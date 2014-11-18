@@ -1,0 +1,6 @@
+passenger_user_switching off;
+passenger_default_user <%= @app_user_name %>;
+
+# number of total rails applications that can be run (ohloh + classy + anything else) - default is 6
+passenger_max_pool_size 16;
+passenger_pool_idle_time 60;

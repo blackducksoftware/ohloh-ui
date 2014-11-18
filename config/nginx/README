@@ -1,0 +1,5 @@
+production.conf, staging.conf and development.conf are built by running script/nginx_build with
+the RAILS_ENV appropriately. This happens automatically at deployment time in the after_code_change
+task.
+
+To change the nginx config files, edit nginx.yml or nginx.erb

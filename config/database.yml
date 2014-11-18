@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  pool: 5
+  timeout: 5000
+  encoding: SQL_ASCII
+  host: ohloh-qa-db.blackducksoftware.com
+  port: 5432
+  username: ruby
+  password: blackswan
+  database: openhub_development
+
+development:
+  <<: *default
+
+vagrant:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

@@ -1,0 +1,33 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+APP_USER_NAME = "deployer"
+APP_USER_ID = 1002
+APP_RAILS_ENV = "vagrant"
+APP_MOUNT_POINT = "/mnt/ohloh-ui"
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/trusty64"
+  config.vm.network "forwarded_port", guest: 80, host: 9090
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "2048"]
+  end
+
+  config.vm.provision "puppet" do |puppet|
+    puppet.module_path = ["modules"]
+    puppet.manifests_path = "manifests"
+    puppet.manifest_file  = "default.pp"
+    puppet.facter = {
+      app_user_name: APP_USER_NAME,
+      app_user_id: APP_USER_ID,
+      app_rails_env: APP_RAILS_ENV,
+      app_mount_point: APP_MOUNT_POINT
+    }
+  end
+
+  config.vm.synced_folder "..", APP_MOUNT_POINT,
+                          owner: APP_USER_ID,
+                          group: APP_USER_ID,
+                          mount_options: ["dmode=777", "fmode=777"]
+
+end

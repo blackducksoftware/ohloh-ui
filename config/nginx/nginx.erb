@@ -1,0 +1,166 @@
+<%= "# WARNING!! Generated file!!!\n" %>
+<%= "# Edit nginx.yml or nginx.erb file instead\n" %>
+<%= "# rebuild with script/nginx_build, the file created depends on your RAILS_ENV\n" %>
+
+user <%= config['user'] || "nobody" %>;
+worker_processes  <%= config['workers'] || 4 %>;
+
+error_log  <%= config['log_path'] || 'logs/' %>error.log error;
+pid        <%= config['pid_path'] || 'logs/' %>nginx.pid;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    #rewrite_log  on; #uncomment this to debug rewrite rules
+    include       mime.types;
+    default_type  application/octet-stream;
+
+<% unless development? %>
+    # comment next line if on OSX
+    sendfile        on;
+<% end %>
+    tcp_nopush      on;
+
+    ## limits
+    # limit how big people can upload files
+    client_max_body_size 10m;
+
+    keepalive_timeout  65;
+    tcp_nodelay       off;
+
+<% if config['upstream'] %>
+    upstream mongrel {
+<% if config['upstream_fair'] %>
+        fair;
+
+<% end %>
+<% Array(config['upstream'] || config['upstreams']).each do |server| %>
+        server <%= server %>;
+<% end %>
+    }
+<% end %>
+
+    log_format  normal '$remote_addr - $remote_user [$time_local] '
+                       '"$request" $status $body_bytes_sent '
+                       '"$http_referer" "$http_user_agent" "$uid_set" "$uid_got"';
+
+    access_log logs/nginx.log normal;
+
+    ## Compression
+    gzip              on;
+    gzip_buffers      16 8k;
+    gzip_comp_level   9;
+    gzip_http_version 1.0;
+    gzip_min_length   0;
+    gzip_types        text/plain text/html text/css image/x-icon image/png application/x-javascript;
+    gzip_vary         on;
+
+<% Array(config['sites']).each do |name, site| %>
+<% [false, true].each do |ssl| %>
+
+    server {
+<% next if ssl == true && site['ssl'].nil? %>
+<% if ssl %>
+<% if site['listen'] %>
+        listen       <%= site['listen'] %>;
+<% else %>
+        listen       443;
+<% end %>
+        server_name  <%= site['server_name'] %>;
+
+        ssl on;
+        ssl_certificate <%= site['ssl']['cert'] %>;
+        ssl_certificate_key <%= site['ssl']['key'] %>;
+
+<% else %>
+        listen       80;
+        server_name  <%= site['server_name'] %>;
+<% end %>
+        root <%= (config['root'][ site['root'] || 'default' ] || site['root']) % name %>;
+
+        userid          on;
+        userid_name     uid;
+        userid_path     /;
+        userid_expires  365d;
+
+
+<% if site['always_www'] %>
+        if ($host != "<%= site['server_name'].split.first %>") {
+            rewrite ^(.*)$ http<%= "s" if ssl %>://<%= site['server_name'].split.first %>$1 permanent;
+            break;
+        }
+<% end %>
+
+        # this rewrites all the requests to the maintenance.html
+        # page if it exists in the doc root. This is for capistrano's
+        # disable web task
+        if ( -f <%= config['root']['system'] %>/maintenance.html ) {
+            rewrite  ^(.*)$  /maintenance.html last;
+            break;
+        }
+
+        location ~* maintenance.html {
+            root <%= config['root']['system']; %>;
+        }
+
+        include /ohloh_beta/current/config/nginx/block_malicious.inc;
+        include /ohloh_beta/current/config/nginx/rewrite_projects.inc;
+
+        # Look for badges first in memcached
+        location ~* (badge\.gif|account_tiny\.gif|account_detailed\.gif|account_rank\.gif|stack_normal\.html|languages\.png|.*\/widgets\/.*)$ {
+            access_log logs/badge_nginx.log normal;
+            access_log logs/nginx.log normal;
+            add_header Cache-Control public;
+            default_type  text/javascript;
+            charset utf-8;
+            set $memcached_key <%= memcached_namespace %>-<%= ENV['RAILS_ENV'] %>:$scheme/views/$uri; # bug: %20 becomes %2520
+            memcached_pass <%= development? ? "localhost:15130" : "207.115.86.108:15130" %>;
+
+            # Send to app. server if Memcached could not answer the request
+            error_page 404 = @dynamic_request;
+        }
+
+        location ~* (robots\.txt|commits.*\.png|age_spark\.png|stack_normal\.html|languages\.png)$ {
+            include /ohloh_beta/current/config/nginx/mongrel_proxy.inc;
+            proxy_set_header Cache-Control public;
+            expires 1h;
+            <%= "proxy_set_header   X-FORWARDED_PROTO https;\n" if ssl %>
+        }
+
+
+        location ~* \.(html|jpg|jpeg|gif|png|ico|css|zip|tgz|gz|rar|bz2|doc|xls|exe|pdf|ppt|txt|tar|mid|midi|wav|bmp|rtf|js|mov)$ {
+            expires 12h;
+            root /ohloh_beta/current/public;
+        }
+
+        location ~* ^/p/.*/download$ {
+            access_log /ohloh_beta/shared/log/download.log;
+            include /ohloh_beta/current/config/nginx/mongrel_proxy.inc;
+            <%= "proxy_set_header   X-FORWARDED_PROTO https;\n" if ssl %>
+        }
+
+        location / {
+            rewrite "^(.+);badge_js$" "$1/badge_js" permanent;
+            rewrite "^(.+);project_(.+)$" "$1/project_$2" permanent;
+            rewrite "^(.*)/languages;compare(.*)$" "$1languages/compare$2" permanent;
+            rewrite "^(.*stacks.*)/rss_articles(.*)$" "$1" permanent;
+
+            #include /ohloh_beta/current/config/nginx/rewrite_projects.inc;
+            include /ohloh_beta/current/config/nginx/mongrel_proxy.inc;
+            <%= "proxy_set_header   X-FORWARDED_PROTO https;\n" if ssl %>
+        }
+
+        location @dynamic_request {
+          access_log logs/nginx.log normal;
+          access_log logs/badge_mongrel.log normal;
+          internal;
+          add_header Cache-Control public;
+          <%= "proxy_set_header   X-FORWARDED_PROTO https;\n" if ssl %>
+          include /ohloh_beta/current/config/nginx/mongrel_proxy.inc;
+        }
+    }
+<% end %>
+<% end %>
+}

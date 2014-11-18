@@ -1,0 +1,200 @@
+user <%= @app_user_name %>;
+worker_processes 4;
+pid /run/nginx.pid;
+
+events {
+  worker_connections 768;
+  # multi_accept on;
+}
+
+http {
+
+  ##
+  # Basic Settings
+  ##
+
+  sendfile on;
+  tcp_nopush on;
+  tcp_nodelay on;
+  keepalive_timeout 65;
+  types_hash_max_size 2048;
+  # server_tokens off;
+
+  # server_names_hash_bucket_size 64;
+  # server_name_in_redirect off;
+
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
+
+  ##
+  # Logging Settings
+  ##
+
+  access_log /var/log/nginx/access.log;
+  error_log /var/log/nginx/error.log;
+
+  ##
+  # Gzip Settings
+  ##
+
+  gzip on;
+  gzip_disable "msie6";
+
+  # gzip_vary on;
+  # gzip_proxied any;
+  # gzip_comp_level 6;
+  # gzip_buffers 16 8k;
+  # gzip_http_version 1.1;
+  # gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+  ##
+  # nginx-naxsi config
+  ##
+  # Uncomment it if you installed nginx-naxsi
+  ##
+
+  # include /etc/nginx/naxsi_core.rules;
+
+  ##
+  # Phusion Passenger config
+  ##
+  # Uncomment it if you installed passenger or passenger-enterprise
+  ##
+
+   passenger_root /usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini;
+   passenger_ruby /usr/bin/ruby;
+         include        /var/local/config/nginx_passenger_http.inc;
+
+        log_format  normal '$http_x_real_ip - $remote_user [$time_local] '
+                       '"$request" $status $body_bytes_sent '
+                       '"$http_referer" "$http_user_agent" "$uid_set" "$uid_got" '
+                       '$request_time';
+    server {
+        listen 80;
+        listen 443 default ssl;
+
+        server_name  dev.openhub.net;
+
+        root /var/local/openhub/current/public;
+
+        userid          on;
+        userid_name     uid;
+        userid_path     /;
+        userid_expires  365d;
+
+        #ssl_certificate   /etc/ssl/blackduck/star_openhub_net-bundled.crt;
+        #ssl_certificate_key /etc/ssl/blackduck/openhub.net.key;
+
+    include /var/local/config/nginx_passenger_common.inc;
+
+        if ($host ~* "^labs\.openhub\.net$") {
+            rewrite ^(.*) http://github.com/blackducksw permanent;
+            break;
+        }
+
+        #if ($host !~* "^www\.ohloh\.net$") {
+        #    rewrite ^(.*)$ http://www.openhub.net$1 permanent;
+        #    break;
+        #}
+
+        # this rewrites all the requests to the maintenance.html
+        # page if it exists in the doc root. This is for capistrano's
+        # disable web task
+        #if ( -f /ohloh_beta/shared/system/maintenance.html ) {
+            #rewrite  ^(.*)$  /maintenance.html last;
+            #break;
+        #}
+
+        #location ~* maintenance.html {
+            #root /ohloh_beta/shared/system;
+        #}
+
+        include /var/local/openhub/current/config/nginx/block_malicious.inc;
+        include /var/local/openhub/current/config/nginx/rewrite_projects.inc;
+
+        # Look for badges first in memcached
+        location ~* (badge\.gif|account_tiny\.gif|account_detailed\.gif|account_rank\.gif|stack_normal\.html|languages\.png|.*\/widgets\/.*)$ {
+          access_log     /var/log/nginx/badge_nginx.log normal;
+          access_log     /var/log/nginx/access_nginx.log normal;
+          add_header     Cache-Control public;
+          default_type    text/javascript;
+          charset     utf-8;
+
+    set $memcached_key openhub-production:$scheme/views/$uri; # bug: %20 becomes %2520
+          memcached_pass         sfo-utility-d.blackducksoftware.com:15130;
+          memcached_connect_timeout   5000; # 5 second connect timeout
+          memcached_read_timeout     5000; # 5 second read timeout
+
+          # Send to app. server if Memcached could not answer the request
+          error_page 404 = @dynamic_request;
+        }
+
+        location ~* (robots\.txt|commits.*\.png|age_spark\.png|stack_normal\.html|languages\.png)$ {
+      include /var/local/config/nginx_passenger_common.inc;
+
+            add_header   Cache-Control public;
+            expires   1h;
+        }
+
+    location ~* \.(html|jpg|jpeg|gif|png|ico|css|zip|tgz|gz|rar|bz2|doc|xls|exe|pdf|ppt|txt|tar|mid|midi|wav|bmp|rtf|js|mov)$ {
+            expires  12h;
+            root   /var/local/openhub/current/public;
+        }
+
+        location ~* ^/p/.*/download$ {
+      include /var/local/config/nginx_passenger_common.inc;
+
+            access_log /var/log/nginx/download.log;
+        }
+
+        location / {
+      include /var/local/config/nginx_passenger_common.inc;
+
+            rewrite "^(.+);badge_js$" "$1/badge_js" permanent;
+            rewrite "^(.+);project_(.+)$" "$1/project_$2" permanent;
+            rewrite "^(.*)/languages;compare(.*)$" "$1languages/compare$2" permanent;
+            rewrite "^(.*stacks.*)/rss_articles(.*)$" "$1" permanent;
+
+            include /var/local/openhub/current/config/nginx/rewrite_projects.inc;
+        }
+
+        location @dynamic_request {
+      include /var/local/config/nginx_passenger_common.inc;
+
+            access_log /var/log/nginx/access_nginx.log normal;
+            access_log /var/log/nginx/badge_mongrel.log normal;
+
+            internal;
+
+            add_header Cache-Control public;
+        }
+        ##
+        # Virtual Host Configs
+        ##
+
+        include /etc/nginx/conf.d/*.conf;
+        include /etc/nginx/sites-enabled/*;
+   }
+}
+
+
+# mail {
+#  # See sample authentication script at:
+#  # http://wiki.nginx.org/ImapAuthenticateWithApachePhpScript
+#
+#  # auth_http localhost/auth.php;
+#  # pop3_capabilities "TOP" "USER";
+#  # imap_capabilities "IMAP4rev1" "UIDPLUS";
+#
+#  server {
+#    listen     localhost:110;
+#    protocol   pop3;
+#    proxy      on;
+#  }
+#
+#  server {
+#    listen     localhost:143;
+#    protocol   imap;
+#    proxy      on;
+#  }
+# }

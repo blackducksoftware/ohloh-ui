@@ -1,0 +1,45 @@
+# This defines the default roots and alternate roots.
+# The name (or key) of your site will be sprintf'd with
+# the below root, right.
+# NOTE: 2014-07-15: Move to OpenHub.  It looks like a fair number of these configurations are significantly outdated
+#root:
+#  system: /ohloh_beta/shared/system
+#  default: /ohloh_beta/current
+#
+#user: <%= production? ? "robin" : "nobody" %> # we should probably use nobody for production/staging too
+#workers: <%= production? ? 4 : 2 %>
+#
+#log_path: /ohloh_beta/shared/log/
+#pid_path: /ohloh_beta/shared/pids/
+
+upstream:
+<% if production? %>
+  - 207.115.86.109:7506
+  - 207.115.86.110:7506
+  - 207.115.86.111:7506
+<% elsif vagrant? %>
+  - 207.115.86.109:7506
+  - 207.115.86.110:7506
+  - 207.115.86.111:7506
+<% elsif staging? %>
+  - 127.0.0.1:7500
+<% else %>
+  <% raise "unexpected RAILS_ENV, must be production, staging or development " unless development? %>
+  - 127.0.0.1:3000
+<% end %>
+#upstream_fair: false # was <%= !development? %> but with apache load-balancing for us, this is (mostly) redundant
+
+sites:
+  openhub:
+    server_name: <%= { production: "www.openhub.net", vagrant: "www.openhub.net", staging: "staging.openhub.net", development: "0.0.0.0" }[ENV['RAILS_ENV']] %>
+
+    # openhub.net => www.openhub.net
+    always_www: <%= production? || staging? || vagrant? %>
+
+    # Which root to use.  You can add a custom one here, too.
+    root: default
+
+    ssl:
+      key: /etc/nginx/certs/server.key
+      cert: /etc/nginx/certs/server.crt
+      listen: 443
