@@ -4,6 +4,7 @@ source 'http://stage-utility-1.blackducksoftware.com:9292/'
 
 gem 'brakeman'
 gem 'coffee-rails'
+gem 'haml-rails'
 gem 'jbuilder'
 gem 'jquery-rails'
 gem 'pg'
@@ -14,12 +15,9 @@ gem 'therubyracer'
 gem 'turbolinks'
 gem 'uglifier'
 
-group :development do
-  gem 'spring'
-end
-
-group :test do
+group :development, :test, :vagrant do
   gem 'mocha'
   gem 'simplecov'
   gem 'simplecov-rcov'
+  gem 'spring'
 end

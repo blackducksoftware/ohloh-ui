@@ -7,5 +7,7 @@ module OhlohUi
   class Application < Rails::Application
     config.generators.stylesheets = false
     config.generators.javascripts = false
+    config.generators.helper = false
+    config.action_controller.include_all_helpers = false
   end
 end
