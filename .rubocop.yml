@@ -1,0 +1,9 @@
+AllCops:
+  Exclude:
+    - vagrant/**/*
+
+Documentation:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
