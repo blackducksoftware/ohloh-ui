@@ -17,7 +17,7 @@ run bundle install and restart the server for you. That should take just a few s
 Pull Request Poller:
 --------------------
 
-* Runs all tests and generates code coverage
+* Runs all tests and generates code coverage information
 * Runs Rubocop
 * Runs Brakeman
 
