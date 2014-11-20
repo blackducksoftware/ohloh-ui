@@ -16,6 +16,7 @@ gem 'turbolinks'
 gem 'uglifier'
 
 group :development, :test, :vagrant do
+  gem 'flog'
   gem 'mocha'
   gem 'simplecov'
   gem 'simplecov-rcov'
