@@ -17,6 +17,11 @@ vagrant:
 
 test:
   <<: *default
+  host: localhost
+  port: 5432
+  database: ohloh_test
+  username: ohloh_user
+  password: password
 
 production:
   <<: *default
