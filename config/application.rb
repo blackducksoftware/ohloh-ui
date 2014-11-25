@@ -9,5 +9,6 @@ module OhlohUi
     config.generators.javascripts = false
     config.generators.helper = false
     config.action_controller.include_all_helpers = false
+    config.active_record.schema_format = :sql
   end
 end
