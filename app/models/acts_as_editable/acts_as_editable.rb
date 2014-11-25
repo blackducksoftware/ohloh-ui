@@ -24,6 +24,14 @@ module ActsAsEditable
     send edit_desc_callback if edit_desc_callback
     self.class.aae_editable_attributes && self.class.aae_merge_within
   end
+
+  def allow_undo?(_)
+    true
+  end
+
+  def allow_undo?(_)
+    true
+  end
 end
 
 ActiveRecord::Base.send :include, ActsAsEditable
