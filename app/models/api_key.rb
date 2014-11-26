@@ -13,7 +13,5 @@ class ApiKey < ActiveRecord::Base
 
   def defaults
     self.daily_limit ||= DEFAULT_DAILY_LIMIT
-    self.key ||= @oauth_client.key
-    self.secret ||= @oauth_client.secret
   end
 end
