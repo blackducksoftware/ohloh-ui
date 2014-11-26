@@ -12,8 +12,8 @@ class ApiKey < ActiveRecord::Base
   validates :key, uniqueness: true
 
   def defaults
-    daily_limit ||= DEFAULT_DAILY_LIMIT
-    key ||= @oauth_client.key
-    secret ||= @oauth_client.secret
+    self.daily_limit ||= DEFAULT_DAILY_LIMIT
+    self.key ||= @oauth_client.key
+    self.secret ||= @oauth_client.secret
   end
 end
