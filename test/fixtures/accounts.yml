@@ -1,0 +1,125 @@
+jason:
+  id: 1
+  login: jason
+  name: Jason Allen
+  email: jason@openhub.net
+  email_md5: 83083cec972de97816efaab06cebf2da
+  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
+  created_at: <%= 5.days.ago.utc.to_s :db %>
+  updated_at: <%= 5.days.ago.utc.to_s :db %>
+  posts_count: 0
+  activation_code: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  activated_at: <%= 5.days.ago.utc.to_s :db %>
+  level: <%= Account::ADMIN_LEVEL %>
+  twitter_account: jason
+robin:
+  id: 2
+  login: robin
+  name: Robin Luckey
+  email: robin@ohloh.net
+  email_md5: 63f26c4a00677ea1e8b14d2a56efb104
+  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
+  created_at: <%= 1.days.ago.utc.to_s :db %>
+  updated_at: <%= 1.days.ago.utc.to_s :db %>
+  posts_count: 0
+  activation_code: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  activated_at: <%= 1.days.ago.utc.to_s :db %>
+  level: <%= Account::DEFAULT_LEVEL %>
+joe:
+  id: 3
+  login: joe
+  name: Joe Schmoe
+  email: joe@email.com
+  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  crypted_password: 4c426caff6b43918711cc94d7a0044bb60eee108 # testy
+  created_at: <%= 1.days.ago.utc.to_s :db %>
+  updated_at: <%= 1.days.ago.utc.to_s :db %>
+  posts_count: 2
+  last_seen_at: <%= 4.minutes.ago.utc.to_s :db %>
+  activation_code: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  activated_at: <%= 5.days.ago.utc.to_s :db %>
+  level: <%= Account::DEFAULT_LEVEL %>
+kyle:
+  id: 4
+  login: kyle
+  name: Kyle Broflovski
+  email: kyle@email.com
+  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  crypted_password: 4c426caff6b43918711cc94d7a0044bb60eee108 # testy
+  created_at: <%= 1.days.ago.utc.to_s :db %>
+  updated_at: <%= 1.days.ago.utc.to_s :db %>
+  posts_count: 0
+  activation_code: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+# Not activated -->   activated_at:
+  level: <%= Account::DEFAULT_LEVEL %>
+# OHLOH_SLAVE is required by the ohloh engine
+ohloh_slave:
+  id: 5
+  login: ohloh_slave
+  name: Ohloh Slave
+  email: info@ohloh.net
+  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
+  created_at: <%= 1.days.ago.utc.to_s :db %>
+  updated_at: <%= 1.days.ago.utc.to_s :db %>
+  posts_count: 0
+  activation_code: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  activated_at: <%= 1.days.ago.utc.to_s :db %>
+  level: <%= Account::DEFAULT_LEVEL %>
+# required for messaging
+ohloh_team:
+  id: 6
+  login: ohloh_team
+  name: Ohloh Team
+  email: team@ohloh.net
+  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
+  created_at: <%= 1.days.ago.utc.to_s :db %>
+  updated_at: <%= 1.days.ago.utc.to_s :db %>
+  posts_count: 0
+  activation_code: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  activated_at: <%= 1.days.ago.utc.to_s :db %>
+  level: <%= Account::DEFAULT_LEVEL %>
+umlaut:
+  id: 7
+  login: ütvon
+  name: ütvon îåa
+  email: andy@ohloh.net
+  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
+  created_at: <%= 1.days.ago.utc.to_s :db %>
+  updated_at: <%= 1.days.ago.utc.to_s :db %>
+  posts_count: 0
+  activation_code: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  activated_at: <%= 1.days.ago.utc.to_s :db %>
+  level: <%= Account::DEFAULT_LEVEL %>
+uber_data_crawler:
+  id: 8
+  login: uber_data_crawler
+  name: Uber Data Crawler
+  email: uber@ohloh.net
+  email_md5: 9dbaca493199c57710e53b56310f6581
+  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
+  created_at: <%= 5.days.ago.utc.to_s :db %>
+  updated_at: <%= 5.days.ago.utc.to_s :db %>
+  posts_count: 0
+  activation_code: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  activated_at: <%= 5.days.ago.utc.to_s :db %>
+  level: <%= Account::DEFAULT_LEVEL %>
+spammer:
+  id: 9
+  login: sir_spams_a_lot
+  name: Sir Spams-a-Lot
+  email: spammy_mc_spams@ohloh.net
+  email_md5: 9dbaca493199c57710e53b56310f6581
+  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
+  created_at: <%= 5.days.ago.utc.to_s :db %>
+  updated_at: <%= 5.days.ago.utc.to_s :db %>
+  posts_count: 0
+  activation_code: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  activated_at: <%= 5.days.ago.utc.to_s :db %>
+  level: <%= Account::SPAMMER_LEVEL %>
