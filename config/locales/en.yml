@@ -1,2 +1,13 @@
 en:
   must_accept_terms: 'You must accept the terms of use.'
+  domain_blacklists:
+    index:
+      notice: 'No Domains Blacklisted'
+    create:
+      success: 'Domain successfully added to blacklist'
+      error: 'Unable to add domain to blacklist'
+    update:
+      success: 'Blacklisted Domain successfully updated'
+      error: 'Unable to update blacklisted domain'
+    destroy:
+      success: 'Blacklisted Domain successfully deleted'
