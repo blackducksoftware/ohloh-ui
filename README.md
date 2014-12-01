@@ -32,6 +32,6 @@ sudo apt-get install postgresql-9.2
 
 Afterwards create ohloh_user and bestow ohloh_user with super user privileges:
 
-sudo -u postgres psql template1
-CREATE USER ohloh_user SUPERUSER;
-ALTER USER ohloh_user WITH PASSWORD 'password';
+* **`sudo -u postgres psql template1`**
+* **`CREATE USER ohloh_user SUPERUSER;`**
+* **`ALTER USER ohloh_user WITH PASSWORD 'password';`**
