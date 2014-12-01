@@ -24,7 +24,14 @@ Pull Request Poller:
 To view the automated Pull Request testing statuses,
 go to: stage-utility-1:8080/job/ohloh-ui-pull-request-sanitizer/
 
--------Note------------
+Note
+-------------------
 
 Postgresql 9.2 needs to be installed for local testing.
 sudo apt-get install postgresql-9.2
+
+Afterwards create ohloh_user and bestow ohloh_user with super user privileges:
+
+sudo -u postgres psql template1
+CREATE USER ohloh_user SUPERUSER;
+ALTER USER ohloh_user WITH PASSWORD 'password';
