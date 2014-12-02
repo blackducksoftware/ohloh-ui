@@ -1,2 +1,5 @@
 en:
   must_accept_terms: 'You must accept the terms of use.'
+  four_oh_four: 'Not Found'
+  must_be_logged_in: 'You must be signed in to perform that action.'
+  not_authorized: 'You do not have permission to perform that action.'
