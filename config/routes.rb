@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
-  resources :api_keys, except: [:show, :new, :create] do
-    collection { get :csv_download, defaults: { format: 'csv' } }
-  end
+  resources :api_keys, only: :index
 
   resources :accounts, except: [:index, :show, :new, :create, :edit, :update, :delete] do
     resources :api_keys, constraints: { format: :html }, except: :show

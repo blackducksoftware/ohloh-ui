@@ -175,6 +175,20 @@ class ApiKeysControllerTest < ActionController::TestCase
     assert !response.body.match(api_key2.name)
   end
 
+  test 'admins should be able to download a csv of the global list of api keys' do
+    api_key1 = create(:api_key, account_id: accounts(:robin).id)
+    api_key2 = create(:api_key, account_id: accounts(:jason).id)
+    @controller.expects(:current_user).at_least_once.returns(accounts(:jason))
+    get :index, format: :csv
+    assert_response :ok
+    assert response.body.match('Open Hub account,Application Name')
+    assert response.body.match(api_key1.name)
+    assert response.body.match(api_key2.name)
+    assert response.headers['Content-Type'].include? 'text/csv'
+    assert response.headers['Content-Disposition'].include? 'attachment'
+    assert response.headers['Content-Disposition'].include? 'api_keys_report.csv'
+  end
+
   # new action
   test 'new should let admins edit daily limit' do
     @controller.expects(:current_user).at_least_once.returns(accounts(:jason))

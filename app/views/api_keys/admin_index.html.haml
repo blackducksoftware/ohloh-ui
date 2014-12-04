@@ -4,7 +4,7 @@
 
 %h3.float_left
   = @meta_title
-  %a.link_no_underline{title: t('.download_as_csv'), href: csv_download_api_keys_path}= t('api_keys.download_as_csv')
+  %a.link_no_underline{title: t('.download_as_csv'), href: api_keys_path(format: :csv)}= t('api_keys.download_as_csv')
 
 .float_right
   %form.form-inline{action: '', rel: 'sort_filter'}

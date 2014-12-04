@@ -1,6 +1,5 @@
 class ApiKeysController < ApplicationController
   before_action :session_required
-  before_action :admin_session_required, only: :csv_download
   before_action :find_account
   before_action :find_models, only: :index
   before_action :find_model, only: [:edit, :update, :destroy]
@@ -10,6 +9,10 @@ class ApiKeysController < ApplicationController
   API_KEYS_PER_PAGE = 10
 
   def index
+    if request_format == 'csv'
+      response.content_type = 'text/csv'
+      response.headers['Content-Disposition'] = 'attachment; filename="api_keys_report.csv"'
+    end
     render_with_format @account ? action_name : 'admin_index'
   end
 
@@ -53,10 +56,6 @@ class ApiKeysController < ApplicationController
     end
   end
 
-  def csv_download
-    # send_data(csv_str, :type => 'text/csv', :filename => 'api_keys_report.csv', :disposition => 'attachment')
-  end
-
   private
 
   def find_account
@@ -80,7 +79,8 @@ class ApiKeysController < ApplicationController
   def find_models
     find_query_param
     find_sort_param
-    models = ApiKey.send(@sort).limit(API_KEYS_PER_PAGE).page(params[:page])
+    models = ApiKey.send(@sort).page(params[:page])
+    models = models.limit((request_format == 'csv') ? 2_147_483_648 : API_KEYS_PER_PAGE)
     models = models.filterable_by(@query_term) if @query_term
     models = models.where(account_id: @account.id) if @account
     @models = models.to_a

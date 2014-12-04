@@ -1,0 +1,6 @@
+Open Hub account,Application Name,URL,Description,Daily limit,Created,All time requests,Requests today,Last accessed,Status,API key
+- @models.each do |k|
+  - status = (k.status == ApiKey::STATUS_OK) ? 'Active' : nil
+  - status ||= (k.status == ApiKey::STATUS_LIMIT_EXCEEDED) ? 'Limit Exceeded' : 'Disabled'
+  - fields = [k.account.name, k.name, k.url, k.description, k.daily_limit, k.created_at.strftime("%m/%d/%Y"), k.total_count, k.daily_count, k.last_access_at, status, k.key]
+  = fields.join ','
