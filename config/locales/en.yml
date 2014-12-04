@@ -12,6 +12,17 @@ en:
   sort_by: 'Sort by:'
   settings: 'Settings'
   api_keys_title: 'API Keys'
+  domain_blacklists:
+    index:
+      notice: 'No Domains Blacklisted'
+    create:
+      success: 'Domain successfully added to blacklist'
+      error: 'Unable to add domain to blacklist'
+    update:
+      success: 'Blacklisted Domain successfully updated'
+      error: 'Unable to update blacklisted domain'
+    destroy:
+      success: 'Blacklisted Domain successfully deleted'
   api_keys:
     permission_denied: 'Only the API Key owner has permission to do this.'
     download_as_csv: 'Download as CSV'
