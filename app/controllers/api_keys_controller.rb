@@ -24,29 +24,32 @@ class ApiKeysController < ApplicationController
     @model = ApiKey.new(model_params)
     @model.account = @account
     if @model.save
-      redirect_to @model, notice: t('.success')
+      redirect_to account_api_keys_path(@account), notice: t('.success')
     else
-      render(nothing: true, status: :created, location: @model)
+      render :new, status: :bad_request
     end
   end
 
   def edit
+    return render_404 unless @account
     render_with_format action_name
   end
 
   def update
+    return render_404 unless @account
+    @model.account = @account
     if @model.update(model_params)
-      redirect_to @model, notice: t('.success')
+      redirect_to account_api_keys_path(@account), notice: t('.success')
     else
-      render_with_format('edit', status: :unprocessable_entity)
+      render :edit, status: :bad_request
     end
   end
 
-  def delete
+  def destroy
     if @model.destroy
-      redirect_to :back, notice: t('.success')
+      redirect_to account_api_keys_path(@account), notice: t('.success')
     else
-      redirect_to :back, alert: t('.error')
+      redirect_to account_api_keys_path(@account), notice: t('.error')
     end
   end
 
@@ -69,7 +72,7 @@ class ApiKeysController < ApplicationController
   def find_model
     @model = ApiKey.find params[:id]
   rescue ActiveRecord::RecordNotFound
-    raise CustomException::ParamRecordNotFound
+    raise ParamRecordNotFound
   rescue e
     raise e
   end
@@ -105,6 +108,6 @@ class ApiKeysController < ApplicationController
 
   def check_api_key_limit
     return unless @account.api_keys.size >= ApiKey::KEY_LIMIT_PER_ACCOUNT
-    redirect_to account_api_keys_path(current_account), notice: t('.limit_reached')
+    redirect_to account_api_keys_path(@account), notice: t('.limit_reached')
   end
 end

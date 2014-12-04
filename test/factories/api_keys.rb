@@ -12,6 +12,6 @@ FactoryGirl.define do
     description 'An API Key for account #1'
     name { generate(:api_key_name) }
     key { generate(:api_key_key) }
-    terms true
+    terms '1'
   end
 end

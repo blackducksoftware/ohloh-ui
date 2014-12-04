@@ -11,7 +11,7 @@ class ApiKey < ActiveRecord::Base
 
   validates :description, length: { within: 4..2000 }
   validates :name, length: { within: 4..50 }
-  validates :terms, acceptance: { accept: true, message: I18n.t(:must_accept_terms) }
+  validates :terms, acceptance: { accept: '1', message: I18n.t(:must_accept_terms) }
   validates :key, uniqueness: true
 
   scope :filterable_by, ->(term) { joins(:account).where(filterable_by_where_clause(term)) }

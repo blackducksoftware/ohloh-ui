@@ -4,6 +4,8 @@ class Account < ActiveRecord::Base
   DISABLE_LEVEL = -10
   SPAMMER_LEVEL = -20
 
+  has_many :api_keys
+
   def admin?
     level == ADMIN_LEVEL
   end

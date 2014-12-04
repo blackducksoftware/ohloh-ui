@@ -3,6 +3,7 @@ require 'test_helper'
 class ApiKeysControllerTest < ActionController::TestCase
   fixtures :accounts
 
+  # index action
   test 'admins should be able to look at the global list of api keys' do
     @controller.expects(:current_user).at_least_once.returns(accounts(:jason))
     get :index
@@ -172,5 +173,94 @@ class ApiKeysControllerTest < ActionController::TestCase
     assert_response :ok
     assert response.body.match(api_key1.name)
     assert !response.body.match(api_key2.name)
+  end
+
+  # new action
+  test 'new should let admins edit daily limit' do
+    @controller.expects(:current_user).at_least_once.returns(accounts(:jason))
+    get :new, account_id: accounts(:jason).id
+    assert_response :ok
+    assert response.body.match('api_key_daily_limit')
+  end
+
+  test 'new should not let users edit daily limit' do
+    @controller.expects(:current_user).at_least_once.returns(accounts(:robin))
+    get :new, account_id: accounts(:robin).id
+    assert_response :ok
+    assert !response.body.match('api_key_daily_limit')
+  end
+
+  test 'new should not let users who have enough keys make more' do
+    (1..ApiKey::KEY_LIMIT_PER_ACCOUNT).each { create(:api_key, account_id: accounts(:robin).id) }
+    @controller.expects(:current_user).at_least_once.returns(accounts(:robin))
+    get :new, account_id: accounts(:robin).id
+    assert_response 302
+  end
+
+  # create action
+  test 'create with valid parameters should create an api key' do
+    @controller.expects(:current_user).at_least_once.returns(accounts(:robin))
+    post :create, account_id: accounts(:robin).id, api_key: { name: 'Name',
+                                                              description: 'It was the best of times.',
+                                                              terms: '1' }
+    assert_response :found
+    assert ApiKey.where(account_id: accounts(:robin).id, description: 'It was the best of times.').first
+  end
+
+  test 'create requires accepting the terms of service' do
+    @controller.expects(:current_user).at_least_once.returns(accounts(:robin))
+    post :create, account_id: accounts(:robin).id, api_key: { name: 'Name',
+                                                              description: 'I do not accept those terms!',
+                                                              terms: '0' }
+    assert_response :bad_request
+    assert response.body.match(I18n.t(:must_accept_terms))
+    assert !ApiKey.where(account_id: accounts(:robin).id, description: 'I do not accept those terms!').first
+  end
+
+  # edit action
+  test 'edit should populate the form' do
+    api_key = create(:api_key, account_id: accounts(:robin).id, description: 'A pre-existing API Key.')
+    @controller.expects(:current_user).at_least_once.returns(accounts(:robin))
+    get :edit, account_id: accounts(:robin).id, id: api_key.id
+    assert_response :ok
+    assert response.body.match('A pre-existing API Key.')
+  end
+
+  test 'edit should 404 attempting to edit a non-existant api key' do
+    @controller.expects(:current_user).at_least_once.returns(accounts(:robin))
+    get :edit, account_id: accounts(:robin).id, id: 9876
+    assert_response :not_found
+  end
+
+  # update action
+  test 'update should populate the form' do
+    api_key = create(:api_key, account_id: accounts(:robin).id, description: 'My old crufty API Key.')
+    @controller.expects(:current_user).at_least_once.returns(accounts(:robin))
+    put :update, account_id: accounts(:robin).id, id: api_key.id, api_key: { name: 'Name',
+                                                                             description: 'Repolished key!',
+                                                                             terms: '1' }
+    assert_response 302
+    api_key.reload
+    assert_equal 'Repolished key!', api_key.description
+  end
+
+  test 'update does not allow unaccepting the terms' do
+    api_key = create(:api_key, account_id: accounts(:robin).id, description: 'My previous API Key.')
+    @controller.expects(:current_user).at_least_once.returns(accounts(:robin))
+    put :update, account_id: accounts(:robin).id, id: api_key.id, api_key: { name: 'Name',
+                                                                             description: 'I cleverly unaccept now!',
+                                                                             terms: '0' }
+    assert_response :bad_request
+    api_key.reload
+    assert_equal 'My previous API Key.', api_key.description
+  end
+
+  # destroy action
+  test 'destroy should remove the api key from the db' do
+    api_key = create(:api_key, account_id: accounts(:robin).id, description: 'My doomed key.')
+    @controller.expects(:current_user).at_least_once.returns(accounts(:robin))
+    delete :destroy, account_id: accounts(:robin).id, id: api_key.id
+    assert_response 302
+    assert !ApiKey.where(account_id: accounts(:robin).id, description: 'My doomed key.').first
   end
 end

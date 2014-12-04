@@ -20,10 +20,12 @@ class ApplicationController < ActionController::Base
   def current_user
     nil
   end
+  helper_method :current_user
 
   def current_user_is_admin?
     current_user && current_user.admin?
   end
+  helper_method :current_user_is_admin?
 
   def request_format
     format = 'html' if request.format.html?
