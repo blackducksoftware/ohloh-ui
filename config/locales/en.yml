@@ -3,3 +3,14 @@ en:
   four_oh_four: 'Not Found'
   must_be_logged_in: 'You must be signed in to perform that action.'
   not_authorized: 'You do not have permission to perform that action.'
+  domain_blacklists:
+    index:
+      notice: 'No Domains Blacklisted'
+    create:
+      success: 'Domain successfully added to blacklist'
+      error: 'Unable to add domain to blacklist'
+    update:
+      success: 'Blacklisted Domain successfully updated'
+      error: 'Unable to update blacklisted domain'
+    destroy:
+      success: 'Blacklisted Domain successfully deleted'
