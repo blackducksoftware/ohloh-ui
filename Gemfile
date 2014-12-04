@@ -14,6 +14,7 @@ gem 'sass-rails'
 gem 'therubyracer'
 gem 'turbolinks'
 gem 'uglifier'
+gem 'will_paginate'
 
 group :development, :test, :vagrant do
   gem 'factory_girl_rails'

@@ -1,0 +1,43 @@
+.row
+  .span10
+    .well
+      %table.unstyled.span9
+        %tbody
+          %tr
+            %td
+              %a.btn.btn-mini.float_right.api_key_edit{href: edit_account_api_key_path(api_key.account, api_key)}
+                %i.icon-pencil= t :edit
+              %h4.nomargin= api_key.name || t('api_keys.untitled_application')
+              %p!= link_to_if !api_key.url.blank?, api_key.url, api_key.url
+              %p.soft= api_key.description
+
+              %p.nomargin!= t 'api_keys.api_key_label', key: api_key.key
+              %p!= t 'api_keys.oath_secret', secret: (api_key.secret ? api_key.secret : t('api_keys.none'))
+
+              %table.table.unstyled
+                %tbody
+                  %tr
+                    %td.span3
+                      %h4.nomargin= t 'api_keys.all_time'
+                      %p!= t 'api_keys.request_all_time', total: api_key.total_count
+                      %p= t 'api_keys.created_ago', ago: time_ago_in_words(api_key.created_at)
+
+                    %td.span3
+                      %h4.nomargin= t 'api_keys.today'
+                      %p!= t 'api_keys.request_so_far_today', so_far: api_key.daily_count
+                      %p!= t 'api_keys.limited_to_per_day', number_per_day: number_with_delimiter(api_key.daily_limit)
+                      %p
+                        - if api_key.last_access_at
+                          = t 'api_keys.last_accessed_at', ago: time_ago_in_words(api_key.last_access_at)
+                        - else
+                          = t 'api_keys.hasnt_been_used_yet'
+                    %td.span2
+                      %h4.nomargin= t 'api_keys.status'
+                      - case api_key.status
+                      - when ApiKey::STATUS_OK
+                        != t 'api_keys.key_is_active'
+                      - when ApiKey::STATUS_LIMIT_EXCEEDED
+                        != t 'api_keys.key_is_over_limit'
+                      - else
+                        != t 'api_keys.key_is_disabled'
+      .clear

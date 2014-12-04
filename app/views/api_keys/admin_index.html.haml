@@ -1,0 +1,31 @@
+- @meta_title = t 'api_keys.index.page_title'
+- selected = params[:sort] || 'newest'
+- opts = options_for_select(@sort_options.invert, selected: @sort)
+
+%h3.float_left
+  = @meta_title
+  %a.link_no_underline{title: t('.download_as_csv'), href: csv_download_api_keys_path}= t('api_keys.download_as_csv')
+
+.float_right
+  %form.form-inline{action: '', rel: 'sort_filter'}
+    %fieldset
+      .dingus-filter.float_left
+        %label.query{for: :query}= t(:search_filet_label)
+        = text_field_tag(:query, @query_term, autocomplete: 'off', class: 'query')
+        %button.btn{type: 'submit'}
+          %i.icon-refresh!= '&nbsp;'
+      .dingus-sort.float_right
+        #sort_by
+          %label{for: 'form-field-select-3'}= t(:sort_by)
+          = select_tag(:sort, opts, class: 'chzn-select')
+.clear_both
+
+.api_keys
+  - if !@models.empty?
+    = render partial: 'admin_api_key', collection: @models, as: 'api_key'
+    = will_paginate @models
+  - elsif !params[:query].blank?
+    .alert.alert-info
+      %a.close{href: '#', 'data-dismiss' => 'alert'} x
+      %i.icon-info-sign!= '&nbsp;'
+      = t(:no_matches)

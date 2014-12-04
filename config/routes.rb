@@ -1,4 +1,15 @@
 Rails.application.routes.draw do
+  resources :api_keys, except: [:show, :new, :create] do
+    collection { get :csv_download, defaults: { format: 'csv' } }
+  end
+
+  resources :accounts, except: [:index, :show, :new, :create, :edit, :update, :delete] do
+    resources :api_keys, constraints: { format: :html }, except: :show
+    member do
+      get :settings
+    end
+  end
+
   # The priority is based upon order of creation: first created -> highest
   # priority.
   # See how all your routes lay out with "rake routes".
