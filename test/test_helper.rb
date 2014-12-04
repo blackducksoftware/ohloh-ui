@@ -9,4 +9,8 @@ ActiveRecord::Migration.maintain_test_schema!
 
 class ActiveSupport::TestCase
   include FactoryGirl::Syntax::Methods
+
+  # TODO: Fix it when integrating accounts
+  def login_as(_account)
+  end
 end

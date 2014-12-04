@@ -1,0 +1,3 @@
+inherit_from: ../.rubocop.yml
+ClassLength:
+  Enabled: false
