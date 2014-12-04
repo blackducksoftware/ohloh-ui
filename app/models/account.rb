@@ -3,4 +3,8 @@ class Account < ActiveRecord::Base
   ADMIN_LEVEL   = 10
   DISABLE_LEVEL = -10
   SPAMMER_LEVEL = -20
+
+  def admin?
+    level == ADMIN_LEVEL
+  end
 end
