@@ -91,14 +91,14 @@ class ApiKeysController < ApplicationController
   end
 
   def find_sort_param
-    @sort_options = { by_most_recent_request: t('.sort_by_most_recent_request'),
-                      by_most_requests_today: t('.sort_by_most_requests_today'),
-                      by_most_requests: t('.sort_by_most_requests'),
-                      by_account_name: t('.sort_by_account_name'),
-                      by_newest: t('.sort_by_newest'),
-                      by_oldest: t('.sort_by_oldest') }
-    @sort = "by_#{params[:sort]}".to_sym
-    @sort = :by_newest unless @sort_options.key?(@sort)
+    @sort_options = { 'by_most_recent_request' => t('.sort_by_most_recent_request'),
+                      'by_most_requests_today' => t('.sort_by_most_requests_today'),
+                      'by_most_requests' => t('.sort_by_most_requests'),
+                      'by_account_name' => t('.sort_by_account_name'),
+                      'by_newest' => t('.sort_by_newest'),
+                      'by_oldest' => t('.sort_by_oldest') }
+    @sort = "by_#{params[:sort]}"
+    @sort = 'by_newest' unless @sort_options.key?(@sort)
   end
 
   def must_be_key_owner

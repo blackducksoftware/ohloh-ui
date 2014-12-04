@@ -11,21 +11,21 @@
               %p!= link_to_if !api_key.url.blank?, api_key.url, api_key.url
               %p.soft= api_key.description
 
-              %p.nomargin!= t 'api_keys.api_key_label', key: api_key.key
-              %p!= t 'api_keys.oath_secret', secret: (api_key.secret ? api_key.secret : t('api_keys.none'))
+              %p.nomargin= t('api_keys.api_key_label', key: html_escape(api_key.key)).html_safe
+              %p= t('api_keys.oath_secret', secret: (api_key.secret ? html_escape(api_key.secret) : t('api_keys.none'))).html_safe
 
               %table.table.unstyled
                 %tbody
                   %tr
                     %td.span3
                       %h4.nomargin= t 'api_keys.all_time'
-                      %p!= t 'api_keys.request_all_time', total: api_key.total_count
+                      %p!= t 'api_keys.request_all_time', total: api_key.total_count.to_i
                       %p= t 'api_keys.created_ago', ago: time_ago_in_words(api_key.created_at)
 
                     %td.span3
                       %h4.nomargin= t 'api_keys.today'
-                      %p!= t 'api_keys.request_so_far_today', so_far: api_key.daily_count
-                      %p!= t 'api_keys.limited_to_per_day', number_per_day: number_with_delimiter(api_key.daily_limit)
+                      %p!= t 'api_keys.request_so_far_today', so_far: api_key.daily_count.to_i
+                      %p!= t 'api_keys.limited_to_per_day', number_per_day: number_with_delimiter(api_key.daily_limit.to_i)
                       %p
                         - if api_key.last_access_at
                           = t 'api_keys.last_accessed_at', ago: time_ago_in_words(api_key.last_access_at)
