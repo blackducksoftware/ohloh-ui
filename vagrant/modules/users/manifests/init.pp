@@ -23,7 +23,15 @@ class users {
   exec { "change password for $app_user_name":
     command => "echo  '$app_user_name:password' | chpasswd $app_user_name",
     path => ["/bin", "/usr/sbin"],
+    creates => "/tmp/deployer_configured",
     require => User[$app_user_name]
+  }
+
+  exec { "mark deployer as being set up":
+    command => "/usr/bin/touch /tmp/deployer_configured",
+    user => root,
+    creates => "/tmp/deployer_configured",
+    require => Exec["change password for $app_user_name"]
   }
 
   file { "/home/$app_user_name/.bash_profile":
