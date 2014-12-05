@@ -6,25 +6,25 @@
 %h2!= "#{settings_link} : #{account_api_keys_link} : #{@meta_title}"
 
 = form_for(@model, as: :api_key, :url => url, :html => {:method => http_method, :id => 'api_key_form'}) do |f|
-  %div.span11.center-block.well
+  %div.col-md-11.center-block.well
     %fieldset
       .control-group
         %label.control-label.required= t 'api_keys.form.application_name'
         .controls
-          = f.text_field :name, :max_length => 50, :class => 'span7'
+          = f.text_field :name, :max_length => 50, :class => 'col-md-7'
           - error_tag @model, :name
 
       .control-group
         %label.control-label= t 'api_keys.form.home_page_url'
         .controls
-          = f.text_field :url, :max_length => 50, :class => 'span7'
+          = f.text_field :url, :max_length => 50, :class => 'col-md-7'
           - error_tag @model, :url
           %p.help-block= t 'api_keys.form.home_page_url_info'
 
       .control-group
         %label.control-label.required= t 'api_keys.form.description'
         .controls
-          = f.text_area :description, :rows => 10, :max_length => 2000, :class => 'span7'
+          = f.text_area :description, :rows => 10, :max_length => 2000, :class => 'col-md-7'
           - error_tag @model, :description
           %p.help-block= t 'api_keys.form.description_info'
 
@@ -32,7 +32,7 @@
         .control-group
           %label.control-label= t 'api_keys.form.daily_request_limit'
           .controls
-            = f.text_field :daily_limit, :max_length => 10, :class => 'span4'
+            = f.text_field :daily_limit, :max_length => 10, :class => 'col-md-4'
             - error_tag @model, :daily_limit
           %p.help-block= t 'api_keys.form.daily_request_limit_admin'
       - else
@@ -58,12 +58,12 @@
 %h4.nomargin.no_padding_one_top
   %span.soft= t :about
   = t :api_keys_title
-.span5
+.col-md-5
   %ul
     %li!= t('api_keys.help_1', terms_link: terms_link, terms_2_link: terms_2_link)
     %li= t('api_keys.help_4')
     %li= t('api_keys.help_5')
-.span5
+.col-md-5
   %ul
     %li= t('api_keys.help_6')
     %li!= t('api_keys.help_7', contacts_link: contacts_link)

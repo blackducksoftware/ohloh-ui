@@ -1,6 +1,14 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
+  attr_reader :page_context
+  helper_method :page_context
+
+  def initialize(*params)
+    @page_context = {}
+    super(*params)
+  end
+
   rescue_from ParamRecordNotFound do
     render_404
   end
@@ -26,6 +34,11 @@ class ApplicationController < ActionController::Base
     current_user && current_user.admin?
   end
   helper_method :current_user_is_admin?
+
+  def read_only_mode?
+    false
+  end
+  helper_method :read_only_mode?
 
   def request_format
     format = 'html' if request.format.html?

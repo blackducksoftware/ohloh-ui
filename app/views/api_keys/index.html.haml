@@ -1,4 +1,4 @@
-- @meta_title = t :api_keys_title
+- page_context[:title] = t :api_keys_title
 
 %h2.float_left!= "#{link_to(t(:settings), settings_account_path(@account))} : #{@meta_title}"
 .clear_both
@@ -13,7 +13,7 @@
 %h4.nomargin.margin_top_20
   %span.soft= t(:about)
   = @meta_title
-.span6
+.col-md-6
   %ul
     - terms_link = blog_link_to(link: :terms, link_text: t('api_keys.terms_link'))
     - terms_2_link = blog_link_to(link: :additional_terms, link_text: t('api_keys.terms_2_link'))

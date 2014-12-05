@@ -129,16 +129,34 @@ http {
           error_page 404 = @dynamic_request;
         }
 
+        # Rails asset pipeline support.
+        location ~ ^/assets/ {
+            error_page 490 = @static_asset;
+            error_page 491 = @dynamic_request;
+            recursive_error_pages on;
+
+            if (-f $request_filename) {
+                return 490;
+            }
+            if (!-f $request_filename) {
+                return 491;
+            }
+        }
+        location @static_asset {
+            gzip_static on;
+            expires max;
+            add_header Cache-Control public;
+            add_header ETag "";
+        }
+        location @dynamic_request {
+            passenger_enabled on;
+        }
+
         location ~* (robots\.txt|commits.*\.png|age_spark\.png|stack_normal\.html|languages\.png)$ {
       include /var/local/config/nginx_passenger_common.inc;
 
             add_header   Cache-Control public;
             expires   1h;
-        }
-
-    location ~* \.(html|jpg|jpeg|gif|png|ico|css|zip|tgz|gz|rar|bz2|doc|xls|exe|pdf|ppt|txt|tar|mid|midi|wav|bmp|rtf|js|mov)$ {
-            expires  12h;
-            root   /var/local/openhub/current/public;
         }
 
         location ~* ^/p/.*/download$ {

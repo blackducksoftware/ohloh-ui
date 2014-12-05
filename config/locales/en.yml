@@ -11,7 +11,18 @@ en:
   no_matches: 'No matches with this filter.'
   sort_by: 'Sort by:'
   settings: 'Settings'
+  follow: 'Follow'
+  profile: 'Profile'
+  sign_in: 'Sign In'
+  logout: 'Logout'
+  join_now: 'Join Now'
   api_keys_title: 'API Keys'
+  projects: 'Projects'
+  people: 'People'
+  organizations: 'Organizations'
+  tools: 'Tools'
+  code: 'Code'
+  blog: 'Blog'
   domain_blacklists:
     index:
       notice: 'No Domains Blacklisted'

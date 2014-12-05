@@ -1,0 +1,49 @@
+.footer-left
+  %ul.nav.nav-pills
+    %li
+      %a{:href => "http://blog.openhub.net/us"}
+        %span About
+    %li
+      %a{:href=> root_path}
+        %span Forums
+    %li
+      %a{:href=> "http://blog.openhub.net/terms"}
+        %span Terms
+    %li
+      %a{:href=> "http://blog.openhub.net/privacy"}
+        %span Privacy
+
+.footer-mid
+  %a{:href => "http://creativecommons.org/licenses/by/3.0/", :rel => "license", :target => "_blank"}
+    %img{:alt => "Creative Commons License", :src => "//i.creativecommons.org/l/by/3.0/88x31.png"}
+  Copyright
+  %sup &copy;
+  = Time.now.year
+  and its contributors, Some Rights Reserved. Unless otherwise marked, this work is licensed under a
+  %span{:itemscope => '' , :itemtype => "http://schema.org/CreativeWork"}
+    %span{:itemprop => "publishingPrinciples"}
+      %a{:rel => "license", :href => "http://creativecommons.org/licenses/by/3.0/", :target => "_blank"}
+        Creative Commons Attribution 3.0 Unported License  \. Open Hub
+  %sup &reg;
+  %span{:itemprop => "description"}
+    and the Open Hub logo are trademarks of
+  %span{:itemscope => '' , :itemtype => "http://schema.org/CreativeWork"}
+    %span{:itemprop => "publisher"}
+      %a{:href => "http://www.blackducksoftware.com", :target => "_blank"}
+        = "Black Duck Software, Inc."
+      All Rights Reserved.
+    in the United States and/or other jurisdictions. All other trademarks are the property of their respective holders.
+
+.footer-right
+  %img{:src => "/images/mast/blackduck_mascot.png"}
+  .clear &nbsp;
+  %sup &copy;
+  = Time.now.year
+  - line_break ||= false
+
+  %span{:itemscope => '' , :itemtype => "http://schema.org/CreativeWork"}
+    %span{:itemprop => "publisher"}
+      %a{:href => "http://www.blackducksoftware.com", :target => "_blank"}
+        = "Black Duck Software, Inc."
+      %br
+      All Rights Reserved.
