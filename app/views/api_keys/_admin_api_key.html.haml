@@ -1,7 +1,7 @@
 .row
-  .span10
+  .col-md-10
     .well
-      %table.unstyled.span9
+      %table
         %tbody
           %tr
             %td
@@ -17,12 +17,12 @@
               %table.table.unstyled
                 %tbody
                   %tr
-                    %td.span3
+                    %td.col-md-3
                       %h4.nomargin= t 'api_keys.all_time'
                       %p!= t 'api_keys.request_all_time', total: api_key.total_count.to_i
                       %p= t 'api_keys.created_ago', ago: time_ago_in_words(api_key.created_at)
 
-                    %td.span3
+                    %td.col-md-3
                       %h4.nomargin= t 'api_keys.today'
                       %p!= t 'api_keys.request_so_far_today', so_far: api_key.daily_count.to_i
                       %p!= t 'api_keys.limited_to_per_day', number_per_day: number_with_delimiter(api_key.daily_limit.to_i)
@@ -31,7 +31,7 @@
                           = t 'api_keys.last_accessed_at', ago: time_ago_in_words(api_key.last_access_at)
                         - else
                           = t 'api_keys.hasnt_been_used_yet'
-                    %td.span2
+                    %td.col-md-2
                       %h4.nomargin= t 'api_keys.status'
                       - case api_key.status
                       - when ApiKey::STATUS_OK

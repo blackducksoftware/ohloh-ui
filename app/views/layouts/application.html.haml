@@ -10,8 +10,9 @@
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = csrf_meta_tags
-  %body
-    #page
+  %body{zoom: 1}
+    #page.container
       %header= render partial: 'layouts/partials/header'
-      .content= yield
+      #page-contents= yield
+      .clear
       %footer= render partial: 'layouts/partials/footer'
