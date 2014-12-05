@@ -13,6 +13,7 @@ gem 'rubocop'
 gem 'sass-rails'
 gem 'therubyracer'
 gem 'turbolinks'
+gem 'twitter-bootstrap-rails'
 gem 'uglifier'
 gem 'will_paginate'
 

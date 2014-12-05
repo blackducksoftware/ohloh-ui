@@ -1,0 +1,5 @@
+en:
+  header:
+    maintenance_in_progress_title: 'Maintenance In Progress'
+    maintenance_in_progress_body_1: 'We are temporarily operating with limited features while we perform a website upgrade. Users cannot log in during this time.'
+    maintenance_in_progress_body_2: "We apologize for any inconvenience. We'll be back to full operation shortly."

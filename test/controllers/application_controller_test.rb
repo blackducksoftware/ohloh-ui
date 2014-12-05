@@ -47,31 +47,31 @@ class ApplicationControllerTest < ActionController::TestCase
   end
 
   test 'session_required with a current user' do
-    @controller.expects(:current_user).returns(accounts(:user))
+    login_as accounts(:user)
     get :session_required_action
     assert_response :ok
   end
 
   test 'session_required without a current user' do
-    @controller.expects(:current_user).returns(nil)
+    login_as nil
     get :session_required_action
     assert_response :unauthorized
   end
 
   test 'admin_session_required with a current admin' do
-    @controller.expects(:current_user).at_least_once.returns(accounts(:admin))
+    login_as accounts(:admin)
     get :admin_session_required_action
     assert_response :ok
   end
 
   test 'admin_session_required without a current user' do
-    @controller.expects(:current_user).at_least_once.returns(nil)
+    login_as nil
     get :admin_session_required_action
     assert_response :unauthorized
   end
 
   test 'admin_session_required with a current plain user' do
-    @controller.expects(:current_user).at_least_once.returns(accounts(:user))
+    login_as accounts(:user)
     get :admin_session_required_action
     assert_response :unauthorized
   end
