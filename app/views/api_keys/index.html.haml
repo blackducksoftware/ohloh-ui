@@ -1,0 +1,23 @@
+- @meta_title = t :api_keys_title
+
+%h2.float_left!= "#{link_to(t(:settings), settings_account_path(@account))} : #{@meta_title}"
+.clear_both
+
+.api_keys
+  - if !@models.empty?
+    = render partial: 'api_key', collection: @models
+    = will_paginate @models
+- if @models.size < ApiKey::KEY_LIMIT_PER_ACCOUNT
+  %a.btn.btn-primary.btn-small.margin_top_10{href: new_account_api_key_path(@account)}= t('api_keys.request_new')
+
+%h4.nomargin.margin_top_20
+  %span.soft= t(:about)
+  = @meta_title
+.span6
+  %ul
+    - terms_link = blog_link_to(link: :terms, link_text: t('api_keys.terms_link'))
+    - terms_2_link = blog_link_to(link: :additional_terms, link_text: t('api_keys.terms_2_link'))
+    - getting_started_link = blog_link_to(link: :api_getting_started, link_text: t('api_keys.getting_started_link'))
+    %li!= t('api_keys.help_1', terms_link: terms_link, terms_2_link: terms_2_link)
+    %li!= t('api_keys.help_2')
+    %li!= t('api_keys.help_3', getting_started_link: getting_started_link)

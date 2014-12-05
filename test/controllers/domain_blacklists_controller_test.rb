@@ -1,29 +1,27 @@
 require_relative '../test_helper'
 
 class DomainBlacklistsControllerTest < ActionController::TestCase
+  fixtures :accounts
+
   def setup
-    login_as :jason
-    @controller = DomainBlacklistsController.new
-    @request = ActionController::TestRequest.new
-    @response = ActionController::TestResponse.new
+    login_as accounts(:admin)
   end
 
   test 'index requires login' do
-    skip('TODO: accounts')
+    login_as nil
     get :index
-    assert_response :redirect
+    assert_response :unauthorized
   end
 
   test 'index requires admin' do
-    skip('TODO: accounts')
-    login_as :robin
+    login_as accounts(:user)
     get :index
-    assert_response :redirect
+    assert_response :unauthorized
   end
 
   test 'index without domains has notice' do
     skip('TODO: layout_params')
-    login_as :jason
+    login_as accounts(:admin)
     get :index
     assert_select 'div.alert', text: EncodedRegexp.new('No Domains Blacklisted')
   end
@@ -137,7 +135,7 @@ class DomainBlacklistsControllerTest < ActionController::TestCase
   test 'the sidebar should have domain blacklists selected' do
     skip('TODO: sidebar')
     create_two_blacklisted_domains
-    login_as(:jason)
+    login_as accounts(:admin)
     get :index
     assert_select 'li', class: 'active' do
       assert_select 'a', href: 'domain_blacklists', text: 'Blacklist Domains'
