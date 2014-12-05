@@ -18,6 +18,7 @@ gem 'uglifier'
 group :development, :test, :vagrant do
   gem 'factory_girl_rails'
   gem 'flog'
+  gem 'haml-lint'
   gem 'mocha'
   gem 'simplecov'
   gem 'simplecov-rcov'
