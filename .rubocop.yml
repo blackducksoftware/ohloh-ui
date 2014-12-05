@@ -1,4 +1,5 @@
 AllCops:
+  RunRailsCops: true
   Exclude:
     - vagrant/**/*
 
