@@ -1,7 +1,7 @@
 class DomainBlacklistsController < ApplicationController
   #  layout_params :admin_layout_params
-  #  before_action :admin_required
 
+  before_action :admin_session_required
   before_action :set_domain_blacklist, only: [:update, :destroy, :edit]
 
   def index

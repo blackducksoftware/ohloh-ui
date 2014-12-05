@@ -1,6 +1,6 @@
-- terms_link = blog_link_to(name: 'terms', link_text: t('api_keys.terms_link'))
-- terms_2_link = blog_link_to(name: 'terms-2', link_text: t('api_keys.terms_2_link'))
-- contacts_link = blog_link_to(name: 'support-2', link_text: t('api_keys.contacts_link'))
+- terms_link = blog_link_to(link: :terms, link_text: t('api_keys.terms_link'))
+- terms_2_link = blog_link_to(link: :additional_terms, link_text: t('api_keys.terms_2_link'))
+- contacts_link = blog_link_to(link: :contact_form, link_text: t('api_keys.contacts_link'))
 - settings_link = link_to(t(:settings), settings_account_path(@account))
 - account_api_keys_link = link_to(t(:api_keys_title), account_api_keys_url(@account))
 %h2!= "#{settings_link} : #{account_api_keys_link} : #{@meta_title}"

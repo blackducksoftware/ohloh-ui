@@ -15,9 +15,9 @@
   = @meta_title
 .span6
   %ul
-    - terms_link = blog_link_to(name: 'terms', link_text: t('api_keys.terms_link'))
-    - terms_2_link = blog_link_to(name: 'terms-2', link_text: t('api_keys.terms_2_link'))
-    - getting_started_link = blog_link_to(name: 'getting_started', link_text: t('api_keys.getting_started_link'))
+    - terms_link = blog_link_to(link: :terms, link_text: t('api_keys.terms_link'))
+    - terms_2_link = blog_link_to(link: :additional_terms, link_text: t('api_keys.terms_2_link'))
+    - getting_started_link = blog_link_to(link: :api_getting_started, link_text: t('api_keys.getting_started_link'))
     %li!= t('api_keys.help_1', terms_link: terms_link, terms_2_link: terms_2_link)
     %li!= t('api_keys.help_2')
     %li!= t('api_keys.help_3', getting_started_link: getting_started_link)

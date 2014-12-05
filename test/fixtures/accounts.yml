@@ -1,8 +1,8 @@
-jason:
+admin:
   id: 1
-  login: jason
-  name: Jason Allen
-  email: jason@openhub.net
+  login: admin
+  name: admin Allen
+  email: admin@openhub.net
   email_md5: 83083cec972de97816efaab06cebf2da
   salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
   crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
@@ -12,12 +12,12 @@ jason:
   activation_code: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
   activated_at: <%= 5.days.ago.utc.to_s :db %>
   level: <%= Account::ADMIN_LEVEL %>
-  twitter_account: jason
-robin:
+  twitter_account: admin
+user:
   id: 2
-  login: robin
-  name: Robin Luckey
-  email: robin@ohloh.net
+  login: user
+  name: user Luckey
+  email: user@ohloh.net
   email_md5: 63f26c4a00677ea1e8b14d2a56efb104
   salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
   crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
