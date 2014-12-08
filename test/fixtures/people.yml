@@ -1,0 +1,49 @@
+jason:
+  id: 1
+  account_id: 1
+  effective_name: Jason Allen
+  kudo_score: 0.15
+  kudo_rank: 10
+  kudo_position: 1
+robin:
+  id: 2
+  account_id: 2
+  effective_name: Robin Luckey
+  kudo_score: 0.14
+  kudo_rank: 10
+  kudo_position: 2
+joe:
+  id: 3
+  account_id: 3
+  effective_name: Joe Schmoe
+  kudo_score: 0.06
+  kudo_rank: 1
+  kudo_position: 3
+kyle:
+  id: 4
+  account_id: 4
+  effective_name: Kyle Broflovski
+  kudo_score: 0.04
+  kudo_rank: 1
+  kudo_position: 4
+ohloh_slave:
+  id: 5
+  account_id: 5
+  effective_name: Ohloh Slave
+  kudo_score: 0
+  kudo_rank: 1
+  kudo_position: 5
+ohloh_team:
+  id: 6
+  account_id: 6
+  effective_name: Ohloh Team
+  kudo_score: 0
+  kudo_rank: 1
+  kudo_position: 6
+umlaut:
+  id: 7
+  account_id: 7
+  effective_name: ütvon îåa
+  kudo_score: 0
+  kudo_rank: 1
+  kudo_position: 7

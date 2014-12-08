@@ -1,0 +1,70 @@
+pdi:
+  id: 1
+  topic_id: 1
+  account_id: 1
+  body: P D I pdi
+  created_at: <%= 4.days.ago.utc.to_s :db %>
+  updated_at: <%= 4.days.ago.utc.to_s :db %>
+pdi_reply:
+  id: 2
+  account_id: 2
+  topic_id: 1
+  body: what? pdi
+  created_at: <%= 3.days.ago.utc.to_s :db %>
+  updated_at: <%= 3.days.ago.utc.to_s :db %>
+pdi_rebuttal:
+  id: 3
+  account_id: 1
+  topic_id: 1
+  body: you heard me pdi
+  created_at: <%= 2.days.ago.utc.to_s :db %>
+  updated_at: <%= 2.days.ago.utc.to_s :db %>
+ponies:
+  id: 4
+  topic_id: 4
+  account_id: 2
+  body: ponies
+  created_at: <%= 47.hours.ago.utc.to_s :db %>
+  updated_at: <%= 47.hours.ago.utc.to_s :db %>
+sticky:
+  id: 5
+  topic_id: 5
+  account_id: 2
+  body: sticky critical security fix
+  created_at: <%= 123.hours.ago.utc.to_s :db %>
+  updated_at: <%= 123.hours.ago.utc.to_s :db %>
+galactus:
+  id: 6
+  topic_id: 6
+  account_id: 1
+  body: galactus gah-lac-tus
+  created_at: <%= 2.hours.ago.utc.to_s :db %>
+  updated_at: <%= 2.hours.ago.utc.to_s :db %>
+silver_surfer:
+  id: 7
+  topic_id: 6
+  account_id: 2
+  body: galactus oh no!
+  created_at: <%= 1.hour.ago.utc.to_s :db %>
+  updated_at: <%= 1.hour.ago.utc.to_s :db %>
+shield:
+  id: 8
+  topic_id: 7
+  account_id: 2
+  body: agent of SHEILD
+  created_at: <%= 1.hour.ago.utc.to_s :db %>
+  updated_at: <%= 1.hour.ago.utc.to_s :db %>
+shield_reply:
+  id: 9
+  topic_id: 7
+  account_id: 1
+  body: Blah Blah
+  created_at: <%= 15.minutes.ago.utc.to_s :db %>
+  updated_at: <%= 15.minutes.ago.utc.to_s :db %>
+il8n:
+  id: 10
+  topic_id: 8
+  account_id: 1
+  body: il8n in rails?
+  created_at: <%= 4.minutes.ago.utc.to_s :db %>
+  updated_at: <%= 2.minutes.ago.utc.to_s :db %>
