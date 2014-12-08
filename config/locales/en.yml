@@ -23,6 +23,9 @@ en:
   tools: 'Tools'
   code: 'Code'
   blog: 'Blog'
+  forums: Forums
+  terms: Terms
+  privacy: Privacy
   domain_blacklists:
     index:
       notice: 'No Domains Blacklisted'

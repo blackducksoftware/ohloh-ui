@@ -68,6 +68,10 @@ GEM
       sexp_processor (~> 4.4)
     haml (4.0.5)
       tilt
+    haml-lint (0.8.0)
+      haml (~> 4.0)
+      rubocop (>= 0.25.0)
+      sysexits (~> 1.1)
     haml-rails (0.5.3)
       actionpack (>= 4.0.1)
       activesupport (>= 4.0.1)
@@ -162,6 +166,7 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
+    sysexits (1.2.0)
     temple (0.6.10)
     terminal-table (1.4.5)
     therubyracer (0.12.1)
@@ -193,6 +198,7 @@ DEPENDENCIES
   factory_girl_rails
   faker
   flog
+  haml-lint
   haml-rails
   jbuilder
   jquery-rails

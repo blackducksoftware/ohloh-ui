@@ -1,0 +1,5 @@
+linters:
+  LineLength:
+    max: 100
+  ConsecutiveComments:
+    enabled: false
