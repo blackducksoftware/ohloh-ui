@@ -3,6 +3,8 @@ require 'rails/all'
 
 Bundler.require(*Rails.groups)
 
+SECURE_TREE = YAML.load('/var/local/config/openhub.yml')
+
 module OhlohUi
   class Application < Rails::Application
     config.generators.stylesheets = false

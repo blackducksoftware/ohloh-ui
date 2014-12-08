@@ -24,4 +24,6 @@ group :development, :test, :vagrant do
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'spring'
+  gem 'faker'
+  gem 'letter_opener'
 end
