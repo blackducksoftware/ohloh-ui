@@ -35,6 +35,19 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_user_is_admin?
 
+  def current_project
+    fail 'No params[:project_id]' unless params[:project_id]
+    begin
+      @current_project ||= Project.find(params[:project_id])
+    rescue ActiveRecord::RecordNotFound
+      raise ParamRecordNotFound
+    rescue e
+      raise e
+    end
+    @current_project
+  end
+  helper_method :current_project
+
   def read_only_mode?
     false
   end
