@@ -3,12 +3,12 @@ class DeletedAccount < ActiveRecord::Base
   after_create :notify_admin
 
   REASONS_MAP = {
-    1 => t('deleted_account.reason_1'),
-    2 => t('deleted_account.reason_2'),
-    3 => t('deleted_account.reason_3'),
-    4 => t('deleted_account.reason_4'),
-    5 => t('deleted_account.reason_5'),
-    6 => t('deleted_account.reason_6')
+    1 => I18n.t('deleted_account.reason_1'),
+    2 => I18n.t('deleted_account.reason_2'),
+    3 => I18n.t('deleted_account.reason_3'),
+    4 => I18n.t('deleted_account.reason_4'),
+    5 => I18n.t('deleted_account.reason_5'),
+    6 => I18n.t('deleted_account.reason_6')
   }
 
   def self.find_deleted_account(login)
