@@ -1,0 +1,34 @@
+random_logo:
+  id: 1
+  type: Logo
+  attachment_file_name: test_logo.png
+  attachment_content_type: image/png
+  attachment_file_size: 12000
+  width: 20
+  height: 20
+random_logo_med:
+  id: 2
+  thumbnail: med
+  type: Logo
+  attachment_file_name: test_logo_med.png
+  attachment_content_type: image/png
+  attachment_file_size: 8000
+  width: 64
+  height: 64
+random_logo_small:
+  id: 3
+  thumbnail: small
+  type: Logo
+  attachment_file_name: test_logo_small.png
+  attachment_content_type: image/png
+  attachment_file_size: 4000
+  width: 32
+  height: 32
+new_logo:
+  id: 4
+  type: Logo
+  attachment_file_name: new_logo.png
+  attachment_content_type: image/png
+  attachment_file_size: 12000
+  width: 20
+  height: 20

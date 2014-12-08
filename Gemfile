@@ -16,6 +16,8 @@ gem 'turbolinks'
 gem 'twitter-bootstrap-rails'
 gem 'uglifier'
 gem 'will_paginate'
+gem 'paperclip'
+gem 'aws-sdk'
 
 group :development, :test, :vagrant do
   gem 'byebug'
