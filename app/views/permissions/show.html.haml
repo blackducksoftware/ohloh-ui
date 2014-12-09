@@ -4,7 +4,7 @@
 .project_content_title
   %h2.float_left
     %a{href: settings_project_path(current_project)}= t :settings
-    = " : #{t('permissions.permissions')}"
+    ` : #{t('permissions.permissions')}`
   -# render_project_analysis_timestamp
 
 .row
@@ -12,7 +12,7 @@
     .well
       = form_for @model, as: :permission, url: permissions_project_path(current_project), html: { method: :put } do |f|
         %fieldset
-          = hidden_field_tag "permission[baseline_remainder]", @model.remainder.to_s
+          = hidden_field_tag 'permission[baseline_remainder]', @model.remainder.to_s
           .control-group
             %label.control-label= t 'permissions.show.settings_may_be_changed_by'
             .controls
@@ -24,7 +24,8 @@
                 = f.radio_button :remainder, 'true', disabled: !current_user_can_manage?
                 = t 'permissions.show.managers_only'
               %p.help-block
-                - linky = link_to t('permissions.show.manager'), managers_project_path(current_project), target: '_blank'
+                - path = managers_project_path(current_project)
+                - linky = link_to t('permissions.show.manager'), path, target: '_blank'
                 != t 'permissions.show.only_an_approved_manager', linky: linky
 
           .actions
