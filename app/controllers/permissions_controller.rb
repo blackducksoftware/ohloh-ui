@@ -24,7 +24,7 @@ class PermissionsController < ApplicationController
   end
 
   def model_params
-    params.require(:permission).permit([:remainder])
+    params.require(:permission).permit(:remainder)
   end
 
   def show_permissions_alert
