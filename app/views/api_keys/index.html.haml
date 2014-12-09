@@ -1,10 +1,10 @@
 - page_context[:title] = t :api_keys_title
 
-%h2.float_left!= "#{link_to(t(:settings), settings_account_path(@account))} : #{@meta_title}"
+%h2.float_left! `#{link_to(t(:settings), settings_account_path(@account))} : #{@meta_title}`
 .clear_both
 
 .api_keys
-  - if !@models.empty?
+  - unless @models.empty?
     = render partial: 'api_key', collection: @models
     = will_paginate @models
 - if @models.size < ApiKey::KEY_LIMIT_PER_ACCOUNT

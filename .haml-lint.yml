@@ -1,5 +1,5 @@
 linters:
   LineLength:
-    max: 100
+    max: 120
   ConsecutiveComments:
     enabled: false
