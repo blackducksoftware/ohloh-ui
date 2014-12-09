@@ -43,7 +43,7 @@ class ApplicationController < ActionController::Base
 
   def current_project
     begin
-      param = params[:project_id].blank? ? params[:id] : params[:project_id]
+      param = params[:project_id].presence || params[:id]
       @current_project ||= Project.find_by_url_name!(param)
     rescue ActiveRecord::RecordNotFound
       raise ParamRecordNotFound
