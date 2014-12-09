@@ -12,7 +12,7 @@ class DeletedAccount < ActiveRecord::Base
   }
 
   def self.find_deleted_account(login)
-    where(login: login).order(created_at: :desc)
+    where(login: login).order(created_at: :desc).take
   end
 
   def feedback_time_elapsed?

@@ -3,7 +3,8 @@ require 'rails/all'
 
 Bundler.require(*Rails.groups)
 
-SECURE_TREE = YAML.load('/var/local/config/openhub.yml')
+require 'dotenv'
+Dotenv.load '.env.local', ".env.#{Rails.env}"
 
 module OhlohUi
   class Application < Rails::Application

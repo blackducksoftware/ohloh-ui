@@ -16,6 +16,7 @@ gem 'turbolinks'
 gem 'twitter-bootstrap-rails'
 gem 'uglifier'
 gem 'will_paginate'
+gem 'dotenv-rails'
 
 group :development, :test, :vagrant do
   gem 'factory_girl_rails'

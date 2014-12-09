@@ -1,6 +1,6 @@
 class DeletedAccountNotifier < ActionMailer::Base
   def deletion(account)
-    recipient  = SECURE_TREE['deleted_account_recipient'] || 'openhub_admins@blackducksoftware.com'
+    recipient  = ENV['DELETED_ACCOUNT_RECIPIENT']
     @affiliation = get_org_name(account)
     @claimed_projects = get_project_names(account)
     @account = account
