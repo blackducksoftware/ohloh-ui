@@ -1,13 +1,13 @@
-- if @project_or_organization.is_a?(Organization)
-  - @meta_title = t('.meta_title')
+- if @organization
+  - @page_context[:title] = t('.meta_title')
 - else
-/  - @meta_title_final = project_pages_title(t('.page_title'))
+  -# @meta_title_final = project_pages_title(t('.page_title'))
 .project_content_title
   %h2.float_left
-    /= link_to "Settings", settings_url_for(@project_or_organization)
+    -# = link_to "Settings", settings_url_for(@project_or_organization)
     = t('.heading')
-  - unless @project_or_organization.is_a?(Organization)
-    /- render_project_analysis_timestamp(@project_or_organization)
+  - unless @organization
+    -# render_project_analysis_timestamp(@project_or_organization)
 
 .row
   .col-md-10.col-md-offset-1
@@ -17,7 +17,7 @@
       .clear
         &nbsp;
 
-- if @project_or_organization.is_a?(Project)
+- if @project
   = render partial: 'about_logos'
-- elsif @project_or_organization.is_a?(Organization)
+- elsif @organization
   = render partial: 'about_organization_logos'

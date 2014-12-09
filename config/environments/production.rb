@@ -90,5 +90,6 @@ Rails.application.configure do
       secret_access_key: ENV['ohloh_s3_secret_access_key']
     }
   }
-  Paperclip::Attachment.default_options[:path] = '/attachments/:id/:basename_:style.:extension'
+  Paperclip::Attachment.default_options[:path] = '/attachments/:id/:basename:style.:extension'
+  Paperclip::Attachment.default_options[:use_timestamp] = false
 end

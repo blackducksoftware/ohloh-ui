@@ -1,7 +1,6 @@
 class LogosController < SettingsController
-  # before_action :login_required, except: :new
   # before_action :check_project
-  # layout_params :auto_layout_params
+  before_action :session_required, except: :new
   before_action :set_project_or_organization, only: [:destroy, :create, :new]
   before_action :set_logo, only: :destroy
   around_action :edit_authorized?, only: :create
@@ -11,9 +10,12 @@ class LogosController < SettingsController
   end
 
   def create
-    create_logo
-    update_parent_logo
-    flash[:success] = t('.success')
+    if create_logo
+      update_parent_logo
+      flash[:success] = t('.success')
+    else
+      flash[:error] = t('.error')
+    end
     redirect_to action: :new
   end
 
@@ -34,13 +36,10 @@ class LogosController < SettingsController
   end
 
   def create_logo
-    return if params[:logo_id].present?
+    return true if params[:logo_id].present?
 
     @logo = Logo.new(logo_params)
-    return if @logo.save
-
-    flash[:error] = t('.error')
-    redirect_to action: :new && return
+    @logo.save
   end
 
   def update_parent_logo
@@ -49,9 +48,9 @@ class LogosController < SettingsController
 
   def set_project_or_organization
     @project_or_organization = if params[:project_id]
-                                 Project.find(params[:project_id])
+                                 @project = Project.find(params[:project_id])
                                elsif params[:organization_id]
-                                 Organization.find(params[:organization_id])
+                                 @organization = Organization.find(params[:organization_id])
                                end
   end
 

@@ -35,7 +35,7 @@
           %p= t('.message', login: current_account.login)
 
 .row
-  .col-md-10{class: "#{@project_or_organization.is_a?(Organization) ? 'hidden' : ''}" }
+  .col-md-10{class: "#{@organization ? 'hidden' : ''}" }
     %h5= t('.head.third')
     -# %p.col-md-8
       = t('.body.second')
