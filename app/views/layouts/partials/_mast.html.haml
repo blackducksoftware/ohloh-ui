@@ -12,7 +12,7 @@
         twitter_url += '&region=follow_link&screen_name=bdopenhub&source=followbutton&variant=2.0'
       %a.btn.follow_btn{href: twitter_url, target: '_blank'}
         %i.icon-twitter
-        %p.follow! `#{t(:follow)}&nbsp;@`
+        %p.follow! #{t(:follow)}&nbsp;@
         %img.icon_twitter{src: image_path('header/twitter.png')}
     - if current_user
       %li
