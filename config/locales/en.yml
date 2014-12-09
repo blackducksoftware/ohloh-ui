@@ -131,3 +131,6 @@ en:
       help_1: "Project settings by default can be modified by anyone with an Open Hub account."
       help_2: "To make a project's settings editable only by the project's managers, select the \"Managers Only\" option."
       help_3: "Projects with no managers cannot be set to \"Managers Only\", so if you wish to limit edits, please be sure to add at least one manager to a project."
+    update:
+      success: "Permissions updated."
+      error: "There was a problem saving!"

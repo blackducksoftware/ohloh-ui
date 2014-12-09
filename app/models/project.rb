@@ -6,6 +6,6 @@ class Project < ActiveRecord::Base
   end
 
   def active_managers
-    Manage.for_project(self).active
+    Manage.for_project(self).active.to_a
   end
 end

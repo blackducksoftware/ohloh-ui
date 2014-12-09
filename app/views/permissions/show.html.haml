@@ -29,7 +29,7 @@
 
           .actions
             - if true # has_permission?
-              = submit_tag t(:save_changes), id: 'submit', class: 'btn btn-primary hidden'
+              = submit_tag t(:save_changes), id: 'submit', class: 'btn btn-primary'
             - else
               = disabled_button t(:save_changes), class: 'btn-primary'
 
