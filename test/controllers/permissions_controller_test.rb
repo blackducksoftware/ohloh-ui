@@ -14,6 +14,7 @@ class PermissionsControllerTest < ActionController::TestCase
     get :show, id: @project
     assert_response :ok
     assert response.body.include?(I18n.t('permissions.must_log_in'))
+    assert_tag tag: 'input', attributes: { disabled: 'disabled' }
   end
 
   test 'admins should not see permissions alert' do
@@ -21,6 +22,7 @@ class PermissionsControllerTest < ActionController::TestCase
     get :show, id: @project
     assert_response :ok
     assert !response.body.include?('flash-msg')
+    assert_no_tag tag: 'input', attributes: { disabled: 'disabled' }
   end
 
   test 'non-managers should see permissions alert' do
@@ -28,6 +30,7 @@ class PermissionsControllerTest < ActionController::TestCase
     get :show, id: @project
     assert_response :ok
     assert response.body.include?(I18n.t('permissions.not_manager'))
+    assert_tag tag: 'input', attributes: { disabled: 'disabled' }
   end
 
   test 'managers pending approval should see permissions alert' do
@@ -36,6 +39,7 @@ class PermissionsControllerTest < ActionController::TestCase
     get :show, id: @project
     assert_response :ok
     assert response.body.include?(I18n.t('permissions.not_manager'))
+    assert_tag tag: 'input', attributes: { disabled: 'disabled' }
   end
 
   test 'approved managers should not see permissions alert' do
@@ -44,6 +48,7 @@ class PermissionsControllerTest < ActionController::TestCase
     get :show, id: @project
     assert_response :ok
     assert !response.body.include?('flash-msg')
+    assert_no_tag tag: 'input', attributes: { disabled: 'disabled' }
   end
 
   test 'should gracefully handle non-existent projects' do
