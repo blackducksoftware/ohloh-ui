@@ -50,7 +50,6 @@
           - error_tag @model, :terms
       .actions
         %input.btn.btn-primary.btn-small{:type => 'submit', :value => t(:save_changes)}
-        %a.btn{href: request.referrer || account_api_keys_path(@account)}= t :cancel
         - unless @model.new_record?
           %a.btn.btn-small.btn-danger{href: account_api_key_path(@account, @model), method: :delete, confirm: t('api_keys.form.delete_confirm')}
             %i.icon-trash= t 'api_keys.form.delete'

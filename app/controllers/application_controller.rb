@@ -35,10 +35,16 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_user_is_admin?
 
+  def current_user_can_manage?
+    return true if current_user_is_admin?
+    current_user && current_project && current_project.active_managers.include?(current_user)
+  end
+  helper_method :current_user_can_manage?
+
   def current_project
-    fail 'No params[:project_id]' unless params[:project_id]
     begin
-      @current_project ||= Project.find(params[:project_id])
+      param = params[:project_id].blank? ? params[:id] : params[:project_id]
+      @current_project ||= Project.find_by_url_name(param)
     rescue ActiveRecord::RecordNotFound
       raise ParamRecordNotFound
     rescue e

@@ -4,4 +4,8 @@ class Project < ActiveRecord::Base
   def to_param
     url_name
   end
+
+  def active_managers
+    Manage.for_project(self).active
+  end
 end
