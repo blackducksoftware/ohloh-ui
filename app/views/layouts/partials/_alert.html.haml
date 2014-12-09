@@ -1,14 +1,18 @@
-- type = { error: 'alert-error', notice: 'alert-info', success: 'alert-success' }.select{ |k,v| flash[k] }.first
-- if type
+- key, klass = { error: 'alert-error', notice: 'alert-info', success: 'alert-success' }.find{ |k, _v| flash[k] }
+- if key
   #flash-msg
-    .margin_top_20.alert{class: type[1]}
+    .margin_top_20.alert{class: klass}
       %a.close{href: '#', 'data-dismiss' => 'alert'}= '×'
-      - if type[0] == :error
-        %i.icon-exclamation-sign
-      - elsif type[0] == :notice
-        %i.icon-info-sign
-      - elsif type[0] == :success
-        %i.icon-ok-sign
-      - else
-        %i.icon-warning-sign
-      != flash[type[0]]
+      :ruby
+        icon = case key
+               when :error
+                 'exclamation'
+               when :notice
+                 'info'
+               when :success
+                 'ok'
+               else
+                 'warning'
+               end
+      %i{ class: "icon-#{icon}-sign" }
+      != flash[key]
