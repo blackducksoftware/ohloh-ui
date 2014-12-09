@@ -22,14 +22,14 @@
               %p.help-block= t 'permissions.show.anyone_can_edit_settings'
               %label.radio{style: 'padding-top: 5px;'}
                 = f.radio_button :remainder, 'true', disabled: !current_user_can_manage?
-                Managers Only
+                = t 'permissions.show.managers_only'
               %p.help-block
                 - linky = link_to t('permissions.show.manager'), managers_project_path(current_project), target: '_blank'
                 != t 'permissions.show.only_an_approved_manager', linky: linky
 
           .actions
-            - if true # has_permission?
-              = submit_tag t(:save_changes), id: 'submit', class: 'btn btn-primary'
+            - if current_user_can_manage?
+              = submit_tag t(:save_changes), id: 'submit', class: 'btn btn-primary', style: 'display: none'
             - else
               = disabled_button t(:save_changes), class: 'btn-primary'
 

@@ -126,6 +126,7 @@ en:
       settings_may_be_changed_by: "Settings may be changed by:"
       everyone: "Everyone"
       anyone_can_edit_settings: "Anyone can edit settings for this project"
+      managers_only: "Managers Only"
       only_an_approved_manager: "Only an approved %{linky} can change settings for this project"
       manager: "manager"
       help_1: "Project settings by default can be modified by anyone with an Open Hub account."

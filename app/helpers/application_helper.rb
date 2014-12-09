@@ -33,6 +33,12 @@ module ApplicationHelper
     haml_tag 'p', [err].flatten.join('<br />'), opts.reverse_merge(class: 'error').merge(rel: attr)
   end
 
+  def disabled_button(text, opts = {})
+    opts[:class] ||= ''
+    opts[:class] << (current_user ? ' disabled' : ' needs_login')
+    "<a href='#' class='btn #{opts[:class]}'>#{text}</a>".html_safe
+  end
+
   def project_pages_title(page_name = nil, project_name = nil)
     project_name ||= current_project.name if current_project
     s = project_name.nil? ? 'Open Hub' : t(:project_page_title, project_name: project_name)
