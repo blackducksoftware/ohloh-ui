@@ -4,7 +4,7 @@
   contacts_link = blog_link_to(link: :contact_form, link_text: t('api_keys.contacts_link'))
   settings_link = link_to(t(:settings), settings_account_path(@account))
   account_api_keys_link = link_to(t(:api_keys_title), account_api_keys_url(@account))
-%h2! `#{settings_link} : #{account_api_keys_link} : #{@meta_title}`
+%h2! #{settings_link} : #{account_api_keys_link} : #{@meta_title}
 
 = form_for(@model, as: :api_key, url: url, html: { method: http_method, id: 'api_key_form' }) do |f|
   .col-md-11.center-block.well
@@ -40,7 +40,7 @@
         .control-group
           %label.control-label
             = t 'api_keys.form.daily_request_limit'
-            `:`
+            &#58;
             = @model.daily_limit || current_object.class::DEFAULT_DAILY_LIMIT
           - default_daily_limit = @model.class::DEFAULT_DAILY_LIMIT
           %p.help-block= t 'api_keys.form.daily_request_limit_user', default_daily_limit: default_daily_limit
