@@ -1,7 +1,7 @@
 - key, klass = { error: 'alert-error', notice: 'alert-info', success: 'alert-success' }.find { |k, _v| flash[k] }
 - if key
   #flash-msg
-    .margin_top_20.alert{class: klass}
+    .alert{class: klass}
       %a.close{ href: '#', 'data-dismiss' => 'alert' }= '×'
       :ruby
         icon = case key
@@ -14,5 +14,5 @@
                else
                  'warning'
                end
-      %i{ class: "glyphicon-#{icon}-sign" }
+      %i{ class: "icon-small icon-#{icon}-sign" }
       != flash[key]

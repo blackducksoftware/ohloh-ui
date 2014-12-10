@@ -16,6 +16,7 @@ gem 'turbolinks'
 gem 'twitter-bootstrap-rails'
 gem 'uglifier'
 gem 'will_paginate'
+gem 'dotenv-rails'
 gem 'paperclip'
 gem 'aws-sdk'
 
@@ -28,4 +29,6 @@ group :development, :test, :vagrant do
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'spring'
+  gem 'faker'
+  gem 'letter_opener'
 end

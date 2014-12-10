@@ -950,3 +950,11 @@ input[type="color"] {
   -o-transition-duration: 0.1s;
   transition-duration: 0.1s;
 }
+
+.radio input[type="radio"],
+.radio-inline input[type="radio"],
+.checkbox input[type="checkbox"],
+.checkbox-inline input[type="checkbox"] {
+  margin: 0 5px 0 0;
+  position: relative;
+}
