@@ -9,4 +9,12 @@ class Account < ActiveRecord::Base
   def admin?
     level == ADMIN_LEVEL
   end
+
+  def disabled?
+    level < DEFAULT_LEVEL
+  end
+
+  def activated?
+    activated_at != nil
+  end
 end

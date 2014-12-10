@@ -33,7 +33,7 @@ joe:
   name: Joe Schmoe
   email: joe@email.com
   salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
-  crypted_password: 4c426caff6b43918711cc94d7a0044bb60eee108 # testy
+  crypted_password: 32fd80457279ac73f89c1d9b0542401b209f743b # testy
   created_at: <%= 1.days.ago.utc.to_s :db %>
   updated_at: <%= 1.days.ago.utc.to_s :db %>
   posts_count: 2
@@ -41,13 +41,13 @@ joe:
   activation_code: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
   activated_at: <%= 5.days.ago.utc.to_s :db %>
   level: <%= Account::DEFAULT_LEVEL %>
-kyle:
+unactivated:
   id: 4
-  login: kyle
-  name: Kyle Broflovski
+  login: unactivated
+  name: Unactivated Broflovski
   email: kyle@email.com
   salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
-  crypted_password: 4c426caff6b43918711cc94d7a0044bb60eee108 # testy
+  crypted_password: 32fd80457279ac73f89c1d9b0542401b209f743b # testy
   created_at: <%= 1.days.ago.utc.to_s :db %>
   updated_at: <%= 1.days.ago.utc.to_s :db %>
   posts_count: 0

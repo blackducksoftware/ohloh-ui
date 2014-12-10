@@ -26,6 +26,22 @@ class SessionsControllerTest < ActionController::TestCase
     assert_equal I18n.t('sessions.create.error'), flash[:error]
   end
 
+  test 'create with valid credentials for disabled accounts should not log in' do
+    assert_equal nil, session[:account_id]
+    post :create, login: { login: 'sir_spams_a_lot', password: 'test' }
+    assert_response :bad_request
+    assert_equal nil, session[:account_id]
+    assert_equal I18n.t('sessions.create.disabled_error'), flash[:error]
+  end
+
+  test 'create with valid credentials for unactivated accounts should not log in' do
+    assert_equal nil, session[:account_id]
+    post :create, login: { login: 'unactivated', password: 'testy' }
+    assert_response :bad_request
+    assert_equal nil, session[:account_id]
+    assert_equal I18n.t('sessions.create.unactivated_error'), flash[:error]
+  end
+
   # destroy action
   test 'destroy should log out' do
     session[:account_id] = accounts(:admin).id
