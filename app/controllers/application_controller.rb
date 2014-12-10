@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   attr_reader :page_context
   helper_method :page_context
 
+  before_action :store_location
+
   def initialize(*params)
     @page_context = {}
     super(*params)
@@ -24,9 +26,8 @@ class ApplicationController < ActionController::Base
     error(message: t(:not_authorized), status: :unauthorized) unless current_user_is_admin?
   end
 
-  # TODO: Fix me when sessions are real
   def current_user
-    nil
+    @current_user ||= session[:account_id] ? Account.where(id: session[:account_id]).first : nil
   end
   helper_method :current_user
 
@@ -76,5 +77,14 @@ class ApplicationController < ActionController::Base
 
   def render_with_format(action, status: :ok)
     render "#{action}.#{request_format}", status: status
+  end
+
+  def store_location
+    session[:return_to] = request.fullpath
+  end
+
+  def redirect_back_or_default(default = root_path)
+    redirect_to(session[:return_to] || default)
+    session[:return_to] = nil
   end
 end

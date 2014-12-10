@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   root 'home#index'
-  resources :sessions, only: [:new, :create, :destroy]
+  resources :sessions, only: [:new, :create] do
+    collection do
+      delete :destroy
+    end
+  end
 
   resources :password_reset, only: [:new, :create] do
     collection do

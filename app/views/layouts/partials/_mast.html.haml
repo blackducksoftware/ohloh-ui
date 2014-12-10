@@ -32,7 +32,7 @@
                 = t :settings
             %li.divider
             %li
-              != link_to("<i class='icon-off'></i> #{t(:logout)}", root_path, method: :delete)
+              = link_to("<i class='icon-off'></i> #{t(:logout)}".html_safe, sessions_path, method: :delete)
     - else
       %li
         %a.icon-signin.btn.btn-mini.btn-primary{href: new_session_path}= t :sign_in

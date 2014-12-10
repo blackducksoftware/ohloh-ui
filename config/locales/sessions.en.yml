@@ -16,3 +16,8 @@ en:
       log_in: "Log In"
       forgot_password: "Forgot Password"
       resend_activation_email: "Resend Activation Email"
+    create:
+      success: "Logged in successfully"
+      error: "Invalid Login Credentials"
+    destroy:
+      success: "You have been logged out."

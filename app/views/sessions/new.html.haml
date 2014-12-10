@@ -12,6 +12,7 @@
     %a.btn.btn-success{href: new_account_path(invite: params[:invite])}= t('.register_today')
     #{ t('.register_today_cta') }
 .col-sm-5
+  - @login = OpenStruct.new
   = form_for(@login, as: :login, url: sessions_path, html: { method: :post, class: 'well form-horizontal' }) do |f|
     %fieldset
       %legend= t('.log_in_to_open_hub')
