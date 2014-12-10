@@ -23,9 +23,10 @@ en:
   tools: 'Tools'
   code: 'Code'
   blog: 'Blog'
-  forums: Forums
-  terms: Terms
-  privacy: Privacy
+  forums: 'Forums'
+  terms: 'Terms'
+  privacy: 'Privacy'
+  project_page_title: "The %{project_name} Open Source Project on Open Hub"
   domain_blacklists:
     index:
       notice: 'No Domains Blacklisted'
@@ -114,3 +115,23 @@ en:
       agree_to_terms: 'I agree to use API keys associated with my account according to the Open Hub site %{terms_link} and %{terms_2_link}'
       delete: 'Remove API Key'
       delete_confirm: 'Delete this API key forever? Warning: existing applications that use this key will cease to function.'
+  permissions:
+    permissions: 'Permissions'
+    not_manager: "You can view, but not change this data. Only managers may change this data."
+    must_log_in: "You must be logged in to change this data. If you don't have an account, Please join."
+    show:
+      page_title: "Permissions Page"
+      about_permissions_1: "About"
+      about_permissions_2: "Permissions"
+      settings_may_be_changed_by: "Settings may be changed by:"
+      everyone: "Everyone"
+      anyone_can_edit_settings: "Anyone can edit settings for this project"
+      managers_only: "Managers Only"
+      only_an_approved_manager: "Only an approved %{linky} can change settings for this project"
+      manager: "manager"
+      help_1: "Project settings by default can be modified by anyone with an Open Hub account."
+      help_2: "To make a project's settings editable only by the project's managers, select the \"Managers Only\" option."
+      help_3: "Projects with no managers cannot be set to \"Managers Only\", so if you wish to limit edits, please be sure to add at least one manager to a project."
+    update:
+      success: "Permissions updated."
+      error: "There was a problem saving!"
