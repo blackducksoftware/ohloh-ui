@@ -24,6 +24,14 @@ class DeletedAccountTest < ActiveSupport::TestCase
     assert !@account.feedback_time_elapsed?
   end
 
+  test 'it should deliver DeletedAccountNotifier after create' do
+    account = build(:deleted_account, created_at: 4.days.ago)
+    DeletedAccountNotifier.expects(:deletion).with(account).returns(Mail::Message.new)
+    Mail::Message.any_instance.expects(:deliver)
+
+    account.save
+  end
+
   private
 
   def create_deleted_account
