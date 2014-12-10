@@ -42,6 +42,18 @@ class SessionsControllerTest < ActionController::TestCase
     assert_equal I18n.t('sessions.create.unactivated_error'), flash[:error]
   end
 
+  test 'create with remember me set should save the right data to the account and cookies' do
+    admin = accounts(:admin)
+    assert_nil admin.remember_token
+    assert_nil admin.remember_token_expires_at
+    post :create, login: { login: 'admin', password: 'test', remember_me: '1' }
+    assert_response :found
+    admin.reload
+    assert_not_nil admin.remember_token
+    assert_not_nil admin.remember_token_expires_at
+    assert_equal admin.remember_token, cookies[:auth_token]
+  end
+
   # destroy action
   test 'destroy should log out' do
     session[:account_id] = accounts(:admin).id
@@ -49,5 +61,17 @@ class SessionsControllerTest < ActionController::TestCase
     assert_response :found
     assert_equal nil, session[:account_id]
     assert_equal I18n.t('sessions.destroy.success'), flash[:notice]
+  end
+
+  test 'destroy should clear remember me data' do
+    admin = accounts(:admin)
+    admin.remember_me
+    session[:account_id] = accounts(:admin).id
+    delete :destroy
+    assert_response :found
+    admin.reload
+    assert_nil admin.remember_token
+    assert_nil admin.remember_token_expires_at
+    assert_equal admin.remember_token, cookies[:auth_token]
   end
 end

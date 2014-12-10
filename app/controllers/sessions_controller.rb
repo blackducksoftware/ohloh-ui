@@ -12,6 +12,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
+    current_user.forget_me if current_user
     reset_session
     flash[:notice] = t '.success'
     redirect_back_or_default(root_path)
@@ -22,9 +23,16 @@ class SessionsController < ApplicationController
   def initialize_session(account)
     return if disabled_account?(account)
     return unless activated_account?(account)
+    remember_me_if_requested(account)
     session[:account_id] = account.id
     flash[:notice] = t '.success'
     redirect_back_or_default account_path(account)
+  end
+
+  def remember_me_if_requested(account)
+    return unless params[:login][:remember_me] == '1'
+    account.remember_me
+    cookies[:auth_token] = { value: account.remember_token, expires: account.remember_token_expires_at }
   end
 
   def disabled_account?(account)

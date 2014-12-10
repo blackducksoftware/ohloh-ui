@@ -27,7 +27,11 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user ||= session[:account_id] ? Account.where(id: session[:account_id]).first : nil
+    return @cached_current_user if @cached_current_user_checked
+    @cached_current_user_checked = true
+    @cached_current_user = find_user_in_session || find_remembered_user
+    session[:account_id] = @cached_current_user.id if @cached_current_user
+    @cached_current_user
   end
   helper_method :current_user
 
@@ -86,5 +90,15 @@ class ApplicationController < ActionController::Base
   def redirect_back_or_default(default = root_path)
     redirect_to(session[:return_to] || default)
     session[:return_to] = nil
+  end
+
+  private
+
+  def find_user_in_session
+    session[:account_id] ? Account.where(id: session[:account_id]).first : nil
+  end
+
+  def find_remembered_user
+    cookies[:auth_token] ? Account.where(remember_token: cookies[:auth_token]).first : nil
   end
 end
