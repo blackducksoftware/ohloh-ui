@@ -1,0 +1,45 @@
+- page_context[:title] = project_pages_title t('permissions.show.page_title')
+= javascript_include_tag 'permissions.js'
+
+.project_content_title
+  %h2.float_left
+    %a{href: settings_project_path(current_project)}= t :settings
+    ` : #{t('permissions.permissions')}`
+  -# render_project_analysis_timestamp
+
+.row
+  .col-sm-6.offset2
+    .well
+      - url = permissions_project_path(current_project)
+      = form_for @permission, as: :permission, url: url, html: { method: :put } do |f|
+        %fieldset
+          = hidden_field_tag 'permission[baseline_remainder]', @permission.remainder.to_s
+          .control-group
+            %label.control-label= t 'permissions.show.settings_may_be_changed_by'
+            .controls
+              %label.radio{style: 'padding-top: 7px;'}
+                = f.radio_button :remainder, 'false', disabled: !current_user_can_manage?
+                = t 'permissions.show.everyone'
+              %p.help-block= t 'permissions.show.anyone_can_edit_settings'
+              %label.radio{style: 'padding-top: 5px;'}
+                = f.radio_button :remainder, 'true', disabled: !current_user_can_manage?
+                = t 'permissions.show.managers_only'
+              %p.help-block
+                - path = managers_project_path(current_project)
+                - linky = link_to t('permissions.show.manager'), path, target: '_blank'
+                != t 'permissions.show.only_an_approved_manager', linky: linky
+
+          .actions
+            - if current_user_can_manage?
+              = submit_tag t(:save_changes), id: 'submit', class: 'btn-sm btn-primary', style: 'display: none'
+            - else
+              = disabled_button t(:save_changes), class: 'btn-primary'
+
+%h4.nomargin
+  %span.soft= t 'permissions.show.about_permissions_1'
+  = t 'permissions.show.about_permissions_2'
+.col-sm-6
+  %ul
+    %li= t 'permissions.show.help_1'
+    %li= t 'permissions.show.help_2'
+    %li= t 'permissions.show.help_3'

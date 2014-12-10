@@ -4,10 +4,20 @@ Rails.application.routes.draw do
   resources :api_keys, only: :index
   resources :domain_blacklists, except: :show
 
-  resources :accounts, except: [:index, :show, :new, :create, :edit, :update, :delete] do
+  resources :accounts do
     resources :api_keys, constraints: { format: :html }, except: :show
     member do
       get :settings
+    end
+  end
+
+  resources :projects, path: 'p' do
+    member do
+      get :settings
+      get 'permissions' => 'permissions#show',   as: :permissions
+      put 'permissions' => 'permissions#update', as: :update_permissions
+      get 'managers'    => 'managers#show',      as: :managers
+      put 'managers'    => 'managers#update',    as: :update_managers
     end
   end
 

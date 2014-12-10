@@ -1,39 +1,43 @@
 .navbar
-  %span{:itemscope => '' , :itemtype => 'http://schema.org/CreativeWork'}
-    %span.hidden{:itemprop => "author"} openhub.net
-    %span.hidden{:itemprop => "publisher"} Black Duck Software, Inc.
-    %a.logo_link{:href => root_path}
+  %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
+    %span.hidden{itemprop: 'author'} openhub.net
+    %span.hidden{itemprop: 'publisher'} Black Duck Software, Inc.
+    %a.logo_link{href: root_path}
       %img{itemprop: 'image', src: image_path('header/logo.png'), alt: 'Open Hub' }
   %ul#top_nav_actions
     %li.twitter_follow
-      %a.btn.follow_btn{:href => "https://twitter.com/intent/follow?original_referer=#{CGI.escape request.url}&region=follow_link&screen_name=bdopenhub&source=followbutton&variant=2.0", :target => '_blank'}
+      :ruby
+        twitter_url = 'https://twitter.com/intent/follow?original_referer='
+        twitter_url += CGI.escape request.url
+        twitter_url += '&region=follow_link&screen_name=bdopenhub&source=followbutton&variant=2.0'
+      %a.btn.follow_btn{href: twitter_url, target: '_blank'}
         %i.icon-twitter
-        %p.follow!= "#{t(:follow)}&nbsp;@"
+        %p.follow! #{t(:follow)}&nbsp;@
         %img.icon_twitter{src: image_path('header/twitter.png')}
     - if current_user
       %li
-        #logged_user_menu.dropdown
-          %a{"data-toggle" => 'dropdown', :href=> '#', :class=>'dropdown-toggle navbar-text link_no_underline'}
+        .dropdown#logged_user_menu
+          %a{"data-toggle" => 'dropdown', :href => '#', :class =>'dropdown-toggle navbar-text link_no_underline'}
             %i.icon-user
             = h(current_user.name)
             %i.icon-caret-down
           %ul.dropdown-menu.user-menu.pull-right.dropdown-menu.dropdown-yellow.dropdown-caret.dropdown-closer
             %li
-              %a{:href => "#{account_path(current_user)}"}
+              %a{href: "#{account_path(current_user)}"}
                 %i.icon-user
                 = t :profile
             %li
-              %a{:href => "#{settings_account_path(current_user)}"}
+              %a{href: "#{settings_account_path(current_user)}"}
                 %i.icon-cog
                 = t :settings
             %li.divider
             %li
-              != link_to("<i class='icon-off'></i> #{t(:logout)}", root_path, :method => :delete)
+              != link_to("<i class='icon-off'></i> #{t(:logout)}", root_path, method: :delete)
     - else
       %li
-        %a.icon-signin.btn.btn-mini.btn-primary{:href => root_path}= t :sign_in
+        %a.icon-signin.btn.btn-mini.btn-primary{href: root_path}= t :sign_in
       %li
-        %a.icon-plus-sign.btn.btn-mini.btn-success{:href => root_path}= t :join_now
+        %a.icon-plus-sign.btn.btn-mini.btn-success{href: root_path}= t :join_now
 
 - if read_only_mode?
   %div

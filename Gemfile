@@ -19,6 +19,7 @@ gem 'will_paginate'
 gem 'dotenv-rails'
 
 group :development, :test, :vagrant do
+  gem 'byebug'
   gem 'factory_girl_rails'
   gem 'flog'
   gem 'haml-lint'

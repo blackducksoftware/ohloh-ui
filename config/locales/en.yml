@@ -23,9 +23,10 @@ en:
   tools: 'Tools'
   code: 'Code'
   blog: 'Blog'
-  forums: Forums
-  terms: Terms
-  privacy: Privacy
+  forums: 'Forums'
+  terms: 'Terms'
+  privacy: 'Privacy'
+  project_page_title: "The %{project_name} Open Source Project on Open Hub"
   domain_blacklists:
     index:
       notice: 'No Domains Blacklisted'
@@ -61,8 +62,8 @@ en:
     status_limit_exceeded: 'Limit Exceeded'
     status_disabled: 'Disabled'
     can_be_used: 'can be used'
-    cannot_be_used_now: 'cannot be used temporarily'
-    cannot_be_used_ever: 'cannot be used'
+    cant_use_now: 'cannot be used temporarily'
+    cant_use_ever: 'cannot be used'
     key_is_active: 'This API Key is currently <span class="label-info">Active</span> and can be used'
     key_is_over_limit: 'This API Key is currently <span class="label-info">Limit Exceeded</span> and cannot be used'
     key_is_disabled: 'This API Key is currently <span class="label-info">Disabled</span> and cannot be used'
@@ -121,3 +122,23 @@ en:
     reason_4: 'I do not want my FOSS activity rolled up and visible to the public'
     reason_5: 'I am no longer involved in FOSS activities'
     reason_6: 'Other (Please feel free to comment more on your reasons):'
+  permissions:
+    permissions: 'Permissions'
+    not_manager: "You can view, but not change this data. Only managers may change this data."
+    must_log_in: "You must be logged in to change this data. If you don't have an account, Please join."
+    show:
+      page_title: "Permissions Page"
+      about_permissions_1: "About"
+      about_permissions_2: "Permissions"
+      settings_may_be_changed_by: "Settings may be changed by:"
+      everyone: "Everyone"
+      anyone_can_edit_settings: "Anyone can edit settings for this project"
+      managers_only: "Managers Only"
+      only_an_approved_manager: "Only an approved %{linky} can change settings for this project"
+      manager: "manager"
+      help_1: "Project settings by default can be modified by anyone with an Open Hub account."
+      help_2: "To make a project's settings editable only by the project's managers, select the \"Managers Only\" option."
+      help_3: "Projects with no managers cannot be set to \"Managers Only\", so if you wish to limit edits, please be sure to add at least one manager to a project."
+    update:
+      success: "Permissions updated."
+      error: "There was a problem saving!"
