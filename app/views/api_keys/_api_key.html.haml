@@ -1,5 +1,5 @@
 .row
-  .well.col-md-11{class: "#{'no_margin_bottom' if (api_key_counter == @models.length - 1)}"}
+  .well.col-md-11{class: "#{'no_margin_bottom' if (api_key_counter == @api_keys.length - 1)}"}
     %h4.float_left.nomargin= api_key.name || t('api_keys.untitled_application')
     %h5.float_right.timestamp.no_margin_bottom
       %i.icon-time &nbsp;

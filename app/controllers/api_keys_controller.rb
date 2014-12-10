@@ -18,15 +18,15 @@ class ApiKeysController < ApplicationController
 
   def new
     return render_404 unless @account
-    @model = ApiKey.new
+    @api_key = ApiKey.new
     render_with_format action_name
   end
 
   def create
     return render_404 unless @account
-    @model = ApiKey.new(model_params)
-    @model.account = @account
-    if @model.save
+    @api_key = ApiKey.new(model_params)
+    @api_key.account = @account
+    if @api_key.save
       redirect_to account_api_keys_path(@account), notice: t('.success')
     else
       render :new, status: :bad_request
@@ -40,8 +40,8 @@ class ApiKeysController < ApplicationController
 
   def update
     return render_404 unless @account
-    @model.account = @account
-    if @model.update(model_params)
+    @api_key.account = @account
+    if @api_key.update(model_params)
       redirect_to account_api_keys_path(@account), notice: t('.success')
     else
       render :edit, status: :bad_request
@@ -49,7 +49,7 @@ class ApiKeysController < ApplicationController
   end
 
   def destroy
-    if @model.destroy
+    if @api_key.destroy
       redirect_to account_api_keys_path(@account), notice: t('.success')
     else
       redirect_to account_api_keys_path(@account), notice: t('.error')
@@ -69,7 +69,7 @@ class ApiKeysController < ApplicationController
   end
 
   def find_model
-    @model = ApiKey.find params[:id]
+    @api_key = ApiKey.find params[:id]
   rescue ActiveRecord::RecordNotFound
     raise ParamRecordNotFound
   rescue e
@@ -83,7 +83,7 @@ class ApiKeysController < ApplicationController
     models = models.limit((request_format == 'csv') ? 2_147_483_648 : API_KEYS_PER_PAGE)
     models = models.filterable_by(@query_term) if @query_term
     models = models.where(account_id: @account.id) if @account
-    @models = models.to_a
+    @api_keys = models.to_a
   end
 
   def find_query_param
