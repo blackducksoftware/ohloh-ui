@@ -80,4 +80,16 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # paperclip amazon s3 configurations
+  config.paperclip_defaults = {
+    storage: :s3,
+    s3_credentials: {
+      bucket: ENV['ohloh_s3_bucket_name'],
+      access_key_id: ENV['ohloh_s3_access_key'],
+      secret_access_key: ENV['ohloh_s3_secret_access_key']
+    }
+  }
+  Paperclip::Attachment.default_options[:path] = '/attachments/:id/:basename:style.:extension'
+  Paperclip::Attachment.default_options[:use_timestamp] = false
 end

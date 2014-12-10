@@ -1,0 +1,74 @@
+.row
+  .col-md-10
+    .col-md-2.col
+      %h6= t('.title')
+      -# project_icon(@project_or_organization, :med)
+
+    .col-md-7.col
+      - if has_permission?
+        %h6= t('.head.first')
+        %p= t('.body.first')
+        .col-md-6.no_margin_left
+          .col-md-4.no_margin_left.ace-file-input.margin_bottom_30
+            = f.file_field :attachment,
+              class: 'new_file_upload', accept: 'image/*',
+              'data_max_size' => Logo::FILE_SIZE_LIMIT.max
+            .max_size_exceeded.hidden
+              = t('.invalid_size',
+                max: number_to_human_size(Logo::FILE_SIZE_LIMIT.max))
+            - if @logo.attachment.url.blank?
+              - if @logo.attachment_file_name.blank?
+                -# error_tag @logo, :attachment_file_name
+              - else
+                -# error_tag @logo, :attachment_content_type
+          %p.margin_bottom_5
+            = f.text_field :url, value: @logo.url,
+              placeholder: t('.placeholder'), class: 'col-md-5'
+            -# error_tag @logo, :url
+            -# error_tag @logo,
+              :attachment_content_type if @logo.url.present?
+              && @logo.errors[:url].blank?
+            -# error_tag @logo, :attachment_file_size
+      - else
+        %h6= t('.head.second')
+        - if logged_in?
+          %p= t('.message', login: current_account.login)
+
+.row
+  .col-md-10{class: "#{@organization ? 'hidden' : ''}" }
+    %h5= t('.head.third')
+    -# %p.col-md-8
+      = t('.body.second')
+      = link_to t('.link.forum'), forum_topic_path(forum_id: 3491, id: 1478)
+      = t('.body.third')
+    %table.col-md-10
+      -# default_logos.in_groups_of(3).each do |logo_set|
+        %tr.float_left
+          - logo_set.each do |label, logo|
+            %td.col-md-1
+              - if logo.nil?
+                &nbsp;
+              - else
+                %input{id: 'logo_' + logo.id.to_s,
+                type: 'radio', name: 'logo_id', value: logo.id}
+
+            %td.col-md-2
+              - unless logo.nil?
+                %label{for: 'logo_' + logo.id.to_s}
+                  %img{src: logo.attachment.url(:small)}
+                %label{for: 'logo_' + logo.id.to_s}= label
+
+.row
+  .col-md-10
+    .actions
+      - if has_permission?
+        %input.btn.btn-sm.btn-primary{type: 'submit', value: t('.button.save')}
+        - if @project_or_organization.logo
+          = link_to t('.link.blank'),
+            [@project_or_organization, @logo],
+            method: :delete, class: 'btn btn-sm'
+        - else
+          = # disabled_button t('.link.blank'), class: 'btn-sm'
+      - else
+        = # disabled_button t('.button.save'), class: 'btn-sm btn-primary'
+        = # disabled_button t('.link.blank'), class: 'btn-sm'

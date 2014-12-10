@@ -142,3 +142,50 @@ en:
     update:
       success: "Permissions updated."
       error: "There was a problem saving!"
+  logos:
+    title: 'Logos'
+    invalid_content_type: 'Open Hub accepts GIF, JPG, and PNG formats for logo images.'
+    invalid_url: 'Invalid URL / Image not found'
+    invalid_file_size: 'File size is too big (must be less than %{max})'
+    new:
+      meta_title: 'Settings: New Logo Page'
+      heading: ': Logo'
+      page_title: 'New Logo Page'
+    about_logos:
+      title: 'Logos'
+      first: "Open Hub will display the project logo on pages with project data, when users stack a project, and in reports highlighting contributor's work on projects."
+      second: 'For best results, a project logo should be a square image at least 64px by 64px. Open Hub will resize an image to this size for display.'
+      third: 'Open Hub accepts GIF, JPG, and PNG formats for logo images.'
+      fourth: 'Please be certain you have permission and rights to upload a logo image before submitting it to Open Hub.'
+      fifth: "Don't have a logo for the project? Open Hub has several default logos you can choose from."
+    about_organization_logos:
+      title: 'Logos'
+      first: "Don't have a logo for the project? Open Hub has several default logos you can choose from."
+      second: 'For best results, a Organization logo should be a square image at least 64px by 64px. Open Hub will resize an image to this size for display.'
+      third: 'Open Hub accepts GIF, JPG, and PNG formats for logo images.'
+      fourth: 'Please be certain you have permission and rights to upload a logo image before submitting it to Open Hub.'
+    fields:
+      title: 'Current Logo'
+      invalid_size: 'Please upload a file less than %{max} in size'
+      placeholder: 'Logo upload by URL'
+      message: 'Sorry %{login}, only managers can upload new logos.'
+      head:
+        first: 'Upload a custom logo'
+        second: 'Upload a custom logo (locked)'
+        third: 'Use a default icon'
+      body:
+        first: 'We automatically resize images to 64x64px. For best results, start with a square image at least 64x64 pixels.'
+        second: "We'd rather see custom icons for everything, but if there isn't one, choose from one below. If you want to suggest a new one (or even better, submit a new one), check"
+        third: 'for details.'
+      button:
+        save: 'Save Logo'
+      link:
+        forum: 'this forum topic'
+        blank: 'Reset to Blank Logo'
+    create:
+      permisson_denied: 'You are not authorized to edit this logo.'
+      error: 'Sorry, there was a problem updating the logo'
+      success: 'Logo updated'
+    destroy:
+      error: 'Sorry, there was a problem deleting the logo'
+      success: 'Logo was reset to blank'

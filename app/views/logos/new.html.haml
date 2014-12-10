@@ -1,0 +1,23 @@
+- if @organization
+  - @page_context[:title] = t('.meta_title')
+- else
+  -# @meta_title_final = project_pages_title(t('.page_title'))
+.project_content_title
+  %h2.float_left
+    -# = link_to "Settings", settings_url_for(@project_or_organization)
+    = t('.heading')
+  - unless @organization
+    -# render_project_analysis_timestamp(@project_or_organization)
+
+.row
+  .col-md-10.col-md-offset-1
+    .well
+      = form_for [@project_or_organization, @logo], html: { multipart: true } do |f|
+        = render partial: 'fields', locals: { f: f }
+      .clear
+        &nbsp;
+
+- if @project
+  = render partial: 'about_logos'
+- elsif @organization
+  = render partial: 'about_organization_logos'
