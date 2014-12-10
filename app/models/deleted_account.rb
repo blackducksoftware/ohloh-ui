@@ -11,8 +11,8 @@ class DeletedAccount < ActiveRecord::Base
     6 => I18n.t('deleted_account.reason_6')
   }
 
-  def self.find_deleted_account(account)
-    where('login' => account.login).order(created_at: :desc).take
+  def self.find_deleted_account(login)
+    where(login: login).order(created_at: :desc).first
   end
 
   def feedback_time_elapsed?

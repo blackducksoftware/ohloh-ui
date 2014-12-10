@@ -11,7 +11,7 @@ class DeletedAccountTest < ActiveSupport::TestCase
   end
 
   test 'it should find the deleted record of a user' do
-    deleted_account = DeletedAccount.find_deleted_account(@account)
+    deleted_account = DeletedAccount.find_deleted_account(@account.login)
     assert_not deleted_account.nil?
   end
 
