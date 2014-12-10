@@ -4,11 +4,11 @@
 .project_content_title
   %h2.float_left
     %a{href: settings_project_path(current_project)}= t :settings
-    ` : #{t('permissions.permissions')}`
+    &#58; #{t('permissions.permissions')}
   -# render_project_analysis_timestamp
 
 .row
-  .col-sm-6.offset2
+  .col-sm-6.col-sm-offset-2
     .well
       - url = permissions_project_path(current_project)
       = form_for @permission, as: :permission, url: url, html: { method: :put } do |f|

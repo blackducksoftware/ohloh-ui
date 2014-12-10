@@ -42,3 +42,11 @@ input[type=checkbox], input[type=radio] {
 .help-inline {
     font-size: 11px !important;
 }
+
+.radio input[type="radio"],
+.radio-inline input[type="radio"],
+.checkbox input[type="checkbox"],
+.checkbox-inline input[type="checkbox"] {
+  margin: 0 5px 0 0;
+  position: relative;
+}
