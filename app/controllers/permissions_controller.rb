@@ -4,9 +4,6 @@ class PermissionsController < ApplicationController
   before_action :require_manage_authorization, only: :update
   before_action :show_permissions_alert, only: :show
 
-  def show
-  end
-
   def update
     if find_model.update(model_params)
       flash.now[:success] = t('.success')

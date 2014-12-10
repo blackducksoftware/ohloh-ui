@@ -30,7 +30,7 @@
 
           .actions
             - if current_user_can_manage?
-              = submit_tag t(:save_changes), id: 'submit', class: 'btn btn-primary', style: 'display: none'
+              = submit_tag t(:save_changes), id: 'submit', class: 'btn-sm btn-primary', style: 'display: none'
             - else
               = disabled_button t(:save_changes), class: 'btn-primary'
 
