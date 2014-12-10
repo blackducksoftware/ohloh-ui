@@ -3,6 +3,9 @@ require 'rails/all'
 
 Bundler.require(*Rails.groups)
 
+require 'dotenv'
+Dotenv.load '.env.local', ".env.#{Rails.env}"
+
 module OhlohUi
   class Application < Rails::Application
     config.generators.stylesheets = false

@@ -115,6 +115,13 @@ en:
       agree_to_terms: 'I agree to use API keys associated with my account according to the Open Hub site %{terms_link} and %{terms_2_link}'
       delete: 'Remove API Key'
       delete_confirm: 'Delete this API key forever? Warning: existing applications that use this key will cease to function.'
+  deleted_account:
+    reason_1: 'I have not been using the site'
+    reason_2: 'I do not need the capabilities that the site provides'
+    reason_3: 'I am concerned about potential privacy issues'
+    reason_4: 'I do not want my FOSS activity rolled up and visible to the public'
+    reason_5: 'I am no longer involved in FOSS activities'
+    reason_6: 'Other (Please feel free to comment more on your reasons):'
   permissions:
     permissions: 'Permissions'
     not_manager: "You can view, but not change this data. Only managers may change this data."

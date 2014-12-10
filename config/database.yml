@@ -3,11 +3,11 @@ default: &default
   pool: 5
   timeout: 5000
   encoding: SQL_ASCII
-  host: ohloh-qa-db.blackducksoftware.com
-  port: 5432
-  username: ruby
-  password: blackswan
-  database: openhub_development
+  host: <%= ENV["DEV_DB_HOST"] %>
+  port: <%= ENV["DEV_DB_PORT"] %>
+  username: <%= ENV["DEV_DB_USERNAME"] %>
+  password: <%= ENV["DEV_DB_PASSWORD"] %>
+  database: <%= ENV["DEV_DB_NAME"] %>
 
 development:
   <<: *default
@@ -17,11 +17,10 @@ vagrant:
 
 test:
   <<: *default
-  host: localhost
-  port: 5432
-  database: ohloh_test
-  username: ohloh_user
-  password: password
+  host: <%= ENV["TEST_DB_HOST"] %>
+  username: <%= ENV["TEST_DB_USERNAME"] %>
+  password: <%= ENV["TEST_DB_PASSWORD"] %>
+  database: <%= ENV["TEST_DB_NAME"] %>
 
 production:
   <<: *default
