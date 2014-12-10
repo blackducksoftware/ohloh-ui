@@ -1,0 +1,37 @@
+- page_context[:title] = t '.page_title'
+
+.col-sm-7
+  %h2= t('.page_header')
+  %p= t('.account_help1')
+  .well
+    %ul
+      %li= t('.account_help2')
+      %li= t('.account_help3')
+      %li= t('.account_help4')
+  %p
+    %a.btn.btn-success{href: new_account_path(invite: params[:invite])}= t('.register_today')
+    #{ t('.register_today_cta') }
+.col-sm-5
+  = form_for(@login, as: :login, url: sessions_path, html: { method: :post, class: 'well form-horizontal' }) do |f|
+    %fieldset
+      %legend= t('.log_in_to_open_hub')
+      .control-group
+        .input-prepend
+          %span.add-on
+            %i.icon-user
+          = f.text_field(:login, class: 'input-xlarge', placeholder: t('.login_or_email'))
+      .control-group.input-prepend
+        %span.add-on
+          %i.icon-key
+        = f.password_field(:password, class: 'input-xlarge', placeholder: t('.password'))
+      .control-group
+        %label.checkbox
+          = f.check_box :remember_me
+          #{ t('.remeber_me') }
+      .actions
+        %input.btn.btn-primary{type: 'submit', value: t('.log_in')}
+  .inset
+    %p
+      %a.command{href: reset_password_reset_index_path}= t('.forgot_password')
+      %br
+      %a.command{href: new_activation_resend_path}= t('.resend_activation_email')

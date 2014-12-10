@@ -10,13 +10,12 @@ class LogosControllerTest < ActionController::TestCase
   end
 
   test 'user has permissions to edit' do
-    # TODO: session, acts_as_edited
+    # TODO: acts_as_edited
     Project.any_instance.expects(:edit_authorized?).returns(false)
-    ActionController::Base.any_instance.stubs(:new_session_path).returns('pending')
     login_as @user
     post :create, project_id: projects(:linux).id
     assert_response :redirect
-    assert_redirected_to 'pending'
+    assert_redirected_to '/sessions/new'
   end
 
   test 'upload logo via URL' do

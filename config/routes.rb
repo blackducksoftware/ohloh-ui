@@ -1,5 +1,14 @@
 Rails.application.routes.draw do
   root 'home#index'
+  resources :sessions, only: [:new, :create, :destroy]
+
+  resources :password_reset, only: [:new, :create] do
+    collection do
+      get :confirm
+      post :reset
+    end
+  end
+  resources :activation_resends, only: [:new, :create]
 
   resources :api_keys, only: :index
   resources :domain_blacklists, except: :show

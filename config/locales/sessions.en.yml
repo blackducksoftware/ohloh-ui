@@ -1,0 +1,18 @@
+en:
+  sessions:
+    new:
+      page_title: "Open Hub Login"
+      page_header: "Welcome to Open Hub!"
+      account_help1: "You can use Open Hub without logging in, or having an account. But with an account, you can do so much more:"
+      account_help2: "Claim all of your commits to projects across all of Open Hub, building a complete picture of your contributions to FOSS."
+      account_help3: "Manage projects."
+      account_help4: "Create project \"stacks\" that detail your usage of FOSS, and rate and review the projects you know."
+      register_today: "Register today"
+      register_today_cta: "and start building your FOSS profile &mdash; it's free!"
+      log_in_to_open_hub: "Log in to Open Hub"
+      login_or_email: "Login or Email"
+      password: "Password"
+      remeber_me: "Remember Me"
+      log_in: "Log In"
+      forgot_password: "Forgot Password"
+      resend_activation_email: "Resend Activation Email"
