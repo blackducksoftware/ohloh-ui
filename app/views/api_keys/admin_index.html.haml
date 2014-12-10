@@ -20,9 +20,9 @@
 .clear_both
 
 .api_keys
-  - if !@models.empty?
-    = render partial: 'admin_api_key', collection: @models, as: 'api_key'
-    = will_paginate @models
+  - if !@api_keys.empty?
+    = render partial: 'admin_api_key', collection: @api_keys, as: 'api_key'
+    = will_paginate @api_keys
   - elsif !params[:query].blank?
     .alert.alert-info
       %a.close{href: '#', 'data-dismiss' => 'alert'} x

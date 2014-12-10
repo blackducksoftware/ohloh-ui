@@ -17,7 +17,7 @@ class PermissionsController < ApplicationController
   private
 
   def find_model
-    @model = current_project.permission || Permission.new(target: current_project)
+    @permission = current_project.permission || Permission.new(target: current_project)
   end
 
   def model_params

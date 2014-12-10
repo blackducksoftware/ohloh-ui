@@ -6,27 +6,27 @@
   account_api_keys_link = link_to(t(:api_keys_title), account_api_keys_url(@account))
 %h2! #{settings_link} : #{account_api_keys_link} : #{@meta_title}
 
-= form_for(@model, as: :api_key, url: url, html: { method: http_method, id: 'api_key_form' }) do |f|
+= form_for(@api_key, as: :api_key, url: url, html: { method: http_method, id: 'api_key_form' }) do |f|
   .col-md-11.center-block.well
     %fieldset
       .control-group
         %label.control-label.required= t 'api_keys.form.application_name'
         .controls
           = f.text_field :name, max_length: 50, class: 'col-md-7'
-          - error_tag @model, :name
+          - error_tag @api_key, :name
 
       .control-group
         %label.control-label= t 'api_keys.form.home_page_url'
         .controls
           = f.text_field :url, max_length: 50, class: 'col-md-7'
-          - error_tag @model, :url
+          - error_tag @api_key, :url
           %p.help-block= t 'api_keys.form.home_page_url_info'
 
       .control-group
         %label.control-label.required= t 'api_keys.form.description'
         .controls
           = f.text_area :description, rows: 10, max_length: 2000, class: 'col-md-7'
-          - error_tag @model, :description
+          - error_tag @api_key, :description
           %p.help-block= t 'api_keys.form.description_info'
 
       - if current_user_is_admin?
@@ -34,26 +34,26 @@
           %label.control-label= t 'api_keys.form.daily_request_limit'
           .controls
             = f.text_field :daily_limit, max_length: 10, class: 'col-md-4'
-            - error_tag @model, :daily_limit
+            - error_tag @api_key, :daily_limit
           %p.help-block= t 'api_keys.form.daily_request_limit_admin'
       - else
         .control-group
           %label.control-label
             = t 'api_keys.form.daily_request_limit'
             &#58;
-            = @model.daily_limit || current_object.class::DEFAULT_DAILY_LIMIT
-          - default_daily_limit = @model.class::DEFAULT_DAILY_LIMIT
+            = @api_key.daily_limit || current_object.class::DEFAULT_DAILY_LIMIT
+          - default_daily_limit = @api_key.class::DEFAULT_DAILY_LIMIT
           %p.help-block= t 'api_keys.form.daily_request_limit_user', default_daily_limit: default_daily_limit
-      - if @model.new_record?
+      - if @api_key.new_record?
         .control-group
           %label.checkbox#request_limit
             = f.check_box :terms
             != t 'api_keys.form.agree_to_terms', terms_link: terms_link, terms_2_link: terms_2_link
-          - error_tag @model, :terms
+          - error_tag @api_key, :terms
       .actions
         %input.btn.btn-primary.btn-small{type: 'submit', value: t(:save_changes)}
-        - unless @model.new_record?
-          %a.btn.btn-small.btn-danger{href: account_api_key_path(@account, @model),
+        - unless @api_key.new_record?
+          %a.btn.btn-small.btn-danger{href: account_api_key_path(@account, @api_key),
                                       method: :delete, confirm: t('api_keys.form.delete_confirm')}
             %i.icon-trash= t 'api_keys.form.delete'
 
