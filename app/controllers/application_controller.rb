@@ -95,10 +95,10 @@ class ApplicationController < ActionController::Base
   private
 
   def find_user_in_session
-    session[:account_id] ? Account.where(id: session[:account_id]).first : nil
+    Account.find_by_id(session[:account_id])
   end
 
   def find_remembered_user
-    cookies[:auth_token] ? Account.where(remember_token: cookies[:auth_token]).first : nil
+    cookies[:auth_token] ? Account.find_by_remember_token(cookies[:auth_token]) : nil
   end
 end
