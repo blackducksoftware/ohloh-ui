@@ -54,6 +54,14 @@ class SessionsControllerTest < ActionController::TestCase
     assert_equal admin.remember_token, cookies[:auth_token]
   end
 
+  test 'create should inform uninformed users about privacy' do
+    assert_equal nil, session[:account_id]
+    post :create, login: { login: 'privacy', password: 'test' }
+    assert_response :found
+    assert_equal accounts(:not_privacy_informed).id, session[:account_id]
+    assert_equal I18n.t('sessions.create.learn_about_privacy'), flash[:notice]
+  end
+
   # destroy action
   test 'destroy should log out' do
     session[:account_id] = accounts(:admin).id

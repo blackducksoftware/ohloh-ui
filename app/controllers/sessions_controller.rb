@@ -25,6 +25,7 @@ class SessionsController < ApplicationController
     return unless activated_account?(account)
     remember_me_if_requested(account)
     session[:account_id] = account.id
+    return unless privacy_informed?(account)
     flash[:notice] = t '.success'
     redirect_back_or_default account_path(account)
   end
@@ -46,6 +47,13 @@ class SessionsController < ApplicationController
     return true if account.activated?
     flash[:error] = t '.unactivated_error'
     render :new, status: :bad_request
+    false
+  end
+
+  def privacy_informed?(account)
+    return true unless account.email_opportunities_visited.blank?
+    flash[:notice] = t '.learn_about_privacy'
+    redirect_to edit_account_privacy_account_path(account)
     false
   end
 end

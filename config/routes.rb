@@ -21,6 +21,8 @@ Rails.application.routes.draw do
     resources :api_keys, constraints: { format: :html }, except: :show
     member do
       get :settings
+      get 'edit_privacy'   => 'privacy#edit',   as: :edit_account_privacy
+      put 'update_privacy' => 'privacy#update', as: :account_privacy
     end
   end
 
