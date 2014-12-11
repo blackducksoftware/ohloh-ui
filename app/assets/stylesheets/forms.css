@@ -35,7 +35,6 @@ input[type="color"]:focus {
 }
 
 form {
-  /*margin: 0 20px;*/
 }
 
 fieldset {
@@ -111,6 +110,10 @@ input[type="color"],
   -webkit-border-radius: 4px;
      -moz-border-radius: 4px;
           border-radius: 4px;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  -ms-box-sizing: content-box;
+  box-sizing: content-box;
 }
 
 input,
@@ -957,4 +960,11 @@ input[type="color"] {
 .checkbox-inline input[type="checkbox"] {
   margin: 0 5px 0 0;
   position: relative;
+}
+
+span.add-on {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  -ms-box-sizing: content-box;
+  box-sizing: content-box;
 }
