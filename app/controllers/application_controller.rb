@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
 
   # TODO: Fix me when sessions are real
   def session_required
-    error(message: t(:must_be_logged_in), status: :unauthorized) unless current_user
+    error(message: t(:must_be_logged_in), status: :unauthorized) unless logged_in?
   end
 
   def admin_session_required
@@ -29,20 +29,25 @@ class ApplicationController < ActionController::Base
   def current_user
     return @cached_current_user if @cached_current_user_checked
     @cached_current_user_checked = true
-    @cached_current_user = find_user_in_session || find_remembered_user
+    @cached_current_user = find_user_in_session || find_remembered_user || NullAccount.new
     session[:account_id] = @cached_current_user.id if @cached_current_user
     @cached_current_user
   end
   helper_method :current_user
 
+  def logged_in?
+    current_user.id != nil
+  end
+  helper_method :logged_in?
+
   def current_user_is_admin?
-    current_user && current_user.admin?
+    logged_in? && current_user.admin?
   end
   helper_method :current_user_is_admin?
 
   def current_user_can_manage?
     return true if current_user_is_admin?
-    current_user && current_project && current_project.active_managers.map(&:account_id).include?(current_user.id)
+    logged_in? && current_project && current_project.active_managers.map(&:account_id).include?(current_user.id)
   end
   helper_method :current_user_can_manage?
 
@@ -87,7 +92,7 @@ class ApplicationController < ActionController::Base
     session[:return_to] = request.fullpath
   end
 
-  def redirect_back_or_default(default = root_path)
+  def redirect_back(default = root_path)
     redirect_to(session[:return_to] || default)
     session[:return_to] = nil
   end

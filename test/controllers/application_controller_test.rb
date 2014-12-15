@@ -86,7 +86,7 @@ class ApplicationControllerTest < ActionController::TestCase
   test 'remember me functionality automatically logs users in' do
     login_as nil
     admin = accounts(:admin)
-    admin.remember_me
+    Authenticator.remember(admin)
     @request.cookies[:auth_token] = admin.remember_token
     get :session_required_action
     assert_response :ok

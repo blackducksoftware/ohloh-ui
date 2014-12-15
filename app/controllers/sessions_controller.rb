@@ -12,10 +12,10 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    current_user.forget_me if current_user
+    Authenticator.forget(current_user) if logged_in?
     reset_session
     flash[:notice] = t '.success'
-    redirect_back_or_default(root_path)
+    redirect_back root_path
   end
 
   private
@@ -27,12 +27,12 @@ class SessionsController < ApplicationController
     session[:account_id] = account.id
     return unless privacy_informed?(account)
     flash[:notice] = t '.success'
-    redirect_back_or_default account_path(account)
+    redirect_back account_path(account)
   end
 
   def remember_me_if_requested(account)
     return unless params[:login][:remember_me] == '1'
-    account.remember_me
+    Authenticator.remember(account)
     cookies[:auth_token] = { value: account.remember_token, expires: account.remember_token_expires_at }
   end
 

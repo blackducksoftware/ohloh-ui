@@ -20,5 +20,15 @@ class Authenticator
       seed = (0...12).map { (65 + rand(26)).chr }.join
       Digest::SHA1.hexdigest("--#{Time.now}--#{seed}--")
     end
+
+    def remember(account)
+      expires_at = 2.weeks.from_now.utc
+      token = hashify(string: "#{account.email}--#{expires_at}", salt: account.salt)
+      account.update_attributes(remember_token_expires_at: expires_at, remember_token: token)
+    end
+
+    def forget(account)
+      account.update_attributes(remember_token_expires_at: nil, remember_token: nil)
+    end
   end
 end
