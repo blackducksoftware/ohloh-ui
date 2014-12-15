@@ -1,5 +1,18 @@
 Rails.application.routes.draw do
   root 'home#index'
+  resources :sessions, only: [:new, :create] do
+    collection do
+      delete :destroy
+    end
+  end
+
+  resources :password_reset, only: [:new, :create] do
+    collection do
+      get :confirm
+      post :reset
+    end
+  end
+  resources :activation_resends, only: [:new, :create]
 
   resources :api_keys, only: :index
   resources :domain_blacklists, except: :show
@@ -8,6 +21,8 @@ Rails.application.routes.draw do
     resources :api_keys, constraints: { format: :html }, except: :show
     member do
       get :settings
+      get 'edit_privacy'   => 'privacy#edit',   as: :edit_account_privacy
+      put 'update_privacy' => 'privacy#update', as: :account_privacy
     end
   end
 

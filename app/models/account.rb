@@ -12,6 +12,14 @@ class Account < ActiveRecord::Base
     level == ADMIN_LEVEL
   end
 
+  def disabled?
+    level < DEFAULT_LEVEL
+  end
+
+  def activated?
+    activated_at != nil
+  end
+
   def default_stack
     stacks << Stack.new unless @cached_default_stack || stacks.count > 0
     @cached_default_stack ||= stacks[0]

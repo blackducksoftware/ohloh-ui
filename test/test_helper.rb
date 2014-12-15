@@ -14,6 +14,6 @@ class ActiveSupport::TestCase
   include FactoryGirl::Syntax::Methods
 
   def login_as(account)
-    @controller.expects(:current_user).times(0..999_999).returns(account)
+    @controller.session[:account_id] = account ? account.id : nil
   end
 end
