@@ -14,7 +14,7 @@
         %i.icon-twitter
         %p.follow! #{t(:follow)}&nbsp;@
         %img.icon_twitter{src: image_path('header/twitter.png')}
-    - if current_user
+    - if logged_in?
       %li
         .dropdown#logged_user_menu
           %a{"data-toggle" => 'dropdown', :href => '#', :class =>'dropdown-toggle navbar-text link_no_underline'}
@@ -32,10 +32,10 @@
                 = t :settings
             %li.divider
             %li
-              != link_to("<i class='icon-off'></i> #{t(:logout)}", root_path, method: :delete)
+              = link_to("<i class='icon-off'></i> #{t(:logout)}".html_safe, sessions_path, method: :delete)
     - else
       %li
-        %a.icon-signin.btn.btn-mini.btn-primary{href: root_path}= t :sign_in
+        %a.icon-signin.btn.btn-mini.btn-primary{href: new_session_path}= t :sign_in
       %li
         %a.icon-plus-sign.btn.btn-mini.btn-success{href: root_path}= t :join_now
 

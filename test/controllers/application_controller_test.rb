@@ -5,6 +5,8 @@ class ApplicationControllerTest < ActionController::TestCase
 
   setup do
     @controller = TestController.new
+    @controller.request = @request
+    @controller.response = @response
   end
 
   test 'render_404 as html' do
@@ -79,6 +81,16 @@ class ApplicationControllerTest < ActionController::TestCase
   test 'ParamRecordNotFound exceptions are caught and not passed on as 500s' do
     get :throws_param_record_not_found
     assert_response :not_found
+  end
+
+  test 'remember me functionality automatically logs users in' do
+    login_as nil
+    admin = accounts(:admin)
+    Authenticator.remember(admin)
+    @request.cookies[:auth_token] = admin.remember_token
+    get :session_required_action
+    assert_response :ok
+    assert_equal admin.id, session[:account_id]
   end
 end
 
