@@ -6,4 +6,8 @@ class NullAccount
   def admin?
     false
   end
+
+  def actions
+    Action.none
+  end
 end

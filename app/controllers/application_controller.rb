@@ -89,7 +89,7 @@ class ApplicationController < ActionController::Base
   end
 
   def clear_reminder
-    return unless logged_in? && params[:clear_action_reminder]
+    return unless params[:clear_action_reminder]
     action = current_user.actions.where(id: params[:clear_action_reminder]).first
     action.update_attributes(status: Action::STATUSES[:completed]) if action
   end
