@@ -6,6 +6,7 @@ class Account < ActiveRecord::Base
 
   has_many :api_keys
   has_many :stacks, -> { order 'stacks.title' }
+  has_many :actions
 
   def admin?
     level == ADMIN_LEVEL

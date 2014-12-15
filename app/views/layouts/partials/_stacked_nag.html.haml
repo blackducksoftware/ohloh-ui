@@ -1,0 +1,12 @@
+- if reminder
+  .row
+    .col.col-md-9.col-sm-offset-3.last.login_warning
+      .inset
+        %p
+          == We've added
+          %a{href: project_path(reminder.stack_project)}= reminder.stack_project.name
+          to your
+          %a{href: stack_path(current_user.default_stack, clear_action_reminder: reminder.id)} stack
+          for you.  You can add more projects now.
+          %a.command.soft{href: url_for(clear_action_reminder: reminder.id)}= '[Click to remove this reminder.]'
+  - reminder.update_attributes(status: Action::STATUSES[:completed]) if reminder.status == Action::STATUSES[:nag_once]

@@ -26,6 +26,9 @@ Rails.application.routes.draw do
     resource :logos, only: [:new, :create, :destroy]
   end
 
+  resources :projects
+  resources :stacks, except: [:new, :edit]
+
   # The priority is based upon order of creation: first created -> highest
   # priority.
   # See how all your routes lay out with "rake routes".

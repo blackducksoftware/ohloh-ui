@@ -77,4 +77,10 @@ class ApplicationController < ActionController::Base
   def render_with_format(action, status: :ok)
     render "#{action}.#{request_format}", status: status
   end
+
+  def clear_reminder
+    return unless current_user && params[:clear_action_reminder]
+    action = current_user.actions.where(id: params[:clear_action_reminder]).first
+    action.update_attributes(status: Action::STATUSES[:completed]) if action
+  end
 end
