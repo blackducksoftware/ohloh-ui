@@ -26,6 +26,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :forums do
+    resources :topics do 
+      resources :posts
+    end
+  end
+
   resources :projects, path: :p, only: [] do
     member do
       get :settings

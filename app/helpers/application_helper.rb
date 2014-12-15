@@ -1,4 +1,5 @@
 module ApplicationHelper
+  
   BLOG_LINKS = {
     terms:                    'terms',
     additional_terms:         'terms-2',

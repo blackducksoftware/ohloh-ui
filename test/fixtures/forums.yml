@@ -1,7 +1,7 @@
 rails:
   id: 1
   name: rails
-  topics_count: 2
+  topics_count: 4
   posts_count: 4
 comics:
   id: 2
