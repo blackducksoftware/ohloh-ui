@@ -46,8 +46,9 @@ class ApplicationController < ActionController::Base
   helper_method :current_user_is_admin?
 
   def current_user_can_manage?
+    return false unless logged_in? && current_project
     return true if current_user_is_admin?
-    logged_in? && current_project && current_project.active_managers.map(&:account_id).include?(current_user.id)
+    Manage.for_project(current_project).active.to_a.map(&:account_id).include?(current_user.id)
   end
   helper_method :current_user_can_manage?
 
