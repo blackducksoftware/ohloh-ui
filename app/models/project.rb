@@ -13,10 +13,11 @@ class Project < ActiveRecord::Base
   validates_each :url, :download_url, allow_blank: true do |record, field, value|
     record.errors.add field, 'not a valid url' unless UrlValidation.valid_http_url?(value)
   end
+  before_validation :clean_strings_and_urls
 
   scope :not_deleted, -> { where(deleted: false) }
   scope :been_analyzed, -> { where.not(best_analysis_id: nil) }
-  scope :recent, -> { not_deleted.been_analyzed.order(created_at: :desc) }
+  scope :recently_analyzed, -> { not_deleted.been_analyzed.order(created_at: :desc) }
   scope :matching, ->(other) { matching_arel(other).not_deleted }
   scope :case_insensitive_match, ->(project, attribute) { case_insensitive_match_arel(project, attribute) }
   scope :hot, ->(lang_id) { hot_projects(lang_id) }
@@ -25,13 +26,6 @@ class Project < ActiveRecord::Base
 
   def to_param
     url_name
-  end
-
-  def before_validation
-    self.name = Project.clean_string(name)
-    self.description = Project.clean_string(description)
-    self.url = Project.clean_url(url)
-    self.download_url = Project.clean_url(download_url)
   end
 
   def related_by_stacks(limit = 12)
@@ -86,6 +80,13 @@ class Project < ActiveRecord::Base
   end
 
   private
+
+  def clean_strings_and_urls
+    self.name = Project.clean_string(name)
+    self.description = Project.clean_string(description)
+    self.url = Project.clean_url(url)
+    self.download_url = Project.clean_url(download_url)
+  end
 
   def sanitize(sql)
     Project.send :sanitize_sql, sql
