@@ -5,6 +5,8 @@ class Account < ActiveRecord::Base
   SPAMMER_LEVEL = -20
 
   has_many :api_keys
+  has_many :kudos
+  has_many :sent_kudos, class_name: :Kudo, foreign_key: :sender_id
 
   def admin?
     level == ADMIN_LEVEL
