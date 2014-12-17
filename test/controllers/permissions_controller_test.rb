@@ -34,8 +34,9 @@ class PermissionsControllerTest < ActionController::TestCase
   end
 
   test 'managers pending approval should see permissions alert' do
+    Manage.create(target: @project, account_id: accounts(:admin).id) # auto-approved
+    Manage.create(target: @project, account_id: accounts(:user).id) # pending approval
     login_as accounts(:user)
-    Manage.create(target: @project, account_id: accounts(:user).id)
     get :show, id: @project
     assert_response :ok
     assert response.body.include?(I18n.t('permissions.not_manager'))
@@ -79,8 +80,9 @@ class PermissionsControllerTest < ActionController::TestCase
   end
 
   test 'managers pending approval should 401' do
+    Manage.create(target: @project, account_id: accounts(:admin).id) # auto-approved
+    Manage.create(target: @project, account_id: accounts(:user).id) # pending approval
     login_as accounts(:user)
-    Manage.create(target: @project, account_id: accounts(:user).id)
     put :update, id: @project, permission: { remainder: true }
     assert_response :unauthorized
   end

@@ -19,6 +19,9 @@ class Manage < ActiveRecord::Base
   scope :organizations, -> { where(target_type: 'Organization') }
   scope :projects, -> { where(target_type: 'Project') }
 
+  before_validation :auto_approve_if_first, on: :create
+  before_save :deliver_emails
+
   def enforce_maximum_management
     return unless over_management_limit?
     errors.add :maximum, I18n.t('manage.maximum_exceeded', max_projects: MAX_PROJECTS)
@@ -50,5 +53,14 @@ class Manage < ActiveRecord::Base
 
   def can_destroy?(destroyer)
     destroyer == account || target.active_managers.include?(destroyer) || destroyer.admin?
+  end
+
+  def auto_approve_if_first
+    self.approver = Account.hamster if target && target.active_managers.length == 0
+  end
+
+  def deliver_emails
+    ManageMailer.deliver_emails(self)
+    true
   end
 end

@@ -37,7 +37,7 @@ Rails.application.routes.draw do
     resource :logos, only: [:new, :create, :destroy]
   end
 
-  resources :organizations, path: :orgs, only: [] do
+  resources :organizations, path: :orgs, only: [:show] do
     resource :logos, only: [:new, :create, :destroy]
     member do
       get 'managers'    => 'managers#show',      as: :managers

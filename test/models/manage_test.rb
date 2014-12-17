@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class ManageTest < ActiveSupport::TestCase
+  include ActionMailer::TestHelper
   fixtures :accounts, :projects, :organizations
 
   def test_create_requires_project
@@ -55,10 +56,10 @@ class ManageTest < ActiveSupport::TestCase
     assert !projects(:linux).reload.active_managers.include?(accounts(:admin))
   end
 
-  def test_active_manager_fails_until_approved
+  def test_active_manager_includes_auto_approved
     manage = Manage.create!(account: accounts(:admin), target: projects(:linux))
     assert_not_nil manage
-    assert !projects(:linux).reload.active_managers.include?(accounts(:admin))
+    assert projects(:linux).reload.active_managers.include?(accounts(:admin))
   end
 
   def test_destroy_by_succeeds
@@ -131,6 +132,15 @@ class ManageTest < ActiveSupport::TestCase
     assert_equal false, manage.pending?
   end
 
+  def test_approve!
+    m1 = Manage.create!(target: projects(:linux), account: accounts(:admin))
+    assert_equal Account.hamster, m1.approver
+    m2 = Manage.create!(target: projects(:linux), account: accounts(:user))
+    assert_equal nil, m2.approver
+    m2.approve!(accounts(:admin))
+    assert projects(:linux).active_managers.include?(accounts(:user))
+  end
+
   def test_should_list_all_the_active_managers_for_an_organization
     organizations(:linux).manages.destroy_all
     manage = Manage.create!(account: accounts(:admin), target: organizations(:linux))
@@ -140,5 +150,55 @@ class ManageTest < ActiveSupport::TestCase
     assert_equal accounts(:admin).reload.manages.organizations.first.target, organizations(:linux)
     assert_equal 3, Manage.count
     assert_equal 1, Manage.organizations.count
+  end
+
+  def test_rejection_mail_sent
+    Manage.create!(account: accounts(:admin), target: projects(:linux))
+    application = Manage.create!(account: accounts(:user), target: projects(:linux))
+
+    # sends one mail to admins (admin) and a different one to applicant (user)
+    assert_emails 2 do
+      application.update_attributes!(destroyer: accounts(:admin))
+    end
+  end
+
+  def test_approve_mail_sent
+    Manage.create!(account: accounts(:admin), target: projects(:linux))
+    application = Manage.create!(account: accounts(:user), target: projects(:linux))
+
+    # sends one mail to admins (admin) and a different one to applicant (user)
+    assert_emails 1 do
+      application.update_attributes!(approver: accounts(:admin))
+    end
+  end
+
+  def test_application_mail_sent_1
+    Manage.create!(account: accounts(:admin), target: projects(:linux))
+
+    # sends one mail to admin
+    assert_emails 1 do
+      Manage.create!(account: accounts(:user), target: projects(:linux))
+    end
+  end
+
+  def test_application_mail_sent_2
+    Manage.create!(account: accounts(:admin), target: projects(:linux))
+    application = Manage.create!(account: accounts(:user), target: projects(:linux))
+
+    # sends one mail to admin
+    assert_emails 1 do
+      application.update_attributes!(destroyer: accounts(:user))
+    end
+  end
+
+  def test_remove_existing_manager
+    Manage.create!(account: accounts(:admin), target: projects(:linux))
+    application = Manage.create!(account: accounts(:user), target: projects(:linux), approver: accounts(:admin))
+    assert_equal 2, projects(:linux).active_managers.count
+
+    # sends one mail to admins (admin) and a different one to applicant (user)
+    assert_emails 2 do
+      application.update_attributes!(destroyer: accounts(:user))
+    end
   end
 end

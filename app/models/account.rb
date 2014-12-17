@@ -19,4 +19,10 @@ class Account < ActiveRecord::Base
   def activated?
     activated_at != nil
   end
+
+  class << self
+    def hamster
+      find_by_login('ohloh_slave')
+    end
+  end
 end
