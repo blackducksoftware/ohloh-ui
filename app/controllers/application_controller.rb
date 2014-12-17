@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
     return @cached_current_user if @cached_current_user_checked
     @cached_current_user_checked = true
     @cached_current_user = find_user_in_session || find_remembered_user || NullAccount.new
-    session[:account_id] = @cached_current_user.id if @cached_current_user
+    session[:account_id] = @cached_current_user.id if @cached_current_user.id
     @cached_current_user
   end
   helper_method :current_user
@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
   helper_method :logged_in?
 
   def current_user_is_admin?
-    logged_in? && current_user.admin?
+    current_user.admin?
   end
   helper_method :current_user_is_admin?
 
@@ -86,6 +86,12 @@ class ApplicationController < ActionController::Base
 
   def render_with_format(action, status: :ok)
     render "#{action}.#{request_format}", status: status
+  end
+
+  def clear_reminder
+    return unless params[:clear_action_reminder]
+    action = current_user.actions.where(id: params[:clear_action_reminder]).first
+    action.update_attributes(status: Action::STATUSES[:completed]) if action
   end
 
   def store_location

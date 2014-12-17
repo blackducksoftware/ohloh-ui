@@ -5,6 +5,8 @@ class Account < ActiveRecord::Base
   SPAMMER_LEVEL = -20
 
   has_many :api_keys
+  has_many :stacks, -> { order 'stacks.title' }
+  has_many :actions
 
   def admin?
     level == ADMIN_LEVEL
@@ -16,5 +18,10 @@ class Account < ActiveRecord::Base
 
   def activated?
     activated_at != nil
+  end
+
+  def default_stack
+    stacks << Stack.new unless @cached_default_stack || stacks.count > 0
+    @cached_default_stack ||= stacks[0]
   end
 end
