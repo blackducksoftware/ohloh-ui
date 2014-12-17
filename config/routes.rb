@@ -26,7 +26,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :projects, path: :p, only: [] do
+  resources :projects, path: :p, only: [:show] do
     member do
       get :settings
       get 'permissions' => 'permissions#show',   as: :permissions
@@ -39,6 +39,10 @@ Rails.application.routes.draw do
 
   resources :organizations, path: :orgs, only: [] do
     resource :logos, only: [:new, :create, :destroy]
+    member do
+      get 'managers'    => 'managers#show',      as: :managers
+      put 'managers'    => 'managers#update',    as: :update_managers
+    end
   end
 
   # The priority is based upon order of creation: first created -> highest
