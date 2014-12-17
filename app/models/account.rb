@@ -5,6 +5,8 @@ class Account < ActiveRecord::Base
   SPAMMER_LEVEL = -20
 
   has_many :api_keys
+  has_many :manages, -> { where.not(approved_by: nil).where(deleted_by: nil, deleted_at: nil) }
+  has_many :projects, -> { where(deleted: false) }, through: :manages, source: :target, source_type: 'Project'
 
   def admin?
     level == ADMIN_LEVEL
