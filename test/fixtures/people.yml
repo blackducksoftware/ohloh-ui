@@ -12,6 +12,7 @@ robin:
   kudo_score: 0.14
   kudo_rank: 10
   kudo_position: 2
+  project_id: 2
 joe:
   id: 3
   account_id: 3
@@ -19,6 +20,8 @@ joe:
   kudo_score: 0.06
   kudo_rank: 1
   kudo_position: 3
+  project_id: 2
+  name_id: 4
 kyle:
   id: 4
   account_id: 4
@@ -26,6 +29,7 @@ kyle:
   kudo_score: 0.04
   kudo_rank: 1
   kudo_position: 4
+  name_id: 5
 ohloh_slave:
   id: 5
   account_id: 5
