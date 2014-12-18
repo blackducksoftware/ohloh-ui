@@ -1,6 +1,4 @@
 source 'https://rubygems.org'
-# Remove when ohno-you-dont is published to rubygems.org
-source 'http://stage-utility-1.blackducksoftware.com:9292/'
 
 gem 'brakeman'
 gem 'coffee-rails'
@@ -19,6 +17,8 @@ gem 'will_paginate'
 gem 'dotenv-rails'
 gem 'paperclip'
 gem 'aws-sdk'
+gem 'squeel'
+gem 'oh_delegator', git: 'git@github.com:blackducksw/oh_delegator.git'
 
 group :development, :test, :vagrant do
   gem 'byebug'

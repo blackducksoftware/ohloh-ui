@@ -1,0 +1,9 @@
+user:
+  id: 1
+  name: User
+admin:
+  id: 2
+  name: Admin
+scott:
+  id: 3
+  name: Scott
