@@ -25,9 +25,4 @@ class Account < ActiveRecord::Base
   def activated?
     activated_at != nil
   end
-
-  def default_stack
-    stacks << Stack.new unless @cached_default_stack || stacks.count > 0
-    @cached_default_stack ||= stacks[0]
-  end
 end

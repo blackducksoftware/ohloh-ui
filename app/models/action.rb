@@ -18,7 +18,7 @@ class Action < ActiveRecord::Base
 
   def run
     return if !stack_project || account.stacks.count > 1
-    account.default_stack.projects << stack_project
+    account.stack_extension.default.projects << stack_project
     update_attributes status: STATUSES[:remind]
   end
 
