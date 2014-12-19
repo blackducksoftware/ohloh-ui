@@ -7,3 +7,9 @@ admin:
 scott:
   id: 3
   name: Scott
+joe:
+  id: 4
+  name: Joe
+kyle:
+  id: 5
+  name: Kyle
