@@ -1,7 +1,7 @@
 class Position < ActiveRecord::Base
   has_one :contribution
   belongs_to :account
-	belongs_to :affiliation, class_name: 'Organization', foreign_key: :organization_id
+  belongs_to :affiliation, class_name: 'Organization', foreign_key: :organization_id
   belongs_to :project
   belongs_to :name
 
