@@ -8,7 +8,11 @@ class Account < ActiveRecord::Base
 
   has_many :api_keys
   has_many :actions
+  has_many :kudos
+  has_many :sent_kudos, class_name: :Kudo, foreign_key: :sender_id
   belongs_to :organization
+
+  oh_delegators :positions_core
 
   def admin?
     level == ADMIN_LEVEL

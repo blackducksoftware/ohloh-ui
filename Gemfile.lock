@@ -1,12 +1,11 @@
 GIT
-  remote: git@bitbucket.org:notalex/oh_delegator.git
-  revision: b5f00a418a92b1dd345c1423a86b0a202bb9d427
+  remote: git@github.com:blackducksw/oh_delegator.git
+  revision: f12bd77c2f04e440ec97f9fd754c5740347113ba
   specs:
     oh_delegator (0.0.1)
 
 GEM
   remote: https://rubygems.org/
-  remote: http://stage-utility-1.blackducksoftware.com:9292/
   specs:
     actionmailer (4.1.7)
       actionpack (= 4.1.7)
