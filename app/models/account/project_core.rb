@@ -1,10 +1,10 @@
-class Account::ProjectExtension < OhDelegator::Base
+class Account::ProjectCore < OhDelegator::Base
   parent_scope do
     has_many :projects, -> { where { deleted.eq(false) } }, through: :manages, source: :target, source_type: 'Project'
   end
 
-	# TODO Replace stacked_project? with this
-	def stacked?(project_id)
+  # TODO Replace stacked_project? with this
+  def stacked?(project_id)
     stack = stacks.detect {|s| s.stacked_project?(project_id) }
     stack.present?
   end

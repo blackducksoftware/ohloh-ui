@@ -1,12 +1,12 @@
 require_relative '../../test_helper'
 
-class StackExtensionTest < ActiveSupport::TestCase
+class StackCoreTest < ActiveSupport::TestCase
   fixtures :accounts, :projects
 
   test "default" do
     account = accounts(:admin)
 
-    default_stack = account.stack_extension.default
+    default_stack = account.stack_core.default
     assert_equal 1, account.stacks.size
 
     stack = Stack.new
@@ -14,8 +14,8 @@ class StackExtensionTest < ActiveSupport::TestCase
     account.stacks << stack
     account.save!
 
-    account_stack_extension = account.stack_extension
+    account_stack_core = account.stack_core
     assert_equal 2, account.stacks.size
-    assert_equal default_stack, account_stack_extension.default
+    assert_equal default_stack, account_stack_core.default
   end
 end

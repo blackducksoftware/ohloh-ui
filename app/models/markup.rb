@@ -1,6 +1,8 @@
 class Markup < ActiveRecord::Base
   before_save :sanitize_html
 
+  validates :raw, length: { maximum: 500 }, allow_blank: true
+
   private
 
   def sanitize_html
