@@ -1,5 +1,7 @@
 class Account::OrganizationExtension < OhDelegator::Base
-  belongs_to :organization
+  parent_scope do
+    belongs_to :organization
+  end
 
   def orgs_for_my_positions
     @orgs_positions ||= Organization.active.joins{projects.positions}.where{positions.account_id.eq my{id}}

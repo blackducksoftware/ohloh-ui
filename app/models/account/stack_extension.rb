@@ -1,5 +1,7 @@
 class Account::StackExtension < OhDelegator::Base
-  has_many :stacks, -> { order { title } }
+  parent_scope do
+    has_many :stacks, -> { order { title } }
+  end
 
   # TODO Replaces default_stack with this
   def default
