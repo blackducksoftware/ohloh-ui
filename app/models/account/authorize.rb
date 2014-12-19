@@ -1,4 +1,4 @@
-class Account::Authorization
+class Account::Authorize
   DEFAULT = 0
   ADMIN = 10
   DISABLED = -10
@@ -46,7 +46,6 @@ class Account::Authorization
   def spam!
     Account.transaction do
       @account.update_attributes!(level: SPAM)
-      @account.destroy_spam
     end
   end
 end
