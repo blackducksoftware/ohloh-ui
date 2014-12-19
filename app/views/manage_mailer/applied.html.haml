@@ -1,8 +1,11 @@
 :ruby
   uri1_args = { id: @manage.target.id, host: ENV['URL_HOST'] }
   uri1 = @manage.target_type == 'Project' ? project_url(uri1_args) : organization_url(uri1_args)
-  uri2_args = { id: @manage.target.id, host: ENV['URL_HOST'] }
-  uri2 = @manage.target_type == 'Project' ? managers_project_url(uri2_args) : managers_organization_url(uri2_args)
+  if @manage.target_type == 'Project'
+    uri2 = project_managers_url(project_id: @manage.target.id, host: ENV['URL_HOST'])
+  else
+    uri2 = organization_managers_url(organization_id: @manage.target.id, host: ENV['URL_HOST'])
+  end
   link1 = link_to(@manage.account.name, account_url(id: @manage.account.id, host: ENV['URL_HOST']))
   link2 = link_to(@manage.target.name, uri1)
   link3 = link_to(t('.action'), uri2)

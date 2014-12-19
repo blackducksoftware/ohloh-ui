@@ -1,0 +1,20 @@
+%h4.nomargin
+  %span.soft= t :about
+  #{t(:managers_link_name)}
+.col-md-5
+  #{t('.powers_header')}
+  %ul
+    %li= t('.powers1')
+    %li= t('.powers2')
+    %li= t('.powers3')
+  #{t('.note')}
+  %br
+  %br
+  #{blog_link_to(link: :managing_projects, link_text: t(:learn_more))}
+.col-md-5
+  #{t('.application_header')}
+  %ul
+    %li= t('.application1')
+    %li= t('.application2')
+    %li= t('.application3')
+    %li= t('.application4')

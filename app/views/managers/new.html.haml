@@ -1,0 +1,24 @@
+- page_context[:title] = project_pages_title t('.page_title')
+
+%h2.float_left
+  = link_to t(:settings), settings_project_path(@parent)
+  &#58;
+  = link_to t(:managers_link_name), parent_managers_path
+  &#58;
+  #{t(:new)}
+
+.clear
+%h4= t '.header', target: @parent.name
+
+.col-md-7
+  .well{style: 'margin-left:22px;'}
+    = form_for(@manage, url: parent_managers_path, html: { method: :post }) do |form|
+      = render partial: 'form', locals: { form: form }
+
+.col-md-4
+  .well
+    %h5.nomargin= t '.explain_header'
+    %p= @parent.active_managers.blank? ? t('.explainer_first') : t('.explainer_existing')
+
+.clear
+= render partial: 'about'

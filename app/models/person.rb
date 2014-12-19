@@ -3,4 +3,5 @@ class Person < ActiveRecord::Base
 
   belongs_to :name
   belongs_to :project
+  belongs_to :account
 end

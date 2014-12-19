@@ -1,0 +1,23 @@
+- unless @manage.errors.empty?
+  - errors = @manage.errors.full_messages
+  - errors = errors.reject { |k, _| k =~ /^ssh.public.key/i || k =~ /^message/i }
+  - unless errors.empty?
+    %p.error= errors.join('. ')
+
+%fieldset
+  .control-group
+    %label.control-label= t '.message_label'
+    .controls
+      = find_and_preserve(form.text_area(:message, rows: 10, max_length: 200, style: 'width: 100%'))
+    %p.help-block
+    .center.soft
+      #{t('.message_help1', target_type: @parent.class.to_s.downcase)}
+      %br
+      #{t('.message_help2')}
+    %br
+    %span= t('.promise', target: html_escape(@parent.name), target_type: @parent.class)
+
+  .actions
+    .clear{style: 'margin-top: 5px;'}
+    %input.btn.btn-primary{type: 'submit', value: t('.submit')}
+    %br &nbsp;

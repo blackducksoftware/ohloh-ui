@@ -9,6 +9,9 @@ class Account < ActiveRecord::Base
   has_many :projects, -> { where(deleted: false) }, through: :manages, source: :target, source_type: 'Project'
   has_many :stacks, -> { order 'stacks.title' }
   has_many :actions
+  has_one :person
+
+  fix_string_column_encodings!
 
   def admin?
     level == ADMIN_LEVEL
@@ -25,6 +28,14 @@ class Account < ActiveRecord::Base
   def default_stack
     stacks << Stack.new unless @cached_default_stack || stacks.count > 0
     @cached_default_stack ||= stacks[0]
+  end
+
+  def to_param
+    login_urlable? && login || id.to_s
+  end
+
+  def login_urlable?
+    login =~ /^[a-zA-Z][\w-]{2,30}$/
   end
 
   class << self

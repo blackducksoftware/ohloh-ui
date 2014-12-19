@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'test_helper'
 
 class StringTest < ActiveSupport::TestCase
@@ -39,5 +40,11 @@ class StringTest < ActiveSupport::TestCase
     assert_equal 'X>Y', 'X&gt;Y'.strip_tags_preserve_line_breaks
     assert_equal 'X<Y', 'X&lt;Y'.strip_tags_preserve_line_breaks
     assert_equal 'X&Y', 'X&amp;Y'.strip_tags_preserve_line_breaks
+  end
+
+  test 'clean up weirdly encoded strings' do
+    before = "* oprava chyby 33731\n* \xFAprava  podle Revize B anglick\xE9ho dokumentu\n"
+    after = ['* oprava chyby 33731', '* �prava  podle Revize B anglick�ho dokumentu']
+    assert_equal after, before.fix_encoding_if_invalid!.split("\n")
   end
 end

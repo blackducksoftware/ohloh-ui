@@ -16,6 +16,8 @@ class Manage < ActiveRecord::Base
 
   scope :for_target, ->(target) { where(target_id: target.id) }
   scope :active, -> { where.not(approved_by: nil).where(deleted_by: nil) }
+  scope :pending, -> { where(approved_by: nil).where(deleted_by: nil) }
+  scope :not_denied, -> { where(deleted_by: nil) }
   scope :organizations, -> { where(target_type: 'Organization') }
   scope :projects, -> { where(target_type: 'Project') }
 

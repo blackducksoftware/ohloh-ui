@@ -3,6 +3,7 @@ en:
   save_changes: 'Save Changes'
   cancel: 'Cancel'
   edit: 'Edit'
+  new: 'New'
   must_accept_terms: 'You must accept the terms of use.'
   four_oh_four: 'Not Found'
   must_be_logged_in: 'You must be signed in to perform that action.'
@@ -26,7 +27,12 @@ en:
   forums: 'Forums'
   terms: 'Terms'
   privacy: 'Privacy'
+  managers_link_name: 'Managers'
+  learn_more: "Learn More&hellip;"
   project_page_title: "The %{project_name} Open Source Project on Open Hub"
+  expander:
+    more: "[More]"
+    less: "[Less]"
   manage:
     maximum_exceeded: "You may manage up to %{max_projects} projects at a time. Delete one before adding another."
     already_manager: ": You are already managing this or have a pending application to become one."

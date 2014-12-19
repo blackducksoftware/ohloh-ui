@@ -1,4 +1,7 @@
 class ApplicationController < ActionController::Base
+  helper AvatarHelper
+  helper ButtonHelper
+
   protect_from_forgery with: :exception
 
   attr_reader :page_context
@@ -23,7 +26,7 @@ class ApplicationController < ActionController::Base
   end
 
   def admin_session_required
-    error(message: t(:not_authorized), status: :unauthorized) unless current_user_is_admin?
+    render_unauthorized unless current_user_is_admin?
   end
 
   def current_user
@@ -82,6 +85,10 @@ class ApplicationController < ActionController::Base
 
   def render_404
     error message: t(:four_oh_four), status: :not_found
+  end
+
+  def render_unauthorized
+    error(message: t(:not_authorized), status: :unauthorized)
   end
 
   def render_with_format(action, status: :ok)
