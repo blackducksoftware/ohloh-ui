@@ -4,7 +4,7 @@ class Project < ActiveRecord::Base
   has_many :contributions
   has_many :positions
   has_many :stack_entries, -> { where { deleted_at.eq(nil) } }
-  has_many :stacks, through: :stack_entries, -> { where { deleted_at.eq(nil) & account_id.not_eq(nil) } }, through: :stack_entries
+  has_many :stacks, -> { where { deleted_at.eq(nil) & account_id.not_eq(nil) } }, through: :stack_entries
   belongs_to :logo
   belongs_to :best_analysis, foreign_key: :best_analysis_id, class_name: :Analysis
   belongs_to :organization
