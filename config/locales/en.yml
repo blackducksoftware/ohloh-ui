@@ -27,6 +27,9 @@ en:
   terms: 'Terms'
   privacy: 'Privacy'
   project_page_title: "The %{project_name} Open Source Project on Open Hub"
+  manage:
+    maximum_exceeded: "You may manage up to %{max_projects} projects at a time. Delete one before adding another."
+    already_manager: ": You are already managing this or have a pending application to become one."
   domain_blacklists:
     index:
       notice: 'No Domains Blacklisted'

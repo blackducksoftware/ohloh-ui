@@ -26,7 +26,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :projects, path: :p, only: [] do
+  resources :projects, path: :p, only: [:show] do
     member do
       get :settings
       get 'permissions' => 'permissions#show',   as: :permissions
@@ -37,8 +37,12 @@ Rails.application.routes.draw do
     resource :logos, only: [:new, :create, :destroy]
   end
 
-  resources :organizations, path: :orgs, only: [] do
+  resources :organizations, path: :orgs, only: [:show] do
     resource :logos, only: [:new, :create, :destroy]
+    member do
+      get 'managers'    => 'managers#show',      as: :managers
+      put 'managers'    => 'managers#update',    as: :update_managers
+    end
   end
 
   resources :projects
