@@ -70,7 +70,7 @@ class ActionTest < ActiveSupport::TestCase
   def test_run_with_newly_activated_account
     action = Action.create!(account: admin_account, _action: "stack_#{linux_project.id}", status: 'after_activation')
     action.run
-    assert admin_account.stack_extension.default.projects.include?(linux_project)
+    assert admin_account.stack_core.default.projects.include?(linux_project)
     assert_equal Action::STATUSES[:remind], action.status
   end
 

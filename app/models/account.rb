@@ -4,7 +4,7 @@ class Account < ActiveRecord::Base
   DISABLE_LEVEL = -10
   SPAMMER_LEVEL = -20
 
-  oh_delegators :stack_extension, :organization_extension, :project_extension, :positions_core
+  oh_delegators :stack_core, :project_core, :positions_core
 
   has_many :api_keys
   has_many :actions

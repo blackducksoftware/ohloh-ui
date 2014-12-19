@@ -1,4 +1,4 @@
-class Account::StackExtension < OhDelegator::Base
+class Account::StackCore < OhDelegator::Base
   parent_scope do
     has_many :stacks, -> { order { title } }
   end

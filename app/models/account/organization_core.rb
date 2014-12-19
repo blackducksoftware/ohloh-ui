@@ -1,6 +1,8 @@
-class Account::OrganizationExtension < OhDelegator::Base
-  parent_scope do
-    belongs_to :organization
+class Account::OrganizationCore
+  attr_reader :id
+
+  def initialize(account_id)
+    @id = account_id
   end
 
   def orgs_for_my_positions
