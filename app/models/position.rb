@@ -13,13 +13,13 @@ class Position < ActiveRecord::Base
   class << self
     # FIXME: Replace account.active_positions with account.positions.active
     def active
-      '
-      EXISTS (SELECT * FROM name_facts
-        INNER JOIN projects
-          ON projects.best_analysis_id = name_facts.analysis_id
-          AND name_facts.name_id = positions.name_id
-          AND projects.id = positions.project_id)
-      '
+      where('
+        EXISTS (SELECT * FROM name_facts
+          INNER JOIN projects
+            ON projects.best_analysis_id = name_facts.analysis_id
+            AND name_facts.name_id = positions.name_id
+            AND projects.id = positions.project_id)
+      ')
     end
   end
 end
