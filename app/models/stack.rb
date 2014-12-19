@@ -1,4 +1,5 @@
 class Stack < ActiveRecord::Base
-  has_many :stack_entries, -> { where(deleted_at: nil) }, dependent: :destroy
-  has_many :projects, -> { where(Project.arel_table[:deleted].eq(false)) }, through: :stack_entries
+	belongs_to :account
+	has_many :stack_entries, -> { where {deleted_at.eq(nil)} }, dependent: :destroy
+	has_many :projects, -> { where {deleted_at.not_eq(true)} }, through: :stack_entries
 end

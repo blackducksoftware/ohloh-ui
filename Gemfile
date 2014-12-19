@@ -19,6 +19,8 @@ gem 'will_paginate'
 gem 'dotenv-rails'
 gem 'paperclip'
 gem 'aws-sdk'
+gem 'squeel'
+gem 'oh_delegator', git: 'git@bitbucket.org:notalex/oh_delegator.git'
 
 group :development, :test, :vagrant do
   gem 'byebug'

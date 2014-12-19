@@ -1,3 +1,9 @@
+GIT
+  remote: git@bitbucket.org:notalex/oh_delegator.git
+  revision: b5f00a418a92b1dd345c1423a86b0a202bb9d427
+  specs:
+    oh_delegator (0.0.1)
+
 GEM
   remote: https://rubygems.org/
   remote: http://stage-utility-1.blackducksoftware.com:9292/
@@ -130,6 +136,8 @@ GEM
       ast (>= 1.1, < 3.0)
       slop (~> 3.4, >= 3.4.5)
     pg (0.17.1)
+    polyamorous (1.1.0)
+      activerecord (>= 3.0)
     powerpack (0.0.9)
     rack (1.5.2)
     rack-test (0.6.2)
@@ -192,6 +200,10 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
+    squeel (1.2.2)
+      activerecord (>= 3.0)
+      activesupport (>= 3.0)
+      polyamorous (~> 1.1.0)
     sysexits (1.2.0)
     temple (0.6.10)
     terminal-table (1.4.5)
@@ -233,6 +245,7 @@ DEPENDENCIES
   jquery-rails
   letter_opener
   mocha
+  oh_delegator!
   paperclip
   pg
   rails
@@ -241,6 +254,7 @@ DEPENDENCIES
   simplecov
   simplecov-rcov
   spring
+  squeel
   therubyracer
   turbolinks
   twitter-bootstrap-rails

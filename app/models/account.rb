@@ -4,9 +4,11 @@ class Account < ActiveRecord::Base
   DISABLE_LEVEL = -10
   SPAMMER_LEVEL = -20
 
+  oh_delegators :stack_extension, :organization_extension, :project_extension
+
   has_many :api_keys
-  has_many :stacks, -> { order 'stacks.title' }
   has_many :actions
+  belongs_to :organization
 
   def admin?
     level == ADMIN_LEVEL
