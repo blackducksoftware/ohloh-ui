@@ -51,7 +51,7 @@ class ManageTest < ActiveSupport::TestCase
   end
 
   def test_active_manager_fails_if_deleted
-    manage = Manage.create!(account: accounts(:admin), target: projects(:linux), destroyer: accounts(:user))
+    manage = Manage.create!(account: accounts(:admin), target: projects(:linux), deleted_at: Time.now.utc)
     manage.update_attributes!(approver: accounts(:user))
     assert !projects(:linux).reload.active_managers.include?(accounts(:admin))
   end
@@ -104,7 +104,7 @@ class ManageTest < ActiveSupport::TestCase
 
   def test_destroy_by_fails_if_destroyer_deleted
     # make user an admin
-    manage1 = Manage.create!(account: accounts(:user), target: projects(:linux), destroyer: accounts(:user))
+    manage1 = Manage.create!(account: accounts(:user), target: projects(:linux), deleted_at: Time.now.utc)
     manage1.update_attributes!(approver: accounts(:user))
 
     # create a manage entry for admin

@@ -15,7 +15,7 @@ class Manage < ActiveRecord::Base
   validate :enforce_maximum_management
 
   scope :for_target, ->(target) { where(target_id: target.id) }
-  scope :active, -> { where.not(approved_by: nil).where(deleted_by: nil) }
+  scope :active, -> { where.not(approved_by: nil).where(deleted_at: nil) }
   scope :organizations, -> { where(target_type: 'Organization') }
   scope :projects, -> { where(target_type: 'Project') }
 
@@ -37,12 +37,11 @@ class Manage < ActiveRecord::Base
 
   def destroy_by!(destroyer)
     fail I18n.t(:not_authorized) unless can_destroy?(destroyer)
-    update_attributes!(deleted_by: destroyer.id)
-    destroy
+    update_attributes!(deleted_by: destroyer.id, deleted_at: Time.now.utc)
   end
 
   def destroy
-    update_attributes(deleted_at: Time.now.utc)
+    update_attributes(deleted_by: Account.hamster.id, deleted_at: Time.now.utc)
   end
 
   private
