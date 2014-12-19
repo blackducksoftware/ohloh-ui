@@ -132,7 +132,7 @@ class ManagersControllerTest < ActionController::TestCase
   def test_accept_should_fail_for_rejected_manager
     login_as accounts(:joe)
     set_manager(accounts(:joe), projects(:linux))
-    projects(:linux).manages.each { |pa| pa.update_attributes!(deleted_by: 1) }
+    projects(:linux).manages.each { |pa| pa.update_attributes!(deleted_by: 1, deleted_at: Time.now.utc) }
     set_manager(accounts(:admin), projects(:linux)) # auto-approved
     manager_apply(accounts(:user), projects(:linux))
     assert_no_difference 'Manage.where.not(approved_by: nil).where(deleted_at: nil).count' do
