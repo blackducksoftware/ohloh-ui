@@ -31,4 +31,5 @@ group :development, :test, :vagrant do
   gem 'spring'
   gem 'faker'
   gem 'letter_opener'
+  gem 'pry'
 end
