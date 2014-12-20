@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class PositionsCoreTest < ActiveSupport::TestCase
+class PositionCoreTest < ActiveSupport::TestCase
   fixtures :accounts, :projects, :names
 
   def setup
@@ -22,7 +22,7 @@ class PositionsCoreTest < ActiveSupport::TestCase
       create(:position, common_attributes.merge(project: project_foo))
       create(:position, common_attributes.merge(project: project_bar, title: :bar_title))
       create(:position, common_attributes.merge(project: nil))
-      assert_equal 2, accounts(:admin).positions_core.with_projects.count
+      assert_equal 2, accounts(:admin).position_core.with_projects.count
 
       assert_equal 3, accounts(:admin).positions.count
 
@@ -30,7 +30,7 @@ class PositionsCoreTest < ActiveSupport::TestCase
 
       assert_equal 2, accounts(:admin).positions.count
       assert_equal :bar_title, accounts(:admin).positions.first.title.to_sym
-      assert_equal 1, accounts(:admin).positions_core.with_projects.count
+      assert_equal 1, accounts(:admin).position_core.with_projects.count
     end
   end
 
@@ -77,7 +77,7 @@ class PositionsCoreTest < ActiveSupport::TestCase
       create(:position, account: admin, project: project.call(:no_commit_and_lower_character),
                         start_date_type: :manual, start_date: Time.now, stop_date_type: :manual, stop_date: Time.now)
 
-      returned_positions = admin.positions_core.ordered.map { |p| p.project.name }
+      returned_positions = admin.position_core.ordered.map { |p| p.project.name }
       expected_positions = %w(
         most_recent_commit
         next_most_recent_commit
@@ -100,7 +100,7 @@ class PositionsCoreTest < ActiveSupport::TestCase
       linux.stubs(:create_alias).returns(alias_stub)
       linux.aliases.stubs(:count).returns(1)
 
-      alias_object = with_editor(:admin) { user.positions_core.ensure_position_or_alias!(linux, scott) }
+      alias_object = with_editor(:admin) { user.position_core.ensure_position_or_alias!(linux, scott) }
 
       assert_equal 1, user.reload.positions.count # ensure no new positions
       assert_equal :Linux, alias_object.project.name.to_sym
@@ -117,7 +117,7 @@ class PositionsCoreTest < ActiveSupport::TestCase
     Position.any_instance.stubs('committer_name=')
     Position.any_instance.stubs(:name).returns(scott)
 
-    position = user.positions_core.ensure_position_or_alias!(linux, scott)
+    position = user.position_core.ensure_position_or_alias!(linux, scott)
 
     assert_equal 1, user.reload.positions.count # still one position
     assert_equal :Scott, position.name.name.to_sym # but for the new name
@@ -125,7 +125,7 @@ class PositionsCoreTest < ActiveSupport::TestCase
   end
 
   test 'logos returns a mapping of { logo_id: logo }' do
-    logos = accounts(:user).positions_core.logos
+    logos = accounts(:user).position_core.logos
     assert_equal 1, logos.keys.first
     assert_equal Logo, logos.values.first.class
   end

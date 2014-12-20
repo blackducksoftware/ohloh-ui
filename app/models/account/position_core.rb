@@ -1,16 +1,16 @@
-class Account::PositionsCore < OhDelegator::Base
+class Account::PositionCore < OhDelegator::Base
   parent_scope do
     has_many :positions, -> { where { project_id.eq(nil) | project_id.not_in(Project.deleted) } }
   end
 
-  # FIXME: Replace positions.for_ohloh_projects with positions_core.with_projects
+  # FIXME: Replace positions.for_ohloh_projects with position_core.with_projects
   def with_projects
     @positions_with_projects ||=
       positions.includes(:project).where { positions.project_id.not_eq(nil) }.order { lower(projects.name).asc }
   end
 
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-  # FIXME: Replace ordered_positions with positions_core.ordered
+  # FIXME: Replace ordered_positions with position_core.ordered
   def ordered
     preloaded_positions.sort do |position_a, position_b|
       position_a_name_fact = name_facts["#{ position_a.project.best_analysis_id }_#{ position_a.name_id }"].try(:first)
@@ -28,7 +28,7 @@ class Account::PositionsCore < OhDelegator::Base
   end
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
-  # FIXME: Replace positions_name_facts with positions_core.name_facts
+  # FIXME: Replace positions_name_facts with position_core.name_facts
   # Returns a mapping of (position.project.analysis_id)_(position.name_id) => [position.name_fact] for all positions.
   def name_facts
     return @name_facts if @name_facts
@@ -43,7 +43,7 @@ class Account::PositionsCore < OhDelegator::Base
     end
   end
 
-  # FIXME: Replace ensure_position_or_alias! with positions_core.ensure_position_or_alias!
+  # FIXME: Replace ensure_position_or_alias! with position_core.ensure_position_or_alias!
   # claim a position if there is no existing position for the project or create an alias
   def ensure_position_or_alias!(project, name, try_create = false, position_attributes = {})
     existing_position = project.positions.claimed_by(account).first
@@ -59,7 +59,7 @@ class Account::PositionsCore < OhDelegator::Base
     end
   end
 
-  # FIXME: Replace account.positions_logos with account.positions_core.logos
+  # FIXME: Replace account.positions_logos with account.position_core.logos
   def logos
     logo_ids = preloaded_positions.map { |position| position.project.logo_id }.compact
     @logos ||= Logo.find(logo_ids).index_by(&:id)

@@ -8,7 +8,7 @@ class Account < ActiveRecord::Base
   DISABLE_LEVEL = -10
   SPAMMER_LEVEL = -20
 
-  oh_delegators :stack_core, :project_core, :positions_core
+  oh_delegators :stack_core, :project_core, :position_core
 
   validates :email, presence: :true, length: { in: 3..100 }, uniqueness: { case_sensitive: false },
                     confirmation: true, email_format: true, allow_blank: false
