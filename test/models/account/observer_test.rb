@@ -1,16 +1,6 @@
 require 'test_helper'
 class Account::ObserverTest < ActiveSupport::TestCase
   fixtures :accounts, :invites
-  test 'before validation' do
-    account = accounts(:user)
-    account.login = 'login    '
-    account.email = '     email'
-    account.name = '    name    '
-    Account::Observer.new(account).before_validation
-    assert_equal 'login', account.login
-    assert_equal 'email', account.email
-    assert_equal 'name', account.name
-  end
 
   test 'before create' do
     account = accounts(:user)

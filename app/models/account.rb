@@ -9,6 +9,7 @@ class Account < ActiveRecord::Base
   SPAMMER_LEVEL = -20
 
   oh_delegators :stack_core, :project_core, :position_core
+  strip_attributes :name, :email, :login, :invite_code, :twitter_account
 
   validates :email, presence: :true, length: { in: 3..100 }, uniqueness: { case_sensitive: false },
                     confirmation: true, email_format: true, allow_blank: false

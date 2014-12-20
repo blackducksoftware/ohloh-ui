@@ -5,9 +5,6 @@ class Account::Observer
 
   def before_validation
     @account.name = @account.login if @account.name.blank?
-    [:name, :email, :login, :invite_code, :twitter_account].each do |attr|
-      @account.send(attr).try(:strip!)
-    end
   end
 
   def before_create

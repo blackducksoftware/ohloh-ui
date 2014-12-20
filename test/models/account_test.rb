@@ -3,6 +3,17 @@ require 'test_helper'
 class AccountTest < ActiveSupport::TestCase
   fixtures :accounts
 
+  test 'before validation' do
+    account = accounts(:user)
+    account.login = 'login    '
+    account.email = '     email'
+    account.name = '    name    '
+    account.save
+    assert_equal 'login', account.login
+    assert_equal 'email', account.email
+    assert_equal 'name', account.name
+  end
+
   test 'sent_kudos' do
     Kudo.delete_all
     admin_account = accounts(:admin)
