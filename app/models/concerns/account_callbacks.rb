@@ -4,6 +4,9 @@ module AccountCallbacks
   included do
     before_validation :set_name_to_login, if: -> { name.blank? }
     before_create :set_activation_code_to_random_hash
+    before_create :encrypt_salt
+    before_save :encrypt_email, if: :email_changed?
+    before_save :encrypt_password, if: -> { password.present? }
 
     after_create :manage_invite, if: -> { invite_code.present? }
     after_create :create_person!, unless: -> { Account::Authorize.new(self).spam? }
@@ -26,6 +29,18 @@ module AccountCallbacks
 
   def set_name_to_login
     self.name = login
+  end
+
+  def encrypt_email
+    self.email_md5 = Digest::MD5.hexdigest(email.downcase).to_s
+  end
+
+  def encrypt_salt
+    self.salt = Account::Authenticate.encrypt(Time.now.to_s, login)
+  end
+
+  def encrypt_password
+    self.crypted_password = Account::Authenticate.encrypt(password, salt)
   end
 
   def set_activation_code_to_random_hash

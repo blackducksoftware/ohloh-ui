@@ -35,7 +35,6 @@ class Account < ActiveRecord::Base
   has_many :posts
   has_many :invites, class_name: 'Invite', foreign_key: 'invitor_id'
 
-  before_save { Account::Observer.new(self).before_save unless password.blank? }
   after_save { Account::Observer.new(self).after_save }
   after_update { Account::Observer.new(self).after_update }
   before_destroy { Account::Observer.new(self).before_destroy }

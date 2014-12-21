@@ -2,41 +2,6 @@ require 'test_helper'
 class Account::ObserverTest < ActiveSupport::TestCase
   fixtures :accounts, :invites
 
-  test 'should not change if password is blank' do
-    account = accounts(:uber_data_crawler)
-    assert_equal '7e3041ebc2fc05a40c60028e2c4901a81035d3cd', account.salt
-    assert_equal '00742970dc9e6319f8019fd54864d3ea740f04b1', account.crypted_password
-    assert_equal '9dbaca493199c57710e53b56310f6581', account.email_md5
-    Account::Observer.new(account).before_save
-    assert_equal '7e3041ebc2fc05a40c60028e2c4901a81035d3cd', account.salt
-    assert_equal '302a770abbfed35c52bbdd82436af94d50363ae0', account.crypted_password
-    assert_equal '135c21feb6a9801c4a8466c394377bd1', account.email_md5
-  end
-
-  test 'should change if password is not blank' do
-    account = accounts(:uber_data_crawler)
-    account.password = 'testpassword'
-    assert_equal '7e3041ebc2fc05a40c60028e2c4901a81035d3cd', account.salt
-    assert_equal '00742970dc9e6319f8019fd54864d3ea740f04b1', account.crypted_password
-    assert_equal '9dbaca493199c57710e53b56310f6581', account.email_md5
-    Account::Observer.new(account).before_save
-    assert_equal '7e3041ebc2fc05a40c60028e2c4901a81035d3cd', account.salt
-    assert_equal '6ed58e4f51f6e32a6d11b66400c3059c989aaff2', account.crypted_password
-    assert_equal '135c21feb6a9801c4a8466c394377bd1', account.email_md5
-  end
-
-  test 'should change salt only if new record' do
-    account = Account.new(accounts(:uber_data_crawler).attributes)
-    account.password = 'testpassword'
-    assert_equal '7e3041ebc2fc05a40c60028e2c4901a81035d3cd', account.salt
-    assert_equal '00742970dc9e6319f8019fd54864d3ea740f04b1', account.crypted_password
-    assert_equal '9dbaca493199c57710e53b56310f6581', account.email_md5
-    Account::Observer.new(account).before_save
-    assert_not_equal '7e3041ebc2fc05a40c60028e2c4901a81035d3cd', account.salt
-    assert_not_equal '6ed58e4f51f6e32a6d11b66400c3059c989aaff2', account.crypted_password
-    assert_equal '135c21feb6a9801c4a8466c394377bd1', account.email_md5
-  end
-
   test 'should update persons effective_name after save' do
     account = accounts(:user)
     assert_equal 'Robin Luckey', account.person.effective_name

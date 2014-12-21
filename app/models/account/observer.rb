@@ -3,11 +3,6 @@ class Account::Observer
     @account = account
   end
 
-  def before_save
-    encrypt_salt_and_password
-    @account.email_md5 = Digest::MD5.hexdigest(@account.email.downcase).to_s
-  end
-
   def after_save
     # TODO: searchable
     # @account.person.reindex
@@ -60,11 +55,6 @@ class Account::Observer
     pids = @account.positions.select('array_agg(project_id) as pids').take.pids
     attrs[:claimed_project_ids] = pids if pids
     DeletedAccount.create(attrs)
-  end
-
-  def encrypt_salt_and_password
-    @account.salt = Account::Authenticate.encrypt(Time.now.to_s, @account.login) unless @account.persisted?
-    @account.crypted_password = Account::Authenticate.encrypt(@account.password, @account.salt)
   end
 
   def transfer_associations_to_anonymous_account
