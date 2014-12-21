@@ -10,7 +10,7 @@ module AccountCallbacks
     before_destroy :dependent_destroy, :create_deleted_account,
                    :transfer_associations_to_anonymous_account
 
-    after_create :manage_invite, if: -> { invite_code.present? }
+    after_create :activate_using_invite!, if: -> { invite_code.present? }
     after_create :create_person!, unless: -> { Account::Authorize.new(self).spam? }
     after_update :destroy_spammer_dependencies, if: -> { Account::Authorize.new(self).spam? }
     # FIXME: organization
@@ -39,7 +39,7 @@ module AccountCallbacks
     person.reindex
   end
 
-  def manage_invite
+  def activate_using_invite!
     invite = Invite.find_by(activation_code: invite_code)
     return unless invite
 
