@@ -146,7 +146,21 @@ class AccountTest < ActiveSupport::TestCase
       # registration email to <strong class='red'>uber@ohloh.net</strong>.
       # Invalid Email Address provided."], account.errors['email']
     end
+  end
 
+  class AfterUpdate < AccountTest
+    test 'should schedule organization analysis on update' do
+      skip('FIXME: add test when implementing schedule_analysis')
+    end
+  end
+
+  class AfterSave < AccountTest
+    test 'must update persons effective_name after save' do
+      account = accounts(:user)
+      assert_equal 'Robin Luckey', account.person.effective_name
+      account.save!
+      assert_equal 'user Luckey', account.person.effective_name
+    end
   end
 
   test 'sent_kudos' do

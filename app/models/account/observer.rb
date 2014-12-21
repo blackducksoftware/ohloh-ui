@@ -3,17 +3,7 @@ class Account::Observer
     @account = account
   end
 
-  def after_save
-    # TODO: searchable
-    # @account.person.reindex
-
-    @account.person.update_attribute(:effective_name, @account.name) if @account.person
-
-    # AccountNotifier.deliver_activation(@account) if @account.no_email
-  end
-
   def after_update
-    schedule_orgs_analysis if @account.organization_id_changed?
     if Account::Authorize.new(@account).spam?
       # TODO: acts_as_editable, posts, manage
       # posts.each { |post| post.destroy_and_cleanup }
@@ -33,18 +23,7 @@ class Account::Observer
     transfer_associations_to_anonymous_account
   end
 
-  def after_destroy
-    # @account.organization.try(:schedule_analysis)
-  end
-
   private
-
-  def schedule_orgs_analysis
-    # TODO: organization
-    # previous_orgs = Organization.find_by(id: @account.organization_id_was)
-    # previous_orgs.try(:schedule_analysis)
-    # @account.organization.try(:schedule_analysis)
-  end
 
   def dependent_destroy
     [:positions, :sent_kudos, :stacks, :ratings, :reviews, :api_keys].each { |assoc| @account.send(assoc).destroy_all }

@@ -2,18 +2,6 @@ require 'test_helper'
 class Account::ObserverTest < ActiveSupport::TestCase
   fixtures :accounts, :invites
 
-  test 'should update persons effective_name after save' do
-    account = accounts(:user)
-    assert_equal 'Robin Luckey', account.person.effective_name
-    Account::Observer.new(account).after_save
-    assert_equal account.name, account.person.effective_name
-  end
-
-  test 'should schedule orgs analysis on update' do
-    skip('TODO: organization schedule analysis')
-    Account::Observer.new(account).after_update
-  end
-
   test 'should destroy dependencies when marked as spam' do
     account = accounts(:user)
     Account::Authorize.any_instance.stubs(:spam?).returns(true)

@@ -35,10 +35,8 @@ class Account < ActiveRecord::Base
   has_many :posts
   has_many :invites, class_name: 'Invite', foreign_key: 'invitor_id'
 
-  after_save { Account::Observer.new(self).after_save }
   after_update { Account::Observer.new(self).after_update }
   before_destroy { Account::Observer.new(self).before_destroy }
-  after_destroy { Account::Observer.new(self).after_destroy }
 
   def admin?
     level == ADMIN_LEVEL
