@@ -1,17 +1,95 @@
 require 'test_helper'
 
 class AccountTest < ActiveSupport::TestCase
-  fixtures :accounts
+  fixtures :accounts, :invites
 
-  test 'before validation' do
-    account = accounts(:user)
-    account.login = 'login    '
-    account.email = '     email'
-    account.name = '    name    '
-    account.save
-    assert_equal 'login', account.login
-    assert_equal 'email', account.email
-    assert_equal 'name', account.name
+  class BeforeValidation < AccountTest
+    test 'must strip login email and name' do
+      account = accounts(:user)
+      account.login = 'login    '
+      account.email = '     email'
+      account.name = '    name    '
+      account.save
+      assert_equal 'login', account.login
+      assert_equal 'email', account.email
+      assert_equal 'name', account.name
+    end
+
+    test 'must set name to login when it is blank' do
+      account = build(:account)
+      account.name = ''
+      account.valid?
+      assert_equal account.login, account.name
+    end
+
+    test 'must retain name when it is not blank' do
+      account = build(:account)
+      account.name = ' name '
+      account.valid?
+      assert_equal 'name', account.name
+    end
+  end
+
+  class BeforeCreate < AccountTest
+    test 'must set activation code to random hash' do
+      account = create(:account)
+      assert_not_empty account.activation_code
+      assert_equal 40, account.activation_code.length
+      assert_nil account.activation_code.match(/[^a-z0-9]/)
+    end
+  end
+
+  class AfterCreate < AccountTest
+    test 'must change invitee id and activated date' do
+      account = build(:account)
+      account.no_email = false
+      invite = invites(:user)
+      invitee_id = invite.invitee_id
+      account.invite_code = invite.activation_code
+      account.save
+
+      assert_not_equal invites(:user).reload.invitee_id, invitee_id
+      assert_equal invites(:user).invitee_id, account.id
+    end
+
+    test 'must create person for non spam account' do
+      account = build(:account, level: Account::DEFAULT_LEVEL)
+      account.no_email = false
+
+      assert_difference('Person.count', 1) do
+        account.save
+      end
+    end
+
+    test 'must not create person for spam account' do
+      account = build(:account, level: Account::SPAMMER_LEVEL)
+      account.no_email = false
+
+      assert_no_difference('Person.count') do
+        account.save
+      end
+    end
+
+    test 'should rollback when notification raises an error' do
+      skip('TODO: AccountNotifier')
+
+      account = build(:account, level: Account::DEFAULT_LEVEL)
+      account.no_email = true
+      AccountNotifier.stubs(:deliver_signup_notification)
+                     .raises(Net::SMTPSyntaxError.new('Bad recipient address syntax'))
+
+      assert_no_difference('Person.count') do
+        Account.transaction do
+          account.save
+        end
+      end
+
+      assert_equal 1, account.errors.size
+      # assert_equal ["The Black Duck Open Hub could not send
+      # registration email to <strong class='red'>uber@ohloh.net</strong>.
+      # Invalid Email Address provided."], account.errors['email']
+    end
+
   end
 
   test 'sent_kudos' do

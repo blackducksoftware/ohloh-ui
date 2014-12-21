@@ -1,7 +1,9 @@
 class Account < ActiveRecord::Base
+  include AccountCallbacks
+  include AffiliationValidation
+
   attr_accessor :password, :current_password, :validate_current_password, :twitter_account, :invite_code,
                 :no_email, :password_confirmation, :about_raw, :email_confirmation
-  include AffiliationValidation
 
   DEFAULT_LEVEL = 0
   ADMIN_LEVEL   = 10
@@ -33,11 +35,8 @@ class Account < ActiveRecord::Base
   has_many :posts
   has_many :invites, class_name: 'Invite', foreign_key: 'invitor_id'
 
-  before_validation { Account::Observer.new(self).before_validation }
   before_save { Account::Observer.new(self).before_save unless password.blank? }
   after_save { Account::Observer.new(self).after_save }
-  before_create { Account::Observer.new(self).before_create }
-  after_create { Account::Observer.new(self).after_create }
   after_update { Account::Observer.new(self).after_update }
   before_destroy { Account::Observer.new(self).before_destroy }
   after_destroy { Account::Observer.new(self).after_destroy }

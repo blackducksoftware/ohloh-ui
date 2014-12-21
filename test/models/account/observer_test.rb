@@ -2,57 +2,6 @@ require 'test_helper'
 class Account::ObserverTest < ActiveSupport::TestCase
   fixtures :accounts, :invites
 
-  test 'before create' do
-    account = accounts(:user)
-    Account::Observer.new(account).before_create
-    assert_not_empty account.activation_code
-    assert_equal 40, account.activation_code.length
-    assert_nil account.activation_code.match(/[^a-z0-9]/)
-  end
-
-  test 'should create person after create' do
-    account = accounts(:uber_data_crawler)
-    account.no_email = false
-    assert_difference('Person.count', 1) do
-      Account::Observer.new(account).after_create
-    end
-  end
-
-  test 'should rollback when notification raises an error' do
-    skip('TODO: AccountNotifier')
-    account = accounts(:uber_data_crawler)
-    account.no_email = true
-    AccountNotifier.stubs(:deliver_signup_notification).raises(Net::SMTPSyntaxError.new('Bad recipient address syntax'))
-    assert_no_difference('Person.count') do
-      Account.transaction do
-        Account::Observer.new(account).after_create
-      end
-    end
-    assert_equal 1, account.errors.size
-    # assert_equal ["The Black Duck Open Hub could not send
-    # registration email to <strong class='red'>uber@ohloh.net</strong>.
-    # Invalid Email Address provided."], account.errors['email']
-  end
-
-  test 'should not create person for spam account' do
-    account = accounts(:spammer)
-    account.no_email = false
-    assert_no_difference('Person.count') do
-      Account::Observer.new(account).after_create
-    end
-  end
-
-  test 'should change invitee id and activated date' do
-    account = accounts(:uber_data_crawler)
-    account.no_email = false
-    invite = invites(:user)
-    invitee_id = invite.invitee_id
-    account.invite_code = invite.activation_code
-    Account::Observer.new(account).after_create
-    assert_not_equal invites(:user).reload.invitee_id, invitee_id
-    assert_equal invites(:user).invitee_id, account.id
-  end
-
   test 'should not change if password is blank' do
     account = accounts(:uber_data_crawler)
     assert_equal '7e3041ebc2fc05a40c60028e2c4901a81035d3cd', account.salt

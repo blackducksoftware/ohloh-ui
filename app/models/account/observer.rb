@@ -3,30 +3,6 @@ class Account::Observer
     @account = account
   end
 
-  def before_validation
-    @account.name = @account.login if @account.name.blank?
-  end
-
-  def before_create
-    @account.activation_code = SecureRandom.hex(20)
-  end
-
-  def after_create
-    manage_invite
-
-    is_spam = Account::Authorize.new(@account).spam?
-
-    Person.create!(account_id: @account.id, effective_name: @account.name) unless is_spam
-
-    # TODO: AccountNotifier
-    # AccountNotifier.deliver_signup_notification(@account) if @account.no_email
-    # rescue Net::SMTPSyntaxError => e
-    # if e.to_s.include?('Bad recipient address syntax')
-    # @account.errors.add(:email, I18n.t('invalid_email_address')
-    # raise ActiveRecord::Rollback
-    # end
-  end
-
   def before_save
     encrypt_salt_and_password
     @account.email_md5 = Digest::MD5.hexdigest(@account.email.downcase).to_s
@@ -73,15 +49,6 @@ class Account::Observer
     # previous_orgs = Organization.find_by(id: @account.organization_id_was)
     # previous_orgs.try(:schedule_analysis)
     # @account.organization.try(:schedule_analysis)
-  end
-
-  def manage_invite
-    invite = Invite.find_by(activation_code: @account.invite_code) if @account.invite_code.present?
-
-    return unless invite
-
-    invite.update_attributes!(invitee_id: @account.id, activated_at: Time.now.utc)
-    Account::Authorize.new(@account).activate!(@account.invite_code) if invite.invitee_email.eql?(@account.email)
   end
 
   def dependent_destroy
