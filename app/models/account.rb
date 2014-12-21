@@ -35,9 +35,6 @@ class Account < ActiveRecord::Base
   has_many :posts
   has_many :invites, class_name: 'Invite', foreign_key: 'invitor_id'
 
-  after_update { Account::Observer.new(self).after_update }
-  before_destroy { Account::Observer.new(self).before_destroy }
-
   def admin?
     level == ADMIN_LEVEL
   end
@@ -68,9 +65,10 @@ class Account < ActiveRecord::Base
 
       return anonymous_account if anonymous_account
 
-      anonymous_account = Account.create(name: 'Anonymous Coward', email: 'anon@openhub.net',
-                                         login: 'anonymous_coward', password: 'mailpass',
-                                         password_confirmation: 'mailpass', no_email: true)
+      anonymous_account = Account.create(name: 'Anonymous Coward', login: 'anonymous_coward',
+                                         email: 'anon@openhub.net', email_confirmation: 'anon@openhub.net',
+                                         password: 'mailpass', password_confirmation: 'mailpass',
+                                         no_email: true)
       Account::Authorize.new(anonymous_account).activate!(nil)
       anonymous_account
     end

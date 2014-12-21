@@ -7,9 +7,12 @@ module AccountCallbacks
     before_create :encrypt_salt
     before_save :encrypt_email, if: :email_changed?
     before_save :encrypt_password, if: -> { password.present? }
+    before_destroy :dependent_destroy, :create_deleted_account,
+                   :transfer_associations_to_anonymous_account
 
     after_create :manage_invite, if: -> { invite_code.present? }
     after_create :create_person!, unless: -> { Account::Authorize.new(self).spam? }
+    after_update :destroy_spammer_dependencies, if: -> { Account::Authorize.new(self).spam? }
     # FIXME: organization
     # after_update :schedule_previous_organization_analysis,
     #              :schedule_organization_analysis, if: :organization_id_changed?
@@ -84,5 +87,55 @@ module AccountCallbacks
 
   def schedule_organization_analysis
     organization.try(:schedule_analysis)
+  end
+
+  def destroy_spammer_dependencies
+    # FIXME: acts_as_editable, posts, manage
+    # posts.each { |post| post.destroy_and_cleanup }
+    # all_manages.each { |manage| manage.destroy_by!(self) }
+    # edits.each { |edit| edit.undo rescue if edit.undone? }
+    topics.where(posts_count: 0).destroy_all
+    person.try(:destroy)
+    dependent_destroy
+  rescue
+    raise ActiveRecord::Rollback
+  end
+
+  def dependent_destroy
+    %w(positions sent_kudos stacks ratings reviews api_keys).each do |association|
+      send(association).destroy_all
+    end
+  end
+
+  def create_deleted_account
+    traits = { login: login, email: email, organization_id: organization_id }
+    pids = positions.select('array_agg(project_id) as pids').take.pids
+    traits[:claimed_project_ids] = pids if pids
+    DeletedAccount.create(traits)
+  end
+
+  def transfer_associations_to_anonymous_account
+    @anonymous_account = Account.find_or_create_anonymous_account
+    posts.update_all(account_id: @anonymous_account)
+    # account_reports.update_all(account_id: @anonymous_account)
+    topics.update_all(account_id: @anonymous_account)
+    # edits.update_all(account_id: @anonymous_account)
+    # update_edit
+    update_invite
+    update_manage
+  end
+
+  def update_invite
+    Invite.where { invitor_id.eq(id) | invitee_id.eq(id) }
+      .update_all(invitor_id: @anonymous_account, invitee_id: @anonymous_account)
+  end
+
+  def update_manage
+    Manage.where { approved_by.eq(id) | deleted_by.eq(id) }
+      .update_all(approved_by: @anonymous_account, deleted_by: @anonymous_account)
+  end
+
+  def update_edit
+    Edit.where(undone_by: self).update_all(undone_by: @anonymous_account)
   end
 end

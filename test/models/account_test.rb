@@ -96,6 +96,50 @@ class AccountTest < ActiveSupport::TestCase
     end
   end
 
+  class BeforeDestroy < AccountTest
+    test 'should destroy dependencies when marked as spam' do
+      account = accounts(:user)
+      Account::Authorize.any_instance.stubs(:spam?).returns(true)
+      account.topics.update_all(posts_count: 0)
+      assert_equal 3, account.topics.count
+      assert_not_nil account.person
+      assert_equal 1, account.positions.count
+      account.save!
+      account.reload
+      assert_equal 0, account.topics.count
+      assert_nil account.person
+      assert_equal 0, account.positions.count
+    end
+
+    test 'should rollback when destroy dependencies raises an exception' do
+      account = accounts(:user)
+      Account::Authorize.any_instance.stubs(:spam?).returns(true)
+      Account.any_instance.stubs(:api_keys).raises(ActiveRecord::Rollback)
+      account.topics.update_all(posts_count: 0)
+      assert_equal 3, account.topics.count
+      assert_not_nil account.person
+      assert_equal 1, account.positions.count
+      account.save
+      account.reload
+      assert_equal 3, account.topics.count
+      assert_not_nil account.person
+      assert_equal 1, account.positions.count
+    end
+
+    test 'should destroy dependencies before account destroy' do
+      account = accounts(:user)
+      assert_equal 1, account.positions.count
+      assert_equal 5, account.posts.count
+      assert_equal 0, Account.find_or_create_anonymous_account.posts.count
+      assert_difference('DeletedAccount.count', 1) do
+        account.destroy
+      end
+      assert_equal 0, account.positions.count
+      assert_equal 0, account.posts.count
+      assert_equal 5, Account.find_or_create_anonymous_account.posts.count
+    end
+  end
+
   class AfterCreate < AccountTest
     test 'must change invitee id and activated date' do
       account = build(:account)
