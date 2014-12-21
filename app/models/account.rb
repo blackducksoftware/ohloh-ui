@@ -18,7 +18,9 @@ class Account < ActiveRecord::Base
   validates :email_confirmation, email_format: true, presence: true, allow_blank: false, on: :create
   validates :password, :password_confirmation, presence: true, length: { in: 5..40 }, confirmation: true
   validates :url, length: { maximum: 100 }, url_format: true, allow_blank: true
-  validates :login, presence: true, length: { in: 3..40 }, uniqueness: { case_sensitive: false }, allow_blank: false
+  validates :login, presence: true
+  validates :login, length: { in: 3..40 }, uniqueness: { case_sensitive: false },
+                    allow_blank: false, format: { with: /\A[a-zA-Z][\w-]{2,30}\Z/ }, if: :login_changed?
   validates :twitter_account, length: { maximum: 15 }, allow_blank: true
   validates :name, length: { maximum: 50 }, allow_blank: true
 

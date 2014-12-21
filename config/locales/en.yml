@@ -192,3 +192,10 @@ en:
   accounts:
     invalid_email_address: 'Invalid Email Address detected.'
     invalid_url_format: 'Invalid URL Format'
+  activerecord:
+    errors:
+      models:
+        account:
+          attributes:
+            login:
+              invalid: 'Must begin with a letter and then only contain letters, numbers, underscore or dash'

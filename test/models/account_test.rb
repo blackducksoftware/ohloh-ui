@@ -250,7 +250,8 @@ class AccountTest < ActiveSupport::TestCase
 
     account = build(:account, login: '')
     assert_not account.valid?
-    expected_error_message = ['can\'t be blank', 'is too short (minimum is 3 characters)']
+    expected_error_message = ['can\'t be blank', 'is too short (minimum is 3 characters)',
+      I18n.t('activerecord.errors.models.account.attributes.login.invalid')]
     assert_equal expected_error_message, account.errors.messages[:login]
 
     create(:account, login: 'openhub_dev')
@@ -334,5 +335,59 @@ class AccountTest < ActiveSupport::TestCase
     assert_not account.valid?
     assert_includes account.errors, :organization_id
     assert_equal ['can\'t be blank'], account.errors.messages[:organization_id]
+  end
+
+  class LoginValidationsTest < AccountTest
+    test 'test should require login' do
+      assert_no_difference 'Account.count' do
+        account = build(:account, login: nil)
+        account.valid?
+        assert account.errors.messages[:login].present?
+      end
+    end
+
+    test 'test valid logins' do
+      account = build(:account)
+      logins = %w(rockola ROCKOLA Rockola Rock_Ola F323)
+
+      logins.each do |login|
+        account.login = login
+        assert account.valid?
+      end
+    end
+
+    test 'test login not urlable' do
+      account = build(:account)
+      bad_logins = %w(123 user.allen $foo])
+
+      bad_logins.each do |bad_login|
+        account.login = bad_login
+        assert !account.valid?
+      end
+    end
+
+    test 'test bad login on create' do
+      account = build(:account, login: '$foo')
+      account.valid?
+      assert account.errors.messages[:login].present?
+    end
+
+    test 'test login on update' do
+      # fake a bad login already in the db
+      account = accounts(:user)
+      account.login = '$bad_login$'
+      assert account.save(validate: false)
+
+      # ok, now update something else than login
+      account.reload
+      account.name = 'My New Name'
+      assert account.save
+
+      # ok, now try updating the name to something new, yet still wrong
+      account.reload
+      account.login = '$another_bad_login$'
+      assert !account.save
+      assert account.errors.messages[:login].present?
+    end
   end
 end
