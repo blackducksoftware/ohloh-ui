@@ -2,7 +2,7 @@ class Account < ActiveRecord::Base
   include AffiliationValidation
 
   attr_accessor :password, :current_password, :validate_current_password, :twitter_account, :invite_code,
-                :no_email, :password_confirmation, :about_raw, :email_confirmation
+                :password_confirmation, :about_raw, :email_confirmation
 
   DEFAULT_LEVEL = 0
   ADMIN_LEVEL   = 10
@@ -67,6 +67,10 @@ class Account < ActiveRecord::Base
 
   def about_raw=(value)
     about_markup_id.nil? ? build_markup(raw: value) : markup.raw = value
+  end
+
+  def is_anonymous?
+    login == AnonymousAccount::LOGIN
   end
 
   class << self

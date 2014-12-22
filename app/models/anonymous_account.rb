@@ -5,8 +5,7 @@ module AnonymousAccount
     def create!
       anonymous_account = Account.new(name: 'Anonymous Coward', login: LOGIN,
                                       email: 'anon@openhub.net', email_confirmation: 'anon@openhub.net',
-                                      password: 'mailpass', password_confirmation: 'mailpass',
-                                      no_email: true)
+                                      password: 'mailpass', password_confirmation: 'mailpass')
       anonymous_account.save!
       Account::Authorize.new(anonymous_account).activate!(nil)
 

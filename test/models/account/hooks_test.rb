@@ -70,7 +70,6 @@ class Account::HooksTest < ActiveSupport::TestCase
   class AfterCreate < Account::HooksTest
     test 'must change invitee id and activated date' do
       account = build(:account)
-      account.no_email = false
       invite = invites(:user)
       invitee_id = invite.invitee_id
       account.invite_code = invite.activation_code
@@ -82,7 +81,6 @@ class Account::HooksTest < ActiveSupport::TestCase
 
     test 'must create person for non spam account' do
       account = build(:account, level: Account::DEFAULT_LEVEL)
-      account.no_email = false
 
       assert_difference('Person.count', 1) do
         account.save
@@ -91,7 +89,6 @@ class Account::HooksTest < ActiveSupport::TestCase
 
     test 'must not create person for spam account' do
       account = build(:account, level: Account::SPAMMER_LEVEL)
-      account.no_email = false
 
       assert_no_difference('Person.count') do
         account.save
@@ -102,7 +99,6 @@ class Account::HooksTest < ActiveSupport::TestCase
       skip('TODO: AccountNotifier')
 
       account = build(:account, level: Account::DEFAULT_LEVEL)
-      account.no_email = true
       AccountNotifier.stubs(:deliver_signup_notification)
         .raises(Net::SMTPSyntaxError.new('Bad recipient address syntax'))
 
