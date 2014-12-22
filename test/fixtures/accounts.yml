@@ -12,7 +12,7 @@ admin:
   activation_code: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
   activated_at: <%= 5.days.ago.utc.to_s :db %>
   email_opportunities_visited: <%= 5.days.ago.utc.to_s :db %>
-  level: <%= Account::ADMIN_LEVEL %>
+  level: <%= Account::Access::ADMIN %>
   twitter_account: admin
 user:
   id: 2
@@ -27,7 +27,7 @@ user:
   posts_count: 0
   activation_code: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
   activated_at: <%= 1.days.ago.utc.to_s :db %>
-  level: <%= Account::DEFAULT_LEVEL %>
+  level: <%= Account::Access::DEFAULT %>
   email_opportunities_visited: <%= 1.days.ago.utc.to_s :db %>
 joe:
   id: 3
@@ -42,7 +42,7 @@ joe:
   last_seen_at: <%= 4.minutes.ago.utc.to_s :db %>
   activation_code: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
   activated_at: <%= 5.days.ago.utc.to_s :db %>
-  level: <%= Account::DEFAULT_LEVEL %>
+  level: <%= Account::Access::DEFAULT %>
   email_opportunities_visited: <%= 1.days.ago.utc.to_s :db %>
 unactivated:
   id: 4
@@ -56,7 +56,7 @@ unactivated:
   posts_count: 0
   activation_code: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
 # Not activated -->   activated_at:
-  level: <%= Account::DEFAULT_LEVEL %>
+  level: <%= Account::Access::DEFAULT %>
 # OHLOH_SLAVE is required by the ohloh engine
 ohloh_slave:
   id: 5
@@ -70,7 +70,7 @@ ohloh_slave:
   posts_count: 0
   activation_code: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
   activated_at: <%= 1.days.ago.utc.to_s :db %>
-  level: <%= Account::DEFAULT_LEVEL %>
+  level: <%= Account::Access::DEFAULT %>
   email_opportunities_visited: <%= 1.days.ago.utc.to_s :db %>
 # required for messaging
 ohloh_team:
@@ -85,7 +85,7 @@ ohloh_team:
   posts_count: 0
   activation_code: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
   activated_at: <%= 1.days.ago.utc.to_s :db %>
-  level: <%= Account::DEFAULT_LEVEL %>
+  level: <%= Account::Access::DEFAULT %>
   email_opportunities_visited: <%= 1.days.ago.utc.to_s :db %>
 umlaut:
   id: 7
@@ -99,7 +99,7 @@ umlaut:
   posts_count: 0
   activation_code: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
   activated_at: <%= 1.days.ago.utc.to_s :db %>
-  level: <%= Account::DEFAULT_LEVEL %>
+  level: <%= Account::Access::DEFAULT %>
   email_opportunities_visited: <%= 1.days.ago.utc.to_s :db %>
 uber_data_crawler:
   id: 8
@@ -114,7 +114,7 @@ uber_data_crawler:
   posts_count: 0
   activation_code: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
   activated_at: <%= 5.days.ago.utc.to_s :db %>
-  level: <%= Account::DEFAULT_LEVEL %>
+  level: <%= Account::Access::DEFAULT %>
   email_opportunities_visited: <%= 5.days.ago.utc.to_s :db %>
 spammer:
   id: 9
@@ -129,7 +129,7 @@ spammer:
   posts_count: 0
   activation_code: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
   activated_at: <%= 5.days.ago.utc.to_s :db %>
-  level: <%= Account::SPAMMER_LEVEL %>
+  level: <%= Account::Access::SPAM %>
   email_opportunities_visited: <%= 5.days.ago.utc.to_s :db %>
 not_privacy_informed:
   id: 10
@@ -144,4 +144,4 @@ not_privacy_informed:
   posts_count: 0
   activation_code: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
   activated_at: <%= 1.days.ago.utc.to_s :db %>
-  level: <%= Account::DEFAULT_LEVEL %>
+  level: <%= Account::Access::DEFAULT %>

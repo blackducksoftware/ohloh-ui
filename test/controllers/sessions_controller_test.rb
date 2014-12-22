@@ -73,7 +73,7 @@ class SessionsControllerTest < ActionController::TestCase
 
   test 'destroy should clear remember me data' do
     admin = accounts(:admin)
-    Authenticator.remember(admin)
+    Account::Authenticator.remember(admin)
     session[:account_id] = accounts(:admin).id
     delete :destroy
     assert_response :found

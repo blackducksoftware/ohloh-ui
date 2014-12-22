@@ -2,8 +2,8 @@ class SessionsController < ApplicationController
   skip_before_action :store_location
 
   def create
-    authenticator = Authenticator.new(login: params[:login][:login], password: params[:login][:password])
-    if authenticator.correct_password?
+    authenticator = Account::Authenticator.new(login: params[:login][:login], password: params[:login][:password])
+    if authenticator.authenticated?
       initialize_session authenticator.account
     else
       flash[:error] = t '.error'
@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    Authenticator.forget(current_user) if logged_in?
+    Account::Authenticator.forget(current_user) if logged_in?
     reset_session
     flash[:notice] = t '.success'
     redirect_back root_path
@@ -32,19 +32,19 @@ class SessionsController < ApplicationController
 
   def remember_me_if_requested(account)
     return unless params[:login][:remember_me] == '1'
-    Authenticator.remember(account)
+    Account::Authenticator.remember(account)
     cookies[:auth_token] = { value: account.remember_token, expires: account.remember_token_expires_at }
   end
 
   def disabled_account?(account)
-    return false unless account.disabled?
+    return false unless Account::Access.new(account).disabled?
     flash[:error] = t '.disabled_error'
     render :new, status: :bad_request
     true
   end
 
   def activated_account?(account)
-    return true if account.activated?
+    return true if Account::Access.new(account).activated?
     flash[:error] = t '.unactivated_error'
     render :new, status: :bad_request
     false
