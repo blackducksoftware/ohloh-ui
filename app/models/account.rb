@@ -75,16 +75,7 @@ class Account < ActiveRecord::Base
     end
 
     def find_or_create_anonymous_account
-      anonymous_account = Account.find_by(name: 'Anonymous Coward')
-
-      return anonymous_account if anonymous_account
-
-      anonymous_account = Account.create(name: 'Anonymous Coward', login: 'anonymous_coward',
-                                         email: 'anon@openhub.net', email_confirmation: 'anon@openhub.net',
-                                         password: 'mailpass', password_confirmation: 'mailpass',
-                                         no_email: true)
-      Account::Authorize.new(anonymous_account).activate!(nil)
-      anonymous_account
+      Account.find_by(login: AnonymousAccount::LOGIN) || AnonymousAccount.create!
     end
   end
 end
