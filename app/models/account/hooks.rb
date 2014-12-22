@@ -35,7 +35,7 @@ class Account::Hooks
     # deliver_activation(account) unless account.no_email
     # FIXME: Integrate alongwith searchable
     # reindex_person(account) if account.person
-    update_person_effective_name(account) if account.name_changed? && account.person.present?
+    update_person_effective_name(account) if account.person.present?
   end
 
   private
