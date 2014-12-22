@@ -1,10 +1,14 @@
 FactoryGirl.define do
+  sequence :account_login do |n|
+    "login-#{ n }"
+  end
+
   factory :account do
     email_address = Faker::Internet.free_email
     email email_address
     email_confirmation email_address
     url Faker::Internet.url
-    login Faker::Internet.user_name
+    login { generate(:account_login) }
     crypted_password 'abc123456'
     salt 'xyz123456'
     password 'abc123456'
