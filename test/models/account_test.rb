@@ -63,7 +63,7 @@ class AccountTest < ActiveSupport::TestCase
 
     account = build(:account, password: '')
     assert_not account.valid?
-    expected_error_message = ['can\'t be blank', 'is too short (minimum is 5 characters)']
+    expected_error_message = ['can\'t be blank']
     assert_includes account.errors, :password
     assert_equal expected_error_message, account.errors.messages[:password]
     assert_equal ['doesn\'t match Password'], account.errors.messages[:password_confirmation]
