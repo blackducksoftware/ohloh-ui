@@ -34,8 +34,8 @@ class Account::Hooks
     # FIXME: Implement alongwith AccountNotifier
     # deliver_activation(account) unless account.no_email
     # FIXME: Integrate alongwith searchable
-    # reindex_person(account) if account.person
-    update_person_effective_name(account) if account.person.present?
+    # reindex_person(account) if account.person && !Account::Authorize.new(account).spam?
+    update_person_effective_name(account) if account.person.present? && !Account::Authorize.new(account).spam?
   end
 
   private
