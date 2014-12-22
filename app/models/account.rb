@@ -1,5 +1,4 @@
 class Account < ActiveRecord::Base
-  include Account::Hooks
   include AffiliationValidation
 
   attr_accessor :password, :current_password, :validate_current_password, :twitter_account, :invite_code,
@@ -40,6 +39,15 @@ class Account < ActiveRecord::Base
   has_many :reviews
   has_many :posts
   has_many :invites, class_name: 'Invite', foreign_key: 'invitor_id'
+
+  before_validation Account::Hooks.new
+  before_create Account::Encrypter.new
+  before_save Account::Encrypter.new
+  before_destroy Account::Hooks.new
+  after_create Account::Hooks.new
+  after_update Account::Hooks.new
+  after_destroy Account::Hooks.new
+  after_save Account::Hooks.new
 
   def admin?
     level == ADMIN_LEVEL
