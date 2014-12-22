@@ -80,8 +80,6 @@ class ManagersController < ApplicationController
     @manage = Manage.not_denied.find_by_account_id(Account.find_by_login!(account_name).id)
   rescue ActiveRecord::RecordNotFound
     raise ParamRecordNotFound
-  rescue StandardError => e
-    raise e
   end
 
   def find_parent
@@ -92,8 +90,6 @@ class ManagersController < ApplicationController
               end
   rescue ActiveRecord::RecordNotFound
     raise ParamRecordNotFound
-  rescue StandardError => e
-    raise e
   end
 
   def redirect_to_index

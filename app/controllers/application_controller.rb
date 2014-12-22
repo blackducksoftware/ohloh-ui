@@ -60,8 +60,6 @@ class ApplicationController < ActionController::Base
       @current_project ||= Project.find_by_url_name!(param)
     rescue ActiveRecord::RecordNotFound
       raise ParamRecordNotFound
-    rescue e
-      raise e
     end
     @current_project
   end
