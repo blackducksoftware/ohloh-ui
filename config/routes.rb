@@ -35,6 +35,9 @@ Rails.application.routes.draw do
       put 'managers'    => 'managers#update',    as: :update_managers
     end
     resource :logos, only: [:new, :create, :destroy]
+    resources :reviews do
+      resources :helpfuls, only: :create
+    end
   end
 
   resources :organizations, path: :orgs, only: [:show] do
