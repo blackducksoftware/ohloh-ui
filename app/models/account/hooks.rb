@@ -25,7 +25,7 @@ class Account::Hooks
     # end
   end
 
-  def after_destroy(account)
+  def after_destroy(_account)
     # FIXME: organization
     # schedule_organization_analysis(account.organization_id)
   end

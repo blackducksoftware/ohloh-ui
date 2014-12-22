@@ -46,8 +46,9 @@ class AccountTest < ActiveSupport::TestCase
 
     account = build(:account, login: '')
     assert_not account.valid?
-    expected_error_message = ['can\'t be blank', 'is too short (minimum is 3 characters)',
-      I18n.t('activerecord.errors.models.account.attributes.login.invalid')]
+    expected_error_message =
+      ['can\'t be blank', 'is too short (minimum is 3 characters)',
+       I18n.t('activerecord.errors.models.account.attributes.login.invalid')]
     assert_equal expected_error_message, account.errors.messages[:login]
 
     create(:account, login: 'openhub_dev')

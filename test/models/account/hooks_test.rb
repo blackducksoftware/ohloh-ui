@@ -104,7 +104,7 @@ class Account::HooksTest < ActiveSupport::TestCase
       account = build(:account, level: Account::DEFAULT_LEVEL)
       account.no_email = true
       AccountNotifier.stubs(:deliver_signup_notification)
-                     .raises(Net::SMTPSyntaxError.new('Bad recipient address syntax'))
+        .raises(Net::SMTPSyntaxError.new('Bad recipient address syntax'))
 
       assert_no_difference('Person.count') do
         Account.transaction do
