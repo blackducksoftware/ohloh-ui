@@ -42,6 +42,9 @@ Rails.application.routes.draw do
   end
 
   resources :organizations, path: :orgs, only: [:show] do
+    member do
+      get :settings
+    end
     resource :logos, only: [:new, :create, :destroy]
     resources :managers, only: [:index, :new, :create, :edit, :update] do
       member do
