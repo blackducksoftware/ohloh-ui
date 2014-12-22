@@ -1,5 +1,5 @@
 class Account < ActiveRecord::Base
-  include AccountCallbacks
+  include Account::Hooks
   include AffiliationValidation
 
   attr_accessor :password, :current_password, :validate_current_password, :twitter_account, :invite_code,

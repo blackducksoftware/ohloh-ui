@@ -1,4 +1,4 @@
-module AccountCallbacks
+module Account::Hooks
   extend ActiveSupport::Concern
 
   included do
