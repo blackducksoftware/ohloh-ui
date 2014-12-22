@@ -4,7 +4,7 @@
   target = html_escape(@parent.name)
   position = nil # TODO: (positions) account.positions.find(:first, :conditions => ["project_id = ?", @parent.id])
   name_fact = nil # TODO: (name_facts) position && position.name_fact
-- if current_user_can_manage? || current_user == account
+- if !manage.pending? || (current_user_can_manage? || current_user == account)
   .row.padding_one_top
     .col-md-2
       = avatar_for(account.person, size: 60)
@@ -17,18 +17,6 @@
         .position
           - position_title_and_org(position)
       %p.nomargin.soft== #{name_fact ? name_fact.commits : '0'} commits
-      - unless manage.message.blank?
-        %p.soft.nomargin #{t('.message_label')} #{expander(html_escape(manage.message), 20, 100)}
-      %p.nomargin
-        - if current_user == account
-          = edit_manages_button(@parent, account)
-          - if manage.pending?
-            = withdraw_manages_button(@parent, account, name, target)
-        - if current_user_can_manage?
-          - if manage.pending?
-            = approve_manages_button(@parent, account, name, target)
-            = reject_manages_button(@parent, account, name, target)
-          - else
-            = remove_manages_button(@parent, account, name, target)
+      = render partial: 'action_buttons', locals: { manage: manage, account: account, name: name, target: target }
     .clear
       &nbsp;

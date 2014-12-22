@@ -1,9 +1,9 @@
 - page_context[:title] = project_pages_title t('.page_title')
 
 %h2.float_left
-  = link_to t(:settings), settings_project_path(@parent)
+  = link_to t(:settings), settings_parent_path(@parent)
   &#58;
-  = link_to t(:managers_link_name), parent_managers_path
+  = link_to t(:managers_link_name), parent_managers_path(@parent)
   &#58;
   #{t(:new)}
 
@@ -12,7 +12,7 @@
 
 .col-md-7
   .well{style: 'margin-left:22px;'}
-    = form_for(@manage, url: parent_managers_path, html: { method: :post }) do |form|
+    = form_for(@manage, url: parent_managers_path(@parent), html: { method: :post }) do |form|
       = render partial: 'form', locals: { form: form }
 
 .col-md-4

@@ -10,24 +10,27 @@
       = render partial: 'manage', collection: @manages
     - else
       %h4= t('.nobody_manages_yet')
+    - if @parent.is_a?(Organization) && current_user_is_admin?
+      %a.btn.btn-primary{href: new_parent_manager_path(@parent), style: 'margin-left: 30px;'}= t('.new_manager')
 
-  .col-md-4
-    - unless @parent.managers.include?(current_user)
-      %a.btn.btn-primary{href: new_project_manager_path(@parent), style: 'margin-left: 30px;'}= t('.new_call_to_action')
-    .clear &nbsp;
-    .padding_one_top
-      - if !@parent.managers.include?(current_user)
-        .well
-          %h5.nomargin= t('.help_header_first1')
-          %p= t('.help_body_first1')
-          %br
-          %h5.nomargin= t('.help_header_first2')
-          %p= t('.help_body_first1')
-      - elsif !@parent.manages.pending.blank?
-        .well
-          %h4.nomargin= t('.help_header_existing', target: html_escape(@parent.name))
-          %p.soft= t('.help_body_existing1')
-          %p.soft= t('.help_body_existing2')
-          %p.soft= t('.help_body_existing3')
+  - if @parent.is_a?(Project)
+    .col-md-4
+      - unless @parent.managers.include?(current_user)
+        %a.btn.btn-primary{href: new_parent_manager_path(@parent), style: 'margin-left: 30px;'}= t('.new_cta')
+      .clear &nbsp;
+      .padding_one_top
+        - if !@parent.managers.include?(current_user)
+          .well
+            %h5.nomargin= t('.help_header_first1')
+            %p= t('.help_body_first1')
+            %br
+            %h5.nomargin= t('.help_header_first2')
+            %p= t('.help_body_first1')
+        - elsif !@parent.manages.pending.blank?
+          .well
+            %h4.nomargin= t('.help_header_existing', target: html_escape(@parent.name))
+            %p.soft= t('.help_body_existing1')
+            %p.soft= t('.help_body_existing2')
+            %p.soft= t('.help_body_existing3')
 
 = render partial: 'about'

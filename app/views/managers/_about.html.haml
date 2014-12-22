@@ -2,19 +2,20 @@
   %span.soft= t :about
   #{t(:managers_link_name)}
 .col-md-5
-  #{t('.powers_header')}
+  #{t('.powers_header', target_type: @parent.class)}
   %ul
     %li= t('.powers1')
-    %li= t('.powers2')
+    %li= t('.powers2', target_type: @parent.class.to_s.downcase)
     %li= t('.powers3')
-  #{t('.note')}
+  #{t('.note', target_type: @parent.class.to_s.downcase)}
   %br
   %br
   #{blog_link_to(link: :managing_projects, link_text: t(:learn_more))}
-.col-md-5
-  #{t('.application_header')}
-  %ul
-    %li= t('.application1')
-    %li= t('.application2')
-    %li= t('.application3')
-    %li= t('.application4')
+- if @parent.is_a?(Project)
+  .col-md-5
+    #{t('.application_header')}
+    %ul
+      %li= t('.application1')
+      %li= t('.application2')
+      %li= t('.application3')
+      %li= t('.application4')

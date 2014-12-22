@@ -1,16 +1,16 @@
 - page_context[:title] = project_pages_title t('.page_title')
 
 %h2.float_left
-  = link_to t(:settings), settings_project_path(@parent)
+  = link_to t(:settings), settings_parent_path(@parent)
   &#58;
-  = link_to t(:managers_link_name), parent_managers_path
+  = link_to t(:managers_link_name), parent_managers_path(@parent)
   &#58;
   #{t(:edit)}
 
 .clear
 .col-md-8
   .well
-    = form_for(@manage, url: parent_manager_path, html: { method: :put }) do |form|
+    = form_for(@manage, url: parent_manager_path(@parent, @manage), html: { method: :put }) do |form|
       = render partial: 'form', locals: { form: form }
 
 .clear

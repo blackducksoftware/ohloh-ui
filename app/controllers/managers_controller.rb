@@ -1,10 +1,11 @@
 class ManagersController < ApplicationController
   include ERB::Util
 
-  before_action :session_required
+  before_action :session_required, except: :index
   before_action :find_parent
   before_action :find_manages, only: :index
   before_action :find_manage, except: :index
+  before_action :admin_session_required, only: [:new, :create, :edit, :update], if: -> { @parent.is_a? Organization }
 
   def new
     @manage ||= Manage.new
@@ -14,7 +15,7 @@ class ManagersController < ApplicationController
     @manage ||= Manage.new
     @manage.assign_attributes(model_params.merge(target: @parent, account: current_user))
     if @manage.save
-      redirect_to parent_managers_path
+      redirect_to_index
     else
       render :new, status: :unprocessable_entity
     end
@@ -28,7 +29,7 @@ class ManagersController < ApplicationController
     return render_unauthorized unless current_user_can_manage?
     if @manage.update_attributes(model_params)
       flash[:notice] = t '.notice'
-      redirect_to parent_managers_path
+      redirect_to_index
     else
       render :edit, status: :unprocessable_entity
     end
@@ -40,7 +41,7 @@ class ManagersController < ApplicationController
       @manage.approve!(current_user)
       flash[:success] = t '.notice', name: html_escape(@manage.account.name)
     end
-    redirect_to parent_managers_path
+    redirect_to_index
   end
 
   def reject
@@ -49,21 +50,10 @@ class ManagersController < ApplicationController
       @manage.destroy_by!(current_user)
       flash[:notice] = t '.notice', name: html_escape(@manage.account.name), target: html_escape(@parent.name)
     end
-    redirect_to parent_managers_path
+    redirect_to_index
   end
 
   protected
-
-  def parent_managers_path
-    @parent.is_a?(Project) ? project_managers_path(@parent) : organization_managers_path(@parent)
-  end
-  helper_method :parent_managers_path
-
-  def parent_manager_path
-    name = @manage.account.to_param
-    @parent.is_a?(Project) ? project_manager_path(@parent, name) : organization_manager_path(@parent, name)
-  end
-  helper_method :parent_manager_path
 
   def current_user_can_manage?
     return true if current_user_is_admin?
@@ -104,5 +94,9 @@ class ManagersController < ApplicationController
     raise ParamRecordNotFound
   rescue StandardError => e
     raise e
+  end
+
+  def redirect_to_index
+    redirect_to view_context.parent_managers_path(@parent)
   end
 end
