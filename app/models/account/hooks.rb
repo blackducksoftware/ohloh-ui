@@ -11,13 +11,13 @@ class Account::Hooks
 
   def after_create(account)
     activate_using_invite!(account) if account.invite_code.present?
-    create_person!(account) unless Account::Authorize.new(account).spam?
+    create_person!(account) unless Account::Access.new(account).spam?
     # FIXME: Implement alongwith AccountNotifier
     # deliver_signup_notification if account.no_email
   end
 
   def after_update(account)
-    destroy_spammer_dependencies(account) if Account::Authorize.new(account).spam?
+    destroy_spammer_dependencies(account) if Account::Access.new(account).spam?
     # FIXME: organization
     # if account.organization_id_changed?
     #   schedule_organization_analysis(account.organization_id_was)
@@ -34,8 +34,8 @@ class Account::Hooks
     # FIXME: Implement alongwith AccountNotifier
     # deliver_activation(account) unless account.no_email
     # FIXME: Integrate alongwith searchable
-    # reindex_person(account) if account.person && !Account::Authorize.new(account).spam?
-    update_person_effective_name(account) if account.person.present? && !Account::Authorize.new(account).spam?
+    # reindex_person(account) if account.person && !Account::Access.new(account).spam?
+    update_person_effective_name(account) if account.person.present? && !Account::Access.new(account).spam?
   end
 
   private
@@ -58,7 +58,7 @@ class Account::Hooks
 
     invite.update!(invitee_id: account.id, activated_at: Time.now.utc)
 
-    Account::Authorize.new(account).activate!(account.invite_code) if invite.invitee_email.eql?(account.email)
+    Account::Access.new(account).activate!(account.invite_code) if invite.invitee_email.eql?(account.email)
   end
 
   def assign_name_to_login(account)

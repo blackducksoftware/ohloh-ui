@@ -20,10 +20,10 @@ class Account::Encrypter
   end
 
   def encrypt_salt(account)
-    account.salt = Account::Authenticate.encrypt(Time.now.to_s, account.login)
+    account.salt = Account::Authenticator.encrypt(Time.now.to_s, account.login)
   end
 
   def encrypt_password(account)
-    account.crypted_password = Account::Authenticate.encrypt(account.password, account.salt)
+    account.crypted_password = Account::Authenticator.encrypt(account.password, account.salt)
   end
 end

@@ -1,4 +1,4 @@
-class Account::Authorize
+class Account::Access
   DEFAULT = 0
   ADMIN = 10
   DISABLED = -10
@@ -6,7 +6,7 @@ class Account::Authorize
 
   def initialize(account)
     @account = account
-    @level = @account.level
+    @level = @account.try(:level)
   end
 
   def admin?

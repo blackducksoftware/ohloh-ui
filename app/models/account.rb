@@ -4,11 +4,6 @@ class Account < ActiveRecord::Base
   attr_accessor :password, :current_password, :validate_current_password, :twitter_account, :invite_code,
                 :no_email, :password_confirmation, :about_raw, :email_confirmation
 
-  DEFAULT_LEVEL = 0
-  ADMIN_LEVEL   = 10
-  DISABLE_LEVEL = -10
-  SPAMMER_LEVEL = -20
-
   oh_delegators :stack_core, :project_core, :position_core
   strip_attributes :name, :email, :login, :invite_code, :twitter_account
 
@@ -49,18 +44,6 @@ class Account < ActiveRecord::Base
   after_destroy Account::Hooks.new
   after_save Account::Hooks.new
 
-  def admin?
-    level == ADMIN_LEVEL
-  end
-
-  def disabled?
-    level < DEFAULT_LEVEL
-  end
-
-  def activated?
-    activated_at != nil
-  end
-
   def about_raw
     markup.raw
   end
@@ -83,7 +66,7 @@ class Account < ActiveRecord::Base
                                          email: 'anon@openhub.net', email_confirmation: 'anon@openhub.net',
                                          password: 'mailpass', password_confirmation: 'mailpass',
                                          no_email: true)
-      Account::Authorize.new(anonymous_account).activate!(nil)
+      Account::Access.new(anonymous_account).activate!(nil)
       anonymous_account
     end
   end
