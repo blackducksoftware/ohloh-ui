@@ -26,7 +26,7 @@ class Account::HooksTest < ActiveSupport::TestCase
   class BeforeDestroy < Account::HooksTest
     test 'should destroy dependencies when marked as spam' do
       account = accounts(:user)
-      Account::Authorize.any_instance.stubs(:spam?).returns(true)
+      Account::Access.any_instance.stubs(:spam?).returns(true)
       account.topics.update_all(posts_count: 0)
       assert_equal 3, account.topics.count
       assert_not_nil account.person
@@ -40,7 +40,7 @@ class Account::HooksTest < ActiveSupport::TestCase
 
     test 'should rollback when destroy dependencies raises an exception' do
       account = accounts(:user)
-      Account::Authorize.any_instance.stubs(:spam?).returns(true)
+      Account::Access.any_instance.stubs(:spam?).returns(true)
       Account.any_instance.stubs(:api_keys).raises(ActiveRecord::Rollback)
       account.topics.update_all(posts_count: 0)
       assert_equal 3, account.topics.count
@@ -80,7 +80,7 @@ class Account::HooksTest < ActiveSupport::TestCase
     end
 
     test 'must create person for non spam account' do
-      account = build(:account, level: Account::DEFAULT_LEVEL)
+      account = build(:account, level: Account::Access::DEFAULT)
 
       assert_difference('Person.count', 1) do
         account.save
@@ -88,7 +88,7 @@ class Account::HooksTest < ActiveSupport::TestCase
     end
 
     test 'must not create person for spam account' do
-      account = build(:account, level: Account::SPAMMER_LEVEL)
+      account = build(:account, level: Account::Access::SPAM)
 
       assert_no_difference('Person.count') do
         account.save
@@ -98,7 +98,7 @@ class Account::HooksTest < ActiveSupport::TestCase
     test 'should rollback when notification raises an error' do
       skip('TODO: AccountNotifier')
 
-      account = build(:account, level: Account::DEFAULT_LEVEL)
+      account = build(:account, level: Account::Access::DEFAULT)
       AccountNotifier.stubs(:deliver_signup_notification)
         .raises(Net::SMTPSyntaxError.new('Bad recipient address syntax'))
 
