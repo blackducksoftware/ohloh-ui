@@ -4,7 +4,7 @@ class Account < ActiveRecord::Base
   attr_accessor :password, :current_password, :validate_current_password, :twitter_account, :invite_code,
                 :password_confirmation, :about_raw, :email_confirmation
 
-  oh_delegators :stack_core, :project_core, :position_core
+  oh_delegators :stack_core, :project_core, :position_core, :claim_core
   strip_attributes :name, :email, :login, :invite_code, :twitter_account
 
   validates :email, presence: :true, length: { in: 3..100 }, uniqueness: { case_sensitive: false },
