@@ -6,6 +6,7 @@ class Account::CommitCore
   end
 
   # TODO: Replaces most_and_recent_commits_data(account_ids)
+  # rubocop:disable Metrics/AbcSize, Style/MultilineBlockChain
   def most_and_recent_data
     return {} if @account_ids.blank?
     stats = Account.select do
@@ -13,7 +14,7 @@ class Account::CommitCore
                projects.name, projects.url_name, max(name_facts.commits).as(max_commits),
                max(name_facts.last_checkin).as(last_checkin)]
             end
-            .facts_joins
+            .with_facts
             .where { accounts.id.in(my { account_ids }) }
             .group { [accounts.id, projects.id, projects.name, projects.url_name] }
     stats.group_by { |hsh| hsh['account_id'].to_i }

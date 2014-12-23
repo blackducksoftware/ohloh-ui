@@ -62,6 +62,13 @@ class Account < ActiveRecord::Base
       .order { coalesce(name_facts.thirty_day_commits, 0).desc }.limit(10)
   }
 
+  scope :with_facts, lambda {
+    joins { positions.project }
+      .joins { ['INNER JOIN name_facts ON name_facts.name_id = positions.name_id'] }
+      .where { positions.name_id.not_eq(nil) }
+      .where { name_facts.analysis_id.eq(projects.best_analysis_id) & name_facts.type.eq('ContributorFact') }
+  }
+
   def about_raw
     markup.raw
   end
@@ -76,18 +83,11 @@ class Account < ActiveRecord::Base
 
   class << self
     def fetch_by_login_or_email(user_name)
-      Account.where { login.eq(user_name) | email.eq(user_name) }.take
+      where { login.eq(user_name) | email.eq(user_name) }.take
     end
 
     def find_or_create_anonymous_account
-      Account.find_by(login: AnonymousAccount::LOGIN) || AnonymousAccount.create!
-    end
-
-    def facts_joins
-      joins { positions.project }
-        .joins { ['INNER JOIN name_facts ON name_facts.name_id = positions.name_id'] }
-        .where { positions.name_id.not_eq(nil) }
-        .where { name_facts.analysis_id.eq(projects.best_analysis_id) & name_facts.type.eq('ContributorFact') }
+      find_by(login: AnonymousAccount::LOGIN) || AnonymousAccount.create!
     end
   end
 end

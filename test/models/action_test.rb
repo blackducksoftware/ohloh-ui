@@ -67,6 +67,7 @@ class ActionTest < ActiveSupport::TestCase
     end
   end
 
+  # rubocop:disable Metrics/AbcSize
   def test_run_with_newly_activated_account
     action = Action.create!(account: admin_account, _action: "stack_#{linux_project.id}", status: 'after_activation')
     action.run

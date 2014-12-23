@@ -167,9 +167,10 @@ class AccountTest < ActiveSupport::TestCase
     project = projects(:linux)
     project.update_attributes! best_analysis_id: analysis.id
 
-    assert_equal 2, Account.facts_joins.size
-    assert_equal 'admin Allen', Account.facts_joins.first.name
-    assert_equal 'user Luckey', Account.facts_joins.last.name
+    accounts_with_facts = Account.with_facts
+    assert_equal 2, accounts_with_facts.size
+    assert_equal 'admin Allen', accounts_with_facts.first.name
+    assert_equal 'user Luckey', accounts_with_facts.last.name
   end
 
   class LoginValidationsTest < AccountTest

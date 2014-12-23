@@ -27,6 +27,7 @@ class Account::OrganizationCore
 
   private
 
+  # rubocop:disable Metrics/AbcSize
   def org_contributions_for
     Account.select { distinct(positions.project_id) }
       .joins { positions.project }

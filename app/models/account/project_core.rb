@@ -10,6 +10,7 @@ class Account::ProjectCore < OhDelegator::Base
   end
 
   # TODO: Replace i_use_these with this
+  # rubocop:disable Metrics/AbcSize
   def used
     @used_projects ||=
       Project.active.joins { stacks }
