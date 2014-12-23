@@ -11,6 +11,8 @@ class Account < ActiveRecord::Base
   has_many :actions
   has_one :person
 
+  scope :from_param, ->(param) { where(arel_table[:login].eq(param).or(arel_table[:id].eq(param))) }
+
   fix_string_column_encodings!
 
   def admin?
@@ -40,7 +42,7 @@ class Account < ActiveRecord::Base
 
   class << self
     def hamster
-      find_by_login('ohloh_slave')
+      from_param('ohloh_slave').first!
     end
   end
 end

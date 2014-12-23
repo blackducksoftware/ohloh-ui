@@ -1,6 +1,4 @@
 class ManagersController < ApplicationController
-  include ERB::Util
-
   before_action :session_required, except: :index
   before_action :find_parent
   before_action :find_manages, only: :index
@@ -39,7 +37,7 @@ class ManagersController < ApplicationController
     return render_unauthorized unless current_user_can_manage?
     if @manage
       @manage.approve!(current_user)
-      flash[:success] = t '.notice', name: html_escape(@manage.account.name)
+      flash[:success] = t '.notice', name: ERB::Util.html_escape(@manage.account.name)
     end
     redirect_to_index
   end
@@ -48,7 +46,8 @@ class ManagersController < ApplicationController
     return render_unauthorized unless current_user_can_manage_or_self?
     if @manage
       @manage.destroy_by!(current_user)
-      flash[:notice] = t '.notice', name: html_escape(@manage.account.name), target: html_escape(@parent.name)
+      flash[:notice] = t '.notice', name: ERB::Util.html_escape(@manage.account.name),
+                                    target: ERB::Util.html_escape(@parent.name)
     end
     redirect_to_index
   end
@@ -77,16 +76,16 @@ class ManagersController < ApplicationController
 
   def find_manage
     account_name = params[:id] || current_user.login
-    @manage = Manage.not_denied.find_by_account_id(Account.find_by_login!(account_name).id)
+    @manage = Manage.not_denied.for_account(Account.from_param(account_name).first!).first
   rescue ActiveRecord::RecordNotFound
     raise ParamRecordNotFound
   end
 
   def find_parent
     @parent = if params[:project_id]
-                Project.find_by_url_name!(params[:project_id])
+                Project.from_param(params[:project_id]).first!
               else
-                Organization.find_by_url_name!(params[:organization_id])
+                Organization.from_param(params[:organization_id]).first!
               end
   rescue ActiveRecord::RecordNotFound
     raise ParamRecordNotFound

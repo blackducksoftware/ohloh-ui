@@ -15,6 +15,7 @@ class Manage < ActiveRecord::Base
   validate :enforce_maximum_management
 
   scope :for_target, ->(target) { where(target_id: target.id) }
+  scope :for_account, ->(account) { where(account_id: account.id) }
   scope :active, -> { where.not(approved_by: nil).where(deleted_at: nil) }
   scope :pending, -> { where(approved_by: nil).where(deleted_by: nil) }
   scope :not_denied, -> { where(deleted_by: nil) }

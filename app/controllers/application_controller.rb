@@ -57,7 +57,7 @@ class ApplicationController < ActionController::Base
   def current_project
     begin
       param = params[:project_id].presence || params[:id]
-      @current_project ||= Project.find_by_url_name!(param)
+      @current_project ||= Project.from_param(param).first!
     rescue ActiveRecord::RecordNotFound
       raise ParamRecordNotFound
     end
@@ -111,10 +111,10 @@ class ApplicationController < ActionController::Base
   private
 
   def find_user_in_session
-    Account.find_by_id(session[:account_id])
+    Account.where(id: session[:account_id]).first
   end
 
   def find_remembered_user
-    cookies[:auth_token] ? Account.find_by_remember_token(cookies[:auth_token]) : nil
+    cookies[:auth_token] ? Account.where(remember_token: cookies[:auth_token]).first : nil
   end
 end
