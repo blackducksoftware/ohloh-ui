@@ -1,0 +1,18 @@
+#navbar-inner
+  #nav-top-bar
+    %ul.new_main_menu
+      %li.menu_item.projects
+        %a{href: root_path}= t :projects
+      %li.menu_item.people
+        %a{href: root_path}= t :people
+      %li.menu_item.organizations
+        %a{href: root_path}= t :organizations
+      %li.menu_item.tools
+        %a{href: root_path}= t :tools
+      %li.menu_item.code
+        %a{href: 'http://code.openhub.net', target: '_blank'}
+          = t :code
+          %i.icon-share
+      %li.menu_item.blog
+        %a{href: 'http://blog.openhub.net', target: '_blank'}= t :blog
+      %li= # render 'shared/search.html.haml', search_text: @q

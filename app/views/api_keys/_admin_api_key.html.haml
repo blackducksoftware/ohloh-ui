@@ -1,0 +1,47 @@
+.row
+  .col-md-10
+    .well
+      %table
+        %tbody
+          %tr
+            %td
+              - edit_account_api_key_url = edit_account_api_key_path(api_key.account, api_key)
+              %a.btn.btn-mini.float_right.api_key_edit{href: edit_account_api_key_url}
+                %i.icon-pencil= t :edit
+              %h4.nomargin= api_key.name || t('api_keys.untitled_application')
+              %p!= link_to_if !api_key.url.blank?, api_key.url, api_key.url
+              %p.soft= api_key.description
+
+              %p.nomargin= t('api_keys.api_key_label', key: html_escape(api_key.key)).html_safe
+              - secret = api_key.secret ? html_escape(api_key.secret) : t('api_keys.none')
+              %p= t('api_keys.oath_secret', secret: secret).html_safe
+
+              %table.table.unstyled
+                %tbody
+                  %tr
+                    %td.col-md-3
+                      %h4.nomargin= t 'api_keys.all_time'
+                      %p!= t 'api_keys.request_all_time', total: api_key.total_count.to_i
+                      %p= t 'api_keys.created_ago', ago: time_ago_in_words(api_key.created_at)
+
+                    %td.col-md-3
+                      %h4.nomargin= t 'api_keys.today'
+                      %p!= t 'api_keys.request_so_far_today', so_far: api_key.daily_count.to_i
+                      - num_per_day = number_with_delimiter(api_key.daily_limit.to_i)
+                      %p!= t 'api_keys.limited_to_per_day', number_per_day: num_per_day
+                      %p
+                        - if api_key.last_access_at
+                          - time_ago = time_ago_in_words(api_key.last_access_at)
+                          = t 'api_keys.last_accessed_at', ago: time_ago
+                        - else
+                          = t 'api_keys.hasnt_been_used_yet'
+                    %td.col-md-2
+                      %h4.nomargin= t 'api_keys.status'
+                      - case api_key.status
+                      - when ApiKey::STATUS_OK
+                        != t 'api_keys.key_is_active'
+                      - when ApiKey::STATUS_LIMIT_EXCEEDED
+                        != t 'api_keys.key_is_over_limit'
+                      - else
+                        != t 'api_keys.key_is_disabled'
+      .clear

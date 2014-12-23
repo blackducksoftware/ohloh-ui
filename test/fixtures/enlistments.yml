@@ -1,0 +1,8 @@
+linux:
+  id: 1
+  project_id: 1
+  repository_id: 1
+adium:
+  id: 2
+  project_id: 2
+  repository_id: 2

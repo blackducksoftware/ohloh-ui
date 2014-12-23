@@ -1,23 +1,200 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
-
 en:
-  hello: "Hello world"
+  about: 'About'
+  save_changes: 'Save Changes'
+  cancel: 'Cancel'
+  edit: 'Edit'
+  new: 'New'
+  must_accept_terms: 'You must accept the terms of use.'
+  four_oh_four: 'Not Found'
+  must_be_logged_in: 'You must be signed in to perform that action.'
+  not_authorized: 'You do not have permission to perform that action.'
+  search_filet_label: 'Search / Filter on:'
+  no_matches: 'No matches with this filter.'
+  sort_by: 'Sort by:'
+  settings: 'Settings'
+  follow: 'Follow'
+  profile: 'Profile'
+  sign_in: 'Sign In'
+  logout: 'Logout'
+  join_now: 'Join Now'
+  api_keys_title: 'API Keys'
+  projects: 'Projects'
+  people: 'People'
+  organizations: 'Organizations'
+  tools: 'Tools'
+  code: 'Code'
+  blog: 'Blog'
+  forums: 'Forums'
+  terms: 'Terms'
+  privacy: 'Privacy'
+  managers_link_name: 'Managers'
+  learn_more: "Learn More&hellip;"
+  project_page_title: "The %{project_name} Open Source Project on Open Hub"
+  expander:
+    more: "[More]"
+    less: "[Less]"
+  manage:
+    maximum_exceeded: "You may manage up to %{max_projects} projects at a time. Delete one before adding another."
+    already_manager: ": You are already managing this or have a pending application to become one."
+  domain_blacklists:
+    index:
+      notice: 'No Domains Blacklisted'
+    create:
+      success: 'Domain successfully added to blacklist'
+      error: 'Unable to add domain to blacklist'
+    update:
+      success: 'Blacklisted Domain successfully updated'
+      error: 'Unable to update blacklisted domain'
+    destroy:
+      success: 'Blacklisted Domain successfully deleted'
+  api_keys:
+    permission_denied: 'Only the API Key owner has permission to do this.'
+    download_as_csv: 'Download as CSV'
+    limit_reached: 'There is a limit of 10 API keys per account. Contact Open Hub support if you have special needs.'
+    untitled_application: '(Untitled Application)'
+    api_key_label: 'API Key: <strong>%{key}</strong>'
+    api_key_label_2: '<strong>API Key</strong><code>%{key}</code>'
+    oath_secret: 'OAuth Consumer Secret: <code>%{secret}</code>'
+    oath_secret_2: '<strong>OAuth Secret</strong><code>%{secret}</code>'
+    none: 'None'
+    all_time: 'All Time'
+    request_all_time: '<strong>%{total}</strong> all-time requests'
+    created_ago: 'Created %{ago} ago'
+    home_page_url: 'Home Page URL'
+    today: 'Today'
+    request_so_far_today: '<strong>%{so_far}</strong> requests today'
+    limited_to_per_day: 'limited to <strong>%{number_per_day}</strong> requests a day'
+    last_accessed_at: 'Last accessed %{ago} ago'
+    hasnt_been_used_yet: "Hasn't been used yet"
+    status: 'Status'
+    status_active: 'Active'
+    status_limit_exceeded: 'Limit Exceeded'
+    status_disabled: 'Disabled'
+    can_be_used: 'can be used'
+    cant_use_now: 'cannot be used temporarily'
+    cant_use_ever: 'cannot be used'
+    key_is_active: 'This API Key is currently <span class="label-info">Active</span> and can be used'
+    key_is_over_limit: 'This API Key is currently <span class="label-info">Limit Exceeded</span> and cannot be used'
+    key_is_disabled: 'This API Key is currently <span class="label-info">Disabled</span> and cannot be used'
+    request_new: 'Request New API Key'
+    terms_link: 'Open Hub Terms of Use'
+    terms_2_link: 'API Agreement'
+    getting_started_link: 'documentation'
+    contacts_link: 'contact form'
+    help_1: 'API keys are associated with your account, and a particular application or usage. Please refer to the %{terms_link} and %{terms_2_link} for more information.'
+    help_2: 'On this page, you can request new API keys, or you can edit or remove existing API keys. You can also see your usage statistics for the API keys you have been granted.'
+    help_3: 'For more information on the Open Hub API, please see the %{getting_started_link}.'
+    help_4: 'New API keys will be granted with the default daily request limit of 1000 requests.'
+    help_5: 'You must check the box that you have read and understand the Terms of Use and API Agreement in order to make your request.'
+    help_6: 'Requests will be granted provisionally - you will gain immediate access to your API key, and Open Hub admins will review your request soon after your request - only if there is an issue will you be contacted.'
+    help_7: 'To request a different Daily Request Limit, please use our %{contacts_link}.'
+    edit_api_key: 'Edit API Key'
+    requests_all_time_view: '<span>%{count}</span><small class="soft">requests all-time</small>'
+    requests_daily_view: '<span>%{count}</span><small class="soft">requests today</small>'
+    requests_daily_limit_view: '<span><small style="color:#000;">limited to</small><span class="inline">%{count}</span></span><small class="soft">requests a day</small>'
+    index:
+      sort_by_most_recent_request: 'Most Recent Request'
+      sort_by_most_requests_today: 'Requests Today'
+      sort_by_most_requests: 'All-Time Requests'
+      sort_by_account_name: 'Account'
+      sort_by_newest: 'Newest Keys'
+      sort_by_oldest: 'Oldest Keys'
+    new:
+      page_title: 'Open Hub API Key Sign Up'
+      verb: 'New'
+    create:
+      success: 'Welcome to the Open Hub API program! Your new API key is shown below.'
+    edit:
+      page_title: 'Edit Open Hub API Key'
+      verb: 'Edit'
+    update:
+      success: 'API Key updated.'
+    destroy:
+      success: 'Api Key deleted.'
+      error: 'Unable to delete Api Key.'
+    form:
+      application_name: 'Application Name'
+      home_page_url: 'Home Page URL'
+      home_page_url_info: 'An optional URL to a web page with information about this application.'
+      description: 'Description'
+      description_info: 'Enter a brief introductory paragraph about your application'
+      daily_request_limit: 'Daily Request Limit'
+      daily_request_limit_admin: 'How many requests can this API Key be used on per day?'
+      daily_request_limit_user: 'The default daily request limit is %{default_daily_limit}.'
+      agree_to_terms: 'I agree to use API keys associated with my account according to the Open Hub site %{terms_link} and %{terms_2_link}'
+      delete: 'Remove API Key'
+      delete_confirm: 'Delete this API key forever? Warning: existing applications that use this key will cease to function.'
+  deleted_account:
+    reason_1: 'I have not been using the site'
+    reason_2: 'I do not need the capabilities that the site provides'
+    reason_3: 'I am concerned about potential privacy issues'
+    reason_4: 'I do not want my FOSS activity rolled up and visible to the public'
+    reason_5: 'I am no longer involved in FOSS activities'
+    reason_6: 'Other (Please feel free to comment more on your reasons):'
+  permissions:
+    permissions: 'Permissions'
+    not_manager: "You can view, but not change this data. Only managers may change this data."
+    must_log_in: "You must be logged in to change this data. If you don't have an account, Please join."
+    show:
+      page_title: "Permissions Page"
+      about_permissions_1: "About"
+      about_permissions_2: "Permissions"
+      settings_may_be_changed_by: "Settings may be changed by:"
+      everyone: "Everyone"
+      anyone_can_edit_settings: "Anyone can edit settings for this project"
+      managers_only: "Managers Only"
+      only_an_approved_manager: "Only an approved %{linky} can change settings for this project"
+      manager: "manager"
+      help_1: "Project settings by default can be modified by anyone with an Open Hub account."
+      help_2: "To make a project's settings editable only by the project's managers, select the \"Managers Only\" option."
+      help_3: "Projects with no managers cannot be set to \"Managers Only\", so if you wish to limit edits, please be sure to add at least one manager to a project."
+    update:
+      success: "Permissions updated."
+      error: "There was a problem saving!"
+  logos:
+    title: 'Logos'
+    invalid_content_type: 'Open Hub accepts GIF, JPG, and PNG formats for logo images.'
+    invalid_url: 'Invalid URL / Image not found'
+    invalid_file_size: 'File size is too big (must be less than %{max})'
+    new:
+      meta_title: 'Settings: New Logo Page'
+      heading: ': Logo'
+      page_title: 'New Logo Page'
+    about_logos:
+      title: 'Logos'
+      first: "Open Hub will display the project logo on pages with project data, when users stack a project, and in reports highlighting contributor's work on projects."
+      second: 'For best results, a project logo should be a square image at least 64px by 64px. Open Hub will resize an image to this size for display.'
+      third: 'Open Hub accepts GIF, JPG, and PNG formats for logo images.'
+      fourth: 'Please be certain you have permission and rights to upload a logo image before submitting it to Open Hub.'
+      fifth: "Don't have a logo for the project? Open Hub has several default logos you can choose from."
+    about_organization_logos:
+      title: 'Logos'
+      first: "Don't have a logo for the project? Open Hub has several default logos you can choose from."
+      second: 'For best results, a Organization logo should be a square image at least 64px by 64px. Open Hub will resize an image to this size for display.'
+      third: 'Open Hub accepts GIF, JPG, and PNG formats for logo images.'
+      fourth: 'Please be certain you have permission and rights to upload a logo image before submitting it to Open Hub.'
+    fields:
+      title: 'Current Logo'
+      invalid_size: 'Please upload a file less than %{max} in size'
+      placeholder: 'Logo upload by URL'
+      message: 'Sorry %{login}, only managers can upload new logos.'
+      head:
+        first: 'Upload a custom logo'
+        second: 'Upload a custom logo (locked)'
+        third: 'Use a default icon'
+      body:
+        first: 'We automatically resize images to 64x64px. For best results, start with a square image at least 64x64 pixels.'
+        second: "We'd rather see custom icons for everything, but if there isn't one, choose from one below. If you want to suggest a new one (or even better, submit a new one), check"
+        third: 'for details.'
+      button:
+        save: 'Save Logo'
+      link:
+        forum: 'this forum topic'
+        blank: 'Reset to Blank Logo'
+    create:
+      permisson_denied: 'You are not authorized to edit this logo.'
+      error: 'Sorry, there was a problem updating the logo'
+      success: 'Logo updated'
+    destroy:
+      error: 'Sorry, there was a problem deleting the logo'
+      success: 'Logo was reset to blank'

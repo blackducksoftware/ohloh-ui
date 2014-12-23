@@ -1,0 +1,2 @@
+class ParamRecordNotFound < StandardError
+end

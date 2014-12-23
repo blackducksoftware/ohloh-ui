@@ -1,0 +1,31 @@
+linux:
+  id: 1
+  name: Linux
+  url_name: linux
+  organization_id: 1
+  name_at_forge: linux
+  description: a useful operating system.
+  created_at: "Sat Jan 01 00:00:00 UTC 2005"
+  updated_at: "Sat Jan 01 00:00:00 UTC 2005"
+  logo_id: 1
+adium:
+  id: 2
+  name: Adium
+  url_name: adium
+  organization_id: 2
+  deleted: true
+  created_at: "Sat Jan 01 00:00:00 UTC 2005"
+  updated_at: "Sat Jan 01 00:00:00 UTC 2005"
+ohloh:
+  id: 3
+  name: Ohloh
+  description: a neat little ditty
+  created_at: "Sat Jan 01 00:00:00 UTC 2005"
+  updated_at: "Sat Jan 01 00:00:00 UTC 2005"
+google:
+  id: 4
+  name: Google
+  organization_id: 2
+  description: surprising useful indexer
+  created_at: "Sat Jan 01 00:00:00 UTC 2005"
+  updated_at: "Sat Jan 01 00:00:00 UTC 2005"

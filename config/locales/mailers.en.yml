@@ -1,0 +1,33 @@
+en:
+  mailers:
+    greeting: "Greetings from Open Hub,"
+    signature: "- The Open Hub Team"
+  manage_mailer:
+    privacy_to_managers: "Privacy is important to Black Duck. We won't share your email address and we're not going to send you follow-up email. Manager information is important though, so we'll continue to update you about manager changes."
+    privacy_to_destroyer: "Privacy is important to Black Duck. We do not provide the email address of Open Hub users to third parties.  So we cannot share %{destroyer}'s email address. Similarly, we won't provide your email address to them or any other third party."
+    rejection:
+      subject: "Your application to manage %{target} was denied."
+      body: "Your application to manage %{link1} was denied by %{link2}."
+    automatic_approval:
+      subject: "Your application to manage %{target} was automatically approved."
+      body: "Your application to manage %{link} was approved."
+    withdrawn:
+      subject: "%{target} manager update: %{name} withdrew his/her application."
+      body: "%{name} withdrew his or her application to manage %{target}."
+    approved:
+      subject: "%{target} manager update: %{approver} approved %{name}'s application."
+      body: "%{approver} approved %{name}'s application to become a manager for %{target}."
+    applied:
+      subject: "%{target} manager update: %{name} applied to manage %{target}."
+      body: "%{link1} applied to manage %{link2}. You are currently a manager of this %{target_type} and can %{link3}."
+      action: "accept or reject the application"
+    denied:
+      subject: "%{target} manager update: %{destroyer} denied %{name}'s application."
+      body: "%{destroyer} denied %{name}'s application to become a manager for %{target}."
+      privacy: "Privacy is important to Open Hub. We do not provide the email address of Open Hub users to third parties. So we cannot share %{destroyer}'s or %{name}'s email address. Similarly, we won't provide your email address to them or any other third party."
+    removed:
+      subject: "%{target} manager update: %{destroyer} removed %{name} from managers."
+      body: "%{destroyer} removed %{name}'s from the list of project managers."
+    removal:
+      subject: "%{target} manager update: %{destroyer} removed you from the managers of this %{target_type}."
+      body: "Your position as manager of %{link1} was deleted by %{link2}."

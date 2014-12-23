@@ -1,12 +1,70 @@
 Rails.application.routes.draw do
-  get 'coverage' => 'coverage#index'
+  root 'home#index'
+  resources :sessions, only: [:new, :create] do
+    collection do
+      delete :destroy
+    end
+  end
+
+  resources :password_reset, only: [:new, :create] do
+    collection do
+      get :confirm
+      post :reset
+    end
+  end
+  resources :activation_resends, only: [:new, :create]
+
+  resources :api_keys, only: :index
+  resources :domain_blacklists, except: :show
+
+  resources :accounts do
+    resources :api_keys, constraints: { format: :html }, except: :show
+    member do
+      get :settings
+      get 'edit_privacy'   => 'privacy#edit',   as: :edit_account_privacy
+      put 'update_privacy' => 'privacy#update', as: :account_privacy
+    end
+  end
+
+  resources :projects, path: :p, only: [:show] do
+    member do
+      get :settings
+      get 'permissions' => 'permissions#show',   as: :permissions
+      put 'permissions' => 'permissions#update', as: :update_permissions
+    end
+    resource :logos, only: [:new, :create, :destroy]
+    resources :managers, only: [:index, :new, :create, :edit, :update] do
+      member do
+        post :approve
+        post :reject
+      end
+    end
+    resources :reviews do
+      resources :helpfuls, only: :create
+    end
+  end
+
+  resources :organizations, path: :orgs, only: [:show] do
+    member do
+      get :settings
+    end
+    resource :logos, only: [:new, :create, :destroy]
+    resources :managers, only: [:index, :new, :create, :edit, :update] do
+      member do
+        post :approve
+        post :reject
+      end
+    end
+  end
+
+  resources :projects
+  resources :stacks, except: [:new, :edit]
 
   # The priority is based upon order of creation: first created -> highest
   # priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

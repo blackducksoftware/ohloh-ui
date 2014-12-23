@@ -1,0 +1,5 @@
+%h1 Edit Domain Blacklist
+= form_for @domain_blacklist do |f|
+  = f.label :domain, 'Blacklisted Domain'
+  = f.text_field :domain
+  = submit_tag 'Update Domain'
