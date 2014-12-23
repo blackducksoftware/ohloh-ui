@@ -8,17 +8,17 @@ class Account::OrganizationCoreTest < ActiveSupport::TestCase
     @account_org = Account::OrganizationCore.new(@account.id)
   end
 
-  test "organizations affiliated with projects I contribute to" do
+  test 'organizations affiliated with projects I contribute to' do
     orgs_for_my_positions = @account_org.orgs_for_my_positions
 
     assert_equal 1, orgs_for_my_positions.size
     assert_equal Organization, orgs_for_my_positions.first.class
-    assert_equal "Linux Foundations", orgs_for_my_positions.first.name
+    assert_equal 'Linux Foundations', orgs_for_my_positions.first.name
   end
 
-  test "affiliations for the projects I contributed to" do
+  test 'affiliations for the projects I contributed to' do
     project = @account.positions.first
-    project.affiliation = Organization.where{id.eq(1)}.first
+    project.affiliation = Organization.where { id.eq(1) }.first
     project.save
 
     affiliations_for_my_positions = @account_org.affiliations_for_my_positions

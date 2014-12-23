@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class AccountTest < ActiveSupport::TestCase
-  fixtures :accounts
+  fixtures :accounts, :vitas, :name_facts
 
   test 'sent_kudos' do
     Kudo.delete_all
@@ -123,6 +123,34 @@ class AccountTest < ActiveSupport::TestCase
     assert_not account.valid?
     assert_includes account.errors, :affiliation_type
     assert_equal ['is invalid'], account.errors.messages[:affiliation_type]
+  end
+
+  test 'should search by login and sort by position and char length' do
+    create(:account, login: 'test')
+    create(:account, login: 'account_test', email: 'test2@openhub.net', email_confirmation: 'test2@openhub.net')
+    create(:account, login: 'tester', email: 'test3@openhub.net', email_confirmation: 'test3@openhub.net')
+    create(:account, login: 'unittest', email: 'test4@openhub.net', email_confirmation: 'test4@openhub.net')
+    create(:account, login: 'unittest1', email: 'test5@openhub.net', email_confirmation: 'test5@openhub.net')
+    account_search = Account.simple_search('test')
+    assert_equal 5, account_search.size
+    assert_equal 'test', account_search.first.login
+    assert_equal 'tester', account_search.second.login
+    assert_equal 'unittest', account_search.third.login
+    assert_equal 'unittest1', account_search.fourth.login
+    assert_equal 'account_test', account_search.fifth.login
+  end
+
+  test 'should return recently active accounts' do
+    name_facts(:vitafact).update_attributes(last_checkin: Time.now)
+    recently_active = Account.recently_active
+    assert_not_nil recently_active
+    assert_equal 1, recently_active.count
+  end
+
+  test 'should not return non recently active accounts' do
+    recently_active = Account.recently_active
+    assert_empty recently_active
+    assert_equal 0, recently_active.count
   end
 
   test 'it should error out when affiliation_type is specified and org name is blank' do

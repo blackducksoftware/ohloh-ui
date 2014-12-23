@@ -29,6 +29,7 @@ user:
   activated_at: <%= 1.days.ago.utc.to_s :db %>
   level: <%= Account::Access::DEFAULT %>
   email_opportunities_visited: <%= 1.days.ago.utc.to_s :db %>
+  best_vita_id: 1
 joe:
   id: 3
   login: joe

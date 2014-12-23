@@ -3,7 +3,7 @@ require_relative '../../test_helper'
 class StackCoreTest < ActiveSupport::TestCase
   fixtures :accounts, :projects
 
-  test "default" do
+  test 'default' do
     account = accounts(:admin)
 
     default_stack = account.stack_core.default

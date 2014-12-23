@@ -35,7 +35,7 @@ class Account < ActiveRecord::Base
   has_many :posts
   has_many :invites, class_name: 'Invite', foreign_key: 'invitor_id'
   has_many :vitas
-  belongs_to :best_vita, :foreign_key => 'best_vita_id', :class_name => 'Vita'
+  belongs_to :best_vita, foreign_key: 'best_vita_id', class_name: 'Vita'
 
   before_validation Account::Hooks.new
   before_create Account::Encrypter.new
@@ -50,8 +50,16 @@ class Account < ActiveRecord::Base
     name.like("%#{query}%") | login.like("%#{query}%")
   end
 
-  scope :sort_by_relevant, lambda {|query|
-    order("COALESCE( NULLIF( POSITION('#{query}' in lower(login)), 0), 100), CHAR_LENGTH(login)")
+  scope :simple_search, lambda { |query|
+    where { sift :name_or_login_like, query }
+      .order("COALESCE( NULLIF( POSITION('#{query}' in lower(login)), 0), 100), CHAR_LENGTH(login)")
+      .limit(10)
+  }
+
+  scope :recently_active, lambda {
+    joins { [vitas.vita_fact, best_vita] }
+      .where { (name_facts.last_checkin > 1.month.ago) & (best_vita_id.not_eq(nil)) }
+      .order { coalesce(name_facts.thirty_day_commits, 0).desc }.limit(10)
   }
 
   def about_raw
@@ -69,17 +77,6 @@ class Account < ActiveRecord::Base
   class << self
     def fetch_by_login_or_email(user_name)
       Account.where { login.eq(user_name) | email.eq(user_name) }.take
-    end
-
-    def simple_search(query = '')
-      where { sift :name_or_login_like, query }.sort_by_relevant(query).limit(10)
-    end
-
-    def recently_active
-      joins{[vitas.vita_fact, best_vita]}
-        .where{name_facts.last_checkin < 1.month.ago}
-        .order{coalesce(name_facts.thirty_day_commits,0).desc}
-        .limit(10)
     end
 
     def find_or_create_anonymous_account

@@ -34,9 +34,8 @@ class Account::Access
   end
 
   def activate!(activation_code)
-    if !activated? && activation_code.eql?(@account.activation_code)
-      @account.update_attributes!(activated_at: Time.now.utc, activation_code: nil)
-    end
+    return unless !activated? && activation_code.eql?(@account.activation_code)
+    @account.update_attributes!(activated_at: Time.now.utc, activation_code: nil)
   end
 
   def disable!

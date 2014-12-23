@@ -3,10 +3,10 @@ require_relative '../../test_helper'
 class ProjectCoreTest < ActiveSupport::TestCase
   fixtures :accounts, :projects
 
-  test "used" do
+  test 'used' do
     account = accounts(:admin)
     stack = Stack.new
-    project = Project.where{id.eq(1)}.first
+    project = Project.where { id.eq(1) }.first
 
     stack.projects << project
     account.stacks << stack
@@ -17,7 +17,7 @@ class ProjectCoreTest < ActiveSupport::TestCase
     assert_equal [project.logo_id], account_project_core.used.last.keys
   end
 
-  test "stacked_count" do
+  test 'stacked_count' do
     account = accounts(:admin)
 
     stack = Stack.new
@@ -29,7 +29,7 @@ class ProjectCoreTest < ActiveSupport::TestCase
     assert_equal 1, account_project_core.stacked_count
   end
 
-  test "stacked?" do
+  test 'stacked?' do
     account = accounts(:admin)
 
     Stack.any_instance.stubs(:stacked_project?).with(projects(:linux).id).returns(true)

@@ -52,7 +52,7 @@ class Account::AccessTest < ActiveSupport::TestCase
     account = accounts(:user)
     refute Account::Access.new(account).spam?
     Account.transaction do
-      Account::Access.new(account).spam! rescue ''
+      Account::Access.new(account).spam! # rescue ''
     end
     assert Account::Access.new(account).spam?
   end
