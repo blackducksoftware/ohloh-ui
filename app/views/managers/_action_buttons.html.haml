@@ -1,0 +1,14 @@
+- if current_user_can_manage? || current_user == account
+  - unless manage.message.blank?
+    %p.soft.nomargin #{t('.message_label')} #{expander(html_escape(manage.message), 20, 100)}
+  %p.nomargin
+    - if current_user == account
+      = edit_manages_button(@parent, account)
+      - if manage.pending?
+        = withdraw_manages_button(@parent, account, name, target)
+    - if current_user_can_manage?
+      - if manage.pending?
+        = approve_manages_button(@parent, account, name, target)
+        = reject_manages_button(@parent, account, name, target)
+      - else
+        = remove_manages_button(@parent, account, name, target)

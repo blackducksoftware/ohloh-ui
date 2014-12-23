@@ -6,6 +6,8 @@ class Project < ActiveRecord::Base
   has_many :managers, through: :manages, source: :account
   has_many :reviews
 
+  scope :from_param, ->(param) { where(url_name: param) }
+
   def to_param
     url_name
   end
