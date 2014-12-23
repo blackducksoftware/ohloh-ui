@@ -19,4 +19,9 @@ class Project < ActiveRecord::Base
   def active_managers
     Manage.for_project(self).active.to_a
   end
+
+  # TODO: Replace account.review(project) with project.first_review_for(account)
+  def first_review_for(account)
+    Review.where(account_id: account.id, project_id: id).first
+  end
 end
