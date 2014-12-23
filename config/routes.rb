@@ -39,6 +39,9 @@ Rails.application.routes.draw do
         post :reject
       end
     end
+    resources :reviews do
+      resources :helpfuls, only: :create
+    end
   end
 
   resources :organizations, path: :orgs, only: [:show] do
