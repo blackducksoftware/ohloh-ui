@@ -21,6 +21,7 @@ class Account < ActiveRecord::Base
                     allow_blank: false, format: { with: /\A[a-zA-Z][\w-]{2,30}\Z/ }, if: :login_changed?
   validates :twitter_account, length: { maximum: 15 }, allow_blank: true
   validates :name, length: { maximum: 50 }, allow_blank: true
+  validate :valid_current_password?, on: :update, if: -> { current_password.present? }
 
   has_many :api_keys
   has_many :actions
@@ -79,6 +80,12 @@ class Account < ActiveRecord::Base
 
   def anonymous?
     login == AnonymousAccount::LOGIN
+  end
+
+  def valid_current_password?
+    authenticator = Account::Authenticator.new(login: login, password: current_password)
+    return if authenticator.authenticated? && Account::Access.new(authenticator.account).active_and_not_disabled?
+    errors.add(:current_password)
   end
 
   class << self

@@ -173,6 +173,22 @@ class AccountTest < ActiveSupport::TestCase
     assert_equal 'user Luckey', accounts_with_facts.last.name
   end
 
+  test 'should validate current password error message' do
+    account = accounts(:user)
+    account.current_password = 'dummy password'
+    refute account.valid?
+    assert_equal 1, account.errors.size
+    assert_equal [I18n.t('activerecord.errors.models.account.attributes.current_password.invalid')],
+                 account.errors[:current_password]
+  end
+
+  test 'should not raise error for valid current password' do
+    account = accounts(:user)
+    account.current_password = 'test'
+    assert account.valid?
+    assert_equal 0, account.errors.size
+  end
+
   class LoginValidationsTest < AccountTest
     test 'test should require login' do
       assert_no_difference 'Account.count' do

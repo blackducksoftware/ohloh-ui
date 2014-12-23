@@ -199,3 +199,5 @@ en:
           attributes:
             login:
               invalid: 'Must begin with a letter and then only contain letters, numbers, underscore or dash'
+            current_password:
+              invalid: 'Check your current password and try again.'
