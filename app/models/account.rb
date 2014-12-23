@@ -62,7 +62,7 @@ class Account < ActiveRecord::Base
     about_markup_id.nil? ? build_markup(raw: value) : markup.raw = value
   end
 
-  def is_anonymous?
+  def anonymous?
     login == AnonymousAccount::LOGIN
   end
 

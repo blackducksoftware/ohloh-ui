@@ -13,7 +13,7 @@ class Account::Hooks
     activate_using_invite!(account) if account.invite_code.present?
     create_person!(account) unless Account::Access.new(account).spam?
     # FIXME: Implement alongwith AccountNotifier
-    # deliver_signup_notification(account) unless account.is_anonymous?
+    # deliver_signup_notification(account) unless account.anonymous?
   end
 
   def after_update(account)
@@ -32,7 +32,7 @@ class Account::Hooks
 
   def after_save(account)
     # FIXME: Implement alongwith AccountNotifier
-    # deliver_activation(account) unless account.is_anonymous?
+    # deliver_activation(account) unless account.anonymous?
     # FIXME: Integrate alongwith searchable
     # reindex_person(account) if account.person && !Account::Access.new(account).spam?
     update_person_effective_name(account) if account.person.present? && !Account::Access.new(account).spam?
