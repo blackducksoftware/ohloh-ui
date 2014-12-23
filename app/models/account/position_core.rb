@@ -67,6 +67,13 @@ class Account::PositionCore < OhDelegator::Base
     @logos ||= Logo.find(logo_ids).index_by(&:id)
   end
 
+  class << self
+    # FIXME: Replace account.only_unclaimed_positions account.position_core.with_only_unclaimed
+    def with_only_unclaimed
+      Account.where('id in (select account_id from positions group by account_id having max(name_id) IS NULL)')
+    end
+  end
+
   private
 
   def create_alias(project, name, existing_position, position_attributes)

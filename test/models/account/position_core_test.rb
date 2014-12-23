@@ -129,4 +129,9 @@ class PositionCoreTest < ActiveSupport::TestCase
     assert_equal 1, logos.keys.first
     assert_equal Logo, logos.values.first.class
   end
+
+  test '#with_only_unclaimed' do
+    # user and admin both have names, joe - no
+    assert_equal [accounts(:joe)], Account::PositionCore.with_only_unclaimed
+  end
 end
