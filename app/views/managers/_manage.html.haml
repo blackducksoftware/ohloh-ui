@@ -1,0 +1,22 @@
+:ruby
+  account = manage.account
+  name = html_escape(account.name)
+  target = html_escape(@parent.name)
+  position = nil # TODO: (positions) account.positions.find(:first, :conditions => ["project_id = ?", @parent.id])
+  name_fact = nil # TODO: (name_facts) position && position.name_fact
+- if !manage.pending? || (current_user_can_manage? || current_user == account)
+  .row.padding_one_top
+    .col-md-2
+      = avatar_for(account.person, size: 60)
+    .col-md-7
+      %h4.soft.nomargin.no_margin_top
+        = link_to(html_escape(account.name), account_path(account))
+        - if manage.pending?
+          #{t('.pending')}
+      - if !position.nil? && position.title?
+        .position
+          - position_title_and_org(position)
+      %p.nomargin.soft== #{name_fact ? name_fact.commits : '0'} commits
+      = render partial: 'action_buttons', locals: { manage: manage, account: account, name: name, target: target }
+    .clear
+      &nbsp;

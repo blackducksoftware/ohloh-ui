@@ -23,4 +23,12 @@ class String
 
     text
   end
+
+  def fix_encoding_if_invalid!
+    unless valid_encoding?
+      encode!('utf-8', 'binary', invalid: :replace, undef: :replace)
+    end
+    force_encoding('utf-8')
+    self
+  end
 end

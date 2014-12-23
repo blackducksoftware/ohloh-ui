@@ -5,6 +5,8 @@ class Project < ActiveRecord::Base
   has_many :manages, -> { where(deleted_at: nil, deleted_by: nil) }, as: 'target'
   has_many :managers, through: :manages, source: :account
 
+  scope :from_param, ->(param) { where(url_name: param) }
+
   def to_param
     url_name
   end

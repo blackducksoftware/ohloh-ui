@@ -31,17 +31,26 @@ Rails.application.routes.draw do
       get :settings
       get 'permissions' => 'permissions#show',   as: :permissions
       put 'permissions' => 'permissions#update', as: :update_permissions
-      get 'managers'    => 'managers#show',      as: :managers
-      put 'managers'    => 'managers#update',    as: :update_managers
     end
     resource :logos, only: [:new, :create, :destroy]
+    resources :managers, only: [:index, :new, :create, :edit, :update] do
+      member do
+        post :approve
+        post :reject
+      end
+    end
   end
 
   resources :organizations, path: :orgs, only: [:show] do
-    resource :logos, only: [:new, :create, :destroy]
     member do
-      get 'managers'    => 'managers#show',      as: :managers
-      put 'managers'    => 'managers#update',    as: :update_managers
+      get :settings
+    end
+    resource :logos, only: [:new, :create, :destroy]
+    resources :managers, only: [:index, :new, :create, :edit, :update] do
+      member do
+        post :approve
+        post :reject
+      end
     end
   end
 
