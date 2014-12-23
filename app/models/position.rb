@@ -1,4 +1,7 @@
 class Position < ActiveRecord::Base
+  # FIXME: Temporary fix to make Account::PositionCore tests work.
+  attr_writer :committer_name
+
   has_one :contribution
   belongs_to :account
   belongs_to :affiliation, class_name: 'Organization', foreign_key: :organization_id

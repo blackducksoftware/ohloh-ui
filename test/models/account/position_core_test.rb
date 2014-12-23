@@ -89,6 +89,26 @@ class PositionCoreTest < ActiveSupport::TestCase
     end
   end
 
+  test 'ensure_position_or_alias creates a position if try_create is set' do
+    unactivated, scott, linux = accounts(:unactivated), names(:scott), projects(:linux)
+    assert_difference('unactivated.positions.count', 1) do
+      position = unactivated.position_core.ensure_position_or_alias!(linux, scott, true)
+      assert_equal 0, linux.reload.aliases.count
+      assert_equal 'Linux', position.project.name
+      # FIXME: uncomment after adding committer_name logic.
+      # assert_equal 'Scott', position.name.name
+    end
+  end
+
+  test 'ensure_position_or_alias does not create a position by default' do
+    unactivated, scott, linux = accounts(:unactivated), names(:scott), projects(:linux)
+    assert_no_difference('unactivated.positions.count') do
+      position = unactivated.position_core.ensure_position_or_alias!(linux, scott)
+      assert_nil position
+      assert_equal 0, linux.reload.aliases.count # still ensure no aliases
+    end
+  end
+
   test 'ensure_position_or_alias creates an alias if a position exists' do
     user, scott, linux = accounts(:user), names(:scott), projects(:linux)
 

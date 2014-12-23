@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class AccountTest < ActiveSupport::TestCase
-  fixtures :accounts, :vitas, :name_facts, :projects, :commits, :analyses
+  fixtures :accounts, :vitas, :name_facts, :projects, :commits, :analyses, :names
 
   test '#sent_kudos' do
     Kudo.delete_all
@@ -247,5 +247,175 @@ class AccountTest < ActiveSupport::TestCase
       assert !account.save
       assert account.errors.messages[:login].present?
     end
+  end
+
+  class MostExperiencedLanguage < ActiveSupport::TestCase
+    test 'should return C as Logic as the most exp language despite make having more commits in Make Lang' do
+      skip 'FIXME: Integrate alongwith Language, vita'
+      make = Language.create(name: :make, nice_name: :Make, category: 2)
+      generate_vita_user
+      vita = accounts(:user).best_vita
+      NameLanguageFact.create(language_id: make.id, total_commits: 300,
+                              vita_id: vita.id, total_activity_lines: 200, total_months: 30)
+      assert_equal accounts(:user).most_experienced_language.nice_name, languages(:c).nice_name
+    end
+
+    test 'should return Make as the most exp language when C has no commits' do
+      skip 'FIXME: Integrate alongwith Language, vita'
+      make = Language.create(name: :make, nice_name: :Make, category: 2)
+      generate_vita_user
+      VitaLanguageFact.find_by_language_id(languages(:c).id).delete
+      vita = accounts(:user).best_vita
+      VitaLanguageFact.create(language_id: make.id, total_commits: 300,
+                              vita_id: vita.id, total_activity_lines: 200, total_months: 30)
+      assert_equal accounts(:user).most_experienced_language.nice_name, make.nice_name
+    end
+
+    test 'should return HAML as the most exp language when C/Make has no commits' do
+      skip 'FIXME: Integrate alongwith Language, vita'
+      make = Language.create(name: :make, nice_name: :Make, category: 2)
+      haml = Language.create(name: :haml, nice_name: :Haml, category: 1)
+      generate_vita_user
+      VitaLanguageFact.find_by_language_id(languages(:c).id).delete
+      vita = accounts(:user).best_vita
+      VitaLanguageFact.create(language_id: make.id, total_commits: 300, vita_id: vita.id,
+                              total_activity_lines: 200, total_months: 30)
+      VitaLanguageFact.create(language_id: haml.id, total_commits: 200, vita_id: vita.id,
+                              total_activity_lines: 200, total_months: 30)
+      assert_equal accounts(:user).most_experienced_language.nice_name, haml.nice_name
+    end
+  end
+
+  class ToParam < AccountTest
+    test 'must return login when it is urlable' do
+      account = build(:account, login: 'stan')
+      assert_equal account.login, account.to_param
+    end
+
+    test 'must return id when login is not urlable' do
+      account = accounts(:user)
+      account.login = '$one'
+      assert_equal account.id.to_s, account.to_param
+    end
+  end
+
+  test '#email_topics' do
+    account = accounts(:admin)
+    assert_equal true, account.email_topics?
+    account.email_master = true
+    account.email_posts = false
+    assert_equal false, account.email_topics?
+    account.email_master = true
+    account.email_posts = true
+    assert_equal true, account.email_topics?
+    account.email_master = false
+    account.email_posts = true
+    assert_equal false, account.email_topics?
+  end
+
+  test '#email_kudos' do
+    account = accounts(:admin)
+    assert_equal true, account.email_kudos?
+    account.email_master = true
+    account.email_kudos = false
+    assert_equal false, account.email_kudos?
+    account.email_master = true
+    account.email_kudos = true
+    assert_equal true, account.email_kudos?
+    account.email_master = false
+    account.email_kudos = true
+    assert_equal false, account.email_kudos?
+  end
+
+  test '#update_akas' do
+    create(:position, project: projects(:ohloh), name: names(:scott), account: accounts(:user))
+    accounts(:user).update_akas
+    assert_equal %w(Scott User), accounts(:user).akas.split("\n").sort
+  end
+
+  test '#links' do
+    skip 'FIXME: Integrate alongwith edits'
+    account = create(:account)
+    link = nil
+    with_editor(account) do
+      link = projects(:linux).links.create!(
+        url: 'http://www.google.com',
+        title: 'title',
+        link_category_id: Link::CATEGORIES[:Other]
+      )
+    end
+    assert account.links.include?(link)
+  end
+
+  test 'badges list' do
+    skip 'FIXME: Integrate alongwith Badge.'
+    account = accounts(:user)
+    badges = %w(badge1 badge2)
+    Badge.expects(:all_eligible).with(account).returns(badges)
+    assert_equal badges, account.badges
+  end
+
+  test '#non_human_ids' do
+    ohloh_slave_id = Account.hamster.id
+    uber_data_crawler_id = Account.uber_data_crawler.id
+
+    assert_equal 2, Account.non_human_ids.size
+    assert_equal true, Account.non_human_ids.include?(ohloh_slave_id)
+    assert_equal true, Account.non_human_ids.include?(uber_data_crawler_id)
+  end
+
+  class Validations < AccountTest
+    test 'should require password' do
+      assert_no_difference 'Account.count' do
+        user = build(:account, password: nil)
+        user.valid?
+        assert user.errors.messages[:password]
+      end
+    end
+
+    test 'should require password confirmation' do
+      assert_no_difference 'Account.count' do
+        user = build(:account, password_confirmation: nil)
+        user.valid?
+        assert user.errors.messages[:password_confirmation]
+      end
+    end
+
+    test 'it should require email confirmation' do
+      assert_no_difference 'Account.count' do
+        user = build(:account, email_confirmation: '')
+        user.valid?
+        assert user.errors.messages[:email_confirmation]
+        assert_equal %(doesn't match Email), user.errors.messages[:email_confirmation].first
+      end
+    end
+
+    test "email & email confirmation shouldn't be blank" do
+      assert_no_difference 'Account.count' do
+        user = build(:account, email_confirmation: '', email: '')
+        user.valid?
+        assert user.errors.messages[:email_confirmation]
+
+        assert_equal 'Invalid Email Address detected.', user.errors.messages[:email_confirmation].first
+      end
+    end
+
+    test 'email & email confirmation is blank and should raise error' do
+      assert_no_difference 'Account.count' do
+        user = build(:account, email_confirmation: '', email: 'rapbhan@rapbhan.com')
+        user.valid?
+        assert user.errors.messages[:email_confirmation]
+        assert_equal %(doesn't match Email), user.errors.messages[:email_confirmation].first
+      end
+    end
+  end
+
+  test 'disallow html tags in url' do
+    account = create(:account, url: 'http://www.ohloh.net/')
+    assert account.valid?
+
+    account.url = %q(http://1.cc/ <img src="s" onerror="top.location=' http://vip-feed.com/35898/buy+adderall.html';">)
+    assert !account.valid?
+    assert account.errors.messages[:url]
   end
 end
