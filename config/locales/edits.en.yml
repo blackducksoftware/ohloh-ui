@@ -1,0 +1,5 @@
+en:
+  edits:
+    undo_redo_require_editor: "You must pass an editor to undo or redo."
+    cant_undo: "Can't undo what has already been undone!"
+    cant_redo: "Can't redo what has already been redone!"
