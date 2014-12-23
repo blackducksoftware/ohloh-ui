@@ -82,5 +82,11 @@ class Account < ActiveRecord::Base
     def find_or_create_anonymous_account
       Account.find_by(login: AnonymousAccount::LOGIN) || AnonymousAccount.create!
     end
+
+    def facts_joins
+      joins{positions.project}.joins{['INNER JOIN name_facts ON name_facts.name_id = positions.name_id']}
+      .where{positions.name_id.not_eq(nil)}
+      .where{name_facts.analysis_id.eq(projects.best_analysis_id) & name_facts.type.eq('ContributorFact')}
+    end
   end
 end

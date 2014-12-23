@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class AccountTest < ActiveSupport::TestCase
-  fixtures :accounts, :vitas, :name_facts
+  fixtures :accounts, :vitas, :name_facts, :projects, :commits, :analyses
 
   test 'sent_kudos' do
     Kudo.delete_all
@@ -160,6 +160,16 @@ class AccountTest < ActiveSupport::TestCase
     assert_not account.valid?
     assert_includes account.errors, :organization_id
     assert_equal ['can\'t be blank'], account.errors.messages[:organization_id]
+  end
+
+  test 'facts_joins should accounts with positions projects and name_facts' do
+    analysis = analyses(:linux)
+    project = projects(:linux)
+    project.update_attributes! best_analysis_id: analysis.id
+
+    assert_equal 2, Account.facts_joins.size
+    assert_equal 'admin Allen', Account.facts_joins.first.name
+    assert_equal 'user Luckey', Account.facts_joins.last.name
   end
 
   class LoginValidationsTest < AccountTest
