@@ -1,6 +1,8 @@
 class Account::PositionCore < OhDelegator::Base
   parent_scope do
     has_many :positions, -> { where { project_id.eq(nil) | project_id.not_in(Project.deleted) } }
+    # FIXME: Replace account.has_claimed_positions? with account.claimed_positions.any?
+    has_many :claimed_positions, -> { where { name_id != nil } }, class_name: 'Position'
   end
 
   # FIXME: Replace positions.for_ohloh_projects with position_core.with_projects

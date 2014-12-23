@@ -5,9 +5,6 @@ class Position < ActiveRecord::Base
   belongs_to :project
   belongs_to :name
 
-  # FIXME: Replace account.has_claimed_positions? with account.positions.claimed.any?
-  # FIXME: Replace account.claimed_positions with account.positions.claimed
-  scope :claimed, -> { where { name_id.not_eq(nil) } }
   scope :claimed_by, -> account { where { account_id.eq(account.id) & name_id.not_eq(nil) } }
 
   class << self

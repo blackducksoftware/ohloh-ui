@@ -3,13 +3,19 @@ require 'test_helper'
 class AccountTest < ActiveSupport::TestCase
   fixtures :accounts, :vitas, :name_facts, :projects, :commits, :analyses
 
-  test 'sent_kudos' do
+  test '#sent_kudos' do
     Kudo.delete_all
     admin_account = accounts(:admin)
     create(:kudo, sender: admin_account, account: accounts(:user))
     create(:kudo, sender: admin_account, account: accounts(:joe))
 
     assert_equal 2, admin_account.sent_kudos.count
+  end
+
+  test '#claimed_positions' do
+    create(:position, account: accounts(:user), project: projects(:ohloh))
+    assert_equal 2, accounts(:user).positions.count
+    assert_equal 1, accounts(:user).claimed_positions.count
   end
 
   test 'the account model should be valid' do

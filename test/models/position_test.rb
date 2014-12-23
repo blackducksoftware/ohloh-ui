@@ -3,12 +3,6 @@ require 'test_helper'
 class PositionTest < ActiveSupport::TestCase
   fixtures :accounts, :projects
 
-  test 'claimed scope' do
-    create(:position, account: accounts(:user), project: projects(:ohloh))
-    assert_equal 2, accounts(:user).positions.count
-    assert_equal 1, accounts(:user).positions.claimed.count
-  end
-
   test 'claimed_by scope' do
     user = accounts(:user)
     positions = Position.claimed_by(user)
