@@ -429,4 +429,22 @@ class AccountTest < ActiveSupport::TestCase
     assert !account.valid?
     assert account.errors.messages[:url]
   end
+
+  test 'deleting an account creates a organization job for the org' do
+    skip('TODO: Organization job should be scheduled for account organization_id update')
+    accounts(:robin).update_attribute(:organization_id, organizations(:google).id)
+    org_id = accounts(:robin).organization_id
+    Job.delete_all
+    accounts(:robin).destroy
+    assert_equal 1, OrganizationJob.count
+    assert_equal org_id, OrganizationJob.first.organization_id
+  end
+
+  test 'updating an account with different org id creates organization jobs for the affected orgs' do
+    skip('TODO: Organization job should be scheduled for account organization_id update')
+    accounts(:robin).update_attribute(:organization_id, organizations(:google).id)
+    Job.delete_all
+    accounts(:robin).reload.update_attributes!(organization_id: organizations(:linux).id)
+    assert_equal 2, OrganizationJob.count
+  end
 end
