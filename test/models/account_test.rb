@@ -195,6 +195,17 @@ class AccountTest < ActiveSupport::TestCase
     assert_equal 0, account.errors.size
   end
 
+  test 'it should get the first commit date for a account position' do
+    user = accounts(:user)
+    expected_date = Time.strptime('2008-02-09', '%Y-%m-%d').to_date.beginning_of_month
+    assert_equal expected_date, user.first_commit_date
+  end
+
+  test 'it should return nil when account has no best_vita' do
+    user = accounts(:admin)
+    assert_nil user.first_commit_date
+  end
+
   class LoginValidationsTest < AccountTest
     test 'test should require login' do
       assert_no_difference 'Account.count' do

@@ -165,6 +165,12 @@ class Account < ActiveRecord::Base
     update!(activation_resent_at: Time.now.utc)
   end
 
+  # TODO: Replaces get_first_commit_date
+  def first_commit_date
+    first_checkin = best_vita.try(:vita_fact).try(:first_checkin)
+    first_checkin.try(:to_date).try(:beginning_of_month)
+  end
+
   class << self
     def resolve_login(login)
       Account.where { lower(login) == login.downcase }.first
