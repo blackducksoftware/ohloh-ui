@@ -31,7 +31,7 @@ class Account < ActiveRecord::Base
   end
 
   def to_param
-    urlable_login || id.to_s
+    (login.match(Patterns::LOGIN_FORMAT) && login) || id.to_s
   end
 
   # ip is tracked as a temporary field - not saved in the db.
@@ -136,11 +136,5 @@ class Account < ActiveRecord::Base
     def find_or_create_anonymous_account
       find_by(login: AnonymousAccount::LOGIN) || AnonymousAccount.create!
     end
-  end
-
-  private
-
-  def urlable_login
-    login.match(Patterns::LOGIN_FORMAT) && login
   end
 end
