@@ -1,6 +1,8 @@
 class Project < ActiveRecord::Base
   has_one :permission, as: :target
   has_many :aliases, -> { where { deleted.eq(false) & preferred_name_id.not_eq(nil) } }
+  has_many :aliases_with_positions_name, -> { where { deleted.eq(false) & preferred_name_id.eq(positions.name_id) } },
+           class_name: 'Alias'
   has_many :contributions
   has_many :positions
   has_many :stack_entries, -> { where { deleted_at.eq(nil) } }

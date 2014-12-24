@@ -3,7 +3,7 @@ require 'test_helper'
 class ClaimCoreTest < ActiveSupport::TestCase
   fixtures :accounts, :projects, :name_facts, :commits, :names, :positions
 
-  test '#email_ids' do
+  test 'email ids' do
     projects(:linux).update!(best_analysis_id: 1)
     assert_equal [], accounts(:user).claim_core.email_ids
     assert_equal [], accounts(:unactivated).claim_core.emails # no positions

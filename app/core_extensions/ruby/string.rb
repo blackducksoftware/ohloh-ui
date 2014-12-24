@@ -23,10 +23,4 @@ class String
 
     text
   end
-
-  def from_postgres_array
-    string_without_curlies = gsub(/(^{|}$)/, '')
-    string_without_curlies_and_null = string_without_curlies.gsub(/NULL/, '')
-    string_without_curlies_and_null.split(',').map(&:to_i)
-  end
 end

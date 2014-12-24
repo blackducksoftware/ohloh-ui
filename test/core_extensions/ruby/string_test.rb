@@ -40,9 +40,4 @@ class StringTest < ActiveSupport::TestCase
     assert_equal 'X<Y', 'X&lt;Y'.strip_tags_preserve_line_breaks
     assert_equal 'X&Y', 'X&amp;Y'.strip_tags_preserve_line_breaks
   end
-
-  test '#from_postgres_array' do
-    assert_equal [1, 2, 3], '{1,2,3}'.from_postgres_array
-    assert_equal [], '{NULL}'.from_postgres_array
-  end
 end
