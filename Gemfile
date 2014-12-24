@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+# Remove when ohno-you-dont is published to rubygems.org
 
 gem 'brakeman'
 gem 'coffee-rails'
@@ -19,6 +20,8 @@ gem 'paperclip'
 gem 'aws-sdk'
 gem 'squeel'
 gem 'oh_delegator', git: 'git@github.com:blackducksw/oh_delegator.git'
+
+gem 'pry-rails', group: :development
 
 group :development, :test, :vagrant do
   gem 'byebug'

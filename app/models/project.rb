@@ -14,12 +14,18 @@ class Project < ActiveRecord::Base
   scope :active, -> { where { deleted.not_eq(true) } }
   scope :deleted, -> { where(deleted: true) }
 
+  has_many :manages, -> { where(deleted_at: nil, deleted_by: nil) }, as: 'target'
+  has_many :managers, through: :manages, source: :account
+  has_many :reviews
+
+  scope :from_param, ->(param) { where(url_name: param) }
+
   def to_param
     url_name
   end
 
   def active_managers
-    Manage.for_project(self).active.to_a
+    Manage.projects.for_target(self).active.to_a.map(&:account)
   end
 
   # TODO: Replace account.review(project) with project.first_review_for(account)

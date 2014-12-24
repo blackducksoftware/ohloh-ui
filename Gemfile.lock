@@ -144,6 +144,8 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-rails (0.3.2)
+      pry (>= 0.9.10)
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -254,6 +256,7 @@ DEPENDENCIES
   paperclip
   pg
   pry
+  pry-rails
   rails
   rubocop
   sass-rails

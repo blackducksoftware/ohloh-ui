@@ -12,6 +12,8 @@ class Account < ActiveRecord::Base
   oh_delegators :stack_core, :project_core, :position_core, :claim_core
   strip_attributes :name, :email, :login, :invite_code, :twitter_account
 
+  fix_string_column_encodings!
+
   def about_raw
     markup.raw
   end
