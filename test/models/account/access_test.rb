@@ -56,4 +56,10 @@ class Account::AccessTest < ActiveSupport::TestCase
     end
     assert Account::Access.new(account).spam?
   end
+
+  test 'should rails exception when account is nil' do
+    assert_raise(RuntimeError) do
+      Account::Access.new(nil)
+    end
+  end
 end
