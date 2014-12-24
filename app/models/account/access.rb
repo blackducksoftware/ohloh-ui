@@ -5,7 +5,7 @@ class Account::Access
   SPAM = -20
 
   def initialize(account)
-    fail "Account cannot be nil" if account.blank?
+    fail 'Account cannot be nil' if account.blank?
     @account = account
     @level = @account.level
   end
