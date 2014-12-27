@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-# Remove when ohno-you-dont is published to rubygems.org
 
 gem 'brakeman'
 gem 'coffee-rails'
