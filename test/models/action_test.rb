@@ -3,82 +3,78 @@ require 'test_helper'
 class ActionTest < ActiveSupport::TestCase
   fixtures :accounts, :projects, :people, :names
 
-  def test_account_required
+  let(:admin_account) { accounts(:admin) }
+  let(:linux_project) { projects(:linux) }
+
+  it 'test account required' do
     assert_no_difference 'Action.count' do
       action = Action.create
-      assert action.errors.include?(:account)
+      action.errors.must_include(:account)
     end
   end
 
-  def test_action_requires_something_to_do
+  it 'test action requires something to do' do
     assert_no_difference 'Action.count' do
       action = Action.create(account: admin_account)
-      assert action.errors.include?(:payload_required)
+      action.errors.must_include(:payload_required)
     end
   end
 
-  def test_create_succeeds_for_claim
+  it 'test create succeeds for claim' do
     assert_difference 'Action.count' do
       person = people(:joe)
       action = Action.create!(account: admin_account, claim: person)
-      assert_equal person, action.claim
-      assert_equal admin_account, action.account
+      action.claim.must_equal person
+      action.account.must_equal admin_account
     end
   end
 
-  def test_create_succeeds_for_stacked_project
+  it 'test create succeeds for stacked project' do
     assert_difference 'Action.count' do
       action = Action.create(account: admin_account, stack_project: linux_project)
-      assert_equal linux_project, action.stack_project
+      action.stack_project.must_equal linux_project
     end
   end
 
-  def test_command_for_claim
+  it 'test command for claim' do
     assert_difference 'Action.count' do
       action_param = "claim_#{people(:joe).id}"
       action = Action.create!(account: admin_account, _action: action_param)
-      assert_equal admin_account, action.account
-      assert_equal people(:joe), action.claim
+      action.account.must_equal admin_account
+      action.claim.must_equal people(:joe)
     end
   end
 
-  def test_command_for_claim_of_person_with_no_project
+  it 'test command for claim of person with no project' do
     assert_no_difference 'Action.count' do
       action_param = "claim_#{people(:kyle).id}"
       action = Action.create(account: admin_account, _action: action_param)
-      assert action.errors.include?(:claim)
+      action.errors.include?(:claim).must_equal true
+      action.errors.must_include(:claim)
     end
   end
 
-  def test_command_for_claim_of_person_with_no_name
+  it 'test command for claim of person with no name' do
     assert_no_difference 'Action.count' do
       action_param = "claim_#{people(:robin).id}"
       action = Action.create(account: admin_account, _action: action_param)
-      assert action.errors.include?(:claim)
+      action.errors.must_include(:claim)
     end
   end
 
-  def test_command_for_stacked_project
+  it 'test command for stacked project' do
     assert_difference 'Action.count' do
       action_param = "stack_#{linux_project.id}"
       action = Action.create!(account: admin_account, _action: action_param)
-      assert_equal admin_account, action.account
-      assert_equal linux_project, action.stack_project
+      action.account.must_equal admin_account
+      action.stack_project.must_equal linux_project
     end
   end
 
-  def test_run_with_newly_activated_account
+  it 'test run with newly activated account' do
     action = Action.create!(account: admin_account, _action: "stack_#{linux_project.id}", status: 'after_activation')
     action.run
-    assert admin_account.default_stack.projects.include?(linux_project)
-    assert_equal Action::STATUSES[:remind], action.status
-  end
-
-  def admin_account
-    accounts(:admin)
-  end
-
-  def linux_project
-    projects(:linux)
+    admin_account.default_stack.projects.must_include(linux_project)
+    action.status.must_equal Action::STATUSES[:remind]
   end
 end

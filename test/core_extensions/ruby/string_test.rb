@@ -2,49 +2,49 @@
 require 'test_helper'
 
 class StringTest < ActiveSupport::TestCase
-  test 'strip_tags' do
-    assert_equal '', ''.strip_tags
-    assert_equal 'test', 'test'.strip_tags
-    assert_equal 'XY', 'X<br/>Y'.strip_tags
-    assert_equal 'XY', '<p>X</p>Y'.strip_tags
-    assert_equal 'X', '<p>X</p>'.strip_tags
-    assert_equal 'XYZ', "X<a href='#'>Y</a>Z".strip_tags
-    assert_equal 'XYZ', 'X<h1>Y</h2>Z'.strip_tags
-    assert_equal 'X<Y', 'X<Y'.strip_tags
-    assert_equal 'X>Y', 'X>Y'.strip_tags
-    assert_equal 'X&gt;Y', 'X&gt;Y'.strip_tags
-    assert_equal 'X&lt;Y', 'X&lt;Y'.strip_tags
-    assert_equal 'X&amp;Y', 'X&amp;Y'.strip_tags
+  it 'strip tags' do
+    ''.strip_tags.must_equal ''
+    'test'.strip_tags.must_equal 'test'
+    'X<br/>Y'.strip_tags.must_equal 'XY'
+    '<p>X</p>Y'.strip_tags.must_equal 'XY'
+    '<p>X</p>'.strip_tags.must_equal 'X'
+    "X<a href='#'>Y</a>Z".strip_tags.must_equal 'XYZ'
+    'X<h1>Y</h2>Z'.strip_tags.must_equal 'XYZ'
+    'X<Y'.strip_tags.must_equal 'X<Y'
+    'X>Y'.strip_tags.must_equal 'X>Y'
+    'X&gt;Y'.strip_tags.must_equal 'X&gt;Y'
+    'X&lt;Y'.strip_tags.must_equal 'X&lt;Y'
+    'X&amp;Y'.strip_tags.must_equal 'X&amp;Y'
   end
 
-  test 'strip_tags_preserve_line_breaks' do
-    assert_equal '', ''.strip_tags_preserve_line_breaks
-    assert_equal 'test', 'test'.strip_tags_preserve_line_breaks
+  it 'strip tags preserve line breaks' do
+    ''.strip_tags_preserve_line_breaks.must_equal ''
+    'test'.strip_tags_preserve_line_breaks.must_equal 'test'
 
-    assert_equal '', "\n".strip_tags_preserve_line_breaks
-    assert_equal 'X', "\nX".strip_tags_preserve_line_breaks
-    assert_equal 'X', "X\n".strip_tags_preserve_line_breaks
-    assert_equal 'X', "\n\nX\n\n".strip_tags_preserve_line_breaks
+    "\n".strip_tags_preserve_line_breaks.must_equal ''
+    "\nX".strip_tags_preserve_line_breaks.must_equal 'X'
+    "X\n".strip_tags_preserve_line_breaks.must_equal 'X'
+    "\n\nX\n\n".strip_tags_preserve_line_breaks.must_equal 'X'
 
-    assert_equal 'X<br/>Y', 'X<br/>Y'.strip_tags_preserve_line_breaks
-    assert_equal 'X<br/>Y', "X\nY".strip_tags_preserve_line_breaks
+    'X<br/>Y'.strip_tags_preserve_line_breaks.must_equal 'X<br/>Y'
+    "X\nY".strip_tags_preserve_line_breaks.must_equal 'X<br/>Y'
 
-    assert_equal 'X<br/><br/>Y', '<p>X</p>Y'.strip_tags_preserve_line_breaks
-    assert_equal 'X', '<p>X</p>'.strip_tags_preserve_line_breaks
+    '<p>X</p>Y'.strip_tags_preserve_line_breaks.must_equal 'X<br/><br/>Y'
+    '<p>X</p>'.strip_tags_preserve_line_breaks.must_equal 'X'
 
-    assert_equal 'XYZ', "X<a href='#'>Y</a>Z".strip_tags_preserve_line_breaks
-    assert_equal 'XYZ', 'X<h1>Y</h2>Z'.strip_tags_preserve_line_breaks
-    assert_equal 'X<Y', 'X<Y'.strip_tags_preserve_line_breaks
-    assert_equal 'X>Y', 'X>Y'.strip_tags_preserve_line_breaks
+    "X<a href='#'>Y</a>Z".strip_tags_preserve_line_breaks.must_equal 'XYZ'
+    'X<h1>Y</h2>Z'.strip_tags_preserve_line_breaks.must_equal 'XYZ'
+    'X<Y'.strip_tags_preserve_line_breaks.must_equal 'X<Y'
+    'X>Y'.strip_tags_preserve_line_breaks.must_equal 'X>Y'
 
-    assert_equal 'X>Y', 'X&gt;Y'.strip_tags_preserve_line_breaks
-    assert_equal 'X<Y', 'X&lt;Y'.strip_tags_preserve_line_breaks
-    assert_equal 'X&Y', 'X&amp;Y'.strip_tags_preserve_line_breaks
+    'X&gt;Y'.strip_tags_preserve_line_breaks.must_equal 'X>Y'
+    'X&lt;Y'.strip_tags_preserve_line_breaks.must_equal 'X<Y'
+    'X&amp;Y'.strip_tags_preserve_line_breaks.must_equal 'X&Y'
   end
 
-  test 'clean up weirdly encoded strings' do
+  it 'clean up weirdly encoded strings' do
     before = "* oprava chyby 33731\n* \xFAprava  podle Revize B anglick\xE9ho dokumentu\n"
     after = ['* oprava chyby 33731', '* �prava  podle Revize B anglick�ho dokumentu']
-    assert_equal after, before.fix_encoding_if_invalid!.split("\n")
+    before.fix_encoding_if_invalid!.split("\n").must_equal after
   end
 end

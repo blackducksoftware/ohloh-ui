@@ -1,91 +1,91 @@
 require_relative '../test_helper'
 
 class LogoTest < ActiveSupport::TestCase
-  test 'class_exists' do
-    assert Logo
-    assert Logo.new
+  it 'class_exists' do
+    Logo.must_be :present?
+    Logo.new.must_be :present?
   end
 
-  test 'invalid_file_type' do
+  it 'invalid_file_type' do
     logo = Logo.create(attachment_file_name: 'output.pdf', attachment_content_type: 'application/pdf')
-    assert_equal false, logo.valid?
-    assert_equal 2, logo.errors.size
-    assert_equal ['Open Hub accepts GIF, JPG, and PNG formats for logo images.'], logo.errors[:attachment_content_type]
+    logo.valid?.must_equal false
+    logo.errors.size.must_equal 2
+    logo.errors[:attachment_content_type].must_equal ['Open Hub accepts GIF, JPG, and PNG formats for logo images.']
   end
 
-  test 'support GIF images' do
+  it 'support GIF images' do
     assert_difference 'Logo.count' do
       Logo.create(attachment_file_name: 'imawesome.gif', attachment_content_type: 'image/gif')
     end
   end
 
-  test 'support JPG images' do
+  it 'support JPG images' do
     assert_difference 'Logo.count' do
       Logo.create(attachment_file_name: 'imawesome.jpg', attachment_content_type: 'image/jpeg')
     end
   end
 
-  test 'supports PNG images' do
+  it 'supports PNG images' do
     assert_difference 'Logo.count' do
       Logo.create(attachment_file_name: 'imawesome.png', attachment_content_type: 'image/png')
     end
   end
 
-  test 'invalid empty filename' do
+  it 'invalid empty filename' do
     logo = Logo.new
-    assert_equal false, logo.valid?
-    assert ['can\'t be blank'], logo.errors[:attachment_file_name]
+    logo.valid?.must_equal false
+    logo.errors[:attachment_file_name].must_equal ['can\'t be blank']
   end
 
-  test 'valid filename' do
+  it 'valid filename' do
     logo = Logo.new(attachment_file_name: 'test.jpg',
                     attachment_content_type: 'image/jpeg', attachment_file_size: '643')
-    assert logo.valid?
-    assert logo.errors.empty?
+    logo.must_be :valid?
+    logo.errors.must_be :empty?
   end
 
-  test 'invalid file size' do
+  it 'invalid file size' do
     logo = Logo.new(attachment_file_name: 'test.jpg',
                     attachment_content_type: 'image/jpeg', attachment_file_size: '6640643')
-    assert_equal false, logo.valid?
-    assert_equal ['File size is too big (must be less than 500 KB)'], logo.errors[:attachment_file_size]
+    logo.valid?.must_equal false
+    logo.errors[:attachment_file_size].must_equal ['File size is too big (must be less than 500 KB)']
   end
 
-  test 'Logo Upload with wrong URL' do
+  it 'Logo Upload with wrong URL' do
     logo = Logo.new(url: 'http://123456790notexist.com/ohloh.jpg', attachment_content_type: 'image/jpg')
     logo.save
-    assert_equal ['Invalid URL / Image not found'], logo.errors[:url]
+    logo.errors[:url].must_equal ['Invalid URL / Image not found']
   end
 
-  test 'Logo Upload with wrong file type' do
+  it 'Logo Upload with wrong file type' do
     logo = Logo.new(url: 'https://www.ohloh.net/robots.txt', attachment_content_type: 'text/plain')
     logo.save
-    assert_equal ['Open Hub accepts GIF, JPG, and PNG formats for logo images.'], logo.errors[:attachment]
+    logo.errors[:attachment].must_equal ['Open Hub accepts GIF, JPG, and PNG formats for logo images.']
   end
 
-  test 'Logo Upload with Huge file size of 5MB' do
+  it 'Logo Upload with Huge file size of 5MB' do
     logo = Logo.new(url: 'https://www.ohloh.net/images/clear.gif',
                     attachment_content_type: 'image/gif', attachment_file_size: '5242880')
     logo.save
-    assert_equal ['File size is too big (must be less than 500 KB)'], logo.errors[:attachment_file_size]
+    logo.errors[:attachment_file_size].must_equal ['File size is too big (must be less than 500 KB)']
   end
 
-  test 'Logo Upload with valid file' do
+  it 'Logo Upload with valid file' do
     logo = Logo.new(url: 'https://www.openhub.net/images/clear.gif',
                     attachment_content_type: 'image/gif')
     logo.save!
-    assert_equal 0, logo.errors.size
-    assert_equal 'clear', File.basename(logo.attachment.url, File.extname(logo.attachment.url))
-    assert_match 'tiny', logo.attachment.url(:tiny)
-    assert_match 'small', logo.attachment.url(:small)
-    assert_match 'med', logo.attachment.url(:med)
-    assert_equal 0, logo.errors.size
+    logo.errors.size.must_equal 0
+    File.basename(logo.attachment.url, File.extname(logo.attachment.url)).must_equal 'clear'
+    logo.attachment.url(:tiny).must_match 'tiny'
+    logo.attachment.url(:small).must_match 'small'
+    logo.attachment.url(:med).must_match 'med'
+    logo.errors.size.must_equal 0
   end
 
-  test 'Project without logo' do
-    assert_equal 'no_logo_16.png', Logo.default_file_name(:tiny)
-    assert_equal 'no_logo_32.png', Logo.default_file_name(:small)
-    assert_equal 'no_logo.png', Logo.default_file_name(:med)
-    assert_equal 'no_logo.png', Logo.default_file_name
+  it 'Project without logo' do
+    Logo.default_file_name(:tiny).must_equal 'no_logo_16.png'
+    Logo.default_file_name(:small).must_equal 'no_logo_32.png'
+    Logo.default_file_name(:med).must_equal 'no_logo.png'
+    Logo.default_file_name.must_equal 'no_logo.png'
   end
 end
