@@ -255,7 +255,6 @@ DEPENDENCIES
   oh_delegator!
   paperclip
   pg
-  pry
   pry-rails
   rails
   rubocop
