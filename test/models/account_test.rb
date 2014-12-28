@@ -445,6 +445,45 @@ class AccountTest < ActiveSupport::TestCase
 
       assert_nil account.errors.messages[:organization_name]
     end
+
+    test 'must match affiliation_type against allowed types' do
+      account = build(:account)
+      account.affiliation_type = 'invalid'
+      account.valid?
+
+      assert_equal I18n.t(:is_invalid), account.errors.messages[:affiliation_type].first
+    end
+
+    test 'must not allow blank organization_id when affiliation_type is specified' do
+      account = build(:account)
+      account.affiliation_type = 'specified'
+      account.organization_id = ''
+      account.organization_name = 'org'
+      account.valid?
+
+      assert_nil account.organization_name
+      assert_equal I18n.t(:cant_be_blank), account.errors.messages[:organization_id].first
+    end
+
+    test 'must not allow blank organization_name when affiliation_type is specified' do
+      account = build(:account)
+      account.affiliation_type = 'specified'
+      account.organization_id = 1
+      account.organization_name = nil
+      account.valid?
+
+      assert_nil account.organization_id
+      assert_equal I18n.t(:cant_be_blank), account.errors.messages[:organization_name].first
+    end
+
+    test 'must allow blank organization_id when affiliation_type is not specified' do
+      account = build(:account)
+      account.affiliation_type = 'other'
+      account.organization_id = nil
+      account.valid?
+
+      assert_empty account.errors.messages
+    end
   end
 
   test 'disallow html tags in url' do
