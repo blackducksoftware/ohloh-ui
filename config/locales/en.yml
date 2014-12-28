@@ -210,3 +210,5 @@ en:
               invalid: 'Must begin with a letter and then only contain letters, numbers, underscore or dash'
             current_password:
               invalid: 'Check your current password and try again.'
+            organization_name:
+              invalid: 'should start with a letter and can include only letters, numbers, _ and -'

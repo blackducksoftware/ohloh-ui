@@ -2,10 +2,9 @@ module AffiliationValidation
   extend ActiveSupport::Concern
   ALLOWED_AFFILIATION_TYPES = %w(unaffiliated other specified)
   included do
-    validate :organization_name, length: { in: 3..85 },
-                                 format: { with: /^[a-zA-Z0-9][\w\s.,-_]*$/u },
-                                 if: proc { |p| p.organization_name.present? },
-                                 message: 'should start with a letter and can include only letters, numbers, _ and -'
+    validates :organization_name, length: { in: 3..85 },
+                                  format: { with: /\A[a-zA-Z0-9][\w\s.,-_]*\Z/u },
+                                  allow_blank: true
     validate :affiliation_existence
     validate :affiliation_by_organization_id
     validate :affiliation_by_organization_name

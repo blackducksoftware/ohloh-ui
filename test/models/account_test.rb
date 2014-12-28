@@ -419,6 +419,32 @@ class AccountTest < ActiveSupport::TestCase
         assert_equal %(doesn't match Email), user.errors.messages[:email_confirmation].first
       end
     end
+
+    test 'must validate format of organization_name' do
+      account = build(:account)
+      account.organization_name = '_org'
+      account.valid?
+
+      message = I18n.t('activerecord.errors.models.account.attributes.organization_name.invalid')
+      assert_equal message, account.errors.messages[:organization_name].first
+    end
+
+    test 'must validated length of organization_name' do
+      account = build(:account)
+      account.organization_name = 'A1'
+      account.valid?
+
+      message = 'is too short (minimum is 3 characters)'
+      assert_equal message, account.errors.messages[:organization_name].first
+    end
+
+    test 'must allow blank organization_name' do
+      account = build(:account)
+      account.organization_name = ''
+      account.valid?
+
+      assert_nil account.errors.messages[:organization_name]
+    end
   end
 
   test 'disallow html tags in url' do
