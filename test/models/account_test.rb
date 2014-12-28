@@ -43,7 +43,7 @@ class AccountTest < ActiveSupport::TestCase
     account = build(:account, url: 'openhub.net')
     assert_not account.valid?
     assert_includes account.errors, :url
-    assert_equal ['Invalid URL Format'], account.errors.messages[:url]
+    assert_equal I18n.t('accounts.invalid_url_format'), account.errors.messages[:url].first
   end
 
   test 'it should validate login' do
@@ -70,9 +70,8 @@ class AccountTest < ActiveSupport::TestCase
 
     account = build(:account, password: '')
     assert_not account.valid?
-    expected_error_message = ['can\'t be blank']
     assert_includes account.errors, :password
-    assert_equal expected_error_message, account.errors.messages[:password]
+    assert_equal I18n.t(:cant_be_blank), account.errors.messages[:password].first
     assert_equal ['doesn\'t match Password'], account.errors.messages[:password_confirmation]
 
     account = build(:account, password: 'abc12345', password_confirmation: 'ABC12345')
@@ -128,7 +127,7 @@ class AccountTest < ActiveSupport::TestCase
     account.affiliation_type = ''
     assert_not account.valid?
     assert_includes account.errors, :affiliation_type
-    assert_equal ['is invalid'], account.errors.messages[:affiliation_type]
+    assert_equal I18n.t(:is_invalid), account.errors.messages[:affiliation_type].first
   end
 
   test 'should search by login and sort by position and char length' do
@@ -165,7 +164,7 @@ class AccountTest < ActiveSupport::TestCase
     account.organization_id = ''
     assert_not account.valid?
     assert_includes account.errors, :organization_id
-    assert_equal ['can\'t be blank'], account.errors.messages[:organization_id]
+    assert_equal I18n.t(:cant_be_blank), account.errors.messages[:organization_id].first
   end
 
   test 'facts_joins should accounts with positions projects and name_facts' do
@@ -407,7 +406,7 @@ class AccountTest < ActiveSupport::TestCase
         user.valid?
         assert user.errors.messages[:email_confirmation]
 
-        assert_equal 'Invalid Email Address detected.', user.errors.messages[:email_confirmation].first
+        assert_equal I18n.t('accounts.invalid_email_address'), user.errors.messages[:email_confirmation].first
       end
     end
 
