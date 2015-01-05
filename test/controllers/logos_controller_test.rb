@@ -7,73 +7,73 @@ class LogosControllerTest < ActionController::TestCase
     @user = accounts(:user)
   end
 
-  test 'user has permissions to edit' do
+  it 'user has permissions to edit' do
     # TODO: acts_as_edited
     Project.any_instance.expects(:edit_authorized?).returns(false)
     login_as @user
     post :create, project_id: projects(:linux).id
-    assert_response :redirect
-    assert_redirected_to '/sessions/new'
+    must_respond_with :redirect
+    must_redirect_to '/sessions/new'
   end
 
-  test 'upload logo via URL' do
+  it 'upload logo via URL' do
     login_as @admin
     project = projects(:linux)
     Project.any_instance.expects(:edit_authorized?).returns(true)
     post :create, project_id: project.id, logo: { url: 'https://www.openhub.net/images/clear.gif' }
-    assert_redirected_to new_project_logos_path
-    assert_equal project.reload.logo.attachment_file_name, 'clear.gif'
-    assert_equal project.logo.attachment_content_type, 'image/gif'
+    must_redirect_to new_project_logos_path
+    project.reload.logo.attachment_file_name.must_equal 'clear.gif'
+    project.logo.attachment_content_type.must_equal 'image/gif'
   end
 
-  test 'upload logo for organization via URL' do
+  it 'upload logo for organization via URL' do
     login_as @admin
     organization = organizations(:linux)
     Organization.any_instance.expects(:edit_authorized?).returns(true)
     post :create, organization_id: organization.id, logo: { url: 'https://www.openhub.net/images/clear.gif' }
-    assert_redirected_to new_organization_logos_path
-    assert_equal organization.reload.logo.attachment_file_name, 'clear.gif'
-    assert_equal organization.logo.attachment_content_type, 'image/gif'
+    must_redirect_to new_organization_logos_path
+    organization.reload.logo.attachment_file_name.must_equal 'clear.gif'
+    organization.logo.attachment_content_type.must_equal 'image/gif'
   end
 
-  test 'validate failure'do
+  it 'validate failure'do
     login_as @admin
     project = projects(:linux)
     Project.any_instance.expects(:edit_authorized?).returns(true)
     post :create, project_id: project.id, logo: { url: 'https://www.dummyhost.net/images/clear.gif' }
-    assert_redirected_to new_project_logos_path
-    assert_equal 'Sorry, there was a problem updating the logo', flash[:error]
+    must_redirect_to new_project_logos_path
+    flash[:error].must_equal 'Sorry, there was a problem updating the logo'
   end
 
-  test 'upload logo via desktop file' do
+  it 'upload logo via desktop file' do
     login_as @admin
     project = projects(:linux)
     Project.any_instance.expects(:edit_authorized?).returns(true)
     tempfile = Rack::Test::UploadedFile.new('test/fixtures/files/ruby.png', 'image/png')
     post :create, project_id: project.id, logo: { attachment: tempfile }
-    assert_redirected_to new_project_logos_path
-    assert_equal project.reload.logo.attachment_file_name, 'ruby.png'
-    assert_equal project.logo.attachment_content_type, 'image/png'
+    must_redirect_to new_project_logos_path
+    project.reload.logo.attachment_file_name.must_equal 'ruby.png'
+    project.logo.attachment_content_type.must_equal 'image/png'
   end
 
-  test 'open LogosController new for project with no logo renders successfully' do
+  it 'open LogosController new for project with no logo renders successfully' do
     project = projects(:linux)
 
     get :new, project_id: project.id
-    assert_response :success
+    must_respond_with :success
   end
 
-  test 'LogosController destroy resets to NilLogo' do
+  it 'LogosController destroy resets to NilLogo' do
     project = projects(:linux)
     login_as @admin
 
     delete :destroy, project_id: project.id
 
-    assert_redirected_to new_project_logos_path
-    assert_equal NilClass, project.reload.logo.class
+    must_redirect_to new_project_logos_path
+    NilClass.must_equal project.reload.logo.class
   end
 
-  test 'new logos page for a deleted project is rendered using the projects/deleted template' do
+  it 'new logos page for a deleted project is rendered using the projects/deleted template' do
     skip('TODO: projects')
     project = projects(:linux)
 
@@ -83,27 +83,27 @@ class LogosControllerTest < ActionController::TestCase
 
     get :new, project_id: project.id
 
-    assert_response :success
-    assert_template 'projects/deleted'
+    must_respond_with :success
+    must_render_template 'projects/deleted'
   end
 
-  test 'new unauthenticated' do
+  it 'new unauthenticated' do
     get :new, project_id: projects(:linux).id
-    assert_response :success
+    must_respond_with :success
   end
 
-  test 'new' do
+  it 'new' do
     skip('TODO: application')
     login_as @admin
     get :new, project_id: projects(:linux).id
-    assert_response :success
-    assert_select 'form[action=?]', project_logos_path do
+    must_respond_with :success
+    'form[action=?]'.must_select project_logos_path do
       assert_select 'input[type=radio][name=logo_id]'
       assert_select 'input[type=submit]'
     end
   end
 
-  test 'new shows flash if user has no permissions' do
+  it 'new shows flash if user has no permissions' do
     skip('TODO: manage')
     with_editor :jason do
       Manage.create!(project: projects(:linux), account: accounts(:robin))
@@ -112,21 +112,21 @@ class LogosControllerTest < ActionController::TestCase
 
     login_as @user
     get :new, project_id: projects(:linux).id
-    assert_equal 'You can view, but not change this data. Only managers may change this data.', flash[:notice]
+    flash[:notice].must_equal 'You can view, but not change this data. Only managers may change this data.'
   end
 
-  test 'create with logo id' do
+  it 'create with logo id' do
     # TODO: acts_as_edited
     login_as @admin
     Project.any_instance.expects(:edit_authorized?).returns(true)
     desired_new_logo_id = attachments(:random_logo).id
     post :create, project_id: projects(:linux).id, logo_id: desired_new_logo_id
-    assert_redirected_to new_project_logos_path(projects(:linux).id)
+    must_redirect_to new_project_logos_path(projects(:linux).id)
     projects(:linux).reload
-    assert_equal desired_new_logo_id, projects(:linux).logo_id
+    desired_new_logo_id.must_equal projects(:linux).logo_id
   end
 
-  test 'create requires permissions' do
+  it 'create requires permissions' do
     skip('TODO: manage')
     with_editor :jason do
       Manage.create!(project: projects(:linux), account: accounts(:robin))
@@ -138,7 +138,7 @@ class LogosControllerTest < ActionController::TestCase
     assert_no_difference('projects(:linux).reload.logo_id') do
       post :create, project_id: projects(:linux).id, logo_id: desired_new_logo_id
     end
-    assert_redirected_to new_session_path
-    assert flash[:error] =~ /authorized/
+    must_redirect_to new_session_path
+    flash[:error].must_match(/authorized/)
   end
 end

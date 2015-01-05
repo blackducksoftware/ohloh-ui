@@ -1,25 +1,25 @@
 require 'test_helper'
 
 class HelpfulTest < ActiveSupport::TestCase
-  def setup
-    @review = Review.create!(account_id: accounts(:admin).id, project: projects(:linux),
-                             comment: 'Dummy Comment', title: 'Dummy Title')
+  let(:review) do
+    Review.create!(account_id: accounts(:admin).id, project: projects(:linux),
+                   comment: 'Dummy Comment', title: 'Dummy Title')
   end
 
-  def test_cant_helpful_your_own_review
-    h = @review.helpfuls.create(account_id: @review.account_id)
-    assert !h.valid?
-    assert_equal ["can't moderate your own review"], h.errors[:account]
+  it 'test cant helpful your own review' do
+    h = review.helpfuls.create(account_id: review.account_id)
+    h.wont_be :valid?
+    h.errors[:account].must_equal ["can't moderate your own review"]
   end
 
-  def test_target
-    h = @review.helpfuls.create!(account_id: accounts(:user).id)
-    assert_equal @review, h.review
+  it 'test target' do
+    h = review.helpfuls.create!(account_id: accounts(:user).id)
+    h.review.must_equal review
   end
 
-  def test_after_save_updates_helpful_score
-    assert_difference('@review.reload.helpful_score', 1) do
-      @review.helpfuls.create!(account_id: accounts(:user).id, yes: true)
+  it 'test after save updates helpful score' do
+    assert_difference('review.reload.helpful_score', 1) do
+      review.helpfuls.create!(account_id: accounts(:user).id, yes: true)
     end
   end
 end
