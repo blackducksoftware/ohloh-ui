@@ -3,133 +3,133 @@ require 'test_helper'
 class ManagersControllerTest < ActionController::TestCase
   fixtures :accounts, :projects, :organizations
 
-  def test_index_of_project_for_manager
+  it 'test index of project for manager' do
     login_as accounts(:admin)
     setup_admin_user_umlaut
     get :index, project_id: projects(:linux).to_param
-    assert_response :success
-    assert @response.body =~ /Pending/i
+    must_respond_with :success
+    @response.body.must_match(/Pending/i)
   end
 
-  def test_index_for_i_manage_this_project_button_for_admin
+  it 'test index for i manage this project button for admin' do
     login_as accounts(:admin)
     get :index, project_id: projects(:linux).to_param
-    assert_response :success
+    must_respond_with :success
     assert_tag tag: 'a', attributes: { class: 'btn btn-primary' }
     assert_select '.col-md-4 a.btn.btn-primary', text: 'I manage this project on Open Hub'
   end
 
-  def test_index_for_i_manage_this_project_button_for_admin_when_admin_is_manager
+  it 'test index for i manage this project button for admin when admin is manager' do
     login_as accounts(:admin)
     a = projects(:linux)
     a.managers << accounts(:admin)
     a.save
     get :index, project_id: projects(:linux).to_param
-    assert_response :success
+    must_respond_with :success
     assert_select 'p a.btn.btn-small.btn-danger', text: /remove manager/
   end
 
-  def test_index_for_applicant
+  it 'test index for applicant' do
     login_as accounts(:umlaut)
     setup_admin_user_umlaut
     get :index, project_id: projects(:linux).to_param
-    assert_response :success
-    assert @response.body =~ /Pending/i
-    assert @response.body =~ /#{accounts(:umlaut).name}/i
+    must_respond_with :success
+    @response.body.must_match(/Pending/i)
+    @response.body.must_match(/#{accounts(:umlaut).name}/i)
   end
 
-  def test_index_for_random
+  it 'test index for random' do
     login_as accounts(:joe)
     setup_admin_user_umlaut
     get :index, project_id: projects(:linux).to_param
-    assert_response :success
-    assert_equal nil, @response.body =~ /Pending/i
-    assert_equal nil, @response.body =~ /#{accounts(:umlaut).name}/i
+    must_respond_with :success
+    @response.body.wont_match(/Pending/i)
+    @response.body.wont_match(/#{accounts(:umlaut).name}/i)
   end
 
-  def test_index_of_non_existant_project
+  it 'test index of non existant project' do
     login_as accounts(:admin)
     get :index, project_id: 'I_AM_A_BANANA!'
-    assert_response :not_found
+    must_respond_with :not_found
   end
 
-  def test_index_of_non_existant_organization
+  it 'test index of non existant organization' do
     login_as accounts(:admin)
     get :index, organization_id: 'I_AM_A_BANANA!'
-    assert_response :not_found
+    must_respond_with :not_found
   end
 
-  def test_reject_should_fail_unless_logged_in
+  it 'test reject should fail unless logged in' do
     manager_apply(accounts(:user), projects(:linux))
     set_manager(accounts(:admin), projects(:linux))
     login_as accounts(:admin)
     assert_difference 'Manage.where.not(deleted_by: nil).count' do
       post :reject, project_id: projects(:linux).to_param, id: accounts(:user).to_param
     end
-    assert_response :redirect
+    must_respond_with :redirect
   end
 
-  def test_reject_should_succeed_for_self
+  it 'test reject should succeed for self' do
     manager_apply(accounts(:user), projects(:linux))
     login_as accounts(:user)
     assert_difference 'Manage.where.not(deleted_by: nil).count' do
       post :reject, project_id: projects(:linux).to_param, id: accounts(:user).to_param
     end
-    assert_response :redirect
+    must_respond_with :redirect
   end
 
-  def test_reject_should_succeed_for_orgs
+  it 'test reject should succeed for orgs' do
     manager_apply(accounts(:user), organizations(:linux))
     login_as accounts(:user)
     assert_difference 'Manage.where.not(deleted_by: nil).count' do
       post :reject, organization_id: organizations(:linux).to_param, id: accounts(:user).to_param
     end
-    assert_response :redirect
+    must_respond_with :redirect
   end
 
-  def test_reject_should_not_succeed_for_unlogged_in
+  it 'test reject should not succeed for unlogged in' do
     manager_apply(accounts(:user), projects(:linux))
     assert_no_difference 'Manage.where.not(deleted_by: nil).count' do
       post :reject, project_id: projects(:linux).to_param, id: accounts(:user).to_param
     end
-    assert_response :unauthorized
+    must_respond_with :unauthorized
   end
 
-  def test_accept_should_succeed_for_manager
+  it 'test accept should succeed for manager' do
     login_as accounts(:admin)
     set_manager(accounts(:admin), projects(:linux))
     manager_apply(accounts(:user), projects(:linux))
     assert_difference 'Manage.where.not(approved_by: nil).where(deleted_at: nil).count' do
       post :approve, project_id: projects(:linux).to_param, id: accounts(:user).to_param
     end
-    assert_equal true, projects(:linux).active_managers.include?(accounts(:user))
+    projects(:linux).active_managers.include?(accounts(:user)).must_equal true
     manage = Manage.where(target: projects(:linux), account_id: accounts(:user).id).first
-    assert_equal accounts(:admin), manage.approver
-    assert_response :redirect
+    manage.approver.must_equal accounts(:admin)
+    must_respond_with :redirect
   end
 
-  def test_accept_should_fail_for_not_logged_in
+  it 'test accept should fail for not logged in' do
     set_manager(accounts(:admin), projects(:linux))
     manager_apply(accounts(:user), projects(:linux))
     assert_no_difference 'Manage.where.not(approved_by: nil).where(deleted_at: nil).count' do
       post :approve, project_id: projects(:linux).to_param, id: accounts(:user).to_param
     end
-    assert_equal false, projects(:linux).active_managers.include?(accounts(:user))
-    assert_response :unauthorized
+    projects(:linux).active_managers.include?(accounts(:user)).must_equal false
+    must_respond_with :unauthorized
   end
 
-  def test_accept_should_fail_for_non_manager
+  it 'test accept should fail for non manager' do
     login_as accounts(:joe)
     set_manager(accounts(:admin), projects(:linux)) # joe's logged in but admin's the manager
     manager_apply(accounts(:user), projects(:linux))
     assert_no_difference 'Manage.where.not(approved_by: nil).where(deleted_at: nil).count' do
       post :approve, project_id: projects(:linux).to_param, id: accounts(:user).to_param
     end
-    assert_equal false, projects(:linux).active_managers.include?(accounts(:user))
-    assert_response :unauthorized
+    projects(:linux).active_managers.include?(accounts(:user)).must_equal false
+    must_respond_with :unauthorized
   end
 
-  def test_accept_should_fail_for_rejected_manager
+  it 'test accept should fail for rejected manager' do
     login_as accounts(:joe)
     set_manager(accounts(:joe), projects(:linux))
     projects(:linux).manages.each { |pa| pa.update_attributes!(deleted_by: 1, deleted_at: Time.now.utc) }
@@ -138,69 +138,69 @@ class ManagersControllerTest < ActionController::TestCase
     assert_no_difference 'Manage.where.not(approved_by: nil).where(deleted_at: nil).count' do
       post :approve, project_id: projects(:linux).to_param, id: accounts(:user).to_param
     end
-    assert_equal false, projects(:linux).active_managers.include?(accounts(:user))
-    assert_response :unauthorized
+    projects(:linux).active_managers.include?(accounts(:user)).must_equal false
+    must_respond_with :unauthorized
   end
 
-  def test_new
+  it 'test new' do
     login_as accounts(:admin)
     get :new, project_id: projects(:linux).to_param
-    assert_response :success
+    must_respond_with :success
   end
 
-  def test_create
+  it 'test create' do
     login_as accounts(:admin)
     assert_difference 'Manage.count' do
       post :create, project_id: projects(:linux).to_param, manage: { message: 'testing' }
-      assert_response :redirect
+      must_respond_with :redirect
     end
   end
 
-  def test_create_doesnt_allow_books
+  it 'test create doesnt allow books' do
     login_as accounts(:admin)
     assert_no_difference 'Manage.count' do
       post :create, project_id: projects(:linux).to_param, manage: { message: 'testing' * 1_000 }
-      assert_response :unprocessable_entity
+      must_respond_with :unprocessable_entity
     end
   end
 
-  def test_edit
+  it 'test edit' do
     login_as accounts(:admin)
     admin_manages_linux
     get :edit, project_id: projects(:linux).to_param, id: accounts(:admin).to_param
-    assert_response :success
-    assert_equal 'test message', assigns(:manage).message
+    must_respond_with :success
+    assigns(:manage).message.must_equal 'test message'
   end
 
-  def test_edit_of_a_non_existant_account
+  it 'test edit of a non existant account' do
     login_as accounts(:admin)
     get :edit, project_id: projects(:linux).to_param, id: 'I_AM_A_BANANA!'
-    assert_response :not_found
+    must_respond_with :not_found
   end
 
-  def test_update
+  it 'test update' do
     login_as accounts(:admin)
     admin_manages_linux
     post :update, id: accounts(:admin).to_param, project_id: projects(:linux).to_param, manage: { message: 'hihi' }
-    assert_equal 'hihi', projects(:linux).reload.manages.first.message
+    projects(:linux).reload.manages.first.message.must_equal 'hihi'
     assert flash[:notice] == 'Save successful!'
   end
 
-  def test_update_doesnt_allow_books
+  it 'test update doesnt allow books' do
     login_as accounts(:admin)
     admin_manages_linux
     post :update, id: accounts(:admin).to_param, project_id: projects(:linux).to_param,
                   manage: { message: 'testing' * 1_000 }
-    assert_response :unprocessable_entity
-    assert_equal 'test message', projects(:linux).reload.manages.first.message
+    must_respond_with :unprocessable_entity
+    projects(:linux).reload.manages.first.message.must_equal 'test message'
   end
 
-  def test_update_wont_edit_someone_elses
+  it 'test update wont edit someone elses' do
     login_as accounts(:user)
     admin_manages_linux
     post :update, id: accounts(:admin).to_param, project_id: projects(:linux).to_param, manage: { message: 'hihi' }
-    assert_response :unauthorized
-    assert_not_equal 'hihi', projects(:linux).manages.first.message
+    must_respond_with :unauthorized
+    projects(:linux).manages.first.message.wont_equal 'hihi'
   end
 
   protected

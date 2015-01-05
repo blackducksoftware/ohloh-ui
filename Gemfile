@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 # Remove when ohno-you-dont is published to rubygems.org
-source 'http://stage-utility-1.blackducksoftware.com:9292/'
+source 'http://oh-stage-utility-1.blackducksoftware.com:9292/'
 
 gem 'brakeman'
 gem 'coffee-rails'
@@ -20,11 +20,14 @@ gem 'dotenv-rails'
 gem 'paperclip'
 gem 'aws-sdk'
 
+gem 'pry-rails', group: :development
+
 group :development, :test, :vagrant do
   gem 'byebug'
   gem 'factory_girl_rails'
   gem 'flog'
   gem 'haml-lint'
+  gem 'minitest-rails'
   gem 'mocha'
   gem 'simplecov'
   gem 'simplecov-rcov'
