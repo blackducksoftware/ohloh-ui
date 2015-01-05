@@ -3,8 +3,6 @@ FactoryGirl.define do
     type 'CreateEdit'
     target_type 'Project'
     target_id 1
-    key 'name'
-    value 'Linux 2: Electric Boogaloo'
     account_id 1
     project_id 1
     organization_id nil
