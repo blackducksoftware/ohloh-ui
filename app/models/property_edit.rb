@@ -15,26 +15,29 @@ class PropertyEdit < Edit
   private
 
   def do_swap(undo)
-    verb = undo ? I18n.t(:undo) : I18n.t(:redo)
+    verb = undo ? I18n.t('edits.undo') : I18n.t('edits.redo')
     fail_unless_authorized!(verb)
     fail_unless_action_allowed!(undo, verb)
-    target.send(key.to_s + '=', previous_value)
-    fail_unless_action_succeeded!(undo)
+    update_target(undo)
+    fail_unless_action_succeeded!(verb)
+  end
+
+  def update_target(undo)
+    target.update_attributes(key.to_s => undo ? previous_value : value)
   end
 
   def fail_unless_authorized!(verb)
     return if !target.respond_to?(:edit_authorized?) || target.edit_authorized?
-    fail ActsAsEditable::UndoError, I18n.t(:aee_you_dont_have_permission, verb: verb)
+    fail ActsAsEditable::UndoError, I18n.t('edits.you_dont_have_permission', verb: verb)
   end
 
   def fail_unless_action_allowed!(undo, verb)
     return if (undo && target.allow_undo?(key) && previous_value) || (!undo && target.allow_redo?(key))
-    fail ActsAsEditable::UndoError, I18n.t(:aee_generic_cant, verb: verb)
+    fail ActsAsEditable::UndoError, I18n.t('edits.generic_cant', verb: verb)
   end
 
-  def fail_unless_action_succeeded!(undo)
+  def fail_unless_action_succeeded!(verb)
     return if target.errors.empty?
-    msg = undo ? :aee_undoing_that_makes_an_invalid : :aee_undoing_that_makes_an_invalid
-    fail ActsAsEditable::UndoError, I18n.t(msg, target_type: target_type)
+    fail ActsAsEditable::UndoError, I18n.t('edits.causes_errors', verb: verb)
   end
 end

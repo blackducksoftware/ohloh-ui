@@ -13,6 +13,8 @@ module OhlohUi
     config.generators.helper = false
     config.action_controller.include_all_helpers = false
     config.active_record.schema_format = :sql
+
     config.autoload_paths << "#{Rails.root}/app/exceptions"
+    config.autoload_paths << "#{Rails.root}/app/models/acts_as_editable"
   end
 end

@@ -29,7 +29,7 @@ module ActsAsEditable
     true
   end
 
-  def allow_undo?(_)
+  def allow_redo?(_)
     true
   end
 end

@@ -3,3 +3,8 @@ en:
     undo_redo_require_editor: "You must pass an editor to undo or redo."
     cant_undo: "Can't undo what has already been undone!"
     cant_redo: "Can't redo what has already been redone!"
+    you_dont_have_permission: "You don't have permission to %{verb} this edit."
+    generic_cant: "You can't %{verb} this edit."
+    causes_errors: "Attempting to %{verb} this edit triggered an error."
+    undo: "undo"
+    redo: "redo"

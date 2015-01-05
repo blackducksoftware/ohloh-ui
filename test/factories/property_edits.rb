@@ -1,6 +1,6 @@
 FactoryGirl.define do
-  factory :create_edit do
-    type 'CreateEdit'
+  factory :property_edit do
+    type 'PropertyEdit'
     target_type 'Project'
     target_id 1
     key 'name'

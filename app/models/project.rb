@@ -8,6 +8,10 @@ class Project < ActiveRecord::Base
 
   scope :from_param, ->(param) { where(url_name: param) }
 
+  acts_as_editable editable_attributes: [:name, :url_name, :logo_id, :organization_id, :best_analysis_id,
+                                         :description, :url, :download_url, :tag_list, :missing_source],
+                   merge_within: 30.minutes
+
   def to_param
     url_name
   end

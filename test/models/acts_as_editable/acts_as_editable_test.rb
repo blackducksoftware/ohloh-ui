@@ -1,5 +1,4 @@
 require 'test_helper'
-require "#{Rails.root}/app/models/acts_as_editable/acts_as_editable.rb"
 require "#{Rails.root}/test/mocks/mock_active_record_base"
 
 class MockEditableRecord < MockActiveRecordBase
@@ -12,6 +11,8 @@ class MockEditableRecord < MockActiveRecordBase
 end
 
 class ActsAsEditable::ActsAsEditableTest < ActiveSupport::TestCase
+  fixtures :accounts
+
   def setup
     @editor_instance = MockEditableRecord.new
   end
@@ -22,7 +23,7 @@ class ActsAsEditable::ActsAsEditableTest < ActiveSupport::TestCase
     end
 
     test "#{method} returns true with an editor account" do
-      @editor_instance.editor_account = 1
+      @editor_instance.editor_account = accounts(:admin)
       assert @editor_instance.save
     end
 
@@ -33,7 +34,7 @@ class ActsAsEditable::ActsAsEditableTest < ActiveSupport::TestCase
     end
 
     test "#{method}! doesn't throw with an editor account" do
-      @editor_instance.editor_account = 1
+      @editor_instance.editor_account = accounts(:admin)
       assert_nothing_raised do
         @editor_instance.send "#{method}!"
       end
@@ -41,7 +42,7 @@ class ActsAsEditable::ActsAsEditableTest < ActiveSupport::TestCase
   end
 
   test 'edit_description option should be invoked during save' do
-    @editor_instance.editor_account = 1
+    @editor_instance.editor_account = accounts(:admin)
     @editor_instance.expects(:edit_desc_callback)
     assert @editor_instance.save
   end

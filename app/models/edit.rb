@@ -1,6 +1,5 @@
-# TODO: The target code can't be activated until we have the models that target polymorphizes
 class Edit < ActiveRecord::Base
-  # belongs_to :target, polymorphic: true
+  belongs_to :target, polymorphic: true
   belongs_to :undoer, class_name: 'Account', foreign_key: 'undone_by'
 
   scope :not_undone, -> { where(undone: false) }
@@ -12,10 +11,12 @@ class Edit < ActiveRecord::Base
   end
 
   def undo!(editor)
+    target.editor_account = editor
     swap_doneness(true, editor)
   end
 
   def redo!(editor)
+    target.editor_account = editor
     swap_doneness(false, editor)
   end
 
