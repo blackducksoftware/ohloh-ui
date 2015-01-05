@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class AccountTest < ActiveSupport::TestCase
-  fixtures :accounts, :vitas, :name_facts, :projects, :commits, :analyses, :names
-
   test '#sent_kudos' do
     Kudo.delete_all
     admin_account = accounts(:admin)

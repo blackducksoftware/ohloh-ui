@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class PermissionsControllerTest < ActionController::TestCase
-  fixtures :accounts, :projects
-
   setup do
     @project = projects(:linux)
     @permissions = create(:permission, target: @project, remainder: false)

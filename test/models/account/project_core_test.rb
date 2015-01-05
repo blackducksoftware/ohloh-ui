@@ -1,8 +1,6 @@
 require_relative '../../test_helper'
 
 class ProjectCoreTest < ActiveSupport::TestCase
-  fixtures :accounts, :projects
-
   test 'used' do
     account = accounts(:admin)
     stack = Stack.new

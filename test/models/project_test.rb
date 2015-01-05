@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class ProjectTest < ActiveSupport::TestCase
-  fixtures :accounts, :projects
-
   test '#first_review_for' do
     account = accounts(:user)
     project = projects(:linux)

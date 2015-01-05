@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class SessionsControllerTest < ActionController::TestCase
-  fixtures :accounts
-
   # new action
   test 'the new action should render correctly' do
     get :new

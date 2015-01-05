@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class KudoTest < ActiveSupport::TestCase
-  fixtures :accounts
-
   test 'recent' do
     Kudo.delete_all
     admin_account = accounts(:admin)

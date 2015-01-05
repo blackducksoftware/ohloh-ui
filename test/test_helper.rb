@@ -12,6 +12,7 @@ ActiveRecord::Migration.maintain_test_schema!
 
 class ActiveSupport::TestCase
   include FactoryGirl::Syntax::Methods
+  fixtures :all
 
   def login_as(account)
     @controller.session[:account_id] = account ? account.id : nil

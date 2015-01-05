@@ -2,7 +2,6 @@ require 'test_helper'
 
 class AvatarHelperTest < ActionView::TestCase
   include AvatarHelper
-  fixtures :accounts, :people
 
   test 'avatar_img_path should handle accounts' do
     path = avatar_img_path(accounts(:admin))

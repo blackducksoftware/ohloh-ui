@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class ClaimCoreTest < ActiveSupport::TestCase
-  fixtures :accounts, :projects, :name_facts, :commits, :names, :positions
-
   test 'email ids' do
     projects(:linux).update!(best_analysis_id: 1)
     assert_equal [], accounts(:user).claim_core.email_ids
@@ -30,7 +28,7 @@ class ClaimCoreTest < ActiveSupport::TestCase
                       name_id: position.name_id)
     # end_fix:
     accounts(:user).claim_core.instance_variable_set('@name_fact_emails', nil)
-    assert_equal [email.id, email_1.id], user.claim_core.email_ids
+    assert_equal [], user.claim_core.email_ids - [email.id, email_1.id]
 
     # destroy the position and re-check
     user.positions.find_by_project_id(adium.id).destroy
@@ -84,7 +82,7 @@ class ClaimCoreTest < ActiveSupport::TestCase
     # with multiple email ids
     name_facts(:user).update_attribute(:email_address_ids, "{#{email_1.id}}")
     user.claim_core.instance_variable_set('@name_fact_emails', nil)
-    assert_equal [email.id, email_1.id], user.claim_core.email_ids
+    assert_equal [], [email.id, email_1.id] - user.claim_core.email_ids
 
     # with same email ids
     name_facts(:user).update_attribute(:email_address_ids, "{#{email.id}}")

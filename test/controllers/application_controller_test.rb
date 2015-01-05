@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class ApplicationControllerTest < ActionController::TestCase
-  fixtures :accounts
-
   setup do
     @controller = TestController.new
     @controller.request = @request

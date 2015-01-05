@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class Account::AccessTest < ActiveSupport::TestCase
-  fixtures :accounts
   test 'validate authorize admin?' do
     account = accounts(:admin)
     assert Account::Access.new(account).admin?

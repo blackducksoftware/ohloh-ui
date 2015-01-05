@@ -1,8 +1,6 @@
 require_relative '../test_helper'
 
 class DomainBlacklistsControllerTest < ActionController::TestCase
-  fixtures :accounts
-
   def setup
     login_as accounts(:admin)
   end
@@ -28,7 +26,6 @@ class DomainBlacklistsControllerTest < ActionController::TestCase
 
   test 'index' do
     get :index
-    assert_equal 'No Domains Blacklisted', flash[:notice]
     assert_response :success
     assert_select 'h3', text: 'Blacklist Domains'
     assert_select 'a[href=/domain_blacklists/new]', text: 'Add New Domain'
@@ -36,7 +33,6 @@ class DomainBlacklistsControllerTest < ActionController::TestCase
 
   test 'link to add new domain' do
     get :index
-    assert_equal 'No Domains Blacklisted', flash[:notice]
     assert_response :success
     assert_select 'h3', text: 'Blacklist Domains'
     assert_select 'a[href=/domain_blacklists/new]', text: 'Add New Domain'
@@ -53,24 +49,24 @@ class DomainBlacklistsControllerTest < ActionController::TestCase
   end
 
   test 'posting the form with a new domain should create a new record' do
-    assert_equal 0, DomainBlacklist.count
+    assert_equal 2, DomainBlacklist.count
     post :create, domain_blacklist: { domain: 'mindpowerup.com' }
     assert_not_nil assigns :domain_blacklist
     assert_equal 0,  (assigns :domain_blacklist).errors.count
     assert_equal 'Domain successfully added to blacklist', flash[:success]
-    assert_equal 1, DomainBlacklist.count
+    assert_equal 3, DomainBlacklist.count
     assert_redirected_to domain_blacklists_path
   end
 
   test 'posting the form with an existing domain fails' do
     bad_domain = 'cruddysite.com'
     DomainBlacklist.create(domain: bad_domain)
-    assert_equal 1, DomainBlacklist.count
+    assert_equal 3, DomainBlacklist.count
     post :create, domain_blacklist: { domain: bad_domain }
     assert_not_nil assigns :domain_blacklist
     assert_equal 1, (assigns :domain_blacklist).errors.count
     assert_equal 'Unable to add domain to blacklist', flash[:error]
-    assert_equal 1, DomainBlacklist.count
+    assert_equal 3, DomainBlacklist.count
     assert_redirected_to new_domain_blacklist_path
   end
 
@@ -128,7 +124,7 @@ class DomainBlacklistsControllerTest < ActionController::TestCase
     domain = DomainBlacklist.find_by_domain('bad_domain.com')
     delete :destroy, id: domain.id
     assert_redirected_to domain_blacklists_path
-    assert_equal 1, DomainBlacklist.count
+    assert_equal 3, DomainBlacklist.count
     assert_equal 'Blacklisted Domain successfully deleted', flash[:notice]
   end
 
@@ -145,6 +141,6 @@ class DomainBlacklistsControllerTest < ActionController::TestCase
   def create_two_blacklisted_domains
     DomainBlacklist.create(domain: 'bad_domain.com')
     DomainBlacklist.create(domain: 'spam_domain.com')
-    assert_equal 2, DomainBlacklist.count
+    assert_equal 4, DomainBlacklist.count
   end
 end

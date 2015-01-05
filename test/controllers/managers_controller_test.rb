@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class ManagersControllerTest < ActionController::TestCase
-  fixtures :accounts, :projects, :organizations
-
   def test_index_of_project_for_manager
     login_as accounts(:admin)
     setup_admin_user_umlaut

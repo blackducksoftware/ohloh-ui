@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class PositionCoreTest < ActiveSupport::TestCase
-  fixtures :accounts, :projects, :names
-
   def setup
     fixup
   end

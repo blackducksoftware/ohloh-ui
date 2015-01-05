@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class HelpfulTest < ActiveSupport::TestCase
-  fixtures :accounts, :projects
-
   def setup
     @review = Review.create!(account_id: accounts(:admin).id, project: projects(:linux),
                              comment: 'Dummy Comment', title: 'Dummy Title')

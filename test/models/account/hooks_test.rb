@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class Account::HooksTest < ActiveSupport::TestCase
-  fixtures :accounts, :invites
-
   class BeforeValidation < Account::HooksTest
     test 'must strip login email and name' do
       account = accounts(:user)

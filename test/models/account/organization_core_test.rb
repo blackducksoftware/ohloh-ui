@@ -1,8 +1,6 @@
 require_relative '../../test_helper'
 
 class Account::OrganizationCoreTest < ActiveSupport::TestCase
-  fixtures :accounts, :organizations, :projects, :name_facts, :analyses
-
   def setup
     @account = accounts(:admin)
     @account_org = Account::OrganizationCore.new(@account.id)

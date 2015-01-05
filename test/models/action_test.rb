@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class ActionTest < ActiveSupport::TestCase
-  fixtures :accounts, :projects, :people, :names
-
   def test_account_required
     assert_no_difference 'Action.count' do
       action = Action.create

@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class Account::EncrypterTest < ActiveSupport::TestCase
-  fixtures :accounts
-
   class BeforeCreate < Account::EncrypterTest
     test 'must set activation code to random hash' do
       account = create(:account)

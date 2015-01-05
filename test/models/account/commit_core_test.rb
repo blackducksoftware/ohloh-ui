@@ -1,8 +1,6 @@
 require_relative '../../test_helper'
 
 class Account::CommitCoreTest < ActiveSupport::TestCase
-  fixtures :accounts, :projects, :name_facts, :analyses, :commits
-
   def setup
     @account_1 = accounts(:admin)
     account_2 = accounts(:user)

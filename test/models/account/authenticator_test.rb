@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class Account::AuthenticatorTest < ActiveSupport::TestCase
-  fixtures :accounts
-
   test 'can authenticate via email' do
     authenticator = Account::Authenticator.new(login: 'admin@openhub.net', password: 'test')
     assert_equal true, authenticator.authenticated?

@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class PositionTest < ActiveSupport::TestCase
-  fixtures :accounts, :projects
-
   test 'claimed_by scope' do
     user = accounts(:user)
     positions = Position.claimed_by(user)
