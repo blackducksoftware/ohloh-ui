@@ -4,155 +4,155 @@ class ManageTest < ActiveSupport::TestCase
   include ActionMailer::TestHelper
   fixtures :accounts, :projects, :organizations
 
-  def test_create_requires_project
+  it 'test create requires project' do
     manage = Manage.create(account: accounts(:admin))
-    assert manage.errors.include?(:target)
+    manage.errors.must_include(:target)
   end
 
-  def test_create_requires_account
+  it 'test create requires account' do
     manage = Manage.create(target: projects(:linux))
-    assert manage.errors.include?(:account)
+    manage.errors.must_include(:account)
   end
 
-  def test_create_should_work
+  it 'test create should work' do
     manage = Manage.create(target: projects(:linux), account: accounts(:admin))
     manage.update_attributes!(approver: accounts(:user))
-    assert manage.errors.empty?
-    assert projects(:linux).managers.include?(accounts(:admin))
-    assert accounts(:admin).projects.include?(projects(:linux))
+    manage.errors.empty?.must_equal true
+    projects(:linux).managers.must_include(accounts(:admin))
+    accounts(:admin).projects.must_include(projects(:linux))
   end
 
-  def test_create_should_fail_on_maximum
+  it 'test create should fail on maximum' do
     Manage.any_instance.expects(:over_management_limit?).returns(true)
     manage = Manage.create(account: accounts(:joe), target: projects(:linux))
-    assert manage.errors.include?(:maximum)
+    manage.errors.must_include(:maximum)
   end
 
-  def test_create_fail_on_uniqueness
+  it 'test create fail on uniqueness' do
     Manage.create!(account: accounts(:admin), target: projects(:linux))
     manage = Manage.create(account: accounts(:admin), target: projects(:linux))
-    assert manage.errors.include?(:target_id)
+    manage.errors.must_include(:target_id)
   end
 
-  def test_add_approver
+  it 'test add approver' do
     Manage.create!(account: accounts(:joe), target: projects(:linux))
     manage = Manage.create!(account: accounts(:admin), target: projects(:linux))
-    assert_nil manage.approver
+    manage.approver.must_be_nil
     manage.update_attributes!(approver: accounts(:user))
     manage.reload
-    assert_equal accounts(:user), manage.approver
+    manage.approver.must_equal accounts(:user)
   end
 
-  def test_active_manager_succeeds
+  it 'test active manager succeeds' do
     projects(:linux).manages.destroy_all
     manage = Manage.create!(account: accounts(:admin), target: projects(:linux))
     manage.update_attributes!(approver: accounts(:user))
-    assert projects(:linux).reload.active_managers.include?(accounts(:admin))
+    projects(:linux).reload.active_managers.must_include(accounts(:admin))
   end
 
-  def test_active_manager_fails_if_deleted
+  it 'test active manager fails if deleted' do
     manage = Manage.create!(account: accounts(:admin), target: projects(:linux), deleted_at: Time.now.utc)
     manage.update_attributes!(approver: accounts(:user))
-    assert !projects(:linux).reload.active_managers.include?(accounts(:admin))
+    projects(:linux).reload.active_managers.wont_include(accounts(:admin))
   end
 
-  def test_active_manager_includes_auto_approved
+  it 'test active manager includes auto approved' do
     manage = Manage.create!(account: accounts(:admin), target: projects(:linux))
-    assert_not_nil manage
-    assert projects(:linux).reload.active_managers.include?(accounts(:admin))
+    manage.wont_be_nil
+    projects(:linux).reload.active_managers.must_include(accounts(:admin))
   end
 
-  def test_destroy_by_succeeds
+  it 'test destroy by succeeds' do
     # make user an admin
     manage = Manage.create!(account: accounts(:user), target: projects(:linux))
     manage.update_attributes!(approver: accounts(:admin))
-    assert projects(:linux).reload.active_managers.include?(accounts(:user))
+    projects(:linux).reload.active_managers.must_include(accounts(:user))
 
     # create a manage entry for admin
     manage = Manage.create!(account: accounts(:admin), target: projects(:linux))
-    assert_equal nil, manage.destroyer
+    manage.destroyer.must_equal nil
 
     # user destroys it
-    assert projects(:linux).reload.managers.include?(accounts(:admin))
+    projects(:linux).reload.managers.must_include(accounts(:admin))
     manage.destroy_by!(accounts(:user))
-    assert !projects(:linux).reload.managers.include?(accounts(:admin))
-    assert_equal accounts(:user), manage.reload.destroyer
+    projects(:linux).reload.managers.wont_include(accounts(:admin))
+    manage.reload.destroyer.must_equal accounts(:user)
   end
 
-  def test_destroy_by_fails_if_destroyer_isnt_admin
+  it 'test destroy by fails if destroyer isnt admin' do
     # create a manage entry for admin
     manage = Manage.create!(account: accounts(:admin), target: projects(:linux))
     manage.update_attributes!(approver: accounts(:user))
-    assert_equal nil, manage.destroyer
+    manage.destroyer.must_equal nil
 
     # user destroys it
-    assert_raise(RuntimeError) { manage.destroy_by!(accounts(:user)) }
+    -> { manage.destroy_by!(accounts(:user)) }.must_raise(RuntimeError)
   end
 
-  def test_destroy_by_fails_if_destroyer_isnt_approved
+  it 'test destroy by fails if destroyer isnt approved' do
     Manage.create!(account: accounts(:joe), target: projects(:linux)) # auto-approved
     manage = Manage.create!(account: accounts(:user), target: projects(:linux))
-    assert !projects(:linux).reload.active_managers.include?(accounts(:user))
+    projects(:linux).reload.active_managers.wont_include(accounts(:user))
 
     # create a manage entry for admin
     manage = Manage.create!(account: accounts(:admin), target: projects(:linux))
-    assert_equal nil, manage.destroyer
+    manage.destroyer.must_equal nil
 
     # user destroys it
-    assert_raise(RuntimeError) { manage.destroy_by!(accounts(:user)) }
+    -> { manage.destroy_by!(accounts(:user)) }.must_raise(RuntimeError)
   end
 
-  def test_destroy_by_fails_if_destroyer_deleted
+  it 'test destroy by fails if destroyer deleted' do
     # make user an admin
     manage1 = Manage.create!(account: accounts(:user), target: projects(:linux), deleted_at: Time.now.utc)
     manage1.update_attributes!(approver: accounts(:user))
 
     # create a manage entry for admin
     manage2 = Manage.create!(account: accounts(:admin), target: projects(:linux))
-    assert_equal nil, manage2.destroyer
+    manage2.destroyer.must_equal nil
 
     # user destroys it
-    assert_raise(RuntimeError) { manage2.destroy_by!(accounts(:user)) }
+    -> { manage2.destroy_by!(accounts(:user)) }.must_raise(RuntimeError)
   end
 
-  def test_pending_fails_if_approved
+  it 'test pending fails if approved' do
     manage = Manage.create!(account: accounts(:user), target: projects(:linux))
     manage.update_attributes!(approver: accounts(:user))
-    assert_equal false, manage.pending?
+    manage.pending?.must_equal false
   end
 
-  def test_pending_fails_if_destroyed
+  it 'test pending fails if destroyed' do
     manage = Manage.create!(account: accounts(:user), target: projects(:linux), destroyer: accounts(:user))
-    assert_equal false, manage.pending?
+    manage.pending?.must_equal false
   end
 
-  def test_pending_fails_if_destroyed_and_approved
+  it 'test pending fails if destroyed and approved' do
     manage = Manage.create!(account: accounts(:user), target: projects(:linux), destroyer: accounts(:user))
     manage.update_attributes!(approver: accounts(:user))
-    assert_equal false, manage.pending?
+    manage.pending?.must_equal false
   end
 
-  def test_approve!
+  it 'test approve!' do
     m1 = Manage.create!(target: projects(:linux), account: accounts(:admin))
-    assert_equal Account.hamster, m1.approver
+    m1.approver.must_equal Account.hamster
     m2 = Manage.create!(target: projects(:linux), account: accounts(:user))
-    assert_equal nil, m2.approver
+    m2.approver.must_equal nil
     m2.approve!(accounts(:admin))
-    assert projects(:linux).active_managers.include?(accounts(:user))
+    projects(:linux).active_managers.must_include(accounts(:user))
   end
 
-  def test_should_list_all_the_active_managers_for_an_organization
+  it 'test should list all the active managers for an organization' do
     organizations(:linux).manages.destroy_all
     manage = Manage.create!(account: accounts(:admin), target: organizations(:linux))
     Manage.create!(account: accounts(:user), target: projects(:linux), approver: accounts(:admin))
     Manage.create!(account: accounts(:joe), target: projects(:adium), approver: accounts(:admin))
     manage.update_attributes!(approver: accounts(:user))
-    assert_equal accounts(:admin).reload.manages.organizations.first.target, organizations(:linux)
-    assert_equal 3, Manage.count
-    assert_equal 1, Manage.organizations.count
+    organizations(:linux).must_equal accounts(:admin).reload.manages.organizations.first.target
+    Manage.count.must_equal 3
+    Manage.organizations.count.must_equal 1
   end
 
-  def test_rejection_mail_sent
+  it 'test rejection mail sent' do
     Manage.create!(account: accounts(:admin), target: projects(:linux))
     application = Manage.create!(account: accounts(:user), target: projects(:linux))
 
@@ -162,7 +162,7 @@ class ManageTest < ActiveSupport::TestCase
     end
   end
 
-  def test_approve_mail_sent
+  it 'test approve mail sent' do
     Manage.create!(account: accounts(:admin), target: projects(:linux))
     application = Manage.create!(account: accounts(:user), target: projects(:linux))
 
@@ -172,7 +172,7 @@ class ManageTest < ActiveSupport::TestCase
     end
   end
 
-  def test_application_mail_sent_1
+  it 'test application mail sent 1' do
     Manage.create!(account: accounts(:admin), target: projects(:linux))
 
     # sends one mail to admin
@@ -181,7 +181,7 @@ class ManageTest < ActiveSupport::TestCase
     end
   end
 
-  def test_application_mail_sent_2
+  it 'test application mail sent 2' do
     Manage.create!(account: accounts(:admin), target: projects(:linux))
     application = Manage.create!(account: accounts(:user), target: projects(:linux))
 
@@ -191,10 +191,10 @@ class ManageTest < ActiveSupport::TestCase
     end
   end
 
-  def test_remove_existing_manager
+  it 'test remove existing manager' do
     Manage.create!(account: accounts(:admin), target: projects(:linux))
     application = Manage.create!(account: accounts(:user), target: projects(:linux), approver: accounts(:admin))
-    assert_equal 2, projects(:linux).active_managers.count
+    projects(:linux).active_managers.count.must_equal 2
 
     # sends one mail to admins (admin) and a different one to applicant (user)
     assert_emails 2 do
