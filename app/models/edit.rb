@@ -4,6 +4,9 @@ class Edit < ActiveRecord::Base
 
   scope :not_undone, -> { where(undone: false) }
   scope :similar_to, ->(edit) { similar_to_edit_arel(edit) }
+  scope :for_target, ->(target) { where(target_type: target.class.to_s, target_id: target.id) }
+  scope :for_editor, ->(editor) { where(account_id: editor.id) }
+  scope :for_ip, ->(ip) { where(ip: ip) }
 
   def previous_value
     previous_edit = find_previous_edit

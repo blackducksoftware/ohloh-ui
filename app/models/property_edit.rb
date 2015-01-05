@@ -1,4 +1,6 @@
 class PropertyEdit < Edit
+  scope :for_property, ->(property) { where(key: property) }
+
   def default_explanation
     new_value = value.present? ? value.to_s.truncate(30, omission: '…') : "[#{I18n.t(:nothing)}]"
     I18n.t(:aee_create_property_explanation, key: key, new_value: new_value)
@@ -23,7 +25,9 @@ class PropertyEdit < Edit
   end
 
   def update_target(undo)
+    target.inside_undo_or_redo = true
     target.update_attributes(key.to_s => undo ? previous_value : value)
+    target.inside_undo_or_redo = false
   end
 
   def fail_unless_authorized!(verb)
