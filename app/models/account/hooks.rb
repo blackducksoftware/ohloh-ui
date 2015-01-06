@@ -1,6 +1,8 @@
 class Account::Hooks
   def before_validation(account)
     assign_name_to_login(account) if account.name.blank?
+    account.organization_name = nil unless account.affiliation_type_other?
+    account.organization_id = nil if account.affiliation_type_other?
   end
 
   def before_destroy(account)

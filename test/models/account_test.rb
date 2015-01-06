@@ -419,6 +419,7 @@ class AccountTest < ActiveSupport::TestCase
 
     it 'must validate format of organization_name' do
       account = build(:account)
+      account.affiliation_type = 'other'
       account.organization_name = '_org'
       account.valid?
 
@@ -428,6 +429,7 @@ class AccountTest < ActiveSupport::TestCase
 
     it 'must validated length of organization_name' do
       account = build(:account)
+      account.affiliation_type = 'other'
       account.organization_name = 'A1'
       account.valid?
 
@@ -437,49 +439,11 @@ class AccountTest < ActiveSupport::TestCase
 
     it 'must allow blank organization_name' do
       account = build(:account)
+      account.affiliation_type = 'specified'
       account.organization_name = ''
       account.valid?
 
-      account.errors.messages[:organization_name].wont_be_nil
-    end
-
-    it 'must match affiliation_type against allowed types' do
-      account = build(:account)
-      account.affiliation_type = 'invalid'
-      account.valid?
-
-      account.errors.messages[:affiliation_type].first.must_equal I18n.t(:is_invalid)
-    end
-
-    it 'must not allow blank organization_id when affiliation_type is specified' do
-      account = build(:account)
-      account.affiliation_type = 'specified'
-      account.organization_id = ''
-      account.organization_name = 'org'
-      account.valid?
-
-      account.organization_name.must_be_nil
-      account.errors.messages[:organization_id].first.must_equal I18n.t(:cant_be_blank)
-    end
-
-    it 'must not allow blank organization_name when affiliation_type is specified' do
-      account = build(:account)
-      account.affiliation_type = 'specified'
-      account.organization_id = 1
-      account.organization_name = nil
-      account.valid?
-
-      account.organization_id.must_be_nil
-      account.errors.messages[:organization_name].first.must_equal I18n.t(:cant_be_blank)
-    end
-
-    it 'must allow blank organization_id when affiliation_type is not specified' do
-      account = build(:account)
-      account.affiliation_type = 'other'
-      account.organization_id = nil
-      account.valid?
-
-      account.errors.messages.must_be_empty
+      account.errors.messages[:organization_name].must_be_nil
     end
   end
 

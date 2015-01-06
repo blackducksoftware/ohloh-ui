@@ -19,6 +19,28 @@ class Account::HooksTest < ActiveSupport::TestCase
       account.valid?
       account.name.must_equal account.login
     end
+
+    it 'must set organization_name to nil when affiliation_type is not other' do
+      account = build(:account)
+      account.affiliation_type = 'specified'
+      account.organization_name = 'org'
+      account.organization_id = 1
+      account.valid?
+
+      account.organization_id.must_equal 1
+      account.organization_name.must_be_nil
+    end
+
+    it 'must set organization_id to nil when affiliation_type is other' do
+      account = build(:account)
+      account.affiliation_type = 'other'
+      account.organization_id = 1
+      account.organization_name = 'org'
+      account.valid?
+
+      account.organization_id.must_be_nil
+      account.organization_name.must_equal 'org'
+    end
   end
 
   describe 'before_destroy' do
