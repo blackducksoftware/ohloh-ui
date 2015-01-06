@@ -1,11 +1,11 @@
 require_relative '../../test_helper'
 
 class StackCoreTest < ActiveSupport::TestCase
-  test 'default' do
+  it 'default' do
     account = accounts(:admin)
 
     default_stack = account.stack_core.default
-    assert_equal 1, account.stacks.size
+    account.stacks.size.must_equal 1
 
     stack = Stack.new
     stack.projects << projects(:linux)
@@ -13,7 +13,7 @@ class StackCoreTest < ActiveSupport::TestCase
     account.save!
 
     account_stack_core = account.stack_core
-    assert_equal 2, account.stacks.size
-    assert_equal default_stack, account_stack_core.default
+    account.stacks.size.must_equal 2
+    account_stack_core.default.must_equal default_stack
   end
 end

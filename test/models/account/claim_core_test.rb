@@ -1,15 +1,15 @@
 require 'test_helper'
 
 class ClaimCoreTest < ActiveSupport::TestCase
-  test 'email ids' do
+  it 'email ids' do
     projects(:linux).update!(best_analysis_id: 1)
-    assert_equal [], accounts(:user).claim_core.email_ids
-    assert_equal [], accounts(:unactivated).claim_core.emails # no positions
+    accounts(:user).claim_core.email_ids.must_be_empty
+    accounts(:unactivated).claim_core.emails.must_be_empty # no positions
 
     email = create(:email_address, address: 'test@test.com')
     name_facts(:user).update_attribute(:email_address_ids, "{#{email.id}}")
     accounts(:user).claim_core.instance_variable_set('@name_fact_emails', nil)
-    assert_equal [email.id], accounts(:user).claim_core.email_ids
+    accounts(:user).claim_core.email_ids.must_equal [email.id]
 
     # claim a new position on a different project
     email_1 = create(:email_address, address: 'test1@test.com')
@@ -28,7 +28,7 @@ class ClaimCoreTest < ActiveSupport::TestCase
                       name_id: position.name_id)
     # end_fix:
     accounts(:user).claim_core.instance_variable_set('@name_fact_emails', nil)
-    assert_equal [], user.claim_core.email_ids - [email.id, email_1.id]
+    (user.claim_core.email_ids - [email.id, email_1.id]).must_be_empty
 
     # destroy the position and re-check
     user.positions.find_by_project_id(adium.id).destroy
@@ -36,21 +36,21 @@ class ClaimCoreTest < ActiveSupport::TestCase
     name_fact.update!(name_id: nil)
     # end_fix:
     accounts(:user).claim_core.instance_variable_set('@name_fact_emails', nil)
-    assert_equal [email.id], accounts(:user).claim_core.email_ids
+    accounts(:user).claim_core.email_ids.must_equal [email.id]
 
     # update the position name_id
     positions(:user).update_attribute(:name_id, names(:scott).id)
     name_facts(:unclaimed).update_attribute(:email_address_ids, "{#{email_1.id}}")
     accounts(:user).claim_core.instance_variable_set('@name_fact_emails', nil)
-    assert_equal [email_1.id], accounts(:user).claim_core.email_ids
+    accounts(:user).claim_core.email_ids.must_equal [email_1.id]
   end
 
-  test 'email_ids for multiple positions or alias' do
+  it 'email_ids for multiple positions or alias' do
     linux, user, scott = projects(:linux), accounts(:user), names(:scott)
     email = create(:email_address, address: 'test@test.com')
     email_1 = create(:email_address, address: 'test1@test.com')
     name_facts(:unclaimed).update_attribute(:email_address_ids, "{#{email.id}}")
-    assert_equal [], user.claim_core.email_ids
+    user.claim_core.email_ids.must_be_empty
 
     # alias scott as user. scott is associated with email - email
     alias_object = with_editor(:user) do
@@ -58,7 +58,7 @@ class ClaimCoreTest < ActiveSupport::TestCase
     end
     linux.update!(best_analysis_id: Analysis.last.id)
     user.claim_core.instance_variable_set('@name_fact_emails', nil)
-    assert_equal [email.id], user.claim_core.email_ids
+    user.claim_core.email_ids.must_equal [email.id]
 
     # delete the alias
     alias_object.stubs(:create_edit).returns(stub(:undo))
@@ -66,54 +66,54 @@ class ClaimCoreTest < ActiveSupport::TestCase
     # FIXME: Remove after integrating analysis logic
     linux.update!(best_analysis_id: nil)
     user.claim_core.instance_variable_set('@name_fact_emails', nil)
-    assert_equal [], user.claim_core.email_ids
+    user.claim_core.email_ids.must_be_empty
 
     # aliasing scott as admin shouldn't affect user's claimed email ids
     alias_object.update!(preferred_name_id: names(:admin).id)
     user.claim_core.instance_variable_set('@name_fact_emails', nil)
-    assert_equal [], user.claim_core.email_ids
+    user.claim_core.email_ids.must_be_empty
 
     # bring back the old alias
     alias_object.update!(preferred_name_id: names(:user).id)
     linux.update!(best_analysis_id: Analysis.last.id)
     user.claim_core.instance_variable_set('@name_fact_emails', nil)
-    assert_equal [email.id], user.claim_core.email_ids
+    user.claim_core.email_ids.must_equal [email.id]
 
     # with multiple email ids
     name_facts(:user).update_attribute(:email_address_ids, "{#{email_1.id}}")
     user.claim_core.instance_variable_set('@name_fact_emails', nil)
-    assert_equal [], [email.id, email_1.id] - user.claim_core.email_ids
+    ([email.id, email_1.id] - user.claim_core.email_ids).must_be_empty
 
     # with same email ids
     name_facts(:user).update_attribute(:email_address_ids, "{#{email.id}}")
     user.claim_core.instance_variable_set('@name_fact_emails', nil)
-    assert_equal [email.id], user.claim_core.email_ids
+    user.claim_core.email_ids.must_equal [email.id]
   end
 
-  test 'email_ids for deleted project' do
+  it 'email_ids for deleted project' do
     projects(:linux).update!(best_analysis_id: Analysis.last.id)
     email = create(:email_address, address: 'test@test.com')
     name_facts(:user).update_attribute(:email_address_ids, "{#{email.id}}")
-    assert_equal [email.id], accounts(:user).claim_core.email_ids
+    accounts(:user).claim_core.email_ids.must_equal [email.id]
 
     with_editor(:user) { projects(:linux).update!(deleted: true) }
     accounts(:user).claim_core.instance_variable_set('@name_fact_emails', nil)
-    assert_equal [], accounts(:user).claim_core.email_ids
+    accounts(:user).claim_core.email_ids.must_be_empty
 
     # add it back
     with_editor(:user) { projects(:linux).update!(deleted: false) }
     accounts(:user).claim_core.instance_variable_set('@name_fact_emails', nil)
-    assert_equal [email.id], accounts(:user).claim_core.email_ids
+    accounts(:user).claim_core.email_ids.must_equal [email.id]
   end
 
-  test 'claimed_emails' do
+  it 'claimed_emails' do
     projects(:linux).update!(best_analysis_id: Analysis.last.id)
-    assert_equal [], accounts(:user).claim_core.emails
-    assert_equal [], accounts(:unactivated).claim_core.emails # no positions
+    accounts(:user).claim_core.emails.must_be_empty
+    accounts(:unactivated).claim_core.emails.must_be_empty # no positions
 
     email = create(:email_address, address: 'test@test.com')
     name_facts(:user).update_attribute(:email_address_ids, "{#{email.id}}")
     accounts(:user).claim_core.instance_variable_set('@name_fact_emails', nil)
-    assert_equal ['test@test.com'], accounts(:user).claim_core.emails
+    accounts(:user).claim_core.emails.must_equal ['test@test.com']
   end
 end

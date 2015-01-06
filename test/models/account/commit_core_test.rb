@@ -12,24 +12,24 @@ class Account::CommitCoreTest < ActiveSupport::TestCase
     @account_commits = Account::CommitCore.new([@account_1.id, account_2.id])
   end
 
-  test 'most_and_recent_data should return values when present' do
+  it 'most_and_recent_data should return values when present' do
     skip('TODO: Failing due to fix_encoding_if_invalid!')
     commits_data = @account_commits.most_and_recent_data
 
-    assert_equal 1, commits_data[@account_1.id].size
-    assert_equal 1, commits_data[@account_1.id].first.account_id
-    assert_equal 1, commits_data[@account_1.id].first.project_id
-    assert_equal 'Linux', commits_data[@account_1.id].first.name
-    assert_equal 'linux', commits_data[@account_1.id].first.url_name
+    commits_data[@account_1.id].size.must_equal 1
+    commits_data[@account_1.id].first.account_id.must_equal 1
+    commits_data[@account_1.id].first.project_id.must_equal 1
+    commits_data[@account_1.id].first.name.must_equal 'Linux'
+    commits_data[@account_1.id].first.url_name.must_equal 'linux'
   end
 
-  test 'most_and_recent_data should return {} when account_ids is []' do
+  it 'most_and_recent_data should return {} when account_ids is empty' do
     account_commits = Account::CommitCore.new([])
-    assert_equal true, account_commits.most_and_recent_data.empty?
+    account_commits.most_and_recent_data.must_be :empty?
   end
 
-  test 'most_and_recent_data should return {} when account_ids given have no data' do
+  it 'most_and_recent_data should return {} when account_ids are non existent' do
     account_commits = Account::CommitCore.new([0])
-    assert_equal true, account_commits.most_and_recent_data.empty?
+    account_commits.most_and_recent_data.must_be :empty?
   end
 end

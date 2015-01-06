@@ -7,81 +7,81 @@ class ApplicationControllerTest < ActionController::TestCase
     @controller.response = @response
   end
 
-  test 'render_404 as html' do
+  it 'render_404 as html' do
     get :renders_404
     must_respond_with :not_found
     response.body.must_include(I18n.t(:four_oh_four))
     response.headers['Content-Type'].must_include('text/html')
   end
 
-  test 'render_404 as json' do
+  it 'render_404 as json' do
     get :renders_404, format: 'json'
     must_respond_with :not_found
     response.body.must_include(I18n.t(:four_oh_four))
     response.headers['Content-Type'].must_include('application/json')
   end
 
-  test 'render_404 as xml' do
+  it 'render_404 as xml' do
     get :renders_404, format: 'xml'
     must_respond_with :not_found
     response.body.must_include(I18n.t(:four_oh_four))
     response.headers['Content-Type'].must_include('application/xml')
   end
 
-  test 'error message as html' do
+  it 'error message as html' do
     get :error_with_message
     must_respond_with :unauthorized
     response.body.must_include('test error string')
   end
 
-  test 'error message as json' do
+  it 'error message as json' do
     get :error_with_message, format: 'json'
     must_respond_with :unauthorized
     response.body.must_include('test error string')
   end
 
-  test 'error message as xml' do
+  it 'error message as xml' do
     get :error_with_message, format: 'xml'
     must_respond_with :unauthorized
     response.body.must_include('test error string')
   end
 
-  test 'session_required with a current user' do
+  it 'session_required with a current user' do
     login_as accounts(:user)
     get :session_required_action
     must_respond_with :ok
   end
 
-  test 'session_required without a current user' do
+  it 'session_required without a current user' do
     login_as nil
     get :session_required_action
     must_respond_with :unauthorized
   end
 
-  test 'admin_session_required with a current admin' do
+  it 'admin_session_required with a current admin' do
     login_as accounts(:admin)
     get :admin_session_required_action
     must_respond_with :ok
   end
 
-  test 'admin_session_required without a current user' do
+  it 'admin_session_required without a current user' do
     login_as nil
     get :admin_session_required_action
     must_respond_with :unauthorized
   end
 
-  test 'admin_session_required with a current plain user' do
+  it 'admin_session_required with a current plain user' do
     login_as accounts(:user)
     get :admin_session_required_action
     must_respond_with :unauthorized
   end
 
-  test 'ParamRecordNotFound exceptions are caught and not passed on as 500s' do
+  it 'ParamRecordNotFound exceptions are caught and not passed on as 500s' do
     get :throws_param_record_not_found
     must_respond_with :not_found
   end
 
-  test 'remember me functionality automatically logs users in' do
+  it 'remember me functionality automatically logs users in' do
     login_as nil
     admin = accounts(:admin)
     Account::Authenticator.remember(admin)

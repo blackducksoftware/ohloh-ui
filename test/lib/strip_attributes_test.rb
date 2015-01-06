@@ -1,23 +1,23 @@
 require 'test_helper'
 
 class StripAttributesTest < ActiveSupport::TestCase
-  test 'must add strip_attributes as a class method' do
-    assert_equal true, Account.singleton_methods.include?(:strip_attributes)
+  it 'must add strip_attributes as a class method' do
+    Account.singleton_methods.must_include(:strip_attributes)
   end
 
-  test 'must strip attributes during validation' do
+  it 'must strip attributes during validation' do
     account = Account.new
     account.login = ' login '
     account.valid?
 
-    assert_equal 'login', account.login
+    account.login.must_equal 'login'
   end
 
-  test 'must strip virtual attributes' do
+  it 'must strip virtual attributes' do
     account = Account.new
     account.invite_code = '   code'
     account.valid?
 
-    assert_equal 'code', account.invite_code
+    account.invite_code.must_equal 'code'
   end
 end

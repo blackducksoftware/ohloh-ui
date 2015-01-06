@@ -1,64 +1,62 @@
 require 'test_helper'
 
 class Account::AccessTest < ActiveSupport::TestCase
-  test 'validate authorize admin?' do
+  it 'validate authorize admin?' do
     account = accounts(:admin)
-    assert Account::Access.new(account).admin?
-    refute Account::Access.new(account).spam?
-    refute Account::Access.new(account).default?
-    assert Account::Access.new(account).active_and_not_disabled?
+    Account::Access.new(account).must_be :admin?
+    Account::Access.new(account).wont_be :spam?
+    Account::Access.new(account).wont_be :default?
+    Account::Access.new(account).must_be :active_and_not_disabled?
   end
 
-  test 'validate authorize spam?' do
+  it 'validate authorize spam?' do
     account = accounts(:spammer)
-    assert Account::Access.new(account).spam?
-    refute Account::Access.new(account).admin?
-    refute Account::Access.new(account).default?
-    refute Account::Access.new(account).active_and_not_disabled?
-    assert Account::Access.new(account).disabled?
+    Account::Access.new(account).must_be :spam?
+    Account::Access.new(account).wont_be :admin?
+    Account::Access.new(account).wont_be :default?
+    Account::Access.new(account).wont_be :active_and_not_disabled?
+    Account::Access.new(account).must_be :disabled?
   end
 
-  test 'validate authorize default?' do
+  it 'validate authorize default?' do
     account = accounts(:user)
-    assert Account::Access.new(account).default?
-    refute Account::Access.new(account).admin?
-    refute Account::Access.new(account).spam?
-    assert Account::Access.new(account).active_and_not_disabled?
+    Account::Access.new(account).must_be :default?
+    Account::Access.new(account).wont_be :admin?
+    Account::Access.new(account).wont_be :spam?
+    Account::Access.new(account).must_be :active_and_not_disabled?
   end
 
-  test 'activate user' do
+  it 'activate user' do
     account = accounts(:unactivated)
-    refute Account::Access.new(account).activated?
+    Account::Access.new(account).wont_be :activated?
     Account::Access.new(account).activate!(account.activation_code)
-    assert Account::Access.new(account).activated?
+    Account::Access.new(account).must_be :activated?
   end
 
-  test 'deny activating user with invalid activation code' do
+  it 'deny activating user with invalid activation code' do
     account = accounts(:unactivated)
-    refute Account::Access.new(account).activated?
+    Account::Access.new(account).wont_be :activated?
     Account::Access.new(account).activate!('dummy')
-    refute Account::Access.new(account).activated?
+    Account::Access.new(account).wont_be :activated?
   end
 
-  test 'disable user' do
+  it 'disable user' do
     account = accounts(:user)
-    refute Account::Access.new(account).disabled?
+    Account::Access.new(account).wont_be :disabled?
     Account::Access.new(account).disable!
-    assert Account::Access.new(account).disabled?
+    Account::Access.new(account).must_be :disabled?
   end
 
-  test 'mark user as spam' do
+  it 'mark user as spam' do
     account = accounts(:user)
-    refute Account::Access.new(account).spam?
+    Account::Access.new(account).wont_be :spam?
     Account.transaction do
       Account::Access.new(account).spam! # rescue ''
     end
-    assert Account::Access.new(account).spam?
+    Account::Access.new(account).must_be :spam?
   end
 
-  test 'should rails exception when account is nil' do
-    assert_raise(RuntimeError) do
-      Account::Access.new(nil)
-    end
+  it 'should rails exception when account is nil' do
+    -> { Account::Access.new(nil) }.must_raise(RuntimeError)
   end
 end

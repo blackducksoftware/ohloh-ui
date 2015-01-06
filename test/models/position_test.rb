@@ -1,18 +1,18 @@
 require 'test_helper'
 
 class PositionTest < ActiveSupport::TestCase
-  test 'claimed_by scope' do
+  it 'claimed_by scope' do
     user = accounts(:user)
     positions = Position.claimed_by(user)
 
-    assert_equal 1, positions.count
-    assert_equal user.id, positions.first.account_id
-    assert positions.first.name_id
+    positions.count.must_equal 1
+    positions.first.account_id.must_equal user.id
+    positions.first.name_id.must_be :present?
   end
 
-  test 'active scope' do
-    assert_equal 0, accounts(:user).positions.active.count
+  it 'active scope' do
+    accounts(:user).positions.active.count.must_equal 0
     projects(:linux).update!(best_analysis_id: 1)
-    assert_equal 1, accounts(:user).positions.active.count
+    accounts(:user).positions.active.count.must_equal 1
   end
 end

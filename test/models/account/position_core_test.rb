@@ -5,11 +5,11 @@ class PositionCoreTest < ActiveSupport::TestCase
     fixup
   end
 
-  test 'association callbacks on delegable' do
-    assert_equal 1, accounts(:user).positions.count
+  it 'association callbacks on delegable' do
+    accounts(:user).positions.count.must_equal 1
   end
 
-  test '#with_projects'do
+  it '#with_projects'do
     Position.delete_all
 
     with_editor(:admin) do
@@ -20,19 +20,19 @@ class PositionCoreTest < ActiveSupport::TestCase
       create(:position, common_attributes.merge(project: project_foo))
       create(:position, common_attributes.merge(project: project_bar, title: :bar_title))
       create(:position, common_attributes.merge(project: nil))
-      assert_equal 2, accounts(:admin).position_core.with_projects.count
+      accounts(:admin).position_core.with_projects.count.must_equal 2
 
-      assert_equal 3, accounts(:admin).positions.count
+      accounts(:admin).positions.count.must_equal 3
 
       project_foo.update!(deleted: true)
 
-      assert_equal 2, accounts(:admin).positions.count
-      assert_equal :bar_title, accounts(:admin).positions.first.title.to_sym
-      assert_equal 1, accounts(:admin).position_core.with_projects.count
+      accounts(:admin).positions.count.must_equal 2
+      accounts(:admin).positions.first.title.to_sym.must_equal :bar_title
+      accounts(:admin).position_core.with_projects.count.must_equal 1
     end
   end
 
-  test '#ordered_positions' do
+  it '#ordered_positions' do
     # FIXME: unstub after integrating positions.
     Position.any_instance.stubs(:start_date_type)
     Position.any_instance.stubs(:start_date_type=)
@@ -83,31 +83,31 @@ class PositionCoreTest < ActiveSupport::TestCase
         no_commit_and_higher_character
         no_commit_and_lower_character
       )
-      assert_equal expected_positions, returned_positions
+      returned_positions.must_equal expected_positions
     end
   end
 
-  test 'ensure_position_or_alias creates a position if try_create is set' do
+  it 'ensure_position_or_alias creates a position if try_create is set' do
     unactivated, scott, linux = accounts(:unactivated), names(:scott), projects(:linux)
     assert_difference('unactivated.positions.count', 1) do
       position = unactivated.position_core.ensure_position_or_alias!(linux, scott, true)
-      assert_equal 0, linux.reload.aliases.count
-      assert_equal 'Linux', position.project.name
+      linux.reload.aliases.count.must_equal 0
+      position.project.name.must_equal 'Linux'
       # FIXME: uncomment after adding committer_name logic.
-      # assert_equal 'Scott', position.name.name
+      # position.name.name.must_equal 'Scott'
     end
   end
 
-  test 'ensure_position_or_alias does not create a position by default' do
+  it 'ensure_position_or_alias does not create a position by default' do
     unactivated, scott, linux = accounts(:unactivated), names(:scott), projects(:linux)
     assert_no_difference('unactivated.positions.count') do
       position = unactivated.position_core.ensure_position_or_alias!(linux, scott)
-      assert_nil position
-      assert_equal 0, linux.reload.aliases.count # still ensure no aliases
+      position.must_be_nil
+      linux.reload.aliases.count.must_equal 0 # still ensure no aliases
     end
   end
 
-  test 'ensure_position_or_alias creates an alias if a position exists' do
+  it 'ensure_position_or_alias creates an alias if a position exists' do
     user, scott, linux = accounts(:user), names(:scott), projects(:linux)
 
     assert_difference('linux.aliases.count', 1) do
@@ -120,14 +120,14 @@ class PositionCoreTest < ActiveSupport::TestCase
 
       alias_object = with_editor(:admin) { user.position_core.ensure_position_or_alias!(linux, scott) }
 
-      assert_equal 1, user.reload.positions.count # ensure no new positions
-      assert_equal :Linux, alias_object.project.name.to_sym
-      assert_equal scott.id, alias_object.commit_name_id
-      assert_equal names(:user).id, alias_object.preferred_name_id
+      user.reload.positions.count.must_equal 1 # ensure no new positions
+      alias_object.project.name.to_sym.must_equal :Linux
+      alias_object.commit_name_id.must_equal scott.id
+      alias_object.preferred_name_id.must_equal names(:user).id
     end
   end
 
-  test 'ensure_position_or_alias deletes existing position and creates new if name is missing' do
+  it 'ensure_position_or_alias deletes existing position and creates new if name is missing' do
     user, scott, linux = accounts(:user), names(:scott), projects(:linux)
 
     analysis_stub = stub(name_fact_for: false)
@@ -137,19 +137,19 @@ class PositionCoreTest < ActiveSupport::TestCase
 
     position = user.position_core.ensure_position_or_alias!(linux, scott)
 
-    assert_equal 1, user.reload.positions.count # still one position
-    assert_equal :Scott, position.name.name.to_sym # but for the new name
-    assert_equal user.id, position.account_id
+    user.reload.positions.count.must_equal 1 # still one position
+    position.name.name.to_sym.must_equal :Scott # but for the new name
+    position.account_id.must_equal user.id
   end
 
-  test 'logos returns a mapping of { logo_id: logo }' do
+  it 'logos returns a mapping of { logo_id: logo }' do
     logos = accounts(:user).position_core.logos
-    assert_equal 1, logos.keys.first
-    assert_equal Logo, logos.values.first.class
+    logos.keys.first.must_equal 1
+    logos.values.first.class.must_equal Logo
   end
 
-  test '#with_only_unclaimed' do
+  it '#with_only_unclaimed' do
     # user and admin both have names, joe - no
-    assert_equal [accounts(:joe)], Account::PositionCore.with_only_unclaimed
+    Account::PositionCore.with_only_unclaimed.must_equal [accounts(:joe)]
   end
 end
