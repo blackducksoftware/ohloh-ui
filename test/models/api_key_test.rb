@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class ApiKeyTest < ActiveSupport::TestCase
-  fixtures :accounts
-
   it 'defaults are populated on new' do
     api_key = create(:api_key)
     api_key.daily_limit.must_equal ApiKey::DEFAULT_DAILY_LIMIT

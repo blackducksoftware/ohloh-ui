@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
   helper_method :logged_in?
 
   def current_user_is_admin?
-    current_user.admin?
+    Account::Access.new(current_user).admin?
   end
   helper_method :current_user_is_admin?
 

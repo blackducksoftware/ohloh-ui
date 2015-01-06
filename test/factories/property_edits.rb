@@ -1,9 +1,8 @@
 FactoryGirl.define do
   factory :property_edit do
     type 'PropertyEdit'
-    target_type 'Project'
-    target_id 1
-    key 'name'
+    association :target, factory: :project, description: 'Linux'
+    key 'description'
     value 'Linux 2: Electric Boogaloo'
     account_id 1
     project_id 1

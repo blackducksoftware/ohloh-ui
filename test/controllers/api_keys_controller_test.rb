@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class ApiKeysControllerTest < ActionController::TestCase
-  fixtures :accounts
-
   # index action
   it 'admins should be able to look at the global list of api keys' do
     login_as accounts(:admin)

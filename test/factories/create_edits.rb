@@ -1,7 +1,6 @@
 FactoryGirl.define do
   factory :create_edit do
-    type 'CreateEdit'
-    target_type 'Project'
+    association :target, factory: :project, description: 'Linux'
     target_id 1
     account_id 1
     project_id 1

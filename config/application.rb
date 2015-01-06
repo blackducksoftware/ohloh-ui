@@ -15,6 +15,7 @@ module OhlohUi
     config.active_record.schema_format = :sql
 
     config.autoload_paths << "#{Rails.root}/app/exceptions"
+    config.autoload_paths << "#{Rails.root}/lib"
     config.autoload_paths << "#{Rails.root}/app/models/acts_as_editable"
   end
 end

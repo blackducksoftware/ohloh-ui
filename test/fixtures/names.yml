@@ -1,9 +1,9 @@
-robin:
+user:
   id: 1
-  name: Robin
-jason:
+  name: User
+admin:
   id: 2
-  name: Jason
+  name: Admin
 scott:
   id: 3
   name: Scott

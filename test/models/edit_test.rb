@@ -4,8 +4,10 @@ class EditTest < ActiveSupport::TestCase
   fixtures :accounts
 
   def setup
-    @edit = create(:create_edit)
-    @previous_edit = create(:create_edit, value: '456', created_at: Time.now - 5.days)
+    project = create(:project, description: 'Linux')
+    Edit.for_target(project).delete_all
+    @edit = create(:create_edit, target: project)
+    @previous_edit = create(:create_edit, value: '456', created_at: Time.now - 5.days, target: project)
   end
 
   def test_that_we_can_get_the_previous_value_of_an_edit

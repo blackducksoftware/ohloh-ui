@@ -26,7 +26,7 @@ class PropertyEdit < Edit
 
   def update_target(undo)
     target.inside_undo_or_redo = true
-    target.update_attributes(key.to_s => undo ? previous_value : value)
+    target.update_attributes(key => undo ? previous_value : value)
     target.inside_undo_or_redo = false
   end
 

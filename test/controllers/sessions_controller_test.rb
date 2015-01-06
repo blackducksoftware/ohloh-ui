@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class SessionsControllerTest < ActionController::TestCase
-  fixtures :accounts
-
   # new action
   it 'the new action should render correctly' do
     get :new
@@ -73,7 +71,7 @@ class SessionsControllerTest < ActionController::TestCase
 
   it 'destroy should clear remember me data' do
     admin = accounts(:admin)
-    Authenticator.remember(admin)
+    Account::Authenticator.remember(admin)
     session[:account_id] = accounts(:admin).id
     delete :destroy
     must_respond_with :found

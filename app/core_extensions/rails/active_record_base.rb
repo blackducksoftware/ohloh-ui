@@ -1,4 +1,6 @@
 class ActiveRecord::Base
+  extend StripAttributes
+
   class << self
     def fix_string_column_encodings!
       after_find :fix_string_column_encodings
