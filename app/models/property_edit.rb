@@ -36,12 +36,20 @@ class PropertyEdit < Edit
   end
 
   def fail_unless_action_allowed!(undo, verb)
-    return if (undo && target.allow_undo?(key) && previous_value) || (!undo && target.allow_redo?(key))
+    return if (undo && allow_undo?) || (!undo && allow_redo?)
     fail ActsAsEditable::UndoError, I18n.t('edits.generic_cant', verb: verb)
   end
 
   def fail_unless_action_succeeded!(verb)
     return if target.errors.empty?
     fail ActsAsEditable::UndoError, I18n.t('edits.causes_errors', verb: verb)
+  end
+
+  def allow_undo?
+    (!target.respond_to?(:allow_undo?) || target.allow_undo?(key)) && previous_value
+  end
+
+  def allow_redo?
+    !target.respond_to?(:allow_redo?) || target.allow_redo?(key)
   end
 end
