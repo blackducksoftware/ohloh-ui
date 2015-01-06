@@ -52,4 +52,41 @@ class EditTest < ActiveSupport::TestCase
       @edit.redo!(accounts(:admin))
     end
   end
+
+  def test_that_project_gets_filled_in_automatically_for_project_edits
+    p = create(:project)
+    edit = CreateEdit.where(target: p).first
+    assert_equal edit.target.id, edit.project_id
+    assert_equal nil, edit.organization_id
+  end
+
+  def test_that_project_gets_filled_in_automatically_for_project_license_edits
+    pl = create(:project_license, project: create(:project), license: create(:license))
+    edit = CreateEdit.where(target: pl).first
+    assert_equal edit.target.project.id, edit.project_id
+    assert_equal nil, edit.organization_id
+  end
+
+  def test_that_organization_gets_filled_in_automatically_for_organization_edits
+    org = create(:organization)
+    edit = CreateEdit.where(target: org).first
+    assert_equal edit.target.id, edit.organization_id
+    assert_equal nil, edit.project_id
+  end
+
+  def test_that_project_and_organization_get_filled_in_automatically_when_associating_project_to_an_org
+    p = create(:project)
+    org = create(:organization)
+    p.update_attributes(organization_id: org.id)
+    edit = PropertyEdit.where(target: p, key: 'organization_id').first
+    assert_equal p.id, edit.project_id
+    assert_equal org.id, edit.organization_id
+  end
+
+  def test_that_nothing_gets_filled_in_automatically_for_license_edits
+    l = create(:license)
+    edit = CreateEdit.where(target: l).first
+    assert_equal nil, edit.project_id
+    assert_equal nil, edit.organization_id
+  end
 end

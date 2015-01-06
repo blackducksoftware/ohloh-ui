@@ -5,7 +5,7 @@ class MockEditableRecord < MockActiveRecordBase
   include ActiveModel::Dirty
   acts_as_editable editable_attributes: [],
                    merge_within: 30.minutes,
-                   edit_description: :edit_desc_callback
+                   edit_description: ->(instance) { instance.edit_desc_callback }
 
   def edit_desc_callback
   end

@@ -43,7 +43,7 @@ module ActsAsEditable
 
     def update_edit_history!
       fail ActsAsEditable::NoEditorAccountError unless editor_account
-      send edit_description if edit_description
+      edit_description.call(self) if edit_description
       record_property_edits! unless inside_undo_or_redo
     end
 

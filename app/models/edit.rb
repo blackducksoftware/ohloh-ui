@@ -1,6 +1,11 @@
 class Edit < ActiveRecord::Base
   belongs_to :target, polymorphic: true
   belongs_to :undoer, class_name: 'Account', foreign_key: 'undone_by'
+  belongs_to :project
+  belongs_to :organization
+
+  before_validation :populate_project
+  before_validation :populate_organization
 
   scope :not_undone, -> { where(undone: false) }
   scope :similar_to, ->(edit) { similar_to_edit_arel(edit) }
@@ -45,5 +50,33 @@ class Edit < ActiveRecord::Base
       .where(Edit.arel_table[:created_at].lt(created_at))
       .order(created_at: :desc)
       .first
+  end
+
+  def populate_project
+    self.project_id = project_id_for_project || project_id_from_target
+  end
+
+  def populate_organization
+    self.organization_id = org_id_when_associating_to_org || org_id_for_org || org_id_from_non_project_target
+  end
+
+  def project_id_for_project
+    target.is_a?(Project) ? target.id : nil
+  end
+
+  def project_id_from_target
+    target.respond_to?(:project_id) ? target.project_id : nil
+  end
+
+  def org_id_when_associating_to_org
+    (key == :organization_id) ? value : nil
+  end
+
+  def org_id_for_org
+    target.is_a?(Organization) ? target.id : nil
+  end
+
+  def org_id_from_non_project_target
+    !target.is_a?(Project) && target.respond_to?(:organization_id) ? target.organization_id : nil
   end
 end
