@@ -1,0 +1,2 @@
+class ContributorFact < NameFact
+end

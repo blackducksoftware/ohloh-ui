@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class ActionTest < ActiveSupport::TestCase
-  fixtures :accounts, :projects, :people, :names
-
   let(:admin_account) { accounts(:admin) }
   let(:linux_project) { projects(:linux) }
 
@@ -74,7 +72,7 @@ class ActionTest < ActiveSupport::TestCase
   it 'test run with newly activated account' do
     action = Action.create!(account: admin_account, _action: "stack_#{linux_project.id}", status: 'after_activation')
     action.run
-    admin_account.default_stack.projects.must_include(linux_project)
+    admin_account.stack_core.default.projects.must_include(linux_project)
     action.status.must_equal Action::STATUSES[:remind]
   end
 end

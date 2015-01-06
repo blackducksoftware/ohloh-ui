@@ -3,6 +3,10 @@ class NullAccount
     nil
   end
 
+  def level
+    nil
+  end
+
   def admin?
     false
   end

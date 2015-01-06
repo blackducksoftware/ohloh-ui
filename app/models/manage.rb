@@ -54,7 +54,7 @@ class Manage < ActiveRecord::Base
   end
 
   def can_destroy?(destroyer)
-    destroyer == account || target.active_managers.include?(destroyer) || destroyer.admin?
+    destroyer == account || target.active_managers.include?(destroyer) || Account::Access.new(destroyer).admin?
   end
 
   def auto_approve_if_first

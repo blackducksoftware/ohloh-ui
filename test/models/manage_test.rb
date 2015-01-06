@@ -2,7 +2,6 @@ require 'test_helper'
 
 class ManageTest < ActiveSupport::TestCase
   include ActionMailer::TestHelper
-  fixtures :accounts, :projects, :organizations
 
   it 'test create requires project' do
     manage = Manage.create(account: accounts(:admin))

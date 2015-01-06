@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class HelpfulsControllerTest < ActionController::TestCase
-  fixtures :accounts, :projects
   def setup
     @linux_review = projects(:linux).reviews.create!(title: 'T', comment: 'C', account_id: accounts(:admin).id)
   end

@@ -1,8 +1,6 @@
 require_relative '../test_helper.rb'
 
 class LogosControllerTest < ActionController::TestCase
-  fixtures :accounts, :projects, :attachments, :organizations
-
   def setup
     ActionView::Base.any_instance.stubs(:has_permission?).returns('true')
     @admin = accounts(:admin)
