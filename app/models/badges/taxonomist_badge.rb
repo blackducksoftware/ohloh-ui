@@ -1,0 +1,2 @@
+class TaxonomistBadge < Badge
+end
