@@ -19,4 +19,8 @@ class Organization < ActiveRecord::Base
   def active_managers
     Manage.organizations.for_target(self).active.to_a.map(&:account)
   end
+
+  def allow_undo?(key)
+    ![:name, :org_type].include?(key)
+  end
 end

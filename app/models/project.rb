@@ -36,4 +36,12 @@ class Project < ActiveRecord::Base
   def first_review_for(account)
     Review.where(account_id: account.id, project_id: id).first
   end
+
+  def allow_undo?(key)
+    ![:name].include?(key)
+  end
+
+  def allow_redo?(key)
+    (key == :organization_id && !organization_id.nil?) ? false : true
+  end
 end

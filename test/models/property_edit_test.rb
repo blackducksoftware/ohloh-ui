@@ -101,4 +101,25 @@ class PropertyEditTest < ActiveSupport::TestCase
       @undone_edit.do_redo
     end
   end
+
+  def test_allow_undo_works
+    [Project, Organization, Link, License, Alias].each do |klass|
+      instance = klass.new
+      assert_equal true, instance.allow_undo?(:not_disallowed)
+    end
+  end
+
+  def test_allow_redo_works
+    [Project].each do |klass|
+      instance = klass.new
+      assert_equal true, instance.allow_redo?(:not_disallowed)
+    end
+  end
+
+  def test_allow_redo_of_org_id_works_for_projects
+    project1 = Project.new
+    assert_equal true, project1.allow_redo?(:organization_id)
+    project2 = Project.new(organization_id: 1)
+    assert_equal false, project2.allow_redo?(:organization_id)
+  end
 end
