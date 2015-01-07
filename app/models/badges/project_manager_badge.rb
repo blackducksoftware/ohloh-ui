@@ -1,0 +1,2 @@
+class ProjectManagerBadge < Badge
+end

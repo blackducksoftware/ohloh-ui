@@ -92,8 +92,6 @@ class Account < ActiveRecord::Base
     about_lines.first.to_s.strip if about.present?
   end
 
-  # Array of eligible badges or empty array
-  # FIXME: Integrate alongwith Badge.
   def badges
     @badges ||= Badge.all_eligible(self)
   end
@@ -112,6 +110,10 @@ class Account < ActiveRecord::Base
   def first_commit_date
     first_checkin = best_vita.try(:vita_fact).try(:first_checkin)
     first_checkin.try(:to_date).try(:beginning_of_month)
+  end
+
+  def kudo_rank
+    person.try(:kudo_rank) || 1
   end
 
   class << self
