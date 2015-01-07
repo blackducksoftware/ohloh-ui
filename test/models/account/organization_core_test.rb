@@ -28,7 +28,9 @@ class Account::OrganizationCoreTest < ActiveSupport::TestCase
 
   it 'contributions_to_org_portfolio' do
     analysis = analyses(:linux)
-    projects(:linux).update_attributes! best_analysis_id: analysis.id
+    linux = projects(:linux)
+    linux.editor_account = create(:account)
+    linux.update_attributes! best_analysis_id: analysis.id
     @account.update_column :organization_id, organizations(:linux).id
     @account.reload
 
@@ -38,7 +40,9 @@ class Account::OrganizationCoreTest < ActiveSupport::TestCase
 
   it 'contributions_outside_org' do
     analysis = analyses(:linux)
-    projects(:linux).update_attributes! best_analysis_id: analysis.id
+    linux = projects(:linux)
+    linux.editor_account = create(:account)
+    linux.update_attributes! best_analysis_id: analysis.id
     account = accounts(:user)
     account.update_column(:organization_id, organizations(:google).id)
     account_org = Account::OrganizationCore.new(account.id)

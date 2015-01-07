@@ -20,6 +20,10 @@ class Project < ActiveRecord::Base
 
   scope :from_param, ->(param) { where(url_name: param) }
 
+  acts_as_editable editable_attributes: [:name, :url_name, :logo_id, :organization_id, :best_analysis_id,
+                                         :description, :url, :download_url, :tag_list, :missing_source],
+                   merge_within: 30.minutes
+
   def to_param
     url_name
   end
@@ -31,5 +35,13 @@ class Project < ActiveRecord::Base
   # TODO: Replace account.review(project) with project.first_review_for(account)
   def first_review_for(account)
     Review.where(account_id: account.id, project_id: id).first
+  end
+
+  def allow_undo?(key)
+    ![:name].include?(key)
+  end
+
+  def allow_redo?(key)
+    (key == :organization_id && !organization_id.nil?) ? false : true
   end
 end

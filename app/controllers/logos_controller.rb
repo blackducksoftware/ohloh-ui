@@ -52,6 +52,7 @@ class LogosController < SettingsController
                                elsif params[:organization_id]
                                  @organization = Organization.find(params[:organization_id])
                                end
+    @project_or_organization.editor_account = current_user
   end
 
   def set_logo

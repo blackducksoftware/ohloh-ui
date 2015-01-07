@@ -20,6 +20,7 @@ class ManagersControllerTest < ActionController::TestCase
   it 'test index for i manage this project button for admin when admin is manager' do
     login_as accounts(:admin)
     a = projects(:linux)
+    a.editor_account = accounts(:admin)
     a.managers << accounts(:admin)
     a.save
     get :index, project_id: projects(:linux).to_param

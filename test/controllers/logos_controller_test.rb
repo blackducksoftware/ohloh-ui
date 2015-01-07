@@ -105,10 +105,8 @@ class LogosControllerTest < ActionController::TestCase
 
   it 'new shows flash if user has no permissions' do
     skip('TODO: manage')
-    with_editor :jason do
-      Manage.create!(project: projects(:linux), account: accounts(:robin))
-      Permission.create!(project: projects(:linux), 'remainder' => true)
-    end
+    Manage.create!(target: projects(:linux), account: accounts(:user))
+    Permission.create!(project: projects(:linux), 'remainder' => true)
 
     login_as @user
     get :new, project_id: projects(:linux).id
@@ -116,7 +114,6 @@ class LogosControllerTest < ActionController::TestCase
   end
 
   it 'create with logo id' do
-    # TODO: acts_as_edited
     login_as @admin
     Project.any_instance.expects(:edit_authorized?).returns(true)
     desired_new_logo_id = attachments(:random_logo).id
@@ -128,10 +125,8 @@ class LogosControllerTest < ActionController::TestCase
 
   it 'create requires permissions' do
     skip('TODO: manage')
-    with_editor :jason do
-      Manage.create!(project: projects(:linux), account: accounts(:robin))
-      Permission.create!(project: projects(:linux), 'remainder' => true)
-    end
+    Manage.create!(target: projects(:linux), account: accounts(:user))
+    Permission.create!(project: projects(:linux), 'remainder' => true)
 
     login_as @user
     desired_new_logo_id = attachments(:new_logo).id

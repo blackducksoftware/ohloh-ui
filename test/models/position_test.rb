@@ -12,7 +12,9 @@ class PositionTest < ActiveSupport::TestCase
 
   it 'active scope' do
     accounts(:user).positions.active.count.must_equal 0
-    projects(:linux).update!(best_analysis_id: 1)
+    linux = projects(:linux)
+    linux.editor_account = accounts(:user)
+    linux.update!(best_analysis_id: 1)
     accounts(:user).positions.active.count.must_equal 1
   end
 end

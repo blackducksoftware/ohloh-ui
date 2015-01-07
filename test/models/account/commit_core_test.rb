@@ -7,6 +7,7 @@ class Account::CommitCoreTest < ActiveSupport::TestCase
 
     analysis = analyses(:linux)
     project = projects(:linux)
+    project.editor_account = create(:account)
     project.update_attributes! best_analysis_id: analysis.id
 
     @account_commits = Account::CommitCore.new([@account_1.id, account_2.id])

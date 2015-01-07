@@ -12,24 +12,22 @@ class PositionCoreTest < ActiveSupport::TestCase
   it '#with_projects'do
     Position.delete_all
 
-    with_editor(:admin) do
-      project_foo = create(:project, name: :foo, url_name: :foo)
-      project_bar = create(:project, name: :bar, url_name: :bar)
+    project_foo = create(:project, name: :foo, url_name: :foo)
+    project_bar = create(:project, name: :bar, url_name: :bar)
 
-      common_attributes = { account: accounts(:admin), start_date: Time.now, stop_date: Time.now }
-      create(:position, common_attributes.merge(project: project_foo))
-      create(:position, common_attributes.merge(project: project_bar, title: :bar_title))
-      create(:position, common_attributes.merge(project: nil))
-      accounts(:admin).position_core.with_projects.count.must_equal 2
+    common_attributes = { account: accounts(:admin), start_date: Time.now, stop_date: Time.now }
+    create(:position, common_attributes.merge(project: project_foo))
+    create(:position, common_attributes.merge(project: project_bar, title: :bar_title))
+    create(:position, common_attributes.merge(project: nil))
+    accounts(:admin).position_core.with_projects.count.must_equal 2
 
-      accounts(:admin).positions.count.must_equal 3
+    accounts(:admin).positions.count.must_equal 3
 
-      project_foo.update!(deleted: true)
+    project_foo.update!(deleted: true)
 
-      accounts(:admin).positions.count.must_equal 2
-      accounts(:admin).positions.first.title.to_sym.must_equal :bar_title
-      accounts(:admin).position_core.with_projects.count.must_equal 1
-    end
+    accounts(:admin).positions.count.must_equal 2
+    accounts(:admin).positions.first.title.to_sym.must_equal :bar_title
+    accounts(:admin).position_core.with_projects.count.must_equal 1
   end
 
   it '#ordered_positions' do
@@ -43,48 +41,45 @@ class PositionCoreTest < ActiveSupport::TestCase
     # ActivityFact.delete_all
     admin = accounts(:admin)
 
-    with_editor(admin) do
-      create(:project, name: :next_most_recent_commit)
-      create(:project, name: :most_recent_commit)
-      create(:project, name: :no_commit_and_higher_character)
-      create(:project, name: :oldest_commit)
-      create(:project, name: :no_commit_and_lower_character)
-      project = -> name { Project.find_by_name(name) }
+    next_most_recent_commit = create(:project, name: :next_most_recent_commit)
+    most_recent_commit = create(:project, name: :most_recent_commit)
+    no_commit_and_higher_character = create(:project, name: :no_commit_and_higher_character)
+    oldest_commit = create(:project, name: :oldest_commit)
+    no_commit_and_lower_character = create(:project, name: :no_commit_and_lower_character)
 
-      analysis_a = create(:analysis, project: project.call(:next_most_recent_commit), logged_at: '20010-01-01')
-      analysis_b = create(:analysis, project: project.call(:most_recent_commit), logged_at: '20010-01-01')
-      analysis_d = create(:analysis, project: project.call(:oldest_commit), logged_at: '20010-01-01')
+    analysis_a = create(:analysis, project: next_most_recent_commit, logged_at: '20010-01-01')
+    analysis_b = create(:analysis, project: most_recent_commit, logged_at: '20010-01-01')
+    analysis_d = create(:analysis, project: oldest_commit, logged_at: '20010-01-01')
 
-      project.call(:next_most_recent_commit).update_attribute(:best_analysis_id, analysis_a.id)
-      project.call(:most_recent_commit).update_attribute(:best_analysis_id, analysis_b.id)
-      project.call(:oldest_commit).update_attribute(:best_analysis_id, analysis_d.id)
+    next_most_recent_commit.update_attribute(:best_analysis_id, analysis_a.id)
+    most_recent_commit.update_attribute(:best_analysis_id, analysis_b.id)
+    oldest_commit.update_attribute(:best_analysis_id, analysis_d.id)
 
-      name = create(:name, name: :my_coding_nickname)
-      create(:name_fact, name: name, analysis_id: project.call(:next_most_recent_commit).best_analysis_id,
-                         last_checkin: Time.now - 6.months)
-      create(:name_fact, name: name, analysis_id: project.call(:most_recent_commit).best_analysis_id,
-                         last_checkin: Time.now - 1.months)
-      create(:name_fact, name: name, analysis_id: project.call(:oldest_commit).best_analysis_id,
-                         last_checkin: Time.now - 12.months)
+    name = create(:name, name: :my_coding_nickname)
+    create(:name_fact, name: name, analysis_id: next_most_recent_commit.best_analysis_id,
+                       last_checkin: Time.now - 6.months)
+    create(:name_fact, name: name, analysis_id: most_recent_commit.best_analysis_id,
+                       last_checkin: Time.now - 1.months)
+    create(:name_fact, name: name, analysis_id: oldest_commit.best_analysis_id,
+                       last_checkin: Time.now - 12.months)
 
-      create(:position, account: admin, project: project.call(:next_most_recent_commit), name: name)
-      create(:position, account: admin, project: project.call(:most_recent_commit), name: name)
-      create(:position, account: admin, project: project.call(:no_commit_and_higher_character),
-                        start_date_type: :manual, start_date: Time.now, stop_date_type: :manual, stop_date: Time.now)
-      create(:position, account: admin, project: project.call(:oldest_commit), name: name)
-      create(:position, account: admin, project: project.call(:no_commit_and_lower_character),
-                        start_date_type: :manual, start_date: Time.now, stop_date_type: :manual, stop_date: Time.now)
+    create(:position, account: admin, project: next_most_recent_commit, name: name)
+    create(:position, account: admin, project: most_recent_commit, name: name)
+    create(:position, account: admin, project: no_commit_and_higher_character,
+                      start_date_type: :manual, start_date: Time.now, stop_date_type: :manual, stop_date: Time.now)
+    create(:position, account: admin, project: oldest_commit, name: name)
+    create(:position, account: admin, project: no_commit_and_lower_character,
+                      start_date_type: :manual, start_date: Time.now, stop_date_type: :manual, stop_date: Time.now)
 
-      returned_positions = admin.position_core.ordered.map { |p| p.project.name }
-      expected_positions = %w(
-        most_recent_commit
-        next_most_recent_commit
-        oldest_commit
-        no_commit_and_higher_character
-        no_commit_and_lower_character
-      )
-      returned_positions.must_equal expected_positions
-    end
+    returned_positions = admin.position_core.ordered.map { |p| p.project.name }
+    expected_positions = %w(
+      most_recent_commit
+      next_most_recent_commit
+      oldest_commit
+      no_commit_and_higher_character
+      no_commit_and_lower_character
+    )
+    returned_positions.must_equal expected_positions
   end
 
   it 'ensure_position_or_alias creates a position if try_create is set' do
@@ -118,7 +113,7 @@ class PositionCoreTest < ActiveSupport::TestCase
       linux.stubs(:create_alias).returns(alias_stub)
       linux.aliases.stubs(:count).returns(1)
 
-      alias_object = with_editor(:admin) { user.position_core.ensure_position_or_alias!(linux, scott) }
+      alias_object = user.position_core.ensure_position_or_alias!(linux, scott)
 
       user.reload.positions.count.must_equal 1 # ensure no new positions
       alias_object.project.name.to_sym.must_equal :Linux

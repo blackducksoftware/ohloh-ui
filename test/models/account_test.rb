@@ -168,6 +168,7 @@ class AccountTest < ActiveSupport::TestCase
   it 'facts_joins should accounts with positions projects and name_facts' do
     analysis = analyses(:linux)
     project = projects(:linux)
+    project.editor_account = create(:account)
     project.update_attributes! best_analysis_id: analysis.id
 
     accounts_with_facts = Account.with_facts
@@ -344,14 +345,15 @@ class AccountTest < ActiveSupport::TestCase
   it '#links' do
     skip 'FIXME: Integrate alongwith edits'
     account = create(:account)
-    link = nil
-    with_editor(account) do
-      link = projects(:linux).links.create!(
-        url: 'http://www.google.com',
-        title: 'title',
-        link_category_id: Link::CATEGORIES[:Other]
-      )
-    end
+    linux = projects(:linux)
+    linux.editor_account = account
+    link = linux.links.new(
+      url: 'http://www.google.com',
+      title: 'title',
+      link_category_id: Link::CATEGORIES[:Other]
+    )
+    link.editor_account = account
+    link.save!
     account.links.must_include(link)
   end
 

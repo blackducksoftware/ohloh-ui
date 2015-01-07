@@ -2,7 +2,9 @@ require 'test_helper'
 
 class ClaimCoreTest < ActiveSupport::TestCase
   it 'email ids' do
-    projects(:linux).update!(best_analysis_id: 1)
+    linux = projects(:linux)
+    linux.editor_account = accounts(:user)
+    linux.update!(best_analysis_id: 1)
     accounts(:user).claim_core.email_ids.must_be_empty
     accounts(:unactivated).claim_core.emails.must_be_empty # no positions
 
@@ -14,12 +16,13 @@ class ClaimCoreTest < ActiveSupport::TestCase
     # claim a new position on a different project
     email_1 = create(:email_address, address: 'test1@test.com')
     user, adium = accounts(:user), projects(:adium)
-    with_editor(:admin) do
-      commits(:adium1).update_attribute(:email_address_id, email_1.id)
-      adium.update_attribute(:deleted, false)
-      # FIXME: Remove start_fix..end_fix blocks after integrating analysis.
-      # adium.analyze
-    end
+    adium_commit = commits(:adium1)
+    adium_commit.update_attribute(:email_address_id, email_1.id)
+    adium.editor_account = accounts(:user)
+    adium.update_attribute(:deleted, false)
+    # FIXME: Remove start_fix..end_fix blocks after integrating analysis.
+    # adium.analyze
+
     position = adium.positions.create(account: user, name: names(:user))
     # start_fix:
     adium.update!(best_analysis_id: Analysis.last.id)
@@ -53,16 +56,15 @@ class ClaimCoreTest < ActiveSupport::TestCase
     user.claim_core.email_ids.must_be_empty
 
     # alias scott as user. scott is associated with email - email
-    alias_object = with_editor(:user) do
-      create(:alias, commit_name_id: scott.id, preferred_name_id: names(:user).id, project_id: linux.id)
-    end
+    alias_object = create(:alias, commit_name_id: scott.id, preferred_name_id: names(:user).id, project_id: linux.id)
+    linux.editor_account = accounts(:user)
     linux.update!(best_analysis_id: Analysis.last.id)
     user.claim_core.instance_variable_set('@name_fact_emails', nil)
     user.claim_core.email_ids.must_equal [email.id]
 
     # delete the alias
-    alias_object.stubs(:create_edit).returns(stub(:undo))
-    with_editor(:user) { alias_object.create_edit.undo }
+    alias_object.stubs(:create_edit).returns(stub(:undo!))
+    alias_object.create_edit.undo!(accounts(:user))
     # FIXME: Remove after integrating analysis logic
     linux.update!(best_analysis_id: nil)
     user.claim_core.instance_variable_set('@name_fact_emails', nil)
@@ -91,23 +93,31 @@ class ClaimCoreTest < ActiveSupport::TestCase
   end
 
   it 'email_ids for deleted project' do
-    projects(:linux).update!(best_analysis_id: Analysis.last.id)
+    linux = projects(:linux)
+    linux.editor_account = accounts(:user)
+    linux.update!(best_analysis_id: Analysis.last.id)
     email = create(:email_address, address: 'test@test.com')
     name_facts(:user).update_attribute(:email_address_ids, "{#{email.id}}")
     accounts(:user).claim_core.email_ids.must_equal [email.id]
 
-    with_editor(:user) { projects(:linux).update!(deleted: true) }
+    linux = projects(:linux)
+    linux.editor_account = accounts(:user)
+    linux.update!(deleted: true)
     accounts(:user).claim_core.instance_variable_set('@name_fact_emails', nil)
     accounts(:user).claim_core.email_ids.must_be_empty
 
     # add it back
-    with_editor(:user) { projects(:linux).update!(deleted: false) }
+    linux = projects(:linux)
+    linux.editor_account = accounts(:user)
+    linux.update!(deleted: false)
     accounts(:user).claim_core.instance_variable_set('@name_fact_emails', nil)
     accounts(:user).claim_core.email_ids.must_equal [email.id]
   end
 
   it 'claimed_emails' do
-    projects(:linux).update!(best_analysis_id: Analysis.last.id)
+    linux = projects(:linux)
+    linux.editor_account = accounts(:user)
+    linux.update!(best_analysis_id: Analysis.last.id)
     accounts(:user).claim_core.emails.must_be_empty
     accounts(:unactivated).claim_core.emails.must_be_empty # no positions
 
