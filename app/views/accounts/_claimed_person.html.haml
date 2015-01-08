@@ -11,7 +11,7 @@
 
 .well.no_padding
   .float_left.avatar_new
-    = avatar_for account,128
+    = avatar_for account, size: 128
 
   .float_left.account_details
     %h3
@@ -55,7 +55,7 @@
           - project = @positions_map[pos_id].try(:project)
           - next unless project
           .margin_bottom_10
-            = link_to project_icon(project, :small, width: 24, class: "logo"), project_path(project), title: project.name}
+            = link_to project_icon(project, :small, width: 24, class: "logo"), project_path(project), title: project.name
             = link_to truncate(project.name, length: 10), project_path(project), class: "margin_left_5"
       .float_left.other_language.other_projects
         - if more_pos_count > 0
