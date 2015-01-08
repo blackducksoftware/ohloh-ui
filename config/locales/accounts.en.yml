@@ -1,11 +1,15 @@
 en:
-  index:
-    page_title: 'Account Holders'
-    manages_count: 'Manages %{count}'
-    member_since: 'Open Hub member since %{since}'
-    langs_link_text1: 'and %{other_langs_count} other %{pluaral_term}'
-    langs_link_text2: 'See Commits by Languages'
-    no_lang_summary: 'no detected<br/>languages'
-    positions_link_text: 'and %{more_pos_count} other %{pluaral_term1}'
-    positions_link_text: 'See Commits by Project'
-    no_commits: 'No commit data to display'
+  accounts:
+    index:
+      page_title: 'Account Holders'
+    claimed_person:
+      manages_count: 'Manages %{count}'
+      member_since: 'Open Hub member since %{since}'
+      langs_link_text1: 'and %{other_langs_count} other %{pluaral_term}'
+      langs_link_text2: 'See Commits by Languages'
+      no_lang_summary: 'no detected<br/>languages'
+      positions_link_text1: 'and %{more_pos_count} other %{pluaral_term}'
+      positions_link_text2: 'See Commits by Project'
+      no_commits: 'No commit data to display'
+      in: 'in ...'
+      to: 'to ...'
