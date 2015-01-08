@@ -11,7 +11,7 @@ class AccountsController < ApplicationController
     all_position_ids = []
 
     @cbp_map = collection.inject({}) do |cbp_map, person|
-      sorted_cbp = person.account.sorted_commits_by_project
+      sorted_cbp = person.account.decorate.sorted_commits_by_project
       position_ids = sorted_cbp.first(3).map(&:first)
       all_position_ids << position_ids
       cbp_map[person.account_id] = [position_ids, sorted_cbp.length - 3]

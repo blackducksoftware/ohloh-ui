@@ -73,8 +73,4 @@ class Badge
   def to_underscore
     self.class.name.gsub("Badge", "").underscore
   end
-
-  def decorator
-    @decorator ||= BadgeDecorator.new(self)
-  end
 end

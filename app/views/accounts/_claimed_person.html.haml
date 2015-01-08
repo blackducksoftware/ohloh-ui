@@ -1,7 +1,7 @@
 - account = claimed_person.account
 - vf = account.best_vita.try(:vita_fact)
 - pos_ids, more_pos_count = @cbp_map[claimed_person.account_id]
-- sorted_cbl = account.sorted_commits_by_language
+- sorted_cbl = account.decorate.sorted_commits_by_language
 
 .well.no_padding
   .float_left.avatar_new
@@ -65,5 +65,5 @@
     = claimed_person.kudo_rank || "1"
 
   #mini-badges-section.float_left.kudo_badge
-    = render 'badges_row', badges: [KudoRankBadge.new(account)]
+    = render 'badges_row', badges: [BadgeDecorator.new(KudoRankBadge.new(account))]
   .clear_both
