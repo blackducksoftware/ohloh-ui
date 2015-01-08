@@ -6,7 +6,7 @@ class Account < ActiveRecord::Base
   include AccountCallbacks
 
   attr_accessor :password, :current_password, :validate_current_password, :twitter_account, :invite_code,
-                :password_confirmation, :about_raw, :email_confirmation
+                :password_confirmation, :about, :email_confirmation
   attr_writer :ip
 
   oh_delegators :stack_core, :project_core, :position_core, :claim_core
@@ -114,6 +114,11 @@ class Account < ActiveRecord::Base
 
   def kudo_rank
     person.try(:kudo_rank) || 1
+  end
+
+  def symbolized_commits_by_project
+    scbp = best_vita.try(:vita_fact).try(:commits_by_project)
+    scbp.to_a.map(&:symbolize_keys)
   end
 
   class << self
