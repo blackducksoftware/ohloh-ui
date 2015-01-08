@@ -1,0 +1,74 @@
+- account = claimed_person.account
+- vf = account.best_vita.try(:vita_fact)
+- pos_ids, more_pos_count = @cbp_map[claimed_person.account_id]
+- cbl = account.best_vita.try(:vita_fact).try(:commits_by_language) || []
+- cbl = cbl.map(&:symbolize_keys).inject({}) do |res, hsh|
+  - lang = hsh[:l_name]
+  - res[lang] ||= { :nice_name => hsh[:l_nice_name], :commits => 0 }
+  - res[lang][:commits] += hsh[:commits].to_i
+  - res
+- sorted_cbl = cbl.sort_by { |k, v| v[:commits] }.reverse
+
+.well.no_padding
+  .float_left.avatar_new
+    = avatar_for account,128
+
+  .float_left.account_details
+    %h3
+      = link_to h(truncate(account.name, length: 18)), account_path(account), class: "margin_top_20",
+                title: h(account.name)
+    %p.small.word_break_all= truncate(account.one_line_about, length: 75)
+    .small.member_info
+      - if account.projects.any?
+        - manages_count_text = t '.manages', count: pluralize(account.projects.count, 'project')
+        %p= link_to manages_count_text, account_projects_path(account)
+      %p= t '.member_since', since: account.created_at.strftime("%B %Y")
+
+  .float_left.commits_summary
+    - if vf && vf.commits > 0 && @positions_map.any?
+      .commits_count.float_left
+        = vf.commits
+        %br
+        %span
+          = link_to pluralize_without_count(vf.commits, "Commit"), account_positions_path(account)
+      .float_left.in in ...
+      - if sorted_cbl.length > 0
+        .float_left.language_summary
+          .float_left{style: "min-height: 99px"}
+            - sorted_cbl.first(3).each do |lang_name, lang_hash|
+              .language_name{style: "background-color:##{language_color(lang_name)}; color: ##{language_text_color(lang_name)}"}
+                %span= link_to lang_hash[:nice_name], language_path(lang_name)
+          .float_left.other_language
+            - if sorted_cbl.length > 3
+              - other_langs_count = sorted_cbl.length - 3
+              - pluaral_term = pluralize_without_count(other_langs_count, "language")
+              = link_to t('.langs_link_text1', other_langs_count: other_langs_count, pluaral_term: pluaral_term), languages_account_path(account)
+            - else
+              = link_to t('.langs_link_text2'), languages_account_path(account)
+      - else
+        .float_left.language_summary.no_lang_summary
+          = t('.no_lang_summary')
+
+      .float_left.in to ...
+      .float_left.project_summary
+        - pos_ids.each do |pos_id|
+          - project = @positions_map[pos_id].try(:project)
+          - next unless project
+          .margin_bottom_10
+            = link_to project_icon(project, :small, width: 24, class: "logo"), project_path(project), title: project.name}
+            = link_to truncate(project.name, length: 10), project_path(project), class: "margin_left_5"
+      .float_left.other_language.other_projects
+        - if more_pos_count > 0
+          - pluaral_term1 = pluralize_without_count(other_langs_count, "project")
+          = link_to t('.positions_link_text1',  more_pos_count: more_pos_count, pluaral_term: pluaral_term1), account_positions_path(account), class: 'more_commits_padding'
+        - else
+          = link_to t('.positions_link_text2'), account_positions_path(account), class: "more_commits_padding"
+    - else
+      %p.no_commits No commit data to display
+
+  .float_left.kudo_rank.signature_color
+    = claimed_person.kudo_rank || "1"
+
+  #mini-badges-section.float_left.kudo_badge
+    = render 'accounts/badges_row', badges: [KudoRankBadge.new(account)]
+  .clear_both
