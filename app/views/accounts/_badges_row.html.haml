@@ -7,10 +7,10 @@
   - if header == :large && index == 4 # render in next line
     %br.clear_both
   - unless hide_foss_logo
-    %a.float_left.account-badge{:title => badge.description, :class => css_class, :href => meta_url_for(:badges), :target => '_blank'}
+    = link_to meta_url_for(:badges), class: "float_left account-badge #{css_class}", title: badge.description, target: '_blank' do
       - if badge.has_levels?
-        %div{:class => "pips pip-#{badge.level_bits}"}
+        .pips{class: "pip-#{badge.level_bits}"}
   - else
     - if badge.has_levels?
-      %div{:class => "pips pip-#{badge.level_bits}", :title => badge.description(and_name = false)}
+      .pips{class: "pip-#{badge.level_bits}", title: badge.description(false)}
 
