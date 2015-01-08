@@ -8,3 +8,4 @@ en:
     no_lang_summary: 'no detected<br/>languages'
     positions_link_text: 'and %{more_pos_count} other %{pluaral_term1}'
     positions_link_text: 'See Commits by Project'
+    no_commits: 'No commit data to display'
