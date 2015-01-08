@@ -40,6 +40,14 @@ class Badge
     desc.strip
   end
 
+  def name
+    self.class.to_s.sub(/Badge/, '').titleize
+  end
+
+  def short_desc
+    fail "Not implemented"
+  end
+
   def has_levels?
     level_limits.any?
   end
@@ -66,6 +74,4 @@ class Badge
   def to_underscore
     self.class.name.gsub("Badge", "").underscore
   end
-
-
 end
