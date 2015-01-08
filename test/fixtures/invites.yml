@@ -1,0 +1,7 @@
+user:
+  id: 1
+  activation_code: 1234567890
+  invitor_id: 2
+  invitee_email: user@ohloh.net
+  project_id: 1
+  invitee_id: 1

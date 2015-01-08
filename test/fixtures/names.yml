@@ -1,0 +1,15 @@
+user:
+  id: 1
+  name: User
+admin:
+  id: 2
+  name: Admin
+scott:
+  id: 3
+  name: Scott
+joe:
+  id: 4
+  name: Joe
+kyle:
+  id: 5
+  name: Kyle

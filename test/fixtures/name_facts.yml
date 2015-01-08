@@ -1,0 +1,41 @@
+user:
+  id: 1
+  analysis_id: 1
+  name_id: 1
+  commits: 2
+  thirty_day_commits: 1
+  primary_language_id: 1
+  total_code_added: 50
+  first_checkin: 2008-01-01
+  last_checkin: 2008-03-01
+  type: ContributorFact
+admin:
+  id: 2
+  analysis_id: 1
+  name_id: 2
+  commits: 1
+  twelve_month_commits: 1
+  primary_language_id: 1
+  total_code_added: 50
+  first_checkin: 2008-02-01
+  last_checkin: 2008-02-01
+  type: ContributorFact
+unclaimed:
+  id: 3
+  analysis_id: 1
+  name_id: 3
+  type: ContributorFact
+  first_checkin: 2008-02-01
+  last_checkin: 2008-09-01
+  man_months: 10
+  primary_language_id: 1
+vitafact:
+  id: 4
+  vita_id: 1
+  analysis_id: 1
+  name_id: 3
+  type: VitaFact
+  first_checkin: 2008-02-01
+  last_checkin: 2008-09-01
+  man_months: 10
+  primary_language_id: 1

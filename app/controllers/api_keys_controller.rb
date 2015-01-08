@@ -72,8 +72,6 @@ class ApiKeysController < ApplicationController
     @api_key = ApiKey.find params[:id]
   rescue ActiveRecord::RecordNotFound
     raise ParamRecordNotFound
-  rescue e
-    raise e
   end
 
   def find_models

@@ -32,20 +32,39 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :projects, path: :p, only: [] do
+  resources :projects, path: :p, only: [:show] do
     member do
       get :settings
       get 'permissions' => 'permissions#show',   as: :permissions
       put 'permissions' => 'permissions#update', as: :update_permissions
-      get 'managers'    => 'managers#show',      as: :managers
-      put 'managers'    => 'managers#update',    as: :update_managers
     end
     resource :logos, only: [:new, :create, :destroy]
+    resources :managers, only: [:index, :new, :create, :edit, :update] do
+      member do
+        post :approve
+        post :reject
+      end
+    end
+    resources :reviews do
+      resources :helpfuls, only: :create
+    end
   end
 
-  resources :organizations, path: :orgs, only: [] do
+  resources :organizations, path: :orgs, only: [:show] do
+    member do
+      get :settings
+    end
     resource :logos, only: [:new, :create, :destroy]
+    resources :managers, only: [:index, :new, :create, :edit, :update] do
+      member do
+        post :approve
+        post :reject
+      end
+    end
   end
+
+  resources :projects
+  resources :stacks, except: [:new, :edit]
 
   # The priority is based upon order of creation: first created -> highest
   # priority.
