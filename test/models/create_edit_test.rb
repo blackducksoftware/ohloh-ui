@@ -3,44 +3,40 @@ require 'test_helper'
 class CreateEditTest < ActiveSupport::TestCase
   fixtures :accounts, :projects
 
-  def setup
+  before do
     @edit = create(:create_edit)
   end
 
-  def test_undo_fails_with_no_editor
-    assert_raises(ActsAsEditable::NoEditorAccountError) do
-      @edit.do_undo
-    end
+  it 'test_undo_fails_with_no_editor' do
+    proc { @edit.do_undo }.must_raise ActsAsEditable::NoEditorAccountError
     @edit.target.reload
-    assert_equal false, @edit.target.deleted
+    @edit.target.deleted.must_equal false
   end
 
-  def test_undo_works_with_editor
-    assert_equal false, @edit.target.deleted
+  it 'test_undo_works_with_editor' do
+    @edit.target.deleted.must_equal false
     @edit.target.editor_account = accounts(:admin)
     @edit.do_undo
     @edit.target.reload
-    assert_equal true, @edit.target.deleted
+    @edit.target.deleted.must_equal true
   end
 
-  def test_redo_fails_with_no_editor
+  it 'test_redo_fails_with_no_editor' do
     @edit.target.editor_account = accounts(:admin)
     @edit.do_undo
     @edit.target.editor_account = nil
-    assert_equal true, @edit.target.deleted
-    assert_raises(ActsAsEditable::NoEditorAccountError) do
-      @edit.do_redo
-    end
+    @edit.target.deleted.must_equal true
+    proc { @edit.do_redo }.must_raise ActsAsEditable::NoEditorAccountError
     @edit.target.reload
-    assert_equal true, @edit.target.deleted
+    @edit.target.deleted.must_equal true
   end
 
-  def test_redo_works_with_editor
+  it 'test_redo_works_with_editor' do
     @edit.target.editor_account = accounts(:admin)
     @edit.do_undo
-    assert_equal true, @edit.target.deleted
+    @edit.target.deleted.must_equal true
     @edit.do_redo
     @edit.target.reload
-    assert_equal false, @edit.target.deleted
+    @edit.target.deleted.must_equal false
   end
 end

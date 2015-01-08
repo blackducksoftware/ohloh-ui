@@ -1,26 +1,24 @@
 module ActsAsEditable
   module ClassMethods
-    def acts_as_editable(editable_attributes: [], merge_within: 0.seconds, edit_description: nil)
+    def acts_as_editable(editable_attributes: [], merge_within: 0.seconds)
       send :attr_accessor, :editor_account
       send :attr_accessor, :inside_undo_or_redo
       send :after_create, :create_edit_history!
       send :after_save, :update_edit_history!
 
-      setup_aae_internals!(editable_attributes, merge_within, edit_description)
+      setup_aae_internals!(editable_attributes, merge_within)
       send :include, ActsAsEditable::InstanceMethods
     end
 
     private
 
-    def setup_aae_internals!(editable_attributes, merge_within, edit_description)
+    def setup_aae_internals!(editable_attributes, merge_within)
       class << self
         send :attr_reader, :aae_editable_attributes
         send :attr_reader, :aae_merge_within
-        send :attr_reader, :aae_edit_description
       end
       @aae_editable_attributes = editable_attributes
       @aae_merge_within = merge_within
-      @aae_edit_description = edit_description
     end
   end
 
@@ -43,7 +41,6 @@ module ActsAsEditable
 
     def update_edit_history!
       fail ActsAsEditable::NoEditorAccountError unless editor_account
-      edit_description.call(self) if edit_description
       record_property_edits! unless inside_undo_or_redo
     end
 
@@ -69,11 +66,5 @@ module ActsAsEditable
     def merge_within
       self.class.aae_merge_within
     end
-
-    def edit_description
-      self.class.aae_edit_description
-    end
   end
 end
-
-ActiveRecord::Base.send :include, ActsAsEditable
