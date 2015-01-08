@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include MetaLinkHelper
+
   BLOG_LINKS = {
     terms:                    'terms',
     additional_terms:         'terms-2',
