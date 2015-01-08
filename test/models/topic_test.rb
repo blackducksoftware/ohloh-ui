@@ -46,8 +46,9 @@ class TopicTest < ActiveSupport::TestCase
     assert_equal @topic.forum, forums(:rails)
   end
 
-  test "a topic should have associated posts" do
-   assert_equal posts(:ponies).topic, @topic
+  test "a topic should have associated posts ordered by created at desc" do
+    @topic = topics(:galactus)
+   assert_equal [posts(:galactus),posts(:silver_surfer)], @topic.posts.to_a
   end
 
 end

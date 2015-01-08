@@ -46,4 +46,5 @@ class ForumsControllerTest < ActionController::TestCase
     end
     assert_redirected_to forums_path
   end
+
 end

@@ -30,11 +30,17 @@ class ForumTest < ActiveSupport::TestCase
     assert_equal 0, forum.topics_count
   end
 
-  test "forum should have associated topic" do
-    assert_equal [topics(:pdi),topics(:sticky),topics(:ponies),topics(:il8n)], @forum.topics.to_a
+  test "forum should have associated topic sorted by sticky and replied at desc" do
+    assert_equal [topics(:pdi),topics(:sticky),topics(:il8n),topics(:ponies)], @forum.topics.to_a
   end
 
-  test "forum should have associated posts through topic" do
-    assert_equal [posts(:pdi),posts(:pdi_reply),posts(:pdi_rebuttal), posts(:ponies),posts(:sticky), posts(:il8n)], @forum.posts
+  test "forum should have associated posts through topic ordered by created at desc" do
+    assert_equal [posts(:il8n),posts(:ponies),posts(:pdi_rebuttal), posts(:pdi_reply),posts(:pdi), posts(:sticky)], @forum.posts.to_a
+  end
+
+  test "destroying a forum destroys its accompanying topics and posts" do
+    @forum.destroy
+    assert_equal @forum.topics.count, 0
+    assert_equal @forum.posts.count, 0
   end
 end
