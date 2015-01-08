@@ -75,6 +75,6 @@ class Badge
   end
 
   def decorator
-    @decorator ||= BadgesDecorator.new(self)
+    @decorator ||= BadgeDecorator.new(self)
   end
 end

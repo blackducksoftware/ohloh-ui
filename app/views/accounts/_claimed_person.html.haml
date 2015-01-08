@@ -1,13 +1,7 @@
 - account = claimed_person.account
 - vf = account.best_vita.try(:vita_fact)
 - pos_ids, more_pos_count = @cbp_map[claimed_person.account_id]
-- cbl = account.best_vita.try(:vita_fact).try(:commits_by_language) || []
-- cbl = cbl.map(&:symbolize_keys).inject({}) do |res, hsh|
-  - lang = hsh[:l_name]
-  - res[lang] ||= { :nice_name => hsh[:l_nice_name], :commits => 0 }
-  - res[lang][:commits] += hsh[:commits].to_i
-  - res
-- sorted_cbl = cbl.sort_by { |k, v| v[:commits] }.reverse
+- sorted_cbl = account.sorted_commits_by_language
 
 .well.no_padding
   .float_left.avatar_new
