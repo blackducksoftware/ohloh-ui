@@ -66,6 +66,10 @@ module ApplicationHelper
     count == 1 ? singular : (plural || singular.pluralize)
   end
 
+  def base_url
+    request.protocol + request.host_with_port
+  end
+
   private
 
   def render_expander(text, l)

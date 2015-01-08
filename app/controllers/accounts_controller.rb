@@ -1,6 +1,4 @@
 class AccountsController < ApplicationController
-  helper BadgesHelper
-
   def index
     @accounts = Person.claimed(params[:page] || 1)
     preload_claimed_persons(@accounts)

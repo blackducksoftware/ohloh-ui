@@ -63,15 +63,18 @@ class Badge
       lvl += 1
       return lvl if count < limit
     end
-    lvl + 1 # max count
+    lvl + 1
   end
 
   def level_bits
     level.to_s(2).rjust(4, '0')
   end
 
-  # Used with image files
   def to_underscore
     self.class.name.gsub("Badge", "").underscore
+  end
+
+  def decorator
+    @decorator ||= BadgeDecorator.new(self)
   end
 end
