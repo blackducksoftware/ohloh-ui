@@ -70,6 +70,10 @@ module ApplicationHelper
     request.protocol + request.host_with_port
   end
 
+  def generate_page_name
+    [controller_name,action_name,"page"].join("_")
+  end
+
   private
 
   def render_expander(text, l)

@@ -3,11 +3,11 @@
 - pos_ids, more_pos_count = @cbp_map[claimed_person.account_id]
 - sorted_cbl = account.decorate.sorted_commits_by_language
 
-.well.no_padding
-  .float_left.avatar_new
+.well.well-sm.no_padding
+  .pull-left.avatar_new
     = avatar_for account, size: 128
 
-  .float_left.account_details
+  .pull-left.account_details
     %h3
       = link_to h(truncate(account.name, length: 18)), account_path(account), class: "margin_top_20",
                 title: h(account.name)
@@ -18,21 +18,21 @@
         %p= link_to manages_count_text, account_projects_path(account)
       %p= t '.member_since', since: account.created_at.strftime("%B %Y")
 
-  .float_left.commits_summary
+  .pull-left.commits_summary
     - if vf && vf.commits > 0 && @positions_map.any?
-      .commits_count.float_left
+      .commits_count.pull-left
         = vf.commits
-        %br
-        %span
+        
+        .text-center
           = link_to pluralize_without_count(vf.commits, "Commit"), account_positions_path(account)
-      .float_left.in= t('.in')
+      .pull-left.in= t('.in')
       - if sorted_cbl.length > 0
-        .float_left.language_summary
-          .float_left{style: "min-height: 99px"}
+        .pull-left.language_summary
+          .pull-left{style: "min-height: 99px"}
             - sorted_cbl.first(3).each do |lang_name, lang_hash|
               .language_name{style: "background-color:##{language_color(lang_name)}; color: ##{language_text_color(lang_name)}"}
                 %span= link_to lang_hash[:nice_name], language_path(lang_name)
-          .float_left.other_language
+          .pull-left.other_language
             - if sorted_cbl.length > 3
               - other_langs_count = sorted_cbl.length - 3
               - pluaral_term = pluralize_without_count(other_langs_count, "language")
@@ -40,19 +40,22 @@
             - else
               = link_to t('.langs_link_text2'), languages_account_path(account)
       - else
-        .float_left.language_summary.no_lang_summary
+        .pull-left.language_summary.no_lang_summary
           = t('.no_lang_summary')
 
-      .float_left.in= t('.to')
-      .float_left.project_summary
+      .pull-left.in= t('.to')
+      .pull-left.project_summary
         - pos_ids.each do |pos_id|
           - project = @positions_map[pos_id].try(:project)
           - next unless project
           .margin_bottom_10
             - # TODO: Replacer below placer holder with project_icon(project, :small, width: 24, class: "logo")
-            = link_to 'Project Icon', project_path(project), title: project.name
+            -#= link_to 'Project Icon', project_path(project), title: project.name
+            - # TODO: Remove this p tag which is static after implementing project_icon
+            %p{:style => "background-color:#FF8F00; color:#000; border:1px dashed #000;font-size:18px; line-height:24px; width:24px; height:24px;text-align:center; float:left; margin-bottom:0; margin-top:0; margin-right:2px"}
+              =project.name[0].upcase
             = link_to truncate(project.name, length: 10), project_path(project), class: "margin_left_5"
-      .float_left.other_language.other_projects
+      .pull-left.other_language.other_projects
         - if more_pos_count > 0
           - pluaral_term1 = pluralize_without_count(other_langs_count, "project")
           = link_to t('.positions_link_text1',  more_pos_count: more_pos_count, pluaral_term: pluaral_term1), account_positions_path(account), class: 'more_commits_padding'
@@ -61,9 +64,9 @@
     - else
       %p.no_commits= t('.no_commits')
 
-  .float_left.kudo_rank.signature_color
+  .pull-left.kudo_rank.signature_color
     = claimed_person.kudo_rank || "1"
 
-  #mini-badges-section.float_left.kudo_badge
+  .mini-badges-section.pull-left.kudo_badge
     = render 'badges_row', badges: [BadgeDecorator.new(KudoRankBadge.new(account))]
-  .clear_both
+  .clear
