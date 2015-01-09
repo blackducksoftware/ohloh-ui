@@ -107,16 +107,7 @@ class ApplicationController < ActionController::Base
     redirect_to(session[:return_to] || default)
     session[:return_to] = nil
   end
-
-  def auto_topic_path(topic, params = {})
-    if topic.forum_id
-      forum_topic_path(params.merge(forum_id: topic.forum_id, id: topic.id))
-    else
-      wiki_url(params.merge(page: topic.page))
-    end
-  end
-  helper_method :auto_topic_path
-
+  
   private
 
   def find_user_in_session

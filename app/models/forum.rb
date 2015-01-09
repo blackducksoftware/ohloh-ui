@@ -4,8 +4,4 @@ class Forum < ActiveRecord::Base
   
   has_many :topics, -> { order('sticky desc, replied_at desc') }, dependent: :destroy
   has_many :posts, -> { order ('created_at desc') }, through: :topics
-
-  #New feature:
-  #Need to add sort functionality to topics and posts
-
 end

@@ -31,4 +31,37 @@ class String
     force_encoding('utf-8')
     self
   end
+
+  #TO DO: #Rewrite this method
+
+  # converts hyperlinks into markdown encoded hyperlinks
+  def encode_hyperlinks_in_markdown
+    text = self
+    
+    # Note that Ruby 1.8 does not support negative look behind
+    # So this function is a lot more complicated due to that
+    
+    # Grab URL's from the text
+    urls = text.scan(/(?:http|https):\/\/[a-z0-9]+(?:[\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(?:(?::[0-9]{1,5})?\/[^\])\s]*)?/ix) 
+    # Remove duplicates
+    urls = urls & urls  
+    # This loop does the actual replacing, but only if it's not already a markdown url
+    # Again, this could be eliminated if we were using ruby 1.9
+    urls.each do |url|
+      loc = text.index(url) 
+      while loc != nil
+        #if loc<1 || text[(loc-2), 1]!=']' || text[(loc-1), 1]!='('
+        if (text[(loc-1), 1]=="[" && (loc+url.length+1)<text.length && text[(loc+url.length), 1]=="]" && text[(loc+url.length+1), 1]=="(") || (loc>1 && text[(loc-2), 1]==']' && text[(loc-1), 1]=='(')
+          loc = text.index(url, loc+1)
+        else
+          text[loc...(loc+url.length)] = "[" + url + "](" + url + ")"
+          if loc+((url.length*2)+4) > text.length
+            break
+          end
+          loc = text.index(url, loc+((url.length*2)+4)) 
+        end
+      end
+    end
+    text
+  end
 end

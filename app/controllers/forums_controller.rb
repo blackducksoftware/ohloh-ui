@@ -1,5 +1,5 @@
 class ForumsController < ApplicationController
-  before_action :grab_forum, except: [:index,:new,:create]
+  before_action :find_forum_record, except: [:index,:new,:create]
 
   def index
     @forums = Forum.all
@@ -18,12 +18,6 @@ class ForumsController < ApplicationController
         format.html { redirect_to forums_path, flash: { error: t('.error') } }
       end
     end
-  end
-
-  def show
-  end
-
-  def edit
   end
 
   def update
@@ -45,8 +39,8 @@ class ForumsController < ApplicationController
 
   private
 
-  def grab_forum
-    @forum = Forum.find(params[:id])
+  def find_forum_record
+    @forum = Forum.find_by(id: params[:id])
   end
 
   def forum_params

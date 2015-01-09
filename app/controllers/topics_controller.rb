@@ -1,18 +1,17 @@
 class TopicsController < ApplicationController 
-  before_action :grab_forum_and_topic, except: [:index,:new,:create]
+  before_action :find_forum_record, only: [:index,:new,:create]
+  before_action :find_forum_and_topic_records, except: [:index,:new,:create]
+
   def index
-    @forum = Forum.find(params[:forum_id])
     @topics = @forum.topics
   end
 
   def new
-    @forum = Forum.find(params[:forum_id])
     @topic = @forum.topics.build
     @post = @topic.posts.build
   end
 
   def create
-    @forum = Forum.find(params[:forum_id])
     @topic = @forum.topics.build(topic_params)
     respond_to do |format|
       if @topic.save
@@ -21,12 +20,6 @@ class TopicsController < ApplicationController
         format.html { redirect_to forum_path(@forum), flash: { error: t('.error') } }
       end
     end
-  end
-
-  def show
-  end
-
-  def edit
   end
 
   def update
@@ -48,9 +41,13 @@ class TopicsController < ApplicationController
 
   private
 
-  def grab_forum_and_topic
-    @forum = Forum.find(params[:forum_id])
-    @topic = @forum.topics.find(params[:id])
+  def find_forum_record
+    @forum = Forum.find_by(id: params[:forum_id])
+  end
+
+  def find_forum_and_topic_records
+    @forum = Forum.find_by(id: params[:forum_id])
+    @topic = @forum.topics.find_by(id: params[:id])
   end
 
   def topic_params

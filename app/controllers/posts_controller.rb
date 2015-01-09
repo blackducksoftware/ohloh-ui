@@ -1,7 +1,8 @@
 require 'test_helper'
 
 class PostsController < ApplicationController
-  before_action :grab_forum_and_topic
+  before_action :find_forum_and_topic_records
+  before_action :find_post_record, only: [:edit,:update,:destroy]
 
   def index
     @posts = @topic.posts
@@ -18,12 +19,7 @@ class PostsController < ApplicationController
     end
   end
 
-  def edit
-    @post = @topic.posts.find(params[:id])
-  end
-
   def update
-    @post = @topic.posts.find(params[:id])
     respond_to do |format|
       if @post.update(post_params)
         format.html { redirect_to forum_topic_path(@forum,@topic), flash: { success: t('.success') } }
@@ -34,7 +30,6 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @post = @topic.posts.find(params[:id])
     @post.destroy
     respond_to do |format|
       format.html { redirect_to forum_topic_path(@forum,@topic) }
@@ -43,13 +38,17 @@ class PostsController < ApplicationController
 
   private
 
+  def find_post_record
+    find_forum_and_topic_records
+    @post= @topic.posts.find_by(id: params[:id])
+  end
+
+  def find_forum_and_topic_records
+    @forum = Forum.find_by(id: params[:forum_id])
+    @topic = @forum.topics.find_by(id: params[:topic_id])
+  end
+
   def post_params
     params.require(:post).permit(:topic_id, :account_id, :body)
   end
-
-  def grab_forum_and_topic
-    @forum = Forum.find(params[:forum_id])
-    @topic = @forum.topics.find(params[:topic_id])
-  end
-
 end
