@@ -1,11 +1,6 @@
 class PropertyEdit < Edit
   scope :for_property, ->(property) { where(key: property) }
 
-  def default_explanation
-    new_value = value.present? ? value.to_s.truncate(30, omission: '…') : "[#{I18n.t(:nothing)}]"
-    I18n.t(:aee_create_property_explanation, key: key, new_value: new_value)
-  end
-
   def do_undo
     do_swap(true)
   end
