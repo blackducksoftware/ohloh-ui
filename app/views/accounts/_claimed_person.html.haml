@@ -1,13 +1,7 @@
 - account = claimed_person.account
 - vf = account.best_vita.try(:vita_fact)
 - pos_ids, more_pos_count = @cbp_map[claimed_person.account_id]
-- cbl = account.best_vita.try(:vita_fact).try(:commits_by_language) || []
-- cbl = cbl.map(&:symbolize_keys).inject({}) do |res, hsh|
-  - lang = hsh[:l_name]
-  - res[lang] ||= { :nice_name => hsh[:l_nice_name], :commits => 0 }
-  - res[lang][:commits] += hsh[:commits].to_i
-  - res
-- sorted_cbl = cbl.sort_by { |k, v| v[:commits] }.reverse
+- sorted_cbl = account.decorate.sorted_commits_by_language
 
 .well.no_padding
   .float_left.avatar_new
@@ -31,7 +25,7 @@
         %br
         %span
           = link_to pluralize_without_count(vf.commits, "Commit"), account_positions_path(account)
-      .float_left.in in ...
+      .float_left.in= t('.in')
       - if sorted_cbl.length > 0
         .float_left.language_summary
           .float_left{style: "min-height: 99px"}
@@ -49,7 +43,7 @@
         .float_left.language_summary.no_lang_summary
           = t('.no_lang_summary')
 
-      .float_left.in to ...
+      .float_left.in= t('.to')
       .float_left.project_summary
         - pos_ids.each do |pos_id|
           - project = @positions_map[pos_id].try(:project)
@@ -71,5 +65,5 @@
     = claimed_person.kudo_rank || "1"
 
   #mini-badges-section.float_left.kudo_badge
-    = render 'accounts/badges_row', badges: [KudoRankBadge.new(account)]
+    = render 'badges_row', badges: [BadgeDecorator.new(KudoRankBadge.new(account))]
   .clear_both

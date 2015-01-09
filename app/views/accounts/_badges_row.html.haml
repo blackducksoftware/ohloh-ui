@@ -1,16 +1,14 @@
 - header ||= :small
 - hide_foss_logo ||= false
+
 - badges.each_with_index do |badge, index|
-  - is_last = index == badges.length - 1
-  - is_last ||= header == :large && badges.length > 4 && index == 3
-  - css_class = badge.class.to_s.underscore.dasherize + (is_last ? ' last' : '')
-  - if header == :large && index == 4 # render in next line
+  - if header == :large && index == 4
     %br.clear_both
-  - unless hide_foss_logo
-    %a.float_left.account-badge{:title => badge.description, :class => css_class, :href => meta_url_for(:badges), :target => '_blank'}
+  - if !hide_foss_logo
+    - css_class = badge.css_class(badges.length, header, index)
+    = link_to meta_url_for(:badges), class: "float_left account-badge #{css_class}", title: badge.description, target: '_blank' do
       - if badge.has_levels?
-        %div{:class => "pips pip-#{badge.level_bits}"}
-  - else
-    - if badge.has_levels?
-      %div{:class => "pips pip-#{badge.level_bits}", :title => badge.description(and_name = false)}
+        .pips{class: "pip-#{badge.level_bits}"}
+  - elsif badge.has_levels?
+    .pips{class: "pip-#{badge.level_bits}", title: badge.description(false)}
 

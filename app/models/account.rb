@@ -116,11 +116,6 @@ class Account < ActiveRecord::Base
     person.try(:kudo_rank) || 1
   end
 
-  def symbolized_commits_by_project
-    scbp = best_vita.try(:vita_fact).try(:commits_by_project)
-    scbp.to_a.map(&:symbolize_keys)
-  end
-
   class << self
     def resolve_login(login)
       Account.where { lower(login) == login.downcase }.first
