@@ -31,16 +31,10 @@ class String
     force_encoding('utf-8')
     self
   end
-
-  #TO DO: #Rewrite this method
-
+  # TODO: Rewrite and shorten this method.
   # converts hyperlinks into markdown encoded hyperlinks
   def encode_hyperlinks_in_markdown
     text = self
-    
-    # Note that Ruby 1.8 does not support negative look behind
-    # So this function is a lot more complicated due to that
-    
     # Grab URL's from the text
     urls = text.scan(/(?:http|https):\/\/[a-z0-9]+(?:[\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(?:(?::[0-9]{1,5})?\/[^\])\s]*)?/ix) 
     # Remove duplicates

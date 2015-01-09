@@ -16,7 +16,7 @@ class TopicTest < ActiveSupport::TestCase
   test "default value for hits should be zero" do
     assert @topic.valid?
     assert @topic.save
-    assert @topic.hits, 0
+    assert_equal @topic.hits, 0
   end
 
   test "default value for sticky should be zero" do

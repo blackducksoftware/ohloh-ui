@@ -1,5 +1,5 @@
 class Forum < ActiveRecord::Base
-  validates :name, :topics_count, :posts_count, presence: true
+  validates :name, presence: true
   validates :position, numericality: true, allow_blank: true
   
   has_many :topics, -> { order('sticky desc, replied_at desc') }, dependent: :destroy

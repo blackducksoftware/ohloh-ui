@@ -76,3 +76,14 @@ broken_topic_no_posts:
   replied_by: 0
   last_post_id: nil
   sticky: 2
+javascript:
+  id: 10
+  forum_id: 4
+  account_id: 3
+  title: learning_javascript
+  created_at: <%= 26.minutes.ago.to_s :db %>
+  replied_at: <%= 20.minutes.ago.to_s :db %>
+  posts_count: 1
+  replied_by: 0
+  last_post_id: 11
+  sticky: 2

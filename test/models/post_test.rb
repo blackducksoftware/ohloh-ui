@@ -39,19 +39,16 @@ class PostTest < ActiveSupport::TestCase
     assert_equal topics(:pdi), @post.topic
   end
 
-  #Located in string.rb 
   test "gracefully handles weirdly encoded post bodies" do
     posts(:pdi_reply).body = "* oprava chyby 33731\n* \xFAprava  podle Revize B anglick\xE9ho dokumentu\n"
     assert_equal ["* oprava chyby 33731", "* �prava  podle Revize B anglick�ho dokumentu"], posts(:pdi_reply).body.split("\n")
   end
 
-  #Located in text_helper_in_string.rb
   test "strip tags method removes " do
     post = Post.new(body: "<p>Bad Tags</b>\n")
     assert_equal 'Bad Tags', post.body
   end
 
-  #Located in text_helper_in_string.rb
   test "auto hyperlink generator" do
     bodyText = "http://start.com and http://middle.com:80/path/file.php?foo=bar#hash with [existing link](http://existing.com) and http://end.com"
     expectedBodyText = "[http://start.com](http://start.com) and [http://middle.com:80/path/file.php?foo=bar#hash](http://middle.com:80/path/file.php?foo=bar#hash) with [existing link](http://existing.com) and [http://end.com](http://end.com)"

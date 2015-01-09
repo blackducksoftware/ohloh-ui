@@ -1,5 +1,5 @@
 class Topic < ActiveRecord::Base
-  validates :account, :forum, :title, :hits, :sticky, :posts_count, presence: true
+  validates :account, :forum, :title, :hits, :sticky, presence: true
   validates :sticky, :posts_count, :hits, numericality: true
   validates :closed, inclusion: {in: [true,false]}
 

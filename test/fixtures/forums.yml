@@ -13,3 +13,8 @@ broken_forum_topic_no_posts:
   name: dont_crash_me_bro
   topics_count: 1
   posts_count: 0
+javascript:
+  id: 4
+  name: javascript
+  topics_count: 1
+  posts_count: 1

@@ -51,7 +51,7 @@ class TopicsController < ApplicationController
   end
 
   def topic_params
-    params.require(:topic).permit(:forum_id, :account_id, :title, :sticky, :closed, :hits, :posts_count, posts_attributes:[:body, :account_id])
+    params.require(:topic).permit(:forum_id, :account_id, :title, :sticky, :closed, :hits, posts_attributes:[:body, :account_id])
   end
 
 end
