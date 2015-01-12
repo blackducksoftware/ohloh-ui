@@ -5,6 +5,7 @@ class TopicTest < ActiveSupport::TestCase
   fixtures :forums, :accounts, :posts, :topics
 
   def setup
+    @admin = accounts(:admin)
     @topic = topics(:ponies)
   end
 
@@ -50,5 +51,4 @@ class TopicTest < ActiveSupport::TestCase
     @topic = topics(:galactus)
    assert_equal [posts(:galactus),posts(:silver_surfer)], @topic.posts.to_a
   end
-
 end

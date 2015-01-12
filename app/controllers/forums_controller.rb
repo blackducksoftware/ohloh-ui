@@ -1,5 +1,6 @@
 class ForumsController < ApplicationController
-  before_action :find_forum_record, except: [:index,:new,:create]
+  before_action :find_forum_record, except: [:index, :new, :create]
+  before_action :admin_session_required, except: [:index, :show]
 
   def index
     @forums = Forum.all
