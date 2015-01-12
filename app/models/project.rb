@@ -46,7 +46,7 @@ class Project < ActiveRecord::Base
   end
 
   def unclaimed_contributor_facts
-    ContributorFact.where('name_id IS NOT NULL')
+    ContributorFact.where.not(name_id: nil)
       .where(analysis_id: best_analysis_id)
       .where('name_id NOT IN
         (SELECT name_id FROM positions WHERE project_id = ? AND name_id IS NOT NULL)', id)
