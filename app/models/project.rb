@@ -24,8 +24,6 @@ class Project < ActiveRecord::Base
   scope :not_deleted, -> { where(deleted: false) }
   scope :been_analyzed, -> { where.not(best_analysis_id: nil) }
   scope :recently_analyzed, -> { not_deleted.been_analyzed.order(created_at: :desc) }
-  scope :matching, ->(other) { matching_arel(other).not_deleted }
-  scope :case_insensitive_match, ->(project, attribute) { case_insensitive_match_arel(project, attribute) }
   scope :hot, ->(lang_id) { hot_projects(lang_id) }
   scope :by_popularity, -> { where.not(user_count: 0).order(user_count: :desc) }
   scope :by_activity, -> { joins(:analyses).joins(:analysis_summaries).by_popularity.thirty_day_summaries }
@@ -84,18 +82,6 @@ class Project < ActiveRecord::Base
       hots = not_deleted.been_analyzed.analyses.fresh.hotness_scored
       hots = hots.for_lang(lang_id) unless lang_id.nil?
       hots
-    end
-
-    private
-
-    def matching_arel(other)
-      case_insensitive_match(other, :owner_at_forge)
-        .case_insensitive_match(other, :name_at_forge)
-        .where(forge_id: other.forge_id)
-    end
-
-    def case_insensitive_match_arel(project, attribute)
-      where(Project.arel_table[attribute].lower.eq((project.send(attribute) || '').downcase))
     end
   end
 
