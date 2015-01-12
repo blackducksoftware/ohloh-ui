@@ -29,8 +29,10 @@ Rails.application.routes.draw do
   resources :projects, path: :p, only: [:show] do
     member do
       get :settings
-      get 'permissions' => 'permissions#show',   as: :permissions
-      put 'permissions' => 'permissions#update', as: :update_permissions
+      get 'permissions'  => 'permissions#show',   as: :permissions
+      put 'permissions'  => 'permissions#update', as: :update_permissions
+      post 'rate/:score' => 'ratings#rate',       as: :rate
+      post 'unrate'      => 'ratings#unrate',     as: :unrate
     end
     resource :logos, only: [:new, :create, :destroy]
     resources :managers, only: [:index, :new, :create, :edit, :update] do
