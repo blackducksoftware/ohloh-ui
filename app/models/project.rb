@@ -78,10 +78,8 @@ class Project < ActiveRecord::Base
   end
 
   class << self
-    def hot_projects(lang_id)
-      hots = not_deleted.been_analyzed.analyses.fresh.hotness_scored
-      hots = hots.for_lang(lang_id) unless lang_id.nil?
-      hots
+    def hot_projects(lang_id = nil)
+      Project.not_deleted.been_analyzed.joins(:analyses).merge(Analysis.fresh_and_hot(lang_id))
     end
   end
 
