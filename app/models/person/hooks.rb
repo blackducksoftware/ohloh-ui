@@ -15,7 +15,6 @@ class Person::Hooks
     person.effective_name ||= person.account_id ? person.account.name : person.name.name
   end
 
-  # rubocop:disable Metrics/AbcSize
   def set_name_fact(person)
     person.name_fact = NameFact.where('name_id = ? and projects.id = ?', person.name_id, person.project_id)
       .joins(:project).first

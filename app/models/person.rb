@@ -1,5 +1,4 @@
 class Person < ActiveRecord::Base
-  # TODO: searchable plugin
   self.primary_key = :id
 
   include PgSearch
