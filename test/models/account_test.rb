@@ -473,4 +473,15 @@ class AccountTest < ActiveSupport::TestCase
     accounts(:robin).reload.update_attributes!(organization_id: organizations(:linux).id)
     OrganizationJob.count.must_equal 2
   end
+
+  describe 'kudo_rank' do
+    it 'should return 1 if kudo_rank is nil' do
+      accounts(:user).kudo_rank.must_equal 10
+    end
+
+    it 'should return kudo_rank' do
+      accounts(:admin).person.update_column(:kudo_rank, nil)
+      accounts(:admin).kudo_rank.must_equal 1
+    end
+  end
 end
