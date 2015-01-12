@@ -21,4 +21,25 @@ class ProjectTest < ActiveSupport::TestCase
     proj.update_attributes(best_analysis_id: analysis.id)
     Project.hot_projects(2).to_a.map(&:id).include?(proj.id).must_equal false
   end
+
+  it 'related_by_stacks should return related projects' do
+    project1 = create(:project)
+    project2 = create(:project)
+    project3 = create(:project)
+    stack1 = create(:stack)
+    stack2 = create(:stack)
+    stack3 = create(:stack)
+    create(:stack_entry, stack: stack1, project: project1)
+    create(:stack_entry, stack: stack1, project: project2)
+    create(:stack_entry, stack: stack1, project: project3)
+    create(:stack_entry, stack: stack2, project: project1)
+    create(:stack_entry, stack: stack2, project: project2)
+    create(:stack_entry, stack: stack2, project: project3)
+    create(:stack_entry, stack: stack3, project: project1)
+    create(:stack_entry, stack: stack3, project: project2)
+    create(:stack_entry, stack: stack3, project: project3)
+    project1.related_by_stacks.to_a.map(&:id).sort.must_equal [project2.id, project3.id]
+    project2.related_by_stacks.to_a.map(&:id).sort.must_equal [project1.id, project3.id]
+    project3.related_by_stacks.to_a.map(&:id).sort.must_equal [project1.id, project2.id]
+  end
 end

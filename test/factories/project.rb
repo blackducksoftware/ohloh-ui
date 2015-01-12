@@ -12,5 +12,6 @@ FactoryGirl.define do
     url_name    { generate(:project_url_name) }
     description Faker::Lorem.sentence
     before(:create) { |instance| instance.editor_account = Account.find(1) }
+    user_count 1
   end
 end
