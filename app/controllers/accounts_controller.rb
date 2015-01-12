@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
   def index
-    @persons = Person.claimed(params[:page] || 1)
+    @persons = Person.claimed(params[:page])
     preload_claimed_persons(@persons)
   end
 
