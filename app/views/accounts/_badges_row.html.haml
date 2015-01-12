@@ -6,7 +6,7 @@
     %br.clear
   - if !hide_foss_logo
     - css_class = badge.css_class(badges.length, header, index)
-    = link_to meta_url_for(:badges), class: "pull-left account-badge #{css_class}", title: badge.description, target: '_blank' do
+    = link_to blog_url_for(:badges), class: "pull-left account-badge #{css_class}", title: badge.description, target: '_blank' do
       - if badge.has_levels?
         .pips{class: "pip-#{badge.level_bits}"}
   - elsif badge.has_levels?
