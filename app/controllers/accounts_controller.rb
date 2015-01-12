@@ -2,7 +2,6 @@ class AccountsController < ApplicationController
   def index
     @persons = Person.claimed(params[:page] || 1)
     preload_claimed_persons(@persons)
-    load_logos
   end
 
   private
@@ -20,10 +19,5 @@ class AccountsController < ApplicationController
 
     @positions_map = Position.where{id.in all_position_ids.flatten}.includes(:project)
                              .references(:all).index_by(&:id)
-  end
-
-  def load_logos
-    @logos_map = Logo.where{id.in @logo_ids}.index_by(&:id)
-    @logo_ids = nil
   end
 end
