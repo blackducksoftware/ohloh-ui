@@ -324,21 +324,6 @@ class PersonTest < ActiveSupport::TestCase
     assert_people
   end
 
-  it 'test_searchable_factor' do
-    skip('TODO: searchable plugin')
-
-    assert_equal 9, Person.count
-
-    people(:jason).kudo_position = 1
-    assert_in_delta 1, people(:jason).searchable_factor, 0.01
-
-    people(:jason).kudo_position = 5
-    assert_in_delta 0.5, people(:jason).searchable_factor, 0.01
-
-    people(:jason).kudo_position = 9
-    assert_in_delta 0, people(:jason).searchable_factor, 0.01
-  end
-
   it 'test_searchable_vector' do
     skip('TODO: searchable plugin')
     assert_equal 'Jason Allen jason', people(:jason).searchable_vector[:a_simple]
