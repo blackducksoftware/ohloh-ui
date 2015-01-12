@@ -4,9 +4,9 @@ class Person < ActiveRecord::Base
 
   include PgSearch
   pg_search_scope :search_by_vector,
-    against: :effective_name,
-    using: { tsearch: { tsvector_column: 'vector' } },
-    ranked_by: ":tsearch*(1+popularity_factor)"
+                  against: :effective_name,
+                  using: { tsearch: { tsvector_column: 'vector' } },
+                  ranked_by: ':tsearch*(1+popularity_factor)'
 
   belongs_to :account
   belongs_to :name
@@ -56,7 +56,7 @@ class Person < ActiveRecord::Base
       limit = opts.fetch(:per_page, 10)
 
       people = includes([:project, :name, name_fact: :primary_language])
-        .where(name_id: limit(limit).unclaimed_people(opts))
+               .where(name_id: limit(limit).unclaimed_people(opts))
                .references(:all)
 
       group_and_sort_by_kudo_positions_or_effective_name(people)
