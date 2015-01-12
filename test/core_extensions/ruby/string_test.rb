@@ -47,4 +47,48 @@ class StringTest < ActiveSupport::TestCase
     after = ['* oprava chyby 33731', '* �prava  podle Revize B anglick�ho dokumentu']
     before.fix_encoding_if_invalid!.split("\n").must_equal after
   end
+
+  it 'valid_http_url? returns true for http:// urls' do
+    'http://cnn.com/sports'.valid_http_url?.must_equal true
+  end
+
+  it 'valid_http_url? returns true for https:// urls' do
+    'https://cnn.com/sports'.valid_http_url?.must_equal true
+  end
+
+  it 'valid_http_url? returns false for string that start with urls, but then are other things' do
+    'http://apt227.com is the place to be; with Martha Gibbs and her family!'.valid_http_url?.must_equal false
+  end
+
+  it 'valid_http_url? returns false for ftp:// urls' do
+    'ftp://cnn.com/sports'.valid_http_url?.must_equal false
+  end
+
+  it 'valid_http_url? returns false for random string' do
+    'I am a banana!'.valid_http_url?.must_equal false
+  end
+
+  it 'clean_url does nothing to nils' do
+    String.clean_url(nil).must_equal nil
+  end
+
+  it 'clean_url strips whitespace' do
+    String.clean_url(" \r\n\t http://cnn.com \r\n\t ").must_equal 'http://cnn.com'
+  end
+
+  it 'clean_url prepends http:// if needed' do
+    String.clean_url('cnn.com/sports').must_equal 'http://cnn.com/sports'
+  end
+
+  it 'clean_url just returns back a valid http:// url' do
+    String.clean_url('http://cnn.com/sports').must_equal 'http://cnn.com/sports'
+  end
+
+  it 'clean_url just returns back a valid https:// url' do
+    String.clean_url('https://cnn.com/sports').must_equal 'https://cnn.com/sports'
+  end
+
+  it 'clean_url just returns back a valid ftp:// url' do
+    String.clean_url('ftp://cnn.com/sports').must_equal 'ftp://cnn.com/sports'
+  end
 end
