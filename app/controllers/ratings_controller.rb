@@ -7,6 +7,11 @@ class RatingsController < ApplicationController
     render nothing: true, status: (@rating.save ? :ok : :unprocessable_entity)
   end
 
+  def unrate
+    @rating.destroy if @rating.persisted?
+    render nothing: true, status: :ok
+  end
+
   private
 
   def model_params
