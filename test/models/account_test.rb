@@ -22,7 +22,8 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it 'it should validate email and email_confirmation' do
-    account = build(:account, email: 'ab')
+    account = build(:account)
+    account.email = 'ab'
     account.wont_be :valid?
     account.errors.must_include(:email)
     account.errors.must_include(:email_confirmation)

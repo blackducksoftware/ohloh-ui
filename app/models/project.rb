@@ -17,6 +17,7 @@ class Project < ActiveRecord::Base
   has_many :manages, -> { where(deleted_at: nil, deleted_by: nil) }, as: 'target'
   has_many :managers, through: :manages, source: :account
   has_many :reviews
+  has_many :ratings
 
   scope :active, -> { where { deleted.not_eq(true) } }
   scope :deleted, -> { where(deleted: true) }
