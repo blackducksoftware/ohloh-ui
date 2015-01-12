@@ -31,6 +31,7 @@ Rails.application.routes.draw do
       get :settings
       get 'permissions' => 'permissions#show',   as: :permissions
       put 'permissions' => 'permissions#update', as: :update_permissions
+      put 'rate/:score' => 'ratings#rate',       as: :rate
     end
     resource :logos, only: [:new, :create, :destroy]
     resources :managers, only: [:index, :new, :create, :edit, :update] do

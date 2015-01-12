@@ -4,9 +4,8 @@ FactoryGirl.define do
   end
 
   factory :account do
-    email_address = Faker::Internet.free_email
-    email email_address
-    email_confirmation email_address
+    email { Faker::Internet.free_email }
+    email_confirmation { |account| account.send :email }
     url Faker::Internet.url
     login { generate(:account_login) }
     crypted_password 'abc123456'
