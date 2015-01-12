@@ -71,11 +71,6 @@ class Project < ActiveRecord::Base
     Manage.projects.for_target(self).active.to_a.map(&:account)
   end
 
-  # TODO: Replace account.review(project) with project.first_review_for(account)
-  def first_review_for(account)
-    Review.where(account_id: account.id, project_id: id).first
-  end
-
   def allow_undo?(key)
     ![:name].include?(key)
   end
