@@ -38,19 +38,19 @@ class PersonTest < ActiveSupport::TestCase
 
   it 'should set id to account id or random' do
     account = create(:account)
-    assert_equal account.id, account.person.id
+    account.person.id.must_equal account.id
 
     person = create(:person)
     assert person.valid?
-    assert_equal 107_374_182_41, person.id
+    person.id.must_equal 107_374_182_41
   end
 
   it 'should set effective_name to an account name or name' do
     account = create(:account)
-    assert_equal account.name, account.person.effective_name
+    account.person.effective_name.must_equal account.name
 
     person = create(:person)
-    assert_equal person.name.name, person.effective_name
+    person.effective_name.must_equal person.name.name
   end
 
   it 'should set name fact' do
@@ -60,133 +60,133 @@ class PersonTest < ActiveSupport::TestCase
 
   it 'should not set name_fact when name_id is not present' do
     person = people(:jason)
-    assert_nil person.name_fact_id
+    person.name_fact_id.must_be_nil
   end
 
   it 'should change effective_name when account name changed' do
     a = accounts(:user)
-    assert_not_equal a.person.effective_name, a.name
+    a.person.effective_name.wont_equal a.name
     a.save!
-    assert_equal a.person.reload.effective_name, a.name
+    a.name.must_equal a.person.reload.effective_name
   end
 
   it 'should cache claimed count' do
     create(:person)
-    assert_equal 8, Person.count
-    assert_equal 7, Person::Cached.claimed_count
+    Person.count.must_equal 8
+    Person::Cached.claimed_count.must_equal 7
   end
 
   it 'should cache unclaimed count' do
-    assert_equal 7, Person.count
-    assert_equal 2, Person::Cached.unclaimed_count
+    Person.count.must_equal 7
+    Person::Cached.unclaimed_count.must_equal 2
   end
 
   it '#find_claimed' do
     people = Person.find_claimed
-    assert_equal 7, people.length
+    people.length.must_equal 7
   end
 
   it '#find_claimed with pagination' do
     people = Person.find_claimed(page: 1, per_page: 5)
-    assert_equal 5, people.length
+    people.length.must_equal 5
     people = Person.find_claimed(page: 2, per_page: 5)
-    assert_equal 2, people.length
+    people.length.must_equal 2
   end
 
   it '#find_claimed with sort option' do
     admin, user = accounts(:admin), accounts(:user)
-    Person.find_by_account_id(admin.id).update_attributes!(kudo_position: 1)
-    Person.find_by_account_id(user.id).update_attributes!(kudo_position: 2)
+    admin.person.update!(kudo_position: 1)
+    user.person.update!(kudo_position: 2)
 
     people = Person.find_claimed(sort_by: 'kudo_position')
-    assert_equal 7, people.total_entries
-    assert_equal admin.id, people[0].account_id
-    assert_equal user.id, people[1].account_id
+    people.total_entries.must_equal 7
+    people[0].account_id.must_equal admin.id
+    people[1].account_id.must_equal user.id
   end
 
   it '#find_claimed with search option' do
     people = Person.find_claimed(q: 'luckey')
-    assert_equal 1, people.length
-    assert_equal 1, people.total_entries
-    assert_equal 2, people.first.account_id
+    people.length.must_equal 1
+    people.total_entries.must_equal 1
+    people.first.account_id.must_equal 2
   end
 
   it 'find_claimed without search option' do
     people = Person.find_claimed(page: 1, per_page: 3)
-    assert_equal 3, people.length
-    assert_equal 7, people.total_entries
+    people.length.must_equal 3
+    people.total_entries.must_equal 7
   end
 
   it '#find_unclaimed' do
     people = Person.find_unclaimed
-    assert_equal 2, people.length
+    people.length.must_equal 2
     person = people.first.last.first
-    assert_equal names(:joe), person.name
-    assert_equal projects(:adium), person.project
+    person.name.must_equal names(:joe)
+    person.project.must_equal projects(:adium)
   end
 
   it '#find_unclaimed with pagination' do
     people = Person.find_unclaimed(per_page: 1)
-    assert_equal 1, people.length
+    people.length.must_equal 1
   end
 
   it '#find_unclaimed with sort option' do
     people = Person.find_unclaimed
-    assert_equal people(:joe), people.first.last.first
-    assert_equal people(:kyle), people.last.last.first
+    people.first.last.first.must_equal people(:joe)
+    people.last.last.first.must_equal people(:kyle)
 
     people(:joe).update_attribute(:kudo_position, 20)
 
     people = Person.find_unclaimed
-    assert_equal people(:joe), people.last.last.first
-    assert_equal people(:kyle), people.first.last.first
+    people.last.last.first.must_equal people(:joe)
+    people.first.last.first.must_equal people(:kyle)
   end
 
   it '#find_unclaimed with search by name' do
-    assert_equal 2, Person.find_unclaimed.length
+    Person.find_unclaimed.length.must_equal 2
     people = Person.find_unclaimed(q: 'joe')
-    assert_equal 1, people.length
+    people.length.must_equal 1
   end
 
   it '#find_unclaimed with search by email' do
-    assert_equal 2, Person.find_unclaimed.length
+    Person.find_unclaimed.length.must_equal 2
     people = Person.find_unclaimed(find_by: 'email', q: 'test@test.com')
-    assert_equal 0, people.length
+    people.length.must_equal 0
 
     create_and_update_email_address_to_joe
 
     people = Person.find_unclaimed(find_by: 'email', q: 'test@test.com')
-    assert_equal 1, people.length
+    people.length.must_equal 1
   end
 
   it '#find_unclaimed search by multiple emails' do
     create_and_update_email_address_to_joe
 
     people = Person.find_unclaimed(find_by: 'email', q: 'test@test.com test1@test.com')
-    assert_equal 1, people.length
-    assert_equal names(:joe).id, people.first.first
+    people.length.must_equal 1
+    people.first.first.must_equal names(:joe).id
   end
 
   it '#count_unclaimed' do
-    assert_equal 2, Person.count_unclaimed
-    assert_equal 1, Person.count_unclaimed('joe')
-    assert_equal 0, Person.count_unclaimed('robinhood')
-    assert_equal 0, Person.count_unclaimed('test@test.com', 'email')
+    Person.count_unclaimed.must_equal 2
+    Person.count_unclaimed('joe').must_equal 1
+    Person.count_unclaimed('robinhood').must_equal 0
+    Person.count_unclaimed('test@test.com', 'email').must_equal 0
 
     create_and_update_email_address_to_joe
 
-    assert_equal 1, Person.count_unclaimed('test@test.com', 'email')
+    Person.count_unclaimed('test@test.com', 'email').must_equal 1
   end
 
   it 'should rebuild by project id' do
-    assert_equal 2, Person.where(project_id: 2).count
+    Person.where(project_id: 2).count.must_equal 2
     Person.rebuild_by_project_id(1)
-    assert_equal 2, Person.where(project_id: 2).count
+    Person.where(project_id: 2).count.must_equal 2
   end
 
   it 'deleting and restoring a project deletes and restores the persons associated with it' do
     skip('TODO: project model')
-    with_editor(accounts(:jason)) do
+    with_editor(accounts(:admin)) do
 
       project = projects(:linux)
       delta = Person.find(:all, conditions: ['project_id = ?', project.id]).count
@@ -216,15 +216,15 @@ class PersonTest < ActiveSupport::TestCase
   it 'test_create_and_delete_position_with_name_id' do
     skip('TODO: position model')
     position = nil
-    assert Person.find_by_project_id_and_name_id(projects(:linux).id, names(:scott).id)
+    Person.find_by(project: projects(:linux), name: names(:scott)).must_be :present?
     assert_difference 'Person.count', -1 do
       position = Position.create!(account: accounts(:kyle), project: projects(:linux), name: names(:scott))
     end
-    assert_nil Person.find_by_project_id_and_name_id(projects(:linux).id, names(:scott).id)
+    Person.find_by(project: projects(:linux), name: names(:scott)).must_be_nil
     assert_difference 'Person.count', +1 do
       position.destroy
     end
-    assert Person.find_by_project_id_and_name_id(projects(:linux).id, names(:scott).id)
+    Person.find_by(project: projects(:linux), name: names(:scott)).must_be :present?
     assert_people
   end
 
@@ -245,45 +245,45 @@ class PersonTest < ActiveSupport::TestCase
   it 'test_edit_position_adds_name_id' do
     skip('TODO: position model')
     position = positions(:joe_unclaimed) # Claims a project, but not a name
-    assert Person.find_by_project_id_and_name_id(position.project_id, 3)
+    Person.find_by(project: position.project, name: 3).must_be :present?
     assert_difference 'Person.count', -1 do
       position.name_id = 3
       position.save!
     end
-    assert_nil Person.find_by_project_id_and_name_id(position.project_id, 3)
+    Person.find_by(project: position.project, name: 3).must_be_nil
   end
 
   it 'test_edit_position_removes_name_id' do
     skip('TODO: position model')
-    position = positions(:jason)
+    position = positions(:admin)
     name_id = position.name_id
-    assert_nil Person.find_by_project_id_and_name_id(position.project_id, name_id)
+    Person.find_by(project: position.project, name: name_id).must_be_nil
     assert_difference 'Person.count', +1 do
       position.update_attributes(name: nil, start_date_type: :manual,
                                  start_date: Time.now, stop_date_type: :manual, stop_date: Time.now)
     end
-    assert Person.find_by_project_id_and_name_id(position.project_id, name_id)
+    Person.find_by(project_id: position.project_id, name_id: name_id).must_be :present?
   end
 
   it 'test_edit_position_changes_name_id' do
     skip('TODO: position model')
-    position = positions(:jason)
+    position = positions(:admin)
     before_name_id = position.name_id
     after_name_id = 3
-    assert_nil Person.find_by_project_id_and_name_id(position.project_id, before_name_id)
-    assert Person.find_by_project_id_and_name_id(position.project_id, after_name_id)
+    Person.find_by(project_id: position.project_id, name_id: before_name_id).must_be_nil
+    Person.find_by(project_id: position.project_id, name_id: after_name_id).must_be :present?
     assert_no_difference 'Person.count' do
       position.update_attributes(name_id: after_name_id,
                                  start_date_type: :manual, start_date: Time.now,
                                  stop_date_type: :manual, stop_date: Time.now)
     end
-    assert Person.find_by_project_id_and_name_id(position.project_id, before_name_id)
-    assert_nil Person.find_by_project_id_and_name_id(position.project_id, after_name_id)
+    Person.find_by(project_id: position.project_id, name_id: before_name_id).must_be :present?
+    Person.find_by(project_id: position.project_id, name_id: after_name_id).must_be_nil
   end
 
   it 'test_setting_best_analysis_to_null_removes_all_names' do
     skip('TODO: project model')
-    with_editor(accounts(:jason)) do
+    with_editor(accounts(:admin)) do
       projects(:linux).update_attributes(best_analysis_id: nil)
     end
     assert_people
@@ -293,7 +293,7 @@ class PersonTest < ActiveSupport::TestCase
     skip('TODO: project model')
     old_analysis = projects(:linux).best_analysis
     new_analysis = duplicate_analysis(old_analysis)
-    with_editor(accounts(:jason)) do
+    with_editor(accounts(:admin)) do
       projects(:linux).update_attributes(best_analysis: new_analysis)
     end
     assert_people
@@ -304,7 +304,7 @@ class PersonTest < ActiveSupport::TestCase
     old_analysis = projects(:linux).best_analysis
     new_analysis = duplicate_analysis(old_analysis)
     ContributorFact.create!(analysis_id: new_analysis.id, name: Name.create(name: 'the new guy'))
-    with_editor(accounts(:jason)) do
+    with_editor(accounts(:admin)) do
       projects(:linux).update_attributes(best_analysis: new_analysis)
     end
     assert_people
@@ -318,52 +318,51 @@ class PersonTest < ActiveSupport::TestCase
       ContributorFact.find(:first, conditions: "analysis_id = #{new_analysis.id} AND name_id = #{names(:scott).id}")
         .destroy
     end
-    with_editor(accounts(:jason)) do
+    with_editor(accounts(:admin)) do
       projects(:linux).update_attributes(best_analysis: new_analysis)
     end
     assert_people
   end
 
   it 'test_searchable_vector' do
-    skip('TODO: searchable plugin')
-    assert_equal 'Jason Allen jason', people(:jason).searchable_vector[:a_simple]
+    people(:jason).searchable_vector[:a].must_equal 'admin Allen admin'
   end
 
   it 'find_claimed with search term' do
-    skip('TODO: searchable plugin')
-    robin, jason = accounts(:robin), accounts(:jason)
-    Person.find_by_account_id(robin.id).update_attributes!(kudo_position: 10)
-    Person.find_by_account_id(jason.id).update_attributes!(kudo_position: 12)
+    user, admin = accounts(:user), accounts(:admin)
+    user.person.update!(kudo_position: 10)
+    admin.person.update!(kudo_position: 12)
 
-    people = Person.find_claimed(q: 'robin')
+    people = Person.find_claimed(q: 'luckey')
 
-    assert_equal true, people.singleton_methods.include?(:query_parser)
-    assert_equal 1, people.length
-    assert_equal 1, people.total_entries
-    assert_equal robin.id, people.first.account_id
+    people.length.must_equal 1
+    people.total_entries.must_equal 1
+    people.first.account_id.must_equal user.id
   end
 
   it 'find_unclaimed when destroying positions' do
-    skip('TODO: positions model')
-    positions(:robin).destroy
-    people = Person.find_unclaimed
-    assert_equal 2, people.length
-    people = people.map(&:last).flatten
-    assert_equal 2, people.length
-    assert people.any? { |p| p.name == names(:robin) }
+    Person.find_unclaimed.count.must_equal 2
+    position = positions(:user)
+    position.destroy
+    Person.create!(project: position.project, name: position.name, name_fact: create(:contributor_fact))
+    name_fact_id_and_people = Person.find_unclaimed
+    name_fact_id_and_people.length.must_equal 3
+    people = name_fact_id_and_people.map(&:last).flatten
+    people.length.must_equal 3
+    assert people.any? { |p| p.name == names(:user) }
   end
 
   it 'find_unclaimed when deleting project' do
     skip('TODO: project model')
-    with_editor(:robin) do
+    with_editor(:user) do
       projects(:adium).update_attribute(:deleted, false)
       projects(:adium).analyze
     end
     people = Person.find_unclaimed
-    assert_equal 2, people.length # still 2 unique names
-    assert_equal 3, people.map(&:last).flatten.length # 3 people records
-    assert_equal 2, people.detect { |k, _v| k == names(:robin).id }.last.length
-    assert people.detect { |k, _v| k == names(:robin).id }.last.any? { |p| p.project == projects(:adium) }
+    people.length.must_equal 2 # still 2 unique names
+    people.map(&:last).flatten.length.must_equal 3  # 3 people records
+    people.detect { |k, _v| k == names(:user).id }.last.length.must_equal 2
+    people.detect { |k, _v| k == names(:user).id }.last.find { |p| p.project == projects(:adium) }.must_be :present?
   end
 
   private
