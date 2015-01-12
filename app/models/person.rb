@@ -26,6 +26,18 @@ class Person < ActiveRecord::Base
 
   alias_attribute :person_name, :effective_name
 
+  def searchable_factor
+    return 0.0 if kudo_position.nil?
+    return 0.0 if Person.cached_count == 1
+    num = (Person.cached_count - kudo_position).to_f
+    denum = (Person.cached_count - 1).to_f
+
+    # unclaimed contributor tweak - demote them significantly
+    num /= 10 unless account_id
+
+    num / denum
+  end
+
   class << self
     def find_claimed(opts = {})
       query, sort_by = opts.delete(:q), opts.delete(:sort_by)
@@ -104,6 +116,10 @@ class Person < ActiveRecord::Base
       reorder(sort_by.eql?('kudo_position') ? 'kudo_position NULLs last' : 'lower(effective_name)')
     end
 
+    def clear_cached_count
+      Rails.cache.delete('person_count')
+    end
+
     private
 
     def group_and_sort_by_kudo_positions_or_effective_name(people)
@@ -124,10 +140,6 @@ class Person < ActiveRecord::Base
     else
       { a: effective_name }
     end
-  end
-
-  def searchable_factor
-    0.0
   end
 
   private

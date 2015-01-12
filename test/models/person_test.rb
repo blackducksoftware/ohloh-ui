@@ -1,6 +1,41 @@
 require 'test_helper'
 
 class PersonTest < ActiveSupport::TestCase
+  before { Rails.cache }
+
+  describe 'searchable_factor' do
+    let(:person) { create(:account).person }
+    before { Person.count.must_equal(7) }
+
+    it 'must return 0.0 when kudo_position is null' do
+      person.kudo_position = nil
+      person.searchable_factor.must_equal 0.0
+    end
+
+    it 'must return 0.0 when Person.cached_count is 1' do
+      person.kudo_position = 5
+      Person.stubs(:cached_count).returns(1)
+      person.searchable_factor.must_equal 0.0
+    end
+
+    it 'must return a significantly lower value when no account_id' do
+      person.account_id = nil
+      person.kudo_position = 1
+      person.searchable_factor.must_be_close_to 0.099
+    end
+
+    it 'must return valid value' do
+      person.kudo_position = 1
+      person.searchable_factor.must_be_close_to 1.0, 0.01
+
+      person.kudo_position = 5
+      person.searchable_factor.must_be_close_to 0.33, 0.01
+
+      person.kudo_position = 7
+      person.searchable_factor.must_be_close_to 0.0, 0.01
+    end
+  end
+
   it 'should set id to account id or random' do
     account = create(:account)
     assert_equal account.id, account.person.id
@@ -78,7 +113,7 @@ class PersonTest < ActiveSupport::TestCase
   end
 
   it '#find_claimed with search option' do
-    people = Person.find_claimed(q: 'robin')
+    people = Person.find_claimed(q: 'luckey')
     assert_equal 1, people.length
     assert_equal 1, people.total_entries
     assert_equal 2, people.first.account_id

@@ -5,6 +5,7 @@ jason:
   kudo_score: 0.15
   kudo_rank: 10
   kudo_position: 1
+  vector: "'admin':1A,3A 'allen':2A"
 robin:
   id: 2
   account_id: 2
@@ -13,6 +14,7 @@ robin:
   kudo_rank: 10
   kudo_position: 2
   project_id: 2
+  vector: "'luckey':2A 'user':1A,3A"
 joe:
   id: 3
   account_id: 3
@@ -22,6 +24,7 @@ joe:
   kudo_position: 3
   project_id: 2
   name_id: 4
+  vector: "'joe':1A,3A 'schmoe':2A"
 kyle:
   id: 4
   account_id: 4
@@ -30,6 +33,7 @@ kyle:
   kudo_rank: 1
   kudo_position: 4
   name_id: 5
+  vector: "'broflovski':2A 'unactiv':1A,3A"
 ohloh_slave:
   id: 5
   account_id: 5
@@ -37,6 +41,7 @@ ohloh_slave:
   kudo_score: 0
   kudo_rank: 1
   kudo_position: 5
+  vector: "'ohloh':1A,3A 'slave':2A,4A"
 ohloh_team:
   id: 6
   account_id: 6
@@ -44,6 +49,7 @@ ohloh_team:
   kudo_score: 0
   kudo_rank: 1
   kudo_position: 6
+  vector: "'ohloh':1A,3A 'team':2A,4A"
 umlaut:
   id: 7
   account_id: 7
@@ -51,3 +57,4 @@ umlaut:
   kudo_score: 0
   kudo_rank: 1
   kudo_position: 7
+  vector: "'tvon':1A,3A"
