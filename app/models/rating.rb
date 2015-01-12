@@ -3,8 +3,7 @@ class Rating < ActiveRecord::Base
   belongs_to :project
 
   validates :score, numericality: { only_integer: true },
-                    inclusion: { in: [nil, 1, 2, 3, 4, 5] },
-                    allow_nil: true
+                    inclusion: { in: [1, 2, 3, 4, 5] }
 
   after_save :update_project_rating_average
   after_destroy :update_project_rating_average

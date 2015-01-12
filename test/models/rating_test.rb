@@ -6,8 +6,8 @@ class RatingTest < ActiveSupport::TestCase
     @account = create(:account)
   end
 
-  it 'allows nil score' do
-    Rating.new(project: @project, account: @account, score: nil).valid?.must_equal true
+  it 'does not allow nil score' do
+    Rating.new(project: @project, account: @account, score: nil).valid?.must_equal false
   end
 
   it 'allows score of 1' do
