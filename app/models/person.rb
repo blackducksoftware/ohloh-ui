@@ -3,7 +3,7 @@ class Person < ActiveRecord::Base
 
   include PgSearch
   pg_search_scope :search_by_vector,
-                  against: :effective_name,
+                  against: :vector,
                   using: { tsearch: { tsvector_column: 'vector' } },
                   ranked_by: ':tsearch*(1+popularity_factor)'
 
