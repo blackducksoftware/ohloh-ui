@@ -3,7 +3,7 @@ class Person::Builder
     # FIXME: Rename Person.rebuild_kudos.
     def rebuild_kudos
       Person.logger.info { 'Person.rebuild_kudos(): Begin' }
-      Person.clear_cached_count
+      Person::Cached.clear_count
 
       Person.find_each(batch_size: 10_000) do |person|
         kudo_score = KudoScore.find_by_account_or_name_and_project(person) ||

@@ -12,9 +12,9 @@ class PersonTest < ActiveSupport::TestCase
       person.searchable_factor.must_equal 0.0
     end
 
-    it 'must return 0.0 when Person.cached_count is 1' do
+    it 'must return 0.0 when Person::Cached.count is 1' do
       person.kudo_position = 5
-      Person.stubs(:cached_count).returns(1)
+      Person::Cached.stubs(:count).returns(1)
       person.searchable_factor.must_equal 0.0
     end
 
@@ -70,23 +70,15 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal a.person.reload.effective_name, a.name
   end
 
-  it 'should cache person count' do
-    assert_equal Person.cached_count, Person.count
-    assert Person.cached_count > 0
-    assert_no_difference 'Person.cached_count' do
-      create(:person)
-    end
-  end
-
   it 'should cache claimed count' do
     create(:person)
     assert_equal 8, Person.count
-    assert_equal 7, Person.cached_claimed_count
+    assert_equal 7, Person::Cached.claimed_count
   end
 
   it 'should cache unclaimed count' do
     assert_equal 7, Person.count
-    assert_equal 2, Person.cached_unclaimed_count
+    assert_equal 2, Person::Cached.unclaimed_count
   end
 
   it '#find_claimed' do

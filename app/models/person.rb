@@ -28,9 +28,9 @@ class Person < ActiveRecord::Base
 
   def searchable_factor
     return 0.0 if kudo_position.nil?
-    return 0.0 if Person.cached_count == 1
-    num = (Person.cached_count - kudo_position).to_f
-    denum = (Person.cached_count - 1).to_f
+    return 0.0 if Person::Cached.count == 1
+    num = (Person::Cached.count - kudo_position).to_f
+    denum = (Person::Cached.count - 1).to_f
 
     # unclaimed contributor tweak - demote them significantly
     num /= 10 unless account_id
@@ -41,7 +41,7 @@ class Person < ActiveRecord::Base
   class << self
     def find_claimed(opts = {})
       query, sort_by = opts.delete(:q), opts.delete(:sort_by)
-      opts[:total_entries] = cached_claimed_count if query.blank?
+      opts[:total_entries] = Person::Cached.claimed_count if query.blank?
       opts = opts.reverse_merge(page: 1, per_page: 10)
 
       search_by_vector_or_scoped(query)
@@ -63,31 +63,13 @@ class Person < ActiveRecord::Base
     end
 
     def count_unclaimed(query = nil, find_by = nil)
-      return cached_unclaimed_count if query.blank?
+      return Person::Cached.unclaimed_count if query.blank?
       unclaimed_people(q: query, find_by: find_by).size
-    end
-
-    def cached_claimed_count
-      Rails.cache.fetch('person_claimed_count', expires_in: 15.minutes) do
-        where.not(account_id: nil).count
-      end
-    end
-
-    def cached_unclaimed_count
-      Rails.cache.fetch('person_unclaimed_count', expires_in: 15.minutes) do
-        Person.count('distinct name_id')
-      end
     end
 
     def rebuild_by_project_id(project_id)
       Person.delete_all(project_id: project_id)
       connection.execute("insert into people (select * from people_view where project_id = #{project_id})")
-    end
-
-    def cached_count
-      Rails.cache.fetch('person_count', expires_in: 5.minutes) do
-        Person.count
-      end
     end
 
     def unclaimed_people(opts)
@@ -114,10 +96,6 @@ class Person < ActiveRecord::Base
       return order('') if sort_by.blank? && query.present?
       return reorder(popularity_factor: :desc) if sort_by.blank?
       reorder(sort_by.eql?('kudo_position') ? 'kudo_position NULLs last' : 'lower(effective_name)')
-    end
-
-    def clear_cached_count
-      Rails.cache.delete('person_count')
     end
 
     private
