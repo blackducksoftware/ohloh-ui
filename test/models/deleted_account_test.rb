@@ -3,28 +3,29 @@ require_relative '../test_helper'
 class DeletedAccountTest < ActiveSupport::TestCase
   setup :create_deleted_account
 
-  test 'it should validate the login and email address' do
+  it 'it should validate the login and email address' do
     deleted_account = build(:deleted_account, email: '', login: '')
-    assert_not deleted_account.valid?
-    assert_includes deleted_account.errors, :email
-    assert_includes deleted_account.errors, :login
+    deleted_account.valid?.must_equal false
+    deleted_account.valid?.must_equal false
+    deleted_account.errors.must_include :email
+    deleted_account.errors.must_include :login
   end
 
-  test 'it should find the deleted record of a user' do
+  it 'it should find the deleted record of a user' do
     deleted_account = DeletedAccount.find_deleted_account(@account.login)
-    assert_not deleted_account.nil?
+    deleted_account.wont_be_nil
   end
 
-  test 'it should elapse the time interval of 1 hour' do
+  it 'it should elapse the time interval of 1 hour' do
     account = create(:deleted_account, created_at: 4.days.ago)
-    assert account.feedback_time_elapsed?
+    account.feedback_time_elapsed?.must_equal true
   end
 
-  test 'it should not elapse the time interval of 1 hour for newly created records' do
-    assert !@account.feedback_time_elapsed?
+  it 'it should not elapse the time interval of 1 hour for newly created records' do
+    @account.feedback_time_elapsed?.must_equal false
   end
 
-  test 'it should deliver DeletedAccountNotifier after create' do
+  it 'it should deliver DeletedAccountNotifier after create' do
     account = build(:deleted_account, created_at: 4.days.ago)
     DeletedAccountNotifier.expects(:deletion).with(account).returns(Mail::Message.new)
     Mail::Message.any_instance.expects(:deliver)

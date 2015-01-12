@@ -1,4 +1,8 @@
 class Alias < ActiveRecord::Base
+  def allow_undo?(key)
+    ![:preferred_name_id].include?(key)
+  end
+
   class << self
     # Returns the entries from the aliases table which resulted in the current best_analysis.
     # !!! Note that these entries may have been modified since the analysis ran !!!

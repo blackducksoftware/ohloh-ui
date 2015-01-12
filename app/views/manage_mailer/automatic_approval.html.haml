@@ -1,0 +1,9 @@
+:ruby
+  uri_args = { id: @manage.target.id, host: ENV['URL_HOST'] }
+  uri = @manage.target_type == 'Project' ? project_url(uri_args) : organization_url(uri_args)
+  link = link_to(@manage.target.name, uri)
+%p= t('mailers.greeting')
+%h4!= t('.body', link: link)
+%p= t('mailers.signature')
+%hr
+%p{style: 'color:777'}= t('manage_mailer.privacy_to_managers')

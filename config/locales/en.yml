@@ -3,6 +3,9 @@ en:
   save_changes: 'Save Changes'
   cancel: 'Cancel'
   edit: 'Edit'
+  new: 'New'
+  is_invalid: is invalid
+  cant_be_blank: can't be blank
   must_accept_terms: 'You must accept the terms of use.'
   four_oh_four: 'Not Found'
   must_be_logged_in: 'You must be signed in to perform that action.'
@@ -26,7 +29,15 @@ en:
   forums: 'Forums'
   terms: 'Terms'
   privacy: 'Privacy'
+  managers_link_name: 'Managers'
+  learn_more: "Learn More&hellip;"
   project_page_title: "The %{project_name} Open Source Project on Open Hub"
+  expander:
+    more: "[More]"
+    less: "[Less]"
+  manage:
+    maximum_exceeded: "You may manage up to %{max_projects} projects at a time. Delete one before adding another."
+    already_manager: ": You are already managing this or have a pending application to become one."
   domain_blacklists:
     index:
       notice: 'No Domains Blacklisted'
@@ -189,3 +200,17 @@ en:
     destroy:
       error: 'Sorry, there was a problem deleting the logo'
       success: 'Logo was reset to blank'
+  accounts:
+    invalid_email_address: 'Invalid Email Address detected.'
+    invalid_url_format: 'Invalid URL Format'
+  activerecord:
+    errors:
+      models:
+        account:
+          attributes:
+            login:
+              invalid: 'Must begin with a letter and then only contain letters, numbers, underscore or dash'
+            current_password:
+              invalid: 'Check your current password and try again.'
+            organization_name:
+              invalid: 'should start with a letter and can include only letters, numbers, _ and -'

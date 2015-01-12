@@ -1,85 +1,83 @@
 require 'test_helper'
 
 class SessionsControllerTest < ActionController::TestCase
-  fixtures :accounts
-
   # new action
-  test 'the new action should render correctly' do
+  it 'the new action should render correctly' do
     get :new
-    assert_response :ok
+    must_respond_with :ok
   end
 
   # create action
-  test 'create with valid credentials should log in' do
-    assert_equal nil, session[:account_id]
+  it 'create with valid credentials should log in' do
+    session[:account_id].must_be_nil
     post :create, login: { login: 'admin', password: 'test' }
-    assert_response :found
-    assert_equal accounts(:admin).id, session[:account_id]
-    assert_equal I18n.t('sessions.create.success'), flash[:notice]
+    must_respond_with :found
+    session[:account_id].must_equal accounts(:admin).id
+    flash[:notice].must_equal I18n.t('sessions.create.success')
   end
 
-  test 'create with invalid credentials should not log in' do
-    assert_equal nil, session[:account_id]
+  it 'create with invalid credentials should not log in' do
+    session[:account_id].must_be_nil
     post :create, login: { login: 'admin', password: 'not the password' }
-    assert_response :bad_request
-    assert_equal nil, session[:account_id]
-    assert_equal I18n.t('sessions.create.error'), flash[:error]
+    must_respond_with :bad_request
+    session[:account_id].must_be_nil
+    flash[:error].must_equal I18n.t('sessions.create.error')
   end
 
-  test 'create with valid credentials for disabled accounts should not log in' do
-    assert_equal nil, session[:account_id]
+  it 'create with valid credentials for disabled accounts should not log in' do
+    session[:account_id].must_be_nil
     post :create, login: { login: 'sir_spams_a_lot', password: 'test' }
-    assert_response :bad_request
-    assert_equal nil, session[:account_id]
-    assert_equal I18n.t('sessions.create.disabled_error'), flash[:error]
+    must_respond_with :bad_request
+    session[:account_id].must_be_nil
+    flash[:error].must_equal I18n.t('sessions.create.disabled_error')
   end
 
-  test 'create with valid credentials for unactivated accounts should not log in' do
-    assert_equal nil, session[:account_id]
+  it 'create with valid credentials for unactivated accounts should not log in' do
+    session[:account_id].must_be_nil
     post :create, login: { login: 'unactivated', password: 'testy' }
-    assert_response :bad_request
-    assert_equal nil, session[:account_id]
-    assert_equal I18n.t('sessions.create.unactivated_error'), flash[:error]
+    must_respond_with :bad_request
+    session[:account_id].must_be_nil
+    flash[:error].must_equal I18n.t('sessions.create.unactivated_error')
   end
 
-  test 'create with remember me set should save the right data to the account and cookies' do
+  it 'create with remember me set should save the right data to the account and cookies' do
     admin = accounts(:admin)
-    assert_nil admin.remember_token
-    assert_nil admin.remember_token_expires_at
+    admin.remember_token.must_be_nil
+    admin.remember_token_expires_at.must_be_nil
     post :create, login: { login: 'admin', password: 'test', remember_me: '1' }
-    assert_response :found
+    must_respond_with :found
     admin.reload
-    assert_not_nil admin.remember_token
-    assert_not_nil admin.remember_token_expires_at
-    assert_equal admin.remember_token, cookies[:auth_token]
+    admin.remember_token.wont_be_nil
+    admin.remember_token_expires_at.wont_be_nil
+    cookies[:auth_token].must_equal admin.remember_token
   end
 
-  test 'create should inform uninformed users about privacy' do
-    assert_equal nil, session[:account_id]
+  it 'create should inform uninformed users about privacy' do
+    session[:account_id].must_be_nil
     post :create, login: { login: 'privacy', password: 'test' }
-    assert_response :found
-    assert_equal accounts(:not_privacy_informed).id, session[:account_id]
-    assert_equal I18n.t('sessions.create.learn_about_privacy'), flash[:notice]
+    must_respond_with :found
+    session[:account_id].must_equal accounts(:not_privacy_informed).id
+    flash[:notice].must_equal I18n.t('sessions.create.learn_about_privacy')
   end
 
   # destroy action
-  test 'destroy should log out' do
+  it 'destroy should log out' do
     session[:account_id] = accounts(:admin).id
     delete :destroy
-    assert_response :found
-    assert_equal nil, session[:account_id]
-    assert_equal I18n.t('sessions.destroy.success'), flash[:notice]
+    must_respond_with :found
+    session[:account_id].must_be_nil
+    flash[:notice].must_equal I18n.t('sessions.destroy.success')
   end
 
-  test 'destroy should clear remember me data' do
+  it 'destroy should clear remember me data' do
     admin = accounts(:admin)
-    Authenticator.remember(admin)
+    Account::Authenticator.remember(admin)
     session[:account_id] = accounts(:admin).id
     delete :destroy
-    assert_response :found
+    must_respond_with :found
     admin.reload
-    assert_nil admin.remember_token
-    assert_nil admin.remember_token_expires_at
-    assert_equal admin.remember_token, cookies[:auth_token]
+    admin.remember_token.must_be_nil
+    admin.remember_token_expires_at.must_be_nil
+    cookies[:auth_token].must_equal admin.remember_token
   end
 end

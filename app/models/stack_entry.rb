@@ -1,5 +1,6 @@
 class StackEntry < ActiveRecord::Base
   belongs_to :stack
+  belongs_to :project
 
   scope :for_project_id, -> (project_id) { for_project_id_arel(project_id) }
   scope :similar_stack_entries, -> (entries1, entries2) { similar_stack_entries_arel(entries1, entries2) }

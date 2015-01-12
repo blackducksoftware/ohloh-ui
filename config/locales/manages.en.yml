@@ -1,0 +1,61 @@
+en:
+  managers:
+    approve:
+      notice: "%{name} approved."
+    reject:
+      notice: "%{name} is no longer a manager of %{target}"
+    index:
+      page_title: "Managers Page"
+      nobody_manages_yet: "Nobody has registered to become a manager of this project on Open Hub."
+      new_manager: "New Manager"
+      new_cta: "I manage this project on Open Hub"
+      help_header_first1: "I want to edit this project's settings and information on Open Hub. Do I need to sign up as a project manager?"
+      help_body_first1: "If a project is locked, then project information can only be edited by managers. Otherwise, anyone with an Open Hub account can edit project information."
+      help_header_first2: "Who should register as a project manager?"
+      help_body_first2: "Someone who works on the project. Ideally the owner, founder, lead developer, or release manager."
+      help_header_existing: "There are pending applications to manage %{target}."
+      help_body_existing1: "Pending applicants appear in the list to the left with a notice 'Pending Approval'."
+      help_body_existing2: "To become an active manager, an existing manager must approve the application. Any of the existing managers may approve or deny an application."
+      help_body_existing3: "An email was sent to the existing managers notifying them of the new application."
+    manage:
+      pending: "(Pending)"
+      message_label: "Message:"
+      edit: "edit"
+      confirm_withdraw: "Remove your application to be a project manager for %{target}?"
+      withdraw: "withdraw"
+      withdraw_title: "Withdraw my application to be a manager for %{name}."
+      confirm_approve: "Approve %{name} as a project manager for %{target}?"
+      approve: "approve"
+      approve_title: "Approve. Make %{name} a manager of %{target}"
+      confirm_reject: "Reject %{name} as a project manager for %{target}?"
+      reject: "reject"
+      reject_title: "%{name} is not a manager of %{target}, reject the application. %{name} may reapply later."
+      confirm_delete: "Remove %{name} as a project manager for %{target}?"
+      remove_manager: "remove manager"
+    new:
+      page_title: "New Manager Page"
+      header: "Request Manager status for %{target}"
+      explain_header: "What happens after I've submitted my request?"
+      explainer_first: "The initial application is automatically approved and subsequent applications must be approved or denied by existing project managers."
+      explainer_existing: "The existing managers will be notified about your application by email. You'll be added to the list of pending managers and any of the existing managers will be able to approve or reject your application."
+    edit:
+      page_title: "Edit Manager Page"
+    update:
+      notice: "Save successful!"
+    form:
+      message_label: "Message (optional)"
+      message_help1: "Explain why you should manage this %{target_type} on Open Hub."
+      message_help2: "This will be evaluated by current managers."
+      promise: "By submitting this form I affirm that I work on the %{target} %{target_type}."
+      submit: "Submit Request"
+    about:
+      powers_header: "%{target_type} managers can:"
+      powers1: "Limit edits just to managers."
+      powers2: "Edit %{target_type} information and settings if community editing has been limited."
+      powers3: "Approve or deny applications to be a manager."
+      note: "If a %{target_type}'s edits are limited, then %{target_type} information can only be edited by managers. Otherwise, anyone with an Open Hub account can edit %{target_type} information."
+      application_header: "Any registered Open Hub user may apply to be a manager, however:"
+      application1: "Only someone who works on the project and has a close connection to it should apply. Ideally the owner, founder, lead developer, or release manager."
+      application2: "Managers' email addresses are used by Open Hub to manage the application process, so email addresses must be accurate."
+      application3: "Managers should be willing to assume responsibility for updating and maintaining the project's information on Open Hub, including monitoring Open Hub's statistics and troubleshooting issues with code locations and Open Hub's access to project data."
+      application4: "If the project already has managers, they must approve new applicants."
