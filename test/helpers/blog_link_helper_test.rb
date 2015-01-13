@@ -20,7 +20,7 @@ class BlogLinkHelperTest < ActionView::TestCase
     end
 
     it 'should return proper blog link url when not available in BLOG_LINKS' do
-      blog_url_for('test').must_equal "http//blog.openhub.net/test"
+      blog_url_for('test').must_equal 'http//blog.openhub.net/test'
     end
   end
 end

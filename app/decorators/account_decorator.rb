@@ -13,21 +13,21 @@ class AccountDecorator < Draper::Decorator
 
   def sorted_commits_by_project
     cbp = symbolized_commits_by_project
-    sorted_cbp = cbp.inject({}) do |res, hsh|
+    sorted_cbp = cbp.each_with_object({}) do |hsh, res|
       pos_id = hsh[:position_id].to_i
       res[pos_id] ||= 0
       res[pos_id] += hsh[:commits].to_i
-      res
-    end.sort_by { |k, v| v }.reverse
+    end
+    sorted_cbp.sort_by { |_k, v| v }.reverse
   end
 
   def sorted_commits_by_language
     cbl = symbolized_commits_by_language
-    sorted_cbl = cbl.inject({}) do |res, hsh|
+    sorted_cbl = cbl.each_with_object({}) do |hsh, res|
       lang = hsh[:l_name]
-      res[lang] ||= { :nice_name => hsh[:l_nice_name], :commits => 0 }
+      res[lang] ||= { nice_name: hsh[:l_nice_name], commits: 0 }
       res[lang][:commits] += hsh[:commits].to_i
-      res
-    end.sort_by { |k, v| v[:commits] }.reverse
+    end
+    sorted_cbl.sort_by { |_k, v| v[:commits] }.reverse
   end
 end

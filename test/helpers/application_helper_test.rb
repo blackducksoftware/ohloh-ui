@@ -30,7 +30,7 @@ class ApplicationHelperTest < ActionView::TestCase
   describe 'language_text_color' do
     it 'should return 000 when color is included in list' do
       BLACK_TEXT_LANGUAGES.each do |color|
-        language_text_color(name).must_equal '000'
+        language_text_color(color).must_equal '000'
       end
     end
 

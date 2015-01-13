@@ -11,7 +11,7 @@
     %h3
       = link_to h(truncate(account.name, length: 18)), account_path(account), class: "margin_top_20",
                 title: h(account.name)
-    %p.small.word_break_all= truncate(account.one_line_about, length: 75)
+    %p.small.word_break_all= truncate(account.markup.try(:first_line), length: 75)
     .small.member_info
       - if account.projects.any?
         - manages_count_text = t '.manages', count: pluralize(account.projects.count, 'project')
@@ -22,7 +22,7 @@
     - if vf && vf.commits > 0 && @positions_map.any?
       .commits_count.pull-left
         = vf.commits
-        
+
         .text-center
           = link_to pluralize_without_count(vf.commits, "Commit"), account_positions_path(account)
       .pull-left.in= t('.in')

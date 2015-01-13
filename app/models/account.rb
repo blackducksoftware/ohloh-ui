@@ -6,17 +6,13 @@ class Account < ActiveRecord::Base
   include AccountCallbacks
 
   attr_accessor :password, :current_password, :validate_current_password, :twitter_account, :invite_code,
-                :password_confirmation, :about, :email_confirmation
+                :password_confirmation, :email_confirmation
   attr_writer :ip
 
   oh_delegators :stack_core, :project_core, :position_core, :claim_core
   strip_attributes :name, :email, :login, :invite_code, :twitter_account
 
   fix_string_column_encodings!
-
-  def about_raw
-    markup.raw
-  end
 
   def about_raw=(value)
     about_markup_id.nil? ? build_markup(raw: value) : markup.raw = value
@@ -82,14 +78,6 @@ class Account < ActiveRecord::Base
   #   Cannot have a has_many :through association 'Account#links' on the polymorphic object 'Target#target'.
   def links
     edits.where { target_type.eq('Link') & type.eq('CreateEdit') & undone.not_eq(true) }.pluck(:target)
-  end
-
-  def about_lines
-    about.to_s.split('<br/>')
-  end
-
-  def one_line_about
-    about_lines.first.to_s.strip if about.present?
   end
 
   def badges

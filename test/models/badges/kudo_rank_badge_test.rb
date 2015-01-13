@@ -16,9 +16,9 @@ class KudoRankBadgeTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'has_levels?' do
+  describe 'levels?' do
     it 'should return true' do
-      kudo_rank_badge.has_levels?.must_equal true
+      kudo_rank_badge.levels?.must_equal true
     end
   end
 

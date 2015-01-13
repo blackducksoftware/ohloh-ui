@@ -4,48 +4,42 @@ class AccountDecoratorTest < Draper::TestCase
   let(:admin) { accounts(:admin) }
   let(:user) { accounts(:user) }
 
-  let(:cbp) {
-    [{ "month" => Time.parse("2010-04-30 20:00:00 -0400"), "commits" => "1", "position_id" => "3" },
-     { "month" => Time.parse("2010-04-30 20:00:00 -0400"), "commits" => "6", "position_id" => "1" },
-     { "month" => Time.parse("2011-01-01 00:00:00"), "commits" => "1", "position_id" => "3" },
-     { "month" => Time.parse("2012-11-01 00:00:00"), "commits" => "1", "position_id" => "1" } ]
-  }
+  let(:cbp) do
+    [{ 'month' => Time.parse('2010-04-30 20:00:00 -0400'), 'commits' => '1', 'position_id' => '3' },
+     { 'month' => Time.parse('2010-04-30 20:00:00 -0400'), 'commits' => '6', 'position_id' => '1' },
+     { 'month' => Time.parse('2011-01-01 00:00:00'), 'commits' => '1', 'position_id' => '3' },
+     { 'month' => Time.parse('2012-11-01 00:00:00'), 'commits' => '1', 'position_id' => '1' }]
+  end
 
-  let(:symbolized_cbp) {
-    [{ month: Time.parse("2010-04-30 20:00:00 -0400"), commits: "1", position_id: "3" },
-     { month: Time.parse("2010-04-30 20:00:00 -0400"), commits: "6", position_id: "1" },
-     { month: Time.parse("2011-01-01 00:00:00"), commits: "1", position_id: "3" },
-     { month: Time.parse("2012-11-01 00:00:00"), commits: "1", position_id: "1" } ]
-  }
+  let(:symbolized_cbp) do
+    [{ month: Time.parse('2010-04-30 20:00:00 -0400'), commits: '1', position_id: '3' },
+     { month: Time.parse('2010-04-30 20:00:00 -0400'), commits: '6', position_id: '1' },
+     { month: Time.parse('2011-01-01 00:00:00'), commits: '1', position_id: '3' },
+     { month: Time.parse('2012-11-01 00:00:00'), commits: '1', position_id: '1' }]
+  end
 
-  let(:cbl) {
+  let(:cbl) do
     c, cpp, js, java = languages(:c), languages(:cpp), languages(:javascript), languages(:java)
-    cbl = [
-      { 'commits' => 20, 'l_id' => c.id, 'l_name' => c.name, 'l_nice_name' => c.nice_name },
-      { 'commits' => 20, 'l_id' => cpp.id, 'l_name' => cpp.name, 'l_nice_name' => cpp.nice_name },
-      { 'commits' => 20, 'l_id' => js.id, 'l_name' => js.name, 'l_nice_name' => js.nice_name },
-      { 'commits' => 20, 'l_id' => java.id, 'l_name' => java.name, 'l_nice_name' => java.nice_name }
-    ]
-  }
+    [{ 'commits' => 20, 'l_id' => c.id, 'l_name' => c.name, 'l_nice_name' => c.nice_name },
+     { 'commits' => 20, 'l_id' => cpp.id, 'l_name' => cpp.name, 'l_nice_name' => cpp.nice_name },
+     { 'commits' => 20, 'l_id' => js.id, 'l_name' => js.name, 'l_nice_name' => js.nice_name },
+     { 'commits' => 20, 'l_id' => java.id, 'l_name' => java.name, 'l_nice_name' => java.nice_name }]
+  end
 
-  let(:symbolized_cbl) {
+  let(:symbolized_cbl) do
     c, cpp, js, java = languages(:c), languages(:cpp), languages(:javascript), languages(:java)
-    cbl = [
-      { commits: 20, l_id: c.id, l_name: c.name, l_nice_name: c.nice_name },
-      { commits: 20, l_id: cpp.id, l_name: cpp.name, l_nice_name: cpp.nice_name },
-      { commits: 20, l_id: js.id, l_name: js.name, l_nice_name: js.nice_name },
-      { commits: 20, l_id: java.id, l_name: java.name, l_nice_name: java.nice_name }
-    ]
-  }
+    [{ commits: 20, l_id: c.id, l_name: c.name, l_nice_name: c.nice_name },
+     { commits: 20, l_id: cpp.id, l_name: cpp.name, l_nice_name: cpp.nice_name },
+     { commits: 20, l_id: js.id, l_name: js.name, l_nice_name: js.nice_name },
+     { commits: 20, l_id: java.id, l_name: java.name, l_nice_name: java.nice_name }]
+  end
 
-  let(:sorted_cbl) {
-    [
-     ["java", { nice_name: "Java", commits: 20 } ],
-     ["javascript", { nice_name: "Javascript", commits: 20 } ],
-     ["cpp", { nice_name: "C++", commits: 20 } ],
-     ["c", { nice_name: "C", commits: 20 } ]
-    ]
-  }
+  let(:sorted_cbl) do
+    [['java', { nice_name: 'Java', commits: 20 }],
+     ['javascript', { nice_name: 'Javascript', commits: 20 }],
+     ['cpp', { nice_name: 'C++', commits: 20 }],
+     ['c', { nice_name: 'C', commits: 20 }]]
+  end
 
   describe 'symbolized_commits_by_project' do
     it 'should return [] when account has no best_vita' do

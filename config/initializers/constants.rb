@@ -71,10 +71,8 @@ LANGUAGE_COLORS = {
   'xslt'          => '556655'
 }
 
-BLACK_TEXT_LANGUAGES = [
-  'ada', 'augeas', 'bat', 'boo', 'c', 'cncpp', 'coq', 'ec', 'html', 'lisp', 'logtalk',
-  'objective_c', 'ocaml', 'perl', 'r', 'scala', 'scheme', 'scilab', 'tcl', 'vala'
-]
+BLACK_TEXT_LANGUAGES = %w(ada augeas bat boo c cncpp coq ec html lisp logtalk objective_c
+                          ocaml perl r scala scheme scilab tcl vala)
 
 BLOG_LINKS = {
   terms:                    'terms',

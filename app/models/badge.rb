@@ -20,7 +20,7 @@ class Badge
   end
 
   def self.all_eligible(account)
-    badges = self.ordered_badges.collect do |klass|
+    badges = ordered_badges.collect do |klass|
       badge = klass.new(account)
       badge if badge.eligible?
     end
@@ -32,7 +32,7 @@ class Badge
   end
 
   def description(and_name = true)
-    desc = has_levels? ? "Level #{level} " : ''
+    desc = levels? ? "Level #{level} " : ''
     if and_name
       desc << name
       desc << ": #{short_desc}" unless short_desc.empty?
@@ -45,10 +45,11 @@ class Badge
   end
 
   def short_desc
-    fail "Not implemented"
+    fail 'Not implemented'
   end
 
-  def has_levels?
+  # TODO: Replacement for has_levels?
+  def levels?
     level_limits.any?
   end
 
@@ -57,7 +58,7 @@ class Badge
   end
 
   def level
-    return 0 unless has_levels?
+    return 0 unless levels?
     count, lvl = eligibility_count, -1
     level_limits.each do |limit|
       lvl += 1
@@ -71,6 +72,6 @@ class Badge
   end
 
   def to_underscore
-    self.class.name.gsub("Badge", "").underscore
+    self.class.name.gsub('Badge', '').underscore
   end
 end

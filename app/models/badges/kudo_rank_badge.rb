@@ -7,7 +7,7 @@ class KudoRankBadge < Badge
     ''
   end
 
-  def has_levels?
+  def levels?
     true
   end
 

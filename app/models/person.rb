@@ -12,9 +12,9 @@ class Person < ActiveRecord::Base
   end
 
   class << self
-    def claimed(page=1)
+    def claimed(page = 1)
       where.not(account_id: nil).includes(:account).references(:all)
-      .order('kudo_rank desc nulls last').paginate(page: page)
+        .order('kudo_rank desc nulls last').paginate(page: page)
     end
   end
 end

@@ -35,7 +35,7 @@ module ApplicationHelper
     BLACK_TEXT_LANGUAGES.include?(name) || language_color(name) == 'EEE' ? '000' : 'FFF'
   end
 
-  def pluralize_without_count(count, singular, plural=nil)
+  def pluralize_without_count(count, singular, plural = nil)
     count == 1 ? singular : (plural || singular.pluralize)
   end
 
@@ -44,7 +44,7 @@ module ApplicationHelper
   end
 
   def generate_page_name
-    [controller_name,action_name,"page"].join("_")
+    [controller_name, action_name, 'page'].join('_')
   end
 
   private

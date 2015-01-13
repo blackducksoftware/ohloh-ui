@@ -109,7 +109,7 @@ class AccountTest < ActiveSupport::TestCase
     about_me = Faker::Lorem.paragraph(2)
     account.about_raw = about_me
     account.save
-    account.about_raw.must_equal about_me
+    account.markup.raw.must_equal about_me
   end
 
   it 'it should not update the markup(about me) when exceeding the limit' do

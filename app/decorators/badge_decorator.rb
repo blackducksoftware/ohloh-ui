@@ -9,7 +9,7 @@ class BadgeDecorator < Draper::Decorator
 
   def pips_url
     return nil unless (1..15).include?(level)
-    file = BADGE_IMAGE_ROOT + sprintf("pips_%02i.png", level)
+    file = BADGE_IMAGE_ROOT + sprintf('pips_%02i.png', level)
     h.base_url + file
   end
 
