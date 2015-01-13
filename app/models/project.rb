@@ -18,6 +18,7 @@ class Project < ActiveRecord::Base
   has_many :managers, through: :manages, source: :account
   has_many :reviews
   has_many :ratings
+  has_one :koders_status
 
   scope :active, -> { where { deleted.not_eq(true) } }
   scope :deleted, -> { where(deleted: true) }
