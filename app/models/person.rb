@@ -112,6 +112,7 @@ class Person < ActiveRecord::Base
 
   # rubocop:disable Metrics/AbcSize
   def searchable_vector
+    # this function allow us to assign weight value to vector column. 'a' has highest weigtage followed by b,c and d
     return { a: effective_name } if account_id.blank?
 
     projects_name = Project.where(id: account.positions.pluck(:project_id)).pluck(:name).join(' ')
