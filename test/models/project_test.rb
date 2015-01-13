@@ -42,4 +42,17 @@ class ProjectTest < ActiveSupport::TestCase
     project2.related_by_stacks.to_a.map(&:id).sort.must_equal [project1.id, project3.id]
     project3.related_by_stacks.to_a.map(&:id).sort.must_equal [project1.id, project2.id]
   end
+
+  it 'related_by_stacks should return related projects' do
+    project1 = create(:project)
+    project2 = create(:project)
+    project3 = create(:project)
+    tag = create(:tag)
+    create(:tagging, tag: tag, taggable: project1)
+    create(:tagging, tag: tag, taggable: project2)
+    create(:tagging, tag: tag, taggable: project3)
+    project1.related_by_tags.to_a.map(&:id).sort.must_equal [project2.id, project3.id]
+    project2.related_by_tags.to_a.map(&:id).sort.must_equal [project1.id, project3.id]
+    project3.related_by_tags.to_a.map(&:id).sort.must_equal [project1.id, project2.id]
+  end
 end
