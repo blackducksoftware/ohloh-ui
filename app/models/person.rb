@@ -26,6 +26,7 @@ class Person < ActiveRecord::Base
 
   alias_attribute :person_name, :effective_name
 
+  # FIXME: Move to analysis backend.
   def searchable_factor
     return 0.0 if kudo_position.nil?
     return 0.0 if Person::Cached.count == 1
