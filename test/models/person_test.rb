@@ -330,8 +330,8 @@ class PersonTest < ActiveSupport::TestCase
 
   it 'find_claimed with search term' do
     user, admin = accounts(:user), accounts(:admin)
-    user.person.update!(kudo_position: 10)
-    admin.person.update!(kudo_position: 12)
+    user.person.update_columns(kudo_position: 10)
+    admin.person.update_columns(kudo_position: 12)
 
     people = Person.find_claimed(q: 'luckey')
 

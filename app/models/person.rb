@@ -109,16 +109,18 @@ class Person < ActiveRecord::Base
     end
   end
 
+  # rubocop:disable Metrics/AbcSize
   def searchable_vector
-    if account_id
-      {
-        a: "#{account.name} #{account.login}",
-        b: account.akas.to_s.gsub("\n", ' ')
-      }
-    else
-      { a: effective_name }
-    end
+    return { a: effective_name } if account_id.blank?
+
+    projects_name = Project.where(id: account.positions.pluck(:project_id)).pluck(:name).join(' ')
+    {
+      a: "#{account.name} #{account.login}",
+      b: account.akas.to_s.gsub("\n", ' '),
+      d: "#{account.markup.try(:formatted)} #{projects_name}"
+    }
   end
+  # rubocop:enable Metrics/AbcSize
 
   private
 

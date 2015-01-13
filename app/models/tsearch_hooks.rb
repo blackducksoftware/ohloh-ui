@@ -1,7 +1,6 @@
 class TsearchHooks
   def after_save(record)
-    record.class.where(id: record).update_all(
-      "vector = #{ vector(record) }, popularity_factor = #{ record.searchable_factor }")
+    record.update_columns(vector: vector(record), popularity_factor: record.searchable_factor)
   end
 
   def vector(record)
