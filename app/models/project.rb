@@ -19,6 +19,8 @@ class Project < ActiveRecord::Base
   has_many :reviews
   has_many :ratings
   has_one :koders_status
+  has_many :enlistments, -> { where(deleted: false) }
+  has_many :repositories, through: :enlistments
 
   scope :active, -> { where { deleted.not_eq(true) } }
   scope :deleted, -> { where(deleted: true) }
