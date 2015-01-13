@@ -9,7 +9,7 @@ class Person::Builder
         kudo_score = KudoScore.find_by_account_or_name_and_project(person) ||
                      NullKudoScore.new
 
-        person.update!(
+        person.update_columns(
           kudo_score: kudo_score.score, kudo_position: kudo_score.position,
           kudo_rank: kudo_score.rank, popularity_factor: person.searchable_factor)
       end
