@@ -12,6 +12,7 @@ class Person < ActiveRecord::Base
   belongs_to :project
   belongs_to :name_fact
   belongs_to :contributor_fact, foreign_key: :name_fact_id
+  belongs_to :contributor_fact_on_name_id, primary_key: :name_id, foreign_key: :name_id, class_name: :ContributorFact
   has_many :contributions
 
   validates :account_id, presence: true, unless: :unclaimed_person?

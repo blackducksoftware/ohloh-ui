@@ -42,10 +42,8 @@ class Person::BuilderTest < ActiveSupport::TestCase
       person.name_fact_id.wont_equal matching_contributor_fact.id
 
       # Stub everthing before the private method call.
-      contributor_fact_relation = ContributorFact.where('1 = 0')
-      Project.any_instance.stubs(:unclaimed_contributor_facts).returns(contributor_fact_relation)
-      person_relation = Person.where('1 = 0')
-      Person.stubs(:where).returns(person_relation)
+      Person.stubs(:delete_all)
+      Person::Builder.stubs(:create_people_from_names)
 
       Person::Builder.rebuild_for_analysis_matching_names(project)
 

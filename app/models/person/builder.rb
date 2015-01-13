@@ -52,22 +52,23 @@ class Person::Builder
     # Deadlock avoidance by ordering
     # The reason the query is complicated that it should is because it attempts to avoid deadlock
     # when multiple processes are updating people table rows by ordering updates by id.
-    # rubocop:disable Metrics/MethodLength
     def fix_contributor_fact_associations_to_match_name_id(project)
       Person.connection.execute <<-SQL
         UPDATE people SET name_fact_id = people_name_facts.name_fact_id
         FROM (
-          SELECT people.id AS person_id, name_facts.id AS name_fact_id
-            FROM people
-          INNER JOIN name_facts ON people.name_id = name_facts.name_id
-          WHERE name_facts.type = 'ContributorFact'
-            AND name_facts.analysis_id = #{ project.best_analysis_id }
-            AND people.project_id = #{ project.id }
-          ORDER BY people.id
+          #{ people_with_contributor_facts_for_project(project).to_sql }
         ) AS people_name_facts
         WHERE id = people_name_facts.person_id;
       SQL
     end
-    # rubocop:enable Metrics/MethodLength
+
+    def people_with_contributor_facts_for_project(project)
+      Person
+        .select(['people.id as person_id', 'name_facts.id as name_fact_id'])
+        .joins(:contributor_fact_on_name_id)
+        .where(project: project)
+        .where('name_facts.analysis_id = ?', project.best_analysis_id)
+        .order('people.id')
+    end
   end
 end
