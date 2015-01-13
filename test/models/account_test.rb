@@ -476,12 +476,12 @@ class AccountTest < ActiveSupport::TestCase
 
   describe 'kudo_rank' do
     it 'should return 1 if kudo_rank is nil' do
-      accounts(:user).kudo_rank.must_equal 10
+      accounts(:admin).person.update_column(:kudo_rank, nil)
+      accounts(:admin).kudo_rank.must_equal 1
     end
 
     it 'should return kudo_rank' do
-      accounts(:admin).person.update_column(:kudo_rank, nil)
-      accounts(:admin).kudo_rank.must_equal 1
+      accounts(:user).kudo_rank.must_equal 10
     end
   end
 end
