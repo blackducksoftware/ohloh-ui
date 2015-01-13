@@ -1,5 +1,7 @@
 FactoryGirl.define do
   factory :position do
-    project_id 4
+    association :project
+    association :account
+    association :name
   end
 end

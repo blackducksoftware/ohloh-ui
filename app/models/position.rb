@@ -8,7 +8,8 @@ class Position < ActiveRecord::Base
   belongs_to :project
   belongs_to :name
 
-  scope :claimed_by, -> account { where { account_id.eq(account.id) & name_id.not_eq(nil) } }
+  scope :claimed_by, ->(account) { where(account_id: account.id).where.not(name_id: nil) }
+  scope :for_project, ->(project) { where(project_id: project.id) }
 
   class << self
     # FIXME: Replace account.active_positions with account.positions.active

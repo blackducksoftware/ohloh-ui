@@ -11,9 +11,11 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it '#claimed_positions' do
-    create(:position, account: accounts(:user), project: projects(:ohloh))
-    accounts(:user).positions.count.must_equal 2
-    accounts(:user).claimed_positions.count.must_equal 1
+    user = create(:account)
+    proj = create(:project)
+    create(:position, account: user, project: proj)
+    user.positions.count.must_equal 1
+    user.claimed_positions.count.must_equal 1
   end
 
   it 'the account model should be valid' do
