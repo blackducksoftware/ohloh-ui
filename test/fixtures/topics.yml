@@ -82,7 +82,6 @@ broken_topic_no_posts:
   replied_by: 0
   last_post_id: nil
   sticky: 2
-<<<<<<< HEAD
 javascript:
   id: 10
   forum_id: 4
@@ -94,6 +93,4 @@ javascript:
   replied_by: 0
   last_post_id: 11
   sticky: 2
-=======
   closed: false
->>>>>>> OTWO_3285_admin
