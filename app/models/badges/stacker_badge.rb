@@ -1,0 +1,2 @@
+class StackerBadge < Badge
+end

@@ -22,7 +22,8 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it 'it should validate email and email_confirmation' do
-    account = build(:account, email: 'ab')
+    account = build(:account)
+    account.email = 'ab'
     account.wont_be :valid?
     account.errors.must_include(:email)
     account.errors.must_include(:email_confirmation)
@@ -109,7 +110,7 @@ class AccountTest < ActiveSupport::TestCase
     about_me = Faker::Lorem.paragraph(2)
     account.about_raw = about_me
     account.save
-    account.about_raw.must_equal about_me
+    account.markup.raw.must_equal about_me
   end
 
   it 'it should not update the markup(about me) when exceeding the limit' do
@@ -474,5 +475,16 @@ class AccountTest < ActiveSupport::TestCase
     Job.delete_all
     accounts(:robin).reload.update_attributes!(organization_id: organizations(:linux).id)
     OrganizationJob.count.must_equal 2
+  end
+
+  describe 'kudo_rank' do
+    it 'should return 1 if kudo_rank is nil' do
+      accounts(:admin).person.update_column(:kudo_rank, nil)
+      accounts(:admin).kudo_rank.must_equal 1
+    end
+
+    it 'should return kudo_rank' do
+      accounts(:user).kudo_rank.must_equal 10
+    end
   end
 end
