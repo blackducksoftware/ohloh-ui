@@ -1,5 +1,5 @@
 %h3.margin_bottom_15= t '.page_title'
 
-= render partial: 'claimed_person', collection: @people
+= render partial: 'account', collection: @people.map(&:account)
 
 = will_paginate @people

@@ -2,7 +2,7 @@ en:
   accounts:
     index:
       page_title: 'Account Holders'
-    claimed_person:
+    account:
       manages_count: 'Manages %{count}'
       member_since: 'Open Hub member since %{since}'
       langs_link_text1: 'and %{other_langs_count} other %{pluaral_term}'

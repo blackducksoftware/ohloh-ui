@@ -14,6 +14,7 @@
     .container#page
       %header= render partial: 'layouts/partials/header'
       #page-contents
-        %div{:id => generate_page_name, :class => "col-md-13"}= yield
+        .col-md-13{id: generate_page_name}
+          = yield
       .clear
       %footer= render partial: 'layouts/partials/footer'
