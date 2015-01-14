@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   attr_reader :page_context
   helper_method :page_context
-    
+
   before_action :store_location
 
   def initialize(*params)
@@ -107,7 +107,7 @@ class ApplicationController < ActionController::Base
     redirect_to(session[:return_to] || default)
     session[:return_to] = nil
   end
-  
+
   private
 
   def find_user_in_session

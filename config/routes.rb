@@ -27,7 +27,7 @@ Rails.application.routes.draw do
   end
 
   resources :forums do
-    resources :topics do 
+    resources :topics do
       resources :posts, except: :show
     end
   end

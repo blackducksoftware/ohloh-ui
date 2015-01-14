@@ -15,10 +15,11 @@ class PostsController < ApplicationController
 
   def create
     @post = @topic.posts.build(post_params)
+    @post.account_id = current_user.id
     respond_to do |format|
-      if @post.save 
+      if @post.save
         post_notification(@post)
-        format.html { redirect_to forum_topic_path(@forum,@topic), flash: { success: t('.success') } }
+        format.html { redirect_to forum_topic_path(@forum, @topic), flash: { success: t('.success') } }
       else
         format.html { redirect_to forum_topic_path(@forum, @topic), flash: { error: t('.error') } }
       end
@@ -26,7 +27,9 @@ class PostsController < ApplicationController
   end
 
   def edit
-    redirect_to forum_topic_path(@forum, @topic) if current_user.id != @post.account_id && current_user_is_admin? == false
+    if current_user.id != @post.account_id && current_user_is_admin? == false
+      redirect_to forum_topic_path(@forum, @topic)
+    end
   end
 
   def update
@@ -52,7 +55,7 @@ class PostsController < ApplicationController
     @user_who_began_topic = post.topic.account
     @user_who_replied = post.account
     @topic = post.topic
-    if @user_who_replied != @user_who_began_topic 
+    if @user_who_replied != @user_who_began_topic
       find_collection_of_users(post)
       send_reply_emails_to_everyone(@all_users_preceding_the_last_user.uniq!)
       send_creation_email
@@ -65,14 +68,14 @@ class PostsController < ApplicationController
   end
 
   def find_collection_of_users(post)
-    @all_users_preceding_the_last_user = post.topic.posts.map { |posts| posts.account }
+    @all_users_preceding_the_last_user = post.topic.posts.map(&:account)
     @all_users_preceding_the_last_user.pop
     @all_users_preceding_the_last_user
   end
 
-  def send_reply_emails_to_everyone(users)
+  def send_reply_emails_to_everyone(_users)
     @all_users_preceding_the_last_user.each do |user|
-      PostNotifier.post_replied_notification(user, @user_who_replied, @topic).deliver 
+      PostNotifier.post_replied_notification(user, @user_who_replied, @topic).deliver
     end
   end
 
@@ -91,6 +94,6 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:topic_id, :account_id, :body)
+    params.require(:post).permit(:body)
   end
 end

@@ -12,7 +12,7 @@ class ForumsController < ApplicationController
 
   def create
     @forum = Forum.new(forum_params)
-    if @forum.save 
+    if @forum.save
       redirect_to forums_path, flash: { success: t('.success') }
     else
       redirect_to forums_path, flash: { error: t('.error') }
