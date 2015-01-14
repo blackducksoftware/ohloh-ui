@@ -1,11 +1,18 @@
 require 'test_helper'
 
 class PostsController < ApplicationController
+  before_action :session_required, only: [:new, :create, :edit, :update]
+  before_action :admin_session_required, only: [:destroy]
   before_action :find_forum_and_topic_records
-  before_action :find_post_record, only: [:edit,:update,:destroy]
-  
+  before_action :find_post_record, only: [:edit, :update, :destroy]
+
   def index
     @posts = @topic.posts
+    redirect_to forum_topic_path(@forum, @topic)
+  end
+
+  def new
+    @post = @topic.posts.build
   end
 
   def create
@@ -15,9 +22,13 @@ class PostsController < ApplicationController
         post_notification(@post)
         format.html { redirect_to forum_topic_path(@forum,@topic), flash: { success: t('.success') } }
       else
-        format.html { redirect_to forum_topic_path(@forum,@topic), flash: { error: t('.error') } }
+        format.html { redirect_to forum_topic_path(@forum, @topic), flash: { error: t('.error') } }
       end
     end
+  end
+
+  def edit
+    redirect_to forum_topic_path(@forum, @topic) if current_user.id != @post.account_id && current_user_is_admin? == false
   end
 
   def update

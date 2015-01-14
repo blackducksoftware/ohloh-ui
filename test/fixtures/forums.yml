@@ -18,3 +18,8 @@ javascript:
   name: javascript
   topics_count: 1
   posts_count: 1
+ponies:
+  id: 5
+  name: ponies
+  topics_count: 0
+  posts_count: 0
