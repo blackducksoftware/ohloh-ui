@@ -19,8 +19,11 @@ Rails.application.routes.draw do
 
   resources :accounts do
     resources :api_keys, constraints: { format: :html }, except: :show
+    resources :projects, only: [:index]
+    resources :positions, only: [:index]
     member do
       get :settings
+      get :languages
       get 'edit_privacy'   => 'privacy#edit',   as: :edit_account_privacy
       put 'update_privacy' => 'privacy#update', as: :account_privacy
     end
@@ -61,6 +64,7 @@ Rails.application.routes.draw do
 
   resources :projects
   resources :stacks, except: [:new, :edit]
+  resources :language, only: [:show]
 
   # The priority is based upon order of creation: first created -> highest
   # priority.

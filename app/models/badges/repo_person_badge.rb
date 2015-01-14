@@ -1,0 +1,2 @@
+class RepoPersonBadge < Badge
+end

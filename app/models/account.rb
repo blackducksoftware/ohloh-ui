@@ -6,17 +6,13 @@ class Account < ActiveRecord::Base
   include AccountCallbacks
 
   attr_accessor :password, :current_password, :validate_current_password, :twitter_account, :invite_code,
-                :password_confirmation, :about_raw, :email_confirmation
+                :password_confirmation, :email_confirmation
   attr_writer :ip
 
   oh_delegators :stack_core, :project_core, :position_core, :claim_core
   strip_attributes :name, :email, :login, :invite_code, :twitter_account
 
   fix_string_column_encodings!
-
-  def about_raw
-    markup.raw
-  end
 
   def about_raw=(value)
     about_markup_id.nil? ? build_markup(raw: value) : markup.raw = value
@@ -84,16 +80,6 @@ class Account < ActiveRecord::Base
     edits.where { target_type.eq('Link') & type.eq('CreateEdit') & undone.not_eq(true) }.pluck(:target)
   end
 
-  def about_lines
-    about.to_s.split('<br/>')
-  end
-
-  def one_line_about
-    about_lines.first.to_s.strip if about.present?
-  end
-
-  # Array of eligible badges or empty array
-  # FIXME: Integrate alongwith Badge.
   def badges
     @badges ||= Badge.all_eligible(self)
   end
@@ -112,6 +98,10 @@ class Account < ActiveRecord::Base
   def first_commit_date
     first_checkin = best_vita.try(:vita_fact).try(:first_checkin)
     first_checkin.try(:to_date).try(:beginning_of_month)
+  end
+
+  def kudo_rank
+    person.try(:kudo_rank) || 1
   end
 
   class << self

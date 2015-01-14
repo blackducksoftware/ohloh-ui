@@ -14,10 +14,12 @@ gem 'turbolinks'
 gem 'twitter-bootstrap-rails'
 gem 'uglifier'
 gem 'will_paginate'
+gem 'will_paginate-bootstrap'
 gem 'dotenv-rails'
 gem 'paperclip'
 gem 'aws-sdk'
 gem 'squeel'
+gem 'draper'
 gem 'oh_delegator', git: 'git@github.com:blackducksw/oh_delegator.git'
 
 group :development, :test, :vagrant do
