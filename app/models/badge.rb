@@ -41,7 +41,7 @@ class Badge
   end
 
   def name
-    self.class.to_s.sub(/Badge/, '').titleize
+    class_name.titleize
   end
 
   def short_desc
@@ -72,6 +72,12 @@ class Badge
   end
 
   def to_underscore
-    self.class.name.gsub('Badge', '').underscore
+    class_name.underscore
+  end
+
+  private
+
+  def class_name
+    self.class.name.sub(/Badge/, '')
   end
 end
