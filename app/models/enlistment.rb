@@ -5,7 +5,7 @@ class Enlistment < ActiveRecord::Base
   acts_as_editable editable_attributes: [:ignore]
 
   class << self
-    def add_project_to_repository(editor_account, project, repository, ignore = nil)
+    def enlist_project_in_repository(editor_account, project, repository, ignore = nil)
       enlistment = Enlistment.where(project_id: project.id, repository_id: repository.id).first_or_initialize
       transaction do
         enlistment.editor_account = editor_account
