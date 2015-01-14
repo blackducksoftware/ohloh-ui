@@ -16,7 +16,7 @@ class AccountsControllerTest < ActionController::TestCase
     get :index
 
     must_respond_with :ok
-    assigns(:persons).length.must_equal 7
+    assigns(:people).length.must_equal 7
     assigns(:cbp_map).length.must_equal 7
     assigns(:positions_map).length.must_equal 2
   end
