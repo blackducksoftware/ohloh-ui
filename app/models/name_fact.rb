@@ -4,6 +4,7 @@ class NameFact < ActiveRecord::Base
   serialize :commits_by_language
 
   belongs_to :name
+  belongs_to :primary_language, foreign_key: :primary_language_id, class_name: 'Language'
   has_one :project, -> { where { deleted.not_eq(true) } }, foreign_key: :best_analysis_id, primary_key: :analysis_id
 
   def <=>(other)

@@ -33,7 +33,7 @@ vitafact:
   id: 4
   vita_id: 1
   analysis_id: 1
-  name_id: 3
+  name_id: 4
   type: VitaFact
   first_checkin: 2008-02-01
   last_checkin: 2008-09-01

@@ -45,4 +45,10 @@ class Project < ActiveRecord::Base
   def allow_redo?(key)
     (key == :organization_id && !organization_id.nil?) ? false : true
   end
+
+  def unclaimed_contributor_facts
+    ContributorFact.where.not(name_id: nil)
+      .where(analysis_id: best_analysis_id)
+      .where.not(name_id: Position.where.not(name_id: nil).where(project_id: id).select(:name_id))
+  end
 end

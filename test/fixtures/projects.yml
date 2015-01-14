@@ -16,6 +16,7 @@ adium:
   deleted: true
   created_at: "Sat Jan 01 00:00:00 UTC 2005"
   updated_at: "Sat Jan 01 00:00:00 UTC 2005"
+  best_analysis_id: 1
 ohloh:
   id: 3
   name: Ohloh
