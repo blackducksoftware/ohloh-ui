@@ -17,4 +17,11 @@ class PositionTest < ActiveSupport::TestCase
     linux.update!(best_analysis_id: 1)
     accounts(:user).positions.active.count.must_equal 1
   end
+
+  it '#for_project' do
+    user = create(:account)
+    proj = create(:project)
+    create(:position, account: user, project: proj)
+    Position.for_project(proj).claimed_by(user).count.must_equal 1
+  end
 end

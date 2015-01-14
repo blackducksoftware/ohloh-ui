@@ -49,6 +49,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user_is_admin?
 
   def current_user_can_manage?
+    return false unless logged_in? && current_project
     return true if current_user_is_admin?
     logged_in? && current_project && current_project.active_managers.include?(current_user)
   end

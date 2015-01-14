@@ -1,6 +1,10 @@
 require 'test_helper'
 
 class PeopleDecoratorTest < Draper::TestCase
+  before do
+    Draper::ViewContext.clear!
+  end
+
   let(:people) { Person.all }
   let(:user) { accounts(:user) }
   let(:people_decorator) { PeopleDecorator.new(people) }

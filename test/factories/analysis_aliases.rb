@@ -1,0 +1,7 @@
+FactoryGirl.define do
+  factory :analysis_alias do
+    association :analysis
+    association :commit_name, factory: :name
+    association :preferred_name, factory: :name
+  end
+end

@@ -24,11 +24,30 @@ class String
     text
   end
 
+  def valid_http_url?
+    URI.parse(self).is_a?(URI::HTTP)
+  rescue URI::InvalidURIError
+    false
+  end
+
   def fix_encoding_if_invalid!
     unless valid_encoding?
       encode!('utf-8', 'binary', invalid: :replace, undef: :replace)
     end
     force_encoding('utf-8')
     self
+  end
+
+  class << self
+    def clean_string(str)
+      return str if str.blank?
+      str.to_s.strip.strip_tags
+    end
+
+    def clean_url(url)
+      return url if url.blank?
+      url.strip!
+      (url =~ %r{^(http:/)|(https:/)|(ftp:/)}) ? url : "http://#{url}"
+    end
   end
 end

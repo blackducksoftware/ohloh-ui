@@ -27,7 +27,7 @@ class Person::Builder
     # FIXME: Rename fixup_changed_project_analysis.
     def rebuild_for_analysis_matching_names(project)
       before_names = Person.where(project: project).pluck(:name_id)
-      after_names = project.unclaimed_contributor_facts.pluck(:name_id)
+      after_names = ContributorFact.unclaimed_for_project(project).pluck(:name_id)
 
       names_to_delete = before_names - after_names
       Person.where(project: project, name: names_to_delete).delete_all
@@ -43,7 +43,7 @@ class Person::Builder
     def create_people_from_names(names, project)
       names.each do |name|
         person = Person.where(project: project, name: name).first_or_initialize
-        person.name_fact_id = project.unclaimed_contributor_facts.find_by(name: name).id
+        person.name_fact_id = ContributorFact.unclaimed_for_project(project).find_by(name: name).id
         person.save!
       end
     end
