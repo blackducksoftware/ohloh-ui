@@ -1,6 +1,10 @@
 require 'test_helper'
 class BadgeDecoratorTest < Draper::TestCase
   describe 'KudoRankBadge' do
+    before do
+      Draper::ViewContext.clear!
+    end
+
     let(:account) { create(:account) }
     let(:kudo_badge) { BadgeDecorator.new(KudoRankBadge.new(account)) }
 
