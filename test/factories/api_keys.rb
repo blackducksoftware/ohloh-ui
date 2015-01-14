@@ -1,17 +1,9 @@
 FactoryGirl.define do
-  sequence :api_key_name do |n|
-    "ApiKeyForAccount#{n}"
-  end
-
-  sequence :api_key_key do |n|
-    "ApiKey#{n}"
-  end
-
   factory :api_key do
     account_id 1
     description 'An API Key for account #1'
-    name { generate(:api_key_name) }
-    key { generate(:api_key_key) }
+    name { Faker::Lorem.characters(5) }
+    key { Faker::Internet.slug }
     terms '1'
   end
 end

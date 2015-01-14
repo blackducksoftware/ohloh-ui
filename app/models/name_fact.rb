@@ -1,5 +1,7 @@
 class NameFact < ActiveRecord::Base
   include Comparable
+  serialize :commits_by_project
+  serialize :commits_by_language
 
   belongs_to :name
   belongs_to :analysis

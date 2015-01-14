@@ -1,16 +1,8 @@
 FactoryGirl.define do
-  sequence :project_name do |n|
-    "name-#{n}"
-  end
-
-  sequence :project_url_name do |n|
-    "url_name-#{n}"
-  end
-
   factory :project do
-    name        { generate(:project_name) }
-    url_name    { generate(:project_url_name) }
-    description Faker::Lorem.sentence
+    name        { Faker::Lorem.word + rand(999_999).to_s }
+    url_name    { Faker::Lorem.word + rand(999_999).to_s }
+    description { Faker::Lorem.sentence }
     before(:create) { |instance| instance.editor_account = Account.find(1) }
     user_count 1
   end
