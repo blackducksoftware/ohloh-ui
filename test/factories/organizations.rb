@@ -10,7 +10,7 @@ FactoryGirl.define do
   factory :organization do
     name        { generate(:organization_name) }
     url_name    { generate(:organization_url_name) }
-    description Faker::Lorem.sentence
+    description { Faker::Lorem.sentence }
     before(:create) { |instance| instance.editor_account = Account.find(1) }
   end
 end

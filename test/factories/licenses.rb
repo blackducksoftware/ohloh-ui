@@ -20,7 +20,7 @@ FactoryGirl.define do
     url          { generate(:license_url) }
     nice_name    { generate(:license_nice_name) }
     abbreviation { generate(:license_abbreviation) }
-    description Faker::Lorem.sentence
+    description { Faker::Lorem.sentence }
     before(:create) { |instance| instance.editor_account = Account.find(1) }
   end
 end
