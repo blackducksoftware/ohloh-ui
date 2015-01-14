@@ -12,30 +12,24 @@ class ForumsController < ApplicationController
 
   def create
     @forum = Forum.new(forum_params)
-    respond_to do |format|
-      if @forum.save 
-        format.html { redirect_to forums_path, flash: { success: t('.success') } }
-      else
-        format.html { redirect_to forums_path, flash: { error: t('.error') } }
-      end
+    if @forum.save 
+      redirect_to forums_path, flash: { success: t('.success') }
+    else
+      redirect_to forums_path, flash: { error: t('.error') }
     end
   end
 
   def update
-    respond_to do |format|
-      if @forum.update(forum_params)
-        format.html { redirect_to forums_path, flash: { success: t('.success') } }
-      else
-        format.html { redirect_to forums_path, flash: { success: t('.error') } }
-      end
+    if @forum.update(forum_params)
+      redirect_to forums_path, flash: { success: t('.success') }
+    else
+      redirect_to forums_path, flash: { success: t('.error') }
     end
   end
 
   def destroy
     @forum.destroy
-    respond_to do |format|
-      format.html { redirect_to forums_path }
-    end
+    redirect_to forums_path
   end
 
   private

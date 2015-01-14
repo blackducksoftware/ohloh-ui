@@ -1,5 +1,3 @@
-require 'test_helper'
-
 class PostsController < ApplicationController
   before_action :session_required, only: [:new, :create, :edit, :update]
   before_action :admin_session_required, only: [:destroy]
