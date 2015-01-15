@@ -1,0 +1,14 @@
+- header ||= :small
+- hide_foss_logo ||= false
+
+- badges.each_with_index do |badge, index|
+  - if header == :large && index == 4
+    %br.clear
+  - if !hide_foss_logo
+    - css_class = badge.css_class(badges.length, header, index)
+    = link_to blog_url_for(:badges), class: "pull-left account-badge #{css_class}",
+    title: badge.description, target: '_blank' do
+      - if badge.levels?
+        .pips{class: "pip-#{badge.level_bits}"}
+  - elsif badge.levels?
+    .pips{class: "pip-#{badge.level_bits}", title: badge.description(false)}

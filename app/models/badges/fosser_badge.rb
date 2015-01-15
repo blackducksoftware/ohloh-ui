@@ -1,0 +1,2 @@
+class FOSSerBadge < Badge
+end

@@ -19,8 +19,11 @@ Rails.application.routes.draw do
 
   resources :accounts do
     resources :api_keys, constraints: { format: :html }, except: :show
+    resources :projects, only: [:index]
+    resources :positions, only: [:index]
     member do
       get :settings
+      get :languages
       get 'edit_privacy'   => 'privacy#edit',   as: :edit_account_privacy
       put 'update_privacy' => 'privacy#update', as: :account_privacy
     end
@@ -35,8 +38,10 @@ Rails.application.routes.draw do
   resources :projects, path: :p, only: [:show] do
     member do
       get :settings
-      get 'permissions' => 'permissions#show',   as: :permissions
-      put 'permissions' => 'permissions#update', as: :update_permissions
+      get 'permissions'  => 'permissions#show',   as: :permissions
+      put 'permissions'  => 'permissions#update', as: :update_permissions
+      post 'rate/:score' => 'ratings#rate',       as: :rate
+      post 'unrate'      => 'ratings#unrate',     as: :unrate
     end
     resource :logos, only: [:new, :create, :destroy]
     resources :managers, only: [:index, :new, :create, :edit, :update] do
@@ -65,6 +70,7 @@ Rails.application.routes.draw do
 
   resources :projects
   resources :stacks, except: [:new, :edit]
+  resources :language, only: [:show]
 
   # The priority is based upon order of creation: first created -> highest
   # priority.

@@ -1,0 +1,2 @@
+class DescriberBadge < Badge
+end

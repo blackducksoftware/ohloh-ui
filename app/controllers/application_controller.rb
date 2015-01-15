@@ -1,12 +1,13 @@
 class ApplicationController < ActionController::Base
   helper AvatarHelper
   helper ButtonHelper
+  helper BlogLinkHelper
 
   protect_from_forgery with: :exception
 
   attr_reader :page_context
   helper_method :page_context
-    
+
   before_action :store_location
 
   def initialize(*params)
@@ -49,6 +50,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user_is_admin?
 
   def current_user_can_manage?
+    return false unless logged_in? && current_project
     return true if current_user_is_admin?
     logged_in? && current_project && current_project.active_managers.include?(current_user)
   end
@@ -107,7 +109,7 @@ class ApplicationController < ActionController::Base
     redirect_to(session[:return_to] || default)
     session[:return_to] = nil
   end
-  
+
   private
 
   def find_user_in_session
