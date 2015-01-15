@@ -14,7 +14,7 @@ class PropertyEditTest < ActiveSupport::TestCase
 
   it 'test_undo_fails_with_no_editor' do
     @edit.target.editor_account = nil
-    proc { @edit.do_undo }.must_raise ActsAsEditable::NoEditorAccountError
+    proc { @edit.do_undo }.must_raise ActsAsEditable::UndoError
     @edit.target.reload
     @edit.target.description.must_equal 'Linux'
   end
@@ -51,7 +51,7 @@ class PropertyEditTest < ActiveSupport::TestCase
 
   it 'test_redo_fails_with_no_editor' do
     @undone_edit.target.editor_account = nil
-    proc { @edit.do_redo }.must_raise ActsAsEditable::NoEditorAccountError
+    proc { @edit.do_redo }.must_raise ActsAsEditable::UndoError
     @undone_edit.target.reload
     @undone_edit.target.description.must_equal 'Linux'
   end

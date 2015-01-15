@@ -32,6 +32,7 @@ en:
   managers_link_name: 'Managers'
   learn_more: "Learn More&hellip;"
   project_page_title: "The %{project_name} Open Source Project on Open Hub"
+  edit_permission_failed: "You are not authorized to edit this #{klass}"
   expander:
     more: "[More]"
     less: "[Less]"

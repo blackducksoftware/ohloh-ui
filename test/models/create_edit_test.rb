@@ -8,7 +8,7 @@ class CreateEditTest < ActiveSupport::TestCase
   end
 
   it 'test_undo_fails_with_no_editor' do
-    proc { @edit.do_undo }.must_raise ActsAsEditable::NoEditorAccountError
+    proc { @edit.do_undo }.must_raise ActiveRecord::RecordInvalid
     @edit.target.reload
     @edit.target.deleted.must_equal false
   end
@@ -26,7 +26,7 @@ class CreateEditTest < ActiveSupport::TestCase
     @edit.do_undo
     @edit.target.editor_account = nil
     @edit.target.deleted.must_equal true
-    proc { @edit.do_redo }.must_raise ActsAsEditable::NoEditorAccountError
+    proc { @edit.do_redo }.must_raise ActiveRecord::RecordInvalid
     @edit.target.reload
     @edit.target.deleted.must_equal true
   end

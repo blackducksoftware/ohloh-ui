@@ -3,6 +3,7 @@ class Enlistment < ActiveRecord::Base
   belongs_to :project
 
   acts_as_editable editable_attributes: [:ignore]
+  acts_as_protected parent: :project
 
   class << self
     def enlist_project_in_repository(editor_account, project, repository, ignore = nil)

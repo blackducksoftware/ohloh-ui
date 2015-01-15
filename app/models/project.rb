@@ -35,6 +35,7 @@ class Project < ActiveRecord::Base
   acts_as_editable editable_attributes: [:name, :url_name, :logo_id, :organization_id, :best_analysis_id,
                                          :description, :tag_list, :missing_source], # TODO: add :url and :download_url
                    merge_within: 30.minutes
+  acts_as_protected
 
   validates :name, presence: true, length: 1..100, allow_nil: false, if: proc { |p| !p.name.blank? },
                    uniqueness: true, case_sensitive: false
