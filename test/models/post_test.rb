@@ -35,8 +35,8 @@ class PostTest < ActiveSupport::TestCase
 
   test 'gracefully handles weirdly encoded post bodies' do
     posts(:pdi_reply).body = "* oprava chyby 33731\n* \xFAprava  podle Revize B anglick\xE9ho dokumentu\n"
-    assert_equal ["* oprava chyby 33731", "* �prava  podle Revize B anglick�ho dokumentu"], 
-                  posts(:pdi_reply).body.split("\n")
+    assert_equal ['* oprava chyby 33731', '* �prava  podle Revize B anglick�ho dokumentu'],
+                 posts(:pdi_reply).body.split("\n")
   end
 
   test 'strip tags method removes ' do

@@ -14,8 +14,7 @@ class PostsController < ApplicationController
   end
 
   def create
-    @post = @topic.posts.build(post_params)
-    @post.account_id = current_user.id
+    @post = build_new_post
     respond_to do |format|
       if @post.save
         post_notification(@post)
@@ -27,9 +26,8 @@ class PostsController < ApplicationController
   end
 
   def edit
-    if current_user.id != @post.account_id && current_user_is_admin? == false
-      redirect_to forum_topic_path(@forum, @topic)
-    end
+    return unless (current_user.id != @post.account_id) && (current_user_is_admin? == false)
+    redirect_to forum_topic_path(@forum, @topic)
   end
 
   def update
@@ -55,16 +53,13 @@ class PostsController < ApplicationController
     @user_who_began_topic = post.topic.account
     @user_who_replied = post.account
     @topic = post.topic
-    if @user_who_replied != @user_who_began_topic
-      find_collection_of_users(post)
-      send_reply_emails_to_everyone(@all_users_preceding_the_last_user.uniq!)
-      send_creation_email
-    else
-      find_collection_of_users(post)
-      @all_users_preceding_the_last_user = @all_users_preceding_the_last_user.reject { |user| user.id == @user_who_replied.id }
-      send_reply_emails_to_everyone(@all_users_preceding_the_last_user)
-      send_creation_email
+    find_collection_of_users(post)
+    unless @user_who_replied != @user_who_began_topic
+      rejected = @all_users_preceding_the_last_user.reject { |user| user.id == @user_who_replied.id }
+      @all_users_preceding_the_last_user = rejected
     end
+    send_reply_emails_to_everyone(@all_users_preceding_the_last_user.uniq!)
+    send_creation_email
   end
 
   def find_collection_of_users(post)
@@ -95,5 +90,11 @@ class PostsController < ApplicationController
 
   def post_params
     params.require(:post).permit(:body)
+  end
+
+  def build_new_post
+    post = @topic.posts.build(post_params)
+    post.account_id = current_user.id
+    post
   end
 end

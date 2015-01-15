@@ -8,8 +8,8 @@ class PostNotifierTest < ActionMailer::TestCase
     assert_equal [accounts(:admin).email], email.to # Admin Allen
     assert_equal 'ohlohadmins@blackducksoftware.com', email[:from].value
     assert_equal 'Post successfully created', email.subject
-    assert_match "Hello #{accounts(:admin).name}, your post has been successfully created under #{topics(:sticky).title}",
-                  email.body.encoded
+    expected = "Hello #{accounts(:admin).name}, your post has been successfully created under #{topics(:sticky).title}"
+    assert_match expected, email.body.encoded
     assert_not ActionMailer::Base.deliveries.empty?
     assert_equal 1, ActionMailer::Base.deliveries.size
   end
@@ -23,7 +23,7 @@ class PostNotifierTest < ActionMailer::TestCase
     assert_equal 'ohlohadmins@blackducksoftware.com', email[:from].value
     assert_equal 'Someone has responded to your post', email.subject
     assert_match "Hello #{user1.name}, #{user2.name} has replied to your post under #{topic.title}",
-                  email.body.encoded
+                 email.body.encoded
     assert_not ActionMailer::Base.deliveries.empty?
     assert_equal 1, ActionMailer::Base.deliveries.size
   end
