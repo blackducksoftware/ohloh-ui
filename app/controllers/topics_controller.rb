@@ -17,6 +17,8 @@ class TopicsController < ApplicationController
 
   def create
     @topic = @forum.topics.build(topic_params)
+    @topic.account_id = current_user.id
+    @topic.posts.last.account_id = current_user.id
     respond_to do |format|
       if @topic.save
         format.html { redirect_to forum_path(@forum), flash: { success: t('.success') } }
@@ -29,9 +31,9 @@ class TopicsController < ApplicationController
   def update
     respond_to do |format|
       if @topic.update(topic_params)
-        format.html { redirect_to forum_topic_path(@forum,@topic), flash: { success: t('.success') } }
+        format.html { redirect_to forum_topic_path(@forum, @topic), flash: { success: t('.success') } }
       else
-        format.html { redirect_to forum_topic_path(@forum,@topic), flash: { error: t('.error') } }
+        format.html { redirect_to forum_topic_path(@forum, @topic), flash: { error: t('.error') } }
       end
     end
   end
@@ -55,6 +57,7 @@ class TopicsController < ApplicationController
   end
 
   def topic_params
-    params.require(:topic).permit(:forum_id, :account_id, :title, :sticky, :hits, :closed, :posts_count, posts_attributes:[:body, :account_id])
+    params.require(:topic).permit(:forum_id, :title, :sticky,
+                                  :hits, :closed, posts_attributes: [:body])
   end
 end
