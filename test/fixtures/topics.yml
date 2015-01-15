@@ -8,6 +8,8 @@ pdi:
   replied_by: 1
   last_post_id: 3
   posts_count: 3
+  sticky: 7
+  closed: false
 sticky:
   id: 5
   forum_id: 1
@@ -19,7 +21,8 @@ sticky:
   replied_by: 2
   last_post_id: 5
   posts_count: 1
-  sticky: 1
+  sticky: 6
+  closed: false
 ponies:
   id: 4
   forum_id: 1
@@ -30,6 +33,8 @@ ponies:
   replied_at: <%= 47.hours.ago.to_s :db %>
   replied_by: 2
   last_post_id: 4
+  sticky: 3
+  closed: false
 galactus:
   id: 6
   forum_id: 2
@@ -40,6 +45,8 @@ galactus:
   replied_at: <%= 2.hours.ago.to_s :db %>
   replied_by: 1
   last_post_id: 6
+  sticky: 5
+  closed: false
 shield:
   id: 7
   forum_id: 2
@@ -50,6 +57,8 @@ shield:
   replied_at: <%= 1.hour.ago.to_s :db %>
   replied_by: 1
   last_post_id: 9
+  sticky: 4
+  closed: false
 il8n:
   id: 8
   forum_id: 1
@@ -60,6 +69,8 @@ il8n:
   posts_count: 1
   replied_by: 1
   last_post_id: 10
+  sticky: 3
+  closed: false
 broken_topic_no_posts:
   id: 9
   forum_id: 3
@@ -70,3 +81,16 @@ broken_topic_no_posts:
   posts_count: 0
   replied_by: 0
   last_post_id: nil
+  sticky: 2
+javascript:
+  id: 10
+  forum_id: 4
+  account_id: 3
+  title: learning_javascript
+  created_at: <%= 26.minutes.ago.to_s :db %>
+  replied_at: <%= 20.minutes.ago.to_s :db %>
+  posts_count: 1
+  replied_by: 0
+  last_post_id: 11
+  sticky: 2
+  closed: false

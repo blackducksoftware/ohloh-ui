@@ -68,3 +68,10 @@ il8n:
   body: il8n in rails?
   created_at: <%= 4.minutes.ago.utc.to_s :db %>
   updated_at: <%= 2.minutes.ago.utc.to_s :db %>
+javascript_post:
+  id: 11
+  topic_id: 10
+  account_id: 3
+  body: I want to learn javascript
+  created_at: <%= 26.minutes.ago.utc.to_s :db %>
+  updated_at: <%= 1.minutes.ago.utc.to_s :db %>
