@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  ActiveAdmin.routes(self)
   root 'home#index'
   resources :sessions, only: [:new, :create] do
     collection do
