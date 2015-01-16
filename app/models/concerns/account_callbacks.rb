@@ -3,7 +3,7 @@ module AccountCallbacks
 
   included do
     before_validation Account::Hooks.new
-    before_create Account::Encrypter.new
+    before_validation Account::Encrypter.new
     before_save Account::Encrypter.new
     before_destroy Account::Hooks.new
     after_create Account::Hooks.new

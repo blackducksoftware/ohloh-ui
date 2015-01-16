@@ -19,7 +19,7 @@ class ActiveSupport::TestCase
   extend MiniTest::Spec::DSL
 
   def login_as(account)
-    @controller.session[:account_id] = account ? account.id : nil
+    @controller ? controller_login_as(account) : integration_login_as(account)
   end
 
   def fixup
@@ -30,4 +30,19 @@ class ActiveSupport::TestCase
     yield if block_given?
   end
   alias_method :edit_as, :as
+
+  private
+
+  def controller_login_as(account)
+    @controller.session[:account_id] = account ? account.id : nil
+  end
+
+  def integration_login_as(account)
+    if account
+      get new_session_path
+      post sessions_path, login: { login: account.email, password: account.password }
+    else
+      delete sessions_path
+    end
+  end
 end
