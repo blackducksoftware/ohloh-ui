@@ -1,0 +1,152 @@
+%h1.margin_bottom_20 Markdown Syntax
+
+.inset
+
+  %p
+    Open Hub supports rich syntax in its forums. The syntax we use is called 'Markdown'. There are several libraries that support this syntax. We happen to use <a href='http://www.openhub.net/projects/3741'>BlueCloth</a>. Here's a reference:
+
+  %h4 Phrase Emphasis
+  %code
+    *italic*   **bold**
+    %br
+    _italic_   __bold__
+  %hr.one
+
+.inset
+  %h4 Links
+  %h6.soft Inline
+  %code
+    An [example](http://url.com/ "Title")
+  %br
+  %br
+  %h6.soft Reference-style labels (titles are optional)
+  %code
+    An [example][id]. Then, anywhere
+    %br
+    else in the doc, define the link:
+    %br
+    [id]: http://example.com/  "Title"
+  %hr.one
+
+.inset
+  %h4 Images
+  %h6.soft Inline (titles are optional)
+  %code ![alt text](/path/img.jpg "Title")
+  %hr.one
+  %h6.soft Reference-style
+  %code
+    ![alt text][id]
+    %br
+    [id]: /url/to/img.jpg "Title"
+  %hr.one
+
+.inset
+  %h4 Headers
+  %h6.soft Setext-style
+  %code
+    Header 1
+    %br
+    \========
+    %br
+    Header 2
+    %br
+    \--------
+  %hr.one
+  %h6.soft atx-style (closing #'s are optional)
+  %code
+    \# Header 1 #
+    %br
+    \## Header 2 ##
+    %br
+    \###### Header 6
+  %hr.one
+
+.inset
+  %h4 Lists
+  %h6.soft Ordered, without paragraphs
+  %code
+    1.  Foo
+    %br
+    2.  Bar
+  %hr.one
+  %h6.soft Unordered
+  %code
+    \*   A list item.
+    %br
+    \*   Bar
+  %hr.one
+  %h6.soft You can nest them
+  %code
+    \* Abacus
+    %br
+    &nbsp; &nbsp; * answer
+    %br
+    \* Bubbles
+    %br
+    &nbsp; &nbsp; 1. bunk
+    %br
+    &nbsp; &nbsp; 2. bupkis
+    %br
+    &nbsp; &nbsp; &nbsp; &nbsp; * BELITTLER
+    %br
+    &nbsp; &nbsp; 3. burper
+    %br
+    \*   Cunning
+  %hr.one
+
+.inset
+  %h4 Blockquotes
+  %code
+    &gt; Email-style angle brackets
+    %br
+    &gt; are used for blockquotes.
+    %br
+    &gt; &gt; And, they can be nested.
+    %br
+    &gt; #### Headers in blockquotes
+    %br
+    &gt; 
+    %br
+    &gt; * You can quote a list.
+    %br
+    &gt; * Etc.
+    %br
+  %hr.one
+
+.inset
+  %h4 Code Spans
+  %code
+    `&lt;code&gt;` spans are delimited by backticks.
+    %br
+    You can include literal backticks like `` `this` ``.
+  %hr.one
+
+.inset
+  %h4 Preformatted Code Blocks
+  %p Indent every line of a code block by at least 4 spaces or 1 tab.
+  %code
+    This is a normal paragraph.
+    %br
+    &nbsp;&nbsp;&nbsp;&nbsp; This is a preformatted
+    %br
+    &nbsp;&nbsp;&nbsp;&nbsp; code block.
+  %hr.one
+
+.inset
+  %h4 Horizontal Rules
+  %p Three or more dashes or asterisks
+  %code
+    \---
+    %br
+    \* * *
+    %br
+    \- - - -
+  %hr.one
+
+.inset
+  %h4 Manual Line Breaks
+  %p End a line with two or more spaces:
+  %code
+    Roses are red,&lt;space&gt;&lt;space&gt;
+    %br   
+    Violets are blue.

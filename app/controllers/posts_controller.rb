@@ -1,12 +1,11 @@
 class PostsController < ApplicationController
   before_action :session_required, only: [:new, :create, :edit, :update]
   before_action :admin_session_required, only: [:destroy]
-  before_action :find_forum_and_topic_records
+  before_action :find_forum_and_topic_records, except: :index
   before_action :find_post_record, only: [:edit, :update, :destroy]
 
   def index
-    @posts = @topic.posts
-    redirect_to forum_topic_path(@forum, @topic)
+    @posts = Post.all
   end
 
   def new
@@ -18,9 +17,9 @@ class PostsController < ApplicationController
     respond_to do |format|
       if @post.save
         post_notification(@post)
-        format.html { redirect_to forum_topic_path(@forum, @topic), flash: { success: t('.success') } }
+        format.html { redirect_to topic_path(@topic), flash: { success: t('.success') } }
       else
-        format.html { redirect_to forum_topic_path(@forum, @topic), flash: { error: t('.error') } }
+        format.html { redirect_to topic_path(@topic), flash: { error: t('.error') } }
       end
     end
   end
@@ -33,9 +32,9 @@ class PostsController < ApplicationController
   def update
     respond_to do |format|
       if @post.update(post_params)
-        format.html { redirect_to forum_topic_path(@forum, @topic), flash: { success: t('.success') } }
+        format.html { redirect_to topic_path(@topic), flash: { success: t('.success') } }
       else
-        format.html { redirect_to forum_topic_path(@forum, @topic), flash: { error: t('.error') } }
+        format.html { redirect_to topic_path(@topic), flash: { error: t('.error') } }
       end
     end
   end
@@ -84,8 +83,7 @@ class PostsController < ApplicationController
   end
 
   def find_forum_and_topic_records
-    @forum = Forum.find_by(id: params[:forum_id])
-    @topic = @forum.topics.find_by(id: params[:topic_id])
+    @topic = Topic.find_by(id: params[:topic_id])
   end
 
   def post_params

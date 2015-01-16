@@ -8,13 +8,18 @@ class PostsControllerTest < ActionController::TestCase
     @admin = accounts(:admin)
     @user = accounts(:user)
     @post = posts(:pdi)
+  end
+
+  def teardown
     ActionMailer::Base.deliveries.clear
   end
 
   #---------------------------User without an account------------------------
-  test 'index' do
-    get :index, forum_id: @forum.id, topic_id: @topic.id
-    assert_redirected_to forum_topic_path(@forum.id, @topic.id)
+  test 'index should be an absolute route' do
+    #TODO modify this test to reflect pagination, also with the user
+    #and admin.
+    get :index
+    assert_routing '/posts', action: 'index', controller: 'posts'
   end
 
   test 'new' do
@@ -49,8 +54,7 @@ class PostsControllerTest < ActionController::TestCase
   #-------------------Basic User-------------------------
   test 'user index' do
     login_as @user
-    get :index, forum_id: @forum.id, topic_id: @topic.id
-    assert_redirected_to forum_topic_path(@forum.id, @topic.id)
+    assert_routing '/posts', action: 'index', controller: 'posts'
   end
 
   test 'user new' do
@@ -149,8 +153,8 @@ class PostsControllerTest < ActionController::TestCase
   #-------------------Admin-------------------------------
   test 'admin index' do
     login_as @admin
-    get :index, forum_id: @forum.id, topic_id: @topic.id
-    assert_redirected_to forum_topic_path(@forum.id, @topic.id)
+    get :index
+    assert_routing '/posts', action: 'index', controller: 'posts'
   end
 
   test 'admin new' do

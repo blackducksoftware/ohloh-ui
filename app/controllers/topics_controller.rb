@@ -18,12 +18,16 @@ class TopicsController < ApplicationController
   def create
     @topic = build_new_topic
     respond_to do |format|
-      if @topic.save
+      if verify_recaptcha(model: @topic) && @topic.save
         format.html { redirect_to forum_path(@forum), flash: { success: t('.success') } }
       else
         format.html { redirect_to forum_path(@forum), flash: { error: t('.error') } }
       end
     end
+  end
+
+  def show
+    @posts = @topic.posts.paginate(page: params[:page], per_page: 25)
   end
 
   def update
@@ -50,8 +54,8 @@ class TopicsController < ApplicationController
   end
 
   def find_forum_and_topic_records
-    @forum = Forum.find_by(id: params[:forum_id])
-    @topic = @forum.topics.find_by(id: params[:id])
+    @topic = Topic.find_by(id: params[:id])
+    @forum = @topic.forum
   end
 
   def topic_params

@@ -29,6 +29,14 @@ class ForumsControllerTest < ActionController::TestCase
     assert_redirected_to forums_path
   end
 
+  test 'admin show' do
+    #TODO: ADD pagination testing
+    #Use factory girl
+    login_as @admin
+    get :show, id: @forum.id
+    assert_response :success
+  end
+
   test 'admin edit' do
     login_as @admin
     get :edit, id: @forum.id
@@ -71,6 +79,7 @@ class ForumsControllerTest < ActionController::TestCase
   end
 
   test 'show' do
+    #TODO: Add pagination testing
     login_as @user
     get :show, id: @forum.id
     assert_response :success

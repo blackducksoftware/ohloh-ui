@@ -1,0 +1,14 @@
+%h1.margin_bottom_20
+  %span= link_to "Forums", forums_url
+.clear
+
+.row
+  .span8.float_left
+    %h2 Edit Forum
+
+.well.span11
+  .span7
+    = form_for @forum do |f|
+      = render partial: "form", locals: { f: f }
+      = submit_tag 'Save Forum', { class: 'btn btn-small btn-primary' }
+      = link_to('Cancel', forum_path(@forum), class: "btn btn-small")

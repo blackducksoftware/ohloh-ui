@@ -1,0 +1,27 @@
+-if topic.posts.present?
+  %tr
+    %td.first
+      %p.nomargin
+        - if topic.sticky?
+          %span.soft Sticky:
+        %span{class: "#{'strong' if topic.sticky?}" }
+          = link_to h(topic.title), forum_topic_path(@forum, topic), class: "entry-title", rel: "bookmark"
+        by
+        = topic.account.name
+    %td.center
+      - if topic.closed
+        %span.label.label-important
+          closed
+      - elsif topic.created_at >= 30.minutes.ago
+        %span.label.label-info
+          new
+      - elsif topic.posts.last.created_at <= 6.months.ago
+        %span.label
+          stale
+      - elsif topic.posts.last.created_at >= 30.minutes.ago
+        %span.label.label-success
+          recent post
+    %td.center= (topic.posts_count - 1)
+    %td.center= topic.hits
+    %td.last.right.small
+      = render partial: "/forums/last_post", locals: { forum: @forum, last_post: topic.posts.last }

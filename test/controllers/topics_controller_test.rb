@@ -61,6 +61,10 @@ class TopicsControllerTest < ActionController::TestCase
     login_as @user
     get :new, forum_id: @forum.id
     assert_response :success
+    assert_select 'input#topic_title'
+    assert_select 'textarea#topic_posts_attributes_0_body'
+    css_select 'div.rc-anchor.rc-anchor-standard'
+    assert_select 'input[type=submit][value=Post Topic]'
   end
 
   test 'user create a topic and an accompanying post' do
@@ -70,6 +74,27 @@ class TopicsControllerTest < ActionController::TestCase
                                                 [{ body: 'Post object that comes by default' }] }
     end
     assert_redirected_to forum_path(@forum.id)
+  end
+
+  #TODO: make a failing create test
+
+  test 'user creates a topic/post with valid recaptcha' do
+    login_as(@user)
+    TopicsController.any_instance.expects(:verify_recaptcha).returns(true)
+    assert_difference(['Topic.count', 'Post.count']) do
+      post :create, forum_id: @forum.id, topic: { title: 'Example Forum', posts_attributes:
+                                                [{ body: 'Post object that comes by default' }] }
+    end
+    assert_redirected_to forum_path(@forum.id)
+  end
+
+  test 'user fails to create a topic/post because of invalid recaptcha' do
+    login_as(@user)
+    TopicsController.any_instance.expects(:verify_recaptcha).returns(false)
+    assert_no_difference(['Topic.count', 'Post.count']) do
+      post :create, forum_id: @forum.id, topic: { title: 'Example Forum', posts_attributes:
+                                                [{ body: 'Post object that comes by default' }] }
+    end
   end
 
   test 'user show' do
@@ -109,6 +134,10 @@ class TopicsControllerTest < ActionController::TestCase
     login_as(@admin)
     get :new, forum_id: @forum.id
     assert_response :success
+    assert_select 'input#topic_title'
+    assert_select 'textarea#topic_posts_attributes_0_body'
+    css_select 'div.rc-anchor.rc-anchor-standard'
+    assert_select 'input[type=submit][value=Post Topic]'
   end
 
   test 'admin create a topic and accompanying post' do
@@ -118,6 +147,25 @@ class TopicsControllerTest < ActionController::TestCase
                                                 [{ body: 'Post object that comes by default' }] }
     end
     assert_redirected_to forum_path(@forum.id)
+  end
+
+  test 'admin creates a topic/post with valid recaptcha' do
+    login_as(@admin)
+    TopicsController.any_instance.expects(:verify_recaptcha).returns(true)
+    assert_difference(['Topic.count', 'Post.count']) do
+      post :create, forum_id: @forum.id, topic: { title: 'Example Forum', posts_attributes:
+                                                [{ body: 'Post object that comes by default' }] }
+    end
+    assert_redirected_to forum_path(@forum.id)
+  end
+
+  test 'admin fails to create a topic/post because of invalid recaptcha' do
+    login_as(@admin)
+    TopicsController.any_instance.expects(:verify_recaptcha).returns(false)
+    assert_no_difference(['Topic.count', 'Post.count']) do
+      post :create, forum_id: @forum.id, topic: { title: 'Example Forum', posts_attributes:
+                                                [{ body: 'Post object that comes by default' }] }
+    end
   end
 
   test 'admin show' do

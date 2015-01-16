@@ -1,0 +1,12 @@
+- title = "Post a Response"
+- if logged_in?
+  .row
+    .span9
+      %h3=title
+      = form_for :post, url: topic_posts_path(@topic), method: :post do |f|
+        = render partial: 'posts/fields', locals: {f: f}
+    .span2
+      = render 'shared/markdown_help'
+- else
+  %h3=title
+  = link_to "Open Hub welcomes your opinions.", '', class: 'needs_login'

@@ -1,4 +1,3 @@
-!!! 5
 %html
   %head
     - page_title = page_context[:title] ? "#{page_context[:title]} - Open Hub" : 'Open Hub'
@@ -10,6 +9,8 @@
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     = csrf_meta_tags
+    /TODO: I need to move this somewhere else.
+    = javascript_include_tag 'https://www.google.com/recaptcha/api.js'
   %body{zoom: 1}
     .container#page
       %header= render partial: 'layouts/partials/header'

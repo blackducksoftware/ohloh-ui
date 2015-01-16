@@ -1,0 +1,51 @@
+.span12
+  %h1.margin_bottom_20
+    = link_to "Forums", forums_url
+    \:
+    = link_to @forum.name, forum_path(@forum)
+
+  - poster = @topic.posts.first.account
+  %h2.float_left.no_margin_top{style: "max-width: 740px"}
+    = @topic.title
+  - if @topic.closed
+    %span.label.label-important.float_left{:style => "margin: 16px 0 0 10px;"}
+      closed
+  .btn-group.float_right
+    - if (current_user_is_admin? && !@topic.closed)
+      = link_to "Close", topic_path(@topic, topic: {closed: "1"}), {method: :put, confirm: "Are you sure you want to close this topic?", class: "btn btn-mini", title: "Close topic '#{@topic.title}'" } 
+    / - if (current_user_is_admin?)
+    /   = link_to "Move", move_dialog_topic_path(@topic), {:class => "btn btn-mini", :id => "move_link"}
+    /   - content_for :javascript do
+    /     = javascript_tag("MoveTopicLink.init();")
+    / - if current_user_is_admin? && !@topic.account.admin?
+    /   = link_to "SPAM!", make_spammer_account_path(@topic.posts.first.account), {:method => :post, :confirm => "Are you sure you want to mark #{@topic.posts.first.account.name} as a spammer, disabling the account and removing all posts?", :class => "btn btn-mini btn-warning", :title => "Mark #{@topic.posts.first.account.name} as spammer!" }
+    - if current_user_is_admin? || (@topic.posts.count == 1 && @topic.account == current_user)
+      = link_to "Delete", topic_path(@topic), {method: :delete, confirm: "Are you sure you want to delete this topic?", class: "btn btn-danger btn-mini", title: "Delete topic '#{@topic.title}'" }
+    - if (current_user_is_admin? || (@topic.account == current_user)) && @topic.closed
+      = link_to "Re-open", topic_path(@topic, topic: {closed: "0"}), {method: :put, confirm: "Are you sure you want to re-open this topic?", class: "btn btn-mini btn-info", title: "Re-open topic '#{@topic.title}'" }
+
+  .clear
+  = render partial: "posts/post", collection: @posts
+  = will_paginate @posts
+
+  .well#post_reply
+    - if @topic.closed?
+      %p
+        - if (@topic.account == current_user)
+          %p Comments to this topic are now closed.
+          %p
+            As the user who created this topic, you may
+            = link_to "re-open", forum_topic_path(@forum, @topic, topic: {closed: "0"}), {method: :put}
+            the topic if you feel your question  was not answered or need more information on this topic.
+        - else
+          %p Comments to this topic are now closed. Please create a new topic to get technical support.
+          %p The user who created the topic can reopen this topic at any time.
+    - else
+      = render partial: 'posts/reply'
+
+  - forum_topics = @topic.forum.topics
+  %ul.pager
+    %li.previous{class: "#{'disabled' unless forum_topics.index(@topic) > 0}" }
+      = link_to "&larr; Previous Topic", topic_path(forum_topics.at((forum_topics.index(@topic)-1)))
+    %li.next{class: "#{'disabled' unless (forum_topics.index(@topic)+1) < forum_topics.size()}" }
+      = link_to "Next Topic &rarr;", topic_path(forum_topics.at((forum_topics.index(@topic)+1)))

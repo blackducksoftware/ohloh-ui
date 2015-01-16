@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/ambethia/recaptcha.git
+  revision: 76c2f58ee906ed591662d552c6be383024af11d6
+  specs:
+    recaptcha (0.3.6)
+
+GIT
   remote: git@github.com:blackducksw/oh_delegator.git
   revision: f12bd77c2f04e440ec97f9fd754c5740347113ba
   specs:
@@ -275,6 +281,7 @@ DEPENDENCIES
   pg_search
   pry-rails
   rails
+  recaptcha!
   rubocop
   sass-rails
   simplecov
