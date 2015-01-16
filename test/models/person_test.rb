@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class PersonTest < ActiveSupport::TestCase
-  before { Person::Cached.stubs(:count).returns(Person.count) }
-
   describe 'searchable_factor' do
     let(:person) { create(:account).person }
     before { Person.count.must_equal(7) }
@@ -12,9 +10,9 @@ class PersonTest < ActiveSupport::TestCase
       person.searchable_factor.must_equal 0.0
     end
 
-    it 'must return 0.0 when Person::Cached.count is 1' do
+    it 'must return 0.0 when Person.count is 1' do
       person.kudo_position = 5
-      Person::Cached.stubs(:count).returns(1)
+      Person.stubs(:count).returns(1)
       person.searchable_factor.must_equal 0.0
     end
 
@@ -29,10 +27,10 @@ class PersonTest < ActiveSupport::TestCase
       person.searchable_factor.must_be_close_to 1.0, 0.01
 
       person.kudo_position = 5
-      person.searchable_factor.must_be_close_to 0.33, 0.01
+      person.searchable_factor.must_be_close_to 0.42, 0.01
 
       person.kudo_position = 7
-      person.searchable_factor.must_be_close_to 0.0, 0.01
+      person.searchable_factor.must_be_close_to 0.14, 0.01
     end
   end
 
@@ -68,17 +66,6 @@ class PersonTest < ActiveSupport::TestCase
     a.person.effective_name.wont_equal a.name
     a.save!
     a.name.must_equal a.person.reload.effective_name
-  end
-
-  it 'should cache claimed count' do
-    create(:person)
-    Person.count.must_equal 8
-    Person::Cached.claimed_count.must_equal 7
-  end
-
-  it 'should cache unclaimed count' do
-    Person.count.must_equal 7
-    Person::Cached.unclaimed_count.must_equal 2
   end
 
   it '#find_claimed' do
@@ -165,17 +152,6 @@ class PersonTest < ActiveSupport::TestCase
     people = Person.find_unclaimed(find_by: 'email', q: 'test@test.com test1@test.com')
     people.length.must_equal 1
     people.first.first.must_equal names(:joe).id
-  end
-
-  it '#count_unclaimed' do
-    Person.count_unclaimed.must_equal 2
-    Person.count_unclaimed('joe').must_equal 1
-    Person.count_unclaimed('robinhood').must_equal 0
-    Person.count_unclaimed('test@test.com', 'email').must_equal 0
-
-    create_and_update_email_address_to_joe
-
-    Person.count_unclaimed('test@test.com', 'email').must_equal 1
   end
 
   it 'should rebuild by project id' do

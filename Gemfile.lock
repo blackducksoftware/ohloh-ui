@@ -1,9 +1,3 @@
-GIT
-  remote: git@github.com:blackducksw/oh_delegator.git
-  revision: f12bd77c2f04e440ec97f9fd754c5740347113ba
-  specs:
-    oh_delegator (0.0.1)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -269,7 +263,6 @@ DEPENDENCIES
   letter_opener
   minitest-rails
   mocha
-  oh_delegator!
   paperclip
   pg
   pg_search
