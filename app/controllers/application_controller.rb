@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   helper AvatarHelper
   helper ButtonHelper
+  helper BlogLinkHelper
 
   protect_from_forgery with: :exception
 

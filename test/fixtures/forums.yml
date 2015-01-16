@@ -1,7 +1,7 @@
 rails:
   id: 1
   name: rails
-  topics_count: 2
+  topics_count: 4
   posts_count: 4
 comics:
   id: 2
@@ -12,4 +12,14 @@ broken_forum_topic_no_posts:
   id: 3
   name: dont_crash_me_bro
   topics_count: 1
+  posts_count: 0
+javascript:
+  id: 4
+  name: javascript
+  topics_count: 1
+  posts_count: 1
+ponies:
+  id: 5
+  name: ponies
+  topics_count: 0
   posts_count: 0

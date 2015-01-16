@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class PersonTest < ActiveSupport::TestCase
-  before { Rails.cache }
+  before { Person::Cached.stubs(:count).returns(Person.count) }
 
   describe 'searchable_factor' do
     let(:person) { create(:account).person }
