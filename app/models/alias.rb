@@ -4,6 +4,7 @@ class Alias < ActiveRecord::Base
   belongs_to :preferred_name, class_name: 'Name', foreign_key: :preferred_name_id
 
   acts_as_editable editable_attributes: [:preferred_name_id]
+  acts_as_protected parent: :project
 
   def allow_undo?(key)
     ![:preferred_name_id].include?(key)

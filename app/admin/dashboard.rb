@@ -1,5 +1,4 @@
 ActiveAdmin.register_page 'Dashboard' do
-
   menu priority: 1, label: proc { I18n.t('active_admin.dashboard') }
 
   content title: proc { I18n.t('active_admin.dashboard') } do
@@ -9,7 +8,6 @@ ActiveAdmin.register_page 'Dashboard' do
         small I18n.t('active_admin.dashboard_welcome.call_to_action')
       end
     end
-
     # Here is an example of a simple dashboard with columns and panels.
     #
     # columns do
