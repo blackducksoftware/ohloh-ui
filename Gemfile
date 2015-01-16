@@ -21,7 +21,6 @@ gem 'aws-sdk'
 gem 'squeel'
 gem 'pg_search'
 gem 'draper'
-gem 'oh_delegator', git: 'git@github.com:blackducksw/oh_delegator.git'
 
 group :development, :test, :vagrant do
   gem 'byebug'
