@@ -47,7 +47,7 @@ module ActsAsProtected
     end
 
     def aap_authorized_editors
-      aap_parent ? aap_parent.active_managers : authorized_editors
+      aap_parent ? aap_parent.active_managers : active_managers
     end
   end
 end

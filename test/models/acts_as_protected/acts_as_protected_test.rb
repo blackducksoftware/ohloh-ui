@@ -21,14 +21,14 @@ class ActsAsProtected::ActsAsProtectedTest < ActiveSupport::TestCase
     it 'calls allow_edit? if the object responds to it' do
       p = create(:project)
       p.editor_account = create(:account)
-      p.stubs(:allow_edit?).returns true
+      p.expects(:allow_edit?).returns true
       p.edit_authorized?.must_equal true
     end
 
     it 'allows edits on non-protection enabled objects' do
       p = create(:project)
       p.editor_account = create(:account)
-      p.stubs(:protection_enabled?).returns false
+      p.expects(:protection_enabled?).returns false
       p.edit_authorized?.must_equal true
     end
 
@@ -36,15 +36,15 @@ class ActsAsProtected::ActsAsProtectedTest < ActiveSupport::TestCase
       p = create(:project)
       p.editor_account = create(:account)
       p.stubs(:protection_enabled?).returns true
-      p.stubs(:aap_authorized_editors).returns [p.editor_account]
+      p.expects(:aap_authorized_editors).returns [p.editor_account]
       p.edit_authorized?.must_equal true
     end
 
     it 'disallows edits on protection enabled objects by non-managers' do
       p = create(:project)
       p.editor_account = create(:account)
-      p.stubs(:protection_enabled?).returns true
-      p.stubs(:aap_authorized_editors).returns [create(:account)]
+      p.expects(:protection_enabled?).returns true
+      p.expects(:aap_authorized_editors).returns [create(:account)]
       p.edit_authorized?.must_equal false
     end
   end
@@ -63,14 +63,14 @@ class ActsAsProtected::ActsAsProtectedTest < ActiveSupport::TestCase
     it 'does not fail validations if unchanged (this can happen when adding a protected project to your stack)' do
       proj = create(:project)
       proj.stubs(:edit_authorized?).returns false
-      proj.valid?.must_equal true
+      proj.must_be :valid?
     end
 
     it 'fails validations for changed objects if not authorized to change' do
       proj = create(:project)
       proj.name = 'spamspamspam'
-      proj.stubs(:edit_authorized?).returns false
-      proj.valid?.must_equal false
+      proj.expects(:edit_authorized?).returns false
+      proj.wont_be :valid?
     end
   end
 end

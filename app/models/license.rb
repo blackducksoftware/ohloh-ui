@@ -8,6 +8,6 @@ class License < ActiveRecord::Base
   end
 
   def allow_edit?
-    (editor_account && Account::Access.new(editor_account).admin?) || !locked
+    editor_account && (Account::Access.new(editor_account).admin? || !locked)
   end
 end
