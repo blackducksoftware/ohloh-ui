@@ -68,17 +68,6 @@ class PersonTest < ActiveSupport::TestCase
     a.name.must_equal a.person.reload.effective_name
   end
 
-  it 'should cache claimed count' do
-    create(:person)
-    Person.count.must_equal 8
-    Person::Cached.claimed_count.must_equal 7
-  end
-
-  it 'should cache unclaimed count' do
-    Person.count.must_equal 7
-    Person::Cached.unclaimed_count.must_equal 2
-  end
-
   it '#find_claimed' do
     people = Person.find_claimed
     people.length.must_equal 7
@@ -163,17 +152,6 @@ class PersonTest < ActiveSupport::TestCase
     people = Person.find_unclaimed(find_by: 'email', q: 'test@test.com test1@test.com')
     people.length.must_equal 1
     people.first.first.must_equal names(:joe).id
-  end
-
-  it '#count_unclaimed' do
-    Person.count_unclaimed.must_equal 2
-    Person.count_unclaimed('joe').must_equal 1
-    Person.count_unclaimed('robinhood').must_equal 0
-    Person.count_unclaimed('test@test.com', 'email').must_equal 0
-
-    create_and_update_email_address_to_joe
-
-    Person.count_unclaimed('test@test.com', 'email').must_equal 1
   end
 
   it 'should rebuild by project id' do
