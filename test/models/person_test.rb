@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class PersonTest < ActiveSupport::TestCase
-  before { Person::Cached.stubs(:count).returns(Person.count) }
-
   describe 'searchable_factor' do
     let(:person) { create(:account).person }
     before { Person.count.must_equal(7) }
@@ -12,9 +10,9 @@ class PersonTest < ActiveSupport::TestCase
       person.searchable_factor.must_equal 0.0
     end
 
-    it 'must return 0.0 when Person::Cached.count is 1' do
+    it 'must return 0.0 when Person.count is 1' do
       person.kudo_position = 5
-      Person::Cached.stubs(:count).returns(1)
+      Person.stubs(:count).returns(1)
       person.searchable_factor.must_equal 0.0
     end
 
@@ -29,10 +27,10 @@ class PersonTest < ActiveSupport::TestCase
       person.searchable_factor.must_be_close_to 1.0, 0.01
 
       person.kudo_position = 5
-      person.searchable_factor.must_be_close_to 0.33, 0.01
+      person.searchable_factor.must_be_close_to 0.42, 0.01
 
       person.kudo_position = 7
-      person.searchable_factor.must_be_close_to 0.0, 0.01
+      person.searchable_factor.must_be_close_to 0.14, 0.01
     end
   end
 

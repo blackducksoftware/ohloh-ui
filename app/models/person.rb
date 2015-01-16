@@ -29,9 +29,9 @@ class Person < ActiveRecord::Base
 
   # FIXME: Move to analysis backend.
   def searchable_factor
-    return 0.0 if kudo_position.nil? || Person::Cached.count == 1
-    num = (Person::Cached.count - kudo_position).to_f
-    denum = (Person::Cached.count - 1).to_f
+    return 0.0 if kudo_position.nil? || Person.count == 1
+    num = (Person.count - kudo_position).to_f
+    denum = (Person.count - 1).to_f
 
     # unclaimed contributor tweak - demote them significantly
     num /= 10 unless account_id
