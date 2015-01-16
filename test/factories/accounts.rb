@@ -16,4 +16,8 @@ FactoryGirl.define do
     name { Faker::Name.name }
     about_raw { Faker::Lorem.characters(10) }
   end
+
+  factory :admin, parent: :account do
+    level Account::Access::ADMIN
+  end
 end
