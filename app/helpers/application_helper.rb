@@ -45,6 +45,15 @@ module ApplicationHelper
     [controller_name, action_name, 'page'].join('_')
   end
 
+  def months_till_end_date(start_date, end_date)
+    (start_date..end_date).map{|d| Date.new(d.year, d.month)}.uniq
+  end
+
+  def fix_time_zone(timestamp)
+    return timestamp unless timestamp.is_a? Time
+    timestamp.utc.to_s.gsub(/ UTC/, '')
+  end
+
   private
 
   def render_expander(text, l)
