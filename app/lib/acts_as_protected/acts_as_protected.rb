@@ -1,26 +1,22 @@
 module ActsAsProtected
+  extend ActiveSupport::Concern
+
   module ClassMethods
     def acts_as_protected(parent: nil, always_protected: false)
-      class << self
-        send :attr_accessor, :aap_parent
-        send :attr_accessor, :aap_always_protected
-      end
-      @aap_parent = parent
-      @aap_always_protected = always_protected
+      cattr_accessor :aap_parent
+      cattr_accessor :aap_always_protected
+      self.aap_parent = parent
+      self.aap_always_protected = always_protected
       validate :must_be_authorized
 
-      send :include, ActsAsProtected::InstanceMethods
+      include ActsAsProtected::InstanceMethods
     end
-  end
-
-  def self.included(klass)
-    klass.send :extend, ActsAsProtected::ClassMethods
   end
 
   module InstanceMethods
     def protection_enabled?
       return true if self.class.aap_always_protected
-      return aap_parent.protection_enabled? unless aap_parent.nil?
+      return send(aap_parent).protection_enabled? unless aap_parent.nil?
       (permission || Permission.new).remainder
     end
 
@@ -47,7 +43,7 @@ module ActsAsProtected
     end
 
     def aap_authorized_editors
-      aap_parent ? aap_parent.active_managers : active_managers
+      aap_parent ? send(aap_parent).active_managers : active_managers
     end
   end
 end

@@ -17,7 +17,9 @@ ActiveAdmin.register ApiKey do
     column :name do |api_key|
       link_to api_key.name, admin_api_key_path(api_key)
     end
-    column :account
+    column :account do |api_key|
+      link_to api_key.account.name, admin_account_path(api_key.account)
+    end
     column :key
     column :status do |api_key|
       case api_key.status
