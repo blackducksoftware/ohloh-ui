@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ApiKeyAdminTest < ActionDispatch::IntegrationTest
+class ApiKeysAdminTest < ActionDispatch::IntegrationTest
   it 'index loads' do
     create(:api_key, status: ApiKey::STATUS_OK)
     create(:api_key, status: ApiKey::STATUS_LIMIT_EXCEEDED)
