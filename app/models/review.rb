@@ -8,12 +8,12 @@ class Review < ActiveRecord::Base
 
   class << self
     def three_quarters_helpful_arel
-      where Review.send(:sanitize_sql, "(#{pos_or_neg_sql(true)}) * 3 >= (#{pos_or_neg_sql(false)})")
+      where sanitize_sql("(#{pos_or_neg_sql(true)}) * 3 >= (#{pos_or_neg_sql(false)})")
     end
 
     def order_by_helpfulness_arel
       order_by = "(#{pos_or_neg_sql(true)}) - (#{pos_or_neg_sql(false)}) DESC, \"reviews\".\"created_at\" ASC"
-      order Review.send(:sanitize_sql, order_by)
+      order sanitize_sql(order_by)
     end
 
     private

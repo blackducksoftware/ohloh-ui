@@ -28,9 +28,9 @@
       .pull-left.in= t('.in')
       - if sorted_cbl.length > 0
         .pull-left.language_summary
-          .pull-left{style: 'min-height: 99px'}
+          .pull-left{ style: 'min-height: 99px' }
             - sorted_cbl.first(3).each do |lang, lang_hash|
-              .language_name{style: "background-color:##{language_color(lang)}; color: ##{language_text_color(lang)}"}
+              .language_name{ style: "background-color:##{language_color(lang)}; color: ##{language_text_color(lang)}" }
                 %span= link_to lang_hash[:nice_name], language_path(lang)
           .pull-left.other_language
             - if sorted_cbl.length > 3

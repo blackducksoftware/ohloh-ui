@@ -10,11 +10,11 @@
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     = csrf_meta_tags
-  %body{zoom: 1}
+  %body{ zoom: 1 }
     .container#page
       %header= render partial: 'layouts/partials/header'
       #page-contents
-        .col-md-13{id: generate_page_name}
+        .col-md-13{ id: generate_page_name }
           = yield
       .clear
       %footer= render partial: 'layouts/partials/footer'
