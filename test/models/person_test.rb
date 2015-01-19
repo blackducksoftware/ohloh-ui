@@ -163,7 +163,6 @@ class PersonTest < ActiveSupport::TestCase
   it 'deleting and restoring a project deletes and restores the persons associated with it' do
     skip('TODO: project model')
     with_editor(accounts(:admin)) do
-
       project = projects(:linux)
       delta = Person.find(:all, conditions: ['project_id = ?', project.id]).count
 

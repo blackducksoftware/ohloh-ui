@@ -1,4 +1,6 @@
 module ActsAsEditable
+  extend ActiveSupport::Concern
+
   module ClassMethods
     def acts_as_editable(editable_attributes: [], merge_within: 0.seconds)
       send :attr_accessor, :editor_account
@@ -7,23 +9,17 @@ module ActsAsEditable
       send :after_save, :update_edit_history!
 
       setup_aae_internals!(editable_attributes, merge_within)
-      send :include, ActsAsEditable::InstanceMethods
+      include ActsAsEditable::InstanceMethods
     end
 
     private
 
     def setup_aae_internals!(editable_attributes, merge_within)
-      class << self
-        send :attr_reader, :aae_editable_attributes
-        send :attr_reader, :aae_merge_within
-      end
-      @aae_editable_attributes = editable_attributes
-      @aae_merge_within = merge_within
+      cattr_accessor :aae_editable_attributes
+      cattr_accessor :aae_merge_within
+      self.aae_editable_attributes = editable_attributes
+      self.aae_merge_within = merge_within
     end
-  end
-
-  def self.included(klass)
-    klass.send :extend, ActsAsEditable::ClassMethods
   end
 
   module InstanceMethods
