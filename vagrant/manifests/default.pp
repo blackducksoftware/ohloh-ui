@@ -6,6 +6,7 @@ class ohloh_dependencies {
   include memcached
   include ruby_2_1
   include users
+  include git
 }
 
 class passenger_install {
