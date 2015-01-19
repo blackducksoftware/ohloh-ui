@@ -463,40 +463,6 @@ CREATE TEXT SEARCH CONFIGURATION "default" (
 
 		ALTER SEQUENCE actions_id_seq OWNED BY actions.id;
 
-		--
-		-- Name: active_admin_comments; Type: TABLE; Schema: public; Owner: -; Tablespace:
-		--
-
-		CREATE TABLE active_admin_comments (
-			id integer NOT NULL,
-			namespace character varying(255),
-			body text,
-			resource_id character varying(255) NOT NULL,
-			resource_type character varying(255) NOT NULL,
-			author_id integer,
-			author_type character varying(255),
-			created_at timestamp without time zone,
-			updated_at timestamp without time zone
-		);
-
-
-		--
-		-- Name: active_admin_comments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
-		--
-
-		CREATE SEQUENCE active_admin_comments_id_seq
-		START WITH 1
-		INCREMENT BY 1
-		NO MINVALUE
-		NO MAXVALUE
-		CACHE 1;
-
-
-		--
-		-- Name: active_admin_comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
-		--
-
-		ALTER SEQUENCE active_admin_comments_id_seq OWNED BY active_admin_comments.id;
 
 		--
 		-- Name: activity_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
@@ -3860,12 +3826,6 @@ CREATE TEXT SEARCH CONFIGURATION "default" (
 
 																			ALTER SEQUENCE tools_id_seq OWNED BY tools.id;
 
-																			--
-																			-- Name: id; Type: DEFAULT; Schema: public; Owner: -
-																			--
-
-																			ALTER TABLE ONLY active_admin_comments ALTER COLUMN id SET DEFAULT nextval('active_admin_comments_id_seq'::regclass);
-
 
 																			--
 																			-- Name: topics_id_seq; Type: SEQUENCE; Schema: public; Owner: -
@@ -4294,14 +4254,6 @@ CREATE TEXT SEARCH CONFIGURATION "default" (
 																			--
 
 																			ALTER TABLE ONLY recently_active_accounts_cache ALTER COLUMN id SET DEFAULT nextval('recently_active_accounts_cache_id_seq'::regclass);
-
-																			--
-																			-- Name: active_admin_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
-																			--
-
-																			ALTER TABLE ONLY active_admin_comments
-																			ADD CONSTRAINT active_admin_comments_pkey PRIMARY KEY (id);
-
 
 
 																			--
@@ -5420,25 +5372,6 @@ CREATE TEXT SEARCH CONFIGURATION "default" (
 
 																			CREATE INDEX foo ON slaves USING btree (clump_status) WHERE (oldest_clump_timestamp IS NOT NULL);
 
-																			--
-																			-- Name: index_active_admin_comments_on_author_type_and_author_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
-																			--
-
-																			CREATE INDEX index_active_admin_comments_on_author_type_and_author_id ON active_admin_comments USING btree (author_type, author_id);
-
-
-																			--
-																			-- Name: index_active_admin_comments_on_namespace; Type: INDEX; Schema: public; Owner: -; Tablespace:
-																			--
-
-																			CREATE INDEX index_active_admin_comments_on_namespace ON active_admin_comments USING btree (namespace);
-
-
-																			--
-																			-- Name: index_active_admin_comments_on_resource_type_and_resource_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
-																			--
-
-																			CREATE INDEX index_active_admin_comments_on_resource_type_and_resource_id ON active_admin_comments USING btree (resource_type, resource_id);
 
 																			--
 																			-- Name: github_project_owner_idx; Type: INDEX; Schema: public; Owner: -; Tablespace:
@@ -7929,8 +7862,6 @@ CREATE TEXT SEARCH CONFIGURATION "default" (
 																			INSERT INTO schema_migrations (version) VALUES ('20141024100301');
 
 																			INSERT INTO schema_migrations (version) VALUES ('20141111214901');
-
-																			INSERT INTO schema_migrations (version) VALUES ('20150115191340');
 
 																			INSERT INTO schema_migrations (version) VALUES ('21');
 
