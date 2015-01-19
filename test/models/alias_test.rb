@@ -14,16 +14,16 @@ class AliasTest < ActiveSupport::TestCase
     Alias.best_analysis_aliases(proj).to_a.map(&:id).sort.must_equal [aka.id]
   end
 
-  test '#create_for_project creates a new alias' do
+  it '#create_for_project creates a new alias' do
     account = create(:account)
     project = create(:project)
     name1 = create(:name)
     name2 = create(:name)
     a = Alias.create_for_project(account, project, name1, name2)
-    a.persisted?.must_equal true
+    a.must_be :persisted?
   end
 
-  test '#create_for_project deletes an alias when one assigns an alias to have the same commit and preferred names' do
+  it '#create_for_project deletes an alias when one assigns an alias to have the same commit and preferred names' do
     account = create(:account)
     project = create(:project)
     name1 = create(:name)
@@ -33,7 +33,7 @@ class AliasTest < ActiveSupport::TestCase
     a.deleted.must_equal true
   end
 
-  test '#create_for_project restores an alias when flipped back' do
+  it '#create_for_project restores an alias when flipped back' do
     account = create(:account)
     project = create(:project)
     name1 = create(:name)
@@ -44,7 +44,7 @@ class AliasTest < ActiveSupport::TestCase
     a.deleted.must_equal false
   end
 
-  test '#create_for_project with NO override bypasses validation' do
+  it '#create_for_project with NO override bypasses validation' do
     account = create(:account)
     project = create(:project)
     name1 = create(:name)
@@ -53,7 +53,7 @@ class AliasTest < ActiveSupport::TestCase
     Alias.create_for_project(account, project, name1, name2)
   end
 
-  test '#create_for_project with override bypasses validation' do
+  it '#create_for_project with override bypasses validation' do
     account = create(:account)
     project = create(:project)
     name1 = create(:name)
