@@ -3,6 +3,6 @@ FactoryGirl.define do
     sender_id 1
     account_id 1
     project_id 1
-    message { Faker::Lorem.sentence }
+    message { Faker::Lorem.sentence(2) }
   end
 end

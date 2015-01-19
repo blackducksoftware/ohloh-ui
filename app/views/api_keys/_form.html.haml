@@ -51,10 +51,10 @@
             != t 'api_keys.form.agree_to_terms', terms_link: terms_link, terms_2_link: terms_2_link
           - error_tag @api_key, :terms
       .actions
-        %input.btn.btn-primary.btn-small{type: 'submit', value: t(:save_changes)}
+        %input.btn.btn-primary.btn-small{ type: 'submit', value: t(:save_changes) }
         - unless @api_key.new_record?
-          %a.btn.btn-small.btn-danger{href: account_api_key_path(@account, @api_key),
-                                      method: :delete, confirm: t('api_keys.form.delete_confirm')}
+          %a.btn.btn-small.btn-danger{ href: account_api_key_path(@account, @api_key),
+                                       method: :delete, confirm: t('api_keys.form.delete_confirm') }
             %i.icon-trash= t 'api_keys.form.delete'
 
 %h4.nomargin.no_padding_one_top

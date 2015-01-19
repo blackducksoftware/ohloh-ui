@@ -8,7 +8,7 @@
     = render partial: 'api_key', collection: @api_keys
     = will_paginate @api_keys
 - if @api_keys.size < ApiKey::KEY_LIMIT_PER_ACCOUNT
-  %a.btn.btn-primary.btn-small.margin_top_10{href: new_account_api_key_path(@account)}= t('api_keys.request_new')
+  %a.btn.btn-primary.btn-small.margin_top_10{ href: new_account_api_key_path(@account) }= t('api_keys.request_new')
 
 %h4.nomargin.margin_top_20
   %span.soft= t(:about)

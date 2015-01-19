@@ -9,6 +9,6 @@
     = link_to blog_url_for(:badges), class: "pull-left account-badge #{css_class}",
     title: badge.description, target: '_blank' do
       - if badge.levels?
-        .pips{class: "pip-#{badge.level_bits}"}
+        .pips{ class: "pip-#{badge.level_bits}" }
   - elsif badge.levels?
-    .pips{class: "pip-#{badge.level_bits}", title: badge.description(false)}
+    .pips{ class: "pip-#{badge.level_bits}", title: badge.description(false) }

@@ -22,6 +22,13 @@ class ActiveSupport::TestCase
     @controller ? controller_login_as(account) : integration_login_as(account)
   end
 
+  def create_must_and_wont_aliases(*classes)
+    classes.each do |klass|
+      klass.send(:alias_method, :wont, :wont_be)
+      klass.send(:alias_method, :must, :must_be)
+    end
+  end
+
   def fixup
   end
 
