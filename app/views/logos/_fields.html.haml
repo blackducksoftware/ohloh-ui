@@ -17,9 +17,9 @@
               = t('.invalid_size',
                 max: number_to_human_size(Logo::FILE_SIZE_LIMIT.max))
             - if @logo.attachment.url.blank?
-              - if @logo.attachment_file_name.blank?
+              -# if @logo.attachment_file_name.blank?
                 -# error_tag @logo, :attachment_file_name
-              - else
+              -# else
                 -# error_tag @logo, :attachment_content_type
           %p.margin_bottom_5
             = f.text_field :url, value: @logo.url,
@@ -35,7 +35,7 @@
           %p= t('.message', login: current_account.login)
 
 .row
-  .col-md-10{class: "#{@organization ? 'hidden' : ''}" }
+  .col-md-10{ class: "#{@organization ? 'hidden' : ''}" }
     %h5= t('.head.third')
     -# %p.col-md-8
       = t('.body.second')
@@ -62,13 +62,13 @@
   .col-md-10
     .actions
       - if has_permission?
-        %input.btn.btn-sm.btn-primary{type: 'submit', value: t('.button.save')}
+        %input.btn.btn-sm.btn-primary{ type: 'submit', value: t('.button.save') }
         - if @project_or_organization.logo
           = link_to t('.link.blank'),
             [@project_or_organization, @logo],
             method: :delete, class: 'btn btn-sm'
-        - else
-          = # disabled_button t('.link.blank'), class: 'btn-sm'
-      - else
-        = # disabled_button t('.button.save'), class: 'btn-sm btn-primary'
-        = # disabled_button t('.link.blank'), class: 'btn-sm'
+        -# else
+          =# disabled_button t('.link.blank'), class: 'btn-sm'
+      -# else
+        =# disabled_button t('.button.save'), class: 'btn-sm btn-primary'
+        =# disabled_button t('.link.blank'), class: 'btn-sm'
