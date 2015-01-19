@@ -20,4 +20,12 @@ FactoryGirl.define do
   factory :admin, parent: :account do
     level Account::Access::ADMIN
   end
+
+  factory :disabled_account, parent: :account do
+    level Account::Access::DISABLED
+  end
+
+  factory :spammer, parent: :account do
+    level Account::Access::SPAM
+  end
 end

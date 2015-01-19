@@ -4,6 +4,8 @@ class AccountsAdminTest < ActionDispatch::IntegrationTest
   it 'index loads' do
     create(:account)
     create(:admin)
+    create(:disabled_account)
+    create(:spammer)
     login_as create(:admin)
     get admin_accounts_path
     assert_response :success
