@@ -6,6 +6,7 @@ en:
   new: 'New'
   is_invalid: is invalid
   cant_be_blank: can't be blank
+  created: 'Created'
   must_accept_terms: 'You must accept the terms of use.'
   four_oh_four: 'Not Found'
   must_be_logged_in: 'You must be signed in to perform that action.'
@@ -39,6 +40,22 @@ en:
   manage:
     maximum_exceeded: "You may manage up to %{max_projects} projects at a time. Delete one before adding another."
     already_manager: ": You are already managing this or have a pending application to become one."
+  title: 'Title'
+  category: 'Category'
+  are_you_sure: 'Are you sure?'
+  new_view:
+    title: 'New %{type} Page'
+  edit_view:
+    title: 'Edit %{type} Page'
+  index_view:
+    title: '%{type} Page'
+  edits_pattern: "Changed link %{id}'s %{edit_key} to be '%{value}'"
+  new_model: 'New %{model}'
+  save_model: 'Save %{model}'
+  remove_model: 'Remove %{model}'
+  help:
+    max_characters: 'max of %{number} characters'
+
   domain_blacklists:
     index:
       notice: 'No Domains Blacklisted'
@@ -236,3 +253,8 @@ en:
               invalid: 'Check your current password and try again.'
             organization_name:
               invalid: 'should start with a letter and can include only letters, numbers, _ and -'
+        link:
+          attributes:
+            url:
+              taken: 'has already been submitted'
+              invalid_url: 'Invalid Link URL'

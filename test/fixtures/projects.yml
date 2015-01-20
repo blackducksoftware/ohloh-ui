@@ -26,6 +26,7 @@ ohloh:
 google:
   id: 4
   name: Google
+  url_name: google
   organization_id: 2
   description: surprising useful indexer
   created_at: "Sat Jan 01 00:00:00 UTC 2005"

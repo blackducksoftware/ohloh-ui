@@ -44,6 +44,7 @@ Rails.application.routes.draw do
       post 'unrate'      => 'ratings#unrate',     as: :unrate
     end
     resource :logos, only: [:new, :create, :destroy]
+    resources :links, except: :show
     resources :managers, only: [:index, :new, :create, :edit, :update] do
       member do
         post :approve

@@ -1,0 +1,43 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+first:
+  id: 1
+  title: :first
+  url: :first_url
+  project_id: 5
+  link_category_id: <%= Link::CATEGORIES[:Other] %>
+another:
+  id: 2
+  title: :another
+  url: :another_url
+  project_id: 5
+  link_category_id: <%= Link::CATEGORIES[:Other] %>
+linux_home:
+  id: 3
+  title: :linux_home
+  project_id: 1
+  url: "http://kernel.org"
+  link_category_id: <%= Link::CATEGORIES[:Homepage] %>
+linux_dl:
+  id: 4
+  title: :linux_dl
+  project_id: 1
+  url: "http://kernel.org/foo"
+  link_category_id: <%= Link::CATEGORIES[:Download] %>
+adium_home:
+  id: 5
+  title: :adium_home
+  project_id: 2
+  url: "http://adium.com"
+  link_category_id: <%= Link::CATEGORIES[:Homepage] %>
+ohloh_home:
+  id: 6
+  title: :ohloh_home
+  project_id: 3
+  url: "http://ohloh.net"
+  link_category_id: <%= Link::CATEGORIES[:Homepage] %>
+google_home:
+  id: 7
+  title: :google_home
+  project_id: 4
+  url: "http://google.com"
+  link_category_id: <%= Link::CATEGORIES[:Homepage] %>

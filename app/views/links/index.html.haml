@@ -1,0 +1,52 @@
+-# - @meta_title_final = project_pages_title(t('index_view.title', type: t('links.title').pluralize))
+-# - sidebar :links
+
+.project_content_title
+  %h2.float_left
+    -# = link_to t('settings'), settings_project_path(@project)
+    = %( : #{ t('links.title').pluralize })
+  -# - render_project_analysis_timestamp
+
+- if @links.empty?
+  -# - alert :info, { message: t('.empty_message') }
+
+.links.col-md-8.center-block
+  - Link::CATEGORIES.each do |category_name, category_id|
+    - links = @links.collect { |l| l if l.link_category_id == category_id }.compact
+    .well
+      %h3.strong.float_left
+        = category_name
+      .clear_both
+      .row
+        - if links.empty?
+          .col-md-2
+            %p
+              %i No links yet.
+        - links.each do |link|
+          .col-md-2.margin_bottom_15
+            = h link.title
+          -# .col-md-4
+            %h5.nomargin
+              = link_to bootstrap_icon('glyphicon glyphicon-external-link',
+                h(truncate(link.url_host, length: 33))),
+                link.url_escaped, target:_blank', title: h(link.url_escaped)
+          -# .col-md-1.nomargin.float_right
+            - if has_permission?
+              = bootstrap_mini_button_link_to bootstrap_icon('glyphicon glyphicon-pencil', t('edit')),
+                edit_project_link_path(@project, link),{class: 'btn-info'}
+            - else
+              = disabled_button bootstrap_icon('glyphicon glyphicon-pencil', t('edit')), class: 'btn-xs'
+          .clear_both
+        .clear_both
+        %p.col-md-4
+          -# - unless links.any? && %w(Homepage Download).include?(category_name)
+            - new_link_title = t('new_model', model: t('links.title'))
+            - if has_permission?
+              = bootstrap_mini_button_link_to new_link_title,
+                new_project_link_path(@project, category_id: category_id),
+                class: "float_left #{ needs_login } btn-primary"
+            - else
+              = disabled_button new_link_title, class: 'float_left btn-xs btn-primary'
+
+
+= render partial: 'about_links'
