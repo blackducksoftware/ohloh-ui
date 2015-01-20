@@ -55,11 +55,11 @@ class LinksController < SettingsController
 
   def load_category_and_title
     @category_name = Link.find_category_by_id(params[:category_id]) || @link.category
-
     return unless @link && @category_name
-
-    types = { Homepage: :Homepage, Download: :Downloads }
-    @link.title ||= types[@category_name.to_sym]
+    type = nil
+    type = :Homepage if (@category_name.to_s == 'Homepage')
+    type = :Downloads if (@category_name.to_s == 'Download')
+    @link.title ||= type
   end
 
   def set_link

@@ -2258,10 +2258,10 @@ CREATE TEXT SEARCH CONFIGURATION "default" (
 
 
 										--
-										-- Name: link_categories; Type: TABLE; Schema: public; Owner: -; Tablespace:
+										-- Name: link_categories_deleted; Type: TABLE; Schema: public; Owner: -; Tablespace:
 										--
 
-										CREATE TABLE link_categories (
+										CREATE TABLE link_categories_deleted (
 											id integer NOT NULL,
 											name text NOT NULL
 										);
@@ -2283,7 +2283,7 @@ CREATE TEXT SEARCH CONFIGURATION "default" (
 										-- Name: link_categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 										--
 
-										ALTER SEQUENCE link_categories_id_seq OWNED BY link_categories.id;
+										ALTER SEQUENCE link_categories_id_seq OWNED BY link_categories_deleted.id;
 
 
 										--
@@ -4120,7 +4120,7 @@ CREATE TEXT SEARCH CONFIGURATION "default" (
 																			-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 																			--
 
-																			ALTER TABLE ONLY link_categories ALTER COLUMN id SET DEFAULT nextval('link_categories_id_seq'::regclass);
+																			ALTER TABLE ONLY link_categories_deleted ALTER COLUMN id SET DEFAULT nextval('link_categories_id_seq'::regclass);
 
 
 																			--
@@ -4782,23 +4782,6 @@ CREATE TEXT SEARCH CONFIGURATION "default" (
 
 																			ALTER TABLE ONLY licenses
 																			ADD CONSTRAINT licenses_pkey PRIMARY KEY (id);
-
-
-																			--
-																			-- Name: link_categories_name_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
-																			--
-
-																			ALTER TABLE ONLY link_categories
-																			ADD CONSTRAINT link_categories_name_key UNIQUE (name);
-
-
-																			--
-																			-- Name: link_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
-																			--
-
-																			ALTER TABLE ONLY link_categories
-																			ADD CONSTRAINT link_categories_pkey PRIMARY KEY (id);
-
 
 																			--
 																			-- Name: links_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
@@ -7151,14 +7134,6 @@ CREATE TEXT SEARCH CONFIGURATION "default" (
 
 																			ALTER TABLE ONLY license_facts
 																			ADD CONSTRAINT license_facts_license_id_fkey FOREIGN KEY (license_id) REFERENCES licenses(id);
-
-
-																			--
-																			-- Name: links_link_category_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
-																			--
-
-																			ALTER TABLE ONLY links
-																			ADD CONSTRAINT links_link_category_id_fkey FOREIGN KEY (link_category_id) REFERENCES link_categories(id) ON DELETE CASCADE;
 
 
 																			--
