@@ -1,0 +1,20 @@
+en:
+  links:
+    title: 'Link'
+    create:
+      success: 'Thank you for submitting your link.'
+    update:
+      success: 'The link has been updated.'
+    destroy:
+      success: 'The link was removed.'
+      error: 'There was a problem deleting!'
+    index:
+      empty_message: 'No links submitted for this project yet.'
+    fields:
+      url_edit: 'Urls are read only, you can only create and delete.'
+      full_url: "Enter a full url, including 'http://' or 'https://'."
+    about_links:
+      first: "Open Hub will display links on the project's summary page, near the top."
+      second: 'A project can have only one Homepage link, and only one Downloads link, but the other categories may have multiple links.'
+      third: "Visitors to Open Hub seeking more information about a project will use these links to learn more. Please be sure to provide links to all of the project's key resources so that potential users and contributors can fully explore the project, and it is presented to advantage."
+
