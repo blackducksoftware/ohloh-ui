@@ -32,6 +32,7 @@ ActiveAdmin.register ApiKey do
       end
     end
     column :total_count
+    column :daily_count
     actions
   end
 
