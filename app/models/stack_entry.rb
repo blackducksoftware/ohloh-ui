@@ -1,9 +1,30 @@
 class StackEntry < ActiveRecord::Base
+  MAX_NOTE_LENGTH = 255
+
   belongs_to :stack
   belongs_to :project
 
+  scope :active, -> { where(deleted_at: nil) }
   scope :for_project_id, -> (project_id) { for_project_id_arel(project_id) }
   scope :similar_stack_entries, -> (entries1, entries2) { similar_stack_entries_arel(entries1, entries2) }
+
+  validates :stack, presence: true
+  validates :project, presence: true,
+                      uniqueness: { scope: [:stack_id, :deleted_at] }
+
+  validates :note, length: { within: 0..MAX_NOTE_LENGTH }, allow_nil: true
+
+  after_create :update_counters
+
+  def destroy
+    update_attributes(deleted_at: Time.now.utc)
+    update_counters
+  end
+
+  def update_counters
+    stack.update_attributes(project_count: stack.stack_entries.count) if stack
+    project.update_attributes(user_count: project.stack_entries.count + 1) if project
+  end
 
   class << self
     def stack_weight_sql(project_id)
