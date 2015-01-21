@@ -16,10 +16,6 @@ class CommitsByLanguage < Draper::Decorator
     { object_array: object_array, date_array: dates }
   end
 
-  def to_json
-    language_experience.to_json
-  end
-
   private
 
   def start_date

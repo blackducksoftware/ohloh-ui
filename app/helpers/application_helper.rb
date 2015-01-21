@@ -46,12 +46,7 @@ module ApplicationHelper
   end
 
   def months_in_range(start_date, end_date)
-    (start_date..end_date).map{|d| Date.new(d.year, d.month)}.uniq
-  end
-
-  def fix_time_zone(timestamp)
-    return timestamp unless timestamp.is_a? Time
-    timestamp.utc.to_s.gsub(/ UTC/, '')
+    (start_date..end_date).map { |d| Date.new(d.year, d.month) }.uniq
   end
 
   private

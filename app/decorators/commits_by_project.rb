@@ -32,12 +32,8 @@ class CommitsByProject < Draper::Decorator
 
   # TODO: Replaces regularize_chart_data account/reports.rb
   def chart_data(project_id = nil)
-    facts = history[:facts]
-    facts = facts.group_by {|fact| fact[:project_id]}[project_id.to_s] if project_id
-    facts = facts.group_by { |f| f[:month].to_date }
-
     months_range = h.months_in_range(history[:start_date], @end_date)
-
+    facts = chart_yaxis_data(project_id)
     y_axis = months_range.map { |m| facts[m].try(:sum) { |f| f[:commits] }.to_i }
     x_axis = months_range.map { |m| m.strftime('%b-%Y') }
 
@@ -46,28 +42,36 @@ class CommitsByProject < Draper::Decorator
 
   private
 
-  def chart_y_axis
+  def chart_yaxis_data(project_id)
+    facts = history[:facts]
+    facts = facts.group_by { |f| f[:project_id] }[project_id.to_s] if project_id
+    facts.group_by { |f| f[:month].to_date }
+  end
 
+  def symbolized
+    @symbolized ||= object.decorate.symbolized_commits_by_project
+  end
+
+  def positions
+    @positions ||= Position.where(id: symbolized.map { |c| c[:position_id] }.uniq.sort)
+                   .includes(:project).references(:all).group_by(&:id)
   end
 
   def with_positions
-    cbp = object.decorate.symbolized_commits_by_project
-    position_ids = cbp.map { |c| c[:position_id] }.uniq.sort
-    @positions = Position.where(id: position_ids).includes(:project).references(:all)
-    active_position_ids = @positions.map(&:id)
-    cbp.select { |c| active_position_ids.include?(c[:position_id].to_i) }
+    position_ids = positions.keys
+    symbolized.select { |c| position_ids.include?(c[:position_id].to_i) }
   end
 
   def in_date_range
     with_positions.select { |c| (@start_date..@end_date).member?(c[:month].to_date) }.map do |c|
-      { pname: @positions.find { |p| p.id.to_s == c[:position_id] }.project.name,
+      { pname: @positions[c[:position_id].to_i].first.project.name,
         commits: c[:commits], month: c[:month].to_date }
     end
   end
 
   def for_all_months
     with_positions.map do |c|
-      { project_id: @positions.find { |p| p.id.to_s == c[:position_id] }.project_id.to_s,
+      { project_id: @positions[c[:position_id].to_i].first.project_id.to_s,
         month: c[:month], commits: c[:commits] }
     end
   end
@@ -97,7 +101,7 @@ class CommitsByProject < Draper::Decorator
   def monthly_commits(facts)
     facts.each_with_object({}) do |(pname, afs), hsh|
       hsh[pname] = (afs + months_without_commits).group_by { |a| a[:month] }.map do |_, d|
-        d.last.merge({pname: pname}).merge(d.first)
+        d.last.merge(pname: pname).merge(d.first)
       end
     end
   end
