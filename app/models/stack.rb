@@ -12,10 +12,23 @@ class Stack < ActiveRecord::Base
   validates :description, length: { within: 0..120 }, allow_nil: true
   validates :title, length: { within: 0..20 }, allow_nil: true
 
+  def sandox?
+    account_id.nil? && project_id.nil? && !session_id.nil?
+  end
+
   def similar_stacks(limit = 12)
     Stack.find_by_sql(similar_stacks_sql(limit)).map do |s|
       { stack: s, shared_projects: (s.projects & projects), uniq_projects: (s.projects - projects) }
     end
+  end
+
+  def suggest_projects(limit = 8)
+    sql = proj_suggest_select
+    sql += proj_suggest_join_stack_entries
+    sql += proj_suggest_join_stack_ignores
+    sql += proj_suggest_wheres
+    sql += proj_suggest_suffix(limit)
+    pad_project_suggestions(Project.find_by_sql(sql), limit)
   end
 
   private
@@ -43,5 +56,53 @@ class Stack < ActiveRecord::Base
        AND SE0.deleted_at IS NULL AND SE1.stack_id != SE0.stack_id
       GROUP BY SE1.stack_id
     SQL
+  end
+
+  def proj_suggest_select
+    'SELECT projects.*, query.total_weight - coalesce(0.25 * ignore.total_weight,0) as total_weight FROM projects'
+  end
+
+  def proj_suggest_join_stack_entries
+    <<-SQL
+      INNER JOIN ( SELECT project_id_recommends, sum(weight) as total_weight
+        FROM recommend_entries
+        INNER JOIN stack_entries ON recommend_entries.project_id = stack_entries.project_id
+        WHERE stack_entries.stack_id = #{id} AND stack_entries.deleted_at IS NULL
+        GROUP BY project_id_recommends ) AS query ON projects.id = project_id_recommends
+    SQL
+  end
+
+  def proj_suggest_join_stack_ignores
+    <<-SQL
+      LEFT OUTER JOIN ( SELECT project_id_recommends as project_id_smells, sum(weight) as total_weight
+        FROM recommend_entries WHERE project_id IN
+        ( SELECT project_id FROM stack_ignores WHERE stack_id = #{id} ORDER BY created_at LIMIT 25 )
+        GROUP BY project_id_smells ) AS ignore ON projects.id = project_id_smells
+    SQL
+  end
+
+  def proj_suggest_wheres
+    <<-SQL
+      WHERE projects.id NOT IN (SELECT project_id FROM stack_entries WHERE stack_id = #{id} AND deleted_at IS NULL)
+      AND projects.id NOT IN (SELECT project_id FROM stack_ignores WHERE stack_id = #{id})
+      AND projects.deleted IS FALSE
+    SQL
+  end
+
+  def proj_suggest_suffix(limit)
+    "ORDER BY query.total_weight - coalesce(0.25 * ignore.total_weight, 0) DESC, LOWER(projects.name) LIMIT #{limit}"
+  end
+
+  def pad_project_suggestions(projects, limit)
+    return projects unless projects.size < limit
+    xtra_where = projects.empty? ? '' : "AND projects.id NOT IN (#{projects.collect { |p| p.id.to_s }.join(',')})"
+    sql = <<-SQL
+      SELECT projects.* FROM projects WHERE projects.deleted IS FALSE AND projects.user_count > 0 #{xtra_where}
+      AND projects.id NOT IN (SELECT project_id FROM stack_ignores WHERE stack_id = #{id})
+      AND projects.id NOT IN (SELECT project_id FROM stack_entries WHERE stack_id = #{id} AND deleted_at IS NULL)
+      ORDER BY projects.user_count DESC, LOWER(projects.name)
+      LIMIT #{limit - projects.size}
+    SQL
+    [projects, Project.find_by_sql(sql)].flatten
   end
 end
