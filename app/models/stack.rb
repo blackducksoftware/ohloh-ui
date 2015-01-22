@@ -12,6 +12,8 @@ class Stack < ActiveRecord::Base
   validates :description, length: { within: 0..120 }, allow_nil: true
   validates :title, length: { within: 0..20 }, allow_nil: true
 
+  before_validation :sanitize_description
+
   def sandox?
     account_id.nil? && project_id.nil? && !session_id.nil?
   end
@@ -32,6 +34,11 @@ class Stack < ActiveRecord::Base
   end
 
   private
+
+  def sanitize_description
+    return unless description
+    self.description = description.strip_tags
+  end
 
   def similar_stacks_sql(limit)
     <<-SQL

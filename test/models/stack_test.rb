@@ -1,6 +1,14 @@
 require 'test_helper'
 
 class StackTest < ActiveSupport::TestCase
+  it '#sanitize_description leaves nils alone' do
+    create(:stack, description: nil).description.must_equal nil
+  end
+
+  it '#sanitize_description strips html tags' do
+    create(:stack, description: '<script>alert("foo");</script>').description.must_equal 'alert("foo");'
+  end
+
   it '#sandox? returns false for most stacks' do
     create(:stack).sandox?.must_equal false
   end
