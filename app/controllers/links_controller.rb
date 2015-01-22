@@ -90,6 +90,6 @@ class LinksController < SettingsController
   end
 
   def link_params
-    params.require(:link).permit!
+    params.require(:link).permit([:title, :url, :project_id, :link_category_id])
   end
 end
