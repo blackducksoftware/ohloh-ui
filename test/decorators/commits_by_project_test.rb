@@ -1,10 +1,6 @@
 require 'test_helper'
 
 class CommitsByProjectTest < Draper::TestCase
-  before do
-    Draper::ViewContext.clear!
-  end
-
   let(:cbp) do
     [{ 'month' => '2009-06-01 00:00:00', 'commits' => '25', 'position_id' => '1' },
      { 'month' => '2009-07-01 00:00:00', 'commits' => '40', 'position_id' => '1' },

@@ -1,10 +1,6 @@
 require 'test_helper'
 
 class PositionDecoratorTest < Draper::TestCase
-  before do
-    Draper::ViewContext.clear!
-  end
-
   let(:user) { accounts(:user) }
   let(:admin) { accounts(:admin) }
 

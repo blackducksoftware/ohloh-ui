@@ -1,10 +1,6 @@
 require 'test_helper'
 
 class CommitsByLanguageTest < Draper::TestCase
-  before do
-    Draper::ViewContext.clear!
-  end
-
   let(:cbl) do
     [{ 'l_id' => '3', 'l_name' => 'xml', 'l_category' => '1', 'l_nice_name' => 'XML',
        'month' => '2009-06-01', 'commits' => '8' },
