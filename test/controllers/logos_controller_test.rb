@@ -116,7 +116,7 @@ class LogosControllerTest < ActionController::TestCase
   it 'create with logo id' do
     login_as @admin
     Project.any_instance.expects(:edit_authorized?).returns(true)
-    desired_new_logo_id = attachments(:random_logo).id
+    desired_new_logo_id = create(:attachment).id
     post :create, project_id: projects(:linux).id, logo_id: desired_new_logo_id
     must_redirect_to new_project_logos_path(projects(:linux).id)
     projects(:linux).reload
@@ -129,7 +129,7 @@ class LogosControllerTest < ActionController::TestCase
     Permission.create!(project: projects(:linux), 'remainder' => true)
 
     login_as @user
-    desired_new_logo_id = attachments(:new_logo).id
+    desired_new_logo_id = create(:attachment).id
     assert_no_difference('projects(:linux).reload.logo_id') do
       post :create, project_id: projects(:linux).id, logo_id: desired_new_logo_id
     end
