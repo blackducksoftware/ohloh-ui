@@ -1,0 +1,62 @@
+.footer-navigation
+  .nav-active
+    :background #CCE6F4
+    :border-left 3px solid #e86d1f
+    :margin-left -3px
+    :color #183057
+
+  .nav-hover
+    :background #eee
+    :border-left 3px solid #aaa
+    :color #183057
+    :border-radius 0px
+    :margin-left -3px
+
+  .navbar-justify
+    :padding-top 2px
+    :padding-bottom 6px
+    :margin-top 8px
+    :margin-bottom 4px
+
+  .actions
+    line-height: 0.5em
+    .footer-nav
+      &.nav-active
+        @extend .nav-active
+    .footer-nav
+      &:hover
+        @extend .nav-hover
+      padding-left: 18px
+      margin-top: 0
+      margin-bottom: 0
+    .footer-navbar, h4
+      a
+        &:hover
+          text-decoration: none
+      .icon
+        :background-image url(/assets/icons/ohloh-icon-sprite.png)
+        :height 24px
+        :width 24px
+        :float left
+        :margin-right 6px
+        &.project_summary,&.account_summary,&.org_summary
+          :background-position -448px -8px
+        &.contributions
+          :background-position -768px -8px
+        &.recognition
+          :background-position -807px -8px
+        &.usage
+          :background-position -848px -8px
+        &.code_data
+          :background-position -489px -6px
+          :margin-top -5px
+        &.scm_data
+          :background-position -528px -6px
+          :margin-top -5px
+        &.user_data
+          :background-position -568px -6px
+          :margin-top -4px
+      &.selected
+        @extend .navbar-justify, .nav-active
+        &:hover
+          @extend .nav-hover, .navbar-justify

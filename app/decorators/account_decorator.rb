@@ -30,4 +30,51 @@ class AccountDecorator < Draper::Decorator
     end
     sorted_cbl.sort_by { |_k, v| v[:commits] }.reverse
   end
+
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+  def sidebar
+    menus = [
+      [
+        [:account_summary,    'Account Summary',      h.account_path(object)],
+        [:stacks, object == h.current_user ? 'My Stacks' : 'Stacks', h.account_stacks_path(object)],
+        [:widgets,            'Widgets',              h.account_widgets_path(object)]
+      ],
+      [
+        [:contributions,      'Contributions',        nil],
+        [:positions,          'Contributions',        h.account_positions_path(object)],
+        [:languages,          'Languages',            h.languages_account_path(object)]
+      ],
+      [
+        [:recognition,        'Recognition',          nil],
+        [:kudos,              'Kudos',                h.account_kudos_path(object)]
+      ],
+      [
+        [:usage,              'Usage',                nil],
+        [:edit_history,       'Website Edits',        h.account_edits_path(object)],
+        [:posts,              'Posts',                h.account_posts_path(object)],
+        [:reviews,            'Reviews',              h.account_reviews_path(object)]
+      ]
+    ]
+
+    projects_count = projects.count
+    menus.first << [:managed_projects, 'Managed Projects', h.account_projects_path(object)] if projects_count > 0
+    menus.first.insert(1, [:settings, 'Settings', h.settings_account_path(object)]) if current_user_or_admin?
+
+    # TODO: account reports
+    # if object.reports.count > 0 && object == current_user
+    # column1 << [:reports, 'My Reports', account_reports_path(object)]
+    # end
+
+    unclaimed_contribution = claim_core.unclaimed_persons_count > 0 && current_user_or_admin?
+    menus.second << [:unclaimed, 'Claim Contributions', h.account_unclaimed_committers_path] if unclaimed_contribution
+
+    menus
+  end
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+
+  private
+
+  def current_user_or_admin?
+    object.eql?(h.current_user) || h.current_user_is_admin?
+  end
 end
