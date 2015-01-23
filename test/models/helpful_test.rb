@@ -13,13 +13,13 @@ class HelpfulTest < ActiveSupport::TestCase
   end
 
   it 'test target' do
-    h = review.helpfuls.create!(account_id: accounts(:user).id)
+    h = review.helpfuls.create!(account_id: create(:account).id)
     h.review.must_equal review
   end
 
   it 'test after save updates helpful score' do
     assert_difference('review.reload.helpful_score', 1) do
-      review.helpfuls.create!(account_id: accounts(:user).id, yes: true)
+      review.helpfuls.create!(account_id: create(:account).id, yes: true)
     end
   end
 end

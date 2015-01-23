@@ -2,7 +2,7 @@ require 'test_helper'
 
 describe TopicsController do
   let(:forum) { forums(:rails) }
-  let(:user) { accounts(:user) }
+  let(:user) { create(:account) }
   let(:admin) { create(:admin) }
   let(:topic) { topics(:ponies) }
 

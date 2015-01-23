@@ -5,7 +5,7 @@ class KudoTest < ActiveSupport::TestCase
     Kudo.delete_all
     admin_account = create(:admin)
     create(:kudo, sender: accounts(:joe), account: admin_account)
-    create(:kudo, sender: accounts(:user), account: admin_account)
+    create(:kudo, sender: create(:account), account: admin_account)
 
     admin_account.kudos.count.must_equal 2
     admin_account.kudos.recent(1).length.must_equal 1
@@ -16,7 +16,7 @@ class KudoTest < ActiveSupport::TestCase
     before do
       Kudo.delete_all
       @admin_account = create(:admin)
-      @kudo1 = create(:kudo, sender: @admin_account, account: accounts(:user),
+      @kudo1 = create(:kudo, sender: @admin_account, account: create(:account),
                              project_id: 1)
       @kudo2 = create(:kudo, sender: @admin_account, account: nil,
                              project_id: 3)

@@ -30,7 +30,7 @@ class ActsAsEditable::ActsAsEditableTest < ActiveSupport::TestCase
 
   it 'edits do not get their property edits merged if they are not by the same editor' do
     project = create(:project, name: 'Foobar')
-    project.editor_account = accounts(:user)
+    project.editor_account = create(:account)
     project.update_attributes(name: 'Goobaz')
     PropertyEdit.where(target: project, key: 'name', value: 'Foobar').count.must_equal 1
     PropertyEdit.where(target: project, key: 'name', value: 'Goobaz').count.must_equal 1

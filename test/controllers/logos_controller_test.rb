@@ -4,7 +4,7 @@ class LogosControllerTest < ActionController::TestCase
   def setup
     ActionView::Base.any_instance.stubs(:has_permission?).returns('true')
     @admin = create(:admin)
-    @user = accounts(:user)
+    @user = create(:account)
   end
 
   it 'user has permissions to edit' do
@@ -105,7 +105,7 @@ class LogosControllerTest < ActionController::TestCase
 
   it 'new shows flash if user has no permissions' do
     skip('TODO: manage')
-    Manage.create!(target: projects(:linux), account: accounts(:user))
+    Manage.create!(target: projects(:linux), account: create(:account))
     Permission.create!(project: projects(:linux), 'remainder' => true)
 
     login_as @user
@@ -125,7 +125,7 @@ class LogosControllerTest < ActionController::TestCase
 
   it 'create requires permissions' do
     skip('TODO: manage')
-    Manage.create!(target: projects(:linux), account: accounts(:user))
+    Manage.create!(target: projects(:linux), account: create(:account))
     Permission.create!(project: projects(:linux), 'remainder' => true)
 
     login_as @user

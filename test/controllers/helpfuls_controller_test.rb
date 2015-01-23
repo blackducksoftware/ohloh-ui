@@ -13,7 +13,7 @@ class HelpfulsControllerTest < ActionController::TestCase
   end
 
   it 'test create review helpful' do
-    login_as accounts(:user)
+    login_as create(:account)
     assert_difference 'Helpful.count' do
       create_helpful(true)
       must_respond_with :success
@@ -24,7 +24,7 @@ class HelpfulsControllerTest < ActionController::TestCase
   end
 
   it 'test create review not helpful' do
-    login_as accounts(:user)
+    login_as create(:account)
     assert_difference 'Helpful.count' do
       create_helpful(false)
       must_respond_with :success
@@ -35,7 +35,7 @@ class HelpfulsControllerTest < ActionController::TestCase
   end
 
   it 'test bug fix on multiple helpfuls' do
-    Helpful.create(review_id: @linux_review.id, account_id: accounts(:user).id, yes: false)
+    Helpful.create(review_id: @linux_review.id, account_id: create(:account).id, yes: false)
     login_as accounts(:joe)
     assert_difference 'Helpful.count' do
       create_helpful(true)
@@ -58,21 +58,21 @@ class HelpfulsControllerTest < ActionController::TestCase
   end
 
   it 'test project must exist' do
-    login_as accounts(:user)
+    login_as create(:account)
     post :create, project_id: 'I_AM_A_BANANA!', review_id: @linux_review.id,
                   format: 'json', helpful: { yes: true }
     must_respond_with :not_found
   end
 
   it 'test review must exist' do
-    login_as accounts(:user)
+    login_as create(:account)
     post :create, project_id: projects(:linux).to_param, review_id: 123_456_789,
                   format: 'json', helpful: { yes: true }
     must_respond_with :not_found
   end
 
   it 'test review must match project' do
-    login_as accounts(:user)
+    login_as create(:account)
     post :create, project_id: projects(:adium).to_param, review_id: @linux_review.id,
                   format: 'json', helpful: { yes: true }
     must_respond_with :not_found
