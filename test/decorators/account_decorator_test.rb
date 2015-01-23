@@ -3,6 +3,10 @@ require 'test_helper'
 class AccountDecoratorTest < Draper::TestCase
   before do
     Draper::ViewContext.clear!
+    @c = create(:language, name: 'c', nice_name: 'C')
+    @cpp = create(:language, name: 'cpp', nice_name: 'C++')
+    @js = create(:language, name: 'javascript', nice_name: 'Javascript')
+    @java = create(:language, name: 'java', nice_name: 'Java')
   end
 
   let(:admin) { accounts(:admin) }
@@ -23,19 +27,17 @@ class AccountDecoratorTest < Draper::TestCase
   end
 
   let(:cbl) do
-    c, cpp, js, java = languages(:c), languages(:cpp), languages(:javascript), languages(:java)
-    [{ 'commits' => 20, 'l_id' => c.id, 'l_name' => c.name, 'l_nice_name' => c.nice_name },
-     { 'commits' => 20, 'l_id' => cpp.id, 'l_name' => cpp.name, 'l_nice_name' => cpp.nice_name },
-     { 'commits' => 20, 'l_id' => js.id, 'l_name' => js.name, 'l_nice_name' => js.nice_name },
-     { 'commits' => 20, 'l_id' => java.id, 'l_name' => java.name, 'l_nice_name' => java.nice_name }]
+    [{ 'commits' => 20, 'l_id' => @c.id, 'l_name' => @c.name, 'l_nice_name' => @c.nice_name },
+     { 'commits' => 20, 'l_id' => @cpp.id, 'l_name' => @cpp.name, 'l_nice_name' => @cpp.nice_name },
+     { 'commits' => 20, 'l_id' => @js.id, 'l_name' => @js.name, 'l_nice_name' => @js.nice_name },
+     { 'commits' => 20, 'l_id' => @java.id, 'l_name' => @java.name, 'l_nice_name' => @java.nice_name }]
   end
 
   let(:symbolized_cbl) do
-    c, cpp, js, java = languages(:c), languages(:cpp), languages(:javascript), languages(:java)
-    [{ commits: 20, l_id: c.id, l_name: c.name, l_nice_name: c.nice_name },
-     { commits: 20, l_id: cpp.id, l_name: cpp.name, l_nice_name: cpp.nice_name },
-     { commits: 20, l_id: js.id, l_name: js.name, l_nice_name: js.nice_name },
-     { commits: 20, l_id: java.id, l_name: java.name, l_nice_name: java.nice_name }]
+    [{ commits: 20, l_id: @c.id, l_name: @c.name, l_nice_name: @c.nice_name },
+     { commits: 20, l_id: @cpp.id, l_name: @cpp.name, l_nice_name: @cpp.nice_name },
+     { commits: 20, l_id: @js.id, l_name: @js.name, l_nice_name: @js.nice_name },
+     { commits: 20, l_id: @java.id, l_name: @java.name, l_nice_name: @java.nice_name }]
   end
 
   let(:sorted_cbl) do
