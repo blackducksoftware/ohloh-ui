@@ -3,7 +3,8 @@ require 'test_helper'
 class HelpfulsControllerTest < ActionController::TestCase
   def setup
     @admin = create(:admin)
-    @linux_review = projects(:linux).reviews.create!(title: 'T', comment: 'C', account_id: @admin.id)
+    @proj = create(:project)
+    @linux_review = @proj.reviews.create!(title: 'T', comment: 'C', account_id: @admin.id)
   end
 
   it 'test login required' do
@@ -66,14 +67,14 @@ class HelpfulsControllerTest < ActionController::TestCase
 
   it 'test review must exist' do
     login_as create(:account)
-    post :create, project_id: projects(:linux).to_param, review_id: 123_456_789,
+    post :create, project_id: @proj.to_param, review_id: 123_456_789,
                   format: 'json', helpful: { yes: true }
     must_respond_with :not_found
   end
 
   it 'test review must match project' do
     login_as create(:account)
-    post :create, project_id: projects(:adium).to_param, review_id: @linux_review.id,
+    post :create, project_id: create(:project).to_param, review_id: @linux_review.id,
                   format: 'json', helpful: { yes: true }
     must_respond_with :not_found
   end
@@ -81,7 +82,7 @@ class HelpfulsControllerTest < ActionController::TestCase
   private
 
   def create_helpful(helpful)
-    post :create, project_id: projects(:linux).to_param, review_id: @linux_review.id,
+    post :create, project_id: @proj.to_param, review_id: @linux_review.id,
                   format: 'json', helpful: { yes: helpful }
   end
 end

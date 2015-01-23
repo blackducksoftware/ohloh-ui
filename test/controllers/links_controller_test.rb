@@ -263,7 +263,7 @@ describe 'LinksControllerTest' do
   end
 
   it 'should_allow_same_url_in_two_categories' do
-    project =  projects(:google)
+    project = create(:project)
 
     link_to_be_deleted = create(:link, link_category_id: Link::CATEGORIES[:Homepage], project: project)
     create(:link, project: project, link_category_id: Link::CATEGORIES[:Download])
@@ -271,11 +271,11 @@ describe 'LinksControllerTest' do
     login_as(admin)
     delete :destroy, id: link_to_be_deleted.id, project_id: project.url_name
 
-    project.links.size.must_equal 2
+    project.links.size.must_equal 1
   end
 
   it 'should_not_create_if_link_was_soft_deleted_already_in_a_link_category' do
-    project =  projects(:google)
+    project = create(:project)
 
     create(:link, project: project, link_category_id: Link::CATEGORIES[:Homepage])
 
