@@ -30,4 +30,19 @@ class AccountDecorator < Draper::Decorator
     end
     sorted_cbl.sort_by { |_k, v| v[:commits] }.reverse
   end
+
+  # TODO: Replaces account_vita_status_message in application_helper
+  def vita_status_message
+    message =
+    if has_claimed_positions? && best_vita.nil?
+      'The analysis for this account has been scheduled.'
+    elsif !has_claimed_positions? && has_positions?
+      'There are no commits available to display.'
+    elsif has_positions?
+      'There are no contributions available to display.'
+    end
+
+    return message unless block_given?
+    message.blank? ? yield : h.haml_tag(:p) { h.concat(message) }
+  end
 end
