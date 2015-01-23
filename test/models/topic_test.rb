@@ -3,7 +3,7 @@ require 'test_helper'
 
 class TopicTest < ActiveSupport::TestCase
   before { create_must_and_wont_aliases(Topic) }
-  let(:admin) { accounts(:admin) }
+  let(:admin) { create(:admin) }
   let(:topic) { topics(:ponies) }
 
   it 'create a valid topic' do
@@ -18,7 +18,7 @@ class TopicTest < ActiveSupport::TestCase
   end
 
   it 'default value for sticky should be zero' do
-    topic = create(:topic, account: accounts(:admin))
+    topic = create(:topic, account: create(:admin))
     topic.sticky.must_equal 0
   end
 

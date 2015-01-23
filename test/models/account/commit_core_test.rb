@@ -2,7 +2,7 @@ require_relative '../../test_helper'
 
 class Account::CommitCoreTest < ActiveSupport::TestCase
   def setup
-    @account_1 = accounts(:admin)
+    @account_1 = create(:admin)
     account_2 = accounts(:user)
 
     analysis = analyses(:linux)

@@ -8,7 +8,7 @@ class Person::BuilderTest < ActiveSupport::TestCase
     let(:analysis) { analyses(:linux) }
 
     before do
-      project.editor_account = accounts(:admin)
+      project.editor_account = create(:admin)
       project.update!(best_analysis_id: analysis.id)
 
       ContributorFact.where(analysis_id: analysis).destroy_all

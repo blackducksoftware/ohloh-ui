@@ -2,7 +2,8 @@ require 'test_helper'
 
 class HelpfulsControllerTest < ActionController::TestCase
   def setup
-    @linux_review = projects(:linux).reviews.create!(title: 'T', comment: 'C', account_id: accounts(:admin).id)
+    @admin = create(:admin)
+    @linux_review = projects(:linux).reviews.create!(title: 'T', comment: 'C', account_id: @admin.id)
   end
 
   it 'test login required' do
@@ -46,7 +47,7 @@ class HelpfulsControllerTest < ActionController::TestCase
   end
 
   it 'test cant helpful yourself' do
-    login_as accounts(:admin)
+    login_as @admin
     assert_no_difference 'Helpful.count' do
       create_helpful(true)
       must_respond_with :success

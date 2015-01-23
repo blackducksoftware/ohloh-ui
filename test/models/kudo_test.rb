@@ -3,7 +3,7 @@ require 'test_helper'
 class KudoTest < ActiveSupport::TestCase
   it 'recent' do
     Kudo.delete_all
-    admin_account = accounts(:admin)
+    admin_account = create(:admin)
     create(:kudo, sender: accounts(:joe), account: admin_account)
     create(:kudo, sender: accounts(:user), account: admin_account)
 
@@ -15,7 +15,7 @@ class KudoTest < ActiveSupport::TestCase
   describe 'sort_by_created_at' do
     before do
       Kudo.delete_all
-      @admin_account = accounts(:admin)
+      @admin_account = create(:admin)
       @kudo1 = create(:kudo, sender: @admin_account, account: accounts(:user),
                              project_id: 1)
       @kudo2 = create(:kudo, sender: @admin_account, account: nil,

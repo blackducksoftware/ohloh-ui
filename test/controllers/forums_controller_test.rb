@@ -2,8 +2,8 @@ require 'test_helper'
 
 describe ForumsController do
   let(:forum) { forums(:rails) }
-  let(:admin) { accounts(:admin) }
-  let(:user) { accounts(:user) }
+  let(:admin) { create(:admin) }
+  let(:user) { create(:account) }
 
   #----------------Admin functionality----------
   it 'admin index' do

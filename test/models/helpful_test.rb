@@ -2,7 +2,7 @@ require 'test_helper'
 
 class HelpfulTest < ActiveSupport::TestCase
   let(:review) do
-    Review.create!(account_id: accounts(:admin).id, project: projects(:linux),
+    Review.create!(account_id: create(:admin).id, project: projects(:linux),
                    comment: 'Dummy Comment', title: 'Dummy Title')
   end
 

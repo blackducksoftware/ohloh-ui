@@ -3,7 +3,7 @@ require_relative '../test_helper.rb'
 class LogosControllerTest < ActionController::TestCase
   def setup
     ActionView::Base.any_instance.stubs(:has_permission?).returns('true')
-    @admin = accounts(:admin)
+    @admin = create(:admin)
     @user = accounts(:user)
   end
 

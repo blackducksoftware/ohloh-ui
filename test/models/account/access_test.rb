@@ -2,7 +2,7 @@ require 'test_helper'
 
 class Account::AccessTest < ActiveSupport::TestCase
   it 'validate authorize admin?' do
-    account = accounts(:admin)
+    account = create(:admin)
     Account::Access.new(account).must_be :admin?
     Account::Access.new(account).wont_be :spam?
     Account::Access.new(account).wont_be :default?

@@ -2,7 +2,7 @@ require 'test_helper'
 
 describe 'LinksControllerTest' do
   let(:project) { projects(:linux) }
-  let(:admin) { accounts(:admin) }
+  let(:admin) { create(:admin) }
   let(:user) { accounts(:user) }
 
   it 'after edit user is taken to index if they came from another page' do

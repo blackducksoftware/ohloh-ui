@@ -3,7 +3,7 @@ require 'test_helper'
 class AccountTest < ActiveSupport::TestCase
   it '#sent_kudos' do
     Kudo.delete_all
-    admin_account = accounts(:admin)
+    admin_account = create(:admin)
     create(:kudo, sender: admin_account, account: accounts(:user))
     create(:kudo, sender: admin_account, account: accounts(:joe))
 
@@ -203,7 +203,7 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it 'it should return nil when account has no best_vita' do
-    user = accounts(:admin)
+    user = create(:admin)
     user.first_commit_date.must_be_nil
   end
 
@@ -312,7 +312,7 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it '#email_topics' do
-    account = accounts(:admin)
+    account = create(:admin)
     account.email_topics?.must_equal true
     account.email_master = true
     account.email_posts = false
@@ -326,7 +326,7 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it '#email_kudos' do
-    account = accounts(:admin)
+    account = create(:admin)
     account.email_kudos?.must_equal true
     account.email_master = true
     account.email_kudos = false
@@ -481,8 +481,8 @@ class AccountTest < ActiveSupport::TestCase
 
   describe 'kudo_rank' do
     it 'should return 1 if kudo_rank is nil' do
-      accounts(:admin).person.update_column(:kudo_rank, nil)
-      accounts(:admin).kudo_rank.must_equal 1
+      create(:admin).person.update_column(:kudo_rank, nil)
+      create(:admin).kudo_rank.must_equal 1
     end
 
     it 'should return kudo_rank' do

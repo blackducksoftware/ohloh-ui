@@ -3,7 +3,7 @@ require 'test_helper'
 describe TopicsController do
   let(:forum) { forums(:rails) }
   let(:user) { accounts(:user) }
-  let(:admin) { accounts(:admin) }
+  let(:admin) { create(:admin) }
   let(:topic) { topics(:ponies) }
 
   #-------------User with no account---------------

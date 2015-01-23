@@ -15,14 +15,14 @@ class CreateEditTest < ActiveSupport::TestCase
 
   it 'test_undo_works_with_editor' do
     @edit.target.deleted.must_equal false
-    @edit.target.editor_account = accounts(:admin)
+    @edit.target.editor_account = create(:admin)
     @edit.do_undo
     @edit.target.reload
     @edit.target.deleted.must_equal true
   end
 
   it 'test_redo_fails_with_no_editor' do
-    @edit.target.editor_account = accounts(:admin)
+    @edit.target.editor_account = create(:admin)
     @edit.do_undo
     @edit.target.editor_account = nil
     @edit.target.deleted.must_equal true
@@ -32,7 +32,7 @@ class CreateEditTest < ActiveSupport::TestCase
   end
 
   it 'test_redo_works_with_editor' do
-    @edit.target.editor_account = accounts(:admin)
+    @edit.target.editor_account = create(:admin)
     @edit.do_undo
     @edit.target.deleted.must_equal true
     @edit.do_redo

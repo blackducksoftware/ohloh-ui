@@ -9,7 +9,7 @@ class AccountDecoratorTest < Draper::TestCase
     @java = create(:language, name: 'java', nice_name: 'Java')
   end
 
-  let(:admin) { accounts(:admin) }
+  let(:admin) { create(:admin) }
   let(:user) { accounts(:user) }
 
   let(:cbp) do
