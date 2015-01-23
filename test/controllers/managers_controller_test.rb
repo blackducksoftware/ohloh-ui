@@ -229,7 +229,6 @@ class ManagersControllerTest < ActionController::TestCase
 
   def admin_manages_linux
     @proj.manages.delete_all
-    @proj.manages.create!(account_id: accounts(:admin).id,
-                                     approved_by: accounts(:user).id, message: 'test message')
+    @proj.manages.create!(account_id: accounts(:admin).id, approved_by: accounts(:user).id, message: 'test message')
   end
 end
