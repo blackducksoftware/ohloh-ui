@@ -2,7 +2,7 @@ require 'test_helper'
 
 class CommitsByLanguageTest < Draper::TestCase
   let(:start_date) do
-    start_date = (Date.today - 6.years).beginning_of_month
+    (Date.today - 6.years).beginning_of_month
   end
 
   let(:cbl) do
