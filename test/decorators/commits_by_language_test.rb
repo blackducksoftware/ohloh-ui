@@ -1,43 +1,47 @@
 require 'test_helper'
 
 class CommitsByLanguageTest < Draper::TestCase
+  let(:start_date) do
+    start_date = (Date.today - 6.years).beginning_of_month
+  end
+
   let(:cbl) do
     [{ 'l_id' => '3', 'l_name' => 'xml', 'l_category' => '1', 'l_nice_name' => 'XML',
-       'month' => '2009-06-01', 'commits' => '8' },
+       'month' => start_date.to_s, 'commits' => '8' },
      { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => '2009-06-01', 'commits' => '24' },
+       'month' => start_date.to_s, 'commits' => '24' },
      { 'l_id' => '1', 'l_name' => 'html', 'l_category' => '1', 'l_nice_name' => 'HTML',
-       'month' => '2009-07-01', 'commits' => '9' },
+       'month' => (start_date + 1.month).to_s, 'commits' => '9' },
      { 'l_id' => '3', 'l_name' => 'xml', 'l_category' => '1', 'l_nice_name' => 'XML',
-       'month' => '2009-07-01', 'commits' => '29' },
+       'month' => (start_date + 1.month).to_s, 'commits' => '29' },
      { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => '2009-07-01', 'commits' => '37' },
+       'month' => (start_date + 1.month).to_s, 'commits' => '37' },
      { 'l_id' => '3', 'l_name' => 'xml', 'l_category' => '1', 'l_nice_name' => 'XML',
-       'month' => '2009-08-01', 'commits' => '7' },
+       'month' => (start_date + 2.months).to_s, 'commits' => '7' },
      { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => '2009-08-01', 'commits' => '27' },
+       'month' => (start_date + 2.months).to_s, 'commits' => '27' },
      { 'l_id' => '30', 'l_name' => 'sql', 'l_category' => '0', 'l_nice_name' => 'SQL',
-       'month' => '2009-08-01', 'commits' => '1' },
+       'month' => (start_date + 2.months).to_s, 'commits' => '1' },
      { 'l_id' => '3', 'l_name' => 'xml', 'l_category' => '1', 'l_nice_name' => 'XML',
-       'month' => '2009-09-01', 'commits' => '2' },
+       'month' => (start_date + 3.months).to_s, 'commits' => '2' },
      { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => '2009-09-01', 'commits' => '16' },
+       'month' => (start_date + 3.months).to_s, 'commits' => '16' },
      { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => '2009-10-01', 'commits' => '1' },
+       'month' => (start_date + 4.months).to_s, 'commits' => '1' },
      { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => '2009-11-01', 'commits' => '8' },
+       'month' => (start_date + 5.months).to_s, 'commits' => '8' },
      { 'l_id' => '3', 'l_name' => 'xml', 'l_category' => '1', 'l_nice_name' => 'XML',
-       'month' => '2009-12-01', 'commits' => '12' },
+       'month' => (start_date + 6.months).to_s, 'commits' => '12' },
      { 'l_id' => '12', 'l_name' => 'ruby', 'l_category' => '0', 'l_nice_name' => 'Ruby',
-       'month' => '2009-12-01', 'commits' => '2' },
+       'month' => (start_date + 6.months).to_s, 'commits' => '2' },
      { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => '2009-12-01', 'commits' => '26' },
+       'month' => (start_date + 6.months).to_s, 'commits' => '26' },
      { 'l_id' => '3', 'l_name' => 'xml', 'l_category' => '1', 'l_nice_name' => 'XML',
-       'month' => '2010-01-01', 'commits' => '2' },
+       'month' => (start_date + 7.months).to_s, 'commits' => '2' },
      { 'l_id' => '12', 'l_name' => 'ruby', 'l_category' => '0', 'l_nice_name' => 'Ruby',
-       'month' => '2010-01-01', 'commits' => '3' },
+       'month' => (start_date + 7.months).to_s, 'commits' => '3' },
      { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => '2010-01-01', 'commits' => '9' }]
+       'month' => (start_date + 7.months).to_s, 'commits' => '9' }]
   end
 
   let(:user) do
@@ -48,7 +52,7 @@ class CommitsByLanguageTest < Draper::TestCase
   let(:admin) { accounts(:admin) }
 
   let(:cbl_decorator) do
-    user.stubs(:first_commit_date).returns(Time.strptime('2009-06-01', '%Y-%m-01').to_date)
+    user.stubs(:first_commit_date).returns(start_date)
     CommitsByLanguage.new(user, context: { scope: 'full' })
   end
 
@@ -67,7 +71,7 @@ class CommitsByLanguageTest < Draper::TestCase
       language.name.must_equal 'csharp'
       language.nice_name.must_equal 'C#'
       language.color_code.must_equal '4096EE'
-      language.commits.must_equal [0] * 17 + [24, 37, 27, 16, 1, 8, 26, 9] + [0] * 59
+      language.commits.must_equal [0] * 12 + [24, 37, 27, 16, 1, 8, 26, 9] + [0] * 64
       language.category.must_equal '0'
     end
 
@@ -90,7 +94,7 @@ class CommitsByLanguageTest < Draper::TestCase
     end
 
     it 'should try to fetch data from first_commit_date if it is more than seven years' do
-      admin.stubs(:first_commit_date).returns(Time.strptime('2004-01-01', '%Y-%m-01').to_date)
+      admin.stubs(:first_commit_date).returns(start_date - 5.years)
       cbl_decorator = CommitsByLanguage.new admin, context: { scope: 'full' }
       le = cbl_decorator.language_experience
       le[:object_array].must_equal []

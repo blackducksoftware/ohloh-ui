@@ -7,7 +7,7 @@ class CommitsByLanguage < Draper::Decorator
   def initialize(*args)
     super
     start_date
-    @end_date = Date.today.beginning_of_month.prev_month
+    @end_date = 1.month.ago.beginning_of_month
   end
 
   def language_experience
