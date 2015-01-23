@@ -34,7 +34,9 @@ class CommitsByProject < Draper::Decorator
   def chart_data(project_id = nil)
     months_range = h.months_in_range(history[:start_date], @end_date)
     facts = chart_yaxis_data(project_id)
-    y_axis = months_range.map { |m| facts[m].try(:sum) { |f| f[:commits].to_i }.to_i }
+    y_axis = months_range.map do |m|
+      facts[m].try(:sum) { |f| f[:commits].to_i } || 0
+    end
     x_axis = months_range.map { |m| m.strftime('%b-%Y') }
 
     { x_axis: x_axis, y_axis: y_axis, max_commits: history[:max_commits] }
