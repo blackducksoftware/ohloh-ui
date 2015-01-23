@@ -4,23 +4,27 @@ class KudoTest < ActiveSupport::TestCase
   it 'recent' do
     Kudo.delete_all
     admin_account = create(:admin)
-    create(:kudo, sender: accounts(:joe), account: admin_account)
-    create(:kudo, sender: create(:account), account: admin_account)
+    user1_account = create(:account)
+    user2_account = create(:account)
+    create(:kudo, sender: user1_account, account: admin_account)
+    create(:kudo, sender: user2_account, account: admin_account)
 
     admin_account.kudos.count.must_equal 2
     admin_account.kudos.recent(1).length.must_equal 1
-    admin_account.kudos.recent(1).first.sender_id.must_equal 3
+    admin_account.kudos.recent(1).first.sender_id.must_equal user1_account.id
   end
 
   describe 'sort_by_created_at' do
     before do
       Kudo.delete_all
       @admin_account = create(:admin)
-      @kudo1 = create(:kudo, sender: @admin_account, account: create(:account),
+      @user1_account = create(:account)
+      @user2_account = create(:account)
+      @kudo1 = create(:kudo, sender: @admin_account, account: @user1_account,
                              project_id: 1)
       @kudo2 = create(:kudo, sender: @admin_account, account: nil,
                              project_id: 3)
-      @kudo3 = create(:kudo, sender: @admin_account, account: accounts(:joe),
+      @kudo3 = create(:kudo, sender: @admin_account, account: @user2_account,
                              project_id: 2)
     end
 
@@ -52,7 +56,7 @@ class KudoTest < ActiveSupport::TestCase
       end
 
       it 'must order by project_id when kudos have same account_id' do
-        @kudo2.update!(project_id: 4, account: accounts(:joe))
+        @kudo2.update!(project_id: 4, account: @user2_account)
 
         @admin_account.sent_kudos.sort_by_created_at.must_equal [@kudo2, @kudo3, @kudo1]
       end

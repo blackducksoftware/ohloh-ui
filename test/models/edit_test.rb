@@ -1,9 +1,9 @@
 require 'test_helper'
 
 class EditTest < ActiveSupport::TestCase
-  fixtures :accounts
-
   before do
+    @user = create(:account)
+    @admin = create(:admin)
     project = create(:project, description: 'Linux')
     Edit.for_target(project).delete_all
     @edit = create(:create_edit, target: project)
@@ -19,12 +19,12 @@ class EditTest < ActiveSupport::TestCase
   end
 
   it 'test_that_undo_and_redo_work' do
-    @edit.undo!(accounts(:admin))
+    @edit.undo!(@admin)
     @edit.undone.must_equal true
-    @edit.undoer.must_equal accounts(:admin)
-    @edit.redo!(accounts(:user))
+    @edit.undoer.must_equal @admin
+    @edit.redo!(@user)
     @edit.undone.must_equal false
-    @edit.undoer.must_equal accounts(:user)
+    @edit.undoer.must_equal @user
   end
 
   it 'test_that_undo_requires_an_editor' do
@@ -32,17 +32,17 @@ class EditTest < ActiveSupport::TestCase
   end
 
   it 'test_that_redo_requires_an_editor' do
-    @edit.undo!(accounts(:admin))
+    @edit.undo!(@admin)
     proc { @edit.undo!(nil) }.must_raise RuntimeError
   end
 
   it 'test_that_undo_can_only_be_called_once' do
-    @edit.undo!(accounts(:admin))
-    proc { @edit.undo!(accounts(:admin)) }.must_raise ActsAsEditable::UndoError
+    @edit.undo!(@admin)
+    proc { @edit.undo!(@admin) }.must_raise ActsAsEditable::UndoError
   end
 
   it 'test_that_redo_can_only_be_called_after_an_undo' do
-    proc { @edit.redo!(accounts(:admin)) }.must_raise ActsAsEditable::UndoError
+    proc { @edit.redo!(@admin) }.must_raise ActsAsEditable::UndoError
   end
 
   it 'test_that_project_gets_filled_in_automatically_for_project_edits' do

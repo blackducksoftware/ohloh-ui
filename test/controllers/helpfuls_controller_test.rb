@@ -36,7 +36,7 @@ class HelpfulsControllerTest < ActionController::TestCase
 
   it 'test bug fix on multiple helpfuls' do
     Helpful.create(review_id: @linux_review.id, account_id: create(:account).id, yes: false)
-    login_as accounts(:joe)
+    login_as create(:account)
     assert_difference 'Helpful.count' do
       create_helpful(true)
       must_respond_with :success
