@@ -27,11 +27,12 @@ class Account::OrganizationCoreTest < ActiveSupport::TestCase
   end
 
   it 'contributions_to_org_portfolio' do
+    org = create(:organization)
     analysis = analyses(:linux)
     linux = projects(:linux)
     linux.editor_account = create(:account)
-    linux.update_attributes! best_analysis_id: analysis.id
-    @account.update_column :organization_id, organizations(:linux).id
+    linux.update_attributes(organization_id: org.id, best_analysis_id: analysis.id)
+    @account.update_column :organization_id, org.id
     @account.reload
 
     @account_org.contributions_to_org_portfolio.must_equal 1
@@ -44,7 +45,7 @@ class Account::OrganizationCoreTest < ActiveSupport::TestCase
     linux.editor_account = create(:account)
     linux.update_attributes! best_analysis_id: analysis.id
     account = accounts(:user)
-    account.update_column(:organization_id, organizations(:google).id)
+    account.update_column(:organization_id, create(:organization).id)
     account_org = Account::OrganizationCore.new(account.id)
     account.reload
 

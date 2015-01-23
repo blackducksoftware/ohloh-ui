@@ -28,7 +28,7 @@ class LogosControllerTest < ActionController::TestCase
 
   it 'upload logo for organization via URL' do
     login_as @admin
-    organization = organizations(:linux)
+    organization = create(:organization)
     Organization.any_instance.expects(:edit_authorized?).returns(true)
     post :create, organization_id: organization.id, logo: { url: 'https://www.openhub.net/images/clear.gif' }
     must_redirect_to new_organization_logos_path

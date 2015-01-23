@@ -78,10 +78,11 @@ class ManagersControllerTest < ActionController::TestCase
   end
 
   it 'test reject should succeed for orgs' do
-    manager_apply(accounts(:user), organizations(:linux))
+    org = create(:organization)
+    manager_apply(accounts(:user), org)
     login_as accounts(:user)
     assert_difference 'Manage.where.not(deleted_by: nil).count' do
-      post :reject, organization_id: organizations(:linux).to_param, id: accounts(:user).to_param
+      post :reject, organization_id: org.to_param, id: accounts(:user).to_param
     end
     must_respond_with :redirect
   end

@@ -463,7 +463,7 @@ class AccountTest < ActiveSupport::TestCase
 
   it 'deleting an account creates a organization job for the org' do
     skip('TODO: Organization job should be scheduled for account organization_id update')
-    accounts(:robin).update_attribute(:organization_id, organizations(:google).id)
+    accounts(:robin).update_attribute(:organization_id, create(:organization).id)
     org_id = accounts(:robin).organization_id
     Job.delete_all
     accounts(:robin).destroy
@@ -473,9 +473,9 @@ class AccountTest < ActiveSupport::TestCase
 
   it 'updating an account with different org id creates organization jobs for the affected orgs' do
     skip('TODO: Organization job should be scheduled for account organization_id update')
-    accounts(:robin).update_attribute(:organization_id, organizations(:google).id)
+    accounts(:robin).update_attribute(:organization_id, create(:organization).id)
     Job.delete_all
-    accounts(:robin).reload.update_attributes!(organization_id: organizations(:linux).id)
+    accounts(:robin).reload.update_attributes!(organization_id: create(:organization).id)
     OrganizationJob.count.must_equal 2
   end
 
