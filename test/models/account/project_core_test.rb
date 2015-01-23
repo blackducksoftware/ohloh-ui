@@ -3,12 +3,12 @@ require_relative '../../test_helper'
 class ProjectCoreTest < ActiveSupport::TestCase
   it 'used' do
     account = accounts(:admin)
-    stack = Stack.new
+    stack = create(:stack, account: account)
     project = Project.where { id.eq(1) }.first
 
     stack.projects << project
-    account.stacks << stack
-    account.save!
+    stack.save!
+    account.reload
 
     account_project_core = account.project_core
     account_project_core.used.first.must_equal [project]
@@ -18,10 +18,10 @@ class ProjectCoreTest < ActiveSupport::TestCase
   it 'stacked_count' do
     account = accounts(:admin)
 
-    stack = Stack.new
+    stack = create(:stack, account: account)
     stack.projects << projects(:linux)
-    account.stacks << stack
-    account.save!
+    stack.save!
+    account.reload
 
     account_project_core = account.project_core
     account_project_core.stacked_count.must_equal 1
@@ -33,10 +33,10 @@ class ProjectCoreTest < ActiveSupport::TestCase
     Stack.any_instance.stubs(:stacked_project?).with(projects(:linux).id).returns(true)
     account.project_core.stacked?(projects(:linux).id).must_equal false
 
-    stack = Stack.new
+    stack = create(:stack, account: account)
     stack.projects << projects(:linux)
-    account.stacks << stack
-    account.save!
+    stack.save!
+    account.reload
 
     account.project_core.stacked?(projects(:linux).id).must_equal true
   end

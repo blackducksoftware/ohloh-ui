@@ -7,10 +7,10 @@ class StackCoreTest < ActiveSupport::TestCase
     default_stack = account.stack_core.default
     account.stacks.size.must_equal 1
 
-    stack = Stack.new
+    stack = create(:stack, account: account)
     stack.projects << projects(:linux)
-    account.stacks << stack
-    account.save!
+    stack.save!
+    account.reload
 
     account_stack_core = account.stack_core
     account.stacks.size.must_equal 2
