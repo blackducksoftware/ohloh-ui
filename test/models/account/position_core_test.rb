@@ -1,10 +1,6 @@
 require 'test_helper'
 
 class PositionCoreTest < ActiveSupport::TestCase
-  def setup
-    fixup
-  end
-
   it 'association callbacks on delegable' do
     accounts(:user).positions.count.must_equal 1
   end

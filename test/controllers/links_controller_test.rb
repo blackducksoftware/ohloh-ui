@@ -1,13 +1,16 @@
 require 'test_helper'
 
 describe 'LinksControllerTest' do
-  let(:project) { projects(:linux) }
+  let(:project) { create(:project) }
   let(:admin) { create(:admin) }
   let(:user) { create(:account) }
 
-  it 'after edit user is taken to index if they came from another page' do
-    fixup
+  before do
+    @link_homepage = create(:link, project: project, link_category_id: Link::CATEGORIES[:Homepage])
+    @link_download = create(:link, project: project, link_category_id: Link::CATEGORIES[:Download])
+  end
 
+  it 'after edit user is taken to index if they came from another page' do
     link = nil
 
     edit_as(admin) do
@@ -25,8 +28,6 @@ describe 'LinksControllerTest' do
   end
 
   it 'after save user is taken to index' do
-    fixup
-
     link = nil
 
     edit_as(admin) do
@@ -42,8 +43,6 @@ describe 'LinksControllerTest' do
 
   it 'non-manager index action displays alert' do
     skip 'TODO: Dependent on restrict_edits_to_managers'
-    fixup
-
     restrict_edits_to_managers project
 
     edit_as(user) do
@@ -55,8 +54,6 @@ describe 'LinksControllerTest' do
 
   it 'non-manager new action redirect to a login prompt' do
     skip 'TODO: Dependent on restrict_edits_to_managers'
-    fixup
-
     restrict_edits_to_managers project
 
     edit_as(user) do
@@ -68,8 +65,6 @@ describe 'LinksControllerTest' do
 
   it 'non-manager edit action redirect to a login prompt' do
     skip 'TODO: Dependent on restrict_edits_to_managers'
-    fixup
-
     link = nil
 
     edit_as(admin) do
@@ -94,8 +89,6 @@ describe 'LinksControllerTest' do
     describe 'new' do
       it 'must not be shown if the link already exists' do
         as(admin) do
-          project.links.first.link_category_id.must_equal Link::CATEGORIES[:Homepage]
-
           get :new, project_id: project.url_name
           assigns(:categories)[:Homepage].must_be_nil
         end
