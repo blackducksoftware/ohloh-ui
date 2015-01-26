@@ -13,6 +13,7 @@ class LinksController < SettingsController
 
   def create
     @link = @project.links.new(link_params)
+    @link.editor_account = current_user
 
     if @link.revive_or_create
       redirect_to project_links_path(@project), flash: { success: t('.success') }
@@ -64,6 +65,7 @@ class LinksController < SettingsController
 
   def set_link
     @link = Link.find(params[:id])
+    @link.editor_account = current_user
   end
 
   def set_project

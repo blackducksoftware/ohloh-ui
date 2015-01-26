@@ -26,14 +26,13 @@ class LinkTest < ActiveSupport::TestCase
   end
 
   it 'must revive or create deleted links' do
-    skip 'Make this test pass after integrating acts_as_editable'
-
-    link = projects(:linux).links.first
-    link.update(deleted: true)
+    link = create(:link, project: projects(:linux))
+    link.destroy
 
     new_title = 'new title'
     new_link = build(:link, url: link.url, project_id: link.project_id,
                             title: new_title, link_category_id: Link::CATEGORIES[:Forums])
+    new_link.editor_account = create(:account)
 
     assert_no_difference('Link.count') do
       new_link.revive_or_create
@@ -49,6 +48,7 @@ class LinkTest < ActiveSupport::TestCase
     new_url   = 'http://www.domain.com'
     new_link = build(:link, url: new_url, project: projects(:linux),
                             title: new_title, link_category_id: Link::CATEGORIES[:Forums])
+    new_link.editor_account = create(:account)
 
     assert_difference('Link.count', 1) do
       new_link.revive_or_create.must_equal true
@@ -106,6 +106,7 @@ class LinkTest < ActiveSupport::TestCase
       'http://www.google.com:8080/some/other/path.php', 'http://www.freshvanilla.org:8080/'
     ].each do |url|
       link = build(:link, url: url, project: projects(:linux))
+      link.editor_account = create(:account)
       link.save
       link.must_be :valid?
     end

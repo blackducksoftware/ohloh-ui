@@ -96,6 +96,7 @@ describe 'LinksControllerTest' do
 
       it 'must be shown if link does not exist' do
         as(admin) do
+          link.editor_account = admin
           link.destroy
           get :new, project_id: project.url_name
           assigns(:categories)[:Homepage].must_equal Link::CATEGORIES[:Homepage]
@@ -104,6 +105,7 @@ describe 'LinksControllerTest' do
 
       it 'download link must not be shown if it already exists' do
         as(admin) do
+          link.editor_account = admin
           link.update!(title: 'Project Download page',
                        link_category_id: Link::CATEGORIES[:Download])
 
@@ -127,6 +129,7 @@ describe 'LinksControllerTest' do
 
       it 'must be shown if link does not exist' do
         as(admin) do
+          link.editor_account = admin
           link.destroy
 
           post :create, project_id: project.url_name,
@@ -138,6 +141,7 @@ describe 'LinksControllerTest' do
 
       it 'must be shown if link is being created' do
         as(admin) do
+          link.editor_account = admin
           link.destroy
 
           post :create, project_id: project.url_name,
@@ -164,6 +168,7 @@ describe 'LinksControllerTest' do
 
       it 'must be shown if does not exist and other link is being updated' do
         as(admin) do
+          link.editor_account = admin
           link.destroy
 
           put :update, id: other_link.id, project_id: project.url_name,
