@@ -53,7 +53,7 @@ class CommitsByLanguageTest < Draper::TestCase
     accounts(:user)
   end
 
-  let(:admin) { accounts(:admin) }
+  let(:admin) { create(:admin) }
 
   let(:cbl_decorator) do
     user.stubs(:first_commit_date).returns(start_date)

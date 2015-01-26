@@ -1,8 +1,0 @@
-fpl:
-  id: 1
-  name: fpl
-  nice_name: First Public License
-spl:
-  id: 2
-  name: spl
-  nice_name: Second Public License

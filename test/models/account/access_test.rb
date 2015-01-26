@@ -2,7 +2,7 @@ require 'test_helper'
 
 class Account::AccessTest < ActiveSupport::TestCase
   it 'validate authorize admin?' do
-    account = accounts(:admin)
+    account = create(:admin)
     Account::Access.new(account).must_be :admin?
     Account::Access.new(account).wont_be :spam?
     Account::Access.new(account).wont_be :default?
@@ -19,7 +19,7 @@ class Account::AccessTest < ActiveSupport::TestCase
   end
 
   it 'validate authorize default?' do
-    account = accounts(:user)
+    account = create(:account)
     Account::Access.new(account).must_be :default?
     Account::Access.new(account).wont_be :admin?
     Account::Access.new(account).wont_be :spam?
@@ -41,14 +41,14 @@ class Account::AccessTest < ActiveSupport::TestCase
   end
 
   it 'disable user' do
-    account = accounts(:user)
+    account = create(:account)
     Account::Access.new(account).wont_be :disabled?
     Account::Access.new(account).disable!
     Account::Access.new(account).must_be :disabled?
   end
 
   it 'mark user as spam' do
-    account = accounts(:user)
+    account = create(:account)
     Account::Access.new(account).wont_be :spam?
     Account.transaction do
       Account::Access.new(account).spam! # rescue ''

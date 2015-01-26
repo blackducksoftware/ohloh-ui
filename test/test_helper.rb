@@ -29,9 +29,6 @@ class ActiveSupport::TestCase
     end
   end
 
-  def fixup
-  end
-
   def as(user)
     login_as user
     yield if block_given?

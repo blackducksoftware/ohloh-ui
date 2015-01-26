@@ -14,7 +14,7 @@ class PostNotifierTest < ActionMailer::TestCase
 
   it 'user who replied should receive a post replied notification email' do
     user1 = accounts(:admin)
-    user2 = accounts(:user)
+    user2 = create(:account)
     topic = topics(:galactus)
     email = PostNotifier.post_replied_notification(user1, user2, topic).deliver
     email.to.must_equal [user1.email] # Admin Allen
