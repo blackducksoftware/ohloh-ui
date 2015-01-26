@@ -28,11 +28,12 @@ module PageContextHelper
     set_page_context(footer_menu_list:  tools_sidebar,
                      select_footer_nav:  :account_summary,
                      select_top_menu_nav:  :select_tools,
-                     heading:  'Tools')
+                     heading:  'Tools',
+                     nav_type: 'sidebar')
   end
 
   def set_page_context(options)
-    options.update(nav_type: 'footer_nav') unless options[:nav_type]
+    options.update(nav_type: 'footer_nav') if options[:nav_type].blank?
     page_context.reverse_merge!(options)
   end
 end

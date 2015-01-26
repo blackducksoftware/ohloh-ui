@@ -11,22 +11,22 @@ class PageContextHelperTest < ActionView::TestCase
   let(:rails) { forums(:rails) }
 
   let(:account_menus) do
-    { nav_type: 'footer_nav',
-      select_footer_nav: :account_summary,
-      select_top_menu_nav: :select_people
+    { select_footer_nav: :account_summary,
+      select_top_menu_nav: :select_people,
+      nav_type: 'footer_nav'
     }
   end
 
   let(:organization_menus) do
-    { nav_type: 'footer_nav',
-      select_footer_nav: :org_summary,
-      select_top_menu_nav: :select_organizations
+    { select_footer_nav: :org_summary,
+      select_top_menu_nav: :select_organizations,
+      nav_type: 'footer_nav'
     }
   end
   let(:project_menus) do
-    { nav_type: 'footer_nav',
-      select_footer_nav: :project_summary,
-      select_top_menu_nav: :select_projects
+    { select_footer_nav: :project_summary,
+      select_top_menu_nav: :select_projects,
+      nav_type: 'footer_nav'
     }
   end
   let(:forum_menus) do
@@ -34,10 +34,10 @@ class PageContextHelperTest < ActionView::TestCase
     }
   end
   let(:tool_menus) do
-    { nav_type: 'sidebar',
-      select_footer_nav: :account_summary,
+    { select_footer_nav: :account_summary,
       select_top_menu_nav: :select_tools,
-      heading: 'Tools'
+      heading: 'Tools',
+      nav_type: 'sidebar'
     }
   end
 
