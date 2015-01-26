@@ -340,9 +340,9 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it '#update_akas' do
-    create(:position, project: projects(:ohloh), name: names(:scott), account: accounts(:user))
+    position = create(:position, project: projects(:ohloh), account: accounts(:user))
     accounts(:user).update_akas
-    accounts(:user).akas.split("\n").sort.must_equal %w(Scott User)
+    accounts(:user).akas.split("\n").sort.must_equal [position.name.name, 'User'].sort
   end
 
   it '#links' do

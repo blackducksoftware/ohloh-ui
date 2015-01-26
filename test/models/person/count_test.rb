@@ -28,15 +28,15 @@ class Person::CountTest < ActiveSupport::TestCase
   describe '#claimed' do
     it 'must return count of people with accounts' do
       proj = create(:project)
-      Person.count.must_equal 8
-      Person.where.not(account_id: nil).count.must_equal 8
-      Person::Count.claimed.must_equal 8
+      Person.count.must_equal 9
+      Person.where.not(account_id: nil).count.must_equal 9
+      Person::Count.claimed.must_equal 9
 
       name = create(:name_with_fact)
       Person.first.update!(name: name, name_fact: NameFact.find_by(name: name),
                            project: proj, account_id: nil)
 
-      Person::Count.claimed.must_equal 7
+      Person::Count.claimed.must_equal 8
     end
   end
 

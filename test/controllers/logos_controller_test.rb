@@ -64,7 +64,7 @@ class LogosControllerTest < ActionController::TestCase
   end
 
   it 'LogosController destroy resets to NilLogo' do
-    project = projects(:linux)
+    project = create(:project)
     login_as @admin
 
     delete :destroy, project_id: project.id

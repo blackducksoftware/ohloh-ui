@@ -17,7 +17,7 @@ class Person::BuilderTest < ActiveSupport::TestCase
     describe 'names relative to project\'s best_analysis_id' do
       it 'must create people with related names' do
         contributor_fact = create(:contributor_fact, analysis_id: analysis.id)
-        ContributorFact.unclaimed_for_project(project).must_equal [contributor_fact]
+        ContributorFact.unclaimed_for_project(project).to_a.map(&:id).must_equal [contributor_fact.id]
 
         assert_difference -> { Person.count }, 1 do
           Person::Builder.rebuild_for_analysis_matching_names(project)

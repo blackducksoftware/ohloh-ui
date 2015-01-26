@@ -4,7 +4,7 @@ class ProjectCoreTest < ActiveSupport::TestCase
   it 'used' do
     account = create(:admin)
     stack = create(:stack, account: account)
-    project = Project.where { id.eq(1) }.first
+    project = create(:project)
 
     stack.projects << project
     stack.save!

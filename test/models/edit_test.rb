@@ -67,7 +67,7 @@ class EditTest < ActiveSupport::TestCase
   end
 
   it 'test_that_project_and_organization_get_filled_in_automatically_when_associating_project_to_an_org' do
-    p = create(:project)
+    p = create(:project, organization: nil)
     org = create(:organization)
     p.update_attributes(organization_id: org.id)
     edit = PropertyEdit.where(target: p, key: 'organization_id').first

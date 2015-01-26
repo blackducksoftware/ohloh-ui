@@ -126,8 +126,8 @@ class ApiKeysControllerTest < ActionController::TestCase
   end
 
   it 'index page should honor the sort order "account_name"' do
-    api_key1 = create(:api_key, account_id: @user.id, created_at: Time.now - 1. day)
-    api_key2 = create(:api_key, account_id: @admin.id, created_at: Time.now)
+    api_key1 = create(:api_key, account_id: @user.id, created_at: Time.now - 1. day, name: 'Zzzzzzzz')
+    api_key2 = create(:api_key, account_id: @admin.id, created_at: Time.now, name: 'Aaaaaaaa')
     login_as @admin
     get :index, sort: 'account_name'
     must_respond_with :ok
