@@ -45,6 +45,10 @@ module ApplicationHelper
     [controller_name, action_name, 'page'].join('_')
   end
 
+  def months_in_range(start_date, end_date)
+    (start_date..end_date).map { |d| Date.new(d.year, d.month) }.uniq
+  end
+
   private
 
   def render_expander(text, l)
