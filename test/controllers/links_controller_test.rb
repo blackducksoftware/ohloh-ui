@@ -279,6 +279,13 @@ describe 'LinksControllerTest' do
     project.links.size.must_equal 1
   end
 
+  it 'should gracefully handle errors when trying to delete a link' do
+    link = create(:link, project: create(:project))
+    Link.any_instance.stubs(:destroy).returns false
+    delete :destroy, id: link.id, project_id: link.project.url_name
+    must_respond_with 302
+  end
+
   it 'should_not_create_if_link_was_soft_deleted_already_in_a_link_category' do
     project = create(:project)
 
