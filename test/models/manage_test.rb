@@ -70,7 +70,7 @@ class ManageTest < ActiveSupport::TestCase
     @proj1.reload.active_managers.must_include(@admin)
   end
 
-  it 'test destroy by succeeds' do
+  it 'test destroy_by! succeeds' do
     # make user an admin
     manage = Manage.create!(account: @user1, target: @proj1)
     manage.update_attributes!(approver: @admin)
@@ -87,7 +87,7 @@ class ManageTest < ActiveSupport::TestCase
     manage.reload.destroyer.must_equal @user1
   end
 
-  it 'test destroy by fails if destroyer isnt admin' do
+  it 'test destroy_by! fails if destroyer isnt admin' do
     # create a manage entry for admin
     manage = Manage.create!(account: @admin, target: @proj1)
     manage.update_attributes!(approver: @user1)
@@ -97,7 +97,7 @@ class ManageTest < ActiveSupport::TestCase
     -> { manage.destroy_by!(@user1) }.must_raise(RuntimeError)
   end
 
-  it 'test destroy by fails if destroyer isnt approved' do
+  it 'test destroy_by! fails if destroyer isnt approved' do
     Manage.create!(account: @user2, target: @proj1) # auto-approved
     manage = Manage.create!(account: @user1, target: @proj1)
     @proj1.reload.active_managers.wont_include(@user1)
@@ -110,7 +110,7 @@ class ManageTest < ActiveSupport::TestCase
     -> { manage.destroy_by!(@user1) }.must_raise(RuntimeError)
   end
 
-  it 'test destroy by fails if destroyer deleted' do
+  it 'test destroy_by! fails if destroyer deleted' do
     # make user an admin
     manage1 = Manage.create!(account: @user1, target: @proj1, deleted_at: Time.now.utc)
     manage1.update_attributes!(approver: @user1)
@@ -121,6 +121,13 @@ class ManageTest < ActiveSupport::TestCase
 
     # user destroys it
     -> { manage2.destroy_by!(@user1) }.must_raise(RuntimeError)
+  end
+
+  it 'test bare destroy does not really destroy the object' do
+    manage = create(:manage)
+    manage.destroy
+    manage = Manage.find(manage.id)
+    manage.deleted_by.must_equal Account.hamster.id
   end
 
   it 'test pending fails if approved' do
