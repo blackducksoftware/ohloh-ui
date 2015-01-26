@@ -3,7 +3,7 @@ class RatingsController < ApplicationController
   before_action :find_project_and_rating
 
   def rate
-    @rating.assign_attributes(score: params[:score])
+    @rating.assign_attributes(model_params)
     render nothing: true, status: (@rating.save ? :ok : :unprocessable_entity)
   end
 

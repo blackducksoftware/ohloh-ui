@@ -281,4 +281,14 @@ class ApiKeysControllerTest < ActionController::TestCase
     must_respond_with 302
     ApiKey.where(account_id: @user.id, description: 'My doomed key.').first.wont_be :present?
   end
+
+  # destroy action
+  it 'destroy gracefully handle error cconditions' do
+    api_key = create(:api_key, account_id: @user.id, description: 'My safe key.')
+    ApiKey.any_instance.stubs(:destroy).returns(false)
+    login_as @user
+    delete :destroy, account_id: @user.id, id: api_key.id
+    must_respond_with 302
+    ApiKey.where(account_id: @user.id, description: 'My safe key.').first.must_be :present?
+  end
 end

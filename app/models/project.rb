@@ -1,5 +1,5 @@
 class Project < ActiveRecord::Base
-  has_many :links
+  has_many :links, -> { where(deleted: false) }
   has_one :permission, as: :target
   has_many :analyses
   has_many :analysis_summaries, through: :analyses
