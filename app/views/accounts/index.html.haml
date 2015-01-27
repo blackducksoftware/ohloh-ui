@@ -1,3 +1,5 @@
+- page_context[:select_top_menu_nav] = 'select_people'
+
 %h3.margin_bottom_15= t '.page_title'
 
 = render partial: 'account', collection: @people.map(&:account)
