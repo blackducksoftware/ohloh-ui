@@ -3,20 +3,20 @@ module ForumHelper
   def forums_sidebar
     menus = []
     menus <<  [
-      [nil, 'Topics'],
-      [:new_topic,      'New Topic',     new_forum_topic_path(@forum)],
+      [nil,             t(:topic)],
+      [:new_topic,      t(:new_topic),     new_forum_topic_path(@forum)],
       [:forum,          @forum.name,     forum_path(@forum)]
     ] if @forum
 
     menus << [
-      [nil, 'Posts'],
-      [:recent,           'Recent Posts',     all_posts_path],
-      [:need_answers,     'Unanswered Posts', all_posts_path(unanswered: true)]
+      [nil,             t(:post)],
+      [:recent,         t(:recent_posts),     all_posts_path],
+      [:need_answers,   t(:unanswered_posts), all_posts_path(unanswered: true)]
     ]
 
     menus << [
-      [nil,  'Admin'],
-      [:new, 'New Forum', new_forum_path]
+      [nil,             t(:admin)],
+      [:new,            t(:new_forum), new_forum_path]
     ] if current_user_is_admin? && !@forum
 
     menus

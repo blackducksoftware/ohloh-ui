@@ -5,27 +5,27 @@ class ProjectDecorator < Draper::Decorator
   def sidebar
     [
       [
-        [:project_summary,  'Project Summary',       h.project_path(object)],
-        [:rss,              'News',                 h.project_rss_articles_path(object)],
-        [:settings,         'Settings',             h.settings_project_path(object)],
-        [:widgets,          'Sharing Widgets',      h.project_widgets_path(object)],
-        [:similar_projects, 'Related Projects',     h.project_similar_projects_path(object)]
+        [:project_summary,  h.t(:project_summary),    h.project_path(object)],
+        [:rss,              h.t(:news),               h.project_rss_articles_path(object)],
+        [:settings,         h.t(:settings),           h.settings_project_path(object)],
+        [:widgets,          h.t(:sharing_widgets),    h.project_widgets_path(object)],
+        [:similar_projects,  h.t(:related_projects),  h.project_similar_projects_path(object)]
       ],
       [
-        [:code_data,      'Code Data'],
-        [:languages,      'Languages',      h.languages_summary_project_analysis_path(object, id: 'latest')],
-        [:estimated_cost, 'Cost Estimates', h.estimated_cost_project_path(object)]
+        [:code_data,        h.t(:code_data)],
+        [:languages,        h.t(:languages),          h.languages_summary_project_analysis_path(object, id: 'latest')],
+        [:estimated_cost,   h.t(:cost_estimates),     h.estimated_cost_project_path(object)]
       ],
       [
-        [:scm_data,     'SCM Data'],
-        [:commits,      'Commits',      h.summary_project_commits_path(object)],
-        [:contributors, 'Contributors', h.summary_project_contributors_path(object)]
+        [:scm_data,         h.t(:scm_data)],
+        [:commits,          h.t(:commits),            h.summary_project_commits_path(object)],
+        [:contributors,     h.t(:contributors),       h.summary_project_contributors_path(object)]
       ],
       [
-        [:user_data, 'Community Data'],
-        [:users,      'Users',                        h.users_project_path(object)],
-        [:reviews,    'Ratings & Reviews',            h.summary_project_reviews_path(object)],
-        [:map,        'User & Contributor Locations', h.map_project_path(object)]
+        [:user_data,        h.t(:community_data)],
+        [:users,            h.t(:users),              h.users_project_path(object)],
+        [:reviews,          h.t(:ratings_reviews),    h.summary_project_reviews_path(object)],
+        [:map,              h.t(:user_contributors),  h.map_project_path(object)]
       ]
     ]
   end

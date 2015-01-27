@@ -35,30 +35,30 @@ class AccountDecorator < Draper::Decorator
   def sidebar
     menus = [
       [
-        [:account_summary,    'Account Summary',      h.account_path(object)],
-        [:stacks, object == h.current_user ? 'My Stacks' : 'Stacks', h.account_stacks_path(object)],
+        [:account_summary,    h.t(:account_summary),      h.account_path(object)],
+        [:stacks, object == h.current_user ? h.t(:my_stacks) : h.t(:stacks), h.account_stacks_path(object)],
         [:widgets,            'Widgets',              h.account_widgets_path(object)]
       ],
       [
-        [:contributions,      'Contributions',        nil],
-        [:positions,          'Contributions',        h.account_positions_path(object)],
-        [:languages,          'Languages',            h.languages_account_path(object)]
+        [:contributions,      h.t(:contributions),        nil],
+        [:positions,          h.t(:contributions),        h.account_positions_path(object)],
+        [:languages,          h.t(:languages),            h.languages_account_path(object)]
       ],
       [
-        [:recognition,        'Recognition',          nil],
-        [:kudos,              'Kudos',                h.account_kudos_path(object)]
+        [:recognition,        h.t(:recognition),          nil],
+        [:kudos,              h.t(:kudos),                h.account_kudos_path(object)]
       ],
       [
-        [:usage,              'Usage',                nil],
-        [:edit_history,       'Website Edits',        h.account_edits_path(object)],
-        [:posts,              'Posts',                h.account_posts_path(object)],
-        [:reviews,            'Reviews',              h.account_reviews_path(object)]
+        [:usage,              h.t(:usage),                nil],
+        [:edit_history,       h.t(:website_edits),        h.account_edits_path(object)],
+        [:posts,              h.t(:post),                h.account_posts_path(object)],
+        [:reviews,            h.t(:reviews),              h.account_reviews_path(object)]
       ]
     ]
 
     projects_count = projects.count
-    menus.first << [:managed_projects, 'Managed Projects', h.account_projects_path(object)] if projects_count > 0
-    menus.first.insert(1, [:settings, 'Settings', h.settings_account_path(object)]) if current_user_or_admin?
+    menus.first << [:managed_projects, h.t(:managed_projects), h.account_projects_path(object)] if projects_count > 0
+    menus.first.insert(1, [:settings, h.t(:settings), h.settings_account_path(object)]) if current_user_or_admin?
 
     # TODO: account reports
     # if object.reports.count > 0 && object == current_user
@@ -66,7 +66,7 @@ class AccountDecorator < Draper::Decorator
     # end
 
     unclaimed_contribution = claim_core.unclaimed_persons_count > 0 && current_user_or_admin?
-    menus.second << [:unclaimed, 'Claim Contributions', h.account_unclaimed_committers_path] if unclaimed_contribution
+    menus.second << [:unclaimed, h.t(:claim_contributions), h.account_unclaimed_committers_path] if unclaimed_contribution
 
     menus
   end

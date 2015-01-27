@@ -3,10 +3,10 @@ module ToolHelper
   def tools_sidebar
     [
       [
-        [nil, 'Tools'],
-        [:compare_projects,     'Compare Projects',    compare_projects_path],
-        [:compare_languages,    'Compare Languages',   compare_languages_path],
-        [:compare_repositories, 'Compare Repositories', compare_repositories_path]
+        [nil,                   t(:tools)],
+        [:compare_projects,     t(:compare_projects),    compare_projects_path],
+        [:compare_languages,    t(:compare_languages),   compare_languages_path],
+        [:compare_repositories, t(:compare_repositories), compare_repositories_path]
       ],
       [
         [nil, 'Languages', nil, 'select'],

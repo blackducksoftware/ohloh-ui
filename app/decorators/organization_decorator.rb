@@ -1,17 +1,17 @@
 class OrganizationDecorator < Draper::Decorator
   delegate_all
 
-  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def sidebar
     [
       [
-        [:org_summary, 'Organization Summary', h.organization_path(object)],
-        [:settings, 'Settings', h.settings_organization_path(object)],
-        [:widgets, 'Widgets', h.organization_widgets_path(object)]
+        [:org_summary,    h.t(:organization_summary),     h.organization_path(object)],
+        [:settings,       h.t(:settings),                 h.settings_organization_path(object)],
+        [:widgets,        h.t(:widgets),                  h.organization_widgets_path(object)]
       ],
       [
-        [:code_data, 'Project Portfolio'],
-        [:projects, 'Claimed Projects', h.projects_organization_path(object)]
+        [:code_data,      h.t(:project_portfolio)],
+        [:projects,       h.t(:claimed_projects),         h.projects_organization_path(object)]
       ]
     ]
   end
