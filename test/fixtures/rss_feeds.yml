@@ -1,7 +1,0 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-first:
-  id: 1
-  url: "http://feeds.feedburner.com/RidingRails"
-another:
-  id: 2
-  url: "http://del.icio.us/rss/tag/myproject"

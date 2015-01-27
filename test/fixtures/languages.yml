@@ -3,28 +3,3 @@ c:
   category: 0
   name: c
   nice_name: C
-cpp:
-  id: 2
-  category: 0
-  name: cpp
-  nice_name: C++
-java:
-  id: 3
-  category: 0
-  name: java
-  nice_name: Java
-javascript:
-  id: 4
-  category: 0
-  name: javascript
-  nice_name: Javascript
-python:
-  id: 5
-  category: 0
-  name: python
-  nice_name: Python
-ruby:
-  id: 6
-  category: 0
-  name: ruby
-  nice_name: Ruby

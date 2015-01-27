@@ -45,7 +45,7 @@ class CommitsByProjectTest < Draper::TestCase
     end
 
     it 'return commits by project data, start_date and max_commits count when commits_by_project is empty' do
-      cbp_decorator = CommitsByProject.new(accounts(:admin))
+      cbp_decorator = CommitsByProject.new(create(:admin))
       data = cbp_decorator.history
 
       data[:facts].must_equal []

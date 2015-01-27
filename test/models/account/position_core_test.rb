@@ -1,10 +1,6 @@
 require 'test_helper'
 
 class PositionCoreTest < ActiveSupport::TestCase
-  def setup
-    fixup
-  end
-
   it 'association callbacks on delegable' do
     accounts(:user).positions.count.must_equal 1
   end
@@ -39,7 +35,7 @@ class PositionCoreTest < ActiveSupport::TestCase
     Position.delete_all
 
     # ActivityFact.delete_all
-    admin = accounts(:admin)
+    admin = create(:admin)
 
     next_most_recent_commit = create(:project, name: :next_most_recent_commit)
     most_recent_commit = create(:project, name: :most_recent_commit)
@@ -47,20 +43,12 @@ class PositionCoreTest < ActiveSupport::TestCase
     oldest_commit = create(:project, name: :oldest_commit)
     no_commit_and_lower_character = create(:project, name: :no_commit_and_lower_character)
 
-    analysis_a = create(:analysis, project: next_most_recent_commit, logged_at: '20010-01-01')
-    analysis_b = create(:analysis, project: most_recent_commit, logged_at: '20010-01-01')
-    analysis_d = create(:analysis, project: oldest_commit, logged_at: '20010-01-01')
-
-    next_most_recent_commit.update_attribute(:best_analysis_id, analysis_a.id)
-    most_recent_commit.update_attribute(:best_analysis_id, analysis_b.id)
-    oldest_commit.update_attribute(:best_analysis_id, analysis_d.id)
-
     name = create(:name, name: :my_coding_nickname)
-    create(:name_fact, name: name, analysis_id: next_most_recent_commit.best_analysis_id,
+    create(:name_fact, name: name, analysis: next_most_recent_commit.best_analysis,
                        last_checkin: Time.now - 6.months)
-    create(:name_fact, name: name, analysis_id: most_recent_commit.best_analysis_id,
+    create(:name_fact, name: name, analysis: most_recent_commit.best_analysis,
                        last_checkin: Time.now - 1.months)
-    create(:name_fact, name: name, analysis_id: oldest_commit.best_analysis_id,
+    create(:name_fact, name: name, analysis: oldest_commit.best_analysis,
                        last_checkin: Time.now - 12.months)
 
     create(:position, account: admin, project: next_most_recent_commit, name: name)
@@ -138,8 +126,9 @@ class PositionCoreTest < ActiveSupport::TestCase
   end
 
   it 'logos returns a mapping of { logo_id: logo }' do
-    logos = accounts(:user).position_core.logos
-    logos.keys.first.must_equal 1
+    position = create(:position)
+    logos = position.account.position_core.logos
+    logos.keys.first.must_equal position.project.logo.id
     logos.values.first.class.must_equal Logo
   end
 

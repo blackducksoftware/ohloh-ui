@@ -1,9 +1,0 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-first:
-  id: 1
-  project_id: 2
-  rss_feed_id: 2
-another:
-  id: 2
-  project_id: 1
-  rss_feed_id: 1

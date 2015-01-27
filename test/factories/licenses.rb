@@ -6,6 +6,6 @@ FactoryGirl.define do
     abbreviation { Faker::Hacker.abbreviation }
     description { Faker::Lorem.sentence }
     locked false
-    before(:create) { |instance| instance.editor_account = Account.find(1) }
+    before(:create) { |instance| instance.editor_account = create(:admin) }
   end
 end

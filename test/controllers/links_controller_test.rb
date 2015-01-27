@@ -1,13 +1,16 @@
 require 'test_helper'
 
 describe 'LinksControllerTest' do
-  let(:project) { projects(:linux) }
-  let(:admin) { accounts(:admin) }
-  let(:user) { accounts(:user) }
+  let(:project) { create(:project) }
+  let(:admin) { create(:admin) }
+  let(:user) { create(:account) }
+
+  before do
+    @link_homepage = create(:link, project: project, link_category_id: Link::CATEGORIES[:Homepage])
+    @link_download = create(:link, project: project, link_category_id: Link::CATEGORIES[:Download])
+  end
 
   it 'after edit user is taken to index if they came from another page' do
-    fixup
-
     link = nil
 
     edit_as(admin) do
@@ -25,8 +28,6 @@ describe 'LinksControllerTest' do
   end
 
   it 'after save user is taken to index' do
-    fixup
-
     link = nil
 
     edit_as(admin) do
@@ -42,8 +43,6 @@ describe 'LinksControllerTest' do
 
   it 'non-manager index action displays alert' do
     skip 'TODO: Dependent on restrict_edits_to_managers'
-    fixup
-
     restrict_edits_to_managers project
 
     edit_as(user) do
@@ -55,8 +54,6 @@ describe 'LinksControllerTest' do
 
   it 'non-manager new action redirect to a login prompt' do
     skip 'TODO: Dependent on restrict_edits_to_managers'
-    fixup
-
     restrict_edits_to_managers project
 
     edit_as(user) do
@@ -68,8 +65,6 @@ describe 'LinksControllerTest' do
 
   it 'non-manager edit action redirect to a login prompt' do
     skip 'TODO: Dependent on restrict_edits_to_managers'
-    fixup
-
     link = nil
 
     edit_as(admin) do
@@ -94,8 +89,6 @@ describe 'LinksControllerTest' do
     describe 'new' do
       it 'must not be shown if the link already exists' do
         as(admin) do
-          project.links.first.link_category_id.must_equal Link::CATEGORIES[:Homepage]
-
           get :new, project_id: project.url_name
           assigns(:categories)[:Homepage].must_be_nil
         end
@@ -103,6 +96,7 @@ describe 'LinksControllerTest' do
 
       it 'must be shown if link does not exist' do
         as(admin) do
+          link.editor_account = admin
           link.destroy
           get :new, project_id: project.url_name
           assigns(:categories)[:Homepage].must_equal Link::CATEGORIES[:Homepage]
@@ -111,6 +105,7 @@ describe 'LinksControllerTest' do
 
       it 'download link must not be shown if it already exists' do
         as(admin) do
+          link.editor_account = admin
           link.update!(title: 'Project Download page',
                        link_category_id: Link::CATEGORIES[:Download])
 
@@ -134,6 +129,7 @@ describe 'LinksControllerTest' do
 
       it 'must be shown if link does not exist' do
         as(admin) do
+          link.editor_account = admin
           link.destroy
 
           post :create, project_id: project.url_name,
@@ -145,6 +141,7 @@ describe 'LinksControllerTest' do
 
       it 'must be shown if link is being created' do
         as(admin) do
+          link.editor_account = admin
           link.destroy
 
           post :create, project_id: project.url_name,
@@ -171,6 +168,7 @@ describe 'LinksControllerTest' do
 
       it 'must be shown if does not exist and other link is being updated' do
         as(admin) do
+          link.editor_account = admin
           link.destroy
 
           put :update, id: other_link.id, project_id: project.url_name,
@@ -270,7 +268,7 @@ describe 'LinksControllerTest' do
   end
 
   it 'should_allow_same_url_in_two_categories' do
-    project =  projects(:google)
+    project = create(:project)
 
     link_to_be_deleted = create(:link, link_category_id: Link::CATEGORIES[:Homepage], project: project)
     create(:link, project: project, link_category_id: Link::CATEGORIES[:Download])
@@ -278,11 +276,18 @@ describe 'LinksControllerTest' do
     login_as(admin)
     delete :destroy, id: link_to_be_deleted.id, project_id: project.url_name
 
-    project.links.size.must_equal 2
+    project.links.size.must_equal 1
+  end
+
+  it 'should gracefully handle errors when trying to delete a link' do
+    link = create(:link, project: create(:project))
+    Link.any_instance.stubs(:destroy).returns false
+    delete :destroy, id: link.id, project_id: link.project.url_name
+    must_respond_with 302
   end
 
   it 'should_not_create_if_link_was_soft_deleted_already_in_a_link_category' do
-    project =  projects(:google)
+    project = create(:project)
 
     create(:link, project: project, link_category_id: Link::CATEGORIES[:Homepage])
 
