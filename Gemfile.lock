@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/activeadmin/activeadmin.git
-  revision: 95127afc924ddac6e1832d59f55f868c973257a7
+  revision: 54bede0558a99ab759f98f9b24e1b0144063a81e
   specs:
     activeadmin (1.0.0.pre)
       arbre (~> 1.0, >= 1.0.2)
@@ -8,7 +8,7 @@ GIT
       coffee-rails
       formtastic (~> 3.1)
       formtastic_i18n
-      inherited_resources (~> 1.6)
+      inherited_resources (~> 1.4, != 1.5.0)
       jquery-rails
       jquery-ui-rails (~> 5.0)
       kaminari (~> 0.15)
@@ -57,8 +57,8 @@ GEM
     aws-sdk-v1 (1.61.0)
       json (~> 1.4)
       nokogiri (>= 1.4.4)
-    bourbon (4.1.1)
-      sass (~> 3.3)
+    bourbon (3.2.3)
+      sass (~> 3.2)
       thor
     brakeman (2.6.3)
       erubis (~> 2.6)
@@ -139,11 +139,11 @@ GEM
       hpricot (~> 0.8.6)
       ruby_parser (>= 3.1.1)
     i18n (0.7.0)
-    inherited_resources (1.6.0)
-      actionpack (>= 3.2, < 5)
+    inherited_resources (1.5.1)
+      actionpack (>= 3.2, < 4.2)
       has_scope (~> 0.6.0.rc)
-      railties (>= 3.2, < 5)
-      responders
+      railties (>= 3.2, < 4.2)
+      responders (~> 1.0)
     jbuilder (2.2.6)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
@@ -153,7 +153,7 @@ GEM
     jquery-ui-rails (5.0.3)
       railties (>= 3.2.16)
     json (1.8.2)
-    kaminari (0.16.2)
+    kaminari (0.16.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     launchy (2.4.3)
@@ -217,7 +217,7 @@ GEM
       thor (>= 0.18.1, < 2.0)
     rainbow (2.0.0)
     rake (10.4.2)
-    ransack (1.6.3)
+    ransack (1.6.2)
       actionpack (>= 3.0)
       activerecord (>= 3.0)
       activesupport (>= 3.0)

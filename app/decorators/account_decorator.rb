@@ -65,8 +65,8 @@ class AccountDecorator < Draper::Decorator
     # column1 << [:reports, 'My Reports', account_reports_path(object)]
     # end
 
-    unclaimed_contribution = claim_core.unclaimed_persons_count > 0 && current_user_or_admin?
-    menus.second << [:unclaimed, h.t(:claim_contributions), h.account_unclaimed_committers_path] if unclaimed_contribution
+    unclaimed_contr = claim_core.unclaimed_persons_count > 0 && current_user_or_admin?
+    menus.second << [:unclaimed, h.t(:claim_contributions), h.account_unclaimed_committers_path] if unclaimed_contr
 
     menus
   end

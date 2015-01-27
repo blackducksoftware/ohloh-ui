@@ -23,16 +23,19 @@ class PageContextHelperTest < ActionView::TestCase
       nav_type: 'footer_nav'
     }
   end
+
   let(:project_menus) do
     { select_footer_nav: :project_summary,
       select_top_menu_nav: :select_projects,
       nav_type: 'footer_nav'
     }
   end
+
   let(:forum_menus) do
     { nav_type: 'footer_nav'
     }
   end
+
   let(:tool_menus) do
     { select_footer_nav: :account_summary,
       select_top_menu_nav: :select_tools,
