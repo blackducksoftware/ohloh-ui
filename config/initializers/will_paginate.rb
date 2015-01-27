@@ -4,6 +4,7 @@ module WillPaginate
       options[:renderer] ||= BootstrapPagination::Rails
       options[:previous_label] = '&larr;'
       options[:next_label] = '&rarr;'
+      options[:class] = 'bootstrap_pagination'
       super.try :html_safe
     end
   end
@@ -15,5 +16,9 @@ module BootstrapPagination
       ul_element = super
       tag(:div, ul_element, class: 'oh_pagination text-center')
     end
+    protected
+      def ul_class
+        @options[:class]
+      end
   end
 end
