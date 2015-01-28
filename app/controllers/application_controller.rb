@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include PageContextHelper
+
   helper AvatarHelper
   helper ButtonHelper
   helper BlogLinkHelper

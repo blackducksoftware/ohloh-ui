@@ -1,6 +1,6 @@
 #navbar-inner
   #nav-top-bar
-    %ul.new_main_menu
+    %ul.new_main_menu{ class: page_context[:select_top_menu_nav] }
       %li.menu_item.projects
         %a{ href: root_path }= t :projects
       %li.menu_item.people

@@ -13,8 +13,6 @@
   %body{ zoom: 1 }
     .container#page
       %header= render partial: 'layouts/partials/header'
-      #page-contents
-        .col-md-13{ id: generate_page_name }
-          = yield
+      = render partial: 'layouts/partials/page'
       .clear
       %footer= render partial: 'layouts/partials/footer'

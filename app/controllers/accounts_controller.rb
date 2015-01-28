@@ -1,4 +1,7 @@
 class AccountsController < ApplicationController
+  # NOTE: uncomment account_context while migrating account's show action
+  # before_action :account_context, only: [:show]
+
   def index
     @people = Person.find_claimed(page: params[:page])
     @cbp_map = PeopleDecorator.decorate(@people).commits_by_project_map
