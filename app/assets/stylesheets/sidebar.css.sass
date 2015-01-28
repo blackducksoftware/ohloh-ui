@@ -13,23 +13,27 @@
     :margin-left -3px
 
   .navbar-justify
-    :padding-top 2px
-    :padding-bottom 6px
-    :margin-top 8px
-    :margin-bottom 12px
+    :border-radius 0px
 
   .actions
     line-height: 0.5em
     .footer-nav
       &.nav-active
         @extend .nav-active
+        margin-left: 18px
+        padding-left: 0px
     .footer-nav
       &:hover
         @extend .nav-hover
+        margin-left: 18px
+        padding-left: 0px
       padding-left: 18px
-      margin-top: 0
-      margin-bottom: 0
+      border-top: -10px
     .footer-navbar, h4
+      :padding-top 2px
+      :padding-bottom 6px
+      :margin-top 8px
+      :margin-bottom 0px
       a
         &:hover
           text-decoration: none
@@ -57,6 +61,12 @@
           :background-position -568px -6px
           :margin-top -4px
       &.selected
-        @extend .navbar-justify, .nav-active
+        @extend .nav-active, .navbar-justify
+        margin-right: 20px
         &:hover
           @extend .nav-hover, .navbar-justify
+          margin-right: 20px
+      &.linked
+        &:hover
+          @extend .nav-hover, .navbar-justify
+          margin-right: 20px

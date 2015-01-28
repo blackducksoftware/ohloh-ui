@@ -33,7 +33,7 @@ class AccountDecorator < Draper::Decorator
 
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def sidebar
-    menus = [
+    [
       [
         [:account_summary,    h.t(:account_summary),      h.account_path(object)],
         [:stacks, object == h.current_user ? h.t(:my_stacks) : h.t(:stacks), h.account_stacks_path(object)],
@@ -54,25 +54,35 @@ class AccountDecorator < Draper::Decorator
         [:posts,              h.t(:post),                h.account_posts_path(object)],
         [:reviews,            h.t(:reviews),              h.account_reviews_path(object)]
       ]
-    ]
-
-    projects_count = projects.count
-    menus.first << [:managed_projects, h.t(:managed_projects), h.account_projects_path(object)] if projects_count > 0
-    menus.first.insert(1, [:settings, h.t(:settings), h.settings_account_path(object)]) if current_user_or_admin?
-
-    # TODO: account reports
-    # if object.reports.count > 0 && object == current_user
-    # column1 << [:reports, 'My Reports', account_reports_path(object)]
-    # end
-
-    unclaimed_contr = claim_core.unclaimed_persons_count > 0 && current_user_or_admin?
-    menus.second << [:unclaimed, h.t(:claim_contributions), h.account_unclaimed_committers_path] if unclaimed_contr
-
-    menus
+    ].tap do |menus|
+      append_project_menu(menus) if projects.exists?
+      append_setting_menu(menus) if current_user_or_admin?
+      append_report_menu(menus)
+      append_unclaimed_contribution_menu(menus) if claim_core.unclaimed_persons_count > 0 && current_user_or_admin?
+    end
   end
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   private
+
+  def append_project_menu(menus)
+    menus.first << [:managed_projects, h.t(:managed_projects), h.account_projects_path(object)] if projects.exists?
+  end
+
+  def append_setting_menu(menus)
+    menus.first.insert(1, [:settings, h.t(:settings), h.settings_account_path(object)]) if current_user_or_admin?
+  end
+
+  def append_unclaimed_contribution_menu(menus)
+    menus.second << [:unclaimed, h.t(:claim_contributions), h.account_unclaimed_committers_path]
+  end
+
+  def append_report_menu(_menus)
+    # TODO: account reports
+    # if object.reports.exists? && object == h.current_user
+    #   menus.first << [:reports, 'My Reports', account_reports_path(object)]
+    # end
+  end
 
   def current_user_or_admin?
     object.eql?(h.current_user) || h.current_user_is_admin?

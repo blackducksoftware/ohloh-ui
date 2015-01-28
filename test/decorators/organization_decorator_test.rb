@@ -5,7 +5,7 @@ class OrganizationDecoratorTest < Draper::TestCase
     Draper::ViewContext.clear!
   end
 
-  let(:linux) { organizations(:linux) }
+  let(:linux) { create(:organization, url_name: 'linux') }
   let(:sidebar) do
     [
       [

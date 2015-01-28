@@ -15,12 +15,7 @@ class ToolHelperTest < ActionView::TestCase
         [nil, 'Languages', nil, 'select'],
         ['All Languages', '/languages'],
         ['select...', ''],
-        ['C', '/languages.1'],
-        ['C++', '/languages.2'],
-        ['Java', '/languages.3'],
-        ['Javascript', '/languages.4'],
-        ['Python', '/languages.5'],
-        ['Ruby', '/languages.6']
+        ['C', '/languages.1']
       ]
     ]
   end
