@@ -3,7 +3,8 @@ require 'test_helper'
 
 class PostTest < ActiveSupport::TestCase
   before { create_must_and_wont_aliases(Post) }
-  let(:post) { posts(:pdi) }
+  let(:topic) { create(:topic) }
+  let(:post) { create(:post) }
 
   it 'a post without a body should not be able to save' do
     post.body = nil
@@ -23,21 +24,22 @@ class PostTest < ActiveSupport::TestCase
   end
 
   it 'posts should have an associated topic' do
-    topics(:pdi).posts.to_a.must_equal [posts(:pdi), posts(:pdi_reply), posts(:pdi_rebuttal)]
-  end
-
-  it 'a post should find its corresponding topic' do
-    post.topic.must_equal topics(:pdi)
+    topic = create(:topic_with_posts)
+    topic.posts[0].topic.must_equal topic
+    topic.posts[1].topic.must_equal topic
+    topic.posts[2].topic.must_equal topic
   end
 
   it 'gracefully handles weirdly encoded post bodies' do
-    posts(:pdi_reply).body = "* oprava chyby 33731\n* \xFAprava  podle Revize B anglick\xE9ho dokumentu\n"
-    posts(:pdi_reply).body.split("\n")
+    post.body = "* oprava chyby 33731\n* \xFAprava  podle Revize B anglick\xE9ho dokumentu\n"
+    post.body.split("\n")
       .must_equal ['* oprava chyby 33731', '* �prava  podle Revize B anglick�ho dokumentu']
   end
 
   it 'strip tags method removes ' do
-    post = Post.new(body: "<p>Bad Tags</b>\n")
+    post.body = "<p>Bad Tags</b>\n"
+    post.save
+    post.reload
     post.body.must_equal 'Bad Tags'
   end
 end

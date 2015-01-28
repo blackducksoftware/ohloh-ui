@@ -1,13 +1,9 @@
 %fieldset
   .control-group
     .controls
-      = find_and_preserve do
-        = f.text_area(:post, html: {rows: 8, style: 'width:95%'}) 
-        %p.error=flash[:bad_reply]["body"] if flash[:bad_reply]
+      = f.text_area(:body) 
+      %p.error=flash[:bad_reply]["body"] if flash[:bad_reply]
     .control-group
-      .controls
-        = render :partial => "shared/captcha"
-        %p.captcha-error-message=flash[:bad_reply]["captcha"] if flash[:bad_reply]
 
   .actions
     = submit_tag "Submit", class: 'btn btn-primary btn-small'

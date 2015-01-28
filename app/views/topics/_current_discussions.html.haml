@@ -12,7 +12,7 @@
   %tbody
     - @recent_topics.each do |topic|
       %tr
-        %td.first= link_to h(topic.title), forum_topic_path(topic.forum_id, topic.id)
+        %td.first= link_to h(topic.title), topic_path(topic)
         %td.center= topic.posts_count
         -if topic.posts.last
           %td= topic.posts.last.account.name

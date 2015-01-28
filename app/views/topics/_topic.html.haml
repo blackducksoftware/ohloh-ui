@@ -5,7 +5,7 @@
         - if topic.sticky?
           %span.soft Sticky:
         %span{class: "#{'strong' if topic.sticky?}" }
-          = link_to h(topic.title), forum_topic_path(@forum, topic), class: "entry-title", rel: "bookmark"
+          = link_to h(topic.title), topic_path(topic), class: "entry-title", rel: "bookmark"
         by
         = topic.account.name
     %td.center

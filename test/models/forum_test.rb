@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ForumTest < ActiveSupport::TestCase
   before { create_must_and_wont_aliases(Forum) }
-  let(:forum) { forums(:rails) }
+  let(:forum) { create(:forum) }
 
   it 'valid forum' do
     forum.must_be :valid?
@@ -28,12 +28,15 @@ class ForumTest < ActiveSupport::TestCase
   end
 
   it 'forum should have associated topic sorted by sticky and replied at desc' do
-    forum.topics.to_a.must_equal [topics(:pdi), topics(:sticky), topics(:il8n), topics(:ponies)]
+    forum = create(:forum_with_topics)
+    forum.topics.to_a.must_equal forum.topics.sort_by(&:replied_at).reverse
+    forum.topics.to_a.must_equal forum.topics.sort_by(&:sticky).reverse
   end
 
-  it 'forum should have associated posts through topic ordered by created at desc' do
-    forum.posts.to_a.must_equal [posts(:il8n), posts(:ponies), posts(:pdi_rebuttal),
-                                 posts(:pdi_reply), posts(:pdi), posts(:sticky)]
+  it 'forum should have associated posts ordered by created at desc' do
+    topic = create(:topic_with_posts)
+    forum = topic.forum
+    forum.posts.to_a.must_equal forum.posts.sort_by(&:created_at).reverse
   end
 
   it 'destroying a forum destroys its accompanying topics and posts' do

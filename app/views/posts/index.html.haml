@@ -1,2 +1,22 @@
-/ TODO: Implement layouts for post index views.
-/ This is a seperate page that requiers sortable and filterable by search functionality
+/TODO: Implement Search/Filer etc. for this page.
+- if @account
+  %h2 Posts
+  / Render search dingus refers to searchable plugin
+  / - render_search_dingus(nil, true, render_post_sorts)
+- else
+  %h1.margin_bottom_20
+    = link_to "Forums", forums_url
+    \:
+    Posts
+    / Render search dingus refers to searchable plugin
+  / - render_search_dingus(nil, true, render_post_sorts)
+  .clear_left &nbsp;
+
+- if @posts.any?
+  / = render :partial => 'searchables/post', :collection => @posts
+  = will_paginate @posts
+/ - elsif current_objects.query_parser.actual_query.nil?
+/   .no-posts
+/     No posts available to display.
+/ - elsif current_objects.total_entries == 0
+/   - no_search_match

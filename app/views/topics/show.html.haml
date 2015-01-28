@@ -1,18 +1,20 @@
 .span12
   %h1.margin_bottom_20
-    = link_to "Forums", forums_url
+    = link_to "Forums", forums_path
     \:
     = link_to @forum.name, forum_path(@forum)
 
-  - poster = @topic.posts.first.account
   %h2.float_left.no_margin_top{style: "max-width: 740px"}
     = @topic.title
   - if @topic.closed
-    %span.label.label-important.float_left{:style => "margin: 16px 0 0 10px;"}
+    %span.label.label-important.float_left{style: "margin: 16px 0 0 10px;"}
       closed
   .btn-group.float_right
     - if (current_user_is_admin? && !@topic.closed)
       = link_to "Close", topic_path(@topic, topic: {closed: "1"}), {method: :put, confirm: "Are you sure you want to close this topic?", class: "btn btn-mini", title: "Close topic '#{@topic.title}'" } 
+      
+      / TODO: Rewrite Move and Spam code
+
     / - if (current_user_is_admin?)
     /   = link_to "Move", move_dialog_topic_path(@topic), {:class => "btn btn-mini", :id => "move_link"}
     /   - content_for :javascript do
@@ -43,9 +45,9 @@
     - else
       = render partial: 'posts/reply'
 
-  - forum_topics = @topic.forum.topics
+  - collection_of_all_topics = @topic.forum.topics
   %ul.pager
-    %li.previous{class: "#{'disabled' unless forum_topics.index(@topic) > 0}" }
-      = link_to "&larr; Previous Topic", topic_path(forum_topics.at((forum_topics.index(@topic)-1)))
-    %li.next{class: "#{'disabled' unless (forum_topics.index(@topic)+1) < forum_topics.size()}" }
-      = link_to "Next Topic &rarr;", topic_path(forum_topics.at((forum_topics.index(@topic)+1)))
+    %li.previous
+      = link_to_unless collection_of_all_topics.index(@topic).zero?, '&larr; Previous Topic', previous_topic(collection_of_all_topics, @topic)
+    %li.next
+      = link_to_if next_topic?(collection_of_all_topics, @topic), 'Next Topic &rarr;', next_topic(collection_of_all_topics, @topic)

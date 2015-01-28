@@ -1,7 +1,8 @@
 class TopicsController < ApplicationController
+  include TopicsHelper
   before_action :session_required, only: [:new, :create]
   before_action :admin_session_required, only: [:edit, :update, :destroy]
-  before_action :find_forum_record, only: [:index, :new, :create, :edit]
+  before_action :find_forum_record, only: [:index, :new, :create]
   before_action :find_forum_and_topic_records, except: [:index, :new, :create]
 
   def index
@@ -33,9 +34,9 @@ class TopicsController < ApplicationController
   def update
     respond_to do |format|
       if @topic.update(topic_params)
-        format.html { redirect_to forum_topic_path(@forum, @topic), flash: { success: t('.success') } }
+        format.html { redirect_to topic_path(@topic), flash: { success: t('.success') } }
       else
-        format.html { redirect_to forum_topic_path(@forum, @topic), flash: { error: t('.error') } }
+        format.html { redirect_to topic_path(@topic), flash: { error: t('.error') } }
       end
     end
   end

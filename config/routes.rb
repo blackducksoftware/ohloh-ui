@@ -36,13 +36,13 @@ Rails.application.routes.draw do
       put 'update_privacy' => 'privacy#update', as: :account_privacy
     end
   end
-  
+
   resources :forums do
     resources :topics, shallow: true
-  end 
+  end
 
-  resources :topics do
-    resources :posts, shallow: true
+  resources :topics, except: [:index, :new, :create] do
+    resources :posts, except: [:new]
   end
 
   resources :posts, only: :index, as: 'all_posts'

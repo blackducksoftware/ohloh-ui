@@ -1,6 +1,6 @@
 %div{id: "post_#{post.id}"}
   .well{style: "#{current_user_is_admin? ? 'background: #D5E3E9;' : ''}"}
-    = find_and_preserve(strip_tags(post.body))
+    = strip_tags(post.body)
     .span3.float_right
       = avatar_img_for post.account, 32
       %a.avatar_name{href: account_path(post.account)}
