@@ -1,3 +1,6 @@
+require_relative 'lib/no_editor_account_error'
+require_relative 'lib/undo_error'
+
 module ActsAsEditable
   extend ActiveSupport::Concern
 

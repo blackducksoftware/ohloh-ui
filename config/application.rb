@@ -18,6 +18,3 @@ module OhlohUi
     config.autoload_paths << "#{Rails.root}/lib"
   end
 end
-
-Dir["#{Rails.root}/app/lib/acts_as_editable/*.rb"].each { |file| require file }
-Dir["#{Rails.root}/app/lib/acts_as_protected/*.rb"].each { |file| require file }
