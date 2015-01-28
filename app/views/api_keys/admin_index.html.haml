@@ -3,19 +3,19 @@
 
 %h3.float_left
   = @meta_title
-  %a.link_no_underline{title: t('.download_as_csv'), href: api_keys_path(format: :csv)}= t('api_keys.download_as_csv')
+  %a.link_no_underline{ title: t('.download_as_csv'), href: api_keys_path(format: :csv) }= t('api_keys.download_as_csv')
 
 .float_right
-  %form.form-inline{action: '', rel: 'sort_filter'}
+  %form.form-inline{ action: '', rel: 'sort_filter' }
     %fieldset
       .dingus-filter.float_left
-        %label.query{for: :query}= t(:search_filet_label)
+        %label.query{ for: :query }= t(:search_filet_label)
         = text_field_tag(:query, @query_term, autocomplete: 'off', class: 'query')
-        %button.btn{type: 'submit'}
+        %button.btn{ type: 'submit' }
           %i.icon-refresh!= '&nbsp;'
       .dingus-sort.float_right
         #sort_by
-          %label{for: 'form-field-select-3'}= t(:sort_by)
+          %label{ for: 'form-field-select-3' }= t(:sort_by)
           = select_tag(:sort, opts, class: 'chzn-select')
 .clear_both
 
@@ -25,6 +25,6 @@
     = will_paginate @api_keys
   - elsif !params[:query].blank?
     .alert.alert-info
-      %a.close{href: '#', 'data-dismiss' => 'alert'} x
+      %a.close{ href: '#', 'data-dismiss' => 'alert' } x
       %i.icon-info-sign!= '&nbsp;'
       = t(:no_matches)

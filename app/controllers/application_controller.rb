@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include PageContextHelper
+
   helper AvatarHelper
   helper ButtonHelper
   helper BlogLinkHelper
@@ -57,6 +59,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user_can_manage?
 
   def current_project
+    return @current_project if @current_project
     begin
       param = params[:project_id].presence || params[:id]
       @current_project ||= Project.from_param(param).first!

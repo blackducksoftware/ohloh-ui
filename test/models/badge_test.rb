@@ -50,6 +50,5 @@ class BadgeTest < ActiveSupport::TestCase
       badge.to_underscore.must_be_empty
       kudo_badge.to_underscore.must_equal 'kudo_rank'
     end
-
   end
 end

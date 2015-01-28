@@ -16,6 +16,5 @@ module OhlohUi
 
     config.autoload_paths << "#{Rails.root}/app/exceptions"
     config.autoload_paths << "#{Rails.root}/lib"
-    config.autoload_paths << "#{Rails.root}/app/models/acts_as_editable"
   end
 end

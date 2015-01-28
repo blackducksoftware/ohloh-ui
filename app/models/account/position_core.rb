@@ -16,16 +16,13 @@ class Account::PositionCore < OhDelegator::Base
   def ordered
     preloaded_positions.sort do |position_a, position_b|
       position_a_name_fact = name_facts["#{ position_a.project.best_analysis_id }_#{ position_a.name_id }"].try(:first)
-      position_b_name_fact = name_facts["#{ position_b.project.best_analysis_id }_#{ position_a.name_id }"].try(:first)
+      position_b_name_fact = name_facts["#{ position_b.project.best_analysis_id }_#{ position_b.name_id }"].try(:first)
 
-      if position_a_name_fact
-        position_a_name_fact <=> position_b_name_fact
-      elsif position_b_name_fact
-        1 # position_b is better.
-      else
-        # Both positions lack name_facts ... sort position alphabetically.
-        position_a.project.name.to_s <=> position_b.project.name.to_s
+      retval = 0
+      if position_a_name_fact && position_b_name_fact
+        retval = position_a_name_fact <=> position_b_name_fact
       end
+      (retval == 0) ? (position_a.project.name.to_s <=> position_b.project.name.to_s) : retval
     end
   end
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength

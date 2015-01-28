@@ -11,7 +11,7 @@
 %h4= t '.header', target: @parent.name
 
 .col-md-7
-  .well{style: 'margin-left:22px;'}
+  .well{ style: 'margin-left:22px;' }
     = form_for(@manage, url: parent_managers_path(@parent), html: { method: :post }) do |form|
       = render partial: 'form', locals: { form: form }
 

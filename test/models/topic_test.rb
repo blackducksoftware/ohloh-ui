@@ -2,46 +2,42 @@
 require 'test_helper'
 
 class TopicTest < ActiveSupport::TestCase
-  fixtures :forums, :accounts, :posts, :topics
+  before { create_must_and_wont_aliases(Topic) }
+  let(:admin) { create(:admin) }
+  let(:topic) { topics(:ponies) }
 
-  def setup
-    @admin = accounts(:admin)
-    @topic = topics(:ponies)
+  it 'create a valid topic' do
+    topic.must_be :valid?
+    topic.must :save
   end
 
-  test 'create a valid topic' do
-    assert @topic.valid?
-    assert @topic.save
+  it 'default value for hits should be zero' do
+    topic.must_be :valid?
+    topic.must :save
+    topic.hits.must_equal 0
   end
 
-  test 'default value for hits should be zero' do
-    assert @topic.valid?
-    assert @topic.save
-    assert_equal @topic.hits, 0
+  it 'default value for sticky should be zero' do
+    topic = create(:topic, account: create(:admin))
+    topic.sticky.must_equal 0
   end
 
-  test 'default value for sticky should be zero' do
-    assert @topic.valid?
-    assert @topic.save
-    assert @topic.sticky, 0
+  it 'default value for closed should be false' do
+    topic.must_be :valid?
+    topic.must :save
+    topic.wont_be :closed
   end
 
-  test 'default value for closed should be false' do
-    assert @topic.valid?
-    assert @topic.save
-    assert_not @topic.closed
+  it 'a topic should be associated with an account' do
+    accounts(:user).must_equal topic.account
   end
 
-  test 'a topic should be associated with an account' do
-    assert_equal @topic.account, accounts(:user)
+  it 'a topic should be associated with a forum' do
+    forums(:rails).must_equal topic.forum
   end
 
-  test 'a topic should be associated with a forum' do
-    assert_equal @topic.forum, forums(:rails)
-  end
-
-  test 'a topic should have associated posts ordered by created at desc' do
-    @topic = topics(:galactus)
-    assert_equal [posts(:galactus), posts(:silver_surfer)], @topic.posts.to_a
+  it 'a topic should have associated posts ordered by created at desc' do
+    topic = topics(:galactus)
+    topic.posts.to_a.must_equal [posts(:galactus), posts(:silver_surfer)]
   end
 end

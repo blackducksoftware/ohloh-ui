@@ -5,6 +5,7 @@ FactoryGirl.define do
     nice_name    { Faker::Lorem.word + rand(999_999).to_s }
     abbreviation { Faker::Hacker.abbreviation }
     description { Faker::Lorem.sentence }
-    before(:create) { |instance| instance.editor_account = Account.find(1) }
+    locked false
+    before(:create) { |instance| instance.editor_account = create(:admin) }
   end
 end

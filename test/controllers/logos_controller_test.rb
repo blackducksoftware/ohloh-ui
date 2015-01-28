@@ -3,8 +3,8 @@ require_relative '../test_helper.rb'
 class LogosControllerTest < ActionController::TestCase
   def setup
     ActionView::Base.any_instance.stubs(:has_permission?).returns('true')
-    @admin = accounts(:admin)
-    @user = accounts(:user)
+    @admin = create(:admin)
+    @user = create(:account)
   end
 
   it 'user has permissions to edit' do
@@ -28,7 +28,7 @@ class LogosControllerTest < ActionController::TestCase
 
   it 'upload logo for organization via URL' do
     login_as @admin
-    organization = organizations(:linux)
+    organization = create(:organization)
     Organization.any_instance.expects(:edit_authorized?).returns(true)
     post :create, organization_id: organization.id, logo: { url: 'https://www.openhub.net/images/clear.gif' }
     must_redirect_to new_organization_logos_path
@@ -64,7 +64,7 @@ class LogosControllerTest < ActionController::TestCase
   end
 
   it 'LogosController destroy resets to NilLogo' do
-    project = projects(:linux)
+    project = create(:project)
     login_as @admin
 
     delete :destroy, project_id: project.id
@@ -105,7 +105,7 @@ class LogosControllerTest < ActionController::TestCase
 
   it 'new shows flash if user has no permissions' do
     skip('TODO: manage')
-    Manage.create!(target: projects(:linux), account: accounts(:user))
+    Manage.create!(target: projects(:linux), account: create(:account))
     Permission.create!(project: projects(:linux), 'remainder' => true)
 
     login_as @user
@@ -116,7 +116,7 @@ class LogosControllerTest < ActionController::TestCase
   it 'create with logo id' do
     login_as @admin
     Project.any_instance.expects(:edit_authorized?).returns(true)
-    desired_new_logo_id = attachments(:random_logo).id
+    desired_new_logo_id = create(:attachment).id
     post :create, project_id: projects(:linux).id, logo_id: desired_new_logo_id
     must_redirect_to new_project_logos_path(projects(:linux).id)
     projects(:linux).reload
@@ -125,11 +125,11 @@ class LogosControllerTest < ActionController::TestCase
 
   it 'create requires permissions' do
     skip('TODO: manage')
-    Manage.create!(target: projects(:linux), account: accounts(:user))
+    Manage.create!(target: projects(:linux), account: create(:account))
     Permission.create!(project: projects(:linux), 'remainder' => true)
 
     login_as @user
-    desired_new_logo_id = attachments(:new_logo).id
+    desired_new_logo_id = create(:attachment).id
     assert_no_difference('projects(:linux).reload.logo_id') do
       post :create, project_id: projects(:linux).id, logo_id: desired_new_logo_id
     end

@@ -11,6 +11,7 @@ class Organization < ActiveRecord::Base
 
   acts_as_editable editable_attributes: [:name, :url_name, :org_type, :logo_id, :description, :homepage_url],
                    merge_within: 30.minutes
+  acts_as_protected
 
   def to_param
     url_name

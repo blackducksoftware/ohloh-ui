@@ -2,7 +2,7 @@ require_relative '../test_helper'
 
 class DomainBlacklistsControllerTest < ActionController::TestCase
   def setup
-    login_as accounts(:admin)
+    login_as create(:admin)
   end
 
   it 'index requires login' do
@@ -12,14 +12,14 @@ class DomainBlacklistsControllerTest < ActionController::TestCase
   end
 
   it 'index requires admin' do
-    login_as accounts(:user)
+    login_as create(:account)
     get :index
     must_respond_with :unauthorized
   end
 
   it 'index without domains has notice' do
     skip('TODO: layout_params')
-    login_as accounts(:admin)
+    login_as create(:admin)
     get :index
     assert_select 'div.alert', text: EncodedRegexp.new('No Domains Blacklisted')
   end
@@ -49,24 +49,24 @@ class DomainBlacklistsControllerTest < ActionController::TestCase
   end
 
   it 'posting the form with a new domain should create a new record' do
-    DomainBlacklist.count.must_equal 2
+    DomainBlacklist.count.must_equal 0
     post :create, domain_blacklist: { domain: 'mindpowerup.com' }
     assigns(:domain_blacklist).wont_be_nil
     assigns(:domain_blacklist).errors.count.must_equal 0
     flash[:success].must_equal 'Domain successfully added to blacklist'
-    DomainBlacklist.count.must_equal 3
+    DomainBlacklist.count.must_equal 1
     assert_redirected_to domain_blacklists_path
   end
 
   it 'posting the form with an existing domain fails' do
     bad_domain = 'cruddysite.com'
     DomainBlacklist.create(domain: bad_domain)
-    DomainBlacklist.count.must_equal 3
+    DomainBlacklist.count.must_equal 1
     post :create, domain_blacklist: { domain: bad_domain }
     assigns(:domain_blacklist).wont_be_nil
     assigns(:domain_blacklist).errors.count.must_equal 1
     flash[:error].must_equal 'Unable to add domain to blacklist'
-    DomainBlacklist.count.must_equal 3
+    DomainBlacklist.count.must_equal 1
     assert_redirected_to new_domain_blacklist_path
   end
 
@@ -124,14 +124,14 @@ class DomainBlacklistsControllerTest < ActionController::TestCase
     domain = DomainBlacklist.find_by_domain('bad_domain.com')
     delete :destroy, id: domain.id
     assert_redirected_to domain_blacklists_path
-    DomainBlacklist.count.must_equal 3
+    DomainBlacklist.count.must_equal 1
     flash[:notice].must_equal 'Blacklisted Domain successfully deleted'
   end
 
   it 'the sidebar should have domain blacklists selected' do
     skip('TODO: sidebar')
     create_two_blacklisted_domains
-    login_as accounts(:admin)
+    login_as create(:admin)
     get :index
     assert_select 'li', class: 'active' do
       assert_select 'a', href: 'domain_blacklists', text: 'Blacklist Domains'
@@ -141,6 +141,6 @@ class DomainBlacklistsControllerTest < ActionController::TestCase
   def create_two_blacklisted_domains
     DomainBlacklist.create(domain: 'bad_domain.com')
     DomainBlacklist.create(domain: 'spam_domain.com')
-    DomainBlacklist.count.must_equal 4
+    DomainBlacklist.count.must_equal 2
   end
 end

@@ -1,46 +1,44 @@
 require 'test_helper'
 
 class ForumTest < ActiveSupport::TestCase
-  fixtures :forums, :topics, :posts
-  def setup
-    @forum = forums(:rails)
+  before { create_must_and_wont_aliases(Forum) }
+  let(:forum) { forums(:rails) }
+
+  it 'valid forum' do
+    forum.must_be :valid?
+    forum.must :save
   end
 
-  test 'valid forum' do
-    assert @forum.valid?
-    assert @forum.save
+  it 'invalid forum without a name' do
+    forum.name = nil
+    forum.wont_be :valid?
+    forum.wont :save
   end
 
-  test 'invalid forum without a name' do
-    @forum.name = nil
-    assert_not @forum.valid?
-    assert_not @forum.save
+  it 'invalid forum without a numerical position' do
+    forum.position = 'foo bar'
+    forum.wont_be :valid?
+    forum.wont :save
   end
 
-  test 'invalid forum without a numerical position' do
-    @forum.position = 'foo bar'
-    assert_not @forum.valid?
-    assert_not @forum.save
-  end
-
-  test 'forum topics count and posts count are zero by default' do
+  it 'forum topics count and posts count are zero by default' do
     forum = Forum.create(name: 'Example Forum')
-    assert_equal 0, forum.posts_count
-    assert_equal 0, forum.topics_count
+    forum.posts_count.must_equal 0
+    forum.topics_count.must_equal 0
   end
 
-  test 'forum should have associated topic sorted by sticky and replied at desc' do
-    assert_equal [topics(:pdi), topics(:sticky), topics(:il8n), topics(:ponies)], @forum.topics.to_a
+  it 'forum should have associated topic sorted by sticky and replied at desc' do
+    forum.topics.to_a.must_equal [topics(:pdi), topics(:sticky), topics(:il8n), topics(:ponies)]
   end
 
-  test 'forum should have associated posts through topic ordered by created at desc' do
-    assert_equal [posts(:il8n), posts(:ponies), posts(:pdi_rebuttal),
-                  posts(:pdi_reply), posts(:pdi), posts(:sticky)], @forum.posts.to_a
+  it 'forum should have associated posts through topic ordered by created at desc' do
+    forum.posts.to_a.must_equal [posts(:il8n), posts(:ponies), posts(:pdi_rebuttal),
+                                 posts(:pdi_reply), posts(:pdi), posts(:sticky)]
   end
 
-  test 'destroying a forum destroys its accompanying topics and posts' do
-    @forum.destroy
-    assert_equal @forum.topics.count, 0
-    assert_equal @forum.posts.count, 0
+  it 'destroying a forum destroys its accompanying topics and posts' do
+    forum.destroy
+    forum.topics.count.must_equal 0
+    forum.posts.count.must_equal 0
   end
 end

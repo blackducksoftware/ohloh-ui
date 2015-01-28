@@ -3,7 +3,7 @@
 
 .project_content_title
   %h2.float_left
-    %a{href: settings_project_path(current_project)}= t :settings
+    %a{ href: settings_project_path(current_project) }= t :settings
     &#58; #{t('permissions.permissions')}
   -# render_project_analysis_timestamp
 
@@ -17,11 +17,11 @@
           .control-group
             %label.control-label= t 'permissions.show.settings_may_be_changed_by'
             .controls
-              %label.radio{style: 'padding-top: 7px;'}
+              %label.radio{ style: 'padding-top: 7px;' }
                 = f.radio_button :remainder, 'false', disabled: !current_user_can_manage?
                 = t 'permissions.show.everyone'
               %p.help-block= t 'permissions.show.anyone_can_edit_settings'
-              %label.radio{style: 'padding-top: 5px;'}
+              %label.radio{ style: 'padding-top: 5px;' }
                 = f.radio_button :remainder, 'true', disabled: !current_user_can_manage?
                 = t 'permissions.show.managers_only'
               %p.help-block

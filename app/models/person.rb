@@ -29,9 +29,9 @@ class Person < ActiveRecord::Base
 
   # FIXME: Move to analysis backend.
   def searchable_factor
-    return 0.0 if kudo_position.nil? || Person::Cached.count == 1
-    num = (Person::Cached.count - kudo_position).to_f
-    denum = (Person::Cached.count - 1).to_f
+    return 0.0 if kudo_position.nil? || Person.count == 1
+    num = (Person.count - kudo_position).to_f
+    denum = (Person.count - 1).to_f
 
     # unclaimed contributor tweak - demote them significantly
     num /= 10 unless account_id
@@ -42,7 +42,7 @@ class Person < ActiveRecord::Base
   class << self
     def find_claimed(opts = {})
       query, sort_by = opts.delete(:q), opts.delete(:sort_by)
-      opts[:total_entries] = Person::Cached.claimed_count if query.blank?
+      opts[:total_entries] = Person::Count.claimed if query.blank?
       opts = opts.reverse_merge(page: 1, per_page: 10)
 
       search_by_vector_or_scoped(query)
@@ -61,11 +61,6 @@ class Person < ActiveRecord::Base
                .references(:all)
 
       group_and_sort_by_kudo_positions_or_effective_name(people)
-    end
-
-    def count_unclaimed(query = nil, find_by = nil)
-      return Person::Cached.unclaimed_count if query.blank?
-      unclaimed_people(q: query, find_by: find_by).size
     end
 
     def rebuild_by_project_id(project_id)

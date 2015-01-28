@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  ActiveAdmin.routes(self)
   root 'home#index'
   resources :sessions, only: [:new, :create] do
     collection do
@@ -21,6 +22,13 @@ Rails.application.routes.draw do
     resources :api_keys, constraints: { format: :html }, except: :show
     resources :projects, only: [:index]
     resources :positions, only: [:index]
+    resources :stacks, only: [:index]
+    resources :widgets, only: [:index]
+    resources :kudos, only: [:index]
+    resources :edits, only: [:index]
+    resources :posts, only: [:index]
+    resources :reviews, only: [:index]
+
     member do
       get :settings
       get :languages
@@ -28,12 +36,6 @@ Rails.application.routes.draw do
       put 'update_privacy' => 'privacy#update', as: :account_privacy
     end
   end
-
-  # resources :forums do
-  #   resources :topics do
-  #     resources :posts, except: [:show, :index]
-  #   end
-  # end
   
   resources :forums do
     resources :topics, shallow: true
@@ -48,27 +50,50 @@ Rails.application.routes.draw do
 
   resources :projects, path: :p, only: [:show] do
     member do
+      get :users
+      get :map
       get :settings
+      get :estimated_cost
       get 'permissions'  => 'permissions#show',   as: :permissions
       put 'permissions'  => 'permissions#update', as: :update_permissions
       post 'rate/:score' => 'ratings#rate',       as: :rate
       post 'unrate'      => 'ratings#unrate',     as: :unrate
     end
+    collection do
+      get :compare
+    end
     resource :logos, only: [:new, :create, :destroy]
+    resources :links, except: :show
     resources :managers, only: [:index, :new, :create, :edit, :update] do
       member do
         post :approve
         post :reject
       end
     end
-    resources :reviews do
+    resources :rss_articles, only: :index
+    resources :widgets, only: :index
+    resources :similar_projects, only: :index
+    resources :reviews, only: :index do
+      collection { get :summary }
       resources :helpfuls, only: :create
+    end
+    resources :analyses, only: :index do
+      member do
+        get :languages_summary
+      end
+    end
+    resources :commits, only: :index do
+      collection { get :summary }
+    end
+    resources :contributors, only: :index do
+      collection { get :summary }
     end
   end
 
   resources :organizations, path: :orgs, only: [:show] do
     member do
       get :settings
+      get :projects
     end
     resource :logos, only: [:new, :create, :destroy]
     resources :managers, only: [:index, :new, :create, :edit, :update] do
@@ -77,11 +102,15 @@ Rails.application.routes.draw do
         post :reject
       end
     end
+    resources :widgets
   end
 
-  resources :projects
   resources :stacks, except: [:new, :edit]
-  resources :language, only: [:show]
+  resources :languages, only: [:show, :index] do
+    collection { get :compare }
+  end
+
+  resource :compare_repositories
 
   # The priority is based upon order of creation: first created -> highest
   # priority.

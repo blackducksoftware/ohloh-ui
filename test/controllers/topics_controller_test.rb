@@ -1,79 +1,75 @@
 require 'test_helper'
 
-class TopicsControllerTest < ActionController::TestCase
-  fixtures :accounts, :forums, :topics, :posts
-
-  def setup
-    @forum = forums(:rails)
-    @user = accounts(:user)
-    @admin = accounts(:admin)
-    @topic = topics(:ponies)
-  end
+describe TopicsController do
+  let(:forum) { forums(:rails) }
+  let(:user) { create(:account) }
+  let(:admin) { create(:admin) }
+  let(:topic) { topics(:ponies) }
 
   #-------------User with no account---------------
-  test 'index' do
-    get :index, forum_id: @forum.id
-    assert_redirected_to forum_path(@forum)
+  it 'index' do
+    get :index, forum_id: forum.id
+    must_redirect_to forum_path(forum)
   end
 
-  test 'new' do
-    get :new, forum_id: @forum.id
-    assert_response :unauthorized
+  it 'new' do
+    get :new, forum_id: forum.id
+    must_respond_with :unauthorized
   end
 
-  test 'create' do
+  it 'create' do
     assert_no_difference(['Topic.count', 'Post.count']) do
-      post :create, forum_id: @forum.id, topic: { title: 'Example Forum', posts_attributes:
-                                                [{ body: 'Post object that comes by default', account_id: @admin.id }] }
+      post :create, forum_id: forum.id, topic: { title: 'Example Forum', posts_attributes:
+                                                [{ body: 'Post object that comes by default', account_id: admin.id }] }
     end
   end
 
-  test 'show' do
-    get :show, forum_id: @forum.id, id: @topic.id
-    assert_response :success
+  it 'show' do
+    get :show, forum_id: forum.id, id: topic.id
+    must_respond_with :success
   end
 
-  test 'edit' do
-    get :edit, forum_id: @forum.id, id: @topic.id
-    assert_response :unauthorized
+  it 'edit' do
+    get :edit, forum_id: forum.id, id: topic.id
+    must_respond_with :unauthorized
   end
 
-  test 'update' do
+  it 'update' do
     assert_no_difference('Topic.count', 'Post.count') do
-      put :update, forum_id: @forum.id, id: @topic.id, topic: { title: 'Example Forum' }
+      put :update, forum_id: forum.id, id: topic.id, topic: { title: 'Example Forum' }
     end
   end
 
-  test 'destroy' do
+  it 'destroy' do
     assert_no_difference('Topic.count') do
-      delete :destroy, forum_id: @forum.id, id: @topic.id
+      delete :destroy, forum_id: forum.id, id: topic.id
     end
   end
 
   #--------------Basic User ----------------------
-  test 'user index' do
-    login_as @user
-    get :index, forum_id: @forum.id
-    assert_redirected_to forum_path(@forum)
+  it 'user index' do
+    login_as user
+    get :index, forum_id: forum.id
+    must_redirect_to forum_path(forum)
   end
 
-  test 'user new' do
-    login_as @user
-    get :new, forum_id: @forum.id
-    assert_response :success
+  it 'user new' do
+    login_as user
+    get :new, forum_id: forum.id
+    must_respond_with :success
     assert_select 'input#topic_title'
     assert_select 'textarea#topic_posts_attributes_0_body'
     css_select 'div.rc-anchor.rc-anchor-standard'
     assert_select 'input[type=submit][value=Post Topic]'
   end
 
-  test 'user create a topic and an accompanying post' do
-    login_as(@user)
+  it 'user create a topic and an accompanying post' do
+    login_as(user)
     assert_difference(['Topic.count', 'Post.count']) do
-      post :create, forum_id: @forum.id, topic: { title: 'Example Forum', posts_attributes:
+      post :create, forum_id: forum.id, topic: { title: 'Example Forum', posts_attributes:
                                                 [{ body: 'Post object that comes by default' }] }
     end
-    assert_redirected_to forum_path(@forum.id)
+    must_redirect_to forum_path(forum.id)
   end
 
   #TODO: make a failing create test
@@ -97,56 +93,56 @@ class TopicsControllerTest < ActionController::TestCase
     end
   end
 
-  test 'user show' do
-    login_as @user
-    get :show, forum_id: @forum.id, id: @topic.id
-    assert_response :success
+  it 'user show' do
+    login_as user
+    get :show, forum_id: forum.id, id: topic.id
+    must_respond_with :success
   end
 
-  test 'user edit' do
-    login_as @user
-    get :edit, forum_id: @forum.id, id: @topic.id
-    assert_response :unauthorized
+  it 'user edit' do
+    login_as user
+    get :edit, forum_id: forum.id, id: topic.id
+    must_respond_with :unauthorized
   end
 
-  test 'user update' do
-    login_as @user
-    put :update, forum_id: @forum.id, id: @topic.id, topic: { title: 'Changed title for test purposes' }
-    @topic.reload
-    assert_equal 'ponies', @topic.title
+  it 'user update' do
+    login_as user
+    put :update, id: topic.id, forum_id: forum.id, topic: { title: 'Changed title for test purposes' }
+    topic.reload
+    topic.title.must_equal 'ponies'
   end
 
-  test 'user destroy' do
-    login_as @user
+  it 'user destroy' do
+    login_as user
     assert_no_difference('Topic.count') do
-      delete :destroy, forum_id: @forum.id, id: @topic.id
+      delete :destroy, forum_id: forum.id, id: topic.id
     end
   end
 
   #-----------Admin Account------------------------
-  test 'admin index' do
-    login_as @admin
-    get :index, forum_id: @forum.id
-    assert_redirected_to forum_path(@forum)
+  it 'admin index' do
+    login_as admin
+    get :index, forum_id: forum.id
+    must_redirect_to forum_path(forum)
   end
 
-  test 'admin new' do
-    login_as(@admin)
-    get :new, forum_id: @forum.id
-    assert_response :success
+  it 'admin new' do
+    login_as(admin)
+    get :new, forum_id: forum.id
+    must_respond_with :success
     assert_select 'input#topic_title'
     assert_select 'textarea#topic_posts_attributes_0_body'
     css_select 'div.rc-anchor.rc-anchor-standard'
     assert_select 'input[type=submit][value=Post Topic]'
   end
 
-  test 'admin create a topic and accompanying post' do
-    login_as(@admin)
+  it 'admin create a topic and accompanying post' do
+    login_as(admin)
     assert_difference(['Topic.count', 'Post.count']) do
-      post :create, forum_id: @forum.id, topic: { title: 'Example Topic', posts_attributes:
+      post :create, forum_id: forum.id, topic: { title: 'Example Topic', posts_attributes:
                                                 [{ body: 'Post object that comes by default' }] }
     end
-    assert_redirected_to forum_path(@forum.id)
+    must_redirect_to forum_path(forum.id)
   end
 
   test 'admin creates a topic/post with valid recaptcha' do
@@ -168,61 +164,62 @@ class TopicsControllerTest < ActionController::TestCase
     end
   end
 
-  test 'admin show' do
-    login_as @admin
-    get :show, forum_id: @forum.id, id: @topic.id
-    assert_response :success
+
+  it 'admin show' do
+    login_as admin
+    get :show, forum_id: forum.id, id: topic.id
+    must_respond_with :success
   end
 
-  test 'admin edit' do
-    login_as(@admin)
-    get :edit, forum_id: @forum.id, id: @topic.id
-    assert_response :success
+  it 'admin edit' do
+    login_as(admin)
+    get :edit, forum_id: forum.id, id: topic.id
+    must_respond_with :success
   end
 
-  test 'admin update' do
-    login_as(@admin)
-    put :update, forum_id: @forum.id, id: @topic.id, topic: { title: 'Changed title for test purposes' }
-    @topic.reload
-    assert_equal 'Changed title for test purposes', @topic.title
+  it 'admin update' do
+    login_as(admin)
+    put :update, forum_id: forum.id, id: topic.id, topic: { title: 'Changed title for test purposes' }
+    topic.reload
+    topic.title.must_equal 'Changed title for test purposes'
   end
 
-  test 'admin destroy' do
-    login_as @admin
+  it 'admin destroy' do
+    login_as admin
     assert_difference('Topic.count', -1) do
-      delete :destroy, forum_id: @forum.id, id: @topic.id
+      delete :destroy, forum_id: forum.id, id: topic.id
     end
-    assert_redirected_to forums_path
+    must_redirect_to forums_path
   end
 
-  test 'admin destryoing a topic deletes the associated posts' do
-    login_as @admin
-    @topic.destroy
-    assert_equal @topic.posts_count, 0
+  it 'admin destryoing a topic deletes the associated posts' do
+    login_as admin
+    topic.destroy
+    topic.posts_count.must_equal 0
   end
 
-  test 'admin can close a topic' do
-    login_as @admin
-    put :update, forum_id: @forum.id, id: @topic.id, topic: { closed: true }
-    @topic.reload
-    assert @topic.closed
+  it 'admin can close a topic' do
+    login_as admin
+    put :update, forum_id: forum.id, id: topic.id, topic: { closed: true }
+    topic.reload
+    topic.closed.must_equal true
   end
 
-  test 'admin can reopen a topic' do
-    login_as @admin
-    @topic.closed = true
-    @topic.reload
-    put :update, forum_id: @forum.id, id: @topic.id, topic: { closed: false }
-    assert_not @topic.closed
+  it 'admin can reopen a topic' do
+    login_as admin
+    topic.closed = true
+    topic.reload
+    put :update, forum_id: forum.id, id: topic.id, topic: { closed: false }
+    topic.closed.must_equal false
   end
 
-  test 'admin can move a topic' do
-    forum = forums(:ponies)
-    login_as @admin
-    put :update, forum_id: @forum.id, id: @topic.id, topic: { forum_id: forum.id }
-    @topic.reload
-    assert_equal @topic.forum_id, forum.id
-    assert_equal forum.topics.first.title, @topic.title
-    assert_equal forum.topics.count, 1
+  it 'admin can move a topic' do
+    new_forum = forums(:ponies)
+    login_as admin
+    put :update, forum_id: forum.id, id: topic.id, topic: { forum_id: new_forum.id }
+    topic.reload
+    new_forum.id.must_equal topic.forum_id
+    topic.title.must_equal new_forum.topics.first.title
+    new_forum.topics.count.must_equal 1
   end
 end

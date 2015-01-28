@@ -16,7 +16,7 @@ class PermissionsControllerTest < ActionController::TestCase
   end
 
   it 'admins should not see permissions alert' do
-    login_as accounts(:admin)
+    login_as create(:admin)
     get :show, id: @project
     must_respond_with :ok
     response.body.wont_include('flash-msg')
@@ -32,7 +32,7 @@ class PermissionsControllerTest < ActionController::TestCase
   end
 
   it 'managers pending approval should see permissions alert' do
-    Manage.create(target: @project, account_id: accounts(:admin).id) # auto-approved
+    Manage.create(target: @project, account_id: create(:admin).id) # auto-approved
     Manage.create(target: @project, account_id: accounts(:user).id) # pending approval
     login_as accounts(:user)
     get :show, id: @project
@@ -43,7 +43,7 @@ class PermissionsControllerTest < ActionController::TestCase
 
   it 'approved managers should not see permissions alert' do
     login_as accounts(:user)
-    Manage.create(target: @project, account_id: accounts(:user).id, approved_by: accounts(:admin).id)
+    Manage.create(target: @project, account_id: accounts(:user).id, approved_by: create(:admin).id)
     get :show, id: @project
     must_respond_with :ok
     response.body.wont_include('flash-msg')
@@ -64,7 +64,7 @@ class PermissionsControllerTest < ActionController::TestCase
   end
 
   it 'admins should be able to update the permissions' do
-    login_as accounts(:admin)
+    login_as create(:admin)
     put :update, id: @project, permission: { remainder: true }
     @permissions.reload
     must_respond_with :ok
@@ -78,7 +78,7 @@ class PermissionsControllerTest < ActionController::TestCase
   end
 
   it 'managers pending approval should 401' do
-    Manage.create(target: @project, account_id: accounts(:admin).id) # auto-approved
+    Manage.create(target: @project, account_id: create(:admin).id) # auto-approved
     Manage.create(target: @project, account_id: accounts(:user).id) # pending approval
     login_as accounts(:user)
     put :update, id: @project, permission: { remainder: true }
@@ -87,7 +87,7 @@ class PermissionsControllerTest < ActionController::TestCase
 
   it 'approved managers should be able to update the permissions' do
     login_as accounts(:user)
-    Manage.create(target: @project, account_id: accounts(:user).id, approved_by: accounts(:admin).id)
+    Manage.create(target: @project, account_id: accounts(:user).id, approved_by: create(:admin).id)
     put :update, id: @project, permission: { remainder: true }
     @permissions.reload
     must_respond_with :ok
@@ -96,7 +96,7 @@ class PermissionsControllerTest < ActionController::TestCase
 
   it 'save failures should 422' do
     login_as accounts(:user)
-    Manage.create(target: @project, account_id: accounts(:user).id, approved_by: accounts(:admin).id)
+    Manage.create(target: @project, account_id: accounts(:user).id, approved_by: create(:admin).id)
     Permission.any_instance.expects(:update).returns false
     put :update, id: @project, permission: { remainder: true }
     @permissions.reload

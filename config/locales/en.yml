@@ -6,6 +6,7 @@ en:
   new: 'New'
   is_invalid: is invalid
   cant_be_blank: can't be blank
+  created: 'Created'
   must_accept_terms: 'You must accept the terms of use.'
   four_oh_four: 'Not Found'
   must_be_logged_in: 'You must be signed in to perform that action.'
@@ -26,18 +27,74 @@ en:
   tools: 'Tools'
   code: 'Code'
   blog: 'Blog'
-  forums: 'Forums'
+  forum: 'Forums'
   terms: 'Terms'
   privacy: 'Privacy'
   managers_link_name: 'Managers'
   learn_more: "Learn More&hellip;"
   project_page_title: "The %{project_name} Open Source Project on Open Hub"
+  edit_permission_failed: "You are not authorized to edit this #{klass}"
   expander:
     more: "[More]"
     less: "[Less]"
   manage:
     maximum_exceeded: "You may manage up to %{max_projects} projects at a time. Delete one before adding another."
     already_manager: ": You are already managing this or have a pending application to become one."
+  title: 'Title'
+  category: 'Category'
+  are_you_sure: 'Are you sure?'
+  new_view:
+    title: 'New %{type} Page'
+  edit_view:
+    title: 'Edit %{type} Page'
+  index_view:
+    title: '%{type} Page'
+  edits_pattern: "Changed link %{id}'s %{edit_key} to be '%{value}'"
+  new_model: 'New %{model}'
+  save_model: 'Save %{model}'
+  remove_model: 'Remove %{model}'
+  help:
+    max_characters: 'max of %{number} characters'
+  account_summary: 'Account Summary'
+  my_stacks: 'My Stacks'
+  stacks: 'Stacks'
+  contributions: 'Contributions'
+  languages: 'Languages'
+  recognition: 'Recognition'
+  kudos: 'Kudos'
+  usage: 'Usage'
+  website_edits: 'Website Edits'
+  post: 'Posts'
+  reviews: 'Reviews'
+  managed_projects: 'Managed Projects'
+  claim_contributions: 'Claim Contributions'
+  project_summary: 'Project Summary'
+  news: 'News'
+  sharing_widgets: 'Sharing Widgets'
+  related_projects: 'Related Projects'
+  code_data: 'Code Data'
+  cost_estimates: 'Cost Estimates'
+  scm_data: 'SCM Data'
+  commits: 'Commits'
+  contributors: 'Contributors'
+  community_data: 'Community Data'
+  users: 'Users'
+  ratings_reviews: 'Ratings & Reviews'
+  user_contributors: 'User & Contributor Locations'
+  organization_summary: 'Organization Summary'
+  widgets: 'Widgets'
+  project_portfolio: 'Project Portfolio'
+  claimed_projects: 'Claimed Projects'
+  topic: 'Topics'
+  new_topic: 'New Topic'
+  recent_posts: 'Recent Posts'
+  unanswered_posts: 'Unanswered Posts'
+  admin: 'Admin'
+  new_forum: 'New Forum'
+  compare_projects: 'Compare Projects'
+  compare_languages: 'Compare Languages'
+  compare_repositories: 'Compare Repositories'
+
   domain_blacklists:
     index:
       notice: 'No Domains Blacklisted'
@@ -235,3 +292,8 @@ en:
               invalid: 'Check your current password and try again.'
             organization_name:
               invalid: 'should start with a letter and can include only letters, numbers, _ and -'
+        link:
+          attributes:
+            url:
+              taken: 'has already been submitted'
+              invalid_url: 'Invalid Link URL'

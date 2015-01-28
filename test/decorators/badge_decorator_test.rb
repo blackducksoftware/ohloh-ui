@@ -22,6 +22,5 @@ class BadgeDecoratorTest < Draper::TestCase
       kudo_badge.pips_url.wont_be_empty
       kudo_badge.pips_url.must_equal 'http://test.host/images/badges/pips_01.png'
     end
-
   end
 end

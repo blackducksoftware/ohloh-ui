@@ -1,5 +1,6 @@
 class Account::Encrypter
-  def before_create(account)
+  def before_validation(account)
+    return unless account.new_record?
     assign_activation_code_to_random_hash(account)
     encrypt_salt(account)
   end

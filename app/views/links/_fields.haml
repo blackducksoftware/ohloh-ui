@@ -1,0 +1,40 @@
+%fieldset
+  - if @category_name
+    %h2
+      = @category_name
+      = t('links.title')
+  .control-group
+    %label.control-label.required
+      = t('title')
+    .controls
+      = f.text_field :title, class: 'col-md-4'
+      -# - error_tag @link, :title
+      %p.help-block= t('help.max_characters', number: 60)
+
+  .control-group
+    %label.control-label.required= t('links.title')
+    - read_only = (@link.new_record? ? false : true)
+    - title_text = (@link.new_record? ? '' : t('.url_edit'))
+    .controls
+      = f.text_field :url, class: 'col-md-4', readonly: read_only, rel: 'tooltip', title: title_text
+      -# - error_tag @link, :url
+      %p.help-block
+        = t('.full_url')
+
+    - if @category_name
+      = f.hidden_field :link_category_id
+    - else
+      .control-group
+        %label.control-label.required= t('category')
+        .controls
+          = f.select :link_category_id, options_for_select(@categories)
+          -# - error_tag @link, :link_category_id
+
+
+  .actions
+    %input.btn.btn-xs.btn-primary{ type: 'submit',
+      value: @link.new_record? ? t('save_model', model: t('links.title')) : t('save_changes') }
+    -# - unless @link.new_record?
+      = link_to bootstrap_icon('glyphicon glyphicon-trash', t('remove_model', model: t('links.title'))),
+        project_link_path(@project, @link), confirm: t('are_you_sure')
+        method: :delete, class: 'btn btn-xs btn-danger'

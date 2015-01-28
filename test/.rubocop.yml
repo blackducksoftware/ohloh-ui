@@ -5,3 +5,9 @@ Metrics/AbcSize:
 
 ClassLength:
   Enabled: false
+
+AbcSize:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
