@@ -102,7 +102,13 @@ Rails.application.routes.draw do
     resources :widgets
   end
 
-  resources :stacks, except: [:new, :edit]
+  resources :stacks, only: [:new, :edit] do
+    resources :stack_ignores, only: [:create] do
+      collection do
+        delete :delete_all
+      end
+    end
+  end
   resources :languages, only: [:show, :index] do
     collection { get :compare }
   end

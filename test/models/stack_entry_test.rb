@@ -32,4 +32,10 @@ class StackEntryTest < ActiveSupport::TestCase
     stack_entry2.destroy
     stack.reload.project_count.must_equal 0
   end
+
+  it '#clean_up_ignores will clear any previous ignores on create' do
+    stack_ignore = create(:stack_ignore)
+    create(:stack_entry, project: stack_ignore.project, stack: stack_ignore.stack)
+    -> { StackIgnore.find(stack_ignore.id) }.must_raise ActiveRecord::RecordNotFound
+  end
 end

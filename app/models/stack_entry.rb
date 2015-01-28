@@ -15,6 +15,7 @@ class StackEntry < ActiveRecord::Base
   validates :note, length: { within: 0..MAX_NOTE_LENGTH }, allow_nil: true
 
   after_create :update_counters
+  after_create :clean_up_ignores
 
   def destroy
     update_attributes(deleted_at: Time.now.utc)
@@ -49,5 +50,11 @@ class StackEntry < ActiveRecord::Base
         .and(entries1[:project_id].not_eq(entries2[:project_id]))
       ).join_sources)
     end
+  end
+
+  private
+
+  def clean_up_ignores
+    stack.stack_ignores.for_project(project).destroy_all
   end
 end
