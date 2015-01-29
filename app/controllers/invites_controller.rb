@@ -1,5 +1,4 @@
 class InvitesController < ApplicationController
-
   private
 
   def invite_params

@@ -1,7 +1,7 @@
 en:
   invites:
     thank_you_message: 'Thank you for inviting %{name} to join Open Hub. An email has been sent to %{email}.'
-    already_invited_to_claim: 'This person has already been invited to claim this contribution.'
-    already_invited_to_join: 'This person has already been invited to join the Black Duck Open Hub.'
+    invited_to_claim: 'This person has already been invited to claim this contribution.'
+    invited_to_join: 'This person has already been invited to join the Black Duck Open Hub.'
     email_sent_exceeded: 'Open Hub has already sent the maximum number of %{name} (%{count}) to this user.'
     account_sent_exceeded: "You've already sent the maximum number of %{name} (%{count}) you're allowed."
