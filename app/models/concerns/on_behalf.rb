@@ -1,0 +1,36 @@
+module OnBehalf
+  extend ActiveSupport::Concern
+
+  MAX_RECEIVED = 5
+  MAX_SENT = 50
+
+  included do
+    belongs_to :invitor, :class_name => 'Account'
+    belongs_to :invitee, :class_name => 'Account'
+
+    validates :invitor, presence: true
+    validates :invitee_email, length: { in: 3..100 }, email_format: true, allow_blank: true
+    validate :email_threshold
+
+    before_save :make_invitee
+    before_save :make_activation_code
+  end
+
+  def make_invitee
+    invitee = Account.find_by_email(invitee_email) # okay to be nil
+  end
+
+  def make_activation_code
+    activation_code ||= ActivationCode::generate
+  end
+
+  def email_threshold
+    invites_sent_to_this_email = self.class.where(invitee_email: self.invitee_email).count
+    err_msg = I18n.t('invites.email_sent_exceeded', name: self.class.name.pluralize.downcase, count: MAX_RECEIVED)
+    errors.add(:send_limit, err_msg) if invites_sent_to_this_email >= MAX_RECEIVED
+
+    invites_sent_from_this_account = self.class.where(invitor_id: self.invitor_id).count
+    err_msg = I18n.t('invites.account_sent_exceeded', name: self.class.name.pluralize.downcase, count: MAX_SENT)
+    errors.add(:send_limit, err_msg) if invites_sent_from_this_account >= MAX_SENT
+  end
+end
