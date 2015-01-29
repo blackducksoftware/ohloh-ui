@@ -1,0 +1,6 @@
+- if @projects.size.zero?
+  %p.col-md-2= t('.no_projects')
+- else
+  - @projects.each do |project|
+    = link_to project.icon(:med, width: 40), project_path(project), border: 0
+  = link_to t('.more'), account_stacks_path(@account) if @account.project_core.stacked_count > 15

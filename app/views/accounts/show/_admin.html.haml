@@ -1,0 +1,19 @@
+#admin_actions_opened.well.hidden
+  %h6= t('.email')
+  %p= link_to @account.email, 'mailto:#{@account.email}'
+  %h6= t('.activity')
+  %p.ohloh_activity
+    = render partial: 'accounts/show/action_link' locals: {action: 'edits', css:'nomargin'}
+    = render partial: 'accounts/show/action_link' locals: {action: 'posts', css:'nomargin'}
+    = render partial: 'accounts/show/action_link' locals: {action: 'reviews'}
+
+  %h6= t('.actions_title')
+  %p
+  %p
+    = link_to t('.spammer.link'), make_spammer_account_path(@account), method: :post, confirm: t('.spammer.confirm', name: @account.name), class: "btn btn-warning btn-small", title: t('.spammer.title', @account.name)
+    &nbsp; &nbsp;
+    = link_to t('.delete.link'), delete_account_path(@account), method: :post, confirm: t('.delete.confirm', name: @account.name), class: "btn btn-danger btn-small", title: t('.delete.title', @account.name)
+    = link_to t('.panel.close'), 'javascript:void(0);', id: 'close_admin_panel'
+
+#admin_actions_closed.well
+  = link_to t('.panel.open'), 'javascript:void(0);', id: 'open_admin_panel'

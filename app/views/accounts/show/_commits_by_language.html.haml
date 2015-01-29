@@ -1,0 +1,25 @@
+:ruby
+  in_languages = action_name == 'languages'
+  scope = in_languages ? 'full' : 'regular'
+  data_url = language_experience_account_url(@account, scope: scope)
+
+.margin_top_10
+  - if in_languages
+    %h2.nomargin.col-md-2= t('.title')
+    .pull-right
+      = render partial: 'accounts/show/vita_timestamp', locals: { best_vita: @account.best_vita }
+    .clearfix
+    .pull-right#sort_by
+      %select.chzn-select.language_category#streamgraph_category
+        %option{ value: '#' }= t('.sort_option.hash')
+        %option{ value: '2' }= t('.sort_option.two')
+        %option{ value: '1' }= t('.sort_option.one')
+        %option{ value: '0' }= t('.sort_option.zero')
+    .clearfix
+  - else
+    .pull-left
+      %h4= link_to t('.link'), languages_account_path(@account)
+    .pull-left.soft.graphs_date_range= account_graph_time_span
+    .clearfix
+
+= streamgraph_chart(data_url, scope)

@@ -1,0 +1,8 @@
+.pull-left
+  %h4= link_to t('.link'), account_positions_path(@account)
+.pull-left.soft.graphs_date_range
+  = account_graph_time_span
+.clear
+
+%div{style: 'height:350px;'}
+  = chart_interactive_tag commits_history_account_url(@account), 950, 300, nil, "project_contributions", true

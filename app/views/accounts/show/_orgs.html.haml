@@ -1,0 +1,8 @@
+= pluralize(size, "organization", "organizations")
+%span.baseball_right_sm
+  = t('.including')
+  %br
+  - if links
+    = orgs.first(3).map(&:names).to_sentence
+  - else
+    = orgs.first(3).map { |org| link_to org, h.organization_path(org) }.to_sentence

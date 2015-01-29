@@ -31,7 +31,7 @@ class AccountDecorator < Draper::Decorator
     sorted_cbl.sort_by { |_k, v| v[:commits] }.reverse
   end
 
-  # TODO: Replaces account_vita_status_message in application_helper
+  # NOTE: Replaces account_vita_status_message in application_helper
   def vita_status_message
     message =
     if has_claimed_positions? && best_vita.nil?
@@ -44,5 +44,21 @@ class AccountDecorator < Draper::Decorator
 
     return message unless block_given?
     message.blank? ? yield : h.haml_tag(:p) { h.concat(message) }
+  end
+
+  # NOTE: Replaces twitter_card_description in application_helper
+  def twitter_card
+    name_fact = best_vita && best_vita.vita_fact
+    content = ""
+    if name_fact
+      content += markup.first_line.concat(", ") if markup.first_line
+      content += "#{pluralize(name_fact.commits, 'total commit')} to #{pluralize(positions.count, 'project')}".concat(", ")
+      content += "most experienced in #{most_experienced_language.nice_name}".concat(", ") if most_experienced_language
+      content += "earned " + badges.collect(&:name).to_sentence(:last_word_connector => " and ")
+    elsif markup.first_line
+      content = markup.first_line
+    end
+    content
+    end
   end
 end

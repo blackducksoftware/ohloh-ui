@@ -2,18 +2,17 @@
   %meta{ content: 'summary', name: 'twitter:card' }
   %meta{ content: '@bdopenhub', name: 'twitter:site' }
   %meta{ content: "#{h(@account.name)}", name: 'twitter:title'}
-  %meta{ content: "#{twitter_card_description(@account)}", name: 'twitter:description'}
+  %meta{ content: "#{@account.decorate.twitter_card}", name: 'twitter:description'}
   %meta{ content: "#{avatar_img_path(@account, 80)}", name: 'twitter:image'}
   %meta{ content: 'https://www.openhub.net', name: 'twitter:domain'}
 
 .row
-  .span12
+  .col-md-12
     = render partial: 'accounts/show/summary'
-- if @account.admin?
-  = render partial: 'accounts/show/admin'
+= render partial: 'accounts/show/admin' if current_user_is_admin?
 .mezzo.padding_one_top
-  %h3= t('.dev_history') Development History
-  .span12
+  %h3= t('.dev_history')
+  .col-md-12
     - @account.decorate.vita_status_message do
       = render partial: 'accounts/show/commits_by_projects'
       = render partial: 'accounts/show/commits_by_language'
