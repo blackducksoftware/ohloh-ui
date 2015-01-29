@@ -36,7 +36,7 @@ class AccountDecorator < Draper::Decorator
     [
       [
         [:account_summary,    h.t(:account_summary),      h.account_path(object)],
-        [:stacks, object == h.current_user ? h.t(:my_stacks) : h.t(:stacks), h.account_stacks_path(object)],
+        [:stacks, object == h.current_user ? h.t(:my_stacks) : h.t(:stacks_title), h.account_stacks_path(object)],
         [:widgets,            'Widgets',              h.account_widgets_path(object)]
       ],
       [

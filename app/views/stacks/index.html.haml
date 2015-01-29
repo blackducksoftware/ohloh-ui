@@ -1,0 +1,43 @@
+- page_context[:title] = t('.page_title', name: @account.name)
+
+.row
+  .col-md-9
+    %h2.float_left Stacks
+    - if current_user == @account
+      %a.btn.btn-mini.btn-primary{ href: stacks_path, data: { method: :post },
+                                   style: 'margin:8px 19px 0 0; float: right;' }
+        %i.icon-plus-sign= t '.new_stack'
+    .clear
+
+.row
+  .col-md-9
+    - @stacks.each do |stack|
+      .well.piano{ id: "stack_#{stack.id}" }
+        - if stack.account == current_user
+          %a.btn.btn-mini.btn-danger{ href: stack_path(stack), method: :delete, style: 'float: right;',
+                                      confirm: t('.delete_confirm', name: stack.title) }
+            %i.icon-trash= t '.remove'
+        %h4.nomargin
+          %a.name{ href: stack_path(stack), title: stack.title }= stack.title
+        %a.description{ href: stack_path(stack), title: stack.title }
+          %p.nomargin.soft= stack.description
+        .clear
+          - stack.projects.order('logo_id IS NULL, stack_entries.created_at DESC').to_a.each do |project|
+            - project_link(project, :tiny, title: project.name)
+        %a{ href: stack_widgets_path(stack) }= t('.embed')
+    - if @stacks.blank?
+      .inset
+      - if current_user == @account
+        %p= t('.no_stack_fix_that', link: link_to(t('.new_stack'), stacks_path, method: :post, class: 'command'))
+      - else
+        %p= t('.no_stack')
+      &nbsp;
+  .col-md-3
+    .well
+      .inset.stack_definition
+        %h5.soft= t('.what_is_a_stack')
+        - lamp_link = link_to('LAMP', 'http://wikipedia.org/wiki/LAMP_(software_bundle)')
+        %p!= t('.stack_explanation', link: lamp_link)
+        %p
+          #{ t('.more_questions') }
+          - blog_link_to(link: :stack_faq, link_text: t('.stack_faq'))

@@ -17,6 +17,11 @@ FactoryGirl.define do
     activation_code nil
   end
 
+  factory :unactivated, parent: :account do
+    activated_at nil
+    activation_code '123456'
+  end
+
   factory :admin, parent: :account do
     level Account::Access::ADMIN
   end
