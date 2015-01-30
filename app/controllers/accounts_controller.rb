@@ -1,5 +1,5 @@
 class AccountsController < ApplicationController
-  before_action :check_account, only: :show
+  before_action :redirect_if_disabled, only: :show
 
   def index
     @people = Person.find_claimed(page: params[:page])
@@ -14,7 +14,7 @@ class AccountsController < ApplicationController
 
   private
 
-  def check_account
+  def redirect_if_disabled
     @account = Account.where(id: params[:id]).first
     redirect_to :disabled if @account && @account.disabled?
   end

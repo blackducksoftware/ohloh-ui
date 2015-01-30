@@ -53,7 +53,7 @@ class BaseballCard < Draper::Decorator
     if orgs_for_positions.any?
       { css: { style: "min-height:38px;" },
         left: i18n_str('contibuted_to'),
-        right: h.render partial: 'accounts/show/orgs' locals: { orgs: orgs_for_positions} }
+        right: h.render(partial: 'accounts/show/orgs', locals: { orgs: orgs_for_positions}) }
     end
   end
 
@@ -62,7 +62,7 @@ class BaseballCard < Draper::Decorator
     if affiliated_orgs.any?
       { css: { style: "min-height:38px;" },
         left: i18n_str('contibuted_for'),
-        right: h.render partial: 'accounts/show/orgs' locals: { orgs: affiliated_orgs } }
+        right: h.render(partial: 'accounts/show/orgs', locals: { orgs: affiliated_orgs }) }
     end
   end
 

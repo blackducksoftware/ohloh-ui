@@ -32,7 +32,7 @@ class Icon < Draper::Decorator
 
   def default_style
     fnt_size = FONT_SIZES[int_size] || 14
-    @opts.reverse_merge! { bg: 'EEE', color: '000'}
+    @opts.reverse_merge!({ bg: 'EEE', color: '000'})
     margin_right = int_size == 64 ? 0 : 2
 
     "background-color:##{@opts[:bg]}; color:##{@opts[:color]}; border:1px dashed ##{@opts[:color]};" +

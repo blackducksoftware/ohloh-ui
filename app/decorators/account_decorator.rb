@@ -59,6 +59,5 @@ class AccountDecorator < Draper::Decorator
       content = markup.first_line
     end
     content
-    end
   end
 end
