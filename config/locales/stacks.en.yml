@@ -20,6 +20,8 @@ en:
       empty_stack_msg: "This stack is empty."
       remove: "Remove"
       delete_confirm: "Delete this Stack forever?"
+      show_recommends: "Show Recommendations for this Stack..."
+      recommends_for_this_stack: "Recommendations for this Stack..."
       notes: "Notes:"
       what_is_a_stack: "What is a Stack?"
       stack_explanation: "It's a list of software used to accomplish something. %{link} is an example."

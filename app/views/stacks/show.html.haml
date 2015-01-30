@@ -21,16 +21,31 @@
         = @stack.description
       - stack_edit_in_place if editable
     - if editable
-      = # render 'stacks/recommendations_container', use_full_path: true
+      - show_them = @stack.project_count == 0
+      .padding_one_top
+        .recommendations
+          .clear{ style: "#{'display:none' if show_them}" }
+            %h4.soft.nomargin.show
+              %a.link_no_underline#show= t('.show_recommends')
+          .clear#recommendations{ style: "#{'display:none' unless show_them}" }
+            %h4.soft{ style: 'margin-bottom: 0.3em;' }
+              #{t('.recommends_for_this_stack')}
+              &nbsp;
+              %a.command#hide= t('.hide')
+          %div.list
+            %ul.stack_sm_suggestions
+              - if show_them
+                = # TODO: stack builder = render partial: 'stack_builder/small_suggestion'...
+          .controls{ style: "#{'display:none' unless show_them}" }
+            %a#skip_all.btn.btn-mini.command= t('.skip_all')
+            %a#more.command.btn.btn-mini{ style: "#{'display:none'}" }= t('.show_me_more')
+            %a.btn.btn-mini.clear_ignores.command{ title: t('.unignore_all') }= t('.show_all_projects')
       .clear &nbsp;
-      .row
-        .col-md-7
-          = form_for StackEntry.new, as: :stack_entry, url: stack_stack_entries_path(@stack),
-                                     html: { class: 'form-inline', id: 'add_project_form' } do |f|
-            = f.text_field :project_name, size: 20, class: 'input-xlarge'
-            %input.btn.btn-small.btn-primary{ type: 'submit', id: 'new_stack_entry', value: 'Add Project to Stack' }
-            = f.hidden_field :stack_id, value: @stack.id
-      = # render 'stacks/add_project', use_full_path: true
+      = form_for StackEntry.new, as: :stack_entry, url: stack_stack_entries_path(@stack),
+                                 html: { class: 'form-inline', id: 'add_project_form' } do |f|
+        = f.text_field :project_name, size: 20, class: 'input-xlarge'
+        %input.btn.btn-small.btn-primary{ type: 'submit', id: 'new_stack_entry', value: 'Add Project to Stack' }
+        = f.hidden_field :stack_id, value: @stack.id
     .stack_item_list
       %table.table.table-bordered.stack_list{ id: "stack_list_#{@stack.id}" }
         - stack_entries.each do |stack_entry|
