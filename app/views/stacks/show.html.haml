@@ -32,13 +32,13 @@
               #{t('.recommends_for_this_stack')}
               &nbsp;
               %a.command#hide= t('.hide')
-          %div.list
+          .list
             %ul.stack_sm_suggestions
               - if show_them
                 = # TODO: stack builder = render partial: 'stack_builder/small_suggestion'...
           .controls{ style: "#{'display:none' unless show_them}" }
-            %a#skip_all.btn.btn-mini.command= t('.skip_all')
-            %a#more.command.btn.btn-mini{ style: "#{'display:none'}" }= t('.show_me_more')
+            %a.btn.btn-mini.command#skip_all= t('.skip_all')
+            %a.command.btn.btn-mini#more{ style: 'display:none' }= t('.show_me_more')
             %a.btn.btn-mini.clear_ignores.command{ title: t('.unignore_all') }= t('.show_all_projects')
       .clear &nbsp;
       = form_for StackEntry.new, as: :stack_entry, url: stack_stack_entries_path(@stack),
