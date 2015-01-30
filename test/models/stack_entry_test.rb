@@ -38,4 +38,12 @@ class StackEntryTest < ActiveSupport::TestCase
     create(:stack_entry, project: stack_ignore.project, stack: stack_ignore.stack)
     -> { StackIgnore.find(stack_ignore.id) }.must_raise ActiveRecord::RecordNotFound
   end
+
+  it '#project_name works' do
+    stack_entry = create(:stack_entry)
+    project = create(:project)
+    stack_entry.project_name = project.name.upcase
+    stack_entry.project_name.must_equal project.name
+    stack_entry.project.must_equal project
+  end
 end

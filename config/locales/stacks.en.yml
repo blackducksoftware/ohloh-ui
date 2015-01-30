@@ -1,5 +1,6 @@
 en:
   stacks:
+    edit_in_place: "[edit]"
     index:
       page_title: "%{name}'s Stacks"
       new_stack: "New Stack"
@@ -14,3 +15,15 @@ en:
       stack_faq: "Stack FAQ"
     create:
       error: "Stack failed to be saved!"
+    show:
+      page_title: "%{who}'s %{what} Stack"
+      empty_stack_msg: "This stack is empty."
+      remove: "Remove"
+      delete_confirm: "Delete this Stack forever?"
+      notes: "Notes:"
+      what_is_a_stack: "What is a Stack?"
+      stack_explanation: "It's a list of software used to accomplish something. %{link} is an example."
+      stack_explanation_empty: "To add a project to your stack, click 'I use it' on the projects you use."
+      stack_explanation_with_projects: "To add a project to your stack, click 'Show Recommendations for this Stack' at the top middle of this page and then click 'I use it' on the projects you use."
+      more_questions: "More questions?"
+      stack_faq: "Stack FAQ"

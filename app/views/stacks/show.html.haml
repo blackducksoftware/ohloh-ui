@@ -1,0 +1,82 @@
+:ruby
+  page_context[:title] = t('.page_title', who: @stack.account.name, what: @stack.title)
+  editable = current_user && (@stack.account == current_user)
+  stack_entries = @stack.stack_entries
+
+.row{ id: "stack_#{@stack.id}" }
+  .col-md-9
+    %h1{ style: 'float: left;' }
+      %span{ class: editable ? 'rest_in_place' : '', attribute: 'title', col: 20, max_length: 20, rows: 1 }
+        = @stack.title
+      - stack_edit_in_place if editable
+    - if editable
+      %a.btn.btn-mini.btn-danger.stack_remove{ href: stack_path(@stack), method: :delete, confirm: t('.delete_confirm'),
+                                               style: 'float: right; display:block; margin-top:10px;' }
+        %i.icon-trash= t '.remove'
+.clear
+.row{ id: "stack_#{@stack.id}" }
+  .col-md-9
+    %p.description.nomargin
+      %span{ class: editable ? 'rest_in_place' : '', attribute: 'description', col: 35, max_length: 120, rows: 3 }
+        = @stack.description
+      - stack_edit_in_place if editable
+    - if editable
+      = # render 'stacks/recommendations_container', use_full_path: true
+      .clear &nbsp;
+      .row
+        .col-md-7
+          = form_for StackEntry.new, as: :stack_entry, url: stack_stack_entries_path(@stack),
+                                     html: { class: 'form-inline', id: 'add_project_form' } do |f|
+            = f.text_field :project_name, size: 20, class: 'input-xlarge'
+            %input.btn.btn-small.btn-primary{ type: 'submit', id: 'new_stack_entry', value: 'Add Project to Stack' }
+            = f.hidden_field :stack_id, value: @stack.id
+      = # render 'stacks/add_project', use_full_path: true
+    .stack_item_list
+      %table.table.table-bordered.stack_list{ id: "stack_list_#{@stack.id}" }
+        - stack_entries.each do |stack_entry|
+          %tr.stack_entry{ id: "stack_entry_#{stack_entry.id}" }
+            %td{ width: '13%', valign: 'middle' }
+              - project_icon(stack_entry.project, :small)
+            %td{ width: '70%', valign: 'top' }
+              = link_to stack_entry.project.name, project_url(stack_entry.project)
+              .line_two
+                - if stack_entry.project.rating_average
+                  .compact_rating_and_review
+                    %span.header Community rating:
+                    .rating_stars
+                      != rating_stars('average_rating_stars', stack_entry.project.rating_average, true)
+                  %br
+                  .note
+                    %span.header.note= t('.notes')
+                    %br
+                    - if editable
+                      - uri = "/stacks/#{@stack.id}/stack_entries/#{stack_entry.id}"
+                      %span.rest_in_place{ url: uri, object: 'stack_entry', attribute: 'note',
+                                           col: '32', rows: '7', max_length: StackEntry::MAX_NOTE_LENGTH }
+                        = stack_entry.note
+                      - stack_edit_in_place
+                    - else
+                      %span.note= stack_entry.note
+            - if editable
+              %td{ width: '18%', valign: 'top' }
+                %a.btn.btn-mini.btn-danger.command.stack_remove{ href: '#', id: "stackit_#{stack_entry.project.id}" }
+                  %i.icon-trash= t '.remove'
+      - if stack_entries.blank?
+        %p= t('.empty_stack_msg')
+  .col-md-3
+    .well
+      .inset.stack_definition
+        %h5.soft= t('.what_is_a_stack')
+        - lamp_link = link_to('LAMP', 'http://wikipedia.org/wiki/LAMP_(software_bundle)')
+        %p!= t('.stack_explanation', link: lamp_link)
+        %p
+          - if @stack.project_count == 0
+            = t('.stack_explanation_empty')
+          - else
+            = t('.stack_explanation_with_projects')
+        %p
+          #{ t('.more_questions') }
+          = blog_link_to(link: :stack_faq, link_text: t('.stack_faq'))
+      = # TODO: avatar_for = render partial: 'stack_similar_accounts/preview', locals: { stack: @stack }
+      %hr.one
+      = # TODO: widgets = stack_promo

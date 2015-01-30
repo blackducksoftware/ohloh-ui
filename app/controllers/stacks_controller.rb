@@ -1,14 +1,13 @@
 class StacksController < ApplicationController
+  helper RatingsHelper
+
   before_action :session_required, except: [:index, :show]
   before_action :find_stack, except: [:index, :create]
   before_action :can_edit_stack, except: [:index, :show, :create]
-  before_action :find_account, only: [:index]
+  before_action :find_account, only: [:index, :show]
 
   def index
     @stacks = @account.stacks
-  end
-
-  def show
   end
 
   def create
@@ -22,11 +21,11 @@ class StacksController < ApplicationController
   end
 
   def update
-    redirect_to stack_path(@stack), notice: (@stack.update_attibutes(model_params) ? t('.success') : t('.error'))
+    render nothing: true, status: (@stack.update_attributes(model_params) ? :ok : :unprocessable_entity)
   end
 
   def destroy
-    redirect_to stack_path(@stack), notice: (@stack.destroy ? t('.success') : t('.error'))
+    render nothing: true, status: (@stack.destroy ? :ok : :unprocessable_entity)
   end
 
   private
@@ -45,7 +44,7 @@ class StacksController < ApplicationController
   end
 
   def find_account
-    @account = Account.resolve_login(params[:account_id])
+    @account = params[:account_id] ? Account.resolve_login(params[:account_id]) : @stack.account
     fail ParamRecordNotFound unless @account && Account::Access.new(@account).active_and_not_disabled?
   end
 end

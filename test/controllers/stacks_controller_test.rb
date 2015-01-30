@@ -39,7 +39,7 @@ class StacksControllerTest < ActionController::TestCase
     login_as stack.account
     get :index, account_id: stack.account
     must_respond_with :ok
-    response.body.must_match(stack.title)
+    response.body.must_match stack.title
   end
 
   it 'index should display when the stack has projects associated with it' do
@@ -48,7 +48,7 @@ class StacksControllerTest < ActionController::TestCase
     login_as stack.account
     get :index, account_id: stack.account
     must_respond_with :ok
-    response.body.must_match(stack.title)
+    response.body.must_match stack.title
   end
 
   it 'index should display when the stack has projects with no logos associated with it' do
@@ -57,7 +57,7 @@ class StacksControllerTest < ActionController::TestCase
     login_as stack.account
     get :index, account_id: stack.account
     must_respond_with :ok
-    response.body.must_match(stack.title)
+    response.body.must_match stack.title
   end
 
   it 'index should not display deleted stacks' do
@@ -66,7 +66,67 @@ class StacksControllerTest < ActionController::TestCase
     login_as stack.account
     get :index, account_id: stack.account
     must_respond_with :ok
-    response.body.wont_match(stack.title)
+    response.body.wont_match stack.title
+  end
+
+  # show action
+  it 'show should not require a current user' do
+    stack = create(:stack)
+    login_as nil
+    get :show, id: stack
+    must_respond_with :ok
+  end
+
+  it 'show should return 404 for disabled users stacks' do
+    stack = create(:stack, account: create(:disabled_account))
+    login_as nil
+    get :show, id: stack
+    must_respond_with :not_found
+  end
+
+  it 'show should offer edit links to stack owner' do
+    stack = create(:stack)
+    login_as stack.account
+    get :show, id: stack
+    must_respond_with :ok
+    response.body.must_match I18n.t('stacks.edit_in_place')
+  end
+
+  it 'show should not offer edit links to unlogged user' do
+    stack = create(:stack)
+    login_as nil
+    get :show, id: stack
+    must_respond_with :ok
+    response.body.wont_match I18n.t('stacks.edit_in_place')
+  end
+
+  it 'show should not offer edit links to other users' do
+    stack = create(:stack)
+    login_as create(:account)
+    get :show, id: stack
+    must_respond_with :ok
+    response.body.wont_match I18n.t('stacks.edit_in_place')
+  end
+
+  it 'show should star ratings for projects' do
+    stack = create(:stack)
+    create(:stack_entry, stack: stack, project: create(:project, rating_average: 0))
+    create(:stack_entry, stack: stack, project: create(:project, rating_average: 2.5))
+    create(:stack_entry, stack: stack, project: create(:project, rating_average: 5))
+    login_as stack.account
+    get :show, id: stack
+    must_respond_with :ok
+    response.body.must_match 'rating_stars'
+  end
+
+  it 'show should support format: json' do
+    stack = create(:stack)
+    login_as nil
+    get :show, id: stack, format: :json
+    must_respond_with :ok
+    resp = JSON.parse(response.body)
+    resp['title'].must_equal stack.title
+    resp['description'].must_equal stack.description
   end
 
   # create action
@@ -86,9 +146,48 @@ class StacksControllerTest < ActionController::TestCase
 
   it 'create should gracefully handle save errors' do
     login_as create(:account)
-    Stack.any_instance.stubs(:save).returns false
+    Stack.any_instance.expects(:save).returns false
     post :create
     must_respond_with 302
+  end
+
+  # update action
+  it 'update should require a current user' do
+    login_as nil
+    put :update, id: create(:stack), stack: { title: 'Best Stack EVAR!' }
+    must_respond_with :unauthorized
+  end
+
+  it 'update should not work for wrong user' do
+    stack = create(:stack, title: 'original')
+    login_as create(:account)
+    put :update, id: stack, stack: { title: 'changed' }
+    must_respond_with :not_found
+    stack.reload.title.must_equal 'original'
+  end
+
+  it 'update should work for owner changing title' do
+    stack = create(:stack, title: 'original')
+    login_as stack.account
+    put :update, id: stack, stack: { title: 'changed' }
+    must_respond_with :ok
+    stack.reload.title.must_equal 'changed'
+  end
+
+  it 'update should work for owner changing description' do
+    stack = create(:stack, description: 'original')
+    login_as stack.account
+    put :update, id: stack, stack: { description: 'changed' }
+    must_respond_with :ok
+    stack.reload.description.must_equal 'changed'
+  end
+
+  it 'update should gracefully handle errors' do
+    stack = create(:stack, description: 'original')
+    login_as stack.account
+    Stack.any_instance.expects(:update_attributes).returns false
+    put :update, id: stack, stack: { description: 'changed' }
+    must_respond_with :unprocessable_entity
   end
 
   # destroy action
@@ -110,7 +209,15 @@ class StacksControllerTest < ActionController::TestCase
     stack = create(:stack)
     login_as stack.account
     delete :destroy, id: stack
-    must_respond_with 302
+    must_respond_with 200
     Stack.where(id: stack.id).count.must_equal 0
+  end
+
+  it 'destroy should gracefully handle errors' do
+    stack = create(:stack)
+    login_as stack.account
+    Stack.any_instance.expects(:destroy).returns false
+    delete :destroy, id: stack
+    must_respond_with :unprocessable_entity
   end
 end

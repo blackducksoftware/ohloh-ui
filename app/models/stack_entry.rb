@@ -17,6 +17,14 @@ class StackEntry < ActiveRecord::Base
   after_create :update_counters
   after_create :clean_up_ignores
 
+  def project_name
+    project ? project.name : ''
+  end
+
+  def project_name=(name)
+    self.project = Project.not_deleted.case_insensitive_name(name).first
+  end
+
   def destroy
     update_attributes(deleted_at: Time.now.utc)
     update_counters
