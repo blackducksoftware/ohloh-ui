@@ -3,7 +3,7 @@
   = render partial: 'accounts/show/vita_timestamp', locals: { best_vita: @account.best_vita }
   .clearfix
   .col-md-5
-    .person_about_me{itemprop: 'description'}
+    .margin_bottom_10px{itemprop: 'description'}
       = render partial: 'accounts/show/description' locals: { markup: @account.markup, desc_size: ACCOUNT_DESC_LENGTH }
     %h4.projects_used
       = link_to t('.projects_used'), account_stacks_path(@account)
