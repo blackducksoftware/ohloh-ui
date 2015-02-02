@@ -1,5 +1,6 @@
 class AccountsController < ApplicationController
   before_action :redirect_if_disabled, only: :show
+  before_action :account_context, only: [:show]
 
   def index
     @people = Person.find_claimed(page: params[:page])

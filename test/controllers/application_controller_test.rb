@@ -47,7 +47,7 @@ class ApplicationControllerTest < ActionController::TestCase
   end
 
   it 'session_required with a current user' do
-    login_as accounts(:user)
+    login_as create(:account)
     get :session_required_action
     must_respond_with :ok
   end
@@ -59,7 +59,7 @@ class ApplicationControllerTest < ActionController::TestCase
   end
 
   it 'admin_session_required with a current admin' do
-    login_as accounts(:admin)
+    login_as create(:admin)
     get :admin_session_required_action
     must_respond_with :ok
   end
@@ -71,7 +71,7 @@ class ApplicationControllerTest < ActionController::TestCase
   end
 
   it 'admin_session_required with a current plain user' do
-    login_as accounts(:user)
+    login_as create(:account)
     get :admin_session_required_action
     must_respond_with :unauthorized
   end
@@ -83,7 +83,7 @@ class ApplicationControllerTest < ActionController::TestCase
 
   it 'remember me functionality automatically logs users in' do
     login_as nil
-    admin = accounts(:admin)
+    admin = create(:admin)
     Account::Authenticator.remember(admin)
     @request.cookies[:auth_token] = admin.remember_token
     get :session_required_action

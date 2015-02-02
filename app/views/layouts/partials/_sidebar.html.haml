@@ -1,0 +1,7 @@
+.row{ id: generate_page_name }
+  .col-md-2
+  .col-md-10
+    %h1= page_context[:heading]
+  .col-md-2
+    = render partial: 'layouts/partials/navigator'
+  .col-md-10= yield

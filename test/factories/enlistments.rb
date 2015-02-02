@@ -3,6 +3,6 @@ FactoryGirl.define do
     association :project
     association :repository
     deleted false
-    before(:create) { |instance| instance.editor_account = Account.find(1) }
+    before(:create) { |instance| instance.editor_account = create(:admin) }
   end
 end

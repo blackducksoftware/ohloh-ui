@@ -4,7 +4,7 @@ class AvatarHelperTest < ActionView::TestCase
   include AvatarHelper
 
   it 'avatar_img_path should handle accounts' do
-    path = avatar_img_path(accounts(:admin))
+    path = avatar_img_path(create(:admin))
     path.ends_with?('.gif').must_equal true
   end
 
@@ -19,7 +19,7 @@ class AvatarHelperTest < ActionView::TestCase
   end
 
   it 'avatar_for should accept accounts' do
-    link = avatar_for(accounts(:admin))
+    link = avatar_for(create(:admin))
     link.starts_with?('<a').must_equal true
   end
 
@@ -29,17 +29,17 @@ class AvatarHelperTest < ActionView::TestCase
   end
 
   it 'avatar_for should clamp sizes to 80' do
-    link = avatar_for(accounts(:admin), size: 1_000)
+    link = avatar_for(create(:admin), size: 1_000)
     link.must_match(/80/)
   end
 
   it 'avatar_for should allow overriding url' do
-    link = avatar_for(accounts(:admin), url: 'http://cnn.com')
+    link = avatar_for(create(:admin), url: 'http://cnn.com')
     link.must_match(/cnn\.com/)
   end
 
   it 'avatar_for should allow inserting a title for an account' do
-    link = avatar_for(accounts(:admin), title: true)
+    link = avatar_for(create(:admin), title: true)
     link.must_match(/title/)
   end
 

@@ -13,6 +13,7 @@ class LinksController < SettingsController
 
   def create
     @link = @project.links.new(link_params)
+    @link.editor_account = current_user
 
     if @link.revive_or_create
       redirect_to project_links_path(@project), flash: { success: t('.success') }
@@ -43,15 +44,12 @@ class LinksController < SettingsController
     if @link.destroy
       redirect_to project_links_path(@project), flash: { success: t('.success') }
     else
-      redirect_to request.referrer, status: :failure, flash: { error: t('.error') }
+      flash[:error] = t('.error')
+      redirect_back
     end
   end
 
   private
-
-  def special_auth_cases
-    must_be_authorized(@project) if %w(new edit).include?(action_name)
-  end
 
   def load_category_and_title
     @category_name = Link.find_category_by_id(params[:category_id]) || @link.category
@@ -64,6 +62,7 @@ class LinksController < SettingsController
 
   def set_link
     @link = Link.find(params[:id])
+    @link.editor_account = current_user
   end
 
   def set_project
@@ -90,6 +89,6 @@ class LinksController < SettingsController
   end
 
   def link_params
-    params.require(:link).permit!
+    params.require(:link).permit([:title, :url, :project_id, :link_category_id])
   end
 end

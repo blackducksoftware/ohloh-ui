@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class ActionTest < ActiveSupport::TestCase
-  let(:admin_account) { accounts(:admin) }
+  let(:admin_account) { create(:admin) }
   let(:linux_project) { projects(:linux) }
 
   it 'test account required' do
