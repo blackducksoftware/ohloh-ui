@@ -1,0 +1,30 @@
+- page_context[:title] = t('.page_title', what: @stack.title)
+- unless @similar_stacks.blank?
+  .clear#similar_stacks
+    %h3= page_context[:title]
+    - @similar_stacks.each do |similar_stack|
+      - account = similar_stack[:stack].account
+
+      .well.col-md-5{ style: 'margin: 0 0 20px 20px;' }
+        .account.clear
+          .avtr= avatar_for account, size: 60
+          .a_left{ style: 'margin-left: 80px' }
+            %h4.margin_bottom_5= link_to(account.name, account_path(account))
+            .stack_name.margin_bottom_5
+              %a{ href: stack_path(similar_stack[:stack]) }= similar_stack[:stack].title
+              %span.soft== updated #{ time_ago_in_words(account.updated_at) } ago
+            = avatar_small_laurels(account.kudo_rank)
+            - stack_country_flag(account.country_code)
+          .a_right
+            %p
+              #{pluralize(similar_stack[:shared_projects].size, t('.shared_project'))} &nbsp;
+              %span= stack_similar_project_list(similar_stack[:shared_projects])
+
+            - uniq_projects_count = similar_stack[:uniq_projects].count
+            - if uniq_projects_count > 0
+              %p
+                #{pluralize(uniq_projects_count, t('.unique_project'))} &nbsp;
+                %span= stack_similar_project_list(similar_stack[:uniq_projects])
+            - else
+              %p
+                %span.count= t('.no_unique_projects')

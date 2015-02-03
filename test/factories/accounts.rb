@@ -15,6 +15,7 @@ FactoryGirl.define do
     about_raw { Faker::Lorem.characters(10) }
     activated_at { Time.now.utc }
     activation_code nil
+    country_code 'us'
   end
 
   factory :unactivated, parent: :account do

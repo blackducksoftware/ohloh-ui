@@ -220,4 +220,29 @@ class StacksControllerTest < ActionController::TestCase
     delete :destroy, id: stack
     must_respond_with :unprocessable_entity
   end
+
+  # similar action
+  it 'similar should not require a current user' do
+    login_as nil
+    get :similar, id: create(:stack)
+    must_respond_with :ok
+  end
+
+  it 'similar should work with a current user' do
+    stack1 = create(:stack)
+    stack2 = create(:stack)
+    stack3 = create(:stack)
+
+    proj1 = create(:project)
+    proj2 = create(:project)
+    proj3 = create(:project)
+
+    stack1.projects = [proj1, proj2, proj3]
+    stack2.projects = [proj2, proj3]
+    stack3.projects = [proj1, proj3]
+
+    login_as create(:account)
+    get :similar, id: stack3
+    must_respond_with :ok
+  end
 end

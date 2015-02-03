@@ -1,9 +1,9 @@
 class StacksController < ApplicationController
   helper RatingsHelper
 
-  before_action :session_required, except: [:index, :show]
+  before_action :session_required, except: [:index, :show, :similar]
   before_action :find_stack, except: [:index, :create]
-  before_action :can_edit_stack, except: [:index, :show, :create]
+  before_action :can_edit_stack, except: [:index, :show, :create, :similar]
   before_action :find_account, only: [:index, :show]
 
   def index
@@ -26,6 +26,10 @@ class StacksController < ApplicationController
 
   def destroy
     render nothing: true, status: (@stack.destroy ? :ok : :unprocessable_entity)
+  end
+
+  def similar
+    @similar_stacks = @stack.similar_stacks
   end
 
   private

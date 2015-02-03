@@ -36,3 +36,8 @@ en:
       stack_faq: "Stack FAQ"
       people_with_similar_stacks: "People with Similar Stacks"
       more: "More..."
+    similar:
+      page_title: "People with Stacks similar to %{what}"
+      shared_project: "shared project"
+      unique_project: "unique project"
+      no_unique_projects: "No unique projects"
