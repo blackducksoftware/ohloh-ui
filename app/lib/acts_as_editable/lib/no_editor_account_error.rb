@@ -1,2 +1,4 @@
-class ActsAsEditable::NoEditorAccountError < StandardError
+module ActsAsEditable
+  class NoEditorAccountError < StandardError
+  end
 end
