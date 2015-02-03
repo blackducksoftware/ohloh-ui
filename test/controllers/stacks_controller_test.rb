@@ -245,4 +245,29 @@ class StacksControllerTest < ActionController::TestCase
     get :similar, id: stack3
     must_respond_with :ok
   end
+
+  # builder action
+  it 'builder should require a current user' do
+    stack = create(:stack)
+    login_as nil
+    get :builder, id: stack, format: :json
+    must_respond_with :unauthorized
+  end
+
+  it 'builder should require real owner' do
+    login_as create(:account)
+    get :builder, id: create(:stack), format: :json
+    must_respond_with :not_found
+  end
+
+  it 'builder should support format: json' do
+    project = create(:project)
+    stack = create(:stack)
+    login_as stack.account
+    Stack.any_instance.expects(:suggest_projects).returns [project]
+    get :builder, id: stack, format: :json
+    must_respond_with :ok
+    resp = JSON.parse(response.body)
+    resp['recommendations'].must_match project.name
+  end
 end

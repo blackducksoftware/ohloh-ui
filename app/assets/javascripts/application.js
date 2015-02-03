@@ -16,5 +16,7 @@
 //= require_tree .
 //= require twitter/bootstrap
 
-StackVerb.init();
-StackShow.init();
+$(document).ready(function() {
+  StackVerb.init();
+  StackShow.init();
+});

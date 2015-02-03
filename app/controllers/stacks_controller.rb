@@ -32,6 +32,11 @@ class StacksController < ApplicationController
     @similar_stacks = @stack.similar_stacks
   end
 
+  def builder
+    @recommendations = render_to_string(partial: 'small_suggestion.html.haml', collection: @stack.suggest_projects(5))
+    render json: { recommendations: @recommendations }
+  end
+
   private
 
   def model_params

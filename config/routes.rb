@@ -105,6 +105,7 @@ Rails.application.routes.draw do
   resources :stacks, only: [:show, :create, :update, :destroy] do
     member do
       get :similar
+      get :builder
     end
     resources :stack_entries, only: [:create]
     resources :stack_ignores, only: [:create] do

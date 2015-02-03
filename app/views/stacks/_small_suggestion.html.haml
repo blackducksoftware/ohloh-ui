@@ -1,0 +1,11 @@
+- project ||= small_suggestion
+%li.clear{ id: "suggestion_#{project.id}" }
+  .stack_right
+    %a.btn.btn-mini.btn-primary.command.stack_add{ href: '#', id: "stackit_#{project.id}" }= t('.i_use_this')
+    %span.separator -
+    %a.btn.btn-mini.btn-warning.command.ignore{ href: '#', id: "stackit_#{project.id}" }= t('.skip_this')
+  - project_link(project, :small, style: 'float: left;')
+  .title
+    %h6.nomargin.no_margin_top
+      %a{ href: project_url(project), title: project.name }= truncate(project.name, length: 35)
+  %p.description.nomargin= truncate(project.description, length: 55)
