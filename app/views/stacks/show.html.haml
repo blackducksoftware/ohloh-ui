@@ -74,7 +74,8 @@
                       %span.note= stack_entry.note
             - if editable
               %td{ width: '18%', valign: 'top' }
-                %a.btn.btn-mini.btn-danger.command.stack_remove{ href: '#', id: "stackit_#{stack_entry.project.id}" }
+                %a.btn.btn-mini.btn-danger.command.stack_remove{ href: '#',
+                                                                 id: "stackit_#{stack_entry.project.url_name}" }
                   %i.icon-trash= t '.remove'
       - if stack_entries.blank?
         %p= t('.empty_stack_msg')
