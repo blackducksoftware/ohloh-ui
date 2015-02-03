@@ -1,0 +1,23 @@
+%h1.margin_bottom_20
+  = link_to "Forums", forums_url
+  \:
+  %a{href: forum_path(@post.topic.forum)}=@post.topic.forum.name
+.clear
+.row
+  .span8.float_left
+    %h2 Edit Post
+  .float_right
+    - if current_user_is_admin?
+      %h2
+        .float_right.btn-group
+          / TODO: SPAM functionality, rewrite into model function and not a seperate route.
+          / = link_to "SPAM!", make_spammer_account_path(@post.account), {:method => :post, :confirm => "Are you sure you want to mark #{@post.account.name} as a spammer, disabling the account and removing all posts?", :class => "btn btn-small btn-warning", :title => "Mark #{@post.account.name} as spammer!" }
+
+          = link_to "Delete", topic_post_path(@topic, @post), {method: :delete, confirm: "Are you sure you want to delete your post?", class: "btn btn-danger btn-small", title: "Delete post?" }
+
+.well.span11
+  .span9
+    = form_for([@topic, @post], url: topic_post_path(@topic, @post), html: {method: 'put'}) do |f|
+      = render partial: 'fields', locals: {f: f}
+  .span2.no_margin_left{style: "margin-top: -10px"}
+  = render partial: 'shared/markdown_help'

@@ -38,12 +38,15 @@ Rails.application.routes.draw do
   end
 
   resources :forums do
-    resources :topics do
-      resources :posts, except: :show
-    end
+    resources :topics, shallow: true
   end
 
-  resources :posts, only: :index, as: :all_posts
+  resources :topics, except: [:index, :new, :create] do
+    resources :posts, except: [:new]
+  end
+
+  resources :posts, only: :index, as: 'all_posts'
+  get 'markdown_syntax', to: 'abouts#markdown_syntax'
 
   resources :projects, path: :p, only: [:show] do
     member do

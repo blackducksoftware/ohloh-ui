@@ -1,0 +1,9 @@
+%fieldset
+  .control-group
+    .controls
+      = f.text_area(:body) 
+      %p.error=flash[:bad_reply]["body"] if flash[:bad_reply]
+    .control-group
+
+  .actions
+    = submit_tag "Submit", class: 'btn btn-primary btn-small'
