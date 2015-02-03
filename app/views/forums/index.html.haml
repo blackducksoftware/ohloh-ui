@@ -3,28 +3,28 @@
 = render partial: '/topics/current_discussions', object: @recent_topics
 
 .center
-  = link_to "Recent Posts", all_posts_path, class: "btn btn-info btn-small"
-  = link_to "Unanswered Posts", all_posts_path(unanswered: true), class: "btn btn-info btn-small"
+  = link_to 'Recent Posts', all_posts_path, class: 'btn btn-info btn-small'
+  = link_to 'Unanswered Posts', all_posts_path(unanswered: true), class: 'btn btn-info btn-small'
 
 %h2.soft All Forums
 %table.table.table-striped
   %thead
     %tr
-      %th{width: "70%"}
+      %th{ width: '70%' }
         %h4.nomargin.strong Forum
-      %th.center{width: "15%"}
+      %th.center{ width: '15%' }
         %h4.nomargin.center.strong Topics
-      %th.center{width: "15%"}
+      %th.center{ width: '15%' }
         %h4.nomargin.center.strong Posts
   %tbody
     - @forums.each do |forum|
       %tr
         %td.first
           %h3.nomargin
-            %a{href: forum_path(forum)}= h forum.name
+            %a{ href: forum_path(forum) } = h forum.name
           %p.nomargin= h forum.description
         %td.center= forum.topics_count
         %td.center= forum.posts_count
 
 - if current_user_is_admin?
-  = link_to 'New Forum', new_forum_path, class: "btn btn-primary btn-small"
+  = link_to 'New Forum', new_forum_path, class: 'btn btn-primary btn-small'

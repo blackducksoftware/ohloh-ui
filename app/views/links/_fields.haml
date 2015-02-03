@@ -30,7 +30,6 @@
           = f.select :link_category_id, options_for_select(@categories)
           -# - error_tag @link, :link_category_id
 
-
   .actions
     %input.btn.btn-xs.btn-primary{ type: 'submit',
       value: @link.new_record? ? t('save_model', model: t('links.title')) : t('save_changes') }

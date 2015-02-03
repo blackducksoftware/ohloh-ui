@@ -1,5 +1,5 @@
 %h1.margin_bottom_20
-  %span= link_to "Forums", forums_url
+  %span= link_to 'Forums', forums_url
 .clear
 
 .row
@@ -9,7 +9,7 @@
 .well.span11
   .span7
     = form_for @forum do |f|
-      = render partial: "form", locals: { f: f }
+      = render partial: 'form', locals: { f: f }
       .actions
-      = f.submit 'Create', { class: 'btn btn-primary btn-small' }
+      = f.submit 'Create', class: 'btn btn-primary btn-small'
   .clear

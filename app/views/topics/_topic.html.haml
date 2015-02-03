@@ -1,11 +1,11 @@
--if topic.posts.present?
+- if topic.posts.present?
   %tr
     %td.first
       %p.nomargin
         - if topic.sticky?
           %span.soft Sticky:
-        %span{class: "#{'strong' if topic.sticky?}" }
-          = link_to h(topic.title), topic_path(topic), class: "entry-title", rel: "bookmark"
+        %span{ class: "#{'strong' if topic.sticky?}" }
+          = link_to h(topic.title), topic_path(topic), class: 'entry-title', rel: 'bookmark'
         by
         = topic.account.name
     %td.center
@@ -21,7 +21,7 @@
       - elsif topic.posts.last.created_at >= 30.minutes.ago
         %span.label.label-success
           recent post
-    %td.center= (topic.posts_count - 1)
-    %td.center= topic.hits
+    %td.center = (topic.posts_count - 1)
+    %td.center = topic.hits
     %td.last.right.small
-      = render partial: "/forums/last_post", locals: { forum: @forum, last_post: topic.posts.last }
+      = render partial: '/forums/last_post', locals: { forum: @forum, last_post: topic.posts.last }

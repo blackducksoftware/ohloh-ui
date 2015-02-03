@@ -1,13 +1,13 @@
-%div{id: "post_#{post.id}"}
-  .well{style: "#{current_user_is_admin? ? 'background: #D5E3E9;' : ''}"}
+%div{ id: "post_#{post.id}" }
+  .well{ style: "#{current_user_is_admin? ? 'background: #D5E3E9;' : ''}" }
     = strip_tags(post.body)
     .span3.float_right
       = avatar_img_for post.account, 32
-      %a.avatar_name{href: account_path(post.account)}
+      %a.avatar_name{ href: account_path(post.account) }
         %h4.nomargin
-          =truncate(h(post.account.name), length: 18)
+          = truncate(h(post.account.name), length: 18)
       %small.date.avatar_name
-        == #{ time_ago_in_words(post.created_at) } ago
+        = # { time_ago_in_words(post.created_at) } ago
     - if (current_user.id == post.account_id) || (current_user_is_admin?)
       = link_to 'Edit post', edit_post_path(post), class: 'btn btn-mini btn-info'
     .clear

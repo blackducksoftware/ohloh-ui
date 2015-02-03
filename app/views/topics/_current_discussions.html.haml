@@ -1,19 +1,19 @@
 %table.table.table-striped
   %thead
     %tr
-      %th.first{width: "45%"}
+      %th.first{ width: '45%' }
         %h4.nomargin.strong Discussion
-      %th{width: "15%"}
+      %th{ width: '15%' }
         %h4.nomargin.center.strong Posts
-      %th{width: "25%"}
+      %th{ width: '25%' }
         %h4.nomargin.strong Poster
-      %th{width: "15%"}
+      %th{ width: '15%' }
         %h4.nomargin.strong Freshness
   %tbody
     - @recent_topics.each do |topic|
       %tr
-        %td.first= link_to h(topic.title), topic_path(topic)
-        %td.center= topic.posts_count
-        -if topic.posts.last
-          %td= topic.posts.last.account.name
-          %td.freshness== #{time_ago_in_words(topic.posts.last.created_at)}
+        %td.first = link_to h(topic.title), topic_path(topic)
+        %td.center = topic.posts_count
+        - if topic.posts.last
+          %td = topic.posts.last.account.name
+          %td.freshness == #{ time_ago_in_words(topic.posts.last.created_at) }
