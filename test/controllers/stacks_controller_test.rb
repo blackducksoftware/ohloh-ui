@@ -270,4 +270,15 @@ class StacksControllerTest < ActionController::TestCase
     resp = JSON.parse(response.body)
     resp['recommendations'].must_match project.name
   end
+
+  it 'builder should support the ignore option' do
+    project1 = create(:project)
+    project2 = create(:project)
+    stack = create(:stack)
+    login_as stack.account
+    get :builder, id: stack, ignore: "#{project1.url_name},#{project2.url_name}", format: :json
+    must_respond_with :ok
+    StackIgnore.where(stack_id: stack.id, project_id: project1.id).count.must_equal 1
+    StackIgnore.where(stack_id: stack.id, project_id: project2.id).count.must_equal 1
+  end
 end

@@ -5,6 +5,7 @@ class StacksController < ApplicationController
   before_action :find_stack, except: [:index, :create]
   before_action :can_edit_stack, except: [:index, :show, :create, :similar]
   before_action :find_account, only: [:index, :show]
+  before_action :auto_ignore, only: [:builder]
 
   def index
     @stacks = @account.stacks
@@ -55,5 +56,12 @@ class StacksController < ApplicationController
   def find_account
     @account = params[:account_id] ? Account.resolve_login(params[:account_id]) : @stack.account
     fail ParamRecordNotFound unless @account && Account::Access.new(@account).active_and_not_disabled?
+  end
+
+  def auto_ignore
+    (params[:ignore] || []).split(',').compact.each do |project_url_name|
+      proj = Project.find_by_url_name(project_url_name)
+      StackIgnore.create(stack_id: @stack.id, project_id: proj.id) if proj
+    end
   end
 end
