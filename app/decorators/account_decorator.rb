@@ -34,11 +34,11 @@ class AccountDecorator < Draper::Decorator
   # NOTE: Replaces account_vita_status_message in application_helper
   def vita_status_message
     message =
-    if has_claimed_positions? && best_vita.nil?
+    if claimed_positions.any? && best_vita.nil?
       'The analysis for this account has been scheduled.'
-    elsif !has_claimed_positions? && has_positions?
+    elsif claimed_positions.blank? && positions.any?
       'There are no commits available to display.'
-    elsif has_positions?
+    elsif positions.any?
       'There are no contributions available to display.'
     end
 
@@ -50,6 +50,7 @@ class AccountDecorator < Draper::Decorator
   def twitter_card
     name_fact = best_vita && best_vita.vita_fact
     content = ""
+    return content unless markup
     if name_fact
       content += markup.first_line.concat(", ") if markup.first_line
       content += "#{pluralize(name_fact.commits, 'total commit')} to #{pluralize(positions.count, 'project')}".concat(", ")
@@ -59,6 +60,11 @@ class AccountDecorator < Draper::Decorator
       content = markup.first_line
     end
     content
+  end
+
+  def twitter_url
+    "https://twitter.com/intent/follow?original_referer=#{CGI.escape h.request.url}&region=follow_link&" +
+    "screen_name=#{twitter_account}&source=followbutton&variant=2.0"
   end
 
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength

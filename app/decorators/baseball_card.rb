@@ -8,6 +8,7 @@ class BaseballCard < Draper::Decorator
     super
     @vita_fact = best_vita.try(:vita_fact)
     @language = most_experienced_language
+    @organization_core = Account::OrganizationCore.new(object.id)
   end
 
   def rows
@@ -16,59 +17,53 @@ class BaseballCard < Draper::Decorator
 
   def first_checkin
     if @vita_fact && @vita_fact.first_checkin
-      { left: i18n_str('first_checkin'),
-        right: i18n_str('duration', date: h.stance_of_time_in_words_to_now(@vita_fact.first_checkin)) }
+      { left: h.t('.first_checkin'),
+        right: h.t('.duration', date: h.distance_of_time_in_words_to_now(@vita_fact.first_checkin)) }
     end
   end
 
   def last_checkin
     if @vita_fact && @vita_fact.last_checkin
-      { left: i18n_str('last_checkin'),
-        right: i18n_str('duration', date: h.distance_of_time_in_words_to_now(@vita_fact.last_checkin)) }
+      { left: h.t('.last_checkin'),
+        right: h.t('.duration', date: h.distance_of_time_in_words_to_now(@vita_fact.last_checkin)) }
     end
   end
 
   def commits
     if best_vita
-      { left: i18n_str('commits.left'),
-        right: i18n_str('commits.right', count: @vita_fact.commits.to_i) }
+      { left: h.t('commits.left'),
+        right: h.t('.commits.right', count: @vita_fact.commits.to_i) }
     end
   end
 
   def joined_at
-    { left: i18n_str('joined_at'),
-      right: i18n_str('duration', date: h.distance_of_time_in_words_to_now(created_at)) }
+    { left: h.t('.joined_at'),
+      right: h.t('.duration', date: h.distance_of_time_in_words_to_now(created_at)) }
   end
 
   def contributions
     if positions.count > 0
       link = h.link_to h.pluralize(positions.count, 'project'), h.account_positions_path(object)
-      { left: i18n_str('contibution'),
+      { left: h.t('.contibution'),
         right: link }
     end
   end
 
   def orgs
-    orgs_for_positions = organization_core.orgs_for_my_positions
+    orgs_for_positions = @organization_core.orgs_for_my_positions
     if orgs_for_positions.any?
       { css: { style: "min-height:38px;" },
-        left: i18n_str('contibuted_to'),
+        left: h.t('.contibuted_to'),
         right: h.render(partial: 'accounts/show/orgs', locals: { orgs: orgs_for_positions}) }
     end
   end
 
   def affiliations
-    affiliated_orgs = organization_core.affiliations_for_my_positions
+    affiliated_orgs = @organization_core.affiliations_for_my_positions
     if affiliated_orgs.any?
       { css: { style: "min-height:38px;" },
-        left: i18n_str('contibuted_for'),
+        left: h.t('.contibuted_for'),
         right: h.render(partial: 'accounts/show/orgs', locals: { orgs: affiliated_orgs }) }
     end
-  end
-
-  private
-
-  def i18n_str(name, args = {})
-    h.t(".accounts.baseball_card.#{name}", args)
   end
 end

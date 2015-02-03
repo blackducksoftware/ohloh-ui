@@ -18,6 +18,9 @@ en:
         title: 'Languages'
     show:
       dev_history: 'Development History'
+      affiliation:
+        unaffliated: 'Unaffiliated'
+        title: 'Add your affiliation!'
       summary:
         title: 'Account Summary'
         projects_used: 'Projects Used'

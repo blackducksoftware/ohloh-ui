@@ -4,7 +4,7 @@
   .clearfix
   .col-md-5
     .margin_bottom_10px{itemprop: 'description'}
-      = render partial: 'accounts/show/description' locals: { markup: @account.markup, desc_size: ACCOUNT_DESC_LENGTH }
+      = render partial: 'accounts/show/description', locals: { markup: @account.markup, desc_size: ACCOUNT_DESC_LENGTH }
     %h4.projects_used
       = link_to t('.projects_used'), account_stacks_path(@account)
     .stacked_projects

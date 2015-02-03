@@ -1,2 +1,4 @@
-class ActsAsEditable::UndoError < StandardError
+module ActsAsEditable
+  class UndoError < StandardError
+  end
 end

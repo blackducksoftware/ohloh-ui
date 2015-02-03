@@ -16,7 +16,8 @@ class AccountsController < ApplicationController
   private
 
   def redirect_if_disabled
-    @account = Account.where(id: params[:id]).first
-    redirect_to :disabled if @account && @account.disabled?
+    accounts = Account.arel_table
+    @account = Account.where(accounts[:id].eq(params[:id]).or(accounts[:login].eq(params[:id]))).first
+    redirect_to :disabled if @account && Account::Access.new(@account).disabled?
   end
 end
