@@ -5,7 +5,7 @@ class StackIgnoresController < ApplicationController
 
   def create
     status = StackIgnore.create(stack_id: @stack.id, project_id: @project.id) ? :ok : :unprocessable_entity
-    render nothing: true, status: status
+    render json: { result: 'okay' }, status: status
   end
 
   def delete_all
@@ -21,7 +21,7 @@ class StackIgnoresController < ApplicationController
   end
 
   def find_project
-    @project = Project.find_by_url_name(params[:project_id])
+    @project = Project.find_by_url_name(params[:stack_ignore][:project_id])
     fail ParamRecordNotFound if @project.nil?
   end
 end

@@ -6,7 +6,7 @@ class StackIgnoresControllerTest < ActionController::TestCase
     stack = create(:stack)
     project = create(:project)
     login_as nil
-    post :create, stack_id: stack, project_id: project
+    post :create, stack_id: stack, stack_ignore: { project_id: project }
     must_respond_with :unauthorized
     StackIgnore.where(stack_id: stack.id, project_id: project.id).count.must_equal 0
   end
@@ -15,7 +15,7 @@ class StackIgnoresControllerTest < ActionController::TestCase
     stack = create(:stack)
     project = create(:project)
     login_as create(:account)
-    post :create, stack_id: stack, project_id: project
+    post :create, stack_id: stack, stack_ignore: { project_id: project }
     must_respond_with :not_found
     StackIgnore.where(stack_id: stack.id, project_id: project.id).count.must_equal 0
   end
@@ -24,7 +24,7 @@ class StackIgnoresControllerTest < ActionController::TestCase
     stack = create(:stack)
     project = create(:project)
     login_as stack.account
-    post :create, stack_id: stack, project_id: project
+    post :create, stack_id: stack, stack_ignore: { project_id: project }
     must_respond_with :ok
     StackIgnore.where(stack_id: stack.id, project_id: project.id).count.must_equal 1
   end
@@ -32,7 +32,7 @@ class StackIgnoresControllerTest < ActionController::TestCase
   it 'create should gracefully handle garbage project_id' do
     stack = create(:stack)
     login_as stack.account
-    post :create, stack_id: stack, project_id: 'i_am_a_banana'
+    post :create, stack_id: stack, stack_ignore: { project_id: 'i_am_a_banana' }
     must_respond_with :not_found
     StackIgnore.where(stack_id: stack.id).count.must_equal 0
   end
@@ -40,7 +40,7 @@ class StackIgnoresControllerTest < ActionController::TestCase
   it 'create should gracefully handle garbage stack_id' do
     project = create(:project)
     login_as create(:account)
-    post :create, stack_id: 'i_am_a_banana', project_id: project
+    post :create, stack_id: 'i_am_a_banana', stack_ignore: { project_id: project }
     must_respond_with :not_found
     StackIgnore.where(project_id: project.id).count.must_equal 0
   end
