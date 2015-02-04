@@ -1,0 +1,13 @@
+- page_context[:title] = t('.title')
+%h2.pull-left
+  = link_to t('reviews.rating_and_reviews'), summary_project_reviews_path(@project)
+  = t('edit')
+-# render_project_analysis_timestamp
+.clearfix
+
+.col-md-9.col-md-offset-1
+  .well
+    -# form_for(@review, url: project_review_path(@project, @review)) do |f|
+    = form_for([@project, @review]) do |f|
+      = render partial: 'fields', locals: { f: f }
+

@@ -1,0 +1,22 @@
+- page_context[:title] = t('.title')
+.project_content_title{ style: 'height: 50px' }
+  %h2.pull_left= t('reviews.rating_and_reviews')
+  -# render_project_analysis_timestamp(@project)
+.row
+  .col.col-md-3.padding_left_25
+    = render partial: 'community_and_your_rating'
+  .col.col-md-8.pull-right
+    = render partial: 'new_or_existing_review'
+.clearfix
+- if @project.reviews.exists?
+  .col-md-6.no_padding_left.padding_right_10
+    %h3= link_to 'Most Helpful Reviews', project_reviews_path(@project, sort: 'helpful')
+    = render partial: 'review_summary', collection: @most_helpful_reviews
+  .col-md-6.no_padding_right.padding_left_10
+    %h3= link_to 'Most Recent Reviews', project_reviews_path(@project, sort: 'recently_added')
+    = render partial: 'review_summary', collection: @recent_reviews
+  .clear
+  - if @project.reviews.count > 1
+    = icon_button(project_reviews_path(@project), text: 'See all reviews', size: 'small')
+- else
+  %p= t('.no_review')

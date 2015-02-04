@@ -3,6 +3,8 @@
   @each $pixel in (5, 10, 15, 20, 25, 30, 35, 40, 45, 50)
     .margin_#{$pos}_#{$pixel}
       margin-#{$pos}: #{$pixel}px !important
+    .padding_#{$pos}_#{$pixel}
+      padding-#{$pos}: #{$pixel}px !important
 
 @mixin menu_links
   :border-bottom 5px solid #0082C6

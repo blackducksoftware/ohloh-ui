@@ -1,0 +1,17 @@
+.small.soft.helpful_below
+  - if logged_in?
+    - unless review.account == current_user
+      Did this review help you?
+      - if review.helpful_to_account?(current_user)
+        %span.voted= t('reviews.yes')
+      - else
+        %a.helpful_yes{ href: review_helpfuls_path(review, format: :json) }= t('reviews.yes')
+      \|
+      - if review.not_helpful_to_account?(current_user)
+        %span.voted= t('reviews.no')
+      - else
+        %a.helpful_no{ href: review_helpfuls_path(review, format: 'json') }= t('reviews.no')
+  - else
+    Did this review help you?
+    %a.needs_login= t('reviews.yes')
+    %a.needs_login= t('reviews.no')

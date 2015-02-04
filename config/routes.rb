@@ -17,6 +17,9 @@ Rails.application.routes.draw do
 
   resources :api_keys, only: :index
   resources :domain_blacklists, except: :show
+  resources :reviews, only: :destroy do
+    resources :helpfuls
+  end
 
   resources :accounts do
     resources :api_keys, constraints: { format: :html }, except: :show
@@ -32,6 +35,7 @@ Rails.application.routes.draw do
     member do
       get :settings
       get :languages
+      post :make_spammer
       get 'edit_privacy'   => 'privacy#edit',   as: :edit_account_privacy
       put 'update_privacy' => 'privacy#update', as: :account_privacy
     end
@@ -45,7 +49,7 @@ Rails.application.routes.draw do
 
   resources :posts, only: :index, as: :all_posts
 
-  resources :projects, path: :p, only: [:show] do
+  resources :projects, path: :p, only: [:show, :edit] do
     member do
       get :users
       get :map
@@ -53,8 +57,8 @@ Rails.application.routes.draw do
       get :estimated_cost
       get 'permissions'  => 'permissions#show',   as: :permissions
       put 'permissions'  => 'permissions#update', as: :update_permissions
-      post 'rate/:score' => 'ratings#rate',       as: :rate
-      post 'unrate'      => 'ratings#unrate',     as: :unrate
+      post 'rate'        => 'ratings#rate',       as: :rate
+      delete 'unrate'      => 'ratings#unrate',     as: :unrate
     end
     collection do
       get :compare
@@ -70,7 +74,8 @@ Rails.application.routes.draw do
     resources :rss_articles, only: :index
     resources :widgets, only: :index
     resources :similar_projects, only: :index
-    resources :reviews, only: :index do
+    resources :ratings
+    resources :reviews, only: [:new, :index, :edit, :update, :create, :destroy] do
       collection { get :summary }
       resources :helpfuls, only: :create
     end
