@@ -67,7 +67,7 @@ class CommitsByProject < Draper::Decorator
   def in_date_range
     with_positions.select { |c| (@start_date..@end_date).member?(c[:month].to_date) }.map do |c|
       { pname: @positions[c[:position_id].to_i].first.project.name,
-        commits: c[:commits], month: c[:month].to_date }
+        commits: c[:commits].to_i, month: c[:month].to_date }
     end
   end
 
@@ -95,7 +95,7 @@ class CommitsByProject < Draper::Decorator
     reduced_facts = facts.take(LIMIT)
     other_projs = facts.drop(LIMIT).map(&:last)
     other_facts = other_projs.flatten.group_by { |af| af[:month] }.map do |month, afs|
-      { month: month, commits: afs.sum { |af| af[:commits].to_i }.to_s, pname: 'Other' }
+      { month: month, commits: afs.sum { |af| af[:commits].to_i }, pname: 'Other' }
     end
     reduced_facts << ['Others', other_facts]
   end
@@ -104,7 +104,7 @@ class CommitsByProject < Draper::Decorator
     facts.each_with_object({}) do |(pname, afs), hsh|
       hsh[pname] = (afs + months_without_commits).group_by { |a| a[:month] }.map do |_, d|
         d.last.merge(pname: pname).merge(d.first)
-      end
+      end.sort_by {|a| a[:month] }
     end
   end
 

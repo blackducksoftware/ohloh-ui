@@ -38,7 +38,7 @@ class AccountDecorator < Draper::Decorator
       'The analysis for this account has been scheduled.'
     elsif claimed_positions.blank? && positions.any?
       'There are no commits available to display.'
-    elsif positions.any?
+    elsif positions.empty?
       'There are no contributions available to display.'
     end
 

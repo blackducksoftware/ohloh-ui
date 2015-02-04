@@ -15,3 +15,7 @@
 //= require turbolinks
 //= require_tree .
 //= require twitter/bootstrap
+//= require highcharts/highstock
+//= require highcharts/highcharts.more
+//= require highcharts/solid-guage.min
+//= require d3.min

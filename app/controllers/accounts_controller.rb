@@ -1,4 +1,5 @@
 class AccountsController < ApplicationController
+  before_action :account, only: [:show, :commits_by_project_chart, :commits_by_language_chart]
   before_action :redirect_if_disabled, only: :show
   before_action :account_context, only: [:show]
 
@@ -13,11 +14,24 @@ class AccountsController < ApplicationController
     @projects, @logos = @account.project_core.used
   end
 
+  # NOTE: Replaces commits_history
+  def commits_by_project_chart
+    render json: Chart.new(@account).commits_by_project
+  end
+
+  # NOTE: Replaces language_experience
+  def commits_by_language_chart
+    render json: Chart.new(@account).commits_by_language(params[:scope])
+  end
+
   private
 
-  def redirect_if_disabled
+  def account
     accounts = Account.arel_table
     @account = Account.where(accounts[:id].eq(params[:id]).or(accounts[:login].eq(params[:id]))).first
+  end
+
+  def redirect_if_disabled
     redirect_to :disabled if @account && Account::Access.new(@account).disabled?
   end
 end

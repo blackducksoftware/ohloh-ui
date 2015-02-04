@@ -1,4 +1,4 @@
-- chart_url = commits_history_account_url(@account).to_s
+- chart_url = commits_by_project_chart_account_url(@account).to_s
 
 .pull-left
   %h4= link_to t('.link'), account_positions_path(@account)
@@ -7,4 +7,4 @@
 .clearfix
 
 %div{style: 'height:350px;'}
-  .chart#project_contributions{style: 'width:950px; height:300; margin-left:-28px', 'datasrc': chart_url}
+  .chart#project_contributions{style: 'width:950px; height:300; margin-left:-28px', 'datasrc' => chart_url}
