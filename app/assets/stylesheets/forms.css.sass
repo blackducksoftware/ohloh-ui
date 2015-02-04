@@ -1,0 +1,12 @@
+@import "base"
+
+form
+  // add the "required" text to required fields
+  .required
+    &:after
+      :content " (required)"
+      :color $soft_gray
+
+  // tighten up the space between help text and the fields they are for
+  input ~ .help-block
+    :margin-top -6px

@@ -20,6 +20,6 @@ class Invite < ActiveRecord::Base
   end
 
   def unique_invitee?
-    invitee.nil? && Account.find_by_email(invitee_email).nil?
+    invitee.nil? && Account.where(email: invitee_email).empty?
   end
 end
