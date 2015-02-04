@@ -11,12 +11,10 @@ class Icon < Draper::Decorator
   end
 
   def image
-    case logo
-    when NilLogo
-      h.haml_tag :p, name.first.capitalize, style: default_icon_styles
+    if logo
+      h.image_tag(logo.attachment.url(@size), style: "#{dimensions} border:0 none;", itemprop: 'image', alt: name)
     else
-      h.concat h.image_tag(s3_url_for(logo, @size), style: "#{dimensions} border:0 none;",
-        itemprop: 'image', alt: name)
+      h.haml_tag :p, name.first.capitalize, style: default_style
     end
   end
 

@@ -83,6 +83,12 @@ class Project < ActiveRecord::Base
     (key == :organization_id && !organization_id.nil?) ? false : true
   end
 
+  def main_language
+    unless best_analysis.nil? || best_analysis.main_language.nil?
+      best_analysis.main_language.name
+    end
+  end
+
   class << self
     def hot_projects(lang_id = nil)
       Project.not_deleted.been_analyzed.joins(:analyses).merge(Analysis.fresh_and_hot(lang_id))

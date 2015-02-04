@@ -37,4 +37,5 @@ class ProjectDecorator < Draper::Decorator
       ]
     ]
   end
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 end
