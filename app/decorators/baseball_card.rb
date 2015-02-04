@@ -15,6 +15,8 @@ class BaseballCard < Draper::Decorator
     ROW_NAMES.map { |row| send(row) }.compact.map { |row| row.reverse_merge(css: {}) }
   end
 
+  private
+
   def first_checkin
     if @vita_fact && @vita_fact.first_checkin
       { left: h.t('.first_checkin'),

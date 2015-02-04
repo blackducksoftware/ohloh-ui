@@ -6,7 +6,7 @@ chart:
   width: 950
   backgroundColor: 'transparent'
   style:
-    background-image: "url('charts_watermark_692')"
+    background-image: "url('/assets/charts/watermark_692.png')"
     background-repeat: 'no-repeat'
     background-position: '18% 50%'
 legend:
