@@ -3,17 +3,15 @@ class InvitesController < ApplicationController
   before_action :find_contribution
 
   def new
-    #@invite = Invite.new(model_params).decorate
   end
 
   def create
-    #@invite = Invite.new(model_params).decorate
     if @invite.save
       InviteMailer.send_invite(@invite).deliver
       flash[:success] = @invite.success_flash
-      #TO-DO change the redirection once project contributor is implemented
-      #redirect_to project_contributor_path(@invite.project, @invite.contribution_id)
-      redirect_to accounts_path #temporary
+      # TO-DO change the redirection once project contributor is implemented
+      # redirect_to project_contributor_path(@invite.project, @invite.contribution_id)
+      redirect_to accounts_path # temporary
     else
       render 'new'
     end
@@ -27,7 +25,7 @@ class InvitesController < ApplicationController
 
   def model_params
     invitee_email = params.try(:[], 'invite').try(:[], 'invitee_email')
-    {invitee_email: invitee_email, contribution: @contribution, invitor: current_user}
+    { invitee_email: invitee_email, contribution: @contribution, invitor: current_user }
   end
 
   def find_contribution
