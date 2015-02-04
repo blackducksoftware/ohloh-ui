@@ -4,16 +4,15 @@ class Invite < ActiveRecord::Base
   belongs_to :name
   belongs_to :contribution
 
-  # TO-DO: once contribution implemented, uncomment it
-  # validates :contribution, presence: true
-  validates :invitee_email, uniqueness: { scope: [:contribution_id], message: I18n.t('invites.invited_to_claim') }
-  validates :invitee_email, uniqueness: { if: unique_invitee? }, message: I18n.t('invites.invited_to_join')
+  after_initialize :set_project_id_name_id
 
-  before_save :set_project_id_name_id
+  validates :contribution, presence: true
+  validates :invitee_email, uniqueness: { scope: [:contribution_id], message: I18n.t('invites.invited_to_claim')}
+  validates :invitee_email, uniqueness: { unless: :unique_invitee?  , message: I18n.t('invites.invited_to_join')}
 
   def set_project_id_name_id
-    self.project_id ||= contribution_id >> 32
-    self.name_id ||= contribution_id & 0x7FFFFFFF
+    self.project_id ||= self.contribution_id >> 32
+    self.name_id ||= self.contribution_id & 0x7FFFFFFF
   end
 
   def success_flash
@@ -21,6 +20,6 @@ class Invite < ActiveRecord::Base
   end
 
   def unique_invitee?
-    invitee.nil? && Account.find_by_email(i.invitee_email).nil?
+    self.invitee.nil? && Account.find_by_email(self.invitee_email).nil?
   end
 end

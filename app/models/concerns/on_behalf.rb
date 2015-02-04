@@ -9,6 +9,7 @@ module OnBehalf
     belongs_to :invitee, class_name: 'Account'
 
     validates :invitor, presence: true
+    validates :invitee_email, presence: {message: I18n.t('invites.invitee_email_blank')}
     validates :invitee_email, length: { in: 3..100 }, email_format: true, allow_blank: true
     validate :email_threshold
 

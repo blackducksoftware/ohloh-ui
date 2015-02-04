@@ -1,0 +1,23 @@
+.control-group
+  %label.control-label.required To
+  .controls
+    = f.text_field :invitee_email, class: "span5"
+    - error_tag @invite, :invitee_email
+    %p.help-block
+      This email will be used only to send this invitation, and won't be stored or shared.
+
+.control-group
+  %label.control-label Subject
+  .controls
+    %input{disabled: "disabled", size: 70, value: t('.email_subject', name: @invite.invitor.name), class: 'span8'}
+
+.control-group
+  %label.control-label Message
+  .controls
+    .c3_light.inset.invite_message
+      = t('.email_body_html', invitor_name: @invite.invitor.name, invitee_name: obfuscate_email(@invite.name.name),
+          url: @invite.claim_url)
+
+.actions
+  %input.btn.btn-primary{:type => 'submit', :value => 'Send Invitation' }
+  -#=link_to_cancel
