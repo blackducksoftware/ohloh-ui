@@ -58,6 +58,7 @@ Rails.application.routes.draw do
     end
     collection do
       get :compare
+      get :autocomplete
     end
     resource :logos, only: [:new, :create, :destroy]
     resources :links, except: :show
