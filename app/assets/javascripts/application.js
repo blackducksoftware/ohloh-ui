@@ -15,3 +15,8 @@
 //= require turbolinks
 //= require_tree .
 //= require twitter/bootstrap
+
+$(document).ready(function() {
+  StackVerb.init();
+  StackShow.init();
+});
