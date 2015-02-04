@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
   before_action :account, only: [:show, :commits_by_project_chart, :commits_by_language_chart]
-  before_action :redirect_if_disabled, only: :show
+  before_action :redirect_if_disabled, only: [:show, :commits_by_project_chart, :commits_by_language_chart]
   before_action :account_context, only: [:show]
 
   def index
@@ -32,6 +32,6 @@ class AccountsController < ApplicationController
   end
 
   def redirect_if_disabled
-    redirect_to :disabled if @account && Account::Access.new(@account).disabled?
+    redirect_to disabled_account_url(@account) if @account && Account::Access.new(@account).disabled?
   end
 end

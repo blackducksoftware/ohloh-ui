@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     resources :reviews, only: [:index]
 
     member do
+      get :disabled
       get :settings
       get :languages
       get :commits_by_project_chart

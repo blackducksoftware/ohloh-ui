@@ -22,7 +22,7 @@ class Chart
   private
 
   def process_commits_by_project_data
-    years = date_objects @cbp.first.last.map { |af| af[:month].strftime('%b-%Y') }
+    years = date_objects @cbp.first.last.map { |af| af[:month].strftime('%b-%Y') } if @cbp.present?
     series = @cbp.each_with_object([]) do |(pname, afs), array|
       array.push({ 'name' => pname, 'data' => afs.map { |af| af[:commits] } })
     end
