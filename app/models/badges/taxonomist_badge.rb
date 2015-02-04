@@ -5,15 +5,15 @@ class TaxonomistBadge < Badge
   end
 
   def name
-    "TAX(I)onomist"
+    'TAX(I)onomist'
   end
 
   def short_desc
-    "edits project tags and taxonomies"
+    'edits project tags and taxonomies'
   end
 
   def level_limits
-    [1, 4, 15, 25, 55, 100, 200, 400, 600, 1000, 5000, 10000]
+    [1, 4, 15, 25, 55, 100, 200, 400, 600, 1000, 5000, 10_000]
   end
 
   def position

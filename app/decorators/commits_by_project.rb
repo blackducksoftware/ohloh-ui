@@ -104,7 +104,8 @@ class CommitsByProject < Draper::Decorator
     facts.each_with_object({}) do |(pname, afs), hsh|
       hsh[pname] = (afs + months_without_commits).group_by { |a| a[:month] }.map do |_, d|
         d.last.merge(pname: pname).merge(d.first)
-      end.sort_by {|a| a[:month] }
+      end
+      hsh[pname].sort_by! { |a| a[:month] }
     end
   end
 

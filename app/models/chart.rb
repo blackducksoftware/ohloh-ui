@@ -16,7 +16,7 @@ class Chart
 
   def commits_by_language(scope = 'full')
     @commits_by_lanugage ||=
-      CommitsByLanguage.new(@account, context: { scope: @scope }).language_experience.to_json
+      CommitsByLanguage.new(@account, context: { scope: scope }).language_experience.to_json
   end
 
   private
@@ -24,7 +24,7 @@ class Chart
   def process_commits_by_project_data
     years = date_objects @cbp.first.last.map { |af| af[:month].strftime('%b-%Y') } if @cbp.present?
     series = @cbp.each_with_object([]) do |(pname, afs), array|
-      array.push({ 'name' => pname, 'data' => afs.map { |af| af[:commits] } })
+      array.push('name' => pname, 'data' => afs.map { |af| af[:commits] })
     end
     { 'xAxis' => { 'categories' => years }, 'series' => series, 'noCommits' => @cbp.empty? }
   end
@@ -36,7 +36,7 @@ class Chart
 
   def date_objects(stringified_dates)
     stringified_dates.map do |date_string|
-      { commit_month: date_string, stringify: date_string.match(/Jan/) ? date_string.split('-').last : ''}
+      { commit_month: date_string, stringify: date_string.match(/Jan/) ? date_string.split('-').last : '' }
     end
   end
 end

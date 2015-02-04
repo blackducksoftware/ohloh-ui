@@ -5,7 +5,7 @@ class DescriberBadge < Badge
   end
 
   def short_desc
-    "edits project descriptions"
+    'edits project descriptions'
   end
 
   def level_limits

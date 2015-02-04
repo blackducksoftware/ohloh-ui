@@ -1,11 +1,11 @@
 class StackerBadge < Badge
   def eligibility_count
     @count ||= vars[:stacks_count]
-    @count ||= Stack.where{project_count.gt(0) & deleted_at.eq(nil) & account_id.eq(my{account.id})}.count
+    @count ||= Stack.where { project_count.gt(0) & deleted_at.eq(nil) & account_id.eq(my { account.id }) }.count
   end
 
   def short_desc
-    "stacks projects"
+    'stacks projects'
   end
 
   def level_limits

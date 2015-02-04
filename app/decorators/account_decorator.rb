@@ -33,38 +33,31 @@ class AccountDecorator < Draper::Decorator
 
   # NOTE: Replaces account_vita_status_message in application_helper
   def vita_status_message
-    message =
     if claimed_positions.any? && best_vita.nil?
-      'The analysis for this account has been scheduled.'
+      h.t('.analysis_scheduled')
     elsif claimed_positions.blank? && positions.any?
-      'There are no commits available to display.'
+      h.t('.no_commits')
     elsif positions.empty?
-      'There are no contributions available to display.'
+      h.t('.no_contributions')
     end
-
-    return message unless block_given?
-    message.blank? ? yield : h.haml_tag(:p) { h.concat(message) }
   end
 
   # NOTE: Replaces twitter_card_description in application_helper
   def twitter_card
-    name_fact = best_vita && best_vita.vita_fact
-    content = ""
-    return content unless markup
-    if name_fact
-      content += markup.first_line.concat(", ") if markup.first_line
-      content += "#{pluralize(name_fact.commits, 'total commit')} to #{pluralize(positions.count, 'project')}".concat(", ")
-      content += "most experienced in #{most_experienced_language.nice_name}".concat(", ") if most_experienced_language
-      content += "earned " + badges.collect(&:name).to_sentence(:last_word_connector => " and ")
-    elsif markup.first_line
-      content = markup.first_line
+    return '' unless markup
+    if best_vita && best_vita.vita_fact
+      content = "#{markup.first_line}, "\
+      "#{pluralize(name_fact.commits, 'total commit')} to #{pluralize(positions.count, 'project')}, "
+      content << "most experienced in #{most_experienced_language.nice_name}, " if most_experienced_language
+      content << 'earned ' + badges.collect(&:name).to_sentence(last_word_connector: ' and ')
+    else
+      markup.first_line
     end
-    content
   end
 
   def twitter_url
-    "https://twitter.com/intent/follow?original_referer=#{CGI.escape h.request.url}&region=follow_link&" +
-    "screen_name=#{twitter_account}&source=followbutton&variant=2.0"
+    "https://twitter.com/intent/follow?original_referer=#{CGI.escape h.request.url}&region=follow_link&"\
+      "screen_name=#{twitter_account}&source=followbutton&variant=2.0"
   end
 
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength

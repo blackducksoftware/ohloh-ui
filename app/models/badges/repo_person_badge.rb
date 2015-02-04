@@ -1,7 +1,7 @@
 class RepoPersonBadge < Badge
   def eligibility_count
     @count ||= vars[:repo_edit_count]
-    @count ||= Edit.where{target_type.eq('Enlistment') & key.eq(nil) & account_id.eq(account_id)}.count
+    @count ||= Edit.where { target_type.eq('Enlistment') & key.eq(nil) & account_id.eq(my { account_id }) }.count
   end
 
   def name
@@ -9,11 +9,11 @@ class RepoPersonBadge < Badge
   end
 
   def short_desc
-    "edits project repositories"
+    'edits project repositories'
   end
 
   def level_limits
-    [1, 5, 15, 35, 70, 110, 200, 500, 1000, 2000, 4000, 10000]
+    [1, 5, 15, 35, 70, 110, 200, 500, 1000, 2000, 4000, 10_000]
   end
 
   def position

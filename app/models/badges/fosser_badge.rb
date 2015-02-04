@@ -13,7 +13,7 @@ class FOSSerBadge < Badge
   end
 
   def short_desc
-    "contributes to free and open source software (FOSS)"
+    'contributes to free and open source software (FOSS)'
   end
 
   def level_limits

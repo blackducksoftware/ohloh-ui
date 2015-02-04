@@ -2,15 +2,18 @@ class ProjectManagerBadge < Badge
   def eligibility_count
     @count ||= vars[:manages_project_count]
     @count ||= Project.joins(:manages)
-               .where{deleted.not_eq(true) & manages.approved_by.not_eq(nil) & manages.account_id.eq(my{account.id})}.count
+              .where do
+                deleted.not_eq(true) & manages.approved_by.not_eq(nil) & manages.account_id.eq(my { account.id })
+              end
+              .count
   end
 
   def name
-    "Big Cheese"
+    'Big Cheese'
   end
 
   def short_desc
-    "manages projects"
+    'manages projects'
   end
 
   def position
