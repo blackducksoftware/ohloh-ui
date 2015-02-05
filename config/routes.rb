@@ -61,6 +61,7 @@ Rails.application.routes.draw do
     end
     collection do
       get :compare
+      get :autocomplete
     end
     resource :logos, only: [:new, :create, :destroy]
     resources :links, except: :show
@@ -105,7 +106,19 @@ Rails.application.routes.draw do
     resources :widgets
   end
 
-  resources :stacks, except: [:new, :edit]
+  resources :stacks, only: [:show, :create, :update, :destroy] do
+    member do
+      get :similar
+      get :builder
+    end
+    resources :stack_entries, only: [:create, :destroy]
+    resources :stack_ignores, only: [:create] do
+      collection do
+        delete :delete_all
+      end
+    end
+    resources :widgets, only: [:index]
+  end
   resources :languages, only: [:show, :index] do
     collection { get :compare }
   end

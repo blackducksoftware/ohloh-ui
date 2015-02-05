@@ -57,7 +57,7 @@ en:
     max_characters: 'max of %{number} characters'
   account_summary: 'Account Summary'
   my_stacks: 'My Stacks'
-  stacks: 'Stacks'
+  stacks_title: 'Stacks'
   contributions: 'Contributions'
   languages: 'Languages'
   recognition: 'Recognition'

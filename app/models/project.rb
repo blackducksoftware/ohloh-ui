@@ -32,6 +32,7 @@ class Project < ActiveRecord::Base
   scope :hot, ->(lang_id) { hot_projects(lang_id) }
   scope :by_popularity, -> { where.not(user_count: 0).order(user_count: :desc) }
   scope :by_activity, -> { joins(:analyses).joins(:analysis_summaries).by_popularity.thirty_day_summaries }
+  scope :case_insensitive_name, ->(mixed_case) { where(['lower(name) = ?', mixed_case.downcase]) }
 
   acts_as_editable editable_attributes: [:name, :url_name, :logo_id, :organization_id, :best_analysis_id,
                                          :description, :tag_list, :missing_source], # TODO: add :url and :download_url

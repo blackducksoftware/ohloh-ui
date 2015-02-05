@@ -15,6 +15,15 @@ class StackEntry < ActiveRecord::Base
   validates :note, length: { within: 0..MAX_NOTE_LENGTH }, allow_nil: true
 
   after_create :update_counters
+  after_create :clean_up_ignores
+
+  def project_name
+    project ? project.name : ''
+  end
+
+  def project_name=(name)
+    self.project = Project.not_deleted.case_insensitive_name(name).first
+  end
 
   def destroy
     update_attributes(deleted_at: Time.now.utc)
@@ -22,8 +31,8 @@ class StackEntry < ActiveRecord::Base
   end
 
   def update_counters
-    stack.update_attributes(project_count: stack.stack_entries.count) if stack
-    project.update_attributes(user_count: project.stack_entries.count + 1) if project
+    stack.update_columns(project_count: stack.stack_entries.count) if stack
+    project.update_columns(user_count: project.stacks.count('distinct(account_id)') + 1) if project
   end
 
   class << self
@@ -49,5 +58,11 @@ class StackEntry < ActiveRecord::Base
         .and(entries1[:project_id].not_eq(entries2[:project_id]))
       ).join_sources)
     end
+  end
+
+  private
+
+  def clean_up_ignores
+    stack.stack_ignores.for_project(project).destroy_all
   end
 end
