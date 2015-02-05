@@ -1,30 +1,32 @@
-%h1.margin_bottom_20 Forums
-%h2.soft Active Topics
+%h1.margin_bottom_20= t('.forums')
+%h2.soft= t('.active_topics')
 = render partial: '/topics/current_discussions', object: @recent_topics
 
 .center
-  = link_to 'Recent Posts', all_posts_path, class: 'btn btn-info btn-small'
-  = link_to 'Unanswered Posts', all_posts_path(unanswered: true), class: 'btn btn-info btn-small'
+  = link_to t('.recent_posts'), all_posts_path, class: 'btn btn-info btn-small'
+  = link_to t('.unanswered_posts'), all_posts_path(unanswered: true), class: 'btn btn-info btn-small'
 
-%h2.soft All Forums
+%h2.soft= t('.all_forums')
 %table.table.table-striped
   %thead
     %tr
       %th{ width: '70%' }
-        %h4.nomargin.strong Forum
+        %h4.nomargin.strong= t('.forums')
       %th.center{ width: '15%' }
-        %h4.nomargin.center.strong Topics
+        %h4.nomargin.center.strong= t('.topics')
       %th.center{ width: '15%' }
-        %h4.nomargin.center.strong Posts
+        %h4.nomargin.center.strong= t('.posts')
   %tbody
     - @forums.each do |forum|
       %tr
         %td.first
           %h3.nomargin
-            %a{ href: forum_path(forum) } = h forum.name
-          %p.nomargin= h forum.description
+            = link_to forum.name, forum_path(forum)
+          %p.nomargin= forum.description
+          / TODO: Changing the below to forum.topics/posts.count
+          / creates an extremely large query. Figure out how to fix this.
         %td.center= forum.topics_count
         %td.center= forum.posts_count
 
 - if current_user_is_admin?
-  = link_to 'New Forum', new_forum_path, class: 'btn btn-primary btn-small'
+  = link_to t('.new_forum'), new_forum_path, class: 'btn btn-primary btn-small'

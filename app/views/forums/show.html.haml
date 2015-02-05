@@ -1,5 +1,5 @@
 %h1.margin_bottom_0
-  = link_to 'Forums', forums_url
+  = link_to t('.forums'), forums_url
   \:
   = @forum.name
 
@@ -7,17 +7,17 @@
   %thead
     %tr
       %th.first.span3
-        %h4.nomargin.strong Topic
+        %h4.nomargin.strong= t('.topic')
       %th.span1
       %th.span1
-        %h4.nomargin.center.strong Replies
+        %h4.nomargin.center.strong= t('.replies')
       %th.span1
-        %h4.nomargin.center.strong Views
+        %h4.nomargin.center.strong= t('.views')
       %th.span3
-        %h4.nomargin.center.strong Last Post
+        %h4.nomargin.center.strong= t('.last_post')
   %tbody
     = render partial: '/topics/topic', collection: @topics
 .row
   .span12
-    = link_to 'Add New Topic', new_forum_topic_path(@forum), class: 'btn btn-primary btn-mini'
+    = link_to t('.add_new_topic'), new_forum_topic_path(@forum), class: 'btn btn-primary btn-mini'
     = will_paginate @topics, style: 'margin-top: -26px'

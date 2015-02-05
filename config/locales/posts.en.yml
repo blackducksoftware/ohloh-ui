@@ -1,0 +1,9 @@
+ en:
+
+   posts:
+      create:
+        success: 'Post successfully created'
+        error: 'Unable to successfully create post'
+      update:
+        success: 'Post updated'
+        error: 'Sorry, there was a problem updating the post'

@@ -1,0 +1,9 @@
+  en:
+  
+    topics:
+      create:
+        success: 'Topic successfully created'
+        error: 'Unable to successfully create topic'
+      update:
+        success: 'Topic updated'
+        error: 'Sorry, there was a problem updating the topic'

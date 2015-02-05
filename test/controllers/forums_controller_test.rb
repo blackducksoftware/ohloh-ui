@@ -23,6 +23,7 @@ describe ForumsController do
       post :create, forum: { name: 'Ruby vs. Javascript, who will win?' }
     end
     must_redirect_to forums_path
+    flash[:notice].must_equal 'Forum successfully created'
   end
 
   it 'admin fails create' do
@@ -30,6 +31,7 @@ describe ForumsController do
     assert_no_difference('Forum.count') do
       post :create, forum: { name: '' }
     end
+    flash[:notice].must_equal 'Unable to successfully create forum'
   end
 
   it 'admin show with pagination' do
@@ -53,6 +55,15 @@ describe ForumsController do
     put :update, id: forum.id, forum: { name: 'Ruby vs. Python vs. Javascript deathmatch' }
     forum.reload
     forum.name.must_equal 'Ruby vs. Python vs. Javascript deathmatch'
+    flash[:notice].must_equal 'Forum successfully updated'
+  end
+
+  it 'admin fails to update' do
+    login_as admin
+    put :update, id: forum.id, forum: { name: '' }
+    forum.reload
+    forum.name.must_equal forum.name
+    flash[:notice].must_equal 'Sorry, there was a problem updating the forum'
   end
 
   it 'admin destroy' do
@@ -62,6 +73,7 @@ describe ForumsController do
       delete :destroy, id: forum.id
     end
     must_redirect_to forums_path
+    flash[:notice].must_equal 'Forum successfully removed'
   end
 
   #------------------User Functionality----------------------
@@ -77,11 +89,12 @@ describe ForumsController do
     must_respond_with :unauthorized
   end
 
-  it 'create' do
+  it 'create fails for a regular user' do
     login_as user
     assert_no_difference('Forum.count') do
       post :create, forum: { name: 'Ruby vs. Javascript, who will win?' }
     end
+    must_respond_with :unauthorized
   end
 
   it 'show with pagination' do
@@ -105,6 +118,7 @@ describe ForumsController do
     put :update, id: forum.id, forum: { name: 'Ruby vs. Python vs. Javascript deathmatch' }
     forum.reload
     forum.name.must_equal forum.name
+    must_respond_with :unauthorized
   end
 
   it 'destroy' do
@@ -113,5 +127,6 @@ describe ForumsController do
     assert_no_difference('Forum.count') do
       delete :destroy, id: forum.id
     end
+    must_respond_with :unauthorized
   end
 end

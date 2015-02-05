@@ -1,17 +1,17 @@
 %fieldset
   .control-group
-    = f.label :title, 'Title (required)', class: 'control-label required'
+    = f.label :title, t('.title'), class: 'control-label required'
     .controls
       = f.text_field :name, class: 'span8'
     - if @forum.errors[:name]
       %p.error = {@forum.errors[:name] }
 
   .control-group
-    = f.label :position, 'Position', class: 'control-label'
+    = f.label :position, t('.position'), class: 'control-label'
     .controls
       = text_field :position, size: 5
 
   .control-group
-    = f.label :description, 'Description', class: 'control-label'
+    = f.label :description, t('.description'), class: 'control-label'
     .controls
       = text_area :description, rows: 10, class: 'span10'

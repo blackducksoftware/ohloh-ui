@@ -14,9 +14,10 @@ class ForumsController < ApplicationController
   def create
     @forum = Forum.new(forum_params)
     if @forum.save
-      redirect_to forums_path, flash: { success: t('.success') }
+      redirect_to forums_path, notice: t('.success')
     else
-      redirect_to forums_path, flash: { error: t('.error') }
+      # render :new, notice: t('.error')
+      render :new
     end
   end
 
@@ -26,15 +27,20 @@ class ForumsController < ApplicationController
 
   def update
     if @forum.update(forum_params)
-      redirect_to forums_path, flash: { success: t('.success') }
+      redirect_to forums_path, notice: t('.success')
     else
-      redirect_to forums_path, flash: { success: t('.error') }
+      redirect_to forums_path, notice: t('.error')
     end
   end
 
   def destroy
-    @forum.destroy
-    redirect_to forums_path
+    # TODO: Look into redirect_back
+    # TODO: Look into error method in application controller
+    if @forum.destroy
+      redirect_to forums_path, notice: t('.success')
+    else
+      redirect_to forums_path, notice: t('.error')
+    end
   end
 
   private
