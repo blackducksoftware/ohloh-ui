@@ -20,6 +20,10 @@ en:
       analysis_scheduled: 'The analysis for this account has been scheduled.'
       no_commits: 'There are no commits available to display.'
       no_contributions: 'There are no contributions available to display.'
+      commits_to: ', %{commits} to %{postions}, '
+      experience_in: 'most experienced in %{nice_name}, '
+      earned: 'earned '
+      and: ' and '
       dev_history: 'Development History'
       affiliation:
         unaffliated: 'Unaffiliated'

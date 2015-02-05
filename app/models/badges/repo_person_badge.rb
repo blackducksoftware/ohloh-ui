@@ -1,7 +1,7 @@
 class RepoPersonBadge < Badge
   def eligibility_count
     @count ||= vars[:repo_edit_count]
-    @count ||= Edit.where { target_type.eq('Enlistment') & key.eq(nil) & account_id.eq(my { account_id }) }.count
+    @count ||= Edit.where(target_type: 'Enlistment', key: nil, account_id: account.id).count
   end
 
   def name

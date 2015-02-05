@@ -31,7 +31,7 @@ class BaseballCard < Draper::Decorator
 
   def commits
     return if best_vita.blank?
-    { left: h.t('commits.left'),
+    { left: h.t('.commits.left'),
       right: h.t('.commits.right', count: @vita_fact.commits.to_i) }
   end
 

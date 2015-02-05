@@ -141,4 +141,12 @@ class AccountDecoratorTest < Draper::TestCase
       admin.decorate.sidebar.fourth.must_equal sidebars.fourth
     end
   end
+
+  describe 'vita_status_message' do
+    it 'should return no_commmits message when positions are empty' do
+      AccountDecorator.any_instance.stubs(:positions).returns([])
+      AccountDecorator.any_instance.stubs(:claimed_positions).returns([true])
+      admin.decorate.vita_status_message.must_equal I18n.t('accounts.show.analysis_scheduled')
+    end
+  end
 end

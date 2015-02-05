@@ -84,9 +84,8 @@ class Project < ActiveRecord::Base
   end
 
   def main_language
-    unless best_analysis.nil? || best_analysis.main_language.nil?
-      best_analysis.main_language.name
-    end
+    return if best_analysis.nil? || best_analysis.main_language.nil?
+    best_analysis.main_language.name
   end
 
   class << self

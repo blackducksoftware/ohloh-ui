@@ -35,24 +35,24 @@ class AccountDecorator < Draper::Decorator
   def vita_status_message
     if claimed_positions.any? && best_vita.nil?
       h.t('.analysis_scheduled')
-    elsif claimed_positions.blank? && positions.any?
-      h.t('.no_commits')
     elsif positions.empty?
       h.t('.no_contributions')
+    elsif claimed_positions.blank?
+      h.t('.no_commits')
     end
   end
 
-  # NOTE: Replaces twitter_card_description in application_helper
+  # NOTE: Replaces twitter_card_description in accounts_helper
   def twitter_card
     return '' unless markup
-    if best_vita && best_vita.vita_fact
-      content = "#{markup.first_line}, "\
-      "#{pluralize(name_fact.commits, 'total commit')} to #{pluralize(positions.count, 'project')}, "
-      content << "most experienced in #{most_experienced_language.nice_name}, " if most_experienced_language
-      content << 'earned ' + badges.collect(&:name).to_sentence(last_word_connector: ' and ')
-    else
-      markup.first_line
+    content = markup.first_line.to_s
+    name_fact = best_vita.try(:vita_fact)
+    if name_fact
+      content += t('.commits_to', commits: pluralize(name_fact.commits, 'total commit'),
+                                  positions: pluralize(positions.count, 'project'))
+      content += addtional_twitter_descripion
     end
+    content
   end
 
   def twitter_url
@@ -93,6 +93,12 @@ class AccountDecorator < Draper::Decorator
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   private
+
+  def addtional_twitter_descripion
+    content = t('.experience_in', nice_name: most_experienced_language.nice_name) if most_experienced_language
+    content += t('.earned') + badges.collect(&:name).to_sentence(last_word_connector: t('.and'))
+    content
+  end
 
   def append_project_menu(menus)
     menus.first << [:managed_projects, h.t(:managed_projects), h.account_projects_path(object)] if projects.exists?
