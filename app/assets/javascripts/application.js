@@ -19,3 +19,8 @@
 //= require highcharts/highcharts.more
 //= require highcharts/solid-guage.min
 //= require d3.min
+
+$(document).ready(function() {
+  StackVerb.init();
+  StackShow.init();
+});

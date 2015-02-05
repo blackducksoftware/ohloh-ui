@@ -1,7 +1,7 @@
 !!! 5
 %html
   %head
-    - page_title = page_context[:title] ? "#{page_context[:title]} - Open Hub" : 'Open Hub'
+    - page_title = content_for?(:html_title) ? "#{ yield(:html_title) } - Open Hub" : 'Open Hub'
     %title= page_title
     %meta{ name: 'viewport', content: 'width=device-width, initial-scale=1.0' }
     %meta{ name: 'description', content: page_context[:description] }

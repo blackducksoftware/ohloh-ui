@@ -1,5 +1,5 @@
 - if @organization
-  - @page_context[:title] = t('.meta_title')
+  - content_for(:html_title) { t('.meta_title') }
 -# else
   -# @meta_title_final = project_pages_title(t('.page_title'))
 .project_content_title
