@@ -1,0 +1,23 @@
+%h1.margin_bottom_0
+  = link_to 'Forums', forums_url
+  \:
+  = @forum.name
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th.first.span3
+        %h4.nomargin.strong Topic
+      %th.span1
+      %th.span1
+        %h4.nomargin.center.strong Replies
+      %th.span1
+        %h4.nomargin.center.strong Views
+      %th.span3
+        %h4.nomargin.center.strong Last Post
+  %tbody
+    = render partial: '/topics/topic', collection: @topics
+.row
+  .span12
+    = link_to 'Add New Topic', new_forum_topic_path(@forum), class: 'btn btn-primary btn-mini'
+    = will_paginate @topics, style: 'margin-top: -26px'

@@ -8,7 +8,7 @@ class PageContextHelperTest < ActionView::TestCase
   let(:admin) { accounts(:admin) }
   let(:linux_organization) { create(:organization, url_name: :linux) }
   let(:linux) { projects(:linux) }
-  let(:rails) { forums(:rails) }
+  let(:rails) { create(:forum) }
 
   let(:account_menus) do
     { select_footer_nav: :account_summary,

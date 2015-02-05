@@ -1,41 +1,37 @@
 class PostsController < ApplicationController
-  before_action :session_required, only: [:new, :create, :edit, :update]
+  before_action :session_required, only: [:create, :edit, :update]
   before_action :admin_session_required, only: [:destroy]
-  before_action :find_forum_and_topic_records
+  before_action :find_topic_record, except: :index
   before_action :find_post_record, only: [:edit, :update, :destroy]
 
   def index
-    @posts = @topic.posts
-    redirect_to forum_topic_path(@forum, @topic)
-  end
-
-  def new
-    @post = @topic.posts.build
+    @posts = Post.paginate(page: params[:page], per_page: 10)
+    redirect_to all_posts_path
   end
 
   def create
     @post = build_new_post
     respond_to do |format|
-      if @post.save
+      if verify_recaptcha(model: @post) && @post.save
         post_notification(@post)
-        format.html { redirect_to forum_topic_path(@forum, @topic), flash: { success: t('.success') } }
+        format.html { redirect_to topic_path(@topic), flash: { success: t('.success') } }
       else
-        format.html { redirect_to forum_topic_path(@forum, @topic), flash: { error: t('.error') } }
+        format.html { redirect_to topic_path(@topic), flash: { error: t('.error') } }
       end
     end
   end
 
   def edit
     return unless (current_user.id != @post.account_id) && (current_user_is_admin? == false)
-    redirect_to forum_topic_path(@forum, @topic)
+    redirect_to topic_path(@topic)
   end
 
   def update
     respond_to do |format|
       if @post.update(post_params)
-        format.html { redirect_to forum_topic_path(@forum, @topic), flash: { success: t('.success') } }
+        format.html { redirect_to topic_path(@topic), flash: { success: t('.success') } }
       else
-        format.html { redirect_to forum_topic_path(@forum, @topic), flash: { error: t('.error') } }
+        format.html { redirect_to topic_path(@topic), flash: { error: t('.error') } }
       end
     end
   end
@@ -43,7 +39,7 @@ class PostsController < ApplicationController
   def destroy
     @post.destroy
     respond_to do |format|
-      format.html { redirect_to forum_topic_path(@forum, @topic) }
+      format.html { redirect_to topic_path(@topic) }
     end
   end
 
@@ -79,13 +75,12 @@ class PostsController < ApplicationController
   end
 
   def find_post_record
-    find_forum_and_topic_records
-    @post = @topic.posts.find_by(id: params[:id])
+    find_topic_record
+    @post = Post.find_by(id: params[:id])
   end
 
-  def find_forum_and_topic_records
-    @forum = Forum.find_by(id: params[:forum_id])
-    @topic = @forum.topics.find_by(id: params[:topic_id])
+  def find_topic_record
+    @topic = Topic.find_by(id: params[:topic_id])
   end
 
   def post_params
