@@ -59,15 +59,15 @@ module ApplicationHelper
   end
 
   def default_icon_styles(size, opts)
-    fnt_size_map = { 64 => 56, 48 => 40, 40 => 32, 32 => 26, 24 => 18, 16 => 13 }
+    font_size_map = { 64 => 56, 48 => 40, 40 => 32, 32 => 26, 24 => 18, 16 => 13 }
     i_size = icon_int_size(size, opts)
-    fnt_size = fnt_size_map[i_size] || 14
+    font_size = font_size_map[i_size] || 14
     bg = opts[:bg] || 'EEE'
     color = opts[:color] || '000'
     margin_right = i_size == 64 ? 0 : 2
 
     "background-color:##{bg}; color:##{color}; border:1px dashed ##{color}; \
-      font-size:#{fnt_size}px; line-height:#{i_size}px; #{icon_dimensions(size, opts)} \
+      font-size:#{font_size}px; line-height:#{i_size}px; #{icon_dimensions(size, opts)} \
       text-align:center; float:left; margin-bottom:0; margin-top:0; margin-right:#{margin_right}px"
   end
 

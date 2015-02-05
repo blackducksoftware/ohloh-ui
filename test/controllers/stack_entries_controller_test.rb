@@ -20,7 +20,7 @@ class StackEntriesControllerTest < ActionController::TestCase
     StackEntry.where(stack_id: stack.id, project_id: project.id).count.must_equal 0
   end
 
-  it 'create should persist a stack ignore into the db' do
+  it 'create should persist a stack entry into the db' do
     stack = create(:stack)
     project = create(:project)
     login_as stack.account
@@ -43,6 +43,15 @@ class StackEntriesControllerTest < ActionController::TestCase
     post :create, stack_id: 'i_am_a_banana', stack_entry: { project_id: project }
     must_respond_with :not_found
     StackEntry.where(project_id: project.id).count.must_equal 0
+  end
+
+  it 'create should gracefully save errors' do
+    stack = create(:stack)
+    project = create(:project)
+    login_as stack.account
+    StackEntry.any_instance.expects(:persisted?).twice.returns false
+    post :create, stack_id: stack, stack_entry: { project_id: project }
+    must_respond_with :unprocessable_entity
   end
 
   # destroy action
