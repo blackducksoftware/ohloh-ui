@@ -23,6 +23,7 @@ describe TopicsController do
       post :create, forum_id: forum.id, topic: { title: 'Example Topic title', posts_attributes:
                                                 [{ body: 'Example Post body', account_id: nil }] }
     end
+    must_respond_with :unauthorized
   end
 
   it 'show with post pagination' do
@@ -71,18 +72,20 @@ describe TopicsController do
                                                 [{ body: 'Post object that comes by default' }] }
     end
     must_redirect_to forum_path(forum.id)
+    flash[:notice].must_equal 'Topic successfully created'
   end
 
-  it 'user fails create a topic and an accompanying post' do
+  it 'user fails to create a topic and an accompanying post' do
     login_as(user)
     assert_no_difference(['Topic.count', 'Post.count']) do
       post :create, forum_id: forum.id, topic: { title: '', posts_attributes:
                                                 [{ body: '' }] }
     end
-    must_redirect_to forum_path(forum.id)
+    must_render_template :new
   end
 
   test 'user creates a topic/post with valid recaptcha' do
+    # TODO: Message might be changed
     login_as(user)
     TopicsController.any_instance.expects(:verify_recaptcha).returns(true)
     assert_difference(['Topic.count', 'Post.count']) do
@@ -90,9 +93,11 @@ describe TopicsController do
                                                 [{ body: 'Post object that comes by default' }] }
     end
     must_redirect_to forum_path(forum.id)
+    flash[:notice].must_equal 'Topic successfully created'
   end
 
   test 'user fails to create a topic/post because of invalid recaptcha' do
+    # TODO: message might be changed.
     login_as(user)
     TopicsController.any_instance.expects(:verify_recaptcha).returns(false)
     assert_no_difference(['Topic.count', 'Post.count']) do
@@ -121,6 +126,7 @@ describe TopicsController do
     put :update, id: topic.id, topic: { title: 'Changed title for test purposes' }
     topic.reload
     topic.title.must_equal topic.title
+    must_respond_with :unauthorized
   end
 
   it 'user destroy' do
@@ -129,6 +135,7 @@ describe TopicsController do
     assert_no_difference('Topic.count') do
       post :destroy, id: topic2.id
     end
+    must_respond_with :unauthorized
   end
 
   # #-----------Admin Account------------------------
@@ -151,18 +158,20 @@ describe TopicsController do
                                                 [{ body: 'Post object that comes by default' }] }
     end
     must_redirect_to forum_path(forum.id)
+    flash[:notice].must_equal 'Topic successfully created'
   end
 
-  it 'user fails create a topic and an accompanying post' do
+  it 'admin fails create a topic and an accompanying post' do
     login_as(admin)
     assert_no_difference(['Topic.count', 'Post.count']) do
       post :create, forum_id: forum.id, topic: { title: '', posts_attributes:
                                                 [{ body: '' }] }
     end
-    must_redirect_to forum_path(forum.id)
+    must_render_template :new
   end
 
   it 'admin creates a topic/post with valid recaptcha' do
+    # TODO: Message might change
     login_as(admin)
     TopicsController.any_instance.expects(:verify_recaptcha).returns(true)
     assert_difference(['Topic.count', 'Post.count']) do
@@ -173,6 +182,7 @@ describe TopicsController do
   end
 
   it 'admin fails to create a topic/post because of invalid recaptcha' do
+    # TODO: Message might change.
     login_as(admin)
     TopicsController.any_instance.expects(:verify_recaptcha).returns(false)
     assert_no_difference(['Topic.count', 'Post.count']) do
@@ -200,6 +210,15 @@ describe TopicsController do
     put :update, id: topic.id, topic: { title: 'Changed title for test purposes' }
     topic.reload
     topic.title.must_equal 'Changed title for test purposes'
+    flash[:notice].must_equal 'Topic updated'
+  end
+
+  it 'admin fails to update' do
+    login_as admin
+    put :update, id: topic.id, topic: { title: '' }
+    topic.reload
+    topic.title.must_equal topic.title
+    flash[:notice].must_equal 'Sorry, there was a problem updating the topic'
   end
 
   it 'admin destroy' do
@@ -212,6 +231,7 @@ describe TopicsController do
   end
 
   it 'admin can close a topic' do
+    # TODO: Will need to change the message for this
     login_as admin
     put :update, id: topic.id, topic: { closed: true }
     topic.reload
@@ -219,6 +239,7 @@ describe TopicsController do
   end
 
   it 'admin can reopen a topic' do
+    # TODO: Will need to change the message for this
     login_as admin
     topic.closed = true
     topic.reload

@@ -9,7 +9,7 @@
       %small.date.avatar_name
         = # { time_ago_in_words(post.created_at) } ago
     - if (current_user.id == post.account_id) || (current_user_is_admin?)
-      = link_to 'Edit post', edit_post_path(post), class: 'btn btn-mini btn-info'
+      = link_to 'Edit post', edit_topic_post_path(post.topic, post), class: 'btn btn-mini btn-info'
     .clear
 .row
   &nbsp;

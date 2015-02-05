@@ -31,7 +31,7 @@ describe ForumsController do
     assert_no_difference('Forum.count') do
       post :create, forum: { name: '' }
     end
-    flash[:notice].must_equal 'Unable to successfully create forum'
+    must_render_template :new
   end
 
   it 'admin show with pagination' do

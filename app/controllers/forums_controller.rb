@@ -16,7 +16,6 @@ class ForumsController < ApplicationController
     if @forum.save
       redirect_to forums_path, notice: t('.success')
     else
-      # render :new, notice: t('.error')
       render :new
     end
   end
@@ -34,8 +33,6 @@ class ForumsController < ApplicationController
   end
 
   def destroy
-    # TODO: Look into redirect_back
-    # TODO: Look into error method in application controller
     if @forum.destroy
       redirect_to forums_path, notice: t('.success')
     else

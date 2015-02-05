@@ -1,6 +1,6 @@
 .span12
   %h1.margin_bottom_20
-    = link_to 'Forums', forums_path
+    = link_to t('.forums'), forums_path
     \:
     = link_to @forum.name, forum_path(@forum)
 
@@ -11,10 +11,11 @@
       closed
   .btn-group.float_right
     - if current_user_is_admin? && !@topic.closed
-      = link_to 'Close', topic_path(@topic, topic: { closed: '0' }),
+    / Stack Overflow:
+      = link_to t('.close'), topic_path(@topic, topic: { closed: '0' }),
         method: :put, confirm: 'Are you sure you want to close this topic?',
         class: 'btn btn-mini', title: "Close topic '#{@topic.title}'"
-      / TODO: Rewrite Move and Spam code
+      / TODO: Rewrite Move and Spam as model methods and not controller methods
 
     / - if (current_user_is_admin?)
     /   = link_to "Move", move_dialog_topic_path(@topic), {:class => "btn btn-mini", :id => "move_link"}
@@ -26,10 +27,10 @@
     / disabling the account and removing all posts?", :class => "btn btn-mini btn-warning",
     / :title => "Mark #{@topic.posts.first.account.name} as spammer!" }
     - if current_user_is_admin? || (@topic.posts.count == 1 && @topic.account == current_user)
-      = link_to 'Delete', topic_path(@topic), method: :delete, confirm: 'Are you sure you want to delete this topic?',
+      = link_to t('.delete'), topic_path(@topic), method: :delete, confirm: 'Are you sure you want to delete this topic?',
         class: 'btn btn-danger btn-mini', title: "Delete topic '#{@topic.title}'"
     - if (current_user_is_admin? || (@topic.account == current_user)) && @topic.closed
-      = link_to 'Re-open', topic_path(@topic, topic: { closed: '0' }), method: :put,
+      = link_to t('.reopen'), topic_path(@topic, topic: { closed: '0' }), method: :put,
         confirm: 'Are you sure you want to re-open this topic?', class: 'btn btn-mini btn-info',
         title: "Re-open topic '#{@topic.title}'"
 
@@ -41,10 +42,10 @@
     - if @topic.closed?
       %p
         - if (@topic.account == current_user)
-          %p Comments to this topic are now closed.
+          %p t(.close_topic)
           %p
             As the user who created this topic, you may
-            = link_to 're-open', forum_topic_path(@forum, @topic, topic: { closed: '0' }), method: :put
+            = link_to t('.reopen'), forum_topic_path(@forum, @topic, topic: { closed: '0' }), method: :put
             the topic if you feel your question  was not answered or need more information on this topic.
         - else
           %p Comments to this topic are now closed. Please create a new topic to get technical support.

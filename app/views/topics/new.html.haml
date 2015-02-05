@@ -1,15 +1,19 @@
 %h1.margin_bottom_20
-  %span = link_to 'Forums', forums_url
+  %span= link_to t('.forums'), forums_url
   \:
-  %a{ href: forum_path(@forum) } = @forum.name
+  =link_to @forum.name, forum_path(@forum)
 
+- if @topic.errors.any? 
+  %div.error_explanation
+    %h4= pluralize(@topic.errors.count, 'error')
 
-%h2 New Topic
+%h2= t('.new_topic')
 .well.span11
   .span9
-    = form_for [@forum, @topic], html: { class: 'topic_form' } do
-      render partial: 'form', locals: { f: f }
-    .control-group
-    = submit_tag 'Post Topic', class: 'btn btn-primary btn-small'
+    = form_for [@forum, @topic], html: { class: 'topic_form' } do |f|
+      = render partial: 'form', locals: { f: f }
+      .actions
+      = f.submit t('.create_topic'), class: 'btn btn-primary btn-small'
   .span2.no_margin_left{ style: 'margin-top: -10px' }
-    render 'shared/markdown_help'
+  / TODO: Translate markdown help
+  = render 'shared/markdown_help'

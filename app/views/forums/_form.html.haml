@@ -1,10 +1,14 @@
+- if @forum.errors.any? 
+  %div.error_explanation
+    %h4= pluralize(@forum.errors.count, 'error')
+
 %fieldset
   .control-group
     = f.label :title, t('.title'), class: 'control-label required'
     .controls
       = f.text_field :name, class: 'span8'
     - if @forum.errors[:name]
-      %p.error = {@forum.errors[:name] }
+      %p.error= @forum.errors[:name]
 
   .control-group
     = f.label :position, t('.position'), class: 'control-label'

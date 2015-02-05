@@ -20,9 +20,9 @@ class TopicsController < ApplicationController
     @topic = build_new_topic
     respond_to do |format|
       if verify_recaptcha(model: @topic) && @topic.save
-        format.html { redirect_to forum_path(@forum), flash: { success: t('.success') } }
+        format.html { redirect_to forum_path(@forum), notice: t('.success') }
       else
-        format.html { redirect_to forum_path(@forum), flash: { error: t('.error') } }
+        format.html { render :new }
       end
     end
   end
@@ -34,17 +34,20 @@ class TopicsController < ApplicationController
   def update
     respond_to do |format|
       if @topic.update(topic_params)
-        format.html { redirect_to topic_path(@topic), flash: { success: t('.success') } }
+        format.html { redirect_to topic_path(@topic), notice: t('.success') }
       else
-        format.html { redirect_to topic_path(@topic), flash: { error: t('.error') } }
+        format.html { redirect_to topic_path(@topic), notice: t('.error') }
       end
     end
   end
 
   def destroy
-    @topic.destroy
     respond_to do |format|
-      format.html { redirect_to forums_path }
+      if @topic.destroy
+        format.html { redirect_to forums_path, notice: t('.success') }
+      else
+        format.html { redirect_to forums_path, notice: t('.error') }
+      end
     end
   end
 

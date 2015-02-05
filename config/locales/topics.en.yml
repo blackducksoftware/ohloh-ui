@@ -1,9 +1,31 @@
   en:
-  
+
     topics:
+      new:
+        create_topic: 'Post Topic'
       create:
         success: 'Topic successfully created'
         error: 'Unable to successfully create topic'
+      show:
+        close: 'Close'
+        # TODO: close_confirm: 'Are you sure you want to close this topic?'
+        delete: 'Delete'
+        reopen: 'Re-open'
+        close_topic: 'Comments to this topic are now closed.'
+      edit:
+        save_changes: 'Save Changes'
       update:
         success: 'Topic updated'
         error: 'Sorry, there was a problem updating the topic'
+      destroy:
+        success: 'Topic successfully removed'
+        error: 'There was a problem deleting the forum'
+      form:
+        title: 'Title (required)'
+        enter_topic_title: 'Enter the topic title.'
+        message: 'Message'
+        first_post: 'This will be the first post'
+        sticky: 'Sticky'
+        closed: 'Closed'
+
+      # TODO: Write error messages for fields

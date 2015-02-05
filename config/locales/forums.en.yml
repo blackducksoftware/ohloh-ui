@@ -17,7 +17,7 @@ en:
       create: 'Create'
     create:
       success: 'Forum successfully created'
-      error: 'Unable to successfully create forum'
+      error: 'There was a problem!'
     update:
       success: 'Forum successfully updated'
       error: 'Sorry, there was a problem updating the forum'
@@ -28,16 +28,3 @@ en:
       title: 'Title (required)'
       position: 'Position'
       description: 'Description'
-
-# TODO: Write error messages
-  # activerecord:
-  #   errors:
-  #     messages:
-  #       inclusion:
-  #       blank:
-  # errors:
-  #   template:
-  #     body:
-  #       header:
-  #         one:
-  #         other:
