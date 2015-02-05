@@ -7,7 +7,7 @@ class InvitesController < ApplicationController
       InviteMailer.send_invite(@invite).deliver
       # TO-DO change the redirection once project contributor is implemented
       # redirect_to project_contributor_path(@invite.project, @invite.contribution_id)
-      redirect_to accounts_path, flash: {sucess: @invite.success_flash} # temporary
+      redirect_to accounts_path, flash: { sucess: @invite.success_flash } # temporary
     else
       render 'new'
     end
