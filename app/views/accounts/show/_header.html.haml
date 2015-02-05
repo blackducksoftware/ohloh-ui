@@ -13,7 +13,7 @@
       - if @account.location.present?
         %span.seperator &nbsp;&nbsp;|&nbsp;&nbsp;
         %meta{itemprop: 'homeLocation', content: @account.location}
-      - if my_account?
+      - if my_account?(@account)
         = link_to settings_account_path(@account) do
           %i.icon-cogs= '&nbsp; Settings'.html_safe
         end
@@ -27,7 +27,7 @@
     #kudo_section
       %meta{itemprop: 'interactionCount', content: @account.kudo_rank}
       .social-connect
-        - if my_account?
+        - if my_account?(@account)
           %i.icon-twitter{style: "color: #ccc"}
         - elsif @account.twitter_account.present?
           = link_to @account.decorate.twitter_url, class: 'link_no_underline', rel: "popup", title: "Follow @#{@account.twitter_account}" do

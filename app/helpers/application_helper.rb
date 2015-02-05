@@ -51,8 +51,8 @@ module ApplicationHelper
     (start_date..end_date).map { |d| Date.new(d.year, d.month) }.uniq
   end
 
-  def my_account?
-    current_user.present? && current_user.id == @account.id
+  def my_account?(account)
+    current_user.present? && current_user.id == account.id
   end
 
   private
