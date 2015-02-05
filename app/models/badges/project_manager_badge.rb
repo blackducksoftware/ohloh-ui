@@ -3,7 +3,7 @@ class ProjectManagerBadge < Badge
     @count ||= vars[:manages_project_count]
     @count ||=
       Project.joins(:manages)
-      .where('NOT deleted AND approved_by IS NOT NULL AND account_id = #{account.id}')
+      .where("NOT deleted AND approved_by IS NOT NULL AND account_id = #{account.id}")
       .count
   end
 

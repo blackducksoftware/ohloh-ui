@@ -48,7 +48,7 @@ class AccountDecorator < Draper::Decorator
     content = markup.first_line.to_s
     name_fact = best_vita.try(:vita_fact)
     if name_fact
-      content += t('.commits_to', commits: pluralize(name_fact.commits, 'total commit'),
+      content += h.t('.commits_to', commits: pluralize(name_fact.commits, 'total commit'),
                                   positions: pluralize(positions.count, 'project'))
       content += addtional_twitter_descripion
     end
@@ -95,8 +95,8 @@ class AccountDecorator < Draper::Decorator
   private
 
   def addtional_twitter_descripion
-    content = t('.experience_in', nice_name: most_experienced_language.nice_name) if most_experienced_language
-    content += t('.earned') + badges.collect(&:name).to_sentence(last_word_connector: t('.and'))
+    content = h.t('.experience_in', nice_name: most_experienced_language.nice_name) if most_experienced_language
+    content += h.t('.earned') + badges.collect(&:name).to_sentence(last_word_connector: t('.and'))
     content
   end
 

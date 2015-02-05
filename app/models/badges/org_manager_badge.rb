@@ -3,7 +3,7 @@ class OrgManagerBadge < Badge
     @count ||= vars[:manages_org_count]
     @count ||=
       Organization.joins(:manages)
-      .where('NOT deleted AND approved_by IS NOT NULL AND account_id = #{account.id}')
+      .where("NOT deleted AND approved_by IS NOT NULL AND account_id = #{account.id}")
       .count
   end
 

@@ -18,7 +18,7 @@ class BaseballCard < Draper::Decorator
   private
 
   def first_checkin
-    return if @vita_fact.blank? && @vita_fact.first_checkin.blank?
+    return if @vita_fact.blank? || @vita_fact.first_checkin.blank?
     { left: h.t('.first_checkin'),
       right: h.t('.duration', date: h.distance_of_time_in_words_to_now(@vita_fact.first_checkin)) }
   end

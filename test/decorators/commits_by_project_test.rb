@@ -65,7 +65,7 @@ class CommitsByProjectTest < Draper::TestCase
       data.size.must_equal 1
       data['Linux'].size.must_equal 3
       data['Linux'].first[:month].to_s.must_equal((start_date_val + 4.months).to_date.to_s)
-      data['Linux'].first[:commits].must_equal '1'
+      data['Linux'].first[:commits].must_equal 1
       data['Linux'].first[:pname].must_equal 'Linux'
     end
 
@@ -75,8 +75,8 @@ class CommitsByProjectTest < Draper::TestCase
 
       data.size.must_equal 1
       data['Linux'].size.must_equal 85
-      data['Linux'].first[:month].to_s.must_equal start_date_val.to_date.to_s
-      data['Linux'].first[:commits].must_equal '25'
+      data['Linux'].first[:month].to_s.must_equal (start_date_val - 12.months).to_date.to_s
+      data['Linux'].first[:commits].must_equal nil
       data['Linux'].first[:pname].must_equal 'Linux'
     end
   end

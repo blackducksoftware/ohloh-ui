@@ -1,7 +1,7 @@
 class StackerBadge < Badge
   def eligibility_count
     @count ||= vars[:stacks_count]
-    @count ||= Stack.where('project_count > 0 AND deleted_at IS NULL AND account_id = #{account.id}').count
+    @count ||= Stack.where("project_count > 0 AND deleted_at IS NULL AND account_id = #{account.id}").count
   end
 
   def short_desc
