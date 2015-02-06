@@ -24,7 +24,7 @@ Rails.application.routes.draw do
     resources :positions, only: [:index]
     resources :stacks, only: [:index]
     resources :widgets, only: [:index]
-    resources :kudos, only: [:index]
+    resources :kudos, only: [:index, :show]
     resources :edits, only: [:index]
     resources :posts, only: [:index]
     resources :reviews, only: [:index]
