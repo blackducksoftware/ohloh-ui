@@ -3,9 +3,9 @@
   %p= link_to @account.email, 'mailto:#{@account.email}'
   %h6= t('.activity')
   %p.ohloh_activity
-    = render partial: 'accounts/show/action_link' locals: {action: 'edits', css:'nomargin'}
-    = render partial: 'accounts/show/action_link' locals: {action: 'posts', css:'nomargin'}
-    = render partial: 'accounts/show/action_link' locals: {action: 'reviews'}
+    = render partial: 'accounts/show/action_link', locals: {action: 'edits', css:'nomargin'}
+    = render partial: 'accounts/show/action_link', locals: {action: 'posts', css:'nomargin'}
+    = render partial: 'accounts/show/action_link', locals: {action: 'reviews'}
 
   %h6= t('.actions_title')
   %p
