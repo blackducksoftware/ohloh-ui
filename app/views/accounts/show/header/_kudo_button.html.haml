@@ -1,7 +1,7 @@
 - # NOTE: Replaces account_kudo_button in kudos helper
 :ruby
   name = account.name
-  kudo = Kudo.where(sender: current_user, target: account)
+  kudo = Kudo.where(sender: current_user, target: account).first
   action = '' #new_kudo_path(account_id: account.to_param)
 
 - unless !logged_in? || current_user == account
