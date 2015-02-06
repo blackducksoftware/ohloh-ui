@@ -1,29 +1,29 @@
 chart:
-  type: "pie"
+  type: 'pie'
   plotBackgroundColor: nil
   plotBorderWidth: nil
-  renderTo: "demographics_chart"
+  renderTo: 'demographics_chart'
   plotShadow: false
 title:
-  align: "right"
+  align: 'right'
   y: 60
-  floating: "true"
+  floating: 'true'
   style:
     color: '#000'
-    fontSize: "10pt"
+    fontSize: '10pt'
 tooltip:
-  formatter: ""
-    style:
-      fontSize: '11pt'
-      padding: '8px'
+  formatter: ''
+  style:
+    fontSize: '11pt'
+    padding: '8px'
 plotOptions:
   pie:
     allowPointSelect: true
-    cursor: "pointer"
-    innerSize: 80,
-    slicedOffset: 10,
-    borderColor: "#fff",
-    borderWidth: 0,
+    cursor: 'pointer'
+    innerSize: 80
+    slicedOffset: 10
+    borderColor: '#fff'
+    borderWidth: 0
     dataLabels:
       enabled: true
       minSize: 1
@@ -32,4 +32,4 @@ plotOptions:
       format: '<b>{point.name}</b>: {point.percentage:.1f} %'
 credits:
   enabled: false
-series: [{type: "pie"}]
+series: [{type: 'pie'}]
