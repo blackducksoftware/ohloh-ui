@@ -9,7 +9,7 @@ class RepoPersonBadge < Badge
   end
 
   def short_desc
-    'edits project repositories'
+    I18n.t('badges.repo_person.short_desc')
   end
 
   def level_limits

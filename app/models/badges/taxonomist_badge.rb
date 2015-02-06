@@ -9,7 +9,7 @@ class TaxonomistBadge < Badge
   end
 
   def short_desc
-    'edits project tags and taxonomies'
+    I18n.t('badges.taxonomist.short_desc')
   end
 
   def level_limits

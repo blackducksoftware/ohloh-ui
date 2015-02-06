@@ -1,10 +1,7 @@
 class ProjectManagerBadge < Badge
   def eligibility_count
     @count ||= vars[:manages_project_count]
-    @count ||=
-      Project.joins(:manages)
-      .where("NOT deleted AND approved_by IS NOT NULL AND account_id = #{account.id}")
-      .count
+    @count ||= Project.managed_by(account).count
   end
 
   def name
@@ -12,7 +9,7 @@ class ProjectManagerBadge < Badge
   end
 
   def short_desc
-    'manages projects'
+    I18n.t('badges.project_manager.short_desc')
   end
 
   def position

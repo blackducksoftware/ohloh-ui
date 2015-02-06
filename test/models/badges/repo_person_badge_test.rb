@@ -1,23 +1,19 @@
 require 'test_helper'
 
 class RepoPersonBadgeTest < ActiveSupport::TestCase
-  let(:user) do
-    account = create(:account)
-    Edit.create!(target_type: 'Enlistment', target_id: 1, key: nil, account_id: account.id)
-    account
-  end
-
+  let(:user) { create(:account) }
   let(:repo_person_badge) { RepoPersonBadge.new(user) }
 
   describe 'eligibility_count' do
     it 'should return account enlistment edits' do
+      create(:create_edit, account_id: user.id, target: create(:enlistment))
       repo_person_badge.eligibility_count.must_equal 1
     end
   end
 
   describe 'short_desc' do
     it 'should return string' do
-      repo_person_badge.short_desc.must_equal 'edits project repositories'
+      repo_person_badge.short_desc.must_equal I18n.t('badges.repo_person.short_desc')
     end
   end
 

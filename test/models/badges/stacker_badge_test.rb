@@ -6,13 +6,14 @@ class StackerBadgeTest < ActiveSupport::TestCase
 
   describe 'eligibility_count' do
     it 'should return account stacks' do
-      stacker_badge.eligibility_count.must_equal 0
+      create(:stack, project_count: 1, account: user)
+      stacker_badge.eligibility_count.must_equal 1
     end
   end
 
   describe 'short_desc' do
     it 'should return string' do
-      stacker_badge.short_desc.must_equal 'stacks projects'
+      stacker_badge.short_desc.must_equal I18n.t('badges.stacker.short_desc')
     end
   end
 

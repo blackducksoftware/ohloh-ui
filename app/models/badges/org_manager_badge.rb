@@ -1,10 +1,7 @@
 class OrgManagerBadge < Badge
   def eligibility_count
     @count ||= vars[:manages_org_count]
-    @count ||=
-      Organization.joins(:manages)
-      .where("NOT deleted AND approved_by IS NOT NULL AND account_id = #{account.id}")
-      .count
+    @count ||= Organization.managed_by(account).count
   end
 
   def name
@@ -12,7 +9,7 @@ class OrgManagerBadge < Badge
   end
 
   def short_desc
-    'manages organizations'
+    I18n.t('badges.org_manager.short_desc')
   end
 
   def position

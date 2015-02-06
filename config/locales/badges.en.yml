@@ -1,0 +1,17 @@
+en:
+  badges:
+    describer:
+      short_desc: 'edits project descriptions'
+    fosser:
+      short_desc: 'contributes to free and open source software (FOSS)'
+    org_manager:
+      short_desc: 'manages organizations'
+    project_manager:
+      short_desc: 'manages projects'
+    repo_person:
+      short_desc: 'edits project repositories'
+    stacker:
+      short_desc: 'stacks projects'
+    taxonomist:
+      short_desc: 'edits project tags and taxonomies'
+

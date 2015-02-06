@@ -13,7 +13,7 @@ class FOSSerBadge < Badge
   end
 
   def short_desc
-    'contributes to free and open source software (FOSS)'
+    I18n.t('badges.fosser.short_desc')
   end
 
   def level_limits

@@ -1,23 +1,19 @@
 require 'test_helper'
 
 class DescriberBadgeTest < ActiveSupport::TestCase
-  let(:user) do
-    account = create(:account)
-    Edit.create!(target_type: 'Project', key: 'description', target_id: create(:project).id, account_id: account.id)
-    account
-  end
-
+  let(:user) { create(:account) }
   let(:describer_badge) { DescriberBadge.new(user) }
 
   describe 'eligibility_count' do
     it 'should return project description edits' do
+      create(:property_edit, key: 'description', account_id: user.id)
       describer_badge.eligibility_count.must_equal 1
     end
   end
 
   describe 'short_desc' do
     it 'should return string' do
-      describer_badge.short_desc.must_equal 'edits project descriptions'
+      describer_badge.short_desc.must_equal I18n.t('badges.describer.short_desc')
     end
   end
 

@@ -5,7 +5,7 @@ class DescriberBadge < Badge
   end
 
   def short_desc
-    'edits project descriptions'
+    I18n.t('badges.describer.short_desc')
   end
 
   def level_limits

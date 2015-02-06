@@ -6,13 +6,14 @@ class FOSSerBadgeTest < ActiveSupport::TestCase
 
   describe 'eligibility_count' do
     it 'should return positions' do
-      fosser_badge.eligibility_count.must_equal 0
+      create(:position, account: user)
+      fosser_badge.eligibility_count.must_equal 1
     end
   end
 
   describe 'short_desc' do
     it 'should return string' do
-      fosser_badge.short_desc.must_equal 'contributes to free and open source software (FOSS)'
+      fosser_badge.short_desc.must_equal I18n.t('badges.fosser.short_desc')
     end
   end
 

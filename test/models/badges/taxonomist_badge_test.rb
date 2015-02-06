@@ -1,23 +1,19 @@
 require 'test_helper'
 
 class TaxonomistBadgeTest < ActiveSupport::TestCase
-  let(:user) do
-    account = create(:account)
-    Edit.create!(target_type: 'Project', target_id: 1, key: 'tag_list', account_id: account.id)
-    account
-  end
-
+  let(:user) { create(:account) }
   let(:taxonomist_badge) { TaxonomistBadge.new(user) }
 
   describe 'eligibility_count' do
     it 'should return project edits with key as tag_list' do
+      create(:property_edit, key: 'tag_list', account_id: user.id)
       taxonomist_badge.eligibility_count.must_equal 1
     end
   end
 
   describe 'short_desc' do
     it 'should return string' do
-      taxonomist_badge.short_desc.must_equal 'edits project tags and taxonomies'
+      taxonomist_badge.short_desc.must_equal I18n.t('badges.taxonomist.short_desc')
     end
   end
 
