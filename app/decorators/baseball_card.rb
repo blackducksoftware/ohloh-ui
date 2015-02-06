@@ -19,45 +19,45 @@ class BaseballCard < Draper::Decorator
 
   def first_checkin
     return if @vita_fact.blank? || @vita_fact.first_checkin.blank?
-    { left: h.t('.first_checkin'),
-      right: h.t('.duration', date: h.distance_of_time_in_words_to_now(@vita_fact.first_checkin)) }
+    { label: h.t('.first_checkin'),
+      value: h.t('.duration', date: h.distance_of_time_in_words_to_now(@vita_fact.first_checkin)) }
   end
 
   def last_checkin
     return if @vita_fact.blank? || @vita_fact.last_checkin.blank?
-    { left: h.t('.last_checkin'),
-      right: h.t('.duration', date: h.distance_of_time_in_words_to_now(@vita_fact.last_checkin)) }
+    { label: h.t('.last_checkin'),
+      value: h.t('.duration', date: h.distance_of_time_in_words_to_now(@vita_fact.last_checkin)) }
   end
 
   def commits
     return if best_vita.blank?
-    { left: h.t('.commits.left'),
-      right: h.t('.commits.right', count: @vita_fact.commits.to_i) }
+    { label: h.t('.commits.label'),
+      value: h.t('.commits.value', count: @vita_fact.commits.to_i) }
   end
 
   def joined_at
-    { left: h.t('.joined_at'),
-      right: h.t('.duration', date: h.distance_of_time_in_words_to_now(created_at)) }
+    { label: h.t('.joined_at'),
+      value: h.t('.duration', date: h.distance_of_time_in_words_to_now(created_at)) }
   end
 
   def contributions
     return if positions.count == 0
     link = h.link_to h.pluralize(positions.count, 'project'), h.account_positions_path(object)
-    { left: h.t('.contibution'),
-      right: link }
+    { label: h.t('.contibution'),
+      value: link }
   end
 
   def orgs
     return if @organization_core.orgs_for_my_positions.empty?
     { css: { style: 'min-height:38px;' },
-      left: h.t('.contibuted_to'),
-      right: h.render(partial: 'accounts/show/orgs', locals: { orgs: orgs_for_positions }) }
+      label: h.t('.contibuted_to'),
+      value: h.render(partial: 'accounts/show/orgs', locals: { orgs: orgs_for_positions }) }
   end
 
   def affiliations
     return if @organization_core.affiliations_for_my_positions.empty?
     { css: { style: 'min-height:38px;' },
-      left: h.t('.contibuted_for'),
-      right: h.render(partial: 'accounts/show/orgs', locals: { orgs: affiliated_orgs }) }
+      label: h.t('.contibuted_for'),
+      value: h.render(partial: 'accounts/show/orgs', locals: { orgs: affiliated_orgs }) }
   end
 end

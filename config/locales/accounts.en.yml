@@ -70,8 +70,8 @@ en:
         first_checkin: 'First commit'
         last_checkin: 'Most recent commit'
         commits:
-          left: 'Has made'
-          right: '%{count} commits'
+          label: 'Has made'
+          value: '%{count} commits'
         joined_at: 'Joined Open Hub'
         contribution: 'Contributed to'
         contributed_to: 'Contributed to projects in'
