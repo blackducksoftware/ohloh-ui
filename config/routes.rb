@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 
   resources :api_keys, only: :index
   resources :domain_blacklists, except: :show
+  resources :kudos
 
   resources :accounts do
     resources :api_keys, constraints: { format: :html }, except: :show
