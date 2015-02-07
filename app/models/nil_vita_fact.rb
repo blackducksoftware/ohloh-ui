@@ -19,10 +19,6 @@ class NilVitaFact
     []
   end
 
-  def vita_language_facts
-    []
-  end
-
   def nil?
     true
   end

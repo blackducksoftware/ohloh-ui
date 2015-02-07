@@ -3,6 +3,10 @@ class NilVita
     NilVitaFact.new
   end
 
+  def vita_language_facts
+    []
+  end
+
   def nil?
     true
   end

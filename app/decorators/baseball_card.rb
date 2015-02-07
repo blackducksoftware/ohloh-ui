@@ -7,7 +7,6 @@ class BaseballCard < Draper::Decorator
   def initialize(*args)
     super
     @vita_fact = best_vita.vita_fact
-    @language = most_experienced_language
     @organization_core = Account::OrganizationCore.new(object.id)
   end
 
