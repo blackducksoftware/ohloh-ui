@@ -6,7 +6,7 @@ class BaseballCard < Draper::Decorator
 
   def initialize(*args)
     super
-    @vita_fact = best_vita.try(:vita_fact)
+    @vita_fact = best_vita.vita_fact
     @language = most_experienced_language
     @organization_core = Account::OrganizationCore.new(object.id)
   end
@@ -18,21 +18,21 @@ class BaseballCard < Draper::Decorator
   private
 
   def first_checkin
-    return if @vita_fact.blank? || @vita_fact.first_checkin.blank?
+    return unless @vita_fact.first_checkin
     { label: h.t('.first_checkin'),
       value: h.t('.duration', date: h.distance_of_time_in_words_to_now(@vita_fact.first_checkin)) }
   end
 
   def last_checkin
-    return if @vita_fact.blank? || @vita_fact.last_checkin.blank?
+    return unless @vita_fact.last_checkin
     { label: h.t('.last_checkin'),
       value: h.t('.duration', date: h.distance_of_time_in_words_to_now(@vita_fact.last_checkin)) }
   end
 
   def commits
-    return if best_vita.blank?
+    return if best_vita.nil?
     { label: h.t('.commits.label'),
-      value: h.t('.commits.value', count: @vita_fact.commits.to_i) }
+      value: h.t('.commits.value', count: @vita_fact.commits) }
   end
 
   def joined_at

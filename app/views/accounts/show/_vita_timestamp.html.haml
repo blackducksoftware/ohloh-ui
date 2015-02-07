@@ -1,5 +1,5 @@
 -# NOTE: Replaces render_vita_timestamp helper in application_helper.rb
-- if best_vita.present?
+- unless best_vita.nil?
   .pull-right.soft#analysis_timestamp
     %i
       %i.icon-time= '&nbsp;'.html_safe

@@ -2,13 +2,11 @@ class AccountDecorator < Draper::Decorator
   delegate_all
 
   def symbolized_commits_by_project
-    scbp = best_vita.try(:vita_fact).try(:commits_by_project)
-    scbp.to_a.map(&:symbolize_keys)
+    best_vita.vita_fact.commits_by_project.map(&:symbolize_keys)
   end
 
   def symbolized_commits_by_language
-    scbp = best_vita.try(:vita_fact).try(:commits_by_language)
-    scbp.to_a.map(&:symbolize_keys)
+    best_vita.vita_fact.commits_by_language.map(&:symbolize_keys)
   end
 
   def sorted_commits_by_project
@@ -46,8 +44,8 @@ class AccountDecorator < Draper::Decorator
   def twitter_card
     return '' unless markup
     content = markup.first_line.to_s
-    name_fact = best_vita.try(:vita_fact)
-    if name_fact
+    name_fact = best_vita.vita_fact
+    if name_fact.nil?
       content += h.t('.commits_to', commits: pluralize(name_fact.commits, 'total commit'),
                                   positions: pluralize(positions.count, 'project'))
       content += addtional_twitter_descripion
