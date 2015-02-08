@@ -42,7 +42,7 @@ class BaseballCard < Draper::Decorator
   def contributions
     return if positions.count == 0
     link = h.link_to h.pluralize(positions.count, 'project'), h.account_positions_path(object)
-    { label: h.t('.contibution'),
+    { label: h.t('.contribution'),
       value: link }
   end
 

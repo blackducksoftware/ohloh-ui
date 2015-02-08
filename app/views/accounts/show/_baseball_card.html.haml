@@ -3,18 +3,15 @@
   bg_color = language_color(lang.try(:name))
   text_color = language_text_color(lang.try(:name))
 
-- if @account.best_vita.nil? && lang
-  .col-md-7.row
+- if !@account.best_vita.nil? && lang
+  .col-md-7.statistic
     .inner
-      %p
-        .col-md-3.left= t('.lang_title')
-        .col-md.right.language{ style: "background-color:##{bg_color}; color:##{text_color};" }
-          = lang.nice_name
+      .col-md-3.pull-left.name= t('.lang_title')
+      .col-md-4.pull-left.language{style: "background-color:##{bg_color}; color:##{text_color};"}
+        = lang.nice_name
 
 - BaseballCard.new(@account).rows.each do |row|
-  .col-md-7.row{row[:css]}
+  .col-md-7.statistic{row[:css]}
     .inner
-      %p
-        .col-md-3.left= row[:label]
-        .col-md-4.right= row[:value]
-
+      .col-md-3.pull-left.name= row[:label]
+      .col-md-4.pull-left.value= row[:value]

@@ -1,7 +1,7 @@
 class AccountsController < ApplicationController
   before_action :account, only: [:show, :commits_by_project_chart, :commits_by_language_chart]
   before_action :redirect_if_disabled, only: [:show, :commits_by_project_chart, :commits_by_language_chart]
-  before_action :account_context, only: [:show]
+  # before_action :account_context, only: [:show]
 
   def index
     @people = Person.find_claimed(page: params[:page])

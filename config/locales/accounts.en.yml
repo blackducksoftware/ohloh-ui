@@ -80,7 +80,8 @@ en:
         including: 'including:'
       vita_timestamp:
         analyzed: 'Analyzed'
-        duration: '%{date} ago'
+        duration: '%{date}'
+        ago: 'ago'
       description:
         more: 'more...'
         less: 'less...'
