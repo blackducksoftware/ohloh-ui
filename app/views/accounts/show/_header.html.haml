@@ -2,8 +2,8 @@
   = image_tag avatar_img_path(@account, 128), size: "128x128", itemprop: 'image'
   - lang = @account.most_experienced_language
   - if lang
-    - bg_color, text_color = language_color(lang.name), language_text_color(lang.name)
-    .center.primary_language_bg{style: "background-color: ##{bg_color}; color: ##{text_color}; width: 128px;"}
+    - lang_style = "background-color: ##{language_color(lang.name)}; color:##{language_text_color(lang.name)};"
+    .center.primary_language_bg{style: lang_style}
       = lang.nice_name
 .col-md-10#account_header
   .pull-left
