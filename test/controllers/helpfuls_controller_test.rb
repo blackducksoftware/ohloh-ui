@@ -1,11 +1,9 @@
 require 'test_helper'
 
-class HelpfulsControllerTest < ActionController::TestCase
-  def setup
-    @admin = create(:admin)
-    @proj = create(:project)
-    @linux_review = @proj.reviews.create!(title: 'T', comment: 'C', account_id: @admin.id)
-  end
+describe 'HelpfulsControllerTest' do
+  let(:admin) { create(:admin) }
+  let(:project) { create(:project) }
+  let(:linux_review) { project.reviews.create!(title: 'T', comment: 'C', account: admin) }
 
   it 'test login required' do
     login_as nil
@@ -13,76 +11,58 @@ class HelpfulsControllerTest < ActionController::TestCase
     must_respond_with :unauthorized
   end
 
-  it 'test create review helpful' do
+  it 'must create helpful record when user clicks yes' do
     login_as create(:account)
     assert_difference 'Helpful.count' do
       create_helpful(true)
+      assigns(:helpful).yes.must_equal true
       must_respond_with :success
-      json = JSON.parse(@response.body)
-      json['yes'].must_equal 1
-      json['total'].must_equal 1
+      must_render_template 'reviews/_helpful_yes_or_no_links'
     end
   end
 
-  it 'test create review not helpful' do
+  it 'must create helpful record when user clicks no' do
     login_as create(:account)
     assert_difference 'Helpful.count' do
       create_helpful(false)
+      assigns(:helpful).yes.must_equal false
       must_respond_with :success
-      json = JSON.parse(@response.body)
-      json['yes'].must_equal 0
-      json['total'].must_equal 1
+      must_render_template 'reviews/_helpful_yes_or_no_links'
     end
   end
 
-  it 'test bug fix on multiple helpfuls' do
-    Helpful.create(review_id: @linux_review.id, account_id: create(:account).id, yes: false)
-    login_as create(:account)
-    assert_difference 'Helpful.count' do
-      create_helpful(true)
-      must_respond_with :success
-      json = JSON.parse(@response.body)
-      json['yes'].must_equal 1
-      json['total'].must_equal 2
-    end
-  end
-
-  it 'test cant helpful yourself' do
-    login_as @admin
+  it 'must update helpful record when it already exists' do
+    account = create(:account)
+    Helpful.create(review: linux_review, account: account, yes: false)
+    login_as account
     assert_no_difference 'Helpful.count' do
       create_helpful(true)
       must_respond_with :success
-      json = JSON.parse(@response.body)
-      json['yes'].must_equal 0
-      json['total'].must_equal 0
+      assigns(:helpful).yes.must_equal true
     end
   end
 
-  it 'test project must exist' do
-    login_as create(:account)
-    post :create, project_id: 'I_AM_A_BANANA!', review_id: @linux_review.id,
-                  format: 'json', helpful: { yes: true }
-    must_respond_with :not_found
-  end
-
-  it 'test review must exist' do
-    login_as create(:account)
-    post :create, project_id: @proj.to_param, review_id: 123_456_789,
-                  format: 'json', helpful: { yes: true }
-    must_respond_with :not_found
+  it 'must not allow review creator to vote' do
+    login_as admin
+    assert_no_difference 'Helpful.count' do
+      create_helpful(true)
+      must_respond_with :failure
+    end
   end
 
   it 'test review must match project' do
-    login_as create(:account)
-    post :create, project_id: create(:project).to_param, review_id: @linux_review.id,
-                  format: 'json', helpful: { yes: true }
+    account = create(:account)
+    login_as account
+    xhr :post, :create, helpful: { account_id: account, review_id: linux_review },
+                        review_id: linux_review.id, project_id: create(:project).to_param, yes: true
     must_respond_with :not_found
   end
 
   private
 
   def create_helpful(helpful)
-    post :create, project_id: @proj.to_param, review_id: @linux_review.id,
-                  format: 'json', helpful: { yes: helpful }
+    account = @controller.send(:current_user).id
+    xhr :post, :create, helpful: { account_id: account, review_id: linux_review },
+                  review_id: linux_review.id, project_id: project.to_param, yes: helpful
   end
 end

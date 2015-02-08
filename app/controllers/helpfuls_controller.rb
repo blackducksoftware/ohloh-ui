@@ -1,28 +1,22 @@
 class HelpfulsController < ApplicationController
   before_action :session_required
-  before_action :find_review_and_helpful
+  before_action :set_project
 
   def create
-    @helpful.assign_attributes(model_params)
-    @helpful.save
-    render json: {
-      helpful_count_status: render_to_string(partial: 'reviews/helpful_count_status.html.haml',
-                                             locals: { review: @review }),
-      helpful_yes_or_no_links: render_to_string(partial: 'reviews/helpful_yes_or_no_links.html.haml',
-                                                locals: { review: @review })
-    }
+    @helpful = Helpful.where(model_params).first_or_initialize
+    @helpful.yes = params[:yes].present?
+    @helpful.save!
   end
 
   private
 
   def model_params
-    params.require(:helpful).permit(:yes)
+    params.require(:helpful).permit(:account_id, :review_id)
   end
 
-  def find_review_and_helpful
-    @review = Review.find(params[:review_id])
-    @helpful = Helpful.where(review_id: params[:review_id], account_id: current_user.id).first_or_initialize
+  def set_project
+    @project = Project.from_param(params[:project_id]).first!
   rescue ActiveRecord::RecordNotFound
-    raise ParamRecordNotFound
+    fail ParamRecordNotFound
   end
 end

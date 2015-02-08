@@ -1,17 +1,24 @@
 .small.soft.helpful_below
   - if logged_in?
     - unless review.account == current_user
-      Did this review help you?
-      - if review.helpful_to_account?(current_user)
-        %span.voted= t('reviews.yes')
-      - else
-        %a.helpful_yes{ href: review_helpfuls_path(review, format: :json) }= t('reviews.yes')
-      \|
-      - if review.not_helpful_to_account?(current_user)
-        %span.voted= t('reviews.no')
-      - else
-        %a.helpful_no{ href: review_helpfuls_path(review, format: 'json') }= t('reviews.no')
+
+      - helpful = Helpful.new(account: current_user, review: review)
+      = form_for [@project, review, helpful], remote: true do |f|
+        = f.hidden_field :account_id
+        = f.hidden_field :review_id
+        %input.hidden{ type: :checkbox, name: :yes }
+
+        Did this review help you?
+        - if review.helpful_to_account?(current_user)
+          %span.voted= t('reviews.yes')
+        - else
+          %a.set-checkbox-and-submit-form{ href: 'javascript:', 'data-check-box' => 1 }= t('reviews.yes')
+        \|
+        - if review.not_helpful_to_account?(current_user)
+          %span.voted= t('reviews.no')
+        - else
+          %a.set-checkbox-and-submit-form{ href: 'javascript:', 'data-check-box' => 0 }= t('reviews.no')
   - else
     Did this review help you?
-    %a.needs_login= t('reviews.yes')
-    %a.needs_login= t('reviews.no')
+    = link_to t('reviews.helpful_yes'), project_review_helpfuls_path(@project, review), method: :post
+    = link_to t('reviews.helpful_no'), project_review_helpfuls_path(@project, review), method: :post

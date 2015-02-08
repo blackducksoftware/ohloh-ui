@@ -11,8 +11,8 @@ en:
     edit_review: 'Edit Review'
     remove_review: 'Remove Review'
     spam: 'SPAM!'
-    yes: 'Yes'
-    no: 'No'
+    helpful_yes: 'Yes'
+    helpful_no: 'No'
     helpful_status: "%{positive} out of %{total_helpful} users found the following review helpful."
     create:
       success: 'Thank you for submitting your review.'
