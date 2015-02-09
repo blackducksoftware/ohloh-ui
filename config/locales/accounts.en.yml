@@ -25,9 +25,10 @@ en:
       earned: 'earned '
       and: ' and '
       dev_history: 'Development History'
-      affiliation:
-        unaffliated: 'Unaffiliated'
-        title: 'Add your affiliation!'
+      header:
+        affiliation:
+          unaffliated: 'Unaffiliated'
+          title: 'Add your affiliation!'
       summary:
         title: 'Account Summary'
         projects_used: 'Projects Used'
@@ -44,7 +45,7 @@ en:
         no_reviews: 'No project reviewed.'
         reviews_size: '%{size} project review(s)'
         actions_title: 'Admin Actions'
-        make_spammer:
+        spammer:
           link: '<i class="icon-check">&nbsp;</i>MARK AS SPAMMER LEVEL'
           confirm: 'Are you sure you want to mark %{name} as a spammer, disabling the account and removing all posts?'
           title: 'Mark %{name} as spammer!'

@@ -20,12 +20,13 @@ describe 'AccountsControllerTest' do
 
   describe 'index' do
     it 'should return claimed persons with their cbp_map and positions_map' do
+      user.best_vita.vita_fact.reload.commits_by_project
       get :index
 
       must_respond_with :ok
-      assigns(:people).length.must_equal 7
-      assigns(:cbp_map).length.must_equal 7
       assigns(:positions_map).length.must_equal 2
+      assigns(:people).length.must_equal 9
+      assigns(:cbp_map).length.must_equal 9
     end
   end
 

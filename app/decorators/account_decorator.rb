@@ -47,7 +47,7 @@ class AccountDecorator < Draper::Decorator
     name_fact = best_vita.vita_fact
     if name_fact.nil?
       content += h.t('.commits_to', commits: pluralize(name_fact.commits, 'total commit'),
-                                  positions: pluralize(positions.count, 'project'))
+                                    positions: pluralize(positions.count, 'project'))
       content += addtional_twitter_descripion
     end
     content

@@ -11,17 +11,15 @@
     %div
       = @account.location
       - if @account.location.present?
-        %span.seperator &nbsp;&nbsp;|&nbsp;&nbsp;
         %meta{itemprop: 'homeLocation', content: @account.location}
       - if my_account?(@account)
+        %span.seperator &nbsp;&nbsp;|&nbsp;&nbsp;
         = link_to settings_account_path(@account) do
           %i.icon-cogs= '&nbsp; Settings'.html_safe
-        end
     - if @account.url.present?
       %div
-        = link_to @account.url, target: 'blank', title: @account.url, itemprop: 'url', rel: 'nofollow' do
+        = link_to @account.url, target: '_blank', title: @account.url, itemprop: 'url', rel: 'nofollow' do
           %i.icon-external-link= "&nbsp; #{truncate(@account.url, length: 60)}".html_safe
-        end
     #account_affiliation
       = render partial: 'accounts/show/header/affiliation', locals: {account: @account}
     #kudo_section

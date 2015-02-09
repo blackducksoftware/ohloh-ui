@@ -64,8 +64,12 @@ class CommitsByProject < Draper::Decorator
     symbolized.select { |c| position_ids.include?(c[:position_id].to_i) }
   end
 
+  def with_positions_in_date_range
+    with_positions.select { |c| (@start_date..@end_date).member?(c[:month].to_date) }
+  end
+
   def in_date_range
-    with_positions.select { |c| (@start_date..@end_date).member?(c[:month].to_date) }.map do |c|
+    with_positions_in_date_range.map do |c|
       { pname: @positions[c[:position_id].to_i].first.project.name,
         commits: c[:commits].to_i, month: c[:month].to_date }
     end
