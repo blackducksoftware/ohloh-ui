@@ -47,14 +47,16 @@ class BaseballCard < Draper::Decorator
   end
 
   def orgs
-    return if @organization_core.orgs_for_my_positions.empty?
+    orgs_for_positions = @organization_core.orgs_for_my_positions
+    return if orgs_for_positions.empty?
     { css: { style: 'min-height:38px;' },
       label: h.t('.contibuted_to'),
       value: h.render(partial: 'accounts/show/orgs', locals: { orgs: orgs_for_positions }) }
   end
 
   def affiliations
-    return if @organization_core.affiliations_for_my_positions.empty?
+    affiliated_orgs = @organization_core.affiliations_for_my_positions
+    return if affiliated_orgs.empty?
     { css: { style: 'min-height:38px;' },
       label: h.t('.contibuted_for'),
       value: h.render(partial: 'accounts/show/orgs', locals: { orgs: affiliated_orgs }) }
