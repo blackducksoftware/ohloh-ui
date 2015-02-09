@@ -13,6 +13,6 @@
   %label.required Message
   .c3_light.inset.invite_message
     = t('.email_body_html', invitor_name: @invite.invitor.name, invitee_name: obfuscate_email(@invite.name.name),
-           url: @invite.claim_url)
+           url: @invite.claim_url, project: @invite.project_name)
 .actions
   %input.btn.btn-primary{:type => 'submit', :value => 'Send Invitation' }

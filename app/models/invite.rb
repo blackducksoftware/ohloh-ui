@@ -7,11 +7,12 @@ class Invite < ActiveRecord::Base
   after_initialize :set_project_id_name_id
 
   validates :contribution, presence: true
-  validates :invitee_email, uniqueness: { scope: [:contribution_id], message: I18n.t('invites.invited_to_claim') }
-  validates :invitee_email, uniqueness: { unless: :unique_invitee?, message: I18n.t('invites.invited_to_join') }
+  # validates :invitee_email, uniqueness: { scope: [:contribution_id], message: I18n.t('invites.invited_to_claim') }
+  # validates :invitee_email, uniqueness: { unless: :unique_invitee?, message: I18n.t('invites.invited_to_join') }
 
   def set_project_id_name_id
-    self.project_id ||= contribution_id >> 32
+    # self.project_id ||= contribution_id >> 32
+    self.project_id ||= contribution_id
     self.name_id ||= contribution_id & 0x7FFFFFFF
   end
 

@@ -4,7 +4,7 @@ FactoryGirl.define do
 
     factory :name_with_fact do
       after(:create) do |name|
-        NameFact.create!(name: name)
+        NameFact.create!(name: name, analysis_id: create(:project).best_analysis_id)
       end
     end
   end

@@ -13,7 +13,7 @@ en:
       email_body_html: |
         <p>Greetings %{invitee_name},</p>
         <p>%{invitor_name} invites you to join Open Hub and claim your
-        <a href='%{url}'>contribution</a> to curl.</p>
+        <a href='%{url}'>contribution</a> to %{project}.</p>
         <p><a href='%{url}'>Click here to claim this contribution.</a></p>
         <p>-- The Open Hub Team</p>
 
