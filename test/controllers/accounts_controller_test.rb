@@ -9,62 +9,10 @@ describe 'AccountsControllerTest' do
     (Time.now - 6.years + month.months).beginning_of_month.strftime('%Y-%m-01 00:00:00')
   end
 
-  let(:cbl) do
-    [{ 'l_id' => '3', 'l_name' => 'xml', 'l_category' => '1', 'l_nice_name' => 'XML',
-       'month' => start_date.to_s, 'commits' => '8' },
-     { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => start_date.to_s, 'commits' => '24' },
-     { 'l_id' => '1', 'l_name' => 'html', 'l_category' => '1', 'l_nice_name' => 'HTML',
-       'month' => (start_date + 1.month).to_s, 'commits' => '9' },
-     { 'l_id' => '3', 'l_name' => 'xml', 'l_category' => '1', 'l_nice_name' => 'XML',
-       'month' => (start_date + 1.month).to_s, 'commits' => '29' },
-     { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => (start_date + 1.month).to_s, 'commits' => '37' },
-     { 'l_id' => '3', 'l_name' => 'xml', 'l_category' => '1', 'l_nice_name' => 'XML',
-       'month' => (start_date + 2.months).to_s, 'commits' => '7' },
-     { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => (start_date + 2.months).to_s, 'commits' => '27' },
-     { 'l_id' => '30', 'l_name' => 'sql', 'l_category' => '0', 'l_nice_name' => 'SQL',
-       'month' => (start_date + 2.months).to_s, 'commits' => '1' },
-     { 'l_id' => '3', 'l_name' => 'xml', 'l_category' => '1', 'l_nice_name' => 'XML',
-       'month' => (start_date + 3.months).to_s, 'commits' => '2' },
-     { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => (start_date + 3.months).to_s, 'commits' => '16' },
-     { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => (start_date + 4.months).to_s, 'commits' => '1' },
-     { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => (start_date + 5.months).to_s, 'commits' => '8' },
-     { 'l_id' => '3', 'l_name' => 'xml', 'l_category' => '1', 'l_nice_name' => 'XML',
-       'month' => (start_date + 6.months).to_s, 'commits' => '12' },
-     { 'l_id' => '12', 'l_name' => 'ruby', 'l_category' => '0', 'l_nice_name' => 'Ruby',
-       'month' => (start_date + 6.months).to_s, 'commits' => '2' },
-     { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => (start_date + 6.months).to_s, 'commits' => '26' },
-     { 'l_id' => '3', 'l_name' => 'xml', 'l_category' => '1', 'l_nice_name' => 'XML',
-       'month' => (start_date + 7.months).to_s, 'commits' => '2' },
-     { 'l_id' => '12', 'l_name' => 'ruby', 'l_category' => '0', 'l_nice_name' => 'Ruby',
-       'month' => (start_date + 7.months).to_s, 'commits' => '3' },
-     { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => (start_date + 7.months).to_s, 'commits' => '9' }]
-  end
-
-  let(:cbp) do
-    [{ 'month' => start_date_str, 'commits' => '25', 'position_id' => '1' },
-     { 'month' => start_date_str(1), 'commits' => '40', 'position_id' => '1' },
-     { 'month' => start_date_str(2), 'commits' => '28', 'position_id' => '1' },
-     { 'month' => start_date_str(3), 'commits' => '18', 'position_id' => '1' },
-     { 'month' => start_date_str(4), 'commits' => '1', 'position_id' => '1' },
-     { 'month' => start_date_str(5), 'commits' => '8', 'position_id' => '1' },
-     { 'month' => start_date_str(6), 'commits' => '26', 'position_id' => '1' },
-     { 'month' => start_date_str(6), 'commits' => '4', 'position_id' => '2' },
-     { 'month' => start_date_str(7), 'commits' => '9', 'position_id' => '1' },
-     { 'month' => start_date_str(7), 'commits' => '3', 'position_id' => '2' }]
-  end
-
   let(:user) do
     account = accounts(:user)
-    account.best_vita.vita_fact.update(commits_by_project: cbp)
-    account.best_vita.vita_fact.update(commits_by_language: cbl)
+    account.best_vita.vita_fact.destroy
+    create(:vita_fact_with_cbl_and_cbp, vita_id: account.best_vita_id)
     account
   end
 
@@ -72,8 +20,6 @@ describe 'AccountsControllerTest' do
 
   describe 'index' do
     it 'should return claimed persons with their cbp_map and positions_map' do
-      user.best_vita.vita_fact.update(commits_by_project: cbp)
-
       get :index
 
       must_respond_with :ok

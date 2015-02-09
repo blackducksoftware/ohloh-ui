@@ -13,22 +13,10 @@ class CommitsByProjectTest < Draper::TestCase
     (Time.now - 6.years + month.months).beginning_of_month.strftime('%Y-%m-01 00:00:00')
   end
 
-  let(:cbp) do
-    [{ 'month' => start_date_str, 'commits' => '25', 'position_id' => '1' },
-     { 'month' => start_date_str(1), 'commits' => '40', 'position_id' => '1' },
-     { 'month' => start_date_str(2), 'commits' => '28', 'position_id' => '1' },
-     { 'month' => start_date_str(3), 'commits' => '18', 'position_id' => '1' },
-     { 'month' => start_date_str(4), 'commits' => '1', 'position_id' => '1' },
-     { 'month' => start_date_str(5), 'commits' => '8', 'position_id' => '1' },
-     { 'month' => start_date_str(6), 'commits' => '26', 'position_id' => '1' },
-     { 'month' => start_date_str(6), 'commits' => '4', 'position_id' => '2' },
-     { 'month' => start_date_str(7), 'commits' => '9', 'position_id' => '1' },
-     { 'month' => start_date_str(7), 'commits' => '3', 'position_id' => '2' }]
-  end
-
   let(:user) do
     account = accounts(:user)
-    account.best_vita.vita_fact.update(commits_by_project: cbp)
+    account.best_vita.vita_fact.destroy
+    create(:vita_fact_with_cbl_and_cbp, vita_id: account.best_vita_id)
     account
   end
 

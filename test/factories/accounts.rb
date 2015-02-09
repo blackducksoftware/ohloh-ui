@@ -28,4 +28,5 @@ FactoryGirl.define do
   factory :spammer, parent: :account do
     level Account::Access::SPAM
   end
+
 end

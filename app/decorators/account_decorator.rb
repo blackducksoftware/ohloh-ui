@@ -2,11 +2,11 @@ class AccountDecorator < Draper::Decorator
   delegate_all
 
   def symbolized_commits_by_project
-    best_vita.vita_fact.commits_by_project.map(&:symbolize_keys)
+    best_vita.vita_fact.commits_by_project.to_a.map(&:symbolize_keys)
   end
 
   def symbolized_commits_by_language
-    best_vita.vita_fact.commits_by_language.map(&:symbolize_keys)
+    best_vita.vita_fact.commits_by_language.to_a.map(&:symbolize_keys)
   end
 
   def sorted_commits_by_project
