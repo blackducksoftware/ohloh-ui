@@ -5,7 +5,7 @@ class HelpfulsController < ApplicationController
   def create
     @helpful = Helpful.where(model_params).first_or_initialize
     @helpful.yes = params[:yes].present?
-    @helpful.save!
+    @helpful.save
   end
 
   private
@@ -15,8 +15,7 @@ class HelpfulsController < ApplicationController
   end
 
   def set_project
-    @project = Project.from_param(params[:project_id]).first!
-  rescue ActiveRecord::RecordNotFound
-    fail ParamRecordNotFound
+    @project = Project.from_param(params[:project_id]).first
+    fail ParamRecordNotFound if @project.nil?
   end
 end

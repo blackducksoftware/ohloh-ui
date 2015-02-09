@@ -7,6 +7,12 @@ class Review < ActiveRecord::Base
   validates :account_id, presence: true
   validates :comment, presence: true, length: { in: 1..5000 }, allow_blank: true
 
+  before_save do |review|
+    sanitizer       = HTML::FullSanitizer.new
+    review.title    = sanitizer.sanitize(review.title)
+    review.comment  = sanitizer.sanitize(review.comment)
+  end
+
   scope :for_project, ->(project) { where(project_id: project.id) }
   scope :top, ->(limit = 2) { three_quarters_helpful_arel.order_by_helpfulness_arel.limit(limit) }
   scope :sort_by, lambda { |key = :helpful|
@@ -20,7 +26,8 @@ class Review < ActiveRecord::Base
     }.fetch(key, order_by_helpfulness_arel)
   }
   scope :find_by_comment_or_title_or_accounts_login, lambda { |query|
-    references(:all)
+    includes(:account)
+      .references(:all)
       .where('comment ilike :query or title ilike :query or accounts.login ilike :query', query: "%#{query}%") if query
   }
 

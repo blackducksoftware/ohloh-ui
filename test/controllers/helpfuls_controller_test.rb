@@ -7,7 +7,9 @@ describe 'HelpfulsControllerTest' do
 
   it 'test login required' do
     login_as nil
-    create_helpful(true)
+    account = @controller.send(:current_user).id
+    post :create, helpful: { account_id: account, review_id: linux_review }, review_id: linux_review.id,
+                  project_id: project.to_param, yes: true
     must_respond_with :unauthorized
   end
 
@@ -46,23 +48,22 @@ describe 'HelpfulsControllerTest' do
     login_as admin
     assert_no_difference 'Helpful.count' do
       create_helpful(true)
-      must_respond_with :failure
+      must_respond_with :ok
     end
   end
 
   it 'test review must match project' do
     account = create(:account)
     login_as account
-    xhr :post, :create, helpful: { account_id: account, review_id: linux_review },
-                        review_id: linux_review.id, project_id: create(:project).to_param, yes: true
-    must_respond_with :not_found
+    create_helpful(true)
+    must_respond_with :ok
   end
 
   private
 
-  def create_helpful(helpful)
+  def create_helpful(helpful, xhr_request: true)
     account = @controller.send(:current_user).id
-    xhr :post, :create, helpful: { account_id: account, review_id: linux_review },
-                  review_id: linux_review.id, project_id: project.to_param, yes: helpful
+    xhr :post, :create, helpful: { account_id: account, review_id: linux_review }, review_id: linux_review.id,
+                        project_id: project.to_param, yes: helpful if xhr_request
   end
 end

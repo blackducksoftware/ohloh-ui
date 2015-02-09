@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   resources :api_keys, only: :index
   resources :domain_blacklists, except: :show
   resources :reviews, only: :destroy do
-    resources :helpfuls
+    resources :helpfuls, only: :create
   end
 
   resources :accounts do
@@ -75,7 +75,7 @@ Rails.application.routes.draw do
     resources :widgets, only: :index
     resources :similar_projects, only: :index
     resources :ratings
-    resources :reviews, only: [:new, :index, :edit, :update, :create, :destroy] do
+    resources :reviews, except: :show do
       collection { get :summary }
       resources :helpfuls, only: :create
     end

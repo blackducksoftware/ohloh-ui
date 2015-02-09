@@ -52,7 +52,7 @@ class AccountDecorator < Draper::Decorator
         [:usage,              h.t(:usage),                nil],
         [:edit_history,       h.t(:website_edits),        h.account_edits_path(object)],
         [:posts,              h.t(:post),                h.account_posts_path(object)],
-        [:reviews,            h.t(:reviews),              h.account_reviews_path(object)]
+        [:reviews,            h.t(:reviews_text),              h.account_reviews_path(object)]
       ]
     ].tap do |menus|
       append_project_menu(menus) if projects.exists?

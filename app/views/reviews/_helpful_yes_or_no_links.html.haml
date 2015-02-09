@@ -3,7 +3,7 @@
     - unless review.account == current_user
 
       - helpful = Helpful.new(account: current_user, review: review)
-      = form_for [@project, review, helpful], remote: true do |f|
+      = form_for [review, helpful], remote: true do |f|
         = f.hidden_field :account_id
         = f.hidden_field :review_id
         %input.hidden{ type: :checkbox, name: :yes }
@@ -20,5 +20,5 @@
           %a.set-checkbox-and-submit-form{ href: 'javascript:', 'data-check-box' => 0 }= t('reviews.no')
   - else
     Did this review help you?
-    = link_to t('reviews.helpful_yes'), project_review_helpfuls_path(@project, review), method: :post
-    = link_to t('reviews.helpful_no'), project_review_helpfuls_path(@project, review), method: :post
+    = link_to t('reviews.helpful_yes'), review_helpfuls_path(review), method: :post
+    = link_to t('reviews.helpful_no'), review_helpfuls_path(review), method: :post
