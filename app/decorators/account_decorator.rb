@@ -2,13 +2,11 @@ class AccountDecorator < Draper::Decorator
   delegate_all
 
   def symbolized_commits_by_project
-    scbp = best_vita.try(:vita_fact).try(:commits_by_project)
-    scbp.to_a.map(&:symbolize_keys)
+    best_vita.vita_fact.commits_by_project.to_a.map(&:symbolize_keys)
   end
 
   def symbolized_commits_by_language
-    scbp = best_vita.try(:vita_fact).try(:commits_by_language)
-    scbp.to_a.map(&:symbolize_keys)
+    best_vita.vita_fact.commits_by_language.to_a.map(&:symbolize_keys)
   end
 
   def sorted_commits_by_project
@@ -29,6 +27,31 @@ class AccountDecorator < Draper::Decorator
       res[lang][:commits] += hsh[:commits].to_i
     end
     sorted_cbl.sort_by { |_k, v| v[:commits] }.reverse
+  end
+
+  # NOTE: Replaces account_vita_status_message in application_helper
+  def vita_status_message
+    if claimed_positions.any? && best_vita.nil?
+      h.t('.analysis_scheduled')
+    elsif positions.empty?
+      h.t('.no_contributions')
+    elsif claimed_positions.blank?
+      h.t('.no_commits')
+    end
+  end
+
+  # NOTE: Replaces twitter_card_description in accounts_helper
+  def twitter_card
+    return '' unless markup
+    name_fact = best_vita.vita_fact
+    content = markup.first_line.to_s
+    return content if name_fact.nil?
+    content + twitter_card_commits(name_fact) + addtional_twitter_descripion
+  end
+
+  def twitter_url
+    "https://twitter.com/intent/follow?original_referer=#{CGI.escape h.request.url}&region=follow_link&"\
+      "screen_name=#{twitter_account}&source=followbutton&variant=2.0"
   end
 
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
@@ -64,6 +87,18 @@ class AccountDecorator < Draper::Decorator
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   private
+
+  def twitter_card_commits(name_fact)
+    commits_count = pluralize(name_fact.commits, h.t('.total commit'))
+    positions_count = pluralize(positions.count, h.t('.project'))
+    h.t('.commits_to', commits: commits_count, positions: positions_count)
+  end
+
+  def addtional_twitter_descripion
+    content = h.t('.experience_in', nice_name: most_experienced_language.nice_name) if most_experienced_language
+    content += h.t('.earned') + badges.collect(&:name).to_sentence(last_word_connector: t('.and'))
+    content
+  end
 
   def append_project_menu(menus)
     menus.first << [:managed_projects, h.t(:managed_projects), h.account_projects_path(object)] if projects.exists?

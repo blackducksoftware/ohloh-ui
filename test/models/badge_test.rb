@@ -15,7 +15,7 @@ class BadgeTest < ActiveSupport::TestCase
 
     it 'should display in a specified order' do
       Badge.ordered_badges.must_be_kind_of Array
-      Badge.ordered_badges.length.must_equal 1 # place holder it would change when implementing other badges
+      Badge.ordered_badges.length.must_equal 8
     end
 
     it 'should display all the eligible badges for a account' do

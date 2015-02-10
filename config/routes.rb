@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 
   resources :api_keys, only: :index
   resources :domain_blacklists, except: :show
+  resources :kudos
 
   resources :accounts do
     resources :api_keys, constraints: { format: :html }, except: :show
@@ -24,14 +25,18 @@ Rails.application.routes.draw do
     resources :positions, only: [:index]
     resources :stacks, only: [:index]
     resources :widgets, only: [:index]
-    resources :kudos, only: [:index]
+    resources :kudos, only: [:index, :show]
     resources :edits, only: [:index]
     resources :posts, only: [:index]
     resources :reviews, only: [:index]
 
     member do
+      get :disabled
       get :settings
       get :languages
+      get :commits_by_project_chart
+      get :commits_by_language_chart
+      post :make_spammer
       get 'edit_privacy'   => 'privacy#edit',   as: :edit_account_privacy
       put 'update_privacy' => 'privacy#update', as: :account_privacy
     end

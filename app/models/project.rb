@@ -32,6 +32,9 @@ class Project < ActiveRecord::Base
   scope :hot, ->(lang_id) { hot_projects(lang_id) }
   scope :by_popularity, -> { where.not(user_count: 0).order(user_count: :desc) }
   scope :by_activity, -> { joins(:analyses).joins(:analysis_summaries).by_popularity.thirty_day_summaries }
+  scope :managed_by, lambda { |account|
+    joins(:manages).where.not(deleted: true, manages: { approved_by: nil }).where(manages: { account_id: account.id })
+  }
   scope :case_insensitive_name, ->(mixed_case) { where(['lower(name) = ?', mixed_case.downcase]) }
 
   acts_as_editable editable_attributes: [:name, :url_name, :logo_id, :organization_id, :best_analysis_id,
@@ -82,6 +85,11 @@ class Project < ActiveRecord::Base
 
   def allow_redo?(key)
     (key == :organization_id && !organization_id.nil?) ? false : true
+  end
+
+  def main_language
+    return if best_analysis.nil? || best_analysis.main_language.nil?
+    best_analysis.main_language.name
   end
 
   class << self

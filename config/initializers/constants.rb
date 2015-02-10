@@ -96,3 +96,5 @@ BLOG_LINKS = {
   pai_about:                'about-project-activity-icons',
   hotness_score:            '2014/01/about-the-ohloh-hotness-score'
 }
+
+ACCOUNT_DESC_LENGTH = 100

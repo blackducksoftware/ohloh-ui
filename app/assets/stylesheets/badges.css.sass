@@ -1,4 +1,10 @@
 .mini-badges-section
+  position: absolute
+  height: 62px
+  top: 50%
+  right: 4px
+  margin-top: -31px
+
   .describer-badge
     background: asset_url('badges/48-pixel-badge-sprite.png') no-repeat -48px 0
   .repo-person-badge
@@ -65,3 +71,17 @@
   padding: 40px 13px
   height: 0px !important
 
+#mini_account_header
+  min-height: 80px //for firefox
+  position: relative
+  form
+    display: inline
+
+#account_header
+  .mini-badges-section
+    position: relative
+    margin: 27px 4px 0 0
+    .account-badge
+      margin: 0 20px 31px 0
+      &.last
+        margin-right: 0
