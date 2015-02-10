@@ -1,3 +1,6 @@
+- content_for :html_title do
+  = "#{@account.name} : Show Accounts"
+
 - content_for :twitter_card do
   %meta{content: 'summary', name: 'twitter:card' }
   %meta{content: '@bdopenhub', name: 'twitter:site' }

@@ -7,20 +7,21 @@
       = lang.nice_name
 .col-md-10#account_header
   .pull-left
-    %h1.pull-left{itemprop: 'name'}= h(@account.name)
-    %div
+    %h1{itemprop: 'name'}= h(@account.name)
+    .info
       = @account.location
       - if @account.location.present?
         %meta{itemprop: 'homeLocation', content: @account.location}
+      - if @account.location && my_account?(@account)
+        %span.seperator= '&nbsp;|&nbsp;'.html_safe
       - if my_account?(@account)
-        %span.seperator &nbsp;&nbsp;|&nbsp;&nbsp;
         = link_to settings_account_path(@account) do
           %i.icon-cogs= '&nbsp; Settings'.html_safe
     - if @account.url.present?
-      %div
+      .info
         = link_to @account.url, target: '_blank', title: @account.url, itemprop: 'url', rel: 'nofollow' do
           %i.icon-external-link= "&nbsp; #{truncate(@account.url, length: 60)}".html_safe
-    #account_affiliation
+    #account_affiliation.info
       = render partial: 'accounts/show/header/affiliation', locals: {account: @account}
     #kudo_section
       %meta{itemprop: 'interactionCount', content: @account.kudo_rank}

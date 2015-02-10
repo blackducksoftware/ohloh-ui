@@ -27,7 +27,7 @@ en:
       dev_history: 'Development History'
       header:
         affiliation:
-          unaffliated: 'Unaffiliated'
+          unaffiliated: 'Unaffiliated'
           title: 'Add your affiliation!'
       summary:
         title: 'Account Summary'
@@ -35,15 +35,16 @@ en:
       stacked_projects:
         no_projects: 'No projects stacked'
         more: 'more'
-      admin:
-        email: 'Email Address:'
-        activity: 'Open Hub Activity'
+      action_link:
         no_edits: 'No Open Hub edits.'
         edits_size: '%{size} Open Hub website edit(s)'
         no_posts: 'No forum posts.'
         posts_size: '%{size} post(s)'
         no_reviews: 'No project reviewed.'
         reviews_size: '%{size} project review(s)'
+      admin:
+        email: 'Email Address:'
+        activity: 'Open Hub Activity'
         actions_title: 'Admin Actions'
         spammer:
           link: '<i class="icon-check">&nbsp;</i>MARK AS SPAMMER LEVEL'
