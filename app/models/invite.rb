@@ -7,7 +7,8 @@ class Invite < ActiveRecord::Base
   after_initialize :set_project_id_name_id
 
   validates :contribution, presence: true
-  validate :unique_invitee
+  validate :unique_invitee_wrt_contribution
+  validate :duplicate_invitee_email
 
   def set_project_id_name_id
     return if contribution_id.nil?
@@ -21,16 +22,15 @@ class Invite < ActiveRecord::Base
 
   private
 
-  # rubocop:disable Metrics/AbcSize
-  def unique_invitee
+  def unique_invitee_wrt_contribution
     return true if errors[:send_limit].any?
     count = self.class.where('invitee_email = ? AND contribution_id = ?', invitee_email, contribution_id).count
     errors.add(:invitee_email, I18n.t('invites.invited_to_claim')) if count > 0
-    return if errors[:invitee_email].any?
-    errors.add(:invitee_email, I18n.t('invites.invited_to_join')) unless :invitee_exists?
   end
-  # rubocop:enable Metrics/AbcSize
-  def invitee_exists?
-    invitee.nil? && Account.where(email: invitee_email).empty?
+
+  def duplicate_invitee_email
+    return true unless invitee.nil? && Account.where(email: invitee_email).nil?
+    count = self.class.where('invitee_email = ? ', invitee_email).count
+    errors.add(:invitee_email, I18n.t('invites.invited_to_join')) if count > 0
   end
 end

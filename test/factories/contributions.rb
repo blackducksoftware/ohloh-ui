@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :contribution do
     association :project
     association :person
-    # association :name
+    association :name
     # association :position
 
     after(:create) do |instance|

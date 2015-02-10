@@ -1,6 +1,7 @@
 !!! 5
 %html
   %head
-    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}
+    %meta{ :content => 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type' }
   %body
-    = I18n.t('invites.fields.email_body_html', invitor_name: @invite.invitor.name, invitee_name: @invite.name.name, url: @invite.claim_url, project: @invite.project.name).html_safe
+    = I18n.t('invites.fields.email_body_html', invitor_name: @invite.invitor.name, invitee_name: @invite.name.name,
+      url: @invite.claim_url, project: @invite.project.name).html_safe

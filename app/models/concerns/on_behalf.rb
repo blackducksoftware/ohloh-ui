@@ -19,6 +19,8 @@ module OnBehalf
     before_save :make_activation_code
   end
 
+  private
+
   def make_invitee
     self.invitee = Account.find_by_email(invitee_email) # okay to be nil
   end
