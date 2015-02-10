@@ -1,4 +1,5 @@
 class ohloh_dependencies {
+  include apt
   include build_essential
   include nginx
   include imagemagick

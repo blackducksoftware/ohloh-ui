@@ -1,0 +1,80 @@
+:ruby
+  page_context[:title] = t('.page_title', who: @stack.account.name, what: @stack.title)
+  editable = current_user && (@stack.account == current_user)
+  stack_entries = @stack.stack_entries
+
+.row{ id: "stack_#{@stack.id}" }
+  .col-md-9
+    %h1{ style: 'float: left;' }
+      %span{ class: editable ? 'rest_in_place' : '', attribute: 'title', col: 20, max_length: 20, rows: 1 }
+        = @stack.title
+      - stack_edit_in_place if editable
+    - if editable
+      %a.btn.btn-mini.btn-danger.stack_remove{ href: stack_path(@stack), method: :delete, confirm: t('.delete_confirm'),
+                                               style: 'float: right; display:block; margin-top:10px;' }
+        %i.icon-trash= t '.remove'
+.clear
+.row{ id: "stack_#{@stack.id}" }
+  .col-md-9
+    %p.description.nomargin
+      %span{ class: editable ? 'rest_in_place' : '', attribute: 'description', col: 35, max_length: 120, rows: 3 }
+        = @stack.description
+      - stack_edit_in_place if editable
+    - if editable
+      - show_them = @stack.project_count == 0
+      .padding_one_top
+        .recommendations
+          .clear{ style: "#{'display:none' if show_them}" }
+            %h4.soft.nomargin.show
+              %a.link_no_underline#show= t('.show_recommends')
+          .clear#recommendations{ style: "#{'display:none' unless show_them}" }
+            %h4.soft{ style: 'margin-bottom: 0.3em;' }
+              #{t('.recommends_for_this_stack')}
+              &nbsp;
+              %a.command#hide= t('.hide')
+          .list
+            %ul.stack_sm_suggestions
+              - if show_them
+                = # TODO: stack builder = render partial: 'stack_builder/small_suggestion'...
+          .controls{ style: "#{'display:none' unless show_them}" }
+            %a.btn.btn-mini.command#skip_all= t('.skip_all')
+            %a.command.btn.btn-mini#more{ style: 'display:none' }= t('.show_me_more')
+            %a.btn.btn-mini.clear_ignores.command{ title: t('.unignore_all') }= t('.show_all_projects')
+      .clear &nbsp;
+      = form_for StackEntry.new, as: :stack_entry, url: stack_stack_entries_path(@stack),
+                                 html: { class: 'form-inline', id: 'add_project_form' } do |f|
+        = f.text_field :project_name, size: 20, class: 'input-xlarge'
+        %input.btn.btn-small.btn-primary{ type: 'submit', id: 'new_stack_entry', value: 'Add Project to Stack' }
+        = f.hidden_field :stack_id, value: @stack.id
+    .stack_item_list
+      %table.table.table-bordered.stack_list{ id: "stack_list_#{@stack.id}" }
+        = render partial: 'stack_entry', collection: stack_entries, locals: { editable: editable }
+      - if stack_entries.blank?
+        %p= t('.empty_stack_msg')
+  .col-md-3
+    .well
+      .inset.stack_definition
+        %h5.soft= t('.what_is_a_stack')
+        - lamp_link = link_to('LAMP', 'http://wikipedia.org/wiki/LAMP_(software_bundle)')
+        %p!= t('.stack_explanation', link: lamp_link)
+        %p
+          - if @stack.project_count == 0
+            = t('.stack_explanation_empty')
+          - else
+            = t('.stack_explanation_with_projects')
+        %p
+          #{ t('.more_questions') }
+          = blog_link_to(link: :stack_faq, link_text: t('.stack_faq'))
+      - similar_stacks = @stack.similar_stacks(10)
+      - unless similar_stacks.blank?
+        #similar_stacks
+          %hr.one
+          .inset.lightup_avatar
+            %h6.soft
+              %a{ href: similar_stack_path(@stack) }= t('.people_with_similar_stacks')
+            .users.clear
+              - similar_stacks.each do |s|
+                = avatar_for s[:stack].account, size: 34, url: stack_path(s[:stack]), title: s[:stack].account.name
+            %a{ href: similar_stack_path(@stack), style: 'float: right;' }= t('.more')
+      %hr.one
+      = # TODO: widgets = stack_promo

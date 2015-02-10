@@ -1,4 +1,5 @@
 class ForumsController < ApplicationController
+  before_action :find_most_recent_topics_from_forum, only: :index
   before_action :find_forum_record, except: [:index, :new, :create]
   before_action :admin_session_required, except: [:index, :show]
 
@@ -17,6 +18,10 @@ class ForumsController < ApplicationController
     else
       redirect_to forums_path, flash: { error: t('.error') }
     end
+  end
+
+  def show
+    @topics = @forum.topics.paginate(page: params[:page], per_page: 15)
   end
 
   def update
@@ -40,5 +45,9 @@ class ForumsController < ApplicationController
 
   def forum_params
     params.require(:forum).permit(:name, :position)
+  end
+
+  def find_most_recent_topics_from_forum
+    @recent_topics = Topic.all.order('replied_at DESC').limit(10)
   end
 end

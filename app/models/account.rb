@@ -29,7 +29,7 @@ class Account < ActiveRecord::Base
   end
 
   def to_param
-    (login.match(Patterns::LOGIN_FORMAT) && login) || id.to_s
+    (login && login.match(Patterns::LOGIN_FORMAT)) ? login : id.to_s
   end
 
   # ip is tracked as a temporary field - not saved in the db.
@@ -108,7 +108,7 @@ class Account < ActiveRecord::Base
 
   class << self
     def resolve_login(login)
-      Account.where { lower(login) == login.downcase }.first
+      Account.where('lower(login) = ?', login.downcase).first
     end
 
     def hamster

@@ -1,4 +1,4 @@
-!!! 5
+!!!5
 %html
   %head
     - page_title = content_for?(:html_title) ? "#{ yield(:html_title) } - Open Hub" : 'Open Hub'
@@ -10,6 +10,8 @@
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     = csrf_meta_tags
+    /TODO: Refactor javascript include tag to only accommodate views that need recaptcha
+    = javascript_include_tag 'https://www.google.com/recaptcha/api.js'
   %body{ zoom: 1 }
     .container#page
       %header= render partial: 'layouts/partials/header'

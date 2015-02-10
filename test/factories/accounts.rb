@@ -4,7 +4,9 @@ FactoryGirl.define do
   end
 
   factory :account do
-    email { Faker::Internet.free_email }
+    sequence :email do |n|
+      "someone#{n}@gmail.com"
+    end
     email_confirmation { |account| account.send :email }
     url { Faker::Internet.url }
     login { generate(:account_login) }
@@ -15,6 +17,12 @@ FactoryGirl.define do
     about_raw { Faker::Lorem.characters(10) }
     activated_at { Time.now.utc }
     activation_code nil
+    country_code 'us'
+  end
+
+  factory :unactivated, parent: :account do
+    activated_at nil
+    activation_code '123456'
   end
 
   factory :admin, parent: :account do
