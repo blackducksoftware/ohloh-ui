@@ -13,9 +13,8 @@ describe 'ReviewsControllerTest' do
     end
 
     it 'should not return for invalid project id' do
-      assert_raises ActiveRecord::RecordNotFound do
-        get :index, project_id: 'NULL'
-      end
+      get :index, project_id: 'NULL'
+      must_respond_with :not_found
     end
 
     it 'should return for project id' do
