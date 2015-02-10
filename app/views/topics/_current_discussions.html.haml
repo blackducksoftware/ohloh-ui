@@ -2,13 +2,13 @@
   %thead
     %tr
       %th.first{ width: '45%' }
-        %h4.nomargin.strong Discussion
+        %h4.nomargin.strong= t('.discussion')
       %th{ width: '15%' }
-        %h4.nomargin.center.strong Posts
+        %h4.nomargin.center.strong= t('.posts')
       %th{ width: '25%' }
-        %h4.nomargin.strong Poster
+        %h4.nomargin.strong= t('.poster')
       %th{ width: '15%' }
-        %h4.nomargin.strong Freshness
+        %h4.nomargin.strong= t('.freshness')
   %tbody
     - @recent_topics.each do |topic|
       %tr
@@ -16,4 +16,4 @@
         %td.center= topic.posts_count
         - if topic.posts.last
           %td= topic.posts.last.account.name
-          %td.freshness == #{ time_ago_in_words(topic.posts.last.created_at) }
+          %td.freshness= "#{ time_ago_in_words(topic.posts.last.created_at) }"

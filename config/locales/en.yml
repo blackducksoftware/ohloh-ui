@@ -290,3 +290,6 @@ en:
       header_2_html: '&num;&num; header 2'
       unordered_list_html: '&hybull; unordered list 1'
       ordered_list_html: '1. ordered list 2'
+    captcha:
+      captcha_label: 'Captcha (required)'
+

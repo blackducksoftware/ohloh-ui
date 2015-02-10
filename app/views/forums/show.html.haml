@@ -16,7 +16,7 @@
       %th.span3
         %h4.nomargin.center.strong= t('.last_post')
   %tbody
-    = render partial: '/topics/topic', collection: @topics
+    = render partial: 'topics/topic', collection: @topics
 .row
   .span12
     = link_to t('.add_new_topic'), new_forum_topic_path(@forum), class: 'btn btn-primary btn-mini'

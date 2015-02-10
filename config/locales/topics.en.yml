@@ -8,10 +8,14 @@
         error: 'Unable to successfully create topic'
       show:
         close: 'Close'
-        # TODO: close_confirm: 'Are you sure you want to close this topic?'
         delete: 'Delete'
         reopen: 'Re-open'
         close_topic: 'Comments to this topic are now closed.'
+        close_confirmation: 'Are you sure you want to close this topic?'
+        delete_confirmation: 'Are you sure you want to delete this topic?'
+        reopen_confirmation: 'Are you sure you want to re-open this topic?'
+        next_topic_html: 'Next Topic&rarr;'
+        previous_topic_html: '&larr;Previous Topic'
       edit:
         save_changes: 'Save Changes'
       update:
@@ -27,5 +31,15 @@
         first_post: 'This will be the first post'
         sticky: 'Sticky'
         closed: 'Closed'
+      topic:
+        closed: 'closed'
+        new: 'new'
+        stale: 'stale'
+        recent: 'recent post'
+      current_discussions:
+        discussion: 'Discussion'
+        posts: 'Posts'
+        poster: 'Poster'
+        freshness: 'Freshness'
 
       # TODO: Write error messages for fields
