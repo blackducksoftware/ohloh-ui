@@ -1,16 +1,5 @@
-class CommitsByProject < Draper::Decorator
+class CommitsByProject < Cherry::Decorator
   LIMIT = 6
-
-  decorates :account
-  delegate_all
-
-  def initialize(*args)
-    super
-    @context[:start_date] ||= Time.now.utc - 7.years
-    @context[:end_date] ||= Time.now.utc
-    @start_date = @context[:start_date].strftime('%Y-%m-01').to_date
-    @end_date = @context[:end_date].strftime('%Y-%m-01').to_date
-  end
 
   # TODO: Replaces fetch_historical_commits account/reports.rb
   def history
@@ -32,7 +21,7 @@ class CommitsByProject < Draper::Decorator
 
   # TODO: Replaces regularize_chart_data account/reports.rb
   def chart_data(project_id = nil)
-    months_range = h.months_in_range(history[:start_date], @end_date)
+    months_range = TimeParser.months_in_range(history[:start_date], end_date)
     facts = chart_yaxis_data(project_id)
     y_axis = months_range.map do |m|
       facts[m].try(:sum) { |f| f[:commits].to_i } || 0
@@ -44,6 +33,18 @@ class CommitsByProject < Draper::Decorator
 
   private
 
+  def start_date
+    return @start_date if @start_date
+    given_start_date = @context[:start_date] || (Time.now.utc - 7.years)
+    @start_date = given_start_date.strftime('%Y-%m-01').to_date
+  end
+
+  def end_date
+    return @end_date if @end_date
+    given_end_date = @context[:end_date] || Time.now.utc
+    @end_date = given_end_date.strftime('%Y-%m-01').to_date
+  end
+
   def chart_yaxis_data(project_id)
     facts = history[:facts]
     facts = facts.group_by { |f| f[:project_id] }[project_id.to_s] if project_id
@@ -51,7 +52,7 @@ class CommitsByProject < Draper::Decorator
   end
 
   def symbolized
-    @symbolized ||= object.decorate.symbolized_commits_by_project
+    @symbolized ||= account.decorate.symbolized_commits_by_project
   end
 
   def positions
@@ -65,7 +66,7 @@ class CommitsByProject < Draper::Decorator
   end
 
   def with_positions_in_date_range
-    with_positions.select { |c| (@start_date..@end_date).member?(c[:month].to_date) }
+    with_positions.select { |c| (start_date..end_date).member?(c[:month].to_date) }
   end
 
   def in_date_range
@@ -115,7 +116,7 @@ class CommitsByProject < Draper::Decorator
 
   def months_without_commits
     @months_with_nil_commits ||=
-    h.months_in_range(@start_date, @end_date).each_with_object([]) do |date, array|
+    TimeParser.months_in_range(start_date, end_date).each_with_object([]) do |date, array|
       array << { month: date.to_date, commits: nil }
     end
   end

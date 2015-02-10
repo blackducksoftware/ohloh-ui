@@ -46,6 +46,8 @@ class PageContextHelperTest < ActionView::TestCase
 
   it 'should return account page context' do
     @account = accounts(:admin)
+    # PageContextHelper is included in ApplicationController where current_user is available.
+    stubs(:current_user).returns(@account)
     account_context
     page_context.delete(:footer_menu_list)
     page_context.must_equal account_menus

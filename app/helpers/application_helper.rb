@@ -30,16 +30,8 @@ module ApplicationHelper
     count == 1 ? singular : (plural || singular.pluralize)
   end
 
-  def base_url
-    request.protocol + request.host_with_port
-  end
-
   def generate_page_name
     [controller_name, action_name, 'page'].join('_')
-  end
-
-  def months_in_range(start_date, end_date)
-    (start_date..end_date).map { |d| Date.new(d.year, d.month) }.uniq
   end
 
   def my_account?(account)
