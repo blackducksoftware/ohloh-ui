@@ -13,3 +13,79 @@ en:
       no_commits: 'No commit data to display'
       in: 'in ...'
       to: 'to ...'
+    languages:
+      commits_by_language:
+        title: 'Languages'
+    show:
+      total_commits: 'total commits'
+      project: 'project'
+      analysis_scheduled: 'The analysis for this account has been scheduled.'
+      no_commits: 'There are no commits available to display.'
+      no_contributions: 'There are no contributions available to display.'
+      commits_to: ', %{commits} to %{postions}, '
+      experience_in: 'most experienced in %{nice_name}, '
+      earned: 'earned '
+      and: ' and '
+      dev_history: 'Development History'
+      header:
+        affiliation:
+          unaffiliated: 'Unaffiliated'
+          title: 'Add your affiliation!'
+      summary:
+        title: 'Account Summary'
+        projects_used: 'Projects Used'
+      stacked_projects:
+        no_projects: 'No projects stacked'
+        more: 'more'
+      action_link:
+        no_edits: 'No Open Hub edits.'
+        edits_size: '%{size} Open Hub website edit(s)'
+        no_posts: 'No forum posts.'
+        posts_size: '%{size} post(s)'
+        no_reviews: 'No project reviewed.'
+        reviews_size: '%{size} project review(s)'
+      admin:
+        email: 'Email Address:'
+        activity: 'Open Hub Activity'
+        actions_title: 'Admin Actions'
+        spammer:
+          link: '<i class="icon-check">&nbsp;</i>MARK AS SPAMMER LEVEL'
+          confirm: 'Are you sure you want to mark %{name} as a spammer, disabling the account and removing all posts?'
+          title: 'Mark %{name} as spammer!'
+        delete:
+          link: '<i class="icon-remove-sign">&nbsp;</i>DELETE ACCOUNT'
+          confirm: 'Deleting an account is permament and cannot be undone! It will also take several minutes to finish, be patient. Are you sure you want to delete %{name}?'
+          title: 'Delete %{name}'
+        panel:
+          close: 'close admin panel'
+          open: 'open admin panel'
+      commits_by_projects:
+        link: 'Commits by Project'
+      commits_by_language:
+        link: 'Commits by Language'
+        sort_option:
+          hash: 'All Languages'
+          one: 'Markup Languages'
+          two: 'Build Languages'
+          zero: 'Logical Languages'
+      baseball_card:
+        lang_title: 'Most experienced in'
+        duration: '%{date} ago'
+        first_checkin: 'First commit'
+        last_checkin: 'Most recent commit'
+        commits:
+          label: 'Has made'
+          value: '%{count} commits'
+        joined_at: 'Joined Open Hub'
+        contribution: 'Contributed to'
+        contributed_to: 'Contributed to projects in'
+        contributed_for: 'Contributed on behalf of'
+      orgs:
+        including: 'including:'
+      vita_timestamp:
+        analyzed: 'Analyzed'
+        duration: '%{date}'
+        ago: 'ago'
+      description:
+        more: 'more...'
+        less: 'less...'

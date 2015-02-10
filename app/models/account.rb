@@ -5,7 +5,7 @@ class Account < ActiveRecord::Base
   include AccountScopes
   include AccountCallbacks
 
-  attr_accessor :password, :current_password, :validate_current_password, :twitter_account, :invite_code,
+  attr_accessor :password, :current_password, :validate_current_password, :invite_code,
                 :password_confirmation, :email_confirmation
   attr_writer :ip
 
@@ -42,8 +42,8 @@ class Account < ActiveRecord::Base
     edits.where(undone: false).count
   end
 
-  def best_vita_fact
-    @best_vita_fact ||= VitaFact.where(vita_id: best_vita_id).first
+  def best_vita
+    Vita.where(id: best_vita_id, account_id: id).first || NilVita.new
   end
 
   def email_topics?
@@ -85,8 +85,9 @@ class Account < ActiveRecord::Base
   end
 
   def most_experienced_language
-    return unless best_vita.try(:vita_fact).try(:vita_language_facts).to_a.any?
-    best_vita.vita_fact.vita_language_facts.first.language
+    language_facts = best_vita.vita_language_facts
+    return if language_facts.empty?
+    language_facts.ordered.first.language
   end
 
   def resend_activation!
@@ -96,8 +97,9 @@ class Account < ActiveRecord::Base
 
   # TODO: Replaces get_first_commit_date
   def first_commit_date
-    first_checkin = best_vita.try(:vita_fact).try(:first_checkin)
-    first_checkin.try(:to_date).try(:beginning_of_month)
+    first_checkin = best_vita.vita_fact.first_checkin
+    return if first_checkin.blank?
+    first_checkin.to_date.beginning_of_month
   end
 
   def kudo_rank

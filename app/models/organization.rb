@@ -10,6 +10,9 @@ class Organization < ActiveRecord::Base
 
   scope :from_param, ->(param) { where(url_name: param) }
   scope :active, -> { where.not(deleted: true) }
+  scope :managed_by, lambda { |account|
+    joins(:manages).where.not(deleted: true, manages: { approved_by: nil }).where(manages: { account_id: account.id })
+  }
 
   validates :name, presence: true, length: 3..85, uniqueness: { case_sensitive: false }
   validates :description, length: 0..800, allow_nil: true
