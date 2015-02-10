@@ -43,14 +43,10 @@ class AccountDecorator < Draper::Decorator
   # NOTE: Replaces twitter_card_description in accounts_helper
   def twitter_card
     return '' unless markup
-    content = markup.first_line.to_s
     name_fact = best_vita.vita_fact
-    if name_fact.nil?
-      content += h.t('.commits_to', commits: pluralize(name_fact.commits, 'total commit'),
-                                    positions: pluralize(positions.count, 'project'))
-      content += addtional_twitter_descripion
-    end
-    content
+    content = markup.first_line.to_s
+    return content if name_fact.nil?
+    content + twitter_card_commits(name_fact) + addtional_twitter_descripion
   end
 
   def twitter_url
@@ -91,6 +87,12 @@ class AccountDecorator < Draper::Decorator
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   private
+
+  def twitter_card_commits(name_fact)
+    commits_count = pluralize(name_fact.commits, h.t('.total commit'))
+    positions_count = pluralize(positions.count, h.t('.project'))
+    h.t('.commits_to', commits: commits_count, positions: positions_count)
+  end
 
   def addtional_twitter_descripion
     content = h.t('.experience_in', nice_name: most_experienced_language.nice_name) if most_experienced_language

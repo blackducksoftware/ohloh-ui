@@ -30,8 +30,7 @@
           %i.icon-twitter{style: "color: #ccc"}
         - elsif @account.twitter_account.present?
           = link_to @account.decorate.twitter_url, class: 'link_no_underline', rel: "popup", title: "Follow @#{@account.twitter_account}" do
-            %i.icon-twitter{style:'margin-top: 12px'}
-          end
+            %i.icon-twitter
         = render partial: 'accounts/show/header/kudo_button', locals: { css: "btn-mini btn-info"}
   .mini-badges-section.pull-right
     - badges = BadgeDecorator.decorate_collection(@account.badges)

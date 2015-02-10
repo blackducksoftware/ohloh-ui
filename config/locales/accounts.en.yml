@@ -17,6 +17,8 @@ en:
       commits_by_language:
         title: 'Languages'
     show:
+      total_commits: 'total commits'
+      project: 'project'
       analysis_scheduled: 'The analysis for this account has been scheduled.'
       no_commits: 'There are no commits available to display.'
       no_contributions: 'There are no contributions available to display.'

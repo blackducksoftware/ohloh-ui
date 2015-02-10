@@ -5,7 +5,7 @@ class Account < ActiveRecord::Base
   include AccountScopes
   include AccountCallbacks
 
-  attr_accessor :password, :current_password, :validate_current_password, :twitter_account, :invite_code,
+  attr_accessor :password, :current_password, :validate_current_password, :invite_code,
                 :password_confirmation, :email_confirmation
   attr_writer :ip
 
