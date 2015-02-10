@@ -13,7 +13,7 @@ class Organization::Affiliated < Organization::AccountFacts
 
   def committers(page = 1, limit = 10)
     accounts = @organization.accounts.joins([:person, :positions])
-    accounts = accounts.group('accounts.id, people.kudo_position').order('COALESCE(kudo_position,999999999) ASC')
+    accounts = accounts.group('accounts.id, people.kudo_position').order('kudo_position nulls last')
     accounts.paginate(per_page: limit, page: page)
   end
 
