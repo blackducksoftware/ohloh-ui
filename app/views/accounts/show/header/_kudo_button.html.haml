@@ -1,4 +1,4 @@
-- # NOTE: Replaces account_kudo_button in kudos helper
+-# NOTE: Replaces account_kudo_button in kudos helper
 :ruby
   name = @account.name
   kudo = Kudo.where(sender_id: current_user.id, account_id: @account.id).first
@@ -6,8 +6,9 @@
 
 - unless !logged_in? || current_user == @account
   - if kudo
-    = form_for kudo, {action: account_kudo_path(current_user, kudo), method: :post} do |f|
-      = f.hidden_field '_method' , 'delete'
-      = f.submit "<i class='icon-undo'></i> Undo Kudo", {class: "btn kudo-btn #{css}"}
+    = form_for kudo, action: account_kudo_path(current_user, kudo), method: :post do |f|
+      = f.hidden_field '_method', 'delete'
+      = f.submit "<i class='icon-undo'></i> Undo Kudo".html_safe, class: "btn kudo-btn #{css}"
   - else
-    = link_to 'Give Kudo', '#', class: "btn kudo-btn #{css}", onclick: "tb_show('Give Kudos to #{name}', '#{action}', false); return false;"
+    = link_to 'Give Kudo', '#', class: "btn kudo-btn #{css}",
+    onclick: "tb_show('Give Kudos to #{name}', '#{action}', false); return false;"
