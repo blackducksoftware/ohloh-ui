@@ -1,10 +1,6 @@
 require 'test_helper'
 
-class ProjectDecoratorTest < Draper::TestCase
-  before do
-    Draper::ViewContext.clear!
-  end
-
+class ProjectDecoratorTest < ActiveSupport::TestCase
   let(:linux) { projects(:linux) }
   let(:sidebar) do
     [

@@ -1,10 +1,6 @@
 require 'test_helper'
 
-class CommitsByLanguageTest < Draper::TestCase
-  before do
-    Draper::ViewContext.clear!
-  end
-
+class CommitsByLanguageTest < ActiveSupport::TestCase
   let(:start_date) do
     (Date.today - 6.years).beginning_of_month
   end

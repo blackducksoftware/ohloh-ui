@@ -1,8 +1,7 @@
 require 'test_helper'
 
-class AccountDecoratorTest < Draper::TestCase
+class AccountDecoratorTest < ActiveSupport::TestCase
   before do
-    Draper::ViewContext.clear!
     @c = create(:language, name: 'c', nice_name: 'C')
     @cpp = create(:language, name: 'cpp', nice_name: 'C++')
     @js = create(:language, name: 'javascript', nice_name: 'Javascript')
@@ -73,7 +72,7 @@ class AccountDecoratorTest < Draper::TestCase
   end
 
   describe 'symbolized_commits_by_project' do
-    it 'should return [] when account has no best_vita' do
+    it 'must be empty when account has no best_vita' do
       admin.decorate.symbolized_commits_by_project.must_be_empty
     end
 
@@ -116,29 +115,31 @@ class AccountDecoratorTest < Draper::TestCase
     end
   end
 
-  describe '#sidebar' do
+  describe '#sidebar_for' do
+    let(:current_user) { NullAccount.new }
+
     it 'should return four sections of menu list' do
-      admin.decorate.sidebar.length.must_equal 4
+      admin.decorate.sidebar_for(current_user).length.must_equal 4
     end
 
     it 'should have three menus in first section' do
-      admin.decorate.sidebar.first.length.must_equal 3
-      admin.decorate.sidebar.first.must_equal sidebars.first
+      admin.decorate.sidebar_for(current_user).first.length.must_equal 3
+      admin.decorate.sidebar_for(current_user).first.must_equal sidebars.first
     end
 
     it 'should have three menus in second section' do
-      admin.decorate.sidebar.second.length.must_equal 3
-      admin.decorate.sidebar.second.must_equal sidebars.second
+      admin.decorate.sidebar_for(current_user).second.length.must_equal 3
+      admin.decorate.sidebar_for(current_user).second.must_equal sidebars.second
     end
 
     it 'should have two menus in third section' do
-      admin.decorate.sidebar.third.length.must_equal 2
-      admin.decorate.sidebar.third.must_equal sidebars.third
+      admin.decorate.sidebar_for(current_user).third.length.must_equal 2
+      admin.decorate.sidebar_for(current_user).third.must_equal sidebars.third
     end
 
     it 'should have 4 menus in fourth sections' do
-      admin.decorate.sidebar.fourth.length.must_equal 4
-      admin.decorate.sidebar.fourth.must_equal sidebars.fourth
+      admin.decorate.sidebar_for(current_user).fourth.length.must_equal 4
+      admin.decorate.sidebar_for(current_user).fourth.must_equal sidebars.fourth
     end
   end
 end
