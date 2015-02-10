@@ -1,6 +1,6 @@
-- if page_context[:nav_type]
-  = render partial: "layouts/partials/#{page_context[:nav_type]}"
-- else
-  #page-contents
-    .col-md-13{ id: generate_page_name }
+#page-contents
+  .col-md-12{ id: generate_page_name }
+    - if page_context[:nav_type]
+      = render partial: "layouts/partials/#{page_context[:nav_type]}"
+    - else
       = yield

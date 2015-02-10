@@ -17,6 +17,9 @@ Rails.application.routes.draw do
 
   resources :api_keys, only: :index
   resources :domain_blacklists, except: :show
+  resources :reviews, only: :destroy do
+    resources :helpfuls, only: :create
+  end
   resources :kudos
 
   resources :accounts do
@@ -53,7 +56,7 @@ Rails.application.routes.draw do
   resources :posts, only: :index, as: 'all_posts'
   get 'markdown_syntax', to: 'abouts#markdown_syntax'
 
-  resources :projects, path: :p, only: [:show] do
+  resources :projects, path: :p, only: [:show, :edit] do
     member do
       get :users
       get :map
@@ -61,8 +64,8 @@ Rails.application.routes.draw do
       get :estimated_cost
       get 'permissions'  => 'permissions#show',   as: :permissions
       put 'permissions'  => 'permissions#update', as: :update_permissions
-      post 'rate/:score' => 'ratings#rate',       as: :rate
-      post 'unrate'      => 'ratings#unrate',     as: :unrate
+      post 'rate'        => 'ratings#rate',       as: :rate
+      delete 'unrate'      => 'ratings#unrate',     as: :unrate
     end
     collection do
       get :compare
@@ -79,7 +82,8 @@ Rails.application.routes.draw do
     resources :rss_articles, only: :index
     resources :widgets, only: :index
     resources :similar_projects, only: :index
-    resources :reviews, only: :index do
+    resources :ratings
+    resources :reviews, except: :show do
       collection { get :summary }
       resources :helpfuls, only: :create
     end

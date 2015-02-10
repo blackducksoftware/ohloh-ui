@@ -1,0 +1,12 @@
+.hidden#from_review review
+.cleafix
+%b.pull-left= t('.rating')
+.controls.pull-left{ style: 'margin-left:10px;' }
+  .jrating{ id: @project.to_param, score: (@rating.try(:score) || 0), star_style: 'big' }
+&nbsp;
+.col-md.hidden#rating_spinner
+  &nbsp;&nbsp;
+  = image_tag('spinner.gif')
+- if @rating.try(:persisted?)
+  %span#clear{ style: 'margin-left:7px;' }
+    = link_to(t('.clear'), {}, class: 'btn btn-mini', 'data-url' => unrate_project_path(@project))

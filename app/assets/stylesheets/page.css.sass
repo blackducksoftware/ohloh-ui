@@ -3,6 +3,7 @@ body
   font-family: 'Open Sans'
   font-size: 13px
   margin: 0
+  color: #000
 
 #page
   background-color: white
@@ -102,6 +103,15 @@ header
 .mezzo
   margin-top: -1px
   border-top: 1px solid #aaa
+
+.no_padding_left
+  padding-left: 0px !important
+
+.no_padding_right
+  padding-right: 0px !important
+
+.col-md-12
+  @extend .no_padding
 
 .busy, a.busy
   :background transparent url(/assets/ui/spinner.gif) no-repeat center

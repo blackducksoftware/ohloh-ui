@@ -32,6 +32,16 @@ module PageContextHelper
                      nav_type: 'sidebar')
   end
 
+  def review_context
+    if @project
+      project_context
+      page_context[:select_footer_nav] = :reviews
+    elsif @account
+      account_context
+      page_context[:select_footer_nav] = :reviews
+    end
+  end
+
   def set_page_context(options)
     options.update(nav_type: 'footer_nav') if options[:nav_type].blank?
     page_context.reverse_merge!(options)

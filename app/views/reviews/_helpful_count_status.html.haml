@@ -1,0 +1,3 @@
+.col-md.soft.small.helpful_above
+  - if review.helpfuls.exists?
+    = t('reviews.helpful_status', positive: review.helpfuls.positive.count, total_helpful: review.helpfuls.count)

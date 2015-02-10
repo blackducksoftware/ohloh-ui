@@ -1,0 +1,62 @@
+.star-rating, .star-rating a:hover, .star-rating a:active,
+.star-rating a:focus, .star-rating .current-rating
+  :background url(/assets/stars/stars_sprite.png) no-repeat left top
+
+.star-rating
+  :width 112px
+  :position relative
+  :height 22px
+  :overflow hidden
+  list-style: none
+  margin: 0
+  padding: 0
+  background-position: left top
+  :background url(/assets/stars/stars_sprite.png) no-repeat left top
+  .current-rating
+    :background-position left bottom
+
+.star-rating li
+  display: inline
+  margin-top: 0
+
+.star-rating a, .star-rating .current-rating
+  position: absolute
+  top: 0
+  left: 0
+  text-indent: -1000em
+  height: 24px
+  line-height: 22px
+  outline: none
+  overflow: hidden
+  border: none
+
+.star-rating.writable a:hover, .star-rating a:active, .star-rating a:focus
+  background-position: left -22px
+
+.star-rating .current-rating
+  z-index: 1
+  background-position: left center
+
+.small-star
+  :width 50px
+  :height 10px
+
+.small-star, .small-star a:hover, .small-star a:active, .small-star a:focus, .small-star .current-rating
+  :background-image url(/assets/stars/stars_sprite_mini.gif) no-repeat left top
+  :line-height 10px
+  :height 10px
+
+ul.small-star
+  :margin-top .2em
+
+span.score_text
+  :float right
+  :display block
+  :padding-top 3px
+  :height 15px
+
+.review_container
+  :padding 5px!important
+.review_content
+  :padding-top 10px
+  :padding-right 10px
