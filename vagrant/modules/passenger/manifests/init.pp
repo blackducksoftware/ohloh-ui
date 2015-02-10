@@ -38,24 +38,11 @@ class passenger {
     require => File["/var/local/config"]
   }
 
-  exec { "check the passenger apt-get key":
-    command => "/usr/bin/gpg --keyserver pgpkeys.mit.edu --recv-key 561F9B9CAC40B2F7",
-    creates => "/usr/bin/passenger",
-    user => root
-  }
-
-  exec { "trust the passenger apt-get key":
-    command => "/usr/bin/gpg -a --export 561F9B9CAC40B2F7 | sudo apt-key add -",
-    user => root,
-    creates => "/usr/bin/passenger",
-    require => Exec["check the passenger apt-get key"]
-  }
-
   exec { "allow agt-get passenger":
     command => "/usr/bin/apt-add-repository -y 'deb https://oss-binaries.phusionpassenger.com/apt/passenger trusty main'",
     user => root,
     creates => "/usr/bin/passenger",
-    require => Exec["trust the passenger apt-get key"]
+    require => File["/etc/apt/apt.conf"]
   }
 
   exec { "apt-get passenger":

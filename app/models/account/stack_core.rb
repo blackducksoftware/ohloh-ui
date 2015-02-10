@@ -1,6 +1,6 @@
 class Account::StackCore < OhDelegator::Base
   parent_scope do
-    has_many :stacks, -> { order { title } }
+    has_many :stacks, -> { order(:title).where(deleted_at: nil) }
   end
 
   # TODO: Replaces default_stack with this

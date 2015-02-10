@@ -1,0 +1,9 @@
+-# NOTE: Replaces render_vita_timestamp helper in application_helper.rb
+- unless best_vita.nil?
+  .pull-right.soft#analysis_timestamp
+    %i
+      %i.icon-time= '&nbsp;'.html_safe
+      = t '.analyzed'
+      %abbr{ title: best_vita.created_at.to_s(:full) }
+        = t '.duration', date: time_ago_in_words(best_vita.created_at)
+      = t '.ago'

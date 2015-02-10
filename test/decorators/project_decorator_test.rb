@@ -1,10 +1,6 @@
 require 'test_helper'
 
-class ProjectDecoratorTest < Draper::TestCase
-  before do
-    Draper::ViewContext.clear!
-  end
-
+class ProjectDecoratorTest < ActiveSupport::TestCase
   let(:linux) { projects(:linux) }
   let(:sidebar) do
     [
@@ -34,11 +30,20 @@ class ProjectDecoratorTest < Draper::TestCase
     ]
   end
 
-  it 'should contain 4 sections' do
-    linux.decorate.sidebar.length.must_equal 4
+  describe 'sidebar' do
+    it 'should contain 4 sections' do
+      linux.decorate.sidebar.length.must_equal 4
+    end
+
+    it 'should return projects menu list' do
+      linux.decorate.sidebar.must_equal sidebar
+    end
   end
 
-  it 'should return projects menu list' do
-    linux.decorate.sidebar.must_equal sidebar
+  describe 'icon' do
+    it 'should return icon image for project' do
+      Icon.any_instance.expects(:image).returns(nil)
+      linux.decorate.icon.must_equal nil
+    end
   end
 end

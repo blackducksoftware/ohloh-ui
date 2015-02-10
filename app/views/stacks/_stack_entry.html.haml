@@ -1,0 +1,30 @@
+- hidden ||= false
+
+%tr.stack_entry{ id: "stack_entry_#{stack_entry.id}", style: "#{'display:none;' if hidden }" }
+  %td{ width: '13%', valign: 'middle' }
+    - project_icon(stack_entry.project, :small)
+  %td{ width: '70%', valign: 'top' }
+    = link_to stack_entry.project.name, project_url(stack_entry.project)
+    .line_two
+      - if stack_entry.project.rating_average
+        .compact_rating_and_review
+          %span.header Community rating:
+          .rating_stars
+            != rating_stars('average_rating_stars', stack_entry.project.rating_average.to_i, true)
+        %br
+      .note
+        %span.header.note= t('.notes')
+        %br
+        - if editable
+          - uri = "/stacks/#{@stack.id}/stack_entries/#{stack_entry.id}"
+          %span.rest_in_place{ url: uri, object: 'stack_entry', attribute: 'note',
+                               col: '32', rows: '7', max_length: StackEntry::MAX_NOTE_LENGTH }
+            = stack_entry.note
+          - stack_edit_in_place
+        - else
+          %span.note= stack_entry.note
+  - if editable
+    %td{ width: '18%', valign: 'top' }
+      %a.btn.btn-mini.btn-danger.command.stack_remove{ href: '#',
+                                                       id: "stackit_#{stack_entry.project.url_name}" }
+        %i.icon-trash= t '.remove'

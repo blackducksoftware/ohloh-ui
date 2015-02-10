@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   resources :reviews, only: :destroy do
     resources :helpfuls, only: :create
   end
+  resources :kudos
 
   resources :accounts do
     resources :api_keys, constraints: { format: :html }, except: :show
@@ -27,14 +28,17 @@ Rails.application.routes.draw do
     resources :positions, only: [:index]
     resources :stacks, only: [:index]
     resources :widgets, only: [:index]
-    resources :kudos, only: [:index]
+    resources :kudos, only: [:index, :show]
     resources :edits, only: [:index]
     resources :posts, only: [:index]
     resources :reviews, only: [:index]
 
     member do
+      get :disabled
       get :settings
       get :languages
+      get :commits_by_project_chart
+      get :commits_by_language_chart
       post :make_spammer
       get 'edit_privacy'   => 'privacy#edit',   as: :edit_account_privacy
       put 'update_privacy' => 'privacy#update', as: :account_privacy
@@ -42,12 +46,15 @@ Rails.application.routes.draw do
   end
 
   resources :forums do
-    resources :topics do
-      resources :posts, except: :show
-    end
+    resources :topics, shallow: true
   end
 
-  resources :posts, only: :index, as: :all_posts
+  resources :topics, except: [:index, :new, :create] do
+    resources :posts, except: [:new]
+  end
+
+  resources :posts, only: :index, as: 'all_posts'
+  get 'markdown_syntax', to: 'abouts#markdown_syntax'
 
   resources :projects, path: :p, only: [:show, :edit] do
     member do
@@ -62,6 +69,7 @@ Rails.application.routes.draw do
     end
     collection do
       get :compare
+      get :autocomplete
     end
     resource :logos, only: [:new, :create, :destroy]
     resources :links, except: :show
@@ -107,7 +115,19 @@ Rails.application.routes.draw do
     resources :widgets
   end
 
-  resources :stacks, except: [:new, :edit]
+  resources :stacks, only: [:show, :create, :update, :destroy] do
+    member do
+      get :similar
+      get :builder
+    end
+    resources :stack_entries, only: [:create, :destroy]
+    resources :stack_ignores, only: [:create] do
+      collection do
+        delete :delete_all
+      end
+    end
+    resources :widgets, only: [:index]
+  end
   resources :languages, only: [:show, :index] do
     collection { get :compare }
   end

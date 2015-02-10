@@ -7,8 +7,8 @@ class ForumHelperTest < ActionView::TestCase
     Object.any_instance.stubs(:current_user_is_admin?).returns(:true)
   end
 
-  let(:forum) { forums(:rails) }
-  let(:admin) { accounts(:rails) }
+  let(:forum) { create(:forum) }
+  let(:admin) { create(:admin) }
   let(:admin_sidebar) do
     [
       [
@@ -27,8 +27,8 @@ class ForumHelperTest < ActionView::TestCase
     [
       [
         [nil, 'Topics'],
-        [:new_topic, 'New Topic', '/forums/1/topics/new'],
-        [:forum, 'rails', '/forums/1']
+        [:new_topic, 'New Topic', "/forums/#{forum.id}/topics/new"],
+        [:forum, "#{forum.name}", "/forums/#{forum.id}"]
       ],
       [
         [nil, 'Posts'],

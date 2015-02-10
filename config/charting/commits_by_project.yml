@@ -1,0 +1,19 @@
+plotOptions:
+  series:
+    minPointLength: 3
+chart:
+  marginLeft: 60
+  width: 950
+  backgroundColor: 'transparent'
+  style:
+    background-image: "url('/assets/charts/watermark_692.png')"
+    background-repeat: 'no-repeat'
+    background-position: '18% 50%'
+legend:
+  itemWidth: 170
+  borderRadius: 0
+xAxis:
+  labels:
+    rotation: 0
+    step: 1
+    align: 'left'

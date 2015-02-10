@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe ForumsController do
-  let(:forum) { forums(:rails) }
+  let(:forum) { create(:forum) }
   let(:admin) { create(:admin) }
   let(:user) { create(:account) }
 
@@ -25,6 +25,23 @@ describe ForumsController do
     must_redirect_to forums_path
   end
 
+  it 'admin fails create' do
+    login_as admin
+    assert_no_difference('Forum.count') do
+      post :create, forum: { name: '' }
+    end
+  end
+
+  it 'admin show with pagination' do
+    create_list(:topic, 20)
+    login_as user
+    get :show, id: forum.id
+    must_respond_with :success
+    # Should have 15 topics per page
+    html = 'div#forums_show_page.col-md-13 table.table.table-striped tbody tr'
+    css_select html, 15
+  end
+
   it 'admin edit' do
     login_as admin
     get :edit, id: forum.id
@@ -39,6 +56,7 @@ describe ForumsController do
   end
 
   it 'admin destroy' do
+    forum = create(:forum)
     login_as admin
     assert_difference('Forum.count', -1) do
       delete :destroy, id: forum.id
@@ -66,10 +84,14 @@ describe ForumsController do
     end
   end
 
-  it 'show' do
+  it 'show with pagination' do
+    create_list(:topic, 20)
     login_as user
     get :show, id: forum.id
     must_respond_with :success
+    # Should have 15 topics per page
+    html = 'div#forums_show_page.col-md-13 table.table.table-striped tbody tr'
+    css_select html, 15
   end
 
   it 'edit' do
@@ -82,10 +104,11 @@ describe ForumsController do
     login_as user
     put :update, id: forum.id, forum: { name: 'Ruby vs. Python vs. Javascript deathmatch' }
     forum.reload
-    forum.name.must_equal 'rails'
+    forum.name.must_equal forum.name
   end
 
   it 'destroy' do
+    forum = create(:forum)
     login_as user
     assert_no_difference('Forum.count') do
       delete :destroy, id: forum.id

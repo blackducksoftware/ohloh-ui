@@ -1,0 +1,20 @@
+:ruby
+  lang = @account.most_experienced_language
+  bg_color = language_color(lang.try(:name))
+  text_color = language_text_color(lang.try(:name))
+
+- if !@account.best_vita.nil? && lang
+  .col-md-7.statistic
+    .inner
+      .col-md-3.pull-left.name= t('.lang_title')
+      .pull-left.language-box{ style: "background-color:##{bg_color}; color:##{text_color};" }= lang.nice_name
+
+- BaseballCard.new(@account).rows.each do |row|
+  .col-md-7.statistic{ row[:css] }
+    .inner
+      .col-md-3.pull-left.name= row[:label]
+      .col-md-4.pull-left.value
+        - if row[:value]
+          = row[:value]
+        - else
+          = render partial: row[:partial], locals: row[:locals]

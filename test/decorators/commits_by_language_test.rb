@@ -1,56 +1,15 @@
 require 'test_helper'
 
-class CommitsByLanguageTest < Draper::TestCase
-  before do
-    Draper::ViewContext.clear!
-  end
-
+class CommitsByLanguageTest < ActiveSupport::TestCase
   let(:start_date) do
     (Date.today - 6.years).beginning_of_month
   end
 
-  let(:cbl) do
-    [{ 'l_id' => '3', 'l_name' => 'xml', 'l_category' => '1', 'l_nice_name' => 'XML',
-       'month' => start_date.to_s, 'commits' => '8' },
-     { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => start_date.to_s, 'commits' => '24' },
-     { 'l_id' => '1', 'l_name' => 'html', 'l_category' => '1', 'l_nice_name' => 'HTML',
-       'month' => (start_date + 1.month).to_s, 'commits' => '9' },
-     { 'l_id' => '3', 'l_name' => 'xml', 'l_category' => '1', 'l_nice_name' => 'XML',
-       'month' => (start_date + 1.month).to_s, 'commits' => '29' },
-     { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => (start_date + 1.month).to_s, 'commits' => '37' },
-     { 'l_id' => '3', 'l_name' => 'xml', 'l_category' => '1', 'l_nice_name' => 'XML',
-       'month' => (start_date + 2.months).to_s, 'commits' => '7' },
-     { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => (start_date + 2.months).to_s, 'commits' => '27' },
-     { 'l_id' => '30', 'l_name' => 'sql', 'l_category' => '0', 'l_nice_name' => 'SQL',
-       'month' => (start_date + 2.months).to_s, 'commits' => '1' },
-     { 'l_id' => '3', 'l_name' => 'xml', 'l_category' => '1', 'l_nice_name' => 'XML',
-       'month' => (start_date + 3.months).to_s, 'commits' => '2' },
-     { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => (start_date + 3.months).to_s, 'commits' => '16' },
-     { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => (start_date + 4.months).to_s, 'commits' => '1' },
-     { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => (start_date + 5.months).to_s, 'commits' => '8' },
-     { 'l_id' => '3', 'l_name' => 'xml', 'l_category' => '1', 'l_nice_name' => 'XML',
-       'month' => (start_date + 6.months).to_s, 'commits' => '12' },
-     { 'l_id' => '12', 'l_name' => 'ruby', 'l_category' => '0', 'l_nice_name' => 'Ruby',
-       'month' => (start_date + 6.months).to_s, 'commits' => '2' },
-     { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => (start_date + 6.months).to_s, 'commits' => '26' },
-     { 'l_id' => '3', 'l_name' => 'xml', 'l_category' => '1', 'l_nice_name' => 'XML',
-       'month' => (start_date + 7.months).to_s, 'commits' => '2' },
-     { 'l_id' => '12', 'l_name' => 'ruby', 'l_category' => '0', 'l_nice_name' => 'Ruby',
-       'month' => (start_date + 7.months).to_s, 'commits' => '3' },
-     { 'l_id' => '17', 'l_name' => 'csharp', 'l_category' => '0', 'l_nice_name' => 'C#',
-       'month' => (start_date + 7.months).to_s, 'commits' => '9' }]
-  end
-
   let(:user) do
-    accounts(:user).best_vita.vita_fact.update(commits_by_language: cbl)
-    accounts(:user)
+    account = accounts(:user)
+    account.best_vita.vita_fact.destroy
+    create(:vita_fact_with_cbl_and_cbp, vita_id: account.best_vita_id)
+    account
   end
 
   let(:admin) { create(:admin) }

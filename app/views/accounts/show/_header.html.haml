@@ -1,0 +1,39 @@
+.col-md-2#account_icon
+  = image_tag avatar_img_path(@account, 128), size: '128x128', itemprop: 'image'
+  - lang = @account.most_experienced_language
+  - if lang
+    - lang_style = "background-color: ##{language_color(lang.name)}; color:##{language_text_color(lang.name)};"
+    .center.primary_language_bg{ style: lang_style }
+      = lang.nice_name
+.col-md-10#account_header
+  .pull-left
+    %h1{ itemprop: 'name' }= h(@account.name)
+    .info
+      = @account.location
+      - if @account.location.present?
+        %meta{ itemprop: 'homeLocation', content: @account.location }
+      - if @account.location && my_account?(@account)
+        %span.seperator= '&nbsp;|&nbsp;'.html_safe
+      - if my_account?(@account)
+        = link_to settings_account_path(@account) do
+          %i.icon-cogs= '&nbsp; Settings'.html_safe
+    - if @account.url.present?
+      .info
+        = link_to @account.url, target: '_blank', title: @account.url, itemprop: 'url', rel: 'nofollow' do
+          %i.icon-external-link= "&nbsp; #{truncate(@account.url, length: 60)}".html_safe
+    .info#account_affiliation
+      = render partial: 'accounts/show/header/affiliation', locals: { account: @account }
+    #kudo_section
+      %meta{ itemprop: 'interactionCount', content: @account.kudo_rank }
+      .social-connect
+        - if my_account?(@account)
+          %i.icon-twitter{ style: 'color: #ccc' }
+        - elsif @account.twitter_account.present?
+          = link_to @account.decorate.twitter_url(request.url), class: 'link_no_underline',
+          rel: 'popup', title: "Follow @#{@account.twitter_account}" do
+            %i.icon-twitter
+        = render partial: 'accounts/show/header/kudo_button', locals: { css: 'btn-mini btn-info' }
+  .mini-badges-section.pull-right
+    - badges = @account.badges.map { |badge| BadgeDecorator.new(badge) }
+    = render partial: 'badges_row', locals: { badges: badges, header: :large }
+  .clearfix

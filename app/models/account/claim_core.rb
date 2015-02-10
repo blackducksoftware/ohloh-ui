@@ -22,6 +22,6 @@ class Account::ClaimCore < OhDelegator::Base
   # No of unclaimed persons based on account's claimed emails.
   def unclaimed_persons_count
     return 0 if emails.empty?
-    Person.count_unclaimed(emails.join(' '), 'email')
+    Person::Count.unclaimed_by(emails.join(' '), 'email')
   end
 end

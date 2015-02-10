@@ -1,7 +1,8 @@
 class TopicsController < ApplicationController
+  include TopicsHelper
   before_action :session_required, only: [:new, :create]
   before_action :admin_session_required, only: [:edit, :update, :destroy]
-  before_action :find_forum_record, only: [:index, :new, :create, :edit]
+  before_action :find_forum_record, only: [:index, :new, :create]
   before_action :find_forum_and_topic_records, except: [:index, :new, :create]
 
   def index
@@ -18,7 +19,7 @@ class TopicsController < ApplicationController
   def create
     @topic = build_new_topic
     respond_to do |format|
-      if @topic.save
+      if verify_recaptcha(model: @topic) && @topic.save
         format.html { redirect_to forum_path(@forum), flash: { success: t('.success') } }
       else
         format.html { redirect_to forum_path(@forum), flash: { error: t('.error') } }
@@ -26,12 +27,16 @@ class TopicsController < ApplicationController
     end
   end
 
+  def show
+    @posts = @topic.posts.paginate(page: params[:page], per_page: 25)
+  end
+
   def update
     respond_to do |format|
       if @topic.update(topic_params)
-        format.html { redirect_to forum_topic_path(@forum, @topic), flash: { success: t('.success') } }
+        format.html { redirect_to topic_path(@topic), flash: { success: t('.success') } }
       else
-        format.html { redirect_to forum_topic_path(@forum, @topic), flash: { error: t('.error') } }
+        format.html { redirect_to topic_path(@topic), flash: { error: t('.error') } }
       end
     end
   end
@@ -50,8 +55,8 @@ class TopicsController < ApplicationController
   end
 
   def find_forum_and_topic_records
-    @forum = Forum.find_by(id: params[:forum_id])
-    @topic = @forum.topics.find_by(id: params[:id])
+    @topic = Topic.find_by(id: params[:id])
+    @forum = @topic.forum
   end
 
   def topic_params

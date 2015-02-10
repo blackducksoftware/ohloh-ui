@@ -1,5 +1,5 @@
 :ruby
-  vf = account.best_vita.try(:vita_fact)
+  vf = account.best_vita.vita_fact
   pos_ids, more_pos_count = @cbp_map[account.id]
   sorted_cbl = account.decorate.sorted_commits_by_language
 
@@ -19,7 +19,7 @@
       %p= t '.member_since', since: account.created_at.strftime('%B %Y')
 
   .pull-left.commits_summary
-    - if vf && vf.commits > 0 && @positions_map.any?
+    - if vf.commits > 0 && @positions_map.any?
       .commits_count.pull-left
         = vf.commits
 

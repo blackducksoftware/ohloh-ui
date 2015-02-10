@@ -2,7 +2,7 @@ require 'test_helper'
 
 class KudoRankBadgeTest < ActiveSupport::TestCase
   let(:user) { create(:account) }
-  let(:kudo_rank_badge) { KudoRankBadge.new(create(:account)) }
+  let(:kudo_rank_badge) { KudoRankBadge.new(user) }
 
   describe 'eligibility_count' do
     it 'should return account kudo_rank' do
