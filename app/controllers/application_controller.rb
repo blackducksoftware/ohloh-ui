@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   helper AvatarHelper
   helper ButtonHelper
   helper BlogLinkHelper
+  helper ColorsHelper
 
   protect_from_forgery with: :exception
 
@@ -105,6 +106,7 @@ class ApplicationController < ActionController::Base
   end
 
   def store_location
+    return if request.xhr?
     session[:return_to] = request.fullpath
   end
 

@@ -80,4 +80,21 @@ class ApplicationHelperTest < ActionView::TestCase
       dates.last.must_equal(Date.today.beginning_of_month)
     end
   end
+
+  describe 'my_account?' do
+    it 'should return true for users own account' do
+      user = create(:account)
+      stubs(:current_user).returns(user)
+
+      my_account?(user).must_equal true
+    end
+
+    it 'should return false for users own account' do
+      user = create(:account)
+      admin = create(:admin)
+      stubs(:current_user).returns(user)
+
+      my_account?(admin).must_equal false
+    end
+  end
 end

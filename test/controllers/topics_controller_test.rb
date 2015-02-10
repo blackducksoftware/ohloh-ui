@@ -1,10 +1,11 @@
 require 'test_helper'
 
 describe TopicsController do
-  let(:forum) { forums(:rails) }
+  let(:forum) { create(:forum) }
   let(:user) { create(:account) }
   let(:admin) { create(:admin) }
-  let(:topic) { topics(:ponies) }
+  let(:topic) { create(:topic) }
+  let(:topic_post) { create(:post) }
 
   #-------------User with no account---------------
   it 'index' do
@@ -17,36 +18,40 @@ describe TopicsController do
     must_respond_with :unauthorized
   end
 
-  it 'create' do
+  it 'create should fail if not signed in' do
     assert_no_difference(['Topic.count', 'Post.count']) do
-      post :create, forum_id: forum.id, topic: { title: 'Example Forum', posts_attributes:
-                                                [{ body: 'Post object that comes by default', account_id: admin.id }] }
+      post :create, forum_id: forum.id, topic: { title: 'Example Topic title', posts_attributes:
+                                                [{ body: 'Example Post body', account_id: nil }] }
     end
   end
 
-  it 'show' do
-    get :show, forum_id: forum.id, id: topic.id
+  it 'show with post pagination' do
+    create_list(:post, 31)
+    get :show, id: topic.id
     must_respond_with :success
+    # There should be 25 posts max per page
+    css_select 'html body div#page.container div#page-contents div#topics_show_page.col-md-13 div.span12 div', 25
   end
 
   it 'edit' do
-    get :edit, forum_id: forum.id, id: topic.id
+    get :edit, id: topic.id
     must_respond_with :unauthorized
   end
 
   it 'update' do
-    assert_no_difference('Topic.count', 'Post.count') do
-      put :update, forum_id: forum.id, id: topic.id, topic: { title: 'Example Forum' }
-    end
+    put :update, id: topic.id, topic: { title: 'Changed title for test purposes' }
+    topic.reload
+    topic.title.must_equal topic.title
   end
 
   it 'destroy' do
+    topic2 = create(:topic)
     assert_no_difference('Topic.count') do
-      delete :destroy, forum_id: forum.id, id: topic.id
+      delete :destroy, id: topic2.id
     end
   end
 
-  #--------------Basic User ----------------------
+  # #--------------Basic User ----------------------
   it 'user index' do
     login_as user
     get :index, forum_id: forum.id
@@ -68,33 +73,65 @@ describe TopicsController do
     must_redirect_to forum_path(forum.id)
   end
 
-  it 'user show' do
+  it 'user fails create a topic and an accompanying post' do
+    login_as(user)
+    assert_no_difference(['Topic.count', 'Post.count']) do
+      post :create, forum_id: forum.id, topic: { title: '', posts_attributes:
+                                                [{ body: '' }] }
+    end
+    must_redirect_to forum_path(forum.id)
+  end
+
+  test 'user creates a topic/post with valid recaptcha' do
+    login_as(user)
+    TopicsController.any_instance.expects(:verify_recaptcha).returns(true)
+    assert_difference(['Topic.count', 'Post.count']) do
+      post :create, forum_id: forum.id, topic: { title: 'Example Forum', posts_attributes:
+                                                [{ body: 'Post object that comes by default' }] }
+    end
+    must_redirect_to forum_path(forum.id)
+  end
+
+  test 'user fails to create a topic/post because of invalid recaptcha' do
+    login_as(user)
+    TopicsController.any_instance.expects(:verify_recaptcha).returns(false)
+    assert_no_difference(['Topic.count', 'Post.count']) do
+      post :create, forum_id: forum.id, topic: { title: 'Example Forum', posts_attributes:
+                                                [{ body: 'Post object that comes by default' }] }
+    end
+  end
+
+  it 'user show with post pagination' do
+    create_list(:post, 31)
     login_as user
-    get :show, forum_id: forum.id, id: topic.id
+    get :show, id: topic.id
     must_respond_with :success
+    # There should be 25 posts max per page
+    css_select 'html body div#page.container div#page-contents div#topics_show_page.col-md-13 div.span12 div', 25
   end
 
   it 'user edit' do
     login_as user
-    get :edit, forum_id: forum.id, id: topic.id
+    get :edit, id: topic.id
     must_respond_with :unauthorized
   end
 
   it 'user update' do
     login_as user
-    put :update, id: topic.id, forum_id: forum.id, topic: { title: 'Changed title for test purposes' }
+    put :update, id: topic.id, topic: { title: 'Changed title for test purposes' }
     topic.reload
-    topic.title.must_equal 'ponies'
+    topic.title.must_equal topic.title
   end
 
   it 'user destroy' do
     login_as user
+    topic2 = create(:topic)
     assert_no_difference('Topic.count') do
-      delete :destroy, forum_id: forum.id, id: topic.id
+      post :destroy, id: topic2.id
     end
   end
 
-  #-----------Admin Account------------------------
+  # #-----------Admin Account------------------------
   it 'admin index' do
     login_as admin
     get :index, forum_id: forum.id
@@ -102,7 +139,7 @@ describe TopicsController do
   end
 
   it 'admin new' do
-    login_as(admin)
+    login_as admin
     get :new, forum_id: forum.id
     must_respond_with :success
   end
@@ -116,42 +153,67 @@ describe TopicsController do
     must_redirect_to forum_path(forum.id)
   end
 
-  it 'admin show' do
-    login_as admin
-    get :show, forum_id: forum.id, id: topic.id
+  it 'user fails create a topic and an accompanying post' do
+    login_as(admin)
+    assert_no_difference(['Topic.count', 'Post.count']) do
+      post :create, forum_id: forum.id, topic: { title: '', posts_attributes:
+                                                [{ body: '' }] }
+    end
+    must_redirect_to forum_path(forum.id)
+  end
+
+  it 'admin creates a topic/post with valid recaptcha' do
+    login_as(admin)
+    TopicsController.any_instance.expects(:verify_recaptcha).returns(true)
+    assert_difference(['Topic.count', 'Post.count']) do
+      post :create, forum_id: forum.id, topic: { title: 'Example Forum', posts_attributes:
+                                                [{ body: 'Post object that comes by default' }] }
+    end
+    assert_redirected_to forum_path(forum.id)
+  end
+
+  it 'admin fails to create a topic/post because of invalid recaptcha' do
+    login_as(admin)
+    TopicsController.any_instance.expects(:verify_recaptcha).returns(false)
+    assert_no_difference(['Topic.count', 'Post.count']) do
+      post :create, forum_id: forum.id, topic: { title: 'Example Forum', posts_attributes:
+                                                [{ body: 'Post object that comes by default' }] }
+    end
+  end
+
+  it 'admin show with post pagination' do
+    create_list(:post, 26)
+    get :show, id: topic.id
     must_respond_with :success
+    # There should be 25 posts max per page
+    css_select 'html body div#page.container div#page-contents div#topics_show_page.col-md-13 div.span12 div', 25
   end
 
   it 'admin edit' do
-    login_as(admin)
-    get :edit, forum_id: forum.id, id: topic.id
+    login_as admin
+    get :edit, id: topic.id
     must_respond_with :success
   end
 
   it 'admin update' do
-    login_as(admin)
-    put :update, forum_id: forum.id, id: topic.id, topic: { title: 'Changed title for test purposes' }
+    login_as admin
+    put :update, id: topic.id, topic: { title: 'Changed title for test purposes' }
     topic.reload
     topic.title.must_equal 'Changed title for test purposes'
   end
 
   it 'admin destroy' do
     login_as admin
+    topic2 = create(:topic)
     assert_difference('Topic.count', -1) do
-      delete :destroy, forum_id: forum.id, id: topic.id
+      delete :destroy, id: topic2.id
     end
     must_redirect_to forums_path
   end
 
-  it 'admin destryoing a topic deletes the associated posts' do
-    login_as admin
-    topic.destroy
-    topic.posts_count.must_equal 0
-  end
-
   it 'admin can close a topic' do
     login_as admin
-    put :update, forum_id: forum.id, id: topic.id, topic: { closed: true }
+    put :update, id: topic.id, topic: { closed: true }
     topic.reload
     topic.closed.must_equal true
   end
@@ -160,17 +222,15 @@ describe TopicsController do
     login_as admin
     topic.closed = true
     topic.reload
-    put :update, forum_id: forum.id, id: topic.id, topic: { closed: false }
+    put :update, id: topic.id, topic: { closed: false }
     topic.closed.must_equal false
   end
 
   it 'admin can move a topic' do
-    new_forum = forums(:ponies)
+    different_topic = create(:topic)
     login_as admin
-    put :update, forum_id: forum.id, id: topic.id, topic: { forum_id: new_forum.id }
+    put :update, id: topic.id, topic: { forum_id: different_topic.forum_id }
     topic.reload
-    new_forum.id.must_equal topic.forum_id
-    topic.title.must_equal new_forum.topics.first.title
-    new_forum.topics.count.must_equal 1
+    topic.forum_id.must_equal different_topic.forum_id
   end
 end

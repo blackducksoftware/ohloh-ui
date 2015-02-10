@@ -1,22 +1,9 @@
 class postgres_client {
-  exec { "check the postgresql apt-get key":
-    command => "/usr/bin/gpg --keyserver pgpkeys.mit.edu --recv-key 7FCC7D46ACCC4CF8",
-    creates => "/usr/bin/psql",
-    user => root
-  }
-
-  exec { "trust the postgresql apt-get key":
-    command => "/usr/bin/gpg -a --export 7FCC7D46ACCC4CF8 | sudo apt-key add -",
-    user => root,
-    creates => "/usr/bin/psql",
-    require => Exec["check the postgresql apt-get key"]
-  }
-
   exec { "allow agt-get postgres":
     command => "/usr/bin/apt-add-repository 'deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main'",
     user => root,
     creates => "/usr/bin/psql",
-    require => Exec["trust the postgresql apt-get key"]
+    require => File["/etc/apt/apt.conf"]
   }
 
   exec { "apt-get postgres":

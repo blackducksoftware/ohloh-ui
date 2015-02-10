@@ -1,0 +1,57 @@
+highchart: true
+chart:
+  borderRadius: 5
+  type: 'column'
+colors:
+  - '#49baf2'
+  - '#527acc'
+  - '#5353a6'
+  - '#5e4d80'
+  - '#503d59'
+  - '#332933'
+title:
+  text: ''
+plotOptions:
+  column:
+    stacking: 'normal'
+    pointPlacement: 'between'
+    dataLabels:
+      enabled: false
+  series:
+    shadow: false
+    pointWidth: 7
+    borderWidth: 0
+yAxis:
+  min: 0
+  title:
+    text: ''
+  labels:
+    enabled: true
+    style: {}
+xAxis:
+  categories: nil
+  labels:
+    rotation: -45
+    align: 'right'
+    step: 12
+    style:
+      fontSize: '12px'
+      fontFamily: 'Verdana, sans-serif'
+      color: '#332933'
+legend:
+  align: 'right'
+  layout: 'vertical'
+  x: 10
+  y: 0
+  verticalAlign: 'top'
+  borderWidth: 1
+  borderColor: '#CCC'
+  floating: false
+tooltip:
+  headerFormat: '<b>{point.key}</b><br/>'
+  style:
+    padding: '10px'
+  customFormat: true
+series: []
+credits:
+  enabled: false

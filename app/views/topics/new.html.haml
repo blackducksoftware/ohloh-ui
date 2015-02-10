@@ -1,0 +1,15 @@
+%h1.margin_bottom_20
+  %span = link_to 'Forums', forums_url
+  \:
+  %a{ href: forum_path(@forum) } = @forum.name
+
+
+%h2 New Topic
+.well.span11
+  .span9
+    = form_for [@forum, @topic], html: { class: 'topic_form' } do
+      render partial: 'form', locals: { f: f }
+    .control-group
+    = submit_tag 'Post Topic', class: 'btn btn-primary btn-small'
+  .span2.no_margin_left{ style: 'margin-top: -10px' }
+    render 'shared/markdown_help'

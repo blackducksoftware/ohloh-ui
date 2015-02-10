@@ -1,0 +1,10 @@
+-# NOTE: Replaces show_ohloh_edits, show_ohloh_posts and show_ohloh_reviews in accounts_helper.rb
+:ruby
+  action_count = @account.send(action).count
+  css ||= 'nomargin'
+
+%p{ class: css }
+  - if action_count > 0
+    = link_to t(".#{action}_size", size: action_count), path
+  - else
+    = t(".no_#{action}")

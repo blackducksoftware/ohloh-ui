@@ -8,13 +8,13 @@ class Badge
 
   def self.ordered_badges
     [
-      # DescriberBadge,
-      # RepoPersonBadge,
-      # ProjectManagerBadge,
-      # StackerBadge,
-      # OrgManagerBadge,
-      # FOSSerBadge,
-      # TaxonomistBadge,
+      DescriberBadge,
+      RepoPersonBadge,
+      ProjectManagerBadge,
+      StackerBadge,
+      OrgManagerBadge,
+      FOSSerBadge,
+      TaxonomistBadge,
       KudoRankBadge
     ]
   end
