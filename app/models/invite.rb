@@ -7,12 +7,11 @@ class Invite < ActiveRecord::Base
   after_initialize :set_project_id_name_id
 
   validates :contribution, presence: true
-  # validates :invitee_email, uniqueness: { scope: [:contribution_id], message: I18n.t('invites.invited_to_claim') }
-  # validates :invitee_email, uniqueness: { unless: :unique_invitee?, message: I18n.t('invites.invited_to_join') }
+  validate :unique_invitee
 
   def set_project_id_name_id
-    # self.project_id ||= contribution_id >> 32
-    self.project_id ||= contribution_id
+    return if contribution_id.nil?
+    self.project_id ||= contribution_id >> 32
     self.name_id ||= contribution_id & 0x7FFFFFFF
   end
 
@@ -20,7 +19,18 @@ class Invite < ActiveRecord::Base
     I18n.t('invites.thank_you_message', name: name.name, email: invitee_email)
   end
 
-  def unique_invitee?
+  private
+
+  # rubocop:disable Metrics/AbcSize
+  def unique_invitee
+    return true if errors[:send_limit].any?
+    count = self.class.where('invitee_email = ? AND contribution_id = ?', invitee_email, contribution_id).count
+    errors.add(:invitee_email, I18n.t('invites.invited_to_claim')) if count > 0
+    return if errors[:invitee_email].any?
+    errors.add(:invitee_email, I18n.t('invites.invited_to_join')) unless :invitee_exists?
+  end
+  # rubocop:enable Metrics/AbcSize
+  def invitee_exists?
     invitee.nil? && Account.where(email: invitee_email).empty?
   end
 end

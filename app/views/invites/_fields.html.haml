@@ -2,6 +2,7 @@
   %label.required To
   = f.text_field :invitee_email, type: "email", class: "col-md-6"
   - error_tag @invite, :invitee_email
+  - error_tag @invite, :send_limit
   %span.help-block
     This email will be used only to send this invitation, and won't be stored or shared.
 
@@ -13,6 +14,6 @@
   %label.required Message
   .c3_light.inset.invite_message
     = t('.email_body_html', invitor_name: @invite.invitor.name, invitee_name: obfuscate_email(@invite.name.name),
-           url: @invite.claim_url, project: @invite.project_name)
+           url: @invite.claim_url, project: @invite.project.name)
 .actions
   %input.btn.btn-primary{:type => 'submit', :value => 'Send Invitation' }

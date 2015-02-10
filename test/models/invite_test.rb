@@ -3,7 +3,7 @@ require 'test_helper'
 
 module OnBehalf
   remove_const :MAX_SENT
-  MAX_SENT = 5 # changing from 50 to 5 for testing purpose
+  MAX_SENT = 5 # changing from 50 to 3 for testing purpose
 end
 
 class InviteTest < ActiveSupport::TestCase
@@ -64,27 +64,42 @@ class InviteTest < ActiveSupport::TestCase
     second_invite.wont :save
     second_invite.wont_be :valid?
     second_invite.errors.must_include(:invitee_email)
-    second_invite.errors.messages[:invitee_email].last.must_equal I18n.t('invites.invited_to_join')
+    second_invite.errors.messages[:invitee_email].last.must_equal I18n.t('invites.invited_to_claim')
   end
 
-  it 'should not receive beyond 5 invites' do
+  it 'invitor should not send beyond 5 invites' do
     Invite.count.must_equal 0
-    FactoryGirl.create_list(:invite, 5, invitee_email: 'max_received@domain.com')
+    FactoryGirl.create_list(:invite, 5, invitor: Account.first)
     Invite.count.must_equal 5
 
-    error_invite = build(:invite,  invitee_email: 'max_received@domain.com')
+    error_invite = build(:invite, invitor: Account.first)
+    error_invite.wont :save
+    error_invite.errors.must_include(:send_limit)
+    error_invite.errors[:send_limit].first.must_match 'You\'ve already sent the maximum number of invites'
+  end
+
+  it 'invitee should not receive beyond 5 invites' do
+    Invite.count.must_equal 0
+
+    create(:invite, invitee_email: 'max_received@domain.com', contribution: generate_contribution)
+    create(:invite, invitee_email: 'max_received@domain.com', contribution: generate_contribution)
+    create(:invite, invitee_email: 'max_received@domain.com', contribution: generate_contribution)
+    create(:invite, invitee_email: 'max_received@domain.com', contribution: generate_contribution)
+    create(:invite, invitee_email: 'max_received@domain.com', contribution: generate_contribution)
+
+    Invite.count.must_equal 5
+    error_invite = build(:invite, invitee_email: 'max_received@domain.com')
     error_invite.wont :save
     error_invite.errors.must_include(:send_limit)
     error_invite.errors[:send_limit].first.must_match 'Open Hub has already sent the maximum number of invites'
   end
 
-  it 'should not send beyond 20 invites' do
-    Invite.count.must_equal 0
-    FactoryGirl.create_list(:invite, 5, invitor: Account.first)
-    Invite.count.must_equal 5
-    error_invite = build(:invite, invitor: Account.first)
-    error_invite.wont :save
-    error_invite.errors.must_include(:send_limit)
-    error_invite.errors[:send_limit].first.must_match 'You\'ve already sent the maximum number of invites'
+  private
+
+  def generate_contribution
+    create(:name_with_fact)
+    name_fact = NameFact.last
+    Person.rebuild_by_project_id(name_fact.analysis.project_id)
+    Contribution.find_by_name_fact_id(name_fact.id)
   end
 end
