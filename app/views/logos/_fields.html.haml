@@ -32,7 +32,7 @@
       - else
         %h6= t('.head.second')
         - if logged_in?
-          %p= t('.message', login: current_account.login)
+          %p= t('.message', login: current_user.login)
 
 .row
   .col-md-10{ class: "#{@organization ? 'hidden' : ''}" }

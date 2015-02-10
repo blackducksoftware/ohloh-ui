@@ -1,0 +1,47 @@
+en:
+  reviews:
+    my_rating: 'My Rating:'
+    my_review: "My Review of %{name} "
+    rating_and_reviews: 'Ratings and Reviews :'
+    reviews_and_ratings: 'Reviews and Ratings'
+    written_ago: "written %{time} ago"
+    remove_confirmation: 'Are you sure you want to delete this Review?'
+    spam_confirmation: "Are you sure you want to mark %{name} as a spammer, disabling the account and removing all posts?"
+    spam_title: "Mark %{name} as spammer!"
+    edit_review: 'Edit Review'
+    remove_review: 'Remove Review'
+    spam: 'SPAM!'
+    helpful_yes: 'Yes'
+    helpful_no: 'No'
+    helpful_status: "%{positive} out of %{total_helpful} users found the following review helpful."
+    create:
+      success: 'Thank you for submitting your review.'
+      error: 'Your review was not saved!'
+    update:
+      success: 'Your review has been updated.'
+    add_review:
+      not_reviewd: 'You have not reviewed this project.</br>Click below to add a review.'
+      not_reviewd_or_rated: 'You have not rated or reviewed this project.</br>Click below to rate/review.'
+    community_and_your_rating:
+      community_rating: 'Community Rating'
+      rating_status: "Average Rating:  &nbsp;   %{avg_rating}</br>Number of Ratings:  &nbsp;   %{ratings_count}</br>Number of Reviews:  &nbsp;   %{reviews_count}"
+    fields:
+      headline: 'Headline'
+      review: 'Review'
+      save_changes: 'Save Changes'
+      save_review: 'Save Review'
+    review_list:
+      accounts_review: "%{name}'s Review"
+    rater:
+      rating: 'Rating'
+      clear: 'Clear'
+    edit:
+      title: 'Edit Ratings and Reviews Page'
+    index:
+      title: 'Listing of Ratings and Reviews Page'
+      listing: 'Listing'
+    new:
+      title: 'New Review'
+    summary:
+      title: 'Ratings and Reviews Page'
+      no_review: 'This project has no reviews.'

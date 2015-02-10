@@ -145,6 +145,10 @@ h1, h2, h3, h4, h5, h6, p, li, dd, dt,span,a,abbr,td,th
       margin: auto 0
     &.soft
       color: #777
+    &.small
+      +small_font
+      line-height: 1.8em
+      font-style: normal
 
 .soft
   color: $soft_gray
@@ -152,3 +156,16 @@ h1, h2, h3, h4, h5, h6, p, li, dd, dt,span,a,abbr,td,th
 code
   color: $c2_dark
   font-family: monaco, 'lucida console','courier new', monospace
+
+.small
+  font-style: italic
+  +small_font
+
+.required
+  &:after
+    content: ' (required)'
+    color: $soft_gray
+
+b
+  font-size: 14px
+  padding-bottom: 5px

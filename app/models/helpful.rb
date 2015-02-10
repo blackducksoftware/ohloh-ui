@@ -6,6 +6,7 @@ class Helpful < ActiveRecord::Base
 
   scope :positive, -> { where(yes: true) }
   scope :negative, -> { where(yes: false) }
+  scope :for_account, ->(account) { where(account_id: account.id) }
 
   after_save :update_review_score
 

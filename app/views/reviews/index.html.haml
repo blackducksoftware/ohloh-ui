@@ -1,0 +1,10 @@
+- page_context[:title] = t('.title')
+- if @project
+  %h2
+    = link_to t('reviews.rating_and_reviews'), summary_project_reviews_path(@project)
+    = t('.listing')
+- else
+  %h2= t('reviews.reviews_and_ratings')
+
+= render partial: 'review_list', collection: @reviews
+= will_paginate @reviews

@@ -1,0 +1,23 @@
+.well.review_container{ id: "review_summary_#{review_summary.id}" }
+  - account = review_summary.account
+  .row
+    .col-md-3.no_padding
+      .pull-right
+        = link_to truncate(account.name, length: 11), account_url(account), title: account.name
+        says:
+      .pull-right.padding_right_15
+        = avatar_for(account, size: 58)
+    .col-md-9.no_padding_right.padding_left_25
+      %strong.pull-left
+        = (review_summary.title ? truncate(review_summary.title.camelize, length: 35) : "#{account.name}'s Review")
+        &nbsp;
+      .pull-left{ style: 'margin-top:1px' }
+        - stars(review_summary.score, small_size: true)
+      .clearfix
+      .col-md
+        %abbr.soft.small{ title: review_summary.created_at }
+          = t('reviews.written_ago', time: time_ago_in_words(review_summary.created_at))
+      %p= simple_format(review_summary.comment)
+      %p= render partial: 'helpful_count_status', locals: { review: review_summary }
+      %p= render partial: 'helpful_yes_or_no_links', locals: { review: review_summary }
+      = render partial: 'buttons', locals: { review: review_summary }

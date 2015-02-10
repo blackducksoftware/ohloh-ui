@@ -3,8 +3,46 @@ class Review < ActiveRecord::Base
   belongs_to :project
   has_many :helpfuls
 
+  validates :title, presence: true
+  validates :account_id, presence: true
+  validates :comment, presence: true, length: { in: 1..5000 }, allow_blank: true
+
+  before_save do |review|
+    sanitizer       = HTML::FullSanitizer.new
+    review.title    = sanitizer.sanitize(review.title)
+    review.comment  = sanitizer.sanitize(review.comment)
+  end
+
   scope :for_project, ->(project) { where(project_id: project.id) }
   scope :top, ->(limit = 2) { three_quarters_helpful_arel.order_by_helpfulness_arel.limit(limit) }
+  scope :sort_by, lambda { |key = :helpful|
+    {
+      'helpful'         => order_by_helpfulness_arel,
+      'highest_rated'   => order(ratings_sql('DESC')).order(created_at: :desc),
+      'lowest_rated'    => order(ratings_sql).order(:created_at),
+      'project'         => includes(:project).order('projects.name'),
+      'recently_added'  => order(created_at: :desc),
+      'author'          => order('accounts.login').order(created_at: :desc)
+    }.fetch(key, order_by_helpfulness_arel)
+  }
+  scope :find_by_comment_or_title_or_accounts_login, lambda { |query|
+    includes(:account)
+      .references(:all)
+      .where('comment ilike :query or title ilike :query or accounts.login ilike :query', query: "%#{query}%") if query
+  }
+
+  def score
+    return 0 unless project_id && account_id
+    Rating.where(project_id: project_id, account_id: account_id).take.try(:score).to_i
+  end
+
+  def helpful_to_account?(account)
+    helpfuls.for_account(account).positive.exists?
+  end
+
+  def not_helpful_to_account?(account)
+    helpfuls.for_account(account).negative.exists?
+  end
 
   class << self
     def three_quarters_helpful_arel
@@ -12,11 +50,20 @@ class Review < ActiveRecord::Base
     end
 
     def order_by_helpfulness_arel
-      order_by = "(#{pos_or_neg_sql(true)}) - (#{pos_or_neg_sql(false)}) DESC, \"reviews\".\"created_at\" ASC"
-      order sanitize_sql(order_by)
+      positive_sql = pos_or_neg_sql(true)
+      negative_sql = pos_or_neg_sql(false)
+      order_by = "(#{positive_sql}) - (#{negative_sql}) DESC, (#{positive_sql}) DESC"
+      order(sanitize_sql(order_by)).order(:created_at)
     end
 
     private
+
+    def ratings_sql(sort_order = 'ASC')
+      reviews = Review.arel_table
+      sql = Rating.where(account_id: reviews[:account_id], project_id: reviews[:project_id]).select(:score).to_sql
+      sql = "( #{sql} ) #{sort_order.eql?('DESC') ? ' DESC NULLS LAST' : ' ASC NULLS FIRST'}"
+      sanitize_sql(sql)
+    end
 
     def pos_or_neg_sql(pos)
       helpfuls = Helpful.arel_table
