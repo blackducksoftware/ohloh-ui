@@ -40,7 +40,7 @@ class PersonTest < ActiveSupport::TestCase
 
     person = create(:person)
     assert person.valid?
-    person.id.must_equal 107_374_182_41
+    (person.id > 2_147_483_647).must_equal true
   end
 
   it 'should set effective_name to an account name or name' do

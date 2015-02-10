@@ -1,7 +1,9 @@
 require 'test_helper'
 
-describe 'ColorsHelper' do
-  describe 'color' do
+class ColorsHelperTest < ActionView::TestCase
+  include ColorsHelper
+
+  describe 'language_color' do
     it 'should return default color when color is not present in list' do
       language_color('test').must_equal 'EEE'
     end
@@ -13,7 +15,7 @@ describe 'ColorsHelper' do
     end
   end
 
-  describe 'text_color' do
+  describe 'language_text_color' do
     it 'should return 000 when color is included in list' do
       BLACK_TEXT_LANGUAGES.each do |color|
         language_text_color(color).must_equal '000'

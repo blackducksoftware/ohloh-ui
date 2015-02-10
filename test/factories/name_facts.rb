@@ -11,6 +11,7 @@ FactoryGirl.define do
     association :analysis
     association :name
     association :primary_language, factory: :language
+    type 'ContributorFact'
   end
 
   factory :vita_fact_with_cbl_and_cbp, parent: :name_fact do
