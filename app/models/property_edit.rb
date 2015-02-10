@@ -41,7 +41,7 @@ class PropertyEdit < Edit
   end
 
   def allow_undo?
-    (!target.respond_to?(:allow_undo?) || target.allow_undo?(key.to_sym)) && previous_value
+    !target.respond_to?(:allow_undo?) || target.allow_undo?(key.to_sym)
   end
 
   def allow_redo?

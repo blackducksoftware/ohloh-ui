@@ -21,6 +21,7 @@ class Organization < ActiveRecord::Base
   acts_as_protected
 
   after_create :create_restricted_permission
+  after_save :check_change_in_delete
 
   def to_param
     url_name
@@ -69,5 +70,14 @@ class Organization < ActiveRecord::Base
     self.description = String.clean_string(description)
     # TODO: fix these once we have links implemented
     # self.download_url = String.clean_url(download_url)
+  end
+
+  def project_claim_edits(undone)
+    Edit.where(target_type: 'Project', key: 'organization_id', value: id.to_s, undone: undone).to_a
+  end
+
+  def check_change_in_delete
+    return false unless changed.include?('deleted')
+    project_claim_edits(!deleted?).each { |edit| edit.send(deleted? ? :undo! : :redo!, editor_account) }
   end
 end
