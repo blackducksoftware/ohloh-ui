@@ -1,5 +1,5 @@
 - if last_post
   / TODO: Figure out how to internationalize this method.
-  = "#{time_ago_in_words(last_post.created_at)} ago"
+  "#{time_ago_in_words(last_post.created_at)} ago"
   by
   = last_post.account.name

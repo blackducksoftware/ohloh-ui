@@ -1,5 +1,5 @@
-- if @forum.errors.any? 
-  %div.error_explanation
+- if @forum.errors.any?
+  .error_explanation
     %h4= pluralize(@forum.errors.count, 'error')
 
 %fieldset

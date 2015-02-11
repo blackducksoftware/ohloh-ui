@@ -60,7 +60,7 @@
   - collection_of_all_topics = @topic.forum.topics
   %ul.pager
     %li.previous
-      = link_to_unless collection_of_all_topics.index(@topic).zero?, t('.previous_topic_html'), 
+      = link_to_unless collection_of_all_topics.index(@topic).zero?, t('.previous_topic_html'),
         previous_topic(collection_of_all_topics, @topic)
     %li.next
       = link_to_if next_topic?(collection_of_all_topics, @topic), t('.next_topic_html'),

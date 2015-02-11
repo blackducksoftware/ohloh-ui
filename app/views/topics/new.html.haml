@@ -1,10 +1,10 @@
 %h1.margin_bottom_20
   %span= link_to t('.forums'), forums_url
   \:
-  =link_to @forum.name, forum_path(@forum)
+  = link_to @forum.name, forum_path(@forum)
 
-- if @topic.errors.any? 
-  %div.error_explanation
+- if @topic.errors.any?
+  .error_explanation
     %h4= pluralize(@topic.errors.count, 'error')
 
 %h2= t('.new_topic')
@@ -15,5 +15,5 @@
       .actions
       = f.submit t('.create_topic'), class: 'btn btn-primary btn-small'
   .span2.no_margin_left{ style: 'margin-top: -10px' }
-  
+
   = render 'shared/markdown_help'
