@@ -23,7 +23,7 @@
         error: 'Sorry, there was a problem updating the topic'
       destroy:
         success: 'Topic successfully removed'
-        error: 'There was a problem deleting the forum'
+        error: 'There was a problem deleting the topic'
       form:
         title: 'Title (required)'
         enter_topic_title: 'Enter the topic title.'
@@ -36,6 +36,7 @@
         new: 'new'
         stale: 'stale'
         recent: 'recent post'
+        sticky: 'Sticky:'
       current_discussions:
         discussion: 'Discussion'
         posts: 'Posts'
