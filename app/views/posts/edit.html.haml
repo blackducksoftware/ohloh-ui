@@ -4,7 +4,7 @@
   %a{ href: forum_path(@post.topic.forum) }= @post.topic.forum.name
 .clear
 .row
-  .span8.float_left
+  .col-md-8.float_left
     %h2= t('.edit_post')
   .float_right
     - if current_user_is_admin?
@@ -18,9 +18,9 @@
           = button_to t('.delete'), topic_post_path(@topic, @post), method: :delete,
             data: { confirm: t('.delete_confirmation') }, class: 'btn btn-danger btn-small'
 
-.well.span11
-  .span9
+.well.col-md-11
+  .col-md-9
     = form_for([@topic, @post], url: topic_post_path(@topic, @post), html: { method: 'put' }) do |f|
       = render partial: 'fields', locals: { f: f }
-  .span2.no_margin_left{ style: 'margin-top: -10px' }
+  .col-md-2.no_margin_left{ style: 'margin-top: -10px' }
   = render partial: 'shared/markdown_help'

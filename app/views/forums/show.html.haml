@@ -6,18 +6,17 @@
 %table.table.table-striped
   %thead
     %tr
-      %th.first.span3
+      %th.first.col-md-3
         %h4.nomargin.strong= t('.topic')
-      %th.span1
-      %th.span1
+      %th.col-md-1
         %h4.nomargin.center.strong= t('.replies')
-      %th.span1
+      %th.col-md-1
         %h4.nomargin.center.strong= t('.views')
-      %th.span3
+      %th.col-md-3
         %h4.nomargin.center.strong= t('.last_post')
   %tbody
     = render partial: 'topics/topic', collection: @topics
 .row
-  .span12
+  .col-md-12
     = link_to t('.add_new_topic'), new_forum_topic_path(@forum), class: 'btn btn-primary btn-mini'
     = will_paginate @topics, style: 'margin-top: -26px'

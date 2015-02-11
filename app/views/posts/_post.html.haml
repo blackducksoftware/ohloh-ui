@@ -1,7 +1,7 @@
 %div{ id: "post_#{post.id}" }
   .well{ style: "#{current_user_is_admin? ? 'background: #D5E3E9;' : ''}" }
     = strip_tags(post.body)
-    .span3.float_right
+    .col-md-3.float_right
       = avatar_img_for post.account, 32
       %a.avatar_name{ href: account_path(post.account) }
         %h4.nomargin

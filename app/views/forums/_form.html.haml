@@ -6,7 +6,7 @@
   .control-group
     = f.label :title, t('.title'), class: 'control-label required'
     .controls
-      = f.text_field :name, class: 'span8'
+      = f.text_field :name, class: 'col-md-8'
     - if @forum.errors[:name]
       %p.error= @forum.errors[:name]
 
@@ -18,4 +18,4 @@
   .control-group
     = f.label :description, t('.description'), class: 'control-label'
     .controls
-      = text_area :description, rows: 10, class: 'span10'
+      = text_area :description, rows: 10, class: 'col-md-10'

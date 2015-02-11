@@ -11,6 +11,9 @@
       update:
         success: 'Post updated'
         error: 'Sorry, there was a problem updating the post'
+      destroy:
+        success: 'Post successfully removed'
+        error: 'There was a problem deleting the post'
       reply:
         post_a_response: 'Post a Response'
         response: 'Open Hub welcomes your opinions.'

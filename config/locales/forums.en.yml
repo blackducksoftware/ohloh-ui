@@ -28,3 +28,5 @@ en:
       title: 'Title (required)'
       position: 'Position'
       description: 'Description'
+    last_post:
+      .time_ago: '%{time} ago'

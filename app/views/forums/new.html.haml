@@ -3,11 +3,11 @@
 .clear
 
 .row
-  .span8.float_left
+  .col-md-8.float_left
     %h2= t('.new_forum')
 
 .well.span11
-  .span7
+  .col-md-7
     = form_for @forum do |f|
       = render partial: 'form', locals: { f: f }
       .actions

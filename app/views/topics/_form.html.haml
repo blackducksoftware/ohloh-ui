@@ -2,7 +2,7 @@
   .control-group
     %label.control-label.required= t('.title')
     .controls
-      = f.text_field :title, class: 'span6'
+      = f.text_field :title, class: 'col-md-6'
       %span.help-inline == by #{ current_user.login }
       %p.help-block= t('.enter_topic_title')
     - if @topic.errors[:title]
@@ -30,9 +30,9 @@
     .controls#topics_form_checkbox
       %label.checkbox.inline
         = f.check_box :sticky, choice: t('.sticky')
-        %span Sticky
+        %span= t('.sticky')
       %label.checkbox.inline
         = f.check_box :closed, choice: t('.closed')
-        %span Closed
+        %span= t('.closed')
 
     = render partial: 'shared/captcha'
