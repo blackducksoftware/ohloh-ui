@@ -1,5 +1,8 @@
 class AccountDecorator < Cherry::Decorator
-  delegate :best_vita, :positions, :claimed_positions, :projects, :markup, :twitter_account, to: :account
+  include ActionView::Helpers::TextHelper
+
+  delegate :best_vita, :positions, :claimed_positions, :projects, :markup,
+           :twitter_account, :most_experienced_language, :badges, to: :account
 
   def symbolized_commits_by_project
     best_vita.vita_fact.commits_by_project.to_a.map(&:symbolize_keys)
@@ -99,6 +102,7 @@ class AccountDecorator < Cherry::Decorator
 
   # rubocop:disable UselessAssignment, Metrics/LineLength
   def addtional_twitter_descripion
+    content = ''
     content = I18n.t('accounts.show.experience_in', nice_name: most_experienced_language.nice_name) if most_experienced_language
     content += I18n.t('accounts.show.earned') + badges.collect(&:name).to_sentence(last_word_connector: I18n.t('accounts.show.and'))
   end
