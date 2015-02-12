@@ -1,34 +1,38 @@
 %fieldset
   .control-group
-    %label.control-label.required Title
+    %label.control-label.required= t('.title')
     .controls
-      = f.text_field :title, class: 'span6'
+      = f.text_field :title, class: 'col-md-6'
       %span.help-inline == by #{ current_user.login }
-      - error_tag @topic, :title
-      %p.help-block Enter the topic's title
+      %p.help-block= t('.enter_topic_title')
+    - if @topic.errors[:title]
+      / TODO: Errors are not displaying correctly
+      %p.error= @topic.errors[:title]
 
-  - if @topic.new_record?
-    .control-group
-      %label.control-label.required Message
-      .controls
-        = f.fields_for :posts do |f|
-          = f.text_area :body, rows: 10, cols: 40, style: 'width: 95%'
-          - error_tag @post, :body
-        %p.help-block This will be the first post.
+    - if @topic.new_record?
+      .control-group
+        %label.control-label.required= t('.message')
+        .controls
+          = f.fields_for :posts do |f|
+            = f.text_area :body, rows: 10, cols: 40, style: 'width: 95%'
+          - if @topic.errors[:body]
+            / TODO: Errors are not displaying correctly
+            %p.error= @topic.errors[:body]
+          %p.help-block= t('.first_post')
 
   - if current_user_is_admin? && !@topic.new_record?
     .control-group#topic_forum_id
-      %label.control-label{ for: 'topic_forum_id' } Forum
+      %label.control-label{ for: 'topic_forum_id' }= t('.forum')
       .controls.chosen#value_select
         = f.select :forum_id, Forum.all.map { |x| [x.name, x.id] }, {}, class: 'chzn-select value-select'
 
   - if current_user_is_admin?
     .controls#topics_form_checkbox
       %label.checkbox.inline
-        = f.check_box :sticky, choice: 'Sticky'
-        %span Sticky
+        = f.check_box :sticky, choice: t('.sticky')
+        %span= t('.sticky')
       %label.checkbox.inline
-        = f.check_box :closed, choice: 'Closed'
-        %span Closed
+        = f.check_box :closed, choice: t('.closed')
+        %span= t('.closed')
 
     = render partial: 'shared/captcha'

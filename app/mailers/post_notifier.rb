@@ -2,7 +2,6 @@ class PostNotifier < ActionMailer::Base
   default from: 'ohlohadmins@blackducksoftware.com'
 
   def post_creation_notification(user_who_replied, topic)
-    # TODO: Make sure that the subject and body are internationalized and encoded correctly
     @user_who_replied = user_who_replied
     @topic = topic
     mail(to: @user_who_replied.email,

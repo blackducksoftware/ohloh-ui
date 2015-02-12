@@ -1,4 +1,4 @@
 - if last_post
-  = # {time_ago_in_words(last_post.created_at)} ago
+  = t('.time_ago', time: time_ago_in_words(last_post.created_at))
   by
   = last_post.account.name

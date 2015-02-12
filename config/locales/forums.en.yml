@@ -1,0 +1,32 @@
+en:
+
+  forums:
+    index:
+      all_forums: 'All Forums'
+      active_topics: 'Active Topics'
+    edit:
+      edit_forum: 'Edit Forum'
+      save_forum: 'Save Forum'
+    show:
+      topic: 'Topic'
+      replies: 'Replies'
+      views: 'Views'
+      last_post: 'Last Post'
+      add_new_topic: 'Add New Topic'
+    new:
+      create: 'Create'
+    create:
+      success: 'Forum successfully created'
+      error: 'There was a problem!'
+    update:
+      success: 'Forum successfully updated'
+      error: 'Sorry, there was a problem updating the forum'
+    destroy:
+      success: 'Forum successfully removed'
+      error: 'There was a problem deleting the forum'
+    form:
+      title: 'Title (required)'
+      position: 'Position'
+      description: 'Description'
+    last_post:
+      .time_ago: '%{time} ago'
