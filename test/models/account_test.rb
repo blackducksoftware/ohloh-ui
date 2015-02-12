@@ -1,21 +1,22 @@
 require 'test_helper'
 
 class AccountTest < ActiveSupport::TestCase
+  let(:account) { create(:account) }
+  let(:admin) { create(:admin) }
+
   it '#sent_kudos' do
     Kudo.delete_all
-    admin_account = create(:admin)
-    create(:kudo, sender: admin_account, account: accounts(:user))
-    create(:kudo, sender: admin_account, account: accounts(:joe))
+    create(:kudo, sender: admin, account: accounts(:user))
+    create(:kudo, sender: admin, account: accounts(:joe))
 
-    admin_account.sent_kudos.count.must_equal 2
+    admin.sent_kudos.count.must_equal 2
   end
 
   it '#claimed_positions' do
-    user = create(:account)
     proj = create(:project)
-    create(:position, account: user, project: proj)
-    user.positions.count.must_equal 1
-    user.claimed_positions.count.must_equal 1
+    create(:position, account: account, project: proj)
+    account.positions.count.must_equal 1
+    account.claimed_positions.count.must_equal 1
   end
 
   it 'the account model should be valid' do
@@ -116,7 +117,6 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it 'it should not update the markup(about me) when exceeding the limit' do
-    account = create(:account)
     about_me = Faker::Lorem.paragraph(130)
     account.about_raw = about_me
     account.wont_be :valid?
@@ -124,7 +124,6 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it 'it should error out when affiliation_type is not specified' do
-    account = create(:account)
     account.affiliation_type = ''
     account.wont_be :valid?
     account.errors.must_include(:affiliation_type)
@@ -160,7 +159,6 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it 'it should error out when affiliation_type is specified and org name is blank' do
-    account = create(:account)
     account.affiliation_type = 'specified'
     account.organization_id = ''
     account.wont_be :valid?
@@ -171,7 +169,7 @@ class AccountTest < ActiveSupport::TestCase
   it 'facts_joins should accounts with positions projects and name_facts' do
     analysis = analyses(:linux)
     project = projects(:linux)
-    project.editor_account = create(:account)
+    project.editor_account = account
     project.update_attributes! best_analysis_id: analysis.id
 
     accounts_with_facts = Account.with_facts
@@ -203,8 +201,7 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it 'it should return nil when account has no best_vita' do
-    user = create(:admin)
-    user.first_commit_date.must_be_nil
+    admin.first_commit_date.must_be_nil
   end
 
   describe 'login validations' do
@@ -312,31 +309,29 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it '#email_topics' do
-    account = create(:admin)
-    account.email_topics?.must_equal true
-    account.email_master = true
-    account.email_posts = false
-    account.email_topics?.must_equal false
-    account.email_master = true
-    account.email_posts = true
-    account.email_topics?.must_equal true
-    account.email_master = false
-    account.email_posts = true
-    account.email_topics?.must_equal false
+    admin.email_topics?.must_equal true
+    admin.email_master = true
+    admin.email_posts = false
+    admin.email_topics?.must_equal false
+    admin.email_master = true
+    admin.email_posts = true
+    admin.email_topics?.must_equal true
+    admin.email_master = false
+    admin.email_posts = true
+    admin.email_topics?.must_equal false
   end
 
   it '#email_kudos' do
-    account = create(:admin)
-    account.email_kudos?.must_equal true
-    account.email_master = true
-    account.email_kudos = false
-    account.email_kudos?.must_equal false
-    account.email_master = true
-    account.email_kudos = true
-    account.email_kudos?.must_equal true
-    account.email_master = false
-    account.email_kudos = true
-    account.email_kudos?.must_equal false
+    admin.email_kudos?.must_equal true
+    admin.email_master = true
+    admin.email_kudos = false
+    admin.email_kudos?.must_equal false
+    admin.email_master = true
+    admin.email_kudos = true
+    admin.email_kudos?.must_equal true
+    admin.email_master = false
+    admin.email_kudos = true
+    admin.email_kudos?.must_equal false
   end
 
   it '#update_akas' do
@@ -347,7 +342,6 @@ class AccountTest < ActiveSupport::TestCase
 
   it '#links' do
     skip 'FIXME: Integrate alongwith edits'
-    account = create(:account)
     linux = projects(:linux)
     linux.editor_account = account
     link = linux.links.new(
@@ -481,12 +475,38 @@ class AccountTest < ActiveSupport::TestCase
 
   describe 'kudo_rank' do
     it 'should return 1 if kudo_rank is nil' do
-      create(:admin).person.update_column(:kudo_rank, nil)
-      create(:admin).kudo_rank.must_equal 1
+      admin.person.update_column(:kudo_rank, nil)
+      admin.kudo_rank.must_equal 1
     end
 
     it 'should return kudo_rank' do
       accounts(:user).kudo_rank.must_equal 10
+    end
+  end
+
+  describe 'best_vita' do
+    it 'should return nil_vita when best_vita is absent' do
+      admin.best_vita.class.must_equal NilVita
+    end
+
+    it 'should return best_vita when available' do
+      vita = create(:best_vita, account_id: account.id)
+      account.update_column(:best_vita_id, vita.id)
+      account.best_vita.class.must_equal Vita
+    end
+  end
+
+  describe 'most_experienced_language' do
+    it 'should return nil when vita_language_facts is empty' do
+      admin.most_experienced_language.must_equal nil
+    end
+
+    it 'should return language name when vita_language_facts is present' do
+      vita = create(:best_vita, account_id: account.id)
+      account.update_column(:best_vita_id, vita.id)
+      language_fact = create(:vita_language_fact, vita_id: vita.id)
+
+      account.most_experienced_language.nice_name.must_equal language_fact.language.nice_name
     end
   end
 end
