@@ -181,14 +181,15 @@ class AccountDecoratorTest < ActiveSupport::TestCase
     end
 
     it 'should return full description if markup and vita_fact is present' do
-      Account.any_instance.stubs(:most_experienced_language).returns(create(:language))
+      language = create(:language)
+      Account.any_instance.stubs(:most_experienced_language).returns(language)
 
       account = create(:account_with_markup)
       vita = create(:vita, account_id: account.id)
       account.update_attributes(best_vita: vita)
-      create(:vita_fact_with_cbl_and_cbp, vita_id: vita.id)
+      create(:vita_fact, vita_id: vita.id)
 
-      description = 'It was, 0 total commits to 0 projects, most experienced in q11onwute6, earned Kudo Rank'
+      description = "It was, 0 total commits to 0 projects, most experienced in #{language.nice_name}, earned Kudo Rank"
       account.decorate.twitter_card.must_equal description
     end
   end
