@@ -24,6 +24,11 @@ gem 'uglifier'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 
+group :development do
+  gem 'capistrano-rails'
+  gem 'capistrano-passenger'
+end
+
 group :development, :test, :vagrant do
   gem 'byebug'
   gem 'factory_girl_rails'
