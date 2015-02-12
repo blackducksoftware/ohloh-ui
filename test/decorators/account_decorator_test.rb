@@ -142,4 +142,21 @@ class AccountDecoratorTest < ActiveSupport::TestCase
       admin.decorate.sidebar_for(current_user).fourth.must_equal sidebars.fourth
     end
   end
+
+  describe 'vita_status_message' do
+    it 'should return ananlyses_scheduled message' do
+      admin.decorate.vita_status_message.must_equal I18n.t('accounts.show.analysis_scheduled')
+    end
+
+    it 'should return no contributions message' do
+      Account.any_instance.stubs(:positions).returns([])
+      user.decorate.vita_status_message.must_equal I18n.t('accounts.show.no_contributions')
+    end
+
+    it 'should return no commits message' do
+      Account.any_instance.stubs(:claimed_positions).returns([])
+      Account.any_instance.stubs(:positions).returns([true])
+      admin.decorate.vita_status_message.must_equal I18n.t('accounts.show.no_commits')
+    end
+  end
 end

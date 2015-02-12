@@ -5,7 +5,7 @@ class BaseballCard < Cherry::Decorator
 
   ROW_NAMES = [:first_checkin, :last_checkin, :commits, :joined_at, :contributions, :orgs, :affiliations]
 
-  delegate :best_vita, :created_at, :positions, to: :object
+  delegate :best_vita, :created_at, :positions, to: :account
 
   def rows
     ROW_NAMES.map { |row| send(row) }.compact.map { |row| row.reverse_merge(css: {}) }
@@ -14,11 +14,11 @@ class BaseballCard < Cherry::Decorator
   private
 
   def organization_core
-    Account::OrganizationCore.new(object.id)
+    Account::OrganizationCore.new(account.id)
   end
 
   def vita_fact
-    object.best_vita.vita_fact
+    account.best_vita.vita_fact
   end
 
   def first_checkin
@@ -46,7 +46,7 @@ class BaseballCard < Cherry::Decorator
 
   def contributions
     return if positions.count == 0
-    link = link_to pluralize(positions.count, 'project'), h.account_positions_path(object)
+    link = link_to pluralize(positions.count, 'project'), h.account_positions_path(account)
     { label: i18n('contribution'),
       value: link }
   end
@@ -55,7 +55,7 @@ class BaseballCard < Cherry::Decorator
     orgs_for_positions = organization_core.orgs_for_my_positions
     return if orgs_for_positions.empty?
     { css: { style: 'min-height:38px;' },
-      label: i18n('contibuted_to'),
+      label: i18n('contributed_to'),
       partial: 'accounts/show/orgs',
       locals: { orgs: orgs_for_positions }
     }
@@ -65,7 +65,7 @@ class BaseballCard < Cherry::Decorator
     affiliated_orgs = organization_core.affiliations_for_my_positions
     return if affiliated_orgs.empty?
     { css: { style: 'min-height:38px;' },
-      label: i18n('contibuted_for'),
+      label: i18n('contributed_for'),
       partial: 'accounts/show/orgs',
       locals: { orgs: affiliated_orgs }
     }

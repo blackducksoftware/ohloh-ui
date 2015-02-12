@@ -29,7 +29,7 @@
         - if my_account?(@account)
           %i.icon-twitter{ style: 'color: #ccc' }
         - elsif @account.twitter_account.present?
-          = link_to @account.decorate.twitter_url(request.url), class: 'link_no_underline',
+          = link_to @twitter_detail.url(request.url), class: 'link_no_underline',
           rel: 'popup', title: "Follow @#{@account.twitter_account}" do
             %i.icon-twitter
         = render partial: 'accounts/show/header/kudo_button', locals: { css: 'btn-mini btn-info' }

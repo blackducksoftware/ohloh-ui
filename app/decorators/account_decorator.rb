@@ -1,5 +1,7 @@
 class AccountDecorator < Cherry::Decorator
-  delegate :best_vita, :positions, :claimed_positions, :projects, :markup, :twitter_account, to: :account
+  include ActionView::Helpers::TextHelper
+
+  delegate :best_vita, :positions, :claimed_positions, :projects, to: :account
 
   def symbolized_commits_by_project
     best_vita.vita_fact.commits_by_project.to_a.map(&:symbolize_keys)
@@ -40,20 +42,6 @@ class AccountDecorator < Cherry::Decorator
     end
   end
 
-  # NOTE: Replaces twitter_card_description in accounts_helper
-  def twitter_card
-    return '' unless markup
-    name_fact = best_vita.vita_fact
-    content = markup.first_line.to_s
-    return content if name_fact.nil?
-    content + twitter_card_commits(name_fact) + addtional_twitter_descripion
-  end
-
-  def twitter_url(url)
-    "https://twitter.com/intent/follow?original_referer=#{ CGI.escape(url) }&region=follow_link&"\
-      "screen_name=#{ twitter_account }&source=followbutton&variant=2.0"
-  end
-
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def sidebar_for(current_user)
     [
@@ -90,19 +78,6 @@ class AccountDecorator < Cherry::Decorator
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   private
-
-  def twitter_card_commits(name_fact)
-    commits_count = pluralize(name_fact.commits, I18n.t('accounts.show.total_commits'))
-    positions_count = pluralize(positions.count, I18n.t('accounts.show.project'))
-    I18n.t('accounts.show.commits_to', commits: commits_count, positions: positions_count)
-  end
-
-  # rubocop:disable UselessAssignment, Metrics/LineLength
-  def addtional_twitter_descripion
-    content = I18n.t('accounts.show.experience_in', nice_name: most_experienced_language.nice_name) if most_experienced_language
-    content += I18n.t('accounts.show.earned') + badges.collect(&:name).to_sentence(last_word_connector: I18n.t('accounts.show.and'))
-  end
-  # rubocop:enable UselessAssignment, Metrics/LineLength
 
   def append_project_menu(menus)
     menus.first << [:managed_projects, I18n.t(:managed_projects), h.account_projects_path(account)]
