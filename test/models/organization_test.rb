@@ -1,8 +1,9 @@
 require 'test_helper'
 
 class OrganizationTest < ActiveSupport::TestCase
+  let(:org) { create(:organization) }
+
   it 'unclaims projects when destroyed and reclaims them when undestroyed' do
-    org = create(:organization)
     proj1 = create(:project)
     proj2 = create(:project)
     proj1.update_attributes(organization_id: org.id)
@@ -21,5 +22,13 @@ class OrganizationTest < ActiveSupport::TestCase
     pe2.reload.undone.must_equal false
     proj1.reload.organization_id.must_equal org.id
     proj2.reload.organization_id.must_equal org.id
+  end
+
+  describe 'managed_by' do
+    it 'should return all orgs managed by an account' do
+      account = create(:account)
+      create(:manage, account: account, target: org)
+      Organization.managed_by(account).must_equal [org]
+    end
   end
 end
