@@ -45,6 +45,16 @@ describe 'AccountsControllerTest' do
       get :show, id: admin.login
       must_redirect_to disabled_account_url(admin)
     end
+
+    it 'should redirect if account is labeled a spammer' do
+      account = create(:account)
+      account_access = Account::Access.new(account)
+      account_access.spam!
+      account_access.spam?.must_equal true
+      account.level.must_equal Account::Access::SPAM
+      get :show, id: account.id
+      must_redirect_to disabled_account_url(account)
+    end
   end
 
   describe 'commits_by_project_chart' do

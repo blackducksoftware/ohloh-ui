@@ -10,6 +10,8 @@
         close: 'Close'
         delete: 'Delete'
         reopen: 'Re-open'
+        spam: 'SPAM!!!'
+        move: 'Move'
         close_topic: 'Comments to this topic are now closed.'
         close_confirmation: 'Are you sure you want to close this topic?'
         delete_confirmation: 'Are you sure you want to delete this topic?'
@@ -18,9 +20,6 @@
         previous_topic_html: '&larr;Previous Topic'
       edit:
         save_changes: 'Save Changes'
-      update:
-        success: 'Topic updated'
-        error: 'Sorry, there was a problem updating the topic'
       destroy:
         success: 'Topic successfully removed'
         error: 'There was a problem deleting the topic'
@@ -42,5 +41,8 @@
         posts: 'Posts'
         poster: 'Poster'
         freshness: 'Freshness'
+      move:
+        move_to: 'Move To:'
+        go: 'Go'
 
       # TODO: Write error messages for fields

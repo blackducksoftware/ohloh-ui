@@ -2,11 +2,8 @@
   .row
     .col-md-9
       %h3= t('.post_a_response')
-      = form_for :post, topic_posts_path(@topic), method: :post do |f|
+      = form_for Post.new, url: topic_posts_path(@topic) do |f|
         = render partial: 'posts/fields', locals: { f: f }
-    .actions
-      = f.submit t('.submit'), class: 'btn btn-primary btn-small'
-
     .col-md-2
       = render 'shared/markdown_help'
 - else

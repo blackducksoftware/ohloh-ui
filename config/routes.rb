@@ -39,7 +39,7 @@ Rails.application.routes.draw do
       get :languages
       get :commits_by_project_chart
       get :commits_by_language_chart
-      post :make_spammer
+      post :label_as_spammer
       get 'edit_privacy'   => 'privacy#edit',   as: :edit_account_privacy
       put 'update_privacy' => 'privacy#update', as: :account_privacy
     end
@@ -52,6 +52,7 @@ Rails.application.routes.draw do
   resources :topics, except: [:index, :new, :create] do
     resources :posts, except: [:new]
   end
+  get 'move_topic/:id', to: 'topics#move_topic', as: :move_topic
 
   resources :posts, only: :index, as: 'all_posts'
   get 'markdown_syntax', to: 'abouts#markdown_syntax'

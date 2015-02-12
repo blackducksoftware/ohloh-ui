@@ -1,9 +1,9 @@
 class TopicsController < ApplicationController
   include TopicsHelper
   before_action :session_required, only: [:new, :create]
-  before_action :admin_session_required, only: [:edit, :update, :destroy]
+  before_action :admin_session_required, only: [:edit, :update, :destroy, :move_topic]
   before_action :find_forum_record, only: [:index, :new, :create]
-  before_action :find_forum_and_topic_records, except: [:index, :new, :create]
+  before_action :find_forum_and_topic_records, except: [:index, :new, :create, :move_topic]
 
   def index
     @topics = @forum.topics
@@ -31,18 +31,24 @@ class TopicsController < ApplicationController
 
   def update
     if @topic.update(topic_params)
-      redirect_to topic_path(@topic), notice: t('.success')
+      redirect_to topic_path(@topic)
     else
-      redirect_to topic_path(@topic), notice: t('.error')
+      redirect_to topic_path(@topic)
     end
   end
 
   def destroy
     if @topic.destroy
-      redirect_to forums_path, notice: t('.success')
+      # TODO: Needs a new topic message
+      redirect_to forums_path
     else
-      redirect_to forums_path, notice: t('.error')
+      redirect_to forums_path
     end
+  end
+
+  def move_topic
+    @topic = Topic.find_by(id: params[:id])
+    render template: 'topics/move'
   end
 
   private
@@ -57,6 +63,7 @@ class TopicsController < ApplicationController
   end
 
   def topic_params
+    # TODO: Remove forum_id
     params.require(:topic).permit(:forum_id, :title, :sticky,
                                   :hits, :closed, posts_attributes: [:body])
   end

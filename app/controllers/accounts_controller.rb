@@ -25,6 +25,12 @@ class AccountsController < ApplicationController
     render json: Chart.new(@account).commits_by_language(params[:scope])
   end
 
+  def label_as_spammer
+    @account = Account.find_by(id: params[:id])
+    Account::Access.new(@account).spam!
+    render template: 'accounts/disabled'
+  end
+
   private
 
   def account
@@ -33,6 +39,8 @@ class AccountsController < ApplicationController
   end
 
   def redirect_if_disabled
-    redirect_to disabled_account_url(@account) if @account && Account::Access.new(@account).disabled?
+    if @account && (Account::Access.new(@account).disabled? || Account::Access.new(@account).spam?)
+      redirect_to disabled_account_url(@account)
+    end
   end
 end

@@ -247,6 +247,16 @@ describe TopicsController do
     topic.closed.must_equal false
   end
 
+  # TODO: Will need to figure out how javascript will affect the testing. 
+  it 'admin can get to move_topic page' do
+    login_as admin
+    get :move_topic, id: topic.id 
+    must_respond_with :success
+    must_render_template 'topics/move'
+  end
+
+  # TODO: This test is off, verify the behavior
+  # TODO: Will need to figure out how javascript will affect the testing. 
   it 'admin can move a topic' do
     different_topic = create(:topic)
     login_as admin
@@ -254,4 +264,6 @@ describe TopicsController do
     topic.reload
     topic.forum_id.must_equal different_topic.forum_id
   end
+
+ #Make a test to verify the spam button
 end
