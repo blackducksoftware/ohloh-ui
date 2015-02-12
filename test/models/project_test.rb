@@ -86,7 +86,6 @@ class ProjectTest < ActiveSupport::TestCase
 
   describe 'active_managers' do
     it 'should return the active accounts managing the project' do
-      admin = create(:admin)
       create(:manage, account: account, target: project)
       project.active_managers.must_equal [account]
     end

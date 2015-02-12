@@ -159,38 +159,4 @@ class AccountDecoratorTest < ActiveSupport::TestCase
       admin.decorate.vita_status_message.must_equal I18n.t('accounts.show.no_commits')
     end
   end
-
-  describe 'twitter_url' do
-    it 'should return twitter_url with given twiiter_account' do
-      url = 'https://twitter.com/intent/follow?original_referer=http%3A%2F%2Ftwiiter.com%2Fmighty_joe'\
-            '&region=follow_link&screen_name=mighty_joe&source=followbutton&variant=2.0'
-
-      admin.stubs(:twitter_account).returns('mighty_joe')
-      admin.decorate.twitter_url('http://twiiter.com/mighty_joe').must_equal url
-    end
-  end
-
-  describe 'twitter_card' do
-    it 'should return empty string if markup is absent' do
-      admin.decorate.twitter_card.must_equal ''
-    end
-
-    it 'should return markup if vita_fact is absent' do
-      account = create(:account_with_markup)
-      account.decorate.twitter_card.must_equal 'It was'
-    end
-
-    it 'should return full description if markup and vita_fact is present' do
-      language = create(:language)
-      Account.any_instance.stubs(:most_experienced_language).returns(language)
-
-      account = create(:account_with_markup)
-      vita = create(:vita, account_id: account.id)
-      account.update_attributes(best_vita: vita)
-      create(:vita_fact, vita_id: vita.id)
-
-      description = "It was, 0 total commits to 0 projects, most experienced in #{language.nice_name}, earned Kudo Rank"
-      account.decorate.twitter_card.must_equal description
-    end
-  end
 end
