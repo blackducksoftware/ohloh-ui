@@ -11,13 +11,11 @@ class PostsController < ApplicationController
 
   def create
     @post = build_new_post
-    respond_to do |format|
-      if verify_recaptcha(model: @post) && @post.save
-        post_notification(@post)
-        format.html { redirect_to topic_path(@topic), flash: { success: t('.success') } }
-      else
-        format.html { redirect_to topic_path(@topic), flash: { error: t('.error') } }
-      end
+    if verify_recaptcha(model: @post) && @post.save
+      post_notification(@post)
+      redirect_to topic_path(@topic), notice: t('.success')
+    else
+      redirect_to topic_path(@topic), notice: t('.error')
     end
   end
 
@@ -27,19 +25,18 @@ class PostsController < ApplicationController
   end
 
   def update
-    respond_to do |format|
-      if @post.update(post_params)
-        format.html { redirect_to topic_path(@topic), flash: { success: t('.success') } }
-      else
-        format.html { redirect_to topic_path(@topic), flash: { error: t('.error') } }
-      end
+    if @post.update(post_params)
+      redirect_to topic_path(@topic), notice: t('.success')
+    else
+      redirect_to topic_path(@topic), notice: t('.error')
     end
   end
 
   def destroy
-    @post.destroy
-    respond_to do |format|
-      format.html { redirect_to topic_path(@topic) }
+    if @post.destroy
+      redirect_to topic_path(@topic), notice: t('.success')
+    else
+      redirect_to topic_path(@topic), notice: t('.error')
     end
   end
 

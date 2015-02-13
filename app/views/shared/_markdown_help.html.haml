@@ -1,25 +1,25 @@
 .inset
   %h5
-    = link_to 'Markdown Help', markdown_syntax_path, class: 'strong external', target: '_blank'
+    = link_to t('.markdown'), markdown_syntax_path, class: 'strong external', target: '_blank'
 
   %p
     [link](http://url.com/)
     %br
     %br
-    %em *italic*
-    %span.soft or
-    %em _italic_
+    %em= t('.italic_asterick_html')
+    %span.soft= t('.or')
+    %em= t('.italic_underscore_html')
     %br
-    %strong **bold**
-    %span.soft or
-    %strong __bold__
+    %strong= t('.bold_asterick_html')
+    %span.soft= t('.or')
+    %strong= t('.bold_underscore_html')
     %br
-    \# header 1
+    = t('.header_1_html')
     %br
-    \## header 2
-    %br
-    %br
-    \- unordered list 1
+    = t('.header_2_html')
     %br
     %br
-    \1. ordered list 2
+    = t('.unordered_list_html')
+    %br
+    %br
+    = t('.ordered_list_html')

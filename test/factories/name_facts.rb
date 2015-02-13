@@ -11,10 +11,16 @@ FactoryGirl.define do
     association :analysis
     association :name
     association :primary_language, factory: :language
+    type 'ContributorFact'
   end
 
-  factory :vita_fact_with_cbl_and_cbp, parent: :name_fact do
+  factory :vita_fact do
+    association :analysis
+    association :name
+    association :primary_language, factory: :language
     type 'VitaFact'
+    first_checkin Time.now - 3.days
+    last_checkin Time.now - 1.day
     commits_by_project [{ 'month' => start_date_str, 'commits' => '25', 'position_id' => '1' },
                         { 'month' => start_date_str(1), 'commits' => '40', 'position_id' => '1' },
                         { 'month' => start_date_str(2), 'commits' => '28', 'position_id' => '1' },

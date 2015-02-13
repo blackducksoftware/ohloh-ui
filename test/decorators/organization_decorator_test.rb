@@ -1,10 +1,6 @@
 require 'test_helper'
 
-class OrganizationDecoratorTest < Draper::TestCase
-  before do
-    Draper::ViewContext.clear!
-  end
-
+class OrganizationDecoratorTest < ActiveSupport::TestCase
   let(:linux) { create(:organization, url_name: 'linux') }
   let(:sidebar) do
     [

@@ -3,7 +3,7 @@ module PageContextHelper
   include ForumHelper
 
   def account_context
-    set_page_context(footer_menu_list: @account.decorate.sidebar,
+    set_page_context(footer_menu_list: @account.decorate.sidebar_for(current_user),
                      select_footer_nav: :account_summary,
                      select_top_menu_nav: :select_people)
   end
@@ -30,6 +30,16 @@ module PageContextHelper
                      select_top_menu_nav:  :select_tools,
                      heading:  'Tools',
                      nav_type: 'sidebar')
+  end
+
+  def review_context
+    if @project
+      project_context
+      page_context[:select_footer_nav] = :reviews
+    elsif @account
+      account_context
+      page_context[:select_footer_nav] = :reviews
+    end
   end
 
   def set_page_context(options)

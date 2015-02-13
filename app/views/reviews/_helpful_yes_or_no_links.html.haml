@@ -1,0 +1,24 @@
+.small.soft.helpful_below
+  - if logged_in?
+    - unless review.account == current_user
+
+      - helpful = Helpful.new(account: current_user, review: review)
+      = form_for [review, helpful], remote: true do |f|
+        = f.hidden_field :account_id
+        = f.hidden_field :review_id
+        %input.hidden{ type: :checkbox, name: :yes }
+
+        Did this review help you?
+        - if review.helpful_to_account?(current_user)
+          %span.voted= t('reviews.yes')
+        - else
+          %a.set-checkbox-and-submit-form{ href: 'javascript:', 'data-check-box' => 1 }= t('reviews.yes')
+        \|
+        - if review.not_helpful_to_account?(current_user)
+          %span.voted= t('reviews.no')
+        - else
+          %a.set-checkbox-and-submit-form{ href: 'javascript:', 'data-check-box' => 0 }= t('reviews.no')
+  - else
+    Did this review help you?
+    = link_to t('reviews.helpful_yes'), review_helpfuls_path(review), method: :post
+    = link_to t('reviews.helpful_no'), review_helpfuls_path(review), method: :post

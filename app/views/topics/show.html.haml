@@ -1,6 +1,6 @@
-.span12
+.col-md-12
   %h1.margin_bottom_20
-    = link_to 'Forums', forums_path
+    = link_to t('.forums'), forums_path
     \:
     = link_to @forum.name, forum_path(@forum)
 
@@ -11,10 +11,11 @@
       closed
   .btn-group.float_right
     - if current_user_is_admin? && !@topic.closed
-      = link_to 'Close', topic_path(@topic, topic: { closed: '0' }),
-        method: :put, confirm: 'Are you sure you want to close this topic?',
-        class: 'btn btn-mini', title: "Close topic '#{@topic.title}'"
-      / TODO: Rewrite Move and Spam code
+      = button_to t('.close'), topic_path(@topic),
+        method: :put, data: { confirm: t('.close_confirmation') },
+        class: 'btn btn-mini'
+
+    / TODO: Rewrite Move and Spam as model methods and not controller methods
 
     / - if (current_user_is_admin?)
     /   = link_to "Move", move_dialog_topic_path(@topic), {:class => "btn btn-mini", :id => "move_link"}
@@ -25,38 +26,42 @@
     / {:method => :post, :confirm => "Are you sure you want to mark #{@topic.posts.first.account.name} as a spammer,
     / disabling the account and removing all posts?", :class => "btn btn-mini btn-warning",
     / :title => "Mark #{@topic.posts.first.account.name} as spammer!" }
+
     - if current_user_is_admin? || (@topic.posts.count == 1 && @topic.account == current_user)
-      = link_to 'Delete', topic_path(@topic), method: :delete, confirm: 'Are you sure you want to delete this topic?',
-        class: 'btn btn-danger btn-mini', title: "Delete topic '#{@topic.title}'"
+      = button_to t('.delete'), topic_path(@topic), method: :delete, data: { confirm: t('.delete_confirmation') },
+        class: 'btn btn-danger btn-mini'
+
     - if (current_user_is_admin? || (@topic.account == current_user)) && @topic.closed
-      = link_to 'Re-open', topic_path(@topic, topic: { closed: '0' }), method: :put,
-        confirm: 'Are you sure you want to re-open this topic?', class: 'btn btn-mini btn-info',
-        title: "Re-open topic '#{@topic.title}'"
+      = button_to t('.reopen'), topic_path(@topic), method: :put, data: { confirm: t('.reopen_confirmation') },
+        class: 'btn btn-mini btn-info'
 
   .clear
-  = render partial: 'posts/post', collection: @posts
-  = will_paginate @posts
+    / TODO: make sure to do posts/post
+    = render partial: 'posts/post', collection: @posts
+    = will_paginate @posts
 
-  .well#post_reply
-    - if @topic.closed?
-      %p
-        - if (@topic.account == current_user)
-          %p Comments to this topic are now closed.
-          %p
-            As the user who created this topic, you may
-            = link_to 're-open', forum_topic_path(@forum, @topic, topic: { closed: '0' }), method: :put
-            the topic if you feel your question  was not answered or need more information on this topic.
-        - else
-          %p Comments to this topic are now closed. Please create a new topic to get technical support.
-          %p The user who created the topic can reopen this topic at any time.
-    - else
-      = render partial: 'posts/reply'
+    / TODO: This logic is broken
+
+    / .well#post_reply
+    / - if @topic.closed?
+    /   %p
+    /     - if (@topic.account == current_user)
+    /       %p t(.close_topic)
+    /       %p
+    /         As the user who created this topic, you may
+    /         = link_to t('.reopen'), forum_topic_path(@forum, @topic, topic: { closed: '0' }), method: :put
+    /         the topic if you feel your question  was not answered or need more information on this topic.
+    /     - else
+    /       %p Comments to this topic are now closed. Please create a new topic to get technical support.
+    /       %p The user who created the topic can reopen this topic at any time.
+    / - else
+    /   = render partial: 'posts/reply'
 
   - collection_of_all_topics = @topic.forum.topics
   %ul.pager
     %li.previous
-      = link_to_unless collection_of_all_topics.index(@topic).zero?,
-        '&larr; Previous Topic', previous_topic(collection_of_all_topics, @topic)
+      = link_to_unless collection_of_all_topics.index(@topic).zero?, t('.previous_topic_html'),
+        previous_topic(collection_of_all_topics, @topic)
     %li.next
-      = link_to_if next_topic?(collection_of_all_topics, @topic),
-        'Next Topic &rarr;', next_topic(collection_of_all_topics, @topic)
+      = link_to_if next_topic?(collection_of_all_topics, @topic), t('.next_topic_html'),
+        next_topic(collection_of_all_topics, @topic)

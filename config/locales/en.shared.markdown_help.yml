@@ -1,0 +1,6 @@
+en:
+  layouts:
+    shared:
+      markdown:
+        markdown_help: 'Markdown Help'
+        italic_html: '&ast;italic&ast; or &lowbar;italic%lowbar;'

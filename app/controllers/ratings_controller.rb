@@ -4,18 +4,19 @@ class RatingsController < ApplicationController
 
   def rate
     @rating.assign_attributes(model_params)
-    render nothing: true, status: (@rating.save ? :ok : :unprocessable_entity)
+    @rating.save
+    render partial: 'reviews/rater'
   end
 
   def unrate
     @rating.destroy if @rating.persisted?
-    render nothing: true, status: :ok
+    render partial: 'reviews/rater'
   end
 
   private
 
   def model_params
-    params.permit([:score])
+    params.permit(:score)
   end
 
   def find_project_and_rating

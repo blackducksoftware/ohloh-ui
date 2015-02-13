@@ -1,0 +1,41 @@
+.well.review_container{ id: "review_list_#{review_list.id}" }
+  .row
+    .col-md-2
+      -# TODO account
+      - if @project
+        - account = review_list.account
+        .padding_right_0
+          .pull-right
+            = link_to account.name.reverse.truncate(11).reverse, account_url(account), title: account.name
+            says:
+          .avatar_margin_left.pull-right.margin_right_10
+            = avatar_for(review_list.account, size: 58)
+      - elsif @account
+        - project = review_list.project
+        .margin_left_20
+          - project_icon(project, :med)
+        .clearfix
+        .margin_left_20
+          = link_to truncate(project.name, length: 20), project_path(project), title: project.name
+
+    .col-md-10.padding_left_30
+      %strong.pull-left
+        - if review_list.title
+          = truncate(review_list.title.camelize, length: 38)
+        - else
+          = t('.accounts_review', name: review_list.account.name)
+        &nbsp;
+      .pull-left{ style: 'margin-top:1px' }
+        - stars(review_list.score, small_size: true)
+      .clear
+      .col-md
+        %abbr.soft.small{ title: review_list.created_at }
+          = t('reviews.written_ago', time: time_ago_in_words(review_list.created_at))
+      %p= simple_format(review_list.comment)
+      .soft.small
+        .pull-left
+          = render partial: 'helpful_count_status', locals: { review: review_list }
+        .pull-right{ style: 'padding-right: 120px' }
+          = render partial: 'helpful_yes_or_no_links', locals: { review: review_list }
+        .clearfix
+        = render partial: 'buttons', locals: { review: review_list }

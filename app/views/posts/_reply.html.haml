@@ -1,11 +1,15 @@
 - if logged_in?
   .row
-    .span9
-      %h3 Post a Response
-      = form_for :post, url: topic_posts_path(@topic), method: :post do |f|
+    .col-md-9
+      %h3= t('.post_a_response')
+      = form_for :post, topic_posts_path(@topic), method: :post do |f|
         = render partial: 'posts/fields', locals: { f: f }
-    .span2
+    .actions
+      = f.submit t('.submit'), class: 'btn btn-primary btn-small'
+
+    .col-md-2
       = render 'shared/markdown_help'
 - else
-  %h3 Post a Response
-  = link_to 'Open Hub welcomes your opinions.', '', class: 'needs_login'
+  %h3= t('.post_a_response')
+  / TODO: The link opens a window for a session. Find out how to implement that feature
+  = link_to t('.response'), '', class: 'needs_login'

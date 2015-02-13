@@ -19,9 +19,11 @@ class RatingsControllerTest < ActionController::TestCase
   end
 
   it 'does not allow rating a project to silly values' do
+    rating_score = @project.ratings
     login_as @account
     post :rate, id: @project.to_param, score: 'silly'
-    must_respond_with :unprocessable_entity
+    must_respond_with :ok
+    @project.ratings.must_equal rating_score
   end
 
   it 'gracefully handles rating of non-existant projects' do

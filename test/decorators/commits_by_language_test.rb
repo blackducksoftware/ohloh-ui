@@ -1,10 +1,6 @@
 require 'test_helper'
 
-class CommitsByLanguageTest < Draper::TestCase
-  before do
-    Draper::ViewContext.clear!
-  end
-
+class CommitsByLanguageTest < ActiveSupport::TestCase
   let(:start_date) do
     (Date.today - 6.years).beginning_of_month
   end
@@ -12,7 +8,7 @@ class CommitsByLanguageTest < Draper::TestCase
   let(:user) do
     account = accounts(:user)
     account.best_vita.vita_fact.destroy
-    create(:vita_fact_with_cbl_and_cbp, vita_id: account.best_vita_id)
+    create(:vita_fact, vita_id: account.best_vita_id)
     account
   end
 

@@ -6,7 +6,7 @@ class ChartTest < ActiveSupport::TestCase
   let(:user) do
     account = accounts(:user)
     account.best_vita.vita_fact.destroy
-    create(:vita_fact_with_cbl_and_cbp, vita_id: account.best_vita_id)
+    create(:vita_fact, vita_id: account.best_vita_id)
     account
   end
 

@@ -1,0 +1,19 @@
+%table{ width: '100%', boder: '1' }
+  %tr
+    %td{ colspan: '3' }
+      %h3= t('reviews.my_review', name: truncate(@project.name, length: 40))
+  %tr
+    %td{ width: '64%' }
+      - if @rating.try(:persisted?)
+        .pull-left
+          = t('.not_reviewd').html_safe
+      - else
+        = t('.not_reviewd_or_rated').html_safe
+    %td{ width: '15%' }
+      %strong= t('reviews.my_rating')
+    %td{ width: '21%' }
+      - stars(@rating.try(:score))
+  %tr
+    %td
+      .clear{ Style: 'margin-top:5px;' }
+      = icon_button(new_project_review_url(@project), text: 'New Review', size: 'small', type: 'primary')
