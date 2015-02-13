@@ -1,4 +1,4 @@
-class InviteDecorator < Draper::Decorator
+class InviteDecorator < Cherry::Decorator
   delegate_all
 
   def claim_url
