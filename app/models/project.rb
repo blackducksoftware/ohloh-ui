@@ -25,7 +25,7 @@ class Project < ActiveRecord::Base
 
   scope :active, -> { where { deleted.not_eq(true) } }
   scope :deleted, -> { where(deleted: true) }
-  scope :from_param, ->(param) { where(url_name: param) }
+  scope :from_param, ->(id) { Project.where(Project.arel_table[:url_name].eq(id).or(Project.arel_table[:id].eq(id))) }
   scope :not_deleted, -> { where(deleted: false) }
   scope :been_analyzed, -> { where.not(best_analysis_id: nil) }
   scope :recently_analyzed, -> { not_deleted.been_analyzed.order(created_at: :desc) }
@@ -53,7 +53,7 @@ class Project < ActiveRecord::Base
   before_validation :clean_strings_and_urls
 
   def to_param
-    url_name
+    url_name || id.to_s
   end
 
   def related_by_stacks(limit = 12)
