@@ -104,6 +104,7 @@ Rails.application.routes.draw do
     member do
       get :settings
       get :projects
+      get :outside_projects
     end
     resource :logos, only: [:new, :create, :destroy]
     resources :managers, only: [:index, :new, :create, :edit, :update] do

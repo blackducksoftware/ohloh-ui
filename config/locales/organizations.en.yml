@@ -1,0 +1,13 @@
+en:
+  organizations:
+    outside_projects:
+      outside_projects: "Outside Projects"
+      no_outside_projects: "There are no outside projects to display."
+      header_name: "Name"
+      header_claimed_by: "Claimed By"
+      header_i_use_this: "I Use This"
+      header_community_rating: "Community Rating"
+      header_num_of_affiliates: "# of Affiliates Contributing"
+      header_all_time_commits: "All-time Commits"
+      header_by_current_affiliates: "(by Current Affiliates)"
+      see_all_num_outside_projs: "See All %{num} Outside Projects"

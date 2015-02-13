@@ -8,7 +8,9 @@ class Organization < ActiveRecord::Base
   has_many :manages, -> { where(deleted_at: nil, deleted_by: nil) }, as: 'target'
   has_many :managers, through: :manages, source: :account
 
-  scope :from_param, ->(param) { where(url_name: param) }
+  scope :from_param, lambda { |param|
+    Organization.where(Organization.arel_table[:url_name].eq(param).or(Organization.arel_table[:id].eq(param)))
+  }
   scope :active, -> { where.not(deleted: true) }
   scope :managed_by, lambda { |account|
     joins(:manages).where.not(deleted: true, manages: { approved_by: nil }).where(manages: { account_id: account.id })
