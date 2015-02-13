@@ -38,7 +38,7 @@ class LinkTest < ActiveSupport::TestCase
       new_link.revive_or_create
     end
 
-    deleted_link = Link.find(link)
+    deleted_link = Link.where(id: link.id).first
     deleted_link.title.must_equal new_title
     deleted_link.link_category_id.must_equal Link::CATEGORIES[:Forums]
   end
@@ -54,7 +54,7 @@ class LinkTest < ActiveSupport::TestCase
       new_link.revive_or_create.must_equal true
     end
 
-    link = Link.find(new_link)
+    link = Link.where(id: new_link.id).first
 
     link.title.must_equal new_title
     link.url.must_equal new_url

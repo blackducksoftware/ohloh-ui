@@ -22,6 +22,7 @@ class DeletedAccount < ActiveRecord::Base
   private
 
   def notify_admin
-    DeletedAccountNotifier.deletion(self).deliver
+    mail = DeletedAccountNotifier.deletion(self)
+    mail.respond_to?(:deliver_now) ? mail.deliver_now : mail.deliver
   end
 end
