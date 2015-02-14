@@ -38,6 +38,25 @@ module ApplicationHelper
     current_user.present? && current_user.id == account.id
   end
 
+  def project_icon(project, size = :small, opts = {})
+    opts = opts_with_lang_colors(project, opts)
+    return default_icon(project, size, opts) if project.logo.nil?
+    styles = "#{icon_dimensions(size, opts)} border:0 none;"
+    concat image_tag(project.logo.attachment.url(size), style: styles, itemprop: 'image', alt: project.name)
+  end
+
+  def project_link(project, size = :small, opts = {})
+    opts = opts.merge(href: "/p/#{project.to_param}")
+    inner = capture_haml { project_icon(project, size, opts) }
+    haml_tag :a, inner, opts
+  end
+
+  private
+
+  def default_icon(project, size, opts)
+    haml_tag(:p, project.name.first.capitalize, style: default_icon_styles(size, opts))
+  end
+
   def icon_int_size(size, opts)
     opts[:width] || opts[:height] || { med: 64, small: 32, tiny: 16 }[size]
   end
@@ -60,21 +79,6 @@ module ApplicationHelper
       text-align:center; float:left; margin-bottom:0; margin-top:0; margin-right:#{margin_right}px"
   end
 
-  def project_icon(project, size = :small, opts = {})
-    opts = opts_with_lang_colors(project, opts)
-    return haml_tag(:p, project.name.capitalize, style: default_icon_styles(size, opts)) if project.logo.nil?
-    styles = "#{icon_dimensions(size, opts)} border:0 none;"
-    concat image_tag(project.logo.attachment.url(size), style: styles, itemprop: 'image', alt: project.name)
-  end
-
-  def project_link(project, size = :small, opts = {})
-    opts = opts.merge(href: "/p/#{project.to_param}")
-    inner = capture_haml { project_icon(project, size, opts) }
-    haml_tag :a, inner, opts
-  end
-
-  private
-
   def render_expander(text, l)
     <<-EXPANDER
     #{ text[0..l] }
@@ -86,7 +90,7 @@ module ApplicationHelper
   end
 
   def opts_with_lang_colors(project, opts)
-    return opts unless project.best_analysis && project.best_analysis.main_language
+    return opts if project.best_analysis.nil? && project.best_analysis.main_language.nil?
     lang_name = project.best_analysis.main_language
     opts.merge(color: language_text_color(lang_name), bg: language_color(lang_name))
   end

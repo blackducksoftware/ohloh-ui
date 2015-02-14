@@ -22,4 +22,11 @@ class OrganizationsControllerTest < ActionController::TestCase
     get :outside_projects, id: 'I_AM_A_BANANA'
     must_respond_with :not_found
   end
+
+  it 'should return affiliated projects for unlogged users' do
+    login_as nil
+    get :projects, id: @organization
+    must_respond_with :ok
+    assigns(:affiliated_projects).count.must_equal 1
+  end
 end

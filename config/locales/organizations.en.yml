@@ -1,5 +1,14 @@
 en:
   organizations:
+    projects:
+      title: 'Portfolio Projects'
+      name: 'name'
+      primary_language: 'Primary Language'
+      i_use_this: 'I Use This'
+      community_rating: 'Community Rating'
+      twelve_month_activity: '12-month Activity & Year-on-Year Change'
+      contributors: 'Contributors'
+      commits: 'Commits'
     outside_projects:
       outside_projects: "Outside Projects"
       no_outside_projects: "There are no outside projects to display."

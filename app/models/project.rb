@@ -52,6 +52,8 @@ class Project < ActiveRecord::Base
   # end
   before_validation :clean_strings_and_urls
 
+  alias_method :original_best_analysis, :best_analysis
+
   def to_param
     url_name || id.to_s
   end
@@ -91,6 +93,10 @@ class Project < ActiveRecord::Base
   def main_language
     return if best_analysis.nil? || best_analysis.main_language.nil?
     best_analysis.main_language.name
+  end
+
+  def best_analysis
+    original_best_analysis || NilAnalysis.new
   end
 
   class << self
