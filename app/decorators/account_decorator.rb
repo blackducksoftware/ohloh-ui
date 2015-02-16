@@ -1,7 +1,9 @@
 class AccountDecorator < Cherry::Decorator
   include ActionView::Helpers::TextHelper
+  include ActionView::Helpers::AssetTagHelper
+  include AvatarHelper
 
-  delegate :best_vita, :positions, :claimed_positions, :projects, to: :account
+  delegate :best_vita, :positions, :claimed_positions, :projects, :login, :name, :to_param, to: :account
 
   def symbolized_commits_by_project
     best_vita.vita_fact.commits_by_project.to_a.map(&:symbolize_keys)
@@ -40,6 +42,19 @@ class AccountDecorator < Cherry::Decorator
     elsif claimed_positions.blank?
       I18n.t('accounts.show.no_commits')
     end
+  end
+
+  def search_result
+    { id: to_param, value: login }
+  end
+
+  def autocomplete_result
+    {
+      login: login,
+      name: name,
+      avatar: image_tag(avatar_img_path(account, 32), size: '32x32', class: 'avatar'),
+      value: login
+    }
   end
 
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength

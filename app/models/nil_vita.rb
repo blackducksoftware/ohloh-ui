@@ -4,7 +4,7 @@ class NilVita
   end
 
   def vita_language_facts
-    []
+    VitaLanguageFact.none
   end
 
   def nil?

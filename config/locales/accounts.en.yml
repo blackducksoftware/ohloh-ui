@@ -1,5 +1,13 @@
 en:
   accounts:
+    activate:
+      notice: 'Account already active'
+      success: 'Activation Succeeded!'
+      no_code: 'Activation failed!'
+    make_spammer:
+      success: "The account %{name} has been marked as spammer."
+    delete_feedback:
+      success: 'Thank you for the feedback.'
     index:
       page_title: 'Account Holders'
     account:

@@ -85,9 +85,9 @@ class Account < ActiveRecord::Base
   end
 
   def most_experienced_language
-    language_facts = best_vita.vita_language_facts
+    language_facts = best_vita.vita_language_facts.ordered
     return if language_facts.empty?
-    language_facts.ordered.first.language
+    language_facts.first.language
   end
 
   def resend_activation!
@@ -107,6 +107,20 @@ class Account < ActiveRecord::Base
   end
 
   class << self
+    def near(latitude, longitude)
+      account = Account.arel_table
+      Account.select([:id, :name, account[:email_md5].as('gravatar'), :latitude, :longitude, :location])
+        .where.not(latitude: nil, longitude: nil)
+        .order("(latitude - #{latitude}) + (longitude - #{longitude})")
+        .limit(50)
+    end
+
+    def near_when_zoomed_out
+      account = Account.arel_table
+      Account.select([:id, :name, account[:email_md5].as('gravatar'), :latitude, :longitude, :location])
+        .where(id: params[:id]).not(latitude: nil, longitude: nil)
+    end
+
     def resolve_login(login)
       Account.where('lower(login) = ?', login.downcase).first
     end
