@@ -21,9 +21,9 @@ en:
   logout: 'Logout'
   join_now: 'Join Now'
   api_keys_title: 'API Keys'
-  projects_text: 'Projects'
+  projects_menu: 'Projects'
   people: 'People'
-  organizations_text: 'Organizations'
+  organizations_menu: 'Organizations'
   tools: 'Tools'
   code: 'Code'
   blog: 'Blog'
@@ -257,27 +257,6 @@ en:
     destroy:
       error: 'Sorry, there was a problem deleting the logo'
       success: 'Logo was reset to blank'
-  posts:
-    create:
-      success: 'Post successfully created'
-      error: 'Unable to successfully create post'
-    update:
-      success: 'Post updated'
-      error: 'Sorry, there was a problem updating the post'
-  topics:
-    create:
-      success: 'Topic successfully created'
-      error: 'Unable to successfully create topic'
-    update:
-      success: 'Topic updated'
-      error: 'Sorry, there was a problem updating the topic'
-  forums:
-    create:
-      success: 'Forum successfully created'
-      error: 'Unable to successfully create forum'
-    update:
-      success: 'Forum updated'
-      error: 'Sorry, there was a problem updating the forum'
   accounts:
     invalid_email_address: 'Invalid Email Address detected.'
     invalid_url_format: 'Invalid URL Format'
@@ -297,3 +276,17 @@ en:
             url:
               taken: 'has already been submitted'
               invalid_url: 'Invalid Link URL'
+  shared:
+    markdown_help:
+      markdown: 'Markdown Help'
+      or: 'or'
+      italic_asterick_html: '&ast;italic&ast;'
+      italic_underscore_html: '&lowbar;&lowbar;italic&lowbar;&lowbar;'
+      bold_asterick_html: '&ast;&ast;bold&ast;&ast;'
+      bold_underscore_html: '&lowbar;&lowbar;bold&lowbar;&lowbar;'
+      header_1_html: '&num; header 1'
+      header_2_html: '&num;&num; header 2'
+      unordered_list_html: '&hybull; unordered list 1'
+      ordered_list_html: '1. ordered list 2'
+    captcha:
+      captcha_label: 'Captcha (required)'
