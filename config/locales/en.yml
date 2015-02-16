@@ -257,6 +257,7 @@ en:
     destroy:
       error: 'Sorry, there was a problem deleting the logo'
       success: 'Logo was reset to blank'
+
   accounts:
     invalid_email_address: 'Invalid Email Address detected.'
     invalid_url_format: 'Invalid URL Format'
@@ -276,6 +277,7 @@ en:
             url:
               taken: 'has already been submitted'
               invalid_url: 'Invalid Link URL'
+
   shared:
     markdown_help:
       markdown: 'Markdown Help'

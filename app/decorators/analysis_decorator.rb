@@ -26,8 +26,8 @@ class AnalysisDecorator < Cherry::Decorator
   private
 
   def year_ago_summary_difference(column)
-    year_summary              = analysis.twelve_month_summary
-    previous_year_summary     = analysis.previous_twelve_month_summary
+    year_summary              = object.twelve_month_summary
+    previous_year_summary     = object.previous_twelve_month_summary
 
     return 0 if year_summary.nil? || previous_year_summary.nil?
 

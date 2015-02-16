@@ -4,6 +4,7 @@ class OrganizationsController < ApplicationController
   helper OrganizationsHelper
 
   before_action :find_organization
+  before_action :organization_context, only: [:outside_projects, :projects]
 
   def outside_projects
     @outside_projects = @organization.outside_projects(params[:page], 20)

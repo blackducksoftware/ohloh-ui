@@ -1,4 +1,5 @@
-- content_for(:html_title) { t('.title') }
+- content_for(:html_title) { t('.page_title', organization_name: @organization.name) }
+- page_context[:select_footer_nav] = :projects
 .padding_one_top#portfolio_projects_list
   - if @affiliated_projects.any?
     %h3= t('.title')

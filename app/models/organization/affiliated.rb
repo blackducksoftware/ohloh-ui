@@ -18,7 +18,9 @@ class Organization::Affiliated < Organization::AccountFacts
   end
 
   def projects(page = 1, limit = 10)
-    @organization.projects.order('projects.user_count DESC').paginate(per_page: limit, page: page)
+    @organization.projects.order('projects.user_count DESC')
+      .includes([:logo, best_analysis: [:twelve_month_summary, :previous_twelve_month_summary, :main_language]])
+      .paginate(per_page: limit, page: page)
   end
 
   private

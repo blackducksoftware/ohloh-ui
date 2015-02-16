@@ -1,4 +1,4 @@
-class NilVita
+class NilVita < NullObject
   def vita_fact
     NilVitaFact.new
   end
