@@ -1,5 +1,7 @@
 en:
   accounts:
+    languages:
+      title: Languages
     activate:
       notice: 'Account already active'
       success: 'Activation Succeeded!'
