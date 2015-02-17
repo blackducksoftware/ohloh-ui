@@ -20,6 +20,10 @@ class Invite < ActiveRecord::Base
     I18n.t('invites.thank_you_message', name: name.name, email: invitee_email)
   end
 
+  def claim_url
+    "http://#{URL_HOST}/p/#{project_id}/contributors/#{contribution_id}?invite=#{activation_code}"
+  end
+
   private
 
   def unique_invitee_wrt_contribution

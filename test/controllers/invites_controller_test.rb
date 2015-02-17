@@ -27,8 +27,9 @@ describe InvitesController do
 
   it 'shouldn\'t create a duplicate invite' do
     login_as user
+    post :create, contributor_id: invite.contribution.id, invite: { invitee_email: 'abc@yahoo.com' }
     assert_no_difference('Invite.count') do
-      post :create, contributor_id: Invite.last.contribution_id, invite: { invitee_email: 'abc@yahoo.com' }
+      post :create, contributor_id: invite.contribution.id, invite: { invitee_email: 'abc@yahoo.com' }
     end
   end
 end
