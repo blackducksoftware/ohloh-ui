@@ -1,6 +1,8 @@
 class VitaLanguageFact < NameLanguageFact
   belongs_to :vita
   belongs_to :language
+  belongs_to :most_commits_project, class_name: 'Project'
+  belongs_to :recent_commit_project, class_name: 'Project'
 
   scope :ordered, lambda {
     joins(:language)
@@ -11,13 +13,4 @@ class VitaLanguageFact < NameLanguageFact
     includes([:language, :most_commits_project, :recent_commit_project])
       .order('most_commits DESC').references(:all)
   }
-
-  class << self
-    def logos
-      facts = with_languages_and_commits
-      projects = facts.map(&:most_commits_project) + facts.map(&:recent_commit_project)
-      logo_ids = projects.compact.map(&:logo_id).compact
-      Logo.where(id: logo_ids)
-    end
-  end
 end

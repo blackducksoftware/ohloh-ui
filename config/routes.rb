@@ -96,7 +96,7 @@ Rails.application.routes.draw do
     resources :commits, only: :index do
       collection { get :summary }
     end
-    resources :contributors, only: :index do
+    resources :contributors, only: [:index, :show] do
       collection { get :summary }
     end
   end

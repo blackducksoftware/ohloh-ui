@@ -1,7 +1,8 @@
 :ruby
   most_committed_project = language_fact.most_commits_project
   recent_project = language_fact.recent_commit_project
-  language_color = "background-color: ##{language_color(language_fact.language.name)};"
+  language = language_fact.language
+  language_color = "background-color: ##{language_color(language.name)};"
   language_text_color = "color: ##{language_text_color(language.name)}"
 
 %tr{ class: cycle('even','odd') }
@@ -32,8 +33,8 @@
       &nbsp;
       = link_to truncate(recent_project.name, length: 16), project_path(recent_project)
       &nbsp;
-      = decorated_recent_projectproject_activity_level_class(recent_project, :fifteen)
+      = decorated_recent_project.activity_level_class(:fifteen)
   %td.center
     - if recent_project
-      - contribution = @contrib_by_proj[recent_project.id].try(:first)
+      - contribution = @contributions[recent_project.id].try(:first)
       = link_to_if contribution, language_fact.recent_commit_month.to_s(:by), project_contributor_path(recent_project, contribution)

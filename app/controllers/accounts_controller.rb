@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
   before_action :account, only: [:show, :commits_by_project_chart, :commits_by_language_chart,
-                                 :make_spammer, :activate]
+                                 :make_spammer, :activate, :languages, :bubble]
   before_action :redirect_if_disabled, only: [:show, :commits_by_project_chart, :commits_by_language_chart]
   before_action :check_activation, only: [:activate]
 
@@ -30,7 +30,7 @@ class AccountsController < ApplicationController
     @contributions = @account.positions.map(&:contribution).group_by(&:project_id)
     return if @account.best_vita.nil?
     @vlfs = @account.best_vita.vita_language_facts.with_languages_and_commits
-    @logos_map = VitaLanguageFact.logos.index_by(&:id)
+    @logos_map = @account.best_vita.language_logos.index_by(&:id)
   end
 
   def bubble
