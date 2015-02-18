@@ -24,6 +24,7 @@ GIT
 
 GEM
   remote: https://rubygems.org/
+  remote: http://oh-stage-utility-1.blackducksoftware.com:9292/
   specs:
     actionmailer (4.1.7)
       actionpack (= 4.1.7)
@@ -195,6 +196,7 @@ GEM
     net-ssh (2.9.2)
     nokogiri (1.6.5)
       mini_portile (~> 0.6.0)
+    oh_delegator (0.0.1)
     paperclip (4.2.1)
       activemodel (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -342,6 +344,7 @@ DEPENDENCIES
   letter_opener
   minitest-rails
   mocha
+  oh_delegator
   paperclip
   pg
   pg_search
