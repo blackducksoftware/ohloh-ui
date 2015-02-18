@@ -1,6 +1,8 @@
 class ProjectDecorator < Cherry::Decorator
   include ColorsHelper
-  delegate :main_language, to: :project
+  include ActionView::Helpers::UrlHelper
+
+  delegate :main_language, :best_analysis, to: :project
 
   def icon(size = :small, opts = {})
     opts[:color] = language_text_color(main_language)
@@ -8,6 +10,13 @@ class ProjectDecorator < Cherry::Decorator
 
     icon = Icon.new(project, context: { size: size, opts: opts })
     icon.image
+  end
+
+  def activity_level_class(image_size)
+    activity_score = ProjectActivity.new(best_analysis)
+    link_to '', 'http://blog.openhub.net/about-project-activity-icons/', target: '_blank',
+             class: activity_score.level_css(image_size),
+             title: activity_score.level_text(true)
   end
 
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize

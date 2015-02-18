@@ -52,6 +52,10 @@ class Project < ActiveRecord::Base
   # end
   before_validation :clean_strings_and_urls
 
+  def best_analysis
+    Analysis.where(id: best_analysis_id).first || NilAnalysis.new
+  end
+
   def to_param
     url_name
   end
