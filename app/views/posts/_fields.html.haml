@@ -2,9 +2,8 @@
   .control-group
     .controls
       = f.text_area(:body)
-      %p.error= flash[:bad_reply]['body'] if flash[:bad_reply]
+      %p.error= flash[:bad_reply] if flash[:bad_reply]
     .control-group
       .actions
       = render 'shared/captcha'
-      / TODO: Fix the transalation
       = f.submit t('.submit'), class: 'btn btn-primary btn-small'

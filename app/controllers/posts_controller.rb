@@ -1,8 +1,10 @@
 class PostsController < ApplicationController
+  include TopicsHelper
   before_action :session_required, only: [:create, :edit, :update]
   before_action :admin_session_required, only: [:destroy]
   before_action :find_topic_record, except: :index
   before_action :find_post_record, only: [:edit, :update, :destroy]
+  before_action :find_forum_and_topic_records, only: [:create]
 
   def index
     @posts = Post.paginate(page: params[:page], per_page: 10)
@@ -10,12 +12,14 @@ class PostsController < ApplicationController
   end
 
   def create
+    # TODO: Add recaptcha error message.
     @post = build_new_post
     if verify_recaptcha(model: @post) && @post.save
       post_notification(@post)
-      redirect_to topic_path(@topic), notice: t('.success')
+      redirect_to topic_path(@topic)
     else
-      redirect_to topic_path(@topic), notice: t('.error')
+      flash[:bad_reply] = "can't be blank"
+      redirect_to topic_path(@topic, post: { body: @post.body }, anchor: 'post_reply')
     end
   end
 
@@ -26,17 +30,17 @@ class PostsController < ApplicationController
 
   def update
     if @post.update(post_params)
-      redirect_to topic_path(@topic), notice: t('.success')
+      redirect_to topic_path(@topic)
     else
-      redirect_to topic_path(@topic), notice: t('.error')
+      redirect_to topic_path(@topic)
     end
   end
 
   def destroy
     if @post.destroy
-      redirect_to topic_path(@topic), notice: t('.success')
+      redirect_to topic_path(@topic)
     else
-      redirect_to topic_path(@topic), notice: t('.error')
+      redirect_to topic_path(@topic)
     end
   end
 
@@ -78,6 +82,11 @@ class PostsController < ApplicationController
 
   def find_topic_record
     @topic = Topic.find_by(id: params[:topic_id])
+  end
+
+  def find_forum_and_topic_records
+    @topic = Topic.find_by(id: params[:topic_id])
+    @forum = @topic.forum
   end
 
   def post_params

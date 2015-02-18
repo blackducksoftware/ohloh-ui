@@ -1,5 +1,5 @@
 class AccountsController < ApplicationController
-  before_action :account, only: [:show, :commits_by_project_chart, :commits_by_language_chart]
+  before_action :account, only: [:show, :commits_by_project_chart, :commits_by_language_chart, :label_as_spammer]
   before_action :redirect_if_disabled, only: [:show, :commits_by_project_chart, :commits_by_language_chart]
   # before_action :account_context, only: [:show]
 
@@ -26,7 +26,6 @@ class AccountsController < ApplicationController
   end
 
   def label_as_spammer
-    @account = Account.find_by(id: params[:id])
     Account::Access.new(@account).spam!
     render template: 'accounts/disabled'
   end
@@ -39,8 +38,7 @@ class AccountsController < ApplicationController
   end
 
   def redirect_if_disabled
-    if @account && (Account::Access.new(@account).disabled? || Account::Access.new(@account).spam?)
-      redirect_to disabled_account_url(@account)
-    end
+    return unless @account && (Account::Access.new(@account).disabled? || Account::Access.new(@account).spam?)
+    redirect_to disabled_account_url(@account)
   end
 end

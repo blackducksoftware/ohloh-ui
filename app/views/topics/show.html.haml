@@ -11,44 +11,36 @@
     closed
   .btn-group.float_right
   - if current_user_is_admin? && !@topic.closed
-    / Note: This implementation should not have worked. should have passed a params with hidden value instead. Refer to docs.
     = button_to t('.close'), topic_path(@topic, topic: { closed: true }),
       method: :put, data: { confirm: t('.close_confirmation') }, class: 'btn btn-mini'
   - if current_user_is_admin?
     = button_to t('.move'), move_topic_path(@topic), method: :get, class: 'btn btn-mini', id: 'move_link'
-    / TODO: Figure out how to make the javascript work
+    / TODO: Determine how to make this javascript work for page rendering.
     / = javascript_tag 'MoveTopic.init()'
   - if current_user_is_admin?
-    / TODO: Internationalize. 
-    / Note: This method should not have to pass in id only.
-    = button_to t('.spam'), label_as_spammer_account_path(@topic.posts.first.account.id), method: :post,
-      data: { confirm: "Are you sure you want to mark #{@topic.posts.first.account.name} as a spammer,
-      disabling the account and removing all posts?" }, class: 'btn btn-mini btn-warning'
+    = button_to t('.spam'), label_as_spammer_account_path(@topic.account), method: :post,
+      data: { confirm: t('.spam_confirmation', user: @topic.posts.first.account.name) },
+      class: 'btn btn-mini btn-warning'
   - if current_user_is_admin? || (@topic.posts.count == 1 && @topic.account == current_user)
     = button_to t('.delete'), topic_path(@topic), method: :delete, data: { confirm: t('.delete_confirmation') },
       class: 'btn btn-danger btn-mini'
   - if (current_user_is_admin? || (@topic.account == current_user)) && @topic.closed
-    / Note: This implementation should not have worked. should have passed a params with hidden value instead. Refer to docs.
-    = button_to t('.reopen'), topic_path(@topic, topic: { closed: false }),
-      method: :put, data: { confirm: t('.reopen_confirmation') }, class: 'btn btn-mini btn-info'
+    = button_to t('.reopen'), topic_path(@topic, topic: { closed: false }), method: :put,
+      data: { confirm: t('.reopen_confirmation') }, class: 'btn btn-mini btn-info'
   .clear
-    / TODO: make sure to do posts/post
     = render partial: 'posts/post', collection: @posts
     = will_paginate @posts
 
-  / TODO: This view logic needs to be refactored and internationalized.
   .well#post_reply
     - if @topic.closed?
-      %p
-        - if (@topic.account == current_user)
-          %p t(.close_topic)
-          %p
-            As the user who created this topic, you may
-            = link_to t('.reopen'), forum_topic_path(@forum, @topic, topic: { closed: '0' }), method: :put
-            the topic if you feel your question  was not answered or need more information on this topic.
-        - else
-          %p Comments to this topic are now closed. Please create a new topic to get technical support.
-          %p The user who created the topic can reopen this topic at any time.
+      %br
+      - if (@topic.account == current_user)
+        %p= t('.close_topic_message_1')
+        - url = link_to(t('.reopen'), forum_topics_path(@forum, @topic, topic: { closed: false }), method: :put)
+        %p= t('.reopen_message_html', link: url)
+      - else
+        %p= t('.closed_topic_message_2')
+        %p= t('.closed_topic_message_3')
     - else
       = render partial: 'posts/reply'
 

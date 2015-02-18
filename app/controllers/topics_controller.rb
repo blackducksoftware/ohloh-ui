@@ -17,9 +17,10 @@ class TopicsController < ApplicationController
   end
 
   def create
+    # Add recaptcha error message.
     @topic = build_new_topic
     if verify_recaptcha(model: @topic) && @topic.save
-      redirect_to forum_path(@forum), notice: t('.success')
+      redirect_to forum_path(@forum)
     else
       render :new
     end
@@ -39,7 +40,7 @@ class TopicsController < ApplicationController
 
   def destroy
     if @topic.destroy
-      # TODO: Needs a new topic message
+      flash[:notice] = t('.success', topic_title: @topic.title)
       redirect_to forums_path
     else
       redirect_to forums_path

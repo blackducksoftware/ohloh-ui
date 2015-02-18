@@ -4,10 +4,19 @@ en:
     index:
       all_forums: 'All Forums'
       active_topics: 'Active Topics'
+      forums: 'Forums'
+      recent_posts: 'Recent Posts'
+      unanswered_posts: 'Unanswered Posts'
+      topics: 'Topics'
+      posts: 'Posts'
+      new_forum: 'New Forum'
     edit:
       edit_forum: 'Edit Forum'
       save_forum: 'Save Forum'
+      forums: 'Forums'
+      cancel: 'Cancel'
     show:
+      forums: 'Forums'
       topic: 'Topic'
       replies: 'Replies'
       views: 'Views'
@@ -15,18 +24,13 @@ en:
       add_new_topic: 'Add New Topic'
     new:
       create: 'Create'
+      forums: 'Forums'
+      new_forum: 'New Forum'
     create:
-      success: 'Forum successfully created'
       error: 'There was a problem!'
     update:
-      success: 'Forum successfully updated'
-      error: 'Sorry, there was a problem updating the forum'
-    destroy:
-      success: 'Forum successfully removed'
-      error: 'There was a problem deleting the forum'
+      error: 'There was a problem saving!'
     form:
       title: 'Title (required)'
       position: 'Position'
       description: 'Description'
-    last_post:
-      .time_ago: '%{time} ago'

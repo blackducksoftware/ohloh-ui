@@ -10,11 +10,9 @@
     - if current_user_is_admin?
       %h2
         .float_right.btn-group
-          / TODO: SPAM functionality, rewrite into model function and not a controller route.
-          / = link_to "SPAM!", make_spammer_account_path(@post.account),
-          / {:method => :post, :confirm => "Are you sure you want to mark #{@post.account.name} as a spammer,
-          / disabling the account and removing all posts?", :class => "btn btn-small btn-warning",
-          / :title => "Mark #{@post.account.name} as spammer!" }
+          = button_to t('.spam'), label_as_spammer_account_path(@post.account), method: :post,
+            data: { confirm: t('.spam_confirmation'), user: @topic.posts.first.account.name },
+            class: 'btn btn-small btn-warning'
           = button_to t('.delete'), topic_post_path(@topic, @post), method: :delete,
             data: { confirm: t('.delete_confirmation') }, class: 'btn btn-danger btn-small'
 
