@@ -1,4 +1,4 @@
-class NilTwelveMonthSummary < NullObject
+class NilAnalysisSummary < NullObject
   def affiliated_committers_count
     0
   end
@@ -12,6 +12,14 @@ class NilTwelveMonthSummary < NullObject
   end
 
   def outside_commits_count
+    0
+  end
+
+  def commits_count
+    0
+  end
+
+  def committer_count
     0
   end
 end

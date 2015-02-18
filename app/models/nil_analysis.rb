@@ -1,10 +1,10 @@
 class NilAnalysis < NullObject
   def twelve_month_summary
-    NilTwelveMonthSummary.new
+    NilAnalysisSummary.new
   end
 
   def previous_twelve_month_summary
-    NilPreviousTwelveMonthSummary.new
+    NilAnalysisSummary.new
   end
 
   def main_language
@@ -17,5 +17,9 @@ class NilAnalysis < NullObject
 
   def name_fact_for(_name_id)
     false
+  end
+
+  def main_language
+    nil
   end
 end

@@ -15,11 +15,11 @@ class Analysis < ActiveRecord::Base
   alias_method :original_previous_twelve_month_summary, :previous_twelve_month_summary
 
   def twelve_month_summary
-    original_twelve_month_summary || NilTwelveMonthSummary.new
+    original_twelve_month_summary || NilAnalysisSummary.new
   end
 
   def previous_twelve_month_summary
-    original_previous_twelve_month_summary || NilPreviousTwelveMonthSummary.new
+    original_previous_twelve_month_summary || NilAnalysisSummary.new
   end
 
   def activity_level

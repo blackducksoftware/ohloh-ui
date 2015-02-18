@@ -35,7 +35,7 @@
 
           %tr
             %td{ rowspan: 3 }
-              - project_icon(project, :small)
+              = project.decorate.icon(:small)
               = link_to truncate(project.name, length: 23), project_path(project), title: project.name
             %td{ rowspan: 3 }
               %div{ style: 'margin-top: -10px' }
@@ -58,7 +58,7 @@
           %tr
             %td.center &nbsp;
             %td.proj_commit_stats
-              Affiliated:&nbsp;
+              #{t('.affiliated')}:&nbsp;
               = render partial: 'project_commit_status', locals: { diff: affiliated_committers_diff,
                 commit_count: twelve_month_summary.affiliated_committers_count,
                 prev_commit_count: previous_twelve_month_summary.affiliated_committers_count }
@@ -69,7 +69,7 @@
           %tr
             %td.center &nbsp;
             %td.proj_committer_stats
-              Outside:&nbsp;&nbsp;&nbsp;
+              #{t('.outside')}:&nbsp;&nbsp;&nbsp;
               = render partial: 'project_commit_status', locals: { diff: outside_committers_diff,
                 commit_count: twelve_month_summary.outside_committers_count,
                 prev_commit_count: previous_twelve_month_summary.outside_committers_count }

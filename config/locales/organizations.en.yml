@@ -10,6 +10,8 @@ en:
       twelve_month_activity: '12-month Activity & Year-on-Year Change'
       contributors: 'Contributors'
       commits: 'Commits'
+      affiliated: 'Affiliated'
+      outside: 'Outside'
     outside_projects:
       outside_projects: "Outside Projects"
       no_outside_projects: "There are no outside projects to display."
