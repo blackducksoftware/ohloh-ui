@@ -29,7 +29,7 @@ class Organization < ActiveRecord::Base
   after_save :check_change_in_delete
 
   def to_param
-    url_name
+    url_name || id.to_s
   end
 
   def active_managers
