@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+source 'http://oh-stage-utility-1.blackducksoftware.com:9292/'
 
 gem 'activeadmin', github: 'activeadmin'
 gem 'aws-sdk'
@@ -9,6 +10,7 @@ gem 'haml-rails'
 gem 'jbuilder'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
+gem 'oh_delegator'
 gem 'paperclip'
 gem 'pg'
 gem 'pg_search'
@@ -23,6 +25,11 @@ gem 'twitter-bootstrap-rails'
 gem 'uglifier'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
+
+group :development do
+  gem 'capistrano-rails'
+  gem 'capistrano-passenger'
+end
 
 group :development, :test, :vagrant do
   gem 'byebug'

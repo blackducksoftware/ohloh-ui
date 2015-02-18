@@ -12,6 +12,9 @@ default: &default
 development:
   <<: *default
 
+staging:
+  <<: *default
+
 vagrant:
   <<: *default
 
