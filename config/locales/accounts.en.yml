@@ -1,5 +1,7 @@
 en:
   accounts:
+    mini_header:
+      title: 'Most experienced in %{nice_name}'
     languages:
       title: Languages
     activate:
