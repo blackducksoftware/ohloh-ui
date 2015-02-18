@@ -3,7 +3,14 @@ en:
     mini_header:
       title: 'Most experienced in %{nice_name}'
     languages:
-      title: Languages
+      title: 'Languages'
+      commits_by_language:
+        title: 'Languages'
+        sort_option:
+          hash: 'All Languages'
+          one: 'Markup Languages'
+          two: 'Build Languages'
+          zero: 'Logical Languages'
     activate:
       notice: 'Account already active'
       success: 'Activation Succeeded!'
@@ -25,9 +32,6 @@ en:
       no_commits: 'No commit data to display'
       in: 'in ...'
       to: 'to ...'
-    languages:
-      commits_by_language:
-        title: 'Languages'
     show:
       total_commits: 'total commits'
       project: 'project'
@@ -75,11 +79,6 @@ en:
         link: 'Commits by Project'
       commits_by_language:
         link: 'Commits by Language'
-        sort_option:
-          hash: 'All Languages'
-          one: 'Markup Languages'
-          two: 'Build Languages'
-          zero: 'Logical Languages'
       baseball_card:
         lang_title: 'Most experienced in'
         duration: '%{date} ago'
