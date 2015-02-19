@@ -19,6 +19,8 @@ en:
       success: "The account %{name} has been marked as spammer."
     delete_feedback:
       success: 'Thank you for the feedback.'
+      expired: 'Sorry, Page expired.'
+      invalid_request: 'Sorry, Invalid request!'
     index:
       page_title: 'Account Holders'
     account:

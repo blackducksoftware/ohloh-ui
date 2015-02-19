@@ -1,8 +1,9 @@
 class AccountsController < ApplicationController
   before_action :account, only: [:show, :commits_by_project_chart, :commits_by_language_chart,
-                                 :make_spammer, :activate, :languages, :bubble]
+                                 :make_spammer, :activate, :languages]
   before_action :redirect_if_disabled, only: [:show, :commits_by_project_chart, :commits_by_language_chart]
   before_action :check_activation, only: [:activate]
+  before_action :deleted_account?, only: :delete_feedback
 
   def index
     @people = Person.find_claimed(page: params[:page])
@@ -33,16 +34,11 @@ class AccountsController < ApplicationController
     @logos_map = @account.best_vita.language_logos.index_by(&:id)
   end
 
-  def bubble
-    @kudo = Kudo.where(sender_id: current_account.id, account_id: @account.id).first if current_account
-    render partial: 'bubble'
-  end
-
   def delete_feedback
-    return unless params[:reasons].present?
-    reasons = params[:reasons].join(',')
-    @deleted_account.update_attributes(reasons: "{#{reasons}}", reason_other: params[:reason_other].strip_tags)
-    redirect_to message_path, success: I18n.t('delete_feedback.success')
+    return unless params[:reasons]
+    attrs = { reasons: "{#{params[:reasons].join(',')}}", reason_other: String.clean_string(params[:reason_other]) }
+    @deleted_account.update_attributes(attrs)
+    redirect_to message_path, success: t('.success')
   end
 
   def make_spammer
@@ -104,6 +100,14 @@ class AccountsController < ApplicationController
 
   def redirect_if_disabled
     redirect_to disabled_account_url(@account) if @account && Account::Access.new(@account).disabled?
+  end
+
+  def deleted_account?
+    @deleted_account = DeletedAccount.find_deleted_account(params[:login])
+    elapsed = @deleted_account.try(:feedback_time_elapsed?)
+    account = Account.find_by_login(params[:login])
+    return if account.nil? || @deleted_account || !elapsed
+    redirect_to message_path, error: elapsed ? t('delete_feedback.expired') : t('delete_feedback.invalid_request')
   end
 
   def check_activation
