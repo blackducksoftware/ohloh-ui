@@ -7,8 +7,8 @@
       - bg_color, text_color = language_color(lang.name), language_text_color(lang.name)
       = link_to '', '#', style: "background-color: ##{bg_color}; color: ##{text_color};",
       title: t('accounts.mini_header.title'), class: "center primary_language_bg"
-  .col-md-11#mini_account_header
-    .pull-left{ style: "width: 40%" }
+  .col-md-12#mini_account_header
+    .info.pull-left{ style: "width: 40%" }
       %h1{ itemprop: 'name' }
         = link_to h(@account.name), account_path(@account)
       .pull-left.clearfix{style: "width: 100%"}
@@ -18,9 +18,9 @@
         - if my_account?(@account)
           = link_to settings_account_path(@account), class: 'link_space' do
             %i.icon-cogs= '&nbsp; Settings'.html_safe
-          = render partial: 'accounts/show/header/kudo_button', locals: {css: 'btn-minier btn-info link_space' }
+          = render partial: 'accounts/show/header/kudo_button', locals: { css: 'btn-minier btn-info link_space' }
       - if @account.url.present?
-        .pull-left.clearfix{:style => "width: 100%"}
+        .pull-left.clearfix{ style: "width: 100%"}
           = link_to @account.url, target: '_blank', title: @account.url, itemprop: 'url', rel: 'nofollow' do
             %i.icon-external-link= "&nbsp; #{truncate(@account.url, length: 60)}".html_safe
       .clearfix

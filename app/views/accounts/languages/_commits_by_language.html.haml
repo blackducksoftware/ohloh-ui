@@ -1,6 +1,6 @@
 - chart_url = commits_by_language_chart_account_url(@account, scope: 'full').to_s
 
-.margin_top_10.margin_left_20
+.margin_top_10
   %h2.nomargin.col-md-2= t('.title')
   .pull-right
     = render partial: 'accounts/show/vita_timestamp', locals: { best_vita: @account.best_vita }

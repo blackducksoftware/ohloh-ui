@@ -20,11 +20,10 @@
       &nbsp;
       = link_to truncate(most_committed_project.name, length: 16), project_path(most_committed_project)
       &nbsp;
-      - decorated_mcp.activity_level_class(:fifteen)
+      = decorated_mcp.activity_level_class(:fifteen)
   %td.center
-    - if most_committed_project
-      - contribution = @contributions[most_committed_project.id].try(:first)
-      = link_to_if contribution, language_fact.total_commits, project_contributor_path(most_committed_project, contribution)
+    - if most_committed_project && contribution = @contributions[most_committed_project.id].try(:first)
+      = link_to language_fact.total_commits, project_contributor_path(most_committed_project, contribution)
   %td
   %td.left
     - if recent_project
@@ -35,6 +34,5 @@
       &nbsp;
       = decorated_recent_project.activity_level_class(:fifteen)
   %td.center
-    - if recent_project
-      - contribution = @contributions[recent_project.id].try(:first)
-      = link_to_if contribution, language_fact.recent_commit_month.to_s(:by), project_contributor_path(recent_project, contribution)
+    - if recent_project && contribution = @contributions[recent_project.id].try(:first)
+      = link_to language_fact.recent_commit_month.to_s(:by), project_contributor_path(recent_project, contribution)
