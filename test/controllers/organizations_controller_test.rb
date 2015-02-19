@@ -22,4 +22,9 @@ class OrganizationsControllerTest < ActionController::TestCase
     get :outside_projects, id: 'I_AM_A_BANANA'
     must_respond_with :not_found
   end
+
+  it 'outside_committers' do
+    get :outside_committers, id: @organization
+    must_respond_with :ok
+  end
 end
