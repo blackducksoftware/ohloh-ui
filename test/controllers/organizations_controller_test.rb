@@ -23,6 +23,13 @@ class OrganizationsControllerTest < ActionController::TestCase
     must_respond_with :not_found
   end
 
+  it 'should return affiliated projects for unlogged users' do
+    login_as nil
+    get :projects, id: @organization
+    must_respond_with :ok
+    assigns(:affiliated_projects).count.must_equal 1
+  end
+
   it 'outside_committers' do
     get :outside_committers, id: @organization
     must_respond_with :ok

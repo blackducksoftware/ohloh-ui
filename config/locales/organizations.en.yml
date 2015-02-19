@@ -1,5 +1,17 @@
 en:
   organizations:
+    projects:
+      page_title: '%{organization_name} : Portfolio Projects'
+      title: 'Portfolio Projects'
+      name: 'Name'
+      primary_language: 'Primary Language'
+      i_use_this: 'I Use This'
+      community_rating: 'Community Rating'
+      twelve_month_activity: '12-month Activity & Year-on-Year Change'
+      contributors: 'Contributors'
+      commits: 'Commits'
+      affiliated: 'Affiliated'
+      outside: 'Outside'
     outside_projects:
       outside_projects: "Outside Projects"
       no_outside_projects: "There are no outside projects to display."
