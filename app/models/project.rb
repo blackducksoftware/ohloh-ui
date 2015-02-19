@@ -52,8 +52,6 @@ class Project < ActiveRecord::Base
   # end
   before_validation :clean_strings_and_urls
 
-  alias_method :original_best_analysis, :best_analysis
-
   def to_param
     url_name || id.to_s
   end
@@ -96,7 +94,7 @@ class Project < ActiveRecord::Base
   end
 
   def best_analysis
-    original_best_analysis || NilAnalysis.new
+    super || NilAnalysis.new
   end
 
   class << self

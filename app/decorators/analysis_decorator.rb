@@ -1,5 +1,5 @@
 class AnalysisDecorator < Cherry::Decorator
-  delegate :twelve_month_summary, :previous_twelve_month_summary, to: :object
+  delegate :twelve_month_summary, :previous_twelve_month_summary, to: :object, allow_nil: true
 
   def commits_difference
     year_ago_summary_difference('commits_count')

@@ -11,15 +11,12 @@ class Analysis < ActiveRecord::Base
   scope :hot, -> { where.not(hotness_score: nil).order(hotness_score: :desc) }
   scope :for_lang, ->(lang_id) { where(main_language_id: lang_id) }
 
-  alias_method :original_twelve_month_summary, :twelve_month_summary
-  alias_method :original_previous_twelve_month_summary, :previous_twelve_month_summary
-
   def twelve_month_summary
-    original_twelve_month_summary || NilAnalysisSummary.new
+    super || NilAnalysisSummary.new
   end
 
   def previous_twelve_month_summary
-    original_previous_twelve_month_summary || NilAnalysisSummary.new
+    super || NilAnalysisSummary.new
   end
 
   def activity_level
