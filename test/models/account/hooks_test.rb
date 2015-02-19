@@ -90,13 +90,10 @@ class Account::HooksTest < ActiveSupport::TestCase
 
   describe 'after_create' do
     it 'must change invitee id and activated date' do
-      account = build(:account)
-      invite = create(:invite)
-      invitee_id = invite.invitee_id
+      account = create(:account, email: 'invitee@gmail.com')
+      invite = create(:invite, contribution: get_contribution, invitee_email: 'invitee@gmail.com')
       account.invite_code = invite.activation_code
       account.save
-
-      invitee_id.wont_equal invite.reload.invitee_id
       account.id.must_equal invite.invitee_id
     end
 

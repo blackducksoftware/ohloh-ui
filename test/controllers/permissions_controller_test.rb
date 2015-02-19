@@ -12,7 +12,7 @@ class PermissionsControllerTest < ActionController::TestCase
     get :show, id: @project
     must_respond_with :ok
     response.body.must_include(I18n.t('permissions.must_log_in'))
-    must_have_tag tag: 'input', attributes: { disabled: 'disabled' }
+    must_select 'input[disabled="disabled"]'
   end
 
   it 'admins should not see permissions alert' do
@@ -20,7 +20,7 @@ class PermissionsControllerTest < ActionController::TestCase
     get :show, id: @project
     must_respond_with :ok
     response.body.wont_include('flash-msg')
-    wont_have_tag tag: 'input', attributes: { disabled: 'disabled' }
+    must_select 'input[disabled="disabled"]', false
   end
 
   it 'non-managers should see permissions alert' do
@@ -28,7 +28,7 @@ class PermissionsControllerTest < ActionController::TestCase
     get :show, id: @project
     must_respond_with :ok
     response.body.must_include(I18n.t('permissions.not_manager'))
-    must_have_tag tag: 'input', attributes: { disabled: 'disabled' }
+    must_select 'input[disabled="disabled"]'
   end
 
   it 'managers pending approval should see permissions alert' do
@@ -38,7 +38,7 @@ class PermissionsControllerTest < ActionController::TestCase
     get :show, id: @project
     must_respond_with :ok
     response.body.must_include(I18n.t('permissions.not_manager'))
-    must_have_tag tag: 'input', attributes: { disabled: 'disabled' }
+    must_select 'input[disabled="disabled"]'
   end
 
   it 'approved managers should not see permissions alert' do
@@ -47,7 +47,7 @@ class PermissionsControllerTest < ActionController::TestCase
     get :show, id: @project
     must_respond_with :ok
     response.body.wont_include('flash-msg')
-    wont_have_tag tag: 'input', attributes: { disabled: 'disabled' }
+    must_select 'input[disabled="disabled"]', false
   end
 
   it 'should gracefully handle non-existent projects' do

@@ -1,10 +1,11 @@
 module ApplicationHelper
+  include EmailObfuscation
   include ChartHelper
   def error_tag(model, attr, opts = {})
     return '' if model.nil?
     err = model.errors[attr]
     return '' if err.blank?
-    haml_tag 'p', [err].flatten.join('<br />'), opts.reverse_merge(class: 'error').merge(rel: attr)
+    haml_tag 'p', [err].flatten.join('<br />').html_safe, opts.reverse_merge(class: 'error').merge(rel: attr)
   end
 
   def project_pages_title(page_name = nil, project_name = nil)

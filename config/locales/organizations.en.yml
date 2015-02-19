@@ -23,3 +23,16 @@ en:
       header_all_time_commits: "All-time Commits"
       header_by_current_affiliates: "(by Current Affiliates)"
       see_all_num_outside_projs: "See All %{num} Outside Projects"
+    outside_committers:
+      title: 'Outside Committers'
+      page_title: '%{organization_name} : %{organization_name}'
+      no_committers: 'There are no outside committers to display.'
+      contributor_name: 'Contributor Name'
+      kudos: 'Kudos'
+      level: 'Level'
+      affiliated_with: 'Affiliated With'
+      contribution_to_portfolio: 'Contributions to Portfolio Projects'
+      projects: 'Projects'
+      twelve_month_commits: '12-mo Commits'
+      unaffiliated: 'Unaffiliated'
+      see_all_outside_committers: 'See All %{count} Outside Committers'

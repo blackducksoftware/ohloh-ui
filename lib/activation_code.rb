@@ -1,0 +1,5 @@
+class ActivationCode
+  def self.generate
+    SecureRandom.hex(20)
+  end
+end

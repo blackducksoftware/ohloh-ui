@@ -29,4 +29,9 @@ class OrganizationsControllerTest < ActionController::TestCase
     must_respond_with :ok
     assigns(:affiliated_projects).count.must_equal 1
   end
+
+  it 'outside_committers' do
+    get :outside_committers, id: @organization
+    must_respond_with :ok
+  end
 end
