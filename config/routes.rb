@@ -59,6 +59,7 @@ Rails.application.routes.draw do
 
   resources :posts, only: :index, as: 'all_posts'
   get 'markdown_syntax', to: 'abouts#markdown_syntax'
+  get 'message', to: 'about#message'
 
   resources :projects, path: :p, only: [:show, :edit] do
     member do

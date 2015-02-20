@@ -121,4 +121,37 @@ describe 'AccountsControllerTest' do
       assigns(:logos_map).must_equal logos_map
     end
   end
+
+  describe 'destroy_feedback' do
+    it 'should not update deleted_account if reason is not given' do
+      deleted_user = create(:deleted_account, login: user.login, email: user.email,
+                                              reasons: nil, reason_other: nil)
+      post :destroy_feedback, login: deleted_user.login
+
+      must_respond_with :ok
+      assigns(:deleted_account).reasons.must_equal nil
+      assigns(:deleted_account).reason_other.must_equal nil
+    end
+
+    it 'should render view if request is a get request' do
+      deleted_user = create(:deleted_account, login: user.login, email: user.email,
+                                              reasons: nil, reason_other: nil)
+      get :destroy_feedback
+
+      must_respond_with :ok
+      assigns(:deleted_account).must_equal nil
+      assigns(:deleted_account).must_equal nil
+    end
+
+    it 'should update deleted_account with the reason given' do
+      deleted_user = create(:deleted_account, login: user.login, email: user.email,
+                                              reasons: nil, reason_other: nil)
+      post :destroy_feedback, login: deleted_user.login, reasons: [1, 2, 3], reason_other: 'reason'
+
+      must_redirect_to message_path
+      assigns(:deleted_account).reasons.must_equal [1, 2, 3]
+      assigns(:deleted_account).reason_other.must_equal 'reason'
+      flash[:success].must_equal I18n.t('accounts.destroy_feedback.success')
+    end
+  end
 end

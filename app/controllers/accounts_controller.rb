@@ -39,7 +39,7 @@ class AccountsController < ApplicationController
     return if request.get? || params[:reasons].blank?
     attrs = { reasons: "{#{params[:reasons].join(',')}}", reason_other: String.clean_string(params[:reason_other]) }
     @deleted_account.update_attributes(attrs)
-    redirect_to message_path, success: t('.success')
+    redirect_to message_path, flash: { success: t('.success') }
   end
 
   def make_spammer
