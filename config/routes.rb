@@ -22,6 +22,8 @@ Rails.application.routes.draw do
   end
   resources :kudos
 
+  resources :people, only: [:index]
+
   resources :accounts do
     resources :api_keys, constraints: { format: :html }, except: :show
     resources :projects, only: [:index]
@@ -46,6 +48,8 @@ Rails.application.routes.draw do
     end
 
     collection do
+      get :search
+      get :autocomplete
       match :destroy_feedback, via: [:get, :post]
     end
   end

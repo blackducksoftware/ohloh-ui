@@ -72,16 +72,6 @@ class AccountsController < ApplicationController
     render json: accounts.map(&:decorate).map(&:autocomplete_result)
   end
 
-  def near
-    accounts =
-    if params[:zoom].to_i > 3
-      Account.near(params[:lat].to_f, params[:lng].to_f)
-    else
-      Account.near_when_zoomed_out
-    end
-    render json: accounts
-  end
-
   def resolve_login
     q = params[:q].to_s
     account = Account.resolve_login(params[:q])
