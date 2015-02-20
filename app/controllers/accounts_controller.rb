@@ -110,7 +110,7 @@ class AccountsController < ApplicationController
     @deleted_account = DeletedAccount.find_deleted_account(params[:login])
     elapsed = @deleted_account.try(:feedback_time_elapsed?)
     account = Account.find_by_login(params[:login])
-    return if account.nil? || @deleted_account || !elapsed
+    return if account.nil? && @deleted_account && !elapsed
     redirect_to message_path, flash: { error: elapsed ? t('.expired') : t('.invalid_request') }
   end
 
