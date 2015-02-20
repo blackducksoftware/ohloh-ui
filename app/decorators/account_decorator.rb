@@ -57,7 +57,7 @@ class AccountDecorator < Cherry::Decorator
       ],
       [
         [:recognition,        I18n.t(:recognition),          nil],
-        [:kudos,              I18n.t(:kudos),                h.account_kudos_path(account)]
+        [:kudos,              I18n.t(:kudos_menu),           h.account_kudos_path(account)]
       ],
       [
         [:usage,              I18n.t(:usage),                nil],
