@@ -72,7 +72,7 @@ class EditTest < ActiveSupport::TestCase
     p.update_attributes(organization_id: org.id)
     edit = PropertyEdit.where(target: p, key: 'organization_id').first
     edit.project_id.must_equal p.id
-    edit.organization_id.must_equal org.id
+    edit.value.must_equal org.id.to_s
   end
 
   it 'test_that_nothing_gets_filled_in_automatically_for_license_edits' do

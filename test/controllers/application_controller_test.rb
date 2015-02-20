@@ -124,4 +124,4 @@ test_routes = proc do
   get 'test/admin_session_required_action' => 'test#admin_session_required_action'
   get 'test/throws_param_record_not_found' => 'test#throws_param_record_not_found'
 end
-Rails.application.routes.eval_block(test_routes)
+Rails.application.routes.send(:eval_block, test_routes)

@@ -4,8 +4,6 @@ class ApplicationController < ActionController::Base
   helper AvatarHelper
   helper ButtonHelper
   helper BlogLinkHelper
-  helper StarHelper
-  helper IconHelper
   helper ColorsHelper
 
   protect_from_forgery with: :exception

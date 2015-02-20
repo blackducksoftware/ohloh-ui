@@ -17,7 +17,7 @@ class ManagersControllerTest < ActionController::TestCase
     login_as accounts(:admin)
     get :index, project_id: @proj.to_param
     must_respond_with :success
-    assert_tag tag: 'a', attributes: { class: 'btn btn-primary' }
+    must_select 'a.btn.btn-primary'
     assert_select '.col-md-4 a.btn.btn-primary', text: 'I manage this project on Open Hub'
   end
 

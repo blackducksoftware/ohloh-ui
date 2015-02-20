@@ -247,7 +247,7 @@ describe 'LinksControllerTest' do
 
     get :new, project_id: project.url_name, category_id: category_id
     assigns(:category_name).must_equal 'Homepage'
-    assigns(:link).title.must_equal :Homepage
+    assigns(:link).title.must_equal 'Homepage'
   end
 
   it 'load_category_and_title_for_new_download_link' do
@@ -255,7 +255,7 @@ describe 'LinksControllerTest' do
 
     get :new, project_id: project.url_name, category_id: Link::CATEGORIES[:Download]
     assigns(:category_name).must_equal 'Download'
-    assigns(:link).title.must_equal :Downloads
+    assigns(:link).title.must_equal 'Downloads'
   end
 
   it 'load_category_and_title_for_new_other_link' do

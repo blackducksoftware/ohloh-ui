@@ -60,7 +60,7 @@ class Account::Hooks
 
     invite.update!(invitee_id: account.id, activated_at: Time.now.utc)
 
-    Account::Access.new(account).activate!(account.invite_code) if invite.invitee_email.eql?(account.email)
+    Account::Access.new(account).activate!(account.activation_code) if invite.invitee_email.eql?(account.email)
   end
 
   def assign_name_to_login(account)

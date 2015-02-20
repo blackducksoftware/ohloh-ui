@@ -1,0 +1,2 @@
+class ThirtyDaySummary < AnalysisSummary
+end

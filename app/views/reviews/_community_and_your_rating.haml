@@ -3,7 +3,7 @@
   %h6.soft= t('.community_rating')
   .nomargin.clearfix
     .col-md-12
-    - stars(project.rating_average)
+    != rating_stars('rating_star', project.rating_average)
   %p.soft.small#average_rating_details_2
     = t('.rating_status', avg_rating: "#{number_with_precision(project.rating_average || 0, precision: 1)}/5.0",
       ratings_count: project.ratings.count, reviews_count: project.reviews.count).html_safe
