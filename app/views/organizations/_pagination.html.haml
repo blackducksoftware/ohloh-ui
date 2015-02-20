@@ -1,0 +1,7 @@
+- if request.xhr? || action_name == 'show'
+  - if count.to_i > 10
+    %a.btn-mini.btn-primary#btn_orgs_see_all_projects{ href: url }= text
+  - else
+    %p &nbsp;
+- else
+  = will_paginate collection

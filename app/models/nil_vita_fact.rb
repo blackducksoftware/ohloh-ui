@@ -1,4 +1,4 @@
-class NilVitaFact
+class NilVitaFact < NullObject
   def first_checkin
     nil
   end
@@ -17,9 +17,5 @@ class NilVitaFact
 
   def commits_by_project
     []
-  end
-
-  def nil?
-    true
   end
 end

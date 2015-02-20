@@ -105,6 +105,8 @@ Rails.application.routes.draw do
     member do
       get :settings
       get :projects
+      get :outside_projects
+      get :outside_committers
     end
     resource :logos, only: [:new, :create, :destroy]
     resources :managers, only: [:index, :new, :create, :edit, :update] do
@@ -134,6 +136,10 @@ Rails.application.routes.draw do
   end
 
   resource :compare_repositories
+
+  resources :contributors, controller: 'contributions' do
+    resources :invites, only: [:new, :create]
+  end
 
   # The priority is based upon order of creation: first created -> highest
   # priority.

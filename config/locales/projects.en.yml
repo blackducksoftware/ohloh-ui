@@ -1,0 +1,11 @@
+en:
+  projects:
+    activity: "Activity"
+    not_available: "Not Available"
+    new_project: "New Project"
+    inactive: "Inactive"
+    very_low: "Very Low"
+    low: "Low"
+    moderate: "Moderate"
+    high: "High"
+    very_high: "Very High"

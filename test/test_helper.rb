@@ -8,6 +8,7 @@ SimpleCov.start 'rails'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'minitest/rails'
+require 'mocha/mini_test'
 require 'dotenv'
 Dotenv.overload '.env.test'
 
@@ -34,6 +35,13 @@ class ActiveSupport::TestCase
     yield if block_given?
   end
   alias_method :edit_as, :as
+
+  def get_contribution
+    create(:name_with_fact)
+    name_fact = NameFact.last
+    Person.rebuild_by_project_id(name_fact.analysis.project_id)
+    Contribution.find_by_name_fact_id(name_fact.id)
+  end
 
   private
 
