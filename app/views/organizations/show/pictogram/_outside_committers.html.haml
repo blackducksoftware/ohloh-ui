@@ -1,0 +1,7 @@
+- if outside_committers_count == 0
+  %span.disabled Outside Committers
+- else
+  %a.select_sub_view.append_history.outside_committers.block_ui{:href => "?view=outside_committers", :url => "?view=outside_committers", :update =>".org-data-table", :current_class => "outside_committers"}
+    Outside Committers
+%i.icon-group.margin_top_20{:class => outside_committers_state}
+

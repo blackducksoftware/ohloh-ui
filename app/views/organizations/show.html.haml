@@ -1,0 +1,24 @@
+- page_context[:select_top_menu_nav] = 'select_organizations'
+
+= render partial: 'organizations/show/header'
+
+.row
+  .col-md-12
+    .mezzo
+      %h2 Organization Summary
+    .col-md-5.pull_left#org_summary
+      - unless @organization.description.blank?
+        = simple_format(h(@organization.description))
+      - else
+        No description has been added for this organization.
+        = link_to "Add description", edit_organization_path(@organization)
+      = render :partial => '/shared/add_this'
+    .col-md-6.col-md-offset-1
+      = render partial: 'organizations/show/quick_reference'
+
+.row
+  .col-md-12
+    .mezzo.padding_one_top
+    = render :partial => '/organizations/show/pictogram'
+%script
+  SVGArrow.generate();

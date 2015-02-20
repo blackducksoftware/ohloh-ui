@@ -1,0 +1,14 @@
+- if outside_committers_commits_count.to_i > 0
+  %span.commits.strong
+    = number_with_delimiter(outside_committers_commits_count)
+    commits
+    by
+  %br
+  %span.projects
+    = out_committers_stats['out_committers']
+    outside people on
+    %br
+    = out_committers_stats['out_projs']
+    of
+    = object.projects_count
+    projects

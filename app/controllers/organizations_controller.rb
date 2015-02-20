@@ -4,6 +4,10 @@ class OrganizationsController < ApplicationController
 
   before_action :find_organization
 
+  def show
+    @graphics = OrgInfoGraphics.new(@organization)
+  end
+
   def outside_projects
     @outside_projects = @organization.outside_projects((params[:page] || 1), 20)
   end

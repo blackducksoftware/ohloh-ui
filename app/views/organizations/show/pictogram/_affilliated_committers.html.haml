@@ -1,0 +1,9 @@
+.count.strong{:class => "#{affilated_committers_state}"}
+  - if @organization.affiliators_count == 0
+    %span.disabled=@organization.affiliators_count
+    .portfolio_label.disabled Affiliated Committers
+  - else
+    %a.select_sub_view.append_history.block_ui.affiliated_committers{:href => "?view=affiliated_committers", :url => "?view=affiliated_committers", :update =>".org-data-table", :current_class => "affiliated_committers"}
+      = @organization.affiliators_count
+      .portfolio_label.strong.affiliated_committers Affiliated Committers
+%i.icon-group.center{:class => "#{affilated_committers_state}"}
