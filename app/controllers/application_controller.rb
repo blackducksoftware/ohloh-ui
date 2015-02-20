@@ -72,7 +72,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_project
 
   def read_only_mode?
-    false
+    defined?(READ_ONLY_MODE) && READ_ONLY_MODE
   end
   helper_method :read_only_mode?
 
@@ -113,6 +113,10 @@ class ApplicationController < ActionController::Base
   def redirect_back(default = root_path)
     redirect_to(session[:return_to] || default)
     session[:return_to] = nil
+  end
+
+  def disabled_during_read_only_mode
+    redirect_to maintenance_path if read_only_mode? && !params[:admin]
   end
 
   private

@@ -4,6 +4,7 @@ class AccountsController < ApplicationController
   before_action :redirect_if_disabled, only: [:show, :commits_by_project_chart, :commits_by_language_chart]
   before_action :check_activation, only: [:activate]
   before_action :deleted_account?, only: :destroy_feedback
+  before_filter :disabled_during_read_only_mode, only: [:activate]
 
   def index
     @people = Person.find_claimed(page: params[:page])
@@ -49,9 +50,11 @@ class AccountsController < ApplicationController
   end
 
   def activate
-    @account.run_actions(Action::Status[:after_activation])
-    session[:account] = @account.id
-    redirect_to account_url(@account), success: I18n.t('activate.success')
+    if Account::Access.new(@account).activate!(params[:code])
+      @account.run_actions(Action::STATUSES[:after_activation])
+      session[:account] = @account.id
+      redirect_to account_path(@account), flash: { success: t('.success') }
+    end
   end
 
   def search
@@ -108,14 +111,10 @@ class AccountsController < ApplicationController
     elapsed = @deleted_account.try(:feedback_time_elapsed?)
     account = Account.find_by_login(params[:login])
     return if account.nil? || @deleted_account || !elapsed
-    redirect_to message_path, error: elapsed ? t('destroy_feedback.expired') : t('destroy_feedback.invalid_request')
+    redirect_to message_path, flash: { error: elapsed ? t('.expired') : t('.invalid_request') }
   end
 
   def check_activation
-    if @account.activated?
-      redirect_to account_path(@account), notice: I18n.t('activate.notice')
-    elsif @account.activate!(params[:code])
-      redirect_to account_path(@account), notice: I18n.t('activate.no_code')
-    end
+    redirect_to account_path(@account), notice: t('.notice') if Account::Access.new(@account).activated?
   end
 end

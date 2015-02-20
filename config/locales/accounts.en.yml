@@ -14,7 +14,6 @@ en:
     activate:
       notice: 'Account already active'
       success: 'Activation Succeeded!'
-      no_code: 'Activation failed!'
     make_spammer:
       success: "The account %{name} has been marked as spammer."
     destroy_feedback:

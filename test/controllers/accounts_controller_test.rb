@@ -165,4 +165,37 @@ describe 'AccountsControllerTest' do
       flash[:success].must_equal I18n.t('accounts.make_spammer.success', name: admin.name)
     end
   end
+
+  describe 'activate' do
+    it 'should successfully activate account' do
+      account = Account.create(login: 'ralph', password: 'abcdef', password_confirmation: 'abcdef',
+                               email: 'ralph@mailinator.com', email_confirmation: 'ralph@mailinator.com')
+
+      get :activate, id: account.to_param, code: account.activation_code
+
+      must_redirect_to account_path(account)
+      flash[:success].must_equal I18n.t('accounts.activate.success')
+      session[:account].must_equal account.id
+    end
+
+    it 'should redirect to maintainance page in diabled mode' do
+      READ_ONLY_MODE = true
+      account = Account.create(login: 'ralph', password: 'abcdef', password_confirmation: 'abcdef',
+                               email: 'ralph@mailinator.com', email_confirmation: 'ralph@mailinator.com')
+      get :activate, id: account.to_param, code: account.activation_code
+
+      must_redirect_to maintenance_path
+    end
+
+    it 'should redirect already activated message' do
+      account = Account.create(login: 'ralph', password: 'abcdef', password_confirmation: 'abcdef',
+                               email: 'ralph@mailinator.com', email_confirmation: 'ralph@mailinator.com')
+      Account::Access.new(account).activate!(account.activation_code)
+
+      get :activate, id: account.to_param, code: account.activation_code
+
+      must_redirect_to account_path(account)
+      flash[:notice].must_equal I18n.t('accounts.activate.notice')
+    end
+  end
 end
