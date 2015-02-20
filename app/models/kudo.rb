@@ -28,13 +28,13 @@ class Kudo < ActiveRecord::Base
         .readonly
     end
 
-    def self.find_by_sender_and_target(sender, target)
+    def find_by_sender_and_target(sender, target)
       case target
       when Account
         Kudo.find_by_sender_id_and_account_id(sender.id, target.id)
       when Contribution, Person
         target = target.account ? target.account : target.contributions.first if target.is_a?(Person)
-        Kudo.find_by_sender_id_and_project_id_and_name_id(sender.id, target.project_id, target.contributor_fact.name_id)
+        Kudo.find_by_sender_id_and_project_id_and_name_id(sender.id, target.project_id, target.name_fact.name_id)
       else
         fail 'Uknown Target Type'
       end
