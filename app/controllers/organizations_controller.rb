@@ -15,6 +15,11 @@ class OrganizationsController < ApplicationController
     @affiliated_projects = @organization.affiliated_projects(params[:page], 20)
   end
 
+  def affiliated_committers
+    @affiliated_committers = @organization.affiliated_committers((params[:page] || 1), 20)
+    @stats_map = Account::CommitCore.new(@affiliated_committers.map(&:id)).most_and_recent_data
+  end
+
   private
 
   def set_outside_committers
