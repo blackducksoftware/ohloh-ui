@@ -12,14 +12,25 @@ class OrganizationsControllerTest < ActionController::TestCase
     create(:position, account: @account, project: @proj3, organization: @proj3.organization)
   end
 
-  it 'allows viewing by unlogged users' do
+  it '#outside_projects allows viewing by unlogged users' do
     login_as nil
     get :outside_projects, id: @organization
     must_respond_with :ok
   end
 
-  it 'gracefully handles non-existant organizations' do
+  it '#outside_projects gracefully handles non-existant organizations' do
     get :outside_projects, id: 'I_AM_A_BANANA'
+    must_respond_with :not_found
+  end
+
+  it '#affiliated_committers allows viewing by unlogged users' do
+    login_as nil
+    get :affiliated_committers, id: @organization
+    must_respond_with :ok
+  end
+
+  it '#affiliated_committers gracefully handles non-existant organizations' do
+    get :affiliated_committers, id: 'I_AM_A_BANANA'
     must_respond_with :not_found
   end
 
