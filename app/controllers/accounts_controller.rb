@@ -3,7 +3,7 @@ class AccountsController < ApplicationController
                                  :make_spammer, :activate, :languages]
   before_action :redirect_if_disabled, only: [:show, :commits_by_project_chart, :commits_by_language_chart]
   before_action :check_activation, only: [:activate]
-  before_action :deleted_account?, only: :delete_feedback
+  before_action :deleted_account?, only: :destroy_feedback
 
   def index
     @people = Person.find_claimed(page: params[:page])
@@ -34,8 +34,9 @@ class AccountsController < ApplicationController
     @logos_map = @account.best_vita.language_logos.index_by(&:id)
   end
 
-  def delete_feedback
-    return unless params[:reasons]
+  #NOTE: Replaces delete_feedback
+  def destroy_feedback
+    return if request.get? || params[:reasons].blank?
     attrs = { reasons: "{#{params[:reasons].join(',')}}", reason_other: String.clean_string(params[:reason_other]) }
     @deleted_account.update_attributes(attrs)
     redirect_to message_path, success: t('.success')
@@ -107,7 +108,7 @@ class AccountsController < ApplicationController
     elapsed = @deleted_account.try(:feedback_time_elapsed?)
     account = Account.find_by_login(params[:login])
     return if account.nil? || @deleted_account || !elapsed
-    redirect_to message_path, error: elapsed ? t('delete_feedback.expired') : t('delete_feedback.invalid_request')
+    redirect_to message_path, error: elapsed ? t('destroy_feedback.expired') : t('destroy_feedback.invalid_request')
   end
 
   def check_activation

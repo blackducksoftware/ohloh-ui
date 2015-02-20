@@ -40,9 +40,12 @@ Rails.application.routes.draw do
       get :commits_by_project_chart
       get :commits_by_language_chart
       post :make_spammer
-      post :delete_feedback
       get 'edit_privacy'   => 'privacy#edit',   as: :edit_account_privacy
       put 'update_privacy' => 'privacy#update', as: :account_privacy
+    end
+
+    collection do
+      match :destroy_feedback, via: [:get, :post]
     end
   end
 
