@@ -43,8 +43,8 @@ class AccountsController < ApplicationController
   end
 
   def make_spammer
-    Account::Access.new(@account).make_spammer!
-    flash[:success] = I18n.t('make_spammer.success', name: CGI.escapeHTML(account.name))
+    Account::Access.new(@account).spam!
+    flash[:success] = t('.success', name: CGI.escapeHTML(@account.name))
     redirect_to account_path(account)
   end
 

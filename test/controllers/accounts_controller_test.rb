@@ -154,4 +154,15 @@ describe 'AccountsControllerTest' do
       flash[:success].must_equal I18n.t('accounts.destroy_feedback.success')
     end
   end
+
+  describe 'make_spammer' do
+    it 'should mark an account as spammer' do
+      admin.level.must_equal Account::Access::ADMIN
+      get :make_spammer, id: admin.id
+
+      must_redirect_to account_path(admin)
+      admin.reload.level.must_equal Account::Access::SPAM
+      flash[:success].must_equal I18n.t('accounts.make_spammer.success', name: admin.name)
+    end
+  end
 end
