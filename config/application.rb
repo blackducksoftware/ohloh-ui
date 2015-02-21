@@ -15,10 +15,6 @@ module OhlohUi
     config.active_record.schema_format = :sql
     config.active_record.raise_in_transactional_callbacks = true
 
-    config.autoload_paths << "#{Rails.root}/app/exceptions"
     config.autoload_paths << "#{Rails.root}/lib"
   end
 end
-
-Dir["#{Rails.root}/app/lib/acts_as_editable/*.rb"].each { |file| require file }
-Dir["#{Rails.root}/app/lib/acts_as_protected/*.rb"].each { |file| require file }
