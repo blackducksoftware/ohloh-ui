@@ -11,7 +11,7 @@
         No description has been added for this organization.
         = link_to 'Add description', edit_organization_path(@organization)
       - else
-        = simple_format(h(@organization.description))
+        = @organization.description
       = render partial: '/shared/add_this', locals: { text: "#{@organization.name} organization" }
     .col-md-6.col-md-offset-1
       = render partial: 'organizations/show/quick_reference'
