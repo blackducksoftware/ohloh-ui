@@ -18,8 +18,4 @@ class NilAnalysis < NullObject
   def name_fact_for(_name_id)
     false
   end
-
-  def main_language
-    nil
-  end
 end
