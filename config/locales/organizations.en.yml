@@ -36,3 +36,19 @@ en:
       twelve_month_commits: '12-mo Commits'
       unaffiliated: 'Unaffiliated'
       see_all_outside_committers: 'See All %{count} Outside Committers'
+    affiliated_committers:
+      page_title: "Affiliated Committers"
+      no_committers: "There are no affiliated committers to display."
+      contrib_name: "Contributor Name"
+      kudos: "Kudos"
+      level: "Level"
+      projects_committed_to: "Projects Committed To"
+      most_commits_to: "Most Commits To..."
+      most_recent_commits_on: "Most Recent Commit On..."
+      portfolio: "Portfolio"
+      other: "Other"
+      project: "Project"
+      num_commits: "#Commits"
+      date: "Date"
+      you: "(You)"
+      see_all: "See All %{num} Affiliated Contributors"
