@@ -1,5 +1,5 @@
 .col-md-1#org_icon
-  = image_tag avatar_img_path(@organization.logo, 64), size: '64x64', itemprop: 'image'
+  = @organization.decorate.icon(:med)
 .col-md-11#project_header
   .pull-left
     %h1= link_to @organization.name, organization_path(@organization)

@@ -41,4 +41,3 @@ Rails.application.configure do
   config.active_support.test_order = :sorted
 end
 URL_HOST = ENV['URL_HOST']
-ANALYTICS_ID = 'TESTING_ID'

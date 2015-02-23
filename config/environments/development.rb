@@ -36,6 +36,18 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # paperclip amazon s3 configurations
+  config.paperclip_defaults = {
+    storage: :s3,
+    s3_credentials: {
+      bucket: ENV['ohloh_s3_bucket_name'],
+      access_key_id: ENV['ohloh_s3_access_key'],
+      secret_access_key: ENV['ohloh_s3_secret_access_key']
+    }
+  }
+  Paperclip::Attachment.default_options[:path] = '/attachments/:id/:basename:style.:extension'
+  Paperclip::Attachment.default_options[:use_timestamp] = false
+
 end
 URL_HOST = ENV['URL_HOST']
-ANALYTICS_ID = 'DEVELOPMENT_ID'
