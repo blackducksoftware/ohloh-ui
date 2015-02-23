@@ -1,4 +1,20 @@
-class NilAnalysis
+class NilAnalysis < NullObject
+  def twelve_month_summary
+    NilAnalysisSummary.new
+  end
+
+  def previous_twelve_month_summary
+    NilAnalysisSummary.new
+  end
+
+  def main_language
+    nil
+  end
+
+  def name_fact_for(_name_id)
+    false
+  end
+
   def project
     nil
   end
@@ -25,9 +41,5 @@ class NilAnalysis
 
   def headcount
     nil
-  end
-
-  def nil?
-    true
   end
 end
