@@ -1,6 +1,5 @@
 class AccountDecorator < Cherry::Decorator
   include ActionView::Helpers::TextHelper
-  include ActionView::Helpers::AssetTagHelper
 
   delegate :best_vita, :positions, :claimed_positions, :projects, to: :account
 
