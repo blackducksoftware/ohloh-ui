@@ -15,24 +15,22 @@
   %td.center= number_with_delimiter(language_fact.total_activity_lines)
   %td.left
     - if most_committed_project
-      - decorated_mcp = most_committed_project.decorate
-      = decorated_mcp.icon(:small, width: 24)
+      = most_committed_project.decorate.icon(:small, width: 24)
       &nbsp;
       = link_to truncate(most_committed_project.name, length: 16), project_path(most_committed_project)
       &nbsp;
-      = decorated_mcp.activity_level_class(:fifteen)
+      - project_activity_level_class(most_committed_project, :fifteen)
   %td.center
     - if most_committed_project && contribution = @contributions[most_committed_project.id].try(:first)
       = link_to language_fact.total_commits, project_contributor_path(most_committed_project, contribution)
   %td
   %td.left
     - if recent_project
-      - decorated_recent_project = recent_project.decorate
-      = decorated_recent_project.icon(:small, width: 24)
+      = recent_project.decorate.icon(:small, width: 24)
       &nbsp;
       = link_to truncate(recent_project.name, length: 16), project_path(recent_project)
       &nbsp;
-      = decorated_recent_project.activity_level_class(:fifteen)
+      - project_activity_level_class(recent_project, :fifteen)
   %td.center
     - if recent_project && contribution = @contributions[recent_project.id].try(:first)
       = link_to language_fact.recent_commit_month.to_s(:by), project_contributor_path(recent_project, contribution)

@@ -1,4 +1,6 @@
 class AccountsController < ApplicationController
+  helper :Projects
+
   before_action :account, only: [:show, :commits_by_project_chart, :commits_by_language_chart,
                                  :make_spammer, :activate, :languages]
   before_action :redirect_if_disabled, only: [:show, :commits_by_project_chart, :commits_by_language_chart]

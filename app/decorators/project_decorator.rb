@@ -12,13 +12,6 @@ class ProjectDecorator < Cherry::Decorator
     icon.image
   end
 
-  def activity_level_class(image_size)
-    activity_score = ProjectActivity.new(best_analysis)
-    link_to '', 'http://blog.openhub.net/about-project-activity-icons/', target: '_blank',
-             class: activity_score.level_css(image_size),
-             title: activity_score.level_text(true)
-  end
-
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def sidebar
     [
