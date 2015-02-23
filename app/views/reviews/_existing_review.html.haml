@@ -12,7 +12,7 @@
       %td{ width: '14%', valign: 'top' }
         %label.control-label= t('reviews.my_rating')
       %td{ width: '21%', valign: 'top' }
-        != rating_stars('rating_star', existing_review.score)
+        != rating_stars('rating_star', existing_review.score.to_f)
     %tr
       %td{ colspan: '3' }
         %p.description.review_content= simple_format(existing_review.comment.fix_encoding_if_invalid!)

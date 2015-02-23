@@ -36,7 +36,7 @@ group :development, :test, :vagrant do
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'flog'
-  gem 'haml-lint'
+  gem 'haml-lint', '~> 0.11'
   gem 'letter_opener'
   gem 'minitest-rails'
   gem 'mocha'
