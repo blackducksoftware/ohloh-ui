@@ -135,8 +135,7 @@ describe 'AccountsControllerTest' do
     end
 
     it 'should render view if request is a get request' do
-      deleted_user = create(:deleted_account, login: user.login, email: user.email,
-                                              reasons: nil, reason_other: nil)
+      create(:deleted_account, login: user.login, email: user.email, reasons: nil, reason_other: nil)
       user.delete
       get :destroy_feedback, login: user.login
 
@@ -166,8 +165,7 @@ describe 'AccountsControllerTest' do
     end
 
     it 'should redirect to message path when feedback time elapsed' do
-      deleted_user = create(:deleted_account, login: user.login, email: user.email,
-                                              reasons: nil, reason_other: nil)
+      create(:deleted_account, login: user.login, email: user.email, reasons: nil, reason_other: nil)
       user.delete
       DeletedAccount.any_instance.stubs(:feedback_time_elapsed?).returns(true)
       post :destroy_feedback, login: user.login, reasons: [1, 2, 3], reason_other: 'reason'
@@ -241,7 +239,7 @@ describe 'AccountsControllerTest' do
 
   describe 'resolve_login' do
     it 'should return account attributes when account is present' do
-      account = create(:account, login: 'robin')
+      create(:account, login: 'robin')
       xhr :get, :resolve_login, q: 'robin'
       result = JSON.parse(response.body)
 

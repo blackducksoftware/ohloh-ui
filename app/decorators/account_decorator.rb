@@ -2,7 +2,7 @@ class AccountDecorator < Cherry::Decorator
   include ActionView::Helpers::TextHelper
   include ActionView::Helpers::AssetTagHelper
 
-  delegate :best_vita, :positions, :claimed_positions, :projects, :login, :name, :to_param, to: :account
+  delegate :best_vita, :positions, :claimed_positions, :projects, to: :account
 
   def symbolized_commits_by_project
     best_vita.vita_fact.commits_by_project.to_a.map(&:symbolize_keys)

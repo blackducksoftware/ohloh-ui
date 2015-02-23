@@ -1,5 +1,7 @@
 - content_for :html_title do
-  = "#{@account.name} : #{@account.name}"
+  = @account.name
+  ' : '
+  = @account.name
 
 = render partial: 'accounts/mini_header'
 

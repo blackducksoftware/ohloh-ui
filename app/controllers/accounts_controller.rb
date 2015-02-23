@@ -6,7 +6,7 @@ class AccountsController < ApplicationController
   before_action :redirect_if_disabled, only: [:show, :commits_by_project_chart, :commits_by_language_chart]
   before_action :check_activation, only: [:activate]
   before_action :deleted_account?, only: :destroy_feedback
-  before_filter :disabled_during_read_only_mode, only: [:activate]
+  before_action :disabled_during_read_only_mode, only: [:activate]
 
   def index
     @people = Person.find_claimed(page: params[:page])
@@ -37,11 +37,11 @@ class AccountsController < ApplicationController
     @logos_map = @account.best_vita.language_logos.index_by(&:id)
   end
 
-  #NOTE: Replaces delete_feedback
+  # NOTE: Replaces delete_feedback
   def destroy_feedback
     return if request.get? || params[:reasons].blank?
-    attrs = { reasons: "{#{params[:reasons].join(',')}}", reason_other: String.clean_string(params[:reason_other]) }
-    @deleted_account.update_attributes(attrs)
+    processed_reasons = process_reason_params(params)
+    @deleted_account.update_attributes(reasons: processed_reasons[:reasons], reason_other: processed_reasons[:other])
     redirect_to message_path, flash: { success: t('.success') }
   end
 
@@ -52,17 +52,16 @@ class AccountsController < ApplicationController
   end
 
   def activate
-    if Account::Access.new(@account).activate!(params[:code])
-      @account.run_actions(Action::STATUSES[:after_activation])
-      session[:account] = @account.id
-      redirect_to account_path(@account), flash: { success: t('.success') }
-    end
+    return unless Account::Access.new(@account).activate!(params[:code])
+    @account.run_actions(Action::STATUSES[:after_activation])
+    session[:account] = @account.id
+    redirect_to account_path(@account), flash: { success: t('.success') }
   end
 
   def search
     if request.xhr?
       accounts = Account.simple_search(params[:term])
-      render json: accounts.map {|a| { id: a.to_param, value: a.login } }
+      render json: accounts.map { |a| { id: a.to_param, value: a.login } }
     else
       redirect_to people_path(q: params[:term])
     end
@@ -89,6 +88,10 @@ class AccountsController < ApplicationController
 
   private
 
+  def disabled_during_read_only_mode
+    redirect_to maintenance_path if read_only_mode? && !params[:admin]
+  end
+
   def account
     accounts = Account.arel_table
     @account = Account.where(accounts[:id].eq(params[:id]).or(accounts[:login].eq(params[:id]))).first
@@ -108,5 +111,9 @@ class AccountsController < ApplicationController
 
   def check_activation
     redirect_to account_path(@account), notice: t('.notice') if Account::Access.new(@account).activated?
+  end
+
+  def process_reason_params(params)
+    { reason: "{#{params[:reasons].join(',')}}", other: String.clean_string(params[:reason_other]) }
   end
 end

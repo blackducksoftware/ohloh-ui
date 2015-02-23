@@ -18,17 +18,17 @@ class VitaTest < ActiveSupport::TestCase
 
   describe 'language_logos' do
     it 'should return logos of projects with recent commit and most commits for lang facts' do
-    lang1 = create(:language, category: 0)
-    lang2 = create(:language, category: 1)
-    fact1 = create(:vita_language_fact, language: lang1, most_commits: 600)
-    fact2 = create(:vita_language_fact, language: lang2, total_activity_lines: 20, most_commits: 100)
+      lang1 = create(:language, category: 0)
+      lang2 = create(:language, category: 1)
+      create(:vita_language_fact, language: lang1, most_commits: 600)
+      create(:vita_language_fact, language: lang2, total_activity_lines: 20, most_commits: 100)
 
-    language_facts = VitaLanguageFact.where.not(id: nil)
-    vita.stubs(:vita_language_facts).returns(language_facts)
-    VitaLanguageFact.any_instance.stubs(:most_commits_project).returns(project)
-    VitaLanguageFact.any_instance.stubs(:recent_commit_project).returns(project)
-    Project.any_instance.stubs(:logo_id).returns(logo.id)
-    vita.language_logos.first.must_equal Logo.where(id: logo.id).first
+      language_facts = VitaLanguageFact.where.not(id: nil)
+      vita.stubs(:vita_language_facts).returns(language_facts)
+      VitaLanguageFact.any_instance.stubs(:most_commits_project).returns(project)
+      VitaLanguageFact.any_instance.stubs(:recent_commit_project).returns(project)
+      Project.any_instance.stubs(:logo_id).returns(logo.id)
+      vita.language_logos.first.must_equal Logo.where(id: logo.id).first
     end
   end
 end

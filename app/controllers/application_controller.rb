@@ -115,10 +115,6 @@ class ApplicationController < ActionController::Base
     session[:return_to] = nil
   end
 
-  def disabled_during_read_only_mode
-    redirect_to maintenance_path if read_only_mode? && !params[:admin]
-  end
-
   private
 
   def find_user_in_session

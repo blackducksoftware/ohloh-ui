@@ -10,15 +10,13 @@ module Ohloh
     end
 
     def self.decrypt(data, key = KEY)
-      begin
-        aes = OpenSSL::Cipher.new('AES-256-CBC')
-        aes.decrypt
-        aes.key = key
-        data = Base64.decode64(CGI.unescape(data))
-        aes.update(data) + aes.final
+      aes = OpenSSL::Cipher.new('AES-256-CBC')
+      aes.decrypt
+      aes.key = key
+      data = Base64.decode64(CGI.unescape(data))
+      aes.update(data) + aes.final
       rescue
         nil
-      end
     end
   end
 end
