@@ -33,42 +33,6 @@ class NilAnalysisTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'project' do
-    it 'should return nil' do
-      nil_analysis.project.must_equal nil
-    end
-  end
-
-  describe 'activity_score' do
-    it 'should return zero' do
-      nil_analysis.activity_score.must_equal 0
-    end
-  end
-
-  describe 'updated_on' do
-    it 'should return nil' do
-      nil_analysis.updated_on.must_equal nil
-    end
-  end
-
-  describe 'headcount' do
-    it 'should return nil' do
-      nil_analysis.headcount.must_equal nil
-    end
-  end
-
-  describe 'first_commit_time' do
-    it 'should return nil' do
-      nil_analysis.first_commit_time.must_equal nil
-    end
-  end
-
-  describe 'last_commit_time' do
-    it 'should return nil' do
-      nil_analysis.last_commit_time.must_equal nil
-    end
-  end
-
   describe 'nil?' do
     it 'should return true' do
       nil_analysis.nil?.must_equal true
