@@ -1,8 +1,7 @@
 class ProjectDecorator < Cherry::Decorator
   include ColorsHelper
-  include ActionView::Helpers::UrlHelper
 
-  delegate :main_language, :best_analysis, to: :project
+  delegate :main_language, to: :project
 
   def icon(size = :small, opts = {})
     opts[:color] = language_text_color(main_language)
