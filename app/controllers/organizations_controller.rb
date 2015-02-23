@@ -19,6 +19,10 @@ class OrganizationsController < ApplicationController
     @affiliated_projects = @organization.affiliated_projects(params[:page], 20)
   end
 
+  def print_infographic
+    render layout: false
+  end
+
   private
 
   def set_outside_committers

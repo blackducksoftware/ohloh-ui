@@ -1,36 +1,39 @@
-#org_infographic
+- partial_dir = 'organizations/show/pictogram'
+- print_path = print_infographic_organization_path(@organization)
+
+.margin_left_15.margin_right_15#org_infographic
   #section1
     .col1.pull-left.strong
-      = render partial: 'organizations/show/pictogram/outside_committers', locals: @graphics.outside_committers
-    .col2.pull-left{ @graphics.other_attributes("out_commits", true) }
-      .svg-arrow.margin_bottom_10{@graphics.arrow_attributes("out_commits", "right")}
-      = render partial: 'organizations/show/pictogram/outside_committers_commits', locals: @graphics.outside_committers
-  #infographic_box{:default_view => @view}
+      = render partial: "#{partial_dir}/outside_committers", locals: @graphics.outside_committers
+    .col2.pull-left{ @graphics.other_attributes('out_commits', true) }
+      .svg-arrow.margin_bottom_10{ @graphics.arrow_attributes('out_commits', 'right') }
+      = render partial: "#{partial_dir}/outside_committers_commits", locals: @graphics.outside_committers
+  #infographic_box{ default_view: @view }
     .header= @organization.name
     .content
       .col1.center.pull-left
-        = render partial: 'organizations/show/pictogram/portfolio_projects', locals: @graphics.portfolio_projects
+        = render partial: "#{partial_dir}/portfolio_projects", locals: @graphics.portfolio_projects
       .col2.center.pull-left
-        .svg-arrow.margin_bottom_10{@graphics.arrow_attributes("affl_commits", "left", 130)}
-          = render partial: 'organizations/show/pictogram/portfolio_commits', locals: @graphics.portfolio_commits
+        .svg-arrow.margin_bottom_10{ @graphics.arrow_attributes('affl_commits', 'left', 130) }
+        = render partial: "#{partial_dir}/portfolio_commits", locals: @graphics.portfolio_commits
       .col3.pull-left
-        = render partial: 'organizations/show/pictogram/affilliated_committers', locals: @graphics.portfolio_commits
+        = render partial: "#{partial_dir}/affilliated_committers", locals: @graphics.portfolio_commits
     .footer_line &nbsp;
     .bottom_links
       .pull-left.margin_top_5.col1
         = render 'shared/creativecommons_license'
       .pull-left.center.col2
-        %a{:href => "http://blog.openhub.net/2014/08/unveiling-the-retooled-organization", :target => "_blank"}
+        %a{ href: 'http://blog.openhub.net/2014/08/unveiling-the-retooled-organization', target: '_blank' }
           (about this graphic)
       .pull-right.col3
-        = image_tag("logo/BD_open_hub_logo160x15.png")
+        = image_tag('logo/BD_open_hub_logo160x15.png')
         %br
-        %a.pull-right.small.margin_top_5.print_infographic{:href => "#", :url => "#"}
+        %a.pull-right.small.margin_top_5.print_infographic{ href: '#', url: "#{print_path}" }
           %i.icon-print
           print graphic
   #section2
-    .col1.pull-left{ @graphics.other_attributes("affl_commits_out", true) }
-      .svg-arrow.margin_bottom_10{ @graphics.arrow_attributes("affl_commits_out", "right", 140) }
-      = render partial: 'organizations/show/pictogram/outside_project_commits', locals: @graphics.outside_project_commits
+    .col1.pull-left{ @graphics.other_attributes('affl_commits_out', true) }
+      .svg-arrow.margin_bottom_10{ @graphics.arrow_attributes('affl_commits_out', 'right', 140) }
+      = render partial: "#{partial_dir}/outside_project_commits", locals: @graphics.outside_project_commits
     .col2.pull-left.strong
-      = render partial: 'organizations/show/pictogram/outside_projects', locals: @graphics.outside_project_commits
+      = render partial: "#{partial_dir}/outside_projects", locals: @graphics.outside_project_commits

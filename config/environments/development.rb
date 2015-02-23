@@ -38,3 +38,4 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 end
 URL_HOST = ENV['URL_HOST']
+ANALYTICS_ID = 'DEVELOPMENT_ID'

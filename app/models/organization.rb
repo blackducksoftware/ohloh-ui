@@ -41,7 +41,7 @@ class Organization < ActiveRecord::Base
   end
 
   def org_type_label
-    ORG_TYPES.invert[self.org_type] || ''
+    ORG_TYPES.invert[org_type] || ''
   end
 
   def affiliated_committers_stats
@@ -69,9 +69,8 @@ class Organization < ActiveRecord::Base
   end
 
   def affiliators_count
-    @affiliators_count ||= self.accounts.count(:joins => [:person, :active_positions], :select => 'DISTINCT(accounts.id)')
+    @affiliators_count ||= accounts.count(joins: [:person, :active_positions], select: 'DISTINCT(accounts.id)')
   end
-
 
   private
 

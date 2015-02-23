@@ -1,3 +1,9 @@
-#addthis_sharing
+#addthis_sharing{ 'data-analytics-id' => "#{ANALYTICS_ID}" }
   %h4.no_margin_top.no_margin_bottom Share
-  %strong Yet to work on this
+  %p{ style: 'padding-left: 11px' }
+    .addthis_toolbox.addthis_default_style
+      %a.addthis_button_facebook_like{ 'fb:like:layout' => 'button_count' }
+      - message = local_assigns[:full_text].nil? ? "Check out the #{h text} on #Open Hub!" : local_assigns[:full_text]
+      %a.addthis_button_tweet{ 'tw:text' => "#{message}" }
+      %a.addthis_button_google_plusone{ 'g:plusone:size' => 'medium' }
+      %a.addthis_counter.addthis_pill_style

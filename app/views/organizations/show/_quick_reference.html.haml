@@ -5,11 +5,11 @@
     %dd= @organization.org_type_label
     %dt.margin_bottom_10 Links:
     %dd
-      = link_to bootstrap_icon("icon-external-link", 'Homepage'), @organization.homepage_url, target: '_blank'
-    %dt= link_to "Managers:", organization_managers_path(@organization)
+      = link_to bootstrap_icon('icon-external-link', 'Homepage'), @organization.homepage_url, target: '_blank'
+    %dt= link_to 'Managers:', organization_managers_path(@organization)
     %dd
       - if @organization.managers.any?
-        == #{@organization.managers.map {|m| link_to h(m.name), account_path(m)}.to_sentence }
+        = @organization.managers.map { |m| link_to h(m.name), account_path(m) }.to_sentence
       - elsif current_user_is_admin?
         = link_to "Add a new manager for #{@organization.name}", new_manager_organization_path(@organization)
       - else
