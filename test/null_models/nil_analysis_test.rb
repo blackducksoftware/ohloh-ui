@@ -22,8 +22,8 @@ class NilAnalysisTest < ActiveSupport::TestCase
   end
 
   describe 'activity_level' do
-    it 'should return nil' do
-      nil_analysis.activity_level.must_equal nil
+    it 'should return :na' do
+      nil_analysis.activity_level.must_equal :na
     end
   end
 
