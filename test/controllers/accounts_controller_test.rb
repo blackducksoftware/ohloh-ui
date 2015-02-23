@@ -238,4 +238,43 @@ describe 'AccountsControllerTest' do
       must_redirect_to people_path(q: 'luck')
     end
   end
+
+  describe 'resolve_login' do
+    it 'should return account attributes when account is present' do
+      account = create(:account, login: 'robin')
+      xhr :get, :resolve_login, q: 'robin'
+      result = JSON.parse(response.body)
+
+      result['login'].must_equal 'robin'
+      result['q'].must_equal 'robin'
+    end
+
+    it 'should return id as nil when account is not present' do
+      xhr :get, :resolve_login, q: 'test'
+      result = JSON.parse(response.body)
+
+      result['id'].must_equal nil
+      result['q'].must_equal 'test'
+    end
+  end
+
+  describe 'unsubscribe_emails' do
+    it 'a valid key for a account should unsubscribe the user' do
+      key = Ohloh::Cipher.encrypt(create(:account).id.to_s)
+      get :unsubscribe_emails, key: CGI.unescape(key)
+      must_respond_with :ok
+      assigns(:account).email_master.must_equal false
+    end
+  end
+
+  describe 'autocomplete' do
+    it 'should return account hash' do
+      xhr :get, :autocomplete, term: 'luck'
+
+      result = JSON.parse(response.body)
+      result.first['login'].must_equal 'user'
+      result.first['value'].must_equal 'user'
+      result.first['name'].must_equal 'user Luckey'
+    end
+  end
 end

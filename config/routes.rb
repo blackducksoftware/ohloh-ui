@@ -50,6 +50,8 @@ Rails.application.routes.draw do
     collection do
       get :search
       get :autocomplete
+      get :resolve_login
+      get :unsubscribe_emails
       match :destroy_feedback, via: [:get, :post]
     end
   end

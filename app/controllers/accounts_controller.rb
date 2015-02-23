@@ -62,7 +62,7 @@ class AccountsController < ApplicationController
   def search
     if request.xhr?
       accounts = Account.simple_search(params[:term])
-      render json: accounts.map(&:decorate).map(&:search_result)
+      render json: accounts.map {|a| { id: a.to_param, value: a.login } }
     else
       redirect_to people_path(q: params[:term])
     end
@@ -71,7 +71,7 @@ class AccountsController < ApplicationController
   # specific for autocomplete helper
   def autocomplete
     accounts = Account.simple_search(params[:term])
-    render json: accounts.map(&:decorate).map(&:autocomplete_result)
+    render json: accounts.map { |a| { login: a.login, name: a.name, value: a.login } }
   end
 
   def resolve_login

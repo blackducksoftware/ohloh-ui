@@ -1,5 +1,18 @@
 en:
   accounts:
+    unsubscribe_emails:
+      title: 'You Have Been Unsubscribed'
+      sad: 'We are sorry that emails from Open Hub were not helpful to you. You have been unsubscribed from all emails from Open Hub'
+      except: 'except'
+      admin_emails: 'administrative emails, from which one cannot be unsubscribed. Please visit your'
+      settings: 'Privacy Settings'
+      privacy: 'to review and modify your email preferences.'
+      already: 'Already Unsubscribed'
+      not_again: 'You have already unsubscribed from Open Hub emails. Please visit your'
+      unable: 'Unable to Unsubscribe'
+      cannot: 'We were not able to recognize this URL to unsubscribe you. Please visit your'
+      respect: 'Open Hub respects your privacy. For more information, please refer to our'
+      policy: 'privacy policy.'
     mini_header:
       title: 'Most experienced in %{nice_name}'
     languages:
