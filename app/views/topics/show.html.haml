@@ -18,7 +18,7 @@
     / TODO: Determine how to make this javascript work for page rendering.
     / = javascript_tag 'MoveTopic.init()'
   - if current_user_is_admin?
-    = button_to t('.spam'), label_as_spammer_account_path(@topic.account), method: :post,
+    = button_to t('.spam'), make_spammer_account_path(@topic.account), method: :post,
       data: { confirm: t('.spam_confirmation', user: @topic.posts.first.account.name) },
       class: 'btn btn-mini btn-warning'
   - if current_user_is_admin? || (@topic.posts.count == 1 && @topic.account == current_user)

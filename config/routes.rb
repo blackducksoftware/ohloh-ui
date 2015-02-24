@@ -39,7 +39,7 @@ Rails.application.routes.draw do
       get :languages
       get :commits_by_project_chart
       get :commits_by_language_chart
-      post :label_as_spammer
+      post :make_spammer
       get 'edit_privacy'   => 'privacy#edit',   as: :edit_account_privacy
       put 'update_privacy' => 'privacy#update', as: :account_privacy
     end
