@@ -22,10 +22,10 @@ class VitaLanguageFactTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'with_languages_and_commits' do
+  describe 'with_language_and_projects' do
     it 'should return ordered by most commits' do
       result = [fact1.id, fact6.id, fact5.id, fact4.id, fact3.id, fact2.id]
-      ordered_facts = VitaLanguageFact.where.not(language_id: nil).with_languages_and_commits
+      ordered_facts = VitaLanguageFact.where.not(language_id: nil).with_language_and_projects
       ordered_facts.map(&:id).must_equal result
     end
   end
