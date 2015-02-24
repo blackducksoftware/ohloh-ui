@@ -5,7 +5,7 @@
   .pull-right
     = render partial: 'accounts/show/vita_timestamp', locals: { best_vita: @account.best_vita }
   .clearfix
-  .pull-right#sort_by
+  .pull-right#sort_by.chosen
     %select.chzn-select.language_category#streamgraph_category
       %option{ value: '#' }= t('.sort_option.hash')
       %option{ value: '2' }= t('.sort_option.two')
