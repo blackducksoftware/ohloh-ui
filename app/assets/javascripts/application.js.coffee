@@ -22,14 +22,6 @@
 #= require highcharts/solid-guage.min
 #= require d3.min
 
-chosenSelect=
-  init: () ->
-    $(".chzn-select").attr("data-placeholder", "Please select an option").chosen();
-    $('#sort_by .chzn-search').hide()
-    $('.nav-select-container .chzn-search').show()
-    $(".value-select").attr("data-placeholder", "Please select an option").chosen()
-
 $(document).on 'page:change', ->
   StackVerb.init()
   StackShow.init()
-  chosenSelect.init()
