@@ -291,8 +291,4 @@ en:
       unordered_list_html: '&hybull; unordered list 1'
       ordered_list_html: '1. ordered list 2'
     captcha:
-<<<<<<< HEAD
       captcha_label: 'Captcha'
-=======
-      captcha_label: 'Captcha (required)'
->>>>>>> master
