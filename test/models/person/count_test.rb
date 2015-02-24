@@ -36,7 +36,7 @@ class Person::CountTest < ActiveSupport::TestCase
       Person.first.update!(name: name, name_fact: NameFact.find_by(name: name),
                            project: proj, account_id: nil)
 
-      Person::Count.claimed.must_equal 8
+      Person::Count.claimed.must_equal 10
     end
   end
 

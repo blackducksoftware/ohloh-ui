@@ -1,0 +1,20 @@
+en:
+  invites:
+    thank_you_message: 'Thank you for inviting %{name} to join Open Hub. An email has been sent to %{email}.'
+    invited_to_claim: 'This person has already been invited to claim this contribution.'
+    invited_to_join: 'This person has already been invited to join the Black Duck Open Hub.'
+    email_sent_exceeded: 'Open Hub has already sent the maximum number of %{name} (%{count}) to this user.'
+    account_sent_exceeded: "You've already sent the maximum number of %{name} (%{count}) you're allowed."
+    invitee_email_blank: "must contain an @ character and a domain, e.g. foo@bar.com"
+    new:
+      invite_to_join: 'Invite %{email} to join Open Hub'
+    fields:
+      email_subject: '%{name} invites you to claim your contribution on the Black Duck Open Hub'
+      email_body_html: |
+        <p>Greetings %{invitee_name},</p>
+        <p>%{invitor_name} invites you to join Open Hub and claim your
+        <a href='%{url}'>contribution</a> to %{project}.</p>
+        <p><a href='%{url}'>Click here to claim this contribution.</a></p>
+        <p>-- The Open Hub Team</p>
+
+
