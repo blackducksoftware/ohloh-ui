@@ -22,7 +22,8 @@
       - if @account.url.present?
         .pull-left.col-md-12.clearfix
           = link_to @account.url, target: '_blank', title: @account.url, itemprop: 'url', rel: 'nofollow' do
-            %i.icon-external-link!= "&nbsp; #{truncate(@account.url, length: 60)}"
+            %i.icon-external-link
+              = truncate(@account.url, length: 60)
       .clearfix
       %meta{ itemprop: 'interactionCount', content: @account.kudo_rank }
     .mini-badges-section.pull-right
