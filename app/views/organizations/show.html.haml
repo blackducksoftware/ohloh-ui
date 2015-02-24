@@ -5,16 +5,17 @@
 .row
   .col-md-12
     .mezzo
-      %h2= t('.title')
-    .col-md-5.pull_left#org_summary
-      - if @organization.description.blank?
-        = t('.no_desc')
-        = link_to t('.add_desc'), edit_organization_path(@organization)
-      - else
-        = @organization.description
-      = render partial: '/shared/add_this', locals: { text: "#{@organization.name} organization" }
-    .col-md-6.col-md-offset-1
-      = render partial: 'organizations/show/quick_reference'
+      .padding_left_20
+        %h2= t('.title')
+        .col-md-5.pull_left#org_summary
+          - if @organization.description.blank?
+            = t('.no_desc')
+            = link_to t('.add_desc'), edit_organization_path(@organization)
+          - else
+            = @organization.description
+          = render partial: '/shared/add_this', locals: { text: "#{@organization.name} organization" }
+        .col-md-6.col-md-offset-1
+          = render partial: 'organizations/show/quick_reference'
 
 .row
   .col-md-12
