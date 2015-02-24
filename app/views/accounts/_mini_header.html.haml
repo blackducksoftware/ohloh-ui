@@ -11,16 +11,16 @@
     .info.pull-left{ style: 'width: 40%' }
       %h1{ itemprop: 'name' }
         = link_to h(@account.name), account_path(@account)
-      .pull-left.clearfix{ style: 'width: 100%' }
+      .col-md-12.pull-left.clearfix
         - if @account.location.present?
           = @account.location
           %meta{ itemprop: 'homeLocation', content: @account.location }
         - if my_account?(@account)
           = link_to settings_account_path(@account), class: 'link_space' do
-            %i.icon-cogs= '&nbsp; Settings'.html_safe
+            %i.icon-cogs!= t '.settings'
           = render partial: 'accounts/show/header/kudo_button', locals: { css: 'btn-minier btn-info link_space' }
       - if @account.url.present?
-        .pull-left.clearfix{ style: 'width: 100%' }
+        .pull-left.col-md-12.clearfix
           = link_to @account.url, target: '_blank', title: @account.url, itemprop: 'url', rel: 'nofollow' do
             %i.icon-external-link= "&nbsp; #{truncate(@account.url, length: 60)}".html_safe
       .clearfix

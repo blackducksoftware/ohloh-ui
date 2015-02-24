@@ -11,6 +11,6 @@ class VitaLanguageFact < NameLanguageFact
 
   scope :with_languages_and_commits, lambda {
     includes([:language, :most_commits_project, :recent_commit_project])
-      .order('most_commits DESC').references(:all)
+      .order('most_commits DESC')
   }
 end

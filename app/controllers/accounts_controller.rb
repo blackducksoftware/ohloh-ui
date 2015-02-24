@@ -31,7 +31,7 @@ class AccountsController < ApplicationController
   end
 
   def languages
-    @contributions = @account.positions.map(&:contribution).group_by(&:project_id)
+    @contributions = @account.positions.includes(:contribution).map(&:contribution).group_by(&:project_id)
     return if @account.best_vita.nil?
     @vlfs = @account.best_vita.vita_language_facts.with_languages_and_commits
     @logos_map = @account.best_vita.language_logos.index_by(&:id)

@@ -10,8 +10,8 @@ class Vita < ActiveRecord::Base
 
   def language_logos
     facts = vita_language_facts.with_languages_and_commits
-    projects = facts.map(&:most_commits_project) + facts.map(&:recent_commit_project)
-    logo_ids = projects.compact.map(&:logo_id).compact
-    Logo.where(id: logo_ids)
+    logo_ids = facts.joins(:most_commits_project).pluck(:logo_id) +
+               facts.joins(:recent_commit_project).pluck(:logo_id)
+    Logo.where(id: logo_ids.compact)
   end
 end

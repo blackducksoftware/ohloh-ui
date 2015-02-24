@@ -2,9 +2,9 @@
   %td{ colspan: '11', style: 'height: 11px' }
 %tr
   %th{ rowspan: '2', scope: 'col', width: '120' }= t('.language')
-  %th.center{ rowspan: '2', scope: 'col' }= t('.aggregate').html_safe
-  %th.center{ rowspan: '2', scope: 'col' }= t('.total_commits').html_safe
-  %th.center{ rowspan: '2', scope: 'col' }= t('.total_lines').html_safe
+  %th.center{ rowspan: '2', scope: 'col' }!= t('.aggregate')
+  %th.center{ rowspan: '2', scope: 'col' }!= t('.total_commits')
+  %th.center{ rowspan: '2', scope: 'col' }!= t('.total_lines')
   %th.center{ colspan: '2', scope: 'col' }= t('.most_commits')
   %th{ rowspan: '2', scope: 'col' }  
   %th.center{ colspan: '2', scope: 'col' }= t('.recent_commit')

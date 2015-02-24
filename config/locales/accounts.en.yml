@@ -15,6 +15,7 @@ en:
       policy: 'privacy policy.'
     mini_header:
       title: 'Most experienced in %{nice_name}'
+      settings: '&nbsp; Settings'
     languages:
       title: 'Languages'
       commits_by_language:
