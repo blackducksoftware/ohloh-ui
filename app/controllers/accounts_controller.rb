@@ -114,6 +114,6 @@ class AccountsController < ApplicationController
   end
 
   def process_reason_params(params)
-    { reason: "{#{params[:reasons].join(',')}}", other: String.clean_string(params[:reason_other]) }
+    { reasons: "{#{params[:reasons].join(',')}}", other: String.clean_string(params[:reason_other]) }
   end
 end
