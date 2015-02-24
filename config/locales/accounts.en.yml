@@ -24,16 +24,6 @@ en:
           one: 'Markup Languages'
           two: 'Build Languages'
           zero: 'Logical Languages'
-      language_header:
-        language: 'Language'
-        aggregate: 'Aggregate<br/>Coding Time'
-        total_commits: 'Total<br/>Commits'
-        total_lines: 'Total Lines<br/>Changed'
-        most_commits: 'Most Commits:'
-        recent_commit: 'Most Recent Commit:'
-        project: 'Project'
-        commits: 'Commits'
-        commit_month: 'Commit Month'
     activate:
       notice: 'Account already active'
       success: 'Activation Succeeded!'

@@ -5,11 +5,11 @@
   language_color = "background-color: ##{language_color(language.name)};"
   language_text_color = "color: ##{language_text_color(language.name)}"
 
-%tr{ class: cycle('even', 'odd') }
+%tr.language_row{ class: cycle('even', 'odd') }
   %td
     .lang_bg{ itemscope: '', itemtype: 'http://schema.org/Language',  style: language_color }
       %span{ itemprop: 'name' }
-        = link_to language.nice_name, language_path(language), class: 'language_name', style: language_text_color
+        = link_to language.nice_name.titleize, language_path(language), class: 'language_name', style: language_text_color
   %td.center= distance_of_time_in_words_to_now(language_fact.total_months.to_i.months.ago)
   %td.center= number_with_delimiter(language_fact.total_commits)
   %td.center= number_with_delimiter(language_fact.total_activity_lines)
