@@ -1,11 +1,11 @@
 .center.count.strong
   - if projects_count == 0
     %span.disabled= projects_count
-    .portfolio_label.disabled Portfolio Projects
+    .portfolio_label.disabled= t('organizations.projects.portfolio_projects')
   - else
     %a.select_sub_view.append_history.block_ui.portfolio_projects{ href: '?view=portfolio_projects',
         url: '?view=portfolio_projects', update: '.org-data-table', current_class: 'portfolio_projects' }
       = projects_count
       .portfolio_label.strong.portfolio_projects
-        Portfolio Projects
+        = t('organizations.projects.portfolio_projects')
 = image_tag("org_infographics/#{portfolio_projects_image}", class: 'center margin_top_10', width: '75px')

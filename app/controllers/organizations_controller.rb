@@ -4,7 +4,7 @@ class OrganizationsController < ApplicationController
   helper OrganizationsHelper
 
   before_action :find_organization
-  before_action :organization_context, only: [:outside_projects, :projects, :outside_committers]
+  before_action :organization_context, except: [:print_infographic]
   before_action :set_outside_committers, only: :outside_committers
 
   def show

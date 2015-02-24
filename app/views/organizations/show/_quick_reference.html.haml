@@ -1,16 +1,16 @@
 .well.org-summary-quick-ref
-  %h4 Quick Reference
+  %h4= t('.quick_ref')
   %dl.dl-horizontal
-    %dt.margin_bottom_10 Organization Type:
+    %dt.margin_bottom_10= t('.org_type')
     %dd= @organization.org_type_label
-    %dt.margin_bottom_10 Links:
+    %dt.margin_bottom_10= t('.links')
     %dd
-      = link_to bootstrap_icon('icon-external-link', 'Homepage'), @organization.homepage_url, target: '_blank'
-    %dt= link_to 'Managers:', organization_managers_path(@organization)
+      = link_to bootstrap_icon('icon-external-link', t('.homepage')), @organization.homepage_url, target: '_blank'
+    %dt= link_to t('.managers'), organization_managers_path(@organization)
     %dd
       - if @organization.managers.any?
         != @organization.managers.map { |m| link_to h(m.name), account_path(m) }.to_sentence
       - elsif current_user_is_admin?
-        = link_to "Add a new manager for #{@organization.name}", new_manager_organization_path(@organization)
+        = link_to t('.add_new', name: @organization.name), new_manager_organization_path(@organization)
       - else
         &nbsp;
