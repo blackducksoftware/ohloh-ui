@@ -4,8 +4,12 @@ class OrganizationsController < ApplicationController
   helper OrganizationsHelper
 
   before_action :find_organization
-  before_action :organization_context, only: [:outside_projects, :projects, :outside_committers]
+  before_action :organization_context, except: [:print_infographic]
   before_action :set_outside_committers, only: :outside_committers
+
+  def show
+    @graphics = OrgInfoGraphics.new(@organization)
+  end
 
   def outside_projects
     @outside_projects = @organization.outside_projects(params[:page], 20)
@@ -13,6 +17,10 @@ class OrganizationsController < ApplicationController
 
   def projects
     @affiliated_projects = @organization.affiliated_projects(params[:page], 20)
+  end
+
+  def print_infographic
+    render layout: false
   end
 
   def affiliated_committers

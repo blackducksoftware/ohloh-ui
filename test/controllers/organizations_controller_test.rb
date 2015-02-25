@@ -45,4 +45,22 @@ class OrganizationsControllerTest < ActionController::TestCase
     get :outside_committers, id: @organization
     must_respond_with :ok
   end
+
+  it 'should get show page for a valid organization' do
+    get :show, id: @organization
+    must_respond_with :ok
+    assert_select 'div#org_summary'
+    assert_select 'div#addthis_sharing'
+    assert_select 'div#org_infographic'
+  end
+
+  it 'should get show page for a invalid organization' do
+    get :show, id: 'some_invalid_id'
+    must_respond_with :not_found
+  end
+
+  it 'should get infographic print view' do
+    get :print_infographic, id: @organization
+    must_respond_with :ok
+  end
 end

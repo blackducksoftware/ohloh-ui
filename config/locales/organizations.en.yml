@@ -1,5 +1,19 @@
 en:
   organizations:
+    show:
+      page_title: '%{organization_name} : Organization Summary'
+      title: 'Organization Summary'
+      no_desc: 'No description has been added for this organization.'
+      add_desc: 'Add description'
+      quick_ref: 'Quick Reference'
+      org_type: 'Organization Type:'
+      links: 'Links:'
+      homepage: 'Homepage'
+      managers: 'Managers:'
+      add_new: 'Add a new manager for %{name}'
+      about_graphic: '(about this graphic)'
+      print_graphic: 'print graphic'
+      portfolio_projects: 'Portfolio Projects'
     projects:
       page_title: '%{organization_name} : Portfolio Projects'
       title: 'Portfolio Projects'
@@ -13,7 +27,7 @@ en:
       affiliated: 'Affiliated'
       outside: 'Outside'
     outside_projects:
-      outside_projects: "Outside Projects"
+      no_outside_projects: "Outside Projects"
       no_outside_projects: "There are no outside projects to display."
       header_name: "Name"
       header_claimed_by: "Claimed By"
