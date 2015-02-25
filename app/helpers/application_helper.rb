@@ -1,6 +1,8 @@
 module ApplicationHelper
   include EmailObfuscation
   include ChartHelper
+  include TwitterBootstrap::IconHelper
+
   def error_tag(model, attr, opts = {})
     return '' if model.nil?
     err = model.errors[attr]
@@ -86,9 +88,9 @@ module ApplicationHelper
     EXPANDER
   end
 
-  def opts_with_lang_colors(project, opts)
-    return opts unless project.best_analysis && project.best_analysis.main_language
+  def opts_with_lang_colors(project, options)
+    return options if project.best_analysis.main_language.nil?
     lang_name = project.best_analysis.main_language
-    opts.merge(color: language_text_color(lang_name), bg: language_color(lang_name))
+    options.merge(color: language_text_color(lang_name), bg: language_color(lang_name))
   end
 end

@@ -85,9 +85,9 @@ class Account < ActiveRecord::Base
   end
 
   def most_experienced_language
-    language_facts = best_vita.vita_language_facts
+    language_facts = best_vita.vita_language_facts.ordered
     return if language_facts.empty?
-    language_facts.ordered.first.language
+    language_facts.first.language
   end
 
   def resend_activation!

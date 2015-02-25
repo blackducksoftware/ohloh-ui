@@ -14,6 +14,7 @@
 #= require jquery_ujs
 #= require jquery-ui
 #= require turbolinks
+#= require chosen.min
 #= require_tree .
 #= require twitter/bootstrap
 #= require highcharts/highstock
@@ -24,3 +25,4 @@
 $(document).on 'page:change', ->
   StackVerb.init()
   StackShow.init()
+  OrganizationPictogram.init();

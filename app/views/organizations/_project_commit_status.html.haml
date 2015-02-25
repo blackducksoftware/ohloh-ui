@@ -1,0 +1,3 @@
+%span= org_pretty_display(commit_count)
+- unless diff.zero?
+  - org_ticker_markup diff, prev_commit_count, 'small'

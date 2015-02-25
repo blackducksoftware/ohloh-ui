@@ -28,6 +28,6 @@ module BlogLinkHelper
 
   def blog_url_for(article_name)
     path = BLOG_LINKS[article_name] || article_name.to_s
-    "http//blog.openhub.net/#{path}"
+    "http://blog.openhub.net/#{path}"
   end
 end

@@ -1,6 +1,7 @@
 class Kudo < ActiveRecord::Base
   belongs_to :sender, foreign_key: :sender_id, class_name: :Account
   belongs_to :account
+  has_one :name_fact, foreign_key: :name_id, primary_key: :name_id
 
   # TODO: Replace recent_kudos.
   scope :recent, -> limit = 3 { limit(limit) }

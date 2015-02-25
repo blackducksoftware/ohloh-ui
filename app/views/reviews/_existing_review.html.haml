@@ -12,10 +12,10 @@
       %td{ width: '14%', valign: 'top' }
         %label.control-label= t('reviews.my_rating')
       %td{ width: '21%', valign: 'top' }
-        - stars(existing_review.score)
+        != rating_stars('rating_star', existing_review.score.to_f)
     %tr
       %td{ colspan: '3' }
-        %p.description.review_content= simple_format(existing_review.comment)
+        %p.description.review_content= simple_format(existing_review.comment.fix_encoding_if_invalid!)
     %tr
       %td
         = icon_button(edit_project_review_path(existing_review.project, existing_review), icon: 'pencil',

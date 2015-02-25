@@ -4,8 +4,6 @@ class ApplicationController < ActionController::Base
   helper AvatarHelper
   helper ButtonHelper
   helper BlogLinkHelper
-  helper StarHelper
-  helper IconHelper
   helper ColorsHelper
 
   protect_from_forgery with: :exception
@@ -74,7 +72,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_project
 
   def read_only_mode?
-    false
+    defined?(READ_ONLY_MODE) && READ_ONLY_MODE
   end
   helper_method :read_only_mode?
 

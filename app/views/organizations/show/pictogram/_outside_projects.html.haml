@@ -1,0 +1,7 @@
+- if aff_outside_commits_count == 0
+  %span.disabled= t('organizations.outside_projects.outside_projects')
+- else
+  %a.select_sub_view.append_history.block_ui.outside_projects{ href: '?view=outside_projects',
+    url: '?view=outside_projects', update: '.org-data-table', current_class: 'outside_projects' }
+    = t('organizations.outside_projects.outside_projects')
+= image_tag("org_infographics/#{outside_projects_image}", class: 'center margin_top_10', width: '60px')

@@ -104,6 +104,7 @@ describe 'AccountsControllerTest' do
       login_as admin
       post :make_spammer, id: user.id
       must_render_template 'accounts/disabled'
+      flash[:success].must_equal I18n.t('accounts.make_spammer.success', name: user.name)
     end
 
     it 'user should not be able to label a spammer' do
@@ -111,6 +112,192 @@ describe 'AccountsControllerTest' do
       login_as user
       post :make_spammer, id: user2.id
       must_respond_with :unauthorized
+    end
+
+    it 'should mark an account as spammer' do
+      login_as admin
+      admin.level.must_equal Account::Access::ADMIN
+      get :make_spammer, id: admin.id
+
+      must_render_template 'accounts/disabled'
+      admin.reload.level.must_equal Account::Access::SPAM
+      flash[:success].must_equal I18n.t('accounts.make_spammer.success', name: admin.name)
+    end
+  end
+
+  describe 'languages' do
+    it 'should respond with contributions data when best vita for account is nil' do
+      contribution = admin.positions.first.contribution
+      project = contribution.project
+
+      get :languages, id: admin.id
+
+      must_respond_with :ok
+      assigns(:contributions)[project.id].must_equal [contribution]
+      assigns(:vlfs).must_equal nil
+      assigns(:logos_map).must_equal nil
+    end
+
+    it 'should respond with contributions and vita language facts data when best vita for account is present' do
+      vita_language_fact = create(:vita_language_fact, vita: user.best_vita)
+      most_commits_project = vita_language_fact.most_commits_project
+      recent_commit_project = vita_language_fact.recent_commit_project
+
+      contribution = user.positions.first.contribution
+      project = contribution.project
+
+      logos_map = { most_commits_project.logo_id => most_commits_project.logo,
+                    recent_commit_project.logo_id => recent_commit_project.logo }
+
+      get :languages, id: user.id
+
+      must_respond_with :ok
+      assigns(:contributions)[project.id].must_equal [contribution]
+      assigns(:vlfs).must_equal [vita_language_fact]
+      assigns(:logos_map).must_equal logos_map
+    end
+  end
+
+  describe 'destroy_feedback' do
+    it 'should not update deleted_account if reason is not given' do
+      deleted_user = create(:deleted_account, login: user.login, email: user.email,
+                                              reasons: nil, reason_other: nil)
+      user.delete
+      post :destroy_feedback, login: deleted_user.login
+
+      must_respond_with :ok
+      assigns(:deleted_account).reasons.must_equal nil
+      assigns(:deleted_account).reason_other.must_equal nil
+    end
+
+    it 'should render view if request is a get request' do
+      create(:deleted_account, login: user.login, email: user.email, reasons: nil, reason_other: nil)
+      user.delete
+      get :destroy_feedback, login: user.login
+
+      must_respond_with :ok
+      assigns(:deleted_account).reasons.must_equal nil
+    end
+
+    it 'should update deleted_account with the reason given' do
+      deleted_user = create(:deleted_account, login: user.login, email: user.email,
+                                              reasons: nil, reason_other: nil)
+      user.delete
+      post :destroy_feedback, login: deleted_user.login, reasons: [1, 2, 3], reason_other: 'reason'
+
+      must_redirect_to message_path
+      assigns(:deleted_account).reasons.must_equal [1, 2, 3]
+      assigns(:deleted_account).reason_other.must_equal 'reason'
+      flash[:success].must_equal I18n.t('accounts.destroy_feedback.success')
+    end
+
+    it 'should redirect to message path when feedback time elapsed' do
+      user.delete
+      post :destroy_feedback, login: user.login, reasons: [1, 2, 3], reason_other: 'reason'
+
+      must_redirect_to message_path
+      assigns(:deleted_account).must_equal nil
+      flash[:error].must_equal I18n.t('accounts.destroy_feedback.invalid_request')
+    end
+
+    it 'should redirect to message path when feedback time elapsed' do
+      create(:deleted_account, login: user.login, email: user.email, reasons: nil, reason_other: nil)
+      user.delete
+      DeletedAccount.any_instance.stubs(:feedback_time_elapsed?).returns(true)
+      post :destroy_feedback, login: user.login, reasons: [1, 2, 3], reason_other: 'reason'
+
+      must_redirect_to message_path
+      flash[:error].must_equal I18n.t('accounts.destroy_feedback.expired')
+    end
+  end
+
+  describe 'activate' do
+    it 'should successfully activate account' do
+      account = Account.create(login: 'ralph', password: 'abcdef', password_confirmation: 'abcdef',
+                               email: 'ralph@mailinator.com', email_confirmation: 'ralph@mailinator.com')
+
+      get :activate, id: account.to_param, code: account.activation_code
+
+      must_redirect_to account_path(account)
+      flash[:success].must_equal I18n.t('accounts.activate.success')
+      session[:account].must_equal account.id
+    end
+
+    it 'should redirect to maintainance page in diabled mode' do
+      READ_ONLY_MODE = true
+      account = Account.create(login: 'ralph', password: 'abcdef', password_confirmation: 'abcdef',
+                               email: 'ralph@mailinator.com', email_confirmation: 'ralph@mailinator.com')
+      get :activate, id: account.to_param, code: account.activation_code
+
+      must_redirect_to maintenance_path
+    end
+
+    it 'should redirect already activated message' do
+      account = Account.create(login: 'ralph', password: 'abcdef', password_confirmation: 'abcdef',
+                               email: 'ralph@mailinator.com', email_confirmation: 'ralph@mailinator.com')
+      Account::Access.new(account).activate!(account.activation_code)
+
+      get :activate, id: account.to_param, code: account.activation_code
+
+      must_redirect_to account_path(account)
+      flash[:notice].must_equal I18n.t('accounts.activate.notice')
+    end
+  end
+
+  describe 'search' do
+    it 'should return formatted account records as json' do
+      xhr :get, :search, term: 'luck'
+
+      result = JSON.parse(response.body)
+      result.first['id'].must_equal 'user'
+      result.first['value'].must_equal 'user'
+      result.last['id'].must_equal 'privacy'
+      result.last['value'].must_equal 'privacy'
+    end
+
+    it 'should redirect ro peoples page when request is not ajax' do
+      get :search, term: 'luck'
+
+      must_redirect_to people_path(q: 'luck')
+    end
+  end
+
+  describe 'resolve_login' do
+    it 'should return account attributes when account is present' do
+      create(:account, login: 'robin')
+      xhr :get, :resolve_login, q: 'robin'
+      result = JSON.parse(response.body)
+
+      result['login'].must_equal 'robin'
+      result['q'].must_equal 'robin'
+    end
+
+    it 'should return id as nil when account is not present' do
+      xhr :get, :resolve_login, q: 'test'
+      result = JSON.parse(response.body)
+
+      result['id'].must_equal nil
+      result['q'].must_equal 'test'
+    end
+  end
+
+  describe 'unsubscribe_emails' do
+    it 'a valid key for a account should unsubscribe the user' do
+      key = Ohloh::Cipher.encrypt(create(:account).id.to_s)
+      get :unsubscribe_emails, key: CGI.unescape(key)
+      must_respond_with :ok
+      assigns(:account).email_master.must_equal false
+    end
+  end
+
+  describe 'autocomplete' do
+    it 'should return account hash' do
+      xhr :get, :autocomplete, term: 'luck'
+
+      result = JSON.parse(response.body)
+      result.first['login'].must_equal 'user'
+      result.first['value'].must_equal 'user'
+      result.first['name'].must_equal 'user Luckey'
     end
   end
 end

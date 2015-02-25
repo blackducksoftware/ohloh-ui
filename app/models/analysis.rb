@@ -1,5 +1,8 @@
 class Analysis < ActiveRecord::Base
   belongs_to :project
+  has_one :thirty_day_summary
+  has_one :twelve_month_summary
+  has_one :previous_twelve_month_summary
   has_many :analysis_summaries
   has_many :analysis_aliases
   belongs_to :main_language, class_name: 'Language', foreign_key: :main_language_id
@@ -7,6 +10,14 @@ class Analysis < ActiveRecord::Base
   scope :fresh, -> { where(Analysis.arel_table[:created_at].gt(Time.now - 2.days)) }
   scope :hot, -> { where.not(hotness_score: nil).order(hotness_score: :desc) }
   scope :for_lang, ->(lang_id) { where(main_language_id: lang_id) }
+
+  def twelve_month_summary
+    super || NilAnalysisSummary.new
+  end
+
+  def previous_twelve_month_summary
+    super || NilAnalysisSummary.new
+  end
 
   def activity_level
     return :na if no_analysis? || old_analysis?

@@ -29,7 +29,7 @@ class Organization < ActiveRecord::Base
   after_save :check_change_in_delete
 
   def to_param
-    url_name
+    url_name || id.to_s
   end
 
   def active_managers
@@ -38,6 +38,10 @@ class Organization < ActiveRecord::Base
 
   def allow_undo?(key)
     ![:name, :org_type].include?(key)
+  end
+
+  def org_type_label
+    ORG_TYPES.invert[org_type] || ''
   end
 
   def affiliated_committers_stats
@@ -62,6 +66,10 @@ class Organization < ActiveRecord::Base
 
   def outside_projects(page, limit)
     Organization::Outside.new(self).projects(page, limit)
+  end
+
+  def affiliators_count
+    @affiliators_count ||= accounts.count(joins: [:person, :active_positions], select: 'DISTINCT(accounts.id)')
   end
 
   private

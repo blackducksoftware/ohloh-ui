@@ -28,21 +28,21 @@ class DomainBlacklistsControllerTest < ActionController::TestCase
     get :index
     must_respond_with :success
     assert_select 'h3', text: 'Blacklist Domains'
-    assert_select 'a[href=/domain_blacklists/new]', text: 'Add New Domain'
+    assert_select 'a[href="/domain_blacklists/new"]', text: 'Add New Domain'
   end
 
   it 'link to add new domain' do
     get :index
     must_respond_with :success
     assert_select 'h3', text: 'Blacklist Domains'
-    assert_select 'a[href=/domain_blacklists/new]', text: 'Add New Domain'
+    assert_select 'a[href="/domain_blacklists/new"]', text: 'Add New Domain'
   end
 
   it 'new domain page form has new domain field' do
     get :new
     must_respond_with :success
     assert_select 'h1', text: 'Add New Domain Blacklist'
-    assert_select 'form[action=/domain_blacklists]'
+    assert_select 'form[action="/domain_blacklists"]'
     assert_select 'label[for=domain_blacklist_domain]', text: 'New Domain to Blacklist:'
     assert_select 'input[id=domain_blacklist_domain]', type: 'text'
     assert_select 'input[name=commit]', type: 'submit'
@@ -84,8 +84,8 @@ class DomainBlacklistsControllerTest < ActionController::TestCase
     assert_select 'tr' do
       assert_select 'td', text: 'bad_domain.com'
       assert_select 'td' do
-        assert_select "a[href=#{edit_domain_blacklist_path(bad)}]", text: 'Edit'
-        assert_select "a[href=#{domain_blacklist_path(bad)}]", text: 'Delete'
+        assert_select "a[href='#{edit_domain_blacklist_path(bad)}']", text: 'Edit'
+        assert_select "a[href='#{domain_blacklist_path(bad)}']", text: 'Delete'
       end
     end
   end
@@ -95,10 +95,10 @@ class DomainBlacklistsControllerTest < ActionController::TestCase
     domain = DomainBlacklist.find_by_domain('bad_domain.com')
     get :edit, id: domain.id
     must_respond_with :success
-    assert_select "form[action=#{domain_blacklist_path(domain)}][method=post]" do
+    assert_select "form[action='#{domain_blacklist_path(domain)}'][method=post]" do
       assert_select 'label', text: 'Blacklisted Domain'
-      assert_select "input[value=#{domain.domain}]"
-      assert_select 'input[type=submit][value=Update Domain]'
+      assert_select "input[value='#{domain.domain}']"
+      assert_select 'input[type="submit"][value="Update Domain"]'
     end
   end
 

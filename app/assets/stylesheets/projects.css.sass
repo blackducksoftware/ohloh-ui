@@ -2,7 +2,6 @@ $sizes: (('fifteen', 15, 1), ('twenty', 20, 0), ('twentyfive', 25, 19), ('thirty
 $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_low', 4), ('inactive', 5), ('na', 6), ('new', 7))
 
 @each $size in $sizes
-  // Build the base string from the 1st value in the element
   $icon_family: nth($size, 1)
   $dimension:   nth($size, 2)
   $left_margin: nth($size, 3)
@@ -22,3 +21,4 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
       :background-position -#{$multiplier * $dimension}px 0
       :background-repeat no-repeat
       :position absolute
+      :top 15px

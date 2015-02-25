@@ -1,6 +1,6 @@
 // margin classes like margin_top_10, margin_left_5, margin_bottom_10..
 @each $pos in ('top', 'right', 'bottom', 'left')
-  @each $pixel in (5, 10, 15, 20, 25, 30, 35, 40, 45, 50)
+  @each $pixel in (0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50)
     .margin_#{$pos}_#{$pixel}
       margin-#{$pos}: #{$pixel}px !important
     .padding_#{$pos}_#{$pixel}

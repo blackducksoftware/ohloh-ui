@@ -22,7 +22,7 @@ Rails.application.configure do
   # config.action_dispatch.rack_cache = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this).
-  config.serve_static_assets = false
+  config.serve_static_files = false
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
@@ -93,3 +93,4 @@ Rails.application.configure do
   Paperclip::Attachment.default_options[:path] = '/attachments/:id/:basename:style.:extension'
   Paperclip::Attachment.default_options[:use_timestamp] = false
 end
+ANALYTICS_ID = 'UA-20399350-1'

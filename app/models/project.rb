@@ -93,6 +93,10 @@ class Project < ActiveRecord::Base
     best_analysis.main_language.name
   end
 
+  def best_analysis
+    super || NilAnalysis.new
+  end
+
   class << self
     def hot_projects(lang_id = nil)
       Project.not_deleted.been_analyzed.joins(:analyses).merge(Analysis.fresh_and_hot(lang_id))

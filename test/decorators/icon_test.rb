@@ -6,9 +6,8 @@ class IconTest < ActiveSupport::TestCase
       logo = create(:attachment)
       project = create(:project, logo_id: logo.id)
 
-      image = "<img alt=\"#{project.name}\" itemprop=\"image\" "\
-              "src=\"#{project.logo.attachment.url(:small)}\" "\
-              "style=\"width:32px; height:32px; border:0 none;\" />"
+      image = "<img style=\"width:32px; height:32px; border:0 none;\" "\
+              "itemprop=\"image\" alt=\"#{project.name}\" src=\"#{project.logo.attachment.url(:small)}\" />"
       Icon.new(project).image.must_equal image
     end
 

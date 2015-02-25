@@ -26,12 +26,12 @@
           = t('.accounts_review', name: review_list.account.name)
         &nbsp;
       .pull-left{ style: 'margin-top:1px' }
-        - stars(review_list.score, small_size: true)
+        != rating_stars('rating_star', review_list.score.to_f, true)
       .clear
       .col-md
         %abbr.soft.small{ title: review_list.created_at }
           = t('reviews.written_ago', time: time_ago_in_words(review_list.created_at))
-      %p= simple_format(review_list.comment)
+      %p= simple_format(review_list.comment.fix_encoding_if_invalid!)
       .soft.small
         .pull-left
           = render partial: 'helpful_count_status', locals: { review: review_list }

@@ -1,7 +1,33 @@
 en:
   organizations:
+    show:
+      page_title: '%{organization_name} : Organization Summary'
+      title: 'Organization Summary'
+      no_desc: 'No description has been added for this organization.'
+      add_desc: 'Add description'
+      quick_ref: 'Quick Reference'
+      org_type: 'Organization Type:'
+      links: 'Links:'
+      homepage: 'Homepage'
+      managers: 'Managers:'
+      add_new: 'Add a new manager for %{name}'
+      about_graphic: '(about this graphic)'
+      print_graphic: 'print graphic'
+      portfolio_projects: 'Portfolio Projects'
+    projects:
+      page_title: '%{organization_name} : Portfolio Projects'
+      title: 'Portfolio Projects'
+      name: 'Name'
+      primary_language: 'Primary Language'
+      i_use_this: 'I Use This'
+      community_rating: 'Community Rating'
+      twelve_month_activity: '12-month Activity & Year-on-Year Change'
+      contributors: 'Contributors'
+      commits: 'Commits'
+      affiliated: 'Affiliated'
+      outside: 'Outside'
     outside_projects:
-      outside_projects: "Outside Projects"
+      no_outside_projects: "Outside Projects"
       no_outside_projects: "There are no outside projects to display."
       header_name: "Name"
       header_claimed_by: "Claimed By"
@@ -11,3 +37,32 @@ en:
       header_all_time_commits: "All-time Commits"
       header_by_current_affiliates: "(by Current Affiliates)"
       see_all_num_outside_projs: "See All %{num} Outside Projects"
+    outside_committers:
+      title: 'Outside Committers'
+      page_title: '%{organization_name} : %{organization_name}'
+      no_committers: 'There are no outside committers to display.'
+      contributor_name: 'Contributor Name'
+      kudos: 'Kudos'
+      level: 'Level'
+      affiliated_with: 'Affiliated With'
+      contribution_to_portfolio: 'Contributions to Portfolio Projects'
+      projects: 'Projects'
+      twelve_month_commits: '12-mo Commits'
+      unaffiliated: 'Unaffiliated'
+      see_all_outside_committers: 'See All %{count} Outside Committers'
+    affiliated_committers:
+      page_title: "Affiliated Committers"
+      no_committers: "There are no affiliated committers to display."
+      contrib_name: "Contributor Name"
+      kudos: "Kudos"
+      level: "Level"
+      projects_committed_to: "Projects Committed To"
+      most_commits_to: "Most Commits To..."
+      most_recent_commits_on: "Most Recent Commit On..."
+      portfolio: "Portfolio"
+      other: "Other"
+      project: "Project"
+      num_commits: "#Commits"
+      date: "Date"
+      you: "(You)"
+      see_all: "See All %{num} Affiliated Contributors"

@@ -15,10 +15,13 @@ class Organization::Affiliated < Organization::AccountFacts
     accounts = @organization.accounts.joins([:person, :positions])
     accounts = accounts.group('accounts.id, people.kudo_position').order('kudo_position nulls last')
     accounts.paginate(per_page: limit, page: page)
+    Account.paginate_by_sql(accounts.to_sql, per_page: limit, page: page)
   end
 
   def projects(page = 1, limit = 10)
-    @organization.projects.order('projects.user_count DESC').paginate(per_page: limit, page: page)
+    @organization.projects.order('projects.user_count DESC')
+      .includes([:logo, best_analysis: [:twelve_month_summary, :previous_twelve_month_summary, :main_language]])
+      .paginate(per_page: limit, page: page)
   end
 
   private

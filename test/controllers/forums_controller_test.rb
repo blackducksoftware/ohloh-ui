@@ -35,6 +35,7 @@ describe ForumsController do
   end
 
   it 'admin show with pagination' do
+    skip 'TODO: This test never ran correctly. It silently failed due to no assertions.'
     create_list(:topic, 20)
     login_as user
     get :show, id: forum.id
@@ -96,6 +97,7 @@ describe ForumsController do
   end
 
   it 'show with pagination' do
+    skip 'TODO: This test never ran correctly. It silently failed due to no assertions.'
     create_list(:topic, 20)
     login_as user
     get :show, id: forum.id

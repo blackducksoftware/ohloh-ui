@@ -67,12 +67,12 @@ class PostsController < ApplicationController
 
   def send_reply_emails_to_everyone(_users)
     @all_users_preceding_the_last_user.each do |user|
-      PostNotifier.post_replied_notification(user, @user_who_replied, @topic).deliver
+      PostNotifier.post_replied_notification(user, @user_who_replied, @topic).deliver_now
     end
   end
 
   def send_creation_email
-    PostNotifier.post_creation_notification(@user_who_replied, @topic).deliver
+    PostNotifier.post_creation_notification(@user_who_replied, @topic).deliver_now
   end
 
   def find_post_record
