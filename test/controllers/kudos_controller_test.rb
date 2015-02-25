@@ -55,7 +55,7 @@ class KudosControllerTest < ActionController::TestCase
 
   it 'index should not respond to xml format with an over-limit api_key' do
     login_as nil
-    get :index, account_id: @kudo.account, api_key: create(:api_key, daily_count: 99999).key, format: :xml
+    get :index, account_id: @kudo.account, api_key: create(:api_key, daily_count: 999_999).key, format: :xml
     must_respond_with :unauthorized
   end
 
@@ -80,7 +80,7 @@ class KudosControllerTest < ActionController::TestCase
 
   it 'sent should not respond to xml format with an over-limit api_key' do
     login_as nil
-    get :sent, account_id: @kudo.account, api_key: create(:api_key, daily_count: 99999).key, format: :xml
+    get :sent, account_id: @kudo.account, api_key: create(:api_key, daily_count: 999_999).key, format: :xml
     must_respond_with :unauthorized
   end
 

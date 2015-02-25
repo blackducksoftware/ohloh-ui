@@ -37,6 +37,13 @@ class KudosController < ApplicationController
 
   private
 
+  # TODO: this really belongs in app_controller, but that file is too big currently
+  def api_key_lock
+    return unless request_format == 'xml'
+    api_key = ApiKey.in_good_standing.where(key: params[:api_key]).first
+    render_unauthorized unless api_key && api_key.may_i_have_another?
+  end
+
   def find_account
     @account = Account.in_good_standing.from_param(params[:account_id]).take
     fail ParamRecordNotFound unless @account

@@ -11,11 +11,11 @@ class NilAnalysis < NullObject
     nil
   end
 
-  def activity_level
-    :na
-  end
-
   def name_fact_for(_name_id)
     false
+  end
+
+  def activity_level
+    :na
   end
 end

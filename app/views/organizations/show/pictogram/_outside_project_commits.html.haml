@@ -1,0 +1,13 @@
+- if aff_outside_commits_count > 0
+  %span.commits.strong
+    = number_with_delimiter(affiliated_committers_stats['affl_commits_out'])
+    commits by
+  %br
+  %span.projects
+    = number_with_delimiter(affiliated_committers_stats['affl_committers_out'])
+    of
+    = number_with_delimiter(@organization.affiliators_count)
+    people on
+    %br
+    = number_with_delimiter(outside_projects_count)
+    outside projects

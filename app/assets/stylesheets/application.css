@@ -12,6 +12,7 @@
  *
  *= require twitter-bootstrap-static/bootstrap
  *= require twitter-bootstrap-static/fontawesome
+ *= require chosen
  *= require_tree .
  *= require_self
 */

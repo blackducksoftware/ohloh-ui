@@ -1,0 +1,17 @@
+%tr{ id: 'dingus-row' }
+  %td{ colspan: '11', style: 'height: 11px' }
+%tr
+  %th{ rowspan: '2', scope: 'col', width: '120' }= t('.language')
+  %th.center{ rowspan: '2', scope: 'col' }!= t('.aggregate')
+  %th.center{ rowspan: '2', scope: 'col' }!= t('.total_commits')
+  %th.center{ rowspan: '2', scope: 'col' }!= t('.total_lines')
+  %th.center{ colspan: '2', scope: 'col' }= t('.most_commits')
+  %th{ rowspan: '2', scope: 'col' }  
+  %th.center{ colspan: '2', scope: 'col' }= t('.recent_commit')
+%tr
+  %th.left
+    %span{ style: 'margin-left:45px;' }= t('.project')
+  %th.center= t('.commits')
+  %th.left
+    %span{ style: 'margin-left:45px;' }= t('.project')
+  %th.center= t('.commit_month')

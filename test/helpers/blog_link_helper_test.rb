@@ -15,12 +15,12 @@ class BlogLinkHelperTest < ActionView::TestCase
   describe 'blog_url_for' do
     it 'should return proper blog link url when available in BLOG_LINKS' do
       BLOG_LINKS.each do |k, v|
-        blog_url_for(k).must_equal "http//blog.openhub.net/#{v}"
+        blog_url_for(k).must_equal "http://blog.openhub.net/#{v}"
       end
     end
 
     it 'should return proper blog link url when not available in BLOG_LINKS' do
-      blog_url_for('test').must_equal 'http//blog.openhub.net/test'
+      blog_url_for('test').must_equal 'http://blog.openhub.net/test'
     end
   end
 end

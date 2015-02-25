@@ -3,6 +3,7 @@ class Kudo < ActiveRecord::Base
   belongs_to :account
   belongs_to :project
   belongs_to :name
+  has_one :name_fact, foreign_key: :name_id, primary_key: :name_id
 
   scope :recent, -> limit = 3 { limit(limit) }
 

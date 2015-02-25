@@ -51,8 +51,8 @@ class AccountDecorator < Cherry::Decorator
         [:widgets,            'Widgets',              h.account_widgets_path(account)]
       ],
       [
-        [:contributions,      I18n.t(:contributions),        nil],
-        [:positions,          I18n.t(:contributions),        h.account_positions_path(account)],
+        [:contributions,      I18n.t(:contribution),        nil],
+        [:positions,          I18n.t(:contribution),        h.account_positions_path(account)],
         [:languages,          I18n.t(:languages),            h.languages_account_path(account)]
       ],
       [
