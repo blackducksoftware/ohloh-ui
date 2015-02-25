@@ -1,0 +1,102 @@
+- page_context[:select_footer_nav] = :settings
+- content_for(:html_title) { @account.name }
+
+= render 'mini_header'
+
+.margin_left_15.mezzo
+  %h2
+    = link_to t('settings'), settings_account_path(@account)
+    = t('.account_basics')
+  .well.margin_left_15#account-edit-form
+    = form_for @account, html: { id: 'handle-organization-selector' } do |f|
+      %fieldset.row-fluid
+        .col-md-5
+          .form-group
+            %label.control-label.required= t('login')
+            .controls
+              = f.text_field :login, class: 'form-control'
+              - error_tag @account, :login
+
+          .form-group
+            %label.control-label= t('name')
+            .controls
+              = f.text_field :name, class: 'form-control'
+              - error_tag @account, :name
+
+          .form-group
+            %label.control-label.require= t('email_address')
+            .controls
+              = f.text_field :email, class: 'form-control'
+              - error_tag @account, :email
+              %p.help-block
+                = t('.email_help')
+                = link_to t('gravatar'), 'http://gravatar.com', target: '_blank'
+
+          .form-group
+            %label.control-label= t('.homepage_url')
+            .controls
+              = f.text_field :url, class: 'form-control', value: @account.url
+              - error_tag @account, :url
+
+          .form-group
+            %label.control-label= t('twitter_id')
+            .controls
+              = f.text_field :twitter_account, class: 'form-control'
+              - error_tag @account, :twitter_account
+
+          .form-group
+            %label.control-label= t('affiliation')
+            .controls.chosen#value_select
+              = f.select :organization_id, OrganizationDecorator.select_options, {},
+                class: 'value-select chzn-select form-control'
+              - error_tag @account, :organization_id
+              = f.text_field :organization_name, class: 'hidden margin_top_10 form-control'
+              = f.hidden_field :affiliation_type
+              - error_tag @account, :organization_name
+              %p.help-block{ style: 'margin-top: 6px' }= t('.affiliation_help')
+
+        .col-md-5.col-md-push-1
+          .form-group
+            %label.control-label!= t('.city_and_country')
+            .controls
+              %p.enabled
+                %input.form-control#location{ type: :text, autocomplete: :off, value: @account.location }
+                -# FIXME: Add js logic to clear location after google maps is integrated.
+                %a{ href: '#' }= t('clear')
+              %p.error#not_found{ style: 'display:none' }
+                = t('.location_error_message')
+              #map
+              = f.hidden_field :location
+              = f.hidden_field :country_code
+              = f.hidden_field :latitude
+              = f.hidden_field :longitude
+
+        .clearfix
+
+        .form-group.margin_left_15
+          %label.control-label= t('bio')
+          .control
+            = f.text_area :about_raw, class: 'edit-description', rows: '10'
+            - error_tag @account, 'markup.raw'
+            %p.help-block= t('.about_raw_help')
+
+        .actions.col-md-10
+          = submit_tag t('save_changes'), class: 'btn btn-primary pull-left margin_right_10'
+          = link_to t('.delete_account'), confirm_delete_account_path(@account), class: 'btn btn-danger pull-left'
+
+  %h4.nomargin
+    %span.soft= t('about')
+    = t('basics')
+.col-md-5
+  %ul
+    %li
+      = t('.help_1')
+    %li
+      = t('.help_2')
+      %b= t('.help_3')
+.col-md-5
+  %ul
+    %li
+      = t('.help_4')
+    %li
+      = t('.help_5')

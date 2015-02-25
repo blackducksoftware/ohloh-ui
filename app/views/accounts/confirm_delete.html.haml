@@ -1,0 +1,41 @@
+- content_for :custom_head do
+  %meta{ name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW' }
+
+:ruby
+  page_context[:select_footer_nav] = :settings
+  content_for(:html_title) { t('.html_title') }
+
+%h2= t('.help_1')
+%p= t('.help_2')
+%p
+  %strong= t('.help_3')
+  = t('.help_4')
+%p
+  %strong= t('.help_5')
+%p= t('.help_6')
+%p= t('.help_7')
+%hr
+
+%h6= t('tldr')
+%ul
+  %li= t('.help_8')
+  %li= t('.help_9')
+  %li= t('.help_10')
+  %li= t('.help_11')
+
+.actions.col-md-4.center-block
+  -# TODO: Move the confirm text to a js function.
+  %button.btn.btn-danger{ 'data-toggle' => 'modal', 'data-target' => '#confirm-delete-modal' }
+    = t('.delete_my_account')
+  = link_to t('cancel'), edit_account_path(@account), class: 'btn btn-default'
+
+.modal.fade#confirm-delete-modal{ tabindex: '-1', role: 'dialog' }
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %h4.modal-title= t('.confirm_modal_header')
+      .modal-body
+        = t('.confirm_modal_body')
+      .modal-footer
+        = link_to t('.confirm_delete_my_account'), account_path(@account), method: :delete, class: 'btn btn-danger'
+        = link_to t('cancel'), @account, class: 'btn btn-default'

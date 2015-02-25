@@ -43,6 +43,7 @@ class Account::Access
     @account.update_attributes!(level: DISABLED)
   end
 
+  # TODO: replace make_spammer! with this.
   def spam!
     Account.transaction do
       @account.update_attributes!(level: SPAM)

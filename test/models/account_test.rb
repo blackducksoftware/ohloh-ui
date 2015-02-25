@@ -74,7 +74,6 @@ class AccountTest < ActiveSupport::TestCase
     account.wont_be :valid?
     account.errors.must_include(:password)
     account.errors.messages[:password].first.must_equal I18n.t(:cant_be_blank)
-    account.errors.messages[:password_confirmation].must_equal ['doesn\'t match Password']
 
     account = build(:account, password: 'abc12345', password_confirmation: 'ABC12345')
     account.wont_be :valid?
