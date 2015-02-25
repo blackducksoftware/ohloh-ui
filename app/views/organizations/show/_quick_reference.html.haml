@@ -9,7 +9,7 @@
     %dt= link_to t('.managers'), organization_managers_path(@organization)
     %dd
       - if @organization.managers.any?
-        = @organization.managers.map { |m| link_to m.name, account_path(m) }.to_sentence
+        = @organization.managers.map { |m| link_to m.name, account_path(m) }.to_sentence.html_safe
       - elsif current_user_is_admin?
         = link_to t('.add_new', name: @organization.name), new_manager_organization_path(@organization)
       - else
