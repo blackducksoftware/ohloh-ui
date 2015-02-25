@@ -57,7 +57,7 @@ class BaseballCard < Cherry::Decorator
     { css: { style: 'min-height:38px;' },
       label: i18n('contributed_to'),
       partial: 'accounts/show/orgs',
-      locals: { orgs: orgs_for_positions }
+      locals: { orgs: orgs_for_positions, links: true }
     }
   end
 
@@ -67,7 +67,7 @@ class BaseballCard < Cherry::Decorator
     { css: { style: 'min-height:38px;' },
       label: i18n('contributed_for'),
       partial: 'accounts/show/orgs',
-      locals: { orgs: affiliated_orgs }
+      locals: { orgs: affiliated_orgs, links: false }
     }
   end
 

@@ -121,6 +121,7 @@ Rails.application.routes.draw do
       get :projects
       get :outside_projects
       get :outside_committers
+      get :print_infographic
       get :affiliated_committers
     end
     resource :logos, only: [:new, :create, :destroy]

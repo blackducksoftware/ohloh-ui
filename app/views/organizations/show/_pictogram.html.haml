@@ -1,0 +1,39 @@
+- partial_dir = 'organizations/show/pictogram'
+- print_path = print_infographic_organization_path(@organization)
+
+.margin_left_15.margin_right_15#org_infographic
+  #section1
+    .col1.pull-left.strong
+      = render partial: "#{partial_dir}/outside_committers", locals: @graphics.outside_committers
+    .col2.pull-left{ @graphics.other_attributes('out_commits', position: true) }
+      .svg-arrow.margin_bottom_10{ @graphics.arrow_attributes('out_commits', arrow_head: 'right') }
+      = render partial: "#{partial_dir}/outside_committers_commits", locals: @graphics.outside_committers
+  #infographic_box{ default_view: @view }
+    .header= @organization.name
+    .content
+      .col1.center.pull-left
+        = render partial: "#{partial_dir}/portfolio_projects", locals: @graphics.portfolio_projects
+      .col2.center.pull-left
+        .svg-arrow.margin_bottom_10{ @graphics.arrow_attributes('affl_commits', arrow_head: 'left', width: 130) }
+        = render partial: "#{partial_dir}/portfolio_commits", locals: @graphics.portfolio_commits
+      .col3.pull-left
+        = render partial: "#{partial_dir}/affilliated_committers", locals: @graphics.portfolio_commits
+    .footer_line &nbsp;
+    .bottom_links
+      .pull-left.margin_top_5.col1
+        = render 'shared/creativecommons_license'
+      .pull-left.center.col2
+        %a{ href: 'http://blog.openhub.net/2014/08/unveiling-the-retooled-organization', target: '_blank' }
+          = t('organizations.show.about_graphic')
+      .pull-right.col3
+        = image_tag('logo/BD_open_hub_logo160x15.png')
+        %br
+        %a.pull-right.small.margin_top_5.print_infographic{ href: '#', url: "#{print_path}" }
+          %i.icon-print
+          = t('organizations.show.print_graphic')
+  #section2
+    .col1.pull-left{ @graphics.other_attributes('affl_commits_out', position: true) }
+      .svg-arrow.margin_bottom_10{ @graphics.arrow_attributes('affl_commits_out', arrow_head: 'right', width: 140) }
+      = render partial: "#{partial_dir}/outside_project_commits", locals: @graphics.outside_project_commits
+    .col2.pull-left.strong
+      = render partial: "#{partial_dir}/outside_projects", locals: @graphics.outside_project_commits

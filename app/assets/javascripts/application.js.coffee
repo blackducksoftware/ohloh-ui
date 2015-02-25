@@ -25,4 +25,4 @@
 $(document).on 'page:change', ->
   StackVerb.init()
   StackShow.init()
-  $('.chzn-select').chosen()
+  OrganizationPictogram.init();

@@ -14,6 +14,10 @@ class OrganizationDecorator < Cherry::Decorator
     ]
   end
 
+  def icon(size = :small, opts = {})
+    Icon.new(organization, context: { size: size, opts: opts }).image
+  end
+
   class << self
     def select_options
       options = Organization.active.order('lower(name)').pluck(:name, :id)
