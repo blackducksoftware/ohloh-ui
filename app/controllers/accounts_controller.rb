@@ -136,9 +136,8 @@ class AccountsController < ApplicationController
   private
 
   def set_account
-    @account = Account.where('id = :id or login = :login', id: params[:id].to_i, login: params[:id]).first!
-  rescue ActiveRecord::RecordNotFound
-    raise ParamRecordNotFound
+    @account = Account.where('id = :id or login = :login', id: params[:id].to_i, login: params[:id]).first
+    fail ParamRecordNotFound unless @account
   end
 
   def redirect_if_disabled
