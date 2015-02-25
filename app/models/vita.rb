@@ -7,4 +7,11 @@ class Vita < ActiveRecord::Base
   def vita_fact
     VitaFact.where(vita_id: id).first || NilVitaFact.new
   end
+
+  def language_logos
+    facts = vita_language_facts.with_language_and_projects
+    logo_ids = facts.joins(:most_commits_project).pluck(:logo_id) +
+               facts.joins(:recent_commit_project).pluck(:logo_id)
+    Logo.where(id: logo_ids.compact)
+  end
 end

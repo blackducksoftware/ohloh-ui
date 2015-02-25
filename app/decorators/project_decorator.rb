@@ -1,5 +1,6 @@
 class ProjectDecorator < Cherry::Decorator
   include ColorsHelper
+
   delegate :main_language, to: :project
 
   def icon(size = :small, opts = {})

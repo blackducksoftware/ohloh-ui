@@ -1,9 +1,9 @@
 FactoryGirl.define do
   factory :contribution do
-    association :project
     association :person
-    association :name
-    # association :position
+    association :project
+    association :position
+    association :contributor_fact
 
     after(:create) do |instance|
       instance.update_attributes(person: create(:person))

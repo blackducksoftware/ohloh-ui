@@ -1,0 +1,19 @@
+- content_for :html_title do
+  = succeed ' : ' do
+    = @account.name
+  = @account.name
+
+= render partial: 'accounts/mini_header'
+
+- if @account.decorate.vita_status_message.blank?
+  .col-md-12.mezzo
+    = render partial: 'accounts/languages/commits_by_language'
+  - if @vlfs.present?
+    .col-md-12#language_detail
+      %table.table.table-striped.table-condensed
+        %thead= render partial: 'contributions/language_header'
+        %tbody= render partial: 'contributions/language_fact', collection: @vlfs
+- else
+  %h2= I18n.t('.title')
+  .col-md-12
+    %p= @account.decorate.vita_status_message

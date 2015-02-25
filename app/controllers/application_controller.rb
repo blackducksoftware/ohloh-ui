@@ -72,7 +72,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_project
 
   def read_only_mode?
-    false
+    defined?(READ_ONLY_MODE) && READ_ONLY_MODE
   end
   helper_method :read_only_mode?
 
