@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   resources :reviews, only: :destroy do
     resources :helpfuls, only: :create
   end
-  resources :kudos
+  resources :kudos, only: [:new, :create, :destroy]
 
   resources :accounts do
     resources :api_keys, constraints: { format: :html }, except: :show
@@ -28,7 +28,11 @@ Rails.application.routes.draw do
     resources :positions, only: [:index]
     resources :stacks, only: [:index]
     resources :widgets, only: [:index]
-    resources :kudos, only: [:index, :show]
+    resources :kudos, only: [:index] do
+      collection do
+        get :sent
+      end
+    end
     resources :edits, only: [:index]
     resources :posts, only: [:index]
     resources :reviews, only: [:index]
@@ -95,7 +99,7 @@ Rails.application.routes.draw do
     resources :commits, only: :index do
       collection { get :summary }
     end
-    resources :contributors, only: :index do
+    resources :contributors, only: [:index, :show] do
       collection { get :summary }
     end
   end
@@ -131,8 +135,13 @@ Rails.application.routes.draw do
     end
     resources :widgets, only: [:index]
   end
+
   resources :languages, only: [:show, :index] do
     collection { get :compare }
+  end
+
+  resources :people do
+    collection { get :rankings }
   end
 
   resource :compare_repositories

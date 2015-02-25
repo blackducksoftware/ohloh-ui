@@ -59,6 +59,12 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_user_can_manage?
 
+  def api_key_lock
+    return unless request_format == 'xml'
+    api_key = ApiKey.in_good_standing.where(key: params[:api_key]).first
+    render_unauthorized unless api_key && api_key.may_i_have_another?
+  end
+
   def current_project
     return @current_project if @current_project
     begin

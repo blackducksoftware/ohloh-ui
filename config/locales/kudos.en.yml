@@ -1,3 +1,26 @@
 en:
   kudos:
     cant_kudo_self: "One may not give kudos to oneself."
+    position_for_person: "Ranked %{link} of %{total}."
+    not_yet_ranked: "Not yet ranked."
+    give_kudos: "Give Kudo"
+    give_kudos_to: "Give Kudos to %{name}"
+    new_link: "New"
+    undo: "Undo"
+    undo_sender: "Are you sure you want to delete kudos sent to %{to}?"
+    undo_account: "Are you sure you want to delete kudos received from %{from}?"
+    for: "(for %{what})"
+    index:
+      title: "Kudos"
+      kudos_received: "Kudos Received"
+      no_kudos_received_yet: "No kudos received yet."
+      kudos_given: "Kudos Given"
+      no_kudos_given_yet: "No kudos given yet."
+      aka: "aka"
+    new:
+      include_message: "Include an optional message with your kudos to %{who}"
+      maximum: "Maximum 80 characters."
+      submit: "Give Kudos"
+    destroy:
+      success: "The Kudo was removed successfully."
+      error: "You don't have permission to do that."

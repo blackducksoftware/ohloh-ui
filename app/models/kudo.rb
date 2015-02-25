@@ -4,11 +4,10 @@ class Kudo < ActiveRecord::Base
   belongs_to :project
   belongs_to :name
 
-  # TODO: Replace recent_kudos.
   scope :recent, -> limit = 3 { limit(limit) }
 
   before_validation :assign_account_from_position
-  validates :message, length: 0..255, allow_nil: true
+  validates :message, length: 0..80, allow_nil: true
   validate :cant_kudo_self
 
   def person
@@ -20,7 +19,6 @@ class Kudo < ActiveRecord::Base
   end
 
   class << self
-    # TODO: Replace display_sorted with sort_by_created_at
     def sort_by_created_at
       select(attribute_names)
         .select("#{ max_created_at_per_account } AS sort_time")

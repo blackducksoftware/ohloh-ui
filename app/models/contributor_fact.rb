@@ -1,4 +1,15 @@
 class ContributorFact < NameFact
+  belongs_to :analysis
+  belongs_to :name
+
+  def person
+    Person.where(['name_id = ? AND project_id = ?', name_id, analysis.project_id]).first
+  end
+
+  def kudo_rank
+    person && person.kudo_rank
+  end
+
   class << self
     def unclaimed_for_project(project)
       ContributorFact.where.not(name_id: nil)
