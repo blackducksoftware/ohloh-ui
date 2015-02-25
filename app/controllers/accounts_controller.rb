@@ -164,7 +164,7 @@ class AccountsController < ApplicationController
   def check_banned_domain
     @account = Account.new(account_params)
     return unless @account.email?
-    render :new if DomainBlacklist.email_banned?(@account.email)
+    render :new, status: 418 if DomainBlacklist.email_banned?(@account.email)
   end
 
   def captcha_response
