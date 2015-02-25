@@ -98,4 +98,19 @@ describe 'AccountsControllerTest' do
       must_redirect_to disabled_account_url(admin)
     end
   end
+
+  describe 'make spammer' do
+    it 'admin should be able to label a spammer' do
+      login_as admin
+      post :make_spammer, id: user.id
+      must_render_template 'accounts/disabled'
+    end
+
+    it 'user should not be able to label a spammer' do
+      user2 = create(:account)
+      login_as user
+      post :make_spammer, id: user2.id
+      must_respond_with :unauthorized
+    end
+  end
 end

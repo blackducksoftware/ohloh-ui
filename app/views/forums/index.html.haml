@@ -1,6 +1,3 @@
-- if flash[:notice]
-  = flash[:notice]
-
 %h1.margin_bottom_20= t('.forums')
 %h2.soft= t('.active_topics')
 = render partial: '/topics/current_discussions', object: @recent_topics
@@ -35,3 +32,4 @@
 
 - if current_user_is_admin?
   = link_to t('.new_forum'), new_forum_path, class: 'btn btn-primary btn-small'
+

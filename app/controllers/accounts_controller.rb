@@ -1,6 +1,7 @@
 class AccountsController < ApplicationController
-  before_action :account, only: [:show, :commits_by_project_chart, :commits_by_language_chart, :label_as_spammer]
+  before_action :account, only: [:show, :commits_by_project_chart, :commits_by_language_chart, :make_spammer]
   before_action :redirect_if_disabled, only: [:show, :commits_by_project_chart, :commits_by_language_chart]
+  before_action :admin_session_required, only: [:make_spammer]
   # before_action :account_context, only: [:show]
 
   def index
@@ -25,7 +26,7 @@ class AccountsController < ApplicationController
     render json: Chart.new(@account).commits_by_language(params[:scope])
   end
 
-  def label_as_spammer
+  def make_spammer
     Account::Access.new(@account).spam!
     render template: 'accounts/disabled'
   end
