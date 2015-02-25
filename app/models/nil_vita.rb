@@ -4,6 +4,6 @@ class NilVita < NullObject
   end
 
   def vita_language_facts
-    []
+    VitaLanguageFact.none
   end
 end

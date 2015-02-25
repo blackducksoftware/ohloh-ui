@@ -22,6 +22,8 @@ Rails.application.routes.draw do
   end
   resources :kudos
 
+  resources :people, only: [:index]
+
   resources :accounts do
     resources :api_keys, constraints: { format: :html }, except: :show
     resources :projects, only: [:index]
@@ -40,8 +42,17 @@ Rails.application.routes.draw do
       get :commits_by_project_chart
       get :commits_by_language_chart
       post :make_spammer
+      get :activate
       get 'edit_privacy'   => 'privacy#edit',   as: :edit_account_privacy
       put 'update_privacy' => 'privacy#update', as: :account_privacy
+    end
+
+    collection do
+      get :search
+      get :autocomplete
+      get :resolve_login
+      get :unsubscribe_emails
+      match :destroy_feedback, via: [:get, :post]
     end
   end
 
@@ -55,6 +66,8 @@ Rails.application.routes.draw do
 
   resources :posts, only: :index, as: 'all_posts'
   get 'markdown_syntax', to: 'abouts#markdown_syntax'
+  get 'message', to: 'about#message'
+  get 'maintenance', to: 'about#maintenance'
 
   resources :projects, path: :p, only: [:show, :edit] do
     member do
@@ -95,7 +108,7 @@ Rails.application.routes.draw do
     resources :commits, only: :index do
       collection { get :summary }
     end
-    resources :contributors, only: :index do
+    resources :contributors, only: [:index, :show] do
       collection { get :summary }
     end
   end
