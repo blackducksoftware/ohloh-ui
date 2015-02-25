@@ -11,19 +11,18 @@ class AccountsController < ApplicationController
   before_action :check_activation, only: [:activate]
   before_action :deleted_account?, only: :destroy_feedback
   before_action :disabled_during_read_only_mode, only: [:new, :create, :edit, :update, :activate]
-  # later: FIXME: Integrate these actions.
+  # FIXME: Integrate this action.
   # before_action :set_smart_sort, only: [:index]
   before_action :session_required, only: [:edit, :destroy, :confirm_delete]
   before_action :must_own_account, only: [:edit, :update, :destroy, :confirm_delete]
   before_action :check_banned_domain, only: :create
   before_action :captcha_response, only: :create
   before_action :account_context, only: :edit
-  # FIXME: params[:_action] does not seem to be passed anywhere, but staging db has latest records.
   after_action :create_action_record, only: :create, if: -> { @account.persisted? && params[:_action].present? }
 
   protect_from_bots :create, redirect_to: :index, controller: :home
 
-  # later: FIXME: people have to be sorted. See sorted_and_filtered in older code.
+  # FIXME: people have to be sorted. See sorted_and_filtered in older code.
   def index
     @people = Person.find_claimed(page: params[:page])
     @cbp_map = PeopleDecorator.new(@people).commits_by_project_map
