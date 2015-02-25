@@ -4,8 +4,8 @@ en:
   cancel: 'Cancel'
   edit: 'Edit'
   new: 'New'
-  is_invalid: is invalid
-  cant_be_blank: can't be blank
+  is_invalid: 'is invalid'
+  cant_be_blank: "can't be blank"
   created: 'Created'
   must_accept_terms: 'You must accept the terms of use.'
   four_oh_four: 'Not Found'
@@ -291,4 +291,4 @@ en:
       unordered_list_html: '&hybull; unordered list 1'
       ordered_list_html: '1. ordered list 2'
     captcha:
-      captcha_label: 'Captcha (required)'
+      captcha_label: 'Captcha'

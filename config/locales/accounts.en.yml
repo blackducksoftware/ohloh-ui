@@ -119,3 +119,6 @@ en:
       description:
         more: 'more...'
         less: 'less...'
+    disabled:
+      disabled_account: "%{user}'s account is disabled."
+      disabled_message: 'This account has been disabled. If you are the account owner and wish to discuss this, send email to info@openhub.net.'

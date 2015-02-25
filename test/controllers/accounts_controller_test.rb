@@ -45,6 +45,16 @@ describe 'AccountsControllerTest' do
       get :show, id: admin.login
       must_redirect_to disabled_account_url(admin)
     end
+
+    it 'should redirect if account is labeled a spammer' do
+      account = create(:account)
+      account_access = Account::Access.new(account)
+      account_access.spam!
+      account_access.spam?.must_equal true
+      account.level.must_equal Account::Access::SPAM
+      get :show, id: account.id
+      must_redirect_to disabled_account_url(account)
+    end
   end
 
   describe 'commits_by_project_chart' do
@@ -86,6 +96,32 @@ describe 'AccountsControllerTest' do
 
       get :commits_by_language_chart, id: admin.login
       must_redirect_to disabled_account_url(admin)
+    end
+  end
+
+  describe 'make spammer' do
+    it 'admin should be able to label a spammer' do
+      login_as admin
+      post :make_spammer, id: user.id
+      must_render_template 'accounts/disabled'
+      flash[:success].must_equal I18n.t('accounts.make_spammer.success', name: user.name)
+    end
+
+    it 'user should not be able to label a spammer' do
+      user2 = create(:account)
+      login_as user
+      post :make_spammer, id: user2.id
+      must_respond_with :unauthorized
+    end
+
+    it 'should mark an account as spammer' do
+      login_as admin
+      admin.level.must_equal Account::Access::ADMIN
+      get :make_spammer, id: admin.id
+
+      must_render_template 'accounts/disabled'
+      admin.reload.level.must_equal Account::Access::SPAM
+      flash[:success].must_equal I18n.t('accounts.make_spammer.success', name: admin.name)
     end
   end
 
@@ -172,17 +208,6 @@ describe 'AccountsControllerTest' do
 
       must_redirect_to message_path
       flash[:error].must_equal I18n.t('accounts.destroy_feedback.expired')
-    end
-  end
-
-  describe 'make_spammer' do
-    it 'should mark an account as spammer' do
-      admin.level.must_equal Account::Access::ADMIN
-      get :make_spammer, id: admin.id
-
-      must_redirect_to account_path(admin)
-      admin.reload.level.must_equal Account::Access::SPAM
-      flash[:success].must_equal I18n.t('accounts.make_spammer.success', name: admin.name)
     end
   end
 
