@@ -20,4 +20,10 @@ class NilVitaTest < ActiveSupport::TestCase
       nil_vita.nil?.must_equal true
     end
   end
+
+  describe 'blank' do
+    it 'should be true' do
+      nil_vita.blank?.must_equal true
+    end
+  end
 end

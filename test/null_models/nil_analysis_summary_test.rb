@@ -38,4 +38,16 @@ class NilAnalysisSummaryTest < ActiveSupport::TestCase
       nil_analysis_summary.committer_count.must_equal 0
     end
   end
+
+  describe 'nil?' do
+    it 'should return true' do
+      nil_analysis_summary.nil?.must_equal true
+    end
+  end
+
+  describe 'blank?' do
+    it 'should return true' do
+      nil_analysis_summary.blank?.must_equal true
+    end
+  end
 end
