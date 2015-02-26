@@ -8,6 +8,7 @@ class Account < ActiveRecord::Base
   attr_accessor :password, :current_password, :validate_current_password, :invite_code,
                 :password_confirmation, :email_confirmation
   attr_writer :ip
+  attr_reader :about_raw
 
   oh_delegators :stack_core, :project_core, :position_core, :claim_core
   strip_attributes :name, :email, :login, :invite_code, :twitter_account
@@ -15,6 +16,7 @@ class Account < ActiveRecord::Base
   fix_string_column_encodings!
 
   def about_raw=(value)
+    @about_raw = value
     about_markup_id.nil? ? build_markup(raw: value) : markup.raw = value
   end
 
