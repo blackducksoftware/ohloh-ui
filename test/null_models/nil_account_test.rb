@@ -15,12 +15,6 @@ class NilAccountTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'admin?' do
-    it 'should return nil' do
-      nil_account.admin?.must_equal false
-    end
-  end
-
   describe 'actions' do
     it 'should return []' do
       nil_account.actions.must_equal []
