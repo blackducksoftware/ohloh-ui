@@ -10,7 +10,7 @@
     - if current_user_is_admin?
       %h2
         .float_right.btn-group
-          = button_to t('.spam'), make_spammer_account_path(@post.account), method: :post,
+          = button_to t('.spam'), make_spammer_account_accesses_path(@post.account), method: :post,
             data: { confirm: t('.spam_confirmation'), user: @topic.posts.first.account.name },
             class: 'btn btn-small btn-warning'
           = button_to t('.delete'), topic_post_path(@topic, @post), method: :delete,
