@@ -8,6 +8,7 @@ class AccountsController < ApplicationController
   # FIXME: Add the disabled view
   before_action :redirect_if_disabled, only: [:show, :update, :edit, :commits_by_project_chart,
                                               :commits_by_language_chart]
+  before_action :admin_session_required, only: [:make_spammer]
   before_action :check_activation, only: [:activate]
   before_action :deleted_account?, only: :destroy_feedback
   before_action :disabled_during_read_only_mode, only: [:new, :create, :edit, :update, :activate]
@@ -94,7 +95,7 @@ class AccountsController < ApplicationController
   def make_spammer
     Account::Access.new(@account).spam!
     flash[:success] = t('.success', name: CGI.escapeHTML(@account.name))
-    redirect_to account_path(@account)
+    render template: 'accounts/disabled'
   end
 
   def activate
@@ -140,7 +141,8 @@ class AccountsController < ApplicationController
   end
 
   def redirect_if_disabled
-    redirect_to disabled_account_url(@account) if @account && Account::Access.new(@account).disabled?
+    return unless @account && (Account::Access.new(@account).disabled? || Account::Access.new(@account).spam?)
+    redirect_to disabled_account_url(@account)
   end
 
   def deleted_account?

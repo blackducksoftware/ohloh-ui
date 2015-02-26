@@ -3,10 +3,6 @@
   \:
   = link_to @forum.name, forum_path(@forum)
 
-- if @topic.errors.any?
-  .error_explanation
-    %h4= pluralize(@topic.errors.count, 'error')
-
 %h2= t('.new_topic')
 .well.col-md-11
   .col-md-9

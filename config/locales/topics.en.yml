@@ -2,31 +2,32 @@
 
     topics:
       new:
+        forums: 'Forums'
         create_topic: 'Post Topic'
-      create:
-        success: 'Topic successfully created'
-        error: 'Unable to successfully create topic'
       show:
+        forums: 'Forums'
         close: 'Close'
         delete: 'Delete'
         reopen: 'Re-open'
-        close_topic: 'Comments to this topic are now closed.'
+        spam: 'SPAM!!!'
+        move: 'Move'
         close_confirmation: 'Are you sure you want to close this topic?'
         delete_confirmation: 'Are you sure you want to delete this topic?'
         reopen_confirmation: 'Are you sure you want to re-open this topic?'
+        reopen_message_html: 'As the user who created this topic, you may %{link} the topic if you feel your question was not answered or need more information on this topic.'
+        spam_confirmation: "Are you sure you want to mark %{user} as a spammer, disabling the account and removing all posts?"
         next_topic_html: 'Next Topic&rarr;'
         previous_topic_html: '&larr;Previous Topic'
+        close_topic_message_1: 'Comments to this topic are now closed.'
+        closed_topic_message_2: 'Comments to this topic are now closed. Please create a new topic to get technical support.'
+        closed_topic_message_3: 'The user who created the topic can reopen this topic at any time.'
       edit:
         save_changes: 'Save Changes'
-      update:
-        success: 'Topic updated'
-        error: 'Sorry, there was a problem updating the topic'
       destroy:
-        success: 'Topic successfully removed'
-        error: 'There was a problem deleting the topic'
+        success: "Topic '%{topic_title}' was deleted."
       form:
-        title: 'Title (required)'
-        enter_topic_title: 'Enter the topic title.'
+        title: 'Title'
+        enter_topic_title: "Enter the topic's title."
         message: 'Message'
         first_post: 'This will be the first post'
         sticky: 'Sticky'
@@ -42,5 +43,6 @@
         posts: 'Posts'
         poster: 'Poster'
         freshness: 'Freshness'
-
-      # TODO: Write error messages for fields
+      move:
+        move_to: 'Move To:'
+        go: 'Go'

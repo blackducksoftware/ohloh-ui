@@ -9,6 +9,7 @@ class PostTest < ActiveSupport::TestCase
   it 'a post without a body should not be able to save' do
     post.body = nil
     post.wont_be :valid?
+    post.errors[:body].must_equal ["can't be blank"]
     post.wont :save
   end
 

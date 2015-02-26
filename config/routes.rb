@@ -65,6 +65,7 @@ Rails.application.routes.draw do
   resources :topics, except: [:index, :new, :create] do
     resources :posts, except: [:new]
   end
+  get 'move_topic/:id', to: 'topics#move_topic', as: :move_topic
 
   resources :posts, only: :index, as: 'all_posts'
   get 'markdown_syntax', to: 'abouts#markdown_syntax'
