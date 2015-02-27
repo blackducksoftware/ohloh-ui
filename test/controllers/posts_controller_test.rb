@@ -195,7 +195,7 @@ describe PostsController do
     assert_no_difference('Post.count') do
       post :create, topic_id: topic.id, post: { body: nil }
     end
-    must_redirect_to topic_path(topic.id)
+    must_redirect_to topic_path(topic.id) + '?post%5Bbody%5D=#post_reply'
   end
 
   it 'create action: valid recaptcha' do
@@ -215,8 +215,9 @@ describe PostsController do
     end
   end
 
-  it 'admin can edit anyone' do
+  it 'admin edit page' do
     login_as admin
+    topic.id = post_object.topic_id
     get :edit, topic_id: topic.id, id: post_object.id
     must_respond_with :success
   end

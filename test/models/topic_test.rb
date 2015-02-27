@@ -5,6 +5,20 @@ class TopicTest < ActiveSupport::TestCase
   before { create_must_and_wont_aliases(Topic) }
   let(:topic) { create(:topic) }
 
+  it 'create an invalid topic without a title' do
+    topic.title = nil
+    topic.wont_be :valid?
+    topic.errors[:title].must_equal ["can't be blank"]
+    topic.wont :save
+  end
+
+  it 'create an invalid topic without a post body' do
+    topic_without_a_post_body = build(:topic) { |topic| topic.posts.build(body: nil) }
+    topic_without_a_post_body.wont_be :valid?
+    topic_without_a_post_body.posts[0].errors[:body].must_equal ["can't be blank"]
+    topic_without_a_post_body.wont :save
+  end
+
   it 'create a valid topic' do
     topic.must_be :valid?
     topic.must :save

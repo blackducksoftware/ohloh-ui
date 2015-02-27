@@ -1,25 +1,21 @@
  en:
 
    posts:
-      create:
-        success: 'Post successfully created'
-        error: 'Unable to successfully create post'
-      edit:
-        edit_post: 'Edit Post'
-        delete: 'Delete'
-        delete_confirmation: 'Are you sure you want to delete your post?'
-      update:
-        success: 'Post updated'
-        error: 'Sorry, there was a problem updating the post'
-      destroy:
-        success: 'Post successfully removed'
-        error: 'There was a problem deleting the post'
-      reply:
-        post_a_response: 'Post a Response'
-        response: 'Open Hub welcomes your opinions.'
-        submit: 'Submit'
-      post:
-        edit_post: 'Edit Post'
-
-
-  # TODO: Error handling for posts
+    edit:
+      forums: 'Forums'
+      edit_post: 'Edit Post'
+      spam: 'SPAM!'
+      spam_confirmation: 'Are you sure you want to mark %{user} as a spammer, disabling the account and removing all posts?'
+      delete: 'Delete'
+      delete_confirmation: 'Are you sure you want to delete your post?'
+    update:
+      success: 'Post updated'
+      error: 'Sorry, there was a problem updating the post'
+    reply:
+      post_a_response: 'Post a Response'
+      response: 'Open Hub welcomes your opinions.'
+      submit: 'Submit'
+    post:
+      edit_post: 'Edit Post'
+    fields:
+      submit: 'Submit'

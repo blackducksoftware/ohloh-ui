@@ -73,7 +73,6 @@ describe TopicsController do
                                                 [{ body: 'Post object that comes by default' }] }
     end
     must_redirect_to forum_path(forum.id)
-    flash[:notice].must_equal 'Topic successfully created'
   end
 
   it 'user fails to create a topic and an accompanying post' do
@@ -86,7 +85,6 @@ describe TopicsController do
   end
 
   test 'user creates a topic/post with valid recaptcha' do
-    # TODO: Message might be changed
     login_as(user)
     TopicsController.any_instance.expects(:verify_recaptcha).returns(true)
     assert_difference(['Topic.count', 'Post.count']) do
@@ -94,11 +92,9 @@ describe TopicsController do
                                                 [{ body: 'Post object that comes by default' }] }
     end
     must_redirect_to forum_path(forum.id)
-    flash[:notice].must_equal 'Topic successfully created'
   end
 
   test 'user fails to create a topic/post because of invalid recaptcha' do
-    # TODO: message might be changed.
     login_as(user)
     TopicsController.any_instance.expects(:verify_recaptcha).returns(false)
     assert_no_difference(['Topic.count', 'Post.count']) do
@@ -160,7 +156,6 @@ describe TopicsController do
                                                 [{ body: 'Post object that comes by default' }] }
     end
     must_redirect_to forum_path(forum.id)
-    flash[:notice].must_equal 'Topic successfully created'
   end
 
   it 'admin fails create a topic and an accompanying post' do
@@ -173,7 +168,6 @@ describe TopicsController do
   end
 
   it 'admin creates a topic/post with valid recaptcha' do
-    # TODO: Message might change
     login_as(admin)
     TopicsController.any_instance.expects(:verify_recaptcha).returns(true)
     assert_difference(['Topic.count', 'Post.count']) do
@@ -184,7 +178,6 @@ describe TopicsController do
   end
 
   it 'admin fails to create a topic/post because of invalid recaptcha' do
-    # TODO: Message might change.
     login_as(admin)
     TopicsController.any_instance.expects(:verify_recaptcha).returns(false)
     assert_no_difference(['Topic.count', 'Post.count']) do
@@ -208,12 +201,12 @@ describe TopicsController do
     must_respond_with :success
   end
 
+  # Tests may not be necessary, topics/edit does not work properly on main app.
   it 'admin update' do
     login_as admin
     put :update, id: topic.id, topic: { title: 'Changed title for test purposes' }
     topic.reload
     topic.title.must_equal 'Changed title for test purposes'
-    flash[:notice].must_equal 'Topic updated'
   end
 
   it 'admin fails to update' do
@@ -221,7 +214,6 @@ describe TopicsController do
     put :update, id: topic.id, topic: { title: '' }
     topic.reload
     topic.title.must_equal topic.title
-    flash[:notice].must_equal 'Sorry, there was a problem updating the topic'
   end
 
   it 'admin destroy' do
@@ -231,10 +223,10 @@ describe TopicsController do
       delete :destroy, id: topic2.id
     end
     must_redirect_to forums_path
+    flash[:notice].must_equal "Topic '#{topic2.title}' was deleted."
   end
 
   it 'admin can close a topic' do
-    # TODO: Will need to change the message for this
     login_as admin
     put :update, id: topic.id, topic: { closed: true }
     topic.reload
@@ -242,7 +234,6 @@ describe TopicsController do
   end
 
   it 'admin can reopen a topic' do
-    # TODO: Will need to change the message for this
     login_as admin
     topic.closed = true
     topic.reload
@@ -250,9 +241,13 @@ describe TopicsController do
     topic.closed.must_equal false
   end
 
+  # TODO: Will need to figure out how javascript will affect the testing.
   it 'admin can move a topic' do
     different_topic = create(:topic)
     login_as admin
+    get :move_topic, id: topic.id
+    must_respond_with :success
+    must_render_template 'topics/move'
     put :update, id: topic.id, topic: { forum_id: different_topic.forum_id }
     topic.reload
     topic.forum_id.must_equal different_topic.forum_id

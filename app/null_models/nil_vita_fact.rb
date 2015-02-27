@@ -1,15 +1,6 @@
 class NilVitaFact < NullObject
-  def first_checkin
-    nil
-  end
-
-  def last_checkin
-    nil
-  end
-
-  def commits
-    0
-  end
+  attr_reader :first_checkin, :last_checkin
+  nought_methods :commits
 
   def commits_by_language
     []

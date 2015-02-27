@@ -23,7 +23,6 @@ describe ForumsController do
       post :create, forum: { name: 'Ruby vs. Javascript, who will win?' }
     end
     must_redirect_to forums_path
-    flash[:notice].must_equal 'Forum successfully created'
   end
 
   it 'admin fails create' do
@@ -32,6 +31,7 @@ describe ForumsController do
       post :create, forum: { name: '' }
     end
     must_render_template :new
+    flash[:alert].must_equal 'There was a problem!'
   end
 
   it 'admin show with pagination' do
@@ -56,7 +56,6 @@ describe ForumsController do
     put :update, id: forum.id, forum: { name: 'Ruby vs. Python vs. Javascript deathmatch' }
     forum.reload
     forum.name.must_equal 'Ruby vs. Python vs. Javascript deathmatch'
-    flash[:notice].must_equal 'Forum successfully updated'
   end
 
   it 'admin fails to update' do
@@ -64,7 +63,7 @@ describe ForumsController do
     put :update, id: forum.id, forum: { name: '' }
     forum.reload
     forum.name.must_equal forum.name
-    flash[:notice].must_equal 'Sorry, there was a problem updating the forum'
+    flash[:alert].must_equal 'There was a problem saving!'
   end
 
   it 'admin destroy' do
@@ -74,7 +73,6 @@ describe ForumsController do
       delete :destroy, id: forum.id
     end
     must_redirect_to forums_path
-    flash[:notice].must_equal 'Forum successfully removed'
   end
 
   #------------------User Functionality----------------------
