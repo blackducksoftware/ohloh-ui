@@ -24,6 +24,10 @@ Rails.application.routes.draw do
 
   resources :people, only: [:index]
 
+  resources :licenses do
+    resources :edits, only: [:index, :update]
+  end
+
   resources :accounts do
     resources :api_keys, constraints: { format: :html }, except: :show
     resources :projects, only: [:index]
@@ -35,7 +39,7 @@ Rails.application.routes.draw do
         get :sent
       end
     end
-    resources :edits, only: [:index]
+    resources :edits, only: [:index, :update]
     resources :posts, only: [:index]
     resources :reviews, only: [:index]
 
@@ -96,6 +100,7 @@ Rails.application.routes.draw do
         post :reject
       end
     end
+    resources :edits, only: [:index, :update]
     resources :rss_articles, only: :index
     resources :widgets, only: :index
     resources :similar_projects, only: :index
@@ -126,6 +131,7 @@ Rails.application.routes.draw do
       get :print_infographic
       get :affiliated_committers
     end
+    resources :edits, only: [:index, :update]
     resource :logos, only: [:new, :create, :destroy]
     resources :managers, only: [:index, :new, :create, :edit, :update] do
       member do
