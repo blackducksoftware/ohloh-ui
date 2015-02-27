@@ -581,7 +581,6 @@ class AccountTest < ActiveSupport::TestCase
     it 'should resent activation email and update sent at timestamp' do
       skip('TODO: AccountNotifier')
       ActionMailer::Base.deliveries.clear
-      unactivated = create(:unactivated)
 
       admin.resend_activation!
       email = ActionMailer::Base.deliveries.last
