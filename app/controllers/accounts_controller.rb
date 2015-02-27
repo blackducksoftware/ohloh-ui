@@ -54,7 +54,7 @@ class AccountsController < ApplicationController
       cookies.delete(:auth_token)
       reset_session
     end
-    redirect_to delete_feedback_deleted_accounts_path(@account.login)
+    redirect_to edit_deleted_account_path(@account.login)
   end
 
   def unsubscribe_emails

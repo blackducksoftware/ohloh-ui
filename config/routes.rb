@@ -64,9 +64,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :deleted_accounts, only: [] do
-    get :delete_feedback, on: :collection, via: [:get, :post]
-  end
+  resources :deleted_accounts, only: [:edit, :update]
 
   resources :check_availabilities, only: [] do
     collection do

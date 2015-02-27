@@ -6,7 +6,7 @@
   %p= t('.rejoin')
   %p= t('.feedback')
 
-  %form{ url: delete_feedback_deleted_accounts_path(login: params[:login]), method: 'post' }
+  = form_for @deleted_account do
     .controls
       - DeletedAccount::REASONS_MAP.sort.each do |val, label|
         %label.checkbox

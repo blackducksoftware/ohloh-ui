@@ -303,7 +303,7 @@ describe 'AccountsController' do
 
       assert_difference 'Account.count', -1 do
         post :destroy, id: account.to_param
-        must_redirect_to delete_feedback_deleted_accounts_path(account.login)
+        must_redirect_to edit_deleted_account_path(account.login)
       end
     end
 
