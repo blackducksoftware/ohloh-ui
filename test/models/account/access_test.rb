@@ -136,7 +136,6 @@ class Account::AccessTest < ActiveSupport::TestCase
     it 'should disable account' do
       account_access.disabled?.must_equal false
       account_access.disable!
-      account_access.disabled?.must_equal false
       Account::Access.new(account).disabled?.must_equal true
     end
 
@@ -149,7 +148,6 @@ class Account::AccessTest < ActiveSupport::TestCase
     it 'should mark account as spam' do
       account_access.spam?.must_equal false
       account_access.spam!
-      account_access.spam?.must_equal false
       Account::Access.new(account).spam?.must_equal true
     end
 
