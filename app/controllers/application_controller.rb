@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
   def current_user
     return @cached_current_user if @cached_current_user_checked
     @cached_current_user_checked = true
-    @cached_current_user = find_user_in_session || find_remembered_user || NullAccount.new
+    @cached_current_user = find_user_in_session || find_remembered_user || NilAccount.new
     session[:account_id] = @cached_current_user.id if @cached_current_user.id
     @cached_current_user
   end

@@ -116,7 +116,7 @@ class AccountDecoratorTest < ActiveSupport::TestCase
   end
 
   describe '#sidebar_for' do
-    let(:current_user) { NullAccount.new }
+    let(:current_user) { NilAccount.new }
 
     it 'should return four sections of menu list' do
       admin.decorate.sidebar_for(current_user).length.must_equal 4

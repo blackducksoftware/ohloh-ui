@@ -38,4 +38,10 @@ class NilVitaFactTest < ActiveSupport::TestCase
       nil_vita_fact.nil?.must_equal true
     end
   end
+
+  describe 'blank?' do
+    it 'should return true' do
+      nil_vita_fact.blank?.must_equal true
+    end
+  end
 end
