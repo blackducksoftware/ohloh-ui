@@ -1,5 +1,6 @@
-class Accounts::ChartsController < AccountsController
+class Accounts::ChartsController < ApplicationController
   include SetAccountByAccountId
+  include RedirectIfDisabled
 
   before_action :redirect_if_disabled
 

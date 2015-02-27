@@ -1,4 +1,6 @@
 class AccountsController < ApplicationController
+  include RedirectIfDisabled
+
   before_action :set_account, only: [:destroy, :show, :update, :edit, :confirm_delete]
   before_action :redirect_if_disabled, only: [:show, :update, :edit]
   before_action :disabled_during_read_only_mode, only: [:new, :create, :edit, :update]
@@ -69,11 +71,6 @@ class AccountsController < ApplicationController
   def set_account
     @account = Account::Find.by_id_or_login(params[:id])
     fail ParamRecordNotFound unless @account
-  end
-
-  def redirect_if_disabled
-    return unless @account && (Account::Access.new(@account).disabled? || Account::Access.new(@account).spam?)
-    redirect_to disabled_account_url(@account)
   end
 
   def check_banned_domain
