@@ -47,9 +47,4 @@ class Account::Access
       @account.update_attributes!(level: SPAM)
     end
   end
-
-  def reload
-    @level = @account.reload.level
-    self
-  end
 end
