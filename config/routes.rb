@@ -83,6 +83,7 @@ Rails.application.routes.draw do
   resources :autocompletes, only: [] do
     collection do
       get :account
+      get :project
     end
   end
 
@@ -113,7 +114,6 @@ Rails.application.routes.draw do
     end
     collection do
       get :compare
-      get :autocomplete
     end
     resource :logos, only: [:new, :create, :destroy]
     resources :links, except: :show
