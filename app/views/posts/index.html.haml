@@ -1,15 +1,13 @@
 / TODO: Implement Search/Filter etc. for this page. New Ticket.
 - if @account
   %h2 Posts
-  / Render search dingus refers to searchable plugin
-  / - render_search_dingus(nil, true, render_post_sorts)
+  = render partial: 'shared/search_dingus', locals: { collection: @posts, sort_option_name: :posts }
 - else
   %h1.margin_bottom_20
     = link_to t('.forums'), forums_url
     \:
     Posts
-    / Render search dingus refers to searchable plugin
-  / - render_search_dingus(nil, true, render_post_sorts)
+    = render partial: 'shared/search_dingus', locals: { collection: @posts, sort_option_name: :posts }
   .clear_left &nbsp;
 
 - if @posts.any?

@@ -12,7 +12,7 @@ describe PostsController do
   it 'index' do
     # TODO: Pagination Sort/Filter/Search etc.
     get :index
-    must_redirect_to '/posts'
+    must_respond_with :ok
   end
 
   it 'create fails for user with no account' do
@@ -44,7 +44,7 @@ describe PostsController do
   it 'user index' do
     login_as user
     get :index
-    must_redirect_to '/posts'
+    must_respond_with :ok
   end
 
   it 'create action: valid recaptcha' do
@@ -179,7 +179,7 @@ describe PostsController do
   it 'admin index' do
     login_as admin
     get :index
-    must_redirect_to '/posts'
+    must_respond_with :ok
   end
 
   it 'admin create' do

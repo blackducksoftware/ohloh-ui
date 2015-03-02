@@ -1,0 +1,32 @@
+- no_match_found_type ||= :message
+#search-dingus
+  %form.form-inline
+    .row
+      .col-md-3.padding_left_25
+        - if collection.respond_to?(:current_page) && !collection.total_entries.zero?
+          %label.paginate= t('.pagination_status', current_page: number_with_delimiter(collection.current_page),
+            total_pages: number_with_delimiter(collection.total_pages))
+      .col-md-5.padding_left_10
+        %label #{t('.search_text')} &nbsp;
+        = text_field_tag :query, params[:query]
+        %button.btn{ type: 'Submit' }
+          %i.icon-refresh
+      .col-md-3.col-md-offset-1.no_padding
+        #sort_by
+          %label= t('.sort_by')
+          = select_tag :sort, options_for_select(SORT_OPTIONS[sort_option_name][:options],
+            params[:sort] || SORT_OPTIONS[sort_option_name][:default]),
+            class: 'chzn-select', onchange: 'this.form.submit()'
+
+- if params[:query].present? && collection.size.zero?
+  - if no_match_found_type == :flash
+    = render partial: 'shared/alert', locals: { message: t('.no_match') }
+  - else
+    .inset.advanced_search_tips
+      %h4= t('.no_match_1_html', query: params[:query])
+      %p= t('.no_match_2')
+      %ul
+        %li= t('.no_match_3')
+        %li= t('.no_match_4')
+        %li= t('.no_match_5')
+        %li= t('.no_match_6')

@@ -7,9 +7,9 @@ class AccountsController < ApplicationController
   before_action :check_activation, only: [:activate]
   before_action :deleted_account?, only: :destroy_feedback
   before_action :disabled_during_read_only_mode, only: [:activate]
+  before_action :find_claimed_people, only: :index
 
   def index
-    @people = Person.find_claimed(page: params[:page])
     @cbp_map = PeopleDecorator.new(@people).commits_by_project_map
     @positions_map = Position.where(id: @cbp_map.values.map(&:first).flatten).includes(:project)
                      .references(:all).index_by(&:id)
@@ -87,6 +87,11 @@ class AccountsController < ApplicationController
   end
 
   private
+
+  def find_claimed_people
+    sort_by = params[:sort] unless params[:sort] == 'relevance'
+    @people = Person.find_claimed(page: params[:page], sort_by: sort_by, q: params[:query])
+  end
 
   def disabled_during_read_only_mode
     redirect_to maintenance_path if read_only_mode? && !params[:admin]
