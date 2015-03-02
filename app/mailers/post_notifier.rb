@@ -5,7 +5,7 @@ class PostNotifier < ActionMailer::Base
     @user_who_replied = user_who_replied
     @topic = topic
     mail(to: @user_who_replied.email,
-         subject: 'Post successfully created',
+         subject: t('.subject'),
          template_path: 'mailers',
          template_name: 'post_notifier')
   end
@@ -15,7 +15,7 @@ class PostNotifier < ActionMailer::Base
     @user_who_replied = user_who_replied
     @topic = topic
     mail(to: @user_who_needs_reply.email,
-         subject: 'Someone has responded to your post',
+         subject: t('.subject'),
          template_path: 'mailers',
          template_name: 'reply_notifier')
   end

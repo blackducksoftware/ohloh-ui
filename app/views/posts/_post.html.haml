@@ -7,8 +7,7 @@
         %h4.nomargin
           = truncate(h(post.account.name), length: 18)
       %small.date.avatar_name
-        / TODO: Internationalize this method
-        "#{ time_ago_in_words(post.created_at) } ago"
+        = time_ago_in_words(post.created_at)
     - if (current_user.id == post.account_id) || (current_user_is_admin?)
       = link_to t('.edit_post'), edit_topic_post_path(post.topic, post), class: 'btn btn-mini btn-info'
     .clear

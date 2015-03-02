@@ -40,6 +40,7 @@ Rails.application.routes.draw do
     resources :reviews, only: [:index]
 
     member do
+      get :confirm_delete
       get :disabled
       get :settings
       get :languages
@@ -56,6 +57,7 @@ Rails.application.routes.draw do
       get :autocomplete
       get :resolve_login
       get :unsubscribe_emails
+      get :delete_feedback
       match :destroy_feedback, via: [:get, :post]
     end
   end
@@ -67,6 +69,7 @@ Rails.application.routes.draw do
   resources :topics, except: [:index, :new, :create] do
     resources :posts, except: [:new]
   end
+  get 'move_topic/:id', to: 'topics#move_topic', as: :move_topic
 
   resources :posts, only: :index, as: 'all_posts'
   get 'markdown_syntax', to: 'abouts#markdown_syntax'
@@ -163,6 +166,9 @@ Rails.application.routes.draw do
   resources :contributors, controller: 'contributions' do
     resources :invites, only: [:new, :create]
   end
+
+  get 'message' => 'home#message'
+  get 'maintenance' => 'home#maintenance'
 
   # The priority is based upon order of creation: first created -> highest
   # priority.

@@ -10,8 +10,8 @@ FactoryGirl.define do
     email_confirmation { |account| account.send :email }
     url { Faker::Internet.url }
     login { generate(:account_login) }
-    password 'abc123456'
-    password_confirmation 'abc123456'
+    password { Faker::Internet.password }
+    password_confirmation { |account| account.send(:password) }
     twitter_account 'openhub'
     name { Faker::Name.name }
     about_raw { Faker::Lorem.characters(10) }

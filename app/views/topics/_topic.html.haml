@@ -9,16 +9,18 @@
         by
         = topic.account.name
     %td.center
-      / TODO: Figure out why the labels don't render
       - if topic.closed
-        %span.label.label-important= t('.closed')
+        %span.label.label-danger= t('.closed')
       - elsif topic.created_at >= 30.minutes.ago
         %span.label.label-info= t('.new')
       - elsif topic.posts.last.created_at <= 6.months.ago
-        %span.label= t('.stale')
+        %span.label.label-default= t('.stale')
       - elsif topic.posts.last.created_at >= 30.minutes.ago
         %span.label.label-success= t('.recent_post')
     %td.center= (topic.posts_count - 1)
     %td.center= topic.hits
     %td.last.right.small
-      = render partial: '/forums/last_post', locals: { forum: @forum, last_post: topic.posts.last }
+      - last_post = topic.posts.last
+      = time_ago_in_words(last_post.created_at)
+      by
+      = last_post.account.name
