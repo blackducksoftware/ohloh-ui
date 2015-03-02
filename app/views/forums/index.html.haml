@@ -23,10 +23,6 @@
           %h3.nomargin
             = link_to forum.name, forum_path(forum)
           %p.nomargin= forum.description
-          / TODO: Changing the below from forum.topics_count to forum.topics.count
-          / creates an extremely large query. Figure out how to address this issue.
-          / This also incorrectly displays the wrong information when a topic/post
-          / is created because the topics_count and posts_count are not incremented.
         %td.center= forum.topics_count
         %td.center= forum.posts_count
 
