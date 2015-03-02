@@ -29,15 +29,15 @@ module AvatarHelper
   end
 
   def avatar_small_laurels(rank)
-    "<img src='/assets/icons/sm_laurel_#{rank || 1}.png' alt='KudoRank #{rank || 1}'/>".html_safe
+    avatar_laurels_img(rank, 'sm_laurel')
   end
 
   def avatar_laurels(rank)
-    "<img src='/assets/icons/laurel_#{rank || 1}.png' alt='KudoRank #{rank || 1}'/>".html_safe
+    avatar_laurels_img(rank, 'laurel')
   end
 
   def avatar_tiny_laurels(rank)
-    "<img src='/assets/icons/tn_laurel_#{rank || 1}.png' alt='KudoRank #{rank || 1}'/>".html_safe
+    avatar_laurels_img(rank, 'tn_laurel')
   end
 
   private
@@ -71,5 +71,9 @@ module AvatarHelper
     when Person
       who.effective_name
     end
+  end
+
+  def avatar_laurels_img(rank, imag_base)
+    "<img src='/assets/icons/#{imag_base}_#{rank || 1}.png' alt='KudoRank #{rank || 1}'/>".html_safe
   end
 end
