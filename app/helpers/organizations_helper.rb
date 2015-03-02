@@ -26,6 +26,11 @@ module OrganizationsHelper
     }
   end
 
+  def load_infograhics_data_via_ajax
+    return unless request.xhr?
+
+  end
+
   private
 
   def org_most_commit_stat(account_stat)

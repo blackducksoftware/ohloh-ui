@@ -2,9 +2,9 @@ OrganizationPictogram = {
   init: function() {
     if ($('#organizations_show_page').length == 0) return;
     SVGArrow.generate();
-    // OrganizationPictogram.block_ui();
-    // OrganizationPictogram.select_subview();
-    // OrganizationPictogram.default_selected("view");
+    OrganizationPictogram.block_ui();
+    OrganizationPictogram.select_subview();
+    OrganizationPictogram.default_selected("view");
     OrganizationPictogram.print_infographic();
   },
   select_subview: function(){
@@ -17,6 +17,7 @@ OrganizationPictogram = {
           $(update).html(response.subview_html);
           OrganizationPictogram.init();
           AppendHistory.init();
+          $.unblockUI();
         }
       });
       return false;
@@ -37,7 +38,7 @@ OrganizationPictogram = {
   /* Block the Page While loading the Data Tables */
   block_ui: function(){
     $(".block_ui").click(function(){
-      $.blockUI({ message: '<h4><img src="/images/spinner.gif" /> Loading...</h4>' });
+      $.blockUI({ message: '<h4><img src="/assets/spinner.gif" /> Loading...</h4>' });
     });
   },
   default_selected: function(view){
@@ -45,6 +46,20 @@ OrganizationPictogram = {
     params_value = match && decodeURIComponent(match[1].replace(/\+/g, " "));
     if(params_value == null)
       params_value = $("#infographic_box").attr("default_view");
+    console.log(params_value);
     $('.'+params_value).addClass('pictogram_link_active').attr("href", "javascript:void(0)").unbind("click");
   }
 };
+
+var AppendHistory = {
+  init: function() {
+    $(".append_history").click( function() {
+      var url = $(this).attr('url');
+      var title = $(this).attr('append_title');
+      if(url != "")
+        history.pushState('', title, url);
+      return false;
+    });
+  }
+};
+
