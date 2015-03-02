@@ -10,8 +10,8 @@ class OrgThirtyDayActivity < ActiveRecord::Base
   class << self
     def most_active_orgs
       with_commits_and_affiliates = joins(:organization)
-                                    .where(arel_table[:thirty_day_commit_count].gt(0))
-                                    .and(arel_table[:affiliate_count].gt(0))
+                                    .where(arel_table[:thirty_day_commit_count].gt(0)
+                                    .and(arel_table[:affiliate_count].gt(0)))
 
       with_commits_and_affiliates.each do |ota|
         ota.commits_per_affiliate = ota.thirty_day_commit_count / ota.affiliate_count
@@ -62,7 +62,7 @@ class OrgThirtyDayActivity < ActiveRecord::Base
 
     def with_thirty_day_commit_count
       joins(:organization)
-      .not(thirty_day_commit_count: nil)
+      .where.not(thirty_day_commit_count: nil)
       .order('thirty_day_commit_count DESC')
       .limit(5)
     end

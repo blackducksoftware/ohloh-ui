@@ -116,7 +116,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :organizations, path: :orgs, only: [:show] do
+  resources :organizations, path: :orgs, only: [:index, :show] do
     member do
       get :settings
       get :projects

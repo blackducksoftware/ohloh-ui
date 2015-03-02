@@ -1,0 +1,24 @@
+.pull-left.col-md-8
+  %h2.pull-left
+  #sort_by.pull-right.nav-select-container
+    %label.pull-left= t '.filter'
+    = select_tag(:org_type, options_for_select(OrgThirtyDayActivity::SORT_TYPES),
+    class: 'chzn-select span2 float_right')
+  .clearfix
+  #org_filter_no_result{ class: @org_by_30_day_commits.empty? ? '' : 'hidden'}
+    %h5
+      %i.icon-warning-sign
+      = t '.no_results'
+  %table.table.table-striped.table-condensed{ class: @org_by_30_day_commits.empty? ? 'hidden' : '' }
+    #spinner.hidden{ style: 'margin-top:12%; margin-bottom:15%; margin-left:45%' }
+      = image_tag 'spinner.gif'
+    %tbody#30_day_commit_volume
+      %tr#header
+        %th{ style: 'width:25%' }= t '.org'
+        %th.center{ style:  'width:15%' }= t '.type'
+        %th.center{ style:  'width:5%' }= t '.size'
+        %th.center{ style:  'width:15%' }= t '.projects'
+        %th.center{ style:  'width:15%' }= t '.affiliates'
+        %th.center{ style:  'width:20%' }= t '30_day_commits'
+      = render partial: 'org_30_day_activity', collection: @org_by_30_day_commits
+

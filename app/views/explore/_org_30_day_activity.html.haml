@@ -1,0 +1,14 @@
+:ruby
+  org = org_30_day_activity.organization
+
+%tr
+  %td
+    = link_to org.decorate.icon(:small), organization_path(org), title: org.name,
+    style: 'text-decoration: none', class: 'logo'
+    &nbsp;
+    = link_to h(truncate(org.name, length: 16)), organization_path(org), title: org.name
+  %td.center= org.org_type_label
+  %td.center.strong= org_30_day_activity.decorate.project_count_text
+  %td.center= org_30_day_activity.project_count
+  %td.center= org_30_day_activity.affiliate_count
+  %td.center= org_30_day_activity.thirty_day_commit_count
