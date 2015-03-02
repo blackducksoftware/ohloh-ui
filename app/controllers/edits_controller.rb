@@ -1,5 +1,6 @@
 class EditsController < ApplicationController
-  before_action :find_parent
+  before_action :session_required, only: [:update]
+  before_action :find_parent, only: [:index]
   before_action :find_edit, only: [:update]
   before_action :find_edits, only: [:index]
 
@@ -8,6 +9,11 @@ class EditsController < ApplicationController
   end
 
   def update
+    undo = params[:undo].to_bool
+    undo ? @edit.undo!(current_user) : @edit.redo!(current_user)
+    render template: 'edits/edit', layout: false
+  rescue StandardError
+    render text: undo ? t('.failed_undo') : t('.failed_redo'), status: 406
   end
 
   private
@@ -38,7 +44,7 @@ class EditsController < ApplicationController
   end
 
   def find_edit
-    @edit = Edit.where(target: @parent, id: params[:id]).first
+    @edit = Edit.where(id: params[:id]).first
     fail ParamRecordNotFound unless @edit
   end
 

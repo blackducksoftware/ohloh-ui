@@ -9,7 +9,7 @@ class License < ActiveRecord::Base
     name
   end
 
-  def allow_undo?(key)
+  def allow_undo_to_nil?(key)
     ![:name, :nice_name].include?(key)
   end
 

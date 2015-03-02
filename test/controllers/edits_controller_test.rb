@@ -30,6 +30,57 @@ describe EditsController do
       must_select "#edit_#{PropertyEdit.where(target: @project, value: 'Blah!').first.id}", true
       must_select "#edit_#{PropertyEdit.where(target: @project, value: 'Wat?').first.id}", false
     end
+
+    # update action
+    it 'undo should require a logged in user' do
+      login_as nil
+      create_edit = CreateEdit.where(target: @project).first
+      post :update, id: create_edit.id, undo: 'true'
+      assert_response :unauthorized
+      assert_equal false, @project.reload.deleted?
+    end
+
+    it 'undo of creation edit should delete the project' do
+      login_as create(:admin)
+      create_edit = CreateEdit.where(target: @project).first
+      post :update, id: create_edit.id, undo: 'true'
+      assert_response :success
+      assert_equal true, @project.reload.deleted?
+    end
+
+    it 'undo gracefully handles undo/redo errors' do
+      login_as create(:admin)
+      Edit.any_instance.stubs(:undo!).raises(ActiveRecord::Rollback)
+      post :update, id: CreateEdit.where(target: @project).first.id, undo: 'true'
+      assert_response 406
+    end
+
+    it 'redo should require a logged in user' do
+      login_as nil
+      create_edit = CreateEdit.where(target: @project).first
+      create_edit.undo! create(:admin)
+      post :update, id: create_edit.id, undo: 'false'
+      assert_response :unauthorized
+      assert_equal true, @project.reload.deleted?
+    end
+
+    it 'redo of creation edit should delete the project' do
+      login_as create(:admin)
+      create_edit = CreateEdit.where(target: @project).first
+      create_edit.undo! create(:admin)
+      post :update, id: create_edit.id, undo: 'false'
+      assert_response :success
+      assert_equal false, @project.reload.deleted?
+    end
+
+    it 'redo gracefully handles undo/redo errors' do
+      login_as create(:admin)
+      create_edit = CreateEdit.where(target: @project).first
+      create_edit.undo! create(:admin)
+      Edit.any_instance.stubs(:redo!).raises(ActiveRecord::Rollback)
+      post :update, id: create_edit.id, undo: 'false'
+      assert_response 406
+    end
   end
 
   describe 'organization edits pages' do

@@ -32,14 +32,6 @@ class Edit < ActiveRecord::Base
     swap_doneness(false, editor)
   end
 
-  def allow_undo?
-    key && (!target.respond_to?(:allow_undo?) || target.allow_undo?(key.to_sym))
-  end
-
-  def allow_redo?
-    key && (!target.respond_to?(:allow_redo?) || target.allow_redo?(key.to_sym))
-  end
-
   private
 
   def swap_doneness(undo, editor)

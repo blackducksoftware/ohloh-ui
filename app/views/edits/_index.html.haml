@@ -12,21 +12,7 @@
   #edits_list{ style: 'margin-top:-20px;' }
     %table.table.table-striped.alt.table-condensed
       %tbody
-        - @edits.each do |edit|
-          %tr{ id: "edit_#{edit.id}", parent_id: (params[:organization_id] || params[:project_id]) }
-            %td
-              - edit_counter ||= 1
-              .edit{ class: "#{edit.id} #{'alt' if edit_counter.even?}" }
-                .edit_actions
-                  .undo_block= render partial: 'undo_block', locals: { edit: edit }
-                .in_avatar.clear
-                  = avatar_for(edit.account)
-                .inside
-                  %p.strong.nomargin{ class: edit_title_class(edit) } #{edit.id} - #{edit_show_subject(edit)}
-                  %p
-                    by
-                    = link_to edit.account.name, account_path(edit.account)
-                    %span.date= edit_humanize_datetime(edit.created_at)
+        = render partial: 'edit', collection: @edits
   = will_paginate @edits
 - elsif !params[:query].blank?
   .alert.alert-info

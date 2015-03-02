@@ -31,6 +31,7 @@ en:
     dash_undone: " - Undone"
     index:
       no_edits_found: "No edits found"
+    undo_block:
       redo: "Redo"
       cant_redo: "Can't Redo"
       undo: "Undo"
@@ -60,3 +61,6 @@ en:
       page_title: "License Edit History"
       licenses: "Licenses"
       openhub_edit_history: "License Edit History"
+    update:
+      failed_undo: "Undo failed."
+      failed_redo: "Redo failed."
