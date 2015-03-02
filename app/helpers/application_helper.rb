@@ -26,7 +26,7 @@ module ApplicationHelper
 
     l = (text[0..min].rindex(regex) || min + 1) + regex_offset
     l -= 1 if text[l..l] == ','
-    render_expander(text, l)
+    render_expander(text, l).html_safe
   end
 
   def pluralize_without_count(count, singular, plural = nil)

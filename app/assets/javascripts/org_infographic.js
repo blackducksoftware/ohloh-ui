@@ -6,6 +6,7 @@ OrganizationPictogram = {
     OrganizationPictogram.select_subview();
     OrganizationPictogram.default_selected("view");
     OrganizationPictogram.print_infographic();
+    AppendHistory.init();
   },
   select_subview: function(){
     $(".select_sub_view").click(function() {
@@ -16,7 +17,6 @@ OrganizationPictogram = {
           $('#org_infographic').replaceWith(response.pictogram_html);
           $(update).html(response.subview_html);
           OrganizationPictogram.init();
-          AppendHistory.init();
           $.unblockUI();
         }
       });
@@ -46,7 +46,6 @@ OrganizationPictogram = {
     params_value = match && decodeURIComponent(match[1].replace(/\+/g, " "));
     if(params_value == null)
       params_value = $("#infographic_box").attr("default_view");
-    console.log(params_value);
     $('.'+params_value).addClass('pictogram_link_active').attr("href", "javascript:void(0)").unbind("click");
   }
 };

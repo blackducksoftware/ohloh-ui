@@ -1,32 +1,32 @@
-%h3= t('organization.page_title')
+%h3= t('organizations.affiliated_committers.page_title')
 - if @affiliated_committers.empty?
-  %p= t('.no_committers')
+  %p= t('organizations.affiliated_committers.no_committers')
 - else
   %table.table.table-striped.table-condensed#orgs_affiliated_list
     %thead
       %tr{ id: 'dingus-row' }
         %td{ colspan: 14 } &nbsp;
       %tr
-        %th{ rowspan: 2, style: 'width: 170px;' }= t('.contrib_name')
-        %th.center{ rowspan: 2, style: 'width: 80px;' }= t('.kudos')
+        %th{ rowspan: 2, style: 'width: 170px;' }= t('organizations.affiliated_committers.contrib_name')
+        %th.center{ rowspan: 2, style: 'width: 80px;' }= t('organizations.affiliated_committers.kudos')
         %th{ rowspan: 2, style: 'width: 96px;' }
           = image_tag('icons/foss-no-bg.png')
-          = t('.level')
+          = t('organizations.affiliated_committers.level')
         %th.center{ colspan: 2, style: 'width:200px' }
-          %strong= t('.projects_committed_to')
+          %strong= t('organizations.affiliated_committers.projects_committed_to')
         %th{ rowspan: 2, style: 'width: 20px;' } &nbsp;
         %th.center{ colspan: 2, style: 'width:200px' }
-          %strong= t('.most_commits_to')
+          %strong= t('organizations.affiliated_committers.most_commits_to')
         %th{ rowspan: 2, style: 'width: 20px;' } &nbsp;
         %th.center{ colspan: 2, style: 'width:200px' }
-          %strong= t('.most_recent_commits_on')
+          %strong= t('organizations.affiliated_committers.most_recent_commits_on')
       %tr
-        %th.center= t('.portfolio')
-        %th.center= t('.other')
-        %th.center= t('.project')
-        %th.center= t('.num_commits')
-        %th.center= t('.project')
-        %th.center= t('.date')
+        %th.center= t('organizations.affiliated_committers.portfolio')
+        %th.center= t('organizations.affiliated_committers.other')
+        %th.center= t('organizations.affiliated_committers.project')
+        %th.center= t('organizations.affiliated_committers.num_commits')
+        %th.center= t('organizations.affiliated_committers.project')
+        %th.center= t('organizations.affiliated_committers.date')
 
     %tbody
       - @affiliated_committers.each do |a|
@@ -41,7 +41,7 @@
             %a{ href: account_path(a), title: h(a.name) }
               = a.name.truncate(20)
               - if @current_user && @current_user.id == a.id
-                %span= t('.you')
+                %span= t('organizations.affiliated_committers.you')
           %td.center= avatar_small_laurels(a.person.kudo_rank)
           %td.center
             .mini-badges-section{ style: 'margin:0; position:relative;height: 0px' }
@@ -64,7 +64,8 @@
               - project_icon(most_recent_project, :small)
           %td.center= stats[:last_checkin].to_date.to_s(:by) if stats[:last_checkin]
   = render partial: 'pagination', locals: { count: @affiliated_committers.total_entries,
-                                            text: t('.see_all', num: @affiliated_committers.total_entries),
+                                            text: t('organizations.affiliated_committers.see_all',
+                                                     num: @organization.affiliators_count),
                                             url: affiliated_committers_organization_path(@organization),
                                             collection: @affiliated_committers }
 

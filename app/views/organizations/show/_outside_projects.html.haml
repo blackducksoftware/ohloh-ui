@@ -1,6 +1,7 @@
 - if @outside_projects.empty?
   %p= t('organizations.outside_projects.no_outside_projects')
 - else
+  %h3= t('organizations.outside_projects.outside_projects')
   %table.table.table-striped.table-condensed
     %thead
       %tr{ id: 'dingus-row' }
@@ -34,7 +35,8 @@
           %td{ style: 'padding-top: 15px; text-align: center;' }= project.contribs_count
           %td{ style: 'padding-top: 15px; text-align: center;' }= project.commits
   = render partial: 'pagination', locals: { count: @outside_projects.total_entries,
-                                            text: t('organizations.outside_projects.see_all_num_outside_projs', num: @outside_projects.total_entries),
+                                            text: t('organizations.outside_projects.see_all_num_outside_projs',
+                                                     num: @outside_projects.total_entries),
                                             url: outside_projects_organization_path(@organization),
                                             collection: @outside_projects }
   .clear &nbsp;

@@ -14,8 +14,8 @@
         %th.center{ colspan: 2, style: 'width:250px' }
           %strong= t('.twelve_month_activity')
       %tr
-        %th= t('anizations.projects.contributors')
-        %th= t('anizations.projects.commits')
+        %th= t('organizations.projects.contributors')
+        %th= t('organizations.projects.commits')
 
     %tbody.portfolio-projects-table
       - @affiliated_projects.each do |project|
@@ -55,7 +55,7 @@
         %tr
           %td.center &nbsp;
           %td.proj_commit_stats
-            #{t('anizations.projects.affiliated')}:&nbsp;
+            #{t('organizations.projects.affiliated')}:&nbsp;
             = render partial: 'project_commit_status', locals: { diff: affiliated_committers_diff,
               commit_count: twelve_month_summary.affiliated_committers_count,
               prev_commit_count: previous_twelve_month_summary.affiliated_committers_count }
@@ -66,7 +66,7 @@
         %tr
           %td.center &nbsp;
           %td.proj_committer_stats
-            #{t('anizations.projects.outside')}:&nbsp;&nbsp;&nbsp;
+            #{t('organizations.projects.outside')}:&nbsp;&nbsp;&nbsp;
             = render partial: 'project_commit_status', locals: { diff: outside_committers_diff,
               commit_count: twelve_month_summary.outside_committers_count,
               prev_commit_count: previous_twelve_month_summary.outside_committers_count }
@@ -74,3 +74,9 @@
             = render partial: 'project_commit_status', locals: { diff: outside_commits_diff,
               commit_count: twelve_month_summary.outside_commits_count,
               prev_commit_count: previous_twelve_month_summary.outside_commits_count }
+  - count = @organization.projects_count
+  = render partial: 'pagination', locals: { count: count,
+                                            text: t('organizations.projects.see_all_projects', num: count),
+                                            url: projects_organization_path(@organization),
+                                            collection: @affiliated_projects }
+
