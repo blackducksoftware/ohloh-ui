@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   resources :reviews, only: :destroy do
     resources :helpfuls, only: :create
   end
-  resources :kudos
+  resources :kudos, only: [:new, :create, :destroy]
 
   resources :people, only: [:index]
 
@@ -30,7 +30,11 @@ Rails.application.routes.draw do
     resources :positions, only: [:index]
     resources :stacks, only: [:index]
     resources :widgets, only: [:index]
-    resources :kudos, only: [:index, :show]
+    resources :kudos, only: [:index] do
+      collection do
+        get :sent
+      end
+    end
     resources :edits, only: [:index]
     resources :posts, only: [:index]
     resources :reviews, only: [:index]
@@ -148,8 +152,13 @@ Rails.application.routes.draw do
     end
     resources :widgets, only: [:index]
   end
+
   resources :languages, only: [:show, :index] do
     collection { get :compare }
+  end
+
+  resources :people do
+    collection { get :rankings }
   end
 
   resource :compare_repositories

@@ -25,6 +25,8 @@ module AccountScopes
         .where { name_facts.analysis_id.eq(projects.best_analysis_id) & name_facts.type.eq('ContributorFact') }
     }
 
+    scope :in_good_standing, -> { where('level >= 0') }
+
     scope :from_param, ->(param) { where(arel_table[:login].eq(param).or(arel_table[:id].eq(param))) }
   end
 end

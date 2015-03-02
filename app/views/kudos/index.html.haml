@@ -1,0 +1,30 @@
+- position = @person ? kudo_position_for_person(@person.id, @person.kudo_position.to_i) : kudo_position_for_person(nil)
+.col-md-12
+  %h2= t('.title')
+  != position
+  %table#kudo_mantle
+    %tr
+      %td{ width: '110px' }
+        .arrow_up &nbsp;
+      %td.rank{ valign: 'top' }
+        .center
+          = kudos_laurel_link_for @person
+          %br
+          != position
+          - kudo_button @person
+      %td{ width: '110px' }
+        .arrow_down &nbsp;
+  .row &nbsp;
+  .row &nbsp;
+.col-md-2.no-margin
+  &nbsp;
+.col-md-5
+  %h5= t('.kudos_received')
+  = render partial: 'kudos/received', collection: @received_kudos
+  - if @received_kudos.empty?
+    %p= t('.no_kudos_received_yet')
+.col-md-5
+  %h5= t('.kudos_given')
+  = render partial: 'kudos/given', collection: kudos_grouped_sent(@sent_kudos)
+  - if @sent_kudos.empty?
+    %p= t('.no_kudos_given_yet')
