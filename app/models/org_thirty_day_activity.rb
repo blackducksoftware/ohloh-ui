@@ -46,6 +46,8 @@ class OrgThirtyDayActivity < ActiveRecord::Base
       with_thirty_day_commit_count.where(org_type: 4)
     end
 
+    private
+
     def method_missing(m, *args, &block)
       if m =~ /filter_/
         filter_all_orgs
@@ -53,8 +55,6 @@ class OrgThirtyDayActivity < ActiveRecord::Base
         super
       end
     end
-
-    private
 
     def with_commits_and_affiliates
       joins(:organization)

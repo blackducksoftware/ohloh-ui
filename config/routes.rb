@@ -158,8 +158,8 @@ Rails.application.routes.draw do
     resources :invites, only: [:new, :create]
   end
 
-  get 'explore/orgs' => 'explore#orgs'
-  get 'explore/orgs_by_thirty_day_commit_volume/:filter' => 'explore#orgs_by_thirty_day_commit_volume'
+  get 'orgs' => 'explore#orgs'
+  get 'explore/orgs_by_thirty_day_commit_volume' => 'explore#orgs_by_thirty_day_commit_volume'
 
   get 'message' => 'home#message'
   get 'maintenance' => 'home#maintenance'
