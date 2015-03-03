@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
   helper_method :page_context
 
   before_action :store_location
+  before_action :strip_query_param
 
   def initialize(*params)
     @page_context = {}
@@ -130,6 +131,10 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def strip_query_param
+    params[:query] = String.clean_string(params[:query])
+  end
 
   def find_user_in_session
     Account.where(id: session[:account_id]).first

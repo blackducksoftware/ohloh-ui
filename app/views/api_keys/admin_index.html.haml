@@ -4,7 +4,7 @@
   = @meta_title
   %a.link_no_underline{ title: t('.download_as_csv'), href: api_keys_path(format: :csv) }= t('api_keys.download_as_csv')
 
-= render partial: 'shared/search_dingus', locals: { collection: @api_keys, sort_option_name: :api_keys }
+= render partial: 'shared/search_dingus', locals: { collection: @api_keys, sort_context: :api_keys }
 .clear_both
 
 .api_keys

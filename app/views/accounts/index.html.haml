@@ -2,7 +2,7 @@
 
 %h3.margin_bottom_15= t '.page_title'
 
-= render partial: 'shared/search_dingus', locals: { collection: @people, sort_option_name: :people }
+= render partial: 'shared/search_dingus', locals: { collection: @people, sort_context: :people }
 = render partial: 'account', collection: @people.map(&:account)
 
 = will_paginate @people

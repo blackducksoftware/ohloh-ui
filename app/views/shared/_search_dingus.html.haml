@@ -1,4 +1,5 @@
 - no_match_found_type ||= :message
+- filter_by_human_edits ||= false
 #search-dingus
   %form.form-inline
     .row
@@ -12,11 +13,16 @@
         %button.btn{ type: 'Submit' }
           %i.icon-refresh
       .col-md-3.col-md-offset-1.no_padding
-        #sort_by
-          %label= t('.sort_by')
-          = select_tag :sort, options_for_select(SORT_OPTIONS[sort_option_name][:options],
-            params[:sort] || SORT_OPTIONS[sort_option_name][:default]),
-            class: 'chzn-select', onchange: 'this.form.submit()'
+        - if filter_by_human_edits
+          %label.checkbox.padding_left_20#human_edits
+            %input{ type: 'checkbox', checked: params[:human] == 'true' }
+            = t('.show_only_humans')
+        - else
+          #sort_by
+            %label= t('.sort_by')
+            = select_tag :sort, options_for_select(SORT_OPTIONS[sort_context][:options],
+              params[:sort] || SORT_OPTIONS[sort_context][:default]),
+              class: 'chzn-select', onchange: 'this.form.submit()'
 
 - if params[:query].present? && collection.size.zero?
   - if no_match_found_type == :flash
