@@ -26,7 +26,7 @@ describe 'ExploreController' do
 
   describe 'orgs' do
     it 'should respond with the necessary data when filter is all' do
-      get 'orgs', filter: 'all'
+      get :orgs, filter: 'all'
 
       must_respond_with :ok
       assigns(:newest_orgs).must_equal [@org5, @org4, @org3]
@@ -37,7 +37,7 @@ describe 'ExploreController' do
 
     it 'should respond with the necessary data when filter is government' do
       OrgThirtyDayActivity.where(id: [@ota5.id, @ota4.id, @ota3.id]).update_all(org_type: 3)
-      get 'orgs', filter: 'government'
+      get :orgs, filter: 'government'
 
       must_respond_with :ok
       assigns(:newest_orgs).must_equal [@org5, @org4, @org3]
@@ -47,7 +47,7 @@ describe 'ExploreController' do
     end
 
     it 'should respond with the necessary data when filter is none' do
-      get 'orgs'
+      get :orgs
 
       must_respond_with :ok
       assigns(:newest_orgs).must_equal [@org5, @org4, @org3]
@@ -59,38 +59,25 @@ describe 'ExploreController' do
 
   describe 'orgs_by_thirty_day_commit_volume' do
     it 'should return json of filtered record when filter is none' do
-      get :orgs_by_thirty_day_commit_volume
-      result = JSON.parse(response.body)
+      xhr :get, :orgs_by_thirty_day_commit_volume, format: :js
 
       must_respond_with :ok
-      result['orgs'].first['name'].must_equal @ota5.name
-      result['orgs'].second['name'].must_equal @ota4.name
-      result['orgs'].third['name'].must_equal @ota3.name
-      result['orgs'].fourth['name'].must_equal @ota2.name
-      result['orgs'].fifth['name'].must_equal @ota1.name
+      assigns(:org_by_30_day_commits).must_equal [@ota5, @ota4, @ota3, @ota2, @ota1]
     end
 
     it 'should return json of filtered record when filter is government' do
       OrgThirtyDayActivity.where(id: [@ota5.id, @ota4.id, @ota3.id]).update_all(org_type: 3)
-      get :orgs_by_thirty_day_commit_volume, filter: 'government'
-      result = JSON.parse(response.body)
+      xhr :get, :orgs_by_thirty_day_commit_volume, filter: 'government', format: 'js'
 
       must_respond_with :ok
-      result['orgs'].first['name'].must_equal @ota5.name
-      result['orgs'].second['name'].must_equal @ota4.name
-      result['orgs'].third['name'].must_equal @ota3.name
+      assigns(:org_by_30_day_commits).must_equal [@ota5, @ota4, @ota3]
     end
 
     it 'should return json of filtered record when filter is all' do
-      get :orgs_by_thirty_day_commit_volume, filter: 'all'
-      result = JSON.parse(response.body)
+      xhr :get, :orgs_by_thirty_day_commit_volume, filter: 'all', format: :js
 
       must_respond_with :ok
-      result['orgs'].first['name'].must_equal @ota5.name
-      result['orgs'].second['name'].must_equal @ota4.name
-      result['orgs'].third['name'].must_equal @ota3.name
-      result['orgs'].fourth['name'].must_equal @ota2.name
-      result['orgs'].fifth['name'].must_equal @ota1.name
+      assigns(:org_by_30_day_commits).must_equal [@ota5, @ota4, @ota3, @ota2, @ota1]
     end
   end
 end
