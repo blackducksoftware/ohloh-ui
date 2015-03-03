@@ -14,6 +14,7 @@ class ApiKey < ActiveRecord::Base
   validates :terms, acceptance: { accept: '1', message: I18n.t(:must_accept_terms) }
   validates :key, uniqueness: true
 
+  scope :in_good_standing, -> { where.not(status: STATUS_DISABLED) }
   scope :filterable_by, ->(term) { joins(:account).where(filterable_by_where_clause(term)) }
   scope :by_account_name, -> { joins(:account).order('lower(accounts.name)') }
   scope :by_newest, -> { order(created_at: :desc) }

@@ -1,0 +1,20 @@
+.row{ style: 'margin-top: 1em;' }
+  .col-md-11
+    .well
+      = form_for @kudo, as: :kudo, url: kudos_path, html: { method: :post } do |f|
+        %fieldset
+          .control-group
+            %label.control-label= t('.include_message', who: @kudo.person_name)
+            .controls
+              = f.text_field :message, size: 80
+              - error_tag @kudo, :message
+              %p.help-block= t('.maximum')
+
+          - if @kudo.account
+            = f.hidden_field :account_id, value: @kudo.account_id
+          - else
+            = f.hidden_field :contribution_id, value: @contribution.id
+            = f.hidden_field :name_id, value: @kudo.name_id
+
+          .actions
+            %input.btn.btn-mini.btn-primary{ type: 'submit', value: t('.submit') }

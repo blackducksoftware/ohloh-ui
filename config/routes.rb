@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   resources :reviews, only: :destroy do
     resources :helpfuls, only: :create
   end
-  resources :kudos
+  resources :kudos, only: [:new, :create, :destroy]
 
   resources :people, only: [:index]
 
@@ -30,12 +30,17 @@ Rails.application.routes.draw do
     resources :positions, only: [:index]
     resources :stacks, only: [:index]
     resources :widgets, only: [:index]
-    resources :kudos, only: [:index, :show]
+    resources :kudos, only: [:index] do
+      collection do
+        get :sent
+      end
+    end
     resources :edits, only: [:index]
     resources :posts, only: [:index]
     resources :reviews, only: [:index]
 
     member do
+      get :confirm_delete
       get :disabled
       get :settings
       get :languages
@@ -52,6 +57,7 @@ Rails.application.routes.draw do
       get :autocomplete
       get :resolve_login
       get :unsubscribe_emails
+      get :delete_feedback
       match :destroy_feedback, via: [:get, :post]
     end
   end
@@ -146,8 +152,13 @@ Rails.application.routes.draw do
     end
     resources :widgets, only: [:index]
   end
+
   resources :languages, only: [:show, :index] do
     collection { get :compare }
+  end
+
+  resources :people do
+    collection { get :rankings }
   end
 
   resource :compare_repositories
@@ -155,6 +166,9 @@ Rails.application.routes.draw do
   resources :contributors, controller: 'contributions' do
     resources :invites, only: [:new, :create]
   end
+
+  get 'message' => 'home#message'
+  get 'maintenance' => 'home#maintenance'
 
   # The priority is based upon order of creation: first created -> highest
   # priority.

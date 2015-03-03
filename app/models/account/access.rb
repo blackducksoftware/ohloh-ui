@@ -5,7 +5,6 @@ class Account::Access
   SPAM = -20
 
   def initialize(account)
-    fail 'Account cannot be nil' if account.blank?
     @account = account
     @level = @account.level
   end
@@ -23,7 +22,7 @@ class Account::Access
   end
 
   def disabled?
-    @level < DEFAULT
+    @level.to_i < DEFAULT
   end
 
   def active_and_not_disabled?
@@ -43,6 +42,7 @@ class Account::Access
     @account.update_attributes!(level: DISABLED)
   end
 
+  # TODO: replace make_spammer! with this.
   def spam!
     Account.transaction do
       @account.update_attributes!(level: SPAM)

@@ -1,6 +1,17 @@
 en:
   about: 'About'
+  password: 'Password'
+  login: 'Login'
+  name: Name
+  bio: Bio
+  basics: Basics
+  email_address: Email Address
   save_changes: 'Save Changes'
+  gravatar: Gravatar
+  twitter_id: Twitter ID
+  tldr: 'TL;DR'
+  affiliation: Affiliation
+  clear: Clear
   cancel: 'Cancel'
   edit: 'Edit'
   new: 'New'
@@ -34,6 +45,7 @@ en:
   learn_more: "Learn More&hellip;"
   project_page_title: "The %{project_name} Open Source Project on Open Hub"
   edit_permission_failed: "You are not authorized to edit this #{klass}"
+  cant_edit_other_account: "You can't edit another's account."
   expander:
     more: "[More]"
     less: "[Less]"
@@ -61,7 +73,7 @@ en:
   contribution: 'Contributions'
   languages: 'Languages'
   recognition: 'Recognition'
-  kudos: 'Kudos'
+  kudos_menu: 'Kudos'
   usage: 'Usage'
   website_edits: 'Website Edits'
   post: 'Posts'

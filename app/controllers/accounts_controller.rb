@@ -1,14 +1,30 @@
+# rubocop:disable Metrics/ClassLength
 class AccountsController < ApplicationController
   helper :Projects
+
+  before_action :set_account, only: [:destroy, :show, :update, :edit, :commits_by_project_chart,
+                                     :commits_by_language_chart, :confirm_delete, :make_spammer,
+                                     :activate, :languages]
+  # FIXME: Add the disabled view
+  before_action :redirect_if_disabled, only: [:show, :update, :edit, :commits_by_project_chart,
+                                              :commits_by_language_chart]
   before_action :admin_session_required, only: [:make_spammer]
-  before_action :account, only: [:show, :commits_by_project_chart, :commits_by_language_chart,
-                                 :make_spammer, :activate, :languages]
-  before_action :redirect_if_disabled, only: [:show, :commits_by_project_chart, :commits_by_language_chart]
   before_action :check_activation, only: [:activate]
   before_action :deleted_account?, only: :destroy_feedback
-  before_action :disabled_during_read_only_mode, only: [:activate]
   before_action :find_claimed_people, only: :index
+  before_action :disabled_during_read_only_mode, only: [:new, :create, :edit, :update, :activate]
+  # FIXME: Integrate this action.
+  # before_action :set_smart_sort, only: [:index]
+  before_action :session_required, only: [:edit, :destroy, :confirm_delete]
+  before_action :must_own_account, only: [:edit, :update, :destroy, :confirm_delete]
+  before_action :check_banned_domain, only: :create
+  before_action :captcha_response, only: :create
+  before_action :account_context, only: :edit
+  after_action :create_action_record, only: :create, if: -> { @account.persisted? && params[:_action].present? }
 
+  protect_from_bots :create, redirect_to: :index, controller: :home
+
+  # FIXME: people have to be sorted. See sorted_and_filtered in older code.
   def index
     @cbp_map = PeopleDecorator.new(@people).commits_by_project_map
     @positions_map = Position.where(id: @cbp_map.values.map(&:first).flatten).includes(:project)
@@ -18,6 +34,37 @@ class AccountsController < ApplicationController
   def show
     @projects, @logos = @account.project_core.used
     @twitter_detail = TwitterDetail.new(@account)
+  end
+
+  def new
+    @account = Account.new
+  end
+
+  def create
+    @account = Account.new(account_params)
+
+    if @account.save
+      redirect_to message_path, flash: { success: t('.success', email: @account.email) }
+    else
+      render :new
+    end
+  end
+
+  def update
+    if @account.update(account_params)
+      redirect_to @account, notice: t('.success')
+    else
+      render 'edit'
+    end
+  end
+
+  def destroy
+    @account.destroy
+    unless current_user_is_admin?
+      cookies.delete(:auth_token)
+      reset_session
+    end
+    redirect_to delete_feedback_accounts_path(@account.login)
   end
 
   # NOTE: Replaces commits_history
@@ -93,13 +140,9 @@ class AccountsController < ApplicationController
     @people = Person.find_claimed(page: params[:page], sort_by: sort_by, q: params[:query])
   end
 
-  def disabled_during_read_only_mode
-    redirect_to maintenance_path if read_only_mode? && !params[:admin]
-  end
-
-  def account
-    accounts = Account.arel_table
-    @account = Account.where(accounts[:id].eq(params[:id]).or(accounts[:login].eq(params[:id]))).first
+  def set_account
+    @account = Account.where('id = :id or login = :login', id: params[:id].to_i, login: params[:id]).first
+    fail ParamRecordNotFound unless @account
   end
 
   def redirect_if_disabled
@@ -122,4 +165,28 @@ class AccountsController < ApplicationController
   def process_reason_params(params)
     { reasons: "{#{params[:reasons].join(',')}}", other: String.clean_string(params[:reason_other]) }
   end
+
+  def check_banned_domain
+    @account = Account.new(account_params)
+    return unless @account.email?
+    render :new, status: 418 if DomainBlacklist.email_banned?(@account.email)
+  end
+
+  def captcha_response
+    @account = Account.new(account_params)
+    verify_recaptcha(model: @account, attribute: :captcha)
+    render :new if @account.errors.messages[:captcha].present?
+  end
+
+  def create_action_record
+    Action.create(account: @account, _action: params[:_action], status: :after_activation)
+  end
+
+  def account_params
+    params.require(:account).permit(
+      :login, :email, :email_confirmation, :name, :country_code, :location, :latitude, :longitude,
+      :twitter_account, :organization_id, :organization_name, :affiliation_type, :invite_code,
+      :password, :password_confirmation, :about_raw, :url)
+  end
 end
+# rubocop:enable Metrics/ClassLength

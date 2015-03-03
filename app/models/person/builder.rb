@@ -6,7 +6,7 @@ class Person::Builder
 
       Person.find_each(batch_size: 10_000) do |person|
         kudo_score = KudoScore.find_by_account_or_name_and_project(person) ||
-                     NullKudoScore.new
+                     NilKudoScore.new
 
         person.update_columns(
           kudo_score: kudo_score.score, kudo_position: kudo_score.position,

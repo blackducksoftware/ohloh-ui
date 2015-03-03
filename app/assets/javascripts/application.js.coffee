@@ -25,4 +25,5 @@
 $(document).on 'page:change', ->
   StackVerb.init()
   StackShow.init()
+  PopupClose.init()
   OrganizationPictogram.init();
