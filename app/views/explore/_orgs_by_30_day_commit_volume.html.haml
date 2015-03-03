@@ -1,9 +1,9 @@
-.pull-left.col-md-8
-  %h2.pull-left
+.pull-left.col-md-8.no_padding#orgs_by_30_days_volume
+  %h2.pull-left= t('.title')
   .pull-right.nav-select-container#sort_by
-    %label.pull-left= t '.filter'
+    %label.pull-left!= t('.filter')
     = select_tag(:org_type, options_for_select(OrgThirtyDayActivity::SORT_TYPES),
-    class: 'chzn-select span2 float_right')
+    class: 'chzn-select pull-right', style: 'width:140px')
   .clearfix
   #org_filter_no_result{ class: @org_by_30_day_commits.empty? ? '' : 'hidden' }
     %h5
@@ -12,11 +12,11 @@
   %table.table.table-striped.table-condensed{ class: @org_by_30_day_commits.empty? ? 'hidden' : '' }
     %thead#header
       %th{ style: 'width:25%' }= t '.org'
-      %th.center{ style:  'width:15%' }= t '.type'
-      %th.center{ style:  'width:5%' }= t '.size'
-      %th.center{ style:  'width:15%' }= t '.projects'
-      %th.center{ style:  'width:15%' }= t '.affiliates'
-      %th.center{ style:  'width:20%' }= t '30_day_commits'
+      %th.center{ style: 'width:15%' }= t '.type'
+      %th.center{ style: 'width:5%' }= t '.size'
+      %th.center{ style: 'width:15%' }= t '.projects'
+      %th.center{ style: 'width:15%' }= t '.affiliates'
+      %th.center{ style: 'width:20%' }= t '30_day_commits'
     %tbody#30_day_commit_volume
       = render partial: 'org_30_day_activity', collection: @org_by_30_day_commits
 

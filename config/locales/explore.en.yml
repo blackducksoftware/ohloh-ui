@@ -8,8 +8,9 @@ en:
       within_30_days: 'Within last 30 days'
       last_calculated: 'last calculated %{duration} ago'
     orgs_by_30_day_commit_volume:
+      title: 'Orgs by 30 Day Commit Volume'
       no_results: 'No Results found matching the filter.'
-      filter: 'Filter by:'
+      filter: 'Filter by:&nbsp;&nbsp;'
       org: 'Organization'
       type: 'Type'
       size: 'Size'
