@@ -1,3 +1,7 @@
 class OrgStatsBySector < ActiveRecord::Base
-  scope :recent, -> { order(['id DESC', 'organization_count DESC']).limit(4) }
+  class << self
+    def recent
+      order('id DESC').limit(4).sort_by(&:organization_count).reverse
+    end
+  end
 end
