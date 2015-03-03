@@ -1,11 +1,11 @@
 .pull-left.col-md-8
   %h2.pull-left
-  #sort_by.pull-right.nav-select-container
+  .pull-right.nav-select-container#sort_by
     %label.pull-left= t '.filter'
     = select_tag(:org_type, options_for_select(OrgThirtyDayActivity::SORT_TYPES),
     class: 'chzn-select span2 float_right')
   .clearfix
-  #org_filter_no_result{ class: @org_by_30_day_commits.empty? ? '' : 'hidden'}
+  #org_filter_no_result{ class: @org_by_30_day_commits.empty? ? '' : 'hidden' }
     %h5
       %i.icon-warning-sign
       = t '.no_results'

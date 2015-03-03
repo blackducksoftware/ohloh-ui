@@ -20,4 +20,5 @@
             #commit-gauge{ 'data-gauge' => "#{orgs.average_commits}", 'data-gauge-max' => "#{gauge_scale}" }
           %td
             .progress#progress-container
-              #progress-bar{ role: 'progressbar', 'aria-valuemax' => "#{scale}", 'aria-valuenow' => "#{orgs.organization_count}", 'aria-valuemin' => '1'}
+              #progress-bar{ role: 'progressbar', 'aria-valuemax' => "#{scale}",
+              'aria-valuenow' => "#{orgs.organization_count}", 'aria-valuemin' => '1' }

@@ -1,7 +1,7 @@
 class OrgThirtyDayActivity < ActiveRecord::Base
-  SORT_TYPES = [['All Organizations','all_orgs'], ['Commercial','commercial'], ['Education','educational'],
-                ['Government','government'], ['Non-Profit','non_profit'], ['Large','large'],
-                ['Medium','medium'], ['Small','small']]
+  SORT_TYPES = [['All Organizations', 'all_orgs'], %w(Commercial commercial), %w(Education educational),
+                %w(Government government), %w(Non-Profit non_profit), %w(Large large),
+                %w(Medium medium), %w(Small small)]
 
   belongs_to :organization
 
@@ -64,9 +64,9 @@ class OrgThirtyDayActivity < ActiveRecord::Base
 
     def with_thirty_day_commit_count
       joins(:organization)
-      .where.not(thirty_day_commit_count: nil)
-      .order('thirty_day_commit_count DESC')
-      .limit(5)
+        .where.not(thirty_day_commit_count: nil)
+        .order('thirty_day_commit_count DESC')
+        .limit(5)
     end
   end
 end

@@ -27,7 +27,6 @@ class OrgThirtyDayActivityTest < ActiveSupport::TestCase
 
       most_active_orgs.must_equal [@ota4, @ota3, @ota2]
     end
-
   end
 
   describe 'filter_all_orgs' do

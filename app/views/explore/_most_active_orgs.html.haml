@@ -1,4 +1,4 @@
-#most-active-orgs.well.col-md-4.margin_left_10
+.well.col-md-4.margin_left_10#most-active-orgs
   %h2= t('.title')
   - @most_active_orgs.each do |org_thirty_day_activity|
     - org = org_thirty_day_activity.organization
@@ -7,10 +7,10 @@
         = link_to org.decorate.icon(:med), organization_path(org), title: org.name,
         style: 'text-decoration: none', class: 'logo'
       .col-md-3
-        %h5= link_to h(truncate(org.name, length: 24)), organization_path(org) , title: org.name
+        %h5= link_to h(truncate(org.name, length: 24)), organization_path(org), title: org.name
         %h6.pull-left.margin_right_5
           = link_to org_thirty_day_activity.commits_per_affiliate,
-          organization_path(org, view: "affiliated_committers")
+          organization_path(org, view: 'affiliated_committers')
         %i.small= t('.commits_or_affiliates')
   .row.no_margin_bottom#active-org-timestamp
     .col-md-2{ style: 'width:90px' }
