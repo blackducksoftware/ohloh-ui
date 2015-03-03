@@ -29,7 +29,7 @@ module AvatarHelper
   end
 
   def avatar_small_laurels(rank)
-    "<img src='/assets/icons/sm_laurel_#{rank || 1}.png' alt='KudoRank #{rank || 1}'/>".html_safe
+    "<img src='" + image_path("icons/sm_laurel_#{rank || 1}.png") + "' alt='KudoRank #{rank || 1}'/>".html_safe
   end
 
   private

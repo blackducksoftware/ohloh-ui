@@ -32,7 +32,7 @@
               = truncate(account.name, length: 20)
               - if current_user.id == account.id
                 %span (You)
-          %td.kudo_rank_column.center= avatar_small_laurels(account.person.kudo_rank)
+          %td.kudo_rank_column.center!= avatar_small_laurels(account.person.kudo_rank)
           %td.center
             .mini-badges-section{ style: 'margin:0; position:relative;height: 0px' }
               = render 'accounts/badges_row',

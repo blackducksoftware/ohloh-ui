@@ -42,7 +42,7 @@
               = a.name.truncate(20)
               - if @current_user && @current_user.id == a.id
                 %span= t('organizations.affiliated_committers.you')
-          %td.center= avatar_small_laurels(a.person.kudo_rank)
+          %td.center!= avatar_small_laurels(a.person.kudo_rank)
           %td.center
             .mini-badges-section{ style: 'margin:0; position:relative;height: 0px' }
               = render 'accounts/badges_row',
