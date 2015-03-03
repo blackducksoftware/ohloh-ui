@@ -9,10 +9,6 @@ class OrgThirtyDayActivity < ActiveRecord::Base
 
   class << self
     def most_active_orgs
-      with_commits_and_affiliates = joins(:organization)
-                                    .where(arel_table[:thirty_day_commit_count].gt(0)
-                                    .and(arel_table[:affiliate_count].gt(0)))
-
       with_commits_and_affiliates.each do |ota|
         ota.commits_per_affiliate = ota.thirty_day_commit_count / ota.affiliate_count
       end.sort_by(&:commits_per_affiliate).reverse.first(3)
@@ -30,7 +26,7 @@ class OrgThirtyDayActivity < ActiveRecord::Base
       with_thirty_day_commit_count.where(project_count: 11..50)
     end
 
-    def filter_largs_orgs
+    def filter_large_orgs
       with_thirty_day_commit_count.where(arel_table[:project_count].gt(50))
     end
 
@@ -59,6 +55,12 @@ class OrgThirtyDayActivity < ActiveRecord::Base
     end
 
     private
+
+    def with_commits_and_affiliates
+      joins(:organization)
+        .where(arel_table[:thirty_day_commit_count].gt(0)
+        .and(arel_table[:affiliate_count].gt(0)))
+    end
 
     def with_thirty_day_commit_count
       joins(:organization)
