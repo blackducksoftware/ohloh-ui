@@ -1,5 +1,5 @@
 class OrgThirtyDayActivity < ActiveRecord::Base
-  SORT_TYPES = [['All Organizations','all_orgs'], ['Commercial','commercial'], ['Education','education'],
+  SORT_TYPES = [['All Organizations','all_orgs'], ['Commercial','commercial'], ['Education','educational'],
                 ['Government','government'], ['Non-Profit','non_profit'], ['Large','large'],
                 ['Medium','medium'], ['Small','small']]
 

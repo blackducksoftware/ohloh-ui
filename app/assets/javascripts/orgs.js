@@ -82,48 +82,17 @@ var GaugeProgress = {
 };
 
 var OrgsFilter = {
-  handlebars: function(template, object){
-    var keys = []
-    for (var k in object){
-      keys.push(k);
-    };
-    for (var key in keys){
-      template = template.replace( new RegExp('{{' + keys[key] + '}}','g'), object[keys[key]]);
-    }
-    return template;
-  },
-
   init: function(){
-    var scope = this;
-    if ($('#explore_orgs_page').length > 0){
-      var header = $('#header');
-      var orgs_commit_template = $('#orgs_js_tmpl').html()
-      $('.chzn-select').chosen().change(function(){
-        var select_value = $(this).val();
-        var spinner = $('#spinner')
-        $('#30_day_commit_volume').empty();
-        $("#org_filter_no_result").hide();
-        spinner.toggleClass('hidden')
-        $.ajax({
-          url: '/explore/orgs?filter='+ select_value + '&format=json',
-          type: "GET",
-          success: function(result){
-            spinner.toggleClass('hidden')
-            if(result.length == 0){
-              $('#30_day_commit_volume').hide();
-              $("#org_filter_no_result").show();
-            }
-            else{
-              $('#30_day_commit_volume').show().append(header)
-              $(result).each(function(index,value){
-                  var data = JSON.parse(value)
-                  $('#30_day_commit_volume').append( scope.handlebars(orgs_commit_template, data) )
-              })
-            }
-          }
-        })
+    $('#explore_orgs_page .chzn-select').chosen().change(function(){
+      $('#spinner').toggleClass('hidden')
+      $.ajax({
+        url: '/explore/orgs_by_thirty_day_commit_volume.js?filter='+ $(this).val(),
+        type: "GET",
+        success: function(){
+          $('#spinner').toggleClass('hidden')
+        }
       })
-    }
+    })
   }
 }
 

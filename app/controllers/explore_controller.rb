@@ -7,6 +7,6 @@ class ExploreController < ApplicationController
   end
 
   def orgs_by_thirty_day_commit_volume
-    render json: { orgs: OrgThirtyDayActivity.send("filter_#{params[:filter]}_orgs") }
+    @org_by_30_day_commits = OrgThirtyDayActivity.send("filter_#{params[:filter]}_orgs")
   end
 end
