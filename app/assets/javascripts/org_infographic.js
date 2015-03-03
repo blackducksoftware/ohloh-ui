@@ -38,7 +38,8 @@ OrganizationPictogram = {
   /* Block the Page While loading the Data Tables */
   block_ui: function(){
     $(".block_ui").click(function(){
-      $.blockUI({ message: '<h4><img src="/assets/spinner.gif" /> Loading...</h4>' });
+      // $.blockUI({ message: '<h4><img src="/assets/spinner.gif" /> Loading...</h4>' });
+      $.blockUI({ message: $('.spinner').html() });
     });
   },
   default_selected: function(view){

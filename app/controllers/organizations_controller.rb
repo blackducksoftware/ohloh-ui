@@ -46,8 +46,8 @@ class OrganizationsController < ApplicationController
 
   def handle_default_view
     show_views = %w(affiliated_committers portfolio_projects outside_committers outside_projects)
-    view = show_views.select { |view| view == params[:view] }
-    @view = view.empty? ? default_view : view
+    view = show_views.find { |defined_view| defined_view == params[:view] }
+    @view = view.nil? ? default_view : view.to_sym
     @per_page = 10 if params[:action] == 'show'
     send(@view)
   end
