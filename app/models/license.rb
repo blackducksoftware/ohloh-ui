@@ -10,4 +10,8 @@ class License < ActiveRecord::Base
   def allow_edit?
     editor_account && (Account::Access.new(editor_account).admin? || !locked)
   end
+
+  def short_name
+    abbreviation.blank? ? nice_name : abbreviation
+  end
 end

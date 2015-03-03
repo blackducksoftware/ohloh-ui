@@ -27,6 +27,10 @@ class Analysis < ActiveRecord::Base
     convert_activity_score
   end
 
+  def code_total
+    logic_total.to_i + markup_total.to_i + build_total.to_i
+  end
+
   class << self
     def fresh_and_hot(lang_id = nil)
       fnh = Analysis.fresh.hot
@@ -36,10 +40,6 @@ class Analysis < ActiveRecord::Base
   end
 
   private
-
-  def code_total
-    logic_total.to_i + markup_total.to_i + build_total.to_i
-  end
 
   def empty?
     min_month.nil? || (code_total == 0)

@@ -22,6 +22,8 @@ class Project < ActiveRecord::Base
   has_one :koders_status
   has_many :enlistments, -> { where(deleted: false) }
   has_many :repositories, through: :enlistments
+  has_many :project_licenses, -> { where(deleted: false) }
+  has_many :licenses, -> { order('lower(licenses.nice_name)') }, through: :project_licenses
 
   scope :active, -> { where { deleted.not_eq(true) } }
   scope :deleted, -> { where(deleted: true) }
@@ -32,6 +34,11 @@ class Project < ActiveRecord::Base
   scope :hot, ->(lang_id) { hot_projects(lang_id) }
   scope :by_popularity, -> { where.not(user_count: 0).order(user_count: :desc) }
   scope :by_activity, -> { joins(:analyses).joins(:analysis_summaries).by_popularity.thirty_day_summaries }
+  scope :by_new, -> { order(created_at: :desc) }
+  scope :by_users, -> { order(user_count: :desc) }
+  scope :by_rating, -> { order('COALESCE(rating_average,0) DESC, user_count DESC, projects.created_at ASC') }
+  scope :by_activity_level, -> { order('COALESCE(activity_level_index,0) DESC, projects.name ASC') }
+  scope :by_active_committers, -> { order('COALESCE(active_committers,0) DESC, projects.created_at ASC') }
   scope :language, -> { joins(best_analysis: :main_language).select('languages.name').map(&:name).first }
   scope :managed_by, lambda { |account|
     joins(:manages).where.not(deleted: true, manages: { approved_by: nil }).where(manages: { account_id: account.id })
@@ -60,10 +67,8 @@ class Project < ActiveRecord::Base
     stack_weights = StackEntry.stack_weight_sql(id)
     Project.select('projects.*, shared_stacks, shared_stacks*sqrt(shared_stacks)/projects.user_count as value')
       .joins(sanitize("INNER JOIN (#{stack_weights}) AS stack_weights ON stack_weights.project_id = projects.id"))
-      .not_deleted
-      .where('shared_stacks > 2')
-      .order('value DESC, shared_stacks DESC')
-      .limit(limit)
+      .not_deleted.where('shared_stacks > 2')
+      .order('value DESC, shared_stacks DESC').limit(limit)
   end
 
   def related_by_tags(limit = 5)

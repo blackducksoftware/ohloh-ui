@@ -76,12 +76,14 @@ Rails.application.routes.draw do
   get 'message', to: 'about#message'
   get 'maintenance', to: 'about#maintenance'
 
-  resources :projects, path: :p, only: [:show, :edit] do
+  get 'explore/projects', to: 'explore#projects', as: :explore_projects
+  resources :projects, path: :p, except: [:destroy] do
     member do
       get :users
       get :map
       get :settings
       get :estimated_cost
+      get :licenses
       get 'permissions'  => 'permissions#show',   as: :permissions
       put 'permissions'  => 'permissions#update', as: :update_permissions
       post 'rate'        => 'ratings#rate',       as: :rate

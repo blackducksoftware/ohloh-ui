@@ -1,0 +1,91 @@
+- project =  project_index
+.well.searchable{ id: "project_#{project.id}" }
+  %h2.title.float_left= link_to project.name.truncate(70), project_path(project), title: project.name
+  .float_right
+    .compare
+      - project_compare_button(project, t('.compare')) if defined?(compare) && compare
+    - if params[:action].to_s != 'check_forge'
+      .i_use_this
+        - project_iusethis_button(project) if defined?(i_use_this) && i_use_this
+  .clear
+
+  .float_left#inner_content
+    %a.float_left.logo{ href: project_path(project) }
+      - project_icon(project, :med)
+
+    .info.float_left
+      %p
+        - if project.organization
+          #{t('.claimed_by')}
+          = link_to truncate(project.organization.name, length: 30),
+                    organization_path(project.organization), class: 'claimed-by-org', title: project.organization.name
+        - else
+          &nbsp;
+
+        - if project.best_analysis || @analysis
+          - analysis = (project.best_analysis || @analysis)
+          %i
+            %abbr.date{ title: analysis.updated_on }
+              = t('.analyzed_ago', time: time_ago_in_words(analysis.updated_on))
+        - else
+          %span.soft.float_right
+            %i= t('.no_analysis_available')
+
+      .desc
+        - if project.description && project.description.strip.size > 340
+          - project_description(project)
+        - elsif project.description
+          %span.proj_desc_toggle{ style: 'display: inline', id: "proj_desc_#{project.id}_lg" }
+            = project.description
+
+    .stats.float_left
+      %p
+        - if project.best_analysis.blank?
+          = link_to 0, '#'
+        - else
+          - code_total_str = project.best_analysis.code_total.to_human
+          = link_to code_total_str, languages_summary_project_analysis_path(project, 'latest')
+        %span= t('.loc')
+      %p
+        = link_to number_with_delimiter(project.active_committers), summary_project_contributors_path(project)
+        %span= t('.current_contributors')
+      %p
+        - if project.best_analysis && project.best_analysis.last_commit_time
+          %a{ href: summary_project_commits_path(project) }= time_ago_in_words(project.best_analysis.last_commit_time)
+        - else
+          = link_to 0, '#'
+        %span= t('.since_last_commit')
+      %p
+        = link_to number_with_delimiter(project.user_count), users_project_path(project)
+        %span= t('.users_on_open_hub')
+
+    .reviews-and-pai.float_left
+      - project_activity_level_class(project, :twentyfive)
+      - project_activity_level_text(project, :twentyfive)
+      .stars!= rating_stars('average_rating_stars', project.rating_average.to_f || 0, true)
+      .reviews
+        #{link_to pluralize_with_delimiter(project.reviews.count, t('.review')), summary_project_reviews_path(project)}
+
+  .add-info
+    .main_language.float_left
+      - if project.best_analysis && project.best_analysis.main_language
+        - lang = project.best_analysis.main_language.nice_name
+        = link_to t('.mostly_written_in', lang: lang), languages_summary_project_analysis_path(project, 'latest')
+      - else
+        %span= t('.mostly_written_lang_not_available')
+    .licenses.float_right
+      = link_to t('.licenses'), licenses_project_path(project)
+      - if project.licenses.any?
+        = project.licenses.first(3).collect { |l| l.short_name.truncate(12) }.join(', ')
+      - else
+        %span= t('.no_declared_licenses')
+    .clear_both
+
+  .tags
+    :ruby
+      # TODO: Implement once tags are implemented
+      # - unless project.tag_list.empty?
+      #   = tag_icon_link(project)
+      #   = tag_links(project.tag_list, 12)
+      #   - if project.tag_list.split.size > 12
+      #   = link_to(((project.tag_list.split.size - 12).to_s + ' more...'), project_path(project))
