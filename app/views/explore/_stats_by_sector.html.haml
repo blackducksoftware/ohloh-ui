@@ -4,7 +4,7 @@
   avg_commits = @stats_by_sector.map(&:average_commits).max
   gauge_scale = scale_to(avg_commits, 1000)
 
-.col-md-6#stats-by-sector
+.col-md-8.margin_left_10#stats-by-sector
   %h2.margin_bottom_20= t '.title'
   %table.table{ style: 'border: 1px solid #ccc' }
     %thead

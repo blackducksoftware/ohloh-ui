@@ -1,14 +1,14 @@
-.col-md-4.margin_left_20#newest-orgs
+.col-md-4#newest-orgs
   %h2= t '.title'
   - @newest_orgs.each do |org|
     .row
-      .col-md-1
+      .col-md-3
         = link_to org.decorate.icon(:med), organization_path(org), style: 'text-decoration: none', title: org.name
-      .row.margin_left_5
-        %h5= link_to h(truncate(org.name, length: 24)), organization_path(org), title: org.name
-        %p
-          = link_to t('.projects_count', count: org.projects_count),
+      .col-md-9
+        = link_to h(truncate(org.name, length: 24)), organization_path(org), title: org.name
+        .margin_top_10
+        = link_to t('.projects_count', count: org.projects_count),
           organization_path(org, view: 'portfolio_projects')
-          %span.small= t('.added', duration: time_ago_in_words(org.updated_at))
+        %span.small= t('.added', duration: time_ago_in_words(org.updated_at))
   %p
     = link_to t('.more').html_safe, organizations_path(sort: 'newest')
