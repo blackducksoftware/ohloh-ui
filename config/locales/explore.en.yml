@@ -10,7 +10,7 @@ en:
     orgs_by_30_day_commit_volume:
       title: 'Orgs by 30 Day Commit Volume'
       no_results: 'No Results found matching the filter.'
-      filter: 'Filter by:&nbsp;&nbsp;'
+      filter: 'Filter by:&nbsp;'
       org: 'Organization'
       type: 'Type'
       size: 'Size'
