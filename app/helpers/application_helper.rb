@@ -22,7 +22,7 @@ module ApplicationHelper
   end
 
   def expander(text, min = 250, max = 350, regex = /\s/, regex_offset = -1)
-    return text if text.length < max
+    return text.html_safe if text.length < max
 
     l = (text[0..min].rindex(regex) || min + 1) + regex_offset
     l -= 1 if text[l..l] == ','
