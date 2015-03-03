@@ -79,4 +79,16 @@ class ProjectsControllerTest < ActionController::TestCase
     must_respond_with :ok
     response.body.must_match(/first.*second/m)
   end
+
+  it 'index should handle query param with atom format' do
+    create(:project, name: 'Foo_atom', description: 'second', rating_average: 2)
+    create(:project, name: 'Foobar_atom', description: 'first', rating_average: 4)
+    login_as nil
+    get :index, q: 'foo', sort: 'rating', format: 'atom'
+    must_respond_with :ok
+    nodes = Nokogiri::XML(response.body).css('entry')
+    nodes.length.must_equal 2
+    nodes[0].css('title').children.to_s.must_equal 'Foobar_atom'
+    nodes[1].css('title').children.to_s.must_equal 'Foo_atom'
+  end
 end

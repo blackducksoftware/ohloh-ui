@@ -52,6 +52,6 @@ class ProjectsController < ApplicationController
 
   def redirect_new_landing_page
     return unless @account.nil?
-    redirect_to explore_projects_path if request.query_parameters.except('action').empty?
+    redirect_to explore_projects_path if request.query_parameters.except('action').empty? && request_format == 'html'
   end
 end
