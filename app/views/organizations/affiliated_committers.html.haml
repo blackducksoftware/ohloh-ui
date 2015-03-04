@@ -1,3 +1,4 @@
 - content_for(:html_title) { t('.page_title') }
+= render partial: 'organizations/show/header'
 = render partial: 'organizations/show/affiliated_committers', affiliated_committers: @affiliated_committers,
                                                               stats_map: @stats_map

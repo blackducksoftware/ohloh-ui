@@ -65,9 +65,14 @@ module ApplicationHelper
 
   def project_icon(project, size = :small, opts = {})
     opts = opts_with_lang_colors(project, opts)
-    return haml_tag(:p, project.name.capitalize, style: default_icon_styles(size, opts)) if project.logo.nil?
+    return project_text_icon(project, size, opts) if project.logo.nil?
     styles = "#{icon_dimensions(size, opts)} border:0 none;"
     concat image_tag(project.logo.attachment.url(size), style: styles, itemprop: 'image', alt: project.name)
+  end
+
+  def project_text_icon(project, size, opts)
+    p_name = project.name.first.capitalize
+    haml_tag(:p, p_name, style: default_icon_styles(size, opts))
   end
 
   def project_link(project, size = :small, opts = {})

@@ -17,6 +17,7 @@ OrganizationPictogram = {
           $('#org_infographic').replaceWith(response.pictogram_html);
           $(update).html(response.subview_html);
           OrganizationPictogram.init();
+          Expander.init();
           $.unblockUI();
         }
       });

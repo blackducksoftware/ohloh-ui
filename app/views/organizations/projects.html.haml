@@ -1,7 +1,6 @@
 - content_for(:html_title) { t('.page_title', organization_name: @organization.name) }
 - page_context[:select_footer_nav] = :projects
+= render partial: 'organizations/show/header'
+
 .padding_one_top#portfolio_projects_list
   = render partial: 'organizations/show/portfolio_projects', affiliated_projects: @affiliated_projects
-  = render partial: 'pagination', locals: { count: @affiliated_projects.total_entries,
-    text: t('see_all_projects', num: @affiliated_projects.total_entries),
-    url: projects_organization_path(@organization), collection: @affiliated_projects }
