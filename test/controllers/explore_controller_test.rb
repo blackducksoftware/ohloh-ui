@@ -18,6 +18,12 @@ describe 'ExploreController' do
                                              affiliate_count: 20, thirty_day_commit_count: 800)
     @ota5 = create(:org_thirty_day_activity, name: 'org_5', url_name: 'org5', organization: @org5,
                                              affiliate_count: 20, thirty_day_commit_count: 1000)
+    @org1.update_column(:thirty_day_activity_id, @ota1.id)
+    @org2.update_column(:thirty_day_activity_id, @ota2.id)
+    @org3.update_column(:thirty_day_activity_id, @ota3.id)
+    @org4.update_column(:thirty_day_activity_id, @ota4.id)
+    @org5.update_column(:thirty_day_activity_id, @ota5.id)
+
     @stat1 = create(:org_stats_by_sector)
     @stat2 = create(:org_stats_by_sector, org_type: 2, organization_count: 20)
     @stat3 = create(:org_stats_by_sector, org_type: 3, organization_count: 40)
