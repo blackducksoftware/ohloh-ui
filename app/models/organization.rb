@@ -1,6 +1,8 @@
 class Organization < ActiveRecord::Base
   ORG_TYPES = { 'Commercial' => 1, 'Education' => 2, 'Government' => 3, 'Non-Profit' => 4 }
 
+  fix_string_column_encodings!
+
   belongs_to :logo
   has_one :permission, as: :target
   has_many :projects, -> { where.not(deleted: true) }
