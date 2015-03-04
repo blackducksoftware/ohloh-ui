@@ -121,4 +121,40 @@ class ProjectsControllerTest < ActionController::TestCase
     nodes[0].css('name').children.to_s.must_equal 'Foobar_xml'
     nodes[1].css('name').children.to_s.must_equal 'Foo_xml'
   end
+
+  it 'index should account sorting by "new"' do
+    project1 = create(:project, name: 'Foo_accounts_new', description: 'second', created_at: Time.now - 3.hours)
+    project2 = create(:project, name: 'Foobar_accounts_new', description: 'first')
+    login_as nil
+    manager = create(:account)
+    create(:manage, account: manager, target: project1)
+    create(:manage, account: manager, target: project2)
+    get :index, account_id: manager.to_param, sort: 'new'
+    must_respond_with :ok
+    response.body.must_match(/first.*second/m)
+  end
+
+  it 'index should handle account sorting by "users"' do
+    project1 = create(:project, name: 'Foo_accounts_users', description: 'second', user_count: 1)
+    project2 = create(:project, name: 'Foobar_accounts_users', description: 'first', user_count: 20)
+    manager = create(:account)
+    create(:manage, account: manager, target: project1)
+    create(:manage, account: manager, target: project2)
+    login_as nil
+    get :index, account_id: manager.to_param, sort: 'users'
+    must_respond_with :ok
+    response.body.must_match(/first.*second/m)
+  end
+
+  it 'index should handle account sorting by "project_name"' do
+    project1 = create(:project, name: 'Foo_second_project_name')
+    project2 = create(:project, name: 'Foobar_first_project_name')
+    manager = create(:account)
+    create(:manage, account: manager, target: project1)
+    create(:manage, account: manager, target: project2)
+    login_as nil
+    get :index, account_id: manager.to_param, sort: 'project_name'
+    must_respond_with :ok
+    response.body.must_match(/first.*second/m)
+  end
 end

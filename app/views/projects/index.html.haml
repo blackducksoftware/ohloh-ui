@@ -1,4 +1,5 @@
 %meta{ name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW' }
+- content_for(:html_title) { @query ? t('.page_title_query', query: @query) : t('.page_title') }
 
 = # TODO: render_session_projects_menu
 

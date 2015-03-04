@@ -22,7 +22,7 @@ module ProjectsHelper
 
   def project_iusethis_button(project)
     haml_tag :a, href: '#', id: "stackit_#{project.to_param}",
-                 class: "#{iusethis_css_class} dontnav btn btn-primary btn-mini" do
+                 class: "#{logged_in? ? 'stack_trigger' : 'needs_login'} dontnav btn btn-primary btn-mini" do
       concat t('projects.i_use_this')
     end
   end

@@ -16,9 +16,13 @@ en:
     by_new: "Newest on Open Hub"
     by_rating: "Rating"
     by_active_committers: "Current Contributors"
+    by_project_name: "Name"
     i_use_this: "I Use This"
     more: "[More]"
     less: "[Less]"
+    index:
+      page_title: "Open Hub Projects"
+      page_title_query: "%{query} - Open Hub Project Search"
     project_index:
       compare: "Compare"
       claimed_by: "Claimed by"
@@ -33,3 +37,6 @@ en:
       mostly_written_lang_not_available: "Mostly written in language not available"
       licenses: "Licenses:"
       no_declared_licenses: "No declared licenses"
+    index_managed:
+      page_title: "%{name} : Index Projects"
+      managed_projects: "Managed Projects"

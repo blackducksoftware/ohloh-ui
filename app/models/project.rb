@@ -39,6 +39,7 @@ class Project < ActiveRecord::Base
   scope :by_rating, -> { order('COALESCE(rating_average,0) DESC, user_count DESC, projects.created_at ASC') }
   scope :by_activity_level, -> { order('COALESCE(activity_level_index,0) DESC, projects.name ASC') }
   scope :by_active_committers, -> { order('COALESCE(active_committers,0) DESC, projects.created_at ASC') }
+  scope :by_project_name, -> { order(name: :desc) }
   scope :language, -> { joins(best_analysis: :main_language).select('languages.name').map(&:name).first }
   scope :managed_by, lambda { |account|
     joins(:manages).where.not(deleted: true, manages: { approved_by: nil }).where(manages: { account_id: account.id })
@@ -67,8 +68,7 @@ class Project < ActiveRecord::Base
     stack_weights = StackEntry.stack_weight_sql(id)
     Project.select('projects.*, shared_stacks, shared_stacks*sqrt(shared_stacks)/projects.user_count as value')
       .joins(sanitize("INNER JOIN (#{stack_weights}) AS stack_weights ON stack_weights.project_id = projects.id"))
-      .not_deleted.where('shared_stacks > 2')
-      .order('value DESC, shared_stacks DESC').limit(limit)
+      .not_deleted.where('shared_stacks > 2').order('value DESC, shared_stacks DESC').limit(limit)
   end
 
   def related_by_tags(limit = 5)

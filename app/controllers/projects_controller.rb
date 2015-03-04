@@ -37,8 +37,8 @@ class ProjectsController < ApplicationController
 
   def find_projects
     parse_sort_term
-    projects = Project.not_deleted.page(params[:page]).per_page(10).send(@sort)
-    @projects = add_query_term(projects)
+    projects = @account ? @account.projects.not_deleted : Project.not_deleted
+    @projects = add_query_term(projects.page(params[:page]).per_page(10).send(@sort))
   end
 
   def add_query_term(projects)
@@ -49,13 +49,23 @@ class ProjectsController < ApplicationController
   end
 
   def parse_sort_term
-    @sort_options = { 'by_activity_level' => t('projects.by_activity_level'),
-                      'by_users' => t('projects.by_users'),
-                      'by_new' => t('projects.by_new'),
-                      'by_rating' => t('projects.by_rating'),
-                      'by_active_committers' => t('projects.by_active_committers') }
+    @sort_options = @account ? account_projects_sort_options : projects_sort_options
     @sort = "by_#{params[:sort]}"
-    @sort = 'by_new' unless @sort_options.key?(@sort)
+    @sort = (@account ? 'by_users' : 'by_new') unless @sort_options.key?(@sort)
+  end
+
+  def account_projects_sort_options
+    { 'by_new' => t('projects.by_new'),
+      'by_users' => t('projects.by_users'),
+      'by_project_name' => t('projects.by_project_name') }
+  end
+
+  def projects_sort_options
+    { 'by_activity_level' => t('projects.by_activity_level'),
+      'by_users' => t('projects.by_users'),
+      'by_new' => t('projects.by_new'),
+      'by_rating' => t('projects.by_rating'),
+      'by_active_committers' => t('projects.by_active_committers') }
   end
 
   def redirect_new_landing_page
