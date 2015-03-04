@@ -87,7 +87,7 @@ var OrgsFilter = {
       $('.busy#commit_volume_loader').toggleClass('hidden')
       $('#orgs_by_30_days_volume table').toggleClass('hidden')
       $.ajax({
-        url: '/explore/orgs_by_thirty_day_commit_volume.js?filter='+ $(this).val(),
+        url: '/explore/orgs_by_thirty_day_commit_volume?format=js&filter='+ $(this).val(),
         type: "GET",
         success: function(){
           $('#orgs_by_30_days_volume table').toggleClass('hidden')
