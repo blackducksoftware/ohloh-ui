@@ -44,7 +44,7 @@ class AccountsController < ApplicationController
 
   def update
     if @account.update(account_params)
-      redirect_to @account, notice: t('.success')
+      redirect_to account_path(@account), notice: t('.success')
     else
       render 'edit'
     end
