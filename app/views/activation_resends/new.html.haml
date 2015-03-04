@@ -1,0 +1,18 @@
+- content_for(:html_title) { 'Activation Resend' }
+
+%h3.no-margin-top= t('.heading')
+
+.col-md-7
+  .well
+    = form_tag action: :create do |f|
+      %fieldset
+        .control-group
+          = label_tag t('.email_address'), nil, class: 'control-label required'
+          .controls
+            = text_field_tag :email
+            .error=@errors
+            - #error_tag @account, :email
+            %p.help-block= t('.enter_email')
+
+        .actions
+          = submit_tag t('.submit'), class: 'btn btn-primary'
