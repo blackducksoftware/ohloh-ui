@@ -84,12 +84,12 @@ var GaugeProgress = {
 var OrgsFilter = {
   init: function(){
     $('#explore_orgs_page .chzn-select').chosen().change(function(){
-      $('#spinner').toggleClass('hidden')
+      $('.busy#commit_volume_loader').toggleClass('hidden')
       $.ajax({
         url: '/explore/orgs_by_thirty_day_commit_volume.js?filter='+ $(this).val(),
         type: "GET",
         success: function(){
-          $('#spinner').toggleClass('hidden')
+          $('.busy#commit_volume_loader').toggleClass('hidden')
         }
       })
     })

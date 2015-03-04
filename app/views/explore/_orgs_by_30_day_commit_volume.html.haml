@@ -10,6 +10,7 @@
       %i.icon-warning-sign
       = t '.no_results'
   %table.table.table-condensed{ class: @org_by_30_day_commits.empty? ? 'hidden' : '' }
+    .busy.hidden#commit_volume_loader
     .margin_top_20
     %thead
       %tr#header
