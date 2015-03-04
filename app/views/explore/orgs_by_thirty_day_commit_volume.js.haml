@@ -2,8 +2,10 @@
   :plain
     $('#org_filter_no_result').removeClass('hidden');
     $('#30_day_commit_volume').addClass('hidden');
+    $('#header').addClass('hidden');
 - else
   :plain
+    $('#header').removeClass('hidden');
     $('#org_filter_no_result').addClass('hidden');
     $('#30_day_commit_volume').removeClass('hidden');
     var partial = "#{ j render(partial: 'org_30_day_activity', collection: @org_by_30_day_commits) }"

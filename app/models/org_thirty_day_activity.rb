@@ -57,13 +57,17 @@ class OrgThirtyDayActivity < ActiveRecord::Base
     end
 
     def with_commits_and_affiliates
+      orgs = Organization.arel_table
       joins(:organization)
+        .where(id: orgs[:thirty_day_activity_id])
         .where(arel_table[:thirty_day_commit_count].gt(0)
         .and(arel_table[:affiliate_count].gt(0)))
     end
 
     def with_thirty_day_commit_count
+      orgs = Organization.arel_table
       joins(:organization)
+        .where(id: orgs[:thirty_day_activity_id])
         .where.not(thirty_day_commit_count: nil)
         .order('thirty_day_commit_count DESC')
         .limit(5)
