@@ -91,4 +91,34 @@ class ProjectsControllerTest < ActionController::TestCase
     nodes[0].css('title').children.to_s.must_equal 'Foobar_atom'
     nodes[1].css('title').children.to_s.must_equal 'Foo_atom'
   end
+
+  it 'index should not respond to xml format without an api_key' do
+    login_as nil
+    get :index, q: 'foo', sort: 'rating', format: 'xml'
+    must_respond_with :unauthorized
+  end
+
+  it 'index should not respond to xml format with a banned api_key' do
+    login_as nil
+    get :index, q: 'foo', sort: 'rating', api_key: create(:api_key, status: ApiKey::STATUS_DISABLED).key, format: :xml
+    must_respond_with :unauthorized
+  end
+
+  it 'index should not respond to xml format with an over-limit api_key' do
+    login_as nil
+    get :index, q: 'foo', sort: 'rating', api_key: create(:api_key, daily_count: 999_999).key, format: :xml
+    must_respond_with :unauthorized
+  end
+
+  it 'index should respond to xml format' do
+    create(:project, name: 'Foo_xml', description: 'second', rating_average: 2)
+    create(:project, name: 'Foobar_xml', description: 'first', rating_average: 4)
+    login_as nil
+    get :index, q: 'foo', sort: 'rating', api_key: create(:api_key).key, format: :xml
+    must_respond_with :ok
+    nodes = Nokogiri::XML(response.body).css('project')
+    nodes.length.must_equal 2
+    nodes[0].css('name').children.to_s.must_equal 'Foobar_xml'
+    nodes[1].css('name').children.to_s.must_equal 'Foo_xml'
+  end
 end

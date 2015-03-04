@@ -1,7 +1,9 @@
 en:
   projects:
     activity: "Activity"
+    na: "Not Available"
     not_available: "Not Available"
+    new: "New Project"
     new_project: "New Project"
     inactive: "Inactive"
     very_low: "Very Low"
