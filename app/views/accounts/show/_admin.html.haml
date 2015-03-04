@@ -11,7 +11,7 @@
   %h6= t('.actions_title')
   %p
   %p
-    = link_to t('.spammer.link').html_safe, make_spammer_account_path(@account),
+    = link_to t('.spammer.link').html_safe, make_spammer_account_accesses_path(@account),
     method: :post, confirm: t('.spammer.confirm', name: @account.name),
     class: 'btn btn-warning btn-small', title: t('.spammer.title', name: @account.name)
     &nbsp; &nbsp;
