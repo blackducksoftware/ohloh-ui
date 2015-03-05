@@ -27,3 +27,5 @@ $(document).on 'page:change', ->
   StackShow.init()
   PopupClose.init()
   OrganizationPictogram.init();
+  GaugeProgress.init();
+  OrgsFilter.init();
