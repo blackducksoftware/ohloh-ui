@@ -19,7 +19,7 @@
         %span.label.label-success= t('.recent_post')
     %td.center= (topic.posts_count - 1)
     %td.center= topic.hits
-    %td.last.right.small
+    %td.last.right.small{ style: 'text-align: center;'}
       - last_post = topic.posts.last
       = time_ago_in_words(last_post.created_at)
       by

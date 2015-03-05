@@ -9,6 +9,7 @@
       %th.first.col-md-3
         %h4.nomargin.strong= t('.topic')
       %th.col-md-1
+      %th.col-md-1
         %h4.nomargin.center.strong= t('.replies')
       %th.col-md-1
         %h4.nomargin.center.strong= t('.views')
@@ -18,5 +19,6 @@
     = render partial: 'topics/topic', collection: @topics
 .row
   .col-md-12
-    = link_to t('.add_new_topic'), new_forum_topic_path(@forum), class: 'btn btn-primary btn-mini'
+    = link_to t('.add_new_topic'), new_forum_topic_path(@forum), class: 'btn btn-primary btn-mini', style: 'margin-left: 13px;'
+    / NOTE: Where does div.oh_pagination text-center come from? Figure out how to change the pagination of CSS.
     = will_paginate @topics, style: 'margin-top: -26px'

@@ -2,8 +2,9 @@
   .control-group
     = f.label :title, t('.title'), class: 'control-label'
     .controls
-      = f.text_field :name, class: 'col-md-8'
+      = f.text_field :name, class: 'col-md-8', style: "width: 660px; height: 20px;"
       - if @forum.errors[:name]
+        / Note: Figure out how to make the errors conditionally display.
         %p.error= @forum.errors[:name]
   .control-group
     = f.label :position, t('.position'), class: 'control-label'
@@ -12,4 +13,4 @@
   .control-group
     = f.label :description, t('.description'), class: 'control-label'
     .controls
-      = f.text_area :description, rows: 10, class: 'col-md-10'
+      = f.text_area :description, rows: 10, class: 'col-md-10', style: "width: 780px; height: 220px;"
