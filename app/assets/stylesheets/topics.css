@@ -1,0 +1,11 @@
+.topic_heading {
+  max-width: 740px; 
+  display: block; 
+  float: left;
+  margin-top: 0 !important;
+} 
+
+.btn_layout {
+  margin-left: 341px;
+  margin-top: 40px;
+}

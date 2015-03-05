@@ -9,7 +9,7 @@
         close: 'Close'
         delete: 'Delete'
         reopen: 'Re-open'
-        spam: 'SPAM!!!'
+        spam: 'SPAM!'
         move: 'Move'
         close_confirmation: 'Are you sure you want to close this topic?'
         delete_confirmation: 'Are you sure you want to delete this topic?'
@@ -23,6 +23,7 @@
         closed_topic_message_3: 'The user who created the topic can reopen this topic at any time.'
       edit:
         save_changes: 'Save Changes'
+        enter_topic_title: "Enter the topic's title."
       destroy:
         success: "Topic '%{topic_title}' was deleted."
       form:

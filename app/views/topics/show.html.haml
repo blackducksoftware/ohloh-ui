@@ -4,28 +4,29 @@
     \:
     = link_to @forum.name, forum_path(@forum)
 
-  %h2.float_left.no_margin_top{ style: 'max-width: 740px' }
+  %h2.topic_heading
     = @topic.title
   - if @topic.closed
     %span.label.label-important.float_left{ style: 'margin: 16px 0 0 10px;' }
     closed
-  .btn-group.float_right
+    / TODO: Play with the buttons CSS to render them properly.
+  .btn-group.btn_layout
   - if current_user_is_admin? && !@topic.closed
-    = button_to t('.close'), topic_path(@topic, topic: { closed: true }),
+    = link_to t('.close'), topic_path(@topic, topic: { closed: true }),
       method: :put, data: { confirm: t('.close_confirmation') }, class: 'btn btn-mini'
   - if current_user_is_admin?
-    = button_to t('.move'), move_topic_path(@topic), method: :get, class: 'btn btn-mini', id: 'move_link'
+    = link_to t('.move'), move_topic_path(@topic), method: :get, class: 'btn btn-mini', id: 'move_link'
     / TODO: Determine how to make this javascript work for page rendering.
     / = javascript_tag 'MoveTopic.init()'
   - if current_user_is_admin?
-    = button_to t('.spam'), make_spammer_account_path(@topic.account), method: :post,
+    = link_to t('.spam'), make_spammer_account_path(@topic.account), method: :post,
       data: { confirm: t('.spam_confirmation', user: @topic.posts.first.account.name) },
       class: 'btn btn-mini btn-warning'
   - if current_user_is_admin? || (@topic.posts.count == 1 && @topic.account == current_user)
-    = button_to t('.delete'), topic_path(@topic), method: :delete, data: { confirm: t('.delete_confirmation') },
+    = link_to t('.delete'), topic_path(@topic), method: :delete, data: { confirm: t('.delete_confirmation') },
       class: 'btn btn-danger btn-mini'
   - if (current_user_is_admin? || (@topic.account == current_user)) && @topic.closed
-    = button_to t('.reopen'), topic_path(@topic, topic: { closed: false }), method: :put,
+    = link_to t('.reopen'), topic_path(@topic, topic: { closed: false }), method: :put,
       data: { confirm: t('.reopen_confirmation') }, class: 'btn btn-mini btn-info'
   .clear
     = render partial: 'posts/post', collection: @posts

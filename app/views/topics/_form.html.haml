@@ -23,12 +23,11 @@
         = f.select :forum_id, Forum.all.map { |x| [x.name, x.id] }, {}, class: 'chzn-select value-select'
 
   - if current_user_is_admin?
-    .controls#topics_form_checkbox
-      %label.checkbox.inline
+    .controls
+      %label.checkbox.inline{ style: 'margin-left: -20px;' }
         = f.check_box :sticky, choice: t('.sticky')
         %span= t('.sticky')
-      %label.checkbox.inline
+      %label.checkbox.inline{ style: 'margin-top: 10px;' }
         = f.check_box :closed, choice: t('.closed')
         %span= t('.closed')
-
   = render partial: 'shared/captcha'

@@ -9,7 +9,7 @@
     = form_for [@forum, @topic], html: { class: 'topic_form' } do |f|
       = render partial: 'form', locals: { f: f }
       .actions
-      = f.submit t('.create_topic'), class: 'btn btn-primary btn-small'
+      = f.submit t('.create_topic'), class: 'btn btn-primary btn-small', style: 'margin-top: 15px;'
   .col-md-2.no_margin_left{ style: 'margin-top: -10px' }
 
   = render 'shared/markdown_help'
