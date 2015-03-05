@@ -12,7 +12,8 @@ class OrgThirtyDayActivityTest < ActiveSupport::TestCase
 
   before do
     (1..5).to_a.each do |value|
-      send("org#{value}").update_column(:thirty_day_activity_id, send("ota#{value}"))
+      ota = send("ota#{value}")
+      send("org#{value}").update_column(:thirty_day_activity_id, ota.id)
     end
   end
 
