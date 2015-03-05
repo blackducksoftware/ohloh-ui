@@ -4,14 +4,13 @@
 
 .col-md-7
   .well
-    = form_tag action: :create do |f|
+    = form_tag action: :create do
       %fieldset
         .control-group
           = label_tag t('.email_address'), nil, class: 'control-label required'
           .controls
             = text_field_tag :email
-            .error=@errors
-            - #error_tag @account, :email
+            .error= @errors
             %p.help-block= t('.enter_email')
 
         .actions
