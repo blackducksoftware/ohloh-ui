@@ -1,0 +1,18 @@
+%meta{ name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW' }
+- content_for(:html_title) { t('.page_title', name: @parent.name) }
+
+.project_content_title
+  %h2.float_left
+    = link_to t(:settings), settings_project_path(@parent)
+    &nbsp;:&nbsp;#{t('.openhub_edit_history')}
+  -# render_project_analysis_timestamp
+
+= render partial: 'index'
+
+%h4.nomargin
+  %span.soft #{t(:about)} #{t('.openhub_edit_history')}
+.col-md-5
+  %ul
+    %li= t('.help_1')
+    %li= t('.help_2')
+    %li= t('.help_3')

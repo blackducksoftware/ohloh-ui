@@ -23,7 +23,10 @@
 #= require d3.min
 
 $(document).on 'page:change', ->
+  Edit.init()
   StackVerb.init()
   StackShow.init()
   PopupClose.init()
   OrganizationPictogram.init();
+  GaugeProgress.init();
+  OrgsFilter.init();

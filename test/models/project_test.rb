@@ -91,13 +91,13 @@ class ProjectTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'allow_undo?' do
+  describe 'allow_undo_to_nil?' do
     it 'should return true if key is :name' do
-      project.allow_undo?(:name).must_equal false
+      project.allow_undo_to_nil?(:name).must_equal false
     end
 
     it 'should return false if key is not :name' do
-      project.allow_undo?(:test).must_equal true
+      project.allow_undo_to_nil?(:test).must_equal true
     end
   end
 

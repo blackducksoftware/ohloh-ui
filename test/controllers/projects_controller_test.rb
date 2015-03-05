@@ -1,21 +1,6 @@
 require 'test_helper'
 
 class ProjectsControllerTest < ActionController::TestCase
-  # autocomplete action
-  it 'autocomplete should match correct projects' do
-    project1 = create(:project, name: 'Foo')
-    project2 = create(:project, name: 'Foobar')
-    create(:project, name: 'Goobaz')
-    get :autocomplete, term: 'foo', format: :json
-    must_respond_with :ok
-    resp = JSON.parse(response.body)
-    resp.length.must_equal 2
-    resp[0]['id'].must_equal project1.to_param
-    resp[0]['value'].must_equal project1.name
-    resp[1]['id'].must_equal project2.to_param
-    resp[1]['value'].must_equal project2.name
-  end
-
   # index
   it 'index should handle query param for unlogged users' do
     project1 = create(:project, name: 'Foo', description: Faker::Lorem.sentence(90))
@@ -147,8 +132,8 @@ class ProjectsControllerTest < ActionController::TestCase
   end
 
   it 'index should handle account sorting by "project_name"' do
-    project1 = create(:project, name: 'Foo_second_project_name')
-    project2 = create(:project, name: 'Foobar_first_project_name')
+    project1 = create(:project, name: 'ZZZ_second_project_name')
+    project2 = create(:project, name: 'AAA_first_project_name')
     manager = create(:account)
     create(:manage, account: manager, target: project1)
     create(:manage, account: manager, target: project2)

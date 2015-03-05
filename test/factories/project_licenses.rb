@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :project_license do
-    project
-    license
+    association :project
+    association :license
     before(:create) { |instance| instance.editor_account = create(:admin) }
   end
 end

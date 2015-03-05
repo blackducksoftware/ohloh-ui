@@ -86,7 +86,7 @@ class Account < ActiveRecord::Base
   end
 
   def resend_activation!
-    AccountNotifier.deliver_signup_notification(self, true)
+    AccountMailer.signup_notification(self).deliver_now
     update!(activation_resent_at: Time.now.utc)
   end
 

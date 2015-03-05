@@ -6,7 +6,7 @@ class Alias < ActiveRecord::Base
   acts_as_editable editable_attributes: [:preferred_name_id]
   acts_as_protected parent: :project
 
-  def allow_undo?(key)
+  def allow_undo_to_nil?(key)
     ![:preferred_name_id].include?(key)
   end
 
