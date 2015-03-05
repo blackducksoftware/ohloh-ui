@@ -1,0 +1,12 @@
+en:
+  activation_resends:
+    new:
+      heading: 'Activation Resend'
+      email_address: 'Email Address'
+      enter_email: 'Enter the email you signed up with.'
+      submit: 'Resend my activation email'
+    create:
+      no_account: 'No account with that email address.'
+      already_active: 'The account with this email is already active. You can log in anytime...'
+      recently_activated: "Activation mail has been resent to this email address recently.  Please check email over the next 2 hours. If you haven't received it by then, you can try again.  Alternatively, ask for help by emailing info@openhub.net"
+      success: 'Another copy of your activation mail was sent to your email address.  Please also check if your spam filter put the mail in your junk folder.'

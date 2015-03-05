@@ -28,3 +28,6 @@ $(document).on 'page:change', ->
   OrganizationPictogram.init()
   Expander.init()
   PopupClose.init()
+  OrganizationPictogram.init();
+  GaugeProgress.init();
+  OrgsFilter.init();

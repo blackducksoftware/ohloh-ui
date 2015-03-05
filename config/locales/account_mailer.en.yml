@@ -1,0 +1,6 @@
+en:
+  account_mailer:
+    signup_notification:
+      subject: 'Open Hub account activation notice'
+      body: 'Your Open Hub account %{login} was created. Follow this link to activate your account:'
+

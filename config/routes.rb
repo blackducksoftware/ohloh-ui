@@ -146,7 +146,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :organizations, path: :orgs, only: [:show] do
+  resources :organizations, path: :orgs, only: [:index, :show] do
     member do
       get :settings
       get :projects
@@ -192,6 +192,9 @@ Rails.application.routes.draw do
   resources :contributors, controller: 'contributions' do
     resources :invites, only: [:new, :create]
   end
+
+  get 'explore/orgs' => 'explore#orgs'
+  get 'explore/orgs_by_thirty_day_commit_volume' => 'explore#orgs_by_thirty_day_commit_volume'
 
   get 'message' => 'home#message'
   get 'maintenance' => 'home#maintenance'
