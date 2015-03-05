@@ -9,6 +9,14 @@ class PropertyEdit < Edit
     do_swap(false)
   end
 
+  def allow_undo?
+    key && (previous_value || !target.respond_to?(:allow_undo_to_nil?) || target.allow_undo_to_nil?(key.to_sym))
+  end
+
+  def allow_redo?
+    key && (!target.respond_to?(:allow_redo?) || target.allow_redo?(key.to_sym))
+  end
+
   private
 
   def do_swap(undo)
@@ -38,13 +46,5 @@ class PropertyEdit < Edit
   def fail_unless_action_succeeded!(verb)
     return if target.errors.empty?
     fail ActsAsEditable::UndoError, I18n.t('edits.causes_errors', verb: verb)
-  end
-
-  def allow_undo?
-    !target.respond_to?(:allow_undo?) || target.allow_undo?(key.to_sym)
-  end
-
-  def allow_redo?
-    !target.respond_to?(:allow_redo?) || target.allow_redo?(key.to_sym)
   end
 end

@@ -38,7 +38,7 @@ class Link < ActiveRecord::Base
     self.class.find_category_by_id(link_category_id)
   end
 
-  def allow_undo?(key)
+  def allow_undo_to_nil?(key)
     ![:title, :url, :link_category_id].include?(key)
   end
 

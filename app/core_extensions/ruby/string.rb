@@ -38,6 +38,10 @@ class String
     self
   end
 
+  def to_bool
+    (self =~ /^(true|t|yes|y|1)$/i) ? true : false
+  end
+
   class << self
     def clean_string(str)
       return str if str.blank?
