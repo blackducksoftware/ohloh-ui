@@ -64,18 +64,12 @@ class EditsController < ApplicationController
   end
 
   def add_where_extra_clause
-    case @parent
-    when Account
-      ' OR edits.account_id = ?'
-    when Project
-      ' OR edits.project_id = ?'
-    when Organization
-      ' OR edits.organization_id = ?'
-    end
+    return nil unless [Account, Project, Organization].include?(@parent.class)
+    " OR edits.#{@parent.class.name.downcase}_id = ?"
   end
 
   def add_robotic_term(edits)
-    non_human_ids = params[:human].present? && params[:human] == 'true' ? (Account.non_human_ids) : [0]
+    non_human_ids = params[:human].to_bool ? (Account.non_human_ids) : [0]
     edits.where.not(account_id: non_human_ids)
   end
 
