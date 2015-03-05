@@ -3,22 +3,18 @@
     %label.control-label.required= t('.title')
     .controls
       = f.text_field :title, class: 'col-md-6'
-      %span.help-inline == by #{ current_user.login }
-      %p.help-block= t('.enter_topic_title')
+      %span.help-inline
+        by #{ current_user.login }
+        %p.help-block= t('.enter_topic_title')
     - if @topic.errors[:title]
-      / TODO: Errors are not displaying correctly
       %p.error= @topic.errors[:title]
-
-    - if @topic.new_record?
-      .control-group
-        %label.control-label.required= t('.message')
-        .controls
-          = f.fields_for :posts do |f|
-            = f.text_area :body, rows: 10, cols: 40, style: 'width: 95%'
-          - if @topic.errors[:body]
-            / TODO: Errors are not displaying correctly
-            %p.error= @topic.errors[:body]
-          %p.help-block= t('.first_post')
+    %label.control-label.required= t('.message')
+    .controls
+      = f.fields_for :posts do |f2|
+        = f2.text_area :body, rows: 10, cols: 40, style: 'width: 95%'
+        - if f2.object.errors[:body]
+          %p.error= f2.object.errors[:body]
+      %p.help-block= t('.first_post')
 
   - if current_user_is_admin? && !@topic.new_record?
     .control-group#topic_forum_id
@@ -35,4 +31,4 @@
         = f.check_box :closed, choice: t('.closed')
         %span= t('.closed')
 
-    = render partial: 'shared/captcha'
+  = render partial: 'shared/captcha'

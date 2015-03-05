@@ -4,6 +4,7 @@ class Contribution < ActiveRecord::Base
   belongs_to :position
   belongs_to :project
   belongs_to :person
+  belongs_to :name_fact
   belongs_to :contributor_fact, foreign_key: 'name_fact_id'
   has_many :invites
   has_many :kudos, ->(contribution) { joins(:name_fact).where(name_fact: { id: contribution.name_fact_id }) },

@@ -1,21 +1,15 @@
-- if @forum.errors.any?
-  .error_explanation
-    %h4= pluralize(@forum.errors.count, 'error')
-
 %fieldset
   .control-group
-    = f.label :title, t('.title'), class: 'control-label required'
+    = f.label :title, t('.title'), class: 'control-label'
     .controls
       = f.text_field :name, class: 'col-md-8'
-    - if @forum.errors[:name]
-      %p.error= @forum.errors[:name]
-
+      - if @forum.errors[:name]
+        %p.error= @forum.errors[:name]
   .control-group
     = f.label :position, t('.position'), class: 'control-label'
     .controls
-      = text_field :position, size: 5
-
+      = f.text_field :position, size: 5
   .control-group
     = f.label :description, t('.description'), class: 'control-label'
     .controls
-      = text_area :description, rows: 10, class: 'col-md-10'
+      = f.text_area :description, rows: 10, class: 'col-md-10'

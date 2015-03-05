@@ -27,3 +27,4 @@ $(document).on 'page:change', ->
   StackShow.init()
   OrganizationPictogram.init()
   Expander.init()
+  PopupClose.init()

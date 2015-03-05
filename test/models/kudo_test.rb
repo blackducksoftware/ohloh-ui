@@ -14,6 +14,11 @@ class KudoTest < ActiveSupport::TestCase
     admin_account.kudos.recent(1).first.sender_id.must_equal user1_account.id
   end
 
+  it 'prevents kudoing oneself' do
+    account = create(:account)
+    proc { create(:kudo, sender: account, account: account) }.must_raise ActiveRecord::RecordInvalid
+  end
+
   describe 'sort_by_created_at' do
     before do
       Kudo.delete_all
@@ -60,6 +65,48 @@ class KudoTest < ActiveSupport::TestCase
 
         @admin_account.sent_kudos.sort_by_created_at.must_equal [@kudo2, @kudo3, @kudo1]
       end
+    end
+  end
+
+  describe '#person' do
+    it 'must find users by account preferably' do
+      kudo = create(:kudo)
+      kudo.person.account_id.must_equal kudo.account_id
+    end
+
+    it 'must find users by name and project if there is no account_id' do
+      kudo = create(:kudo_with_name, account: nil)
+      kudo.person.id.wont_equal nil
+    end
+  end
+
+  describe '#person_name' do
+    it 'must find users by account preferably' do
+      kudo = create(:kudo)
+      kudo.person_name.must_equal kudo.account.name
+    end
+
+    it 'must find users by name if there is no account_id' do
+      kudo = create(:kudo_with_name, account: nil)
+      kudo.person_name.must_equal kudo.name.name
+    end
+  end
+
+  describe '#find_by_sender_and_target' do
+    it 'must find users by account' do
+      kudo = create(:kudo)
+      found_kudo = Kudo.find_by_sender_and_target(kudo.sender, kudo.account)
+      kudo.id.must_equal found_kudo.id
+    end
+
+    it 'must find users by person' do
+      kudo = create(:kudo_with_name, account: nil)
+      found_kudo = Kudo.find_by_sender_and_target(kudo.sender, kudo.person)
+      kudo.id.must_equal found_kudo.id
+    end
+
+    it 'must error if the target is not a supported data type' do
+      proc { Kudo.find_by_sender_and_target(create(:kudo).sender, 'hello') }.must_raise RuntimeError
     end
   end
 end

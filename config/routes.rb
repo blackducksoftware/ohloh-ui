@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   resources :reviews, only: :destroy do
     resources :helpfuls, only: :create
   end
-  resources :kudos
+  resources :kudos, only: [:new, :create, :destroy]
 
   resources :people, only: [:index]
 
@@ -30,29 +30,62 @@ Rails.application.routes.draw do
     resources :positions, only: [:index]
     resources :stacks, only: [:index]
     resources :widgets, only: [:index]
-    resources :kudos, only: [:index, :show]
+    resources :kudos, only: [:index] do
+      collection do
+        get :sent
+      end
+    end
     resources :edits, only: [:index]
     resources :posts, only: [:index]
     resources :reviews, only: [:index]
 
     member do
+      get :confirm_delete
       get :disabled
       get :settings
-      get :languages
-      get :commits_by_project_chart
-      get :commits_by_language_chart
-      post :make_spammer
-      get :activate
       get 'edit_privacy'   => 'privacy#edit',   as: :edit_account_privacy
       put 'update_privacy' => 'privacy#update', as: :account_privacy
     end
 
     collection do
-      get :search
-      get :autocomplete
-      get :resolve_login
       get :unsubscribe_emails
-      match :destroy_feedback, via: [:get, :post]
+    end
+
+    resources :charts, only: [], module: :accounts do
+      collection do
+        get :commits_by_project
+        get :commits_by_language
+      end
+    end
+
+    resources :languages, only: :index, module: :accounts
+
+    resources :accesses, only: [], module: :accounts do
+      collection do
+        post :make_spammer
+        get :activate
+      end
+    end
+  end
+
+  resources :deleted_accounts, only: [:edit, :update]
+
+  resources :check_availabilities, only: [] do
+    collection do
+      get :account
+    end
+  end
+
+  resources :searches, only: [] do
+    collection do
+      get :account
+    end
+  end
+
+  resources :autocompletes, only: [] do
+    collection do
+      get :account
+      get :project
     end
   end
 
@@ -63,6 +96,7 @@ Rails.application.routes.draw do
   resources :topics, except: [:index, :new, :create] do
     resources :posts, except: [:new]
   end
+  get 'move_topic/:id', to: 'topics#move_topic', as: :move_topic
 
   resources :posts, only: :index, as: 'all_posts'
   get 'markdown_syntax', to: 'abouts#markdown_syntax'
@@ -82,7 +116,6 @@ Rails.application.routes.draw do
     end
     collection do
       get :compare
-      get :autocomplete
     end
     resource :logos, only: [:new, :create, :destroy]
     resources :links, except: :show
@@ -145,8 +178,13 @@ Rails.application.routes.draw do
     end
     resources :widgets, only: [:index]
   end
+
   resources :languages, only: [:show, :index] do
     collection { get :compare }
+  end
+
+  resources :people do
+    collection { get :rankings }
   end
 
   resource :compare_repositories
@@ -154,6 +192,9 @@ Rails.application.routes.draw do
   resources :contributors, controller: 'contributions' do
     resources :invites, only: [:new, :create]
   end
+
+  get 'message' => 'home#message'
+  get 'maintenance' => 'home#maintenance'
 
   # The priority is based upon order of creation: first created -> highest
   # priority.

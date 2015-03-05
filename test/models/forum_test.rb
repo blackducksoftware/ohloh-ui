@@ -12,6 +12,7 @@ class ForumTest < ActiveSupport::TestCase
   it 'invalid forum without a name' do
     forum.name = nil
     forum.wont_be :valid?
+    forum.errors[:name].must_equal ["can't be blank"]
     forum.wont :save
   end
 

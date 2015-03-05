@@ -1,0 +1,31 @@
+:ruby
+  kudo_array = given.to_a
+  first_kudo = kudo_array.delete_at(0)
+  other_kudos = kudo_array
+
+%table.table.table-condensed.unstyled.nomargin
+  %tbody
+    %tr
+      %td{ width: '23', style: 'vertical-align: text-top !important;' }
+        = avatar_tiny_laurels(kudo_rank_from_kudo(first_kudo))
+      %td{ id: (first_kudo.account.nil? ? '' : "kudo_given_#{first_kudo.account.login}") }
+        = kudo_person_link(first_kudo)
+        %span{ style: 'margin-left: 50px;' }
+          - kudo_delete_link(first_kudo) if logged_in?
+        - if kudo_is_new?(first_kudo.account_id, first_kudo.created_at)
+          %span.signature_color{ style: 'margin-left: 20px;' }= t('kudos.new_link')
+        - if first_kudo.project_id
+          .project= t('kudos.for', what: first_kudo.project.name)
+        - unless first_kudo.message.blank?
+          .message &ldquo;#{first_kudo.message}&rdquo;
+        %table{ id: (first_kudo.account.nil? ? '' : "kudo_given_alternates_#{first_kudo.account.login}") }
+          %tbody
+            - other_kudos.each do |kudo|
+              %tr
+                %td
+                  #{t('.aka')}
+                  = kudos_aka_name(kudo)
+                  - unless kudo.message.blank?
+                    .message &ldquo;#{kudo.message}&rdquo;
+                %td
+                  - kudo_delete_link(kudo) if logged_in?

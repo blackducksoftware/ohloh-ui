@@ -1,0 +1,19 @@
+%meta{ name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW' }
+
+.col-md-10
+  %h2= t('.sad')
+  %p= t('.info')
+  %p= t('.rejoin')
+  %p= t('.feedback')
+
+  = form_for @deleted_account do
+    .controls
+      - DeletedAccount::REASONS_MAP.sort.each do |val, label|
+        %label.checkbox
+          %input{ type: 'checkbox', name: 'reasons[]', value: val, checked: [1, 2, 6].include?(val) }
+            = label
+    .controls
+      %textarea.col-md-7{ name: 'reason_other', rows: '5' }
+    .actions
+      %input.btn.btn-primary{ type: 'submit', value: 'Submit' }
+.clearfix &nbsp;
