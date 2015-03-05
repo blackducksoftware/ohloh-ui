@@ -37,9 +37,9 @@
               - other_langs_count = sorted_cbl.length - 3
               - pluaral_term = pluralize_without_count(other_langs_count, 'language')
               - langs_link = t('.langs_link_text1', other_langs_count: other_langs_count, pluaral_term: pluaral_term)
-              = link_to langs_link, languages_account_path(account)
+              = link_to langs_link, account_languages_path(account)
             - else
-              = link_to t('.langs_link_text2'), languages_account_path(account)
+              = link_to t('.langs_link_text2'), account_languages_path(account)
       - else
         .pull-left.language_summary.no_lang_summary
           = t('.no_lang_summary')
