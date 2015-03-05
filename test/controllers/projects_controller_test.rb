@@ -132,8 +132,8 @@ class ProjectsControllerTest < ActionController::TestCase
   end
 
   it 'index should handle account sorting by "project_name"' do
-    project1 = create(:project, name: 'Foo_second_project_name')
-    project2 = create(:project, name: 'Foobar_first_project_name')
+    project1 = create(:project, name: 'ZZZ_second_project_name')
+    project2 = create(:project, name: 'AAA_first_project_name')
     manager = create(:account)
     create(:manage, account: manager, target: project1)
     create(:manage, account: manager, target: project2)

@@ -39,7 +39,7 @@ class Project < ActiveRecord::Base
   scope :by_rating, -> { order('COALESCE(rating_average,0) DESC, user_count DESC, projects.created_at ASC') }
   scope :by_activity_level, -> { order('COALESCE(activity_level_index,0) DESC, projects.name ASC') }
   scope :by_active_committers, -> { order('COALESCE(active_committers,0) DESC, projects.created_at ASC') }
-  scope :by_project_name, -> { order(name: :desc) }
+  scope :by_project_name, -> { order(name: :asc) }
   scope :language, -> { joins(best_analysis: :main_language).select('languages.name').map(&:name).first }
   scope :managed_by, lambda { |account|
     joins(:manages).where.not(deleted: true, manages: { approved_by: nil }).where(manages: { account_id: account.id })
