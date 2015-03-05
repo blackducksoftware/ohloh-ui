@@ -26,3 +26,5 @@ $(document).on 'page:change', ->
   StackVerb.init()
   StackShow.init()
   OrganizationPictogram.init();
+  GaugeProgress.init();
+  OrgsFilter.init();

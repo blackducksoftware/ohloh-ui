@@ -5,45 +5,21 @@ class OrgThirtyDayActivity < ActiveRecord::Base
 
   belongs_to :organization
 
-  attr_accessor :commits_per_affiliate
+  scope :filter_all_orgs, -> { with_thirty_day_commit_count }
+  scope :filter_small_orgs, -> { with_thirty_day_commit_count.where(project_count: 1..10) }
+  scope :filter_medium_orgs, -> { with_thirty_day_commit_count.where(project_count: 11..50) }
+  scope :filter_large_orgs, -> { with_thirty_day_commit_count.where(arel_table[:project_count].gt(50)) }
+  scope :filter_commercial_orgs, -> { with_thirty_day_commit_count.where(org_type: 1) }
+  scope :filter_educational_orgs, -> { with_thirty_day_commit_count.where(org_type: 2) }
+  scope :filter_government_orgs, -> { with_thirty_day_commit_count.where(org_type: 3) }
+  scope :filter_non_profit_orgs, -> { with_thirty_day_commit_count.where(org_type: 4) }
 
   class << self
     def most_active_orgs
-      with_commits_and_affiliates.each do |ota|
-        ota.commits_per_affiliate = ota.thirty_day_commit_count / ota.affiliate_count
-      end.sort_by(&:commits_per_affiliate).reverse.first(3)
-    end
-
-    def filter_all_orgs
-      with_thirty_day_commit_count
-    end
-
-    def filter_small_orgs
-      with_thirty_day_commit_count.where(project_count: 1..10)
-    end
-
-    def filter_medium_orgs
-      with_thirty_day_commit_count.where(project_count: 11..50)
-    end
-
-    def filter_large_orgs
-      with_thirty_day_commit_count.where(arel_table[:project_count].gt(50))
-    end
-
-    def filter_commercial_orgs
-      with_thirty_day_commit_count.where(org_type: 1)
-    end
-
-    def filter_educational_orgs
-      with_thirty_day_commit_count.where(org_type: 2)
-    end
-
-    def filter_government_orgs
-      with_thirty_day_commit_count.where(org_type: 3)
-    end
-
-    def filter_non_profit_orgs
-      with_thirty_day_commit_count.where(org_type: 4)
+      commits_per_affliate = (arel_table[:thirty_day_commit_count] / arel_table[:affiliate_count])
+      with_commits_and_affiliates
+        .select([Arel.star, commits_per_affliate.as('commits_per_affiliate')])
+        .order(commits_per_affliate.desc).limit(3)
     end
 
     private
@@ -69,7 +45,7 @@ class OrgThirtyDayActivity < ActiveRecord::Base
       joins(:organization)
         .where(id: orgs[:thirty_day_activity_id])
         .where.not(thirty_day_commit_count: nil)
-        .order('thirty_day_commit_count DESC')
+        .order(thirty_day_commit_count: :desc)
         .limit(5)
     end
   end

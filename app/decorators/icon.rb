@@ -7,7 +7,7 @@ class Icon < Cherry::Decorator
 
   delegate :logo, :name, to: :object
 
-  def image(with_dimensions = true)
+  def image(with_dimensions: true)
     if logo
       width_and_height = with_dimensions ? dimensions : ''
       image_tag(logo.attachment.url(size), style: "#{width_and_height} border:0 none;", itemprop: 'image', alt: name)

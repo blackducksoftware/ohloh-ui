@@ -11,4 +11,4 @@
           organization_path(org, view: 'portfolio_projects')
         %span.small= t('.added', duration: time_ago_in_words(org.updated_at))
   %p
-    = link_to t('.more').html_safe, organizations_path(sort: 'newest')
+    = link_to t('.more_html'), organizations_path(sort: 'newest')

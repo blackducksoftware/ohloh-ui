@@ -97,8 +97,3 @@ var OrgsFilter = {
     })
   }
 }
-
-$(document).ready(function(){
-  GaugeProgress.init();
-  OrgsFilter.init();
-});
