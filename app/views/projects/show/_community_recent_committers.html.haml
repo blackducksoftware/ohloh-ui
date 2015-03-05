@@ -1,0 +1,20 @@
+- if @analysis && @analysis.all_time_summary
+  %h4= link_to 'Most Recent Contributors', project_contributors_path(@project, sort: 'latest_commit')
+  - recent_contributors = @analysis.all_time_summary.recent_contribution_persons
+  - if recent_contributors.any?
+    %table#recent_committers_table
+      - recent_contributors.take(6).in_groups_of(2) do |persons|
+        %tr{ height: '40px;' }
+          - persons.compact.each do |p|
+            %td{ width: '1%' }= avatar_img_for(p, 24)
+            :ruby
+              if p.account_id
+                contrib_id = Contribution.generate_id_from_project_id_and_account_id(@project.id, p.account_id)
+              else
+                contrib_id = p.id
+              end
+            %td.recent_committers{ width: '49%', title: obfuscate_email(p.person_name) }
+              = link_to truncate_file_name(obfuscate_email(p.person_name), 17),
+                        project_contributor_path(@project.id, contrib_id)
+  - else
+    %p No one has contributed to this project recently

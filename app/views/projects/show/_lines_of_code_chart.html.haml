@@ -1,0 +1,14 @@
+- if @analysis
+  - lines_of_code_url = codehistory_project_analysis_url(project_id: @project.to_param, id: 'latest', chart_size: '440')
+  legend1 = '"enabled": true, "layout": "horizontal", "align": "center", "verticalAlign": "bottom"'
+  legend2 = '"x": 0, "y": 0, "floating": false, "backgroundColor": "#ffffff"'
+  - options = chart_options('data-legend' => "{ #{legend1}, #{legend2} }")
+  %h4= link_to 'Lines of Code', languages_summary_project_analysis_path(@project, id: 'latest')
+  .span4{ style: 'margin: -20px 0 0 -10px;' }
+    = chart_interactive_tag(lines_of_code_url, 460, 200, nil, 'loc_chart', false, options)
+- else
+  %h4 Lines of Code
+  %p
+    There are no Code Locations added to this project so Open Hub cannot display the lines of code chart.
+    = link_to 'Add a code location', new_project_enlistment_path(@project)
+    to see this information.

@@ -1,0 +1,57 @@
+- content_for :javascript do
+  = javascript_tag '(function($){$(SimilarProjects.init);})(jQuery);'
+%h4{ style: 'margin-bottom: .3em;' } Quick Reference
+%dl.dl-horizontal.unstyled
+  - if @project.organization
+    %dt Organization:
+    %dd{ style: 'margin-bottom: .5em;' }
+      = link_to @project.organization.name, organization_path(@project.organization)
+  %dt
+    = link_to 'Project Links:', project_links_path(@project)
+  %dd{ style: 'margin-bottom: .5em;' }
+    - if sorted_link_list.any?
+      - sorted_link_list.each do |link_category_name, links|
+        - if links.any?
+          - if links.size > 1
+            %a{ href: project_links_path(@project) }
+              #{link_category_name}
+              %i
+                ( #{links.size} Links )
+          - else
+            = micro_data_tag_link(link_category_name, links)
+          %br
+    - else
+      = link_to 'Add some Project Link(s)', project_links_path(@project)
+  %dt
+    = link_to 'Code Locations:', project_enlistments_path(@project)
+  %dd{ style: 'margin-bottom: .5em;' }
+    - if @project.enlistments.any?
+      - if @project.enlistments.size > 1
+        %i= link_to "(#{@project.enlistments.size} Locations)", project_enlistments_path(@project)
+      - else
+        = @project.enlistments.first.repository.url.truncate(35)
+      %br
+    - else
+      = link_to 'Add a code location!', project_enlistments_path(@project)
+  %dt
+    = link_to 'Licenses:', licenses_project_path(@project)
+  %dd{ style: 'margin-bottom: .5em;' }
+    = project_license_list(@project)
+  %dt
+    = link_to 'Similar Projects:', project_similar_projects_path(@project)
+  %dd{ style: 'margin-bottom: .5em;' }
+    #similar_projects{ project_id: @project.to_param }
+    .hidden#related_spinner= image_tag('/images/spinner.gif')
+  %dt
+    = link_to 'Managers:', project_managers_path(@project)
+  %dd{ style: 'margin-bottom: .5em;' }
+    - if @project.active_managers.any?
+      #{@project.active_managers.map { |m| link_to m.name, account_path(m) }.to_sentence}
+    - else
+      = link_to "Become the first manager for #{@project.name}", new_project_manage_path(@project)
+- if @project.code_published_in_code_search?
+  - ohloh_code_url = "http://code.openhub.net/project?pid=&ipid=#{@project.koders_status.koders_id}"
+  %a.btn.btn-info.browse_code_button{ href: ohloh_code_url,
+                                      title: "Browse the Source Code for #{@project.name} on Open Hub Code!",
+                                      target: '_blank' }
+    Browse Code

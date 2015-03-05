@@ -1,0 +1,16 @@
+- duplicate = project.is_a_duplicate
+- if duplicate
+  .alert.alert-info
+    %p
+      This project has been reported as a duplicate of
+      = link_to(duplicate.good_project.name, project_path(duplicate.good_project)) + '.'
+      This project will be deleted upon review by an Open Hub administrator.
+    - if admin? || (@current_account && duplicate.account == @current_account)
+      %p
+        = bootstrap_button_link_to 'Cancel this request', duplicate_path(duplicate),
+                                   method: :delete, confirm: 'Are you sure you want to cancel this request?',
+                                   class: 'btn-warning'
+        = bootstrap_button_link_to bootstrap_icon('icon-edit', 'Edit this request'),
+                                   edit_project_duplicate_path(project, duplicate),
+                                   class: 'btn-info'
+  &nbsp;

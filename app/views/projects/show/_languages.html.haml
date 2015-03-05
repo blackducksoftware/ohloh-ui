@@ -1,0 +1,26 @@
+- if @analysis
+  - if @analysis.empty?
+    No source code was found in any of the code locations
+  - else
+    %h4= link_to 'Languages', languages_summary_project_analysis_path(@project, id: 'latest')
+    .float_left{ style: 'padding-right: 10px;' }
+      %img{ src: "/p/#{@project.to_param}/analyses/latest/languages.png?height=75&width=75" }
+
+    // and now for the table
+    %table.table.table-striped.unstyled.float_left{ style: 'width: 300px;' }
+      - @analysis.language_percentages.each do |id, name, attr|
+        - percent = attr[:percent] > 0 ? attr[:percent] : '<1'
+        %tr.float_left{ style: 'width: 150px;' }
+          - color = attr[:color]
+          %td{ style: 'width: 120px;' }
+            .float_left{ style: "width:5px;height:12px;margin-top:5px;margin-right:10px;background-color:##{color}" }
+            = id ? link_to(name, language_path(id), itemprop: 'name') : name
+          %td{ style: 'width: 20px;' }
+            %span{ itemscope: '', itemprop: 'aggregateRating', itemtype: 'http://schema.org/AggregateRating' }
+              %span{ itemprop: 'ratingValue' } #{percent}%
+- else
+  %h4 Languages
+  %p
+    There are no Code Locations added to this project so Open Hub cannot display the language breakdown.
+    = link_to 'Add a code location', new_project_enlistment_path(@project)
+    to see this information.

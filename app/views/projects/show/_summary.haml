@@ -1,0 +1,5 @@
+- if project.description && project.description.length > 0
+  .summary
+    = simple_format(h(project.description))
+- else
+  %p==No description has been added for this project. #{ link_to 'Add description', edit_project_path(project)}

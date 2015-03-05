@@ -1,7 +1,7 @@
 module ApplicationHelper
   include EmailObfuscation
   include ChartHelper
-  include TwitterBootstrap::IconHelper
+  include BootstrapHelper
 
   def error_tag(model, attr, opts = {})
     return '' if model.nil?
