@@ -134,6 +134,7 @@ Rails.application.routes.draw do
       resources :helpfuls, only: :create
     end
     resources :analyses, only: :index do
+      resources :activity_facts, only: :index
       member do
         get :languages_summary
       end

@@ -76,6 +76,10 @@ module ApplicationHelper
     haml_tag :a, inner, opts
   end
 
+  def xml_date_to_time(date)
+    Time.gm(date.year, date.month, date.day).xmlschema
+  end
+
   private
 
   def render_expander(text, l)
