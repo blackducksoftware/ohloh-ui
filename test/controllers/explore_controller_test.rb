@@ -24,27 +24,6 @@ describe 'ExploreController' do
 
   describe 'orgs' do
     it 'should respond with the necessary data when filter is all' do
-      get :orgs, filter: 'all'
-
-      must_respond_with :ok
-      assigns(:newest_orgs).must_equal [org5, org4, org3]
-      assigns(:most_active_orgs).map(&:name).must_equal [ota5.name, ota4.name, ota3.name]
-      assigns(:stats_by_sector).must_equal [@stat4, @stat3, @stat2, @stat1]
-      assigns(:org_by_30_day_commits).must_equal [ota5, ota4, ota3, ota2, ota1]
-    end
-
-    it 'should respond with the necessary data when filter is government' do
-      OrgThirtyDayActivity.where(id: [ota5.id, ota4.id, ota3.id]).update_all(org_type: 3)
-      get :orgs, filter: 'government'
-
-      must_respond_with :ok
-      assigns(:newest_orgs).must_equal [org5, org4, org3]
-      assigns(:most_active_orgs).map(&:name).must_equal [ota5.name, ota4.name, ota3.name]
-      assigns(:stats_by_sector).must_equal [@stat4, @stat3, @stat2, @stat1]
-      assigns(:org_by_30_day_commits).must_equal [ota5, ota4, ota3]
-    end
-
-    it 'should respond with the necessary data when filter is none' do
       get :orgs
 
       must_respond_with :ok
@@ -57,7 +36,7 @@ describe 'ExploreController' do
 
   describe 'orgs_by_thirty_day_commit_volume' do
     it 'should return json of filtered record when filter is none' do
-      xhr :get, :orgs_by_thirty_day_commit_volume, format: :js
+      xhr :get, :orgs_by_thirty_day_commit_volume, format: :js, filter: 'all_orgs'
 
       must_respond_with :ok
       assigns(:org_by_30_day_commits).must_equal [ota5, ota4, ota3, ota2, ota1]
@@ -72,7 +51,7 @@ describe 'ExploreController' do
     end
 
     it 'should return json of filtered record when filter is all' do
-      xhr :get, :orgs_by_thirty_day_commit_volume, filter: 'all', format: :js
+      xhr :get, :orgs_by_thirty_day_commit_volume, filter: 'all_orgs', format: :js
 
       must_respond_with :ok
       assigns(:org_by_30_day_commits).must_equal [ota5, ota4, ota3, ota2, ota1]
