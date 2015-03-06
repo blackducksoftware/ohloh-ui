@@ -37,12 +37,6 @@ class OrgThirtyDayActivityTest < ActiveSupport::TestCase
       ota4.update_column(:thirty_day_commit_count, nil)
       OrgThirtyDayActivity.filter_all_orgs.must_equal [ota5, ota3, ota2, ota1]
     end
-
-    it 'should be executed when incorrect method call is made for filtering methods' do
-      ota5.update_column(:organization_id, org5.id)
-      ota4.update_column(:thirty_day_commit_count, nil)
-      OrgThirtyDayActivity.filter_test.must_equal [ota5, ota3, ota2, ota1]
-    end
   end
 
   describe 'filter_small_orgs' do
@@ -191,4 +185,51 @@ class OrgThirtyDayActivityTest < ActiveSupport::TestCase
       all_orgs.must_equal [ota5, ota3]
     end
   end
+
+  describe 'filter' do
+    it 'should call the correct filter method when filter is all_orgs' do
+      OrgThirtyDayActivity.expects(:filter_all_orgs).once
+      OrgThirtyDayActivity.filter('all_orgs')
+    end
+
+    it 'should call the correct filter method when filter is large' do
+      OrgThirtyDayActivity.expects(:filter_large_orgs).once
+      OrgThirtyDayActivity.filter('large')
+    end
+
+    it 'should call the correct filter method when filter is small' do
+      OrgThirtyDayActivity.expects(:filter_small_orgs).once
+      OrgThirtyDayActivity.filter('small')
+    end
+
+    it 'should call the correct filter method when filter is medium' do
+      OrgThirtyDayActivity.expects(:filter_medium_orgs).once
+      OrgThirtyDayActivity.filter('medium')
+    end
+
+    it 'should call the correct filter method when filter is government' do
+      OrgThirtyDayActivity.expects(:filter_government_orgs).once
+      OrgThirtyDayActivity.filter('government')
+    end
+
+    it 'should call the correct filter method when filter is commercial' do
+      OrgThirtyDayActivity.expects(:filter_commercial_orgs).once
+      OrgThirtyDayActivity.filter('commercial')
+    end
+
+    it 'should call the correct filter method when filter is non_profit' do
+      OrgThirtyDayActivity.expects(:filter_non_profit_orgs).once
+      OrgThirtyDayActivity.filter('non_profit')
+    end
+
+    it 'should call the correct filter method when filter is educational' do
+      OrgThirtyDayActivity.expects(:filter_educational_orgs).once
+      OrgThirtyDayActivity.filter('educational')
+    end
+
+    it 'should raise exception when incorrect fiter is invoked' do
+      proc { OrgThirtyDayActivity.filter('incorrect') }.must_raise ArgumentError
+    end
+  end
 end
+
