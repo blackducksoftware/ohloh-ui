@@ -29,7 +29,7 @@ class ActivityFactByMonth
   end
 
   def months
-    Arel::Table.new(:all_months)
+    AllMonth.arel_table
   end
 
   def coalesce_columns
