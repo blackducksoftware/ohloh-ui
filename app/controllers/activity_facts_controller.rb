@@ -4,13 +4,11 @@ class ActivityFactsController < ApplicationController
   before_action :set_project
   before_action :verify_api_key
 
-  def index
-    if params[:analysis_id] == 'latest'
-      @analysis = @project.best_analysis
-    else
-      @analysis = Analysis.find(params[:analysis_id])
-    end
+  LATEST_ID = 'latest'
 
+  def index
+    latest_analysis = params[:analysis_id] == LATEST_ID
+    @analysis = latest_analysis ? @project.best_analysis : Analysis.find(params[:analysis_id])
     @activity_facts = ActivityFactByMonthQuery.new(@analysis).execute
   end
 
