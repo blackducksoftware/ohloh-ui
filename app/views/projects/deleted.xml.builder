@@ -1,5 +1,5 @@
 xml.instruct!
 xml.response do
-  xml.status 'failed'
+  xml.status t('.failed')
   xml.error t('.message', name: @project.name)
 end

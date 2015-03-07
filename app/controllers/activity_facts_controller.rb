@@ -1,5 +1,8 @@
 class ActivityFactsController < ApplicationController
+  include ApiKeyChecks
+
   before_action :set_project
+  before_action :verify_api_key
 
   def index
     if params[:analysis_id] == 'latest'

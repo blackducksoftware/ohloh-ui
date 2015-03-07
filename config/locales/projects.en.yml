@@ -10,4 +10,5 @@ en:
     high: "High"
     very_high: "Very High"
     deleted:
-      message: '%{name} is deleted'
+      message: '%{name} has been deleted'
+      failed: 'failed'
