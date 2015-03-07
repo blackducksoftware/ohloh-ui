@@ -26,7 +26,7 @@ describe 'ActivityFactsControllerTest' do
     it 'should respond with activity_facts for latest analysis' do
       project.update_column(:best_analysis_id, analysis.id)
 
-      get :index, { format: 'xml', project_id: project.id, analysis_id: 'latest', api_key: api_key.key }
+      get :index, format: 'xml', project_id: project.id, analysis_id: 'latest', api_key: api_key.key
       xml = xml_hash(@response.body)
 
       must_respond_with :ok
@@ -41,7 +41,7 @@ describe 'ActivityFactsControllerTest' do
     end
 
     it 'should respond with activity_facts analysis id is specified' do
-      get :index, { format: 'xml', project_id: project.id, analysis_id: analysis.id, api_key: api_key.key }
+      get :index, format: 'xml', project_id: project.id, analysis_id: analysis.id, api_key: api_key.key
       xml = xml_hash(@response.body)
 
       must_respond_with :ok
@@ -58,7 +58,7 @@ describe 'ActivityFactsControllerTest' do
     it 'should respond with failure if project id deleted' do
       Project.any_instance.stubs(:deleted?).returns(true)
 
-      get :index, { format: 'xml', project_id: project.id, analysis_id: analysis.id, api_key: api_key.key }
+      get :index, format: 'xml', project_id: project.id, analysis_id: analysis.id, api_key: api_key.key
       xml = xml_hash(@response.body)
 
       must_respond_with :ok
@@ -67,7 +67,7 @@ describe 'ActivityFactsControllerTest' do
     end
 
     it 'should respond with unauthorized if api_key is invalid' do
-      get :index, { format: 'xml', project_id: project.id, analysis_id: analysis.id, api_key: 'dummy_key' }
+      get :index, format: 'xml', project_id: project.id, analysis_id: analysis.id, api_key: 'dummy_key'
       xml = xml_hash(@response.body)
 
       must_respond_with :unauthorized
