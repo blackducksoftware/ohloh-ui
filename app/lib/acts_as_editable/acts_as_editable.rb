@@ -19,6 +19,7 @@ module ActsAsEditable
       cattr_accessor :aae_merge_within
       self.aae_editable_attributes = editable_attributes
       self.aae_merge_within = merge_within
+      has_many :edits, as: :target
     end
   end
 

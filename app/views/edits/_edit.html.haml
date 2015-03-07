@@ -1,0 +1,15 @@
+- edit.target.editor_account = current_user
+%tr{ id: "edit_#{edit.to_param}", parent_id: (params[:organization_id] || params[:project_id]) }
+  %td
+    - edit_counter ||= 1
+    .edit{ class: "#{edit.to_param} #{'alt' if edit_counter.even?}" }
+      .edit_actions
+        .undo_block= render partial: 'undo_block', locals: { edit: edit }
+      .in_avatar.clear
+        = avatar_for(edit.account)
+      .inside
+        %p.strong.nomargin{ class: edit_title_class(edit) } #{edit.id} - #{edit_show_subject(edit)}
+        %p
+          by
+          = link_to edit.account.name, account_path(edit.account)
+          %span.date= edit_humanize_datetime(edit.created_at)

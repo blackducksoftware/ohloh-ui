@@ -23,6 +23,11 @@ Rails.application.routes.draw do
   resources :kudos, only: [:new, :create, :destroy]
 
   resources :people, only: [:index]
+  resources :edits, only: [:update]
+
+  resources :licenses do
+    resources :edits, only: [:index]
+  end
 
   resources :accounts do
     resources :api_keys, constraints: { format: :html }, except: :show
@@ -125,6 +130,7 @@ Rails.application.routes.draw do
         post :reject
       end
     end
+    resources :edits, only: [:index]
     resources :rss_articles, only: :index
     resources :widgets, only: :index
     resources :similar_projects, only: :index
@@ -156,6 +162,7 @@ Rails.application.routes.draw do
       get :print_infographic
       get :affiliated_committers
     end
+    resources :edits, only: [:index]
     resource :logos, only: [:new, :create, :destroy]
     resources :managers, only: [:index, :new, :create, :edit, :update] do
       member do

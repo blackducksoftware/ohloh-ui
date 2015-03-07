@@ -1,6 +1,7 @@
 module ApplicationHelper
   include EmailObfuscation
   include ChartHelper
+  include TimeStampHelper
   include TwitterBootstrap::IconHelper
 
   def error_tag(model, attr, opts = {})
