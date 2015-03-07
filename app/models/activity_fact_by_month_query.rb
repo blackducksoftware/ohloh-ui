@@ -1,4 +1,4 @@
-class ActivityFactByMonth
+class ActivityFactByMonthQuery
   COALESCE_COLUMNS = [:code_added, :code_removed, :blanks_added, :blanks_removed, :comments_added,
                       :comments_removed, :commits]
 
@@ -6,7 +6,7 @@ class ActivityFactByMonth
     @analysis = analysis
   end
 
-  def result
+  def execute
     fail ActiveRecord::RecordNotFound if @analysis.nil?
     return [] if @analysis.min_month.blank?
     ActivityFact.find_by_sql(query)

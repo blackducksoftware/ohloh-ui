@@ -11,7 +11,7 @@ class ActivityFactsController < ApplicationController
       @analysis = Analysis.find(params[:analysis_id])
     end
 
-    @activity_facts = ActivityFactByMonth.new(@analysis).result
+    @activity_facts = ActivityFactByMonthQuery.new(@analysis).execute
   end
 
   private
