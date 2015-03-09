@@ -38,6 +38,7 @@ class PropertyEditTest < ActiveSupport::TestCase
   it 'test_undo_respects_targets_allow_undo' do
     @edit.target.editor_account = create(:admin)
     @edit.target.define_singleton_method(:allow_undo?) { |_| false }
+    @edit.key = :name
     proc { @edit.do_undo }.must_raise ActsAsEditable::UndoError
     @edit.target.reload
     @edit.target.description.must_equal 'Linux'
@@ -89,7 +90,7 @@ class PropertyEditTest < ActiveSupport::TestCase
   it 'test_allow_undo_works' do
     [Project, Organization, Link, License, Alias].each do |klass|
       instance = klass.new
-      instance.allow_undo?(:not_disallowed).must_equal true
+      instance.allow_undo_to_nil?(:not_disallowed).must_equal true
     end
   end
 

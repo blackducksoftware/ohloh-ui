@@ -1,6 +1,8 @@
 class Organization < ActiveRecord::Base
   ORG_TYPES = { 'Commercial' => 1, 'Education' => 2, 'Government' => 3, 'Non-Profit' => 4 }
 
+  fix_string_column_encodings!
+
   belongs_to :logo
   has_one :permission, as: :target
   has_many :projects, -> { where.not(deleted: true) }
@@ -36,7 +38,7 @@ class Organization < ActiveRecord::Base
     Manage.organizations.for_target(self).active.to_a.map(&:account)
   end
 
-  def allow_undo?(key)
+  def allow_undo_to_nil?(key)
     ![:name, :org_type].include?(key)
   end
 
