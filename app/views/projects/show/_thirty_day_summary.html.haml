@@ -3,29 +3,29 @@
     - thirty_day_summary = @analysis.thirty_day_summary
     - thirty_days_ago = @analysis.logged_at - 30.days
     - new_contributors_count = thirty_day_summary.new_contributors_count || 0
-    - new_languages = @project.new_languages(thirty_days_ago)
+    - new_languages = Language.new_languages_for_project(@project, thirty_days_ago)
 
     %li
-      %big= thirty_day_summary.commit_count
-      - commits_link_text = pluralize(thirty_day_summary.commit_count, 'Commit')
+      %big= thirty_day_summary.commits_count
+      - commits_link_text = thirty_day_summary.commits_count == 1 ? t('.commit') : t('.commits')
       = link_to commits_link_text, project_commits_path(@project, time_span: '30 days')
     %li
       %big= thirty_day_summary.committer_count
-      - committer_link_text = pluralize(thirty_day_summary.committer_count, 'Contributor')
+      - committer_link_text = thirty_day_summary.committer_count == 1 ? t('.contributor') : t('.contributors')
       = link_to committer_link_text, project_contributors_path(@project, time_span: '30 days', sort: 'latest_commit')
       - if new_contributors_count > 0
-        %span.clear.small
-          including
-          - new_committer_link_text = pluralize(new_contributors_count, 'new contributor')
+        .small{ style: 'padding-left: 22px;' }
+          = t('.including')
+          - new_committer_link_text = pluralize(new_contributors_count, t('.new_contributor'))
           = link_to new_committer_link_text, project_contributors_path(@project, time_span: '30 days',
                                                                                  highlight_key: 'first_checkin')
     - if new_languages.any?
       %li#new_languages
         %big= new_languages.size
-        = pluralize(new_languages.size, 'New Language')
+        = new_languages.size == 1 ? t('.new_language') : t('.new_languages')
         \:
         - new_languages.each do |_, commit_flags|
-          %span.clear.small
+          .small{ style: 'padding-left: 22px;' }
             = link_to commit_flags.first.language.nice_name, project_commit_path(@project, commit_flags.first.commit)
-            added
+            = t('.added')
             = commit_flags.first.commit.time.strftime('%b %e')

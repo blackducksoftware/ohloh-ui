@@ -1,0 +1,76 @@
+@import global_vars
+.summary
+  :word-break break-word
+  :width 100%
+.summary.truncated
+  :margin-bottom 20px
+  :height 200px
+#summary-truncated-info
+  :margin 1em 0
+  :width 100%
+  :text-align right
+  span.pad
+    :position relative
+    :top 0em
+    :padding 0 15px
+    :background #fff
+    a
+      :background #fff
+      :margin-top 4px
+
+// in a nutshell section
+ul#factoids
+  :padding-left 30px
+
+.recent_committers
+  :font-size 11px
+  :padding-left 5px
+  :line-height 12px
+
+#recent_committers_table
+  :position relative
+  :top -6px
+
+.browse_code_button
+  :width 150px
+  :margin 0 auto
+  :display block
+  :letter-spacing .1em
+  :font-weight bold
+  sup
+    :font-style italics
+    :font-weight normal
+    :leter-spacing 0px
+#activity_table
+  h4
+    :padding 0px
+    :margin-bottom 0px
+    &.thirty_day
+      :width 190px
+    &.twelve_month
+      :width 200px
+  ul
+    li
+      span.small
+        :padding-left 22px
+        :line-height 13px
+
+.analysis_in_progress
+  :color $soft_gray
+
+#similar_projects td img
+  :max-width none
+
+small.summary_timespan
+  :display block
+  :text-align right
+  :padding-top 5px
+  :font-style italic
+  +small_font
+  :line-height 1
+  :color #999
+  :font-weight normal
+  :margin 0 0 5px
+  :width 200px
+  &.thirty_day
+    :width 190px

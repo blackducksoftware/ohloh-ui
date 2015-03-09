@@ -1,5 +1,5 @@
 - if @analysis && @analysis.all_time_summary
-  %h4= link_to 'Most Recent Contributors', project_contributors_path(@project, sort: 'latest_commit')
+  %h4= link_to t('.most_recent'), project_contributors_path(@project, sort: 'latest_commit')
   - recent_contributors = @analysis.all_time_summary.recent_contribution_persons
   - if recent_contributors.any?
     %table#recent_committers_table
@@ -14,7 +14,7 @@
                 contrib_id = p.id
               end
             %td.recent_committers{ width: '49%', title: obfuscate_email(p.person_name) }
-              = link_to truncate_file_name(obfuscate_email(p.person_name), 17),
-                        project_contributor_path(@project.id, contrib_id)
+              - obfuscated_email = obfuscate_email(p.person_name).reverse.truncate(17).reverse
+              = link_to obfuscated_email, project_contributor_path(@project.id, contrib_id)
   - else
-    %p No one has contributed to this project recently
+    %p= t('.no_one_recently')

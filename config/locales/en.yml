@@ -106,7 +106,9 @@ en:
   compare_projects: 'Compare Projects'
   compare_languages: 'Compare Languages'
   compare_repositories: 'Compare Repositories'
-
+  up: 'Up'
+  down: 'Down'
+  from_prev_12_mo: 'from previous 12 months'
   domain_blacklists:
     index:
       notice: 'No Domains Blacklisted'

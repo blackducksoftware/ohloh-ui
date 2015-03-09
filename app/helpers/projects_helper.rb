@@ -51,7 +51,34 @@ module ProjectsHelper
     end
   end
 
+  def project_twitter_description(project, analysis)
+    return project_twitter_description_analysis(project, analysis) unless analysis.blank?
+    project.description.to_s.length > 0 ? project.description : ''
+  end
+
+  def truncate_project_name(name, link = false, len = 25)
+    if name.length > len && link == false
+      "<abbr title = '#{name}'>#{name.truncate(len)}</abbr>"
+    elsif name.length > len && link == true
+      name.truncate(len)
+    else
+      name
+    end
+  end
+
+  def project_managers_list
+    @project.active_managers.map { |m| link_to(html_escape(m.name), account_path(m)) }.to_sentence
+  end
+
   private
+
+  def project_twitter_description_analysis(project, analysis)
+    content = ''
+    content += project.description.truncate(80).concat(', ')
+    content += "#{number_with_delimiter analysis.code_total} lines of code"
+    content += " from #{number_with_delimiter analysis.committers_all_time} contributors"
+    content + ", #{project_activity_text(project, true)}, #{project.user_count} users"
+  end
 
   def project_activity_css_class(project, size)
     "#{size}_project_activity_level_#{project_activity_level(project)}"

@@ -1,75 +1,70 @@
 .row
   - if @project.enlistments.empty?
-    .alert.alert-info.alert-block.span11
-      %h3= bootstrap_icon('icon-info-sign', 'Code locations have been removed since last analysis')
+    .alert.alert-info.alert-block.col-md-11
+      %h3= bootstrap_icon('icon-info-sign', t('.code_locations_removed'))
       .indent{ style: 'padding-left: 30px;' }
-        %p
-          At one point, Open Hub analyzed source code for this project based on code location(s) available at
-          that time. Since then, the code locations have been removed.
-  .span6
+        %p= t('.code_locations_removed_explanation')
+  .col-md-6
     .well
       - p_name = truncate_project_name(@project.name, false, 40)
-      %h4 In a Nutshell, #{@project.name.length > 40 ? p_name : p_name.concat('...')}
+      %h4= t('.in_a_nutshell', name: @project.name.length > 40 ? p_name : p_name.concat('...'))
       = render 'projects/show/factoids'
-  .span6{ itemscope: '', itemtype: 'http://schema.org/Language' }
+  .col-md-6{ itemscope: '', itemtype: 'http://schema.org/Language' }
     = render partial: 'projects/show/languages'
     .clear &nbsp;
     .clear &nbsp;
     = render partial: 'projects/show/lines_of_code_chart'
   .clear &nbsp;
 .mezzo
-  %h3 Activity
+  %h3= t('.activity')
 .row
-  .span6
+  .col-md-6
     .well{ style: 'min-height: 200px;' }
       %table.unstyled#activity_table{ width: '100%' }
         %tbody
           %tr
             %td{ width: '50%', valign: 'top' }
-              %h4.section_header.thirty_day
-                30 Day Summary
+              %h4.section_header.thirty_day= t('.thirty_day_summary')
               %small.summary_timespan.thirty_day
                 - if @analysis && @analysis.thirty_day_summary && @analysis.logged_at
                   = (@analysis.logged_at - 30.days).strftime('%b %e %Y')
                   &mdash;
                   = (@analysis.logged_at).strftime('%b %e %Y')
                 - else
-                  not available
+                  = t('.not_available')
               .clear
               = render partial: 'projects/show/thirty_day_summary'
             %td{ width: '50%', valign: 'top' }
-              %h4.section_header.twelve_month= '12 Month Summary'
+              %h4.section_header.twelve_month= t('.twelve_month_summary')
               %small.summary_timespan
                 - if @analysis && @analysis.twelve_month_summary && @analysis.logged_at
                   = (@analysis.logged_at - 12.months).strftime('%b %e %Y')
                   &mdash;
                   = (@analysis.logged_at).strftime('%b %e %Y')
                 - else
-                  not available
+                  = t('.not_available')
               .clear
               = render partial: 'projects/show/twelve_month_summary'
-  .span6
+  .col-md-6
     - if @analysis
       - commits_url = url_for(commitshistory_project_analysis_url(project_id: @project.to_param, id: 'latest'))
       - opts = chart_options('data-chart' => chart_watermark('charts_watermark_440'))
-      %h4= link_to 'Commits per Month', summary_project_commits_path(@project)
-      .span4{ style: 'margin: -20px 0 0 -10px;' }
-        = chart_interactive_tag(commits_url, 460, 200, nil, 'loc_chart', false, opts)
+      %h4= link_to t('.commits_per_month'), summary_project_commits_path(@project)
+      .col-md-4{ style: 'margin: -20px 0 0 -10px;' }
+        != chart_interactive_tag(commits_url, 460, 200, opts)
     - else
-      %h4 Commits per Month
-      %p
-        There are no Code Locations added to this project so Open Hub cannot display the commits per month chart.
-        = link_to 'Add a code location', new_project_enlistment_path(@project)
-        to see this information.
+      %h4= t('.commits_per_month')
+      - add_code_link = link_to t('.add_a_code_location'), new_project_enlistment_path(@project)
+      %p= t('.no_code_locations', link: add_code_link)
 .mezzo
-  %h3 Community
+  %h3= t('.community')
 %div
   .proj_community_ratings#proj_rating= render partial: 'projects/show/community_rating'
   .float_left{ style: 'width: 280px;' }= render partial: 'projects/show/community_recent_committers'
-  .float_left= render partial: 'projects/show/committers_per_month_chart'
+  .float_left{ style: 'width: 450px;' }= render partial: 'projects/show/committers_per_month_chart'
 .row
-  .span12 &nbsp;
+  .col-md-12 &nbsp;
 .row
-  .span6#stackoverflow_recent_questions
-  .span6#stackoverflow_popular_questions
+  .col-md-6#stackoverflow_recent_questions
+  .col-md-6#stackoverflow_popular_questions
   -# tags = @project.tags.sort_by(&:weight).collect(&:name).join(';')

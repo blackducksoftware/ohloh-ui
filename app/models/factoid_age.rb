@@ -1,0 +1,2 @@
+class FactoidAge < Factoid
+end

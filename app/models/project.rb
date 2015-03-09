@@ -24,14 +24,17 @@ class Project < ActiveRecord::Base
   has_many :repositories, through: :enlistments
   has_many :project_licenses, -> { where(deleted: false) }
   has_many :licenses, -> { order('lower(licenses.nice_name)') }, through: :project_licenses
-
+  has_one :is_a_duplicate, class_name: 'Duplicate', foreign_key: 'bad_project_id'
+  has_many :named_commits, ->(proj) { where(analysis_id: (proj.best_analysis_id || 0)) }
+  has_many :commit_flags, -> { order(time: :desc).where('commit_flags.sloc_set_id = named_commits.sloc_set_id') },
+           through: :named_commits
   scope :active, -> { where { deleted.not_eq(true) } }
   scope :deleted, -> { where(deleted: true) }
   scope :from_param, ->(id) { Project.where(Project.arel_table[:url_name].eq(id).or(Project.arel_table[:id].eq(id))) }
   scope :not_deleted, -> { where(deleted: false) }
   scope :been_analyzed, -> { where.not(best_analysis_id: nil) }
   scope :recently_analyzed, -> { not_deleted.been_analyzed.order(created_at: :desc) }
-  scope :hot, ->(lang_id) { hot_projects(lang_id) }
+  scope :hot, ->(l_id = nil) { Project.not_deleted.been_analyzed.joins(:analyses).merge(Analysis.fresh_and_hot(l_id)) }
   scope :by_popularity, -> { where.not(user_count: 0).order(user_count: :desc) }
   scope :by_activity, -> { joins(:analyses).joins(:analysis_summaries).by_popularity.thirty_day_summaries }
   scope :by_new, -> { order(created_at: :desc) }
@@ -75,10 +78,7 @@ class Project < ActiveRecord::Base
     tag_weights = Tagging.tag_weight_sql(self.class, tags.map(&:id))
     Project.select('projects.*, tag_weights.weight')
       .joins(sanitize("INNER JOIN (#{tag_weights}) AS tag_weights ON tag_weights.project_id = projects.id"))
-      .not_deleted
-      .where.not(id: id)
-      .order('tag_weights.weight DESC, projects.user_count DESC')
-      .limit(limit)
+      .not_deleted.where.not(id: id).order('tag_weights.weight DESC, projects.user_count DESC').limit(limit)
   end
 
   def active_managers
@@ -100,12 +100,6 @@ class Project < ActiveRecord::Base
 
   def best_analysis
     super || NilAnalysis.new
-  end
-
-  class << self
-    def hot_projects(lang_id = nil)
-      Project.not_deleted.been_analyzed.joins(:analyses).merge(Analysis.fresh_and_hot(lang_id))
-    end
   end
 
   private

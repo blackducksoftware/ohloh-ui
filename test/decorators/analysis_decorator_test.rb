@@ -5,27 +5,27 @@ class AnlysisDecoratorTest < ActiveSupport::TestCase
 
   describe 'without prev and twelve month summary' do
     it 'commits_difference' do
-      commit_difference('commits_difference', 0)
+      commit_difference('commits_difference', -4)
     end
 
     it 'committers_difference' do
-      commit_difference('committers_difference', 0)
+      commit_difference('committers_difference', -4)
     end
 
     it 'affiliated_commits_difference' do
-      commit_difference('affiliated_commits_difference', 0)
+      commit_difference('affiliated_commits_difference', -2)
     end
 
     it 'affiliated_committers_difference' do
-      commit_difference('affiliated_committers_difference', 0)
+      commit_difference('affiliated_committers_difference', -2)
     end
 
     it 'outside_commits_difference'do
-      commit_difference('outside_commits_difference', 0)
+      commit_difference('outside_commits_difference', -2)
     end
 
     it 'outside_committers_difference' do
-      commit_difference('outside_committers_difference', 0)
+      commit_difference('outside_committers_difference', -2)
     end
   end
 

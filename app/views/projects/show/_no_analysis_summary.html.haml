@@ -3,29 +3,20 @@
   analysis_not_complete = @project.enlistments.any? && analysis.nil?
   no_recognized_code = @project.enlistments.any? && analysis && analysis.empty?
   no_code_available = @project.enlistments.empty? && analysis.blank?
-  message = 'No recognizable code' if no_recognized_code
-  message = 'No code available to analyze' if no_code_available
-  message = 'Code analysis has not completed' if analysis_not_complete
-
+  message = t('.message_1') if no_recognized_code
+  message = t('.message_2') if no_code_available
+  message = t('.message_3') if analysis_not_complete
 .no_analysis_message
-  .alert.alert-info.alert-block.span8
+  .alert.alert-info.alert-block.col-md-8
     %h3= bootstrap_icon('icon-info-sign', message)
     .indent{ style: 'padding-left: 30px;' }
       - if no_recognized_code
-        %p
-          Open Hub computes statistics on FOSS projects by examining source code and commit history in source code
-          management systems. This project has code locations but that location contains no recognizable source code
-          for Open Hub to analyze.
+        %p= t('.help_1')
       - if no_code_available
-        %p
-          Open Hub computes statistics on FOSS projects by examining source code and commit history in source code
-          management systems. This project has no code locations, and so Open Hub cannot perform this analysis
-        %p
-          Is this project's source code hosted in a publicly available repository? Do you know the URL? If you do,
-          click the button below and tell us so that Open Hub can generate statistics! It's fast and easy -
-          try it and see!
+        %p= t('.help_2')
+        %p= t('.help_3')
         %p{ align: 'center' }
-          = bootstrap_large_button_link_to 'Add a code location', new_project_enlistment_path(@project),
+          = bootstrap_large_button_link_to t('.add_a_code_location'), new_project_enlistment_path(@project),
                                            class: 'btn-primary'
       - if analysis_not_complete
         - message_analysis_not_complete(@project, false)
