@@ -7,6 +7,7 @@
       show:
         forums: 'Forums'
         close: 'Close'
+        closed: 'closed'
         delete: 'Delete'
         reopen: 'Re-open'
         spam: 'SPAM!'

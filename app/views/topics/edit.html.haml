@@ -20,9 +20,9 @@
 
   - if current_user_is_admin?
     .controls
-      .checkbox.inline{ style: 'margin-left: -20px;' }
+      / .checkbox.inline{ style: 'margin-left: -20px;' }
       / NOTE: Why is this being rendered as a label?
-        = f.check_box :sticky, choice: t('.sticky')
+      = f.check_box :sticky, choice: t('.sticky')
       /   %span= t('.sticky')
       / %label.checkbox.inline{ style: 'margin-top: 10px;' }
       /   = f.check_box :closed, choice: t('.closed')

@@ -1,5 +1,5 @@
-%h1.margin_bottom_20= t('.forums')
-%h2.soft= t('.active_topics')
+%h1.margin_top_0= t('.forums')
+%h2.soft.margin_top_20= t('.active_topics')
 = render partial: '/topics/current_discussions', object: @recent_topics
 
 .center
@@ -11,20 +11,30 @@
   %thead
     %tr
       %th{ width: '70%' }
-        %h4.nomargin.strong= t('.forums')
+        %h4.nomargin.strong.margin_bottom_0= t('.forums')
       %th.center{ width: '15%' }
-        %h4.nomargin.center.strong= t('.topics')
+        %h4.nomargin.center.strong.margin_bottom_0= t('.topics')
       %th.center{ width: '15%' }
-        %h4.nomargin.center.strong= t('.posts')
+        %h4.nomargin.center.strong.margin_bottom_0= t('.posts')
   %tbody
     - @forums.each do |forum|
-      %tr
-        %td.first
-          %h3.nomargin
-            = link_to forum.name, forum_path(forum)
-          %p.nomargin= forum.description
-        %td.center= forum.topics_count
-        %td.center= forum.posts_count
+      / NOTE: There must be a way to refactor this.
+      - if @forums.last == forum
+        %tr.border_bottom_color 
+          %td.first
+            %h3.nomargin
+              = link_to forum.name, forum_path(forum)
+            %p.nomargin= forum.description
+          %td.center= forum.topics_count
+          %td.center= forum.posts_count
+      - else
+        %tr 
+          %td.first
+            %h3.nomargin
+              = link_to forum.name, forum_path(forum)
+            %p.nomargin= forum.description
+          %td.center= forum.topics_count
+          %td.center= forum.posts_count
 
 - if current_user_is_admin?
   = link_to t('.new_forum'), new_forum_path, class: 'btn btn-primary btn-small'

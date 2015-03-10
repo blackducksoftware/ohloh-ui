@@ -17,7 +17,6 @@ class TopicsController < ApplicationController
   end
 
   def create
-    # Add recaptcha error message.
     @topic = build_new_topic
     if verify_recaptcha(model: @topic) && @topic.save
       redirect_to forum_path(@forum)
