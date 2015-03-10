@@ -23,6 +23,7 @@
 #= require d3.min
 
 $(document).on 'page:change', ->
+  Edit.init()
   StackVerb.init()
   StackShow.init()
   OrganizationPictogram.init()

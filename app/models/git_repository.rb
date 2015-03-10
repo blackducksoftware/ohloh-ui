@@ -1,0 +1,2 @@
+class GitRepository < Repository
+end

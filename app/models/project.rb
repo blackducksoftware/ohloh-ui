@@ -80,7 +80,7 @@ class Project < ActiveRecord::Base
     Manage.projects.for_target(self).active.to_a.map(&:account)
   end
 
-  def allow_undo?(key)
+  def allow_undo_to_nil?(key)
     ![:name].include?(key)
   end
 

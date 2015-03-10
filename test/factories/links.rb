@@ -11,6 +11,7 @@ FactoryGirl.define do
     title { generate(:link_title) }
     url { generate(:link_url) }
     link_category_id Link::CATEGORIES.values.last(6).sample
+    association :project
     before(:create) { |instance| instance.editor_account = create(:admin) }
   end
 end

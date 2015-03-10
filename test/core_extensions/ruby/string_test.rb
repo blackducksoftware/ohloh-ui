@@ -91,4 +91,22 @@ class StringTest < ActiveSupport::TestCase
   it 'clean_url just returns back a valid ftp:// url' do
     String.clean_url('ftp://cnn.com/sports').must_equal 'ftp://cnn.com/sports'
   end
+
+  describe 'to_bool' do
+    it 'truthy values are true' do
+      't'.to_bool.must_equal true
+      'true'.to_bool.must_equal true
+      'y'.to_bool.must_equal true
+      'yes'.to_bool.must_equal true
+      '1'.to_bool.must_equal true
+    end
+
+    it 'falsey values are false' do
+      'f'.to_bool.must_equal false
+      'false'.to_bool.must_equal false
+      'n'.to_bool.must_equal false
+      'no'.to_bool.must_equal false
+      '0'.to_bool.must_equal false
+    end
+  end
 end
