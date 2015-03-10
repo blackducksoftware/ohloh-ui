@@ -18,7 +18,6 @@ var ohloh = (function builder($) {
   return {
     ui: {
       init: function(){
-        $('input[name="query"].search').ghostText({ ghostText: 'Search...' });
         var $scope = $('.ux-dropdown');
         var $search_text_field = $scope.find('.text');
         var dropdownHead = $('a span.selection', $scope);
@@ -79,8 +78,6 @@ var ohloh = (function builder($) {
           if( q.indexOf('&') > -1 ) {
             q = q.split('&')[0];
           }
-
-          $search_text_field.val(unescape(q).replace(/\+/ig,' ')).removeClass('ghost');
         }
 
         $search_text_field.keydown(function(e){
@@ -94,7 +91,7 @@ var ohloh = (function builder($) {
         $search_text_field.siblings('.submit').click(function(e) {
           var search_term = $.trim($search_text_field.val());
 
-          if(search_term.length > 0 && search_term !== "Search...") {
+          if(search_term.length > 0) {
             e.preventDefault();
 
             var section = getSelectedValue(),

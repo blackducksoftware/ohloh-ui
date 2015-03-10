@@ -25,3 +25,5 @@ en:
       no_match_4: 'Try different keywords.'
       no_match_5: 'Try more general keywords.'
       no_match_6: 'Try fewer keywords.'
+    search:
+      search_text: 'Search...'
