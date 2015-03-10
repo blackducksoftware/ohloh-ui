@@ -132,3 +132,6 @@ en:
         too_young: "This project is less than 12 months old."
         must_reanalyize: "Open Hub must re-analyze this project to display this information."
         no_commit_data: "No commit data was found in the analysis from previous 12 months"
+    deleted:
+      message: '%{name} has been deleted'
+      failed: 'failed'

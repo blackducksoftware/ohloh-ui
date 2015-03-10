@@ -3,9 +3,14 @@ FactoryGirl.define do
     association :name
     association :language
     association :analysis
-    code_added 10
-    code_removed 5
-    comments_added 4
-    comments_removed 2
+    month  { Date.today }
+    code_added 100
+    code_removed 100
+    comments_added 100
+    comments_removed 100
+    blanks_added 100
+    blanks_removed 100
+    name_id 100
+    commits 100
   end
 end

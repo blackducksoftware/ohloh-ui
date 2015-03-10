@@ -291,18 +291,3 @@ en:
             url:
               taken: 'has already been submitted'
               invalid_url: 'Invalid Link URL'
-
-  shared:
-    markdown_help:
-      markdown: 'Markdown Help'
-      or: 'or'
-      italic_asterick_html: '&ast;italic&ast;'
-      italic_underscore_html: '&lowbar;&lowbar;italic&lowbar;&lowbar;'
-      bold_asterick_html: '&ast;&ast;bold&ast;&ast;'
-      bold_underscore_html: '&lowbar;&lowbar;bold&lowbar;&lowbar;'
-      header_1_html: '&num; header 1'
-      header_2_html: '&num;&num; header 2'
-      unordered_list_html: '&hybull; unordered list 1'
-      ordered_list_html: '1. ordered list 2'
-    captcha:
-      captcha_label: 'Captcha'

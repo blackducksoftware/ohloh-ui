@@ -1,6 +1,6 @@
 - if request.xhr? || action_name == 'show'
   - if count.to_i > 10
-    %a.btn-mini.btn-primary#btn_orgs_see_all_projects{ href: url }= text
+    = link_to(text, url, class: 'btn btn-mini btn-primary')
   - else
     %p &nbsp;
 - else

@@ -109,7 +109,7 @@ Rails.application.routes.draw do
   get 'maintenance', to: 'about#maintenance'
 
   get 'explore/projects', to: 'explore#projects', as: :explore_projects
-  resources :projects, path: :p, except: [:destroy] do
+  resources :projects, path: :p, only: [:index, :show, :edit] do
     member do
       get :users
       get :map
@@ -145,6 +145,7 @@ Rails.application.routes.draw do
       resources :helpfuls, only: :create
     end
     resources :analyses, only: :index do
+      resources :activity_facts, only: :index
       member do
         get :languages_summary
         get :codehistory

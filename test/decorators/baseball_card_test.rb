@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class BaseballCardTest < ActiveSupport::TestCase
+  include ActionView::Helpers::DateHelper
+
   describe 'rows' do
     it 'should return all rows with their values' do
       org = create(:organization)
@@ -9,11 +11,22 @@ class BaseballCardTest < ActiveSupport::TestCase
       Account::OrganizationCore.any_instance.stubs(:positions).returns([create(:position)])
       Account::OrganizationCore.any_instance.stubs(:orgs_for_my_positions).returns([org])
       Account::OrganizationCore.any_instance.stubs(:affiliations_for_my_positions).returns([org])
+      vita_fact = best_vita.vita_fact
+      account = best_vita.account
 
-      result = [{ css: {}, label: 'First commit', value: '3 days ago' },
-                { css: {}, label: 'Most recent commit', value: '1 day ago' },
-                { css: {}, label: 'Has made', value: '0 commits' },
-                { css: {}, label: 'Joined Open Hub', value: '4 days ago' },
+      first_commit_day = I18n.t('accounts.show.baseball_card.duration',
+                                date: distance_of_time_in_words_to_now(vita_fact.first_checkin))
+      last_commit_day = I18n.t('accounts.show.baseball_card.duration',
+                               date: distance_of_time_in_words_to_now(vita_fact.last_checkin))
+      joined_day = I18n.t('accounts.show.baseball_card.duration',
+                          date: distance_of_time_in_words_to_now(account.created_at))
+
+      commits = I18n.t('accounts.show.baseball_card.commits.value', count: vita_fact.commits)
+
+      result = [{ css: {}, label: 'First commit', value: first_commit_day },
+                { css: {}, label: 'Most recent commit', value: last_commit_day },
+                { css: {}, label: 'Has made', value: commits },
+                { css: {}, label: 'Joined Open Hub', value: joined_day },
                 {
                   css: { style: 'min-height:38px;' },
                   label: I18n.t('accounts.show.baseball_card.contributed_to'),

@@ -144,14 +144,14 @@ class ProjectsControllerTest < ActionController::TestCase
   end
 
   # show
-  it 'index should render for unlogged users' do
+  it 'show should render for unlogged users' do
     project = create(:project)
     login_as nil
     get :show, id: project.to_param
     must_respond_with :ok
   end
 
-  it 'index should render for projects that have been analyzed' do
+  it 'show should render for projects that have been analyzed' do
     project = create(:project)
     af_1 = create(:activity_fact, analysis: project.best_analysis, code_added: 8_000, comments_added: 8_000)
     create(:factoid, analysis: project.best_analysis, language: af_1.language)

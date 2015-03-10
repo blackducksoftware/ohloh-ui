@@ -50,4 +50,10 @@ class ApplicationHelperTest < ActionView::TestCase
       my_account?(admin).must_equal false
     end
   end
+
+  describe 'xml_date_to_time' do
+    it 'should return xml format time for date' do
+      xml_date_to_time(Date.today).must_equal "#{Date.today.strftime('%Y-%m-%d')}T00:00:00Z"
+    end
+  end
 end

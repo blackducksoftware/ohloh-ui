@@ -26,6 +26,8 @@ $(document).on 'page:change', ->
   Edit.init()
   StackVerb.init()
   StackShow.init()
+  OrganizationPictogram.init()
+  Expander.init()
   PopupClose.init()
   OrganizationPictogram.init();
   GaugeProgress.init();

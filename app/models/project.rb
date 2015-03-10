@@ -49,6 +49,8 @@ class Project < ActiveRecord::Base
   }
   scope :case_insensitive_name, ->(mixed_case) { where(['lower(name) = ?', mixed_case.downcase]) }
 
+  fix_string_column_encodings!
+
   acts_as_editable editable_attributes: [:name, :url_name, :logo_id, :organization_id, :best_analysis_id,
                                          :description, :tag_list, :missing_source], # TODO: add :url and :download_url
                    merge_within: 30.minutes
