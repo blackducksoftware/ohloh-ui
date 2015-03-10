@@ -50,11 +50,7 @@
           - project = @positions_map[pos_id].try(:project)
           - next unless project
           .margin_bottom_10
-            -# TODO: Replacer below placer holder with project_icon(project, :small, width: 24, class: "logo")
-            -# = link_to 'Project Icon', project_path(project), title: project.name
-            -# TODO: Remove this p tag which is static after implementing project_icon
-            %p.project_name
-              = project.name[0].upcase
+            = project.decorate.icon(:tiny)
             = link_to truncate(project.name, length: 10), project_path(project), class: 'margin_left_5'
       .pull-left.other_language.other_projects
         - if more_pos_count > 0
