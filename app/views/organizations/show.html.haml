@@ -2,22 +2,36 @@
 - content_for(:html_title) { t('.page_title', organization_name: @organization.name) }
 = render partial: 'organizations/show/header'
 
-.row
-  .col-md-12
-    .mezzo
-      .padding_left_20
-        %h2= t('.title')
-        .col-md-5.pull_left#org_summary
-          - if @organization.description.blank?
-            = t('.no_desc')
-            = link_to t('.add_desc'), edit_organization_path(@organization)
-          - else
-            = @organization.description
-          = render partial: '/shared/add_this', locals: { text: "#{@organization.name} organization" }
-        .col-md-6.col-md-offset-1
-          = render partial: 'organizations/show/quick_reference'
+.padding_left_20
+  %h2= t('.title')
+  .col-md-5.pull_left#org_summary
+    - if @organization.description.blank?
+      = t('.no_desc')
+      = link_to t('.add_desc'), edit_organization_path(@organization)
+    - else
+      = @organization.description
+    = render partial: '/shared/add_this', locals: { text: "#{@organization.name} organization" }
+  .col-md-6.col-md-offset-1
+    = render partial: 'organizations/show/quick_reference'
 
 .row
   .col-md-12
     .mezzo.padding_one_top
     = render partial: '/organizations/show/pictogram'
+    .mezzo.padding_one_top
+      .org-data-table.margin_left_10.margin_right_10
+        - case @view
+          - when :affiliated_committers
+          = render partial: 'organizations/show/affiliated_committers',
+                   affiliated_committers: @affiliated_committers, stats_map: @stats_map
+          - when :portfolio_projects
+          = render partial: 'organizations/show/portfolio_projects', affiliated_projects: @affiliated_projects
+          - when :outside_committers
+          = render partial: 'organizations/show/outside_committers', accounts: @accounts
+          - when :outside_projects
+          = render partial: 'organizations/show/outside_projects', projects: @projects
+
+.spinner.hidden
+  %h4
+    %img{ src: image_path('spinner.gif') }
+    Loading.....

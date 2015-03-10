@@ -20,9 +20,9 @@ class OrgInfoGraphics < Cherry::Decorator
     affiliated_committers_stats = object.affiliated_committers_stats
     aff_commits_count = affiliated_committers_stats['affl_commits'].to_i
     aff_outside_commits_count = affiliated_committers_stats['affl_commits_out'].to_i
-    affilated_committers_state = 'active' if (@view == :affiliated_committers)
+    affiliated_committers_state = 'active' if (@view == :affiliated_committers)
     { aff_commits_count: aff_commits_count, affiliated_committers_stats: affiliated_committers_stats,
-      affilated_committers_state: affilated_committers_state, aff_outside_commits_count: aff_outside_commits_count }
+      affiliated_committers_state: affiliated_committers_state, aff_outside_commits_count: aff_outside_commits_count }
   end
 
   def outside_project_commits
