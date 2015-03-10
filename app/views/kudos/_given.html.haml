@@ -7,7 +7,7 @@
   %tbody
     %tr
       %td{ width: '23', style: 'vertical-align: text-top !important;' }
-        = avatar_tiny_laurels(kudo_rank_from_kudo(first_kudo))
+        != avatar_tiny_laurels(kudo_rank_from_kudo(first_kudo))
       %td{ id: (first_kudo.account.nil? ? '' : "kudo_given_#{first_kudo.account.login}") }
         = kudo_person_link(first_kudo)
         %span{ style: 'margin-left: 50px;' }

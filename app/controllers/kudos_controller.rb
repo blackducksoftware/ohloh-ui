@@ -22,7 +22,7 @@ class KudosController < ApplicationController
 
   def create
     @kudo.save
-    redirect_back
+    redirect_to :back
   end
 
   def destroy
@@ -32,7 +32,7 @@ class KudosController < ApplicationController
     else
       flash[:error] = t('.error')
     end
-    redirect_back
+    redirect_to :back
   end
 
   private
