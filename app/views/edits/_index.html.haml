@@ -1,4 +1,4 @@
-.clear_both
+.clearfix
 
 .full_row
   - if @edits.any?
@@ -20,4 +20,5 @@
     %i.icon-info-sign!= '&nbsp;'
     = t(:no_matches)
 - if @edits.blank?
+  .clearfix
   %h4= t('.no_edits_found')

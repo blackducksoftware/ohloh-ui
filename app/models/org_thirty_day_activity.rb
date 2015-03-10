@@ -3,6 +3,11 @@ class OrgThirtyDayActivity < ActiveRecord::Base
                 %w(Government government), %w(Non-Profit non_profit), %w(Large large),
                 %w(Medium medium), %w(Small small)]
 
+  FILTER_TYPES = { all_orgs: :filter_all_orgs, small: :filter_small_orgs, medium: :filter_medium_orgs,
+                   large: :filter_large_orgs, commercial: :filter_commercial_orgs,
+                   government: :filter_government_orgs, non_profit: :filter_non_profit_orgs,
+                   educational: :filter_educational_orgs }
+
   belongs_to :organization
 
   scope :filter_all_orgs, -> { with_thirty_day_commit_count }
@@ -22,15 +27,13 @@ class OrgThirtyDayActivity < ActiveRecord::Base
         .order(commits_per_affliate.desc).limit(3)
     end
 
-    private
-
-    def method_missing(m, *args, &block)
-      if m =~ /filter_/
-        filter_all_orgs
-      else
-        super
-      end
+    def filter(filter_type)
+      filter_type = filter_type.to_sym
+      fail ArgumentError, 'Invalid Filter Type' unless FILTER_TYPES.keys.include?(filter_type)
+      send(FILTER_TYPES[filter_type])
     end
+
+    private
 
     def with_commits_and_affiliates
       orgs = Organization.arel_table

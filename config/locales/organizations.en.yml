@@ -26,6 +26,7 @@ en:
       commits: 'Commits'
       affiliated: 'Affiliated'
       outside: 'Outside'
+      see_all_projects: 'See All %{num} Portfolio Projects'
     outside_projects:
       no_outside_projects: "Outside Projects"
       no_outside_projects: "There are no outside projects to display."

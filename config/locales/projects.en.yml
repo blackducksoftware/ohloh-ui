@@ -40,3 +40,6 @@ en:
     index_managed:
       page_title: "%{name} : Index Projects"
       managed_projects: "Managed Projects"
+    deleted:
+      message: '%{name} has been deleted'
+      failed: 'failed'

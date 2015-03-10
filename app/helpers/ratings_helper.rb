@@ -43,7 +43,7 @@ module RatingsHelper
   def rating_star_row(dimensions, width, empty)
     position = empty ? 'right top' : 'left bottom'
     "<span style=\"font-size: 1px; float: left; display: inline; height: #{dimensions[:height]}px; width: #{width}px; \
-                   background: url(/assets/rating_stars/#{dimensions[:img]}) #{position}\"> \
+                   background: url(" + image_path("rating_stars/#{dimensions[:img]}") + ") #{position}\"> \
       &nbsp; \
     </span>"
   end
