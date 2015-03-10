@@ -108,7 +108,7 @@ Rails.application.routes.draw do
   get 'message', to: 'about#message'
   get 'maintenance', to: 'about#maintenance'
 
-  resources :projects, path: :p, only: [:show, :edit] do
+  resources :projects, path: :p, only: [:index, :show, :edit] do
     member do
       get :users
       get :map

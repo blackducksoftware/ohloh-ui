@@ -11,13 +11,13 @@ class AccountsController < ApplicationController
   before_action :check_banned_domain, only: :create
   before_action :captcha_response, only: :create
   before_action :account_context, only: :edit
+  before_action :find_claimed_people, only: :index
   after_action :create_action_record, only: :create, if: -> { @account.persisted? && params[:_action].present? }
 
   protect_from_bots :create, redirect_to: :index, controller: :home
 
   # FIXME: people have to be sorted. See sorted_and_filtered in older code.
   def index
-    @people = Person.find_claimed(page: params[:page])
     @cbp_map = PeopleDecorator.new(@people).commits_by_project_map
     @positions_map = Position.where(id: @cbp_map.values.map(&:first).flatten).includes(:project)
                      .references(:all).index_by(&:id)
@@ -67,6 +67,11 @@ class AccountsController < ApplicationController
   end
 
   private
+
+  def find_claimed_people
+    sort_by = params[:sort] unless params[:sort] == 'relevance'
+    @people = Person.find_claimed(page: params[:page], sort_by: sort_by, q: params[:query])
+  end
 
   def set_account
     @account = Account::Find.by_id_or_login(params[:id])
