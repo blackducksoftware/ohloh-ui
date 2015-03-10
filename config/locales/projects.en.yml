@@ -9,3 +9,6 @@ en:
     moderate: "Moderate"
     high: "High"
     very_high: "Very High"
+    deleted:
+      message: '%{name} has been deleted'
+      failed: 'failed'
