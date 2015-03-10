@@ -1,6 +1,6 @@
 class ActivityFactByMonthQuery
-  COALESCE_COLUMNS = [:code_added, :code_removed, :blanks_added, :blanks_removed, :comments_added,
-                      :comments_removed, :commits]
+  SUM_COLUMNS = [:code_added, :code_removed, :blanks_added, :blanks_removed, :comments_added,
+                 :comments_removed, :commits]
 
   def initialize(analysis)
     @analysis = analysis
@@ -16,7 +16,7 @@ class ActivityFactByMonthQuery
 
   def query
     month = months[:month]
-    months.project([month, coalesce_columns, distinct_column])
+    months.project([month, summed_columns, distinct_column])
       .join(*joins_clause)
       .on(on_clause)
       .where(conditions)
@@ -32,8 +32,8 @@ class ActivityFactByMonthQuery
     AllMonth.arel_table
   end
 
-  def coalesce_columns
-    COALESCE_COLUMNS.map { |column| activities.coalesce_and_sum(column, 0) }
+  def summed_columns
+    SUM_COLUMNS.map { |column| activities[column].sum.as(column.to_s) }
   end
 
   def distinct_column
