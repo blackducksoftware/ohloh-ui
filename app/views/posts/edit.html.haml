@@ -2,7 +2,7 @@
   = render partial: 'forums/breadcrumb', locals: { forum:  @post.topic.forum }
 .clear
 .row
-  .col-md-8.pull-left
+  .col-md-8.pull-left.margin_top_10
     %h2= t('.edit_post')
   .col-md-3.pull-right
     - if current_user_is_admin?
@@ -10,14 +10,16 @@
         .pull-left
           = button_to t('.spam'), make_spammer_account_path(@post.account), method: :post,
           data: { confirm: t('.spam_confirmation'), user: @topic.posts.first.account.name },
-          class: 'btn btn-small btn-warning pull-left'
+          class: 'btn btn-warning btn-xs'
+          / Note: button size won't render properly.
         .pull-left.margin_left_5
           = button_to t('.delete'), topic_post_path(@topic, @post), method: :delete,
-          data: { confirm: t('.delete_confirmation') }, class: 'btn btn-danger btn-small pull-left'
+          data: { confirm: t('.delete_confirmation') }, class: 'btn btn-danger btn-xs'
+          / Note: button size won't render properly.
 
 .well.col-md-12
-  .col-md-7.pull-left
+  .col-md-9
     = form_for([@topic, @post], url: topic_post_path(@topic, @post), html: { method: 'put' }) do |f|
       = render partial: 'fields', locals: { f: f }
-  .col-md-4.no_margin_left.pull-left{ style: 'margin-top: -10px' }
+  .col-md-2.margin_left_30{ style: 'margin-top: -10px' }
     = render partial: 'shared/markdown_help'

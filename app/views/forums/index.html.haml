@@ -18,23 +18,13 @@
         %h4.nomargin.center.strong.margin_bottom_0= t('.posts')
   %tbody
     - @forums.each do |forum|
-      / NOTE: There must be a way to refactor this.
-      - if @forums.last == forum
-        %tr.border_bottom_color 
-          %td.first
-            %h3.nomargin
-              = link_to forum.name, forum_path(forum)
-            %p.nomargin= forum.description
-          %td.center= forum.topics_count
-          %td.center= forum.posts_count
-      - else
-        %tr 
-          %td.first
-            %h3.nomargin
-              = link_to forum.name, forum_path(forum)
-            %p.nomargin= forum.description
-          %td.center= forum.topics_count
-          %td.center= forum.posts_count
+      %tr{ class: "#{'border_bottom_color' if @forums.last == forum}" } 
+        %td.first
+          %h3.nomargin
+            = link_to forum.name, forum_path(forum)
+          %p.nomargin= forum.description
+        %td.center= forum.topics_count
+        %td.center= forum.posts_count
 
 - if current_user_is_admin?
   = link_to t('.new_forum'), new_forum_path, class: 'btn btn-primary btn-small'

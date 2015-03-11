@@ -1,9 +1,8 @@
-%div{ id: "post_#{post.id}" }
-  / TODO: Figure out how the coloring works for post. Colors do not alternate properly even in ohloh app.
-  .well{ style: "#{current_user_is_admin? ? 'background: #D5E3E9;' : ''}" }
-    / TODO: Blue cloth was used for rendering the post body. ohloh application_helper.rb format_text
-    / Blue cloth is outdated. Find another gem to fix this.
-    = strip_tags(post.body)
+- @posts.each do |post|
+  .well{ style: "#{Account::Access.new(post.account).admin? ? 'background: #D5E3E9;' : ''}" }
+    / TODO: Look more deeply into stripping tags. The below code removes almost all html except for
+    / stars. Ask Peter about markdown for this.
+    = String.clean_string(post.body)
     .clearfix.margin_top_10
       .col-md-3.pull-right
         .pull-left
@@ -16,5 +15,5 @@
       - if (current_user.id == post.account_id) || (current_user_is_admin?)
         %p= link_to t('.edit_post'), edit_topic_post_path(post.topic, post), class: 'btn btn-mini btn-info'
       .clear
-.row
-  &nbsp;
+  .row
+    &nbsp;

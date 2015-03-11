@@ -46,11 +46,6 @@ class TopicsController < ApplicationController
     end
   end
 
-  def move_topic
-    @topic = Topic.find_by(id: params[:id])
-    render template: 'topics/move'
-  end
-
   private
 
   def find_forum_record
@@ -63,7 +58,6 @@ class TopicsController < ApplicationController
   end
 
   def topic_params
-    # TODO: Remove forum_id
     params.require(:topic).permit(:forum_id, :title, :sticky,
                                   :hits, :closed, posts_attributes: [:body])
   end

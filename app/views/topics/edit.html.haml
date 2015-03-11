@@ -6,11 +6,10 @@
       %label.control-label.required= t('.title')
       .controls
         = f.text_field :title, class: 'col-md-6'
+        - error_tag @topic, :title
         %span.help-inline
           by #{ current_user.login }
           %p.help-block= t('.enter_topic_title')
-      - if @topic.errors[:title]
-        %p.error= @topic.errors[:title]
 
   - if current_user_is_admin? && !@topic.new_record?
     .control-group#topic_forum_id

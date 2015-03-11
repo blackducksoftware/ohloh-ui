@@ -1,0 +1,15 @@
+%button.btn.btn-mini{ "data-target" => "#moveTopic", "data-toggle" => "modal", type: "button" }= t('.move')
+
+#moveTopic.modal.fade{ "aria-hidden" => "true", "aria-labelledby" => "moveTopicLabel", role: "dialog",tabindex: "-1" }
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{ "aria-label" => "Close", "data-dismiss" => "modal", type: "button" }
+          %span{ "aria-hidden" => "true" } ×
+        %h4#exampleModalLabel.modal-title= t('.move_topic')
+      .modal-body
+        = form_for @topic do |f|
+          %div= t('.move_to')
+          = f.select :forum_id, Forum.all.collect { |forum| [forum.name, forum.id] }
+          / Note: Why won't the button size change.
+          = f.submit t('.go'), class: 'btn btn-primary', style: 'float: right;'
