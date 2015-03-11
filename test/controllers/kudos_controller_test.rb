@@ -8,6 +8,7 @@ class KudosControllerTest < ActionController::TestCase
     create(:kudo, account: sent1.account, sender: @kudo.account)
     person = create(:person)
     create(:kudo, sender: @kudo.account, account: sent1.account, name: person.name, project: person.project)
+    @request.env['HTTP_REFERER'] = '/'
   end
 
   # index action

@@ -29,15 +29,15 @@ module AvatarHelper
   end
 
   def avatar_small_laurels(rank)
-    avatar_laurels_img(rank, 'sm_laurel')
+    avatar_laurels_img(rank, 'sm_laurel').html_safe
   end
 
   def avatar_laurels(rank)
-    avatar_laurels_img(rank, 'laurel')
+    avatar_laurels_img(rank, 'laurel').html_safe
   end
 
   def avatar_tiny_laurels(rank)
-    avatar_laurels_img(rank, 'tn_laurel')
+    avatar_laurels_img(rank, 'tn_laurel').html_safe
   end
 
   private
