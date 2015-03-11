@@ -3,24 +3,6 @@
   = render partial: 'topics/title', locals: { topic: @topic }
   = render partial: 'topics/action_group', locals: { topic: @topic }
 
-  .btn-group.pull-right
-    - if current_user_is_admin? && !@topic.closed
-      = link_to t('.close'), topic_path(@topic, topic: { closed: true }),
-        method: :put, data: { confirm: t('.close_confirmation') }, class: 'btn btn-mini'
-    - if current_user_is_admin?
-      = link_to t('.move'), move_topic_path(@topic), method: :get, class: 'btn btn-mini', id: 'move_link'
-      / TODO: Determine how to make this javascript work for page rendering.
-      / = javascript_tag 'MoveTopic.init()'
-    - if current_user_is_admin?
-      = link_to t('.spam'), make_spammer_account_path(@topic.account), method: :post,
-        data: { confirm: t('.spam_confirmation', user: @topic.posts.first.account.name) },
-        class: 'btn btn-mini btn-warning'
-    - if current_user_is_admin? || (@topic.posts.count == 1 && @topic.account == current_user)
-      = link_to t('.delete'), topic_path(@topic), method: :delete, data: { confirm: t('.delete_confirmation') },
-        class: 'btn btn-danger btn-mini'
-    - if (current_user_is_admin? || (@topic.account == current_user)) && @topic.closed
-      = link_to t('.reopen'), topic_path(@topic, topic: { closed: false }), method: :put,
-        data: { confirm: t('.reopen_confirmation') }, class: 'btn btn-mini btn-info'
 .col-md-12
   = render partial: 'posts/post', collection: @posts
   = will_paginate @posts

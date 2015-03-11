@@ -33,7 +33,7 @@ class TopicsController < ApplicationController
     if @topic.update(topic_params)
       redirect_to topic_path(@topic)
     else
-      redirect_to topic_path(@topic)
+      render :edit
     end
   end
 
@@ -44,11 +44,6 @@ class TopicsController < ApplicationController
     else
       redirect_to forums_path
     end
-  end
-
-  def move_topic
-    @topic = Topic.find_by(id: params[:id])
-    render template: 'topics/move'
   end
 
   private
@@ -63,7 +58,6 @@ class TopicsController < ApplicationController
   end
 
   def topic_params
-    # TODO: Remove forum_id
     params.require(:topic).permit(:forum_id, :title, :sticky,
                                   :hits, :closed, posts_attributes: [:body])
   end

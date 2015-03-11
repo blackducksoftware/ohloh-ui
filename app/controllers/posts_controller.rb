@@ -32,7 +32,8 @@ class PostsController < ApplicationController
     if @post.update(post_params)
       redirect_to topic_path(@topic)
     else
-      redirect_to topic_path(@topic)
+      flash[:bad_reply] = "can't be blank"
+      redirect_to topic_path(@topic, post: { body: @post.body }, anchor: 'post_reply')
     end
   end
 

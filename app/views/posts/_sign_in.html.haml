@@ -1,0 +1,12 @@
+%a.needs_login{ href: '#', "data-target" => "#postLogin", "data-toggle" => "modal" }= t('.response')
+
+#postLogin.modal.fade{ "aria-hidden" => "true", "aria-labelledby" => "postLoginLabel", role: "dialog",tabindex: "-1" }
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{ "aria-label" => "Close", "data-dismiss" => "modal", type: "button" }
+          %span{ "aria-hidden" => "true" } ×
+        %h4#postLoginLabel.modal-title= t('.login_required')
+      .modal-body
+        = render 'sessions/sign_in'
+      

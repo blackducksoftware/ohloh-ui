@@ -1,13 +1,11 @@
 - if logged_in?
   .row
-    .col-md-9
+    .col-md-9.pull-left
       %h3= t('.post_a_response')
       = form_for Post.new, url: topic_posts_path(@topic) do |f|
         = render partial: 'posts/fields', locals: { f: f }
-    .col-md-2
+    .col-md-2.pull-right.margin_top_15
       = render 'shared/markdown_help'
 - else
   %h3= t('.post_a_response')
-  / TODO: The link opens a window for a session. Find out how to implement that feature.
-  / This looks like it will need to be some sort of javascript code.
-  = link_to t('.response'), '', class: 'needs_login'
+  = render 'posts/sign_in'

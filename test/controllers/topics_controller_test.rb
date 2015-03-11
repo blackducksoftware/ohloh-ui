@@ -214,6 +214,7 @@ describe TopicsController do
     put :update, id: topic.id, topic: { title: '' }
     topic.reload
     topic.title.must_equal topic.title
+    must_render_template :edit
   end
 
   it 'admin destroy' do
@@ -241,13 +242,9 @@ describe TopicsController do
     topic.closed.must_equal false
   end
 
-  # TODO: Will need to figure out how javascript will affect the testing.
   it 'admin can move a topic' do
     different_topic = create(:topic)
     login_as admin
-    get :move_topic, id: topic.id
-    must_respond_with :success
-    must_render_template 'topics/move'
     put :update, id: topic.id, topic: { forum_id: different_topic.forum_id }
     topic.reload
     topic.forum_id.must_equal different_topic.forum_id

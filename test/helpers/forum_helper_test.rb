@@ -1,7 +1,7 @@
 require 'test_helper'
 
-class ForumHelperTest < ActionView::TestCase
-  include ForumHelper
+class ForumsHelperTest < ActionView::TestCase
+  include ForumsHelper
 
   before do
     Object.any_instance.stubs(:current_user_is_admin?).returns(:true)

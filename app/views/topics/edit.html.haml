@@ -1,33 +1,39 @@
-%h1= link_to @forum.name, forum_path(@forum)
+.col-md-2
+  %h4= t(:topic)
+  %ul
+    %li= link_to t(:new_topic), new_forum_topic_path(@forum)
+    %li= link_to_if @forum, @forum.name, forum_path(@forum)
+  %h4= t(:post)
+  %ul
+    / TODO: Implement posts index after merging with master (OTWO-3350)
+    %li= link_to t(:recent_posts), all_posts_path
+    %li= link_to t(:unanswered_posts), all_posts_path(unanswered: true)
 
-= form_for @topic do |f|
-  %fieldset
-    .control-group
-      %label.control-label.required= t('.title')
-      .controls
-        = f.text_field :title, class: 'col-md-6'
-        %span.help-inline
-          by #{ current_user.login }
-          %p.help-block= t('.enter_topic_title')
-      - if @topic.errors[:title]
-        %p.error= @topic.errors[:title]
+.col-md-9
+  %h1.margin_bottom_15.margin_top_0= link_to @forum.name, forum_path(@forum)
 
-  - if current_user_is_admin? && !@topic.new_record?
-    .control-group#topic_forum_id
-      %label.control-label{ for: 'topic_forum_id' }= t('.forum')
-      .controls.chosen#value_select
-        = f.select :forum_id, Forum.all.map { |x| [x.name, x.id] }, {}, class: 'chzn-select value-select'
+  = form_for @topic do |f|
+    %fieldset
+      .control-group
+        %label.control-label.required= t('.title')
+        .controls
+          = f.text_field :title, class: 'col-md-6'
+          - error_tag @topic, :title
+          %span.help-inline.margin_top_15
+            by #{ current_user.login }
+          %span.help-block= t('.enter_topic_title')
 
-  - if current_user_is_admin?
-    .controls
-      / .checkbox.inline{ style: 'margin-left: -20px;' }
-      / NOTE: Why is this being rendered as a label?
-      = f.check_box :sticky, choice: t('.sticky')
-      /   %span= t('.sticky')
-      / %label.checkbox.inline{ style: 'margin-top: 10px;' }
-      /   = f.check_box :closed, choice: t('.closed')
-      /   %span= t('.closed')
-      
-/ = render partial: 'shared/captcha'
-/   %br
-/ = f.submit t('.save_changes')
+    - if current_user_is_admin? && !@topic.new_record?
+      .control-group
+        %label.control-label= t('.forum')
+        .controls.chosen#value_select
+          = f.select :forum_id, Forum.all.map { |x| [x.name, x.id] }, {}, class: 'chzn-select value-select'
+        .controls.check-box_specifications
+          %label.checkbox.inline.margin_right_20
+            = f.check_box :sticky, choice: t('.sticky')
+            %span= t('.sticky')
+          %label.checkbox.inline.margin_top_10#closed_specifications
+            = f.check_box :closed, choice: t('.closed')
+            %span= t('.closed')
+          .actions#submit_specifications
+            = f.submit t('.save_changes'), class: 'btn btn-primary btn-small'

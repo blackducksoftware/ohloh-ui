@@ -1,9 +1,15 @@
-/ Note: New ticket to determine why glyphicons are not rendering.
-- if flash[:alert]
-  .alert.alert-danger.alert-color
-    %span.glyphicon.glyphicon-exclamation-sign
-    %span.text-size= flash[:alert]
-    %span.glyphicon.glyphicon-remove.float_right
+/ Note: Determine why glyphicons are not rendering.
+/ - if flash[:alert]
+/   .alert.alert-danger.alert-color
+/     = bootstrap_icon('glyphicon glyphicon-exclamation-sign')
+/     %span.text-size= flash[:alert]
+/     = bootstrap_icon('glyphicon glyphicon-remove')
+
+/ Note: Bootstrap documentation example. Still does not render properly.
+/ .alert.alert-danger{:role => "alert"}
+/   %span.glyphicon.glyphicon-exclamation-sign{"aria-hidden" => "true"}
+/   %span.sr-only Error:
+/   Enter a valid email address
 
 %h1.margin_top_0
   %span= link_to t('.forums'), forums_url
@@ -19,4 +25,3 @@
       = render partial: 'form', locals: { f: f }
       = f.submit t('.create'), class: 'btn btn-primary btn-small', style: 'margin-top: 20px;'
   .clear
-

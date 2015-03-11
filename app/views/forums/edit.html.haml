@@ -1,4 +1,5 @@
-/ TODO: Figure out why glyphicons are not rendering.
+/ Note: Determine why glyphicons are not rendering.
+/ Refactor this into a partial for new/edit html pages.
 - if flash[:alert]
   .alert.alert-danger.alert-color
     %span.glyphicon.glyphicon-exclamation-sign
@@ -19,4 +20,3 @@
       = render partial: 'form', locals: { f: f }
       = f.submit t('.save_forum'), class: 'btn btn-small btn-primary'
       = link_to t('.cancel'), forum_path(@forum), class: 'btn btn-small'
-
