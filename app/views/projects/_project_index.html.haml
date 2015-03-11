@@ -22,7 +22,7 @@
         - else
           &nbsp;
 
-        - if project.best_analysis || @analysis
+        - if !project.best_analysis.nil? || @analysis
           - analysis = (project.best_analysis || @analysis)
           %i
             %abbr.date{ title: analysis.updated_on }
@@ -33,7 +33,7 @@
 
       .desc
         - if project.description && project.description.strip.size > 340
-          - project_description(project)
+          = project_description(project)
         - elsif project.description
           %span.proj_desc_toggle{ style: 'display: inline', id: "proj_desc_#{project.id}_lg" }
             = project.description
