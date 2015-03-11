@@ -108,7 +108,7 @@ class ProjectsControllerTest < ActionController::TestCase
     nodes[1].css('name').children.to_s.must_equal 'Foo_xml'
   end
 
-  it 'index should account sorting by "new"' do
+  it 'index should handle account sorting by "new"' do
     project1 = create(:project, name: 'Foo_accounts_new', description: 'second', created_at: Time.now - 3.hours)
     project2 = create(:project, name: 'Foobar_accounts_new', description: 'first')
     login_as nil

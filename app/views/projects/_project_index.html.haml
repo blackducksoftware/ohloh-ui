@@ -22,7 +22,7 @@
         - else
           &nbsp;
 
-        - if project.best_analysis || @analysis
+        - if !project.best_analysis.nil? || @analysis
           - analysis = (project.best_analysis || @analysis)
           %i
             %abbr.date{ title: analysis.updated_on }
