@@ -11,10 +11,9 @@
       = render 'projects/show/factoids'
   .col-md-6{ itemscope: '', itemtype: 'http://schema.org/Language' }
     = render partial: 'projects/show/languages'
-    .clear &nbsp;
-    .clear &nbsp;
+    .clearfix
     = render partial: 'projects/show/lines_of_code_chart'
-  .clear &nbsp;
+  .clearfix
 .mezzo
   %h3= t('.activity')
 .row
@@ -32,7 +31,7 @@
                   = (@analysis.logged_at).strftime('%b %e %Y')
                 - else
                   = t('.not_available')
-              .clear
+              .clearfix
               = render partial: 'projects/show/thirty_day_summary'
             %td{ width: '50%', valign: 'top' }
               %h4.section_header.twelve_month= t('.twelve_month_summary')
@@ -43,7 +42,7 @@
                   = (@analysis.logged_at).strftime('%b %e %Y')
                 - else
                   = t('.not_available')
-              .clear
+              .clearfix
               = render partial: 'projects/show/twelve_month_summary'
   .col-md-6
     - if @analysis
@@ -60,8 +59,8 @@
   %h3= t('.community')
 %div
   .proj_community_ratings#proj_rating= render partial: 'projects/show/community_rating'
-  .float_left{ style: 'width: 280px;' }= render partial: 'projects/show/community_recent_committers'
-  .float_left{ style: 'width: 450px;' }= render partial: 'projects/show/committers_per_month_chart'
+  .pull-left{ style: 'width: 280px;' }= render partial: 'projects/show/community_recent_committers'
+  .pull-left{ style: 'width: 450px;' }= render partial: 'projects/show/committers_per_month_chart'
 .row
   .col-md-12 &nbsp;
 .row

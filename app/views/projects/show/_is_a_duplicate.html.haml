@@ -5,10 +5,8 @@
     %p!= t('.reported', link: link)
     - if admin? || (@current_account && duplicate.account == @current_account)
       %p
-        = bootstrap_button_link_to t('.cancel_request'), duplicate_path(duplicate),
-                                   method: :delete, confirm: t('.cancel_request_confirm'),
-                                   class: 'btn-warning'
-        = bootstrap_button_link_to bootstrap_icon('icon-edit', t('.edit_request')),
-                                   edit_project_duplicate_path(project, duplicate),
-                                   class: 'btn-info'
+        = link_to t('.cancel_request'), duplicate_path(duplicate), class: 'btn btn-warning', method: :delete,
+                                                                   confirm: t('.cancel_request_confirm')
+        = link_to bootstrap_icon('icon-edit', t('.edit_request')),  edit_project_duplicate_path(project, duplicate),
+                  class: 'btn btn-info'
   &nbsp;

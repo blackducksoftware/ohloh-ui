@@ -40,7 +40,8 @@
     - if @project.licenses.size > 0
       %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
         %span{ itemprop: 'publishingPrinciples' }
-          = @project.licenses.collect { |l| link_to l.short_name, license_url(l.to_param) }.to_sentence
+          - licenses = @project.licenses
+          = licenses.collect { |l| link_to html_escape(l.short_name), license_url(l.to_param) }.to_sentence.html_safe
     - else
       = t('.no_license')
   %dt

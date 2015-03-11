@@ -16,7 +16,6 @@
         %p= t('.help_2')
         %p= t('.help_3')
         %p{ align: 'center' }
-          = bootstrap_large_button_link_to t('.add_a_code_location'), new_project_enlistment_path(@project),
-                                           class: 'btn-primary'
+          = link_to t('.add_a_code_location'), new_project_enlistment_path(@project), class: 'btn btn-large btn-primary'
       - if analysis_not_complete
         - message_analysis_not_complete(@project, false)

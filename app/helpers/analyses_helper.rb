@@ -73,27 +73,33 @@ module AnalysesHelper
 
   def analysis_language_breakdown(analysis)
     return [] if analysis.empty?
+    analysis_language_breakdowns(analysis).select { |lb| lb['code'].to_i > 0 || lb['comments'].to_i > 0 }
+  end
 
-    lbs = Analysis.connection.select_all <<-SQL
-      SELECT #{analysis_language_breakdown_select} FROM activity_facts AF
-        INNER JOIN languages L ON AF.language_id = L.id
-      WHERE AF.analysis_id = #{ analysis.id } AND AF.on_trunk
-      GROUP BY L.id, L.nice_name, L.name, L.category
-      ORDER BY SUM(AF.code_added - AF.code_removed) DESC, L.nice_name, L.name, L.category
-    SQL
-
-    lbs.select { |lb| lb['code'].to_i > 0 || lb['comments'].to_i > 0 }
+  def analysis_language_breakdowns(analysis)
+    ActivityFact.select(analysis_language_breakdown_select)
+      .joins(:language)
+      .where(analysis_id: analysis.id, on_trunk: true)
+      .group('languages.id, languages.nice_name, languages.name, languages.category')
+      .order(analysis_language_breakdown_order).to_a
   end
 
   def analysis_language_breakdown_select
     <<-SQL
-      SUM(AF.code_added - AF.code_removed) AS code
-      ,SUM(AF.comments_added - AF.comments_removed) AS comments
-      ,SUM(AF.blanks_added - AF.blanks_removed) AS blanks
-      ,L.id AS language_id
-      ,L.nice_name AS language
-      ,L.name AS language_name
-      ,L.category
+      SUM(activity_facts.code_added - activity_facts.code_removed) AS code
+      ,SUM(activity_facts.comments_added - activity_facts.comments_removed) AS comments
+      ,SUM(activity_facts.blanks_added - activity_facts.blanks_removed) AS blanks
+      ,languages.id AS language_id
+      ,languages.nice_name AS language
+      ,languages.name AS language_name
+      ,languages.category
+    SQL
+  end
+
+  def analysis_language_breakdown_order
+    <<-SQL
+      SUM(activity_facts.code_added - activity_facts.code_removed) DESC,
+      languages.nice_name, languages.name, languages.category
     SQL
   end
 end
