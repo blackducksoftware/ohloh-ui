@@ -1,24 +1,23 @@
-%h1.margin_bottom_20
-  = link_to t('.forums'), forums_url
-  \:
-  %a{ href: forum_path(@post.topic.forum) }= @post.topic.forum.name
+.col-md-12
+  = render partial: 'forums/breadcrumb', locals: { forum:  @post.topic.forum }
 .clear
 .row
-  .col-md-8.float_left
+  .col-md-8.pull-left
     %h2= t('.edit_post')
-  .float_right
+  .col-md-3.pull-right
     - if current_user_is_admin?
-      %h2
-        .float_right.btn-group
+      .btn-group
+        .pull-left
           = button_to t('.spam'), make_spammer_account_path(@post.account), method: :post,
-            data: { confirm: t('.spam_confirmation'), user: @topic.posts.first.account.name },
-            class: 'btn btn-small btn-warning'
+          data: { confirm: t('.spam_confirmation'), user: @topic.posts.first.account.name },
+          class: 'btn btn-small btn-warning pull-left'
+        .pull-left.margin_left_5
           = button_to t('.delete'), topic_post_path(@topic, @post), method: :delete,
-            data: { confirm: t('.delete_confirmation') }, class: 'btn btn-danger btn-small'
+          data: { confirm: t('.delete_confirmation') }, class: 'btn btn-danger btn-small pull-left'
 
-.well.col-md-11
-  .col-md-9
+.well.col-md-12
+  .col-md-7.pull-left
     = form_for([@topic, @post], url: topic_post_path(@topic, @post), html: { method: 'put' }) do |f|
       = render partial: 'fields', locals: { f: f }
-  .col-md-2.no_margin_left{ style: 'margin-top: -10px' }
-  = render partial: 'shared/markdown_help'
+  .col-md-4.no_margin_left.pull-left{ style: 'margin-top: -10px' }
+    = render partial: 'shared/markdown_help'

@@ -1,15 +1,9 @@
 .col-md-12
-  %h1.margin_top_0
-    = link_to t('.forums'), forums_path
-    \:
-    = link_to @forum.name, forum_path(@forum)
+  = render partial: 'forums/breadcrumb', locals: { forum: @forum }
+  = render partial: 'topics/title', locals: { topic: @topic }
+  = render partial: 'topics/action_group', locals: { topic: @topic }
 
-  %h2.col-md-6
-    = @topic.title
-  - if @topic.closed
-    %span.label.label-warning#closed_status= t('.closed')
-
-  .btn-group
+  .btn-group.pull-right
     - if current_user_is_admin? && !@topic.closed
       = link_to t('.close'), topic_path(@topic, topic: { closed: true }),
         method: :put, data: { confirm: t('.close_confirmation') }, class: 'btn btn-mini'
@@ -27,10 +21,9 @@
     - if (current_user_is_admin? || (@topic.account == current_user)) && @topic.closed
       = link_to t('.reopen'), topic_path(@topic, topic: { closed: false }), method: :put,
         data: { confirm: t('.reopen_confirmation') }, class: 'btn btn-mini btn-info'
-
-  .clear
-    = render partial: 'posts/post', collection: @posts
-    = will_paginate @posts
+.col-md-12
+  = render partial: 'posts/post', collection: @posts
+  = will_paginate @posts
 
   .well#post_reply
     - if @topic.closed?

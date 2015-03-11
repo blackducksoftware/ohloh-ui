@@ -4,16 +4,17 @@
     / TODO: Blue cloth was used for rendering the post body. ohloh application_helper.rb format_text
     / Blue cloth is outdated. Find another gem to fix this.
     = strip_tags(post.body)
-    .col-md-3{ style: 'float: right; display: block;' }
-      / TODO: Figure out why the avatar image is not rendering properly.
-      = avatar_img_for post.account, 32
-      %a.avatar_name{ href: account_path(post.account) }
-        %h4
-          = truncate(h(post.account.name), length: 18)
-      %small.date.avatar_name
-        = time_ago_in_words(post.created_at)
-    - if (current_user.id == post.account_id) || (current_user_is_admin?)
-      = link_to t('.edit_post'), edit_topic_post_path(post.topic, post), class: 'btn btn-mini btn-info'
-    .clear
+    .clearfix.margin_top_10
+      .col-md-3.pull-right
+        .pull-left
+          %a= avatar_img_for post.account, 42
+        .pull-left.margin_left_5
+          %a.avatar_name{ href: account_path(post.account) }
+            = truncate(h(post.account.name), length: 18)
+          %small.date.avatar_name
+            = time_ago_in_words(post.created_at)
+      - if (current_user.id == post.account_id) || (current_user_is_admin?)
+        %p= link_to t('.edit_post'), edit_topic_post_path(post.topic, post), class: 'btn btn-mini btn-info'
+      .clear
 .row
   &nbsp;

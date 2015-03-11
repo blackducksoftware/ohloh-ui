@@ -25,4 +25,4 @@
 $(document).on 'page:change', ->
   StackVerb.init()
   StackShow.init()
-  OrganizationPictogram.init();
+  #OrganizationPictogram.init();
