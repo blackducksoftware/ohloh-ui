@@ -33,7 +33,7 @@
 
       .desc
         - if project.description && project.description.strip.size > 340
-          - project_description(project)
+          = project_description(project)
         - elsif project.description
           %span.proj_desc_toggle{ style: 'display: inline', id: "proj_desc_#{project.id}_lg" }
             = project.description

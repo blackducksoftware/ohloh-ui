@@ -87,12 +87,7 @@ module ApplicationHelper
   end
 
   def description(content, more_or_less, opts)
-    haml_tag :span, class: opts[:css_clazz], style: opts[:style], id: opts[:id] do
-      concat content
-      haml_tag :a, href: '#', id: opts[:link_id] do
-        concat more_or_less
-      end
-    end
+    render partial: 'application/description', locals: { content: content, more_or_less: more_or_less, opts: opts }
   end
 
   def xml_date_to_time(date)
