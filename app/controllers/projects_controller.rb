@@ -2,7 +2,6 @@ class ProjectsController < ApplicationController
   helper AnalysesHelper
   helper FactoidsHelper
   helper RatingsHelper
-  helper SearchablesHelper
 
   before_action :session_required, only: [:create, :new, :update]
   before_action :api_key_lock, only: [:index]
