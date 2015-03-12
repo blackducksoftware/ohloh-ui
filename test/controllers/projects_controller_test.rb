@@ -170,4 +170,17 @@ class ProjectsControllerTest < ActionController::TestCase
     get :show, id: project.to_param
     must_respond_with :ok
   end
+
+  # new
+  it 'new should require a current user' do
+    login_as nil
+    get :new
+    must_respond_with :unauthorized
+  end
+
+  it 'new should render for logged users' do
+    login_as create(:account)
+    get :new
+    must_respond_with :ok
+  end
 end

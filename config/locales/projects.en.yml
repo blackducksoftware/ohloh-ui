@@ -135,3 +135,12 @@ en:
     deleted:
       message: '%{name} has been deleted'
       failed: 'failed'
+    new:
+      call_to_action: "Add a new project to Open Hub"
+      help1: "Open Hub can automatically fetch project information from some forges: Bitbucket, GitHub, Google Code, Launchpad and SourceForge."
+      help2: "If your project is not hosted on one of these five forges, add your project manually."
+      codelocation_label: "Enter the forge URL for your project (or leave blank)"
+      examples: "Examples:"
+      example1: "http://sourceforge.net/projects/filezilla/?source=directory"
+      example2: "http://github.com/robconery/massive"
+      next: "Next"
