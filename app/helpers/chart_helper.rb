@@ -3,6 +3,7 @@ module ChartHelper
     "#{7.years.ago.strftime('%b %Y')} - Present"
   end
 
+  # TODO: Switch all of this to chart decorator once that is merged in.
   def chart_options(opts)
     enabled_false = '{ "enabled": false }'
     options = {
