@@ -1,0 +1,8 @@
+en:
+  searchables:
+    no_match_your_search: "Your search - <strong>%{query}</strong> - did not match anything."
+    no_match_suggestions: "Suggestions:"
+    no_match_make_sure: "Make sure all words are spelled correctly."
+    no_match_try1: "Try different keywords."
+    no_match_try2: "Try more general keywords."
+    no_match_try3: "Try fewer keywords."

@@ -34,6 +34,10 @@ module ApplicationHelper
     count == 1 ? singular : (plural || singular.pluralize)
   end
 
+  def pluralize_with_delimiter(count, singular, plural = nil)
+    number_with_delimiter(count || 0) + ' ' + ((count.to_i == 1) ? singular : (plural || singular.pluralize))
+  end
+
   def generate_page_name
     [controller_name, action_name, 'page'].join('_')
   end
@@ -80,6 +84,10 @@ module ApplicationHelper
     opts = opts.merge(href: "/p/#{project.to_param}")
     inner = capture_haml { project_icon(project, size, opts) }
     haml_tag :a, inner, opts
+  end
+
+  def description(content, more_or_less, opts)
+    render partial: 'application/description', locals: { content: content, more_or_less: more_or_less, opts: opts }
   end
 
   def xml_date_to_time(date)

@@ -1,7 +1,9 @@
 en:
   projects:
     activity: "Activity"
+    na: "Not Available"
     not_available: "Not Available"
+    new: "New Project"
     new_project: "New Project"
     inactive: "Inactive"
     very_low: "Very Low"
@@ -9,6 +11,35 @@ en:
     moderate: "Moderate"
     high: "High"
     very_high: "Very High"
+    by_activity_level: "Activity Level"
+    by_users: "Users"
+    by_new: "Newest on Open Hub"
+    by_rating: "Rating"
+    by_active_committers: "Current Contributors"
+    by_project_name: "Name"
+    i_use_this: "I Use This"
+    more: "[More]"
+    less: "[Less]"
+    index:
+      page_title: "Open Hub Projects"
+      page_title_query: "%{query} - Open Hub Project Search"
+    project_index:
+      compare: "Compare"
+      claimed_by: "Claimed by"
+      analyzed_ago: "Analyzed %{time} ago"
+      no_analysis_available: "No analysis available"
+      loc: "lines of code"
+      current_contributors: "current contributors"
+      since_last_commit: "since last commit"
+      users_on_open_hub: "users on Open Hub"
+      review: "Review"
+      mostly_written_in: "Mostly written in %{lang}"
+      mostly_written_lang_not_available: "Mostly written in language not available"
+      licenses: "Licenses:"
+      no_declared_licenses: "No declared licenses"
+    index_managed:
+      page_title: "%{name} : Index Projects"
+      managed_projects: "Managed Projects"
     deleted:
       message: '%{name} has been deleted'
       failed: 'failed'

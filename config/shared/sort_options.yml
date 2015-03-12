@@ -58,3 +58,24 @@ posts:
     -
      - Unanswered
      - unanswered
+
+projects:
+  options:
+    -
+      - Activity Level
+      - activity_level
+    -
+      - Users
+      - users
+    -
+      - Newest on the Open Hub
+      - new
+    -
+      - Rating
+      - rating
+    -
+      - Relevance
+      - relevance
+    -
+      - Current Contributors
+      - active_committers
