@@ -15,12 +15,8 @@ class InvitesController < ApplicationController
 
   private
 
-  def invite_params
-    params.require(:invite).permit(:invitee_email, :invitor, :contribution)
-  end
-
   def model_params
-    invitee_email = params.try(:[], 'invite').try(:[], 'invitee_email')
+    invitee_email = params[:invite] ? params[:invite][:invitee_email] : nil
     { invitee_email: invitee_email, contribution: @contribution, invitor: current_user }
   end
 

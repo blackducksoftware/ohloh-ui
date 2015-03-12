@@ -1,7 +1,7 @@
 - project =  project_index
 .well.searchable{ id: "project_#{project.id}" }
-  %h2.title.float_left= link_to project.name.truncate(70), project_path(project), title: project.name
-  .float_right
+  %h2.title.pull-left= link_to project.name.truncate(70), project_path(project), title: project.name
+  .pull-right
     .compare
       - project_compare_button(project, t('.compare')) if defined?(compare) && compare
     - if params[:action].to_s != 'check_forge'
@@ -9,11 +9,11 @@
         - project_iusethis_button(project) if defined?(i_use_this) && i_use_this
   .clear
 
-  .float_left#inner_content
-    %a.float_left.logo{ href: project_path(project) }
+  .pull-left#inner_content
+    %a.pull-left.logo{ href: project_path(project) }
       - project_icon(project, :med)
 
-    .info.float_left
+    .info.pull-left
       %p
         - if project.organization
           #{t('.claimed_by')}
@@ -28,7 +28,7 @@
             %abbr.date{ title: analysis.updated_on }
               = t('.analyzed_ago', time: time_ago_in_words(analysis.updated_on))
         - else
-          %span.soft.float_right
+          %span.soft.pull-right
             %i= t('.no_analysis_available')
 
       .desc
@@ -38,7 +38,7 @@
           %span.proj_desc_toggle{ style: 'display: inline', id: "proj_desc_#{project.id}_lg" }
             = project.description
 
-    .stats.float_left
+    .stats.pull-left
       %p
         - if project.best_analysis.blank?
           = link_to 0, '#'
@@ -59,7 +59,7 @@
         = link_to number_with_delimiter(project.user_count), users_project_path(project)
         %span= t('.users_on_open_hub')
 
-    .reviews-and-pai.float_left
+    .reviews-and-pai.pull-left
       - project_activity_level_class(project, :twentyfive)
       - project_activity_level_text(project, :twentyfive)
       .stars!= rating_stars('average_rating_stars', project.rating_average.to_f || 0, true)
@@ -67,13 +67,13 @@
         #{link_to pluralize_with_delimiter(project.reviews.count, t('.review')), summary_project_reviews_path(project)}
 
   .add-info
-    .main_language.float_left
+    .main_language.pull-left
       - if project.best_analysis && project.best_analysis.main_language
         - lang = project.best_analysis.main_language.nice_name
         = link_to t('.mostly_written_in', lang: lang), languages_summary_project_analysis_path(project, 'latest')
       - else
         %span= t('.mostly_written_lang_not_available')
-    .licenses.float_right
+    .licenses.pull-right
       = link_to t('.licenses'), licenses_project_path(project)
       - if project.licenses.any?
         = project.licenses.first(3).collect { |l| l.short_name.truncate(12) }.join(', ')

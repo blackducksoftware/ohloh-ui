@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class ActivityFactByMonthQueryTest < ActiveSupport::TestCase
-  let(:analysis) { create(:analysis) }
+  let(:analysis) { create(:analysis, min_month: nil) }
   let(:nil_fact) { ActivityFactByMonthQuery.new(nil) }
   let(:analysis_fact) { ActivityFactByMonthQuery.new(analysis) }
 

@@ -132,7 +132,10 @@ Rails.application.routes.draw do
         post :reject
       end
     end
+    resources :manages, only: [:new]
     resources :edits, only: [:index]
+    resources :enlistments, only: [:index, :new]
+    resources :factoids, only: [:index]
     resources :rss_articles, only: :index
     resources :widgets, only: :index
     resources :similar_projects, only: :index
@@ -145,9 +148,12 @@ Rails.application.routes.draw do
       resources :activity_facts, only: :index
       member do
         get :languages_summary
+        get :codehistory
+        get :commitshistory
+        get :committerhistory
       end
     end
-    resources :commits, only: :index do
+    resources :commits, only: [:index, :show] do
       collection { get :summary }
     end
     resources :contributors, only: [:index, :show] do

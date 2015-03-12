@@ -1,0 +1,2 @@
+class FactoidActivity < Factoid
+end

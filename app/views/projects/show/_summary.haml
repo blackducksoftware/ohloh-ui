@@ -1,0 +1,6 @@
+- if project.description && project.description.length > 0
+  .summary
+    = simple_format(h(project.description))
+- else
+  - link = link_to t('.add_desc'), edit_project_path(project)
+  %p= t('.no_desc', link: link)

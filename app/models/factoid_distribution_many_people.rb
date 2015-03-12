@@ -1,0 +1,2 @@
+class FactoidDistributionManyPeople < FactoidDistribution
+end
