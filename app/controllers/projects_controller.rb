@@ -7,7 +7,7 @@ class ProjectsController < ApplicationController
   before_action :api_key_lock, only: [:index]
   before_action :find_account
   before_action :find_projects, only: [:index]
-  before_action :find_project, only: [:show]
+  before_action :find_project, only: [:show, :edit, :update]
   before_action :redirect_new_landing_page, only: :index
 
   def index
@@ -73,6 +73,7 @@ class ProjectsController < ApplicationController
   def find_project
     @project = Project.not_deleted.from_param(params[:id]).take
     fail ParamRecordNotFound unless @project
+    @project.editor_account = current_user
   end
 
   def redirect_new_landing_page

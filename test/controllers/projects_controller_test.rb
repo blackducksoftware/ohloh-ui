@@ -183,4 +183,32 @@ class ProjectsControllerTest < ActionController::TestCase
     get :new
     must_respond_with :ok
   end
+
+  # edit
+  it 'edit should disable save button for unlogged users' do
+    login_as nil
+    get :edit, id: create(:project).id
+    must_respond_with :ok
+    must_select 'input.save', 0
+    must_select '.disabled.save', 1
+  end
+
+  it 'edit should enable save button for managers' do
+    project = create(:project)
+    manager = create(:account)
+    Manage.create(target: project, account: manager)
+    login_as manager
+    get :edit, id: project.id
+    must_respond_with :ok
+    must_select 'input.save', 1
+    must_select '.disabled.save', 0
+  end
+
+  it 'edit should enable save button for admins' do
+    login_as create(:admin)
+    get :edit, id: create(:project).id
+    must_respond_with :ok
+    must_select 'input.save', 1
+    must_select '.disabled.save', 0
+  end
 end
