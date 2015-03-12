@@ -2,5 +2,3 @@
   .control-group
     .controls.margin_left_40
       = f.text_area :body, style: 'width: 665px; height: 160px; margin-left: -10px; margin-top: 20px;'
-      %p.error= flash[:bad_reply] if flash[:bad_reply]
-      = f.submit t('.submit'), class: 'btn btn-primary btn-small', style: 'margin-top: 15px;'

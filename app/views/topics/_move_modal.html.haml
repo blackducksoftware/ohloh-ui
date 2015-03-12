@@ -12,3 +12,4 @@
           %div= t('.move_to')
           = f.select :forum_id, Forum.all.collect { |forum| [forum.name, forum.id] }
           = f.submit t('.go'), class: 'btn btn-primary button-small', style: 'float: right;'
+          
