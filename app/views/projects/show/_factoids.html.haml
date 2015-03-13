@@ -1,0 +1,51 @@
+- homepage ||= false
+%ul.unstyled.nutshell#factoids
+  %li
+    \...
+    .indent
+      has had
+      = link_to "#{number_with_delimiter @analysis.commit_count} commits", summary_project_commits_path(@project)
+      made by
+      = link_to "#{number_with_delimiter @analysis.committers_all_time} contributors",
+                summary_project_contributors_path(@project)
+      %br
+      representing
+      = link_to "#{number_with_delimiter @analysis.code_total} lines of code",
+                languages_summary_project_analysis_path(@project, id: 'latest')
+  - if @analysis.main_language
+    %li
+      \...
+      .indent
+        is
+        = link_to "mostly written in #{@analysis.main_language.nice_name}",
+                  languages_summary_project_analysis_path(@project, id: 'latest')
+        %br
+        with
+        - get_factoid_display :comments
+  %li
+    \...
+    .indent
+      has
+      - get_factoid_display :age
+      %br
+      maintained by
+      - get_factoid_display :team
+      %br
+      with
+      - get_factoid_display :activity
+  - unless homepage
+    %li
+      \...
+      .indent
+        took an estimated
+        = link_to "#{number_with_delimiter @analysis.man_years.ceil} years of effort",
+                  estimated_cost_project_path(@project)
+        (COCOMO model)
+        %br
+        starting with its
+        = link_to "first commit in #{@analysis.first_commit_time.strftime('%B, %Y')}",
+                  project_commits_path(@project, sort: 'oldest')
+        %br
+        ending with its
+        = link_to "most recent commit #{time_ago_in_words(@analysis.last_commit_time)}", project_commits_path(@project)
+        ago

@@ -24,9 +24,9 @@ xml.analysis do
       end
     end
   end
-  if analysis.language_percentages
+  if analysis_language_percentages(analysis)
     xml.languages graph_url: "#{project_url(analysis.project)}/analyses/#{analysis.id}/languages.png" do
-      analysis.language_percentages.each do |id, name, attr|
+      analysis_language_percentages(analysis).each do |id, name, attr|
         percent = attr[:percent] > 0 ? "#{attr[:percent]}" : '<1'
         xml.language percentage: percent, color: attr[:color], id: id do
           xml.text! name

@@ -1,0 +1,38 @@
+%ul.unstyled.nutshell
+  - if @analysis && @analysis.factoids && @analysis.twelve_month_summary
+    :ruby
+      commits_fact = @analysis.factoids.select { |f| f.is_a? FactoidActivity }
+      committers_fact = @analysis.factoids.select { |f| f.is_a? FactoidStaff }
+      has_old_data = commits_fact.any? || committers_fact.any?
+      commits = @analysis.twelve_month_summary.commits_count
+      committers = @analysis.twelve_month_summary.committer_count
+      previous_twelve_month_summary = @analysis.previous_twelve_month_summary
+      analysis_less_than_a_year_old = Time.parse(@analysis.min_month.to_s) >= 12.months.ago
+    %li
+      %big= commits
+      = link_to t('.commits'), project_commits_path(@project, time_span: '12 months')
+      .small{ style: 'padding-left: 22px;' }
+        - if previous_twelve_month_summary
+          - if previous_twelve_month_summary.data?
+            %span.commits_ticker
+              - analysis_twelve_month_commits_ticker(@analysis)
+          - elsif analysis_less_than_a_year_old
+            = t('.too_young')
+        - elsif has_old_data
+          = t('.must_reanalyize')
+        - else
+          = t('.no_commit_data')
+    %li
+      %big= committers
+      = link_to t('.contributors'), project_contributors_path(@project, time_span: '12 months', sort: 'latest_commit')
+      .small{ style: 'padding-left: 22px;' }
+        - if previous_twelve_month_summary
+          - if previous_twelve_month_summary.data?
+            %span.committers_ticker
+              - analysis_twelve_month_commits_ticker(@analysis)
+          - elsif analysis_less_than_a_year_old
+            = t('.too_young')
+        - elsif has_old_data
+          = t('.must_reanalyize')
+        - else
+          = t('.no_commit_data')

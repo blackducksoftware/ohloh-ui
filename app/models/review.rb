@@ -13,6 +13,7 @@ class Review < ActiveRecord::Base
     review.comment  = sanitizer.sanitize(review.comment)
   end
 
+  scope :by_account, ->(account) { where(account_id: account.id) }
   scope :for_project, ->(project) { where(project_id: project.id) }
   scope :top, ->(limit = 2) { three_quarters_helpful_arel.order_by_helpfulness_arel.limit(limit) }
   scope :sort_by, lambda { |key = :helpful|

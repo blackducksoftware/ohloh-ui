@@ -1,10 +1,13 @@
 class ProjectsController < ApplicationController
+  helper AnalysesHelper
+  helper FactoidsHelper
   helper RatingsHelper
 
   before_action :session_required, only: [:create, :new, :update]
   before_action :api_key_lock, only: [:index]
   before_action :find_account
-  before_action :find_projects
+  before_action :find_projects, only: [:index]
+  before_action :find_project, only: [:show]
   before_action :redirect_new_landing_page, only: :index
 
   def index
@@ -15,10 +18,10 @@ class ProjectsController < ApplicationController
     end
   end
 
-  def autocomplete
-    @projects = Project.not_deleted.order('length(projects.name)').limit(25)
-    @projects = @projects.where(['(lower(projects.name) like ?)', "%#{params[:term]}%"])
-    @projects = @projects.where.not(id: params[:exclude_project_id].to_i) if params[:exclude_project_id].present?
+  def show
+    @analysis = @project.best_analysis
+    @rating = logged_in? ? @project.ratings.where(account_id: current_user.id).first : nil
+    @score = @rating ? @rating.score : 0
   end
 
   private
@@ -58,6 +61,11 @@ class ProjectsController < ApplicationController
       'by_new' => t('projects.by_new'),
       'by_rating' => t('projects.by_rating'),
       'by_active_committers' => t('projects.by_active_committers') }
+  end
+
+  def find_project
+    @project = Project.not_deleted.from_param(params[:id]).take
+    fail ParamRecordNotFound unless @project
   end
 
   def redirect_new_landing_page

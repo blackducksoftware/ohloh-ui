@@ -651,9 +651,7 @@ CREATE TEXT SEARCH CONFIGURATION "default" (
 			lines_removed integer,
 			type text NOT NULL,
 			created_at timestamp without time zone,
-			recent_contributors text DEFAULT '--- []
-
-			'::text,
+			recent_contributors text DEFAULT '---\n[]'::text,
 			new_contributors_count integer,
 			affiliated_committers_count integer,
 			affiliated_commits_count integer,

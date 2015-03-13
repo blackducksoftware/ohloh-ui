@@ -1,0 +1,2 @@
+class FactoidStaff < Factoid
+end

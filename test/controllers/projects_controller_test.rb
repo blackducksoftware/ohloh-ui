@@ -143,4 +143,31 @@ class ProjectsControllerTest < ActionController::TestCase
     must_respond_with :ok
     response.body.must_match(/first.*second/m)
   end
+
+  # show
+  it 'show should render for unlogged users' do
+    project = create(:project)
+    login_as nil
+    get :show, id: project.to_param
+    must_respond_with :ok
+  end
+
+  it 'show should render for projects that have been analyzed' do
+    project = create(:project)
+    af_1 = create(:activity_fact, analysis: project.best_analysis, code_added: 8_000, comments_added: 8_000)
+    create(:factoid, analysis: project.best_analysis, language: af_1.language)
+    af_2 = create(:activity_fact, analysis: project.best_analysis)
+    create(:factoid, analysis: project.best_analysis, language: af_2.language)
+    af_3 = create(:activity_fact, analysis: project.best_analysis)
+    create(:factoid, analysis: project.best_analysis, language: af_3.language)
+    af_4 = create(:activity_fact, analysis: project.best_analysis)
+    create(:factoid, analysis: project.best_analysis, language: af_4.language)
+    ats = project.best_analysis.all_time_summary
+    ats.update_attributes(recent_contributors: [create(:person).id, create(:person).id])
+    cf = create(:commit_flag)
+    create(:analysis_sloc_set, analysis: project.best_analysis, sloc_set: cf.sloc_set)
+    login_as create(:admin)
+    get :show, id: project.to_param
+    must_respond_with :ok
+  end
 end

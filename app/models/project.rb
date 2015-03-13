@@ -9,7 +9,7 @@ class Project < ActiveRecord::Base
   scope :not_deleted, -> { where(deleted: false) }
   scope :been_analyzed, -> { where.not(best_analysis_id: nil) }
   scope :recently_analyzed, -> { not_deleted.been_analyzed.order(created_at: :desc) }
-  scope :hot, ->(lang_id) { hot_projects(lang_id) }
+  scope :hot, ->(l_id = nil) { Project.not_deleted.been_analyzed.joins(:analyses).merge(Analysis.fresh_and_hot(l_id)) }
   scope :by_popularity, -> { where.not(user_count: 0).order(user_count: :desc) }
   scope :by_activity, -> { joins(:analyses).joins(:analysis_summaries).by_popularity.thirty_day_summaries }
   scope :by_new, -> { reorder(created_at: :desc) }
@@ -23,6 +23,8 @@ class Project < ActiveRecord::Base
     joins(:manages).where.not(deleted: true, manages: { approved_by: nil }).where(manages: { account_id: account.id })
   }
   scope :case_insensitive_name, ->(mixed_case) { where(['lower(name) = ?', mixed_case.downcase]) }
+
+  fix_string_column_encodings!
 
   acts_as_editable editable_attributes: [:name, :url_name, :logo_id, :organization_id, :best_analysis_id,
                                          :description, :tag_list, :missing_source], # TODO: add :url and :download_url
@@ -53,10 +55,7 @@ class Project < ActiveRecord::Base
     tag_weights = Tagging.tag_weight_sql(self.class, tags.map(&:id))
     Project.select('projects.*, tag_weights.weight')
       .joins(sanitize("INNER JOIN (#{tag_weights}) AS tag_weights ON tag_weights.project_id = projects.id"))
-      .not_deleted
-      .where.not(id: id)
-      .order('tag_weights.weight DESC, projects.user_count DESC')
-      .limit(limit)
+      .not_deleted.where.not(id: id).order('tag_weights.weight DESC, projects.user_count DESC').limit(limit)
   end
 
   def active_managers
@@ -78,12 +77,6 @@ class Project < ActiveRecord::Base
 
   def best_analysis
     super || NilAnalysis.new
-  end
-
-  class << self
-    def hot_projects(lang_id = nil)
-      Project.not_deleted.been_analyzed.joins(:analyses).merge(Analysis.fresh_and_hot(lang_id))
-    end
   end
 
   private

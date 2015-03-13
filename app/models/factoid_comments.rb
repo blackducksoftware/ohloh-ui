@@ -1,0 +1,2 @@
+class FactoidComments < Factoid
+end
