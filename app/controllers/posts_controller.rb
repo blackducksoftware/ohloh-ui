@@ -12,13 +12,12 @@ class PostsController < ApplicationController
   end
 
   def create
-    # TODO: Add recaptcha error message.
     @post = build_new_post
     if verify_recaptcha(model: @post) && @post.save
       post_notification(@post)
       redirect_to topic_path(@topic)
     else
-      flash[:bad_reply] = "can't be blank"
+      flash[:bad_reply] = t('.blank')
       redirect_to topic_path(@topic, post: { body: @post.body }, anchor: 'post_reply')
     end
   end
@@ -32,7 +31,7 @@ class PostsController < ApplicationController
     if @post.update(post_params)
       redirect_to topic_path(@topic)
     else
-      flash[:bad_reply] = "can't be blank"
+      flash[:bad_reply] = t('.blank')
       redirect_to topic_path(@topic, post: { body: @post.body }, anchor: 'post_reply')
     end
   end

@@ -2,22 +2,28 @@
   - if current_user_is_admin?
     = link_to t('.edit'), edit_topic_path(@topic), method: :get, class: 'btn btn-info btn-mini'
 
-  - if current_user_is_admin? && !@topic.closed
-    = link_to t('.close'), topic_path(@topic, topic: { closed: true }),
-      method: :put, data: { confirm: t('.close_confirmation') }, class: 'btn btn-mini'
-
-  - if current_user_is_admin?
     = render 'topics/move_modal'
 
-  - if current_user_is_admin?
     = link_to t('.spam'), make_spammer_account_path(@topic.account), method: :post,
       data: { confirm: t('.spam_confirmation', user: @topic.posts.first.account.name) },
       class: 'btn btn-mini btn-warning'
 
-  - if current_user_is_admin? || (@topic.posts.count == 1 && @topic.account == current_user)
-    = link_to t('.delete'), topic_path(@topic), method: :delete, data: { confirm: t('.delete_confirmation') },
-      class: 'btn btn-danger btn-mini'
+    - unless @topic.closed
+      = link_to t('.close'), topic_path(@topic, topic: { closed: true }),
+        method: :put, data: { confirm: t('.close_confirmation') }, class: 'btn btn-mini'
 
-  - if (current_user_is_admin? || (@topic.account == current_user)) && @topic.closed
-    = link_to t('.reopen'), topic_path(@topic, topic: { closed: false }), method: :put,
+    = link_to t('.delete'), topic_path(@topic), method: :delete,
+      data: { confirm: t('.delete_confirmation') }, class: 'btn btn-danger btn-mini'
+
+    - if @topic.closed
+      = link_to t('.reopen'), topic_path(@topic, topic: { closed: false }), method: :put,
+        data: { confirm: t('.reopen_confirmation') }, class: 'btn btn-mini btn-info'
+
+  - else
+    - if @topic.account == current_user && !@topic.closed
+      = link_to t('.close'), topic_path(@topic, topic: { closed: true }),
+      method: :put, data: { confirm: t('.close_confirmation') }, class: 'btn btn-mini'
+
+    - if @topic.account == current_user && @topic.closed
+      = link_to t('.reopen'), topic_path(@topic, topic: { closed: false }), method: :put,
       data: { confirm: t('.reopen_confirmation') }, class: 'btn btn-mini btn-info'

@@ -1,5 +1,4 @@
 class ForumsController < ApplicationController
-  include ForumsHelper
   before_action :find_most_recent_topics_from_forum, only: :index
   before_action :find_forum_record, except: [:index, :new, :create]
   before_action :admin_session_required, except: [:index, :show]

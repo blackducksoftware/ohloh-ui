@@ -1,4 +1,7 @@
 - if logged_in?
+  - if flash[:bad_reply]
+    %p{ style: 'color: red' }= flash[:bad_reply]
+
   .row
     .col-md-9.pull-left
       %h3= t('.post_a_response')

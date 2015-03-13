@@ -25,4 +25,5 @@
 $(document).on 'page:change', ->
   StackVerb.init()
   StackShow.init()
+  #TODO: Will be needed for Organization layout
   #OrganizationPictogram.init();

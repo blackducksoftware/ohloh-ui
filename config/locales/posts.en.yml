@@ -9,8 +9,9 @@
       delete: 'Delete'
       delete_confirmation: 'Are you sure you want to delete your post?'
     update:
-      success: 'Post updated'
-      error: 'Sorry, there was a problem updating the post'
+      blank: "can't be blank"
+    create:
+      blank: "can't be blank"
     reply:
       post_a_response: 'Post a Response'
       submit: 'Submit'

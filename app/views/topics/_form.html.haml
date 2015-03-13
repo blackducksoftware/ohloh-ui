@@ -29,7 +29,5 @@
         = f.check_box :closed, choice: t('.closed')
         %span= t('.closed')
   = render partial: 'shared/captcha'
-  / Note: Does not seem very efficient. (reCaptcha error message)
-  / Figure out how to rewrite this.
   - if @topic.errors[:base]
     .strong.alert-color= @topic.errors[:base][0]
