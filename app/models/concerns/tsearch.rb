@@ -2,10 +2,6 @@ module Tsearch
   extend ActiveSupport::Concern
 
   included do
-    include PgSearch
-    pg_search_scope :search_by_vector, against: :vector, using: { tsearch: { tsvector_column: 'vector' } },
-                                       ranked_by: ':tsearch*(1+popularity_factor)'
-
     # update_columns doesn't support string interpolation so we have used update_all.
     # Why interpolation? because the entire set_vector result is a postgres function
     # that has to be evaluated while updating the vector column but in update_columns
@@ -16,14 +12,37 @@ module Tsearch
     end
 
     class << self
-      def tsearch(query, sort_by)
-        (query ? search_by_vector(query) : all).torder(query, sort_by)
+      def tsearch(query, sort_by = nil)
+        (query ? where(tsearch_where_clause(query)) : all).tsearch_sort_by(query, sort_by)
       end
 
-      def torder(query, sort_by)
-        return order('') if sort_by.blank? && query.present?
+      def tsearch_sort_by(query, sort_by)
+        return order("greatest(#{tsearch_rank('simple', query)},
+                     #{tsearch_rank('default', query)})*(1+popularity_factor) desc") if sort_by.blank? && query.present?
         return order(popularity_factor: :desc) if sort_by.blank?
         send(sort_by)
+      end
+
+      private
+
+      def tsearch_where_clause(query)
+        "#{tsearch_where_condition('simple', query)} or #{tsearch_where_condition('default', query)}"
+      end
+
+      def tsearch_where_condition(dictionary, query)
+        "(#{tsearch_vector} @@ #{tsearch_query(dictionary, query)})"
+      end
+
+      def tsearch_vector
+        "(#{table_name}.vector)"
+      end
+
+      def tsearch_query(dictionary, query)
+        "(to_tsquery('#{dictionary}', ''' ' || '#{query}' || ' '''))"
+      end
+
+      def tsearch_rank(dictionary, query)
+        "(ts_rank(#{tsearch_vector}, #{tsearch_query(dictionary, query)}))"
       end
     end
 

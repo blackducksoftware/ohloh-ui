@@ -12,6 +12,9 @@ class Person < ActiveRecord::Base
   belongs_to :contributor_fact_on_name_id, primary_key: :name_id, foreign_key: :name_id, class_name: :ContributorFact
   has_many :contributions
 
+  scope :sort_by_kudo_position, -> { order('kudo_position nulls last') }
+  scope :sort_by_effective_name, -> { order('lower(effective_name)') }
+
   validates :account_id, presence: true, unless: :unclaimed_person?
   validates :name_id, uniqueness: { scope: :project_id }, if: :unclaimed_person?
   validates :name_fact_id, presence: true, if: :unclaimed_person?
@@ -35,17 +38,12 @@ class Person < ActiveRecord::Base
   end
 
   class << self
-    def find_claimed(opts = {})
-      query, sort_by = opts.delete(:q), opts.delete(:sort_by)
-      opts[:total_entries] = Person::Count.claimed if query.blank?
-      opts = opts.reverse_merge(page: 1, per_page: 10)
-
-      search_by_vector_or_scoped(query)
+    def find_claimed(query, sort_by)
+      sort_by = sort_by.eql?('kudo_position') ? 'sort_by_kudo_position' : nil
+      tsearch(query, sort_by)
         .includes(:account)
         .where.not(account_id: nil)
         .references(:all)
-        .sort_by_kudo_position_or_effective_name(query, sort_by)
-        .paginate(opts)
     end
 
     def find_unclaimed(opts = {})
@@ -72,22 +70,11 @@ class Person < ActiveRecord::Base
         .pluck(:name_id)
     end
 
-    def search_by_vector_or_scoped(query)
-      return where('') if query.blank?
-      search_by_vector(query)
-    end
-
     def find_by_name_or_email(opts)
       return where("name_facts.email_address_ids && (#{EmailAddress.search_sql(opts[:q])})")
         .joins(:contributor_fact) if opts[:find_by].eql?('email')
 
-      search_by_vector_or_scoped(opts[:q])
-    end
-
-    def sort_by_kudo_position_or_effective_name(query, sort_by)
-      return order('') if sort_by.blank? && query.present?
-      return reorder(popularity_factor: :desc) if sort_by.blank?
-      reorder(sort_by.eql?('kudo_position') ? 'kudo_position NULLs last' : 'lower(effective_name)')
+      tsearch(opts[:q])
     end
 
     private
