@@ -238,4 +238,23 @@ class ProjectsControllerTest < ActionController::TestCase
     must_select 'input.save', 1
     must_select 'p.error[rel="name"]', 1
   end
+
+  # estimated_cost
+  it 'estimated_cost should display for analyzed projects' do
+    login_as nil
+    get :estimated_cost, id: create(:project).id
+    must_respond_with :success
+    response.body.must_match I18n.t('projects.estimated_cost.project_cost_calculator')
+    must_select '.no_analysis_message', 0
+  end
+
+  it 'estimated_cost should display for unanalyzed projects' do
+    project = create(:project)
+    project.update_attributes(best_analysis_id: nil)
+    login_as nil
+    get :estimated_cost, id: project.id
+    must_respond_with :success
+    response.body.wont_match I18n.t('projects.estimated_cost.project_cost_calculator')
+    must_select '.no_analysis_message', 1
+  end
 end

@@ -16,4 +16,20 @@ class NilAnalysis < NullObject
   def activity_level
     :na
   end
+
+  def man_years_from_loc(_)
+    0
+  end
+
+  def logic_total
+    0
+  end
+
+  def markup_total
+    0
+  end
+
+  def build_total
+    0
+  end
 end
