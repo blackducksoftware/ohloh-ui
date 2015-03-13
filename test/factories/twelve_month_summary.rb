@@ -5,5 +5,6 @@ FactoryGirl.define do
     affiliated_commits_count 2
     outside_committers_count 2
     outside_commits_count 2
+    recent_contributors []
   end
 end

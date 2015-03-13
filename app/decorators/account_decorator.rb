@@ -53,11 +53,11 @@ class AccountDecorator < Cherry::Decorator
       [
         [:contributions,      I18n.t(:contribution),        nil],
         [:positions,          I18n.t(:contribution),        h.account_positions_path(account)],
-        [:languages,          I18n.t(:languages),            h.languages_account_path(account)]
+        [:languages,          I18n.t(:languages),            h.account_languages_path(account)]
       ],
       [
         [:recognition,        I18n.t(:recognition),          nil],
-        [:kudos,              I18n.t(:kudos),                h.account_kudos_path(account)]
+        [:kudos,              I18n.t(:kudos_menu),           h.account_kudos_path(account)]
       ],
       [
         [:usage,              I18n.t(:usage),                nil],

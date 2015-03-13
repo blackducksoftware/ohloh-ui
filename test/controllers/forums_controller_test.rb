@@ -96,6 +96,13 @@ describe ForumsController do
     must_respond_with :unauthorized
   end
 
+  it 'show should render for unlogged user' do
+    create_list(:topic, 20)
+    login_as nil
+    get :show, id: forum.id
+    must_respond_with :success
+  end
+
   it 'show with pagination' do
     skip 'TODO: This test never ran correctly. It silently failed due to no assertions.'
     create_list(:topic, 20)
@@ -128,5 +135,15 @@ describe ForumsController do
       delete :destroy, id: forum.id
     end
     must_respond_with :unauthorized
+  end
+
+  it 'destroy gracefully handles errors' do
+    forum = create(:forum)
+    login_as create(:admin)
+    Forum.any_instance.expects(:destroy).returns(false)
+    assert_no_difference('Forum.count') do
+      delete :destroy, id: forum.id
+    end
+    must_redirect_to forums_path
   end
 end

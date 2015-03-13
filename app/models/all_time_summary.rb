@@ -1,0 +1,2 @@
+class AllTimeSummary < AnalysisSummary
+end

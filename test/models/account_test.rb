@@ -74,7 +74,6 @@ class AccountTest < ActiveSupport::TestCase
     account.wont_be :valid?
     account.errors.must_include(:password)
     account.errors.messages[:password].first.must_equal I18n.t(:cant_be_blank)
-    account.errors.messages[:password_confirmation].must_equal ['doesn\'t match Password']
 
     account = build(:account, password: 'abc12345', password_confirmation: 'ABC12345')
     account.wont_be :valid?
@@ -507,6 +506,99 @@ class AccountTest < ActiveSupport::TestCase
       language_fact = create(:vita_language_fact, vita_id: vita.id)
 
       account.most_experienced_language.nice_name.must_equal language_fact.language.nice_name
+    end
+  end
+
+  describe 'anonymous?' do
+    it 'should return true for anonymous account' do
+      account = AnonymousAccount.create!
+      account.anonymous?.must_equal true
+    end
+
+    it 'should return false for normal account' do
+      admin.anonymous?.must_equal false
+    end
+  end
+
+  describe 'edit_count' do
+    it 'should return the no of undone edits' do
+      CreateEdit.create(target: admin, account_id: admin.id)
+      CreateEdit.create(target: admin, account_id: admin.id, undone: true)
+      admin.edit_count.must_equal 1
+    end
+  end
+
+  describe 'badges' do
+    it 'should return all eligible badges' do
+      fosser_badge = FOSSerBadge.new(admin)
+      Badge.stubs(:all_eligible).returns([fosser_badge])
+      admin.badges.must_equal [fosser_badge]
+    end
+  end
+
+  describe 'find_or_create_anonymous_account' do
+    it 'should create anonymous account if it does not exist' do
+      Account.find_or_create_anonymous_account.login.must_equal AnonymousAccount::LOGIN
+    end
+
+    it 'should find anonymous account if it exists' do
+      anonymous_account = AnonymousAccount.create!
+      Account.find_or_create_anonymous_account.must_equal anonymous_account
+    end
+  end
+
+  describe 'resolve_login' do
+    it 'should find account by login' do
+      admin.update_column(:login, 'test')
+      Account.resolve_login('Test').must_equal admin
+      Account.resolve_login('tEst').must_equal admin
+      Account.resolve_login('test').must_equal admin
+    end
+  end
+
+  describe 'ip' do
+    it 'should return ip if defined' do
+      admin.ip = '127.0.0.1'
+      admin.ip.must_equal '127.0.0.1'
+    end
+
+    it 'should return ip as 0.0.0.0 if not defined' do
+      admin.ip.must_equal '0.0.0.0'
+    end
+  end
+
+  describe 'links' do
+    it 'should return links' do
+      project = create(:project)
+      link = create(:link, project: project)
+      CreateEdit.create!(target_id: link.id, project_id: project.id, target_type: 'Link', account_id: admin.id)
+
+      admin.links.must_equal [link]
+    end
+  end
+
+  describe 'resend_activation!' do
+    it 'should resent activation email and update sent at timestamp' do
+      skip('TODO: AccountNotifier')
+      ActionMailer::Base.deliveries.clear
+
+      admin.resend_activation!
+      email = ActionMailer::Base.deliveries.last
+      email.to.must_equal [user.email]
+      email.subject.must_equal ''
+    end
+  end
+
+  describe 'run_actions' do
+    it 'should run all actions for the account' do
+      account = create(:account)
+      project = create(:project)
+      action = Action.create(account: account, stack_project: project, status: 'completed')
+
+      account.reload
+      account.run_actions('completed')
+      action.reload
+      action.status.must_equal Action::STATUSES[:remind]
     end
   end
 end

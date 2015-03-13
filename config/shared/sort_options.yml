@@ -1,0 +1,81 @@
+reviews:
+  options:
+    -
+     - Most Helpful
+     - helpful
+    -
+     - Recently added
+     - recently_added
+    -
+     - Highest rating
+     - highest_rated
+    -
+     - Lowest rating
+     - lowest_rated
+  default:
+    helpful
+
+people:
+  options:
+    -
+     - Relevance
+     - relevance
+    -
+     - Kudo Rank
+     - kudo_position
+  default:
+    kudo_position
+
+api_keys:
+  options:
+    -
+     - Most Recent Request
+     - most_recent_request
+    -
+     - Requests Today
+     - most_requests_today
+    -
+     - All-Time Requests
+     - most_requests
+    -
+     - Account
+     - account_name
+    -
+     - Newest Keys
+     - newest
+    -
+     - Oldest Keys
+     - oldest
+
+posts:
+  options:
+    -
+     - Newest
+     - newest
+    -
+     - Relevance
+     - relevance
+    -
+     - Unanswered
+     - unanswered
+
+projects:
+  options:
+    -
+      - Activity Level
+      - activity_level
+    -
+      - Users
+      - users
+    -
+      - Newest on the Open Hub
+      - new
+    -
+      - Rating
+      - rating
+    -
+      - Relevance
+      - relevance
+    -
+      - Current Contributors
+      - active_committers

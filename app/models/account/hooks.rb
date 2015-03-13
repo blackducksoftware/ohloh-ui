@@ -68,16 +68,11 @@ class Account::Hooks
   end
 
   def deliver_signup_notification(account)
-    AccountNotifier.deliver_signup_notification(account)
-  rescue Net::SMTPSyntaxError => e
-    if e.to_s.include?('Bad recipient address syntax')
-      account.errors.add(:email, I18n.t('invalid_email_address'))
-      raise ActiveRecord::Rollback
-    end
+    AccountMailer.signup_notification(account).deliver_now
   end
 
   def deliver_activation(account)
-    AccountNotifier.deliver_activation(account)
+    AccountMailer.deliver_activation(account).deliver_now
   end
 
   def schedule_organization_analysis(organization_id)

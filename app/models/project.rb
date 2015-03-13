@@ -22,29 +22,41 @@ class Project < ActiveRecord::Base
   has_one :koders_status
   has_many :enlistments, -> { where(deleted: false) }
   has_many :repositories, through: :enlistments
-
+  has_many :project_licenses, -> { where(deleted: false) }
+  has_many :licenses, -> { order('lower(licenses.nice_name)') }, through: :project_licenses
+  has_one :is_a_duplicate, class_name: 'Duplicate', foreign_key: 'bad_project_id'
+  has_many :named_commits, ->(proj) { where(analysis_id: (proj.best_analysis_id || 0)) }
+  has_many :commit_flags, -> { order(time: :desc).where('commit_flags.sloc_set_id = named_commits.sloc_set_id') },
+           through: :named_commits
   scope :active, -> { where { deleted.not_eq(true) } }
   scope :deleted, -> { where(deleted: true) }
   scope :from_param, ->(id) { Project.where(Project.arel_table[:url_name].eq(id).or(Project.arel_table[:id].eq(id))) }
   scope :not_deleted, -> { where(deleted: false) }
   scope :been_analyzed, -> { where.not(best_analysis_id: nil) }
   scope :recently_analyzed, -> { not_deleted.been_analyzed.order(created_at: :desc) }
-  scope :hot, ->(lang_id) { hot_projects(lang_id) }
+  scope :hot, ->(l_id = nil) { Project.not_deleted.been_analyzed.joins(:analyses).merge(Analysis.fresh_and_hot(l_id)) }
   scope :by_popularity, -> { where.not(user_count: 0).order(user_count: :desc) }
   scope :by_activity, -> { joins(:analyses).joins(:analysis_summaries).by_popularity.thirty_day_summaries }
+  scope :by_new, -> { order(created_at: :desc) }
+  scope :by_users, -> { order(user_count: :desc) }
+  scope :by_rating, -> { order('COALESCE(rating_average,0) DESC, user_count DESC, projects.created_at ASC') }
+  scope :by_activity_level, -> { order('COALESCE(activity_level_index,0) DESC, projects.name ASC') }
+  scope :by_active_committers, -> { order('COALESCE(active_committers,0) DESC, projects.created_at ASC') }
+  scope :by_project_name, -> { order(name: :asc) }
   scope :language, -> { joins(best_analysis: :main_language).select('languages.name').map(&:name).first }
   scope :managed_by, lambda { |account|
     joins(:manages).where.not(deleted: true, manages: { approved_by: nil }).where(manages: { account_id: account.id })
   }
   scope :case_insensitive_name, ->(mixed_case) { where(['lower(name) = ?', mixed_case.downcase]) }
 
+  fix_string_column_encodings!
+
   acts_as_editable editable_attributes: [:name, :url_name, :logo_id, :organization_id, :best_analysis_id,
                                          :description, :tag_list, :missing_source], # TODO: add :url and :download_url
                    merge_within: 30.minutes
   acts_as_protected
 
-  validates :name, presence: true, length: 1..100, allow_nil: false, if: proc { |p| !p.name.blank? },
-                   uniqueness: true, case_sensitive: false
+  validates :name, presence: true, length: 1..100, allow_nil: false, uniqueness: true, case_sensitive: false
   validates :description, length: 0..800, allow_nil: true # , if: proc { |p| p.validate_url_name_and_desc == 'true' }
   # TODO: When Links are merged
   # validates_each :url, :download_url, allow_blank: true do |record, field, value|
@@ -60,27 +72,21 @@ class Project < ActiveRecord::Base
     stack_weights = StackEntry.stack_weight_sql(id)
     Project.select('projects.*, shared_stacks, shared_stacks*sqrt(shared_stacks)/projects.user_count as value')
       .joins(sanitize("INNER JOIN (#{stack_weights}) AS stack_weights ON stack_weights.project_id = projects.id"))
-      .not_deleted
-      .where('shared_stacks > 2')
-      .order('value DESC, shared_stacks DESC')
-      .limit(limit)
+      .not_deleted.where('shared_stacks > 2').order('value DESC, shared_stacks DESC').limit(limit)
   end
 
   def related_by_tags(limit = 5)
     tag_weights = Tagging.tag_weight_sql(self.class, tags.map(&:id))
     Project.select('projects.*, tag_weights.weight')
       .joins(sanitize("INNER JOIN (#{tag_weights}) AS tag_weights ON tag_weights.project_id = projects.id"))
-      .not_deleted
-      .where.not(id: id)
-      .order('tag_weights.weight DESC, projects.user_count DESC')
-      .limit(limit)
+      .not_deleted.where.not(id: id).order('tag_weights.weight DESC, projects.user_count DESC').limit(limit)
   end
 
   def active_managers
     Manage.projects.for_target(self).active.to_a.map(&:account)
   end
 
-  def allow_undo?(key)
+  def allow_undo_to_nil?(key)
     ![:name].include?(key)
   end
 
@@ -95,12 +101,6 @@ class Project < ActiveRecord::Base
 
   def best_analysis
     super || NilAnalysis.new
-  end
-
-  class << self
-    def hot_projects(lang_id = nil)
-      Project.not_deleted.been_analyzed.joins(:analyses).merge(Analysis.fresh_and_hot(lang_id))
-    end
   end
 
   private

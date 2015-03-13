@@ -7,10 +7,12 @@
     %meta{ name: 'description', content: page_context[:description] }
     %meta{ name: 'keywords', content: page_context[:keywords] }
     %meta{ name: 'google-site-verification', content: 'jKkWeVQ0tB1bffJYg7xXAtcIM-nrjjVxhP3ohb8UH2A' }
+    = yield :custom_head
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     = csrf_meta_tags
     = javascript_include_tag 'https://www.google.com/recaptcha/api.js'
+    = ohno_asset_tag
   %body{ zoom: 1 }
     .container#page
       %header= render partial: 'layouts/partials/header'

@@ -1,6 +1,17 @@
 en:
   about: 'About'
+  password: 'Password'
+  login: 'Login'
+  name: Name
+  bio: Bio
+  basics: Basics
+  email_address: Email Address
   save_changes: 'Save Changes'
+  gravatar: Gravatar
+  twitter_id: Twitter ID
+  tldr: 'TL;DR'
+  affiliation: Affiliation
+  clear: Clear
   cancel: 'Cancel'
   edit: 'Edit'
   new: 'New'
@@ -34,6 +45,7 @@ en:
   learn_more: "Learn More&hellip;"
   project_page_title: "The %{project_name} Open Source Project on Open Hub"
   edit_permission_failed: "You are not authorized to edit this #{klass}"
+  cant_edit_other_account: "You can't edit another's account."
   expander:
     more: "[More]"
     less: "[Less]"
@@ -61,7 +73,7 @@ en:
   contribution: 'Contributions'
   languages: 'Languages'
   recognition: 'Recognition'
-  kudos: 'Kudos'
+  kudos_menu: 'Kudos'
   usage: 'Usage'
   website_edits: 'Website Edits'
   post: 'Posts'
@@ -94,7 +106,9 @@ en:
   compare_projects: 'Compare Projects'
   compare_languages: 'Compare Languages'
   compare_repositories: 'Compare Repositories'
-
+  up: 'Up'
+  down: 'Down'
+  from_prev_12_mo: 'from previous 12 months'
   domain_blacklists:
     index:
       notice: 'No Domains Blacklisted'
@@ -277,18 +291,3 @@ en:
             url:
               taken: 'has already been submitted'
               invalid_url: 'Invalid Link URL'
-
-  shared:
-    markdown_help:
-      markdown: 'Markdown Help'
-      or: 'or'
-      italic_asterick_html: '&ast;italic&ast;'
-      italic_underscore_html: '&lowbar;&lowbar;italic&lowbar;&lowbar;'
-      bold_asterick_html: '&ast;&ast;bold&ast;&ast;'
-      bold_underscore_html: '&lowbar;&lowbar;bold&lowbar;&lowbar;'
-      header_1_html: '&num; header 1'
-      header_2_html: '&num;&num; header 2'
-      unordered_list_html: '&hybull; unordered list 1'
-      ordered_list_html: '1. ordered list 2'
-    captcha:
-      captcha_label: 'Captcha'

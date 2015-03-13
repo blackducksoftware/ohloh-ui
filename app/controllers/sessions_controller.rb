@@ -24,10 +24,15 @@ class SessionsController < ApplicationController
     return if disabled_account?(account)
     return unless activated_account?(account)
     remember_me_if_requested(account)
-    session[:account_id] = account.id
+    initialize_session_variables(account)
     return unless privacy_informed?(account)
     flash[:notice] = t '.success'
     redirect_back account_path(account)
+  end
+
+  def initialize_session_variables(account)
+    session[:account_id] = account.id
+    session[:last_active] = Time.now.utc
   end
 
   def remember_me_if_requested(account)

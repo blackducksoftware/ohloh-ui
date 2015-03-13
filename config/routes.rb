@@ -20,9 +20,14 @@ Rails.application.routes.draw do
   resources :reviews, only: :destroy do
     resources :helpfuls, only: :create
   end
-  resources :kudos
+  resources :kudos, only: [:new, :create, :destroy]
 
   resources :people, only: [:index]
+  resources :edits, only: [:update]
+
+  resources :licenses do
+    resources :edits, only: [:index]
+  end
 
   resources :accounts do
     resources :api_keys, constraints: { format: :html }, except: :show
@@ -30,29 +35,62 @@ Rails.application.routes.draw do
     resources :positions, only: [:index]
     resources :stacks, only: [:index]
     resources :widgets, only: [:index]
-    resources :kudos, only: [:index, :show]
+    resources :kudos, only: [:index] do
+      collection do
+        get :sent
+      end
+    end
     resources :edits, only: [:index]
     resources :posts, only: [:index]
     resources :reviews, only: [:index]
 
     member do
+      get :confirm_delete
       get :disabled
       get :settings
-      get :languages
-      get :commits_by_project_chart
-      get :commits_by_language_chart
-      post :make_spammer
-      get :activate
       get 'edit_privacy'   => 'privacy#edit',   as: :edit_account_privacy
       put 'update_privacy' => 'privacy#update', as: :account_privacy
     end
 
     collection do
-      get :search
-      get :autocomplete
-      get :resolve_login
       get :unsubscribe_emails
-      match :destroy_feedback, via: [:get, :post]
+    end
+
+    resources :charts, only: [], module: :accounts do
+      collection do
+        get :commits_by_project
+        get :commits_by_language
+      end
+    end
+
+    resources :languages, only: :index, module: :accounts
+
+    resources :accesses, only: [], module: :accounts do
+      collection do
+        post :make_spammer
+        get :activate
+      end
+    end
+  end
+
+  resources :deleted_accounts, only: [:edit, :update]
+
+  resources :check_availabilities, only: [] do
+    collection do
+      get :account
+    end
+  end
+
+  resources :searches, only: [] do
+    collection do
+      get :account
+    end
+  end
+
+  resources :autocompletes, only: [] do
+    collection do
+      get :account
+      get :project
     end
   end
 
@@ -70,12 +108,14 @@ Rails.application.routes.draw do
   get 'message', to: 'about#message'
   get 'maintenance', to: 'about#maintenance'
 
-  resources :projects, path: :p, only: [:show, :edit] do
+  get 'explore/projects', to: 'explore#projects', as: :explore_projects
+  resources :projects, path: :p, except: [:destroy] do
     member do
       get :users
       get :map
       get :settings
       get :estimated_cost
+      get :licenses
       get 'permissions'  => 'permissions#show',   as: :permissions
       put 'permissions'  => 'permissions#update', as: :update_permissions
       post 'rate'        => 'ratings#rate',       as: :rate
@@ -83,7 +123,7 @@ Rails.application.routes.draw do
     end
     collection do
       get :compare
-      get :autocomplete
+      post :check_forge
     end
     resource :logos, only: [:new, :create, :destroy]
     resources :links, except: :show
@@ -93,6 +133,10 @@ Rails.application.routes.draw do
         post :reject
       end
     end
+    resources :manages, only: [:new]
+    resources :edits, only: [:index]
+    resources :enlistments, only: [:index, :new]
+    resources :factoids, only: [:index]
     resources :rss_articles, only: :index
     resources :widgets, only: :index
     resources :similar_projects, only: :index
@@ -102,11 +146,15 @@ Rails.application.routes.draw do
       resources :helpfuls, only: :create
     end
     resources :analyses, only: :index do
+      resources :activity_facts, only: :index
       member do
         get :languages_summary
+        get :codehistory
+        get :commitshistory
+        get :committerhistory
       end
     end
-    resources :commits, only: :index do
+    resources :commits, only: [:index, :show] do
       collection { get :summary }
     end
     resources :contributors, only: [:index, :show] do
@@ -114,7 +162,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :organizations, path: :orgs, only: [:show] do
+  resources :organizations, path: :orgs, only: [:index, :show] do
     member do
       get :settings
       get :projects
@@ -123,6 +171,7 @@ Rails.application.routes.draw do
       get :print_infographic
       get :affiliated_committers
     end
+    resources :edits, only: [:index]
     resource :logos, only: [:new, :create, :destroy]
     resources :managers, only: [:index, :new, :create, :edit, :update] do
       member do
@@ -146,8 +195,13 @@ Rails.application.routes.draw do
     end
     resources :widgets, only: [:index]
   end
+
   resources :languages, only: [:show, :index] do
     collection { get :compare }
+  end
+
+  resources :people do
+    collection { get :rankings }
   end
 
   resource :compare_repositories
@@ -155,6 +209,12 @@ Rails.application.routes.draw do
   resources :contributors, controller: 'contributions' do
     resources :invites, only: [:new, :create]
   end
+
+  get 'explore/orgs' => 'explore#orgs'
+  get 'explore/orgs_by_thirty_day_commit_volume' => 'explore#orgs_by_thirty_day_commit_volume'
+
+  get 'message' => 'home#message'
+  get 'maintenance' => 'home#maintenance'
 
   # The priority is based upon order of creation: first created -> highest
   # priority.

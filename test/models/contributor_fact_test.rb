@@ -14,4 +14,14 @@ class ContributorFactTest < ActiveSupport::TestCase
       ContributorFact.unclaimed_for_project(project).to_a.map(&:id).must_equal [contributor_fact.id]
     end
   end
+
+  describe '#first_for_name_id_and_project_id' do
+    it 'must return contributor_fact' do
+      proj = create(:project)
+      cf = create(:name_fact, type: 'ContributorFact', analysis: proj.best_analysis)
+      create(:analysis_alias, analysis: cf.analysis, commit_name: cf.name, preferred_name: cf.name)
+      retval = ContributorFact.first_for_name_id_and_project_id(cf.name.id, cf.analysis.project.id)
+      retval.id.must_equal cf.id
+    end
+  end
 end

@@ -1,4 +1,5 @@
 class Edit < ActiveRecord::Base
+  belongs_to :account
   belongs_to :target, polymorphic: true
   belongs_to :undoer, class_name: 'Account', foreign_key: 'undone_by'
   belongs_to :project
@@ -12,6 +13,7 @@ class Edit < ActiveRecord::Base
   scope :for_target, ->(target) { where(target_type: target.class.to_s, target_id: target.id) }
   scope :for_editor, ->(editor) { where(account_id: editor.id) }
   scope :for_ip, ->(ip) { where(ip: ip) }
+  scope :filterable_by, ->(term) { where(filterable_by_where_clause(term)) }
 
   fix_string_column_encodings!
 
@@ -55,7 +57,7 @@ class Edit < ActiveRecord::Base
   end
 
   def populate_project
-    self.project_id = project_id_for_project || project_id_from_target
+    self.project_id = project_id_for_project || project_id_from_target || project_id_from_targets_target
   end
 
   def populate_organization
@@ -70,6 +72,10 @@ class Edit < ActiveRecord::Base
     target.respond_to?(:project_id) ? target.project_id : nil
   end
 
+  def project_id_from_targets_target
+    (target.respond_to?(:target_id) && target.target_type == 'Project') ? target.target_id : nil
+  end
+
   def org_id_when_associating_to_org
     (key == :organization_id) ? value : nil
   end
@@ -80,5 +86,13 @@ class Edit < ActiveRecord::Base
 
   def org_id_from_non_project_target
     !target.is_a?(Project) && target.respond_to?(:organization_id) ? target.organization_id : nil
+  end
+
+  class << self
+    def filterable_by_where_clause(term)
+      term = "%#{term}%"
+      api_keys = Edit.arel_table
+      api_keys[:key].matches(term).or(api_keys[:value].matches(term))
+    end
   end
 end

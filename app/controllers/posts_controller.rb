@@ -8,7 +8,6 @@ class PostsController < ApplicationController
 
   def index
     @posts = Post.paginate(page: params[:page], per_page: 10)
-    redirect_to all_posts_path
   end
 
   def create

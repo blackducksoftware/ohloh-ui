@@ -1,0 +1,51 @@
+- content_for(:html_title) { t('.page_title', name: @project.name) }
+
+- content_for :twitter_card do
+  %meta{ content: 'summary', name: 'twitter:card' }
+  %meta{ content: '@Open Hub', name: 'twitter:site' }
+  %meta{ content: @project.name, name: 'twitter:title' }
+  %meta{ content: project_twitter_description(@project, @analysis), name: 'twitter:description' }
+  / TODO: implement when we have s3_url_for
+  / %meta{ content: s3_url_for(@project.logo, :med), name: 'twitter:image' }
+  %meta{ content: 'https://www.openhub.net', name: 'twitter:domain' }
+
+%div
+  %h2.pull-left= t('.project_summary')
+  -# render_project_analysis_timestamp
+
+.clear
+= render partial: 'projects/show/is_a_duplicate', locals: { project: @project }
+
+.row
+  .col-md-6
+    #project_summary{ itemprop: 'description' }
+      - if @project.description && @project.description.length > 0
+        = simple_format(@project.description)
+      - else
+        = t('.no_description')
+        = link_to t('.add_description'), edit_project_path(@project)
+
+    / TODO: implement with tags
+    / #project_tags{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
+    /   %h4 Tags
+    /   %p
+    /     %span{ style: 'margin-left: -17px;' }
+    /       = tag_icon_link(@project)
+    /     - if !@project.tag_list.empty?
+    /       = tag_links(@project.tag_list)
+    /     - else
+    /       = t('.no_tags')
+    /       - if @project.edit_authorized?
+    /         = link_to t('.add_tags'), select_project_tags_path(@project)
+    = render partial: 'shared/add_this', locals: { text: "#{@project.name} project" }
+  .col-md-6
+    .well
+      = render partial: 'projects/show/quick_reference'
+
+- if @analysis
+  = render partial: 'projects/show/analysis_summary'
+- else
+  = render partial: 'projects/show/no_analysis_summary'
+  .col-md-3#proj_rating= render partial: 'projects/show/community_rating', locals: { title: t('.community_rating') }
+  - if @project.enlistments.empty? && @analysis.blank?
+    = image_tag('/images/sample_ohloh_analysis.jpg')

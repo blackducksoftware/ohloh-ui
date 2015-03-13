@@ -1,0 +1,69 @@
+.row
+  - if @project.enlistments.empty?
+    .alert.alert-info.alert-block.col-md-11
+      %h3= bootstrap_icon('icon-info-sign', t('.code_locations_removed'))
+      .indent{ style: 'padding-left: 30px;' }
+        %p= t('.code_locations_removed_explanation')
+  .col-md-6
+    .well
+      - p_name = truncate_project_name(@project.name, false, 40)
+      %h4= t('.in_a_nutshell', name: @project.name.length > 40 ? p_name : p_name.concat('...'))
+      = render 'projects/show/factoids'
+  .col-md-6{ itemscope: '', itemtype: 'http://schema.org/Language' }
+    = render partial: 'projects/show/languages'
+    .clearfix
+    = render partial: 'projects/show/lines_of_code_chart'
+  .clearfix
+.mezzo
+  %h3= t('.activity')
+.row
+  .col-md-6
+    .well{ style: 'min-height: 200px;' }
+      %table.unstyled#activity_table{ width: '100%' }
+        %tbody
+          %tr
+            %td{ width: '50%', valign: 'top' }
+              %h4.section_header.thirty_day= t('.thirty_day_summary')
+              %small.summary_timespan.thirty_day
+                - if @analysis && @analysis.thirty_day_summary && @analysis.logged_at
+                  = (@analysis.logged_at - 30.days).strftime('%b %e %Y')
+                  &mdash;
+                  = (@analysis.logged_at).strftime('%b %e %Y')
+                - else
+                  = t('.not_available')
+              .clearfix
+              = render partial: 'projects/show/thirty_day_summary'
+            %td{ width: '50%', valign: 'top' }
+              %h4.section_header.twelve_month= t('.twelve_month_summary')
+              %small.summary_timespan
+                - if @analysis && @analysis.twelve_month_summary && @analysis.logged_at
+                  = (@analysis.logged_at - 12.months).strftime('%b %e %Y')
+                  &mdash;
+                  = (@analysis.logged_at).strftime('%b %e %Y')
+                - else
+                  = t('.not_available')
+              .clearfix
+              = render partial: 'projects/show/twelve_month_summary'
+  .col-md-6
+    - if @analysis
+      - commits_url = url_for(commitshistory_project_analysis_url(project_id: @project.to_param, id: 'latest'))
+      - opts = chart_options('data-chart' => chart_watermark('charts_watermark_440'))
+      %h4= link_to t('.commits_per_month'), summary_project_commits_path(@project)
+      .col-md-4{ style: 'margin: -20px 0 0 -10px;' }
+        != chart_interactive_tag(commits_url, 460, 200, opts)
+    - else
+      %h4= t('.commits_per_month')
+      - add_code_link = link_to t('.add_a_code_location'), new_project_enlistment_path(@project)
+      %p= t('.no_code_locations', link: add_code_link)
+.mezzo
+  %h3= t('.community')
+%div
+  .proj_community_ratings#proj_rating= render partial: 'projects/show/community_rating'
+  .pull-left{ style: 'width: 280px;' }= render partial: 'projects/show/community_recent_committers'
+  .pull-left{ style: 'width: 450px;' }= render partial: 'projects/show/committers_per_month_chart'
+.row
+  .col-md-12 &nbsp;
+.row
+  .col-md-6#stackoverflow_recent_questions
+  .col-md-6#stackoverflow_popular_questions
+  -# tags = @project.tags.sort_by(&:weight).collect(&:name).join(';')

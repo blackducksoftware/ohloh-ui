@@ -56,12 +56,12 @@ class InviteTest < ActiveSupport::TestCase
 
   it 'should not send invite for an existing account' do
     accounts = Account.limit(1).order('RANDOM()')
-    hash = { invitor: accounts.first,  invitee_email: accounts.last.email }
-    invite = create(:invite,  hash)
+    hash = { invitor: accounts.first, invitee_email: accounts.last.email }
+    invite = build(:invite, hash)
     invite.wont :save
     invite.wont_be :valid?
     invite.errors.must_include(:invitee_email)
-    invite.errors.messages[:invitee_email].last.must_equal I18n.t('invites.invited_to_claim')
+    invite.errors.messages[:invitee_email].last.must_equal I18n.t('invites.invited_to_join')
   end
 
   it 'invitor should not send beyond 5 invites' do

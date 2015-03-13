@@ -1,7 +1,8 @@
 module ApplicationHelper
   include EmailObfuscation
   include ChartHelper
-  include TwitterBootstrap::IconHelper
+  include BootstrapHelper
+  include TimeStampHelper
 
   def error_tag(model, attr, opts = {})
     return '' if model.nil?
@@ -22,15 +23,19 @@ module ApplicationHelper
   end
 
   def expander(text, min = 250, max = 350, regex = /\s/, regex_offset = -1)
-    return text if text.length < max
+    return text.html_safe if text.length < max
 
     l = (text[0..min].rindex(regex) || min + 1) + regex_offset
     l -= 1 if text[l..l] == ','
-    render_expander(text, l)
+    render_expander(text, l).html_safe
   end
 
   def pluralize_without_count(count, singular, plural = nil)
     count == 1 ? singular : (plural || singular.pluralize)
+  end
+
+  def pluralize_with_delimiter(count, singular, plural = nil)
+    number_with_delimiter(count || 0) + ' ' + ((count.to_i == 1) ? singular : (plural || singular.pluralize))
   end
 
   def generate_page_name
@@ -65,15 +70,28 @@ module ApplicationHelper
 
   def project_icon(project, size = :small, opts = {})
     opts = opts_with_lang_colors(project, opts)
-    return haml_tag(:p, project.name.capitalize, style: default_icon_styles(size, opts)) if project.logo.nil?
+    return project_text_icon(project, size, opts) if project.logo.nil?
     styles = "#{icon_dimensions(size, opts)} border:0 none;"
     concat image_tag(project.logo.attachment.url(size), style: styles, itemprop: 'image', alt: project.name)
+  end
+
+  def project_text_icon(project, size, opts)
+    p_name = project.name.first.capitalize
+    haml_tag(:p, p_name, style: default_icon_styles(size, opts))
   end
 
   def project_link(project, size = :small, opts = {})
     opts = opts.merge(href: "/p/#{project.to_param}")
     inner = capture_haml { project_icon(project, size, opts) }
     haml_tag :a, inner, opts
+  end
+
+  def description(content, more_or_less, opts)
+    render partial: 'application/description', locals: { content: content, more_or_less: more_or_less, opts: opts }
+  end
+
+  def xml_date_to_time(date)
+    Time.gm(date.year, date.month, date.day).xmlschema
   end
 
   private

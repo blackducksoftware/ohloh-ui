@@ -1,0 +1,10 @@
+%meta{ name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW' }
+- content_for(:html_title) { @query ? t('.page_title_query', query: @query) : t('.page_title') }
+
+= render partial: 'shared/search_dingus', locals: { collection: @projects, sort_context: :projects }
+.clear
+
+#projects_index_list
+  = render partial: 'project_index', collection: @projects, locals: { metric: project_metric_from_sort(@sort),
+                                                                      compare: true, show_active_committers: true }
+  = will_paginate @projects

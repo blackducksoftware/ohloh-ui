@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class ApplicationController < ActionController::Base
   include PageContextHelper
 
@@ -12,6 +13,8 @@ class ApplicationController < ActionController::Base
   helper_method :page_context
 
   before_action :store_location
+  before_action :strip_query_param
+  before_action :clear_reminder
 
   def initialize(*params)
     @page_context = {}
@@ -36,7 +39,7 @@ class ApplicationController < ActionController::Base
   def current_user
     return @cached_current_user if @cached_current_user_checked
     @cached_current_user_checked = true
-    @cached_current_user = find_user_in_session || find_remembered_user || NullAccount.new
+    @cached_current_user = find_user_in_session || find_remembered_user || NilAccount.new
     session[:account_id] = @cached_current_user.id if @cached_current_user.id
     @cached_current_user
   end
@@ -72,9 +75,15 @@ class ApplicationController < ActionController::Base
   helper_method :current_project
 
   def read_only_mode?
-    defined?(READ_ONLY_MODE) && READ_ONLY_MODE
+    ENV['READ_ONLY_MODE'].present?
   end
   helper_method :read_only_mode?
+
+  def disabled_during_read_only_mode
+    # Pass '?admin=1' in the URL to open the backdoor.
+    # The backdoor allows users to avoid the redirect, but it doesn't actually allow login.
+    redirect_to maintenance_path if read_only_mode? && !params[:admin]
+  end
 
   def request_format
     format = 'html' if request.format.html?
@@ -115,7 +124,18 @@ class ApplicationController < ActionController::Base
     session[:return_to] = nil
   end
 
+  def must_own_account
+    return if current_user == @account
+
+    flash.now[:error] = t('cant_edit_other_account')
+    access_denied
+  end
+
   private
+
+  def strip_query_param
+    params[:query] = String.clean_string(params[:query])
+  end
 
   def find_user_in_session
     Account.where(id: session[:account_id]).first
@@ -124,4 +144,12 @@ class ApplicationController < ActionController::Base
   def find_remembered_user
     cookies[:auth_token] ? Account.where(remember_token: cookies[:auth_token]).first : nil
   end
+
+  def access_denied
+    store_location
+    # TODO: Check if we really need width options.
+    width_options = params[:width] && { width: 't' }
+    redirect_to new_session_path(width_options)
+  end
 end
+# rubocop:enable Metrics/ClassLength

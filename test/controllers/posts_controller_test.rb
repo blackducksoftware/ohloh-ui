@@ -12,7 +12,7 @@ describe PostsController do
   it 'index' do
     # TODO: Pagination Sort/Filter/Search etc.
     get :index
-    must_redirect_to '/posts'
+    must_respond_with :ok
   end
 
   it 'create fails for user with no account' do
@@ -44,7 +44,7 @@ describe PostsController do
   it 'user index' do
     login_as user
     get :index
-    must_redirect_to '/posts'
+    must_respond_with :ok
   end
 
   it 'create action: valid recaptcha' do
@@ -169,6 +169,15 @@ describe PostsController do
     must_redirect_to topic_path(post_object.topic.id)
   end
 
+  it 'update gracefully handles errors' do
+    Post.any_instance.expects(:update).returns(false)
+    login_as post_object.account
+    put :update, topic_id: post_object.topic.id, id: post_object.id, post: { body: 'Updating the body' }
+    post_object.reload
+    post_object.body.wont_equal 'Updating the body'
+    must_redirect_to topic_path(post_object.topic.id)
+  end
+
   it 'user cannot edit someone else\'s post' do
     login_as user
     get :edit, topic_id: post_object.topic.id, id: post_object.id
@@ -179,7 +188,7 @@ describe PostsController do
   it 'admin index' do
     login_as admin
     get :index
-    must_redirect_to '/posts'
+    must_respond_with :ok
   end
 
   it 'admin create' do
@@ -234,6 +243,16 @@ describe PostsController do
     login_as admin
     post_object2 = create(:post)
     assert_difference('Post.count', -1) do
+      delete :destroy, topic_id: post_object2.topic.id, id: post_object2.id
+    end
+    must_redirect_to topic_path(post_object2.topic.id)
+  end
+
+  it 'destroy gracefully handles errors' do
+    post_object2 = create(:post)
+    login_as create(:admin)
+    Post.any_instance.expects(:destroy).returns(false)
+    assert_no_difference('Post.count') do
       delete :destroy, topic_id: post_object2.topic.id, id: post_object2.id
     end
     must_redirect_to topic_path(post_object2.topic.id)

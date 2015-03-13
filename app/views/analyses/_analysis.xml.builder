@@ -1,0 +1,41 @@
+xml.analysis do
+  xml.id analysis.id
+  xml.url analysis_url analysis, format: 'xml'
+  xml.project_id analysis.project_id
+  xml.updated_at analysis.updated_on.iso8601
+  xml.logged_at analysis.logged_at.iso8601
+  xml.min_month analysis.min_month.iso8601
+  xml.max_month analysis.max_month.iso8601
+  xml.twelve_month_contributor_count analysis.headcount
+  xml.total_contributor_count analysis.committers_all_time
+  if tms = analysis.twelve_month_summary
+    xml.twelve_month_commit_count tms.commit_count
+  end
+  xml.total_commit_count analysis.commit_count
+  xml.total_code_lines analysis.code_total
+  if analysis.factoids && analysis.factoids.any?
+    xml.factoids do
+      if analysis.factoids.reject! { |f| f.type.to_s =~ /FactoidDistribution|FactoidStaff/ }
+        analysis.factoids.each do |f|
+          xml.factoid type: f.class do
+            xml.text! f.to_s
+          end
+        end
+      end
+    end
+  end
+  if analysis_language_percentages(analysis)
+    xml.languages graph_url: "#{project_url(analysis.project)}/analyses/#{analysis.id}/languages.png" do
+      analysis_language_percentages(analysis).each do |id, name, attr|
+        percent = attr[:percent] > 0 ? "#{attr[:percent]}" : '<1'
+        xml.language percentage: percent, color: attr[:color], id: id do
+          xml.text! name
+        end
+      end
+    end
+  end
+  if analysis.main_language_id
+    xml.main_language_id analysis.main_language_id
+    xml.main_language_name analysis.main_language.nice_name
+  end
+end

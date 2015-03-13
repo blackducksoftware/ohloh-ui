@@ -9,6 +9,7 @@ class Invite < ActiveRecord::Base
   validates :contribution, presence: true
   validate :unique_invitee_wrt_contribution
   validate :duplicate_invitee_email
+  validate :account_already_exists
 
   def set_project_id_name_id
     return if contribution_id.nil?
@@ -28,13 +29,25 @@ class Invite < ActiveRecord::Base
 
   def unique_invitee_wrt_contribution
     return true if errors[:send_limit].any?
-    count = self.class.where('invitee_email = ? AND contribution_id = ?', invitee_email, contribution_id).count
-    errors.add(:invitee_email, I18n.t('invites.invited_to_claim')) if count > 0
+    errors.add(:invitee_email, I18n.t('invites.invited_to_claim')) if previous_invitee_wrt_contribution.count > 0
   end
 
   def duplicate_invitee_email
-    return true unless invitee.nil? && Account.where(email: invitee_email).nil?
-    count = self.class.where('invitee_email = ? ', invitee_email).count
-    errors.add(:invitee_email, I18n.t('invites.invited_to_join')) if count > 0
+    return true unless invitee.nil?
+    invites = Invite.where(invitee_email: invitee_email, invitor_id: invitor_id)
+    invites = invites.where.not(id: id) if id
+    errors.add(:invitee_email, I18n.t('invites.invited_to_join')) if invites.count > 0
+  end
+
+  def account_already_exists
+    return true unless invitee.nil?
+    accounts = Account.where(email: invitee_email)
+    errors.add(:invitee_email, I18n.t('invites.invited_to_join')) if accounts.count > 0
+  end
+
+  def previous_invitee_wrt_contribution
+    invites = Invite.where(invitee_email: invitee_email, contribution_id: contribution_id)
+    invites = invites.where.not(id: id) if id
+    invites
   end
 end

@@ -1,0 +1,21 @@
+:ruby
+  analysis = @analysis unless defined?(analysis)
+  analysis_not_complete = @project.enlistments.any? && analysis.nil?
+  no_recognized_code = @project.enlistments.any? && analysis && analysis.empty?
+  no_code_available = @project.enlistments.empty? && analysis.blank?
+  message = t('.message_1') if no_recognized_code
+  message = t('.message_2') if no_code_available
+  message = t('.message_3') if analysis_not_complete
+.no_analysis_message
+  .alert.alert-info.alert-block.col-md-8
+    %h3= bootstrap_icon('icon-info-sign', message)
+    .indent{ style: 'padding-left: 30px;' }
+      - if no_recognized_code
+        %p= t('.help_1')
+      - if no_code_available
+        %p= t('.help_2')
+        %p= t('.help_3')
+        %p{ align: 'center' }
+          = link_to t('.add_a_code_location'), new_project_enlistment_path(@project), class: 'btn btn-large btn-primary'
+      - if analysis_not_complete
+        - message_analysis_not_complete(@project, false)

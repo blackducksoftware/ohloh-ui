@@ -17,7 +17,8 @@ en:
       title: 'Most experienced in %{nice_name}'
       settings: '&nbsp; Settings'
     languages:
-      title: 'Languages'
+      index:
+        title: 'Languages'
       commits_by_language:
         title: 'Languages'
         sort_option:
@@ -25,21 +26,80 @@ en:
           one: 'Markup Languages'
           two: 'Build Languages'
           zero: 'Logical Languages'
-    activate:
-      notice: 'Account already active'
-      success: 'Activation Succeeded!'
-    make_spammer:
-      success: "The account %{name} has been marked as spammer."
-    destroy_feedback:
-      success: 'Thank you for the feedback.'
-      expired: 'Sorry, Page expired.'
-      invalid_request: 'Sorry, Invalid request!'
-      sad: 'We are sorry to see you go...'
-      info: "Your account has been deleted. Any contributions you had claimed under your account have been placed back in the pool of unclaimed contributions on Open Hub. They\'re still visible, just not associated with you through an account."
-      rejoin: "You can rejoin Open Hub any time you like - just click the 'Join' button in the upper right on any Open Hub page and set up a new account. We hope you'll consider returning in the future!"
-      feedback: "Please take a moment to let us know why you're deleting your account. We're constantly striving to make Open Hub better, and your feedback is important to us!"
+    accesses:
+      activate:
+        notice: 'Account already active'
+        success: 'Activation Succeeded!'
+      make_spammer:
+        success: "The account %{name} has been marked as spammer."
+
+    join_now:
+      welcome_bullet_1: 'Claim all of your commits to projects across all of Open Hub, building a complete picture of your contributions to FOSS.'
+      welcome_bullet_2: 'Manage projects.'
+      welcome_bullet_3: 'Create project "stacks" that detail your usage of FOSS, and rate and review the projects you know.'
+    new:
+      html_title: New Open Hub Account
+      login_text: Login now
+      login_link_description: "and start building your FOSS profile &mdash; it's free!"
+      invite_code_message: 'The first step to claim your Open Source contribution is create an Open Hub account.'
+
+    edit:
+      email_help: 'We use your email address to show your'
+      affiliation_help: "Enter the company or organization you're affiliated with."
+      city_and_country: 'City &amp; Country'
+      location_error_message: 'Sorry, that location was not found.'
+      about_raw_help: 'A short (less than 500 characters) description of you.'
+      delete_account: 'Delete Account'
+      account_basics: ' : Account Basics'
+      homepage_url: 'Homepage URL'
+      help_1: Your login ID will be shown in many places on Open Hub, including in lists that highlight your contributions to projects, so please choose something you want to be seen.
+      help_2: Your email address is used to show your Gravitar. In addition, your email address may be used by Open Hub to match against discovered, unclaimed committer IDs on projects as a convenient way to locate your FOSS contributions. You may change your email address; we will send an activiation letter to that address for confirmation.
+      help_3: Open Hub will never show your email addresses to anyone on the site or through the API.
+      help_4: Your homepage URL is optional and can be any website. Often, Open Hub users choose to point this link to their blog.
+      help_5: Location can be a city, country pair, separated by a comma, or for those countries subdivided into states, city, state, country triples. The map will update after you save changes to show where Open Hub positions your location.
+
+    welcome:
+      title: 'Welcome to Open Hub!'
+      description: 'You can use Open Hub without logging in, or having an account.  But with an account, you can do so much more:'
+
+    fields:
+      new_account: 'New Account'
+      sign_up: 'Sign Up'
+      login_help: 'Your login is your public name on Open Hub and will be associated with all of your contributions.'
+      login: 'Login'
+      email_help_1: 'You must provide a valid email to activate your account.'
+      email_help_2: 'You can opt-in to additional mail from Open Hub on the "Notifications" settings page.'
+      email_help_3: 'If you have a'
+      email_help_4: 'for this email address, Open Hub will use it.'
+      verify_email_address: 'Verify Email Address'
+      verify_password: 'Verify Password'
+      password_help: 'Password must be at least 5 characters long'
+      verify_password_help: 'Verify Password must be at least 5 characters long'
+
     index:
       page_title: 'Account Holders'
+    create:
+      success: "Thanks for signing up! Your account information was sent to %{email}. Follow the activation instructions contained in the email before logging in."
+    update:
+      success: 'Save successful!'
+    confirm_delete:
+      html_title: 'Delete Account'
+      delete_my_account: Delete My Account
+      confirm_modal_header: Confirm Delete Account
+      confirm_modal_body: Are your sure? This cannot be undone.
+      confirm_delete_my_account: 'Confirm: Delete My Account'
+      help_1: 'About Deleting Your Account'
+      help_2: 'Open Hub collects publicly available data on Free and Open Source software participation from multiple sites and forges across the Internet. When you delete your Open Hub account, you remove the place where Open Hub aggregates your participation together into one record.'
+      help_3: "Deleting your account will have no effect on the actual projects to which you've contributed"
+      help_4: "all the code you've written will still be there and attributed to your committer ID in that project's source code repositories. Open Hub will continue to show the commits you've done, and these commits will continue to roll up to accurately describe the history of the projects to which you've contributed."
+      help_5: 'The commmitter IDs you have claimed will be returned to the pool of unclaimed committer IDs on Open Hub, but they will still be visible to all.'
+      help_6: The edits you've made to the Open Hub site will still be present - we don't undo them. But those edits will now be attributed to "Anonymous User".
+      help_7: If you delete your account and then choose at a later time to rejoin Open Hub, you'll be able to re-claim your unclaimed committer IDs using the normal claim process. You will not be able to reclaim any edits you made to the Open Hub site under your previously deleted account.
+      help_8: This won't change the actual projects you've worked on.
+      help_9: Your committer IDs go back into the "unclaimed" pool.
+      help_10: Your edits to the site will now be by "Anonymous User"
+      help_11: You can rejoin and re-claim committer IDs but not previous edits.
+
     account:
       manages_count: 'Manages %{count}'
       member_since: 'Open Hub member since %{since}'

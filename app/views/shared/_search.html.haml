@@ -1,0 +1,24 @@
+- unless request.path == root_path
+  %form.pull-right#quicksearch{ action: projects_path, style: 'margin-top: -6px' }
+    .dropdown
+      .btn-group.ux-dropdown
+        %a.btn.btn-small.dropdown-toggle{ 'data-toggle' => 'dropdown' }
+          %span.selection= t('projects_menu')
+          %span.caret
+        %ul.dropdown-menu
+          %li
+            %a{ val: 'people' }= t('people')
+          %li
+            %a.default{ val: 'p' }= t('projects_menu')
+          %li
+            %a{ val: 'orgs' }= t('organizations_menu')
+          %li
+            %a{ val: 'posts' }= t('forum')
+          %li
+            %a{ val: '//code.openhub.net/search', onclick: 'Forms.OhlohCodeSearch();' }
+              %i.icon-share= t('code')
+        %input.search.text.global_top_search{ type: :text, name: 'query', placeholder: t('shared.search.search_text'),
+        value: params[:query] }
+        %input.search.hidden{ type: 'hidden', name: 'search_type', id: 'search_type', value: 'projects' }
+        %button.submit.no_padding{ type: 'submit' }
+          .icon-search.global_top_search_icon
