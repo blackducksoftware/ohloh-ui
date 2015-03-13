@@ -211,4 +211,31 @@ class ProjectsControllerTest < ActionController::TestCase
     must_select 'input.save', 1
     must_select '.disabled.save', 0
   end
+
+  # update
+  it 'update should refuse unauthorized attempts' do
+    project = create(:project)
+    login_as nil
+    put :update, id: project.id, project: { name: 'KoolOSSProject' }
+    must_respond_with :unauthorized
+    project.reload.name.wont_equal 'KoolOSSProject'
+  end
+
+  it 'update should persist changes' do
+    project = create(:project)
+    login_as create(:admin)
+    put :update, id: project.id, project: { name: 'KoolOSSProject' }
+    must_respond_with 302
+    project.reload.name.must_equal 'KoolOSSProject'
+  end
+
+  it 'update should handle invalid params and render the edit action' do
+    project = create(:project, name: 'KoolOSSProject123')
+    login_as create(:admin)
+    put :update, id: project.id, project: { name: '' }
+    must_respond_with :unprocessable_entity
+    project.reload.name.must_equal 'KoolOSSProject123'
+    must_select 'input.save', 1
+    must_select 'p.error[rel="name"]', 1
+  end
 end

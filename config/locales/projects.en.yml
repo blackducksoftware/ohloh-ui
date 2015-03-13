@@ -157,3 +157,5 @@ en:
       about1: "The project name will be shown in Open Hub search results, as well as in search engines. This name must be unique across all of Open Hub. Please %{link} if you believe your preferred project name is incorrectly assigned to another project. Please use as short a name as possible."
       about2: "The project URL must also be unique across all of Open Hub."
       about3: "The project description will appear on the project's summary page. Please be concise, but highlight unique aspects and key features."
+    update:
+      success: "Project updated"

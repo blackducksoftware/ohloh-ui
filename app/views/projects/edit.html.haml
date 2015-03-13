@@ -17,13 +17,6 @@
     = form_for @project, as: :project, url: project_path(@project), html: { method: :put,
                                                                             class: 'center-block edit_project',
                                                                             style: 'width:710px;' } do |f|
-      %input{ name: 'project[baseline_name]', id: 'baseline_name', type: 'hidden' }
-      %input{ name: 'project[baseline_url]', id: 'baseline_url', type: 'hidden' }
-      %input{ name: 'project[baseline_download_url]', id: 'baseline_download_url', type: 'hidden' }
-      %input{ name: 'project[baseline_description]', id: 'baseline_description', type: 'hidden' }
-      %input{ name: 'project[validate_url_name_and_desc]', id: 'validate_url_name_and_desc', type: 'hidden',
-              value: 'true' }
-
       %fieldset
         .control-group
           %label.control-label.required= t('.project_name')
@@ -46,7 +39,7 @@
         .control-group
           %label.control-label= t('.description')
           .controls
-            = find_and_preserve(f.text_area(:description, max_length: 800, style: 'width: 100%;'))
+            = find_and_preserve(f.text_area(:description, max_length: 800, style: 'width: 100%; height: 150px;'))
             - error_tag @project, :description
         .clearfix
 

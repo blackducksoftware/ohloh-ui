@@ -24,6 +24,16 @@ class ProjectsController < ApplicationController
     @score = @rating ? @rating.score : 0
   end
 
+  def update
+    return render_unauthorized unless @project.edit_authorized?
+    if @project.update_attributes(project_params)
+      flash[:notice] = t '.success'
+      redirect_to project_path(@project)
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   private
 
   # TODO: this really belongs in app_controller, but that file is too big currently
@@ -74,6 +84,10 @@ class ProjectsController < ApplicationController
     @project = Project.not_deleted.from_param(params[:id]).take
     fail ParamRecordNotFound unless @project
     @project.editor_account = current_user
+  end
+
+  def project_params
+    params.require(:project).permit([:name, :description, :url_name])
   end
 
   def redirect_new_landing_page
