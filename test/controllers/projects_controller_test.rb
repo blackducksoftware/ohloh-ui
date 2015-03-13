@@ -170,4 +170,72 @@ class ProjectsControllerTest < ActionController::TestCase
     get :show, id: project.to_param
     must_respond_with :ok
   end
+
+  # new
+  it 'new should require a current user' do
+    login_as nil
+    get :new
+    must_respond_with :unauthorized
+  end
+
+  it 'new should render for logged users' do
+    login_as create(:account)
+    get :new
+    must_respond_with :ok
+  end
+
+  # edit
+  it 'edit should disable save button for unlogged users' do
+    login_as nil
+    get :edit, id: create(:project).id
+    must_respond_with :ok
+    must_select 'input.save', 0
+    must_select '.disabled.save', 1
+  end
+
+  it 'edit should enable save button for managers' do
+    project = create(:project)
+    manager = create(:account)
+    Manage.create(target: project, account: manager)
+    login_as manager
+    get :edit, id: project.id
+    must_respond_with :ok
+    must_select 'input.save', 1
+    must_select '.disabled.save', 0
+  end
+
+  it 'edit should enable save button for admins' do
+    login_as create(:admin)
+    get :edit, id: create(:project).id
+    must_respond_with :ok
+    must_select 'input.save', 1
+    must_select '.disabled.save', 0
+  end
+
+  # update
+  it 'update should refuse unauthorized attempts' do
+    project = create(:project)
+    login_as nil
+    put :update, id: project.id, project: { name: 'KoolOSSProject' }
+    must_respond_with :unauthorized
+    project.reload.name.wont_equal 'KoolOSSProject'
+  end
+
+  it 'update should persist changes' do
+    project = create(:project)
+    login_as create(:admin)
+    put :update, id: project.id, project: { name: 'KoolOSSProject' }
+    must_respond_with 302
+    project.reload.name.must_equal 'KoolOSSProject'
+  end
+
+  it 'update should handle invalid params and render the edit action' do
+    project = create(:project, name: 'KoolOSSProject123')
+    login_as create(:admin)
+    put :update, id: project.id, project: { name: '' }
+    must_respond_with :unprocessable_entity
+    project.reload.name.must_equal 'KoolOSSProject123'
+    must_select 'input.save', 1
+    must_select 'p.error[rel="name"]', 1
+  end
 end
