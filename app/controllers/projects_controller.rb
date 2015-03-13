@@ -7,7 +7,7 @@ class ProjectsController < ApplicationController
   before_action :api_key_lock, only: [:index]
   before_action :find_account
   before_action :find_projects, only: [:index]
-  before_action :find_project, only: [:show, :edit, :update]
+  before_action :find_project, only: [:show, :edit, :update, :estimated_cost]
   before_action :redirect_new_landing_page, only: :index
 
   def index
