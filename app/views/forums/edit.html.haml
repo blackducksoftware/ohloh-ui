@@ -1,10 +1,5 @@
-/ Note: Determine why glyphicons are not rendering.
-/ Refactor this into a partial for new/edit html pages.
 - if flash[:alert]
-  .alert.alert-danger.alert-color
-    %span.glyphicon.glyphicon-exclamation-sign
-    %span.text-size= flash[:alert]
-    %span.glyphicon.glyphicon-remove.float_right
+  = render 'forums/error_alert'
 
 %h1.margin_top_0
   %span= link_to t('.forums'), forums_url
