@@ -1,29 +1,7 @@
 class Project < ActiveRecord::Base
-  has_many :links, -> { where(deleted: false) }
-  has_one :permission, as: :target
-  has_many :analyses
-  has_many :analysis_summaries, through: :analyses
-  has_many :taggings, as: :taggable
-  has_many :tags, through: :taggings
-  belongs_to :best_analysis, foreign_key: :best_analysis_id, class_name: :Analysis
-  has_many :aliases, -> { where { deleted.eq(false) & preferred_name_id.not_eq(nil) } }
-  has_many :aliases_with_positions_name, -> { where { deleted.eq(false) & preferred_name_id.eq(positions.name_id) } },
-           class_name: 'Alias'
-  has_many :contributions
-  has_many :positions
-  has_many :stack_entries, -> { where { deleted_at.eq(nil) } }
-  has_many :stacks, -> { where { deleted_at.eq(nil) & account_id.not_eq(nil) } }, through: :stack_entries
-  belongs_to :logo
-  belongs_to :organization
-  has_many :manages, -> { where(deleted_at: nil, deleted_by: nil) }, as: 'target'
-  has_many :managers, through: :manages, source: :account
-  has_many :reviews
-  has_many :ratings
-  has_one :koders_status
-  has_many :enlistments, -> { where(deleted: false) }
-  has_many :repositories, through: :enlistments
-  has_many :project_licenses, -> { where(deleted: false) }
-  has_many :licenses, -> { order('lower(licenses.nice_name)') }, through: :project_licenses
+  include ProjectAssociations
+  include Tsearch
+  include ProjectSearchables
 
   scope :active, -> { where { deleted.not_eq(true) } }
   scope :deleted, -> { where(deleted: true) }
@@ -34,12 +12,12 @@ class Project < ActiveRecord::Base
   scope :hot, ->(lang_id) { hot_projects(lang_id) }
   scope :by_popularity, -> { where.not(user_count: 0).order(user_count: :desc) }
   scope :by_activity, -> { joins(:analyses).joins(:analysis_summaries).by_popularity.thirty_day_summaries }
-  scope :by_new, -> { order(created_at: :desc) }
-  scope :by_users, -> { order(user_count: :desc) }
-  scope :by_rating, -> { order('COALESCE(rating_average,0) DESC, user_count DESC, projects.created_at ASC') }
-  scope :by_activity_level, -> { order('COALESCE(activity_level_index,0) DESC, projects.name ASC') }
-  scope :by_active_committers, -> { order('COALESCE(active_committers,0) DESC, projects.created_at ASC') }
-  scope :by_project_name, -> { order(name: :asc) }
+  scope :by_new, -> { reorder(created_at: :desc) }
+  scope :by_users, -> { reorder(user_count: :desc) }
+  scope :by_rating, -> { reorder('COALESCE(rating_average,0) DESC, user_count DESC, projects.created_at ASC') }
+  scope :by_activity_level, -> { reorder('COALESCE(activity_level_index,0) DESC, projects.name ASC') }
+  scope :by_active_committers, -> { reorder('COALESCE(active_committers,0) DESC, projects.created_at ASC') }
+  scope :by_project_name, -> { reorder(name: :asc) }
   scope :language, -> { joins(best_analysis: :main_language).select('languages.name').map(&:name).first }
   scope :managed_by, lambda { |account|
     joins(:manages).where.not(deleted: true, manages: { approved_by: nil }).where(manages: { account_id: account.id })

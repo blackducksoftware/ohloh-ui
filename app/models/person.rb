@@ -2,11 +2,7 @@ class Person < ActiveRecord::Base
   self.primary_key = :id
   self.per_page = 10
 
-  include PgSearch
-  pg_search_scope :search_by_vector,
-                  against: :vector,
-                  using: { tsearch: { tsvector_column: 'vector' } },
-                  ranked_by: ':tsearch*(1+popularity_factor)'
+  include Tsearch
 
   belongs_to :account
   belongs_to :name
@@ -21,7 +17,6 @@ class Person < ActiveRecord::Base
   validates :name_fact_id, presence: true, if: :unclaimed_person?
 
   before_validation Person::Hooks.new
-  after_save TsearchHooks.new
 
   fix_string_column_encodings!
 

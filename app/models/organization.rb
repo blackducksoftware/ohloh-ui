@@ -1,4 +1,7 @@
 class Organization < ActiveRecord::Base
+  include OrganizationSearchables
+  include Tsearch
+
   ORG_TYPES = { 'Commercial' => 1, 'Education' => 2, 'Government' => 3, 'Non-Profit' => 4 }
 
   fix_string_column_encodings!
