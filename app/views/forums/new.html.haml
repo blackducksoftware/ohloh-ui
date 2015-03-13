@@ -1,15 +1,5 @@
-/ Note: Determine why glyphicons are not rendering.
-/ - if flash[:alert]
-/   .alert.alert-danger.alert-color
-/     = bootstrap_icon('glyphicon glyphicon-exclamation-sign')
-/     %span.text-size= flash[:alert]
-/     = bootstrap_icon('glyphicon glyphicon-remove')
-
-/ Note: Bootstrap documentation example. Still does not render properly.
-/ .alert.alert-danger{:role => "alert"}
-/   %span.glyphicon.glyphicon-exclamation-sign{"aria-hidden" => "true"}
-/   %span.sr-only Error:
-/   Enter a valid email address
+- if flash[:alert]
+  = render 'forums/error_alert'
 
 %h1.margin_top_0
   %span= link_to t('.forums'), forums_url

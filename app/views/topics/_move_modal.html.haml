@@ -1,15 +1,15 @@
-%button.btn.btn-mini{ "data-target" => "#moveTopic", "data-toggle" => "modal", type: "button", style: "margin-right:" "2px" }= t('.move')
+%button.btn.btn-mini{ 'data-target' => '#moveTopic', 'data-toggle' => 'modal',
+  type: 'button', style: 'margin-right:' '2px' }= t('.move')
 
-#moveTopic.modal.fade{ "aria-hidden" => "true", "aria-labelledby" => "moveTopicLabel", role: "dialog",tabindex: "-1" }
+.modal.fade#moveTopic{ 'aria-hidden' => 'true', 'aria-labelledby' => 'moveTopicLabel', role: 'dialog', tabindex: '-1' }
   .modal-dialog
     .modal-content
       .modal-header
-        %button.close{ "aria-label" => "Close", "data-dismiss" => "modal", type: "button" }
-          %span{ "aria-hidden" => "true" } ×
-        %h4#moveTopicLabel.modal-title= t('.move_topic')
+        %button.close{ 'aria-label' => 'Close', 'data-dismiss' => 'modal', type: 'button' }
+          %span{ 'aria-hidden' => 'true' } ×
+        %h4.modal-title#moveTopicLabel= t('.move_topic')
       .modal-body
         = form_for @topic do |f|
           %div= t('.move_to')
           = f.select :forum_id, Forum.all.collect { |forum| [forum.name, forum.id] }
           = f.submit t('.go'), class: 'btn btn-primary button-small', style: 'float: right;'
-          
