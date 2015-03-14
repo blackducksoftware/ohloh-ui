@@ -32,8 +32,8 @@
                 link.url_escaped, target:_blank', title: h(link.url_escaped)
           -# .col-md-1.nomargin.float_right
             - if has_permission?
-              = bootstrap_mini_button_link_to bootstrap_icon('glyphicon glyphicon-pencil', t('edit')),
-                edit_project_link_path(@project, link),{class: 'btn-info'}
+              %a.btn.btn-mini.btn-info{ href: edit_project_link_path(@project, link) }
+                %i.glyphicon.glyphicon-pencil= t('edit')
             - else
               = disabled_button bootstrap_icon('glyphicon glyphicon-pencil', t('edit')), class: 'btn-xs'
           .clear_both
@@ -42,9 +42,8 @@
           -# - unless links.any? && %w(Homepage Download).include?(category_name)
             - new_link_title = t('new_model', model: t('links.title'))
             - if has_permission?
-              = bootstrap_mini_button_link_to new_link_title,
-                new_project_link_path(@project, category_id: category_id),
-                class: "float_left #{ needs_login } btn-primary"
+              - path = new_project_link_path(@project, category_id: category_id)
+              %a.btn.btn-mini.btn-primary.pull-left{ href: path, class: needs_login }= new_link_title
             - else
               = disabled_button new_link_title, class: 'float_left btn-xs btn-primary'
 

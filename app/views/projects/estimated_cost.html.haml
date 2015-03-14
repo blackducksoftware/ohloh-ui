@@ -1,0 +1,92 @@
+:ruby
+  content_for(:html_title) { t('.page_title', name: @project.name) }
+  analysis = @project.best_analysis
+  man_years = {}
+  man_years[:logic_man_years] = analysis.man_years_from_loc(analysis.logic_total)
+  man_years[:markup_man_years] = analysis.man_years_from_loc(analysis.markup_total)
+  man_years[:build_man_years] = analysis.man_years_from_loc(analysis.build_total)
+  cocomo_link = link_to(t('.basic_cocomo_model'), 'http://en.wikipedia.org/wiki/COCOMO')
+
+#cocomo_page
+  .project_content_title
+    %h2.float_left= t('.estimated_cost')
+    -# render_project_analysis_timestamp
+
+  .row
+    - if !analysis.nil?
+      .center-block
+        .col-md-1
+          &nbsp;
+        .col-md-6
+          - js = "var project_analysis = #{man_years.to_json};"
+          %script{ type: 'text/javascript' }
+            \ //<![CDATA[
+            \ #{js.html_safe}
+            \ //]]>
+
+          %form.cocomo-form.nomargin
+            %fieldset{ style: 'margin-top: -10px;' }
+              %h4.caption= t('.project_cost_calculator')
+              .control-group.col-md-4
+                %label.control-label= t('.include')
+                .controls.chosen#value_select
+                  %select.col-md-10.chzn-select.value-select#cocomo_loc_dropdown
+                    %option.selected{ value: analysis.code_total + analysis.markup_total + analysis.build_total }
+                      = t('.all_code')
+                    %option{ value: analysis.logic_total }= t('.logic_code_only')
+                    %option{ value: analysis.markup_total }= t('.markup_only')
+                    %option{ value: analysis.build_total }= t('.build_scripts_only')
+              .control-group.col-md-8
+                %label.control-label= t('.average_salary')
+                .controls
+                  .input-prepend.input-append
+                    %span.add-on $
+                    %input.margin-hack.span2#cocomo_salary{ type: 'text', value: Analysis::AVG_SALARY }
+                    %span.add-on .00
+
+              .control-group.col-md-4
+                %label.control-label= t('.codebase_size')
+                .controls
+                  %span#cocomo_loc= number_with_delimiter(analysis.code_total)
+                  = t('.lines')
+              .control-group.col-md-8
+                %label.control-label= t('.estimated_effort')
+                .controls
+                  %span#cocomo_years= analysis.man_years.round
+                  = t('.person_years')
+              .control-group.col-md-4
+                %label.control-label= t('.estimated_cost')
+                .controls
+                  $
+                  - cocomo_value = (analysis.man_years * Analysis::AVG_SALARY).round
+                  %span#cocomo_value= number_with_delimiter(cocomo_value)
+                  *
+          %span{ style: 'margin-left:20px;' }
+            *Using the #{cocomo_link}
+      /.well.float_right.estimated_cost_well
+      .well.col-md-4
+        %h4{ style: 'margin-bottom:0.8em;' }= t('.too_high')
+        %p!= t('.help1')
+        - code_location_link = link_to t('.code_locations'), project_enlistments_path(@project)
+        %p!= t('.help2', link: code_location_link)
+        %ul.nomargin
+          %li= t('.help3')
+          %li= t('.help4')
+    - else
+      = render partial: 'projects/show/no_analysis_summary'
+
+  .col-md-12
+    %h4.nomargin
+      %span.soft= t('.about')
+      = t('.cost_estimates')
+    .row.about
+      .col-md-5
+        %ul
+          %li= t('.about1')
+          %li!= t('.about2', link: cocomo_link)
+          %li.coefficients= t('.about3')
+      .col-md-5
+        %ul
+          %li= t('.about4')
+          %li= t('.about5')
+          %li= t('.about6')
