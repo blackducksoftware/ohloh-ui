@@ -12,12 +12,12 @@ class Project < ActiveRecord::Base
   scope :hot, ->(l_id = nil) { Project.not_deleted.been_analyzed.joins(:analyses).merge(Analysis.fresh_and_hot(l_id)) }
   scope :by_popularity, -> { where.not(user_count: 0).order(user_count: :desc) }
   scope :by_activity, -> { joins(:analyses).joins(:analysis_summaries).by_popularity.thirty_day_summaries }
-  scope :by_new, -> { reorder(created_at: :desc) }
-  scope :by_users, -> { reorder(user_count: :desc) }
-  scope :by_rating, -> { reorder('COALESCE(rating_average,0) DESC, user_count DESC, projects.created_at ASC') }
-  scope :by_activity_level, -> { reorder('COALESCE(activity_level_index,0) DESC, projects.name ASC') }
-  scope :by_active_committers, -> { reorder('COALESCE(active_committers,0) DESC, projects.created_at ASC') }
-  scope :by_project_name, -> { reorder(name: :asc) }
+  scope :by_new, -> { order(created_at: :desc) }
+  scope :by_users, -> { order(user_count: :desc) }
+  scope :by_rating, -> { order('COALESCE(rating_average,0) DESC, user_count DESC, projects.created_at ASC') }
+  scope :by_activity_level, -> { order('COALESCE(activity_level_index,0) DESC, projects.name ASC') }
+  scope :by_active_committers, -> { order('COALESCE(active_committers,0) DESC, projects.created_at ASC') }
+  scope :by_project_name, -> { order(name: :asc) }
   scope :language, -> { joins(best_analysis: :main_language).select('languages.name').map(&:name).first }
   scope :managed_by, lambda { |account|
     joins(:manages).where.not(deleted: true, manages: { approved_by: nil }).where(manages: { account_id: account.id })

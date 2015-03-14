@@ -27,5 +27,9 @@ module ProjectAssociations
     has_many :repositories, through: :enlistments
     has_many :project_licenses, -> { where(deleted: false) }
     has_many :licenses, -> { order('lower(licenses.nice_name)') }, through: :project_licenses
+    has_one :is_a_duplicate, class_name: 'Duplicate', foreign_key: 'bad_project_id'
+    has_many :named_commits, ->(proj) { where(analysis_id: (proj.best_analysis_id || 0)) }
+    has_many :commit_flags, -> { order(time: :desc).where('commit_flags.sloc_set_id = named_commits.sloc_set_id') },
+             through: :named_commits
   end
 end
