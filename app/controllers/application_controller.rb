@@ -14,6 +14,7 @@ class ApplicationController < ActionController::Base
 
   before_action :store_location
   before_action :strip_query_param
+  before_action :clear_reminder
 
   def initialize(*params)
     @page_context = {}

@@ -59,7 +59,8 @@ describe 'Accounts::AccessesController' do
 
       must_render_template 'accounts/disabled'
       admin.reload.level.must_equal Account::Access::SPAM
-      flash[:success].must_equal I18n.t('accounts.accesses.make_spammer.success', name: admin.name)
+      expected = ERB::Util.html_escape(I18n.t('accounts.accesses.make_spammer.success', name: admin.name))
+      flash[:success].must_equal expected
     end
   end
 end

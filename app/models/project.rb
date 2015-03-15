@@ -57,8 +57,7 @@ class Project < ActiveRecord::Base
                    merge_within: 30.minutes
   acts_as_protected
 
-  validates :name, presence: true, length: 1..100, allow_nil: false, if: proc { |p| !p.name.blank? },
-                   uniqueness: true, case_sensitive: false
+  validates :name, presence: true, length: 1..100, allow_nil: false, uniqueness: true, case_sensitive: false
   validates :description, length: 0..800, allow_nil: true # , if: proc { |p| p.validate_url_name_and_desc == 'true' }
   # TODO: When Links are merged
   # validates_each :url, :download_url, allow_blank: true do |record, field, value|

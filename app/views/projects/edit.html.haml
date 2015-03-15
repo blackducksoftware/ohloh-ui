@@ -1,0 +1,58 @@
+- content_for(:html_title) { t('.page_title') }
+- content_for :javascript do
+  - js1 = "var a = UrlAvailable;a.object_id='#{ @project.id }';"
+  - js2 = "a.ajax_path='#{projects_path}/resolve_url_name';"
+  - js3 = "a.base_url='#{projects_url}/';"
+  = javascript_tag "$(document).ready(function(){#{js1}#{js2}#{js3}});"
+
+.project_content_title
+  %h2.float_left
+    = link_to t('.settings'), settings_project_path(@project)
+    \ :
+    = t('.basics')
+  -# render_project_analysis_timestamp
+
+.row
+  .well.col-md-10.col-md-offset-1
+    = form_for @project, as: :project, url: project_path(@project), html: { method: :put,
+                                                                            class: 'center-block edit_project',
+                                                                            style: 'width:710px;' } do |f|
+      %fieldset
+        .control-group
+          %label.control-label.required= t('.project_name')
+          .controls
+            %input{ name: 'project[name]', id: 'project_name', type: 'text', value: @project.name,
+                    style: 'width: 100%;' }
+            - error_tag @project, :name
+        .clearfix
+
+        .control-group
+          %label.control-label.required= t('.oh_project_url')
+          .controls
+            .input-prepend
+              %span.add-on http://www.openhub.net/p/
+              = f.text_field :url_name, class: 'url_available', data_id: @project.id, autocomplete: 'off',
+                                        style: 'width:514px;'
+              - error_tag @project, :url_name, class: 'error url_name'
+        .clearfix
+
+        .control-group
+          %label.control-label= t('.description')
+          .controls
+            = find_and_preserve(f.text_area(:description, max_length: 800, style: 'width: 100%; height: 150px;'))
+            - error_tag @project, :description
+        .clearfix
+
+        .actions
+          - if logged_in? && @project.edit_authorized?
+            %input.btn.btn-primary.save{ type: 'submit', value: t('.save_changes') }
+          - else
+            = disabled_button t('.save_changes'), class: 'btn-primary save'
+%h4.nomargin
+  %span.soft= t('.about')
+  = t('.basics')
+.col-md-6
+  %ul{ style: 'padding-left: 30px;' }
+    %li!= t('.about1', link: link_to(t('.contact_us'), blog_url_for(:contact_form)))
+    %li= t('.about2')
+    %li= t('.about3')

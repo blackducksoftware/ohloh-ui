@@ -4,12 +4,12 @@ describe EditsController do
   describe 'project edits pages' do
     before do
       @project = create(:project)
-      create(:alias, project: @project)
       create(:enlistment, project: @project, ignore: 'Ignored!')
       create(:link, project: @project)
       create(:permission, target: @project, remainder: false)
       create(:project_license, project: @project)
       create(:rss_subscription, project: @project).update_attributes(deleted: true)
+      create(:alias, project: @project)
     end
 
     # index action

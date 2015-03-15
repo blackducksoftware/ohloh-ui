@@ -2,13 +2,12 @@ class ProjectsController < ApplicationController
   helper AnalysesHelper
   helper FactoidsHelper
   helper RatingsHelper
-  helper SearchablesHelper
 
   before_action :session_required, only: [:create, :new, :update]
   before_action :api_key_lock, only: [:index]
   before_action :find_account
   before_action :find_projects, only: [:index]
-  before_action :find_project, only: [:show, :users]
+  before_action :find_project, only: [:show, :edit, :update, :estimated_cost, :users]
   before_action :redirect_new_landing_page, only: :index
 
   def index
@@ -29,6 +28,15 @@ class ProjectsController < ApplicationController
     accounts = @project.users.paginate(page: params[:page], per_page: 10)
     accounts = filter_project_users(accounts)
     @accounts = sort_project_users(accounts)
+
+  def update
+    return render_unauthorized unless @project.edit_authorized?
+    if @project.update_attributes(project_params)
+      flash[:notice] = t '.success'
+      redirect_to project_path(@project)
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   private
@@ -80,6 +88,11 @@ class ProjectsController < ApplicationController
   def find_project
     @project = Project.not_deleted.from_param(params[:id]).take
     fail ParamRecordNotFound unless @project
+    @project.editor_account = current_user
+  end
+
+  def project_params
+    params.require(:project).permit([:name, :description, :url_name])
   end
 
   def redirect_new_landing_page

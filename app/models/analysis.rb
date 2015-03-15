@@ -1,4 +1,6 @@
 class Analysis < ActiveRecord::Base
+  AVG_SALARY = 55_000
+
   belongs_to :project
   has_one :all_time_summary
   has_one :thirty_day_summary
@@ -50,6 +52,10 @@ class Analysis < ActiveRecord::Base
     end
   end
 
+  def man_years_from_loc(loc = 0)
+    loc > 0 ? 2.4 * ((loc.to_f / 1000.0)**1.05) / 12.0 : 0
+  end
+
   private
 
   def no_analysis?
@@ -80,9 +86,5 @@ class Analysis < ActiveRecord::Base
     when 4_686_316..13_305_163 then :high
     else :very_high
     end
-  end
-
-  def man_years_from_loc(loc = 0)
-    loc > 0 ? 2.4 * ((loc.to_f / 1000.0)**1.05) / 12.0 : 0
   end
 end
