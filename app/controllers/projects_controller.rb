@@ -28,6 +28,7 @@ class ProjectsController < ApplicationController
     accounts = @project.users.paginate(page: params[:page], per_page: 10)
     accounts = filter_project_users(accounts)
     @accounts = sort_project_users(accounts)
+  end
 
   def update
     return render_unauthorized unless @project.edit_authorized?
@@ -102,7 +103,7 @@ class ProjectsController < ApplicationController
 
   def filter_project_users(accounts)
     return accounts if params[:query].blank?
-    accounts.where("lower(name) LIKE '%#{params[:query]}%'")
+    accounts.where("lower(name) LIKE '%#{params[:query].downcase}%'")
   end
 
   def sort_project_users(accounts)

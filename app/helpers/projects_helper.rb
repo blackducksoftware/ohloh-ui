@@ -73,7 +73,10 @@ module ProjectsHelper
 
   def stack_name(account)
     stacks ||= account.stacks.select { |s| s.projects.include? @project }
-    stacks.map { |s| link_to "#{s.name}#{' Stack' unless s.decorate(:name) =~ /stack/i}", stack_path(s) }.join(', ')
+    stacks.map do |stack|
+      name = stack.decorate.name(account, @project)
+      link_to "#{name}#{' Stack' unless name =~ /stack/i}", stack_path(stack)
+    end.join(', ')
   end
 
   private
