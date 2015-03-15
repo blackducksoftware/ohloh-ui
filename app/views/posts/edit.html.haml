@@ -8,7 +8,7 @@
     - if current_user_is_admin?
       .btn-group
         .pull-left
-          = button_to t('.spam'), make_spammer_account_path(@post.account), method: :post,
+          = button_to t('.spam'), make_spammer_account_accesses_path(@post.account), method: :post,
           data: { confirm: t('.spam_confirmation'), user: @topic.posts.first.account.name },
           class: 'btn btn-warning btn-mini'
         .pull-left.margin_left_5

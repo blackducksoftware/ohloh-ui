@@ -4,7 +4,7 @@
 
     = render 'topics/move_modal'
 
-    = link_to t('.spam'), make_spammer_account_path(@topic.account), method: :post,
+    = link_to t('.spam'), make_spammer_account_accesses_path(@topic.account), method: :post,
       data: { confirm: t('.spam_confirmation', user: @topic.posts.first.account.name) },
       class: 'btn btn-mini btn-warning'
 
