@@ -71,6 +71,11 @@ module ProjectsHelper
     @project.active_managers.map { |m| link_to(html_escape(m.name), account_path(m)) }.to_sentence
   end
 
+  def stack_name(account)
+    stacks ||= account.stacks.select { |s| s.projects.include? @project }
+    stacks.map { |s| link_to "#{s.name}#{' Stack' unless s.decorate(:name) =~ /stack/i}", stack_path(s) }.join(', ')
+  end
+
   private
 
   def project_twitter_description_analysis(project, analysis)

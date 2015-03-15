@@ -8,7 +8,7 @@ class ProjectsController < ApplicationController
   before_action :api_key_lock, only: [:index]
   before_action :find_account
   before_action :find_projects, only: [:index]
-  before_action :find_project, only: [:show]
+  before_action :find_project, only: [:show, :users]
   before_action :redirect_new_landing_page, only: :index
 
   def index
@@ -23,6 +23,12 @@ class ProjectsController < ApplicationController
     @analysis = @project.best_analysis
     @rating = logged_in? ? @project.ratings.where(account_id: current_user.id).first : nil
     @score = @rating ? @rating.score : 0
+  end
+
+  def users
+    accounts = @project.users.paginate(page: params[:page], per_page: 10)
+    accounts = filter_project_users(accounts)
+    @accounts = sort_project_users(accounts)
   end
 
   private
@@ -79,5 +85,16 @@ class ProjectsController < ApplicationController
   def redirect_new_landing_page
     return unless @account.nil?
     redirect_to explore_projects_path if request.query_parameters.except('action').empty? && request_format == 'html'
+  end
+
+  def filter_project_users(accounts)
+    return accounts if params[:query].blank?
+    accounts.where("lower(name) LIKE '%#{params[:query]}%'")
+  end
+
+  def sort_project_users(accounts)
+    valid_sort = SORT_OPTIONS[:project_users][:options].collect { |_key, value| value }.include?(params[:sort])
+    sort_by = valid_sort ? params[:sort] : 'kudo_position'
+    accounts.order("#{sort_by} ASC")
   end
 end

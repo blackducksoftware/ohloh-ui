@@ -20,6 +20,7 @@ en:
     i_use_this: "I Use This"
     more: "[More]"
     less: "[Less]"
+    html_title: "The %{name} Open Source Project : %{title}"
     index:
       page_title: "Open Hub Projects"
       page_title_query: "%{query} - Open Hub Project Search"
@@ -135,3 +136,5 @@ en:
     deleted:
       message: '%{name} has been deleted'
       failed: 'failed'
+    users:
+      title: 'Users'

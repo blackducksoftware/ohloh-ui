@@ -1,0 +1,26 @@
+- content_for(:html_title) { t('projects.html_title', name: @project.name, title: 'Users') }
+- page_context[:select_top_menu_nav] = 'select_projects'
+
+%div
+  %h2.pull-left= t('.users')
+
+.clearfix
+= render partial: 'shared/search_dingus', locals: { collection: @accounts, sort_context: :project_users }
+
+- @accounts.each do |account|
+  .row.margin_bottom_25
+    .col-md-12
+      .col-md-3
+        .avatar
+          = link_to avatar_img_for(account.person), avatar_path(account.person)
+          .avatar_name
+            %h4.nomargin= link_to h(account.person.person_name), avatar_path(account.person)
+          .margin_left_50.small!= stack_name(account)
+      .col-md-6
+        %h6.soft.margin_top_0 Contributions
+        = render partial: '/projects/person_contribution', locals: { person: account.person }
+      .col-md-2.kudo_rank.pull-right
+        %h6.soft.margin_top_0 Kudo Rank
+        = avatar_small_laurels(account.person.kudo_rank)
+
+= will_paginate @accounts

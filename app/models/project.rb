@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class Project < ActiveRecord::Base
   has_many :links, -> { where(deleted: false) }
   has_one :permission, as: :target
@@ -104,6 +105,12 @@ class Project < ActiveRecord::Base
     super || NilAnalysis.new
   end
 
+  def users
+    Account.select('DISTINCT(accounts.id), accounts.*, people.kudo_position')
+      .joins(stacks: :stack_entries).joins(:person)
+      .where(stack_entries: { project_id: id })
+  end
+
   private
 
   def clean_strings_and_urls
@@ -118,3 +125,4 @@ class Project < ActiveRecord::Base
     Project.send :sanitize_sql, sql
   end
 end
+# rubocop:enable Metrics/ClassLength
