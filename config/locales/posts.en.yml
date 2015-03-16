@@ -1,6 +1,8 @@
  en:
 
    posts:
+    index:
+      posts: 'Posts'
     edit:
       forums: 'Forums'
       edit_post: 'Edit Post'
@@ -17,6 +19,10 @@
       submit: 'Submit'
     post:
       edit_post: 'Edit Post'
+    posts:
+      views: 'Views'
+      author: 'Author'
+      posted: 'Posted'
     fields:
       submit: 'Submit'
     sign_in:

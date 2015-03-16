@@ -9,10 +9,23 @@ describe PostsController do
   before { ActionMailer::Base.deliveries.clear }
 
   #---------------------------User without an account------------------------
-  it 'index' do
-    # TODO: Pagination Sort/Filter/Search etc.
-    get :index
-    must_respond_with :ok
+  describe 'index' do
+    it 'index' do
+      get :index
+      must_respond_with :ok
+    end
+
+    it 'sorts index posts by newest' do
+
+    end
+
+    it 'sorts index posts by relevance' do
+
+    end
+
+    it 'sorts index posts by unanswered' do
+
+    end
   end
 
   it 'create fails for user with no account' do

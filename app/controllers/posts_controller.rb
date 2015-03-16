@@ -7,7 +7,8 @@ class PostsController < ApplicationController
   before_action :find_forum_and_topic_records, only: [:create]
 
   def index
-    @posts = Post.paginate(page: params[:page], per_page: 10)
+    all_posts = Post.all
+    @posts = all_posts.paginate(page: params[:page], per_page: 10)
   end
 
   def create

@@ -1,17 +1,16 @@
-/ TODO: Implement Search/Filter etc. for this page. New Ticket.
 - if @account
-  %h2 Posts
+  %h2= t('.posts')
   = render partial: 'shared/search_dingus', locals: { collection: @posts, sort_context: :posts }
 - else
-  %h1.margin_bottom_20
-    = link_to t('.forums'), forums_url
+  %h1.margin_top_0
+    = link_to t('.forums'), forums_path
     \:
-    Posts
+    = t('.posts')
     = render partial: 'shared/search_dingus', locals: { collection: @posts, sort_context: :posts }
   .clear_left &nbsp;
 
 - if @posts.any?
-  / = render :partial => 'searchables/post', :collection => @posts
+  = render partial: 'posts/posts', collection: @posts
   = will_paginate @posts
 / - elsif current_objects.query_parser.actual_query.nil?
 /   .no-posts
