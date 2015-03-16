@@ -1,0 +1,3 @@
+%h2.max_width.pull-left= @topic.title
+- if @topic.closed
+  %span.label.label-warning#closed_status= t('topics.show.closed')
