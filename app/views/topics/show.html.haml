@@ -4,7 +4,7 @@
   = render partial: 'topics/action_group', locals: { topic: @topic }
 
 .col-md-12
-  = render partial: 'posts/post', collection: @posts
+  = render partial: 'posts/post'
   = will_paginate @posts
 
   .well#post_reply

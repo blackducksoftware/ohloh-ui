@@ -66,6 +66,7 @@ describe TopicsController do
     must_respond_with :success
   end
 
+   # TODO: This should have a post_notifier assert_difference
   it 'user create a topic and an accompanying post' do
     login_as(user)
     assert_difference(['Topic.count', 'Post.count']) do
@@ -84,6 +85,7 @@ describe TopicsController do
     must_render_template :new
   end
 
+   # TODO: This should have a post_notifier assert_difference
   test 'user creates a topic/post with valid recaptcha' do
     login_as(user)
     TopicsController.any_instance.expects(:verify_recaptcha).returns(true)
@@ -201,7 +203,6 @@ describe TopicsController do
     must_respond_with :success
   end
 
-  # Tests may not be necessary, topics/edit does not work properly on main app.
   it 'admin update' do
     login_as admin
     put :update, id: topic.id, topic: { title: 'Changed title for test purposes' }
