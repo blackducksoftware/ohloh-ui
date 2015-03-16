@@ -1,6 +1,7 @@
 - content_for(:html_title) { t('projects.html_title', name: @project.name, title: 'Users') }
 - page_context[:select_top_menu_nav] = 'select_projects'
 
+= render partial: 'projects/show/header'
 %div
   %h2.pull-left= t('.users')
 
