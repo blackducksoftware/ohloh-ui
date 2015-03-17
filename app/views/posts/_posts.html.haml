@@ -1,4 +1,3 @@
-/ TODO: Ordering is incorrect
 .well
   .col-md-7
     %h4
@@ -17,5 +16,5 @@
     %p.posts_index_specifications= t('.posted')
     %span.pull-right
       / TODO: Internationalize all time_ago_words properly.
-      = time_ago_in_words(posts.created_at) + " ago"
+      = time_ago_in_words(posts.created_at) + 'ago'
   .clear

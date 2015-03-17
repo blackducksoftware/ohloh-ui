@@ -15,16 +15,14 @@ describe PostsController do
       must_respond_with :ok
     end
 
+    # TODO: search_dingus ticket.
     it 'sorts index posts by newest' do
-
     end
 
     it 'sorts index posts by relevance' do
-
     end
 
     it 'sorts index posts by unanswered' do
-
     end
   end
 
@@ -61,19 +59,19 @@ describe PostsController do
   end
 
   it 'create action: a user replies to a post for the first time' do
-    topic = create(:topic) do |topic|
-      topic.posts.build(body: 'Default post that comes with a topic', account_id: topic.account_id)
-      topic.posts[0].save
-    end 
-                                                              
-    login_as user
+    topic = create(:topic) do |topic_record|
+      topic_record.posts.build(body: 'Default post that comes with a topic', account_id: topic_record.account_id)
+      topic_record.posts[0].save
+    end
 
+    login_as user
     post :create, topic_id: topic.id, post: { body: 'Replying for the first time' }
-    Post.count.must_equal 2
+    # binding.pry
+    topic.posts.count.must_equal 2
     ActionMailer::Base.deliveries.size.must_equal 2
-   
+
     email = ActionMailer::Base.deliveries
-    
+
     email.first.to.must_equal [topic.account.email]
     email.first.subject.must_equal 'Someone has responded to your post'
     must_redirect_to topic_path(topic.id)
@@ -95,13 +93,13 @@ describe PostsController do
     # Sign in and reply as the last user to reply.
     last_user = user
     login_as last_user
-    
+
     assert_difference(['ActionMailer::Base.deliveries.size'], 3) do
       post :create, topic_id: topic.id, post: { body: 'This post should trigger a cascade
                                                                       of emails being sent to all preceding users' }
     end
     email = ActionMailer::Base.deliveries
-    
+
     # First response email should go to the originator of the topic/post
     email.first.to.must_equal [topic.posts[0].account.email]
     email.first.subject.must_equal 'Someone has responded to your post'
@@ -128,11 +126,11 @@ describe PostsController do
     # Sign in and reply as the last user to reply.
     last_user = topic.account
     login_as last_user
-   
+
     post :create, topic_id: topic.id, post: { body: 'last_user replies to his own post' }
-    
+
     email = ActionMailer::Base.deliveries
-    
+
     email.first.to.must_equal [topic.posts[2].account.email]
     email.first.subject.must_equal 'Someone has responded to your post'
     email.last.to.must_equal [last_user.email]

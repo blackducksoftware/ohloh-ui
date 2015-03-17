@@ -53,6 +53,29 @@ describe TopicsController do
     end
   end
 
+  describe 'track views' do
+    it 'should increment when not logged in' do
+      before_hits = topic.hits
+      get :show, id: topic.id
+      must_respond_with :success
+      topic.reload.hits.must_equal before_hits + 1
+    end
+
+    it 'should increment when topic account does not match current user' do
+      before_hits = topic.hits
+      get :show, id: topic.id
+      must_respond_with :success
+      topic.reload.hits.must_equal before_hits + 1
+    end
+
+    it 'should not increment when logged in' do
+      login_as user
+      get :show, id: topic.id
+      must_respond_with :success
+      topic.hits.wont_equal topic.hits += 1
+    end
+  end
+
   # #--------------Basic User ----------------------
   it 'user index' do
     login_as user
@@ -66,7 +89,6 @@ describe TopicsController do
     must_respond_with :success
   end
 
-   # TODO: This should have a post_notifier assert_difference
   it 'user create a topic and an accompanying post' do
     login_as(user)
     assert_difference(['Topic.count', 'Post.count']) do
@@ -85,7 +107,6 @@ describe TopicsController do
     must_render_template :new
   end
 
-   # TODO: This should have a post_notifier assert_difference
   test 'user creates a topic/post with valid recaptcha' do
     login_as(user)
     TopicsController.any_instance.expects(:verify_recaptcha).returns(true)

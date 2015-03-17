@@ -50,7 +50,6 @@ class PostsController < ApplicationController
     @user_who_began_topic = post.topic.account
     @user_who_replied = post.account
     @topic = post.topic
-    # binding.pry
     find_collection_of_users(post)
     unless @user_who_replied != @user_who_began_topic
       rejected = @all_users_preceding_the_last_user.reject { |user| user.id == @user_who_replied.id }
@@ -64,12 +63,10 @@ class PostsController < ApplicationController
     @all_users_preceding_the_last_user = post.topic.posts.map(&:account)
     @all_users_preceding_the_last_user.pop unless @all_users_preceding_the_last_user.size == 1
     @all_users_preceding_the_last_user
-    # binding.pry
   end
 
   def send_reply_emails_to_everyone(_users)
     @all_users_preceding_the_last_user.each do |user|
-      # binding.pry
       PostNotifier.post_replied_notification(user, @user_who_replied, @topic).deliver_now
     end
   end

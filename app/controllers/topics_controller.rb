@@ -4,6 +4,7 @@ class TopicsController < ApplicationController
   before_action :admin_session_required, only: [:edit, :update, :destroy, :move_topic]
   before_action :find_forum_record, only: [:index, :new, :create]
   before_action :find_forum_and_topic_records, except: [:index, :new, :create, :move_topic]
+  after_action :track_views, only: [:show]
 
   def index
     @topics = @forum.topics
@@ -47,6 +48,15 @@ class TopicsController < ApplicationController
   end
 
   private
+
+  def track_views
+    topic = Topic.find_by(id: params[:id])
+    hit!(topic) unless logged_in? && (@topic.account == current_user)
+  end
+
+  def hit!(topic)
+    topic.increment!(:hits)
+  end
 
   def find_forum_record
     @forum = Forum.find_by(id: params[:forum_id])
