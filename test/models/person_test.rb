@@ -69,15 +69,8 @@ class PersonTest < ActiveSupport::TestCase
   end
 
   it '#find_claimed' do
-    people = Person.find_claimed
+    people = Person.find_claimed(nil, nil)
     people.length.must_equal 7
-  end
-
-  it '#find_claimed with pagination' do
-    people = Person.find_claimed(page: 1, per_page: 5)
-    people.length.must_equal 5
-    people = Person.find_claimed(page: 2, per_page: 5)
-    people.length.must_equal 2
   end
 
   it '#find_claimed with sort option' do
@@ -85,23 +78,17 @@ class PersonTest < ActiveSupport::TestCase
     admin.person.update!(kudo_position: 1)
     user.person.update!(kudo_position: 2)
 
-    people = Person.find_claimed(sort_by: 'kudo_position')
-    people.total_entries.must_equal 7
+    people = Person.find_claimed(nil, 'kudo_position')
+    people.size.must_equal 7
     people[0].account_id.must_equal admin.id
     people[1].account_id.must_equal user.id
   end
 
   it '#find_claimed with search option' do
-    people = Person.find_claimed(q: 'luckey')
+    people = Person.find_claimed('luckey', nil)
     people.length.must_equal 1
-    people.total_entries.must_equal 1
+    people.size.must_equal 1
     people.first.account_id.must_equal 2
-  end
-
-  it 'find_claimed without search option' do
-    people = Person.find_claimed(page: 1, per_page: 3)
-    people.length.must_equal 3
-    people.total_entries.must_equal 7
   end
 
   it '#find_unclaimed' do
@@ -308,10 +295,10 @@ class PersonTest < ActiveSupport::TestCase
     user.person.update_columns(kudo_position: 10)
     admin.person.update_columns(kudo_position: 12)
 
-    people = Person.find_claimed(q: 'luckey')
+    people = Person.find_claimed('luckey', nil)
 
     people.length.must_equal 1
-    people.total_entries.must_equal 1
+    people.size.must_equal 1
     people.first.account_id.must_equal user.id
   end
 
