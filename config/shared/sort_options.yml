@@ -90,3 +90,5 @@ projects:
     -
       - Current Contributors
       - active_committers
+  default:
+    relevance

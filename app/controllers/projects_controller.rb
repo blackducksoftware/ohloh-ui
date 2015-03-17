@@ -54,36 +54,13 @@ class ProjectsController < ApplicationController
   end
 
   def find_projects
-    parse_sort_term
     projects = @account ? @account.projects.not_deleted : Project.not_deleted
-    @projects = add_query_term(projects.page(params[:page]).per_page(10).send(@sort))
+    sort_by = parse_sort_term(projects)
+    @projects = projects.tsearch(params[:query], sort_by).page(params[:page]).per_page(10)
   end
 
-  def add_query_term(projects)
-    @query = params[:q] || params[:query]
-    return projects unless @query
-    arel_table = Project.arel_table
-    projects.where(arel_table[:name].matches("%#{@query}%").or(arel_table[:description].matches("%#{@query}%")))
-  end
-
-  def parse_sort_term
-    @sort_options = @account ? account_projects_sort_options : projects_sort_options
-    @sort = "by_#{params[:sort]}"
-    @sort = (@account ? 'by_users' : 'by_new') unless @sort_options.key?(@sort)
-  end
-
-  def account_projects_sort_options
-    { 'by_new' => t('projects.by_new'),
-      'by_users' => t('projects.by_users'),
-      'by_project_name' => t('projects.by_project_name') }
-  end
-
-  def projects_sort_options
-    { 'by_activity_level' => t('projects.by_activity_level'),
-      'by_users' => t('projects.by_users'),
-      'by_new' => t('projects.by_new'),
-      'by_rating' => t('projects.by_rating'),
-      'by_active_committers' => t('projects.by_active_committers') }
+  def parse_sort_term(projects)
+    projects.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : nil
   end
 
   def find_project

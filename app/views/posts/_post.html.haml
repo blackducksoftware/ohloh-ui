@@ -1,15 +1,19 @@
-%div{ id: "post_#{post.id}" }
-  .well{ style: "#{current_user_is_admin? ? 'background: #D5E3E9;' : ''}" }
-    = strip_tags(post.body)
-    .col-md-3.float_right
-      = avatar_img_for post.account, 32
-      %a.avatar_name{ href: account_path(post.account) }
-        %h4.nomargin
-          = truncate(h(post.account.name), length: 18)
-      %small.date.avatar_name
-        = time_ago_in_words(post.created_at)
-    - if (current_user.id == post.account_id) || (current_user_is_admin?)
-      = link_to t('.edit_post'), edit_topic_post_path(post.topic, post), class: 'btn btn-mini btn-info'
-    .clear
-.row
-  &nbsp;
+- @posts.each do |post|
+  .well{ style: "#{Account::Access.new(post.account).admin? ? 'background: #D5E3E9;' : ''}" }
+    / TODO: This code on line 4 may relate to my newly created ticket OTWO-3419
+    / for BlueCloth. Ask Peter about markdown and how its used.
+    = String.clean_string(post.body)
+    .clearfix.margin_top_10
+      .col-md-3.pull-right
+        .pull-left
+          %a= avatar_img_for post.account, 42
+        .pull-left.margin_left_5
+          %a.avatar_name{ href: account_path(post.account) }
+            = truncate(h(post.account.name), length: 18)
+          %small.date.avatar_name
+            = time_ago_in_words(post.created_at)
+      - if (current_user.id == post.account_id) || (current_user_is_admin?)
+        %p= link_to t('.edit_post'), edit_topic_post_path(post.topic, post), class: 'btn btn-mini btn-info'
+      .clear
+  .row
+    &nbsp;
