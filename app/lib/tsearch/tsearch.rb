@@ -13,7 +13,7 @@ module Tsearch
 
     class << self
       def tsearch(query, sort_by = nil)
-        (query ? where(tsearch_where_clause(query)) : all).tsearch_sort_by(query, sort_by)
+        (query.present? ? where(tsearch_where_clause(query)) : all).tsearch_sort_by(query, sort_by)
       end
 
       def tsearch_sort_by(query, sort_by)
@@ -38,11 +38,16 @@ module Tsearch
       end
 
       def tsearch_query(dictionary, query)
-        "(to_tsquery('#{dictionary}', ''' ' || '#{query}' || ' '''))"
+        "(to_tsquery('#{dictionary}', '#{query_parser(query)}'))"
       end
 
       def tsearch_rank(dictionary, query)
         "(ts_rank(#{tsearch_vector}, #{tsearch_query(dictionary, query)}))"
+      end
+
+      def query_parser(query)
+        return "'' ' || ' #{query.gsub("'", ' ')} ' || ' ''" unless query.match(/[-.\/]/)
+        "''#{query.gsub(/[-.'\/]/, '-' => 'dssh', '.' => 'dtt', '/' => ' ')}'' | ''#{query.gsub("'", '')}''"
       end
     end
 
