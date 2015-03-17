@@ -1,4 +1,5 @@
-- contributions = person.contributions
+/ - contributions = person.contributions.includes([{contributor_fact: :name}, :project])
+- contributions = person.decorate.contributions
 - if contributions.any?
   - contributions.take(3).each do |c|
     %p.margin_bottom_0
