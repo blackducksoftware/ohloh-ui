@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/ClassLength
 class Project < ActiveRecord::Base
   include ProjectAssociations
   include Tsearch
@@ -81,7 +80,7 @@ class Project < ActiveRecord::Base
 
   def users
     Account.select('DISTINCT(accounts.id), accounts.*, people.kudo_position')
-      .joins([{stacks: :stack_entries}, :person])
+      .joins([{ stacks: :stack_entries }, :person])
       .where(stack_entries: { project_id: id })
   end
 
@@ -99,4 +98,3 @@ class Project < ActiveRecord::Base
     Project.send :sanitize_sql, sql
   end
 end
-# rubocop:enable Metrics/ClassLength

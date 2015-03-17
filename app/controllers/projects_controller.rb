@@ -80,7 +80,7 @@ class ProjectsController < ApplicationController
 
   def filter_project_users(accounts)
     return accounts if params[:query].blank?
-    accounts.where("name iLIKE ?", "%#{params[:query]}%")
+    accounts.where('name iLIKE ?', "%#{params[:query]}%")
   end
 
   def sort_project_users(accounts)
