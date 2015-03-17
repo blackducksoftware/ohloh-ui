@@ -72,7 +72,7 @@ module ProjectsHelper
   end
 
   def stack_name(account)
-    stacks ||= account.stacks.select { |s| s.projects.include? @project }
+    stacks ||= account.stacks.joins(:projects).where(projects: {id: @project})
     stacks.map do |stack|
       name = stack.decorate.name(account, @project)
       link_to "#{name}#{' Stack' unless name =~ /stack/i}", stack_path(stack)

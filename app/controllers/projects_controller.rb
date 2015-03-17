@@ -103,12 +103,11 @@ class ProjectsController < ApplicationController
 
   def filter_project_users(accounts)
     return accounts if params[:query].blank?
-    accounts.where("lower(name) LIKE '%#{params[:query].downcase}%'")
+    accounts.where("name iLIKE ?", "%#{params[:query]}%")
   end
 
   def sort_project_users(accounts)
-    valid_sort = SORT_OPTIONS[:project_users][:options].collect { |_key, value| value }.include?(params[:sort])
-    sort_by = valid_sort ? params[:sort] : 'kudo_position'
-    accounts.order("#{sort_by} ASC")
+    sort_by = params[:sort].eql?('name') ? 'accounts.name ASC' : 'people.kudo_position ASC'
+    accounts.order(sort_by)
   end
 end

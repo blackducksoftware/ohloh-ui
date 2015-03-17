@@ -106,7 +106,7 @@ class Project < ActiveRecord::Base
 
   def users
     Account.select('DISTINCT(accounts.id), accounts.*, people.kudo_position')
-      .joins(stacks: :stack_entries).joins(:person)
+      .joins([{stacks: :stack_entries}, :person])
       .where(stack_entries: { project_id: id })
   end
 

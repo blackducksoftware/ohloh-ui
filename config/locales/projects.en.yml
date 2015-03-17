@@ -138,6 +138,9 @@ en:
       failed: 'failed'
     users:
       title: 'Users'
+      default: 'Default'
+      contributions: 'Contributions'
+      kudo_rank: 'Kudo Rank'
     new:
       call_to_action: "Add a new project to Open Hub"
       help1: "Open Hub can automatically fetch project information from some forges: Bitbucket, GitHub, Google Code, Launchpad and SourceForge."
