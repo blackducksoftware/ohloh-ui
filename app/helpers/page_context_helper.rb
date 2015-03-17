@@ -1,6 +1,6 @@
 module PageContextHelper
   include ToolHelper
-  include ForumHelper
+  include ForumsHelper
 
   def account_context
     set_page_context(footer_menu_list: @account.decorate.sidebar_for(current_user),

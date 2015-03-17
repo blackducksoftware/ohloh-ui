@@ -4,7 +4,7 @@ class Topic < ActiveRecord::Base
   validates :closed, inclusion: { in: [true, false] }
 
   belongs_to :account
-  belongs_to :forum
+  belongs_to :forum, counter_cache: true
   has_many :posts, -> { order('created_at desc') }, inverse_of: :topic, dependent: :destroy
 
   accepts_nested_attributes_for :posts
