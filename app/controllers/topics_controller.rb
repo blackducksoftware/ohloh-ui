@@ -51,11 +51,7 @@ class TopicsController < ApplicationController
 
   def track_views
     topic = Topic.find_by(id: params[:id])
-    hit!(topic) unless logged_in? && (@topic.account == current_user)
-  end
-
-  def hit!(topic)
-    topic.increment!(:hits)
+    topic.increment!(:hits) unless logged_in? && (@topic.account == current_user)
   end
 
   def find_forum_record

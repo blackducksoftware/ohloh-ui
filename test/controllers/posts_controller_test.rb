@@ -66,7 +66,6 @@ describe PostsController do
 
     login_as user
     post :create, topic_id: topic.id, post: { body: 'Replying for the first time' }
-    # binding.pry
     topic.posts.count.must_equal 2
     ActionMailer::Base.deliveries.size.must_equal 2
 
