@@ -25,7 +25,8 @@ class ProjectsController < ApplicationController
   end
 
   def users
-    accounts = @project.users.paginate(page: params[:page], per_page: 10)
+    accounts = @project.users.paginate(page: params[:page], per_page: 10,
+                                       total_entries: @project.users.count('DISTINCT(accounts.id)')
     accounts = filter_project_users(accounts)
     @accounts = sort_project_users(accounts)
   end
