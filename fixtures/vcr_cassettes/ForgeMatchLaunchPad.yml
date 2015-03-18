@@ -1,0 +1,82 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.launchpad.net/1.0/wagwoord
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Ohloh.net client
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 17 Mar 2015 19:09:06 GMT
+      Server:
+      - zope.server.http (HTTP)
+      X-Powered-By:
+      - Zope (www.zope.org), Python (www.python.org)
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Strict-Transport-Security:
+      - max-age=15552000
+      Vary:
+      - Accept,Accept-Encoding
+      Etag:
+      - '"8acd3dac22c8b326ad3a304169d21a9deecceff7-ce2d4c5114752ab56f815b9054583260e3e44fbd"'
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Lazr-Notifications:
+      - "[]"
+      Content-Type:
+      - application/json
+      X-Cache:
+      - MISS from nutmeg.canonical.com
+      X-Cache-Lookup:
+      - MISS from nutmeg.canonical.com:3128
+      Via:
+      - 1.0 nutmeg.canonical.com:3128 (squid/2.7.STABLE7)
+      Content-Length:
+      - '870'
+    body:
+      encoding: UTF-8
+      string: '{"license_info": null, "remote_product": null, "recipes_collection_link":
+        "https://api.launchpad.net/1.0/wagwoord/recipes", "development_focus_link":
+        "https://api.launchpad.net/1.0/wagwoord/trunk", "bug_supervisor_link": "https://api.launchpad.net/1.0/~knny-myer",
+        "private": false, "registrant_link": "https://api.launchpad.net/1.0/~knny-myer",
+        "official_bug_tags": [], "active_milestones_collection_link": "https://api.launchpad.net/1.0/wagwoord/active_milestones",
+        "commercial_subscription_is_due": false, "translation_focus_link": null, "licenses":
+        ["GNU GPL v3"], "all_milestones_collection_link": "https://api.launchpad.net/1.0/wagwoord/all_milestones",
+        "bug_reporting_guidelines": null, "bug_reported_acknowledgement": null, "display_name":
+        "Wagwoord", "wiki_url": null, "title": "A (mnemonic) password generator",
+        "homepage_url": null, "download_url": null, "name": "wagwoord", "is_permitted":
+        "tag:launchpad.net:2008:redacted", "reviewer_whiteboard": "tag:launchpad.net:2008:redacted",
+        "self_link": "https://api.launchpad.net/1.0/wagwoord", "information_type":
+        "Public", "resource_type_link": "https://api.launchpad.net/1.0/#project",
+        "programming_language": "Python", "description": null, "project_reviewed":
+        "tag:launchpad.net:2008:redacted", "brand_link": "https://api.launchpad.net/1.0/wagwoord/brand",
+        "sourceforge_project": null, "http_etag": "\"8acd3dac22c8b326ad3a304169d21a9deecceff7-ce2d4c5114752ab56f815b9054583260e3e44fbd\"",
+        "project_group_link": null, "date_created": "2010-07-08T03:57:21.489287+00:00",
+        "active": true, "private_bugs": false, "bug_tracker_link": null, "security_contact":
+        null, "license_approved": "tag:launchpad.net:2008:redacted", "driver_link":
+        null, "freshmeat_project": null, "screenshots_url": null, "web_link": "https://launchpad.net/wagwoord",
+        "summary": "Wagwoord is a Python password generator and can also create secure
+        mnemonic passwords. It''s usable via CLI and comes with a GTK interface, too.",
+        "logo_link": "https://api.launchpad.net/1.0/wagwoord/logo", "owner_link":
+        "https://api.launchpad.net/1.0/~knny-myer", "qualifies_for_free_hosting":
+        true, "releases_collection_link": "https://api.launchpad.net/1.0/wagwoord/releases",
+        "date_next_suggest_packaging": null, "series_collection_link": "https://api.launchpad.net/1.0/wagwoord/series",
+        "commercial_subscription_link": null, "icon_link": "https://api.launchpad.net/1.0/wagwoord/icon"}'
+    http_version: 
+  recorded_at: Tue, 17 Mar 2015 19:09:56 GMT
+recorded_with: VCR 2.9.3

@@ -64,6 +64,9 @@ class Project < ActiveRecord::Base
   # end
   before_validation :clean_strings_and_urls
 
+  attr_accessor :url
+  attr_accessor :download_url
+
   def to_param
     url_name || id.to_s
   end

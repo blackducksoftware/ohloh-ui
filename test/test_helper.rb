@@ -14,6 +14,11 @@ Dotenv.overload '.env.test'
 
 ActiveRecord::Migration.maintain_test_schema!
 
+VCR.configure do |config|
+  config.cassette_library_dir = 'fixtures/vcr_cassettes'
+  config.hook_into :webmock
+end
+
 class ActiveSupport::TestCase
   fixtures :all
   include FactoryGirl::Syntax::Methods

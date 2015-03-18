@@ -46,4 +46,6 @@ group :development, :test, :vagrant do
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'spring'
+  gem 'vcr'
+  gem 'webmock'
 end
