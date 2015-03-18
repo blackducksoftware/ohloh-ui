@@ -78,6 +78,17 @@ class Project < ActiveRecord::Base
     super || NilAnalysis.new
   end
 
+  def users(query = '', sort = '')
+    search_term = query.present? ? ['accounts.name iLIKE ?', "%#{query}%"] : nil
+    orber_by = sort.eql?('name') ? 'accounts.name ASC' : 'people.kudo_position ASC'
+
+    Account.select('DISTINCT(accounts.id), accounts.*, people.kudo_position')
+      .joins([{ stacks: :stack_entries }, :person])
+      .where(stack_entries: { project_id: id })
+      .where(search_term)
+      .order(orber_by)
+  end
+
   private
 
   def clean_strings_and_urls

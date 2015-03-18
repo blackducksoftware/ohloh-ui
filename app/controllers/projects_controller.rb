@@ -7,7 +7,7 @@ class ProjectsController < ApplicationController
   before_action :api_key_lock, only: [:index]
   before_action :find_account
   before_action :find_projects, only: [:index]
-  before_action :find_project, only: [:show, :edit, :update, :estimated_cost]
+  before_action :find_project, only: [:show, :edit, :update, :estimated_cost, :users]
   before_action :redirect_new_landing_page, only: :index
 
   def index
@@ -22,6 +22,12 @@ class ProjectsController < ApplicationController
     @analysis = @project.best_analysis
     @rating = logged_in? ? @project.ratings.where(account_id: current_user.id).first : nil
     @score = @rating ? @rating.score : 0
+  end
+
+  def users
+    @accounts = @project.users(params[:query], params[:sort])
+                .paginate(page: params[:page], per_page: 10,
+                          total_entries: @project.users.count('DISTINCT(accounts.id)'))
   end
 
   def update
