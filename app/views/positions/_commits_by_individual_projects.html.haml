@@ -1,0 +1,44 @@
+%div{ class: position.decorate.analyzed_class_name }
+  %div
+    .one-project-header-left
+      %a.pull-left.logo{ href: project_path(position.project) }
+        = position.project.decorate.icon
+      .col-md-8.one-project-name
+        %a.title{ href: project_path(position.project), title: position.project.name }
+          = truncate(position.project.name, length: 40)
+        - project_activity_level_class(position.project, :fifteen)
+        - organization = position.project.organization
+        - if organization
+          = link_to "(#{ organization.name })", organization, class: 'project-organization'
+      .col-md-8.one-project-contribution
+        %span.contribution_role
+          = position.title
+        = position.decorate.affiliation
+        - if position.description && position.description.strip.size > 179
+          %span.one-project-description{ id: "proj_desc_#{ position.id }_sm", style: 'display: inline' }
+            = truncate(position.description, length: 180)
+            %a{ href: 'javascript:', id: "more_desc_#{ position.id }" }
+              = t('.more')
+
+          %span.one-project-description.hidden{ id: "proj_desc_#{ position.id }_lg" }
+            = position.description
+            %a{ href: 'javascript:', id: "less_desc_#{ position.id }" }
+              = t('.less')
+
+        - elsif position.description
+          %span.one-project-description{ style: 'display: inline', id: "proj_desc_#{ position.id }_lg" }
+            = position.description
+
+    .one-project-header-right
+      = render 'edit_link', position: position
+      = render 'commit_information', position: position
+  .clear
+  %div
+    - if position.name.nil?
+      .one_project_information_message
+        = t('.no_commits_to_display')
+    - elsif position.decorate.analyzed?
+      = render 'commits_by_individual_project_highchart', position: position, index: index
+    - else
+      .one_project_information_message
+        = t('.analysis_is_scheduled')

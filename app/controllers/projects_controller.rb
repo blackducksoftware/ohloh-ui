@@ -25,9 +25,9 @@ class ProjectsController < ApplicationController
   end
 
   def users
-    accounts = @project.users.paginate(page: params[:page], per_page: 10)
-    accounts = filter_project_users(accounts)
-    @accounts = sort_project_users(accounts)
+    @accounts = @project.users(params[:query], params[:sort])
+                .paginate(page: params[:page], per_page: 10,
+                          total_entries: @project.users.count('DISTINCT(accounts.id)'))
   end
 
   def update
@@ -54,36 +54,13 @@ class ProjectsController < ApplicationController
   end
 
   def find_projects
-    parse_sort_term
     projects = @account ? @account.projects.not_deleted : Project.not_deleted
-    @projects = add_query_term(projects.page(params[:page]).per_page(10).send(@sort))
+    sort_by = parse_sort_term(projects)
+    @projects = projects.tsearch(params[:query], sort_by).page(params[:page]).per_page(10)
   end
 
-  def add_query_term(projects)
-    @query = params[:q] || params[:query]
-    return projects unless @query
-    arel_table = Project.arel_table
-    projects.where(arel_table[:name].matches("%#{@query}%").or(arel_table[:description].matches("%#{@query}%")))
-  end
-
-  def parse_sort_term
-    @sort_options = @account ? account_projects_sort_options : projects_sort_options
-    @sort = "by_#{params[:sort]}"
-    @sort = (@account ? 'by_users' : 'by_new') unless @sort_options.key?(@sort)
-  end
-
-  def account_projects_sort_options
-    { 'by_new' => t('projects.by_new'),
-      'by_users' => t('projects.by_users'),
-      'by_project_name' => t('projects.by_project_name') }
-  end
-
-  def projects_sort_options
-    { 'by_activity_level' => t('projects.by_activity_level'),
-      'by_users' => t('projects.by_users'),
-      'by_new' => t('projects.by_new'),
-      'by_rating' => t('projects.by_rating'),
-      'by_active_committers' => t('projects.by_active_committers') }
+  def parse_sort_term(projects)
+    projects.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : nil
   end
 
   def find_project
@@ -99,16 +76,5 @@ class ProjectsController < ApplicationController
   def redirect_new_landing_page
     return unless @account.nil?
     redirect_to explore_projects_path if request.query_parameters.except('action').empty? && request_format == 'html'
-  end
-
-  def filter_project_users(accounts)
-    return accounts if params[:query].blank?
-    accounts.where("lower(name) LIKE '%#{params[:query].downcase}%'")
-  end
-
-  def sort_project_users(accounts)
-    valid_sort = SORT_OPTIONS[:project_users][:options].collect { |_key, value| value }.include?(params[:sort])
-    sort_by = valid_sort ? params[:sort] : 'kudo_position'
-    accounts.order("#{sort_by} ASC")
   end
 end

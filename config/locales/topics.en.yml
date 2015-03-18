@@ -1,48 +1,54 @@
-  en:
-
-    topics:
-      new:
-        forums: 'Forums'
-        create_topic: 'Post Topic'
-      show:
-        forums: 'Forums'
-        close: 'Close'
-        delete: 'Delete'
-        reopen: 'Re-open'
-        spam: 'SPAM!!!'
-        move: 'Move'
-        close_confirmation: 'Are you sure you want to close this topic?'
-        delete_confirmation: 'Are you sure you want to delete this topic?'
-        reopen_confirmation: 'Are you sure you want to re-open this topic?'
-        reopen_message_html: 'As the user who created this topic, you may %{link} the topic if you feel your question was not answered or need more information on this topic.'
-        spam_confirmation: "Are you sure you want to mark %{user} as a spammer, disabling the account and removing all posts?"
-        next_topic_html: 'Next Topic&rarr;'
-        previous_topic_html: '&larr;Previous Topic'
-        close_topic_message_1: 'Comments to this topic are now closed.'
-        closed_topic_message_2: 'Comments to this topic are now closed. Please create a new topic to get technical support.'
-        closed_topic_message_3: 'The user who created the topic can reopen this topic at any time.'
-      edit:
-        save_changes: 'Save Changes'
-      destroy:
-        success: "Topic '%{topic_title}' was deleted."
-      form:
-        title: 'Title'
-        enter_topic_title: "Enter the topic's title."
-        message: 'Message'
-        first_post: 'This will be the first post'
-        sticky: 'Sticky'
-        closed: 'Closed'
-      topic:
-        closed: 'closed'
-        new: 'new'
-        stale: 'stale'
-        recent: 'recent post'
-        sticky: 'Sticky:'
-      current_discussions:
-        discussion: 'Discussion'
-        posts: 'Posts'
-        poster: 'Poster'
-        freshness: 'Freshness'
-      move:
-        move_to: 'Move To:'
-        go: 'Go'
+en:
+  topics:
+    new:
+      forums: 'Forums'
+      create_topic: 'Post Topic'
+    show:
+      next_topic_html: 'Next Topic&rarr;'
+      previous_topic_html: '&larr;Previous Topic'
+      reopen_message_html: 'As the user who created this topic, you may %{link} the topic if you feel your question was not answered or need more information on this topic.'
+      close_topic_message_1: 'Comments to this topic are now closed.'
+      closed_topic_message_2: 'Comments to this topic are now closed. Please create a new topic to get technical support.'
+      closed_topic_message_3: 'The user who created the topic can reopen this topic at any time.'
+    action_group:
+      forums: 'Forums'
+      close: 'Close'
+      closed: 'closed'
+      delete: 'Delete'
+      reopen: 'Re-open'
+      spam: 'SPAM!'
+      close_confirmation: 'Are you sure you want to close this topic?'
+      delete_confirmation: 'Are you sure you want to delete this topic?'
+      reopen_confirmation: 'Are you sure you want to re-open this topic?'
+      spam_confirmation: "Are you sure you want to mark %{user} as a spammer, disabling the account and removing all posts?"
+    move_modal:
+      move: 'Move'
+      move_topic: 'Move Topic'
+      go: 'Go'
+      move_to: 'Move To:'
+    edit:
+      title: 'Title'
+      sticky: 'Sticky'
+      closed: 'Closed'
+      save_changes: 'Save Changes'
+      enter_topic_title: "Enter the topic's title."
+    destroy:
+      success: "Topic '%{topic_title}' was deleted."
+    form:
+      title: 'Title'
+      enter_topic_title: "Enter the topic's title."
+      message: 'Message'
+      first_post: 'This will be the first post'
+      sticky: 'Sticky'
+      closed: 'Closed'
+    topic:
+      closed: 'closed'
+      new: 'new'
+      stale: 'stale'
+      recent: 'recent post'
+      sticky: 'Sticky:'
+    current_discussions:
+      discussion: 'Discussion'
+      posts: 'Posts'
+      poster: 'Poster'
+      freshness: 'Freshness'

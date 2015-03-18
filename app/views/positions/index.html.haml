@@ -1,0 +1,28 @@
+:ruby
+  page_context[:keywords] = "openhub, #{ h(@account.name) }, #{ h(@account.login) }"
+  page_context[:description] = t('.contributions_on_open_hub', name: @account.name)
+  page_context[:select_top_menu_nav] = :select_people
+
+= render 'accounts/mini_header'
+.clearfix
+.mezzo
+  %h2.pull-left= t('contribution')
+  .padding_top_5
+    = render 'accounts/show/vita_timestamp', best_vita: @account.best_vita
+
+.clearfix
+#positions-index-page
+  - if @account.positions.exists?
+    = render 'commits_by_projects_extended'
+    .mezzo.padding_one_top
+      - @positions.each_with_index do |position, i|
+        = render 'commits_by_individual_projects', position: position, index: i
+  - else
+    %p= t('.no_contributions_to_display')
+
+- if current_user == @account
+  -# NOTE: Use the following instead of `bootstrap_button_link_to` during migration.
+  = link_to new_account_position_path(@account), class: 'btn btn-small btn-primary' do
+    %i.icon-plus-sign
+      &nbsp;
+    = t('.claim_contribution')

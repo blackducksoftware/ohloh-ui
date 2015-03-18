@@ -57,4 +57,14 @@ class ActiveSupport::TestCase
       delete sessions_path
     end
   end
+
+  def create_position(attributes = {})
+    project = attributes[:project] || create(:project)
+    name_fact = create(:name_fact, analysis: project.best_analysis, name: attributes[:name] || create(:name))
+    create :position, { name: name_fact.name, project: project }.merge(attributes)
+  end
+
+  def i18n_activerecord(model, key)
+    I18n.t("activerecord.errors.models.#{ model }.attributes.#{ key }")
+  end
 end

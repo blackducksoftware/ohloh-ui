@@ -1,0 +1,17 @@
+plotOptions:
+  series:
+    pointWidth:
+yAxis:
+  showFirstLabel: false
+  plotBands:
+    value: 0
+    color: '#eeeeee'
+    width: 1
+    zIndex: 3
+  startOnTick: false
+xAxis:
+  labels:
+    align: left
+    rotation: 0
+    step: 1
+colors: ['#2f7ed8']

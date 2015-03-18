@@ -1,0 +1,109 @@
+%fieldset.row-fluid
+  .form-group
+    %label.control-label.required= t('.project_name')
+    .controls
+      - value = params[:position].present? ? params[:position][:project_oss] : position.try(:project).try(:name)
+      = f.text_field :project_oss, class: 'col-md-4', value: value
+      - error_tag(position, :project_oss)
+      %p.help-block= t('.enter_openhub_project_name')
+
+  .form-group
+    %label.control-label= t('.committer_name')
+    .controls
+      = f.text_field :committer_name, class: 'col-md-4'
+      - error_tag(position, :committer_name)
+      %p.help-block
+        = t('.enter_scm_committer_id')
+        %br
+        = t('.leave_this_blank')
+
+  .form-group
+    %label.control-label= t('affiliation')
+    .controls.chosen#value_select
+      = f.select :organization_id, OrganizationDecorator.select_options, {}, class: 'col-md-4 chzn-select value-select'
+      - error_tag(position, :organization_id)
+      = f.text_field :organization_name, class: 'col-md-4 hidden', style: 'margin-bottom: 0px;'
+      = f.hidden_field :affiliation_type
+      - error_tag(position, :organization_name)
+      %p.help-block= t('.enter_name_of_company_or_organization')
+
+  .form-group
+    %label.control-label= t('.role_on_project')
+    .controls
+      = f.text_field :title, class: 'col-md-4'
+
+  .clearfix
+
+  .form-group
+    %label.control-label= t('.describe_contributions')
+    .controls
+      = f.text_area :description, rows: 10, class: 'col-md-4', value: @position.description
+
+  .clearfix
+
+  - date_selector_options = { order: [:month, :year], prompt: true, end_year: Time.current.year, start_year: 1980 }
+  .form-group
+    %label.control-label= t('.when_did_u_start')
+    .controls
+      = radio_button_tag :start_date_type, nil, !position.start_date?, class: 'choose-automatic'
+      = t('.calculate_from_first_commit')
+      &nbsp;&nbsp;
+      = radio_button_tag :start_date_type, nil, position.start_date?, id: 'manual-start-date'
+      = t('.specify_date_manually')
+      %p.chosen#value_select
+        %br
+        = f.date_select :start_date, date_selector_options, class: 'chzn-select value-select'
+      .row
+        .col-md-5
+          - error_tag(position, :start_date)
+  .form-group
+    %label.control-label= t('.when_did_u_stop')
+    .controls
+      = f.radio_button :ongoing, false, checked: @position.new_record?, class: 'choose-automatic'
+      = t('.calculate_from_last_commit')
+      &nbsp;&nbsp;
+      = f.radio_button :ongoing, true
+      = t('.i_have_this_position')
+      &nbsp;&nbsp;
+      = f.radio_button :ongoing, false, id: 'manual-stop-date'
+      = t('.specify_date_manually')
+      &nbsp;&nbsp;
+      %p.chosen#value_select
+        %br
+        = f.date_select :stop_date, date_selector_options, class: 'chzn-select value-select'
+      .row
+        .col-md-5
+          - error_tag(position, :stop_date)
+    %p
+      %i.icon-chevron-down
+        &nbsp;
+      = link_to t('.describe_projects_and_languages'), 'javascript:', class: :collapsed
+      = link_to t('.describe_projects_and_languages'), 'javascript:', class: 'expanded hidden'
+    %p
+    .hidden#additional-fields
+      .form-group
+        %label.control-label= t('.what_did_u_program_in')
+        .controls
+          #position_languages{ style: 'line-height: 25px;' }
+            = render 'language_selector'
+          %p.help-block= t('.list_regular_languages')
+      .form-group
+        %label.control-label= t('.describe_open_source_projects')
+        .controls#project-experience-form
+          - @position.project_experiences.build
+          = f.fields_for :project_experiences do |ff|
+            .clearfix
+              %p.help-block= t('.enter_project_name')
+              = ff.text_field :project_name, class: 'col-md-4 autocompletable'
+              %button.margin_left_5.btn.btn-small.remove{ type: :button }
+                = t('remove')
+              - error_tag(ff.object, :project_name)
+
+          = button_tag 'Add another project', class: 'btn btn-default', type: :button, id: 'add-project-experience'
+
+  .actions
+    - submit_text = params[:invite].blank? ? :Submit : :Next
+    = submit_tag(submit_text, class: 'btn btn-sm btn-primary', id: :saveForm)
+    - if allow_delete
+      = link_to 'Delete Position', [@account, @position], method: :delete, confirm: t('.delete_forever'),
+                                                          class: 'btn btn-sm btn-danger'

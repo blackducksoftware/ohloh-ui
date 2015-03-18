@@ -1,34 +1,8 @@
-# rubocop:disable Metrics/ClassLength
 class Project < ActiveRecord::Base
-  has_many :links, -> { where(deleted: false) }
-  has_one :permission, as: :target
-  has_many :analyses
-  has_many :analysis_summaries, through: :analyses
-  has_many :taggings, as: :taggable
-  has_many :tags, through: :taggings
-  belongs_to :best_analysis, foreign_key: :best_analysis_id, class_name: :Analysis
-  has_many :aliases, -> { where { deleted.eq(false) & preferred_name_id.not_eq(nil) } }
-  has_many :aliases_with_positions_name, -> { where { deleted.eq(false) & preferred_name_id.eq(positions.name_id) } },
-           class_name: 'Alias'
-  has_many :contributions
-  has_many :positions
-  has_many :stack_entries, -> { where { deleted_at.eq(nil) } }
-  has_many :stacks, -> { where { deleted_at.eq(nil) & account_id.not_eq(nil) } }, through: :stack_entries
-  belongs_to :logo
-  belongs_to :organization
-  has_many :manages, -> { where(deleted_at: nil, deleted_by: nil) }, as: 'target'
-  has_many :managers, through: :manages, source: :account
-  has_many :reviews
-  has_many :ratings
-  has_one :koders_status
-  has_many :enlistments, -> { where(deleted: false) }
-  has_many :repositories, through: :enlistments
-  has_many :project_licenses, -> { where(deleted: false) }
-  has_many :licenses, -> { order('lower(licenses.nice_name)') }, through: :project_licenses
-  has_one :is_a_duplicate, class_name: 'Duplicate', foreign_key: 'bad_project_id'
-  has_many :named_commits, ->(proj) { where(analysis_id: (proj.best_analysis_id || 0)) }
-  has_many :commit_flags, -> { order(time: :desc).where('commit_flags.sloc_set_id = named_commits.sloc_set_id') },
-           through: :named_commits
+  include ProjectAssociations
+  include Tsearch
+  include ProjectSearchables
+
   scope :active, -> { where { deleted.not_eq(true) } }
   scope :deleted, -> { where(deleted: true) }
   scope :from_param, ->(id) { Project.where(Project.arel_table[:url_name].eq(id).or(Project.arel_table[:id].eq(id))) }
@@ -104,10 +78,15 @@ class Project < ActiveRecord::Base
     super || NilAnalysis.new
   end
 
-  def users
+  def users(query = '', sort = '')
+    search_term = query.present? ? ['accounts.name iLIKE ?', "%#{query}%"] : nil
+    orber_by = sort.eql?('name') ? 'accounts.name ASC' : 'people.kudo_position ASC'
+
     Account.select('DISTINCT(accounts.id), accounts.*, people.kudo_position')
-      .joins(stacks: :stack_entries).joins(:person)
+      .joins([{ stacks: :stack_entries }, :person])
       .where(stack_entries: { project_id: id })
+      .where(search_term)
+      .order(orber_by)
   end
 
   private
@@ -124,4 +103,3 @@ class Project < ActiveRecord::Base
     Project.send :sanitize_sql, sql
   end
 end
-# rubocop:enable Metrics/ClassLength

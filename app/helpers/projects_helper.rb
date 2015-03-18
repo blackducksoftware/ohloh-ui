@@ -72,7 +72,7 @@ module ProjectsHelper
   end
 
   def stack_name(account)
-    stacks ||= account.stacks.select { |s| s.projects.include? @project }
+    stacks ||= account.stacks.joins(:projects).where(projects: { id: @project })
     stacks.map do |stack|
       name = stack.decorate.name(account, @project)
       link_to "#{name}#{' Stack' unless name =~ /stack/i}", stack_path(stack)
@@ -89,6 +89,7 @@ module ProjectsHelper
     content + ", #{project_activity_text(project, true)}, #{project.user_count} users"
   end
 
+  # NOTE: Replaces ProjectActivityScore.css_class.
   def project_activity_css_class(project, size)
     "#{size}_project_activity_level_#{project_activity_level(project)}"
   end
@@ -97,6 +98,7 @@ module ProjectsHelper
     "#{image_size}_project_activity_text"
   end
 
+  # NOTE: Replaces ProjectActivityScore.activity_level_text.
   def project_activity_text(project, append_activity)
     activity_level = project_activity_level(project)
     case activity_level
