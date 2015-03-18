@@ -25,10 +25,9 @@ class ProjectsController < ApplicationController
   end
 
   def users
-    accounts = @project.users.paginate(page: params[:page], per_page: 10,
-                                       total_entries: @project.users.count('DISTINCT(accounts.id)')
-    accounts = filter_project_users(accounts)
-    @accounts = sort_project_users(accounts)
+    @accounts = @project.users(params[:query], params[:sort])
+                .paginate(page: params[:page], per_page: 10,
+                          total_entries: @project.users.count('DISTINCT(accounts.id)'))
   end
 
   def update
@@ -77,15 +76,5 @@ class ProjectsController < ApplicationController
   def redirect_new_landing_page
     return unless @account.nil?
     redirect_to explore_projects_path if request.query_parameters.except('action').empty? && request_format == 'html'
-  end
-
-  def filter_project_users(accounts)
-    return accounts if params[:query].blank?
-    accounts.where('name iLIKE ?', "%#{params[:query]}%")
-  end
-
-  def sort_project_users(accounts)
-    sort_by = params[:sort].eql?('name') ? 'accounts.name ASC' : 'people.kudo_position ASC'
-    accounts.order(sort_by)
   end
 end
