@@ -1,4 +1,5 @@
 - content_for(:html_title) { t('.page_title', name: @project.name) }
+- page_context[:select_top_menu_nav] = 'select_projects'
 
 - content_for :twitter_card do
   %meta{ content: 'summary', name: 'twitter:card' }
