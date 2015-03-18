@@ -10,6 +10,10 @@ class NameFact < ActiveRecord::Base
 
   scope :for_project, ->(project) { where(analysis_id: project.best_analysis_id) }
 
+  def active?
+    last_checkin.next_year > Time.current
+  end
+
   def <=>(other)
     return 0 unless other
     if last_checkin.nil?

@@ -1,0 +1,5 @@
+- if my_account?(@account) || current_user_is_admin?
+  - edit_link_classes = 'btn btn-mini btn-info pull-right margin_top_5'
+  = link_to edit_account_position_path(@account, position), class: edit_link_classes do
+    %i.icon-pencil
+    = t('edit')

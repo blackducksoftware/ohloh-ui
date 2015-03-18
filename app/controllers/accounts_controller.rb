@@ -69,8 +69,9 @@ class AccountsController < ApplicationController
   private
 
   def find_claimed_people
-    sort_by = params[:sort] unless params[:sort] == 'relevance'
-    @people = Person.find_claimed(page: params[:page], sort_by: sort_by, q: params[:query])
+    total_entries = params[:query].blank? ? Person::Count.claimed : nil
+    @people = Person.find_claimed(params[:query], params[:sort])
+              .paginate(page: params[:page], per_page: 10, total_entries: total_entries)
   end
 
   def set_account

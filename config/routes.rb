@@ -43,6 +43,8 @@ Rails.application.routes.draw do
     resources :edits, only: [:index]
     resources :posts, only: [:index]
     resources :reviews, only: [:index]
+    resources :positions
+    resources :position_factories, only: :create
 
     member do
       get :confirm_delete

@@ -71,7 +71,8 @@ class AccountDecorator < Cherry::Decorator
       # TODO: account reports
       # append_report_menu(menus) if account == current_user && account.reports.exists?
       if account.claim_core.unclaimed_persons_count > 0 && current_or_admin?(current_user)
-        append_unclaimed_contribution_menu(menus)
+        # FIXME: Uncomment after integrating committers controller.
+        # append_unclaimed_contribution_menu(menus)
       end
     end
   end

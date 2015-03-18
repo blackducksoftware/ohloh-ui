@@ -2,16 +2,16 @@
   %thead
     %tr
       %th.first{ width: '45%' }
-        %h4.nomargin.strong= t('.discussion')
+        %h4.nomargin.strong.margin_bottom_0= t('.discussion')
       %th{ width: '15%' }
-        %h4.nomargin.center.strong= t('.posts')
+        %h4.nomargin.center.strong.margin_bottom_0= t('.posts')
       %th{ width: '25%' }
-        %h4.nomargin.strong= t('.poster')
+        %h4.nomargin.strong.margin_bottom_0= t('.poster')
       %th{ width: '15%' }
-        %h4.nomargin.strong= t('.freshness')
+        %h4.nomargin.strong.margin_bottom_0= t('.freshness')
   %tbody
     - @recent_topics.each do |topic|
-      %tr
+      %tr{ class: "#{'border_bottom_color' if @recent_topics.last == topic}" }
         %td.first= link_to h(topic.title), topic_path(topic)
         %td.center= topic.posts_count
         - if topic.posts.last

@@ -1,0 +1,77 @@
+en:
+  positions:
+    create:
+      invite_success: "Congrats! You've created a Black Duck Open Hub account and claimed your contribution. Consider adding some information about yourself by clicking 'Profile' under your name at the top of this page. You can also build a list of the open source projects you use by clicking on the Stack link."
+    index:
+      contributions_on_open_hub: "%{name}'s Developer Contributions on Open Hub."
+      no_contributions_to_display: There are no contributions available to display.
+      claim_contribution: Claim a Contribution
+    new:
+      provide_extra_information: 'If you like, you may provide some extra information describing this contribution.  Or just hit next.'
+    commit_information:
+      in_mostly: 'in mostly'
+    commits_by_individual_projects:
+      more: 'more...'
+      less: 'less...'
+      no_commits_to_display: There are no commits available to display.
+      analysis_is_scheduled: The analysis for this contribution has been scheduled.
+    fields:
+      project_name: 'Project Name'
+      enter_openhub_project_name: Enter the Open Hub project name of the project you worked on.
+      committer_name: Committer Name
+      enter_scm_committer_id: Enter the SCM committer ID under which you made these commits.
+      leave_this_blank: If you did not actually commit the code yourself, leave this blank.
+      enter_name_of_company_or_organization: Enter the company or organization on whose behalf you made these contributions (if any).
+      role_on_project: Role on Project
+      describe_contributions: Describe your contributions
+      when_did_u_start: When did you start?
+      calculate_from_first_commit: Calculate from first commit
+      specify_date_manually: Specify date manually
+      when_did_u_stop: When did you stop?
+      calculate_from_last_commit: Calculate from last commit
+      i_have_this_position: I'm still in this position
+      specify_date_manually: Specify date manually
+      describe_projects_and_languages: Describe Projects and Languages Used
+      what_did_u_program_in: What languages did you program in?
+      list_regular_languages: List the languages you worked with on a regular basis.
+      describe_open_source_projects: What open source projects did you use?
+      enter_project_name: Enter the open source project that you used.
+      delete_forever: Delete this position forever?
+    language_selector:
+      select_prompt: Please select an option
+    position:
+      commits: ' commits'
+      new: 'New!'
+      unknown_dates: 'Unknown Dates'
+      activity_chart_for_account: "activity chart for %{name}'s contribution"
+      to_add_information: 'to add your organization, title, and other information to this contribution.'
+
+  position_factories:
+    create:
+      success: "Work by '%{name}' will be linked to your Open Hub account after submitting this form."
+      project_not_found: "Project '%{name}' could not be found."
+      contributor_not_found: "Contributor '%{name}' could not be found."
+      rename_commit_author: "Commits by '%{name}' will be renamed to '%{preferred_name}' and linked to your Open Hub account. Changes will not take place until the next Open Hub update."
+      contribution_claimed: "Contribution claimed successfully. Work by '%{name}' will now be linked to your Open Hub account"
+
+  activerecord:
+    errors:
+      models:
+        position:
+          attributes:
+            project_id:
+              taken: 'You have already claimed a position on this project.'
+            committer_name:
+              blank: 'Automatic date calculation requires a valid committer name.'
+
+  position:
+    project_id:
+      blank: No matching open source project found.
+    start_date:
+      in_future: Start date must be in the past.
+    stop_date:
+      in_future: Stop date can't be in the future.
+      earlier: Can't be earlier than start date.
+    no_name_fact: No recognized committer with that name.
+    name_already_claimed: "This name is already claimed by '%{name}'."
+    affiliated_with: "Affiliated with %{name}"

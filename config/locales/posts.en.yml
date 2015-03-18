@@ -9,13 +9,22 @@
       delete: 'Delete'
       delete_confirmation: 'Are you sure you want to delete your post?'
     update:
-      success: 'Post updated'
-      error: 'Sorry, there was a problem updating the post'
+      blank: "can't be blank"
+    create:
+      blank: "can't be blank"
     reply:
       post_a_response: 'Post a Response'
-      response: 'Open Hub welcomes your opinions.'
       submit: 'Submit'
     post:
       edit_post: 'Edit Post'
     fields:
       submit: 'Submit'
+    sign_in:
+      response: 'Open Hub welcomes your opinions.'
+      login_required: 'Login Required'
+      login_to_open_hub: 'Log in to Open Hub'
+      login_or_email: "Login or Email"
+      password: "Password"
+      remember_me: "Remember Me"
+      log_in: "Log In"
+      

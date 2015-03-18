@@ -6,7 +6,7 @@ class FOSSerBadgeTest < ActiveSupport::TestCase
 
   describe 'eligibility_count' do
     it 'should return positions' do
-      create(:position, account: user)
+      create_position(account: user)
       fosser_badge.eligibility_count.must_equal 1
     end
   end

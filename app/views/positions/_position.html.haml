@@ -1,0 +1,58 @@
+.row
+  .col-md-7
+    .well
+      - unless params_id_is_total?
+        - if current_user == position.account || current_user_is_admin?
+          %span.pull-right
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            = link_to edit_account_position_path(position.account_id, position), class: 'btn btn-mini' do
+              %i.icon-pencil
+                &nbsp;
+              = t('edit')
+
+      -# NOTE: Replaces position_h6
+      %h6
+        - project_name = position.project.name
+        - if project_name
+          = link_to project_name, position.project || position
+        - if position.name_fact
+          %span
+            &nbsp;&nbsp;
+          %span= position.name_fact.commits
+          %span.bold= t('.commits')
+        - if position.created_at > 1.hour.ago
+          %span{ style: 'color: red' }
+            &nbsp;&nbsp;&nbsp;
+            = t('.new')
+        %span.pull-right
+          - if position.effective_start_date && position.effective_stop_date
+            = position.effective_start_date.strftime('%b %Y')
+            - unless position.one_monther?
+              to
+              = position.decorate.stop_date
+          - else
+            = t('.unknown_dates')
+
+      -# NOTE: Replaces position_title_and_org
+      - if position.title? && position.organization.present?
+        %p.nomargin
+          %span.title= position.title
+          %span.at= t('at')
+          %span.organization= position.organization
+
+      %p.nomargin.desc= h position.description
+
+      -# NOTE: Replaces position_metrics(position, link: true).
+      - if position.name_fact.try(:analysis_id)
+        = link_to [@account, position], class: 'metrics clear' do
+          %img.padding_one_top{ src: position.decorate.commits_compound_spark_path,
+                                width: 510, height: 39,
+                                alt: t('.activity_chart_for_account', name: position.account.name) }
+
+      - if current_user == position.account && position.decorate.old_and_has_null_description_title_and_organization?
+        %p.prompt
+          = link_to t('edit_description'), edit_account_position_path(position.account, position)
+          = t('.to_add_information')
+
+        .col
+          = render 'description_and_metrics', position: position

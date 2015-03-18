@@ -1,0 +1,19 @@
+- @login = OpenStruct.new
+= form_for(@login, as: :login, url: sessions_path, html: { method: :post, class: 'well form-horizontal' }) do |f|
+  %fieldset
+    %legend= t('.log_in_to_open_hub')
+    .control-group
+      .input-prepend
+        %span.add-on
+          %i.icon-user
+        = f.text_field(:login, class: 'input-xlarge', placeholder: t('.login_or_email'))
+    .control-group.input-prepend
+      %span.add-on
+        %i.icon-key
+      = f.password_field(:password, class: 'input-xlarge', placeholder: t('.password'))
+    .control-group
+      %label.checkbox
+        = f.check_box :remember_me
+        #{ t('.remember_me') }
+    .actions
+      %input.btn.btn-primary{ type: 'submit', value: t('.log_in') }

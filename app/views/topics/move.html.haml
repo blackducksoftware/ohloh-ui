@@ -1,4 +1,0 @@
-= form_for @topic do |f|
-  .chosen#value_select= t('.move_to')
-  = f.select :forum_id, Forum.all.collect { |forum| [forum.name, forum.id] }
-  = f.submit t('.go')
