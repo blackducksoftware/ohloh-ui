@@ -8,6 +8,7 @@ class Analysis < ActiveRecord::Base
   has_one :previous_twelve_month_summary
   has_many :analysis_summaries
   has_many :analysis_aliases
+  has_many :contributor_facts, class_name: 'ContributorFact'
   belongs_to :main_language, class_name: 'Language', foreign_key: :main_language_id
   has_many :factoids, -> { order('severity DESC') }, dependent: :delete_all
 

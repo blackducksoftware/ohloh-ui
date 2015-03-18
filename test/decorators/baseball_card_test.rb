@@ -8,7 +8,7 @@ class BaseballCardTest < ActiveSupport::TestCase
       org = create(:organization)
       best_vita = create(:best_vita)
       best_vita.account.update_attributes(best_vita_id: best_vita.id, created_at: Time.now - 4.days)
-      Account::OrganizationCore.any_instance.stubs(:positions).returns([create(:position)])
+      Account::OrganizationCore.any_instance.stubs(:positions).returns([create_position])
       Account::OrganizationCore.any_instance.stubs(:orgs_for_my_positions).returns([org])
       Account::OrganizationCore.any_instance.stubs(:affiliations_for_my_positions).returns([org])
       vita_fact = best_vita.vita_fact

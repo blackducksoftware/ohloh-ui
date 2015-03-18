@@ -3,7 +3,10 @@ class Alias < ActiveRecord::Base
   belongs_to :commit_name, class_name: 'Name', foreign_key: :commit_name_id
   belongs_to :preferred_name, class_name: 'Name', foreign_key: :preferred_name_id
 
+  scope :not_deleted, -> { where(deleted: false) }
+
   acts_as_editable editable_attributes: [:preferred_name_id]
+  has_many :edits, as: :target
   acts_as_protected parent: :project
 
   def allow_undo_to_nil?(key)

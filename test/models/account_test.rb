@@ -14,7 +14,7 @@ class AccountTest < ActiveSupport::TestCase
 
   it '#claimed_positions' do
     proj = create(:project)
-    create(:position, account: account, project: proj)
+    create_position(account: account, project: proj)
     account.positions.count.must_equal 1
     account.claimed_positions.count.must_equal 1
   end
@@ -334,7 +334,8 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it '#update_akas' do
-    position = create(:position, project: projects(:ohloh), account: accounts(:user))
+    projects(:ohloh).update!(best_analysis_id: create(:analysis).id, editor_account: accounts(:user))
+    position = create_position(project: projects(:ohloh), account: accounts(:user))
     accounts(:user).update_akas
     accounts(:user).akas.split("\n").sort.must_equal [position.name.name, 'User'].sort
   end
