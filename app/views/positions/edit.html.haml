@@ -1,0 +1,10 @@
+= render 'accounts/mini_header'
+
+%h3
+  = link_to t('contribution'), account_positions_path(@account)
+  = precede ' : ' do
+    = t('edit')
+
+.well.col-md-11.center-block
+  = form_for [@account, @position], html: { id: :position_form } do |f|
+    = render 'fields', f: f, position: @position, allow_delete: true

@@ -7,9 +7,9 @@ class OrganizationsControllerTest < ActionController::TestCase
     @proj3 = create(:project)
     @organization = @proj1.organization
     @account = create(:account, organization_id: @organization.id)
-    create(:position, account: @account, project: @proj1, organization: @organization)
-    create(:position, account: @account, project: @proj2, organization: @proj2.organization)
-    create(:position, account: @account, project: @proj3, organization: @proj3.organization)
+    create_position(account: @account, project: @proj1, organization: @organization)
+    create_position(account: @account, project: @proj2, organization: @proj2.organization)
+    create_position(account: @account, project: @proj3, organization: @proj3.organization)
   end
 
   it '#outside_projects allows viewing by unlogged users' do

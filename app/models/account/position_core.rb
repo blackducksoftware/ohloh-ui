@@ -49,7 +49,7 @@ class Account::PositionCore < OhDelegator::Base
     return unless existing_position || try_create
 
     Account.transaction do
-      if existing_position && project.best_analysis.name_fact_for(existing_position.name_id)
+      if existing_position && project.best_analysis.contributor_facts.find_by(name_id: existing_position.name_id)
         create_alias(project, name, existing_position, position_attributes)
       else
         attributes = position_attributes.merge(account: account, project: project, committer_name: name.name)

@@ -1,0 +1,16 @@
+.clearfix
+  = render 'accounts/mini_header'
+
+.mezzo
+  .margin_left_15
+    %h3
+      = link_to t('.contribution'), account_positions_path(@account)
+      = precede ' : ' do
+        = t('new')
+
+    .well.center-block.margin_left_15
+      - if params[:invite].present?
+        %p= t('.provide_extra_information')
+      = form_for [@account, @position], html: { id: :position_form } do |f|
+        = hidden_field_tag :invite, params[:invite]
+        = render 'fields', f: f, position: @position, allow_delete: false
