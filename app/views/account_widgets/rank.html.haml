@@ -1,8 +1,8 @@
 :ruby
   widget ||= @widget
   account = widget.account
-  image = rank_account_account_widgets_url(account, format: 'gif')
-  image = 'icons/sm_laurel_9.png'
+  ref ||= widget.class
+  #TODO: image = rank_account_account_widgets_url(account, format: 'gif', ref: ref)
+  image = image_url('icons/sm_laurel_9.png')
 
-= link_to rank_account_account_widgets_url(account, ref: ref || widget.class), target: '_blank' do
-  = image_tag image, border: 0, height: widget.height, width: widget.width, alt: t('.alt', name: widget.name)
+= render partial: 'bbc_or_js', locals: { bbc: bbc, widget: widget, url: account_url(account, ref: ref), image: image }

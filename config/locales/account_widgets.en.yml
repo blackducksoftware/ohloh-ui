@@ -2,13 +2,10 @@ en:
   account_widgets:
     title: 'Contributor Statistics'
     missing: 'Missing account_id'
+    bbc_or_js:
+      alt: 'Open Hub profile for %{name}'
     detailed:
       image_name: 'acc.name error'
-      alt: 'Open Hub profile for %{name}'
-    tiny:
-      alt: 'Open Hub profile for %{name}'
-    rank:
-      alt: 'Open Hub profile for %{name}'
     index:
       embed: 'You can embed Open Hub widgets in your web site.'
       widgets: 'Widgets'

@@ -1,5 +1,5 @@
 :ruby
-  locals = { widget: widget, ref: widget.short_nice_name }
+  locals = { widget: widget, ref: widget.short_nice_name, bbc: false }
   widget_html = render(template: "#{controller_name}/#{widget.name.downcase}", locals: locals)
 
 .widget_list
@@ -19,4 +19,4 @@
       %p
         %span.soft= t('.bbc')
       %pre.prettyprint
-        = h html_to_bbcode_for_widget(widget_html)
+        = h render(template: "#{controller_name}/#{widget.name.downcase}", locals: locals.merge(bbc: true))

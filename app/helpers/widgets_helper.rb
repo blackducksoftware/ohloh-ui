@@ -33,16 +33,4 @@ module WidgetsHelper
   def widget_iframe_style(widget)
     "height: #{widget.height}px; width: #{widget.width}px; border: none"
   end
-
-  def html_to_bbcode_for_widget(html)
-    url_text = 'url'
-    img_text = 'img'
-    result = html.gsub(/\n/, '')
-    result.gsub!(/\t/, '')
-    result.gsub!(/<a +href *= *\\*\"([^"]*)\">/, "[#{url_text}=\\1]")
-    result.gsub!(/<a +href *= *\\*\'([^"]*)\'>/, "[#{url_text}=\\1]")
-    result.gsub!('</a>',"[/#{url_text}]")
-    result.gsub!(/<img +.*src *= *'([^"']*)'.*>/i, "[#{img_text}]\\1[/#{img_text}]")
-    result.strip
-  end
 end
