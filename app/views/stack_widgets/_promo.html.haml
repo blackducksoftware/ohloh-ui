@@ -1,0 +1,7 @@
+- unless defined?(HIDE_BADGE) && HIDE_BADGE == true
+  %hr.one
+  %a.promo{ href: href }
+    .inset
+      %h6= t('.embed')
+      %p.soft= t('.show')
+      .widget_preview= render partial: 'stack_widgets/normal_inner', locals: widget_params.merge(ref: 'sample')

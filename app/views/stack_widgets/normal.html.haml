@@ -1,0 +1,7 @@
+:ruby
+  ref ||= @widget.class
+  width ||= (@widget.vars[:width] || 214).to_i
+  url = stack_url(@stack, ref: ref)
+
+= link_to url, class: 'normal_stack_link', style: "width:#{width}px", target: '_blank' do
+  = render partial: 'normal_inner', locals: { stack: @stack, widget: @widget, width: width }
