@@ -1,10 +1,10 @@
 class AccountWidget::Detailed < AccountWidget
   def width
-    AccountBadge::WIDTH
+    230
   end
 
   def height
-    AccountBadge::HEIGHT
+    35
   end
 
   def image
