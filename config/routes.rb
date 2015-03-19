@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :stack_entries
+
   resources :password_reset, only: [:new, :create] do
     collection do
       get :confirm
@@ -168,6 +170,8 @@ Rails.application.routes.draw do
         get :codehistory
         get :commitshistory
         get :committerhistory
+        get :commits_spark
+        get :languages
       end
     end
     resources :commits, only: [:index, :show] do
