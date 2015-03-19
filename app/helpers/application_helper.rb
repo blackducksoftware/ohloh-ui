@@ -104,6 +104,11 @@ module ApplicationHelper
     end
   end
 
+  def eliminate_whitespace(*args, &block)
+    haml = capture_haml(*args, &block)
+    haml.gsub(/^ */, '').gsub(/\n/, '')
+  end
+
   private
 
   def render_expander(text, l)
