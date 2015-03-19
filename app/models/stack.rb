@@ -42,6 +42,10 @@ class Stack < ActiveRecord::Base
     "Unnamed"
   end
 
+  def friendly_name
+    "#{name}#{" Stack" unless name =~ /Stack/i}"
+  end
+
   private
 
   def sanitize_description
