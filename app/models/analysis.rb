@@ -45,16 +45,31 @@ class Analysis < ActiveRecord::Base
     min_month.nil? || (code_total == 0)
   end
 
+  #TODO: Implemt analysis/reports.rb
+  def language_percentages
+    []
+  end
+
+  def cocomo_value(avg_salary = AVG_SALARY)
+    return nil unless man_years
+    Analysis.calc_cocomo(man_years, avg_salary)
+  end
+
+  def man_years_from_loc(loc = 0)
+    loc > 0 ? 2.4 * ((loc.to_f / 1000.0)**1.05) / 12.0 : 0
+  end
+
   class << self
     def fresh_and_hot(lang_id = nil)
       fnh = Analysis.fresh.hot
       fnh = fnh.for_lang(lang_id) unless lang_id.nil?
       fnh
     end
-  end
 
-  def man_years_from_loc(loc = 0)
-    loc > 0 ? 2.4 * ((loc.to_f / 1000.0)**1.05) / 12.0 : 0
+    def calc_cocomo(man_years, avg_salary = AVG_SALARY)
+      avg_salary ||= AVG_SALARY
+      (man_years * avg_salary).to_i
+    end
   end
 
   private
