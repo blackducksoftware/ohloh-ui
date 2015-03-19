@@ -2,7 +2,7 @@
   widget ||= @widget
   project = widget.project
   analysis = project.best_analysis
-  factoids = project.best_analysis.factoids.ordered
+  factoids = analysis.factoids
 
 = render partial: 'factoids_stats_css'
 
