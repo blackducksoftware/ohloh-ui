@@ -1,0 +1,13 @@
+= render partial: 'accounts/mini_header'
+
+.clearfix
+.mezzo.project_content_title.margin_bottom_10
+  %h2= t('.widgets')
+  %p
+    = t('.embed')
+    = t('.select')
+
+.clearfix
+  = render partial: 'widget', collection: @widgets
+
+  %p.soft=t('.asks')

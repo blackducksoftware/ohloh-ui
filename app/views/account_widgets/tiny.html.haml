@@ -1,0 +1,9 @@
+:ruby
+  widget ||= @widget
+  account = widget.account
+  url = tiny_account_account_widgets_url(account, ref: ref || widget.class)
+  image = tiny_account_account_widgets_url(account, format: 'gif')
+  image = 'profile_tiny.png'
+
+= link_to url, target: '_blank' do
+  = image_tag image, border: 0, height: widget.height, width: widget.width, alt: t('.alt', name: widget.name)

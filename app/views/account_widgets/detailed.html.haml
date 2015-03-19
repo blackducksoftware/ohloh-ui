@@ -1,0 +1,9 @@
+:ruby
+  widget ||= @widget
+  account = widget.account
+  url = detailed_account_account_widgets_url(account, ref: ref || widget.class)
+  image = detailed_account_account_widgets_url(account, format: 'gif', ref: widget.class)
+  image = 'widget_logos/openhub_partner_badge.png'
+
+= link_to url, target: '_blank' do
+  = image_tag image, border: 0, height: widget.height, width: widget.width, alt: t('.alt', name: widget.name)
