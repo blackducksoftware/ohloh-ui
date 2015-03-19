@@ -6,10 +6,9 @@
 
 .stack{ class: clear_class, id: "stack_#{stack.id}", style: "width:#{inner_width}px" }
   %h4= title
-  = eliminate_whitespace do
-    .icons
-      - stack.projects.limit(limit).order('logo_id is null').each do |project|
-        = project.decorate.icon(:tiny)
+  .icons
+    - stack.projects.limit(limit).order('logo_id is null').each do |project|
+      = project.decorate.icon(:tiny)
   - if widget.more > 0
     %p= t('.more', more: widget.more)
   .clearfix
