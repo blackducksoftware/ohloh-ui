@@ -24,6 +24,10 @@ class PostTest < ActiveSupport::TestCase
     post.must :save
   end
 
+  it "should sort 'by_unanswered'" do
+    Post.by_unanswered.must_equal Post.joins(:topic).where("posts_count = '1'").order('created_at desc')
+  end
+
   it 'posts should have an associated topic' do
     topic = create(:topic_with_posts)
     topic.posts[0].topic.must_equal topic

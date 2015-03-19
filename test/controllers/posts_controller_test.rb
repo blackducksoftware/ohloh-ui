@@ -9,22 +9,134 @@ describe PostsController do
   before { ActionMailer::Base.deliveries.clear }
 
   #---------------------------User without an account------------------------
-  describe 'index' do
-    it 'index' do
-      get :index
+  describe 'index sort' do
+    # Remove fixture data.
+    # TODO: Remove when all models are independent of fixture data.
+    before { Post.all.each(&:delete) }
+
+    it 'index should handle search for unlogged users' do
+      login_as nil
+      create(:post, body: 'oldest', created_at: Time.now - 2.hours)
+      create(:post, body: 'newest', created_at: Time.now)
+      get :index, sort: 'newest'
       must_respond_with :ok
+      response.body.must_match(/newest.*oldest/m)
+    end
+
+    it 'index should handle query param that matches no project' do
+      get :index, query: 'qwertyuioplkjhgfdsazxcvbnm'
+      must_respond_with :ok
+      must_select 'div.advanced_search_tips', true
     end
 
     it 'sorts index posts by newest' do
-
-    end
-
-    it 'sorts index posts by relevance' do
-
+      create(:post, body: 'oldest', created_at: Time.now - 2.hours)
+      create(:post, body: 'newest', created_at: Time.now)
+      get :index, sort: 'newest'
+      must_respond_with :ok
+      response.body.must_match(/newest.*oldest/m)
     end
 
     it 'sorts index posts by unanswered' do
+      create(:post, body: 'post_count_1')
+      create_list(:post, 2, body: 'answered', topic: topic)
+      get :index, sort: 'unanswered'
+      must_respond_with :ok
+      response.body.must_match(/post_count_1/)
+      response.body.wont_match(/\Aanswered/)
+    end
 
+    it 'filters index by query parameter' do
+      create(:post, body: 'Mozilla')
+      create(:post, body: 'Apache')
+      create(:post, body: 'Google')
+      create(:post, body: 'Dropbox')
+      get :index, query: 'Mozilla'
+      must_respond_with :ok
+      response.body.must_match(/Mozilla/)
+      response.body.wont_match(/Apache/)
+      response.body.wont_match(/Google/)
+      response.body.wont_match(/Dropbox/)
+    end
+
+    it 'filters index by query parameter and sorts by newest' do
+      create(:post, body: 'first Mozilla', created_at: Time.now - 3.hours)
+      create(:post, body: 'second Mozilla', created_at: Time.now - 2.hours)
+      create(:post, body: 'third Mozilla', created_at: Time.now)
+      create(:post, body: 'Dropbox', created_at: Time.now - 4.hours)
+      get :index, query: 'Mozilla', sort: 'newest'
+      must_respond_with :ok
+      response.body.must_match(/third\sMozilla.*second\sMozilla.*first\sMozilla/m)
+      response.body.wont_match(/Dropbox/)
+    end
+
+    it 'filters index by query parameter and sorts by unanswered' do
+      create(:post, body: 'Mozilla unanswered')
+      create_list(:post, 2, body: 'Mozilla answered', topic: topic)
+      get :index, query: 'Mozilla', sort: 'unanswered'
+      must_respond_with :ok
+      response.body.must_match(/Mozilla\sunanswered/)
+      response.body.wont_match(/Mozilla\sanswered/)
+    end
+  end
+
+  describe 'account index sort' do
+    before { Post.all.each(&:delete) }
+
+    it 'fails to find a match' do
+      get :index, account_id: user, query: 'qwertyuioplkjhgfdsazxcvbnm'
+      must_respond_with :ok
+      must_select 'div.advanced_search_tips', true
+    end
+
+    it 'sorts by unanswered' do
+      create(:post, account: user, body: 'post_count_1')
+      create_list(:post, 2, body: 'answered', topic: topic)
+      get :index, account_id: user, sort: 'unanswered'
+      must_respond_with :ok
+      response.body.must_match(/post_count_1/)
+      response.body.wont_match(/\Aanswered/)
+    end
+
+    it 'sorts by newest' do
+      create(:post, account: user, body: 'oldest', created_at: Time.now - 2.hours)
+      create(:post, account: user, body: 'newest', created_at: Time.now)
+      get :index, account_id: user, sort: 'newest'
+      must_respond_with :ok
+      response.body.must_match(/newest.*oldest/m)
+    end
+
+    it 'filters index by query parameter' do
+      create(:post, account: user, body: 'Mozilla')
+      create(:post, account: user, body: 'Apache')
+      create(:post, account: user, body: 'Google')
+      create(:post, account: user, body: 'Dropbox')
+      get :index, account_id: user, query: 'Mozilla'
+      must_respond_with :ok
+      response.body.must_match(/Mozilla/)
+      response.body.wont_match(/Apache/)
+      response.body.wont_match(/Google/)
+      response.body.wont_match(/Dropbox/)
+    end
+
+    it 'filters index by query parameter and sorts by newest' do
+      create(:post, account: user, body: 'first Mozilla', created_at: Time.now - 3.hours)
+      create(:post, account: user, body: 'second Mozilla', created_at: Time.now - 2.hours)
+      create(:post, account: user, body: 'third Mozilla', created_at: Time.now)
+      create(:post, account: user, body: 'Dropbox', created_at: Time.now - 4.hours)
+      get :index, account_id: user, query: 'Mozilla', sort: 'newest'
+      must_respond_with :ok
+      response.body.must_match(/third\sMozilla.*second\sMozilla.*first\sMozilla/m)
+      response.body.wont_match(/Dropbox/)
+    end
+
+    it 'filters index by query parameter and sorts by unanswered' do
+      create(:post, account: user, body: 'Mozilla unanswered')
+      create_list(:post, 2, account: user, body: 'Mozilla answered', topic: topic)
+      get :index, account_id: user, query: 'Mozilla', sort: 'unanswered'
+      must_respond_with :ok
+      response.body.must_match(/Mozilla\sunanswered/)
+      response.body.wont_match(/Mozilla\sanswered/)
     end
   end
 

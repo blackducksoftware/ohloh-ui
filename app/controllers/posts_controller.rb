@@ -7,8 +7,7 @@ class PostsController < ApplicationController
   before_action :find_forum_and_topic_records, only: [:create]
 
   def index
-    all_posts = Post.all
-    @posts = all_posts.paginate(page: params[:page], per_page: 10)
+    params[:account_id] ? find_posts_belonging_to_account : find_posts
   end
 
   def create
@@ -87,6 +86,23 @@ class PostsController < ApplicationController
   def find_forum_and_topic_records
     @topic = Topic.find_by(id: params[:topic_id])
     @forum = @topic.forum
+  end
+
+  def find_posts_belonging_to_account
+    @account = Account.from_param(params[:account_id]).first
+    posts = Post.where(account_id: @account)
+    sort_by = parse_sort_term(posts)
+    @posts = posts.tsearch(params[:query], sort_by).page(params[:page]).per_page(10)
+  end
+
+  def find_posts
+    posts = Post.all
+    sort_by = parse_sort_term(posts)
+    @posts = posts.tsearch(params[:query], sort_by).page(params[:page]).per_page(10)
+  end
+
+  def parse_sort_term(posts)
+    posts.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : nil
   end
 
   def post_params

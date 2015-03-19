@@ -1,6 +1,9 @@
  en:
 
    posts:
+    by_unanswered: 'Unanswered'
+    by_relevance: 'Relevance'
+    by_newest: 'Newest'
     index:
       posts: 'Posts'
     edit:

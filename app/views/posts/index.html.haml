@@ -1,3 +1,7 @@
+- content_for :html_title do
+  OpenHub Forum Posts
+
+/ # TODO: Add posts#index for an account.
 - if @account
   %h2= t('.posts')
   = render partial: 'shared/search_dingus', locals: { collection: @posts, sort_context: :posts }
