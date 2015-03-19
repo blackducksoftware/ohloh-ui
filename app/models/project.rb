@@ -89,6 +89,10 @@ class Project < ActiveRecord::Base
       .order(orber_by)
   end
 
+  def code_published_in_code_search?
+    koders_status.try(:ohloh_code_ready) == true
+  end
+
   private
 
   def clean_strings_and_urls
