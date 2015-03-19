@@ -1,0 +1,20 @@
+= render partial: 'ohloh_code_header'
+= render partial: 'search_all_code_js', locals: { term: t('.search') }
+
+#ohloh_widget_code
+  .widget_search_code
+    %table{ width: '100%', cellpadding: 0 , cellspacing: 0 }
+      %tr
+        %td.browse_code_top{ colspan: 2, style: 'padding-bottom: 0px' }
+          %h2.header= t('.search')
+      %tr
+        %td
+          %form.search.no_margin_bottom{ action: '//code.openhub.net/search', method: :get,
+            target: '_blank', onsubmit: 'return validate_ohloh_search_form(this.s.value)'}
+            %input{ type: :hidden, name: 'browser', value: 'Default' }
+            %input.search_code{ type: :text, name: 's', value: t('.enter'),
+              onfocus: 'onFocus(this);', onblur: 'onBlur(this);', style: 'width: 305px' }
+            %input.icon_search{ type: 'image', src: widget_image_url('assets/search_icon.png') }
+      %tr
+        %td.right
+          = render partial: 'ohloh_code_footer'

@@ -1,0 +1,63 @@
+:javascript
+  function number_with_delimiter(n) {
+    var d = ",";
+    n = n.toString();
+
+    if (n.length > 3) {
+      var mod = n.length % 3;
+      var output = (mod > 0 ? (n.substring(0,mod)) : "");
+      for (i=0 ; i < Math.floor(n.length / 3); i++) {
+        if ((mod == 0) && (i == 0))
+          output += n.substring(mod+ 3 * i, mod + 3 * i + 3);
+        else
+          output+= d + n.substring(mod + 3 * i, mod + 3 * i + 3);
+      }
+      return output;
+    }
+    else {
+      return n;
+    }
+  }
+
+  function calc_man_years(loc) {
+    var a_term = 2.4;
+    var b_term = 1.05;
+    var months = a_term * Math.pow(loc/1000.0, b_term);
+    return months/12;
+  }
+
+  function loc_from_index(i) {
+    var cocomo_loc = document.getElementById("cocomo_loc_dropdown");
+    return parseInt(cocomo_loc.options[i].value);
+  }
+
+  function update_cocomo() {
+    var cocomo_loc = document.getElementById("cocomo_loc_dropdown");
+    var man_years = 0;
+    var loc_markup = loc_from_index(1);
+    var loc_code = loc_from_index(2);
+    var loc = 0;
+
+    switch(cocomo_loc.selectedIndex) {
+      case 0:
+        loc = loc_markup + loc_code;
+        man_years = calc_man_years(loc_markup) + calc_man_years(loc_code);
+        break;
+      case 1:
+        loc = loc_markup;
+        man_years = calc_man_years(loc);
+        break;
+      case 2:
+        loc = loc_code;
+        man_years = calc_man_years(loc);
+        break;
+    }
+
+    salary = parseFloat(document.getElementById("cocomo_salary").value);
+    final_cost = man_years * salary;
+    if (isNaN(final_cost)) final_cost = 0;
+
+    document.getElementById("cocomo_years").innerHTML = number_with_delimiter(Math.round(man_years));
+    document.getElementById("cocomo_loc").innerHTML = number_with_delimiter(Math.round(loc));
+    document.getElementById("cocomo_value").innerHTML = number_with_delimiter(Math.round(final_cost));
+  }

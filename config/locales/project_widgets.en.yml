@@ -1,0 +1,88 @@
+en:
+  project_widgets:
+    title: 'Project Metrics by Open Hub'
+    footer:
+      more: 'more at'
+      updated: ', updated %{at}'
+    index:
+      embed: 'You can embed Open Hub widgets in your web site.'
+      widgets: 'Widgets'
+    no_project:
+      add: 'Add this project to Open Hub!'
+      stats: 'Project statistics are provided by'
+      free: ', a free website that monitors open source software development across the web.'
+      regular_updates: 'Projects in the Open Hub directory receive regularly updated source code statistics and online developer profiles.'
+      home_link: 'Open Hub Home Page'
+      add_project: 'Add this project to Open Hub'
+    basic_stats:
+      main_language: 'Main Language:'
+      total_lines: 'Total Lines of Code:'
+      active_contibutors: 'Active Contributors:'
+      activity: 'Commit Activity Timeline'
+      not_ready: 'The Open Hub report is not ready yet'
+      progress: 'See progress'
+      could_not: 'Open Hub could not analyze the source code of this project'
+      find_out: 'Find Out Why'
+      title: 'Project Statistics by Open Hub'
+    noname_footer:
+      updated_time: 'Updated %{time}'
+    browse_code:
+      short_nice_name: 'Browse Code'
+      title: 'Browse Code by Open Hub'
+    cocomo:
+      cost: '%{name} - Project Cost'
+      include: 'Include'
+      title: 'Project Cost Estimator'
+    factoids:
+      title: 'Project Analysis Summary'
+      mostly_written: 'Mostly written in %{lang}'
+      not_ready: 'The Open Hub report is not ready yet.'
+      progress: 'See progress.'
+    factoids_stats:
+      time_line: 'Commit Activity Timeline:'
+      not_ready: 'The Open Hub report is not ready yet.'
+      progress: 'See progress.'
+      why: 'Find out why'
+      not_analyzed: 'Open Hub could not analyze the source code of this project.'
+      active_contibutors: '%{count} active contributors'
+      mostly_written: 'Mostly written in %{lang}'
+      short_nice_name: 'Factoids and Stats'
+      title: 'Project Factoids and Stats by Open Hub'
+    languages:
+      languages: 'Languages'
+      not_ready: '= The Open Hub report is not ready yet.'
+      title: 'Project Language Statistics'
+      percent: '= %{percent}%'
+    partner_badge:
+      short_nice_name: 'Partner Badge'
+      lines: "%{count} Lines "
+      cost: "$%{count} Cost "
+      developer: "Developer"
+      head_count: "%{count} %{text}"
+      alt: 'Open Hub project report for %{name}'
+    search_all_code:
+      search: 'Search Open Source Code for'
+      enter: 'Enter Search Terms...'
+    search_code:
+      enter: 'Enter Search Terms...'
+      search: 'Search Code from....'
+      title: 'Search Code by Open Hub'
+      short_nice_name: 'Search Code'
+    users_logo:
+      support: 'Support %{name} by adding it to your stack at Open Hub'
+      short_nice_name: 'I Use It - Logo'
+      title: 'Project Users'
+      i_use_it: 'I USE IT'
+    thin_badge:
+      alt: 'Open Hub project report for %{name}'
+      short_nice_name: 'Thin badge'
+    users:
+      users: 'USERS'
+      i_use_it: 'I USE IT'
+      support: 'Support %{name} by adding it to your stack at Open Hub'
+      title: 'Project Users'
+      short_nice_name: 'I Use It - %{text}'
+    ohloh_code_footer:
+      with: '...with'
+      code: 'Code'
+

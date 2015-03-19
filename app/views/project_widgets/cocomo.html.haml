@@ -1,0 +1,50 @@
+:ruby
+  widget ||= @widget
+  project = widget.project
+  analysis = project.best_analysis
+
+= render partial: 'cocomo_js'
+= render partial: 'cocomo_css'
+
+.cocomo
+  %h2= t('.cost', name: truncate(project.name, length: 50))
+  %table{ width: '100%', cellpadding: 0, cellspacing: 0 }
+    - if !analysis.nil?
+      %tr
+        %td{ width: '51%', bgcolor: '#F2F2F2', style: 'padding:3px'}
+          %strong= t('.include')
+          %select#cocomo_loc_dropdown{ style: 'color: #333', onChange: 'update_cocomo();' }
+            %option{:selected=>true, :value=> analysis.code_total + analysis.markup_total} Markup And Code
+            %option{:value=>analysis.markup_total} Markup Only
+            %option{:value=>analysis.logic_total} Code Only
+        %td{:width=>"49%", :bgcolor=>"#F2F2F2", :style=>"padding:3px"}
+          %span{:style=>"padding:2px;font-size:12px;"}
+            %strong Avg. Salary
+            %span{:style=>"padding:3px;text-align:right;"}
+              %br
+              $
+              %input.right{:type=>"text", :style=>"color:#333", :id=>"cocomo_salary", :value=>widget.salary, :size=>7, :onChange=>"update_cocomo();", :onKeyUp=>"update_cocomo();"}>
+              = "/year"
+
+      %tr
+        %td{:style=>"border-top:1px solid #fff;padding:3px;font-weight:500;"}
+          %strong Codebase
+          %br
+          %span#cocomo_loc= number_with_delimiter(analysis.code_total)
+          Lines
+        %td{:style=>"border-top:1px solid #fff;padding:3px;font-weight:500;"}
+          %strong Effort (est.)
+          %br
+          %span#cocomo_years= analysis.man_years.round
+          Person Years
+      %tr
+        %td{:colspan => 2, :style=>"font-weight:800; font-size:14px; color:#FFF;text-align:right;border-top:1px solid #fff;padding:5px 3px 5px 0px;text-align:right;background-color:#000;"}
+          %div{:style=>"float:left; padding-left:3px;"} Estimated Cost
+          %div{:style=>"float:right;"}
+            $
+            %span#cocomo_value>= number_with_delimiter(analysis.cocomo_value(widget.salary.to_i).round)
+    - else
+      %tr.prolog
+        %td{:colspan=>2, :style=>"padding:3px;"}
+          == The Open Hub analysis is not ready yet. #{link_to "See progress.", project_enlistments_url(@project), :target => "_blank"}
+  = render partial: 'footer', locals: { project: project, no_name: true }

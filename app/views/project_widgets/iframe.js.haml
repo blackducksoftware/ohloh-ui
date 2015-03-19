@@ -1,0 +1,8 @@
+:ruby
+  url = widget_url_without_format(@widget, 'project')
+  style = wiget_iframe_style(@widget)
+  iframe = "<iframe src='#{url}', scrolling='no', marginHeight='0', marginWidth='0', style='#{style}'></iframe>"
+
+:plain
+  var elem = document.getElementById('iframe_#{@widget.name.underscore}_#{@widget.position}');
+  document.write("#{iframe}");

@@ -1,0 +1,30 @@
+:ruby
+  widget ||= @widget
+  project = widget.project
+  href  = CGI::unescapeHTML new_stack_entry_url(project_id: project.to_param, ref: widget.class)
+  title = t('.support', name: project.name)
+  user_link = { onMouseOver: 'mouseOverForUsers();', onMouseOut: 'mouseOutForUsers();' }
+  user_without_css_link = { onMouseOver: 'mouseOverForUsers();', onMouseOut: 'mouseOutForUsers();' }
+
+= render partial: 'users_css'
+
+- if widget.vars[:style] && widget.vars[:style].length > 0
+  - background_color = widget.background_color
+  - grad_style = widget.vars[:style].to_sym == :rainbow ? 'rainbow' : ''
+  .users
+    = link_to href, title: title, target: '_blank' do
+      = image_tag widget_ohloh_logo_url
+      .info{ class: grad_style, style: "background-color: #{background_color}" }
+        %p.count= project.user_count
+        %p.user= t('.users')
+      .iuseit_container
+        #iuseit= t('.i_use_it')
+- else
+  .users_without_style
+    = link_to href, title: title, target: '_blank' do
+      .count
+        %b= project.user_count
+        %span.user= t('.users')
+      #iuseit= t('.i_use_it')
+      %span.last &nbsp;
+      = image_tag widget_ohloh_logo_url

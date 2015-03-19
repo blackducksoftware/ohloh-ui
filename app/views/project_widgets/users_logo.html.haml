@@ -1,0 +1,12 @@
+:ruby
+  widget ||= @widget
+  project = widget.project
+  href  = CGI::unescapeHTML new_stack_entry_url(project_id: project.to_param, ref: widget.class)
+
+= render partial: 'users_logo_css'
+
+.users_logo
+  = link_to href, title: t('.support', name: project.name), target: '_blank' do
+    %img.logo{ src: widget_ohloh_logo_url }
+    %span{ onmouseover: 'usersLogoMouseOver(this);', onmouseout: 'usersLogoMouseOut(this);'}
+      = t('.i_use_it')

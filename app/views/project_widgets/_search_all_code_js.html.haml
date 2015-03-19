@@ -1,0 +1,11 @@
+:javascript
+  var term = '#{term}';
+  function onFocus(elem){
+    if (elem.value == term)
+      elem.value = '';
+  }
+
+  function onFocus(elem){
+    if (elem.value == '')
+      elem.value = term;
+  }
