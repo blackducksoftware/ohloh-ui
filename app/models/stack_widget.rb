@@ -13,6 +13,10 @@ class StackWidget < Widget
     super(p)
   end
 
+  def name
+    'normal'
+  end
+
   def stack
     @stack ||= Stack.find(stack_id)
   end
