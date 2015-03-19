@@ -1,0 +1,23 @@
+= render partial: 'activity_css'
+
+#widget-body
+  %div
+    = link_to org.decorate.icon(:med), organization_url(org), target: '_blank', id: 'logo'
+    %h3
+      = link_to truncate(org.name, length: 21), organization_url(org), title: org.name, target: '_blank', id: 'org-name'
+    %div
+    %ul
+      %li
+        %p#item-left= number_with_delimiter(people)
+        %p#item-right
+          = committer_text
+          %span= t('.made')
+      %li
+        %p#item-left= number_with_delimiter(commits_to)
+        %p#item-right
+          = t('.commits')
+          %span= t('.to')
+      %li
+        %p#item-left= number_with_delimiter(projects)
+        %p#item-right= project_text
+      %li= render partial: 'footer', locals: { org: org }

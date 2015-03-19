@@ -1,0 +1,26 @@
+en:
+  organization_widgets:
+    title: 'Organization Metrics by Open Hub'
+    missing: 'Missing organization_id'
+    index:
+      title: 'Widgets'
+      embed: 'You can embed Open Hub widgets in your web site.'
+    activity:
+      made: 'made'
+      commits: 'Commits'
+      to: 'to'
+    affiliated_committers_activity:
+      title: 'Affiliated Committers Activity'
+      short_nice_name: 'Affiliates to Portfolio Projects'
+      affiliates: 'Affiliates'
+      portfolio: 'Portfolio Projects'
+    open_source_activity:
+      short_nice_name: 'Open Source Activity'
+      open: 'Open Source Projects'
+    portfolio_projects_activity:
+      portfolio: 'Portfolio Projects'
+      people: 'People'
+      title: 'Organization Most Active Projects'
+      short_nice_name: 'Portfolio Projects Activity'
+    footer:
+      more: 'more at'
