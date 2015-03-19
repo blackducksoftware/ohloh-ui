@@ -195,7 +195,11 @@ Rails.application.routes.draw do
         delete :delete_all
       end
     end
-    resources :widgets, only: [:index]
+    resources :stack_widgets, path: :widgets, only: :index do
+      collection do
+        get :normal
+      end
+    end
   end
 
   resources :languages, only: [:show, :index] do
