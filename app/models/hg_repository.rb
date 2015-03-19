@@ -1,0 +1,2 @@
+class HgRepository < Repository
+end

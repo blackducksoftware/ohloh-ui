@@ -17,32 +17,38 @@ class LogosControllerTest < ActionController::TestCase
   end
 
   it 'upload logo via URL' do
-    login_as @admin
-    project = projects(:linux)
-    Project.any_instance.expects(:edit_authorized?).returns(true)
-    post :create, project_id: project.id, logo: { url: 'https://www.openhub.net/images/clear.gif' }
-    must_redirect_to new_project_logos_path
-    project.reload.logo.attachment_file_name.must_equal 'clear.gif'
-    project.logo.attachment_content_type.must_equal 'image/gif'
+    VCR.use_cassette('LogoClearGif') do
+      login_as @admin
+      project = projects(:linux)
+      Project.any_instance.expects(:edit_authorized?).returns(true)
+      post :create, project_id: project.id, logo: { url: 'https://www.openhub.net/images/clear.gif' }
+      must_redirect_to new_project_logos_path
+      project.reload.logo.attachment_file_name.must_equal 'clear.gif'
+      project.logo.attachment_content_type.must_equal 'image/gif'
+    end
   end
 
   it 'upload logo for organization via URL' do
-    login_as @admin
-    organization = create(:organization)
-    Organization.any_instance.expects(:edit_authorized?).returns(true)
-    post :create, organization_id: organization.id, logo: { url: 'https://www.openhub.net/images/clear.gif' }
-    must_redirect_to new_organization_logos_path
-    organization.reload.logo.attachment_file_name.must_equal 'clear.gif'
-    organization.logo.attachment_content_type.must_equal 'image/gif'
+    VCR.use_cassette('LogoClearGif') do
+      login_as @admin
+      organization = create(:organization)
+      Organization.any_instance.expects(:edit_authorized?).returns(true)
+      post :create, organization_id: organization.id, logo: { url: 'https://www.openhub.net/images/clear.gif' }
+      must_redirect_to new_organization_logos_path
+      organization.reload.logo.attachment_file_name.must_equal 'clear.gif'
+      organization.logo.attachment_content_type.must_equal 'image/gif'
+    end
   end
 
   it 'validate failure'do
-    login_as @admin
-    project = projects(:linux)
-    Project.any_instance.expects(:edit_authorized?).returns(true)
-    post :create, project_id: project.id, logo: { url: 'https://www.dummyhost.net/images/clear.gif' }
-    must_redirect_to new_project_logos_path
-    flash[:error].must_equal 'Sorry, there was a problem updating the logo'
+    VCR.use_cassette('LogoClearGif') do
+      login_as @admin
+      project = projects(:linux)
+      Project.any_instance.expects(:edit_authorized?).returns(true)
+      post :create, project_id: project.id, logo: { url: 'https://www.dummyhost.net/images/clear.gif' }
+      must_redirect_to new_project_logos_path
+      flash[:error].must_equal 'Sorry, there was a problem updating the logo'
+    end
   end
 
   it 'upload logo via desktop file' do
