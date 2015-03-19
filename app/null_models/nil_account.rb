@@ -4,4 +4,7 @@ class NilAccount < NullObject
   def actions
     Action.none
   end
+
+  def admin?
+  end
 end

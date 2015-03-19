@@ -6,11 +6,11 @@ class Organization::AffiliatedTest < ActiveSupport::TestCase
     proj2 = create(:project)
     account1 = create(:account, organization_id: proj1.organization_id)
     account2 = create(:account, organization_id: proj1.organization_id)
-    po1 = create(:position, account: account1, project: proj1, organization: proj1.organization)
+    po1 = create_position(account: account1, project: proj1, organization: proj1.organization)
     NameFact.where(analysis_id: proj1.best_analysis_id, name_id: po1.name_id).first.update_attributes(commits: 2)
-    po2 = create(:position, account: account2, project: proj1, organization: proj1.organization)
+    po2 = create_position(account: account2, project: proj1, organization: proj1.organization)
     NameFact.where(analysis_id: proj1.best_analysis_id, name_id: po2.name_id).first.update_attributes(commits: 1)
-    po3 = create(:position, account: account1, project: proj2, organization: proj2.organization)
+    po3 = create_position(account: account1, project: proj2, organization: proj2.organization)
     NameFact.where(analysis_id: proj2.best_analysis_id, name_id: po3.name_id).first.update_attributes(commits: 2)
 
     acs = proj1.organization.affiliated_committers_stats
@@ -27,8 +27,8 @@ class Organization::AffiliatedTest < ActiveSupport::TestCase
     account1 = create(:account, organization_id: proj.organization_id)
     account1.person.update_attributes(kudo_position: 100)
     account2 = create(:account, organization_id: proj.organization_id)
-    create(:position, account: account1, project: proj, organization: proj.organization)
-    create(:position, account: account2, project: proj, organization: proj.organization)
+    create_position(account: account1, project: proj, organization: proj.organization)
+    create_position(account: account2, project: proj, organization: proj.organization)
 
     accounts = proj.organization.affiliated_committers(1, 1)
     accounts.length.must_equal 1

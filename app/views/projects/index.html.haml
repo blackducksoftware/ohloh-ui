@@ -1,5 +1,6 @@
 %meta{ name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW' }
 - content_for(:html_title) { @query ? t('.page_title_query', query: @query) : t('.page_title') }
+- page_context[:select_top_menu_nav] = 'select_projects'
 
 = render partial: 'shared/search_dingus', locals: { collection: @projects, sort_context: :projects }
 .clear

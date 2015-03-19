@@ -23,7 +23,7 @@ var Charts = {
     array.each(function() {
       var chart = $(this);
       var options = chart.data();
-      var data = $.parseJSON(chart.attr('datavalue'));
+      var data = $.parseJSON(chart.attr('data-value'));
       if(options.pname) data.series.name = options.pname;
       Charts.renderChart(this, data, '200', options);
     });

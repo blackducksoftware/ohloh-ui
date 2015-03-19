@@ -71,15 +71,17 @@ class LogoTest < ActiveSupport::TestCase
   end
 
   it 'Logo Upload with valid file' do
-    logo = Logo.new(url: 'https://www.openhub.net/images/clear.gif',
-                    attachment_content_type: 'image/gif')
-    logo.save!
-    logo.errors.size.must_equal 0
-    File.basename(logo.attachment.url, File.extname(logo.attachment.url)).must_equal 'clear'
-    logo.attachment.url(:tiny).must_match 'tiny'
-    logo.attachment.url(:small).must_match 'small'
-    logo.attachment.url(:med).must_match 'med'
-    logo.errors.size.must_equal 0
+    VCR.use_cassette('LogoClearGif') do
+      logo = Logo.new(url: 'https://www.openhub.net/images/clear.gif',
+                      attachment_content_type: 'image/gif')
+      logo.save!
+      logo.errors.size.must_equal 0
+      File.basename(logo.attachment.url, File.extname(logo.attachment.url)).must_equal 'clear'
+      logo.attachment.url(:tiny).must_match 'tiny'
+      logo.attachment.url(:small).must_match 'small'
+      logo.attachment.url(:med).must_match 'med'
+      logo.errors.size.must_equal 0
+    end
   end
 
   it 'Project without logo' do

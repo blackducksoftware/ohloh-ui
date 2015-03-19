@@ -15,6 +15,17 @@ reviews:
   default:
     helpful
 
+project_users:
+  options:
+    -
+     - Name
+     - name
+    -
+     - Kudo Rank
+     - kudo_position
+  default:
+    kudo_position
+
 people:
   options:
     -
@@ -79,3 +90,5 @@ projects:
     -
       - Current Contributors
       - active_committers
+  default:
+    relevance

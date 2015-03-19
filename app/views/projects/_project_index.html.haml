@@ -50,7 +50,7 @@
         = link_to number_with_delimiter(project.active_committers), summary_project_contributors_path(project)
         %span= t('.current_contributors')
       %p
-        - if project.best_analysis && project.best_analysis.last_commit_time
+        - if !project.best_analysis.nil? && project.best_analysis.last_commit_time
           %a{ href: summary_project_commits_path(project) }= time_ago_in_words(project.best_analysis.last_commit_time)
         - else
           = link_to 0, '#'

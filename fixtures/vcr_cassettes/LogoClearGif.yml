@@ -1,0 +1,51 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://www.openhub.net/images/clear.gif
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Wed, 18 Mar 2015 14:20:38 GMT
+      Content-Type:
+      - image/gif
+      Content-Length:
+      - '43'
+      Connection:
+      - keep-alive
+      Last-Modified:
+      - Tue, 24 Feb 2015 18:51:14 GMT
+      Etag:
+      - '"54ecc822-2b"'
+      Expires:
+      - Thu, 19 Mar 2015 02:20:38 GMT
+      Cache-Control:
+      - max-age=43200
+      X-Host:
+      - sfo-web-1
+      Set-Cookie:
+      - uid=rB0lM1UJibZEcHUUA3OwAg==; expires=Thu, 17-Mar-16 14:20:38 GMT; path=/
+      Accept-Ranges:
+      - bytes
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==
+    http_version: 
+  recorded_at: Wed, 18 Mar 2015 14:21:30 GMT
+recorded_with: VCR 2.9.3
