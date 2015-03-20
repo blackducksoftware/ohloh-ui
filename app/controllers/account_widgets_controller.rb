@@ -1,7 +1,6 @@
 class AccountWidgetsController < WidgetsController
   before_filter :set_account
   before_filter :render_gif_image
-  before_filter :render_for_js_format
   before_filter :account_context, only: :index
 
   def index
