@@ -50,6 +50,7 @@ en:
   cant_edit_other_account: "You can't edit another's account."
   edit_description: Edit Description
   all_projects: All Projects
+  openhub_show: "Open Hub Forum: %{name}"
 
   destroy:
     success: 'Record deleted!'

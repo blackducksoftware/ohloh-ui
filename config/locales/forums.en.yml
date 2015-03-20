@@ -1,5 +1,6 @@
 en:
   forums:
+    openhub_show: "Open Hub Forum: %{name}"
     index:
       all_forums: 'All Forums'
       active_topics: 'Active Topics'
@@ -9,11 +10,13 @@ en:
       topics: 'Topics'
       posts: 'Posts'
       new_forum: 'New Forum'
+      openhub_forums: 'OpenHub Forums'
     edit:
       edit_forum: 'Edit Forum'
       save_forum: 'Save Forum'
       forums: 'Forums'
       cancel: 'Cancel'
+      edit_forum_title: 'Edit Forums - OpenHub'
     show:
       forums: 'Forums'
       topic: 'Topic'
@@ -25,6 +28,7 @@ en:
       create: 'Create'
       forums: 'Forums'
       new_forum: 'New Forum'
+      new_forum_title: 'New Forums - OpenHub'
     create:
       error: 'There was a problem!'
     update:
