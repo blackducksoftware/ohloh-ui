@@ -59,8 +59,8 @@ class ApplicationHelperTest < ActionView::TestCase
 
   describe 'number_with_delimiter' do
     it 'should return formatted number' do
-      number_with_delimiter(50000, delimiter: '_').must_equal '50_000'
-      number_with_delimiter(50000).must_equal '50,000'
+      number_with_delimiter(50_000, delimiter: '_').must_equal '50_000'
+      number_with_delimiter(50_000).must_equal '50,000'
       number_with_delimiter(500).must_equal '500'
       number_with_delimiter(500, delimiter: '_').must_equal '500'
     end

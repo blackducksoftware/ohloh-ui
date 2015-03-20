@@ -1,7 +1,7 @@
 class AccountWidgetsController < WidgetsController
-  before_filter :set_account
-  before_filter :render_gif_image
-  before_filter :account_context, only: :index
+  before_action :set_account
+  before_action :render_gif_image
+  before_action :account_context, only: :index
 
   def index
     @widgets = AccountWidget.create_widgets(params[:account_id])

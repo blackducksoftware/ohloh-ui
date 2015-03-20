@@ -1,12 +1,13 @@
 module WidgetsHelper
   def factoid_image_path(factoid)
-    path = case factoid.human_rating
+    path =
+      case factoid.human_rating
       when 'good' then '/assets/fact_good.png'
       when 'info' then '/assets/fact_info.png'
       when 'warning' then '/assets/fact_warning.png'
       when 'bad' then '/assets/fact_bad.png'
       else '/assets/fact_info.png'
-    end
+      end
     widget_image_url path
   end
 
