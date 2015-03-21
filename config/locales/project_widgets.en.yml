@@ -1,6 +1,7 @@
 en:
   project_widgets:
     title: 'Project Metrics by Open Hub'
+    missing: 'Missing Project Id'
     footer:
       more: 'more at'
       updated: ', updated %{at}'

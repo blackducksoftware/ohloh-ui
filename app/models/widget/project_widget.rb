@@ -1,4 +1,9 @@
 class ProjectWidget < Widget
+  def initialize(vars = {})
+    fail ArgumentError I18n.t('project_widgets.missing') unless vars[:project_id]
+    super
+  end
+
   def project
     @project ||= Project.from_param(project_id).first
   end
