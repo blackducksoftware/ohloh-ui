@@ -5,7 +5,6 @@ class OrganizationWidget::AffiliatedCommittersActivity < OrganizationWidget
 
   def title
     I18n.t('organization_widgets.affiliated_committers_activity.title')
-
   end
 
   def position
