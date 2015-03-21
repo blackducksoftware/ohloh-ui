@@ -7,10 +7,6 @@ class ProjectWidget::BasicStats < ProjectWidget
     350
   end
 
-  def border
-    1
-  end
-
   def title
     I18n.t('project_widgets.basic_stats.title')
   end

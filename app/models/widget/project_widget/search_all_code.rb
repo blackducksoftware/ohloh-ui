@@ -7,10 +7,6 @@ class ProjectWidget::SearchAllCode < ProjectWidget
     350
   end
 
-  def border
-    1
-  end
-
   def short_nice_name
     I18n.t('project_widgets.search_code.short_nice_name')
   end

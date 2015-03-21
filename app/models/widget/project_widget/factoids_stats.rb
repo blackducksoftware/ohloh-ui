@@ -7,10 +7,6 @@ class ProjectWidget::FactoidsStats < ProjectWidget
     370
   end
 
-  def border
-    1
-  end
-
   def short_nice_name
     I18n.t('project_widgets.factoids_stats.short_nice_name')
   end

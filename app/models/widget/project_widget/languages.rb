@@ -3,10 +3,6 @@ class ProjectWidget::Languages < ProjectWidget
     I18n.t('project_widgets.languages.title')
   end
 
-  def border
-    1
-  end
-
   def height
     210
   end
