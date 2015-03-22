@@ -17,13 +17,14 @@
             %option{ selected: true, value: analysis.code_total + analysis.markup_total }= t('.markup_and_code')
             %option{ value: analysis.markup_total }= t('.markup')
             %option{ value: analysis.logic_total }= t('.code_only')
-        %td{ width: "49%", bgcolor: "#F2F2F2" }
+        %td{ width: '49%', bgcolor: '#F2F2F2' }
           %span.salary
             %strong= t('.avg')
             %span.avg
               %br
               $
-              %input.right#cocomo_salary{ type: "text", value: widget.salary, size: 7, onChange: 'update_cocomo();', onKeyUp: 'update_cocomo();'}>
+              %input.right#cocomo_salary{ type: 'text', value: widget.salary, size: 7,
+              onChange: 'update_cocomo();', onKeyUp: 'update_cocomo();' }>
               = t('.year')
       %tr.second_row
         %td.first

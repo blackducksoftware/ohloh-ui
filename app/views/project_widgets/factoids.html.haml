@@ -17,10 +17,11 @@
       - if analysis.main_language
         %li
           %img{ src: widget_image_url('/assets/fact_info.png') }
-          = link_to t('.mostly_written', lang: analysis.main_language.nice_name),languages_summary_project_analysis_url(project, id: 'latest'), target: '_blank'
+          = link_to t('.mostly_written', lang: analysis.main_language.nice_name),
+          languages_summary_project_analysis_url(project, id: 'latest'), target: '_blank'
       - factoids.reject { |f| f.type.to_s =~ /FactoidDistribution|FactoidStaff/ }.each do |factoid|
         %li
-          %img{ src: factoid_image_path(factoid)}>
+          %img{ src: factoid_image_path(factoid) }>
           = link_to(factoid, project_factoids_url(project, anchor: factoid.type), target: '_blank')
 
   = render partial: 'footer', locals: { project: project }

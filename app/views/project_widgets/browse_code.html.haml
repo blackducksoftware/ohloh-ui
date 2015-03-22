@@ -9,13 +9,13 @@
     %table{ width: '100%' }
       %tr
         %td.browse_code_top{ colspan: '2' }
-          %h2.header Browse Code from....
+          %h2.header= t('.browse')
       %tr
         %td{ width: '15%' }
           = link_to project.decorate.icon(:med), ohloh_code_url, style: 'padding-bottom: 10px', target: '_blank'
         %td.project_title.center{ width: '85%' }
           = link_to(project.name.truncate(length: 50),
-            ohloh_code_url, target: '_blank', class: 'project_name', title:project.name)
+            ohloh_code_url, target: '_blank', class: 'project_name', title: project.name)
       %tr
         %td.right{ colspan: '2' }
           = render partial: 'ohloh_code_footer'

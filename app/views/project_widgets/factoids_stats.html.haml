@@ -24,20 +24,20 @@
               %img{ src: factoid_image_path(factoid) }>
               = link_to(factoid, project_factoids_path(project, anchor: factoid.type), target: '_blank')
           %li
-            %img{src: image_path('fact_info.png') }
+            %img{ src: image_path('fact_info.png') }
             = link_to t('active_contibutors', count: analysis.headcount), project_contributors_url(widget.project),
               target: '_blank'
         %p
           = t('.time_line')
           %br
-          - #TODO commits_spark_project_analysis_url(format: 'png', project_id: project.to_param, id: 'latest')
+          -# TODO commits_spark_project_analysis_url(format: 'png', project_id: project.to_param, id: 'latest')
           = image_tag 'spark.png', width: 179, height: 32
 
       - elsif project.enlistments.any?
         %p
           = t('.not_ready')
           = link_to t('.progress'), project_enlistments_url(project), target: '_blank'
-      -else
+      - else
         %p
           = t('.not_analyzed')
           = link_to t('.why'), project_enlistments_url(widget.project), target: '_blank'

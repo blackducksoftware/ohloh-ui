@@ -30,6 +30,7 @@ en:
     browse_code:
       short_nice_name: 'Browse Code'
       title: 'Browse Code by Open Hub'
+      browse: Browse Code from....
     cocomo:
       cost: '%{name} - Project Cost'
       include: 'Include'

@@ -1,3 +1,6 @@
+:ruby
+  background = '-webkit-gradient(linear, left top, right bottom, color-stop(0%, #828181), '\
+               'color-stop(55%, #A4A3A3), color-stop(130%, #828181))'
 :javascript
   function mouseOverForUsers() {
     var elem = document.getElementById('iuseit');
@@ -11,7 +14,7 @@
     elem.style.color = '#ffffff';
     elem.style.background = '#828181';
     elem.style.background = 'linear-gradient(to right, #828181, #A4A3A3, #828181)';
-    elem.style.background = '-webkit-gradient(linear, left top, right bottom, color-stop(0%, #828181), color-stop(55%, #A4A3A3), color-stop(130%, #828181))';
+    elem.style.background = #{background};
     elem.style.backgroundColor = '#828181';
   }
 

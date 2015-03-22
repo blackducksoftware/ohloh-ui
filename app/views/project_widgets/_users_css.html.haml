@@ -1,3 +1,10 @@
+:ruby
+  gradient = '-webkit-gradient(linear, left center, right center, color-stop(0%, #B6010C), '\
+             'color-stop(12%, #9B015C),color-stop(25%, #6315DF), color-stop(37%, #2A43F4), '\
+             'color-stop(50%, #01843E), color-stop(63%, #018707), color-stop(75%, #3A4F01), '\
+             'color-stop(87%, #533701), color-stop(100%, #821E01))'
+  linear = 'linear-gradient(to right, #B6010C, #9B015C, #6315DF, #2A43F4, #01843E, #018707, #3A4F01, #533701, #821E01)'
+
 = render partial: 'widgets/web_fonts'
 
 %style{ type: 'text/css' }
@@ -23,8 +30,8 @@
           width: 69px
           height: 13px
       .rainbow
-        background: -webkit-gradient(linear, left center, right center, color-stop(0%, #B6010C), color-stop(12%, #9B015C), color-stop(25%, #6315DF), color-stop(37%, #2A43F4), color-stop(50%, #01843E), color-stop(63%, #018707), color-stop(75%, #3A4F01), color-stop(87%, #533701), color-stop(100%, #821E01))
-        background: linear-gradient(to right, #B6010C, #9B015C, #6315DF, #2A43F4, #01843E, #018707, #3A4F01, #533701, #821E01)
+        background: #{gradient}
+        background: #{linear}
         background-color: #C7C7C9
       .info
         margin: 0
