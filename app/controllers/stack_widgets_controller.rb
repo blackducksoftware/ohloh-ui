@@ -12,6 +12,6 @@ class StackWidgetsController < WidgetsController
 
   def set_stack_and_widget
     @widget = StackWidget.new(stack_id: params[:stack_id])
-    @stack = Stack.where(id: params[:stack_id]).first
+    @stack = Stack.where(id: params[:stack_id]).first!
   end
 end
