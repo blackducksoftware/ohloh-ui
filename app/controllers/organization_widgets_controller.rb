@@ -10,6 +10,6 @@ class OrganizationWidgetsController < WidgetsController
   private
 
   def set_organization
-    @organization = Organization.active.from_param(params[:organization_id]).first
+    @organization = Organization.active.from_param(params[:organization_id]).first!
   end
 end

@@ -8,3 +8,4 @@
 /vagrant/.vagrant
 .env.local
 public/system/
+.sass-cache/

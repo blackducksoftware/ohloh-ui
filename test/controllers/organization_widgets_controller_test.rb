@@ -32,6 +32,13 @@ describe 'OrganizationWidgetsController' do
       assigns(:widget).class.must_equal OrganizationWidget::OpenSourceActivity
       assigns(:organization).must_equal org
     end
+
+    it 'should show not found error' do
+      get :open_source_activity, organization_id: 0
+
+      must_respond_with :ok
+      @response.body.must_equal I18n.t('widgets.not_found')
+    end
   end
 
   describe 'affiliated_committers_activity' do
@@ -50,6 +57,13 @@ describe 'OrganizationWidgetsController' do
       assigns(:widget).class.must_equal OrganizationWidget::AffiliatedCommittersActivity
       assigns(:organization).must_equal org
     end
+
+    it 'should show not found error' do
+      get :affiliated_committers_activity, organization_id: 0
+
+      must_respond_with :ok
+      @response.body.must_equal I18n.t('widgets.not_found')
+    end
   end
 
   describe 'portfolio_projects_activity' do
@@ -67,6 +81,13 @@ describe 'OrganizationWidgetsController' do
       must_render_template :iframe
       assigns(:widget).class.must_equal OrganizationWidget::PortfolioProjectsActivity
       assigns(:organization).must_equal org
+    end
+
+    it 'should show not found error' do
+      get :portfolio_projects_activity, organization_id: 0
+
+      must_respond_with :ok
+      @response.body.must_equal I18n.t('widgets.not_found')
     end
   end
 end
