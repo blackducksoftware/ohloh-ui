@@ -3,6 +3,7 @@
   stack_name = widget.stack.name
   stack_name += ' Stack' unless widget.stack.name =~ /stack/i
   url = normal_stack_stack_widgets_url(widget.vars.merge(format: 'js'))
+  script = "<script type='text/javascript' src='#{url}'></script>"
 
 .row
   .col-md-4.well
@@ -14,7 +15,7 @@
             %input.title{ type: 'text', value: stack_name }
         .control-group
           %label.control-label= t('.icon_size')
-          %label.radio{for: :small_icon}
+          %label.radio{ for: :small_icon }
             = t('.small')
             %input#small_icon{ type: 'radio', checked: 'checked', value: 16, name: 'icon_size' }
           %label.radio{ for: :medium_icon }
@@ -42,4 +43,4 @@
     %h4.margin_bottom_5= t('.embed')
     %span.help-block= t('.hint')
     %pre{ id: normal_stack_stack_widgets_url(widget.stack) }
-      = "<script type='text/javascript' src='#{url}'></script>"
+      = script
