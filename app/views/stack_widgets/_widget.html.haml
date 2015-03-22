@@ -1,9 +1,6 @@
 :ruby
   widget ||= @widget
-  stack_name = widget.stack.name
-  stack_name += ' Stack' unless widget.stack.name =~ /stack/i
-  url = normal_stack_stack_widgets_url(widget.vars.merge(format: 'js'))
-  script = "<script type='text/javascript' src='#{url}'></script>"
+  script = "<script type='text/javascript' src='#{widget_url(widget, 'stack')}'></script>"
 
 .row
   .col-md-4.well
@@ -12,7 +9,7 @@
         .control-group
           %label.control-label.required= t('.badge_title')
           .controls
-            %input.title{ type: 'text', value: stack_name }
+            %input.title{ type: 'text', value: widget.stack.friendly_name }
         .control-group
           %label.control-label= t('.icon_size')
           %label.radio{ for: :small_icon }
@@ -34,13 +31,13 @@
               %input.input-mini-num.pull-left.icons{ type: 'text', size: 4, value: widget.initial_icons_width }
               %span.help-inline= t('.icons')
               .clearfix
-  .col-md-7
+  .col-md-6.margin_left_10
     %h4.margin_bottom_5.margin_top_15= t('.preview')
     .preview
 
-  .col-md-7.embed.javascript
+  .col-md-7.embed.javascript.margin_left_10
     %p &nbsp;
     %h4.margin_bottom_5= t('.embed')
     %span.help-block= t('.hint')
-    %pre{ id: normal_stack_stack_widgets_url(widget.stack) }
+    %pre{ id: widget_url(widget, 'stack') }
       = script
