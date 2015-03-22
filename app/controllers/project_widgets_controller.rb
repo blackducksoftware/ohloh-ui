@@ -11,6 +11,6 @@ class ProjectWidgetsController < WidgetsController
   private
 
   def set_project
-    @project = Project.from_param(params[:project_id]).first
+    @project = Project.from_param(params[:project_id]).first!
   end
 end

@@ -1,8 +1,9 @@
 :ruby
   widget ||= @widget
   project = widget.project
-  #TODO: use this - url = thin_badge_project_project_widgets_url(project, format: 'gif', ref: ref || widget.class)
+  ref ||= widget.short_nice_name
+  # TODO: use this - url = thin_badge_project_project_widgets_url(project, format: 'gif', ref: ref)
   url = image_path('widget_logos/openhub_thin_badge.png')
 
-= link_to project_url(id: project.to_param, ref: ref || widget.class), target: '_blank' do
+= link_to project_url(id: project.to_param, ref: ref), target: '_blank' do
   %img{ src: url, alt: t('.alt', name: project.name), border: '0' }
