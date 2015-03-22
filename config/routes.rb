@@ -129,6 +129,7 @@ Rails.application.routes.draw do
       get :compare
       post :check_forge
     end
+    resources :duplicates
     resource :logos, only: [:new, :create, :destroy]
     resources :links, except: :show
     resources :managers, only: [:index, :new, :create, :edit, :update] do
