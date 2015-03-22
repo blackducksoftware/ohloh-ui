@@ -44,7 +44,7 @@ class Analysis < ActiveRecord::Base
     min_month.nil? || (code_total == 0)
   end
 
-  #TODO: Implemt analysis/reports.rb
+  # TODO: Implemt analysis/reports.rb
   def language_percentages
     []
   end

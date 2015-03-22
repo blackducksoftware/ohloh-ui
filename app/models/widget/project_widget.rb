@@ -25,7 +25,7 @@ class ProjectWidget < Widget
       widgets_classes = descendants.select { |widget| widget != ProjectWidget::Users }
       widgets = widgets_classes.map { |widget| widget.new(project_id: project_id) }
       widgets += ProjectWidget::Users.instantiate_styled_badges(project_id: project_id)
-      widgets.select { |w| w.can_display? }.sort_by(&:position)
+      widgets.select(&:can_display?).sort_by(&:position)
     end
   end
 end

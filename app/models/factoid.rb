@@ -3,7 +3,7 @@ class Factoid < ActiveRecord::Base
   belongs_to :language
   belongs_to :license
 
-  delegate :project, :to => :analysis
+  delegate :project, to: :analysis
 
   def human_rating
     case severity
@@ -11,7 +11,7 @@ class Factoid < ActiveRecord::Base
     when 0 then 'icon-info-sign info'
     when -2..-1 then 'icon-warning-sign warning'
     when -100..-3 then 'icon-exclamation-sign bad'
-    else fail RuntimeError, 'weird severity'
+    else fail 'weird severity'
     end
   end
 end
