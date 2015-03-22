@@ -37,7 +37,6 @@ class Analysis < ActiveRecord::Base
   end
 
   def man_years
-    return nil unless code_total
     man_years_from_loc(markup_total) + man_years_from_loc(logic_total) + man_years_from_loc(build_total)
   end
 
@@ -51,8 +50,7 @@ class Analysis < ActiveRecord::Base
   end
 
   def cocomo_value(avg_salary = AVG_SALARY)
-    return nil unless man_years
-    Analysis.calc_cocomo(man_years, avg_salary)
+    (man_years * avg_salary).to_i
   end
 
   def man_years_from_loc(loc = 0)
@@ -64,11 +62,6 @@ class Analysis < ActiveRecord::Base
       fnh = Analysis.fresh.hot
       fnh = fnh.for_lang(lang_id) unless lang_id.nil?
       fnh
-    end
-
-    def calc_cocomo(man_years, avg_salary = AVG_SALARY)
-      avg_salary ||= AVG_SALARY
-      (man_years * avg_salary).to_i
     end
   end
 
