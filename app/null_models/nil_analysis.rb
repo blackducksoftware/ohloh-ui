@@ -1,5 +1,5 @@
 class NilAnalysis < NullObject
-  attr_reader :main_language
+  attr_reader :main_language, :logged_at
 
   nought_methods :logic_total, :markup_total, :build_total
 
@@ -25,9 +25,5 @@ class NilAnalysis < NullObject
 
   def factoids
     Factoid.none
-  end
-
-  def logged_at
-    nil
   end
 end
