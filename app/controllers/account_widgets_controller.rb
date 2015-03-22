@@ -10,6 +10,6 @@ class AccountWidgetsController < WidgetsController
   private
 
   def set_account
-    @account = Account.from_param(params[:account_id]).first
+    @account = Account.from_param(params[:account_id]).first!
   end
 end

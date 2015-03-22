@@ -1,5 +1,5 @@
 :ruby
-  locals = { widget: widget, ref: widget.short_nice_name }
+  locals = { widget: widget, ref: 'sample' }
   widget_html = render(template: "#{controller_name}/#{widget.name.downcase}", locals: locals)
 
 .widget_list

@@ -23,9 +23,16 @@ describe 'AccountWidgetsController' do
       assigns(:account).must_equal account
     end
 
+    it 'should show not found error' do
+      get :detailed, account_id: 0
+
+      must_respond_with :ok
+      @response.body.must_equal I18n.t('widgets.not_found')
+    end
+
     it 'should render image for gif format' do
       skip('TODO: implement after mini_magick')
-      get :rank, account_id: account.id, format: :gif
+      get :detailed, account_id: account.id, format: :gif
 
       must_respond_with :ok
       assigns(:widgets).map(&:class).must_equal AccountWidget::Detailed
@@ -42,9 +49,16 @@ describe 'AccountWidgetsController' do
       assigns(:account).must_equal account
     end
 
+    it 'should show not found error' do
+      get :rank, account_id: 0
+
+      must_respond_with :ok
+      @response.body.must_equal I18n.t('widgets.not_found')
+    end
+
     it 'should render image for gif format' do
       skip('TODO: implement after mini_magick')
-      get :detailed, account_id: account.id, format: :gif
+      get :rank, account_id: account.id, format: :gif
 
       must_respond_with :ok
       assigns(:widgets).map(&:class).must_equal AccountWidget::Rank
@@ -59,6 +73,13 @@ describe 'AccountWidgetsController' do
       must_respond_with :ok
       assigns(:widget).class.must_equal AccountWidget::Tiny
       assigns(:account).must_equal account
+    end
+
+    it 'should show not found error' do
+      get :tiny, account_id: 0
+
+      must_respond_with :ok
+      @response.body.must_equal I18n.t('widgets.not_found')
     end
 
     it 'should render image for gif format' do

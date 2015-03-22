@@ -7,7 +7,7 @@ class WidgetsController < ApplicationController
   private
 
   def record_not_found
-    render text: 'Sorry, the widget you requested could not be found.'
+    render text: I18n.t('widgets.not_found')
   end
 
   def set_widget
