@@ -111,4 +111,26 @@ class ProjectTest < ActiveSupport::TestCase
       project.allow_redo?(:test).must_equal true
     end
   end
+
+  describe 'url cleanup' do
+    it 'should clean up url value' do
+      project.update_attributes(url: 'openhub.net/url_cleanup')
+      project.reload.url.must_equal 'http://openhub.net/url_cleanup'
+    end
+
+    it 'should clean up url value' do
+      project.update_attributes(download_url: 'openhub.net/download_url_cleanup')
+      project.reload.download_url.must_equal 'http://openhub.net/download_url_cleanup'
+    end
+
+    it 'should require url value is a valid url if present' do
+      project.update_attributes(url: 'I am a banana!')
+      project.errors.messages[:url].must_equal [I18n.t(:not_a_valid_url)]
+    end
+
+    it 'should require url value is a valid url if present' do
+      project.update_attributes(download_url: 'I am a banana!')
+      project.errors.messages[:download_url].must_equal [I18n.t(:not_a_valid_url)]
+    end
+  end
 end

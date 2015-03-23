@@ -6,10 +6,9 @@ xml.project do
   xml.created_at project.created_at.iso8601
   xml.updated_at project.updated_at.iso8601
   xml.description project.description
-  # TODO: Fix this when urls are implemented
-  # xml.homepage_url project.url
-  # xml.download_url project.download_url
-  # xml.url_name project.url_name
+  xml.homepage_url project.url
+  xml.download_url project.download_url
+  xml.url_name project.url_name
   # TODO: Fix this when s3 urls are implemented
   # if project.logo_id
   #   xml.medium_logo_url s3_url_for(project.logo, :med)
@@ -43,16 +42,15 @@ xml.project do
     xml.value project.best_analysis.activity_level.to_s
     xml.description t("projects.#{project.best_analysis.activity_level}")
   end
-  # TODO: Fix this when links are implemented
-  # if project.general_links.any?
-  #   xml.links do
-  #     project.general_links.each do |link|
-  #       xml.link do
-  #         xml.title link.title
-  #         xml.url link.url
-  #         xml.category link.category
-  #       end
-  #     end
-  #   end
-  # end
+  if project.links.general.any?
+    xml.links do
+      project.links.general.each do |link|
+        xml.link do
+          xml.title link.title
+          xml.url link.url
+          xml.category link.category
+        end
+      end
+    end
+  end
 end

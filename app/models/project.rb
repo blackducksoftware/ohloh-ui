@@ -33,10 +33,9 @@ class Project < ActiveRecord::Base
 
   validates :name, presence: true, length: 1..100, allow_nil: false, uniqueness: true, case_sensitive: false
   validates :description, length: 0..800, allow_nil: true # , if: proc { |p| p.validate_url_name_and_desc == 'true' }
-  # TODO: When Links are merged
-  # validates_each :url, :download_url, allow_blank: true do |record, field, value|
-  #   record.errors.add field, 'not a valid url' unless UrlValidation.valid_http_url?(value)
-  # end
+  validates_each :url, :download_url, allow_blank: true do |record, field, value|
+    record.errors.add(field, I18n.t(:not_a_valid_url)) unless value.valid_http_url?
+  end
   before_validation :clean_strings_and_urls
 
   attr_accessor :managed_by_creator
@@ -96,9 +95,6 @@ class Project < ActiveRecord::Base
   def clean_strings_and_urls
     self.name = String.clean_string(name)
     self.description = String.clean_string(description)
-    # TODO: fix these once we have links implemented
-    # self.url = String.clean_url(url)
-    # self.download_url = String.clean_url(download_url)
   end
 
   def sanitize(sql)

@@ -50,6 +50,7 @@ en:
   cant_edit_other_account: "You can't edit another's account."
   edit_description: Edit Description
   all_projects: All Projects
+  not_a_valid_url: "not a valid url"
 
   destroy:
     success: 'Record deleted!'

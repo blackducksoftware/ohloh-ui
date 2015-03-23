@@ -19,6 +19,7 @@ class Link < ActiveRecord::Base
 
   scope :homepage, -> { where(link_category_id: CATEGORIES[:Homepage]) }
   scope :download, -> { where(link_category_id: CATEGORIES[:Download]) }
+  scope :general, -> { where(link_category_id: [CATEGORIES[:Homepage], CATEGORIES[:Download]]) }
 
   validates :title, length: { in: 3..60 }, presence: true
   validates :url, presence: true,

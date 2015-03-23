@@ -46,9 +46,8 @@ module ProjectAssociations
     end
 
     def url=(uri)
-      @url_uri = uri
-      link = links.homepage.first_or_initialize
-      update_link_uri(link, @url_uri, 'Homepage')
+      @url_uri = String.clean_url(uri)
+      update_link_uri(links.homepage.first_or_initialize, @url_uri, 'Homepage')
     end
 
     def download_url
@@ -58,9 +57,8 @@ module ProjectAssociations
     end
 
     def download_url=(uri)
-      @download_url_uri = uri
-      link = links.download.first_or_initialize
-      update_link_uri(link, @download_url_uri, 'Download')
+      @download_url_uri = String.clean_url(uri)
+      update_link_uri(links.download.first_or_initialize, @download_url_uri, 'Download')
     end
 
     private

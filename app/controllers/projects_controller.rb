@@ -53,17 +53,6 @@ class ProjectsController < ApplicationController
   def check_forge
     if @projects.empty? || params[:bypass]
       populate_project_from_forge
-      #
-      # if @project.project_repositories.first
-      #   repo_match = Forge::Match.first(@project.project_repositories.first.url)
-      #   if match != repo_match
-      #     flash.now[:notice] =  "#{match.forge.name} suggested a different code location for \"#{CGI::escapeHTML
-      #       code_location}\". You can change this below."
-      #     @project.errors.add(:repositories, "suggested code location")
-      #   else
-      #     flash.now[:notice] =  "Project data was successfully fetched from #{match.forge.name}"
-      #   end
-      # end
     else
       flash.now[:notice] =  (@projects.length == 1) ? t('.code_location_single') : t('.code_location_multiple')
       render template: 'projects/check_forge_duplicate'
