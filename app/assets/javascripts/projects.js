@@ -31,7 +31,7 @@ ProjectForm = {
         var $input = $("<input />", {
                         type: 'text',
                         style: 'display:none;',
-                        name: 'project[project_license_ids][][id]',
+                        name: 'project[project_licenses_attributes][][license_id]',
                         'class': 'license_id_' + ui.item.id,
                         value: ui.item.id });
         $input.insertAfter($('#add_license'));

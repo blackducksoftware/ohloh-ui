@@ -7,9 +7,10 @@
   message = t('.message_2') if no_code_available
   message = t('.message_3') if analysis_not_complete
 .no_analysis_message
-  .alert.alert-info.alert-block.col-md-8
-    %h3= bootstrap_icon('icon-info-sign', message)
-    .indent{ style: 'padding-left: 30px;' }
+  .alert.alert-info.alert-block.col-md-6{ style: 'padding-left: 30px;' }
+    .title
+      %h3!= bootstrap_icon('icon-info-sign', message)
+    .indent{ style: 'margin-top: 15px;' }
       - if no_recognized_code
         %p= t('.help_1')
       - if no_code_available

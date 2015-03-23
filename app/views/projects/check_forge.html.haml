@@ -28,13 +28,14 @@
               .control-group.nomargin
                 %label.control-label.required= t('.project_source_code')
                 .controls.chosen#value_select
-                  %select.chzn-select.value-select#repository_type{ name: 'project[repositories][][type]',
+                  - nested_repository_prefix = 'project[enlistments_attributes][][repository_attributes]'
+                  %select.chzn-select.value-select#repository_type{ name: "#{nested_repository_prefix}[type]",
                                                                     style: 'width:100px;' }
                     = repository_options_for_select(first_repo)
-                  %input#repository_url{ name: 'project[repositories][][url]', type: 'text',
+                  %input#repository_url{ name: "#{nested_repository_prefix}[url]", type: 'text',
                                          value: first_repo.url, style: 'width: 265px; margin-bottom: 1px;' }
                   - if first_repo.type == 'GitRepository'
-                    %input#repository_branch_name{ name: 'project[repositories][][branch_name]', type: 'text',
+                    %input#repository_branch_name{ name: "#{nested_repository_prefix}[branch_name]", type: 'text',
                                                    value: first_repo.branch_name.presence || 'master',
                                                    style: 'width: 105px; margin-bottom: 1px;' }
                   .clear_left
@@ -79,7 +80,7 @@
                       %a.btn.btn-mini.remove_license.btn-danger{ href: '' }
                         %i.icon-trash= t '.remove'
                     %input{ type: 'hidden', value: license.id,
-                            name: 'project[project_license_ids][][id]' }
+                            name: 'project[project_licenses_attributes][][license_id]' }
                 - if @project.licenses.empty?
                   .license.inset= t('.none')
             .clearfix

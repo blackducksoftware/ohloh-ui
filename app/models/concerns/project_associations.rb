@@ -66,9 +66,18 @@ module ProjectAssociations
     private
 
     def update_link_uri(link, uri, title)
+      uri.blank? ? remove_link(link) : add_link(link, uri, title)
+    end
+
+    def add_link(link, uri, title)
       CreateEdit.where(target: link).first.redo!(editor_account) if link.deleted
       link.assign_attributes(url: uri, title: title, editor_account: editor_account)
       links << link if link.project_id.blank?
+    end
+
+    def remove_link(link)
+      CreateEdit.where(target: link).first.undo!(editor_account) if link.persisted?
+      links.delete(link)
     end
   end
 end
