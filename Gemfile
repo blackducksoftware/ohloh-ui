@@ -30,7 +30,6 @@ group :development, :vagrant do
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
   gem 'pry-rails'
-  gem 'letter_opener'
 end
 
 group :test do

@@ -51,6 +51,7 @@ en:
   edit_description: Edit Description
   all_projects: All Projects
   openhub_show: "Open Hub Forum: %{name}"
+  openhub: "OpenHub"
 
   destroy:
     success: 'Record deleted!'

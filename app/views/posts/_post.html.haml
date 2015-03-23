@@ -1,7 +1,6 @@
-
 .well{ style: "#{Account::Access.new(post.account).admin? ? 'background: #D5E3E9;' : ''}" }
   / TODO: This code on line 5 causes an encoding issue and relates to ticket OTWO-3419
-  / for BlueCloth. 
+  / for BlueCloth.
   = String.clean_string(post.body)
   .clearfix.margin_top_10
     .col-md-3.pull-right

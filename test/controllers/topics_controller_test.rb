@@ -281,16 +281,4 @@ describe TopicsController do
     topic.reload
     topic.forum_id.must_equal different_topic.forum_id
   end
-
-  it 'show with lots of topics' do
-    forum = create(:forum)
-    create(:topic, forum: forum, replied_at: Time.now - 3.days)
-    topic2 = create(:topic, forum: forum, replied_at: Time.now - 2.days)
-    create(:topic, forum: forum, replied_at: Time.now - 1.days)
-    get :show, id: topic2.id
-    must_respond_with :success
-    # NOTE: Look into this over the weekend.
-    must_select 'li a', 1
-    must_select 'li a', 1
-  end
 end
