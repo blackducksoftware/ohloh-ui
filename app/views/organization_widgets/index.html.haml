@@ -1,3 +1,10 @@
+- page_context[:select_footer_nav] = :widgets
+- content_for :html_title do
+  = succeed ' : Organization Widgets' do
+    = @organization.name
+
+=  render partial: 'organizations/show/header'
+
 .project_content_title.margin_bottom_10
   %h2= t('.title')
   %p= t('.embed')
@@ -5,3 +12,5 @@
 .clearfix
   - @widgets.each do |widget|
     = render partial: 'widget', locals: { widget: widget, type: 'organization' }
+
+.mezzo.margin_top_15

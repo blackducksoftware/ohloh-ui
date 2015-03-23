@@ -2,6 +2,7 @@ class OrganizationWidgetsController < WidgetsController
   before_action :set_organization
   before_action :render_not_supported_thin_badge
   before_action :render_for_js_format
+  before_action :organization_context, only: :index
 
   def index
     @widgets = OrganizationWidget.create_widgets(params[:organization_id])
