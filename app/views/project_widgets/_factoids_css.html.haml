@@ -1,7 +1,14 @@
 = render partial: 'widgets/web_fonts'
 
-%style
-  :sass
+:sass
+  .factoids
+    padding: 10px
+    width: 312px
+    color: #444
+    font-family: Open Sans
+    font-size: 12px
+    background-color: #ffffff
+    border:thin #000 solid
     li
       a
         color: #336699
@@ -9,21 +16,13 @@
         &:hover
           color: #336699
           text-decoration: underline !important
-    .factoids
-      padding: 10px
-      width: 312px
-      color: #444
-      font-family: Open Sans
-      font-size: 12px
-      background-color: #ffffff
-      border:thin #000 solid
-      ul
-        list-style-type: none
-        margin: 0pt 6px 3px 0px
-        padding-bottom: 20px
-        padding-left: 0pt
-        line-height: 18px
-        li
-          img
-            vertical-align: -18%
-            padding-right: 5px
+    ul
+      list-style-type: none
+      margin: 0pt 6px 3px 0px
+      padding-bottom: 20px
+      padding-left: 0pt
+      line-height: 18px
+      li
+        img
+          vertical-align: -18%
+          padding-right: 5px

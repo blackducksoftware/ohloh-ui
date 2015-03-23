@@ -1,42 +1,41 @@
 = render partial: 'widgets/web_fonts'
 
-%style
-  :sass
-    div.gadget
-      font-size: 10px
-      width: 312px
-      margin-left: 0px!important
-      font-family: Open Sans
-      border: thin solid #000000
-      padding: 10px
-      img
-        border: none
-      p
-        line-height: 1.5em
-        margin: 0 0 0.5em 0
-      h3
-        font-size: 16px
-        font-weight: 800
-        margin-top: 0
-        border: none
-        a
+:sass
+  div.gadget
+    font-size: 10px
+    width: 312px
+    margin-left: 0px!important
+    font-family: Open Sans
+    border: thin solid #000000
+    padding: 10px
+    img
+      border: none
+    p
+      line-height: 1.5em
+      margin: 0 0 0.5em 0
+    h3
+      font-size: 16px
+      font-weight: 800
+      margin-top: 0
+      border: none
+      a
+        color: #000 !important
+        text-decoration: none
+        &:hover
           color: #000 !important
-          text-decoration: none
-          &:hover
-            color: #000 !important
-            text-decoration: underline
-      .logo
-        float: left
-        a
-          text-decoration: none !important
-      .main
-        margin-left: 80px
-      .updated
-        clear: both
-        padding-top: 1em
-        p
-          font-size: smaller
-          color: #aaa
-      .more_at_ohloh
-        float: right
+          text-decoration: underline
+    .logo
+      float: left
+      a
+        text-decoration: none !important
+    .main
+      margin-left: 80px
+    .updated
+      clear: both
+      padding-top: 1em
+      p
+        font-size: smaller
+        color: #aaa
+    .more_at_ohloh
+      float: right
 

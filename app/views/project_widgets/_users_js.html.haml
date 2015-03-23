@@ -2,15 +2,15 @@
   background = '-webkit-gradient(linear, left top, right bottom, color-stop(0%, #828181), '\
                'color-stop(55%, #A4A3A3), color-stop(130%, #828181))'
 :javascript
-  function mouseOverForUsers() {
-    var elem = document.getElementById('iuseit');
+  function mouseOverForUsers(parent) {
+    var elem = parent.getElementsByClassName('used_link')[0];
     elem.style.background = '#ffffff';
     elem.style.backgroundColor = '#ffffff';
     elem.style.color = '#000000';
   }
 
-  function mouseOutForUsers() {
-    var elem= document.getElementById('iuseit');
+  function mouseOutForUsers(parent) {
+    var elem = parent.getElementsByClassName('used_link')[0];
     elem.style.color = '#ffffff';
     elem.style.background = '#828181';
     elem.style.background = 'linear-gradient(to right, #828181, #A4A3A3, #828181)';
@@ -18,12 +18,12 @@
     elem.style.backgroundColor = '#828181';
   }
 
-  function mouseOverForUsersWithoutStyle() {
-    document.getElementById('iuseit').style.color = '#000';
-    document.getElementById('iuseit').style.fontWeight = 'bold';
+  function mouseOverForUsersWithoutStyle(parent) {
+    parent.getElementsByClassName('non_css_used_link')[0].style.color = '#000';
+    parent.getElementsByClassName('non_css_used_link')[0].style.fontWeight = 'bold';
   }
 
-  function mouseOutForUsersWithoutStyle() {
-    document.getElementById('iuseit').style.color = '#5F6062';
-    document.getElementById('iuseit').style.fontWeight = 'normal';
+  function mouseOutForUsersWithoutStyle(parent) {
+    parent.getElementsByClassName('non_css_used_link')[0].style.color = '#5F6062';
+    parent.getElementsByClassName('non_css_used_link')[0].style.fontWeight = 'normal';
   }

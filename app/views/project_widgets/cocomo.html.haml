@@ -3,8 +3,8 @@
   project = widget.project
   analysis = project.best_analysis
 
-= render partial: 'cocomo_js'
 = render partial: 'cocomo_css'
+= render partial: 'cocomo_js'
 
 .cocomo
   %h2= t('.cost', name: truncate(project.name, length: 50))
