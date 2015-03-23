@@ -1,0 +1,15 @@
+- locals = { widget: widget, ref: widget.short_nice_name }
+
+.widget_list
+  .row{ style: 'margin-left: -15px' }
+    .col-md-10
+      %h3.inset_top.no_padding_top
+        = widget.short_nice_name
+    .col-md-4.col{ id: "iframe_#{widget.name.underscore}_#{widget.position}" }
+      %div{ style: "height: #{widget.height}px; width: #{widget.width}px; border: none" }
+        = render template: "#{controller_name}/#{widget.name.underscore}", locals: locals
+    .col-md-7.col.pull-right
+      %h6.no_margin_top HTML
+      %p= t('.embed')
+      %pre.prettyprint
+        = "<script type='text/javascript' src='#{widget_url(widget, type)}'></script>"

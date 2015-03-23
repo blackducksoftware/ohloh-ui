@@ -1,0 +1,6 @@
+en:
+  widgets:
+    title: 'Metrics by the Black Duck Open Hub'
+    description: "The Black Duck Open Hub is an open source network that connects people through the software they create and use. Open Hub's gadgets provide detailed statistics about open source software projects and developers."
+    widget:
+      embed: 'Embed this in your web page:'
