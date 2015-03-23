@@ -7,7 +7,7 @@
       %h3= t('.post_a_response')
       = form_for Post.new, url: topic_posts_path(@topic) do |f|
         = render partial: 'posts/fields', locals: { f: f }
-    .col-md-2.pull-right.margin_top_15
+    .col-md-2.margin_top_15.margin_left_25
       = render 'shared/markdown_help'
 
 - else

@@ -18,4 +18,16 @@ class NameFactTest < ActiveSupport::TestCase
 
     [nf4, nf2, nf1, nf3].sort.map(&:id).must_equal [nf1.id, nf2.id, nf3.id, nf4.id]
   end
+
+  describe 'active' do
+    it 'must be true when last_checkin is less than 1 year ago' do
+      name_fact = NameFact.new(last_checkin: 11.months.ago)
+      name_fact.must_be :active?
+    end
+
+    it 'wont be true when last checking is more than 1 year ago' do
+      name_fact = NameFact.new(last_checkin: 1.year.ago)
+      name_fact.wont_be :active?
+    end
+  end
 end

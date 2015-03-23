@@ -1,0 +1,7 @@
+.chosen.select-language-experiences#value_select
+  %select.chzn-select{ name: 'position[language_exp][]', multiple: true, 'data-placeholder' => t('.select_prompt') }
+    - all_languages = Language.order('lower(nice_name) ASC').pluck(:id, :nice_name)
+    - existing_experience_ids = @position.language_experiences.pluck(:language_id)
+    - all_languages.each do |id, language_name|
+      %option{ value: @position.id, selected: existing_experience_ids.include?(id) }
+        = language_name

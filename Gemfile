@@ -14,7 +14,6 @@ gem 'oh_delegator'
 gem 'ohno-you-dont', require: 'ohno'
 gem 'paperclip'
 gem 'pg'
-gem 'pg_search'
 gem 'rails'
 gem 'rubocop'
 gem 'recaptcha', github: 'ambethia/recaptcha'
@@ -27,23 +26,25 @@ gem 'uglifier'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 
-group :development do
+group :development, :vagrant do
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
+  gem 'pry-rails'
+  gem 'letter_opener'
 end
 
-group :development, :test, :vagrant do
+group :test do
   gem 'byebug'
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'flog'
   gem 'haml-lint', '~> 0.11'
-  gem 'letter_opener'
   gem 'minitest-rails'
   gem 'mocha'
-  gem 'pry-rails'
   gem 'ruby_parser'
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'spring'
+  gem 'vcr'
+  gem 'webmock'
 end

@@ -1,0 +1,25 @@
+%div
+  - if position.language_experiences.any?
+    %p
+      %strong
+        = succeed ':' do
+          = t('languages')
+        &nbsp;&nbsp;&nbsp;
+      - position.language_experiences.each do |language_experience|
+        %span.badge
+          = language_experience.language.nice_name
+      &nbsp;
+    %p
+
+%div
+  - if position.project_experiences.any?
+    %p
+      %strong
+        = succeed ':' do
+          = t('technologies')
+        &nbsp;&nbsp;&nbsp;
+      - position.project_experiences.each do |project_experience|
+        = link_to project_experience.project do
+          %span.badge
+            = project_experience.project.name
+      &nbsp;

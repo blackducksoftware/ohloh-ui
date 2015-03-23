@@ -1,4 +1,5 @@
 en:
+  at: at
   about: 'About'
   password: 'Password'
   login: 'Login'
@@ -13,6 +14,7 @@ en:
   affiliation: Affiliation
   clear: Clear
   cancel: 'Cancel'
+  remove: Remove
   edit: 'Edit'
   new: 'New'
   is_invalid: 'is invalid'
@@ -46,6 +48,14 @@ en:
   project_page_title: "The %{project_name} Open Source Project on Open Hub"
   edit_permission_failed: "You are not authorized to edit this #{klass}"
   cant_edit_other_account: "You can't edit another's account."
+  edit_description: Edit Description
+  all_projects: All Projects
+  openhub_show: "Open Hub Forum: %{name}"
+
+  destroy:
+    success: 'Record deleted!'
+    failure: 'There was a problem deleting!'
+
   expander:
     more: "[More]"
     less: "[Less]"
@@ -72,6 +82,7 @@ en:
   stacks_title: 'Stacks'
   contribution: 'Contributions'
   languages: 'Languages'
+  technologies: Technologies
   recognition: 'Recognition'
   kudos_menu: 'Kudos'
   usage: 'Usage'
@@ -291,3 +302,6 @@ en:
             url:
               taken: 'has already been submitted'
               invalid_url: 'Invalid Link URL'
+
+  project_experience:
+    no_matching_project: No matching open source project with this name.

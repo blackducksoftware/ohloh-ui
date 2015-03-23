@@ -1,0 +1,21 @@
+chart:
+  backgroundColor: transparent
+  style:
+    background-image: url('/assets/charts/watermark_914.png')
+    background-repeat: no-repeat
+    background-position: '50% 50%'
+plotOptions:
+  series:
+    pointWidth:
+    minPointLength: 3
+yAxis:
+  showFirstLabel: false
+xAxis:
+  labels:
+    align: left
+  labels:
+    rotation: 0
+    step: 1
+colors: ['#2f7ed8']
+legend:
+  enabled: false

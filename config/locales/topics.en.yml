@@ -3,6 +3,7 @@ en:
     new:
       forums: 'Forums'
       create_topic: 'Post Topic'
+      new_topic: 'New Topics - OpenHub'
     show:
       next_topic_html: 'Next Topic&rarr;'
       previous_topic_html: '&larr;Previous Topic'
@@ -10,6 +11,7 @@ en:
       close_topic_message_1: 'Comments to this topic are now closed.'
       closed_topic_message_2: 'Comments to this topic are now closed. Please create a new topic to get technical support.'
       closed_topic_message_3: 'The user who created the topic can reopen this topic at any time.'
+      topic_show: "%{forum} : %{topic}"
     action_group:
       forums: 'Forums'
       close: 'Close'
@@ -32,6 +34,7 @@ en:
       closed: 'Closed'
       save_changes: 'Save Changes'
       enter_topic_title: "Enter the topic's title."
+      edit_topic: "Edit Topic - Openhub"
     destroy:
       success: "Topic '%{topic_title}' was deleted."
     form:

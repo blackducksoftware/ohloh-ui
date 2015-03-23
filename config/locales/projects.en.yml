@@ -20,6 +20,7 @@ en:
     i_use_this: "I Use This"
     more: "[More]"
     less: "[Less]"
+    html_title: "The %{name} Open Source Project : %{title}"
     index:
       page_title: "Open Hub Projects"
       page_title_query: "%{query} - Open Hub Project Search"
@@ -135,6 +136,11 @@ en:
     deleted:
       message: '%{name} has been deleted'
       failed: 'failed'
+    users:
+      title: 'Users'
+      default: 'Default'
+      contributions: 'Contributions'
+      kudo_rank: 'Kudo Rank'
     new:
       call_to_action: "Add a new project to Open Hub"
       help1: "Open Hub can automatically fetch project information from some forges: Bitbucket, GitHub, Google Code, Launchpad and SourceForge."
@@ -158,7 +164,7 @@ en:
       about2: "The project URL must also be unique across all of Open Hub."
       about3: "The project description will appear on the project's summary page. Please be concise, but highlight unique aspects and key features."
     update:
-      success: "Project updated"
+      success: "Project changes were saved successfully!"
     estimated_cost:
       page_title: "The %{name} Open Source Project on Open Hub : Estimated Cost Page"
       estimated_cost: "Estimated Cost"

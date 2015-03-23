@@ -1,3 +1,6 @@
+- content_for :html_title do
+  = t('.new_forum_title')
+
 - if flash[:alert]
   = render 'forums/error_alert'
 
@@ -13,5 +16,6 @@
   .col-md-7
     = form_for @forum do |f|
       = render partial: 'form', locals: { f: f }
-      = f.submit t('.create'), class: 'btn btn-primary btn-small', style: 'margin-top: 20px;'
+      .actions
+        = f.submit t('.create'), class: 'btn btn-primary btn-small', style: 'margin-top: 20px;'
   .clear

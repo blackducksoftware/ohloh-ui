@@ -5,7 +5,7 @@ class Account::OrganizationCoreTest < ActiveSupport::TestCase
     @org = create(:organization)
     @account = create(:account, organization: @org)
     @project = create(:project, organization: @org)
-    @position = create(:position, project: @project, account: @account, organization: @org)
+    @position = create_position(project: @project, account: @account, organization: @org)
     @account_org = Account::OrganizationCore.new(@account.id)
   end
 
