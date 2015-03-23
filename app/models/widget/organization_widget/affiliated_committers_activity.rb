@@ -8,6 +8,6 @@ class OrganizationWidget::AffiliatedCommittersActivity < OrganizationWidget
   end
 
   def position
-    2
+    3
   end
 end

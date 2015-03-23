@@ -10,8 +10,8 @@ en:
       commits: 'Commits'
       to: 'to'
     affiliated_committers_activity:
-      title: 'Affiliated Committers Activity'
-      short_nice_name: 'Affiliates to Portfolio Projects'
+      title: 'Affiliates to Portfolio Projects'
+      short_nice_name: 'Affiliated Committers Activity'
       affiliates: 'Affiliates'
       portfolio: 'Portfolio Projects'
     open_source_activity:

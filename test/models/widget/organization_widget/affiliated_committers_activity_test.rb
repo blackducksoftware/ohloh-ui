@@ -5,8 +5,8 @@ class AffiliatedCommittersActivityTest < ActiveSupport::TestCase
   let(:widget) { OrganizationWidget::AffiliatedCommittersActivity.new(organization_id: org.id) }
 
   describe 'position' do
-    it 'should return 2' do
-      widget.position.must_equal 2
+    it 'should return 3' do
+      widget.position.must_equal 3
     end
   end
 

@@ -8,6 +8,6 @@ class OrganizationWidget::PortfolioProjectsActivity < OrganizationWidget
   end
 
   def position
-    3
+    2
   end
 end

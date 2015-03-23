@@ -17,8 +17,8 @@ class PortfolioProjectsActivityTest < ActiveSupport::TestCase
   end
 
   describe 'position' do
-    it 'should return 3' do
-      widget.position.must_equal 3
+    it 'should return 2' do
+      widget.position.must_equal 2
     end
   end
 end
