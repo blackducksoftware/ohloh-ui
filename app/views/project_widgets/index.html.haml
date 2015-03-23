@@ -1,3 +1,8 @@
+- content_for :html_title do
+  The
+  = @project.name
+  Open Source Project Widgets Page
+
 - page_context[:select_footer_nav] = :widgets
 
 = render partial: 'projects/header'
@@ -9,3 +14,5 @@
     .clearfix
     - @widgets.each do |widget|
       = render partial: 'widget', locals: { widget: widget, type: 'project', ref: 'sample' }
+
+.mezzo.margin_top_15
