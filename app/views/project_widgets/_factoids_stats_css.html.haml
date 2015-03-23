@@ -1,7 +1,7 @@
 = render partial: 'widgets/web_fonts'
 
 :sass
-  .gadget
+  .factoid_stats
     font-size: 12px
     width: 370px
     margin-left: 0px !important
@@ -26,6 +26,9 @@
           color: #000 !important
           text-decoration: underline
     .logo
+      min-width: 64px
+      min-height: 64px
+      margin: 3px 10px 115px 0px
       float: left
       a
         text-decoration: none !important
@@ -40,6 +43,18 @@
           &:hover
             color: #336699
             text-decoration: underline !important
+      ul
+        list-style-type: none
+        margin: 0pt 0px 3px 0px
+        padding-bottom: 0px
+        padding-left: 0pt
+        line-height: 16px
+        position: relative
+        top: -13px
+        li
+          img
+            vertical-align: -25%
+            padding-right: 5px
     .updated
       clear: both
       padding-top: 1em
@@ -49,20 +64,3 @@
         color: #aaa
     .more_at_ohloh
       float: right
-  .logo
-    min-width: 64px
-    min-height: 64px
-    margin: 3px 10px 115px 0px
-  .main
-    ul
-      list-style-type: none
-      margin: 0pt 0px 3px 0px
-      padding-bottom: 0px
-      padding-left: 0pt
-      line-height: 16px
-      position: relative
-      top: -13px
-      li
-        img
-          vertical-align: -25%
-          padding-right: 5px
