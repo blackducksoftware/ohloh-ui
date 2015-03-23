@@ -11,13 +11,11 @@ module WidgetsHelper
   end
 
   def widget_image_url(source)
-    return source if source.starts_with?('http')
-    source = "/#{source}" unless source.starts_with?('/')
-    "#{request.protocol}#{request.host_with_port}#{source}"
+    source.starts_with?('http') ? source : asset_url(source)
   end
 
   def widget_ohloh_logo_url
-    widget_image_url 'assets/widget_logos/openhublogo.png'
+    widget_image_url 'widget_logos/openhublogo.png'
   end
 
   def widget_url(widget, type)
