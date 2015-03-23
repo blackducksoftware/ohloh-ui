@@ -1,0 +1,22 @@
+:ruby
+  locals = { widget: widget, ref: 'sample' }
+  widget_html = render(template: "#{controller_name}/#{widget.name.downcase}", locals: locals)
+
+.widget_list
+  .row{ style: 'margin-left: -15px' }
+    .col-md-10
+      %h3.inset_top.no_padding_top
+        = widget.short_nice_name
+    .col-md-5.col
+      = widget_html
+    .col-md-6.col
+      %h6.no_margin_top HTML
+      %p= t('.embed')
+      %pre.prettyprint
+        = CGI.unescapeHTML(CGI.escapeHTML(widget_html))
+      %hr.one
+      %h6 BBCode
+      %p
+        %span.soft= t('.bbc')
+      %pre.prettyprint
+        = h render(template: "#{controller_name}/#{widget.name.downcase}", locals: locals.merge(bbc: true))

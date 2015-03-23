@@ -34,7 +34,13 @@ Rails.application.routes.draw do
     resources :projects, only: [:index]
     resources :positions, only: [:index]
     resources :stacks, only: [:index]
-    resources :widgets, only: [:index]
+    resources :account_widgets, path: :widgets, only: :index do
+      collection do
+        get :detailed
+        get :tiny
+        get :rank
+      end
+    end
     resources :kudos, only: [:index] do
       collection do
         get :sent

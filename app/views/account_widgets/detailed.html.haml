@@ -1,0 +1,9 @@
+:ruby
+  widget ||= @widget
+  bbc ||= false
+  account = widget.account
+  ref ||= widget.class
+  # TODO: image = detailed_account_account_widgets_url(account, format: 'gif', ref: ref)
+  image = image_url('widget_logos/openhub_partner_badge.png')
+
+= render partial: 'bbc_or_js', locals: { bbc: bbc, widget: widget, url: account_url(account, ref: ref), image: image }

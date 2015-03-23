@@ -1,0 +1,16 @@
+en:
+  account_widgets:
+    title: 'Contributor Statistics'
+    missing: 'Missing account_id'
+    bbc_or_js:
+      alt: 'Open Hub profile for %{name}'
+    detailed:
+      image_name: 'acc.name error'
+    index:
+      embed: 'You can embed Open Hub widgets in your web site.'
+      widgets: 'Widgets'
+      select: 'Select any widget from the gallery below.'
+      asks: 'Open Hub asks that if you include links to these images, that you wrap them with a link as shown above. If we find a widget that is creating a lot of traffic without a link back to Open Hub, we may shut off that image.'
+    widget:
+      embed: 'Embed this in your web page:'
+      bbc: 'Used in some forums, bulletin boards, wikis'

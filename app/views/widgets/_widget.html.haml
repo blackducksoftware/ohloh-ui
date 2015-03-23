@@ -12,4 +12,4 @@
       %h6.no_margin_top HTML
       %p= t('.embed')
       %pre.prettyprint
-        = "<script type='text/javascript' src='#{widget_url(widget, type)}'></script>"
+        = html_escape "<script type='text/javascript' src='#{widget_url(widget, type)}'></script>"

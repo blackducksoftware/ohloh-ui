@@ -1,12 +1,13 @@
 module WidgetsHelper
   def factoid_image_path(factoid)
-    path = case factoid.human_rating
-      when 'good' then "/assets/fact_good.png"
-      when 'info' then "/assets/fact_info.png"
-      when 'warning' then "/assets/fact_warning.png"
-      when 'bad' then "/assets/fact_bad.png"
-      else "/assets/fact_info.png"
-    end
+    path =
+      case factoid.human_rating
+      when 'good' then '/assets/fact_good.png'
+      when 'info' then '/assets/fact_info.png'
+      when 'warning' then '/assets/fact_warning.png'
+      when 'bad' then '/assets/fact_bad.png'
+      else '/assets/fact_info.png'
+      end
     widget_image_url path
   end
 
@@ -32,17 +33,5 @@ module WidgetsHelper
 
   def widget_iframe_style(widget)
     "height: #{widget.height}px; width: #{widget.width}px; border: none"
-  end
-
-  def html_to_bbcode_for_widget(html)
-    url_text = 'url'
-    img_text = 'img'
-    result = html.gsub(/\n/, '')
-    result.gsub!(/\t/, '')
-    result.gsub!(/<a +href *= *\\*\"([^"]*)\">/, "[#{url_text}=\\1]")
-    result.gsub!(/<a +href *= *\\*\'([^"]*)\'>/, "[#{url_text}=\\1]")
-    result.gsub!('</a>',"[/#{url_text}]")
-    result.gsub!(/<img +.*src *= *'([^"']*)'.*>/i, "[#{img_text}]\\1[/#{img_text}]")
-    result.strip
   end
 end
