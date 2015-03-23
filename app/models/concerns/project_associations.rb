@@ -31,5 +31,44 @@ module ProjectAssociations
     has_many :named_commits, ->(proj) { where(analysis_id: (proj.best_analysis_id || 0)) }
     has_many :commit_flags, -> { order(time: :desc).where('commit_flags.sloc_set_id = named_commits.sloc_set_id') },
              through: :named_commits
+
+    accepts_nested_attributes_for :enlistments
+    accepts_nested_attributes_for :project_licenses
+
+    def assign_editor_account_to_associations
+      [aliases, enlistments, project_licenses, links].flatten.each { |obj| obj.editor_account = editor_account }
+    end
+
+    def url
+      return @url_uri if @url_uri
+      link = links.homepage.first
+      link ? link.url : nil
+    end
+
+    def url=(uri)
+      @url_uri = uri
+      link = links.homepage.first_or_initialize
+      update_link_uri(link, @url_uri, 'Homepage')
+    end
+
+    def download_url
+      return @download_url_uri if @download_url_uri
+      link = links.download.first
+      link ? link.url : nil
+    end
+
+    def download_url=(uri)
+      @download_url_uri = uri
+      link = links.download.first_or_initialize
+      update_link_uri(link, @download_url_uri, 'Download')
+    end
+
+    private
+
+    def update_link_uri(link, uri, title)
+      CreateEdit.where(target: link).first.redo!(editor_account) if link.deleted
+      link.assign_attributes(url: uri, title: title, editor_account: editor_account)
+      links << link if link.project_id.blank?
+    end
   end
 end

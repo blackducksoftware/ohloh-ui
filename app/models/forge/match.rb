@@ -2,6 +2,8 @@ class Forge::Match
   require 'open-uri'
   require 'json'
 
+  MAX_FORGE_COMM_TIME = 10
+
   attr_accessor :forge
   attr_accessor :owner_at_forge
   attr_accessor :name_at_forge
@@ -19,7 +21,7 @@ class Forge::Match
   end
 
   def project
-    Project.new(forge.get_project_attributes(self))
+    Project.new(forge.get_project_attributes(self).merge(repositories: repositories))
   end
 
   def repositories

@@ -14,7 +14,7 @@ class ManageTest < ActiveSupport::TestCase
 
   it 'test create requires project' do
     manage = Manage.create(account: @admin)
-    manage.errors.must_include(:target)
+    manage.errors.must_include(:target_type)
   end
 
   it 'test create requires account' do
@@ -39,7 +39,7 @@ class ManageTest < ActiveSupport::TestCase
   it 'test create fail on uniqueness' do
     Manage.create!(account: @admin, target: @proj1)
     manage = Manage.create(account: @admin, target: @proj1)
-    manage.errors.must_include(:target_id)
+    manage.errors.must_include(:target_type)
   end
 
   it 'test add approver' do

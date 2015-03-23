@@ -13,4 +13,9 @@ class AutocompletesController < ApplicationController
                 .order('length(name)')
                 .limit(25)
   end
+
+  def licenses
+    licenses = params[:term] ? License.autocomplete(params[:term]) : []
+    render text: licenses.map { |l| { nice_name: l.nice_name, id: l.id.to_s } }.to_json
+  end
 end

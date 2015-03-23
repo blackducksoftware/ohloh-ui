@@ -2,13 +2,15 @@ class ProjectsController < ApplicationController
   helper AnalysesHelper
   helper FactoidsHelper
   helper RatingsHelper
+  helper RepositoriesHelper
 
-  before_action :session_required, only: [:create, :new, :update]
+  before_action :session_required, only: [:check_forge, :create, :new, :update]
   before_action :api_key_lock, only: [:index]
   before_action :find_account
   before_action :find_projects, only: [:index]
   before_action :find_project, only: [:show, :edit, :update, :estimated_cost, :users]
   before_action :redirect_new_landing_page, only: :index
+  before_action :find_forge_matches, only: :check_forge
 
   def index
     respond_to do |format|
@@ -33,10 +35,38 @@ class ProjectsController < ApplicationController
   def update
     return render_unauthorized unless @project.edit_authorized?
     if @project.update_attributes(project_params)
-      flash[:notice] = t '.success'
-      redirect_to project_path(@project)
+      redirect_to project_path(@project), notice: t('.success')
     else
       render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def create
+    create_project_from_params
+    if @project.save
+      redirect_to project_path(@project)
+    else
+      render :check_forge, status: :unprocessable_entity, notice: t('.failure')
+    end
+  end
+
+  def check_forge
+    if @projects.empty? || params[:bypass]
+      populate_project_from_forge
+      #
+      # if @project.project_repositories.first
+      #   repo_match = Forge::Match.first(@project.project_repositories.first.url)
+      #   if match != repo_match
+      #     flash.now[:notice] =  "#{match.forge.name} suggested a different code location for \"#{CGI::escapeHTML
+      #       code_location}\". You can change this below."
+      #     @project.errors.add(:repositories, "suggested code location")
+      #   else
+      #     flash.now[:notice] =  "Project data was successfully fetched from #{match.forge.name}"
+      #   end
+      # end
+    else
+      flash.now[:notice] =  (@projects.length == 1) ? t('.code_location_single') : t('.code_location_multiple')
+      render template: 'projects/check_forge_duplicate'
     end
   end
 
@@ -70,11 +100,32 @@ class ProjectsController < ApplicationController
   end
 
   def project_params
-    params.require(:project).permit([:name, :description, :url_name])
+    params.require(:project).permit([:name, :description, :url_name, :url, :download_url, :managed_by_creator,
+                                     project_licenses_attributes: [:license_id],
+                                     enlistments_attributes: [repository_attributes: [:type, :url, :branch_name]]])
   end
 
   def redirect_new_landing_page
     return unless @account.nil?
     redirect_to explore_projects_path if request.query_parameters.except('action').empty? && request_format == 'html'
+  end
+
+  def find_forge_matches
+    @match = Forge::Match.first(params[:codelocation])
+    repositories = @match ? Repository.matching(@match) : []
+    @projects = []
+    repositories.each { |repo| repo.enlistments.each { |e| @projects << e.project unless e.project.deleted } }
+  end
+
+  def create_project_from_params
+    @project = Project.new({ editor_account: current_user }.merge(project_params))
+    @project.assign_editor_account_to_associations
+    @project.manages.new(account: current_user) if project_params[:managed_by_creator].to_bool
+  end
+
+  def populate_project_from_forge
+    Timeout.timeout(Forge::Match::MAX_FORGE_COMM_TIME) { @project = @match.project } if @match
+  rescue Timeout::Error
+    flash.now[:notice] = t('.forge_time_out', name: @match.forge.name)
   end
 end

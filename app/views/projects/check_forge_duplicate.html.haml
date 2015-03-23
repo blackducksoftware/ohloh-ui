@@ -1,0 +1,17 @@
+- content_for(:html_title) { t('.page_title') }
+- page_context[:select_top_menu_nav] = 'select_projects'
+
+%h1.margin_bottom_20= t('projects.new.call_to_action')
+.row
+  .col-md-12
+    %div{ style: 'padding: 0 15px;' }
+      %h2= t('.duplicate_found')
+      %p!= t('.message', param: content_tag(:code, html_escape(params[:codelocation])))
+      #managed_projects_list
+        = render partial: 'project_index', collection: @projects, locals: { compare: false }
+
+      = form_tag check_forge_projects_path, class: 'styled new_project' do
+        %input{ type: 'hidden', name: 'bypass', value: 'true' }
+        %input{ type: 'hidden', name: 'codelocation', value: params[:codelocation] }
+        .pull-right{ style: 'padding-top: 5px;' }
+          %input.col-md-2.button.btn{ type: 'submit', value: t('.submit') }

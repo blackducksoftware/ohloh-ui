@@ -26,12 +26,13 @@ gem 'uglifier'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 
-group :development do
+group :development, :vagrant do
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
+  gem 'pry-rails'
 end
 
-group :development, :test, :vagrant do
+group :test do
   gem 'byebug'
   gem 'factory_girl_rails'
   gem 'faker'
@@ -40,7 +41,6 @@ group :development, :test, :vagrant do
   gem 'letter_opener'
   gem 'minitest-rails'
   gem 'mocha'
-  gem 'pry-rails'
   gem 'ruby_parser'
   gem 'simplecov'
   gem 'simplecov-rcov'

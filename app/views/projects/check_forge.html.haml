@@ -1,0 +1,108 @@
+:ruby
+  @project ||= Project.new
+  content_for(:html_title) { t('.page_title', name: @project.name) }
+  page_context[:select_top_menu_nav] = 'select_projects'
+  first_repo = @project.repositories.first
+  content_for :javascript do
+    js1 = "var a = UrlAvailable;a.object_id='#{ @project.id }';"
+    js2 = "a.ajax_path='#{projects_path}/resolve_url_name';"
+    js3 = "a.base_url='#{projects_url}/';"
+    javascript_tag "$(document).ready(function(){#{js1}#{js2}#{js3}});"
+  end
+
+%h1.margin_bottom_20= t('projects.new.call_to_action')
+.row
+  .col-md-12
+    %div{ style: 'padding: 0 15px;' }
+      .well
+        = form_for @project, as: :project, url: projects_path, html: { class: 'styled new_project' } do |f|
+          %fieldset
+            %legend= t('.create_a_new_project')
+            .control-group{ class: ('nomargin' unless first_repo) }
+              %label.control-label.required= t('.project_name')
+              .controls
+                %input.col-md-5#project_name{ name: 'project[name]', type: 'text', value: @project.name }
+                - error_tag @project, :name
+                %p.help-block!= t('.project_name_help', link: link_to(t('.contact_us'), blog_url_for(:contact_form)))
+            - if first_repo
+              .control-group.nomargin
+                %label.control-label.required= t('.project_source_code')
+                .controls.chosen#value_select
+                  %select.chzn-select.value-select#repository_type{ name: 'project[repositories][][type]',
+                                                                    style: 'width:100px;' }
+                    = repository_options_for_select(first_repo)
+                  %input#repository_url{ name: 'project[repositories][][url]', type: 'text',
+                                         value: first_repo.url, style: 'width: 265px; margin-bottom: 1px;' }
+                  - if first_repo.type == 'GitRepository'
+                    %input#repository_branch_name{ name: 'project[repositories][][branch_name]', type: 'text',
+                                                   value: first_repo.branch_name.presence || 'master',
+                                                   style: 'width: 105px; margin-bottom: 1px;' }
+                  .clear_left
+                  - error_tag @project, :repositories
+            .control-group
+              .controls
+                %label.checkbox.control-label{ style: 'padding: 0;' }
+                  = f.check_box :managed_by_creator, choice: t('.i_manage_this_project'), class: 'col'
+                  #{t('.i_manage_this_project')}
+                %p.help-block
+                  #{t('.i_manage_this_project_help1')}
+                  %br
+                  #{t('.i_manage_this_project_help2')}
+            .control-group
+              %label.control-label= t('.homepage_page')
+              .controls
+                = f.text_field :url, class: 'col-md-5'
+                - error_tag @project, :url
+                %p.help-block= t('.homepage_page_help')
+            .control-group
+              %label.control-label= t('.download_page')
+              .controls
+                = f.text_field :download_url, class: 'col-md-5'
+                - error_tag @project, :download_url
+                %p.help-block= t('.download_page_help')
+            .control-group
+              %label.control-label= t('.add_license')
+              .controls
+                %input.license.col-md-5#add_license{ type: 'text' }
+                %p.help-block
+                #{t('.add_license_help1')}
+                %br
+                #{t('.add_license_help2')}
+            .control-group
+              %label.control-label= t('.chosen_licenses')
+              .controls.chosen_licenses
+                - @project.licenses.each do |license|
+                  .license.span5.no_margin_left
+                    .col-md-3.no_margin_left
+                      = license.nice_name
+                    .col-md-2.no_margin_left
+                      %a.btn.btn-mini.remove_license.btn-danger{ href: '' }
+                        %i.icon-trash= t '.remove'
+                    %input{ type: 'hidden', value: license.id,
+                            name: 'project[project_license_ids][][id]' }
+                - if @project.licenses.empty?
+                  .license.inset= t('.none')
+            .clearfix
+            .control-group.clear_left
+              %label.control-label.required= t('.url')
+              .controls
+                .input-prepend
+                  %span.add-on= 'http://www.openhub.net/p/'
+                  = f.text_field :url_name, class: 'url_available', data_id: @project.id, autocomplete: 'off',
+                                            style: 'width: 188px;'
+                - error_tag @project, :url_name, class: 'error url_name'
+                %p.help-block
+                  #{t('.url_help1')}
+                  %br
+                  #{t('.url_help2')}
+            .control-group
+              %label.control-label= t('.description')
+              .controls
+                = find_and_preserve(f.text_area(:description, max_length: 800, style: 'width: 376px; height: 200px;'))
+                - error_tag @project, :description
+                %p.help-block
+                  #{t('.description_help1')}
+                  %br
+                  #{t('.description_help2')}
+            .actions.clear_left
+              %input.btn.btn-primary{ type: 'submit', value: t('.submit') }

@@ -36,4 +36,11 @@ class LicenseTest < ActiveSupport::TestCase
     license.editor_account = create(:admin)
     license.allow_edit?.must_equal true
   end
+
+  it '#autocomplete returns correct licenses' do
+    license_1 = create(:license, nice_name: 'AutocompleteMIT')
+    create(:license, nice_name: 'AutocompleteBSD')
+    license_3 = create(:license, nice_name: 'AutocompleteMit v2')
+    License.autocomplete('autocompletemit').map(&:id).sort.must_equal [license_1.id, license_3.id].sort
+  end
 end
