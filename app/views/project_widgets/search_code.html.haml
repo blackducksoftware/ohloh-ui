@@ -24,7 +24,7 @@
             %input{ type: :hidden, name: 'fp', value: @project.koders_status.try(:koders_id) }
             %input.search_code{ type: :text, name: 's', value: t('.enter'),
               onfocus: 'onFocus(this);', onblur: 'onBlur(this);' }
-            %input.icon_search{ type: 'image', src: widget_image_url('assets/search_icon.png') }
+            %input.icon_search{ type: 'image', src: widget_image_url('search_icon.png') }
       %tr
         %td.right{ colspan: '2' }
           = render partial: 'ohloh_code_footer'

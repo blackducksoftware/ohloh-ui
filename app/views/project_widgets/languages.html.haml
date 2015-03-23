@@ -10,12 +10,12 @@
 .languages
   %h2= t('.languages')
   - if analysis
-    - colors = analysis.language_percentages.map { |_, _, attr| attr[:color] }
+    - colors = analysis_language_percentages(analysis).map { |_, _, attr| attr[:color] }
     .analysis
       = image_tag 'sample_graph.png', width: 120, height: 120
     %div
       %table{ width: '155px', cellpadding: '0', cellspacing: '0' }
-        - analysis.language_percentages.each do |_, _, attr|
+        - analysis_language_percentages(analysis).each do |_, name, attr|
           :ruby
             percent = attr[:percent] > 0 ? attr[:percent] : '<1'
             css = cycle('even', 'odd', name: 'tr')
@@ -29,4 +29,4 @@
         - reset_cycle('tr')
   - else
     %p= t('.not_ready')
-  = render partial: 'footer', locals: { project: project }
+  = render partial: 'footer', locals: { project: project, show_name: true }

@@ -1,0 +1,11 @@
+- page_context[:select_footer_nav] = :widgets
+
+= render partial: 'accounts/mini_header'
+
+.project_content_title.margin_bottom_10
+  %h2= t('.title')
+  %p= t('.embed')
+
+.clearfix.margin_left_15
+  = render partial: 'widget', locals: { widget: @widget }
+

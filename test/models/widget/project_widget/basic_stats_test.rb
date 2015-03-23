@@ -5,8 +5,8 @@ class BasicStatsTest < ActiveSupport::TestCase
   let(:widget) { ProjectWidget::BasicStats.new(project_id: project.id) }
 
   describe 'height' do
-    it 'should return 22' do
-      widget.height.must_equal 22
+    it 'should return 225' do
+      widget.height.must_equal 225
     end
   end
 

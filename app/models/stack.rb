@@ -35,6 +35,17 @@ class Stack < ActiveRecord::Base
     pad_project_suggestions(Project.find_by_sql(sql), limit)
   end
 
+  def name
+    return title if respond_to?(:title) && !title.blank?
+    return 'Default' if account && self == account.stack_core.default
+    return "#{project.name}'s Stack" unless project.nil?
+    'Unnamed'
+  end
+
+  def friendly_name
+    "#{name}#{' Stack' unless name =~ /Stack/i}"
+  end
+
   private
 
   def sanitize_description

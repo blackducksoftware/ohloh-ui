@@ -76,20 +76,6 @@ class AnalysisTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'language_percentages' do
-    # TODO: Rewrit this test once the method is implemented
-    it 'should return []' do
-      analysis.language_percentages.must_equal []
-    end
-  end
-
-  describe 'language_percentages' do
-    # TODO: Rewrit this test once the method is implemented
-    it 'should return []' do
-      analysis.language_percentages.must_equal []
-    end
-  end
-
   describe 'cocomo_value' do
     it 'should return the calculated value' do
       analysis.cocomo_value.must_equal 2941

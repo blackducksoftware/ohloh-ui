@@ -39,7 +39,7 @@
           = t('could_not')
           = link_to t('.find_out'), project_enlistments_url(project), target: '_blank'
     .updated
-      = render partial: 'footer', locals: { project: project, no_name: true }
+      = render partial: 'footer', locals: { project: project, show_name: false }
 - else
   = render partial: 'no_project'
 

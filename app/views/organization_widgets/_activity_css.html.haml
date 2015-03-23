@@ -1,83 +1,82 @@
 = render partial: 'widgets/web_fonts'
 
-%style{ type: 'text/css' }
-  :sass
-    .org_widgets_footer
-      font-size: 90%
-      margin-top: 10px
-      clear: both
-    .link_container
-      text-align: right
-      margin-left: 15px
-      margin-top: 8px
-      float: right
-      a
-        color: #999
+:sass
+  .org_widgets_footer
+    font-size: 90%
+    margin-top: 10px
+    clear: both
+  .link_container
+    text-align: right
+    margin-left: 15px
+    margin-top: 8px
+    float: right
+    a
+      color: #999
+      text-decoration: none
+    .ohloh_logo
+      border: none
+      width: 69px
+      height: 13px
+      margin-bottom: -2px
+  #widget-body
+    width: 304px
+    margin: 0
+    padding: 10px
+    color: #444444
+    font-family: Open Sans
+    font-size: 12px
+    background-color: #ffffff
+    border: thin #000 solid
+
+    a#logo
+      width: 80px
+      float: left
+
+    h3
+      margin: 20px 0 0
+      padding: 0
+      font-size: 1.5em
+      line-height: 1em
+      font-weight: bold
+      float: left
+
+      a#org-name
+        color: #444444
         text-decoration: none
-      .ohloh_logo
-        border: none
-        width: 69px
-        height: 13px
-        margin-bottom: -2px
-    #widget-body
-      width: 304px
-      margin: 0
-      padding: 10px
-      color: #444444
-      font-family: Open Sans
-      font-size: 12px
-      background-color: #ffffff
-      border: thin #000 solid
+    div div
+      clear: both
 
-      a#logo
-        width: 80px
-        float: left
+    ul
+      margin: 0 0 16px 0
+      padding: 0 0 0 15px
+      list-style: none
+      height: 60px
+      font-weight: bold
+      font-size: 14px
 
-      h3
-        margin: 20px 0 0
-        padding: 0
-        font-size: 1.5em
-        line-height: 1em
-        font-weight: bold
-        float: left
+      li
+        margin-bottom: 5px
+        margin-left: 24px
 
-        a#org-name
-          color: #444444
+        p#item-left
+          width: 50px
+          float: left
           text-decoration: none
-      div div
-        clear: both
+          margin-bottom: 0px
+          margin-top: 0px
+          text-align: right
 
-      ul
-        margin: 0 0 16px 0
-        padding: 0 0 0 15px
-        list-style: none
-        height: 60px
-        font-weight: bold
-        font-size: 14px
+        p#item-right
+          color: #444444
+          width: 166px
+          float: left
+          text-decoration: none
+          margin-top: 0px
+          margin-bottom: 0px
+          margin-left: 10px
 
-        li
-          margin-bottom: 5px
-          margin-left: 24px
+          span
+            font-size: 12px
 
-          p#item-left
-            width: 50px
-            float: left
-            text-decoration: none
-            margin-bottom: 0px
-            margin-top: 0px
-            text-align: right
-
-          p#item-right
-            color: #444444
-            width: 166px
-            float: left
-            text-decoration: none
-            margin-top: 0px
-            margin-bottom: 0px
-            margin-left: 10px
-
-            span
-              font-size: 12px
-
-          div
-            clear: left
+        div
+          clear: left

@@ -1,6 +1,6 @@
 class ProjectWidget::FactoidsStats < ProjectWidget
   def height
-    250
+    220
   end
 
   def width

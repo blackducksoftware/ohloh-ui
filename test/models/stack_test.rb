@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class StackTest < ActiveSupport::TestCase
+  let(:stack) { create(:stack) }
+
   it '#sanitize_description leaves nils alone' do
     create(:stack, description: nil).description.must_equal nil
   end
@@ -58,5 +60,47 @@ class StackTest < ActiveSupport::TestCase
     stack4.projects = [proj4]
 
     stack3.suggest_projects(2).map(&:id).must_equal [proj2.id, proj4.id]
+  end
+
+  describe 'name' do
+    it 'should return if title is present' do
+      stack.stubs(:title).returns('test')
+
+      stack.name.must_equal 'test'
+    end
+
+    it 'should return default' do
+      stack.stubs(:title).returns(nil)
+
+      stack.name.must_equal 'Default'
+    end
+
+    it 'should return with project name' do
+      project = create(:project)
+      stack.stubs(:title).returns(nil)
+      stack.stubs(:account).returns(nil)
+      stack.stubs(:project).returns(project)
+
+      stack.name.must_equal "#{project.name}'s Stack"
+    end
+
+    it 'should return unnamed' do
+      stack.stubs(:title).returns(nil)
+      stack.stubs(:account).returns(nil)
+
+      stack.name.must_equal 'Unnamed'
+    end
+  end
+
+  describe 'friendly_name' do
+    it 'should return name with stack appended' do
+      stack.stubs(:name).returns('test')
+      stack.friendly_name.must_equal 'test Stack'
+    end
+
+    it 'should return name without stack appended' do
+      stack.stubs(:name).returns('TestStack')
+      stack.friendly_name.must_equal 'TestStack'
+    end
   end
 end

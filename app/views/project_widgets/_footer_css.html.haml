@@ -5,18 +5,22 @@
     .link_container
       float: right
       text-align: right
-      &.name
-        margin-left: 15px
-      .project_link
+    .noname
+      margin-left: 15px
+      font-size: 11px
+    img
+      border: none
+      width: 69px
+      height: 13px
+      margin-bottom: 2px
+    .name
+      font-size: 9px
+      a
         color: #999
-        text-decoration: none
-      img
-        border: none
-        width: 48px
-        height: 12px
-        margin-bottom: -2px
-        &.noname
-          width: 69px
-          height: 13px
-          a
-            color: #999
+    .project_link
+      color: #999
+      text-decoration: none
+      &.name
+        text-decoration: underline
+      &.noname
+        text-decoration: underline

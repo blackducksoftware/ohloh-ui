@@ -1,6 +1,6 @@
 class ProjectWidget::BasicStats < ProjectWidget
   def height
-    22
+    225
   end
 
   def width

@@ -44,11 +44,6 @@ class Analysis < ActiveRecord::Base
     min_month.nil? || (code_total == 0)
   end
 
-  # TODO: Implemt analysis/reports.rb
-  def language_percentages
-    []
-  end
-
   def cocomo_value(avg_salary = AVG_SALARY)
     (man_years * avg_salary).to_i
   end

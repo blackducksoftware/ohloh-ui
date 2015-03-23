@@ -1,0 +1,43 @@
+:ruby
+  widget ||= @widget
+  script = "<script type='text/javascript' src='#{widget_url(widget, 'stack')}'></script>"
+
+.row
+  .col-md-4.well
+    %form.styled.customized_stack_badge
+      %fieldset
+        .control-group
+          %label.control-label.required= t('.badge_title')
+          .controls
+            %input.title{ type: 'text', value: widget.stack.friendly_name }
+        .control-group
+          %label.control-label= t('.icon_size')
+          %label.radio{ for: :small_icon }
+            = t('.small')
+            %input#small_icon{ type: 'radio', checked: 'checked', value: 16, name: 'icon_size' }
+          %label.radio{ for: :medium_icon }
+            = t('.medium')
+            %input#medium_icon{ type: 'radio', name: 'icon_size', value: 24 }
+        .control-group
+          %label.control-label= t('.badge_width')
+          .controls
+            %label.radio
+              %input.radio_button#pixels{ type: 'radio', name: 'badge_width_unit' }
+              %input.input-mini-num.pull-left{ type: 'text', size: 4, disabled: 'disabled', value: '214' }
+              %span.help-inline= t('.wide')
+              .clearfix
+            %label.radio
+              %input.radio_button#icons{ type: 'radio', checked: 'checked', name: 'badge_width_unit' }
+              %input.input-mini-num.pull-left.icons{ type: 'text', size: 4, value: widget.initial_icons_width }
+              %span.help-inline= t('.icons')
+              .clearfix
+  .col-md-6.margin_left_10
+    %h4.margin_bottom_5.margin_top_15= t('.preview')
+    .preview
+
+  .col-md-7.embed.javascript.margin_left_10
+    %p &nbsp;
+    %h4.margin_bottom_5= t('.embed')
+    %span.help-block= t('.hint')
+    %pre{ id: widget_url(widget, 'stack') }
+      = script
