@@ -1,0 +1,47 @@
+:ruby
+  widget ||= @widget
+  project = widget.project
+  analysis = project.best_analysis
+  factoids = analysis.factoids
+
+= render partial: 'factoids_stats_css'
+
+- if project
+  .factoid_stats
+    .logo
+      = link_to project.decorate.icon(:med), project_url(project), target: '_blank'
+    .main
+      %h3= link_to truncate(project.name, length: 50), project_url(project), target: '_blank', title: project.name
+      - if analysis
+        %ul
+          - if analysis.main_language
+            %li
+              %img{ src: image_path('fact_info.png') }
+              = link_to t('.mostly_written', lang: analysis.main_language.nice_name),
+                languages_summary_project_analysis_path(project, id: 'latest'), target: '_blank'
+          - factoids.reject { |f| f.type.to_s =~ /FactoidDistribution|FactoidStaff/ }.each do |factoid|
+            %li
+              %img{ src: factoid_image_path(factoid) }>
+              = link_to(factoid, project_factoids_path(project, anchor: factoid.type), target: '_blank')
+          %li
+            %img{ src: image_path('fact_info.png') }
+            = link_to t('active_contibutors', count: analysis.headcount), project_contributors_url(widget.project),
+              target: '_blank'
+        %p
+          = t('.time_line')
+          %br
+          -# TODO commits_spark_project_analysis_url(format: 'png', project_id: project.to_param, id: 'latest')
+          = image_tag 'spark.png', width: 179, height: 32
+
+      - elsif project.enlistments.any?
+        %p
+          = t('.not_ready')
+          = link_to t('.progress'), project_enlistments_url(project), target: '_blank'
+      - else
+        %p
+          = t('.not_analyzed')
+          = link_to t('.why'), project_enlistments_url(widget.project), target: '_blank'
+    .updated
+      = render partial: 'footer', locals: { project: project, no_name: true }
+- else
+  = render partial: 'no_project'

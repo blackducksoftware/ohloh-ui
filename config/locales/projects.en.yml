@@ -194,3 +194,9 @@ en:
       about4: "Please note that COCOMO was created to model large institutional projects, which often don't compare well with distributed open-source projects."
       about5: "COCOMO is meant to include the design, specification drafting, reviewing and management overhead that goes along with producing quality software."
       about6: "This model seems to be most accurate with mature, large projects. Young projects with little activity are typically overvalued."
+    header:
+      settings: 'Settings'
+      edit_duplicate: 'Edit Duplicate'
+      report_duplicate: 'Report Duplicate'
+      title: '%{name} has been stacked by %{count} users. Click here to add it to your stack.'
+      i_use: 'I Use This!'

@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :stack_entries
+
   resources :password_reset, only: [:new, :create] do
     collection do
       get :confirm
@@ -133,6 +135,7 @@ Rails.application.routes.draw do
       get :compare
       post :check_forge
     end
+    resources :duplicates
     resource :logos, only: [:new, :create, :destroy]
     resources :links, except: :show
     resources :managers, only: [:index, :new, :create, :edit, :update] do
@@ -146,7 +149,21 @@ Rails.application.routes.draw do
     resources :enlistments, only: [:index, :new]
     resources :factoids, only: [:index]
     resources :rss_articles, only: :index
-    resources :widgets, only: :index
+    resources :project_widgets, path: :widgets, only: :index do
+      collection do
+        get :factoids
+        get :factoids_stats
+        get :basic_stats
+        get :users
+        get :users_logo
+        get :search_code
+        get :search_all_code
+        get :languages
+        get :partner_badge
+        get :thin_badge
+        get :cocomo
+      end
+    end
     resources :similar_projects, only: :index
     resources :ratings
     resources :reviews, except: :show do
@@ -160,6 +177,8 @@ Rails.application.routes.draw do
         get :codehistory
         get :commitshistory
         get :committerhistory
+        get :commits_spark
+        get :languages
       end
     end
     resources :commits, only: [:index, :show] do

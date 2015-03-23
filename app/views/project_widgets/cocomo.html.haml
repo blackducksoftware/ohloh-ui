@@ -1,0 +1,50 @@
+:ruby
+  widget ||= @widget
+  project = widget.project
+  analysis = project.best_analysis
+
+= render partial: 'cocomo_css'
+= render partial: 'cocomo_js'
+
+.cocomo
+  %h2= t('.cost', name: truncate(project.name, length: 50))
+  %table{ width: '100%', cellpadding: 0, cellspacing: 0 }
+    - if !analysis.nil?
+      %tr.first_row
+        %td{ width: '51%', bgcolor: '#F2F2F2' }
+          %strong= t('.include')
+          %select#cocomo_loc_dropdown{ onChange: 'update_cocomo();' }
+            %option{ selected: true, value: analysis.code_total + analysis.markup_total }= t('.markup_and_code')
+            %option{ value: analysis.markup_total }= t('.markup')
+            %option{ value: analysis.logic_total }= t('.code_only')
+        %td{ width: '49%', bgcolor: '#F2F2F2' }
+          %span.salary
+            %strong= t('.avg')
+            %span.avg
+              %br
+              $
+              %input.right#cocomo_salary{ type: 'text', value: widget.salary, size: 7,
+              onChange: 'update_cocomo();', onKeyUp: 'update_cocomo();' }>
+              = t('.year')
+      %tr.second_row
+        %td.first
+          %strong= t('.code')
+          %br
+          %span#cocomo_loc= number_with_delimiter(analysis.code_total)
+          = t('.lines')
+        %td.second
+          %strong= t('.effort')
+          %br
+          %span#cocomo_years= analysis.man_years.round
+          = t('.years')
+      %tr.th
+        %td{ colspan: 2 }
+          .estimate= t('.estimate')
+          .salary
+            $
+            %span#cocomo_value>= number_with_delimiter(analysis.cocomo_value(widget.salary.to_i).round)
+    - else
+      %tr.prolog
+        %td{ colspan: 2 }
+          = t('.not_ready')
+  = render partial: 'footer', locals: { project: project, no_name: true }

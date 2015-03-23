@@ -1,0 +1,54 @@
+= render partial: 'widgets/web_fonts'
+
+:sass
+  .cocomo
+    padding: 10px
+    width: 312px
+    min-height: 80px
+    color: #444
+    font-family: Open Sans
+    font-size: 12px
+    border: thin #000 solid
+    h2
+      margin: 0px 0px 8px 0px
+      font-size: 16px
+      font-weight: 800
+    table
+      background-color: #efefef
+      font-size: 12px
+      margin-bottom: 5px
+      tr
+        &.first_row
+          td
+            padding: 3px
+          #cocomo_loc_dropdown
+            color: #333
+          .salary
+            padding: 2px
+            font-size: 12px
+          .avg
+            padding: 3px
+            text-align: right
+          #cocomo_salary
+            color: #333
+        &.second_row
+          td
+            border-top: 1px solid #fff
+            padding: 3px
+            font-weight: 500
+        &.third_row
+          font-weight: 800
+          font-size: 14px
+          color: #FFF
+          text-align: right
+          border-top: 1px solid #fff
+          padding: 5px 3px 5px 0px
+          text-align: right
+          background-color: #000
+        .cost
+          float: left
+          padding-left: 3px
+        .salary
+          float: right
+        .prolog
+          padding: 3px

@@ -1,0 +1,16 @@
+:ruby
+  logged_at = project.best_analysis.logged_at
+  no_name ||= false
+  no_name_class = no_name ? 'noname' : 'name'
+
+= render partial: 'footer_css'
+
+.project_footer
+  .link_container{ class: no_name_class }
+    = link_to project_url(project), target: '_blank', class: 'project_link' do
+      = t('.more')
+      = image_tag(widget_ohloh_logo_url, class: no_name_class)
+    = link_to project_url(project), target: '_blank', class: "project_link #{no_name_class}", title: project.name do
+      = truncate(project.name, lenth: 50) unless no_name
+      - if logged_at
+        = t('.updated', at: logged_at.to_s(:mdy))

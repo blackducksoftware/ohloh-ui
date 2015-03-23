@@ -102,6 +102,10 @@ module ApplicationHelper
       number
   end
 
+  def iusethis_css_class
+    logged_in? ? 'stack_trigger' : 'needs_login'
+  end
+
   private
 
   def render_expander(text, l)

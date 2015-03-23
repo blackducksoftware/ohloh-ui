@@ -1,0 +1,11 @@
+.gadet
+  %h3
+    = t('.add')
+    %p
+      = t('.stats')
+      = link_to 'Open Hub', home_url, target: '_blank'
+      = t('.free')
+    %p
+      = t('.regular_updates')
+    %p= link_to t('.home_link'), home_url, target: '_blank'
+    %p= link_to t('.add_project'), new_project_url, target: '_blank'
