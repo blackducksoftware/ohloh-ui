@@ -1,6 +1,9 @@
+- url = request.protocol + request.host_with_port + '/assets/stylesheets/OpenSans-Regular.woff'
+
 %style{ type: 'text/css' }
-  :sass
-    @font-face
-      font-family: 'Open Sans'
-      font-style: normal
-      src: font-url('OpenSans-Regular.woff') format('woff'), font-url('OpenSans-Regular.ttf') format('truetype')
+  :css
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      src: local('Open Sans'), local('OpenSans'), url('#{url}') format('woff');
+    }

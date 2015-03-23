@@ -5,7 +5,7 @@ class OrganizationDecorator < Cherry::Decorator
       [
         [:org_summary,    I18n.t(:organization_summary),     h.organization_path(organization)],
         [:settings,       I18n.t(:settings),                 h.settings_organization_path(organization)],
-        [:widgets,        I18n.t(:widget),                   h.organization_widgets_path(organization)]
+        [:widgets,        I18n.t(:widget),                   h.organization_organization_widgets_path(organization)]
       ],
       [
         [:code_data,      I18n.t(:project_portfolio)],

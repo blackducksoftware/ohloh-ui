@@ -1,0 +1,12 @@
+:ruby
+  widget ||= @widget
+  org = widget.organization
+  commits_to = org.affiliated_committers_stats['affl_commits_out'].to_i +
+               org.affiliated_committers_stats['affl_commits'].to_i
+
+  projects = org.projects.count + org.affiliated_committers_stats['affl_projects_out'].to_i
+
+  locals = { org: org, people: org.affiliators_count, commits_to: commits_to, projects: projects,
+             committer_text: t('.affiliates'), project_text: t('.open') }
+
+= render partial: 'activity', locals: locals

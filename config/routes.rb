@@ -187,7 +187,13 @@ Rails.application.routes.draw do
         post :reject
       end
     end
-    resources :widgets
+    resources :organization_widgets, path: :widgets, only: :index do
+      collection do
+        get :affiliated_committers_activity
+        get :open_source_activity
+        get :portfolio_projects_activity
+      end
+    end
   end
 
   resources :stacks, only: [:show, :create, :update, :destroy] do
