@@ -21,13 +21,13 @@ module WidgetsHelper
 
   def widget_url(widget, type)
     url_params = widget.vars.dup.delete_if { |k, _| k == "#{type}_id" }
-    send("#{widget.name.underscore}_#{type}_#{controller_name}_url", widget.send(type)) +
+    send("#{widget.name.underscore}_#{controller_name}_url", widget.send(type)) +
       "?#{url_params.merge(format: 'js').to_query}"
   end
 
   def widget_url_without_format(widget, type)
     url_params = widget.vars.dup.delete_if { |k, _| k == "#{type}_id" }
-    send("#{widget.name.underscore}_#{type}_#{controller_name}_url", widget.send(type), url_params)
+    send("#{widget.name.underscore}_#{controller_name}_url", widget.send(type), url_params)
   end
 
   def widget_iframe_style(widget)
