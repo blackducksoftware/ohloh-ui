@@ -9,8 +9,8 @@ describe 'OrganizationWidgetsController' do
 
       must_respond_with :ok
       widget_classes = [OrganizationWidget::OpenSourceActivity,
-                        OrganizationWidget::AffiliatedCommittersActivity,
-                        OrganizationWidget::PortfolioProjectsActivity]
+                        OrganizationWidget::PortfolioProjectsActivity,
+                        OrganizationWidget::AffiliatedCommittersActivity]
       assigns(:widgets).map(&:class).must_equal widget_classes
       assigns(:organization).must_equal org
     end

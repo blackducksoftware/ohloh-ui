@@ -37,8 +37,8 @@ class OrganizationWidgetTest < ActiveSupport::TestCase
   describe 'create_widgets' do
     it 'should create descendan widgets' do
       widget_classes = [OrganizationWidget::OpenSourceActivity,
-                        OrganizationWidget::AffiliatedCommittersActivity,
-                        OrganizationWidget::PortfolioProjectsActivity]
+                        OrganizationWidget::PortfolioProjectsActivity,
+                        OrganizationWidget::AffiliatedCommittersActivity]
       OrganizationWidget.create_widgets(org.id).map(&:class).must_equal widget_classes
     end
   end

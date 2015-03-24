@@ -5,8 +5,8 @@ class FactoidsStatsTest < ActiveSupport::TestCase
   let(:widget) { ProjectWidget::FactoidsStats.new(project_id: project.id) }
 
   describe 'height' do
-    it 'should return 250' do
-      widget.height.must_equal 250
+    it 'should return 220' do
+      widget.height.must_equal 220
     end
   end
 

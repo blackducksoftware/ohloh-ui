@@ -62,7 +62,7 @@ class WidgetsHelperTest < ActionView::TestCase
 
   describe 'widget_url' do
     it 'should return url based on type' do
-      path = "http://test.host/accounts/#{account.login}/widgets/detailed.js?format=js&test=test"
+      path = "http://test.host/accounts/#{account.login}/widgets/detailed?format=js&test=test"
       widget = AccountWidget::Detailed.new(account_id: account.id, test: 'test')
       widget_url(widget, 'account').must_equal path
     end
@@ -78,6 +78,14 @@ class WidgetsHelperTest < ActionView::TestCase
   describe 'widget_iframe_style' do
     it 'should return css' do
       widget_iframe_style(widget).must_equal 'height: 35px; width: 230px; border: none'
+    end
+  end
+
+  describe 'widget_gif_url' do
+    it 'should return url with gif format' do
+      path = "http://test.host/accounts/#{account.login}/widgets/detailed?format=gif&ref=sample"
+      url = widget_gif_url(detailed_account_widgets_url(account), 'sample')
+      url.must_equal path
     end
   end
 end
