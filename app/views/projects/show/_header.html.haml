@@ -18,11 +18,6 @@
           |
           -# TO-DO Change the Path to Report Duplicate when implemented
           = link_to bootstrap_icon('icon-flag', t('projects.header.duplicate')), '#'
-        - if current_user_is_admin?
-          |
-          -# TO-DO: Change the Jobs Path later for now redirecting to project paath
-          -# = link_to bootstrap_icon('icon-tasks', 'Jobs'), project_jobs_path(@project)
-          = link_to bootstrap_icon('icon-tasks', t('projects.header.jobs')), project_path(@project)
     .col-md-3.pull-right.no_padding#widgets
       .pull-left#project_header_activity_indicator
         - project_activity_level_class(@project, :thirtyfive)
