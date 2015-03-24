@@ -25,7 +25,7 @@
       .pull-left#project_header_activity_indicator
         - project_activity_level_class(@project, :thirtyfive)
         - project_activity_level_text(@project, :thirtyfive)
-      %div{ itemtype: 'CreativeWork', itemprop: 'interactionCount'}
+      %div{ itemtype: 'CreativeWork', itemprop: 'interactionCount' }
         .pull-left#i_use_this_container
           .use_count= link_to number_with_delimiter(@project.user_count), users_project_path(@project)
           %button.btn.btn-mini.btn-grey.iusethis.pull-right{ id: "stackit_#{@project.to_param}",
