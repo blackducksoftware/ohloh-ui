@@ -13,7 +13,7 @@ class ProjectWidget::ThinBadge < ProjectWidget
 
   def image
     image_data = [{ text: project.name.truncate(18), align: :center }]
-    image_data += [lines_text, count_text, head_count_text] if analysis.present?
+    image_data += [lines_text, cost_text, head_count_text] if analysis.present?
     image_data += [{ text: 'Metrics by Open Hub', align: :center }]
     WidgetBadge::Thin.create(image_data)
   end
