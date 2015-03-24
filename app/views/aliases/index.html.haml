@@ -1,4 +1,5 @@
-- content_for(:html_title) { t('.title', project_name: @project.to_param) }
+- content_for(:html_title) { t('.title', project_name: @project.name) }
+- page_context[:select_footer_nav] = nil
 - has_permission = logged_in? && @project.edit_authorized?
 
 .project_content_title
@@ -22,7 +23,7 @@
               type: 'danger', size: 'minier pull-right')
           - else
             = disabled_button bootstrap_icon('icon-trash', t('.remove')), class: 'btn-minier btn-danger pull-right'
-            - best_analysis_aliases = @best_analysis_aliases.pluck(:commit_name_id, :preferred_name_id)
+          - best_analysis_aliases = @best_analysis_aliases.pluck(:commit_name_id, :preferred_name_id)
           - unless best_analysis_aliases.include?([a.commit_name_id, a.preferred_name_id])
             %span.pending= t('.pending')
 

@@ -1,4 +1,5 @@
 - content_for(:html_title) { t('.title', project_name: @project.to_param) }
+- page_context[:select_footer_nav] = nil
 -# TODO: Projects mini header
 = # render partial: 'projects/mini_header'
 

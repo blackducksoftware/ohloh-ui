@@ -7,7 +7,7 @@ en:
     save_alias: 'Save Alias'
     alias_temporarily_disabled: 'Creating aliases for this project is temporarily disabled'
     index:
-      title: "The %{project_name} Open Source Project on Open Hub : Aliases Page"
+      title: "The %{project_name} Open Source Project : Aliases Page"
       aliases: ': Aliases'
       contributions_by: 'Contributions by'
       attributed_to: 'will be attributed to'

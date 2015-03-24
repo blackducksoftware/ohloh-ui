@@ -131,4 +131,9 @@ class AliasTest < ActiveSupport::TestCase
     Alias.any_instance.expects(:save_without_validation!)
     Alias.create_for_project(account, project, name1, name2, true)
   end
+
+  it 'allow_undo_to_nil?' do
+    alias_record = create(:alias)
+    assert alias_record.allow_undo_to_nil?(alias_record.preferred_name_id)
+  end
 end
