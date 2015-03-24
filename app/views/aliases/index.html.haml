@@ -1,0 +1,52 @@
+- content_for(:html_title) { t('.title', project_name: @project.to_param) }
+- has_permission = logged_in? && @project.edit_authorized?
+
+.project_content_title
+  %h2.pull-left
+    = link_to t('settings'), settings_project_path(@project)
+    = t('.aliases')
+  = project_analysis_timestamp(@project)
+.clearfix
+.alias
+  - if @aliases.length + @best_analysis_aliases.length > 0
+    %ul
+      - @aliases.each do |a|
+        %li
+          = t('.contributions_by')
+          %strong= h(a.commit_name.name)
+          = t('.attributed_to')
+          %strong= h(a.preferred_name.name)
+          - if has_permission
+            = icon_button(undo_project_alias_path(project_id: @project.to_param, id: a.id), text: t('.remove'),
+              icon: 'trash', method: :post, data: { confirm: t('.confirm_message') },
+              type: 'danger', size: 'minier pull-right')
+          - else
+            = disabled_button bootstrap_icon('icon-trash', t('.remove')), class: 'btn-minier btn-danger pull-right'
+            - best_analysis_aliases = @best_analysis_aliases.pluck(:commit_name_id, :preferred_name_id)
+          - unless best_analysis_aliases.include?([a.commit_name_id, a.preferred_name_id])
+            %span.pending= t('.pending')
+
+      - @best_analysis_aliases.where.not(commit_name_id: @aliases.pluck(:commit_name_id)).each do |baa|
+        %li{ style: 'margin-bottom:0.5em;' }
+          %span.undone
+            = t('.contributions_by')
+            %strong= h(baa.commit_name.name)
+            = t('.attributed_to')
+            %strong= h(baa.preferred_name.name)
+          |
+          - if has_permission
+            = icon_button(redo_project_alias_path(project_id: @project.to_param, id: baa.id), text: t('.remove'),
+              icon: 'trash', method: :post, data: { confirm: t('.confirm_message_redo') }, type: 'danger', size: 'mini')
+          - else
+            = disabled_button bootstrap_icon('icon-trash', t('.remove')), class: 'btn-mini btn-danger'
+          %span.pending= t('.pending')
+
+  - else
+    = render partial: 'shared/alert', locals: { message: t('.no_contributions') }
+
+  - if has_permission
+    = link_to t('.new_alias'), new_project_alias_path(@project), class: 'btn btn-primary'
+  - else
+    = disabled_button t('.new_alias'), class: 'btn-primary'
+.margin_top_5
+  = render partial: 'about_aliases'

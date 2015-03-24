@@ -160,6 +160,13 @@ Rails.application.routes.draw do
     resources :contributors, only: [:index, :show] do
       collection { get :summary }
     end
+    resources :aliases, only: [:index, :new, :create] do
+      collection { get :preferred_names }
+      member do
+        post :undo
+        post :redo
+      end
+    end
   end
 
   resources :organizations, path: :orgs, only: [:index, :show] do
