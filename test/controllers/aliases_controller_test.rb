@@ -5,15 +5,14 @@ describe 'AliasesController' do
   let(:account) { create(:account) }
 
   it 'index' do
-    proj = create(:project)
-    best = create(:analysis, project: proj)
-    create(:analysis, project: proj)
-    proj.update_columns(best_analysis_id: best.id)
+    best = create(:analysis, project: project)
+    create(:analysis, project: project)
+    project.update_columns(best_analysis_id: best.id)
     name1 = create(:name)
     name2 = create(:name)
     create(:analysis_alias, analysis: best, commit_name: name1, preferred_name: name2)
-    project_alias = create(:alias, project: proj, commit_name: name1, preferred_name: name2)
-    get :index, project_id: proj.id
+    project_alias = create(:alias, project: project, commit_name: name1, preferred_name: name2)
+    get :index, project_id: project.id
     must_respond_with :ok
     must_render_template :index
     assigns(:best_analysis_aliases).count.must_equal 1
@@ -26,8 +25,8 @@ describe 'AliasesController' do
     it 'with login user' do
       login_as account
       commit = create(:commit)
-      enlistment = create(:enlistment, repository: commit.code_set.repository)
-      get :new, project_id: enlistment.project.id
+      create(:enlistment, repository: commit.code_set.repository, project: project)
+      get :new, project_id: project.id
       must_respond_with :ok
       must_render_template :new
       assigns(:committer_names).count.must_equal 1
