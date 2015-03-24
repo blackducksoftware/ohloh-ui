@@ -3,7 +3,6 @@
   ohloh_code_url = 'http://code.openhub.net/project?pid=&ipid=#{project.koders_status.try(:koders_id)}'
 
 = render partial: 'ohloh_code_header'
-= render partial: 'search_all_code_js', locals: { term: t('.search') }
 
 #ohloh_widget_code
   .widget_search_project_code
@@ -22,8 +21,7 @@
             target: '_blank', onsubmit: 'return validate_ohloh_search_form(this.s.value)' }
             %input{ type: :hidden, name: 'browser', value: 'Default' }
             %input{ type: :hidden, name: 'fp', value: @project.koders_status.try(:koders_id) }
-            %input.search_code{ type: :text, name: 's', value: t('.enter'),
-              onfocus: 'onFocus(this);', onblur: 'onBlur(this);' }
+            %input.search_code{ type: :text, name: 's', placeholder: t('.enter') }
             %input.icon_search{ type: 'image', src: widget_image_url('search_icon.png') }
       %tr
         %td.right{ colspan: '2' }

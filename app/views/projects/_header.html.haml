@@ -1,8 +1,8 @@
 #project_masthead
-  .col-md-1#project_icon
+  .col-md-1.no_padding_left#project_icon
     = link_to project_path(@project), itemprop: 'url' do
       = @project.decorate.icon(:med)
-  .col-md-11#project_header
+  .col-md-11.no_padding_left#project_header
     .pull-left.project_title
       %h1.pull-left{ itemprop: 'name' }
         = link_to @project.name, project_path(@project), style: 'color: black', itemprop: 'url'
