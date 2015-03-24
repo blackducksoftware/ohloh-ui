@@ -21,8 +21,8 @@ module WidgetsHelper
 
   def widget_url(widget, type)
     url_params = widget.vars.dup.delete_if { |k, _| k == "#{type}_id" }
-    url = send("#{widget.name.underscore}_#{type}_#{controller_name}_url", widget.send(type))
-    url += "?#{url_params.merge(format: 'js').to_query}"
+    send("#{widget.name.underscore}_#{type}_#{controller_name}_url", widget.send(type)) +
+      "?#{url_params.merge(format: 'js').to_query}"
   end
 
   def widget_url_without_format(widget, type)

@@ -15,5 +15,4 @@ class OpenSourceActivityTest < ActiveSupport::TestCase
       widget.position.must_equal 1
     end
   end
-
 end
