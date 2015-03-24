@@ -1,5 +1,5 @@
 #project_masthead
-  .col-md-1#project_icon
+  .col-md-1.no_padding#project_icon
     %a{href: project_path(@project), itemprop: 'url'}
       - project_icon(@project , :med )
 
@@ -7,7 +7,7 @@
     .pull-left.project_title
       %h1.float_left{ itemprop: 'name' }
         = link_to @project.name, project_path(@project), :style => "color: black;", :itemprop => 'url'
-      %small.pull-left.clearfix
+      %small.pull-left.clear_both
         != link_to bootstrap_icon("icon-cogs", "Settings"), settings_project_path(@project)
         - if @project.is_a_duplicate
           - if current_user_is_admin? || (@current_account && @project.is_a_duplicate.account == @current_account)
@@ -15,10 +15,11 @@
             != link_to bootstrap_icon("icon-flag", "Edit Duplicate"), edit_project_duplicate_path(@project, @project.is_a_duplicate)
         - else
           |
+          = link_to bootstrap_icon("icon-flag", "Report Duplicate"), "#"
           -#!= link_to bootstrap_icon("icon-flag", "Report Duplicate"), new_project_duplicate_path(@project)
         - if current_user_is_admin?
           |
-          -# TO-DO: Change the Jobs Path later
+          -# TO-DO: Change the Jobs Path later for now redirecting to project paath
           -#= link_to bootstrap_icon("icon-tasks", "Jobs"), project_jobs_path(@project)
           = link_to bootstrap_icon("icon-tasks", "Jobs"), project_path(@project)
     .col-md-3.pull-right.no_padding#widgets
@@ -32,3 +33,7 @@
           %button.btn.btn-mini.btn-grey.iusethis.float_right{id: "stackit_#{@project.to_param}", class: i_use_this_css, title: "#{@project.name} has been stacked by #{ @project.user_count } users. Click here to add it to your stack." }
             I Use This!
 .clearfix
+.row
+  .col-md-12
+    .mezzo
+

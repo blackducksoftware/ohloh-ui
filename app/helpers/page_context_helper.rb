@@ -17,7 +17,8 @@ module PageContextHelper
   def project_context
     set_page_context(footer_menu_list:  @project.decorate.sidebar,
                      select_footer_nav:  :project_summary,
-                     select_top_menu_nav:  :select_projects)
+                     select_top_menu_nav:  :select_projects,
+                     page_header: 'projects/show/header')
   end
 
   def forum_context
