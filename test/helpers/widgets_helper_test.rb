@@ -18,45 +18,45 @@ class WidgetsHelperTest < ActionView::TestCase
   describe 'factoid_image_path' do
     it 'should return good image path' do
       factoid.stubs(:human_rating).returns('good')
-      factoid_image_path(factoid).must_equal 'http://localhost:3000/assets/fact_good.png'
+      factoid_image_path(factoid).must_equal 'http://localhost:3000/fact_good.png'
     end
 
     it 'should return info image path' do
       factoid.stubs(:human_rating).returns('info')
-      factoid_image_path(factoid).must_equal 'http://localhost:3000/assets/fact_info.png'
+      factoid_image_path(factoid).must_equal 'http://localhost:3000/fact_info.png'
     end
 
     it 'should return warning image path' do
       factoid.stubs(:human_rating).returns('warning')
-      factoid_image_path(factoid).must_equal 'http://localhost:3000/assets/fact_warning.png'
+      factoid_image_path(factoid).must_equal 'http://localhost:3000/fact_warning.png'
     end
 
     it 'should return bad image path' do
       factoid.stubs(:human_rating).returns('bad')
-      factoid_image_path(factoid).must_equal 'http://localhost:3000/assets/fact_bad.png'
+      factoid_image_path(factoid).must_equal 'http://localhost:3000/fact_bad.png'
     end
 
     it 'should return info image path when rating is others' do
       factoid.stubs(:human_rating).returns('others')
-      factoid_image_path(factoid).must_equal 'http://localhost:3000/assets/fact_info.png'
+      factoid_image_path(factoid).must_equal 'http://localhost:3000/fact_info.png'
     end
   end
 
   describe 'widget_image_url' do
     it 'should return image path as it is' do
-      img_path = 'http://localhost:3000/assets/fact_info.png'
+      img_path = 'http://localhost:3000/fact_info.png'
       widget_image_url(img_path).must_equal img_path
     end
 
     it 'should return image full path' do
-      img_path = 'http://localhost:3000/assets/fact_info.png'
-      widget_image_url('/assets/fact_info.png').must_equal img_path
+      img_path = 'http://localhost:3000/fact_info.png'
+      widget_image_url('/fact_info.png').must_equal img_path
     end
   end
 
   describe 'widget_ohloh_logo_url' do
     it 'should return logo url' do
-      widget_ohloh_logo_url.must_equal 'http://localhost:3000/assets/widget_logos/openhublogo.png'
+      widget_ohloh_logo_url.must_equal 'http://localhost:3000/widget_logos/openhublogo.png'
     end
   end
 
