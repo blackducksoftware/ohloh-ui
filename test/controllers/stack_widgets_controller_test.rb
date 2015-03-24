@@ -29,14 +29,5 @@ describe 'StackWidgetsController' do
       must_respond_with :ok
       @response.body.must_equal I18n.t('widgets.not_found')
     end
-
-    it 'should render image for gif format' do
-      skip('TODO: implement after mini_magick')
-      get :normal, stack_id: stack.id, format: :gif
-
-      must_respond_with :ok
-      assigns(:widget).class.must_equal StackWidget
-      assigns(:stack).must_equal stack
-    end
   end
 end
