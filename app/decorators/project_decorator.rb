@@ -18,7 +18,7 @@ class ProjectDecorator < Cherry::Decorator
         [:project_summary,  I18n.t(:project_summary),    h.project_path(project)],
         [:rss,              I18n.t(:news),               h.project_rss_articles_path(project)],
         [:settings,         I18n.t(:settings),           h.settings_project_path(project)],
-        [:widgets,          I18n.t(:sharing_widgets),    h.project_project_widgets_path(project)],
+        [:widgets,          I18n.t(:sharing_widgets),    h.project_widgets_path(project)],
         [:similar_projects,  I18n.t(:related_projects),  h.project_similar_projects_path(project)]
       ],
       [

@@ -36,7 +36,7 @@ Rails.application.routes.draw do
     resources :projects, only: [:index]
     resources :positions, only: [:index]
     resources :stacks, only: [:index]
-    resources :account_widgets, path: :widgets, only: :index do
+    resources :account_widgets, path: :widgets, as: :widgets, only: :index do
       collection do
         get :detailed
         get :tiny
@@ -149,7 +149,7 @@ Rails.application.routes.draw do
     resources :enlistments, only: [:index, :new]
     resources :factoids, only: [:index]
     resources :rss_articles, only: :index
-    resources :project_widgets, path: :widgets, only: :index do
+    resources :project_widgets, path: :widgets, as: :widgets, only: :index do
       collection do
         get :factoids
         get :factoids_stats
@@ -207,7 +207,7 @@ Rails.application.routes.draw do
         post :reject
       end
     end
-    resources :organization_widgets, path: :widgets, only: :index do
+    resources :organization_widgets, path: :widgets, as: :widgets, only: :index do
       collection do
         get :affiliated_committers_activity
         get :open_source_activity
@@ -227,7 +227,7 @@ Rails.application.routes.draw do
         delete :delete_all
       end
     end
-    resources :stack_widgets, path: :widgets, only: :index do
+    resources :stack_widgets, path: :widgets, as: :widgets, only: :index do
       collection do
         get :normal
       end
