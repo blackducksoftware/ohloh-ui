@@ -37,6 +37,7 @@ module PageContextHelper
     if @project
       project_context
       page_context[:select_footer_nav] = :reviews
+      page_context[:page_header] = 'projects/show/header'
     elsif @account
       account_context
       page_context[:select_footer_nav] = :reviews
