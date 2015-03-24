@@ -50,7 +50,8 @@ class TopicsController < ApplicationController
   private
 
   def track_views
-    topic = Topic.find_by(id: params[:id])
+    topic = Topic.where(id: params[:id]).take
+    fail ParamRecordNotFound unless topic
     topic.increment!(:hits) unless logged_in? && (@topic.account == current_user)
   end
 

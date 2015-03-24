@@ -29,6 +29,7 @@ gem 'will_paginate-bootstrap'
 group :development, :vagrant do
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
+  gem 'letter_opener'
   gem 'pry-rails'
 end
 

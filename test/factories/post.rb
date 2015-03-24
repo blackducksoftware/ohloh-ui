@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :post do
-    association :account, factory: :account
+    association :account
     association :topic
     body { Faker::Lorem.sentence }
     sequence :created_at do |n|

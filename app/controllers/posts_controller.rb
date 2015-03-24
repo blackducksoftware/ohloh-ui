@@ -61,7 +61,7 @@ class PostsController < ApplicationController
 
   def find_collection_of_users(post)
     @all_users_preceding_the_last_user = post.topic.posts.map(&:account)
-    @all_users_preceding_the_last_user.pop unless @all_users_preceding_the_last_user.size == 1
+    @all_users_preceding_the_last_user.pop unless @all_users_preceding_the_last_user.one?
     @all_users_preceding_the_last_user
   end
 
