@@ -117,5 +117,4 @@ module ProjectsHelper
   def i_use_this_css
     logged_in? ? 'stack_trigger' : 'needs_login'
   end
-
 end

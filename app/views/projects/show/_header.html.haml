@@ -1,39 +1,41 @@
 #project_masthead
   .col-md-1.no_padding#project_icon
-    %a{href: project_path(@project), itemprop: 'url'}
-      - project_icon(@project , :med )
+    %a{ href: project_path(@project), itemprop: 'url' }
+      - project_icon(@project, :med)
 
   .col-md-11#project_header
     .pull-left.project_title
       %h1.float_left{ itemprop: 'name' }
-        = link_to @project.name, project_path(@project), :style => "color: black;", :itemprop => 'url'
+        = link_to @project.name, project_path(@project), style: 'color: black', itemprop: 'url'
       %small.pull-left.clear_both
-        != link_to bootstrap_icon("icon-cogs", "Settings"), settings_project_path(@project)
+        != link_to bootstrap_icon('icon-cogs', t('projects.header.settings')), settings_project_path(@project)
         - if @project.is_a_duplicate
           - if current_user_is_admin? || (@current_account && @project.is_a_duplicate.account == @current_account)
             |
-            != link_to bootstrap_icon("icon-flag", "Edit Duplicate"), edit_project_duplicate_path(@project, @project.is_a_duplicate)
+            != link_to bootstrap_icon('icon-flag', 'Edit Duplicate'),
+                       edit_project_duplicate_path(@project, @project.is_a_duplicate)
         - else
           |
-          = link_to bootstrap_icon("icon-flag", "Report Duplicate"), "#"
-          -#!= link_to bootstrap_icon("icon-flag", "Report Duplicate"), new_project_duplicate_path(@project)
+          -# TO-DO Change the Path to Report Duplicate when implemented
+          = link_to bootstrap_icon('icon-flag', t('projects.header.duplicate')), '#'
         - if current_user_is_admin?
           |
           -# TO-DO: Change the Jobs Path later for now redirecting to project paath
-          -#= link_to bootstrap_icon("icon-tasks", "Jobs"), project_jobs_path(@project)
-          = link_to bootstrap_icon("icon-tasks", "Jobs"), project_path(@project)
+          -# = link_to bootstrap_icon('icon-tasks', 'Jobs'), project_jobs_path(@project)
+          = link_to bootstrap_icon('icon-tasks', t('projects.header.jobs')), project_path(@project)
     .col-md-3.pull-right.no_padding#widgets
       .pull-left#project_header_activity_indicator
-        -project_activity_level_class(@project, :thirtyfive)
-        -project_activity_level_text(@project, :thirtyfive)
+        - project_activity_level_class(@project, :thirtyfive)
+        - project_activity_level_text(@project, :thirtyfive)
       %div{ itemtype: 'CreativeWork', itemprop: 'interactionCount' }
         .pull-right#i_use_this_container
           .use_count
             = link_to number_with_delimiter(@project.user_count), users_project_path(@project)
-          %button.btn.btn-mini.btn-grey.iusethis.float_right{id: "stackit_#{@project.to_param}", class: i_use_this_css, title: "#{@project.name} has been stacked by #{ @project.user_count } users. Click here to add it to your stack." }
-            I Use This!
+          %button{ id: "stackit_#{@project.to_param}",
+                   class: "btn btn-mini btn-grey iusethis float_right #{i_use_this_css}",
+                   title: t('projects.header.i_use_this_title', name: @project.name, count: @project.user_count) }
+            = t('projects.header.i_use_this')
 .clearfix
 .row
   .col-md-12
     .mezzo
-

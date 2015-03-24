@@ -1,6 +1,7 @@
-- content_for(:html_title) { t('projects.html_title', name: @project.name, title: 'Users') }
-- page_context[:select_top_menu_nav] = 'select_projects'
-- page_context[:select_footer_nav] = :users
+:ruby
+  content_for(:html_title) { t('projects.html_title', name: @project.name, title: 'Users') }
+  page_context[:select_top_menu_nav] = 'select_projects'
+  page_context[:select_footer_nav] = :users
 
 %div
   %h2.pull-left= t('.users')
@@ -25,5 +26,3 @@
         = avatar_small_laurels(account.person.kudo_rank)
 
 = will_paginate @accounts
-
-= render partial: 'projects/show/footer'
