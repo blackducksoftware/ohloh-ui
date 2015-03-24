@@ -35,7 +35,7 @@
     - else
       = link_to t('.add_code_location'), project_enlistments_path(@project)
   %dt
-    = link_to t('.licenses'), licenses_project_path(@project)
+    = link_to t('.licenses'), project_licenses_path(@project)
   %dd{ style: 'margin-bottom: .5em;' }
     - if @project.licenses.size > 0
       %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }

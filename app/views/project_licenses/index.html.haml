@@ -8,7 +8,7 @@
   -# render_project_analysis_timestamp
 .clearfix
 
-- flash[:info] = t('.no_licenses_for_project') if @licenses.empty?
+- flash[:notice] = t('.no_licenses_for_project') if @licenses.empty?
 
 - if @licenses.any?
   .declared_licenses
@@ -17,7 +17,7 @@
       %table{ style: 'width: 100%;' }
         %tbody
           - @licenses.each do |license|
-            %tr
+            %tr.license
               %td.col-md-8.padding_one_top= license.nice_name
               %td.col-md-4.padding_one_top.last
                 .pull-right
