@@ -11,22 +11,21 @@ class ProjectWidget::ThinBadge < ProjectWidget
     32
   end
 
-  # TODO: Implement this after taking care of mini_magick
   def image
-    # strings = [{ text: project.name.truncate(length: 18), align: :center }]
-    # if project.best_analysis_id.to_i > 0
-    #   analysis = project.best_analysis
-    #   strings << { text: I18n.t('project_widgets.partner_badge.lines', count: analysis.code_total.to_human),
-    #                align: :center }
-    #   strings << { text: I18n.t('project_widgets.partner_badge.cost', count: analysis.cocomo_value.to_human),
-    #                align: :center }
-    #   strings << { text: I18n.t('project_widgets.partner_badge.head_count',
-    #                             text: I18n.t('project_widgets.partner_badge.developer').pluralize(analysis.headcount),
-    #                             count: analysis.headcount.to_human),
-    #                align: :center }
-    # end
-    # strings << {text: 'Metrics by Open Hub', align: :center}
-    # ThinBadge.create(strings)
+    image_data = [{ text: project.name.truncate(18), align: :center }]
+    if project.best_analysis.present?
+      analysis = project.best_analysis
+      image_data << { text: I18n.t('project_widgets.partner_badge.lines', count: analysis.code_total.to_human),
+                   align: :center }
+      image_data << { text: I18n.t('project_widgets.partner_badge.cost', count: analysis.cocomo_value.to_human),
+                   align: :center }
+      image_data << { text: I18n.t('project_widgets.partner_badge.head_count',
+                                text: I18n.t('project_widgets.partner_badge.developer').pluralize(analysis.headcount),
+                                count: analysis.headcount.try(:to_human)),
+                   align: :center }
+    end
+    image_data << { text: 'Metrics by Open Hub', align: :center }
+    WidgetBadge::Thin.create(image_data)
   end
 
   def position

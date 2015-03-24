@@ -7,10 +7,9 @@ class AccountWidget::Tiny < AccountWidget
     80
   end
 
-  # TODO: Impement after taking care of mini_magick
   def image
-    # image = Magick::Image.read("#{File.dirname(__FILE__)}/../../public/images/widget_logos/Profile_tiny.png")
-    # image[0].to_blob { |info| info.format = 'gif'; }
+    file_path = Rails.root.join('app/assets/images/widget_logos/profile_tiny.png')
+    MiniMagick::Image.read(file_path).to_blob
   end
 
   def position

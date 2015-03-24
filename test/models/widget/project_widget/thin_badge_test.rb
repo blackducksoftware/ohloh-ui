@@ -16,6 +16,13 @@ class ThinBadgeTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'image' do
+    it 'must call WidgetBadge::Thin.create' do
+      WidgetBadge::Thin.expects(:create).once
+      widget.image
+    end
+  end
+
   describe 'short_nice_name' do
     it 'should return the short_nice_name' do
       widget.short_nice_name.must_equal I18n.t('project_widgets.thin_badge.short_nice_name')

@@ -16,6 +16,13 @@ class PartnerBadgeTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'image' do
+    it 'must call WidgetBadge::Partner.create' do
+      WidgetBadge::Partner.expects(:create).once
+      widget.image
+    end
+  end
+
   describe 'position' do
     it 'should return 9' do
       widget.position.must_equal 9

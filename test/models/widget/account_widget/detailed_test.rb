@@ -21,4 +21,11 @@ class DetailedTest < ActiveSupport::TestCase
       widget.position.must_equal 1
     end
   end
+
+  describe 'image' do
+    it 'must call WidgetBadge::Account.create' do
+      WidgetBadge::Account.expects(:create).once
+      widget.image
+    end
+  end
 end

@@ -3,6 +3,10 @@ class NullObject
     true
   end
 
+  def present?
+    false
+  end
+
   def blank?
     true
   end

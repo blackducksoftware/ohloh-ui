@@ -16,6 +16,13 @@ class TinyTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'image' do
+    it 'must call File.binread' do
+      File.expects(:binread).once
+      widget.image
+    end
+  end
+
   describe 'position' do
     it 'should return 3' do
       widget.position.must_equal 3
