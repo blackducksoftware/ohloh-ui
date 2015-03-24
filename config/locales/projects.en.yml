@@ -21,6 +21,11 @@ en:
     more: "[More]"
     less: "[Less]"
     html_title: "The %{name} Open Source Project : %{title}"
+    header:
+      i_use_this_title: "%{name} has been stacked by %{count} users. Click here to add it to your stack."
+      settings: 'Settings'
+      duplicate: 'Report Duplicate'
+      i_use_this: 'I Use This!'
     index:
       page_title: "Open Hub Projects"
       page_title_query: "%{query} - Open Hub Project Search"
