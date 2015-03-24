@@ -3,6 +3,7 @@ class Alias < ActiveRecord::Base
   belongs_to :commit_name, class_name: 'Name', foreign_key: :commit_name_id
   belongs_to :preferred_name, class_name: 'Name', foreign_key: :preferred_name_id
   has_one :create_edit, as: :target
+  has_many :edits, as: :target
 
   validates :commit_name_id, presence: true
   validates :preferred_name_id, presence: true
@@ -15,6 +16,7 @@ class Alias < ActiveRecord::Base
   acts_as_editable editable_attributes: [:preferred_name_id]
   acts_as_protected parent: :project
 
+  scope :not_deleted, -> { where(deleted: false) }
   scope :for_project, lambda {|project|
     where(project_id: project.id)
       .where(deleted: false)

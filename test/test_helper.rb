@@ -14,6 +14,11 @@ Dotenv.overload '.env.test'
 
 ActiveRecord::Migration.maintain_test_schema!
 
+VCR.configure do |config|
+  config.cassette_library_dir = 'fixtures/vcr_cassettes'
+  config.hook_into :webmock
+end
+
 class ActiveSupport::TestCase
   fixtures :all
   include FactoryGirl::Syntax::Methods
@@ -56,5 +61,15 @@ class ActiveSupport::TestCase
     else
       delete sessions_path
     end
+  end
+
+  def create_position(attributes = {})
+    project = attributes[:project] || create(:project)
+    name_fact = create(:name_fact, analysis: project.best_analysis, name: attributes[:name] || create(:name))
+    create :position, { name: name_fact.name, project: project }.merge(attributes)
+  end
+
+  def i18n_activerecord(model, key)
+    I18n.t("activerecord.errors.models.#{ model }.attributes.#{ key }")
   end
 end

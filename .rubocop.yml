@@ -14,3 +14,9 @@ Style/ClassAndModuleChildren:
 
 Style/AccessorMethodName:
   Enabled: false
+
+Style/PerlBackrefs:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false

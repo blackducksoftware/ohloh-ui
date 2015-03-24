@@ -257,4 +257,36 @@ class ProjectsControllerTest < ActionController::TestCase
     response.body.wont_match I18n.t('projects.estimated_cost.project_cost_calculator')
     must_select '.no_analysis_message', 1
   end
+
+  it 'should show the project users page' do
+    project = create(:project, logo: nil)
+    account = create(:account)
+    create(:stack_entry, stack: create(:stack, account: account), project: project)
+    create(:stack_entry, stack: create(:stack, account: account), project: project)
+    get :users, id: project.id
+    must_respond_with :success
+    must_select '.advanced_search_tips', 0
+    assigns(:accounts).count.must_equal 2
+  end
+
+  it 'should search for a valid account' do
+    project = create(:project, logo: nil)
+    account1 = create(:account)
+    account2 = create(:account)
+    create(:stack_entry, stack: create(:stack, account: account1), project: project)
+    create(:stack_entry, stack: create(:stack, account: account2), project: project)
+
+    get :users, id: project.id, query: account1.name
+    must_respond_with :success
+    must_select '.advanced_search_tips', 0
+    assigns(:accounts).count.must_equal 1
+  end
+
+  it 'should not list a invalid search term' do
+    project = create(:project, logo: nil)
+    get :users, id: project.id, query: 'unknown_text_to_seach'
+    must_respond_with :success
+    must_select '.advanced_search_tips', 1
+    assigns(:accounts).count.must_equal 0
+  end
 end

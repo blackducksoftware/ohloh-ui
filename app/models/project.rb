@@ -39,6 +39,9 @@ class Project < ActiveRecord::Base
   # end
   before_validation :clean_strings_and_urls
 
+  attr_accessor :url
+  attr_accessor :download_url
+
   def to_param
     url_name || id.to_s
   end
@@ -76,6 +79,17 @@ class Project < ActiveRecord::Base
 
   def best_analysis
     super || NilAnalysis.new
+  end
+
+  def users(query = '', sort = '')
+    search_term = query.present? ? ['accounts.name iLIKE ?', "%#{query}%"] : nil
+    orber_by = sort.eql?('name') ? 'accounts.name ASC' : 'people.kudo_position ASC'
+
+    Account.select('DISTINCT(accounts.id), accounts.*, people.kudo_position')
+      .joins([{ stacks: :stack_entries }, :person])
+      .where(stack_entries: { project_id: id })
+      .where(search_term)
+      .order(orber_by)
   end
 
   private

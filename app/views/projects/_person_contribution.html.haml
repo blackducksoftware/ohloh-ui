@@ -1,0 +1,14 @@
+/ - contributions = person.contributions.includes([{contributor_fact: :name}, :project])
+- contributions = person.decorate.contributions
+- if contributions.any?
+  - contributions.take(3).each do |c|
+    %p.margin_bottom_0
+      Contributes to
+      = link_to c.project.name, project_path(c.project.to_param)
+      - if c.committer_name != person.effective_name
+        as
+        = h(obfuscate_email(c.committer_name))
+  - if contributions.length > 3
+    = link_to "and #{contributions.size} other projects", account_path(person.account_id)
+- else
+  No Contributions Found

@@ -29,6 +29,10 @@ module ActsAsEditable
       CreateEdit.where(target_type: self.class.to_s, target_id: id).first.undo!(editor_account)
     end
 
+    def find_create_edit
+      CreateEdit.find_by(target_type: self.class.to_s, target_id: id)
+    end
+
     private
 
     def create_edit_history!
