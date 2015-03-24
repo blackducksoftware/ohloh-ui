@@ -25,6 +25,11 @@ module WidgetsHelper
       "?#{url_params.merge(format: 'js').to_query}"
   end
 
+  def widget_gif_url(url, ref)
+    query_params = { format: 'gif', ref: ref }
+    url + "?#{query_params.to_query}"
+  end
+
   def widget_url_without_format(widget, type)
     url_params = widget.vars.dup.delete_if { |k, _| k == "#{type}_id" }
     send("#{widget.name.underscore}_#{controller_name}_url", widget.send(type), url_params)

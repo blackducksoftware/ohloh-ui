@@ -3,6 +3,6 @@
   account = widget.account
   bbc ||= false
   ref ||= widget.class
-  image = tiny_account_widgets_url(account, format: 'gif', ref: ref)
+  image = widget_gif_url(tiny_account_widgets_url(account), ref)
 
 = render partial: 'bbc_or_js', locals: { bbc: bbc, widget: widget, url: account_url(account, ref: ref), image: image }
