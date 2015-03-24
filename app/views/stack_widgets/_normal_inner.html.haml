@@ -3,12 +3,13 @@
   limit ||= widget.vars[:projects_shown] || 8
   inner_width = width - 18
   clear_class = widget.vars[:noclear] ? 'clearfix' : ''
+  icon_size = widget.icon_width.to_i == 16 ? [:tiny] : [:small, { width: 24, height: 24 }]
 
 .stack{ class: clear_class, id: "stack_#{stack.id}", style: "width:#{inner_width}px" }
   %h4= title
   .icons
     - stack.projects.limit(limit).order(:logo_id).each do |project|
-      = project.decorate.icon(:tiny)
+      = project.decorate.icon(*icon_size)
   - if widget.more > 0
     %p= t('.more', more: widget.more)
   .clearfix
