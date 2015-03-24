@@ -1,6 +1,9 @@
-- page_context[:select_footer_nav] = :widgets
+- page_context[:select_footer_nav] = :stacks
 
 = render partial: 'accounts/mini_header'
+
+.clearfix
+.mezzo
 
 .project_content_title.margin_bottom_10
   %h2= t('.title')
@@ -9,3 +12,4 @@
 .clearfix.margin_left_15
   = render partial: 'widget', locals: { widget: @widget }
 
+.mezzo.margin_top_15
