@@ -1,4 +1,6 @@
 .footer-navigation
+  a
+    color: #369
   .nav-active
     :background #CCE6F4
     :border-left 3px solid #e86d1f
@@ -19,15 +21,18 @@
     line-height: 0.5em
     h4
       font-size: 15px
+    h4.linked
+      padding: 6px
+      margin-top: 2px
     .footer-nav
       &.nav-active
         @extend .nav-active
-        margin-left: 18px
+        margin-left: 15px
         padding-left: 0px
     .footer-nav
       &:hover
         @extend .nav-hover
-        margin-left: 18px
+        margin-left: 15px
         padding-left: 0px
       padding-left: 18px
       border-top: -10px
@@ -37,14 +42,16 @@
       :margin-top 8px
       :margin-bottom 0px
       a
+        color: #369
         &:hover
           text-decoration: none
       .icon
-        :background-image asset_url('/icons/ohloh-icon-sprite.png')
+        :background-image asset_url('icons/ohloh-icon-sprite.png')
         :height 24px
         :width 24px
         :float left
         :margin-right 6px
+        :margin-top -3px
         &.project_summary,&.account_summary,&.org_summary
           :background-position -448px -8px
         &.contributions
@@ -56,6 +63,7 @@
         &.code_data
           :background-position -489px -6px
           :margin-top -5px
+          :margin-left 1px
         &.scm_data
           :background-position -528px -6px
           :margin-top -5px
@@ -65,6 +73,7 @@
       &.selected
         @extend .nav-active, .navbar-justify
         margin-right: 20px
+        padding: 6px
         &:hover
           @extend .nav-hover, .navbar-justify
           margin-right: 20px

@@ -1,5 +1,6 @@
 class ReviewsController < ApplicationController
   helper RatingsHelper
+  helper ProjectsHelper
   before_action :session_required, except: [:index, :summary]
   before_action :find_parent, except: :destroy
   before_action :find_review, only: [:edit, :update, :destroy]

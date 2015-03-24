@@ -1,5 +1,5 @@
 module BootstrapHelper
   def bootstrap_icon(name, text = nil)
-    "<i class='#{name}'>#{text == '' ? '' : '&nbsp;'}</i>#{text || ''}"
+    "<i class='#{name}'>#{text == '' ? '' : '&nbsp;'}</i>#{text || ''}".html_safe
   end
 end

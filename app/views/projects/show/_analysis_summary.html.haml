@@ -7,7 +7,7 @@
   .col-md-6
     .well
       - p_name = truncate_project_name(@project.name, false, 40)
-      %h4= t('.in_a_nutshell', name: @project.name.length > 40 ? p_name : p_name.concat('...'))
+      %h4= t('.in_a_nutshell', name: @project.name.length > 40 ? p_name : p_name + '...')
       = render 'projects/show/factoids'
   .col-md-6{ itemscope: '', itemtype: 'http://schema.org/Language' }
     = render partial: 'projects/show/languages'
