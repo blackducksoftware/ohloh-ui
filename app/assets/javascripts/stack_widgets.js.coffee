@@ -1,12 +1,12 @@
-StackWidget =
-  init: () ->
+class stackWidget
+  constructor: ->
     $('form.customized_stack_badge input[type=radio]').click(@activate)
     $('form.customized_stack_badge input[type=text]').change(@update).keyup(@update);
     $('form.customized_stack_badge input[name="icon_size"]').click(@update);
     @update() if $("form.customized_stack_badge").length > 0
 
 
-  activate: () ->
+  activate: ->
     $(this).parent().parent().find('input[type=text]').attr('disabled', 'disabled')
     $(this).siblings('input[type=text]').removeAttr('disabled')
 
@@ -20,7 +20,10 @@ StackWidget =
     script_tag.text(new_html)
 
     preview_src = "#{script_tag.attr('id')}.html#{script_args}"
-    $.get preview_src, (badge) -> $(".preview").html(badge)
+    $.ajax
+      url: preview_src
+      success: (badge) ->
+         $('.preview').html(badge)
 
   white_space: 4
 
@@ -28,7 +31,7 @@ StackWidget =
     one_widget_width = @icon_size() + @white_space
     Math.min(25*one_widget_width, Math.max(one_widget_width, input_width))
 
-  recalc_width: () ->
+  recalc_width: ->
     specified_by_icons = $('#icons').attr('checked')
     padding = 8
     border = 1
@@ -47,7 +50,7 @@ StackWidget =
   icon_size: () ->
     parseInt $('input[name="icon_size"]:checked').val()
 
-  update: () ->
+  update: () =>
     title = $('input.title').val()
     @recalc_width()
     badge_width = parseInt($('input#pixels ~ input[type=text]').val())
@@ -56,3 +59,6 @@ StackWidget =
     projects_shown = if columns < 4 then columns*8 else columns*2
     projects_shown = Math.min(projects_shown, max_projects_shown)
     @set_javascript @icon_size(), title, badge_width, projects_shown
+
+$ ->
+  new stackWidget

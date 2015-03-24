@@ -5,9 +5,9 @@ class StackWidget < Widget
 
   def initialize(vars = {})
     vars = vars.with_indifferent_access
-    p = { icon_width: 16, icon_height: 16 }
+    p = { icon_width: 16, icon_height: 16, projects_shown: MAX_ICONS_SHOWN }
     p.merge!(vars.symbolize_keys)
-    p[:projects_shown] = [MAX_ICONS_SHOWN, vars[:projects_shown].to_i].min
+    p[:projects_shown] = [MAX_ICONS_SHOWN, p[:projects_shown].to_i].min
 
     fail ArgumentError, I18n.t('stack_widgets.missing') unless vars[:stack_id]
     super(p)

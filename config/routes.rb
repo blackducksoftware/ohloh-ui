@@ -157,6 +157,7 @@ Rails.application.routes.draw do
         get :users
         get :users_logo
         get :search_code
+        get :browse_code
         get :search_all_code
         get :languages
         get :partner_badge
