@@ -1,0 +1,2 @@
+class SvnRepository < Repository
+end

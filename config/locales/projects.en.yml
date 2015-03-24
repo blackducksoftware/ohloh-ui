@@ -164,7 +164,7 @@ en:
       about2: "The project URL must also be unique across all of Open Hub."
       about3: "The project description will appear on the project's summary page. Please be concise, but highlight unique aspects and key features."
     update:
-      success: "Project updated"
+      success: "Project changes were saved successfully!"
     estimated_cost:
       page_title: "The %{name} Open Source Project on Open Hub : Estimated Cost Page"
       estimated_cost: "Estimated Cost"

@@ -1,4 +1,5 @@
 - content_for(:html_title) { t('.page_title') }
+- page_context[:select_top_menu_nav] = 'select_projects'
 - content_for :javascript do
   - js1 = "var a = UrlAvailable;a.object_id='#{ @project.id }';"
   - js2 = "a.ajax_path='#{projects_path}/resolve_url_name';"

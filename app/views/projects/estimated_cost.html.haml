@@ -1,5 +1,6 @@
 :ruby
   content_for(:html_title) { t('.page_title', name: @project.name) }
+  page_context[:select_top_menu_nav] = 'select_projects'
   analysis = @project.best_analysis
   man_years = {}
   man_years[:logic_man_years] = analysis.man_years_from_loc(analysis.logic_total)
@@ -12,6 +13,7 @@
     %h2.float_left= t('.estimated_cost')
     -# render_project_analysis_timestamp
 
+  .clearfix
   .row
     - if !analysis.nil?
       .center-block
@@ -75,11 +77,11 @@
     - else
       = render partial: 'projects/show/no_analysis_summary'
 
-  .col-md-12
+  .col-md-12.about
     %h4.nomargin
       %span.soft= t('.about')
       = t('.cost_estimates')
-    .row.about
+    .row
       .col-md-5
         %ul
           %li= t('.about1')

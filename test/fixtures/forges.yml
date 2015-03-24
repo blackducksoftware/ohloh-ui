@@ -1,0 +1,32 @@
+# As each of these match a model it really makes no sense to make these factories
+# This should be an exact duplicate of the live production site
+github:
+  id: 1
+  name: "Github"
+  url: "git://github.com"
+  type: "Forge::Github"
+google_code:
+  id: 2
+  name: "Google Code"
+  url: "http://code.google.com"
+  type: "Forge::GoogleCode"
+source_forge:
+  id: 3
+  name: "SourceForge"
+  url: "http://sourceforge.net"
+  type: "Forge::SourceForge"
+launchpad:
+  id: 4
+  name: "Launchpad"
+  url: "https://launchpad.net"
+  type: "Forge::Launchpad"
+bitbucket:
+  id: 5
+  name: "Bitbucket"
+  url: "https://bitbucket.org"
+  type: "Forge::Bitbucket"
+codeplex:
+  id: 7
+  name: "Codeplex"
+  url: "http://www.codeplex.com"
+  type: "Forge::Codeplex"
