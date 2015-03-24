@@ -1,11 +1,13 @@
-- content_for(:html_title) { t('.title', project_name: @project.name) }
-- page_context[:select_footer_nav] = nil
-- has_permission = logged_in? && @project.edit_authorized?
+:ruby
+  content_for(:html_title) { t('.title', project_name: @project.name) }
+  page_context[:select_footer_nav] = nil
+  has_permission = logged_in? && @project.edit_authorized?
 
 .project_content_title
   %h2.pull-left
     = link_to t('settings'), settings_project_path(@project)
-    = t('.aliases')
+    &nbsp;:&nbsp;
+    = t('aliases.aliases')
   = project_analysis_timestamp(@project)
 .clearfix
 .alias
@@ -13,9 +15,9 @@
     %ul
       - @aliases.each do |a|
         %li
-          = t('.contributions_by')
+          = t('aliases.contributions_by')
           %strong= h(a.commit_name.name)
-          = t('.attributed_to')
+          = t('aliases.attributed_to')
           %strong= h(a.preferred_name.name)
           - if has_permission
             = icon_button(undo_project_alias_path(project_id: @project.to_param, id: a.id), text: t('.remove'),
@@ -30,9 +32,9 @@
       - @best_analysis_aliases.where.not(commit_name_id: @aliases.pluck(:commit_name_id)).each do |baa|
         %li{ style: 'margin-bottom:0.5em;' }
           %span.undone
-            = t('.contributions_by')
+            = t('aliases.contributions_by')
             %strong= h(baa.commit_name.name)
-            = t('.attributed_to')
+            = t('aliases.attributed_to')
             %strong= h(baa.preferred_name.name)
           |
           - if has_permission
@@ -46,8 +48,8 @@
     = render partial: 'shared/alert', locals: { message: t('.no_contributions') }
 
   - if has_permission
-    = link_to t('.new_alias'), new_project_alias_path(@project), class: 'btn btn-primary'
+    = link_to t('aliases.new_alias'), new_project_alias_path(@project), class: 'btn btn-primary'
   - else
-    = disabled_button t('.new_alias'), class: 'btn-primary'
+    = disabled_button t('aliases.new_alias'), class: 'btn-primary'
 .margin_top_5
   = render partial: 'about_aliases'

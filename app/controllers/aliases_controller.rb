@@ -1,4 +1,5 @@
 class AliasesController < SettingsController
+  helper ProjectsHelper
   before_action :session_required, except: :index
   before_action :find_project, except: [:undo, :redo]
   before_action :redirect_to_message_if_oversized_project, only: :new

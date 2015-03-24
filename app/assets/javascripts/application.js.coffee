@@ -15,6 +15,7 @@
 #= require jquery-ui
 #= require turbolinks
 #= require chosen.min
+#= require app
 #= require_tree .
 #= require twitter/bootstrap
 #= require highcharts/highstock
@@ -33,4 +34,3 @@ $(document).on 'page:change', ->
   GaugeProgress.init()
   OrgsFilter.init()
   Cocomo.init()
-  Alias.init()

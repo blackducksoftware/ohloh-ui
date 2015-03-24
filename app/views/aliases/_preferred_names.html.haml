@@ -1,4 +1,4 @@
-- if @preferred_names.present? && !@preferred_names.length.zero?
+- if @preferred_names.present?
   .chosen#value_select
     = select_tag :preferred_name_id, options_for_select(@preferred_names.pluck(:name, :id), '-1'),
       class: 'preferred value-select'

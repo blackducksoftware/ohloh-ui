@@ -8,14 +8,10 @@ en:
     alias_temporarily_disabled: 'Creating aliases for this project is temporarily disabled'
     index:
       title: "The %{project_name} Open Source Project : Aliases Page"
-      aliases: ': Aliases'
-      contributions_by: 'Contributions by'
-      attributed_to: 'will be attributed to'
       confirm_message: 'Are you sure you want to delete this alias?'
       confirm_message_redo: 'Are you sure you want to delete this setting?'
       pending: 'Changes will take effect after the next Open Hub report update.'
       no_contributions: 'No contributor aliases have been defined for this project.'
-      new_alias: 'New Alias'
       remove: 'Remove'
     new:
       title: "The %{project_name} Open Source Project on Open Hub : New Aliases Page"
