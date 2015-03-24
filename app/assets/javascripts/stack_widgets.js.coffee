@@ -1,8 +1,8 @@
 class stackWidget
   constructor: ->
     $('form.customized_stack_badge input[type=radio]').click(@activate)
-    $('form.customized_stack_badge input[type=text]').change(@update).keyup(@update);
-    $('form.customized_stack_badge input[name="icon_size"]').click(@update);
+    $('form.customized_stack_badge input[type=text]').change(@update).keyup(@update)
+    $('form.customized_stack_badge input[name="icon_size"]').click(@update)
     @update() if $("form.customized_stack_badge").length > 0
 
 
@@ -32,7 +32,7 @@ class stackWidget
     Math.min(25*one_widget_width, Math.max(one_widget_width, input_width))
 
   recalc_width: ->
-    specified_by_icons = $('#icons').attr('checked')
+    specified_by_icons = $('#icons')[0].checked
     padding = 8
     border = 1
     extra_space = padding*2 + border*2

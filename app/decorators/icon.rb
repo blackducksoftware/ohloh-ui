@@ -41,6 +41,6 @@ class Icon < Cherry::Decorator
 
     "background-color:##{opts[:bg]}; color:##{opts[:color]}; border:1px dashed ##{opts[:color]};"\
     "font-size:#{font_size}px; line-height:#{int_size}px; #{dimensions}"\
-    "text-align:center; float:left; margin-bottom:0; margin-top:3; margin-right:#{margin_right}px"
+    "text-align:center; float:left; margin-bottom:0; margin-top:3px; margin-right:#{margin_right}px"
   end
 end
