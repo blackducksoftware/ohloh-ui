@@ -1,5 +1,6 @@
 :ruby
-  project = @widget.project
+  widget ||= @widget
+  project = widget.project
   ohloh_code_url = 'http://code.openhub.net/project?pid=&ipid=#{project.koders_status.try(:koders_id)}'
 
 = render partial: 'ohloh_code_header'
