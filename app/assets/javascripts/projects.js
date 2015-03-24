@@ -1,4 +1,5 @@
 // handles project edit form
+// TODO: Replace all of this with better Javascript. Specifically that cobbled together HTML down there is awful.
 ProjectForm = {
   preview_url_name_label: 'label#preview_url_name',
   url_name_input: 'input#project_url_name',

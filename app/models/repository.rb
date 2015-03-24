@@ -7,10 +7,10 @@ class Repository < ActiveRecord::Base
   attr_accessor :forge_match
 
   class << self
-    def forge_match_search(match)
-      wheres = where(forge_id: match.forge.id).where(['lower(name_at_forge) = ?', match.name_at_forge.downcase])
-      if match.owner_at_forge
-        wheres.where(['lower(owner_at_forge) = ?', match.owner_at_forge.downcase])
+    def forge_match_search(m)
+      wheres = where(forge_id: m.forge.id).where(['lower(repositories.name_at_forge) = ?', m.name_at_forge.downcase])
+      if m.owner_at_forge
+        wheres.where(['lower(repositories.owner_at_forge) = ?', m.owner_at_forge.downcase])
       else
         wheres.where(owner_at_forge: nil)
       end

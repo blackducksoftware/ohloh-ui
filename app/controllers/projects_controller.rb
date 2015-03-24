@@ -52,7 +52,7 @@ class ProjectsController < ApplicationController
   end
 
   def check_forge
-    if @projects.empty? || params[:bypass]
+    if @projects.blank? || params[:bypass]
       populate_project_from_forge
     else
       flash.now[:notice] =  (@projects.length == 1) ? t('.code_location_single') : t('.code_location_multiple')
@@ -102,9 +102,8 @@ class ProjectsController < ApplicationController
 
   def find_forge_matches
     @match = Forge::Match.first(params[:codelocation])
-    repositories = @match ? Repository.matching(@match) : []
-    @projects = []
-    repositories.each { |repo| repo.enlistments.each { |e| @projects << e.project unless e.project.deleted } }
+    return unless @match
+    @projects = Project.where(id: Repository.matching(@match).joins(:projects).select('projects.id')).not_deleted
   end
 
   def create_project_from_params
