@@ -17,8 +17,7 @@ class Link < ActiveRecord::Base
   acts_as_protected parent: :project
   has_many :accounts, through: :edits
 
-  scope :homepage, -> { where(link_category_id: CATEGORIES[:Homepage]) }
-  scope :download, -> { where(link_category_id: CATEGORIES[:Download]) }
+  scope :of_category, ->(category_id) { where(link_category_id: category_id) }
   scope :general, -> { where(link_category_id: [CATEGORIES[:Homepage], CATEGORIES[:Download]]) }
 
   validates :title, length: { in: 3..60 }, presence: true

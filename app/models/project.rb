@@ -1,5 +1,6 @@
 class Project < ActiveRecord::Base
   include ProjectAssociations
+  include LinkAccessors
   include Tsearch
   include ProjectSearchables
 
@@ -30,6 +31,7 @@ class Project < ActiveRecord::Base
                                          :description, :tag_list, :missing_source, :url, :download_url],
                    merge_within: 30.minutes
   acts_as_protected
+  link_accessors accessors: { url: :Homepage, download_url: :Download }
 
   validates :name, presence: true, length: 1..100, allow_nil: false, uniqueness: true, case_sensitive: false
   validates :description, length: 0..800, allow_nil: true # , if: proc { |p| p.validate_url_name_and_desc == 'true' }

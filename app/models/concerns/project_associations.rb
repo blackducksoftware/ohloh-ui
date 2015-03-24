@@ -35,55 +35,8 @@ module ProjectAssociations
     accepts_nested_attributes_for :enlistments
     accepts_nested_attributes_for :project_licenses
 
-    attr_accessor :url_is_dirty
-    attr_accessor :download_url_is_dirty
-
     def assign_editor_account_to_associations
       [aliases, enlistments, project_licenses, links].flatten.each { |obj| obj.editor_account = editor_account }
-    end
-
-    def url
-      return @url_uri if @url_uri
-      link = links.homepage.first
-      link ? link.url : nil
-    end
-
-    def url=(uri)
-      cleaned_uri = String.clean_url(uri)
-      return if !@url_uri.nil? && cleaned_uri == @url_uri
-      @url_is_dirty = true
-      @url_uri = cleaned_uri
-      update_link_uri(links.homepage.first_or_initialize, @url_uri, 'Homepage')
-    end
-
-    def download_url
-      return @download_url_uri if @download_url_uri
-      link = links.download.first
-      link ? link.url : nil
-    end
-
-    def download_url=(uri)
-      cleaned_uri = String.clean_url(uri)
-      return if !@download_url_uri.nil? && cleaned_uri == @download_url_uri
-      @download_url_is_dirty = true
-      @download_url_uri = cleaned_uri
-      update_link_uri(links.download.first_or_initialize, @download_url_uri, 'Download')
-    end
-
-    private
-
-    def update_link_uri(link, uri, title)
-      uri.blank? ? remove_link(link) : add_link(link, uri, title)
-    end
-
-    def add_link(link, uri, title)
-      link.assign_attributes(url: uri, title: title, editor_account: editor_account)
-      links << link
-    end
-
-    def remove_link(link)
-      link.editor_account = editor_account
-      link.destroy if link.persisted?
     end
   end
 end
