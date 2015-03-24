@@ -19,7 +19,7 @@ class stackWidget
     new_html = "<script type='text/javascript' src='#{script_src}'></script>"
     script_tag.text(new_html)
 
-    preview_src = "#{script_tag.attr('id')}.html#{script_args}"
+    preview_src = "#{script_tag.attr('id')}#{script_args}"
     $.ajax
       url: preview_src
       success: (badge) ->
