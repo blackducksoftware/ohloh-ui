@@ -203,6 +203,7 @@ GEM
     metaclass (0.0.4)
     method_source (0.8.2)
     mime-types (2.4.3)
+    mini_magick (4.1.1)
     mini_portile (0.6.2)
     minitest (5.5.1)
     minitest-rails (2.1.1)
@@ -370,6 +371,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   letter_opener
+  mini_magick (~> 4.1.1)
   minitest-rails
   mocha
   oh_delegator
