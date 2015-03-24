@@ -10,7 +10,7 @@
     %table{ width: '100%', cellpadding: 0, cellspacing: 0 }
       %tr
         %td.browse_code_top{ colspan: 2 }
-          %h2= t('.search')
+          %h2.header_title= t('.search')
       %tr
         %td{ width: '15%', valign: 'middle' }
           = link_to project.decorate.icon(:med), ohloh_code_url, style: 'padding-bottom: 10px', target: '_blank'
