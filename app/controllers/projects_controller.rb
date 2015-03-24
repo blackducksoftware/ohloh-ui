@@ -9,6 +9,7 @@ class ProjectsController < ApplicationController
   before_action :find_projects, only: [:index]
   before_action :find_project, only: [:show, :edit, :update, :estimated_cost, :users]
   before_action :redirect_new_landing_page, only: :index
+  before_action :project_context, only: [:show, :users, :estimated_cost]
 
   def index
     respond_to do |format|
