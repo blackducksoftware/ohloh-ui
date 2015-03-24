@@ -31,11 +31,10 @@ describe 'AccountWidgetsController' do
     end
 
     it 'should render image for gif format' do
-      skip('TODO: implement after mini_magick')
       get :detailed, account_id: account.id, format: :gif
 
       must_respond_with :ok
-      assigns(:widgets).map(&:class).must_equal AccountWidget::Detailed
+      assigns(:widget).class.must_equal AccountWidget::Detailed
       assigns(:account).must_equal account
     end
   end
@@ -57,11 +56,10 @@ describe 'AccountWidgetsController' do
     end
 
     it 'should render image for gif format' do
-      skip('TODO: implement after mini_magick')
       get :rank, account_id: account.id, format: :gif
 
       must_respond_with :ok
-      assigns(:widgets).map(&:class).must_equal AccountWidget::Rank
+      assigns(:widget).class.must_equal AccountWidget::Rank
       assigns(:account).must_equal account
     end
   end
@@ -83,11 +81,10 @@ describe 'AccountWidgetsController' do
     end
 
     it 'should render image for gif format' do
-      skip('TODO: implement after mini_magick')
       get :tiny, account_id: account.id, format: :gif
 
       must_respond_with :ok
-      assigns(:widgets).map(&:class).must_equal AccountWidget::Tiny
+      assigns(:widget).class.must_equal AccountWidget::Tiny
       assigns(:account).must_equal account
     end
   end

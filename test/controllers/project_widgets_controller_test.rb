@@ -261,7 +261,6 @@ describe 'ProjectWidgetsController' do
     end
 
     it 'should render image for gif format' do
-      skip('TODO: implement after mini_magick')
       get :partner_badge, project_id: project.id, format: :gif
 
       must_respond_with :ok
@@ -295,7 +294,6 @@ describe 'ProjectWidgetsController' do
     end
 
     it 'should render image for gif format' do
-      skip('TODO: implement after mini_magick')
       get :thin_badge, project_id: project.id, format: :gif
 
       must_respond_with :ok
