@@ -24,11 +24,12 @@
       submit: 'Submit'
     post:
       edit_post: 'Edit Post'
+      replied_ago: "%{date} ago"
     posts:
       views: 'Views'
       author: 'Author'
       posted: 'Posted'
-      posted_ago: '%{posted} ago'
+      posted_ago: '%{date} ago'
     fields:
       submit: 'Submit'
     sign_in:
