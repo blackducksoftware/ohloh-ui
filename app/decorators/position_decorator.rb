@@ -44,7 +44,7 @@ class PositionDecorator < Cherry::Decorator
                                                    format: :png)
   end
 
-  def old_and_has_null_description_title_and_organization?
+  def new_and_has_null_description_title_and_organization?
     created_at > 1.hour.ago && description.blank? && title.blank? && organization.blank?
   end
 
