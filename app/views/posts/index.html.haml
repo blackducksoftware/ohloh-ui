@@ -8,12 +8,12 @@
   %h2= t('.posts')
   = render partial: 'shared/search_dingus', locals: { collection: @posts, sort_context: :posts }
 - else
-  %h1.margin_top_0
+  %h1
     = link_to t('.forums'), forums_path
     \:
     = t('.posts')
     = render partial: 'shared/search_dingus', locals: { collection: @posts, sort_context: :posts }
-  .clear_left &nbsp;
+  .clearfix
 
 - if @posts.any?
   = render partial: 'posts/posts', collection: @posts

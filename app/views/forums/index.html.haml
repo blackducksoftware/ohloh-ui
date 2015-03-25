@@ -4,7 +4,7 @@
 
 .center
   = link_to t('.recent_posts'), all_posts_path, class: 'btn btn-info btn-small'
-  = link_to t('.unanswered_posts'), all_posts_path(unanswered: true), class: 'btn btn-info btn-small'
+  = link_to t('.unanswered_posts'), all_posts_path(sort: :unanswered), class: 'btn btn-info btn-small'
 
 %h2.soft= t('.all_forums')
 %table.table.table-striped
