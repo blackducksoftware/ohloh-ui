@@ -14,29 +14,23 @@ class Account::Hooks
   def after_create(account)
     activate_using_invite!(account) if account.invite_code.present?
     create_person!(account) unless Account::Access.new(account).spam?
-    # FIXME: Implement alongwith AccountNotifier
-    # deliver_signup_notification(account) unless account.anonymous?
+    deliver_signup_notification(account) unless account.anonymous?
   end
 
   def after_update(account)
     destroy_spammer_dependencies(account) if Account::Access.new(account).spam?
-    # FIXME: organization
-    # if account.organization_id_changed?
-    #   schedule_organization_analysis(account.organization_id_was)
-    #   schedule_organization_analysis(account.organization_id)
-    # end
+    return unless account.organization_id_changed?
+    schedule_organization_analysis(account.organization_id_was)
+    schedule_organization_analysis(account.organization_id)
   end
 
-  def after_destroy(_account)
-    # FIXME: organization
-    # schedule_organization_analysis(account.organization_id)
+  def after_destroy(account)
+    schedule_organization_analysis(account.organization_id)
   end
 
   def after_save(account)
-    # FIXME: Implement alongwith AccountNotifier
-    # deliver_activation(account) unless account.anonymous?
-    # FIXME: Integrate alongwith searchable
-    # reindex_person(account) if account.person && !Account::Access.new(account).spam?
+    deliver_activation(account) unless account.anonymous?
+    reindex_person(account) if account.person && !Account::Access.new(account).spam?
     update_person_effective_name(account) if account.person.present? && !Account::Access.new(account).spam?
   end
 
@@ -50,8 +44,9 @@ class Account::Hooks
     account.person.update!(effective_name: account.name)
   end
 
-  def reindex_person(account)
-    account.person.reindex
+  def reindex_person(_account)
+    # FIXME: Integrate alongwith searchable
+    # account.person.reindex
   end
 
   def activate_using_invite!(account)
@@ -67,16 +62,19 @@ class Account::Hooks
     account.name = account.login
   end
 
-  def deliver_signup_notification(account)
-    AccountMailer.signup_notification(account).deliver_now
+  def deliver_signup_notification(_account)
+    # FIXME: Implement alongwith AccountNotifier
+    # AccountMailer.signup_notification(account).deliver_now
   end
 
-  def deliver_activation(account)
-    AccountMailer.deliver_activation(account).deliver_now
+  def deliver_activation(_account)
+    # FIXME: Implement alongwith AccountNotifier
+    # AccountMailer.deliver_activation(account).deliver_now
   end
 
-  def schedule_organization_analysis(organization_id)
-    Organization.find_by_id(organization_id).try(:schedule_analysis)
+  def schedule_organization_analysis(_organization_id)
+    # FIXME: Uncomment when Organization analysis scheduling works.
+    # Organization.find_by_id(organization_id).schedule_analysis
   end
 
   def destroy_spammer_dependencies(account)
@@ -110,8 +108,8 @@ class Account::Hooks
     account.posts.update_all(account_id: @anonymous_account)
     # account.account_reports.update_all(account_id: @anonymous_account)
     account.topics.update_all(account_id: @anonymous_account)
-    # account.edits.update_all(account_id: @anonymous_account)
-    # update_edit(account.id)
+    account.edits.update_all(account_id: @anonymous_account)
+    update_edit(account.id)
     update_invite(account.id)
     update_manage(account.id)
   end

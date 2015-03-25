@@ -33,6 +33,12 @@ class Forge::LaunchpadTest < ActiveSupport::TestCase
       Forge::Match.expects(:new).with(forge, nil, 'project_name')
       forge.match('lp:project_name')
     end
+
+    it 'should accept launchpad.net/project and create a new Forge::Match with the correct initialization parameters' do
+      forge = Forge::Launchpad.new
+      Forge::Match.expects(:new).with(forge, nil, 'project_name')
+      forge.match('https://launchpad.net/project_name')
+    end
   end
 
   describe 'json_api_url' do

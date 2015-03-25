@@ -17,27 +17,27 @@ class WidgetsHelperTest < ActionView::TestCase
 
   describe 'factoid_image_path' do
     it 'should return good image path' do
-      factoid.stubs(:human_rating).returns('good')
+      factoid.stubs(:severity).returns(50)
       factoid_image_path(factoid).must_equal 'http://localhost:3000/fact_good.png'
     end
 
     it 'should return info image path' do
-      factoid.stubs(:human_rating).returns('info')
+      factoid.stubs(:severity).returns(0)
       factoid_image_path(factoid).must_equal 'http://localhost:3000/fact_info.png'
     end
 
     it 'should return warning image path' do
-      factoid.stubs(:human_rating).returns('warning')
+      factoid.stubs(:severity).returns(-1)
       factoid_image_path(factoid).must_equal 'http://localhost:3000/fact_warning.png'
     end
 
     it 'should return bad image path' do
-      factoid.stubs(:human_rating).returns('bad')
+      factoid.stubs(:severity).returns(-75)
       factoid_image_path(factoid).must_equal 'http://localhost:3000/fact_bad.png'
     end
 
     it 'should return info image path when rating is others' do
-      factoid.stubs(:human_rating).returns('others')
+      factoid.stubs(:severity).returns(-9_000)
       factoid_image_path(factoid).must_equal 'http://localhost:3000/fact_info.png'
     end
   end

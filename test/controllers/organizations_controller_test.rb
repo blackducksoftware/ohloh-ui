@@ -54,6 +54,18 @@ class OrganizationsControllerTest < ActionController::TestCase
     assert_select 'div#org_infographic'
   end
 
+  it 'should support show page via xhr' do
+    xhr :get, :show, id: @organization
+    must_respond_with :ok
+    JSON.parse(response.body)['subview_html'].must_match 'Affiliated Committers'
+  end
+
+  it 'should support ?view=portfolio_projects for show action' do
+    get :show, id: @organization, view: 'portfolio_projects'
+    must_respond_with :ok
+    assert_select 'div#org_summary'
+  end
+
   it 'should get show page for a invalid organization' do
     get :show, id: 'some_invalid_id'
     must_respond_with :not_found

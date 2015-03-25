@@ -190,6 +190,17 @@ class Forge::MatchTest < ActiveSupport::TestCase
       end
     end
 
+    it 'should return new repository for Forge::LaunchPad (alt) match' do
+      VCR.use_cassette('ForgeMatchLaunchPadRepositoryAlt2') do
+        match = Forge::Match.first('http://launchpad.net/ampoule')
+        repositories = match.repositories
+        repositories.length.must_equal 1
+        repositories[0].is_a?(BzrRepository).must_equal true
+        repositories[0].url.must_equal 'lp:ampoule'
+        repositories[0].forge_match.must_equal match
+      end
+    end
+
     it 'should return new repository for Forge::SourceForge match' do
       VCR.use_cassette('ForgeMatchSourceForge') do
         match = Forge::Match.first('https://jotwiki.svn.sourceforge.net/svnroot/jotwiki/jotwiki/')
