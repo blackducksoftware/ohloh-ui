@@ -33,7 +33,7 @@ class Stack < ActiveRecord::Base
   end
 
   def name
-    return title if respond_to?(:title) && !title.blank?
+    return title if respond_to?(:title) && title.present?
     return 'Default' if account && self == account.stack_core.default
     return "#{project.name}'s Stack" unless project.nil?
     'Unnamed'

@@ -5,5 +5,5 @@
 
 = render partial: 'normal_css'
 
-= link_to url, class: 'normal_stack_link', style: 'width: 100%', target: '_blank' do
+= link_to url, class: 'normal_stack_link', style: "width: #{width}px", target: '_blank' do
   = render partial: 'normal_inner', locals: { stack: @stack, widget: @widget, width: width }

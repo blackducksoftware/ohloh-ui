@@ -14,3 +14,4 @@ en:
     widget:
       embed: 'Embed this in your web page:'
       bbc: 'Used in some forums, bulletin boards, wikis'
+      bbc_code: 'BBCode'

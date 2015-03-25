@@ -1,7 +1,5 @@
 - content_for :html_title do
-  The
-  = @project.name
-  Open Source Project Widgets Page
+  = t('.page_title', name: @project.name)
 
 - page_context[:select_footer_nav] = :widgets
 

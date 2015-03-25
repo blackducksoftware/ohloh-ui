@@ -10,7 +10,7 @@
 = render partial: 'users_css'
 = render partial: 'users_js'
 
-- if widget.vars[:style] && widget.vars[:style].length > 0
+- if widget.vars[:style].present?
   - background_color = widget.background_color
   - grad_style = widget.vars[:style].to_sym == :rainbow ? 'rainbow' : ''
   .users_with_style

@@ -8,6 +8,7 @@ en:
     index:
       embed: 'You can embed Open Hub widgets in your web site.'
       widgets: 'Widgets'
+      page_title: 'The %{name} Open Source Project Widgets Page'
     no_project:
       add: 'Add this project to Open Hub!'
       stats: 'Project statistics are provided by'
