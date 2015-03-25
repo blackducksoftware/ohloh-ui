@@ -15,7 +15,7 @@ class IconTest < ActiveSupport::TestCase
       org = create(:organization)
       markup = "<p style=\"background-color:#EEE; color:#000; border:1px dashed #000;font-size:26px; "\
                 'line-height:32px; width:32px; height:32px;text-align:center; '\
-                "float:left; margin-bottom:0; margin-top:0; margin-right:2px\">#{org.name[0].capitalize}</p>"
+                "float:left; margin-bottom:0; margin-top:3px; margin-right:2px\">#{org.name[0].capitalize}</p>"
       Icon.new(org).image.must_equal markup
     end
   end

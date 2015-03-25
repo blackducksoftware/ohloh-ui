@@ -44,4 +44,40 @@ class NilAnalysisTest < ActiveSupport::TestCase
       nil_analysis.blank?.must_equal true
     end
   end
+
+  describe 'man_years_from_loc' do
+    it 'should return zero' do
+      nil_analysis.man_years_from_loc('test').must_equal 0
+    end
+  end
+
+  describe 'factoids' do
+    it 'should return []' do
+      nil_analysis.factoids.must_equal []
+    end
+  end
+
+  describe 'logged_at' do
+    it 'should return nil' do
+      nil_analysis.logged_at.must_equal nil
+    end
+  end
+
+  describe 'markup_total' do
+    it 'should return zero' do
+      nil_analysis.markup_total.must_equal 0
+    end
+  end
+
+  describe 'build_total' do
+    it 'should return zero' do
+      nil_analysis.build_total.must_equal 0
+    end
+  end
+
+  describe 'logic_total' do
+    it 'should return zero' do
+      nil_analysis.logic_total.must_equal 0
+    end
+  end
 end

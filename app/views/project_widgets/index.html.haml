@@ -1,0 +1,17 @@
+- content_for :html_title do
+  = t('.page_title', name: @project.name)
+
+- page_context[:select_footer_nav] = :widgets
+
+= render partial: 'projects/header'
+
+.project_content_title.margin_bottom_10
+  %h2= t('.widgets')
+  %p
+    = t('.embed')
+    .clearfix
+    - @widgets.each do |widget|
+      .project_widget_container
+        = render partial: 'widget', locals: { widget: widget, type: 'project', ref: 'sample' }
+
+.mezzo.margin_top_15

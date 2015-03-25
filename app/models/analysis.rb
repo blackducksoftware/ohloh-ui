@@ -37,12 +37,19 @@ class Analysis < ActiveRecord::Base
   end
 
   def man_years
-    return nil unless code_total
     man_years_from_loc(markup_total) + man_years_from_loc(logic_total) + man_years_from_loc(build_total)
   end
 
   def empty?
     min_month.nil? || (code_total == 0)
+  end
+
+  def cocomo_value(avg_salary = AVG_SALARY)
+    (man_years * avg_salary).to_i
+  end
+
+  def man_years_from_loc(loc = 0)
+    loc > 0 ? 2.4 * ((loc.to_f / 1000.0)**1.05) / 12.0 : 0
   end
 
   class << self
@@ -51,10 +58,6 @@ class Analysis < ActiveRecord::Base
       fnh = fnh.for_lang(lang_id) unless lang_id.nil?
       fnh
     end
-  end
-
-  def man_years_from_loc(loc = 0)
-    loc > 0 ? 2.4 * ((loc.to_f / 1000.0)**1.05) / 12.0 : 0
   end
 
   private

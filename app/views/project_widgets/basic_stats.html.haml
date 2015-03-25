@@ -1,0 +1,45 @@
+:ruby
+  widget ||= @widget
+  project = widget.project
+  analysis = project.best_analysis
+
+= render partial: 'basic_stats_css'
+
+- if project
+  .gadget
+    .logo
+      = link_to project.decorate.icon(:med), project_url(project), target: '_blank'
+    .main
+      %h3
+        = link_to truncate(project.name, length: 50), project_url(project), target: '_blank', title: project.name
+      - if !analysis.nil?
+        %p
+          = t('.main_language')
+          = link_to analysis.main_language ? analysis.main_language.nice_name : 'n/a',
+            languages_summary_project_analysis_path(project, id: 'latest'), target: '_blank'
+        %p
+          = t('.total_lines')
+          = link_to number_with_delimiter(analysis.logic_total),
+            languages_summary_project_analysis_path(project, id: 'latest'), target: '_blank'
+        %p
+          = t('.active_contibutors')
+          = link_to analysis.headcount, project_contributors_url(project), target: '_blank'
+        %p
+          = t('.commit_activity')
+          %br
+          -# TODO: commits_spark_project_analysis_url(format: 'gif', project_id: project.to_param, id: 'latest')
+          = image_tag 'spark.png', width: 179, height: 32
+
+      - elsif project.enlistments.any?
+        %p
+          = t('.not_ready')
+          = link_to t('.progress'), project_enlistments_url(project), target: '_blank'
+      - else
+        %p
+          = t('could_not')
+          = link_to t('.find_out'), project_enlistments_url(project), target: '_blank'
+    .updated
+      = render partial: 'footer', locals: { project: project, show_name: false }
+- else
+  = render partial: 'no_project'
+

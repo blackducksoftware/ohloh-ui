@@ -5,7 +5,7 @@ class OrganizationDecorator < Cherry::Decorator
       [
         [:org_summary,    I18n.t(:organization_summary),     h.organization_path(organization)],
         [:settings,       I18n.t(:settings),                 h.settings_organization_path(organization)],
-        [:widgets,        I18n.t(:widgets),                  h.organization_widgets_path(organization)]
+        [:widgets,        I18n.t(:widget),                   h.organization_widgets_path(organization)]
       ],
       [
         [:code_data,      I18n.t(:project_portfolio)],
@@ -15,7 +15,7 @@ class OrganizationDecorator < Cherry::Decorator
   end
 
   def icon(size = :small, opts = {})
-    Icon.new(organization, context: { size: size, opts: opts }).image(with_dimensions: false)
+    Icon.new(organization, context: { size: size, options: opts }).image(with_dimensions: false)
   end
 
   class << self
