@@ -17,7 +17,6 @@ module WidgetBadge
     def setup_blank
       image = super
       image.scale('138x21')
-      image
     end
 
     def new_text_image(text, options)
