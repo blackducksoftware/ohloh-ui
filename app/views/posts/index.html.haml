@@ -1,17 +1,22 @@
-/ TODO: Implement Search/Filter etc. for this page. New Ticket.
+- content_for :html_title do
+  = t('.openhub_posts')
+
+/ # TODO: Add posts#index for an account.
 - if @account
-  %h2 Posts
+  - account_post_context
+  - page_context[:select_footer_nav] = :posts
+  %h2= t('.posts')
   = render partial: 'shared/search_dingus', locals: { collection: @posts, sort_context: :posts }
 - else
-  %h1.margin_bottom_20
-    = link_to t('.forums'), forums_url
+  %h1
+    = link_to t('.forums'), forums_path
     \:
-    Posts
+    = t('.posts')
     = render partial: 'shared/search_dingus', locals: { collection: @posts, sort_context: :posts }
-  .clear_left &nbsp;
+  .clearfix
 
 - if @posts.any?
-  / = render :partial => 'searchables/post', :collection => @posts
+  = render partial: 'posts/posts', collection: @posts
   = will_paginate @posts
 / - elsif current_objects.query_parser.actual_query.nil?
 /   .no-posts

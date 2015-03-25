@@ -1,0 +1,32 @@
+:ruby
+  widget ||= @widget
+  project = widget.project
+  analysis = project.best_analysis
+  # use below image instead of sample_graph image
+  # languages_project_analysis_url(format: 'gif', project_id: project.to_param, id: 'latest', width: 120, height: 120)
+
+= render partial: 'languages_css'
+
+.languages
+  %h2= t('.languages')
+  - if analysis
+    - colors = analysis_language_percentages(analysis).map { |_, _, attr| attr[:color] }
+    .analysis
+      = image_tag 'sample_graph.png', width: 120, height: 120
+    %div
+      %table{ width: '155px', cellpadding: '0', cellspacing: '0' }
+        - analysis_language_percentages(analysis).each do |_, name, attr|
+          :ruby
+            percent = attr[:percent] > 0 ? attr[:percent] : '<1'
+            css = cycle('even', 'odd', name: 'tr')
+            color = cycle(*(colors + [{ name: 'charting_colors' }]))
+          %tr{ class: "row_#{css}" }
+            %td
+              %div{ style: "width:5px; background-color:##{color}" } &nbsp;
+            %td.name= name
+            %td.percent= t('.percent', percent: percent)
+        - reset_cycle('charting_colors')
+        - reset_cycle('tr')
+  - else
+    %p= t('.not_ready')
+  = render partial: 'footer', locals: { project: project, show_name: true }

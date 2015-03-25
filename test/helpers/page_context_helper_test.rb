@@ -13,6 +13,7 @@ class PageContextHelperTest < ActionView::TestCase
   let(:account_menus) do
     { select_footer_nav: :account_summary,
       select_top_menu_nav: :select_people,
+      page_header: 'accounts/mini_header',
       nav_type: 'footer_nav'
     }
   end

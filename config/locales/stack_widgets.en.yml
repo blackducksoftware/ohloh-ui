@@ -1,0 +1,22 @@
+en:
+  stack_widgets:
+    missing: 'Missing stack_id'
+    widget:
+      badge_title: 'Badge Title'
+      icon_size: 'Icon Size'
+      small: 'Small'
+      medium: 'Medium'
+      badge_width: 'Badge Width'
+      wide: 'pixels wide'
+      icons: 'project icons wide'
+      preview: 'Preview'
+      embed: 'Embed this in your web page'
+      hint: 'Hint: The parameters of this javascript may be customized by hand.'
+    index:
+      title: 'Widgets'
+      embed: 'You can embed Open Hub widgets in your web site.'
+    normal_inner:
+      more: '%{more} more...'
+    promo:
+      embed: 'Embed'
+      show: 'Show the world what open source projects you use.'

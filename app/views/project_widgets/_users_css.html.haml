@@ -1,0 +1,99 @@
+:ruby
+  gradient = '-webkit-gradient(linear, left center, right center, color-stop(0%, #B6010C), '\
+             'color-stop(12%, #9B015C),color-stop(25%, #6315DF), color-stop(37%, #2A43F4), '\
+             'color-stop(50%, #01843E), color-stop(63%, #018707), color-stop(75%, #3A4F01), '\
+             'color-stop(87%, #533701), color-stop(100%, #821E01))'
+  linear = 'linear-gradient(to right, #B6010C, #9B015C, #6315DF, #2A43F4, #01843E, #018707, #3A4F01, #533701, #821E01)'
+
+= render partial: 'widgets/web_fonts'
+
+:sass
+  .users_with_style
+    margin: 0
+    padding: 0
+    background-color: #fff
+    width: 80px
+    border: 1px solid #000
+    text-align: center
+    font-family: Open Sans
+    font-weight: normal
+    font-size: 12px
+    color: #fff
+    a
+      color: #ffffff
+      text-decoration: none
+      img
+        margin: 3px auto
+        vertical-align: middle
+        border: 0
+        width: 69px
+        height: 13px
+    .rainbow
+      background: #{gradient}
+      background: #{linear}
+      background-color: #C7C7C9
+    .info
+      margin: 0
+      padding: 8px 0
+      width: 80px
+      .count
+        font-weight: bold
+        font-size: 16pt
+        margin: 0 auto
+        padding: 0
+        letter-spacing: -0.05em
+      .user
+        margin: 0 auto
+        padding: 0
+        letter-spacing: -0.03em
+        font-weight: bold
+        font-size: 11px
+    .iuseit_container
+      margin: 0
+      padding: 0
+      overflow: hidden
+      #iuseit
+        margin: 0
+        padding: 2px 0
+        font-weight: bold
+        font-size: 14px
+        letter-spacing: -0.03em
+        background-color: #828181
+        width: 80px
+  .users_without_style
+    margin: 0
+    padding: 0
+    background-color: #E9E8E8
+    width: 80px
+    border: 1px solid #000
+    text-align: center
+    font-family: 'Open Sans'
+    font-weight: normal
+    font-size: 12px
+    color: #000
+    a
+      img
+        margin: 3px auto
+        border: 0
+        width: 69px
+        height: 13px
+      .last
+        display: block
+        margin: 0
+        padding: 0
+        border-top: 1px solid #5F6062
+        width: 80px
+        height: 2px
+        overflow: hidden
+      #iuseit
+        border: 1px solid #898989
+        width: 67px
+        margin: 8px auto
+        color: #5F6062
+      .user
+        font-size: 10px
+      .count
+        margin-top: 5px
+    a
+      color: #000
+      text-decoration: none

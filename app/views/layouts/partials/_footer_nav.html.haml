@@ -2,8 +2,8 @@
 %div{ id: generate_page_name, itemscope: '', itemtype: "http://schema.org/#{item_type}" }
   .col-md-12
     #page_contents= yield
-  .clear
-  .clear.margin_top_15
-  .margin_left_20.margin_right_20.margin_top_15
+  .clearfix
+  .clearfix.margin_top_15
+  .margin_left_20.margin_right_20
     .footer-navigation
       = render partial: 'layouts/partials/navigator'

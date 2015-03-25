@@ -1,0 +1,18 @@
+.well
+  .col-md-8
+    %h4
+      = link_to posts.topic.forum.name, forum_path(posts.topic.forum)
+      \:
+      = link_to posts.topic.title, topic_path(posts.topic)
+    %p= expander(strip_tags(posts.body), 200, 250)
+  .col-md-3.margin_top_10.post_stats
+    %p
+      = t('.views')
+      %span.view_count.pull-right= posts.topic.hits
+    %p
+      = t('.author')
+      = link_to posts.account.login, account_path(posts.account), class: 'pull-right'
+    %p
+      = t('.posted')
+      %span.pull-right= t('.posted_ago', posted: time_ago_in_words(posts.created_at))
+  .clear

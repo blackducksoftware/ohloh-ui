@@ -94,6 +94,18 @@ module ApplicationHelper
     Time.gm(date.year, date.month, date.day).xmlschema
   end
 
+  def number_with_delimiter(number, delimiter: ',', separator: '.')
+    parts = number.to_s.split('.')
+    parts[0].gsub!(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1#{delimiter}")
+    parts.join separator
+    rescue
+      number
+  end
+
+  def iusethis_css_class
+    logged_in? ? 'stack_trigger' : 'needs_login'
+  end
+
   private
 
   def render_expander(text, l)
