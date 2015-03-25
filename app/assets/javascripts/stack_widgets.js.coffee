@@ -1,64 +1,62 @@
-class stackWidget
+class StackWidget
+  WHITE_SPACE = 4
+
   constructor: ->
-    $('form.customized_stack_badge input[type=radio]').click(@activate)
-    $('form.customized_stack_badge input[type=text]').change(@update).keyup(@update)
-    $('form.customized_stack_badge input[name="icon_size"]').click(@update)
-    @update() if $("form.customized_stack_badge").length > 0
+    $('form.customized_stack_badge input[type=radio]').click(activate)
+    $('form.customized_stack_badge input[type=text]').change(update).keyup(update)
+    $('form.customized_stack_badge input[name="icon_size"]').click(update)
+    update() if $("form.customized_stack_badge").length
 
-
-  activate: ->
+  activate = ->
     $(this).parent().parent().find('input[type=text]').attr('disabled', 'disabled')
     $(this).siblings('input[type=text]').removeAttr('disabled')
 
-  set_javascript: (icon_size, title, badge_width, projects_shown) ->
-    script_tag = $('.embed.javascript pre')
-    script_args = "?icon_width=#{icon_size}&icon_height=#{icon_size}&title=#{encodeURIComponent(title)}" +
-                  "&width=#{@constrain_width(badge_width)}&projects_shown=#{projects_shown}&noclear=true"
+  setJavascript = (iconSize, title, badgeWidth, projectsShown) ->
+    scriptTag = $('.embed.javascript pre')
+    scriptArgs = "?icon_width=#{ iconSize }&icon_height=#{ iconSize }&title=#{ encodeURIComponent(title) }" +
+                  "&width=#{ constrainWidth(badgeWidth) }&projects_shown=#{ projectsShown }&noclear=true"
 
-    script_src = script_tag.attr('id') + script_args;
-    new_html = "<script type='text/javascript' src='#{script_src}'></script>"
-    script_tag.text(new_html)
+    scriptSrc = scriptTag.attr('id') + scriptArgs
+    newHtml = "<script type='text/javascript' src='#{ scriptSrc }'></script>"
+    scriptTag.text(newHtml)
 
-    preview_src = "#{script_tag.attr('id')}#{script_args}"
+    previewSrc = "#{ scriptTag.attr('id') }#{ scriptArgs }"
     $.ajax
-      url: preview_src
+      url: previewSrc
       success: (badge) ->
          $('.preview').html(badge)
 
-  white_space: 4
+  constrainWidth = (inputWidth) ->
+    oneWidgetWidth = iconSize() + WHITE_SPACE
+    Math.min(25*oneWidgetWidth, Math.max(oneWidgetWidth, inputWidth))
 
-  constrain_width: (input_width) ->
-    one_widget_width = @icon_size() + @white_space
-    Math.min(25*one_widget_width, Math.max(one_widget_width, input_width))
-
-  recalc_width: ->
-    specified_by_icons = $('#icons')[0].checked
+  recalcWidth = ->
+    specifiedByIcons = $('#icons')[0].checked
     padding = 8
     border = 1
-    extra_space = padding*2 + border*2
-    one_widget_width = @icon_size() + @white_space
-    $pixel_input = $('#pixels ~ input[type=text]')
-    $icons_input = $('#icons ~ input[type=text]')
+    extraSpace = padding*2 + border*2
+    $pixelInput = $('#pixels ~ input[type=text]')
+    $iconsInput = $('#icons ~ input[type=text]')
 
-    if specified_by_icons
-      badge_width = parseInt($icons_input.val()) * (@icon_size() + @white_space) + extra_space
-      $pixel_input.val parseInt(@constrain_width(badge_width))
+    if specifiedByIcons
+      badgeWidth = parseInt($iconsInput.val()) * (iconSize() + WHITE_SPACE) + extraSpace
+      $pixelInput.val parseInt(constrainWidth(badgeWidth))
     else
-      icons = parseInt($pixel_input.val() - extra_space) / (@icon_size() + @white_space)
-      $icons_input.val parseInt(icons)
+      icons = parseInt($pixelInput.val() - extraSpace) / (iconSize() + WHITE_SPACE)
+      $iconsInput.val parseInt(icons)
 
-  icon_size: () ->
+  iconSize = ->
     parseInt $('input[name="icon_size"]:checked').val()
 
-  update: () =>
+  update = ->
     title = $('input.title').val()
-    @recalc_width()
-    badge_width = parseInt($('input#pixels ~ input[type=text]').val())
-    max_projects_shown = 24
+    recalcWidth()
+    badgeWidth = parseInt($('input#pixels ~ input[type=text]').val())
+    maxProjectsShown = 24
     columns = parseInt($('.icons').val())
-    projects_shown = if columns < 4 then columns*8 else columns*2
-    projects_shown = Math.min(projects_shown, max_projects_shown)
-    @set_javascript @icon_size(), title, badge_width, projects_shown
+    projectsShown = if columns < 4 then columns*8 else columns*2
+    projectsShown = Math.min(projectsShown, maxProjectsShown)
+    setJavascript(iconSize(), title, badgeWidth, projectsShown)
 
 $ ->
-  new stackWidget
+  new StackWidget
