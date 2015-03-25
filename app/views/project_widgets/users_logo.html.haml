@@ -4,6 +4,7 @@
   href  = CGI.unescapeHTML new_stack_entry_url(project_id: project.to_param, ref: widget.class)
 
 = render partial: 'users_logo_css'
+= render partial: 'users_logo_js'
 
 .users_logo
   = link_to href, title: t('.support', name: project.name), target: '_blank' do
