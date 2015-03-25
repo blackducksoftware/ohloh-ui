@@ -25,7 +25,12 @@ class PostTest < ActiveSupport::TestCase
   end
 
   it "should sort 'by_unanswered'" do
-    Post.by_unanswered.must_equal Post.joins(:topic).where("posts_count = '1'").order('created_at desc')
+    # TODO: Remove once other tests are
+    # independent from posts.yml file
+    Post.destroy_all
+    unanswered_post = post
+    create(:topic_with_posts)
+    Post.all.by_unanswered.must_equal [unanswered_post]
   end
 
   it 'posts should have an associated topic' do

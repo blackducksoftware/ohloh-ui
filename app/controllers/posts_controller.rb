@@ -90,19 +90,16 @@ class PostsController < ApplicationController
 
   def find_posts_belonging_to_account
     @account = Account.from_param(params[:account_id]).first
-    posts = Post.where(account_id: @account)
-    sort_by = parse_sort_term(posts)
-    @posts = posts.tsearch(params[:query], sort_by).page(params[:page]).per_page(10)
+    @posts = Post.tsearch(params[:query], parse_sort_term).page(params[:page]).per_page(10)
   end
 
   def find_posts
-    posts = Post.all
-    sort_by = parse_sort_term(posts)
-    @posts = posts.tsearch(params[:query], sort_by).page(params[:page]).per_page(10)
+    @posts = Post.tsearch(params[:query], parse_sort_term).page(params[:page]).per_page(10)
   end
 
-  def parse_sort_term(posts)
-    posts.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : nil
+  def parse_sort_term
+    Post.where(account_id: @account).respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : nil if @account
+    Post.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : nil
   end
 
   def post_params

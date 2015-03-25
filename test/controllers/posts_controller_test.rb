@@ -12,7 +12,7 @@ describe PostsController do
   describe 'index sort' do
     # Remove fixture data.
     # TODO: Remove when all models are independent of fixture data.
-    before { Post.all.each(&:delete) }
+    before { Post.destroy_all }
 
     it 'index should handle search for unlogged users' do
       login_as nil
@@ -81,7 +81,7 @@ describe PostsController do
   end
 
   describe 'account index sort' do
-    before { Post.all.each(&:delete) }
+    before { Post.destroy_all }
 
     it 'fails to find a match' do
       get :index, account_id: user, query: 'qwertyuioplkjhgfdsazxcvbnm'

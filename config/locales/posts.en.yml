@@ -6,6 +6,7 @@
     by_newest: 'Newest'
     index:
       posts: 'Posts'
+      openhub_posts: 'Open Hub Forum Posts '
     edit:
       forums: 'Forums'
       edit_post: 'Edit Post'

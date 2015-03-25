@@ -9,12 +9,7 @@ class Post < ActiveRecord::Base
   validates :popularity_factor, numericality: true, allow_blank: true
 
   scope :by_newest, -> { order('created_at desc') }
-
-  class << self
-    def by_unanswered
-      joins(:topic).where("posts_count = '1'").by_newest
-    end
-  end
+  scope :by_unanswered, -> { joins(:topic).where(topics: { posts_count: 1 }).by_newest }
 
   def body=(value)
     super(value ? value.fix_encoding_if_invalid!.strip_tags.strip : nil)
