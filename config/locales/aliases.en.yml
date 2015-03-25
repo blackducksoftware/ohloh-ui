@@ -1,0 +1,25 @@
+en:
+  aliases:
+    aliases: 'Aliases'
+    new_alias: 'New Alias'
+    contributions_by: 'Contributions by'
+    attributed_to: 'will be attributed to'
+    save_alias: 'Save Alias'
+    alias_temporarily_disabled: 'Creating aliases for this project is temporarily disabled'
+    index:
+      title: "The %{project_name} Open Source Project : Aliases Page"
+      confirm_message: 'Are you sure you want to delete this alias?'
+      confirm_message_redo: 'Are you sure you want to delete this setting?'
+      pending: 'Changes will take effect after the next Open Hub report update.'
+      no_contributions: 'No contributor aliases have been defined for this project.'
+      remove: 'Remove'
+    new:
+      title: "The %{project_name} Open Source Project on Open Hub : New Aliases Page"
+      no_more_alias: 'No more aliases can be assigned to this project.'
+    about_aliases:
+      about: 'About'
+      aliases: 'Aliases'
+      about_desc_1: 'If an individual has contributed code to a project under several different committer IDs, you can combine them using aliases.'
+      about_desc_2: 'An alias will replace one committer ID with another in reports. You specify the ID you wish to replace, and the replacement ID, on the Add Aliases form.'
+      about_desc_3: 'Aliases do not change your source code history, and Open Hub continues to gather and analyze this history as always. An alias is only an ID mapping for reports and charts.'
+

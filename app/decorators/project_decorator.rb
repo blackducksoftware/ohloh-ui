@@ -1,7 +1,7 @@
 class ProjectDecorator < Cherry::Decorator
   include ColorsHelper
 
-  delegate :main_language, to: :project
+  delegate :main_language, :links, to: :project
 
   def icon(size = :small, opts = {})
     opts[:color] = language_text_color(main_language)
@@ -9,6 +9,18 @@ class ProjectDecorator < Cherry::Decorator
 
     icon = Icon.new(project, context: { size: size, opts: opts })
     icon.image
+  end
+
+  def sorted_link_list
+    links.sort do |a, b|
+      if b.category == 'Homepage'
+        1
+      elsif a.category == 'Homepage'
+        -1
+      else
+        a.category <=> b.category
+      end
+    end.group_by(&:category)
   end
 
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize

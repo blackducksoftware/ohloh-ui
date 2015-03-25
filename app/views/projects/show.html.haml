@@ -46,7 +46,7 @@
 - if @analysis.nil?
   = render partial: 'projects/show/no_analysis_summary'
   .col-md-3#proj_rating= render partial: 'projects/show/community_rating', locals: { title: t('.community_rating') }
-  - if @project.enlistments.empty? && @analysis.blank?
-    = image_tag('/images/sample_ohloh_analysis.jpg')
+  - if @project.enlistments.empty?
+    = image_tag('sample_ohloh_analysis.jpg')
 - else
   = render partial: 'projects/show/analysis_summary'

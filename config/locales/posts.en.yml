@@ -1,6 +1,12 @@
  en:
 
    posts:
+    by_unanswered: 'Unanswered'
+    by_relevance: 'Relevance'
+    by_newest: 'Newest'
+    index:
+      posts: 'Posts'
+      openhub_posts: 'Open Hub Forum Posts '
     edit:
       forums: 'Forums'
       edit_post: 'Edit Post'
@@ -17,6 +23,11 @@
       submit: 'Submit'
     post:
       edit_post: 'Edit Post'
+    posts:
+      views: 'Views'
+      author: 'Author'
+      posted: 'Posted'
+      posted_ago: '%{posted} ago'
     fields:
       submit: 'Submit'
     sign_in:
@@ -27,4 +38,4 @@
       password: "Password"
       remember_me: "Remember Me"
       log_in: "Log In"
-      
+

@@ -15,6 +15,7 @@
 #= require jquery-ui
 #= require turbolinks
 #= require chosen.min
+#= require app
 #= require_tree .
 #= require twitter/bootstrap
 #= require highcharts/highstock

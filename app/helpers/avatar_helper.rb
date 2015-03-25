@@ -60,7 +60,7 @@ module AvatarHelper
   end
 
   def anonymous_image_path(size)
-    "/images/anon/anon#{avatar_default_size(size)}.gif"
+    "anon/anon#{avatar_default_size(size)}.gif"
   end
 
   def avatar_title(who)

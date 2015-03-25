@@ -6,23 +6,23 @@
     %dt= t('.organization')
     %dd{ style: 'margin-bottom: .5em;' }
       = link_to @project.organization.name, organization_path(@project.organization)
-  / TODO: implement when links are ready
-  / %dt
-  /   = link_to t('.proj_links'), project_links_path(@project)
-  / %dd{ style: 'margin-bottom: .5em;' }
-  /   - if sorted_link_list.any?
-  /     - sorted_link_list.each do |link_category_name, links|
-  /       - if links.any?
-  /         - if links.size > 1
-  /           %a{ href: project_links_path(@project) }
-  /             #{link_category_name}
-  /             %i
-  /               ( #{links.size} Links )
-  /         - else
-  /           = micro_data_tag_link(link_category_name, links)
-  /         %br
-  /   - else
-  /     = link_to t('.add_proj_links'), project_links_path(@project)
+  %dt
+    = link_to t('.proj_links'), project_links_path(@project)
+  %dd{ style: 'margin-bottom: .5em;' }
+    - if @project.decorate.sorted_link_list.any?
+      - @project.decorate.sorted_link_list.each do |link_category_name, links|
+        - if links.size > 1
+          = link_to project_links_path(@project) do
+            = link_category_name
+            %i= t('.no_of_links', count: links.size)
+        - elsif links.size == 1
+          - link_opts = link_category_name == 'Homepage' ?  { itemprop: 'url' } : {}
+          = link_to links.first.url, link_opts do
+            %i.icon-external-link
+            = link_category_name
+        %br
+    - else
+      = link_to t('.add_proj_links'), project_links_path(@project)
   %dt
     = link_to t('.code_locations'), project_enlistments_path(@project)
   %dd{ style: 'margin-bottom: .5em;' }
@@ -35,7 +35,7 @@
     - else
       = link_to t('.add_code_location'), project_enlistments_path(@project)
   %dt
-    = link_to t('.licenses'), licenses_project_path(@project)
+    = link_to t('.licenses'), project_licenses_path(@project)
   %dd{ style: 'margin-bottom: .5em;' }
     - if @project.licenses.size > 0
       %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }

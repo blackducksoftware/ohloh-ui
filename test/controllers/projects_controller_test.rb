@@ -354,7 +354,7 @@ class ProjectsControllerTest < ActionController::TestCase
     get :edit, id: create(:project).id
     must_respond_with :ok
     must_select 'input.save', 0
-    must_select '.disabled.save', 1
+    must_select '.needs_login.save', 1
   end
 
   it 'edit should enable save button for managers' do
