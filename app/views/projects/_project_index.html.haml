@@ -74,7 +74,7 @@
       - else
         %span= t('.mostly_written_lang_not_available')
     .licenses.pull-right
-      = link_to t('.licenses'), licenses_project_path(project)
+      = link_to t('.licenses'), project_licenses_path(project)
       - if project.licenses.any?
         = project.licenses.first(3).collect { |l| l.short_name.truncate(12) }.join(', ')
       - else

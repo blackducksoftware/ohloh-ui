@@ -117,7 +117,6 @@ Rails.application.routes.draw do
       get :map
       get :settings
       get :estimated_cost
-      get :licenses
       get 'permissions'  => 'permissions#show',   as: :permissions
       put 'permissions'  => 'permissions#update', as: :update_permissions
       post 'rate'        => 'ratings#rate',       as: :rate
@@ -127,6 +126,7 @@ Rails.application.routes.draw do
       get :compare
       post :check_forge
     end
+    resources :licenses, controller: :project_licenses, only: [:index, :new, :create, :destroy]
     resource :logos, only: [:new, :create, :destroy]
     resources :links, except: :show
     resources :managers, only: [:index, :new, :create, :edit, :update] do
