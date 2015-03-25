@@ -101,6 +101,7 @@ Rails.application.routes.draw do
     collection do
       get :account
       get :project
+      get :licenses
     end
   end
 

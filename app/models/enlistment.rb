@@ -2,6 +2,10 @@ class Enlistment < ActiveRecord::Base
   belongs_to :repository
   belongs_to :project
 
+  accepts_nested_attributes_for :repository
+
+  scope :not_deleted, -> { where(deleted: false) }
+
   acts_as_editable editable_attributes: [:ignore]
   acts_as_protected parent: :project
 

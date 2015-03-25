@@ -1,0 +1,52 @@
+:ruby
+  content_for(:html_title) { t('.page_title', name: @project.name) }
+  page_context[:select_top_menu_nav] = 'select_projects'
+  content_for :javascript do
+    js = "$('#edit_project_license').submit(function(e) { \
+             if($('.chzn-container-single a.chzn-single').text().trim() == '#{t('.select_placeholder')}') { \
+               e.preventDefault(); \
+               $('#error').show(); \
+             } \
+           });"
+    javascript_tag(js)
+  end
+
+#error{ style: 'display: none;' }
+  .alert.alert-info
+    %i.icon-exclamation-sign
+    #{t('.at_least_one')}
+
+.project_content_title
+  %h2.float_left
+    = link_to t(:settings), settings_project_path(@project)
+    &nbsp;:&nbsp;
+    = link_to t('.licenses'), project_licenses_path(@project)
+    &nbsp;:&nbsp;#{t(:new)}
+  -# render_project_analysis_timestamp
+
+.well.col-md-7.col-md-offset-2
+  = form_for ProjectLicense.new, url: project_licenses_path(@project),
+                                 html: { class: 'edit_project', id: 'edit_project_license' } do
+    %fieldset
+      %legend= t('.new_declared_license')
+      .control-group
+        %label.control-label.required= t('.license')
+        .controls.chosen#value_select
+          %select.chzn-select.value-select#value_selector{ name: 'license_id', style: 'width: 524px;',
+                                                           data: { placeholder: t('.select_placeholder') } }
+            %option{ value: 'blank' }
+            - @licenses.each do |license|
+              %option{ value: license.id }= license.nice_name
+          %p.clear.help-block
+            - link = link_to t('.add_it'), new_license_path
+            != t('.add_it_help', link: link)
+          - error_tag @license, :license_id
+
+      .actions
+        - if @project.edit_authorized?
+          %input.btn.btn-primary.add-license{ type: 'submit', value: t('.add_declared_license') }
+        - else
+          = disabled_button t('.add_declared_license'), class: 'btn-primary add-license'
+
+.clear
+= render partial: 'project_licenses/about'

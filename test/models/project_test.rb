@@ -112,6 +112,56 @@ class ProjectTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'url and download_url' do
+    it 'should clean up url value' do
+      proj = create(:project)
+      proj.update_attributes(url: 'openhub.net/url_cleanup')
+      proj.reload.url.must_equal 'http://openhub.net/url_cleanup'
+    end
+
+    it 'should clean up url value' do
+      proj = create(:project)
+      proj.update_attributes(download_url: 'openhub.net/download_url_cleanup')
+      proj.reload.download_url.must_equal 'http://openhub.net/download_url_cleanup'
+    end
+
+    it 'should require url value is a valid url if present' do
+      proj = create(:project)
+      proj.update_attributes(url: 'I am a banana!')
+      proj.errors.messages[:url].must_equal [I18n.t(:not_a_valid_url)]
+    end
+
+    it 'should require url value is a valid url if present' do
+      proj = create(:project)
+      proj.update_attributes(download_url: 'I am a banana!')
+      proj.errors.messages[:download_url].must_equal [I18n.t(:not_a_valid_url)]
+    end
+
+    it 'should support undo of setting url value' do
+      proj = create(:project)
+      proj.update_attributes(url: 'http://openhub.net/url')
+      proj = Project.find(proj.id)
+      prop_edits = PropertyEdit.for_target(proj).where(key: :url).to_a
+      prop_edits.length.must_equal 1
+      prop_edits[0].key.must_equal 'url'
+      prop_edits[0].value.must_equal 'http://openhub.net/url'
+      prop_edits[0].undo!(create(:admin))
+      proj.reload.url.must_equal nil
+    end
+
+    it 'should support undo of setting download_url value' do
+      proj = create(:project)
+      proj.update_attributes(download_url: 'http://openhub.net/download_url')
+      proj = Project.find(proj.id)
+      prop_edits = PropertyEdit.for_target(proj).where(key: :download_url).to_a
+      prop_edits.length.must_equal 1
+      prop_edits[0].key.must_equal 'download_url'
+      prop_edits[0].value.must_equal 'http://openhub.net/download_url'
+      prop_edits[0].undo!(create(:admin))
+      proj.reload.download_url.must_equal nil
+    end
+  end
+
   describe 'code_published_in_code_search?' do
     it 'should return false' do
       koder_status = KodersStatus.create!(project_id: project.id, ohloh_code_ready: false)

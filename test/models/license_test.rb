@@ -44,4 +44,11 @@ class LicenseTest < ActiveSupport::TestCase
   it '#short_name returns nice_name if no abbreviation is available' do
     create(:license, nice_name: 'Foobar', abbreviation: nil).short_name.must_equal 'Foobar'
   end
+
+  it '#autocomplete returns correct licenses' do
+    license_1 = create(:license, nice_name: 'AutocompleteMIT')
+    create(:license, nice_name: 'AutocompleteBSD')
+    license_3 = create(:license, nice_name: 'AutocompleteMit v2')
+    License.autocomplete('autocompletemit').map(&:id).sort.must_equal [license_1.id, license_3.id].sort
+  end
 end

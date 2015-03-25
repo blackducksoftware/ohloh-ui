@@ -8,6 +8,10 @@ class ProjectLicensesController < ApplicationController
     @licenses = @project.licenses
   end
 
+  def new
+    @licenses = License.all
+  end
+
   private
 
   def find_project

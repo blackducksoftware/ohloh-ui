@@ -47,10 +47,11 @@ en:
   managers_link_name: 'Managers'
   learn_more: "Learn More&hellip;"
   project_page_title: "The %{project_name} Open Source Project on Open Hub"
-  edit_permission_failed: "You are not authorized to edit this #{klass}"
+  edit_permission_failed: "You are not authorized to edit this %{klass}"
   cant_edit_other_account: "You can't edit another's account."
   edit_description: Edit Description
   all_projects: All Projects
+  not_a_valid_url: "not a valid url"
   openhub_show: "Open Hub Forum: %{name}"
   openhub: "OpenHub"
 

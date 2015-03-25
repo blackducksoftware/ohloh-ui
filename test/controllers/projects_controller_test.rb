@@ -184,6 +184,170 @@ class ProjectsControllerTest < ActionController::TestCase
     must_respond_with :ok
   end
 
+  # check_forge
+  it 'check_forge should require a current user' do
+    login_as nil
+    post :check_forge, codelocation: 'http://cnn.com'
+    must_respond_with :unauthorized
+  end
+
+  it 'check_forge should gracefully handle duplicate projects detected' do
+    VCR.use_cassette('ProjectControllerCheckForge-rails') do
+      proj = create(:project)
+      repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forges(:github).id,
+                                 owner_at_forge: 'rails', name_at_forge: 'rails')
+      create(:enlistment, project: proj, repository: repo)
+      login_as create(:account)
+      post :check_forge, codelocation: 'https://github.com/rails/rails'
+      must_respond_with :ok
+      must_select "#project_#{proj.id}", 1
+      must_select 'form#new_project', 0
+      response.body.must_match 'already'
+    end
+  end
+
+  it 'check_forge should gracefully handle forge timeout errors' do
+    VCR.use_cassette('ProjectControllerCheckForge-rails') do
+      proj = create(:project)
+      repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forges(:github).id,
+                                 owner_at_forge: 'rails', name_at_forge: 'rails')
+      create(:enlistment, project: proj, repository: repo)
+      login_as create(:account)
+      Forge::Match.any_instance.expects(:project).raises Timeout::Error
+      post :check_forge, codelocation: 'https://github.com/rails/rails', bypass: true
+      must_respond_with :ok
+      must_select "#project_#{proj.id}", 0
+      must_select 'form#new_project', 1
+      response.body.must_match I18n.t('projects.check_forge.forge_time_out', name: forges(:github).name)
+    end
+  end
+
+  it 'check_forge should allow creating a project that already matches an existing project' do
+    VCR.use_cassette('ProjectControllerCheckForge-rails') do
+      proj = create(:project)
+      repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forges(:github).id,
+                                 owner_at_forge: 'rails', name_at_forge: 'rails')
+      create(:enlistment, project: proj, repository: repo)
+      login_as create(:account)
+      post :check_forge, codelocation: 'https://github.com/rails/rails', bypass: true
+      must_respond_with :ok
+      must_select "#project_#{proj.id}", 0
+      must_select 'form#new_project', 1
+    end
+  end
+
+  # create
+  it 'create should require a current user' do
+    login_as nil
+    post :create, project: { name: 'Fail', url_name: 'fail', description: 'It fails.' }
+    must_respond_with :unauthorized
+  end
+
+  it 'create should persist a valid project to the database' do
+    account = create(:account)
+    license1 = create(:license)
+    license2 = create(:license)
+    login_as account
+    post :create, project: { name: 'Cool Beans', url_name: 'cool-beans', description: 'cool beans app',
+                             url: 'http://a.com/', download_url: 'http://b.com/', managed_by_creator: '1',
+                             project_licenses_attributes: [{ license_id: license1.id }, { license_id: license2.id }],
+                             enlistments_attributes: [repository_attributes: { type: 'GitRepository',
+                                                                               url: 'git://a.com/cb.git',
+                                                                               branch_name: 'master' }] }
+    must_respond_with 302
+    project = Project.where(url_name: 'cool-beans').last
+    project.wont_equal nil
+    project.name.must_equal 'Cool Beans'
+    project.url.must_equal 'http://a.com/'
+    project.download_url.must_equal 'http://b.com/'
+    project.active_managers.must_equal [account]
+    project.licenses.map(&:id).sort.must_equal [license1.id, license2.id].sort
+    project.repositories.length.must_equal 1
+    project.repositories[0].type.must_equal 'GitRepository'
+    project.repositories[0].url.must_equal 'git://a.com/cb.git'
+    project.repositories[0].branch_name.must_equal 'master'
+  end
+
+  it 'create should allow no download_url' do
+    account = create(:account)
+    license1 = create(:license)
+    license2 = create(:license)
+    login_as account
+    post :create, project: { name: 'Cool Beans', url_name: 'cool-beans', description: 'cool beans app',
+                             url: 'http://a.com/', download_url: '', managed_by_creator: '1',
+                             project_licenses_attributes: [{ license_id: license1.id }, { license_id: license2.id }],
+                             enlistments_attributes: [repository_attributes: { type: 'GitRepository',
+                                                                               url: 'git://a.com/cb.git',
+                                                                               branch_name: 'master' }] }
+    must_respond_with 302
+    project = Project.where(url_name: 'cool-beans').last
+    project.wont_equal nil
+    project.name.must_equal 'Cool Beans'
+    project.url.must_equal 'http://a.com/'
+    project.download_url.must_equal nil
+    project.active_managers.must_equal [account]
+    project.licenses.map(&:id).sort.must_equal [license1.id, license2.id].sort
+    project.repositories.length.must_equal 1
+    project.repositories[0].type.must_equal 'GitRepository'
+    project.repositories[0].url.must_equal 'git://a.com/cb.git'
+    project.repositories[0].branch_name.must_equal 'master'
+  end
+
+  it 'create should allow no licenses' do
+    account = create(:account)
+    login_as account
+    post :create, project: { name: 'Cool Beans', url_name: 'cool-beans', description: 'cool beans app',
+                             url: 'http://a.com/', download_url: 'http://b.com/', managed_by_creator: '1',
+                             project_licenses_attributes: [],
+                             enlistments_attributes: [repository_attributes: { type: 'GitRepository',
+                                                                               url: 'git://a.com/cb.git',
+                                                                               branch_name: 'master' }] }
+    must_respond_with 302
+    project = Project.where(url_name: 'cool-beans').last
+    project.wont_equal nil
+    project.name.must_equal 'Cool Beans'
+    project.url.must_equal 'http://a.com/'
+    project.download_url.must_equal 'http://b.com/'
+    project.active_managers.must_equal [account]
+    project.licenses.must_equal []
+    project.repositories.length.must_equal 1
+    project.repositories[0].type.must_equal 'GitRepository'
+    project.repositories[0].url.must_equal 'git://a.com/cb.git'
+    project.repositories[0].branch_name.must_equal 'master'
+  end
+
+  it 'create should allow the creator not being automatically the manager' do
+    license1 = create(:license)
+    license2 = create(:license)
+    login_as create(:account)
+    post :create, project: { name: 'Cool Beans', url_name: 'cool-beans', description: 'cool beans app',
+                             url: 'http://a.com/', download_url: 'http://b.com/', managed_by_creator: '0',
+                             project_licenses_attributes: [{ license_id: license1.id }, { license_id: license2.id }],
+                             enlistments_attributes: [repository_attributes: { type: 'GitRepository',
+                                                                               url: 'git://a.com/cb.git',
+                                                                               branch_name: 'master' }] }
+    must_respond_with 302
+    project = Project.where(url_name: 'cool-beans').last
+    project.wont_equal nil
+    project.name.must_equal 'Cool Beans'
+    project.url.must_equal 'http://a.com/'
+    project.download_url.must_equal 'http://b.com/'
+    project.active_managers.must_equal []
+    project.licenses.map(&:id).sort.must_equal [license1.id, license2.id].sort
+    project.repositories.length.must_equal 1
+    project.repositories[0].type.must_equal 'GitRepository'
+    project.repositories[0].url.must_equal 'git://a.com/cb.git'
+    project.repositories[0].branch_name.must_equal 'master'
+  end
+
+  it 'create should gracefully handle validation errors' do
+    login_as create(:account)
+    post :create, project: { name: '' }
+    must_respond_with :unprocessable_entity
+    must_select 'form#new_project', 1
+    must_select 'p.error'
+  end
+
   # edit
   it 'edit should disable save button for unlogged users' do
     login_as nil
