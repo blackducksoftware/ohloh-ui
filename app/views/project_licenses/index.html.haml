@@ -1,0 +1,37 @@
+- content_for(:html_title) { t('.page_title', name: @project.name) }
+- page_context[:select_top_menu_nav] = 'select_projects'
+
+.project_content_title
+  %h2.pull-left
+    = link_to t(:settings), settings_project_path(@project)
+    &nbsp;:&nbsp;#{t('.licenses')}
+  -# render_project_analysis_timestamp
+.clearfix
+
+- flash[:notice] = t('.no_licenses_for_project') if @licenses.empty?
+
+- if @licenses.any?
+  .declared_licenses
+    .col-md-7.well.col-md-offset-2
+      %h4= t('.declared_licenses')
+      %table{ style: 'width: 100%;' }
+        %tbody
+          - @licenses.each do |license|
+            %tr.license
+              %td.col-md-8.padding_one_top= license.nice_name
+              %td.col-md-4.padding_one_top.last
+                .pull-right
+                  - if @project.edit_authorized?
+                    %a.btn.btn-mini.btn-danger{ href: project_license_path(@project, license),
+                                                method: :delete, confirm: t('.remove_confirm') }
+                      %i.icon-trash= t '.remove'
+                  - else
+                    = disabled_button bootstrap_icon('icon-trash', t('.remove')), class: 'btn-mini btn-danger'
+          %tr
+            %td.padding_one_top{ colspan: '2' }= show_license_button(@project)
+    .clear
+
+- else
+  = show_license_button(@project)
+
+= render partial: 'project_licenses/about'

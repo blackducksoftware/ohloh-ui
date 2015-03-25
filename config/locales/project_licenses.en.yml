@@ -1,0 +1,16 @@
+en:
+  project_licenses:
+    new_declared_license: "New Declared License"
+    index:
+      page_title: "The %{name} Open Source Project on Open Hub : Settings Licenses Page"
+      licenses: "Licenses"
+      no_licenses_for_project: "There are no declared licenses for this project."
+      declared_licenses: "Declared Licenses"
+      remove: "Remove"
+      remove_confirm: "Are you sure you want to remove this license?"
+    about:
+      licenses: "Licenses"
+      help1: "Open Hub lets you declare the licenses in use by the project. You can add or remove licenses to accurately reflect the project's license usage."
+      help2: "This information will be displayed on the project's summary page."
+      help3: "Open Hub will suggest licenses already known to the site based on the text you enter."
+      help4: "While you can add a new license, please help us keep the license data accurate by choosing from the existing set, unless you are certain that the project uses a license not already known to Open Hub."

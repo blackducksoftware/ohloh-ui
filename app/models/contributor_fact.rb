@@ -10,6 +10,20 @@ class ContributorFact < NameFact
     person && person.kudo_rank
   end
 
+  def append_name_fact(name_fact)
+    return if name_fact.nil?
+    self.commits += name_fact.commits
+    self.email_address_ids += name_fact.email_address_ids
+    save
+  end
+
+  def remove_name_fact(name_fact)
+    return if name_fact.nil?
+    self.commits -= name_fact.commits
+    self.email_address_ids -= name_fact.email_address_ids
+    save
+  end
+
   class << self
     def unclaimed_for_project(project)
       ContributorFact.where.not(name_id: nil)

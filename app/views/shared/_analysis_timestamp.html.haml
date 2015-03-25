@@ -2,14 +2,14 @@
 .pull-right.soft#analysis_timestamp
   %i
     %i.icon-time
-    Analyzed
+    = t('.analyzed')
     %abbr{ title: analysis.updated_on.to_s(:full) }
       = time_ago_in_words analysis.updated_on
-    ago
+    = t('.ago')
     - if project.is_a?(Organization)
-      project data may be more current
+      = t('.project_may_be_current')
     - elsif analysis.logged_at.present?
-      based on code collected
+      = t('.based_on')
       %abbr{ title: analysis.logged_at.to_s(:full) }
         = time_ago_in_words analysis.logged_at
-      ago
+      = t('.ago')

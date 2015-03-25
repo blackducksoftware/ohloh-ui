@@ -1,5 +1,7 @@
 class PostsController < ApplicationController
   include TopicsHelper
+  helper PageContextHelper
+
   before_action :session_required, only: [:create, :edit, :update]
   before_action :admin_session_required, only: [:destroy]
   before_action :find_topic_record, except: :index
@@ -7,7 +9,7 @@ class PostsController < ApplicationController
   before_action :find_forum_and_topic_records, only: [:create]
 
   def index
-    @posts = Post.paginate(page: params[:page], per_page: 10)
+    params[:account_id] ? find_posts_belonging_to_account : find_posts
   end
 
   def create
@@ -86,6 +88,21 @@ class PostsController < ApplicationController
   def find_forum_and_topic_records
     @topic = Topic.find_by(id: params[:topic_id])
     @forum = @topic.forum
+  end
+
+  def find_posts_belonging_to_account
+    @account = Account.from_param(params[:account_id]).first
+    @posts = @account.posts.includes(:topic).tsearch(params[:query], parse_sort_term)
+             .page(params[:page]).per_page(10)
+  end
+
+  def find_posts
+    @posts = Post.tsearch(params[:query], parse_sort_term).page(params[:page]).per_page(10)
+  end
+
+  def parse_sort_term
+    Post.where(account_id: @account).respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : nil if @account
+    Post.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : nil
   end
 
   def post_params
