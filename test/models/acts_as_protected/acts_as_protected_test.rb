@@ -57,6 +57,11 @@ class ActsAsProtected::ActsAsProtectedTest < ActiveSupport::TestCase
     it 'returns true by default for permissions' do
       create(:permission).protection_enabled?.must_equal true
     end
+
+    it 'returns true by default for permissions' do
+      Project.any_instance.expects(:protection_enabled?).returns true
+      create(:enlistment).protection_enabled?.must_equal true
+    end
   end
 
   describe '#must_be_authorized validation' do

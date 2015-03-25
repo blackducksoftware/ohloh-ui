@@ -37,6 +37,14 @@ class LicenseTest < ActiveSupport::TestCase
     license.allow_edit?.must_equal true
   end
 
+  it '#short_name returns abbreviation if present' do
+    create(:license, nice_name: 'Foobar', abbreviation: 'Foo').short_name.must_equal 'Foo'
+  end
+
+  it '#short_name returns nice_name if no abbreviation is available' do
+    create(:license, nice_name: 'Foobar', abbreviation: nil).short_name.must_equal 'Foobar'
+  end
+
   it '#autocomplete returns correct licenses' do
     license_1 = create(:license, nice_name: 'AutocompleteMIT')
     create(:license, nice_name: 'AutocompleteBSD')

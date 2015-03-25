@@ -37,11 +37,6 @@ module ActsAsProtected
 
     private
 
-    def aap_parent
-      parent_method = self.class.aap_parent
-      parent_method ? send(parent_method) : nil
-    end
-
     def aap_authorized_editors
       aap_parent ? send(aap_parent).active_managers : active_managers
     end
