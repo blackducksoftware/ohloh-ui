@@ -45,11 +45,9 @@ module PageContextHelper
     end
   end
 
-  def post_context
-    if @account
-      account_context
-      page_context[:select_top_menu_nav] = :select_people
-    end
+  def account_post_context
+    account_context
+    page_context[:select_top_menu_nav] = :select_people
   end
 
   def set_page_context(options)

@@ -93,7 +93,7 @@ class PostsController < ApplicationController
   def find_posts_belonging_to_account
     @account = Account.from_param(params[:account_id]).first
     @posts = @account.posts.includes(:topic).tsearch(params[:query], parse_sort_term)
-                     .page(params[:page]).per_page(10)
+             .page(params[:page]).per_page(10)
   end
 
   def find_posts
