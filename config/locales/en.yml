@@ -2,6 +2,7 @@ en:
   at: at
   about: 'About'
   password: 'Password'
+  unnamed: 'Unnamed'
   login: 'Login'
   name: Name
   bio: Bio
