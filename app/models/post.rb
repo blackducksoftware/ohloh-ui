@@ -8,7 +8,7 @@ class Post < ActiveRecord::Base
   validates :body, :topic, presence: true
   validates :popularity_factor, numericality: true, allow_blank: true
 
-  scope :by_newest, -> { order('created_at desc') }
+  scope :by_newest, -> { order('posts.created_at desc') }
   scope :by_unanswered, -> { joins(:topic).where(topics: { posts_count: 1 }).by_newest }
 
   def body=(value)
