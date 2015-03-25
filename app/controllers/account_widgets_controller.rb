@@ -1,6 +1,6 @@
 class AccountWidgetsController < WidgetsController
   before_action :set_account
-  before_action :render_gif_image
+  before_action :render_image_for_gif_format
   before_action :account_context, only: :index
 
   def index

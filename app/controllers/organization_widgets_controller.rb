@@ -1,7 +1,7 @@
 class OrganizationWidgetsController < WidgetsController
   before_action :set_organization
-  before_action :render_not_supported_thin_badge
-  before_action :render_for_js_format
+  before_action :render_not_supported_for_gif_format
+  before_action :render_iframe_for_js_format
   before_action :organization_context, only: :index
 
   def index

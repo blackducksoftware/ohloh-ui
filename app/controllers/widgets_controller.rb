@@ -14,18 +14,18 @@ class WidgetsController < ApplicationController
     @widget = Object.const_get("#{controller_name.camelize[0..-2]}::#{action_name.camelize}").new(params)
   end
 
-  def render_gif_image
+  def render_image_for_gif_format
     return unless request.format.gif?
     send_data(@widget.image, disposition: 'inline', type: 'image/gif', filename: 'widget.gif', status: 200)
   end
 
-  def render_not_supported_thin_badge
+  def render_not_supported_for_gif_format
     return unless request.format.gif?
     image = WidgetBadge::Thin.create([text: 'Not supported'])
     send_data(image, disposition: 'inline', type: 'image/gif', filename: 'widget.gif', status: 406)
   end
 
-  def render_for_js_format
+  def render_iframe_for_js_format
     return unless request.format.js?
     render :iframe
   end
