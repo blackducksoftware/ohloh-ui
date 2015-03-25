@@ -27,3 +27,8 @@ en:
       no_match_6: 'Try fewer keywords.'
     search:
       search_text: 'Search...'
+    analysis_timestamp:
+      ago: 'ago.'
+      analyzed: 'Analyzed'
+      based_on: 'based on code collected'
+      project_may_be_current: 'project data may be more current'

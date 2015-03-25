@@ -1,0 +1,20 @@
+- content_for(:html_title) { t('.title', project_name: @project.to_param) }
+- page_context[:select_footer_nav] = nil
+
+%h2.pull-left
+  = link_to t('settings'), settings_project_path(@project)
+  &nbsp;:&nbsp;
+  = link_to t('aliases.aliases'), project_aliases_path(@project)
+  &nbsp;: #{t('aliases.new_alias')}
+= project_analysis_timestamp(@project)
+
+.clearfix
+.alias
+  - if @committer_names.length.zero?
+    .alert.alert-info.alert-block= t('.no_more_alias')
+  - else
+    = form_for [@project, @alias] do
+      = render partial: 'fields'
+
+.clearfix
+= render partial: 'about_aliases'

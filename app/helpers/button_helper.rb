@@ -1,7 +1,7 @@
 module ButtonHelper
   def disabled_button(text, opts = {})
     opts[:class] ||= ''
-    opts[:class] << (current_user ? ' disabled' : ' needs_login')
+    opts[:class] << (logged_in? ? ' disabled' : ' needs_login')
     "<a href='#' class='btn #{opts[:class]}'>#{text}</a>".html_safe
   end
 
