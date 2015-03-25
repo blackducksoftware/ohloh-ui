@@ -1,5 +1,10 @@
 - page_context[:select_footer_nav] = :stacks
 
+- content_for :html_title do
+  = succeed ' :' do
+    = @account.name
+  = @account.name
+
 = render partial: 'accounts/mini_header'
 
 .clearfix
