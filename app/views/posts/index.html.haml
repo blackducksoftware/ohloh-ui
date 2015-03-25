@@ -3,11 +3,8 @@
 
 / # TODO: Add posts#index for an account.
 - if @account
-  :ruby
-    page_context[:select_top_menu_nav] = 'select_people'
-    account_context
-    page_context[:select_top_menu_nav] = 'select_people'
-
+  - account_context
+  - page_context[:select_footer_nav] = :posts
   %h2= t('.posts')
   = render partial: 'shared/search_dingus', locals: { collection: @posts, sort_context: :posts }
 - else
