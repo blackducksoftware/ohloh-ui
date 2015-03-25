@@ -66,4 +66,48 @@ class PositionDecoratorTest < ActiveSupport::TestCase
       position.decorate.stop_date.must_equal effective_stop_date.strftime('%b %Y')
     end
   end
+
+  describe '#name_fact' do
+    it 'must get the correct name_fact' do
+      project = create(:project)
+      name = create(:name)
+      name_fact = create(:name_fact, analysis: project.best_analysis, name: name)
+      position = create(:position, project: project, name: name)
+
+      position.decorate.name_fact.must_equal name_fact
+    end
+  end
+
+  describe 'project_contributor_or_show_path' do
+    it 'must return an array of account and position when no contribution' do
+      account = create(:account)
+      position = create_position(account: account)
+      position.stubs(:contribution)
+      position.decorate.project_contributor_or_show_path.must_equal [account, position]
+    end
+  end
+
+  describe 'new_and_has_null_description_title_and_organization' do
+    it 'must return true when less than 1 hour old and certain attributes are nil' do
+      Position.any_instance.stubs(:organization)
+      position = create_position(description: nil, title: nil)
+      position.decorate.new_and_has_null_description_title_and_organization?.must_equal true
+    end
+  end
+
+  describe 'analyzed_class_name' do
+    it 'must return data class when analyzed' do
+      position = Position.new
+      decorator = position.decorate
+      decorator.stubs(:analyzed?).returns(true)
+      decorator.analyzed_class_name.must_equal 'one-project data'
+    end
+
+    it 'must return no_data class when not analyzed' do
+      position = Position.new
+      decorator = position.decorate
+      decorator.stubs(:analyzed?).returns(false)
+      decorator.analyzed_class_name.must_equal 'one-project no_data'
+    end
+  end
 end
