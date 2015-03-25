@@ -25,46 +25,6 @@ class PositionCoreTest < ActiveSupport::TestCase
     accounts(:admin).position_core.with_projects.count.must_equal 1
   end
 
-  it '#ordered_positions' do
-    skip 'FIXME: test failing due to a PG subquery error. Needs more research.'
-    Position.delete_all
-
-    # ActivityFact.delete_all
-    admin = create(:admin)
-
-    next_most_recent_commit = create(:project, name: :next_most_recent_commit)
-    most_recent_commit = create(:project, name: :most_recent_commit)
-    no_commit_and_higher_character = create(:project, name: :no_commit_and_higher_character)
-    oldest_commit = create(:project, name: :oldest_commit)
-    no_commit_and_lower_character = create(:project, name: :no_commit_and_lower_character)
-
-    name = create(:name, name: :my_coding_nickname)
-    create(:name_fact, name: name, analysis: next_most_recent_commit.best_analysis,
-                       last_checkin: Time.now - 6.months)
-    create(:name_fact, name: name, analysis: most_recent_commit.best_analysis,
-                       last_checkin: Time.now - 1.months)
-    create(:name_fact, name: name, analysis: oldest_commit.best_analysis,
-                       last_checkin: Time.now - 12.months)
-
-    create_position(account: admin, project: next_most_recent_commit, name: name)
-    create_position(account: admin, project: most_recent_commit, name: name)
-    create(:position, account: admin, project: no_commit_and_higher_character, name: nil,
-                      start_date: Time.now, stop_date: Time.now)
-    create_position(account: admin, project: oldest_commit, name: name)
-    create(:position, account: admin, project: no_commit_and_lower_character, name: nil,
-                      start_date: Time.now, stop_date: Time.now)
-
-    returned_positions = admin.position_core.ordered.map { |p| p.project.name }
-    expected_positions = %w(
-      most_recent_commit
-      next_most_recent_commit
-      oldest_commit
-      no_commit_and_higher_character
-      no_commit_and_lower_character
-    )
-    returned_positions.must_equal expected_positions
-  end
-
   it 'ensure_position_or_alias creates a position if try_create is set' do
     account, name, project = create(:account), create(:name), create(:project)
     NameFact.create!(analysis: project.best_analysis, name: name)
@@ -130,5 +90,58 @@ class PositionCoreTest < ActiveSupport::TestCase
   it '#with_only_unclaimed' do
     # user and admin both have names, joe - no
     Account::PositionCore.with_only_unclaimed.must_equal [accounts(:joe)]
+  end
+
+  describe '#name_facts' do
+    it 'must return a sorted list of concatenated analysis_id and name_id' do
+      project_foo = create(:project, name: :foo)
+      project_bar = create(:project, name: :bar)
+
+      name = create(:name)
+      name_fact_1 = create(:name_fact, analysis: project_foo.best_analysis, name: name)
+      name_fact_2 = create(:name_fact, analysis: project_bar.best_analysis, name: name)
+
+      account = create(:account)
+      create(:position, project: project_foo, name: name, account: account)
+      create(:position, project: project_bar, name: name, account: account)
+
+      account.position_core.name_facts.keys.must_equal([
+        "#{ name_fact_1.analysis_id }_#{ name.id }",
+        "#{ name_fact_2.analysis_id }_#{ name.id }"
+      ])
+    end
+  end
+
+  describe '#ordered' do
+    it 'must sort positions by name_fact.last_checkin when it is present' do
+      project_foo = create(:project, name: :foo)
+      project_bar = create(:project, name: :bar)
+
+      name = create(:name)
+      create(:name_fact, analysis: project_foo.best_analysis, name: name, last_checkin: 2.days.ago)
+      create(:name_fact, analysis: project_bar.best_analysis, name: name, last_checkin: 1.day.ago)
+
+      account = create(:account)
+      position_1 = create(:position, project: project_foo, name: name, account: account)
+      position_2 = create(:position, project: project_bar, name: name, account: account)
+
+      account.position_core.ordered.must_equal [position_2, position_1]
+    end
+
+    it 'must sort positions by project_name when no name_fact' do
+      project_foo = create(:project, name: :foo)
+      project_bar = create(:project, name: :bar)
+
+      name = create(:name)
+      create(:name_fact, analysis: project_foo.best_analysis, name: name)
+      create(:name_fact, analysis: project_bar.best_analysis, name: name)
+
+      account = create(:account)
+      position_foo = create(:position, project: project_foo, name: name, account: account)
+      position_bar = create(:position, project: project_bar, name: name, account: account)
+
+      Account::PositionCore.any_instance.stubs(:name_facts).returns({})
+      account.position_core.ordered.must_equal [position_bar, position_foo]
+    end
   end
 end
