@@ -49,7 +49,7 @@
                                 width: 510, height: 39,
                                 alt: t('.activity_chart_for_account', name: position.account.name) }
 
-      - if current_user == position.account && position.decorate.old_and_has_null_description_title_and_organization?
+      - if current_user == position.account && position.decorate.new_and_has_null_description_title_and_organization?
         %p.prompt
           = link_to t('edit_description'), edit_account_position_path(position.account, position)
           = t('.to_add_information')
