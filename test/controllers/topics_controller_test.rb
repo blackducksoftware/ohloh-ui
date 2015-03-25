@@ -53,6 +53,29 @@ describe TopicsController do
     end
   end
 
+  describe 'track views' do
+    it 'should increment when not logged in' do
+      before_hits = topic.hits
+      get :show, id: topic.id
+      must_respond_with :success
+      topic.reload.hits.must_equal before_hits + 1
+    end
+
+    it 'should increment when topic account does not match current user' do
+      before_hits = topic.hits
+      get :show, id: topic.id
+      must_respond_with :success
+      topic.reload.hits.must_equal before_hits + 1
+    end
+
+    it 'should not increment when logged in' do
+      login_as user
+      get :show, id: topic.id
+      must_respond_with :success
+      topic.hits.wont_equal topic.hits += 1
+    end
+  end
+
   # #--------------Basic User ----------------------
   it 'user index' do
     login_as user
@@ -201,7 +224,6 @@ describe TopicsController do
     must_respond_with :success
   end
 
-  # Tests may not be necessary, topics/edit does not work properly on main app.
   it 'admin update' do
     login_as admin
     put :update, id: topic.id, topic: { title: 'Changed title for test purposes' }
@@ -258,16 +280,5 @@ describe TopicsController do
     put :update, id: topic.id, topic: { forum_id: different_topic.forum_id }
     topic.reload
     topic.forum_id.must_equal different_topic.forum_id
-  end
-
-  it 'show with lots of topics' do
-    forum = create(:forum)
-    create(:topic, forum: forum, replied_at: Time.now - 3.days)
-    topic2 = create(:topic, forum: forum, replied_at: Time.now - 2.days)
-    create(:topic, forum: forum, replied_at: Time.now - 1.days)
-    get :show, id: topic2.id
-    must_respond_with :success
-    must_select 'li.previous a', 1
-    must_select 'li.next a', 1
   end
 end

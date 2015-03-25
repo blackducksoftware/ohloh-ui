@@ -36,8 +36,8 @@ class TopicTest < ActiveSupport::TestCase
     topic.wont_be :closed
   end
 
-  it 'a topic should have associated posts ordered by created at desc' do
+  it 'a topic should have associated posts ordered by created at asc' do
     topic = create(:topic_with_posts)
-    topic.posts.to_a.must_equal topic.posts.sort_by(&:created_at).reverse
+    topic.posts.to_a.must_equal topic.posts.sort_by(&:created_at)
   end
 end

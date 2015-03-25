@@ -1,5 +1,7 @@
 %fieldset
   .control-group
-    .controls.margin_left_40
+    .controls.margin_left_10
       = f.text_area :body, style: 'width: 665px; height: 160px; margin-left: -10px; margin-top: 20px;'
-      = f.submit t('.submit'), class: 'btn btn-primary btn-small', style: 'margin-left: -10px'
+    %div
+      = render partial: 'shared/captcha'
+      = f.submit t('.submit'), class: 'btn btn-primary btn-small', style: 'margin-top: 20px'

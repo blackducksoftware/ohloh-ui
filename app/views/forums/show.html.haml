@@ -1,3 +1,6 @@
+- content_for :html_title do
+  = t('openhub_show', name: "#{@forum.name}")
+
 %h1.margin_top_0
   = link_to t('.forums'), forums_url
   \:
@@ -17,9 +20,9 @@
         %h4.nomargin.center.strong.margin_bottom_0= t('.last_post')
   %tbody
     = render partial: 'topics/topic', collection: @topics
-.row
-  .col-md-12
+.col-md-12{ style: 'margin-left: -15px' }
+  .col-md-1
     = link_to t('.add_new_topic'), new_forum_topic_path(@forum),
-      class: 'btn btn-primary btn-mini', style: 'margin-left: 13px;'
-    .pagination_position
-      = will_paginate @topics
+      class: 'btn btn-primary btn-mini'
+  .col-md-11{ style: 'margin-top: -20px' }
+    = will_paginate @topics

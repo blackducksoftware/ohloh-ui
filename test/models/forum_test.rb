@@ -34,10 +34,10 @@ class ForumTest < ActiveSupport::TestCase
     forum.topics.to_a.must_equal forum.topics.sort_by(&:sticky).reverse
   end
 
-  it 'forum should have associated posts ordered by created at desc' do
+  it 'forum should have associated posts ordered by created at asc' do
     topic = create(:topic_with_posts)
     forum = topic.forum
-    forum.posts.to_a.must_equal forum.posts.sort_by(&:created_at).reverse
+    forum.posts.to_a.must_equal forum.posts.sort_by(&:created_at)
   end
 
   it 'destroying a forum destroys its accompanying topics and posts' do
