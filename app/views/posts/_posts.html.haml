@@ -14,5 +14,5 @@
       = link_to posts.account.login, account_path(posts.account), class: 'pull-right'
     %p
       = t('.posted')
-      %span.pull-right= time_ago_in_words(posts.created_at)
+      %span.pull-right= t('.posted_ago', posted: time_ago_in_words(posts.created_at))
   .clear

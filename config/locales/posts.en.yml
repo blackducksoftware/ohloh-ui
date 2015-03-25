@@ -27,6 +27,7 @@
       views: 'Views'
       author: 'Author'
       posted: 'Posted'
+      posted_ago: '%{posted} ago'
     fields:
       submit: 'Submit'
     sign_in:
@@ -37,4 +38,4 @@
       password: "Password"
       remember_me: "Remember Me"
       log_in: "Log In"
-      
+
