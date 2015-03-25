@@ -19,3 +19,4 @@
       = render partial: 'layouts/partials/page'
       .clear
       %footer= render partial: 'layouts/partials/footer'
+    = yield(:javascript) if content_for?(:javascript)

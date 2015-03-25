@@ -55,4 +55,36 @@ class ProjectLicensesControllerTest < ActionController::TestCase
     must_select 'a.new-license.needs_login', 0
     must_select 'a.new-license.disabled', 1
   end
+
+  # new
+  it 'new should offer to allow adding license for logged in users' do
+    project = create(:project)
+    login_as create(:account)
+    get :new, project_id: project.to_param
+    must_respond_with :ok
+    must_select 'input.add-license', 1
+    must_select 'a.add-license.needs_login', 0
+    must_select 'a.add-license.disabled', 0
+  end
+
+  it 'new should not offer to allow adding license for non-managers' do
+    project = create(:project)
+    create(:permission, target: project, remainder: true)
+    login_as create(:account)
+    get :new, project_id: project.to_param
+    must_respond_with :ok
+    must_select 'input.add-license', 0
+    must_select 'a.add-license.needs_login', 0
+    must_select 'a.add-license.disabled', 1
+  end
+
+  it 'new should not offer to allow adding license for unlogged users' do
+    project = create(:project)
+    login_as nil
+    get :new, project_id: project.to_param
+    must_respond_with :ok
+    must_select 'input.add-license', 0
+    must_select 'a.add-license.needs_login', 1
+    must_select 'a.add-license.disabled', 0
+  end
 end

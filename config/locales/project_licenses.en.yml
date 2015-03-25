@@ -8,6 +8,16 @@ en:
       declared_licenses: "Declared Licenses"
       remove: "Remove"
       remove_confirm: "Are you sure you want to remove this license?"
+    new:
+      page_title: "The %{name} Open Source Project on Open Hub : New License Page"
+      at_least_one: "Please select at least one License."
+      licenses: "Licenses"
+      new_declared_license: "New Declared License"
+      license: "License:"
+      select_placeholder: "Please select a license..."
+      add_it: "add it"
+      add_it_help: "Declare the license under which this project is licensed. If Open Hub doesn't know about this license yet you can %{link}."
+      add_declared_license: "Add Declared License"
     about:
       licenses: "Licenses"
       help1: "Open Hub lets you declare the licenses in use by the project. You can add or remove licenses to accurately reflect the project's license usage."
