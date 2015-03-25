@@ -21,7 +21,7 @@ class WidgetsController < ApplicationController
 
   def render_not_supported_thin_badge
     return unless request.format.gif?
-    image = ThinBadge.create('Not supported')
+    image = WidgetBadge::Thin.create([text: 'Not supported'])
     send_data(image, disposition: 'inline', type: 'image/gif', filename: 'widget.gif', status: 406)
   end
 
