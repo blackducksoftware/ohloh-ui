@@ -1,21 +1,18 @@
-/ TODO: Ordering is incorrect
 .well
-  .col-md-7
+  .col-md-8
     %h4
       = link_to posts.topic.forum.name, forum_path(posts.topic.forum)
       \:
       = link_to posts.topic.title, topic_path(posts.topic)
-      = h truncate(posts.topic.title, length: 60)
-      / TODO: Another markdown/blueCloth issue that will need to be addressed.
-      / %p= expander(strip_tags(format_text(posts.body)), 200, 250)
-      %p= expander(strip_tags(posts.body), 200, 250)
-  .col-md-3
-    %p.posts_index_specifications= t('.views')
-    %span.view_count.float_right= posts.topic.hits
-    %p.posts_index_specifications= t('.author')
-    = link_to posts.account.login, account_path(posts.account), class: 'pull-right'
-    %p.posts_index_specifications= t('.posted')
-    %span.pull-right
-      / TODO: Internationalize all time_ago_words properly.
-      = time_ago_in_words(posts.created_at) + ' ago'
+    %p= expander(strip_tags(posts.body), 200, 250)
+  .col-md-3.margin_top_10.post_stats
+    %p
+      = t('.views')
+      %span.view_count.pull-right= posts.topic.hits
+    %p
+      = t('.author')
+      = link_to posts.account.login, account_path(posts.account), class: 'pull-right'
+    %p
+      = t('.posted')
+      %span.pull-right= time_ago_in_words(posts.created_at)
   .clear

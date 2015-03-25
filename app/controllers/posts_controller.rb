@@ -1,5 +1,7 @@
 class PostsController < ApplicationController
   include TopicsHelper
+  helper PageContextHelper
+
   before_action :session_required, only: [:create, :edit, :update]
   before_action :admin_session_required, only: [:destroy]
   before_action :find_topic_record, except: :index
@@ -90,7 +92,8 @@ class PostsController < ApplicationController
 
   def find_posts_belonging_to_account
     @account = Account.from_param(params[:account_id]).first
-    @posts = Post.tsearch(params[:query], parse_sort_term).page(params[:page]).per_page(10)
+    @posts = @account.posts.includes(:topic).tsearch(params[:query], parse_sort_term)
+                     .page(params[:page]).per_page(10)
   end
 
   def find_posts
