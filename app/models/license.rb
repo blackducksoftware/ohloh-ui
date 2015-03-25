@@ -20,4 +20,10 @@ class License < ActiveRecord::Base
   def short_name
     abbreviation.blank? ? nice_name : abbreviation
   end
+
+  class << self
+    def autocomplete(term)
+      License.select([:nice_name, :id]).where(['lower(nice_name) LIKE ?', "#{term.downcase}%"]).limit(10)
+    end
+  end
 end

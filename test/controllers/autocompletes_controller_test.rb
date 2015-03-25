@@ -62,4 +62,20 @@ describe 'AutocompletesController' do
       resp.map { |hsh| hsh['value'] }.must_equal %w(Foo Foobar)
     end
   end
+
+  describe 'licenses' do
+    it 'must render valid licenses json' do
+      license_1 = create(:license, nice_name: 'ACMIT')
+      create(:license, nice_name: 'ACBSD')
+      license_3 = create(:license, nice_name: 'ACMit v2')
+
+      get :licenses, term: 'acmit', format: :json
+
+      must_respond_with :ok
+      resp = JSON.parse(response.body)
+      resp.length.must_equal 2
+      [resp[0]['id'].to_i, resp[1]['id'].to_i].sort.must_equal [license_1.id, license_3.id].sort
+      [resp[0]['nice_name'], resp[1]['nice_name']].sort.must_equal [license_1.nice_name, license_3.nice_name].sort
+    end
+  end
 end

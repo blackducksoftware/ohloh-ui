@@ -6,10 +6,9 @@ class Manage < ActiveRecord::Base
   belongs_to :approver, class_name: 'Account', foreign_key: :approved_by
   belongs_to :destroyer, class_name: 'Account', foreign_key: :deleted_by
 
-  validates :target, presence: true
-  validates :target_id, presence: true,
-                        uniqueness: { scope: [:target_type, :account_id, :deleted_at],
-                                      message: I18n.t(:already_manager) }
+  validates :target_type, presence: true,
+                          uniqueness: { scope: [:target_id, :account_id, :deleted_at],
+                                        message: I18n.t('manage.already_manager') }
   validates :account, presence: true
   validates :message, length: 0..200, allow_nil: true
   validate :enforce_maximum_management
@@ -58,7 +57,7 @@ class Manage < ActiveRecord::Base
   end
 
   def auto_approve_if_first
-    self.approver = Account.hamster if target && target.active_managers.length == 0
+    self.approver = Account.hamster if !target || target.active_managers.length == 0
   end
 
   def deliver_emails

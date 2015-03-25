@@ -1,5 +1,4 @@
 class Link < ActiveRecord::Base
-  # TODO: acts_as_editable and acts_as_protected
   # Maintain this order for the index page.
   CATEGORIES = HashWithIndifferentAccess.new(
     Homepage: 9,
@@ -17,6 +16,9 @@ class Link < ActiveRecord::Base
                    merge_within: 30.minutes
   acts_as_protected parent: :project
   has_many :accounts, through: :edits
+
+  scope :of_category, ->(category_id) { where(link_category_id: category_id) }
+  scope :general, -> { where(link_category_id: [CATEGORIES[:Homepage], CATEGORIES[:Download]]) }
 
   validates :title, length: { in: 3..60 }, presence: true
   validates :url, presence: true,

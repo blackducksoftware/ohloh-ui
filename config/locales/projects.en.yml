@@ -148,6 +148,7 @@ en:
       contributions: 'Contributions'
       kudo_rank: 'Kudo Rank'
     new:
+      page_title: "New Projects"
       call_to_action: "Add a new project to Open Hub"
       help1: "Open Hub can automatically fetch project information from some forges: Bitbucket, GitHub, Google Code, Launchpad and SourceForge."
       help2: "If your project is not hosted on one of these five forges, add your project manually."
@@ -171,6 +172,8 @@ en:
       about3: "The project description will appear on the project's summary page. Please be concise, but highlight unique aspects and key features."
     update:
       success: "Project changes were saved successfully!"
+    create:
+      failure: "There was a problem!"
     estimated_cost:
       page_title: "The %{name} Open Source Project on Open Hub : Estimated Cost Page"
       estimated_cost: "Estimated Cost"
@@ -200,6 +203,41 @@ en:
       about4: "Please note that COCOMO was created to model large institutional projects, which often don't compare well with distributed open-source projects."
       about5: "COCOMO is meant to include the design, specification drafting, reviewing and management overhead that goes along with producing quality software."
       about6: "This model seems to be most accurate with mature, large projects. Young projects with little activity are typically overvalued."
+    check_forge:
+      forge_time_out: "We couldn't contact %{name}. Please fill out the form below."
+      code_location_single: "That code location is already in use by another project"
+      code_location_multiple: "That code location is in use by a few other projects"
+      page_title: "%{name} : Check Forge Projects"
+      create_a_new_project: "Create a new project"
+      project_name: "Project Name"
+      contact_us: "Contact us"
+      project_name_help: "This name must be unique across all projects on Open Hub.<br/>%{link} if you believe someone is using the name of your project inappropriately on Open Hub."
+      project_source_code: "Project Source Code"
+      i_manage_this_project: "I manage this project"
+      i_manage_this_project_help1: "Click to manage this project on Open Hub. You should already contribute to the project in a significant way."
+      i_manage_this_project_help2: "Open Hub project managers will normally be the project's leader or someone they designate."
+      homepage_page: "Homepage"
+      homepage_page_help: "The homepage URL of this project."
+      download_page: "Download Page"
+      download_page_help: "The URL for download information about this project."
+      add_license: "Add License"
+      add_license_help1: "Declare the licenses under which this project is licensed."
+      add_license_help2: "If Open Hub doesn't know the license yet, you can add it, but please don't add new licenses unless you're sure the project doesn't use ones already known to Open Hub."
+      chosen_licenses: "Chosen Licenses"
+      remove: "Remove"
+      none: "[None]"
+      url: "Open Hub Project URL"
+      url_help1: "Starts with a letter, followed by letters, numbers, dashes, or underscores."
+      url_help2: "The URL must be unique across all projects on Open Hub."
+      description: "Description"
+      description_help1: "Describe the project focusing on key features and unique aspects."
+      description_help2: "Maximum 800 characters, and only new-line formatting is allowed."
+      submit: "Save Project"
+    check_forge_duplicate:
+      page_title: "Check Forge Projects"
+      message: "We found that the code location %{param} is already in use by the following projects. If you still wish to create a project using this code location, click the \"Create Project\" button below."
+      duplicate_found: "Duplicate Project Found"
+      submit: "Create Project"
     header:
       settings: 'Settings'
       edit_duplicate: 'Edit Duplicate'

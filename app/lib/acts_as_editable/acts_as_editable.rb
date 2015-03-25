@@ -46,7 +46,7 @@ module ActsAsEditable
     end
 
     def record_property_edits!
-      (changed.map(&:to_sym) & editable_attributes).each do |property|
+      changed_editable_properties.each do |property|
         prop_edit = new_or_merged_property_edit property
         prop_edit.ip = editor_account.last_seen_ip
         prop_edit.value = send property
@@ -66,6 +66,15 @@ module ActsAsEditable
 
     def merge_within
       self.class.aae_merge_within
+    end
+
+    def changed_editable_properties
+      editable_attributes.select { |attribute| attribute_changed?(attribute) }.compact
+    end
+
+    def attribute_changed?(attribute)
+      dirty_method = "#{attribute}_is_dirty".to_sym
+      changed.map(&:to_sym).include?(attribute) || (respond_to?(dirty_method) && send(dirty_method))
     end
   end
 end

@@ -8,11 +8,10 @@ class Alias < ActiveRecord::Base
   validates :commit_name_id, presence: true
   validates :preferred_name_id, presence: true
 
-  after_save :update_unclaimed_person, if: proc { id_changed? || deleted_changed? }
-  after_save :schedule_project_analysis, if: proc { preferred_name_id_changed? || deleted_changed? }
-  after_update :move_name_facts_to_preferred_name, if: proc { preferred_name_id_changed? }
+  after_save :update_unclaimed_person, if: proc { |obj| !(obj.changed & %w(id deleted)).blank? }
+  after_save :schedule_project_analysis, if: proc { |obj| !(obj.changed & %w(preferred_name_id deleted)).blank? }
+  after_update :move_name_facts_to_preferred_name, if: proc { |obj| !(obj.changed & %w(preferred_name_id)).blank? }
 
-  # TODO: Figure out explain_yourself
   acts_as_editable editable_attributes: [:preferred_name_id]
   acts_as_protected parent: :project
 
@@ -105,10 +104,14 @@ class Alias < ActiveRecord::Base
   end
 
   def move_name_facts_to_preferred_name
-    name_fact = ContributorFact.find_by(name_id: commit_name_id, analysis_id: project.best_analysis_id)
+    name_fact = contributor_fact_for_commit
     ContributorFact.find_by(name_id: preferred_name_id, analysis_id: project.best_analysis_id)
       .try(:append_name_fact, name_fact)
-    ContributorFact.find_by(name_id: preferred_name_id_was, analysis_id: project.best_analysis_id)
+    ContributorFact.find_by(name_id: changed_attributes[:preferred_name_id], analysis_id: project.best_analysis_id)
       .try(:remove_name_fact, name_fact)
+  end
+
+  def contributor_fact_for_commit
+    ContributorFact.find_by(name_id: commit_name_id, analysis_id: project.best_analysis_id)
   end
 end

@@ -19,7 +19,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Tue, 17 Mar 2015 20:37:36 GMT
+      - Fri, 20 Mar 2015 13:59:46 GMT
       Server:
       - zope.server.http (HTTP)
       X-Powered-By:
@@ -37,11 +37,11 @@ http_interactions:
       Content-Type:
       - text/html;charset=utf-8
       X-Cache:
-      - MISS from banana.canonical.com
+      - MISS from nutmeg.canonical.com
       X-Cache-Lookup:
-      - MISS from banana.canonical.com:3128
+      - MISS from nutmeg.canonical.com:3128
       Via:
-      - 1.0 banana.canonical.com:3128 (squid/2.7.STABLE7)
+      - 1.0 nutmeg.canonical.com:3128 (squid/2.7.STABLE7)
       Transfer-Encoding:
       - chunked
     body:
@@ -59,18 +59,18 @@ http_interactions:
         type=\"application/atom+xml\"\n            href=\"http://feeds.launchpad.net/wagwoord/revisions.atom\"\n
         \           title=\"Latest Revisions for Wagwoord\" />\n    \n\n    \n  \n
         \ <link type=\"text/css\" rel=\"stylesheet\"\n        media=\"screen, print\"\n
-        \       href=\"/+icing/rev17403/combo.css\" />\n\n\n    \n\n    \n      \n
+        \       href=\"/+icing/rev17405/combo.css\" />\n\n\n    \n\n    \n      \n
         \   \n\n    \n  \n\n  \n  \n  <script type=\"text/javascript\">\n    var LP
         = {\n        cache: {},\n        links: {}\n    };\n  </script>\n\n  \n\n
         \ <script type=\"text/javascript\">var cookie_scope = '; Path=/; Secure; Domain=.launchpad.net';</script>\n\n
-        \  <script type=\"text/javascript\"\n           src=\"/+combo/rev17403/?yui/yui/yui-min.js&amp;lp/meta.js&amp;yui/loader/loader-min.js\"></script>\n
+        \  <script type=\"text/javascript\"\n           src=\"/+combo/rev17405/?yui/yui/yui-min.js&amp;lp/meta.js&amp;yui/loader/loader-min.js\"></script>\n
         \  <script type=\"text/javascript\">\n        var raw = null;\n        if
         (LP.devmode) {\n           raw = 'raw';\n        }\n        YUI.GlobalConfig
-        = {\n            combine: true,\n            comboBase: '/+combo/rev17403/?',\n
+        = {\n            combine: true,\n            comboBase: '/+combo/rev17405/?',\n
         \           root: 'yui/',\n            filter: raw,\n            debug: false,\n
         \           fetchCSS: false,\n            maxURLLength: 2000,\n            groups:
         {\n                lp: {\n                    combine: true,\n                    base:
-        '/+combo/rev17403/?lp/',\n                    comboBase: '/+combo/rev17403/?',\n
+        '/+combo/rev17405/?lp/',\n                    comboBase: '/+combo/rev17405/?',\n
         \                   root: 'lp/',\n                    // comes from including
         lp/meta.js\n                    modules: LP_MODULES,\n                    fetchCSS:
         false\n                }\n            }\n        }</script>\n\n  <script type=\"text/javascript\">\n
@@ -125,7 +125,7 @@ http_interactions:
         \       <script type=\"text/javascript\">\n          var _gaq = _gaq || [];\n
         \         _gaq.push(['_setAccount', 'UA-12833497-1']);\n          _gaq.push(['_setDomainName',
         '.launchpad.net']);\n          _gaq.push(['_setAllowHash', false]);\n          _gaq.push(['_trackPageview']);\n
-        \       </script>\n        <script type=\"text/javascript\"\n                src=\"https://launchpad.net/+icing/rev17403/google-analytics/ga.js\"></script>\n
+        \       </script>\n        <script type=\"text/javascript\"\n                src=\"https://launchpad.net/+icing/rev17405/google-analytics/ga.js\"></script>\n
         \   <div class=\"yui-d0\">\n      <div id=\"locationbar\" class=\"login-logout\">\n
         \       \n\n<div id=\"logincontrol\"><a href=\"https://launchpad.net/wagwoord/+login\">Log
         in / Register</a></div>\n\n\n\n      </div><!--id=\"locationbar\"-->\n\n      <div
@@ -253,7 +253,7 @@ http_interactions:
         \     <a href=\"http://blog.launchpad.net/\">Blog</a>\n      \n\t&nbsp;&bull;&nbsp;\n\t<a
         href=\"http://www.canonical.com/about-canonical/careers\">Careers</a>\n      \n
         \     &nbsp;&bull;&nbsp;\n      <a href=\"http://identi.ca/launchpadstatus\">System
-        status</a>\n      <span id=\"lp-version\">\n      &nbsp;&bull;&nbsp;\n        r17403\n
+        status</a>\n      <span id=\"lp-version\">\n      &nbsp;&bull;&nbsp;\n        r17405\n
         \       \n        \n        (<a href=\"https://dev.launchpad.net/\">Get the
         code!</a>)\n      </span>\n    </div>\n  </div>\n\n    </div><!-- yui-d0-->\n\n
         \   \n  \n  \n  <script id=\"json-cache-script\">LP.cache = {\"target_info\":
@@ -306,10 +306,10 @@ http_interactions:
         \   \n  \n\n    \n  </body>\n\n\n  <!--\n    Facet name: overview\n    Page
         type: main_side\n    Has global search: True\n    Has application tabs: True\n
         \   Has side portlets: True\n\n    At least 30 queries/external actions issued
-        in 0.47 seconds\n\n    Features: {'app.mainsite_only.canonical_url': None,
+        in 0.36 seconds\n\n    Features: {'app.mainsite_only.canonical_url': None,
         'markdown.enabled': None, 'baselayout.careers_link.disabled': None, 'hard_timeout':
         u'5000', 'profiling.enabled': None, 'js.yui_version': None, 'visible_render_time':
-        None}\n\n    r17403\n\n    -->\n\n</html>\n\n"
+        None}\n\n    r17405\n\n    -->\n\n</html>\n\n"
     http_version: 
-  recorded_at: Tue, 17 Mar 2015 20:38:26 GMT
+  recorded_at: Fri, 20 Mar 2015 14:00:40 GMT
 recorded_with: VCR 2.9.3

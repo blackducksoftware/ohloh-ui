@@ -34,3 +34,4 @@ $(document).on 'page:change', ->
   GaugeProgress.init()
   OrgsFilter.init()
   Cocomo.init()
+  ProjectForm.init()

@@ -1,5 +1,6 @@
 class Project < ActiveRecord::Base
   include ProjectAssociations
+  include LinkAccessors
   include Tsearch
   include ProjectSearchables
 
@@ -27,20 +28,19 @@ class Project < ActiveRecord::Base
   fix_string_column_encodings!
 
   acts_as_editable editable_attributes: [:name, :url_name, :logo_id, :organization_id, :best_analysis_id,
-                                         :description, :tag_list, :missing_source], # TODO: add :url and :download_url
+                                         :description, :tag_list, :missing_source, :url, :download_url],
                    merge_within: 30.minutes
   acts_as_protected
+  link_accessors accessors: { url: :Homepage, download_url: :Download }
 
   validates :name, presence: true, length: 1..100, allow_nil: false, uniqueness: true, case_sensitive: false
   validates :description, length: 0..800, allow_nil: true # , if: proc { |p| p.validate_url_name_and_desc == 'true' }
-  # TODO: When Links are merged
-  # validates_each :url, :download_url, allow_blank: true do |record, field, value|
-  #   record.errors.add field, 'not a valid url' unless UrlValidation.valid_http_url?(value)
-  # end
+  validates_each :url, :download_url, allow_blank: true do |record, field, value|
+    record.errors.add(field, I18n.t(:not_a_valid_url)) unless value.valid_http_url?
+  end
   before_validation :clean_strings_and_urls
 
-  attr_accessor :url
-  attr_accessor :download_url
+  attr_accessor :managed_by_creator
 
   def to_param
     url_name || id.to_s
@@ -101,9 +101,6 @@ class Project < ActiveRecord::Base
   def clean_strings_and_urls
     self.name = String.clean_string(name)
     self.description = String.clean_string(description)
-    # TODO: fix these once we have links implemented
-    # self.url = String.clean_url(url)
-    # self.download_url = String.clean_url(download_url)
   end
 
   def sanitize(sql)
