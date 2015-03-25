@@ -5,7 +5,8 @@ module PageContextHelper
   def account_context
     set_page_context(footer_menu_list: @account.decorate.sidebar_for(current_user),
                      select_footer_nav: :account_summary,
-                     select_top_menu_nav: :select_people)
+                     select_top_menu_nav: :select_people,
+                     page_header: 'accounts/mini_header')
   end
 
   def organization_context
@@ -42,6 +43,11 @@ module PageContextHelper
       account_context
       page_context[:select_footer_nav] = :reviews
     end
+  end
+
+  def account_post_context
+    account_context
+    page_context[:select_top_menu_nav] = :select_people
   end
 
   def set_page_context(options)
