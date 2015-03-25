@@ -161,4 +161,19 @@ class ProjectTest < ActiveSupport::TestCase
       proj.reload.download_url.must_equal nil
     end
   end
+
+  describe 'code_published_in_code_search?' do
+    it 'should return false' do
+      koder_status = KodersStatus.create!(project_id: project.id, ohloh_code_ready: false)
+      project.stubs(:koders_status).returns(koder_status)
+      project.code_published_in_code_search?.must_equal false
+    end
+
+    it 'should return true' do
+      koder_status = KodersStatus.create!(project_id: project.id, ohloh_code_ready: true)
+      project.stubs(:koders_status).returns(koder_status)
+
+      project.code_published_in_code_search?.must_equal true
+    end
+  end
 end

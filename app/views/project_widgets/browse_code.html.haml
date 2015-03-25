@@ -1,0 +1,22 @@
+:ruby
+  widget ||= @widget
+  project = widget.project
+  ohloh_code_url = "http://code.openhub.net/project?pid=&ipid=#{project.koders_status.try(:koders_id)}"
+
+= render partial: 'ohloh_code_header'
+
+#ohloh_widget_code
+  .widget_browse_code
+    %table{ width: '100%' }
+      %tr
+        %td.browse_code_top{ colspan: '2' }
+          %h2.header_title= t('.browse')
+      %tr
+        %td{ width: '15%' }
+          = link_to project.decorate.icon(:med), ohloh_code_url, style: 'padding-bottom: 10px', target: '_blank'
+        %td.project_title.center{ width: '85%' }
+          = link_to truncate(project.name, length: 50), ohloh_code_url, target: '_blank',
+          class: 'project_name', title: project.name
+      %tr
+        %td.right{ colspan: '2' }
+          = render partial: 'ohloh_code_footer'

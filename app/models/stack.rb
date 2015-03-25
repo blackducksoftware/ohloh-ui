@@ -27,27 +27,32 @@ class Stack < ActiveRecord::Base
   end
 
   def suggest_projects(limit = 8)
-    sql = proj_suggest_select
-    sql += proj_suggest_join_stack_entries
-    sql += proj_suggest_join_stack_ignores
-    sql += proj_suggest_wheres
-    sql += proj_suggest_suffix(limit)
+    sql = proj_suggest_select + proj_suggest_join_stack_entries + proj_suggest_join_stack_ignores +
+          proj_suggest_wheres + proj_suggest_suffix(limit)
     pad_project_suggestions(Project.find_by_sql(sql), limit)
+  end
+
+  def name
+    return title if respond_to?(:title) && title.present?
+    return 'Default' if account && self == account.stack_core.default
+    return "#{project.name}'s Stack" unless project.nil?
+    'Unnamed'
+  end
+
+  def friendly_name
+    "#{name}#{' Stack' unless name =~ /Stack/i}"
   end
 
   private
 
   def sanitize_description
-    return unless description
-    self.description = description.strip_tags
+    self.description = description.strip_tags if description
   end
 
   def similar_stacks_sql(limit)
     <<-SQL
       SELECT S.*, shared_count, s_count.count, shared_count/sqrt(s_count.count) as func
-      FROM stacks S
-      INNER JOIN (#{stack_entry_to_stack_join_sql}) AS se_to_s
-        ON S.id = se_to_s.stack_id
+      FROM stacks S INNER JOIN (#{stack_entry_to_stack_join_sql}) AS se_to_s ON S.id = se_to_s.stack_id
       INNER JOIN ( SELECT count(*), stack_id from stack_entries where deleted_at IS NULL group by stack_id) as s_count
         ON se_to_s.stack_id = s_count.stack_id
       WHERE S.account_id IS NOT NULL #{ account ? " AND S.account_id != #{account.id} " : '' }
@@ -74,8 +79,7 @@ class Stack < ActiveRecord::Base
   def proj_suggest_join_stack_entries
     <<-SQL
       INNER JOIN ( SELECT project_id_recommends, sum(weight) as total_weight
-        FROM recommend_entries
-        INNER JOIN stack_entries ON recommend_entries.project_id = stack_entries.project_id
+        FROM recommend_entries INNER JOIN stack_entries ON recommend_entries.project_id = stack_entries.project_id
         WHERE stack_entries.stack_id = #{id} AND stack_entries.deleted_at IS NULL
         GROUP BY project_id_recommends ) AS query ON projects.id = project_id_recommends
     SQL
@@ -93,8 +97,7 @@ class Stack < ActiveRecord::Base
   def proj_suggest_wheres
     <<-SQL
       WHERE projects.id NOT IN (SELECT project_id FROM stack_entries WHERE stack_id = #{id} AND deleted_at IS NULL)
-      AND projects.id NOT IN (SELECT project_id FROM stack_ignores WHERE stack_id = #{id})
-      AND projects.deleted IS FALSE
+      AND projects.id NOT IN (SELECT project_id FROM stack_ignores WHERE stack_id = #{id}) AND projects.deleted IS FALSE
     SQL
   end
 

@@ -18,6 +18,7 @@
         - if my_account?(@account)
           = link_to settings_account_path(@account), class: 'link_space' do
             %i.icon-cogs!= t '.settings'
+        - else
           = render partial: 'accounts/show/header/kudo_button', locals: { css: 'btn-minier btn-info link_space' }
       - if @account.url.present?
         .pull-left.col-md-12.clearfix

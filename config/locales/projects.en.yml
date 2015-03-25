@@ -238,3 +238,9 @@ en:
       message: "We found that the code location %{param} is already in use by the following projects. If you still wish to create a project using this code location, click the \"Create Project\" button below."
       duplicate_found: "Duplicate Project Found"
       submit: "Create Project"
+    header:
+      settings: 'Settings'
+      edit_duplicate: 'Edit Duplicate'
+      report_duplicate: 'Report Duplicate'
+      title: '%{name} has been stacked by %{count} users. Click here to add it to your stack.'
+      i_use: 'I Use This!'

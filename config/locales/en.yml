@@ -51,6 +51,8 @@ en:
   edit_description: Edit Description
   all_projects: All Projects
   not_a_valid_url: "not a valid url"
+  openhub_show: "Open Hub Forum: %{name}"
+  openhub: "OpenHub"
 
   destroy:
     success: 'Record deleted!'
@@ -105,7 +107,7 @@ en:
   ratings_reviews: 'Ratings & Reviews'
   user_contributors: 'User & Contributor Locations'
   organization_summary: 'Organization Summary'
-  widgets: 'Widgets'
+  widget: 'Widgets'
   project_portfolio: 'Project Portfolio'
   claimed_projects: 'Claimed Projects'
   topic: 'Topics'

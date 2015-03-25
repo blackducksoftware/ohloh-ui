@@ -1,3 +1,6 @@
+- content_for :html_title do
+  = t('.topic_show', forum: @forum.name, topic: @topic.title)
+
 .col-md-12
   = render partial: 'forums/breadcrumb', locals: { forum: @forum }
   = render partial: 'topics/title', locals: { topic: @topic }
@@ -22,9 +25,9 @@
 
   - collection_of_all_topics = @topic.forum.topics
   %ul.pager
-    %li.previous
+    %li.pull-left
       = link_to_unless collection_of_all_topics.index(@topic).zero?, t('.previous_topic_html'),
         previous_topic(collection_of_all_topics, @topic)
-    %li.next
+    %li.pull-right
       = link_to_if next_topic?(collection_of_all_topics, @topic), t('.next_topic_html'),
         next_topic(collection_of_all_topics, @topic)

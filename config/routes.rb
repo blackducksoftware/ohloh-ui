@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :stack_entries
+
   resources :password_reset, only: [:new, :create] do
     collection do
       get :confirm
@@ -34,7 +36,13 @@ Rails.application.routes.draw do
     resources :projects, only: [:index]
     resources :positions, only: [:index]
     resources :stacks, only: [:index]
-    resources :widgets, only: [:index]
+    resources :account_widgets, path: :widgets, as: :widgets, only: :index do
+      collection do
+        get :detailed
+        get :tiny
+        get :rank
+      end
+    end
     resources :kudos, only: [:index] do
       collection do
         get :sent
@@ -128,6 +136,7 @@ Rails.application.routes.draw do
       post :check_forge
     end
     resources :licenses, controller: :project_licenses, only: [:index, :new, :create, :destroy]
+    resources :duplicates
     resource :logos, only: [:new, :create, :destroy]
     resources :links, except: :show
     resources :managers, only: [:index, :new, :create, :edit, :update] do
@@ -141,7 +150,22 @@ Rails.application.routes.draw do
     resources :enlistments, only: [:index, :new]
     resources :factoids, only: [:index]
     resources :rss_articles, only: :index
-    resources :widgets, only: :index
+    resources :project_widgets, path: :widgets, as: :widgets, only: :index do
+      collection do
+        get :factoids
+        get :factoids_stats
+        get :basic_stats
+        get :users
+        get :users_logo
+        get :search_code
+        get :browse_code
+        get :search_all_code
+        get :languages
+        get :partner_badge
+        get :thin_badge
+        get :cocomo
+      end
+    end
     resources :similar_projects, only: :index
     resources :ratings
     resources :reviews, except: :show do
@@ -155,6 +179,8 @@ Rails.application.routes.draw do
         get :codehistory
         get :commitshistory
         get :committerhistory
+        get :commits_spark
+        get :languages
       end
     end
     resources :commits, only: [:index, :show] do
@@ -189,7 +215,13 @@ Rails.application.routes.draw do
         post :reject
       end
     end
-    resources :widgets
+    resources :organization_widgets, path: :widgets, as: :widgets, only: :index do
+      collection do
+        get :affiliated_committers_activity
+        get :open_source_activity
+        get :portfolio_projects_activity
+      end
+    end
   end
 
   resources :stacks, only: [:show, :create, :update, :destroy] do
@@ -203,7 +235,11 @@ Rails.application.routes.draw do
         delete :delete_all
       end
     end
-    resources :widgets, only: [:index]
+    resources :stack_widgets, path: :widgets, as: :widgets, only: :index do
+      collection do
+        get :normal
+      end
+    end
   end
 
   resources :languages, only: [:show, :index] do

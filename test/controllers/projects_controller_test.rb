@@ -202,7 +202,7 @@ class ProjectsControllerTest < ActionController::TestCase
       must_respond_with :ok
       must_select "#project_#{proj.id}", 1
       must_select 'form#new_project', 0
-      response.body.must_match I18n.t('projects.check_forge.code_location_single')
+      response.body.must_match 'already'
     end
   end
 

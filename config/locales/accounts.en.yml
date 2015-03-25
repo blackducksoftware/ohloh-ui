@@ -93,12 +93,12 @@ en:
       help_3: "Deleting your account will have no effect on the actual projects to which you've contributed"
       help_4: "all the code you've written will still be there and attributed to your committer ID in that project's source code repositories. Open Hub will continue to show the commits you've done, and these commits will continue to roll up to accurately describe the history of the projects to which you've contributed."
       help_5: 'The commmitter IDs you have claimed will be returned to the pool of unclaimed committer IDs on Open Hub, but they will still be visible to all.'
-      help_6: The edits you've made to the Open Hub site will still be present - we don't undo them. But those edits will now be attributed to "Anonymous User".
-      help_7: If you delete your account and then choose at a later time to rejoin Open Hub, you'll be able to re-claim your unclaimed committer IDs using the normal claim process. You will not be able to reclaim any edits you made to the Open Hub site under your previously deleted account.
-      help_8: This won't change the actual projects you've worked on.
-      help_9: Your committer IDs go back into the "unclaimed" pool.
-      help_10: Your edits to the site will now be by "Anonymous User"
-      help_11: You can rejoin and re-claim committer IDs but not previous edits.
+      help_6: "The edits you've made to the Open Hub site will still be present - we don't undo them. But those edits will now be attributed to 'Anonymous User'."
+      help_7: "If you delete your account and then choose at a later time to rejoin Open Hub, you'll be able to re-claim your unclaimed committer IDs using the normal claim process. You will not be able to reclaim any edits you made to the Open Hub site under your previously deleted account."
+      help_8: "This won't change the actual projects you've worked on."
+      help_9: "Your committer IDs go back into the 'unclaimed' pool."
+      help_10: "Your edits to the site will now be by 'Anonymous User'."
+      help_11: "You can rejoin and re-claim committer IDs but not previous edits."
 
     account:
       manages_count: 'Manages %{count}'
@@ -112,6 +112,7 @@ en:
       in: 'in ...'
       to: 'to ...'
     show:
+      show_accounts: ': Show Accounts'
       total_commits: 'total commits'
       project: 'project'
       analysis_scheduled: 'The analysis for this account has been scheduled.'

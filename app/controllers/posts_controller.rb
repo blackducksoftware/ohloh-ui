@@ -14,7 +14,7 @@ class PostsController < ApplicationController
 
   def create
     @post = build_new_post
-    if verify_recaptcha(model: @post) && @post.save
+    if @post.save
       post_notification(@post)
       redirect_to topic_path(@topic)
     else
@@ -62,7 +62,7 @@ class PostsController < ApplicationController
 
   def find_collection_of_users(post)
     @all_users_preceding_the_last_user = post.topic.posts.map(&:account)
-    @all_users_preceding_the_last_user.pop
+    @all_users_preceding_the_last_user.pop unless @all_users_preceding_the_last_user.one?
     @all_users_preceding_the_last_user
   end
 

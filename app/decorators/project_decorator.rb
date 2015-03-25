@@ -7,7 +7,7 @@ class ProjectDecorator < Cherry::Decorator
     opts[:color] = language_text_color(main_language)
     opts[:bg]    = language_color(main_language)
 
-    icon = Icon.new(project, context: { size: size, opts: opts })
+    icon = Icon.new(project, context: { size: size, options: opts })
     icon.image
   end
 
