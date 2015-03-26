@@ -24,6 +24,7 @@ class Project < ActiveRecord::Base
     joins(:manages).where.not(deleted: true, manages: { approved_by: nil }).where(manages: { account_id: account.id })
   }
   scope :case_insensitive_name, ->(mixed_case) { where(['lower(name) = ?', mixed_case.downcase]) }
+  scope :case_insensitive_url_name, ->(mixed_case) { where(['lower(url_name) = ?', mixed_case.downcase]) }
 
   fix_string_column_encodings!
 

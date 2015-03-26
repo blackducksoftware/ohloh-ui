@@ -129,11 +129,12 @@ Rails.application.routes.draw do
       get 'permissions'  => 'permissions#show',   as: :permissions
       put 'permissions'  => 'permissions#update', as: :update_permissions
       post 'rate'        => 'ratings#rate',       as: :rate
-      delete 'unrate'      => 'ratings#unrate',     as: :unrate
+      delete 'unrate'    => 'ratings#unrate',     as: :unrate
     end
     collection do
       get :compare
       post :check_forge
+      get 'resolve_url_name' => 'resolve_url_names#project'
     end
     resources :licenses, controller: :project_licenses, only: [:index, :new, :create, :destroy]
     resources :duplicates
@@ -206,6 +207,9 @@ Rails.application.routes.draw do
       get :outside_committers
       get :print_infographic
       get :affiliated_committers
+    end
+    collection do
+      get 'resolve_url_name' => 'resolve_url_names#organization'
     end
     resources :edits, only: [:index]
     resource :logos, only: [:new, :create, :destroy]
