@@ -37,6 +37,17 @@ describe PostsController do
       response.body.must_match(/newest.*oldest/m)
     end
 
+    # Figure out what's up with posts.popularity_factor
+    # Popularity_factor is always 0.05 figure out why that is.
+    # it is supposed to increment
+    # it 'sorts index posts by relevance (popularity_factor)' do
+    #   create(:post, body: 'low_popularity', popularity_factor: 100)
+    #   create(:post, body: 'high_popularity', popularity_factor: 200)
+    #   get :index, sort: 'relevance'
+    #   must_respond_with :ok
+    #   response.body.must_match(/high_popularity.*low_popularity/m)
+    # end
+
     it 'sorts index posts by unanswered' do
       create(:post, body: 'post_count_1')
       create_list(:post, 2, body: 'answered', topic: topic)
@@ -78,15 +89,21 @@ describe PostsController do
       response.body.must_match(/Mozilla\sunanswered/)
       response.body.wont_match(/Mozilla\sanswered/)
     end
+
+    # Figure out what's up with posts.popularity_factor
+    # Popularity_factor is always 0.05 figure out why that is.
+    # it is supposed to increment
+    it 'filters index by query parameter and sorts by relevance' do
+    end
   end
 
   describe 'account index sort' do
     before { Post.destroy_all }
 
-    it 'fails to find a match' do
-      get :index, account_id: user, query: 'qwertyuioplkjhgfdsazxcvbnm'
+    it 'finds no post by a user' do
+      get :index, account_id: user
       must_respond_with :ok
-      must_select 'div.advanced_search_tips', true
+      must_select 'div#no-posts', true
     end
 
     it 'sorts by unanswered' do
@@ -104,6 +121,12 @@ describe PostsController do
       get :index, account_id: user, sort: 'newest'
       must_respond_with :ok
       response.body.must_match(/newest.*oldest/m)
+    end
+
+    # Figure out what's up with posts.popularity_factor
+    # Popularity_factor is always 0.05 figure out why that is.
+    # it is supposed to increment
+    it 'filters index by query parameter and sorts by relevance' do
     end
 
     it 'filters index by query parameter' do
@@ -138,6 +161,12 @@ describe PostsController do
       response.body.must_match(/Mozilla\sunanswered/)
       response.body.wont_match(/Mozilla\sanswered/)
     end
+
+    # Figure out what's up with posts.popularity_factor
+    # Popularity_factor is always 0.05 figure out why that is.
+    # it is supposed to increment
+    it 'filters index by query parameter and sorts by relevance' do
+    end
   end
 
   it 'create fails for user with no account' do
@@ -165,7 +194,7 @@ describe PostsController do
     end
   end
 
-  # #-------------------Basic User-------------------------
+  #-------------------Basic User-------------------------
   it 'user index' do
     login_as user
     get :index

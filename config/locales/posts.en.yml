@@ -7,6 +7,7 @@
     index:
       posts: 'Posts'
       openhub_posts: 'Open Hub Forum Posts '
+      no_posts: 'No posts available to display.'
     edit:
       forums: 'Forums'
       edit_post: 'Edit Post'

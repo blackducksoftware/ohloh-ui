@@ -64,6 +64,9 @@ posts:
      - Newest
      - newest
     -
+     - Relevance
+     - relevance
+    -
      - Unanswered
      - unanswered
 
@@ -81,6 +84,9 @@ projects:
     -
       - Rating
       - rating
+    -
+      - Relevance
+      - relevance
     -
       - Current Contributors
       - active_committers
