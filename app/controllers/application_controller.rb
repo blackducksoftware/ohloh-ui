@@ -131,6 +131,11 @@ class ApplicationController < ActionController::Base
     access_denied
   end
 
+  def show_permissions_alert
+    return if current_user_can_manage?
+    flash.now[:notice] = logged_in? ? t('permissions.not_manager') : t('permissions.must_log_in')
+  end
+
   private
 
   def strip_query_param

@@ -1,0 +1,97 @@
+:ruby
+  content_for(:html_title) { t('projects.html_title', name: @project.name, title: t('.title')) }
+  page_context[:select_top_menu_nav] = 'select_projects'
+  page_context[:select_footer_nav] = :settings
+
+%div
+  %h2.pull-left= t('.title')
+  = render 'shared/analysis_timestamp', analysis: @project.best_analysis, project: @project
+
+.clearfix.margin_bottom_20 &nbsp;
+
+.row.margin_bottom_30
+  .col-md-4.settings_module
+    %h4.nomargin
+      = link_to t('.project_basis'), edit_project_path(@project)
+    %span.pull-left
+      %a.module_icon.basics{ href: edit_project_path(@project) }
+    %span.pull-left.settings_description= t('.project_basis_desc')
+  .col-md-4.settings_module
+    %h4.nomargin
+      = link_to t('.code_location'), project_enlistments_path(@project)
+    %span.pull-left
+      %a.module_icon.code_locations{ href: project_enlistments_path(@project) }
+    %span.pull-left.settings_description= t('.code_location_desc')
+
+  .col-md-4.settings_module
+    %h4.nomargin
+      = link_to t('.aliases'), project_aliases_path(@project)
+    %span.pull-left
+      %a.module_icon.aliases{ href: project_aliases_path(@project) }
+    %span.pull-left.settings_description= t('.aliases_desc')
+
+.row.margin_bottom_35
+  .col-md-4.settings_module
+    %h4.nomargin
+      -# TO-DO: Update the logo path from # to new_project_logo_path(@project)
+      = link_to t('.logo'), '#'
+    %span.pull-left
+      -# TO-DO: Update the logo path from # to new_project_logo_path(@project)
+      %a.module_icon.logo{ href: '#' }
+    %span.pull-left.settings_description= t('.logo_desc')
+
+  .col-md-4.settings_module
+    %h4.nomargin
+      = link_to t('.links'), project_links_path(@project)
+    %span.pull-left
+      %a.module_icon.links{ href: project_links_path(@project) }
+    %span.pull-left.settings_description= t('.links_desc')
+  .col-md-4.settings_module
+    %h4.nomargin
+      -# TO-DO Update the path from # to project_permissions_path(@project)
+      = link_to t('.permissions'), '#'
+    %span.pull-left
+      -# TO-DO Update the path from # to project_permissions_path(@project)
+      %a.module_icon.permissions{ href: '#' }
+    %span.pull-left.settings_description= t('.permissions_desc')
+
+.row.margin_bottom_50
+  .col-md-4.settings_module
+    -# TO-DO Update the path from # to licenses_project_path(@project)
+    %h4.nomargin
+      = link_to t('.licenses'), '#'
+    %span.pull-left
+      -# TO-DO Update the path from # to licenses_project_path(@project)
+      %a.module_icon.licenses{ href: '#' }
+    %span.pull-left.settings_description= t('.licenses_desc')
+  .col-md-4.settings_module
+    %h4.nomargin
+      -# TO-DO Update the path from # to select_project_tags_path(@project)
+      = link_to t('.tags'), '#'
+    %span.pull-left
+      -# TO-DO Update the path from # to select_project_tags_path(@project)
+      %a.module_icon.tags{ href: '#' }
+    %span.pull-left.settings_description= t('.tags_desc')
+  .col-md-4.settings_module
+    %h4.nomargin
+      = link_to t('.edits'), project_edits_path(@project)
+    %span.pull-left
+      %a.module_icon.history{ href: project_edits_path(@project) }
+    %span.pull-left.settings_description= t('.edits_desc')
+
+.row.margin_bottom_30
+  .col-md-4.settings_module
+    %h4.nomargin
+      = link_to t('.managers'), project_managers_path(@project)
+    %span.pull-left
+      %a.module_icon.managers{ href: project_managers_path(@project) }
+    %span.pull-left.settings_description= t('.managers_desc')
+
+  .col-md-4.settings_module
+    %h4.nomargin
+      -# TO-DO Update the path from # to project_rss_subscriptions_path(@project)
+      = link_to t('.news'), '#'
+    %span.pull-left
+      -# TO-DO Update the path from # to project_rss_subscriptions_path(@project)
+      %a.module_icon.news{ href: '#' }
+    %span.pull-left.settings_description= t('.news_desc')
