@@ -4,9 +4,10 @@ class ProjectLicensesController < ApplicationController
   before_action :find_project
   before_action :project_context
   before_action :project_edit_authorized, only: [:create, :destroy]
+  before_action :find_project_license, only: [:destroy]
 
   def index
-    @licenses = @project.licenses
+    @project_licenses = @project.project_licenses
   end
 
   def new
@@ -24,16 +25,27 @@ class ProjectLicensesController < ApplicationController
     end
   end
 
+  def destroy
+    flash[:notice] = @project_license.destroy ? t('.success') : t('.error')
+    redirect_to action: :index
+  end
+
   private
 
   def project_license_params
-    params.require(:project_license).permit([:license_id]).merge(project: @project, editor_account: current_user)
+    params.permit([:license_id]).merge(project: @project, editor_account: current_user)
   end
 
   def find_project
     @project = Project.not_deleted.from_param(params[:project_id]).take
-    @project.editor_account = current_user
     fail ParamRecordNotFound unless @project
+    @project.editor_account = current_user
+  end
+
+  def find_project_license
+    @project_license = ProjectLicense.where(id: params[:id], project_id: @project.id).take
+    fail ParamRecordNotFound unless @project_license
+    @project_license.editor_account = current_user
   end
 
   def project_edit_authorized
