@@ -18,4 +18,8 @@ class AutocompletesController < ApplicationController
     licenses = params[:term] ? License.autocomplete(params[:term]) : []
     render text: licenses.map { |l| { nice_name: l.nice_name, id: l.id.to_s } }.to_json
   end
+
+  # NOTE: Replaces contibutors#autocomplete
+  def contributors
+  end
 end
