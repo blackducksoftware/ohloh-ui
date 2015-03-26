@@ -18,6 +18,10 @@ en:
       add_it: "add it"
       add_it_help: "Declare the license under which this project is licensed. If Open Hub doesn't know about this license yet you can %{link}."
       add_declared_license: "Add Declared License"
+    create:
+      success: "License was added successfully."
+      error_already_exists: "License already exists on this project!"
+      error_other: "License could not be added."
     about:
       licenses: "Licenses"
       help1: "Open Hub lets you declare the licenses in use by the project. You can add or remove licenses to accurately reflect the project's license usage."

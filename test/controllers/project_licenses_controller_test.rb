@@ -87,4 +87,56 @@ class ProjectLicensesControllerTest < ActionController::TestCase
     must_select 'a.add-license.needs_login', 1
     must_select 'a.add-license.disabled', 0
   end
+
+  # create
+  it 'create should require a current user' do
+    project = create(:project)
+    license = create(:license)
+    login_as nil
+    post :create, project_id: project.to_param, project_license: { license_id: license.id }
+    must_respond_with 302
+    project.reload.licenses.pluck(:id).must_equal []
+    session['flash']['flashes']['notice'].must_match I18n.t(:not_authorized)
+  end
+
+  it 'create should deny changes to non-managers' do
+    project = create(:project)
+    create(:permission, target: project, remainder: true)
+    license = create(:license)
+    login_as create(:account)
+    post :create, project_id: project.to_param, project_license: { license_id: license.id }
+    must_respond_with 302
+    project.reload.licenses.pluck(:id).must_equal []
+    session['flash']['flashes']['notice'].must_match I18n.t(:not_authorized)
+  end
+
+  it 'create should accept good parameters' do
+    project = create(:project)
+    license = create(:license)
+    login_as create(:account)
+    post :create, project_id: project.to_param, project_license: { license_id: license.id }
+    must_respond_with 302
+    project.reload.licenses.pluck(:id).must_equal [license.id]
+    session['flash']['flashes']['success'].must_match I18n.t('project_licenses.create.success')
+  end
+
+  it 'create should gracefully handle garbage parameters' do
+    project = create(:project)
+    login_as create(:account)
+    post :create, project_id: project.to_param, project_license: { license_id: 'i_am_a_banana' }
+    must_respond_with :unprocessable_entity
+    project.reload.licenses.pluck(:id).must_equal []
+    response.body.must_match I18n.t('project_licenses.create.error_other')
+  end
+
+  it 'create should gracefully handle attempting adding a license that is already on the project' do
+    project = create(:project)
+    license = create(:license)
+    create(:project_license, project: project, license: license)
+    login_as create(:account)
+    post :create, project_id: project.to_param, project_license: { license_id: license.id }
+    must_respond_with :unprocessable_entity
+    project.reload.licenses.pluck(:id).must_equal [license.id]
+    response.body.must_match I18n.t('project_licenses.create.error_already_exists')
+  end
 end
