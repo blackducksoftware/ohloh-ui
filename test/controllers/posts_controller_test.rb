@@ -37,17 +37,6 @@ describe PostsController do
       response.body.must_match(/newest.*oldest/m)
     end
 
-    # Figure out what's up with posts.popularity_factor
-    # Popularity_factor is always 0.05 figure out why that is.
-    # it is supposed to increment
-    # it 'sorts index posts by relevance (popularity_factor)' do
-    #   create(:post, body: 'low_popularity', popularity_factor: 100)
-    #   create(:post, body: 'high_popularity', popularity_factor: 200)
-    #   get :index, sort: 'relevance'
-    #   must_respond_with :ok
-    #   response.body.must_match(/high_popularity.*low_popularity/m)
-    # end
-
     it 'sorts index posts by unanswered' do
       create(:post, body: 'post_count_1')
       create_list(:post, 2, body: 'answered', topic: topic)
@@ -55,6 +44,17 @@ describe PostsController do
       must_respond_with :ok
       response.body.must_match(/post_count_1/)
       response.body.wont_match(/\Aanswered/)
+    end
+
+    # This test does not work.
+    it 'sorts index posts by relevance' do
+      post1 = create(:post, body: 'Elon Musk is cool', popularity_factor: 100)
+      post2 = create(:post, body: 'Mark Zuckerberg is cool too, I guess...', popularity_factor: 200)
+      get :index, query: nil, sort: 'relevance'
+      must_respond_with :ok
+      assigns(:posts).count 2
+      assigns(:posts).first.must_equal post1
+      assigns(:posts).last.must_equal post2
     end
 
     it 'filters index by query parameter' do
@@ -90,10 +90,12 @@ describe PostsController do
       response.body.wont_match(/Mozilla\sanswered/)
     end
 
-    # Figure out what's up with posts.popularity_factor
-    # Popularity_factor is always 0.05 figure out why that is.
-    # it is supposed to increment
-    it 'filters index by query parameter and sorts by relevance' do
+    it 'sorts index posts by relevance and query (popularity_factor)' do
+      post1 = create(:post, body: 'Mozilla Google Mozilla Yahoo')
+      post2 = create(:post, body: 'Mozilla Google Mozilla Mozilla Google SpaceX Dropbox')
+      get :index, query: 'Mozilla', sort: 'relevance'
+      must_respond_with :ok
+      response.body.must_match(/#{post2.body}.*#{post1.body}/m)
     end
   end
 
@@ -121,12 +123,6 @@ describe PostsController do
       get :index, account_id: user, sort: 'newest'
       must_respond_with :ok
       response.body.must_match(/newest.*oldest/m)
-    end
-
-    # Figure out what's up with posts.popularity_factor
-    # Popularity_factor is always 0.05 figure out why that is.
-    # it is supposed to increment
-    it 'filters index by query parameter and sorts by relevance' do
     end
 
     it 'filters index by query parameter' do
@@ -162,10 +158,14 @@ describe PostsController do
       response.body.wont_match(/Mozilla\sanswered/)
     end
 
-    # Figure out what's up with posts.popularity_factor
-    # Popularity_factor is always 0.05 figure out why that is.
-    # it is supposed to increment
-    it 'filters index by query parameter and sorts by relevance' do
+    it 'sorts index posts by relevance' do
+      post1 = create(:post, account: user, body: 'Elon Musk is cool', popularity_factor: 100)
+      post2 = create(:post, account: user, body: 'Mark Zuckerberg is cool too, I guess...', popularity_factor: 200)
+      get :index, account: user, query: nil, sort: 'relevance'
+      must_respond_with :ok
+      assigns(:posts).count 2
+      assigns(:posts).first.must_equal post1
+      assigns(:posts).last.must_equal post2
     end
   end
 
@@ -315,7 +315,7 @@ describe PostsController do
     must_redirect_to topic_path(post_object.topic.id)
   end
 
-  # #-------------------Admin-------------------------------
+  #-------------------Admin-------------------------------
   it 'admin index' do
     login_as admin
     get :index
