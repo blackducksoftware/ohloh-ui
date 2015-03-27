@@ -33,11 +33,9 @@
 .row.margin_bottom_35
   .col-md-4.settings_module
     %h4.nomargin
-      -# TO-DO: Update the logo path from # to new_project_logo_path(@project)
-      = link_to t('.logo'), '#'
+      = link_to t('.logo'), new_project_logos_path(@project)
     %span.pull-left
-      -# TO-DO: Update the logo path from # to new_project_logo_path(@project)
-      %a.module_icon.logo{ href: '#' }
+      %a.module_icon.logo{ href: new_project_logos_path(@project) }
     %span.pull-left.settings_description= t('.logo_desc')
 
   .col-md-4.settings_module
@@ -48,29 +46,23 @@
     %span.pull-left.settings_description= t('.links_desc')
   .col-md-4.settings_module
     %h4.nomargin
-      -# TO-DO Update the path from # to project_permissions_path(@project)
-      = link_to t('.permissions'), '#'
+      = link_to t('.permissions'), permissions_project_path(@project)
     %span.pull-left
-      -# TO-DO Update the path from # to project_permissions_path(@project)
-      %a.module_icon.permissions{ href: '#' }
+      %a.module_icon.permissions{ href: permissions_project_path(@project) }
     %span.pull-left.settings_description= t('.permissions_desc')
 
 .row.margin_bottom_50
   .col-md-4.settings_module
-    -# TO-DO Update the path from # to licenses_project_path(@project)
     %h4.nomargin
-      = link_to t('.licenses'), '#'
+      = link_to t('.licenses'), project_licenses_path(@project)
     %span.pull-left
-      -# TO-DO Update the path from # to licenses_project_path(@project)
-      %a.module_icon.licenses{ href: '#' }
+      %a.module_icon.licenses{ href: project_licenses_path(@project) }
     %span.pull-left.settings_description= t('.licenses_desc')
   .col-md-4.settings_module
     %h4.nomargin
-      -# TO-DO Update the path from # to select_project_tags_path(@project)
-      = link_to t('.tags'), '#'
+      = link_to t('.tags'), select_project_tags_path(@project)
     %span.pull-left
-      -# TO-DO Update the path from # to select_project_tags_path(@project)
-      %a.module_icon.tags{ href: '#' }
+      %a.module_icon.tags{ href: select_project_tags_path(@project) }
     %span.pull-left.settings_description= t('.tags_desc')
   .col-md-4.settings_module
     %h4.nomargin
@@ -89,9 +81,7 @@
 
   .col-md-4.settings_module
     %h4.nomargin
-      -# TO-DO Update the path from # to project_rss_subscriptions_path(@project)
-      = link_to t('.news'), '#'
+      = link_to t('.news'), project_rss_articles_path(@project)
     %span.pull-left
-      -# TO-DO Update the path from # to project_rss_subscriptions_path(@project)
-      %a.module_icon.news{ href: '#' }
+      %a.module_icon.news{ href: project_rss_articles_path(@project) }
     %span.pull-left.settings_description= t('.news_desc')
