@@ -453,4 +453,18 @@ class ProjectsControllerTest < ActionController::TestCase
     must_select '.advanced_search_tips', 1
     assigns(:accounts).count.must_equal 0
   end
+
+  it 'should show the permission alert when not logged in while accessing the setting page' do
+    project = create(:project, logo: nil)
+    get :settings, id: project.id
+    must_respond_with :success
+    flash[:notice].must_equal I18n.t('permissions.must_log_in')
+  end
+
+  it 'should not show the permission alert when logged in while accessing the setting page' do
+    login_as create(:admin)
+    project = create(:project, logo: nil)
+    get :settings, id: project.id
+    must_respond_with :success
+  end
 end
