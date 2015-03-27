@@ -55,3 +55,4 @@ en:
       posts: 'Posts'
       poster: 'Poster'
       freshness: 'Freshness'
+      freshness_time: "%{date} ago"

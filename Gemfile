@@ -43,6 +43,7 @@ group :test do
   gem 'haml-lint', '~> 0.11'
   gem 'minitest-rails'
   gem 'mocha'
+  gem 'pry-rails'
   gem 'ruby_parser'
   gem 'simplecov'
   gem 'simplecov-rcov'
