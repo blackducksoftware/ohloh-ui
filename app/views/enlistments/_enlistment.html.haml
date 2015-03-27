@@ -1,0 +1,28 @@
+- has_permission = logged_in? && @project.edit_authorized?
+%tr.enlistment
+  %td.col-md-4
+    = enlistment.repository.nice_url
+  %td.col-md-2
+    -# TODO: repository model.
+    = # enlistment.repository.english_name
+  %td.col-md-3
+    -# TODO: repository model
+    = # enlistment.repository.progress_message
+  %td.col-md-2.status
+    - ass = enlistment.analysis_sloc_set
+    - if ass
+      - if ass.ignored_fyle_count.to_i.zero?
+        = t('.description3')
+      - else
+        = t('.description1')
+        = pluralize(ass.ignored_fyle_count, t('.file'))
+        = t('.description2')
+  %td.col-md-2.last
+    - if has_permission
+      = icon_button(edit_project_enlistment_path(@project, enlistment), icon: 'pencil',
+        text: t('.edit_ignored'), size: 'mini', type: 'primary')
+      = icon_button(project_enlistment_path(@project, enlistment), icon: 'trash',
+        text: t('.remove'), size: 'mini', type: 'danger', method: :delete, data: { confirm: t('.confirm') })
+    - else
+      = disabled_button bootstrap_icon('icon-pencil', t('.edit_ignored')), class: 'btn-mini btn-primary'
+      = disabled_button bootstrap_icon('icon-trash', t('.remove')), class: 'btn-mini btn-danger pull-right'

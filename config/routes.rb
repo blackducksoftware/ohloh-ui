@@ -147,7 +147,7 @@ Rails.application.routes.draw do
     end
     resources :manages, only: [:new]
     resources :edits, only: [:index]
-    resources :enlistments, only: [:index, :new]
+    resources :enlistments
     resources :factoids, only: [:index]
     resources :rss_articles, only: :index
     resources :project_widgets, path: :widgets, as: :widgets, only: :index do

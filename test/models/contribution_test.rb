@@ -48,8 +48,12 @@ class ContributionTest < ActiveSupport::TestCase
   describe '#filter_by' do
     it 'filter_by with query string' do
       create_people_for_sort_by
-      Contribution.filter_by('AA test').count.must_equal 1
-      Contribution.filter_by('AA test').first.must_equal @person2.contributions.first
+      contribution = Contribution
+                     .includes(person: :account, contributor_fact: :primary_language)
+                     .references(:all)
+                     .filter_by('AA test')
+      contribution.count.must_equal 1
+      contribution.first.must_equal @person2.contributions.first
     end
 
     it 'filter_by with nil string' do

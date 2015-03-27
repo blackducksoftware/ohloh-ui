@@ -75,28 +75,20 @@ class ApiKeysController < ApplicationController
   end
 
   def find_models
-    find_query_param
-    find_sort_param
-    models = ApiKey.send(@sort).page(params[:page])
-    models = models.limit((request_format == 'csv') ? 2_147_483_648 : API_KEYS_PER_PAGE)
-    models = models.filterable_by(@query_term) if @query_term
-    models = models.where(account_id: @account.id) if @account
-    @api_keys = models.to_a
+    @api_keys = (@account ? @account.api_keys : ApiKey)
+                .includes(:account).references(:all)
+                .send(parse_sort_term)
+                .filter_by(params[:query])
+                .page(params[:page])
+                .limit(default_or_csv_limit)
   end
 
-  def find_query_param
-    @query_term = params[:q] || params[:query]
+  def parse_sort_term
+    ApiKey.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : 'by_newest'
   end
 
-  def find_sort_param
-    @sort_options = { 'by_most_recent_request' => t('.sort_by_most_recent_request'),
-                      'by_most_requests_today' => t('.sort_by_most_requests_today'),
-                      'by_most_requests' => t('.sort_by_most_requests'),
-                      'by_account_name' => t('.sort_by_account_name'),
-                      'by_newest' => t('.sort_by_newest'),
-                      'by_oldest' => t('.sort_by_oldest') }
-    @sort = "by_#{params[:sort]}"
-    @sort = 'by_newest' unless @sort_options.key?(@sort)
+  def default_or_csv_limit
+    request_format == 'csv' ? 2_147_483_648 : API_KEYS_PER_PAGE
   end
 
   def must_be_key_owner

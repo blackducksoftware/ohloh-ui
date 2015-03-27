@@ -92,3 +92,17 @@ projects:
       - active_committers
   default:
     relevance
+
+enlistments:
+  options:
+    -
+      - Repository Type
+      - by_type
+    -
+      - Url
+      - by_url
+    -
+      - Module Name
+      - by_module_name
+  default:
+    by_url

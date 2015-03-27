@@ -1,0 +1,16 @@
+- content_for(:html_title) { t('.page_title', name: @project.name) }
+- page_context[:select_footer_nav] = nil
+
+%h2.pull-left
+  = link_to t('settings'), settings_project_path(@project)
+  &nbsp;:&nbsp;
+  = link_to t('.code_locations'), project_enlistments_path(@project)
+  = t('.new')
+= project_analysis_timestamp(@project)
+
+.col-md-8.col-md-offset-2
+  .well.enlistment
+    = form_for @repository, url: project_enlistments_url, html: { method: 'post' } do |f|
+      = render partial: 'fields', locals: { f: f }
+.clearfix
+= render partial: 'about_code_locations'

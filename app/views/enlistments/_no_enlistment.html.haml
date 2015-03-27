@@ -1,0 +1,35 @@
+.col-md-12
+  %h3= t('.where_is_source_code')
+
+  %p= t('.description1')
+  %p= t('.description2')
+  - if logged_in? && @project.edit_authorized?
+    = link_to t('.new_code_location'), new_project_enlistment_path(@project), class: 'btn btn-primary'
+  - else
+    = disabled_button t('.new_code_location'), class: 'btn-primary'
+
+.padding_one_top &nbsp;
+
+.col-md-12
+  %h3= t('.help1')
+
+  %p= t('.help2')
+
+.col-md-11.well
+  = form_for @project, html: { method: :put, class: 'normal' } do |f|
+    = hidden_field_tag 'original_missing_source', @project.missing_source
+    %fieldset
+      .control-group
+        .controls
+          %label.radio
+            = f.radio_button :missing_source, ''
+            = t('.feedback1')
+          %label.radio
+            = f.radio_button :missing_source, 'MISSING_SOURCE_NOT_AVAILABLE'
+            = t('.feedback2')
+          %label.radio
+            = f.radio_button :missing_source, 'MISSING_SOURCE_NOT_SUPPORTED'
+            = t('.feedback3')
+      .actions
+        %input.btn{ type: 'submit', value: t('.send_feedback') }
+.clearfix

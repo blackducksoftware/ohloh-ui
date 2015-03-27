@@ -26,10 +26,13 @@ class Review < ActiveRecord::Base
       'author'          => order('accounts.login').order(created_at: :desc)
     }.fetch(key, order_by_helpfulness_arel)
   }
+
+  filterable_by ['comment', 'title', 'accounts.login']
+
   scope :find_by_comment_or_title_or_accounts_login, lambda { |query|
     includes(:account)
       .references(:all)
-      .where('comment ilike :query or title ilike :query or accounts.login ilike :query', query: "%#{query}%") if query
+      .filter_by(query) if query
   }
 
   def score
