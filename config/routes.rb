@@ -135,6 +135,7 @@ Rails.application.routes.draw do
       get :compare
       post :check_forge
       get 'resolve_url_name' => 'resolve_url_names#project'
+      get 'compare' => 'compare#projects'
     end
     resources :licenses, controller: :project_licenses, only: [:index, :new, :create, :destroy]
     resources :duplicates
