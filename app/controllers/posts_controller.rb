@@ -10,6 +10,10 @@ class PostsController < ApplicationController
 
   def index
     params[:account_id] ? find_posts_belonging_to_account : find_posts
+    respond_to do |format|
+      format.atom
+      format.html
+    end
   end
 
   def create
@@ -78,15 +82,18 @@ class PostsController < ApplicationController
 
   def find_post_record
     find_topic_record
-    @post = Post.find_by(id: params[:id])
+    @post = Post.where(id: params[:id]).take
+    fail ParamRecordNotFound unless @post
   end
 
   def find_topic_record
-    @topic = Topic.find_by(id: params[:topic_id])
+    @topic = Topic.where(id: params[:topic_id]).take
+    fail ParamRecordNotFound unless @topic
   end
 
   def find_forum_and_topic_records
-    @topic = Topic.find_by(id: params[:topic_id])
+    @topic = Topic.where(id: params[:topic_id]).take
+    fail ParamRecordNotFound unless @topic
     @forum = @topic.forum
   end
 

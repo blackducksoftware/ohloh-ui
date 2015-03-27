@@ -45,7 +45,8 @@ class ForumsController < ApplicationController
   private
 
   def find_forum_record
-    @forum = Forum.find_by(id: params[:id])
+    @forum = Forum.where(id: params[:id]).take
+    fail ParamRecordNotFound unless @forum
   end
 
   def forum_params

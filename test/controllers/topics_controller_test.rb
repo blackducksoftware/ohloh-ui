@@ -35,6 +35,12 @@ describe TopicsController do
     css_select 'html body div#page.container div#page-contents div#topics_show_page.col-md-13 div.span12 div', 25
   end
 
+  it 'show responds to atom format' do
+    create_list(:post, 5, topic: topic)
+    get :show, id: topic, format: 'atom'
+    must_respond_with :ok
+  end
+
   it 'edit' do
     get :edit, id: topic.id
     must_respond_with :unauthorized
@@ -134,6 +140,13 @@ describe TopicsController do
     must_respond_with :success
     # There should be 25 posts max per page
     css_select 'html body div#page.container div#page-contents div#topics_show_page.col-md-13 div.span12 div', 25
+  end
+
+  it 'user show responds to atom format' do
+    login_as user
+    create_list(:post, 5, topic: topic)
+    get :show, id: topic, format: 'atom'
+    must_respond_with :ok
   end
 
   it 'user edit' do
@@ -280,5 +293,12 @@ describe TopicsController do
     put :update, id: topic.id, topic: { forum_id: different_topic.forum_id }
     topic.reload
     topic.forum_id.must_equal different_topic.forum_id
+  end
+
+   it 'admin show responds to atom format' do
+    login_as admin
+    create_list(:post, 5, topic: topic)
+    get :show, id: topic, format: 'atom'
+    must_respond_with :ok
   end
 end

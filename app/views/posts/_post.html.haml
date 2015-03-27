@@ -1,4 +1,4 @@
-.well{ style: "#{Account::Access.new(post.account).admin? ? 'background: #D5E3E9;' : 'background: #e3e3e3'}" }
+.well.posts{ style: "#{Account::Access.new(post.account).admin? ? 'background: #D5E3E9;' : 'background: #F6F6F6'}" }
   / TODO: This code on line 5 causes an encoding issue and relates to ticket OTWO-3419
   / for BlueCloth.
   = String.clean_string(post.body)
