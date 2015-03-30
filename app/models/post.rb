@@ -6,6 +6,8 @@ class Post < ActiveRecord::Base
   belongs_to :account
 
   validates :body, :topic, presence: true
+  # Popularity_factor is not increasing at all. Get antoher pair of eyes
+  # all posts in the database are set at 0.05
   validates :popularity_factor, numericality: true, allow_blank: true
 
   scope :by_newest, -> { order('posts.created_at desc') }

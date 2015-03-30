@@ -135,3 +135,73 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     margin-top: 10px
     li
       margin: 15px 0 15px 30px
+
+// settings page styles
+.settings_module
+  :cursor pointer
+  &:hover
+    h4
+      :text-decoration underline
+    .module_icon
+      &.basics
+        :background-position 0 -40px
+      &.code_locations
+        :background-position -40px -40px
+      &.aliases
+        :background-position -80px -40px
+      &.logo
+        :background-position -120px -40px
+      &.links
+        :background-position -160px -40px
+      &.orgs_manage_projects
+        :background-position -599px -40px
+      &.permissions
+        :background-position -200px -40px
+      &.licenses
+        :background-position -240px -40px
+      &.tags
+        :background-position -280px -40px
+      &.history
+        :background-position -320px -40px
+      &.managers
+        :background-position -360px -40px
+      &.news
+        :background-position -400px -40px
+  .settings_description
+    :width 240px
+    :padding-left 10px
+  // module icon sprites
+  .module_icon
+    :background-image asset_url('icons/ohloh-icon-sprite.png')
+    :background-repeat no-repeat
+    :height 40px
+    :width 40px
+    :display block
+    &.basics
+      :background-position 0 0
+    &.code_locations
+      :background-position -40px 0px
+    &.aliases
+      :background-position -80px 0px
+    &.logo
+      :background-position -120px 0px
+    &.links
+      :background-position -160px 0px
+    &.orgs_manage_projects
+      :background-position -599px 0px
+    &.permissions
+      :background-position -200px 0px
+    &.licenses
+      :background-position -240px 0px
+    &.tags
+      :background-position -280px 0px
+      :height 36px
+      :width 31px
+    &.history
+      :background-position -320px 0px
+    &.managers
+      :background-position -360px 0px
+      :width 36px
+    &.news
+      :background-position -400px 0px
+

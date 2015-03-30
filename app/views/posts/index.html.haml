@@ -1,25 +1,22 @@
 - content_for :html_title do
   = t('.openhub_posts')
 
-/ # TODO: Add posts#index for an account.
 - if @account
   - account_post_context
   - page_context[:select_footer_nav] = :posts
+  .mezzo
   %h2= t('.posts')
-  = render partial: 'shared/search_dingus', locals: { collection: @posts, sort_context: :posts }
+  - if @account.posts.count == 0
+    #no-posts= t('.no_posts')
+  - else
+    = render partial: 'shared/search_dingus', locals: { collection: @posts, sort_context: :posts }
+    = render partial: 'posts/posts', collection: @posts
+    = will_paginate @posts
 - else
   %h1
     = link_to t('.forums'), forums_path
     \:
     = t('.posts')
-    = render partial: 'shared/search_dingus', locals: { collection: @posts, sort_context: :posts }
-  .clearfix
-
-- if @posts.any?
+  = render partial: 'shared/search_dingus', locals: { collection: @posts, sort_context: :posts }
   = render partial: 'posts/posts', collection: @posts
   = will_paginate @posts
-/ - elsif current_objects.query_parser.actual_query.nil?
-/   .no-posts
-/     No posts available to display.
-/ - elsif current_objects.total_entries == 0
-/   - no_search_match

@@ -8,10 +8,11 @@ class ProjectsController < ApplicationController
   before_action :api_key_lock, only: [:index]
   before_action :find_account
   before_action :find_projects, only: [:index]
-  before_action :find_project, only: [:show, :edit, :update, :estimated_cost, :users]
+  before_action :find_project, only: [:show, :edit, :update, :estimated_cost, :users, :settings]
   before_action :redirect_new_landing_page, only: :index
   before_action :find_forge_matches, only: :check_forge
-  before_action :project_context, only: [:show, :users, :estimated_cost, :edit]
+  before_action :project_context, only: [:show, :users, :estimated_cost, :edit, :settings]
+  before_action :show_permissions_alert, only: [:settings]
 
   def index
     respond_to do |format|

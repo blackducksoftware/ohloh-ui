@@ -46,6 +46,17 @@ describe PostsController do
       response.body.wont_match(/\Aanswered/)
     end
 
+    # This test does not work.
+    it 'sorts index posts by relevance' do
+      post1 = create(:post, body: 'Elon Musk is cool', popularity_factor: 100)
+      post2 = create(:post, body: 'Mark Zuckerberg is cool too, I guess...', popularity_factor: 200)
+      get :index, query: nil, sort: 'relevance'
+      must_respond_with :ok
+      assigns(:posts).count 2
+      assigns(:posts).first.must_equal post1
+      assigns(:posts).last.must_equal post2
+    end
+
     it 'filters index by query parameter' do
       create(:post, body: 'Mozilla')
       create(:post, body: 'Apache')
@@ -78,15 +89,23 @@ describe PostsController do
       response.body.must_match(/Mozilla\sunanswered/)
       response.body.wont_match(/Mozilla\sanswered/)
     end
+
+    it 'sorts index posts by relevance and query (popularity_factor)' do
+      post1 = create(:post, body: 'Mozilla Google Mozilla Yahoo')
+      post2 = create(:post, body: 'Mozilla Google Mozilla Mozilla Google SpaceX Dropbox')
+      get :index, query: 'Mozilla', sort: 'relevance'
+      must_respond_with :ok
+      response.body.must_match(/#{post2.body}.*#{post1.body}/m)
+    end
   end
 
   describe 'account index sort' do
     before { Post.destroy_all }
 
-    it 'fails to find a match' do
-      get :index, account_id: user, query: 'qwertyuioplkjhgfdsazxcvbnm'
+    it 'finds no post by a user' do
+      get :index, account_id: user
       must_respond_with :ok
-      must_select 'div.advanced_search_tips', true
+      must_select 'div#no-posts', true
     end
 
     it 'sorts by unanswered' do
@@ -138,6 +157,16 @@ describe PostsController do
       response.body.must_match(/Mozilla\sunanswered/)
       response.body.wont_match(/Mozilla\sanswered/)
     end
+
+    it 'sorts index posts by relevance' do
+      post1 = create(:post, account: user, body: 'Elon Musk is cool', popularity_factor: 100)
+      post2 = create(:post, account: user, body: 'Mark Zuckerberg is cool too, I guess...', popularity_factor: 200)
+      get :index, account: user, query: nil, sort: 'relevance'
+      must_respond_with :ok
+      assigns(:posts).count 2
+      assigns(:posts).first.must_equal post1
+      assigns(:posts).last.must_equal post2
+    end
   end
 
   it 'create fails for user with no account' do
@@ -165,7 +194,7 @@ describe PostsController do
     end
   end
 
-  # #-------------------Basic User-------------------------
+  #-------------------Basic User-------------------------
   it 'user index' do
     login_as user
     get :index
@@ -286,7 +315,7 @@ describe PostsController do
     must_redirect_to topic_path(post_object.topic.id)
   end
 
-  # #-------------------Admin-------------------------------
+  #-------------------Admin-------------------------------
   it 'admin index' do
     login_as admin
     get :index

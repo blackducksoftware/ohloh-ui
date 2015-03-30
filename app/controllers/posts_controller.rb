@@ -101,7 +101,7 @@ class PostsController < ApplicationController
   end
 
   def parse_sort_term
-    Post.where(account_id: @account).respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : nil if @account
+    return Post.where(account_id: @account).respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : nil if @account
     Post.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : nil
   end
 
