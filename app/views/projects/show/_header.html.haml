@@ -34,3 +34,5 @@
 .row
   .col-md-12
     .mezzo
+= yield :header_title if content_for?(:header_title)
+= render partial: 'layouts/partials/alert'
