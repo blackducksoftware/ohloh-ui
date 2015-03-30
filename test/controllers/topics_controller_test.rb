@@ -295,7 +295,7 @@ describe TopicsController do
     topic.forum_id.must_equal different_topic.forum_id
   end
 
-   it 'admin show responds to atom format' do
+  it 'admin show responds to atom format' do
     login_as admin
     create_list(:post, 5, topic: topic)
     get :show, id: topic, format: 'atom'

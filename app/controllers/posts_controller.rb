@@ -4,9 +4,8 @@ class PostsController < ApplicationController
 
   before_action :session_required, only: [:create, :edit, :update]
   before_action :admin_session_required, only: [:destroy]
-  before_action :find_topic_record, except: :index
+  before_action :find_relevant_records, except: [:index]
   before_action :find_post_record, only: [:edit, :update, :destroy]
-  before_action :find_forum_and_topic_records, only: [:create]
 
   def index
     params[:account_id] ? find_posts_belonging_to_account : find_posts
@@ -80,21 +79,15 @@ class PostsController < ApplicationController
     PostNotifier.post_creation_notification(@user_who_replied, @topic).deliver_now
   end
 
-  def find_post_record
-    find_topic_record
-    @post = Post.where(id: params[:id]).take
-    fail ParamRecordNotFound unless @post
-  end
-
-  def find_topic_record
-    @topic = Topic.where(id: params[:topic_id]).take
-    fail ParamRecordNotFound unless @topic
-  end
-
-  def find_forum_and_topic_records
+  def find_relevant_records
     @topic = Topic.where(id: params[:topic_id]).take
     fail ParamRecordNotFound unless @topic
     @forum = @topic.forum
+  end
+
+  def find_post_record
+    @post = Post.where(id: params[:id]).take
+    fail ParamRecordNotFound unless @post
   end
 
   def find_posts_belonging_to_account
