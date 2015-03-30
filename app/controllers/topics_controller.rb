@@ -28,6 +28,10 @@ class TopicsController < ApplicationController
 
   def show
     @posts = @topic.posts.paginate(page: params[:page], per_page: 25)
+    respond_to do |format|
+      format.atom
+      format.html
+    end
   end
 
   def update
@@ -56,11 +60,13 @@ class TopicsController < ApplicationController
   end
 
   def find_forum_record
-    @forum = Forum.find_by(id: params[:forum_id])
+    @forum = Forum.where(id: params[:forum_id]).take
+    fail ParamRecordNotFound unless @forum
   end
 
   def find_forum_and_topic_records
-    @topic = Topic.find_by(id: params[:id])
+    @topic = Topic.where(id: params[:id]).take
+    fail ParamRecordNotFound unless @topic
     @forum = @topic.forum
   end
 

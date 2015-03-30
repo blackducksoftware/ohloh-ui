@@ -14,6 +14,12 @@ describe PostsController do
     # TODO: Remove when all models are independent of fixture data.
     before { Post.destroy_all }
 
+    it 'should render in atom format' do
+      create_list(:post, 5)
+      get :index, format: 'atom'
+      must_respond_with :ok
+    end
+
     it 'index should handle search for unlogged users' do
       login_as nil
       create(:post, body: 'oldest', created_at: Time.now - 2.hours)
@@ -46,7 +52,6 @@ describe PostsController do
       response.body.wont_match(/\Aanswered/)
     end
 
-    # This test does not work.
     it 'sorts index posts by relevance' do
       post1 = create(:post, body: 'Elon Musk is cool', popularity_factor: 100)
       post2 = create(:post, body: 'Mark Zuckerberg is cool too, I guess...', popularity_factor: 200)
@@ -101,6 +106,12 @@ describe PostsController do
 
   describe 'account index sort' do
     before { Post.destroy_all }
+
+    it 'should render in atom format' do
+      create_list(:post, 5, account: user)
+      get :index, account: user, format: 'atom'
+      must_respond_with :ok
+    end
 
     it 'finds no post by a user' do
       get :index, account_id: user
