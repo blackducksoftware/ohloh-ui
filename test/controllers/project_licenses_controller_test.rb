@@ -140,6 +140,18 @@ class ProjectLicensesControllerTest < ActionController::TestCase
     response.body.must_match I18n.t('project_licenses.create.error_already_exists')
   end
 
+  it 'create should reuse a previously deleted project_license if one is available' do
+    project = create(:project)
+    license = create(:license)
+    project_license = create(:project_license, project: project, license: license)
+    project_license.destroy
+    login_as create(:account)
+    post :create, project_id: project.to_param, license_id: license.id
+    must_respond_with 302
+    project.reload.project_licenses.pluck(:id).must_equal [project_license.id]
+    flash['success'].must_match I18n.t('project_licenses.create.success')
+  end
+
   # destroy
   it 'destroy should require a current user' do
     project = create(:project)

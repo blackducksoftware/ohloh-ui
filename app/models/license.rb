@@ -5,6 +5,8 @@ class License < ActiveRecord::Base
                    merge_within: 30.minutes
   acts_as_protected
 
+  fix_string_column_encodings!
+
   def to_param
     name
   end

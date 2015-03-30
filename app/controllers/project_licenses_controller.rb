@@ -15,14 +15,11 @@ class ProjectLicensesController < ApplicationController
   end
 
   def create
-    project_license = ProjectLicense.new(project_license_params)
-    begin
-      project_license.save!
-      flash[:success] = t('.success')
-      redirect_to action: :index
-    rescue
-      handle_creation_errors(project_license)
-    end
+    create_project_license
+    flash[:success] = t('.success')
+    redirect_to action: :index
+  rescue
+    handle_creation_errors(@project_license)
   end
 
   def destroy
@@ -32,8 +29,18 @@ class ProjectLicensesController < ApplicationController
 
   private
 
+  def create_project_license
+    @project_license = ProjectLicense.where(project_license_params.merge(deleted: true)).first
+    if @project_license
+      CreateEdit.where(target: @project_license).first.redo!(current_user)
+    else
+      @project_license = ProjectLicense.new(project_license_params.merge(editor_account: current_user))
+      @project_license.save!
+    end
+  end
+
   def project_license_params
-    params.permit([:license_id]).merge(project: @project, editor_account: current_user)
+    params.permit([:license_id]).merge(project: @project)
   end
 
   def find_project
