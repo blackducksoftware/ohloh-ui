@@ -1,5 +1,6 @@
 class Analysis < ActiveRecord::Base
   AVG_SALARY = 55_000
+  EARLIEST_DATE = Time.utc(1971, 1, 1)
 
   belongs_to :project
   has_one :all_time_summary

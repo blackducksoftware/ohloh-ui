@@ -24,6 +24,10 @@ class ContributorFact < NameFact
     save
   end
 
+  def monthly_commits(years = 5)
+    AnalysisCommitHistoryQuery.new(analysis, name_id, Time.now.utc, Time.now.utc - years.years)
+  end
+
   class << self
     def unclaimed_for_project(project)
       ContributorFact.where.not(name_id: nil)
