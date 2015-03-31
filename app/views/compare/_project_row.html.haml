@@ -7,7 +7,7 @@
         = label
         - if opts[:graph] && @projects.select { |p| p && p.best_analysis_id }.any?
           %br
-          %a.graph{ href: '#', graph: opts[:graph] }= 'View as graph'
+          %a.graph{ href: '#', graph: opts[:graph] }= t('compare.view_as_graph')
   - @projects.each do |project|
     %td.col-md-3{ valign: 'top', style: 'padding-top: 5px;' }
       - if project
