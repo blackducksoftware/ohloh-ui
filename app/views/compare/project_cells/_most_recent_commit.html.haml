@@ -1,0 +1,6 @@
+- if !project.best_analysis.nil? && project.best_analysis.last_commit_time
+  %span.status= t('compare.ago', ago: time_ago_in_words(project.best_analysis.last_commit_time))
+- elsif project.enlistments.count > 0
+  %span.soft= t('compare.pending')
+- else
+  %span.soft= t('compare.no_data')

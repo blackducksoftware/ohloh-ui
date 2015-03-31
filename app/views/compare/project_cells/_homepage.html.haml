@@ -1,0 +1,13 @@
+:ruby
+  uri = URI.parse(URI.escape(project.url.to_s))
+  host = if uri.host
+           uri.host
+         else
+           project.url
+         end
+- if !host.blank?
+  = link_to host, project.url
+- elsif !project.url.blank?
+  = link_to project.url
+- else
+  %span.soft= t('compare.no_data')

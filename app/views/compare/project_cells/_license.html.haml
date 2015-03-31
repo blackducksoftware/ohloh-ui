@@ -1,0 +1,4 @@
+- if project.licenses.any?
+  != project.licenses.map { |l| link_to html_escape(l.short_name), license_path(l) }.join(', ')
+- else
+  %span.soft= t('compare.no_data')

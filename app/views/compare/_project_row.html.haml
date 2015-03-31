@@ -1,0 +1,16 @@
+%tr
+  %th
+    .label_1{ valign: 'top' }
+      - if [:mostly_written, :project_codebase_cost].include?(opts[:help])
+        = blog_link_to(link: opts[:help], link_text: label)
+      - else
+        = label
+        - if opts[:graph] && @projects.select { |p| p && p.best_analysis_id }.any?
+          %br
+          %a.graph{ href: '#', graph: opts[:graph] }= 'View as graph'
+  - @projects.each do |project|
+    %td.col-md-3{ valign: 'top', style: 'padding-top: 5px;' }
+      - if project
+        != render partial: "compare/project_cells/#{cell}", locals: { project: project }
+      - else
+        &nbsp;

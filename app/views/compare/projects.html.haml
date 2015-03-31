@@ -1,0 +1,58 @@
+:ruby
+  content_for(:html_title) { t('.page_title') }
+  page_context[:select_top_menu_nav] = 'select_tools'
+  proj_names = params.select { |k, _| k.to_s.match(/project/) }
+- content_for :javascript do
+  = javascript_tag '$(document).ready(CompareProjects.init);'
+
+.projects_compare
+  %h1.float_left.margin_left_10= t('.compare_projects')
+  - if @projects.any?
+    %a.btn.btn-mini.btn-primary.csv{ href: compare_projects_path(proj_names.merge(format: 'csv')) }= t('.export_to_csv')
+  .pull-right.col-md-6.social_share_compare_projects
+    = render partial: '/shared/add_this', locals: { full_text: t('.i_just_compared') }
+  .clearfix
+
+  .margin_left_10
+    .projects_compare
+      %table.side_by_side
+        = compare_section t('.general'), class: 'first', include_header: true
+        = compare_row t('.compare_table_activity_level'), :activity_level
+        = compare_row t('.compare_table_data_quality'), :data_quality
+        = compare_row t('.compare_table_homepage'), :homepage
+        = compare_row t('.compare_table_license'), :license
+        = compare_row t('.compare_table_cocomo'), :cocomo, help: :project_codebase_cost
+
+        = compare_section t('.all_time_statistics')
+        = compare_row t('.compare_table_committers_all_time'), :committers_all_time,
+                      graph: compare_graph_projects_path(proj_names.merge(metric: 'Contributors'))
+        = compare_row t('.compare_table_commit_count'), :commit_count,
+                      graph: compare_graph_projects_path(proj_names.merge(metric: 'Activity'))
+        = compare_row t('.compare_table_initial_commit'), :initial_commit
+        = compare_row t('.compare_table_most_recent_commit'), :most_recent_commit
+
+        = compare_section t('.twelve_month_statistics')
+        = compare_row t('.compare_table_twelve_months_committers'), :twelve_months_committers
+        = compare_row t('.compare_table_twelve_months_commits'), :twelve_months_commits
+        = compare_row t('.compare_table_twelve_months_files_modified'), :twelve_months_files_modified
+        = compare_row t('.compare_table_twelve_months_lines_added'), :twelve_months_lines_added
+        = compare_row t('.compare_table_twelve_months_lines_removed'), :twelve_months_lines_removed
+        = compare_row t('.compare_table_year_over_year_commits'), :year_over_year_commits
+
+        = compare_section t('.thirty_day_statistics')
+        = compare_row t('.compare_table_thirty_day_committers'), :thirty_day_committers
+        = compare_row t('.compare_table_thirty_day_commits'), :thirty_day_commits
+        = compare_row t('.compare_table_thirty_day_files_modified'), :thirty_day_files_modified
+        = compare_row t('.compare_table_thirty_day_lines_added'), :thirty_day_lines_added
+        = compare_row t('.compare_table_thirty_day_lines_removed'), :thirty_day_lines_removed
+
+        = compare_section t('.code_analysis')
+        = compare_row t('.compare_table_mostly_written_in'), :mostly_written_in, help: :mostly_written
+        = compare_row t('.compare_table_comments'), :comments
+        = compare_row t('.compare_table_lines_of_code'), :lines_of_code,
+                      graph: compare_graph_projects_path(proj_names.merge(metric: 'Codebase'))
+
+        = compare_section t('.people')
+        = compare_row t('.compare_table_managers'), :managers
+        = compare_row t('.compare_table_users'), :users
+        = compare_row t('.compare_table_rating'), :rating
