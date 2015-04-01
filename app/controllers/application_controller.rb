@@ -1,5 +1,7 @@
 # rubocop:disable Metrics/ClassLength
 class ApplicationController < ActionController::Base
+  BOT_REGEX = /\b(Baiduspider|Googlebot|libwww-perl|msnbot|SiteUptime|Slurp)\b/i
+
   include PageContextHelper
 
   helper AvatarHelper
@@ -129,6 +131,11 @@ class ApplicationController < ActionController::Base
 
     flash.now[:error] = t('cant_edit_other_account')
     access_denied
+  end
+
+  def is_bot?
+    return true if request.env['HTTP_USER_AGENT'] =~ BOT_REGEX
+    false
   end
 
   private

@@ -135,6 +135,17 @@ Rails.application.routes.draw do
       get :compare
       post :check_forge
     end
+    resources :contributions, path: :contributors, only: [:index, :show] do
+      collection do
+        get :near
+        get :summary
+      end
+      member do
+        get :commits_compound_spark
+        get :commits_spark
+      end
+    end
+
     resources :licenses, controller: :project_licenses, only: [:index, :new, :create, :destroy]
     resources :duplicates
     resource :logos, only: [:new, :create, :destroy]

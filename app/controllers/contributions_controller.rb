@@ -1,9 +1,11 @@
+require 'spark/new_spark'
+
 class ContributionsController < ApplicationController
   COMMITS_SPARK_IMAGE = 'app/assets/images/bot_stuff/contribution_commits_spark.png'
   COMMITS_COMPOUND_SPARK_IMAGE = 'app/assets/images/bot_stuff/position_commits_compound_spark.png'
 
   before_action :set_project
-  before_action :set_contribution
+  before_action :set_contribution, except: [:index, :summary, :near]
   before_action :set_contributor, only: [:commits_spark, :commits_compound_spark]
   before_action :send_sample_image_if_bot, if: :is_bot?, only: [:commits_spark, :commits_compound_spark]
 
@@ -20,12 +22,12 @@ class ContributionsController < ApplicationController
   end
 
   def commits_spark
-    spark_image = NewSpark.new(@contributor.monthly_commits, max_value: 50)
+    spark_image = NewSpark.new(@contributor.monthly_commits, max_value: 50).render
     send_data spark_image, type: 'image/png', filename: 'commits.png', disposition: 'inline'
   end
 
   def commits_compound_spark
-    spark_image = CompoundSpark.new(@contributor.monthly_commits(11), max_value: 50)
+    spark_image = CompoundSpark.new(@contributor.monthly_commits(11), max_value: 50).render
     send_data spark_image, type: 'image/png', filename: 'commits.png', disposition: 'inline'
   end
 
@@ -43,7 +45,8 @@ class ContributionsController < ApplicationController
   private
 
   def set_contributor
-    @contributor = @contribution.contributor_fact.where(analysis_id: @project.best_analysis_id).eager_load(:name)
+    @contributor = ContributorFact.where(id: @contribution.name_fact_id, analysis_id: @project.best_analysis_id)
+                    .eager_load(:name).first
   end
 
   def send_sample_image_if_bot
@@ -52,13 +55,13 @@ class ContributionsController < ApplicationController
   end
 
   def set_contribution
-    @contribution = @project.contributions.where(params[:id]).first
+    @contribution = @project.contributions.where(id: params[:id]).first
     @contribution ||= Contribution.find_contributor_indirectly(id: params[:id], project_id: params[:project_id])
     fail ParamRecordNotFound unless @contribution
   end
 
   def set_project
     @project = Project.from_param(params[:project_id]).first
-    render 'projects/deleted' if @porject.deleted?
+    render 'projects/deleted' if @project.deleted?
   end
 end
