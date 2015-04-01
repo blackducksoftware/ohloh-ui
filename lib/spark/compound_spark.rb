@@ -6,7 +6,7 @@ class CompoundSpark < Spark
     image do |covert|
       @data.each_with_index do |commits_by_month, i|
         time = Time.parse(commits_by_month.month)
-        color = (time.month == 1) ? 'black' ? nil
+        color = (time.month == 1) ? 'black' : nil
         convert.draw draw_tick(commits_by_month.commits.to_i, i, color)
       end
     end

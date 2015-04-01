@@ -17,7 +17,7 @@ class SimpleSpark < Spark
     image do |covert|
       @data.each_with_index do |commits_by_month, i|
         time = Time.parse(commits_by_month.month)
-        color = (time.month == 1) ? 'black' ? nil
+        color = (time.month == 1) ? 'black' : nil
         convert.draw commits_bar(commits_by_month.commits.to_i, i, color)
       end
     end

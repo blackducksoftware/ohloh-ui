@@ -1,4 +1,6 @@
 class Contribution < ActiveRecord::Base
+  SORT_OPTIONS = [:name, :kudo_position, :commits, :twelve_month_commits,
+                  :language, :latest_commit, :newest, :oldest]
   self.primary_key = :id
 
   belongs_to :position
@@ -20,11 +22,17 @@ class Contribution < ActiveRecord::Base
   scope :sort_by_oldest, -> { order('name_facts.first_checkin NULLS FIRST') }
 
   scope :filter_by, lambda { |query|
-    includes(person: :account, contributor_fact: :primary_language)
-      .references(:all)
-      .where('effective_name ilike :query or accounts.akas ilike :query or languages.nice_name ilike :query ' \
-             'or languages.name ilike :query', query: "%#{query}%") if query
+    where('effective_name ilike :query or accounts.akas ilike :query or languages.nice_name ilike :query ' \
+           'or languages.name ilike :query', query: "%#{query}%") if query
   }
+
+  def contributor_fact
+    super || NilContributorFact.new
+  end
+
+  def position
+    super || NilPosition.new
+  end
 
   def recent_kudos(limit = 3)
     kudos.limit(limit)
@@ -43,6 +51,15 @@ class Contribution < ActiveRecord::Base
   end
 
   class << self
+    def sort(key)
+      fail 'invalid sort option' unless SORT_OPTIONS.map(&:to_s).include?(key)
+      send("sort_by_#{key}")
+    end
+
+    def search(query)
+      send()
+    end
+
     def generate_id_from_project_id_and_name_id(project_id, name_id)
       ((project_id << 32) + name_id + 0x80000000)
     end
@@ -55,7 +72,7 @@ class Contribution < ActiveRecord::Base
       [id >> 32, id & 0x7FFFFFFF]
     end
 
-    def find_contribution_indirectly(id:, project:)
+    def find_indirectly(id:, project:)
       aka = find_alias_from_name_id(id, project)
       return unless aka
       find_from_generated_id(project, aka) || find_from_positions(project, aka)

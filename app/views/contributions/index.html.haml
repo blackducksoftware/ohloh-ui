@@ -1,0 +1,16 @@
+- page_context[:select_footer_nav] = :contributors
+
+- content_for :html_title do
+  = succeed ' Open Source Project on Open Hub: Contributions Listing Page' do
+    = @project.name
+
+.project_content_title
+  %h2.pull-left
+    = link_to 'Contributors', summary_project_contributors_path(@project)
+  = project_analysis_timestamp(@project)
+  .clearfix
+
+- if @project.best_analysis.present?
+  = render partial: 'contributions', locals: { contributions: @contributions, dingus: true }
+- else
+  = render partial: 'projects/show/no_analysis_summary', locals: { analysis: analysis }

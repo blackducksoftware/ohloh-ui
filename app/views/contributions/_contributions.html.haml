@@ -1,0 +1,55 @@
+:ruby
+  highlight_key = (params[:highlight_key] || :last_checkin).to_sym
+%table.table.table-striped.table-condensed{ style: 'width:98%' }
+  %thead
+    %tr{ id: 'dingus-row' }
+      %td{ colspan: '10' }
+        = render partial: 'shared/search_dingus', locals: { collection: contributions, sort_context: :contributions }
+    %tr
+      %th.col-md-3.centert= t('.name')
+      %th{ width: '45px' }= t('.kudos')
+      %th.center{ width: '80px' }= t('.12_month_commits')
+      %th{ width: '80px' }= t('.all_commits')
+      %th.col-md-3= t('.trend')
+      %th= t('.language')
+      %th.col-md-2= t('.first_commit')
+      %th.col-md-2= t('.last_commit')
+  %tbody
+    - contributions.each do |contribution|
+      :ruby
+        person_name = contribution.person.person_name
+        fact = contribution.contributor_fact
+        contributor_path = project_contributor_path(@project, contribution)
+        spark_path = commits_spark_project_contribution_url(project_id: @project.to_param, id: fact.name_id)
+      %tr
+        %td
+          = link_to contributor_path, class: 'pull-left' do
+            = avatar_img_for(contribution.person)
+
+          = link_to contributor_path, class: 'avatar_name pull-left', title: person_name do
+            = h(truncate(person_name, length: 23))
+
+          %span.small
+            - if contribution.position.title.present?
+              = t('.position_title', title: contribution.position.title)
+            - elsif contribution.position.active?
+              = t('.inactive')
+            - elsif @project.managers.include?(contribution.person.account)
+              = t('.manager')
+        %td
+          - rank = contribution.person.kudo_rank || 1
+          = image_tag "icons/sm_laurel_#{rank}.png" , alt: "KudoRank #{rank}"
+        %td.right{ style: 'padding-right: 25px' }
+          = fact.twelve_month_commits
+        %td.center
+          = fact.commits
+        %td
+          = image_tag spark_path, width: 179, height: 32, align: 'left' if fact.name_id
+        %td
+          = fact.primary_language.nice_name if fact.primary_language
+        %td
+          - if fact.first_checkin
+            %abbr.date{ title: fact.first_checkin }= t('.ago', duration: time_ago_in_words(fact.first_checkin))
+        %td
+          - if fact.last_checkin
+            %abbr.date{ title: fact.last_checkin}= t('.ago', duration: time_ago_in_words(fact.last_checkin))

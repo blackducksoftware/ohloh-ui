@@ -1,5 +1,3 @@
-require 'spark/new_spark'
-
 class ContributionsController < ApplicationController
   COMMITS_SPARK_IMAGE = 'app/assets/images/bot_stuff/contribution_commits_spark.png'
   COMMITS_COMPOUND_SPARK_IMAGE = 'app/assets/images/bot_stuff/position_commits_compound_spark.png'
@@ -8,6 +6,12 @@ class ContributionsController < ApplicationController
   before_action :set_contribution, except: [:index, :summary, :near]
   before_action :set_contributor, only: [:commits_spark, :commits_compound_spark]
   before_action :send_sample_image_if_bot, if: :is_bot?, only: [:commits_spark, :commits_compound_spark]
+
+  def index
+    @contributions = @project.contributions.sort(params[:sort])
+                      .filter_by(params[:query]).includes(person: :account, contributor_fact: :primary_language)
+                      .references(:all)
+  end
 
   def show
     redirect_to project_contributor_path(@project, @contribution) && return if @contribution.id != params[:id].to_i
@@ -56,7 +60,7 @@ class ContributionsController < ApplicationController
 
   def set_contribution
     @contribution = @project.contributions.where(id: params[:id]).first
-    @contribution ||= Contribution.find_contributor_indirectly(id: params[:id], project_id: params[:project_id])
+    @contribution ||= Contribution.find_indirectly(id: params[:id], project_id: params[:project_id])
     fail ParamRecordNotFound unless @contribution
   end
 
