@@ -120,6 +120,8 @@ Rails.application.routes.draw do
   get 'maintenance', to: 'about#maintenance'
 
   get 'explore/projects', to: 'explore#projects', as: :explore_projects
+  get 'p/compare', to: 'compare#projects', as: :compare_projects
+  get 'p/graph', to: 'compare#projects_graph', as: :compare_graph_projects
   resources :projects, path: :p, except: [:destroy] do
     member do
       get :users
@@ -132,7 +134,6 @@ Rails.application.routes.draw do
       delete 'unrate'    => 'ratings#unrate',     as: :unrate
     end
     collection do
-      get :compare
       post :check_forge
       get 'resolve_url_name' => 'resolve_url_names#project'
     end

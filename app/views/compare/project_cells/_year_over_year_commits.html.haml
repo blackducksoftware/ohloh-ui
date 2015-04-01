@@ -1,0 +1,17 @@
+- if !project.best_analysis.nil? && project.best_analysis.last_commit_time
+  - factoid = project.best_analysis.factoids.select { |f| f.is_a?(FactoidActivity) }.first
+  - factoid ||= project.best_analysis.factoids.select { |f| f.is_a?(FactoidTeamSizeZero) }.first
+  - case factoid
+  - when FactoidActivityIncreasing
+    %span.status= link_to(t('compare.increasing'), project_factoids_path(project, anchor: factoid.class))
+  - when FactoidActivityDecreasing
+    %span.status= link_to(t('compare.decreasing'), project_factoids_path(project, anchor: factoid.class))
+  - when FactoidTeamSizeZero
+    %span.status= link_to(t('compare.no_activity'), project_factoids_path(project, anchor: factoid.class))
+  - else
+    %span.status= t('compare.stable')
+  %span.status= t('compare.ago', ago: time_ago_in_words(project.best_analysis.last_commit_time))
+- elsif project.enlistments.count > 0
+  %span.soft= t('compare.pending')
+- else
+  %span.soft= t('compare.no_data')

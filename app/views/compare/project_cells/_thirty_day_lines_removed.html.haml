@@ -1,0 +1,13 @@
+- if !project.best_analysis.nil? && project.best_analysis.last_commit_time
+  - tds = project.best_analysis.thirty_day_summary
+  - if tds
+    - if tds.commits_count > 0
+      %span{ style: 'color: red;' }= pluralize_with_delimiter(tds.lines_removed, t('compare.line'))
+    - else
+      %span.status.warning= t('no_activity')
+  - else
+    %span.soft= t('compare.no_data')
+- elsif project.enlistments.count > 0
+  %span.soft= t('compare.pending')
+- else
+  %span.soft= t('compare.no_data')

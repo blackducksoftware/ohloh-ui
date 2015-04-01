@@ -1,0 +1,7 @@
+- if !project.best_analysis.nil? && project.best_analysis.last_commit_time
+  - str = pluralize_with_delimiter(project.best_analysis.code_total, t('compare.line'))
+  = link_to(str, languages_summary_project_analysis_path(project, id: 'latest'))
+- elsif project.enlistments.count > 0
+  %span.soft= t('compare.pending')
+- else
+  %span.soft= t('compare.no_data')

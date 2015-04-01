@@ -1,0 +1,22 @@
+- if !project.best_analysis.nil? && project.best_analysis.last_commit_time
+  - if project.best_analysis.relative_comments
+    - factoid = project.best_analysis.factoids.select { |f| f.is_a?(FactoidComments) }.first
+    - case factoid
+    - when FactoidCommentsVeryHigh
+      %span.status.good= link_to(t('compare.very_high'), project_factoids_path(project, anchor: factoid.type))
+    - when FactoidCommentsHigh
+      %span.status.good= link_to(t('compare.high'), project_factoids_path(project, anchor: factoid.type))
+    - when FactoidCommentsLow
+      %span.status.warning= link_to(t('compare.low'), project_factoids_path(project, anchor: factoid.type))
+    - when FactoidCommentsVeryLow
+      %span.status.bad= link_to(t('compare.very_low'), project_factoids_path(project, anchor: factoid.type))
+    - when FactoidCommentsAverage
+      %span.status.good= link_to(t('compare.average'), project_factoids_path(project, anchor: factoid.type))
+    - else
+      = t('compare.no_comments_found')
+  - else
+    = t('compare.no_comments_found')
+- elsif project.enlistments.count > 0
+  %span.soft= t('compare.pending')
+- else
+  %span.soft= t('compare.no_data')
