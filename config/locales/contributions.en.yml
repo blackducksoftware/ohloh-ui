@@ -23,3 +23,36 @@ en:
       inactive: '(Inactive)'
       manager: '(Manager)'
       ago: '%{duration} ago'
+    commits_timeline:
+      approximately: 'Approximately one year of commit activity shown'
+      no_commits: 'Open Hub did not measure any commits by this contributor.'
+    show:
+      no_kudos: 'There are no kudos for this contributor at this time.'
+      kudo_message: '&quot;%{message}&quot;'
+      recent_kudos: 'Recent Kudos...'
+      contributors: 'Contributors'
+      unclaimed_position:
+        invite_him: 'Send him or her an invite to join Open Hub.'
+        know: 'Know this developer?'
+        add: 'Add this position to your profile!'
+        are_you: 'Are you this developer?'
+        claim: 'Claim Commits'
+        help_out: 'Open Hub computes statistics about contributors by analyzing their commits on all FOSS projects. We would like to be able to attribute this work to the right person, so if you know the contributor, please help out:'
+        do_you_know: 'Do you know this contributor?'
+        invite_him: 'Send an Invite'
+      kudo_button:
+        undo_kudo: "<i class='icon-undo'></i> Undo Kudo"
+        give_kudo: 'Give Kudo'
+        kudo_for: 'Give Kudos to %{name}'
+        given_by: '... for %{name} given by:'
+      activity:
+        activity_on: 'Activity on %{name} by %{committer}'
+        see_full_profile: 'see full profile for %{name}'
+        all_commits: 'All-time Commits:'
+        12_mo_commits: '12-Month Commits:'
+        30_day_commits: '30-Day Commits:'
+        overall_rank: 'Overall Kudo Rank:'
+        first_commit: 'First Commit:'
+        last_commit: 'Last Commit:'
+        scm_names: 'Names in SCM:'
+        history: 'Commit history:'

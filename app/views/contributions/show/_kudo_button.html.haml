@@ -1,0 +1,16 @@
+-# NOTE: Replaces _kudo_button in kudos helper
+:ruby
+  target_account = contribution.person.account
+  name = contribution.person.name.try(:name)
+  kudo = Kudo.where(sender_id: current_user.id, contribution_id: contribution.id).first
+  action = new_kudo_path(contribution_id => contribution.id)
+  kudo_for = t('.kudo_for', name: name)
+
+- unless !logged_in? || current_user == @account
+  - if kudo
+    = form_for kudo, action: account_kudo_path(current_user, kudo), method: :post, class: 'kudo_action' do |f|
+      = f.hidden_field '_method', 'delete'
+      = f.submit t('.undo_kudo').html_safe, class: 'btn kudo-btn btn-info btn-mini'
+  - else
+    = link_to t('.give_kudo'), '#', class: 'btn kudo-btn btn-primary btn-mini',
+    onclick: "tb_show('#{kudo_for}', '#{action}', false); return false;"

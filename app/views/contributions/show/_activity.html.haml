@@ -1,0 +1,47 @@
+.well.pull-left { style: 'width:650px;' }
+  %h4
+    = t('.activity_on', name: @project.name, committer: committer_name)
+    = link_to t('.see_full_profile', name: committer_name), account_path(account) if account
+  .committer-summary
+    = image_tag avatar_img_path(@contribution.person, 64), class: 'pull-left avatar', style: 'margin-bottom:65px;'
+    - unless fact.nil?
+      - spark_url = commits_compound_spark_project_contribution_url(project_id: @project.to_param, id: fact.name_id)
+      .col-md-2{ style: 'width: 155px' }
+        %span= t('.all_commits')
+        %span.pull-right
+          = fact.commits
+        .clearfix
+        %span= t('.12_mo_commits')
+        %span.pull-right
+          = fact.twelve_month_commits
+        .clearfix
+        %span= t('.30_day_commits')
+        %span.pull-right
+          = fact.thirty_day_commits
+        .clearfix
+
+      .pull-left{ style: 'width:165px; margin-left:215px;' }
+        %span= t('.overall_rank')
+        %span.pull-right{ style: 'margin-top:-8px;' }
+          = kudos_laurel_link_for(@contribution.person)
+        .clearfix
+        %span= t('.first_commit')
+        %span.pull-right
+          = fact.first_checkin.to_s(:dmy)
+        .clearfix
+        %span= t('.last_commit')
+        %span.pull-right
+          = fact.last_checkin.to_s(:dmy)
+        .clearfix
+
+      .padding_one_top.col-md-4
+        %span= t('.scm_names')
+        %span
+          = @contribution.scm_names.map(&:name).join(', ')
+
+      .padding_one_top.col-md-7
+        %span= t('.history')
+        %span.pull-right
+          = image_tag spark_url, width: 430, height: 39
+        .clearfix
+      .clearfix
