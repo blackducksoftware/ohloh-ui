@@ -2,6 +2,7 @@
   content_for(:html_title) { t('.page_title') }
   page_context[:select_top_menu_nav] = 'select_tools'
   proj_names = params.select { |k, _| k.to_s.match(/project/) }
+
 - content_for :javascript do
   = javascript_tag '$(document).ready(CompareProjects.init);'
 
@@ -22,12 +23,11 @@
         = compare_row t('.compare_table_homepage'), :homepage
         = compare_row t('.compare_table_license'), :license
         = compare_row t('.compare_table_cocomo'), :cocomo, help: :project_codebase_cost
-
         = compare_section t('.all_time_statistics')
         = compare_row t('.compare_table_committers_all_time'), :committers_all_time,
-                      graph: compare_graph_projects_path(proj_names.merge(metric: 'Contributors'))
+                      graph: proj_names.merge(metric: 'Contributors')
         = compare_row t('.compare_table_commit_count'), :commit_count,
-                      graph: compare_graph_projects_path(proj_names.merge(metric: 'Activity'))
+                     graph: proj_names.merge(metric: 'Commits')
         = compare_row t('.compare_table_initial_commit'), :initial_commit
         = compare_row t('.compare_table_most_recent_commit'), :most_recent_commit
 
@@ -50,8 +50,7 @@
         = compare_row t('.compare_table_mostly_written_in'), :mostly_written_in, help: :mostly_written
         = compare_row t('.compare_table_comments'), :comments
         = compare_row t('.compare_table_lines_of_code'), :lines_of_code,
-                      graph: compare_graph_projects_path(proj_names.merge(metric: 'Codebase'))
-
+                      graph: proj_names.merge(metric: 'Code')
         = compare_section t('.people')
         = compare_row t('.compare_table_managers'), :managers
         = compare_row t('.compare_table_users'), :users

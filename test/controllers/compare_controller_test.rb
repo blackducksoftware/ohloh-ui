@@ -35,4 +35,43 @@ class CompareControllerTest < ActionController::TestCase
     response.body.must_match 'Phil'
     response.body.must_match 'Bob'
   end
+
+  test 'should get projects graph route for contributor history' do
+    project1 = create(:project, name: 'The Avenger Initiative')
+    project2 = create(:project, name: 'X-MEN')
+    project3 = create(:project, name: 'Suicide Squad')
+    project_data = {}
+    project_data[project1] = project1.name
+    project_data[project2] = project2.name
+    project_data[project3] = project3.name
+    project_data[:metric] = 'Contributors'
+    xhr :get, :projects_graph, project_data: project_data
+    must_respond_with :ok
+  end
+
+  test 'should get projects graph route for commit history' do
+    project1 = create(:project, name: 'The Avenger Initiative')
+    project2 = create(:project, name: 'X-MEN')
+    project3 = create(:project, name: 'Suicide Squad')
+    project_data = {}
+    project_data[project1] = project1.name
+    project_data[project2] = project2.name
+    project_data[project3] = project3.name
+    project_data[:metric] = 'Commits'
+    xhr :get, :projects_graph, project_data: project_data
+    must_respond_with :ok
+  end
+
+  test 'should get projects graph route for code history' do
+    project1 = create(:project, name: 'The Avenger Initiative')
+    project2 = create(:project, name: 'X-MEN')
+    project3 = create(:project, name: 'Suicide Squad')
+    project_data = {}
+    project_data[project1] = project1.name
+    project_data[project2] = project2.name
+    project_data[project3] = project3.name
+    project_data[:metric] = 'Code'
+    xhr :get, :projects_graph, project_data: project_data
+    must_respond_with :ok
+  end
 end

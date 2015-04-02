@@ -1,0 +1,33 @@
+- content_for :html_title do
+  = t('.geo_map', project: @project.name)
+
+= render 'projects/header'
+
+= javascript_include_tag 'lib/assets/google_map'
+
+/ From ohloh-app
+/ This renders the actual google map and javascript code:
+= render '/projects/map/common'
+/ This places the User and Contributor points on the map.
+- content_for :javascript do
+  = javascript_tag('Map.postMap = function(){Map.setCenterZoom(25,12,2); ProjectMap.getContributors();}')
+
+/ Note: A possible solution is to place the object.init into the file and see if the code
+/ works
+
+.col-md-12
+  .col-md-1
+    %strong= t('.show')
+  .col-md-8
+    .radio
+      %label
+      / TODO: Buttons don't actually change when clicked
+      / Nor do they have actual id's in CSS yet.
+      %input{ checked: 'checked', name: 'contributors', type: 'radio',
+              value: 'contributors', id: 'contributors' }= t('.contributors')
+    .radio
+      %label
+      %input{ checked: 'checked', name: 'users', type: 'radio', value: 'users', id: 'users' }= t('.users')
+  .col-md-1
+    / TODO: map_status does something in ohloh. Figure that out.
+    %span#map_status Loading...

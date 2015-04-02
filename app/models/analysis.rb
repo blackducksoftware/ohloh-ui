@@ -1,4 +1,5 @@
 class Analysis < ActiveRecord::Base
+  include Analysis::Report
   AVG_SALARY = 55_000
 
   belongs_to :project
@@ -6,6 +7,7 @@ class Analysis < ActiveRecord::Base
   has_one :thirty_day_summary
   has_one :twelve_month_summary
   has_one :previous_twelve_month_summary
+  has_many :activity_facts
   has_many :analysis_summaries
   has_many :analysis_aliases
   has_many :contributor_facts, class_name: 'ContributorFact'

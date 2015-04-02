@@ -2,8 +2,10 @@ FactoryGirl.define do
   factory :activity_fact do
     association :name
     association :language
-    association :analysis
-    month  { Date.today }
+    analysis
+    sequence :month do |n|
+      Time.utc(Time.now.utc.year, "#{n}", 1)
+    end
     code_added 100
     code_removed 100
     comments_added 100
