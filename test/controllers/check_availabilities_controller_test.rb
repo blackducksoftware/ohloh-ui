@@ -2,21 +2,17 @@ require 'test_helper'
 
 describe 'CheckAvailabilitiesController' do
   describe 'account' do
-    it 'should return account attributes when account is present' do
+    it 'should return true when account is present' do
       create(:account, login: 'robin')
-      xhr :get, :account, q: 'robin'
-      result = JSON.parse(response.body)
+      xhr :get, :account, query: 'RoBiN'
 
-      result['login'].must_equal 'robin'
-      result['q'].must_equal 'robin'
+      response.body.must_equal 'true'
     end
 
-    it 'should return id as nil when account is not present' do
-      xhr :get, :account, q: 'test'
-      result = JSON.parse(response.body)
+    it 'should return false when account is not present' do
+      xhr :get, :account, query: 'test'
 
-      result['id'].must_equal nil
-      result['q'].must_equal 'test'
+      response.body.must_equal 'false'
     end
   end
 end
