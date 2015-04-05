@@ -12,6 +12,15 @@ module ContributionsHelper
     link_to text, claim_position_url_options(contribution), class: css_class, id: id
   end
 
+  def months_or_years(months)
+    case months
+    when 0..11
+      "#{months}m"
+    else
+      "#{(months/12).to_i}y #{months%12}m"
+    end
+  end
+
   def invite
     @invite ||= Invite.find_by_activation_code(params[:invite])
   end

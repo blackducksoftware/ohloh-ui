@@ -52,12 +52,9 @@ class Contribution < ActiveRecord::Base
 
   class << self
     def sort(key)
-      fail 'invalid sort option' unless SORT_OPTIONS.map(&:to_s).include?(key)
+      key ||= :commits
+      fail 'invalid sort option' unless SORT_OPTIONS.include?(key.to_sym)
       send("sort_by_#{key}")
-    end
-
-    def search(query)
-      send()
     end
 
     def generate_id_from_project_id_and_name_id(project_id, name_id)

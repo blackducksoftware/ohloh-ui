@@ -2,8 +2,7 @@
   committer_name = h(@contribution.person.effective_name)
   account = @contribution.person.account
   fact = @contribution.contributor_fact
-
-- page_context[:select_footer_nav] = :contributors
+  page_context[:select_footer_nav] = :contributors
 
 - content_for :html_title do
   = succeed ' Open Source Project on Open Hub: Contributor' do
@@ -12,8 +11,8 @@
 
 %h2.pull-left.contributor_name.margin_top_20
   = link_to t('.contributos'), summary_project_contributors_path(@project)
-  :
-  = committer_name
+  = succeed ':' do
+    = committer_name
 
 = project_analysis_timestamp(@project)
 
@@ -38,7 +37,7 @@
       = t('.no_kudos')
 
   .padding_one_top
-  = render partial: 'contributions/show/kudo_button' if fact.present?
+  = render partial: 'contributions/show/kudo_button', locals: { contribution: @contribution } if fact.present?
 .clearfix
 
 = render partial: 'contributions/show/unclaimed_position', locals: { contribution: @contribution }

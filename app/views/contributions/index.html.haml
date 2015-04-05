@@ -11,6 +11,7 @@
   .clearfix
 
 - if @project.best_analysis.present?
-  = render partial: 'contributions', locals: { contributions: @contributions, dingus: true }
+  = render partial: 'shared/search_dingus', locals: { collection: @contributions, sort_context: :contributions }
+  = render partial: 'contributions', locals: { contributions: @contributions }
 - else
   = render partial: 'projects/show/no_analysis_summary', locals: { analysis: analysis }

@@ -136,6 +136,7 @@ Rails.application.routes.draw do
       post :check_forge
     end
     resources :contributions, path: :contributors, only: [:index, :show] do
+      resources :commits
       collection do
         get :near
         get :summary
@@ -192,6 +193,7 @@ Rails.application.routes.draw do
         get :committerhistory
         get :commits_spark
         get :languages
+        get :top_commit_volume_chart
       end
     end
     resources :commits, only: [:index, :show] do

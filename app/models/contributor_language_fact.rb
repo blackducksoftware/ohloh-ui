@@ -1,0 +1,2 @@
+class ContributorLanguageFact < NameLanguageFact
+end

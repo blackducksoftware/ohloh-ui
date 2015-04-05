@@ -2,6 +2,8 @@ class ContributionsController < ApplicationController
   COMMITS_SPARK_IMAGE = 'app/assets/images/bot_stuff/contribution_commits_spark.png'
   COMMITS_COMPOUND_SPARK_IMAGE = 'app/assets/images/bot_stuff/position_commits_compound_spark.png'
 
+  helper :kudos
+
   before_action :set_project
   before_action :set_contribution, except: [:index, :summary, :near]
   before_action :set_contributor, only: [:commits_spark, :commits_compound_spark]

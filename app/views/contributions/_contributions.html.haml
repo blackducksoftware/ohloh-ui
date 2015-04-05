@@ -1,19 +1,17 @@
 :ruby
   highlight_key = (params[:highlight_key] || :last_checkin).to_sym
-%table.table.table-striped.table-condensed{ style: 'width:98%' }
+
+%table.table.table-striped.table-condensed
   %thead
-    %tr{ id: 'dingus-row' }
-      %td{ colspan: '10' }
-        = render partial: 'shared/search_dingus', locals: { collection: contributions, sort_context: :contributions }
     %tr
-      %th.col-md-3.centert= t('.name')
+      %th.center= t('.name')
       %th{ width: '45px' }= t('.kudos')
       %th.center{ width: '80px' }= t('.12_month_commits')
       %th{ width: '80px' }= t('.all_commits')
-      %th.col-md-3= t('.trend')
+      %th= t('.trend')
       %th= t('.language')
-      %th.col-md-2= t('.first_commit')
-      %th.col-md-2= t('.last_commit')
+      %th= t('.first_commit')
+      %th= t('.last_commit')
   %tbody
     - contributions.each do |contribution|
       :ruby
@@ -26,10 +24,9 @@
           = link_to contributor_path, class: 'pull-left' do
             = avatar_img_for(contribution.person)
 
-          = link_to contributor_path, class: 'avatar_name pull-left', title: person_name do
-            = h(truncate(person_name, length: 23))
-
-          %span.small
+          = link_to contributor_path, class: 'avatar_name pull-left col-md-10 padding_left_0', title: person_name do
+            = h truncate(person_name, length: 23)
+          %span.small.contribution_title.pull-left
             - if contribution.position.title.present?
               = t('.position_title', title: contribution.position.title)
             - elsif contribution.position.active?
@@ -39,9 +36,9 @@
         %td
           - rank = contribution.person.kudo_rank || 1
           = image_tag "icons/sm_laurel_#{rank}.png" , alt: "KudoRank #{rank}"
-        %td.right{ style: 'padding-right: 25px' }
-          = fact.twelve_month_commits
         %td.center
+          = fact.twelve_month_commits
+        %td
           = fact.commits
         %td
           = image_tag spark_path, width: 179, height: 32, align: 'left' if fact.name_id

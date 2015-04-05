@@ -2,6 +2,11 @@ class ContributorFact < NameFact
   belongs_to :analysis
   belongs_to :name
 
+  def name_language_facts
+    NameLanguageFact.where(name_id: name_id, analysis_id: analysis_id)
+                    .order(total_months: :desc, total_commits: :desc, total_activity_lines: :desc)
+  end
+
   def person
     Person.where(['name_id = ? AND project_id = ?', name_id, analysis.project_id]).first
   end
