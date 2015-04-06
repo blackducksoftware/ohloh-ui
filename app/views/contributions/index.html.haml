@@ -6,13 +6,13 @@
 
 .project_content_title
   %h2.pull-left
-    = link_to 'Contributors', summary_project_contributors_path(@project)
+    = link_to t('.contributors').html_safe, summary_project_contributors_path(@project)
+    = t('.listing').html_safe
   = project_analysis_timestamp(@project)
   .clearfix
 
 - if @project.best_analysis.present?
-  = render partial: 'shared/search_dingus', locals: { collection: @contributions, sort_context: :contributions }
-  = render partial: 'contributions', locals: { contributions: @contributions }
+  = render partial: 'contributions', locals: { contributions: @contributions, search_bar: true }
 - else
   = render partial: 'projects/show/no_analysis_summary', locals: { analysis: analysis }
 

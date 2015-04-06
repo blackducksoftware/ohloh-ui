@@ -1,10 +1,11 @@
-:ruby
-  highlight_key = (params[:highlight_key] || :last_checkin).to_sym
-
 %table.table
   %thead
     %tr{ id: 'dingus-row' }
-      %td{ colspan: '10' } &nbsp;
+      %td{ colspan: 10 }
+        - if search_bar
+          = render partial: 'shared/search_dingus', locals: { collection: @contributions, sort_context: :contributions }
+        - else
+          &nbsp;
     %tr
       %th.center= t('.name')
       %th{ width: '45px' }= t('.kudos')

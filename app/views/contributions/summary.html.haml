@@ -34,7 +34,7 @@
 
   .col-md-12.top-committers
     %h4= link_to t('.top_contributions'), project_contributions_path(@project)
-    = render partial: 'contributions', locals: { contributions: @top_contributions }
+    = render partial: 'contributions', locals: { contributions: @top_contributions, search_bar: false }
     %p
       = link_to t('.see_all'), project_contributions_path(@project), class: 'btn btn-info btn-small'
   .clearfix

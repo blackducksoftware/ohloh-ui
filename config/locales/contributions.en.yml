@@ -1,5 +1,8 @@
 en:
   contributions:
+    index:
+      contributors: 'Contributors:'
+      listing: 'Listing'
     language_header:
       language: 'Language'
       aggregate: 'Aggregate<br/>Coding Time'
