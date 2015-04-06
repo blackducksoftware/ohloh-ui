@@ -28,7 +28,7 @@
       = render partial: 'newest_contributions', locals: { contributions: @newest_contributions.first(5) }
     - if @newest_contributions.length > 5
       .col-md-6
-        = render partial: 'newest_contributions', locals: { contributions: @newest_contributions[5..-1] }
+        = render partial: 'newest_contributions', locals: { contributions: @newest_contributions.last(5) }
     .clearfix
   .clearfix
 

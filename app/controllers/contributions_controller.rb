@@ -8,7 +8,7 @@ class ContributionsController < ApplicationController
   before_action :set_contribution, except: [:index, :summary, :near]
   before_action :set_contributor, only: [:commits_spark, :commits_compound_spark]
   before_action :send_sample_image_if_bot, if: :is_bot?, only: [:commits_spark, :commits_compound_spark]
-  before_action :project_context, only: [:index, :show]
+  before_action :project_context, only: [:index, :show, :summary]
 
   def index
     @contributions = @project.contributions.sort(params[:sort])
