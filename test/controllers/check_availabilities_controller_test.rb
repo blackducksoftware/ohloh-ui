@@ -15,4 +15,34 @@ describe 'CheckAvailabilitiesController' do
       response.body.must_equal 'false'
     end
   end
+
+  describe 'project' do
+    it 'should return true when project is present' do
+      create(:project, url_name: 'Mario')
+      xhr :get, :project, query: 'maRio'
+
+      response.body.must_equal 'true'
+    end
+
+    it 'should return false when project is not present' do
+      xhr :get, :project, query: 'test'
+
+      response.body.must_equal 'false'
+    end
+  end
+
+  describe 'organization' do
+    it 'should return true when organization is present' do
+      create(:organization, url_name: 'Mario')
+      xhr :get, :organization, query: 'maRio'
+
+      response.body.must_equal 'true'
+    end
+
+    it 'should return false when organization is not present' do
+      xhr :get, :organization, query: 'test'
+
+      response.body.must_equal 'false'
+    end
+  end
 end

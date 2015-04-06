@@ -6,9 +6,10 @@ class App.CheckAvailiability
     return unless $input.length
     @$input = $input
     @$preview = $input.next('.availability-preview')
+    @$preview = $input.parent().next('.availability-preview') unless @$preview.length
     throttledCheckAvailability = _(@checkAvailabilityForValidValue).throttle(500, leading: false)
     @$input.keyup(throttledCheckAvailability)
-    @$input.trigger('keyup') # process value preloaded by soft refresh or back.
+    @$input.trigger('keyup') if @$input.val().length # process value preloaded by soft refresh or back.
 
   checkAvailabilityForValidValue: =>
     inputValue = @$input.val()
