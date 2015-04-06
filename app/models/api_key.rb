@@ -14,8 +14,9 @@ class ApiKey < ActiveRecord::Base
   validates :terms, acceptance: { accept: '1', message: I18n.t(:must_accept_terms) }
   validates :key, uniqueness: true
 
+  filterable_by ['accounts.name', 'api_keys.key', 'api_keys.description', 'api_keys.name']
+
   scope :in_good_standing, -> { where.not(status: STATUS_DISABLED) }
-  scope :filterable_by, ->(term) { joins(:account).where(filterable_by_where_clause(term)) }
   scope :by_account_name, -> { joins(:account).order('lower(accounts.name)') }
   scope :by_newest, -> { order(created_at: :desc) }
   scope :by_oldest, -> { order(created_at: :asc) }
@@ -56,16 +57,5 @@ class ApiKey < ActiveRecord::Base
 
   def exceeded_daily_allotment?
     (daily_count >= daily_limit) && status == STATUS_OK
-  end
-
-  class << self
-    def filterable_by_where_clause(term)
-      term = "%#{term}%"
-      api_keys = ApiKey.arel_table
-      api_keys[:key].matches(term)
-        .or(api_keys[:description].matches(term))
-        .or(api_keys[:name].matches(term))
-        .or(Account.arel_table[:name].matches(term))
-    end
   end
 end

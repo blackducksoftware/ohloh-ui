@@ -75,6 +75,6 @@ class EditsController < ApplicationController
 
   def add_query_term(edits)
     query_term = params[:q] || params[:query]
-    query_term ? edits.filterable_by(query_term) : edits
+    query_term ? edits.filter_by(query_term) : edits
   end
 end

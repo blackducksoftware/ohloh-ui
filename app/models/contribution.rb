@@ -19,12 +19,7 @@ class Contribution < ActiveRecord::Base
   scope :sort_by_newest, -> { order('name_facts.first_checkin DESC NULLS LAST') }
   scope :sort_by_oldest, -> { order('name_facts.first_checkin NULLS FIRST') }
 
-  scope :filter_by, lambda { |query|
-    includes(person: :account, contributor_fact: :primary_language)
-      .references(:all)
-      .where('effective_name ilike :query or accounts.akas ilike :query or languages.nice_name ilike :query ' \
-             'or languages.name ilike :query', query: "%#{query}%") if query
-  }
+  filterable_by ['effective_name', 'accounts.akas', 'languages.nice_name', 'languages.name']
 
   def recent_kudos(limit = 3)
     kudos.limit(limit)
