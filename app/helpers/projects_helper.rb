@@ -79,6 +79,18 @@ module ProjectsHelper
     end.join(', ')
   end
 
+  # NOTE: Replaces ProjectActivityScore.activity_level_text.
+  def project_activity_text(project, append_activity)
+    activity_level = project_activity_level(project)
+    case activity_level
+    when :na then "#{t('projects.activity') if append_activity} #{t('projects.not_available')}"
+    when :new then t('projects.new_project')
+    when :inactive then t('projects.inactive')
+    else
+      "#{t("projects.#{activity_level}")} #{t('projects.activity') if append_activity }"
+    end
+  end
+
   private
 
   def project_twitter_description_analysis(project, analysis)
@@ -96,18 +108,6 @@ module ProjectsHelper
 
   def project_activity_level_text_class(image_size)
     "#{image_size}_project_activity_text"
-  end
-
-  # NOTE: Replaces ProjectActivityScore.activity_level_text.
-  def project_activity_text(project, append_activity)
-    activity_level = project_activity_level(project)
-    case activity_level
-    when :na then "#{t('projects.activity') if append_activity} #{t('projects.not_available')}"
-    when :new then t('projects.new_project')
-    when :inactive then t('projects.inactive')
-    else
-      "#{t("projects.#{activity_level}")} #{t('projects.activity') if append_activity }"
-    end
   end
 
   def project_activity_level(project)

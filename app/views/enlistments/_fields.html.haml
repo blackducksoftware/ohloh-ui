@@ -1,0 +1,93 @@
+%fieldset
+  .control-group
+    %label.control-label.required= t('.scm_type')
+    .controls.chosen#value_select
+      %select.chzn-select.value-select{ name: 'repository[type]', id: 'repository_type' }
+        = options_for_select_type
+      - error_tag @repository, :type
+  .control-group
+    %label.control-label.required= t('.enter_url')
+    .controls
+      = f.text_field :url, class: 'col-md-7', value: params[:repository].try(:[], :url)
+      - error_tag @repository, :url
+      .clearfix
+      .cvs.hidden
+        %p= t('.example')
+        %ul
+          %li= t('.description4')
+          %li= t('.description5')
+      .svn
+        %p= t('.example')
+        %ul.margin_left_20
+          %li= t('.description6')
+          %li= t('.description7')
+        %p.help-block
+          = t('.description8_html')
+      .git.hidden
+        %p= t('.example')
+        %ul
+          %li= t('.description15')
+          %li= t('.description16')
+      .hg.hidden
+        %p= t('.example')
+        %ul
+          %li= t('.description17')
+          %li= t('.description18')
+      .bzr.hidden
+        %p= t('.example')
+        %ul
+          %li= t('.description19')
+          %li= t('.description20')
+  .cvs.svn
+    .control-group.warning
+      %label.control-label= t('.if_required')
+      .controls
+        = f.text_field :username, placeholder: 'Username', style: 'display:block;'
+        - error_tag @repository, :username
+        = f.text_field :password, placeholder: 'Password', style: 'display:block;'
+        - error_tag @repository, :password
+        %p.help-block.col-md-7
+          %strong= t('.warning')
+          = t('.description23')
+        .clearfix &nbsp;
+
+  .cvs.hidden
+    .control-group
+      %label.cotrol-label.required= t('.cvs_module_name')
+      .controls
+        = f.text_field :module_name
+        - error_tag @repository, :module_name
+        %p.help-block
+          = t('.enter_cvs')
+          %br
+          = t('.create_seperate_enlistment')
+
+  .git.hidden
+    .control-group
+      %label.control-label= t('.enter_git')
+      .controls
+        = f.text_field :branch_name
+        - error_tag @repository, :branch_name
+        %p.help-block
+          = t('.enter_git_name')
+          %br
+          %strong= t('.if_not_sure')
+
+  - if defined?(BYPASS_URL_VALIDATION) && BYPASS_URL_VALIDATION
+    .control-group
+      .controls
+        %label.checkbox
+          = f.check_box :bypass_url_validation, choice: t('.choice')
+          = t('.bypass_url_validation')
+  .control-group
+    .controls
+      - error_tag @repository, :failed
+
+  .actions
+    - if logged_in? && @project.edit_authorized?
+      = submit_tag t('.save_code_location'), class: 'btn btn-primary submit'
+      %p.spinner.hidden
+        = image_tag 'spinner.gif'
+        = t('.check_server_connection')
+    - else
+      = disabled_button t('.save_code_location'), class: 'btn-primary'
