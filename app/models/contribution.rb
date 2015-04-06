@@ -69,29 +69,29 @@ class Contribution < ActiveRecord::Base
       [id >> 32, id & 0x7FFFFFFF]
     end
 
-    def find_indirectly(id:, project:)
-      aka = find_alias_from_name_id(id, project)
+    def find_indirectly(contribution_id:, project:)
+      aka = find_alias_from_name_id(contribution_id, project)
       return unless aka
       find_from_generated_id(project, aka) || find_from_positions(project, aka)
     end
 
     private
 
-    def find_alias_from_name_id(id, project)
-      _, name_id = generate_project_id_and_name_id_from_id(id.to_i)
+    def find_alias_from_name_id(contribution_id, project)
+      _, name_id = generate_project_id_and_name_id_from_id(contribution_id.to_i)
       project.aliases.where(commit_name_id: name_id).first
     end
 
     def find_from_generated_id(project, aka)
-      id = generate_id_from_project_id_and_name_id(project.id, aka.preferred_name_id)
-      project.contributions.where(id: id).first
+      generated_id = generate_id_from_project_id_and_name_id(project.id, aka.preferred_name_id)
+      project.contributions.where(id: generated_id).first
     end
 
     def find_from_positions(project, aka)
       position = project.positions.where(name_id: aka.preferred_name_id).first
       return unless position
-      id = generate_id_from_project_id_and_account_id(project.id, position.account_id)
-      project.contributions.where(id: id).first
+      contribution_id = generate_id_from_project_id_and_account_id(project.id, position.account_id)
+      project.contributions.where(id: contribution_id).first
     end
   end
 end

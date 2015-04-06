@@ -2,17 +2,18 @@ class ContributionsController < ApplicationController
   COMMITS_SPARK_IMAGE = 'app/assets/images/bot_stuff/contribution_commits_spark.png'
   COMMITS_COMPOUND_SPARK_IMAGE = 'app/assets/images/bot_stuff/position_commits_compound_spark.png'
 
-  helper :kudos
+  helper :kudos, :projects
 
   before_action :set_project
   before_action :set_contribution, except: [:index, :summary, :near]
   before_action :set_contributor, only: [:commits_spark, :commits_compound_spark]
   before_action :send_sample_image_if_bot, if: :is_bot?, only: [:commits_spark, :commits_compound_spark]
+  before_action :project_context, only: :index
 
   def index
     @contributions = @project.contributions.sort(params[:sort])
                       .filter_by(params[:query]).includes(person: :account, contributor_fact: :primary_language)
-                      .references(:all)
+                      .references(:all).paginate(per_page: 20, page: params[:page] || 1)
   end
 
   def show
@@ -28,7 +29,7 @@ class ContributionsController < ApplicationController
   end
 
   def commits_spark
-    spark_image = NewSpark.new(@contributor.monthly_commits, max_value: 50).render
+    spark_image = SimpleSpark.new(@contributor.monthly_commits, max_value: 50).render
     send_data spark_image, type: 'image/png', filename: 'commits.png', disposition: 'inline'
   end
 
@@ -62,7 +63,7 @@ class ContributionsController < ApplicationController
 
   def set_contribution
     @contribution = @project.contributions.where(id: params[:id]).first
-    @contribution ||= Contribution.find_indirectly(id: params[:id], project_id: params[:project_id])
+    @contribution ||= Contribution.find_indirectly(contribution_id: params[:id], project: @project)
     fail ParamRecordNotFound unless @contribution
   end
 

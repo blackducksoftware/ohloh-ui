@@ -15,3 +15,5 @@
   = render partial: 'contributions', locals: { contributions: @contributions }
 - else
   = render partial: 'projects/show/no_analysis_summary', locals: { analysis: analysis }
+
+= will_paginate @contributions
