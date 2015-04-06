@@ -1,8 +1,8 @@
 passenger_enabled on;
 passenger_ignore_client_abort on;
 
-passenger_set_cgi_param HTTP_X_FORWARDED_FOR $proxy_add_x_forwarded_for;
-passenger_set_cgi_param HTTP_X_FORWARDED_PROTO $scheme;
+passenger_set_header HTTP_X_FORWARDED_FOR $proxy_add_x_forwarded_for;
+passenger_set_header HTTP_X_FORWARDED_PROTO $scheme;
 
 add_header X-Host $hostname;
 

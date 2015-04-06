@@ -194,7 +194,13 @@ Rails.application.routes.draw do
       collection { get :summary }
     end
     resources :contributors, only: [:index, :show] do
-      collection { get :summary }
+      collection do
+        get :summary
+        get :near
+      end
+    end
+    resources :stacks, only: [] do
+      collection { get :near }
     end
     resources :aliases, only: [:index, :new, :create] do
       collection { get :preferred_names }

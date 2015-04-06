@@ -268,3 +268,5 @@ en:
       report_duplicate: 'Report Duplicate'
       title: '%{name} has been stacked by %{count} users. Click here to add it to your stack.'
       i_use: 'I Use This!'
+    map:
+      page_title: "User & Contributor Locations Page"
