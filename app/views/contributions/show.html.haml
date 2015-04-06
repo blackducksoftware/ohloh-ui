@@ -29,11 +29,11 @@
       = link_to h(kudo.sender.name), account_url(kudo.sender), id: "kudo_received_link_#{kudo.sender.login}"
       = image_tag "icons/tn_laurel_#{kudo.sender.kudo_rank}.png", alt: "KudoRank #{kudo.sender.kudo_rank}"
       - unless kudo.message.blank?
-        %p.nomargin.margin_left_25{ id: "kudo_received_#{kudo.sender.login}" }
+        %p.margin_left_25{ id: "kudo_received_#{kudo.sender.login}" }
           != t('.kudo_message', message: kudo.message)
 
   - if @recent_kudos.empty?
-    %p.nomargin.margin_left_15
+    %p.margin_left_15
       = t('.no_kudos')
 
   .padding_one_top
@@ -42,9 +42,7 @@
 
 = render partial: 'contributions/show/unclaimed_position', locals: { contribution: @contribution }
 
-.row
-  .col-md-12
-    = render partial: 'commits_timeline', locals: { contribution: @contribution }
-.row
-  .col-md-12
-    = render partial: 'contributions/show/languages', locals: { contribution: @contribution, name_fact: fact }
+.col-md-12
+  = render partial: 'commits_timeline', locals: { contribution: @contribution }
+.col-md-12
+  = render partial: 'contributions/show/languages', locals: { contribution: @contribution, name_fact: fact }

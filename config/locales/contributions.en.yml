@@ -26,11 +26,13 @@ en:
     commits_timeline:
       approximately: 'Approximately one year of commit activity shown'
       no_commits: 'Open Hub did not measure any commits by this contributor.'
+      project_commits: 'Project Commits'
     show:
       no_kudos: 'There are no kudos for this contributor at this time.'
       kudo_message: '&quot;%{message}&quot;'
       recent_kudos: 'Recent Kudos...'
       contributors: 'Contributors'
+      given_by: '... for %{name} given by:'
       unclaimed_position:
         invite_him: 'Send him or her an invite to join Open Hub.'
         know: 'Know this developer?'
@@ -44,7 +46,6 @@ en:
         undo_kudo: "<i class='icon-undo'></i> Undo Kudo"
         give_kudo: 'Give Kudo'
         kudo_for: 'Give Kudos to %{name}'
-        given_by: '... for %{name} given by:'
       activity:
         activity_on: 'Activity on %{name} by %{committer}'
         see_full_profile: 'see full profile for %{name}'

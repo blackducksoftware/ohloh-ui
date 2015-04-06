@@ -1,6 +1,6 @@
 - fact = @contribution.contributor_fact
 
-%h4 Project Commits
+%h4= t('.project_commits')
 .col-md-10.center-block
   - if fact.commits.to_i > 0
     #timeline{ project_id: "#{contribution.project_id}", name_id: "#{fact.name_id}", date: fact.last_checkin.to_s }
