@@ -32,6 +32,7 @@ class Project < ActiveRecord::Base
                                          :description, :tag_list, :missing_source, :url, :download_url],
                    merge_within: 30.minutes
   acts_as_protected
+  acts_as_taggable
   link_accessors accessors: { url: :Homepage, download_url: :Download }
 
   validates :name, presence: true, length: 1..100, allow_nil: false, uniqueness: true, case_sensitive: false
