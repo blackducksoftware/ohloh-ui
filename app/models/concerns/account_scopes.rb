@@ -28,8 +28,5 @@ module AccountScopes
     scope :in_good_standing, -> { where('level >= 0') }
 
     scope :from_param, ->(param) { where(arel_table[:login].eq(param).or(arel_table[:id].eq(param))) }
-
-    scope :zoom_in, -> (lat, lng) { order("@(accounts.latitude - #{lat.to_f}) + @(accounts.longitude - #{lng.to_f})") }
-    scope :zoom_out, -> { order('name_facts.commits DESC') }
   end
 end

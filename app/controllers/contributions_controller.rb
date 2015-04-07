@@ -44,17 +44,6 @@ class ContributionsController < ApplicationController
     send_file spark_image.path, type: 'image/png', filename: 'commits.png', disposition: 'inline'
   end
 
-  def near
-    accounts = Account.near(params[:project_id])
-    if params[:zoom].to_i < 3
-      @accounts = accounts.zoom_out
-    else
-      @accounts = accounts.zoom_in(params[:lat], params[:lng])
-    end
-
-    render json: { accounts: @accounts }
-  end
-
   private
 
   def set_contributor

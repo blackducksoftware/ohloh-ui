@@ -62,27 +62,7 @@ describe 'ContributionsController' do
 
       must_respond_with :ok
       assigns(:contribution).must_equal @contribution
-      assigns(:contributor).must_equal @contribution
-    end
-  end
-
-  describe 'near' do
-    it 'should show accounts when zoom level is > 3' do
-      account = create(:account, latitude: '1', longitude: '1')
-      vita = create(:best_vita, account_id: account.id)
-      account.update_column(:best_vita_id, vita.id)
-
-      get :near, project_id: @project.to_param
-
-      must_respond_with :ok
-      assigns(:accounts).must_equal
-    end
-
-    it 'should show accounts when zoom level is < 3' do
-      get :near, project_id: @project.to_param
-
-      must_respond_with :ok
-      assigns(:accounts).must_equal
+      assigns(:contributor).must_equal @contributor_fact
     end
   end
 end

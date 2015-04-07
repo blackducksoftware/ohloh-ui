@@ -102,12 +102,6 @@ class Account < ActiveRecord::Base
   end
 
   class << self
-    def near(project_id)
-      select([:id, :latitude, :longitude]).joins(:positions, best_vita: :vita_fact)
-        .where(positions: { project_id: project_id.to_i })
-        .where.not(latitude: nil, longitude: nil).limit(50)
-    end
-
     def resolve_login(login)
       Account.where('lower(login) = ?', login.downcase).first
     end
