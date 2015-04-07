@@ -1,13 +1,15 @@
-class CompoundSpark < Spark
+class Spark::CompoundSpark < Spark::Spark
   SPARK = { column_width: 3, column_gap: 1, column_base: 1, column_variant: 25, blank_row: 1,
             label_height: 12, label_point_size: 11, max_value: 100, graph_padding: 27 }
 
+  def initialize(data, options = {})
+    super(data, SPARK.merge(options))
+  end
+
   def render
-    image do |covert|
+    image do |convert|
       @data.each_with_index do |commits_by_month, i|
-        time = Time.parse(commits_by_month.month)
-        color = (time.month == 1) ? 'black' : nil
-        convert.draw draw_tick(commits_by_month.commits.to_i, i, color)
+        draw_commits_bar(convert, commits_by_month, i)
       end
     end
   end
@@ -17,40 +19,49 @@ class CompoundSpark < Spark
   def image
     new_image do |convert|
       convert.size "#{width}x#{height}"
-      convert << 'xc:white'
+      convert << 'xc:none'
       convert.stroke 'none'
       yield convert
     end
   end
 
-  def draw_tick(datum, i, max)
-    time = Time.parse(datum['month'])
-    value = datum['commits'].to_i
-    image do |convert|
-      convert.draw "stroke_width none stroke_opacity 0 fill_opacity 0"
-      commits_bar(commits_count, index, color)
-      if (time.year % 2 == 0 and time.month == 1)
-        convert.draw even_years_starting_month_rectangle
-        convert.draw even_years_starting_month_annotation
-      end
-    end
+  def get_commits_color(datum)
+    return 'black' if datum.month.month == 1
+    datum.commits.to_i.zero? ? 'LightGray' : 'DarkGray'
   end
 
-  def even_years_starting_month_rectangle
-    "fill light_gray rectangle #{x_axis_value}, #{y_axis_value - COLUMN_BASE} "\
-    "#{x_axis_value + @column_width - 1}, #{COLUMN_BASE}"
+  def draw_commits_bar(convert, datum, index)
+    convert.fill get_commits_color(datum)
+    convert.draw draw_rectangle_bar(datum.commits.to_i, index)
+    draw_bottom_year_text(convert, datum.month, index)
   end
 
-  def even_years_starting_month_annotation
-    "fill dark_gray font_family sans stroke none pointsize #{LABEL_POINT_SIZE} font_weight bold"\
-    "annotate 0, 0, x_axis_value + 4, y_axis_value + #{LABEL_HEIGHT}, time.year.to_s"
+  def draw_bottom_year_text(convert, time, index)
+    return convert unless time.year.even? && time.month == 1
+
+    draw_bottom_year_pointer(convert, index)
+    set_text_style(convert)
+    convert.draw "text #{x1_axis_value(index) + 4},#{y2_axis_value + SPARK[:label_height]} '#{time.year}'"
+  end
+
+  def set_text_style(convert)
+    convert.fill 'DarkGray'
+    convert.font 'sans'
+    convert.pointsize SPARK[:label_point_size]
+    convert.weight 'bold'
+  end
+
+  def draw_bottom_year_pointer(convert, index)
+    convert.fill 'LightGray'
+    convert.draw "rectangle #{x1_axis_value(index)}, #{y1_axis_value(0) + SPARK[:label_height]} \
+    #{x2_axis_value(index)}, #{y2_axis_value + SPARK[:column_base]}"
   end
 
   def scale(value)
     if value >= @max_value
-      COLUMN_VARIANT
+      SPARK[:column_variant]
     else
-      (value.to_f / @max_value.to_f * COLUMN_VARIANT).to_i
+      (value.to_f / @max_value.to_f * SPARK[:column_variant]).to_i
     end
   end
 end

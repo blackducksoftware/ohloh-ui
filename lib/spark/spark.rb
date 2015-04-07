@@ -1,28 +1,25 @@
 class Spark::Spark
   IMAGE_DIR = Rails.root.join('app/assets/images/')
-  SPARK = { column_width: 2, column_gap: 1, column_base: 1, column_variant: 21, blank_row: 1,
-            label_height: 9, max_value: 5000 }
 
   def initialize(data, options = {})
     @data = data
-    @column_width = options[:column_width] || SPARK[:column_width]
-    @column_gap = options[:column_gap] || SPARK[:column_gap]
+    @spark = options
     @max_value = options[:max_value] || max_commits_value
   end
 
   private
 
   def column_height
-    SPARK[:column_base] + SPARK[:column_variant]
+    @spark[:column_base] + @spark[:column_variant]
   end
 
   def height
-    column_height + SPARK[:blank_row] + SPARK[:label_height]
+    column_height + @spark[:blank_row] + @spark[:label_height]
   end
 
   def width
-    width = (@data.size * @column_width) + ((@data.size - 1) * @column_gap).to_i
-    width += SPARK[:graph_padding] if SPARK[:graph_padding].present?
+    width = (@data.size * @spark[:column_width]) + ((@data.size - 1) * @spark[:column_gap]).to_i
+    width += @spark[:graph_padding] if @spark[:graph_padding].present?
     width
   end
 
@@ -30,18 +27,25 @@ class Spark::Spark
     @data.map(&:commits).map(&:to_i).max
   end
 
-  def x_axis_value(index)
-    index * (@column_width + @column_gap)
+  def x1_axis_value(index)
+    index * (@spark[:column_width] + @spark[:column_gap])
   end
 
-  def y_axis_value
+  def y1_axis_value(commits_count)
+    dy = commits_count.zero? ? 0 : scale(commits_count)
+    column_height - @spark[:column_base] - dy
+  end
+
+  def x2_axis_value(index)
+    x1_axis_value(index) + @spark[:column_width] - 1
+  end
+
+  def y2_axis_value
     column_height
   end
 
-  def commits_bar(commits_count, index)
-    dy = commits_count.zero? ? scale(commits_count) : 0
-    "rectangle #{x_axis_value(index)}, #{y_axis_value - SPARK[:column_base] - dy} "\
-    "#{x_axis_value(index) + @column_width - 1}, #{column_height}"
+  def draw_rectangle_bar(commits_count, index)
+    "rectangle #{x1_axis_value(index)}, #{y1_axis_value(commits_count)} #{x2_axis_value(index)}, #{y2_axis_value}"
   end
 
   def new_image

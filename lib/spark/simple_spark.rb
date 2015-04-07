@@ -1,10 +1,9 @@
 class Spark::SimpleSpark < Spark::Spark
-  def merge_5_year_commit_image_with_spark_image
-    label = MiniMagick::Image.open(IMAGE_DIR + '5_year.png')
-    commits_graph.composite(label) do |c|
-      c.compose 'Over'
-      c.geometry "+#{width - 78}+#{height - 9}"
-    end
+  SPARK = { column_width: 2, column_gap: 1, column_base: 1, column_variant: 21, blank_row: 1,
+            label_height: 9, max_value: 5000 }
+
+  def initialize(data, options = {})
+    super(data, SPARK.merge(options))
   end
 
   def render
@@ -12,6 +11,14 @@ class Spark::SimpleSpark < Spark::Spark
   end
 
   private
+
+  def merge_5_year_commit_image_with_spark_image
+    label = MiniMagick::Image.open(IMAGE_DIR + '5_year.png')
+    commits_graph.composite(label) do |c|
+      c.compose 'Over'
+      c.geometry "+#{width - 78}+#{height - 9}"
+    end
+  end
 
   def commits_graph
     image do |convert|
@@ -21,7 +28,7 @@ class Spark::SimpleSpark < Spark::Spark
         commits_count = commits_by_month.commits.to_i
         color ||= commits_count.zero? ? 'LightGray' : 'DarkGray'
         convert.fill color
-        convert.draw commits_bar(commits_count, i)
+        convert.draw draw_rectangle_bar(commits_count, i)
       end
     end
   end
@@ -41,7 +48,7 @@ class Spark::SimpleSpark < Spark::Spark
     elsif value >= @max_value
       SPARK[:column_variant]
     else
-      (Math.log(value) / Math.log(max_value) * (SPARK[:column_variant] - 1) + 1).to_i
+      (Math.log(value) / Math.log(@max_value) * (SPARK[:column_variant] - 1) + 1).to_i
     end
   end
 end
