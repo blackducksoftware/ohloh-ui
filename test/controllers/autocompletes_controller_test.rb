@@ -84,8 +84,8 @@ describe 'AutocompletesController' do
       project = create(:project)
       name1 = create(:name, name: 'test1')
       name2 = create(:name, name: 'test2')
-      name_fact1 = create(:name_fact, name: name1, analysis: project.best_analysis)
-      name_fact2 = create(:name_fact, name: name2, analysis: project.best_analysis)
+      create(:name_fact, name: name1, analysis: project.best_analysis)
+      create(:name_fact, name: name2, analysis: project.best_analysis)
 
       get :contributions, term: 'test', project: "#{project.name}"
 

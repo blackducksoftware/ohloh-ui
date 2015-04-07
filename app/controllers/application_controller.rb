@@ -133,7 +133,7 @@ class ApplicationController < ActionController::Base
     access_denied
   end
 
-  def is_bot?
+  def bot?
     return true if request.env['HTTP_USER_AGENT'] =~ BOT_REGEX
     false
   end

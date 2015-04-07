@@ -17,7 +17,7 @@ module ContributionsHelper
     when 0..11
       "#{months}m"
     else
-      "#{(months/12).to_i}y #{months%12}m"
+      "#{(months / 12).to_i}y #{months % 12}m"
     end
   end
 end

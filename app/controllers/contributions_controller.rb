@@ -9,13 +9,13 @@ class ContributionsController < ApplicationController
   before_action :set_project
   before_action :set_contribution, except: [:index, :summary, :near]
   before_action :set_contributor, only: [:commits_spark, :commits_compound_spark]
-  before_action :send_sample_image_if_bot, if: :is_bot?, only: [:commits_spark, :commits_compound_spark]
+  before_action :send_sample_image_if_bot, if: :bot?, only: [:commits_spark, :commits_compound_spark]
   before_action :project_context, only: [:index, :show, :summary]
 
   def index
     @contributions = @project.contributions.sort(params[:sort])
-                      .filter_by(params[:query]).includes(person: :account, contributor_fact: :primary_language)
-                      .references(:all).paginate(per_page: 20, page: params[:page] || 1)
+                     .filter_by(params[:query]).includes(person: :account, contributor_fact: :primary_language)
+                     .references(:all).paginate(per_page: 20, page: params[:page] || 1)
   end
 
   def show
@@ -48,7 +48,7 @@ class ContributionsController < ApplicationController
 
   def set_contributor
     @contributor = ContributorFact.where(id: @contribution.name_fact_id, analysis_id: @project.best_analysis_id)
-                    .eager_load(:name).first
+                   .eager_load(:name).first
   end
 
   def send_sample_image_if_bot

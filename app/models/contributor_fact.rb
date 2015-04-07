@@ -4,7 +4,7 @@ class ContributorFact < NameFact
 
   def name_language_facts
     NameLanguageFact.where(name_id: name_id, analysis_id: analysis_id)
-                    .order(total_months: :desc, total_commits: :desc, total_activity_lines: :desc)
+      .order(total_months: :desc, total_commits: :desc, total_activity_lines: :desc)
   end
 
   def person
