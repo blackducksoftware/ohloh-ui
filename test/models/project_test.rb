@@ -176,4 +176,24 @@ class ProjectTest < ActiveSupport::TestCase
       project.code_published_in_code_search?.must_equal true
     end
   end
+
+  describe 'newest_contributions' do
+    it 'should return the latest contributions to a project' do
+      person = create(:person)
+      contribution = person.contributions.first
+      project = contribution.project
+
+      project.newest_contributions.must_equal [contribution]
+    end
+  end
+
+  describe 'top_contributions' do
+    it 'should return the top contributions to a project' do
+      person = create(:person)
+      contribution = person.contributions.first
+      project = contribution.project
+
+      project.top_contributions.must_equal [contribution]
+    end
+  end
 end
