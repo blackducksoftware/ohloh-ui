@@ -24,4 +24,16 @@ class ContributorFactTest < ActiveSupport::TestCase
       retval.id.must_equal cf.id
     end
   end
+
+  describe '#name_language_facts' do
+    it 'must return langauge facts' do
+      analysis = create(:analysis)
+      name = create(:name)
+      contributor_fact = create(:contributor_fact, analysis_id: analysis.id, name_id: name.id)
+      lang = create(:language)
+      fact = create(:vita_language_fact, language: lang, analysis_id: analysis.id, name_id: name.id)
+
+      contributor_fact.name_language_facts.must_equal [fact]
+    end
+  end
 end
