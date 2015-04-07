@@ -1,0 +1,9 @@
+en:
+  tags:
+    list:
+      page_title: "Tags - Open Hub"
+      tags: "Tags"
+      help1: "Listed below are the most popular project tags. Select a tag to browse associated project and drill deeper into the tag cloud."
+      help2: "Select a tag to browse associated projects and drill deeper into the tag cloud."
+      input_label: "Go to specific tag:"
+      input_hint: "Start typing in the field above. Open Hub will suggest popular tag names that match what you enter."

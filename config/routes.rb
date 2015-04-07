@@ -31,6 +31,8 @@ Rails.application.routes.draw do
     resources :edits, only: [:index]
   end
 
+  resources :tags, only: [:index]
+
   resources :accounts do
     resources :api_keys, constraints: { format: :html }, except: :show
     resources :projects, only: [:index]
@@ -102,6 +104,7 @@ Rails.application.routes.draw do
       get :account
       get :project
       get :licenses
+      get :tags
     end
   end
 
