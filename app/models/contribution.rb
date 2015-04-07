@@ -78,7 +78,7 @@ class Contribution < ActiveRecord::Base
     private
 
     def find_alias_from_name_id(contribution_id, project)
-      _, name_id = generate_project_id_and_name_id_from_id(contribution_id.to_i)
+      _, name_id = generate_project_id_and_name_id_from_id(contribution_id)
       project.aliases.where(commit_name_id: name_id).first
     end
 

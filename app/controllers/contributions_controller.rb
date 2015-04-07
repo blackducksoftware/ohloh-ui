@@ -1,3 +1,5 @@
+require 'spark/simple_spark'
+
 class ContributionsController < ApplicationController
   COMMITS_SPARK_IMAGE = 'app/assets/images/bot_stuff/contribution_commits_spark.png'
   COMMITS_COMPOUND_SPARK_IMAGE = 'app/assets/images/bot_stuff/position_commits_compound_spark.png'
@@ -29,13 +31,13 @@ class ContributionsController < ApplicationController
   end
 
   def commits_spark
-    spark_image = SimpleSpark.new(@contributor.monthly_commits, max_value: 50).render
-    send_data spark_image, type: 'image/png', filename: 'commits.png', disposition: 'inline'
+    spark_image = Spark::SimpleSpark.new(@contributor.monthly_commits, max_value: 50).render
+    send_file spark_image.path, type: 'image/png', filename: 'commits.png', disposition: 'inline'
   end
 
   def commits_compound_spark
-    spark_image = CompoundSpark.new(@contributor.monthly_commits(11), max_value: 50).render
-    send_data spark_image, type: 'image/png', filename: 'commits.png', disposition: 'inline'
+    spark_image = Spark::CompoundSpark.new(@contributor.monthly_commits(11), max_value: 50).render
+    send_file spark_image.path, type: 'image/png', filename: 'commits.png', disposition: 'inline'
   end
 
   def near
@@ -62,8 +64,10 @@ class ContributionsController < ApplicationController
   end
 
   def set_contribution
-    @contribution = @project.contributions.where(id: params[:id]).first
-    @contribution ||= Contribution.find_indirectly(contribution_id: params[:id], project: @project)
+    @contribution = @project.contributions.where(id: params[:id].to_i).first
+    # It's possible that the contributor we are looking for has been aliased to a new name.
+    # Redirect to the new name if we can find it.
+    @contribution ||= Contribution.find_indirectly(contribution_id: params[:id].to_i, project: @project)
     fail ParamRecordNotFound unless @contribution
   end
 
