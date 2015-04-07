@@ -19,10 +19,6 @@ module ProjectSearchables
 
     private
 
-    def tag_list
-      tags.pluck(:name).uniq.compact.join(' ')
-    end
-
     def collect_tags_licenses_and_language
       tag_list + main_language.to_s +
         licenses.pluck(:name).uniq.compact.join(' ')

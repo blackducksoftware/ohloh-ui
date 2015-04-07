@@ -16,13 +16,13 @@ module ActsAsTaggable
     end
 
     def tag_list
-      tags.pluck(&:name).join(' ')
+      tags.pluck(:name).uniq.compact.join(' ')
     end
 
     private
 
     def parse_tag_list(list)
-      list.gsub!(/\"/, '').split(/\s/)
+      list.gsub(/\"/, '').split(/\s/).reject(&:blank?)
     end
   end
 end
