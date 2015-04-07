@@ -10,9 +10,9 @@
   = committer_name
 
 %h2.pull-left.contributor_name.margin_top_20
-  = link_to t('.contributors'), summary_project_contributors_path(@project)
-  = succeed ':' do
-    = committer_name
+  = succeed ' : ' do
+    = link_to t('.contributors'), summary_project_contributors_path(@project)
+  = committer_name
 
 = project_analysis_timestamp(@project)
 

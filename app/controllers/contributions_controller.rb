@@ -22,7 +22,7 @@ class ContributionsController < ApplicationController
     redirect_to project_contributor_path(@project, @contribution) && return if @contribution.id != params[:id].to_i
     account = @contribution.person.account
     if account
-      @recent_kudos = account.kudos.limit(3)
+      @recent_kudos = account.kudos.order(created_at: :desc).limit(3)
     else
       @recent_kudos = @contribution.recent_kudos
     end
