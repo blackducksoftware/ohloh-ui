@@ -10,7 +10,7 @@
   = committer_name
 
 %h2.pull-left.contributor_name.margin_top_20
-  = link_to t('.contributos'), summary_project_contributors_path(@project)
+  = link_to t('.contributors'), summary_project_contributors_path(@project)
   = succeed ':' do
     = committer_name
 
@@ -40,9 +40,11 @@
   = render partial: 'contributions/show/kudo_button', locals: { contribution: @contribution } if fact.present?
 .clearfix
 
-= render partial: 'contributions/show/unclaimed_position', locals: { contribution: @contribution }
+.col-md-12
+  = render partial: 'contributions/show/unclaimed_position', locals: { contribution: @contribution }
 
 .col-md-12
   = render partial: 'commits_timeline', locals: { contribution: @contribution }
+
 .col-md-12
   = render partial: 'contributions/show/languages', locals: { contribution: @contribution, name_fact: fact }

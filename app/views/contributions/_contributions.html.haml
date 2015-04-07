@@ -3,11 +3,12 @@
     %tr{ id: 'dingus-row' }
       %td{ colspan: 10 }
         - if search_bar
-          = render partial: 'shared/search_dingus', locals: { collection: @contributions, sort_context: :contributions }
+          = render partial: 'shared/search_dingus',
+          locals: { collection: @contributions, sort_context: :contributions, no_match_found_type: :none }
         - else
           &nbsp;
     %tr
-      %th.center= t('.name')
+      %th.col-md-3.center= t('.name')
       %th{ width: '45px' }= t('.kudos')
       %th.center{ width: '80px' }= t('.12_month_commits')
       %th{ width: '80px' }= t('.all_commits')
@@ -21,7 +22,6 @@
         person_name = contribution.person.person_name
         fact = contribution.contributor_fact
         contributor_path = project_contributor_path(@project, contribution)
-        spark_path = commits_spark_project_contribution_url(project_id: @project.to_param, id: fact.name_id)
       %tr
         %td
           = link_to contributor_path, class: 'pull-left' do
@@ -32,7 +32,7 @@
           %span.small.contribution_title.pull-left
             - if contribution.position.title.present?
               = t('.position_title', title: contribution.position.title)
-            - elsif contribution.position.active?
+            - elsif !contribution.position.active?
               = t('.inactive')
             - elsif @project.managers.include?(contribution.person.account)
               = t('.manager')
@@ -44,7 +44,8 @@
         %td
           = fact.commits
         %td
-          = image_tag spark_path, width: 179, height: 32, align: 'left' if fact.name_id
+          = image_tag commits_spark_project_contribution_url(project_id: @project.to_param, id: fact.name_id),
+          width: 179, height: 32, align: 'left' if fact.name_id
         %td
           = fact.primary_language.nice_name if fact.primary_language
         %td
@@ -53,3 +54,6 @@
         %td
           - if fact.last_checkin
             %abbr.date{ title: fact.last_checkin}= t('.ago', duration: time_ago_in_words(fact.last_checkin))
+
+- if contributions.empty?
+  = render partial: 'shared/alert', locals: { message: t('shared.search_dingus.no_match') }
