@@ -9,7 +9,7 @@ class CompareProjectUrlCsvDecorator
   def year_over_year_commits_url
     require_best_analysis do |a|
       f = a.factoids.select { |factoid| f.is_a?(FactoidActivity) || factoid.is_a?(FactoidTeamSizeZero) }.first
-      f ? h.project_factoids_url(@project, host: @host, anchor: f.class.name) : t('compare.stable')
+      h.project_factoids_url(@project, host: @host, anchor: (f ? f.class.name : 'FactoidActivityStable'))
     end
   end
 
