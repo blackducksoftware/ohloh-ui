@@ -20,8 +20,12 @@ class ContributionsController < ApplicationController
 
   def show
     redirect_to project_contributor_path(@project, @contribution) && return if @contribution.id != params[:id].to_i
-    account_or_contribution = @contribution.person.account || @contribution
-    @recent_kudos = account_or_contribution.kudos.limit(3)
+    account = @contribution.person.account
+    if account
+      @recent_kudos = account.kudos.limit(3)
+    else
+      @recent_kudos = @contribution.recent_kudos
+    end
   end
 
   def summary

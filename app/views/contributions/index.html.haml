@@ -14,6 +14,6 @@
 - if @project.best_analysis.present?
   = render partial: 'contributions', locals: { contributions: @contributions, search_bar: true }
 - else
-  = render partial: 'projects/show/no_analysis_summary', locals: { analysis: analysis }
+  = render partial: 'projects/show/no_analysis_summary', locals: { analysis: @project.best_analysis }
 
 = will_paginate @contributions
