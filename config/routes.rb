@@ -102,6 +102,7 @@ Rails.application.routes.draw do
       get :account
       get :project
       get :licenses
+      get :contributions
     end
   end
 
