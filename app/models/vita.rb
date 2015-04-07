@@ -3,6 +3,7 @@ class Vita < ActiveRecord::Base
   belongs_to :account
   has_one :vita_fact
   has_many :vita_language_facts
+  has_one :name_fact
 
   def vita_fact
     VitaFact.where(vita_id: id).first || NilVitaFact.new

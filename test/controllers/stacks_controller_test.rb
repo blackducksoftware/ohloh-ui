@@ -281,4 +281,35 @@ class StacksControllerTest < ActionController::TestCase
     StackIgnore.where(stack_id: stack.id, project_id: project1.id).count.must_equal 1
     StackIgnore.where(stack_id: stack.id, project_id: project2.id).count.must_equal 1
   end
+
+  # near
+  it 'near should display for unlogged in users' do
+    login_as nil
+    project = create(:project)
+    account = create(:account, latitude: 30.26, longitude: -97.74)
+    stack = create(:stack, account: account)
+    create(:stack_entry, project: project, stack: stack)
+    get :near, project_id: project.to_param, lat: 25, lng: 12, zoom: 2
+    must_respond_with :success
+    resp = JSON.parse(response.body)
+    resp['accounts'].length.must_equal 1
+    resp['accounts'][0]['id'].must_equal account.id
+    resp['accounts'][0]['latitude'].must_equal account.latitude.to_s
+    resp['accounts'][0]['longitude'].must_equal account.longitude.to_s
+  end
+
+  it 'near should support zoomed in values' do
+    login_as nil
+    project = create(:project)
+    account = create(:account, latitude: 30.26, longitude: -97.74)
+    stack = create(:stack, account: account)
+    create(:stack_entry, project: project, stack: stack)
+    get :near, project_id: project.to_param, lat: 25, lng: 12, zoom: 4
+    must_respond_with :success
+    resp = JSON.parse(response.body)
+    resp['accounts'].length.must_equal 1
+    resp['accounts'][0]['id'].must_equal account.id
+    resp['accounts'][0]['latitude'].must_equal account.latitude.to_s
+    resp['accounts'][0]['longitude'].must_equal account.longitude.to_s
+  end
 end

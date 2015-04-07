@@ -467,4 +467,12 @@ class ProjectsControllerTest < ActionController::TestCase
     get :settings, id: project.id
     must_respond_with :success
   end
+
+  # map
+  it 'map should display for unlogged in users' do
+    login_as nil
+    get :map, id: create(:project).to_param
+    must_respond_with :success
+    must_select '#map', 1
+  end
 end
