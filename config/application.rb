@@ -15,6 +15,8 @@ module OhlohUi
     config.active_record.schema_format = :sql
     config.active_record.raise_in_transactional_callbacks = true
 
+    config.google_maps_api_key = 'AIzaSyBGY091UPV-hajnLzUVSyp9pUGlWsIibDM'
+
     config.autoload_paths << "#{Rails.root}/lib"
   end
 end

@@ -64,7 +64,7 @@ class EnlistmentsController < SettingsController
   end
 
   def repository_params
-    params.require(:repository).permit!
+    params.require(:repository).permit(:url, :module_name, :branch_name, :username, :password, :bypass_url_validation)
   end
 
   def parse_sort_term
@@ -83,8 +83,13 @@ class EnlistmentsController < SettingsController
     @enlistment.editor_account = current_user
   end
 
+  def safe_constantize(repo)
+    repo.constantize if %w(svnrepository svnsyncrepository repository hgrepository
+                           gitrepository cvsrepository bzrrepositoryr).include?(repo.downcase)
+  end
+
   def initialize_repository
-    @repository_class = params[:repository][:type].constantize
+    @repository_class = safe_constantize(params[:repository][:type])
     @repository = @repository_class.get_compatible_class(params[:repository][:url]).new(repository_params)
   end
 
