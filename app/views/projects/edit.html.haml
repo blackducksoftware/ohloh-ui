@@ -1,10 +1,5 @@
 - content_for(:html_title) { t('.page_title') }
 - page_context[:select_top_menu_nav] = 'select_projects'
-- content_for :javascript do
-  - js1 = "var a = UrlAvailable;a.object_id='#{ @project.id }';"
-  - js2 = "a.ajax_path='#{projects_path}/resolve_url_name';"
-  - js3 = "a.base_url='#{projects_url}/';"
-  = javascript_tag "$(document).ready(function(){#{js1}#{js2}#{js3}});"
 
 .project_content_title
   %h2.float_left
@@ -32,9 +27,12 @@
           .controls
             .input-prepend
               %span.add-on http://www.openhub.net/p/
-              = f.text_field :url_name, class: 'url_available', data_id: @project.id, autocomplete: 'off',
-                                        style: 'width:514px;'
+              = f.text_field :url_name, class: 'check-availability', autocomplete: 'off',
+                                        style: 'width:514px;',
+                                        'data-ajax-path' => project_check_availabilities_path,
+                                        'data-preview-base-url' => projects_url
               - error_tag @project, :url_name, class: 'error url_name'
+            = render 'shared/availability_preview'
         .clearfix
 
         .control-group
