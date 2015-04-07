@@ -1,10 +1,12 @@
-class Spark
+class Spark::Spark
   IMAGE_DIR = Rails.root.join('app/assets/images/')
+  SPARK = { column_width: 2, column_gap: 1, column_base: 1, column_variant: 21, blank_row: 1,
+            label_height: 9, max_value: 5000 }
 
   def initialize(data, options = {})
     @data = data
-    @column_width = options[:column_width] || COLUMN_WIDTH
-    @column_gap = options[:column_gap] || COLUMN_GAP
+    @column_width = options[:column_width] || SPARK[:column_width]
+    @column_gap = options[:column_gap] || SPARK[:column_gap]
     @max_value = options[:max_value] || max_commits_value
   end
 
@@ -19,8 +21,9 @@ class Spark
   end
 
   def width
-    width = (@data.size * @column_width) + ((@data.size - 1) * @column_gap)
-    width += SPARK[:graph_padding] if defined?(SPARK[:graph_padding])
+    width = (@data.size * @column_width) + ((@data.size - 1) * @column_gap).to_i
+    width += SPARK[:graph_padding] if SPARK[:graph_padding].present?
+    width
   end
 
   def max_commits_value
@@ -35,17 +38,10 @@ class Spark
     column_height
   end
 
-  def commits_bar(commits_count, index, color)
-    if commits_count == 0
-      color ||= 'light_gray'
-      "fill #{color} rectangle #{x_axis_value}, #{y_axis_value - COLUMN_BASE} "\
-      "#{x_axis_value + @column_width - 1}, y_axis_value"
-    else
-      color ||= 'dark_gray'
-      dy = scale(commits_count)
-      "fill #{color} rectangle #{x_axis_value}, #{y_axis_value - COLUMN_BASE - dy} "\
-      "#{x_axis_value + @column_width - 1}, y_axis_value"
-    end
+  def commits_bar(commits_count, index)
+    dy = commits_count.zero? ? scale(commits_count) : 0
+    "rectangle #{x_axis_value(index)}, #{y_axis_value - SPARK[:column_base] - dy} "\
+    "#{x_axis_value(index) + @column_width - 1}, #{column_height}"
   end
 
   def new_image

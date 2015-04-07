@@ -1,24 +1,27 @@
-class SimpleSpark < Spark
-  SPARK = { column_width: 2, column_gap: 1, column_base: 1, column_variant: 21, blank_row: 1,
-            label_height: 9, max_value: 5000}
-
-  def render
+class Spark::SimpleSpark < Spark::Spark
+  def merge_5_year_commit_image_with_spark_image
     label = MiniMagick::Image.open(IMAGE_DIR + '5_year.png')
-
     commits_graph.composite(label) do |c|
       c.compose 'Over'
-      c.geometry '+78+9'
+      c.geometry "+#{width - 78}+#{height - 9}"
     end
+  end
+
+  def render
+    merge_5_year_commit_image_with_spark_image
   end
 
   private
 
   def commits_graph
-    image do |covert|
+    image do |convert|
       @data.each_with_index do |commits_by_month, i|
-        time = Time.parse(commits_by_month.month)
+        time = commits_by_month.month
         color = (time.month == 1) ? 'black' : nil
-        convert.draw commits_bar(commits_by_month.commits.to_i, i, color)
+        commits_count = commits_by_month.commits.to_i
+        color ||= commits_count.zero? ? 'LightGray' : 'DarkGray'
+        convert.fill color
+        convert.draw commits_bar(commits_count, i)
       end
     end
   end
@@ -36,9 +39,9 @@ class SimpleSpark < Spark
     if [0, 1].include?(value)
       value
     elsif value >= @max_value
-      SIMPLE_SPARK[:column_variant]
+      SPARK[:column_variant]
     else
-      (Math.log(value) / Math.log(max_value) * (SIMPLE_SPARK[:column_variant] - 1) + 1).to_i
+      (Math.log(value) / Math.log(max_value) * (SPARK[:column_variant] - 1) + 1).to_i
     end
   end
 end
