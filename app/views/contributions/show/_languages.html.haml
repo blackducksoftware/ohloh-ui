@@ -15,7 +15,7 @@
 
     - facts.each do |nlf|
       %tr
-        %td{ style: "background-color: ##{language_color(nlf.language.name)}"}
+        %td{ style: "background-color: ##{language_color(nlf.language.name)}" }
           &nbsp;
         %td
           = link_to nlf.language.nice_name, language_path(nlf.language)
@@ -31,14 +31,17 @@
         %td= t('.all_languages')
         %td.center= months_or_years(name_fact.man_months)
         - if defined?(contribution) && contribution
-          %td.center= link_to number_with_delimiter(name_fact.commits), project_contribution_commits_path(contribution.project, contribution)
+          %td.center
+            = link_to number_with_delimiter(name_fact.commits),
+            project_contribution_commits_path(contribution.project, contribution)
         - else
           %td.center= number_with_delimiter(name_fact.commits)
-
-        - total_activity_lines = facts.inject(0) { |total, nlf| total += nlf.total_activity_lines }
-        %td.center= number_with_delimiter(total_activity_lines)
+        %td.center= number_with_delimiter(facts.map(&:total_activity_lines).sum)
         %td.center
-          = name_fact.comment_ratio ? number_with_precision(name_fact.comment_ratio.to_f * 100.0, precision: 1).to_s + "%" : "-"
+          - if name_fact.comment_ratio
+            = number_with_precision(name_fact.comment_ratio.to_f * 100.0, precision: 1).to_s + '%'
+          - else
+            '-'
 
 - else
   .row

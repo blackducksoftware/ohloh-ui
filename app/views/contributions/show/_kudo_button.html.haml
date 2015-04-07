@@ -1,6 +1,5 @@
 -# NOTE: Replaces _kudo_button in kudos helper
 :ruby
-  target_account = contribution.person.account
   name = contribution.person.name.try(:name)
   fact = contribution.contributor_fact
   kudo = Kudo.where(sender_id: current_user.id, project_id: @project.id, name_id: fact.name_id).first

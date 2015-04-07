@@ -38,7 +38,7 @@
               = t('.manager')
         %td
           - rank = contribution.person.kudo_rank || 1
-          = image_tag "icons/sm_laurel_#{rank}.png" , alt: "KudoRank #{rank}"
+          = image_tag "icons/sm_laurel_#{rank}.png", alt: "KudoRank #{rank}"
         %td.center
           = fact.twelve_month_commits
         %td
@@ -53,7 +53,7 @@
             %abbr.date{ title: fact.first_checkin }= t('.ago', duration: time_ago_in_words(fact.first_checkin))
         %td
           - if fact.last_checkin
-            %abbr.date{ title: fact.last_checkin}= t('.ago', duration: time_ago_in_words(fact.last_checkin))
+            %abbr.date{ title: fact.last_checkin }= t('.ago', duration: time_ago_in_words(fact.last_checkin))
 
 - if contributions.empty?
   = render partial: 'shared/alert', locals: { message: t('shared.search_dingus.no_match') }
