@@ -1,5 +1,3 @@
-require 'spark/simple_spark'
-
 class ContributionsController < ApplicationController
   COMMITS_SPARK_IMAGE = 'app/assets/images/bot_stuff/contribution_commits_spark.png'
   COMMITS_COMPOUND_SPARK_IMAGE = 'app/assets/images/bot_stuff/position_commits_compound_spark.png'
@@ -7,15 +5,18 @@ class ContributionsController < ApplicationController
   helper :kudos, :projects
 
   before_action :set_project
-  before_action :set_contribution, except: [:index, :summary, :near]
+  before_action :set_contribution, except: [:commits_spark, :commits_compound_spark, :index, :summary, :near]
   before_action :set_contributor, only: [:commits_spark, :commits_compound_spark]
   before_action :send_sample_image_if_bot, if: :bot?, only: [:commits_spark, :commits_compound_spark]
   before_action :project_context, only: [:index, :show, :summary]
 
   def index
-    @contributions = @project.contributions.sort(params[:sort])
-                     .filter_by(params[:query]).includes(person: :account, contributor_fact: :primary_language)
-                     .references(:all).paginate(per_page: 20, page: params[:page] || 1)
+    @contributions = @project.contributions
+                     .sort(params[:sort])
+                     .filter_by(params[:query])
+                     .includes(person: :account, contributor_fact: :primary_language)
+                     .references(:all)
+                     .paginate(per_page: 20, page: params[:page])
   end
 
   def show
@@ -47,7 +48,7 @@ class ContributionsController < ApplicationController
   private
 
   def set_contributor
-    @contributor = ContributorFact.where(id: @contribution.name_fact_id, analysis_id: @project.best_analysis_id)
+    @contributor = ContributorFact.where(names: { id: params[:id] }).where(analysis_id: @project.best_analysis_id)
                    .eager_load(:name).first
   end
 
@@ -57,7 +58,7 @@ class ContributionsController < ApplicationController
   end
 
   def set_contribution
-    @contribution = @project.contributions.where(id: params[:id].to_i).first
+    @contribution = @project.contributions.find_by(id: params[:id].to_i)
     # It's possible that the contributor we are looking for has been aliased to a new name.
     # Redirect to the new name if we can find it.
     @contribution ||= Contribution.find_indirectly(contribution_id: params[:id].to_i, project: @project)

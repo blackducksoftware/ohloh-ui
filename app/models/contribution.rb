@@ -79,19 +79,19 @@ class Contribution < ActiveRecord::Base
 
     def find_alias_from_name_id(contribution_id, project)
       _, name_id = generate_project_id_and_name_id_from_id(contribution_id)
-      project.aliases.where(commit_name_id: name_id).first
+      project.aliases.find_by(commit_name_id: name_id)
     end
 
     def find_from_generated_id(project, aka)
       generated_id = generate_id_from_project_id_and_name_id(project.id, aka.preferred_name_id)
-      project.contributions.where(id: generated_id).first
+      project.contributions.find_by(id: generated_id)
     end
 
     def find_from_positions(project, aka)
-      position = project.positions.where(name_id: aka.preferred_name_id).first
+      position = project.positions.find_by(name_id: aka.preferred_name_id)
       return unless position
       contribution_id = generate_id_from_project_id_and_account_id(project.id, position.account_id)
-      project.contributions.where(id: contribution_id).first
+      project.contributions.find_by(id: contribution_id)
     end
   end
 end
