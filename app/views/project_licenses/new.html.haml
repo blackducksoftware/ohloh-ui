@@ -1,6 +1,7 @@
 :ruby
   content_for(:html_title) { t('.page_title', name: @project.name) }
   page_context[:select_top_menu_nav] = 'select_projects'
+  page_context[:select_footer_nav] = nil
   content_for :javascript do
     js = "$('#edit_project_license').submit(function(e) { \
              if($('.chzn-container-single a.chzn-single').text().trim() == '#{t('.select_placeholder')}') { \
@@ -11,18 +12,19 @@
     javascript_tag(js)
   end
 
+- content_for :header_title do
+  .project_content_title
+    %h2.float_left
+      = link_to t(:settings), settings_project_path(@project)
+      &nbsp;:&nbsp;
+      = link_to t('.licenses'), project_licenses_path(@project)
+      &nbsp;:&nbsp;#{t(:new)}
+    -# render_project_analysis_timestamp
+
 #error{ style: 'display: none;' }
   .alert.alert-info
     %i.icon-exclamation-sign
     #{t('.at_least_one')}
-
-.project_content_title
-  %h2.float_left
-    = link_to t(:settings), settings_project_path(@project)
-    &nbsp;:&nbsp;
-    = link_to t('.licenses'), project_licenses_path(@project)
-    &nbsp;:&nbsp;#{t(:new)}
-  -# render_project_analysis_timestamp
 
 .well.col-md-7.col-md-offset-2
   = form_for ProjectLicense.new, url: project_licenses_path(@project),

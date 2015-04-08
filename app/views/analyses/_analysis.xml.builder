@@ -9,7 +9,7 @@ xml.analysis do
   xml.twelve_month_contributor_count analysis.headcount
   xml.total_contributor_count analysis.committers_all_time
   if tms = analysis.twelve_month_summary
-    xml.twelve_month_commit_count tms.commit_count
+    xml.twelve_month_commit_count tms.commits_count
   end
   xml.total_commit_count analysis.commit_count
   xml.total_code_lines analysis.code_total

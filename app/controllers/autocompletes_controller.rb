@@ -10,7 +10,7 @@ class AutocompletesController < ApplicationController
   # NOTE: Replaces projects#autocomplete.
   def project
     @projects = Project.not_deleted
-                .where('lower(name) like ?', "%#{ params[:term] }%")
+                .where('lower(name) like ?', "%#{ params[:term].downcase }%")
                 .where.not(id: params[:exclude_project_id].to_i)
                 .order('length(name)')
                 .limit(25)

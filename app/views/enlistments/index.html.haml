@@ -1,0 +1,55 @@
+- content_for(:html_title) { t('.title', name: @project.name) }
+- page_context[:select_footer_nav] = nil
+
+.project_content_title
+  %h2.pull-left
+    = link_to t('settings'), settings_project_path(@project)
+    = t('.code_locations')
+  = project_analysis_timestamp(@project)
+.clearfix
+
+- if @first_enlistment
+  .alert.alert-info.alert-block
+    %h4.alert-heading.nomargin= t('.alert_info_heading', name: @project.name)
+    %p= t('.alert_info_description')
+
+- if @failed_job
+  .alert.alert-warning.alert-block
+    %h4.alert-heading.nomargin= t('.alert_warn_heading')
+    %p= t('.alert_warn_description1')
+    = t('.alert_warn_description2')
+    = link_to t('.help_forum'), forum_url(10)
+    \.
+    %p
+    = t('.alert_warn_description3_html')
+
+- if @project.enlistments.any?
+  %table.table.table-striped
+    %thead
+      %tr{ id: 'dingus-row' }
+        %td{ colspan: '7' }
+          = render partial: 'shared/search_dingus', locals: { collection: @enlistments,
+            sort_context: 'enlistments', no_match_found_type: :flash }
+      %tr
+        %th= t('.repository_url')
+        %th= t('.scm_type')
+        %th= t('.update_status')
+        %th= t('.ignored_files')
+        %th= t('.actions')
+    %tbody
+      = render partial: 'enlistment', collection: @enlistments
+- else
+  = render '/enlistments/no_enlistment'
+
+= will_paginate @enlistments
+
+- if @enlistments.empty? && params[:query].present?
+  = render partial: 'shared/alert', locals: { message: t('.no_match') }
+
+- unless @project.enlistments.empty?
+  - if logged_in? && @project.edit_authorized?
+    = link_to t('.new_code_location'), new_project_enlistment_path(@project), class: 'btn btn-primary'
+  - else
+    = disabled_button t('.new_code_location'), class: 'btn-primary'
+
+= render partial: 'about_code_locations'

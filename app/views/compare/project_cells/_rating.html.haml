@@ -1,0 +1,5 @@
+.clearfix
+  != rating_stars("rating_#{project.id}", project.rating_average.to_f || 0, true)
+  = number_with_precision(project.rating_average || 0, precision: 1)
+  /5.0
+%p.small.soft= t('compare.based_on', what: pluralize(project.ratings.count, t('compare.user_rating')))

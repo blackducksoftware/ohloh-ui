@@ -61,31 +61,5 @@ ProjectForm = {
         .append( "<a>" + item.nice_name + "</a>" )
         .appendTo( ul );
     };
-  },
-
-  url_name_autocomplete: function() {
-    var value = $.trim($(ProjectForm.url_name_input).val());
-    if (value === '') {
-      return;
-    }
-    label.children('span.value').text(value);
-    label.show();
-    if (value.match(ProjectForm.valid_url_name_re) == null) {
-      label.addClass('invalid').removeClass('is_available not_available');
-      return;
-    }
-    $.ajax({
-      url: '/p/resolve_url_name',
-      data: {url_name:value},
-      dataType: 'json',
-      success: function (data, textStatus) {
-      var label = $(ProjectForm.preview_url_name_label);
-      if (data.id == null || data.id == ProjectForm.project_id) {
-          label.removeClass('invalid not_available').addClass('is_available');
-        } else {
-          label.removeClass('invalid is_available').addClass('not_available');
-        }
-      }
-    });
   }
 }

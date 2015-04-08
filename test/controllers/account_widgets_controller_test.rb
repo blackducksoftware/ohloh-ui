@@ -31,6 +31,7 @@ describe 'AccountWidgetsController' do
     end
 
     it 'should render image for gif format' do
+      account = create(:account, name: "apostro'phic")
       get :detailed, account_id: account.id, format: :gif
 
       must_respond_with :ok

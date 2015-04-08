@@ -33,3 +33,5 @@
             = t('.i_use')
 .clearfix
 .mezzo.margin_top_15
+= yield :header_title if content_for?(:header_title)
+= render partial: 'layouts/partials/alert'

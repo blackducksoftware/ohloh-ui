@@ -1,29 +1,33 @@
-- content_for(:html_title) { t('.page_title', name: @project.name) }
-- page_context[:select_top_menu_nav] = 'select_projects'
+:ruby
+  content_for(:html_title) { t('.page_title', name: @project.name) }
+  page_context[:select_top_menu_nav] = 'select_projects'
+  page_context[:select_footer_nav] = nil
 
-.project_content_title
-  %h2.pull-left
-    = link_to t(:settings), settings_project_path(@project)
-    &nbsp;:&nbsp;#{t('.licenses')}
-  -# render_project_analysis_timestamp
+- content_for :header_title do
+  .project_content_title
+    %h2.pull-left
+      = link_to t(:settings), settings_project_path(@project)
+      &nbsp;:&nbsp;#{t('.licenses')}
+    -# render_project_analysis_timestamp
+
+- flash.now[:notice] = t('.no_licenses_for_project') if @project_licenses.empty?
+
 .clearfix
 
-- flash[:notice] = t('.no_licenses_for_project') if @licenses.empty?
-
-- if @licenses.any?
+- if @project_licenses.any?
   .declared_licenses
     .col-md-7.well.col-md-offset-2
       %h4= t('.declared_licenses')
       %table{ style: 'width: 100%;' }
         %tbody
-          - @licenses.each do |license|
+          - @project_licenses.each do |project_license|
             %tr.license
-              %td.col-md-8.padding_one_top= license.nice_name
+              %td.col-md-8.padding_one_top= project_license.license.nice_name
               %td.col-md-4.padding_one_top.last
                 .pull-right
                   - if @project.edit_authorized?
-                    %a.btn.btn-mini.btn-danger{ href: project_license_path(@project, license),
-                                                method: :delete, confirm: t('.remove_confirm') }
+                    %a.btn.btn-mini.btn-danger{ href: project_license_path(@project, project_license),
+                                                data: { method: :delete, confirm: t('.remove_confirm') } }
                       %i.icon-trash= t '.remove'
                   - else
                     = disabled_button bootstrap_icon('icon-trash', t('.remove')), class: 'btn-mini btn-danger'
@@ -34,4 +38,5 @@
 - else
   = show_license_button(@project)
 
+= yield page_context[:header_title] if page_context[:header_title]
 = render partial: 'project_licenses/about'

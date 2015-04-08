@@ -20,6 +20,7 @@ class Organization < ActiveRecord::Base
   scope :managed_by, lambda { |account|
     joins(:manages).where.not(deleted: true, manages: { approved_by: nil }).where(manages: { account_id: account.id })
   }
+  scope :case_insensitive_url_name, ->(mixed_case) { where(['lower(url_name) = ?', mixed_case.downcase]) }
 
   validates :name, presence: true, length: 3..85, uniqueness: { case_sensitive: false }
   validates :description, length: 0..800, allow_nil: true

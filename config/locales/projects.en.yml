@@ -46,6 +46,30 @@ en:
     index_managed:
       page_title: "%{name} : Index Projects"
       managed_projects: "Managed Projects"
+    settings:
+      title: 'Settings'
+      project_basis: 'Project Basics'
+      project_basis_desc: 'Project name, description, and Open Hub URL for the project.'
+      code_location: 'Code Locations'
+      code_location_desc: 'URLs for the repositories where the project source code is stored.'
+      aliases: 'Aliases'
+      aliases_desc: 'List of committer IDs whose data should be grouped together for this project.'
+      logo: 'Logo'
+      logo_desc: 'The logo displayed for the project.'
+      links: 'Links'
+      links_desc: 'External links for project homepage, downloads, documentation, forums, etc.'
+      permissions: 'Permissions'
+      permissions_desc: 'Change whether all users or just managers may edit project settings.'
+      licenses: 'Licenses'
+      licenses_desc: 'License or licenses governing use of this project.'
+      tags: 'Tags'
+      tags_desc: 'Tags to assist searching for the project.'
+      edits: 'Open Hub Edit History'
+      edits_desc: 'List of recent activity of this project for audit and undo purposes.'
+      managers: 'Managers'
+      managers_desc: 'Users who manage the project settings and oversee the project on Open Hub.'
+      news: 'News Feeds'
+      news_desc: 'URLs for RSS and other news feeds for this project.'
     show:
       page_title: "The %{name} Open Source Project"
       project_summary: "Project Summary"
@@ -244,3 +268,5 @@ en:
       report_duplicate: 'Report Duplicate'
       title: '%{name} has been stacked by %{count} users. Click here to add it to your stack.'
       i_use: 'I Use This!'
+    map:
+      page_title: "User & Contributor Locations Page"

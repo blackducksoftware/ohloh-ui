@@ -13,7 +13,7 @@ class Edit < ActiveRecord::Base
   scope :for_target, ->(target) { where(target_type: target.class.to_s, target_id: target.id) }
   scope :for_editor, ->(editor) { where(account_id: editor.id) }
   scope :for_ip, ->(ip) { where(ip: ip) }
-  scope :filterable_by, ->(term) { where(filterable_by_where_clause(term)) }
+  filterable_by %w(key value)
 
   fix_string_column_encodings!
 
@@ -86,13 +86,5 @@ class Edit < ActiveRecord::Base
 
   def org_id_from_non_project_target
     !target.is_a?(Project) && target.respond_to?(:organization_id) ? target.organization_id : nil
-  end
-
-  class << self
-    def filterable_by_where_clause(term)
-      term = "%#{term}%"
-      api_keys = Edit.arel_table
-      api_keys[:key].matches(term).or(api_keys[:value].matches(term))
-    end
   end
 end

@@ -1,0 +1,25 @@
+:ruby
+  total_users = @project.user_count
+  total_contributors = @project.best_analysis.contributor_facts.size
+- content_for(:html_title) { t('.page_title') }
+- content_for :javascript do
+  - args = "'#{@project.to_param}', #{total_users}, #{total_contributors}"
+  = javascript_tag "$(document).on('page:change', function(){ ProjectMap.init(#{args}); });"
+
+%h3= t('.page_title')
+
+#map_container{ 'data-icon-image' => image_path('map/map_yellow.png') }
+  %p
+    %strong Show:
+    /=link_to "Contributors", "#", id: 'a_contributors'
+    /|
+    /=link_to "Users", "#", id: 'a_users'
+    %input{ type: 'radio', id: 'a_contributors', name: 'map_type' }
+    Contributors
+    %br
+    %input{ type: 'radio', id: 'a_users', name: 'map_type' }
+    Users
+    %span#map_status Loading...
+  .big#map
+
+!= map_init('map')

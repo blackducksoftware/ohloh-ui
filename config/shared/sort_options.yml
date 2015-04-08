@@ -119,3 +119,17 @@ contributions:
     -
       - Oldest Contributors
       - oldest
+
+enlistments:
+  options:
+    -
+      - Repository Type
+      - by_type
+    -
+      - Url
+      - by_url
+    -
+      - Module Name
+      - by_module_name
+  default:
+    by_url

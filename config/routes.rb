@@ -92,6 +92,8 @@ Rails.application.routes.draw do
   resources :check_availabilities, only: [] do
     collection do
       get :account
+      get :project
+      get :organization
     end
   end
 
@@ -125,6 +127,8 @@ Rails.application.routes.draw do
   get 'maintenance', to: 'about#maintenance'
 
   get 'explore/projects', to: 'explore#projects', as: :explore_projects
+  get 'p/compare', to: 'compare#projects', as: :compare_projects
+  get 'p/graph', to: 'compare#projects_graph', as: :compare_graph_projects
   resources :projects, path: :p, except: [:destroy] do
     member do
       get :users
@@ -134,10 +138,9 @@ Rails.application.routes.draw do
       get 'permissions'  => 'permissions#show',   as: :permissions
       put 'permissions'  => 'permissions#update', as: :update_permissions
       post 'rate'        => 'ratings#rate',       as: :rate
-      delete 'unrate'      => 'ratings#unrate',     as: :unrate
+      delete 'unrate'    => 'ratings#unrate',     as: :unrate
     end
     collection do
-      get :compare
       post :check_forge
     end
     resources :contributions, path: :contributors, only: [:index, :show] do
@@ -153,6 +156,11 @@ Rails.application.routes.draw do
     end
 
     resources :licenses, controller: :project_licenses, only: [:index, :new, :create, :destroy]
+    resources :tags, controller: :project_tags, only: [:index, :new, :create, :destroy] do
+      collection do
+        get :select
+      end
+    end
     resources :duplicates
     resource :logos, only: [:new, :create, :destroy]
     resources :links, except: :show
@@ -164,7 +172,7 @@ Rails.application.routes.draw do
     end
     resources :manages, only: [:new]
     resources :edits, only: [:index]
-    resources :enlistments, only: [:index, :new]
+    resources :enlistments
     resources :factoids, only: [:index]
     resources :rss_articles, only: :index
     resources :project_widgets, path: :widgets, as: :widgets, only: :index do
@@ -205,7 +213,13 @@ Rails.application.routes.draw do
       collection { get :summary }
     end
     resources :contributors, only: [:index, :show] do
-      collection { get :summary }
+      collection do
+        get :summary
+        get :near
+      end
+    end
+    resources :stacks, only: [] do
+      collection { get :near }
     end
     resources :aliases, only: [:index, :new, :create] do
       collection { get :preferred_names }
