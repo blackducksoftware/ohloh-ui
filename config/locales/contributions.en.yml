@@ -44,7 +44,7 @@ en:
         claim: 'Claim Commits'
         help_out: 'Open Hub computes statistics about contributors by analyzing their commits on all FOSS projects. We would like to be able to attribute this work to the right person, so if you know the contributor, please help out:'
         do_you_know: 'Do you know this contributor?'
-        invite_him: 'Send an Invite'
+        send_invite: 'Send an Invite'
       kudo_button:
         undo_kudo: "<i class='icon-undo'></i> Undo Kudo"
         give_kudo: 'Give Kudo'
