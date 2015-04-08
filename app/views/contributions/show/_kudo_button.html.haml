@@ -8,8 +8,8 @@
 
 - unless !logged_in? || current_user == @account
   - if kudo
-    = form_for kudo, action: account_kudo_path(current_user, kudo), method: :delete, class: 'kudo_action' do |f|
-      = button_tag(type: 'submit', class: "btn kudo-btn btn-info btn-mini") do
+    = form_for kudo, action: account_kudo_path(current_user, kudo), method: :delete, class: 'kudo_action' do
+      = button_tag type: 'submit', class: 'btn kudo-btn btn-info btn-mini' do
         %icon.icon-undo
         = t('.undo_kudo')
   - else
