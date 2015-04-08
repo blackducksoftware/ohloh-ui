@@ -34,7 +34,11 @@ Rails.application.routes.draw do
   resources :accounts do
     resources :api_keys, constraints: { format: :html }, except: :show
     resources :projects, only: [:index]
-    resources :positions, only: [:index]
+    resources :positions, only: [:index] do
+      collection do
+        get :one_click_create
+      end
+    end
     resources :stacks, only: [:index]
     resources :account_widgets, path: :widgets, as: :widgets, only: :index do
       collection do
