@@ -53,7 +53,7 @@ class Contribution < ActiveRecord::Base
   class << self
     def sort(key)
       key ||= :twelve_month_commits
-      fail 'invalid sort option' unless SORT_OPTIONS.include?(key.to_sym)
+      fail ArgumentError, 'invalid sort option' unless SORT_OPTIONS.include?(key.to_sym)
       send("sort_by_#{key}")
     end
 

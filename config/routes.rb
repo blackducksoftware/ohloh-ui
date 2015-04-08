@@ -47,7 +47,7 @@ Rails.application.routes.draw do
         get :rank
       end
     end
-    resources :kudos, only: [:index] do
+    resources :kudos, only: [:index, :show] do
       collection do
         get :sent
       end
