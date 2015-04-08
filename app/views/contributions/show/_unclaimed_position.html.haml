@@ -1,4 +1,4 @@
-- unless contribution.position
+- if contribution.position.blank?
   .well
     %p{ style: 'font-size: 18px' }
       %i.icon-exclamation-sign &nbsp;
