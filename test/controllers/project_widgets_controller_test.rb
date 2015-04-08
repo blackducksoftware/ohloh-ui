@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe 'ProjectWidgetsController' do
-  let(:project) { create(:project) }
+  let(:project) { create(:project, name: "apostro'phic") }
   let(:widget_classes) do
     [ProjectWidget::FactoidsStats, ProjectWidget::Factoids, ProjectWidget::BasicStats,
      ProjectWidget::Languages, ProjectWidget::SearchAllCode, ProjectWidget::Cocomo,
