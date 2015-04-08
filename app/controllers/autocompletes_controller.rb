@@ -1,5 +1,6 @@
 class AutocompletesController < ApplicationController
   before_action :check_for_project, only: :contributions
+  before_action :set_name_facts, only: :contributions
 
   # NOTE: Replaces accounts#autocomplete,
   def account
@@ -23,17 +24,20 @@ class AutocompletesController < ApplicationController
 
   # NOTE: Replaces contributions#autocomplete
   def contributions
-    name_facts = NameFact.where(analysis_id: @project.best_analysis_id)
-                 .where(['lower(names.name) like ? ', "%#{@project_name}%"])
-                 .includes(:name).references(:all).order('names.name ASC').limit(10)
-    render json: name_facts.map { |nf| nf.name.name }
+    render json: @name_facts.map { |nf| nf.name.name }
   end
 
   private
 
+  def set_name_facts
+    @name_facts = NameFact.where(analysis_id: @project.best_analysis_id)
+                  .where(['lower(names.name) like ? ', "%#{params[:term].strip.downcase}%"])
+                  .includes(:name).references(:all).order('names.name ASC').limit(10)
+  end
+
   def check_for_project
-    @project_name = params[:project].to_s.strip.downcase
-    @project = Project.active.where(['lower(name) = ?', @project_name]).first unless @project_name.empty?
+    project_name = params[:project].to_s.strip.downcase
+    @project = Project.active.where(['lower(name) = ?', project_name]).first unless project_name.empty?
     render text: '' if @project.nil? || @project.best_analysis_id.nil?
   end
 end
