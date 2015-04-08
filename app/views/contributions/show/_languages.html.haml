@@ -33,7 +33,7 @@
         - if defined?(contribution) && contribution
           %td.center
             = link_to number_with_delimiter(name_fact.commits),
-            project_contribution_commits_path(contribution.project, contribution)
+            project_contributor_commits_path(contribution.project, contribution)
         - else
           %td.center= number_with_delimiter(name_fact.commits)
         %td.center= number_with_delimiter(facts.map(&:total_activity_lines).sum)

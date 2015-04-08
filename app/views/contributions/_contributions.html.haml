@@ -44,7 +44,7 @@
         %td
           = fact.commits
         %td
-          = image_tag commits_spark_project_contribution_url(project_id: @project.to_param, id: fact.name_id),
+          = image_tag commits_spark_project_contributor_url(project_id: @project.to_param, id: fact.name_id),
           width: 179, height: 32, align: 'left' if fact.name_id
         %td
           = fact.primary_language.nice_name if fact.primary_language

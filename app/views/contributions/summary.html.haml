@@ -23,7 +23,7 @@
     .clearfix
 
   .col-md-12
-    %h4= link_to t('.newest_contributors'), project_contributions_path(@project, sort: 'newest')
+    %h4= link_to t('.newest_contributors'), project_contributors_path(@project, sort: 'newest')
     .col-md-6
       = render partial: 'newest_contributions', locals: { contributions: @newest_contributions.first(5) }
     - if @newest_contributions.length > 5
@@ -33,10 +33,10 @@
   .clearfix
 
   .col-md-12.top-committers
-    %h4= link_to t('.top_contributions'), project_contributions_path(@project)
+    %h4= link_to t('.top_contributions'), project_contributors_path(@project)
     = render partial: 'contributions', locals: { contributions: @top_contributions, search_bar: false }
     %p
-      = link_to t('.see_all'), project_contributions_path(@project), class: 'btn btn-info btn-small'
+      = link_to t('.see_all'), project_contributors_path(@project), class: 'btn btn-info btn-small'
   .clearfix
 - else
   = render partial: 'projects/show/no_analysis_summary'

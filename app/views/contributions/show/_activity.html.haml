@@ -5,7 +5,7 @@
   .committer-summary
     = image_tag avatar_img_path(@contribution.person, 64), class: 'pull-left avatar', style: 'margin-bottom:65px;'
     - unless fact.nil?
-      - spark_url = commits_compound_spark_project_contribution_url(project_id: @project.to_param, id: fact.name_id)
+      - spark_url = commits_compound_spark_project_contributor_url(project_id: @project.to_param, id: fact.name_id)
       .col-md-3
         %span= t('.all_commits')
         %span.pull-right
