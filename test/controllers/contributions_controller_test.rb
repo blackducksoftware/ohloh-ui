@@ -46,6 +46,7 @@ describe 'ContributionsController' do
 
   describe 'commits_spark' do
     it 'should return contribution simple spark image' do
+      Spark::SimpleSpark.any_instance.stubs(:width).returns(100)
       @contributor_fact.update_column(:analysis_id, @project.best_analysis_id)
       get :commits_spark, project_id: @project.to_param, id: @contribution.contributor_fact.name_id
 
