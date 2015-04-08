@@ -3,6 +3,7 @@ class ContributionsController < ApplicationController
   COMMITS_COMPOUND_SPARK_IMAGE = 'app/assets/images/bot_stuff/position_commits_compound_spark.png'
 
   helper :kudos, :projects
+  helper MapHelper
 
   before_action :set_project
   before_action :set_contribution, except: [:commits_spark, :commits_compound_spark, :index, :summary, :near]
@@ -33,6 +34,10 @@ class ContributionsController < ApplicationController
     @newest_contributions = @project.newest_contributions
     @top_contributions = @project.top_contributions
     @analysis = @project.best_analysis
+  end
+
+  def near
+    render text: view_context.map_near_contributors_json(@project, params)
   end
 
   def commits_spark
@@ -66,7 +71,7 @@ class ContributionsController < ApplicationController
   end
 
   def set_project
-    @project = Project.from_param(params[:project_id]).first
+    @project = Project.not_deleted.from_param(params[:project_id]).take
     render 'projects/deleted' if @project.deleted?
   end
 end
