@@ -46,7 +46,7 @@ en:
         do_you_know: 'Do you know this contributor?'
         send_invite: 'Send an Invite'
       kudo_button:
-        undo_kudo: "<i class='icon-undo'></i> Undo Kudo"
+        undo_kudo: 'Undo Kudo'
         give_kudo: 'Give Kudo'
         kudo_for: 'Give Kudos to %{name}'
       activity:
