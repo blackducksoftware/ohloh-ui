@@ -47,21 +47,19 @@ describe 'ContributionsController' do
   describe 'commits_spark' do
     it 'should return contribution simple spark image' do
       @contributor_fact.update_column(:analysis_id, @project.best_analysis_id)
-      get :commits_spark, project_id: @project.to_param, id: @contribution.id
+      get :commits_spark, project_id: @project.to_param, id: @contribution.contributor_fact.name_id
 
       must_respond_with :ok
-      assigns(:contribution).must_equal @contribution
       assigns(:contributor).must_equal @contribution.contributor_fact
     end
   end
 
   describe 'commits_compound_spark' do
-    it 'contribution' do
+    it 'should return contribution compound spark image' do
       @contributor_fact.update_column(:analysis_id, @project.best_analysis_id)
-      get :commits_compound_spark, project_id: @project.to_param, id: @contribution.id
+      get :commits_compound_spark, project_id: @project.to_param, id: @contribution.contributor_fact.name_id
 
       must_respond_with :ok
-      assigns(:contribution).must_equal @contribution
       assigns(:contributor).must_equal @contributor_fact
     end
   end
