@@ -55,6 +55,11 @@ en:
   openhub_show: "Open Hub Forum: %{name}"
   openhub: "OpenHub"
 
+
+  layouts:
+    application:
+      openhub: "OpenHub"
+
   destroy:
     success: 'Record deleted!'
     failure: 'There was a problem deleting!'
