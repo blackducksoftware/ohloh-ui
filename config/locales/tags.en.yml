@@ -1,5 +1,9 @@
 en:
   tags:
+    tag: 'tag'
+    reached_maximum: "Project has maximum number of tags"
+    over_maximum: "<span class='error'><strong>Please remove %{overage} tags.</strong></span>"
+    number_remaining: "You can add %{count} more %{word} to this project."
     cloud:
       page_title: "Tags - Open Hub"
       tags: "Tags"

@@ -37,7 +37,7 @@
         - else
           = t('.no_tags')
           - if @project.edit_authorized?
-            = link_to t('.add_tags'), select_project_tags_path(@project)
+            = link_to t('.add_tags'), project_tags_path(@project)
     = render partial: 'shared/add_this', locals: { text: "#{@project.name} project" }
   .col-md-6
     .well

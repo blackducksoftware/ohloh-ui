@@ -31,7 +31,9 @@ TagNew = {
     var project_id = $('form#edit_tags').attr('project_id');
     var term = $('#input_tags').val();
     $('#input_tags').autocomplete({source:'/autocompletes/tags?project_id='+project_id+'&term='+term, select : function (evt, ui) {
-      }});
+      tags_value = ui.item.value;
+      $('form[rel=tag_edit]').submit();
+     }});
   }
 }
 
@@ -44,24 +46,25 @@ TagEdit = {
     $('a.tag.delete').click(TagEdit.onTagDeleteClick);
   },
   onSubmit: function() {
-    if ($.trim(tags_value) != "") {
-      TagEdit.create($('input#input_tags')[0].value);
+    value = $.trim(tags_value);
+    if (value != "") {
+      TagEdit.create(value);
     }
     $('input#input_tags').focus().val('');
     return false;
   },
   create: function(text) {
     text = text.replace(".", "", "g");
-    taglinks = $('a.tag:[tagname=\'' + text + '\']');
+    taglinks = $('a.tag[tagname=\'' + text + '\']');
     taglinks.unbind('click', TagEdit.onTagAddClick).removeClass('add');
     $(".spinner").show();
     $("#error").hide();
     $("#submit").attr("disabled",'');
-    var project_id = $('form#edit_tags').attr('project_id');
+    var project = $('form#edit_tags').attr('project');
     $.ajax({
       type: "POST",
-      url: '/p/' + project_id + '/tags',
-      data: {tag_list:text},
+      url: '/p/' + project + '/tags',
+      data: {tag_name: text},
       success: function (data, textStatus) {
         TagEdit.update_status(text);
         taglinks.click(TagEdit.onTagDeleteClick).addClass('delete');
@@ -77,11 +80,11 @@ TagEdit = {
     });
   },
   update_status: function(text) {
-    taglinks = $('a.tag:[tagname=\'' + text + '\']');
-    var project_id = $('form#edit_tags').attr('project_id');
+    taglinks = $('a.tag[tagname=\'' + text + '\']');
+    var project = $('form#edit_tags').attr('project');
     $.ajax({
       type: "GET",
-      url: '/p/' + project_id + '/tags/status',
+      url: '/p/' + project + '/tags/status',
       success: function (data, textStatus) {
         $('p.tags_left').html(data[1]);
         if(data[0] < 1) { $("#edit_tags").hide(); }
@@ -89,17 +92,16 @@ TagEdit = {
     });
   },
   destroy: function(text) {
-    taglinks = $('a.tag:[tagname=\'' + text + '\']');
+    taglinks = $('a.tag[tagname=\'' + text + '\']');
     $('span[tagname=\'' + text + '\']').show();
     taglinks.fadeOut("slow");
     taglinks.unbind('click', TagEdit.onTagDeleteClick).removeClass('delete');
     $('span[tagname=\'' + text + '\']').show();
-    var project_id = $('form#edit_tags').attr('project_id');
+    var project = $('form#edit_tags').attr('project');
     $("#error").hide();
     $.ajax({
       type: "DELETE",
-      url: '/p/' + project_id + '/tags/0',
-      data: {tag_list:text},
+      url: '/p/' + project + '/tags/' + text,
       success: function (data, textStatus) {
         $('p.tags_left').html(data[1]);
         if(data[0] > 0) { $("#edit_tags").show(); }
@@ -156,9 +158,9 @@ TagEdit = {
   updateRelatedProjects: function() {
     $('#related_projects').html('');
     $('#related_spinner').show();
-    var project_id = $('form#edit_tags').attr('project_id');
+    var project = $('form#edit_tags').attr('project');
     $.ajax({
-      url: '/p/' + project_id + '/tags/related',
+      url: '/p/' + project + '/tags/related',
       success: function (data, textStatus) {
         $('#related_projects').html( data );
         $('#related_projects a.tag.add').click(TagEdit.onTagAddClick);

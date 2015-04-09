@@ -1,4 +1,6 @@
 class Tag < ActiveRecord::Base
+  MAX_ALLOWED_PER_PROJECT = 20
+
   has_many :taggings
   has_many :projects, through: :taggings
 

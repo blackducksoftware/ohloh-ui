@@ -141,9 +141,10 @@ Rails.application.routes.draw do
       get 'resolve_url_name' => 'resolve_url_names#project'
     end
     resources :licenses, controller: :project_licenses, only: [:index, :new, :create, :destroy]
-    resources :tags, controller: :project_tags, only: [:index, :new, :create, :destroy] do
+    resources :tags, controller: :project_tags, only: [:index, :create, :destroy] do
       collection do
-        get :select
+        get :related
+        get :status
       end
     end
     resources :duplicates
