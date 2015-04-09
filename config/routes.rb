@@ -180,9 +180,13 @@ Rails.application.routes.draw do
       collection { get :summary }
       resources :helpfuls, only: :create
     end
-    resources :analyses, only: :index do
+    resources :analyses, only: [:index, :show] do
       resources :activity_facts, only: :index
       member do
+        get :commit_volume_chart
+        get :top_commit_volume_chart
+        get :languagehistory
+        get :licenses
         get :languages_summary
         get :codehistory
         get :commitshistory
