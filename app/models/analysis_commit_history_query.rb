@@ -19,7 +19,7 @@ class AnalysisCommitHistoryQuery
     months.project([month, coalesce_commits_count])
       .join(subquery, Arel::Nodes::OuterJoin)
       .on(month.eq(subquery[:this_month]))
-      .where(query_conditions)
+      .where(month_within_range)
       .order(month)
   end
 
@@ -33,7 +33,7 @@ class AnalysisCommitHistoryQuery
       .arel.as('counts')
   end
 
-  def query_conditions
+  def month_within_range
     month.gteq(@start_month).and(month.lteq(@end_month))
   end
 
