@@ -60,9 +60,9 @@
     %span.pull-left.settings_description= t('.licenses_desc')
   .col-md-4.settings_module
     %h4.nomargin
-      = link_to t('.tags'), select_project_tags_path(@project)
+      = link_to t('.tags'), project_tags_path(@project)
     %span.pull-left
-      %a.module_icon.tags{ href: select_project_tags_path(@project) }
+      %a.module_icon.tags{ href: project_tags_path(@project) }
     %span.pull-left.settings_description= t('.tags_desc')
   .col-md-4.settings_module
     %h4.nomargin

@@ -1,0 +1,61 @@
+:ruby
+  content_for(:html_title) { t('.page_title', name: @project.name) }
+  page_context[:select_top_menu_nav] = 'select_projects'
+  page_context[:select_footer_nav] = :settings
+  remaining_tags = Tag::MAX_ALLOWED_PER_PROJECT - @project.tags.length
+
+- content_for :javascript do
+  = javascript_tag '$(document).ready(TagEdit.init);$(document).ready(TagNew.init);'
+
+.project_content_title
+  %h2
+    = link_to t(:settings), settings_project_path(@project)
+    &nbsp;:&nbsp;#{t('.tags')}
+.row#settings_tags
+  .col-md-6
+    .well
+      %h4= t('.tags_for', name: truncate_project_name(@project.name, false, 43))
+      %div
+        %p.tags_left= tags_left(remaining_tags)
+        %span.tags#current_tags
+          - @project.tags.sort { |a, b| a.name <=> b.name }.each do |tag|
+            %a{ tagname: tag.name, class: "tag#{' delete tag_remove' if @project.edit_authorized?}" }
+              = tag.name
+              &nbsp;
+              %i.icon-remove
+            %span.hidden{ tagname: tag.name }
+              = image_tag 'spinner.gif'
+        .clear &nbsp;
+        %form#edit_tags{ project_id: @project.id, project: @project.to_param,
+                         style: remaining_tags > 0 ? '' : 'display: none;', rel: 'tag_edit' }
+          %p.strong= t('.add_new_tag')
+          .control-group.nomargin
+            %input.autocompletable#input_tags{ type: :text, placeholder: t('.enter_tag_here') }
+            %p.error.hidden#error &nbsp;
+          .control-group
+            - if @project.edit_authorized?
+              %input.btn.btn-primary#submit{ type: 'submit', value: t('.save_tag') }
+            - else
+              = disabled_button t('.save_tag'), class: 'btn-primary'
+
+            %span.spinner.hidden= image_tag 'spinner.gif'
+
+  .col-md-5{ style: 'width: 450px;' }
+    %h4= t('.projects_with_similar_tags')
+    #related_projects
+      = render partial: 'related_projects'
+    .hidden#related_spinner= image_tag 'spinner.gif'
+
+%h4.nomargin
+  %span.soft= t(:about)
+  #{t('.tags')}
+.col-md-5
+  %ul
+    %li= t('.help1')
+    %li= t('.help2', max: Tag::MAX_ALLOWED_PER_PROJECT)
+    %li= t('.help3')
+.col-md-5
+  %ul
+    %li= t('.help4')
+    %li= t('.help5')
+    %li= t('.help6', max: Tag::MAX_ALLOWED_PER_PROJECT)

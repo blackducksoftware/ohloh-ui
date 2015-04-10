@@ -31,6 +31,8 @@ Rails.application.routes.draw do
     resources :edits, only: [:index]
   end
 
+  resources :tags, only: [:index]
+
   resources :accounts do
     resources :api_keys, constraints: { format: :html }, except: :show
     resources :projects, only: [:index]
@@ -104,6 +106,7 @@ Rails.application.routes.draw do
       get :account
       get :project
       get :licenses
+      get :tags
     end
   end
 
@@ -139,9 +142,10 @@ Rails.application.routes.draw do
       post :check_forge
     end
     resources :licenses, controller: :project_licenses, only: [:index, :new, :create, :destroy]
-    resources :tags, controller: :project_tags, only: [:index, :new, :create, :destroy] do
+    resources :tags, controller: :project_tags, only: [:index, :create, :destroy] do
       collection do
-        get :select
+        get :related
+        get :status
       end
     end
     resources :duplicates

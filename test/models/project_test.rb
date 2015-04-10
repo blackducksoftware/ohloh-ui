@@ -176,4 +176,18 @@ class ProjectTest < ActiveSupport::TestCase
       project.code_published_in_code_search?.must_equal true
     end
   end
+
+  describe 'tag_list=' do
+    it 'should record property_edits to the database' do
+      project = create(:project)
+      PropertyEdit.where(key: 'tag_list', target: project).count.must_equal 0
+      project.update_attributes(tag_list: 'aquatic beavers cavort down east')
+      project.reload.tags.length.must_equal 5
+      PropertyEdit.where(key: 'tag_list', target: project).count.must_equal 1
+      project.editor_account = create(:account)
+      project.update_attributes(tag_list: 'zany')
+      project.reload.tags.length.must_equal 1
+      PropertyEdit.where(key: 'tag_list', target: project).count.must_equal 2
+    end
+  end
 end

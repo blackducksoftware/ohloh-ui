@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  [AnalysesHelper, FactoidsHelper, MapHelper, RatingsHelper, RepositoriesHelper].each { |help| helper help }
+  [AnalysesHelper, FactoidsHelper, MapHelper, RatingsHelper, RepositoriesHelper, TagsHelper].each { |help| helper help }
 
   before_action :session_required, only: [:check_forge, :create, :new, :update]
   before_action :api_key_lock, only: [:index]
