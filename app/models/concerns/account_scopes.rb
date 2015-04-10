@@ -27,6 +27,6 @@ module AccountScopes
 
     scope :in_good_standing, -> { where('level >= 0') }
 
-    scope :from_param, ->(param) { where(arel_table[:login].eq(param).or(arel_table[:id].eq(param))) }
+    scope :from_param, ->(param) { in_good_standing.where(arel_table[:login].eq(param).or(arel_table[:id].eq(param))) }
   end
 end

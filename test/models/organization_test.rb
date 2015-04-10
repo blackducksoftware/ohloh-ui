@@ -31,4 +31,28 @@ class OrganizationTest < ActiveSupport::TestCase
       Organization.managed_by(account).must_equal [org]
     end
   end
+
+  describe 'from_param' do
+    it 'should match organization url_name' do
+      organization = create(:organization)
+      Organization.from_param(organization.url_name).first.id.must_equal organization.id
+    end
+
+    it 'should match organization id as string' do
+      organization = create(:organization)
+      Organization.from_param(organization.id.to_s).first.id.must_equal organization.id
+    end
+
+    it 'should match organization id as integer' do
+      organization = create(:organization)
+      Organization.from_param(organization.id).first.id.must_equal organization.id
+    end
+
+    it 'should not match deleted organizations' do
+      organization = create(:organization)
+      Organization.from_param(organization.to_param).count.must_equal 1
+      organization.destroy
+      Organization.from_param(organization.to_param).count.must_equal 0
+    end
+  end
 end
