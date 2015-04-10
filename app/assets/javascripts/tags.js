@@ -33,6 +33,7 @@ TagNew = {
     $('#input_tags').autocomplete({source:'/autocompletes/tags?project_id='+project_id+'&term='+term, select : function (evt, ui) {
       tags_value = ui.item.value;
       $('form[rel=tag_edit]').submit();
+      $('#input_tags').val('');
      }});
   }
 }
@@ -47,10 +48,10 @@ TagEdit = {
   },
   onSubmit: function() {
     value = $.trim(tags_value);
+    $('#input_tags').val('');
     if (value != "") {
       TagEdit.create(value);
     }
-    $('input#input_tags').focus().val('');
     return false;
   },
   create: function(text) {

@@ -13,6 +13,7 @@ module ActsAsTaggable
   module InstanceMethods
     def tag_with(list)
       self.tags = parse_tag_list(list).map { |tag| Tag.where(name: tag).first_or_create }
+      self
     end
 
     def tag_list

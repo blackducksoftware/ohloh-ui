@@ -43,9 +43,7 @@
   .col-md-5{ style: 'width: 450px;' }
     %h4= t('.projects_with_similar_tags')
     #related_projects
-      = render(partial: 'related_project', collection: @related_projects, locals: { tags: @project.tags })
-      - if @related_projects.empty?
-        - alert :info, message: t('.no_other_projects')
+      = render partial: 'related_projects'
     .hidden#related_spinner= image_tag 'spinner.gif'
 
 %h4.nomargin

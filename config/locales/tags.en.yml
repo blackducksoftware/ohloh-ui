@@ -1,5 +1,6 @@
 en:
   tags:
+    allowed_characters: "may include only letters, numbers, +, and _"
     tag: 'tag'
     reached_maximum: "Project has maximum number of tags"
     over_maximum: "<span class='error'><strong>Please remove %{overage} tags.</strong></span>"
