@@ -10,7 +10,7 @@ var ProjectMap = {
 
     Map.clearMarkers();
     $('#map_status').innerHTML='Loading users...';
-    Map.defaultIconImage='/assets/map/map_gray.png';
+    Map.defaultIconImage = $("#map_container").data("icon-image");
     Map.url='/p/' + document.mapParams['project_param'] + '/stacks/near';
     Map.onComplete=function(jsonData){
       if(jsonData && jsonData.accounts && jsonData.accounts.length > 0){
@@ -36,7 +36,7 @@ var ProjectMap = {
 
     Map.clearMarkers();
     $('#map_status').innerHTML='Loading contributors...';
-    Map.defaultIconImage='/assets/map/map_yellow.png';
+    Map.defaultIconImage=$("#map_container").data("icon-image");
     Map.url='/p/' + document.mapParams['project_param'] + '/contributors/near';
     Map.onComplete=function(jsonData){
       if(jsonData && jsonData.accounts && jsonData.accounts.length > 0){

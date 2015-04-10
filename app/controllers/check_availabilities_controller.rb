@@ -1,8 +1,16 @@
 class CheckAvailabilitiesController < ApplicationController
   # NOTE: Replaces accounts#resolve_login.
   def account
-    q = params[:q].to_s
-    account = Account.resolve_login(params[:q])
-    render json: account ? account.attributes.merge(q: q) : { id: nil, q: q }
+    render json: Account.resolve_login(params[:query]).present?
+  end
+
+  # NOTE: Replaces projects#resolve_url_name.
+  def project
+    render json: Project.case_insensitive_url_name(params[:query]).present?
+  end
+
+  # NOTE: Replaces organizations#resolve_url_name.
+  def organization
+    render json: Organization.case_insensitive_url_name(params[:query]).present?
   end
 end

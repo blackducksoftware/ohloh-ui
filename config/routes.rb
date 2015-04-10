@@ -90,6 +90,8 @@ Rails.application.routes.draw do
   resources :check_availabilities, only: [] do
     collection do
       get :account
+      get :project
+      get :organization
     end
   end
 
@@ -138,7 +140,6 @@ Rails.application.routes.draw do
     end
     collection do
       post :check_forge
-      get 'resolve_url_name' => 'resolve_url_names#project'
     end
     resources :licenses, controller: :project_licenses, only: [:index, :new, :create, :destroy]
     resources :tags, controller: :project_tags, only: [:index, :create, :destroy] do
@@ -223,9 +224,6 @@ Rails.application.routes.draw do
       get :outside_committers
       get :print_infographic
       get :affiliated_committers
-    end
-    collection do
-      get 'resolve_url_name' => 'resolve_url_names#organization'
     end
     resources :edits, only: [:index]
     resource :logos, only: [:new, :create, :destroy]
