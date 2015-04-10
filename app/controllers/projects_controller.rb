@@ -72,13 +72,12 @@ class ProjectsController < ApplicationController
   end
 
   def find_projects
-    projects = @account ? @account.projects.not_deleted : Project.not_deleted
-    sort_by = parse_sort_term(projects)
-    @projects = projects.tsearch(params[:query], sort_by).page(params[:page]).per_page(10)
+    @projects = find_projects_by_params.page(params[:page]).per_page([25, (params[:per_page] || 10).to_i].min)
   end
 
-  def parse_sort_term(projects)
-    projects.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : nil
+  def find_projects_by_params
+    projects = @account ? @account.projects.not_deleted : Project.not_deleted
+    projects.by_collection(params[:ids], params[:sort], params[:query])
   end
 
   def find_project
