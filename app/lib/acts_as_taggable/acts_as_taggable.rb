@@ -6,14 +6,17 @@ module ActsAsTaggable
       has_many :taggings, as: :taggable, dependent: :destroy
       has_many :tags, through: :taggings
 
+      attr_accessor :tag_list_is_dirty
+
       include ActsAsTaggable::InstanceMethods
     end
   end
 
   module InstanceMethods
-    def tag_with(list)
+    def tag_list=(list)
+      return if tag_list == list
+      self.tag_list_is_dirty = true
       self.tags = parse_tag_list(list).map { |tag| Tag.where(name: tag).first_or_create }
-      self
     end
 
     def tag_list

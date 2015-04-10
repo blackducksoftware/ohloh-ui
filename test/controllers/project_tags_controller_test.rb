@@ -46,7 +46,7 @@ describe 'ProjectTagsController' do
 
     it 'should gracefully handle attempting to add the same tag twice' do
       project = create(:project)
-      project.tag_with('zesty')
+      project.tag_list = 'zesty'
       login_as create(:account)
       post :create, project_id: project.to_param, tag_name: 'zesty'
       assert_response :ok

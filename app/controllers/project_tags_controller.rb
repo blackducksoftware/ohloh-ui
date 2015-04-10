@@ -10,7 +10,7 @@ class ProjectTagsController < ApplicationController
   before_action :project_context
 
   def create
-    @project.tag_with("#{@project.tag_list} #{params[:tag_name]}").save
+    @project.update_attributes(tag_list: "#{@project.tag_list} #{params[:tag_name]}")
     render text: ERB::Util.html_escape(@project.tag_list).split.sort.join("\n")
   rescue
     render_create_error
