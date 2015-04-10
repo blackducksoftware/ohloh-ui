@@ -48,7 +48,7 @@
     = link_to t('.similar_projects'), project_similar_projects_path(@project)
   %dd{ style: 'margin-bottom: .5em;' }
     #similar_projects{ project_id: @project.to_param }
-    .hidden#related_spinner= image_tag('/images/spinner.gif')
+    .hidden#related_spinner= image_tag('spinner.gif')
   %dt
     = link_to t('.managers'), project_managers_path(@project)
   %dd{ style: 'margin-bottom: .5em;' }

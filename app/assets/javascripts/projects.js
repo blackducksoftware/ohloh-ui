@@ -63,3 +63,20 @@ ProjectForm = {
     };
   }
 }
+
+SimilarProjects = {
+  init: function(){
+    $('#similar_projects').html('');
+    $('#related_spinner').show();
+    var project_id = $('#similar_projects').attr('project_id');
+    $.ajax({
+      url: '/p/' + project_id + '/similar_by_tags',
+      success: function (data, textStatus) {
+        $('#similar_projects').html( data );
+      },
+      complete: function() {
+        $('#related_spinner').hide();
+      }
+    });
+  }
+}

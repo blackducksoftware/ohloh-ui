@@ -5,7 +5,7 @@ class ProjectsController < ApplicationController
   before_action :api_key_lock, only: [:index]
   before_action :find_account
   before_action :find_projects, only: [:index]
-  before_action :find_project, only: [:show, :edit, :update, :estimated_cost, :users, :settings, :map]
+  before_action :find_project, only: [:show, :edit, :update, :estimated_cost, :users, :settings, :map, :similar_by_tags]
   before_action :redirect_new_landing_page, only: :index
   before_action :find_forge_matches, only: :check_forge
   before_action :project_context, only: [:show, :users, :estimated_cost, :edit, :settings, :map]
@@ -56,6 +56,10 @@ class ProjectsController < ApplicationController
       flash.now[:notice] =  (@projects.length == 1) ? t('.code_location_single') : t('.code_location_multiple')
       render template: 'projects/check_forge_duplicate'
     end
+  end
+
+  def similar_by_tags
+    render partial: 'projects/show/similar_by_tags', locals: { similar_by_tags: @project.related_by_tags(4) }
   end
 
   private
