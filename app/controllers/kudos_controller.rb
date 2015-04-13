@@ -45,13 +45,13 @@ class KudosController < ApplicationController
   end
 
   def find_account
-    @account = Account.in_good_standing.from_param(params[:account_id]).take
+    @account = Account.from_param(params[:account_id]).take
     fail ParamRecordNotFound unless @account
   end
 
   def find_account_or_contribution
     p = params[:kudo] || params
-    @account = Account.in_good_standing.from_param(p[:account_id]).take
+    @account = Account.from_param(p[:account_id]).take
     @contribution = Contribution.where(id: p[:contribution_id]).take
     fail ParamRecordNotFound unless @account || @contribution
   end

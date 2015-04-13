@@ -1,0 +1,18 @@
+- if similar_by_tags.any?
+  %table
+    - similar_by_tags.sort { |a, b| a.name.downcase <=> b.name.downcase }.take(4).in_groups_of(2, false) do |projects|
+      %tr{ height: '35px' }
+        - projects.compact.each do |p|
+          %td{ width: '1%', valign: 'top' }
+            %a{ href: project_path(p) }
+              - project_icon(p, :small, width: 24)
+          %td{ width: '49%', valign: 'top' }
+            &nbsp;
+            %a{ href: project_path(p), style: 'position: relative; top: 3px;' }= truncate(p.name, length: 15)
+- elsif @project.tags.empty?
+  - if @project.edit_authorized?
+    %a{ href: project_tags_path(@project) }= t('.add_some_tags')
+  - else
+    #{t('.none')}
+- else
+  #{t('.totally_unique_tags')}

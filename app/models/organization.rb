@@ -14,7 +14,7 @@ class Organization < ActiveRecord::Base
   has_many :managers, through: :manages, source: :account
 
   scope :from_param, lambda { |param|
-    Organization.where(Organization.arel_table[:url_name].eq(param).or(Organization.arel_table[:id].eq(param)))
+    active.where(Organization.arel_table[:url_name].eq(param).or(Organization.arel_table[:id].eq(param)))
   }
   scope :active, -> { where.not(deleted: true) }
   scope :managed_by, lambda { |account|

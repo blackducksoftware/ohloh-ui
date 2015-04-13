@@ -190,4 +190,28 @@ class ProjectTest < ActiveSupport::TestCase
       PropertyEdit.where(key: 'tag_list', target: project).count.must_equal 2
     end
   end
+
+  describe 'from_param' do
+    it 'should match project url_name' do
+      project = create(:project)
+      Project.from_param(project.url_name).first.id.must_equal project.id
+    end
+
+    it 'should match project id as string' do
+      project = create(:project)
+      Project.from_param(project.id.to_s).first.id.must_equal project.id
+    end
+
+    it 'should match project id as integer' do
+      project = create(:project)
+      Project.from_param(project.id).first.id.must_equal project.id
+    end
+
+    it 'should not match deleted projects' do
+      project = create(:project)
+      Project.from_param(project.to_param).count.must_equal 1
+      project.destroy
+      Project.from_param(project.to_param).count.must_equal 0
+    end
+  end
 end
