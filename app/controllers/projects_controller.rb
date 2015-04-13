@@ -72,7 +72,7 @@ class ProjectsController < ApplicationController
   end
 
   def find_account
-    @account = Account.in_good_standing.from_param(params[:account_id]).take
+    @account = Account.from_param(params[:account_id]).take
   end
 
   def find_projects
@@ -86,7 +86,7 @@ class ProjectsController < ApplicationController
   end
 
   def find_project
-    @project = Project.not_deleted.from_param(params[:id]).take
+    @project = Project.from_param(params[:id]).take
     fail ParamRecordNotFound unless @project
     @project.editor_account = current_user
   end
