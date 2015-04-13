@@ -108,6 +108,37 @@ class ProjectsControllerTest < ActionController::TestCase
     nodes[1].css('name').children.to_s.must_equal 'Foo_xml'
   end
 
+  it 'index should respond to xml format with list of ids' do
+    project1 = create(:project, name: 'Baz_xml', description: 'second', rating_average: 2)
+    project2 = create(:project, name: 'BazBar_xml', description: 'first', rating_average: 4)
+    login_as nil
+    get :index, ids: "#{project1.id},#{project2.id}", api_key: create(:api_key).key, format: :xml
+    must_respond_with :ok
+    nodes = Nokogiri::XML(response.body).css('project')
+    nodes.length.must_equal 2
+    nodes[0].css('name').children.to_s.must_equal 'Baz_xml'
+    nodes[1].css('name').children.to_s.must_equal 'BazBar_xml'
+  end
+
+  it 'index should limit maximum returned to 25' do
+    projects = (0...50).map { |_| create(:project) }
+    login_as nil
+    get :index, ids: projects.map(&:id).join(','), per_page: 50, api_key: create(:api_key).key, format: :xml
+    must_respond_with :ok
+    nodes = Nokogiri::XML(response.body).css('project')
+    nodes.length.must_equal 25
+  end
+
+  it 'index should support pagination' do
+    projects = (0...10).map { |_| create(:project) }
+    login_as nil
+    get :index, ids: projects.map(&:id).join(','), page: 2, per_page: 5, api_key: create(:api_key).key, format: :xml
+    must_respond_with :ok
+    nodes = Nokogiri::XML(response.body).css('project')
+    nodes.length.must_equal 5
+    nodes[0].css('id').children.to_s.to_i.must_equal projects[5].id
+  end
+
   it 'index should handle account sorting by "new"' do
     project1 = create(:project, name: 'Foo_accounts_new', description: 'second', created_at: Time.now - 3.hours)
     project2 = create(:project, name: 'FooBar_accounts_new', description: 'first')
