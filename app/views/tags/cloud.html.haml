@@ -1,7 +1,7 @@
 %meta{ name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW' }
 - content_for(:html_title) { t('.page_title') }
 - content_for :javascript do
-  = javascript_tag '$(document).ready(JumpToTag.init);'
+  = javascript_tag "$(document).on('page:change', JumpToTag.init);"
 
 .tags
   %h1.margin_bottom_20.margin_top_20= t('.tags')
