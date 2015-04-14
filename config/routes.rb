@@ -149,7 +149,7 @@ Rails.application.routes.draw do
         get :status
       end
     end
-    resources :duplicates
+    resources :duplicates, only: [:new, :create, :edit, :update, :destroy]
     resource :logos, only: [:new, :create, :destroy]
     resources :links, except: :show
     resources :managers, only: [:index, :new, :create, :edit, :update] do

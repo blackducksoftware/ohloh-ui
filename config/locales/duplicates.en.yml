@@ -4,3 +4,19 @@ en:
     no_valid_project: "Enter the name of a valid Open Hub project."
     no_dupe_of_dupe: "%{this} has been reported as a duplicate of another project (%{that}). Choose a different project."
     already_reported: "Project '%{that}' has already been reported as a duplicate of '%{this}', and may soon be merged into '%{this}'. That report must be resolved or canceled before a new duplicate report will be accepted."
+    new:
+      cant_dupe_a_dupe: "Project '%{that}' has already been reported as a duplicate of this project. That report must be resolved or canceled before reporting '%{this}' as a duplicate."
+      page_title: "The %{name} Open Source Project on Open Hub : Report Duplicate"
+      page_header: "Report Duplicate : New"
+      button_text: "Submit Request"
+    instructions:
+      header: "Report Duplicate"
+      help1: "Use this form to request that a duplicate project be deleted"
+      help2: "This request will be reviewed by a site administrator. If approved:"
+      help3: "Project %{project} will be deleted"
+      help4: "All reviews, ratings, contributors, etc. from %{name} will be merged into the original project, specified above"
+    fields:
+      legend: "Request to Remove Project %{name}"
+      good_label: "%{name} is a duplicate of this original project"
+      original_url: "URL of the original project"
+      comment: "Comment"
