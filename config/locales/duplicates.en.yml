@@ -1,0 +1,6 @@
+en:
+  duplicates:
+    no_self_referential_duplicates: "A project can't be a duplicate of itself."
+    no_valid_project: "Enter the name of a valid Open Hub project."
+    no_dupe_of_dupe: "%{this} has been reported as a duplicate of another project (%{that}). Choose a different project."
+    already_reported: "Project '%{that}' has already been reported as a duplicate of '%{this}', and may soon be merged into '%{this}'. That report must be resolved or canceled before a new duplicate report will be accepted."
