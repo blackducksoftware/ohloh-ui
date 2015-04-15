@@ -6,5 +6,5 @@ xml.response do
   xml.first_item_position @projects.offset
   xml.result do
     xml << render(partial: 'project', collection: @projects, locals: { builder: xml })
-  end
+  end unless @projects.blank?
 end
