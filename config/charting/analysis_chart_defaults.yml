@@ -15,7 +15,7 @@ yAxis:
 xAxis:
   dateTimeLabelFormats:
     millisecond: '%Y'
-    tickInterval: 1000 * 1.year
+    tickInterval: 31557600000.0
     minPadding: 0.015
     maxPadding: 0.015
 tooltip:
