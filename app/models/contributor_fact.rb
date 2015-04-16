@@ -24,6 +24,21 @@ class ContributorFact < NameFact
     save
   end
 
+  def daily_commits
+    Commit.for_contributor_fact(self)
+      .select(daily_commits_select_clause)
+      .where('commits.position <= analysis_sloc_sets.as_of')
+      .group("date_trunc('day', commits.time)")
+      .order("date_trunc('day', commits.time) desc")
+      .limit(300)
+  end
+
+  def commits_within(from, to)
+    Commit.for_contributor_fact(self)
+      .where(time: from..to)
+      .order(:time)
+  end
+
   class << self
     def unclaimed_for_project(project)
       ContributorFact.where.not(name_id: nil)
@@ -36,5 +51,13 @@ class ContributorFact < NameFact
         .where('name_id = ? or name_id in (?)', name_id,
                AnalysisAlias.select(:preferred_name_id).joins(:project).where(commit_name_id: name_id)).first
     end
+  end
+
+  private
+
+  def daily_commits_select_clause
+    commit_arel = Commit.arel_table
+    [commit_arel[:time].minimum.as('time'), commit_arel[:comment].minimum.as('comment'),
+     commit_arel[Arel.star].count.as('count')]
   end
 end

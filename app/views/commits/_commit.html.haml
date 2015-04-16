@@ -1,0 +1,37 @@
+%table.table.table-striped.table-condensed{ style: 'width:98%;' }
+  %thead
+    %tr{ id: 'dingus-row' }
+      %td{ colspan: '7' }
+        - if search_dingus
+          = render partial: 'shared/search_dingus', locals: { collection: @named_commits,
+            sort_context: nil, no_match_found_type: :flash }
+    %tr
+      %th{ width: '40%' }= t('.commit_message')
+      %th{ width: '17%' }= t('.contributor')
+      %th.center{ width: '5%' }= t('.files_modified')
+      %th.center{ width: '5%' }= t('.lines_added')
+      %th.center{ width: '5%' }= t('.lines_removed')
+      %th.center{ width: '18%' }= t('.code_location')
+      %th{ width: '10%' }= t('.date')
+  %tbody
+    - @named_commits.each do |named_commit|
+      -# TODO: highlight is required ?
+      - commit = named_commit.commit
+      %tr
+        %td= link_to "#{ h commit.first_line }", project_commit_path(@project, commit)
+        %td
+          = avatar_for(named_commit.person)
+          .committer_name{ style: 'padding-top:5px;' }
+            = render partial: 'committer_name', locals: { named_commit: named_commit }
+        %td{ colspan: '4', class: "commit_#{ commit.to_param }" }
+          %span.icon-play-circle
+            = link_to t('.more'), '#', 'data-toggle' => 'commit-details',
+              commit_id: commit.to_param, project_id: @project.to_param
+          %span.spinner.hidden
+            = image_tag 'spinner.gif'
+        %td
+          %abbr.date{ title: commit.time.to_s }
+            = t('time_ago', time: time_ago_in_words(commit.time))
+
+- if @named_commits.blank?
+  = render :partial => "shared/alert", locals: { message: t('shared.search_dingus.no_match') }
