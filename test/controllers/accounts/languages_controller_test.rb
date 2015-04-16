@@ -35,5 +35,10 @@ describe 'Accounts::LanguagesController' do
       assigns(:vlfs).must_equal [vita_language_fact]
       assigns(:logos_map).must_equal logos_map
     end
+
+    it 'should not display for spammer accounts' do
+      get :index, account_id: create(:spammer).to_param
+      must_respond_with 302
+    end
   end
 end

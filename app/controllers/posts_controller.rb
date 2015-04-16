@@ -1,19 +1,13 @@
 class PostsController < ApplicationController
   include TopicsHelper
+  include RedirectIfDisabled
   helper PageContextHelper
 
   before_action :session_required, only: [:create, :edit, :update]
   before_action :admin_session_required, only: [:destroy]
   before_action :find_relevant_records, except: [:index]
   before_action :find_post_record, only: [:edit, :update, :destroy]
-
-  def index
-    params[:account_id] ? find_posts_belonging_to_account : find_posts
-    respond_to do |format|
-      format.atom
-      format.html
-    end
-  end
+  before_action :find_posts, only: [:index]
 
   def create
     @post = build_new_post
@@ -91,12 +85,17 @@ class PostsController < ApplicationController
   end
 
   def find_posts_belonging_to_account
-    @account = Account.from_param(params[:account_id]).first
+    @account = Account::Find.by_id_or_login(params[:account_id])
+    redirect_if_disabled
     @posts = @account.posts.includes(:topic).tsearch(params[:query], parse_sort_term)
              .page(params[:page]).per_page(10)
   end
 
   def find_posts
+    params[:account_id] ? find_posts_belonging_to_account : find_posts_by_search_params
+  end
+
+  def find_posts_by_search_params
     @posts = Post.tsearch(params[:query], parse_sort_term).page(params[:page]).per_page(10)
   end
 
