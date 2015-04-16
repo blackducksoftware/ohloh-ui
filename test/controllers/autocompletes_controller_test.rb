@@ -79,6 +79,31 @@ describe 'AutocompletesController' do
     end
   end
 
+  describe 'contributions' do
+    it 'must render name facts json' do
+      project = create(:project)
+      name1 = create(:name, name: 'test1')
+      name2 = create(:name, name: 'test2')
+      create(:name_fact, name: name1, analysis: project.best_analysis)
+      create(:name_fact, name: name2, analysis: project.best_analysis)
+
+      get :contributions, term: 'test', project: "#{project.name}"
+
+      must_respond_with :ok
+      result = JSON.parse(response.body)
+      result.length.must_equal 2
+      result.first.must_equal name1.name
+      result.last.must_equal name2.name
+    end
+
+    it 'must render empty text if project name is empty' do
+      get :contributions, term: 'test'
+
+      must_respond_with :ok
+      response.body.must_equal ''
+    end
+  end
+
   describe 'tags' do
     it 'must render valid tags json' do
       project = create(:project)
