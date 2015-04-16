@@ -30,7 +30,7 @@
       = image_tag "icons/tn_laurel_#{kudo.sender.kudo_rank}.png", alt: "KudoRank #{kudo.sender.kudo_rank}"
       - unless kudo.message.blank?
         %p.margin_left_25{ id: "kudo_received_#{kudo.sender.login}" }
-          != t('.kudo_message', message: kudo.message)
+          "#{kudo.message}"
 
   - if @recent_kudos.empty?
     %p.margin_left_15

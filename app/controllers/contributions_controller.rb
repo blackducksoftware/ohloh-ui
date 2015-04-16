@@ -36,13 +36,13 @@ class ContributionsController < ApplicationController
   end
 
   def commits_spark
-    spark_image = Spark::SimpleSpark.new(@contributor.monthly_commits, max_value: 50).render
-    send_file spark_image.path, type: 'image/png', filename: 'commits.png', disposition: 'inline'
+    spark_image = Spark::SimpleSpark.new(@contributor.monthly_commits, max_value: 50).render.to_blob
+    send_data spark_image, type: 'image/png', filename: 'commits.png', disposition: 'inline'
   end
 
   def commits_compound_spark
-    spark_image = Spark::CompoundSpark.new(@contributor.monthly_commits(11), max_value: 50).render
-    send_file spark_image.path, type: 'image/png', filename: 'commits.png', disposition: 'inline'
+    spark_image = Spark::CompoundSpark.new(@contributor.monthly_commits(11), max_value: 50).render.to_blob
+    send_data spark_image, type: 'image/png', filename: 'commits.png', disposition: 'inline'
   end
 
   private
