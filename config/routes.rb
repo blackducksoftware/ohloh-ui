@@ -31,6 +31,8 @@ Rails.application.routes.draw do
     resources :edits, only: [:index]
   end
 
+  resources :tags, only: [:index]
+
   resources :accounts do
     resources :api_keys, constraints: { format: :html }, except: :show
     resources :projects, only: [:index]
@@ -109,6 +111,7 @@ Rails.application.routes.draw do
       get :project
       get :licenses
       get :contributions
+      get :tags
     end
   end
 
@@ -135,6 +138,7 @@ Rails.application.routes.draw do
       get :map
       get :settings
       get :estimated_cost
+      get :similar_by_tags
       get 'permissions'  => 'permissions#show',   as: :permissions
       put 'permissions'  => 'permissions#update', as: :update_permissions
       post 'rate'        => 'ratings#rate',       as: :rate
@@ -156,9 +160,10 @@ Rails.application.routes.draw do
     end
 
     resources :licenses, controller: :project_licenses, only: [:index, :new, :create, :destroy]
-    resources :tags, controller: :project_tags, only: [:index, :new, :create, :destroy] do
+    resources :tags, controller: :project_tags, only: [:index, :create, :destroy] do
       collection do
-        get :select
+        get :related
+        get :status
       end
     end
     resources :duplicates

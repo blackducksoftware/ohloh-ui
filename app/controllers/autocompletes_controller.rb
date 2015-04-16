@@ -27,6 +27,11 @@ class AutocompletesController < ApplicationController
     render json: @name_facts.map { |nf| nf.name.name }
   end
 
+  def tags
+    tags = Tag.autocomplete(params[:project_id], params[:term]).limit(10).pluck(:name)
+    render json: tags
+  end
+
   private
 
   def set_name_facts

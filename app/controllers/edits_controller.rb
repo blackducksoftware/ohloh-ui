@@ -25,7 +25,7 @@ class EditsController < ApplicationController
 
   def find_account
     return nil unless params[:account_id]
-    Account.in_good_standing.from_param(params[:account_id]).take
+    Account.from_param(params[:account_id]).take
   end
 
   def find_project

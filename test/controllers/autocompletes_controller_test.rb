@@ -103,4 +103,20 @@ describe 'AutocompletesController' do
       response.body.must_equal ''
     end
   end
+
+  describe 'tags' do
+    it 'must render valid tags json' do
+      project = create(:project)
+      create(:tagging, tag: create(:tag, name: 'c'), taggable: project)
+      create(:tagging, tag: create(:tag, name: 'algol'), taggable: project)
+      create(:tagging, tag: create(:tag, name: 'c++'), taggable: project)
+
+      get :tags, term: 'C', format: :json
+
+      must_respond_with :ok
+      resp = JSON.parse(response.body)
+      resp.length.must_equal 2
+      [resp[0], resp[1]].sort.must_equal ['c', 'c++']
+    end
+  end
 end
