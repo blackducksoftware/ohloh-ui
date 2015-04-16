@@ -48,8 +48,8 @@ class AnalysesController < ApplicationController
   end
 
   def commits_spark
-    spark_image = NewSpark.new(@analysis.monthly_commits, max_value: 5000).render
-    send_file spark_image, type: 'image/png', filename: 'commits.png', disposition: 'inline'
+    spark_image = NewSpark.new(@analysis.monthly_commits, max_value: 5000).render.to_blob
+    send_data spark_image, type: 'image/png', filename: 'commits.png', disposition: 'inline'
   end
 
   private
