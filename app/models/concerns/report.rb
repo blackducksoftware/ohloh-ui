@@ -1,5 +1,3 @@
-# Note: Check to see if all data points are correct. The queries yield 37 data points NOT 36.
-# Note: Create test points for these methods.
 module Report
   extend ActiveSupport::Concern
 

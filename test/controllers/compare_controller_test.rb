@@ -73,6 +73,7 @@ class CompareControllerTest < ActionController::TestCase
     project_data[:metric] = 'Code'
     xhr :get, :projects_graph, project_data: project_data
     must_respond_with :ok
+  end
 
   # projects - csv format
   test 'csv format should render with no projects passed in' do

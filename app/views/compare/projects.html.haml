@@ -50,7 +50,7 @@
         = compare_row t('.compare_table_mostly_written_in'), :mostly_written_in, help: :mostly_written
         = compare_row t('.compare_table_comments'), :comments
         = compare_row t('.compare_table_lines_of_code'), :lines_of_code,
-                      graph: proj_names.merge(metric: 'Code')
+                      graph: proj_names.merge(metric: 'Code_total')
         = compare_section t('.people')
         = compare_row t('.compare_table_managers'), :managers
         = compare_row t('.compare_table_users'), :users
