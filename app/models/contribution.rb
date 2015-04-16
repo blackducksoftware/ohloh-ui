@@ -31,6 +31,10 @@ class Contribution < ActiveRecord::Base
     super || NilPosition.new
   end
 
+  def kudoable
+    person.account || self
+  end
+
   def recent_kudos(limit = 3)
     kudos.limit(limit)
   end
