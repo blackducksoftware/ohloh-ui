@@ -120,6 +120,20 @@ class ProjectsControllerTest < ActionController::TestCase
     nodes[1].css('name').children.to_s.must_equal 'BazBar_xml'
   end
 
+  it 'index should gracefully handle garbage numeric ids' do
+    login_as nil
+    get :index, ids: '111112222222', api_key: create(:api_key).key, format: :xml
+    must_respond_with :not_found
+  end
+
+  it 'index should gracefully handle garbage non-numeric ids' do
+    login_as nil
+    get :index, ids: 'baal_the_destroyer', api_key: create(:api_key).key, format: :xml
+    must_respond_with :ok
+    nodes = Nokogiri::XML(response.body).css('project')
+    nodes.length.must_equal 0
+  end
+
   it 'index should limit maximum returned to 25' do
     projects = (0...50).map { |_| create(:project) }
     login_as nil

@@ -100,6 +100,16 @@ class Project < ActiveRecord::Base
     koders_status.try(:ohloh_code_ready) == true
   end
 
+  def newest_contributions
+    contributions.sort_by_newest.includes(person: :account, contributor_fact: :primary_language).limit(10)
+  end
+
+  def top_contributions
+    contributions.sort_by_twelve_month_commits
+      .includes(person: :account, contributor_fact: :primary_language)
+      .limit(10)
+  end
+
   private
 
   def clean_strings_and_urls

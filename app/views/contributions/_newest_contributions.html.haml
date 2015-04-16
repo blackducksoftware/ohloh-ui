@@ -1,0 +1,22 @@
+%table.table.table-striped.table-condensed
+  %thead
+    %tr{ id: 'dingus-row' }
+      %td{ colspan: '3' } &nbsp;
+    %tr
+      %th.col-md-3.center= t('.name')
+      %th.col-md-1.center= t('.commits')
+      %th.col-md-2.center= t('.first_commit')
+  %tbody
+    - contributions.each do |contribution|
+      - fact = contribution.contributor_fact
+      %tr
+        %td
+          = link_to project_contributor_path(@project, contribution), class: 'pull-left' do
+            = avatar_img_for(contribution.person)
+          = link_to project_contributor_path(@project, contribution), class: 'avatar_name strong' do
+            = truncate(contribution.person.person_name, length: 30)
+        %td.center
+          = fact.commits
+        %td.center
+          - if fact.first_checkin
+            %abbr.date{ title: fact.first_checkin }= t('.ago', duration: time_ago_in_words(fact.first_checkin))
