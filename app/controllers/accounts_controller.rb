@@ -1,7 +1,7 @@
 class AccountsController < ApplicationController
   include RedirectIfDisabled
 
-  before_action :set_account, only: [:destroy, :show, :update, :edit, :confirm_delete]
+  before_action :set_account, only: [:destroy, :show, :update, :edit, :confirm_delete, :disabled]
   before_action :redirect_if_disabled, only: [:show, :update, :edit]
   before_action :disabled_during_read_only_mode, only: [:new, :create, :edit, :update]
   # FIXME: Integrate this action.
