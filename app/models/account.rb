@@ -101,6 +101,10 @@ class Account < ActiveRecord::Base
     person.try(:kudo_rank) || 1
   end
 
+  def recent_kudos(limit = 3)
+    kudos.order(created_at: :desc).limit(limit)
+  end
+
   class << self
     def resolve_login(login)
       Account.where('lower(login) = ?', login.downcase).first

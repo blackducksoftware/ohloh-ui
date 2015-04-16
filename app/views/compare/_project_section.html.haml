@@ -1,7 +1,7 @@
 - has_header = opts[:include_header]
 - proj_names = params.select { |k, _| k.to_s.match(/project/) }
 %tr.section
-  %th{ colspan: (has_header ? 1 : 4), style: (has_header ? 'padding-top: 47px;' : '') }
+  %th{ colspan: (has_header ? 1 : 4), style: (has_header ? 'padding-top: 7px;' : '') }
     %h4.section.pull-left.nomargin= label
   - if has_header
     - @projects.each_with_index do |project, index|
@@ -16,8 +16,9 @@
                                           data: { placement: 'bottom', 'original-title' => t('compare.remove_from') } }
                 %i.icon-remove= t(:clear)
         - else
-          %form.padding_one_top{ action: compare_projects_path }
-            - (@projects - [project]).each_with_index do |proj, i|
+          %form{ action: compare_projects_path }
+            - @projects.each_with_index do |proj, i|
+              - next if project == proj
               %input{ type: 'hidden', name: "project_#{i}", value: proj ? proj.name : '' }
             - key = "project_#{index}"
             %input.proj.autocompletable{ type: 'text', id: key, name: key, width: 20,

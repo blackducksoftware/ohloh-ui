@@ -1,11 +1,11 @@
 class ProjectsController < ApplicationController
-  [AnalysesHelper, FactoidsHelper, MapHelper, RatingsHelper, RepositoriesHelper].each { |help| helper help }
+  [AnalysesHelper, FactoidsHelper, MapHelper, RatingsHelper, RepositoriesHelper, TagsHelper].each { |help| helper help }
 
   before_action :session_required, only: [:check_forge, :create, :new, :update]
   before_action :api_key_lock, only: [:index]
   before_action :find_account
   before_action :find_projects, only: [:index]
-  before_action :find_project, only: [:show, :edit, :update, :estimated_cost, :users, :settings, :map]
+  before_action :find_project, only: [:show, :edit, :update, :estimated_cost, :users, :settings, :map, :similar_by_tags]
   before_action :redirect_new_landing_page, only: :index
   before_action :find_forge_matches, only: :check_forge
   before_action :project_context, only: [:show, :users, :estimated_cost, :edit, :settings, :map]
@@ -58,6 +58,10 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def similar_by_tags
+    render partial: 'projects/show/similar_by_tags', locals: { similar_by_tags: @project.related_by_tags(4) }
+  end
+
   private
 
   # TODO: this really belongs in app_controller, but that file is too big currently
@@ -68,21 +72,20 @@ class ProjectsController < ApplicationController
   end
 
   def find_account
-    @account = Account.in_good_standing.from_param(params[:account_id]).take
+    @account = Account.from_param(params[:account_id]).take
   end
 
   def find_projects
-    projects = @account ? @account.projects.not_deleted : Project.not_deleted
-    sort_by = parse_sort_term(projects)
-    @projects = projects.tsearch(params[:query], sort_by).page(params[:page]).per_page(10)
+    @projects = find_projects_by_params.page(params[:page]).per_page([25, (params[:per_page] || 10).to_i].min)
   end
 
-  def parse_sort_term(projects)
-    projects.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : nil
+  def find_projects_by_params
+    projects = @account ? @account.projects.not_deleted : Project.not_deleted
+    projects.by_collection(params[:ids], params[:sort], params[:query])
   end
 
   def find_project
-    @project = Project.not_deleted.from_param(params[:id]).take
+    @project = Project.from_param(params[:id]).take
     fail ParamRecordNotFound unless @project
     @project.editor_account = current_user
   end

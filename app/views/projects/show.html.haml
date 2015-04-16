@@ -26,18 +26,18 @@
         = t('.no_description')
         = link_to t('.add_description'), edit_project_path(@project)
 
-    / TODO: implement with tags
-    / #project_tags{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
-    /   %h4 Tags
-    /   %p
-    /     %span{ style: 'margin-left: -17px;' }
-    /       = tag_icon_link(@project)
-    /     - if !@project.tag_list.empty?
-    /       = tag_links(@project.tag_list)
-    /     - else
-    /       = t('.no_tags')
-    /       - if @project.edit_authorized?
-    /         = link_to t('.add_tags'), select_project_tags_path(@project)
+    #project_tags{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
+      %h4= t('.tags')
+      %p.tags{ style: 'padding-left: 20px;' }
+        %span{ style: 'margin-left: -17px;' }
+          = tag_icon_link(@project)
+        - tags = @project.tag_list.split(' ')
+        - if tags.any?
+          = tag_links(tags)
+        - else
+          = t('.no_tags')
+          - if @project.edit_authorized?
+            = link_to t('.add_tags'), project_tags_path(@project)
     = render partial: 'shared/add_this', locals: { text: "#{@project.name} project" }
   .col-md-6
     .well

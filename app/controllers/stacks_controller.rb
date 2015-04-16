@@ -72,7 +72,7 @@ class StacksController < ApplicationController
   end
 
   def find_project
-    @project = Project.not_deleted.from_param(params[:project_id]).take
+    @project = Project.from_param(params[:project_id]).take
     fail ParamRecordNotFound unless @project
   end
 end

@@ -602,4 +602,28 @@ class AccountTest < ActiveSupport::TestCase
       action.status.must_equal Action::STATUSES[:remind]
     end
   end
+
+  describe 'from_param' do
+    it 'should match account login' do
+      account = create(:account)
+      Account.from_param(account.login).first.id.must_equal account.id
+    end
+
+    it 'should match account id as string' do
+      account = create(:account)
+      Account.from_param(account.id.to_s).first.id.must_equal account.id
+    end
+
+    it 'should match account id as integer' do
+      account = create(:account)
+      Account.from_param(account.id).first.id.must_equal account.id
+    end
+
+    it 'should not match spammers' do
+      account = create(:account)
+      Account.from_param(account.to_param).count.must_equal 1
+      Account::Access.new(account).spam!
+      Account.from_param(account.to_param).count.must_equal 0
+    end
+  end
 end

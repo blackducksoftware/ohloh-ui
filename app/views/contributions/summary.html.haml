@@ -1,0 +1,42 @@
+:ruby
+  page_context[:select_footer_nav] = :contributors
+  top_commit_volume_chart_url = top_commit_volume_chart_project_analysis_path(@project, @analysis)
+  committer_history_chart_url = committerhistory_project_analysis_url(project_id: @project.to_param, id: 'latest')
+
+- content_for :html_title do
+  = succeed t('.page_title') do
+    = @project.name
+
+.project_content_title
+  %h2.pull-left= t('.contributors')
+  = project_analysis_timestamp(@project)
+  .clearfix
+
+- if @analysis.present?
+  .row.committers_chart
+    .pull-left.col-md-5{ style: 'width:420px;' }
+      %h4= t('.top_contributors')
+      .chart#top_commit_volume_chart{ datasrc: top_commit_volume_chart_url, style: 'height:320px' }
+    .pull-right.col-md-6
+      %h4= t('.no_of_contributors')
+      .chart#top_commit_volume_chart{ datasrc: committer_history_chart_url, style: 'height:320px' }
+    .clearfix
+
+  .col-md-12
+    %h4= link_to t('.newest_contributors'), project_contributors_path(@project, sort: 'newest')
+    .col-md-6
+      = render partial: 'newest_contributions', locals: { contributions: @newest_contributions.first(5) }
+    - if @newest_contributions.length > 5
+      .col-md-6
+        = render partial: 'newest_contributions', locals: { contributions: @newest_contributions.last(5) }
+    .clearfix
+  .clearfix
+
+  .col-md-12.top-committers
+    %h4= link_to t('.top_contributions'), project_contributors_path(@project)
+    = render partial: 'contributions', locals: { contributions: @top_contributions, search_bar: false }
+    %p
+      = link_to t('.see_all'), project_contributors_path(@project), class: 'btn btn-info btn-small'
+  .clearfix
+- else
+  = render partial: 'projects/show/no_analysis_summary'

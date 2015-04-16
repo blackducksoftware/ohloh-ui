@@ -39,7 +39,7 @@ module MapHelper
 
   def map_js_initialization(id)
     javascript_tag <<-JSCRIPT
-      $(document).ready(function(){
+      $(document).on('page:change', function(){
         Map.load('#{id}', 25, 12, 2);
         Map.moveTo(25, 12, 2);
       });
