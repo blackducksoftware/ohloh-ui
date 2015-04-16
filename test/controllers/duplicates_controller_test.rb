@@ -40,7 +40,7 @@ describe 'DuplicatesController' do
     end
 
     it 'should create gracefully handle garbage good_project_id' do
-      good = create(:project)
+      create(:project)
       bad = create(:project)
       login_as create(:account)
       post :create, project_id: bad.to_param, duplicate: { good_project_id: 'I_am_a_banana' }
@@ -53,6 +53,133 @@ describe 'DuplicatesController' do
       post :create, project_id: project.to_param, duplicate: { good_project_id: project.to_param }
       assert_response :unprocessable_entity
       response.body.must_match I18n.t('duplicates.fields.legend', name: project.name)
+    end
+  end
+
+  describe 'edit' do
+    it 'should require a current user' do
+      project = create(:project)
+      duplicate = create(:duplicate, bad_project: project)
+      get :edit, project_id: project.to_param, id: duplicate.id
+      assert_response :unauthorized
+    end
+
+    it 'should require that the user be the reporter' do
+      project = create(:project)
+      duplicate = create(:duplicate, bad_project: project)
+      login_as create(:account)
+      get :edit, project_id: project.to_param, id: duplicate.id
+      assert_response 302
+    end
+
+    it 'should allow the creator to edit duplicate' do
+      project = create(:project)
+      duplicate = create(:duplicate, bad_project: project)
+      login_as duplicate.account
+      get :edit, project_id: project.to_param, id: duplicate.id
+      assert_response :ok
+    end
+
+    it 'should allow admins to edit duplicates made by others' do
+      project = create(:project)
+      duplicate = create(:duplicate, bad_project: project)
+      login_as create(:admin)
+      get :edit, project_id: project.to_param, id: duplicate.id
+      assert_response :ok
+    end
+  end
+
+  describe 'update' do
+    it 'should require a current user' do
+      project = create(:project)
+      duplicate = create(:duplicate, bad_project: project)
+      post :update, project_id: project.to_param, id: duplicate.id,
+                    duplicate: { good_project_id: duplicate.good_project_id, comment: 'Whatevs!' }
+      assert_response :unauthorized
+      duplicate.reload.comment.wont_equal 'Whatevs!'
+    end
+
+    it 'should require that the user be the reporter' do
+      project = create(:project)
+      duplicate = create(:duplicate, bad_project: project)
+      login_as create(:account)
+      post :update, project_id: project.to_param, id: duplicate.id,
+                    duplicate: { good_project_id: duplicate.good_project_id, comment: 'Whatevs!' }
+      assert_response 302
+      duplicate.reload.comment.wont_equal 'Whatevs!'
+    end
+
+    it 'should allow the creator to edit duplicate' do
+      project = create(:project)
+      duplicate = create(:duplicate, bad_project: project)
+      login_as duplicate.account
+      post :update, project_id: project.to_param, id: duplicate.id,
+                    duplicate: { good_project_id: duplicate.good_project_id, comment: 'Whatevs!' }
+      assert_response 302
+      duplicate.reload.comment.must_equal 'Whatevs!'
+    end
+
+    it 'should allow admins to update duplicates made by others' do
+      project = create(:project)
+      duplicate = create(:duplicate, bad_project: project)
+      login_as create(:admin)
+      post :update, project_id: project.to_param, id: duplicate.id,
+                    duplicate: { good_project_id: duplicate.good_project_id, comment: 'Whatevs!' }
+      assert_response 302
+      duplicate.reload.comment.must_equal 'Whatevs!'
+    end
+
+    it 'should gracefully handle validation errors' do
+      project = create(:project)
+      duplicate = create(:duplicate, bad_project: project)
+      login_as duplicate.account
+      post :update, project_id: project.to_param, id: duplicate.id,
+                    duplicate: { good_project_id: project.to_param, comment: 'Whatevs!' }
+      assert_response :unprocessable_entity
+      duplicate.reload.comment.wont_equal 'Whatevs!'
+      response.body.must_match I18n.t('duplicates.fields.legend', name: project.name)
+    end
+  end
+
+  describe 'destroy' do
+    it 'should require a current user' do
+      project = create(:project)
+      duplicate = create(:duplicate, bad_project: project)
+      delete :destroy, project_id: project.to_param, id: duplicate.id
+      Duplicate.where(id: duplicate.id).count.must_equal 1
+    end
+
+    it 'should require that the user be the reporter' do
+      project = create(:project)
+      duplicate = create(:duplicate, bad_project: project)
+      login_as create(:account)
+      delete :destroy, project_id: project.to_param, id: duplicate.id
+      Duplicate.where(id: duplicate.id).count.must_equal 1
+    end
+
+    it 'should allow the creator to edit duplicate' do
+      project = create(:project)
+      duplicate = create(:duplicate, bad_project: project)
+      login_as duplicate.account
+      delete :destroy, project_id: project.to_param, id: duplicate.id
+      Duplicate.where(id: duplicate.id).count.must_equal 0
+    end
+
+    it 'should allow admins to update duplicates made by others' do
+      project = create(:project)
+      duplicate = create(:duplicate, bad_project: project)
+      login_as create(:admin)
+      delete :destroy, project_id: project.to_param, id: duplicate.id
+      Duplicate.where(id: duplicate.id).count.must_equal 0
+    end
+
+    it 'should gracefully handle destroy errors' do
+      project = create(:project)
+      duplicate = create(:duplicate, bad_project: project)
+      login_as duplicate.account
+      Duplicate.any_instance.expects(:destroy).returns false
+      delete :destroy, project_id: project.to_param, id: duplicate.id
+      Duplicate.where(id: duplicate.id).count.must_equal 1
     end
   end
 end

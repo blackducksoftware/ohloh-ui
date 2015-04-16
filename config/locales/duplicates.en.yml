@@ -11,6 +11,16 @@ en:
       button_text: "Submit Request"
     create:
       success: "Thank you for your help! Your report has been sent to an Open Hub administrator."
+    edit:
+      must_own_duplicate: "You can't edit this duplicate. You don't own it."
+      page_title: "The %{name} Open Source Project on Open Hub : Edit Duplicate"
+      page_header: "Report Duplicate : Edit"
+      button_text: "Update Request"
+    update:
+      success: "Duplicate report updated."
+    destroy:
+      success: "Project duplicate report canceled."
+      error: "Project duplicate report cannot be canceled."
     instructions:
       header: "Report Duplicate"
       help1: "Use this form to request that a duplicate project be deleted"

@@ -6,6 +6,7 @@ class DuplicatesController < ApplicationController
   before_action :find_duplicate, only: [:edit, :update, :destroy]
   before_action :find_good_project, only: [:create, :update]
   before_action :project_context
+  before_action :must_own_duplicate, only: [:edit, :update, :destroy]
 
   def new
     previous_dupe = @project.duplicates.first
@@ -26,13 +27,22 @@ class DuplicatesController < ApplicationController
     end
   end
 
-  def edit
-  end
-
   def update
+    if @duplicate.update_attributes(good_project: @good_project, comment: duplicate_params[:comment])
+      flash[:success] = t('.success')
+      redirect_to project_path(@duplicate.bad_project)
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   def destroy
+    if @duplicate.destroy
+      flash[:success] = t('.success')
+    else
+      flash[:error] = t('.error')
+    end
+    redirect_to project_path(@duplicate.bad_project)
   end
 
   private
@@ -43,7 +53,7 @@ class DuplicatesController < ApplicationController
   end
 
   def find_duplicate
-    @duplicate = Duplicate.where(project_id: @project.id, account_id: current_user.id).from_param(params[:id]).take
+    @duplicate = Duplicate.where(bad_project_id: @project.id).where(id: params[:id]).take
     fail ParamRecordNotFound if @duplicate.nil?
   end
 
@@ -54,5 +64,11 @@ class DuplicatesController < ApplicationController
 
   def duplicate_params
     params.require(:duplicate).permit([:good_project_id, :comment])
+  end
+
+  def must_own_duplicate
+    return if (@duplicate.account == current_user) || current_user_is_admin?
+    flash[:error] = t('duplicates.edit.must_own_duplicate')
+    redirect_to project_path(@duplicate.bad_project)
   end
 end
