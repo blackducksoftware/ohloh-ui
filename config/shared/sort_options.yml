@@ -92,3 +92,44 @@ projects:
       - active_committers
   default:
     relevance
+
+contributions:
+  options:
+    -
+      - All Time Commits
+      - commits
+    -
+      - 12 Month Commits
+      - twelve_month_commits
+    -
+      - KudoRank
+      - kudo_position
+    -
+      - Language
+      - language
+    -
+      - Name
+      - name
+    -
+      - Recently Active
+      - latest_commit
+    -
+      - Newest Contributors
+      - newest
+    -
+      - Oldest Contributors
+      - oldest
+
+enlistments:
+  options:
+    -
+      - Repository Type
+      - by_type
+    -
+      - Url
+      - by_url
+    -
+      - Module Name
+      - by_module_name
+  default:
+    by_url

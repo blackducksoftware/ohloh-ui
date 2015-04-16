@@ -14,6 +14,7 @@
 #= require jquery_ujs
 #= require jquery-ui
 #= require turbolinks
+#= require underscore-min
 #= require chosen.min
 #= require app
 #= require_tree .
@@ -33,3 +34,4 @@ $(document).on 'page:change', ->
   OrgsFilter.init()
   Cocomo.init()
   ProjectForm.init()
+  new App.CheckAvailiability($('input.check-availability'))

@@ -1,11 +1,13 @@
 class StacksController < ApplicationController
+  helper MapHelper
   helper RatingsHelper
 
-  before_action :session_required, except: [:index, :show, :similar]
-  before_action :find_stack, except: [:index, :create]
-  before_action :can_edit_stack, except: [:index, :show, :create, :similar]
+  before_action :session_required, except: [:index, :show, :similar, :near]
+  before_action :find_stack, except: [:index, :create, :near]
+  before_action :can_edit_stack, except: [:index, :show, :create, :similar, :near]
   before_action :find_account, only: [:index, :show]
   before_action :auto_ignore, only: [:builder]
+  before_action :find_project, only: [:near]
 
   def index
     @stacks = @account.stacks
@@ -38,6 +40,10 @@ class StacksController < ApplicationController
     render json: { recommendations: @recommendations }
   end
 
+  def near
+    render text: view_context.map_near_stacks_json(@project, params)
+  end
+
   private
 
   def model_params
@@ -63,5 +69,10 @@ class StacksController < ApplicationController
       proj = Project.find_by_url_name(project_url_name)
       StackIgnore.create(stack_id: @stack.id, project_id: proj.id) if proj
     end
+  end
+
+  def find_project
+    @project = Project.from_param(params[:project_id]).take
+    fail ParamRecordNotFound unless @project
   end
 end

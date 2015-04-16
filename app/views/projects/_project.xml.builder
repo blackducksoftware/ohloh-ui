@@ -19,14 +19,14 @@ xml.project do
   xml.rating_count project.ratings.count
   xml.review_count project.reviews.count
   xml.analysis_id project.best_analysis_id
-  # TODO: Fix this when tags are implemented
-  # unless project.tag_list.empty?
-  #   xml.tags do
-  #     project.tag_list.split.each do |t|
-  #       xml.tag t
-  #     end
-  #   end
-  # end
+  tags = project.tag_list.split(' ')
+  if tags.any?
+    xml.tags do
+      tags.each do |t|
+        xml.tag t
+      end
+    end
+  end
   if defined?(analysis) and analysis
     xml << render(partial: 'analyses/analysis', locals: { analysis: analysis, builder: xml })
   end

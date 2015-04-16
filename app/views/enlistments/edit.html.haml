@@ -1,0 +1,77 @@
+- content_for(:html_title) { t('.html_title', name: @project.name) }
+- page_context[:select_footer_nav] = nil
+
+%h2.pull-left
+  = link_to t('settings'), settings_project_path(@project)
+  &nbsp;:&nbsp;
+  = link_to t('.code_locations'), project_enlistments_path(@project)
+  = t('.ignored_files')
+= project_analysis_timestamp(@project)
+.clearfix
+
+.col-md-offset-1.col-md-11.padding_right_50
+  .well
+    = form_for [@project, @enlistment], html: { method: :put } do |f|
+      %fieldset
+        .control-group
+          %label.control-label
+            = t('.ignored_files_for')
+            %strong= @enlistment.repository.nice_url
+          .controls
+            = find_and_preserve(f.text_area(:ignore, rows: 20, cols: 40,
+              style: 'width: 730px; font-family: monospace;'))
+            - error_tag @enlistment, :ignore
+            %p.help-block
+              = t('.description1')
+        .actions
+          %input.btn.btn-primary{ type: 'submit', value: t('.save_ignored_files') }
+
+.clearfix
+
+%h4.nomargin
+  %span.soft= t('.about')
+  = t('.code_locations_ignored')
+.col-md-5
+  %p= t('.syntax_tips')
+  %ul
+    %li
+      = t('.description6')
+      %code= t('.description7')
+    %li
+      = t('.description8')
+      %code= t('.description9')
+      = t('.description10')
+      %code= t('.description11')
+      = t('.description12')
+    %li
+      = t('.description13')
+      %code= t('.description14')
+      = t('.description15')
+      %code= t('.description16')
+      = t('.description17')
+    %li
+      = t('.description18')
+      %code= t('.description19')
+      = t('.description20')
+    %li
+      = t('.description21')
+    %li
+      = t('.description22')
+      %code= t('.description23')
+      = t('.description24')
+      = t('.description25')
+    %li
+      = t('.description26')
+      %code= t('.description27')
+      = t('.description28')
+      %code= t('.description29')
+      = t('.description30')
+.col-md-5
+  %p= t('.example')
+  - other_examples = ''
+  - if @examples.present?
+    - other_examples << t('.some_random_files')
+    - @examples.each do |enlistment|
+      - other_examples << t('.disallow_html', enlistment: enlistment)
+  %pre
+    = t('.excluded_directory_html', other_examples: other_examples)

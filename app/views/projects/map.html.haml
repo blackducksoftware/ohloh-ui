@@ -1,33 +1,25 @@
-- content_for :html_title do
-  = t('.geo_map', project: @project.name)
-
-= render 'projects/header'
-
-= javascript_include_tag 'lib/assets/google_map'
-
-/ From ohloh-app
-/ This renders the actual google map and javascript code:
-= render '/projects/map/common'
-/ This places the User and Contributor points on the map.
+:ruby
+  total_users = @project.user_count
+  total_contributors = @project.best_analysis.contributor_facts.size
+- content_for(:html_title) { t('.page_title') }
 - content_for :javascript do
-  = javascript_tag('Map.postMap = function(){Map.setCenterZoom(25,12,2); ProjectMap.getContributors();}')
+  - args = "'#{@project.to_param}', #{total_users}, #{total_contributors}"
+  = javascript_tag "$(document).on('page:change', function(){ ProjectMap.init(#{args}); });"
 
-/ Note: A possible solution is to place the object.init into the file and see if the code
-/ works
+%h3= t('.page_title')
 
-.col-md-12
-  .col-md-1
-    %strong= t('.show')
-  .col-md-8
-    .radio
-      %label
-      / TODO: Buttons don't actually change when clicked
-      / Nor do they have actual id's in CSS yet.
-      %input{ checked: 'checked', name: 'contributors', type: 'radio',
-              value: 'contributors', id: 'contributors' }= t('.contributors')
-    .radio
-      %label
-      %input{ checked: 'checked', name: 'users', type: 'radio', value: 'users', id: 'users' }= t('.users')
-  .col-md-1
-    / TODO: map_status does something in ohloh. Figure that out.
+#map_container{ 'data-icon-image' => image_path('map/map_yellow.png') }
+  %p
+    %strong Show:
+    /=link_to "Contributors", "#", id: 'a_contributors'
+    /|
+    /=link_to "Users", "#", id: 'a_users'
+    %input{ type: 'radio', id: 'a_contributors', name: 'map_type' }
+    Contributors
+    %br
+    %input{ type: 'radio', id: 'a_users', name: 'map_type' }
+    Users
     %span#map_status Loading...
+  .big#map
+
+!= map_init('map')

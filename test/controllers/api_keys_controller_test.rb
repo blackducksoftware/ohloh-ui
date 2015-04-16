@@ -29,7 +29,7 @@ class ApiKeysControllerTest < ActionController::TestCase
     api_key1 = create(:api_key, name: 'foobar')
     api_key2 = create(:api_key, name: 'goobaz')
     login_as @admin
-    get :index, q: 'foobar'
+    get :index, query: 'foobar'
     must_respond_with :ok
     response.body.must_match(api_key1.name)
     response.body.wont_match(api_key2.name)
@@ -39,7 +39,7 @@ class ApiKeysControllerTest < ActionController::TestCase
     api_key1 = create(:api_key, description: 'foobar')
     api_key2 = create(:api_key, description: 'goobaz')
     login_as @admin
-    get :index, q: 'foobar'
+    get :index, query: 'foobar'
     must_respond_with :ok
     response.body.must_match(api_key1.name)
     response.body.wont_match(api_key2.name)
@@ -49,7 +49,7 @@ class ApiKeysControllerTest < ActionController::TestCase
     api_key1 = create(:api_key, key: 'foobar')
     api_key2 = create(:api_key, key: 'goobaz')
     login_as @admin
-    get :index, q: 'foobar'
+    get :index, query: 'foobar'
     must_respond_with :ok
     response.body.must_match(api_key1.name)
     response.body.wont_match(api_key2.name)
@@ -59,7 +59,7 @@ class ApiKeysControllerTest < ActionController::TestCase
     api_key1 = create(:api_key, account_id: @user.id)
     api_key2 = create(:api_key, account_id: @admin.id)
     login_as @admin
-    get :index, q: @user.name
+    get :index, query: @user.name
     must_respond_with :ok
     response.body.must_match(api_key1.name)
     response.body.wont_match(api_key2.name)

@@ -1,0 +1,24 @@
+- if contribution.position.blank?
+  .well
+    %p{ style: 'font-size: 18px' }
+      %i.icon-exclamation-sign &nbsp;
+      = t('.do_you_know')
+    .row.margin_right_10.margin_left_40
+      .offset1.margin_left_40
+        = t('.help_out')
+      .padding_one_top.offset1
+        .col-md-6.margin_left_40.padding_left_40
+          .col-md-0
+            = link_to_claim_position contribution, t('.claim')
+          .col-md-12
+            = t('.are_you')
+            %br
+            = t('.add')
+        .col-md-5
+          .col-md-0
+            = link_to t('.send_invite'), new_contributor_invite_path(contribution), class: 'btn'
+          .col-md-3.no_padding{ style: 'width:230px' }
+            = t('.know')
+            %br
+            = t('.invite_him')
+        .clearfix

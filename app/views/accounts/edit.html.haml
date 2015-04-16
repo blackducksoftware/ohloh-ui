@@ -16,7 +16,10 @@
             .form-group
               %label.control-label.required= t('login')
               .controls
-                = f.text_field :login, class: 'form-control'
+                = f.text_field :login, class: 'form-control check-availability',
+                                       'data-ajax-path' => account_check_availabilities_path,
+                                       'data-preview-base-url' => accounts_url
+                = render 'shared/availability_preview'
                 - error_tag @account, :login
 
             .form-group

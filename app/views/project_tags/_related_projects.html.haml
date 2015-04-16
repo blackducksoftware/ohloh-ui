@@ -1,0 +1,3 @@
+= render(partial: 'related_project', collection: @related_projects, locals: { tags: @project.tags })
+- if @related_projects.empty?
+  - alert :info, message: t('.no_other_projects')

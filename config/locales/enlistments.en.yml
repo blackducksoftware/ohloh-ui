@@ -1,0 +1,130 @@
+en:
+  enlistments:
+    index:
+      title: 'The %{name} Open Source Project on Open Hub : Code Locations Page'
+      no_match: 'No matches with this filter'
+      code_locations: ' : Code Locations'
+      alert_info_heading: "Awesome! You added the first Code Location to %{name}"
+      alert_info_description: 'Open Hub will analyze enlistments in the order they are received. The amount of time it takes depends on how many projects are ahead of you in the queue, as well as how large your project is. In practice this can mean anywhere from an hour to several days.'
+      alert_warn_heading: 'If you are experiencing a problem with Code Locations in Open Hub'
+      alert_warn_description1: 'Please wait about 24 hours before reporting a problem. We continuously monitor the system, and many types of errors will be repaired automatically.'
+      alert_warn_description2: 'If the problem persists, please alert us for special handling in our'
+      help_forum: 'help forum'
+      alert_warn_description3_html: 'Please <strong>do not</strong> simply delete and re-add the enlistment. In most cases this does not have any effect (our system will recognize the URL and simply re-add the existing broken download), and it will complicate our debugging efforts.'
+      repository_url: 'Repository URL'
+      scm_type: 'SCM Type'
+      update_status: 'Update Status'
+      ignored_files: 'Ignored Files'
+      actions: 'Actions'
+      new_code_location: 'New Code Location'
+    new:
+      page_title: 'The %{name} Open Source Project on Open Hub : New Code Location Page'
+      code_locations: 'Code Locations'
+      new: ' : New'
+    fields:
+      scm_type: 'Select the type of source control software'
+      enter_url: 'Enter the source control URL'
+      example: 'Examples:'
+      description4: ':pserver:anonymous:@myproject.cvs.sourceforge.net:/cvsroot/myproject'
+      description5: ':pserver:username:password@mywebsite.org:/cvs'
+      description6: 'svn://mywebsite.org/svn/myproject/trunk'
+      description7: 'http://subversion.mywebsite.org/myproject/trunk'
+      description8_html: 'To conserve server resources, please submit only the <strong>trunk</strong> subdirectory of a Subversion repository. Do not import the <strong>tags</strong> or <strong>branches</strong> directories.'
+      description15: 'git://git.mywebsite.org/pub/scm/git/myproject.git'
+      description16: 'http://mywebsite.org/myproject.git'
+      description17: 'http://www.mywebsite.org/pub/scm/hg/myproject'
+      description18: 'https://mywebsite.org/myproject/hg'
+      description19: 'bzr://www.mywebsite.org/myproject.bzr'
+      description20: 'https://code.launchpad.net/myproject/trunk'
+      if_required: 'If required, enter the login credentials here'
+      warning: 'Warning!'
+      description23: 'The username and password you enter here will become public information.Do not submit a password to Open Hub unless you want everyone to see it.'
+      cvs_module_name: 'Enter the CVS module name'
+      enter_cvs: 'Enter the name of a single CVS module.'
+      create_seperate_enlistment: 'Create separate enlistments for each module in the project.'
+      enter_git: 'Enter an optional Git branch name'
+      enter_git_name: 'Enter the name of a single Git branch.'
+      if_not_sure: 'If not sure, just leave it blank. Open Hub will track the master branch.'
+      bypass_url_validation: 'DEBUG ONLY: Do not validate this repository'
+      check_server_connection: 'Checking server connection...'
+      choice: 'DEBUG ONLY: Do not validate this repository'
+      save_code_location: 'Save Code Location'
+    update:
+      success: 'Changes saved. The list of ignored files will be updated during the next Open Hub analysis.'
+    create:
+      notice:  "A repository with the url: %{url} already exists for this project."
+      success:  "Successfully added %{url} %{branch_name} %{module_name}"
+    enlistment:
+      file: 'file'
+      description1: 'Open Hub ignored'
+      description2: 'during processing.'
+      description3: 'All files included.'
+      edit_ignored: 'Edit ignored files'
+      remove: 'Remove'
+      confirm: 'Are you sure you want to delete this code location?'
+    destroy:
+      success: "Code location was removed from %{name} successfully."
+    about_code_locations:
+      about: 'About'
+      code_locations: 'Code Locations'
+      description1: "Open Hub's statistics are derived from analysis of the project's source code history as maintained by the project's repository. Accordingly, it is crucial that this information be maintained accurately."
+      description2: "Open Hub currently supports repositories maintained using Git, Mercurial, Bazaar, Subversion, and CVS."
+      description3: "For Subversion repositories, submit only the trunk subdirectory. Don't submit the tags or branches directories."
+      description4: "As soon as you add a new repository, Open Hub will immediately verify settings and successful connection to the source control server. The repository will then be added to a queue for later processing. Depending on the load on Open Hub's crawlers and the size of the repository, it may be several hours before the project's statistics have been updated to reflect the new repository."
+      description5: 'If a repository requires login credentials, those credentials'
+      description6: 'will become public information.'
+      description7: 'Do not submit a username and password to Open Hub unless you are certain that it is safe for this information to become public.'
+      description8: 'Open Hub can combine data from multiple code locations to create a composite and complete set of statistics for a project. This means that a project:'
+      description9: 'can consist of multiple sub-projects, each with its own repositories'
+      description10: 'can include both a read-only historical repository and a newer, active repository that accurately reflect the entire history of a project even if its code has been moved or its SCM has been changed.'
+      description11: "A code location (repository) can be part of multiple projects. The code in such a repository will be counted for each project, so please consider carefully how to organize Open Hub's view of a project and its sub-projects, to prevent double-counting while still reflecting the chosen organizational structure for the project."
+    no_enlistment:
+      where_is_source_code: "Where's the source code?"
+      description1: 'Open Hub connects to Subversion, Git, CVS, Mercurial and Bazaar source control servers to discover the contributors and the history of their activities.'
+      description2: 'If possible, add a source control repository to this project:'
+      new_code_location: 'New Code Location'
+      help1: "Help! I can't add the repository to Open Hub!"
+      help2: "No worries, let us know why you can't tell Open Hub where the code is and we'll be happy to help you out."
+      feedback1: "I don't know where the source control is!"
+      feedback2: 'There is no publicly accessible source control repository'
+      feedback3: "Open Hub doesn't support this project's source control system (e.g. Darcs, Perforce, etc.)"
+      send_feedback: 'Send Feedback'
+    edit:
+      html_title: 'The %{name} Open Source Project on Open Hub : Ignore Files'
+      code_locations: 'Code Locations'
+      save_ignored_files: 'Save Ignored Files'
+      ignored_files: ' : Ignore Files'
+      ignored_files_for: 'Ignored Files for'
+      description1: 'If you just want Open Hub to include everything from this repository, leave this box blank.'
+      about: 'About'
+      code_locations_ignored: 'Code Locations : Ignore Files'
+      syntax_tips: 'Syntax Tips:'
+      description6: 'Each line must begin with'
+      description7: 'Disallow:'
+      description8: 'All paths that match the provided prefix will be ignored. For example,'
+      description9: 'Disallow: doc/'
+      description10: 'will cause Open Hub to ignore all files in the'
+      description11: 'doc/'
+      description12: 'directory.'
+      description13: 'To ignore a specifc file, specify the full relative file path. For example,'
+      description14: 'Disallow: tests/unit/suite.xml'
+      description15: 'will cause Open Hub to ignore'
+      description16: 'tests/unit/suite.xml'
+      description17: 'file.'
+      description18: 'Comments are supported, and must begin with a'
+      description19: '#'
+      description20: 'character.'
+      description21: 'Wildcard characters (*) and regular expressions are not supported.'
+      description22: 'Open Hub will not allow you to ignore an entire repository. Specifically,'
+      description23: 'Disallow: /'
+      description24: 'is not supported. If you really want to ignore this entire repository, you should delete'
+      description25: 'this enlistment instead.'
+      description26: 'Open Hub does not support the'
+      description27: 'User-agent:'
+      description28: 'or'
+      description29: 'Allow:'
+      description30: 'keywords. Lines containing them will simply be skipped.'
+      example: 'Example:'
+      some_random_files: '# Some random files from this repository'
+      disallow_html: "\rDisallow: %{enlistment}"
+      excluded_directory_html: "# Some commonly excluded directories\rDisallow: lib/\rDisallow: tools/\r%{other_examples}"

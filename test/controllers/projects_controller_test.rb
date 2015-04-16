@@ -108,6 +108,51 @@ class ProjectsControllerTest < ActionController::TestCase
     nodes[1].css('name').children.to_s.must_equal 'Foo_xml'
   end
 
+  it 'index should respond to xml format with list of ids' do
+    project1 = create(:project, name: 'Baz_xml', description: 'second', rating_average: 2)
+    project2 = create(:project, name: 'BazBar_xml', description: 'first', rating_average: 4)
+    login_as nil
+    get :index, ids: "#{project1.id},#{project2.id}", api_key: create(:api_key).key, format: :xml
+    must_respond_with :ok
+    nodes = Nokogiri::XML(response.body).css('project')
+    nodes.length.must_equal 2
+    nodes[0].css('name').children.to_s.must_equal 'Baz_xml'
+    nodes[1].css('name').children.to_s.must_equal 'BazBar_xml'
+  end
+
+  it 'index should gracefully handle garbage numeric ids' do
+    login_as nil
+    get :index, ids: '111112222222', api_key: create(:api_key).key, format: :xml
+    must_respond_with :not_found
+  end
+
+  it 'index should gracefully handle garbage non-numeric ids' do
+    login_as nil
+    get :index, ids: 'baal_the_destroyer', api_key: create(:api_key).key, format: :xml
+    must_respond_with :ok
+    nodes = Nokogiri::XML(response.body).css('project')
+    nodes.length.must_equal 0
+  end
+
+  it 'index should limit maximum returned to 25' do
+    projects = (0...50).map { |_| create(:project) }
+    login_as nil
+    get :index, ids: projects.map(&:id).join(','), per_page: 50, api_key: create(:api_key).key, format: :xml
+    must_respond_with :ok
+    nodes = Nokogiri::XML(response.body).css('project')
+    nodes.length.must_equal 25
+  end
+
+  it 'index should support pagination' do
+    projects = (0...10).map { |_| create(:project) }
+    login_as nil
+    get :index, ids: projects.map(&:id).join(','), page: 2, per_page: 5, api_key: create(:api_key).key, format: :xml
+    must_respond_with :ok
+    nodes = Nokogiri::XML(response.body).css('project')
+    nodes.length.must_equal 5
+    nodes[0].css('id').children.to_s.to_i.must_equal projects[5].id
+  end
+
   it 'index should handle account sorting by "new"' do
     project1 = create(:project, name: 'Foo_accounts_new', description: 'second', created_at: Time.now - 3.hours)
     project2 = create(:project, name: 'FooBar_accounts_new', description: 'first')
@@ -466,5 +511,44 @@ class ProjectsControllerTest < ActionController::TestCase
     project = create(:project, logo: nil)
     get :settings, id: project.id
     must_respond_with :success
+  end
+
+  # map
+  it 'map should display for unlogged in users' do
+    login_as nil
+    get :map, id: create(:project).to_param
+    must_respond_with :success
+    must_select '#map', 1
+  end
+
+  # similar_by_tags
+  it 'similar_by_tags should display for projects with no tags' do
+    get :similar_by_tags, id: create(:project).to_param
+    must_respond_with :success
+    response.body.must_match I18n.t('projects.show.similar_by_tags.none')
+  end
+
+  it 'similar_by_tags should invite users to add tags for projects with no tags' do
+    login_as create(:account)
+    get :similar_by_tags, id: create(:project).to_param
+    must_respond_with :success
+    response.body.must_match I18n.t('projects.show.similar_by_tags.add_some_tags')
+  end
+
+  it 'similar_by_tags should display related projects' do
+    project1 = create(:project, name: 'California')
+    project2 = create(:project, name: 'Oregon')
+    project3 = create(:project, name: 'Washington')
+    create(:project, name: 'Arizona')
+    tag = create(:tag)
+    create(:tagging, taggable: project1, tag: tag)
+    create(:tagging, taggable: project2, tag: tag)
+    create(:tagging, taggable: project3, tag: tag)
+    get :similar_by_tags, id: project1.to_param
+    must_respond_with :success
+    response.body.wont_match 'California'
+    response.body.must_match 'Oregon'
+    response.body.must_match 'Washington'
+    response.body.wont_match 'Arizona'
   end
 end

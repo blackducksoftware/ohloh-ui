@@ -25,7 +25,7 @@ class EditsController < ApplicationController
 
   def find_account
     return nil unless params[:account_id]
-    Account.in_good_standing.from_param(params[:account_id]).take
+    Account.from_param(params[:account_id]).take
   end
 
   def find_project
@@ -75,6 +75,6 @@ class EditsController < ApplicationController
 
   def add_query_term(edits)
     query_term = params[:q] || params[:query]
-    query_term ? edits.filterable_by(query_term) : edits
+    query_term ? edits.filter_by(query_term) : edits
   end
 end

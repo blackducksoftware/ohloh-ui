@@ -61,30 +61,21 @@ ProjectForm = {
         .append( "<a>" + item.nice_name + "</a>" )
         .appendTo( ul );
     };
-  },
+  }
+}
 
-  url_name_autocomplete: function() {
-    var value = $.trim($(ProjectForm.url_name_input).val());
-    if (value === '') {
-      return;
-    }
-    label.children('span.value').text(value);
-    label.show();
-    if (value.match(ProjectForm.valid_url_name_re) == null) {
-      label.addClass('invalid').removeClass('is_available not_available');
-      return;
-    }
+SimilarProjects = {
+  init: function(){
+    $('#similar_projects').html('');
+    $('#related_spinner').show();
+    var project_id = $('#similar_projects').attr('project_id');
     $.ajax({
-      url: '/p/resolve_url_name',
-      data: {url_name:value},
-      dataType: 'json',
+      url: '/p/' + project_id + '/similar_by_tags',
       success: function (data, textStatus) {
-      var label = $(ProjectForm.preview_url_name_label);
-      if (data.id == null || data.id == ProjectForm.project_id) {
-          label.removeClass('invalid not_available').addClass('is_available');
-        } else {
-          label.removeClass('invalid is_available').addClass('not_available');
-        }
+        $('#similar_projects').html( data );
+      },
+      complete: function() {
+        $('#related_spinner').hide();
       }
     });
   }

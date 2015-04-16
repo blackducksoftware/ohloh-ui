@@ -31,10 +31,16 @@ Rails.application.routes.draw do
     resources :edits, only: [:index]
   end
 
+  resources :tags, only: [:index]
+
   resources :accounts do
     resources :api_keys, constraints: { format: :html }, except: :show
     resources :projects, only: [:index]
-    resources :positions, only: [:index]
+    resources :positions, only: [:index] do
+      collection do
+        get :one_click_create
+      end
+    end
     resources :stacks, only: [:index]
     resources :account_widgets, path: :widgets, as: :widgets, only: :index do
       collection do
@@ -43,7 +49,7 @@ Rails.application.routes.draw do
         get :rank
       end
     end
-    resources :kudos, only: [:index] do
+    resources :kudos, only: [:index, :show] do
       collection do
         get :sent
       end
@@ -88,6 +94,8 @@ Rails.application.routes.draw do
   resources :check_availabilities, only: [] do
     collection do
       get :account
+      get :project
+      get :organization
     end
   end
 
@@ -102,6 +110,8 @@ Rails.application.routes.draw do
       get :account
       get :project
       get :licenses
+      get :contributions
+      get :tags
     end
   end
 
@@ -128,6 +138,7 @@ Rails.application.routes.draw do
       get :map
       get :settings
       get :estimated_cost
+      get :similar_by_tags
       get 'permissions'  => 'permissions#show',   as: :permissions
       put 'permissions'  => 'permissions#update', as: :update_permissions
       post 'rate'        => 'ratings#rate',       as: :rate
@@ -135,12 +146,24 @@ Rails.application.routes.draw do
     end
     collection do
       post :check_forge
-      get 'resolve_url_name' => 'resolve_url_names#project'
     end
-    resources :licenses, controller: :project_licenses, only: [:index, :new, :create, :destroy]
-    resources :tags, controller: :project_tags, only: [:index, :new, :create, :destroy] do
+    resources :contributions, path: :contributors, as: :contributors, only: [:index, :show] do
+      resources :commits
       collection do
-        get :select
+        get :near
+        get :summary
+      end
+      member do
+        get :commits_compound_spark
+        get :commits_spark
+      end
+    end
+
+    resources :licenses, controller: :project_licenses, only: [:index, :new, :create, :destroy]
+    resources :tags, controller: :project_tags, only: [:index, :create, :destroy] do
+      collection do
+        get :related
+        get :status
       end
     end
     resources :duplicates
@@ -154,7 +177,7 @@ Rails.application.routes.draw do
     end
     resources :manages, only: [:new]
     resources :edits, only: [:index]
-    resources :enlistments, only: [:index, :new]
+    resources :enlistments
     resources :factoids, only: [:index]
     resources :rss_articles, only: :index
     resources :project_widgets, path: :widgets, as: :widgets, only: :index do
@@ -188,13 +211,14 @@ Rails.application.routes.draw do
         get :committerhistory
         get :commits_spark
         get :languages
+        get :top_commit_volume_chart
       end
     end
     resources :commits, only: [:index, :show] do
       collection { get :summary }
     end
-    resources :contributors, only: [:index, :show] do
-      collection { get :summary }
+    resources :stacks, only: [] do
+      collection { get :near }
     end
     resources :aliases, only: [:index, :new, :create] do
       collection { get :preferred_names }
@@ -213,9 +237,6 @@ Rails.application.routes.draw do
       get :outside_committers
       get :print_infographic
       get :affiliated_committers
-    end
-    collection do
-      get 'resolve_url_name' => 'resolve_url_names#organization'
     end
     resources :edits, only: [:index]
     resource :logos, only: [:new, :create, :destroy]

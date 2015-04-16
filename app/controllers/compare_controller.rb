@@ -1,7 +1,10 @@
 class CompareController < ApplicationController
+  helper CsvHelper
   helper ProjectsHelper
   helper RatingsHelper
   before_action :find_projects, only: [:projects_graph]
+
+  before_action :setup_header, only: [:projects]
 
   def projects
     @projects = [Project.where(name: params[:project_0]).first,
@@ -39,5 +42,10 @@ class CompareController < ApplicationController
     present_date = Time.now.utc
     @end_date = Time.now.utc.strftime('%Y-%m-01')
     @start_date = Time.utc(present_date.year - 3, present_date.month).strftime('%Y-%m-01')
+
+  def setup_header
+    return unless request_format == 'csv'
+    response.content_type = 'text/csv'
+    response.headers['Content-Disposition'] = 'attachment; filename="export_compare.csv"'
   end
 end
