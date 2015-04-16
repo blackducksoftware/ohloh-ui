@@ -134,8 +134,7 @@ class ApplicationController < ActionController::Base
   end
 
   def bot?
-    return true if request.env['HTTP_USER_AGENT'] =~ BOT_REGEX
-    false
+    !!request.env['HTTP_USER_AGENT'] =~ BOT_REGEX
   end
 
   def show_permissions_alert
