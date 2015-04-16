@@ -4,7 +4,7 @@
   committer_history_chart_url = committerhistory_project_analysis_url(project_id: @project.to_param, id: 'latest')
 
 - content_for :html_title do
-  = succeed ' Open Source Project on Open Hub: Contribution Summary' do
+  = succeed t('.page_title') do
     = @project.name
 
 .project_content_title

@@ -5,7 +5,7 @@
   page_context[:select_footer_nav] = :contributors
 
 - content_for :html_title do
-  = succeed ' Open Source Project on Open Hub: Contributor' do
+  = succeed t('.page_title') do
     = @project.name
   = committer_name
 

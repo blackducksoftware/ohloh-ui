@@ -1,6 +1,7 @@
 en:
   contributions:
     index:
+      page_title: ' Open Source Project on Open Hub: Contributions Listing Page'
       contributors: 'Contributors:'
       listing: 'Listing'
     language_header:
@@ -31,6 +32,7 @@ en:
       no_commits: 'Open Hub did not measure any commits by this contributor.'
       project_commits: 'Project Commits'
     show:
+      page_title: ' Open Source Project on Open Hub: Contributor'
       no_kudos: 'There are no kudos for this contributor at this time.'
       kudo_message: '&quot;%{message}&quot;'
       recent_kudos: 'Recent Kudos...'
@@ -70,6 +72,7 @@ en:
         total_changed: 'Total Lines Changed'
         ratio: 'Comment Ratio'
     summary:
+      page_title: ' Open Source Project on Open Hub: Contribution Summary'
       contributors: 'Contributors'
       top_contributors: 'Commits by Top Contributors'
       no_of_contributors: 'Number of Contributors'
