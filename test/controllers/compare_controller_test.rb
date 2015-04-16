@@ -40,12 +40,7 @@ class CompareControllerTest < ActionController::TestCase
     project1 = create(:project, name: 'The Avenger Initiative')
     project2 = create(:project, name: 'X-MEN')
     project3 = create(:project, name: 'Suicide Squad')
-    project_data = {}
-    project_data[project1] = project1.name
-    project_data[project2] = project2.name
-    project_data[project3] = project3.name
-    project_data[:metric] = 'Contributors'
-    xhr :get, :projects_graph, project_data: project_data
+    xhr :get, :projects_graph, metric: 'contributor', project_0: project1.name, project_1: project2.name, project_2: project2.name
     must_respond_with :ok
   end
 
@@ -53,25 +48,15 @@ class CompareControllerTest < ActionController::TestCase
     project1 = create(:project, name: 'The Avenger Initiative')
     project2 = create(:project, name: 'X-MEN')
     project3 = create(:project, name: 'Suicide Squad')
-    project_data = {}
-    project_data[project1] = project1.name
-    project_data[project2] = project2.name
-    project_data[project3] = project3.name
-    project_data[:metric] = 'Commits'
-    xhr :get, :projects_graph, project_data: project_data
+    xhr :get, :projects_graph, metric: 'commit', project_0: project1.name, project_1: project2.name, project_2: project2.name
     must_respond_with :ok
   end
 
-  test 'should get projects graph route for code history' do
+  test 'should get projects graph route for code total history' do
     project1 = create(:project, name: 'The Avenger Initiative')
     project2 = create(:project, name: 'X-MEN')
     project3 = create(:project, name: 'Suicide Squad')
-    project_data = {}
-    project_data[project1] = project1.name
-    project_data[project2] = project2.name
-    project_data[project3] = project3.name
-    project_data[:metric] = 'Code'
-    xhr :get, :projects_graph, project_data: project_data
+    xhr :get, :projects_graph, metric: 'code_total', project_0: project1.name, project_1: project2.name, project_2: project2.name
     must_respond_with :ok
   end
 

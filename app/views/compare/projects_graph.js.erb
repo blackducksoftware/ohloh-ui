@@ -4,23 +4,19 @@ var year = year - 3;
 var month = presentDay.getMonth();
 
 $(function () {
-  new Highcharts.Chart({
+   $('#chartContainer').highcharts({
     chart: {
-    renderTo: "graphModal",
     height: 450,
-    width: 700,
+    width: 540,
     borderWidth: 5,
     borderColor: '#525252'
     },
     colors: ['#ee1f08','#39d63c','#2ba5e1'],
     title: {
-      text: "Project Comparison Graph"
-    },
-    subtitle: {
-      <%- if @metric == 'Code' -%>
+      <%- if @metric == 'code_total' -%>
             text: 'Total lines of project source code, excluding comments and blank lines.'
       <%- else %>
-            text: '# of <%= @metric.downcase.pluralize %> who made changes to the project source code each month'
+            text: 'Number of <%= @metric.capitalize.pluralize %> who made changes to the project source code each month'
       <%- end %>
     },
     xAxis: {
@@ -34,17 +30,22 @@ $(function () {
       type: 'datetime'
     },
     yAxis: {
+      floor: 0,
+      labels: {
+       formatter:function() {
+        return Highcharts.numberFormat(this.value, 0, '', ',');
+        }
+      },
       title: {
-        <%- if @metric == 'Code' -%>
+        <%- if @metric == 'code_total' -%>
           text: 'Total Lines of Code'
         <%- else %>
-          text: '<%= @metric.pluralize %>'
+          text: '<%= @metric.capitalize.pluralize %>'
         <% end %>
       },
       <%- if @metric == 'Code' -%>
       tickInterval: 1000000,
       <% end %>
-      floor: 0
     },      
     plotOptions: {
         series: {
@@ -57,8 +58,10 @@ $(function () {
       }
     },
     series: [
-    <%- @series_of_plot_points.size.times do | index | %>
-      <%- project_name = params[:project_data][("project_#{index}").to_sym] %>
+    <%- @series_of_plot_points.size.times do |index| %>
+      <%- index += 1 unless params.has_key?("project_#{index}") %>
+      <%- index += 1 unless params.has_key?("project_#{index}") %>
+      <%- project_name = params[("project_#{index}").to_sym] %>
     {
       data: <%= @series_of_plot_points[project_name] %>,
       name: '<%= @series_of_plot_points.key(@series_of_plot_points[project_name]) %>'
@@ -66,6 +69,11 @@ $(function () {
     <%- end %>
     ]
   });
+  var chart = $('#container').highcharts();
+  $('#chart-modal').on('shown.bs.modal', function() {
+    $('#container').css('visibility', 'initial');
+    chart.reflow();
+  });   
 });
 
 $('#graphModal').modal();

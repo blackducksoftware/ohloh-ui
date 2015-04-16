@@ -2,19 +2,17 @@ class CompareController < ApplicationController
   helper CsvHelper
   helper ProjectsHelper
   helper RatingsHelper
-  before_action :find_projects, only: [:projects_graph]
-
   before_action :setup_header, only: [:projects]
 
   def projects
-    @projects = [Project.where(name: params[:project_0]).first,
-                 Project.where(name: params[:project_1]).first,
-                 Project.where(name: params[:project_2]).first]
+    find_projects
   end
 
   def projects_graph
-    @metric = params[:project_data][:metric]
-    populate_chart_plot_points_and_series(@projects)
+    @metric = params[:metric]
+    find_projects
+    set_date_ranges
+    populate_chart_plot_points_and_series
   end
 
   private
@@ -25,13 +23,11 @@ class CompareController < ApplicationController
                  Project.where(name: params[:project_2]).first]
   end
 
-  def populate_chart_plot_points_and_series(projects)
-    set_date_ranges
+  def populate_chart_plot_points_and_series
     @series_of_plot_points = {}
-    projects.each do |project|
+    @projects.compact.each do |project|
       next if project.nil? || project.best_analysis.nil?
-      data = project.best_analysis.send("#{@metric.downcase.singularize}_history".to_sym, @start_date, @end_date)
-      @series_of_plot_points[project.name] = data.map { |values| values["#{@metric.downcase}"].to_i }
+      @series_of_plot_points[project.name] = metric_data(@metric, project)
       @series_of_plot_points[project.name].pop
     end
   end
@@ -46,5 +42,12 @@ class CompareController < ApplicationController
     return unless request_format == 'csv'
     response.content_type = 'text/csv'
     response.headers['Content-Disposition'] = 'attachment; filename="export_compare.csv"'
+  end
+
+  def metric_data(metric_name, project)
+    data = project.best_analysis.send("#{metric_name}_history".to_sym, @start_date, @end_date)
+    data.map do |values|
+      metric_name == 'code_total' ? values['code_total'].to_i : values["#{metric_name.pluralize}"].to_i
+    end
   end
 end

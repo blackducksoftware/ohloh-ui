@@ -1,5 +1,7 @@
 en:
   compare:
+    project_row:
+      project_comparison_graph: "Project Comparison Graph"
     projects:
       page_title: "Compare Projects - Open Hub"
       compare_projects: "Compare Projects"
@@ -64,3 +66,4 @@ en:
     enter_name: "Enter a project name"
     go: "Go"
     view_as_graph: "View as graph"
+

@@ -11,7 +11,7 @@ module Report
     self.class.connection.select_all(sql)
   end
 
-  def code_history(start_date, end_date)
+  def code_total_history(start_date, end_date)
     sql = <<-INLINE_SQL
     SELECT M.month AS month, COALESCE( SUM(AF.code_added - AF.code_removed), 0) AS code_total
     ,COALESCE( SUM(AF.comments_added - AF.comments_removed), 0) AS comments_total
