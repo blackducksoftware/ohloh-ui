@@ -12,11 +12,7 @@ class ProjectsController < ApplicationController
   before_action :show_permissions_alert, only: [:settings]
 
   def index
-    respond_to do |format|
-      format.html { render template: @account ? 'projects/index_managed' : 'projects/index' }
-      format.xml
-      format.atom
-    end
+    render template: @account ? 'projects/index_managed' : 'projects/index' if request_format == 'html'
   end
 
   def show
@@ -76,7 +72,9 @@ class ProjectsController < ApplicationController
   end
 
   def find_projects
-    @projects = find_projects_by_params.page(params[:page]).per_page([25, (params[:per_page] || 10).to_i].min)
+    @projects = find_projects_by_params.page(params[:page]).per_page([25, (params[:per_page] || 10).to_i].min).to_a
+  rescue
+    raise ParamRecordNotFound
   end
 
   def find_projects_by_params
