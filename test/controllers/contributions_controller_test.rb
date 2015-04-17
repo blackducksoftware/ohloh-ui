@@ -57,6 +57,18 @@ describe 'ContributionsController' do
       must_respond_with :ok
       assigns(:contributor).must_equal @contribution.contributor_fact
     end
+
+    it 'should render sample image if bot' do
+      ApplicationController.any_instance.stubs(:bot?).returns(true)
+      Spark::SimpleSpark.any_instance.expects(:render).never
+
+      ContributorFact.any_instance.stubs(:monthly_commits).returns(activity_facts_by_commits_data)
+      @contributor_fact.update_column(:analysis_id, @project.best_analysis_id)
+
+      get :commits_spark, project_id: @project.to_param, id: @contribution.contributor_fact.name_id
+
+      must_respond_with :ok
+    end
   end
 
   describe 'commits_compound_spark' do
@@ -69,6 +81,18 @@ describe 'ContributionsController' do
 
       must_respond_with :ok
       assigns(:contributor).must_equal @contributor_fact
+    end
+
+    it 'should render sample image if bot' do
+      ApplicationController.any_instance.stubs(:bot?).returns(true)
+      Spark::CompoundSpark.any_instance.expects(:render).never
+
+      ContributorFact.any_instance.stubs(:monthly_commits).returns(activity_facts_by_commits_data)
+      @contributor_fact.update_column(:analysis_id, @project.best_analysis_id)
+
+      get :commits_compound_spark, project_id: @project.to_param, id: @contribution.contributor_fact.name_id
+
+      must_respond_with :ok
     end
   end
 
