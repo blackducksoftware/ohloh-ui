@@ -1,4 +1,4 @@
-class Spark::SimpleSpark < Spark::Spark
+class Spark::SimpleSpark < Spark::Base
   SPARK = { column_width: 2, column_gap: 1, column_base: 1, column_variant: 21, blank_row: 1,
             label_height: 9, max_value: 5000 }
 

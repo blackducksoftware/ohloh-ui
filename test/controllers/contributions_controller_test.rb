@@ -1,6 +1,9 @@
 require 'test_helper'
+require 'test_helpers/activity_facts_by_commits_data'
 
 describe 'ContributionsController' do
+  let(:activity_facts_by_commits_data) { ActivityFactsByMonthData.new(true).data }
+
   before do
     @person = create(:person)
     @contribution = @person.contributions.first
@@ -46,8 +49,9 @@ describe 'ContributionsController' do
 
   describe 'commits_spark' do
     it 'should return contribution simple spark image' do
-      Spark::SimpleSpark.any_instance.stubs(:width).returns(100)
+      ContributorFact.any_instance.stubs(:monthly_commits).returns(activity_facts_by_commits_data)
       @contributor_fact.update_column(:analysis_id, @project.best_analysis_id)
+
       get :commits_spark, project_id: @project.to_param, id: @contribution.contributor_fact.name_id
 
       must_respond_with :ok
@@ -57,7 +61,10 @@ describe 'ContributionsController' do
 
   describe 'commits_compound_spark' do
     it 'should return contribution compound spark image' do
+      ContributorFact.any_instance.stubs(:monthly_commits).returns(activity_facts_by_commits_data)
+
       @contributor_fact.update_column(:analysis_id, @project.best_analysis_id)
+
       get :commits_compound_spark, project_id: @project.to_param, id: @contribution.contributor_fact.name_id
 
       must_respond_with :ok
