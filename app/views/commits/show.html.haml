@@ -39,7 +39,7 @@
         %td.info= lines_removed
       %tr
         %td.text-right{ valign: 'top' }= t('.commit_comment')
-        %td.info{ colspan: '3' }= commit.obfuscate_email(commit.comment).gsub("\n", '<br/>')
+        %td.info{ colspan: '3' }= h(commit.obfuscate_email(commit.comment).gsub("\n", '<br/>'))
 
 .clearfix
 %h4= t('.changes_by_language')
@@ -113,4 +113,4 @@
 
 .clearfix
 - if @diffs.blank?
-  = render :partial => "shared/alert", locals: { message: t('shared.search_dingus.no_match') }
+  = render partial: 'shared/alert', locals: { message: t('shared.search_dingus.no_match') }

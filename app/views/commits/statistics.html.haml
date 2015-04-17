@@ -1,7 +1,9 @@
 - if request.xhr?
-  = [@commit.diffs.count, @lines_added, @lines_removed,
-    @commit.code_set.repository.url.to_s.reverse.truncate(25).reverse,
-    @commit.code_set.repository.url].join(' || ')
+  %td.center= @commit.diffs.count
+  %td.center= @lines_added
+  %td.center= @lines_removed
+  %td.center{ title: @commit.code_set.repository.url.to_s.reverse.truncate(25).reverse }
+    = @commit.code_set.repository.url
 - else
   %ul.nomargin.unstyled
     %li

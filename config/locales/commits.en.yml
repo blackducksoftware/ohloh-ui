@@ -14,7 +14,7 @@ en:
       as_comment_html: "as %{name}"
       unknown: 'unknown'
     index:
-      html_title: "The %{name} Open Source Project on Open Hub : Commits Summary Page"
+      html_title: "The %{name} Open Source Project on Open Hub : Commits Listing Page"
       commits: 'Commits'
       listings: ': Listings'
     show:

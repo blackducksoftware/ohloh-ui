@@ -3,6 +3,7 @@ class CommitsController < SettingsController
   before_action :find_named_commit, only: :show
   before_action :find_contributor_fact, only: [:events, :event_details]
   before_action :redirect_to_message_if_oversized_project, except: :statistics
+  before_action :set_sort_and_highlight, only: :index
   before_action :project_context, except: [:statistics, :events, :event_details]
   helper ProjectsHelper
 
@@ -39,7 +40,9 @@ class CommitsController < SettingsController
 
   def events
     @daily_commits = @contributor_fact.daily_commits
-    render layout: false
+    respond_to do |format|
+      format.xml  { render layout: false }
+    end
   end
 
   def event_details
@@ -71,8 +74,8 @@ class CommitsController < SettingsController
 
   def find_start_time
     time_param = params[:time] =~ /commit_(\d+)/ ? $1 : params[:time]
-    time_param = Time.at(time_param.to_i).utc
-    Time.utc(time_param.year, time_param.month, time_param.day)
+    time_param = Time.at(time_param.to_i)
+    Time.new(time_param.year, time_param.month, time_param.day)
   end
 
   def redirect_to_message_if_oversized_project

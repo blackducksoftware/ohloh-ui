@@ -15,23 +15,24 @@
       %th{ width: '10%' }= t('.date')
   %tbody
     - @named_commits.each do |named_commit|
-      -# TODO: highlight is required ?
       - commit = named_commit.commit
-      %tr
-        %td= link_to "#{ h commit.first_line }", project_commit_path(@project, commit)
+      %tr{ class: highlight(commit.time) }
+        %td= link_to h(commit.obfuscate_email(commit.comment).split("\n").first), project_commit_path(@project, commit)
         %td
           = avatar_for(named_commit.person)
           .committer_name{ style: 'padding-top:5px;' }
             = render partial: 'committer_name', locals: { named_commit: named_commit }
         %td{ colspan: '4', class: "commit_#{ commit.to_param }" }
-          %span.icon-play-circle
+          %span.icon-play-circle{ id: "icon_play_circle_#{ commit.to_param }" }
             = link_to t('.more'), '#', 'data-toggle' => 'commit-details',
               commit_id: commit.to_param, project_id: @project.to_param
-          %span.spinner.hidden
+          %span.spinner.hidden{ id: "spinner_#{ commit.to_param }" }
             = image_tag 'spinner.gif'
         %td
           %abbr.date{ title: commit.time.to_s }
             = t('time_ago', time: time_ago_in_words(commit.time))
 
+= will_paginate @named_commits if @named_commits.respond_to?(:total_pages)
+
 - if @named_commits.blank?
-  = render :partial => "shared/alert", locals: { message: t('shared.search_dingus.no_match') }
+  = render partial: 'shared/alert', locals: { message: t('shared.search_dingus.no_match') }
