@@ -1,6 +1,8 @@
 class Spark::SimpleSpark < Spark::Base
   SPARK = { column_width: 2, column_gap: 1, column_base: 1, column_variant: 21, blank_row: 1,
             label_height: 9, max_value: 5000 }
+  LIGHT_GRAY = '#a7a7a7'
+  DARK_GRAY = '#656565'
 
   def initialize(data, options = {})
     super(data, SPARK.merge(options))
@@ -26,7 +28,7 @@ class Spark::SimpleSpark < Spark::Base
         time = commits_by_month.month
         color = (time.month == 1) ? 'black' : nil
         commits_count = commits_by_month.commits.to_i
-        color ||= commits_count.zero? ? 'LightGray' : 'DarkGray'
+        color ||= commits_count.zero? ? LIGHT_GRAY : DARK_GRAY
         convert.fill color
         convert.draw draw_rectangle_bar(commits_count, i)
       end
