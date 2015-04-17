@@ -10,7 +10,7 @@ describe 'Spark::SimpleSpark' do
       expected_image_path = Rails.root.join('test/data/spark/simple_spark.png')
       result_file = Spark::SimpleSpark.new(data, max_value: 50).render
 
-      compare_images(result_file.path, expected_image_path, 0.06)
+      compare_images(result_file.path, expected_image_path, 0.1)
     end
   end
 end
