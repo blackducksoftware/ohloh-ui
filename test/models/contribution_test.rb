@@ -109,6 +109,30 @@ class ContributionTest < ActiveSupport::TestCase
     @contribution.recent_kudos.first.must_equal kudo
   end
 
+  describe '#find_indirectly' do
+    it 'via alias' do
+      project = create(:project)
+      person1 = create(:person, project: project)
+      person2 = create(:person, project: project)
+      aka = create(:alias, project: project, commit_name_id: person1.name_id, preferred_name_id: person2.name_id)
+
+      contribution = Contribution.find_indirectly(contribution_id: person1.contributions.first.id, project: project)
+      contribution.must_equal person2.contributions.first
+    end
+
+    it 'via position' do
+      project = create(:project)
+      person1 = create(:person, project: project)
+      person2 = create(:person, project: project)
+      name = create(:name)
+      aka = create(:alias, project: project, commit_name_id: person1.name_id, preferred_name_id: name.id)
+      person1.contributions.first.contributor_fact.update_attributes(analysis_id: project.best_analysis_id, name_id: name.id)
+      position = create(:position, project: project, name_id: name.id)
+      contribution = Contribution.find_indirectly(contribution_id: person1.contributions.first.id, project: project)
+      contribution.must_equal position.contribution
+    end
+  end
+
   private
 
   def create_people_for_sort_by
