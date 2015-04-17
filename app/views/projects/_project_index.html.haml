@@ -82,10 +82,9 @@
     .clear_both
 
   .tags
-    :ruby
-      # TODO: Implement once tags are implemented
-      # - unless project.tag_list.empty?
-      #   = tag_icon_link(project)
-      #   = tag_links(project.tag_list, 12)
-      #   - if project.tag_list.split.size > 12
-      #   = link_to(((project.tag_list.split.size - 12).to_s + ' more...'), project_path(project))
+    - unless project.tag_list.blank?
+      - tags = project.tag_list.split(' ')
+      = tag_icon_link(project)
+      = tag_links(tags, 12)
+      - if tags.length > 12
+        = link_to t('.n_more', n: (tags.length - 12)), project_path(project)

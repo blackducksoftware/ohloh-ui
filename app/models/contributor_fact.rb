@@ -2,6 +2,11 @@ class ContributorFact < NameFact
   belongs_to :analysis
   belongs_to :name
 
+  def name_language_facts
+    NameLanguageFact.where(name_id: name_id, analysis_id: analysis_id)
+      .order(total_months: :desc, total_commits: :desc, total_activity_lines: :desc)
+  end
+
   def person
     Person.where(['name_id = ? AND project_id = ?', name_id, analysis.project_id]).first
   end
@@ -37,6 +42,10 @@ class ContributorFact < NameFact
     Commit.for_contributor_fact(self)
       .where(time: from..to)
       .order(:time)
+  end
+
+  def monthly_commits(years = 5)
+    AnalysisCommitHistoryQuery.new(analysis, name_id, Time.now.utc - years.years, Time.now.utc).execute
   end
 
   class << self

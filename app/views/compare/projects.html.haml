@@ -3,7 +3,7 @@
   page_context[:select_top_menu_nav] = 'select_tools'
   proj_names = params.select { |k, _| k.to_s.match(/project/) }
 - content_for :javascript do
-  = javascript_tag '$(document).ready(CompareProjects.init);'
+  = javascript_tag "$(document).on('page:change', CompareProjects.init);"
 
 .projects_compare
   %h1.float_left.margin_left_10= t('.compare_projects')

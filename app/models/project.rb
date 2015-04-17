@@ -6,8 +6,10 @@ class Project < ActiveRecord::Base
 
   scope :active, -> { where { deleted.not_eq(true) } }
   scope :deleted, -> { where(deleted: true) }
-  scope :from_param, ->(id) { Project.where(Project.arel_table[:url_name].eq(id).or(Project.arel_table[:id].eq(id))) }
   scope :not_deleted, -> { where(deleted: false) }
+  scope :from_param, lambda { |param|
+    not_deleted.where(Project.arel_table[:url_name].eq(param).or(Project.arel_table[:id].eq(param)))
+  }
   scope :been_analyzed, -> { where.not(best_analysis_id: nil) }
   scope :recently_analyzed, -> { not_deleted.been_analyzed.order(created_at: :desc) }
   scope :hot, ->(l_id = nil) { Project.not_deleted.been_analyzed.joins(:analyses).merge(Analysis.fresh_and_hot(l_id)) }
@@ -96,6 +98,16 @@ class Project < ActiveRecord::Base
 
   def code_published_in_code_search?
     koders_status.try(:ohloh_code_ready) == true
+  end
+
+  def newest_contributions
+    contributions.sort_by_newest.includes(person: :account, contributor_fact: :primary_language).limit(10)
+  end
+
+  def top_contributions
+    contributions.sort_by_twelve_month_commits
+      .includes(person: :account, contributor_fact: :primary_language)
+      .limit(10)
   end
 
   private

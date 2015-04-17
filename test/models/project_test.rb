@@ -176,4 +176,62 @@ class ProjectTest < ActiveSupport::TestCase
       project.code_published_in_code_search?.must_equal true
     end
   end
+
+  describe 'newest_contributions' do
+    it 'should return the latest contributions to a project' do
+      person = create(:person)
+      contribution = person.contributions.first
+      project = contribution.project
+
+      project.newest_contributions.must_equal [contribution]
+    end
+  end
+
+  describe 'top_contributions' do
+    it 'should return the top contributions to a project' do
+      person = create(:person)
+      contribution = person.contributions.first
+      project = contribution.project
+
+      project.top_contributions.must_equal [contribution]
+    end
+  end
+
+  describe 'tag_list=' do
+    it 'should record property_edits to the database' do
+      project = create(:project)
+      PropertyEdit.where(key: 'tag_list', target: project).count.must_equal 0
+      project.update_attributes(tag_list: 'aquatic beavers cavort down east')
+      project.reload.tags.length.must_equal 5
+      PropertyEdit.where(key: 'tag_list', target: project).count.must_equal 1
+      project.editor_account = create(:account)
+      project.update_attributes(tag_list: 'zany')
+      project.reload.tags.length.must_equal 1
+      PropertyEdit.where(key: 'tag_list', target: project).count.must_equal 2
+    end
+  end
+
+  describe 'from_param' do
+    it 'should match project url_name' do
+      project = create(:project)
+      Project.from_param(project.url_name).first.id.must_equal project.id
+    end
+
+    it 'should match project id as string' do
+      project = create(:project)
+      Project.from_param(project.id.to_s).first.id.must_equal project.id
+    end
+
+    it 'should match project id as integer' do
+      project = create(:project)
+      Project.from_param(project.id).first.id.must_equal project.id
+    end
+
+    it 'should not match deleted projects' do
+      project = create(:project)
+      Project.from_param(project.to_param).count.must_equal 1
+      project.destroy
+      Project.from_param(project.to_param).count.must_equal 0
+    end
+  end
 end

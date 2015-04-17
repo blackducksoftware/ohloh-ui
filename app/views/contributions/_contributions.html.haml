@@ -1,0 +1,59 @@
+%table.table
+  %thead
+    %tr{ id: 'dingus-row' }
+      %td{ colspan: 10 }
+        - if search_bar
+          = render partial: 'shared/search_dingus',
+          locals: { collection: @contributions, sort_context: :contributions, no_match_found_type: :none }
+        - else
+          &nbsp;
+    %tr
+      %th.col-md-3.center= t('.name')
+      %th{ width: '45px' }= t('.kudos')
+      %th.center{ width: '80px' }= t('.12_month_commits')
+      %th{ width: '80px' }= t('.all_commits')
+      %th= t('.trend')
+      %th= t('.language')
+      %th= t('.first_commit')
+      %th= t('.last_commit')
+  %tbody
+    - contributions.each do |contribution|
+      :ruby
+        person_name = contribution.person.person_name
+        fact = contribution.contributor_fact
+        contributor_path = project_contributor_path(@project, contribution)
+      %tr
+        %td
+          = link_to contributor_path, class: 'pull-left' do
+            = avatar_img_for(contribution.person)
+
+          = link_to contributor_path, class: 'avatar_name pull-left col-md-10 padding_left_0', title: person_name do
+            = h truncate(person_name, length: 23)
+          %span.small.contribution_title.pull-left
+            - if contribution.position.title.present?
+              = t('.position_title', title: contribution.position.title)
+            - elsif !contribution.position.active?
+              = t('.inactive')
+            - elsif @project.managers.include?(contribution.person.account)
+              = t('.manager')
+        %td
+          - rank = contribution.person.kudo_rank || 1
+          = image_tag "icons/sm_laurel_#{rank}.png", alt: "KudoRank #{rank}"
+        %td.center
+          = fact.twelve_month_commits
+        %td
+          = fact.commits
+        %td
+          = image_tag commits_spark_project_contributor_url(project_id: @project.to_param, id: fact.name_id),
+          width: 179, height: 32, align: 'left' if fact.name_id
+        %td
+          = fact.primary_language.nice_name if fact.primary_language
+        %td
+          - if fact.first_checkin
+            %abbr.date{ title: fact.first_checkin }= t('.ago', duration: time_ago_in_words(fact.first_checkin))
+        %td
+          - if fact.last_checkin
+            %abbr.date{ title: fact.last_checkin }= t('.ago', duration: time_ago_in_words(fact.last_checkin))
+
+- if contributions.empty?
+  = render partial: 'shared/alert', locals: { message: t('shared.search_dingus.no_match') }

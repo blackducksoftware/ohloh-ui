@@ -1,10 +1,13 @@
 require 'test_helper'
 
 class ContributorFactTest < ActiveSupport::TestCase
+  let(:analysis) { create(:analysis) }
+  let(:name_object) { create(:name) }
+  let(:contributor_fact) { create(:contributor_fact, analysis_id: analysis.id, name_id: name_object.id) }
+  let(:project) { create(:project) }
+
   describe '#unclaimed_for_project' do
     it 'must return contributor_facts which have no matching position' do
-      project = projects(:linux)
-      analysis = analyses(:linux)
       project.editor_account = create(:admin)
       project.update!(best_analysis_id: analysis.id)
 
@@ -17,11 +20,33 @@ class ContributorFactTest < ActiveSupport::TestCase
 
   describe '#first_for_name_id_and_project_id' do
     it 'must return contributor_fact' do
-      proj = create(:project)
-      cf = create(:name_fact, type: 'ContributorFact', analysis: proj.best_analysis)
+      cf = create(:name_fact, type: 'ContributorFact', analysis: project.best_analysis)
       create(:analysis_alias, analysis: cf.analysis, commit_name: cf.name, preferred_name: cf.name)
       retval = ContributorFact.first_for_name_id_and_project_id(cf.name.id, cf.analysis.project.id)
       retval.id.must_equal cf.id
+    end
+  end
+
+  describe '#name_language_facts' do
+    it 'must return langauge facts' do
+      lang = create(:language)
+      fact = create(:vita_language_fact, language: lang, analysis_id: analysis.id, name_id: name_object.id)
+
+      contributor_fact.name_language_facts.must_equal [fact]
+    end
+  end
+
+  describe 'person' do
+    it 'should' do
+      person = create(:person, name_id: name_object.id, project_id: analysis.project_id)
+      contributor_fact.reload.person.must_equal person
+    end
+  end
+
+  describe 'kudo_rank' do
+    it 'should return kudo_rank' do
+      person = create(:person, name_id: name_object.id, project_id: analysis.project_id)
+      contributor_fact.kudo_rank.must_equal person.kudo_rank
     end
   end
 end

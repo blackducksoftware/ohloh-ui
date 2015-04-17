@@ -1,0 +1,17 @@
+en:
+  project_tags:
+    index:
+      page_title: "The %{name} Open Source Project on Open Hub : Tags Page"
+      tags: "Tags"
+      tags_for: "Tags for %{name}"
+      add_new_tag: "Add New Tag"
+      enter_tag_here: "Enter Tag name here..."
+      save_tag: "Save Tag"
+      projects_with_similar_tags: "Projects with Similar Tags"
+      no_other_projects: "No other projects match your chosen tags / No Tags found"
+      help1: "Tags are used by Open Hub to aid in search discovery, in the \"Browse Projects By Tags\" feature available as an option on the project search results page, and to help determine project similarity through shared tags."
+      help2: "In order to encourage careful choice of tags, Open Hub limits the number of tags per project to %{max}. You'll need to pick and choose the right tags to make the project easy to discover, establish similarity, and at the same time highlight unique and differentiating aspects."
+      help3: "To add a tag, enter it into the Add a Tag box. Open Hub will suggest tags already in use based on the text you enter."
+      help4: "Open Hub shows you projects with similar tags as an assist in selecting good tags. By seeing the tags of similar projects, you can see how Open Hub's tagging will identify similar projects, while also choosing some tags that differentiate this one from others like it."
+      help5: "Of course, you are able to add a new tag that is not already in use, but we strongly encourage you to pick from the existing tag set whenever possible."
+      help6: "For projects tagged prior to the implementation of the %{max} tag limit, those tags are grandfathered in, but when you edit a project with more than %{max}, you'll be required to reduce the number to %{max} or fewer."

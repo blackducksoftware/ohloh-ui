@@ -93,6 +93,33 @@ projects:
   default:
     relevance
 
+contributions:
+  options:
+    -
+      - All Time Commits
+      - commits
+    -
+      - 12 Month Commits
+      - twelve_month_commits
+    -
+      - KudoRank
+      - kudo_position
+    -
+      - Language
+      - language
+    -
+      - Name
+      - name
+    -
+      - Recently Active
+      - latest_commit
+    -
+      - Newest Contributors
+      - newest
+    -
+      - Oldest Contributors
+      - oldest
+
 enlistments:
   options:
     -
