@@ -1,6 +1,10 @@
-class Spark::CompoundSpark < Spark::Spark
+class Spark::CompoundSpark < Spark::Base
   SPARK = { column_width: 3, column_gap: 1, column_base: 1, column_variant: 25, blank_row: 1,
             label_height: 12, label_point_size: 11, max_value: 100, graph_padding: 27 }
+
+  LIGHT_GRAY = '#a7a7a7'
+  DARK_GRAY = '#656565'
+  FONT = "#{Rails.root}/app/assets/fonts/OpenSans-Bold.ttf"
 
   def initialize(data, options = {})
     super(data, SPARK.merge(options))
@@ -27,7 +31,7 @@ class Spark::CompoundSpark < Spark::Spark
 
   def get_commits_color(datum)
     return 'black' if datum.month.month == 1
-    datum.commits.to_i.zero? ? 'LightGray' : 'DarkGray'
+    datum.commits.to_i.zero? ? LIGHT_GRAY : DARK_GRAY
   end
 
   def draw_commits_bar(convert, datum, index)
@@ -45,14 +49,13 @@ class Spark::CompoundSpark < Spark::Spark
   end
 
   def set_text_style(convert)
-    convert.fill 'DarkGray'
-    convert.font 'sans'
+    convert.fill DARK_GRAY
+    convert.font FONT
     convert.pointsize SPARK[:label_point_size]
-    convert.weight 'bold'
   end
 
   def draw_bottom_year_pointer(convert, index)
-    convert.fill 'LightGray'
+    convert.fill LIGHT_GRAY
     convert.draw "rectangle #{x1_axis_value(index)}, #{y1_axis_value(0) + SPARK[:label_height]} \
     #{x2_axis_value(index)}, #{y2_axis_value + SPARK[:column_base]}"
   end
