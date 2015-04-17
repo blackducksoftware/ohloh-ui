@@ -41,6 +41,13 @@ describe TopicsController do
     must_respond_with :ok
   end
 
+  it 'show should render markdown as html' do
+    post = create(:post, body: '**Markdown Me**')
+    get :show, id: post.topic.id
+    must_respond_with :ok
+    response.body.must_match '<p><strong>Markdown Me</strong></p>'
+  end
+
   it 'edit' do
     get :edit, id: topic.id
     must_respond_with :unauthorized
