@@ -11,3 +11,4 @@ ANALYSIS_CHART_DEFAULTS = load_charting_defaults("#{Rails.root}/config/charting/
 COMMIT_HISTORY_CHART_DEFAULTS = load_charting_defaults("#{Rails.root}/config/charting/analysis_commit_history_chart.yml")
 COMMITTER_HISTORY_CHART_DEFAULTS = load_charting_defaults("#{Rails.root}/config/charting/analysis_committer_history_chart.yml")
 CODE_HISTORY_CHART_DEFAULTS = load_charting_defaults("#{Rails.root}/config/charting/analysis_code_history_chart.yml")
+COMMIT_VOLUME_CHART_DEFAULTS = load_charting_defaults("#{Rails.root}/config/charting/analysis_commit_volume_chart.yml")
