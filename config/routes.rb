@@ -203,20 +203,20 @@ Rails.application.routes.draw do
       resources :helpfuls, only: :create
     end
     resources :analyses, only: [:index, :show] do
-      resources :activity_facts, only: :index
       member do
+        get :languages_summary
+        get :languages
+        get :licenses
         get :commit_volume_chart
         get :top_commit_volume_chart
-        get :languagehistory
-        get :licenses
-        get :languages_summary
-        get :codehistory
-        get :commitshistory
-        get :committerhistory
+        get :commits_history
+        get :committer_history
+        get :language_history
+        get :code_history
         get :commits_spark
-        get :languages
-        get :top_commit_volume_chart
       end
+
+      resources :activity_facts, only: :index
     end
     resources :commits, only: [:index, :show] do
       collection { get :summary }

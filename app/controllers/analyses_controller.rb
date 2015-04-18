@@ -31,19 +31,19 @@ class AnalysesController < ApplicationController
     render json: @analysis.top_commit_volume_chart
   end
 
-  def commitshistory
+  def commits_history
     render json: @analysis.commits_history_chart
   end
 
-  def committerhistory
+  def committer_history
     render json: @analysis.committer_history_chart
   end
 
-  def languagehistory
+  def language_history
     render json: @analysis.language_history_chart
   end
 
-  def codehistory
+  def code_history
     render json: @analysis.code_history_chart(params[:chart_size])
   end
 
