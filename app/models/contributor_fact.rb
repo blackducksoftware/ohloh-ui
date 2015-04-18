@@ -30,7 +30,8 @@ class ContributorFact < NameFact
   end
 
   def monthly_commits(years = 5)
-    AnalysisCommitHistoryQuery.new(analysis, name_id, Time.now.utc - years.years, Time.now.utc).execute
+    options = { analysis: analysis, name_id: name_id, start_date: Time.now.utc - years.years, end_date: Time.now.utc }
+    Analysis::CommitHistory.new(options).execute
   end
 
   class << self

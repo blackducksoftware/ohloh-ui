@@ -1,13 +1,13 @@
-class AnalysisCommitHistoryQuery
-  def initialize(analysis, name_id, start_date, end_date)
-    @analysis_id = analysis.id
-    @name_id = name_id
-    start_date ||= Analysis::EARLIEST_DATE
-    end_date ||= analysis.updated_on
+class Analysis::CommitHistory < Analysis::Query
+  attr_reader :start_date, :end_date
 
-    @start_month = start_date.strftime('%Y-%m-01')
-    @end_month = end_date.strftime('%Y-%m-01')
+  arel_tables :analysis_aliases, :commits, :analysis_aliases, :analysis_sloc_sets
+
+  def initialize(analysis:, name_id: nil, start_date: nil, end_date: nil)
+    @name_id = name_id
+    super(analysis: analysis, start_date: start_date, end_date: end_date)
   end
+
 
   def execute
     Analysis.find_by_sql(query)
@@ -16,25 +16,21 @@ class AnalysisCommitHistoryQuery
   private
 
   def query
-    months.project([month, coalesce_commits_count])
+    all_months.project([month, coalesce_commits_count])
       .join(subquery, Arel::Nodes::OuterJoin)
       .on(month.eq(subquery[:this_month]))
-      .where(month_within_range)
+      .where(within_date)
       .order(month)
   end
 
   def subquery
-    AnalysisSlocSet.select([Arel.star.count.as('count'), truncate_date])
+    AnalysisSlocSet.select([Arel.star.count.as('count'), commit_date])
       .joins(sloc_set: { code_set: :commits })
       .joins(analysis_aliases_joins)
       .where(subquery_conditions)
       .group('this_month')
       .order('this_month')
       .arel.as('counts')
-  end
-
-  def month_within_range
-    month.gteq(@start_month).and(month.lteq(@end_month))
   end
 
   def subquery_conditions
@@ -59,27 +55,7 @@ class AnalysisCommitHistoryQuery
     Arel::Nodes::NamedFunction.new('COALESCE', [subquery[:count], 0]).as('commits')
   end
 
-  def truncate_date
-    Arel::Nodes::NamedFunction.new('date_trunc', [Arel.sql("'month'"), commits[:time]]).as('this_month')
-  end
-
-  def analysis_sloc_sets
-    AnalysisSlocSet.arel_table
-  end
-
-  def months
-    AllMonth.arel_table
-  end
-
-  def analysis_aliases
-    AnalysisAlias.arel_table
-  end
-
-  def commits
-    Commit.arel_table
-  end
-
-  def month
-    months[:month]
+  def commit_date
+    truncate_date(commits[:time]).as('this_month')
   end
 end
