@@ -1,0 +1,22 @@
+- page_context[:select_footer_nav] = :code
+
+.project_content_title
+  %h2.pull-left= t('title')
+  = project_analysis_timestamp(@project)
+
+- if @language_breakdown.any?
+  %br
+  = render partial: 'projects_languages_details', { language_breakdown: @language_breakdown }
+  .clearfix
+
+  .row
+    .col-md-10.padding_one_top
+      = render partial: 'analysis_graphs', locals: { project: @project, analysis: @analysis }
+
+  .row
+    .col-md-12.padding_one_top
+      = render partial: 'language_table' locals: { language_breakdown: @language_breakdown }
+- elsif @analysis.present?
+  %p= t('.no_recognized_languages')
+- else
+  = render partial: 'projects/show/no_analysis_summary'

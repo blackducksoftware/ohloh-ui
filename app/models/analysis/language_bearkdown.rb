@@ -7,11 +7,11 @@ class Analysis::LangaugeBreakdown < Analysis::Query
     execute.select { |fact| fact.code_total.to_i > 0 || fact.comments_total.to_i > 0 }
   end
 
+  private
+
   def execute
     empty? ? [] : query
   end
-
-  private
 
   def query
     ActivityFact.select([select_columns, language_select_colums]).joins(:language).where(with_analysis)

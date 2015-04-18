@@ -1,0 +1,31 @@
+en:
+  analyses:
+    languages_summary:
+      title: 'Languages'
+      no_recognized_languages: 'Open Hub did not find any recognized languages in this project.'
+    project_languages_details:
+      total_lines: 'Total Lines  :'
+      code_lines: 'Code Lines :'
+      percentage_lines: 'Percent Code Lines :'
+      languages: 'Number of Languages :'
+      total_language_lines: 'Total Comment Lines :'
+      percentage_comments: 'Percent Comment Lines :'
+      total_blank_lines: 'Total Blank Lines :'
+      percentage_blanks: 'Percent Blank Lines :'
+    analysis_graphs:
+      code_comments_blanks: 'Code, Comments and Blank Lines'
+      loc: 'LOC by Language'
+      no_lang: 'Unfortunately, Open Hub did not find any recognized languages in the repository(s) listed.'
+      no_commits: 'There do not appear to be any commits in the repository(s) listed for this project.'
+      must_analyze: 'Open Hub must analyze the project source code before showing code analysis.'
+      add_new: 'Add a new source code enlistment'
+    language_table:
+      title: 'Language Breakdown'
+      language: 'Language'
+      codes: 'Code Lines'
+      comments: 'Comment Lines'
+      comment_ratio: 'Comment Ratio'
+      blanks: 'Blank Lines'
+      total_lines: 'Total Lines'
+      total_percent: 'Total Percentage'
+      total: 'Totals'

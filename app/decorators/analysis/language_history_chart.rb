@@ -1,11 +1,12 @@
-class Analysis::CodeHistoryChart < Analysis::Chart
+class Analysis::LanguageHistoryChart < Analysis::Chart
   def initialize(analysis)
     @analysis = analysis
     @history = Analysis::LanguageHistory.new(analysis)
+    @defaults = ANALYSIS_CHART_DEFAULTS.deep_merge(LANGUAGE_HISTORY_CHART)
   end
 
   def data
-    chart = ANALYSIS_CHART_DEFAULTS.merge('title' => 'Lines', 'series' => series_map)
+    chart = @defaults.merge('series' => series_map)
     chart.merge! range_selector(history.map { |x| x['ticks'] }.min)
   end
 

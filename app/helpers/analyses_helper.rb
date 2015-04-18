@@ -27,6 +27,34 @@ module AnalysesHelper
     language_infos(lbs, 100, analysis_total_lines(lbs))
   end
 
+  def analysis_total_lines(lbs)
+    lbs.collect { |lb| analysis_calculate_sum_for(lb) }.sum
+  end
+
+  def analysis_total_detail(analysis_language_breakdown, type)
+   analysis_language_breakdown.collect { |line| line[type].to_i }.sum
+  end
+
+  def analysis_total_percent_detail(type, total_lines)
+    number_with_precision(((type.to_i.to_f/total_lines.to_f) * 100), :precision => 1).to_s + "%"
+  end
+
+  def comments_ratio_from_lanaguage_breakdown(language_breakdown)
+    comments_and_code_sum = language_breakdown.code + language_breakdown.comments
+    comments_by_code = (language_breakdown.comments.to_f / comments_and_code_sum.to_f) * 100
+    comments_and_code_sum > 0 ? number_with_precision(comments_by_code, precision: 1).to_s + '%' : '-'
+  end
+
+  def barfill_css(language_breakdown, lb)
+    "width:#{total_percent(language_breakdown, lb).to_i}%;"\
+    "background: ##{language_color(lb.language_name)}"
+  end
+
+  def total_percent(analysis_language_breakdown, lb)
+    number_with_precision(
+      calculate_percentage(lb, analysis_total_lines(analysis_language_breakdown)), precision: 1).to_s + '%'
+  end
+
   private
 
   def language_infos(lbs, total_left, total_lines, result = [])
@@ -56,10 +84,6 @@ module AnalysesHelper
   def analysis_language_info(lb, percent)
     [lb['language_id'], lb['language'],
      { url_name: lb['language_name'], percent: percent, color: language_color(lb['language_name']) }]
-  end
-
-  def analysis_total_lines(lbs)
-    lbs.collect { |lb| analysis_calculate_sum_for(lb) }.sum
   end
 
   def analysis_calculate_sum_for(language_breakdown)

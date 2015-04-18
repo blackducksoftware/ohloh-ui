@@ -1,13 +1,16 @@
 class AnalysesController < ApplicationController
   before_action :set_project
-  before_filter :set_analysis, except: [:licenses]
+  before_action :set_analysis, except: :licenses
+  before_action :fail_if_analysis_not_found, except: :lanaguages_summary
+  before_action :code_context, only: :languages_summary
 
   def show
     redirect_to project_path(@project)
   end
 
-  def languages_summary
+  def lanaguages_summary
     @analysis ||= @project.best_analysis
+    @langauge_breakdown = Analysis::LanguageBreakdown.new(analysis: @analysis).collection
   end
 
   def languages
@@ -61,6 +64,9 @@ class AnalysesController < ApplicationController
 
   def set_analysis
     @analysis = params[:id] == 'latest' ? @project.best_analysis : Analysis.where(id: params[:id]).take
+  end
+
+  def fail_if_analysis_not_found
     fail ParamRecordNotFound if @analysis.blank?
   end
 end
