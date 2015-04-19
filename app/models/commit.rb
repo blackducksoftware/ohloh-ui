@@ -20,10 +20,6 @@ class Commit < ActiveRecord::Base
       .where(analysis_aliases: { preferred_name_id: contributor_fact.name_id })
   }
 
-  def first_line
-    obfuscate_email(comment.to_s).split("\n").first
-  end
-
   def lines_added_and_removed(analysis_id)
     summaries = SlocMetric.commit_summaries(self, analysis_id)
     lines_added = lines_removed = 0
@@ -39,9 +35,9 @@ class Commit < ActiveRecord::Base
     when SvnSyncRepository
       "r#{sha1}"
     when GitRepository
-      params[:short] ? sha1.to_s.truncate(length: 8, omission: '') : sha1
+      params[:short] ? sha1.to_s.truncate(8, omission: '') : sha1
     when HgRepository
-      params[:short] ? sha1.to_s.truncate(length: 12, omission: '') : sha1
+      params[:short] ? sha1.to_s.truncate(12, omission: '') : sha1
     end
   end
 end

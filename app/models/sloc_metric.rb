@@ -1,7 +1,8 @@
 class SlocMetric < ActiveRecord::Base
   belongs_to :diff
   belongs_to :language
-  has_many :analysis_sloc_sets, primary_key: :sloc_set_id, foreign_key: :sloc_set_id
+  belongs_to :sloc_set
+  belongs_to :analysis_sloc_set, primary_key: :sloc_set_id, foreign_key: :sloc_set_id
 
   scope :commit_summaries, lambda { |commit, analysis_id|
     return none unless analysis_id
@@ -17,7 +18,7 @@ class SlocMetric < ActiveRecord::Base
 
   scope :diff_summaries, lambda { |diff, analysis_id|
     SlocMetric.select_summary_attributes.select('languages.nice_name as language_name')
-      .joins(:analysis_sloc_sets, :language)
+      .joins(:analysis_sloc_set, :language)
       .where(analysis_sloc_sets: { analysis_id: analysis_id })
       .where(diff_id: diff.id)
       .group([:language_id, 'languages.nice_name'])
@@ -29,16 +30,11 @@ class SlocMetric < ActiveRecord::Base
       tuples.blank? ? where(nil) : where.not(tuples)
     end
 
-    # rubocop:disable Metrics/AbcSize
     def select_summary_attributes
       sloc_metrics_arel = SlocMetric.arel_table
+      attributes = [:code_added, :code_removed, :comments_added, :comments_removed, :blanks_added, :blanks_removed]
       select([:language_id,
-              sloc_metrics_arel[:code_added].sum.as('code_added'),
-              sloc_metrics_arel[:code_removed].sum.as('code_removed'),
-              sloc_metrics_arel[:comments_added].sum.as('comments_added'),
-              sloc_metrics_arel[:comments_removed].sum.as('comments_removed'),
-              sloc_metrics_arel[:blanks_added].sum.as('blanks_added'),
-              sloc_metrics_arel[:blanks_removed].sum.as('blanks_removed')])
+              attributes.map { |x| sloc_metrics_arel[x].sum.as(x.to_s) }])
         .order('code_added desc, code_removed desc, comments_added desc, comments_removed desc,
                 blanks_added desc, blanks_removed desc')
     end

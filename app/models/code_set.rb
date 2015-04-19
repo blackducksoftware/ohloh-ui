@@ -7,6 +7,6 @@ class CodeSet < ActiveRecord::Base
 
   def ignore_prefixes(project)
     enlistment = project.enlistments.where(repository_id: repository_id).first
-    enlistment.nil? ? none : enlistment.analysis_sloc_set.ignore_prefixes
+    enlistment.nil? ? CodeSet.none : enlistment.analysis_sloc_set.ignore_prefixes
   end
 end

@@ -7,7 +7,7 @@ class AnalysisSlocSet < ActiveRecord::Base
 
   def ignore_tuples
     conditions = ignore_prefixes.collect do |prefix|
-      sanitize_sql_for_conditions(['fyles.name like %s%%', sanitize_sql_like(prefix)])
+      AnalysisSlocSet.sanitize_sql_condition(prefix)
     end.join(' OR ')
     conditions.concat(" and fyles.code_set_id = #{sloc_set.code_set_id}") if conditions.present?
   end
@@ -17,6 +17,10 @@ class AnalysisSlocSet < ActiveRecord::Base
   end
 
   private
+
+  def self.sanitize_sql_condition(file_name)
+    sanitize_sql_for_conditions(["fyles.name like '%s%%'", sanitize_sql_like(file_name)])
+  end
 
   def adjust_leading_slash(file_name)
     is_directory = file_name.starts_with?('/')

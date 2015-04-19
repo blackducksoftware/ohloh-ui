@@ -39,7 +39,7 @@
         %td.info= lines_removed
       %tr
         %td.text-right{ valign: 'top' }= t('.commit_comment')
-        %td.info{ colspan: '3' }= h(commit.obfuscate_email(commit.comment).gsub("\n", '<br/>'))
+        %td.info.pre-line{ colspan: '3' }= h(commit.obfuscate_email(commit.comment))
 
 .clearfix
 %h4= t('.changes_by_language')

@@ -1,5 +1,5 @@
 App.Commit = init: ->
-  $(document).on 'click', 'a[data-toggle="commit-details"]', (e) ->
+  $('a[data-toggle="commit-details"]').one 'click', (e) ->
     e.preventDefault()
     commit_id = $(this).attr('commit_id')
     project_id = $(this).attr('project_id')

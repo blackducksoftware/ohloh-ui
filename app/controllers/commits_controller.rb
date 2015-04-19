@@ -1,11 +1,12 @@
 class CommitsController < SettingsController
-  before_action :set_project_or_contribution
+  helper ProjectsHelper
+
+  before_action :set_project
   before_action :find_named_commit, only: :show
   before_action :find_contributor_fact, only: [:events, :event_details]
   before_action :redirect_to_message_if_oversized_project, except: :statistics
   before_action :set_sort_and_highlight, only: :index
   before_action :project_context, except: [:statistics, :events, :event_details]
-  helper ProjectsHelper
 
   def index
     @named_commits = @project.named_commits
@@ -47,19 +48,19 @@ class CommitsController < SettingsController
 
   def event_details
     day_time = find_start_time
-    @commits = @contributor_fact.commits_within(day_time, day_time.day_since(1))
+    @commits = @contributor_fact.commits_within(day_time, day_time.days_since(1))
     render layout: false
   end
 
   private
 
-  def set_project_or_contribution
+  def set_project
     @project = Project.from_param(params[:project_id]).take
     fail ParamRecordNotFound if @project.nil?
   end
 
   def find_named_commit
-    @named_commit = NamedCommit.find(params[:id])
+    @named_commit = NamedCommit.find_by(id: params[:id])
     fail ParamRecordNotFound if @named_commit.nil?
   end
 

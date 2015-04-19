@@ -222,6 +222,12 @@ Rails.application.routes.draw do
         get :event_details
       end
     end
+    resources :contributors do
+      member do
+        get :event_details
+        get :events
+      end
+    end
     resources :stacks, only: [] do
       collection { get :near }
     end
