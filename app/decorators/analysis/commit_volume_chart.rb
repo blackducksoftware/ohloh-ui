@@ -10,14 +10,15 @@ class Analysis::CommitVolumeChart
   end
 
   def data
-    COMMIT_VOLUME_CHART_DEFAULTS.merge(
-      'series' => pivoted_series.map { |name, data| { 'name' => name, 'data' => data } },
-      'xAxis' => { 'categories' => @interval_labels },
-      'warning' => warning_messages
-    )
+    COMMIT_VOLUME_CHART_DEFAULTS.merge(data_options)
   end
 
   private
+
+  def data_options
+    { 'series' => pivoted_series.map { |name, data| { 'name' => name, 'data' => data } },
+      'xAxis' => { 'categories' => @interval_labels }, 'warning' => warning_messages }
+  end
 
   def history_for_all_intervals
     @history = INTERVALS.map do |interval|
