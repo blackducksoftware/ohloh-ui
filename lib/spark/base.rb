@@ -1,4 +1,4 @@
-class Spark::Spark
+class Spark::Base
   IMAGE_DIR = Rails.root.join('app/assets/images/')
 
   def initialize(data, options = {})

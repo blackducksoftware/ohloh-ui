@@ -53,7 +53,7 @@ class ContributionsController < ApplicationController
   end
 
   def send_sample_image_if_bot
-    image_path = "#{Rails.root}/#{Object.const_get(action_name.upcase + '_IMAGE')}"
+    image_path = "#{Rails.root}/#{self.class.const_get(action_name.upcase + '_IMAGE')}"
     send_file image_path, filename: 'commits.png', type: 'image/png', disposition: 'inline'
   end
 
