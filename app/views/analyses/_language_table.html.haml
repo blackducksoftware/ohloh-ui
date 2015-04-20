@@ -1,13 +1,13 @@
 :ruby
-  search_locals = locals: { collection: language_breakdown, sort_context: :languages }
+  search_locals = { collection: language_breakdown, sort_context: :languages }
+  # %tr{ id: 'dingus-row' }
+  #   %td{ colspan: 8 }= render partial: 'shared/search_dingus', locals: search_locals
 
 %h4
   = t('.title')
 
 %table.table.table-striped.table-condensed
   %thead
-    %tr{ id: 'dingus-row' }
-      %td{ colspan: 8 }= render partial: 'shared/search_dingus', search_locals
     %tr
     %tr
       %th{ width: '3%' }
@@ -24,7 +24,7 @@
         %td{ style: "background-color: ##{language_color(lb['language_name'])}" } &nbsp;
         %td
           %span{ itemscope: '' , itemtype: 'http://schema.org/Language' }
-            %span{ itemprop: 'name' }= link_to lb.language, language_path(lb.language_name)
+            %span{ itemprop: 'name' }= link_to lb.language_nice_name, language_path(lb.language_name)
         %td.right= number_with_delimiter(lb.code_total)
         %td.right= number_with_delimiter(lb.comments_total)
         %td.right= comments_ratio_from_lanaguage_breakdown(lb)
@@ -32,7 +32,7 @@
         %td.right= number_with_delimiter(lb.code_total + lb.comments_total + lb.blanks_total)
         %td
           .bar.pull-left
-            .barfill{ style: barfill_style(lb) }
+            .barfill{ style: barfill_css(language_breakdown, lb) }
           %span{ itemscope: '', itemprop: 'aggregateRating', itemtype: 'http://schema.org/AggregateRating' }
             %span.pull-right{ itemprop: 'ratingValue', style: 'margin-left:5px;' }
               = total_percent(language_breakdown, lb)

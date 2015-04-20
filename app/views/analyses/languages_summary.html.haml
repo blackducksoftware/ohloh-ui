@@ -6,7 +6,7 @@
 
 - if @language_breakdown.any?
   %br
-  = render partial: 'projects_languages_details', { language_breakdown: @language_breakdown }
+  = render partial: 'projects_languages_details', locals: { language_breakdown: @language_breakdown }
   .clearfix
 
   .row
@@ -15,7 +15,7 @@
 
   .row
     .col-md-12.padding_one_top
-      = render partial: 'language_table' locals: { language_breakdown: @language_breakdown }
+      = render partial: 'language_table', locals: { language_breakdown: @language_breakdown }
 - elsif @analysis.present?
   %p= t('.no_recognized_languages')
 - else

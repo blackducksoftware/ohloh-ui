@@ -1,8 +1,10 @@
 class AnalysesController < ApplicationController
+  helper :Projects
+
   before_action :set_project
   before_action :set_analysis, except: :licenses
   before_action :fail_if_analysis_not_found, except: :lanaguages_summary
-  before_action :code_context, only: :languages_summary
+  before_action :project_context, only: :languages_summary
 
   def show
     respond_to do |format|
@@ -11,9 +13,9 @@ class AnalysesController < ApplicationController
     end
   end
 
-  def lanaguages_summary
+  def languages_summary
     @analysis ||= @project.best_analysis
-    @langauge_breakdown = Analysis::LanguageBreakdown.new(analysis: @analysis).collection
+    @language_breakdown = Analysis::LanguageBreakdown.new(analysis: @analysis).collection
   end
 
   def languages
@@ -46,7 +48,8 @@ class AnalysesController < ApplicationController
   end
 
   def language_history
-    render json: @analysis.language_history_chart
+    language_history = Analysis::LanguageHistoryChart.new(@analysis).data
+    render json: language_history
   end
 
   def code_history

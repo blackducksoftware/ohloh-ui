@@ -1,5 +1,6 @@
-class Analysis::LangaugeBreakdown < Analysis::Query
-  LANAGUAGE_SELECT_COLUMNS = { id: 'language_id', nice_name: 'language', name: 'language_name', category: 'category' }
+class Analysis::LanguageBreakdown < Analysis::Query
+  LANAGUAGE_SELECT_COLUMNS = { id: 'language_id', nice_name: 'language_nice_name', name: 'language_name',
+                               category: 'category' }
 
   arel_tables :activity_fact, :language
 
