@@ -31,11 +31,6 @@ class AnalysesController < ApplicationController
     @licenses = Analysis.license_counts(params[:id])
   end
 
-  def commit_volume_chart
-    commit_volume_chart = Analysis::CommitVolumeChart.new(@analysis).data
-    render json: commit_volume_chart
-  end
-
   def top_commit_volume_chart
     top_commit_volume_chart = Analysis::TopCommitVolumeChart.new(@analysis).data
     render json: top_commit_volume_chart

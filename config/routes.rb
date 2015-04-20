@@ -207,7 +207,6 @@ Rails.application.routes.draw do
         get :languages_summary
         get :languages
         get :licenses
-        get :commit_volume_chart
         get :top_commit_volume_chart
         get :commits_history
         get :committer_history
