@@ -1,6 +1,6 @@
 class Analysis::Query
   SUM_COLUMNS = [[:code_added, :code_removed, :code_total],
-                 [:comments_added, :comments_removed, :commets_total],
+                 [:comments_added, :comments_removed, :comments_total],
                  [:blanks_added, :blanks_removed, :blanks_total]]
 
   delegate :logged_at, :updated_on, :empty?, to: :@analysis
@@ -41,7 +41,6 @@ class Analysis::Query
 
   def truncate_date(value)
     Arel::Nodes::NamedFunction.new('date_trunc', [Arel.sql("'month'"), value])
-    # Arel.sql("TIMESTAMP '#{value}'")
   end
 
   def differential_sum(column_names)

@@ -1,5 +1,5 @@
 - if @analysis
-  - committers_url = url_for(committerhistory_project_analysis_url(project_id: @project.to_param, id: 'latest'))
+  - committers_url = url_for(committer_history_project_analysis_url(project_id: @project.to_param, id: 'latest'))
   - opts = chart_options('data-chart' => chart_watermark('charts_watermark_440'))
   %h4= link_to t('.contributors_per_month'), summary_project_contributors_path(@project)
   .col-md-4{ style: 'margin: -20px 0 0 -10px;' }

@@ -1,0 +1,15 @@
+chart:
+  backgroundColor: transparent
+  style:
+    background-image: 'url("/assets/charts/watermark_440.png")'
+    background-repeat: 'no-repeat'
+    background-position: '50% 50%'
+legend:
+  enabled: true
+  layout: 'horizontal'
+  align: 'center'
+  verticalAlign: 'bottom'
+  x: 0
+  y: 0
+  floating: false
+  backgroundColor: '#ffffff'

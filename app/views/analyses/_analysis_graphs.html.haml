@@ -1,7 +1,7 @@
 - if analysis.present?
   :ruby
     code_chart = code_history_project_analysis_url(project_id: project.to_param, id: 'latest')
-    language_chart = languagehistory_project_analysis_url(project_id: project.to_param, id: 'latest')
+    language_chart = language_history_project_analysis_url(project_id: project.to_param, id: 'latest')
     show_chart, reason = analysis.decorate.display_chart?
 
   .row
@@ -14,7 +14,7 @@
           %br
           %br
           %h4= t('.loc')
-          #language_analysis_chart.chart{ 'datasrc' => code_chart, style: 'width: 340px' }
+          #language_analysis_chart.chart{ 'datasrc' => language_chart, style: 'width: 340px' }
     - else
       .code_analysis_error
         - if reason == :no_understood_lang

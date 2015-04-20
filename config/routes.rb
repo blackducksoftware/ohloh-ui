@@ -213,6 +213,7 @@ Rails.application.routes.draw do
         get :committer_history
         get :language_history
         get :code_history
+        get :lines_of_code
         get :commits_spark
       end
 

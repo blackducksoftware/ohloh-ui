@@ -5,7 +5,10 @@ class AnalysesController < ApplicationController
   before_action :code_context, only: :languages_summary
 
   def show
-    redirect_to project_path(@project)
+    respond_to do |format|
+      format.html { redirect_to project_path(@project) }
+      format.xml { @status = @analysis.blank? ? 404 : 200 }
+    end
   end
 
   def lanaguages_summary
@@ -47,7 +50,13 @@ class AnalysesController < ApplicationController
   end
 
   def code_history
-    render json: @analysis.code_history_chart(params[:chart_size])
+    code_history = Analysis::CodeHistoryChart.new(@analysis).data
+    render json: code_history
+  end
+
+  def lines_of_code
+    lines_of_code = Analysis::CodeHistoryChart.new(@analysis).data_for_lines_of_code
+    render json: lines_of_code
   end
 
   def commits_spark

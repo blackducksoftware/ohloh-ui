@@ -13,3 +13,4 @@ CODE_HISTORY_CHART_DEFAULTS = load_charting_defaults("#{Rails.root}/config/chart
 COMMIT_VOLUME_CHART_DEFAULTS = load_charting_defaults("#{Rails.root}/config/charting/analysis_commit_volume_chart.yml")
 TOP_COMMIT_VOLUME_CHART_DEFAULTS = load_charting_defaults("#{Rails.root}/config/charting/analysis_top_commit_volume_chart.yml")
 LANGUAGE_HISTORY_CHART = load_charting_defaults("#{Rails.root}/config/charting/analysis_language_history_chart.yml")
+LINES_OF_CODE_CHART_DEFAULTS = load_charting_defaults("#{Rails.root}/config/charting/analysis_lines_of_code_chart_defaults.yml")

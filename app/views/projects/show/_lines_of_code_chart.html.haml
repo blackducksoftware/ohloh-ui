@@ -1,12 +1,9 @@
-- if @analysis
+- if @analysis.present?
   :ruby
-    lines_of_code_url = codehistory_project_analysis_url(project_id: @project.to_param, id: 'latest', chart_size: '440')
-    legend1 = '"enabled": true, "layout": "horizontal", "align": "center", "verticalAlign": "bottom"'
-    legend2 = '"x": 0, "y": 0, "floating": false, "backgroundColor": "#ffffff"'
-    options = chart_options('data-legend' => "{ #{legend1}, #{legend2} }")
+    lines_of_code_url = lines_of_code_project_analysis_url(project_id: @project.to_param, id: 'latest')
   %h4= link_to t('.loc'), languages_summary_project_analysis_path(@project, id: 'latest')
   .col-md-4{ style: 'margin: -20px 0 0 -10px;' }
-    != chart_interactive_tag(lines_of_code_url, 460, 200, options)
+    #language_analysis_chart.chart{ 'datasrc' => lines_of_code_url, style: 'width: 200px; height: 460px' }
 - else
   %h4 t('.loc')
   %p!= t('.no_code_locations', link: link_to(t('.add_a_code_location'), new_project_enlistment_path(@project)))

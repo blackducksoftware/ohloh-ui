@@ -46,7 +46,7 @@
               = render partial: 'projects/show/twelve_month_summary'
   .col-md-6
     - if @analysis
-      - commits_url = url_for(commitshistory_project_analysis_url(project_id: @project.to_param, id: 'latest'))
+      - commits_url = url_for(commits_history_project_analysis_url(project_id: @project.to_param, id: 'latest'))
       - opts = chart_options('data-chart' => chart_watermark('charts_watermark_440'))
       %h4= link_to t('.commits_per_month'), summary_project_commits_path(@project)
       .col-md-4{ style: 'margin: -20px 0 0 -10px;' }
