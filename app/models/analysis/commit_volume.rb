@@ -1,4 +1,4 @@
-class CommitsVolume < Analysis::Query
+class CommitVolume < Analysis::Query
   arel_tables :name, :analysis_sloc_set, :commit, :analysis_alias
 
   def initialize(analysis, interval)
@@ -7,13 +7,13 @@ class CommitsVolume < Analysis::Query
   end
 
   def collection
-    execute.map { |row| [row.name, row.count] }
+    execute.map { |row| [row.committer_name, row.count] }
   end
 
   private
 
   def execute
-    Analysis.select([names[:name], Arel.star.count('count')])
+    Analysis.select([names[:name].as('committer_name'), Arel.star.count('count')])
             .joins(analysis_sloc_sets: { sloc_set: { code_set: :commits }}, analysis_aliases: :preferred_name)
             .where(commits[:position].lteq(analysis_sloc_sets[:as_of]))
             .where(commits[:name_id].eq(analysis_aliases[:commit_name_id]))

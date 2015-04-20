@@ -32,15 +32,18 @@ class AnalysesController < ApplicationController
   end
 
   def commit_volume_chart
-    render json: @analysis.commit_volume_chart
+    commit_volume_chart = Analysis::CommitVolumeChart.new(@analysis).data
+    render json: commit_volume_chart
   end
 
   def top_commit_volume_chart
-    render json: @analysis.top_commit_volume_chart
+    top_commit_volume_chart = Analysis::TopCommitVolumeChart.new(@analysis).data
+    render json: top_commit_volume_chart
   end
 
   def commits_history
-    render json: @analysis.commits_history_chart
+    commits_history = Analysis::CommitHistoryChart.new(@analysis).data
+    render json: commits_history
   end
 
   def committer_history

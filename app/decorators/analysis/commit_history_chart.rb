@@ -1,7 +1,7 @@
 class Analysis::CommitHistoryChart < Analysis::Chart
-  def intitialize(analysis)
+  def initialize(analysis)
     @analysis = analysis
-    @history = Analysis::CommitHistory.new(analysis)
+    @history = Analysis::CommitHistory.new(analysis: analysis).execute
     @defaults = ANALYSIS_CHART_DEFAULTS.deep_merge(COMMIT_HISTORY_CHART_DEFAULTS)
   end
 
@@ -12,10 +12,10 @@ class Analysis::CommitHistoryChart < Analysis::Chart
   end
 
   def series_data_without_axis_data
-    series.reject_if { |data| data['month'] < latest_date }.map { |h| [h['ticks'], h['commits'].to_i] }
+    series.reject { |data| data.month < latest_date }.map { |h| [h.ticks, h.commits] }
   end
 
   def x_and_y_axis_data
-    [{ 'x' => series.last['ticks'], 'y' => series.last['commits'].to_i }]
+    [{ 'x' => series.last.ticks, 'y' => series.last.commits }]
   end
 end

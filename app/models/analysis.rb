@@ -22,6 +22,8 @@ class Analysis < ActiveRecord::Base
   scope :hot, -> { where.not(hotness_score: nil).order(hotness_score: :desc) }
   scope :for_lang, ->(lang_id) { where(main_language_id: lang_id) }
 
+  attr_accessor :ticks
+
   def twelve_month_summary
     super || NilAnalysisSummary.new
   end

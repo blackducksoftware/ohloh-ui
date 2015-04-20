@@ -8,7 +8,7 @@ chart:
 credits:
   enabled: false
 title:
-  text: nil
+  text:
 xAxis:
   labels:
     align: 'center'

@@ -6,7 +6,6 @@ class Analysis::CommitVolumeChart
   def initialize(analysis)
     @analysis = analysis
     history_for_all_intervals
-    @interval_labels = ['All Time', 'Past 12 Months', @analysis.max_month.strftime('%B %Y')]
   end
 
   def data
@@ -15,9 +14,13 @@ class Analysis::CommitVolumeChart
 
   private
 
+  def interval_labels
+    ['All Time', 'Past 12 Months', @analysis.max_month.strftime('%B %Y')]
+  end
+
   def data_options
     { 'series' => pivoted_series.map { |name, data| { 'name' => name, 'data' => data } },
-      'xAxis' => { 'categories' => @interval_labels }, 'warning' => warning_messages }
+      'xAxis' => { 'categories' => interval_labels }, 'warning' => nil }
   end
 
   def history_for_all_intervals
@@ -29,7 +32,7 @@ class Analysis::CommitVolumeChart
   def series
     @series ||= @history.map do |data|
       others_count = data.drop(NAME_COUNT).map(&:last).sum
-      data.take(NAME_COUNT) + [OTHER, others_count]
+      data.take(NAME_COUNT) + [[OTHER, others_count]]
     end
   end
 
@@ -39,22 +42,11 @@ class Analysis::CommitVolumeChart
 
   def find_count(name_to_find)
     series.map do |data|
-      data.find { |name, _| name == name_to_find }.last
+      data.find { |name, _| name == name_to_find }.try(:last).to_i
     end
   end
 
   def committer_names
     @comitter_names ||= series.map { |data| data.map(&:first) }.flatten.uniq
-  end
-
-  def warning_messages
-    committers_with_most_commits_last_year.map do |name, count|
-      "#{name} generated more than 50% of all commits during the past 12 months."
-    end
-  end
-
-  def committers_with_most_commits_last_year
-    half_of_commits_count = series[1].map(&:last).sum / 2
-    series[1].take(NAME_COUNT).reject { |datum| datum.last < half_of_commits_count }
   end
 end
