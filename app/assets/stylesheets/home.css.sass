@@ -50,6 +50,25 @@
 .openhub_rebrand
   background: asset_url("home/Ohloh_to_OpenHub-620x240r2.png") 0 0 no-repeat
   height: 260px
+
+::-webkit-input-placeholder
+  color:    black
+\:-moz-placeholder
+  color:    black
+  opacity:  1
+::-moz-placeholder
+  color:    black
+  opacity:  1
+\:-ms-input-placeholder
+  color:    #909
+
+input:focus::-webkit-input-placeholder
+  color: transparent
+input:focus::-moz-placeholder
+  color: transparent
+input:focus::-ms-input-placeholder
+  color: transparent
+
 .landing
   margin-left: -14px
 .top_ten_main
@@ -84,11 +103,18 @@
     margin-top: 0
     margin-right: 2px
 .for_search_all_code
-  background: asset_url("search_icon.png") no-repeat scroll 99% 50% / 13px auto transparent
   height: 23px !important
   margin-top: -108px
   width: 413px
   color: black !important
+.image_icon
+  img
+    margin-left: -24px
+    margin-top: -115px
+    padding-bottom: 3px
+    width: 13px !important
+    height: 17px !important
+    cursor: pointer
 .top_ten_link
   a
     border: 0
