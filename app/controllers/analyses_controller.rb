@@ -44,7 +44,8 @@ class AnalysesController < ApplicationController
   end
 
   def committer_history
-    render json: @analysis.committer_history_chart
+    committer_history = Analysis::ContributorHistoryChart.new(@analysis).data
+    render json: committer_history
   end
 
   def language_history

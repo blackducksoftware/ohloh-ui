@@ -1,7 +1,7 @@
 class Analysis::ContributorHistoryChart < Analysis::Chart
-  def intitialize(analysis)
+  def initialize(analysis)
     @analysis = analysis
-    @history = Analysis::ContributorHistory.new(analysis)
+    @history = Analysis::ContributorHistory.new(analysis: analysis).execute
     @defaults = ANALYSIS_CHART_DEFAULTS.deep_merge(COMMITTER_HISTORY_CHART_DEFAULTS)
   end
 
@@ -12,10 +12,10 @@ class Analysis::ContributorHistoryChart < Analysis::Chart
   end
 
   def series_data_without_axis_data
-    series.reject_if { |data| data['month'] < latest_date }.map { |h| [h['ticks'], h['contributors'].to_i] }
+    series.reject { |data| data.month < latest_date }.map { |h| [h.ticks, h.contributors] }
   end
 
   def x_and_y_axis_data
-    [{ 'x' => series.last['ticks'], 'y' => series.last['contributors'].to_i }]
+    [{ 'x' => series.last.ticks, 'y' => series.last.contributors }]
   end
 end
