@@ -1,4 +1,4 @@
-class TopCommitVolumeChart < CommitVolumeChart
+class Analysis::TopCommitVolumeChart < Analysis::CommitVolumeChart
   NAME_COUNT = 8
 
   def initialize(analysis)
