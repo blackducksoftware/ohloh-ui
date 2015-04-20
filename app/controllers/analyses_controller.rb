@@ -18,15 +18,6 @@ class AnalysesController < ApplicationController
     @language_breakdown = Analysis::LanguageBreakdown.new(analysis: @analysis).collection
   end
 
-  def languages
-    modified_params.reverse_merge(width: '154', height: '154', border: 1, show: true)
-    languages = @analysis.language_percentages(modified_params).map { |_, name, value| [name, value] }
-    chart_format = Chart::Format.new(width: params[:width].to_i, height: params[:height].to_i,
-                                     p_legend_height: 40, right_buffer: 40)
-    chart = Chart::Pie.render(chart_format, languages, params)
-    send_file chart, disposition: 'inline', type: 'image/png'
-  end
-
   def licenses
     @licenses = Analysis.license_counts(params[:id])
   end
