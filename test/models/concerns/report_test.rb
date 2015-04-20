@@ -29,7 +29,7 @@ class ReportTest < ActiveSupport::TestCase
     (1..3).to_a.each do |value|
       create(:all_month, month: Time.utc(Time.now.utc.year, value, 1))
     end
-    plot_points = project_analysis.code__total_history(@start_date, @end_date)
+    plot_points = project_analysis.code_total_history(@start_date, @end_date)
     plot_points = plot_points.map { |values| values['code_total'].to_i }
     plot_points.count.must_equal 3
   end

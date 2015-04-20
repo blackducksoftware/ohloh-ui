@@ -40,7 +40,8 @@ class CompareControllerTest < ActionController::TestCase
     project1 = create(:project, name: 'The Avenger Initiative')
     project2 = create(:project, name: 'X-MEN')
     project3 = create(:project, name: 'Suicide Squad')
-    xhr :get, :projects_graph, metric: 'contributor', project_0: project1.name, project_1: project2.name, project_2: project2.name
+    xhr :get, :projects_graph, metric: 'contributor', project_0: project1.name,
+                               project_1: project2.name, project_2: project3.name
     must_respond_with :ok
   end
 
@@ -48,7 +49,8 @@ class CompareControllerTest < ActionController::TestCase
     project1 = create(:project, name: 'The Avenger Initiative')
     project2 = create(:project, name: 'X-MEN')
     project3 = create(:project, name: 'Suicide Squad')
-    xhr :get, :projects_graph, metric: 'commit', project_0: project1.name, project_1: project2.name, project_2: project2.name
+    xhr :get, :projects_graph, metric: 'commit', project_0: project1.name,
+                               project_1: project2.name, project_2: project3.name
     must_respond_with :ok
   end
 
@@ -56,7 +58,8 @@ class CompareControllerTest < ActionController::TestCase
     project1 = create(:project, name: 'The Avenger Initiative')
     project2 = create(:project, name: 'X-MEN')
     project3 = create(:project, name: 'Suicide Squad')
-    xhr :get, :projects_graph, metric: 'code_total', project_0: project1.name, project_1: project2.name, project_2: project2.name
+    xhr :get, :projects_graph, metric: 'code_total', project_0: project1.name,
+                               project_1: project2.name, project_2: project3.name
     must_respond_with :ok
   end
 
