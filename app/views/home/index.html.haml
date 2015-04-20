@@ -8,7 +8,7 @@
     %form.search#search_form{ action: projects_path }
       %input{ type: :hidden, name: 'ref', value: 'homepage' }
       %input.for_search_all_code{ type: :text, name: 'q', placeholder: "Search  Projects...", id: "text" }
-        %span.image_icon= image_tag(asset_url("search_icon.png"), id: 'image_icon')
+        %span.image_icon= image_tag(asset_url("search_icon2.png"), id: 'icon_text')
       %p.icon_search
     #global_statistics
       %p#content-0= t('.counting', count: number_with_delimiter(@home.lines_count.to_i))
