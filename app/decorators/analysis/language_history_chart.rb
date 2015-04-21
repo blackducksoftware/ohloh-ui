@@ -4,12 +4,12 @@ class Analysis::LanguageHistoryChart < Analysis::Chart
   def initialize(analysis)
     @analysis = analysis
     @history = Analysis::LanguageHistory.new(analysis: analysis).execute
-    @defaults = ANALYSIS_CHART_DEFAULTS.deep_merge(LANGUAGE_HISTORY_CHART)
+    @defaults = ANALYSIS_CHART_DEFAULTS.deep_merge(ANALYIS_CHARTS_OPTIONS['language_history'])
   end
 
   def data
     chart = @defaults.merge('series' => series_map)
-    chart.merge! range_selector
+    chart.merge range_selector
   end
 
   private

@@ -2,11 +2,15 @@ class Analysis::CodeHistoryChart < Analysis::Chart
   def initialize(analysis)
     @analysis = analysis
     @history = Analysis::CodeHistory.new(analysis: analysis).execute
-    @defaults = ANALYSIS_CHART_DEFAULTS.deep_merge(CODE_HISTORY_CHART_DEFAULTS)
+    @defaults = ANALYSIS_CHART_DEFAULTS.deep_merge(ANALYIS_CHARTS_OPTIONS['code_history'])
+  end
+
+  def data
+    series_and_range_data(@defaults)
   end
 
   def data_for_lines_of_code
-    data.deep_merge(LINES_OF_CODE_CHART_DEFAULTS)
+    data.deep_merge(ANALYIS_CHARTS_OPTIONS['no_auxillaries']).deep_merge(ANALYIS_CHARTS_OPTIONS['lines_of_code'])
   end
 
   private

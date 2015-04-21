@@ -3,7 +3,7 @@
     lines_of_code_url = lines_of_code_project_analysis_url(project_id: @project.to_param, id: 'latest')
   %h4= link_to t('.loc'), languages_summary_project_analysis_path(@project, id: 'latest')
   .col-md-4{ style: 'margin: -20px 0 0 -10px;' }
-    #language_analysis_chart.chart{ 'datasrc' => lines_of_code_url, style: 'width: 200px; height: 460px' }
+    #loc_chart.chart{ 'datasrc' => lines_of_code_url, style: 'width: 460px; height: 200px' }
 - else
   %h4 t('.loc')
   %p!= t('.no_code_locations', link: link_to(t('.add_a_code_location'), new_project_enlistment_path(@project)))

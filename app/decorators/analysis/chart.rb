@@ -3,14 +3,14 @@ class Analysis::Chart
 
   delegate :min_month, :logged_at, :created_at, to: :@analysis
 
-  def data
-    series_data_map.each_with_index do |data, index|
-      @defaults['series'][index].merge!({ 'data' => data })
-    end
-    @defaults.merge! range_selector
-  end
-
   private
+
+  def series_and_range_data(default_options)
+    series_data_map.each_with_index do |data, index|
+      default_options['series'][index].merge!({ 'data' => data })
+    end
+    default_options.merge range_selector
+  end
 
   def first_ticks
     series.first.ticks

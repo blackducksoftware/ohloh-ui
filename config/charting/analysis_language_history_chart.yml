@@ -1,7 +1,0 @@
-chart:
-  backgroundColor: transparent
-  style:
-    background-image: url('/assets/charts/watermark_914.png')
-    background-repeat: no-repeat
-    background-position: '50% 50%'
-title: 'Lines'

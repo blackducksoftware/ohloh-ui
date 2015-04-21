@@ -45,12 +45,11 @@
               .clearfix
               = render partial: 'projects/show/twelve_month_summary'
   .col-md-6
-    - if @analysis
-      - commits_url = url_for(commits_history_project_analysis_url(project_id: @project.to_param, id: 'latest'))
-      - opts = chart_options('data-chart' => chart_watermark('charts_watermark_440'))
+    - if @analysis.present?
+      - chart_url = commits_history_project_analysis_url(project_id: @project.to_param, id: 'latest')
       %h4= link_to t('.commits_per_month'), summary_project_commits_path(@project)
       .col-md-4{ style: 'margin: -20px 0 0 -10px;' }
-        != chart_interactive_tag(commits_url, 460, 200, opts)
+        .chart{ 'datasrc' => chart_url, style: 'width: 460px; height: 180px' }
     - else
       %h4= t('.commits_per_month')
       - add_code_link = link_to t('.add_a_code_location'), new_project_enlistment_path(@project)
