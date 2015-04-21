@@ -8,7 +8,7 @@ class Analysis::LanguageHistoryChart < Analysis::Chart
   end
 
   def data
-    chart = @defaults.merge('series' => series_map)
+    chart = @defaults.merge('series' => series_map).deep_merge(chart_watermark('watermark_914'))
     chart.merge range_selector
   end
 

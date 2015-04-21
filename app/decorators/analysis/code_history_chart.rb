@@ -6,11 +6,13 @@ class Analysis::CodeHistoryChart < Analysis::Chart
   end
 
   def data
-    series_and_range_data(@defaults)
+    series_and_range_data(@defaults).deep_merge(chart_watermark('watermark_914'))
   end
 
   def data_for_lines_of_code
-    data.deep_merge(ANALYIS_CHARTS_OPTIONS['no_auxillaries']).deep_merge(ANALYIS_CHARTS_OPTIONS['lines_of_code'])
+    data.deep_merge(ANALYIS_CHARTS_OPTIONS['no_auxillaries'])
+      .deep_merge(ANALYIS_CHARTS_OPTIONS['lines_of_code'])
+      .deep_merge(chart_watermark('watermark_440'))
   end
 
   private

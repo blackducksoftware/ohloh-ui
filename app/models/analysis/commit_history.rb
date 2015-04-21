@@ -61,6 +61,6 @@ class Analysis::CommitHistory < Analysis::Query
   end
 
   def commit_date
-    truncate_date(commits[:time]).as('this_month')
+    Arel::Nodes::NamedFunction.new('date_trunc', [Arel.sql("'month'"), commits[:time]]).as('this_month')
   end
 end
