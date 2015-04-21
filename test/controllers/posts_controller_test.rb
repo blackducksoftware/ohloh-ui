@@ -194,12 +194,12 @@ describe PostsController do
 
   describe 'xml index' do
     it 'should render as xml' do
-      get :index
+      get :index, format: 'atom'
       must_respond_with :ok
     end
 
     it 'should render as xml for account posts' do
-      get :index, account: user
+      get :index, account: user, format: 'atom'
       must_respond_with :ok
     end
   end
