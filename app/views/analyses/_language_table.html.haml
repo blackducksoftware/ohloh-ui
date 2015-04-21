@@ -6,7 +6,7 @@
 %h4
   = t('.title')
 
-%table.table.table-striped.table-condensed
+%table.table.table-striped.table-condensed#analyses_language_table
   %thead
     %tr
     %tr
@@ -21,15 +21,15 @@
 
     - language_breakdown.each do |lb|
       %tr{ class: cycle('odd','even') }
-        %td{ style: "background-color: ##{language_color(lb['language_name'])}" } &nbsp;
+        %td{ style: "background-color: ##{language_color(lb.language_name)}" } &nbsp;
         %td
           %span{ itemscope: '' , itemtype: 'http://schema.org/Language' }
             %span{ itemprop: 'name' }= link_to lb.language_nice_name, language_path(lb.language_name)
-        %td.right= number_with_delimiter(lb.code_total)
-        %td.right= number_with_delimiter(lb.comments_total)
-        %td.right= comments_ratio_from_lanaguage_breakdown(lb)
-        %td.right= number_with_delimiter(lb.blanks_total)
-        %td.right= number_with_delimiter(lb.code_total + lb.comments_total + lb.blanks_total)
+        %td.center= number_with_delimiter(lb.code_total)
+        %td.center= number_with_delimiter(lb.comments_total)
+        %td.center= comments_ratio_from_lanaguage_breakdown(lb)
+        %td.center= number_with_delimiter(lb.blanks_total)
+        %td.center= number_with_delimiter(lb.code_total + lb.comments_total + lb.blanks_total)
         %td
           .bar.pull-left
             .barfill{ style: barfill_css(language_breakdown, lb) }
@@ -40,10 +40,10 @@
 
     %tr
       %td
-      %td.right= t('.total')
-      %td.right= number_with_delimiter analysis_total_detail(language_breakdown, 'code')
-      %td.right= number_with_delimiter analysis_total_detail(language_breakdown, 'comments')
-      %td.right
-      %td.right= number_with_delimiter analysis_total_detail(language_breakdown, 'blanks')
-      %td.right= number_with_delimiter analysis_total_lines(language_breakdown)
+      %td.center= t('.total')
+      %td.center= number_with_delimiter analysis_total_detail(language_breakdown, 'code_total')
+      %td.center= number_with_delimiter analysis_total_detail(language_breakdown, 'comments_total')
+      %td.center
+      %td.center= number_with_delimiter analysis_total_detail(language_breakdown, 'blanks_total')
+      %td.center= number_with_delimiter analysis_total_lines(language_breakdown)
       %td.center

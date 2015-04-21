@@ -1,8 +1,8 @@
 :ruby
   total_lines = analysis_total_lines(language_breakdown)
-  code_lines = analysis_total_detail(language_breakdown, 'code')
-  comment_lines = analysis_total_detail(language_breakdown, 'comments')
-  blank_lines = analysis_total_detail(language_breakdown, 'blanks')
+  code_lines = analysis_total_detail(language_breakdown, 'code_total')
+  comment_lines = analysis_total_detail(language_breakdown, 'comments_total')
+  blank_lines = analysis_total_detail(language_breakdown, 'blanks_total')
 
 .well{ style: 'border: none; box-shadow: none; border-radius: 0' }
   %table
@@ -23,7 +23,7 @@
       %td{ width: '5%',  scope: 'col' }= number_with_delimiter(comment_lines)
       %td{ width: '10%', scope: 'col' }
       %td{ width: '20%', scope: 'col' }= t('.percentage_comments')
-      %td{ width: '10%', scope: 'col' }= analysis_total_percent_detail(comment_lines,total_lines)
+      %td{ width: '10%', scope: 'col' }= analysis_total_percent_detail(comment_lines, total_lines)
     %tr
       %td{ width: '20%', scope: 'col' }
       %td{ width: '5%',  scope: 'col' }
