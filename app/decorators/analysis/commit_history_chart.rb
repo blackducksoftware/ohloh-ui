@@ -16,7 +16,7 @@ class Analysis::CommitHistoryChart < Analysis::Chart
   end
 
   def series_data_without_axis_data
-    series.reject { |data| data.month < latest_date }.map { |h| [h.ticks, h.commits] }
+    series.select { |data| data.month < latest_date }.map { |h| [h.ticks, h.commits] }
   end
 
   def x_and_y_axis_data
