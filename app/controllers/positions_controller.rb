@@ -75,7 +75,7 @@ class PositionsController < ApplicationController
   end
 
   def set_account
-    @account = Account.resolve_login(params[:account_id])
+    @account = Account.from_param(params[:account_id]).take
     fail ParamRecordNotFound unless @account
   end
 
