@@ -192,6 +192,18 @@ describe PostsController do
     end
   end
 
+  describe 'xml index' do
+    it 'should render as xml' do
+      get :index
+      must_respond_with :ok
+    end
+
+    it 'should render as xml for account posts' do
+      get :index, account: user
+      must_respond_with :ok
+    end
+  end
+
   it 'create fails for user with no account' do
     assert_no_difference('Post.count') do
       post :create, topic_id: topic.id, post: { body: 'Creating a post for testing' }

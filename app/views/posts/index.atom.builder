@@ -15,7 +15,7 @@ atom_feed do |feed|
         feed.link @base_url + "?query=#{params[:query]}&sort=#{params[:sort]}" if params[:query].present? && params[:sort].present?
         feed.language 'en-us'
         feed.ttl 60
-        xml << render(partial: 'posts/posts.atom.builder', collection: @posts)
+        xml << render(partial: 'posts/posts.atom.builder', collection: @posts).gsub(/^/, '      ')
       end
     end
   end
