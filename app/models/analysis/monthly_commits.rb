@@ -20,6 +20,10 @@ class Analysis::MonthlyCommits < Analysis::Query
     commits[:position].lteq(analysis_sloc_sets[:as_of]).and analysis_sloc_sets[:analysis_id].eq(@analysis.id)
   end
 
+  def truncate_date(value)
+    Arel::Nodes::NamedFunction.new('date_trunc', [Arel.sql("'month'"), value])
+  end
+
   def start_date
     Time.now.utc - COMMIT_YEARS.years
   end

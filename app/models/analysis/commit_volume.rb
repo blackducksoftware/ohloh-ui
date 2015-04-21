@@ -13,7 +13,7 @@ class CommitVolume < Analysis::Query
   private
 
   def execute
-    Analysis.select([name.as('committer_name'), Arel.star.count('count')])
+    Analysis.select([name.as('committer_name'), Arel.star.count.as('count')])
       .joins(analysis_sloc_sets: { sloc_set: { code_set: :commits } }, analysis_aliases: :preferred_name)
       .where(conditions)
       .where(id: @analysis.id)

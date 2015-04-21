@@ -14,8 +14,4 @@ class Analysis::CodeHistory < Analysis::Query
   def end_date
     truncate_date(@end_date)
   end
-
-  def truncate_date(value)
-    Arel::Nodes::NamedFunction.new('date_trunc', [Arel.sql("'month'"), Arel.sql("TIMESTAMP '#{value}'")])
-  end
 end

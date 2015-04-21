@@ -217,6 +217,7 @@ Rails.application.routes.draw do
       end
 
       resources :activity_facts, only: :index
+      resources :size_facts, only: :index
     end
     resources :commits, only: [:index, :show] do
       collection { get :summary }

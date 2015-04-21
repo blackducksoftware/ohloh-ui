@@ -20,10 +20,6 @@ class Analysis::LanguageHistory < Analysis::Query
     activity_facts.join(languages).on(activity_facts[:language_id].eq(languages[:id])).join_sources
   end
 
-  def truncate_date(value)
-    Arel::Nodes::NamedFunction.new('date_trunc', [Arel.sql("'month'"), Arel.sql("TIMESTAMP '#{value}'")])
-  end
-
   def start_date
     truncate_date(@start_date)
   end

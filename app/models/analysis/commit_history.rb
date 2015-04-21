@@ -16,12 +16,12 @@ class Analysis::CommitHistory < Analysis::Query
 
   def query
     all_months.project([month, coalesce_commits_count])
-      .join(arel_sub_query, Arel::Nodes::OuterJoin)
-      .on(month.eq(arel_sub_query[:this_month])).where(within_date)
+      .join(arel_subquery, Arel::Nodes::OuterJoin)
+      .on(month.eq(arel_subquery[:this_month])).where(within_date)
       .order(month)
   end
 
-  def arel_sub_query
+  def arel_subquery
     subquery.arel.as('counts')
   end
 
@@ -57,7 +57,7 @@ class Analysis::CommitHistory < Analysis::Query
   end
 
   def coalesce_commits_count
-    Arel::Nodes::NamedFunction.new('COALESCE', [subquery[:count], 0]).as('commits')
+    Arel::Nodes::NamedFunction.new('COALESCE', [arel_subquery[:count], 0]).as('commits')
   end
 
   def commit_date
