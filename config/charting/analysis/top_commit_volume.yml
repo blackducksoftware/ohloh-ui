@@ -1,0 +1,51 @@
+chart:
+  defaultSeriesType: 'bar'
+  backgroundColor: 'transparent'
+  style:
+    background-image: 'url("/assets/charts/watermark_340.png")'
+    background-repeat: 'no-repeat'
+    background-position: '90% 14%'
+credits:
+  enabled: false
+title:
+  text:
+xAxis:
+  labels:
+    align: 'center'
+    style:
+      fontSize: '0.9em'
+      width: '75px'
+  gridLineWidth: 0
+  lineWidth: 0
+yAxis:
+  min: 0
+  title:
+    text: '% of Commits'
+  stackLabels:
+    enabled: false
+  lineWidth: 1
+  gridLineWidth: 0
+tooltip:
+  commit_volume_chart: true
+legend:
+  align: 'center'
+  verticalAlign: 'bottom'
+  x: 0
+  y: 0
+  floating: false
+  backgroundColor: 'white'
+  borderColor: 'white'
+  shadow: false
+  layout: 'horizontal'
+  width: 320
+  itemWidth: 100
+  lineHeight: 20
+  margin: 20
+  padding: 20
+  itemStyle:
+    fontSize: '0.9em'
+plotOptions:
+  series:
+    stacking: 'percent'
+    dataLabels:
+      enabled: false
