@@ -1,10 +1,13 @@
 class AnalysesController < ApplicationController
+  include ApiKeyChecks
+
   helper :Projects
 
   before_action :set_project
   before_action :set_analysis, except: :licenses
   before_action :fail_if_analysis_not_found, except: :lanaguages_summary
   before_action :project_context, only: :languages_summary
+  before_action :verify_api_key, only: :show
 
   def show
     respond_to do |format|
