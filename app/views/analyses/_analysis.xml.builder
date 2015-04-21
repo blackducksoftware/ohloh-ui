@@ -1,6 +1,6 @@
 xml.analysis do
   xml.id analysis.id
-  xml.url analysis_url analysis, format: 'xml'
+  xml.url "project/#{analysis.project}/analyses/#{analysis.id}.xml"
   xml.project_id analysis.project_id
   xml.updated_at analysis.updated_on.iso8601
   xml.logged_at analysis.logged_at.iso8601
@@ -15,7 +15,7 @@ xml.analysis do
   xml.total_code_lines analysis.code_total
   if analysis.factoids && analysis.factoids.any?
     xml.factoids do
-      if analysis.factoids.reject! { |f| f.type.to_s =~ /FactoidDistribution|FactoidStaff/ }
+      if analysis.factoids.to_a.reject! { |f| f.type.to_s =~ /FactoidDistribution|FactoidStaff/ }
         analysis.factoids.each do |f|
           xml.factoid type: f.class do
             xml.text! f.to_s
