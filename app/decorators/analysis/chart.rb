@@ -7,7 +7,7 @@ class Analysis::Chart
 
   def series_and_range_data(default_options)
     series_data_map.each_with_index do |data, index|
-      default_options['series'][index].merge!({ 'data' => data })
+      default_options['series'][index].merge!('data' => data)
     end
     default_options.merge range_selector
   end
@@ -22,7 +22,7 @@ class Analysis::Chart
 
   def range_selector
     buttons = first_ticks.present? ? y_axis_ticks : []
-    buttons.push({ type: 'all', text: 'All' })
+    buttons.push(type: 'all', text: 'All')
     { 'rangeSelector' => { 'inputEnabled' => false, 'buttons' => buttons, 'selected' => (buttons.size - 1) } }
   end
 

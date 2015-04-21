@@ -27,7 +27,7 @@ class Analysis::LanguageHistoryChart < Analysis::Chart
 
   def series_lang_map(lang)
     series.select { |data| (data.language == lang) && (data.ticks > min_month_as_ticks) }
-          .map { |data| [data.ticks, data.code_total] }
+      .map { |data| [data.ticks, data.code_total] }
   end
 
   def top_5_languages

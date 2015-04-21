@@ -32,11 +32,11 @@ module AnalysesHelper
   end
 
   def analysis_total_detail(analysis_language_breakdown, type)
-   analysis_language_breakdown.collect { |line| line[type].to_i }.sum
+    analysis_language_breakdown.collect { |line| line[type].to_i }.sum
   end
 
   def analysis_total_percent_detail(type, total_lines)
-    number_with_precision(((type.to_i.to_f/total_lines.to_f) * 100), :precision => 1).to_s + "%"
+    number_with_precision(((type.to_i.to_f / total_lines.to_f) * 100), precision: 1).to_s + '%'
   end
 
   def comments_ratio_from_lanaguage_breakdown(language_breakdown)

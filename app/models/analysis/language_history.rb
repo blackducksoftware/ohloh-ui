@@ -3,10 +3,14 @@ class Analysis::LanguageHistory < Analysis::Query
 
   def execute
     AllMonth.select(select_columns).joins(joins_clause).joins(languages_joins).where(within_date)
-            .group([month, languages[:nice_name], languages[:name]]).order(languages[:nice_name], month)
+      .group(group_clause).order(languages[:nice_name], month)
   end
 
   private
+
+  def group_clause
+    [month, languages[:nice_name], languages[:name]]
+  end
 
   def select_columns
     [month, languages[:nice_name].as('language'), languages[:name].as('language_name'), super]

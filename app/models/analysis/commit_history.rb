@@ -16,26 +16,33 @@ class Analysis::CommitHistory < Analysis::Query
 
   def query
     all_months.project([month, coalesce_commits_count])
-      .join(subquery, Arel::Nodes::OuterJoin)
-      .on(month.eq(subquery[:this_month])).where(within_date)
+      .join(arel_sub_query, Arel::Nodes::OuterJoin)
+      .on(month.eq(arel_sub_query[:this_month])).where(within_date)
       .order(month)
   end
 
+  def arel_sub_query
+    subquery.arel.as('counts')
+  end
+
   def subquery
-    AnalysisSlocSet.select([Arel.star.count.as('count'), commit_date])
+    AnalysisSlocSet.select(subquery_select_clause)
       .joins(sloc_set: { code_set: :commits })
       .joins(analysis_aliases_joins)
       .where(subquery_conditions)
       .where(preferred_name_id)
       .group('this_month')
       .order('this_month')
-      .arel.as('counts')
   end
 
   def subquery_conditions
     commits[:position].lteq(analysis_sloc_sets[:as_of])
       .and(analysis_aliases[:analysis_id].eq(@analysis.id))
       .and(analysis_sloc_sets[:analysis_id].eq(@analysis.id))
+  end
+
+  def subquery_select_clause
+    [Arel.star.count.as('count'), commit_date]
   end
 
   def analysis_aliases_joins

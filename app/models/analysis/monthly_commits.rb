@@ -12,9 +12,12 @@ class Analysis::MonthlyCommits < Analysis::Query
   def sub_query
     AnalysisSlocSet.select([Arel.star.count])
       .joins(sloc_set: { code_set: :commits })
-      .where(commits[:position].lteq(analysis_sloc_sets[:as_of]))
-      .where(analysis_sloc_sets[:analysis_id].eq(@analysis.id))
+      .where(subquery_conditions)
       .where(month.eq(truncate_date(commits[:time])))
+  end
+
+  def subquery_conditions
+    commits[:position].lteq(analysis_sloc_sets[:as_of]).and analysis_sloc_sets[:analysis_id].eq(@analysis.id)
   end
 
   def start_date

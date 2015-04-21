@@ -13,17 +13,24 @@ class CommitVolume < Analysis::Query
   private
 
   def execute
-    Analysis.select([names[:name].as('committer_name'), Arel.star.count('count')])
-            .joins(analysis_sloc_sets: { sloc_set: { code_set: :commits }}, analysis_aliases: :preferred_name)
-            .where(commits[:position].lteq(analysis_sloc_sets[:as_of]))
-            .where(commits[:name_id].eq(analysis_aliases[:commit_name_id]))
-            .where(id: @analysis.id)
-            .where(commits[:time].eq(date_interval))
-            .group(names[:name])
-            .order('count DESC LOWER(names.name)')
+    Analysis.select([name.as('committer_name'), Arel.star.count('count')])
+      .joins(analysis_sloc_sets: { sloc_set: { code_set: :commits } }, analysis_aliases: :preferred_name)
+      .where(conditions)
+      .where(id: @analysis.id)
+      .where(commits_conditions)
+      .group(name)
+      .order('count DESC LOWER(names.name)')
   end
 
-  def date_interval
-    "analyses.max_month + INTERVAL '1 month' - INTERVAL '#{@interval}'"
+  def name
+    names[:name]
+  end
+
+  def conditions
+    commits[:position].lteq(analysis_sloc_sets[:as_of]).and commits[:name_id].eq(analysis_aliases[:commit_name_id])
+  end
+
+  def commits_conditions
+    commits[:time].eq "analyses.max_month + INTERVAL '1 month' - INTERVAL '#{@interval}'"
   end
 end

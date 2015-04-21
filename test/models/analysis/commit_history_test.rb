@@ -14,7 +14,7 @@ class Analysis::CommitHistoryTest < ActiveSupport::TestCase
         FactoryGirl.create(:all_month, month: date)
       end
 
-      query_options = { analysis: analysis, name_id: name_id, start_date: 3.months.ago, Date.today }
+      query_options = { analysis: analysis, name_id: name_id, start_date: 3.months.ago, end_date: Date.today }
       query = Analysis::CommitHistory.new(query_options)
       results = query.execute
 

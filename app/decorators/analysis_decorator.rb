@@ -29,7 +29,7 @@ class AnalysisDecorator < Cherry::Decorator
   def display_chart?
     return [false, :no_commits] if commit_count.nil? || commit_count <= 0
     return [false, :no_understood_lang] if logic_total <= 0 && markup_total <= 0
-    return [true, nil]
+    [true, nil]
   end
 
   private

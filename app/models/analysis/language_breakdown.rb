@@ -16,7 +16,7 @@ class Analysis::LanguageBreakdown < Analysis::Query
 
   def query
     ActivityFact.select([select_columns, language_select_colums]).joins(:language).where(with_analysis)
-                .group(language: LANAGUAGE_SELECT_COLUMNS.keys).order('code_total DESC, nice_name, name, category')
+      .group(language: LANAGUAGE_SELECT_COLUMNS.keys).order('code_total DESC, nice_name, name, category')
   end
 
   def language_select_colums

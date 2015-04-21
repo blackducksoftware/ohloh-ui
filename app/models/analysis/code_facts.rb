@@ -7,12 +7,15 @@ class Analysis::CodeFacts < Analysis::Query
 
   def execute
     AllMonth.select(select_columns).joins(joins_clause)
-            .where(within_date).where(activity_facts[:analysis_id].eq(@analysis.id))
-            .where.not(activity_facts[:name_id].eq(nil))
-            .group(month).order(month)
+      .where(within_date).where(conditions)
+      .group(month).order(month)
   end
 
   private
+
+  def activity_fact_conditions
+    activity_facts[:analysis_id].eq(@analysis.id).not(activity_facts[:name_id].eq(nil))
+  end
 
   def start_date
     truncate_date(@start_date)
