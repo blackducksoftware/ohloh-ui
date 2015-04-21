@@ -18,7 +18,8 @@ class DuplicatesController < ApplicationController
   end
 
   def create
-    @duplicate = Duplicate.new(good_project: @good_project, bad_project: @project, comment: duplicate_params[:comment])
+    @duplicate = Duplicate.new(good_project: @good_project, bad_project: @project,
+                               comment: duplicate_params[:comment], account: current_user)
     if @duplicate.save
       flash[:success] = t('.success')
       redirect_to project_path(@duplicate.bad_project)
@@ -63,7 +64,7 @@ class DuplicatesController < ApplicationController
   end
 
   def duplicate_params
-    params.require(:duplicate).permit([:good_project_id, :comment])
+    params.require(:duplicate).permit([:good_project_id, :good_project, :bad_project_id, :comment])
   end
 
   def must_own_duplicate
