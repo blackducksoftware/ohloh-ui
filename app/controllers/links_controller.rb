@@ -37,7 +37,7 @@ class LinksController < SettingsController
   end
 
   def index
-    @links = Link.all
+    @links = @project.links
   end
 
   def destroy
@@ -67,6 +67,7 @@ class LinksController < SettingsController
 
   def set_project
     @project = Project.from_param(params[:project_id]).first
+    fail ParamRecordNotFound unless @project
   end
 
   def set_categories
