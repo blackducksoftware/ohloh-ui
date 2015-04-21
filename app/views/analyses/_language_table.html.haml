@@ -1,8 +1,3 @@
-:ruby
-  search_locals = { collection: language_breakdown, sort_context: :languages }
-  # %tr{ id: 'dingus-row' }
-  #   %td{ colspan: 8 }= render partial: 'shared/search_dingus', locals: search_locals
-
 %h4
   = t('.title')
 
@@ -11,19 +6,19 @@
     %tr
     %tr
       %th{ width: '3%' }
-      %th{ width: '12%',       scope: 'col' }= t('.language')
-      %th.center{width: '12%', scope: 'col' }= t('.codes')
-      %th.center{width: '14%', scope: 'col' }= t('.comments')
-      %th.center{width: '14%', scope: 'col' }= t('.comment_ratio')
-      %th.center{width: '11%', scope: 'col' }= t('.blanks')
-      %th.center{width: '11%', scope: 'col' }= t('.total_lines')
-      %th.left{width: '20%',   scope: 'col' }= t('.total_percent')
+      %th{ width: '12%', scope: 'col' }= t('.language')
+      %th.center{ width: '12%', scope: 'col' }= t('.codes')
+      %th.center{ width: '14%', scope: 'col' }= t('.comments')
+      %th.center{ width: '14%', scope: 'col' }= t('.comment_ratio')
+      %th.center{ width: '11%', scope: 'col' }= t('.blanks')
+      %th.center{ width: '11%', scope: 'col' }= t('.total_lines')
+      %th.left{ width: '20%', scope: 'col' }= t('.total_percent')
 
     - language_breakdown.each do |lb|
-      %tr{ class: cycle('odd','even') }
+      %tr{ class: cycle('odd', 'even') }
         %td{ style: "background-color: ##{language_color(lb.language_name)}" } &nbsp;
         %td
-          %span{ itemscope: '' , itemtype: 'http://schema.org/Language' }
+          %span{ itemscope: '', itemtype: 'http://schema.org/Language' }
             %span{ itemprop: 'name' }= link_to lb.language_nice_name, language_path(lb.language_name)
         %td.center= number_with_delimiter(lb.code_total)
         %td.center= number_with_delimiter(lb.comments_total)

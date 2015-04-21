@@ -9,12 +9,12 @@
       .col-md-12.no_margin_left
         .col-md-12
           %h4= t('.code_comments_blanks')
-          #code_analysis_chart.chart{ 'datasrc' => code_chart, style: 'height: 340px' }
+          .chart#code_analysis_chart{ 'datasrc' => code_chart, style: 'height: 340px' }
         .col-md-12
           %br
           %br
           %h4= t('.loc')
-          #language_analysis_chart.chart{ 'datasrc' => language_chart, style: 'height: 340px' }
+          .chart#language_analysis_chart{ 'datasrc' => language_chart, style: 'height: 340px' }
     - else
       .code_analysis_error
         - if reason == :no_understood_lang
