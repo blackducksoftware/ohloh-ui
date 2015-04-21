@@ -1,17 +1,18 @@
 en:
   analyses:
     languages_summary:
+      page_title: 'The %{name} Open Source Project on Open Hub: Languages Page'
       title: 'Languages'
       no_recognized_languages: 'Open Hub did not find any recognized languages in this project.'
-    project_languages_details:
-      total_lines: 'Total Lines  :'
-      code_lines: 'Code Lines :'
-      percentage_lines: 'Percent Code Lines :'
-      languages: 'Number of Languages :'
-      total_language_lines: 'Total Comment Lines :'
-      percentage_comments: 'Percent Comment Lines :'
-      total_blank_lines: 'Total Blank Lines :'
-      percentage_blanks: 'Percent Blank Lines :'
+    projects_languages_details:
+      total_lines: 'Total Lines : '
+      code_lines: 'Code Lines : '
+      percentage_lines: 'Percent Code Lines : '
+      languages: 'Number of Languages : '
+      total_language_lines: 'Total Comment Lines : '
+      percentage_comments: 'Percent Comment Lines : '
+      total_blank_lines: 'Total Blank Lines : '
+      percentage_blanks: 'Percent Blank Lines : '
     analysis_graphs:
       code_comments_blanks: 'Code, Comments and Blank Lines'
       loc: 'LOC by Language'

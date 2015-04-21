@@ -25,7 +25,6 @@ commits_history:
 code_history:
   chart:
     defaultSeriesType: 'area'
-    marginLeft: 60
     width: 950
   title: 'Total Lines'
   plotOptions:
