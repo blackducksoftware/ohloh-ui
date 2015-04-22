@@ -4,7 +4,7 @@ module ChartHelper
   end
 
   def chart_watermark(image, x: '50%', y: '50%')
-    image_url = image_path("charts/#{image}.png")
+    image_url = asset_path("charts/#{image}.png")
     style = { 'background-image' => "url('#{image_url}')", 'background-repeat' => 'no-repeat',
               'background-position' => "#{x} #{y}" }
     { chart: { backgroundColor: 'transparent', style: style } }
