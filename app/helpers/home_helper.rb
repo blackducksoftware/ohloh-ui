@@ -1,9 +1,8 @@
 module HomeHelper
   def width(project, required, max)
     count = project_count(project, required)
-    max = 1 if max.nil? || max.zero?
-    count = 0 if count.nil?
-    [1, count * 60 / max].max
+    max = 1 if max.to_i.zero?
+    [1, count.to_i * 60 / max].max
   end
 
   def project_count(project, required)
@@ -11,7 +10,7 @@ module HomeHelper
     when 'most_popular_projects'
       return project.user_count
     when 'most_active_projects'
-      return project.best_analysis.thirty_day_summary.commits_count if project.best_analysis
+      return project.best_analysis.thirty_day_summary.commits_count unless project.best_analysis.nil?
     when 'most_active_contributors'
       # FIXME: Implement or replace project.best_vita and unstub the tests.
       project.best_vita.vita_fact.thirty_day_commits unless project.best_vita.vita_fact.nil?

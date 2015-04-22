@@ -12,7 +12,8 @@ class HomeHelperTest < ActionView::TestCase
     it 'must use the provided max value to divide the user_count * 60' do
       project = stub(user_count: 5)
       max = 5
-      width(project, 'most_popular_projects', max).must_equal (project.user_count * 60)/max
+      project_user_count = (project.user_count * 60) / max
+      width(project, 'most_popular_projects', max).must_equal project_user_count
     end
 
     it 'must return 1 when user_count is nil' do

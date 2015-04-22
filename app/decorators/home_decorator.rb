@@ -26,6 +26,6 @@ class HomeDecorator
   end
 
   def lines_count
-    Language.sum(:code) + Language.sum(:comments) + Language.sum(:blanks)
+    Language.pluck(:code, :comments, :blanks).flatten.sum
   end
 end
