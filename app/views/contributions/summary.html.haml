@@ -1,7 +1,7 @@
 :ruby
   page_context[:select_footer_nav] = :contributors
   top_commit_volume_chart = top_commit_volume_chart_project_analysis_path(@project, @analysis)
-  committer_history_chart = committer_history_project_analysis_url(project_id: @project.to_param, id: 'latest')
+  committer_history_chart = contributor_summary_project_analysis_url(project_id: @project.to_param, id: 'latest')
 
 - content_for :html_title do
   = succeed t('.page_title') do

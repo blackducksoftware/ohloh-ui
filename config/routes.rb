@@ -210,6 +210,7 @@ Rails.application.routes.draw do
         get :top_commit_volume_chart
         get :commits_history
         get :committer_history
+        get :contributor_summary
         get :language_history
         get :code_history
         get :lines_of_code

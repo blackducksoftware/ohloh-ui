@@ -1,4 +1,7 @@
 class Analysis::TopCommitVolumeChart
+  include ChartHelper
+  include ActionView::Helpers::AssetUrlHelper
+
   OTHER = 'Other'
   NAME_COUNT = 8
   INTERVALS = ['50 years', '12 months', '1 month']
@@ -9,7 +12,8 @@ class Analysis::TopCommitVolumeChart
   end
 
   def data
-    TOP_COMMIT_VOLUME_CHART_DEFAULTS.merge(data_options)
+    watermark = chart_watermark('watermark_340', x: '90%', y: '14%')
+    TOP_COMMIT_VOLUME_CHART_DEFAULTS.merge(data_options).deep_merge(watermark)
   end
 
   private

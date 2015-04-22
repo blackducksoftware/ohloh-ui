@@ -1,10 +1,5 @@
 chart:
   defaultSeriesType: 'bar'
-  backgroundColor: 'transparent'
-  style:
-    background-image: 'url("/assets/charts/watermark_340.png")'
-    background-repeat: 'no-repeat'
-    background-position: '90% 14%'
 credits:
   enabled: false
 title:
