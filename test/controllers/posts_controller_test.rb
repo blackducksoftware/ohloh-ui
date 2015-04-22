@@ -35,13 +35,6 @@ describe PostsController do
       must_select 'div.advanced_search_tips', true
     end
 
-    it 'index should strip HTML from markdown' do
-      create(:post, body: '**Markdown Me**')
-      get :index
-      must_respond_with :ok
-      response.body.must_match '<p>Markdown Me</p>'
-    end
-
     it 'sorts index posts by newest' do
       create(:post, body: 'oldest', created_at: Time.now - 2.hours)
       create(:post, body: 'newest', created_at: Time.now)
