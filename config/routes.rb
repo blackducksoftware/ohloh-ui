@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   ActiveAdmin.routes(self)
-  root 'home#index'
+  root to: 'home#index'
   resources :sessions, only: [:new, :create] do
     collection do
       delete :destroy

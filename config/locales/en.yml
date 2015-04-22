@@ -56,6 +56,11 @@ en:
   openhub: "OpenHub"
   time_ago: "%{time} ago"
 
+
+  layouts:
+    application:
+      openhub: "OpenHub"
+
   destroy:
     success: 'Record deleted!'
     failure: 'There was a problem deleting!'
