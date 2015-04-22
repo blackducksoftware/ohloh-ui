@@ -125,7 +125,7 @@ Rails.application.routes.draw do
   get 'move_topic/:id', to: 'topics#move_topic', as: :move_topic
 
   resources :posts, only: :index, as: 'all_posts'
-  get 'markdown_syntax', to: 'about#markdown_syntax'
+  get 'markdown_syntax', to: 'abouts#markdown_syntax'
   get 'message', to: 'about#message'
   get 'maintenance', to: 'about#maintenance'
 
