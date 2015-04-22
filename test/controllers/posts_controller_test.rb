@@ -119,6 +119,11 @@ describe PostsController do
       must_select 'div#no-posts', true
     end
 
+    it 'redirects away from spammers' do
+      get :index, account_id: create(:spammer).to_param
+      must_respond_with 302
+    end
+
     it 'sorts by unanswered' do
       create(:post, account: user, body: 'post_count_1')
       create_list(:post, 2, body: 'answered', topic: topic)

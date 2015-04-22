@@ -35,8 +35,20 @@ module ProjectAssociations
     accepts_nested_attributes_for :enlistments
     accepts_nested_attributes_for :project_licenses
 
+    scope :by_collection, ->(ids, sort, query) { collection_arel(ids, sort, query) }
+
     def assign_editor_account_to_associations
       [aliases, enlistments, project_licenses, links].flatten.each { |obj| obj.editor_account = editor_account }
+    end
+
+    class << self
+      def collection_arel(ids = nil, sort = nil, query = nil)
+        if !ids.blank?
+          where(id: ids.split(',')).order(:id)
+        else
+          tsearch(query, respond_to?("by_#{sort}") ? "by_#{sort}" : nil)
+        end
+      end
     end
   end
 end

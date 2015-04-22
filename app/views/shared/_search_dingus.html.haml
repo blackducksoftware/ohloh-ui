@@ -27,6 +27,7 @@
 - if params[:query].present? && collection.size.zero?
   - if no_match_found_type == :flash
     = render partial: 'shared/alert', locals: { message: t('.no_match') }
+  - elsif no_match_found_type == :none
   - else
     .inset.advanced_search_tips
       %h4= t('.no_match_1_html', query: params[:query])

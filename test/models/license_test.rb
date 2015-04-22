@@ -51,4 +51,11 @@ class LicenseTest < ActiveSupport::TestCase
     license_3 = create(:license, nice_name: 'AutocompleteMit v2')
     License.autocomplete('autocompletemit').map(&:id).sort.must_equal [license_1.id, license_3.id].sort
   end
+
+  describe 'from_param' do
+    it 'should match by name' do
+      license = create(:license)
+      License.from_param(license.name).first.id.must_equal license.id
+    end
+  end
 end

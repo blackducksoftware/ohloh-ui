@@ -87,6 +87,13 @@ describe 'AccountsController' do
     end
   end
 
+  describe 'new' do
+    it 'must respond with success' do
+      get :disabled, id: create(:spammer).to_param
+      must_respond_with :success
+    end
+  end
+
   describe 'create' do
     let(:account_attributes) do
       FactoryGirl.attributes_for(:account).select do |k, _v|
