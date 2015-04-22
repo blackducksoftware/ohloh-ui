@@ -17,8 +17,8 @@ class Analysis::Query
 
   def initialize(analysis:, start_date: Analysis::EARLIEST_DATE, end_date: analysis.updated_on)
     @analysis = analysis
-    @start_date = Date.parse start_date.strftime('%Y-%m-01')
-    @end_date = Date.parse end_date.strftime('%Y-%m-01')
+    @start_date = start_date.beginning_of_month
+    @end_date = end_date.beginning_of_month
   end
 
   private
