@@ -216,6 +216,17 @@ Rails.application.routes.draw do
     end
     resources :commits, only: [:index, :show] do
       collection { get :summary }
+      member do
+        get :statistics
+        get :events
+        get :event_details
+      end
+    end
+    resources :contributors do
+      member do
+        get :event_details
+        get :events
+      end
     end
     resources :stacks, only: [] do
       collection { get :near }

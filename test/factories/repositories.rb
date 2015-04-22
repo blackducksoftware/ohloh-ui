@@ -6,4 +6,8 @@ FactoryGirl.define do
     type 'GitRepository'
     after(:create) { |repository| create(:enlistment, repository: repository) }
   end
+
+  factory :svnsyncrepository, parent: :repository, class: 'SvnSyncRepository' do
+    type 'SvnSyncRepository'
+  end
 end

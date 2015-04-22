@@ -1,0 +1,31 @@
+- if request.xhr?
+  %td.center= @commit.diffs.count
+  %td.center= @lines_added
+  %td.center= @lines_removed
+  %td.center{ title: @commit.code_set.repository.url.to_s.reverse.truncate(25).reverse }
+    = @commit.code_set.repository.url
+- else
+  %ul.nomargin.unstyled
+    %li
+      - if @commit.code_set.repository.url =~ /github\.com/
+        %span.icon-github-sign
+      = t('.repository')
+      %strong= h @commit.code_set.repository.url
+    %li
+      %span.icon-file
+      = pluralize(@commit.diffs.count, 'file')
+      = t('.modified')
+
+    - if @lines_added.zero? && @lines_removed.zero?
+      %li= t('.no_code_detected')
+    - else
+      %li{ style: 'color:green' }
+        %span.icon-plus-sign
+        = pluralize(@commit.lines_added(@project.best_analysis_id), t('.line'))
+        = t('.added')
+      %li{ style: 'color:red' }
+        %span.icon-minus-sign
+        = pluralize(@commit.lines_removed(@project.best_analysis_id), t('.line'))
+        = t('.removed')
+    %li{ style: 'text-align: right' }
+      = link_to t('.more_details'), project_commit_path(@project, @commit)

@@ -4,8 +4,7 @@
       = link_to posts.topic.forum.name, forum_path(posts.topic.forum)
       \:
       = link_to posts.topic.title, topic_path(posts.topic)
-      / TODO: Fix text size
-      %p.margin_top_15#post_body_text_size= expander(strip_tags(posts.body), 200, 250)
+      %p.margin_top_15#post_body_text_size= expander(strip_tags(markdown_format(posts.body)), 200, 250)
   .col-md-4
     .float_left{ style: 'margin-left: -20px' }
       %div= t('.views')

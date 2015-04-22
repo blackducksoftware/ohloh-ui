@@ -35,6 +35,13 @@ describe PostsController do
       must_select 'div.advanced_search_tips', true
     end
 
+    it 'index should strip HTML from markdown' do
+      create(:post, body: '**Markdown Me**')
+      get :index
+      must_respond_with :ok
+      response.body.must_match 'Markdown Me'
+    end
+
     it 'sorts index posts by newest' do
       create(:post, body: 'oldest', created_at: Time.now - 2.hours)
       create(:post, body: 'newest', created_at: Time.now)
@@ -48,7 +55,7 @@ describe PostsController do
       create_list(:post, 2, body: 'answered', topic: topic)
       get :index, sort: 'unanswered'
       must_respond_with :ok
-      response.body.must_match(/post_count_1/)
+      response.body.must_match(/postcount1/)
       response.body.wont_match(/\Aanswered/)
     end
 
@@ -129,7 +136,7 @@ describe PostsController do
       create_list(:post, 2, body: 'answered', topic: topic)
       get :index, account_id: user, sort: 'unanswered'
       must_respond_with :ok
-      response.body.must_match(/post_count_1/)
+      response.body.must_match(/postcount1/)
       response.body.wont_match(/\Aanswered/)
     end
 

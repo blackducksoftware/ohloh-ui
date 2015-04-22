@@ -1,0 +1,116 @@
+:ruby
+  content_for(:html_title) { t('.html_title', name: @project.name) }
+  page_context[:select_footer_nav] = :commits
+  commit = @named_commit.commit
+  lines_added, lines_removed = commit.lines_added_and_removed(@project.best_analysis_id)
+
+.project_content_title
+  %h2.pull-left
+    = link_to t('.commits'), summary_project_commits_path(@project)
+    = t('.individual_commit')
+  = project_analysis_timestamp(@project)
+
+.col-md-10.col-md-offset-1
+  .well
+    %p.commit_id
+      = t('.commit_id')
+      = commit.nice_id
+    %table.commit_info
+      %tr
+        %td.text-top{ width: '13%', rowspan: '4' }
+          = avatar_for(@named_commit.person, size: 64)
+        %td.text-right{ width: '15%' }= t('.contributor')
+        %td.info{ width: '40%' }
+          = render 'committer_name', named_commit: @named_commit
+        %td.text-right{ width: '20%' }= t('.files_modified')
+        %td.info{ width: '20%' }= commit.diffs.count
+      %tr
+        %td.text-right= t('.date')
+        %td.info= commit.time.strftime('%d-%B-%Y at %H:%M')
+        %td.text-right= t('.lines_added')
+        %td.info= lines_added
+      %tr
+        %td.text-right= t('.repository')
+        %td.info
+          = link_to @named_commit.code_set.repository.url, @named_commit.code_set.repository.url
+          = @named_commit.code_set.repository.module_name
+          = @named_commit.code_set.repository.branch_name
+        %td.text-right= t('.lines_removed')
+        %td.info= lines_removed
+      %tr
+        %td.text-right{ valign: 'top' }= t('.commit_comment')
+        %td.info.pre-line{ colspan: '3' }= h(commit.obfuscate_email(commit.comment))
+
+.clearfix
+%h4= t('.changes_by_language')
+- sloc_metrics_summaries = SlocMetric.commit_summaries(commit, @project.best_analysis_id)
+- if sloc_metrics_summaries.blank?
+  %p.inset= t('.no_code_detected')
+- else
+  .col-md-10.col-md-offset-1.padding_left_30
+    %table.table.table-striped.language_total.center
+      %thead
+        %tr
+          %th{ colspan: '2', width: '85%' }= t('.language')
+          %th.center{ width: '4%' }= t('.code_added')
+          %th.center{ width: '3%' }= t('.code_removed')
+          %th.center{ width: '3%' }= t('.comments_added')
+          %th.center{ width: '3%' }= t('.comments_removed')
+          %th.center{ width: '3%' }= t('.blanks_added')
+          %th.center{ width: '3%' }= t('.blanks_removed')
+      %tbody
+        - sloc_metrics_summaries.each do |summary|
+          %tr{ class: cycle('even', 'odd', name: 'rows') }
+            %td{ width: '1%', style: "background-color: ##{ language_color(summary.name) }" } &nbsp;
+            = render 'commits/code_added_removed', summary: summary, klass: ''
+
+.clearfix
+%h4= t('.changes_by_file')
+#commits_changes_by_file
+  .col-md-12
+    = render 'shared/search_dingus', collection: @diffs,
+      sort_context: nil, no_match_found_type: :none
+    %table.table.language_total.nohover
+      %thead
+        %tr
+          %th.center{ width: '50%' }= t('.file')
+          %th{ width: '30%' }= t('.language')
+          %th.center{ width: '3%' }= t('.code_added')
+          %th.center{ width: '3%' }= t('.code_removed')
+          %th.center{ width: '3%' }= t('.comments_added')
+          %th.center{ width: '3%' }= t('.comments_removed')
+          %th.center{ width: '3%' }= t('.blanks_added')
+          %th.center{ width: '3%' }= t('.blanks_removed')
+      %tbody
+        - reset_cycle('rows')
+        - @diffs.each do |diff|
+          - klass = cycle('even', 'odd', named: 'rows')
+          %tr{ class: "#{ klass } nohover" }
+            %td.strong
+              - if @named_commit.code_set.repository.is_a? CvsRepository
+                #{ @named_commit.code_set.repository.module_name }/#{ diff.fyle.name }
+              - else
+                = truncate(diff.try(:fyle).try(:name), length: 43)
+            - if Ignore.match?(@ignore_prefixes, diff.fyle.name)
+              %td &nbsp;
+              %td.ignored{ colspan: 7 }= t('.ignored_by_req')
+            - else
+              - diff_summaries = SlocMetric.diff_summaries(diff, @named_commit.analysis_id)
+              - if diff_summaries.blank?
+                %td &nbsp;
+                %td.ignored{ colspan: 7 }
+                  = t('.no_source_code_detected')
+              - diff_summaries.each_with_index do |summary, i|
+                - if i >= 1
+                  %tr{ class: "#{ klass } nohover" }
+                    %td.no_border &nbsp;
+                    = render 'commits/code_added_removed',
+                      summary: summary, klass: 'no_border'
+                - else
+                  = render 'commits/code_added_removed', summary: summary, klass: ''
+
+= will_paginate @diffs
+
+.clearfix
+- if @diffs.blank?
+  = render 'shared/alert', message: t('shared.search_dingus.no_match')
