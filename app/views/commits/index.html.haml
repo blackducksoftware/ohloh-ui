@@ -1,0 +1,16 @@
+:ruby
+  content_for(:html_title) { t('.html_title', name: @project.name) }
+  page_context[:select_footer_nav] = :commits
+  analysis = @project.best_analysis
+
+.project_content_title
+  %h2.pull-left
+    = link_to t('.commits'), summary_project_commits_path(@project)
+    = t('.listings')
+  = project_analysis_timestamp(@project)
+
+.col-md-12
+  - if analysis.nil?
+    = render 'projects/show/no_analysis_summary', analysis: analysis
+  - else
+    = render 'commit', named_commits: @named_commits, search_dingus: true

@@ -54,6 +54,7 @@ en:
   not_a_valid_url: "not a valid url"
   openhub_show: "Open Hub Forum: %{name}"
   openhub: "OpenHub"
+  time_ago: "%{time} ago"
 
   destroy:
     success: 'Record deleted!'
@@ -101,8 +102,8 @@ en:
   code_data: 'Code Data'
   cost_estimates: 'Cost Estimates'
   scm_data: 'SCM Data'
-  commits: 'Commits'
   contributors: 'Contributors'
+  commits_menu: 'Commits'
   community_data: 'Community Data'
   users: 'Users'
   ratings_reviews: 'Ratings & Reviews'

@@ -40,7 +40,7 @@ class ProjectDecorator < Cherry::Decorator
       ],
       [
         [:scm_data,         I18n.t(:scm_data)],
-        [:commits,          I18n.t(:commits),            h.summary_project_commits_path(project)],
+        [:commits,          I18n.t(:commits_menu),       h.summary_project_commits_path(project)],
         [:contributors,     I18n.t(:contributors),       h.summary_project_contributors_path(project)]
       ],
       [
