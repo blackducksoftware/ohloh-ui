@@ -77,6 +77,7 @@ GEM
       multi_xml (~> 0.5)
     aws-sdk-resources (2.0.26)
       aws-sdk-core (= 2.0.26)
+    bluecloth (2.2.0)
     bourbon (4.2.0)
       sass (~> 3.4)
       thor
@@ -356,6 +357,7 @@ PLATFORMS
 DEPENDENCIES
   activeadmin!
   aws-sdk
+  bluecloth
   brakeman
   byebug
   capistrano-passenger
