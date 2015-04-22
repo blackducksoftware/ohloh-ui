@@ -5,6 +5,9 @@ xml.response do
     xml.message 'Code analysis is not available'
   else
     xml.status 'success'
+    xml.items_returned @size_facts.length
+    xml.items_available @size_facts.length
+    xml.first_item_position 0
     xml.result do
       @size_facts.each do |fact|
         xml.size_fact do
