@@ -1,15 +1,15 @@
 App.Commit = init: ->
-  $('a[data-toggle="commit-details"]').one 'click', (e) ->
+  $('#commit-details').one 'click', (e) ->
     e.preventDefault()
-    commit_id = $(this).attr('commit_id')
-    project_id = $(this).attr('project_id')
-    $('#icon_play_circle_' + commit_id).remove()
-    $('#spinner_' + commit_id).removeClass('hidden')
+    commitId = $(this).attr('commit_id')
+    projectId = $(this).attr('project_id')
+    $('#icon_play_circle_' + commitId).remove()
+    $('#spinner_' + commitId).removeClass('hidden')
     $(this).remove()
     $.ajax
-      url: '/p/' + project_id + '/commits/' + commit_id + '/statistics'
+      url: '/p/' + projectId + '/commits/' + commitId + '/statistics'
       success: (html) ->
-        $response = $('td.commit_' + commit_id)
+        $response = $('td.commit_' + commitId)
         $response.removeAttr 'colspan'
         $response.addClass 'hidden'
         $response.after html

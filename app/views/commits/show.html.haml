@@ -21,7 +21,7 @@
           = avatar_for(@named_commit.person, size: 64)
         %td.text-right{ width: '15%' }= t('.contributor')
         %td.info{ width: '40%' }
-          = render partial: 'committer_name', locals: { named_commit: @named_commit }
+          = render 'committer_name', named_commit: @named_commit
         %td.text-right{ width: '20%' }= t('.files_modified')
         %td.info{ width: '20%' }= commit.diffs.count
       %tr
@@ -62,14 +62,14 @@
         - sloc_metrics_summaries.each do |summary|
           %tr{ class: cycle('even', 'odd', name: 'rows') }
             %td{ width: '1%', style: "background-color: ##{ language_color(summary.name) }" } &nbsp;
-            = render partial: 'commits/code_added_removed', locals: { summary: summary, klass: '' }
+            = render 'commits/code_added_removed', summary: summary, klass: ''
 
 .clearfix
 %h4= t('.changes_by_file')
 #commits_changes_by_file
   .col-md-12
-    = render partial: 'shared/search_dingus', locals: { collection: @diffs,
-      sort_context: nil, no_match_found_type: :none }
+    = render 'shared/search_dingus', collection: @diffs,
+      sort_context: nil, no_match_found_type: :none
     %table.table.language_total.nohover
       %thead
         %tr
@@ -104,13 +104,13 @@
                 - if i >= 1
                   %tr{ class: "#{ klass } nohover" }
                     %td.no_border &nbsp;
-                    = render partial: 'commits/code_added_removed',
-                      locals: { summary: summary, klass: 'no_border' }
+                    = render 'commits/code_added_removed',
+                      summary: summary, klass: 'no_border'
                 - else
-                  = render partial: 'commits/code_added_removed', locals: { summary: summary, klass: '' }
+                  = render 'commits/code_added_removed', summary: summary, klass: ''
 
 = will_paginate @diffs
 
 .clearfix
 - if @diffs.blank?
-  = render partial: 'shared/alert', locals: { message: t('shared.search_dingus.no_match') }
+  = render 'shared/alert', message: t('shared.search_dingus.no_match')

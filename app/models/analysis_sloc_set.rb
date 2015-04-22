@@ -23,11 +23,10 @@ class AnalysisSlocSet < ActiveRecord::Base
   end
 
   def adjust_leading_slash(file_name)
-    is_directory = file_name.starts_with?('/')
     if sloc_set.code_set.repository.is_a? SvnSyncRepository
-      is_directory ? file_name : file_name.prepend('/')
+      file_name.gsub(/^[^\/]/, '/\0')
     else
-      is_directory ? file_name.from(1) : file_name
+      file_name.gsub(/^\//, '')
     end
   end
 end

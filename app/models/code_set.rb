@@ -6,7 +6,7 @@ class CodeSet < ActiveRecord::Base
   has_many :sloc_sets, dependent: :destroy
 
   def ignore_prefixes(project)
-    enlistment = project.enlistments.where(repository_id: repository_id).first
+    enlistment = project.enlistments.find_by(repository_id: repository_id)
     enlistment.nil? ? CodeSet.none : enlistment.analysis_sloc_set.ignore_prefixes
   end
 end

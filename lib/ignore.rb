@@ -7,14 +7,13 @@ module Ignore
     end
 
     def parse_line(line)
-      return $1 if line.to_s.strip =~ /^Disallow:\s*([^#\*\s][^\*\s]+)\*?(\s+|$)/i
+      line.to_s.strip.slice(/^Disallow:\s*([^#\*\s][^\*\s]+)\*?(\s+|$)/i, 1)
     end
 
     def match?(prefixes, fyle_name)
-      prefixes.each do |prefix|
-        return true if fyle_name[0, prefix.length] == prefix
+      prefixes.any? do |prefix|
+        fyle_name.match(/^#{ prefix }/)
       end
-      false
     end
   end
 end

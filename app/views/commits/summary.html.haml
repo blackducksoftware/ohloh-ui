@@ -6,7 +6,7 @@
   = project_analysis_timestamp(@project)
 
 - if @analysis.nil?
-  = render partial: 'projects/show/no_analysis_summary'
+  = render 'projects/show/no_analysis_summary'
 - else
   :ruby
     @all_time_summary     = @analysis.all_time_summary.nil? ? NilAnalysisSummaryWithNa.new : @analysis.all_time_summary
@@ -27,23 +27,23 @@
               %th.text-right{ width: '25%', align: 'right' }= t('.30_day')
             %tr{ style: 'margin-top:8px' }
               %td{ width: '25%' } #{t('.commits')}:
-              = render partial: 'summary', locals: { attribute: :commits_count }
+              = render 'summary', attribute: :commits_count
 
             %tr.border_bottom
               %td= t('.contributors')
-              = render partial: 'summary', locals: { attribute: :committer_count }
+              = render 'summary', attribute: :committer_count
 
             %tr
               %td= t('.files_modified')
-              = render partial: 'summary', locals: { attribute: :files_modified }
+              = render 'summary', attribute: :files_modified
 
             %tr
               %td= t('.lines_added')
-              = render partial: 'summary', locals: { attribute: :lines_added }
+              = render 'summary', attribute: :lines_added
 
             %tr.border_bottom
               %td= t('.lines_removed')
-              = render partial: 'summary', locals: { attribute: :lines_removed }
+              = render 'summary', attribute: :lines_removed
 
     .col-md-12.no_margin_left
       %h4= t('.commits_per_month')
@@ -53,5 +53,5 @@
 
     .clearfix
     %h4= link_to t('.most_recent_commits'), project_commits_path(@project)
-    = render partial: 'commit', locals: { named_commits: @named_commits, search_dingus: false }
+    = render 'commit', named_commits: @named_commits, search_dingus: false
     = link_to t('.see_all_commits'), project_commits_path(@project), class: 'btn btn-small btn-primary'
