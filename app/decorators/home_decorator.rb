@@ -1,7 +1,4 @@
-class HomeDecorator < Cherry::Decorator
-  def initialize
-  end
-
+class HomeDecorator
   def most_popular_projects
     Project.by_popularity.limit(10)
   end
