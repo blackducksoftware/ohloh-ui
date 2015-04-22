@@ -6,7 +6,7 @@ class TopCommitVolume < Analysis::Query
   def initialize(analysis, interval)
     @analysis = analysis
     @interval = interval
-    fail ArgumentError 'Unknown interval - #{interval}' unless interval_attr
+    fail ArgumentError.new("Unknown interval - #{ interval }") unless interval_attr
   end
 
   def collection
