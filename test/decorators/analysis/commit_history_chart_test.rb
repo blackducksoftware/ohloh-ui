@@ -8,7 +8,6 @@ class Analysis::CommitHistoryChartTest < ActiveSupport::TestCase
       commit = create(:commit, code_set: analysis_sloc_set.sloc_set.code_set, position: 0)
       analysis = analysis_sloc_set.analysis
       analysis.update_attribute(:created_at, Date.today + 32.days)
-      analysis.reload
       create(:analysis_alias, commit_name: commit.name, analysis: analysis)
 
       date_range = [3.months.ago, 2.months.ago, 1.month.ago, Date.today].map(&:beginning_of_month)
