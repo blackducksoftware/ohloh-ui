@@ -6,9 +6,7 @@ class Analysis::ContributorHistoryTest < ActiveSupport::TestCase
 
     before do
       date_range = [3.months.ago, 2.months.ago, 1.month.ago, Date.today].map(&:beginning_of_month)
-      date_range.each do |date|
-        FactoryGirl.create(:all_month, month: date)
-      end
+      date_range.each { |date| create(:all_month, month: date) }
     end
 
     describe 'contributors count' do

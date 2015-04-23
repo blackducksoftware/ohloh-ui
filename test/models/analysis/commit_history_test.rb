@@ -3,10 +3,10 @@ require 'test_helper'
 class Analysis::CommitHistoryTest < ActiveSupport::TestCase
   describe 'execute' do
     it 'must return a list of dates in a range and commits' do
-      analysis_sloc_set = FactoryGirl.create(:analysis_sloc_set, as_of: 1)
-      commit = FactoryGirl.create(:commit, code_set: analysis_sloc_set.sloc_set.code_set, position: 0)
+      analysis_sloc_set = create(:analysis_sloc_set, as_of: 1)
+      commit = create(:commit, code_set: analysis_sloc_set.sloc_set.code_set, position: 0)
       analysis = analysis_sloc_set.analysis
-      analysis_alias = FactoryGirl.create(:analysis_alias, commit_name: commit.name, analysis: analysis)
+      analysis_alias = create(:analysis_alias, commit_name: commit.name, analysis: analysis)
       name_id = analysis_alias.preferred_name_id
 
       date_range = [3.months.ago, 2.months.ago, 1.month.ago, Date.today].map(&:beginning_of_month)
