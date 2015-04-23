@@ -4,7 +4,7 @@ class AnalysesController < ApplicationController
   helper :Projects
 
   before_action :set_project
-  before_action :set_analysis, except: :licenses
+  before_action :set_analysis
   before_action :fail_if_analysis_not_found, except: :lanaguages_summary
   before_action :project_context, only: :languages_summary
   before_action :verify_api_key, only: :show
@@ -19,10 +19,6 @@ class AnalysesController < ApplicationController
   def languages_summary
     @analysis ||= @project.best_analysis
     @language_breakdown = Analysis::LanguageBreakdown.new(analysis: @analysis).collection
-  end
-
-  def licenses
-    @licenses = Analysis.license_counts(params[:id])
   end
 
   def top_commit_volume_chart
