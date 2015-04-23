@@ -1,5 +1,8 @@
-- no_match_found_type ||= :message
-- filter_by_human_edits ||= false
+:ruby
+  no_match_found_type ||= :message
+  filter_by_human_edits ||= false
+  filter_type ||= false
+  total_count ||= false
 .margin_top_20#search-dingus
   %form.form-inline
     .row
@@ -7,6 +10,10 @@
         - if collection.respond_to?(:current_page) && !collection.total_entries.zero?
           %label.paginate= t('.pagination_status', current_page: number_with_delimiter(collection.current_page),
             total_pages: number_with_delimiter(collection.total_pages))
+        - elsif total_count && !total_count.to_i.zero?
+          %label.paginate= t('.count_status', current_count: collection.length,
+            total_count: number_with_delimiter(total_count))
+
       .col-md-5.padding_left_10
         %label #{t('.search_text')} &nbsp;
         = text_field_tag :query, params[:query]
@@ -17,13 +24,19 @@
           %label.checkbox.padding_left_20#human_edits
             %input{ type: 'checkbox', checked: params[:human] == 'true' }
             = t('.show_only_humans')
-        - else
-          - if sort_context.present?
-            #sort_by
-              %label= t('.sort_by')
-              = select_tag :sort, options_for_select(SORT_OPTIONS[sort_context][:options],
-                params[:sort] || SORT_OPTIONS[sort_context][:default]),
-                class: 'chzn-select', onchange: 'this.form.submit()'
+        - elsif filter_type == :radiobutton
+          %label.radio.inline.margin_left_40
+            = radio_button_tag('find_by', 'name', params[:find_by] != 'email')
+            = t('.by_name')
+          %label.radio.inline
+            = radio_button_tag('find_by', 'email', params[:find_by] == 'email')
+            = t('by_email')
+        - elsif sort_context.present?
+          #sort_by
+            %label= t('.sort_by')
+            = select_tag :sort, options_for_select(SORT_OPTIONS[sort_context][:options],
+              params[:sort] || SORT_OPTIONS[sort_context][:default]),
+              class: 'chzn-select', onchange: 'this.form.submit()'
 
 - if params[:query].present? && collection.size.zero?
   - if no_match_found_type == :flash

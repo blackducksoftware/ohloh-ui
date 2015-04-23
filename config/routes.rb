@@ -304,6 +304,13 @@ Rails.application.routes.draw do
   get 'message' => 'home#message'
   get 'maintenance' => 'home#maintenance'
 
+  resources :committers, only: [:index, :show] do
+    member do
+      post :claim
+      post :save_claim
+    end
+  end
+
   # The priority is based upon order of creation: first created -> highest
   # priority.
   # See how all your routes lay out with "rake routes".

@@ -1,0 +1,21 @@
+- project = position.project
+- name_fact = @name_facts_map[project.best_analysis_id]
+
+.col-md-6.claim_form_box
+  .col-md-4
+    .inner
+      .single_container
+        .group
+          = render 'unclaimed_tile', project: project, name_fact: name_fact
+
+  .col-md-2.no_padding_left
+    %input{ type: 'hidden', value: project.id, name: 'positions[][project_id]' }
+    %input.textbox{ placeholder: t('.your_role', name: project.name), type: 'text', name: 'positions[][title]',
+    value: position.title }
+    %textarea{ placeholder: t('.description'), name: 'positions[][description]' }= position.description
+
+  .clearfix
+
+  - if position.errors.present?
+    .col-md-5
+      %p.error= position.errors[:base]
