@@ -292,8 +292,6 @@ Rails.application.routes.draw do
     collection { get :rankings }
   end
 
-  resource :compare_repositories
-
   resources :contributors, controller: 'contributions' do
     resources :invites, only: [:new, :create]
   end
@@ -303,6 +301,9 @@ Rails.application.routes.draw do
 
   get 'message' => 'home#message'
   get 'maintenance' => 'home#maintenance'
+
+  get 'repositories/compare' => 'compare_repositories#index', as: :compare_repositories
+  get 'repositories/chart' => 'compare_repositories#chart', as: :compare_repositories_chart
 
   # The priority is based upon order of creation: first created -> highest
   # priority.

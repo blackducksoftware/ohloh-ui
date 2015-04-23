@@ -1,0 +1,5 @@
+- content_for(:html_title) { 'Compare Repositories' }
+
+.compare_repositories
+  %h3= 'Compare Repositories'
+  .chart{ style: 'height:480px', 'datasrc' => compare_repositories_chart_url }
