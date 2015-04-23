@@ -17,7 +17,7 @@ class Analysis::CommitVolume < Analysis::Query
       .joins(analysis_sloc_sets: { sloc_set: { code_set: :commits } }, analysis_aliases: :preferred_name)
       .where(conditions)
       .where(id: @analysis.id)
-      .where("commits.time >= analyses.max_month + INTERVAL '1 month' - INTERVAL '#{@interval}'")
+      .where(["commits.time >= analyses.max_month + INTERVAL '1 month' - INTERVAL ? ", @interval])
       .group(name)
       .order('count DESC, LOWER(names.name)')
   end
