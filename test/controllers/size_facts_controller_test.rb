@@ -30,12 +30,16 @@ describe 'SizeFactsControllerTest' do
       xml['response']['first_item_position'].must_equal '0'
       xml['response']['result']['size_fact'].size.must_equal 4
       xml['response']['result']['size_fact'].reverse.each_with_index do |fact, index|
-        fact['code'].must_equal ((4 - index) * 3).to_s
-        fact['comments'].must_equal ((4 - index) * 3).to_s
+        code_value = ((4 - index) * 3).to_s
+        commits_value = ((400 - (index * 100))).to_s
+        month_value = (4 - index).to_s
+
+        fact['code'].must_equal code_value
+        fact['comments'].must_equal code_value
         fact['blanks'].must_equal '0'
         fact['comment_ratio'].must_equal '0.5'
-        fact['commits'].must_equal ((400 - (index * 100))).to_s
-        fact['man_months'].must_equal (4 - index).to_s
+        fact['commits'].must_equal commits_value
+        fact['man_months'].must_equal month_value
         fact['month'].must_equal xml_time Date.today - (index + 2).months
       end
     end
@@ -51,12 +55,16 @@ describe 'SizeFactsControllerTest' do
       xml['response']['first_item_position'].must_equal '0'
       xml['response']['result']['size_fact'].size.must_equal 4
       xml['response']['result']['size_fact'].reverse.each_with_index do |fact, index|
-        fact['code'].must_equal ((4 - index) * 3).to_s
-        fact['comments'].must_equal ((4 - index) * 3).to_s
+        code_value = ((4 - index) * 3).to_s
+        commits_value = ((400 - (index * 100))).to_s
+        month_value = (4 - index).to_s
+
+        fact['code'].must_equal code_value
+        fact['comments'].must_equal code_value
         fact['blanks'].must_equal '0'
         fact['comment_ratio'].must_equal '0.5'
-        fact['commits'].must_equal ((400 - (index * 100))).to_s
-        fact['man_months'].must_equal (4 - index).to_s
+        fact['commits'].must_equal commits_value
+        fact['man_months'].must_equal month_value
         fact['month'].must_equal xml_time Date.today - (index + 2).months
       end
     end

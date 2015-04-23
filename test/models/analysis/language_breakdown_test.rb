@@ -2,11 +2,14 @@ require 'test_helper'
 
 class Analysis::LanguageBreakdownTest < ActiveSupport::TestCase
   describe 'collection' do
-    let(:activity_fact) { create(:activity_fact, code_added: 5, code_removed: 3,
-                                                 comments_added: 3, comments_removed: 0) }
-    before { create(:activity_fact, analysis: activity_fact.analysis,
-                                    code_added: 6, code_removed: 5,
-                                    comments_added: 5, comments_removed: 4) }
+    let(:activity_fact) do
+      create(:activity_fact, code_added: 5, code_removed: 3, comments_added: 3, comments_removed: 0)
+    end
+
+    before do
+      create(:activity_fact, analysis: activity_fact.analysis, code_added: 6, code_removed: 5,
+                             comments_added: 5, comments_removed: 4)
+    end
 
     it 'must group results by language' do
       ActivityFact.last.update!(language: activity_fact.language)

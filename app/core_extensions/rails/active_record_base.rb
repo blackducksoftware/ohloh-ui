@@ -12,7 +12,7 @@ class ActiveRecord::Base
   end
 
   def fix_string_column_encodings
-    self.attributes.keys.each do |column|
+    attributes.keys.each do |column|
       string = send(column)
       next unless string.is_a?(String)
       send("#{column}=", string.fix_encoding_if_invalid!) unless string.blank?

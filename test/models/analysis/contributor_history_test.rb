@@ -53,7 +53,7 @@ class Analysis::ContributorHistoryTest < ActiveSupport::TestCase
           analysis: activity_fact.analysis, start_date: 5.months.ago,
           end_date: 2.months.ago).execute
 
-          results.map(&:contributors).must_equal [0, 1]
+        results.map(&:contributors).must_equal [0, 1]
       end
 
       it 'wont consider activity_fact with a non beginning month date' do

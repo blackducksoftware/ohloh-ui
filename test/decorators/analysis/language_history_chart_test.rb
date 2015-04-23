@@ -3,7 +3,7 @@ require 'test_helper'
 class Analysis::LanguageHistoryChartTest < ActiveSupport::TestCase
   let(:activity_fact) do
     fact_values = { code_added: 10, code_removed: 5, comments_added: 20, comments_removed: 10, on_trunk: true,
-                    blanks_added: 10, blanks_removed: 7, month: 2.months.ago.beginning_of_month.advance(days: 5)}
+                    blanks_added: 10, blanks_removed: 7, month: 2.months.ago.beginning_of_month.advance(days: 5) }
     create(:activity_fact, fact_values)
   end
 

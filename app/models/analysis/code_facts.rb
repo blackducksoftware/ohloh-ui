@@ -9,9 +9,17 @@ class Analysis::CodeFacts < Analysis::Query
 
   def query
     AllMonth.select(select_columns).joins(joins_clause)
-      .where(within_date).where(activity_facts[:analysis_id].eq(@analysis.id))
-      .where.not(activity_facts[:name_id].eq(nil))
+      .where(within_date).where(analysis_conditions)
+      .where.not(activity_fact_conditions)
       .group(month).order(month)
+  end
+
+  def analysis_conditions
+    activity_facts[:analysis_id].eq(@analysis.id)
+  end
+
+  def activity_fact_conditions
+    activity_facts[:name_id].eq(nil)
   end
 
   def start_date

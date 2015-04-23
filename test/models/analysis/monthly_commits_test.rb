@@ -15,7 +15,7 @@ class MonthlyCommitsTest < ActiveSupport::TestCase
 
       commit = FactoryGirl.create(:commit, code_set: analysis_sloc_set.sloc_set.code_set,
                                            position: 0, time: 2.months.ago)
-      analysis_alias = create(:analysis_alias, commit_name: commit.name, analysis: analysis)
+      create(:analysis_alias, commit_name: commit.name, analysis: analysis)
 
       results = Analysis::MonthlyCommits.new(analysis: analysis).execute
 

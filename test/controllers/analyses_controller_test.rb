@@ -47,8 +47,8 @@ describe 'AnalysesController' do
       analysis_result['url'].must_equal "#{url}.xml"
       analysis_result['project_id'].must_equal project.id.to_s
       analysis_result['updated_at'].must_equal xml_time(Date.today)
-      analysis_result['min_month'].must_equal (Date.today - 1.month).to_s
-      analysis_result['max_month'].must_equal (Date.today - 1.day).to_s
+      analysis_result['min_month'].must_equal((Date.today - 1.month).to_s)
+      analysis_result['max_month'].must_equal((Date.today - 1.day).to_s)
       analysis_result['twelve_month_contributor_count'].must_equal nil
       analysis_result['total_contributor_count'].must_equal nil
       analysis_result['twelve_month_commit_count'].must_equal '4'
@@ -166,7 +166,7 @@ describe 'AnalysesController' do
   describe 'language_history' do
     it 'should return chart data' do
       fact_values = { code_added: 10, code_removed: 5, comments_added: 20, comments_removed: 10, on_trunk: true,
-                      blanks_added: 10, blanks_removed: 7, month: 2.months.ago.beginning_of_month.advance(days: 5)}
+                      blanks_added: 10, blanks_removed: 7, month: 2.months.ago.beginning_of_month.advance(days: 5) }
       activity_fact.update_attributes(fact_values)
       create_all_months
 
@@ -187,7 +187,7 @@ describe 'AnalysesController' do
   describe 'code_history' do
     it 'should return chart data' do
       options = { code_added: 10, code_removed: 5, comments_added: 20, comments_removed: 10,
-                  blanks_added: 10, blanks_removed: 7, month: 2.months.ago.beginning_of_month.advance(days: 5)}
+                  blanks_added: 10, blanks_removed: 7, month: 2.months.ago.beginning_of_month.advance(days: 5) }
       activity_fact.update_attributes(options)
       activity_fact_2
       create_all_months
@@ -205,7 +205,7 @@ describe 'AnalysesController' do
 
       series.first['id'].must_equal 'code'
       series.map { |d| d['data'].last }.must_equal [[time_integer, 5], [time_integer, 10], [time_integer, 3]]
-      series.map { |d| d['name'] }.must_equal ['Code', 'Comments', 'Blanks']
+      series.map { |d| d['name'] }.must_equal %w(Code Comments Blanks)
       chart_options['width'].must_equal 950
       result['scrollbar'].must_equal nil
     end
@@ -214,7 +214,7 @@ describe 'AnalysesController' do
   describe 'lines_of_code' do
     it 'should return chart data' do
       options = { code_added: 10, code_removed: 5, comments_added: 20, comments_removed: 10,
-                  blanks_added: 10, blanks_removed: 7, month: 2.months.ago.beginning_of_month.advance(days: 5)}
+                  blanks_added: 10, blanks_removed: 7, month: 2.months.ago.beginning_of_month.advance(days: 5) }
       activity_fact.update_attributes(options)
       activity_fact_2
       create_all_months
@@ -232,7 +232,7 @@ describe 'AnalysesController' do
 
       series.first['id'].must_equal 'code'
       series.map { |d| d['data'].last }.must_equal [[time_integer, 5], [time_integer, 10], [time_integer, 3]]
-      series.map { |d| d['name'] }.must_equal ['Code', 'Comments', 'Blanks']
+      series.map { |d| d['name'] }.must_equal %w(Code Comments Blanks)
       chart_options['width'].must_equal 460
       result['scrollbar']['enabled'].must_equal false
     end
