@@ -12,6 +12,7 @@ class Analysis < ActiveRecord::Base
   has_many :analysis_aliases
   has_many :contributor_facts, class_name: 'ContributorFact'
   has_many :analysis_sloc_sets, dependent: :delete_all
+  has_many :named_commits
   has_many :factoids, -> { order('severity DESC') }, dependent: :delete_all
   has_many :activity_facts, dependent: :delete_all
 
@@ -58,6 +59,14 @@ class Analysis < ActiveRecord::Base
 
   def man_years_from_loc(loc = 0)
     loc > 0 ? 2.4 * ((loc.to_f / 1000.0)**1.05) / 12.0 : 0
+  end
+
+  def ignore_tuples
+    [].tap do |tuples|
+      analysis_sloc_sets.each do |analysis_sloc_set|
+        tuples << analysis_sloc_set.ignore_tuples
+      end
+    end.compact.join(' AND ')
   end
 
   class << self

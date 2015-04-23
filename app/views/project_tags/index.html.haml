@@ -16,7 +16,7 @@
     .well
       %h4= t('.tags_for', name: truncate_project_name(@project.name, false, 43))
       %div
-        %p.tags_left= tags_left(remaining_tags)
+        %p.tags_left!= tags_left(remaining_tags)
         %span.tags#current_tags
           - @project.tags.sort { |a, b| a.name <=> b.name }.each do |tag|
             %a{ tagname: tag.name, class: "tag#{' delete tag_remove' if @project.edit_authorized?}" }

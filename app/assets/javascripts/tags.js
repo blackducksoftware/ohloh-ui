@@ -47,8 +47,9 @@ TagEdit = {
     $('a.tag.delete').click(TagEdit.onTagDeleteClick);
   },
   onSubmit: function() {
-    value = $.trim(tags_value);
-    $('#input_tags').val('');
+    input = $('#input_tags')[0];
+    value = $.trim(input.value);
+    input.value = '';
     if (value != "") {
       TagEdit.create(value);
     }

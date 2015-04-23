@@ -35,6 +35,13 @@ describe PostsController do
       must_select 'div.advanced_search_tips', true
     end
 
+    it 'index should strip HTML from markdown' do
+      create(:post, body: '**Markdown Me**')
+      get :index
+      must_respond_with :ok
+      response.body.must_match 'Markdown Me'
+    end
+
     it 'sorts index posts by newest' do
       create(:post, body: 'oldest', created_at: Time.now - 2.hours)
       create(:post, body: 'newest', created_at: Time.now)
@@ -48,7 +55,7 @@ describe PostsController do
       create_list(:post, 2, body: 'answered', topic: topic)
       get :index, sort: 'unanswered'
       must_respond_with :ok
-      response.body.must_match(/post_count_1/)
+      response.body.must_match(/postcount1/)
       response.body.wont_match(/\Aanswered/)
     end
 
@@ -119,12 +126,17 @@ describe PostsController do
       must_select 'div#no-posts', true
     end
 
+    it 'redirects away from spammers' do
+      get :index, account_id: create(:spammer).to_param
+      must_respond_with 302
+    end
+
     it 'sorts by unanswered' do
       create(:post, account: user, body: 'post_count_1')
       create_list(:post, 2, body: 'answered', topic: topic)
       get :index, account_id: user, sort: 'unanswered'
       must_respond_with :ok
-      response.body.must_match(/post_count_1/)
+      response.body.must_match(/postcount1/)
       response.body.wont_match(/\Aanswered/)
     end
 
@@ -177,6 +189,18 @@ describe PostsController do
       assigns(:posts).count 2
       assigns(:posts).first.must_equal post1
       assigns(:posts).last.must_equal post2
+    end
+  end
+
+  describe 'xml index' do
+    it 'should render as xml' do
+      get :index, format: 'atom'
+      must_respond_with :ok
+    end
+
+    it 'should render as xml for account posts' do
+      get :index, account: user, format: 'atom'
+      must_respond_with :ok
     end
   end
 
