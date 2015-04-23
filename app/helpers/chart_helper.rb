@@ -7,6 +7,6 @@ module ChartHelper
     image_url = asset_path("charts/#{image}.png")
     style = { 'background-image' => "url('#{image_url}')", 'background-repeat' => 'no-repeat',
               'background-position' => "#{x} #{y}" }
-    { chart: { backgroundColor: 'transparent', style: style } }
+    { 'chart' => { 'backgroundColor' => 'transparent', 'style' => style } }
   end
 end
