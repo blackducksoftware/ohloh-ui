@@ -7,7 +7,7 @@ class TopCommitVolumeTest < ActiveSupport::TestCase
       name_fact = create(:name_fact, thirty_day_commits: thirty_day_commits_count)
 
       analysis = name_fact.analysis
-      results = TopCommitVolume.new(analysis, '1 month').collection
+      results = Analysis::TopCommitVolume.new(analysis, '1 month').collection
 
       results.first[0].must_equal name_fact.name.name
       results.first[1].must_equal thirty_day_commits_count
@@ -18,7 +18,7 @@ class TopCommitVolumeTest < ActiveSupport::TestCase
       name_fact = create(:name_fact, twelve_month_commits: twelve_month_commits_count)
 
       analysis = name_fact.analysis
-      results = TopCommitVolume.new(analysis, '12 months').collection
+      results = Analysis::TopCommitVolume.new(analysis, '12 months').collection
 
       results.first[0].must_equal name_fact.name.name
       results.first[1].must_equal twelve_month_commits_count
@@ -29,7 +29,7 @@ class TopCommitVolumeTest < ActiveSupport::TestCase
       name_fact = create(:name_fact, commits: commits_count)
 
       analysis = name_fact.analysis
-      results = TopCommitVolume.new(analysis, '50 years').collection
+      results = Analysis::TopCommitVolume.new(analysis, '50 years').collection
 
       results.first[0].must_equal name_fact.name.name
       results.first[1].must_equal commits_count
