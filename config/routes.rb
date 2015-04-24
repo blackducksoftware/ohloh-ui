@@ -129,7 +129,6 @@ Rails.application.routes.draw do
   get 'message', to: 'about#message'
   get 'maintenance', to: 'about#maintenance'
 
-  get 'explore/projects', to: 'explore#projects', as: :explore_projects
   get 'p/compare', to: 'compare#projects', as: :compare_projects
   get 'p/graph', to: 'compare#projects_graph', as: :compare_graph_projects
   resources :projects, path: :p, except: [:destroy] do
@@ -298,8 +297,13 @@ Rails.application.routes.draw do
     resources :invites, only: [:new, :create]
   end
 
-  get 'explore/orgs' => 'explore#orgs'
-  get 'explore/orgs_by_thirty_day_commit_volume' => 'explore#orgs_by_thirty_day_commit_volume'
+  resources :explores, only: :index, path: :explore do
+    collection do
+      get :orgs
+      get :projects
+      get :orgs_by_thirty_day_commit_volume
+    end
+  end
 
   get 'message' => 'home#message'
   get 'maintenance' => 'home#maintenance'

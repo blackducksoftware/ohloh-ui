@@ -63,6 +63,10 @@ class Analysis < ActiveRecord::Base
     end.compact.join(' AND ')
   end
 
+  def angle
+    (Math.atan(hotness_score) * 180 / Math::PI).round(3)
+  end
+
   class << self
     def fresh_and_hot(lang_id = nil)
       fnh = Analysis.fresh.hot

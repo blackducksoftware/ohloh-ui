@@ -5,6 +5,7 @@ chart:
   renderTo: 'demographics_chart'
   plotShadow: false
 title:
+  text:
   align: 'right'
   y: 60
   floating: 'true'

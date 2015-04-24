@@ -94,6 +94,32 @@ class Project < ActiveRecord::Base
       .limit(10)
   end
 
+  class << self
+    def hot_projects
+      active.where.not([arel_table[best_analysis_id].eq(nil), analyses_table[:hotness_score].eq(nil)])
+        .where(analyses_table[:created_at].gt("NOW() AT TIME ZONE 'utc' - INTERVAL '2 days'"))
+        .inlcudes(:best_analysis, :organization)
+        .order(analyses_table[:hotness_score].desc)
+        .limit(10)
+    end
+
+    def with_main_language(language_name)
+      return if language_name.blank?
+      language = Language.where(name: language_name).first
+      where analyses_table[:main_language_id].eq(language.id)
+    end
+
+    def with_pai_available
+      active.where(arel_table[:activity_level_index].gt(0)).size
+    end
+
+    private
+
+    def analyses_table
+      Analysis.arel_table
+    end
+  end
+
   private
 
   def clean_strings_and_urls

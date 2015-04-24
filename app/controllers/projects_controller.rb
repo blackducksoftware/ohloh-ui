@@ -96,7 +96,7 @@ class ProjectsController < ApplicationController
 
   def redirect_new_landing_page
     return unless @account.nil?
-    redirect_to explore_projects_path if request.query_parameters.except('action').empty? && request_format == 'html'
+    redirect_to projects_explores_path if request.query_parameters.except('action').empty? && request_format == 'html'
   end
 
   def find_forge_matches

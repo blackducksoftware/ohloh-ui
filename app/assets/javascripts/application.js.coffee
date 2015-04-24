@@ -22,6 +22,7 @@
 #= require highcharts/highstock
 #= require highcharts/highcharts.more
 #= require highcharts/solid-guage.min
+#= require tagcloud.js
 #= require d3.min
 
 $(document).on 'page:change', ->
@@ -36,4 +37,6 @@ $(document).on 'page:change', ->
   OrgsFilter.init()
   Cocomo.init()
   ProjectForm.init()
+  JumpToTag.init
+  TagCloud.init
   new App.CheckAvailiability($('input.check-availability'))

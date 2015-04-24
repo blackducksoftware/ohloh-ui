@@ -1,0 +1,22 @@
+- if @project.empty?
+  %tr
+    %td.center{ colspan: 6 }= t('.no_matching_records')
+- else
+  - @projects.each_with_index do |project, index|
+    :ruby
+      project_name = truncate(project.name, length: 26)
+      org = project.organization
+      org_name = truncate(org.name, length: 30)
+    %tr
+      %td.center
+        = (index+1)
+      %td
+        = project.decorate.icon(:small)
+      %td
+        = link_to , project_path(project)
+      %td.center
+        = link_to org_name, organization_path(org), class: 'claimed-by-org', title: org_name if org
+      %td.pai
+        - project_activity_level_class(project, :twentyfive)
+      %td.center
+        = number_with_precision(project.best_analysis.angle, precision: 3)
