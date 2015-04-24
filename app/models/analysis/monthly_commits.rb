@@ -1,4 +1,4 @@
-class Analysis::MonthlyCommits < Analysis::Query
+class Analysis::MonthlyCommits < Analysis::QueryBase
   COMMIT_YEARS = 5
 
   arel_tables :commit, :analysis_sloc_set, :all_month

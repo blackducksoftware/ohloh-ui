@@ -1,4 +1,4 @@
-class Analysis::LanguageBreakdown < Analysis::Query
+class Analysis::LanguageBreakdown < Analysis::QueryBase
   LANAGUAGE_SELECT_COLUMNS = { id: 'language_id', nice_name: 'language_nice_name', name: 'language_name',
                                category: 'category' }
 

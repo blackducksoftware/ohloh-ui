@@ -1,4 +1,4 @@
-class Analysis::ContributorHistory < Analysis::Query
+class Analysis::ContributorHistory < Analysis::QueryBase
   attr_reader :start_date, :end_date
 
   arel_tables :all_month, :activity_fact

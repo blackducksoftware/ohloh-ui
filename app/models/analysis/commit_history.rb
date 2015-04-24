@@ -1,4 +1,4 @@
-class Analysis::CommitHistory < Analysis::Query
+class Analysis::CommitHistory < Analysis::QueryBase
   attr_reader :start_date, :end_date
 
   arel_tables :analysis_alias, :commit, :analysis_sloc_set, :all_month

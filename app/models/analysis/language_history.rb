@@ -1,4 +1,4 @@
-class Analysis::LanguageHistory < Analysis::Query
+class Analysis::LanguageHistory < Analysis::QueryBase
   arel_tables :all_month, :activity_fact, :language
 
   def execute

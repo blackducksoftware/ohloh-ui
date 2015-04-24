@@ -1,4 +1,4 @@
-class Analysis::TopCommitVolume < Analysis::Query
+class Analysis::TopCommitVolume < Analysis::QueryBase
   INTERVAL_ATTRS = { '50 years' => :commits, '12 months' => :twelve_month_commits, '1 month' => :thirty_day_commits }
 
   arel_tables :contributor_fact, :name

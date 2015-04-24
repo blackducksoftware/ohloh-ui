@@ -1,4 +1,4 @@
-class Analysis::CodeHistory < Analysis::Query
+class Analysis::CodeHistory < Analysis::QueryBase
   arel_tables :activity_fact, :all_month
 
   def execute
