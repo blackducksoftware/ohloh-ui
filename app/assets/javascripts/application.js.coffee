@@ -39,4 +39,5 @@ $(document).on 'page:change', ->
   ProjectForm.init()
   JumpToTag.init
   TagCloud.init
+  ProjectDemographics.init()
   new App.CheckAvailiability($('input.check-availability'))
