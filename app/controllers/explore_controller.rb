@@ -1,6 +1,5 @@
 class ExploreController < ApplicationController
-  before_action :project_details, only: [:index, :projects]
-  before_action :project_context, only: [:index, :projects]
+  before_action :projects_details, only: [:index, :projects]
   before_action :organization_context, only: :orgs
 
   def index

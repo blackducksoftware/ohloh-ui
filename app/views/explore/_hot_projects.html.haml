@@ -3,7 +3,7 @@
   %form{ action: '', rel: 'sort_filter' }
     #sort_by.pull-right.nav-select-container
       %label.pull-left= t('.filter')
-      = select_tag :lang, options_for_select(@language_map, params[:lang]),
+      = select_tag :lang, options_for_select(@languages, params[:lang]),
       class: 'chzn-select col-md-2 pull-right'
   %table.table.table-striped.center-block#hot_projects
     %tr
@@ -13,5 +13,5 @@
       %th{ width: '15%'}= t('.claimed')
       %th.center{ width:  '8%' }= t('.rank')
       %th.center{ width:  '12%' }
-      = link_to t('.hotness_score'), blog_url_for(:hotness_score), class 'meta', target: '_blank'
+      = link_to t('.hotness_score'), blog_url_for(:hotness_score), class: 'meta', target: '_blank'
     = render 'hot_projects_list'
