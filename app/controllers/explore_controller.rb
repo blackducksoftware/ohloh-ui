@@ -1,6 +1,7 @@
 class ExploreController < ApplicationController
+  helper :Projects
+
   before_action :projects_details, only: [:index, :projects]
-  before_action :organization_context, only: :orgs
 
   def index
     render 'explore/projects'
