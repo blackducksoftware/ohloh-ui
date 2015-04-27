@@ -1,24 +1,66 @@
-.explore_search
-  width: 173px
-.explore_compare
-  width: 194px
+#explore_projects_page
+  #explore_sidebar
+    box-shadow: none
+    width: 28%
+    min-height: 650px
+    border-radius: 0px
+    border: none
+    #tagcloud
+      a
+        font-size: 12px
+        color: #202020
+    .icon-search
+      &.search
+        font-size: 18px
+        position: relative
+        top: 3px
+    input
+      color: #202020
+      &:-moz-placeholder
+        color: #202020
+        font-style: italic
+      &:-ms-input-placeholder
+        color: #202020
+        font-style: italic
+      &::-webkit-input-placeholder
+        color: #202020
+        font-style: italic
+  .explore_search
+    width: 173px
+    margin-top: 7px
+  .explore_compare
+    width: 194px
 
-#hot_projects td
-  :padding 5px
-  a[class^="twentyfive_project_activity_level_"]
-    :margin-left 12px
-    :margin-top -12px
+  #hot_projects td
+    :padding 5px
+    a[class^="twentyfive_project_activity_level_"]
+      :margin-left 12px
+      :margin-top -12px
 
-#project_demographics
-  margin-top: 30px
+  #project_demographics
+    margin-top: 30px
 
-#demographics_chart
-  min-height: 480px
+  #demographics_chart
+    min-height: 480px
 
-.similar_tags_project_name
-  margin-bottom: 0.5em
-  width: 185px
-  margin-left: 10px
-.similar_tags_tagged
-  width: 245px
-  margin-left: 10px
+  .similar_tags_project_name
+    margin-bottom: 0.5em
+    width: 185px
+    margin-left: 10px
+  .similar_tags_tagged
+    width: 245px
+    margin-left: 10px
+
+  #tagcloud
+    :margin 5px
+
+  span.tag.container
+    background: none
+    border: none
+    margin-top: -2px
+    margin-bottom: -2px
+    padding: 2px
+    cursor: default
+
+  #value_selector_selected_tags
+    width: 400px

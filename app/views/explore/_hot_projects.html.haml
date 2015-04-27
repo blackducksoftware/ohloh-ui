@@ -1,8 +1,10 @@
-.pull-right.col-md-8
+.pull-right.col-md-8.margin_top_20
   %h2.pull-left= t('.title')
   %form{ action: '', rel: 'sort_filter' }
     #sort_by.pull-right.nav-select-container
-      %label.pull-left= t('.filter')
+      %label.pull-left{ style: 'line-height: 28px'}
+        = t('.filter')
+        &nbsp;
       = select_tag :lang, options_for_select(@languages, params[:lang]),
       class: 'chzn-select col-md-2 pull-right'
   .clearfix

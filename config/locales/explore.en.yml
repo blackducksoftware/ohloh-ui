@@ -45,7 +45,7 @@ en:
       add_here: 'add it here'
     hot_projects:
       title: 'Hot Projects on Open Hub'
-      filter: ' Filter by Language:'
+      filter: 'Filter by Language:'
       rank: 'Rank'
       name: 'Name'
       claimed: 'Claimed By'
