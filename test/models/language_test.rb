@@ -15,4 +15,15 @@ class LanguageTest < ActiveSupport::TestCase
       )
     end
   end
+
+  describe 'map' do
+    it 'should return a name map of all languages' do
+      create(:language, name: 'name_1', nice_name: 'nice_name_1')
+      create(:language, name: 'name_2', nice_name: 'nice_name_2')
+
+      Language.map.must_include ['All Languages', '']
+      Language.map.must_include ['nice_name_1', 'name_1']
+      Language.map.must_include ['nice_name_2', 'name_2']
+    end
+  end
 end
