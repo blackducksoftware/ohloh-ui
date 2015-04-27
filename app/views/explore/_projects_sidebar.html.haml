@@ -1,9 +1,9 @@
-#explore_sidebar.well.col-md-3.margin_left_10{ style: 'min-height:650px;' }
+#explore_sidebar.well.col-md-3.margin_left_10.margin_top_20{ style: 'box-shadow: none; width: 28%; min-height:650px; border-radius: 0px; border: none' }
   %h3= t('.search')
   .margin_left_10
     %form.search#explore_search_form{ action: projects_path }
       %input{ type: :hidden, name: 'ref', value: 'explore_project' }
-      %input.explore_search{ type: :text, name: 'q', rel:'ghost', data_ghost_text: 'Enter search string' }
+      %input.explore_search{ type: :text, name: 'q', rel:'ghost', placeholder: 'Enter search string' }
       .icon-search.search.submit
 
   %h3= t('.tags')

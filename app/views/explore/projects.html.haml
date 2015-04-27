@@ -2,11 +2,10 @@
 - content_for :html_title do
   = t('.page_title')
 
-#explore_projects
-  %h1= t('.title')
+%h1.margin_top_15= t('.title')
 
-  = render 'projects_sidebar'
+= render 'projects_sidebar'
 
-  = render 'hot_projects'
+= render 'hot_projects'
 
-  = render 'project_demographics'
+= render 'project_demographics'

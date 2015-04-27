@@ -30,6 +30,7 @@ en:
       orgs: '# of Orgs'
     projects:
       title: 'Projects'
+      page_title: 'Projects Explore - Open Hub'
     projects_sidebar:
       search: 'Search:'
       tags: 'Explore Tags:'
