@@ -12,7 +12,7 @@
         - if @project.is_a_duplicate
           - if current_user_is_admin? || (@current_account && @project.is_a_duplicate.account == @current_account)
             |
-            != link_to bootstrap_icon('icon-flag', 'Edit Duplicate'),
+            != link_to bootstrap_icon('icon-flag', t('projects.header.edit_duplicate')),
                        edit_project_duplicate_path(@project, @project.is_a_duplicate)
         - else
           |

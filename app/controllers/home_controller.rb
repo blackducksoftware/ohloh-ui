@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
   def index
-    render nothing: true
+    @home = HomeDecorator.new
   end
 end

@@ -1,7 +1,8 @@
 class PostsController < ApplicationController
-  include TopicsHelper
   include RedirectIfDisabled
+  helper MarkdownHelper
   helper PageContextHelper
+  helper TopicsHelper
 
   before_action :session_required, only: [:create, :edit, :update]
   before_action :admin_session_required, only: [:destroy]
