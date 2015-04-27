@@ -5,11 +5,5 @@ CompareProjects = {
       if ($("#auto_submit").val() != "false")
         $(this).parents('form:first').submit();
     }});
-    $(".projects_compare .graph").click(CompareProjects.graph);
   },
-  graph:function() {
-    var u = $(this).attr('graph')
-    tb_show('Project Comparison Graph', u, false);
-    return false;
-  }
 }

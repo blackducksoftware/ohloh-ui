@@ -122,7 +122,6 @@ Rails.application.routes.draw do
   resources :topics, except: [:index, :new, :create] do
     resources :posts, except: [:new]
   end
-  get 'move_topic/:id', to: 'topics#move_topic', as: :move_topic
 
   resources :posts, only: :index, as: 'all_posts'
   get 'markdown_syntax', to: 'abouts#markdown_syntax'
@@ -132,6 +131,7 @@ Rails.application.routes.draw do
   get 'explore/projects', to: 'explore#projects', as: :explore_projects
   get 'p/compare', to: 'compare#projects', as: :compare_projects
   get 'p/graph', to: 'compare#projects_graph', as: :compare_graph_projects
+
   resources :projects, path: :p, except: [:destroy] do
     member do
       get :users

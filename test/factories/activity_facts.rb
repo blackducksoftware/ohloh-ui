@@ -2,8 +2,8 @@ FactoryGirl.define do
   factory :activity_fact do
     association :name
     association :language
-    association :analysis
-    month  { Date.today }
+    analysis
+    month Date.today
     code_added 100
     code_removed 100
     comments_added 100
