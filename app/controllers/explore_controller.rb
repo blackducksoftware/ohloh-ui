@@ -27,7 +27,7 @@ class ExploreController < ApplicationController
   def projects_details
     @tags = CloudTag.list
     @languages = Language.map
-    @projects = Project.hot_projects.with_main_language(params[:lang])
+    @projects = Project.hot(params[:lang_id])
     @project_logos = Logo.where(id: @projects.map(&:logo_id)).index_by(&:id)
     @total_count = Project.active.count
     @with_pai_count = Project.with_pai_available
