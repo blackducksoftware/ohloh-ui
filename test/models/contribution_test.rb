@@ -47,6 +47,8 @@ class ContributionTest < ActiveSupport::TestCase
 
   describe '#filter_by' do
     it 'filter_by with query string' do
+      ContributorFact.delete_all
+      Person.delete_all
       create_people_for_sort_by
       contribution = Contribution
                      .includes(person: :account, contributor_fact: :primary_language)

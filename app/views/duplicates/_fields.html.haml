@@ -1,0 +1,33 @@
+- good = @duplicate.good_project
+- content_for :javascript do
+  = javascript_tag '$(document).on("page:change", NewDuplicate.init);'
+
+%fieldset
+  %legend= t('.legend', name: truncate_project_name(@duplicate.bad_project.name))
+  .control-group.clearfix
+    %label.control-label.required= t('.good_label', name: truncate_project_name(@duplicate.bad_project.name))
+    .controls
+      = form.text_field :good_project, class: 'autocompletable', id: 'duplicate_autocomplete',
+                                       style: 'width: 95%;', value: good ? good.name : ''
+      .hidden#new_duplicate_spinner= image_tag 'spinner.gif'
+      - error_tag @duplicate, :good_project
+
+  .control-group.clearfix#good_project_url_label{ class: good ? '' : ' hidden' }
+    %label.control-label= t('.original_url')
+    .controls
+      - if good
+        %a#good_project_url{ base: projects_url, href: project_url(good) }= project_url(good)
+      - else
+        %a#good_project_url{ base: projects_url, href: '#' }
+      = form.hidden_field :good_project_id
+
+  .control-group.clearfix
+    %label.control-label= t('.comment')
+    .controls
+      = find_and_preserve do
+        = form.text_area(:comment, rows: 10, cols: 80, max_length: 1000, style: 'width: 95%;')
+
+  = form.hidden_field :bad_project_id
+
+  .actions
+    %input.btn.btn-primary{ type: 'submit', value: button_text }
