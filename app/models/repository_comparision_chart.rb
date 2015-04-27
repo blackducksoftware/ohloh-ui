@@ -17,7 +17,7 @@ module RepositoryComparisionChart
 
   def chart_data
     repositories = Repository.select('type, count(type)').group(:type).order(:type)
-    data = repositories.map(&:attributes).map(&:with_indifferent_access)
+    data = repositories.map { |repository| repository.attributes.with_indifferent_access }
     combined_data = combine_svn_and_svn_sync_count(data)
     combined_data.map do |hsh|
       aliased_type = NAME_MAP.fetch(hsh[:type])
