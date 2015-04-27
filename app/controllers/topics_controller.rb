@@ -1,5 +1,6 @@
 class TopicsController < ApplicationController
-  include TopicsHelper
+  helper MarkdownHelper
+  helper TopicsHelper
   before_action :session_required, only: [:new, :create]
   before_action :admin_session_required, only: [:edit, :update, :destroy]
   before_action :find_forum_record, only: [:index, :new, :create]

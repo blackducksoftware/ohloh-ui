@@ -3,6 +3,7 @@ source 'http://oh-stage-utility-1.blackducksoftware.com:9292/'
 
 gem 'activeadmin', github: 'activeadmin'
 gem 'aws-sdk'
+gem 'bluecloth'
 gem 'brakeman'
 gem 'coffee-rails'
 gem 'coffee-script-source', '~>1.8.0'
@@ -18,8 +19,8 @@ gem 'ohno-you-dont', require: 'ohno'
 gem 'paperclip'
 gem 'pg'
 gem 'rails'
-gem 'rubocop'
 gem 'recaptcha', github: 'ambethia/recaptcha'
+gem 'rubocop'
 gem 'sass-rails'
 gem 'squeel'
 gem 'therubyracer'
@@ -33,7 +34,6 @@ group :development, :vagrant do
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
   gem 'letter_opener'
-  gem 'pry-rails'
 end
 
 group :test do
@@ -44,11 +44,14 @@ group :test do
   gem 'haml-lint', '~> 0.11'
   gem 'minitest-rails'
   gem 'mocha'
-  gem 'pry-rails'
   gem 'ruby_parser'
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'spring'
   gem 'vcr'
   gem 'webmock'
+end
+
+group :development, :vagrant, :test do
+  gem 'pry-rails'
 end

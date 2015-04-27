@@ -1,0 +1,65 @@
+en:
+  commits:
+    project_temporarily_disabled: 'Displaying commits for this project is temporarily disabled.'
+    commit:
+      commit_message: 'Commit Message'
+      contributor: 'Contributor'
+      files_modified: 'Files Modified'
+      lines_added: 'Lines Added'
+      lines_removed: 'Lines Removed'
+      code_location: 'Code Location'
+      date: 'Date'
+      more: 'More...'
+    committer_name:
+      as_comment_html: "as %{name}"
+      unknown: 'unknown'
+    index:
+      html_title: "The %{name} Open Source Project on Open Hub : Commits Listing Page"
+      commits: 'Commits'
+      listings: ': Listings'
+    show:
+      html_title: "The %{name} Open Source Project on Open Hub : Individual Commit Page"
+      commits: 'Commits'
+      individual_commit: ': Individual Commit'
+      commit_id: 'Commit ID'
+      contributor: 'Contributor:'
+      files_modified: 'Files Modified'
+      date: 'Date:'
+      lines_added: 'Lines Added:'
+      repository: 'Repository:'
+      lines_removed: 'Lines Removed:'
+      commit_comment: 'Commit Comment:'
+      changes_by_language: 'Changes by Language'
+      no_code_detected: 'No code was detected in this commit.'
+      language: 'Language'
+      code_added: 'Code Added'
+      code_removed: 'Code Removed'
+      comments_added: 'Comments Added'
+      comments_removed: 'Comments Removed'
+      blanks_added: 'Blanks Added'
+      blanks_removed: 'Blanks Removed'
+      changes_by_file: 'Changes by File'
+      file: 'File'
+      ignored_by_req: 'This file was ignored by request.'
+      no_source_code_detected: 'No source code was detected in this file.'
+    statistics:
+      repository: 'Repository'
+      modified: 'Modified'
+      no_code_detected: 'No code was detected in this commit.'
+      added: 'added'
+      removed: 'removed'
+      line: 'line'
+      more_details: 'More Details'
+    summary:
+      html_title: "The %{name} Open Source Project on Open Hub : Commits Summary Page"
+      commits: 'Commits'
+      all_time: 'All Time'
+      12_month: '12 Month'
+      30_day: '30 Day'
+      contributors: 'Contributors:'
+      files_modified: 'Files Modified:'
+      lines_added: 'Lines Added:'
+      lines_removed: 'Lines Removed'
+      commits_per_month: 'Commits per Month'
+      most_recent_commits: 'Month Recent Commits'
+      see_all_commits: 'See All Commits'

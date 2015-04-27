@@ -5,10 +5,10 @@
       = link_to position.decorate.project_contributor_or_show_path do
         - if name_fact.commits > 1
           = name_fact.commits
-          = t('commits')
+          = t('commits_menu')
         - else
           1
-          = t('commits').singularize
+          = t('commits_menu').singularize
       - main_language = name_fact.primary_language
       - if main_language
         = t('.in_mostly')

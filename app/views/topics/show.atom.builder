@@ -7,7 +7,8 @@ atom_feed do |feed|
       feed.language 'en-us'
       feed.ttl 60
       feed.description @topic.title
-      xml << render(partial: 'posts/posts.atom.builder', collection: @posts)
+      # Note: Hacky fix for xml indentation. Gsub method indents xml properly.
+      xml << render(partial: 'posts/posts.atom.builder', collection: @posts).gsub(/^/, '      ')
     end
   end
 end
