@@ -1,6 +1,7 @@
 class ExploreController < ApplicationController
   helper :Projects
 
+  before_action :set_language, only: [:index, :projects]
   before_action :projects_details, only: [:index, :projects]
 
   def index
@@ -27,9 +28,13 @@ class ExploreController < ApplicationController
   def projects_details
     @tags = CloudTag.list
     @languages = Language.map
-    @projects = Project.hot(params[:lang_id])
+    @projects =  @language ? Project.hot(@language.id) : Project.hot
     @project_logos = Logo.where(id: @projects.map(&:logo_id)).index_by(&:id)
     @total_count = Project.active.count
     @with_pai_count = Project.with_pai_available
+  end
+
+  def set_language
+    @language = Language.where(name: params[:lang].downcase).first if params[:lang].present?
   end
 end

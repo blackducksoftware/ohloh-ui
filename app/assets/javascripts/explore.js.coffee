@@ -36,6 +36,11 @@ Explore =
         $('span.error').show()
         return false
 
+    $('form[rel=sort_filter] select').change () ->
+      if $('#explore_projects_page') && $(this).val() == ''
+        $(this).attr('disabled', 'disabled')
+      $(this).parents('form').attr('action', document.location).submit()
+
 TagCloud =
   init: () ->
     $.fn.tagcloud.defaults =

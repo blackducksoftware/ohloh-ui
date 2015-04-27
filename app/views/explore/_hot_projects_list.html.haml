@@ -6,7 +6,7 @@
     :ruby
       project_name = truncate(project.name, length: 26)
       org = project.organization
-      org_name = truncate(org.name, length: 30)
+      org_name = truncate(org.name, length: 30) if org
     %tr
       %td.center
         = (index+1)
