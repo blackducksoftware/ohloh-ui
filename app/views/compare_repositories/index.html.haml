@@ -1,5 +1,5 @@
-- content_for(:html_title) { 'Compare Repositories' }
+- content_for(:html_title) { t('compare_repositories') }
 
 .compare_repositories
-  %h3= 'Compare Repositories'
+  %h3= t('compare_repositories')
   .chart{ style: 'height:480px', 'datasrc' => compare_repositories_chart_url }
