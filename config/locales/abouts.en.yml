@@ -2,3 +2,25 @@ en:
   abouts:
     markdown_syntax:
       page_title: "Markdown Syntax - Open Hub"
+    tools:
+      tools: 'Tools'
+      compare_projects: 'Compare Projects'
+      compare_stats: 'Compare project statistics, including activity, codebase, contributors, and more in either a graphical or side-by-side view.'
+      compare_languages: 'Compare Languages'
+      compare_languages_stats: 'Compare languages based on commits, contributors, lines of code changes, and the total number of new projects.'
+      compare_repositories: 'Compare Repositories'
+      compare_repositories_stats: 'Compare types of repositories based on how many of that type are registered with Open Hub.'
+      language_stats: 'Language Statistics'
+      view_stats_per_language: 'View statistics per language, including most experienced contributors, recent contributors, total lines of code analyzed, total lines of comments, and more.'
+      font_size: 'Font size is based on total lines counted per language.'
+      view_stats_for_all_languages_html: 'View statistics for %{href}'
+      additional_info: 'Additional Information'
+      api: 'API'
+      all_languages: 'All Languages'
+      getting_started: 'Getting Started'
+      examples: 'Examples'
+      open_source_projects: 'Open Source Projects'
+      ohcount: 'Ohcount'
+      ohloh_scm: 'Ohloh SCM'
+      line_counter_metrics:  'The line counter we use to build the metrics around your project'
+      source_code_abstraction: 'The source code abstraction layer we use to grab your code'

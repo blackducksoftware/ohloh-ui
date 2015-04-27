@@ -1,0 +1,46 @@
+.col-md-12
+  %h1= t('.tools')
+  %br
+  .row
+    .col-md-4
+      %h3= link_to t('.compare_projects'), compare_projects_path
+      %p= t('.compare_stats')
+      = image_tag 'tools/compare_projects_preview_graph.pn', alt: t('.compare_projects')
+
+    .col-md-4
+      %h3= link_to t('.compare_languages'), compare_languages_path
+      %p= t('.compare_languages_stats')
+      = image_tag 'tools/compare_languages_preview_graph.png', alt: t('.compare_languages')
+
+    .col-md-4
+      %h3= link_to t('.compare_repositories'), compare_repositories_path
+      %p= t('.compare_repositories_stats')
+      = image_tag 'tools/compare_repositories_preview_graph.png', alt: t('.compare_repositories')
+
+  .row
+    %p &nbsp;
+  .row
+    .col-md-8
+      %h3= link_to t('.language_stats'), languages_path
+      %p= t('.view_stats_per_language')
+      %p= t('.font_size')
+      %p.language-list-lineheight
+        - @languages.each do |language|
+          = link_to language.nice_name, language_path(language), style: compute_style_for_language_tag(language)
+      %p= t('.view_stats_for_all_languages_html', href: link_to(t('.all_languages'), languages_path))
+    .col-md-4
+      %h3= t('.additional_info')
+      %h4= t('.api')
+      %ul.margin_left_30
+        %li
+          = link_to t('.getting_started'), 'https://github.com/blackducksw/ohloh_api#ohloh-api-documentation'
+        %li
+          = link_to t('.examples'), 'https://github.com/blackducksw/ohloh_api/tree/master/examples#ohloh-api-examples'
+      %h4= t('.open_source_projects')
+      %ul.margin_left_30
+        %li
+          = link_to t('.ohcount:'), 'https://github.com/blackducksw/ohcount'
+          %span= t('.line_counter_metrics')
+        %li
+          = link_to t('.ohloh_scm'), 'https://github.com/blackducksw/ohloh_scm'
+          %span= t('.source_code_abstraction')
