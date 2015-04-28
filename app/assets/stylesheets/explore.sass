@@ -7,8 +7,7 @@
     border: none
     #tagcloud
       a
-        font-size: 12px
-        color: #202020
+        line-height: 17px
     .icon-search
       &.search
         font-size: 18px
@@ -33,9 +32,13 @@
 
   #hot_projects td
     :padding 5px
+    &.pai
+      position: relative
     a[class^="twentyfive_project_activity_level_"]
-      :margin-left 12px
-      :margin-top -12px
+      margin-left: 12px
+      margin-top: -12px
+      position: absolute
+      top: 24px
 
   #project_demographics
     margin-top: 30px
