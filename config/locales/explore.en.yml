@@ -34,6 +34,7 @@ en:
     projects_sidebar:
       search: 'Search:'
       tags: 'Explore Tags:'
+      enter_string: 'Enter search string'
       enter_tag: 'Enter different tag'
       enter_project: 'Enter a project name'
       compare: 'Compare:'
