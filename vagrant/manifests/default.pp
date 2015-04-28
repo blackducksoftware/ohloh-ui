@@ -5,7 +5,7 @@ class ohloh_dependencies {
   include imagemagick
   include postgres_client
   include memcached
-  include ruby_2_1
+  include ruby_2_2
   include users
   include git
 }
