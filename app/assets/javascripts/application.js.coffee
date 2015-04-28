@@ -37,7 +37,4 @@ $(document).on 'page:change', ->
   OrgsFilter.init()
   Cocomo.init()
   ProjectForm.init()
-  JumpToTag.init
-  TagCloud.init
-  ProjectDemographics.init()
   new App.CheckAvailiability($('input.check-availability'))

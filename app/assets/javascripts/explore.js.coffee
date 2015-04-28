@@ -56,3 +56,4 @@ TagCloud =
 $ ->
   Explore.init()
   TagCloud.init()
+  JumpToTag.init()
