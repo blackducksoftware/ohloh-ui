@@ -4,7 +4,7 @@ class Project::DemographicChart
 
   class << self
     def data
-      default_options = DEMOGRAPHIC_CHART_DEFAULTS.clone
+      default_options = DEMOGRAPHIC_CHART_DEFAULTS.deep_dup
       default_options['plotOptions']['pie']['startAngle'] = angle
       default_options['series'] << { 'data' => activity_level_data }
       default_options

@@ -118,7 +118,7 @@ describe 'ExploreController' do
         result['chart']['type'].must_equal 'pie'
         data['name'].must_equal 'Inactive'
         data['color'].must_equal '#2369C8'
-        data['y'].must_equal 100.0
+        data['y'].must_equal 20.0
         data['sliced'].must_equal true
         data['selected'].must_equal false
       end
