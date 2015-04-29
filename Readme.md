@@ -29,9 +29,10 @@ Build the application:
 
 ```
 cd ~/src/ohloh-ui
-docker build -t ohloh-ui .
-docker run --name ohloh-ui-app-server -p 9090:3000 -d ohloh-ui
-open http://$(boot2docker ip 2>/dev/null):9090/p/rails
+rake docker:build
+rake docker:run
+rake docker:status
+rake docker:open
 ```
 
 Pull Request Poller:
