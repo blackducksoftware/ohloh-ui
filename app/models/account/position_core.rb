@@ -75,8 +75,8 @@ class Account::PositionCore < OhDelegator::Base
 
   def create_alias(project, name, existing_position, position_attributes)
     # Augment the existing, valid position by creating an alias that merges the old and new names.
-    project.aliases.create(commit_name_id: name.id, preferred_name_id: existing_position.name_id,
-                           deleted: true, editor_account: account).tap do
+    Alias.create(project_id: project.id, commit_name_id: name.id, preferred_name_id: existing_position.name_id,
+                 deleted: true, editor_account: account).tap do
       # and update the existing position to use new position_attributes(title, desc)
       existing_position.update_attributes!(position_attributes)
     end

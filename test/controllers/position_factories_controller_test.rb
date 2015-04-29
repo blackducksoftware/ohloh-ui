@@ -43,7 +43,7 @@ describe 'PositionFactoriesController' do
         name_2 = create(:name)
 
         create_position(account: account, name: name_1, project: project)
-        Project.any_instance.expects(:aliases).returns(Alias)
+        Alias.expects(:create).returns(Alias.new(preferred_name: name_1))
 
         login_as(account)
         post :create, account_id: account.to_param, project_name: project.name, committer_name: name_2.name
@@ -64,7 +64,7 @@ describe 'PositionFactoriesController' do
         name_2 = create(:name)
 
         create_position(account: account, name: name_1, project: project)
-        Project.any_instance.expects(:aliases).returns(Alias)
+        Alias.expects(:create).returns(Alias.new(preferred_name: name_1))
 
         login_as(account)
         post :create, account_id: account.to_param, project_name: project.name, committer_name: name_2.name
