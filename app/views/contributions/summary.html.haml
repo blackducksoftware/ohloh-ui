@@ -1,7 +1,7 @@
 :ruby
   page_context[:select_footer_nav] = :contributors
-  top_commit_volume_chart_url = top_commit_volume_chart_project_analysis_path(@project, @analysis)
-  committer_history_chart_url = committerhistory_project_analysis_url(project_id: @project.to_param, id: 'latest')
+  top_commit_volume_chart = top_commit_volume_chart_project_analysis_path(@project, @analysis)
+  committer_history_chart = contributor_summary_project_analysis_url(project_id: @project.to_param, id: 'latest')
 
 - content_for :html_title do
   = succeed t('.page_title') do
@@ -16,10 +16,10 @@
   .row.committers_chart
     .pull-left.col-md-5{ style: 'width:420px;' }
       %h4= t('.top_contributors')
-      .chart#top_commit_volume_chart{ datasrc: top_commit_volume_chart_url, style: 'height:320px' }
+      .chart#top_commit_volume_chart{ datasrc: top_commit_volume_chart, style: 'height:320px' }
     .pull-right.col-md-6
       %h4= t('.no_of_contributors')
-      .chart#top_commit_volume_chart{ datasrc: committer_history_chart_url, style: 'height:320px' }
+      .chart#committer_history_chart{ datasrc: committer_history_chart, style: 'height:320px' }
     .clearfix
 
   .col-md-12

@@ -10,7 +10,6 @@ FactoryGirl.define do
     comments_removed 100
     blanks_added 100
     blanks_removed 100
-    name_id 100
     commits 100
   end
 end
