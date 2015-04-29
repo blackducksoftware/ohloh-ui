@@ -1,4 +1,5 @@
 class Analysis < ActiveRecord::Base
+  include Analysis::Report
   AVG_SALARY = 55_000
   EARLIEST_DATE = Time.utc(1971, 1, 1)
   EARLIEST_DATE_SQL_STRING = "TIMESTAMP '#{EARLIEST_DATE.strftime('%Y-%m-%d')}'"
@@ -7,7 +8,6 @@ class Analysis < ActiveRecord::Base
   has_one :thirty_day_summary
   has_one :twelve_month_summary
   has_one :previous_twelve_month_summary
-
   has_many :analysis_summaries
   has_many :analysis_aliases
   has_many :contributor_facts, class_name: 'ContributorFact'

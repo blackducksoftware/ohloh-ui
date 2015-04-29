@@ -36,6 +36,33 @@ class CompareControllerTest < ActionController::TestCase
     response.body.must_match 'Bob'
   end
 
+  test 'should get projects graph route for contributor history' do
+    project1 = create(:project, name: 'The Avenger Initiative')
+    project2 = create(:project, name: 'X-MEN')
+    project3 = create(:project, name: 'Suicide Squad')
+    xhr :get, :projects_graph, metric: 'contributor', project_0: project1.name,
+                               project_1: project2.name, project_2: project3.name
+    must_respond_with :ok
+  end
+
+  test 'should get projects graph route for commit history' do
+    project1 = create(:project, name: 'The Avenger Initiative')
+    project2 = create(:project, name: 'X-MEN')
+    project3 = create(:project, name: 'Suicide Squad')
+    xhr :get, :projects_graph, metric: 'commit', project_0: project1.name,
+                               project_1: project2.name, project_2: project3.name
+    must_respond_with :ok
+  end
+
+  test 'should get projects graph route for code total history' do
+    project1 = create(:project, name: 'The Avenger Initiative')
+    project2 = create(:project, name: 'X-MEN')
+    project3 = create(:project, name: 'Suicide Squad')
+    xhr :get, :projects_graph, metric: 'code_total', project_0: project1.name,
+                               project_1: project2.name, project_2: project3.name
+    must_respond_with :ok
+  end
+
   # projects - csv format
   test 'csv format should render with no projects passed in' do
     get :projects, format: :csv

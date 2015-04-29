@@ -1,0 +1,79 @@
+var presentDay = new Date();
+var year = presentDay.getFullYear();
+var year = year - 3;
+var month = presentDay.getMonth();
+
+$(function () {
+   $('#chartContainer').highcharts({
+    chart: {
+    height: 450,
+    width: 540,
+    borderWidth: 5,
+    borderColor: '#525252'
+    },
+    colors: ['#ee1f08','#39d63c','#2ba5e1'],
+    title: {
+      <%- if @metric == 'code_total' -%>
+            text: 'Total lines of project source code, excluding comments and blank lines.'
+      <%- else %>
+            text: 'Number of <%= @metric.capitalize.pluralize %> who made changes to the project source code each month'
+      <%- end %>
+    },
+    xAxis: {
+      dateTimeLabelFormats: {
+        month: '20%y'
+      },
+      labels: {
+        step: 1
+      },
+      tickInterval: 24 * 3600 * 1000 * 365,
+      type: 'datetime'
+    },
+    yAxis: {
+      floor: 0,
+      labels: {
+       formatter:function() {
+        return Highcharts.numberFormat(this.value, 0, '', ',');
+        }
+      },
+      title: {
+        <%- if @metric == 'code_total' -%>
+          text: 'Total Lines of Code'
+        <%- else %>
+          text: '<%= @metric.capitalize.pluralize %>'
+        <% end %>
+      },
+      <%- if @metric == 'Code' -%>
+      tickInterval: 1000000,
+      <% end %>
+    },      
+    plotOptions: {
+        series: {
+          pointStart: Date.UTC(year, month, 1),
+          pointIntervalUnit: 'month'
+      },
+      line: {
+        marker: {enabled:false},
+        shadow : true
+      }
+    },
+    series: [
+    <%- @series_of_plot_points.size.times do |index| %>
+      <%- index += 1 unless params.has_key?("project_#{index}") %>
+      <%- index += 1 unless params.has_key?("project_#{index}") %>
+      <%- project_name = params[("project_#{index}").to_sym] %>
+    {
+      data: <%= @series_of_plot_points[project_name] %>,
+      name: '<%= @series_of_plot_points.key(@series_of_plot_points[project_name]) %>'
+    },
+    <%- end %>
+    ]
+  });
+  var chart = $('#container').highcharts();
+  $('#chart-modal').on('shown.bs.modal', function() {
+    $('#container').css('visibility', 'initial');
+    chart.reflow();
+  });   
+});
+
+$('#graphModal').modal();
