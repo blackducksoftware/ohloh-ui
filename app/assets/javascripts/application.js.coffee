@@ -22,7 +22,7 @@
 #= require highcharts/highstock
 #= require highcharts/highcharts.more
 #= require highcharts/solid-guage.min
-#= require tagcloud.js
+#= require tagcloud
 #= require d3.min
 
 $(document).on 'page:change', ->

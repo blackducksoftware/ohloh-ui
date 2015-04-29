@@ -4,7 +4,7 @@
     .margin_left_10
       %form.search#explore_search_form{ action: projects_path }
         %input{ type: :hidden, name: 'ref', value: 'explore_project' }
-        %input.explore_search.margin_top_10{ type: :text, name: 'q', rel: 'ghost', placeholder: t('.enter_string') }
+        %input.explore_search.margin_top_10{ type: :text, name: 'q', placeholder: t('.enter_string') }
         .icon-search.search.submit
 
     %h3= t('.tags')
@@ -12,11 +12,10 @@
       .row
         #tagcloud
           - @tags.each do |tag|
-            = link_to tag[0], tag_path(tag[0]), 'data-weight' => tag[1]
+            = link_to tag[0], tag_path(tag[0]), data: { weight: tag[1] }
     .margin_left_10
       %form{ rel: 'tag_jump' }
-        %input.explore_search.tag_autocomplete#input_tag{ type: :text, rel: 'ghost', placeholder: t('.enter_tag') }
-        .icon-search.search.submit
+        %input.explore_search.tag_autocomplete#input_tag{ type: :text, placeholder: t('.enter_tag') }
 
     %p &nbsp;
     %h3= t('.compare')
@@ -30,8 +29,7 @@
     %p &nbsp;
     %h3= t('.similar')
     %form.similar_projects.margin_left_10{ rel: 'similar_project_jump' }
-      %input.proj.explore_search#project{ type: 'text', placeholder: t('.enter_project'),
-      rel: 'ghost', autocomplete: 'off' }
+      %input.proj.explore_search#project{ type: 'text', placeholder: t('.enter_project'), autocomplete: 'off' }
       %input#proj_id{ type: 'hidden' }
       .icon-search.search.submit
       %span.error.hidden= t('.invalid_select')

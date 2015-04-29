@@ -13,9 +13,6 @@ Explore =
         $(this).siblings('.icon-search').trigger('click')
         return false
 
-    JumpToTag.init()
-    CompareProjects.init()
-
     $('.similar_projects #project').autocomplete
       source: '/autocompletes/project'
       select: (e, ui) ->
@@ -24,7 +21,7 @@ Explore =
         $(this).parents('form:first').submit()
 
     $('.similar_projects .icon-search').click (e) ->
-      $(this).parents('form:first').submit()
+      $(this).parents('form:first').trigger('submit')
 
     $('form[rel=similar_project_jump]').submit (e) ->
       projectId = $("#proj_id").val()
@@ -33,7 +30,7 @@ Explore =
         $('#proj_id').val('')
         window.location.href = "/p/#{projectId}/similar"
       else
-        $('span.error').show()
+        $('span.error').removeClass('hidden')
         return false
 
     $('form[rel=sort_filter] select').change () ->
@@ -56,4 +53,3 @@ TagCloud =
 $ ->
   Explore.init()
   TagCloud.init()
-  JumpToTag.init()
