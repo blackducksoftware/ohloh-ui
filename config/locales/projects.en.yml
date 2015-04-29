@@ -112,7 +112,7 @@ en:
       is_a_duplicate:
         reported: "This project has been reported as a duplicate of %{link}. This project will be deleted upon review by an Open Hub administrator."
         cancel_request: "Cancel this request"
-        cancel_request_confirm: "Are you sure you want to cancel this request?"
+        cancel_confirm: "Are you sure you want to cancel this request?"
         edit_request: "Edit this request"
       languages:
         no_source: "No source code was found in any of the code locations"

@@ -2,9 +2,9 @@ class TopicsController < ApplicationController
   helper MarkdownHelper
   helper TopicsHelper
   before_action :session_required, only: [:new, :create]
-  before_action :admin_session_required, only: [:edit, :update, :destroy, :move_topic]
+  before_action :admin_session_required, only: [:edit, :update, :destroy]
   before_action :find_forum_record, only: [:index, :new, :create]
-  before_action :find_forum_and_topic_records, except: [:index, :new, :create, :move_topic]
+  before_action :find_forum_and_topic_records, except: [:index, :new, :create]
   after_action :track_views, only: [:show]
 
   def index
