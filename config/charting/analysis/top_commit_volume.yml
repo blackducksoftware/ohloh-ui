@@ -1,0 +1,44 @@
+chart:
+  defaultSeriesType: 'bar'
+credits:
+  enabled: false
+title:
+  text:
+xAxis:
+  labels:
+    align: 'center'
+    style:
+      fontSize: '0.9em'
+      width: '75px'
+  gridLineWidth: 0
+  lineWidth: 0
+yAxis:
+  min: 0
+  title:
+    text: '% of Commits'
+  stackLabels:
+    enabled: false
+  lineWidth: 1
+  gridLineWidth: 0
+tooltip:
+  commit_volume_chart: true
+legend:
+  align: 'center'
+  verticalAlign: 'bottom'
+  x: 0
+  y: 0
+  floating: false
+  backgroundColor: 'white'
+  borderColor: 'white'
+  shadow: false
+  layout: 'horizontal'
+  width: 390
+  itemWidth: 130
+  lineHeight: 20
+  itemStyle:
+    fontSize: '0.9em'
+plotOptions:
+  series:
+    stacking: 'percent'
+    dataLabels:
+      enabled: false

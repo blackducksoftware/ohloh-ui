@@ -20,6 +20,9 @@
 #= require_tree .
 #= require twitter/bootstrap
 #= require d3.min
+#= require highcharts/highstock
+#= require highcharts/highcharts-more
+#= require highcharts/solid-gauge
 #= require highcharts/highcharts
 
 $(document).on 'page:change', ->
