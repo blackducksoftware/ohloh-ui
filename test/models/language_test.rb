@@ -22,8 +22,8 @@ class LanguageTest < ActiveSupport::TestCase
       create(:language, name: 'name_2', nice_name: 'nice_name_2')
 
       Language.map.must_include ['All Languages', '']
-      Language.map.must_include ['nice_name_1', 'name_1']
-      Language.map.must_include ['nice_name_2', 'name_2']
+      Language.map.must_include %w(nice_name_1 name_1)
+      Language.map.must_include %w(nice_name_2 name_2)
     end
   end
 end

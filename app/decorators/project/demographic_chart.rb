@@ -13,9 +13,10 @@ class Project::DemographicChart
     private
 
     def activity_level_data
-      count_by_activity_level.each_with_object([]) do |(level, count), array|
+      level_data = count_by_activity_level.each_with_object([]) do |(level, count), array|
         array.push Project::ActivityLevelIndex.new(level, count, total_count).demographic_chart_data
-      end.sort_by { |d| SORT_ORDER.index(d[:name]) }
+      end
+      level_data.sort_by { |d| SORT_ORDER.index(d[:name]) }
     end
 
     def count_by_activity_level

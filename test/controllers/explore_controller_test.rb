@@ -120,7 +120,7 @@ describe 'ExploreController' do
         data['color'].must_equal '#2369C8'
         data['y'].must_equal 20.0
         data['sliced'].must_equal true
-        data['selected'].must_equal false
+        data['selected'].must_equal true
       end
     end
   end

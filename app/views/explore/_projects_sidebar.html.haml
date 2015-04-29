@@ -36,7 +36,8 @@
 
     %p &nbsp;
     %h3= t('.add')
-    %p.justify.margin_left_10= t('.community')
-    %p.justify.margin_left_10
+    %p.justify.margin_left_10.margin_top_20{ style: 'line-height: 20px' }
+      = t('.community')
+    %p.justify.margin_left_10{ style: 'line-height: 20px' }
       = t('.favorite')
       = link_to t('.add_here'), new_project_path

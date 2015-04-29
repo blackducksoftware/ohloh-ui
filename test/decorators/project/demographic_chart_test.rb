@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class Project::DemographicChartTest < ActiveSupport::TestCase
-
   describe 'data' do
     it 'should return the computed chart data' do
       create(:project, name: 'testa', activity_level_index: 20)
@@ -11,7 +10,7 @@ class Project::DemographicChartTest < ActiveSupport::TestCase
       create(:project, name: 'teste', activity_level_index: 40)
 
       data = Project::DemographicChart.data
-      data['plotOptions']['pie']['startAngle'].must_equal -18.0
+      data['plotOptions']['pie']['startAngle'].must_equal(-18.0)
       data['series'].first['type'].must_equal 'pie'
       inactive_data = data['series'].last['data'].first
       low_active_data = data['series'].last['data'].last
