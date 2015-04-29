@@ -80,6 +80,14 @@ describe 'SizeFactsControllerTest' do
       xml['response']['error'].must_equal I18n.t('projects.deleted.message', name: project.name)
     end
 
+    it 'should respond with failure if project id does not exist' do
+      get :index, format: 'xml', project_id: 'not_available', analysis_id: analysis.id, api_key: api_key.key
+      xml = xml_hash(@response.body)
+
+      must_respond_with :not_found
+      xml['error']['message'].must_equal I18n.t('four_oh_four')
+    end
+
     it 'should respond with unauthorized if api_key is invalid' do
       get :index, format: 'xml', project_id: project.id, analysis_id: analysis.id, api_key: 'dummy_key'
       xml = xml_hash(@response.body)

@@ -17,7 +17,7 @@
       %td{ width: '10%', scope: 'col' }= analysis_total_percent_detail(code_lines, total_lines)
     %tr
       %td{ width: '20%', scope: 'col' }= t('.languages')
-      %td{ width: '5%',  scope: 'col' }= @language_breakdown.size
+      %td{ width: '5%',  scope: 'col' }= @languages_breakdown.size
       %td{ width: '10%', scope: 'col' }
       %td{ width: '20%', scope: 'col' }= t('.total_language_lines')
       %td{ width: '5%',  scope: 'col' }= number_with_delimiter(comment_lines)

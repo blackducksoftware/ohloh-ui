@@ -68,8 +68,8 @@ describe 'AnalysesController' do
       must_respond_with :ok
       assigns(:analysis).must_equal analysis
       assigns(:project).must_equal project
-      assigns(:language_breakdown).first.code_total.must_equal 3
-      assigns(:language_breakdown).first.blanks_total.must_equal 4
+      assigns(:languages_breakdown).first.code_total.must_equal 3
+      assigns(:languages_breakdown).first.blanks_total.must_equal 4
     end
   end
 

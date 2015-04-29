@@ -7,16 +7,16 @@
   %h2.pull-left= t('.title')
   = project_analysis_timestamp(@project)
 
-- if @language_breakdown.any?
+- if @languages_breakdown.any?
   %br
-  = render partial: 'projects_languages_details', locals: { language_breakdown: @language_breakdown }
+  = render partial: 'projects_languages_details', locals: { language_breakdown: @languages_breakdown }
   .clearfix
 
   .col-md-10.padding_one_top
     = render partial: 'analysis_graphs', locals: { project: @project, analysis: @analysis }
 
   .col-md-12.padding_one_top
-    = render partial: 'language_table', locals: { language_breakdown: @language_breakdown }
+    = render partial: 'language_table', locals: { language_breakdown: @languages_breakdown }
 
 - elsif @analysis.present?
   %p= t('.no_recognized_languages')

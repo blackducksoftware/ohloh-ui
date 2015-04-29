@@ -15,7 +15,8 @@ class SizeFactsController < ApplicationController
   private
 
   def set_project
-    @project = Project.from_param(params[:project_id]).first
+    @project = Project.deleted_and_not_deleted_from_param(params[:project_id]).first
+    fail ParamRecordNotFound if @project.nil?
     render 'projects/deleted' if @project.deleted?
   end
 end

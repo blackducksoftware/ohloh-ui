@@ -18,7 +18,7 @@ class AnalysesController < ApplicationController
 
   def languages_summary
     @analysis ||= @project.best_analysis
-    @language_breakdown = Analysis::LanguageBreakdown.new(analysis: @analysis).collection
+    @languages_breakdown = Analysis::LanguageBreakdown.new(analysis: @analysis).collection
   end
 
   def top_commit_volume_chart
@@ -65,12 +65,12 @@ class AnalysesController < ApplicationController
   private
 
   def set_project
-    @project = Project.active.from_param(params[:project_id]).take
+    @project = Project.from_param(params[:project_id]).take
     fail ParamRecordNotFound unless @project
   end
 
   def set_analysis
-    @analysis = params[:id] == 'latest' ? @project.best_analysis : Analysis.where(id: params[:id]).take
+    @analysis = params[:id] == 'latest' ? @project.best_analysis : Analysis.find_by(id: params[:id])
   end
 
   def fail_if_analysis_not_found
