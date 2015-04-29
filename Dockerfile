@@ -1,9 +1,6 @@
 FROM phusion/passenger-ruby22:0.9.15
 MAINTAINER OpenHub <info@ohloh.net>
 
-RUN sudo apt-get -y update
-RUN sudo apt-get install -y passenger
-
 RUN rm /etc/nginx/sites-enabled/default
 ADD config/nginx.conf /etc/nginx/sites-enabled/webapp.conf
 RUN rm -f /etc/service/nginx/down

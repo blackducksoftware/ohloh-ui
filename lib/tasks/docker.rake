@@ -1,4 +1,4 @@
-namespace :docker do |ns|
+namespace :docker do
   desc 'Cuts a new build'
   task :build do
     system 'git rev-parse HEAD > config/GIT_SHA'
@@ -14,9 +14,15 @@ namespace :docker do |ns|
     system 'docker run --name ohloh-ui-app-server -p 7070:80 -d ohloh-ui'
   end
 
+  desc 'Launches a bash shell into the container'
+  task :bash do
+    system 'docker exec -it ohloh-ui-app-server /bin/bash'
+  end
+
   desc 'Curls the status page'
   task :status do
     system 'curl http://$(boot2docker ip 2>/dev/null):7070/server_info'
+    puts "\n"
   end
 
   desc 'Opens the status page in a web browser'

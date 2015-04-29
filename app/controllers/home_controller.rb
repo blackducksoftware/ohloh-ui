@@ -1,5 +1,3 @@
-require 'phusion_passenger'
-
 class HomeController < ApplicationController
   def index
     @home = HomeDecorator.new
@@ -7,13 +5,17 @@ class HomeController < ApplicationController
 
   def server_info
     render json: { status: 'OK', ruby: RUBY_VERSION, rails: Rails.version,
-                   git_sha: git_sha, passenger: PhusionPassenger::VERSION_STRING }
+                   git_sha: HomeController.git_sha, passenger: HomeController.passenger_version }
   end
 
-  private
+  class << self
+    def git_sha
+      file = "#{Rails.root}/config/GIT_SHA"
+      File.exist?(file) ? File.read(file)[0...40] : 'development'
+    end
 
-  def git_sha
-    file = "#{Rails.root}/config/GIT_SHA"
-    File.exists?(file) ? File.read(file)[0...40] : 'development'
+    def passenger_version
+      /([0-9\.]+)/.match(`passenger -v`)[0] rescue 'development'
+    end
   end
 end
