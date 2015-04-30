@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 source 'http://oh-stage-utility-1.blackducksoftware.com:9292/'
 
 gem 'activeadmin', github: 'activeadmin'
+gem 'airbrake'
 gem 'aws-sdk'
 gem 'bluecloth'
 gem 'brakeman'
