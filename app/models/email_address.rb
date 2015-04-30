@@ -1,5 +1,6 @@
 class EmailAddress < ActiveRecord::Base
   BLACKLISTED_EMAILS = ['root@localhost']
+  include EmailObfuscation
 
   class << self
     def search_sql(address_string)
