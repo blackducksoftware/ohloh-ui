@@ -64,8 +64,7 @@ Rails.application.routes.draw do
       get :confirm_delete
       get :disabled
       get :settings
-      get 'edit_privacy'   => 'privacy#edit',   as: :edit_account_privacy
-      put 'update_privacy' => 'privacy#update', as: :account_privacy
+      get :edit_privacy, to: 'privacy#edit', as: :edit_account_privacy
     end
 
     collection do

@@ -300,6 +300,54 @@ describe 'AccountsController' do
       must_redirect_to new_session_path
       flash.now[:error].must_match(/You can't edit another's account/)
     end
+
+    it 'should update email master to false' do
+      put :update, id: account.id, account: { email_master: false }
+      account.save!
+      account.reload
+      account.email_master.must_equal false
+      flash[:notice].must_equal 'Save successful!'
+    end
+
+    it 'should update email master to true if set to false' do
+      account.email_master = false
+      put :update, id: account.id, account: { email_master: true }
+      account.reload
+      account.email_master.must_equal true
+      flash[:notice].must_equal 'Save successful!'
+    end
+
+    it 'should update email kudos to false' do
+      put :update, id: account.id, account: { email_kudos: false }
+      account.save!
+      account.reload
+      account.email_kudos.must_equal false
+      flash[:notice].must_equal 'Save successful!'
+    end
+
+    it 'should update email kudos to true if set to false' do
+      account.email_kudos = false
+      put :update, id: account.id, account: { email_kudos: true }
+      account.reload
+      account.email_kudos.must_equal true
+      flash[:notice].must_equal 'Save successful!'
+    end
+
+    it 'should update email posts to false' do
+      put :update, id: account.id, account: { email_posts: false }
+      account.save!
+      account.reload
+      account.email_posts.must_equal false
+      flash[:notice].must_equal 'Save successful!'
+    end
+
+    it 'should update email posts to true if set to false' do
+      account.email_posts = false
+      put :update, id: account.id, account: { email_posts: true }
+      account.reload
+      account.email_posts.must_equal true
+      flash[:notice].must_equal 'Save successful!'
+    end
   end
 
   describe 'destroy' do
@@ -360,6 +408,12 @@ describe 'AccountsController' do
       post :destroy, id: account.to_param
 
       project.manages.must_be :empty?
+    end
+  end
+
+  describe 'settings' do
+    it 'should render settings' do
+      get :settings, id: user.id
     end
   end
 

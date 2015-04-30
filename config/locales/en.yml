@@ -43,7 +43,7 @@ en:
   blog: 'Blog'
   forum: 'Forums'
   terms: 'Terms'
-  privacy: 'Privacy'
+  privacy_blog: 'Privacy'
   managers_link_name: 'Managers'
   learn_more: "Learn More&hellip;"
   project_page_title: "The %{project_name} Open Source Project on Open Hub"
