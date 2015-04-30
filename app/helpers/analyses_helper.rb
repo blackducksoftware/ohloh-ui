@@ -23,7 +23,7 @@ module AnalysesHelper
 
   def analysis_language_percentages(analysis)
     return [] if analysis.empty?
-    lbs = Analysis::LanguageBreakdown.new(analysis: analysis).collection
+    lbs = Analysis::LanguagesBreakdown.new(analysis: analysis).collection
     language_infos(lbs, 100, analysis_total_lines(lbs))
   end
 

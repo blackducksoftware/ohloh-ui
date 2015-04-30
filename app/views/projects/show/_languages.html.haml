@@ -6,9 +6,8 @@
     .pull-left{ style: 'padding-right: 10px;' }
       %img{ src: "/p/#{@project.to_param}/analyses/latest/languages.png?height=75&width=75" }
 
-    // and now for the table
     %table.table.table-striped.unstyled.pull-left{ style: 'width: 300px;' }
-      - analysis_language_percentages(@analysis).each do |id, name, attr|
+      - Analysis::LanguagePercentages.new(@analysis).collection.each do |id, name, attr|
         - percent = attr[:percent] > 0 ? attr[:percent] : '<1'
         %tr.pull-left{ style: 'width: 150px;' }
           - color = attr[:color]

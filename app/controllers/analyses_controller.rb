@@ -16,9 +16,19 @@ class AnalysesController < ApplicationController
     end
   end
 
+  def languages
+    params.reverse_merge!(width: 154, height: 154, border: 1, show: true)
+    languages = Analysis::LanguagePercentages.new(@analysis).collection.map { |id, name, value| [name, value] }
+    chart_format = Chart::Format.new(width: params[:width].to_i, height: params[:height].to_i,
+                                     top_legend_height: 40, right_buffer: 40)
+    pie_chart = Chart::Pie.render(chart_format, languages, params)
+
+    send_data pie_chart, disposition: 'inline', type: 'image/png'
+  end
+
   def languages_summary
     @analysis ||= @project.best_analysis
-    @languages_breakdown = Analysis::LanguageBreakdown.new(analysis: @analysis).collection
+    @languages_breakdown = Analysis::LanguagesBreakdown.new(analysis: @analysis).collection
   end
 
   def top_commit_volume_chart
