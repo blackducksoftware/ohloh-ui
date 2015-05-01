@@ -96,6 +96,7 @@ Rails.application.routes.draw do
       get :account
       get :project
       get :organization
+      get :license
     end
   end
 

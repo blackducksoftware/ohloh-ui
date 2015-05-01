@@ -1,0 +1,54 @@
+en:
+  licenses:
+    create:
+      notice: 'Create successful!'
+      error: 'There was a problem!'
+    update:
+      notice: 'Save successful!'
+      error: 'There was a problem!'
+    fields:
+      name: 'Name'
+      url_name: 'Open Hub URL Name'
+      nice_name_help: 'This name must be unique for all licenses.'
+      name_help: 'This is the URL address on Open Hub and must be unique. Only characters, numbers, dashes and underscores allowed.'
+      abbreviation: 'Abbreviation'
+      abbreviation_help: 'Enter a short abbreviation for the license.'
+      homepage: 'Homepage'
+      homepage_help: "The full homepage URL of the license, starting with 'http:// or https://'."
+      license_text: 'License Text'
+      license_help: 'Enter the complete text of the license. Only new-line formatting is allowed.'
+      save_changes: 'Save Changes'
+      save_license: 'Save License'
+      locked: 'Locked'
+    edit:
+      title: "%{name} - Open Hub"
+      license: 'License'
+      edit_license: 'Edit License'
+    index:
+      title: 'Licenses - Open Hub'
+      license: 'Licenses'
+      edit_project_licenses: 'Edit Project Licenses'
+      add_new_license: 'Add New License'
+      no_license_for_project: "No governing licenses have been defined for project %{name}."
+      click: 'Click '
+      click_more: ' to edit the project.'
+      here: 'here'
+    new:
+      title: 'New Licenses - Open Hub'
+      license: 'Licenses'
+      new_license: 'New License'
+    show:
+      title: "%{name} - Open Hub"
+      license: 'License'
+      edit_license: 'Edit License'
+      add_new_license: 'Add New License'
+      view_history: 'View History'
+      home_page: 'Home Page for License'
+      provide_license: 'Provide license text'
+      read_more: "Read more about this license at"
+  activerecord:
+    errors:
+      models:
+        license:
+          invalid:
+            'should start with a letter and can include only letters, numbers, _ and -'
