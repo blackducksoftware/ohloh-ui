@@ -9,9 +9,9 @@ class Analysis::LanguagePercentages
   end
 
   def collection
-    data = high_percentage_languages
-    if low_percentage_languages.empty?
-      data += combine_low_percentage_languages
+    data = high_percentage_languages_info
+    if low_percentage_languages_info.empty?
+      data += combined_low_percentage_languages_info
     else
       data += [@last_language.info(insignificant_languages_percentage)]
     end
@@ -19,27 +19,28 @@ class Analysis::LanguagePercentages
 
   private
 
-  def high_percentage_languages
+  def high_percentage_languages_info
     @high_pecentages ||= @languages.select(&:high_precentage?).map(&:info)
   end
 
-  def low_percentage_languages
-    @low_pecentages ||= (@languages - high_percentage_languages).map(&:brief_info)
+  def low_percentage_languages_info
+    @low_pecentages ||= @languages.select(&:low_percentage?).map(&:brief_info)
   end
 
-  def combine_low_percentage_languages
-    others_info = low_percentage_languages + [last_language.brief_info]
-    others_count = "#{low_percentage_languages.size} Other"
+  def combined_low_percentage_languages_info
+    others_info = low_percentage_languages_info + [last_language.brief_info]
+    others_count = "#{low_percentage_languages_info.size} Other"
     [nil, others_count, { percent: insignificant_languages_percentage, composed_of: others_info, color: '000000' }]
   end
 
   def insignificant_languages_percentage
-    @ingsignificant_pecentages ||= TOTAL_PERCENTAGE - high_percentage_languages.sum(&:percentage)
+    significant_lanaguages_percentage = high_percentage_languages_info.map(&:last).sum { |detail| detail[:percentage] }
+    @ingsignificant_pecentages ||= TOTAL_PERCENTAGE - significant_lanaguages_percentage
   end
 
   def create_broken_down_languages
     @languages = @languages_breakdown.map do |language_hash|
-      Analysis::BorkedownLanguage.new language_hash.merge(total_lines: @total_lines)
+      Analysis::BrokedownLanguage.new language_hash.merge(total_lines: @total_lines)
     end
     @last_language = @languages.pop
   end

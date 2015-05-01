@@ -9,7 +9,7 @@ class Analysis::LanguagesBreakdown < Analysis::QueryBase
   end
 
   def map
-    collection.map do
+    collection.map do |fact|
       { id: fact.language_id, nice_name: fact.language_nice_name, name: fact.language_name,
         lines: (fact.code_total + fact.comments_total + fact.blanks_total) }
     end.sort_by { |fact| fact[:lines] }
