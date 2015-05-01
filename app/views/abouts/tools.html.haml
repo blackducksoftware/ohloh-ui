@@ -1,3 +1,6 @@
+- content_for(:html_title) do
+  = t('.openhub_tools')
+
 .col-md-12
   %h1= t('.tools')
   %br
@@ -5,17 +8,17 @@
     .col-md-4
       %h3= link_to t('.compare_projects'), compare_projects_path
       %p= t('.compare_stats')
-      = image_tag 'tools/compare_projects_preview_graph.png', alt: t('.compare_projects')
+      = link_to (image_tag 'tools/compare_projects_preview_graph.png', alt: t('.compare_projects')), compare_projects_path
 
     .col-md-4
       %h3= link_to t('.compare_languages'), compare_languages_path
       %p= t('.compare_languages_stats')
-      = image_tag 'tools/compare_languages_preview_graph.png', alt: t('.compare_languages')
+      = link_to (image_tag 'tools/compare_languages_preview_graph.png', alt: t('.compare_languages')), compare_languages_path
 
     .col-md-4
       %h3= link_to t('.compare_repositories'), compare_repositories_path
       %p= t('.compare_repositories_stats')
-      = image_tag 'tools/compare_repositories_preview_graph.png', alt: t('.compare_repositories')
+      = link_to (image_tag 'tools/compare_repositories_preview_graph.png', alt: t('.compare_repositories')), compare_repositories_path
 
   .row
     %p &nbsp;

@@ -3,6 +3,7 @@ en:
     markdown_syntax:
       page_title: "Markdown Syntax - Open Hub"
     tools:
+      openhub_tools: 'Tools About - Open Hub'
       tools: 'Tools'
       compare_projects: 'Compare Projects'
       compare_stats: 'Compare project statistics, including activity, codebase, contributors, and more in either a graphical or side-by-side view.'
