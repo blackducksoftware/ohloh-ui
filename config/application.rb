@@ -24,5 +24,8 @@ module OhlohUi
 
     matches = /([0-9\.]+)/.match(`passenger -v 2>&1`)
     config.passenger_version = matches ? matches[0] : '???'
+
+    config.cache_store = :redis_store, { host: ENV['REDIS_HOST'], port: ENV['REDIS_PORT'],
+                                         namespace: ENV['REDIS_NAMESPACE'] }
   end
 end
