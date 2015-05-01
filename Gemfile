@@ -29,6 +29,7 @@ gem 'therubyracer'
 gem 'turbolinks'
 gem 'twitter-bootstrap-rails'
 gem 'uglifier'
+gem 'version'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 
