@@ -16,5 +16,15 @@ FactoryGirl.define do
       instance.update_attributes(previous_twelve_month_summary: prev)
       instance.update_attributes(all_time_summary: create(:all_time_summary, analysis: instance))
     end
+
+    factory :analysis_with_multiple_activity_facts do
+      transient do
+        activity_facts_count 3
+      end
+
+      after(:create) do |analysis, evaluator|
+        create_list(:activity_fact, evaluator.activity_facts_count, analysis: analysis)
+      end
+    end
   end
 end

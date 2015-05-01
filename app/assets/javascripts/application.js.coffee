@@ -19,10 +19,11 @@
 #= require app
 #= require_tree .
 #= require twitter/bootstrap
-#= require highcharts/highstock
-#= require highcharts/highcharts.more
-#= require highcharts/solid-guage.min
 #= require d3.min
+#= require highcharts/highstock
+#= require highcharts/highcharts-more
+#= require highcharts/solid-gauge
+#= require highcharts/highcharts
 
 $(document).on 'page:change', ->
   Edit.init()

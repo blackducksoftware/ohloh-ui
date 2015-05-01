@@ -1,0 +1,5 @@
+en:
+  people:
+    unclaimed_person:
+      claim_these_contributions: 'Claim These Contributions'
+      and_more: "and %{length} more..."

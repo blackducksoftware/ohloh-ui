@@ -95,7 +95,7 @@ module ProjectsHelper
 
   def project_twitter_description_analysis(project, analysis)
     content = ''
-    content += project.description.truncate(80).concat(', ')
+    content += project.description.to_s.truncate(80).concat(', ')
     content += "#{number_with_delimiter analysis.code_total} lines of code"
     content += " from #{number_with_delimiter analysis.committers_all_time} contributors"
     content + ", #{project_activity_text(project, true)}, #{project.user_count} users"

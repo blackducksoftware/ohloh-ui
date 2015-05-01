@@ -122,7 +122,6 @@ Rails.application.routes.draw do
   resources :topics, except: [:index, :new, :create] do
     resources :posts, except: [:new]
   end
-  get 'move_topic/:id', to: 'topics#move_topic', as: :move_topic
 
   resources :posts, only: :index, as: 'all_posts'
   get 'markdown_syntax', to: 'abouts#markdown_syntax'
@@ -132,6 +131,7 @@ Rails.application.routes.draw do
   get 'explore/projects', to: 'explore#projects', as: :explore_projects
   get 'p/compare', to: 'compare#projects', as: :compare_projects
   get 'p/graph', to: 'compare#projects_graph', as: :compare_graph_projects
+
   resources :projects, path: :p, except: [:destroy] do
     member do
       get :users
@@ -166,7 +166,7 @@ Rails.application.routes.draw do
         get :status
       end
     end
-    resources :duplicates
+    resources :duplicates, only: [:new, :create, :edit, :update, :destroy]
     resource :logos, only: [:new, :create, :destroy]
     resources :links, except: :show
     resources :managers, only: [:index, :new, :create, :edit, :update] do
@@ -202,17 +202,23 @@ Rails.application.routes.draw do
       collection { get :summary }
       resources :helpfuls, only: :create
     end
-    resources :analyses, only: :index do
-      resources :activity_facts, only: :index
+    resources :analyses, only: [:index, :show] do
       member do
         get :languages_summary
-        get :codehistory
-        get :commitshistory
-        get :committerhistory
-        get :commits_spark
         get :languages
+        get :licenses
         get :top_commit_volume_chart
+        get :commits_history
+        get :committer_history
+        get :contributor_summary
+        get :language_history
+        get :code_history
+        get :lines_of_code
+        get :commits_spark
       end
+
+      resources :activity_facts, only: :index
+      resources :size_facts, only: :index
     end
     resources :commits, only: [:index, :show] do
       collection { get :summary }
@@ -304,6 +310,13 @@ Rails.application.routes.draw do
 
   get 'repositories/compare' => 'compare_repositories#index', as: :compare_repositories
   get 'repositories/chart' => 'compare_repositories#chart', as: :compare_repositories_chart
+
+  resources :committers, only: [:index, :show] do
+    member do
+      post :claim
+      post :save_claim
+    end
+  end
 
   # The priority is based upon order of creation: first created -> highest
   # priority.

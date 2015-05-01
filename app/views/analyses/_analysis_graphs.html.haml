@@ -1,0 +1,27 @@
+- if analysis.present?
+  :ruby
+    code_chart = code_history_project_analysis_url(project_id: project.to_param, id: 'latest')
+    language_chart = language_history_project_analysis_url(project_id: project.to_param, id: 'latest')
+    show_chart, reason = analysis.decorate.display_chart?
+
+  .row
+    - if show_chart
+      .col-md-12.no_margin_left
+        .col-md-12
+          %h4= t('.code_comments_blanks')
+          .chart#code_analysis_chart{ 'datasrc' => code_chart, style: 'height: 340px' }
+        .col-md-12
+          %br
+          %br
+          %h4= t('.loc')
+          .chart#language_analysis_chart{ 'datasrc' => language_chart, style: 'height: 340px' }
+    - else
+      .code_analysis_error
+        - if reason == :no_understood_lang
+          %p.no_lang= t('.no_lang')
+        - if reason == :no_commits
+          %p.no_commits= t('.no_commits')
+
+- else
+  %p= t('.must_analyze')
+  %p= link_to t('.add_new'), new_project_enlistment_path(project) if project.enlistments.empty?

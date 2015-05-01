@@ -4,8 +4,6 @@
   = succeed ' : Widgets' do
     = @account.name
 
-= render partial: 'accounts/mini_header'
-
 .clearfix
 .mezzo.project_content_title.margin_bottom_10
   %h2= t('.widgets')
@@ -17,5 +15,3 @@
   = render partial: 'widget', collection: @widgets
 
   %p.soft= t('.asks')
-
-.mezzo.margin_top_15

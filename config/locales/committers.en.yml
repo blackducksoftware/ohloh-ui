@@ -1,0 +1,32 @@
+en:
+  committers:
+    error: 'Valid committer required'
+    save_claim:
+      success: 'Contributions claimed successfully'
+      notice: "Are any of these ID's yours? We found additional committer IDs that might be yours based on the email addresses associated with your claimed IDs"
+    position:
+      your_role: "Your role on %{name}"
+      description: 'Description'
+    unclaimed_title:
+      commit: 'commit'
+    claim:
+      meta_name: 'ROBOTS'
+      meta_content: 'NOINDEX, NOFOLLOW'
+      title: "%{current_user}Claim Contributions - Open Hub"
+      people: 'People'
+      heading: 'Claim Contributions'
+      unclaimed_committer_ids: "Unclaimed Committer ID's"
+      claim: ': Claim'
+      nothing_to_claim: 'Nothing to claim'
+      save_claim: 'Save Claim'
+    index:
+      title: "%{name}Unclaimed Committer ID's - Open Hub"
+      people: 'People'
+      heading: "Unclaimed Committer ID's"
+      see_all_committers: "See All Unclaimed Committer ID's"
+      no_committer: 'No unclaimed committers'
+      remaining_committers_count: "Plus %{remaining} unshown committer ID's. Please refine your search."
+    show:
+      title: "%{current_user}Unclaimed Committer ID's : %{name}"
+      people: 'People'
+      heading: "Unclaimed Committer ID's"

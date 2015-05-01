@@ -237,7 +237,7 @@ describe 'PositionsController' do
     it 'must display the pips' do
       desc = 'Level 3 Describer: edits project descriptions'
       badges = [OpenStruct.new(level: 3, description: desc, levels?: true, level_bits: '0011')]
-      Account.any_instance.expects(:badges).twice.returns(badges)
+      Account.any_instance.expects(:badges).returns(badges)
 
       get :index, account_id: account.to_param
       must_select 'div.mini-badges-section a.account-badge div.pips.pip-0011'
@@ -248,7 +248,7 @@ describe 'PositionsController' do
     it 'must not display the pips' do
       desc = 'Level 3 Describer: edits project descriptions'
       badges = [OpenStruct.new(level: 3, description: desc, levels?: false, level_bits: '0011')]
-      Account.any_instance.expects(:badges).twice.returns(badges)
+      Account.any_instance.expects(:badges).returns(badges)
 
       get :index, account_id: account.to_param
       must_select 'div.mini-badges-section a.account-badge div.pips.pip-0011', false

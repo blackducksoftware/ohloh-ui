@@ -1,7 +1,7 @@
 class Review < ActiveRecord::Base
   belongs_to :account
   belongs_to :project
-  has_many :helpfuls
+  has_many :helpfuls, dependent: :destroy
 
   validates :title, presence: true
   validates :account_id, presence: true
