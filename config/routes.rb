@@ -311,4 +311,11 @@ Rails.application.routes.draw do
   get 'maintenance' => 'home#maintenance'
 
   get 'server_info' => 'home#server_info'
+
+  resources :committers, only: [:index, :show] do
+    member do
+      post :claim
+      post :save_claim
+    end
+  end
 end

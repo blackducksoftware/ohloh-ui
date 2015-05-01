@@ -1,0 +1,29 @@
+:ruby
+  name = people.first.name.name
+  from_show_page ||= false
+  unclaimed_people = people if from_show_page
+  unclaimed_people ||= people.length > 12 ? people.first(11) : people
+
+= form_tag(claim_committer_path(name_id), method: :post) do
+  .well.col-md-12.unclaimed_committers_box
+    .header_row
+      .pull-left
+        %h4.no_margin_bottom
+          = from_show_page ? name : link_to(truncate(name, length: 70), committer_path(name_id))
+      .pull-right
+        = submit_tag t('.claim_these_contributions'), class: 'btn btn-mini btn-primary'
+    .clearfix
+
+    .entire_commits_container
+      - unclaimed_people.each do |unclaimed_person|
+        - project = unclaimed_person.project
+        .inner
+          .single_container
+            .group
+              = render 'committers/unclaimed_tile', project: project, name_fact: unclaimed_person.name_fact
+              %input.hidden{ type: 'checkbox', name: 'project_ids[]', value: project.id, checked: 'checked' }
+      - if people.length > 12 && !from_show_page
+        .inner.more
+          .single_container.show_more
+            %span
+              = link_to t('.and_more', length: people.length - 11), committer_path(name_id)

@@ -49,9 +49,8 @@ class Person < ActiveRecord::Base
     def find_unclaimed(opts = {})
       limit = opts.fetch(:per_page, 10)
 
-      people = includes([:project, :name, name_fact: :primary_language])
+      people = includes([[project: [[best_analysis: :main_language], :logo]], :name, name_fact: :primary_language])
                .where(name_id: limit(limit).unclaimed_people(opts))
-               .references(:all)
 
       group_and_sort_by_kudo_positions_or_effective_name(people)
     end
@@ -67,7 +66,7 @@ class Person < ActiveRecord::Base
         .find_by_name_or_email(opts)
         .group([:name_id, :effective_name])
         .reorder('MIN(COALESCE(kudo_position,999999999)), lower(effective_name)')
-        .pluck(:name_id)
+        .select(:name_id)
     end
 
     def find_by_name_or_email(opts)
