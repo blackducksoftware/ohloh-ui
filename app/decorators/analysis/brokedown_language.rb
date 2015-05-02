@@ -2,7 +2,7 @@ class Analysis::BrokedownLanguage
   include ColorsHelper
 
   def initialize(options)
-    options.each { |key, value| instance_variable_set("@#{key.to_s}", value) }
+    options.each { |key, value| instance_variable_set("@#{key}", value) }
   end
 
   def percentage

@@ -3,7 +3,7 @@
   positive_commits_diff = commits_diff > 0
   commits_count = summary.commits_count
 
-- if previous_twelve_month_summary.data?
+- if summary.data?
   %span.commits_ticker
     %span
       = positive_commits_diff ? t(:up) : t(:down)

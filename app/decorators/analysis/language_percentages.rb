@@ -9,11 +9,10 @@ class Analysis::LanguagePercentages
   end
 
   def collection
-    data = high_percentage_languages_info
     if low_percentage_languages_info.empty?
-      data += combined_low_percentage_languages_info
+      high_percentage_languages_info + combined_low_percentage_languages_info
     else
-      data += [@last_language.info(insignificant_languages_percentage)]
+      high_percentage_languages_info << @last_language.info(insignificant_languages_percentage)
     end
   end
 
@@ -34,13 +33,13 @@ class Analysis::LanguagePercentages
   end
 
   def insignificant_languages_percentage
-    significant_lanaguages_percentage = high_percentage_languages_info.map(&:last).sum { |detail| detail[:percentage] }
+    significant_lanaguages_percentage = high_percentage_languages_info.map(&:last).sum { |detail| detail[:percent] }
     @ingsignificant_pecentages ||= TOTAL_PERCENTAGE - significant_lanaguages_percentage
   end
 
   def create_broken_down_languages
-    @languages = @languages_breakdown.map do |language_hash|
-      Analysis::BrokedownLanguage.new language_hash.merge(total_lines: @total_lines)
+    @languages = @languages_breakdown.each_with_object([]) do |language_hash, array|
+      array << Analysis::BrokedownLanguage.new(language_hash.merge(total_lines: @total_lines, index: array.size))
     end
     @last_language = @languages.pop
   end

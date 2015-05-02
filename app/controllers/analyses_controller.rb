@@ -17,8 +17,8 @@ class AnalysesController < ApplicationController
   end
 
   def languages
-    chart_data = Analysis::LanguagePercentages.new(@analysis).collection.map { |_, name, value| [name, value] }
-    pie_chart = Chart::Pie.new(chart_data, width: params[:width].to_i, height: params[:height].to_i).render
+    chart_data = Analysis::LanguagePercentages.new(@analysis).collection.map(&:last)
+    pie_chart = Chart::Pie.new(chart_data).render
     send_data pie_chart, disposition: 'inline', type: 'image/png'
   end
 

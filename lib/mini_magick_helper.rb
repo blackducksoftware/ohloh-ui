@@ -12,4 +12,3 @@ module MiniMagickHelper
     image
   end
 end
-
