@@ -9,38 +9,32 @@ class Analysis::LanguagePercentages
   end
 
   def collection
-    if low_percentage_languages_info.empty?
-      high_percentage_languages_info + combined_low_percentage_languages_info
-    else
-      high_percentage_languages_info << @last_language.info(insignificant_languages_percentage)
+    result = []
+    @languages.each_with_index do |language, index|
+      if (language.low_percentage? || index > 2) && index < (@languages.size - 1)
+        result << combined_low_percentages_info(index)
+        break
+      end
+      result << language.info
     end
+    result
   end
 
   private
 
-  def high_percentage_languages_info
-    @high_pecentages ||= @languages.select(&:high_precentage?).map(&:info)
-  end
-
-  def low_percentage_languages_info
-    @low_pecentages ||= @languages.select(&:low_percentage?).map(&:brief_info)
-  end
-
-  def combined_low_percentage_languages_info
-    others_info = low_percentage_languages_info + [last_language.brief_info]
-    others_count = "#{low_percentage_languages_info.size} Other"
-    [nil, others_count, { percent: insignificant_languages_percentage, composed_of: others_info, color: '000000' }]
-  end
-
-  def insignificant_languages_percentage
-    significant_lanaguages_percentage = high_percentage_languages_info.map(&:last).sum { |detail| detail[:percent] }
-    @ingsignificant_pecentages ||= TOTAL_PERCENTAGE - significant_lanaguages_percentage
-  end
-
   def create_broken_down_languages
     @languages = @languages_breakdown.each_with_object([]) do |language_hash, array|
-      array << Analysis::BrokedownLanguage.new(language_hash.merge(total_lines: @total_lines, index: array.size))
+      array << Analysis::BrokedownLanguage.new(language_hash.merge(total_lines: @total_lines))
     end
-    @last_language = @languages.pop
+  end
+
+  def combined_low_percentages_info(index)
+    others_info = @languages[index..-1].map(&:brief_info)
+    percentage = remaining_percentage(index)
+    [nil, "#{others_info.size} Other", { percent: percentage, composed_of: others_info, color: '000000' }]
+  end
+
+  def remaining_percentage(index)
+    @left_over_percentage ||= TOTAL_PERCENTAGE - @languages[0...index].sum(&:percentage)
   end
 end

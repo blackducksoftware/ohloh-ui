@@ -4,10 +4,10 @@ class Chart::Pie
   BORDER = 1
   SWEEP_POSITIVE = 1
 
-  def initialize(data, width = 120, height = 120)
+  def initialize(data, width, height)
     @data = data
-    @width = width
-    @height = height
+    @width = (width || 120).to_i
+    @height = (height || 120).to_i
     @radius = @width / 2 - BORDER
     @half_height = @height / 2
     @half_width = @width / 2
@@ -31,12 +31,17 @@ class Chart::Pie
     start_angle = 0.0
     @data.each do |language|
       convert.fill "##{language[:color]}"
-      degrees = language[:percent].to_f / 100 * 360.0
+      degrees = language_degrees(language[:percent])
       next if degrees == 0
       end_angle = start_angle + degrees
       convert.draw wedge(start_angle, end_angle)
       start_angle = end_angle
     end
+  end
+
+  def language_degrees(percentage)
+    degrees = percentage.to_f / 100 * 360.0
+    degrees >= 360.0 ? 359.9999 : degrees
   end
 
   def rad_from_degree(degree)

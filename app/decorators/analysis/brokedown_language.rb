@@ -10,11 +10,7 @@ class Analysis::BrokedownLanguage
   end
 
   def low_percentage?
-    percentage < 5 || @index > 2
-  end
-
-  def high_precentage?
-    percentage > 5 || @index == 1
+    percentage < 5
   end
 
   def info(percentage_value = percentage)

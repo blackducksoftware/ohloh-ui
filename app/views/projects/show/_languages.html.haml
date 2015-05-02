@@ -1,10 +1,13 @@
+:ruby
+  languages_image_options = { project_id: @project.to_param, id: 'latest', height: 75, width: 75 }
+
 - if @analysis
   - if @analysis.empty?
     = t('.no_source')
   - else
     %h4= link_to t('.languages'), languages_summary_project_analysis_path(@project, id: 'latest')
     .pull-left{ style: 'padding-right: 10px;' }
-      %img{ src: "/p/#{@project.to_param}/analyses/latest/languages.png?height=75&width=75" }
+      = image_tag languages_project_analysis_url(languages_image_options)
 
     %table.table.table-striped.unstyled.pull-left{ style: 'width: 300px;' }
       - Analysis::LanguagePercentages.new(@analysis).collection.each do |id, name, attr|

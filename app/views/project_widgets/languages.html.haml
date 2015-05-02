@@ -2,9 +2,7 @@
   widget ||= @widget
   project = widget.project
   analysis = project.best_analysis
-  language_percentages = Analysis::LanguagePercentages.new(@analysis).collection
-  # use below image instead of sample_graph image
-  # languages_project_analysis_url(format: 'gif', project_id: project.to_param, id: 'latest', width: 120, height: 120)
+  language_percentages = Analysis::LanguagePercentages.new(analysis).collection
 
 = render partial: 'languages_css'
 
@@ -13,7 +11,7 @@
   - if analysis
     - colors = language_percentages.map { |_, _, attr| attr[:color] }
     .analysis
-      = image_tag 'sample_graph.png', width: 120, height: 120
+      = image_tag languages_project_analysis_url(project_id: project.to_param, id: 'latest')
     %div
       %table{ width: '155px', cellpadding: '0', cellspacing: '0' }
         - language_percentages.each do |_, name, attr|

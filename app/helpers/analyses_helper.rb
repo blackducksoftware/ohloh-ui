@@ -35,6 +35,6 @@ module AnalysesHelper
 
   def analysis_calculate_percentage(language_breakdown, total_lines)
     return 0 if total_lines.to_i <= 0
-    ((analysis_calculate_sum_for(language_breakdown) / total_lines.to_f) * 100).round
+    ((analysis_calculate_sum_for(language_breakdown) / total_lines.to_f) * 100)
   end
 end

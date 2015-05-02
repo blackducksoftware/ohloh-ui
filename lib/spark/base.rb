@@ -1,4 +1,6 @@
 class Spark::Base
+  include MiniMagickHelper
+
   IMAGE_DIR = Rails.root.join('app/assets/images/')
 
   def initialize(data, options = {})
@@ -46,18 +48,5 @@ class Spark::Base
 
   def draw_rectangle_bar(commits_count, index)
     "rectangle #{x1_axis_value(index)}, #{y1_axis_value(commits_count)} #{x2_axis_value(index)}, #{y2_axis_value}"
-  end
-
-  def new_image
-    tempfile = Tempfile.new(['image-base-', '.png'])
-
-    MiniMagick::Tool::Convert.new do |convert|
-      yield convert
-      convert << tempfile.path
-    end
-
-    image = MiniMagick::Image.open(tempfile.path)
-    tempfile.close
-    image
   end
 end

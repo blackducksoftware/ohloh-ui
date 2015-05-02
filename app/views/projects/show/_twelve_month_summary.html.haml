@@ -7,14 +7,14 @@
       commits = @analysis.twelve_month_summary.commits_count
       committers = @analysis.twelve_month_summary.committer_count
       summary = @analysis.previous_twelve_month_summary
-      young_analysis = Time.parse(@analysis.min_month.to_s) >= 12.months.ago
+      ticker_options = { summary: summary, young_analysis: Time.parse(@analysis.min_month.to_s) >= 12.months.ago }
 
     %li
       %big= commits
       = link_to t('.commits'), project_commits_path(@project, time_span: '12 months')
       .small{ style: 'padding-left: 22px;' }
         - if summary
-          = render partial: 'projects/show/twelve_month_ticker', locals: { summary: summary, young_analysis: young_analysis }
+          = render partial: 'projects/show/twelve_month_ticker', locals: ticker_options
         - elsif has_old_data
           = t('.must_reanalyize')
         - else
@@ -24,7 +24,7 @@
       = link_to t('.contributors'), project_contributors_path(@project, time_span: '12 months', sort: 'latest_commit')
       .small{ style: 'padding-left: 22px;' }
         - if summary
-          = render partial: 'projects/show/twelve_month_ticker', locals: { summary: summary, young_analysis: young_analysis }
+          = render partial: 'projects/show/twelve_month_ticker', locals: ticker_options
         - elsif has_old_data
           = t('.must_reanalyize')
         - else
