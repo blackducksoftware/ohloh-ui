@@ -2,7 +2,6 @@ class ProjectsController < ApplicationController
   [AnalysesHelper, FactoidsHelper, MapHelper, RatingsHelper, RepositoriesHelper, TagsHelper].each { |help| helper help }
 
   before_action :session_required, only: [:check_forge, :create, :new, :update]
-  before_action :api_key_lock, only: [:index]
   before_action :find_account
   before_action :find_projects, only: [:index]
   before_action :find_project, only: [:show, :edit, :update, :estimated_cost, :users, :settings, :map, :similar_by_tags]
@@ -59,13 +58,6 @@ class ProjectsController < ApplicationController
   end
 
   private
-
-  # TODO: this really belongs in app_controller, but that file is too big currently
-  def api_key_lock
-    return unless request_format == 'xml'
-    api_key = ApiKey.in_good_standing.where(key: params[:api_key]).first
-    render_unauthorized unless api_key && api_key.may_i_have_another?
-  end
 
   def find_account
     @account = Account.from_param(params[:account_id]).take
