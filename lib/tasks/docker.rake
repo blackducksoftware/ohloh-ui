@@ -29,4 +29,14 @@ namespace :docker do
   task :open do
     system 'open http://$(boot2docker ip 2>/dev/null):7070/server_info'
   end
+
+  desc 'Tag, Build, and Push a new version of Ohloh-UI'
+  task :tag do
+    internal_registry = "coreos.blackducksoftware.com:5000"
+    Rake::Task['version:bump'].invoke
+    system 'git push'
+    Rake::Task['docker:build'].invoke
+    system "docker tag ohloh-ui:latest #{internal_registry}/ohloh-ui:#{File.open("#{Rails.root}/VERSION").read.gsub("\n", '')}"
+    system "docker push #{internal_registry}/ohloh-ui"
+  end
 end

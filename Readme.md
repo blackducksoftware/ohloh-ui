@@ -23,6 +23,10 @@ brew update
 brew install boot2docker
 boot2docker init
 boot2docker up
+boot2docker ssh
+echo 'EXTRA_ARGS="--insecure-registry coreos.blackducksoftware.com:5000"' | sudo tee -a /var/lib/boot2docker/profile
+sudo /etc/init.d/docker restart
+exit
 eval "$(boot2docker shellinit)"
 ```
 Build the application:
@@ -33,7 +37,12 @@ rake docker:build
 rake docker:run
 rake docker:status
 rake docker:open
+rake docker:tag
 ```
+
+To see which builds are available for running, look here:
+
+http://coreos.blackducksoftware.com:5000/v1/repositories/ohloh-ui/tags
 
 Pull Request Poller:
 --------------------

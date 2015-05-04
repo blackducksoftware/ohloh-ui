@@ -14,6 +14,8 @@ RUN bundle install --deployment
 
 ADD . /home/app/webapp
 
+RUN rake assets:precompile RAILS_ENV=production
+
 CMD ["/sbin/my_init"]
 EXPOSE 80
 
