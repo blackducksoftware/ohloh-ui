@@ -6,14 +6,22 @@
   account_api_keys_link = link_to(t(:api_keys_title), account_api_keys_url(@account))
 %h2! #{settings_link} : #{account_api_keys_link} : #{@meta_title}
 
-= form_for(@api_key, as: :api_key, url: url, html: { method: http_method, id: 'api_key_form' }) do |f|
+= form_for [@account, @api_key] do |f|
   .col-md-11.center-block.well
     %fieldset
-      .control-group
-        %label.control-label.required= t 'api_keys.form.application_name'
-        .controls
-          = f.text_field :name, max_length: 50, class: 'col-md-7'
-          - error_tag @api_key, :name
+      - @api_key.oauth_application || @api_key.build_oauth_application
+      = f.fields_for :oauth_application do |ff|
+        .control-group
+          %label.control-label.required= t 'api_keys.form.application_name'
+          .controls
+            = ff.text_field :name, max_length: 50, class: 'col-md-7'
+            - error_tag @api_key.oauth_application, :name
+
+        .control-group
+          %label.control-label.required= t 'api_keys.redirect_uri'
+          .controls
+            = ff.text_field :redirect_uri, max_length: 50, class: 'col-md-7'
+            - error_tag @api_key.oauth_application, :redirect_uri
 
       .control-group
         %label.control-label= t 'api_keys.form.home_page_url'

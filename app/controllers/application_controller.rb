@@ -150,8 +150,14 @@ class ApplicationController < ActionController::Base
   def verify_api_access_for_xml_request
     return unless request_format == 'xml'
 
-    api_key = ApiKey.in_good_standing.find_by(key: params[:api_key])
-    render_unauthorized unless api_key && api_key.may_i_have_another?
+    client_id = params[:api_key] || doorkeeper_token.try(:application).try(:uid)
+    api_key = ApiKey.in_good_standing.find_by_oauth_application_uid(client_id)
+
+    if api_key.try(:may_i_have_another?)
+      doorkeeper_authorize! if doorkeeper_token
+    else
+      render_unauthorized
+    end
   end
 
   def strip_query_param
