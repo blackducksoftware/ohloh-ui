@@ -44,7 +44,7 @@ class ProjectLicensesController < ApplicationController
   end
 
   def find_project
-    @project = Project.from_param(params[:project_id]).take
+    @project = Project.from_param(params[:id]).take
     fail ParamRecordNotFound unless @project
     @project.editor_account = current_user
   end

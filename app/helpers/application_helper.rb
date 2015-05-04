@@ -112,6 +112,14 @@ module ApplicationHelper
     return 'highlight' if actual_time >= base_time
   end
 
+  def strip_tags_and_escaped_html(string)
+    ActionView::Base.full_sanitizer.sanitize(string)
+  end
+
+  def needs_login
+    logged_in? ? '' : 'needs_login'
+  end
+
   private
 
   def render_expander(text, l)

@@ -158,7 +158,7 @@ Rails.application.routes.draw do
         get :commits_spark
       end
     end
-
+    resources :rss_subscriptions
     resources :licenses, controller: :project_licenses, only: [:index, :new, :create, :destroy]
     resources :tags, controller: :project_tags, only: [:index, :create, :destroy] do
       collection do

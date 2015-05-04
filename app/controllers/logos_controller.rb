@@ -48,9 +48,9 @@ class LogosController < SettingsController
 
   def set_project_or_organization
     @project_or_organization = if params[:project_id]
-                                 @project = Project.find(params[:project_id])
+                                 @project = Project.from_param(params[:project_id]).take
                                elsif params[:organization_id]
-                                 @organization = Organization.find(params[:organization_id])
+                                 @organization = Organization.from_param(params[:organization_id]).take
                                end
     @project_or_organization.editor_account = current_user
   end
