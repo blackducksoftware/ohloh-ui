@@ -39,11 +39,7 @@ class PageContextHelperTest < ActionView::TestCase
   end
 
   let(:tool_menus) do
-    { select_footer_nav: :account_summary,
-      select_top_menu_nav: :select_tools,
-      heading: 'Tools',
-      nav_type: 'sidebar'
-    }
+    { select_top_menu_nav: :select_tools }
   end
 
   it 'should return account page context' do
@@ -79,7 +75,7 @@ class PageContextHelperTest < ActionView::TestCase
 
   it 'should return tools page context' do
     tool_context
-    page_context.delete(:footer_menu_list)
+    page_context.delete(:nav_type)
     page_context.must_equal tool_menus
   end
 end

@@ -1,19 +1,11 @@
 require 'test_helper'
+require 'test_helpers/xml_parsing_helpers'
 
 describe 'ActivityFactsControllerTest' do
   let(:account) { create(:account) }
   let(:analysis) { create(:analysis, min_month: Date.today - 5.months) }
   let(:project) { create(:project) }
   let(:api_key) { create(:api_key, account_id: account.id, daily_limit: 100) }
-
-  def xml_time(date)
-    Time.gm(date.year, date.month, date.day).xmlschema
-  end
-
-  def xml_hash(data)
-    xml = Nokogiri::XML(data)
-    Hash.from_xml(xml.to_s)
-  end
 
   before do
     (1..5).to_a.each do |value|

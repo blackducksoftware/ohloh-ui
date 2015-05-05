@@ -36,7 +36,7 @@ en:
   join_now: 'Join Now'
   api_keys_title: 'API Keys'
   projects_menu: 'Projects'
-  people: 'People'
+  people_menu: 'People'
   organizations_menu: 'Organizations'
   tools: 'Tools'
   code: 'Code'
@@ -55,7 +55,7 @@ en:
   openhub_show: "Open Hub Forum: %{name}"
   openhub: "OpenHub"
   time_ago: "%{time} ago"
-
+  compare_repositories: 'Compare Repositories'
 
   layouts:
     application:

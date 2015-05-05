@@ -1,8 +1,9 @@
 class Analysis < ActiveRecord::Base
+  include Analysis::Report
   AVG_SALARY = 55_000
   EARLIEST_DATE = Time.utc(1971, 1, 1)
+  EARLIEST_DATE_SQL_STRING = "TIMESTAMP '#{EARLIEST_DATE.strftime('%Y-%m-%d')}'"
 
-  belongs_to :project
   has_one :all_time_summary
   has_one :thirty_day_summary
   has_one :twelve_month_summary
@@ -12,12 +13,17 @@ class Analysis < ActiveRecord::Base
   has_many :contributor_facts, class_name: 'ContributorFact'
   has_many :analysis_sloc_sets, dependent: :delete_all
   has_many :named_commits
-  belongs_to :main_language, class_name: 'Language', foreign_key: :main_language_id
   has_many :factoids, -> { order('severity DESC') }, dependent: :delete_all
+  has_many :activity_facts, dependent: :delete_all
+
+  belongs_to :project
+  belongs_to :main_language, class_name: 'Language', foreign_key: :main_language_id
 
   scope :fresh, -> { where(Analysis.arel_table[:created_at].gt(Time.now - 2.days)) }
   scope :hot, -> { where.not(hotness_score: nil).order(hotness_score: :desc) }
   scope :for_lang, ->(lang_id) { where(main_language_id: lang_id) }
+
+  attr_accessor :ticks
 
   def twelve_month_summary
     super || NilAnalysisSummary.new

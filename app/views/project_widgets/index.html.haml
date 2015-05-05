@@ -3,7 +3,7 @@
 
 - page_context[:select_footer_nav] = :widgets
 
-.project_content_title.margin_bottom_10
+.project_content_title.margin_bottom_10{ style: 'height: 100%' }
   %h2= t('.widgets')
   %p
     = t('.embed')
@@ -11,5 +11,3 @@
     - @widgets.each do |widget|
       .project_widget_container
         = render partial: 'widget', locals: { widget: widget, type: 'project', ref: 'sample' }
-
-.mezzo.margin_top_15

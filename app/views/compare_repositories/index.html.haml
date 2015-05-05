@@ -1,0 +1,8 @@
+- content_for(:html_title) { t('compare_repositories') }
+
+.clearfix
+  %h1.pull-left= t('tools')
+
+.compare_repositories.margin_left_10
+  %h3= t('compare_repositories')
+  .chart{ style: 'height:480px', 'datasrc' => compare_repositories_chart_url }
