@@ -1,5 +1,6 @@
 #navbar-inner
   #nav-top-bar
+    / Note: Is this page_context code working?
     %ul.new_main_menu{ class: page_context[:select_top_menu_nav] }
       %li.menu_item.projects
         %a{ href: root_path }= t :projects_menu
@@ -8,7 +9,7 @@
       %li.menu_item.organizations
         %a{ href: root_path }= t :organizations_menu
       %li.menu_item.tools
-        %a{ href: root_path }= t :tools
+        %a.select_tab{ href: root_path }= t :tools
       %li.menu_item.code
         %a{ href: 'http://code.openhub.net', target: '_blank' }
           = t :code
