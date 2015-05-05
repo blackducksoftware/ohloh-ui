@@ -4,6 +4,7 @@
     #page_contents= yield
   .clearfix
   .clearfix.margin_top_15
-  .margin_left_20.margin_right_20
-    .footer-navigation
-      = render partial: 'layouts/partials/navigator'
+  - if page_context[:footer_menu_list]
+    .margin_left_20.margin_right_20
+      .footer-navigation
+        = render 'layouts/partials/navigator'

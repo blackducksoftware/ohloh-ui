@@ -55,7 +55,7 @@ en:
   openhub_show: "Open Hub Forum: %{name}"
   openhub: "OpenHub"
   time_ago: "%{time} ago"
-
+  compare_repositories: 'Compare Repositories'
 
   layouts:
     application:

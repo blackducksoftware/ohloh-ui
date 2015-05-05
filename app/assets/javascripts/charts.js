@@ -124,6 +124,12 @@ var Charts = {
   },
   charts: [],
   init: function() {
+    Highcharts.setOptions({
+      lang: {
+        thousandsSep: ','
+      }
+    })
+
     $('.chart').each(function(){
       var $chart = $(this);
       var options = $chart.data();
