@@ -1,3 +1,6 @@
+# Doorkeeper views do not have access to the rails application helpers.
+# This is used to make the application layout render successfully for a doorkeeper view.
+# Any new helper methods added for application layout will need to be added to this helper too.
 module OauthLayoutHelper
   private
   mattr_reader :generate_page_name, :find_nag_reminder
