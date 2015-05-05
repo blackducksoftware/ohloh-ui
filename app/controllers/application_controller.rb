@@ -3,7 +3,8 @@ class ApplicationController < ActionController::Base
   BOT_REGEX = /\b(Baiduspider|Googlebot|libwww-perl|msnbot|SiteUptime|Slurp)\b/i
 
   include PageContextHelper
-  helper PageContextHelper
+
+  helper MenuHelper
   helper AvatarHelper
   helper ButtonHelper
   helper BlogLinkHelper

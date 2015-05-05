@@ -1,5 +1,6 @@
 module ToolHelper
   # rubocop:disable Metrics/MethodLength
+  # Note: Is this used at all anywhere?
   def tools_sidebar
     [
       [
