@@ -4,6 +4,7 @@ APP_USER_NAME = "deployer"
 APP_USER_ID = 1002
 APP_RAILS_ENV = "vagrant"
 APP_MOUNT_POINT = "/mnt/ohloh-ui"
+APP_RUBY_VERSION = "2.2.2"
 
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/trusty64"
@@ -22,7 +23,8 @@ Vagrant.configure("2") do |config|
       app_user_name: APP_USER_NAME,
       app_user_id: APP_USER_ID,
       app_rails_env: APP_RAILS_ENV,
-      app_mount_point: APP_MOUNT_POINT
+      app_mount_point: APP_MOUNT_POINT,
+      app_ruby_version: APP_RUBY_VERSION
     }
   end
 
