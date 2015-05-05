@@ -28,14 +28,12 @@
               %ul.chosen#email_status{ style: 'padding-left: 25px' }
                 %li.margin_bottom_13
                   %span= t('.please')
-                  = f.select :email_kudos, [['include', true], ['exclude', false]],
-                    style: 'margin-top: 8px; width: 80px'
+                  = f.select :email_kudos, [['include', true], ['exclude', false]], {}, class: 'select_box'
                   %span= t('.notices_ive_received')
                   %br
                 %li{ style: 'width: 370px' }
                   %span= t('.please')
-                  = f.select :email_posts, [['include', true], ['exclude', false]],
-                    style: 'margin-top: 8px; width: 80px'
+                  = f.select :email_posts, [['include', true], ['exclude', false]], {}, class: 'select_box'
                   %span= t('.replies_to_forum_topics')
               %br
               %p= t('.never_ask_for_personal_email')

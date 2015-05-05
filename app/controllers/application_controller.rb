@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
 
   include PageContextHelper
 
-  helper MenuHelper
+  helper PageContextHelper
   helper AvatarHelper
   helper ButtonHelper
   helper BlogLinkHelper
