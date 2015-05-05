@@ -14,7 +14,7 @@ class Chart::Pie
   end
 
   def render
-    image = new_image do |convert|
+    new_image do |convert|
       convert.size "#{@width}x#{@height}"
       convert << 'xc:white'
       convert.stroke 'black'
@@ -22,7 +22,6 @@ class Chart::Pie
       convert.format 'PNG8'
       draw_chart(convert)
     end
-    image.to_blob
   end
 
   private
