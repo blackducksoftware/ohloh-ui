@@ -1,0 +1,13 @@
+- content_for(:html_title) { t('.title') }
+
+#license
+  %h1.margin_bottom_20
+    = link_to t('.licenses'), licenses_path
+    &nbsp;:
+    = t('.new_license')
+
+  .col-md-10
+    .well
+      = form_for @license do |f|
+        %fieldset
+          = render 'fields', f: f

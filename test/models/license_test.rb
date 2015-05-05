@@ -58,4 +58,77 @@ class LicenseTest < ActiveSupport::TestCase
       License.from_param(license.name).first.id.must_equal license.id
     end
   end
+
+  describe 'name' do
+    it 'should validate uniqueness' do
+      license_1 = create(:license)
+      license_2 = build(:license, name: license_1.name)
+      license_2.valid?.must_equal false
+      license_2.errors.count.must_equal 2
+      license_2.errors[:name].must_equal ['has already been taken']
+    end
+
+    it 'should validate length' do
+      license = build(:license, name: 'a')
+      license.valid?.must_equal false
+      license.errors.count.must_equal 2
+      license.errors[:name].must_equal ['is too short (minimum is 2 characters)']
+    end
+
+    it 'should validate format' do
+      license = build(:license, name: '1a')
+      license.valid?.must_equal false
+      license.errors.count.must_equal 2
+      license.errors[:name].must_equal ['should start with a letter and can include only letters, numbers, _ and -']
+    end
+  end
+
+  describe 'nice_name' do
+    it 'should validate uniqueness' do
+      license_1 = create(:license)
+      license = build(:license, nice_name: license_1.nice_name)
+      license.valid?.must_equal false
+      license.errors.count.must_equal 2
+      license.errors[:nice_name].must_equal ['has already been taken']
+    end
+
+    it 'should validate length' do
+      license = build(:license, nice_name: '')
+      license.valid?.must_equal false
+      license.errors.count.must_equal 2
+      license.errors[:nice_name].must_equal ['is too short (minimum is 1 character)']
+    end
+  end
+
+  describe 'abbreviation' do
+    it 'should validate length' do
+      license = build(:license, abbreviation: Faker::Lorem.characters(102))
+      license.valid?.must_equal false
+      license.errors.count.must_equal 2
+      license.errors[:abbreviation].must_equal ['is too long (maximum is 100 characters)']
+    end
+
+    it 'should allow nil' do
+      license = build(:license, abbreviation: nil, editor_account: create(:account))
+      license.valid?.must_equal true
+    end
+  end
+
+  describe 'description' do
+    it 'should validate length' do
+      license = build(:license, description: Faker::Lorem.characters(50_001))
+      license.valid?.must_equal false
+      license.errors.count.must_equal 2
+      license.errors[:description].must_equal ['is too long (maximum is 50000 characters)']
+    end
+  end
+
+  describe 'url' do
+    it 'should validate url' do
+      license = build(:license, url: 'invalid url')
+      license.valid?.must_equal false
+      license.errors.count.must_equal 2
+      license.errors[:url].must_equal ['Invalid URL Format']
+    end
+  end
 end

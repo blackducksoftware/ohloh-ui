@@ -58,7 +58,7 @@ en:
       help_2: "You have the option to undo any of the settings and changes you've made to the site, if you have necessary permissions. For projects, you will have permission if a project is not locked so only managers may change settings, or if you are a manager of a locked project. For organizations, you will have permission if you are a manager of the organization."
       help_3: "To undo a change, click the \"Undo\" button next to that change. This reverts the settings effected by that change to their previous state. The edit will stay in the list, with an indication of who and when it was undone and a \"Redo\" button, should you decide to change back to the updated state."
     index_license:
-      page_title: "License Edit History"
+      page_title: "License Edit History - Open Hub"
       licenses: "Licenses"
       openhub_edit_history: "License Edit History"
     update:

@@ -45,4 +45,19 @@ describe 'CheckAvailabilitiesController' do
       response.body.must_equal 'false'
     end
   end
+
+  describe 'license' do
+    it 'should return true when license is present' do
+      create(:license, name: 'Mario')
+      xhr :get, :license, query: 'maRio'
+
+      response.body.must_equal 'true'
+    end
+
+    it 'should return false when license is not present' do
+      xhr :get, :license, query: 'test'
+
+      response.body.must_equal 'false'
+    end
+  end
 end

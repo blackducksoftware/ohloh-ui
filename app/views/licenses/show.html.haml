@@ -1,0 +1,32 @@
+- content_for(:html_title) { t('.title', name: @license.nice_name) }
+
+#license
+  %h1.col-md-9.no_padding_left
+    = link_to t('.license'), licenses_path
+    &nbsp;:
+    = link_to truncate(@license.nice_name, length: 42), license_url(@license), title: @license.nice_name
+
+  .pull-right.licenses_button_groups.margin_top_10
+    - if current_user_is_admin? || !@license.locked
+      = link_to t('.edit_license'), edit_license_path(@license),
+        class: "btn btn-info btn-mini #{'needs_login' unless logged_in?}"
+
+    = link_to t('.view_history'), license_edits_path(@license), class: 'btn btn-info btn-mini'
+    .margin_top_5
+      = icon_button(@license.url, icon: 'external-link', text: t('.home_page'), size: 'mini',
+        type: 'info', target: '_blank', style: 'width: 166px')
+
+.clearfix
+
+- if @license.description.blank?
+  %p= link_to t('.provide_license'), edit_license_path(@license)
+
+- else
+  .margin_top_20
+  %p!= @license.description.to_s.gsub(/\n/, '<br/>')
+
+- if @license.url.present?
+  %p
+    = t('.read_more')
+    = link_to @license.url, @license.url
+= link_to t('.add_new_license'), new_license_path, class: 'btn btn-small btn-primary margin_bottom_20'
