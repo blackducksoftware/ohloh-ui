@@ -1,6 +1,8 @@
 require 'test_helper'
 
-class ProjectsControllerTest < ActionController::TestCase
+describe 'ProjectsController' do
+  let(:api_key) { create(:api_key) }
+
   # index
   it 'index should handle query param for unlogged users' do
     project1 = create(:project, name: 'Foo', description: Faker::Lorem.sentence(90))
@@ -550,5 +552,56 @@ class ProjectsControllerTest < ActionController::TestCase
     response.body.must_match 'Oregon'
     response.body.must_match 'Washington'
     response.body.wont_match 'Arizona'
+  end
+
+  describe 'oauth' do
+    describe 'index' do
+      let(:token) { stub('acceptable?' => true, application: stub(uid: api_key.oauth_application.uid)) }
+
+      it 'wont allow access with a banned api_key' do
+        @controller.stubs(:doorkeeper_token).returns(token)
+        api_key.update!(status: ApiKey::STATUS_DISABLED)
+
+        get :index, format: :xml
+
+        must_respond_with :unauthorized
+      end
+
+      it 'wont allow access with an over-limit api_key' do
+        @controller.stubs(:doorkeeper_token).returns(token)
+        api_key.update! daily_count: 999_999
+
+        get :index, format: :xml
+
+        must_respond_with :unauthorized
+      end
+
+      it 'wont allow access without oauth token' do
+        get :index, format: :xml
+
+        must_respond_with :unauthorized
+      end
+
+      it 'wont allow access for token matching no application' do
+        token = stub('acceptable?' => true)
+        @controller.stubs(:doorkeeper_token).returns(token)
+
+        get :index, format: :xml
+
+        must_respond_with :unauthorized
+      end
+
+      it 'must allow access for a valid token' do
+        @controller.stubs(:doorkeeper_token).returns(token)
+        create(:project, name: 'Foo_xml', description: 'second', rating_average: 2)
+        create(:project, name: 'FooBar_xml', description: 'first', rating_average: 4)
+        get :index, query: 'foo', sort: 'rating', format: :xml
+        must_respond_with :ok
+        nodes = Nokogiri::XML(response.body).css('project')
+        nodes.length.must_equal 2
+        nodes[0].css('name').children.to_s.must_equal 'FooBar_xml'
+        nodes[1].css('name').children.to_s.must_equal 'Foo_xml'
+      end
+    end
   end
 end
