@@ -1,6 +1,9 @@
 require 'test_helper'
 
 class KudosControllerTest < ActionController::TestCase
+  let(:api_key) { create(:api_key) }
+  let(:client_id) { api_key.oauth_application.uid }
+
   before do
     @kudo = create(:kudo)
     create(:kudo_with_name, sender: @kudo.account)
@@ -49,20 +52,24 @@ class KudosControllerTest < ActionController::TestCase
   end
 
   it 'index should not respond to xml format with a banned api_key' do
-    login_as nil
-    get :index, account_id: @kudo.account, api_key: create(:api_key, status: ApiKey::STATUS_DISABLED).key, format: :xml
+    api_key.update!(status: ApiKey::STATUS_DISABLED)
+
+    get :index, account_id: @kudo.account, api_key: client_id, format: :xml
+
     must_respond_with :unauthorized
   end
 
   it 'index should not respond to xml format with an over-limit api_key' do
-    login_as nil
-    get :index, account_id: @kudo.account, api_key: create(:api_key, daily_count: 999_999).key, format: :xml
+    api_key.update! daily_count: 999_999
+
+    get :index, account_id: @kudo.account, api_key: client_id, format: :xml
+
     must_respond_with :unauthorized
   end
 
   it 'index should respond to xml format' do
     login_as nil
-    get :index, account_id: @kudo.account, api_key: create(:api_key).key, format: :xml
+    get :index, account_id: @kudo.account, api_key: client_id, format: :xml
     must_respond_with :ok
   end
 
@@ -75,19 +82,23 @@ class KudosControllerTest < ActionController::TestCase
 
   it 'sent should not respond to xml format with a banned api_key' do
     login_as nil
-    get :sent, account_id: @kudo.account, api_key: create(:api_key, status: ApiKey::STATUS_DISABLED).key, format: :xml
+    api_key.update!(status: ApiKey::STATUS_DISABLED)
+
+    get :sent, account_id: @kudo.account, api_key: client_id, format: :xml
     must_respond_with :unauthorized
   end
 
   it 'sent should not respond to xml format with an over-limit api_key' do
     login_as nil
-    get :sent, account_id: @kudo.account, api_key: create(:api_key, daily_count: 999_999).key, format: :xml
+    api_key.update! daily_count: 999_999
+
+    get :sent, account_id: @kudo.account, api_key: client_id, format: :xml
     must_respond_with :unauthorized
   end
 
   it 'sent should respond to xml format' do
     login_as nil
-    get :sent, account_id: @kudo.account, api_key: create(:api_key).key, format: :xml
+    get :sent, account_id: @kudo.account, api_key: client_id, format: :xml
     must_respond_with :ok
   end
 
