@@ -5,7 +5,7 @@ class Analysis::LanguagePercentages
     @analysis = analysis
     @languages_breakdown = Analysis::LanguagesBreakdown.new(analysis: analysis).map
     @total_lines = @languages_breakdown.map { |language| language[:lines] }.sum
-    create_broken_down_languages
+    @languages = create_broken_down_languages
   end
 
   def collection
@@ -23,7 +23,7 @@ class Analysis::LanguagePercentages
   private
 
   def create_broken_down_languages
-    @languages = @languages_breakdown.each_with_object([]) do |language_hash, array|
+    @languages_breakdown.each_with_object([]) do |language_hash, array|
       array << Analysis::BrokedownLanguage.new(language_hash.merge(total_lines: @total_lines))
     end
   end
