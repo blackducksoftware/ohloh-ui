@@ -53,6 +53,9 @@ en:
         title: 'An error has occurred'
       new:
         title: 'Authorize required'
+        heading: 'Authorization Confirmation'
+        would_you_like: 'Would you like to authorize application'
+        to_access_account: 'to access your account?'
         prompt: 'Authorize %{client_name} to use your account?'
         able_to: 'This application will be able to'
       show:

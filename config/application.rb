@@ -18,5 +18,10 @@ module OhlohUi
     config.google_maps_api_key = 'AIzaSyBGY091UPV-hajnLzUVSyp9pUGlWsIibDM'
 
     config.autoload_paths << "#{Rails.root}/lib"
+
+    config.to_prepare do
+      Doorkeeper::AuthorizationsController.layout 'application'
+      Doorkeeper::AuthorizationsController.helper OauthLayoutHelper
+    end
   end
 end
