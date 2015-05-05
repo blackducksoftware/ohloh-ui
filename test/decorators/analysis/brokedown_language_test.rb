@@ -1,7 +1,9 @@
 require 'test_helper'
 
 class Analysis::BrokedownLanguageTest < ActiveSupport::TestCase
-  let(:brokedown_language) { Analysis::BrokedownLanguage.new(total_lines: 100, lines: 50, id: 1, name: 'c', nice_name: 'C') }
+  let(:brokedown_language) do
+    Analysis::BrokedownLanguage.new(total_lines: 100, lines: 50, id: 1, name: 'c', nice_name: 'C')
+  end
 
   describe 'percentage' do
     it 'should return percentge' do

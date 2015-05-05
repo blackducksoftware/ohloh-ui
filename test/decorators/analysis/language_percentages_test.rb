@@ -36,9 +36,9 @@ class Analysis::LanguagePercentagesTest < ActiveSupport::TestCase
       results.fourth.second.must_equal '3 Other'
       results.fourth.third[:percent].must_equal 27
       results.fourth.third[:color].must_equal '000000'
-      results.fourth.third[:composed_of].first.must_equal [4, "CSS", { percent: 18}]
-      results.fourth.third[:composed_of].second.must_equal [5, "C++", { percent: 6}]
-      results.fourth.third[:composed_of].last.must_equal [6, "C", { percent: 3}]
+      results.fourth.third[:composed_of].first.must_equal [4, 'CSS', { percent: 18 }]
+      results.fourth.third[:composed_of].second.must_equal [5, 'C++', { percent: 6 }]
+      results.fourth.third[:composed_of].last.must_equal [6, 'C', { percent: 3 }]
     end
   end
 end
