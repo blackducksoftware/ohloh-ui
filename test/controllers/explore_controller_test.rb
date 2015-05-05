@@ -79,8 +79,8 @@ describe 'ExploreController' do
 
         must_respond_with :ok
         assigns(:projects).must_equal [project_1, project_2]
-        assigns(:project_logos)[logo_1.id].must_equal logo_1
-        assigns(:project_logos)[logo_2.id].must_equal logo_2
+        assigns(:project_logos_map)[logo_1.id].must_equal logo_1
+        assigns(:project_logos_map)[logo_2.id].must_equal logo_2
         assigns(:with_pai_count).must_equal 1
         assigns(:total_count).must_equal Project.active.count
         assigns(:languages).must_include ['All Languages', '']
@@ -97,8 +97,8 @@ describe 'ExploreController' do
         must_render_template :projects
 
         assigns(:projects).must_equal [project_1, project_2]
-        assigns(:project_logos)[logo_1.id].must_equal logo_1
-        assigns(:project_logos)[logo_2.id].must_equal logo_2
+        assigns(:project_logos_map)[logo_1.id].must_equal logo_1
+        assigns(:project_logos_map)[logo_2.id].must_equal logo_2
         assigns(:with_pai_count).must_equal 1
         assigns(:total_count).must_equal Project.active.count
         assigns(:languages).must_include ['All Languages', '']

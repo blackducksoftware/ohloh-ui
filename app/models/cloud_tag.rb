@@ -1,5 +1,5 @@
 class CloudTag
-  TAGS_LIST = YAML.load File.read("#{Rails.root}/config/tags_list.yml")
+  TAGS_LIST = YAML.load_file("#{Rails.root}/config/tags_list.yml")
 
   class << self
     def list

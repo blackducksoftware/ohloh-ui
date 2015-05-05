@@ -29,12 +29,12 @@ class ExploreController < ApplicationController
     @tags = CloudTag.list
     @languages = Language.map
     @projects =  @language ? Project.hot(@language.id).limit(10) : Project.hot.limit(10)
-    @project_logos = Logo.where(id: @projects.map(&:logo_id)).index_by(&:id)
+    @project_logos_map = Logo.where(id: @projects.map(&:logo_id)).index_by(&:id)
     @total_count = Project.active.count
     @with_pai_count = Project.with_pai_available
   end
 
   def set_language
-    @language = Language.where(name: params[:lang].downcase).first if params[:lang].present?
+    @language = Language.find_by(name: params[:lang].downcase) if params[:lang].present?
   end
 end
