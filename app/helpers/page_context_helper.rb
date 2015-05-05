@@ -27,11 +27,7 @@ module PageContextHelper
   end
 
   def tool_context
-    set_page_context(footer_menu_list:  tools_sidebar,
-                     select_footer_nav:  :account_summary,
-                     select_top_menu_nav:  :select_tools,
-                     heading:  'Tools',
-                     nav_type: 'sidebar')
+    set_page_context(select_top_menu_nav: :select_tools)
   end
 
   def review_context

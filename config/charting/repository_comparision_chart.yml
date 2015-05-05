@@ -1,0 +1,15 @@
+chart: {}
+title:
+credits:
+  enabled: false
+plotOptions:
+  pie:
+    allowPointSelect: true
+    cursor: pointer
+    dataLabels:
+      enabled: true
+      color: '#000000'
+      connectedColor: '#000000'
+series:
+  - type: pie
+    name: piedata
