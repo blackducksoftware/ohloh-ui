@@ -3,6 +3,7 @@
 # Any new helper methods added for application layout will need to be added to this helper too.
 module OauthLayoutHelper
   private
+
   mattr_reader :generate_page_name, :find_nag_reminder
 
   def page_context
