@@ -20,7 +20,7 @@ $pai_levels: (('vh',0), ('h', 1), ('m', 2), ('l', 3), ('vl', 4), ('i', 5), ('na'
     $multiplier: nth($level, 2)
     .#{$activity_level}_#{$postfix}
       @extend #{$activity_level}
-      :background-image url("/images/project_activity/pai-#{$dimension}px.png")
+      :background-image asset_url("project_activity/pai-#{$dimension}px.png")
       :background-position -#{$multiplier * $dimension}px 0
       :background-repeat no-repeat
       :position absolute

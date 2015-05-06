@@ -18,5 +18,14 @@ module OhlohUi
     config.google_maps_api_key = 'AIzaSyBGY091UPV-hajnLzUVSyp9pUGlWsIibDM'
 
     config.autoload_paths << "#{Rails.root}/lib"
+
+    file = "#{Rails.root}/config/GIT_SHA"
+    config.git_sha = File.exist?(file) ? File.read(file)[0...40] : 'development'
+
+    matches = /([0-9\.]+)/.match(`passenger -v 2>&1`)
+    config.passenger_version = matches ? matches[0] : '???'
+
+    config.cache_store = :redis_store, { host: ENV['REDIS_HOST'], port: ENV['REDIS_PORT'],
+                                         namespace: ENV['REDIS_NAMESPACE'] }
   end
 end
