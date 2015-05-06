@@ -15,10 +15,10 @@ Privacy =
         if $('#account_email_posts').val() == 'true' || $('#account_email_kudos').val() == 'true'
           $('#account_email_master_true').trigger('click')
 
-    $('#account_email_master_' + status).trigger('click')
+    $("#account_email_master_#{status}").trigger('click')
 
   toggleBoxes: (true_or_false) ->
-    color = if (true_or_false) then 'black' else 'lightgray'
+    color = if true_or_false then 'black' else 'lightgray'
     if true_or_false == false
       $('#account_email_posts').val(true_or_false.toString())
       $('#account_email_kudos').val(true_or_false.toString())
