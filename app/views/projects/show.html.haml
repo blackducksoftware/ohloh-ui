@@ -12,7 +12,7 @@
 
 %div
   %h2.pull-left= t('.project_summary')
-  -# render_project_analysis_timestamp
+  = project_analysis_timestamp(@project)
 
 .clear
 = render partial: 'projects/show/is_a_duplicate', locals: { project: @project }
