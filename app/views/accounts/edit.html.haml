@@ -1,8 +1,8 @@
 - page_context[:select_footer_nav] = :settings
 - content_for(:html_title) { @account.name }
+-# TODO: Accounts edit is not internationalized
 
 .clearfix
-  = render 'mini_header'
 
 .mezzo
   .margin_left_15
@@ -93,6 +93,7 @@
   %span.soft= t('about')
   = t('basics')
 
+-# TODO: Accounts edit is not internationalized
 .col-md-5
   %ul
     %li

@@ -1,0 +1,45 @@
+- content_for(:html_title) do
+  - t('.edit_privacy_title', account: @account.login)
+
+- account_context
+
+.full-width.mezzo.margin_left_20.margin_right_20.margin_top_15
+%h2= t('.settings_privacy_html', href: link_to(t('.settings'), settings_account_path(@account)))
+.row
+  .col-md-6
+    .well
+      = form_for @account do |f|
+        %fieldset
+          %legend_without_border_bottom= t('.manage_email')
+          .control-group.col-md-12.margin_left_20
+            %h4= t('.administrative_email')
+            %p.admin_email_notice= t('.send_admin_email')
+            %br
+            %h4= t('.other_openhub_email')
+            %p.admin_email_notice= t('.admin_email_notice')
+            %br
+            .controls.admin_email_notice
+              %p.email_opt_status
+                = f.radio_button(:email_master, 'false', id: 'account_email_master_false')
+                %span.margin_left_20= t('.dont_send_email')
+                %br
+                = f.radio_button(:email_master, 'true', id: 'account_email_master_true')
+                %span.margin_left_20= t('.do_send_email')
+              %ul.chosen#email_status{ style: 'padding-left: 25px' }
+                %li.margin_bottom_13
+                  %span= t('.please')
+                  = f.select :email_kudos, [['include', true], ['exclude', false]], {}, class: 'select_box'
+                  %span= t('.notices_ive_received')
+                  %br
+                %li{ style: 'width: 370px' }
+                  %span= t('.please')
+                  = f.select :email_posts, [['include', true], ['exclude', false]], {}, class: 'select_box'
+                  %span= t('.replies_to_forum_topics')
+              %br
+              %p= t('.never_ask_for_personal_email')
+            .actions
+              %br
+              = submit_tag(t('.save_changes'), id: 'Submit', class: 'btn btn-sm btn-primary')
+
+  = render partial: 'authorized_apps'
+  = render partial: 'privacy_text'

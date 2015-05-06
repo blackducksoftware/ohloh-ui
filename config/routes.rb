@@ -64,8 +64,7 @@ Rails.application.routes.draw do
       get :confirm_delete
       get :disabled
       get :settings
-      get 'edit_privacy'   => 'privacy#edit',   as: :edit_account_privacy
-      put 'update_privacy' => 'privacy#update', as: :account_privacy
+      get :edit_privacy, to: 'privacy#edit', as: :edit_account_privacy
     end
 
     collection do
@@ -126,8 +125,9 @@ Rails.application.routes.draw do
 
   resources :posts, only: :index, as: 'all_posts'
   get 'markdown_syntax', to: 'abouts#markdown_syntax'
-  get 'message', to: 'about#message'
-  get 'maintenance', to: 'about#maintenance'
+  get 'message', to: 'abouts#message'
+  get 'maintenance', to: 'abouts#maintenance'
+  get 'tools', to: 'abouts#tools'
 
   get 'explore/projects', to: 'explore#projects', as: :explore_projects
   get 'p/compare', to: 'compare#projects', as: :compare_projects

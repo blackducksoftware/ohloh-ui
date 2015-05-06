@@ -1,0 +1,32 @@
+en:
+  privacy:
+    edit:
+      edit_privacy_title: '%{account} : %{account} - Openhub'
+      settings_privacy_html: '%{href} : Privacy'
+      settings: 'Settings'
+      manage_email: 'Manage email from Open Hub'
+      adiministrative_email: 'Administrative Email'
+      send_admin_email: 'Open Hub will always send normal administrative email such as activation notices and password change requests.'
+      other_openhub_email: 'Other Open Hub Email'
+      admin_email_notice: 'Open Hub occassionally sends other email to its members, such as informational notices and site updates.'
+      never_ask_for_personal_email: 'Open Hub will never ask you for personal information via email.'
+      dont_send_email: "Don't send other Open Hub email"
+      do_send_email: 'Do send other Open Hub email'
+      please: 'Please'
+      replies_to_forum_topics: "replies to forum topics I've participated."
+      notices_ive_received: "notices that I've received Badges or Kudos."
+      save_changes: 'Save Changes'
+    authorized_apps:
+      authorized_apps: 'Authorized Apps'
+      registered_applications: 'Any registered applications that you have authorized to have OAuth access to your Open Hub account will be shown here.'
+      no_registered_applications: 'No applications have been authorized to access your Open Hub account.'
+      remove: 'Remove'
+    privacy_text:
+      about_privacy: 'About Privacy'
+      admin_emails_from_openhub: Administrative emails from Open Hub cannot be deactivated. If you are a regular user, these administrative emails will include things like activation notices, password change requests, etc. If you are an organization or a project manager, you may additionally receive administrative emails relating to the organization or project(s) that you manage.
+      opting_in: "You may opt-in to receiving emails when you receive a kudo, or when someone replies to a forum post you've initiated or in which you've participated."
+      opting_out: "While you may opt-out of all communications from Open Hub, we recommend that you keep the lines of communication open - other Open Hub account holders may want to participate in your project, adopt it for their own uses, or engage in some other way. Open Hub is about facilitating such connections."
+      privacy_policy_html: "Open Hub respects your privacy. For more information please refer to our %{href}."
+      openhub_oauth_html:  "Open Hub also allows external applications to %{href}, authenticated under your account, without the need for you to reveal your account password to the application. External applications can connect to Open Hub, allow you to type your password into an Open Hub page to authenticate, and receive an OAuth token. You can revoke OAuth access granted to external applications on this page as well."
+      privacy_policy: 'privacy policy'
+      oauth_api: 'access the API using Oauth'

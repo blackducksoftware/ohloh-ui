@@ -1,7 +1,7 @@
 class AccountsController < ApplicationController
   include RedirectIfDisabled
 
-  before_action :set_account, only: [:destroy, :show, :update, :edit, :confirm_delete, :disabled]
+  before_action :set_account, only: [:destroy, :show, :update, :edit, :confirm_delete, :disabled, :settings]
   before_action :redirect_if_disabled, only: [:show, :update, :edit]
   before_action :disabled_during_read_only_mode, only: [:new, :create, :edit, :update]
   # FIXME: Integrate this action.
@@ -99,6 +99,6 @@ class AccountsController < ApplicationController
     params.require(:account).permit(
       :login, :email, :email_confirmation, :name, :country_code, :location, :latitude, :longitude,
       :twitter_account, :organization_id, :organization_name, :affiliation_type, :invite_code,
-      :password, :password_confirmation, :about_raw, :url)
+      :password, :password_confirmation, :about_raw, :url, :email_master, :email_kudos, :email_posts)
   end
 end
