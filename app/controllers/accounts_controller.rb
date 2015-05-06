@@ -99,6 +99,6 @@ class AccountsController < ApplicationController
     params.require(:account).permit(
       :login, :email, :email_confirmation, :name, :country_code, :location, :latitude, :longitude,
       :twitter_account, :organization_id, :organization_name, :affiliation_type, :invite_code,
-      :password, :password_confirmation, :about_raw, :url, :email_master, :email_kudos, :email_posts)
+      :password, :password_confirmation, :about_raw, :url)
   end
 end

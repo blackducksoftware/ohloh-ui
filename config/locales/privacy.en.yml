@@ -16,6 +16,8 @@ en:
       replies_to_forum_topics: "replies to forum topics I've participated."
       notices_ive_received: "notices that I've received Badges or Kudos."
       save_changes: 'Save Changes'
+    update:
+      success: 'Your notifications are successfully updated.'
     authorized_apps:
       authorized_apps: 'Authorized Apps'
       registered_applications: 'Any registered applications that you have authorized to have OAuth access to your Open Hub account will be shown here.'

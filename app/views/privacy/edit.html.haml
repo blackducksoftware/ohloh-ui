@@ -3,15 +3,22 @@
 
 - account_context
 
-.full-width.mezzo.margin_left_20.margin_right_20.margin_top_15
+.mezzo.margin_left_20.margin_right_20.margin_top_15
+%br
+- if flash[:notice]
+  .alert.alert-success
+    %i.icon-check-sign
+    %span.text-size= flash[:notice]
+    %a.close{ 'data-dismiss' => 'alert', href: '#' } ×
+
 %h2= t('.settings_privacy_html', href: link_to(t('.settings'), settings_account_path(@account)))
 .row
   .col-md-6
-    .well
-      = form_for @account do |f|
+    .well.well-lg
+      = form_for(@account, url: edit_privacy_account_path) do |f|
         %fieldset
           %legend_without_border_bottom= t('.manage_email')
-          .control-group.col-md-12.margin_left_20
+          .control-group.col-md-12.margin_left_5
             %h4= t('.administrative_email')
             %p.admin_email_notice= t('.send_admin_email')
             %br

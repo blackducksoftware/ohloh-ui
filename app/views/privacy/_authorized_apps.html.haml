@@ -1,4 +1,4 @@
-.col-md-5
+.col-md-
   %form
     %fieldset
       %legend_without_border_bottom#authorized_apps= t('.authorized_apps')
@@ -6,7 +6,7 @@
         %p.help-block.margin_left_20= t('.registered_applications')
         %br
       - if @active_authorizations.blank?
-        %span.col-md-5.well.margin_left_20{ style: 'width: 100%' }= t('.no_registered_applications')
+        %span.well.col-md-10.margin_left_20= t('.no_registered_applications')
       - else
         %table.table.span5{ style: 'border: 1px solid #ddd;' }
           %tbody
