@@ -7,7 +7,7 @@
     -# = link_to "Settings", settings_url_for(@project_or_organization)
     = t('.heading')
   - unless @organization
-    -# render_project_analysis_timestamp(@project_or_organization)
+    = project_analysis_timestamp(@project_or_organization)
 
 .row
   .col-md-10.col-md-offset-1

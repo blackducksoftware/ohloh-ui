@@ -1,0 +1,17 @@
+- @meta_title = t('.page_title')
+- content_for :javascript do
+  = javascript_tag '$(document).on("page:change", Factoids.highlight);'
+
+%h2.float_left
+  = link_to t('.project_Summary'), project_path(@project)
+  = t('.colon_factoids')
+
+= project_analysis_timestamp(@project)
+
+.clear &nbsp;
+- if @factoids.empty?
+  - flash.now[:info] = t('.no_factoids')
+- else
+  = render partial: 'factoids/factoid', collection: @factoids
+  .clear &nbsp;
+  %a.btn.btn-info{ href: blog_url_for(:all_factoids), target: '_blank' }= t('.see_all')
