@@ -25,7 +25,7 @@ en:
       remove: 'Remove'
     privacy_text:
       about_privacy: 'About Privacy'
-      admin_emails_from_openhub: Administrative emails from Open Hub cannot be deactivated. If you are a regular user, these administrative emails will include things like activation notices, password change requests, etc. If you are an organization or a project manager, you may additionally receive administrative emails relating to the organization or project(s) that you manage.
+      admin_emails_from_openhub: "Administrative emails from Open Hub cannot be deactivated. If you are a regular user, these administrative emails will include things like activation notices, password change requests, etc. If you are an organization or a project manager, you may additionally receive administrative emails relating to the organization or project(s) that you manage."
       opting_in: "You may opt-in to receiving emails when you receive a kudo, or when someone replies to a forum post you've initiated or in which you've participated."
       opting_out: "While you may opt-out of all communications from Open Hub, we recommend that you keep the lines of communication open - other Open Hub account holders may want to participate in your project, adopt it for their own uses, or engage in some other way. Open Hub is about facilitating such connections."
       privacy_policy_html: "Open Hub respects your privacy. For more information please refer to our %{href}."

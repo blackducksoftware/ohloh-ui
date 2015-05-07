@@ -3,8 +3,7 @@ class PrivacyController < ApplicationController
 
   def update
     if @account.update(account_params)
-      redirect_to edit_account_privacy_account_path(@account)
-      flash[:notice] = t('.success')
+      redirect_to edit_account_privacy_account_path(@account), notice: t('.success')
     else
       render 'edit'
     end
@@ -13,7 +12,7 @@ class PrivacyController < ApplicationController
   private
 
   def set_account_and_authorizations
-    @account = Account::Find.by_id_or_login(params[:id])
+    @account = Account.from_param(params[:id]).take
     fail ParamRecordNotFound unless @account
     @account.update_attribute(:email_opportunities_visited, Time.now.utc)
     # TODO: @active_authorizations needs to be implemented after OAuth ticket is done.
