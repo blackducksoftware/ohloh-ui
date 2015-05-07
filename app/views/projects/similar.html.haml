@@ -1,3 +1,5 @@
+- page_context[:select_footer_nav] = :similar_projects
+
 .project_content_title
   %h2.pull-left= t('.title')
   = project_analysis_timestamp(@project)
@@ -19,14 +21,15 @@
     = link_to t('.add_tags'), select_project_tags_path(@project)
     = t('.to_similar')
 
-%div
-  %h3= t('.also_use', name: @project.name)
+.clearfix
+  .margin_top_30
+    %h3= t('.also_use', name: @project.name)
 
-  - @similar_by_stacks.in_groups_of(3, false) do |columns|
-    .col-md-12
-      - columns.each do |project|
-        = render partial: 'similar_project', locals: { project: project }
+    - @similar_by_stacks.in_groups_of(3, false) do |columns|
+      .col-md-12
+        - columns.each do |project|
+          = render partial: 'similar_project', locals: { project: project }
 
-  - if @similar_by_stacks.empty?
-    %p= t('.nothing_by_stacks')
-    %p= t('.nightly_update')
+    - if @similar_by_stacks.empty?
+      %p= t('.nothing_by_stacks')
+      %p= t('.nightly_update')
