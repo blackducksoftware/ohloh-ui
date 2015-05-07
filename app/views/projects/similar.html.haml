@@ -19,7 +19,7 @@
 - if @similar_by_tags.empty?
   %p= t('.nothing_by_tags')
   %p
-    = link_to t('.add_tags'), tags_path(@project)
+    = link_to t('.add_tags'), project_tags_path(@project)
     = t('.to_similar')
 
 .clearfix
