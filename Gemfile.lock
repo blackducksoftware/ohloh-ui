@@ -131,6 +131,8 @@ GEM
       safe_yaml (~> 1.0.0)
     debugger-linecache (1.2.0)
     docile (1.1.5)
+    doorkeeper (2.2.0)
+      railties (>= 3.2)
     dotenv (1.0.2)
     dotenv-rails (1.0.2)
       dotenv (= 1.0.2)
@@ -391,6 +393,7 @@ DEPENDENCIES
   capistrano-rails
   coffee-rails
   coffee-script-source (~> 1.8.0)
+  doorkeeper
   dotenv-rails
   factory_girl_rails
   faker

@@ -15,7 +15,8 @@ describe 'FactoidsControllerTest' do
     end
 
     it 'should support being queried via the api' do
-      get :index, project_id: @factoid.analysis.project.to_param, format: :xml, api_key: create(:api_key).key
+      get :index, project_id: @factoid.analysis.project.to_param, format: :xml,
+                  api_key: create(:api_key).oauth_application.uid
       must_respond_with :success
       response.body.must_match '<items_returned>1</items_returned>'
     end

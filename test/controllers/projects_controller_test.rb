@@ -1,6 +1,9 @@
 require 'test_helper'
 
-class ProjectsControllerTest < ActionController::TestCase
+describe 'ProjectsController' do
+  let(:api_key) { create(:api_key) }
+  let(:client_id) { api_key.oauth_application.uid }
+
   # index
   it 'index should handle query param for unlogged users' do
     project1 = create(:project, name: 'Foo', description: Faker::Lorem.sentence(90))
@@ -85,14 +88,16 @@ class ProjectsControllerTest < ActionController::TestCase
 
   it 'index should not respond to xml format with a banned api_key' do
     login_as nil
-    key = create(:api_key, status: ApiKey::STATUS_DISABLED).key
-    get :index, query: 'foo', sort: 'rating', api_key: key, format: :xml
+
+    api_key.update!(status: ApiKey::STATUS_DISABLED)
+    get :index, query: 'foo', sort: 'rating', api_key: client_id, format: :xml
     must_respond_with :unauthorized
   end
 
   it 'index should not respond to xml format with an over-limit api_key' do
     login_as nil
-    get :index, query: 'foo', sort: 'rating', api_key: create(:api_key, daily_count: 999_999).key, format: :xml
+    api_key.update! daily_count: 999_999
+    get :index, query: 'foo', sort: 'rating', api_key: client_id, format: :xml
     must_respond_with :unauthorized
   end
 
@@ -100,7 +105,7 @@ class ProjectsControllerTest < ActionController::TestCase
     create(:project, name: 'Foo_xml', description: 'second', rating_average: 2)
     create(:project, name: 'FooBar_xml', description: 'first', rating_average: 4)
     login_as nil
-    get :index, query: 'foo', sort: 'rating', api_key: create(:api_key).key, format: :xml
+    get :index, query: 'foo', sort: 'rating', api_key: client_id, format: :xml
     must_respond_with :ok
     nodes = Nokogiri::XML(response.body).css('project')
     nodes.length.must_equal 2
@@ -112,7 +117,7 @@ class ProjectsControllerTest < ActionController::TestCase
     project1 = create(:project, name: 'Baz_xml', description: 'second', rating_average: 2)
     project2 = create(:project, name: 'BazBar_xml', description: 'first', rating_average: 4)
     login_as nil
-    get :index, ids: "#{project1.id},#{project2.id}", api_key: create(:api_key).key, format: :xml
+    get :index, ids: "#{project1.id},#{project2.id}", api_key: client_id, format: :xml
     must_respond_with :ok
     nodes = Nokogiri::XML(response.body).css('project')
     nodes.length.must_equal 2
@@ -122,13 +127,13 @@ class ProjectsControllerTest < ActionController::TestCase
 
   it 'index should gracefully handle garbage numeric ids' do
     login_as nil
-    get :index, ids: '111112222222', api_key: create(:api_key).key, format: :xml
+    get :index, ids: '111112222222', api_key: client_id, format: :xml
     must_respond_with :not_found
   end
 
   it 'index should gracefully handle garbage non-numeric ids' do
     login_as nil
-    get :index, ids: 'baal_the_destroyer', api_key: create(:api_key).key, format: :xml
+    get :index, ids: 'baal_the_destroyer', api_key: client_id, format: :xml
     must_respond_with :ok
     nodes = Nokogiri::XML(response.body).css('project')
     nodes.length.must_equal 0
@@ -137,7 +142,7 @@ class ProjectsControllerTest < ActionController::TestCase
   it 'index should limit maximum returned to 25' do
     projects = (0...50).map { |_| create(:project) }
     login_as nil
-    get :index, ids: projects.map(&:id).join(','), per_page: 50, api_key: create(:api_key).key, format: :xml
+    get :index, ids: projects.map(&:id).join(','), per_page: 50, api_key: client_id, format: :xml
     must_respond_with :ok
     nodes = Nokogiri::XML(response.body).css('project')
     nodes.length.must_equal 25
@@ -146,7 +151,7 @@ class ProjectsControllerTest < ActionController::TestCase
   it 'index should support pagination' do
     projects = (0...10).map { |_| create(:project) }
     login_as nil
-    get :index, ids: projects.map(&:id).join(','), page: 2, per_page: 5, api_key: create(:api_key).key, format: :xml
+    get :index, ids: projects.map(&:id).join(','), page: 2, per_page: 5, api_key: client_id, format: :xml
     must_respond_with :ok
     nodes = Nokogiri::XML(response.body).css('project')
     nodes.length.must_equal 5
@@ -550,5 +555,56 @@ class ProjectsControllerTest < ActionController::TestCase
     response.body.must_match 'Oregon'
     response.body.must_match 'Washington'
     response.body.wont_match 'Arizona'
+  end
+
+  describe 'oauth' do
+    describe 'index' do
+      let(:token) { stub('acceptable?' => true, application: stub(uid: api_key.oauth_application.uid)) }
+
+      it 'wont allow access with a banned api_key' do
+        @controller.stubs(:doorkeeper_token).returns(token)
+        api_key.update!(status: ApiKey::STATUS_DISABLED)
+
+        get :index, format: :xml
+
+        must_respond_with :unauthorized
+      end
+
+      it 'wont allow access with an over-limit api_key' do
+        @controller.stubs(:doorkeeper_token).returns(token)
+        api_key.update! daily_count: 999_999
+
+        get :index, format: :xml
+
+        must_respond_with :unauthorized
+      end
+
+      it 'wont allow access without oauth token' do
+        get :index, format: :xml
+
+        must_respond_with :unauthorized
+      end
+
+      it 'wont allow access for token matching no application' do
+        token = stub('acceptable?' => true)
+        @controller.stubs(:doorkeeper_token).returns(token)
+
+        get :index, format: :xml
+
+        must_respond_with :unauthorized
+      end
+
+      it 'must allow access for a valid token' do
+        @controller.stubs(:doorkeeper_token).returns(token)
+        create(:project, name: 'Foo_xml', description: 'second', rating_average: 2)
+        create(:project, name: 'FooBar_xml', description: 'first', rating_average: 4)
+        get :index, query: 'foo', sort: 'rating', format: :xml
+        must_respond_with :ok
+        nodes = Nokogiri::XML(response.body).css('project')
+        nodes.length.must_equal 2
+        nodes[0].css('name').children.to_s.must_equal 'FooBar_xml'
+        nodes[1].css('name').children.to_s.must_equal 'Foo_xml'
+      end
+    end
   end
 end
