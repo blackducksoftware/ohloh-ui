@@ -1,7 +1,7 @@
 role :web_1, %w(deployer@oh-stage-web-1)
 role :web_2, %w(deployer@oh-stage-web-2)
 role :web_3, %w(deployer@oh-stage-web-3)
-role :web_5, %w(deployer@oh-stage-web-5)
+role :web_5, %w(core@10.1.1.106)
 role :web_7, %w(deployer@oh-stage-web-7)
 role :db, %w(deployer@oh-stage-utility-2), primary: true
 

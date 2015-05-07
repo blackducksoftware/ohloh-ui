@@ -1,4 +1,4 @@
-class Analysis::LanguageBreakdown < Analysis::QueryBase
+class Analysis::LanguagesBreakdown < Analysis::QueryBase
   LANAGUAGE_SELECT_COLUMNS = { id: 'language_id', nice_name: 'language_nice_name', name: 'language_name',
                                category: 'category' }
 
@@ -6,6 +6,13 @@ class Analysis::LanguageBreakdown < Analysis::QueryBase
 
   def collection
     execute.select { |fact| fact.code_total.to_i > 0 || fact.comments_total.to_i > 0 }
+  end
+
+  def map
+    collection.map do |fact|
+      { id: fact.language_id, nice_name: fact.language_nice_name, name: fact.language_name,
+        lines: (fact.code_total + fact.comments_total + fact.blanks_total) }
+    end
   end
 
   private

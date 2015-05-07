@@ -11,3 +11,4 @@ public/system/
 .sass-cache/
 .idea/
 .idea/runConfigurations
+/config/GIT_SHA
