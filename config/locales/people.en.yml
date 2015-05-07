@@ -1,5 +1,6 @@
 en:
   people:
+    contributes_to: "Contributes to: %{sentence}"
     index:
       page_title: "People - Open Hub"
       people: "People"
@@ -7,6 +8,11 @@ en:
       more_account_holders: "More Account Holders"
       unclaimed_committer_ids: "Unclaimed Committer ID's"
       more_commiters: "More Unclaimed Committer ID's"
+    rankings:
+      page_title: "Open Source People - Open Hub"
+      open_source_people: "Open Source People"
+      kudo_rank: "Kudo Rank"
+      kudo_position: "Kudo Position:"
     claimed_person:
       manages: "Manages %{what}"
       project: "project"
