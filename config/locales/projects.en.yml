@@ -278,9 +278,10 @@ en:
     map:
       page_title: 'User & Contributor Locations Page'
     similar:
+      page_title: 'The %{name} Open Source Project on Open Hub : Related Projects Page'
       title: 'Related Projects'
       project: 'Project'
-      similar: 'Similar to'
+      similar_to: 'Similar to'
       nothing_by_tags: 'No similar projects found. Open Hub uses project tags to determine project relationships.'
       add_tags: 'Add tags to this project'
       to_similar: 'to find similar projects.'

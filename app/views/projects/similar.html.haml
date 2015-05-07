@@ -1,3 +1,4 @@
+- content_for(:html_title) { t('.page_title', name: @project.name) }
 - page_context[:select_footer_nav] = :similar_projects
 
 .project_content_title
@@ -18,7 +19,7 @@
 - if @similar_by_tags.empty?
   %p= t('.nothing_by_tags')
   %p
-    = link_to t('.add_tags'), select_project_tags_path(@project)
+    = link_to t('.add_tags'), tags_path(@project)
     = t('.to_similar')
 
 .clearfix
