@@ -199,7 +199,6 @@ Rails.application.routes.draw do
         get :cocomo
       end
     end
-    resources :similar_projects, only: :index
     resources :ratings
     resources :reviews, except: :show do
       collection { get :summary }
