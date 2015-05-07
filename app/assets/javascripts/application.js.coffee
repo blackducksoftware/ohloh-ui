@@ -37,5 +37,4 @@ $(document).on 'page:change', ->
   OrgsFilter.init()
   Cocomo.init()
   ProjectForm.init()
-  Privacy.init()
   new App.CheckAvailiability($('input.check-availability'))
