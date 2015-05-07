@@ -363,6 +363,12 @@ describe 'AccountsController' do
     end
   end
 
+  describe 'settings' do
+    it 'should render settings' do
+      get :settings, id: user.id
+    end
+  end
+
   private
 
   def stub_verify_recaptcha_to_add_captcha_error
