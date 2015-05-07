@@ -3,6 +3,16 @@ require 'test_helper'
 class PasswordResetTest < ActiveSupport::TestCase
   let(:account) { create(:account) }
 
+  describe 'validations' do
+    it 'must validate for blank emails' do
+      password_reset = PasswordReset.new(email: '')
+      password_reset.valid?
+
+      password_reset.errors.messages.length.must_equal 1
+      password_reset.errors.messages[:email].first.must_match /required/
+    end
+  end
+
   describe 'new' do
     it 'must assign passed attributes as instance variables' do
       email = Faker::Internet.email

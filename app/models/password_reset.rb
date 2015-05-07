@@ -8,7 +8,7 @@ class PasswordReset
   attr_reader :email
 
   validates :email, presence: { message: 'Email address is required' }
-  validate :account_exists_for_email
+  validate :account_exists_for_email, if: -> { email.present? }
 
   def initialize(attributes = {})
     attributes.each do |name, value|
