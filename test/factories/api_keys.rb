@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :api_key do
     account_id 1
+    association :oauth_application
     description 'An API Key for account #1'
     name { Faker::Lorem.characters(5) }
     key { Faker::Internet.slug }

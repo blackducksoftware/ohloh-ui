@@ -38,12 +38,12 @@ en:
   projects_menu: 'Projects'
   people_menu: 'People'
   organizations_menu: 'Organizations'
-  tools: 'Tools'
+  tools_menu: 'Tools'
   code: 'Code'
   blog: 'Blog'
   forum: 'Forums'
   terms: 'Terms'
-  privacy: 'Privacy'
+  privacy_blog: 'Privacy'
   managers_link_name: 'Managers'
   learn_more: "Learn More&hellip;"
   project_page_title: "The %{project_name} Open Source Project on Open Hub"
@@ -185,6 +185,7 @@ en:
     requests_all_time_view: '<span>%{count}</span><small class="soft">requests all-time</small>'
     requests_daily_view: '<span>%{count}</span><small class="soft">requests today</small>'
     requests_daily_limit_view: '<span><small style="color:#000;">limited to</small><span class="inline">%{count}</span></span><small class="soft">requests a day</small>'
+    redirect_uri: 'Redirect URI'
     index:
       sort_by_most_recent_request: 'Most Recent Request'
       sort_by_most_requests_today: 'Requests Today'

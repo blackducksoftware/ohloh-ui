@@ -8,7 +8,7 @@
     %h2.pull-left
       = link_to t(:settings), settings_project_path(@project)
       &nbsp;:&nbsp;#{t('.licenses')}
-    -# render_project_analysis_timestamp
+    = project_analysis_timestamp(@project)
 
 - flash.now[:notice] = t('.no_licenses_for_project') if @project_licenses.empty?
 

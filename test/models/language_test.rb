@@ -15,4 +15,12 @@ class LanguageTest < ActiveSupport::TestCase
       )
     end
   end
+
+  describe 'total' do
+    it 'determines the total sum of code, comments, and blanks' do
+      language = create(:language, code: 10_000_000, comments: 10_000_000, blanks: 10_000_000)
+      total = language.code + language.comments + language.blanks
+      total.must_equal language.total
+    end
+  end
 end
