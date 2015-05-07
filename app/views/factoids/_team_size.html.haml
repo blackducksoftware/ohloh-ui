@@ -1,0 +1,22 @@
+- project_link = link_to(CGI.escapeHTML(@project.name), project_url(@project))
+- if @project.best_analysis.headcount == 0
+  %p!= t('.nobody_1', link: link_to(@project.name, project_url(@project)))
+- elsif @project.best_analysis.headcount == 1
+  %p= t('.single_1')
+- elsif factoid.is_a? FactoidTeamSizeSmall
+  %p!= t('.small', count: @project.best_analysis.headcount, link: project_link)
+- elsif factoid.is_a? FactoidTeamSizeAverage
+  %p!= t('.avg', count: @project.best_analysis.headcount, link: project_link)
+- elsif factoid.is_a? FactoidTeamSizeLarge
+  %p!= t('.large', count: @project.best_analysis.headcount, link: project_link)
+- else
+  %p!= t('.huge', count: @project.best_analysis.headcount, link: project_link)
+- if @project.best_analysis.headcount == 0
+  %p= t('.nobody_2')
+- elsif @project.best_analysis.headcount == 1
+  %p= t('.single_2')
+- if @project.best_analysis.contributor_facts.size != @project.best_analysis.headcount
+  %p
+    - text = pluralize(@project.best_analysis.contributor_facts.size, t('.developer'))
+    - link = link_to(text, project_contributors_path(@project))
+    != t('.all_time', link: link)
