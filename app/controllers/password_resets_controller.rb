@@ -12,9 +12,8 @@ class PasswordResetsController < ApplicationController
 
     if @password_reset.valid?
       @password_reset.refresh_token_and_email_link
-      flash[:success] = 'A link to reset your password was sent to your email address.'
 
-      redirect_to message_path
+      redirect_to message_path, flash: { success: t('.success') }
     else
       render :new
     end
@@ -26,8 +25,7 @@ class PasswordResetsController < ApplicationController
   def reset
     @account.reset_password_tokens = nil
     if @account.update(account_params)
-      flash[:success] = 'Your password has been reset successfully.'
-      redirect_to new_session_url(return_to: account_path(@account))
+      redirect_to new_session_url(return_to: account_path(@account)), flash: { success: t('.success') }
     else
       render :confirm
     end
@@ -49,14 +47,12 @@ class PasswordResetsController < ApplicationController
     return render_404 unless token_expires_at
     return if token_expires_at > Time.now.utc
 
-    flash[:error] = 'Your password reset URL has expired. Please try again!'
-    redirect_to new_password_reset_path
+    redirect_to new_password_reset_path, flash: { error: t('password_resets.token_expired_error') }
   end
 
   def redirect_if_logged_in
     return unless logged_in?
 
-    flash[:notice] = 'You are already logged in.'
-    redirect_to account_path(current_user)
+    redirect_to account_path(current_user), notice: t('password_resets.already_logged_in')
   end
 end

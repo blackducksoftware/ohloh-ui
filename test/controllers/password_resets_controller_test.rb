@@ -47,6 +47,7 @@ describe 'PasswordResetsController' do
       post :create, password_reset: { email: account.email }
 
       must_respond_with :redirect
+      flash[:success].must_equal I18n.t('password_resets.create.success')
       account.reload
       account.reset_password_tokens.keys.first.must_be :present?
       # FIXME: Uncomment after implementing ActionMailer.reset_password_link

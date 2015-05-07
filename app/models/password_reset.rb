@@ -7,7 +7,7 @@ class PasswordReset
 
   attr_reader :email
 
-  validates :email, presence: { message: 'Email address is required' }
+  validates :email, presence: { message: I18n.t('password_resets.errors.email.blank') }
   validate :account_exists_for_email, if: -> { email.present? }
 
   def initialize(attributes = {})
@@ -41,6 +41,6 @@ class PasswordReset
   def account_exists_for_email
     return if account
 
-    errors.add(:email, 'No account with that email address')
+    errors.add(:email, I18n.t('password_resets.errors.account.invalid'))
   end
 end
