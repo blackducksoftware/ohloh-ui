@@ -1,0 +1,30 @@
+:ruby
+  compare_url = compare_projects_path(project_0: @project.name, project_1: project.name)
+  compare_title = t('.compare_title', name_1: project.name, name_2: @project.name)
+  activity_class = project_activity_css_class(project, :fifteen)
+  activity_text = project_activity_text(project, true)
+
+.col-md-4
+  .col-md-1.no_margin_left
+    .pull-left= link_to project.decorate.icon(:med), project_path(project), title: h(project.description)
+  .col-md-3
+    %h4.nomargin.no_margin_top
+      = link_to project.name, project_path(project)
+      &nbsp;
+      = link_to t('.compare'), compare_url, style: 'font-size: 12px', title: compare_title
+    %p.nomargin
+      = link_to blog_url_for(:pai_about), class: activity_class, target: '_blank', title: activity_text
+      %span{ class: project_activity_level_text_class(:fifteen)}= activity_text
+    - if project.best_analysis.present?
+      %p.nomargin
+        = t('.most_written')
+        = link_to project.best_analysis.main_language.nice_name, languages_summary_project_analysis_path(project, id: 'latest')
+    %p.nomargin
+      = t('.licence')
+      - if project.licenses.any?
+        = p.licenses.map { |license| link_to license.short_name, license_path(license) }.join(', ')
+      - else
+        = t('.unknown')
+  .clearfix
+    %br
+    &nbsp;

@@ -5,7 +5,7 @@ class ProjectsController < ApplicationController
   before_action :api_key_lock, only: [:index]
   before_action :find_account
   before_action :find_projects, only: [:index]
-  before_action :find_project, only: [:show, :edit, :update, :estimated_cost, :users, :settings, :map, :similar_by_tags]
+  before_action :find_project, only: [:show, :edit, :update, :estimated_cost, :users, :settings, :map, :similar_by_tags, :similar]
   before_action :redirect_new_landing_page, only: :index
   before_action :find_forge_matches, only: :check_forge
   before_action :project_context, only: [:show, :users, :estimated_cost, :edit, :settings, :map]
@@ -56,6 +56,11 @@ class ProjectsController < ApplicationController
 
   def similar_by_tags
     render partial: 'projects/show/similar_by_tags', locals: { similar_by_tags: @project.related_by_tags(4) }
+  end
+
+  def similar
+    @similar_by_tags = @project.related_by_tags(10)
+    @similar_by_stacks = @project.related_by_stacks(10)
   end
 
   private
