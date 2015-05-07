@@ -9,7 +9,7 @@ class ToolHelperTest < ActionView::TestCase
         [nil, 'Tools'],
         [:compare_projects, 'Compare Projects', '/p/compare'],
         [:compare_languages, 'Compare Languages', '/languages/compare'],
-        [:compare_repositories, 'Compare Repositories', '/compare_repositories']
+        [:compare_repositories, 'Compare Repositories', '/repositories/compare']
       ],
       [
         [nil, 'Languages', nil, 'select'],

@@ -39,5 +39,7 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   config.active_support.test_order = :sorted
+
+  config.cache_store = :memory_store
 end
 URL_HOST = ENV['URL_HOST']

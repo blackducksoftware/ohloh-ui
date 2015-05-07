@@ -1,0 +1,12 @@
+%a{ name: "##{factoid.type}" }
+.factoid.inset{ id: factoid.type }
+  %h3= factoid
+  - case factoid
+  - when FactoidTeamSize
+    = render partial: 'factoids/team_size', locals: { factoid: factoid }
+  - when FactoidAge
+    = render partial: 'factoids/age', locals: { factoid: factoid }
+  - when FactoidActivity
+    = render partial: 'factoids/activity', locals: { factoid: factoid }
+  - when FactoidComments
+    = render partial: 'factoids/comments', locals: { factoid: factoid }

@@ -5,7 +5,7 @@
   %h2.float_left
     -# = link_to t('settings'), settings_project_path(@project)
     = %( : #{ t('links.title').pluralize })
-  -# - render_project_analysis_timestamp
+  = project_analysis_timestamp(@project)
 
 - if @links.empty?
   -# - alert :info, { message: t('.empty_message') }

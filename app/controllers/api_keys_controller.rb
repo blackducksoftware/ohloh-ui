@@ -59,7 +59,7 @@ class ApiKeysController < ApplicationController
   private
 
   def find_account
-    @account = Account.from_param(params[:account_id]).first
+    @account = params[:account_id] || params[:id] ? Account.from_param(params[:account_id]).take : nil
   end
 
   def model_params

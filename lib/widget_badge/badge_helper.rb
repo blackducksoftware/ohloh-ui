@@ -6,24 +6,13 @@ module WidgetBadge
     IMAGE_DIR = Rails.root.join('app/assets/images/widget_logos')
 
     module ClassMethods
+      include MiniMagickHelper
+
       private
 
       def setup_blank
         image = MiniMagick::Image.open(IMAGE_DIR.join('OH_Partner_frame.png'))
         image.background('white')
-        image
-      end
-
-      def new_image
-        tempfile = Tempfile.new(['image-base-', '.png'])
-
-        MiniMagick::Tool::Convert.new do |convert|
-          yield convert
-          convert << tempfile.path
-        end
-
-        image = MiniMagick::Image.open(tempfile.path)
-        tempfile.close
         image
       end
 

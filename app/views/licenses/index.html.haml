@@ -1,0 +1,35 @@
+- content_for(:html_title) { t('.title') }
+
+#license
+  %h1.col-md-9.no_padding_left= t('.licenses')
+  .pull-right.margin_top_15
+    - if @project
+      = link_to t('.edit_project_licenses'), edit_project_url(@project), class: 'btn btn-primary'
+    - else
+      = link_to t('.add_new_license'), new_license_path, class: 'btn btn-mini btn-primary'
+  .clearfix
+
+  - if @project && @licenses.empty?
+    %p= t('.no_license_for_project', name: h(@project.name))
+    %p
+      = t('.click')
+      = link_to t('.here'), edit_project_url(@project)
+      = t('.click_more')
+
+  - else
+    = render 'shared/search_dingus', collection: @licenses, sort_context: nil, no_match_found_type: :none
+
+    %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
+      %span{ itemprop: 'publishingPrinciples' }
+        %table.table.table-striped.table-condensed
+          %tbody
+            %tr{ style: 'display: none' }
+              %td
+            - @licenses.each do |license|
+              %tr
+                %td= link_to license.nice_name, license_url(license)
+
+= render partial: 'shared/alert',
+  locals: { message: t('shared.search_dingus.no_match') } if @licenses.blank? && params[:query].present?
+
+= will_paginate @licenses

@@ -69,8 +69,8 @@ Rails.application.routes.draw do
       get :confirm_delete
       get :disabled
       get :settings
-      get 'edit_privacy'   => 'privacy#edit',   as: :edit_account_privacy
-      put 'update_privacy' => 'privacy#update', as: :account_privacy
+      get :edit_privacy, to: 'privacy#edit', as: :edit_account_privacy
+      patch :edit_privacy, to: 'privacy#update', as: :account_privacy
     end
 
     collection do
@@ -101,6 +101,7 @@ Rails.application.routes.draw do
       get :account
       get :project
       get :organization
+      get :license
     end
   end
 
@@ -130,8 +131,9 @@ Rails.application.routes.draw do
 
   resources :posts, only: :index, as: 'all_posts'
   get 'markdown_syntax', to: 'abouts#markdown_syntax'
-  get 'message', to: 'about#message'
-  get 'maintenance', to: 'about#maintenance'
+  get 'message', to: 'abouts#message'
+  get 'maintenance', to: 'abouts#maintenance'
+  get 'tools', to: 'abouts#tools'
 
   get 'explore/projects', to: 'explore#projects', as: :explore_projects
   get 'p/compare', to: 'compare#projects', as: :compare_projects
@@ -303,8 +305,6 @@ Rails.application.routes.draw do
     collection { get :rankings }
   end
 
-  resource :compare_repositories
-
   resources :contributors, controller: 'contributions' do
     resources :invites, only: [:new, :create]
   end
@@ -315,65 +315,15 @@ Rails.application.routes.draw do
   get 'message' => 'home#message'
   get 'maintenance' => 'home#maintenance'
 
+  get 'repositories/compare' => 'compare_repositories#index', as: :compare_repositories
+  get 'repositories/chart' => 'compare_repositories#chart', as: :compare_repositories_chart
+
+  get 'server_info' => 'home#server_info'
+
   resources :committers, only: [:index, :show] do
     member do
       post :claim
       post :save_claim
     end
   end
-
-  # The priority is based upon order of creation: first created -> highest
-  # priority.
-  # See how all your routes lay out with "rake routes".
-
-  # You can have the root of your site routed with "root"
-
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
-
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
-  # Example resource route (maps HTTP verbs to controller actions automatically)
-  #   resources :products
-
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
-
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
-
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
 end

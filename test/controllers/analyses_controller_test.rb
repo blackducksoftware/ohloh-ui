@@ -249,4 +249,21 @@ describe 'AnalysesController' do
       assigns(:analysis).must_equal analysis
     end
   end
+
+  describe 'languages' do
+    it 'should return pie chart' do
+      data = [[1, 'XMl', { url_name: 'xml', percent: 30, color: '555555' }],
+              [2, 'SQL', { url_name: 'sql', percent: 23, color: '493625' }],
+              [3, 'HTML', { url_name: 'html', percent: 20, color: '47A400' }],
+              [nil, '3 Other', { url_name: 'xml', percent: 27, color: '555555' }]]
+
+      Analysis::LanguagePercentages.any_instance.stubs(:collection).returns(data)
+
+      get :languages, project_id: project.to_param, id: analysis.id
+
+      must_respond_with :ok
+      assigns(:analysis).must_equal analysis
+      assigns(:project).must_equal project
+    end
+  end
 end

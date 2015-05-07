@@ -183,3 +183,14 @@ en:
     disabled:
       disabled_account: "%{user}'s account is disabled."
       disabled_message: 'This account has been disabled. If you are the account owner and wish to discuss this, send email to info@openhub.net.'
+    settings:
+      settings_title: 'Settings Page'
+      settings: 'Settings'
+      account_basics: 'Account Basics'
+      password: 'Password'
+      api_keys: 'API Keys'
+      privacy: 'Privacy'
+      account_basics_settings: 'Login ID, Full Name, Email, Bio, Homepage, and Location for the account.'
+      change_passwords: 'Change password for the account.'
+      api_key_settings:  'API Key settings and deletion, request new API keys.'
+      email_settings: 'Opt-in / opt-out for emails from Open Hub, and OAuth access settings for external applications.'

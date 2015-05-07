@@ -1,0 +1,52 @@
+.control-group
+  %label.control-label.required= t('.name')
+  .controls
+    = f.text_field :nice_name, class: 'col-md-11'
+    - error_tag @license, :nice_name
+    %p.help-block= t('.nice_name_help')
+
+.control-group
+  %label.control-label.required= t('.url_name')
+  .controls
+    .input-prepend.pull-left
+      %span.add-on= 'http://www.openhub.net/licenses/'
+    - read_only = @license.persisted? ? true : false
+    = f.text_field :name, readonly: read_only, :class => 'check-availability col-md-6',
+      autocomplete: 'off',
+      'data-ajax-path' => license_check_availabilities_path,
+      'data-preview-base-url' => licenses_url
+    = render 'shared/availability_preview'
+    - error_tag @license, :name, class: 'error url_name'
+    %p.help-block= t('.name_help')
+
+.control-group
+  %label.control-label= t('.abbreviation')
+  .controls
+    = f.text_field :abbreviation, class: 'col-md-6'
+    - error_tag @license, :abbreviation
+    %p.help-block= t('.abbreviation_help')
+
+.control-group
+  %label.control-label= t('.homepage')
+  .controls
+    = f.text_field :url, class: 'col-md-11'
+    - error_tag @license, :url
+    %p.help-block= t('.homepage_help')
+
+.control-group
+  %label.control-label= t('.license_text')
+  .controls
+    = find_and_preserve(f.text_area(:description, max_length: 50_000, rows: 10,
+      class: 'col-md-11 no_padding_right'))
+    - error_tag @license, :description
+    .clearfix
+    %p.help-block= t('.license_help')
+
+.actions
+  - btn_value = @license.persisted? ? t('.save_changes') : t('.save_license')
+  %input.btn.btn-primary{ type: 'submit', value: btn_value }
+  .pull-right.margin_right_35
+    - if current_user_is_admin?
+      %label.checkbox
+        = f.check_box :locked, choice: 'Locked'
+        = t('.locked')

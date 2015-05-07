@@ -5,7 +5,7 @@
   %h2.float_left
     %a{ href: settings_project_path(current_project) }= t :settings
     &#58; #{t('permissions.permissions')}
-  -# render_project_analysis_timestamp
+  = project_analysis_timestamp(current_project)
 
 .row
   .col-sm-6.col-sm-offset-2
