@@ -1,4 +1,4 @@
-- content_for(:html_title) { t('password_resets.title') }
+- content_for(:html_title) { "#{ @account.login } : #{ t('password_resets.title') }" }
 
 %h3= t('password_resets.title')
 
