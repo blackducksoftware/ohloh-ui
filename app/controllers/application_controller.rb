@@ -145,6 +145,12 @@ class ApplicationController < ActionController::Base
     flash.now[:notice] = logged_in? ? t('permissions.not_manager') : t('permissions.must_log_in')
   end
 
+  def api_key_lock
+    return unless request_format == 'xml'
+    api_key = ApiKey.in_good_standing.where(key: params[:api_key]).first
+    render_unauthorized unless api_key && api_key.may_i_have_another?
+  end
+
   private
 
   def strip_query_param

@@ -5,7 +5,8 @@ class ProjectsController < ApplicationController
   before_action :api_key_lock, only: [:index]
   before_action :find_account
   before_action :find_projects, only: [:index]
-  before_action :find_project, only: [:show, :edit, :update, :estimated_cost, :users, :settings, :map, :similar_by_tags, :similar]
+  before_action :find_project, only: [:show, :edit, :update, :estimated_cost, :users, :settings, :map,
+                                      :similar_by_tags, :similar]
   before_action :redirect_new_landing_page, only: :index
   before_action :find_forge_matches, only: :check_forge
   before_action :project_context, only: [:show, :users, :estimated_cost, :edit, :settings, :map, :similar]
@@ -64,13 +65,6 @@ class ProjectsController < ApplicationController
   end
 
   private
-
-  # TODO: this really belongs in app_controller, but that file is too big currently
-  def api_key_lock
-    return unless request_format == 'xml'
-    api_key = ApiKey.in_good_standing.where(key: params[:api_key]).first
-    render_unauthorized unless api_key && api_key.may_i_have_another?
-  end
 
   def find_account
     @account = Account.from_param(params[:account_id]).take

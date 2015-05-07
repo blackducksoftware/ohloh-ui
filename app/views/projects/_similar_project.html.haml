@@ -1,8 +1,7 @@
 :ruby
   compare_url = compare_projects_path(project_0: @project.name, project_1: project.name)
   compare_title = t('.compare_title', name_1: project.name, name_2: @project.name)
-  activity_class = project_activity_css_class(project, :fifteen)
-  activity_text = project_activity_text(project, true)
+  languages_summary_path = languages_summary_project_analysis_path(project, id: 'latest')
 
 .col-md-4.no_padding
   .col-md-3.no_padding
@@ -14,15 +13,16 @@
       = link_to t('.compare'), compare_url, style: 'font-size: 12px', title: compare_title
     %p.nomargin
       - project_activity_level_class(project, :fifteen)
-      %span{ class: project_activity_level_text_class(:fifteen)}= activity_text
+      %span{ class: project_activity_level_text_class(:fifteen) }
+        = project_activity_text(project, true)
     - if project.best_analysis.present?
       %p.nomargin
         = t('.most_written')
-        = link_to project.best_analysis.main_language.nice_name, languages_summary_project_analysis_path(project, id: 'latest')
+        = link_to project.best_analysis.main_language.nice_name, languages_summary_path
     %p.nomargin
       = t('.licence')
       - if project.licenses.any?
-        = p.licenses.map { |license| link_to license.short_name, license_path(license) }.join(', ')
+        = project.licenses.map { |license| link_to license.short_name, license_path(license) }.join(', ').html_safe
       - else
         = t('.unknown')
   .margin_top_10
