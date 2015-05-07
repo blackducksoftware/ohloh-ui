@@ -1,0 +1,24 @@
+- content_for(:html_title) { t('password_resets.title') }
+
+%h3= t('password_resets.title')
+
+.row
+  .col-md-7
+    .well
+      = form_for @account, url: reset_password_resets_path do |f|
+        = hidden_field_tag :account_id, @account.to_param
+        = hidden_field_tag :token, params[:token]
+
+        %fieldset
+          .control-group
+            %label.control-label.required= t('.new_password')
+            .controls
+              = f.password_field :password, value: '', class: 'input-xlarge'
+              - error_tag @account, :password
+          .control-group
+            %label.control-label.required= t('.confirm_password')
+            .controls
+              = f.password_field :password_confirmation, value: '', class: 'input-xlarge'
+              - error_tag @account, :password_confirmation
+          .actions
+            = f.submit t('.submit_text'), class: 'btn btn-primary'

@@ -7,6 +7,9 @@ module AccountValidations
     validates :email_confirmation, email_format: true, presence: true, allow_blank: false, on: :create
 
     validates :password, presence: true, on: :create
+    # Password updated from the form cannot be nil.
+    # Password will only be nil when we are updating the other columns.
+    validates :password, presence: { allow_nil: true }, on: :update
     validates :password, :password_confirmation, confirmation: true, on: [:create, :update]
     validates :password, :password_confirmation, length: { in: 5..40 }, if: -> { password.present? }
 

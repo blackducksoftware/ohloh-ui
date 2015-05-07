@@ -314,3 +314,13 @@ en:
 
   project_experience:
     no_matching_project: No matching open source project with this name.
+
+  password_resets:
+    title: 'Password Reset'
+    new:
+      enter_email_address: Enter the email you signed up with.
+      submit_text: Send me a password reset link
+    confirm:
+      new_password: New Password
+      confirm_password: Confirm Password
+      submit_text: Reset Password
