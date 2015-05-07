@@ -41,23 +41,22 @@ class PasswordResetsController < ApplicationController
 
   def set_account
     @account = Account.from_param(params[:account_id]).first
-    raise ParamRecordNotFound unless @account
+    fail ParamRecordNotFound unless @account
   end
 
   def check_token_expiration
     token_expires_at = @account.reset_password_tokens[params[:token]]
     return render_404 unless token_expires_at
+    return if token_expires_at > Time.now.utc
 
-    if token_expires_at < Time.now.utc
-      flash[:error] = 'Your password reset URL has expired. Please try again!'
-      redirect_to new_password_reset_path
-    end
+    flash[:error] = 'Your password reset URL has expired. Please try again!'
+    redirect_to new_password_reset_path
   end
 
   def redirect_if_logged_in
-    if logged_in?
-      flash[:notice] = 'You are already logged in.'
-      redirect_to account_path(current_user)
-    end
+    return unless logged_in?
+
+    flash[:notice] = 'You are already logged in.'
+    redirect_to account_path(current_user)
   end
 end
