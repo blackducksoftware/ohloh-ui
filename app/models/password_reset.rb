@@ -35,7 +35,7 @@ class PasswordReset
   private
 
   def account
-    @account ||= Account.find_by(email: email)
+    @account ||= Account.find_by(email: email.strip)
   end
 
   def account_exists_for_email
