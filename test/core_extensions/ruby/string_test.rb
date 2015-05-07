@@ -48,6 +48,17 @@ class StringTest < ActiveSupport::TestCase
     before.fix_encoding_if_invalid!.split("\n").must_equal after
   end
 
+  it 'should not force_encode to utf-8 when string has valid encoding' do
+    encoded_string = 'including \\xE2??fair'
+    edit_id = create(:create_edit, value: encoded_string).id
+    encoded_string.valid_encoding?.must_equal true
+    encoded_string.encoding.to_s.must_equal 'UTF-8'
+    edit = Edit.find(edit_id)
+    edit.value.valid_encoding?.must_equal true
+    edit.value.encoding.to_s.must_equal 'UTF-8'
+    edit.value.must_equal encoded_string
+  end
+
   it 'valid_http_url? returns true for http:// urls' do
     'http://cnn.com/sports'.valid_http_url?.must_equal true
   end
