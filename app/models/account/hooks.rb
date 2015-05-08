@@ -28,6 +28,10 @@ class Account::Hooks
     schedule_organization_analysis(account.organization_id)
   end
 
+  def before_save(account)
+    account.current_password = account.crypted_password
+  end
+
   def after_save(account)
     deliver_activation(account) unless account.anonymous?
     reindex_person(account) if account.person && !Account::Access.new(account).spam?

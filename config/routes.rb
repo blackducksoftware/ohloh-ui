@@ -64,6 +64,8 @@ Rails.application.routes.draw do
       get :confirm_delete
       get :disabled
       get :settings
+      get 'passwords/edit', to: 'passwords#edit'
+      patch 'passwords/edit', to: 'passwords#update'
       get :edit_privacy, to: 'privacy#edit', as: :edit_account_privacy
       patch :edit_privacy, to: 'privacy#update', as: :account_privacy
     end

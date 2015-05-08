@@ -14,10 +14,9 @@
           %a.account_settings_icon.settings_account_basics{ href: edit_account_path(@account) }
         %span= t('.account_basics_settings')
       .pull-right.span5.settings_specifications
-        %h4= link_to t('.password'), '#', class: 'strong'
+        %h4= link_to t('.password'), passwords_edit_account_path(@account), class: 'strong'
         %span.pull-left
-          -# TODO: Password Controller/link does not exist yet.
-          %a.account_settings_icon.settings_account_password{ href: '#' }
+          %a.account_settings_icon.settings_account_password{ href: passwords_edit_account_path(@account) }
         %span= t('.change_passwords')
     .account_setting_row
       .pull-left.span5.settings_specifications
