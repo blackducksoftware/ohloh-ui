@@ -47,7 +47,7 @@
           = image_tag commits_spark_project_contributor_url(project_id: @project.to_param, id: fact.name_id),
           width: 179, height: 32, align: 'left' if fact.name_id
         %td
-          = fact.primary_language.nice_name if fact.primary_language
+          = fact.primary_language.nice_name
         %td
           - if fact.first_checkin
             %abbr.date{ title: fact.first_checkin }= t('.ago', duration: time_ago_in_words(fact.first_checkin))
