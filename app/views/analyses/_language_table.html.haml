@@ -14,7 +14,7 @@
       %th.center{ width: '11%', scope: 'col' }= t('.total_lines')
       %th.left{ width: '20%', scope: 'col' }= t('.total_percent')
 
-    - language_breakdown.each do |lb|
+    - languages_breakdown.each do |lb|
       %tr{ class: cycle('odd', 'even') }
         %td{ style: "background-color: ##{language_color(lb.language_name)}" } &nbsp;
         %td
@@ -27,18 +27,18 @@
         %td.center= number_with_delimiter(lb.code_total + lb.comments_total + lb.blanks_total)
         %td
           .bar.pull-left
-            .barfill{ style: barfill_css(language_breakdown, lb) }
+            .barfill{ style: barfill_css(languages_breakdown, lb) }
           %span{ itemscope: '', itemprop: 'aggregateRating', itemtype: 'http://schema.org/AggregateRating' }
             %span.pull-right{ itemprop: 'ratingValue', style: 'margin-left:5px;' }
-              = total_percent(language_breakdown, lb)
+              = total_percent(languages_breakdown, lb)
           .clearfix
 
     %tr
       %td
       %td.center= t('.total')
-      %td.center= number_with_delimiter analysis_total_detail(language_breakdown, 'code_total')
-      %td.center= number_with_delimiter analysis_total_detail(language_breakdown, 'comments_total')
+      %td.center= number_with_delimiter analysis_total_detail(languages_breakdown, 'code_total')
+      %td.center= number_with_delimiter analysis_total_detail(languages_breakdown, 'comments_total')
       %td.center
-      %td.center= number_with_delimiter analysis_total_detail(language_breakdown, 'blanks_total')
-      %td.center= number_with_delimiter analysis_total_lines(language_breakdown)
+      %td.center= number_with_delimiter analysis_total_detail(languages_breakdown, 'blanks_total')
+      %td.center= number_with_delimiter analysis_total_lines(languages_breakdown)
       %td.center

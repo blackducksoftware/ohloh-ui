@@ -1,0 +1,26 @@
+:ruby
+  project_link = link_to(CGI.escapeHTML(@project.name), project_url(@project)).html_safe
+  lang = Language.find(@project.best_analysis.main_language_id)
+  precision = lang.avg_percent_comments > 0.1 ? 0 : 1
+  lang_name = CGI.escapeHTML(lang.nice_name).html_safe
+  lang_percent = lang.avg_percent_comments * 100.0
+  proj_percent = @project.best_analysis.relative_comments.to_f * lang.avg_percent_comments.to_f * 100.0
+%p= t('.comments_1', link: project_link, lang_name: lang_name).html_safe
+%p= t('.comments_2', lang_name: lang_name, percent: number_to_percentage(lang_percent, precision: precision))
+- unless factoid.is_a? FactoidCommentsAverage
+  - if @project.best_analysis.relative_comments <= 0.7
+    #{t('.avg', name: @project.name, percent: number_to_percentage(proj_percent, precision: precision))}
+  - else
+    #{t('.only', name: @project.name, percent: number_to_percentage(proj_percent, precision: precision))}
+%p
+  - if factoid.is_a? FactoidCommentsVeryLow
+    #{t('.comments_very_low', name: @project.name, lang_name: lang_name)}
+  - elsif factoid.is_a? FactoidCommentsLow
+    #{t('.comments_low', name: @project.name, lang_name: lang_name)}
+  - elsif factoid.is_a? FactoidCommentsAverage
+    #{t('.comments_average', name: @project.name, lang_name: lang_name)}
+  - elsif factoid.is_a? FactoidCommentsHigh
+    #{t('.comments_high', name: @project.name, lang_name: lang_name)}
+  - elsif factoid.is_a? FactoidCommentsVeryHigh
+    #{t('.comments_very_high', name: @project.name, lang_name: lang_name)}
+%p= t('.comments_note')

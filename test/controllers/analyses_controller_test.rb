@@ -33,10 +33,11 @@ describe 'AnalysesController' do
       must_respond_with :unauthorized
     end
 
-    it 'should redirect to project page for html request' do
+    it 'must respond with valid data for xml request' do
       url = "http://test.host/p/#{project.url_name}/analyses/#{analysis.id}"
+      client_id = api_key.oauth_application.uid
 
-      get :show, project_id: project.to_param, id: analysis.id, format: :xml, api_key: api_key.key
+      get :show, project_id: project.to_param, id: analysis.id, format: :xml, api_key: client_id
 
       result = xml_hash(@response.body)['response']
       analysis_result = result['result']['analysis']
@@ -246,6 +247,23 @@ describe 'AnalysesController' do
       must_respond_with :ok
       assigns(:project).must_equal project
       assigns(:analysis).must_equal analysis
+    end
+  end
+
+  describe 'languages' do
+    it 'should return pie chart' do
+      data = [[1, 'XMl', { url_name: 'xml', percent: 30, color: '555555' }],
+              [2, 'SQL', { url_name: 'sql', percent: 23, color: '493625' }],
+              [3, 'HTML', { url_name: 'html', percent: 20, color: '47A400' }],
+              [nil, '3 Other', { url_name: 'xml', percent: 27, color: '555555' }]]
+
+      Analysis::LanguagePercentages.any_instance.stubs(:collection).returns(data)
+
+      get :languages, project_id: project.to_param, id: analysis.id
+
+      must_respond_with :ok
+      assigns(:analysis).must_equal analysis
+      assigns(:project).must_equal project
     end
   end
 end

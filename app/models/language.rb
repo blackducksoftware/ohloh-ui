@@ -13,4 +13,8 @@ class Language < ActiveRecord::Base
       end.unshift(ALL_LANGUAGES)
     end
   end
+
+  def total
+    code.to_i + comments.to_i + blanks.to_i
+  end
 end

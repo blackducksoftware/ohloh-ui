@@ -1,4 +1,4 @@
-- key, klass = { error: 'alert-error', notice: 'alert-info', success: 'alert-success' }.find { |k, _v| flash[k] }
+- key, klass = { error: 'alert-danger', notice: 'alert-info', success: 'alert-success' }.find { |k, _v| flash[k] }
 - if key
   #flash-msg
     .alert{ class: klass }

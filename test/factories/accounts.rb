@@ -18,6 +18,9 @@ FactoryGirl.define do
     activated_at { Time.now.utc }
     activation_code nil
     country_code 'us'
+    email_master true
+    email_kudos true
+    email_posts true
   end
 
   factory :unactivated, parent: :account do

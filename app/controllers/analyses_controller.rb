@@ -1,13 +1,10 @@
 class AnalysesController < ApplicationController
-  include ApiKeyChecks
-
   helper :Projects
 
   before_action :set_project
   before_action :set_analysis
   before_action :fail_if_analysis_not_found, except: :lanaguages_summary
   before_action :project_context, only: :languages_summary
-  before_action :verify_api_key, only: :show
 
   def show
     respond_to do |format|
@@ -16,9 +13,15 @@ class AnalysesController < ApplicationController
     end
   end
 
+  def languages
+    chart_data = Analysis::LanguagePercentages.new(@analysis).collection.map(&:last)
+    pie_chart = Chart::Pie.new(chart_data, params[:width], params[:height]).render.to_blob
+    send_data pie_chart, disposition: 'inline', type: 'image/png'
+  end
+
   def languages_summary
     @analysis ||= @project.best_analysis
-    @languages_breakdown = Analysis::LanguageBreakdown.new(analysis: @analysis).collection
+    @languages_breakdown = Analysis::LanguagesBreakdown.new(analysis: @analysis).collection
   end
 
   def top_commit_volume_chart

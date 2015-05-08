@@ -6,15 +6,17 @@ class ApiKey < ActiveRecord::Base
   KEY_LIMIT_PER_ACCOUNT = 10
 
   belongs_to :account
+  belongs_to :oauth_application, class_name: 'Doorkeeper::Application', dependent: :destroy
 
   after_initialize :defaults
 
-  validates :description, length: { within: 4..2000 }
-  validates :name, length: { within: 4..50 }
-  validates :terms, acceptance: { accept: '1', message: I18n.t(:must_accept_terms) }
-  validates :key, uniqueness: true
+  accepts_nested_attributes_for :oauth_application
 
-  filterable_by ['accounts.name', 'api_keys.key', 'api_keys.description', 'api_keys.name']
+  validates :description, length: { within: 4..2000 }
+  validates :terms, acceptance: { accept: '1', message: I18n.t(:must_accept_terms) }
+
+  filterable_by ['accounts.name', 'oauth_applications.uid', 'api_keys.description',
+                 'oauth_applications.name']
 
   scope :in_good_standing, -> { where.not(status: STATUS_DISABLED) }
   scope :by_account_name, -> { joins(:account).order('lower(accounts.name)') }
@@ -43,6 +45,10 @@ class ApiKey < ActiveRecord::Base
     def reset_all!
       ApiKey.update_all(daily_count: 0, day_began_at: Time.now.utc)
       ApiKey.where(status: STATUS_LIMIT_EXCEEDED).update_all(status: STATUS_OK)
+    end
+
+    def find_by_oauth_application_uid(client_id)
+      joins(:oauth_application).where('oauth_applications.uid' => client_id).first
     end
   end
 

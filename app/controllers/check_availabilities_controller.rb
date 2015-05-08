@@ -13,4 +13,8 @@ class CheckAvailabilitiesController < ApplicationController
   def organization
     render json: Organization.case_insensitive_url_name(params[:query]).present?
   end
+
+  def license
+    render json: License.resolve_name(params[:query]).present?
+  end
 end

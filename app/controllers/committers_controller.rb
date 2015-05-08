@@ -94,6 +94,6 @@ class CommittersController < ApplicationController
   end
 
   def find_emails(email_ids)
-    @emails_map = EmailAddress.where(id: email_ids).index_by(&:id)
+    @emails_map = EmailAddress.where(id: email_ids.flatten).index_by(&:id)
   end
 end
