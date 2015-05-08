@@ -14,10 +14,10 @@ Rails.application.routes.draw do
 
   resources :stack_entries
 
-  resources :password_reset, only: [:new, :create] do
+  resources :password_resets, only: [:new, :create] do
     collection do
       get :confirm
-      post :reset
+      patch :reset
     end
   end
   resources :activation_resends, only: [:new, :create]
