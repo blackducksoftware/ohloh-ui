@@ -29,7 +29,9 @@ Rails.application.routes.draw do
   end
   resources :kudos, only: [:new, :create, :destroy]
 
-  resources :people, only: [:index]
+  resources :people, only: [:index] do
+    collection { get :rankings }
+  end
   resources :edits, only: [:update]
 
   resources :licenses do
@@ -299,10 +301,6 @@ Rails.application.routes.draw do
 
   resources :languages, only: [:show, :index] do
     collection { get :compare }
-  end
-
-  resources :people do
-    collection { get :rankings }
   end
 
   resources :contributors, controller: 'contributions' do

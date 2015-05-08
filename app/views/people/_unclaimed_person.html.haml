@@ -1,5 +1,6 @@
 :ruby
   name = people.first.name.name
+  name_id ||= people.first.name.id
   from_show_page ||= false
   unclaimed_people = people if from_show_page
   unclaimed_people ||= people.length > 12 ? people.first(11) : people

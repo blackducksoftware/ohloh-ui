@@ -11,7 +11,7 @@ class NilContributorFactTest < ActiveSupport::TestCase
 
   describe 'primary_language' do
     it 'should return nil' do
-      nil_contributor_fact.primary_language.must_equal nil
+      nil_contributor_fact.primary_language.is_a?(NilLanguage).must_equal true
     end
   end
 

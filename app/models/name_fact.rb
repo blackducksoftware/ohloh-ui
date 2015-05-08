@@ -15,6 +15,10 @@ class NameFact < ActiveRecord::Base
     last_checkin.next_year > Time.current
   end
 
+  def primary_language
+    super || NilLanguage.new
+  end
+
   def <=>(other)
     return 0 unless other
     if last_checkin.nil?
