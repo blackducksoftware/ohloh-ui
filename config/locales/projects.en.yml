@@ -276,4 +276,21 @@ en:
       title: '%{name} has been stacked by %{count} users. Click here to add it to your stack.'
       i_use: 'I Use This!'
     map:
-      page_title: "User & Contributor Locations Page"
+      page_title: 'User & Contributor Locations Page'
+    similar:
+      page_title: 'The %{name} Open Source Project on Open Hub : Related Projects Page'
+      title: 'Related Projects'
+      project: 'Project'
+      similar_to: 'Similar to'
+      nothing_by_tags: 'No similar projects found. Open Hub uses project tags to determine project relationships.'
+      add_tags: 'Add tags to this project'
+      to_similar: 'to find similar projects.'
+      also_use: 'People who use %{name} also use:'
+      nothing_by_stacks: 'Open Hub requires more users for this project before we can determine project relationships.'
+      nightly_update: 'This list is updated nightly.'
+    similar_project:
+      compare: '(Compare Project)'
+      compare_title: 'Compare %{name_1} to %{name_2}'
+      most_written: 'Mostly written in'
+      licence: 'License:'
+      unknown: 'Unknown'
