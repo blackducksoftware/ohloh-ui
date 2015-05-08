@@ -14,10 +14,10 @@ Rails.application.routes.draw do
 
   resources :stack_entries
 
-  resources :password_reset, only: [:new, :create] do
+  resources :password_resets, only: [:new, :create] do
     collection do
       get :confirm
-      post :reset
+      patch :reset
     end
   end
   resources :activation_resends, only: [:new, :create]
@@ -148,6 +148,7 @@ Rails.application.routes.draw do
       get :settings
       get :estimated_cost
       get :similar_by_tags
+      get :similar
       get 'permissions'  => 'permissions#show',   as: :permissions
       put 'permissions'  => 'permissions#update', as: :update_permissions
       post 'rate'        => 'ratings#rate',       as: :rate
@@ -205,7 +206,6 @@ Rails.application.routes.draw do
         get :cocomo
       end
     end
-    resources :similar_projects, only: :index
     resources :ratings
     resources :reviews, except: :show do
       collection { get :summary }

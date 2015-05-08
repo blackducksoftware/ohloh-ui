@@ -9,7 +9,7 @@ class ProjectDecoratorTest < ActiveSupport::TestCase
         [:rss, 'News', '/p/linux/rss_articles'],
         [:settings, 'Settings', '/p/linux/settings'],
         [:widgets, 'Sharing Widgets', '/p/linux/widgets'],
-        [:similar_projects, 'Related Projects', '/p/linux/similar_projects']
+        [:similar_projects, 'Related Projects', '/p/linux/similar']
       ],
       [
         [:code_data, 'Code Data'],
