@@ -9,7 +9,7 @@ class PasswordResetTest < ActiveSupport::TestCase
       password_reset.valid?
 
       password_reset.errors.messages.length.must_equal 1
-      password_reset.errors.messages[:email].first.must_match /required/
+      password_reset.errors.messages[:email].first.must_match(/required/)
     end
 
     it 'must accept emails with trailing or leading whitespaces' do
