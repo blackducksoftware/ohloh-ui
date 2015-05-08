@@ -11,7 +11,7 @@
       = link_to project.name, project_path(project)
       &nbsp;
       = link_to t('.compare'), compare_url, style: 'font-size: 12px', title: compare_title
-    .nomargin{ style: 'position: relative'}
+    .nomargin{ style: 'position: relative' }
       - project_activity_level_class(project, :fifteen)
       %span{ class: project_activity_level_text_class(:fifteen) }
         = project_activity_text(project, true)
