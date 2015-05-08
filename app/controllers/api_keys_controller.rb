@@ -63,7 +63,8 @@ class ApiKeysController < ApplicationController
   end
 
   def model_params
-    editable_params = [:name, :description, :url, :terms]
+    editable_params = [:name, :description, :url, :terms,
+                       { oauth_application_attributes: [:id, :name, :redirect_uri] }]
     editable_params << :daily_limit if current_user_is_admin?
     params.require(:api_key).permit(editable_params)
   end
@@ -76,7 +77,7 @@ class ApiKeysController < ApplicationController
 
   def find_models
     @api_keys = (@account ? @account.api_keys : ApiKey)
-                .includes(:account).references(:all)
+                .includes(:account, :oauth_application).references(:all)
                 .send(parse_sort_term)
                 .filter_by(params[:query])
                 .page(params[:page])

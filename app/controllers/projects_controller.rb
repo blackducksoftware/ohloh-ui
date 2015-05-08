@@ -2,7 +2,6 @@ class ProjectsController < ApplicationController
   [AnalysesHelper, FactoidsHelper, MapHelper, RatingsHelper, RepositoriesHelper, TagsHelper].each { |help| helper help }
 
   before_action :session_required, only: [:check_forge, :create, :new, :update]
-  before_action :api_key_lock, only: [:index]
   before_action :find_account
   before_action :find_projects, only: [:index]
   before_action :find_project, only: [:show, :edit, :update, :estimated_cost, :users, :settings, :map,

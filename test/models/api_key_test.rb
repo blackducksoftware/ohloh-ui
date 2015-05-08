@@ -67,4 +67,32 @@ class ApiKeyTest < ActiveSupport::TestCase
     api_key3.day_began_at.wont_equal day_began_at
     api_key3.status.must_equal ApiKey::STATUS_DISABLED
   end
+
+  it 'must successfully create a nested oauth application' do
+    application_name = Faker::Company.name
+    api_key = create(:api_key, oauth_application_attributes: { name: application_name,
+                                                               redirect_uri: Faker::Internet.url })
+
+    api_key.oauth_application.name.must_equal application_name
+    api_key.oauth_application.uid.must_be :present?
+    api_key.oauth_application.secret.must_be :present?
+  end
+
+  it 'must successfully update a nested oauth application' do
+    api_key = create(:api_key)
+    application_name = Faker::Company.name
+    api_key.update!(oauth_application_attributes: { name: application_name,
+                                                    redirect_uri: Faker::Internet.url })
+
+    api_key.oauth_application.name.must_equal application_name
+  end
+
+  describe '#find_by_oauth_application_uid' do
+    it 'must return the correct oauth_application' do
+      api_key = create(:api_key)
+      oauth_application_uid = Doorkeeper::Application.last.uid
+
+      ApiKey.find_by_oauth_application_uid(oauth_application_uid).must_equal api_key
+    end
+  end
 end

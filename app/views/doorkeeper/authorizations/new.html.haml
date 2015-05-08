@@ -1,0 +1,24 @@
+- content_for(:html_title) { "Open Hub: #{ t('.title') }" }
+
+.row-fluid.clearfix.margin_bottom_20.margin_top_10
+  .col-md-10.col-md-offset-2
+    .inset
+      - api_key = ApiKey.find_by(oauth_application_id: @pre_auth.client.application.id)
+      %h1= t('.heading')
+      %p
+        = t('.would_you_like')
+        %strong
+          = surround '&ldquo;'.html_safe, '&rdquo;'.html_safe do
+            = @pre_auth.client.name
+        = t('.to_access_account')
+      %h6.nomargin= link_to_if api_key.url.presence, @pre_auth.client.name, api_key.url
+      %p= api_key.description
+
+    .inset
+      = form_tag oauth_authorization_path, method: :post do
+        = hidden_field_tag :client_id, @pre_auth.client.uid
+        = hidden_field_tag :redirect_uri, @pre_auth.redirect_uri
+        = hidden_field_tag :state, @pre_auth.state
+        = hidden_field_tag :response_type, @pre_auth.response_type
+        = hidden_field_tag :scope, @pre_auth.scope
+        = submit_tag t('doorkeeper.authorizations.buttons.authorize'), class: 'btn btn-primary'

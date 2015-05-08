@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   root to: 'home#index'
+
+  use_doorkeeper do
+    skip_controllers :applications, :authorized_applications
+  end
+
   resources :sessions, only: [:new, :create] do
     collection do
       delete :destroy
@@ -34,7 +39,7 @@ Rails.application.routes.draw do
   resources :tags, only: [:index]
 
   resources :accounts do
-    resources :api_keys, constraints: { format: :html }, except: :show
+    resources :api_keys, constraints: { format: :html }
     resources :projects, only: [:index]
     resources :positions, only: [:index] do
       collection do

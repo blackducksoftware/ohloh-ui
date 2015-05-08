@@ -87,9 +87,12 @@ describe 'EnlistmentsControllerTest' do
     end
   end
 
-  it 'show' do
+  it 'show must return valid data for xml request' do
     login_as @account
-    get :show, project_id: @project_id, id: @enlistment.id, format: :xml
+    client_id = create(:api_key).oauth_application.uid
+
+    get :show, project_id: @project_id, id: @enlistment.id, format: :xml, api_key: client_id
+
     must_respond_with :ok
     must_render_template :show
   end
