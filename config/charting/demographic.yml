@@ -1,10 +1,11 @@
 chart:
   type: 'pie'
-  plotBackgroundColor: nil
-  plotBorderWidth: nil
+  plotBackgroundColor:
+  plotBorderWidth:
   renderTo: 'demographics_chart'
   plotShadow: false
 title:
+  text:
   align: 'right'
   y: 60
   floating: 'true'

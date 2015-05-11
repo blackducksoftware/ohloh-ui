@@ -38,7 +38,7 @@ Rails.application.routes.draw do
     resources :edits, only: [:index]
   end
 
-  resources :tags, only: [:index]
+  resources :tags, only: [:index, :show]
 
   resources :accounts do
     resources :api_keys, constraints: { format: :html }
@@ -137,7 +137,6 @@ Rails.application.routes.draw do
   get 'maintenance', to: 'abouts#maintenance'
   get 'tools', to: 'abouts#tools'
 
-  get 'explore/projects', to: 'explore#projects', as: :explore_projects
   get 'p/compare', to: 'compare#projects', as: :compare_projects
   get 'p/graph', to: 'compare#projects_graph', as: :compare_graph_projects
 
@@ -307,8 +306,14 @@ Rails.application.routes.draw do
     resources :invites, only: [:new, :create]
   end
 
-  get 'explore/orgs' => 'explore#orgs'
-  get 'explore/orgs_by_thirty_day_commit_volume' => 'explore#orgs_by_thirty_day_commit_volume'
+  resources :explores, only: :index, path: :explore, controller: :explore do
+    collection do
+      get :orgs
+      get :projects
+      get :demographic_chart
+      get :orgs_by_thirty_day_commit_volume
+    end
+  end
 
   get 'message' => 'home#message'
   get 'maintenance' => 'home#maintenance'

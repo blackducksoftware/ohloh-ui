@@ -23,6 +23,7 @@
 #= require highcharts/highcharts-more
 #= require highcharts/solid-gauge
 #= require highcharts/highcharts
+#= require tagcloud
 
 $(document).on 'page:change', ->
   Edit.init()

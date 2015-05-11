@@ -28,3 +28,33 @@ en:
       sector: 'Sector'
       average: 'Average Commits / Affiliate'
       orgs: '# of Orgs'
+    projects:
+      title: 'Projects'
+      page_title: 'Projects Explore - Open Hub'
+    projects_sidebar:
+      search: 'Search:'
+      tags: 'Explore Tags:'
+      enter_string: 'Enter search string'
+      enter_tag: 'Enter different tag'
+      enter_project: 'Enter a project name'
+      compare: 'Compare:'
+      similar: 'Similar Projects to:'
+      invalid_select: 'Please select a valid Project'
+      add: 'Add a Project:'
+      community: 'Open Hub is community driven web site that thrives when members tell us about new FOSS projects.'
+      favorite: "If you don't find a favorite project on Open Hub, "
+      add_here: 'add it here'
+    hot_projects:
+      title: 'Hot Projects on Open Hub'
+      filter: 'Filter by Language:'
+      rank: 'Rank'
+      name: 'Name'
+      claimed: 'Claimed By'
+      pai: 'PAI'
+      hotness_score: 'Hotness Score'
+    hot_projects_list:
+      no_matching_records: 'There are no matching projects to display.'
+    project_demographics:
+      demographics_by: 'Project Demographics by'
+      out_of: 'Projects out of %{count} total have a PAI available'
+
