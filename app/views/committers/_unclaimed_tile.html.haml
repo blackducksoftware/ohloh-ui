@@ -1,0 +1,18 @@
+:ruby
+  main_lang = name_fact.primary_language.name
+  bg_color = language_color(main_lang)
+  txt_color = language_text_color(main_lang)
+  emails = name_fact.email_address_ids.compact.map { |email_id| @emails_map[email_id].obfuscate_email }
+  contributor_id = Contribution.generate_id_from_project_id_and_name_id(project.id, name_fact.name_id)
+
+.logo
+  %a{ href: project_path(project), title: project.name }
+    - project_icon(project, :small, class: 'logo')
+.commits{ style: "background-color: ##{bg_color}; color: ##{txt_color} !important", title: "#{emails.join("\n")}" }
+  %span= name_fact.commits
+  .clearfix
+  = link_to 'commit'.pluralize(name_fact.commits), project_contributor_path(project, contributor_id)
+.clearfix
+
+.project_link
+  = link_to truncate(project.name, length: 14), project_path(project), title: project.name

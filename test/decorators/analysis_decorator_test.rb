@@ -58,6 +58,32 @@ class AnlysisDecoratorTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'display_chart?' do
+    it 'should return false and no_commits when commit count is nil' do
+      analysis.stubs(:commit_count).returns(nil)
+      analysis.decorate.display_chart?.must_equal [false, :no_commits]
+    end
+
+    it 'should return false and no_commits when commit count is negative' do
+      analysis.stubs(:commit_count).returns(-1)
+      analysis.decorate.display_chart?.must_equal [false, :no_commits]
+    end
+
+    it 'should return false and no_understood_lang when markup_total and logic_total is negative' do
+      analysis.stubs(:commit_count).returns(1)
+      analysis.stubs(:logic_total).returns(-1)
+      analysis.stubs(:markup_total).returns(-1)
+      analysis.decorate.display_chart?.must_equal [false, :no_understood_lang]
+    end
+
+    it 'should return true and nil when logic_total, markup_total and commit_count are present' do
+      analysis.stubs(:markup_total).returns(1)
+      analysis.stubs(:logic_total).returns(1)
+      analysis.stubs(:commit_count).returns(1)
+      analysis.decorate.display_chart?.must_equal [true, nil]
+    end
+  end
+
   private
 
   def create_summaries

@@ -46,22 +46,13 @@ class PositionCoreTest < ActiveSupport::TestCase
   end
 
   it 'ensure_position_or_alias creates an alias if a position exists' do
-    account, name, project = create(:account), create(:name), create(:project)
+    account, person, project, name = create(:account), create(:person), create(:project), create(:name)
     create_position(account: account, project: project, name: name)
-    new_name = create(:name)
-
-    assert_difference('project.aliases.count', 1) do
-      alias_stub = stub(project: project, commit_name_id: name.id,
-                        preferred_name_id: new_name.id)
-      project.stubs(:create_alias).returns(alias_stub)
-      project.aliases.stubs(:count).returns(1)
-
-      alias_object = account.position_core.ensure_position_or_alias!(project, name)
-
-      account.reload.positions.count.must_equal 1 # ensure no new positions
-      alias_object.project.name.must_equal project.name
-      alias_object.commit_name_id.must_equal name.id
-      alias_object.preferred_name_id.must_equal new_name.id
+    assert_difference 'Alias.count' do
+      alias_obj = account.position_core.ensure_position_or_alias!(project, person.name)
+      alias_obj.project_id.must_equal project.id
+      alias_obj.commit_name_id.must_equal person.name_id
+      alias_obj.preferred_name_id.must_equal name.id
     end
   end
 

@@ -1,17 +1,12 @@
 .clearfix
 
-.full_row
-  - if @edits.any?
-    %table.table.table-striped.table-condensed
+- if @edits.present?
+  #edits_list
+    %table.table.table-striped.alt.table-condensed
       %tbody
         %tr{ id: 'dingus-row' }
           %td
-            -# render_table_dingus(true, @edits, true, nil, (project_edits_page? || orgs_edits_page?))
-
-- if !@edits.empty?
-  #edits_list{ style: 'margin-top:-20px;' }
-    %table.table.table-striped.alt.table-condensed
-      %tbody
+            = render 'shared/search_dingus', collection: @edits, sort_context: nil
         = render partial: 'edit', collection: @edits
   = will_paginate @edits
 - elsif !params[:query].blank?

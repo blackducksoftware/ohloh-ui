@@ -8,6 +8,9 @@ module ProjectScopes
     scope :from_param, lambda { |param|
       not_deleted.where(Project.arel_table[:url_name].eq(param).or(Project.arel_table[:id].eq(param)))
     }
+    scope :deleted_and_not_deleted_from_param, lambda { |param|
+      where(Project.arel_table[:url_name].eq(param).or(Project.arel_table[:id].eq(param)))
+    }
     scope :been_analyzed, -> { where.not(best_analysis_id: nil) }
     scope :recently_analyzed, -> { not_deleted.been_analyzed.order(created_at: :desc) }
     scope :hot, lambda { |l_id = nil|
@@ -32,5 +35,6 @@ module ProjectScopes
         .active. order(' COALESCE(analysis_summaries.affiliated_commits_count, 0) +
                      COALESCE(analysis_summaries.outside_commits_count, 0) DESC ').limit(10)
     }
+    scope :with_pai_available, -> { active.where(arel_table[:activity_level_index].gt(0)).size }
   end
 end

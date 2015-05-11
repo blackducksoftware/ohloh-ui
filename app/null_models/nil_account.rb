@@ -7,4 +7,8 @@ class NilAccount < NullObject
 
   def admin?
   end
+
+  def id
+    nil
+  end
 end

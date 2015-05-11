@@ -1,0 +1,11 @@
+- project_link = link_to(sanitize(@project.name), project_url(@project))
+%p
+  != t('.activity', link: project_link)
+  - case factoid
+  - when FactoidActivityIncreasing
+    #{t('.increasing')}
+  - when FactoidActivityStable
+    #{t('.stable')}
+  - else
+    #{t('.decreasing')}
+%p= t('.activity_note')

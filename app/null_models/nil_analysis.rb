@@ -26,4 +26,8 @@ class NilAnalysis < NullObject
   def factoids
     Factoid.none
   end
+
+  def empty?
+    true
+  end
 end

@@ -116,4 +116,11 @@ class AnalysisTest < ActiveSupport::TestCase
       analysis.previous_twelve_month_summary.class.must_equal PreviousTwelveMonthSummary
     end
   end
+
+  describe 'angle' do
+    it 'should return the computed angle' do
+      analysis.stubs(:hotness_score).returns(20)
+      analysis.angle.must_equal 87.138
+    end
+  end
 end

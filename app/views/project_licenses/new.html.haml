@@ -19,7 +19,7 @@
       &nbsp;:&nbsp;
       = link_to t('.licenses'), project_licenses_path(@project)
       &nbsp;:&nbsp;#{t(:new)}
-    -# render_project_analysis_timestamp
+    = project_analysis_timestamp(@project)
 
 #error{ style: 'display: none;' }
   .alert.alert-info

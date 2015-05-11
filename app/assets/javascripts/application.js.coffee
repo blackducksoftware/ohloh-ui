@@ -13,16 +13,17 @@
 #= require jquery
 #= require jquery_ujs
 #= require jquery-ui
-#= require turbolinks
 #= require underscore-min
 #= require chosen.min
 #= require app
 #= require_tree .
 #= require twitter/bootstrap
-#= require highcharts/highstock
-#= require highcharts/highcharts.more
-#= require highcharts/solid-guage.min
 #= require d3.min
+#= require highcharts/highstock
+#= require highcharts/highcharts-more
+#= require highcharts/solid-gauge
+#= require highcharts/highcharts
+#= require tagcloud
 
 $(document).on 'page:change', ->
   Edit.init()

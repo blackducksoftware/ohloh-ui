@@ -15,4 +15,23 @@ class LanguageTest < ActiveSupport::TestCase
       )
     end
   end
+
+  describe 'map' do
+    it 'should return a name map of all languages' do
+      create(:language, name: 'name_1', nice_name: 'nice_name_1')
+      create(:language, name: 'name_2', nice_name: 'nice_name_2')
+
+      Language.map.must_include ['All Languages', '']
+      Language.map.must_include %w(nice_name_1 name_1)
+      Language.map.must_include %w(nice_name_2 name_2)
+    end
+  end
+
+  describe 'total' do
+    it 'determines the total sum of code, comments, and blanks' do
+      language = create(:language, code: 10_000_000, comments: 10_000_000, blanks: 10_000_000)
+      total = language.code + language.comments + language.blanks
+      total.must_equal language.total
+    end
+  end
 end

@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   root to: 'home#index'
+
+  use_doorkeeper do
+    skip_controllers :applications, :authorized_applications
+  end
+
   resources :sessions, only: [:new, :create] do
     collection do
       delete :destroy
@@ -9,10 +14,10 @@ Rails.application.routes.draw do
 
   resources :stack_entries
 
-  resources :password_reset, only: [:new, :create] do
+  resources :password_resets, only: [:new, :create] do
     collection do
       get :confirm
-      post :reset
+      patch :reset
     end
   end
   resources :activation_resends, only: [:new, :create]
@@ -24,17 +29,19 @@ Rails.application.routes.draw do
   end
   resources :kudos, only: [:new, :create, :destroy]
 
-  resources :people, only: [:index]
+  resources :people, only: [:index] do
+    collection { get :rankings }
+  end
   resources :edits, only: [:update]
 
   resources :licenses do
     resources :edits, only: [:index]
   end
 
-  resources :tags, only: [:index]
+  resources :tags, only: [:index, :show]
 
   resources :accounts do
-    resources :api_keys, constraints: { format: :html }, except: :show
+    resources :api_keys, constraints: { format: :html }
     resources :projects, only: [:index]
     resources :positions, only: [:index] do
       collection do
@@ -64,8 +71,8 @@ Rails.application.routes.draw do
       get :confirm_delete
       get :disabled
       get :settings
-      get 'edit_privacy'   => 'privacy#edit',   as: :edit_account_privacy
-      put 'update_privacy' => 'privacy#update', as: :account_privacy
+      get :edit_privacy, to: 'privacy#edit', as: :edit_account_privacy
+      patch :edit_privacy, to: 'privacy#update', as: :account_privacy
     end
 
     collection do
@@ -96,6 +103,7 @@ Rails.application.routes.draw do
       get :account
       get :project
       get :organization
+      get :license
     end
   end
 
@@ -122,16 +130,16 @@ Rails.application.routes.draw do
   resources :topics, except: [:index, :new, :create] do
     resources :posts, except: [:new]
   end
-  get 'move_topic/:id', to: 'topics#move_topic', as: :move_topic
 
   resources :posts, only: :index, as: 'all_posts'
   get 'markdown_syntax', to: 'abouts#markdown_syntax'
-  get 'message', to: 'about#message'
-  get 'maintenance', to: 'about#maintenance'
+  get 'message', to: 'abouts#message'
+  get 'maintenance', to: 'abouts#maintenance'
+  get 'tools', to: 'abouts#tools'
 
-  get 'explore/projects', to: 'explore#projects', as: :explore_projects
   get 'p/compare', to: 'compare#projects', as: :compare_projects
   get 'p/graph', to: 'compare#projects_graph', as: :compare_graph_projects
+
   resources :projects, path: :p, except: [:destroy] do
     member do
       get :users
@@ -139,6 +147,7 @@ Rails.application.routes.draw do
       get :settings
       get :estimated_cost
       get :similar_by_tags
+      get :similar
       get 'permissions'  => 'permissions#show',   as: :permissions
       put 'permissions'  => 'permissions#update', as: :update_permissions
       post 'rate'        => 'ratings#rate',       as: :rate
@@ -166,7 +175,7 @@ Rails.application.routes.draw do
         get :status
       end
     end
-    resources :duplicates
+    resources :duplicates, only: [:new, :create, :edit, :update, :destroy]
     resource :logos, only: [:new, :create, :destroy]
     resources :links, except: :show
     resources :managers, only: [:index, :new, :create, :edit, :update] do
@@ -196,23 +205,28 @@ Rails.application.routes.draw do
         get :cocomo
       end
     end
-    resources :similar_projects, only: :index
     resources :ratings
     resources :reviews, except: :show do
       collection { get :summary }
       resources :helpfuls, only: :create
     end
-    resources :analyses, only: :index do
-      resources :activity_facts, only: :index
+    resources :analyses, only: [:index, :show] do
       member do
         get :languages_summary
-        get :codehistory
-        get :commitshistory
-        get :committerhistory
-        get :commits_spark
         get :languages
+        get :licenses
         get :top_commit_volume_chart
+        get :commits_history
+        get :committer_history
+        get :contributor_summary
+        get :language_history
+        get :code_history
+        get :lines_of_code
+        get :commits_spark
       end
+
+      resources :activity_facts, only: :index
+      resources :size_facts, only: :index
     end
     resources :commits, only: [:index, :show] do
       collection { get :summary }
@@ -288,74 +302,31 @@ Rails.application.routes.draw do
     collection { get :compare }
   end
 
-  resources :people do
-    collection { get :rankings }
-  end
-
-  resource :compare_repositories
-
   resources :contributors, controller: 'contributions' do
     resources :invites, only: [:new, :create]
   end
 
-  get 'explore/orgs' => 'explore#orgs'
-  get 'explore/orgs_by_thirty_day_commit_volume' => 'explore#orgs_by_thirty_day_commit_volume'
+  resources :explores, only: :index, path: :explore, controller: :explore do
+    collection do
+      get :orgs
+      get :projects
+      get :demographic_chart
+      get :orgs_by_thirty_day_commit_volume
+    end
+  end
 
   get 'message' => 'home#message'
   get 'maintenance' => 'home#maintenance'
 
-  # The priority is based upon order of creation: first created -> highest
-  # priority.
-  # See how all your routes lay out with "rake routes".
+  get 'repositories/compare' => 'compare_repositories#index', as: :compare_repositories
+  get 'repositories/chart' => 'compare_repositories#chart', as: :compare_repositories_chart
 
-  # You can have the root of your site routed with "root"
+  get 'server_info' => 'home#server_info'
 
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
-
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
-  # Example resource route (maps HTTP verbs to controller actions automatically)
-  #   resources :products
-
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
-
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
-
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
+  resources :committers, only: [:index, :show] do
+    member do
+      post :claim
+      post :save_claim
+    end
+  end
 end

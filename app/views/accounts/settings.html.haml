@@ -1,0 +1,32 @@
+- content_for :html_title do
+  = t('.settings_title')
+- account_context
+
+.full-width.mezzo.margin_left_20.margin_right_20.margin_top_15
+.clear_left
+.col-md-12
+  %h3= t('.settings')
+  .account_settings_options
+    .account_setting_row
+      .pull-left.span5.settings_specifications
+        %h4= link_to t('.account_basics'), edit_account_path(@account), class: 'strong'
+        %span.pull-left
+          %a.account_settings_icon.settings_account_basics{ href: edit_account_path(@account) }
+        %span= t('.account_basics_settings')
+      .pull-right.span5.settings_specifications
+        %h4= link_to t('.password'), '#', class: 'strong'
+        %span.pull-left
+          -# TODO: Password Controller/link does not exist yet.
+          %a.account_settings_icon.settings_account_password{ href: '#' }
+        %span= t('.change_passwords')
+    .account_setting_row
+      .pull-left.span5.settings_specifications
+        %h4= link_to t('.api_keys'), account_api_keys_path(@account), class: 'strong'
+        %span.pull-left
+          %a.account_settings_icon.settings_api_keys{ href: account_api_keys_path(@account) }
+        %span= t('.api_key_settings')
+      .pull-right.span5.settings_specifications
+        %h4= link_to t('.privacy'), edit_account_privacy_account_path, class: 'strong'
+        %span.pull-left
+          %a.account_settings_icon.settings_privacy{ href: edit_account_privacy_account_path }
+        %span= t('.email_settings')

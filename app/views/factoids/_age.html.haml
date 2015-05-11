@@ -1,0 +1,19 @@
+- project_link = link_to(sanitize(@project.name), project_url(@project))
+- case factoid
+- when FactoidAgeYoung
+  %p!= t('.young_1', link: project_link)
+  %p= t('.young_2')
+  %p= t('.young_3')
+- when FactoidAgeOld
+  %p!= t('.old_1', link: project_link, year: @project.best_analysis.min_month.year)
+  %p= t('.old_2')
+- when FactoidAgeEstablished
+  - month = Date::MONTHNAMES[@project.best_analysis.min_month.month]
+  %p!= t('.established_1', link: project_link, month: month, year: @project.best_analysis.min_month.year)
+  %p= t('.established_2')
+- when FactoidAgeVeryOld
+  %p!= t('.very_old_1', link: project_link, year: @project.best_analysis.min_month.year)
+  %p= t('.very_old_2')
+%p
+  %strong= t('.note')
+  #{t('.note_body', name: @project.name)}

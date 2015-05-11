@@ -36,14 +36,14 @@ en:
   join_now: 'Join Now'
   api_keys_title: 'API Keys'
   projects_menu: 'Projects'
-  people: 'People'
+  people_menu: 'People'
   organizations_menu: 'Organizations'
-  tools: 'Tools'
+  tools_menu: 'Tools'
   code: 'Code'
   blog: 'Blog'
   forum: 'Forums'
   terms: 'Terms'
-  privacy: 'Privacy'
+  privacy_blog: 'Privacy'
   managers_link_name: 'Managers'
   learn_more: "Learn More&hellip;"
   project_page_title: "The %{project_name} Open Source Project on Open Hub"
@@ -55,7 +55,7 @@ en:
   openhub_show: "Open Hub Forum: %{name}"
   openhub: "OpenHub"
   time_ago: "%{time} ago"
-
+  compare_repositories: 'Compare Repositories'
 
   layouts:
     application:
@@ -185,6 +185,7 @@ en:
     requests_all_time_view: '<span>%{count}</span><small class="soft">requests all-time</small>'
     requests_daily_view: '<span>%{count}</span><small class="soft">requests today</small>'
     requests_daily_limit_view: '<span><small style="color:#000;">limited to</small><span class="inline">%{count}</span></span><small class="soft">requests a day</small>'
+    redirect_uri: 'Redirect URI'
     index:
       sort_by_most_recent_request: 'Most Recent Request'
       sort_by_most_requests_today: 'Requests Today'
@@ -314,3 +315,24 @@ en:
 
   project_experience:
     no_matching_project: No matching open source project with this name.
+
+  password_resets:
+    title: 'Password Reset'
+    new:
+      enter_email_address: Enter the email you signed up with.
+      submit_text: Send me a password reset link
+    create:
+      success: A link to reset your password was sent to your email address.
+    reset:
+      success: Your password has been reset successfully.
+    confirm:
+      new_password: New Password
+      confirm_password: Confirm Password
+      submit_text: Reset Password
+    token_expired_error: Your password reset URL has expired. Please try again!
+    already_logged_in: You are already logged in.
+    errors:
+      email:
+        blank: Email address is required
+      account:
+        invalid: No account with that email address

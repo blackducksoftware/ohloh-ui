@@ -1,0 +1,72 @@
+no_auxillaries:
+  scrollbar:
+    enabled: false
+  navigator:
+    enabled: false
+  rangeSelector:
+    enabled: false
+  legend:
+    enabled: false
+
+commits_history:
+  title: 'Commits'
+  tooltip:
+    dateFormat: '%B %Y'
+  series:
+    - name: 'Commits'
+      id: 'commits'
+    - name: 'Current Month'
+      type: 'scatter'
+      color: 'rgba(119, 152, 191, 3)'
+      marker:
+        radius: 4
+        symbol: 'circle'
+
+code_history:
+  chart:
+    defaultSeriesType: 'area'
+    width: 950
+  title: 'Total Lines'
+  plotOptions:
+    area:
+      stacking: 'normal'
+  series:
+    - name: 'Code'
+      id: 'code'
+    - name: 'Comments'
+    - name: 'Blanks'
+
+committer_history:
+  title: 'Contributors'
+  tooltip:
+    dateFormat: '%B %Y'
+  series:
+    - name: 'Committers'
+      id: 'committers'
+    - name: 'Current Month'
+      type: 'scatter'
+      color: 'rgba(119, 152, 191, 3)'
+      marker:
+        radius: 4
+        symbol: 'circle'
+
+language_history:
+  title: 'Lines'
+  chart:
+    width: 950
+
+lines_of_code:
+  chart:
+    marginLeft: 0
+    width: 460
+  legend:
+    enabled: true
+    layout: 'horizontal'
+    align: 'center'
+    verticalAlign: 'bottom'
+    x: 0
+    y: 0
+    floating: false
+    backgroundColor: '#ffffff'
+
+

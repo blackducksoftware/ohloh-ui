@@ -1,19 +1,12 @@
 require 'test_helper'
+require 'test_helpers/xml_parsing_helpers'
 
 describe 'ActivityFactsControllerTest' do
   let(:account) { create(:account) }
   let(:analysis) { create(:analysis, min_month: Date.today - 5.months) }
   let(:project) { create(:project) }
   let(:api_key) { create(:api_key, account_id: account.id, daily_limit: 100) }
-
-  def xml_time(date)
-    Time.gm(date.year, date.month, date.day).xmlschema
-  end
-
-  def xml_hash(data)
-    xml = Nokogiri::XML(data)
-    Hash.from_xml(xml.to_s)
-  end
+  let(:client_id) { api_key.oauth_application.uid }
 
   before do
     (1..5).to_a.each do |value|
@@ -26,7 +19,7 @@ describe 'ActivityFactsControllerTest' do
     it 'should respond with activity_facts for latest analysis' do
       project.update_column(:best_analysis_id, analysis.id)
 
-      get :index, format: 'xml', project_id: project.id, analysis_id: 'latest', api_key: api_key.key
+      get :index, format: 'xml', project_id: project.id, analysis_id: 'latest', api_key: client_id
       xml = xml_hash(@response.body)
 
       must_respond_with :ok
@@ -41,7 +34,7 @@ describe 'ActivityFactsControllerTest' do
     end
 
     it 'should respond with activity_facts analysis id is specified' do
-      get :index, format: 'xml', project_id: project.id, analysis_id: analysis.id, api_key: api_key.key
+      get :index, format: 'xml', project_id: project.id, analysis_id: analysis.id, api_key: client_id
       xml = xml_hash(@response.body)
 
       must_respond_with :ok
@@ -58,7 +51,7 @@ describe 'ActivityFactsControllerTest' do
     it 'should respond with failure if project id deleted' do
       Project.any_instance.stubs(:deleted?).returns(true)
 
-      get :index, format: 'xml', project_id: project.id, analysis_id: analysis.id, api_key: api_key.key
+      get :index, format: 'xml', project_id: project.id, analysis_id: analysis.id, api_key: client_id
       xml = xml_hash(@response.body)
 
       must_respond_with :ok

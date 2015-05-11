@@ -10,6 +10,6 @@
           1
           = t('commits_menu').singularize
       - main_language = name_fact.primary_language
-      - if main_language
+      - unless main_language.nil?
         = t('.in_mostly')
         = main_language.nice_name

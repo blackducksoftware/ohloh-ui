@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class CommitTest < ActiveSupport::TestCase
+  # Destroy commits loaded via fixtures. Remove this line when fixtures are removed.
+  before { Commit.destroy_all }
   let(:commit) { create(:commit, sha1: Faker::Number.number(15)) }
 
   describe '#for_project' do

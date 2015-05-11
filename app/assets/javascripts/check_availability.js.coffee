@@ -11,6 +11,10 @@ class App.CheckAvailiability
     @$input.keyup(throttledCheckAvailability)
     @$input.trigger('keyup') if @$input.val().length # process value preloaded by soft refresh or back.
 
+  appendClass: (className) ->
+    $('span.add-on').addClass(className)
+    $('.error.url_name').addClass('hidden')
+
   checkAvailabilityForValidValue: =>
     inputValue = @$input.val()
     if inputValue == @$input.attr('value')
@@ -25,6 +29,7 @@ class App.CheckAvailiability
       else
         @setupPreviewSection()
         @$preview.find('.text-warning').removeClass('hidden')
+        @appendClass('text-warning')
 
   setupPreviewSection: ->
     @$preview.removeClass('hidden')
@@ -35,5 +40,10 @@ class App.CheckAvailiability
     @setupPreviewSection()
     if accountFound
       @$preview.find('.text-danger').removeClass('hidden')
+      @appendClass('text-danger')
     else
       @$preview.find('.text-success').removeClass('hidden')
+      @appendClass('text-success')
+
+$(document).on 'page:change', ->
+  new App.CheckAvailiability($('input.check-availability'))

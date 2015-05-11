@@ -15,9 +15,12 @@ en:
       captcha_label: 'Captcha'
     search_dingus:
       pagination_status: "Showing page %{current_page} of %{total_pages}"
+      count_status: "Showing %{current_count} of %{total_count}"
       search_text: 'Search / Filter on:'
       sort_by: 'Sort by:'
       show_only_humans: 'Show only edits by human'
+      by_email: 'By Email'
+      by_name: 'By Name'
       no_match: 'No Matches with this filter'
       no_match_1_html: "Your search - <strong>%{query}</strong> - did not match anything."
       no_match_2: 'Suggestions:'

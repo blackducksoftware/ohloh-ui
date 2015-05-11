@@ -16,8 +16,7 @@
                        edit_project_duplicate_path(@project, @project.is_a_duplicate)
         - else
           |
-          -# TO-DO Change the Path to Report Duplicate when implemented
-          = link_to bootstrap_icon('icon-flag', t('projects.header.report_duplicate')), '#'
+          = link_to bootstrap_icon('icon-flag', t('projects.header.duplicate')), new_project_duplicate_path(@project)
     .col-md-3.pull-right.no_padding#widgets
       .pull-left#project_header_activity_indicator
         - project_activity_level_class(@project, :thirtyfive)

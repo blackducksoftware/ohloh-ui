@@ -1,0 +1,13 @@
+.col-md-6
+  %h4.nomargin
+    %span.soft= t(:about)
+    #{t('.instructions')}
+
+  %ul{ style: 'margin-left: 30px;' }
+    %li= t('.help1')
+    %li
+      #{t('.help2')}
+      %ul{ style: 'margin-left: 30px;' }
+        - link = link_to(html_escape(@project.name), project_path(@project), title: html_escape(@project.name))
+        %li!= t('.help3', project: link)
+        %li= t('.help4', name: @project.name)

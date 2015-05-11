@@ -5,7 +5,7 @@
   = %( : )
   = link_to t('links.title').pluralize, project_links_path(@project)
   = %( : #{ t('new') })
--# - render_project_analysis_timestamp
+= project_analysis_timestamp(@project)
 .clear
 
 .well.col-md-8.col-md-offset-1

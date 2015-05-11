@@ -45,7 +45,7 @@
     - else
       = t('.no_license')
   %dt
-    = link_to t('.similar_projects'), project_similar_projects_path(@project)
+    = link_to t('.similar_projects'), similar_project_path(@project)
   %dd{ style: 'margin-bottom: .5em;' }
     #similar_projects{ project_id: @project.to_param }
     .hidden#related_spinner= image_tag('spinner.gif')
