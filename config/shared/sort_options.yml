@@ -133,3 +133,35 @@ enlistments:
       - by_module_name
   default:
     by_url
+
+languages:
+  options:
+    -
+      - Code Lines
+      - code
+    -
+      - Comment Ratio
+      - comment_ratio
+    -
+      - Commits
+      - commits
+    -
+      - Contributors
+      - contributors
+    -
+      - Code Lines
+      - code
+    -
+      - Name
+      - name
+    -
+      - Code Lines
+      - code
+    -
+      - Projects
+      - projects
+    -
+      - Total Lines
+      - total
+  default:
+    name

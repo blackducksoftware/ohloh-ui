@@ -1,0 +1,30 @@
+credits:
+  enabled: false
+plotOptions:
+  series:
+    pointStart: ''
+    pointIntervalUnit: 'month'
+  line:
+    enableMouseTracking: false
+    marker:
+      enabled: false
+title:
+  text: ''
+chart:
+  type: 'line'
+xAxis:
+  type: 'datetime'
+  tickInterval: 31536000000
+  dateTimeLabelFormats:
+    month: '%y'
+  startOnTick: false
+yAxis:
+  title: ''
+  startOnTick: false
+  showFirstLabel: false
+  minPadding: 0
+  labels:
+    format: '{value}%'
+legend:
+  enabled: false
+series: []
