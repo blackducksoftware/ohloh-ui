@@ -1,5 +1,6 @@
 en:
   people:
+    not_yet_ranked: "Unranked"
     contributes_to: "Contributes to: %{sentence}"
     index:
       page_title: "People - Open Hub"
