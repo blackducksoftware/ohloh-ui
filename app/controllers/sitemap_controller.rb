@@ -26,7 +26,7 @@ class SitemapController < ApplicationController
   end
 
   def pages(model)
-    Rational(model.active.length, MAX_URLS).ceil
+    Rational(model.active.count, MAX_URLS).ceil
   end
 
   def setup_sitemap
