@@ -329,4 +329,6 @@ Rails.application.routes.draw do
       post :save_claim
     end
   end
+
+  resources :session_projects, only: [:index, :create, :destroy]
 end

@@ -56,6 +56,7 @@ en:
   openhub: "OpenHub"
   time_ago: "%{time} ago"
   compare_repositories: 'Compare Repositories'
+  compare: Compare
 
   layouts:
     application:
@@ -336,3 +337,10 @@ en:
         blank: Email address is required
       account:
         invalid: No account with that email address
+
+  session_projects:
+    menu:
+      compare_projects: 'Compare Projects:'
+      limit_reached: limit reached
+    create:
+      limit_exceeded: Project count limit exceeded
