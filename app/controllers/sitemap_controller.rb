@@ -3,21 +3,20 @@ class SitemapController < ApplicationController
 
   SITEMAPS = [{ ctrl: 'projects', model: Project, priority: 0.8, select: 'id, url_name' },
               { ctrl: 'accounts', model: Account, priority: 0.6, select: 'id, login' }]
-  MAX_URLS = 10000
+  MAX_URLS = 10_000
 
   before_action :setup_sitemap, only: :show
 
   def index
-    @time = Time.now.strftime('%Y-%m-%d')
     @sites = []
-    SITEMAPS.each { |type| 1.upto(pages(type[:model])) { |i| @sites << "#{type[:ctrl]}/#{i}.xml" } }
+    SITEMAPS.each do |type|
+      1.upto(pages(type[:model])) { |i| @sites << "#{type[:ctrl]}/#{i}.xml" }
+    end
   end
 
   def show
     @priority = @sitemap[:priority]
-    @time = Time.now.strftime('%Y-%m-%d')
-    objects = @sitemap[:model].active.select(@sitemap[:select]).offset(offset).limit(MAX_URLS).order(:id)
-    @urls = objects.map {|o| url_for(controller: @sitemap[:ctrl], only_path: false, action: 'show', id: o.to_param) }
+    @objects = @sitemap[:model].active.select(@sitemap[:select]).offset(offset).limit(MAX_URLS).order(:id)
   end
 
   protected
@@ -31,7 +30,7 @@ class SitemapController < ApplicationController
   end
 
   def setup_sitemap
-    @sitemap = SITEMAPS.find {|s| s[:ctrl] == params[:ctrl]}
+    @sitemap = SITEMAPS.find { |s| s[:ctrl] == params[:ctrl] }
     fail ActionController::RoutingError, 'Unsupported sitemap controller' unless @sitemap
   end
 end

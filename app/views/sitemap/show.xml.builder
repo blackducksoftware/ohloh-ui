@@ -1,9 +1,11 @@
+time = Time.now.strftime('%Y-%m-%d')
+
 xml.instruct!
 xml.urlset(xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9') do
-  @urls.each do |url|
+  @objects.each do |object|
     xml.url do
-      xml.loc url
-      xml.lastmod @time
+      xml.loc url_for(controller: @sitemap[:ctrl], only_path: false, action: 'show', id: object.to_param)
+      xml.lastmod time
       xml.changefreq 'daily'
       xml.priority @priority unless @priority.nil?
     end
