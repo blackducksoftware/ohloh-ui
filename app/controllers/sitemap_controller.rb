@@ -31,6 +31,6 @@ class SitemapController < ApplicationController
 
   def setup_sitemap
     @sitemap = SITEMAPS.find { |s| s[:ctrl] == params[:ctrl] }
-    fail ActionController::RoutingError, 'Unsupported sitemap controller' unless @sitemap
+    fail ActionController::RoutingError, t('.unsupported') unless @sitemap
   end
 end

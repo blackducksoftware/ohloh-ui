@@ -18,9 +18,9 @@ describe 'SitemapController' do
 
       xml['xmlns'].must_equal 'http://www.sitemaps.org/schemas/sitemap/0.9'
       xml['sitemap'].size.must_equal 2
-      xml['sitemap'].first['loc'].must_equal 'http:///test.host/sitemaps/projects/1.xml'
+      xml['sitemap'].first['loc'].must_equal 'http://test.host/sitemaps/projects/1.xml'
       xml['sitemap'].first['lastmod'].must_equal Time.now.strftime('%Y-%m-%d')
-      xml['sitemap'].last['loc'].must_equal 'http:///test.host/sitemaps/accounts/1.xml'
+      xml['sitemap'].last['loc'].must_equal 'http://test.host/sitemaps/accounts/1.xml'
       xml['sitemap'].last['lastmod'].must_equal Time.now.strftime('%Y-%m-%d')
     end
   end
