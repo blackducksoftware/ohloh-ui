@@ -16,6 +16,7 @@ module PageContextHelper
   end
 
   def project_context
+    @project ||= @parent if @parent.is_a?(Project)
     set_page_context(footer_menu_list:  @project.decorate.sidebar,
                      select_footer_nav:  :project_summary,
                      select_top_menu_nav:  :select_projects,
