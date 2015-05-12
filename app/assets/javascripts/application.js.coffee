@@ -22,20 +22,7 @@
 #= require highcharts/highstock
 #= require highcharts/highcharts-more
 #= require highcharts/solid-gauge
-#= require highcharts/highcharts
 #= require tagcloud
-
-TagCloud =
-  init: () ->
-    $.fn.tagcloud.defaults =
-      size:
-        start: 10
-        end: 18
-        unit: 'pt'
-      color:
-        start: '#999'
-        end: '#000'
-    $('#tagcloud a').tagcloud()
 
 $(document).on 'page:change', ->
   Edit.init()
