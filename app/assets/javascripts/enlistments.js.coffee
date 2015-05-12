@@ -21,5 +21,5 @@ App.Enlistment = init: ->
   ).change()
   $('.enlistment .submit').click ->
     $('.enlistment .spinner').show()
-$ ->
+$(document).on 'page:change', ->
   App.Enlistment.init()

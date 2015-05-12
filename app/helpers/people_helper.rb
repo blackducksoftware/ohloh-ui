@@ -8,7 +8,7 @@ module PeopleHelper
   end
 
   def people_position(person)
-    return I18n.t('kudos.not_yet_ranked') unless person.kudo_score
+    return I18n.t('people.not_yet_ranked') unless person.kudo_score
     person.kudo_position
   end
 

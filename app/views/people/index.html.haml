@@ -13,7 +13,7 @@
     %p &nbsp;
 
 - if @unclaimed_people.any?
-  %h3.margin_bottom_15= t('unclaimed_committer_ids')
+  %h3.margin_bottom_15= t('.unclaimed_committer_ids')
   - @unclaimed_people.each do |_, people|
     = render partial: 'unclaimed_person', locals: { people: people }
   - if @unclaimed_people_count > 3

@@ -23,5 +23,5 @@ App.Committers =
   disable_selection: (entire_commits_container) ->
     entire_commits_container.children('.inner').not('.more').children('.selected_contribution').remove()
 
-$ ->
+$(document).on 'page:change', ->
   App.Committers.init()

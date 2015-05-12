@@ -25,7 +25,7 @@
 #= require highcharts/highcharts
 #= require tagcloud
 
-$ ->
+$(document).on 'page:change', ->
   Edit.init()
   StackVerb.init()
   StackShow.init()
@@ -38,3 +38,7 @@ $ ->
   Cocomo.init()
   ProjectForm.init()
   new App.CheckAvailiability($('input.check-availability'))
+
+# Remove the following trigger when TurboLinks are re-enabled
+$(document).ready ->
+  $(document).trigger 'page:change'
