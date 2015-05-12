@@ -10,6 +10,6 @@ App.Helpfuls =
     $('#sort_by .chzn-search').hide()
     $('.nav-select-container .chzn-search').show()
     $('.value-select').chosen()
-$(document).on 'page:change', ->
+$ ->
   App.Helpfuls.setupVoteLinks()
   App.Helpfuls.setupChosenSelect()
