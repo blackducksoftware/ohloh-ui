@@ -50,6 +50,6 @@ TagCloud =
         end: '#000'
     $('#tagcloud a').tagcloud()
 
-$ ->
+$(document).on 'page:change', ->
   Explore.init()
   TagCloud.init()
