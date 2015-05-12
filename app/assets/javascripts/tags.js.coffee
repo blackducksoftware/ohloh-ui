@@ -13,18 +13,6 @@ JumpToTag =
         $(this).val(ui.item.value)
         $('form[rel=tag_jump]').submit()
 
-TagCloud =
-  init: () ->
-    $.fn.tagcloud.defaults =
-      size:
-        start: 10
-        end: 18
-        unit: 'pt'
-      color:
-        start: '#999'
-        end: '#000'
-    $('#tagcloud a').tagcloud()
-
 TagNew =
   init: () ->
     project_id = $('form#edit_tags').attr('project_id')
