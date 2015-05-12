@@ -398,6 +398,7 @@ DEPENDENCIES
   pg
   pry-rails
   rails
+  rails-html-sanitizer
   recaptcha!
   redis-rails
   rubocop

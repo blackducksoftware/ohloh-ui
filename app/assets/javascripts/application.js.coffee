@@ -36,8 +36,9 @@ $(document).on 'page:change', ->
   OrgsFilter.init()
   Cocomo.init()
   ProjectForm.init()
+  App.ProjectRating.init()
   new App.CheckAvailiability($('input.check-availability'))
-  TagCloud.init()
+  App.TagCloud.init()
   Explore.init()
 
 # Remove the following trigger when TurboLinks are re-enabled

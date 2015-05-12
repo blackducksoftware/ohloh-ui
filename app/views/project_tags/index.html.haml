@@ -5,7 +5,7 @@
   remaining_tags = Tag::MAX_ALLOWED_PER_PROJECT - @project.tags.length
 
 - content_for :javascript do
-  = javascript_tag "$(document).on('page:change', TagEdit.init);$(document).on('page:change', TagNew.init);"
+  = javascript_tag "$(document).on('page:change', App.TagEdit.init);$(document).on('page:change', App.TagNew.init);"
 
 .project_content_title
   %h2
