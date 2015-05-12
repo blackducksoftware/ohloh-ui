@@ -1,4 +1,4 @@
-$(document).on('page:change', function() {
+$(function() {
   Charts.init();
 });
 
