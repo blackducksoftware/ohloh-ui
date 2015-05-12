@@ -1,7 +1,7 @@
 %fieldset
   .control-group
     #proj_rating
-      = render partial: 'rater'
+      = render partial: 'rater', locals: { score: @rating.try(:score) || 0 }
     .col-md-12
     .col-md.margin_top_15
     %b.required= t('.headline')

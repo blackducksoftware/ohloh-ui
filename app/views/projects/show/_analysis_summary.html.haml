@@ -8,7 +8,7 @@
     .well
       - p_name = truncate_project_name(@project.name, false, 40)
       %h4= t('.in_a_nutshell', name: @project.name.length > 40 ? p_name : p_name + '...')
-      = render 'projects/show/factoids'
+      -#= render 'projects/show/factoids'
   .col-md-6{ itemscope: '', itemtype: 'http://schema.org/Language' }
     = render partial: 'projects/show/languages'
     .clearfix
@@ -43,7 +43,7 @@
                 - else
                   = t('.not_available')
               .clearfix
-              = render partial: 'projects/show/twelve_month_summary'
+              -#= render partial: 'projects/show/twelve_month_summary'
   .col-md-6
     - if @analysis.present?
       - chart_url = commits_history_project_analysis_url(project_id: @project.to_param, id: 'latest')
@@ -57,7 +57,7 @@
 .mezzo
   %h3= t('.community')
 %div
-  .proj_community_ratings#proj_rating= render partial: 'projects/show/community_rating'
+  .proj_community_ratings#proj_rating= render partial: 'projects/show/community_rating', locals: { score: @score }
   .pull-left{ style: 'width: 280px;' }= render partial: 'projects/show/community_recent_committers'
   .pull-left{ style: 'width: 450px;' }= render partial: 'projects/show/committers_per_month_chart'
 .row

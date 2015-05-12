@@ -68,7 +68,7 @@ StackShow = {
   reinit: function() {
     StackShow.recommendations_init(true);
     StackShow.rehook();
-    ProjectRating.init();
+    // ProjectRating.init();
     Expander.init();
   },
   hook: function() {

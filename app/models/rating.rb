@@ -8,10 +8,10 @@ class Rating < ActiveRecord::Base
   after_save :update_project_rating_average
   after_destroy :update_project_rating_average
 
-  private
+  protected
 
   def update_project_rating_average
     project.editor_account = account
-    project.update_attributes rating_average: project.ratings.average(:score)
+    project.update_attribute(:rating_average, project.ratings.average(:score))
   end
 end
