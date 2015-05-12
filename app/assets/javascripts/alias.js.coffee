@@ -16,5 +16,5 @@ App.Alias =
         $('.alias #preferred_name').html html
         App.Alias.after()
 
-$ ->
+$(document).on 'page:change', ->
   App.Alias.init()

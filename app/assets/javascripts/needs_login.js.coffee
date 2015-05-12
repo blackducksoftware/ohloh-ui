@@ -11,5 +11,5 @@ App.NeedsLogin =
       else
         tb_show 'Login Required', url + '&height=300&width=370', false
 
-$ ->
+$(document).on 'page:change', ->
   App.NeedsLogin.init()
