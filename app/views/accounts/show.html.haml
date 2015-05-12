@@ -1,4 +1,5 @@
 / TODO: Internationalize
+- set_page_context(select_top_menu_nav: :select_people, footer_menu_list: @account.decorate.sidebar_for(current_user))
 - content_for :html_title do
   = succeed t('.show_accounts') do
     = @account.name
@@ -11,8 +12,6 @@
   %meta{ content: "#{@twitter_detail.description}", name: 'twitter:description' }
   %meta{ content: "#{avatar_img_path(@account, 80)}", name: 'twitter:image' }
   %meta{ content: 'https://www.openhub.net', name: 'twitter:domain' }
-
-= render partial: 'accounts/show/header'
 
 .row
   .col-md-12
