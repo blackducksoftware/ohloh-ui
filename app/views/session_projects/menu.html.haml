@@ -1,6 +1,6 @@
 - if @session_projects.any?
   .inner
-    %p.col.float_left{ style: 'margin-right: 3em' }
+    %p.col.pull-left{ style: 'margin-right: 3em' }
       %strong= t('.compare_projects')
       - if @session_projects.size == 3
         %span.limit
@@ -17,4 +17,4 @@
       - @session_projects.each_with_index do |p, i|
         %input{ type: 'hidden', name: "project_#{ i }", value: p.name }
       %input.btn.btn-sm{ type: 'submit', value: t('compare'), style: 'margin: -2px 0 7px 0px;' }
-    .clear_both
+    .clearfix
