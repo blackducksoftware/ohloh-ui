@@ -1,4 +1,4 @@
-class LanguageDecorator
+class Language::Chart
   include ColorsHelper
 
   def initialize(options)

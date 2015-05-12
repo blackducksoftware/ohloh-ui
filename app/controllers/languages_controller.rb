@@ -27,7 +27,7 @@ class LanguagesController < ApplicationController
   end
 
   def chart
-    language_data = LanguageDecorator.new(params).data
+    language_data = Language::Chart.new(params).data
     render json: language_data
   end
 
