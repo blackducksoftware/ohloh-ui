@@ -1,4 +1,4 @@
-$(document).ready ->
+$(document).on 'page:change', ->
   divs = $('p[id^="content-"]').hide()
   i = 0
   do ->
