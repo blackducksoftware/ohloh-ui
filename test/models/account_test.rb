@@ -626,4 +626,16 @@ class AccountTest < ActiveSupport::TestCase
       Account.from_param(account.to_param).count.must_equal 0
     end
   end
+
+  describe 'active' do
+    it 'should return active accounts' do
+      account1 = create(:account, level: -20)
+      account2 = create(:account, level: 0)
+      account3 = create(:account, level: 10)
+
+      Account.active.wont_include account1
+      Account.active.must_include account2
+      Account.active.wont_include account3
+    end
+  end
 end
