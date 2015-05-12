@@ -35,5 +35,6 @@ module ProjectScopes
         .active. order(' COALESCE(analysis_summaries.affiliated_commits_count, 0) +
                      COALESCE(analysis_summaries.outside_commits_count, 0) DESC ').limit(10)
     }
+    scope :with_pai_available, -> { active.where(arel_table[:activity_level_index].gt(0)).size }
   end
 end

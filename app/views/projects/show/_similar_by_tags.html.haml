@@ -1,6 +1,6 @@
 - if similar_by_tags.any?
   %table
-    - similar_by_tags.sort { |a, b| a.name.downcase <=> b.name.downcase }.take(4).in_groups_of(2, false) do |projects|
+    - similar_by_tags.take(4).in_groups_of(2, false) do |projects|
       %tr{ height: '35px' }
         - projects.compact.each do |p|
           %td{ width: '1%', valign: 'top' }

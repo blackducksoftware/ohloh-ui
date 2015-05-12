@@ -1,6 +1,8 @@
+- oauth_application = api_key.oauth_application || Doorkeeper::Application.new
+
 .row
   .well.col-md-11{ class: "#{'no_margin_bottom' if (api_key_counter == @api_keys.length - 1)}" }
-    %h4.float_left.nomargin= api_key.name || t('api_keys.untitled_application')
+    %h4.float_left.nomargin= oauth_application.name || t('api_keys.untitled_application')
     %h5.float_right.timestamp.no_margin_bottom
       %i.icon-time &nbsp;
       = t 'api_keys.created_ago', ago: time_ago_in_words(api_key.created_at)
@@ -13,10 +15,19 @@
       %small= api_key.description
 
     .col-md-6#api_key_basic_info
-      = t('api_keys.api_key_label_2', key: html_escape(api_key.key)).html_safe
+      = t('api_keys.api_key_label_2', key: oauth_application.uid).html_safe
       %br
-      - secret = api_key.secret ? html_escape(api_key.secret) : t('api_keys.none')
+      - secret = oauth_application.secret || t('api_keys.none')
       = t('api_keys.oath_secret_2', secret: secret).html_safe
+
+      - redirect_uri = oauth_application.redirect_uri
+      - if redirect_uri
+        %br
+        %strong= t('api_keys.redirect_uri')
+        = link_to redirect_uri, redirect_uri, target: '_blank'
+        %i.icon-external-link
+        %p
+
       - unless api_key.url.to_s.empty?
         %br
         %strong= t('api_keys.home_page_url')

@@ -8,7 +8,7 @@ class Account::PositionCore < OhDelegator::Base
   # FIXME: Replace positions.for_ohloh_projects with position_core.with_projects
   def with_projects
     @positions_with_projects ||=
-      positions.includes(:project).where { positions.project_id.not_eq(nil) }.order { lower(projects.name).asc }
+      positions.joins(:project).where { positions.project_id.not_eq(nil) }.order { lower(projects.name).asc }
   end
 
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength

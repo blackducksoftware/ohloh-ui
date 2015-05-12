@@ -19,6 +19,11 @@ module OhlohUi
 
     config.autoload_paths << "#{Rails.root}/lib"
 
+    config.to_prepare do
+      Doorkeeper::AuthorizationsController.layout 'application'
+      Doorkeeper::AuthorizationsController.helper OauthLayoutHelper
+    end
+
     file = "#{Rails.root}/config/GIT_SHA"
     config.git_sha = File.exist?(file) ? File.read(file)[0...40] : 'development'
 

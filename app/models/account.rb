@@ -14,6 +14,7 @@ class Account < ActiveRecord::Base
   strip_attributes :name, :email, :login, :invite_code, :twitter_account
 
   fix_string_column_encodings!
+  serialize :reset_password_tokens, Hash
 
   def about_raw=(value)
     @about_raw = value

@@ -1,8 +1,5 @@
 class SizeFactsController < ApplicationController
-  include ApiKeyChecks
-
   before_action :set_project
-  before_action :verify_api_key
 
   LATEST_ID = 'latest'
 

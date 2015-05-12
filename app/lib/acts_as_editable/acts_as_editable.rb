@@ -74,7 +74,7 @@ module ActsAsEditable
 
     def attribute_changed?(attribute)
       dirty_method = "#{attribute}_is_dirty".to_sym
-      changed.map(&:to_sym).include?(attribute) || (respond_to?(dirty_method) && send(dirty_method))
+      changes_include?(attribute) || (respond_to?(dirty_method) && send(dirty_method))
     end
   end
 end

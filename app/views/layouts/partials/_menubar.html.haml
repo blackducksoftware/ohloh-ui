@@ -1,14 +1,19 @@
+:ruby
+  explore_projects_class = params[:action] == 'explore/projects' ? 'select' : ''
+  explore_orgs_class = params[:action] == 'explore/orgs' ? 'select' : ''
+  tools_select = params[:action] == 'tools' ? 'select' : ''
+
 #navbar-inner
   #nav-top-bar
     %ul.new_main_menu{ class: page_context[:select_top_menu_nav] }
       %li.menu_item.projects
-        = link_to t(:projects_menu), explore_projects_path, class: params[:action] == 'explore/projects' ? 'select' : ''
+        = link_to t(:projects_menu), projects_explores_path, class: explore_projects_class
       %li.menu_item.people
         = link_to t(:people_menu), people_path, class: params[:action] == 'people' ? 'select' : ''
       %li.menu_item.organizations
-        = link_to t(:organizations_menu), explore_orgs_path, class: params[:action] == 'explore/orgs' ? 'select' : ''
+        = link_to t(:organizations_menu), orgs_explores_path, class: explore_orgs_class
       %li.menu_item.tools
-        = link_to t(:tools_menu), tools_path, class: params[:action] == 'tools' ? 'select' : ''
+        = link_to t(:tools_menu), tools_path, class: tools_select
       %li.menu_item.code
         %a{ href: 'http://code.openhub.net', target: '_blank' }
           = t :code

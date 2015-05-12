@@ -234,4 +234,12 @@ class ProjectTest < ActiveSupport::TestCase
       Project.from_param(project.to_param).count.must_equal 0
     end
   end
+
+  describe 'with_pai_available' do
+    it 'should return count of projects with activity_level_index more than 0' do
+      create(:project, activity_level_index: 20)
+
+      Project.with_pai_available.must_equal 1
+    end
+  end
 end
