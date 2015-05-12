@@ -1,4 +1,4 @@
-$(document).on 'page:change', ->
+$ ->
   if $('#position_form').length
     new App.OrganizationSelector('position')
     new SetupAutocompletes

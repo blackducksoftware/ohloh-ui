@@ -13,5 +13,5 @@ App.Commit = init: ->
         $response.removeAttr 'colspan'
         $response.addClass 'hidden'
         $response.after html
-$(document).on 'page:change', ->
+$ ->
   App.Commit.init()

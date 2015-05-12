@@ -192,6 +192,6 @@ Streamgraph = {
   }
 }
 
-$(document).on('page:change', function() {
+$(function() {
   Streamgraph.init();
 })
