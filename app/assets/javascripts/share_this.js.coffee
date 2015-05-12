@@ -5,7 +5,7 @@ ShareThis =
       data_ga_social: true
       data_track_clickback: false
 
-$(document).on 'page:change', ->
+$ ->
   if window.addthis
     for i of window
       if /^addthis/.test(i) or /^_at/.test(i)

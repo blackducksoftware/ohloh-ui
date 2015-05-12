@@ -25,7 +25,7 @@
 #= require highcharts/highcharts
 #= require tagcloud
 
-$(document).on 'page:change', ->
+$ ->
   Edit.init()
   StackVerb.init()
   StackShow.init()
