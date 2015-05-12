@@ -28,7 +28,7 @@ module PageContextHelper
 
   def tool_context
     set_page_context(footer_menu_list: tools_sidebar,
-                     heading: t('.tools'),
+                     heading: I18n.t('.tools_menu'),
                      select_top_menu_nav: :select_tools,
                      nav_type: 'sidebar')
   end

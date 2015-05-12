@@ -6,10 +6,10 @@
         %td
           .rank= avatar_small_laurels(account.kudo_rank)
         %td
-          %a.block.clear.contributor{ href: account_path(account) }
+          %a.block.contributor{ href: account_path(account) }
             .avatar= avatar_img_for(account, 32)
         %td.col-md-10
-          %a.block.clear.contributor{ href: account_path(account) }
+          %a.block.contributor{ href: account_path(account) }
             .name #{i + 1}. #{account.name}
           - if show_commits
             .metric= pluralize(account_id.last, 'commit')

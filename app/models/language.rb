@@ -13,6 +13,7 @@ class Language < ActiveRecord::Base
 
   filterable_by ['languages.nice_name']
   ALL_LANGUAGES = ['All Languages', '']
+  DEFAULT_LANGUAGES = %w(c html java php)
 
   class << self
     def new_languages_for_project(project, days)

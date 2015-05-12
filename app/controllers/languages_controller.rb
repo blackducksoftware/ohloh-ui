@@ -4,16 +4,12 @@ class LanguagesController < ApplicationController
 
   before_action :tool_context, except: :chart
   before_action :find_language, only: :show
+  before_action :find_languages, only: :compare
 
   def index
     @languages = Language.filter_by(params[:query])
                  .send(parse_sort_term)
                  .page(params[:page]).per_page(10)
-
-    respond_to do |format|
-      format.html
-      format.xml
-    end
   end
 
   def show
@@ -33,7 +29,6 @@ class LanguagesController < ApplicationController
 
   def compare
     @measure = params[:measure] || 'commits'
-    @language_names = Language.where(name: params[:language_name] || %w(c html java php)).by_name.pluck(:name)
     @languages = Language.by_name.pluck(:nice_name, :name).prepend([t('.none'), '-1'])
   end
 
@@ -42,6 +37,11 @@ class LanguagesController < ApplicationController
   def find_language
     @language = Language.from_param(params[:id]).take
     fail ParamRecordNotFound unless @language
+  end
+
+  def find_languages
+    @language_names = Language.where(name: params[:language_name]).by_name.pluck(:name)
+    @language_names = Language.where(name: Language::DEFAULT_LANGUAGES).by_name.pluck(:name) if @language_names.blank?
   end
 
   def parse_sort_term

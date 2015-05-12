@@ -8,6 +8,7 @@ describe 'LanguagesController' do
   let(:create_all_months) do
     date_range.each { |date| create(:all_month, month: date) }
   end
+  let(:client_id) { create(:api_key).oauth_application.uid }
 
   describe 'index' do
     it 'should return languages' do
@@ -42,7 +43,7 @@ describe 'LanguagesController' do
     end
 
     it 'should respond to xml request' do
-      get :index, format: :xml
+      get :index, format: :xml, api_key: client_id
       must_respond_with :ok
       must_render_template :index
       assigns(:languages).count.must_equal 2
@@ -52,7 +53,7 @@ describe 'LanguagesController' do
 
   describe 'show' do
     it 'should load language facts' do
-      create(:language_fact, language: @language)
+      language_fact = create(:language_fact, language: @language)
       get :show, id: @language.name
       must_respond_with :ok
       must_render_template :show
@@ -62,7 +63,7 @@ describe 'LanguagesController' do
 
     it 'should not load language_facts if xml request' do
       create(:language_fact, language: @language)
-      get :show, id: @language.name, format: :xml
+      get :show, id: @language.name, format: :xml, api_key: client_id
       must_respond_with :ok
       must_render_template :show
       assigns(:language_facts).must_equal nil
@@ -77,7 +78,7 @@ describe 'LanguagesController' do
 
       response_data = JSON.parse(response.body)
       response_data['series'].count.must_equal 1
-      response_data['series'][:name].must_equal @language.name
+      response_data['series'].last['name'].must_equal @language.nice_name
     end
 
     it 'should support muliple language names' do

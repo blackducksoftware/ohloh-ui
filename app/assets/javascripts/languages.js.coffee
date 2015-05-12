@@ -1,6 +1,6 @@
 App.Languages =
   init: ->
-    $('.last_language').change App.Languages.add_language
+    $('.last_language').change @add_language
 
   add_language: ->
     $parent = $(this).parent('.language')
@@ -13,6 +13,6 @@ App.Languages =
     $clone.find('.chzn-container').remove()
     $clone.find('select').removeClass('chzn-done').chosen()
 
-$(document).on 'page:change', ->
+$ ->
   App.Languages.init()
 

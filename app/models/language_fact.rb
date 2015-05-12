@@ -16,19 +16,15 @@ class LanguageFact < ActiveRecord::Base
 
     private
 
-    def language_facts
-      LanguageFact.arel_table
-    end
-
     def all_months
       AllMonth.arel_table
     end
 
     def join_clause(language_id)
-      all_months.join(language_facts, Arel::Nodes::OuterJoin)
+      all_months.join(arel_table, Arel::Nodes::OuterJoin)
         .on(
-          all_months[:month].eq(language_facts[:month])
-         .and(language_facts[:language_id].eq(language_id))
+          all_months[:month].eq(arel_table[:month])
+         .and(arel_table[:language_id].eq(language_id))
         )
         .join_sources
     end
@@ -44,7 +40,7 @@ class LanguageFact < ActiveRecord::Base
     end
 
     def measure_sum(measure)
-      LanguageFact.select(language_facts[measure].sum)
+      LanguageFact.select(arel_table[measure].sum)
         .where('language_facts.month = all_months.month').to_sql
     end
   end
