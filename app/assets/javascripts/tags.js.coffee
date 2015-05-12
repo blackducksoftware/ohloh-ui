@@ -156,5 +156,5 @@ TagEdit =
       complete: () ->
         $('#related_spinner').hide()
 
-$ ->
+$(document).on 'page:change', ->
   JumpToTag.init()
