@@ -78,7 +78,9 @@ en:
       verify_password_help: 'Verify Password must be at least 5 characters long'
 
     index:
-      page_title: 'Account Holders'
+      page_title: 'Account Holders - Open Hub'
+      people: 'People'
+      header: 'Account Holders'
     create:
       success: "Thanks for signing up! Your account information was sent to %{email}. Follow the activation instructions contained in the email before logging in."
     update:

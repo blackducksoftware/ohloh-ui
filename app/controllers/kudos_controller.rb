@@ -6,6 +6,8 @@ class KudosController < ApplicationController
   before_action :find_kudo, only: [:destroy]
   before_action :make_new_kudo, only: [:new, :create]
 
+  before_action :account_context
+
   def index
     @person = @account.person
     @received_kudos = @account.kudos.sort_by_created_at
