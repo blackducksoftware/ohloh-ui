@@ -16,7 +16,8 @@
   .pull-left.account_details
     %h3
       %a.margin_top_20{ href: account_path(account), title: account.name }= truncate(account.name, length: 18)
-    %p.small.word_break_all= truncate(Markup.create(raw: account.about_raw || '').first_line, length: 75)
+    - markup_raw = account.markup ? account.markup.raw : ''
+    %p.small.word_break_all= truncate(Markup.create(raw: markup_raw).first_line, length: 75)
     .small.member_info
       - if account.projects.any?
         %p
@@ -30,7 +31,8 @@
         = vf.commits
         %br
         %span
-          %a{ href: account_positions_path(account) }= pluralize_without_count(vf.commits, t('.commit'))
+          %a{ href: account_positions_path(account), style: 'font-size: 12px;' }
+            #{pluralize_without_count(vf.commits, t('.commit'))}
       .pull-left.in= t('.in_dots')
       - if sorted_cbl.length > 0
         .pull-left.language_summary

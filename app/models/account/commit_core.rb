@@ -1,22 +1,25 @@
 class Account::CommitCore
-  attr_accessor :account_ids
-
   def initialize(account_ids)
     @account_ids = account_ids
+    @accounts_id = Account.arel_table[:id]
+    @projects = Project.arel_table
+    @name_facts = NameFact.arel_table
   end
 
-  # TODO: Replaces most_and_recent_commits_data(account_ids)
-  # rubocop:disable Metrics/AbcSize, Style/MultilineBlockChain
   def most_and_recent_data
     return {} if @account_ids.blank?
-    stats = Account.select do
-              [accounts.id.as(account_id), projects.id.as(project_id),
-               projects.name, projects.url_name, max(name_facts.commits).as(max_commits),
-               max(name_facts.last_checkin).as(last_checkin)]
-            end
+    stats = Account.select(select_clause)
             .with_facts
-            .where { accounts.id.in(my { account_ids }) }
-            .group { [accounts.id, projects.id, projects.name, projects.url_name] }
+            .where(@accounts_id.in(@account_ids))
+            .group(@accounts_id, @projects[:id], @projects[:name], @projects[:url_name])
     stats.group_by { |hsh| hsh['account_id'].to_i }
+  end
+
+  private
+
+  def select_clause
+    [@accounts_id.as('account_id'), @projects[:id].as('project_id'), @projects[:name], @projects[:url_name],
+     @name_facts[:commits].maximum.as('max_commits'),
+     @name_facts[:last_checkin].maximum.as('last_checkin')]
   end
 end

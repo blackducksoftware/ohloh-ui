@@ -12,5 +12,5 @@ CompareProjects =
     tb_show('Project Comparison Graph', $(this).attr('graph'), false)
     return false
 
-$ ->
+$(document).on 'page:change', ->
   CompareProjects.init()

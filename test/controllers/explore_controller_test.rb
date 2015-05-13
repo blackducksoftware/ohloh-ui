@@ -69,6 +69,8 @@ describe 'ExploreController' do
     let(:project_2) { create(:project, name: 'testb', logo_id: logo_2.id, activity_level_index: 40) }
 
     before do
+      Project.update_all(activity_level_index: nil)
+      Analysis.update_all(hotness_score: nil)
       project_1.best_analysis.update_columns(hotness_score: 70, main_language_id: lang_1.id)
       project_2.best_analysis.update_columns(hotness_score: 70, main_language_id: lang_2.id)
     end

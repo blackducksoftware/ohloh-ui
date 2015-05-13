@@ -5,11 +5,7 @@ class Project::DemographicChart
   class << self
     def data
       default_options = DEMOGRAPHIC_CHART_DEFAULTS.deep_dup
-      puts "############ START #########"
-      puts default_options.inspect
-      puts "    #####################"
       default_options['plotOptions']['pie']['startAngle'] = angle
-      puts default_options.inspect
       default_options['series'] << { 'data' => activity_level_data }
       default_options
     end
@@ -28,15 +24,10 @@ class Project::DemographicChart
     end
 
     def total_count
-      @count ||= count_by_activity_level.values.sum
+      count_by_activity_level.values.sum
     end
 
     def angle
-      puts "$$$$$$$$$"
-      puts count_by_activity_level
-      puts "$$$$$$$$$"
-      puts total_count
-      puts "$$$$$$$$$"
       90.0 - 360 * (count_by_activity_level[INACTIVE_INDEX].to_f / total_count) / 2
     end
   end

@@ -29,11 +29,11 @@ project_users:
 people:
   options:
     -
-     - Relevance
-     - relevance
-    -
      - Kudo Rank
      - kudo_position
+    -
+     - Name
+     - effective_name
   default:
     kudo_position
 
