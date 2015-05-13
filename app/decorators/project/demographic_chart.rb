@@ -24,7 +24,7 @@ class Project::DemographicChart
     end
 
     def total_count
-      @count ||= count_by_activity_level.values.sum
+      count_by_activity_level.values.sum
     end
 
     def angle
