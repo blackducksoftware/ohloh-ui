@@ -1,11 +1,12 @@
--# - @meta_title_final = project_pages_title(t('new_view', type: t('links.title').pluralize))
+- page_context[:select_footer_nav] = nil
+.project_content_title
+  %h2.float_left
+    = link_to t(:settings), settings_project_path(@project)
+    \:
+    = link_to t('links.title').pluralize, project_links_path(@project)
+    = %( : #{ t('new') })
+  = project_analysis_timestamp(@project)
 
-%h2.float_left
-  -# = link_to t('settings'), settings_project_path(@project)
-  = %( : )
-  = link_to t('links.title').pluralize, project_links_path(@project)
-  = %( : #{ t('new') })
-= project_analysis_timestamp(@project)
 .clear
 
 .well.col-md-8.col-md-offset-1

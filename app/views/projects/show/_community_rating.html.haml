@@ -26,7 +26,7 @@
       = t('.click_to_add')
   .clear
     .jrating.pull-left{ id: @project.to_param, class: (logged_in? ? '' : 'needs_login'), score: score,
-        star_style: 'big', style: 'margin-left: 9px;', 'data-show'=> 'projects/show/community_rating' }
+      star_style: 'big', style: 'margin-left: 9px', data: { 'show': 'projects/show/community_rating' } }
     %span.hidden.pull-left#rating_spinner
       &nbsp;&nbsp;
       = image_tag('spinner.gif')

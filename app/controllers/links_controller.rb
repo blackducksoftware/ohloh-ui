@@ -69,6 +69,7 @@ class LinksController < SettingsController
   def set_project
     @project = Project.from_param(params[:project_id]).first
     fail ParamRecordNotFound unless @project
+    @project.editor_account = current_user
   end
 
   def set_categories

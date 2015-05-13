@@ -27,11 +27,12 @@
               %i= t('.no_links')
           .clearfix
           - links.each do |link|
-            .col-md-4.margin_bottom_0
+            .col-md-4.margin_bottom_25
               = h link.title
             .col-md-4
               %h5.nomargin
-                = link_to bootstrap_icon('icon-external-link', h(truncate(link.url_host, length: 33))), link.url_escaped, target: '_blank', title: h(link.url_escaped)
+                = link_to bootstrap_icon('icon-external-link', h(truncate(link.url_host, length: 33))),
+                    link.url_escaped, target: '_blank', title: h(link.url_escaped)
             .col-md-2.nomargin.pull-right
               - if has_permission
                 %a.btn.btn-info.btn-mini{ href: edit_project_link_path(@project, link) }
@@ -39,12 +40,12 @@
               - else
                 = disabled_button bootstrap_icon('icon-pencil', t('edit')), class: 'btn-mini'
             .clearfix
-          %p.col-md-4
+          .col-md-4
             - unless links.any? && %w(Homepage Download).include?(category_name)
               - new_link_title = t('new_model', model: t('links.title'))
               - if has_permission
                 - path = new_project_link_path(@project, category_id: category_id)
-                %a.btn.btn-mini.btn-primary.pull-left{ href: path, class: needs_login }= new_link_title
+                %a.btn.btn-mini.btn-primary.pull-left{ href: path }= new_link_title
               - else
                 = disabled_button new_link_title, class: 'pull-left btn-mini btn-primary'
           .clearfix

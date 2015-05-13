@@ -45,14 +45,12 @@ class Link < ActiveRecord::Base
   end
 
   def url_escaped
-    URI::escape(self.url)
+    URI.escape(url)
   end
 
   def url_host
-    URI::parse(self.url_escaped).host
+    URI.parse(url_escaped).host
   end
-
-
 
   class << self
     def find_category_by_id(category_id)
