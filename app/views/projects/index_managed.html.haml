@@ -1,8 +1,6 @@
 - content_for(:html_title) { t('.page_title', name: @account.name) }
 - page_context[:select_top_menu_nav] = 'select_projects'
 
--# layout_params.section_header = 'accounts/mini_header_summary'
-
 #managed_projects_list
   %h3= t('.managed_projects')
   = render partial: 'project_index', collection: @projects, locals: { i_use_this: true, compare: false,

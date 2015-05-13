@@ -131,9 +131,14 @@ class ApplicationController < ActionController::Base
   end
 
   def must_own_account
-    return if current_user == @account || current_user_is_admin?
+    return if current_user == @account
 
-    flash.now[:error] = t('cant_edit_other_account')
+    if current_user_is_admin?
+      flash.now[:error] = t(:admin_warning)
+      return
+    end
+
+    flash.now[:error] = t(:cant_edit_other_account)
     access_denied
   end
 

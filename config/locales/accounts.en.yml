@@ -18,6 +18,7 @@ en:
       settings: '&nbsp; Settings'
     languages:
       index:
+        page_title: "Languages for %{name} : Open Hub"
         title: 'Languages'
       commits_by_language:
         title: 'Languages'
