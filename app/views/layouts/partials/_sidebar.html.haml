@@ -2,7 +2,21 @@
   .col-md-2
   .col-md-10
     %h1= page_context[:heading]
-  .col-md-2
+  .col-md-2.padding_left_5
     .footer-navigation
-      = render partial: 'layouts/partials/navigator'
+      - page_context[:footer_menu_list].each do |section|
+        %ul.nav.nav-stacked.nav-pills
+          - header, *links = section
+          - _header_class, header_name, _header_url, header_type = header
+          %h4.margin_bottom_0= header_name
+          - if header_type.eql?('select')
+            .nav-select-container.padding_top_10#sort_by
+              - select_link = page_context[:select_side_bar].to_s.prepend('/') if page_context[:select_side_bar]
+              = select_tag('nav_select', options_for_select(links, "/languages#{select_link}"),
+                class: 'chzn-select', style: 'width: 140px', onchange: 'document.location.href=this.value')
+          - else
+            - links.each do |link|
+              - link_class, link_name, link_url = link
+              %li.sidebar-nav{ class: "#{link_class} #{'active' if page_context[:select_side_bar] == link_class}" }
+                %a{ href: link_url }= link_name
   .col-md-10= yield

@@ -11,9 +11,9 @@ module ToolHelper
       ],
       [
         [nil, 'Languages', nil, 'select'],
-        ['All Languages', languages_path],
-        ['select...', '']
-      ] + Language.order('lower(nice_name)').map { |l| [l.nice_name, languages_path(l)] }
+        [t('languages.select'), ''],
+        [t('languages.all_languages'), languages_path]
+      ] + Language.order('lower(nice_name)').map { |l| [l.nice_name, language_path(l)] }
     ]
   end
 end
