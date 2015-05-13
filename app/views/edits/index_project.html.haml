@@ -1,6 +1,7 @@
 %meta{ name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW' }
 - content_for(:html_title) { t('.page_title', name: @parent.name) }
 - page_context[:select_top_menu_nav] = 'select_projects'
+- page_context[:select_footer_nav] = nil
 
 .project_content_title
   %h2.pull-left

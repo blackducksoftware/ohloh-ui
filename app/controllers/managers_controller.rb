@@ -1,4 +1,4 @@
-class ManagersController < ApplicationController
+class ManagersController < SettingsController
   before_action :session_required, except: :index
   before_action :find_parent
   before_action :find_manages, only: :index

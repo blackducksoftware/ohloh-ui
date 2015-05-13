@@ -1,4 +1,6 @@
-class EditsController < ApplicationController
+class EditsController < SettingsController
+  helper ProjectsHelper
+
   before_action :session_required, only: [:update]
   before_action :find_parent, only: [:index]
   before_action :find_edit, only: [:update]
@@ -30,7 +32,9 @@ class EditsController < ApplicationController
 
   def find_project
     return nil unless params[:project_id]
-    Project.from_param(params[:project_id]).take
+    @project = Project.from_param(params[:project_id]).take
+    project_context if @project.present?
+    @project
   end
 
   def find_organization

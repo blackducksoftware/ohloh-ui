@@ -3,6 +3,7 @@ class TagsController < ApplicationController
   helper RatingsHelper
 
   before_action :find_models, only: [:index]
+  before_action :show_permissions_alert, only: :select
 
   private
 
