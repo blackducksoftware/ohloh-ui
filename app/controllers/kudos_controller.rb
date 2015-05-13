@@ -6,7 +6,7 @@ class KudosController < ApplicationController
   before_action :find_kudo, only: [:destroy]
   before_action :make_new_kudo, only: [:new, :create]
 
-  before_action :account_context
+  before_action :account_context, only: [:index]
 
   def index
     @person = @account.person

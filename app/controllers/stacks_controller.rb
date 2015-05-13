@@ -9,7 +9,7 @@ class StacksController < ApplicationController
   before_action :auto_ignore, only: [:builder]
   before_action :find_project, only: [:near]
 
-  before_action :account_context
+  before_action :account_context, only: [:index]
 
   def index
     @stacks = @account.stacks

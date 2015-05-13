@@ -7,7 +7,7 @@
 - unless !logged_in? || current_user == @account
   - if kudo
     = form_for kudo, action: account_kudo_path(current_user, kudo), method: :post do |f|
-      = f.hidden_field '_method', 'delete'
+      = f.hidden_field '_method', value: 'delete'
       = f.submit "<i class='icon-undo'></i> Undo Kudo".html_safe, class: "btn kudo-btn #{css}"
   - else
     = link_to 'Give Kudo', '#', class: "btn kudo-btn #{css}",
