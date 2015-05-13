@@ -5,6 +5,9 @@ class Project::DemographicChartTest < ActiveSupport::TestCase
     it 'should return the computed chart data' do
       Project.update_all(activity_level_index: nil)
       create(:project, name: 'test1', activity_level_index: nil)
+      create(:project, name: 'test2', activity_level_index: nil)
+      create(:project, name: 'test3', activity_level_index: nil)
+      create(:project, name: 'test4', activity_level_index: nil)
       create(:project, name: 'testa', activity_level_index: 20)
       create(:project, name: 'testb', activity_level_index: 20)
       create(:project, name: 'testc', activity_level_index: 20)

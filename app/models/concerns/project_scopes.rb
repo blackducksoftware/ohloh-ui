@@ -2,7 +2,7 @@ module ProjectScopes
   extend ActiveSupport::Concern
 
   included do
-    scope :active, -> { where { deleted.not_eq(true) } }
+    scope :active, -> { where.not(deleted: true) }
     scope :deleted, -> { where(deleted: true) }
     scope :not_deleted, -> { where(deleted: false) }
     scope :from_param, lambda { |param|
