@@ -66,7 +66,7 @@ describe 'ExploreController' do
     let(:lang_1) { create(:language, nice_name: 'testa') }
     let(:lang_2) { create(:language, nice_name: 'testb') }
     let(:project_1) { create(:project, name: 'testa', logo_id: logo_1.id, activity_level_index: 20) }
-    let(:project_2) { create(:project, name: 'testb', logo_id: logo_2.id) }
+    let(:project_2) { create(:project, name: 'testb', logo_id: logo_2.id, activity_level_index: 40) }
 
     before do
       project_1.best_analysis.update_columns(hotness_score: 70, main_language_id: lang_1.id)
@@ -81,7 +81,7 @@ describe 'ExploreController' do
         assigns(:projects).must_equal [project_1, project_2]
         assigns(:project_logos_map)[logo_1.id].must_equal logo_1
         assigns(:project_logos_map)[logo_2.id].must_equal logo_2
-        assigns(:with_pai_count).must_equal 1
+        assigns(:with_pai_count).must_equal 2
         assigns(:total_count).must_equal Project.active.count
         assigns(:languages).must_include ['All Languages', '']
         assigns(:languages).must_include [lang_1.nice_name, lang_1.name]
@@ -99,7 +99,7 @@ describe 'ExploreController' do
         assigns(:projects).must_equal [project_1, project_2]
         assigns(:project_logos_map)[logo_1.id].must_equal logo_1
         assigns(:project_logos_map)[logo_2.id].must_equal logo_2
-        assigns(:with_pai_count).must_equal 1
+        assigns(:with_pai_count).must_equal 2
         assigns(:total_count).must_equal Project.active.count
         assigns(:languages).must_include ['All Languages', '']
         assigns(:languages).must_include [lang_1.nice_name, lang_1.name]
@@ -118,7 +118,7 @@ describe 'ExploreController' do
         result['chart']['type'].must_equal 'pie'
         data['name'].must_equal 'Inactive'
         data['color'].must_equal '#2369C8'
-        data['y'].must_equal 20.0
+        data['y'].must_equal 50.0
         data['sliced'].must_equal true
         data['selected'].must_equal true
       end
