@@ -17,5 +17,5 @@ ProjectDemographics =
       else
         "#{this.series.name}: #{this.y}%"
 
-$ ->
+$(document).on 'page:change', ->
   ProjectDemographics.init()

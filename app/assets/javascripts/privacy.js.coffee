@@ -26,5 +26,5 @@ Privacy =
     $('#account_email_kudos').css('color', color)
     $('ul#email_status').css('color', color)
 
-$ ->
+$(document).on 'page:change', ->
   Privacy.init()

@@ -58,5 +58,5 @@ class StackWidget
     projectsShown = Math.min(projectsShown, maxProjectsShown)
     setJavascript(iconSize(), title, badgeWidth, projectsShown)
 
-$ ->
+$(document).on 'page:change', ->
   new StackWidget
