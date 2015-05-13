@@ -6,7 +6,7 @@ class ManagersController < ApplicationController
   before_action :find_manages, only: :index
   before_action :find_manage, except: :index
   before_action :admin_session_required, only: [:new, :create, :edit, :update], if: -> { @parent.is_a? Organization }
-  before_action :project_context, unless: -> { @parent.is_a? Organization }
+  before_action :project_context, if: -> { @parent.is_a? Project }
 
   def new
     @manage ||= Manage.new
