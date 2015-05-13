@@ -57,6 +57,7 @@ en:
   time_ago: "%{time} ago"
   compare_repositories: 'Compare Repositories'
   compare: Compare
+  admin_warning: "CAREFUL! Editing someone else's account!"
 
   layouts:
     application:

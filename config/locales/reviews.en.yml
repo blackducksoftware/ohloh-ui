@@ -39,6 +39,7 @@ en:
       title: 'Edit Ratings and Reviews Page'
     index:
       title: 'Listing of Ratings and Reviews Page'
+      account_title: "%{name} : Ratings and Reviews : Listing - Open Hub"
       listing: 'Listing'
     new:
       title: 'New Review'

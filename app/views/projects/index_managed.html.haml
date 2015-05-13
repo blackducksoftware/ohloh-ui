@@ -1,7 +1,7 @@
-- content_for(:html_title) { t('.page_title', name: @account.name) }
-- page_context[:select_top_menu_nav] = 'select_projects'
-
--# layout_params.section_header = 'accounts/mini_header_summary'
+:ruby
+  content_for(:html_title) { t('.page_title', name: @account.name) }
+  account_context
+  page_context[:select_footer_nav] = :managed_projects
 
 #managed_projects_list
   %h3= t('.managed_projects')

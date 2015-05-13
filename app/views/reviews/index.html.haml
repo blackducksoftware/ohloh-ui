@@ -1,11 +1,13 @@
-- content_for(:html_title) { t('.title') }
-- if @project
-  %h2
-    = link_to t('reviews.rating_and_reviews'), summary_project_reviews_path(@project)
-    = t('.listing')
-- else
-  %h2= t('reviews.reviews_and_ratings')
-= render partial: 'shared/search_dingus', locals: { collection: @reviews, sort_context: :reviews,
-  no_match_found_type: :flash }
-= render partial: 'review_list', collection: @reviews
-= will_paginate @reviews
+.mezzo
+  - if @project
+    - content_for(:html_title) { t('.title') }
+    %h2
+      = link_to t('reviews.rating_and_reviews'), summary_project_reviews_path(@project)
+      = t('.listing')
+  - else
+    - content_for(:html_title) { t('.account_title', name: @account.name) }
+    %h2= t('reviews.reviews_and_ratings')
+  = render partial: 'shared/search_dingus', locals: { collection: @reviews, sort_context: :reviews,
+    no_match_found_type: :flash }
+  = render partial: 'review_list', collection: @reviews
+  = will_paginate @reviews
