@@ -10,6 +10,8 @@ en:
       error: 'There was a problem deleting!'
     index:
       empty_message: 'No links submitted for this project yet.'
+      page_title: 'The %{name} Open Source Project on Open Hub : Links Page'
+      no_links: 'No links yet.'
     fields:
       url_edit: 'Urls are read only, you can only create and delete.'
       full_url: "Enter a full url, including 'http://' or 'https://'."

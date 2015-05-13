@@ -1,7 +1,8 @@
 class LinksController < SettingsController
-  # layout_params :project_layout_params
-  # before_action :check_project
+  helper ProjectsHelper
+
   before_action :set_project
+  before_action :project_context
   before_action :set_link, only: [:edit, :update, :destroy]
   before_action :session_required, only: [:create, :new, :edit, :update]
   before_action :set_categories, only: [:create, :new, :edit, :update]
