@@ -142,6 +142,13 @@ en:
     destroy:
       success: 'Blacklisted Domain successfully deleted'
   api_keys:
+    api_key:
+      none: 'None'
+      api_key: 'API Key'
+      oauth_secret: 'OAuth Secret'
+      redirect_url: 'Redirect URL'
+      home_page_url: 'Home Page URL'
+      api_key_label_2_html: '<strong>API Key</strong><code title=%{key}>%{value}</code>'
     permission_denied: 'Only the API Key owner has permission to do this.'
     download_as_csv: 'Download as CSV'
     limit_reached: 'There is a limit of 10 API keys per account. Contact Open Hub support if you have special needs.'

@@ -3,6 +3,7 @@ module PageContextHelper
   include ForumsHelper
 
   def account_context
+    return if @account.blank?
     set_page_context(footer_menu_list: @account.decorate.sidebar_for(current_user),
                      select_footer_nav: :account_summary,
                      select_top_menu_nav: :select_people,
@@ -10,12 +11,14 @@ module PageContextHelper
   end
 
   def organization_context
+    return if @organization.blank?
     set_page_context(footer_menu_list:  @organization.decorate.sidebar,
                      select_footer_nav:  :org_summary,
                      select_top_menu_nav:  :select_organizations)
   end
 
   def project_context
+    return if @project.blank?
     set_page_context(footer_menu_list:  @project.decorate.sidebar,
                      select_footer_nav:  :project_summary,
                      select_top_menu_nav:  :select_projects,
