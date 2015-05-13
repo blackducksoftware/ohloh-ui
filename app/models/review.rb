@@ -8,7 +8,7 @@ class Review < ActiveRecord::Base
   validates :comment, presence: true, length: { in: 1..5000 }, allow_blank: true
 
   before_save do |review|
-    sanitizer       = HTML::FullSanitizer.new
+    sanitizer       = Rails::Html::FullSanitizer.new
     review.title    = sanitizer.sanitize(review.title)
     review.comment  = sanitizer.sanitize(review.comment)
   end
