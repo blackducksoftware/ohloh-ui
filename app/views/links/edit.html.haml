@@ -1,10 +1,12 @@
+- content_for(:html_title) { t('.page_title', name: @project.name) }
 - page_context[:select_footer_nav] = nil
+
 .project_content_title
-  %h2.float_left
+  %h2.pull-left
     = link_to t(:settings), settings_project_path(@project)
     \:
     = link_to t('links.title').pluralize, project_links_path(@project)
-    = %( : #{ t('edit') })
+    = %( : #{ t(:edit) })
   = project_analysis_timestamp(@project)
 
 .well.col-md-offset-1.col-md-8

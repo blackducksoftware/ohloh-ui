@@ -10,9 +10,9 @@
     = %( : #{ t('links.title').pluralize })
   = project_analysis_timestamp(@project)
 
-
 - if @links.empty?
-  -# - alert :info, { message: t('.empty_message') }
+  = render partial: 'shared/alert', locals: { message: t('.empty_message') }
+
 .row
   .links.center-block
     - Link::CATEGORIES.each do |category_name, category_id|
@@ -27,9 +27,9 @@
               %i= t('.no_links')
           .clearfix
           - links.each do |link|
-            .col-md-4.margin_bottom_25
+            .col-md-3.margin_bottom_25
               = h link.title
-            .col-md-4
+            .col-md-6
               %h5.nomargin
                 = link_to bootstrap_icon('icon-external-link', h(truncate(link.url_host, length: 33))),
                     link.url_escaped, target: '_blank', title: h(link.url_escaped)

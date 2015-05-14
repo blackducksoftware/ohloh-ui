@@ -3,6 +3,10 @@ en:
     title: 'Link'
     create:
       success: 'Thank you for submitting your link.'
+    edit:
+      page_title: 'The %{name} Open Source Project on Open Hub : Edit Links Page'
+    new:
+      page_title: 'The %{name} Open Source Project on Open Hub : New Links Page'
     update:
       success: 'The link has been updated.'
     destroy:
@@ -15,6 +19,7 @@ en:
     fields:
       url_edit: 'Urls are read only, you can only create and delete.'
       full_url: "Enter a full url, including 'http://' or 'https://'."
+      remove: 'Remove Link'
     about_links:
       first: "Open Hub will display links on the project's summary page, near the top."
       second: 'A project can have only one Homepage link, and only one Downloads link, but the other categories may have multiple links.'

@@ -20,7 +20,6 @@ var ProjectRating = {
             success: function(data) {
               $("#rating_spinner").hide();
               ProjectRating.init();
-              console.log("ajax");
             }
           });
         }

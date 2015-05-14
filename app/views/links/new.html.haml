@@ -1,4 +1,6 @@
 - page_context[:select_footer_nav] = nil
+- content_for(:html_title) { t('.page_title', name: @project.name) }
+
 .project_content_title
   %h2.float_left
     = link_to t(:settings), settings_project_path(@project)
