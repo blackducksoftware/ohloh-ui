@@ -11,6 +11,7 @@ module PageContextHelper
   end
 
   def organization_context
+    @organization ||= @parent if @parent && @parent.is_a?(Organization)
     set_page_context(footer_menu_list:  @organization.decorate.sidebar,
                      select_footer_nav:  :org_summary,
                      select_top_menu_nav:  :select_organizations)
