@@ -7,19 +7,19 @@
   %form.form-inline
     .row
       .col-md-3.padding_left_25
-        - if collection.respond_to?(:current_page) && !collection.total_entries.zero?
+        - if collection.respond_to?(:current_page) && !collection.length.zero?
           %label.paginate= t('.pagination_status', current_page: number_with_delimiter(collection.current_page),
             total_pages: number_with_delimiter(collection.total_pages))
         - elsif total_count && !total_count.to_i.zero?
           %label.paginate= t('.count_status', current_count: collection.length,
             total_count: number_with_delimiter(total_count))
 
-      .col-md-5.padding_left_10
+      .col-md-5.no_padding
         %label #{t('.search_text')} &nbsp;
         = text_field_tag :query, params[:query]
         %button.btn{ type: 'Submit' }
           %i.icon-refresh
-      .col-md-3.col-md-offset-1.no_padding
+      .col-md-4
         - if filter_by_human_edits
           %label.checkbox.padding_left_20#human_edits
             %input{ type: 'checkbox', checked: params[:human] == 'true' }

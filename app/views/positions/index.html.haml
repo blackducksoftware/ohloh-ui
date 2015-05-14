@@ -1,7 +1,9 @@
 :ruby
+  content_for(:html_title) { t('.page_title', name: @account.name) }
   page_context[:keywords] = "openhub, #{ h(@account.name) }, #{ h(@account.login) }"
   page_context[:description] = t('.contributions_on_open_hub', name: @account.name)
   page_context[:select_top_menu_nav] = :select_people
+  page_context[:select_footer_nav] = :positions
 
 .clearfix
 .mezzo

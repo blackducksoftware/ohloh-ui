@@ -3,6 +3,7 @@ module PageContextHelper
   include ForumsHelper
 
   def account_context
+    @account ||= @parent if @parent && @parent.is_a?(Account)
     set_page_context(footer_menu_list: @account.decorate.sidebar_for(current_user),
                      select_footer_nav: :account_summary,
                      select_top_menu_nav: :select_people,
@@ -16,6 +17,7 @@ module PageContextHelper
   end
 
   def project_context
+    @project ||= @parent if @parent && @parent.is_a?(Project)
     set_page_context(footer_menu_list:  @project.decorate.sidebar,
                      select_footer_nav:  :project_summary,
                      select_top_menu_nav:  :select_projects,
@@ -27,7 +29,10 @@ module PageContextHelper
   end
 
   def tool_context
-    set_page_context(select_top_menu_nav: :select_tools)
+    set_page_context(footer_menu_list: tools_sidebar,
+                     heading: I18n.t('.tools_menu'),
+                     select_top_menu_nav: :select_tools,
+                     nav_type: 'sidebar')
   end
 
   def review_context

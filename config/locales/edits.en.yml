@@ -52,7 +52,7 @@ en:
       help_2: "If you are this organization's manager, you have the option to undo any of these settings and changes."
       help_3: "To undo a change, just click the \"Undo\" button next to that change and the change will be immediately rolled back to its previous state."
     index_account:
-      page_title: "Open Hub Edit History"
+      page_title: "%{name} : Account Edit History - Open Hub"
       openhub_edit_history: "Account Edit History"
       help_1: "All edits made by you on Open Hub, including project and organization settings and data changes are rolled up in a running list, so you can see each change in sequential order."
       help_2: "You have the option to undo any of the settings and changes you've made to the site, if you have necessary permissions. For projects, you will have permission if a project is not locked so only managers may change settings, or if you are a manager of a locked project. For organizations, you will have permission if you are a manager of the organization."
