@@ -59,6 +59,10 @@ class StringTest < ActiveSupport::TestCase
     edit.value.must_equal encoded_string
   end
 
+  it 'should not mangle good unicode strings' do
+    'Stefan Küng'.fix_encoding_if_invalid!.must_equal 'Stefan Küng'
+  end
+
   it 'valid_http_url? returns true for http:// urls' do
     'http://cnn.com/sports'.valid_http_url?.must_equal true
   end
