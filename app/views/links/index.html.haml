@@ -11,7 +11,7 @@
   = project_analysis_timestamp(@project)
 
 - if @links.empty?
-  = render partial: 'shared/alert', locals: { message: t('.empty_message') }
+  - flash.now[:notice] = t('.empty_message')
 
 .row
   .links.center-block
