@@ -9,13 +9,11 @@ module ProjectAssociations
     has_many :taggings, as: :taggable
     has_many :tags, through: :taggings
     belongs_to :best_analysis, foreign_key: :best_analysis_id, class_name: :Analysis
-    has_many :aliases, -> { where { deleted.eq(false) & preferred_name_id.not_eq(nil) } }
-    has_many :aliases_with_positions_name, -> { where { deleted.eq(false) & preferred_name_id.eq(positions.name_id) } },
-             class_name: 'Alias'
+    has_many :aliases, -> { where(deleted: false).where.not(preferred_name_id: nil) }
     has_many :contributions
     has_many :positions
-    has_many :stack_entries, -> { where { deleted_at.eq(nil) } }
-    has_many :stacks, -> { where { deleted_at.eq(nil) & account_id.not_eq(nil) } }, through: :stack_entries
+    has_many :stack_entries, -> { where(deleted_at: nil) }
+    has_many :stacks, -> { where(deleted_at: nil).where.not(arel_table[:account_id].eq(nil)) }, through: :stack_entries
     belongs_to :logo
     belongs_to :organization
     has_many :manages, -> { where(deleted_at: nil, deleted_by: nil) }, as: 'target'

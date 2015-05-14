@@ -57,6 +57,7 @@ en:
   time_ago: "%{time} ago"
   compare_repositories: 'Compare Repositories'
   compare: Compare
+  admin_warning: "CAREFUL! Editing someone else's account!"
 
   layouts:
     application:
@@ -91,7 +92,7 @@ en:
   my_stacks: 'My Stacks'
   stacks_title: 'Stacks'
   contribution: 'Contributions'
-  languages: 'Languages'
+  languages_menu: 'Languages'
   technologies: Technologies
   recognition: 'Recognition'
   kudos_menu: 'Kudos'

@@ -1,6 +1,6 @@
 class Account::ProjectCore < OhDelegator::Base
   parent_scope do
-    has_many :projects, -> { where { deleted.eq(false) } }, through: :manages, source: :target, source_type: 'Project'
+    has_many :projects, -> { where(deleted: false) }, through: :manages, source: :target, source_type: 'Project'
   end
 
   # TODO: Replace stacked_project? with this
@@ -10,12 +10,10 @@ class Account::ProjectCore < OhDelegator::Base
   end
 
   # TODO: Replace i_use_these with this
-  # rubocop:disable Metrics/AbcSize
   def used
     @used_projects ||=
-      Project.active.joins { stacks }
-      .where { stacks.account_id.eq my { id } }
-      .order { [user_count, name] }.limit(15).distinct
+      Project.active.joins(:stacks).where(stacks_account_id)
+      .order(:user_count, :name).limit(15).distinct
 
     logo_ids = @used_projects.collect(&:logo_id).compact
     @used_proj_logos ||= logo_ids.any? ? Logo.find(logo_ids) : []
@@ -25,8 +23,12 @@ class Account::ProjectCore < OhDelegator::Base
   # TODO: Replace stacked_projects_count with this
   def stacked_count
     @stacked_projects_count ||=
-      Project.active.joins { stacks }
-      .where { stacks.account_id.eq my { id } }
-      .distinct.count
+      Project.active.joins(:stacks).where(stacks_account_id).distinct.count
+  end
+
+  private
+
+  def stacks_account_id
+    Stack.arel_table[:account_id].eq(id)
   end
 end

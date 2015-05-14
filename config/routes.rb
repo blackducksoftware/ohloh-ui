@@ -299,7 +299,10 @@ Rails.application.routes.draw do
   end
 
   resources :languages, only: [:show, :index] do
-    collection { get :compare }
+    collection do
+      get :compare
+      get :chart
+    end
   end
 
   resources :contributors, controller: 'contributions' do

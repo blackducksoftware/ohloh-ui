@@ -2,6 +2,9 @@
   page_context[:title] = t('.page_title', who: @stack.account.name, what: @stack.title)
   editable = current_user && (@stack.account == current_user)
   stack_entries = @stack.stack_entries
+  page_context[:select_top_menu_nav] = 'select_people'
+  page_context[:select_footer_nav] = :stacks
+
 
 .row{ id: "stack_#{@stack.id}" }
   .col-md-9

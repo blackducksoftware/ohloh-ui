@@ -18,6 +18,7 @@ en:
       settings: '&nbsp; Settings'
     languages:
       index:
+        page_title: "Languages for %{name} : Open Hub"
         title: 'Languages'
       commits_by_language:
         title: 'Languages'
@@ -77,7 +78,9 @@ en:
       verify_password_help: 'Verify Password must be at least 5 characters long'
 
     index:
-      page_title: 'Account Holders'
+      page_title: 'Account Holders - Open Hub'
+      people: 'People'
+      header: 'Account Holders'
     create:
       success: "Thanks for signing up! Your account information was sent to %{email}. Follow the activation instructions contained in the email before logging in."
     update:

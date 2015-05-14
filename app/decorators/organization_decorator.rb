@@ -20,7 +20,7 @@ class OrganizationDecorator < Cherry::Decorator
 
   class << self
     def select_options
-      options = Organization.active.order('lower(name)').pluck(:name, :id)
+      options = Organization.active.select(:name, :id).order('lower(name)').map { |org| [org.name, org.id] }
       options.unshift(['Unaffiliated', ''])
       options.push(['Other', ''])
     end
