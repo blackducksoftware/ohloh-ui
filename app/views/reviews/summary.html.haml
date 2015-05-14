@@ -1,7 +1,7 @@
-- page_context[:title] = t('.title')
+- content_for(:html_title) { t('.title', name: @project.name) }
 .project_content_title{ style: 'height: 50px' }
-  %h2.pull_left= t('reviews.rating_and_reviews')
-  -# render_project_analysis_timestamp(@project)
+  %h2.pull-left= t('reviews.rating_and_reviews')
+  = project_analysis_timestamp(@project)
 .row
   .col.col-md-3.padding_left_25
     = render partial: 'community_and_your_rating'

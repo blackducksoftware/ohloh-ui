@@ -1,4 +1,4 @@
-class ProjectLicensesController < ApplicationController
+class ProjectLicensesController < SettingsController
   helper ProjectsHelper
 
   before_action :find_project

@@ -299,7 +299,10 @@ Rails.application.routes.draw do
   end
 
   resources :languages, only: [:show, :index] do
-    collection { get :compare }
+    collection do
+      get :compare
+      get :chart
+    end
   end
 
   resources :contributors, controller: 'contributions' do
@@ -329,6 +332,8 @@ Rails.application.routes.draw do
       post :save_claim
     end
   end
+
+  resources :session_projects, only: [:index, :create, :destroy]
 
   get 'sitemap_index.xml', controller: 'sitemap', action: 'index', format: 'xml'
   get 'sitemaps/:ctrl/:page.xml', controller: 'sitemap', action: 'show', format: 'xml'

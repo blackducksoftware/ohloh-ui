@@ -37,19 +37,3 @@ Explore =
       if $('#explore_projects_page') && $(this).val() == ''
         $(this).attr('disabled', 'disabled')
       $(this).parents('form').attr('action', document.location).submit()
-
-TagCloud =
-  init: () ->
-    $.fn.tagcloud.defaults =
-      size:
-        start: 10
-        end: 18
-        unit: 'pt'
-      color:
-        start: '#999'
-        end: '#000'
-    $('#tagcloud a').tagcloud()
-
-$ ->
-  Explore.init()
-  TagCloud.init()

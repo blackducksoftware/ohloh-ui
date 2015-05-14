@@ -1,4 +1,7 @@
-- page_context[:title] = t('.page_title', name: @account.name)
+:ruby
+  page_context[:title] = t('.page_title', name: @account.name)
+  page_context[:select_top_menu_nav] = 'select_people'
+  page_context[:select_footer_nav] = :stacks
 
 .row
   .col-md-9

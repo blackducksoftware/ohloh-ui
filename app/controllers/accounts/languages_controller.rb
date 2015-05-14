@@ -2,6 +2,8 @@ class Accounts::LanguagesController < ApplicationController
   include SetAccountByAccountId
   helper :Projects
 
+  before_action :account_context
+
   # NOTE: Replaces accounts#language.
   def index
     @contributions = @account.positions.includes(:contribution).map(&:contribution).group_by(&:project_id)

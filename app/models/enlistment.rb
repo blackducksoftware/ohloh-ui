@@ -17,6 +17,7 @@ class Enlistment < ActiveRecord::Base
   scope :by_project, -> { order('projects.name, repositories.url, repositories.module_name') }
   scope :by_type, -> { order('repositories.type, repositories.url, repositories.module_name') }
   scope :by_module_name, -> { order('repositories.module_name, repositories.url') }
+  scope :with_repo_url, ->(url) { joins(:repository).where(Repository.arel_table[:url].eq(url)) }
 
   filterable_by ['projects.name', 'repositories.url', 'repositories.module_name',
                  'repositories.type', 'repositories.branch_name']

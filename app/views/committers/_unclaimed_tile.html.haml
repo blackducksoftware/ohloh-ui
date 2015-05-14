@@ -11,7 +11,8 @@
 .commits{ style: "background-color: ##{bg_color}; color: ##{txt_color} !important", title: "#{emails.join("\n")}" }
   %span= name_fact.commits
   .clearfix
-  = link_to 'commit'.pluralize(name_fact.commits), project_contributor_path(project, contributor_id)
+  %a{ href: project_contributor_path(project, contributor_id), style: 'display: inline-block;' }
+    #{'commit'.pluralize(name_fact.commits)}
 .clearfix
 
 .project_link

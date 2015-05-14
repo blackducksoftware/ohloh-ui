@@ -13,9 +13,9 @@ class ToolHelperTest < ActionView::TestCase
       ],
       [
         [nil, 'Languages', nil, 'select'],
-        ['All Languages', '/languages'],
         ['select...', ''],
-        ['C', '/languages.1']
+        ['All Languages', '/languages'],
+        ['C', '/languages/c']
       ]
     ]
   end

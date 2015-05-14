@@ -1,4 +1,4 @@
-JumpToTag =
+App.JumpToTag =
   init: () ->
     $('form[rel=tag_jump]').submit () ->
       console.log 'here'
@@ -13,7 +13,7 @@ JumpToTag =
         $(this).val(ui.item.value)
         $('form[rel=tag_jump]').submit()
 
-TagCloud =
+App.TagCloud =
   init: () ->
     $.fn.tagcloud.defaults =
       size:
@@ -25,7 +25,7 @@ TagCloud =
         end: '#000'
     $('#tagcloud a').tagcloud()
 
-TagNew =
+App.TagNew =
   init: () ->
     project_id = $('form#edit_tags').attr('project_id')
     term = $('#input_tags').val()
@@ -36,24 +36,24 @@ TagNew =
         $('form[rel=tag_edit]').submit()
         $('#input_tags').val('')
 
-TagEdit =
+App.TagEdit =
   init: () ->
     return if $('input#input_tags').length == 0
-    $('form#edit_tags').submit(TagEdit.onSubmit)
-    $('a.tag.add').click(TagEdit.onTagAddClick)
-    $('a.tag.delete').click(TagEdit.onTagDeleteClick)
+    $('form#edit_tags').submit(App.TagEdit.onSubmit)
+    $('a.tag.add').click(App.TagEdit.onTagAddClick)
+    $('a.tag.delete').click(App.TagEdit.onTagDeleteClick)
 
   onSubmit: () ->
     input = $('#input_tags')[0]
     value = $.trim(input.value)
     input.value = ''
-    TagEdit.create(value) if value != ""
+    App.TagEdit.create(value) if value != ""
     return false
 
   create: (text) ->
     text = text.replace('.', '', 'g')
     taglinks = $("a.tag[tagname='#{text}']");
-    taglinks.unbind('click', TagEdit.onTagAddClick).removeClass('add')
+    taglinks.unbind('click', App.TagEdit.onTagAddClick).removeClass('add')
     $('.spinner').show()
     $('#error').hide()
     $('#submit').attr("disabled",'')
@@ -66,9 +66,9 @@ TagEdit =
         tag_name: text
 
       success: (data, textStatus) ->
-        TagEdit.update_status(text)
-        taglinks.click(TagEdit.onTagDeleteClick).addClass('delete')
-        TagEdit.setTagArray(data.split('\n'))
+        App.TagEdit.update_status(text)
+        taglinks.click(App.TagEdit.onTagDeleteClick).addClass('delete')
+        App.TagEdit.setTagArray(data.split('\n'))
         $('.spinner').hide()
         $('#submit').removeAttr('disabled')
 
@@ -91,7 +91,7 @@ TagEdit =
     taglinks = $("a.tag[tagname=#{text}']")
     $("span[tagname='#{text}']").show()
     taglinks.fadeOut('slow');
-    taglinks.unbind('click', TagEdit.onTagDeleteClick).removeClass('delete')
+    taglinks.unbind('click', App.TagEdit.onTagDeleteClick).removeClass('delete')
     $("span[tagname='#{text}']").show()
     project = $('form#edit_tags').attr('project')
     $("#error").hide()
@@ -101,28 +101,28 @@ TagEdit =
       success: (data, textStatus) ->
         $('p.tags_left').html(data[1])
         $("#edit_tags").show() if data[0] > 0
-        TagEdit.updateRelatedProjects()
+        App.TagEdit.updateRelatedProjects()
         $("span[tagname='#{text}']").hide();
 
   setTagArray: (ary) ->
     $('span#current_tags').html('')
     for i in ary
       if ary[i].length > 0
-        $('span#current_tags').append(TagEdit.tagLink(ary[i]));
+        $('span#current_tags').append(App.TagEdit.tagLink(ary[i]));
         $("span#recommended_tags a.add[tagname='#{ary[i]}']").remove()
-    $('span#current_tags a.tag').click(TagEdit.onTagDeleteClick).addClass('delete')
-    TagEdit.updateRelatedProjects()
+    $('span#current_tags a.tag').click(App.TagEdit.onTagDeleteClick).addClass('delete')
+    App.TagEdit.updateRelatedProjects()
 
   tagLink: (text) ->
     "<a tagname='#{text}' class='tag delete tag_remove'>#{text}&nbsp;&nbsp;&nbsp;<i class='icon-remove'></i></a>" +
     "&nbsp;<span class='hidden' tagname='#{text}'><img src='/images/spinner.gif'></span>"
 
   onTagAddClick: () ->
-    TagEdit.create $(this).attr('tagname')
+    App.TagEdit.create $(this).attr('tagname')
     return false
 
   onTagDeleteClick: () ->
-    TagEdit.destroy($(this).attr('tagname'))
+    App.TagEdit.destroy($(this).attr('tagname'))
     return false
 
   doAutoComplete: () ->
@@ -137,8 +137,8 @@ TagEdit =
         tags = JSON.parse(data)
         for i in tags
           if tags[i].length > 0
-            $('#recommended_tags').append(TagEdit.tagLink(tags[i]))
-            $("#recommended_tags a.tag.add[tagname='#{tags[i]}']").click(TagEdit.onTagAddClick)
+            $('#recommended_tags').append(App.TagEdit.tagLink(tags[i]))
+            $("#recommended_tags a.tag.add[tagname='#{tags[i]}']").click(App.TagEdit.onTagAddClick)
       complete: () ->
         $('#recommended_spinner').hide()
 
@@ -150,11 +150,11 @@ TagEdit =
       url: "/p/#{project}/tags/related"
       success: (data, textStatus) ->
         $('#related_projects').html(data)
-        $('#related_projects a.tag.add').click(TagEdit.onTagAddClick)
-        $('#related_projects a.tag.delete').click(TagEdit.onTagDeleteClick)
+        $('#related_projects a.tag.add').click(App.TagEdit.onTagAddClick)
+        $('#related_projects a.tag.delete').click(App.TagEdit.onTagDeleteClick)
 
       complete: () ->
         $('#related_spinner').hide()
 
-$ ->
-  JumpToTag.init()
+$(document).on 'page:change', ->
+  App.JumpToTag.init()

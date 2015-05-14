@@ -30,3 +30,6 @@
     .mini-badges-section.pull-right
       - badges = @account.badges.map { |badge| BadgeDecorator.new(badge) }
       = render partial: 'accounts/badges_row', locals: { badges: badges }
+
+.clearfix
+= render partial: 'layouts/partials/alert'

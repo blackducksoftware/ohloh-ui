@@ -1,0 +1,5 @@
+- compare_path = compare_languages_path(measure: measure, language_name: language.name)
+%a{ href: compare_path, style: 'text-decoration: none' }
+  .chart#language{ datasrc: chart_languages_path(measure: measure, language_name: language.name),
+  style: 'height: 90px;width: 140px',
+  title: t('.click_to_zoom') }

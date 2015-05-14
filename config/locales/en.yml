@@ -56,6 +56,8 @@ en:
   openhub: "OpenHub"
   time_ago: "%{time} ago"
   compare_repositories: 'Compare Repositories'
+  compare: Compare
+  admin_warning: "CAREFUL! Editing someone else's account!"
 
   layouts:
     application:
@@ -90,7 +92,7 @@ en:
   my_stacks: 'My Stacks'
   stacks_title: 'Stacks'
   contribution: 'Contributions'
-  languages: 'Languages'
+  languages_menu: 'Languages'
   technologies: Technologies
   recognition: 'Recognition'
   kudos_menu: 'Kudos'
@@ -336,3 +338,10 @@ en:
         blank: Email address is required
       account:
         invalid: No account with that email address
+
+  session_projects:
+    menu:
+      compare_projects: 'Compare Projects:'
+      limit_reached: limit reached
+    create:
+      limit_exceeded: Project count limit exceeded

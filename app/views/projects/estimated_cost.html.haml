@@ -33,7 +33,7 @@
               .control-group.col-md-4
                 %label.control-label= t('.include')
                 .controls.chosen#value_select
-                  %select.col-md-10.chzn-select.value-select#cocomo_loc_dropdown
+                  %select.col-md-8.chzn-select.value-select#cocomo_loc_dropdown
                     %option.selected{ value: analysis.code_total + analysis.markup_total + analysis.build_total }
                       = t('.all_code')
                     %option{ value: analysis.logic_total }= t('.logic_code_only')

@@ -20,8 +20,10 @@ class Link < ActiveRecord::Base
   scope :of_category, ->(category_id) { where(link_category_id: category_id) }
   scope :general, -> { where(link_category_id: [CATEGORIES[:Homepage], CATEGORIES[:Download]]) }
 
-  validates :title, length: { in: 3..60 }, presence: true
-  validates :url, presence: true,
+  validates :title, length: { in: 3..60 }, allow_blank: true
+  validates :title, presence: true
+  validates :url, presence: true
+  validates :url, allow_blank: true,
                   uniqueness: { scope: [:project_id, :link_category_id] },
                   url_format: { message: :invalid_url }
   validates :link_category_id, presence: true
@@ -42,6 +44,14 @@ class Link < ActiveRecord::Base
 
   def allow_undo_to_nil?(key)
     ![:title, :url, :link_category_id].include?(key)
+  end
+
+  def url_escaped
+    URI.escape(url)
+  end
+
+  def url_host
+    URI.parse(url_escaped).host
   end
 
   class << self

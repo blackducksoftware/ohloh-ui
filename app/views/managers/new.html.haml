@@ -1,11 +1,12 @@
 - content_for(:html_title) { project_pages_title t('.page_title') }
 
-%h2.float_left
+%h2.pull-left
   = link_to t(:settings), settings_parent_path(@parent)
   &#58;
   = link_to t(:managers_link_name), parent_managers_path(@parent)
   &#58;
   #{t(:new)}
+= project_analysis_timestamp(@project)
 
 .clear
 %h4= t '.header', target: @parent.name
