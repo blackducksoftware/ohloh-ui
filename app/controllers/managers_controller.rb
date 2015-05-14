@@ -1,4 +1,4 @@
-class ManagersController < ApplicationController
+class ManagersController < SettingsController
   helper ProjectsHelper
 
   before_action :session_required, except: :index

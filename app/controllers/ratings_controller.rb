@@ -5,12 +5,12 @@ class RatingsController < ApplicationController
   def rate
     @rating.assign_attributes(model_params)
     @rating.save
-    render partial: 'reviews/rater'
+    render partial: params[:show], locals: { score: @rating.score, project: @project.reload }
   end
 
   def unrate
     @rating.destroy if @rating.persisted?
-    render partial: 'reviews/rater'
+    render partial: params[:show], locals: { score: '0' }
   end
 
   private

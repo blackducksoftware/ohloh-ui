@@ -175,6 +175,7 @@ en:
       failed: 'failed'
     users:
       title: 'Users'
+      users: 'Users'
       default: 'Default'
       contributions: 'Contributions'
       kudo_rank: 'Kudo Rank'

@@ -22,7 +22,8 @@ class ProjectLicensesControllerTest < ActionController::TestCase
     login_as nil
     get :index, project_id: project.to_param
     must_respond_with :ok
-    must_select '#flash-msg .alert', 0
+    flash[:notice].must_equal I18n.t('permissions.must_log_in')
+    must_select '#flash-msg .alert', 1
     must_select 'tr.license', 3
     must_select 'a.new-license', 1
     must_select 'a.new-license.needs_login', 1

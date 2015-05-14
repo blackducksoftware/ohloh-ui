@@ -29,7 +29,7 @@ module RepositoryComparisionChart
     svn_sync_type = -> hsh { hsh[:type] == 'SvnSyncRepository' }
     svn_sync_data = data.find(&svn_sync_type)
     svn_data = data.find { |hsh| hsh[:type] == 'SvnRepository' }
-    svn_data[:count] += svn_sync_data[:count]
+    svn_data[:count] += svn_sync_data[:count] unless svn_sync_data.nil?
     data.reject(&svn_sync_type)
   end
 end

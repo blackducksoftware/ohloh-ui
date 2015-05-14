@@ -5,6 +5,7 @@
 
 %div
   %h2.pull-left= t('.users')
+  = project_analysis_timestamp(@project)
 
 .clearfix
 = render partial: 'shared/search_dingus', locals: { collection: @accounts, sort_context: :project_users }

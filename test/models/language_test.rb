@@ -50,7 +50,7 @@ class LanguageTest < ActiveSupport::TestCase
       language = create(:language, active_contributors: [[account_1.id, 1234], [account_2.id, 123]],
                                    experienced_contributors: [[account_3.id, 343]])
       language_preloads = language.preload_active_and_experienced_accounts
-      language_preloads.keys.must_equal [account_1.id, account_2.id, account_3.id]
+      language_preloads.keys.sort.must_equal [account_1.id, account_2.id, account_3.id].sort
       language_preloads[account_1.id].must_equal [account_1]
       language_preloads[account_2.id].must_equal [account_2]
       language_preloads[account_3.id].must_equal [account_3]
