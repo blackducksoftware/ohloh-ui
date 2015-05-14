@@ -8,7 +8,7 @@
   = project_analysis_timestamp(@project)
 
 - if @links.empty?
-  -# - alert :info, { message: t('.empty_message') }
+  - flash.now[:notice] = t('.empty_message')
 
 .links.col-md-8.center-block
   - Link::CATEGORIES.each do |category_name, category_id|
