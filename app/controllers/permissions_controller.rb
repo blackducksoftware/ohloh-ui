@@ -20,9 +20,9 @@ class PermissionsController < ApplicationController
   private
 
   def find_model
+    @project = current_project
     @permission = current_project.permission || Permission.new(target: current_project)
     @permission.tap { |p| p.editor_account = current_user }
-    @project = current_project
   end
 
   def model_params

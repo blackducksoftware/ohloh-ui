@@ -1,4 +1,4 @@
-class ProjectTagsController < ApplicationController
+class ProjectTagsController < SettingsController
   helper ProjectsHelper
   helper TagsHelper
 

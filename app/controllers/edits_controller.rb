@@ -23,6 +23,7 @@ class EditsController < SettingsController
   def find_parent
     @parent = find_account || find_project || find_organization || find_license
     fail ParamRecordNotFound unless @parent
+    send("#{@parent.class.name.downcase}_context") unless @parent.is_a?(License)
   end
 
   def find_account
@@ -32,9 +33,7 @@ class EditsController < SettingsController
 
   def find_project
     return nil unless params[:project_id]
-    @project = Project.from_param(params[:project_id]).take
-    project_context if @project.present?
-    @project
+    Project.from_param(params[:project_id]).take
   end
 
   def find_organization
