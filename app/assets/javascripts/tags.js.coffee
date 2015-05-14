@@ -78,7 +78,7 @@ App.TagEdit =
         $('#submit').removeAttr('disabled')
 
   update_status: (text) ->
-    taglinks = $("a.tag[tagname=#{text}']")
+    taglinks = $("a.tag[tagname='#{text}']")
     project = $('form#edit_tags').attr('project')
     $.ajax
       type: 'GET'
@@ -88,7 +88,7 @@ App.TagEdit =
         $("#edit_tags").hide() if data[0] < 1
 
   destroy: (text) ->
-    taglinks = $("a.tag[tagname=#{text}']")
+    taglinks = $("a.tag[tagname='#{text}']")
     $("span[tagname='#{text}']").show()
     taglinks.fadeOut('slow');
     taglinks.unbind('click', App.TagEdit.onTagDeleteClick).removeClass('delete')
@@ -97,7 +97,7 @@ App.TagEdit =
     $("#error").hide()
     $.ajax
       type: 'DELETE'
-      url: "/p/#{project}/tags#{text}"
+      url: "/p/#{project}/tags/#{text}"
       success: (data, textStatus) ->
         $('p.tags_left').html(data[1])
         $("#edit_tags").show() if data[0] > 0
@@ -106,10 +106,10 @@ App.TagEdit =
 
   setTagArray: (ary) ->
     $('span#current_tags').html('')
-    for i in ary
-      if ary[i].length > 0
-        $('span#current_tags').append(App.TagEdit.tagLink(ary[i]));
-        $("span#recommended_tags a.add[tagname='#{ary[i]}']").remove()
+    for tag in ary
+      if tag.length > 0
+        $('span#current_tags').append(App.TagEdit.tagLink(tag));
+        $("span#recommended_tags a.add[tagname='#{tag}']").remove()
     $('span#current_tags a.tag').click(App.TagEdit.onTagDeleteClick).addClass('delete')
     App.TagEdit.updateRelatedProjects()
 
@@ -158,3 +158,5 @@ App.TagEdit =
 
 $(document).on 'page:change', ->
   App.JumpToTag.init()
+  App.TagEdit.init()
+  App.TagNew.init()
