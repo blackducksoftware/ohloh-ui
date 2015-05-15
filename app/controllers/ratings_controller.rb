@@ -2,16 +2,17 @@ class RatingsController < ApplicationController
   ALLOWED_PARTIALS = ['projects/show/community_rating', 'reviews/rater']
   before_action :session_required
   before_action :find_project_and_rating
-  before_action :sanitize_partial, only: [:rate, :unrate]
 
   def rate
     @rating.assign_attributes(model_params)
     @rating.save
+    sanitize_partial(params[:show])
     render partial: @partial, locals: { score: @rating.score, project: @project.reload }
   end
 
   def unrate
     @rating.destroy if @rating.persisted?
+    sanitize_partial(params[:show])
     render partial: @partial, locals: { score: '0' }
   end
 
@@ -28,11 +29,11 @@ class RatingsController < ApplicationController
     raise ParamRecordNotFound
   end
 
-  def sanitize_partial
-    if ALLOWED_PARTIALS.include? params[:show]
-      @partial = params[:show]
+  def sanitize_partial(partial)
+    if ALLOWED_PARTIALS.include? partial
+      @partial = partial
     else
-      fail StandardError, I18n.t('ratings.partial_not_found', partial: params[:show])
+      fail StandardError, I18n.t('ratings.partial_not_found', partial: partial)
     end
   end
 end
