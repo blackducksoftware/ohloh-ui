@@ -32,12 +32,12 @@
       = image_tag('spinner.gif')
 
     - if @rating
-      %span.pull-left#clear{ style: 'padding-left: 10px;' }
+      %span.pull-left#clearfix{ style: 'padding-left: 10px;' }
         = link_to t('.clear'), 'javascript:void(0);', class: 'btn btn-mini',
                                                       'data-url' => unrate_project_path(@project,
-                                                      show: '/projects/show/community_rating'),
+                                                      show: 'projects/show/community_rating'),
                                                       method: :delete
   - unless current_user && Review.by_account(current_user).for_project(@project).count > 0
-    .clear &nbsp;
+    .clearfix &nbsp;
     %span{ style: 'margin-left: 5px;' }
       = link_to t('.review_this_project'), new_project_review_path(@project)

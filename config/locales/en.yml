@@ -345,3 +345,5 @@ en:
       limit_reached: limit reached
     create:
       limit_exceeded: Project count limit exceeded
+  ratings:
+    partial_not_found: 'unexpected partial request: %{partial}'
