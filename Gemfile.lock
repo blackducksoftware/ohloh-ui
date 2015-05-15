@@ -272,6 +272,7 @@ GEM
       activesupport (>= 3.0)
       i18n
       polyamorous (~> 1.1)
+    rb-readline (0.5.2)
     redis (3.2.1)
     redis-actionpack (4.0.0)
       actionpack (~> 4)
@@ -396,6 +397,7 @@ DEPENDENCIES
   pry-rails
   rails
   rails-html-sanitizer
+  rb-readline
   recaptcha!
   redis-rails
   rubocop
