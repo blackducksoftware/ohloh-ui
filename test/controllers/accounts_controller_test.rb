@@ -214,7 +214,7 @@ describe 'AccountsController' do
   end
 
   describe 'edit' do
-    it 'must respond with not_found when account does not exist' do
+    it 'must respond with unauthorized when account does not exist' do
       get :edit, id: :anything
       must_respond_with :unauthorized
     end
