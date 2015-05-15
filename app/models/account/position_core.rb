@@ -1,14 +1,18 @@
 class Account::PositionCore < OhDelegator::Base
   parent_scope do
-    has_many :positions, -> { where { project_id.eq(nil) | project_id.not_in(Project.deleted) } }
+    has_many :positions, lambda {
+      deleted_projects = Project.select(:id).deleted.arel
+      where(arel_table[:project_id].eq(nil).or(arel_table[:project_id].not_in(deleted_projects)))
+    }
     # FIXME: Replace account.has_claimed_positions? with account.claimed_positions.any?
-    has_many :claimed_positions, -> { where { name_id.not_eq(nil) } }, class_name: :Position
+    has_many :claimed_positions, -> { where.not(name_id: nil) }, class_name: :Position
   end
 
   # FIXME: Replace positions.for_ohloh_projects with position_core.with_projects
   def with_projects
     @positions_with_projects ||=
-      positions.joins(:project).where { positions.project_id.not_eq(nil) }.order { lower(projects.name).asc }
+      positions.joins(:project).where.not(Position.arel_table[:project_id].eq(nil))
+      .order(Project.arel_table[:name].lower)
   end
 
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength

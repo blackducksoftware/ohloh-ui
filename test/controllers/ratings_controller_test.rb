@@ -14,14 +14,14 @@ class RatingsControllerTest < ActionController::TestCase
 
   it 'allows rating a project with logged in users' do
     login_as @account
-    post :rate, id: @project.to_param, score: '5'
+    post :rate, id: @project.to_param, score: '5', show: 'projects/show/community_rating'
     must_respond_with :ok
   end
 
   it 'does not allow rating a project to silly values' do
     rating_score = @project.ratings
     login_as @account
-    post :rate, id: @project.to_param, score: 'silly'
+    post :rate, id: @project.to_param, score: 'silly', show: 'projects/show/community_rating'
     must_respond_with :ok
     @project.ratings.must_equal rating_score
   end
@@ -35,7 +35,7 @@ class RatingsControllerTest < ActionController::TestCase
   it 'allows changing a rating on a project' do
     rating = create(:rating, account: @account, project: @project, score: '3')
     login_as @account
-    post :rate, id: @project.to_param, score: '5'
+    post :rate, id: @project.to_param, score: '5', show: 'projects/show/community_rating'
     must_respond_with :ok
     @project.reload
     @project.ratings.map(&:id).must_equal [rating.id]
@@ -51,7 +51,7 @@ class RatingsControllerTest < ActionController::TestCase
 
   it 'allows unrating a project with logged in users even if they never rated it' do
     login_as @account
-    post :unrate, id: @project.to_param
+    post :unrate, id: @project.to_param, show: 'projects/show/community_rating'
     must_respond_with :ok
   end
 
@@ -64,7 +64,7 @@ class RatingsControllerTest < ActionController::TestCase
   it 'allows unrating a project' do
     create(:rating, account: @account, project: @project, score: '3')
     login_as @account
-    post :unrate, id: @project.to_param
+    post :unrate, id: @project.to_param, show: 'projects/show/community_rating'
     must_respond_with :ok
     @project.ratings.must_equal []
   end

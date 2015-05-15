@@ -1,0 +1,24 @@
+- content_for(:html_title) { t('.title', title: @language.nice_name) }
+- page_context[:select_side_bar] = @language.name
+
+%h3= t('.heading')
+.col-md-12
+  = render 'language', language: @language, show_lang_usage: true
+
+.col-md-6
+  - exp_accounts = @language.experienced_contributors
+  - if exp_accounts.present?
+    .inset
+      %h3= t('.most_experience_contributors')
+      %p= t('.most_exp_Desc', name: @language.nice_name)
+      = render 'account', accounts: exp_accounts, show_commits: false
+
+.col-md-6
+  - active_accounts = @language.active_contributors
+  - if active_accounts.present?
+    .inset
+      %h3= t('.active_contributors')
+      %p= t('.active_contributors_desc', name: @language.nice_name,
+        start_date: Time.now.months_ago(2).at_beginning_of_month.strftime('%b %Y'),
+        end_date: Time.now.strftime('%b %Y'))
+      = render 'account', accounts: active_accounts, show_commits: true

@@ -57,7 +57,7 @@
 .mezzo
   %h3= t('.community')
 %div
-  .proj_community_ratings#proj_rating= render partial: 'projects/show/community_rating'
+  .proj_community_ratings#proj_rating= render partial: 'projects/show/community_rating', locals: { score: @score }
   .pull-left{ style: 'width: 280px;' }= render partial: 'projects/show/community_recent_committers'
   .pull-left{ style: 'width: 450px;' }= render partial: 'projects/show/committers_per_month_chart'
 .row

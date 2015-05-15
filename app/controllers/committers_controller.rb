@@ -11,7 +11,7 @@ class CommittersController < UnclaimedController
 
   def show
     @people = Person.where(name_id: @name.id)
-              .includes([[project: [[best_analysis: :main_language], :logo]], :name, name_fact: :primary_language])
+              .includes({ project: [{ best_analysis: :main_language }, :logo] }, :name, name_fact: :primary_language)
     preload_emails
   end
 

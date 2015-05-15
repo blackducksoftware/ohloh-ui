@@ -1,0 +1,11 @@
+- content_for(:html_title) { t('.title') }
+
+%h3.pull-left= t('.heading')
+
+.clearfix
+
+.col-md-12
+  = render 'shared/search_dingus', collection: @languages, sort_context: 'languages', no_match_found_type: :flash
+  = render partial: 'language', collection: @languages
+
+= will_paginate @languages

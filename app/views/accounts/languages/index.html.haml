@@ -1,10 +1,7 @@
-- page_context[:select_top_menu_nav] = 'select_people'
-- content_for :html_title do
-  = succeed ' : ' do
-    = @account.name
-  = @account.name
-
-= render partial: 'accounts/mini_header'
+:ruby
+  content_for(:html_title) { t('.page_title', name: @account.name) }
+  page_context[:select_top_menu_nav] = 'select_people'
+  page_context[:select_footer_nav] = :languages
 
 - if @account.decorate.vita_status_message.blank?
   .col-md-12.mezzo

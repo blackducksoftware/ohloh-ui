@@ -167,7 +167,7 @@ Rails.application.routes.draw do
         get :commits_spark
       end
     end
-
+    resources :rss_subscriptions
     resources :licenses, controller: :project_licenses, only: [:index, :new, :create, :destroy]
     resources :tags, controller: :project_tags, only: [:index, :create, :destroy] do
       collection do
@@ -299,7 +299,10 @@ Rails.application.routes.draw do
   end
 
   resources :languages, only: [:show, :index] do
-    collection { get :compare }
+    collection do
+      get :compare
+      get :chart
+    end
   end
 
   resources :contributors, controller: 'contributions' do
