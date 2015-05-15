@@ -31,9 +31,10 @@ class String
   end
 
   def fix_encoding_if_invalid!
-    unless valid_encoding? && encoding == 'UTF-8'
-      encode!('utf-8', invalid: :replace, undef: :replace)
-    end
+    # All new strings claim to be 8-bit ASCII in the DB, but are really saved as UTF-8...
+    force_encoding('utf-8') unless encoding == 'UTF-8'
+    # ...but old strings are a hodge-podge of encodings, so replace any unrecognizable characters with unknowns.
+    encode!('utf-8', invalid: :replace, undef: :replace) unless valid_encoding?
     self
   end
 
