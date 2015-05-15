@@ -8,6 +8,6 @@
   &nbsp;&nbsp;
   = image_tag('spinner.gif')
 - if @rating.try(:persisted?)
-  %span#clear{ style: 'margin-left:7px;' }
+  %span#clearfix{ style: 'margin-left:7px;' }
     = link_to t('.clear'), 'javascript:void(0);', class: 'btn btn-mini',
-        data: { url: unrate_project_path(@project, show: '/reviews/rater') }, method: :delete
+        data: { url: unrate_project_path(@project, show: 'reviews/rater') }, method: :delete
