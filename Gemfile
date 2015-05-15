@@ -32,11 +32,13 @@ gem 'uglifier'
 gem 'version'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
+gem 'simple-rss'
 
 group :development, :vagrant do
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
   gem 'letter_opener'
+  gem 'byebug'
 end
 
 group :test do

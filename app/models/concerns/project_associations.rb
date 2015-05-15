@@ -18,6 +18,8 @@ module ProjectAssociations
     belongs_to :organization
     has_many :manages, -> { where(deleted_at: nil, deleted_by: nil) }, as: 'target'
     has_many :managers, through: :manages, source: :account
+    has_many :rss_subscriptions, -> { where(deleted: false) }
+    has_many :rss_feeds, through: :rss_subscriptions
     has_many :reviews
     has_many :ratings
     has_many :kudos
@@ -39,6 +41,12 @@ module ProjectAssociations
 
     def assign_editor_account_to_associations
       [aliases, enlistments, project_licenses, links].flatten.each { |obj| obj.editor_account = editor_account }
+    end
+
+    def rss_articles
+      RssArticle.joins(rss_feed: :rss_subscriptions)
+        .where("rss_subscriptions.project_id = #{id} and rss_subscriptions.deleted = false")
+        .order('time DESC')
     end
 
     class << self
