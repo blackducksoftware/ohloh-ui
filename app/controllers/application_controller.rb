@@ -186,5 +186,11 @@ class ApplicationController < ActionController::Base
     width_options = params[:width] && { width: 't' }
     redirect_to new_session_path(width_options)
   end
+
+  def set_session_projects
+    @session_projects = (session[:session_projects] || []).map do |url_name|
+      Project.from_param(url_name).take
+    end.compact.uniq
+  end
 end
 # rubocop:enable Metrics/ClassLength
