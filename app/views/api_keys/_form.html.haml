@@ -1,13 +1,16 @@
+- page_context[:select_footer_nav] = :settings
+
 :ruby
   terms_link = blog_link_to(link: :terms, link_text: t('api_keys.terms_link'))
   terms_2_link = blog_link_to(link: :additional_terms, link_text: t('api_keys.terms_2_link'))
   contacts_link = blog_link_to(link: :contact_form, link_text: t('api_keys.contacts_link'))
   settings_link = link_to(t(:settings), settings_account_path(@account))
   account_api_keys_link = link_to(t(:api_keys_title), account_api_keys_url(@account))
-%h2! #{settings_link} : #{account_api_keys_link} : #{@meta_title}
+
+%h2! #{settings_link} : #{account_api_keys_link} : #{t('api_keys_title')}
 
 = form_for [@account, @api_key] do |f|
-  .col-md-11.center-block.well
+  .col-md-11.center-block.well.margin_left_20.padding_right_0
     %fieldset
       - @api_key.oauth_application || @api_key.build_oauth_application
       = f.fields_for :oauth_application do |ff|
@@ -17,12 +20,14 @@
             = ff.text_field :name, max_length: 50, class: 'col-md-7'
             - error_tag @api_key.oauth_application, :name
 
+        .clearfix &nbsp;
         .control-group
           %label.control-label.required= t 'api_keys.redirect_uri'
           .controls
             = ff.text_field :redirect_uri, max_length: 50, class: 'col-md-7'
             - error_tag @api_key.oauth_application, :redirect_uri
 
+      .clearfix &nbsp;
       .control-group
         %label.control-label= t 'api_keys.form.home_page_url'
         .controls
@@ -35,6 +40,7 @@
         .controls
           = f.text_area :description, rows: 10, max_length: 2000, class: 'col-md-7'
           - error_tag @api_key, :description
+          .clearfix &nbsp;
           %p.help-block= t 'api_keys.form.description_info'
 
       - if current_user_is_admin?
@@ -43,6 +49,7 @@
           .controls
             = f.text_field :daily_limit, max_length: 10, class: 'col-md-4'
             - error_tag @api_key, :daily_limit
+          .clearfix
           %p.help-block= t 'api_keys.form.daily_request_limit_admin'
       - else
         .control-group
@@ -54,7 +61,7 @@
           %p.help-block= t 'api_keys.form.daily_request_limit_user', default_daily_limit: default_daily_limit
       - if @api_key.new_record?
         .control-group
-          %label.checkbox#request_limit
+          %label.checkbox.no_padding#request_limit
             = f.check_box :terms
             != t 'api_keys.form.agree_to_terms', terms_link: terms_link, terms_2_link: terms_2_link
           - error_tag @api_key, :terms
@@ -65,15 +72,16 @@
                                        method: :delete, confirm: t('api_keys.form.delete_confirm') }
             %i.icon-trash= t 'api_keys.form.delete'
 
-%h4.nomargin.no_padding_one_top
+.clearfix
+%h4.margin_bottom_0
   %span.soft= t :about
   = t :api_keys_title
-.col-md-5
+.col-md-5.margin_left_30
   %ul
     %li!= t('api_keys.help_1', terms_link: terms_link, terms_2_link: terms_2_link)
     %li= t('api_keys.help_4')
     %li= t('api_keys.help_5')
-.col-md-5
+.col-md-5.margin_left_20
   %ul
     %li= t('api_keys.help_6')
     %li!= t('api_keys.help_7', contacts_link: contacts_link)

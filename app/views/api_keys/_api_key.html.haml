@@ -1,9 +1,7 @@
 - oauth_application = api_key.oauth_application || Doorkeeper::Application.new
-
-.row
-  .well.col-md-11{ class: "#{'no_margin_bottom' if (api_key_counter == @api_keys.length - 1)}" }
-    %h4.float_left.nomargin= oauth_application.name || t('api_keys.untitled_application')
-    %h5.float_right.timestamp.no_margin_bottom
+.well.col-md-12
+  .padding_20
+    %h5.pull-right.timestamp
       %i.icon-time &nbsp;
       = t 'api_keys.created_ago', ago: time_ago_in_words(api_key.created_at)
       ,
@@ -11,53 +9,47 @@
         = t 'api_keys.last_accessed_at', ago: time_ago_in_words(api_key.last_access_at)
       - else
         = t 'api_keys.hasnt_been_used_yet'
-    %p.clear_both
-      %small= api_key.description
-
-    .col-md-6#api_key_basic_info
-      = t('api_keys.api_key_label_2', key: oauth_application.uid).html_safe
-      %br
-      - secret = oauth_application.secret || t('api_keys.none')
-      = t('api_keys.oath_secret_2', secret: secret).html_safe
-
+    %h4.nomargin= oauth_application.name || t('api_keys.untitled_application')
+    %p.soft= api_key.description
+    .col-md-2
+      .strong= t('.api_key')
+      .strong= t('.oauth_secret')
+      .strong= t('.redirect_url')
+      .strong= t('.home_page_url')
+    .col-md-6.no_padding
+      %code{ title: oauth_application.uid }= oauth_application.uid
+      - secret = oauth_application.secret || t('.none')
+      %code{ title: secret }= secret
       - redirect_uri = oauth_application.redirect_uri
       - if redirect_uri
-        %br
-        %strong= t('api_keys.redirect_uri')
         = link_to redirect_uri, redirect_uri, target: '_blank'
-        %i.icon-external-link
-        %p
-
-      - unless api_key.url.to_s.empty?
-        %br
-        %strong= t('api_keys.home_page_url')
+        %i.icon-external-link.inline &nbsp;
+      .clearfix
+      - if api_key.url.present?
         = link_to api_key.url, api_key.url, target: '_blank'
-        %i.icon-external-link
-        %p
-
+        %i.icon-external-link.inline &nbsp;
     .col-md-4#api_key_request_info
-      %h4.nomargin.no_margin_left.col-md-5
-        :ruby
-          label_class, icon_class, status, status_appendix =
-            case api_key.status
-            when ApiKey::STATUS_OK
-              ['ok', 'icon-ok', t('api_keys.status_active'), t('api_keys.can_be_used')]
-            when ApiKey::STATUS_LIMIT_EXCEEDED
-              ['limit-exceeded', 'icon-warning-sign', t('api_keys.status_limit_exceeded'), t('api_keys.cant_use_now')]
-            when ApiKey::STATUS_DISABLED
-              ['disabled', 'icon-ban-circle', t('api_keys.status_disabled'), t('api_keys.cant_use_ever')]
-            end
-        %span.status
-          %label.api-key-status{ class: label_class }
-            != status
-            %i{ class: icon_class }
-        %small.soft= status_appendix
+      :ruby
+        label_class, icon_class, status, status_appendix =
+          case api_key.status
+          when ApiKey::STATUS_OK
+            ['ok', 'icon-ok', t('api_keys.status_active'), t('api_keys.can_be_used')]
+          when ApiKey::STATUS_LIMIT_EXCEEDED
+            ['limit-exceeded', 'icon-warning-sign', t('api_keys.status_limit_exceeded'), t('api_keys.cant_use_now')]
+          when ApiKey::STATUS_DISABLED
+            ['disabled', 'icon-ban-circle', t('api_keys.status_disabled'), t('api_keys.cant_use_ever')]
+          end
+      %span.status.margin_right_0
+        %label.api-key-status{ class: label_class }
+          != status
+          %i{ class: icon_class }
+      .soft.inline= status_appendix
       %h4.nomargin!= t('api_keys.requests_all_time_view', count: api_key.total_count.to_i)
       %h4.nomargin!= t('api_keys.requests_daily_view', count: api_key.daily_count.to_i)
       %h4.nomargin!= t('api_keys.requests_daily_limit_view', count: api_key.daily_limit.to_i)
-    .clear
 
-    .col-md-4
+    .clearfix
+
+    .col-md-4.padding_bottom_20
       %a.btn.btn-small.btn-primary{ href: edit_account_api_key_path(api_key.account, api_key) }
         %i.icon-pencil= t 'api_keys.edit_api_key'
-    .clear
