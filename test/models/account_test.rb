@@ -580,13 +580,12 @@ class AccountTest < ActiveSupport::TestCase
 
   describe 'resend_activation!' do
     it 'should resent activation email and update sent at timestamp' do
-      skip('TODO: AccountNotifier')
       ActionMailer::Base.deliveries.clear
 
       admin.resend_activation!
       email = ActionMailer::Base.deliveries.last
-      email.to.must_equal [user.email]
-      email.subject.must_equal ''
+      email.to.must_equal [admin.email]
+      email.subject.must_equal I18n.t('account_mailer.signup_notification.subject')
     end
   end
 

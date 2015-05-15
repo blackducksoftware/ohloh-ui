@@ -5,7 +5,6 @@ describe 'WidgetBadge::Thin' do
   describe '#create' do
     # We were unable to compare the gifs. So we instead just check for successful method call.
     it 'must complete the operation without any exceptions' do
-      skip 'FIXME: This blows up on pfrys machine due to none of the temporary frame files existing on disk'
       strings = [
         { text: 'The Battle for W...', align: :center },
         { text: '124k Lines', align: :center },
@@ -20,26 +19,24 @@ describe 'WidgetBadge::Thin' do
 
   describe '#add_text' do
     it 'must produce an image with given text' do
-      skip 'FIXME: The generated image is slightly different than the reference image on some computers'
       text = '124k Lines'
       options = { y_offset: -1, blur: 70 }
 
       result_image = WidgetBadge::Thin.send :add_text, *[text, options]
       expected_image_path = Rails.root.join('test/data/widget_badge/thin/openhub_and_text.png')
 
-      compare_images(result_image.path, expected_image_path)
+      compare_images(result_image.path, expected_image_path, 0.1)
     end
   end
 
   describe '#new_text_image' do
     it 'must create a image with a given text' do
-      skip 'FIXME: The generated image is slightly different than the reference image on some computers'
       options = { y_offset: -1, blur: 70, align: :center }
 
       result_image = WidgetBadge::Thin.send :new_text_image, *['Some Text', options]
       expected_image_path = Rails.root.join('test/data/widget_badge/thin/new_text_image.png')
 
-      compare_images(result_image.path, expected_image_path)
+      compare_images(result_image.path, expected_image_path, 0.13)
     end
   end
 end
