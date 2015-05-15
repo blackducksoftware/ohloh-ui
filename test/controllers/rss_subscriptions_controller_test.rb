@@ -26,13 +26,11 @@ describe 'RssSubscriptionsController' do
     must_render_template 'rss_subscriptions/new'
   end
 
-  # it 'should destroy a rss subscription' do
-  #   p project_rss_subscriptions_url(@project)
-  #   rss_subscription = create(:rss_subscription, project: @project)
-  #   login_as rss_subscription.editor_account
-  #   current_user = rss_subscription.editor_account
-  #   delete :destroy, project_id: @project.to_param, id: rss_subscription.id
-  #   must_respond_with :redirect
-  #   must_redirect_to project_rss_subscriptions_path(@project)
-  # end
+  it 'should destroy a rss subscription' do
+    rss_subscription = create(:rss_subscription, project: @project)
+    login_as rss_subscription.editor_account
+    delete :destroy, project_id: @project.to_param, id: rss_subscription.id
+    must_respond_with :redirect
+    must_redirect_to project_rss_subscriptions_path(@project)
+  end
 end
