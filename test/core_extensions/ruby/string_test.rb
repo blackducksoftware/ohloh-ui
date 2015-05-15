@@ -63,6 +63,15 @@ class StringTest < ActiveSupport::TestCase
     'Stefan Küng'.fix_encoding_if_invalid!.must_equal 'Stefan Küng'
   end
 
+  it 'should replace garbage encoded characters with unknowns' do
+    bad_str = "\xE2??"
+    bad_str.valid_encoding?.must_equal false
+    bad_str.fix_encoding_if_invalid!
+    bad_str.present?.must_equal true
+    bad_str.valid_encoding?.must_equal true
+    bad_str.must_equal "�??"
+  end
+
   it 'valid_http_url? returns true for http:// urls' do
     'http://cnn.com/sports'.valid_http_url?.must_equal true
   end
