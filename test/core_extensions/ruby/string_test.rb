@@ -69,7 +69,7 @@ class StringTest < ActiveSupport::TestCase
     bad_str.fix_encoding_if_invalid!
     bad_str.present?.must_equal true
     bad_str.valid_encoding?.must_equal true
-    bad_str.must_equal "�??"
+    bad_str.must_equal '�??'
   end
 
   it 'valid_http_url? returns true for http:// urls' do
