@@ -216,7 +216,7 @@ describe 'AccountsController' do
   describe 'edit' do
     it 'must respond with not_found when account does not exist' do
       get :edit, id: :anything
-      must_respond_with :not_found
+      must_respond_with :unauthorized
     end
 
     it 'must respond with success' do
@@ -240,17 +240,15 @@ describe 'AccountsController' do
     end
 
     it 'must logout spammer trying to edit or update' do
-      skip 'FIXME: Integrate alongwith handle_spammer_account'
       account = create(:account)
       login_as account
       Account::Access.new(account).spam!
 
       get :edit, id: account.to_param
+      must_respond_with :unauthorized
       session[:account_id].must_be_nil
       account.reload.remember_token.must_be_nil
       cookies[:auth_token].must_be_nil
-      flash[:notice].wont_be_nil
-      must_respond_with :redirect
     end
   end
 
@@ -325,7 +323,6 @@ describe 'AccountsController' do
     end
 
     it 'while deleting an account, edits.account_id and edits.undone_by should be marked with Anonymous Coward ID' do
-      skip 'Fix edits logic'
       project = create(:project)
       account = create(:account)
       login_as account
@@ -345,7 +342,6 @@ describe 'AccountsController' do
     end
 
     it 'when deleting an account set the approved_by and deleted_by fields to Anonymous Coward ID' do
-      skip 'Fix edits logic'
       project = create(:project)
       account = create(:account)
       login_as account
@@ -359,7 +355,7 @@ describe 'AccountsController' do
 
       post :destroy, id: account.to_param
 
-      project.manages.must_be :empty?
+      project.reload.manages.must_be :empty?
     end
   end
 

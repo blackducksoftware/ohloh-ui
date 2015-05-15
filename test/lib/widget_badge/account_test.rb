@@ -10,8 +10,7 @@ describe 'WidgetBadge::Account' do
       result_blob = WidgetBadge::Account.create(options)
       result_file = write_to_file(result_blob)
 
-      skip 'FIXME: The generated image is slightly different than the reference image on some computers'
-      compare_images(result_file.path, expected_image_path)
+      compare_images(result_file.path, expected_image_path, 0.1)
     end
   end
 
@@ -24,8 +23,7 @@ describe 'WidgetBadge::Account' do
       result_image = WidgetBadge::Account.send :add_text, *[base_image, options]
       expected_image_path = Rails.root.join('test/data/widget_badge/account/text_without_name.png')
 
-      skip 'FIXME: The generated image is slightly different than the reference image on some computers'
-      compare_images(result_image.path, expected_image_path)
+      compare_images(result_image.path, expected_image_path, 0.1)
     end
 
     it 'must produce an image without commits and kudos when not present' do
@@ -34,8 +32,7 @@ describe 'WidgetBadge::Account' do
       result_image = WidgetBadge::Account.send :add_text, *[base_image, options]
       expected_image_path = Rails.root.join('test/data/widget_badge/account/text_without_commits_and_kudos.png')
 
-      skip 'FIXME: The generated image is slightly different than the reference image on some computers'
-      compare_images(result_image.path, expected_image_path)
+      compare_images(result_image.path, expected_image_path, 0.1)
     end
   end
 
@@ -46,8 +43,7 @@ describe 'WidgetBadge::Account' do
       result_image = WidgetBadge::Account.send :new_text_image, *['Some Text', options]
       expected_image_path = Rails.root.join('test/data/widget_badge/account/new_text_image.png')
 
-      skip 'FIXME: The generated image is slightly different than the reference image on some computers'
-      compare_images(result_image.path, expected_image_path)
+      compare_images(result_image.path, expected_image_path, 0.1)
     end
   end
 end

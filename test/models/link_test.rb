@@ -2,8 +2,7 @@ require 'test_helper'
 
 class LinkTest < ActiveSupport::TestCase
   it 'must raise an error when no editor' do
-    skip 'Integrate alongwith acts_as_editable'
-    -> { create(:link) }.must_raise(ActiveRecord::Acts::Editable::MissingEditorError)
+    -> { create(:link_with_no_editor_account) }.must_raise(ActiveRecord::RecordInvalid)
   end
 
   it 'must create a link' do
@@ -59,32 +58,6 @@ class LinkTest < ActiveSupport::TestCase
     link.title.must_equal new_title
     link.url.must_equal new_url
     link.link_category_id.must_equal Link::CATEGORIES[:Forums]
-  end
-
-  describe 'explain_yourself' do
-    let(:edit) { stub(value: 5, key: 'some_attribute', is_a?: false) }
-    let(:link) { Link.new }
-    before { link.stubs(:id).returns(1) }
-
-    it 'test value when not property edit' do
-      skip('FIXME: Integrate alongwith acts_as_editable')
-      information = link.explain_yourself(edit)
-      information.must_equal 'Created link 1'
-    end
-
-    it 'test value when property edit without link category id' do
-      skip('FIXME: Integrate alongwith acts_as_editable')
-      edit.stubs(:is_a?).returns(true)
-      information = link.explain_yourself(edit)
-      information.must_equal "Changed link 1's some_attribute to be '5'"
-    end
-
-    it 'test value when property edit with link category id' do
-      skip('FIXME: Integrate alongwith acts_as_editable')
-      edit = stub(value: Link::CATEGORIES[:Forums], key: 'link_category_id', is_a?: true)
-      information = link.explain_yourself(edit)
-      information.must_equal "Changed link 1's link_category_id to be 'Forums'"
-    end
   end
 
   it 'test url' do

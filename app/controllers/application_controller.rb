@@ -45,8 +45,8 @@ class ApplicationController < ActionController::Base
   def current_user
     return @cached_current_user if @cached_current_user_checked
     @cached_current_user_checked = true
-    @cached_current_user = find_user_in_session || find_remembered_user || NilAccount.new
-    session[:account_id] = @cached_current_user.id if @cached_current_user.id
+    @cached_current_user = find_previous_user || NilAccount.new
+    session[:account_id] = @cached_current_user.id
     @cached_current_user
   end
   helper_method :current_user
@@ -178,6 +178,12 @@ class ApplicationController < ActionController::Base
 
   def find_remembered_user
     cookies[:auth_token] ? Account.where(remember_token: cookies[:auth_token]).first : nil
+  end
+
+  def find_previous_user
+    previous_user = find_user_in_session || find_remembered_user
+    previous_user = nil if previous_user && Account::Access.new(previous_user).spam?
+    previous_user
   end
 
   def access_denied
