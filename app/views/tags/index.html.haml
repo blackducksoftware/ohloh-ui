@@ -1,5 +1,8 @@
 %meta{ name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW' }
 - content_for(:html_title) { t('.page_title', names: @names.collect { |n| "‘#{n}’" }.to_sentence) }
+- content_for :session_projects_banner do
+  #sp_menu.navbar.container
+    = render 'session_projects/menu'
 
 #tags_show_header
   %h1

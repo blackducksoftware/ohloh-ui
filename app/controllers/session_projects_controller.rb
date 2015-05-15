@@ -5,14 +5,14 @@ class SessionProjectsController < ApplicationController
   before_action :set_session_projects
 
   def index
-    render 'menu'
+    render partial: 'menu'
   end
 
   def create
     if @session_projects.size < 3
       @session_projects.push(@project).uniq!
       session[:session_projects] = @session_projects.map(&:to_param)
-      render 'menu'
+      render partial: 'menu'
     else
       render text: t('.limit_exceeded'), status: :forbidden
     end
@@ -21,19 +21,13 @@ class SessionProjectsController < ApplicationController
   def destroy
     @session_projects.delete_if { |project| project.to_param == params[:id] }
     session[:session_projects] = @session_projects.map(&:to_param)
-    render 'menu'
+    render partial: 'menu'
   end
 
   protected
 
   def prevent_bot_access
     render text: '', status: :forbidden if bot?
-  end
-
-  def set_session_projects
-    @session_projects = (session[:session_projects] || []).map do |url_name|
-      Project.from_param(url_name).take
-    end.compact.uniq
   end
 
   def set_project

@@ -10,6 +10,7 @@ class ProjectsController < ApplicationController
   before_action :find_forge_matches, only: :check_forge
   before_action :project_context, only: [:show, :users, :estimated_cost, :edit, :settings, :map, :similar]
   before_action :show_permissions_alert, only: [:settings, :edit]
+  before_action :set_session_projects, only: :index
 
   def index
     render template: @account ? 'projects/index_managed' : 'projects/index' if request_format == 'html'

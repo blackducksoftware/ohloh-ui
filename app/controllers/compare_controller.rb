@@ -6,6 +6,7 @@ class CompareController < ApplicationController
 
   def projects
     find_projects
+    save_session_projects unless bot?
   end
 
   def projects_graph
@@ -16,6 +17,10 @@ class CompareController < ApplicationController
   end
 
   private
+
+  def save_session_projects
+    session[:session_projects] = @projects.map(&:to_param)
+  end
 
   def find_projects
     @projects = [Project.where(name: params[:project_0]).first,
