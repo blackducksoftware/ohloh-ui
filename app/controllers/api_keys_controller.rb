@@ -5,6 +5,7 @@ class ApiKeysController < ApplicationController
   before_action :find_model, only: [:edit, :update, :destroy]
   before_action :check_api_key_limit, only: [:new, :create]
   before_action :must_be_key_owner
+  before_action :account_context, only: [:new, :edit]
 
   API_KEYS_PER_PAGE = 10
 

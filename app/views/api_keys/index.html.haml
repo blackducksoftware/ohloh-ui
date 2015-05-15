@@ -1,4 +1,9 @@
-- content_for(:html_title) { t :api_keys_title }
+:ruby
+  content_for(:html_title) { t :api_keys_title }
+  account_context
+  page_context[:select_footer_nav] = :settings
+
+.mezzo
 
 %h2.float_left! #{link_to(t(:settings), settings_account_path(@account))} : #{@meta_title}
 .clear_both

@@ -1,2 +1,4 @@
 - content_for(:html_title) { t('api_keys.edit.page_title') }
-= render 'form'
+- page_context[:select_footer_nav] = :settings
+
+.mezzo= render 'form'

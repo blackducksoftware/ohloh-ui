@@ -38,11 +38,9 @@ group :development, :vagrant do
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
   gem 'letter_opener'
-  gem 'byebug'
 end
 
 group :test do
-  gem 'byebug'
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'flog'
@@ -58,5 +56,7 @@ group :test do
 end
 
 group :development, :vagrant, :test do
+  gem 'byebug'
   gem 'pry-rails'
+  gem 'rb-readline'
 end
