@@ -13,27 +13,22 @@ Explore =
         $(this).siblings('.icon-search').trigger('click')
         return false
 
-    $('.similar_projects #project').autocomplete
-      source: '/autocompletes/project'
-      select: (e, ui) ->
-        $('#project').val(ui.item.value)
-        $('#proj_id').val(ui.item.id)
-        $(this).parents('form:first').submit()
-
     $('.similar_projects .icon-search').click (e) ->
       $(this).parents('form:first').trigger('submit')
 
     $('form[rel=similar_project_jump]').submit (e) ->
-      projectId = $("#proj_id").val()
-      if $('#project').val() != '' and projectId != ''
+      projectId = $("#project").val()
+      if projectId != ''
         e.preventDefault()
-        $('#proj_id').val('')
-        window.location.href = "/p/#{projectId}/similar"
+        window.location.href = "/p/#{projectId.toLowerCase()}/similar"
       else
         $('span.error').removeClass('hidden')
-        return false
+        false
 
     $('form[rel=sort_filter] select').change () ->
       if $('#explore_projects_page') && $(this).val() == ''
         $(this).attr('disabled', 'disabled')
       $(this).parents('form').attr('action', document.location).submit()
+
+$(document).on 'page:change', ->
+  Explore.init()

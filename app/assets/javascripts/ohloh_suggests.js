@@ -89,7 +89,6 @@ StackShow = {
   },
 
   add_project_init: function() {
-    $('input#stack_entry_project_name').autocomplete({source:'/autocompletes/project'});
     $('input#new_stack_entry').click(StackShow.add_autocompleted_project);
     $('#add_project_form').submit(StackShow.add_autocompleted_project);
   },
