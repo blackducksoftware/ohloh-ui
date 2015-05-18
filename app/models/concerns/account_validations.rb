@@ -8,13 +8,9 @@ module AccountValidations
 
     validates :password, presence: true, confirmation: true, on: :create
     validates :password_confirmation, presence: true, on: :create
-    validates :password, :password_confirmation, length: { in: 5..40 }
+    validates :password, :password_confirmation, length: { in: 5..40 }, on: :create
 
-    # validates :password, presence: true, confirmation: true, on: :update #if: :crypted_password_changed?
-    # validates :password_confirmation, presence: true, on: :update, if: :crypted_password_changed?
-    # validate :valid_current_password?, on: :update #if: :crypted_password_changed?
-
-    validates :password, presence: true, confirmation: true, on: :update, if: :changing_password?
+    validates :password, presence: true, length: { in: 5..40 }, confirmation: true, on: :update, if: :changing_password?
     validates :password_confirmation, presence: true, on: :update, if: :changing_password?
     validate :valid_current_password?, on: :update, if: :changing_password?
 
@@ -26,10 +22,7 @@ module AccountValidations
     validates :name, length: { maximum: 50 }, allow_blank: true
 
     def changing_password?
-      # binding.pry
-      # Maybe use some other attribute besides crypted_password.
-      # current_password.present? ? true : false
-      current_password.present? || password.present?
+      !password.nil? && !current_password.nil?
     end
   end
 end

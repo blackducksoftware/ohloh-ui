@@ -12,6 +12,9 @@ class Account::Hooks
   end
 
   def after_create(account)
+    # Breaks integration testing
+    account.password = nil
+    account.current_password = nil
     activate_using_invite!(account) if account.invite_code.present?
     create_person!(account) unless Account::Access.new(account).spam?
     deliver_signup_notification(account) unless account.anonymous?
