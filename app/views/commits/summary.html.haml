@@ -48,7 +48,7 @@
     .col-md-12.no_margin_left
       %h4= t('.commits_per_month')
       - commits_chart_url = commits_history_project_analysis_url(project_id: @project.to_param, id: 'latest')
-      .chart#code_analysis_chart{ 'datasrc' => commits_chart_url, style: 'height: 340px' }
+      .chart.watermark440#code_analysis_chart{ 'datasrc' => commits_chart_url, style: 'height: 340px' }
 
     .clearfix
     %h4= link_to t('.most_recent_commits'), project_commits_path(@project)

@@ -6,7 +6,7 @@ class Analysis::ContributorHistoryChart < Analysis::Chart
   end
 
   def data
-    series_and_range_data(@defaults).deep_merge(chart_watermark('watermark_440'))
+    series_and_range_data(@defaults).deep_merge(chart_watermark)
   end
 
   def data_without_auxillaries
