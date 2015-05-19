@@ -21,7 +21,12 @@ class PeopleController < UnclaimedController
   end
 
   def find_rankings_people
-    @people = Person.tsearch(params[:query], "sort_by_#{params[:sort] || 'kudo_position'}")
+    @people = Person.includes(:account).references(:all)
+              .filter_by(params[:query]).send(parse_sort_term)
               .paginate(page: params[:page] || 1, per_page: 10)
+  end
+
+  def parse_sort_term
+    Person.respond_to?("sort_by_#{params[:sort]}") ? "sort_by_#{params[:sort]}" : 'sort_by_kudo_position'
   end
 end
