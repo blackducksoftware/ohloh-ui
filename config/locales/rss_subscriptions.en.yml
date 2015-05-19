@@ -2,6 +2,7 @@ en:
   rss_subscriptions:
     index:
       no_match: 'No matches with this filter'
+      news_feeds: 'News Feeds'
       news_feed: 'News Feed'
       update_status: 'Update Status'
       settings: 'Settings'
@@ -9,7 +10,7 @@ en:
       last_update: 'Last Updated %{time} ago'
       never_updated: 'Never Updated'
       confirm_text: 'Are you sure you want to delete this RSS feed?'
-      page_title: "The %{name} Open Source Project on Open Hub : News Feed Page"
+      page_title: "The %{name} Open Source Project on Open Hub : News Feeds Page"
       remove: 'Remove'
       no_feed_exists: 'No news feeds exists'
       explain: 'Subscribed to RSS feed %{url}'
@@ -36,4 +37,3 @@ en:
   rss_articles:
     index:
       page_title: "The %{name} Open Source Project on Open Hub : News Page"
-
