@@ -22,7 +22,7 @@
       %code{ title: secret }= secret
       - redirect_uri = oauth_application.redirect_uri
       - if redirect_uri
-        = link_to redirect_uri, redirect_uri, target: '_blank'
+        %a{ href: redirect_uri, target: '_blank' }= redirect_uri
         %i.icon-external-link.inline &nbsp;
       .clearfix
       - if api_key.url.present?
