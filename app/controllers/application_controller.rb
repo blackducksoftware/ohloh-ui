@@ -37,6 +37,8 @@ class ApplicationController < ActionController::Base
     render_404
   end
 
+  # Any ActionController::RoutingError raised by ActionDispatch is not caught by ActionController.
+  # See: https://github.com/rails/rails/issues/671
   def raise_not_found!
     fail ActionController::RoutingError, "No route matches #{params[:unmatched_route]}"
   end
