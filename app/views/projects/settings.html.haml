@@ -81,7 +81,7 @@
 
   .col-md-4.settings_module
     %h4.nomargin
-      = link_to t('.news'), project_rss_articles_path(@project)
+      = link_to t('.news'), project_rss_subscriptions_path(@project)
     %span.pull-left
-      %a.module_icon.news{ href: project_rss_articles_path(@project) }
+      %a.module_icon.news{ href: project_rss_subscriptions_path(@project) }
     %span.pull-left.settings_description= t('.news_desc')
