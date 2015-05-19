@@ -12,8 +12,7 @@ class Analysis::TopCommitVolumeChart
   end
 
   def data
-    watermark = chart_watermark('watermark_340', x: '90%', y: '14%')
-    TOP_COMMIT_VOLUME_CHART_DEFAULTS.merge(data_options).deep_merge(watermark)
+    TOP_COMMIT_VOLUME_CHART_DEFAULTS.merge(data_options).deep_merge(chart_watermark(x: '90%', y: '14%'))
   end
 
   private
