@@ -224,7 +224,7 @@ class ApiKeysControllerTest < ActionController::TestCase
   end
 
   it 'new should not let users who have enough keys make more' do
-    (1..ApiKey::KEY_LIMIT_PER_ACCOUNT).each { create(:api_key, account_id: @user.id) }
+    (1..ApiKey::KEY_LIMIT_PER_ACCOUNT).each { |i| create(:api_key, account_id: @user.id, key: "max_keys_test_#{i}") }
     login_as @user
     get :new, account_id: @user.id
     must_respond_with 302
