@@ -11,7 +11,7 @@ class ApplicationControllerTest < ActionController::TestCase
     it 'render_404 as html' do
       get :renders_404
       must_respond_with :not_found
-      response.body.must_include(I18n.t(:four_oh_four))
+      response.body.must_include(I18n.t('application.error.header'))
       response.headers['Content-Type'].must_include('text/html')
     end
 
@@ -32,7 +32,7 @@ class ApplicationControllerTest < ActionController::TestCase
     it 'error message as html' do
       get :error_with_message
       must_respond_with :unauthorized
-      response.body.must_include('test error string')
+      response.body.must_include(I18n.t('application.error.header'))
     end
 
     it 'error message as json' do
@@ -45,6 +45,37 @@ class ApplicationControllerTest < ActionController::TestCase
       get :error_with_message, format: 'xml'
       must_respond_with :unauthorized
       response.body.must_include('test error string')
+    end
+
+    it 'does not invoke airbrake on routing errors' do
+      Rails.application.config.stubs(:consider_all_requests_local).returns false
+      @controller.expects(:notify_airbrake).never
+      get :throws_routing_error
+      must_respond_with :not_found
+      Rails.application.config.unstub(:consider_all_requests_local)
+    end
+
+    it 'does not invoke airbrake on param not found errors' do
+      Rails.application.config.stubs(:consider_all_requests_local).returns false
+      @controller.expects(:notify_airbrake).never
+      get :throws_param_record_not_found
+      must_respond_with :not_found
+      Rails.application.config.unstub(:consider_all_requests_local)
+    end
+
+    it 'does invoke airbrake on generic errors' do
+      Rails.application.config.stubs(:consider_all_requests_local).returns false
+      @controller.expects(:notify_airbrake).once
+      get :throws_standard_error
+      must_respond_with :not_found
+      Rails.application.config.unstub(:consider_all_requests_local)
+    end
+
+    it 'does not prevent sandard errors from being shown to developers' do
+      Rails.application.config.stubs(:consider_all_requests_local).returns true
+      @controller.expects(:notify_airbrake).never
+      -> { get :throws_standard_error }.must_raise(StandardError)
+      Rails.application.config.unstub(:consider_all_requests_local)
     end
 
     it 'session_required with a current user' do
@@ -142,6 +173,14 @@ class TestController < ApplicationController
   def throws_param_record_not_found
     fail ParamRecordNotFound
   end
+
+  def throws_routing_error
+    fail ActionController::RoutingError, 'i_am_a_banana'
+  end
+
+  def throws_standard_error
+    fail StandardError
+  end
 end
 
 test_routes = proc do
@@ -150,5 +189,7 @@ test_routes = proc do
   get 'test/session_required_action' => 'test#session_required_action'
   get 'test/admin_session_required_action' => 'test#admin_session_required_action'
   get 'test/throws_param_record_not_found' => 'test#throws_param_record_not_found'
+  get 'test/throws_routing_error' => 'test#throws_routing_error'
+  get 'test/throws_standard_error' => 'test#throws_standard_error'
 end
 Rails.application.routes.send(:eval_block, test_routes)

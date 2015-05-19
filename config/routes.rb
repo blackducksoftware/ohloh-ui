@@ -337,4 +337,7 @@ Rails.application.routes.draw do
 
   get 'sitemap_index.xml', controller: 'sitemap', action: 'index', format: 'xml'
   get 'sitemaps/:ctrl/:page.xml', controller: 'sitemap', action: 'show', format: 'xml'
+
+  # the unmatched_route must be last as it matches everything
+  match '*unmatched_route', to: 'application#raise_not_found!', via: :all
 end

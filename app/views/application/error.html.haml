@@ -1,1 +1,19 @@
-= @error[:message]
+.row
+  .col-md-8.col-md-offset-2
+    %h3= t('application.error.header')
+    %p &nbsp;
+    %h4= t('application.error.section_1_header')
+    %ul{ style: 'margin-left: 30px;' }
+      %li= t('application.error.section_1_help_1')
+      %li= t('application.error.section_1_help_2')
+      %li= t('application.error.section_1_help_3')
+      %li= t('application.error.section_1_help_4')
+      %li!= t('application.error.section_1_help_5')
+    %h4= t('application.error.section_2_header')
+    %ul{ style: 'margin-left: 30px;' }
+      %li= t('application.error.section_2_help_1')
+      %li= t('application.error.section_2_help_2')
+      %li= t('application.error.section_2_help_3')
+      - link = blog_link_to(link: :contact_form, link_text: t('application.error.contact_us'))
+      %li!= t('application.error.section_2_help_4', link: link)
+    %p &nbsp;

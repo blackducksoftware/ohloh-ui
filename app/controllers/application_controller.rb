@@ -27,8 +27,20 @@ class ApplicationController < ActionController::Base
     super(*params)
   end
 
-  rescue_from ParamRecordNotFound do
+  rescue_from ::Exception do |exception|
+    fail exception if Rails.application.config.consider_all_requests_local
+    notify_airbrake(exception)
     render_404
+  end
+
+  rescue_from ParamRecordNotFound, ActionController::RoutingError do
+    render_404
+  end
+
+  # Any ActionController::RoutingError raised by ActionDispatch is not caught by ActionController.
+  # See: https://github.com/rails/rails/issues/671
+  def raise_not_found!
+    fail ActionController::RoutingError, "No route matches #{params[:unmatched_route]}"
   end
 
   protected
@@ -94,7 +106,7 @@ class ApplicationController < ActionController::Base
   def request_format
     format = 'html' if request.format.html?
     format ||= params[:format]
-    format
+    format || 'html'
   end
 
   def error(message:, status:)
