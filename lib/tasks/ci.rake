@@ -5,5 +5,6 @@ namespace :ci do
     exit(1) unless system('rubocop')
     exit(1) unless system('brakeman -qz')
     exit(1) unless system('haml-lint .')
+    puts 'PASSED'
   end
 end
