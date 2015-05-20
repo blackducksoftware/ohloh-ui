@@ -14,20 +14,25 @@ en:
     captcha:
       captcha_label: 'Captcha'
     search_dingus:
-      pagination_status: "Showing page %{current_page} of %{total_pages}"
-      count_status: "Showing %{current_count} of %{total_count}"
-      search_text: 'Search / Filter on:'
-      sort_by: 'Sort by:'
-      show_only_humans: 'Show only edits by human'
-      by_email: 'By Email'
-      by_name: 'By Name'
-      no_match: 'No Matches with this filter'
-      no_match_1_html: "Your search - <strong>%{query}</strong> - did not match anything."
-      no_match_2: 'Suggestions:'
-      no_match_3: 'Make sure all words are spelled correctly.'
-      no_match_4: 'Try different keywords.'
-      no_match_5: 'Try more general keywords.'
-      no_match_6: 'Try fewer keywords.'
+      page_entries_info:
+        pagination_status: "Showing page %{current_page} of %{total_pages}"
+        count_status: "Showing %{current_count} of %{total_count}"
+      sort:
+        show_only_humans: 'Show only edits by human'
+        by_email: 'By Email'
+        by_name: 'By Name'
+        sort_by: 'Sort by:'
+      search_bar:
+        filter_by_tags: 'Filter by Related Tags:'
+        search_text: 'Search / Filter on:'
+      no_match_found:
+        no_match: 'No Matches with this filter'
+        no_match_1_html: "Your search - <strong>%{query}</strong> - did not match anything."
+        no_match_2: 'Suggestions:'
+        no_match_3: 'Make sure all words are spelled correctly.'
+        no_match_4: 'Try different keywords.'
+        no_match_5: 'Try more general keywords.'
+        no_match_6: 'Try fewer keywords.'
     search:
       search_text: 'Search...'
     analysis_timestamp:

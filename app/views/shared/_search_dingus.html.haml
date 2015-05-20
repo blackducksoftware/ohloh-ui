@@ -1,53 +1,18 @@
 :ruby
+  total_count ||= 0
+  search_type ||= nil
+  tags ||= nil
+  filter_type ||= nil
+  sort_context ||= nil
   no_match_found_type ||= :message
-  filter_by_human_edits ||= false
-  filter_type ||= false
-  total_count ||= false
+
 .margin_top_20#search-dingus
   %form.form-inline
     .row
-      .col-md-3.padding_left_25
-        - if collection.respond_to?(:current_page) && !collection.length.zero?
-          %label.paginate= t('.pagination_status', current_page: number_with_delimiter(collection.current_page),
-            total_pages: number_with_delimiter(collection.total_pages))
-        - elsif total_count && !total_count.to_i.zero?
-          %label.paginate= t('.count_status', current_count: collection.length,
-            total_count: number_with_delimiter(total_count))
+      = render 'shared/search_dingus/page_entries_info', collection: collection, total_count: total_count
 
-      .col-md-5.no_padding
-        %label #{t('.search_text')} &nbsp;
-        = text_field_tag :query, params[:query]
-        %button.btn{ type: 'Submit' }
-          %i.icon-refresh
-      .col-md-4
-        - if filter_by_human_edits
-          %label.checkbox.padding_left_20#human_edits
-            %input{ type: 'checkbox', checked: params[:human] == 'true' }
-            = t('.show_only_humans')
-        - elsif filter_type == :radiobutton
-          %label.radio.inline.margin_left_40
-            = radio_button_tag('find_by', 'name', params[:find_by] != 'email')
-            = t('.by_name')
-          %label.radio.inline
-            = radio_button_tag('find_by', 'email', params[:find_by] == 'email')
-            = t('by_email')
-        - elsif sort_context.present?
-          #sort_by
-            %label= t('.sort_by')
-            = select_tag :sort, options_for_select(SORT_OPTIONS[sort_context][:options],
-              params[:sort] || SORT_OPTIONS[sort_context][:default]),
-              class: 'chzn-select', onchange: 'this.form.submit()'
+      = render 'shared/search_dingus/search_bar', search_type: search_type, tags: tags
 
-- if params[:query].present? && collection.size.zero?
-  - if no_match_found_type == :flash
-    = render partial: 'shared/alert', locals: { message: t('.no_match') }
-  - elsif no_match_found_type == :none
-  - else
-    .inset.advanced_search_tips
-      %h4= t('.no_match_1_html', query: params[:query])
-      %p= t('.no_match_2')
-      %ul.margin_left_35
-        %li= t('.no_match_3')
-        %li= t('.no_match_4')
-        %li= t('.no_match_5')
-        %li= t('.no_match_6')
+      = render 'shared/search_dingus/sort', filter_type: filter_type, sort_context: sort_context
+
+= render 'shared/search_dingus/no_match_found', collection: collection, no_match_found_type: no_match_found_type
