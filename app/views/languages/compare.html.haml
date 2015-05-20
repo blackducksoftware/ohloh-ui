@@ -16,7 +16,7 @@
 = form_tag(compare_languages_path(measure: @measure), method: :get) do
   = hidden_field_tag :measure, @measure
   .col-md-8
-    .chart#language{ datasrc: chart_languages_path(measure: @measure, language_name: @language_names),
+    .chart.watermark440#language{ datasrc: chart_languages_path(measure: @measure, language_name: @language_names),
       style: 'height: 270px;width: 480px' }
   .col-md-4
     - @language_names.each do |name|
