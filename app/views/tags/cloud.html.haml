@@ -1,5 +1,8 @@
 %meta{ name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW' }
 - content_for(:html_title) { t('.page_title') }
+- content_for :session_projects_banner do
+  .navbar.container#sp_menu
+    = render 'session_projects/menu'
 
 .tags
   %h1.margin_bottom_20.margin_top_20= t('.tags')
