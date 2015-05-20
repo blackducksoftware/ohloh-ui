@@ -22,7 +22,7 @@ module AccountValidations
     validates :name, length: { maximum: 50 }, allow_blank: true
 
     def changing_password?
-      !password.nil? && !current_password.nil?
+      !password.nil?
     end
   end
 end

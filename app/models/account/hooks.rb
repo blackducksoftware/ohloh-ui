@@ -12,7 +12,6 @@ class Account::Hooks
   end
 
   def after_create(account)
-    # Breaks integration testing
     account.password = nil
     account.current_password = nil
     activate_using_invite!(account) if account.invite_code.present?
@@ -29,10 +28,6 @@ class Account::Hooks
 
   def after_destroy(account)
     schedule_organization_analysis(account.organization_id)
-  end
-
-  def before_save(account)
-    account.current_password = account.crypted_password
   end
 
   def after_save(account)

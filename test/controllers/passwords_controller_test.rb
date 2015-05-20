@@ -88,7 +88,7 @@ describe 'PasswordsController' do
   it 'must update password fields' do
     account = create(:account, password: 'testing', password_confirmation: 'testing')
     login_as account
-    put :update, id: account.id, account: { current_password: account.password,
+    put :update, id: account.id, account: { current_password: 'testing',
                                             password: 'newpassword',
                                             password_confirmation: 'newpassword' }
     must_redirect_to account_path
