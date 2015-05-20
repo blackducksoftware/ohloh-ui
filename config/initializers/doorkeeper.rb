@@ -16,7 +16,9 @@ Doorkeeper.configure do
   # by default in non-development environments). OAuth2 delegates security in
   # communication to the HTTPS protocol so it is wise to keep this enabled.
   #
-  force_ssl_in_redirect_uri !(Rails.env.development? || Rails.env.test?)
+  # Other service providers like Google allow non ssl redirect_uri in production.
+  # This allows us to let users use `localhost` urls for testing.
+  force_ssl_in_redirect_uri false
 
   # Require admin rights to access the web interface.
   # admin_authenticator do
