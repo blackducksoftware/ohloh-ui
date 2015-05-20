@@ -17,6 +17,8 @@ class Tag < ActiveRecord::Base
   validates :name, length: { within: 1..50 }, allow_nil: false,
                    format: { with: /\A[\w\+\(\)\_\-#]*\Z/, message: I18n.t('tags.allowed_characters') }
 
+  fix_string_column_encodings!
+
   class << self
     def autocomplete(project_id, query)
       by_popularity.for_projects
