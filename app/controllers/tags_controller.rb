@@ -33,11 +33,4 @@ class TagsController < ApplicationController
     @tags = Tag.popular.paginate(page: params[:page], per_page: 48)
     render template: 'tags/cloud'
   end
-
-  def projects_with_all_tags(tag_ids)
-    ins = tag_ids.collect do |tag_id|
-      "projects.id IN (SELECT taggable_id FROM taggings WHERE tag_id=#{tag_id} AND taggable_type='Project')"
-    end
-    Project.not_deleted.where(ins.join(' AND ')).order(user_count: :desc).paginate(page: params[:page], per_page: 10)
-  end
 end
