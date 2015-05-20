@@ -66,9 +66,9 @@ ProjectForm = {
 
 SimilarProjects = {
   init: function(){
+    var project_id = $('#similar_projects').attr('project_id');
     $('#similar_projects').html('');
     $('#related_spinner').show();
-    var project_id = $('#similar_projects').attr('project_id');
     $.ajax({
       url: '/p/' + project_id + '/similar_by_tags',
       success: function (data, textStatus) {
@@ -81,4 +81,6 @@ SimilarProjects = {
   }
 }
 
-SimilarProjects.init();
+$( document ).ready(function() {
+    SimilarProjects.init();
+});

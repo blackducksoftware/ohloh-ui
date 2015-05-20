@@ -12,7 +12,7 @@
     %td{ width: '15%' }
       %strong= t('reviews.my_rating')
     %td{ width: '21%' }
-      != rating_stars('rating_star', @rating.try(:score))
+      != rating_stars('rating_star', @rating.try(:score).to_i)
   %tr
     %td
       .clear{ Style: 'margin-top:5px;' }
