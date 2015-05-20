@@ -6,7 +6,7 @@ en:
       error: "RSS fetch failed. url=%{url}, message=%{message}, backtrace=%{trace}"
     about_news_feeds:
       about_1: 'About'
-      about_2: 'News Feed'
+      about_2: 'News Feeds'
       about_txt: 'Open Hub supports Atom, RSS 0.9, RSS 1.0, and RSS 2.0 feeds. Feeds are updated on a
                   frequent, regular schedule, and feeds that have problems will not be displayed.'
       example: 'Example'

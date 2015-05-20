@@ -2,9 +2,9 @@ class TagsController < ApplicationController
   helper ProjectsHelper
   helper RatingsHelper
 
+  before_action :set_session_projects, only: :index
   before_action :find_models, only: [:index]
   before_action :show_permissions_alert, only: :select
-  before_action :set_session_projects, only: :index
 
   private
 

@@ -1,0 +1,16 @@
+en:
+  application:
+    error:
+      header: "Something seems wrong with your URL"
+      section_1_header: "Open Hub couldn't find the page you were looking for:"
+      section_1_help_1: "There may be a typo in the URL"
+      section_1_help_2: "The page may have moved"
+      section_1_help_3: "You may have followed an outdated link or bookmark"
+      section_1_help_4: "The page may have a different name"
+      section_1_help_5: "Or something else may have happened&hellip;"
+      section_2_header: "You might try:"
+      section_2_help_1: "Fix any typos or other mistakes in the URL"
+      section_2_help_2: "Hit the Back button and try again"
+      section_2_help_3: "Continue using Open Hub from here with, for example, search"
+      contact_us: "Use our reporting forum"
+      section_2_help_4: "%{link} to let us know about the problem"

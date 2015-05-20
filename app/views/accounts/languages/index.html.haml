@@ -12,6 +12,6 @@
         %thead= render partial: 'contributions/language_header'
         %tbody= render partial: 'contributions/language_fact', collection: @vlfs
 - else
-  %h2= I18n.t('.title')
+  %h2= t('accounts.languages.index.title')
   .col-md-12
     %p= @account.decorate.vita_status_message
