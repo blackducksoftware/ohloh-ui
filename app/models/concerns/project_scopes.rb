@@ -36,5 +36,11 @@ module ProjectScopes
                      COALESCE(analysis_summaries.outside_commits_count, 0) DESC ').limit(10)
     }
     scope :with_pai_available, -> { active.where(arel_table[:activity_level_index].gt(0)).size }
+    scope :tagged_with, lambda { |tags|
+      not_deleted.joins(:tags)
+        .where(tags: { name: tags })
+        .group('projects.id')
+        .having('count(*) >= ?', tags.split.flatten.length)
+    }
   end
 end

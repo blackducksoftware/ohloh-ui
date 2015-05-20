@@ -13,9 +13,20 @@ class TagsController < ApplicationController
   end
 
   def find_projects_by_names
-    @names = params[:names].split(',').collect { |name| CGI.unescape(name.gsub('+', '%2B')) }.uniq
-    @projects = projects_with_all_tags(Tag.where(name: @names).pluck(:id))
+    @projects = Project.tagged_with(params[:names])
+                .includes([[best_analysis: :main_language], :logo, :organization, :licenses])
+                .order(user_count: :desc)
+                .page(params[:page]).per_page(10)
     @projects.each { |proj| proj.editor_account = current_user }
+    find_related_tags
+  end
+
+  def find_related_tags
+    tags = Tag.where(name: params[:names]).pluck("name||' (' || taggings_count || ')', name")
+    related_tags = Tag.related_tags(params[:names])
+                   .order(count: :desc)
+                   .pluck("name|| ' (' || count(*) || ')', name")
+    @related_tags = tags + related_tags
   end
 
   def find_tags_by_popularity
