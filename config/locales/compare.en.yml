@@ -63,7 +63,6 @@ en:
     position_not_yet_claimed: "Position not yet claimed"
     based_on: "Based on %{what}."
     remove_from: "Remove from comparision"
-    enter_name: "Enter a project name"
+    enter_name: 'Enter a project name'
     go: "Go"
     view_as_graph: "View as graph"
-
