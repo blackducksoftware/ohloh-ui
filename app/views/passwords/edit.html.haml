@@ -4,15 +4,15 @@
 
 .full-width.mezzo
 %br
-- if flash[:error]
+- if flash[:password_error]
   .alert.alert-danger
     %i.icon-exclamation-sign
-    %span.text-size= flash[:error]
+    %span.text-size= t('.problem_saving')
     %a.close{ 'data-dismiss' => 'alert', href: '#' } ×
 
 %h2= t('.settings_password_html', href: link_to(t('.settings'), settings_account_path(@account)))
 .well.col-md-5#center_position
-  = form_for(@account, url: passwords_edit_account_path) do |f|
+  = form_for(@account, url: password_edit_account_path) do |f|
     %fieldset
       %legend.margin_left_30
         = t('.change_your_password')
