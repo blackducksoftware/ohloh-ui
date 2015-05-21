@@ -66,6 +66,7 @@ ProjectForm = {
 
 SimilarProjects = {
   init: function(){
+    if($('#projects_show_page').length == 0) return;
     $('#similar_projects').html('');
     $('#related_spinner').show();
     var project_id = $('#similar_projects').attr('project_id');
