@@ -2,7 +2,7 @@ module ProjectScopes
   extend ActiveSupport::Concern
 
   included do
-    scope :active, -> { where { deleted.not_eq(true) } }
+    scope :active, -> { where.not(deleted: true) }
     scope :deleted, -> { where(deleted: true) }
     scope :not_deleted, -> { where(deleted: false) }
     scope :from_param, lambda { |param|
@@ -34,6 +34,13 @@ module ProjectScopes
       joins(best_analysis: :analysis_summaries).where(analysis_summaries: { type: 'ThirtyDaySummary' })
         .active. order(' COALESCE(analysis_summaries.affiliated_commits_count, 0) +
                      COALESCE(analysis_summaries.outside_commits_count, 0) DESC ').limit(10)
+    }
+    scope :with_pai_available, -> { active.where(arel_table[:activity_level_index].gt(0)).size }
+    scope :tagged_with, lambda { |tags|
+      not_deleted.joins(:tags)
+        .where(tags: { name: tags })
+        .group('projects.id')
+        .having('count(*) >= ?', tags.split.flatten.length)
     }
   end
 end

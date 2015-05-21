@@ -1,7 +1,13 @@
 - content_for(:html_title) { t :api_keys_title }
+- page_context[:select_footer_nav] = :settings
 
-%h2.float_left! #{link_to(t(:settings), settings_account_path(@account))} : #{@meta_title}
-.clear_both
+.mezzo &nbsp;
+
+%h2.float_left
+  = link_to(t(:settings), settings_account_path(@account))
+  &nbsp;:&nbsp;
+  = t('api_keys_title')
+.clearfix
 
 .api_keys
   - unless @api_keys.empty?
@@ -10,11 +16,11 @@
 - if @api_keys.size < ApiKey::KEY_LIMIT_PER_ACCOUNT
   %a.btn.btn-primary.btn-small.margin_top_10{ href: new_account_api_key_path(@account) }= t('api_keys.request_new')
 
-%h4.nomargin.margin_top_20
+%h4.margin_top_20.margin_bottom_0
   %span.soft= t(:about)
-  = @meta_title
+  = t('api_keys_title')
 .col-md-6
-  %ul
+  %ul.padding_left_30
     - terms_link = blog_link_to(link: :terms, link_text: t('api_keys.terms_link'))
     - terms_2_link = blog_link_to(link: :additional_terms, link_text: t('api_keys.terms_2_link'))
     - getting_started_link = blog_link_to(link: :api_getting_started, link_text: t('api_keys.getting_started_link'))

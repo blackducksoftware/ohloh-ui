@@ -1,15 +1,17 @@
 - content_for(:html_title) { project_pages_title t('.page_title') }
+- page_context[:select_footer_nav] = :settings
 
 .project_content_title
-  %h2.float_left
+  %h2.pull-left
     = link_to t(:settings), settings_parent_path(@parent)
     &#58; #{t(:managers_link_name)}
+  = project_analysis_timestamp(@project)
 .row
   .col-md-8
     - if @manages.any?
       = render partial: 'manage', collection: @manages
     - else
-      %h4= t('.nobody_manages_yet')
+      - flash.now[:notice] = t('.nobody_manages_yet')
     - if @parent.is_a?(Organization) && current_user_is_admin?
       %a.btn.btn-primary{ href: new_parent_manager_path(@parent), style: 'margin-left: 30px;' }= t('.new_manager')
 

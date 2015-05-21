@@ -7,12 +7,16 @@ class NameFact < ActiveRecord::Base
   belongs_to :analysis
   belongs_to :primary_language, class_name: 'Language', foreign_key: :primary_language_id
   belongs_to :vita
-  has_one :project, -> { where { deleted.not_eq(true) } }, foreign_key: :best_analysis_id, primary_key: :analysis_id
+  has_one :project, -> { where.not(deleted: true) }, foreign_key: :best_analysis_id, primary_key: :analysis_id
 
   scope :for_project, ->(project) { where(analysis_id: project.best_analysis_id) }
 
   def active?
     last_checkin.next_year > Time.current
+  end
+
+  def primary_language
+    super || NilLanguage.new
   end
 
   def <=>(other)

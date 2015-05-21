@@ -1,0 +1,51 @@
+:ruby
+  content_for(:html_title) { t('.page_title', name: @project.name) }
+  page_context[:select_footer_nav] = :rss
+  has_permission = logged_in? && @project.edit_authorized?
+.project_content_title
+  %h2.pull-left
+    = link_to t('.settings'), settings_project_path(@project)
+    \:
+    = t('.news_feeds')
+  = render 'shared/analysis_timestamp', analysis: @project.best_analysis, project: @project
+.clearfix
+
+- if @rss_subscriptions.empty? && !params[:query].present?
+  = render partial: 'shared/alert', locals: { message: t('.no_feed_exists') }
+- else
+  %table.table-striped.table
+    %thead
+      %tr{ id: 'dingus-row' }
+        %td{ colspan: '3' }
+          = render partial: 'shared/search_dingus', locals: { collection: @rss_subscriptions,
+            sort_context: nil, no_match_found_type: :none }
+      %tr
+        %th= t('.news_feed')
+        %th= t('.update_status')
+        %th &nbsp;
+    %tbody
+      - @rss_subscriptions.each do |rss_subscription|
+        %tr
+          %td.col-md-7
+            = link_to bootstrap_icon('icon-external-link', rss_subscription.rss_feed.url),
+                      rss_subscription.rss_feed.url,
+                      target: '_blank'
+          %td.col-md-3= last_fetch_detail(rss_subscription)
+          %td.col-md-2.last
+            - if has_permission
+              = link_to bootstrap_icon('icon-trash', t('.remove')),
+                        project_rss_subscription_path(@project, rss_subscription),
+                        method: :delete, data: { confirm: t('.confirm_text') },
+                        class: 'btn btn-danger btn-lg pull-right'
+            - else
+              = disabled_button bootstrap_icon('icon-trash', t('.remove')), class: 'btn btn-danger pull-right'
+  = will_paginate @rss_subscriptions
+  - if @rss_subscriptions.empty? && params[:query].present?
+    = render partial: 'shared/alert', locals: { message: t('.no_match') }
+
+- if @project
+  - if has_permission
+    = link_to t('.new_feed'), new_project_rss_subscription_path(@project), class: 'btn btn-primary'
+  - else
+    = disabled_button t('.new_feed'), class: 'btn btn-primary'
+  = render partial: 'rss_feeds/about_news_feeds'

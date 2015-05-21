@@ -1,4 +1,6 @@
 class SettingsController < ApplicationController
+  before_action :show_permissions_alert, only: [:index, :new, :edit]
+
   # NOTE: renamed disable_oversized_projects to oversized_project?
   def oversized_project?(project)
     return true if defined?(OVERSIZED_PROJECT_IDS) && OVERSIZED_PROJECT_IDS.include?(project.id)

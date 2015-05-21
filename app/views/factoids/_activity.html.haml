@@ -1,9 +1,10 @@
-- project_link = link_to(CGI.escapeHTML(@project.name), project_url(@project))
+- project_link = link_to(sanitize(@project.name), project_url(@project))
 %p
   != t('.activity', link: project_link)
-  - if factoid.is_a? FactoidActivityIncreasing
+  - case factoid
+  - when FactoidActivityIncreasing
     #{t('.increasing')}
-  - elsif factoid.is_a? FactoidActivityStable
+  - when FactoidActivityStable
     #{t('.stable')}
   - else
     #{t('.decreasing')}

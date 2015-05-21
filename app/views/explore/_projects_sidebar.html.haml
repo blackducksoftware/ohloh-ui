@@ -1,0 +1,43 @@
+.well.col-md-3.margin_left_10.margin_top_20#explore_sidebar
+  %div{ style: 'margin-top: -12px' }
+    %h3= t('.search')
+    .margin_left_10
+      %form.search#explore_search_form{ action: projects_path }
+        %input{ type: :hidden, name: 'ref', value: 'explore_project' }
+        %input.explore_search.margin_top_10{ type: :text, name: 'q', placeholder: t('.enter_string') }
+        .icon-search.search.submit
+
+    %h3= t('.tags')
+    .margin_left_10{ style: 'min-height: 100px; padding-left: 15px' }
+      .row
+        #tagcloud
+          - @tags.each do |tag|
+            = link_to tag[0], tag_path(tag[0]), data: { weight: tag[1] }
+    .margin_left_10
+      %form{ rel: 'tag_jump' }
+        %input.explore_search.tag_autocomplete#input_tag{ type: :text, placeholder: t('.enter_tag') }
+
+    %p &nbsp;
+    %h3= t('.compare')
+    %form.projects_compare.margin_left_15{ action: '/p/compare' }
+      - compare_project_inputs.each do |options|
+        %input.proj.explore_compare{ options }
+      %input#auto_submit{ type: 'hidden', value: 'false' }
+      %input.pull-right.btn.btn-primary.btn-small#compare_btn{ type: 'submit', value: 'Compare' }
+
+    %p &nbsp;
+    %p &nbsp;
+    %h3= t('.similar')
+    %form.similar_projects.margin_left_10{ rel: 'similar_project_jump' }
+      %input.proj.explore_search#project{ type: 'text', placeholder: t('.enter_project'), autocomplete: 'off' }
+      %input#proj_id{ type: 'hidden' }
+      .icon-search.search.submit
+      %span.error.hidden= t('.invalid_select')
+
+    %p &nbsp;
+    %h3= t('.add')
+    %p.justify.margin_left_10.margin_top_20{ style: 'line-height: 20px' }
+      = t('.community')
+    %p.justify.margin_left_10{ style: 'line-height: 20px' }
+      = t('.favorite')
+      = link_to t('.add_here'), new_project_path

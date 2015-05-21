@@ -8,31 +8,31 @@ gem 'bluecloth'
 gem 'brakeman'
 gem 'coffee-rails'
 gem 'coffee-script-source', '~>1.8.0'
+gem 'doorkeeper'
 gem 'dotenv-rails'
 gem 'font-awesome-rails'
 gem 'haml-rails'
 gem 'jbuilder'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'jquery-turbolinks'
 gem 'mini_magick', '~> 4.1.1'
 gem 'oh_delegator'
 gem 'ohno-you-dont', require: 'ohno'
 gem 'paperclip'
 gem 'pg'
 gem 'rails'
+gem 'rails-html-sanitizer'
 gem 'recaptcha', github: 'ambethia/recaptcha'
 gem 'redis-rails'
 gem 'rubocop'
 gem 'sass-rails'
-gem 'squeel'
 gem 'therubyracer'
-gem 'turbolinks'
 gem 'twitter-bootstrap-rails'
 gem 'uglifier'
 gem 'version'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
+gem 'simple-rss'
 
 group :development, :vagrant do
   gem 'capistrano-rails'
@@ -41,7 +41,6 @@ group :development, :vagrant do
 end
 
 group :test do
-  gem 'byebug'
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'flog'
@@ -57,5 +56,7 @@ group :test do
 end
 
 group :development, :vagrant, :test do
+  gem 'byebug'
   gem 'pry-rails'
+  gem 'rb-readline'
 end

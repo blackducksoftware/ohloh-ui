@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   root to: 'home#index'
+
+  use_doorkeeper do
+    skip_controllers :applications, :authorized_applications
+  end
+
   resources :sessions, only: [:new, :create] do
     collection do
       delete :destroy
@@ -9,10 +14,10 @@ Rails.application.routes.draw do
 
   resources :stack_entries
 
-  resources :password_reset, only: [:new, :create] do
+  resources :password_resets, only: [:new, :create] do
     collection do
       get :confirm
-      post :reset
+      patch :reset
     end
   end
   resources :activation_resends, only: [:new, :create]
@@ -24,17 +29,19 @@ Rails.application.routes.draw do
   end
   resources :kudos, only: [:new, :create, :destroy]
 
-  resources :people, only: [:index]
+  resources :people, only: [:index] do
+    collection { get :rankings }
+  end
   resources :edits, only: [:update]
 
   resources :licenses do
     resources :edits, only: [:index]
   end
 
-  resources :tags, only: [:index]
+  resources :tags, only: [:index, :show]
 
   resources :accounts do
-    resources :api_keys, constraints: { format: :html }, except: :show
+    resources :api_keys, constraints: { format: :html }
     resources :projects, only: [:index]
     resources :positions, only: [:index] do
       collection do
@@ -132,7 +139,6 @@ Rails.application.routes.draw do
   get 'maintenance', to: 'abouts#maintenance'
   get 'tools', to: 'abouts#tools'
 
-  get 'explore/projects', to: 'explore#projects', as: :explore_projects
   get 'p/compare', to: 'compare#projects', as: :compare_projects
   get 'p/graph', to: 'compare#projects_graph', as: :compare_graph_projects
 
@@ -143,6 +149,7 @@ Rails.application.routes.draw do
       get :settings
       get :estimated_cost
       get :similar_by_tags
+      get :similar
       get 'permissions'  => 'permissions#show',   as: :permissions
       put 'permissions'  => 'permissions#update', as: :update_permissions
       post 'rate'        => 'ratings#rate',       as: :rate
@@ -162,7 +169,7 @@ Rails.application.routes.draw do
         get :commits_spark
       end
     end
-
+    resources :rss_subscriptions
     resources :licenses, controller: :project_licenses, only: [:index, :new, :create, :destroy]
     resources :tags, controller: :project_tags, only: [:index, :create, :destroy] do
       collection do
@@ -200,7 +207,6 @@ Rails.application.routes.draw do
         get :cocomo
       end
     end
-    resources :similar_projects, only: :index
     resources :ratings
     resources :reviews, except: :show do
       collection { get :summary }
@@ -295,19 +301,24 @@ Rails.application.routes.draw do
   end
 
   resources :languages, only: [:show, :index] do
-    collection { get :compare }
-  end
-
-  resources :people do
-    collection { get :rankings }
+    collection do
+      get :compare
+      get :chart
+    end
   end
 
   resources :contributors, controller: 'contributions' do
     resources :invites, only: [:new, :create]
   end
 
-  get 'explore/orgs' => 'explore#orgs'
-  get 'explore/orgs_by_thirty_day_commit_volume' => 'explore#orgs_by_thirty_day_commit_volume'
+  resources :explores, only: :index, path: :explore, controller: :explore do
+    collection do
+      get :orgs
+      get :projects
+      get :demographic_chart
+      get :orgs_by_thirty_day_commit_volume
+    end
+  end
 
   get 'message' => 'home#message'
   get 'maintenance' => 'home#maintenance'
@@ -323,4 +334,12 @@ Rails.application.routes.draw do
       post :save_claim
     end
   end
+
+  resources :session_projects, only: [:index, :create, :destroy]
+
+  get 'sitemap_index.xml', controller: 'sitemap', action: 'index', format: 'xml'
+  get 'sitemaps/:ctrl/:page.xml', controller: 'sitemap', action: 'show', format: 'xml'
+
+  # the unmatched_route must be last as it matches everything
+  match '*unmatched_route', to: 'application#raise_not_found!', via: :all
 end

@@ -1,0 +1,39 @@
+en:
+  rss_subscriptions:
+    index:
+      no_match: 'No matches with this filter'
+      news_feeds: 'News Feeds'
+      news_feed: 'News Feed'
+      update_status: 'Update Status'
+      settings: 'Settings'
+      new_feed: 'New News Feed'
+      last_update: 'Last Updated %{time} ago'
+      never_updated: 'Never Updated'
+      confirm_text: 'Are you sure you want to delete this RSS feed?'
+      page_title: "The %{name} Open Source Project on Open Hub : News Feeds Page"
+      remove: 'Remove'
+      no_feed_exists: 'No news feeds exists'
+      explain: 'Subscribed to RSS feed %{url}'
+    new:
+      page_title: "The %{name} Open Source Project on Open Hub : New News Feed Page"
+      settings: 'Settings'
+      news_feed: 'News Feed'
+      new: ': New'
+      about: 'About News Feeds'
+      about_1: 'Open Hub supports Atom, RSS 0.9, RSS 1.0, and RSS 2.0 feeds.'
+      about_2: 'Feeds must be "live" (e.g. respond to a web request) in order to be added'
+    fields:
+      url: 'Enter URL'
+      example: 'Examples:'
+      sample_url_1: 'http://sourceforge.net/export/rss2_projnews.php?group_id=12345'
+      sample_url_2: 'http://del.icio.us/rss/tag/myproject'
+      sample_url_3: 'http://www.digg.com/rss_search?search=myproject'
+      save: 'Save News Feed'
+    create:
+      success: 'Successfully added RSS subscription.'
+    destroy:
+      success: 'Successfully deleted RSS subscription.'
+
+  rss_articles:
+    index:
+      page_title: "The %{name} Open Source Project on Open Hub : News Page"

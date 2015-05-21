@@ -56,6 +56,8 @@ en:
   openhub: "OpenHub"
   time_ago: "%{time} ago"
   compare_repositories: 'Compare Repositories'
+  compare: Compare
+  admin_warning: "CAREFUL! Editing someone else's account!"
 
   layouts:
     application:
@@ -90,7 +92,7 @@ en:
   my_stacks: 'My Stacks'
   stacks_title: 'Stacks'
   contribution: 'Contributions'
-  languages: 'Languages'
+  languages_menu: 'Languages'
   technologies: Technologies
   recognition: 'Recognition'
   kudos_menu: 'Kudos'
@@ -141,6 +143,13 @@ en:
     destroy:
       success: 'Blacklisted Domain successfully deleted'
   api_keys:
+    api_key:
+      none: 'None'
+      api_key: 'API Key'
+      oauth_secret: 'OAuth Secret'
+      redirect_url: 'Redirect URL'
+      home_page_url: 'Home Page URL'
+      api_key_label_2_html: '<strong>API Key</strong><code title=%{key}>%{value}</code>'
     permission_denied: 'Only the API Key owner has permission to do this.'
     download_as_csv: 'Download as CSV'
     limit_reached: 'There is a limit of 10 API keys per account. Contact Open Hub support if you have special needs.'
@@ -185,6 +194,7 @@ en:
     requests_all_time_view: '<span>%{count}</span><small class="soft">requests all-time</small>'
     requests_daily_view: '<span>%{count}</span><small class="soft">requests today</small>'
     requests_daily_limit_view: '<span><small style="color:#000;">limited to</small><span class="inline">%{count}</span></span><small class="soft">requests a day</small>'
+    redirect_uri: 'Redirect URI'
     index:
       sort_by_most_recent_request: 'Most Recent Request'
       sort_by_most_requests_today: 'Requests Today'
@@ -314,3 +324,33 @@ en:
 
   project_experience:
     no_matching_project: No matching open source project with this name.
+
+  password_resets:
+    title: 'Password Reset'
+    new:
+      enter_email_address: Enter the email you signed up with.
+      submit_text: Send me a password reset link
+    create:
+      success: A link to reset your password was sent to your email address.
+    reset:
+      success: Your password has been reset successfully.
+    confirm:
+      new_password: New Password
+      confirm_password: Confirm Password
+      submit_text: Reset Password
+    token_expired_error: Your password reset URL has expired. Please try again!
+    already_logged_in: You are already logged in.
+    errors:
+      email:
+        blank: Email address is required
+      account:
+        invalid: No account with that email address
+
+  session_projects:
+    menu:
+      compare_projects: 'Compare Projects:'
+      limit_reached: limit reached
+    create:
+      limit_exceeded: Project count limit exceeded
+  ratings:
+    partial_not_found: 'unexpected partial request: %{partial}'

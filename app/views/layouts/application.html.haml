@@ -8,8 +8,8 @@
     %meta{ name: 'keywords', content: page_context[:keywords] }
     %meta{ name: 'google-site-verification', content: 'jKkWeVQ0tB1bffJYg7xXAtcIM-nrjjVxhP3ohb8UH2A' }
     = yield :custom_head
-    = javascript_include_tag 'application', 'data-turbolinks-track' => true
-    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application'
+    = stylesheet_link_tag 'application', media: 'all'
     = csrf_meta_tags
     = javascript_include_tag 'https://www.google.com/recaptcha/api.js'
     = ohno_asset_tag

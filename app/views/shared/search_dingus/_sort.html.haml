@@ -1,0 +1,20 @@
+.col-md-4
+  - if filter_type == :checkbox
+    %label.checkbox.padding_left_20#human_edits
+      %input{ type: 'checkbox', checked: params[:human] == 'true' }
+      = t('.show_only_humans')
+
+  - elsif filter_type == :radiobutton
+    %label.radio.inline.margin_left_40
+      = radio_button_tag('find_by', 'name', params[:find_by] != 'email')
+      = t('.by_name')
+    %label.radio.inline
+      = radio_button_tag('find_by', 'email', params[:find_by] == 'email')
+      = t('by_email')
+
+  - elsif sort_context.present?
+    #sort_by
+      %label= t('.sort_by')
+      = select_tag :sort, options_for_select(SORT_OPTIONS[sort_context][:options],
+        params[:sort] || SORT_OPTIONS[sort_context][:default]),
+        class: 'chzn-select', onchange: 'this.form.submit()'

@@ -18,10 +18,10 @@ class DomainBlacklistsControllerTest < ActionController::TestCase
   end
 
   it 'index without domains has notice' do
-    skip('TODO: layout_params')
     login_as create(:admin)
     get :index
-    assert_select 'div.alert', text: EncodedRegexp.new('No Domains Blacklisted')
+    assert_select 'div.alert'
+    response.body.must_match I18n.t('domain_blacklists.index.notice')
   end
 
   it 'index' do
@@ -129,12 +129,11 @@ class DomainBlacklistsControllerTest < ActionController::TestCase
   end
 
   it 'the sidebar should have domain blacklists selected' do
-    skip('TODO: sidebar')
     create_two_blacklisted_domains
     login_as create(:admin)
     get :index
-    assert_select 'li', class: 'active' do
-      assert_select 'a', href: 'domain_blacklists', text: 'Blacklist Domains'
+    assert_select 'div', class: 'status' do
+      assert_select 'h3', text: 'Blacklist Domains'
     end
   end
 

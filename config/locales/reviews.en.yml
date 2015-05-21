@@ -39,9 +39,10 @@ en:
       title: 'Edit Ratings and Reviews Page'
     index:
       title: 'Listing of Ratings and Reviews Page'
+      account_title: "%{name} : Ratings and Reviews : Listing - Open Hub"
       listing: 'Listing'
     new:
       title: 'New Review'
     summary:
-      title: 'Ratings and Reviews Page'
+      title: 'The %{name} Open Source Project on Open Hub : Ratings and Reviews Page'
       no_review: 'This project has no reviews.'

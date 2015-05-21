@@ -1,10 +1,12 @@
 class KudosController < ApplicationController
   before_action :session_required, except: [:index, :sent]
-  before_action :api_key_lock, only: [:index, :sent]
+  before_action :verify_api_access_for_xml_request, only: [:index, :sent]
   before_action :find_account, only: [:index, :sent]
   before_action :find_account_or_contribution, only: [:new, :create]
   before_action :find_kudo, only: [:destroy]
   before_action :make_new_kudo, only: [:new, :create]
+
+  before_action :account_context, only: [:index]
 
   def index
     @person = @account.person
@@ -36,13 +38,6 @@ class KudosController < ApplicationController
   end
 
   private
-
-  # TODO: this really belongs in app_controller, but that file is too big currently
-  def api_key_lock
-    return unless request_format == 'xml'
-    api_key = ApiKey.in_good_standing.where(key: params[:api_key]).first
-    render_unauthorized unless api_key && api_key.may_i_have_another?
-  end
 
   def find_account
     @account = Account.from_param(params[:account_id]).take

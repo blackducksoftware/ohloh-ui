@@ -1,4 +1,4 @@
-- @meta_title = t('.page_title')
+- content_for(:html_title) { t('.page_title') }
 - content_for :javascript do
   = javascript_tag '$(document).on("page:change", Factoids.highlight);'
 
@@ -10,7 +10,7 @@
 
 .clear &nbsp;
 - if @factoids.empty?
-  - flash.now[:info] = t('.no_factoids')
+  - flash.now[:notice] = t('.no_factoids')
 - else
   = render partial: 'factoids/factoid', collection: @factoids
   .clear &nbsp;

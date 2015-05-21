@@ -25,19 +25,19 @@
     - else
       = t('.click_to_add')
   .clear
-    .jrating.pull-left{ id: @project.to_param, class: (logged_in? ? '' : 'needs_login'), score: @score,
-                         star_style: 'big', style: 'margin-left: 9px;' }
-    %span.hidden#rating_spinner
+    .jrating.pull-left{ id: @project.to_param, class: (logged_in? ? '' : 'needs_login'), score: score,
+      star_style: 'big', style: 'margin-left: 9px', data: { show: 'projects/show/community_rating' } }
+    %span.hidden.pull-left#rating_spinner
       &nbsp;&nbsp;
-      = image_tag('/images/spinner.gif')
+      = image_tag('spinner.gif')
 
     - if @rating
-      %span.pull-left#clear{ style: 'padding-left: 10px;' }
+      %span.pull-left#clearfix{ style: 'padding-left: 10px;' }
         = link_to t('.clear'), 'javascript:void(0);', class: 'btn btn-mini',
-                                                      'data-url' => project_rating_path(@project, @rating,
-                                                      show: '/projects/show/community_rating'),
+                                                      'data-url' => unrate_project_path(@project,
+                                                      show: 'projects/show/community_rating'),
                                                       method: :delete
   - unless current_user && Review.by_account(current_user).for_project(@project).count > 0
-    .clear &nbsp;
+    .clearfix &nbsp;
     %span{ style: 'margin-left: 5px;' }
       = link_to t('.review_this_project'), new_project_review_path(@project)

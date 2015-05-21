@@ -1,0 +1,45 @@
+en:
+  languages:
+    all_languages: 'All Languages'
+    select: 'select...'
+    monthly_commits: 'Monthly Commits'
+    monthly_contributors: 'Monthly Contributors'
+    monthly_loc: 'Monthly Lines of Code Changed'
+    monthly_projects: 'Monthly Projects'
+    commits_desc: 'The lines show the count of monthly commits made by source code developers. Commits including multiple languages are counted once for each language.'
+    loc_desc: 'The lines show the sum of lines of code changed in a month.'
+    contributors_desc: 'The lines show the number of developers who have contributed at least one line of code in each month.'
+    projects_desc: 'The lines show the count of projects with at least one line of code changed in a month.'
+    index:
+      title: 'All Languages - Open Hub'
+      heading: 'All Languages'
+      tools: 'Tools'
+    compare:
+      none: '[None]'
+      title: 'Compare Languages - Open Hub'
+      heading: 'Compare Languages'
+      more: 'More'
+      tools: 'Tools'
+      measure_heading: "%{measure} (Percent of Total)"
+      update: 'Update'
+    show:
+      title: "%{title} Programming Language Statistics - Open Hub"
+      heading: 'Language Statistics'
+      tools: 'Tools'
+      most_experience_contributors: 'Most Experienced Contributors'
+      most_exp_Desc: "Accounts with the most overall experience in %{name}, as measured by Open Hub."
+      active_contributors: 'Recently Active Contributors'
+      active_contributors_desc: "Accounts with the most commits in %{name} between %{start_date} and %{end_date} as measured by Open Hub."
+    language:
+      earliest_usage: 'Earliest usage tracked by Open Hub:'
+      unknown: 'Unknown'
+      total_lines: Total Lines
+      code: Code
+      comments: Comments
+      precision_percentage: " (%{precision}%)"
+      projects: Projects
+      contributors: Contributors
+      commits: Commits
+    mini_chart:
+      alt: 'Chart'
+      click_to_zoom: 'Click to zoom'

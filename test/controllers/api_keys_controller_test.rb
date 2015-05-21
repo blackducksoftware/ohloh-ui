@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ApiKeysControllerTest < ActionController::TestCase
   before do
-    @admin = create(:admin)
+    @admin = create(:admin, name: 'xyzzy-admin')
     @user = create(:account, name: 'user_api_keys_test')
   end
 
@@ -25,14 +25,15 @@ class ApiKeysControllerTest < ActionController::TestCase
     must_respond_with :unauthorized
   end
 
-  it 'index page should find models whose name match the "q" parameter' do
-    api_key1 = create(:api_key, name: 'foobar')
-    api_key2 = create(:api_key, name: 'goobaz')
+  it 'index page should find models whose oauth_application.name match the "q" parameter' do
+    api_key1 = create(:api_key)
+    api_key2 = create(:api_key)
+    api_key1.oauth_application.update! name: 'foobar'
     login_as @admin
     get :index, query: 'foobar'
     must_respond_with :ok
-    response.body.must_match(api_key1.name)
-    response.body.wont_match(api_key2.name)
+    response.body.must_match(api_key1.oauth_application.name)
+    response.body.wont_match(api_key2.oauth_application.name)
   end
 
   it 'index page should find models whose description match the "q" parameter' do
@@ -41,18 +42,18 @@ class ApiKeysControllerTest < ActionController::TestCase
     login_as @admin
     get :index, query: 'foobar'
     must_respond_with :ok
-    response.body.must_match(api_key1.name)
-    response.body.wont_match(api_key2.name)
+    response.body.must_match(api_key1.oauth_application.name)
+    response.body.wont_match(api_key2.oauth_application.name)
   end
 
-  it 'index page should find models whose key match the "q" parameter' do
-    api_key1 = create(:api_key, key: 'foobar')
-    api_key2 = create(:api_key, key: 'goobaz')
+  it 'index page should find models whose oauth_application.uid match the "q" parameter' do
+    api_key1 = create(:api_key)
+    api_key2 = create(:api_key)
     login_as @admin
-    get :index, query: 'foobar'
+    get :index, query: api_key1.oauth_application.uid
     must_respond_with :ok
-    response.body.must_match(api_key1.name)
-    response.body.wont_match(api_key2.name)
+    response.body.must_match(api_key1.oauth_application.name)
+    response.body.wont_match(api_key2.oauth_application.name)
   end
 
   it 'index page should find models whose account name match the "q" parameter' do
@@ -61,18 +62,18 @@ class ApiKeysControllerTest < ActionController::TestCase
     login_as @admin
     get :index, query: @user.name
     must_respond_with :ok
-    response.body.must_match(api_key1.name)
-    response.body.wont_match(api_key2.name)
+    response.body.must_match(api_key1.oauth_application.name)
+    response.body.wont_match(api_key2.oauth_application.name)
   end
 
   it 'index page should accept "query" in place of "q" as a parameter' do
-    api_key1 = create(:api_key, name: 'foobar')
-    api_key2 = create(:api_key, name: 'goobaz')
+    api_key1 = create(:api_key)
+    api_key2 = create(:api_key)
     login_as @admin
-    get :index, query: 'foobar'
+    get :index, query: api_key1.oauth_application.name
     must_respond_with :ok
-    response.body.must_match(api_key1.name)
-    response.body.wont_match(api_key2.name)
+    response.body.must_match(api_key1.oauth_application.name)
+    response.body.wont_match(api_key2.oauth_application.name)
   end
 
   it 'index page should honor the sort order "most_recent_request"' do
@@ -82,7 +83,9 @@ class ApiKeysControllerTest < ActionController::TestCase
     login_as @admin
     get :index, sort: 'most_recent_request'
     must_respond_with :ok
-    response.body.must_match(/#{api_key3.name}.*#{api_key1.name}.*#{api_key2.name}/m)
+    pattern = [api_key3, api_key1, api_key2].map { |api_key| api_key.oauth_application.name }
+              .join('.*')
+    response.body.must_match(/#{ pattern }/m)
   end
 
   it 'index page should honor the sort order "most_requests_today"' do
@@ -92,7 +95,9 @@ class ApiKeysControllerTest < ActionController::TestCase
     login_as @admin
     get :index, sort: 'most_requests_today'
     must_respond_with :ok
-    response.body.must_match(/#{api_key3.name}.*#{api_key1.name}.*#{api_key2.name}/m)
+    pattern = [api_key3, api_key1, api_key2].map { |api_key| api_key.oauth_application.name }
+              .join('.*')
+    response.body.must_match(/#{ pattern }/m)
   end
 
   it 'index page should honor the sort order "most_requests"' do
@@ -102,7 +107,9 @@ class ApiKeysControllerTest < ActionController::TestCase
     login_as @admin
     get :index, sort: 'most_requests'
     must_respond_with :ok
-    response.body.must_match(/#{api_key3.name}.*#{api_key1.name}.*#{api_key2.name}/m)
+    pattern = [api_key3, api_key1, api_key2].map { |api_key| api_key.oauth_application.name }
+              .join('.*')
+    response.body.must_match(/#{ pattern }/m)
   end
 
   it 'index page should honor the sort order "newest"' do
@@ -112,7 +119,9 @@ class ApiKeysControllerTest < ActionController::TestCase
     login_as @admin
     get :index, sort: 'newest'
     must_respond_with :ok
-    response.body.must_match(/#{api_key3.name}.*#{api_key1.name}.*#{api_key2.name}/m)
+    pattern = [api_key3, api_key1, api_key2].map { |api_key| api_key.oauth_application.name }
+              .join('.*')
+    response.body.must_match(/#{ pattern }/m)
   end
 
   it 'index page should honor the sort order "oldest"' do
@@ -122,17 +131,20 @@ class ApiKeysControllerTest < ActionController::TestCase
     login_as @admin
     get :index, sort: 'oldest'
     must_respond_with :ok
-    response.body.must_match(/#{api_key2.name}.*#{api_key1.name}.*#{api_key3.name}/m)
+    pattern = [api_key2, api_key1, api_key3].map { |api_key| api_key.oauth_application.name }
+              .join('.*')
+    response.body.must_match(/#{ pattern }/m)
   end
 
   it 'index page should honor the sort order "account_name"' do
-    skip('TODO: this fails 1 in 10 test runs and it almost certainly is a test db issue')
     api_key1 = create(:api_key, account_id: @user.id, created_at: Time.now - 1. day, name: 'Zzzzzzzz')
     api_key2 = create(:api_key, account_id: @admin.id, created_at: Time.now, name: 'Aaaaaaaa')
     login_as @admin
     get :index, sort: 'account_name'
     must_respond_with :ok
-    response.body.must_match(/#{api_key2.name}.*#{api_key1.name}/m)
+    pattern = [api_key1, api_key2].map { |api_key| api_key.oauth_application.name }
+              .join('.*')
+    response.body.must_match(/#{ pattern }/m)
   end
 
   it 'index page should assume "newest" when the sort parameter is unsupported' do
@@ -142,7 +154,9 @@ class ApiKeysControllerTest < ActionController::TestCase
     login_as @admin
     get :index, sort: 'I_am_a_banana!'
     must_respond_with :ok
-    response.body.must_match(/#{api_key3.name}.*#{api_key1.name}.*#{api_key2.name}/m)
+    pattern = [api_key3, api_key1, api_key2].map { |api_key| api_key.oauth_application.name }
+              .join('.*')
+    response.body.must_match(/#{ pattern }/m)
   end
 
   it 'admins should be able to look at the api keys of someone else' do
@@ -175,8 +189,8 @@ class ApiKeysControllerTest < ActionController::TestCase
     login_as @user
     get :index, account_id: @user.id
     must_respond_with :ok
-    response.body.must_match(api_key1.name)
-    response.body.wont_match(api_key2.name)
+    response.body.must_match(api_key1.oauth_application.name)
+    response.body.wont_match(api_key2.oauth_application.name)
   end
 
   it 'admins should be able to download a csv of the global list of api keys' do
@@ -186,8 +200,8 @@ class ApiKeysControllerTest < ActionController::TestCase
     get :index, format: :csv
     must_respond_with :ok
     response.body.must_match('Open Hub account,Application Name')
-    response.body.must_match(api_key1.name)
-    response.body.must_match(api_key2.name)
+    response.body.must_match(api_key1.oauth_application.name)
+    response.body.must_match(api_key2.oauth_application.name)
     response.headers['Content-Type'].must_include('text/csv')
     response.headers['Content-Type'].must_include('text/csv')
     response.headers['Content-Disposition'].must_include('attachment')
@@ -210,7 +224,7 @@ class ApiKeysControllerTest < ActionController::TestCase
   end
 
   it 'new should not let users who have enough keys make more' do
-    (1..ApiKey::KEY_LIMIT_PER_ACCOUNT).each { create(:api_key, account_id: @user.id) }
+    (1..ApiKey::KEY_LIMIT_PER_ACCOUNT).each { |i| create(:api_key, account_id: @user.id, key: "max_keys_test_#{i}") }
     login_as @user
     get :new, account_id: @user.id
     must_respond_with 302

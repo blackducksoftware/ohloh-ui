@@ -1,0 +1,17 @@
+- has_permission = logged_in? && @project.edit_authorized?
+%fieldset
+  .control-group
+    %label.control-label.required= t('.url')
+    .controls
+      = f.text_field :url, class: 'col-md-11'
+      - error_tag @rss_feed, :url
+%p= t('.examples')
+%ul.margin_left_25
+  %li= t('.sample_url_1')
+  %li= t('.sample_url_2')
+  %li= t('.sample_url_3')
+.actions
+  - if has_permission
+    %input.btn.btn-primary{ type: 'submit', value: t('.save') }
+  - else
+    %a.btn.btn-primary{ href: '#' }= t('.save')

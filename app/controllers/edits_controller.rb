@@ -1,4 +1,6 @@
-class EditsController < ApplicationController
+class EditsController < SettingsController
+  helper ProjectsHelper
+
   before_action :session_required, only: [:update]
   before_action :find_parent, only: [:index]
   before_action :find_edit, only: [:update]
@@ -21,6 +23,7 @@ class EditsController < ApplicationController
   def find_parent
     @parent = find_account || find_project || find_organization || find_license
     fail ParamRecordNotFound unless @parent
+    send("#{@parent.class.name.downcase}_context") unless @parent.is_a?(License)
   end
 
   def find_account

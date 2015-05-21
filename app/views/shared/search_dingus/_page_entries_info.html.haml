@@ -1,0 +1,7 @@
+.col-md-3.padding_left_25
+  - if collection.respond_to?(:current_page) && !collection.length.zero?
+    %label.paginate= t('.pagination_status', current_page: number_with_delimiter(collection.current_page),
+      total_pages: number_with_delimiter(collection.total_pages))
+  - elsif !total_count.to_i.zero?
+    %label.paginate= t('.count_status', current_count: collection.length,
+      total_count: number_with_delimiter(total_count))

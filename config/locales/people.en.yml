@@ -1,5 +1,31 @@
 en:
   people:
+    not_yet_ranked: "Unranked"
+    contributes_to: "Contributes to: %{sentence}"
+    index:
+      page_title: "People - Open Hub"
+      people: "People"
+      account_holders: "Account Holders"
+      more_account_holders: "More Account Holders"
+      unclaimed_committer_ids: "Unclaimed Committer ID's"
+      more_commiters: "More Unclaimed Committer ID's"
+    rankings:
+      page_title: "Open Source People - Open Hub"
+      open_source_people: "Open Source People"
+      kudo_rank: "Kudo Rank"
+      kudo_position: "Kudo Position:"
+    claimed_person:
+      manages: "Manages %{what}"
+      project: "project"
+      open_hub_member_since: "Open Hub member since %{when}"
+      commit: "Commit"
+      in_dots: "in ..."
+      other_language: "other language"
+      see_commits_by_languages: "See Commits by Languages"
+      no_detected_languages: "no detected<br>languages"
+      and_thing: "and %{thing}"
+      other_project: "other project"
+      see_commits_by_project: "See Commits by Project"
     unclaimed_person:
       claim_these_contributions: 'Claim These Contributions'
       and_more: "and %{length} more..."

@@ -80,3 +80,5 @@ SimilarProjects = {
     });
   }
 }
+
+SimilarProjects.init();

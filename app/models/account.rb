@@ -14,6 +14,7 @@ class Account < ActiveRecord::Base
   strip_attributes :name, :email, :login, :invite_code, :twitter_account
 
   fix_string_column_encodings!
+  serialize :reset_password_tokens, Hash
 
   def about_raw=(value)
     @about_raw = value
@@ -72,7 +73,7 @@ class Account < ActiveRecord::Base
   # ActiveRecord::HasManyThroughAssociationPolymorphicError:
   #   Cannot have a has_many :through association 'Account#links' on the polymorphic object 'Target#target'.
   def links
-    edits.where { target_type.eq('Link') & type.eq('CreateEdit') & undone.not_eq(true) }.map(&:target)
+    edits.where(target_type: 'Link', type: 'CreateEdit').where.not(undone: true).map(&:target)
   end
 
   def badges
@@ -123,7 +124,7 @@ class Account < ActiveRecord::Base
     end
 
     def fetch_by_login_or_email(user_name)
-      where { login.eq(user_name) | email.eq(user_name) }.take
+      where(arel_table[:login].eq(user_name).or(arel_table[:email].eq(user_name))).take
     end
 
     def find_or_create_anonymous_account

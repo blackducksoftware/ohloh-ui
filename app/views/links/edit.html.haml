@@ -1,11 +1,13 @@
--# - @meta_title_final = project_pages_title(t('edit_view.title', type: t('links.title').pluralize))
+- content_for(:html_title) { t('.page_title', name: @project.name) }
+- page_context[:select_footer_nav] = nil
 
-%h2.float_left
-  -# = link_to t('settings'), settings_project_path(@project)
-  = %( : )
-  = link_to t('links.title').pluralize, project_links_path(@project)
-  = %( : #{ t('edit') })
-= project_analysis_timestamp(@project)
+.project_content_title
+  %h2.pull-left
+    = link_to t(:settings), settings_project_path(@project)
+    \:
+    = link_to t('links.title').pluralize, project_links_path(@project)
+    = %( : #{ t(:edit) })
+  = project_analysis_timestamp(@project)
 
 .well.col-md-offset-1.col-md-8
   = form_for([@project, @link]) do |f|

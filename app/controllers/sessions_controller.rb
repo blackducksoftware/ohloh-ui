@@ -1,6 +1,10 @@
 class SessionsController < ApplicationController
   skip_before_action :store_location
 
+  def new
+    render partial: 'sign_in' if request.xhr?
+  end
+
   def create
     authenticator = Account::Authenticator.new(login: params[:login][:login], password: params[:login][:password])
     if authenticator.authenticated?

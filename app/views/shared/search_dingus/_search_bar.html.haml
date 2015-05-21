@@ -1,0 +1,15 @@
+- if search_type == :tags
+  .search_tags
+    %label= t('.filter_by_tags')
+    .chosen#value_select
+      = select_tag :names, options_for_select(tags.map { |ary| ary.map(&:fix_encoding_if_invalid!) }, params[:names]),
+        class: 'chzn-select value-select multiple-select',
+        multiple: true, onchange: 'this.form.submit()'
+
+- else
+  .col-md-5.no_padding
+    %label #{t('.search_text')} &nbsp;
+    = text_field_tag :query, params[:query]
+
+    %button.btn{ type: 'Submit' }
+      %i.icon-refresh

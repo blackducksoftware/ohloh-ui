@@ -20,14 +20,27 @@ class ApplicationController < ActionController::Base
   before_action :store_location
   before_action :strip_query_param
   before_action :clear_reminder
+  before_action :verify_api_access_for_xml_request, only: [:show, :index]
 
   def initialize(*params)
     @page_context = {}
     super(*params)
   end
 
-  rescue_from ParamRecordNotFound do
+  rescue_from ::Exception do |exception|
+    fail exception if Rails.application.config.consider_all_requests_local
+    notify_airbrake(exception)
     render_404
+  end
+
+  rescue_from ParamRecordNotFound, ActionController::RoutingError do
+    render_404
+  end
+
+  # Any ActionController::RoutingError raised by ActionDispatch is not caught by ActionController.
+  # See: https://github.com/rails/rails/issues/671
+  def raise_not_found!
+    fail ActionController::RoutingError, "No route matches #{params[:unmatched_route]}"
   end
 
   protected
@@ -44,8 +57,8 @@ class ApplicationController < ActionController::Base
   def current_user
     return @cached_current_user if @cached_current_user_checked
     @cached_current_user_checked = true
-    @cached_current_user = find_user_in_session || find_remembered_user || NilAccount.new
-    session[:account_id] = @cached_current_user.id if @cached_current_user.id
+    @cached_current_user = find_previous_user || NilAccount.new
+    session[:account_id] = @cached_current_user.id
     @cached_current_user
   end
   helper_method :current_user
@@ -93,7 +106,7 @@ class ApplicationController < ActionController::Base
   def request_format
     format = 'html' if request.format.html?
     format ||= params[:format]
-    format
+    format || 'html'
   end
 
   def error(message:, status:)
@@ -132,7 +145,12 @@ class ApplicationController < ActionController::Base
   def must_own_account
     return if current_user == @account
 
-    flash.now[:error] = t('cant_edit_other_account')
+    if current_user_is_admin?
+      flash.now[:error] = t(:admin_warning)
+      return
+    end
+
+    flash.now[:error] = t(:cant_edit_other_account)
     access_denied
   end
 
@@ -147,6 +165,21 @@ class ApplicationController < ActionController::Base
 
   private
 
+  # FIXME: Old source allowed some XML requests without authentication.
+  #        Skip this filter for widgets, sitemap and exhibits.
+  def verify_api_access_for_xml_request
+    return unless request_format == 'xml'
+
+    client_id = params[:api_key] || doorkeeper_token.try(:application).try(:uid)
+    api_key = ApiKey.in_good_standing.find_by_oauth_application_uid(client_id)
+
+    if api_key.try(:may_i_have_another?)
+      doorkeeper_authorize! if doorkeeper_token
+    else
+      render_unauthorized
+    end
+  end
+
   def strip_query_param
     params[:query] = String.clean_string(params[:query])
   end
@@ -159,11 +192,23 @@ class ApplicationController < ActionController::Base
     cookies[:auth_token] ? Account.where(remember_token: cookies[:auth_token]).first : nil
   end
 
+  def find_previous_user
+    previous_user = find_user_in_session || find_remembered_user
+    previous_user = nil if previous_user && Account::Access.new(previous_user).spam?
+    previous_user
+  end
+
   def access_denied
     store_location
     # TODO: Check if we really need width options.
     width_options = params[:width] && { width: 't' }
     redirect_to new_session_path(width_options)
+  end
+
+  def set_session_projects
+    @session_projects = (session[:session_projects] || []).map do |url_name|
+      Project.from_param(url_name).take
+    end.compact.uniq
   end
 end
 # rubocop:enable Metrics/ClassLength

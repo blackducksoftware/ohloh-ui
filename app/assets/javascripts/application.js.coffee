@@ -13,7 +13,6 @@
 #= require jquery
 #= require jquery_ujs
 #= require jquery-ui
-#= require turbolinks
 #= require underscore-min
 #= require chosen.min
 #= require app
@@ -23,7 +22,7 @@
 #= require highcharts/highstock
 #= require highcharts/highcharts-more
 #= require highcharts/solid-gauge
-#= require highcharts/highcharts
+#= require tagcloud
 
 $(document).on 'page:change', ->
   Edit.init()
@@ -37,4 +36,11 @@ $(document).on 'page:change', ->
   OrgsFilter.init()
   Cocomo.init()
   ProjectForm.init()
+  App.ProjectRating.init()
   new App.CheckAvailiability($('input.check-availability'))
+  App.TagCloud.init()
+  Explore.init()
+
+# Remove the following trigger when TurboLinks are re-enabled
+$(document).ready ->
+  $(document).trigger 'page:change'

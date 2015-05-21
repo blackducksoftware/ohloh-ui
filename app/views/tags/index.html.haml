@@ -1,22 +1,24 @@
 %meta{ name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW' }
-- content_for(:html_title) { t('.page_title', names: @names.collect { |n| "‘#{n}’" }.to_sentence) }
+- names = params[:names].split.flatten
+- content_for(:html_title) { t('.page_title', names: names.collect { |n| "‘#{n}’" }.to_sentence) }
+- content_for :session_projects_banner do
+  .navbar.container#sp_menu
+    = render 'session_projects/menu'
 
 #tags_show_header
   %h1
     %a{ href: tags_path }= t('.tags')
     \: #{t('.browse_projects')}
-.clear
 
 .call_to_action{ style: 'padding-top: 5px;' }
   - if @projects.any?
     %p= t('.select_a_tag')
   - else
     .margin_left_10
-      %p= t('.no_projects', names: @names.to_sentence)
+      %p= t('.no_projects', names: names.to_sentence)
       %a{ href: tags_path }= t('.browse_tags')
 
-= render partial: 'shared/search_dingus', locals: { collection: @projects, sort_context: :projects }
-.clear
+= render partial: 'shared/search_dingus', locals: { collection: @projects, search_type: :tags, tags: @related_tags }
 
 #projects_index_list
   - if @projects.any?

@@ -22,6 +22,7 @@ class Person < ActiveRecord::Base
   before_validation Person::Hooks.new
 
   fix_string_column_encodings!
+  filterable_by ['effective_name', 'accounts.akas']
 
   alias_attribute :person_name, :effective_name
 
@@ -49,7 +50,7 @@ class Person < ActiveRecord::Base
     def find_unclaimed(opts = {})
       limit = opts.fetch(:per_page, 10)
 
-      people = includes([[project: [[best_analysis: :main_language], :logo]], :name, name_fact: :primary_language])
+      people = includes({ project: [{ best_analysis: :main_language }, :logo] }, :name, name_fact: :primary_language)
                .where(name_id: limit(limit).unclaimed_people(opts))
 
       group_and_sort_by_kudo_positions_or_effective_name(people)

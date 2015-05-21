@@ -2,14 +2,15 @@ class ProjectsController < ApplicationController
   [AnalysesHelper, FactoidsHelper, MapHelper, RatingsHelper, RepositoriesHelper, TagsHelper].each { |help| helper help }
 
   before_action :session_required, only: [:check_forge, :create, :new, :update]
-  before_action :api_key_lock, only: [:index]
   before_action :find_account
   before_action :find_projects, only: [:index]
-  before_action :find_project, only: [:show, :edit, :update, :estimated_cost, :users, :settings, :map, :similar_by_tags]
+  before_action :find_project, only: [:show, :edit, :update, :estimated_cost, :users, :settings, :map,
+                                      :similar_by_tags, :similar]
   before_action :redirect_new_landing_page, only: :index
   before_action :find_forge_matches, only: :check_forge
-  before_action :project_context, only: [:show, :users, :estimated_cost, :edit, :settings, :map]
-  before_action :show_permissions_alert, only: [:settings]
+  before_action :project_context, only: [:show, :users, :estimated_cost, :edit, :settings, :map, :similar]
+  before_action :show_permissions_alert, only: [:settings, :edit]
+  before_action :set_session_projects, only: :index
 
   def index
     render template: @account ? 'projects/index_managed' : 'projects/index' if request_format == 'html'
@@ -58,14 +59,12 @@ class ProjectsController < ApplicationController
     render partial: 'projects/show/similar_by_tags', locals: { similar_by_tags: @project.related_by_tags(4) }
   end
 
-  private
-
-  # TODO: this really belongs in app_controller, but that file is too big currently
-  def api_key_lock
-    return unless request_format == 'xml'
-    api_key = ApiKey.in_good_standing.where(key: params[:api_key]).first
-    render_unauthorized unless api_key && api_key.may_i_have_another?
+  def similar
+    @similar_by_tags = @project.related_by_tags(10)
+    @similar_by_stacks = @project.related_by_stacks(10)
   end
+
+  private
 
   def find_account
     @account = Account.from_param(params[:account_id]).take
@@ -96,7 +95,7 @@ class ProjectsController < ApplicationController
 
   def redirect_new_landing_page
     return unless @account.nil?
-    redirect_to explore_projects_path if request.query_parameters.except('action').empty? && request_format == 'html'
+    redirect_to projects_explores_path if request.query_parameters.except('action').empty? && request_format == 'html'
   end
 
   def find_forge_matches

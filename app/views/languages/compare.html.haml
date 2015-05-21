@@ -1,0 +1,35 @@
+- content_for(:html_title) { t('.title') }
+- page_context[:select_side_bar] = :compare_languages
+
+%h3= t('.heading')
+
+- measures.each do |key, value|
+  = link_to value, compare_languages_path(measure: key, language_name: params[:language_name]),
+    class: "btn btn-mini #{@measure == key ? 'btn-primary' : 'btn-info'}"
+
+%h5
+  = t('.measure_heading', measure: measures[@measure])
+%p
+  = measure_description[@measure]
+  = link_to t('.more'), 'http://blog.openhub.net/compare_languages', target: '_blank'
+
+= form_tag(compare_languages_path(measure: @measure), method: :get) do
+  = hidden_field_tag :measure, @measure
+  .col-md-8
+    .chart.watermark440#language{ datasrc: chart_languages_path(measure: @measure, language_name: @language_names),
+      style: 'height: 270px;width: 480px' }
+  .col-md-4
+    - @language_names.each do |name|
+      .col-md-3{ style: "height: 28px;background-color: ##{ language_color(name) }" }
+        &nbsp;
+      .col-md-9.margin_bottom_10
+        #sort_by
+          = select_tag 'language_name[]', options_for_select(@languages, name), class: 'chzn-select col-md-9'
+      .clearfix
+    .language
+      .col-md-3 &nbsp;
+      .col-md-9.margin_bottom_10.last_language
+        #sort_by
+          = select_tag 'language_name[]', options_for_select(@languages), class: 'chzn-select col-md-9'
+
+    = submit_tag t('.update'), class: 'btn btn-small btn-primary pull-right'

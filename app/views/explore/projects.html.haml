@@ -1,0 +1,11 @@
+- page_context[:select_top_menu_nav] = 'select_projects'
+- content_for :html_title do
+  = t('.page_title')
+
+%h1.margin_top_15= t('.title')
+
+= render 'projects_sidebar'
+
+= render 'hot_projects'
+
+= render 'project_demographics'

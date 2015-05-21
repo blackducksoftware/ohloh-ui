@@ -613,13 +613,12 @@ class AccountTest < ActiveSupport::TestCase
 
   describe 'resend_activation!' do
     it 'should resent activation email and update sent at timestamp' do
-      skip('TODO: AccountNotifier')
       ActionMailer::Base.deliveries.clear
 
       admin.resend_activation!
       email = ActionMailer::Base.deliveries.last
-      email.to.must_equal [user.email]
-      email.subject.must_equal ''
+      email.to.must_equal [admin.email]
+      email.subject.must_equal I18n.t('account_mailer.signup_notification.subject')
     end
   end
 
@@ -657,6 +656,18 @@ class AccountTest < ActiveSupport::TestCase
       Account.from_param(account.to_param).count.must_equal 1
       Account::Access.new(account).spam!
       Account.from_param(account.to_param).count.must_equal 0
+    end
+  end
+
+  describe 'active' do
+    it 'should return active accounts' do
+      account1 = create(:account, level: -20)
+      account2 = create(:account, level: 0)
+      account3 = create(:account, level: 10)
+
+      Account.active.wont_include account1
+      Account.active.must_include account2
+      Account.active.wont_include account3
     end
   end
 end

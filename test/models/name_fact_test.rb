@@ -30,4 +30,10 @@ class NameFactTest < ActiveSupport::TestCase
       name_fact.wont_be :active?
     end
   end
+
+  describe 'primary_language' do
+    it 'must return a NilLanguage if it has no primary_language associated with it' do
+      create(:name_fact, primary_language: nil).primary_language.is_a?(NilLanguage).must_equal true
+    end
+  end
 end

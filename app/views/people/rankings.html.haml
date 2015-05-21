@@ -1,0 +1,27 @@
+- content_for(:html_title) { t('.page_title') }
+- page_context[:select_top_menu_nav] = :select_people
+%meta{ name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW' }
+
+%h1= t('.open_source_people')
+
+= render partial: 'shared/search_dingus', locals: { collection: @people, sort_context: :people }
+#people_rankings_page
+  %table.table
+    %tbody
+      - @people.each do |person|
+        %tr
+          %td
+            .avatar
+              = link_to avatar_img_for(person), avatar_path(person)
+            .avatar_name
+              %h4.nomargin= link_to person.effective_name, avatar_path(person)
+              %p.nomargin
+                != people_contribution_list_for person
+          %td{ width: '5%' }
+            %h6.soft= t('.kudo_rank')
+            = avatar_small_laurels(person.kudo_rank)
+          %td{ width: '10%' }
+            %dl.dl-horizontal
+              %dt= t('.kudo_position')
+              %dd!= people_position(person)
+= will_paginate @people

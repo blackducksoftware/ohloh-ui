@@ -1,0 +1,37 @@
+- content_for(:html_title) { t('.page_title', name: @project.name) }
+- page_context[:select_footer_nav] = :rss
+%div
+  %h2.pull-left= t('.title')
+  = render 'shared/analysis_timestamp', analysis: @project.best_analysis, project: @project
+
+.clearfix
+.col-md-12
+  - if @project && @rss_articles.empty?
+    = render partial: 'shared/alert', locals: { message: t('.no_feed_exists') }
+    %p= t('.no_article_1')
+    %p= t('.no_article_2')
+
+  %table.table.table-striped.table-condensed
+    %tbody
+      - @rss_articles.each do |rss_article|
+        %tr
+          %td
+            .pull-left
+              - title = strip_tags_and_escaped_html(rss_article.title.to_s)
+              = link_to title, rss_article.link, class: 'rss_article_title_link', target: '_blank'
+            .pull-right.soft
+              %i
+                = t('.posted')
+                = time_ago_in_words(rss_article.time)
+                = t('.ago')
+                - if rss_article.author
+                  = t('.by')
+                  = obfuscate_email(strip_tags_and_escaped_html(rss_article.author.to_s))
+            .clearfix
+            - if rss_article.description.present?
+              .summary-alignment.space= expander(strip_tags(CGI.unescapeHTML(rss_article.description)))
+
+- if @project
+  %p= link_to(t('.edit'), project_rss_subscriptions_path(@project), class: "#{needs_login} btn btn-info")
+
+= will_paginate @rss_articles

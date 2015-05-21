@@ -23,7 +23,11 @@ class Analysis::LanguagesBreakdown < Analysis::QueryBase
 
   def query
     ActivityFact.select([select_columns, language_select_colums]).joins(:language).where(with_analysis)
-      .group(language: LANAGUAGE_SELECT_COLUMNS.keys).order('code_total DESC, nice_name, name, category')
+      .group(language_group_columns).order('code_total DESC, nice_name, name, category')
+  end
+
+  def language_group_columns
+    LANAGUAGE_SELECT_COLUMNS.keys.map { |column| languages[column] }
   end
 
   def language_select_colums

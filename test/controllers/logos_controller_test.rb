@@ -130,15 +130,14 @@ class LogosControllerTest < ActionController::TestCase
   end
 
   it 'create requires permissions' do
-    skip('TODO: manage')
-    Manage.create!(target: projects(:linux), account: create(:account))
-    Permission.create!(project: projects(:linux), 'remainder' => true)
+    project = create(:project, logo: nil)
+    create(:manage, target: project, account: create(:account))
+    create(:permission, target: project, remainder: true)
 
     login_as @user
     desired_new_logo_id = create(:attachment).id
-    assert_no_difference('projects(:linux).reload.logo_id') do
-      post :create, project_id: projects(:linux).id, logo_id: desired_new_logo_id
-    end
+    post :create, project_id: project.id, logo_id: desired_new_logo_id
+    project.reload.logo_id.must_equal nil
     must_redirect_to new_session_path
     flash[:error].must_match(/authorized/)
   end

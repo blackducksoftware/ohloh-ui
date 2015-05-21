@@ -1,4 +1,5 @@
 - content_for(:html_title) { project_pages_title t('permissions.show.page_title') }
+- page_context[:select_footer_nav] = nil
 = javascript_include_tag 'permissions.js'
 
 .project_content_title

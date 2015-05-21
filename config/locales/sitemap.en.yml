@@ -1,0 +1,4 @@
+en:
+  sitemap:
+    show:
+      unsupported: 'Unsupported sitemap controller'
