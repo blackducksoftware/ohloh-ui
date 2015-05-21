@@ -11,6 +11,13 @@ module ApplicationHelper
     haml_tag 'p', [err].flatten.join('<br />').html_safe, opts.reverse_merge(class: 'error').merge(rel: attr)
   end
 
+  def password_error_tag(model, attr, opts = {})
+    err = model.errors[attr]
+    return '' if err.blank? || err == ["can't be blank"]
+    err = err.first if err.size == 2
+    haml_tag 'p', [err].flatten.join('<br />').html_safe, opts.reverse_merge(class: 'error').merge(rel: attr)
+  end
+
   def project_pages_title(page_name = nil, project_name = nil)
     project_name ||= current_project.name if current_project
     s = project_name.nil? ? 'Open Hub' : t(:project_page_title, project_name: project_name)

@@ -20,21 +20,21 @@
         %label.required= t('.current_password')
         .controls
           = f.password_field :current_password, class: 'input-xlarge'
-          - error_tag @account, :current_password
+          - password_error_tag @account, :current_password
           %p.help-block
             = t('.your_current_password')
       .control-group.center_form_position
         %label.required= t('.new_password')
         .controls
           = f.password_field :password, class: 'input-xlarge'
-          - error_tag @account, :password
+          - password_error_tag @account, :password
+          - password_error_tag @account, :password_confirmation
           %p.help-block
             = t('.your_new_password')
       .control-group.center_form_position
         %label.required= t('.confirm_password')
         .controls
           = f.password_field :password_confirmation, class: 'input-xlarge'
-          - error_tag @account, :password_confirmation
           %p.help-block= t('.confirm_your_password')
       .actions.margin_left_30
         = submit_tag(t('.update_password'), class: 'btn btn-primary btn-small')
