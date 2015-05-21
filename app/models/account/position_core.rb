@@ -96,6 +96,7 @@ class Account::PositionCore < OhDelegator::Base
   end
 
   def preloaded_positions
-    @preloaded_positions ||= positions.includes({ project: [:best_analysis, :organization] }, :name, :contribution)
+    @preloaded_positions ||= positions.includes({ project: [{ best_analysis: :main_language }, :organization, :logo] },
+                                                :name, :account, :affiliation)
   end
 end
