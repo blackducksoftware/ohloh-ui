@@ -12,6 +12,7 @@ en:
       indexing: 'Indexing %{count} open source projects'
       connecting: 'Connecting %{count} open source contributors'
       tracking: 'Tracking %{count} source control repositories'
+      search_projects: 'Search Projects...'
 
     join_now_home:
       claim: 'Claim'
