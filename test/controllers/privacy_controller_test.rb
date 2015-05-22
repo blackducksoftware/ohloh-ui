@@ -24,6 +24,16 @@ describe 'PrivacyController' do
       get :edit, id: account.id
       must_respond_with :ok
     end
+
+    it 'must set oauth_applications with unrevoked tokens' do
+      create(:access_token, resource_owner_id: account.id).revoke # revoked application.
+      create(:access_token)                                       # unauthorized application.
+      authorized_application = create(:access_token, resource_owner_id: account.id).application
+      create(:api_key, oauth_application: authorized_application)
+
+      get :edit, id: account.id
+      assigns(:oauth_applications).must_equal [authorized_application]
+    end
   end
 
   describe 'update' do

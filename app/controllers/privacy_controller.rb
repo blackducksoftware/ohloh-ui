@@ -1,7 +1,9 @@
 class PrivacyController < ApplicationController
-  before_action :set_account_and_authorizations
   before_action :session_required, only: [:edit, :update]
+  before_action :set_account
+  before_action :update_email_opportunities_visited
   before_action :must_own_account, only: [:edit, :update]
+  before_action :set_oauth_applications
 
   def update
     if @account.update(account_params)
@@ -13,12 +15,21 @@ class PrivacyController < ApplicationController
 
   private
 
-  def set_account_and_authorizations
+  def set_account
     @account = Account.from_param(params[:id]).take
     fail ParamRecordNotFound unless @account
+  end
+
+  def update_email_opportunities_visited
     @account.update_attribute(:email_opportunities_visited, Time.now.utc)
-    # TODO: @active_authorizations needs to be implemented after OAuth ticket is done.
-    # @active_authorizations = @account.authorizations.active
+  end
+
+  def set_oauth_applications
+    @oauth_applications = Doorkeeper::Application
+                          .joins(:access_tokens)
+                          .where('oauth_access_tokens.resource_owner_id' => @account.id)
+                          .where('oauth_access_tokens.revoked_at' => nil)
+                          .uniq
   end
 
   def account_params
