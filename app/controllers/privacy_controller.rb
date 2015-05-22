@@ -1,5 +1,7 @@
 class PrivacyController < ApplicationController
   before_action :set_account_and_authorizations
+  before_action :session_required, only: [:edit, :update]
+  before_action :must_own_account, only: [:edit, :update]
 
   def update
     if @account.update(account_params)
