@@ -1,14 +1,14 @@
 class PasswordsController < ApplicationController
   before_action :session_required
   before_action :set_account
+  before_action :account_context
 
   def update
     if @account.update_attributes(account_params)
-      redirect_to account_path
-      flash[:password_changed] = t('.password_changed')
+      redirect_to account_path, flash: { success: t('.password_changed') }
     else
       render :edit, status: :unprocessable_entity
-      flash[:password_error] = t('.problem_saving')
+      flash[:error] = t('.problem_saving')
     end
   end
 
