@@ -12,10 +12,11 @@
 
   = render partial: 'index'
 
-  .col-md-12
-    %span.soft #{t(:about)} #{t('.openhub_edit_history')}
-    .col-md-6
-      %ul
-        %li= t('.help_1')
-        %li= t('.help_2')
-        %li= t('.help_3')
+  .col-md-6
+    %h4.margin_bottom_0
+      .soft.inline= t(:about)
+      = t('.edit_history')
+    %ul.margin_left_50
+      %li= t('.help_1')
+      %li= t('.help_2')
+      %li= t('.help_3')

@@ -5,7 +5,7 @@
 
 .row
   .col-md-9
-    %h2.float_left Stacks
+    %h2.pull-left= t('.stacks')
     - if current_user == @account
       %a.btn.btn-mini.btn-primary{ href: stacks_path, data: { method: :post },
                                    style: 'margin:8px 19px 0 0; float: right;' }
@@ -41,6 +41,7 @@
         %h5.soft= t('.what_is_a_stack')
         - lamp_link = link_to('LAMP', 'http://wikipedia.org/wiki/LAMP_(software_bundle)')
         %p!= t('.stack_explanation', link: lamp_link)
+        %p= t('.max_stacks_desc')
         %p
           #{ t('.more_questions') }
           = blog_link_to(link: :stack_faq, link_text: t('.stack_faq'))
