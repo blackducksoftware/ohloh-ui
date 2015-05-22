@@ -1,14 +1,44 @@
 require 'test_helper'
 
 describe 'PrivacyController' do
-  it 'should get account privacy page' do
-    account = create(:account)
-    get :edit, id: account.id
-    must_respond_with :ok
+  let(:account) { create(:account) }
+  before do
+    login_as account
+  end
+
+  describe 'edit' do
+    it 'must require login' do
+      login_as nil
+      get :edit, id: account.id
+      must_respond_with :unauthorized
+    end
+
+    it 'must be own account' do
+      login_as create(:account)
+      get :edit, id: account.id
+      must_respond_with :redirect
+      must_redirect_to new_session_path
+    end
+
+    it 'should get account privacy page' do
+      get :edit, id: account.id
+      must_respond_with :ok
+    end
   end
 
   describe 'update' do
-    let(:account) { accounts(:user) }
+    it 'must require login' do
+      login_as nil
+      put :update, id: account.id
+      must_respond_with :unauthorized
+    end
+
+    it 'must be own account' do
+      login_as create(:account)
+      put :update, id: account.id
+      must_respond_with :redirect
+      must_redirect_to new_session_path
+    end
 
     it 'should update email master to false' do
       put :update, id: account.id, account: { email_master: false }
