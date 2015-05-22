@@ -18,6 +18,11 @@ describe 'CommitsController' do
   end
 
   describe 'index' do
+    it 'should not show permission alert' do
+      get :index, project_id: @project.id
+      flash.count.must_equal 0
+    end
+
     it 'should not return commits if invalid project id' do
       get :index, project_id: 'I am banana'
       assigns(:named_commits).must_equal nil
@@ -47,6 +52,11 @@ describe 'CommitsController' do
   end
 
   describe 'show' do
+    it 'should not show permission alert' do
+      get :index, project_id: @project.id
+      flash.count.must_equal 0
+    end
+
     it 'should return diffs' do
       get :show, project_id: @project.id, id: @named_commit.id
       assigns(:diffs).count.must_equal 1
