@@ -354,3 +354,8 @@ en:
       limit_exceeded: Project count limit exceeded
   ratings:
     partial_not_found: 'unexpected partial request: %{partial}'
+
+  doorkeeper:
+    oauth_applications:
+      revoke_access:
+        success: Succesfully revoked access for %{name}
