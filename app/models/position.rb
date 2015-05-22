@@ -4,17 +4,16 @@ class Position < ActiveRecord::Base
 
   attr_reader :project_oss
 
-  has_one :contribution
-  has_many :language_experiences, dependent: :destroy
-  has_many :project_experiences, dependent: :destroy
   belongs_to :account
-  belongs_to :affiliation, class_name: 'Organization', foreign_key: :organization_id
   belongs_to :project
   belongs_to :organization
   belongs_to :name
-  has_many :name_facts, foreign_key: :name_id, primary_key: :name_id
   # we have a method named organization to maintain backward compatibility
   belongs_to :affiliation, class_name: 'Organization', foreign_key: :organization_id
+  has_one :contribution
+  has_many :language_experiences, dependent: :destroy
+  has_many :project_experiences, dependent: :destroy
+  has_many :name_facts, foreign_key: :name_id, primary_key: :name_id
 
   scope :claimed_by, ->(account) { where(account_id: account.id).where.not(name_id: nil) }
   scope :for_project, ->(project) { where(project_id: project.id) }
@@ -91,7 +90,7 @@ class Position < ActiveRecord::Base
   end
 
   def organization
-    organization_name.presence || affiliation.name
+    organization_name.presence || affiliation.try(:name)
   end
 
   def language_exp=(language_ids)

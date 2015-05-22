@@ -6,11 +6,13 @@ en:
       new_stack: "New Stack"
       embed: "Embed"
       remove: "Remove"
+      stacks: 'Stacks'
       delete_confirm: "Delete %{name} forever?"
       no_stack: "This user doesn't have a stack."
       no_stack_fix_that: "You don't have a stack. Click %{link} to create one."
       what_is_a_stack: "What is a Stack?"
       stack_explanation: "It's a list of software used to accomplish something. %{link} is an example."
+      max_stacks_desc: 'You can have up to 30 stacks.'
       more_questions: "More questions?"
       stack_faq: "Stack FAQ"
     create:

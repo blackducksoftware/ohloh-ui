@@ -19,8 +19,9 @@ class AccountsController < ApplicationController
   # FIXME: people have to be sorted. See sorted_and_filtered in older code.
   def index
     @cbp_map = PeopleDecorator.new(@people).commits_by_project_map
-    @positions_map = Position.where(id: @cbp_map.values.map(&:first).flatten).includes(:project)
-                     .references(:all).index_by(&:id)
+    @positions_map = Position.where(id: @cbp_map.values.map(&:first).flatten)
+                     .preload(project: [{ best_analysis: :main_language }, :logo])
+                     .index_by(&:id)
   end
 
   def show

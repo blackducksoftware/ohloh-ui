@@ -1,11 +1,4 @@
-.mezzo
-%br
-- if flash[:password_changed]
-  .alert.alert-success
-    %i.fa.fa-check-circle
-    %span.text-size= flash[:password_changed]
-    %a.close{ 'data-dismiss' => 'alert', href: '#' } ×
-
+#accounts_show
   %h2.pull-left= t('.title')
   = render partial: 'accounts/show/vita_timestamp', locals: { best_vita: @account.best_vita }
   .clearfix

@@ -8,7 +8,7 @@
         = f.hidden_field :review_id
         %input.hidden{ type: :checkbox, name: :yes }
 
-        Did this review help you?
+        = t('.did_this_helpful')
         - if review.helpful_to_account?(current_user)
           %span.voted= t('reviews.yes')
         - else
@@ -19,6 +19,6 @@
         - else
           %a.set-checkbox-and-submit-form{ href: 'javascript:', 'data-check-box' => 0 }= t('reviews.no')
   - else
-    Did this review help you?
-    = link_to t('reviews.helpful_yes'), review_helpfuls_path(review), method: :post
-    = link_to t('reviews.helpful_no'), review_helpfuls_path(review), method: :post
+    = t('.did_this_helpful')
+    %a.needs_login{ href: 'javascript:void(0)' }= t('reviews.helpful_yes')
+    %a.needs_login{ href: 'javascript:void(0)' }= t('reviews.helpful_no')

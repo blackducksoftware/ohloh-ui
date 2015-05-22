@@ -1,6 +1,7 @@
 .row.padding_one_top
-%h4.margin_left_15
-  %span= t('.about_privacy')
+%h4.margin_left_15.margin_bottom_0
+  .soft.inline= t('.about')
+  = t('.privacy')
 .col-md-5
   %ul.margin_left_40
     %li= t('.privacy_policy_html', href: link_to(t('.privacy_policy'), 'http://blog.openhub.net/privacy/'))

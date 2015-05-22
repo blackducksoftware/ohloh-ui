@@ -29,6 +29,9 @@ en:
     index:
       page_title: "Open Hub Projects"
       page_title_query: "%{query} - Open Hub Project Search"
+      projects: 'Projects'
+      browse_projects: 'Browse Projects By Tags'
+      add_new_project: 'Add a New Project'
     project_index:
       compare: "Compare"
       claimed_by: "Claimed by"

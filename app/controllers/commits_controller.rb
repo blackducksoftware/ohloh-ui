@@ -7,6 +7,7 @@ class CommitsController < SettingsController
   before_action :redirect_to_message_if_oversized_project, except: :statistics
   before_action :set_sort_and_highlight, only: :index
   before_action :project_context, except: [:statistics, :events, :event_details]
+  skip_before_action :show_permissions_alert
 
   def index
     @named_commits = @project.named_commits

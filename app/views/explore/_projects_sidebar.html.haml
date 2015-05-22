@@ -14,23 +14,23 @@
           - @tags.each do |tag|
             = link_to tag[0], tag_path(tag[0]), data: { weight: tag[1] }
     .margin_left_10
-      %form{ rel: 'tag_jump' }
-        %input.explore_search.tag_autocomplete#input_tag{ type: :text, placeholder: t('.enter_tag') }
+      %form.autocomplete-submit{ rel: 'tag_jump' }
+        %input.explore_search.tag_autocomplete.autocompletable#input_tag{ type: :text, placeholder: t('.enter_tag'),
+        data: { source: '/autocompletes/tags', select: 'submitForm' } }
 
     %p &nbsp;
     %h3= t('.compare')
     %form.projects_compare.margin_left_15{ action: '/p/compare' }
       - compare_project_inputs.each do |options|
         %input.proj.explore_compare{ options }
-      %input#auto_submit{ type: 'hidden', value: 'false' }
       %input.pull-right.btn.btn-primary.btn-small#compare_btn{ type: 'submit', value: 'Compare' }
 
     %p &nbsp;
     %p &nbsp;
     %h3= t('.similar')
     %form.similar_projects.margin_left_10{ rel: 'similar_project_jump' }
-      %input.proj.explore_search#project{ type: 'text', placeholder: t('.enter_project'), autocomplete: 'off' }
-      %input#proj_id{ type: 'hidden' }
+      %input.autocompletable.explore_search#project{ type: 'text', placeholder: t('.enter_project'),
+      autocomplete: 'off', data: { source: '/autocompletes/project', select: 'submitForm' } }
       .icon-search.search.submit
       %span.error.hidden= t('.invalid_select')
 

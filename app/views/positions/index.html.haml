@@ -5,11 +5,9 @@
   page_context[:select_top_menu_nav] = :select_people
   page_context[:select_footer_nav] = :positions
 
-.clearfix
-.mezzo
-  %h2.pull-left= t('contribution')
-  .padding_top_5
-    = render 'accounts/show/vita_timestamp', best_vita: @account.best_vita
+%h2.pull-left= t('contribution')
+.padding_top_5
+  = render 'accounts/show/vita_timestamp', best_vita: @account.best_vita
 
 .clearfix
 #positions-index-page

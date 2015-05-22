@@ -8,7 +8,7 @@ class OrganizationsController < ApplicationController
   before_action :handle_default_view, only: :show
 
   def show
-    @graphics = OrgInfoGraphics.new(@organization)
+    @graphics = OrgInfoGraphics.new(@organization, context: { view: @view })
     load_infographics_table
   end
 
