@@ -13,7 +13,7 @@ describe 'PasswordsController' do
     login_as account
     put :update, id: account.id, account: { current_password: '', password: '', password_confirmation: '' }
     must_respond_with :unprocessable_entity
-    flash[:error].must_equal 'There was a problem saving!'
+    flash[:password_error].must_equal 'There was a problem saving!'
   end
 
   it 'must fail if current password is not provided' do
@@ -23,7 +23,7 @@ describe 'PasswordsController' do
                                             password: 'newpassword',
                                             password_confirmation: 'newpassword' }
     must_respond_with :unprocessable_entity
-    flash[:error].must_equal 'There was a problem saving!'
+    flash[:password_error].must_equal 'There was a problem saving!'
   end
 
   it 'must fail if current password does not match' do
@@ -33,7 +33,7 @@ describe 'PasswordsController' do
                                             password: 'newpassword',
                                             password_confirmation: 'newpassword' }
     must_respond_with :unprocessable_entity
-    flash[:error].must_equal 'There was a problem saving!'
+    flash[:password_error].must_equal 'There was a problem saving!'
   end
 
   it 'must fail when new password is not provided' do
@@ -43,7 +43,7 @@ describe 'PasswordsController' do
                                             password: '',
                                             password_confirmation: 'newpassword' }
     must_respond_with :unprocessable_entity
-    flash[:error].must_equal 'There was a problem saving!'
+    flash[:password_error].must_equal 'There was a problem saving!'
   end
 
   it 'must fail when confirm password is not provided' do
@@ -53,7 +53,7 @@ describe 'PasswordsController' do
                                             password: 'newpassword',
                                             password_confirmation: '' }
     must_respond_with :unprocessable_entity
-    flash[:error].must_equal 'There was a problem saving!'
+    flash[:password_error].must_equal 'There was a problem saving!'
   end
 
   it 'must fail when new password and confirm password do not match' do
@@ -63,7 +63,7 @@ describe 'PasswordsController' do
                                             password: 'newpassword',
                                             password_confirmation: 'oldpassword' }
     must_respond_with :unprocessable_entity
-    flash[:error].must_equal 'There was a problem saving!'
+    flash[:password_error].must_equal 'There was a problem saving!'
   end
 
   it 'must fail if new password is less than 5 characters' do
@@ -72,7 +72,7 @@ describe 'PasswordsController' do
     put :update, id: account.id, account: { current_password: 'testing',
                                             password: 'abc', password_confirmation: 'abc' }
     must_respond_with :unprocessable_entity
-    flash[:error].must_equal 'There was a problem saving!'
+    flash[:password_error].must_equal 'There was a problem saving!'
   end
 
   it 'must fail if new password is more than 40 characters' do
@@ -82,7 +82,7 @@ describe 'PasswordsController' do
     put :update, id: account.id, account: { current_password: 'testing',
                                             password: password, password_confirmation: password }
     must_respond_with :unprocessable_entity
-    flash[:error].must_equal 'There was a problem saving!'
+    flash[:password_error].must_equal 'There was a problem saving!'
   end
 
   it 'must update password fields' do
@@ -92,6 +92,6 @@ describe 'PasswordsController' do
                                             password: 'newpassword',
                                             password_confirmation: 'newpassword' }
     must_redirect_to account_path
-    flash[:notice].must_equal 'Password successfully changed.'
+    flash[:password_changed].must_equal 'Password successfully changed.'
   end
 end
