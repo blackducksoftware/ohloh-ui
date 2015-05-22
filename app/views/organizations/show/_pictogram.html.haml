@@ -5,8 +5,8 @@
   #section1
     .col1.pull-left.strong
       = render partial: "#{partial_dir}/outside_committers", locals: @graphics.outside_committers
-    .col2.pull-left{ @graphics.other_attributes('out_commits', position: true) }
-      .svg-arrow.margin_bottom_10{ @graphics.arrow_attributes('out_commits', arrow_head: 'right') }
+    .col2.pull-left{ @graphics.other_attributes('out_commits', true) }
+      .svg-arrow.margin_bottom_10{ @graphics.arrow_attributes('out_commits', 'right') }
       = render partial: "#{partial_dir}/outside_committers_commits", locals: @graphics.outside_committers
   #infographic_box{ default_view: @view }
     .header= @organization.name
@@ -14,7 +14,7 @@
       .col1.center.pull-left
         = render partial: "#{partial_dir}/portfolio_projects", locals: @graphics.portfolio_projects
       .col2.center.pull-left
-        .svg-arrow.margin_bottom_10{ @graphics.arrow_attributes('affl_commits', arrow_head: 'left', width: 130) }
+        .svg-arrow.margin_bottom_10{ @graphics.arrow_attributes('affl_commits', 'left', 130) }
         = render partial: "#{partial_dir}/portfolio_commits", locals: @graphics.portfolio_commits
       .col3.pull-left
         = render partial: "#{partial_dir}/affiliated_committers", locals: @graphics.portfolio_commits
@@ -32,8 +32,8 @@
           %i.icon-print
           = t('organizations.show.print_graphic')
   #section2
-    .col1.pull-left{ @graphics.other_attributes('affl_commits_out', position: true) }
-      .svg-arrow.margin_bottom_10{ @graphics.arrow_attributes('affl_commits_out', arrow_head: 'right', width: 140) }
+    .col1.pull-left{ @graphics.other_attributes('affl_commits_out', true) }
+      .svg-arrow.margin_bottom_10{ @graphics.arrow_attributes('affl_commits_out', 'right', 140) }
       = render partial: "#{partial_dir}/outside_project_commits", locals: @graphics.outside_project_commits
     .col2.pull-left.strong
       = render partial: "#{partial_dir}/outside_projects", locals: @graphics.outside_project_commits
