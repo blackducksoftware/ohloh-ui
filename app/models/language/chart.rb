@@ -1,5 +1,6 @@
 class Language::Chart
   include ColorsHelper
+  include ChartHelper
 
   def initialize(options)
     @options = options
@@ -14,7 +15,7 @@ class Language::Chart
                              name: language.nice_name
       }
     end
-    @series
+    @series.deep_merge(chart_watermark)
   end
 
   private

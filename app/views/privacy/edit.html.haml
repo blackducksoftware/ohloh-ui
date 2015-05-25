@@ -3,13 +3,7 @@
 
 - account_context
 
-.mezzo.margin_left_20.margin_right_20.margin_top_15
-%br
-- if flash[:notice]
-  .alert.alert-success
-    %i.icon-check-sign
-    %span.text-size= flash[:notice]
-    %a.close{ 'data-dismiss' => 'alert', href: '#' } ×
+.margin_left_20.margin_right_20.margin_top_15 &nbsp;
 
 %h2= t('.settings_privacy_html', href: link_to(t('.settings'), settings_account_path(@account)))
 .row

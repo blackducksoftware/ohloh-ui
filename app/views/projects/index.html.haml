@@ -6,6 +6,14 @@
     .navbar.container#sp_menu
       = render 'session_projects/menu'
 
+#projects_index_header
+  %h1.pull-left= t('.projects')
+  .pull-right.margin_top_20
+    = link_to t('.browse_projects'), tags_path, class: 'btn btn-light btn-mini'
+    = link_to t('.add_new_project'), new_project_path, class: 'btn btn-light btn-mini'
+
+.clearfix &nbsp;
+
 = render partial: 'shared/search_dingus', locals: { collection: @projects, sort_context: :projects }
 .clear
 

@@ -25,6 +25,8 @@ en:
     community_and_your_rating:
       community_rating: 'Community Rating'
       rating_status: "Average Rating:  &nbsp;   %{avg_rating}</br>Number of Ratings:  &nbsp;   %{ratings_count}</br>Number of Reviews:  &nbsp;   %{reviews_count}"
+    helpful_yes_or_no_links:
+      did_this_helpful: 'Did this review help you?'
     fields:
       headline: 'Headline'
       review: 'Review'

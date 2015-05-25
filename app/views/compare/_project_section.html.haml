@@ -1,5 +1,7 @@
-- has_header = opts[:include_header]
-- proj_names = params.select { |k, _| k.to_s.match(/project/) }
+:ruby
+  has_header = opts[:include_header]
+  proj_names = params.select { |k, _| k.to_s.match(/project/) }
+
 %tr.section
   %th{ colspan: (has_header ? 1 : 4), style: (has_header ? 'padding-top: 7px;' : '') }
     %h4.section.pull-left.nomargin= label
@@ -21,6 +23,6 @@
               - next if project == proj
               %input{ type: 'hidden', name: "project_#{i}", value: proj ? proj.name : '' }
             - key = "project_#{index}"
-            %input.proj.autocompletable{ type: 'text', id: key, name: key, width: 20,
-                                         placeholder: t('compare.enter_name') }
+            %input.autocompletable{ type: 'text', id: key, name: key, width: 20,
+            placeholder: t('.enter_name'), data: { source: '/autocompletes/project'  } }
             %input{ type: 'submit', value: t('compare.go'), name: "submit_#{index}", style: 'display: none;' }

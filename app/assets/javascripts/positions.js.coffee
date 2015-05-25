@@ -1,7 +1,6 @@
 $(document).on 'page:change', ->
   if $('#position_form').length
     new App.OrganizationSelector('position')
-    new SetupAutocompletes
     new SetupProjectAndLanguagesSections
     new SetupNestedProjectExperienceFields
     new SetupCommitDateRadioBindings
@@ -13,7 +12,6 @@ class SetupNestedProjectExperienceFields
   constructor: ->
     @$form = $('#project-experience-form')
     @$addNewButton = $('#add-project-experience')
-    setupAutocomplete(@$form.find('.autocompletable'))
     @setupNestedInputBindings()
 
   setupNestedInputBindings: ->
@@ -28,9 +26,6 @@ class SetupNestedProjectExperienceFields
 
     @$form.find('.remove').click(markExistingInputForDestruction)
 
-  setupAutocomplete = ($input) ->
-    $input.autocomplete(source: '/autocompletes/project')
-
   markExistingInputForDestruction = ->
     $parent = $(this).parent()
     $input = $parent.find('input.autocompletable')
@@ -44,7 +39,7 @@ class SetupNestedProjectExperienceFields
       $parent.hide()
 
   setupDynamicInputBindings = ($container) ->
-    setupAutocomplete($container.find('input'))
+    $container.find('input').autocomplete({ source: '/autocompletes/project' })
     $container.find('.remove').click =>
       $container.remove()
 
@@ -74,18 +69,6 @@ class SetupProjectAndLanguagesSections
       $('#additional-fields').addClass('hidden')
       $(this).addClass('hidden')
       $('a.collapsed').removeClass('hidden')
-
-class SetupAutocompletes
-  constructor: ->
-    $('#position_project_oss').autocomplete source: '/autocompletes/project'
-    ### FIXME: Integrate after implementing contributions#autocomplete.
-    $('#position_committer_name').autocomplete source: (request, response) ->
-      $.getJSON '/autocompletes/contributors', {
-        term: request.term
-        project: ->
-          $('#position_project_oss').val()
-      }, response
-    ###
 
 class SetupCommitDateRadioBindings
   constructor: ->

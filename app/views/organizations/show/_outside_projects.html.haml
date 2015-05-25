@@ -24,7 +24,7 @@
             = project.decorate.icon(:small)
             = link_to truncate(project.name, length: 23), project_path(project), title: project.name
           %td.left
-            %div{ style: 'padding: 10px;' }
+            %div{ style: 'margin-top: -25px; position: relative' }
               - project_activity_level_class(project, :twenty)
           %td{ style: 'padding-top: 15px; text-align: center;' }
             - if project.organization

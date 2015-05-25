@@ -28,7 +28,6 @@ $(document).on 'page:change', ->
   Edit.init()
   StackVerb.init()
   StackShow.init()
-  OrganizationPictogram.init()
   Expander.init()
   PopupClose.init()
   OrganizationPictogram.init()
@@ -36,10 +35,8 @@ $(document).on 'page:change', ->
   OrgsFilter.init()
   Cocomo.init()
   ProjectForm.init()
-  App.ProjectRating.init()
   new App.CheckAvailiability($('input.check-availability'))
   App.TagCloud.init()
-  Explore.init()
 
 # Remove the following trigger when TurboLinks are re-enabled
 $(document).ready ->

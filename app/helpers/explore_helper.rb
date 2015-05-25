@@ -8,8 +8,8 @@ module ExploreHelper
 
   def compare_project_inputs
     COMPARE_PROJECT_INPUT_NOS.map do |n|
-      { type: 'text', name: "project_#{n}", placeholder: t('.enter_project'), rel: 'ghost',
-        autocomplete: 'off', id: "project_#{n}" }
+      { type: 'text', name: "project_#{n}", placeholder: t('.enter_project'), id: "project_#{n}",
+        class: 'autocompletable', data: { source: '/autocompletes/project' } }
     end
   end
 end

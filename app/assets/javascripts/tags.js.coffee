@@ -1,17 +1,10 @@
 App.JumpToTag =
   init: () ->
     $('form[rel=tag_jump]').submit () ->
-      console.log 'here'
       if $('input#input_tag').val() != ''
         tag_value = encodeURIComponent $('input#input_tag').val().toLowerCase()
         window.location.href = "/tags?names=#{tag_value}"
       return false
-
-    $('input.tag_autocomplete').autocomplete
-      source: '/autocompletes/tags'
-      select : (e, ui) ->
-        $(this).val(ui.item.value)
-        $('form[rel=tag_jump]').submit()
 
 App.TagCloud =
   init: () ->

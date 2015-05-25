@@ -31,5 +31,7 @@
       - badges = @account.badges.map { |badge| BadgeDecorator.new(badge) }
       = render partial: 'accounts/badges_row', locals: { badges: badges }
 
-.clearfix
+.clearfix &nbsp;
+.col-md-12
+  .mezzo
 = render partial: 'layouts/partials/alert'

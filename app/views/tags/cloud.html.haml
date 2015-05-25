@@ -1,7 +1,5 @@
 %meta{ name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW' }
 - content_for(:html_title) { t('.page_title') }
-- content_for :javascript do
-  = javascript_tag "$(document).on('page:change', JumpToTag.init);"
 - content_for :session_projects_banner do
   .navbar.container#sp_menu
     = render 'session_projects/menu'
@@ -13,12 +11,13 @@
     %p= t('.help1')
     %p= t('.help2')
 
-  %form.col-md-10{ rel: 'tag_jump' }
+  %form.col-md-10.autocomplete-submit{ rel: 'tag_jump' }
     %fieldset
       .control-group
         %label.control-label= t('.input_label')
         .controls
-          %input.text.tag_autocomplete.autocompletable#input_tag{ type: :text }
+          %input.text.tag_autocomplete.autocompletable#input_tag{ type: :text,
+          data: { source: '/autocompletes/tags', select: 'submitForm' } }
           %p.help-block.margin_bottom_25= t('.input_hint')
 
   .col-md-12

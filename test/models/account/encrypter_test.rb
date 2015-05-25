@@ -19,9 +19,10 @@ class Account::EncrypterTest < ActiveSupport::TestCase
 
   describe 'before_save' do
     it 'must not change salt' do
-      account = accounts(:user)
+      account = create(:account, password: 'testing', password_confirmation: 'testing')
       account.password = 'new_password'
       account.password_confirmation = 'new_password'
+      account.current_password = 'testing'
       original_salt = account.salt
 
       account.save!
@@ -30,9 +31,10 @@ class Account::EncrypterTest < ActiveSupport::TestCase
     end
 
     it 'must not change crypted_password when password is blank' do
-      account = accounts(:uber_data_crawler)
+      account = create(:account, password: 'testing', password_confirmation: 'testing')
       account.password = nil
       account.password_confirmation = nil
+      account.current_password = 'testing'
       original_crypted_password = account.crypted_password
 
       account.save!
@@ -41,9 +43,10 @@ class Account::EncrypterTest < ActiveSupport::TestCase
     end
 
     it 'must change crypted_password if password is not blank' do
-      account = accounts(:uber_data_crawler)
+      account = create(:account, password: 'testing', password_confirmation: 'testing')
       account.password = 'new_password'
       account.password_confirmation = 'new_password'
+      account.current_password = 'testing'
       original_crypted_password = account.crypted_password
 
       account.save!

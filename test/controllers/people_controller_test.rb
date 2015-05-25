@@ -19,7 +19,7 @@ describe 'PeopleControllerTest' do
 
   describe 'index' do
     it 'should render the people found' do
-      get :index, q: 'Bubba'
+      get :index, query: 'Bubba'
       must_respond_with :ok
       response.body.must_match @claimed.account.name
       response.body.must_match @unclaimed.name.name

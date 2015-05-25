@@ -71,6 +71,8 @@ Rails.application.routes.draw do
       get :confirm_delete
       get :disabled
       get :settings
+      get 'password/edit', to: 'passwords#edit'
+      patch 'password/edit', to: 'passwords#update'
       get :edit_privacy, to: 'privacy#edit', as: :edit_account_privacy
       patch :edit_privacy, to: 'privacy#update', as: :account_privacy
     end
@@ -94,6 +96,9 @@ Rails.application.routes.draw do
         get :activate
       end
     end
+
+    get 'doorkeeper/oauth_applications/:id/revoke_access' =>
+      'doorkeeper/oauth_applications#revoke_access', as: :revoke_oauth_access
   end
 
   resources :deleted_accounts, only: [:edit, :update]

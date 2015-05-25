@@ -9,6 +9,7 @@ module TagsHelper
 
   def tag_links(tag_list, max_tags = tag_list.length)
     tag_list[0..(max_tags - 1)].collect do |tag|
+      tag.fix_encoding_if_invalid!
       link_to html_escape(tag), tags_path(names: tag), class: 'tag', itemprop: 'keywords'
     end.join(' ').html_safe
   end

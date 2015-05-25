@@ -4,7 +4,7 @@
   page_context[:select_footer_nav] = :languages
 
 - if @account.decorate.vita_status_message.blank?
-  .col-md-12.mezzo
+  .col-md-12
     = render partial: 'accounts/languages/commits_by_language'
   - if @vlfs.present?
     .col-md-12#language_detail

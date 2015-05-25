@@ -25,8 +25,7 @@ ProjectForm = {
     add_license.autocomplete({
       source : '/autocompletes/licenses',
       focus: function(e, ui) {
-        $( "add_license" ).val( ui.item.nice_name );
-        return false;
+        $( "#add_license" ).val( ui.item.nice_name );
       },
       select: function(event, ui) {
         var $input = $("<input />", {
@@ -66,7 +65,8 @@ ProjectForm = {
 
 SimilarProjects = {
   init: function(){
-    var project_id = $('#similar_projects').attr('project_id');
+    if($('#projects_show_page').length == 0) return;
+    var project_id = $('#similar_projects').data('project-id');
     $('#similar_projects').html('');
     $('#related_spinner').show();
     $.ajax({
@@ -81,6 +81,4 @@ SimilarProjects = {
   }
 }
 
-$( document ).ready(function() {
-    SimilarProjects.init();
-});
+$(document).on('page:change', SimilarProjects.init())
