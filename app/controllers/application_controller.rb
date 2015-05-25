@@ -75,7 +75,7 @@ class ApplicationController < ActionController::Base
 
   def current_user_can_manage?
     return false unless logged_in? && current_project
-    return true unless current_project.protection_enabled?
+    # return true unless current_project.protection_enabled?
     return true if current_user_is_admin?
     current_project.active_managers.include?(current_user)
   end
@@ -161,6 +161,7 @@ class ApplicationController < ActionController::Base
 
   def show_permissions_alert
     return if current_user_can_manage?
+    return unless current_project.protection_enabled?
     flash.now[:notice] = logged_in? ? t('permissions.not_manager') : t('permissions.must_log_in')
   end
 
