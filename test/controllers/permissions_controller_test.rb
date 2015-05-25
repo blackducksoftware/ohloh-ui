@@ -6,6 +6,11 @@ class PermissionsControllerTest < ActionController::TestCase
     @permissions = create(:permission, target: @project, remainder: false)
   end
 
+  def set_protection_to_true
+    put :update, id: @project, permission: { remainder: true }
+    @permissions.reload
+  end
+
   # show action
   it 'unlogged users should see permissions alert' do
     login_as nil
@@ -23,18 +28,20 @@ class PermissionsControllerTest < ActionController::TestCase
     must_select 'input[disabled="disabled"]', false
   end
 
-  it 'non-managers should see permissions alert' do
+  it 'non-managers should see permissions alert only when project permission is true' do
     login_as accounts(:user)
+    set_protection_to_true
     get :show, id: @project
     must_respond_with :ok
     response.body.must_include(I18n.t('permissions.not_manager'))
     must_select 'input[disabled="disabled"]'
   end
 
-  it 'managers pending approval should see permissions alert' do
+  it 'managers pending approval should see permissions alert when project permission is true' do
     Manage.create(target: @project, account_id: create(:admin).id) # auto-approved
     Manage.create(target: @project, account_id: accounts(:user).id) # pending approval
     login_as accounts(:user)
+    set_protection_to_true
     get :show, id: @project
     must_respond_with :ok
     response.body.must_include(I18n.t('permissions.not_manager'))
@@ -60,6 +67,7 @@ class PermissionsControllerTest < ActionController::TestCase
   it 'unlogged users should 401' do
     login_as nil
     put :update, id: @project, permission: { remainder: true }
+    @permissions.reload
     must_respond_with :unauthorized
   end
 
@@ -73,6 +81,7 @@ class PermissionsControllerTest < ActionController::TestCase
 
   it 'non-managers should 401' do
     login_as accounts(:user)
+    set_protection_to_true
     put :update, id: @project, permission: { remainder: true }
     must_respond_with :unauthorized
   end
@@ -81,6 +90,7 @@ class PermissionsControllerTest < ActionController::TestCase
     Manage.create(target: @project, account_id: create(:admin).id) # auto-approved
     Manage.create(target: @project, account_id: accounts(:user).id) # pending approval
     login_as accounts(:user)
+    set_protection_to_true
     put :update, id: @project, permission: { remainder: true }
     must_respond_with :unauthorized
   end
