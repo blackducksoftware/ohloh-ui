@@ -1,6 +1,9 @@
 require 'test_helper'
 
-class OrganizationsControllerTest < ActionController::TestCase
+describe 'OrganizationsController' do
+  let(:account) { create(:account) }
+  let(:organization) { create(:organization) }
+
   before do
     @proj1 = create(:project)
     @proj2 = create(:project)
@@ -74,5 +77,40 @@ class OrganizationsControllerTest < ActionController::TestCase
   it 'should get infographic print view' do
     get :print_infographic, id: @organization
     must_respond_with :ok
+  end
+
+  describe 'settings' do
+    it 'must ask user to log in' do
+      restrict_edits_to_managers(organization, account)
+
+      get :settings, id: organization.to_param
+
+      flash[:notice].must_equal I18n.t('permissions.must_log_in')
+    end
+
+    it 'must alert non managers about read only data' do
+      restrict_edits_to_managers(organization, account)
+      login_as account
+
+      get :settings, id: organization.to_param
+
+      flash[:notice].must_equal I18n.t('permissions.not_manager')
+    end
+
+    it 'must allow access to an authorized user' do
+      create(:manage, target: organization, account: account)
+      restrict_edits_to_managers(organization, account)
+
+      login_as account
+      get :settings, id: organization.to_param
+
+      flash[:notice].must_be_nil
+    end
+
+    it 'must show permission alert for an unprotected org' do
+      get :settings, id: organization.to_param
+
+      flash[:notice].must_be_nil
+    end
   end
 end
