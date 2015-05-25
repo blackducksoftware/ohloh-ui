@@ -97,17 +97,11 @@ describe 'OrganizationsController' do
       flash[:notice].must_equal I18n.t('permissions.not_manager')
     end
 
-    it 'must allow access to an authorized user' do
+    it 'wont show permission alert to an authorized manager' do
       create(:manage, target: organization, account: account)
       restrict_edits_to_managers(organization, account)
 
       login_as account
-      get :settings, id: organization.to_param
-
-      flash[:notice].must_be_nil
-    end
-
-    it 'must show permission alert for an unprotected org' do
       get :settings, id: organization.to_param
 
       flash[:notice].must_be_nil
