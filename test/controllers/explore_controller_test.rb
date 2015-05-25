@@ -98,7 +98,7 @@ describe 'ExploreController' do
         must_respond_with :ok
         must_render_template :projects
 
-        assigns(:projects).must_equal [project_1, project_2]
+        assigns(:projects).map(&:id).sort.must_equal [project_1.id, project_2.id].sort
         assigns(:project_logos_map)[logo_1.id].must_equal logo_1
         assigns(:project_logos_map)[logo_2.id].must_equal logo_2
         assigns(:with_pai_count).must_equal 2
