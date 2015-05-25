@@ -3,6 +3,7 @@ class Organization < ActiveRecord::Base
   include Tsearch
 
   ORG_TYPES = { 'Commercial' => 1, 'Education' => 2, 'Government' => 3, 'Non-Profit' => 4 }
+  ALLOWED_SORT_OPTIONS = ['newest', 'recent', 'name', 'projects']
 
   fix_string_column_encodings!
 
@@ -21,6 +22,10 @@ class Organization < ActiveRecord::Base
     joins(:manages).where.not(deleted: true, manages: { approved_by: nil }).where(manages: { account_id: account.id })
   }
   scope :case_insensitive_url_name, ->(mixed_case) { where(['lower(url_name) = ?', mixed_case.downcase]) }
+  scope :sort_by_newest, -> { order(created_at: :desc) }
+  scope :sort_by_recent, -> { order(updated_at: :desc) }
+  scope :sort_by_name, -> { order(arel_table[:name].lower) }
+  scope :sort_by_projects, -> { order('COALESCE(projects_count, 0) DESC') }
 
   validates :name, presence: true, length: 3..85, uniqueness: { case_sensitive: false }
   validates :description, length: 0..800, allow_nil: true
@@ -76,6 +81,14 @@ class Organization < ActiveRecord::Base
 
   def affiliators_count
     @affiliators_count ||= accounts.count(joins: [:person, :active_positions], select: 'DISTINCT(accounts.id)')
+  end
+
+  class << self
+    def search_and_sort(query, sort, page)
+      sort ||= 'name'
+      fail ArgumentError, 'Invalid Sort Option' unless ALLOWED_SORT_OPTIONS.include?(sort)
+      tsearch(query, "sort_by_#{sort}").where.not(deleted: true).paginate(page: page)
+    end
   end
 
   private

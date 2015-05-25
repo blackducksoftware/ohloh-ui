@@ -3,9 +3,30 @@ class OrganizationsController < ApplicationController
   helper RatingsHelper
   helper OrganizationsHelper
 
-  before_action :find_organization
-  before_action :organization_context, except: [:print_infographic]
+  before_action :set_organization, except: [:index, :create]
+  before_action :organization_context, except: [:print_infographic, :create, :update]
   before_action :handle_default_view, only: :show
+
+  def index
+    redirect_to orgs_explores_path if request.format == 'html' && request.query_string.blank?
+    @organizations = Organization.search_and_sort(params[:query], params[:sort], params[:page])
+  end
+
+  def create
+    if Organization.create(params[:organization])
+      redirect_to organization_path(@organization), notice: 'Organization has been created successfully'
+    else
+      render :new
+    end
+  end
+
+  def update
+    if @organization.update_attributes(params[:organization])
+      redirect_to organization_path(@organization), notice: 'Organization changes were saved successfully'
+    else
+      render :edit, :status => 422
+    end
+  end
 
   def show
     @graphics = OrgInfoGraphics.new(@organization, context: { view: @view })
@@ -39,7 +60,7 @@ class OrganizationsController < ApplicationController
 
   private
 
-  def find_organization
+  def set_organization
     @organization = Organization.from_param(params[:id]).take
     fail ParamRecordNotFound if @organization.nil?
   end

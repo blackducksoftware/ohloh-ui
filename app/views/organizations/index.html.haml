@@ -1,0 +1,7 @@
+= render partial: 'shared/search_dingus', locals: { collection: @organizations, sort_context: :organizations }
+
+- if @organizations.empty?
+  No matches with this filter.
+- else
+  = render partial: 'organization', collection: @organizations
+  = will_paginate @organizations

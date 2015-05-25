@@ -159,3 +159,17 @@ languages:
       - total
   default:
     name
+
+organizations:
+  options:
+    -
+      - Recently Created
+      - newest
+    -
+      - Name
+      - name
+    -
+      - Number of Projects
+      - projects
+  default:
+    projects
