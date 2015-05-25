@@ -18,6 +18,7 @@ class ReviewsController < ApplicationController
     @account_reviews = current_user.reviews if logged_in?
     @most_helpful_reviews = @parent.reviews.top(5)
     @recent_reviews = @parent.reviews.sort_by('recently_added').limit(5)
+    @rating = logged_in? ? current_user.ratings.where(project_id: @project).take : nil
   end
 
   def new
