@@ -73,12 +73,13 @@ class AccountTest < ActiveSupport::TestCase
     account = build(:account, password: '')
     account.wont_be :valid?
     account.errors.must_include(:password)
-    account.errors.messages[:password].first.must_equal I18n.t(:cant_be_blank)
+    account.errors.messages[:password].first.must_equal 'Please provide a password.'
 
     account = build(:account, password: 'abc12345', password_confirmation: 'ABC12345')
     account.wont_be :valid?
     account.errors.must_include(:password_confirmation)
-    account.errors.messages[:password_confirmation].must_equal ['doesn\'t match Password']
+    error_message = account.errors.messages[:password_confirmation]
+    error_message.must_equal ['Please enter the same password in the confirmation field.']
   end
 
   it 'it should validate twitter account only if its present' do
@@ -178,19 +179,51 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it 'should validate current password error message' do
-    account = accounts(:user)
-    account.current_password = 'dummy password'
-    refute account.valid?
+    account.update(password: 'newpassword', password_confirmation: 'newpassword', current_password: 'dummy password')
     account.errors.size.must_equal 1
     error_message = [I18n.t('activerecord.errors.models.account.attributes.current_password.invalid')]
     error_message.must_equal account.errors[:current_password]
   end
 
-  it 'should not raise error for valid current password' do
-    account = accounts(:user)
-    account.current_password = 'test'
-    account.must_be :valid?
-    account.errors.size.must_equal 0
+  it 'should update password and password_confirmation with valid passwords' do
+    account = create(:account, password: 'testing', password_confirmation: 'testing')
+    account.update(password: 'newpassword', password_confirmation: 'newpassword', current_password: 'testing')
+    account.reload.crypted_password.must_equal Account::Authenticator.encrypt('newpassword', account.salt)
+  end
+
+  it 'should not update password and password_confirmation if current_password is an empty string' do
+    account.update(password: 'newpassword', password_confirmation: 'newpassword', current_password: '')
+    assert_not_equal account.reload.crypted_password, Account::Authenticator.encrypt('newpassword', account.salt)
+  end
+
+  it 'should not update if password and password_confirmation do not match' do
+    account = create(:account, password: 'testing', password_confirmation: 'testing')
+    account.update(password: 'foobar', password_confirmation: 'barfoo', current_password: 'testing')
+    assert account.invalid?
+  end
+
+  it 'should not update if password and password_confirmation are blank' do
+    account = create(:account, password: 'testing', password_confirmation: 'testing')
+    account.update(password: '', password_confirmation: '', current_password: 'testing')
+    assert account.invalid?
+  end
+
+  it 'should not update if password is blank' do
+    account = create(:account, password: 'testing', password_confirmation: 'testing')
+    account.update(password: '', password_confirmation: 'foobar', current_password: 'testing')
+    assert account.invalid?
+  end
+
+  it 'should not update if password_confirmation is blank' do
+    account = create(:account, password: 'testing', password_confirmation: 'testing')
+    account.update(password: 'foobar', password_confirmation: '', current_password: 'testing')
+    assert account.invalid?
+  end
+
+  it 'should not update password if password is less than 5 characters' do
+    account = create(:account, password: 'testing', password_confirmation: 'testing')
+    account.update(password: 'pass', password_confirmation: 'pass', current_password: 'testing')
+    assert account.invalid?
   end
 
   it 'it should get the first commit date for a account position' do
@@ -240,7 +273,7 @@ class AccountTest < ActiveSupport::TestCase
 
     it 'test login on update' do
       # fake a bad login already in the db
-      account = accounts(:user)
+      account = create(:account)
       account.login = '$bad_login$'
       account.save(validate: false).wont_equal false
 
