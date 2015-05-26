@@ -6,10 +6,10 @@
 
 - unless !logged_in? || current_user == @account
   - if kudo
-    = form_for kudo, action: account_kudo_path(current_user, kudo), method: :delete do |f|
+    = form_for kudo, action: account_kudo_path(current_user, kudo), method: :delete do
       = button_tag class: "btn kudo-btn #{ css }" do
         %i.icon.icon-undo
-        = "#{ t('undo') } Kudo"
+        #{ t('undo') } Kudo
   - else
     = link_to "#{ t('give') } Kudo", 'javascript:', class: "btn kudo-btn #{ css }",
     onclick: "tb_show('#{ t('give') } Kudos #{ t('to') } #{name}', '#{action}', false); return false;"
