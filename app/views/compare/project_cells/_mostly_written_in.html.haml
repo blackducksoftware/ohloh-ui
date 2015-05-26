@@ -1,6 +1,0 @@
-- if !project.best_analysis.nil? && project.best_analysis.last_commit_time
-  = project.best_analysis.main_language ? project.best_analysis.main_language.nice_name : t('compare.no_code_found')
-- elsif project.enlistments.count > 0
-  %span.soft= t('compare.pending')
-- else
-  %span.soft= t('compare.no_data')

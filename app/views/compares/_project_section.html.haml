@@ -1,0 +1,28 @@
+:ruby
+  has_header = opts[:include_header]
+  proj_names = params.select { |k, _| k.to_s.match(/project/) }
+
+%tr.section
+  %th{ colspan: (has_header ? 1 : 4), style: (has_header ? 'padding-top: 7px;' : '') }
+    %h4.section.pull-left.nomargin= label
+  - if has_header
+    - @projects.each_with_index do |project, index|
+      %th.head
+        - if project
+          %div
+            - project_icon(project)
+            %big= link_to(truncate_project_name(project.name, true, 14), project_path(project), title: project.name)
+            .pull-right
+              - link = compare_projects_path(proj_names.except("project_#{index}"))
+              %a.btn.btn-minier.btn-info{ href: link, rel: 'tooltip', style: 'margin: 5px 10px 0 0;',
+                                          data: { placement: 'bottom', 'original-title' => t('.remove_from') } }
+                %i.icon-remove= t(:clear)
+        - else
+          %form{ action: compare_projects_path }
+            - @projects.each_with_index do |proj, i|
+              - next if project == proj
+              %input{ type: 'hidden', name: "project_#{i}", value: proj ? proj.name : '' }
+            - key = "project_#{index}"
+            %input.autocompletable{ type: 'text', id: key, name: key, width: 20,
+            placeholder: t('.enter_name'), data: { source: '/autocompletes/project'  } }
+            %input{ type: 'submit', value: t('.go'), name: "submit_#{index}", style: 'display: none;' }

@@ -30,4 +30,8 @@ class NilAnalysis < NullObject
   def empty?
     true
   end
+
+  def last_commit_time
+    nil
+  end
 end
