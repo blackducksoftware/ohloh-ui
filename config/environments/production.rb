@@ -93,4 +93,3 @@ Rails.application.configure do
   Paperclip::Attachment.default_options[:path] = '/attachments/:id/:basename:style.:extension'
   Paperclip::Attachment.default_options[:use_timestamp] = false
 end
-ANALYTICS_ID = 'UA-20399350-1'
