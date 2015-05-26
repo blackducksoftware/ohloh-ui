@@ -1,5 +1,5 @@
 - page_context[:select_top_menu_nav] = 'select_organizations'
-- content_for(:html_title) { t('.page_title', organization_name: @organization.name) }
+- content_for(:html_title) { t('.page_title', name: @organization.name) }
 = render partial: 'organizations/show/header'
 
 %h2.pull-left

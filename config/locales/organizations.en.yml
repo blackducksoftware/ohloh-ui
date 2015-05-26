@@ -1,6 +1,14 @@
 en:
   organizations:
+    new_manager:
+      settings: 'Settings'
+      managers: 'Managers'
+      new: ' : New'
+      new_manager: 'New Manager'
+      enter_name: 'Enter a user name'
+      add: 'Add Manager'
     list_managers:
+      page_title: '%{name} : Settings: Managers - Open Hub'
       title_link: 'Settings'
       title: ' : Managers'
       confirm: 'Remove %{name} as a manager for %{org}?'

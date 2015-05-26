@@ -6,8 +6,8 @@ class OrganizationsController < ApplicationController
   before_action :set_organization, except: [:index, :new, :create, :resolve_url_name, :print_org_infographic]
   before_action :organization_context, except: [:print_infographic, :create, :update]
   before_filter :admin_required, :only => [:new, :create]
-  before_filter :show_permissions_alert, only: [:index, :new, :edit, :list_managers, :manage_projects, :new_manager,
-                                                :claim_projects_list, :settings]
+  # before_filter :show_permissions_alert, only: [:index, :new, :edit, :list_managers, :manage_projects, :new_manager,
+                                                # :claim_projects_list, :settings]
   before_action :handle_default_view, only: :show
 
   def index
@@ -52,7 +52,7 @@ class OrganizationsController < ApplicationController
     @projects = []
     params[:sort] ||= 'relevance'
     return if params[:query].blank?
-    @projects = Project.tsearch(params[:query], "sort_by_#{params[:sort]}")
+    @projects = Project.tsearch(params[:query], "by_#{params[:sort]}")
       .where.not(deleted: true).includes(:best_analysis)
       .paginate(page: params[:page], per_page: 20)
   end
@@ -77,7 +77,7 @@ class OrganizationsController < ApplicationController
 
   def manage_projects
     params[:sort] ||= 'new'
-    @projects = Project.tsearch(params[:query], "sort_by_#{params[:sort]}")
+    @projects = Project.tsearch(params[:query], "by_#{params[:sort]}")
                 .includes(:best_analysis).paginate(page: params[:page], per_page: 20)
   end
 
