@@ -32,7 +32,8 @@ class ReviewsController < ApplicationController
     if @review.save
       redirect_to summary_project_reviews_path(@project), flash: { success: t('.success') }
     else
-      redirect_to new_project_review_path(@project), flash: { error: t('.error') }
+      flash.now[:error] = t('.error')
+      render :new
     end
   end
 

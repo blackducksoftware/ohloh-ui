@@ -25,6 +25,22 @@ class ReviewTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'validate comment' do
+    it 'should fail if comment is empty' do
+      review = Review.new(title: 'title', comment: '')
+      review.valid?.must_equal false
+      review.errors.count.must_equal 2
+      review.errors[:comment].must_equal ["can't be blank"]
+    end
+
+    it 'should be between 1 and 5000 characters' do
+      review = Review.new(title: 'title', comment: Faker::Lorem.characters(5001))
+      review.valid?.must_equal false
+      review.errors.count.must_equal 2
+      review.errors[:comment].must_equal ['is too long (maximum is 5000 characters)']
+    end
+  end
+
   describe '#find_by_comment_or_title_or_accounts_login' do
     it 'find by comment' do
       review1 = create(:review, comment: 'search_by_comment')
