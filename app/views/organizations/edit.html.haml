@@ -1,0 +1,10 @@
+%h2.pull-left
+  = link_to t('.settings'), settings_organization_path(@organization)
+  &nbsp; #{t('.basics')}
+.clear
+.row
+  .well.col-md-10.center-block
+    - form_for @organization, url: organization_path(@organization), class: 'center-block', style: 'width:650px' do |f|
+      = render partial: 'fields', :locals => { f: f }
+
+= render partial: 'about_basics'

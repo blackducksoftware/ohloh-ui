@@ -1,5 +1,25 @@
 en:
   organizations:
+    about_basics:
+      about: 'About'
+      basics: 'Basics'
+      info: 'The organization name will be shown in Open Hub search results, as well as in search engines. This name must be unique across all organizations on Open Hub.'
+      contact_us: 'Contact us'
+      inapropriate: 'if you believe someone is using the name of your organization inappropriately on Open Hub. Please use as short a name as possible.'
+      url_unique: 'The organization URL must be unique across all organizations on Open Hub. It should start with a letter, followed by letters, numbers, dashes, or underscores.'
+      description: "The organization description will appear on the organization's summary page. Please be concise, but highlight unique aspects and key features. Maximum 800 characters, and only new-line formatting is allowed."
+    new:
+      title: 'New Organization'
+    edit:
+      settings: 'Settings'
+      basics: ' : Basics'
+    fields:
+      name: 'Organization Name'
+      url: 'Open Hub Organization URL'
+      type: 'Organization Type'
+      description: 'Description'
+      home: 'Homepage Link'
+      save_changes: 'Save Changes'
     new_manager:
       settings: 'Settings'
       managers: 'Managers'

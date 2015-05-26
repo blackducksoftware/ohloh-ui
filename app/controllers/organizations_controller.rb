@@ -5,18 +5,23 @@ class OrganizationsController < ApplicationController
 
   before_action :set_organization, except: [:index, :new, :create, :resolve_url_name, :print_org_infographic]
   before_action :organization_context, except: [:print_infographic, :create, :update]
-  before_filter :admin_required, :only => [:new, :create]
+  # before_filter :admin_required, :only => [:new, :create]
+  before_action :handle_default_view, only: :show
   # before_filter :show_permissions_alert, only: [:index, :new, :edit, :list_managers, :manage_projects, :new_manager,
                                                 # :claim_projects_list, :settings]
-  before_action :handle_default_view, only: :show
 
   def index
     redirect_to orgs_explores_path if request.format == 'html' && request.query_string.blank?
     @organizations = Organization.search_and_sort(params[:query], params[:sort], params[:page])
   end
 
+  def new
+    @organization = Organization.new
+  end
+
   def create
-    if Organization.create(params[:organization])
+    @organization = Organization.create(params[:organization])
+    if @organization
       redirect_to organization_path(@organization), notice: t('.notice')
     else
       render :new
