@@ -3,8 +3,11 @@ class OrganizationsController < ApplicationController
   helper RatingsHelper
   helper OrganizationsHelper
 
-  before_action :set_organization, except: [:index, :create]
+  before_action :set_organization, except: [:index, :new, :create, :resolve_url_name, :print_org_infographic]
   before_action :organization_context, except: [:print_infographic, :create, :update]
+  before_filter :admin_required, :only => [:new, :create]
+  before_filter :show_permissions_alert, only: [:index, :new, :edit, :list_managers, :manage_projects, :new_manager,
+                                                :claim_projects_list, :settings]
   before_action :handle_default_view, only: :show
 
   def index
@@ -14,7 +17,7 @@ class OrganizationsController < ApplicationController
 
   def create
     if Organization.create(params[:organization])
-      redirect_to organization_path(@organization), notice: 'Organization has been created successfully'
+      redirect_to organization_path(@organization), notice: t('.notice')
     else
       render :new
     end
@@ -22,15 +25,72 @@ class OrganizationsController < ApplicationController
 
   def update
     if @organization.update_attributes(params[:organization])
-      redirect_to organization_path(@organization), notice: 'Organization changes were saved successfully'
+      redirect_to organization_path(@organization), notice: t('.notice')
     else
-      render :edit, :status => 422
+      render :edit, status: 422
     end
   end
 
   def show
     @graphics = OrgInfoGraphics.new(@organization, context: { view: @view })
     load_infographics_table
+  end
+
+  def list_managers
+    @managers = @organization.managers
+  end
+
+  def new_manager
+    @manage = @organization.manages.new(account_id: params[:account_id], approver: Account.hamster)
+    return if request.get?
+    if @manage.save
+      redirect_to managers_url_for(@organization), flash: { success: t('.success') }
+    end
+  end
+
+  def claim_projects_list
+    @projects = []
+    params[:sort] ||= 'relevance'
+    return if params[:query].blank?
+    @projects = Project.tsearch(params[:query], "sort_by_#{params[:sort]}")
+      .where.not(deleted: true).includes(:best_analysis)
+      .paginate(page: params[:page], per_page: 20)
+  end
+
+  def claim_project
+    render text: t('.unauthorized') unless request.xhr? && @organization.edit_authorized?
+    @project = Project.from_param(params[:project_id]).take
+    if @project.update_attribute(:organization_id, @organization.id)
+      render partial: 'active_remove_project_button', locals: { p: @project, source: :claim }
+    else
+      render text: t('.failed')
+    end
+  end
+
+  def projects
+    if @organization.projects_count == 0
+      redirect_to organization_path(@organization, view: :portfolio_projects), notice: t('.notice') && return
+    end
+    @projects = @organization.projects.includes(best_analysis: [:twelve_month_summary, :previous_twelve_month_summary])
+                .paginate(per_page: 20, page: params[:page]).order(user_count: :desc)
+  end
+
+  def manage_projects
+    params[:sort] ||= 'new'
+    @projects = Project.tsearch(params[:query], "sort_by_#{params[:sort]}")
+                .includes(:best_analysis).paginate(page: params[:page], per_page: 20)
+  end
+
+  def remove_project
+    project = Project.from_param(params[:project_id]).take
+    edits = project.edits.find_by(key: 'organization_id')
+    edits.try(:undo) ? flash[:success] = t('.success') : flash[:error] = t('.error')
+
+    if params[:source]
+      redirect_to manage_projects_organization_path(@organization)
+    else
+      redirect_to claim_projects_list_organization_path(@organization)
+    end
   end
 
   def outside_projects

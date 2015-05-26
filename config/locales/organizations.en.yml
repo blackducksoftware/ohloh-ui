@@ -1,5 +1,33 @@
 en:
   organizations:
+    list_managers:
+      title_link: 'Settings'
+      title: ' : Managers'
+      confirm: 'Remove %{name} as a manager for %{org}?'
+      remove: 'remove manager'
+      empty_alert: 'Nobody has registered to become a manager of this organization on Open Hub'
+      new_manager: 'New Manager'
+    about_managers:
+      about: 'About'
+      managers: 'Managers'
+      ability: 'Organization managers can:'
+      limit: 'Limit edits just to managers.'
+      edit: 'Edit organization information and settings if community editing has been limited.'
+      approve: 'Approve or deny applications to be a manager.'
+      edit_info: "If an organization's edits are limited, then organization information can only be edited by managers. Otherwise, anyone with an Open Hub account can edit organization information."
+    create:
+      notice: 'Organization has been created successfully'
+    update:
+      notice: 'Organization changes were saved successfully'
+    new_manger: 'Manager created successfully'
+    claim_project:
+      unauthorized: 'Unauthorized!'
+      failed: 'Failed.'
+    projects:
+      notice: 'There are no portfolio projects to display'
+    remove_project:
+      success: 'Removed #{project.to_s} successfully'
+      error: "Error! Couldn\'t remove this project."
     show:
       page_title: '%{organization_name} : Organization Summary'
       title: 'Organization Summary'

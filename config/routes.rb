@@ -254,7 +254,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :organizations, path: :orgs, only: [:index, :show] do
+  resources :organizations, path: :orgs do
     member do
       get :settings
       get :projects
@@ -262,7 +262,21 @@ Rails.application.routes.draw do
       get :outside_committers
       get :print_infographic
       get :affiliated_committers
+      get :settings
+      get :new_manager
+      get :list_managers
+      get :projects
+      get :manage_projects
+      get :claim_projects_list
+      get :claim_project
+      get :remove_project
+      post :new_manager
     end
+
+    collection do
+      get :resolve_url_name
+    end
+
     resources :edits, only: [:index]
     resource :logos, only: [:new, :create, :destroy]
     resources :managers, only: [:index, :new, :create, :edit, :update] do
