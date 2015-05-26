@@ -15,9 +15,6 @@ development:
 staging:
   <<: *default
 
-vagrant:
-  <<: *default
-
 test:
   <<: *default
   host: <%= ENV["TEST_DB_HOST"] %>
