@@ -3,7 +3,7 @@ require 'test_helper'
 class PermissionsControllerTest < ActionController::TestCase
   setup do
     @project = projects(:linux)
-    @permissions = create(:permission, target: @project, remainder: false)
+    @permissions = create(:permission, target: @project, remainder: true)
   end
 
   # show action
@@ -101,6 +101,6 @@ class PermissionsControllerTest < ActionController::TestCase
     put :update, id: @project, permission: { remainder: true }
     @permissions.reload
     must_respond_with :unprocessable_entity
-    @permissions.remainder.must_equal false
+    @permissions.remainder.must_equal true
   end
 end
