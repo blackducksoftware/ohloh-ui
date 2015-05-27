@@ -48,9 +48,7 @@ class OrganizationsController < ApplicationController
   def new_manager
     @manage = @organization.manages.new(account_id: params[:account_id], approver: Account.hamster)
     return if request.get?
-    if @manage.save
-      redirect_to managers_url_for(@organization), flash: { success: t('.success') }
-    end
+    redirect_to managers_url_for(@organization), flash: { success: t('.success') } if @manage.save
   end
 
   def claim_projects_list
@@ -70,14 +68,6 @@ class OrganizationsController < ApplicationController
     else
       render text: t('.failed')
     end
-  end
-
-  def projects
-    if @organization.projects_count == 0
-      redirect_to organization_path(@organization, view: :portfolio_projects), notice: t('.notice') && return
-    end
-    @projects = @organization.projects.includes(best_analysis: [:twelve_month_summary, :previous_twelve_month_summary])
-                .paginate(per_page: 20, page: params[:page]).order(user_count: :desc)
   end
 
   def manage_projects
