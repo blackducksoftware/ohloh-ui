@@ -270,7 +270,6 @@ Rails.application.routes.draw do
       get :settings
       get :new_manager
       get :list_managers
-      get :projects
       get :manage_projects
       get :claim_projects_list
       get :claim_project

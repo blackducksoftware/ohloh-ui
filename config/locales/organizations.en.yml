@@ -1,5 +1,8 @@
 en:
   organizations:
+    index:
+      no_matches: 'No matches with this filter.'
+      title: 'Organizations'
     about_basics:
       about: 'About'
       basics: 'Basics'
