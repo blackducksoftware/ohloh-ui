@@ -58,6 +58,7 @@ en:
   compare_repositories: 'Compare Repositories'
   compare: Compare
   admin_warning: "CAREFUL! Editing someone else's account!"
+  logo: Logo
 
   layouts:
     application:
