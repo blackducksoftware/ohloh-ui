@@ -19,6 +19,7 @@ en:
       error: 'Your review was not saved!'
     update:
       success: 'Your review has been updated.'
+      error: 'There was a problem saving!'
     add_review:
       not_reviewd: 'You have not reviewed this project.</br>Click below to add a review.'
       not_reviewd_or_rated: 'You have not rated or reviewed this project.</br>Click below to rate/review.'
