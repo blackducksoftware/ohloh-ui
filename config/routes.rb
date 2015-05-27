@@ -291,6 +291,7 @@ Rails.application.routes.draw do
     member do
       get :similar
       get :builder
+      get :reset
     end
     resources :stack_entries, only: [:create, :destroy]
     resources :stack_ignores, only: [:create] do
