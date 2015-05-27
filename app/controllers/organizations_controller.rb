@@ -6,6 +6,7 @@ class OrganizationsController < ApplicationController
   before_action :find_organization
   before_action :organization_context, except: [:print_infographic]
   before_action :handle_default_view, only: :show
+  before_action :show_permissions_alert, only: :settings
 
   def show
     @graphics = OrgInfoGraphics.new(@organization, context: { view: @view })

@@ -7,7 +7,7 @@ Explore =
       $(this).closest('form').trigger('submit')
       return false
 
-    $("#explore_search_form input[name='q']").keydown (e) ->
+    $("#explore_search_form input[name='query']").keydown (e) ->
       if e.which == 13
         e.preventDefault()
         $(this).siblings('.icon-search').trigger('click')
