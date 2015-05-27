@@ -100,7 +100,7 @@ describe 'PasswordResetsController' do
 
       patch :reset, account_id: account.login, token: token,
                     account: { password: password, password_confirmation: password,
-                               crypted_password: '', reset_password_tokens: '' }
+                               current_password: original_password, reset_password_tokens: '' }
 
       flash[:success].must_match(/reset success/)
       must_respond_with :redirect

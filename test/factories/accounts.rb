@@ -12,6 +12,7 @@ FactoryGirl.define do
     login { generate(:account_login) }
     password { Faker::Internet.password }
     password_confirmation { |account| account.send(:password) }
+    current_password { |account| account.send(:password) }
     twitter_account 'openhub'
     name { Faker::Name.name + rand(999_999).to_s }
     about_raw { Faker::Lorem.characters(10) }

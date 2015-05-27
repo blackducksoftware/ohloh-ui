@@ -12,8 +12,10 @@
 
 = render partial: 'index'
 
-%h4.nomargin
-  %span.soft #{t(:about)} #{t('.openhub_edit_history')}
+%h4.margin_bottom_0
+  .soft.inline= t(:about)
+  = t('.openhub_edit_history')
+
 .margin_left_25.col-md-5
   %ul
     %li= t('.help_1')

@@ -162,7 +162,8 @@ describe 'ReviewsControllerTest' do
       Review.any_instance.stubs(:save).returns(false)
       lambda do
         post :create, project_id: project.to_param, review: review.attributes
-        must_redirect_to new_project_review_path(project)
+        must_respond_with :ok
+        must_render_template :new
       end.must_change 'Review.count', 0
     end
   end

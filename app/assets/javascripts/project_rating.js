@@ -1,5 +1,6 @@
 var ProjectRating = {
   init: function() {
+    $("#rating_spinner").hide();
     this.hook_ratings();
     this.clear_ratings();
   },
