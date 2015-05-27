@@ -1,14 +1,15 @@
 class OrganizationsController < ApplicationController
+  PERMISSION_ALERT = [:manage_projects, :new_manager, :new, :edit, :claim_projects_list, :list_managers, :settings]
+
   helper ProjectsHelper
   helper RatingsHelper
   helper OrganizationsHelper
 
   before_action :set_organization, except: [:index, :new, :create, :resolve_url_name, :print_org_infographic]
   before_action :organization_context, except: [:print_infographic, :create, :update]
-  # before_filter :admin_required, :only => [:new, :create]
+  before_filter :admin_session_required, only: [:new, :create]
   before_action :handle_default_view, only: :show
-  # before_filter :show_permissions_alert, only: [:new, :edit, :list_managers, :manage_projects, :new_manager,
-                                                # :claim_projects_list, :settings]
+  before_filter :show_permissions_alert, only: PERMISSION_ALERT
 
   def index
     redirect_to orgs_explores_path if request.format == 'html' && request.query_string.blank?
@@ -53,7 +54,7 @@ class OrganizationsController < ApplicationController
 
   def claim_projects_list
     @projects = []
-    params[:sort] ||= 'relevance'
+    params[:sort] ||= 'project_name'
     return if params[:query].blank?
     @projects = Project.tsearch(params[:query], "by_#{params[:sort]}")
       .where.not(deleted: true).includes(:best_analysis)
