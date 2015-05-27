@@ -7,7 +7,7 @@ class OrganizationsController < ApplicationController
   before_action :organization_context, except: [:print_infographic, :create, :update]
   # before_filter :admin_required, :only => [:new, :create]
   before_action :handle_default_view, only: :show
-  # before_filter :show_permissions_alert, only: [:index, :new, :edit, :list_managers, :manage_projects, :new_manager,
+  # before_filter :show_permissions_alert, only: [:new, :edit, :list_managers, :manage_projects, :new_manager,
                                                 # :claim_projects_list, :settings]
 
   def index
