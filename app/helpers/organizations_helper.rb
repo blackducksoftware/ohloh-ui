@@ -34,6 +34,13 @@ module OrganizationsHelper
     }
   end
 
+  def claim_link_options(org, project)
+    {
+      class: 'btn-small btn-success org-claim-project',
+      id: 'claim_project_#{project.id}',
+      data: { url: claim_project_organization_path(org, project_id: project.to_param) }
+    }
+  end
 
   private
 
