@@ -136,6 +136,14 @@ describe 'ReviewsControllerTest' do
       must_redirect_to summary_project_reviews_path(project)
       assigns(:review).title = title
     end
+
+    it 'should render edit if update fails' do
+      login_as account
+      Review.any_instance.stubs(:update).returns(false)
+      post :update, id: review.id, project_id: project.to_param, review: review.attributes
+      must_respond_with :ok
+      must_render_template :edit
+    end
   end
 
   describe 'destroy' do
