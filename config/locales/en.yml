@@ -359,4 +359,4 @@ en:
   doorkeeper:
     oauth_applications:
       revoke_access:
-        success: Succesfully revoked access for %{name}
+        success: You have successfully revoked the authorization for %{name}
