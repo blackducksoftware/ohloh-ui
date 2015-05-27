@@ -1,0 +1,7 @@
+- if project.best_analysis.present?
+  %span.status= t('compares.updated_ago', ago: time_ago_in_words(project.best_analysis.updated_on))
+- else
+  - if project.enlistments.count > 0
+    %span.status.warning= t('compares.pending')
+  - else
+    %span.status.bad= t('compares.no_data')

@@ -39,12 +39,15 @@ describe 'DuplicatesController' do
       Duplicate.where(good_project_id: good.id, bad_project_id: bad.id).first.comment.must_equal 'Cow says: Moo'
     end
 
-    it 'should create gracefully handle garbage good_project_id' do
+    it 'must display error mesesage for garbage good_project_id' do
       create(:project)
       bad = create(:project)
       login_as create(:account)
+
       post :create, project_id: bad.to_param, duplicate: { good_project_id: 'I_am_a_banana' }
-      assert_response :not_found
+
+      must_render_template 'new'
+      assigns('duplicate').errors.messages[:good_project].must_be :present?
     end
 
     it 'should render the new page if the duplicate fails to save' do

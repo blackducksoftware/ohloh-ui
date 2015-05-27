@@ -5,7 +5,8 @@ class Review < ActiveRecord::Base
 
   validates :title, presence: true
   validates :account_id, presence: true
-  validates :comment, presence: true, length: { in: 1..5000 }, allow_blank: true
+  validates :comment, presence: true
+  validates :comment, length: { in: 1..5000 }, allow_blank: true
 
   before_save do |review|
     sanitizer       = Rails::Html::FullSanitizer.new

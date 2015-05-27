@@ -142,8 +142,8 @@ Rails.application.routes.draw do
   get 'maintenance', to: 'abouts#maintenance'
   get 'tools', to: 'abouts#tools'
 
-  get 'p/compare', to: 'compare#projects', as: :compare_projects
-  get 'p/graph', to: 'compare#projects_graph', as: :compare_graph_projects
+  get 'p/compare', to: 'compares#projects', as: :compare_projects
+  get 'p/graph', to: 'compares#projects_graph', as: :compare_graph_projects
 
   resources :projects, path: :p, except: [:destroy] do
     member do
@@ -259,7 +259,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :organizations, path: :orgs, only: [:index, :show] do
+  resources :organizations, path: :orgs do
     member do
       get :settings
       get :projects
@@ -267,6 +267,8 @@ Rails.application.routes.draw do
       get :outside_committers
       get :print_infographic
       get :affiliated_committers
+      get :list_managers
+      get :manage_projects
     end
     resources :edits, only: [:index]
     resource :logos, only: [:new, :create, :destroy]

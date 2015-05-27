@@ -1,7 +1,0 @@
-- if !project.best_analysis.nil? && project.best_analysis.last_commit_time
-  - str = pluralize(project.best_analysis.commit_count, t('compare.commit'))
-  = link_to str, project_commits_path(project)
-- elsif project.enlistments.count > 0
-  %span.soft= t('compare.pending')
-- else
-  %span.soft= t('compare.no_data')

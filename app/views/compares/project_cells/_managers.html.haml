@@ -1,0 +1,8 @@
+- if project.managers.any?
+  %div
+    - project.active_managers.each do |m|
+      .clearfix
+        = avatar_for(m.person, size: 32)
+        %a.avatar_name.pull-left{ href: account_path(m) }= m.name
+- else
+  %span.status.warning= link_to t('compares.position_not_yet_claimed'), project_managers_path(project)

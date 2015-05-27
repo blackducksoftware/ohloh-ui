@@ -5,7 +5,7 @@ class ReviewsController < ApplicationController
   before_action :find_parent, except: :destroy
   before_action :find_review, only: [:edit, :update, :destroy]
   before_action :own_object?, only: [:edit, :update, :destroy]
-  before_action :review_context, only: [:summary, :index, :new, :edit]
+  before_action :review_context
 
   def index
     @reviews = @parent.reviews
@@ -15,7 +15,7 @@ class ReviewsController < ApplicationController
   end
 
   def summary
-    @account_reviews = current_user.reviews if logged_in?
+    @account_reviews = current_user.reviews.where(project: @project) if logged_in?
     @most_helpful_reviews = @parent.reviews.top(5)
     @recent_reviews = @parent.reviews.sort_by('recently_added').limit(5)
     @rating = logged_in? ? current_user.ratings.where(project_id: @project).take : nil
@@ -32,7 +32,8 @@ class ReviewsController < ApplicationController
     if @review.save
       redirect_to summary_project_reviews_path(@project), flash: { success: t('.success') }
     else
-      redirect_to new_project_review_path(@project), flash: { error: t('.error') }
+      flash.now[:error] = t('.error')
+      render :new
     end
   end
 
@@ -41,8 +42,12 @@ class ReviewsController < ApplicationController
   end
 
   def update
-    @review.update(review_params)
-    redirect_to summary_project_reviews_path(@project), flash: { success: t('.success') }
+    if @review.update(review_params)
+      redirect_to summary_project_reviews_path(@project), flash: { success: t('.success') }
+    else
+      flash.now[:error] = t('.error')
+      render :edit
+    end
   end
 
   def destroy
