@@ -142,3 +142,12 @@ en:
       date: "Date"
       you: "(You)"
       see_all: "See All %{num} Affiliated Contributors"
+    settings:
+      basics: Organization Basics
+      name_description_and_url: Name, description and Open Hub URL for Organization.
+      users_who_manage: Users who manage the organization settings and oversee the organization on Open Hub.
+      edit_history: Open Hub Edit History
+      list_of_recent_activity: List of recent activity of this organization for audit and undo purposes.
+      logo_displayed_for_org: The logo displayed for the organization.
+      manage_projects: Manage Projects
+      held_projects: Projects that are held under the auspices of this organization.

@@ -267,14 +267,12 @@ Rails.application.routes.draw do
       get :outside_committers
       get :print_infographic
       get :affiliated_committers
-      get :settings
-      get :new_manager
       get :list_managers
-      get :manage_projects
       get :claim_projects_list
       get :claim_project
       get :remove_project
       post :new_manager
+      get :manage_projects
     end
 
     collection do
