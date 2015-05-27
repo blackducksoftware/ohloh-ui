@@ -9,7 +9,7 @@ class StacksController < ApplicationController
   before_action :auto_ignore, only: [:builder]
   before_action :find_project, only: [:near]
 
-  before_action :account_context, only: [:index]
+  before_action :account_context, only: [:index, :show]
 
   def index
     @stacks = @account.stacks
@@ -18,6 +18,7 @@ class StacksController < ApplicationController
   def create
     @stack = Stack.new
     @stack.account = current_user
+    set_title
     if @stack.save
       redirect_to stack_path(@stack)
     else
@@ -30,7 +31,16 @@ class StacksController < ApplicationController
   end
 
   def destroy
-    render nothing: true, status: (@stack.destroy ? :ok : :unprocessable_entity)
+    account = @stack.account
+    @stack.destroy
+    redirect_to account_stacks_path(account), notice: t('.notice')
+  end
+
+  def reset
+    @stack.stack_entries.destroy_all
+    @stack.stack_ignores.destroy_all
+    @stack.projects << Project.where(id: Stack::SAMPLE_PROJECT_IDS[params[:init].try(:to_sym)])
+    redirect_to stack_path(@stack.id)
   end
 
   def similar
@@ -47,6 +57,11 @@ class StacksController < ApplicationController
   end
 
   private
+
+  def set_title
+    title = (1..30).collect { |i| "New Stack #{i}" } - Stack.where(account_id: @stack.account_id).pluck(:title)
+    @stack.title = title.first
+  end
 
   def model_params
     params.require(:stack).permit([:title, :description])
