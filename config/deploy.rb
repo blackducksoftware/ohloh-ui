@@ -1,9 +1,13 @@
 lock '3.4.0'
 
+set :whoami, `whoami`.strip
+set :default_env, 'PATH' => '/home/deployer/.rbenv/shims:$PATH', 'BASH_ENV' => '/home/deployer/.production_vars'
+
 set :application, 'openhub'
 set :repo_url, 'git@github.com:blackducksw/ohloh-ui.git'
 set :user, :deployer
 set :use_sudo, false
+set :passenger_restart_with_sudo, true
 set :branch, ENV['branch'] || :master
 
 set :deploy_to, "/var/local/#{ fetch(:application) }"
