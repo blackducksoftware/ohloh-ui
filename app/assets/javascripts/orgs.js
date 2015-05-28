@@ -97,3 +97,22 @@ var OrgsFilter = {
     })
   }
 }
+
+var OrgClaimProject = {
+  init: function(){
+    $('.org-claim-project').click(function(){
+      var url = $(this).data('url');
+      $(this).html(StackShow.busy_div);
+      var link_id = $(this).attr('id');
+
+      $.ajax({
+        type: "GET",
+        url: url,
+        success: function(data){
+          $('#'+link_id).replaceWith(data);
+        }
+      });
+      return false;
+    });
+  }
+}

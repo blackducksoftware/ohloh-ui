@@ -59,13 +59,16 @@ class OrganizationsController < ApplicationController
     @projects = Project.tsearch(params[:query], "by_#{params[:sort]}")
       .where.not(deleted: true).includes(:best_analysis)
       .paginate(page: params[:page], per_page: 20)
+    @organization.editor_account = current_user
   end
 
   def claim_project
-    render text: t('.unauthorized') unless request.xhr? && @organization.edit_authorized?
+    @organization.editor_account = current_user
+    render text: t('.unauthorized') and return unless request.xhr? && @organization.edit_authorized?
     @project = Project.from_param(params[:project_id]).take
+    @project.editor_account = current_user
     if @project.update_attribute(:organization_id, @organization.id)
-      render partial: 'active_remove_project_button', locals: { p: @project, source: :claim }
+      render partial: 'active_remove_project_button', locals: { p: @project }
     else
       render text: t('.failed')
     end
@@ -79,14 +82,11 @@ class OrganizationsController < ApplicationController
 
   def remove_project
     project = Project.from_param(params[:project_id]).take
+    project.editor_account = current_user
+
     edits = project.edits.find_by(key: 'organization_id')
     edits.try(:undo) ? flash[:success] = t('.success') : flash[:error] = t('.error')
-
-    if params[:source]
-      redirect_to manage_projects_organization_path(@organization)
-    else
-      redirect_to claim_projects_list_organization_path(@organization)
-    end
+    redirect_to manage_projects_organization_path(@organization)
   end
 
   def outside_projects
