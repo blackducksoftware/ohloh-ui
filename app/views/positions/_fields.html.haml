@@ -107,5 +107,5 @@
     - submit_text = params[:invite].blank? ? :Submit : :Next
     = submit_tag(submit_text, class: 'btn btn-sm btn-primary', id: :saveForm)
     - if allow_delete
-      = link_to 'Delete Position', [@account, @position], method: :delete, confirm: t('.delete_forever'),
+      = link_to 'Delete Position', [@account, @position], method: :delete, data: { confirm: t('.delete_forever') },
                                                           class: 'btn btn-sm btn-danger'
