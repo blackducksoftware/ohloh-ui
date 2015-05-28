@@ -25,10 +25,22 @@
         .pull-right#i_use_this_container
           .use_count
             = link_to number_with_delimiter(@project.user_count), users_project_path(@project)
-          %button{ id: "stackit_#{@project.to_param}",
-                   class: "btn btn-mini btn-grey iusethis float_right #{i_use_this_css}",
-                   title: t('projects.header.i_use_this_title', name: @project.name, count: @project.user_count) }
-            = t('projects.header.i_use_this')
+          / Modal will go here.
+          / %button{ id: "stackit_#{@project.to_param}",
+          /          class: "btn btn-mini btn-grey iusethis float_right #{i_use_this_css}",
+          /          title: t('projects.header.i_use_this_title', name: @project.name, count: @project.user_count) }
+          /   = t('projects.header.i_use_this')
+          %button.btn.btn-default{"data-target" => "#iUseThisModal", "data-toggle" => "modal", :type => "button"}= t('.i_use_this')
+          #iUseThisModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "iUseThisModalLabel", :role => "dialog", :tabindex => "-1"}
+            .modal-dialog
+              .modal-content
+                .modal-header
+                  %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+                    %span{"aria-hidden" => "true"} &times;
+                  %h4#myModalLabel.modal-title= t('.add_to_stacks')
+                .modal-body= t('.add_to_your_stack', project: @project.name)
+                .modal-footer
+                  %button.btn.btn-default.btn-lg= t('.create_a_new_stack', project: @project.name)
 .clearfix
 .row
   .col-md-12
