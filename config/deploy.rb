@@ -1,10 +1,7 @@
 lock '3.4.0'
 
 set :whoami, `whoami`.strip
-set :default_env, {
-  'PATH' => '/home/deployer/.rbenv/shims:$PATH',
-  'BASH_ENV' => '/home/deployer/.production_vars'
-}
+set :default_env, 'PATH' => '/home/deployer/.rbenv/shims:$PATH', 'BASH_ENV' => '/home/deployer/.production_vars'
 
 set :application, 'openhub'
 set :repo_url, 'git@github.com:blackducksw/ohloh-ui.git'
