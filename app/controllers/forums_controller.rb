@@ -4,7 +4,8 @@ class ForumsController < ApplicationController
   before_action :admin_session_required, except: [:index, :show]
 
   def index
-    @forums = Forum.all
+    # General Discussion is not on the production website
+    @forums = Forum.where("name != 'General Discussion'")
   end
 
   def new

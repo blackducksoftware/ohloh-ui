@@ -22,5 +22,6 @@
           text: t('reviews.edit_review'), size: 'mini', type: 'info')
         - if current_user_is_admin? || existing_review.account == current_user
           = icon_button(review_path(existing_review), icon: 'trash', text: t('reviews.remove_review'), size: 'mini',
-            type: 'danger', method: :delete, confirm: t('reviews.remove_confirmation'), style: 'margin-left: 5px')
+            type: 'danger', method: :delete, data: { confirm: t('reviews.remove_confirmation') },
+            style: 'margin-left: 5px')
           &nbsp;

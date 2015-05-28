@@ -1,5 +1,5 @@
 :ruby
-  page_context[:title] = t('.page_title', name: @account.name)
+  content_for(:html_title) { t('.page_title', name: @account.name) }
   page_context[:select_top_menu_nav] = 'select_people'
   page_context[:select_footer_nav] = :stacks
 
@@ -17,9 +17,9 @@
     - @stacks.each do |stack|
       .well.piano{ id: "stack_#{stack.id}" }
         - if stack.account == current_user
-          %a.btn.btn-mini.btn-danger{ href: stack_path(stack), method: :delete, style: 'float: right;',
-                                      confirm: t('.delete_confirm', name: stack.title) }
-            %i.icon-trash= t '.remove'
+          = icon_button(stack_path(stack), text: t('.remove'), size: 'mini', type: 'danger',
+            icon: 'trash', data: { confirm: t('.delete_confirm', name: stack.title) },
+            method: :delete, style: 'float: right; display: block; margin-top: 10px;')
         %h4.nomargin
           %a.name{ href: stack_path(stack), title: stack.title }= stack.title
         %a.description{ href: stack_path(stack), title: stack.title }
@@ -31,7 +31,7 @@
     - if @stacks.blank?
       .inset
       - if current_user == @account
-        %p= t('.no_stack_fix_that', link: link_to(t('.new_stack'), stacks_path, method: :post, class: 'command'))
+        %p= t('.no_stack_fix_that_html', link: link_to(t('.new_stack'), stacks_path, method: :post, class: 'command'))
       - else
         %p= t('.no_stack')
       &nbsp;

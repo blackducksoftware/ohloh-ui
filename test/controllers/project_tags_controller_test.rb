@@ -21,7 +21,7 @@ describe 'ProjectTagsController' do
       project = create(:project)
       get :index, project_id: project.to_param
       assert_response :success
-      assert_select '.alert', 1
+      assert_select '.alert', 2
       response.body.must_match I18n.t('project_tags.index.no_other_projects')
     end
   end

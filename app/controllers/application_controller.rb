@@ -74,11 +74,17 @@ class ApplicationController < ActionController::Base
   helper_method :current_user_is_admin?
 
   def current_user_can_manage?
-    return false unless logged_in? && current_project
+    return false unless logged_in? && current_project_or_org
     return true if current_user_is_admin?
-    logged_in? && current_project && current_project.active_managers.include?(current_user)
+    logged_in? && current_project_or_org && current_project_or_org.active_managers.include?(current_user)
   end
   helper_method :current_user_can_manage?
+
+  def current_project_or_org
+    return @current_project_or_org if @current_project_or_org
+    param = params[:project_id].presence || params[:id]
+    @current_project_or_org = Project.from_param(param).first || Organization.from_param(param).first
+  end
 
   def current_project
     return @current_project if @current_project
@@ -160,7 +166,7 @@ class ApplicationController < ActionController::Base
 
   def show_permissions_alert
     return if current_user_can_manage?
-    return if logged_in? && !current_project.protection_enabled?
+    return if logged_in? && !current_project_or_org.protection_enabled?
     flash.now[:notice] = logged_in? ? t('permissions.not_manager') : t('permissions.must_log_in')
   end
 

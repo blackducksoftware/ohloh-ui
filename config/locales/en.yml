@@ -58,6 +58,10 @@ en:
   compare_repositories: 'Compare Repositories'
   compare: Compare
   admin_warning: "CAREFUL! Editing someone else's account!"
+  undo: Undo
+  give: Give
+  to: to
+  logo: Logo
 
   layouts:
     application:
@@ -358,4 +362,4 @@ en:
   doorkeeper:
     oauth_applications:
       revoke_access:
-        success: Succesfully revoked access for %{name}
+        success: You have successfully revoked the authorization for %{name}

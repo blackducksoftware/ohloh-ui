@@ -259,7 +259,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :organizations, path: :orgs, only: [:index, :show] do
+  resources :organizations, path: :orgs do
     member do
       get :settings
       get :projects
@@ -267,6 +267,8 @@ Rails.application.routes.draw do
       get :outside_committers
       get :print_infographic
       get :affiliated_committers
+      get :list_managers
+      get :manage_projects
     end
     resources :edits, only: [:index]
     resource :logos, only: [:new, :create, :destroy]
@@ -289,6 +291,7 @@ Rails.application.routes.draw do
     member do
       get :similar
       get :builder
+      get :reset
     end
     resources :stack_entries, only: [:create, :destroy]
     resources :stack_ignores, only: [:create] do

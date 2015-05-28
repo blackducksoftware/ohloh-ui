@@ -73,4 +73,10 @@ class ActiveSupport::TestCase
   def i18n_activerecord(model, key)
     I18n.t("activerecord.errors.models.#{ model }.attributes.#{ key }")
   end
+
+  def restrict_edits_to_managers(organization, account = create(:account))
+    organization.update! editor_account: account
+    permission = organization.create_permission
+    permission.update!(remainder: true, editor_account: account)
+  end
 end
