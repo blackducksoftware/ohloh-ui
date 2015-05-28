@@ -2,9 +2,9 @@ class StacksController < ApplicationController
   helper MapHelper
   helper RatingsHelper
 
-  before_action :session_required, except: [:index, :show, :similar, :near]
+  before_action :session_required, except: [:index, :show, :similar, :similar_stacks, :near]
   before_action :find_stack, except: [:index, :create, :near]
-  before_action :can_edit_stack, except: [:index, :show, :create, :similar, :near]
+  before_action :can_edit_stack, except: [:index, :show, :create, :similar, :similar_stacks, :near]
   before_action :find_account, only: [:index, :show]
   before_action :auto_ignore, only: [:builder]
   before_action :find_project, only: [:near]
@@ -45,6 +45,10 @@ class StacksController < ApplicationController
 
   def similar
     @similar_stacks = @stack.similar_stacks
+  end
+
+  def similar_stacks
+    render partial: 'similar_stacks', locals: { stack: @stack }
   end
 
   def builder

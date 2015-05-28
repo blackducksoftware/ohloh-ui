@@ -290,6 +290,7 @@ Rails.application.routes.draw do
   resources :stacks, only: [:show, :create, :update, :destroy] do
     member do
       get :similar
+      get :similar_stacks
       get :builder
       get :reset
     end

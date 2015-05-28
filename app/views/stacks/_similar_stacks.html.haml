@@ -1,0 +1,11 @@
+- similar_stacks = stack.similar_stacks(10)
+- unless similar_stacks.blank?
+  #similar_stacks
+    %hr.one
+    .inset.lightup_avatar
+      %h6.soft
+        %a{ href: similar_stack_path(@stack) }= t('.people_with_similar_stacks')
+      .users.clear
+        - similar_stacks.each do |s|
+          = avatar_for s[:stack].account, size: 34, url: stack_path(s[:stack]), title: s[:stack].account.name
+      %a{ href: similar_stack_path(@stack), style: 'float: right;' }= t('.more')
