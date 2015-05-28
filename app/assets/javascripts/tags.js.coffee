@@ -25,9 +25,6 @@ App.TagNew =
     $('#input_tags').autocomplete
       source: "/autocompletes/tags?project_id=#{project_id}&term=#{term}"
       select : (evt, ui) ->
-        tags_value = ui.item.value
-        $('form[rel=tag_edit]').submit()
-        $('#input_tags').val('')
 
 App.TagEdit =
   init: () ->
