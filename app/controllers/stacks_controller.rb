@@ -19,7 +19,11 @@ class StacksController < ApplicationController
     @stack = Stack.new
     @stack.account = current_user
     if @stack.save
-      redirect_to stack_path(@stack)
+      respond_to do |format|
+        format.html { redirect_to stack_path(@stack) }
+        # This is working but the actual page change is not working too great.
+        format.js { redirect_to stack_path(@stack) }
+      end
     else
       redirect_to account_stacks_path(current_user), notice: t('.error')
     end
