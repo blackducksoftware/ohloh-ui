@@ -21,8 +21,7 @@ class PageContextHelperTest < ActionView::TestCase
   let(:organization_menus) do
     { select_footer_nav: :org_summary,
       select_top_menu_nav: :select_organizations,
-      nav_type: 'footer_nav',
-      page_header: 'organizations/show/header'
+      nav_type: 'footer_nav'
     }
   end
 

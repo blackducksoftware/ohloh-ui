@@ -1,19 +1,15 @@
 %meta{ name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW' }
 - content_for(:html_title) { t('.page_title') }
-- page_context[:select_footer_nav] = nil
 
-%h2.pull-left
+%h2.float_left
   = link_to t(:settings), settings_organization_path(@parent)
   &nbsp;:&nbsp;#{t('.openhub_edit_history')}
 
 = render partial: 'index'
 
-.margin_left_20
-  %h4.margin_bottom_0
-    .soft.inline= t(:about)
-    = t('.openhub_edit_history')
-
-  .margin_left_25.col-md-6
+.col-md-12
+  %span.soft #{t(:about)} #{t('.openhub_edit_history')}
+  .col-md-6
     %ul
       %li= t('.help_1')
       %li= t('.help_2')
