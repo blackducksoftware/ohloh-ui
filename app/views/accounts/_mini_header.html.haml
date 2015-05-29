@@ -18,7 +18,7 @@
         - if my_account?(@account) || current_user_is_admin?
           = link_to settings_account_path(@account), class: 'link_space' do
             %i.icon-cogs!= t '.settings'
-        - else
+        - unless my_account?(@account)
           = render partial: 'accounts/show/header/kudo_button', locals: { css: 'btn-minier btn-info link_space' }
       - if @account.url.present?
         .pull-left.col-md-12.clearfix
