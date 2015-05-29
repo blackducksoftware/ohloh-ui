@@ -5,7 +5,7 @@ class StacksController < ApplicationController
   before_action :session_required, except: [:index, :show, :similar, :similar_stacks, :near]
   before_action :find_stack, except: [:index, :create, :near]
   before_action :can_edit_stack, except: [:index, :show, :create, :similar, :similar_stacks, :near]
-  before_action :find_account, only: [:index, :show]
+  before_action :find_account, only: [:index, :show, :similar]
   before_action :auto_ignore, only: [:builder]
   before_action :find_project, only: [:near]
 
