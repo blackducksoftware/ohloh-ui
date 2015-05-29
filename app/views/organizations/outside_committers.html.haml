@@ -1,4 +1,3 @@
 - page_context[:select_footer_nav] = nil
 - content_for(:html_title) { t('.page_title', organization_name: @organization.name) }
-= render partial: 'organizations/show/header'
 = render partial: 'organizations/show/outside_committers', outside_committers: @outside_committers

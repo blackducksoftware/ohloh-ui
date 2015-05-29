@@ -339,4 +339,12 @@ describe 'StacksControllerTest' do
       stack.stack_ignores.count.must_equal 0
     end
   end
+
+  describe 'similar_stacks' do
+    it 'must render the partial' do
+      get :similar_stacks, id: create(:stack).id
+      must_respond_with :ok
+      must_render_template 'stacks/_similar_stacks'
+    end
+  end
 end
