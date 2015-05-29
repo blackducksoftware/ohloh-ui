@@ -1,4 +1,8 @@
-- page_context[:title] = t('.page_title', what: @stack.title)
+:ruby
+  content_for(:html_title) { t('.page_title', what: @stack.title) }
+  page_context[:select_top_menu_nav] = 'select_people'
+  page_context[:select_footer_nav] = :stacks
+
 - unless @similar_stacks.blank?
   .clear#similar_stacks
     %h3= page_context[:title]
