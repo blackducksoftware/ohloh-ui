@@ -75,7 +75,7 @@ describe 'AnalysesController' do
 
     it 'must render the page correctly when no analysis' do
       Project.any_instance.stubs(:best_analysis).returns(NilAnalysis.new)
-      get :languages_summary, project_id: project.to_param, id: 999999
+      get :languages_summary, project_id: project.to_param, id: 999
 
       must_respond_with :ok
     end
