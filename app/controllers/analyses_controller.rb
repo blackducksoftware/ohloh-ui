@@ -3,7 +3,7 @@ class AnalysesController < ApplicationController
 
   before_action :set_project
   before_action :set_analysis
-  before_action :fail_if_analysis_not_found, except: :lanaguages_summary
+  before_action :fail_if_analysis_not_found, except: :languages_summary
   before_action :project_context, only: :languages_summary
 
   def show
@@ -21,7 +21,7 @@ class AnalysesController < ApplicationController
 
   def languages_summary
     @analysis ||= @project.best_analysis
-    @languages_breakdown = Analysis::LanguagesBreakdown.new(analysis: @analysis).collection
+    @languages_breakdown = @analysis.nil? ? [] : Analysis::LanguagesBreakdown.new(analysis: @analysis).collection
   end
 
   def top_commit_volume_chart
