@@ -34,4 +34,8 @@ class NilAnalysis < NullObject
   def last_commit_time
     nil
   end
+
+  def contributor_facts
+    []
+  end
 end

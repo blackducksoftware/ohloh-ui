@@ -529,12 +529,21 @@ describe 'ProjectsController' do
     must_respond_with :success
   end
 
-  # map
-  it 'map should display for unlogged in users' do
-    login_as nil
-    get :map, id: create(:project).to_param
-    must_respond_with :success
-    must_select '#map', 1
+  describe 'map' do
+    it 'map should display for unlogged in users' do
+      login_as nil
+      get :map, id: create(:project).to_param
+      must_respond_with :success
+      must_select '#map', 1
+    end
+
+    it 'must render successfully when no analysis' do
+      Project.any_instance.stubs(:best_analysis).returns(NilAnalysis.new)
+
+      get :map, id: create(:project).to_param
+
+      must_respond_with :success
+    end
   end
 
   # similar_by_tags
