@@ -63,3 +63,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'rb-readline'
 end
+
+group :production do
+  gem 'oboe'
+end
