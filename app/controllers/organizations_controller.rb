@@ -43,13 +43,15 @@ class OrganizationsController < ApplicationController
   end
 
   def list_managers
+    @organization.editor_account = current_user
     @managers = @organization.managers
   end
 
   def new_manager
+    @organization.editor_account = current_user
     @manage = @organization.manages.new(account_id: params[:account_id], approver: Account.hamster)
     return if request.get?
-    redirect_to managers_url_for(@organization), flash: { success: t('.success') } if @manage.save
+    redirect_to list_managers_organization_path(@organization), flash: { success: t('.success') } if @manage.save
   end
 
   def claim_projects_list

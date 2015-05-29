@@ -1,14 +1,14 @@
 .row
   %h2.pull-left
     = link_to t('.settings'), settings_organization_path(@organization)
-    :
-    = link_to t('.managers'), managers_url_for(@organization)
+    \:
+    = link_to t('.managers'), list_managers_organization_path(@organization)
     = t('.new')
 
 .row.padding_one_top
   .col-md-12
     .col-md-8.well.center-block
-      - form_for :manage, @manage, url: new_manager_organization_path(@organization), html: { class: 'nomargin' } do |f|
+      = form_for @manage, url: new_manager_organization_path(@organization), class: 'nomargin' do |f|
         - unless @manage.errors.empty?
           - errors = @manage.errors.full_messages
           - errors = errors.reject { |k,v| k =~ /^ssh.public.key/i || k =~ /^message/i }
@@ -25,6 +25,6 @@
 
           .actions
             - if logged_in? && @organization.edit_authorized?
-              %input.btn.btn-primary{ type: 'submit', value: t('.add'), id: 'org_new_manager_submit' }
+              %input.btn.btn-primary.margin_left_10{ style: 'margin-top: -10px', type: 'submit', value: t('.add'), id: 'org_new_manager_submit' }
             - else
               = disabled_button(t('.add'), class: 'btn-primary')

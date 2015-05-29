@@ -30,7 +30,6 @@
                 - if p.organization_id.blank?
                   = link_to '#', claim_link_options(@organization, p), class: 'btn btn-small btn-success' do
                     %i.icon-plus-sign
-                    &nbsp;
                     = t('.claim_link')
                 - else
                   = render partial: '/organizations/active_remove_project_button', locals: { p: p}

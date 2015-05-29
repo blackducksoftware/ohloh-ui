@@ -37,5 +37,6 @@
         = link_to t('.new_manager'), new_manager_organization_path(@organization),
         class: 'btn btn-primary btn-small'
       - else
-        = link_to t('.new_manager'), '#', class: "btn-primary btn-small new-manager #{logged_in? ? 'disabled' : 'needs_login'}"
+        = link_to t('.new_manager'), new_manager_organization_path(@organization),
+        class: "btn btn-primary btn-small #{logged_in? ? 'disabled' : 'needs_login'}"
 = render partial: 'about_managers'
