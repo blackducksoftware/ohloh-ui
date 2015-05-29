@@ -1,7 +1,7 @@
 class NilAnalysis < NullObject
   attr_reader :main_language, :logged_at
 
-  nought_methods :logic_total, :markup_total, :build_total
+  nought_methods :logic_total, :markup_total, :build_total, :headcount
 
   def twelve_month_summary
     NilAnalysisSummary.new

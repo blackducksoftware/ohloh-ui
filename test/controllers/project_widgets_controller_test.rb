@@ -24,6 +24,14 @@ describe 'ProjectWidgetsController' do
       must_respond_with :ok
       @response.body.must_equal I18n.t('widgets.not_found')
     end
+
+    it 'must render successfully when no analysis' do
+      Project.any_instance.stubs(:best_analysis).returns(NilAnalysis.new)
+
+      get :index, project_id: project.to_param
+
+      must_respond_with :ok
+    end
   end
 
   describe 'basic_stats' do
