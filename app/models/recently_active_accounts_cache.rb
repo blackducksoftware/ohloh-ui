@@ -2,17 +2,19 @@ class RecentlyActiveAccountsCache < ActiveRecord::Base
   self.table_name = 'recently_active_accounts_cache'
   self.primary_key = 'id'
 
-  serialize :accounts
-
   def self.instance
-    first || new
+    where(id: 2).first_or_create
   end
 
   def self.accounts
-    instance.accounts || []
+    Account.find(JSON.parse(instance.accounts)) || []
+  rescue StandardError
+    RecentlyActiveAccountsCache.recalc!
   end
 
   def self.recalc!
-    instance.update_attribute(:accounts, Account.recently_active)
+    recents = Account.recently_active
+    instance.update_attribute(:accounts, recents.map(&:id).to_json)
+    recents
   end
 end
