@@ -173,6 +173,11 @@ en:
         add_some_tags: "Add some tags!"
         none: "None"
         totally_unique_tags: "This project's tags do not match any other project."
+      factoids:
+        starting: starting with its
+        ending: ending with its
+        first_commit_in: first commit in %{time}
+        most_recent_commit: most recent commit %{time}
     deleted:
       message: '%{name} has been deleted'
       failed: 'failed'

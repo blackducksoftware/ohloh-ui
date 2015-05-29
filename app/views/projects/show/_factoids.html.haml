@@ -41,11 +41,16 @@
         = link_to "#{number_with_delimiter @analysis.man_years.ceil} years of effort",
                   estimated_cost_project_path(@project)
         (COCOMO model)
-        %br
-        starting with its
-        = link_to "first commit in #{@analysis.first_commit_time.strftime('%B, %Y')}",
-                  project_commits_path(@project, sort: 'oldest')
-        %br
-        ending with its
-        = link_to "most recent commit #{time_ago_in_words(@analysis.last_commit_time)}", project_commits_path(@project)
-        ago
+
+        - if @analysis.first_commit_time?
+          %br
+          = t('.starting')
+          = link_to t('.first_commit_in', time: @analysis.first_commit_time.strftime('%B, %Y')),
+                    project_commits_path(@project, sort: 'oldest')
+
+        - if @analysis.last_commit_time?
+          %br
+          = t('.ending')
+          = link_to t('.most_recent_commit', time: time_ago_in_words(@analysis.last_commit_time)),
+                    project_commits_path(@project)
+          = t('ago')
