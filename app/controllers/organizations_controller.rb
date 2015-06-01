@@ -5,8 +5,9 @@ class OrganizationsController < ApplicationController
   helper RatingsHelper
   helper OrganizationsHelper
 
-  before_action :set_organization, except: [:index, :new, :create, :resolve_url_name, :print_org_infographic]
-  before_action :organization_context, except: [:print_infographic, :create, :update]
+  before_action :set_organization, except: [:index, :new, :create, :resolve_url_name, :print_org_infographic, :update ]
+  before_action :set_organization_based_on_id, only: [:update]
+  before_action :organization_context, except: [:print_infographic, :create]
   before_filter :admin_session_required, only: [:new, :create]
   before_action :handle_default_view, only: :show
   before_filter :show_permissions_alert, only: PERMISSION_ALERT
@@ -17,22 +18,30 @@ class OrganizationsController < ApplicationController
   end
 
   def new
-    @organization = Organization.new
+    @organization = Organization.new({ editor_account: current_user })
   end
 
   def create
-    @organization = Organization.create(params[:organization])
-    if @organization
+    @organization = Organization.new({ editor_account: current_user }.merge(organization_params))
+    if @organization.save
       redirect_to organization_path(@organization), notice: t('.notice')
     else
       render :new
     end
   end
 
+  def edit
+    @current_object = @organization
+  end
+
+
   def update
-    if @organization.update_attributes(params[:organization])
+    return render_unauthorized unless @organization.edit_authorized?
+    if @organization.update_attributes(organization_params)
       redirect_to organization_path(@organization), notice: t('.notice')
     else
+      @current_object = @organization.clone
+      @organization.reload
       render :edit, status: 422
     end
   end
@@ -117,8 +126,14 @@ class OrganizationsController < ApplicationController
   private
 
   def set_organization
-    @organization = Organization.from_param(params[:id]).take
+    @organization ||= Organization.from_param(params[:id]).take
     fail ParamRecordNotFound if @organization.nil?
+    @organization.editor_account = current_user
+  end
+
+  def set_organization_based_on_id
+    @organization = Organization.find_by_id(params[:organization][:id])
+    set_organization
   end
 
   def handle_default_view
@@ -140,4 +155,9 @@ class OrganizationsController < ApplicationController
     pictogram_html = render_to_string(partial:  'organizations/show/pictogram')
     render json: { subview_html: subview_html, pictogram_html: pictogram_html }
   end
+
+  def organization_params
+    params.require(:organization).permit([:name, :description, :url_name, :org_type, :homepage_url])
+  end
+
 end
