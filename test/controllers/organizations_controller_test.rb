@@ -166,12 +166,47 @@ describe 'OrganizationsController' do
   describe 'list_managers' do
     it 'should return managers' do
       manage = create(:manage, target: organization, account: account)
-      # restrict_edits_to_managers(organization, account)
-
       get :list_managers, id: organization.id
       must_respond_with :ok
 
       assigns(:managers).must_equal [account]
+    end
+  end
+
+  describe 'claim_projects_list' do
+    it 'should return no projects without search term' do
+      get :claim_projects_list, id: organization.to_param
+
+      must_respond_with :ok
+
+      assigns(:projects).must_equal []
+      assigns(:organization).must_equal organization
+    end
+
+    it 'should return projects with search term' do
+      pro_1 = create(:project, name: 'test name1')
+      pro_2 = create(:project, name: 'test name2')
+      pro_3 = create(:project, name: 'test name3')
+
+      get :claim_projects_list, id: organization.to_param, query: 'test'
+
+      must_respond_with :ok
+
+      assigns(:projects).must_equal [pro_1, pro_2, pro_3]
+      assigns(:organization).must_equal organization
+    end
+
+    it 'should return projects with search term with sorting' do
+      pro_1 = create(:project, name: 'test name1')
+      pro_2 = create(:project, name: 'test name2')
+      pro_3 = create(:project, name: 'test name3')
+
+      get :claim_projects_list, id: organization.to_param, query: 'test', sort: 'new'
+
+      must_respond_with :ok
+
+      assigns(:projects).must_equal [pro_3, pro_2, pro_1]
+      assigns(:organization).must_equal organization
     end
   end
 end
