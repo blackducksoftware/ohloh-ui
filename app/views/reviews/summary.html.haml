@@ -1,6 +1,6 @@
 - content_for(:html_title) { t('.title', name: @project.name) }
 .project_content_title{ style: 'height: 50px' }
-  %h2.pull-left= t('reviews.rating_and_reviews')
+  %h2.pull-left= t('.rating_and_reviews')
   = project_analysis_timestamp(@project)
 .row
   .col.col-md-3.padding_left_25
