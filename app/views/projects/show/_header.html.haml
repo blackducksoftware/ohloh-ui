@@ -35,11 +35,11 @@
                   %h4#myModalLabel.modal-title= t('.add_to_stacks')
                 .modal-body= t('.add_to_your_stack', project: @project.name)
                 / Save the ajax button calls for later.
-                - @account.stacks.each do |stack|
-                  - haml_tag :div, stack.title
-                  = check_box_tag 'stacked?'
+                / - @account.stacks.each do |stack|
+                /   - haml_tag :div, stack.title
+                /   = check_box_tag 'stacked?'
                 .modal-footer
-                  = button_to t('.create_a_new_stack', project: @project.name), stacks_path, remote: true
+                  = button_to t('.create_a_new_stack', project: @project.name), stacks_path, remote: true, params: { project_id: @project.id }
 .clearfix
 .row
   .col-md-12

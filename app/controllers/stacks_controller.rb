@@ -7,9 +7,9 @@ class StacksController < ApplicationController
   before_action :can_edit_stack, except: [:index, :show, :create, :similar, :near]
   before_action :find_account, only: [:index, :show]
   before_action :auto_ignore, only: [:builder]
-  before_action :find_project, only: [:near]
-
+  before_action :find_project, only: [:near, :create]
   before_action :account_context, only: [:index]
+  after_action :connect_stack_entry_to_stack, only: [:create], :if => :i_use_this?
 
   def index
     @stacks = @account.stacks
@@ -18,11 +18,11 @@ class StacksController < ApplicationController
   def create
     @stack = Stack.new
     @stack.account = current_user
+    i_use_this if request.xhr?
     if @stack.save
       respond_to do |format|
         format.html { redirect_to stack_path(@stack) }
-        # This is working but the actual page change is not working too great.
-        format.js { redirect_to stack_path(@stack) }
+        format.js { render action: 'i_use_this.js.erb' }
       end
     else
       redirect_to account_stacks_path(current_user), notice: t('.error')
@@ -80,5 +80,19 @@ class StacksController < ApplicationController
   def find_project
     @project = Project.from_param(params[:project_id]).take
     fail ParamRecordNotFound unless @project
+  end
+
+  def i_use_this
+    stack_count = current_user.stacks.count + 1
+    @stack.auto_generate_title(stack_count)
+    @stack.project = @project
+  end
+
+  def connect_stack_entry_to_stack
+    stack_entry = StackEntry.create(stack_id: @stack.id, project_id: @project.id)
+  end
+
+  def i_use_this?
+    request.xhr?
   end
 end

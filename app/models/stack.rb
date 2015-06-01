@@ -1,4 +1,5 @@
 class Stack < ActiveRecord::Base
+ 
   belongs_to :account
   belongs_to :project
 
@@ -41,6 +42,10 @@ class Stack < ActiveRecord::Base
 
   def friendly_name
     "#{name}#{' Stack' unless name =~ /Stack/i}"
+  end
+
+  def auto_generate_title(stack_count)
+    self.title = "New Stack #{stack_count}"
   end
 
   private
