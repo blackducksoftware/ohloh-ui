@@ -11,8 +11,8 @@ describe 'SizeFactsControllerTest' do
   before do
     AllMonth.delete_all
     (1..5).to_a.each do |value|
-      create(:all_month, month: Date.today - value.months)
-      create(:activity_fact, month: Date.today - value.months, analysis_id: analysis.id,
+      create(:all_month, month: Date.today.at_beginning_of_month - value.months + 5.days)
+      create(:activity_fact, month: Date.today.at_beginning_of_month - value.months + 5.days, analysis_id: analysis.id,
                              code_added: 10, code_removed: 7, comments_added: 10, comments_removed: 7)
     end
   end
@@ -41,7 +41,7 @@ describe 'SizeFactsControllerTest' do
         fact['comment_ratio'].must_equal '0.5'
         fact['commits'].must_equal commits_value
         fact['man_months'].must_equal month_value
-        fact['month'].must_equal xml_time Date.today - (index + 2).months
+        fact['month'].must_equal xml_time Date.today.at_beginning_of_month - (index + 2).months + 5.days
       end
     end
 
@@ -66,7 +66,7 @@ describe 'SizeFactsControllerTest' do
         fact['comment_ratio'].must_equal '0.5'
         fact['commits'].must_equal commits_value
         fact['man_months'].must_equal month_value
-        fact['month'].must_equal xml_time Date.today - (index + 2).months
+        fact['month'].must_equal xml_time Date.today.at_beginning_of_month - (index + 2).months + 5.days
       end
     end
 

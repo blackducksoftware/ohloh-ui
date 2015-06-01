@@ -2,7 +2,7 @@ require 'test_helper'
 
 class Analysis::ContributorHistoryChartTest < ActiveSupport::TestCase
   let(:beginning_of_month) { Date.today.to_time.beginning_of_month }
-  let(:activity_fact) { create(:activity_fact, month: Date.today) }
+  let(:activity_fact) { create(:activity_fact, month: Date.today + 1.day) }
 
   before do
     AllMonth.delete_all
