@@ -44,8 +44,9 @@ class Stack < ActiveRecord::Base
     "#{name}#{' Stack' unless name =~ /Stack/i}"
   end
 
-  def auto_generate_title(stack_count)
+  def auto_generate_title_and_description(stack_count)
     self.title = "New Stack #{stack_count}"
+    self.description = "The Projects used for #{self.title}"
   end
 
   private

@@ -84,7 +84,7 @@ class StacksController < ApplicationController
 
   def i_use_this
     stack_count = current_user.stacks.count + 1
-    @stack.auto_generate_title(stack_count)
+    @stack.auto_generate_title_and_description(stack_count)
     @stack.project = @project
   end
 
