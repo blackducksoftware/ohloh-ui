@@ -15,7 +15,7 @@
       .row.padding_one_top
         .col-md-6
           .pull-left
-            = avatar_for(manager.person, 60)
+            = avatar_for(manager.person, size: 60)
           .col-md-4.pull-left
             %h4.soft.nomargin.no_margin_top
               = link_to h(manager.name), account_url(manager)

@@ -162,4 +162,16 @@ describe 'OrganizationsController' do
       must_respond_with :unauthorized
     end
   end
+
+  describe 'list_managers' do
+    it 'should return managers' do
+      manage = create(:manage, target: organization, account: account)
+      # restrict_edits_to_managers(organization, account)
+
+      get :list_managers, id: organization.id
+      must_respond_with :ok
+
+      assigns(:managers).must_equal [account]
+    end
+  end
 end
