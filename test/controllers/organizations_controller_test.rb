@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'test_helpers/xml_parsing_helpers'
 
 describe 'OrganizationsController' do
   let(:account) { create(:account) }
@@ -105,6 +106,60 @@ describe 'OrganizationsController' do
       get :settings, id: organization.to_param
 
       flash[:notice].must_be_nil
+    end
+  end
+
+  describe 'index' do
+    it 'should redirect to explores path' do
+      get :index
+
+      must_redirect_to orgs_explores_path
+    end
+
+    it 'should return organizations when search term is present' do
+      org_1 = create(:organization, name: 'test name1', projects_count: 2)
+      org_2 = create(:organization, name: 'test name2', projects_count: 3)
+      org_3 = create(:organization, name: 'test name3', projects_count: 4)
+
+      get :index, query: 'test'
+
+      must_respond_with :ok
+      assigns(:organizations).must_equal [org_3, org_2, org_1]
+    end
+
+    it 'should return organizations via xml' do
+      org_1 = create(:organization, name: 'test name1', projects_count: 2)
+      org_2 = create(:organization, name: 'test name2', projects_count: 3)
+      org_3 = create(:organization, name: 'test name3', projects_count: 4, description: 'test description')
+
+      api_key = create(:api_key, account_id: account.id)
+      client_id = api_key.oauth_application.uid
+
+      get :index, format: :xml, api_key: client_id, query: 'test'
+
+      xml = xml_hash(@response.body)['response']
+
+      must_respond_with :ok
+      xml['status'].must_equal 'success'
+      xml['items_returned'].must_equal '3'
+      xml['items_available'].must_equal '3'
+      xml['first_item_position'].must_equal '0'
+      org = xml['result']['organization'].first
+      xml['result']['organization'].length.must_equal 3
+      org['name'].must_equal 'test name3'
+      org['url'].must_equal "http://test.host/orgs/#{org_3.url_name}.xml"
+      org['html_url'].must_equal "http://test.host/orgs/#{org_3.url_name}"
+      org['description'].must_equal 'test description'
+      org['url_name'].must_equal org_3.url_name
+      org['type'].must_equal 'Commercial'
+      org['projects_count'].must_equal '4'
+      org['affiliated_committers'].must_equal '0'
+    end
+
+    it 'should return unauthorized if api key is invalid' do
+      get :index, format: :xml, api_key: 'dummy_id'
+
+      must_respond_with :unauthorized
     end
   end
 end
