@@ -237,4 +237,42 @@ describe 'OrganizationsController' do
       assigns(:organization).must_equal organization
     end
   end
+
+  describe 'claim_project' do
+    it 'should claim a project for the given org' do
+      login_as account
+      pro_1 = create(:project, name: 'test name1')
+      xhr :get, :claim_project, id: organization.to_param, project_id: pro_1.id
+
+      must_respond_with :ok
+      assigns(:project).organization_id.must_equal organization.id
+    end
+  end
+
+  describe 'remove_project' do
+    it 'should remove project from org' do
+      login_as account
+      pro_1 = create(:project, name: 'test name1', organization_id: organization.id)
+
+      get :remove_project, id: organization.to_param, project_id: pro_1.id
+
+      must_redirect_to manage_projects_organization_path(organization)
+      flash[:success].must_equal I18n.t('organizations.remove_project.success', name: pro_1.name)
+      pro_1.reload.organization_id.must_equal nil
+    end
+  end
+
+  describe 'new_manager' do
+    it 'should show new manager form for get request' do
+      get :new_manager, id: organization, account_id: account.id
+      must_respond_with :ok
+    end
+
+    it 'should show new manager form for get request' do
+      post :new_manager, id: organization, account_id: account.id
+
+      must_redirect_to list_managers_organization_path(organization)
+      assigns(:manage).target organization
+    end
+  end
 end

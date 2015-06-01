@@ -84,10 +84,11 @@ class OrganizationsController < ApplicationController
 
   def remove_project
     project = Project.from_param(params[:project_id]).take
-    project.editor_account = current_user
-
-    edits = project.edits.find_by(key: 'organization_id')
-    edits.try(:undo) ? flash[:success] = t('.success') : flash[:error] = t('.error')
+    if project.edits.find_by(key: 'organization_id').try(:undo!, current_user)
+     flash[:success] = t('.success', name: project.name.to_s)
+    else
+      flash[:error] = t('.error')
+    end
     redirect_to manage_projects_organization_path(@organization)
   end
 

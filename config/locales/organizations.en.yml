@@ -89,7 +89,7 @@ en:
     projects:
       notice: 'There are no portfolio projects to display'
     remove_project:
-      success: 'Removed #{project.to_s} successfully'
+      success: 'Removed %{name} successfully'
       error: "Error! Couldn\'t remove this project."
     show:
       page_title: '%{organization_name} : Organization Summary'
