@@ -1,0 +1,18 @@
+%td
+  %a.logo.med{ href: project_path(p)}
+    = p.decorate.icon(:med, width: 48)
+%td= link_to h(p.name), project_path(p), title: p.name
+%td.center{ style: 'padding-right:15px;' }= p.user_count
+%td.center{ style: 'padding-right:15px;' }= p.best_analysis.code_total
+%td.left
+  .project_activity_margin_top{ style: 'position: relative; top: -15px' }
+    - project_activity_level_class(p, :fifteen)
+%td.center{ style: 'padding-right:15px;' }= p.active_committers
+%td.center
+  - if p.rating_average.to_i.zero?
+    = t('.none')
+  - else
+    = rating_stars('average_rating_stars', p.rating_average || 0, true)
+
+%td.center{ style: 'padding-right:15px;' }= p.reviews.count
+%td= expander(h(p.description.to_s), 100, 300)

@@ -270,8 +270,8 @@ Rails.application.routes.draw do
       get :list_managers
       get :claim_projects_list
       get :claim_project
-      get :remove_project
-      post :new_manager
+      put :remove_project
+      match :new_manager, via: [:get, :post]
       get :manage_projects
     end
 

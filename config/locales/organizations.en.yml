@@ -1,5 +1,24 @@
 en:
   organizations:
+    active_remove_project_button:
+      remove_from: 'Remove %{project} from %{org}?'
+    manage_projects:
+      title: ' : Manage Projects'
+      settings: 'Settings'
+      none_claimed: 'No projects are claimed yet.'
+      no_results: 'No results found.'
+      remove: 'Remove'
+      claim_link: 'Claim a Project'
+    manage_project:
+      none: 'none'
+    manage_projects_header:
+      name: 'Name'
+      i_use: 'I Use This'
+      lines_of_code: 'Lines of Code'
+      committers: 'Current Committers'
+      rating: 'Community Rating'
+      reviews: 'Reviews'
+      description: 'Description'
     index:
       no_matches: 'No matches with this filter.'
       title: 'Organizations'
@@ -72,7 +91,7 @@ en:
     projects:
       notice: 'There are no portfolio projects to display'
     remove_project:
-      success: 'Removed #{project.to_s} successfully'
+      success: 'Removed %{name} successfully'
       error: "Error! Couldn\'t remove this project."
     show:
       page_title: '%{organization_name} : Organization Summary'

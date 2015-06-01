@@ -15,7 +15,7 @@
       .row.padding_one_top
         .col-md-6
           .pull-left
-            -#= avatar_for(manager.person, 60)
+            = avatar_for(manager.person, size: 60)
           .col-md-4.pull-left
             %h4.soft.nomargin.no_margin_top
               = link_to h(manager.name), account_url(manager)
@@ -37,5 +37,6 @@
         = link_to t('.new_manager'), new_manager_organization_path(@organization),
         class: 'btn btn-primary btn-small'
       - else
-        = link_to t('.new_manager'), '#', class: "btn-primary btn-small new-manager #{logged_in? ? 'disabled' : 'needs_login'}"
+        = link_to t('.new_manager'), new_manager_organization_path(@organization),
+        class: "btn btn-primary btn-small #{logged_in? ? 'disabled' : 'needs_login'}"
 = render partial: 'about_managers'

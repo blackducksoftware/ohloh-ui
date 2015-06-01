@@ -19,19 +19,20 @@
 - unless @projects.empty?
   %table.table.table-striped.table-condensed
     %thead
-      = render '/organizations/manage_projects/list_header'
+      = render partial: 'manage_projects_header'
     %tbody
       - @projects.each do |p|
         %tr
-          = render partial: '/organizations/manage_projects/project', locals: { p: p }
+          = render partial: 'manage_project', locals: { p: p }
           %td.center
             - if p.organization_id.blank? || p.organization_id == @organization.id
               - if logged_in? && @organization.edit_authorized?
                 - if p.organization_id.blank?
-                  = link_to t('.claim_link'), '#', claim_link_options(@organization, p) do
+                  = link_to '#', claim_link_options(@organization, p), class: 'btn btn-small btn-success' do
                     %i.icon-plus-sign
+                    = t('.claim_link')
                 - else
-                  = render partial: '/organizations/active_remove_project_button', locals: { p: p, source: :claim }
+                  = render partial: '/organizations/active_remove_project_button', locals: { p: p}
               - else
                 - if p.organization_id.blank?
                   = disabled_button(t('.claim_link'), class: 'btn-small btn-success')
@@ -50,5 +51,3 @@
   = render partial: 'shared/alert', locals: { message: t('.enter_project_name') }
 - elsif @projects.empty? && !params[:query].blank?
   = render partial: 'shared/alert', locals: { message: t('.no_match') }
-- else
-  = render partial: 'shared/alert', locals: { message: t('.no_results') }

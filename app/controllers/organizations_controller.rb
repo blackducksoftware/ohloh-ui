@@ -52,13 +52,15 @@ class OrganizationsController < ApplicationController
   end
 
   def list_managers
+    @organization.editor_account = current_user
     @managers = @organization.managers
   end
 
   def new_manager
+    @organization.editor_account = current_user
     @manage = @organization.manages.new(account_id: params[:account_id], approver: Account.hamster)
     return if request.get?
-    redirect_to managers_url_for(@organization), flash: { success: t('.success') } if @manage.save
+    redirect_to list_managers_organization_path(@organization), flash: { success: t('.success') } if @manage.save
   end
 
   def claim_projects_list
@@ -68,13 +70,16 @@ class OrganizationsController < ApplicationController
     @projects = Project.tsearch(params[:query], "by_#{params[:sort]}")
       .where.not(deleted: true).includes(:best_analysis)
       .paginate(page: params[:page], per_page: 20)
+    @organization.editor_account = current_user
   end
 
   def claim_project
-    render text: t('.unauthorized') unless request.xhr? && @organization.edit_authorized?
+    @organization.editor_account = current_user
+    render text: t('.unauthorized') and return unless request.xhr? && @organization.edit_authorized?
     @project = Project.from_param(params[:project_id]).take
+    @project.editor_account = current_user
     if @project.update_attribute(:organization_id, @organization.id)
-      render partial: 'active_remove_project_button', locals: { p: @project, source: :claim }
+      render partial: 'active_remove_project_button', locals: { p: @project }
     else
       render text: t('.failed')
     end
@@ -88,14 +93,12 @@ class OrganizationsController < ApplicationController
 
   def remove_project
     project = Project.from_param(params[:project_id]).take
-    edits = project.edits.find_by(key: 'organization_id')
-    edits.try(:undo) ? flash[:success] = t('.success') : flash[:error] = t('.error')
-
-    if params[:source]
-      redirect_to manage_projects_organization_path(@organization)
+    if project.edits.find_by(key: 'organization_id').try(:undo!, current_user)
+     flash[:success] = t('.success', name: project.name.to_s)
     else
-      redirect_to claim_projects_list_organization_path(@organization)
+      flash[:error] = t('.error')
     end
+    redirect_to manage_projects_organization_path(@organization)
   end
 
   def outside_projects
