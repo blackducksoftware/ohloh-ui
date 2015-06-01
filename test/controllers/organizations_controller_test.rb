@@ -209,4 +209,32 @@ describe 'OrganizationsController' do
       assigns(:organization).must_equal organization
     end
   end
+
+  describe 'manage_projects' do
+    it 'should return org managed projects' do
+      pro_1 = create(:project, name: 'test name1')
+      pro_2 = create(:project, name: 'test name2')
+      pro_3 = create(:project, name: 'test name3')
+
+      get :manage_projects, id: organization.to_param, query: 'test'
+
+      must_respond_with :ok
+
+      assigns(:projects).must_equal [pro_3, pro_2, pro_1]
+      assigns(:organization).must_equal organization
+    end
+
+    it 'should return org managed projects with sorting' do
+      pro_1 = create(:project, name: 'test name1')
+      pro_2 = create(:project, name: 'test name2')
+      pro_3 = create(:project, name: 'test name3')
+
+      get :manage_projects, id: organization.to_param, query: 'test', sort: 'project_name'
+
+      must_respond_with :ok
+
+      assigns(:projects).must_equal [pro_1, pro_2, pro_3]
+      assigns(:organization).must_equal organization
+    end
+  end
 end
