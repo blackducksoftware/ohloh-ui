@@ -173,3 +173,26 @@ organizations:
       - projects
   default:
     projects
+
+claim_projects_list:
+  options:
+    -
+      - Newest Project
+      - new
+    -
+      - Project Name
+      - name
+    -
+      - Users
+      - users
+    -
+      - Current Committers
+      - active_committers
+    -
+      - Rating
+      - rating
+    -
+      - Relevance
+      - relevance
+  default:
+    relevance

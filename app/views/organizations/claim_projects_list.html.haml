@@ -4,7 +4,7 @@
   = link_to t('.manage_projects'), manage_projects_organization_path(@organization)
   = t('.claim')
 .clearfix
-= render partial: 'shared/search_dingus', locals: { collection: @projects, sort_context: :projects }
+= render partial: 'shared/search_dingus', locals: { collection: @projects, sort_context: :claim_projects_list }
 
 - if @projects.any? && @projects.detect { |p| !p.organization_id.blank? && p.organization_id != @organization.id }
   .alert.alert-warn.alert-block.margin_top_10
