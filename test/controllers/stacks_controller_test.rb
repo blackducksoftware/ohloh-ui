@@ -204,16 +204,6 @@ class StacksControllerTest < ActionController::TestCase
     must_respond_with :unprocessable_entity
   end
 
-  # it 'should update a stack by xhr when I Use This is clicked' do
-  #   account = create(:account)
-  #   project = create(:project)
-  #   login_as account
-  #   xml_http_request :put, 'update'
-  #   assert_difference 'StackEntry.count', 1 do
-  #     xml_http_request :post, 'create'
-  #   end
-  # end
-
   # destroy action
   it 'destroy should require a current user' do
     login_as nil

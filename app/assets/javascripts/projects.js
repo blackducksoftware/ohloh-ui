@@ -90,12 +90,16 @@ $(document).ready(function() {
 
   $("input[name='stacked']").click(function() {
     if (check_value == 0) {
-      var stack_id = $("input[name='stacked']").attr("stack");
+      var stack_id = $("input[name='stacked']").data("stack");
+      var project_url_name = $("input[name='stacked']").data("project");
       check_value = 1;
-      $.ajax("/stacks/" + stack_id,{
-        type: "PUT"
+      $.ajax("/stacks/" + stack_id + "/stack_entries",{
+        type: "POST",
+        data: "project_id=" + project_url_name,
+        dataType: 'json'
         //success: do something with the text value stacked
       });
+
     } else {
       check_value = 0;
       alert(check_value.toString());

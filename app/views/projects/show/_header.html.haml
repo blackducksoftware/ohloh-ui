@@ -37,7 +37,7 @@
                 - if logged_in? && @account.stacks.count > 0
                   - @account.stacks.each do |stack|
                     - haml_tag :div, stack.title
-                    = check_box_tag 'stacked', 0, false, { stack: stack.id, project: @project.id } 
+                    = check_box_tag 'stacked', 0, false, { "data-stack" => stack.to_param, "data-project" => @project.to_param }
                 .modal-footer
                   = button_to t('.create_a_new_stack', project: @project.name), stacks_path, remote: true, params: { project_id: @project.id }
 .clearfix
