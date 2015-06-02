@@ -1,2 +1,11 @@
 $(document).on 'page:change', ->
-  $("#edit_permission input#submit").show()
+  PermissionForm.init()
+  return
+
+PermissionForm =
+  init: ->
+    $('#permission_show input[type=radio]').click PermissionForm.enable_submit
+    return
+  enable_submit: ->
+    $('#permission_show input#submit').show()
+    return
