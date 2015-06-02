@@ -1,4 +1,4 @@
-.well.searchable[organization]{ style: 'padding-left: 70px;' }
+.well.searchable{ id: "organization_#{organization.id}", style: 'padding-left: 70px;' }
   .row.no_padding_top
     .col-md-7{ style: 'margin-top: -15px; font-size:16px;' }
       %h3= link_to h(organization.name), organization_path(organization)
@@ -6,7 +6,7 @@
     .col-md-1
       = link_to organization.decorate.icon(:med), organization_path(organization)
     .col-md-9.margin_left_10
-      %p{style: 'word-wrap: break-word' }= expander(h(organization.description), 300, 350)
+      %p{ style: 'word-wrap: break-word' }= expander(h(organization.description), 300, 350)
   .row
     .col-md-9{ style: 'margin-left: 85px' }
       = link_to pluralize_with_delimiter(organization.projects_count, 'projects'),

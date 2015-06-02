@@ -6,7 +6,7 @@
     %dt.margin_bottom_10= t('.links')
     %dd
       = link_to bootstrap_icon('icon-external-link', t('.homepage')), @organization.homepage_url, target: '_blank'
-    %dt= link_to t('.managers'), organization_managers_path(@organization)
+    %dt= link_to t('.managers'), list_managers_organization_path(@organization)
     %dd
       - if @organization.managers.any?
         = @organization.managers.map { |m| link_to m.name, account_path(m) }.to_sentence.html_safe

@@ -1,6 +1,5 @@
 - content_for(:html_title) { t('.page_title', name: @organization.name) }
 - page_context[:select_top_menu_nav] = 'select_organizations'
-= render partial: 'organizations/show/header'
 
 %h2.pull-left
   = link_to t('.settings'), settings_organization_path(@organization)
@@ -9,7 +8,8 @@
 
 .row
   .well.col-md-10.col-md-offset-1
-    = form_for @current_object, url: organization_path(@organization), class: 'center-block', style: 'width:650px' do |f|
-      = render partial: 'fields', :locals => { f: f }
+    = form_for @current_object, url: organization_path(@organization),
+      class: 'center-block', style: 'width:650px' do |f|
+      = render partial: 'fields', locals: { f: f }
 
 = render partial: 'about_basics'
