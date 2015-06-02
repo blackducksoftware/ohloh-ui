@@ -128,9 +128,9 @@ describe 'OrganizationsController' do
     end
 
     it 'should return organizations via xml' do
-      org_1 = create(:organization, name: 'test name1', projects_count: 2)
-      org_2 = create(:organization, name: 'test name2', projects_count: 3)
-      org_3 = create(:organization, name: 'test name3', projects_count: 4, description: 'test description')
+      create(:organization, name: 'test name1', projects_count: 2)
+      create(:organization, name: 'test name2', projects_count: 3)
+      create(:organization, name: 'test name3', projects_count: 4, description: 'test description')
 
       api_key = create(:api_key, account_id: account.id)
       client_id = api_key.oauth_application.uid
@@ -165,7 +165,7 @@ describe 'OrganizationsController' do
 
   describe 'list_managers' do
     it 'should return managers' do
-      manage = create(:manage, target: organization, account: account)
+      create(:manage, target: organization, account: account)
       get :list_managers, id: organization.id
       must_respond_with :ok
 

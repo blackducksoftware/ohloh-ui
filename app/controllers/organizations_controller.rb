@@ -7,9 +7,10 @@ class OrganizationsController < ApplicationController
 
   before_action :set_organization, except: [:index, :new, :create, :resolve_url_name, :print_org_infographic]
   before_action :organization_context, except: [:print_infographic, :create, :update]
-  before_filter :admin_session_required, only: [:new, :create]
+  before_action :admin_session_required, only: [:new, :create]
   before_action :handle_default_view, only: :show
-  before_filter :show_permissions_alert, only: PERMISSION_ALERT
+  before_action :show_permissions_alert, only: PERMISSION_ALERT
+  before_action :set_editor, only: [:list_managers, :new_manager, :claim_projects_list, :claim_project]
 
   def index
     redirect_to orgs_explores_path if request.format == 'html' && request.query_string.blank?
@@ -43,12 +44,10 @@ class OrganizationsController < ApplicationController
   end
 
   def list_managers
-    @organization.editor_account = current_user
     @managers = @organization.managers
   end
 
   def new_manager
-    @organization.editor_account = current_user
     @manage = @organization.manages.new(account_id: params[:account_id], approver: Account.hamster)
     return if request.get?
     redirect_to list_managers_organization_path(@organization), flash: { success: t('.success') } if @manage.save
@@ -58,15 +57,11 @@ class OrganizationsController < ApplicationController
     @projects = []
     params[:sort] ||= 'project_name'
     return if params[:query].blank?
-    @projects = Project.tsearch(params[:query], "by_#{params[:sort]}")
-      .where.not(deleted: true).includes(:best_analysis)
-      .paginate(page: params[:page], per_page: 20)
-    @organization.editor_account = current_user
+    @projects = Project.active.search_and_sort(params[:query], params[:sort], params[:page])
   end
 
   def claim_project
-    @organization.editor_account = current_user
-    render text: t('.unauthorized') and return unless request.xhr? && @organization.edit_authorized?
+    render text: t('.unauthorized') && return unless request.xhr? && @organization.edit_authorized?
     @project = Project.from_param(params[:project_id]).take
     @project.editor_account = current_user
     if @project.update_attribute(:organization_id, @organization.id)
@@ -78,14 +73,13 @@ class OrganizationsController < ApplicationController
 
   def manage_projects
     params[:sort] ||= 'new'
-    @projects = Project.tsearch(params[:query], "by_#{params[:sort]}")
-                .includes(:best_analysis).paginate(page: params[:page], per_page: 20)
+    @projects = Project.search_and_sort(params[:query], params[:sort], params[:page])
   end
 
   def remove_project
     project = Project.from_param(params[:project_id]).take
     if project.edits.find_by(key: 'organization_id').try(:undo!, current_user)
-     flash[:success] = t('.success', name: project.name.to_s)
+      flash[:success] = t('.success', name: project.name.to_s)
     else
       flash[:error] = t('.error')
     end
@@ -122,6 +116,10 @@ class OrganizationsController < ApplicationController
   def set_organization
     @organization = Organization.from_param(params[:id]).take
     fail ParamRecordNotFound if @organization.nil?
+  end
+
+  def set_editor
+    @organization.editor_account = current_user
   end
 
   def handle_default_view

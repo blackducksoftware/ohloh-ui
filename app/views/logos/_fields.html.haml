@@ -11,7 +11,7 @@
         %p= t('.body.first')
         .no-margin-left.no-margin-left
           = f.file_field :attachment, class: 'new_file_upload', accept: 'image/*',
-            data: { max_size : Logo::FILE_SIZE_LIMIT.max }
+            data: { max_size: Logo::FILE_SIZE_LIMIT.max }
           .max_size_exceeded.hidden
             = t('.invalid_size', max: number_to_human_size(Logo::FILE_SIZE_LIMIT.max))
           - if @logo.attachment.url.blank?
