@@ -1,5 +1,5 @@
 %td
-  %a.logo.med{ href: project_path(p)}
+  %a.logo.med{ href: project_path(p) }
     = p.decorate.icon(:med, width: 48)
 %td= link_to h(p.name), project_path(p), title: p.name
 %td.center{ style: 'padding-right:15px;' }= p.user_count

@@ -73,6 +73,8 @@ en:
       enter_project_name: 'Enter a project name or Code Location above to search for projects that you wish to claim.'
       no_match: 'No matches with this filter.'
       not_results: 'No results found.'
+    claim_link:
+      claim_link: 'Claim'
     about_managers:
       about: 'About'
       managers: 'Managers'
