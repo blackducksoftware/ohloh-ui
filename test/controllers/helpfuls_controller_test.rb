@@ -10,7 +10,8 @@ describe 'HelpfulsControllerTest' do
     account = @controller.send(:current_user).id
     post :create, helpful: { account_id: account, review_id: linux_review }, review_id: linux_review.id,
                   project_id: project.to_param, yes: true
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
   end
 
   it 'must create helpful record when user clicks yes' do

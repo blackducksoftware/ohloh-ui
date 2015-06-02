@@ -236,7 +236,9 @@ describe 'ProjectsController' do
   it 'new should require a current user' do
     login_as nil
     get :new
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
+    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_account_path)
   end
 
   it 'new should render for logged users' do
@@ -249,7 +251,9 @@ describe 'ProjectsController' do
   it 'check_forge should require a current user' do
     login_as nil
     post :check_forge, codelocation: 'http://cnn.com'
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
+    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_account_path)
   end
 
   it 'check_forge should gracefully handle duplicate projects detected' do
@@ -301,7 +305,9 @@ describe 'ProjectsController' do
   it 'create should require a current user' do
     login_as nil
     post :create, project: { name: 'Fail', url_name: 'fail', description: 'It fails.' }
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
+    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_account_path)
   end
 
   it 'create should persist a valid project to the database' do
@@ -442,7 +448,9 @@ describe 'ProjectsController' do
     project = create(:project)
     login_as nil
     put :update, id: project.id, project: { name: 'KoolOSSProject' }
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
+    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_account_path)
     project.reload.name.wont_equal 'KoolOSSProject'
   end
 

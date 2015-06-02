@@ -216,7 +216,8 @@ describe 'AccountsController' do
   describe 'edit' do
     it 'must respond with unauthorized when account does not exist' do
       get :edit, id: :anything
-      must_respond_with :unauthorized
+      must_respond_with :redirect
+      must_redirect_to new_session_path
     end
 
     it 'must respond with success' do
@@ -225,11 +226,6 @@ describe 'AccountsController' do
       get :edit, id: account.to_param
       must_render_template 'edit'
       must_respond_with :success
-    end
-
-    it 'must render error if not logged in' do
-      get :edit, id: create(:account).id
-      must_render_template 'error.html'
     end
 
     it 'must redirect to new_session if account is not owned' do
@@ -245,7 +241,8 @@ describe 'AccountsController' do
       Account::Access.new(account).spam!
 
       get :edit, id: account.to_param
-      must_respond_with :unauthorized
+      must_respond_with :redirect
+      must_redirect_to new_session_path
       session[:account_id].must_be_nil
       account.reload.remember_token.must_be_nil
       cookies[:auth_token].must_be_nil

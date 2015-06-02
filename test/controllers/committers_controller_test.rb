@@ -55,7 +55,8 @@ describe 'CommittersControllerTest' do
   describe 'claim' do
     it 'must be logged in to claim projects' do
       post :claim, id: @person.name.id
-      must_respond_with :unauthorized
+      must_respond_with :redirect
+      must_redirect_to new_session_path
     end
 
     it 'should render claim for project ids' do
@@ -71,7 +72,8 @@ describe 'CommittersControllerTest' do
   describe 'save_claim' do
     it 'must be logged in to create a position' do
       post :save_claim, id: @person.name.id
-      must_respond_with :unauthorized
+      must_respond_with :redirect
+      must_redirect_to new_session_path
     end
 
     it 'must create a position for projects' do

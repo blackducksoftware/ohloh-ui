@@ -15,7 +15,8 @@ describe TopicsController do
 
   it 'new' do
     get :new, forum_id: forum.id
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
   end
 
   it 'create should fail if not signed in' do
@@ -23,7 +24,8 @@ describe TopicsController do
       post :create, forum_id: forum.id, topic: { title: 'Example Topic title', posts_attributes:
                                                 [{ body: 'Example Post body', account_id: nil }] }
     end
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
   end
 
   it 'show with post pagination' do

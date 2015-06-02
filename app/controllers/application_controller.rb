@@ -47,7 +47,9 @@ class ApplicationController < ActionController::Base
 
   # TODO: Fix me when sessions are real
   def session_required
-    error(message: t(:must_be_logged_in), status: :unauthorized) unless logged_in?
+    return if logged_in?
+    flash[:notice] = t('sessions.message_html', href: new_account_path)
+    access_denied
   end
 
   def admin_session_required
