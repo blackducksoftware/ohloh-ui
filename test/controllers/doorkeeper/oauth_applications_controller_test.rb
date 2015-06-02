@@ -9,7 +9,8 @@ describe 'Doorkeeper::OauthApplicationsController' do
     it 'wont allow without logging in' do
       get :revoke_access, account_id: account.id, id: oauth_application.id
 
-      must_respond_with :unauthorized
+      must_respond_with :redirect
+      must_redirect_to new_session_path
     end
 
     it 'wont allow for other account' do

@@ -1,5 +1,6 @@
 en:
   sessions:
+    message_html: 'Login Required. <a href=%{href}>Sign up now</a> -- its free!'
     new:
       page_title: "Open Hub Login"
       page_header: "Welcome to Open Hub!"

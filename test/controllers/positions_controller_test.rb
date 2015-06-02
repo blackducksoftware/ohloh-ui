@@ -7,7 +7,8 @@ describe 'PositionsController' do
     it 'must render error for logged out user' do
       get :new, account_id: account.to_param
 
-      must_render_template 'error.html'
+      must_respond_with :redirect
+      must_redirect_to new_session_path
     end
 
     it 'must render the view successfully' do
@@ -24,7 +25,8 @@ describe 'PositionsController' do
     it 'must render error for logged out user' do
       post :create, account_id: account.to_param
 
-      must_render_template 'error.html'
+      must_respond_with :redirect
+      must_redirect_to new_session_path
     end
 
     it 'wont allow creating positions for other accounts' do
