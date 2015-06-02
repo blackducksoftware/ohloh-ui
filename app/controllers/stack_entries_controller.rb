@@ -10,7 +10,8 @@ class StackEntriesController < ApplicationController
   def create
     stack_entry = StackEntry.create(stack_id: @stack.id, project_id: @project.id)
     if stack_entry.persisted?
-      render json: { stack_entry: stack_entry_html(stack_entry), result: 'okay', updated_count: 1 }, status: :ok
+      render json: { stack_entry: stack_entry_html(stack_entry), result: 'okay',
+                     updated_count: @stack.projects.count }, status: :ok
     else
       render json: { result: 'error' }, status: :unprocessable_entity
     end

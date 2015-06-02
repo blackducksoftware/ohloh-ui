@@ -68,7 +68,6 @@ StackShow = {
   reinit: function() {
     StackShow.recommendations_init(true);
     StackShow.rehook();
-    App.ProjectRating.init();
     Expander.init();
   },
   hook: function() {
@@ -143,7 +142,7 @@ StackShow = {
     var new_entry = $(list.find('tr'));
     new_entry.slideDown(1000, function() {
       RestInPlace.init();
-    }).ohloh_fade();
+    });
     $(".empty_stack_text").slideUp();
     StackShow.update_previews();
   },
@@ -162,10 +161,10 @@ StackShow = {
     StackShow.timeoutPreview = null;
   },
   update_widget_preview: function() {
-    $(".widget_preview").load("/stacks/"+StackShow.stack_id()+"/widgets/stack_normal.html?icon_height=16&icon_width=16&projects_shown=8&width=100");
+    $(".widget_preview").load("/stacks/"+StackShow.stack_id()+"/widgets/normal?icon_height=16&icon_width=16&projects_shown=8&width=100");
   },
   update_similar_stacks_preview: function() {
-    $("#similar_stacks").load("/stacks/"+StackShow.stack_id()+"/similar_accounts?preview=true");
+    $("#similar_stacks").load("/stacks/"+StackShow.stack_id()+"/similar_stacks?preview=true");
   },
 
   execute: function(clicked_link, url, type, action) {
@@ -303,8 +302,8 @@ StackShow = {
 
   update_count: function(json) {
     if (json.updated_count) {
-      $(".listing_result").html(json.updated_count).ohloh_fade();
-      if (json.updated_count.split(" ")[0] == "[0") {
+      $(".listing_result").html(json.updated_count);
+      if (json.updated_count == 0) {
         $("#empty_stack_text").fadeIn("slow");
       } else {
         $("#empty_stack_text").fadeOut("slow");

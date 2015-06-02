@@ -1,11 +1,13 @@
 -# NOTE: Replaces render_project_analysis_timestamp.
 .pull-right.soft#analysis_timestamp
   %i
-    %i.icon-time
-    = t('.analyzed')
-    %abbr{ title: analysis.updated_on.to_s(:full) }
-      = time_ago_in_words analysis.updated_on
-    = t('.ago')
+    - unless analysis.nil?
+      %i.icon-time
+      = t('.analyzed')
+      %abbr{ title: analysis.updated_on.to_s(:full) }
+        = time_ago_in_words analysis.updated_on
+      = t('.ago')
+
     - if project.is_a?(Organization)
       = t('.project_may_be_current')
     - elsif analysis.logged_at.present?

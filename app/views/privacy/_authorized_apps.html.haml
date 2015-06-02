@@ -1,12 +1,12 @@
-.col-md-
+.col-md-5
   %form
     %fieldset
-      %legend_without_border_bottom#authorized_apps= t('.authorized_apps')
+      %legend.margin_bottom_0#authorized_apps= t('.authorized_apps')
       .col-md-12
-        %p.help-block.margin_left_20= t('.registered_applications')
+        %p.help-block= t('.registered_applications')
         %br
       - if @oauth_applications.present?
-        %table.table.span5{ style: 'border: 1px solid #ddd;' }
+        %table.table{ style: 'border: 1px solid #ddd;' }
           %tbody
             - @oauth_applications.each do |oauth_application|
               - api_key = ApiKey.find_by(oauth_application: oauth_application)

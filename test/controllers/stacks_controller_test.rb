@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class StacksControllerTest < ActionController::TestCase
+describe 'StacksControllerTest' do
   # index action
   it 'index should not require a current user' do
     stack = create(:stack)
@@ -209,7 +209,8 @@ class StacksControllerTest < ActionController::TestCase
     stack = create(:stack)
     login_as stack.account
     delete :destroy, id: stack
-    must_respond_with 200
+    must_respond_with :redirect
+    must_redirect_to account_stacks_path(stack.account)
     Stack.where(id: stack.id).count.must_equal 0
   end
 
@@ -218,7 +219,7 @@ class StacksControllerTest < ActionController::TestCase
     login_as stack.account
     Stack.any_instance.expects(:destroy).returns false
     delete :destroy, id: stack
-    must_respond_with :unprocessable_entity
+    must_respond_with :redirect
   end
 
   # similar action
@@ -311,5 +312,39 @@ class StacksControllerTest < ActionController::TestCase
     resp['accounts'][0]['id'].must_equal account.id
     resp['accounts'][0]['latitude'].must_equal account.latitude.to_s
     resp['accounts'][0]['longitude'].must_equal account.longitude.to_s
+  end
+
+  describe 'reset' do
+    it 'should destroy all stack entries and ignores' do
+      stack_entry = create(:stack_entry)
+      stack = stack_entry.stack
+      create(:stack_ignore, stack: stack)
+      login_as stack.account
+      stack.stack_entries.count.must_equal 1
+      stack.stack_ignores.count.must_equal 1
+      get :reset, id: stack.id
+      must_respond_with :redirect
+      must_redirect_to stack_path(stack)
+      stack.stack_entries.count.must_equal 0
+      stack.stack_ignores.count.must_equal 0
+    end
+
+    it 'should create sample projects based on init' do
+      stack = create(:stack, project: create(:project, id: 28))
+      login_as stack.account
+      get :reset, id: stack.id, init: 'lamp'
+      must_respond_with :redirect
+      must_redirect_to stack_path(stack)
+      stack.reload.stack_entries.count.must_equal 1
+      stack.stack_ignores.count.must_equal 0
+    end
+  end
+
+  describe 'similar_stacks' do
+    it 'must render the partial' do
+      get :similar_stacks, id: create(:stack).id
+      must_respond_with :ok
+      must_render_template 'stacks/_similar_stacks'
+    end
   end
 end

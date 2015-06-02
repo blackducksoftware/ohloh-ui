@@ -85,12 +85,11 @@ Rails.application.configure do
   config.paperclip_defaults = {
     storage: :s3,
     s3_credentials: {
-      bucket: ENV['ohloh_s3_bucket_name'],
-      access_key_id: ENV['ohloh_s3_access_key'],
-      secret_access_key: ENV['ohloh_s3_secret_access_key']
+      bucket: ENV['OHLOH_S3_BUCKET_NAME'],
+      access_key_id: ENV['OHLOH_S3_ACCESS_KEY'],
+      secret_access_key: ENV['OHLOH_S3_SECRET_ACCESS_KEY']
     }
   }
   Paperclip::Attachment.default_options[:path] = '/attachments/:id/:basename:style.:extension'
   Paperclip::Attachment.default_options[:use_timestamp] = false
 end
-ANALYTICS_ID = 'UA-20399350-1'

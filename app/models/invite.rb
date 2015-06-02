@@ -22,7 +22,7 @@ class Invite < ActiveRecord::Base
   end
 
   def claim_url
-    "http://#{URL_HOST}/p/#{project_id}/contributors/#{contribution_id}?invite=#{activation_code}"
+    "http://#{ENV['URL_HOST']}/p/#{project_id}/contributors/#{contribution_id}?invite=#{activation_code}"
   end
 
   private

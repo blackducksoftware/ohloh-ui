@@ -15,7 +15,7 @@
           %meta{ itemprop: 'homeLocation', content: @account.location }
         - if @account.location && my_account?(@account)
           %span.seperator= '&nbsp;|&nbsp;'.html_safe
-        - if my_account?(@account)
+        - if my_account?(@account) || current_user_is_admin?
           = link_to settings_account_path(@account) do
             %i.icon-cogs= '&nbsp; Settings'.html_safe
       - if @account.url.present?
