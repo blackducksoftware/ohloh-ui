@@ -42,7 +42,8 @@ class OrganizationsController < ApplicationController
     else
       @current_object = @organization.clone
       @organization.reload
-      render :edit, status: 422
+      flash.now[:error] = t('.failure')
+      render :edit, status: :unprocessable_entity
     end
   end
 

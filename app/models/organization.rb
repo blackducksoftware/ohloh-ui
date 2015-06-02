@@ -90,7 +90,7 @@ class Organization < ActiveRecord::Base
     def search_and_sort(query, sort, page)
       sort ||= 'projects'
       fail ArgumentError, 'Invalid Sort Option' unless ALLOWED_SORT_OPTIONS.include?(sort)
-      tsearch(query, "sort_by_#{sort}").where.not(deleted: true).paginate(page: page)
+      tsearch(query, "sort_by_#{sort}").where.not(deleted: true).paginate(page: page, per_page: 10)
     end
   end
 

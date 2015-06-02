@@ -22,6 +22,7 @@ en:
     index:
       no_matches: 'No matches with this filter.'
       title: 'Organizations'
+      page_title: 'Organizations - OpenHub'
     about_basics:
       about: 'About'
       basics: 'Basics'
@@ -84,6 +85,7 @@ en:
       notice: 'Organization has been created successfully'
     update:
       notice: 'Organization changes were saved successfully'
+      failure: 'Organization changes could not be saved.'
     new_manger: 'Manager created successfully'
     claim_project:
       unauthorized: 'Unauthorized!'
