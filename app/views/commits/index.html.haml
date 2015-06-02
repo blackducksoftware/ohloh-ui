@@ -11,6 +11,6 @@
 
 .col-md-12
   - if analysis.nil?
-    = render 'projects/show/no_analysis_summary', analysis: analysis
+    = render 'projects/show/no_analysis_summary'
   - else
     = render 'commit', named_commits: @named_commits, search_dingus: true
