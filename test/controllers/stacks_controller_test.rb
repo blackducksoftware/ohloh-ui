@@ -157,6 +157,12 @@ class StacksControllerTest < ActionController::TestCase
     login_as account
     xml_http_request :post, 'create'
     must_render_template 'stacks/i_use_this.js.erb'
+    assert_difference 'Stack.count', 1 do
+      xml_http_request :post, 'create'
+    end
+    assert_difference 'StackEntry.count', 1 do
+      xml_http_request :post, 'create'
+    end
   end
 
   # update action
@@ -197,6 +203,16 @@ class StacksControllerTest < ActionController::TestCase
     put :update, id: stack, stack: { description: 'changed' }
     must_respond_with :unprocessable_entity
   end
+
+  # it 'should update a stack by xhr when I Use This is clicked' do
+  #   account = create(:account)
+  #   project = create(:project)
+  #   login_as account
+  #   xml_http_request :put, 'update'
+  #   assert_difference 'StackEntry.count', 1 do
+  #     xml_http_request :post, 'create'
+  #   end
+  # end
 
   # destroy action
   it 'destroy should require a current user' do

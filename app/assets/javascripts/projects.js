@@ -1,5 +1,6 @@
 // handles project edit form
 // TODO: Replace all of this with better Javascript. Specifically that cobbled together HTML down there is awful.
+
 ProjectForm = {
   preview_url_name_label: 'label#preview_url_name',
   url_name_input: 'input#project_url_name',
@@ -82,3 +83,22 @@ SimilarProjects = {
 }
 
 $(document).on('page:change', SimilarProjects.init())
+
+$(document).ready(function() {
+  // Grab the checked value 0 or 1
+  var check_value = $("input[name='stacked']").val();
+
+  $("input[name='stacked']").click(function() {
+    if (check_value == 0) {
+      var stack_id = $("input[name='stacked']").attr("stack");
+      check_value = 1;
+      $.ajax("/stacks/" + stack_id,{
+        type: "PUT"
+        //success: do something with the text value stacked
+      });
+    } else {
+      check_value = 0;
+      alert(check_value.toString());
+    }
+  });
+});
