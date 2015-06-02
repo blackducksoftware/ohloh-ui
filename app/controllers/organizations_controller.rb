@@ -1,6 +1,4 @@
 class OrganizationsController < ApplicationController
-  PERMISSION_ALERT = [:manage_projects, :new_manager, :edit, :claim_projects_list, :list_managers, :settings]
-
   helper ProjectsHelper
   helper RatingsHelper
   helper OrganizationsHelper
@@ -10,8 +8,9 @@ class OrganizationsController < ApplicationController
   before_action :organization_context, except: [:print_infographic, :create, :update]
   before_action :admin_session_required, only: [:new, :create]
   before_action :handle_default_view, only: :show
-  before_action :show_permissions_alert, only: PERMISSION_ALERT
   before_action :set_editor, only: [:list_managers, :new_manager, :claim_projects_list, :claim_project]
+  before_action :show_permissions_alert, only: [:manage_projects, :new_manager, :edit,
+                                                :claim_projects_list, :list_managers, :settings]
 
   def index
     redirect_to orgs_explores_path if request.format == 'html' && request.query_string.blank?
@@ -82,7 +81,7 @@ class OrganizationsController < ApplicationController
 
   def manage_projects
     params[:sort] ||= 'new'
-    @projects = Project.search_and_sort(params[:query], params[:sort], params[:page])
+    @projects = @organization.projects.search_and_sort(params[:query], params[:sort], params[:page])
   end
 
   def remove_project

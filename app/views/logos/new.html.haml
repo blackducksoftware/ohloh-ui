@@ -1,9 +1,10 @@
 - if @organization
   - content_for(:html_title) { t('.meta_title') }
--# else
-  -# @meta_title_final = project_pages_title(t('.page_title'))
+- #else
+  -# page_context[:select_top_menu_nav] = 'select_projects'
+
 .project_content_title
-  %h2.float_left
+  %h2.pull-left
     - path = @organization ? settings_organization_path(@organization) : settings_project_path(@project)
     = link_to t('.settings'), path
     = t('.heading')
