@@ -45,6 +45,14 @@ class KudosControllerTest < ActionController::TestCase
     must_select 'i.rescind-kudos', false
   end
 
+  it 'index should render if the account lacks a person for some reason' do
+    login_as nil
+    account = create(:account)
+    account.person.destroy!
+    get :index, account_id: account
+    must_respond_with :ok
+  end
+
   it 'index should not respond to xml format without an api_key' do
     login_as nil
     get :index, account_id: @kudo.account, format: :xml

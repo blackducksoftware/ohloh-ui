@@ -9,7 +9,7 @@ class KudosController < ApplicationController
   before_action :account_context, only: [:index]
 
   def index
-    @person = @account.person
+    @person = @account.person || Person.new(account_id: @account.id, effective_name: @account.name)
     @received_kudos = @account.kudos.sort_by_created_at
     @sent_kudos = @account.sent_kudos.sort_by_created_at
   end
