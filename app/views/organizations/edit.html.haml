@@ -8,7 +8,8 @@
 
 .row
   .well.col-md-10.col-md-offset-1
-    = form_for @current_object, url: organization_path(@organization), class: 'center-block', style: 'width:650px' do |f|
-      = render partial: 'fields', :locals => { f: f }
+    = form_for @current_object, url: organization_path(@organization),
+      class: 'center-block', style: 'width:650px' do |f|
+      = render partial: 'fields', locals: { f: f }
 
 = render partial: 'about_basics'
