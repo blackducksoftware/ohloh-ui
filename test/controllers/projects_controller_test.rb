@@ -472,6 +472,17 @@ describe 'ProjectsController' do
     must_select 'p.error[rel="name"]', 1
   end
 
+  it 'update should handle blank url_names gracefully and render the edit action' do
+    project = create(:project)
+    login_as create(:admin)
+    put :update, id: project.id, project: { url_name: '' }
+    must_respond_with :unprocessable_entity
+    project.reload.url_name.blank?.must_equal false
+    must_respond_with :unprocessable_entity
+    must_select 'input.save', 1
+    must_select 'p.error[rel="url_name"]', 1
+  end
+
   # estimated_cost
   it 'estimated_cost should display for analyzed projects' do
     login_as nil

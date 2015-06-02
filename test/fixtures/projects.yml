@@ -17,6 +17,7 @@ adium:
 ohloh:
   id: 3
   name: Ohloh
+  url_name: ohloh
   description: a neat little ditty
   created_at: "Sat Jan 01 00:00:00 UTC 2005"
   updated_at: "Sat Jan 01 00:00:00 UTC 2005"

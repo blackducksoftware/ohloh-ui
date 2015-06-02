@@ -15,6 +15,7 @@ class Project < ActiveRecord::Base
   link_accessors accessors: { url: :Homepage, download_url: :Download }
 
   validates :name, presence: true, length: 1..100, allow_nil: false, uniqueness: true, case_sensitive: false
+  validates :url_name, presence: true, length: 1..60, allow_nil: false, uniqueness: true, case_sensitive: false
   validates :description, length: 0..800, allow_nil: true # , if: proc { |p| p.validate_url_name_and_desc == 'true' }
   validates_each :url, :download_url, allow_blank: true do |record, field, value|
     record.errors.add(field, I18n.t(:not_a_valid_url)) unless value.valid_http_url?
