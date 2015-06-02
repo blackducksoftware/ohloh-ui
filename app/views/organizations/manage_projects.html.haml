@@ -26,7 +26,7 @@
       = will_paginate @projects
       .clearfix
       - if logged_in? && @organization.edit_authorized?
-        = link_to claim_projects_list_organization_path(@organization), class: 'btn-small btn-primary' do
+        = link_to claim_projects_list_organization_path(@organization), class: 'btn btn-small btn-primary' do
           %i.icon-plus-sign
           = t('.claim_link')
       - else
