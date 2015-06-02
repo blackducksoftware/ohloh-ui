@@ -71,14 +71,11 @@ GEM
     ast (2.0.0)
     astrolabe (1.3.0)
       parser (>= 2.2.0.pre.3, < 3.0)
-    aws-sdk (2.0.42)
-      aws-sdk-resources (= 2.0.42)
-    aws-sdk-core (2.0.42)
-      builder (~> 3.0)
-      jmespath (~> 1.0)
-      multi_json (~> 1.0)
-    aws-sdk-resources (2.0.42)
-      aws-sdk-core (= 2.0.42)
+    aws-sdk (1.64.0)
+      aws-sdk-v1 (= 1.64.0)
+    aws-sdk-v1 (1.64.0)
+      json (~> 1.4)
+      nokogiri (>= 1.4.4)
     bluecloth (2.2.0)
     bourbon (4.2.0)
       sass (~> 3.4)
@@ -182,8 +179,6 @@ GEM
     jbuilder (2.2.13)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
-    jmespath (1.0.2)
-      multi_json (~> 1.0)
     jquery-rails (4.0.3)
       rails-dom-testing (~> 1.0)
       railties (>= 4.2.0)
@@ -371,7 +366,7 @@ PLATFORMS
 DEPENDENCIES
   activeadmin!
   airbrake
-  aws-sdk
+  aws-sdk (< 2.0)
   bluecloth
   brakeman
   byebug
