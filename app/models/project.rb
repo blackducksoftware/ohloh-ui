@@ -99,6 +99,7 @@ class Project < ActiveRecord::Base
       tsearch(query, "by_#{sort}")
         .includes(:best_analysis)
         .paginate(page: page, per_page: 20)
+    end
   end
 
   private
