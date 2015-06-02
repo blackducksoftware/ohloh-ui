@@ -31,8 +31,10 @@ en:
       url_unique: 'The organization URL must be unique across all organizations on Open Hub. It should start with a letter, followed by letters, numbers, dashes, or underscores.'
       description: "The organization description will appear on the organization's summary page. Please be concise, but highlight unique aspects and key features. Maximum 800 characters, and only new-line formatting is allowed."
     new:
+      page_title: 'Organizations: New - Open Hub'
       title: 'New Organization'
     edit:
+      page_title: '%{name} : Settings: Basics - Open Hub'
       settings: 'Settings'
       basics: ' : Basics'
     fields:

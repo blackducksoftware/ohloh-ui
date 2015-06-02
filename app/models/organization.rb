@@ -27,7 +27,10 @@ class Organization < ActiveRecord::Base
   scope :sort_by_name, -> { order(arel_table[:name].lower) }
   scope :sort_by_projects, -> { order('COALESCE(projects_count, 0) DESC') }
 
-  validates :name, presence: true, length: 3..85, uniqueness: { case_sensitive: false }
+  validates :name, presence: true
+  validates :name, presence: true, length: 3..85, allow_blank: true
+  validates :url_name, presence: true, uniqueness: true, case_sensitive: false
+  validates :homepage_url, allow_blank: true, url_format: { message: I18n.t('accounts.invalid_url_format') }
   validates :description, length: 0..800, allow_nil: true
   validates :org_type, inclusion: { in: ORG_TYPES.values }
   before_validation :clean_strings_and_urls
@@ -40,7 +43,7 @@ class Organization < ActiveRecord::Base
   after_save :check_change_in_delete
 
   def to_param
-    url_name || id.to_s
+    url_name.blank? ? id.to_s : url_name
   end
 
   def active_managers
