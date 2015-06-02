@@ -140,7 +140,7 @@ module ApplicationHelper
   end
 
   def opts_with_lang_colors(project, options)
-    return options if project.best_analysis.main_language.nil?
+    return options if !project.is_a?(Project) || project.best_analysis.main_language.nil?
     lang_name = project.best_analysis.main_language
     options.merge(color: language_text_color(lang_name), bg: language_color(lang_name))
   end

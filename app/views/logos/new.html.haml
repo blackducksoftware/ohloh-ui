@@ -4,15 +4,15 @@
   -# @meta_title_final = project_pages_title(t('.page_title'))
 .project_content_title
   %h2.float_left
-    -# = link_to "Settings", settings_url_for(@project_or_organization)
+    = link_to t(:settings), settings_parent_path(@parent)
     = t('.heading')
   - unless @organization
-    = project_analysis_timestamp(@project_or_organization)
+    = project_analysis_timestamp(@parent)
 
 .row
   .col-md-10.col-md-offset-1
     .well
-      = form_for [@project_or_organization, @logo], html: { multipart: true } do |f|
+      = form_for [@parent, @logo], html: { multipart: true } do |f|
         = render partial: 'fields', locals: { f: f }
       .clear
         &nbsp;
