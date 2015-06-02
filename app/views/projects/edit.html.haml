@@ -3,16 +3,16 @@
 
 .project_content_title
   %h2.float_left
-    = link_to t('.settings'), settings_project_path(@project)
+    = link_to t('.settings'), settings_project_path(params[:id])
     \ :
     = t('.basics')
   = project_analysis_timestamp(@project)
 
 .row
   .well.col-md-10.col-md-offset-1
-    = form_for @project, as: :project, url: project_path(@project), html: { method: :put,
-                                                                            class: 'center-block edit_project',
-                                                                            style: 'width:710px;' } do |f|
+    = form_for @project, as: :project, url: project_path(params[:id]), html: { method: :put,
+                                                                               class: 'center-block edit_project',
+                                                                               style: 'width:710px;' } do |f|
       %fieldset
         .control-group
           %label.control-label.required= t('.project_name')
