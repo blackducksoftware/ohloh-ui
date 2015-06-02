@@ -10,6 +10,7 @@ gem 'coffee-rails'
 gem 'coffee-script-source', '~>1.8.0'
 gem 'doorkeeper'
 gem 'dotenv-rails'
+gem 'execjs'
 gem 'font-awesome-rails'
 gem 'haml-rails'
 gem 'jbuilder'
@@ -34,7 +35,9 @@ gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 gem 'simple-rss'
 
-group :development, :vagrant do
+group :development do
+  gem 'capistrano'
+  gem 'capistrano-faster-assets'
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
   gem 'letter_opener'
@@ -55,8 +58,12 @@ group :test do
   gem 'webmock'
 end
 
-group :development, :vagrant, :test do
+group :development, :test do
   gem 'byebug'
   gem 'pry-rails'
   gem 'rb-readline'
+end
+
+group :production do
+  gem 'oboe'
 end

@@ -17,10 +17,6 @@ upstream:
   - 207.115.86.109:7506
   - 207.115.86.110:7506
   - 207.115.86.111:7506
-<% elsif vagrant? %>
-  - 207.115.86.109:7506
-  - 207.115.86.110:7506
-  - 207.115.86.111:7506
 <% elsif staging? %>
   - 127.0.0.1:7500
 <% else %>
@@ -31,10 +27,10 @@ upstream:
 
 sites:
   openhub:
-    server_name: <%= { production: "www.openhub.net", vagrant: "www.openhub.net", staging: "staging.openhub.net", development: "0.0.0.0" }[ENV['RAILS_ENV']] %>
+    server_name: <%= { production: "www.openhub.net", staging: "staging.openhub.net", development: "0.0.0.0" }[ENV['RAILS_ENV']] %>
 
     # openhub.net => www.openhub.net
-    always_www: <%= production? || staging? || vagrant? %>
+    always_www: <%= production? || staging? %>
 
     # Which root to use.  You can add a custom one here, too.
     root: default

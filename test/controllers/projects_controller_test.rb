@@ -194,31 +194,42 @@ describe 'ProjectsController' do
     response.body.must_match(/first.*second/m)
   end
 
-  # show
-  it 'show should render for unlogged users' do
-    project = create(:project)
-    login_as nil
-    get :show, id: project.to_param
-    must_respond_with :ok
-  end
+  describe 'show' do
+    it 'show should render for unlogged users' do
+      project = create(:project)
+      login_as nil
+      get :show, id: project.to_param
+      must_respond_with :ok
+    end
 
-  it 'show should render for projects that have been analyzed' do
-    project = create(:project)
-    af_1 = create(:activity_fact, analysis: project.best_analysis, code_added: 8_000, comments_added: 8_000)
-    create(:factoid, analysis: project.best_analysis, language: af_1.language)
-    af_2 = create(:activity_fact, analysis: project.best_analysis)
-    create(:factoid, analysis: project.best_analysis, language: af_2.language)
-    af_3 = create(:activity_fact, analysis: project.best_analysis)
-    create(:factoid, analysis: project.best_analysis, language: af_3.language)
-    af_4 = create(:activity_fact, analysis: project.best_analysis)
-    create(:factoid, analysis: project.best_analysis, language: af_4.language)
-    ats = project.best_analysis.all_time_summary
-    ats.update_attributes(recent_contributors: [create(:person).id, create(:person).id])
-    cf = create(:commit_flag)
-    create(:analysis_sloc_set, analysis: project.best_analysis, sloc_set: cf.sloc_set)
-    login_as create(:admin)
-    get :show, id: project.to_param
-    must_respond_with :ok
+    it 'show should render for projects that have been analyzed' do
+      project = create(:project)
+      af_1 = create(:activity_fact, analysis: project.best_analysis, code_added: 8_000, comments_added: 8_000)
+      create(:factoid, analysis: project.best_analysis, language: af_1.language)
+      af_2 = create(:activity_fact, analysis: project.best_analysis)
+      create(:factoid, analysis: project.best_analysis, language: af_2.language)
+      af_3 = create(:activity_fact, analysis: project.best_analysis)
+      create(:factoid, analysis: project.best_analysis, language: af_3.language)
+      af_4 = create(:activity_fact, analysis: project.best_analysis)
+      create(:factoid, analysis: project.best_analysis, language: af_4.language)
+      ats = project.best_analysis.all_time_summary
+      ats.update_attributes(recent_contributors: [create(:person).id, create(:person).id])
+      cf = create(:commit_flag)
+      create(:analysis_sloc_set, analysis: project.best_analysis, sloc_set: cf.sloc_set)
+      login_as create(:admin)
+      get :show, id: project.to_param
+      must_respond_with :ok
+    end
+
+    it 'must render successfully when analysis has nil dates' do
+      project = create(:project)
+      project.best_analysis.update! min_month: nil, max_month: nil, logged_at: nil,
+                                    first_commit_time: nil, last_commit_time: nil
+
+      get :show, id: project.to_param
+
+      must_respond_with :ok
+    end
   end
 
   # new
@@ -518,12 +529,21 @@ describe 'ProjectsController' do
     must_respond_with :success
   end
 
-  # map
-  it 'map should display for unlogged in users' do
-    login_as nil
-    get :map, id: create(:project).to_param
-    must_respond_with :success
-    must_select '#map', 1
+  describe 'map' do
+    it 'map should display for unlogged in users' do
+      login_as nil
+      get :map, id: create(:project).to_param
+      must_respond_with :success
+      must_select '#map', 1
+    end
+
+    it 'must render successfully when no analysis' do
+      Project.any_instance.stubs(:best_analysis).returns(NilAnalysis.new)
+
+      get :map, id: create(:project).to_param
+
+      must_respond_with :success
+    end
   end
 
   # similar_by_tags

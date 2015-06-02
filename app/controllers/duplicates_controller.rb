@@ -60,7 +60,6 @@ class DuplicatesController < ApplicationController
 
   def find_good_project
     @good_project = Project.from_param(duplicate_params[:good_project_id]).take
-    fail ParamRecordNotFound if @good_project.nil?
   end
 
   def duplicate_params

@@ -1,9 +1,8 @@
 - content_for(:html_title) do
   - t('.edit_privacy_title', account: @account.login)
+- page_context[:select_footer_nav] = :settings
 
 - account_context
-
-.margin_left_20.margin_right_20.margin_top_15 &nbsp;
 
 %h2= t('.settings_privacy_html', href: link_to(t('.settings'), settings_account_path(@account)))
 .row
@@ -11,7 +10,7 @@
     .well.well-lg
       = form_for(@account, url: account_privacy_account_path) do |f|
         %fieldset
-          %legend_without_border_bottom= t('.manage_email')
+          %legend.margin_bottom_0= t('.manage_email')
           .control-group.col-md-12.margin_left_5
             %h4= t('.administrative_email')
             %p.admin_email_notice= t('.send_admin_email')
@@ -37,7 +36,7 @@
                   = f.select :email_posts, [['include', true], ['exclude', false]], {}, class: 'select_box value-select'
                   %span= t('.replies_to_forum_topics')
               %br
-              %p= t('.never_ask_for_personal_email')
+              %p.help-inline= t('.never_ask_for_personal_email')
             .actions
               %br
               = submit_tag(t('.save_changes'), id: 'Submit', class: 'btn btn-sm btn-primary')

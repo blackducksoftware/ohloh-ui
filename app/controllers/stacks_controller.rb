@@ -2,14 +2,14 @@ class StacksController < ApplicationController
   helper MapHelper
   helper RatingsHelper
 
-  before_action :session_required, except: [:index, :show, :similar, :near]
+  before_action :session_required, except: [:index, :show, :similar, :similar_stacks, :near]
   before_action :find_stack, except: [:index, :create, :near]
-  before_action :can_edit_stack, except: [:index, :show, :create, :similar, :near]
-  before_action :find_account, only: [:index, :show]
+  before_action :can_edit_stack, except: [:index, :show, :create, :similar, :similar_stacks, :near]
+  before_action :find_account, only: [:index, :show, :similar]
   before_action :auto_ignore, only: [:builder]
   before_action :find_project, only: [:near]
 
-  before_action :account_context, only: [:index]
+  before_action :account_context, only: [:index, :show, :similar]
 
   def index
     @stacks = @account.stacks
@@ -18,6 +18,7 @@ class StacksController < ApplicationController
   def create
     @stack = Stack.new
     @stack.account = current_user
+    set_title
     if @stack.save
       redirect_to stack_path(@stack)
     else
@@ -30,11 +31,24 @@ class StacksController < ApplicationController
   end
 
   def destroy
-    render nothing: true, status: (@stack.destroy ? :ok : :unprocessable_entity)
+    account = @stack.account
+    @stack.destroy
+    redirect_to account_stacks_path(account), notice: t('.notice')
+  end
+
+  def reset
+    @stack.stack_entries.destroy_all
+    @stack.stack_ignores.destroy_all
+    @stack.projects << Project.where(id: Stack::SAMPLE_PROJECT_IDS[params[:init].try(:to_sym)])
+    redirect_to stack_path(@stack.id)
   end
 
   def similar
     @similar_stacks = @stack.similar_stacks
+  end
+
+  def similar_stacks
+    render partial: 'similar_stacks', locals: { stack: @stack }
   end
 
   def builder
@@ -47,6 +61,11 @@ class StacksController < ApplicationController
   end
 
   private
+
+  def set_title
+    title = (1..30).collect { |i| "New Stack #{i}" } - Stack.where(account_id: @stack.account_id).pluck(:title)
+    @stack.title = title.first
+  end
 
   def model_params
     params.require(:stack).permit([:title, :description])

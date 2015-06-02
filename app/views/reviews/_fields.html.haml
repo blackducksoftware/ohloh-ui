@@ -25,9 +25,10 @@
     - if @review.persisted?
       - if current_user_is_admin? || @review.account == current_user
         = icon_button(review_path(@review), icon: 'trash', text: t('reviews.remove'), size: 'sm',
-          type: 'danger', method: :delete, confirm: t('reviews.remove_confirmation'), style: 'margin-left: 7px')
+          type: 'danger', method: :delete, data: { confirm: t('reviews.remove_confirmation') },
+          style: 'margin-left: 7px')
         &nbsp;
       - if current_user_is_admin?
         = icon_button(make_spammer_account_accesses_path(@review.account), text: t('reviews.spam'), method: :post,
-          confirm: t('reviews.spam_confirmation', name: @review.account.name), size: 'sm', type: 'warning',
+          data: { confirm: t('reviews.spam_confirmation', name: @review.account.name) }, size: 'sm', type: 'warning',
           title: t('reviews.spam_title', name: @review.account.name))

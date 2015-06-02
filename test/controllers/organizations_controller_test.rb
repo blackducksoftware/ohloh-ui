@@ -130,7 +130,7 @@ describe 'OrganizationsController' do
     it 'should return organizations via xml' do
       create(:organization, name: 'test name1', projects_count: 2)
       create(:organization, name: 'test name2', projects_count: 3)
-      create(:organization, name: 'test name3', projects_count: 4, description: 'test description')
+      org_3 = create(:organization, name: 'test name3', projects_count: 4, description: 'test description')
 
       api_key = create(:api_key, account_id: account.id)
       client_id = api_key.oauth_application.uid
@@ -273,6 +273,72 @@ describe 'OrganizationsController' do
 
       must_redirect_to list_managers_organization_path(organization)
       assigns(:manage).target organization
+    end
+  end
+
+  describe 'create' do
+    it 'should show validation errors' do
+      account.update_column(:level, 10)
+      login_as account
+      post :create, organization: { name: 'test', description: 'tes', url_name: '',
+                                    org_type: '2', homepage_url: 'http://test.com' }
+
+      must_respond_with :ok
+      assigns(:organization).errors[:url_name].must_equal ['can\'t be blank']
+    end
+
+    it 'should save record successfully' do
+      account.update_column(:level, 10)
+      login_as account
+      post :create, organization: { name: 'test', description: 'tes', url_name: 'test',
+                                    org_type: '2', homepage_url: 'http://test.com' }
+
+      must_redirect_to organization_path(assigns(:organization))
+      assigns(:organization).valid?.must_equal true
+    end
+  end
+
+  describe 'update' do
+    it 'should show validation errors' do
+      login_as account
+      account.update_column(:level, 10)
+      org = create(:organization, name: 'test')
+      put :update, id: org.id, organization: { name: '', description: 'tes', url_name: 'test',
+                                    org_type: '2', homepage_url: 'http://test.com' }
+
+      must_respond_with 422
+      assigns(:organization).errors[:name].must_equal ['can\'t be blank']
+    end
+
+    it 'should save record successfully' do
+      account.update_column(:level, 10)
+      login_as account
+      org = create(:organization, name: 'test')
+      put :update, id: org.id, organization: { name: 'test2', description: 'tes', url_name: 'test',
+                                    org_type: '2', homepage_url: 'http://test.com' }
+
+      must_redirect_to organization_path(assigns(:organization))
+      assigns(:organization).name.must_equal 'test2'
+      assigns(:organization).valid?.must_equal true
+    end
+  end
+
+  describe 'edit' do
+    it 'should set organization' do
+      login_as account
+      account.update_column(:level, 10)
+      org = create(:organization, name: 'test')
+      get :edit, id: org.id
+      assigns(:organization).must_equal org
+    end
+  end
+
+  describe 'new' do
+    it 'should set new organization' do
+      login_as account
+      account.update_column(:level, 10)
+      get :new
+      assigns(:organization).new_record?.must_equal true
     end
   end
 end

@@ -1,6 +1,12 @@
 en:
   stacks:
     edit_in_place: "[edit]"
+    lamp: 'LAMP'
+    lamp_desc: 'Linux Kernel, Apache HTTP Server, MySQL, and PHP'
+    sash: 'SASH'
+    sash_desc: 'Spring Framework, Axis, Struts, and Hibernate'
+    gnome: 'GNOME Desktop'
+    gnome_desc: 'GNOME, Firefox, OpenOffice.org, Thunderbird, and GIMP'
     index:
       page_title: "%{name}'s Stacks"
       new_stack: "New Stack"
@@ -9,7 +15,7 @@ en:
       stacks: 'Stacks'
       delete_confirm: "Delete %{name} forever?"
       no_stack: "This user doesn't have a stack."
-      no_stack_fix_that: "You don't have a stack. Click %{link} to create one."
+      no_stack_fix_that_html: "You don't have a stack. Click %{link} to create one."
       what_is_a_stack: "What is a Stack?"
       stack_explanation: "It's a list of software used to accomplish something. %{link} is an example."
       max_stacks_desc: 'You can have up to 30 stacks.'
@@ -17,8 +23,11 @@ en:
       stack_faq: "Stack FAQ"
     create:
       error: "Stack failed to be saved!"
+    destroy:
+      notice: 'Stack deleted!'
     show:
-      page_title: "%{who}'s %{what} Stack"
+      page_title: "%{who} : %{who}'s %{what} Stack"
+      stack_desc: "The projects used for %{name}"
       empty_stack_msg: "This stack is empty."
       remove: "Remove"
       delete_confirm: "Delete this Stack forever?"
@@ -29,13 +38,15 @@ en:
       show_me_more: "Show Me More"
       unignore_all: "This will restore all skipped projects to the list"
       show_all_projects: "Show All Projects"
+      recommented_projects_desc: 'Add projects to your stack using Recommendations or Add Project, above. You may also choose one of these common stacks to get started:'
       notes: "Notes:"
       what_is_a_stack: "What is a Stack?"
       stack_explanation: "It's a list of software used to accomplish something. %{link} is an example."
       stack_explanation_empty: "To add a project to your stack, click 'I use it' on the projects you use."
-      stack_explanation_with_projects: "To add a project to your stack, click 'Show Recommendations for this Stack' at the top middle of this page and then click 'I use it' on the projects you use."
+      stack_explanation_with_projects: "To add a project to your stack, click 'Show Recommendations for this Stack' at the top middle of this page and then click 'I use this' on the projects you use."
       more_questions: "More questions?"
       stack_faq: "Stack FAQ"
+    similar_stacks:
       people_with_similar_stacks: "People with Similar Stacks"
       more: "More..."
     similar:

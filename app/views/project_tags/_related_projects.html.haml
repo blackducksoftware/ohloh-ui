@@ -1,3 +1,3 @@
 = render(partial: 'related_project', collection: @related_projects, locals: { tags: @project.tags })
 - if @related_projects.empty?
-  - flash.now[:notice] = t('project_tags.index.no_other_projects')
+  = render 'shared/alert', message: t('project_tags.index.no_other_projects')

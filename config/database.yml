@@ -3,19 +3,16 @@ default: &default
   pool: 5
   timeout: 5000
   encoding: SQL_ASCII
-  host: <%= ENV["DEV_DB_HOST"] %>
-  port: <%= ENV["DEV_DB_PORT"] %>
-  username: <%= ENV["DEV_DB_USERNAME"] %>
-  password: <%= ENV["DEV_DB_PASSWORD"] %>
-  database: <%= ENV["DEV_DB_NAME"] %>
+  host: <%= ENV["DB_HOST"] %>
+  port: <%= ENV["DB_PORT"] %>
+  username: <%= ENV["DB_USERNAME"] %>
+  password: <%= ENV["DB_PASSWORD"] %>
+  database: <%= ENV["DB_NAME"] %>
 
 development:
   <<: *default
 
 staging:
-  <<: *default
-
-vagrant:
   <<: *default
 
 test:

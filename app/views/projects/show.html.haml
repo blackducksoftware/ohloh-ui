@@ -47,8 +47,8 @@
 
 - if @analysis.nil?
   = render partial: 'projects/show/no_analysis_summary'
-  .col-md-3#proj_rating= render partial: 'projects/show/community_rating', locals: { title: t('.community_rating') }
+  .col-md-3#proj_rating= render 'projects/show/community_rating', title: t('.community_rating'), score: @score
   - if @project.enlistments.empty? && @analysis.blank?
-    = image_tag('sample_ohloh_analysis.jpg')
+    = image_tag('sample_ohloh_analysis.jpg', class: 'col-md-12')
 - else
   = render partial: 'projects/show/analysis_summary'

@@ -72,6 +72,13 @@ describe 'AnalysesController' do
       assigns(:languages_breakdown).first.code_total.must_equal 3
       assigns(:languages_breakdown).first.blanks_total.must_equal 4
     end
+
+    it 'must render the page correctly when no analysis' do
+      Project.any_instance.stubs(:best_analysis).returns(NilAnalysis.new)
+      get :languages_summary, project_id: project.to_param, id: 999
+
+      must_respond_with :ok
+    end
   end
 
   describe 'top_commit_volume_chart' do

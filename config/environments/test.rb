@@ -42,4 +42,3 @@ Rails.application.configure do
 
   config.cache_store = :memory_store
 end
-URL_HOST = ENV['URL_HOST']
