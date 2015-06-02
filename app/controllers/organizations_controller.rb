@@ -159,5 +159,4 @@ class OrganizationsController < ApplicationController
   def organization_params
     params.require(:organization).permit([:name, :description, :url_name, :org_type, :homepage_url])
   end
-
 end
