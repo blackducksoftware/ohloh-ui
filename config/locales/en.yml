@@ -327,6 +327,11 @@ en:
               taken: 'has already been submitted'
               invalid_url: 'Invalid Link URL'
 
+        repository:
+          attributes:
+            url:
+              blank: The URL can't be blank.
+
   project_experience:
     no_matching_project: No matching open source project with this name.
 
