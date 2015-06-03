@@ -26,6 +26,7 @@ class OrganizationsController < ApplicationController
     if @organization.save
       redirect_to organization_path(@organization), notice: t('.notice')
     else
+      flash[:error] = t('.error')
       render :new
     end
   end
