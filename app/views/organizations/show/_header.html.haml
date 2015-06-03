@@ -1,10 +1,3 @@
-- if @organization.new_record?
-  .col-md-11#project_header
-    .pull-left
-      %h1.margin_top_10 Organizations
-    .pull-left.margin_left_25.margin_top_15
-
-- else
   .col-md-1.no_padding#org_icon
     = @organization.decorate.icon(:med)
   .col-md-11#project_header
