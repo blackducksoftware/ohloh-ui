@@ -12,8 +12,11 @@
       .controls
         .input-prepend
           %span.add-on= 'http://www.openhub.net/orgs/'
-          = f.text_field :url_name, class: 'url_available ', data: { id: @organization.id },
-          autocomplete: 'off', style: 'width: 375px'
+          = f.text_field :url_name, class: 'check-availability',
+            'data-ajax-path' => organization_check_availabilities_path,
+            'data-preview-base-url' => organizations_url,
+            autocomplete: 'off', style: 'width: 375px'
+          = render 'shared/availability_preview'
       - error_tag @organization, :url_name, class: 'error url_name'
 
     .control-group
