@@ -3,7 +3,7 @@
     .control-group
       %label.control-label.required= t('.name')
       .controls
-        = f.text_field :name, class: 'col-md-8'
+        = f.text_field :name, class: 'col-md-10'
         - error_tag @organization, :name
     .clearfix
 
@@ -12,8 +12,8 @@
       .controls
         .input-prepend
           %span.add-on= 'http://www.openhub.net/orgs/'
-          = f.text_field :url_name, class: 'url_available', data: { id: @organization.id },
-          autocomplete: 'off', style: 'width:415px;'
+          = f.text_field :url_name, class: 'url_available ', data: { id: @organization.id },
+          autocomplete: 'off', style: 'width: 375px'
       - error_tag @organization, :url_name, class: 'error url_name'
 
     .control-group
@@ -30,14 +30,14 @@
     .control-group
       %label.control-label= t('.description')
       .controls
-        = find_and_preserve f.text_area(:description, max_length: 800, class: 'col-md-8', size: '40x10')
+        = find_and_preserve f.text_area(:description, max_length: 800, style: 'width: 375px', rows: '10')
         - error_tag @organization, :description
     .clearfix
 
     .control-group
       %label.control-label= t('.home')
       .controls
-        = f.text_field :homepage_url, class: 'col-md-8'
+        = f.text_field :homepage_url, class: 'col-md-10'
         - error_tag @organization, :homepage_url
     .clearfix
       = f.hidden_field :id unless @organization.new_record?
