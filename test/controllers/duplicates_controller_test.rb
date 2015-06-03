@@ -4,7 +4,8 @@ describe 'DuplicatesController' do
   describe 'new' do
     it 'should require a current user' do
       get :new, project_id: create(:project).to_param
-      assert_response :unauthorized
+      assert_response :redirect
+      must_redirect_to new_session_path
     end
 
     it 'should succeed in normal conditions' do
@@ -27,7 +28,8 @@ describe 'DuplicatesController' do
   describe 'create' do
     it 'should require a current user' do
       post :create, project_id: create(:project).to_param, duplicate: { good_project_id: create(:project).to_param }
-      assert_response :unauthorized
+      assert_response :redirect
+      must_redirect_to new_session_path
     end
 
     it 'should create duplicate record' do
@@ -64,7 +66,8 @@ describe 'DuplicatesController' do
       project = create(:project)
       duplicate = create(:duplicate, bad_project: project)
       get :edit, project_id: project.to_param, id: duplicate.id
-      assert_response :unauthorized
+      assert_response :redirect
+      must_redirect_to new_session_path
     end
 
     it 'should require that the user be the reporter' do
@@ -98,7 +101,8 @@ describe 'DuplicatesController' do
       duplicate = create(:duplicate, bad_project: project)
       post :update, project_id: project.to_param, id: duplicate.id,
                     duplicate: { good_project_id: duplicate.good_project_id, comment: 'Whatevs!' }
-      assert_response :unauthorized
+      assert_response :redirect
+      must_redirect_to new_session_path
       duplicate.reload.comment.wont_equal 'Whatevs!'
     end
 

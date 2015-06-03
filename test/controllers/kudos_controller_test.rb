@@ -45,6 +45,14 @@ class KudosControllerTest < ActionController::TestCase
     must_select 'i.rescind-kudos', false
   end
 
+  it 'index should render if the account lacks a person for some reason' do
+    login_as nil
+    account = create(:account)
+    account.person.destroy!
+    get :index, account_id: account
+    must_respond_with :ok
+  end
+
   it 'index should not respond to xml format without an api_key' do
     login_as nil
     get :index, account_id: @kudo.account, format: :xml
@@ -106,7 +114,8 @@ class KudosControllerTest < ActionController::TestCase
   it 'new should require a current user' do
     login_as nil
     get :new, account_id: create(:account).id
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
   end
 
   it 'new should accept account_id' do
@@ -125,7 +134,8 @@ class KudosControllerTest < ActionController::TestCase
   it 'create should require a current user' do
     login_as nil
     post :create, kudo: { account_id: create(:account).id }
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
   end
 
   it 'create should not allow user to kudo themselves' do
@@ -157,7 +167,8 @@ class KudosControllerTest < ActionController::TestCase
     kudo = create(:kudo)
     login_as nil
     delete :destroy, id: kudo.id
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
     Kudo.where(id: kudo.id).count.must_equal 1
   end
 

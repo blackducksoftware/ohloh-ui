@@ -7,7 +7,8 @@ class StackIgnoresControllerTest < ActionController::TestCase
     project = create(:project)
     login_as nil
     post :create, stack_id: stack, stack_ignore: { project_id: project }
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
     StackIgnore.where(stack_id: stack.id, project_id: project.id).count.must_equal 0
   end
 
@@ -50,7 +51,8 @@ class StackIgnoresControllerTest < ActionController::TestCase
     stack_ignore = create(:stack_ignore)
     login_as nil
     post :delete_all, stack_id: stack_ignore.stack
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
     StackIgnore.where(stack_id: stack_ignore.stack.id).count.must_equal 1
   end
 

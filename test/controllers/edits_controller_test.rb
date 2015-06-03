@@ -36,7 +36,8 @@ describe EditsController do
       login_as nil
       create_edit = CreateEdit.where(target: @project).first
       post :update, id: create_edit.id, undo: 'true'
-      assert_response :unauthorized
+      assert_response :redirect
+      must_redirect_to new_session_path
       assert_equal false, @project.reload.deleted?
     end
 
@@ -60,7 +61,8 @@ describe EditsController do
       create_edit = CreateEdit.where(target: @project).first
       create_edit.undo! create(:admin)
       post :update, id: create_edit.id, undo: 'false'
-      assert_response :unauthorized
+      assert_response :redirect
+      must_redirect_to new_session_path
       assert_equal true, @project.reload.deleted?
     end
 

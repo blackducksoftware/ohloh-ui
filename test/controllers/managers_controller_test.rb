@@ -96,7 +96,8 @@ class ManagersControllerTest < ActionController::TestCase
     assert_no_difference 'Manage.where.not(deleted_by: nil).count' do
       post :reject, project_id: @proj.to_param, id: accounts(:user).to_param
     end
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
   end
 
   it 'test accept should succeed for manager' do
@@ -119,7 +120,8 @@ class ManagersControllerTest < ActionController::TestCase
       post :approve, project_id: @proj.to_param, id: accounts(:user).to_param
     end
     @proj.active_managers.include?(accounts(:user)).must_equal false
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
   end
 
   it 'test accept should fail for non manager' do

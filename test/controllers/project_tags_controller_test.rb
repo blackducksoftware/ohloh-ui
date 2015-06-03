@@ -31,7 +31,8 @@ describe 'ProjectTagsController' do
       project = create(:project)
       login_as nil
       post :create, project_id: project.to_param, tag_name: 'scrumptious'
-      assert_response :unauthorized
+      assert_response :redirect
+      must_redirect_to new_session_path
       project.reload.tag_list.must_equal ''
     end
 
@@ -76,7 +77,8 @@ describe 'ProjectTagsController' do
       create(:tagging, taggable: project, tag: create(:tag, name: 'shiny'))
       login_as nil
       delete :destroy, project_id: project.to_param, id: 'shiny'
-      assert_response :unauthorized
+      assert_response :redirect
+      must_redirect_to new_session_path
       project.reload.tag_list.must_equal 'shiny'
     end
 

@@ -9,7 +9,8 @@ class RatingsControllerTest < ActionController::TestCase
   it 'does not allow rating a project by unlogged users' do
     login_as nil
     post :rate, id: @project.to_param, score: '5'
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
   end
 
   it 'allows rating a project with logged in users' do
@@ -46,7 +47,8 @@ class RatingsControllerTest < ActionController::TestCase
   it 'does not allow unrating a project by unlogged users' do
     login_as nil
     post :unrate, id: @project.to_param
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
   end
 
   it 'allows unrating a project with logged in users even if they never rated it' do

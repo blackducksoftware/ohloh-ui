@@ -212,14 +212,16 @@ describe PostsController do
 
   it 'edit' do
     get :edit, topic_id: topic.id, id: post_object.id
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
   end
 
   it 'update' do
     put :update, topic_id: topic.id, id: post_object.id, post: { body: 'Updating the body' }
     post_object.reload
     post_object.body.must_equal post_object.body
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
   end
 
   it 'delete' do

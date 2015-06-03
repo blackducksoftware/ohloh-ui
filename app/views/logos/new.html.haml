@@ -1,20 +1,21 @@
-- if @organization
-  - content_for(:html_title) { t('.meta_title') }
-- else
-  -# page_context[:select_top_menu_nav] = 'select_projects'
+:ruby
+  if @organization
+    content_for(:html_title) { t('.meta_title') }
+    page_context[:select_top_menu_nav] = 'select_organizations'
+  else
+    page_context[:select_top_menu_nav] = 'select_projects'
 
 .project_content_title
   %h2.pull-left
-    - path = @organization ? settings_organization_path(@organization) : settings_project_path(@project)
-    = link_to t('.settings'), path
+    = link_to t(:settings), settings_parent_path(@parent)
     = t('.heading')
   - unless @organization
-    = project_analysis_timestamp(@project_or_organization)
+    = project_analysis_timestamp(@parent)
 
 .row
   .col-md-10.col-md-offset-1
     .well
-      = form_for [@project_or_organization, @logo], html: { multipart: true } do |f|
+      = form_for [@parent, @logo], html: { multipart: true } do |f|
         = render partial: 'fields', locals: { f: f }
       .clear
         &nbsp;

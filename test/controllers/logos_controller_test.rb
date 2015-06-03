@@ -2,7 +2,7 @@ require_relative '../test_helper.rb'
 
 class LogosControllerTest < ActionController::TestCase
   def setup
-    ActionView::Base.any_instance.stubs(:has_permission?).returns('true')
+    ActionView::Base.any_instance.stubs(:current_user_can_manage?).returns('true')
     @admin = create(:admin)
     @user = create(:account)
   end
@@ -66,6 +66,13 @@ class LogosControllerTest < ActionController::TestCase
     project = projects(:linux)
 
     get :new, project_id: project.id
+    must_respond_with :success
+  end
+
+  it 'open LogosController new for organization with no logo renders successfully' do
+    organization = create(:organization)
+
+    get :new, organization_id: organization.id
     must_respond_with :success
   end
 

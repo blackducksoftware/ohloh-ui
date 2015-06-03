@@ -16,7 +16,8 @@ class ApiKeysControllerTest < ActionController::TestCase
   it 'unlogged in users should not be able to look at the global list of api keys' do
     login_as nil
     get :index
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
   end
 
   it 'normal users should not be able to look at the global list of api keys' do
@@ -168,7 +169,8 @@ class ApiKeysControllerTest < ActionController::TestCase
   it 'unlogged in users should not be able to look at the api keys of a user' do
     login_as nil
     get :index, account_id: @user.id
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
   end
 
   it 'normal users should be able to look at their own api keys' do
