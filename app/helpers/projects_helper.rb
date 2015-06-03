@@ -59,7 +59,7 @@ module ProjectsHelper
 
   def truncate_project_name(name, link = false, len = 25)
     if name.length > len && link == false
-      "<abbr title = '#{name}'>#{name.truncate(len)}</abbr>"
+      content_tag(:abbr, name.truncate(len), title: name)
     elsif name.length > len && link == true
       name.truncate(len)
     else
