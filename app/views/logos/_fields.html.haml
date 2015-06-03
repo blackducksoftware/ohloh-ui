@@ -9,7 +9,7 @@
       - if has_permission
         %h6.margin_bottom_10= t('.head.first')
         %p= t('.body.first')
-        .no-margin-left.no-margin-left
+        .no-margin-left.no-margin-left.ace-file-input
           = f.file_field :attachment, class: 'new_file_upload', accept: 'image/*',
             data: { max_size: Logo::FILE_SIZE_LIMIT.max }
           .max_size_exceeded.hidden
