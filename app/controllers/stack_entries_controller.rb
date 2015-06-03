@@ -21,7 +21,10 @@ class StackEntriesController < ApplicationController
   end
 
   def destroy
-    render json: { result: 'okay' }, status: (@stack_entry.destroy ? :ok : :unprocessable_entity)
+    respond_to do |format|
+      format.html { render json: { result: 'okay' }, status: (@stack_entry.destroy ? :ok : :unprocessable_entity) }
+      format.json { render nothing: true }
+    end
   end
 
   private

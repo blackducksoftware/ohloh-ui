@@ -25,6 +25,8 @@
         .pull-right#i_use_this_container
           .use_count
             = link_to number_with_delimiter(@project.user_count), users_project_path(@project)
+
+          / Don't forget to implement login modal when not logged in.
           %button.btn.btn-default{"data-target" => "#iUseThisModal", "data-toggle" => "modal", :type => "button"}= t('.i_use_this')
           #iUseThisModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "iUseThisModalLabel", :role => "dialog", :tabindex => "-1"}
             .modal-dialog
@@ -36,8 +38,9 @@
                 .modal-body= t('.add_to_your_stack', project: @project.name)
                 - if logged_in? && @account.stacks.count > 0
                   - @account.stacks.each do |stack|
+                    - stack_entry = stack.stack_entries.select { |stack_entry| stack_entry.project_id == @project.id }.first
                     - haml_tag :div, stack.title
-                    = check_box_tag 'stacked', 0, false, { "data-stack" => stack.to_param, "data-project" => @project.to_param }
+                    = check_box_tag 'stacked', 0, false, { "data-stack" => stack.to_param, "data-project" => @project.to_param, "data-stackentry" => stack_entry.to_param }
                 .modal-footer
                   = button_to t('.create_a_new_stack', project: @project.name), stacks_path, remote: true, params: { project_id: @project.id }
 .clearfix
