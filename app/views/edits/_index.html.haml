@@ -6,7 +6,7 @@
       %tbody
         %tr{ id: 'dingus-row' }
           %td
-            = render 'shared/search_dingus', collection: @edits, sort_context: nil
+            = render 'shared/search_dingus', collection: @edits, filter_type: :checkbox
         = render partial: 'edit', collection: @edits
   = will_paginate @edits
 - elsif !params[:query].blank?

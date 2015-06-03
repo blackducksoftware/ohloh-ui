@@ -1,6 +1,6 @@
 .col-md-4
   - if filter_type == :checkbox
-    %label.checkbox.padding_left_20#human_edits
+    %label.checkbox.pull-right.padding_right_20#human_edits
       %input{ type: 'checkbox', checked: params[:human] == 'true' }
       = t('.show_only_humans')
 
