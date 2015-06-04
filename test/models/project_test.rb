@@ -242,4 +242,14 @@ class ProjectTest < ActiveSupport::TestCase
       Project.with_pai_available.must_equal 1
     end
   end
+
+  describe 'search_and_sort' do
+    it 'should return sorted search results' do
+      pro_1 = create(:project, name: 'test na1', user_count: 5)
+      pro_2 = create(:project, name: 'test na2', user_count: 10)
+      pro_3 = create(:project, name: 'test na3', user_count: 9)
+
+      Project.search_and_sort('test', 'new', nil).must_equal [pro_3, pro_2, pro_1]
+    end
+  end
 end

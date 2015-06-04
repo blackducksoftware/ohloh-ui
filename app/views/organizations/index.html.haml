@@ -1,0 +1,17 @@
+- content_for(:html_title) { t('.page_title') }
+- page_context[:select_top_menu_nav] = 'select_organizations'
+
+.row
+  .col-md-2.pull-left
+    %h1= t('.title')
+  - if current_user_is_admin?
+    .col-md-3.pull-right
+      = link_to t('.add'), new_organization_path, class: 'btn btn-small btn-info margin_top_20 margin_left_15'
+
+= render partial: 'shared/search_dingus', locals: { collection: @organizations, sort_context: :organizations }
+
+- if @organizations.empty?
+  = t('.no_matches')
+- else
+  = render partial: 'organization', collection: @organizations
+  = will_paginate @organizations

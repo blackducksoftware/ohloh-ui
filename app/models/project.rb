@@ -95,6 +95,14 @@ class Project < ActiveRecord::Base
       .limit(10)
   end
 
+  class << self
+    def search_and_sort(query, sort, page)
+      tsearch(query, "by_#{sort}")
+        .includes(:best_analysis)
+        .paginate(page: page, per_page: 20)
+    end
+  end
+
   private
 
   def clean_strings_and_urls

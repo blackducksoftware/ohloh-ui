@@ -2,28 +2,25 @@
   .col-md-12
     .col-md-3.col
       %h6= t('.title')
-      - project_icon(@parent, :med)
+      - @parent.decorate.icon(:med)
 
     .col-md-9.col
-      - if current_user_can_manage?
+      - if logged_in? && @parent.edit_authorized?
         %h6= t('.head.first')
         %p= t('.body.first')
         .col-md-10.no_margin_left
           .col-md-8.no_margin_left.ace-file-input.margin_bottom_30
-            = f.file_field :attachment,
-              class: 'new_file_upload', accept: 'image/*',
+            = f.file_field :attachment, class: 'new_file_upload', accept: 'image/*',
               'data_max_size' => Logo::FILE_SIZE_LIMIT.max
             .max_size_exceeded.hidden
-              = t('.invalid_size',
-                max: number_to_human_size(Logo::FILE_SIZE_LIMIT.max))
+              = t('.invalid_size', max: number_to_human_size(Logo::FILE_SIZE_LIMIT.max))
             - if @logo.attachment.url.blank?
               - if @logo.attachment_file_name.blank?
                 - error_tag @logo, :attachment_file_name
               - else
                 - error_tag @logo, :attachment_content_type
           %p.margin_bottom_5
-            = f.text_field :url, value: @logo.url,
-              placeholder: t('.placeholder'), class: 'col-md-5'
+            = f.text_field :url, value: @logo.url, placeholder: t('.placeholder'), class: 'col-md-5'
             - error_tag @logo, :url
             - error_tag @logo, :attachment_content_type if @logo.url.present? && @logo.errors[:url].blank?
             - error_tag @logo, :attachment_file_size
@@ -55,15 +52,13 @@
                   %img{ src: logo.attachment.url(:small) }
                 %label{ for: 'logo_' + logo.id.to_s }= label
 
-.row
+.row.margin_top_30
   .col-md-12
     .actions
-      - if current_user_can_manage?
+      - if logged_in? && @parent.edit_authorized?
         %input.btn.btn-sm.btn-primary{ type: 'submit', value: t('.button.save') }
         - if @parent.logo
-          = link_to t('.link.blank'),
-            [@parent, @logo],
-            method: :delete, class: 'btn btn-sm'
+          = link_to t('.link.blank'), [@parent, @logo], method: :delete, class: 'btn btn-sm'
         - else
           = disabled_button t('.link.blank'), class: 'btn-sm'
       - else

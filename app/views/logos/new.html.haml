@@ -1,9 +1,7 @@
-- if @organization
-  - content_for(:html_title) { t('.meta_title') }
--# else
-  -# @meta_title_final = project_pages_title(t('.page_title'))
+- page_context[:select_top_menu_nav] = @organization ? 'select_organizations' : 'select_projects'
+
 .project_content_title
-  %h2.float_left
+  %h2.pull-left
     = link_to t(:settings), settings_parent_path(@parent)
     = t('.heading')
   - unless @organization
@@ -14,7 +12,7 @@
     .well
       = form_for [@parent, @logo], html: { multipart: true } do |f|
         = render partial: 'fields', locals: { f: f }
-      .clear
+      .clearfix
         &nbsp;
 
 - if @project
