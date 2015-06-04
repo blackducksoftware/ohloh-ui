@@ -86,20 +86,18 @@ $(document).on('page:change', SimilarProjects.init())
 
 // Don't forget controller tests!
 $(document).ready(function() {
-  var check_value = $("input[name='stacked']").val();
+  // var check_value = $("input[name='stacked']").val();
   $("input[name='stacked']").click(function() {
-    if (check_value == 0) {
+    if ($("input[name='stacked']").prop("checked") == true) {
       var stack_id = $("input[name='stacked']").data("stack");
       var project_url_name = $("input[name='stacked']").data("project");
       $.ajax("/stacks/" + stack_id + "/stack_entries",{
         type: "POST",
         data: "project_id=" + project_url_name,
         dataType: 'json',
-        success: function(){
-          $('.spinner').show();
-          $("input[name='stacked']").prop("checked",true);
-          $("input[name='stacked']").attr("value", "1");
-          $("input[name='stacked']").append("<span>stacked</span>")
+        success: function(data){
+          $("input[name='stacked']").attr("data-stackentry", data.stack_entry_id);
+          $(".stack_message").append("<p>stacked</p>");
         }
       });
     } else {
@@ -110,10 +108,8 @@ $(document).ready(function() {
         type: "DELETE",
         dataType: 'json',
         success: function() {
-          $('.spinner').show();
-          $("input[name='stacked']").prop("checked",false);
-          $("input[name='stacked']").attr("value", "0");
-          $("input[name='stacked']").append("<span>unstacked</span>")
+          $("input[name='stacked']").removeAttr("data-stackentry");
+          $(".stack_message").append("<p>unstacked</p>");
         }
       });
     }

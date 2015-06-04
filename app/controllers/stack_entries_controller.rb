@@ -11,20 +11,14 @@ class StackEntriesController < ApplicationController
   def create
     stack_entry = StackEntry.create(stack_id: @stack.id, project_id: @project.id)
     if stack_entry.persisted?
-      respond_to do |format|
-        format.html { render json: { stack_entry: stack_entry_html(stack_entry), result: 'okay', updated_count: 1 }, status: :ok }
-        format.json { render nothing: true }
-      end
+      render json: { stack_entry_id: stack_entry.id, stack_entry: stack_entry_html(stack_entry), result: 'okay', updated_count: 1 }, status: :ok 
     else
       render json: { result: 'error' }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    respond_to do |format|
-      format.html { render json: { result: 'okay' }, status: (@stack_entry.destroy ? :ok : :unprocessable_entity) }
-      format.json { render nothing: true }
-    end
+    render json: { result: 'okay' }, status: (@stack_entry.destroy ? :ok : :unprocessable_entity)
   end
 
   private
