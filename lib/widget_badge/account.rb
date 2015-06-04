@@ -37,7 +37,7 @@ module WidgetBadge
         set_font_and_color(convert, options)
         set_gravity(convert, options[:align])
 
-        convert.draw "text 0,#{ options[:y_offset] - 8 } '#{ text }'"
+        convert.draw "text 0,#{ options[:y_offset] - 8 } '#{ text.gsub("'", %q(\\\')) }'"
       end
     end
 
