@@ -84,33 +84,38 @@ SimilarProjects = {
 
 $(document).on('page:change', SimilarProjects.init())
 
-// Don't forget controller tests!
+// I Use this button p/id
 $(document).ready(function() {
-  // var check_value = $("input[name='stacked']").val();
   $("input[name='stacked']").click(function() {
-    if ($("input[name='stacked']").prop("checked") == true) {
-      var stack_id = $("input[name='stacked']").data("stack");
-      var project_url_name = $("input[name='stacked']").data("project");
-      $.ajax("/stacks/" + stack_id + "/stack_entries",{
+    if ($(this).prop("checked") == true) {
+      var $stack_id = $(this).data("stack");
+      var $project_url_name = $(this).data("project");
+      $.ajax("/stacks/" + $stack_id + "/stack_entries",{
         type: "POST",
-        data: "project_id=" + project_url_name,
+        data: "project_id=" + $project_url_name,
         dataType: 'json',
         success: function(data){
-          $("input[name='stacked']").attr("data-stackentry", data.stack_entry_id);
-          $(".stack_message").append("<p>stacked</p>");
+          if ($(".unstack-message").length) {
+            $(".unstack-message").remove();
+          }
+          $(":checked").attr("data-stackentry", data.stack_entry_id);
+          $("<p class=stack-message>stacked</p>").insertAfter(":checked");
         }
       });
     } else {
-      var stack_id = $("input[name='stacked']").data("stack");
-      var stack_entry_id = $("input[name='stacked']").data("stackentry");
-      var project_url_name = $("input[name='stacked']").data("project");
-      $.ajax("/stacks/" + stack_id + "/stack_entries/" + stack_entry_id, {
+      var $input_element = $(this);
+      var $stack_id = $(this).data("stack");
+      var $stack_entry_id = $(this).data("stackentry");
+      $.ajax("/stacks/" + $stack_id + "/stack_entries/" + $stack_entry_id, {
         type: "DELETE",
         dataType: 'json',
+        context: $input_element,
         success: function() {
-          $("input[name='stacked']").removeAttr("data-stackentry");
-          $(".stack_message").append("<p>unstacked</p>");
+          $(".stack-message").remove();
         }
+      }).done(function(){
+        $("<p class=unstack-message>unstacked</p>").insertAfter($input_element);
+        $input_element.removeAttr("data-stackentry");
       });
     }
   });
