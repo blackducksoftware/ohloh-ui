@@ -90,7 +90,9 @@ describe 'OrganizationsController' do
     end
 
     it 'must alert non managers about read only data' do
-      restrict_edits_to_managers(organization, account)
+      admin = create(:admin)
+      create(:manage, target: organization, account: admin, approved_by: admin.id)
+      restrict_edits_to_managers(organization, admin)
       login_as account
 
       get :settings, id: organization.to_param
@@ -99,7 +101,7 @@ describe 'OrganizationsController' do
     end
 
     it 'wont show permission alert to an authorized manager' do
-      create(:manage, target: organization, account: account)
+      create(:manage, target: organization, account: account, approved_by: create(:admin).id)
       restrict_edits_to_managers(organization, account)
 
       login_as account

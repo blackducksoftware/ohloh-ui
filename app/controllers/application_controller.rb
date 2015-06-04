@@ -76,29 +76,34 @@ class ApplicationController < ActionController::Base
   helper_method :current_user_is_admin?
 
   def current_user_can_manage?
-    return false unless logged_in? && current_project_or_org
     return true if current_user_is_admin?
     logged_in? && current_project_or_org && current_project_or_org.active_managers.include?(current_user)
   end
   helper_method :current_user_can_manage?
 
   def current_project_or_org
-    return @current_project_or_org if @current_project_or_org
-    param = params[:project_id].presence || params[:id]
-    @current_project_or_org = Project.from_param(param).first || Organization.from_param(param).first
+    @parent ||= @project || @organization || current_project || current_organization
+    @parent
   end
 
   def current_project
-    return @current_project if @current_project
     begin
-      param = params[:project_id].presence || params[:id]
-      @current_project ||= Project.from_param(param).first!
+      @project ||= Project.from_param(params[:project_id] || params[:id]).first!
     rescue ActiveRecord::RecordNotFound
       raise ParamRecordNotFound
     end
-    @current_project
+    @project
   end
   helper_method :current_project
+
+  def current_organization
+    begin
+      @organization ||= Organization.from_param(params[:organization_id] || params[:id]).first!
+    rescue ActiveRecord::RecordNotFound
+      raise ParamRecordNotFound
+    end
+    @organization
+  end
 
   def read_only_mode?
     ENV['READ_ONLY_MODE'].present?
