@@ -48,7 +48,7 @@ class LogoTest < ActiveSupport::TestCase
     logo = Logo.new(attachment_file_name: 'test.jpg',
                     attachment_content_type: 'image/jpeg', attachment_file_size: '6640643')
     logo.valid?.must_equal false
-    logo.errors[:attachment_file_size].must_equal ['File size is too big (must be less than 500 KB)']
+    logo.errors[:attachment_file_size].must_equal ['File size is too big (must be less than 500 kB)']
   end
 
   it 'Logo Upload with wrong URL' do
@@ -67,7 +67,7 @@ class LogoTest < ActiveSupport::TestCase
     logo = Logo.new(url: 'https://www.ohloh.net/images/clear.gif',
                     attachment_content_type: 'image/gif', attachment_file_size: '5242880')
     logo.save
-    logo.errors[:attachment_file_size].must_equal ['File size is too big (must be less than 500 KB)']
+    logo.errors[:attachment_file_size].must_equal ['File size is too big (must be less than 500 kB)']
   end
 
   it 'Logo Upload with valid file' do
