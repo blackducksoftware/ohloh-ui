@@ -212,9 +212,9 @@ describe 'OrganizationsController' do
 
   describe 'manage_projects' do
     it 'should return org managed projects' do
-      pro_1 = create(:project, name: 'test name1')
-      pro_2 = create(:project, name: 'test name2')
-      pro_3 = create(:project, name: 'test name3')
+      pro_1 = create(:project, name: 'test name1', organization_id: organization.id)
+      pro_2 = create(:project, name: 'test name2', organization_id: organization.id)
+      pro_3 = create(:project, name: 'test name3', organization_id: organization.id)
 
       get :manage_projects, id: organization.to_param, query: 'test'
 
@@ -225,9 +225,9 @@ describe 'OrganizationsController' do
     end
 
     it 'should return org managed projects with sorting' do
-      pro_1 = create(:project, name: 'test name1')
-      pro_2 = create(:project, name: 'test name2')
-      pro_3 = create(:project, name: 'test name3')
+      pro_1 = create(:project, name: 'test name1', organization_id: organization.id)
+      pro_2 = create(:project, name: 'test name2', organization_id: organization.id)
+      pro_3 = create(:project, name: 'test name3', organization_id: organization.id)
 
       get :manage_projects, id: organization.to_param, query: 'test', sort: 'project_name'
 
@@ -284,7 +284,7 @@ describe 'OrganizationsController' do
                                     org_type: '2', homepage_url: 'http://test.com' }
 
       must_respond_with :ok
-      assigns(:organization).errors[:url_name].must_equal ['can\'t be blank']
+      assigns(:organization).errors[:url_name].must_equal ['can\'t be blank', 'is too short (minimum is 1 character)']
     end
 
     it 'should save record successfully' do
@@ -304,10 +304,10 @@ describe 'OrganizationsController' do
       account.update_column(:level, 10)
       org = create(:organization, name: 'test')
       put :update, id: org.id, organization: { name: '', description: 'tes', url_name: 'test',
-                                    org_type: '2', homepage_url: 'http://test.com' }
+                                               org_type: '2', homepage_url: 'http://test.com' }
 
       must_respond_with 422
-      assigns(:organization).errors[:name].must_equal ['can\'t be blank']
+      assigns(:organization).errors[:name].must_equal ['can\'t be blank', 'is too short (minimum is 3 characters)']
     end
 
     it 'should save record successfully' do
@@ -315,7 +315,7 @@ describe 'OrganizationsController' do
       login_as account
       org = create(:organization, name: 'test')
       put :update, id: org.id, organization: { name: 'test2', description: 'tes', url_name: 'test',
-                                    org_type: '2', homepage_url: 'http://test.com' }
+                                               org_type: '2', homepage_url: 'http://test.com' }
 
       must_redirect_to organization_path(assigns(:organization))
       assigns(:organization).name.must_equal 'test2'

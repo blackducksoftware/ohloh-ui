@@ -2,7 +2,7 @@
   .col-md-12
     .col-md-3.col
       %h6= t('.title')
-      - @parent.decorate.icon(, :med)
+      - @parent.decorate.icon(:med)
 
     .col-md-9.col
       - if logged_in? && @parent.edit_authorized?
