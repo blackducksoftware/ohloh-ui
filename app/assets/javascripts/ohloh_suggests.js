@@ -104,9 +104,6 @@ StackShow = {
         StackShow.update_count(json);
         StackShow.reinit();
         StackShow.update_recommendations(null, $("a:visible").filter("#skip_all, #more"));
-      },
-      error: function (xml_http_request, textStatus, errorThrown) {
-        alert('Error: ' + xml_http_request.responseText);
       }
     });
     return false;
