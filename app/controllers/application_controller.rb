@@ -82,10 +82,14 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_user_can_manage?
 
+  def project_param_name
+    params[:project_id] || (params[:id] unless controller_name == 'organizations')
+  end
+
   def current_project_or_org
     return @current_project_or_org if @current_project_or_org
-    param = params[:project_id].presence || params[:id]
-    @current_project_or_org = Project.from_param(param).first || Organization.from_param(param).first
+    @current_project_or_org = Project.from_param(project_param_name).first if project_param_name
+    @current_project_or_org ||= Organization.from_param(params[:id]).first
   end
 
   def current_project
