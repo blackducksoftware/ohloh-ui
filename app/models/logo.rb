@@ -9,7 +9,7 @@ class Logo < Attachment
 
   validates_attachment_content_type :attachment, content_type: /\Aimage\/.*\Z/,
                                                  message: I18n.t('logos.invalid_content_type')
-  validates_attachment_size :attachment, in: FILE_SIZE_LIMIT, message: I18n.t('logos.invalid_file_size')
+  validates_attachment_size :attachment, in: FILE_SIZE_LIMIT, message: I18n.t('logos.invalid_file_size', max: 500)
 
   alias_attribute :attachment_file_name, :filename
   alias_attribute :attachment_file_size, :size

@@ -44,9 +44,10 @@ class LogosControllerTest < ActionController::TestCase
     VCR.use_cassette('LogoClearGif') do
       login_as @admin
       project = projects(:linux)
-      Project.any_instance.expects(:edit_authorized?).returns(true)
+      Project.any_instance.expects(:edit_authorized?).at_least_once.returns(true)
       post :create, project_id: project.id, logo: { url: 'https://www.dummyhost.net/images/clear.gif' }
-      must_redirect_to new_project_logos_path
+      must_respond_with :unprocessable_entity
+      must_render_template :new
       flash[:error].must_equal 'Sorry, there was a problem updating the logo'
     end
   end
