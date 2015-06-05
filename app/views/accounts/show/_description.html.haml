@@ -1,14 +1,14 @@
 -# NOTE: Replaces show_hide_about_me in accounts_helper.rb
 - unless markup.blank?
-  - if markup.formatted.length < desc_size  && markup.lines.size == 1
+  - if markup.formatted.length < desc_size && markup.lines.size <= 1
     %div= markup.formatted
   - else
     #about_me_sm
-      - if markup.formatted.length >= desc_size && markup.lines.size == 1
-        = markup.formatted[0..desc_size]
+      - if markup.formatted.length >= desc_size && markup.lines.size <= 1
+        != markup.formatted[0..desc_size]
       - else
         = markup.first_line
       %span#more_about= link_to t('.more'), 'javascript:void(0)'
-    .hidden#about_me_all
-      = markup.formatted
+    #about_me_all{ style: 'display: none;' }
+      != markup.formatted
       %span#less_about= link_to t('.less'), 'javascript:void(0)'
