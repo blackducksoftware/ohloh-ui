@@ -5,10 +5,11 @@
   - else
     #about_me_sm
       - if markup.formatted.length >= desc_size && markup.lines.size <= 1
-        != markup.formatted[0..desc_size]
+        = markup.formatted[0..desc_size]
       - else
         = markup.first_line
       %span#more_about= link_to t('.more'), 'javascript:void(0)'
     #about_me_all{ style: 'display: none;' }
-      != markup.formatted
+      - markup.lines.each do |line|
+        %p.no-margin= line
       %span#less_about= link_to t('.less'), 'javascript:void(0)'
