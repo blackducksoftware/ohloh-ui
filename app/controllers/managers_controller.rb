@@ -58,12 +58,6 @@ class ManagersController < SettingsController
 
   protected
 
-  def current_user_can_manage?
-    return true if current_user_is_admin?
-    logged_in? && @parent && @parent.active_managers.include?(current_user)
-  end
-  helper_method :current_user_can_manage?
-
   def current_user_can_manage_or_self?
     current_user_can_manage? || @manage.account == current_user
   end

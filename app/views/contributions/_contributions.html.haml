@@ -34,7 +34,7 @@
               = t('.position_title', title: contribution.position.title)
             - elsif !contribution.position.active?
               = t('.inactive')
-            - elsif @project.managers.include?(contribution.person.account)
+            - elsif @project.active_managers.include?(contribution.person.account)
               = t('.manager')
         %td
           - rank = contribution.person.kudo_rank || 1
