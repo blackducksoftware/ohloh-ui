@@ -19,7 +19,6 @@
         %a#good_project_url{ base: projects_url, href: project_url(good) }= project_url(good)
       - else
         %a#good_project_url{ base: projects_url, href: '#' }
-      = form.hidden_field :good_project_id
 
   .control-group.clearfix
     %label.control-label= t('.comment')
