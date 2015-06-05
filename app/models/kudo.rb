@@ -67,6 +67,6 @@ class Kudo < ActiveRecord::Base
 
   def cant_kudo_self
     return unless sender_id == account_id
-    errors.add :account, I18n.t('kudos.cant_kudo_self')
+    errors.add :base, I18n.t('kudos.cant_kudo_self')
   end
 end
