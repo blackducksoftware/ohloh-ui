@@ -281,7 +281,7 @@ Rails.application.routes.draw do
 
     resources :edits, only: [:index]
     resource :logos, only: [:new, :create, :destroy]
-    resources :managers, only: [:index, :new, :create, :edit, :update] do
+    resources :managers, only: [:index, :create, :edit, :update] do
       member do
         post :approve
         post :reject

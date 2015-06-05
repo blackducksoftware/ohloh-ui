@@ -13,7 +13,7 @@ module ManagersHelper
   end
 
   def new_parent_manager_path(parent)
-    parent.is_a?(Project) ? new_project_manager_path(parent) : new_organization_manager_path(parent)
+    parent.is_a?(Project) ? new_project_manager_path(parent) : new_manager_organization_path(parent)
   end
 
   def edit_parent_manager_path(parent, account)
