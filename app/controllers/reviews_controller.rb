@@ -45,6 +45,7 @@ class ReviewsController < ApplicationController
     if @review.update(review_params)
       redirect_to summary_project_reviews_path(@project), flash: { success: t('.success') }
     else
+      @rating = current_user.ratings.where(project_id: @project).take
       flash.now[:error] = t('.error')
       render :edit
     end

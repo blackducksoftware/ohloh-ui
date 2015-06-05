@@ -1,5 +1,5 @@
 App.ProjectRating =
-  init:  ->
+  init: ->
     $("#rating_spinner").hide()
     $('ul.stack_list').change App.ProjectRating.hook_ratings
     @hook_ratings()
