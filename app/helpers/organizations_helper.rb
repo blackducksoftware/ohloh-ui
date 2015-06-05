@@ -29,8 +29,8 @@ module OrganizationsHelper
   def manager_link(manager, org)
     confirm = t('.confirm', name: h(manager.name.to_s), org: org.name)
     {
-      path: organization_manager_path(org, manager),
-      options: { method: :delete, confirm: confirm, class: 'btn btn-mini btn-danger' }
+      path: reject_organization_manager_path(org, manager),
+      options: { method: :post, data: { confirm: confirm }, class: 'btn btn-mini btn-danger' }
     }
   end
 
