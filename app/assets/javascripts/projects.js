@@ -62,23 +62,3 @@ ProjectForm = {
     };
   }
 }
-
-SimilarProjects = {
-  init: function(){
-    if($('#projects_show_page').length == 0) return;
-    var project_id = $('#similar_projects').data('project-id');
-    $('#similar_projects').html('');
-    $('#related_spinner').show();
-    $.ajax({
-      url: '/p/' + project_id + '/similar_by_tags',
-      success: function (data, textStatus) {
-        $('#similar_projects').html( data );
-      },
-      complete: function() {
-        $('#related_spinner').hide();
-      }
-    });
-  }
-}
-
-$(document).on('page:change', SimilarProjects.init())
