@@ -3,9 +3,9 @@
   = javascript_tag '$(document).on("page:change", NewDuplicate.init);'
 
 %fieldset
-  %legend= t('.legend', name: truncate_project_name(@duplicate.bad_project.name))
+  %legend= t('.legend', name: truncate_project_name(@duplicate.bad_project.name)).html_safe
   .control-group.clearfix
-    %label.control-label.required= t('.good_label', name: truncate_project_name(@duplicate.bad_project.name))
+    %label.control-label.required= t('.good_label', name: truncate_project_name(@duplicate.bad_project.name)).html_safe
     .controls
       = form.text_field :good_project, class: 'autocompletable', style: 'width: 95%;', value: good ? good.name : '',
       data: { source: '/autocompletes/project', select: 'duplicatesSelect' }
@@ -19,7 +19,6 @@
         %a#good_project_url{ base: projects_url, href: project_url(good) }= project_url(good)
       - else
         %a#good_project_url{ base: projects_url, href: '#' }
-      = form.hidden_field :good_project_id
 
   .control-group.clearfix
     %label.control-label= t('.comment')

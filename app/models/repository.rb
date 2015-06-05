@@ -5,6 +5,8 @@ class Repository < ActiveRecord::Base
 
   scope :matching, ->(match) { Repository.forge_match_search(match) }
 
+  validates :url, presence: true
+
   attr_accessor :forge_match
 
   def nice_url

@@ -263,7 +263,7 @@ en:
     title: 'Logos'
     invalid_content_type: 'Open Hub accepts GIF, JPG, and PNG formats for logo images.'
     invalid_url: 'Invalid URL / Image not found'
-    invalid_file_size: 'File size is too big (must be less than %{max})'
+    invalid_file_size: 'File size is too big (must be less than %{max} kB)'
     new:
       meta_title: 'Settings: New Logo Page'
       heading: ': Logo'
@@ -326,6 +326,11 @@ en:
             url:
               taken: 'has already been submitted'
               invalid_url: 'Invalid Link URL'
+
+        repository:
+          attributes:
+            url:
+              blank: The URL can't be blank.
 
   project_experience:
     no_matching_project: No matching open source project with this name.

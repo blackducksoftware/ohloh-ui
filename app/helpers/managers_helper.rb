@@ -4,7 +4,7 @@ module ManagersHelper
   end
 
   def parent_managers_path(parent)
-    parent.is_a?(Project) ? project_managers_path(parent) : organization_managers_path(parent)
+    parent.is_a?(Project) ? project_managers_path(parent) : list_managers_organization_path(parent)
   end
 
   def parent_manager_path(parent, manage)

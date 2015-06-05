@@ -12,6 +12,7 @@ class RatingsController < ApplicationController
 
   def unrate
     @rating.destroy if @rating.persisted?
+    @rating = nil if @rating.destroyed?
     sanitize_partial(params[:show])
     render partial: @partial, locals: { score: '0' }
   end
