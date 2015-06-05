@@ -1,4 +1,5 @@
 - page_context[:select_footer_nav] = nil
+- content_for(:html_title) { t('.page_title', name: @organization.name) }
 
 %h2.pull-left
   = link_to t('.settings'), settings_organization_path(@organization)
@@ -21,7 +22,8 @@
           %label.control-label.required= t('.new_manager')
           .controls
             = text_field_tag :account_name, params[:account_name],
-            id: 'org_new_manager', class: 'col-md-7', placeholder: t('.enter_name')
+            id: 'org_new_manager', class: 'autocompletable col-md-7', placeholder: t('.enter_name'),
+            data: { source: '/autocompletes/account', select: 'new_manager' }
             = hidden_field_tag :account_id
           .clearfix
           .actions.margin_top_15

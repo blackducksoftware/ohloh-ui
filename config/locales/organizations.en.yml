@@ -53,6 +53,8 @@ en:
       new_manager: 'New Manager'
       enter_name: 'Enter a user name'
       add: 'Add Manager'
+      success: 'Manager created successfully'
+      page_title: '%{name} : Settings: Managers : New - Open Hub'
     list_managers:
       page_title: '%{name} : Settings: Managers - Open Hub'
       title_link: 'Settings'
@@ -90,7 +92,6 @@ en:
     update:
       notice: 'Organization changes were saved successfully'
       failure: 'Organization changes could not be saved.'
-    new_manger: 'Manager created successfully'
     claim_project:
       unauthorized: 'Unauthorized!'
       failed: 'Failed.'
