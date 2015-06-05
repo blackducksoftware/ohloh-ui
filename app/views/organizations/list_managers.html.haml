@@ -1,36 +1,40 @@
-- page_context[:select_top_menu_nav] = 'select_organizations'
-- content_for(:html_title) { t('.page_title', name: @organization.name) }
+:ruby
+  page_context[:select_top_menu_nav] = 'select_organizations'
+  page_context[:select_footer_nav] = nil
+  content_for(:html_title) { t('.page_title', name: @organization.name) }
 
-.row
-  .col-md-1
-    &nbsp;
-  .col-md-8
-    - @managers.each do |manager|
-      .row.padding_one_top
-        .col-md-6
-          .pull-left
-            = avatar_for(manager.person, size: 60)
-          .col-md-4.pull-left
-            %h4.soft.nomargin.no_margin_top
-              = link_to h(manager.name), account_url(manager)
-            %p.margin_top_10
-              - if logged_in? && @organization.edit_authorized?
-                - link_values = manager_link(manager, @organization)
-                = link_to link_values[:path], link_values[:options] do
-                  %i.icon-trash= t('.remove').titleize
-              - else
-                = link_to '#', class: "btn btn-mini btn-danger #{logged_in? ? 'disabled' : 'needs_login'}" do
-                  %i.icon-trash= t('.remove')
-          .clearfix &nbsp;
+%h2.pull-left
+  = link_to t('.settings'), settings_organization_path(@organization)
+  \:
+  = t('.managers')
+.clearfix
 
-    - if @managers.empty?
-      = render partial: 'shared/alert', locals: { message: t('.empty_alert') }
+- if @managers.empty?
+  = render partial: 'shared/alert', locals: { message: t('.empty_alert') }
+  = render partial: 'managers/new_button'
+- else
+  .row
+    .col-md-1
+      &nbsp;
+    .col-md-11
+      - @managers.each do |manager|
+        .row.padding_one_top
+          .col-md-11
+            .pull-left
+              = avatar_for(manager.person, size: 60)
+            .col-md-9.pull-left
+              %h4.soft.nomargin.no_margin_top
+                = link_to h(manager.name), account_url(manager)
+              %p.margin_top_10
+                - if logged_in? && @organization.edit_authorized?
+                  - link_values = manager_link(manager, @organization)
+                  = link_to link_values[:path], link_values[:options] do
+                    %i.icon-trash= t('.remove').titleize
+                - else
+                  = link_to '#', class: "btn btn-mini btn-danger #{logged_in? ? 'disabled' : 'needs_login'}" do
+                    %i.icon-trash= t('.remove')
+            .clearfix &nbsp;
+      = render partial: 'managers/new_button'
 
-    .padding_one_top
-      - if logged_in? && @organization.edit_authorized?
-        = link_to t('.new_manager'), new_manager_organization_path(@organization),
-        class: 'btn btn-primary btn-small'
-      - else
-        = link_to t('.new_manager'), new_manager_organization_path(@organization),
-        class: "btn btn-primary btn-small #{logged_in? ? 'disabled' : 'needs_login'}"
 = render partial: 'about_managers'
+
