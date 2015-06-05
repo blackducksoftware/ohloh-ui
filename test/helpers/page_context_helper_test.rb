@@ -40,7 +40,7 @@ class PageContextHelperTest < ActionView::TestCase
   end
 
   let(:tool_menus) do
-    { select_top_menu_nav: :select_tools, nav_type: 'footer_nav'}
+    { select_top_menu_nav: :select_tools, nav_type: 'footer_nav' }
   end
 
   it 'should return account page context' do
