@@ -1,0 +1,31 @@
+- page_context[:select_footer_nav] = nil
+
+%h2.pull-left
+  = link_to t('.settings'), settings_organization_path(@organization)
+  \:
+  = link_to t('.managers'), list_managers_organization_path(@organization)
+  = t('.new')
+.clearfix
+
+.row.padding_one_top
+  .well.col-md-8.col-md-offset-2
+    = form_for @manage, url: new_manager_organization_path(@organization), class: 'nomargin' do |_|
+      - unless @manage.errors.empty?
+        - errors = @manage.errors.full_messages
+        - errors = errors.reject { |k, _| k =~ /^ssh.public.key/i || k =~ /^message/i }
+        - unless errors.empty?
+          %p.error= errors.join('. ')
+
+      %fieldset
+        .control-group
+          %label.control-label.required= t('.new_manager')
+          .controls
+            = text_field_tag :account_name, params[:account_name],
+            id: 'org_new_manager', class: 'col-md-7', placeholder: t('.enter_name')
+            = hidden_field_tag :account_id
+          .clearfix
+          .actions.margin_top_15
+            - if logged_in? && @organization.edit_authorized?
+              %input.btn.btn-primary{ type: 'submit', value: t('.add'), id: 'org_new_manager_submit' }
+            - else
+              = disabled_button(t('.add'), class: 'btn-primary')

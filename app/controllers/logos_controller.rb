@@ -6,7 +6,9 @@ class LogosController < SettingsController
   before_action :set_project_or_organization, only: [:destroy, :create, :new]
   before_action :set_logo, only: :destroy
   around_action :edit_authorized?, only: :create
+  before_action :show_permissions_alert, only: :new
   before_action :project_context, if: -> { @parent.is_a? Project }
+  before_action :organization_context, if: -> { @parent.is_a? Organization }
 
   def new
     @logo = Logo.new

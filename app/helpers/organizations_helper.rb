@@ -26,6 +26,22 @@ module OrganizationsHelper
     }
   end
 
+  def manager_link(manager, org)
+    confirm = t('.confirm', name: h(manager.name.to_s), org: org.name)
+    {
+      path: organization_manager_path(org, manager),
+      options: { method: :delete, confirm: confirm, class: 'btn btn-mini btn-danger' }
+    }
+  end
+
+  def claim_link_options(org, project)
+    {
+      class: 'btn btn-small btn-success org-claim-project',
+      id: "claim_project_#{project.id}",
+      data: { url: claim_project_organization_path(org, project_id: project.to_param) }
+    }
+  end
+
   private
 
   def org_most_commit_stat(account_stat)

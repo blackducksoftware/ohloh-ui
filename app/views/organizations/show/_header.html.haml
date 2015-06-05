@@ -1,4 +1,4 @@
-.col-md-1#org_icon
+.col-md-1.no_padding#org_icon
   = @organization.decorate.icon(:med)
 .col-md-11#project_header
   .pull-left
@@ -9,5 +9,8 @@
       = t('.settings')
     -# TODO: change the Jobs path accordingly
     -# = link_to bootstrap_icon('icon-tasks', 'Jobs'), organization_jobs_path(@organization)
-.col-md-12.mezzo
-.clearfix
+
+.clearfix &nbsp;
+.col-md-12
+  .mezzo
+= render partial: 'layouts/partials/alert'

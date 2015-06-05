@@ -1,2 +1,165 @@
 input.btn
   height: 43px
+
+.ace-file-input
+  position: relative
+  height: 38px
+  line-height: 38px
+  margin-bottom: 9px
+
+.ace-file-input input[type=file]
+  position: fixed
+  z-index: -2
+  opacity: 0
+
+.ace-file-input label
+  display: block
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  height: 28px
+  background-color: #ffffff
+  border: 1px solid #e3e3e3
+  cursor: pointer
+  -webkit-box-shadow: none
+  -moz-box-shadow: none
+  box-shadow: none
+  -webkit-transition: all 0.15s
+  -moz-transition: all 0.15s
+  -o-transition: all 0.15s
+  transition: all 0.15s
+
+.ace-file-input label:hover
+  -webkit-box-shadow: none
+  -moz-box-shadow: none
+  box-shadow: none
+  border-color: #f59942
+
+.ace-file-input label:before
+  display: inline-block
+  content: attr(data-title)
+  position: absolute
+  right: 0
+  top: 0
+  bottom: 0
+  padding: 0 8px
+  line-height: 24px
+  text-align: center
+  background-color: #6fb3e0
+  color: #FFF
+  font-size: 11px
+  font-weight: bold
+  border: 2px solid #FFF
+  border-left-width: 4px
+  -webkit-transition: all 0.3s
+  -moz-transition: all 0.3s
+  -o-transition: all 0.3s
+  transition: all 0.3s
+
+.ace-file-input label span
+  display: inline-block
+  height: 28px
+  max-width: 80%
+  white-space: nowrap
+  overflow: hidden
+  line-height: 28px
+  color: #888888
+  font-size: 13px
+  position: static
+  padding-left: 30px
+
+.ace-file-input label span:after
+  display: inline-block
+  content: attr(data-title)
+
+.ace-file-input label.selected
+  right: 16px
+
+.ace-file-input label.selected span
+  color: #666666
+
+.ace-file-input label [class*="icon-"]
+  display: inline-block
+  position: absolute
+  left: 0
+  top: 0
+  bottom: 0
+  line-height: 22px
+  width: 22px
+  text-align: center
+  font-family: FontAwesome
+  font-size: 13px
+  border: 2px solid #FFF
+  color: #FFF
+  -webkit-transition: all 0.1s
+  -moz-transition: all 0.1s
+  -o-transition: all 0.1s
+  transition: all 0.1s
+  background-color: #d1d1d1
+
+.ace-file-input label.selected [class*="icon-"]
+  background-color: #efad62
+
+.ace-file-input label.selected .icon-picture
+  background-color: #bd7a9d
+
+.ace-file-input label.selected .icon-film
+  background-color: #87b87f
+
+.ace-file-input label.selected .icon-music
+  background-color: #8b7ac9
+
+.ace-file-input label.selected .icon-archive
+  background-color: #efad62
+
+.ace-file-input label.hide-placeholder:before
+  display: none
+
+.ace-file-input a:hover
+  text-decoration: none
+
+.ace-file-input .remove
+  position: absolute
+  right: -8px
+  top: 6px
+  display: none
+  width: 17px
+  text-align: center
+  height: 17px
+  line-height: 15px
+  font-size: 11px
+  font-weight: normal
+  background-color: #fb7142
+  -webkit-border-radius: 100%
+  -moz-border-radius: 100%
+  border-radius: 100%
+  color: #FFF
+  text-decoration: none
+
+.ace-file-input label.selected + .remove
+  display: inline-block
+
+
+.ace-file-input input[type=file].disabled + label,
+.ace-file-input input[type=file][disabled] + label,
+.ace-file-input input[type=file][readonly] + label
+  cursor: not-allowed
+  background-color: #EEE
+
+.ace-file-input input[type=file].disabled + label:hover,
+.ace-file-input input[type=file][disabled] + label:hover,
+.ace-file-input input[type=file][readonly] + label:hover
+  -webkit-box-shadow: none
+  -moz-box-shadow: none
+  box-shadow: none
+  border-color: #E3E3E3
+
+.ace-file-input input[type=file].disabled + label:before,
+.ace-file-input input[type=file][disabled] + label:before,
+.ace-file-input input[type=file][readonly] + label:before
+  border-color: #EEE
+  background-color: #A1AAAF
+
+.ace-file-input input[type=file][readonly] + label
+  cursor: default

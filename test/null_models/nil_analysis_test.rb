@@ -81,6 +81,12 @@ class NilAnalysisTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'code_total' do
+    it 'should return zero' do
+      nil_analysis.code_total.must_equal 0
+    end
+  end
+
   describe 'empty?' do
     it 'should return true' do
       nil_analysis.empty?.must_equal true

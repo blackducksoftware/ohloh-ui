@@ -55,4 +55,50 @@ class OrganizationTest < ActiveSupport::TestCase
       Organization.from_param(organization.to_param).count.must_equal 0
     end
   end
+
+  describe 'sort_by_newest' do
+    it 'org' do
+      org_1 = create(:organization, name: 'test1')
+      org_2 = create(:organization, name: 'test2')
+
+      Organization.sort_by_newest.must_equal [org_2, org_1]
+    end
+  end
+
+  describe 'sort_by_recent' do
+    it 'org' do
+      org_1 = create(:organization, name: 'test1', updated_at: Time.now + 5.days)
+      org_2 = create(:organization, name: 'test2')
+
+      Organization.sort_by_recent.must_equal [org_1, org_2]
+    end
+  end
+
+  describe 'sort_by_name' do
+    it 'org' do
+      org_1 = create(:organization, name: 'test1')
+      org_2 = create(:organization, name: 'test2')
+
+      Organization.sort_by_name.must_equal [org_1, org_2]
+    end
+  end
+
+  describe 'sort_by_projects' do
+    it 'org' do
+      org_1 = create(:organization, name: 'test1', projects_count: 5)
+      org_2 = create(:organization, name: 'test2', projects_count: 10)
+
+      Organization.sort_by_projects.must_equal [org_2, org_1]
+    end
+  end
+
+  describe 'search_and_sort' do
+    it 'should return sorted search results' do
+      org_1 = create(:organization, name: 'test na1', projects_count: 5)
+      org_2 = create(:organization, name: 'test na2', projects_count: 10)
+      org_3 = create(:organization, name: 'test na3', projects_count: 9)
+
+      Organization.search_and_sort('test', 'projects', nil).must_equal [org_2, org_3, org_1]
+    end
+  end
 end
