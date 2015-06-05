@@ -24,9 +24,9 @@
       %input.btn.btn-primary{ type: 'submit', value: t('.save_review') }
     - if @review.persisted?
       - if current_user_is_admin? || @review.account == current_user
-        = icon_button(review_path(@review), icon: 'trash', text: t('reviews.remove'), size: 'sm',
+        = icon_button(review_path(@review), icon: 'trash', text: t('reviews.remove_review'), size: 'sm',
           type: 'danger', method: :delete, data: { confirm: t('reviews.remove_confirmation') },
-          style: 'margin-left: 7px')
+          style: 'margin-left: 7px', title: t('reviews.remove_review'))
         &nbsp;
       - if current_user_is_admin?
         = icon_button(make_spammer_account_accesses_path(@review.account), text: t('reviews.spam'), method: :post,
