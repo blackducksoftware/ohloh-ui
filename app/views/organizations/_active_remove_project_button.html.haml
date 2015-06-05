@@ -1,7 +1,7 @@
 :ruby
   options = { class: 'btn btn-danger btn-mini', method: :put,
-              confirm: t('.remove_from', org: @organization.name, project: h(p.name.to_s)) }
+  data: { confirm: t('.remove_from', org: @organization.name, project: h(p.name.to_s)) } }
 
-= link_to remove_project_organization_path(@organization, project_id: p.id), options do
+= link_to remove_project_organization_path(@organization, project_id: p.id, source: action_name), options do
   %i.icon-trash &nbsp;
   = t('.remove')

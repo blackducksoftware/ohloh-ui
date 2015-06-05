@@ -81,7 +81,9 @@ class OrganizationsController < ApplicationController
     else
       flash[:error] = t('.error')
     end
-    redirect_to manage_projects_organization_path(@organization)
+
+    redirect_path = manage_projects_organization_path(@organization) if params[:source] == 'manage_projects'
+    redirect_to (redirect_path || claim_projects_list_organization_path(@organization))
   end
 
   def outside_projects

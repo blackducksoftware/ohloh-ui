@@ -1,3 +1,5 @@
+- page_context[:select_footer_nav] = nil
+
 %h2.pull-left
   = link_to t('.settings'), settings_organization_path(@organization)
   \:
@@ -7,7 +9,7 @@
 = render partial: 'shared/search_dingus', locals: { collection: @projects, sort_context: :claim_projects_list }
 
 - if @projects.any? && @projects.detect { |p| !p.organization_id.blank? && p.organization_id != @organization.id }
-  .alert.alert-warn.alert-block.margin_top_10
+  .alert.alert-block.margin_top_10
     %h4.nomargin
       %i.icon-warning-sign
       = t('.already_claimed')
@@ -28,10 +30,10 @@
             - if p.organization_id.blank? || p.organization_id == @organization.id
               = render 'claim_link', project: p
             - else
-              %a.btn{ href: t('.mailto', org: p.organization.to_s, project: p.name),
-              title: t('.link_title', org: h(p.organization.to_s)), rel: 'tooltip' }
+              %a.btn{ href: t('.mailto', org: p.organization.name.to_s, project: p.name),
+              title: t('.link_title', org: h(p.organization.name.to_s)), rel: 'tooltip' }
                 %i.icon-warning-sign
-                = t('.report')
+                = t('.report_text')
   = will_paginate @projects
   .clearfix &nbsp;
 

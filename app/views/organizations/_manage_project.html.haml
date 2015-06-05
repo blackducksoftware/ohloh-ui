@@ -1,7 +1,7 @@
 %td
   %a.logo.med{ href: project_path(p) }
     = p.decorate.icon(:med, width: 48)
-%td= link_to h(p.name), project_path(p), title: p.name
+%td= link_to truncate(h(p.name), length: 20), project_path(p), title: p.name
 %td.center{ style: 'padding-right:15px;' }= p.user_count
 %td.center{ style: 'padding-right:15px;' }= p.best_analysis.code_total
 %td.left

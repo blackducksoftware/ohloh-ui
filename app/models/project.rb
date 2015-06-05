@@ -97,7 +97,8 @@ class Project < ActiveRecord::Base
 
   class << self
     def search_and_sort(query, sort, page)
-      tsearch(query, "by_#{sort}")
+      sort_by = (sort == 'relevance') ? nil : "by_#{sort}"
+      tsearch(query, sort_by)
         .includes(:best_analysis)
         .paginate(page: page, per_page: 20)
     end
