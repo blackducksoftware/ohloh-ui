@@ -84,38 +84,41 @@ SimilarProjects = {
 
 $(document).on('page:change', SimilarProjects.init())
 
-// I Use this button p/id
 $(document).ready(function() {
   $("input[name='stacked']").click(function() {
     if ($(this).prop("checked") == true) {
-      var $stack_id = $(this).data("stack");
-      var $project_url_name = $(this).data("project");
-      $.ajax("/stacks/" + $stack_id + "/stack_entries",{
+      var target = $(this).attr("target");
+      var message = ".stack.message-position#message" + target;
+      var $stackId = $(this).data("stack");
+      var $projectUrlName = $(this).data("project");
+      $.ajax("/stacks/" + $stackId + "/stack_entries",{
         type: "POST",
-        data: "project_id=" + $project_url_name,
+        data: "project_id=" + $projectUrlName,
         dataType: 'json',
         success: function(data){
           if ($(".unstack-message").length) {
             $(".unstack-message").remove();
           }
           $(":checked").attr("data-stackentry", data.stack_entry_id);
-          $("<p class=stack-message>stacked</p>").insertAfter(":checked");
+          $(message).append("<p class=stack-message>stacked</p>");
         }
       });
     } else {
-      var $input_element = $(this);
-      var $stack_id = $(this).data("stack");
-      var $stack_entry_id = $(this).data("stackentry");
-      $.ajax("/stacks/" + $stack_id + "/stack_entries/" + $stack_entry_id, {
+      var $inputElement = $(this);
+      var target = $(this).attr("target");
+      var message = ".stack.message-position#message" + target;
+      var $stackId = $(this).data("stack");
+      var $stackEntryId = $(this).data("stackentry");
+      $.ajax("/stacks/" + $stackId + "/stack_entries/" + $stackEntryId, {
         type: "DELETE",
         dataType: 'json',
-        context: $input_element,
+        context: $inputElement,
         success: function() {
           $(".stack-message").remove();
         }
       }).done(function(){
-        $("<p class=unstack-message>unstacked</p>").insertAfter($input_element);
-        $input_element.removeAttr("data-stackentry");
+        $(message).append("<p class=unstack-message>unstacked</p>");
+        $inputElement.removeAttr("data-stackentry");
       });
     }
   });

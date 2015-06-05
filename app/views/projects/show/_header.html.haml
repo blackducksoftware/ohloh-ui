@@ -25,27 +25,20 @@
         .pull-right#i_use_this_container
           .use_count
             = link_to number_with_delimiter(@project.user_count), users_project_path(@project)
-
-          / Don't forget to implement login modal when not logged in.
-          %button.btn.btn-default{"data-target" => "#iUseThisModal", "data-toggle" => "modal", :type => "button"}= t('.i_use_this')
-          #iUseThisModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "iUseThisModalLabel", :role => "dialog", :tabindex => "-1"}
-            .modal-dialog
-              .modal-content
+        - if logged_in?
+          = render 'projects/show/i_use_this', locals: { account: current_user }
+        - else
+          .btn.btn-mini.margin_left_15{ 'data-target' => '#LoginModal', 'data-toggle' => 'modal', :type => 'button' }= t('.i_use_this')
+          .modal.fade#LoginModal{ 'aria-hidden' => 'true', 'aria-labelledby' => 'LoginModalLabel', :role => 'dialog', :tabindex => '-1' }
+            .modal-dialog.modal-sm
+              .modal-content{ style: 'width: 398px' }
                 .modal-header
-                  %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
-                    %span{"aria-hidden" => "true"} &times;
-                  %h4#myModalLabel.modal-title= t('.add_to_stacks')
-                .modal-body= t('.add_to_your_stack', project: @project.name)
+                  %button.close{ 'aria-label' => 'Close', 'data-dismiss' => 'modal', :type => 'button' }
+                    %span{ 'aria-hidden' => 'true' } &times;
+                  %h4.modal-title#LoginModalLabel= t('.login_required')
+                .model-body
+                  = render 'sessions/sign_in'
 
-
-                - if logged_in? && @account.stacks.count > 0
-                  - @account.stacks.each do |stack|
-                    - haml_tag :div, stack.title
-                    = check_box_tag "stacked", 0, false, { "data-stack" => stack.to_param, "data-project" => @project.to_param }
-
-
-                .modal-footer
-                  = button_to t('.create_a_new_stack', project: @project.name), stacks_path, remote: true, params: { project_id: @project.id }
 .clearfix
 .row
   .col-md-12

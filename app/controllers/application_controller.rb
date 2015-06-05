@@ -138,6 +138,7 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_back(default = root_path)
+    # Bug is right here. Will redirect to analyses#languages
     redirect_to(session[:return_to] || default)
     session[:return_to] = nil
   end

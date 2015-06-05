@@ -1,5 +1,4 @@
 class Stack < ActiveRecord::Base
- 
   belongs_to :account
   belongs_to :project
 
@@ -46,7 +45,7 @@ class Stack < ActiveRecord::Base
 
   def auto_generate_title_and_description(stack_count)
     self.title = "New Stack #{stack_count}"
-    self.description = "The Projects used for #{self.title}"
+    self.description = "The Projects used for #{title}"
   end
 
   private

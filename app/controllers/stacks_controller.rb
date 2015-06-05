@@ -9,7 +9,6 @@ class StacksController < ApplicationController
   before_action :auto_ignore, only: [:builder]
   before_action :find_project, only: [:near, :create]
   before_action :account_context, only: [:index]
-  after_action :connect_stack_entry_to_stack, only: [:create], :if => :i_use_this?
 
   def index
     @stacks = @account.stacks
@@ -86,10 +85,6 @@ class StacksController < ApplicationController
     stack_count = current_user.stacks.count + 1
     @stack.auto_generate_title_and_description(stack_count)
     @stack.project = @project
-  end
-
-  def connect_stack_entry_to_stack
-    stack_entry = StackEntry.create(stack_id: @stack.id, project_id: @project.id)
   end
 
   def i_use_this?

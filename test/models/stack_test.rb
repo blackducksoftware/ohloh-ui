@@ -110,8 +110,8 @@ class StackTest < ActiveSupport::TestCase
       stack = create(:stack, title: nil, description: nil)
       account.stacks << stack
       stack.auto_generate_title_and_description(account.stacks.count)
-      stack.title.must_equal "New Stack 1"
-      stack.description.must_equal "The Projects used for New Stack 1"
+      stack.title.must_equal 'New Stack 1'
+      stack.description.must_equal 'The Projects used for New Stack 1'
     end
   end
 end
