@@ -100,6 +100,7 @@ en:
       success: 'Removed %{name} successfully'
       error: "Error! Couldn\'t remove this project."
     show:
+      loading: 'Loading.....'
       page_title: '%{organization_name} : Organization Summary'
       title: 'Organization Summary'
       no_desc: 'No description has been added for this organization.'
