@@ -82,8 +82,7 @@ class OrganizationsController < ApplicationController
       flash[:error] = t('.error')
     end
 
-    redirect_path = manage_projects_organization_path(@organization) if params[:source] == 'manage_projects'
-    redirect_to (redirect_path || claim_projects_list_organization_path(@organization))
+    redirect_to remove_project_redirect
   end
 
   def outside_projects
@@ -109,5 +108,15 @@ class OrganizationsController < ApplicationController
 
   def outside_committers
     @outside_committers = @organization.outside_committers(params[:page], @per_page || 20)
+  end
+
+  private
+
+  def remove_project_redirect
+    if params[:source] == 'manage_projects'
+      manage_projects_organization_path(@organization)
+    else
+      claim_projects_list_organization_path(@organization)
+    end
   end
 end
