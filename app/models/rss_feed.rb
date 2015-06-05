@@ -6,7 +6,7 @@ class RssFeed < ActiveRecord::Base
   has_many :projects, through: :rss_subscriptions
   has_many :rss_articles
   default_scope { order('last_fetch DESC') }
-  validates :url, url_format: true, allow_blank: true
+  validates :url, url_format: true, allow_blank: false
   filterable_by ['rss_feeds.url']
 
   def fetch(current_user)

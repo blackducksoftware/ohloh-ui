@@ -26,6 +26,12 @@ describe 'RssSubscriptionsController' do
     must_render_template 'rss_subscriptions/new'
   end
 
+  it 'should not create a new rss subscription with blank url' do
+    post :create, project_id: @project.to_param, rss_feed: { url: '' }
+    must_render_template 'rss_subscriptions/new'
+    response.body.must_match I18n.t('accounts.invalid_url_format')
+  end
+
   it 'should destroy a rss subscription' do
     rss_subscription = create(:rss_subscription, project: @project)
     login_as rss_subscription.editor_account
