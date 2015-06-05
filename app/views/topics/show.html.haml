@@ -1,7 +1,7 @@
 - content_for :html_title do
   = t('.topic_show', forum: @forum.name, topic: @topic.title)
 
-.col-md-12
+.col-md-12.margin_top_10
   = render partial: 'forums/breadcrumb', locals: { forum: @forum }
   = render partial: 'topics/title', locals: { topic: @topic }
   = render partial: 'topics/action_group', locals: { topic: @topic }

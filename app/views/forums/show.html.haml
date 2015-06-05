@@ -1,7 +1,7 @@
 - content_for :html_title do
   = t('openhub_show', name: "#{@forum.name}")
 
-%h1.margin_top_0
+%h1
   = link_to t('.forums'), forums_url
   \:
   = @forum.name
