@@ -84,7 +84,8 @@ class Organization < ActiveRecord::Base
   end
 
   def affiliators_count
-    @affiliators_count ||= accounts.count(joins: [:person, :active_positions], select: 'DISTINCT(accounts.id)')
+    @affiliators_count ||=
+      accounts.joins(:person, :positions).where(Position.with_facts).count('DISTINCT(accounts.id)')
   end
 
   class << self
