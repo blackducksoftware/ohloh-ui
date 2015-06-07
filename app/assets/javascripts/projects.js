@@ -85,6 +85,13 @@ SimilarProjects = {
 $(document).on('page:change', SimilarProjects.init())
 
 $(document).ready(function() {
+
+  $("input[name='stacked']").each(function(index) {
+    if ( $(this).attr("data-stackentry") ) {
+      $(this).prop("checked",true);
+    }
+  });
+  
   $("input[name='stacked']").click(function() {
     if ($(this).prop("checked") == true) {
       var target = $(this).attr("target");

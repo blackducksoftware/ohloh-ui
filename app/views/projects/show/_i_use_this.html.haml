@@ -17,7 +17,8 @@
             .stack{ style: 'margin-left: 50px' }
               = check_box_tag 'stacked', 0, false, 'data-stack' => stack.to_param,
                                                    'data-project' => @project.to_param,
-                                                   target: counter
+                                                   'data-stackentry' => find_stack_entry(stack, @project).to_param,
+                                                    target: counter
             .stack.message-position{ id: "message#{counter}" }
             .hidden#related_spinner= image_tag('spinner.gif')
       .modal-footer
