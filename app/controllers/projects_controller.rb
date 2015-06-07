@@ -69,7 +69,6 @@ class ProjectsController < ApplicationController
 
   def find_account
     @account = Account.from_param(params[:account_id]).take
-    @account = current_user if @account.nil?
   end
 
   def find_projects
