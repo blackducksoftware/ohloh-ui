@@ -9,15 +9,14 @@ class StacksController < ApplicationController
   before_action :auto_ignore, only: [:builder]
   before_action :find_project, only: [:near, :create]
   before_action :account_context, only: [:index]
+  after_action :connect_stack_entry_to_stack, only: [:create]
 
   def index
     @stacks = @account.stacks
   end
 
   def create
-    @stack = Stack.new
-    @stack.account = current_user
-    i_use_this if request.xhr?
+    create_stack
     if @stack.save
       respond_to do |format|
         format.html { redirect_to stack_path(@stack) }
@@ -50,6 +49,12 @@ class StacksController < ApplicationController
   end
 
   private
+
+  def create_stack
+    @stack = Stack.new
+    @stack.account = current_user
+    i_use_this if request.xhr?
+  end
 
   def model_params
     params.require(:stack).permit([:title, :description])
@@ -84,7 +89,10 @@ class StacksController < ApplicationController
   def i_use_this
     stack_count = current_user.stacks.count + 1
     @stack.auto_generate_title_and_description(stack_count)
-    @stack.project = @project
+  end
+
+  def connect_stack_entry_to_stack
+    StackEntry.create(stack_id: @stack.id, project_id: @project.id)
   end
 
   def i_use_this?
