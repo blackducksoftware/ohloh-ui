@@ -31,9 +31,10 @@ class StackEntriesControllerTest < ActionController::TestCase
 
   it 'create should persist a stack entry into the db if the request was xhr' do
     stack = create(:stack)
+    project = create(:project)
     login_as stack.account
     assert_difference 'StackEntry.count', 1 do
-      xml_http_request :post, 'create'
+      xml_http_request :post, 'create', stack_id: stack, project_id: project
     end
   end
 
@@ -90,12 +91,14 @@ class StackEntriesControllerTest < ActionController::TestCase
     stack_entry.reload.deleted_at.wont_equal nil
   end
 
-  it 'destroy should mark the stack entry as delted with xhr request' do
+  # Wny does this test not work. I pass in the correct parameters. It should decrease by one.
+  it 'destroy should mark the stack entry as deleted with xhr request' do
+    stack = create(:stack)
     project = create(:project)
-    stack_entry = create(:stack_entry, project: project)
-    login_as stack_entry.stack.account
-    assert_difference 'StackEntry.count', 1 do
-      xml_http_request :delete
-    end
+    stack_entry = create(:stack_entry, project: project, stack: stack)
+    login_as stack.account
+    xml_http_request :delete, 'destroy', id: stack_entry, stack_id: stack
+    must_respond_with :ok
+    stack_entry.reload.deleted_at.wont_equal nil
   end
 end
