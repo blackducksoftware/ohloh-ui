@@ -2,13 +2,14 @@ class StacksController < ApplicationController
   helper MapHelper
   helper RatingsHelper
 
-  before_action :session_required, except: [:index, :show, :similar, :near]
+  before_action :session_required, except: [:index, :show, :similar, :similar_stacks, :near]
   before_action :find_stack, except: [:index, :create, :near]
-  before_action :can_edit_stack, except: [:index, :show, :create, :similar, :near]
-  before_action :find_account, only: [:index, :show]
+  before_action :can_edit_stack, except: [:index, :show, :create, :similar, :similar_stacks, :near]
+  before_action :find_account, only: [:index, :show, :similar]
   before_action :auto_ignore, only: [:builder]
   before_action :find_project, only: [:near, :create]
   before_action :account_context, only: [:index]
+  before_action :account_context, only: [:index, :show, :similar]
   after_action :connect_stack_entry_to_stack, only: [:create]
 
   def index
@@ -32,11 +33,24 @@ class StacksController < ApplicationController
   end
 
   def destroy
-    render nothing: true, status: (@stack.destroy ? :ok : :unprocessable_entity)
+    account = @stack.account
+    @stack.destroy
+    redirect_to account_stacks_path(account), notice: t('.notice')
+  end
+
+  def reset
+    @stack.stack_entries.destroy_all
+    @stack.stack_ignores.destroy_all
+    @stack.projects << Project.where(id: Stack::SAMPLE_PROJECT_IDS[params[:init].try(:to_sym)])
+    redirect_to stack_path(@stack.id)
   end
 
   def similar
     @similar_stacks = @stack.similar_stacks
+  end
+
+  def similar_stacks
+    render partial: 'similar_stacks', locals: { stack: @stack }
   end
 
   def builder
@@ -53,7 +67,22 @@ class StacksController < ApplicationController
   def create_stack
     @stack = Stack.new
     @stack.account = current_user
-    i_use_this if request.xhr?
+    request.xhr? ? i_use_this : set_title
+  end
+
+  def set_title
+    title = (1..30).collect { |i| "New Stack #{i}" } - Stack.where(account_id: @stack.account_id).pluck(:title)
+    @stack.title = title.first
+  end
+
+  def i_use_this
+    stack_count = current_user.stacks.count + 1
+    auto_generate_title_and_description(stack_count)
+  end
+
+  def auto_generate_title_and_description(stack_count)
+    @stack.title = "New Stack #{stack_count}"
+    @stack.description = "The Projects used for #{@stack.title}"
   end
 
   def model_params
@@ -84,11 +113,6 @@ class StacksController < ApplicationController
   def find_project
     @project = Project.from_param(params[:project_id]).take
     fail ParamRecordNotFound unless @project
-  end
-
-  def i_use_this
-    stack_count = current_user.stacks.count + 1
-    @stack.auto_generate_title_and_description(stack_count)
   end
 
   def connect_stack_entry_to_stack
