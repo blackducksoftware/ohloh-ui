@@ -1,4 +1,4 @@
-- content_for(:html_title) { t :api_keys_title }
+- content_for(:html_title) { t(:api_keys_account_title, name: @account.name) }
 - page_context[:select_footer_nav] = :settings
 
 %h2.float_left
