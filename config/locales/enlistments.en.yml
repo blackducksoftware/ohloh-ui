@@ -38,7 +38,7 @@ en:
       description20: 'https://code.launchpad.net/myproject/trunk'
       if_required: 'If required, enter the login credentials here'
       warning: 'Warning!'
-      description23: 'The username and password you enter here will become public information.Do not submit a password to Open Hub unless you want everyone to see it.'
+      description23: 'The username and password you enter here will become public information. Do not submit a password to Open Hub unless you want everyone to see it.'
       cvs_module_name: 'Enter the CVS module name'
       enter_cvs: 'Enter the name of a single CVS module.'
       create_seperate_enlistment: 'Create separate enlistments for each module in the project.'
