@@ -98,6 +98,7 @@ $(document).ready(function() {
       var message = ".stack.message-position#message" + target;
       var $stackId = $(this).data("stack");
       var $projectUrlName = $(this).data("project");
+      $('#related_spinner[target=' + '"' + target + '"' +']').removeClass("hidden");
       $.ajax("/stacks/" + $stackId + "/stack_entries",{
         type: "POST",
         data: "project_id=" + $projectUrlName,
@@ -108,6 +109,9 @@ $(document).ready(function() {
           }
           $(":checked").attr("data-stackentry", data.stack_entry_id);
           $(message).append("<p class=stack-message>stacked</p>");
+        }, 
+        complete: function(){
+          $('#related_spinner[target=' + '"' + target + '"' +']').addClass("hidden");
         }
       });
     } else {
@@ -116,12 +120,16 @@ $(document).ready(function() {
       var message = ".stack.message-position#message" + target;
       var $stackId = $(this).data("stack");
       var $stackEntryId = $(this).data("stackentry");
+      $('#related_spinner[target=' + '"' + target + '"' +']').removeClass("hidden");
       $.ajax("/stacks/" + $stackId + "/stack_entries/" + $stackEntryId, {
         type: "DELETE",
         dataType: 'json',
         context: $inputElement,
         success: function() {
           $(".stack-message").remove();
+        },
+        complete: function(){
+          $('#related_spinner[target=' + '"' + target + '"' +']').addClass("hidden");
         }
       }).done(function(){
         $(message).append("<p class=unstack-message>unstacked</p>");

@@ -22,8 +22,7 @@
                                                    'data-stackentry' => find_stack_entry(stack, @project).to_param,
                                                     target: counter
             .stack.message-position{ id: "message#{counter}" }
-            / TODO: Fix spinner is not working
-            .hidden#related_spinner= image_tag('spinner.gif')
+            = image_tag('spinner.gif', class: 'hidden', id: 'related_spinner', target: counter)
       .modal-footer
         = button_to t('.create_a_new_stack', project: @project.name), stacks_path, class: 'btn btn-default btn-lg',
                     id: 'create_a_stack_and_add', remote: true, params: { project_id: @project.id }
