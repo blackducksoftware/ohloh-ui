@@ -13,7 +13,7 @@ class StackEntriesController < ApplicationController
     if stack_entry.persisted?
       render json: { stack_entry_id: stack_entry.id,
                      stack_entry: stack_entry_html(stack_entry),
-                     result: 'okay', updated_count: 1 }, status: :ok
+                     result: 'okay', updated_count: @stack.projects.count }, status: :ok
     else
       render json: { result: 'error' }, status: :unprocessable_entity
     end

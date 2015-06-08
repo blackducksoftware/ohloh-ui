@@ -16,11 +16,11 @@ class RssSubscriptionsController < ApplicationController
 
   def create
     @rss_feed = RssFeed.where(url: params[:rss_feed][:url].strip).first_or_create
-    if @rss_feed.errors.any?
-      render :new
-    else
+    if @rss_feed.valid?
       handle_subscription
       redirect_to project_rss_subscriptions_url(@project), flash: { success: t('.success') }
+    else
+      render :new
     end
   end
 

@@ -1,0 +1,37 @@
+- page_context[:select_footer_nav] = nil
+
+%h2.pull-left
+  = link_to t('.settings'), settings_organization_path(@organization)
+  = t('.title')
+.clearfix
+
+.col-md-12
+  - if @projects.empty? && params[:query].blank?
+    = render partial: 'shared/alert', locals: { message: t('.none_claimed') }
+  - else
+    = render 'shared/search_dingus', collection: @projects, sort_context: :claim_projects_list,
+      no_match_found_type: :none
+    %table.table.table-striped.table-condensed
+      %thead
+        = render partial: 'manage_projects_header'
+      %tbody
+        - @projects.each do |p|
+          %tr
+            = render partial: 'manage_project', locals: { p: p }
+            %td.center
+              - if logged_in? && @organization.edit_authorized?
+                = render partial: 'active_remove_project_button', locals: { p: p }
+              - else
+                = disabled_button(bootstrap_icon('icon-trash', t('.remove')), class: 'btn-danger btn-mini')
+    = will_paginate @projects
+
+.clearfix
+
+= render partial: 'shared/alert', locals: { message: t('.none_claimed') } if @projects.empty? && params[:query]
+
+- if logged_in? && @organization.edit_authorized?
+  = link_to claim_projects_list_organization_path(@organization), class: 'btn btn-small btn-primary' do
+    %i.icon-plus-sign
+    = t('.claim_link')
+- else
+  = disabled_button(t('.claim_link'), class: 'btn-small btn-primary')

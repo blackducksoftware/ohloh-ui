@@ -1,9 +1,14 @@
 class LogosController < SettingsController
-  # before_action :check_project
+  helper ManagersHelper
+  helper ProjectsHelper
+
   before_action :session_required, except: :new
   before_action :set_project_or_organization, only: [:destroy, :create, :new]
   before_action :set_logo, only: :destroy
   around_action :edit_authorized?, only: :create
+  before_action :show_permissions_alert, only: :new
+  before_action :project_context, if: -> { @parent.is_a? Project }
+  before_action :organization_context, if: -> { @parent.is_a? Organization }
 
   def new
     @logo = Logo.new
@@ -13,14 +18,15 @@ class LogosController < SettingsController
     if create_logo
       update_parent_logo
       flash[:success] = t('.success')
+      redirect_to action: :new
     else
       flash[:error] = t('.error')
+      render :new, status: :unprocessable_entity
     end
-    redirect_to action: :new
   end
 
   def destroy
-    @project_or_organization.update_attribute(:logo_id, nil)
+    @parent.update_attribute(:logo_id, nil)
     @logo.destroy ? flash[:success] = t('.success') : flash[:error] = t('.error')
     redirect_to action: :new
   end
@@ -28,7 +34,7 @@ class LogosController < SettingsController
   private
 
   def edit_authorized?
-    if @project_or_organization.edit_authorized?
+    if @parent.edit_authorized?
       yield
     else
       redirect_to new_session_path, flash: { error: t('.permisson_denied') }
@@ -43,20 +49,20 @@ class LogosController < SettingsController
   end
 
   def update_parent_logo
-    @project_or_organization.update_attribute(:logo_id, params[:logo_id] || @logo.id)
+    @parent.update_attribute(:logo_id, params[:logo_id] || @logo.id)
   end
 
   def set_project_or_organization
-    @project_or_organization = if params[:project_id]
-                                 @project = Project.from_param(params[:project_id]).take
-                               elsif params[:organization_id]
-                                 @organization = Organization.from_param(params[:organization_id]).take
-                               end
-    @project_or_organization.editor_account = current_user
+    @parent = if params[:project_id]
+                @project = Project.from_param(params[:project_id]).take
+              elsif params[:organization_id]
+                @organization = Organization.from_param(params[:organization_id]).take
+              end
+    @parent.editor_account = current_user
   end
 
   def set_logo
-    @logo = @project_or_organization.logo
+    @logo = @parent.logo
   end
 
   def logo_params

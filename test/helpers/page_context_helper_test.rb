@@ -21,7 +21,8 @@ class PageContextHelperTest < ActionView::TestCase
   let(:organization_menus) do
     { select_footer_nav: :org_summary,
       select_top_menu_nav: :select_organizations,
-      nav_type: 'footer_nav'
+      nav_type: 'footer_nav',
+      page_header: 'organizations/show/header'
     }
   end
 
@@ -39,9 +40,7 @@ class PageContextHelperTest < ActionView::TestCase
   end
 
   let(:tool_menus) do
-    { heading: I18n.t('.tools_menu'),
-      select_top_menu_nav: :select_tools,
-      nav_type: 'sidebar' }
+    { select_top_menu_nav: :select_tools, nav_type: 'footer_nav' }
   end
 
   it 'should return account page context' do

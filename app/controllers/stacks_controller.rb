@@ -7,10 +7,10 @@ class StacksController < ApplicationController
   before_action :can_edit_stack, except: [:index, :show, :create, :similar, :similar_stacks, :near]
   before_action :find_account, only: [:index, :show, :similar]
   before_action :auto_ignore, only: [:builder]
-  before_action :find_project, only: [:near, :create]
-  before_action :account_context, only: [:index]
+  before_action :find_project, only: [:near]
+  before_action :find_project, only: [:create], if: :i_use_this?
   before_action :account_context, only: [:index, :show, :similar]
-  after_action :connect_stack_entry_to_stack, only: [:create]
+  after_action :connect_stack_entry_to_stack, only: [:create], if: :i_use_this?
 
   def index
     @stacks = @account.stacks
@@ -67,7 +67,7 @@ class StacksController < ApplicationController
   def create_stack
     @stack = Stack.new
     @stack.account = current_user
-    request.xhr? ? i_use_this : set_title
+    i_use_this? ? i_use_this : set_title
   end
 
   def set_title

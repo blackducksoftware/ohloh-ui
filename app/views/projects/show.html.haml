@@ -45,10 +45,10 @@
     .well
       = render partial: 'projects/show/quick_reference'
 
-- if @analysis.nil?
+- if @analysis.blank?
   = render partial: 'projects/show/no_analysis_summary'
   .col-md-3#proj_rating= render 'projects/show/community_rating', title: t('.community_rating'), score: @score
   - if @project.enlistments.empty? && @analysis.blank?
-    = image_tag('sample_ohloh_analysis.jpg')
+    = image_tag('sample_ohloh_analysis.jpg', class: 'col-md-12')
 - else
   = render partial: 'projects/show/analysis_summary'

@@ -1,5 +1,5 @@
 :ruby
-  analysis = @analysis unless defined?(analysis)
+  analysis = @analysis || @project.best_analysis
   analysis_not_complete = @project.enlistments.any? && analysis.nil?
   no_recognized_code = @project.enlistments.any? && analysis && analysis.empty?
   no_code_available = @project.enlistments.empty? && analysis.blank?
@@ -7,7 +7,7 @@
   message = t('.message_2') if no_code_available
   message = t('.message_3') if analysis_not_complete
 .no_analysis_message
-  .alert.alert-info.alert-block.col-md-6{ style: 'padding-left: 30px;' }
+  .alert.alert-info.alert-block.col-md-8{ style: 'padding-left: 30px;' }
     .title
       %h3!= bootstrap_icon('icon-info-sign', message)
     .indent{ style: 'margin-top: 15px;' }
@@ -19,4 +19,5 @@
         %p{ align: 'center' }
           = link_to t('.add_a_code_location'), new_project_enlistment_path(@project), class: 'btn btn-large btn-primary'
       - if analysis_not_complete
-        - message_analysis_not_complete(@project, false)
+        - link = link_to(t('.check_its_progress'), project_enlistments_path(@project))
+        %span.analysis_in_progress!= t('.how_it_computes', link: link)

@@ -21,7 +21,7 @@ describe 'ProjectTagsController' do
       project = create(:project)
       get :index, project_id: project.to_param
       assert_response :success
-      assert_select '.alert', 1
+      assert_select '.alert', 2
       response.body.must_match I18n.t('project_tags.index.no_other_projects')
     end
   end
@@ -31,7 +31,8 @@ describe 'ProjectTagsController' do
       project = create(:project)
       login_as nil
       post :create, project_id: project.to_param, tag_name: 'scrumptious'
-      assert_response :unauthorized
+      assert_response :redirect
+      must_redirect_to new_session_path
       project.reload.tag_list.must_equal ''
     end
 
@@ -76,7 +77,8 @@ describe 'ProjectTagsController' do
       create(:tagging, taggable: project, tag: create(:tag, name: 'shiny'))
       login_as nil
       delete :destroy, project_id: project.to_param, id: 'shiny'
-      assert_response :unauthorized
+      assert_response :redirect
+      must_redirect_to new_session_path
       project.reload.tag_list.must_equal 'shiny'
     end
 

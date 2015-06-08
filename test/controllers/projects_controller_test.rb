@@ -194,38 +194,51 @@ describe 'ProjectsController' do
     response.body.must_match(/first.*second/m)
   end
 
-  # show
-  it 'show should render for unlogged users' do
-    project = create(:project)
-    login_as nil
-    get :show, id: project.to_param
-    must_respond_with :ok
-  end
+  describe 'show' do
+    it 'show should render for unlogged users' do
+      project = create(:project)
+      login_as nil
+      get :show, id: project.to_param
+      must_respond_with :ok
+    end
 
-  it 'show should render for projects that have been analyzed' do
-    project = create(:project)
-    af_1 = create(:activity_fact, analysis: project.best_analysis, code_added: 8_000, comments_added: 8_000)
-    create(:factoid, analysis: project.best_analysis, language: af_1.language)
-    af_2 = create(:activity_fact, analysis: project.best_analysis)
-    create(:factoid, analysis: project.best_analysis, language: af_2.language)
-    af_3 = create(:activity_fact, analysis: project.best_analysis)
-    create(:factoid, analysis: project.best_analysis, language: af_3.language)
-    af_4 = create(:activity_fact, analysis: project.best_analysis)
-    create(:factoid, analysis: project.best_analysis, language: af_4.language)
-    ats = project.best_analysis.all_time_summary
-    ats.update_attributes(recent_contributors: [create(:person).id, create(:person).id])
-    cf = create(:commit_flag)
-    create(:analysis_sloc_set, analysis: project.best_analysis, sloc_set: cf.sloc_set)
-    login_as create(:admin)
-    get :show, id: project.to_param
-    must_respond_with :ok
+    it 'show should render for projects that have been analyzed' do
+      project = create(:project)
+      af_1 = create(:activity_fact, analysis: project.best_analysis, code_added: 8_000, comments_added: 8_000)
+      create(:factoid, analysis: project.best_analysis, language: af_1.language)
+      af_2 = create(:activity_fact, analysis: project.best_analysis)
+      create(:factoid, analysis: project.best_analysis, language: af_2.language)
+      af_3 = create(:activity_fact, analysis: project.best_analysis)
+      create(:factoid, analysis: project.best_analysis, language: af_3.language)
+      af_4 = create(:activity_fact, analysis: project.best_analysis)
+      create(:factoid, analysis: project.best_analysis, language: af_4.language)
+      ats = project.best_analysis.all_time_summary
+      ats.update_attributes(recent_contributors: [create(:person).id, create(:person).id])
+      cf = create(:commit_flag)
+      create(:analysis_sloc_set, analysis: project.best_analysis, sloc_set: cf.sloc_set)
+      login_as create(:admin)
+      get :show, id: project.to_param
+      must_respond_with :ok
+    end
+
+    it 'must render successfully when analysis has nil dates' do
+      project = create(:project)
+      project.best_analysis.update! min_month: nil, max_month: nil, logged_at: nil,
+                                    first_commit_time: nil, last_commit_time: nil
+
+      get :show, id: project.to_param
+
+      must_respond_with :ok
+    end
   end
 
   # new
   it 'new should require a current user' do
     login_as nil
     get :new
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
+    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_account_path)
   end
 
   it 'new should render for logged users' do
@@ -238,7 +251,9 @@ describe 'ProjectsController' do
   it 'check_forge should require a current user' do
     login_as nil
     post :check_forge, codelocation: 'http://cnn.com'
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
+    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_account_path)
   end
 
   it 'check_forge should gracefully handle duplicate projects detected' do
@@ -290,7 +305,9 @@ describe 'ProjectsController' do
   it 'create should require a current user' do
     login_as nil
     post :create, project: { name: 'Fail', url_name: 'fail', description: 'It fails.' }
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
+    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_account_path)
   end
 
   it 'create should persist a valid project to the database' do
@@ -431,7 +448,9 @@ describe 'ProjectsController' do
     project = create(:project)
     login_as nil
     put :update, id: project.id, project: { name: 'KoolOSSProject' }
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
+    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_account_path)
     project.reload.name.wont_equal 'KoolOSSProject'
   end
 
@@ -451,6 +470,17 @@ describe 'ProjectsController' do
     project.reload.name.must_equal 'KoolOSSProject123'
     must_select 'input.save', 1
     must_select 'p.error[rel="name"]', 1
+  end
+
+  it 'update should handle blank url_names gracefully and render the edit action' do
+    project = create(:project)
+    login_as create(:admin)
+    put :update, id: project.id, project: { url_name: '' }
+    must_respond_with :unprocessable_entity
+    project.reload.url_name.blank?.must_equal false
+    must_respond_with :unprocessable_entity
+    must_select 'input.save', 1
+    must_select 'p.error[rel="url_name"]', 1
   end
 
   # estimated_cost
@@ -518,12 +548,21 @@ describe 'ProjectsController' do
     must_respond_with :success
   end
 
-  # map
-  it 'map should display for unlogged in users' do
-    login_as nil
-    get :map, id: create(:project).to_param
-    must_respond_with :success
-    must_select '#map', 1
+  describe 'map' do
+    it 'map should display for unlogged in users' do
+      login_as nil
+      get :map, id: create(:project).to_param
+      must_respond_with :success
+      must_select '#map', 1
+    end
+
+    it 'must render successfully when no analysis' do
+      Project.any_instance.stubs(:best_analysis).returns(NilAnalysis.new)
+
+      get :map, id: create(:project).to_param
+
+      must_respond_with :success
+    end
   end
 
   # similar_by_tags

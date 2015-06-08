@@ -1,0 +1,52 @@
+.col-md-offset-1
+  %fieldset
+    .control-group
+      %label.control-label.required= t('.name')
+      .controls
+        = f.text_field :name, class: 'col-md-10'
+        - error_tag @organization, :name
+    .clearfix
+
+    .control-group
+      %label.control-label.required= t('.url')
+      .controls
+        .input-prepend
+          %span.add-on= 'http://www.openhub.net/orgs/'
+          = f.text_field :url_name, class: 'check-availability',
+            'data-ajax-path' => organization_check_availabilities_path,
+            'data-preview-base-url' => organizations_url,
+            autocomplete: 'off', style: 'width: 375px'
+          = render 'shared/availability_preview'
+      - error_tag @organization, :url_name, class: 'error url_name'
+
+    .control-group
+      %label.control-label.required= t('.type')
+      .controls
+        - Organization::ORG_TYPES.each do |label, val|
+          %label.radio-inline
+            = f.radio_button :org_type, val
+            = label
+    %p.margin_top_15
+      - error_tag @organization, :org_type, class: 'error margin_top_25'
+    .clearfix
+
+    .control-group
+      %label.control-label= t('.description')
+      .controls
+        = find_and_preserve f.text_area(:description, max_length: 800, style: 'width: 83%', rows: '10')
+        - error_tag @organization, :description
+    .clearfix
+
+    .control-group
+      %label.control-label= t('.home')
+      .controls
+        = f.text_field :homepage_url, class: 'col-md-10'
+        - error_tag @organization, :homepage_url
+    .clearfix
+      = f.hidden_field :id unless @organization.new_record?
+    .actions.pull-left.margin_top_20
+      - if logged_in? && @organization.edit_authorized?
+        %input.btn.btn-primary{ type: 'submit', value: t('.save_changes') }
+      - else
+        = disabled_button(t('.save_changes'), class: 'btn-primary')
+    .clearfix

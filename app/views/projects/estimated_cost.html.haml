@@ -15,8 +15,8 @@
     = project_analysis_timestamp(@project)
 
   .clearfix
-  .row
-    - if !analysis.nil?
+  .col-md-12
+    - if !analysis.blank?
       .center-block
         .col-md-1
           &nbsp;

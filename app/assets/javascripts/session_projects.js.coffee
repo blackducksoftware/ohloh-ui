@@ -43,7 +43,7 @@ SessionProjects =
     # Animate the appearance/disappearance of menu.
     height = '0'
     height = '2.6em' if $('#sp_menu .sp_input').length
-    $('#sp_menu').animate { 'height': height }, duration: 300
+    $('#sp_menu').animate { 'min-height': height }, duration: 300
 
   disableUnchecked: ->
     $('.sp_input')

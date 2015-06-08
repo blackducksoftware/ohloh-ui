@@ -268,8 +268,17 @@ Rails.application.routes.draw do
       get :print_infographic
       get :affiliated_committers
       get :list_managers
+      get :claim_projects_list
+      get :claim_project
+      put :remove_project
+      match :new_manager, via: [:get, :post]
       get :manage_projects
     end
+
+    collection do
+      get :resolve_url_name
+    end
+
     resources :edits, only: [:index]
     resource :logos, only: [:new, :create, :destroy]
     resources :managers, only: [:index, :new, :create, :edit, :update] do
@@ -290,6 +299,7 @@ Rails.application.routes.draw do
   resources :stacks, only: [:show, :create, :update, :destroy] do
     member do
       get :similar
+      get :similar_stacks
       get :builder
       get :reset
     end

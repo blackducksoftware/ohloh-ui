@@ -81,7 +81,8 @@ describe 'ReviewsControllerTest' do
   describe 'new' do
     it 'should return unauthorized when user not logged-in' do
       get :new, project_id: project.to_param
-      must_respond_with :unauthorized
+      must_respond_with :redirect
+      must_redirect_to new_session_path
     end
 
     it 'should allow access when user logged-in' do
@@ -97,7 +98,8 @@ describe 'ReviewsControllerTest' do
   describe 'edit' do
     it 'should restrict when user not logged-in' do
       get :edit, id: review.id, project_id: project.to_param
-      must_respond_with :unauthorized
+      must_respond_with :redirect
+      must_redirect_to new_session_path
     end
 
     it 'should allow when user logged-in' do

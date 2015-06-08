@@ -1,4 +1,4 @@
-- if project.managers.any?
+- if project.active_managers.any?
   %div
     - project.active_managers.each do |m|
       .clearfix

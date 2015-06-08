@@ -2,9 +2,8 @@
 - content_for(:html_title) { @query ? t('.page_title_query', query: @query) : t('.page_title') }
 - page_context[:select_top_menu_nav] = 'select_projects'
 - content_for :session_projects_banner do
-  .clearfix
-    .navbar.container#sp_menu
-      = render 'session_projects/menu'
+  .navbar.container#sp_menu
+    = render 'session_projects/menu'
 
 #projects_index_header
   %h1.pull-left= t('.projects')

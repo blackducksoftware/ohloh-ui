@@ -141,6 +141,8 @@ en:
         help_2: "Open Hub computes statistics on FOSS projects by examining source code and commit history in source code management systems. This project has no code locations, and so Open Hub cannot perform this analysis"
         help_3: "Is this project's source code hosted in a publicly available repository? Do you know the URL? If you do, click the button below and tell us so that Open Hub can generate statistics! It's fast and easy - try it and see!"
         add_a_code_location: "Add a code location"
+        check_its_progress: "check its progress"
+        how_it_computes: "The Open Hub computes statistics on FOSS projects by examining source code and commit history in source code management systems. The source code for this project has been located, but the analysis isn't complete. Feel free to %{link}."
       quick_reference:
         organization: "Organization:"
         proj_links: "Project Links:"
@@ -180,6 +182,11 @@ en:
         add_some_tags: "Add some tags!"
         none: "None"
         totally_unique_tags: "This project's tags do not match any other project."
+      factoids:
+        starting: starting with its
+        ending: ending with its
+        first_commit_in: first commit in %{time}
+        most_recent_commit: most recent commit %{time}
     deleted:
       message: '%{name} has been deleted'
       failed: 'failed'

@@ -60,7 +60,8 @@ class PermissionsControllerTest < ActionController::TestCase
   it 'unlogged users should 401' do
     login_as nil
     put :update, id: @project, permission: { remainder: true }
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
   end
 
   it 'admins should be able to update the permissions' do

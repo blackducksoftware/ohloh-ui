@@ -15,6 +15,7 @@ class Project < ActiveRecord::Base
   link_accessors accessors: { url: :Homepage, download_url: :Download }
 
   validates :name, presence: true, length: 1..100, allow_nil: false, uniqueness: true, case_sensitive: false
+  validates :url_name, presence: true, length: 1..60, allow_nil: false, uniqueness: true, case_sensitive: false
   validates :description, length: 0..800, allow_nil: true # , if: proc { |p| p.validate_url_name_and_desc == 'true' }
   validates_each :url, :download_url, allow_blank: true do |record, field, value|
     record.errors.add(field, I18n.t(:not_a_valid_url)) unless value.valid_http_url?
@@ -92,6 +93,14 @@ class Project < ActiveRecord::Base
     contributions.sort_by_twelve_month_commits
       .includes(person: :account, contributor_fact: :primary_language)
       .limit(10)
+  end
+
+  class << self
+    def search_and_sort(query, sort, page)
+      tsearch(query, "by_#{sort}")
+        .includes(:best_analysis)
+        .paginate(page: page, per_page: 20)
+    end
   end
 
   private

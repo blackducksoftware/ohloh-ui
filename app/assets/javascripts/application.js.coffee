@@ -23,6 +23,7 @@
 #= require highcharts/highcharts-more
 #= require highcharts/solid-gauge
 #= require tagcloud
+#= require ace-element.min
 
 $(document).on 'page:change', ->
   Edit.init()
@@ -35,6 +36,7 @@ $(document).on 'page:change', ->
   OrgsFilter.init()
   Cocomo.init()
   ProjectForm.init()
+  OrgClaimProject.init()
   new App.CheckAvailiability($('input.check-availability'))
   App.TagCloud.init()
 

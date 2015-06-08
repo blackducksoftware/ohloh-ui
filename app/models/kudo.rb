@@ -11,6 +11,8 @@ class Kudo < ActiveRecord::Base
   validates :message, length: 0..80, allow_nil: true
   validate :cant_kudo_self
 
+  fix_string_column_encodings!
+
   def person
     (account_id && Person.find_by_account_id(account_id)) || Person.find_by_name_id_and_project_id(name_id, project_id)
   end
@@ -65,6 +67,6 @@ class Kudo < ActiveRecord::Base
 
   def cant_kudo_self
     return unless sender_id == account_id
-    errors.add :account, I18n.t('kudos.cant_kudo_self')
+    errors.add :base, I18n.t('kudos.cant_kudo_self')
   end
 end

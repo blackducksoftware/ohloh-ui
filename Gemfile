@@ -3,7 +3,7 @@ source 'http://oh-stage-utility-1.blackducksoftware.com:9292/'
 
 gem 'activeadmin', github: 'activeadmin'
 gem 'airbrake'
-gem 'aws-sdk'
+gem 'aws-sdk', '< 2.0' # paperclip doesn't work with the new aws-sdk gem
 gem 'bluecloth'
 gem 'brakeman'
 gem 'coffee-rails'
@@ -62,4 +62,8 @@ group :development, :test do
   gem 'byebug'
   gem 'pry-rails'
   gem 'rb-readline'
+end
+
+group :production do
+  gem 'oboe'
 end

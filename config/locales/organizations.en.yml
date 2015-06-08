@@ -1,6 +1,107 @@
 en:
   organizations:
+    active_remove_project_button:
+      remove_from: 'Remove %{project} from %{org}?'
+    manage_projects:
+      title: ' : Manage Projects'
+      settings: 'Settings'
+      none_claimed: 'No projects are claimed yet.'
+      no_results: 'No results found.'
+      remove: 'Remove'
+      claim_link: 'Claim a Project'
+    manage_project:
+      none: 'none'
+    manage_projects_header:
+      name: 'Name'
+      i_use: 'I Use This'
+      lines_of_code: 'Lines of Code'
+      committers: 'Current Committers'
+      rating: 'Community Rating'
+      reviews: 'Reviews'
+      description: 'Description'
+    index:
+      no_matches: 'No matches with this filter.'
+      title: 'Organizations'
+      page_title: 'Organizations - OpenHub'
+      add: 'Add a New Organization'
+    about_basics:
+      about: 'About'
+      basics: 'Basics'
+      info: 'The organization name will be shown in Open Hub search results, as well as in search engines. This name must be unique across all organizations on Open Hub.'
+      contact_us: 'Contact us'
+      inapropriate: 'if you believe someone is using the name of your organization inappropriately on Open Hub. Please use as short a name as possible.'
+      url_unique: 'The organization URL must be unique across all organizations on Open Hub. It should start with a letter, followed by letters, numbers, dashes, or underscores.'
+      description: "The organization description will appear on the organization's summary page. Please be concise, but highlight unique aspects and key features. Maximum 800 characters, and only new-line formatting is allowed."
+    new:
+      page_title: 'Organizations: New - Open Hub'
+      title: 'New Organization'
+    edit:
+      page_title: '%{name} : Settings: Basics - Open Hub'
+      settings: 'Settings'
+      basics: ' : Basics'
+    fields:
+      name: 'Organization Name'
+      url: 'Open Hub Organization URL'
+      type: 'Organization Type'
+      description: 'Description'
+      home: 'Homepage Link'
+      save_changes: 'Save Changes'
+    new_manager:
+      settings: 'Settings'
+      managers: 'Managers'
+      new: ' : New'
+      new_manager: 'New Manager'
+      enter_name: 'Enter a user name'
+      add: 'Add Manager'
+      success: 'Manager created successfully'
+      page_title: '%{name} : Settings: Managers : New - Open Hub'
+    list_managers:
+      page_title: '%{name} : Settings: Managers - Open Hub'
+      title_link: 'Settings'
+      title: ' : Managers'
+      confirm: 'Remove %{name} as a manager for %{org}?'
+      remove: 'remove manager'
+      empty_alert: 'Nobody has registered to become a manager of this organization on Open Hub'
+      new_manager: 'New Manager'
+    claim_projects_list:
+      settings: 'Settings'
+      manage_projects: 'Manage Projects'
+      claim: ' : Claim'
+      already_claimed: 'Some projects already claimed!'
+      report: 'One or more projects below have already been claimed by Another organization. Please report any improper claims to'
+      claim_link: 'Claim'
+      mailto: 'mailto:info@openhub.net?subject=Incorrect Claim by %{org} on %{p.name}'
+      link_title: 'This project has already been claimed by %{org}.'
+      report: 'Report'
+      enter_project_name: 'Enter a project name or Code Location above to search for projects that you wish to claim.'
+      no_match: 'No matches with this filter.'
+      not_results: 'No results found.'
+    claim_link:
+      claim_link: 'Claim'
+    about_managers:
+      about: 'About'
+      managers: 'Managers'
+      ability: 'Organization managers can:'
+      limit: 'Limit edits just to managers.'
+      edit: 'Edit organization information and settings if community editing has been limited.'
+      approve: 'Approve or deny applications to be a manager.'
+      edit_info: "If an organization's edits are limited, then organization information can only be edited by managers. Otherwise, anyone with an Open Hub account can edit organization information."
+    create:
+      error: 'There was a problem!'
+      notice: 'Organization has been created successfully'
+    update:
+      notice: 'Organization changes were saved successfully'
+      failure: 'Organization changes could not be saved.'
+    claim_project:
+      unauthorized: 'Unauthorized!'
+      failed: 'Failed.'
+    projects:
+      notice: 'There are no portfolio projects to display'
+    remove_project:
+      success: 'Removed %{name} successfully'
+      error: "Error! Couldn\'t remove this project."
     show:
+      loading: 'Loading.....'
       page_title: '%{organization_name} : Organization Summary'
       title: 'Organization Summary'
       no_desc: 'No description has been added for this organization.'

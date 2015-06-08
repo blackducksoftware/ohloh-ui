@@ -9,7 +9,7 @@ class KudosController < ApplicationController
   before_action :account_context, only: [:index]
 
   def index
-    @person = @account.person
+    @person = @account.person || Person.new(account_id: @account.id, effective_name: @account.name)
     @received_kudos = @account.kudos.sort_by_created_at
     @sent_kudos = @account.sent_kudos.sort_by_created_at
   end
@@ -23,7 +23,11 @@ class KudosController < ApplicationController
   end
 
   def create
-    @kudo.save
+    if @kudo.save
+      flash[:success] = kudos_creation_success_flash_msg
+    else
+      flash[:error] = @kudo.errors.full_messages.first
+    end
     redirect_to :back
   end
 
@@ -59,5 +63,13 @@ class KudosController < ApplicationController
   def make_new_kudo
     @kudo = Kudo.new(message: (params[:kudo] && params[:kudo][:message]), sender: current_user, account: @account)
     @kudo.assign_attributes(project: @contribution.project, name: @contribution.name_fact.name) if @contribution
+  end
+
+  def kudos_creation_success_flash_msg
+    if @account
+      t('.success_account', name: @account.name)
+    else
+      t('.success_contribution', name: @kudo.name.name, project: @kudo.project.name)
+    end
   end
 end

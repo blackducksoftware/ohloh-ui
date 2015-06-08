@@ -7,7 +7,7 @@
       commits = @analysis.twelve_month_summary.commits_count
       committers = @analysis.twelve_month_summary.committer_count
       summary = @analysis.previous_twelve_month_summary
-      ticker_options = { summary: summary, young_analysis: Time.parse(@analysis.min_month.to_s) >= 12.months.ago }
+      ticker_options = { summary: summary, young_analysis: @analysis.min_month && @analysis.min_month >= 12.months.ago }
 
     %li
       %big= commits

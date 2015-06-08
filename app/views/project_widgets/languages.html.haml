@@ -2,7 +2,7 @@
   widget ||= @widget
   project = widget.project
   analysis = project.best_analysis
-  language_percentages = Analysis::LanguagePercentages.new(analysis).collection
+  language_percentages = analysis.nil? ? [] : Analysis::LanguagePercentages.new(analysis).collection
 
 = render partial: 'languages_css'
 

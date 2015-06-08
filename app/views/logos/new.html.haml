@@ -1,20 +1,20 @@
-- if @organization
-  - content_for(:html_title) { t('.meta_title') }
--# else
-  -# @meta_title_final = project_pages_title(t('.page_title'))
+- page_context[:select_top_menu_nav] = @organization ? 'select_organizations' : 'select_projects'
+- page_context[:select_footer_nav] = :settings
+
 .project_content_title
-  %h2.float_left
-    -# = link_to "Settings", settings_url_for(@project_or_organization)
+  %h2.pull-left
+    = link_to t(:settings), settings_parent_path(@parent)
     = t('.heading')
   - unless @organization
-    = project_analysis_timestamp(@project_or_organization)
+    = project_analysis_timestamp(@parent)
 
 .row
   .col-md-10.col-md-offset-1
     .well
-      = form_for [@project_or_organization, @logo], html: { multipart: true } do |f|
+      - path = @parent.is_a?(Project) ? project_logos_path(@parent) : organization_logos_path(@parent)
+      = form_for @logo, url: path, html: { multipart: true } do |f|
         = render partial: 'fields', locals: { f: f }
-      .clear
+      .clearfix
         &nbsp;
 
 - if @project

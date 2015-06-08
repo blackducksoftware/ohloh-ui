@@ -11,17 +11,17 @@
     - if @manages.any?
       = render partial: 'manage', collection: @manages
     - else
-      - flash.now[:notice] = t('.nobody_manages_yet')
+      = render 'shared/alert', message: t('.nobody_manages_yet')
     - if @parent.is_a?(Organization) && current_user_is_admin?
       %a.btn.btn-primary{ href: new_parent_manager_path(@parent), style: 'margin-left: 30px;' }= t('.new_manager')
 
   - if @parent.is_a?(Project)
     .col-md-4
-      - unless @parent.managers.include?(current_user)
+      - unless @parent.active_managers.include?(current_user)
         %a.btn.btn-primary{ href: new_parent_manager_path(@parent), style: 'margin-left: 30px;' }= t('.new_cta')
       .clear &nbsp;
       .padding_one_top
-        - if !@parent.managers.include?(current_user)
+        - if !@parent.active_managers.include?(current_user)
           .well
             %h5.nomargin= t('.help_header_first1')
             %p= t('.help_body_first1')

@@ -41,7 +41,8 @@ describe 'LicensesControllerTest' do
   describe 'new' do
     it 'should require login to create a license' do
       get :new
-      must_respond_with :unauthorized
+      must_respond_with :redirect
+      must_redirect_to new_session_path
     end
 
     it 'should render new if user logged in' do
@@ -55,7 +56,8 @@ describe 'LicensesControllerTest' do
   describe 'create' do
     it 'should be logged in' do
       post :create
-      must_respond_with :unauthorized
+      must_respond_with :redirect
+      must_redirect_to new_session_path
     end
 
     it 'should create license' do
@@ -79,7 +81,8 @@ describe 'LicensesControllerTest' do
   describe 'update' do
     it 'should require login' do
       put :update, id: @license.id, license: build(:license).attributes
-      must_respond_with :unauthorized
+      must_respond_with :redirect
+      must_redirect_to new_session_path
     end
 
     it 'should update the license' do

@@ -1,5 +1,4 @@
 module PageContextHelper
-  include ToolHelper
   include ForumsHelper
 
   def account_context
@@ -16,7 +15,8 @@ module PageContextHelper
     return if @organization.blank?
     set_page_context(footer_menu_list:  @organization.decorate.sidebar,
                      select_footer_nav:  :org_summary,
-                     select_top_menu_nav:  :select_organizations)
+                     select_top_menu_nav:  :select_organizations,
+                     page_header: 'organizations/show/header')
   end
 
   def project_context
@@ -33,10 +33,7 @@ module PageContextHelper
   end
 
   def tool_context
-    set_page_context(footer_menu_list: tools_sidebar,
-                     heading: I18n.t('.tools_menu'),
-                     select_top_menu_nav: :select_tools,
-                     nav_type: 'sidebar')
+    set_page_context(select_top_menu_nav: :select_tools)
   end
 
   def review_context

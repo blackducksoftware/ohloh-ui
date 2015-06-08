@@ -87,7 +87,8 @@ class ApplicationControllerTest < ActionController::TestCase
     it 'session_required without a current user' do
       login_as nil
       get :session_required_action
-      must_respond_with :unauthorized
+      must_respond_with :redirect
+      must_redirect_to new_session_path
     end
 
     it 'admin_session_required with a current admin' do

@@ -22,6 +22,9 @@ en:
       include_message: "Include an optional message with your kudos to %{who}"
       maximum: "Maximum 80 characters."
       submit: "Give Kudos"
+    create:
+      success_account: "You have given kudos to %{name}."
+      success_contribution: "You have given kudos to %{name} on project %{project}."
     destroy:
       success: "The Kudo was removed successfully."
       error: "You don't have permission to do that."

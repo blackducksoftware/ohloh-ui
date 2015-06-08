@@ -133,7 +133,8 @@ describe 'StacksControllerTest' do
   it 'create should require a current user' do
     login_as nil
     post :create
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
   end
 
   it 'create should require a current user' do
@@ -169,7 +170,8 @@ describe 'StacksControllerTest' do
   it 'update should require a current user' do
     login_as nil
     put :update, id: create(:stack), stack: { title: 'Best Stack EVAR!' }
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
   end
 
   it 'update should not work for wrong user' do
@@ -208,7 +210,8 @@ describe 'StacksControllerTest' do
   it 'destroy should require a current user' do
     login_as nil
     delete :destroy, id: create(:stack)
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
   end
 
   it 'destroy should not destroy stack owned by someone else' do
@@ -266,7 +269,8 @@ describe 'StacksControllerTest' do
     stack = create(:stack)
     login_as nil
     get :builder, id: stack, format: :json
-    must_respond_with :unauthorized
+    must_respond_with :redirect
+    must_redirect_to new_session_path
   end
 
   it 'builder should require real owner' do
@@ -351,6 +355,14 @@ describe 'StacksControllerTest' do
       must_redirect_to stack_path(stack)
       stack.reload.stack_entries.count.must_equal 1
       stack.stack_ignores.count.must_equal 0
+    end
+  end
+
+  describe 'similar_stacks' do
+    it 'must render the partial' do
+      get :similar_stacks, id: create(:stack).id
+      must_respond_with :ok
+      must_render_template 'stacks/_similar_stacks'
     end
   end
 end
