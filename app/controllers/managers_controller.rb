@@ -24,11 +24,11 @@ class ManagersController < SettingsController
   end
 
   def edit
-    return render_unauthorized unless current_user_can_manage?
+    return render_unauthorized unless current_user_can_manage_or_self?
   end
 
   def update
-    return render_unauthorized unless current_user_can_manage?
+    return render_unauthorized unless current_user_can_manage_or_self?
     if @manage.update_attributes(model_params)
       flash[:notice] = t '.notice'
       redirect_to_index
