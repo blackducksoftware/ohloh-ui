@@ -8,7 +8,6 @@ class StacksController < ApplicationController
   before_action :find_account, only: [:index, :show, :similar]
   before_action :auto_ignore, only: [:builder]
   before_action :find_project, only: [:near]
-  before_action :find_project, only: [:create], if: :i_use_this?
   before_action :account_context, only: [:index, :show, :similar]
   after_action :connect_stack_entry_to_stack, only: [:create], if: :i_use_this?
 
@@ -76,6 +75,7 @@ class StacksController < ApplicationController
   end
 
   def i_use_this
+    find_project
     stack_count = current_user.stacks.count + 1
     auto_generate_title_and_description(stack_count)
   end
