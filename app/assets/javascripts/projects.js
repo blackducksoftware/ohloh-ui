@@ -95,7 +95,7 @@ $(document).ready(function() {
   $("input[name='stacked']").click(function() {
     if ($(this).prop("checked") == true) {
       var target = $(this).attr("target");
-      var message = ".stack.message-position#message" + target;
+      var message = ".message-position#message" + target;
       var $stackId = $(this).data("stack");
       var $projectUrlName = $(this).data("project");
       $('#related_spinner[target=' + '"' + target + '"' +']').removeClass("hidden");
@@ -117,7 +117,7 @@ $(document).ready(function() {
     } else {
       var $inputElement = $(this);
       var target = $(this).attr("target");
-      var message = ".stack.message-position#message" + target;
+      var message = ".message-position#message" + target;
       var $stackId = $(this).data("stack");
       var $stackEntryId = $(this).data("stackentry");
       $('#related_spinner[target=' + '"' + target + '"' +']').removeClass("hidden");

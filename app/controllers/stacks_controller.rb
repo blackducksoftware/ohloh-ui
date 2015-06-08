@@ -9,7 +9,7 @@ class StacksController < ApplicationController
   before_action :auto_ignore, only: [:builder]
   before_action :find_project, only: [:near]
   before_action :account_context, only: [:index, :show, :similar]
-  after_action :connect_stack_entry_to_stack, only: [:create], if: :i_use_this?
+  after_action :connect_stack_entry_to_stack, only: [:create], if: :request_is_xhr?
 
   def index
     @stacks = @account.stacks
@@ -66,7 +66,7 @@ class StacksController < ApplicationController
   def create_stack
     @stack = Stack.new
     @stack.account = current_user
-    i_use_this? ? i_use_this : set_title
+    request_is_xhr? ? i_use_this : set_title
   end
 
   def set_title
@@ -77,12 +77,7 @@ class StacksController < ApplicationController
   def i_use_this
     find_project
     stack_count = current_user.stacks.count + 1
-    auto_generate_title_and_description(stack_count)
-  end
-
-  def auto_generate_title_and_description(stack_count)
-    @stack.title = "New Stack #{stack_count}"
-    @stack.description = "The Projects used for #{@stack.title}"
+    @stack.auto_generate_title_and_description(stack_count)
   end
 
   def model_params
@@ -119,7 +114,7 @@ class StacksController < ApplicationController
     StackEntry.create(stack_id: @stack.id, project_id: @project.id)
   end
 
-  def i_use_this?
+  def request_is_xhr?
     request.xhr?
   end
 end

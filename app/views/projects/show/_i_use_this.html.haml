@@ -13,16 +13,17 @@
         - counter = 0
         - current_user.stacks.each do |stack|
           - counter += 1
-          .stack-position
-            .stack{ style: 'margin-left: 180px' }
-            = stack.title
-            .stack{ style: 'margin-left: 50px' }
+          %div
+            .stack-title
+              = stack.title
+            .stack-checkbox
               = check_box_tag 'stacked', 0, false, 'data-stack' => stack.to_param,
                                                    'data-project' => @project.to_param,
                                                    'data-stackentry' => find_stack_entry(stack, @project).to_param,
                                                     target: counter
-            .stack.message-position{ id: "message#{counter}" }
-            = image_tag('spinner.gif', class: 'hidden', id: 'related_spinner', target: counter)
+            .message-position{ id: "message#{counter}" }
+              = image_tag('spinner.gif', class: 'hidden', id: 'related_spinner', target: counter)
       .modal-footer
-        = button_to t('.create_a_new_stack', project: @project.name), stacks_path, class: 'btn btn-default btn-lg',
-                    id: 'create_a_stack_and_add', remote: true, params: { project_id: @project.id }
+      .stack-align.margin_bottom_20
+        = button_to t('.create_a_new_stack', project: @project.name), stacks_path,
+          class: 'btn btn-default btn-lg stack-align', remote: true, params: { project_id: @project.id }

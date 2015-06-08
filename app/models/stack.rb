@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class Stack < ActiveRecord::Base
   SAMPLE_PROJECT_IDS = { lamp: [3141, 72, 4139, 28], sash: [41, 3468, 3568, 55], gnome: [3760, 43, 9, 29, 36] }
 
@@ -39,6 +40,11 @@ class Stack < ActiveRecord::Base
     return 'Default' if account && self == account.stack_core.default
     return "#{project.name}'s Stack" unless project.nil?
     'Unnamed'
+  end
+
+  def auto_generate_title_and_description(stack_count)
+    self.title = "New Stack #{stack_count}"
+    self.description = "The Projects used for #{title}"
   end
 
   def friendly_name
