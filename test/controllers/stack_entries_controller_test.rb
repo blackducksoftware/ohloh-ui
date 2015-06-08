@@ -93,7 +93,6 @@ class StackEntriesControllerTest < ActionController::TestCase
     stack_entry.reload.deleted_at.wont_equal nil
   end
 
-  # Wny does this test not work. I pass in the correct parameters. It should decrease by one.
   it 'destroy should mark the stack entry as deleted with xhr request' do
     stack = create(:stack)
     project = create(:project)
@@ -101,6 +100,6 @@ class StackEntriesControllerTest < ActionController::TestCase
     login_as stack.account
     xml_http_request :delete, 'destroy', id: stack_entry, stack_id: stack
     must_respond_with :ok
-    stack_entry.reload.deleted_at.wont_equal nil
+    stack.stack_entries.count.must_equal 0
   end
 end
