@@ -28,8 +28,8 @@
         - if logged_in?
           = render 'projects/show/i_use_this', locals: { account: current_user }
         - else
-          .btn.btn-mini.margin_left_15{ 'data-target' => '#LoginModal', 'data-toggle' => 'modal', :type => 'button' }= t('.i_use_this')
-          .modal.fade#LoginModal{ 'aria-hidden' => 'true', 'aria-labelledby' => 'LoginModalLabel', :role => 'dialog', :tabindex => '-1' }
+          .btn.btn-mini.margin_left_15{ 'data-target' => '#LoginModal', 'data-toggle' => 'modal' }= t('.i_use_this')
+          .modal.fade#LoginModal{ 'aria-hidden' => 'true', 'aria-labelledby' => 'LoginModalLabel', :role => 'dialog' }
             .modal-dialog.modal-sm
               .modal-content{ style: 'width: 398px' }
                 .modal-header
