@@ -3,6 +3,7 @@ en:
     title: 'Organization Metrics by Open Hub'
     missing: 'Missing organization_id'
     index:
+      page_title: '%{name} : Organization Widgets - Open Hub'
       title: 'Widgets'
       embed: 'You can embed Open Hub widgets in your web site.'
     activity:

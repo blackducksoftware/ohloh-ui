@@ -102,7 +102,7 @@ en:
       error: "Error! Couldn\'t remove this project."
     show:
       loading: 'Loading.....'
-      page_title: '%{organization_name} : Organization Summary'
+      page_title: '%{organization_name} : Organization Summary - Open Hub'
       title: 'Organization Summary'
       no_desc: 'No description has been added for this organization.'
       add_desc: 'Add description'
@@ -119,7 +119,7 @@ en:
         managers: 'Managers:'
         add_new: 'Add a new manager for %{name}'
     projects:
-      page_title: '%{organization_name} : Portfolio Projects'
+      page_title: '%{organization_name} : Portfolio Projects - Open Hub'
       title: 'Portfolio Projects'
       name: 'Name'
       primary_language: 'Primary Language'
