@@ -1,4 +1,6 @@
 class Stack < ActiveRecord::Base
+  SAMPLE_PROJECT_IDS = { lamp: [3141, 72, 4139, 28], sash: [41, 3468, 3568, 55], gnome: [3760, 43, 9, 29, 36] }
+
   belongs_to :account
   belongs_to :project
 
