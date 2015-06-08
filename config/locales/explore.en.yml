@@ -22,7 +22,7 @@ en:
       title: 'Newest Organizations'
       projects_count: '%{count} projects.'
       added: 'Added %{duration} ago.'
-      more: 'more &raquo;'
+      more_html: 'more &raquo;'
     stats_by_sector:
       title: 'Stats by Sector'
       sector: 'Sector'
