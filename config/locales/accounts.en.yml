@@ -18,7 +18,7 @@ en:
       settings: '&nbsp; Settings'
     languages:
       index:
-        page_title: "Languages for %{name} : Open Hub"
+        page_title: "%{name} : %{name} - Open Hub"
         title: 'Languages'
       commits_by_language:
         title: 'Languages'
@@ -115,7 +115,7 @@ en:
       in: 'in ...'
       to: 'to ...'
     show:
-      show_accounts: ': Show Accounts'
+      page_title: '%{name} : %{name} - Open Hub'
       total_commits: 'total commits'
       project: 'project'
       analysis_scheduled: 'The analysis for this account has been scheduled.'

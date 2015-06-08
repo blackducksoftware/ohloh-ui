@@ -6,7 +6,8 @@
     by_newest: 'Newest'
     index:
       posts: 'Posts'
-      openhub_posts: 'Open Hub Forum Posts '
+      openhub_posts: 'Open Hub Forum Posts'
+      openhub_posts_for_account: '%{name} : Posts - Open Hub'
       no_posts: 'No posts available to display.'
     edit:
       forums: 'Forums'

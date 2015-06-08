@@ -1,7 +1,7 @@
 en:
   privacy:
     edit:
-      edit_privacy_title: '%{account} : %{account} - Openhub'
+      edit_privacy_title: '%{account} : %{account} - Open Hub'
       settings_privacy_html: '%{href} : Privacy'
       settings: 'Settings'
       manage_email: 'Manage email from Open Hub'
