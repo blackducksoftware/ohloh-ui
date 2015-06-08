@@ -40,7 +40,7 @@ en:
       undid_this_on: "undid this on"
       redid_this_on: "redid this on"
     index_project:
-      page_title: "%{name} | Edit History Page"
+      page_title: "The %{name} Open Source Project on Open Hub : Edit History Page"
       openhub_edit_history: "Open Hub Edit History"
       help_1: "All edits to an Open Hub project's settings and analysis data are rolled up in a running list, so you can see who made each change to a project."
       help_2: "If you are an Open Hub account holder and a project is not locked so that only managers may change settings, or if you are a manager of a locked project, you have the option to undo any of these settings and changes."

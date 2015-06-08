@@ -72,7 +72,7 @@ en:
         total_changed: 'Total Lines Changed'
         ratio: 'Comment Ratio'
     summary:
-      page_title: ' Open Source Project on Open Hub: Contribution Summary'
+      page_title: ' Open Source Project on Open Hub: Contributors'
       contributors: 'Contributors'
       top_contributors: 'Commits by Top Contributors'
       no_of_contributors: 'Number of Contributors'
