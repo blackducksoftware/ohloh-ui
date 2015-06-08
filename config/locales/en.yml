@@ -134,6 +134,7 @@ en:
   compare_projects: 'Compare Projects'
   compare_languages: 'Compare Languages'
   compare_repositories: 'Compare Repositories'
+  compare_repositories_page_title: 'Compare Repositories - Open Hub'
   up: 'Up'
   down: 'Down'
   from_prev_12_mo: 'from previous 12 months'
