@@ -140,11 +140,15 @@ class ApplicationController < ActionController::Base
 
   def store_location
     return if request.xhr?
+    # binding.pry
+    # The line of code below will store the fullpaths of assets when a projects (p/firefox) page loads
+    # first request = p/firefox
+    # second request = /assets/undercore-min.map
+    # The last request = "/p/php/analyses/latest/languages?height=75&width=75"
     session[:return_to] = request.fullpath
   end
 
   def redirect_back(default = root_path)
-    # Bug is right here. Will redirect to analyses#languages
     redirect_to(session[:return_to] || default)
     session[:return_to] = nil
   end
