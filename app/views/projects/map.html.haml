@@ -1,14 +1,12 @@
 :ruby
   total_users = @project.user_count
   total_contributors = @project.best_analysis.contributor_facts.size
-- content_for(:html_title) { t('.page_title') }
+- content_for(:html_title) { t('.page_title', name: @project.name) }
 - content_for :javascript do
   - args = "'#{@project.to_param}', #{total_users}, #{total_contributors}"
   = javascript_tag "$(document).on('page:change', function(){ ProjectMap.init(#{args}); });"
 
-%h3= t('.page_title')
-
-#map_container{ 'data-icon-image' => image_path('map/map_yellow.png') }
+.margin_top_10#map_container{ 'data-icon-image' => image_path('map/map_yellow.png') }
   %p
     %strong Show:
     /=link_to "Contributors", "#", id: 'a_contributors'

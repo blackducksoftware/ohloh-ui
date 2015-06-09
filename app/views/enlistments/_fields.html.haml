@@ -11,9 +11,9 @@
       = f.text_field :url, class: 'col-md-7', value: params[:repository].try(:[], :url)
       - error_tag @repository, :url
       .clearfix
-      .cvs.hidden
+      .cvs{ style: 'display: none;' }
         %p= t('.example')
-        %ul
+        %ul.margin_left_20
           %li= t('.description4')
           %li= t('.description5')
       .svn
@@ -23,19 +23,19 @@
           %li= t('.description7')
         %p.help-block
           = t('.description8_html')
-      .git.hidden
+      .git{ style: 'display: none;' }
         %p= t('.example')
-        %ul
+        %ul.margin_left_20
           %li= t('.description15')
           %li= t('.description16')
-      .hg.hidden
+      .hg{ style: 'display: none;' }
         %p= t('.example')
-        %ul
+        %ul.margin_left_20
           %li= t('.description17')
           %li= t('.description18')
-      .bzr.hidden
+      .bzr{ style: 'display: none;' }
         %p= t('.example')
-        %ul
+        %ul.margin_left_20
           %li= t('.description19')
           %li= t('.description20')
   .cvs.svn
@@ -51,7 +51,7 @@
           = t('.description23')
         .clearfix &nbsp;
 
-  .cvs.hidden
+  .cvs{ style: 'display: none;' }
     .control-group
       %label.cotrol-label.required= t('.cvs_module_name')
       .controls
@@ -62,7 +62,7 @@
           %br
           = t('.create_seperate_enlistment')
 
-  .git.hidden
+  .git{ style: 'display: none;' }
     .control-group
       %label.control-label= t('.enter_git')
       .controls
@@ -86,7 +86,7 @@
   .actions
     - if logged_in? && @project.edit_authorized?
       = submit_tag t('.save_code_location'), class: 'btn btn-primary submit'
-      %p.spinner.hidden
+      %p.spinner{ style: 'display: none;' }
         = image_tag 'spinner.gif'
         = t('.check_server_connection')
     - else

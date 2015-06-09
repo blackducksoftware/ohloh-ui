@@ -178,6 +178,26 @@ class ManagersControllerTest < ActionController::TestCase
     assigns(:manage).message.must_equal 'test message'
   end
 
+  it 'test edit for non-admin' do
+    proj = create(:project)
+    create(:manage, account: create(:admin), target: proj)
+    account = create(:account)
+    create(:manage, account: account, target: proj)
+    login_as account
+    get :edit, project_id: proj.to_param, id: account.to_param
+    must_respond_with :success
+  end
+
+  it 'test edit of others manager requests' do
+    proj = create(:project)
+    create(:manage, account: create(:admin), target: proj)
+    account = create(:account)
+    create(:manage, account: account, target: proj)
+    login_as create(:account)
+    get :edit, project_id: proj.to_param, id: account.to_param
+    must_respond_with :unauthorized
+  end
+
   it 'test edit of a non existant account' do
     login_as accounts(:admin)
     get :edit, project_id: @proj.to_param, id: 'I_AM_A_BANANA!'

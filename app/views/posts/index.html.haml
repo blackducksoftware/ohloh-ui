@@ -1,5 +1,4 @@
-- content_for :html_title do
-  = t('.openhub_posts')
+- content_for(:html_title) { @account ? t('.openhub_posts_for_account', name: @account.name) : t('.openhub_posts') }
 
 - if @account
   - account_post_context

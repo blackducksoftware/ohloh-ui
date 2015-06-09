@@ -2,9 +2,7 @@
 - set_page_context(select_top_menu_nav: :select_people,
                    footer_menu_list: @account.decorate.sidebar_for(current_user),
                    select_footer_nav: :account_summary)
-- content_for :html_title do
-  = succeed t('.show_accounts') do
-    = @account.name
+- content_for(:html_title) { t('accounts.show.page_title', name: @account.name) }
 
 - content_for :twitter_card do
   %meta{ content: 'summary', name: 'twitter:card' }

@@ -7,6 +7,7 @@ en:
     detailed:
       image_name: 'acc.name error'
     index:
+      page_title: "%{who} : Widgets - Open Hub"
       embed: 'You can embed Open Hub widgets in your web site.'
       widgets: 'Widgets'
       select: 'Select any widget from the gallery below.'

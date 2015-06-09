@@ -1,5 +1,7 @@
-- page_context[:select_top_menu_nav] = @organization ? 'select_organizations' : 'select_projects'
-- page_context[:select_footer_nav] = :settings
+:ruby
+  page_context[:select_top_menu_nav] = @organization ? 'select_organizations' : 'select_projects'
+  page_context[:select_footer_nav] = :settings
+  content_for(:html_title) { t('.page_title', name: @parent.name) }
 
 .project_content_title
   %h2.pull-left

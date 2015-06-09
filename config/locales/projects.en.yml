@@ -20,7 +20,7 @@ en:
     i_use_this: "I Use This"
     more: "[More]"
     less: "[Less]"
-    html_title: "The %{name} Open Source Project : %{title}"
+    html_title: "The %{name} Open Source Project on Open Hub : %{title}"
     header:
       i_use_this_title: "%{name} has been stacked by %{count} users. Click here to add it to your stack."
       settings: 'Settings'
@@ -50,6 +50,7 @@ en:
       page_title: "%{name} : Index Projects"
       managed_projects: "Managed Projects"
     settings:
+      page_title: 'Settings Page'
       title: 'Settings'
       project_basis: 'Project Basics'
       project_basis_desc: 'Project name, description, and Open Hub URL for the project.'
@@ -74,7 +75,7 @@ en:
       news: 'News Feeds'
       news_desc: 'URLs for RSS and other news feeds for this project.'
     show:
-      page_title: "The %{name} Open Source Project"
+      page_title: "The %{name} Open Source Project on Open Hub"
       project_summary: "Project Summary"
       no_description: "No description has been added for this project."
       add_description: "Add description"
@@ -191,6 +192,7 @@ en:
       message: '%{name} has been deleted'
       failed: 'failed'
     users:
+      page_title: 'Users Page'
       title: 'Users'
       users: 'Users'
       default: 'Default'
@@ -207,7 +209,7 @@ en:
       example2: "http://github.com/robconery/massive"
       next: "Next"
     edit:
-      page_title: "Settings Basics Page"
+      page_title: "The %{name} Open Source Project on Open Hub : Settings Basics Page"
       settings: "Settings"
       project_name: "Project Name"
       oh_project_url: "Open Hub Project URL"
@@ -294,7 +296,7 @@ en:
       title: '%{name} has been stacked by %{count} users. Click here to add it to your stack.'
       i_use: 'I Use This!'
     map:
-      page_title: 'User & Contributor Locations Page'
+      page_title: 'The %{name} Open Source Project on Open Hub : User & Contributor Locations Page'
     similar:
       page_title: 'The %{name} Open Source Project on Open Hub : Related Projects Page'
       title: 'Related Projects'
