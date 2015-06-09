@@ -19,7 +19,7 @@ class Analysis < ActiveRecord::Base
   belongs_to :project
   belongs_to :main_language, class_name: 'Language', foreign_key: :main_language_id
 
-  scope :fresh, -> { where(Analysis.arel_table[:created_at].gt(Time.now - 2.days)) }
+  scope :fresh, -> { where(Analysis.arel_table[:created_at].gt(Time.current - 2.days)) }
   scope :hot, -> { where.not(hotness_score: nil).order(hotness_score: :desc) }
   scope :for_lang, ->(lang_id) { where(main_language_id: lang_id) }
 
@@ -88,15 +88,15 @@ class Analysis < ActiveRecord::Base
   end
 
   def old_analysis?
-    updated_on < Time.now - 30.days
+    updated_on < Time.current - 30.days
   end
 
   def new_first_commit?
-    first_commit_time > Time.now - 12.months
+    first_commit_time > Time.current - 12.months
   end
 
   def old_last_commit?
-    last_commit_time < Time.now - 24.months
+    last_commit_time < Time.current - 24.months
   end
 
   def too_small_team?

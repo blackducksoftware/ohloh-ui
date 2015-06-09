@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :commit_flag do
     association :commit
     association :sloc_set
-    time { Time.now }
+    time { Time.current }
     type 'CommitFlag::NewLanguage'
     data { { language_id: create(:language).id } }
   end

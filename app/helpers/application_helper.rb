@@ -115,7 +115,7 @@ module ApplicationHelper
 
   def highlight(actual_time, base_time = nil)
     return if actual_time.blank?
-    base_time ||= @highlight_from || Time.now
+    base_time ||= @highlight_from || Time.current
     return 'highlight' if actual_time >= base_time
   end
 

@@ -3,7 +3,7 @@ class CloudTag
 
   class << self
     def list
-      index = TAGS_LIST.length - Time.now.day
+      index = TAGS_LIST.length - Time.current.day
       TAGS_LIST[index].sort { |a, b| a[0] <=> b[0] }
     end
   end

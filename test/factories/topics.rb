@@ -10,7 +10,7 @@ FactoryGirl.define do
       "#{n}"
     end
     sequence :replied_at do |n|
-      Time.now + n
+      Time.current + n
     end
 
     factory :topic_with_posts, parent: :topic do

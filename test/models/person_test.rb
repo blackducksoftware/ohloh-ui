@@ -195,7 +195,7 @@ class PersonTest < ActiveSupport::TestCase
     position = nil
     assert_no_difference 'Person.count' do
       position = Position.create!(account: accounts(:kyle), project: projects(:linux),
-                                  start_date: Time.now, stop_date: Time.now)
+                                  start_date: Time.current, stop_date: Time.current)
     end
     assert_no_difference 'Person.count' do
       position.destroy
@@ -220,7 +220,7 @@ class PersonTest < ActiveSupport::TestCase
     name_id = position.name_id
     Person.find_by(project: position.project, name: name_id).must_be_nil
     assert_difference 'Person.count', +1 do
-      position.update(name: nil, start_date: Time.now, stop_date: Time.now)
+      position.update(name: nil, start_date: Time.current, stop_date: Time.current)
     end
     Person.find_by(project_id: position.project_id, name_id: name_id).must_be :present?
   end
@@ -233,7 +233,7 @@ class PersonTest < ActiveSupport::TestCase
     Person.find_by(project_id: position.project_id, name_id: before_name_id).must_be_nil
     Person.find_by(project_id: position.project_id, name_id: after_name_id).must_be :present?
     assert_no_difference 'Person.count' do
-      position.update(name_id: after_name_id, start_date: Time.now, stop_date: Time.now)
+      position.update(name_id: after_name_id, start_date: Time.current, stop_date: Time.current)
     end
     Person.find_by(project_id: position.project_id, name_id: before_name_id).must_be :present?
     Person.find_by(project_id: position.project_id, name_id: after_name_id).must_be_nil

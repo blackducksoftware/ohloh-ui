@@ -1,6 +1,6 @@
 module EditsHelper
   def edit_humanize_datetime(datetime)
-    now = Time.now
+    now = Time.current
     return t('edits.edit_humanize_datetime', difference: time_ago_in_words(datetime)) if (now - datetime) < 24.hours
     return datetime.strftime('%b %d') if datetime.year == now.year
     datetime.strftime('%b %d, %Y')

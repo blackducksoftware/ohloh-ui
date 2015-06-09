@@ -11,7 +11,7 @@ class RssFeed < ActiveRecord::Base
 
   def fetch(current_user)
     handle_fetch(url, current_user)
-    self.last_fetch ||= Time.now.utc
+    self.last_fetch ||= Time.current
     schedule_next_fetch
     save(validate: false)
   end
@@ -28,7 +28,7 @@ class RssFeed < ActiveRecord::Base
     # If the fetch succeeds, another fetch will be scheduled 24 hours from now.
     # If the fetch fails, the wait until the next fetch will be doubled.
     if error
-      self.next_fetch = Time.now.utc + (Time.now.utc - self.last_fetch) * 2
+      self.next_fetch = Time.current + (Time.current - self.last_fetch) * 2
     else
       self.next_fetch = self.last_fetch + 1.day
     end
@@ -49,7 +49,7 @@ class RssFeed < ActiveRecord::Base
   def update_projects(current_user)
     projects.each do |p|
       p.editor_account = current_user
-      p.update_attribute(:updated_at, Time.now.utc)
+      p.update_attribute(:updated_at, Time.current)
     end
   end
 

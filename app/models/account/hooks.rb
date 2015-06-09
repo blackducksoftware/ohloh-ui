@@ -55,7 +55,7 @@ class Account::Hooks
     invite = Invite.find_by(activation_code: account.invite_code)
     return unless invite
 
-    invite.update!(invitee_id: account.id, activated_at: Time.now.utc)
+    invite.update!(invitee_id: account.id, activated_at: Time.current)
 
     Account::Access.new(account).activate!(account.activation_code) if invite.invitee_email.eql?(account.email)
   end

@@ -31,7 +31,7 @@ class ApiKey < ActiveRecord::Base
   end
 
   def may_i_have_another?
-    now = Time.now.utc
+    now = Time.current
     daily_reset!
     update_attributes!(last_access_at: now,
                        day_began_at: day_began_at || now,
@@ -43,7 +43,7 @@ class ApiKey < ActiveRecord::Base
 
   class << self
     def reset_all!
-      ApiKey.update_all(daily_count: 0, day_began_at: Time.now.utc)
+      ApiKey.update_all(daily_count: 0, day_began_at: Time.current)
       ApiKey.where(status: STATUS_LIMIT_EXCEEDED).update_all(status: STATUS_OK)
     end
 
@@ -55,8 +55,8 @@ class ApiKey < ActiveRecord::Base
   private
 
   def daily_reset!
-    return unless day_began_at && day_began_at < (Time.now.utc - 1.day)
-    assign_attributes(day_began_at: Time.now.utc,
+    return unless day_began_at && day_began_at < (Time.current - 1.day)
+    assign_attributes(day_began_at: Time.current,
                       daily_count: 0,
                       status: (status == STATUS_LIMIT_EXCEEDED) ? STATUS_OK : status)
   end

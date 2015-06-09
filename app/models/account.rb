@@ -88,7 +88,7 @@ class Account < ActiveRecord::Base
 
   def resend_activation!
     AccountMailer.signup_notification(self).deliver_now
-    update!(activation_resent_at: Time.now.utc)
+    update!(activation_resent_at: Time.current)
   end
 
   # TODO: Replaces get_first_commit_date

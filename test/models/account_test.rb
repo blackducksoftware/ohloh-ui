@@ -146,7 +146,7 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it 'should return recently active accounts' do
-    name_facts(:vitafact).update_attributes(last_checkin: Time.now)
+    name_facts(:vitafact).update_attributes(last_checkin: Time.current)
     recently_active = Account.recently_active
     recently_active.wont_be_nil
     recently_active.count.must_equal 1

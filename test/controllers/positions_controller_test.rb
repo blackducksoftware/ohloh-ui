@@ -43,7 +43,7 @@ describe 'PositionsController' do
       before { NameFact.create!(analysis: project.best_analysis, name: name_obj) }
 
       it 'must respond with a special flash message for invitees' do
-        account.update!(created_at: Time.now.utc)
+        account.update!(created_at: Time.current)
         login_as(account)
 
         assert_difference 'Position.count', 1 do

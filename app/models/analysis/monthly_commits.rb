@@ -25,10 +25,10 @@ class Analysis::MonthlyCommits < Analysis::QueryBase
   end
 
   def start_date
-    Time.now.utc - COMMIT_YEARS.years
+    Time.current - COMMIT_YEARS.years
   end
 
   def end_date
-    Time.now.utc
+    Time.current
   end
 end

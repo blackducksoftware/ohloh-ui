@@ -8,7 +8,7 @@ class RecentlyActiveAccountsCacheTest < ActiveSupport::TestCase
     end
 
     it 'should retrive the first record' do
-      name_facts(:vitafact).update_attributes(last_checkin: Time.now)
+      name_facts(:vitafact).update_attributes(last_checkin: Time.current)
       RecentlyActiveAccountsCache.recalc!
       RecentlyActiveAccountsCache.accounts.count.must_equal 1
     end

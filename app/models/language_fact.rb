@@ -4,8 +4,8 @@ class LanguageFact < ActiveRecord::Base
 
   class << self
     def report(language, options = {})
-      start_month = options[:start_month] || Time.now.years_ago(10)
-      end_month = options[:end_month] || Time.now.months_ago(1)
+      start_month = options[:start_month] || Time.current.years_ago(10)
+      end_month = options[:end_month] || Time.current.months_ago(1)
       measure = options[:measure] || 'loc_changed'
 
       AllMonth.joins(join_clause(language.id))

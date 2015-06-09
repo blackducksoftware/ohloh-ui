@@ -78,9 +78,9 @@ class ApiKeysControllerTest < ActionController::TestCase
   end
 
   it 'index page should honor the sort order "most_recent_request"' do
-    api_key1 = create(:api_key, last_access_at: Time.now)
-    api_key2 = create(:api_key, last_access_at: Time.now - 1.day)
-    api_key3 = create(:api_key, last_access_at: Time.now + 1.day)
+    api_key1 = create(:api_key, last_access_at: Time.current)
+    api_key2 = create(:api_key, last_access_at: Time.current - 1.day)
+    api_key3 = create(:api_key, last_access_at: Time.current + 1.day)
     login_as @admin
     get :index, sort: 'most_recent_request'
     must_respond_with :ok
@@ -114,9 +114,9 @@ class ApiKeysControllerTest < ActionController::TestCase
   end
 
   it 'index page should honor the sort order "newest"' do
-    api_key1 = create(:api_key, created_at: Time.now)
-    api_key2 = create(:api_key, created_at: Time.now - 1.day)
-    api_key3 = create(:api_key, created_at: Time.now + 1.day)
+    api_key1 = create(:api_key, created_at: Time.current)
+    api_key2 = create(:api_key, created_at: Time.current - 1.day)
+    api_key3 = create(:api_key, created_at: Time.current + 1.day)
     login_as @admin
     get :index, sort: 'newest'
     must_respond_with :ok
@@ -126,9 +126,9 @@ class ApiKeysControllerTest < ActionController::TestCase
   end
 
   it 'index page should honor the sort order "oldest"' do
-    api_key1 = create(:api_key, created_at: Time.now)
-    api_key2 = create(:api_key, created_at: Time.now - 1.day)
-    api_key3 = create(:api_key, created_at: Time.now + 1.day)
+    api_key1 = create(:api_key, created_at: Time.current)
+    api_key2 = create(:api_key, created_at: Time.current - 1.day)
+    api_key3 = create(:api_key, created_at: Time.current + 1.day)
     login_as @admin
     get :index, sort: 'oldest'
     must_respond_with :ok
@@ -138,8 +138,8 @@ class ApiKeysControllerTest < ActionController::TestCase
   end
 
   it 'index page should honor the sort order "account_name"' do
-    api_key1 = create(:api_key, account_id: @user.id, created_at: Time.now - 1. day, name: 'Zzzzzzzz')
-    api_key2 = create(:api_key, account_id: @admin.id, created_at: Time.now, name: 'Aaaaaaaa')
+    api_key1 = create(:api_key, account_id: @user.id, created_at: Time.current - 1. day, name: 'Zzzzzzzz')
+    api_key2 = create(:api_key, account_id: @admin.id, created_at: Time.current, name: 'Aaaaaaaa')
     login_as @admin
     get :index, sort: 'account_name'
     must_respond_with :ok
@@ -149,9 +149,9 @@ class ApiKeysControllerTest < ActionController::TestCase
   end
 
   it 'index page should assume "newest" when the sort parameter is unsupported' do
-    api_key1 = create(:api_key, created_at: Time.now)
-    api_key2 = create(:api_key, created_at: Time.now - 1.day)
-    api_key3 = create(:api_key, created_at: Time.now + 1.day)
+    api_key1 = create(:api_key, created_at: Time.current)
+    api_key2 = create(:api_key, created_at: Time.current - 1.day)
+    api_key3 = create(:api_key, created_at: Time.current + 1.day)
     login_as @admin
     get :index, sort: 'I_am_a_banana!'
     must_respond_with :ok

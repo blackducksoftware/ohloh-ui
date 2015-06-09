@@ -21,7 +21,7 @@ class PrivacyController < ApplicationController
   end
 
   def update_email_opportunities_visited
-    @account.update_attribute(:email_opportunities_visited, Time.now.utc)
+    @account.update_attribute(:email_opportunities_visited, Time.current)
   end
 
   def set_oauth_applications

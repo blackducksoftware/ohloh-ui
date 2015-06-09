@@ -19,6 +19,6 @@
     .inset
       %h3= t('.active_contributors')
       %p= t('.active_contributors_desc', name: @language.nice_name,
-        start_date: Time.now.months_ago(2).at_beginning_of_month.strftime('%b %Y'),
-        end_date: Time.now.strftime('%b %Y'))
+        start_date: Time.current.months_ago(2).at_beginning_of_month.strftime('%b %Y'),
+        end_date: Time.current.strftime('%b %Y'))
       = render 'account', accounts: active_accounts, show_commits: true

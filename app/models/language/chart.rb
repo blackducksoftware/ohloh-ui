@@ -21,6 +21,6 @@ class Language::Chart
   private
 
   def set_start_date
-    @series['plotOptions']['series']['pointStart'] = Time.now.years_ago(10).to_f * 1000
+    @series['plotOptions']['series']['pointStart'] = Time.current.years_ago(10).to_f * 1000
   end
 end

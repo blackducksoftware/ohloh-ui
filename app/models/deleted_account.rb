@@ -16,7 +16,7 @@ class DeletedAccount < ActiveRecord::Base
   end
 
   def feedback_time_elapsed?
-    created_at < Time.now.utc - 1.hour
+    created_at < Time.current - 1.hour
   end
 
   private

@@ -22,8 +22,8 @@ describe PostsController do
 
     it 'index should handle search for unlogged users' do
       login_as nil
-      create(:post, body: 'oldest', created_at: Time.now - 2.hours)
-      create(:post, body: 'newest', created_at: Time.now)
+      create(:post, body: 'oldest', created_at: Time.current - 2.hours)
+      create(:post, body: 'newest', created_at: Time.current)
       get :index, sort: 'newest'
       must_respond_with :ok
       response.body.must_match(/newest.*oldest/m)
@@ -43,8 +43,8 @@ describe PostsController do
     end
 
     it 'sorts index posts by newest' do
-      create(:post, body: 'oldest', created_at: Time.now - 2.hours)
-      create(:post, body: 'newest', created_at: Time.now)
+      create(:post, body: 'oldest', created_at: Time.current - 2.hours)
+      create(:post, body: 'newest', created_at: Time.current)
       get :index, sort: 'newest'
       must_respond_with :ok
       response.body.must_match(/newest.*oldest/m)
@@ -83,10 +83,10 @@ describe PostsController do
     end
 
     it 'filters index by query parameter and sorts by newest' do
-      create(:post, body: 'first Mozilla', created_at: Time.now - 3.hours)
-      create(:post, body: 'second Mozilla', created_at: Time.now - 2.hours)
-      create(:post, body: 'third Mozilla', created_at: Time.now)
-      create(:post, body: 'Dropbox', created_at: Time.now - 4.hours)
+      create(:post, body: 'first Mozilla', created_at: Time.current - 3.hours)
+      create(:post, body: 'second Mozilla', created_at: Time.current - 2.hours)
+      create(:post, body: 'third Mozilla', created_at: Time.current)
+      create(:post, body: 'Dropbox', created_at: Time.current - 4.hours)
       get :index, query: 'Mozilla', sort: 'newest'
       must_respond_with :ok
       response.body.must_match(/third\sMozilla.*second\sMozilla.*first\sMozilla/m)
@@ -141,8 +141,8 @@ describe PostsController do
     end
 
     it 'sorts by newest' do
-      create(:post, account: user, body: 'oldest', created_at: Time.now - 2.hours)
-      create(:post, account: user, body: 'newest', created_at: Time.now)
+      create(:post, account: user, body: 'oldest', created_at: Time.current - 2.hours)
+      create(:post, account: user, body: 'newest', created_at: Time.current)
       get :index, account_id: user, sort: 'newest'
       must_respond_with :ok
       response.body.must_match(/newest.*oldest/m)
@@ -162,10 +162,10 @@ describe PostsController do
     end
 
     it 'filters index by query parameter and sorts by newest' do
-      create(:post, account: user, body: 'first Mozilla', created_at: Time.now - 3.hours)
-      create(:post, account: user, body: 'second Mozilla', created_at: Time.now - 2.hours)
-      create(:post, account: user, body: 'third Mozilla', created_at: Time.now)
-      create(:post, account: user, body: 'Dropbox', created_at: Time.now - 4.hours)
+      create(:post, account: user, body: 'first Mozilla', created_at: Time.current - 3.hours)
+      create(:post, account: user, body: 'second Mozilla', created_at: Time.current - 2.hours)
+      create(:post, account: user, body: 'third Mozilla', created_at: Time.current)
+      create(:post, account: user, body: 'Dropbox', created_at: Time.current - 4.hours)
       get :index, account_id: user, query: 'Mozilla', sort: 'newest'
       must_respond_with :ok
       response.body.must_match(/third\sMozilla.*second\sMozilla.*first\sMozilla/m)

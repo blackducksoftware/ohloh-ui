@@ -45,7 +45,7 @@ class PasswordResetsController < ApplicationController
   def check_token_expiration
     token_expires_at = @account.reset_password_tokens[params[:token]]
     return render_404 unless token_expires_at
-    return if token_expires_at > Time.now.utc
+    return if token_expires_at > Time.current
 
     redirect_to new_password_reset_path, flash: { error: t('password_resets.token_expired_error') }
   end

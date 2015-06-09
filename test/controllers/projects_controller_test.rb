@@ -24,7 +24,7 @@ describe 'ProjectsController' do
   end
 
   it 'index should handle query param sorting by new' do
-    create(:project, name: 'Foo_new', description: 'second', created_at: Time.now - 3.hours)
+    create(:project, name: 'Foo_new', description: 'second', created_at: Time.current - 3.hours)
     create(:project, name: 'FooBar_new', description: 'first')
     login_as nil
     get :index, query: 'foo', sort: 'new'
@@ -159,7 +159,7 @@ describe 'ProjectsController' do
   end
 
   it 'index should handle account sorting by "new"' do
-    project1 = create(:project, name: 'Foo_accounts_new', description: 'second', created_at: Time.now - 3.hours)
+    project1 = create(:project, name: 'Foo_accounts_new', description: 'second', created_at: Time.current - 3.hours)
     project2 = create(:project, name: 'FooBar_accounts_new', description: 'first')
     login_as nil
     manager = create(:account)

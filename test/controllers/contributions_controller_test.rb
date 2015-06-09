@@ -36,8 +36,8 @@ describe 'ContributionsController' do
 
   describe 'show' do
     it 'should return contribution' do
-      ContributorFact.any_instance.stubs(:first_checkin).returns(Time.now - 2.days)
-      ContributorFact.any_instance.stubs(:last_checkin).returns(Time.now)
+      ContributorFact.any_instance.stubs(:first_checkin).returns(Time.current - 2.days)
+      ContributorFact.any_instance.stubs(:last_checkin).returns(Time.current)
 
       get :show, project_id: @project.to_param, id: @contribution.id
 

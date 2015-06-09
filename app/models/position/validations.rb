@@ -38,11 +38,11 @@ module Position::Validations
   end
 
   def start_date_must_be_in_past
-    errors.add(:start_date, I18n.t('position.start_date.in_future')) if start_date > Time.now.utc
+    errors.add(:start_date, I18n.t('position.start_date.in_future')) if start_date > Time.current
   end
 
   def stop_date_must_be_in_past
-    errors.add(:stop_date, I18n.t('position.stop_date.in_future')) if stop_date > Time.now.utc
+    errors.add(:stop_date, I18n.t('position.stop_date.in_future')) if stop_date > Time.current
   end
 
   def stop_date_must_be_later_than_start_date

@@ -169,7 +169,7 @@ class PositionTest < ActiveSupport::TestCase
     it 'must return current utc time when ongoing' do
       position = Position.new(ongoing: true)
       Time.stub :now, stub(utc: 1.minute.ago) do
-        position.effective_stop_date.must_equal Time.now.utc
+        position.effective_stop_date.must_equal Time.current
       end
     end
 
@@ -177,8 +177,8 @@ class PositionTest < ActiveSupport::TestCase
       position = Position.new
       name_fact = stub(active?: true)
       position.stubs(:name_fact).returns(name_fact)
-      Time.stub :now, stub(utc: 1.minute.ago) do
-        position.effective_stop_date.must_equal Time.now.utc
+      Time.stub :current, stub(utc: 1.minute.ago) do
+        position.effective_stop_date.must_equal Time.current
       end
     end
 
@@ -186,8 +186,8 @@ class PositionTest < ActiveSupport::TestCase
       position = Position.new
       name_fact = stub(last_checkin: 1.day.ago)
       position.stubs(:name_fact).returns(name_fact)
-      Time.stub :now, 1.day.ago do
-        position.effective_stop_date.to_i.must_equal Time.now.to_i
+      Time.stub :current, 1.day.ago do
+        position.effective_stop_date.to_i.must_equal Time.current.to_i
       end
     end
   end

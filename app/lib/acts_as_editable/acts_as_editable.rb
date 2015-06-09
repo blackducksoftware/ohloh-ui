@@ -56,7 +56,7 @@ module ActsAsEditable
 
     def new_or_merged_property_edit(property)
       prop_edit = PropertyEdit.not_undone.for_property(property).for_target(self).for_editor(editor_account)
-      prop_edit = prop_edit.where(PropertyEdit.arel_table[:created_at].gt(Time.now - merge_within))
+      prop_edit = prop_edit.where(PropertyEdit.arel_table[:created_at].gt(Time.current - merge_within))
       prop_edit.first_or_initialize
     end
 

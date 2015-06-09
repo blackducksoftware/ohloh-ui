@@ -4,7 +4,7 @@ FactoryGirl.define do
     association :topic
     body { Faker::Lorem.sentence }
     sequence :created_at do |n|
-      Time.now + n
+      Time.current + n
     end
   end
 end
