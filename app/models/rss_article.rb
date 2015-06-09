@@ -15,9 +15,9 @@ class RssArticle < ActiveRecord::Base
     end
 
     def set_time(item)
-      date = (item.published || item.pubDate || item.dc_date || Time.now).to_s
+      date = (item.published || item.pubDate || item.dc_date || Time.current).to_s
       time = Time.parse(date).utc
-      time = Time.now.utc if time > Time.now.utc
+      time = Time.current if time > Time.current
       time
     end
 

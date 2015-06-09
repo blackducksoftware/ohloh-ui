@@ -4,7 +4,7 @@ describe 'PasswordResetsController' do
   let(:token) { SecureRandom.hex(16) }
   let(:original_password) { Faker::Internet.password  }
   let(:account) do
-    create(:account, reset_password_tokens: { token => Time.now.utc + 1.hour },
+    create(:account, reset_password_tokens: { token => Time.current + 1.hour },
                      password: original_password, password_confirmation: original_password)
   end
 
@@ -70,7 +70,7 @@ describe 'PasswordResetsController' do
     end
 
     it 'wont allow expired tokens' do
-      account.update! reset_password_tokens: { token => Time.now.utc }
+      account.update! reset_password_tokens: { token => Time.current }
 
       get :confirm, account_id: account.login, token: token
 

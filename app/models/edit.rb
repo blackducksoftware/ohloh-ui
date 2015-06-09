@@ -39,7 +39,7 @@ class Edit < ActiveRecord::Base
     fail ActsAsEditable::UndoError, I18n.t(undo ? 'edits.cant_undo' : 'edits.cant_redo') if (undone == undo)
     Edit.transaction do
       undo ? do_undo : do_redo
-      self.update_attributes!(undone: undo, undone_at: Time.now.utc, undone_by: editor.id)
+      self.update_attributes!(undone: undo, undone_at: Time.current, undone_by: editor.id)
     end
   end
 

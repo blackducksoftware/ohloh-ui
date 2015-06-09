@@ -19,9 +19,9 @@ describe 'SitemapController' do
       xml['xmlns'].must_equal 'http://www.sitemaps.org/schemas/sitemap/0.9'
       xml['sitemap'].size.must_equal 2
       xml['sitemap'].first['loc'].must_equal 'http://test.host/sitemaps/projects/1.xml'
-      xml['sitemap'].first['lastmod'].must_equal Time.now.strftime('%Y-%m-%d')
+      xml['sitemap'].first['lastmod'].must_equal Time.current.strftime('%Y-%m-%d')
       xml['sitemap'].last['loc'].must_equal 'http://test.host/sitemaps/accounts/1.xml'
-      xml['sitemap'].last['lastmod'].must_equal Time.now.strftime('%Y-%m-%d')
+      xml['sitemap'].last['lastmod'].must_equal Time.current.strftime('%Y-%m-%d')
     end
   end
 
@@ -41,7 +41,7 @@ describe 'SitemapController' do
       urls.must_include "http://test.host/p/#{@projects.third.url_name}"
       urls.must_include "http://test.host/p/#{@projects.fourth.url_name}"
       urls.must_include "http://test.host/p/#{@projects.last.url_name}"
-      xml['url'].map { |url| url['lastmod'] }.must_equal [Time.now.strftime('%Y-%m-%d')] * active_count
+      xml['url'].map { |url| url['lastmod'] }.must_equal [Time.current.strftime('%Y-%m-%d')] * active_count
       xml['url'].map { |url| url['priority'] }.must_equal ['0.8'] * active_count
       xml['url'].map { |url| url['changefreq'] }.must_equal ['daily'] * active_count
     end
@@ -61,7 +61,7 @@ describe 'SitemapController' do
       urls.must_include "http://test.host/accounts/#{@accounts.third.login}"
       urls.must_include "http://test.host/accounts/#{@accounts.fourth.login}"
       urls.must_include "http://test.host/accounts/#{@accounts.last.login}"
-      xml['url'].map { |url| url['lastmod'] }.must_equal [Time.now.strftime('%Y-%m-%d')] * active_count
+      xml['url'].map { |url| url['lastmod'] }.must_equal [Time.current.strftime('%Y-%m-%d')] * active_count
       xml['url'].map { |url| url['priority'] }.must_equal ['0.6'] * active_count
       xml['url'].map { |url| url['changefreq'] }.must_equal ['daily'] * active_count
     end

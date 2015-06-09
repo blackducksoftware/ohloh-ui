@@ -50,8 +50,8 @@ class PasswordResetTest < ActiveSupport::TestCase
 
     it 'must set a timestamp for expiration' do
       timestamp = account.reset_password_tokens.values.first
-      timestamp.must_be :<=, Time.now.utc.advance(hours: 4)
-      timestamp.must_be :>, Time.now.utc.advance(hours: 3, minutes: 58)
+      timestamp.must_be :<=, Time.current.advance(hours: 4)
+      timestamp.must_be :>, Time.current.advance(hours: 3, minutes: 58)
     end
   end
 end

@@ -11,7 +11,7 @@ class PositionCoreTest < ActiveSupport::TestCase
     project_foo = create(:project, name: :foo, url_name: :foo)
     project_bar = create(:project, name: :bar, url_name: :bar)
 
-    common_attributes = { account: accounts(:admin), start_date: Time.now, stop_date: Time.now }
+    common_attributes = { account: accounts(:admin), start_date: Time.current, stop_date: Time.current }
     create_position(common_attributes.merge(project: project_foo))
     create_position(common_attributes.merge(project: project_bar, title: :bar_title))
     accounts(:admin).position_core.with_projects.count.must_equal 2

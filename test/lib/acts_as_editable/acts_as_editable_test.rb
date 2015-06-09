@@ -4,7 +4,7 @@ class ActsAsEditable::ActsAsEditableTest < ActiveSupport::TestCase
   fixtures :accounts
 
   it 'edits get created on new project' do
-    project = create(:project, name: 'Foo', description: 'Best of projects!', created_at: Time.now)
+    project = create(:project, name: 'Foo', description: 'Best of projects!', created_at: Time.current)
     CreateEdit.where(target: project).count.must_equal 1
     PropertyEdit.where(target: project, key: 'name', value: 'Foo').count.must_equal 1
     PropertyEdit.where(target: project, key: 'description', value: 'Best of projects!').count.must_equal 1
@@ -19,7 +19,7 @@ class ActsAsEditable::ActsAsEditableTest < ActiveSupport::TestCase
   end
 
   it 'edits do not get their property edits merged if they are not recent to one another' do
-    long_ago = Time.now - 5.days
+    long_ago = Time.current - 5.days
     Time.stubs(:now).returns long_ago
     project = create(:project, name: 'Foobar')
     Time.unstub(:now)

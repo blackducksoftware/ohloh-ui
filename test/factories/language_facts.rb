@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :language_fact do
     association :language
-    month { Time.now }
+    month { Time.current }
   end
 end

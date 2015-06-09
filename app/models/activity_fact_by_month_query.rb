@@ -57,7 +57,7 @@ class ActivityFactByMonthQuery
   end
 
   def less_than
-    months[:month].lt(Time.now.utc)
+    months[:month].lt(Time.current)
   end
 
   def greater_than

@@ -36,7 +36,7 @@ class SessionsController < ApplicationController
 
   def initialize_session_variables(account)
     session[:account_id] = account.id
-    session[:last_active] = Time.now.utc
+    session[:last_active] = Time.current
   end
 
   def remember_me_if_requested(account)

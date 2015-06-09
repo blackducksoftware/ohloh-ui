@@ -15,7 +15,7 @@ class ActivationResendsController < ApplicationController
   end
 
   def prevent_email_delivery_for_recently_activated
-    return unless @account.activation_resent_at && Time.now.utc < @account.activation_resent_at.since(2.hours)
+    return unless @account.activation_resent_at && Time.current < @account.activation_resent_at.since(2.hours)
     redirect_to message_path, flash: { success: t('.recently_activated') }
   end
 

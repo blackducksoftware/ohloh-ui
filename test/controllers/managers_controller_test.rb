@@ -138,7 +138,7 @@ class ManagersControllerTest < ActionController::TestCase
   it 'test accept should fail for rejected manager' do
     login_as accounts(:joe)
     set_manager(accounts(:joe), @proj)
-    @proj.manages.each { |pa| pa.update_attributes!(deleted_by: 1, deleted_at: Time.now.utc) }
+    @proj.manages.each { |pa| pa.update_attributes!(deleted_by: 1, deleted_at: Time.current) }
     set_manager(accounts(:admin), @proj) # auto-approved
     manager_apply(accounts(:user), @proj)
     assert_no_difference 'Manage.where.not(approved_by: nil).where(deleted_at: nil).count' do

@@ -68,9 +68,9 @@ class Position < ActiveRecord::Base
   # nil: unknown (for some reason)
   # rubocop:disable Metrics/CyclomaticComplexity
   def effective_stop_date
-    stop_date || (ongoing && Time.now.utc) ||
-      (name_fact.try(:active?) && Time.now.utc) ||
-      name_fact.try(:last_checkin) || Time.now
+    stop_date || (ongoing && Time.current) ||
+      (name_fact.try(:active?) && Time.current) ||
+      name_fact.try(:last_checkin) || Time.current
   end
   # rubocop:enable Metrics/CyclomaticComplexity
 
@@ -86,7 +86,7 @@ class Position < ActiveRecord::Base
   end
 
   def active?
-    effective_ongoing? && !(stop_date.present? && stop_date < Time.now.utc)
+    effective_ongoing? && !(stop_date.present? && stop_date < Time.current)
   end
 
   def organization

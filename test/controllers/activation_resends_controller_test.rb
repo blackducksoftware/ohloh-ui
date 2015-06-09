@@ -3,7 +3,7 @@ require 'test_helper'
 describe 'ActivationResendsController' do
   let(:account) { create(:account) }
   let(:unactivated) { create(:unactivated) }
-  let(:recently_activated) { create(:unactivated, activation_resent_at: Time.now) }
+  let(:recently_activated) { create(:unactivated, activation_resent_at: Time.current) }
 
   describe 'new' do
     it 'must respond with success' do

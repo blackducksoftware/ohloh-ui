@@ -16,7 +16,7 @@ FactoryGirl.define do
     twitter_account 'openhub'
     name { Faker::Name.name + rand(999_999).to_s }
     about_raw { Faker::Lorem.characters(10) }
-    activated_at { Time.now.utc }
+    activated_at { Time.current }
     activation_code nil
     country_code 'us'
     email_master true

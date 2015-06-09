@@ -39,11 +39,11 @@ class Manage < ActiveRecord::Base
 
   def destroy_by!(destroyer)
     fail I18n.t(:not_authorized) unless can_destroy?(destroyer)
-    update_attributes!(deleted_by: destroyer.id, deleted_at: Time.now.utc)
+    update_attributes!(deleted_by: destroyer.id, deleted_at: Time.current)
   end
 
   def destroy
-    update_attributes(deleted_by: Account.hamster.id, deleted_at: Time.now.utc)
+    update_attributes(deleted_by: Account.hamster.id, deleted_at: Time.current)
   end
 
   private

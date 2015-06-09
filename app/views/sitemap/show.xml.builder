@@ -1,4 +1,4 @@
-time = Time.now.strftime('%Y-%m-%d')
+time = Time.current.strftime('%Y-%m-%d')
 
 xml.instruct!
 xml.urlset(xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9') do

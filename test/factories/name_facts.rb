@@ -1,5 +1,5 @@
 def start_date_str(month = 0)
-  (Time.now - 6.years + month.months).beginning_of_month.strftime('%Y-%m-01 00:00:00')
+  (Time.current - 6.years + month.months).beginning_of_month.strftime('%Y-%m-01 00:00:00')
 end
 
 def start_date
@@ -19,8 +19,8 @@ FactoryGirl.define do
     association :name
     association :primary_language, factory: :language
     type 'VitaFact'
-    first_checkin Time.now - 3.days
-    last_checkin Time.now - 1.day
+    first_checkin Time.current - 3.days
+    last_checkin Time.current - 1.day
     commits_by_project [{ 'month' => start_date_str, 'commits' => '25', 'position_id' => '1' },
                         { 'month' => start_date_str(1), 'commits' => '40', 'position_id' => '1' },
                         { 'month' => start_date_str(2), 'commits' => '28', 'position_id' => '1' },

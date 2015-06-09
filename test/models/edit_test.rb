@@ -7,7 +7,7 @@ class EditTest < ActiveSupport::TestCase
     project = create(:project, description: 'Linux')
     Edit.for_target(project).delete_all
     @edit = create(:create_edit, target: project)
-    @previous_edit = create(:create_edit, value: '456', created_at: Time.now - 5.days, target: project)
+    @previous_edit = create(:create_edit, value: '456', created_at: Time.current - 5.days, target: project)
   end
 
   it 'test_that_we_can_get_the_previous_value_of_an_edit' do

@@ -141,16 +141,16 @@ class ContributionTest < ActiveSupport::TestCase
   def create_people_for_sort_by
     Person.update_all(kudo_position: 10)
     ContributorFact.update_all(commits: nil, twelve_month_commits: nil,
-                               last_checkin: nil, first_checkin: (Time.now - 5.years))
+                               last_checkin: nil, first_checkin: (Time.current - 5.years))
     @person1 = create(:person, effective_name: 'AB test', kudo_position: 3)
     @person1.contributor_fact.update_columns(commits: 10, twelve_month_commits: 3,
-                                             last_checkin: Time.now, first_checkin: Time.now)
+                                             last_checkin: Time.current, first_checkin: Time.current)
     @person2 = create(:person, effective_name: 'AA test', kudo_position: 2)
     @person2.contributor_fact.update_columns(commits: 9, twelve_month_commits: 4,
-                                             last_checkin: Time.now + 1, first_checkin: Time.now + 1)
+                                             last_checkin: Time.current + 1, first_checkin: Time.current + 1)
     @person3 = create(:person, effective_name: 'AC test', kudo_position: 1)
     @person3.contributor_fact.update_columns(commits: 8, twelve_month_commits: 5,
-                                             last_checkin: Time.now + 2, first_checkin: Time.now + 2)
+                                             last_checkin: Time.current + 2, first_checkin: Time.current + 2)
   end
 
   def find_contribution(join, sort_by)

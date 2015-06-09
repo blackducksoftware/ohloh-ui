@@ -22,7 +22,7 @@ module KudosHelper
 
   def kudo_is_new?(account_id, created_at)
     return (session[:last_active] && (created_at > session[:last_active])) if account_id == current_user.id
-    created_at > Time.now.utc - 24.hours
+    created_at > Time.current - 24.hours
   end
 
   def kudo_delete_link_confirm(kudo)

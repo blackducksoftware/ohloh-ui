@@ -14,7 +14,7 @@ describe 'AccountsController' do
   end
 
   def start_date_str(month = 0)
-    (Time.now - 6.years + month.months).beginning_of_month.strftime('%Y-%m-01 00:00:00')
+    (Time.current - 6.years + month.months).beginning_of_month.strftime('%Y-%m-01 00:00:00')
   end
 
   let(:user) do

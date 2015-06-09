@@ -38,8 +38,8 @@ class ComparesController < ApplicationController
   end
 
   def set_date_ranges
-    present_date = Time.now.utc
-    @end_date = Time.now.utc.strftime('%Y-%m-01')
+    present_date = Time.current
+    @end_date = Time.current.strftime('%Y-%m-01')
     @start_date = Time.utc(present_date.year - 3, present_date.month).strftime('%Y-%m-01')
   end
 
