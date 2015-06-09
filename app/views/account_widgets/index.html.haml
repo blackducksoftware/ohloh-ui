@@ -1,8 +1,6 @@
 - page_context[:select_footer_nav] = :widgets
 
-- content_for :html_title do
-  = succeed ' : Widgets' do
-    = @account.name
+- content_for(:html_title) { t('.page_title', who: @account.name) }
 
 .clearfix
 .project_content_title.margin_bottom_10

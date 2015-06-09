@@ -30,6 +30,15 @@ class StackEntriesControllerTest < ActionController::TestCase
     StackEntry.where(stack_id: stack.id, project_id: project.id).count.must_equal 1
   end
 
+  it 'create should persist a stack entry into the db if the request was xhr' do
+    stack = create(:stack)
+    project = create(:project)
+    login_as stack.account
+    assert_difference 'StackEntry.count', 1 do
+      xml_http_request :post, 'create', stack_id: stack, project_id: project
+    end
+  end
+
   it 'create should gracefully handle garbage project_id' do
     stack = create(:stack)
     login_as stack.account
@@ -82,5 +91,15 @@ class StackEntriesControllerTest < ActionController::TestCase
     post :destroy, id: stack_entry, stack_id: stack_entry.stack, stack_entry: { project_id: project }
     must_respond_with :ok
     stack_entry.reload.deleted_at.wont_equal nil
+  end
+
+  it 'destroy should mark the stack entry as deleted with xhr request' do
+    stack = create(:stack)
+    project = create(:project)
+    stack_entry = create(:stack_entry, project: project, stack: stack)
+    login_as stack.account
+    xml_http_request :delete, 'destroy', id: stack_entry, stack_id: stack
+    must_respond_with :ok
+    stack.stack_entries.count.must_equal 0
   end
 end

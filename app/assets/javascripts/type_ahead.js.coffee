@@ -19,6 +19,9 @@ class App.TypeAhead
     $('a#good_project_url').attr('href', project_url).text(project_url)
     $('#good_project_url_label').removeClass('hidden')
 
+  new_manager: (ui) ->
+    $('#account_id').val(ui.item.id)
+
 class App.ChosenSelect
   constructor: () ->
     $('.chzn-select').chosen()

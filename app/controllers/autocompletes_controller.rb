@@ -5,7 +5,7 @@ class AutocompletesController < ApplicationController
   # NOTE: Replaces accounts#autocomplete,
   def account
     accounts = Account.simple_search(params[:term])
-    render json: accounts.map { |a| { login: a.login, name: a.name, value: a.login } }
+    render json: accounts.map { |a| { login: a.login, name: a.name, value: a.login, id: a.id } }
   end
 
   # NOTE: Replaces projects#autocomplete.

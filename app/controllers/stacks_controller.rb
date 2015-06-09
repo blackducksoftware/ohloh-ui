@@ -8,19 +8,20 @@ class StacksController < ApplicationController
   before_action :find_account, only: [:index, :show, :similar]
   before_action :auto_ignore, only: [:builder]
   before_action :find_project, only: [:near]
-
   before_action :account_context, only: [:index, :show, :similar]
+  after_action :connect_stack_entry_to_stack, only: [:create], if: :request_is_xhr?
 
   def index
     @stacks = @account.stacks
   end
 
   def create
-    @stack = Stack.new
-    @stack.account = current_user
-    set_title
+    create_stack
     if @stack.save
-      redirect_to stack_path(@stack)
+      respond_to do |format|
+        format.html { redirect_to stack_path(@stack) }
+        format.js { render action: 'i_use_this.js.erb' }
+      end
     else
       redirect_to account_stacks_path(current_user), notice: t('.error')
     end
@@ -62,9 +63,21 @@ class StacksController < ApplicationController
 
   private
 
+  def create_stack
+    @stack = Stack.new
+    @stack.account = current_user
+    request_is_xhr? ? i_use_this : set_title
+  end
+
   def set_title
     title = (1..30).collect { |i| "New Stack #{i}" } - Stack.where(account_id: @stack.account_id).pluck(:title)
     @stack.title = title.first
+  end
+
+  def i_use_this
+    find_project
+    stack_count = current_user.stacks.count + 1
+    @stack.auto_generate_title_and_description(stack_count)
   end
 
   def model_params
@@ -95,5 +108,13 @@ class StacksController < ApplicationController
   def find_project
     @project = Project.from_param(params[:project_id]).take
     fail ParamRecordNotFound unless @project
+  end
+
+  def connect_stack_entry_to_stack
+    StackEntry.create(stack_id: @stack.id, project_id: @project.id)
+  end
+
+  def request_is_xhr?
+    request.xhr?
   end
 end

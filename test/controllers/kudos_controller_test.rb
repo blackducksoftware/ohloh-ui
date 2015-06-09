@@ -143,6 +143,7 @@ class KudosControllerTest < ActionController::TestCase
     login_as account
     post :create, kudo: { account_id: account.id }
     must_respond_with 302
+    flash[:error].must_equal I18n.t('kudos.cant_kudo_self')
     Kudo.where(account_id: account.id).count.must_equal 0
   end
 
@@ -151,7 +152,17 @@ class KudosControllerTest < ActionController::TestCase
     login_as create(:account)
     post :create, kudo: { account_id: account.id }
     must_respond_with 302
+    flash[:success].must_equal I18n.t('kudos.create.success_account', name: account.name)
     Kudo.where(account_id: account.id).count.must_equal 1
+  end
+
+  it 'create should not allow a kudos with too much text' do
+    account = create(:account)
+    login_as create(:account)
+    post :create, kudo: { account_id: account.id, message: Faker::Lorem.sentences(12) }
+    must_respond_with 302
+    flash[:error].must_equal 'Message is too long (maximum is 80 characters)'
+    Kudo.where(account_id: account.id).count.must_equal 0
   end
 
   it 'create should allow user to kudo a contribution' do

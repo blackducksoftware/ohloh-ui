@@ -90,6 +90,18 @@ describe 'OrganizationsController' do
     end
 
     it 'must alert non managers about read only data' do
+      admin = create(:admin)
+      create(:manage, target: organization, account: admin, approved_by: admin.id)
+      restrict_edits_to_managers(organization, admin)
+      login_as account
+
+      get :settings, id: organization.to_param
+
+      flash[:notice].must_equal I18n.t('permissions.not_manager')
+    end
+
+    it 'must alert non managers even if project and organization url name are same' do
+      create(:project, url_name: organization.to_param)
       restrict_edits_to_managers(organization, account)
       login_as account
 
@@ -99,7 +111,7 @@ describe 'OrganizationsController' do
     end
 
     it 'wont show permission alert to an authorized manager' do
-      create(:manage, target: organization, account: account)
+      create(:manage, target: organization, account: account, approved_by: create(:admin).id)
       restrict_edits_to_managers(organization, account)
 
       login_as account

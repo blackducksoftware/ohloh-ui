@@ -81,7 +81,8 @@
           .form-group.margin_left_15
             %label.control-label= t('bio')
             .control
-              = f.text_area :about_raw, value: @account.markup.raw, class: 'edit-description', rows: '10'
+              - about_raw = @account.markup ? @account.markup.raw : ''
+              = f.text_area :about_raw, value: about_raw, class: 'edit-description', rows: '10'
               - error_tag @account, 'markup.raw'
               %p.help-block= t('.about_raw_help')
 

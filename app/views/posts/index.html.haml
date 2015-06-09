@@ -1,11 +1,10 @@
-- content_for :html_title do
-  = t('.openhub_posts')
+- content_for(:html_title) { @account ? t('.openhub_posts_for_account', name: @account.name) : t('.openhub_posts') }
 
 - if @account
   - account_post_context
   - page_context[:select_footer_nav] = :posts
   .mezzo
-  %h2= t('.posts')
+  %h1= t('.posts')
   - if @account.posts.count == 0
     #no-posts= t('.no_posts')
   - else

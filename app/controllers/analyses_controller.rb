@@ -5,6 +5,7 @@ class AnalysesController < ApplicationController
   before_action :set_analysis
   before_action :fail_if_analysis_not_found, except: :languages_summary
   before_action :project_context, only: :languages_summary
+  skip_before_action :store_location
 
   def show
     respond_to do |format|

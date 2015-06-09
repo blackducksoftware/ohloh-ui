@@ -1,7 +1,5 @@
 - page_context[:select_footer_nav] = :widgets
-- content_for :html_title do
-  = succeed ' : Organization Widgets' do
-    = @organization.name
+- content_for(:html_title) { t('.page_title', name: @organization.name) }
 
 .project_content_title.margin_bottom_10
   %h2= t('.title')

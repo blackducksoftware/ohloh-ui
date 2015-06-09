@@ -1,0 +1,29 @@
+.btn.btn-mini.margin_left_15{ 'data-target' => '#iUseThisModal',
+  'data-toggle' => 'modal', :type => 'button' }= t('.i_use_this')
+.modal.fade#iUseThisModal{ 'aria-hidden' => 'true',
+  'aria-labelledby' => 'iUseThisModalLabel', :role => 'dialog', :tabindex => '-1' }
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{ 'aria-label' => 'Close', 'data-dismiss' => 'modal', :type => 'button' }
+          %span{ 'aria-hidden' => 'true' } &times;
+        %h4.modal-title#myModalLabel= t('.add_to_stacks')
+      .modal-body#add_project_to_stack= t('.add_to_your_stack', project: @project.name)
+      - if logged_in? && current_user.stacks.count > 0
+        - counter = 0
+        - current_user.stacks.each do |stack|
+          - counter += 1
+          %div
+            .stack-title
+              = stack.title
+            .stack-checkbox
+              = check_box_tag 'stacked', 0, false, 'data-stack' => stack.to_param,
+                                                   'data-project' => @project.to_param,
+                                                   'data-stackentry' => find_stack_entry(stack, @project).to_param,
+                                                    target: counter
+            .message-position{ id: "message#{counter}" }
+              = image_tag('spinner.gif', class: 'hidden', id: 'related_spinner', target: counter)
+      .modal-footer
+      .stack-align.margin_bottom_20
+        = button_to t('.create_a_new_stack', project: @project.name), stacks_path,
+          class: 'btn btn-default btn-lg stack-align', remote: true, params: { project_id: @project.id }

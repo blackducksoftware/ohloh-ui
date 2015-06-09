@@ -54,6 +54,8 @@ en:
       new_manager: 'New Manager'
       enter_name: 'Enter a user name'
       add: 'Add Manager'
+      success: 'Manager created successfully'
+      page_title: '%{name} : Settings: Managers : New - Open Hub'
     list_managers:
       page_title: '%{name} : Settings: Managers - Open Hub'
       title_link: 'Settings'
@@ -92,7 +94,6 @@ en:
     update:
       notice: 'Organization changes were saved successfully'
       failure: 'Organization changes could not be saved.'
-    new_manger: 'Manager created successfully'
     claim_project:
       unauthorized: 'Unauthorized!'
       failed: 'Failed.'
@@ -102,7 +103,8 @@ en:
       success: 'Removed %{name} successfully'
       error: "Error! Couldn\'t remove this project."
     show:
-      page_title: '%{organization_name} : Organization Summary'
+      loading: 'Loading.....'
+      page_title: '%{organization_name} : Organization Summary - Open Hub'
       title: 'Organization Summary'
       no_desc: 'No description has been added for this organization.'
       add_desc: 'Add description'
@@ -119,7 +121,7 @@ en:
         managers: 'Managers:'
         add_new: 'Add a new manager for %{name}'
     projects:
-      page_title: '%{organization_name} : Portfolio Projects'
+      page_title: '%{organization_name} : Portfolio Projects - Open Hub'
       title: 'Portfolio Projects'
       name: 'Name'
       primary_language: 'Primary Language'

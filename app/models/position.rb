@@ -102,9 +102,13 @@ class Position < ActiveRecord::Base
   class << self
     # FIXME: Replace account.active_positions with account.positions.active
     def active
-      where("exists (
-        #{ joins(name_facts: :project).where('projects.id = positions.project_id').to_sql }
-      )")
+      where(with_facts.to_sql)
+    end
+
+    def with_facts
+      joins(name_facts: :project)
+        .where(Project.arel_table[:id].eq(arel_table[:project_id]))
+        .exists
     end
   end
 

@@ -1,5 +1,6 @@
 // handles project edit form
 // TODO: Replace all of this with better Javascript. Specifically that cobbled together HTML down there is awful.
+
 ProjectForm = {
   preview_url_name_label: 'label#preview_url_name',
   url_name_input: 'input#project_url_name',
@@ -82,3 +83,58 @@ SimilarProjects = {
 }
 
 $(document).on('page:change', SimilarProjects.init())
+
+$(document).ready(function() {
+
+  $("input[name='stacked']").each(function(index) {
+    if ( $(this).attr("data-stackentry") ) {
+      $(this).prop("checked",true);
+    }
+  });
+  
+  $("input[name='stacked']").click(function() {
+    if ($(this).prop("checked") == true) {
+      var target = $(this).attr("target");
+      var message = ".message-position#message" + target;
+      var $stackId = $(this).data("stack");
+      var $projectUrlName = $(this).data("project");
+      $('#related_spinner[target=' + '"' + target + '"' +']').removeClass("hidden");
+      $.ajax("/stacks/" + $stackId + "/stack_entries",{
+        type: "POST",
+        data: "project_id=" + $projectUrlName,
+        dataType: 'json',
+        success: function(data){
+          if ($(".unstack-message").length) {
+            $(".unstack-message").remove();
+          }
+          $(":checked").attr("data-stackentry", data.stack_entry_id);
+          $(message).append("<p class=stack-message>stacked</p>");
+        }, 
+        complete: function(){
+          $('#related_spinner[target=' + '"' + target + '"' +']').addClass("hidden");
+        }
+      });
+    } else {
+      var $inputElement = $(this);
+      var target = $(this).attr("target");
+      var message = ".message-position#message" + target;
+      var $stackId = $(this).data("stack");
+      var $stackEntryId = $(this).data("stackentry");
+      $('#related_spinner[target=' + '"' + target + '"' +']').removeClass("hidden");
+      $.ajax("/stacks/" + $stackId + "/stack_entries/" + $stackEntryId, {
+        type: "DELETE",
+        dataType: 'json',
+        context: $inputElement,
+        success: function() {
+          $(".stack-message").remove();
+        },
+        complete: function(){
+          $('#related_spinner[target=' + '"' + target + '"' +']').addClass("hidden");
+        }
+      }).done(function(){
+        $(message).append("<p class=unstack-message>unstacked</p>");
+        $inputElement.removeAttr("data-stackentry");
+      });
+    }
+  });
+});

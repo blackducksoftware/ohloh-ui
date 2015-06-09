@@ -1,4 +1,7 @@
-- page_context[:select_top_menu_nav] = @organization ? 'select_organizations' : 'select_projects'
+:ruby
+  page_context[:select_top_menu_nav] = @organization ? 'select_organizations' : 'select_projects'
+  page_context[:select_footer_nav] = :settings
+  content_for(:html_title) { t('.page_title', name: @parent.name) }
 
 .project_content_title
   %h2.pull-left
@@ -10,7 +13,8 @@
 .row
   .col-md-10.col-md-offset-1
     .well
-      = form_for [@parent, @logo], html: { multipart: true } do |f|
+      - path = @parent.is_a?(Project) ? project_logos_path(@parent) : organization_logos_path(@parent)
+      = form_for @logo, url: path, html: { multipart: true } do |f|
         = render partial: 'fields', locals: { f: f }
       .clearfix
         &nbsp;

@@ -85,6 +85,15 @@ describe 'EnlistmentsControllerTest' do
       Repository.count.must_equal 1
       Enlistment.count.must_equal 2
     end
+
+    it 'must render error for missing url' do
+      login_as @account
+
+      post :create, project_id: @project_id, repository: build(:repository, url: '').attributes
+
+      assigns(:repository).errors.messages[:url].must_be :present?
+      must_render_template :new
+    end
   end
 
   it 'show must return valid data for xml request' do

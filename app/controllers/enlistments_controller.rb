@@ -33,7 +33,7 @@ class EnlistmentsController < SettingsController
 
   def create
     initialize_repository
-    render :new, status: :unprocessable_entity && return unless @repository.valid?
+    return render :new, status: :unprocessable_entity unless @repository.valid?
     save_or_update_repository
     create_enlistment
     @first_enlistment = true if @project.enlistments.count == 1

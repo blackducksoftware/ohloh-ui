@@ -152,6 +152,20 @@ describe 'StacksControllerTest' do
     must_respond_with 302
   end
 
+  it 'create should hande an ajax request for I Use This' do
+    account = create(:account)
+    project = create(:project)
+    login_as account
+    xml_http_request :post, 'create', project_id: project
+    must_render_template 'stacks/i_use_this.js.erb'
+    assert_difference 'Stack.count', 1 do
+      xml_http_request :post, 'create', project_id: project
+    end
+    assert_difference 'StackEntry.count', 1 do
+      xml_http_request :post, 'create', project_id: project
+    end
+  end
+
   # update action
   it 'update should require a current user' do
     login_as nil

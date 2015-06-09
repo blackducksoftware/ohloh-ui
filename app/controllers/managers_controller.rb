@@ -24,11 +24,11 @@ class ManagersController < SettingsController
   end
 
   def edit
-    return render_unauthorized unless current_user_can_manage?
+    return render_unauthorized unless current_user_can_manage_or_self?
   end
 
   def update
-    return render_unauthorized unless current_user_can_manage?
+    return render_unauthorized unless current_user_can_manage_or_self?
     if @manage.update_attributes(model_params)
       flash[:notice] = t '.notice'
       redirect_to_index
@@ -57,12 +57,6 @@ class ManagersController < SettingsController
   end
 
   protected
-
-  def current_user_can_manage?
-    return true if current_user_is_admin?
-    logged_in? && @parent && @parent.active_managers.include?(current_user)
-  end
-  helper_method :current_user_can_manage?
 
   def current_user_can_manage_or_self?
     current_user_can_manage? || @manage.account == current_user

@@ -8,9 +8,9 @@
       = link_to bootstrap_icon('icon-external-link', t('.homepage')), @organization.homepage_url, target: '_blank'
     %dt= link_to t('.managers'), list_managers_organization_path(@organization)
     %dd
-      - if @organization.managers.any?
-        = @organization.managers.map { |m| link_to m.name, account_path(m) }.to_sentence.html_safe
+      - if @organization.active_managers.any?
+        = @organization.active_managers.map { |m| link_to m.name, account_path(m) }.to_sentence.html_safe
       - elsif current_user_is_admin?
-        = link_to t('.add_new', name: @organization.name), new_organization_manager_path(@organization)
+        = link_to t('.add_new', name: @organization.name), new_manager_organization_path(@organization)
       - else
         &nbsp;

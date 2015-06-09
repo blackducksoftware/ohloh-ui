@@ -23,4 +23,10 @@ class RssFeedTest < ActiveSupport::TestCase
     rss_feed.fetch(accounts(:admin))
     rss_feed.errors.wont_be_nil
   end
+
+  it 'should not allow blank urls' do
+    rss_feed = build(:rss_feed, url: '')
+    rss_feed.wont_be :valid?
+    rss_feed.errors.messages[:url].first.must_equal 'Invalid URL Format'
+  end
 end

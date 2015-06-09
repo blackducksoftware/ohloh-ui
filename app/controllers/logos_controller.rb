@@ -18,10 +18,11 @@ class LogosController < SettingsController
     if create_logo
       update_parent_logo
       flash[:success] = t('.success')
+      redirect_to action: :new
     else
       flash[:error] = t('.error')
+      render :new, status: :unprocessable_entity
     end
-    redirect_to action: :new
   end
 
   def destroy

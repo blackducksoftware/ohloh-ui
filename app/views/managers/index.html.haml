@@ -17,11 +17,11 @@
 
   - if @parent.is_a?(Project)
     .col-md-4
-      - unless @parent.managers.include?(current_user)
+      - unless @parent.active_managers.include?(current_user)
         %a.btn.btn-primary{ href: new_parent_manager_path(@parent), style: 'margin-left: 30px;' }= t('.new_cta')
       .clear &nbsp;
       .padding_one_top
-        - if !@parent.managers.include?(current_user)
+        - if !@parent.active_managers.include?(current_user)
           .well
             %h5.nomargin= t('.help_header_first1')
             %p= t('.help_body_first1')

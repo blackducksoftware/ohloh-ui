@@ -7,7 +7,10 @@
   - else
     - content_for(:html_title) { t('.account_title', name: @account.name) }
     %h2= t('reviews.reviews_and_ratings')
-  = render partial: 'shared/search_dingus', locals: { collection: @reviews, sort_context: :reviews,
-    no_match_found_type: :flash }
-  = render partial: 'review_list', collection: @reviews
-  = will_paginate @reviews
+  - if @reviews.length > 0
+    = render partial: 'shared/search_dingus', locals: { collection: @reviews, sort_context: :reviews,
+      no_match_found_type: :flash }
+    = render partial: 'review_list', collection: @reviews
+    = will_paginate @reviews
+  - else
+    %h3= t('.no_reviews_yet')
