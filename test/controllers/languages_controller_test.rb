@@ -61,10 +61,11 @@ describe 'LanguagesController' do
       assigns(:language_facts).first.must_equal language_fact
     end
 
-    it 'should accept show by id' do
-      get :show, id: create(:language).id
-      must_respond_with :ok
-      must_render_template :show
+    it 'should accept show by id and redirect to by name' do
+      language = create(:language)
+      get :show, id: language.id
+      must_respond_with :found
+      must_redirect_to language_path(language)
     end
 
     it 'should not load language_facts if xml request' do
