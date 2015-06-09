@@ -1,8 +1,14 @@
 @font-face
   font-family: 'Open Sans'
   font-style: normal
+  font-weight: 300
+  src: font-url('OpenSans-Light.woff') format('woff')
+
+@font-face
+  font-family: 'Open Sans'
+  font-style: normal
   font-weight: 400
-  src: font-url('OpenSans-Regular.woff') format('woff'), font-url('OpenSans-Regular.ttf') format('truetype')
+  src: font-url('OpenSans-Regular.woff') format('woff')
 
 // base mixins
 =sans_font
@@ -52,6 +58,9 @@ $c4_light: #E7F2D7
 // yellowish-gray (to highlight content)
 $yellow_med: #faf8be
 $yellow_light: #fffee8
+
+body
+  text-rendering: optimizeLegibility
 
 .hidden
   display: none
