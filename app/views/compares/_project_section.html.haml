@@ -18,11 +18,11 @@
                                           data: { placement: 'bottom', 'original-title' => t('.remove_from') } }
                 %i.icon-remove= t(:clear)
         - else
-          %form{ action: compare_projects_path }
+          %form.autocomplete-submit{ action: compare_projects_path }
             - @projects.each_with_index do |proj, i|
               - next if project == proj
               %input{ type: 'hidden', name: "project_#{i}", value: proj ? proj.name : '' }
             - key = "project_#{index}"
             %input.autocompletable{ type: 'text', id: key, name: key, width: 20,
-            placeholder: t('.enter_name'), data: { source: '/autocompletes/project'  } }
+            placeholder: t('.enter_name'), data: { source: '/autocompletes/project', select: 'submitForm' } }
             %input{ type: 'submit', value: t('.go'), name: "submit_#{index}", style: 'display: none;' }
