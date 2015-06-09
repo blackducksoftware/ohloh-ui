@@ -2,15 +2,17 @@ require 'test_helper'
 require 'test_helpers/xml_parsing_helpers'
 
 describe 'AnalysesController' do
-  let(:beginning_of_month) { Date.today.to_time.beginning_of_month }
+  let(:beginning_of_month) { Time.current.beginning_of_month }
+  let(:second_day_of_month) { beginning_of_month.advance(days: 1) }
   let(:account) { create(:account) }
   let(:activity_fact) { create(:activity_fact, code_added: 5, code_removed: 3, blanks_added: 3, blanks_removed: 0) }
   let(:activity_fact_2) do
-    options = { analysis: activity_fact.analysis, code_added: 6, code_removed: 5, blanks_added: 5, blanks_removed: 4 }
+    options = { analysis: activity_fact.analysis, code_added: 6, code_removed: 5, blanks_added: 5, blanks_removed: 4,
+                month: second_day_of_month }
     create(:activity_fact, options)
   end
   let(:analysis) do
-    activity_fact_2.analysis.update_attributes(updated_on: Date.today, logged_at: Date.today)
+    activity_fact_2.analysis.update!(updated_on: Date.today, logged_at: Date.today)
     activity_fact_2.analysis
   end
   let(:project) { analysis.project }
@@ -129,7 +131,7 @@ describe 'AnalysesController' do
   describe 'committer_history' do
     it 'should return chart data' do
       create_all_months
-      activity_fact.update_attributes!(month: Date.today)
+      activity_fact.update_attributes!(month: second_day_of_month)
       create(:activity_fact, month: beginning_of_month, analysis: activity_fact.analysis)
       analysis.update_attributes!(logged_at: Date.today + 32.days)
 
@@ -153,7 +155,7 @@ describe 'AnalysesController' do
   describe 'contributor_summary' do
     it 'should return chart data' do
       create_all_months
-      activity_fact.update_attribute(:month, Date.today)
+      activity_fact.update_attribute(:month, second_day_of_month)
       create(:activity_fact, month: beginning_of_month, analysis: activity_fact.analysis)
       analysis.update_attributes(logged_at: Date.today + 32.days)
 
