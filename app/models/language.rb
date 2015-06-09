@@ -9,7 +9,7 @@ class Language < ActiveRecord::Base
   scope :by_projects, -> { order(projects: :desc).by_name }
   scope :by_contributors, -> { order(contributors: :desc).by_name }
   scope :by_commits, -> { order(commits: :desc).by_name }
-  scope :from_param, ->(name) { where(name: name) }
+  scope :from_param, ->(param) { where(Language.arel_table[:name].eq(param).or(Language.arel_table[:id].eq(param))) }
 
   filterable_by ['languages.nice_name']
   ALL_LANGUAGES = ['All Languages', '']

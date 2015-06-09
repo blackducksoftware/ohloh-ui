@@ -61,6 +61,12 @@ describe 'LanguagesController' do
       assigns(:language_facts).first.must_equal language_fact
     end
 
+    it 'should accept show by id' do
+      get :show, id: create(:language).id
+      must_respond_with :ok
+      must_render_template :show
+    end
+
     it 'should not load language_facts if xml request' do
       create(:language_fact, language: @language)
       get :show, id: @language.name, format: :xml, api_key: client_id

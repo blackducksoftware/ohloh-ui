@@ -9,7 +9,7 @@ class Language::Chart
 
   def data
     set_start_date
-    Language.from_param(@options[:language_name]).each do |language|
+    Language.where(name: @options[:language_name]).to_a.each do |language|
       @series['series'] << { data: LanguageFact.report(language, @options).map(&:percent),
                              color: "##{language_color(language.name)}",
                              name: language.nice_name
