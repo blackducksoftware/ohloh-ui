@@ -10,6 +10,11 @@ class NameFact < ActiveRecord::Base
   has_one :project, -> { where.not(deleted: true) }, foreign_key: :best_analysis_id, primary_key: :analysis_id
 
   scope :for_project, ->(project) { where(analysis_id: project.best_analysis_id) }
+  scope :with_positions, lambda {
+    joins(:project)
+      .where('name_facts.name_id = positions.name_id and projects.id = positions.project_id')
+      .exists
+  }
 
   def active?
     last_checkin.next_year > Time.current

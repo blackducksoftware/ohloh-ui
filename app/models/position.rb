@@ -99,19 +99,6 @@ class Position < ActiveRecord::Base
     end
   end
 
-  class << self
-    # FIXME: Replace account.active_positions with account.positions.active
-    def active
-      where(with_facts.to_sql)
-    end
-
-    def with_facts
-      joins(name_facts: :project)
-        .where(Project.arel_table[:id].eq(arel_table[:project_id]))
-        .exists
-    end
-  end
-
   private
 
   def find_name_fact_from_project_and_comitter_name

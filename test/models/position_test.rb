@@ -16,15 +16,6 @@ class PositionTest < ActiveSupport::TestCase
       positions.first.name_id.must_be :present?
     end
 
-    it 'active' do
-      NameFact.create!(analysis: project.best_analysis, name: name_obj)
-      account.positions.active.count.must_equal 0
-      create_position(account: account, name: name_obj, project: project)
-
-      account.reload
-      account.positions.active.count.must_equal 1
-    end
-
     it 'for_project' do
       project = create(:project)
       position = create_position(project: project, name: name_obj)
