@@ -25,7 +25,7 @@ class Project < ActiveRecord::Base
   attr_accessor :managed_by_creator
 
   def to_param
-    url_name || id.to_s
+    url_name.blank? ? id.to_s : url_name
   end
 
   def related_by_stacks(limit = 12)
