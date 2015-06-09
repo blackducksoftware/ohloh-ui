@@ -1,5 +1,6 @@
 - content_for(:html_title) { t('.page_title', name: @organization.name) }
 - page_context[:select_top_menu_nav] = 'select_organizations'
+- page_context[:select_footer_nav] = nil
 
 %h2.pull-left
   = link_to t('.settings'), settings_organization_path(@organization)
