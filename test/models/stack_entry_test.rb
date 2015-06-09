@@ -11,13 +11,13 @@ class StackEntryTest < ActiveSupport::TestCase
     proj = create(:project)
     proj.reload.user_count.must_equal 1
     stack_entry1 = create(:stack_entry, project: proj)
-    proj.reload.user_count.must_equal 2
-    stack_entry2 = create(:stack_entry, project: proj)
-    proj.reload.user_count.must_equal 3
-    stack_entry1.destroy
-    proj.reload.user_count.must_equal 2
-    stack_entry2.destroy
     proj.reload.user_count.must_equal 1
+    stack_entry2 = create(:stack_entry, project: proj)
+    proj.reload.user_count.must_equal 2
+    stack_entry1.destroy
+    proj.reload.user_count.must_equal 1
+    stack_entry2.destroy
+    proj.reload.user_count.must_equal 0
   end
 
   it '#update_counters updates stack.project_count' do
