@@ -1,8 +1,12 @@
 - page_context[:select_footer_nav] = :settings
 - content_for(:html_title) { @account.name }
--# TODO: Accounts edit is not internationalized
 
 .clearfix
+
+- if @account.latitude && @account.longitude
+  - content_for :javascript do
+    - callback = "EditMap.jumpMeTo(#{@account.latitude}, #{@account.longitude});"
+    = javascript_tag "$(document).on('page:change', function(){#{callback}});"
 
 #accounts_edits
   .margin_left_15
@@ -65,7 +69,7 @@
               %label.control-label!= t('.city_and_country')
               .controls
                 %p.enabled
-                  %input.form-control#location{ type: :text, autocomplete: :off, value: @account.location }
+                  %input.form-control#location_scratch{ type: :text, autocomplete: :off, value: @account.location }
                   -# FIXME: Add js logic to clear location after google maps is integrated.
                   %a{ href: '#' }= t('clear')
                 %p.error#not_found{ style: 'display:none' }
@@ -108,3 +112,5 @@
       = t('.help_4')
     %li
       = t('.help_5')
+
+!= map_init('map', 7)

@@ -1,6 +1,8 @@
 class AccountsController < ApplicationController
   include RedirectIfDisabled
 
+  helper MapHelper
+
   before_action :session_required, only: [:edit, :destroy, :confirm_delete]
   before_action :set_account, only: [:destroy, :show, :update, :edit, :confirm_delete, :disabled, :settings]
   before_action :redirect_if_disabled, only: [:show, :update, :edit]
