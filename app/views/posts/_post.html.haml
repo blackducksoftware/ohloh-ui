@@ -1,5 +1,5 @@
 .well.posts{ style: "#{Account::Access.new(post.account).admin? ? 'background: #D5E3E9;' : 'background: #F6F6F6'}" }
-  = find_and_preserve(markdown_format(strip_tags(post.body)))
+  = find_and_preserve(markdown_format(post.body))
   .clearfix.margin_top_10
     .col-md-3.pull-right
       .pull-left
