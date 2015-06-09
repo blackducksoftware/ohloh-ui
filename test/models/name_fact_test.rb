@@ -36,4 +36,13 @@ class NameFactTest < ActiveSupport::TestCase
       create(:name_fact, primary_language: nil).primary_language.is_a?(NilLanguage).must_equal true
     end
   end
+
+  describe 'with_positions' do
+    it 'must exist if position found' do
+      position = create_position
+      positions = Position.where(NameFact.with_positions)
+      positions.count.must_equal 1
+      positions.first.must_equal position
+    end
+  end
 end

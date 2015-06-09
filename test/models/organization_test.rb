@@ -101,4 +101,17 @@ class OrganizationTest < ActiveSupport::TestCase
       Organization.search_and_sort('test', 'projects', nil).must_equal [org_2, org_3, org_1]
     end
   end
+
+  describe 'affiliators_count' do
+    it 'must return non zero count' do
+      account = create(:account, organization_id: org.id)
+      create_position(account: account)
+      org.affiliators_count.must_equal 1
+    end
+
+    it 'must return zero if no positions found' do
+      create(:account, organization_id: org.id)
+      org.affiliators_count.must_equal 0
+    end
+  end
 end
