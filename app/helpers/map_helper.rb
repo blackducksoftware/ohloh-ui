@@ -1,6 +1,6 @@
 module MapHelper
-  def map_init(id)
-    map_script_load + map_js_initialization(id)
+  def map_init(id, zoom = 2)
+    map_script_load + map_js_initialization(id, zoom)
   end
 
   def map_near_stacks_json(project, params)
@@ -37,11 +37,11 @@ module MapHelper
     "<script src='#{uri}' type='text/javascript'></script>"
   end
 
-  def map_js_initialization(id)
+  def map_js_initialization(id, zoom)
     javascript_tag <<-JSCRIPT
       $(document).on('page:change', function(){
         Map.load('#{id}', 25, 12, 2);
-        Map.moveTo(25, 12, 2);
+        Map.moveTo(25, 12, #{zoom});
       });
     JSCRIPT
   end
