@@ -4,9 +4,9 @@
       %i.icon-plus-sign
       = t('.claim_link')
   - else
-    = render partial: '/organizations/active_remove_project_button', locals: { p: project }
+    = render partial: 'active_remove_project_button', locals: { p: project }
 - else
   - if project.organization_id.blank?
     = disabled_button(t('.claim_link'), class: 'btn-small btn-success')
   - else
-    = disabled_button(bootstrap_icon('icon-trash', 'Remove'), class: 'btn-mini btn-danger')
+    = disabled_button(bootstrap_icon('icon-trash', t('.remove')), class: 'btn-mini btn-danger')

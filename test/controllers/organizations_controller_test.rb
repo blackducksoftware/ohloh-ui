@@ -266,9 +266,20 @@ describe 'OrganizationsController' do
       login_as account
       pro_1 = create(:project, name: 'test name1', organization_id: organization.id)
 
-      get :remove_project, id: organization.to_param, project_id: pro_1.id
+      get :remove_project, id: organization.to_param, project_id: pro_1.id, source: 'manage_projects'
 
       must_redirect_to manage_projects_organization_path(organization)
+      flash[:success].must_equal I18n.t('organizations.remove_project.success', name: pro_1.name)
+      pro_1.reload.organization_id.must_equal nil
+    end
+
+    it 'should remove project from org and redirect to claim_projects_list' do
+      login_as account
+      pro_1 = create(:project, name: 'test name1', organization_id: organization.id)
+
+      get :remove_project, id: organization.to_param, project_id: pro_1.id, source: 'claim_projects_list'
+
+      must_redirect_to claim_projects_list_organization_path(organization)
       flash[:success].must_equal I18n.t('organizations.remove_project.success', name: pro_1.name)
       pro_1.reload.organization_id.must_equal nil
     end

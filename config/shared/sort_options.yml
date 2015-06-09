@@ -181,7 +181,7 @@ claim_projects_list:
       - new
     -
       - Project Name
-      - name
+      - project_name
     -
       - Users
       - users

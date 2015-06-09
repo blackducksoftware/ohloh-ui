@@ -2,6 +2,7 @@ en:
   organizations:
     active_remove_project_button:
       remove_from: 'Remove %{project} from %{org}?'
+      remove: 'Remove'
     manage_projects:
       title: ' : Manage Projects'
       settings: 'Settings'
@@ -72,12 +73,13 @@ en:
       claim_link: 'Claim'
       mailto: 'mailto:info@openhub.net?subject=Incorrect Claim by %{org} on %{p.name}'
       link_title: 'This project has already been claimed by %{org}.'
-      report: 'Report'
+      report_text: 'Report'
       enter_project_name: 'Enter a project name or Code Location above to search for projects that you wish to claim.'
       no_match: 'No matches with this filter.'
       not_results: 'No results found.'
     claim_link:
       claim_link: 'Claim'
+      remove: 'Remove'
     about_managers:
       about: 'About'
       managers: 'Managers'

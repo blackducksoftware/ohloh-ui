@@ -8,6 +8,8 @@
 .col-md-12
   - if @projects.empty? && params[:query].blank?
     = render partial: 'shared/alert', locals: { message: t('.none_claimed') }
+  - elsif @projects.empty? && params[:query].present?
+    = render partial: 'shared/alert', locals: { message: t('.no_results') }
   - else
     = render 'shared/search_dingus', collection: @projects, sort_context: :claim_projects_list,
       no_match_found_type: :none
