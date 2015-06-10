@@ -3,7 +3,7 @@
     %label.control-label.required= t('.scm_type')
     .controls.chosen#value_select
       %select.chzn-select.value-select{ name: 'repository[type]', id: 'repository_type' }
-        = options_for_select_type
+        = options_for_select_type(@repository)
       - error_tag @repository, :type
   .control-group
     %label.control-label.required= t('.enter_url')
