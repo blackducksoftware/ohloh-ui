@@ -6,6 +6,8 @@
       - lang_style = "background-color: ##{language_color(lang.name)}; color:##{language_text_color(lang.name)};"
       .center.primary_language_bg{ style: lang_style }
         = lang.nice_name
+    - else
+      &nbsp;
   .col-md-10#account_header
     .pull-left
       %h1{ itemprop: 'name' }= h(@account.name)
@@ -13,9 +15,9 @@
         = @account.location
         - if @account.location.present?
           %meta{ itemprop: 'homeLocation', content: @account.location }
-        - if @account.location && my_account?(@account)
-          %span.seperator= '&nbsp;|&nbsp;'.html_safe
         - if my_account?(@account) || current_user_is_admin?
+          - if @account.location.present?
+            %span.seperator &nbsp;|&nbsp;
           = link_to settings_account_path(@account) do
             %i.icon-cogs= '&nbsp; Settings'.html_safe
       - if @account.url.present?
