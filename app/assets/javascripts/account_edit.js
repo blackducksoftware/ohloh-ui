@@ -17,7 +17,7 @@ var EditMap = {
   },
 
   jumpMeTo: function(lat, lng) {
-    var marker = Map.jumpTo(lat, lng, 5);
+    var marker = Map.jumpTo(lat, lng);
     google.maps.event.addListener(marker, "dragend", function() {
         $('#account_latitude')[0].value = marker.getPosition().lat();
         $('#account_longitude')[0].value = marker.getPosition().lng();
