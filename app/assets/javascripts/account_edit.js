@@ -51,9 +51,13 @@ var EditMap = {
       var address = resp.formatted_address;
       var loc = resp.geometry.location;
       var components = resp.address_components;
-      var countryCode = components.find(function(o) {
-        return /country/i.test(o.types.join());
-      }).short_name;
+      var countryCode = '';
+      $.each(components, function(_, o) {
+        if (/country/i.test(o.types.join())) {
+          countryCode = o.short_name;
+        }
+      });
+
       marker = EditMap.jumpMeTo(loc.lat(), loc.lng());
 
       $('#account_country_code').val(countryCode);
