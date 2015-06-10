@@ -85,7 +85,7 @@ class EnlistmentsController < SettingsController
 
   def safe_constantize(repo)
     repo.constantize if %w(svnrepository svnsyncrepository repository hgrepository
-                           gitrepository cvsrepository bzrrepositoryr).include?(repo.downcase)
+                           gitrepository cvsrepository bzrrepository).include?(repo.downcase)
   end
 
   def initialize_repository
