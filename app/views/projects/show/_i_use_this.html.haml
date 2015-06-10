@@ -17,9 +17,10 @@
             .stack-title
               = stack.title
             .stack-checkbox
+              - stack_entry = stack.stack_entries.where(project_id: @project.id).take
               = check_box_tag 'stacked', 0, false, 'data-stack' => stack.to_param,
                                                    'data-project' => @project.to_param,
-                                                   'data-stackentry' => find_stack_entry(stack, @project).to_param,
+                                                   'data-stackentry' => stack_entry.to_param,
                                                     target: counter
             .message-position{ id: "message#{counter}" }
               = image_tag('spinner.gif', class: 'hidden', id: 'related_spinner', target: counter)

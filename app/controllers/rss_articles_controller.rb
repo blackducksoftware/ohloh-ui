@@ -1,5 +1,4 @@
 class RssArticlesController < ApplicationController
-  helper StackEntryHelper
   helper :projects
   before_action :find_project
   before_action :project_context
