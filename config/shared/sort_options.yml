@@ -32,7 +32,7 @@ people:
      - Kudo Rank
      - kudo_position
     -
-     - Name
+     - Relevance
      - effective_name
   default:
     kudo_position
