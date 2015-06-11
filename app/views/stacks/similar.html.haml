@@ -1,11 +1,11 @@
 :ruby
-  content_for(:html_title) { t('.page_title', what: @stack.title) }
+  content_for(:html_title) { t('.page_title', who: @account.name, what: @stack.title) }
   page_context[:select_top_menu_nav] = 'select_people'
   page_context[:select_footer_nav] = :stacks
 
 - unless @similar_stacks.blank?
   .clear#similar_stacks
-    %h3= page_context[:title]
+    %h3= t('.header', what: @stack.title)
     - @similar_stacks.each do |similar_stack|
       - account = similar_stack[:stack].account
 
