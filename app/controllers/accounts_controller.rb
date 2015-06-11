@@ -3,7 +3,7 @@ class AccountsController < ApplicationController
 
   helper MapHelper
 
-  before_action :session_required, only: [:edit, :destroy, :confirm_delete]
+  before_action :session_required, only: [:edit, :destroy, :confirm_delete, :me]
   before_action :set_account, only: [:destroy, :show, :update, :edit, :confirm_delete, :disabled, :settings]
   before_action :redirect_if_disabled, only: [:show, :update, :edit]
   before_action :disabled_during_read_only_mode, only: [:new, :create, :edit, :update]
@@ -31,6 +31,10 @@ class AccountsController < ApplicationController
     @projects, @logos = @account.project_core.used
     @twitter_detail = TwitterDetail.new(@account)
     page_context[:page_header] = 'accounts/show/header'
+  end
+
+  def me
+    redirect_to account_path(current_user)
   end
 
   # FIXME: uncomment when new account creation is re-enabled.
