@@ -26,7 +26,7 @@ en:
     destroy:
       notice: 'Stack deleted!'
     show:
-      page_title: "%{who} : %{who}'s %{what} Stack"
+      page_title: "%{who} : %{who}'s %{what} Stack - Open Hub"
       stack_desc: "The projects used for %{name}"
       empty_stack_msg: "This stack is empty."
       remove: "Remove"
