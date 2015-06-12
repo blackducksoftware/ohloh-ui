@@ -1,12 +1,18 @@
 class DuplicatesController < ApplicationController
   helper ProjectsHelper
+  helper StackEntryHelper
 
   before_action :session_required
-  before_action :find_project
+  before_action :find_project, except: :index
   before_action :find_duplicate, only: [:edit, :update, :destroy]
   before_action :find_good_project, only: [:create, :update]
-  before_action :project_context
+  before_action :project_context, except: :index
   before_action :must_own_duplicate, only: [:edit, :update, :destroy]
+  before_action :admin_session_required, only: [:index, :show]
+
+  def index
+    @duplicates = Duplicate.paginate(per_page: 10, page: params[:page])
+  end
 
   def new
     previous_dupe = @project.duplicates.first

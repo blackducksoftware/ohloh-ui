@@ -1,6 +1,33 @@
 require 'test_helper'
 
 describe 'DuplicatesController' do
+  describe 'index' do
+    it 'should 404 for normal user session' do
+      login_as create(:account)
+      get :index
+
+      assert_response :unauthorized
+    end
+
+    it 'should redirect for no session' do
+      get :index
+
+      assert_response :redirect
+      must_redirect_to new_session_path
+    end
+
+    it 'should load with an admin session' do
+      duplicate = create(:duplicate, bad_project: create(:project))
+      admin = create(:admin)
+      login_as admin
+
+      get :index
+
+      assert_response :success
+      assigns(:duplicates).must_equal [duplicate]
+    end
+  end
+
   describe 'new' do
     it 'should require a current user' do
       get :new, project_id: create(:project).to_param

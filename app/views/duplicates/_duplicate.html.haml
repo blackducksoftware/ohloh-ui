@@ -1,0 +1,17 @@
+.duplicate
+  .col.col-md-3
+    %p.inset=link_to t('.duplicate', id: duplicate.id), duplicate_path(duplicate)
+
+  .col.col-md-6.last
+    %p.inset
+      = link_to duplicate.bad_project.name, project_path(duplicate.bad_project)
+      = t('.is_duplicate')
+      = link_to duplicate.good_project.name, project_path(duplicate.good_project)
+      %br
+      = t('.reported')
+      - if duplicate.account_id
+        = t('.by')
+        = link_to h(duplicate.account.name), account_path(duplicate.account)
+      = time_ago_in_words(duplicate.created_at)
+      = t(:ago)
+  .clearfix
