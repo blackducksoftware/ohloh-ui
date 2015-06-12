@@ -42,3 +42,7 @@
     - else
       .one_project_information_message.padding_left_30.padding_bottom_20
         = t('.analysis_is_scheduled')
+  .clear{ style: 'margin-right: 10px' }
+    - analysis = position.project.try(:best_analysis)
+      - if analysis
+      = render 'shared/analysis_timestamp', analysis: analysis, project: position.project
