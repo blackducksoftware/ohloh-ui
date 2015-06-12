@@ -71,7 +71,7 @@ describe 'AccountsController' do
       must_redirect_to new_session_path
     end
 
-    it 'should redirect_to sign in page for unlogged users' do
+    it 'should redirect_to accounts page for logged users' do
       account = create(:account)
       login_as account
       get :me
