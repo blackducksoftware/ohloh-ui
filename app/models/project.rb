@@ -5,8 +5,6 @@ class Project < ActiveRecord::Base
   include ProjectSearchables
   include ProjectScopes
 
-  fix_string_column_encodings!
-
   acts_as_editable editable_attributes: [:name, :url_name, :logo_id, :organization_id, :best_analysis_id,
                                          :description, :tag_list, :missing_source, :url, :download_url],
                    merge_within: 30.minutes

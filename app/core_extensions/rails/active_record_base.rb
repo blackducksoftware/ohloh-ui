@@ -1,15 +1,8 @@
 class ActiveRecord::Base
   extend StripAttributes
+  after_find :fix_string_column_encodings
 
-  class << self
-    def fix_string_column_encodings!
-      after_find :fix_string_column_encodings
-    end
-
-    def string_column_names
-      @string_columns ||= columns.reject { |column| column.sql_type != 'text' }.map(&:name).map(&:to_sym)
-    end
-  end
+  private
 
   def fix_string_column_encodings
     attributes.keys.each do |column|

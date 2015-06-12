@@ -12,8 +12,6 @@ class License < ActiveRecord::Base
                    merge_within: 30.minutes
   acts_as_protected
 
-  fix_string_column_encodings!
-
   filterable_by ['licenses.name', 'licenses.description', 'licenses.url', 'licenses.abbreviation', 'licenses.nice_name']
 
   scope :by_name, -> { order(:name) }

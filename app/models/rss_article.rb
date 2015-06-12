@@ -2,7 +2,6 @@ class RssArticle < ActiveRecord::Base
   belongs_to :rss_feed
   validates :guid, presence: true
   validates :title, presence: true
-  fix_string_column_encodings!
 
   class << self
     def from_item(item)

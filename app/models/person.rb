@@ -21,7 +21,6 @@ class Person < ActiveRecord::Base
 
   before_validation Person::Hooks.new
 
-  fix_string_column_encodings!
   filterable_by ['effective_name', 'accounts.akas']
 
   alias_attribute :person_name, :effective_name

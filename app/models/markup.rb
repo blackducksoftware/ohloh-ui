@@ -3,8 +3,6 @@ class Markup < ActiveRecord::Base
 
   validates :raw, length: { maximum: 500 }, allow_blank: true
 
-  fix_string_column_encodings!
-
   # TODO: Replaces about_lines in account
   def lines
     formatted.to_s.split('<br/>')
