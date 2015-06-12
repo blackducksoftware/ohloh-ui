@@ -41,7 +41,7 @@ describe 'Accounts::AccessesController' do
     it 'admin should be able to label a spammer' do
       login_as admin
       post :make_spammer, account_id: account.id
-      must_render_template 'accounts/disabled'
+      must_redirect_to account_path(account)
       expected = ERB::Util.html_escape(I18n.t('accounts.accesses.make_spammer.success', name: account.name))
       flash[:success].must_equal expected
     end
@@ -58,7 +58,7 @@ describe 'Accounts::AccessesController' do
       admin.level.must_equal Account::Access::ADMIN
       get :make_spammer, account_id: admin.id
 
-      must_render_template 'accounts/disabled'
+      must_redirect_to account_path(admin)
       admin.reload.level.must_equal Account::Access::SPAM
       expected = ERB::Util.html_escape(I18n.t('accounts.accesses.make_spammer.success', name: admin.name))
       flash[:success].must_equal expected

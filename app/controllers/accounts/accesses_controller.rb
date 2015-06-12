@@ -9,7 +9,7 @@ class Accounts::AccessesController < ApplicationController
   def make_spammer
     Account::Access.new(@account).spam!
     flash[:success] = t('.success', name: CGI.escapeHTML(@account.name))
-    render template: 'accounts/disabled'
+    redirect_to account_path(@account)
   end
 
   # NOTE: Replaces accounts#activate.
