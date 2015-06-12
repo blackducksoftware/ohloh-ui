@@ -5,6 +5,7 @@ class TopicsController < ApplicationController
   before_action :admin_session_required, only: [:edit, :update, :destroy]
   before_action :find_forum_record, only: [:index, :new, :create]
   before_action :find_forum_and_topic_records, except: [:index, :new, :create]
+  before_action :fix_encoding_for_posts, only: [:show]
   after_action :track_views, only: [:show]
 
   def index
@@ -28,7 +29,6 @@ class TopicsController < ApplicationController
   end
 
   def show
-    @posts = @topic.posts.paginate(page: params[:page], per_page: 25)
     respond_to do |format|
       format.atom
       format.html
@@ -81,5 +81,10 @@ class TopicsController < ApplicationController
     topic.account_id = current_user.id
     topic.posts.last.account_id = current_user.id
     topic
+  end
+
+  def fix_encoding_for_posts
+    @posts = @topic.posts.paginate(page: params[:page], per_page: 25)
+    @posts = @posts.each { |post| post.body.fix_encoding_if_invalid! }
   end
 end
