@@ -65,6 +65,20 @@ describe 'AccountsController' do
     end
   end
 
+  describe 'me' do
+    it 'should redirect_to sign in page for unlogged users' do
+      get :me
+      must_redirect_to new_session_path
+    end
+
+    it 'should redirect_to accounts page for logged users' do
+      account = create(:account)
+      login_as account
+      get :me
+      must_redirect_to account_path(account)
+    end
+  end
+
   describe 'unsubscribe_emails' do
     it 'a valid key for a account should unsubscribe the user' do
       key = Ohloh::Cipher.encrypt(create(:account).id.to_s)
