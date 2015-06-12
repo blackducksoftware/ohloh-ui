@@ -101,7 +101,7 @@ $(document).ready(function() {
       $('#related_spinner[target=' + '"' + target + '"' +']').removeClass("hidden");
       $.ajax("/stacks/" + $stackId + "/stack_entries",{
         type: "POST",
-        data: "project_id=" + $projectUrlName,
+        data: "stack_entry[project_id]=" + $projectUrlName,
         dataType: 'json',
         success: function(data){
           if ($(".unstack-message").length) {

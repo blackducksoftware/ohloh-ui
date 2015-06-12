@@ -35,7 +35,7 @@ class StackEntriesControllerTest < ActionController::TestCase
     project = create(:project)
     login_as stack.account
     assert_difference 'StackEntry.count', 1 do
-      xml_http_request :post, 'create', stack_id: stack, project_id: project
+      xml_http_request :post, 'create', stack_id: stack, stack_entry: { project_id: project.url_name }
     end
   end
 
