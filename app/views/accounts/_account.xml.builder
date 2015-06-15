@@ -1,7 +1,12 @@
+show_positions ||= false
+show_about ||= false
+
 xml.account do
   xml.id account.id
   xml.name account.name
-  xml.about account.markup ? account.markup.raw : ''
+  if show_about
+    xml.about account.markup ? account.markup.raw : ''
+  end
   xml.login account.login
   xml.created_at xml_date_to_time(account.created_at)
   xml.updated_at xml_date_to_time(account.updated_at)
@@ -22,18 +27,20 @@ xml.account do
       xml.position account.person.kudo_position
     end
   end
-  vita_fact = account.best_vita.try(:vita_fact)
-  if vita_fact && vita_fact.name_language_facts.any?
-    xml.languages do
-      vita_fact.name_language_facts.each do |nlf|
-        color = language_color(nlf.language.name)
-        xml.language color: color do
-          xml.name nlf.language.name
-          xml.experience_months nlf.total_months
-          xml.total_commits number_with_delimiter(nlf.total_commits)
-          xml.total_lines_changed number_with_delimiter(nlf.total_activity_lines)
-          cr = nlf.comment_ratio ? number_with_precision(nlf.comment_ratio.to_f * 100.0, precision: 1).to_s + '%' : '-'
-          xml.comment_ratio cr
+  if show_positions
+    vita_fact = account.best_vita.try(:vita_fact)
+    if vita_fact && vita_fact.name_language_facts.any?
+      xml.languages do
+        vita_fact.name_language_facts.each do |nlf|
+          color = language_color(nlf.language.name)
+          xml.language color: color do
+            xml.name nlf.language.name
+            xml.experience_months nlf.total_months
+            xml.total_commits number_with_delimiter(nlf.total_commits)
+            xml.total_lines_changed number_with_delimiter(nlf.total_activity_lines)
+            cr = nlf.comment_ratio ? number_with_precision(nlf.comment_ratio.to_f * 100.0, precision: 1).to_s + '%' : '-'
+            xml.comment_ratio cr
+          end
         end
       end
     end

@@ -36,6 +36,12 @@ describe 'AccountsController' do
       assigns(:people).length.must_equal 9
       assigns(:cbp_map).length.must_equal 9
     end
+
+    it 'should support being queried via the api' do
+      key = create(:api_key, account_id: create(:account).id)
+      get :index, format: :xml, api_key: key.oauth_application.uid
+      must_respond_with :ok
+    end
   end
 
   describe 'show' do
