@@ -33,6 +33,12 @@ describe 'OrganizationsController' do
     must_respond_with :ok
   end
 
+  it '#affiliated_committers supports xml api' do
+    api_key = create(:api_key, account_id: account.id)
+    get :affiliated_committers, id: @organization, format: :xml, api_key: api_key.oauth_application.uid
+    must_respond_with :ok
+  end
+
   it '#affiliated_committers gracefully handles non-existant organizations' do
     get :affiliated_committers, id: 'I_AM_A_BANANA'
     must_respond_with :not_found
