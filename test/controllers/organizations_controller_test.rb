@@ -64,6 +64,12 @@ describe 'OrganizationsController' do
     assert_select 'div#org_infographic'
   end
 
+  it 'should support show page via xml api' do
+    key = create(:api_key, account_id: create(:account).id)
+    get :show, id: @organization, format: :xml, api_key: key.oauth_application.uid
+    must_respond_with :ok
+  end
+
   it 'should support show page via xhr' do
     xhr :get, :show, id: @organization
     must_respond_with :ok
@@ -162,8 +168,8 @@ describe 'OrganizationsController' do
       xml['items_returned'].must_equal '3'
       xml['items_available'].must_equal '3'
       xml['first_item_position'].must_equal '0'
-      org = xml['result']['organization'].first
-      xml['result']['organization'].length.must_equal 3
+      org = xml['result']['org'].first
+      xml['result']['org'].length.must_equal 3
       org['name'].must_equal 'test name3'
       org['url'].must_equal "http://test.host/orgs/#{org_3.url_name}.xml"
       org['html_url'].must_equal "http://test.host/orgs/#{org_3.url_name}"
