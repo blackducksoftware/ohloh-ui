@@ -177,11 +177,6 @@ class ApplicationController < ActionController::Base
     flash.now[:notice] = logged_in? ? t('permissions.not_manager') : t('permissions.must_log_in')
   end
 
-  def xml_time(date)
-    Time.gm(date.year, date.month, date.day).xmlschema
-  end
-  helper_method :xml_time
-
   private
 
   # FIXME: Old source allowed some XML requests without authentication.

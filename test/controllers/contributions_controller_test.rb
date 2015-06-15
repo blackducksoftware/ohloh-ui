@@ -22,9 +22,12 @@ describe 'ContributionsController' do
       assigns(:contributions).must_equal [@contribution]
     end
 
-    it 'should return contributions in xml format wiht api key' do
+    it 'should return contributions in xml format with valid api key' do
+      @contributor_fact.first_checkin = Date.today
+      @contributor_fact.last_checkin = Date.today
+      @contributor_fact.save
       key = create(:api_key, account_id: create(:account).id)
-      get :index, project_id: @project.to_param, api_key: key.oauth_application.uid, format: 'xml'
+      get :index, project_id: @project.to_param, api_key: key.oauth_application.uid, format: :xml
       must_respond_with :ok
     end
   end

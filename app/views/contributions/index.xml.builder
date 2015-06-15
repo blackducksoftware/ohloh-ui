@@ -17,8 +17,8 @@ xml.response do
           xml.primary_language_id contributor_fact.primary_language_id
           xml.primary_language_nice_name contributor_fact.primary_language_id ? contributor_fact.primary_language.nice_name : ''
           xml.comment_ratio contributor_fact.comment_ratio
-          xml.first_commit_time xml_time(contributor_fact.first_checkin)
-          xml.last_commit_time xml_time(contributor_fact.last_checkin)
+          xml.first_commit_time xml_date_to_time(contributor_fact.first_checkin)
+          xml.last_commit_time xml_date_to_time(contributor_fact.last_checkin)
           xml.man_months contributor_fact.man_months
           xml.commits contributor_fact.commits
         end
