@@ -1,6 +1,5 @@
 class DuplicatesController < ApplicationController
   helper ProjectsHelper
-  helper StackEntryHelper
 
   before_action :session_required
   before_action :find_project, except: :index
