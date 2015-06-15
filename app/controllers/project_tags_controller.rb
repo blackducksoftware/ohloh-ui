@@ -2,7 +2,7 @@ class ProjectTagsController < SettingsController
   helper ProjectsHelper
   helper TagsHelper
 
-  before_action :session_required, only: [:create, :destroy]
+  before_action :session_required, :redirect_unverified_account, only: [:create, :destroy]
   before_action :find_project
   before_action :edit_authorized_only!, only: [:create, :destroy]
   before_action :find_related_projects, only: [:index, :related]

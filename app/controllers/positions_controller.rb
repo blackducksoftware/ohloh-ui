@@ -1,6 +1,6 @@
 class PositionsController < ApplicationController
   helper ProjectsHelper
-  before_action :session_required, only: [:edit, :new, :create, :delete]
+  before_action :session_required, :redirect_unverified_account, only: [:edit, :new, :create, :delete]
   before_action :set_account
   before_action :must_own_account, only: [:edit, :update, :new, :create]
   before_action :redirect_to_languages, only: :show, if: :params_id_is_total?

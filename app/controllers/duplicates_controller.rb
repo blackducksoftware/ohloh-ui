@@ -1,7 +1,7 @@
 class DuplicatesController < ApplicationController
   helper ProjectsHelper
 
-  before_action :session_required
+  before_action :session_required, :redirect_unverified_account
   before_action :find_project
   before_action :find_duplicate, only: [:edit, :update, :destroy]
   before_action :find_good_project, only: [:create, :update]

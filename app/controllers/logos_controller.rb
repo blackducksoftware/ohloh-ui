@@ -2,7 +2,7 @@ class LogosController < SettingsController
   helper ManagersHelper
   helper ProjectsHelper
 
-  before_action :session_required, except: :new
+  before_action :session_required, :redirect_unverified_account, except: :new
   before_action :set_project_or_organization, only: [:destroy, :create, :new]
   before_action :set_logo, only: :destroy
   around_action :edit_authorized?, only: :create

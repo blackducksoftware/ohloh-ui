@@ -1,5 +1,5 @@
 class LicensesController < ApplicationController
-  before_action :session_required, only: [:create, :new, :edit, :update]
+  before_action :session_required, :redirect_unverified_account, only: [:create, :new, :edit, :update]
   before_action :set_project
   before_action :set_license, only: [:show, :edit, :update]
 

@@ -1,7 +1,7 @@
 class PermissionsController < ApplicationController
   helper ProjectsHelper
 
-  before_action :session_required, only: :update
+  before_action :session_required, :redirect_unverified_account, only: :update
   before_action :find_model
   before_action :require_manage_authorization, only: :update
   before_action :show_permissions_alert, only: :show

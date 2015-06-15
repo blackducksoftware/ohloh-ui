@@ -1,6 +1,6 @@
 class RatingsController < ApplicationController
   ALLOWED_PARTIALS = ['projects/show/community_rating', 'reviews/rater']
-  before_action :session_required
+  before_action :session_required, :redirect_unverified_account
   before_action :find_project_and_rating
 
   def rate

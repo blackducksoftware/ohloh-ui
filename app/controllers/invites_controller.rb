@@ -1,5 +1,5 @@
 class InvitesController < ApplicationController
-  before_action :session_required
+  before_action :session_required, :redirect_unverified_account
   before_action :find_contribution
 
   def create

@@ -224,5 +224,11 @@ class ApplicationController < ActionController::Base
       Project.from_param(url_name).take
     end.compact.uniq
   end
+
+  def redirect_unverified_account
+    account = find_user_in_session
+    return if Account::Access.new(account).verified?
+    redirect_to new_account_verification_path(account)
+  end
 end
 # rubocop:enable Metrics/ClassLength

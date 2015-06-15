@@ -197,3 +197,9 @@ en:
       change_passwords: 'Change password for the account.'
       api_key_settings:  'API Key settings and deletion, request new API keys.'
       email_settings: 'Opt-in / opt-out for emails from Open Hub, and OAuth access settings for external applications.'
+
+    verifications:
+      new:
+        html_title: Verify Account
+        verification_prompt: We would need your phone number to verify your account. Please click on the button given below to proceed.
+        verify_using_phone_number: Verify Phone Number

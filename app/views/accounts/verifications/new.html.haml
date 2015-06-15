@@ -1,0 +1,9 @@
+- content_for(:html_title) { t('.html_title') }
+
+.row-fluid
+  .well.well-large.col-md-8.col-md-offset-2.margin_top_20
+    %p
+      = t('.verification_prompt')
+
+    %button.btn.btn-primary
+      = t('.verify_using_phone_number')

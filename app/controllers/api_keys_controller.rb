@@ -1,5 +1,5 @@
 class ApiKeysController < ApplicationController
-  before_action :session_required
+  before_action :session_required, :redirect_unverified_account
   before_action :find_account
   before_action :find_models, only: :index
   before_action :find_model, only: [:edit, :update, :destroy]

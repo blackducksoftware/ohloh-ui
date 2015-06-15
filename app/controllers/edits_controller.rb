@@ -1,7 +1,7 @@
 class EditsController < SettingsController
   helper ProjectsHelper
 
-  before_action :session_required, only: [:update]
+  before_action :session_required, :redirect_unverified_account, only: [:update]
   before_action :find_parent, only: [:index]
   before_action :find_edit, only: [:update]
   before_action :find_edits, only: [:index]

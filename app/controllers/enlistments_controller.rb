@@ -1,7 +1,7 @@
 class EnlistmentsController < SettingsController
   helper EnlistmentsHelper
   helper ProjectsHelper
-  before_action :session_required, only: [:create, :new, :destroy, :edit, :update]
+  before_action :session_required, :redirect_unverified_account, only: [:create, :new, :destroy, :edit, :update]
   before_action :find_project
   before_action :find_enlistment, only: [:show, :edit, :update, :destroy]
   before_action :project_context, only: [:index, :new, :edit]

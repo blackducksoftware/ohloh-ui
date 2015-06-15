@@ -2,7 +2,7 @@ class StackEntriesController < ApplicationController
   helper RatingsHelper
   helper StacksHelper
 
-  before_action :session_required
+  before_action :session_required, :redirect_unverified_account
   before_action :find_stack
   before_action :find_project, except: [:destroy]
   before_action :find_stack_entry, only: [:destroy]

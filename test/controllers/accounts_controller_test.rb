@@ -182,6 +182,15 @@ describe 'AccountsController' do
   end
 
   describe 'edit' do
+    it 'must redirect to verification page when not verified' do
+      account = create(:account, twitter_id: '')
+      login_as account
+
+      get :edit, id: account.id
+
+      must_redirect_to new_account_verification_path(account)
+    end
+
     it 'must respond with unauthorized when account does not exist' do
       get :edit, id: :anything
       must_respond_with :redirect
