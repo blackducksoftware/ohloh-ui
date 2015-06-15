@@ -1,6 +1,5 @@
 en:
   accounts:
-    temporarily_suspended: "Account creation is temporarily suspended"
     unsubscribe_emails:
       title: 'You Have Been Unsubscribed'
       sad: 'We are sorry that emails from Open Hub were not helpful to you. You have been unsubscribed from all emails from Open Hub'
