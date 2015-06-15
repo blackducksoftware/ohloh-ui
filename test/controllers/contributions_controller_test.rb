@@ -45,6 +45,16 @@ describe 'ContributionsController' do
       assigns(:contribution).must_equal @contribution
       assigns(:recent_kudos).must_equal @contribution.recent_kudos
     end
+
+    it 'should support being called via the api' do
+      ContributorFact.any_instance.stubs(:first_checkin).returns(Time.current - 2.days)
+      ContributorFact.any_instance.stubs(:last_checkin).returns(Time.current)
+
+      key = create(:api_key, account_id: create(:account).id)
+      get :show, project_id: @project.to_param, id: @contribution.id, format: :xml, api_key: key.oauth_application.uid
+
+      must_respond_with :ok
+    end
   end
 
   describe 'commits_spark' do
