@@ -9,4 +9,8 @@ class NilVitaFact < NullObject
   def commits_by_project
     []
   end
+
+  def name_language_facts
+    []
+  end
 end

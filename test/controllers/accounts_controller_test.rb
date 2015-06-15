@@ -47,6 +47,12 @@ describe 'AccountsController' do
       assigns(:logos).must_be_empty
     end
 
+    it 'should support being queried via the api' do
+      key = create(:api_key, account_id: create(:account).id)
+      get :show, id: admin.login, format: :xml, api_key: key.oauth_application.uid
+      must_respond_with :ok
+    end
+
     it 'should redirect if account is disabled' do
       Account::Access.any_instance.stubs(:disabled?).returns(true)
 
