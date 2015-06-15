@@ -10,7 +10,7 @@ class DuplicatesController < ApplicationController
   before_action :admin_session_required, only: [:index, :show]
 
   def index
-    @duplicates = Duplicate.paginate(per_page: 10, page: params[:page])
+    @duplicates = Duplicate.paginate(per_page: 10, page: params[:page]).order(id: :desc)
   end
 
   def new
