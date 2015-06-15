@@ -21,6 +21,12 @@ describe 'ContributionsController' do
       must_respond_with :ok
       assigns(:contributions).must_equal [@contribution]
     end
+
+    it 'should return contributions in xml format wiht api key' do
+      key = create(:api_key, account_id: create(:account).id)
+      get :index, project_id: @project.to_param, api_key: key.oauth_application.uid, format: 'xml'
+      must_respond_with :ok
+    end
   end
 
   describe 'summary' do

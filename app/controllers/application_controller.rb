@@ -177,13 +177,17 @@ class ApplicationController < ActionController::Base
     flash.now[:notice] = logged_in? ? t('permissions.not_manager') : t('permissions.must_log_in')
   end
 
+  def xml_time(date)
+    Time.gm(date.year, date.month, date.day).xmlschema
+  end
+  helper_method :xml_time
+
   private
 
   # FIXME: Old source allowed some XML requests without authentication.
   #        Skip this filter for widgets, sitemap and exhibits.
   def verify_api_access_for_xml_request
     return unless request_format == 'xml'
-
     client_id = params[:api_key] || doorkeeper_token.try(:application).try(:uid)
     api_key = ApiKey.in_good_standing.find_by_oauth_application_uid(client_id)
 

@@ -18,6 +18,9 @@ class ContributionsController < ApplicationController
                      .includes(person: :account, contributor_fact: :primary_language)
                      .references(:all)
                      .paginate(per_page: 20, page: params[:page])
+    respond_to do |format|
+      format.xml
+    end
   end
 
   def show
