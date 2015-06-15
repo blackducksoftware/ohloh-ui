@@ -15,8 +15,6 @@ class Stack < ActiveRecord::Base
   validates :description, length: { within: 0..120 }, allow_nil: true
   validates :title, length: { within: 0..20 }, allow_nil: true
 
-  fix_string_column_encodings!
-
   before_validation :sanitize_description
 
   def sandox?

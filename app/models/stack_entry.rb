@@ -14,8 +14,6 @@ class StackEntry < ActiveRecord::Base
 
   validates :note, length: { within: 0..MAX_NOTE_LENGTH }, allow_nil: true
 
-  fix_string_column_encodings!
-
   after_create :update_counters
   after_create :clean_up_ignores
 
