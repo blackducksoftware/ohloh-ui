@@ -333,6 +333,15 @@ en:
           attributes:
             url:
               blank: The URL can't be blank.
+            branch_name:
+              too_long: The branch name must not be longer than 80 characters.
+              invalid: The branch name may contain only letters, numbers, spaces, and the special characters '_', '-', '+', '/', '^', and '.'
+            username:
+              too_long: The username must not be longer than 32 characters.
+              invalid: The username may contain only A-Z, a-z, 0-9, and underscore (_)
+            password:
+              too_long: The password must not be longer than 32 characters.
+              invalid: The password contains illegal characters
 
   project_experience:
     no_matching_project: No matching open source project with this name.

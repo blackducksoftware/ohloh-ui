@@ -26,7 +26,7 @@ en:
     destroy:
       notice: 'Stack deleted!'
     show:
-      page_title: "%{who} : %{who}'s %{what} Stack"
+      page_title: "%{who} : %{who}'s %{what} Stack - Open Hub"
       stack_desc: "The projects used for %{name}"
       empty_stack_msg: "This stack is empty."
       remove: "Remove"
@@ -50,7 +50,8 @@ en:
       people_with_similar_stacks: "People with Similar Stacks"
       more: "More..."
     similar:
-      page_title: "People with Stacks similar to %{what}"
+      page_title: "%{who} : People with Stacks similar to %{what} - Open Hub"
+      header: "People with Stacks similar to %{what}"
       shared_project: "shared project"
       unique_project: "unique project"
       no_unique_projects: "No unique projects"

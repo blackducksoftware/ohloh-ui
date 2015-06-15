@@ -1,5 +1,5 @@
 - page_context[:select_footer_nav] = :settings
-- content_for(:html_title) { @account.name }
+- content_for(:html_title) { t('accounts.show.page_title', name: @account.name) }
 
 .clearfix
 
@@ -70,8 +70,7 @@
               .controls
                 %p.enabled
                   %input.form-control#location_scratch{ type: :text, autocomplete: :off, value: @account.location }
-                  -# FIXME: Add js logic to clear location after google maps is integrated.
-                  %a{ href: '#' }= t('clear')
+                  %a{ href: 'javascript:EditMap.clearLocation();' }= t('clear')
                 %p.error#not_found{ style: 'display:none' }
                   = t('.location_error_message')
                 #map
@@ -113,4 +112,4 @@
     %li
       = t('.help_5')
 
-!= map_init('map', 7)
+!= map_init('map', @account.latitude ? 7 : 0)

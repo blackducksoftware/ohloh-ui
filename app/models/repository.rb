@@ -6,6 +6,12 @@ class Repository < ActiveRecord::Base
   scope :matching, ->(match) { Repository.forge_match_search(match) }
 
   validates :url, presence: true
+  validates :branch_name, length: { maximum: 80 },
+                          format: { with: /\A[A-Za-z0-9_^\-\+\.\/\ ]+\Z/ }
+  validates :username, length: { maximum: 32 },
+                       format: { with: /\A\w*\Z/ }
+  validates :password, length: { maximum: 32 },
+                       format: { with: /\A[\w!@\#$%^&*\(\)\{\}\[\]\;\?\|\+\-\=]*\Z/ }
 
   attr_accessor :forge_match
 

@@ -5,7 +5,7 @@ set :default_env, 'PATH' => '/home/deployer/.rbenv/shims:$PATH', 'BASH_ENV' => '
 
 set :application, 'openhub'
 set :repo_url, 'git@github.com:blackducksw/ohloh-ui.git'
-set :user, :deployer
+set :user, 'deployer'
 set :use_sudo, false
 set :passenger_restart_with_sudo, true
 set :branch, ENV['branch'] || :master
