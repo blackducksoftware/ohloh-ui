@@ -218,7 +218,6 @@ GEM
     oboe (2.7.19)
       json
     oh_delegator (0.0.1)
-    ohno-you-dont (1.0.1)
     paperclip (4.2.1)
       activemodel (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -394,7 +393,6 @@ DEPENDENCIES
   mocha
   oboe
   oh_delegator
-  ohno-you-dont
   paperclip
   pg
   pry-rails
@@ -418,6 +416,3 @@ DEPENDENCIES
   webmock
   will_paginate
   will_paginate-bootstrap
-
-BUNDLED WITH
-   1.10.3

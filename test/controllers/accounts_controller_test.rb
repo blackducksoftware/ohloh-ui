@@ -116,86 +116,39 @@ describe 'AccountsController' do
       end
     end
 
-    let(:valid_params) do
-      valid_honeypot_and_captcha_params = {
-        token: :valid_token, honeypot: '',
-        recaptcha_challenge_field: :challenge, recaptcha_response_field: :response }
-
-      { account: account_attributes }.merge(valid_honeypot_and_captcha_params)
-    end
-
-    before do
-      HoneyPotField.create!(field_name: :honeypot, token: :valid_token)
-      AccountsController.any_instance.stubs(:verify_recaptcha)
-    end
+    let(:account_params) { { account: account_attributes } }
 
     it 'must render the new template when validations fail' do
-      post :create, valid_params.merge(account: { email: '' })
+      post :create, account_params.merge(account: { email: '' })
       assigns(:account).wont_be :valid?
       must_render_template :new
-    end
-
-    it 'must render the new template for invalid captcha' do
-      assert_no_difference 'Account.count' do
-        stub_verify_recaptcha_to_add_captcha_error
-        post :create, valid_params.merge(recaptcha_response_field: '')
-
-        assigns(:account).errors.messages[:captcha].must_be :present?
-        must_render_template :new
-      end
-    end
-
-    it 'must redirect for valid captcha' do
-      assert_difference 'Account.count', 1 do
-        post :create, valid_params
-        must_respond_with :redirect
-      end
-    end
-
-    it 'must redirect to home page if honeypot field is filled' do
-      post :create, valid_params.merge(honeypot: :filled_by_bot)
-
-      must_redirect_to root_path
-    end
-
-    it 'must redirect to home page if token field value is invalid' do
-      post :create, valid_params.merge(token: :invalid_token)
-
-      must_redirect_to root_path
-    end
-
-    it 'must redirect to home page if token field is expired' do
-      HoneyPotField.last.update!(expired: true)
-      post :create, valid_params
-
-      must_redirect_to root_path
     end
 
     it 'must redirect to maintenance during read only mode' do
       ApplicationController.any_instance.stubs(:read_only_mode?).returns(true)
       assert_no_difference 'Account.count' do
-        post :create, valid_params
+        post :create, account_params
         must_redirect_to maintenance_path
       end
     end
 
     it 'must require login' do
       assert_no_difference 'Account.count' do
-        post :create, valid_params.merge(account: { login: '' })
+        post :create, account_params.merge(account: { login: '' })
         assigns(:account).errors.messages[:login].must_be :present?
       end
     end
 
     it 'must require password' do
       assert_no_difference 'Account.count' do
-        post :create, valid_params.merge(account: { password: '' })
+        post :create, account_params.merge(account: { password: '' })
         assigns(:account).errors.messages[:password].must_be :present?
       end
     end
 
     it 'must require email and email_confirmation' do
       assert_no_difference 'Account.count' do
-        post :create, valid_params.merge(account: { email_confirmation: '', email: '' })
+        post :create, account_params.merge(account: { email_confirmation: '', email: '' })
         assigns(:account).errors.messages[:email_confirmation].must_be :present?
         assigns(:account).errors.messages[:email_confirmation].must_be :present?
       end
@@ -207,7 +160,7 @@ describe 'AccountsController' do
 
       assert_no_difference 'Account.count' do
         email = "bad_guy@#{ bad_domain }"
-        post :create, valid_params.merge(account: { email: email, email_confirmation: email })
+        post :create, account_params.merge(account: { email: email, email_confirmation: email })
 
         must_render_template :new
         Account.find_by(email: email).wont_be :present?
@@ -218,7 +171,7 @@ describe 'AccountsController' do
       person = create(:person)
 
       assert_difference 'Action.count', 1 do
-        post :create, valid_params.merge(_action: "claim_#{ person.id }")
+        post :create, account_params.merge(_action: "claim_#{ person.id }")
       end
 
       action = Action.last
@@ -374,17 +327,6 @@ describe 'AccountsController' do
   describe 'settings' do
     it 'should render settings' do
       get :settings, id: user.id
-    end
-  end
-
-  private
-
-  def stub_verify_recaptcha_to_add_captcha_error
-    AccountsController.any_instance.unstub(:verify_recaptcha)
-    ApplicationController.class_eval do
-      def verify_recaptcha(options)
-        options[:model].errors.add(:captcha, 'some error')
-      end
     end
   end
 end

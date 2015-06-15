@@ -11,12 +11,9 @@ class AccountsController < ApplicationController
   # before_action :set_smart_sort, only: [:index]
   before_action :must_own_account, only: [:edit, :update, :destroy, :confirm_delete]
   before_action :check_banned_domain, only: :create
-  before_action :captcha_response, only: :create
   before_action :account_context, only: :edit
   before_action :find_claimed_people, only: :index
   after_action :create_action_record, only: :create, if: -> { @account.persisted? && params[:_action].present? }
-
-  protect_from_bots :create, redirect_to: :index, controller: :home
 
   # FIXME: people have to be sorted. See sorted_and_filtered in older code.
   def index
@@ -87,12 +84,6 @@ class AccountsController < ApplicationController
     fail ParamRecordNotFound unless @account
   end
 
-  # def captcha_response
-  #   @account = Account.new(account_params)
-  #   verify_recaptcha(model: @account, attribute: :captcha)
-  #   render :new if @account.errors.messages[:captcha].present?
-  # end
-  #
   def check_banned_domain
     @account = Account.new(account_params)
     return unless @account.email?

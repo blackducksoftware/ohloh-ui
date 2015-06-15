@@ -1580,37 +1580,6 @@ ALTER SEQUENCE helpfuls_id_seq OWNED BY helpfuls.id;
 
 
 --
--- Name: honey_pot_fields; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE honey_pot_fields (
-    id integer NOT NULL,
-    token character varying(255),
-    field_name character varying(255),
-    expired boolean DEFAULT false
-);
-
-
---
--- Name: honey_pot_fields_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE honey_pot_fields_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: honey_pot_fields_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE honey_pot_fields_id_seq OWNED BY honey_pot_fields.id;
-
-
---
 -- Name: invites; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -3983,13 +3952,6 @@ ALTER TABLE ONLY helpfuls ALTER COLUMN id SET DEFAULT nextval('helpfuls_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY honey_pot_fields ALTER COLUMN id SET DEFAULT nextval('honey_pot_fields_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY invites ALTER COLUMN id SET DEFAULT nextval('invites_id_seq'::regclass);
 
 
@@ -4775,14 +4737,6 @@ ALTER TABLE ONLY gestalts
 
 ALTER TABLE ONLY helpfuls
     ADD CONSTRAINT helpfuls_pkey PRIMARY KEY (id);
-
-
---
--- Name: honey_pot_fields_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY honey_pot_fields
-    ADD CONSTRAINT honey_pot_fields_pkey PRIMARY KEY (id);
 
 
 --
@@ -7937,6 +7891,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150423061349');
 INSERT INTO schema_migrations (version) VALUES ('20150429084504');
 
 INSERT INTO schema_migrations (version) VALUES ('20150504072306');
+
+INSERT INTO schema_migrations (version) VALUES ('20150615040531');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
