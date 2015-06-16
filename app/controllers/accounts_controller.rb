@@ -41,7 +41,8 @@ class AccountsController < ApplicationController
     @account = Account.new(account_params)
 
     if @account.save
-      redirect_to message_path, flash: { success: t('.success', email: @account.email) }
+      session[:account_id] = @account.id
+      redirect_to new_account_verification_path(@account)
     else
       render :new
     end

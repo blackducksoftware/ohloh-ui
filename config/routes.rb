@@ -101,7 +101,7 @@ Rails.application.routes.draw do
     get 'doorkeeper/oauth_applications/:id/revoke_access' =>
       'doorkeeper/oauth_applications#revoke_access', as: :revoke_oauth_access
 
-    resources :verifications, only: [:new], module: :accounts
+    resources :verifications, only: [:new, :create], module: :accounts
   end
 
   resources :deleted_accounts, only: [:edit, :update]

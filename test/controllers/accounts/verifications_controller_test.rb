@@ -35,4 +35,32 @@ describe 'Accounts::VerificationsController' do
       must_render_template :new
     end
   end
+
+  describe 'create' do
+    let(:account) { create(:account, twitter_id: nil) }
+    before { login_as(account) }
+
+    it 'must update account with non null twitter_id' do
+      service_provider_url = Faker::Internet.url
+      credentials = "oauth_consumer_key=#{ Faker::Internet.password }"
+      twitter_id = Faker::Internet.password
+
+      TwitterDigits.expects(:get_twitter_id).with(service_provider_url, credentials)
+        .returns(twitter_id)
+
+      post :create, account_id: account.id,
+                    verification: { service_provider_url: service_provider_url, credentials: credentials }
+
+      account.reload.twitter_id.must_equal twitter_id
+    end
+
+    it 'wont report an error when twitter_id is null' do
+      TwitterDigits.stubs(:get_twitter_id)
+
+      post :create, account_id: account.id, verification: {}
+
+      flash[:error].must_be :present?
+      must_render_template :new
+    end
+  end
 end

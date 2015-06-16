@@ -179,6 +179,16 @@ describe 'AccountsController' do
       action.claim_person_id.must_equal person.id
       action.account_id.must_equal Account.last.id
     end
+
+    it 'must redirect to the verification page after account is created' do
+      assert_difference 'Account.count', 1 do
+        post :create, account_params
+      end
+
+      created_account = Account.last
+      @controller.send(:current_user).must_equal created_account
+      must_redirect_to new_account_verification_path(created_account)
+    end
   end
 
   describe 'edit' do
