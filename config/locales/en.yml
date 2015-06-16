@@ -138,17 +138,6 @@ en:
   up: 'Up'
   down: 'Down'
   from_prev_12_mo: 'from previous 12 months'
-  domain_blacklists:
-    index:
-      notice: 'No Domains Blacklisted'
-    create:
-      success: 'Domain successfully added to blacklist'
-      error: 'Unable to add domain to blacklist'
-    update:
-      success: 'Blacklisted Domain successfully updated'
-      error: 'Unable to update blacklisted domain'
-    destroy:
-      success: 'Blacklisted Domain successfully deleted'
   api_keys:
     api_key:
       none: 'None'

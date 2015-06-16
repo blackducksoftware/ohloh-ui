@@ -23,7 +23,6 @@ Rails.application.routes.draw do
   resources :activation_resends, only: [:new, :create]
 
   resources :api_keys, only: :index
-  resources :domain_blacklists, except: :show
   resources :reviews, only: :destroy do
     resources :helpfuls, only: :create
   end

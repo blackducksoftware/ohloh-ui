@@ -10,7 +10,6 @@ class AccountsController < ApplicationController
   # FIXME: Integrate this action.
   # before_action :set_smart_sort, only: [:index]
   before_action :must_own_account, only: [:edit, :update, :destroy, :confirm_delete]
-  before_action :check_banned_domain, only: :create
   before_action :account_context, only: :edit
   before_action :find_claimed_people, only: :index
   after_action :create_action_record, only: :create, if: -> { @account.persisted? && params[:_action].present? }
@@ -83,12 +82,6 @@ class AccountsController < ApplicationController
   def set_account
     @account = Account::Find.by_id_or_login(params[:id])
     fail ParamRecordNotFound unless @account
-  end
-
-  def check_banned_domain
-    @account = Account.new(account_params)
-    return unless @account.email?
-    render :new, status: 418 if DomainBlacklist.email_banned?(@account.email)
   end
 
   def create_action_record
