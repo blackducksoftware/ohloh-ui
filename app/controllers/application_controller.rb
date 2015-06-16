@@ -236,7 +236,7 @@ class ApplicationController < ActionController::Base
     return if Account::Access.new(current_user).activated?
 
     flash[:notice] ||= t('non_activated_message',
-                       link: view_context.link_to(:here, new_activation_resend_path))
+                         link: view_context.link_to(:here, new_activation_resend_path))
   end
 end
 # rubocop:enable Metrics/ClassLength

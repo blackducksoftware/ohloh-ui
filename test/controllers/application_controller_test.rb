@@ -158,9 +158,9 @@ describe 'ApplicationController' do
     end
 
     describe 'alert_non_activated_account' do
-      let(:non_activated_message) { I18n.t('non_activated_message',
-                                           link: @controller.view_context.link_to(:here, new_activation_resend_path)) }
-
+      let(:non_activated_message) do
+        I18n.t('non_activated_message', link: @controller.view_context.link_to(:here, new_activation_resend_path))
+      end
 
       it 'wont show flash message when logged out' do
         account = create(:account, activated_at: nil)
