@@ -1,5 +1,6 @@
 class PositionsController < ApplicationController
   helper ProjectsHelper
+  helper PositionsHelper
   before_action :session_required, only: [:edit, :new, :create, :delete]
   before_action :set_account
   before_action :must_own_account, only: [:edit, :update, :new, :create]
