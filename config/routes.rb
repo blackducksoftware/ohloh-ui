@@ -147,6 +147,7 @@ Rails.application.routes.draw do
   get 'p/graph', to: 'compares#projects_graph', as: :compare_graph_projects
   get 'projects/:id/stacks', to: 'stacks#project_stacks', as: :project_stacks_old_documented_route
   get 'p/:id/stacks', to: 'stacks#project_stacks', as: :project_stacks
+  get 'projects', to: 'projects#index', constraints: { format: /xml/ }
 
   resources :duplicates, only: [:index, :show]
 
