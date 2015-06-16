@@ -365,4 +365,12 @@ describe 'StacksControllerTest' do
       must_render_template 'stacks/_similar_stacks'
     end
   end
+
+  describe 'project_stacks' do
+    it 'should succeed with a valid api key' do
+      api_key = create(:api_key)
+      get :project_stacks, id: create(:project), format: :xml, api_key: api_key.oauth_application.uid
+      must_respond_with :ok
+    end
+  end
 end

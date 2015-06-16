@@ -2,13 +2,14 @@ class StacksController < ApplicationController
   helper MapHelper
   helper RatingsHelper
 
-  before_action :session_required, except: [:index, :show, :similar, :similar_stacks, :near]
-  before_action :find_stack, except: [:index, :create, :near]
-  before_action :can_edit_stack, except: [:index, :show, :create, :similar, :similar_stacks, :near]
+  before_action :session_required, except: [:index, :show, :similar, :similar_stacks, :near, :project_stacks]
+  before_action :find_stack, except: [:index, :create, :near, :project_stacks]
+  before_action :can_edit_stack, except: [:index, :show, :create, :similar, :similar_stacks, :near, :project_stacks]
   before_action :find_account, only: [:index, :show, :similar]
   before_action :auto_ignore, only: [:builder]
-  before_action :find_project, only: [:near]
+  before_action :find_project, only: [:near, :project_stacks]
   before_action :account_context, only: [:index, :show, :similar]
+  before_action :verify_api_access_for_xml_request, only: [:project_stacks]
   after_action :connect_stack_entry_to_stack, only: [:create], if: :request_is_xhr?
 
   def index
@@ -106,7 +107,7 @@ class StacksController < ApplicationController
   end
 
   def find_project
-    @project = Project.from_param(params[:project_id]).take
+    @project = Project.from_param(params[:project_id] || params[:id]).take
     fail ParamRecordNotFound unless @project
   end
 

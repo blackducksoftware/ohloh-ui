@@ -145,6 +145,8 @@ Rails.application.routes.draw do
 
   get 'p/compare', to: 'compares#projects', as: :compare_projects
   get 'p/graph', to: 'compares#projects_graph', as: :compare_graph_projects
+  get 'projects/:id/stacks', to: 'stacks#project_stacks', as: :project_stacks_old_documented_route
+  get 'p/:id/stacks', to: 'stacks#project_stacks', as: :project_stacks
 
   resources :duplicates, only: [:index, :show]
 
