@@ -2,7 +2,7 @@ xml.response do
   xml.status('success')
   xml.items_returned @contributions.length
   xml.items_available @contributions.total_entries
-  xml.first_item_position 0
+  xml.first_item_position @contributions.offset
   xml.result do
     @contributions.each do |contribution|
       contributor_fact = contribution.contributor_fact
