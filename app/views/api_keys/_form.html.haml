@@ -7,7 +7,7 @@
   settings_link = link_to(t(:settings), settings_account_path(@account))
   account_api_keys_link = link_to(t(:api_keys_title), account_api_keys_url(@account))
 
-%h2! #{settings_link} : #{account_api_keys_link} : #{t('api_keys_title')}
+%h2! #{settings_link} : #{account_api_keys_link} : #{@api_key.new_record? ? t(:new) : t(:edit)}
 
 = form_for [@account, @api_key] do |f|
   .col-md-11.center-block.well.margin_left_20.padding_right_0
