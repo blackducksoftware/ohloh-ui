@@ -1,19 +1,20 @@
+include_analysis ||= false
+
 xml.project do
   xml.id project.id
   xml.name project.name
   xml.url project_url project, format: 'xml'
   xml.html_url project_url project
-  xml.created_at project.created_at.iso8601
-  xml.updated_at project.updated_at.iso8601
+  xml.created_at(project.created_at.iso8601) if project.created_at
+  xml.updated_at(project.updated_at.iso8601) if project.updated_at
   xml.description project.description
   xml.homepage_url project.url
   xml.download_url project.download_url
   xml.url_name project.url_name
-  # TODO: Fix this when s3 urls are implemented
-  # if project.logo_id
-  #   xml.medium_logo_url s3_url_for(project.logo, :med)
-  #   xml.small_logo_url s3_url_for(project.logo, :small)
-  # end
+  if project.logo_id
+    xml.medium_logo_url project.logo.attachment.url(:med)
+    xml.small_logo_url project.logo.attachment.url(:small)
+  end
   xml.user_count project.user_count
   xml.average_rating project.rating_average
   xml.rating_count project.ratings.count
@@ -27,8 +28,8 @@ xml.project do
       end
     end
   end
-  if defined?(analysis) and analysis
-    xml << render(partial: 'analyses/analysis', locals: { analysis: analysis, builder: xml })
+  if include_analysis && project.best_analysis
+    xml << render(partial: 'analyses/analysis', locals: { analysis: project.best_analysis, builder: xml })
   end
   xml.licenses do
     project.licenses.each do |license|
