@@ -88,6 +88,12 @@ describe 'OrganizationsController' do
     assert_select 'div#org_summary'
   end
 
+  it 'should support projects view as xml' do
+    key = create(:api_key, account_id: create(:account).id)
+    get :show, id: @organization, format: :xml, api_key: key.oauth_application.uid
+    must_respond_with :ok
+  end
+
   it 'should get show page for a invalid organization' do
     get :show, id: 'some_invalid_id'
     must_respond_with :not_found
