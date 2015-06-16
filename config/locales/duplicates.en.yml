@@ -4,6 +4,14 @@ en:
     no_valid_project: "Enter the name of a valid Open Hub project."
     no_dupe_of_dupe: "%{this} has been reported as a duplicate of another project (%{that}). Choose a different project."
     already_reported: "Project '%{that}' has already been reported as a duplicate of '%{this}', and may soon be merged into '%{this}'. That report must be resolved or canceled before a new duplicate report will be accepted."
+    index:
+      page_title: 'Duplicates - Open Hub'
+      title: 'Duplicates'
+    duplicate:
+      duplicate: 'Duplicate %{id}'
+      is_duplicate: 'is a duplicate of'
+      reported: Reported
+      by: 'by'
     new:
       cant_dupe_a_dupe: "Project '%{that}' has already been reported as a duplicate of this project. That report must be resolved or canceled before reporting '%{this}' as a duplicate."
       page_title: "The %{name} Open Source Project on Open Hub : Report Duplicate"
