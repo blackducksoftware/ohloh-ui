@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ApplicationControllerTest < ActionController::TestCase
+describe 'ApplicationController' do
   describe 'TestController' do
     setup do
       @controller = TestController.new
@@ -147,6 +147,52 @@ class ApplicationControllerTest < ActionController::TestCase
       @response.body.wont_match(/You can add more projects now./)
       assert_response :success
       action.reload.status.must_equal Action::STATUSES[:completed]
+    end
+  end
+
+  describe 'AccountsController' do
+    before do
+      @controller = AccountsController.new
+      @controller.request = @request
+      @controller.response = @response
+    end
+
+    describe 'alert_non_activated_account' do
+      let(:non_activated_message) { I18n.t('non_activated_message',
+                                           link: @controller.view_context.link_to(:here, new_activation_resend_path)) }
+
+
+      it 'wont show flash message when logged out' do
+        account = create(:account, activated_at: nil)
+
+        get :show, id: account.id
+        flash[:notice].must_be_nil
+      end
+
+      it 'must set flash message when account is not activated' do
+        account = create(:account, activated_at: nil)
+        login_as account
+
+        get :show, id: account.id
+        flash[:notice].must_equal non_activated_message
+      end
+
+      it 'wont set flash message for activated accounts' do
+        account = create(:account)
+        login_as account
+
+        get :show, id: account.id
+        flash[:notice].wont_equal non_activated_message
+      end
+
+      it 'wont display non activated message when notice already exists' do
+        account = create(:account, activated_at: nil)
+        login_as account
+
+        patch :update, id: account.id, account: { url: Faker::Internet.url }
+
+        flash[:notice].wont_equal non_activated_message
+      end
     end
   end
 end

@@ -22,7 +22,6 @@ en:
       success: "Logged in successfully"
       error: "Invalid Login Credentials"
       disabled_error: "This account is disabled."
-      unactivated_error: "Account hasn't been activated yet - check your email."
       learn_about_privacy: "Almost done. Before using your account, please configure these email notification settings."
     destroy:
       success: "You have been logged out."
