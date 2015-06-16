@@ -1,0 +1,5 @@
+- content_for(:html_title) { t('.page_title') }
+
+%h3= t('.title')
+= render collection: @duplicates, partial: 'duplicate'
+= will_paginate @duplicates

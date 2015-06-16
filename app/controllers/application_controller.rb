@@ -184,7 +184,6 @@ class ApplicationController < ActionController::Base
   #        Skip this filter for widgets, sitemap and exhibits.
   def verify_api_access_for_xml_request
     return unless request_format == 'xml'
-
     client_id = params[:api_key] || doorkeeper_token.try(:application).try(:uid)
     api_key = ApiKey.in_good_standing.find_by_oauth_application_uid(client_id)
 

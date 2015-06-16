@@ -1,6 +1,4 @@
 class ContributorFact < NameFact
-  fix_string_column_encodings!
-
   belongs_to :analysis
   belongs_to :name
 

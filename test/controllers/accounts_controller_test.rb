@@ -36,6 +36,12 @@ describe 'AccountsController' do
       assigns(:people).length.must_equal 9
       assigns(:cbp_map).length.must_equal 9
     end
+
+    it 'should support being queried via the api' do
+      key = create(:api_key, account_id: create(:account).id)
+      get :index, format: :xml, api_key: key.oauth_application.uid
+      must_respond_with :ok
+    end
   end
 
   describe 'show' do
@@ -45,6 +51,12 @@ describe 'AccountsController' do
       must_respond_with :ok
       assigns(:account).must_equal admin
       assigns(:logos).must_be_empty
+    end
+
+    it 'should support being queried via the api' do
+      key = create(:api_key, account_id: create(:account).id)
+      get :show, id: admin.login, format: :xml, api_key: key.oauth_application.uid
+      must_respond_with :ok
     end
 
     it 'should redirect if account is disabled' do

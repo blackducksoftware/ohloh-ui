@@ -147,6 +147,8 @@ Rails.application.routes.draw do
   get 'p/compare', to: 'compares#projects', as: :compare_projects
   get 'p/graph', to: 'compares#projects_graph', as: :compare_graph_projects
 
+  resources :duplicates, only: [:index, :show]
+
   resources :projects, path: :p, except: [:destroy] do
     member do
       get :users
@@ -182,7 +184,7 @@ Rails.application.routes.draw do
         get :status
       end
     end
-    resources :duplicates, only: [:new, :create, :edit, :update, :destroy]
+    resources :duplicates, except: [:show, :index]
     resource :logos, only: [:new, :create, :destroy]
     resources :links, except: :show
     resources :managers, only: [:index, :new, :create, :edit, :update] do

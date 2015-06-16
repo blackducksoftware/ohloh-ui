@@ -2,6 +2,7 @@ class Repository < ActiveRecord::Base
   belongs_to :best_code_set, foreign_key: :best_code_set_id, class_name: CodeSet
   has_many :enlistments, -> { not_deleted }
   has_many :projects, through: :enlistments
+  has_many :jobs
 
   scope :matching, ->(match) { Repository.forge_match_search(match) }
 
@@ -21,6 +22,12 @@ class Repository < ActiveRecord::Base
 
   def english_name
     # TODO: scm source adapter
+  end
+
+  def failed?
+    job = jobs.incomplete.first
+    return true if job && job.status == Job::STATUS_FAILED
+    false
   end
 
   class << self

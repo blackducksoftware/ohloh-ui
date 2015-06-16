@@ -1,7 +1,7 @@
 xml = xml_instance
 detailed_info ||= false
 
-xml.organization do
+xml.org do
   xml.name organization.name
   xml.url organization_url organization, format: 'xml'
   xml.html_url organization_url organization

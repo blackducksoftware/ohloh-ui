@@ -15,8 +15,6 @@ class Edit < ActiveRecord::Base
   scope :for_ip, ->(ip) { where(ip: ip) }
   filterable_by %w(key value)
 
-  fix_string_column_encodings!
-
   def previous_value
     previous_edit = find_previous_edit
     previous_edit ? previous_edit.value : nil
