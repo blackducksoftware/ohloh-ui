@@ -3,10 +3,19 @@ require 'test_helper'
 describe 'Accounts::VerificationsController' do
   describe 'new' do
     it 'must require user to be logged in' do
-      get :new, account_id: create(:account).id
+      get :new, account_id: create(:account, twitter_id: nil).id
 
       must_respond_with :redirect
       must_redirect_to new_session_path
+    end
+
+    it 'must redirect to root_path if account is verified' do
+      account = create(:account)
+      login_as account
+
+      get :new, account_id: account.id
+
+      must_redirect_to root_path
     end
 
     it 'must handle disabled account' do
@@ -20,14 +29,14 @@ describe 'Accounts::VerificationsController' do
 
     it 'wont allow verifying other account' do
       login_as create(:account)
-      get :new, account_id: create(:account).id
+      get :new, account_id: create(:account, twitter_id: nil).id
 
       must_respond_with :redirect
       must_redirect_to new_session_path
     end
 
     it 'must render the view successfully' do
-      account = create(:account)
+      account = create(:account, twitter_id: nil)
       login_as account
 
       get :new, account_id: account.id

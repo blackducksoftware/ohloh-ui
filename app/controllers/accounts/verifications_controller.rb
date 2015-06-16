@@ -6,6 +6,7 @@ class Accounts::VerificationsController < ApplicationController
   before_action :set_account
   before_action :redirect_if_disabled
   before_action :must_own_account
+  before_action :redirect_if_verified
 
   def create
     twitter_id = TwitterDigits.get_twitter_id(params[:verification][:service_provider_url],
@@ -25,5 +26,9 @@ class Accounts::VerificationsController < ApplicationController
   def set_account
     @account = Account.from_param(params[:account_id]).take
     fail ParamRecordNotFound unless @account
+  end
+
+  def redirect_if_verified
+    redirect_to root_path if @account.twitter_id?
   end
 end
