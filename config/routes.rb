@@ -44,6 +44,9 @@ Rails.application.routes.draw do
     resources :api_keys, constraints: { format: :html }
     resources :projects, only: [:index]
     resources :positions, only: [:index] do
+      member do
+        get :commits_compound_spark
+      end
       collection do
         get :one_click_create
       end

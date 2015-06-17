@@ -406,6 +406,14 @@ describe 'PositionsController' do
     end
   end
 
+  describe 'commits_compound_spark' do
+    it 'should render positions img' do
+      position = create_position
+      get :commits_compound_spark, account_id: position.account.id, id: position
+      must_respond_with :ok
+    end
+  end
+
   describe 'destroy' do
     it 'must remove positions successfully' do
       position = create_position
