@@ -166,19 +166,6 @@ describe 'AccountsController' do
       end
     end
 
-    it 'must render the new account page for a blacklisted email domain' do
-      bad_domain = 'really_bad_domain.com'
-      DomainBlacklist.create(domain: bad_domain)
-
-      assert_no_difference 'Account.count' do
-        email = "bad_guy@#{ bad_domain }"
-        post :create, account_params.merge(account: { email: email, email_confirmation: email })
-
-        must_render_template :new
-        Account.find_by(email: email).wont_be :present?
-      end
-    end
-
     it 'must create an action record when relevant params are passed' do
       person = create(:person)
 
