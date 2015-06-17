@@ -148,6 +148,7 @@ Rails.application.routes.draw do
   get 'projects/:id/stacks', to: 'stacks#project_stacks', constraints: { format: /xml/ }
   get 'p/:id/stacks', to: 'stacks#project_stacks', as: :project_stacks, constraints: { format: /xml/ }
   get 'p/:id/stacks', to: redirect('/p/%{id}/users'), constraints: { format: /html/ }
+  get 'projects', to: 'projects#index', constraints: { format: /xml/ }
 
   resources :duplicates, only: [:index, :show]
 

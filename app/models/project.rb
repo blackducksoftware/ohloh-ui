@@ -19,6 +19,7 @@ class Project < ActiveRecord::Base
     record.errors.add(field, I18n.t(:not_a_valid_url)) unless value.valid_http_url?
   end
   before_validation :clean_strings_and_urls
+  after_save :update_organzation_project_count
 
   attr_accessor :managed_by_creator
 
@@ -111,5 +112,10 @@ class Project < ActiveRecord::Base
 
   def sanitize(sql)
     Project.send :sanitize_sql, sql
+  end
+
+  def update_organzation_project_count
+    return unless organization
+    organization.update_attributes(editor_account: editor_account, projects_count: organization.projects.count)
   end
 end

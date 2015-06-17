@@ -252,4 +252,13 @@ class ProjectTest < ActiveSupport::TestCase
       Project.search_and_sort('test', 'new', nil).must_equal [pro_3, pro_2, pro_1]
     end
   end
+
+  describe 'update_organzation_project_count' do
+    it 'should update its organizations projects_count' do
+      org = create(:organization)
+      org.reload.projects_count.must_equal 0
+      create(:project, organization: org)
+      org.reload.projects_count.must_equal 1
+    end
+  end
 end
