@@ -22,7 +22,7 @@ FactoryGirl.define do
     email_master true
     email_kudos true
     email_posts true
-    twitter_id Faker::Internet.password
+    twitter_id { Faker::Internet.password }
   end
 
   factory :unactivated, parent: :account do
