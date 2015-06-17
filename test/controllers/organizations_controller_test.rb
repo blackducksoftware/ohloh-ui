@@ -62,6 +62,12 @@ describe 'OrganizationsController' do
     must_respond_with :ok
   end
 
+  it 'should get outside_committers in xml format with valid api key' do
+    key = create(:api_key, account_id: @account.id)
+    get :outside_committers, id: @organization, format: :xml, api_key: key.oauth_application.uid
+    must_respond_with :ok
+  end
+
   it 'should get show page for a valid organization' do
     get :show, id: @organization
     must_respond_with :ok
@@ -86,6 +92,12 @@ describe 'OrganizationsController' do
     get :show, id: @organization, view: 'portfolio_projects'
     must_respond_with :ok
     assert_select 'div#org_summary'
+  end
+
+  it 'should support projects view as xml' do
+    key = create(:api_key, account_id: create(:account).id)
+    get :show, id: @organization, format: :xml, api_key: key.oauth_application.uid
+    must_respond_with :ok
   end
 
   it 'should get show page for a invalid organization' do

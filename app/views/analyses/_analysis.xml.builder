@@ -4,10 +4,10 @@ xml.analysis do
   xml.id analysis.id
   xml.url project_analysis_url(analysis.project, analysis, format: :xml)
   xml.project_id analysis.project_id
-  xml.updated_at analysis.updated_on.iso8601
-  xml.logged_at analysis.logged_at.iso8601
-  xml.min_month analysis.min_month.iso8601
-  xml.max_month analysis.max_month.iso8601
+  xml.updated_at(analysis.updated_on.iso8601) if analysis.updated_on
+  xml.logged_at(analysis.logged_at.iso8601) if analysis.logged_at
+  xml.min_month(analysis.min_month.iso8601) if analysis.min_month
+  xml.max_month(analysis.max_month.iso8601) if analysis.max_month
   xml.twelve_month_contributor_count analysis.headcount
   xml.total_contributor_count analysis.committers_all_time
   if tms = analysis.twelve_month_summary

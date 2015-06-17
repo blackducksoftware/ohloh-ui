@@ -202,6 +202,12 @@ describe 'ProjectsController' do
       must_respond_with :ok
     end
 
+    it 'show accepts being called via api' do
+      api_key = create(:api_key)
+      get :show, id: create(:project), format: :xml, api_key: api_key.oauth_application.uid
+      must_respond_with :ok
+    end
+
     it 'show should render for projects that have been analyzed' do
       project = create(:project)
       af_1 = create(:activity_fact, analysis: project.best_analysis, code_added: 8_000, comments_added: 8_000)
