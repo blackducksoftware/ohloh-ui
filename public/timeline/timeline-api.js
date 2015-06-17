@@ -21,7 +21,6 @@ Timeline.Platform = new Object();
         before it loads timeline.js and util/platform.js.
     */
 
-Timeline.urlPrefix = '/timeline/';
 (function() {
     var javascriptFiles = [
         "timeline.js",
@@ -108,7 +107,7 @@ Timeline.urlPrefix = '/timeline/';
                         }
                     }
                 }
-                //throw new Error("Failed to derive URL prefix for Timeline API code files");
+                throw new Error("Failed to derive URL prefix for Timeline API code files");
             }
         })();
 

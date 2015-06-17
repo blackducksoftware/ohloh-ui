@@ -46,7 +46,7 @@ CommitTimeline = {
     bandInfos[2].eventPainter.setLayout(bandInfos[0].eventPainter.getLayout());
 
     tl = Timeline.create(tl_div[0], bandInfos);
-    Timeline.loadXML("/p/" + project_id + "/commits/" + name_id + "/events?contributor_id="+name_id, function(xml, url) { eventSource.loadXML(xml, url); });
+    Timeline.loadXML("/p/" + project_id + "/commits/" + name_id + "/events.xml?contributor_id="+name_id, function(xml, url) { eventSource.loadXML(xml, url); });
 
   }
 }

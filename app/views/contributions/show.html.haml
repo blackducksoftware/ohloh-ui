@@ -5,7 +5,7 @@
   page_context[:select_footer_nav] = :contributors
 
 - content_for :custom_head do
-  %script{ src: '/timeline/timeline-api.js'}
+  = javascript_include_tag('/timeline/timeline-api.js')
 
 - content_for :html_title do
   = succeed t('.page_title') do
