@@ -312,6 +312,8 @@ en:
               invalid: 'Check your current password and try again.'
             organization_name:
               invalid: 'should start with a letter and can include only letters, numbers, _ and -'
+            twitter_id:
+              taken: This Digits account is already associated with another OpenHub account. Please try a new phone number.
         link:
           attributes:
             url:

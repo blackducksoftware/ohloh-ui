@@ -71,5 +71,19 @@ describe 'Accounts::VerificationsController' do
       flash[:error].must_be :present?
       must_render_template :new
     end
+
+    it 'wont allow verifying a new account with an used twitter_id' do
+      verified_account = create(:account)
+      unverified_account = create(:account, twitter_id: nil)
+      login_as unverified_account
+
+      TwitterDigits.stubs(:get_twitter_id).returns(verified_account.twitter_id)
+
+      post :create, account_id: unverified_account.id, verification: {}
+
+      unverified_account.reload.twitter_id.must_be_nil
+      flash[:error].must_equal i18n_activerecord(:account, :twitter_id)[:taken]
+      must_render_template :new
+    end
   end
 end

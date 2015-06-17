@@ -9,16 +9,14 @@ class Accounts::VerificationsController < ApplicationController
   before_action :redirect_if_verified
 
   def create
-    twitter_id = TwitterDigits.get_twitter_id(params[:verification][:service_provider_url],
-                                              params[:verification][:credentials])
-
-    if twitter_id
-      @account.update!(twitter_id: twitter_id)
-      redirect_back
+    if digits_response_success?
+      return redirect_back if @account.update(twitter_id: twitter_id)
+      flash[:error] = @account.errors.messages[:twitter_id].first
     else
       flash[:error] = t('.error')
-      render :new
     end
+
+    render :new
   end
 
   private
@@ -28,7 +26,16 @@ class Accounts::VerificationsController < ApplicationController
     fail ParamRecordNotFound unless @account
   end
 
+  def digits_response_success?
+    twitter_id.present?
+  end
+
   def redirect_if_verified
     redirect_to root_path if @account.twitter_id?
+  end
+
+  def twitter_id
+    @twitter_id ||= TwitterDigits.get_twitter_id(params[:verification][:service_provider_url],
+                                                 params[:verification][:credentials])
   end
 end
