@@ -373,6 +373,12 @@ describe 'PositionsController' do
       must_respond_with :success
       response.body.wont_match new_account_position_path(position.account)
     end
+
+    it 'must render index in xml format' do
+      key = create(:api_key)
+      get :index, account_id: account, format: :xml, api_key: key.oauth_application.uid
+      must_respond_with :ok
+    end
   end
 
   describe 'show' do
