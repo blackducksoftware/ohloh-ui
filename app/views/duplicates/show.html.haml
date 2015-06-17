@@ -14,7 +14,7 @@
   .col-md-6
     %h4= t('.reported_by')
     .avtr= avatar_for(@duplicate.account, size: 32)
-    .cnt{ style: 'padding: 5px 5px' }
+    .cnt{ style: 'position: relative; top: 5px; left: 4px' }
       %h4= link_to(@duplicate.account.name, account_url(@duplicate.account))
   .col-md-6
     %h4= t('.comment')
@@ -27,7 +27,7 @@
   .col-md-6.good= render partial: 'project', locals: { project: @duplicate.good_project }
   .col-md-6.bad= render partial: 'project', locals: { project: @duplicate.bad_project }
 
-  .col-md-12{ style: 'position: realtive' }
+  .col-md-12{ style: 'position: relative' }
     .col-md-4
       .message.keep-bad
         %h2= t('.deleted')
@@ -42,20 +42,20 @@
         = time_ago_in_words(@duplicate.good_project.created_at) + t('.ago')
         = t('.by')
         - good_project_edit = CreateEdit.where(project_id: @duplicate.good_project.id).take
-        = link_to good_project_edit.account.name, account_path(good_project_edit.account)
+        = link_to good_project_edit.account.name, account_path(good_project_edit.account), class: 'green'
       %td.col-md-4.bad
         = time_ago_in_words(@duplicate.bad_project.created_at) + t('.ago')
         = t('.by')
         - bad_project_edit = CreateEdit.where(project_id: @duplicate.bad_project.id).take
-        = link_to bad_project_edit.account.name, account_path(bad_project_edit.account)
+        = link_to bad_project_edit.account.name, account_path(bad_project_edit.account), class: 'red'
     %tr
       %td= t('.url')
-      %td.good= link_to project_path(@duplicate.good_project.url_name)
-      %td.bad= link_to project_path(@duplicate.bad_project.url_name)
+      %td.good= link_to nil, project_path(@duplicate.good_project.url_name), class: 'green'
+      %td.bad= link_to nil, project_path(@duplicate.bad_project.url_name), class: 'red'
     %tr
       %td= t('.homepage')
-      %td.good= link_to @duplicate.good_project.url
-      %td.bad= link_to @duplicate.bad_project.url
+      %td.good= link_to nil, @duplicate.good_project.url, class: 'green'
+      %td.bad= link_to nil, @duplicate.bad_project.url, class: 'red'
     %tr
       %td= t('.users')
       %td.good= pluralize(@duplicate.good_project.user_count, 'user')
@@ -73,11 +73,11 @@
       %td.good
         = link_to pluralize(@duplicate.good_project.enlistments.count, 'repository'),
         project_enlistments_path(@duplicate.good_project),
-        { title: @duplicate.good_project.enlistments[0..20].map { |e| h(e.repository.nice_url) }.join('\n') }
+        { class: 'green', title: @duplicate.good_project.enlistments[0..20].map { |e| h(e.repository.nice_url) }.join('\n') }
       %td.bad
         = link_to pluralize(@duplicate.bad_project.enlistments.count, 'repository'),
         project_enlistments_path(@duplicate.bad_project),
-        { title: @duplicate.bad_project.enlistments[0..20].map { |e| h(e.repository.nice_url) }.join('\n') }
+        { class: 'red', title: @duplicate.bad_project.enlistments[0..20].map { |e| h(e.repository.nice_url) }.join('\n') }
     %tr.suggestion
       %td= t('.suggests')
       %td.good
