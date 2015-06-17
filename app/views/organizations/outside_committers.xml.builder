@@ -18,6 +18,7 @@ xml.response do
           end
         end
       end
+      xml.detailed_page_url "/orgs/#{@organization.url_name}/outside_committers"
     end
   end
 end

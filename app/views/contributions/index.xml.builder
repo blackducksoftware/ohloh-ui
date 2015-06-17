@@ -14,6 +14,7 @@ xml.response do
         end
         if (contributor_fact)
           xml.analysis_id contributor_fact.analysis_id
+          xml.contributor_name obfuscate_email(contributor_fact.name.name)
           xml.primary_language_id contributor_fact.primary_language_id
           xml.primary_language_nice_name contributor_fact.primary_language_id ? contributor_fact.primary_language.nice_name : ''
           xml.comment_ratio contributor_fact.comment_ratio
