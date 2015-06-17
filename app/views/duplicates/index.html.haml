@@ -1,5 +1,19 @@
 - content_for(:html_title) { t('.page_title') }
 
 %h3= t('.title')
-= render collection: @duplicates, partial: 'duplicate'
-= will_paginate @duplicates
+
+.col-md-12
+  %ul.nav.nav-tabs
+    %li.active
+      = link_to 'Unresolved', '#unresolved-duplicates', 'data-toggle' => :tab
+    %li
+      = link_to 'Resolved', '#resolved-duplicates', 'data-toggle' => :tab
+
+  .tab-content
+    #unresolved-duplicates.tab-pane.fade.in.active
+      = render collection: @unresolved_duplicates, partial: 'duplicate'
+      = will_paginate @unresolved_duplicates
+
+    #resolved-duplicates.tab-pane.fade
+      = render collection: @resolved_duplicates, partial: 'duplicate'
+      = will_paginate @resolved_duplicates

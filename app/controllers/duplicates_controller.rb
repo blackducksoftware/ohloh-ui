@@ -1,16 +1,19 @@
 class DuplicatesController < ApplicationController
   helper ProjectsHelper
+  helper RatingsHelper
+  helper TagsHelper
 
   before_action :session_required
   before_action :find_project, except: :index
   before_action :find_duplicate, only: [:edit, :update, :destroy]
   before_action :find_good_project, only: [:create, :update]
-  before_action :project_context, except: :index
+  before_action :project_context, except: [:index, :show]
   before_action :must_own_duplicate, only: [:edit, :update, :destroy]
   before_action :admin_session_required, only: [:index, :show]
 
   def index
-    @duplicates = Duplicate.paginate(per_page: 10, page: params[:page]).order(id: :desc)
+    @resolved_duplicates = Duplicate.where(resolved: true).order(id: :desc).paginate(per_page: 10, page: params[:page])
+    @unresolved_duplicates = Duplicate.where.not(resolved: true).order(id: :desc).paginate(per_page: 10, page: params[:page])
   end
 
   def new
@@ -40,6 +43,11 @@ class DuplicatesController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def show
+    @duplicate = Duplicate.where(id: params[:id]).take
+    fail ParamRecordNotFound if @duplicate.nil?
   end
 
   def destroy

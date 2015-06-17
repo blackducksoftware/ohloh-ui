@@ -1,0 +1,106 @@
+%h3= t('.title')
+.col.col-md-12.duplicates
+  .col.col-md-12
+    %p
+      = time_ago_in_words(@duplicate.created_at)
+      = t(:ago)
+      = link_to(@duplicate.account.name, account_url(@duplicate.account))
+      = t('.reported_that')
+      = link_to @duplicate.bad_project.name, project_path(@duplicate.bad_project)
+      = t('.is_duplicate')
+      = link_to @duplicate.good_project.name, project_path(@duplicate.good_project)
+  .clearfix
+
+  .col-md-6
+    %h4= t('.reported_by')
+    .avtr= avatar_for(@duplicate.account, size: 32)
+    .cnt{ style: 'padding: 5px 5px' }
+      %h4= link_to(@duplicate.account.name, account_url(@duplicate.account))
+  .col-md-6
+    %h4= t('.comment')
+    %p= h(@duplicate.comment)
+
+  .clearfix
+
+  .col-md-12.margin_top_10.padding_bottom_20{ style: 'border-bottom: solid 1px #eee' }
+
+  .col-md-6.good= render partial: 'project', locals: { project: @duplicate.good_project }
+  .col-md-6.bad= render partial: 'project', locals: { project: @duplicate.bad_project }
+
+  .col-md-12{ style: 'position: realtive' }
+    .col-md-4
+      .message.keep-bad
+        %h2= t('.deleted')
+    .col-md-4
+      .message.keep-good
+        %h2= t('.deleted')
+
+  %table.table
+    %tr
+      %td.col-md-4= t('.created')
+      %td.col-md-4.good
+        = time_ago_in_words(@duplicate.good_project.created_at) + t('.ago')
+        = t('.by')
+        - good_project_edit = CreateEdit.where(project_id: @duplicate.good_project.id).take
+        = link_to good_project_edit.account.name, account_path(good_project_edit.account)
+      %td.col-md-4.bad
+        = time_ago_in_words(@duplicate.bad_project.created_at) + t('.ago')
+        = t('.by')
+        - bad_project_edit = CreateEdit.where(project_id: @duplicate.bad_project.id).take
+        = link_to bad_project_edit.account.name, account_path(bad_project_edit.account)
+    %tr
+      %td= t('.url')
+      %td.good= link_to project_path(@duplicate.good_project.url_name)
+      %td.bad= link_to project_path(@duplicate.bad_project.url_name)
+    %tr
+      %td= t('.homepage')
+      %td.good= link_to @duplicate.good_project.url
+      %td.bad= link_to @duplicate.bad_project.url
+    %tr
+      %td= t('.users')
+      %td.good= pluralize(@duplicate.good_project.user_count, 'user')
+      %td.bad= pluralize(@duplicate.bad_project.user_count, 'user')
+    %tr
+      %td= t('.ratings')
+      %td.good= pluralize(@duplicate.good_project.ratings.count, 'ratings')
+      %td.bad= pluralize(@duplicate.bad_project.ratings.count, 'ratings')
+    %tr
+      %td= t('.last_analyzed')
+      %td.good= @duplicate.good_project.best_analysis && @duplicate.good_project.best_analysis.logged_at ? time_ago_in_words(@duplicate.good_project.best_analysis.logged_at) + t('.ago') : t('.never')
+      %td.bad= @duplicate.bad_project.best_analysis && @duplicate.bad_project.best_analysis.logged_at ? time_ago_in_words(@duplicate.bad_project.best_analysis.logged_at) + t('.ago') : t('.never')
+    %tr
+      %td= t('.enlistments')
+      %td.good
+        = link_to pluralize(@duplicate.good_project.enlistments.count, 'repository'),
+        project_enlistments_path(@duplicate.good_project),
+        { title: @duplicate.good_project.enlistments[0..20].map { |e| h(e.repository.nice_url) }.join('\n') }
+      %td.bad
+        = link_to pluralize(@duplicate.bad_project.enlistments.count, 'repository'),
+        project_enlistments_path(@duplicate.bad_project),
+        { title: @duplicate.bad_project.enlistments[0..20].map { |e| h(e.repository.nice_url) }.join('\n') }
+    %tr.suggestion
+      %td= t('.suggests')
+      %td.good
+        %i.icon-ok.icon-large{ style: 'color: green' }
+        %p{ style: 'float:left; padding-right: 5px; margin-bottom: 0px' }
+          = t('.user_wants')
+      %td.bad
+        &nbsp;
+    %tr.actions
+      %td= t('.action')
+      %td.good
+        = link_to t('.keep', project: truncate_project_name(@duplicate.good_project.name, true)),
+        "/duplicates/#{@duplicate.id}/resolve/#{@duplicate.good_project.id}",
+        { method: :post, class: 'btn btn-large btn-success good keep-good',
+          title: t('.keep_title', bad: @duplicate.good_project.name, good: @duplicate.bad_project.name),
+          data: { confirm: t('.keep_confirm', bad: @duplicate.good_project.name, good: @duplicate.bad_project.name) } }
+      %td.bad
+        = link_to t('.keep', project: truncate_project_name(@duplicate.bad_project.name, true)),
+        "/duplicates/#{@duplicate.id}/resolve/#{@duplicate.bad_project.id}",
+        { method: :post, class: 'btn btn-large btn-success bad keep-bad',
+          title: t('.keep_title', good: @duplicate.good_project.name, bad: @duplicate.bad_project.name),
+          data: { confirm: t('.keep_confirm', good: @duplicate.good_project.name, bad: @duplicate.bad_project.name) } }
+  .col.col-md-12
+    %p.pull-right
+      = link_to t('.close_request'), duplicate_path(@duplicate),
+      { method: :delete, data: { confirm: t('.confirm_close') }, class: 'btn btn-large btn-info', title: t('.close_title') }

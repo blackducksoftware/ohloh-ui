@@ -4,6 +4,35 @@ en:
     no_valid_project: "Enter the name of a valid Open Hub project."
     no_dupe_of_dupe: "%{this} has been reported as a duplicate of another project (%{that}). Choose a different project."
     already_reported: "Project '%{that}' has already been reported as a duplicate of '%{this}', and may soon be merged into '%{this}'. That report must be resolved or canceled before a new duplicate report will be accepted."
+    show:
+      title: 'Duplicate Resolution'
+      reported_that: 'reported that'
+      is_duplicate: 'is a duplicate of'
+      reported_by: 'Reported By'
+      comment: 'Comment'
+      deleted: 'This Project Will Be Deleted'
+      close_request: 'Close this request and keep both projects.'
+      confirm_close: 'Are you sure you want to cancel this request?'
+      close_title: 'Take no action and close this request'
+      keep_confirm: 'Are you sure you want to keep %{bad} and delete %{good}?'
+      keep_title: 'Keep %{bad} and delete %{good}'
+      keep: 'Keep %{project}'
+      action: 'Action'
+      user_wants: 'User wants to keep this project'
+      suggests: 'User Suggests'
+      enlistments: 'Enlistments'
+      created: 'Created'
+      by: 'by'
+      url: 'Open Hub URL'
+      homepage: 'Homepage'
+      users: 'Users'
+      ratings: 'Ratings'
+      last_analyzed: 'Last Analyzed'
+      ago: ' ago'
+      never: 'never'
+    project:
+      lines_of_code: '%{lines} of code'
+      more: " more..."
     index:
       page_title: 'Duplicates - Open Hub'
       title: 'Duplicates'
