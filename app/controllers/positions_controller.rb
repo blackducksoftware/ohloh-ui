@@ -58,8 +58,8 @@ class PositionsController < ApplicationController
 
   def commits_compound_spark
     @project = @position.project
-    @name_fact = ContributorFact.includes(:name).where("analysis_id = '#{@project.best_analysis_id}'
-      AND name_id = '#{@position.name_id}'").first
+    @name_fact = ContributorFact.includes(:name).where(analysis_id: @project.best_analysis_id,
+                                                       name_id: @position.name_id).first
     spark_image = Spark::CompoundSpark.new(@name_fact.monthly_commits(11), max_value: 50).render.to_blob
     send_data spark_image, type: 'image/png', filename: 'position_commits_compound_spark.png', disposition: 'inline'
   end
