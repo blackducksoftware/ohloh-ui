@@ -4,7 +4,7 @@ class EnlistmentsController < SettingsController
   before_action :session_required, only: [:create, :new, :destroy, :edit, :update]
   before_action :find_project
   before_action :find_enlistment, only: [:show, :edit, :update, :destroy]
-  before_action :project_context, only: [:index, :new, :edit]
+  before_action :project_context, only: [:index, :new, :edit, :create, :update]
 
   def index
     @enlistments = @project.enlistments
