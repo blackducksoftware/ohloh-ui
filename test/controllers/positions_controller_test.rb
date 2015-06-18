@@ -373,6 +373,12 @@ describe 'PositionsController' do
       must_respond_with :success
       response.body.wont_match new_account_position_path(position.account)
     end
+
+    it 'must render index in xml format' do
+      key = create(:api_key)
+      get :index, account_id: account, format: :xml, api_key: key.oauth_application.uid
+      must_respond_with :ok
+    end
   end
 
   describe 'show' do
@@ -397,6 +403,14 @@ describe 'PositionsController' do
     it 'must render error for a invalid position id' do
       get :show, account_id: account.to_param, id: 0
       must_render_template 'error.html'
+    end
+  end
+
+  describe 'commits_compound_spark' do
+    it 'should render positions img' do
+      position = create_position
+      get :commits_compound_spark, account_id: position.account.id, id: position
+      must_respond_with :ok
     end
   end
 

@@ -17,8 +17,6 @@ class AccountsController < ApplicationController
   before_action :find_claimed_people, only: :index
   after_action :create_action_record, only: :create, if: -> { @account.persisted? && params[:_action].present? }
 
-  protect_from_bots :create, redirect_to: :index, controller: :home
-
   # FIXME: people have to be sorted. See sorted_and_filtered in older code.
   def index
     @cbp_map = PeopleDecorator.new(@people).commits_by_project_map
