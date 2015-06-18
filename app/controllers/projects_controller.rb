@@ -9,7 +9,7 @@ class ProjectsController < ApplicationController
                                       :similar_by_tags, :similar]
   before_action :redirect_new_landing_page, only: :index
   before_action :find_forge_matches, only: :check_forge
-  before_action :project_context, only: [:show, :users, :estimated_cost, :edit, :settings, :map, :similar]
+  before_action :project_context, only: [:show, :users, :estimated_cost, :edit, :settings, :map, :similar, :update]
   before_action :show_permissions_alert, only: [:settings, :edit]
   before_action :set_session_projects, only: :index
 

@@ -13,7 +13,7 @@ class AccountsController < ApplicationController
   before_action :must_own_account, only: [:edit, :update, :destroy, :confirm_delete]
   before_action :check_banned_domain, only: :create
   before_action :captcha_response, only: :create
-  before_action :account_context, only: :edit
+  before_action :account_context, only: [:edit, :update]
   before_action :find_claimed_people, only: :index
   after_action :create_action_record, only: :create, if: -> { @account.persisted? && params[:_action].present? }
 
