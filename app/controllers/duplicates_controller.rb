@@ -59,6 +59,14 @@ class DuplicatesController < ApplicationController
     redirect_to project_path(@duplicate.bad_project)
   end
 
+  def resolve
+    @duplicate = Duplicate.where(id: params[:id]).take
+    @duplicate.switch_good_and_bad! if params[:keep_id].to_i == @duplicate.bad_project_id
+
+    @duplicate.resolve!(current_user)
+    redirect_to duplicates_path, flash: { success: t('.success') }
+  end
+
   private
 
   def find_project

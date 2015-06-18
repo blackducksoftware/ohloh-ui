@@ -146,7 +146,11 @@ Rails.application.routes.draw do
   get 'p/compare', to: 'compares#projects', as: :compare_projects
   get 'p/graph', to: 'compares#projects_graph', as: :compare_graph_projects
 
-  resources :duplicates, only: [:index, :show]
+  resources :duplicates, only: [:index, :show] do
+    member do
+      post 'resolve/:keep_id', to: 'duplicates#resolve'
+    end
+  end
 
   resources :projects, path: :p, except: [:destroy] do
     member do

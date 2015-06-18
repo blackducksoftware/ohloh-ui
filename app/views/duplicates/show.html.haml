@@ -102,5 +102,5 @@
           data: { confirm: t('.keep_confirm', good: @duplicate.good_project.name, bad: @duplicate.bad_project.name) } }
   .col.col-md-12
     %p.pull-right
-      = link_to t('.close_request'), duplicate_path(@duplicate),
+      = link_to t('.close_request'), project_duplicate_path(@duplicate.bad_project, @duplicate),
       { method: :delete, data: { confirm: t('.confirm_close') }, class: 'btn btn-large btn-info', title: t('.close_title') }

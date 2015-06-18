@@ -4,6 +4,8 @@ en:
     no_valid_project: "Enter the name of a valid Open Hub project."
     no_dupe_of_dupe: "%{this} has been reported as a duplicate of another project (%{that}). Choose a different project."
     already_reported: "Project '%{that}' has already been reported as a duplicate of '%{this}', and may soon be merged into '%{this}'. That report must be resolved or canceled before a new duplicate report will be accepted."
+    resolve:
+      success: 'Projects successfully merged.'
     show:
       title: 'Duplicate Resolution'
       reported_that: 'reported that'

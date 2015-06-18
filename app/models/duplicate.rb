@@ -14,6 +14,12 @@ class Duplicate < ActiveRecord::Base
     Duplicate.transaction { RESOLVES.each { |r| send("resolve_#{r}!") } }
   end
 
+  def switch_good_and_bad!
+    self.bad_project_id = good_project_id_was
+    self.good_project_id = bad_project_id_was
+    save(false)
+  end
+
   private
 
   def verify_good_projects
