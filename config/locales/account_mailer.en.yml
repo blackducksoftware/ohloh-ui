@@ -6,3 +6,6 @@ en:
     activation:
       subject: 'Your account has been activated!'
       body: '%{login}, your account has been activated.  You may now start adding your plugins:'
+    reset_password_link:
+      subject: 'Open Hub account reset password'
+      body: '%{login}, please follow this link to reset your Open Hub account password:'
