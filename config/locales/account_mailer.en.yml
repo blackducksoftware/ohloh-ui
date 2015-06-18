@@ -3,4 +3,6 @@ en:
     signup_notification:
       subject: 'Open Hub account activation notice'
       body: 'Your Open Hub account %{login} was created. Follow this link to activate your account:'
-
+    activation:
+      subject: 'Your account has been activated!'
+      body: '%{login}, your account has been activated.  You may now start adding your plugins:'

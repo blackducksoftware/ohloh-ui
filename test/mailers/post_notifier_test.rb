@@ -1,11 +1,9 @@
 require 'test_helper'
 
 describe PostNotifier do
-  let(:user) { create(:account) }
-  let(:admin) { create(:admin) }
-  let(:topic) { create(:topic) }
-
   it 'user who originally created the first post for a topic should receive a post creation email' do
+    user = create(:account)
+    topic = create(:topic)
     before = ActionMailer::Base.deliveries.size
     email = PostNotifier.post_creation_notification(user, topic).deliver_now
     email.to.must_equal [user.email]
@@ -18,9 +16,10 @@ describe PostNotifier do
   end
 
   it 'user who replied should receive a post replied notification email' do
+    user1 = create(:admin)
+    user2 = create(:account)
+    topic = create(:topic)
     before = ActionMailer::Base.deliveries.size
-    user1 = admin
-    user2 = user
     email = PostNotifier.post_replied_notification(user1, user2, topic).deliver_now
     email.to.must_equal [user1.email]
     email[:from].value.must_equal 'ohlohadmins@blackducksoftware.com'

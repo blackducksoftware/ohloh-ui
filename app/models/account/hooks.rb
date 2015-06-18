@@ -31,7 +31,6 @@ class Account::Hooks
   end
 
   def after_save(account)
-    deliver_activation(account) unless account.anonymous?
     reindex_person(account) if account.person && !Account::Access.new(account).spam?
     update_person_effective_name(account) if account.person.present? && !Account::Access.new(account).spam?
   end
@@ -64,14 +63,8 @@ class Account::Hooks
     account.name = account.login
   end
 
-  def deliver_signup_notification(_account)
-    # FIXME: Implement alongwith AccountNotifier
-    # AccountMailer.signup_notification(account).deliver_now
-  end
-
-  def deliver_activation(_account)
-    # FIXME: Implement alongwith AccountNotifier
-    # AccountMailer.deliver_activation(account).deliver_now
+  def deliver_signup_notification(account)
+    AccountMailer.signup_notification(account).deliver_now
   end
 
   def schedule_organization_analysis(_organization_id)

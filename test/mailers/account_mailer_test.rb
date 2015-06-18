@@ -1,9 +1,8 @@
 require 'test_helper'
 
 describe AccountMailer do
-  let(:user) { create(:account) }
-
   it '#signup_notification' do
+    user = create(:account, activated_at: nil)
     before = ActionMailer::Base.deliveries.count
     email = AccountMailer.signup_notification(user).deliver_now
     ActionMailer::Base.deliveries.count.must_equal before + 1

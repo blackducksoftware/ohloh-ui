@@ -7,4 +7,10 @@ class AccountMailer < ActionMailer::Base
                                          host: ENV['URL_HOST'], protocol: 'https')
     mail to: account.email, subject: t('.subject'), bcc: 'pdegenportnoy@blackducksoftware.com'
   end
+
+  def activation(account)
+    @url = root_url(host: ENV['URL_HOST'])
+    @account = account
+    mail to: account.email, subject: t('.subject')
+  end
 end
