@@ -1,6 +1,15 @@
 require 'test_helper'
 
 class StackEntriesControllerTest < ActionController::TestCase
+  # show
+  it 'show should return good json for a stack entry' do
+    stack_entry = create(:stack_entry)
+    get :show, format: :json, id: stack_entry, stack_id: stack_entry.stack
+    must_respond_with :ok
+    result = JSON.parse(@response.body)
+    result['id'].must_equal stack_entry.id
+  end
+
   # create action
   it 'create should require a current user' do
     stack = create(:stack)
@@ -62,6 +71,15 @@ class StackEntriesControllerTest < ActionController::TestCase
     StackEntry.any_instance.expects(:persisted?).twice.returns false
     post :create, stack_id: stack, stack_entry: { project_id: project }
     must_respond_with :unprocessable_entity
+  end
+
+  # update
+  it 'update should allow updating of a stack entrys note' do
+    stack_entry = create(:stack_entry)
+    login_as stack_entry.stack.account
+    put :update, id: stack_entry, stack_id: stack_entry.stack, stack_entry: { note: 'Changed!' }
+    must_respond_with :ok
+    stack_entry.reload.note.must_equal 'Changed!'
   end
 
   # destroy action

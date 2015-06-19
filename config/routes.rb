@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :stack_entries
+  resources :stack_entries, only: [:new]
 
   resources :password_resets, only: [:new, :create] do
     collection do
@@ -313,7 +313,7 @@ Rails.application.routes.draw do
       get :builder
       get :reset
     end
-    resources :stack_entries, only: [:create, :destroy]
+    resources :stack_entries, only: [:show, :create, :update, :destroy]
     resources :stack_ignores, only: [:create] do
       collection do
         delete :delete_all

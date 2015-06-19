@@ -2,10 +2,10 @@ class StackEntriesController < ApplicationController
   helper RatingsHelper
   helper StacksHelper
 
-  before_action :session_required
+  before_action :session_required, except: [:show]
   before_action :find_stack
-  before_action :find_project, except: [:destroy]
-  before_action :find_stack_entry, only: [:destroy]
+  before_action :find_project, only: [:create]
+  before_action :find_stack_entry, except: [:create]
 
   def create
     stack_entry = StackEntry.create(stack_id: @stack.id, project_id: @project.id)
@@ -13,6 +13,14 @@ class StackEntriesController < ApplicationController
       render json: { stack_entry_id: stack_entry.id,
                      stack_entry: stack_entry_html(stack_entry),
                      result: 'okay', updated_count: @stack.projects.count }, status: :ok
+    else
+      render json: { result: 'error' }, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    if params[:stack_entry] && @stack_entry.update_attributes(note: params[:stack_entry][:note])
+      render json: { result: 'okay' }, status: :ok
     else
       render json: { result: 'error' }, status: :unprocessable_entity
     end
@@ -26,7 +34,7 @@ class StackEntriesController < ApplicationController
 
   def find_stack
     @stack = Stack.find_by_id(params[:stack_id])
-    fail ParamRecordNotFound if @stack.nil? || (@stack.account_id != current_user.id)
+    fail ParamRecordNotFound if @stack.nil? || ((@stack.account_id != current_user.id) && (params[:action] != 'show'))
   end
 
   def find_project
