@@ -10,10 +10,10 @@
       = link_to 'Resolved', '#resolved-duplicates', 'data-toggle' => :tab
 
   .tab-content
-    #unresolved-duplicates.tab-pane.fade.in.active
+    .tab-pane.fade.in.active#unresolved-duplicates
       = render collection: @unresolved_duplicates, partial: 'duplicate'
       = will_paginate @unresolved_duplicates
 
-    #resolved-duplicates.tab-pane.fade
+    .tab-pane.fade#resolved-duplicates
       = render collection: @resolved_duplicates, partial: 'duplicate'
       = will_paginate @resolved_duplicates

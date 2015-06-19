@@ -34,7 +34,7 @@ describe 'DuplicatesController' do
     it 'should show unauthorized message' do
       good_project = create(:project)
       bad_project = create(:project)
-      duplicate = create(:duplicate, good_project: good_project , bad_project: bad_project)
+      duplicate = create(:duplicate, good_project: good_project, bad_project: bad_project)
 
       login_as create(:account)
       post :resolve, id: duplicate.id, keep_id: bad_project.id
@@ -45,7 +45,7 @@ describe 'DuplicatesController' do
     it 'should redirect for no session' do
       good_project = create(:project)
       bad_project = create(:project)
-      duplicate = create(:duplicate, good_project: good_project , bad_project: bad_project)
+      duplicate = create(:duplicate, good_project: good_project, bad_project: bad_project)
 
       post :resolve, id: duplicate.id, keep_id: bad_project.id
 
@@ -65,6 +65,8 @@ describe 'DuplicatesController' do
       assert_response :redirect
       must_redirect_to duplicates_path
       assigns(:duplicate).resolved?.must_equal true
+      assigns(:duplicate).good_project.must_equal bad_project
+      assigns(:duplicate).bad_project.must_equal good_project
     end
   end
 

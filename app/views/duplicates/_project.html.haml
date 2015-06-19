@@ -1,7 +1,7 @@
-.searchable[project]
+.searchable.project{ id: "project_#{project.id}" }
   .row
     .col-md-12
-      %h3= link_to truncate_project_name(project.name,true), project_path(project), title: project.name
+      %h3= link_to truncate_project_name(project.name, true), project_path(project), title: project.name
   .row
     .col-md-2
       = link_to project_path(project) do
@@ -19,13 +19,13 @@
       - unless project.best_analysis.empty?
         %span.seperator &nbsp;|&nbsp;
         = link_to t('.lines_of_code', lines: pluralize_with_delimiter(project.best_analysis.code_total, 'line')),
-        project_analysis_path(project, "latest")
+        project_analysis_path(project, 'latest')
   .row
     .col-md-12.tags
       - unless project.tag_list.empty?
         = tag_icon_link(project)
         = tag_links(project.tag_list.split, 12)
         - if project.tag_list.split.size > 12
-          = link_to ((project.tag_list.split.size - 12).to_s + t('.more')), project_tags_path(project)
+          = link_to "#{(project.tag_list.split.size - 12)}#{t('.more')}", project_tags_path(project)
   .row
     .col-md-12.last &nbsp;

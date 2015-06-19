@@ -1,9 +1,7 @@
 class Duplicate < ActiveRecord::Base
   RESOLVES = [:stack_entries, :kudos, :tags, :ratings, :reviews, :links, :aliases, :enlistments,
               :positions, :project_experiences, :edits, :self]
-  belongs_to :good_project, class_name: 'Project'
-  belongs_to :bad_project, class_name: 'Project'
-  belongs_to :account
+  include DuplicateAssociations
 
   scope :unresolved, -> { where.not(resolved: true) }
 
@@ -14,12 +12,6 @@ class Duplicate < ActiveRecord::Base
   def resolve!(editor_account)
     good_project.editor_account = bad_project.editor_account = editor_account
     Duplicate.transaction { RESOLVES.each { |r| send("resolve_#{r}!") } }
-  end
-
-  def switch_good_and_bad!
-    self.bad_project_id = good_project_id_was
-    self.good_project_id = bad_project_id_was
-    save(validate: false)
   end
 
   private
@@ -42,8 +34,8 @@ class Duplicate < ActiveRecord::Base
   end
 
   def verify_not_already_reported
-    return unless bad_project && bad_project.duplicates.unresolved.any?
-    dupe = bad_project.duplicates.unresolved.first
+    dupe = bad_project.duplicates.unresolved.try(:first) if bad_project
+    return unless dupe
     errors.add :bad_project, I18n.t('duplicates.already_reported', this: bad_project.name, that: dupe.bad_project.name)
   end
 
@@ -124,6 +116,6 @@ class Duplicate < ActiveRecord::Base
   def resolve_self!
     bad_project.update_attributes(name: "Duplicate Project #{id}", url_name: '')
     CreateEdit.where(target: bad_project).first.undo!(bad_project.editor_account) unless bad_project.deleted?
-    update_attributes!(resolved: true)
+    update_attribute(:resolved, true)
   end
 end
