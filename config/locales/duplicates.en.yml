@@ -38,6 +38,8 @@ en:
     index:
       page_title: 'Duplicates - Open Hub'
       title: 'Duplicates'
+      unresolved: 'Unresolved'
+      resolved: 'Resolved'
     duplicate:
       duplicate: 'Duplicate %{id}'
       is_duplicate: 'is a duplicate of'

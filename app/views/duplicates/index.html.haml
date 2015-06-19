@@ -5,9 +5,9 @@
 .col-md-12
   %ul.nav.nav-tabs
     %li.active
-      = link_to 'Unresolved', '#unresolved-duplicates', 'data-toggle' => :tab
+      = link_to t('.unresolved'), '#unresolved-duplicates', 'data-toggle' => :tab
     %li
-      = link_to 'Resolved', '#resolved-duplicates', 'data-toggle' => :tab
+      = link_to t('.resolved'), '#resolved-duplicates', 'data-toggle' => :tab
 
   .tab-content
     .tab-pane.fade.in.active#unresolved-duplicates
