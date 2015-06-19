@@ -8,11 +8,14 @@ class Repository < ActiveRecord::Base
 
   validates :url, presence: true
   validates :branch_name, length: { maximum: 80 },
-                          format: { with: /\A[A-Za-z0-9_^\-\+\.\/\ ]+\Z/ }
+                          format: { with: /\A[A-Za-z0-9_^\-\+\.\/\ ]+\Z/ },
+                          allow_blank: true
   validates :username, length: { maximum: 32 },
-                       format: { with: /\A\w*\Z/ }
+                       format: { with: /\A\w*\Z/ },
+                       allow_blank: true
   validates :password, length: { maximum: 32 },
-                       format: { with: /\A[\w!@\#$%^&*\(\)\{\}\[\]\;\?\|\+\-\=]*\Z/ }
+                       format: { with: /\A[\w!@\#$%^&*\(\)\{\}\[\]\;\?\|\+\-\=]*\Z/ },
+                       allow_blank: true
 
   attr_accessor :forge_match
 
