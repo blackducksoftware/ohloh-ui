@@ -28,14 +28,18 @@ describe 'PasswordResetsController' do
 
   describe 'create' do
     it 'must validate the presence of email' do
-      post :create, password_reset: { email: '' }
+      assert_difference(['ActionMailer::Base.deliveries.size'], 0) do
+        post :create, password_reset: { email: '' }
+      end
 
       must_render_template 'password_resets/new'
       assigns(:password_reset).errors.messages[:email].first.must_match(/required/i)
     end
 
     it 'must complain about missing account' do
-      post :create, password_reset: { email: 'not_a_valid_email' }
+      assert_difference(['ActionMailer::Base.deliveries.size'], 0) do
+        post :create, password_reset: { email: 'not_a_valid_email' }
+      end
 
       must_render_template 'password_resets/new'
       assigns(:password_reset).errors.messages[:email].first.must_match(/no account/i)
@@ -44,15 +48,14 @@ describe 'PasswordResetsController' do
     it 'must successfully send out an email with reset password link' do
       account = create(:account)
 
-      post :create, password_reset: { email: account.email }
+      assert_difference(['ActionMailer::Base.deliveries.size'], 1) do
+        post :create, password_reset: { email: account.email }
+      end
 
       must_respond_with :redirect
       flash[:success].must_equal I18n.t('password_resets.create.success')
       account.reload
       account.reset_password_tokens.keys.first.must_be :present?
-      # FIXME: Uncomment after implementing ActionMailer.reset_password_link
-      # ActionMailer::Base.deliveries.last.body.must_match(
-      #   /^https:.*\/password_reset\/confirm\?account_id=jason&token=#{token}/)
     end
   end
 

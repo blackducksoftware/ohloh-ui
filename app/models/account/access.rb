@@ -36,13 +36,13 @@ class Account::Access
   def activate!(activation_code)
     return unless !activated? && activation_code.eql?(@account.activation_code)
     @account.update_attributes!(activated_at: Time.current, activation_code: nil)
+    AccountMailer.activation(@account).deliver_now
   end
 
   def disable!
     @account.update_attributes!(level: DISABLED)
   end
 
-  # TODO: replace make_spammer! with this.
   def spam!
     Account.transaction do
       @account.update_attributes!(level: SPAM)

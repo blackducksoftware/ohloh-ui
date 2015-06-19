@@ -119,16 +119,22 @@ class Account::AccessTest < ActiveSupport::TestCase
   describe 'activate!' do
     it 'should activate unactivated account' do
       unactivated_access.activated?.must_equal false
-      unactivated_access.activate!(unactivated.activation_code)
+      assert_difference(['ActionMailer::Base.deliveries.size'], 1) do
+        unactivated_access.activate!(unactivated.activation_code)
+      end
     end
 
     it 'should deny activation user with invalid activation code' do
       unactivated_access.activate!('dummy')
-      unactivated_access.activated?.must_equal false
+      assert_difference(['ActionMailer::Base.deliveries.size'], 0) do
+        unactivated_access.activated?.must_equal false
+      end
     end
 
     it 'should raise exception for nil_account' do
-      proc { nil_account_access.activate!('dummy') }.must_raise NoMethodError
+      assert_difference(['ActionMailer::Base.deliveries.size'], 0) do
+        proc { nil_account_access.activate!('dummy') }.must_raise NoMethodError
+      end
     end
   end
 
