@@ -8,7 +8,7 @@
   .control-group
     %label.control-label.required= t('.enter_url')
     .controls
-      = f.text_field :url, class: 'col-md-7', value: params[:repository].try(:[], :url)
+      = f.text_field :url, class: 'col-md-7', value: params[:repository].try(:[], :url), name: 'repository[url]'
       - error_tag @repository, :url
       .clearfix
       .cvs{ style: 'display: none;' }
@@ -42,9 +42,9 @@
     .control-group.warning
       %label.control-label= t('.if_required')
       .controls
-        = f.text_field :username, placeholder: 'Username', style: 'display:block;'
+        = f.text_field :username, placeholder: 'Username', style: 'display:block;', name: 'repository[username]'
         - error_tag @repository, :username
-        = f.text_field :password, placeholder: 'Password', style: 'display:block;'
+        = f.text_field :password, placeholder: 'Password', style: 'display:block;', name: 'repository[password]'
         - error_tag @repository, :password
         %p.help-block.col-md-7
           %strong= t('.warning')
@@ -55,7 +55,7 @@
     .control-group
       %label.cotrol-label.required= t('.cvs_module_name')
       .controls
-        = f.text_field :module_name
+        = f.text_field :module_name, name: 'repository[module_name]'
         - error_tag @repository, :module_name
         %p.help-block
           = t('.enter_cvs')
@@ -66,7 +66,7 @@
     .control-group
       %label.control-label= t('.enter_git')
       .controls
-        = f.text_field :branch_name
+        = f.text_field :branch_name, name: 'repository[branch_name]'
         - error_tag @repository, :branch_name
         %p.help-block
           = t('.enter_git_name')
