@@ -1,0 +1,40 @@
+8
+
+dir
+5459
+http://simile.mit.edu/repository/timeline/trunk/src/webapp/api/scripts/ext
+http://simile.mit.edu/repository
+
+
+
+2006-06-24T13:26:12.818799Z
+4473
+dfhuynh
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+983b779f-54db-0310-a2f8-e46c051b0de2
+
+japanese-eras.js
+file
+
+
+
+
+2006-11-17T09:09:15.000000Z
+8fc442b4c4670abcd2538343007b1f2e
+2006-06-24T13:26:12.818799Z
+4473
+dfhuynh
+

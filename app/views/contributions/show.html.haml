@@ -4,6 +4,9 @@
   fact = @contribution.contributor_fact
   page_context[:select_footer_nav] = :contributors
 
+- content_for :custom_head do
+  = javascript_include_tag('/timeline/timeline-api.js')
+
 - content_for :html_title do
   = succeed t('.page_title') do
     = @project.name
