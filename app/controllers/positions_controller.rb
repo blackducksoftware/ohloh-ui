@@ -1,10 +1,11 @@
 class PositionsController < ApplicationController
   helper ProjectsHelper
+  helper PositionsHelper
   before_action :session_required, only: [:edit, :new, :create, :delete]
   before_action :set_account
   before_action :must_own_account, only: [:edit, :update, :new, :create]
   before_action :redirect_to_languages, only: :show, if: :params_id_is_total?
-  before_action :set_position, only: [:show, :edit, :update, :destroy]
+  before_action :set_position, only: [:show, :edit, :update, :destroy, :commits_compound_spark]
   before_action :redirect_to_contribution_if_found, only: :show, unless: :params_id_is_total?
   before_action :account_context
 
@@ -53,6 +54,14 @@ class PositionsController < ApplicationController
 
   def index
     @positions = @account.position_core.ordered
+  end
+
+  def commits_compound_spark
+    @project = @position.project
+    @name_fact = ContributorFact.includes(:name).where(analysis_id: @project.best_analysis_id,
+                                                       name_id: @position.name_id).first
+    spark_image = Spark::CompoundSpark.new(@name_fact.monthly_commits(11), max_value: 50).render.to_blob
+    send_data spark_image, type: 'image/png', filename: 'position_commits_compound_spark.png', disposition: 'inline'
   end
 
   private

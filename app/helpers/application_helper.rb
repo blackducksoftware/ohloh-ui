@@ -98,6 +98,7 @@ module ApplicationHelper
   end
 
   def xml_date_to_time(date)
+    return '' if date.nil?
     Time.gm(date.year, date.month, date.day).xmlschema
   end
 
