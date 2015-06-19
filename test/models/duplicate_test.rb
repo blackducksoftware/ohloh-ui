@@ -1,6 +1,18 @@
 require 'test_helper'
 
 class DuplicateTest < ActiveSupport::TestCase
+  describe 'switch_good_and_bad!' do
+    it 'should switch good and bad projects ids' do
+      good_project = create(:project)
+      bad_project = create(:project)
+      duplicate = create(:duplicate, good_project: good_project, bad_project: bad_project)
+
+      duplicate.switch_good_and_bad!
+      duplicate.good_project.must_equal bad_project
+      duplicate.bad_project.must_equal good_project
+    end
+  end
+
   describe 'resolve!' do
     it 'properly cleans up stack_entries' do
       good_project = create(:project)

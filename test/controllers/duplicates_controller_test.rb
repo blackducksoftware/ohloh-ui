@@ -1,6 +1,73 @@
 require 'test_helper'
 
 describe 'DuplicatesController' do
+  describe 'show' do
+    it 'should show unauthorized message' do
+      duplicate = create(:duplicate, bad_project: create(:project))
+      login_as create(:account)
+      get :show, id: duplicate.id
+
+      assert_response :unauthorized
+    end
+
+    it 'should redirect for no session' do
+      duplicate = create(:duplicate, bad_project: create(:project))
+      get :show, id: duplicate.id
+
+      assert_response :redirect
+      must_redirect_to new_session_path
+    end
+
+    it 'should load with an admin session' do
+      duplicate = create(:duplicate, bad_project: create(:project))
+      admin = create(:admin)
+      login_as admin
+
+      get :show, id: duplicate.id
+
+      assert_response :success
+      assigns(:duplicate).must_equal duplicate
+    end
+  end
+
+  describe 'resolve' do
+    it 'should show unauthorized message' do
+      good_project = create(:project)
+      bad_project = create(:project)
+      duplicate = create(:duplicate, good_project: good_project , bad_project: bad_project)
+
+      login_as create(:account)
+      post :resolve, id: duplicate.id, keep_id: bad_project.id
+
+      assert_response :unauthorized
+    end
+
+    it 'should redirect for no session' do
+      good_project = create(:project)
+      bad_project = create(:project)
+      duplicate = create(:duplicate, good_project: good_project , bad_project: bad_project)
+
+      post :resolve, id: duplicate.id, keep_id: bad_project.id
+
+      assert_response :redirect
+      must_redirect_to new_session_path
+    end
+
+    it 'should resolve duplicate with an admin session' do
+      good_project = create(:project)
+      bad_project = create(:project)
+      duplicate = create(:duplicate, good_project: good_project, bad_project: bad_project)
+
+      login_as create(:admin)
+
+      post :resolve, id: duplicate.id, keep_id: bad_project.id
+
+      assert_response :redirect
+      must_redirect_to duplicates_path
+      assigns(:duplicate).resolved?.must_equal true
+    end
+  end
+
   describe 'index' do
     it 'should 404 for normal user session' do
       login_as create(:account)
@@ -24,7 +91,8 @@ describe 'DuplicatesController' do
       get :index
 
       assert_response :success
-      assigns(:duplicates).must_equal [duplicate]
+      assigns(:resolved_duplicates).must_equal []
+      assigns(:unresolved_duplicates).must_equal [duplicate]
     end
   end
 

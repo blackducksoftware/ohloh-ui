@@ -4,12 +4,12 @@ class DuplicatesController < ApplicationController
   helper TagsHelper
 
   before_action :session_required
-  before_action :find_project, except: :index
+  before_action :find_project, except: [:index, :show, :resolve]
   before_action :find_duplicate, only: [:edit, :update, :destroy]
   before_action :find_good_project, only: [:create, :update]
-  before_action :project_context, except: [:index, :show]
+  before_action :project_context, except: [:index, :show, :resolve]
   before_action :must_own_duplicate, only: [:edit, :update, :destroy]
-  before_action :admin_session_required, only: [:index, :show]
+  before_action :admin_session_required, only: [:index, :show, :resolve]
 
   def index
     @resolved_duplicates = Duplicate.where(resolved: true).order(id: :desc).paginate(per_page: 10, page: params[:page])
@@ -17,7 +17,7 @@ class DuplicatesController < ApplicationController
   end
 
   def new
-    previous_dupe = @project.duplicates.first
+    previous_dupe = @project.duplicates.unresolved.first
     if previous_dupe
       flash[:notice] = t('.cant_dupe_a_dupe', this: @project.name, that: previous_dupe.bad_project.name)
       return redirect_to project_path(@project)
