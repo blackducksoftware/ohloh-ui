@@ -73,7 +73,7 @@ class DuplicatesController < ApplicationController
   end
 
   def find_duplicate_without_project_id
-    @duplicate = Duplicate.where(id: params[:id]).take
+    @duplicate = Duplicate.where(id: params[:id]).where.not(resolved: true).take
     fail ParamRecordNotFound if @duplicate.nil?
   end
 
