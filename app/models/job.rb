@@ -5,4 +5,16 @@ class Job < ActiveRecord::Base
   STATUS_COMPLETED = 5
 
   scope :incomplete, -> { where.not(status: STATUS_COMPLETED) }
+
+  belongs_to :organization
+
+  class << self
+    def incomplete_project_job(project_ids)
+      where('status != ? AND project_id IN (?)', STATUS_COMPLETED,  project_ids).first
+    end
+  end
+end
+
+class OrganizationJob < Job
+  # Doesn't need any methods as it would be processed by the Crawlers running with old ohloh sourse.
 end
