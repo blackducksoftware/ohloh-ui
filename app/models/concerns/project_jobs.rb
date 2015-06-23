@@ -2,10 +2,6 @@ module ProjectJobs
   extend ActiveSupport::Concern
 
   included do
-    def schedule_fetch(priority = 0)
-      repositories.each { |r| r.schedule_fetch(priority) }
-    end
-
     def ensure_job(priority = 0)
       update_activity_level
       Job.transaction do
