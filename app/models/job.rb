@@ -5,4 +5,10 @@ class Job < ActiveRecord::Base
   STATUS_COMPLETED = 5
 
   scope :incomplete, -> { where.not(status: STATUS_COMPLETED) }
+
+  belongs_to :project
+  belongs_to :repository
+  belongs_to :code_set
+  belongs_to :sloc_set
+  belongs_to :account
 end

@@ -52,6 +52,7 @@ describe 'EnlistmentsControllerTest' do
                  enlistment: { ignore: 'Ignore Me' }
     must_respond_with :redirect
     must_redirect_to action: :index
+    Project.find_by(url_name: @project_id).jobs.count.must_equal 1
     @enlistment.reload.ignore.must_equal 'Ignore Me'
   end
 

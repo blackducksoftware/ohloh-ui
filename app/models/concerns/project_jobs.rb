@@ -24,12 +24,17 @@ module ProjectJobs
       forge && Forge::Match.new(forge, owner_at_forge, name_at_forge)
     end
 
+    def forge_match=(m)
+      self.forge_id       = m && m.forge_id
+      self.owner_at_forge = m && m.owner_at_forge
+      self.name_at_forge  = m && m.name_at_forge
+    end
+
     def guess_forge
       if repositories.any?
         matches = repositories.map(&:forge_match).compact.sort.uniq
         return matches.first if matches.size == 1
       end
-
       Forge::Match.first(url)
     end
   end

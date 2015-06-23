@@ -1,5 +1,6 @@
 class Repository < ActiveRecord::Base
   belongs_to :best_code_set, foreign_key: :best_code_set_id, class_name: CodeSet
+  belongs_to :forge, class_name: "Forge::Base"
   has_many :enlistments, -> { not_deleted }
   has_many :projects, through: :enlistments
   has_many :jobs
