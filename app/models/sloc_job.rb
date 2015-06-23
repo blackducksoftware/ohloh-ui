@@ -1,0 +1,2 @@
+class SlocJob < Job
+end

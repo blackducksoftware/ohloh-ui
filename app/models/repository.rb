@@ -33,6 +33,25 @@ class Repository < ActiveRecord::Base
     false
   end
 
+  def schedule_fetch(priority = 0)
+    if best_code_set
+      CompleteJob.try_create(best_code_set, priority)
+    else
+      ensure_job(priority)
+    end
+  end
+
+  def ensure_job(priority = 0)
+    job = nil
+    Job.transaction do
+      job = jobs.incomplete.first
+      return job if job
+      job = create_fecth_job(priority) if best_code_set.blank?
+      job = create_import_or_sloc_jobs(priority) if best_code_set.present?
+    end
+    job
+  end
+
   class << self
     def find_existing(repository)
       where(url: repository.url).first
@@ -49,6 +68,22 @@ class Repository < ActiveRecord::Base
       else
         wheres.where(owner_at_forge: nil)
       end
+    end
+  end
+
+  private
+
+  def create_fecth_job(priority)
+    cs = CodeSet.create(repository: self)
+    FetchJob.create(code_set: cs, priority: priority)
+  end
+
+  def create_import_or_sloc_jobs(priority)
+    sloc_set = best_code_set.best_sloc_set
+    if sloc_set.blank?
+      ImportJob.create(code_set: best_code_set, priority: priority)
+    elsif sloc_set.as_of.to_i < best_code_set.as_of.to_i
+      SlocJob.create(sloc_set: sloc_set, priority: priority)
     end
   end
 end
