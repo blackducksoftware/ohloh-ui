@@ -153,7 +153,11 @@ Rails.application.routes.draw do
   get 'p/:id/stacks', to: redirect('/p/%{id}/users'), constraints: { format: /html/ }
   get 'projects', to: 'projects#index', as: :project_xml_api, constraints: { format: /xml/ }
 
-  resources :duplicates, only: [:index, :show]
+  resources :duplicates, only: [:index, :show] do
+    member do
+      post 'resolve/:keep_id', to: 'duplicates#resolve'
+    end
+  end
 
   resources :projects, path: :p, except: [:destroy] do
     member do
