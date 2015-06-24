@@ -22,6 +22,10 @@ en:
     less: "[Less]"
     html_title: "The %{name} Open Source Project on Open Hub : %{title}"
     header:
+      edit_duplicate: 'Edit Duplicate'
+      report_duplicate: 'Report Duplicate'
+      title: '%{name} has been stacked by %{count} users. Click here to add it to your stack.'
+      i_use: 'I Use This!'
       i_use_this_title: "%{name} has been stacked by %{count} users. Click here to add it to your stack."
       settings: 'Settings'
       duplicate: 'Report Duplicate'
@@ -289,12 +293,6 @@ en:
       message: "We found that the code location %{param} is already in use by the following projects. If you still wish to create a project using this code location, click the \"Create Project\" button below."
       duplicate_found: "Duplicate Project Found"
       submit: "Create Project"
-    header:
-      settings: 'Settings'
-      edit_duplicate: 'Edit Duplicate'
-      report_duplicate: 'Report Duplicate'
-      title: '%{name} has been stacked by %{count} users. Click here to add it to your stack.'
-      i_use: 'I Use This!'
     map:
       page_title: 'The %{name} Open Source Project on Open Hub : User & Contributor Locations Page'
     similar:
