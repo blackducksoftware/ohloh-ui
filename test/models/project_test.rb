@@ -314,6 +314,34 @@ class ProjectTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'schedule_delayed_analysis' do
+    it 'should not create a job if no repository is available for the project' do
+      project = create(:project)
+
+      project.schedule_delayed_analysis
+      project.jobs.count.must_equal 0
+    end
+
+    it 'should schedule analysis if no existing jobs are found' do
+      project = create(:project)
+      create_repositiory(project)
+
+      project.jobs.count.must_equal 0
+      project.schedule_delayed_analysis
+      project.jobs.count.must_equal 1
+    end
+
+    it 'should update existing job if present' do
+      project = create(:project)
+      create_repositiory(project)
+      AnalyzeJob.create(project: project, wait_until: Time.now + 5.hours)
+
+      project.jobs.count.must_equal 1
+      project.schedule_delayed_analysis(2.hours)
+      project.jobs.count.must_equal 1
+    end
+  end
+
   private
 
   def create_repositiory(project)
