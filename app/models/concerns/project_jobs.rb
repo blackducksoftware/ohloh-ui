@@ -1,5 +1,6 @@
 module ProjectJobs
   extend ActiveSupport::Concern
+  ACTIVITY_LEVEL = { na: 0, new: 10, inactive: 20, very_low: 30, low: 40, moderate: 50, high: 60, very_high: 70 }
 
   included do
     def schedule_delayed_analysis(delay = 0)
@@ -63,8 +64,8 @@ module ProjectJobs
 
   def update_activity_level
     return if best_analysis.blank? || best_analysis.updated_on >= 1.month.ago
-    activity_index = Project::ActivityLevelIndex::ACTIVITY_LEVEL_INDEX[project.best_analysis.activity_level]
-    update_attribute(:activity_level_index, activity_index) if activity_index != activity_level_index
+    activity_index = ACTIVITY_LEVEL[best_analysis.activity_level]
+    update_attributes!(activity_level_index: activity_index) if activity_index != activity_level_index
   end
 
   def incomplete_job
@@ -73,7 +74,6 @@ module ProjectJobs
   end
 
   def sloc_sets_out_of_date?
-    return false if best_analysis.blank?
     best_sloc_set_ids = repositories.map(&:best_code_set).compact.map(&:best_sloc_set_id)
     return true if (best_analysis.sloc_sets.map(&:id) - best_sloc_set_ids).present?
     update_analyis_sloc_sets

@@ -263,6 +263,33 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   describe 'ensure_job' do
+    it 'should update analysis sloc set logged at date if out of date' do
+      analysis = create(:analysis, created_at: 25.days.ago)
+      project = create(:project)
+      project.update_column(:best_analysis_id, analysis.id)
+      sloc_set = create(:sloc_set, as_of: 1, logged_at: Date.today)
+      code_set = create(:code_set, as_of: 1, best_sloc_set: sloc_set)
+      analysis_sloc_set = create(:analysis_sloc_set, as_of: 1, analysis: analysis, sloc_set: sloc_set)
+      repo = create(:repository, best_code_set: code_set)
+      create(:enlistment, project: project, repository: repo)
+
+      Repository.any_instance.stubs(:ensure_job).returns(false)
+
+      project.ensure_job
+      analysis_sloc_set.reload.logged_at.must_equal Date.today
+    end
+
+    it 'should update activity level index if analsyis is old' do
+      Analysis.any_instance.stubs(:activity_level).returns(:new)
+      analysis = create(:analysis, updated_on: 2.months.ago)
+      project = create(:project)
+      project.update_columns(best_analysis_id: analysis.id, activity_level_index: 40)
+
+      project.activity_level_index.must_equal 40
+      project.ensure_job
+      project.reload.activity_level_index.must_equal 10
+    end
+
     it 'should not create a new job if project is deleted' do
       project = create(:project, deleted: true)
       create_repositiory(project)

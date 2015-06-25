@@ -24,7 +24,7 @@ module ProjectAssociations
     has_many :ratings
     has_many :kudos
     has_many :jobs
-    belongs_to :forge, class_name: "Forge::Base"
+    belongs_to :forge, class_name: 'Forge::Base'
     has_one :koders_status
     has_many :enlistments, -> { where(deleted: false) }
     has_many :repositories, through: :enlistments
