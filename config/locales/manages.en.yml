@@ -1,9 +1,7 @@
 en:
   managers:
     create:
-      success: 'Created Successfully'
-    update:
-      notice: 'Updated Successfully'
+      success: 'Create Successful!'
     approve:
       notice: "%{name} approved."
     reject:
