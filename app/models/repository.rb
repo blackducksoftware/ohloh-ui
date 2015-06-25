@@ -39,7 +39,7 @@ class Repository < ActiveRecord::Base
     Job.transaction do
       job = jobs.incomplete.first
       return job if job
-      job = create_fecth_job(priority) if best_code_set.blank?
+      job = create_fetch_job(priority) if best_code_set.blank?
       job = create_import_or_sloc_jobs(priority) if best_code_set.present?
     end
     job
@@ -66,7 +66,7 @@ class Repository < ActiveRecord::Base
 
   private
 
-  def create_fecth_job(priority)
+  def create_fetch_job(priority)
     cs = CodeSet.create(repository: self)
     FetchJob.create(code_set: cs, priority: priority)
   end
