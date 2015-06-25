@@ -261,4 +261,64 @@ class ProjectTest < ActiveSupport::TestCase
       org.reload.projects_count.must_equal 1
     end
   end
+
+  describe 'ensure_job' do
+    it 'should not create a new job if project is deleted' do
+      project = create(:project, deleted: true)
+      create_repositiory(project)
+
+      project.ensure_job
+      project.jobs.count.must_equal 0
+    end
+
+    it 'should not create a new job if project has no repositories' do
+      project = create(:project)
+      create_repositiory(project)
+      project.repositories.delete_all
+
+      project.ensure_job
+      project.jobs.count.must_equal 0
+    end
+
+    it 'should not create a new job if project already has a job' do
+      project = create(:project)
+      create_repositiory(project)
+      AnalyzeJob.create(project: project, wait_until: Time.now + 5.hours)
+
+      project.ensure_job
+      project.jobs.count.must_equal 1
+    end
+
+    it 'should create new analyze job if project has no analysis' do
+      project = create(:project)
+      project.update_column(:best_analysis_id, nil)
+      create_repositiory(project)
+      Repository.any_instance.stubs(:ensure_job).returns(false)
+
+      project.jobs.count.must_equal 0
+      project.ensure_job
+      project.jobs.count.must_equal 1
+    end
+
+    it 'should create new analyze job if project analysis is old' do
+      analysis = create(:analysis, created_at: 2.months.ago)
+      project = create(:project)
+      project.update_column(:best_analysis_id, analysis.id)
+      create_repositiory(project)
+
+      Repository.any_instance.stubs(:ensure_job).returns(false)
+
+      project.jobs.count.must_equal 0
+      project.ensure_job
+      project.jobs.count.must_equal 1
+    end
+  end
+
+  private
+
+  def create_repositiory(project)
+    repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forges(:github).id,
+                               owner_at_forge: 'rails', name_at_forge: 'rails')
+    create(:enlistment, project: project, repository: repo)
+  end
 end

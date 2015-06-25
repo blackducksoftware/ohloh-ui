@@ -2,15 +2,6 @@ module ProjectJobs
   extend ActiveSupport::Concern
 
   included do
-    def ensure_job(priority = 0)
-      update_activity_level
-      Job.transaction do
-        return if deleted? || repositories.empty? || incomplete_job
-        repositories.each { |r| return if r.ensure_job }
-        create_new_job? ? AnalyzeJob.create(project: self, priority: priority) : update_logged_at
-      end
-    end
-
     def schedule_delayed_analysis(delay = 0)
       return nil if repositories.empty?
       job = nil
@@ -18,6 +9,15 @@ module ProjectJobs
         job = create_or_update_analyze_jobs(delay)
       end
       job
+    end
+
+    def ensure_job(priority = 0)
+      update_activity_level
+      Job.transaction do
+        return if deleted? || repositories.empty? || incomplete_job
+        repositories.each { |r| return if r.ensure_job }
+        create_new_job? ? AnalyzeJob.create(project: self, priority: priority) : update_logged_at
+      end
     end
 
     def forge_match
@@ -51,6 +51,16 @@ module ProjectJobs
     job
   end
 
+  def create_new_job?
+    best_analysis.blank? || best_analysis.created_at < 1.month.ago ||
+      sloc_sets_out_of_date? || !best_analysis.thirty_day_summary
+  end
+
+  def update_logged_at
+    sloc_set_ids = AnalysisSlocSet.where(analysis_id: best_analysis_id).pluck(:sloc_set_id)
+    best_analysis.update_attributes(logged_at: SlocSet.where(id: sloc_set_ids).minimum(:logged_at))
+  end
+
   def update_activity_level
     return if best_analysis.blank? || best_analysis.updated_on >= 1.month.ago
     activity_index = Project::ActivityLevelIndex::ACTIVITY_LEVEL_INDEX[project.best_analysis.activity_level]
@@ -64,7 +74,7 @@ module ProjectJobs
 
   def sloc_sets_out_of_date?
     return false if best_analysis.blank?
-    best_sloc_set_ids = repositories.map(&:best_code_set).map(&:best_sloc_set_id)
+    best_sloc_set_ids = repositories.map(&:best_code_set).compact.map(&:best_sloc_set_id)
     return true if (best_analysis.sloc_sets.map(&:id) - best_sloc_set_ids).present?
     update_analyis_sloc_sets
   end
@@ -76,15 +86,5 @@ module ProjectJobs
       ass.update_attributes(logged_at: ass.sloc_set.logged_at)
     end
     sloc_sets_out_of_date
-  end
-
-  def create_new_job?
-    best_analysis.blank? || best_analysis.created_at < 1.month.ago ||
-      sloc_sets_out_of_date? || !best_analysis.thirty_day_summary
-  end
-
-  def update_logged_at
-    sloc_set_ids = AnalysisSlocSet.where(analysis_id: best_analysis_id).pluck(:sloc_set_id)
-    best_analysis.update_attributes(logged_at: SlocSet.where(id: sloc_set_ids).minimum(:logged_at))
   end
 end
