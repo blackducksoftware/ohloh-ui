@@ -1,0 +1,51 @@
+en:
+  stack_entries:
+    new:
+      support: 'Support your favorite open source projects:'
+      add_more: 'Add more projects to your stack:'
+      share: 'Share your love for %{project}. Recommend that a friend check it out!'
+      email: 'Email address'
+      recommend: 'Send recommendation'
+      wont_spam: "Open Hub won't spam the recipient or sell their email address. We'll show a preview of the email to you for approval before sending it."
+      statistics: 'Browse statistics about %{project}:'
+      contributors: 'contributors'
+      overview: 'overview'
+      reviews: 'reviews'
+      know: 'Know an open source project that should be on Open Hub?'
+      add_to_oh: 'Add a project to Open Hub!'
+    fields:
+      stacks_feature: 'The Open Hub "stacks" feature lets you organize lists of the open source projects you use.'
+      no_stack: 'You have not created a stack yet.'
+      add_html: 'Start a new stack and add &rdquo;%{name}&ldquo;'
+      add_this: 'Add the %{name} project to one of your stacks'
+      create_html: 'Create a new stack and add &rdquo;%{project.name}&ldquo;'
+    describe_ohloh:
+      what_is: 'What is Open Hub?'
+      it_is: "It's a network connecting you to people through the software you create and use."
+      stack_what: 'What is a Stack?'
+      stack_explanation: 'A stack is a list of software used to accomplish something.'
+      example: 'is an example.'
+      create_upto: 'You may create up to %{max} stacks.'
+      more_questions: 'More questions?'
+      help_project: 'How can Open Hub help a project?'
+      reports: 'source-code reports'
+      exposure: 'exposure'
+      reward: 'reward contributors'
+      community: 'build community'
+      add_new: 'Add your project to Open Hub'
+    recommendations_for_landing_page:
+      more: 'More Recommendations'
+      link: 'if you use %{name}, click here to your stack'
+      i_use: 'i use %{name}'
+      contributors: '%{count} contributors'
+    welcome:
+      welcome: 'Welcome to Open Hub. Pick one of your stacks below to which to add %{name}.'
+      unexpected: 'unexpected'
+      stack: 'stack'
+      in_ur: 'in your'
+      one_of: 'in one of your stacks'
+      success_with_name: 'Success! %{name} is'
+      on_hub: 'on Open Hub.'
+      your_stack: 'your stack'
+      is_now: 'is now on'
+      success: 'Success!'

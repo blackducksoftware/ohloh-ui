@@ -1,0 +1,22 @@
+%h5.soft= t('.what_is')
+%p.nomargin.soft= t('.it_is')
+.piano.no_margin_left
+.inset.stack_definition
+%h5.soft= t('.stack_what')
+%p
+  %span.soft= t('.stack_explanation')
+  = link_to 'LAMP', 'http://wikipedia.org/wiki/LAMP_(software_bundle)'
+  %span.soft= t('.example')
+%p.soft= t('.create_upto', max: Stack::MAX_STACKS_PER_ACCOUNT)
+%p
+  %span.soft= t('.more_questions')
+.piano.no_margin_left
+.inset
+%h5.soft= t('.help_project')
+%ul
+  %li.soft.right_side= t('.reports')
+  %li.soft.left_side= t('.exposure')
+  %li.soft.right_side= t('.reward')
+  %li.soft.left_side= t('.community')
+.clearfix
+= link_to t('.add_new'), new_project_path, class: 'btn'

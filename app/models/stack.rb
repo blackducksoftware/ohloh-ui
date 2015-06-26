@@ -1,6 +1,7 @@
 # rubocop:disable Metrics/ClassLength
 class Stack < ActiveRecord::Base
   SAMPLE_PROJECT_IDS = { lamp: [3141, 72, 4139, 28], sash: [41, 3468, 3568, 55], gnome: [3760, 43, 9, 29, 36] }
+  MAX_STACKS_PER_ACCOUNT = 30
 
   belongs_to :account
   belongs_to :project
@@ -47,6 +48,10 @@ class Stack < ActiveRecord::Base
 
   def friendly_name
     "#{name}#{' Stack' unless name =~ /Stack/i}"
+  end
+
+  def stacked_project?(project_id)
+    stack_entries.includes(:stack).where(project_id: project_id, deleted_at: nil).first
   end
 
   private

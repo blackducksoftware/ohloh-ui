@@ -1,0 +1,52 @@
+- @auto_stacked = false
+
+- if display_as_project_page
+  %hr.one
+  #iuseit_landing.col-md-8
+    - if params[:ref]
+      = render 'welcome'
+    .picker.clear
+      = render partial: 'fields', locals: { project: @project } unless @auto_stacked
+    %div{ class: "no_margin_left #{@auto_stacked ? '' : 'piano'}" }
+      %p &nbsp;
+      %h4= t('.support')
+      %ol.no_margin_left
+        %li
+          %span.strong= t('.add_more')
+          %br &nbsp;
+          = render partial: 'recommendations_for_landing_page', locals: { project: @project }
+        %li.landing
+          %span.strong= t('.share', project: @project.name)
+          .inset
+            %form.form-inline{ action: "/projects/#{@project.to_param}/recommendations/new" }
+              .control-group
+                %label.control-label{ for: 'search_projects' }= t('.email')
+                .controls
+                  %input#search_projects.text{ type: 'text', name: 'email'}
+              %input.submit.btn{ type: 'submit', value: t('.recommend') }
+          .inset
+            %p.soft= t('.wont_spam')
+        %li
+          %span.strong=t('.statistics', project: @project.name)
+          .clearfix.inset
+            .col-md-3
+              = link_to t('.contributors'), project_contributors_path(@project)
+          .clearfix.inset
+            .col-md-3
+              = link_to t('.overview'), project_path(@project)
+            - unless @project.reviews.empty?
+              .col-md-3.no_margin_left
+                = link_to t('.reviews'), project_reviews_path(@project)
+        %hr.one
+        %li
+          %span.strong= t('.know')
+          .clearfix.inset
+            = link_to t('.add_to_oh'), new_project_path
+
+  - if params[:ref]
+    .col-md-4
+      = render partial: 'describe_ohloh'
+
+- else
+  .thickbox_padding
+    = render partial: 'fields', locals: { project: @project }
