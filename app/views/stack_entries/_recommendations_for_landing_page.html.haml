@@ -4,11 +4,11 @@
 - if suggestions.any?
   .nomargin.clearfix
     - suggestions.each_with_index do |p, i|
-      %div{ class: "col-md-3 #{i.even? ? 'pull-left no_margin_left' : 'pull-left'}" }
-        .logo
+      .col-md-6.pull-left{ class: i.even? ? 'no_margin_left' : 'pull-left' }
+        .logo{ style: 'height:85px; width:85px' }
           = p.decorate.icon(:small, options: { size: 32 })
         .text
-          %h4.no_margin_bottom
+          %h4{ style: 'margin-bottom: 0px'}
             = link_to truncate(h(p.name), length: 26), project_path(p)
           .right_side
             %span.small.soft= t('.contributors', count: p.contributions.count)

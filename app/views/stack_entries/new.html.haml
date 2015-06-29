@@ -1,16 +1,24 @@
 - @auto_stacked = false
 
 - if display_as_project_page
-  %hr.one
-  #iuseit_landing.col-md-8
+  .col-md-1.margin_top_10
+    = link_to @project.decorate.icon(:med), project_path(@project)
+  .col-md-11
+    .pull-left
+      %h1.pull-left= link_to @project.name, project_path(@project), style: 'color: black'
+  .clearfix
+  .row
+    .col-md-12
+      .mezzo.margin_top_10
+  #iuseit_landing.col-md-8.margin_top_10.no_padding_left
     - if params[:ref]
       = render 'welcome'
-    .picker.clear
+    .picker.clearfix
       = render partial: 'fields', locals: { project: @project } unless @auto_stacked
     %div{ class: "no_margin_left #{@auto_stacked ? '' : 'piano'}" }
       %p &nbsp;
       %h4= t('.support')
-      %ol.no_margin_left
+      %ol
         %li
           %span.strong= t('.add_more')
           %br &nbsp;
@@ -37,14 +45,13 @@
             - unless @project.reviews.empty?
               .col-md-3.no_margin_left
                 = link_to t('.reviews'), project_reviews_path(@project)
-        %hr.one
         %li
           %span.strong= t('.know')
           .clearfix.inset
-            = link_to t('.add_to_oh'), new_project_path
+            = link_to t('.add_to_oh'), new_project_path, class: 'btn'
 
   - if params[:ref]
-    .col-md-4
+    .col-md-4.margin_top_20
       = render partial: 'describe_ohloh'
 
 - else
