@@ -26,7 +26,7 @@ describe 'ActivationResendsController' do
         post :create, email: recently_activated.email
       end.wont_change 'ActionMailer::Base.deliveries.count'
       must_respond_with :redirect
-      must_redirect_to message_path
+      must_redirect_to root_path
       flash[:success].must_equal I18n.t('activation_resends.create.recently_activated')
     end
 
@@ -45,7 +45,7 @@ describe 'ActivationResendsController' do
         post :create, email: unactivated.email
       end.must_change 'ActionMailer::Base.deliveries.count'
       must_respond_with :redirect
-      must_redirect_to message_path
+      must_redirect_to root_path
       flash[:notice].must_equal I18n.t('activation_resends.create.success')
     end
   end

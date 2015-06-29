@@ -142,7 +142,6 @@ Rails.application.routes.draw do
 
   resources :posts, only: :index, as: 'all_posts'
   get 'markdown_syntax', to: 'abouts#markdown_syntax'
-  get 'message', to: 'abouts#message'
   get 'maintenance', to: 'abouts#maintenance'
   get 'tools', to: 'abouts#tools'
 
@@ -350,7 +349,6 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'message' => 'home#message'
   get 'maintenance' => 'home#maintenance'
 
   get 'repositories/compare' => 'compare_repositories#index', as: :compare_repositories
