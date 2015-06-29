@@ -28,7 +28,7 @@ xml.project do
       end
     end
   end
-  if include_analysis && project.best_analysis
+  if include_analysis && project.best_analysis.present?
     xml << render(partial: 'analyses/analysis', locals: { analysis: project.best_analysis, builder: xml })
   end
   xml.licenses do
