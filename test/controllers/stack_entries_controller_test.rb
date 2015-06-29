@@ -124,7 +124,7 @@ class StackEntriesControllerTest < ActionController::TestCase
   it 'new should return current user stacks and project' do
     stack = create(:stack)
     project = create(:project)
-    stack_entry = create(:stack_entry, project: project, stack: stack)
+    create(:stack_entry, project: project, stack: stack)
     login_as stack.account
 
     get :new, project_id: project.id, ref: 'ProjectWidget%3A%3AUsers'

@@ -17,5 +17,4 @@
       = link_to t('.stack'), stack_path(current_user.stack_core.default)
   - @auto_stacked = true
 - else
-  - raise t('.unexpected') unless current_user.stacks.count > 1
   %h3.primary= t('.welcome', name: @project.name)

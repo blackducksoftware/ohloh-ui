@@ -10,7 +10,7 @@
   .row
     .col-md-12
       .mezzo.margin_top_10
-  #iuseit_landing.col-md-8.margin_top_10.no_padding_left
+  .col-md-8.margin_top_10.no_padding_left#iuseit_landing
     - if params[:ref]
       = render 'welcome'
     .picker.clearfix
@@ -30,12 +30,12 @@
               .control-group
                 %label.control-label{ for: 'search_projects' }= t('.email')
                 .controls
-                  %input#search_projects.text{ type: 'text', name: 'email'}
+                  %input.text#search_projects{ type: 'text', name: 'email' }
               %input.submit.btn{ type: 'submit', value: t('.recommend') }
           .inset
             %p.soft= t('.wont_spam')
         %li
-          %span.strong=t('.statistics', project: @project.name)
+          %span.strong= t('.statistics', project: @project.name)
           .clearfix.inset
             .col-md-3
               = link_to t('.contributors'), project_contributors_path(@project)
