@@ -44,7 +44,7 @@ class AccountsController < ApplicationController
   #   @account = Account.new(account_params)
   #
   #   if @account.save
-  #     redirect_to message_path, flash: { success: t('.success', email: @account.email) }
+  #     redirect_to root_path, flash: { success: t('.success', email: @account.email) }
   #   else
   #     render :new
   #   end

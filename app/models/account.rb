@@ -6,7 +6,7 @@ class Account < ActiveRecord::Base
   include AccountCallbacks
 
   attr_accessor :password, :current_password, :validate_current_password, :invite_code,
-                :password_confirmation, :email_confirmation
+                :password_confirmation, :email_confirmation, :skip_current_password_check
   attr_writer :ip
   attr_reader :about_raw
 

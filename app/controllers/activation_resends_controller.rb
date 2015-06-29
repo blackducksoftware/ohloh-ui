@@ -5,7 +5,7 @@ class ActivationResendsController < ApplicationController
 
   def create
     @account.resend_activation!
-    redirect_to message_path, notice: t('.success')
+    redirect_to root_path, notice: t('.success')
   end
 
   private
@@ -16,7 +16,7 @@ class ActivationResendsController < ApplicationController
 
   def prevent_email_delivery_for_recently_activated
     return unless @account.activation_resent_at && Time.current < @account.activation_resent_at.since(2.hours)
-    redirect_to message_path, flash: { success: t('.recently_activated') }
+    redirect_to root_path, flash: { success: t('.recently_activated') }
   end
 
   def find_account_by_email

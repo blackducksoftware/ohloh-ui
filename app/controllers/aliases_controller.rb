@@ -46,6 +46,6 @@ class AliasesController < SettingsController
   end
 
   def redirect_to_message_if_oversized_project
-    redirect_to message_path, notice: t('aliases.alias_temporarily_disabled') if oversized_project?(@project)
+    redirect_to root_path, notice: t('aliases.alias_temporarily_disabled') if oversized_project?(@project)
   end
 end
