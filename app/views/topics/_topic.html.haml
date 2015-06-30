@@ -20,6 +20,7 @@
   %td.center= topic.hits
   %td.last.right.small.text-center
     - last_post = topic.posts.last
-    = time_ago_in_words(last_post.created_at)
-    by
-    = last_post.account.name
+    - if last_post
+      = time_ago_in_words(last_post.created_at)
+      by
+      = last_post.account.name
