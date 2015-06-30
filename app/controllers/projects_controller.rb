@@ -18,17 +18,13 @@ class ProjectsController < ApplicationController
     render template: @account ? 'projects/index_managed' : 'projects/index' if request_format == 'html'
   end
 
-  # rubocop:disable Metrics/AbcSize
   def show
-    @analysis = @project.best_analysis
-    @rating = logged_in? ? @project.ratings.where(account_id: current_user.id).first : nil
-    @score = @rating ? @rating.score : 0
+    grab_show_items
     respond_to do |format|
       format.html { render 'projects/show' }
       format.xml { render 'projects/no_analysis' if @analysis.class == NilAnalysis }
     end
   end
-  # rubocop:enable Metrics/AbcSize
 
   def users
     @accounts = @project.users(params[:query], params[:sort])
@@ -122,5 +118,11 @@ class ProjectsController < ApplicationController
     Timeout.timeout(Forge::Match::MAX_FORGE_COMM_TIME) { @project = @match.project } if @match
   rescue Timeout::Error
     flash.now[:notice] = t('.forge_time_out', name: @match.forge.name)
+  end
+
+  def grab_show_items
+    @analysis = @project.best_analysis
+    @rating = logged_in? ? @project.ratings.where(account_id: current_user.id).first : nil
+    @score = @rating ? @rating.score : 0
   end
 end
