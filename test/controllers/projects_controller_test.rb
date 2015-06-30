@@ -236,6 +236,14 @@ describe 'ProjectsController' do
 
       must_respond_with :ok
     end
+
+    it "must render no analysis template if project's best analysis is nil" do
+      api_key = create(:api_key)
+      project = create(:project_without_analysis)
+      get :show, id: project, format: 'xml', api_key: api_key.oauth_application.uid
+      must_respond_with :ok
+      must_render_template :no_analysis
+    end
   end
 
   # new

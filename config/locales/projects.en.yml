@@ -21,6 +21,8 @@ en:
     more: "[More]"
     less: "[Less]"
     html_title: "The %{name} Open Source Project on Open Hub : %{title}"
+    no_analysis:
+      no_analysis_message: "No Analysis to display for %{name}."
     header:
       edit_duplicate: 'Edit Duplicate'
       report_duplicate: 'Report Duplicate'
