@@ -1,6 +1,7 @@
 en:
   stack_entries:
     new:
+      html_title: '%{name} - Open Hub'
       support: 'Support your favorite open source projects:'
       add_more: 'Add more projects to your stack:'
       share: 'Share your love for %{project}. Recommend that a friend check it out!'
@@ -33,6 +34,7 @@ en:
       reward: 'reward contributors'
       community: 'build community'
       add_new: 'Add your project to Open Hub'
+      faq: 'Stack FAQ'
     recommendations_for_landing_page:
       more: 'More Recommendations'
       link: 'if you use %{name}, click here to your stack'
