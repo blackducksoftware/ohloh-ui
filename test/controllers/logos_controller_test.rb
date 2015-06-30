@@ -87,18 +87,16 @@ class LogosControllerTest < ActionController::TestCase
     NilClass.must_equal project.reload.logo.class
   end
 
-  it 'new logos page for a deleted project is rendered using the projects/deleted template' do
-    skip('TODO: projects')
-    project = projects(:linux)
+  it 'must render projects/deleted when project is deleted' do
+    project = create(:project)
+    account = create(:account)
 
-    edit_as :robin do
-      project.update_attribute(:deleted, true)
-    end
+    login_as account
+    project.update!(deleted: true, editor_account: account)
 
     get :new, project_id: project.id
 
-    must_respond_with :success
-    must_render_template 'projects/deleted'
+    must_render_template 'deleted'
   end
 
   it 'new unauthenticated' do

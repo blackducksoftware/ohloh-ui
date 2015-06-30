@@ -12,7 +12,7 @@ class ActivityFactsController < ApplicationController
   private
 
   def set_project
-    @project = Project.from_param(params[:project_id]).first
+    @project = Project.by_url_name_or_id(params[:project_id]).first
     render 'projects/deleted' if @project.deleted?
   end
 end

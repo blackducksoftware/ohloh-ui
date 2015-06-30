@@ -66,7 +66,7 @@ class ContributionsController < ApplicationController
   end
 
   def set_project
-    @project = Project.not_deleted.from_param(params[:project_id]).take
+    @project = Project.by_url_name_or_id(params[:project_id]).take
     render 'projects/deleted' if @project.deleted?
   end
 end

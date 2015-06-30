@@ -54,10 +54,11 @@ class LogosController < SettingsController
 
   def set_project_or_organization
     @parent = if params[:project_id]
-                @project = Project.from_param(params[:project_id]).take
+                @project = Project.by_url_name_or_id(params[:project_id]).take
               elsif params[:organization_id]
                 @organization = Organization.from_param(params[:organization_id]).take
               end
+    return render 'projects/deleted' if @parent.deleted?
     @parent.editor_account = current_user
   end
 

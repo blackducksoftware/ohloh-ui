@@ -64,6 +64,14 @@ describe 'ContributionsController' do
 
       must_respond_with :ok
     end
+
+    it 'must render projects/deleted when project is deleted' do
+      @project.update!(deleted: true, editor_account: create(:account))
+
+      get :show, project_id: @project.to_param, id: @contribution.id
+
+      must_render_template 'deleted'
+    end
   end
 
   describe 'commits_spark' do
