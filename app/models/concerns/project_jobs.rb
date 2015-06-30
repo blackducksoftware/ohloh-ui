@@ -45,9 +45,9 @@ module ProjectJobs
   def create_or_update_analyze_jobs(delay)
     job = incomplete_job
     if job.nil?
-      job = AnalyzeJob.create(project: self, wait_until: Time.now.utc + delay)
+      job = AnalyzeJob.create(project: self, wait_until: Time.current + delay)
     elsif job.is_a? AnalyzeJob
-      job.update_attribute(:wait_until, Time.now.utc + delay)
+      job.update_attribute(:wait_until, Time.current + delay)
     end
     job
   end
@@ -70,12 +70,12 @@ module ProjectJobs
 
   def incomplete_job
     jobs.where.not(status: Job::STATUS_COMPLETED).first ||
-      jobs.where(repository_id: repositories.map(&:id)).where.not(status: Job::STATUS_COMPLETED).first
+      jobs.where(repository_id: repositories.pluck(:id)).where.not(status: Job::STATUS_COMPLETED).first
   end
 
   def sloc_sets_out_of_date?
     best_sloc_set_ids = repositories.map(&:best_code_set).compact.map(&:best_sloc_set_id)
-    return true if (best_analysis.sloc_sets.map(&:id) - best_sloc_set_ids).present?
+    return true if (best_analysis.sloc_sets.pluck(:id) - best_sloc_set_ids).present?
     update_analyis_sloc_sets
   end
 
