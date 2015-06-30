@@ -45,7 +45,6 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  # TODO: Fix me when sessions are real
   def session_required
     return if logged_in?
     flash[:notice] = t('sessions.message_html', href: new_account_path)

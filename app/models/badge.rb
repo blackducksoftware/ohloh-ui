@@ -48,7 +48,6 @@ class Badge
     fail 'Not implemented'
   end
 
-  # TODO: Replacement for has_levels?
   def levels?
     level_limits.any?
   end
