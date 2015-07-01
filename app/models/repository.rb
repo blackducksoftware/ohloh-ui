@@ -1,5 +1,6 @@
 class Repository < ActiveRecord::Base
   belongs_to :best_code_set, foreign_key: :best_code_set_id, class_name: CodeSet
+  belongs_to :forge, class_name: 'Forge::Base'
   has_many :enlistments, -> { not_deleted }
   has_many :projects, through: :enlistments
   has_many :jobs
@@ -33,6 +34,17 @@ class Repository < ActiveRecord::Base
     false
   end
 
+  def ensure_job(priority = 0)
+    job = nil
+    Job.transaction do
+      job = jobs.incomplete.first
+      return job if job
+      job = create_fetch_job(priority) if best_code_set.blank?
+      job = create_import_or_sloc_jobs(priority) if best_code_set.present?
+    end
+    job
+  end
+
   class << self
     def find_existing(repository)
       where(url: repository.url).first
@@ -49,6 +61,22 @@ class Repository < ActiveRecord::Base
       else
         wheres.where(owner_at_forge: nil)
       end
+    end
+  end
+
+  private
+
+  def create_fetch_job(priority)
+    cs = CodeSet.create(repository: self)
+    FetchJob.create(code_set: cs, priority: priority)
+  end
+
+  def create_import_or_sloc_jobs(priority)
+    sloc_set = best_code_set.best_sloc_set
+    if sloc_set.blank?
+      ImportJob.create(code_set: best_code_set, priority: priority)
+    elsif sloc_set.as_of.to_i < best_code_set.as_of.to_i
+      SlocJob.create(sloc_set: sloc_set, priority: priority)
     end
   end
 end
