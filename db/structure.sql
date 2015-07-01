@@ -6679,14 +6679,6 @@ ALTER TABLE ONLY api_keys
 
 
 --
--- Name: attachments_parent_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY attachments
-    ADD CONSTRAINT attachments_parent_id_fkey FOREIGN KEY (parent_id) REFERENCES attachments(id);
-
-
---
 -- Name: authorizations_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
