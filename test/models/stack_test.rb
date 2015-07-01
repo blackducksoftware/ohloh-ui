@@ -103,4 +103,16 @@ class StackTest < ActiveSupport::TestCase
       stack.friendly_name.must_equal 'TestStack'
     end
   end
+
+  describe 'stacked_project?' do
+    it 'should find stack entry for project' do
+      stack = create(:stack)
+      project1 = create(:project)
+      project2 = create(:project)
+
+      stack.projects = [project1, project2]
+
+      stack.stacked_project?(project1.id).class.must_equal StackEntry
+    end
+  end
 end

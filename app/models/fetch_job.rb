@@ -1,0 +1,2 @@
+class FetchJob < Job
+end

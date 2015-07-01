@@ -3,6 +3,7 @@ require 'test_helper'
 class DuplicatesAdminTest < ActionDispatch::IntegrationTest
   it 'index loads' do
     create(:duplicate)
+    create(:duplicate, resolved: true)
     admin = create(:admin, password: 'xyzzy123456')
     admin.password = 'xyzzy123456'
     login_as admin
