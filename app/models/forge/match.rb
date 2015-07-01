@@ -14,6 +14,10 @@ class Forge::Match
     @name_at_forge = name_at_forge
   end
 
+  def forge_id
+    forge && forge.id
+  end
+
   def get_json_api
     json_api_url = forge.json_api_url(self)
     return {} unless json_api_url

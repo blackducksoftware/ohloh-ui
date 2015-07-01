@@ -4,6 +4,12 @@ class Job < ActiveRecord::Base
   STATUS_FAILED    = 3
   STATUS_COMPLETED = 5
 
+  def initialize(attributes = {})
+    super(attributes)
+    self.code_set_id ||= sloc_set.code_set_id if sloc_set
+    self.repository_id ||= code_set.repository_id if code_set_id
+  end
+
   scope :incomplete, -> { where.not(status: STATUS_COMPLETED) }
 
   belongs_to :project

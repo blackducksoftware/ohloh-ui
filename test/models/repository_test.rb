@@ -122,7 +122,6 @@ class RepositoryTest < ActiveSupport::TestCase
     describe 'ensure_job' do
       it 'should not create a new job if one already exists' do
         repository = create(:repository)
-        AnalyzeJob.create(repository: repository, wait_until: Time.now + 5.hours)
 
         repository.jobs.count.must_equal 1
         repository.ensure_job
@@ -131,6 +130,7 @@ class RepositoryTest < ActiveSupport::TestCase
 
       it 'should create a new fetch job if best code set is not present' do
         repository = create(:repository)
+        repository.jobs.delete_all
 
         repository.jobs.count.must_equal 0
         repository.ensure_job.class.must_equal FetchJob
