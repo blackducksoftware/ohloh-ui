@@ -40,7 +40,7 @@ xml.project do
     end
   end
   xml.project_activity_index do
-    xml.value project.best_analysis.activity_level.to_s
+    xml.value Analysis::ACTIVITY_LEVEL_INDEX_MAP[project.best_analysis.activity_level]
     xml.description t("projects.#{project.best_analysis.activity_level}")
   end
   if project.links.general.any?
