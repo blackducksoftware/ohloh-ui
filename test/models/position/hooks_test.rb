@@ -106,6 +106,12 @@ class Position::HooksTest < ActiveSupport::TestCase
       kudo.reload.account_id.must_be_nil
     end
 
+    it 'must invoke account analysis job on create and dstroy' do
+      VitaJob.expects(:schedule_account_analysis).twice
+      position = create_position
+      position.destroy
+    end
+
     describe 'name_facts' do
       it 'wont create an unclaimed person if name has no name_facts' do
         position = create_position
@@ -228,6 +234,7 @@ class Position::HooksTest < ActiveSupport::TestCase
   describe 'after_save' do
     it 'must call account.update_akas' do
       Account.any_instance.expects(:update_akas).once
+      VitaJob.expects(:schedule_account_analysis)
       create_position
     end
 
