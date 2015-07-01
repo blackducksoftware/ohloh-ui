@@ -24,6 +24,8 @@ class RepositoryTest < ActiveSupport::TestCase
   end
 
   describe 'validations' do
+    before { Repository.any_instance.stubs(:should_validate?).returns(true) }
+
     describe 'url' do
       it 'wont allow blank url' do
         repository = build(:repository, url: '')

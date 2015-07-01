@@ -5,8 +5,21 @@ describe 'RssSubscriptionsController' do
     @account = create(:admin)
     login_as @account
   end
-  it 'should get the RSS articles list' do
+
+  it 'must render the page correctly when no rss_subscriptions' do
     get :index, project_id: @project.to_param
+
+    must_respond_with :ok
+  end
+
+  it 'must render the page correctly when rss_subscriptions are present' do
+    rss_subscription_1 = create(:rss_subscription, project: @project)
+    rss_feed = create(:rss_feed, last_fetch: true)
+    rss_subscription_2 = create(:rss_subscription, project: @project, rss_feed: rss_feed)
+
+    get :index, project_id: @project.to_param
+
+    assigns(:rss_subscriptions).must_equal [rss_subscription_1, rss_subscription_2]
     must_respond_with :ok
   end
 
