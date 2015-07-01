@@ -1,5 +1,6 @@
 class Organization < ActiveRecord::Base
   include OrganizationSearchables
+  include OrganizationJobs
   include Tsearch
 
   ORG_TYPES = { 'Commercial' => 1, 'Education' => 2, 'Government' => 3, 'Non-Profit' => 4 }
@@ -40,6 +41,7 @@ class Organization < ActiveRecord::Base
 
   after_create :create_restricted_permission
   after_save :check_change_in_delete
+  after_update :schedule_analysis, if: :org_type_changed?
 
   def to_param
     url_name.blank? ? id.to_s : url_name
@@ -116,5 +118,6 @@ class Organization < ActiveRecord::Base
   def check_change_in_delete
     return false unless changed.include?('deleted')
     project_claim_edits(!deleted?).each { |edit| edit.send(deleted? ? :undo! : :redo!, editor_account) }
+    schedule_analysis
   end
 end

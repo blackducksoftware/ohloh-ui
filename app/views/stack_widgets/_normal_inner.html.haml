@@ -10,6 +10,6 @@
     - stack.projects.limit(limit).order(:logo_id).each do |project|
       = project.decorate.icon(*icon_size)
   - if widget.more > 0
-    %p= t('.more', more: widget.more)
+    %p.promo-more-link= t('.more', more: widget.more)
   .ohloh
     = image_tag('widget_logos/openhublogo.png')

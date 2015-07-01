@@ -74,7 +74,7 @@
           %br
           %strong= t('.if_not_sure')
 
-  - if defined?(BYPASS_URL_VALIDATION) && BYPASS_URL_VALIDATION
+  - if Rails.env.development?
     .control-group
       .controls
         %label.checkbox

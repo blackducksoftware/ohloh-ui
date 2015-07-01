@@ -4,6 +4,7 @@ class Project < ActiveRecord::Base
   include Tsearch
   include ProjectSearchables
   include ProjectScopes
+  include ProjectJobs
 
   acts_as_editable editable_attributes: [:name, :url_name, :logo_id, :organization_id, :best_analysis_id,
                                          :description, :tag_list, :missing_source, :url, :download_url],
