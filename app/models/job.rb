@@ -11,4 +11,11 @@ class Job < ActiveRecord::Base
   belongs_to :code_set
   belongs_to :sloc_set
   belongs_to :account
+  belongs_to :organization
+
+  class << self
+    def incomplete_project_job(project_ids)
+      where(project_id: project_ids).where.not(status: STATUS_COMPLETED).first
+    end
+  end
 end

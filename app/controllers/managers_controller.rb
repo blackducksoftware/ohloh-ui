@@ -17,6 +17,7 @@ class ManagersController < SettingsController
     @manage ||= Manage.new
     @manage.assign_attributes(model_params.merge(target: @parent, account: current_user))
     if @manage.save
+      flash[:success] = t '.success'
       redirect_to_index
     else
       render :new, status: :unprocessable_entity

@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :stack_entries
+  resources :stack_entries, only: [:new]
 
   resources :password_resets, only: [:new, :create] do
     collection do
@@ -142,7 +142,6 @@ Rails.application.routes.draw do
 
   resources :posts, only: :index, as: 'all_posts'
   get 'markdown_syntax', to: 'abouts#markdown_syntax'
-  get 'message', to: 'abouts#message'
   get 'maintenance', to: 'abouts#maintenance'
   get 'tools', to: 'abouts#tools'
 
@@ -151,9 +150,13 @@ Rails.application.routes.draw do
   get 'projects/:id/stacks', to: 'stacks#project_stacks', constraints: { format: /xml/ }
   get 'p/:id/stacks', to: 'stacks#project_stacks', as: :project_stacks, constraints: { format: /xml/ }
   get 'p/:id/stacks', to: redirect('/p/%{id}/users'), constraints: { format: /html/ }
-  get 'projects', to: 'projects#index', constraints: { format: /xml/ }
+  get 'projects', to: 'projects#index', as: :project_xml_api, constraints: { format: /xml/ }
 
-  resources :duplicates, only: [:index, :show]
+  resources :duplicates, only: [:index, :show] do
+    member do
+      post 'resolve/:keep_id', to: 'duplicates#resolve'
+    end
+  end
 
   resources :projects, path: :p, except: [:destroy] do
     member do
@@ -313,7 +316,7 @@ Rails.application.routes.draw do
       get :builder
       get :reset
     end
-    resources :stack_entries, only: [:create, :destroy]
+    resources :stack_entries, only: [:show, :create, :update, :destroy]
     resources :stack_ignores, only: [:create] do
       collection do
         delete :delete_all
@@ -346,7 +349,6 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'message' => 'home#message'
   get 'maintenance' => 'home#maintenance'
 
   get 'repositories/compare' => 'compare_repositories#index', as: :compare_repositories

@@ -3,7 +3,7 @@ class AliasesController < SettingsController
   before_action :session_required, except: :index
   before_action :find_project, except: [:undo, :redo]
   before_action :redirect_to_message_if_oversized_project, only: :new
-  before_action :project_context, only: [:index, :new]
+  before_action :project_context, only: [:index, :new, :create]
 
   def index
     @best_analysis_aliases = Alias.best_analysis_aliases(@project)
@@ -46,6 +46,6 @@ class AliasesController < SettingsController
   end
 
   def redirect_to_message_if_oversized_project
-    redirect_to message_path, notice: t('aliases.alias_temporarily_disabled') if oversized_project?(@project)
+    redirect_to root_path, notice: t('aliases.alias_temporarily_disabled') if oversized_project?(@project)
   end
 end

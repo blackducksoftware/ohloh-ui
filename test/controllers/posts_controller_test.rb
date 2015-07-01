@@ -6,7 +6,6 @@ describe PostsController do
   let(:admin) { create(:admin) }
   let(:topic) { create(:topic) }
   let(:post_object) { create(:post) }
-  before { ActionMailer::Base.deliveries.clear }
 
   #---------------------------User without an account------------------------
   describe 'index sort' do
@@ -245,6 +244,7 @@ describe PostsController do
     end
 
     login_as user
+    ActionMailer::Base.deliveries.clear
     post :create, topic_id: topic.id, post: { body: 'Replying for the first time' }
     topic.posts.count.must_equal 2
     ActionMailer::Base.deliveries.size.must_equal 2
@@ -273,6 +273,7 @@ describe PostsController do
     last_user = user
     login_as last_user
 
+    ActionMailer::Base.deliveries.clear
     assert_difference(['ActionMailer::Base.deliveries.size'], 3) do
       post :create, topic_id: topic.id, post: { body: 'This post should trigger a cascade
                                                                       of emails being sent to all preceding users' }
@@ -306,6 +307,7 @@ describe PostsController do
     last_user = topic.account
     login_as last_user
 
+    ActionMailer::Base.deliveries.clear
     post :create, topic_id: topic.id, post: { body: 'last_user replies to his own post' }
 
     email = ActionMailer::Base.deliveries

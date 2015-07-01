@@ -10,7 +10,7 @@
       = t('.by_name')
     %label.radio.inline
       = radio_button_tag('find_by', 'email', params[:find_by] == 'email')
-      = t('by_email')
+      = t('.by_email')
 
   - elsif sort_context.present?
     #sort_by

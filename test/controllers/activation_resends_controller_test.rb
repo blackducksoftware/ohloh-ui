@@ -1,10 +1,6 @@
 require 'test_helper'
 
 describe 'ActivationResendsController' do
-  let(:account) { create(:account) }
-  let(:unactivated) { create(:unactivated) }
-  let(:recently_activated) { create(:unactivated, activation_resent_at: Time.current) }
-
   describe 'new' do
     it 'must respond with success' do
       get :new
@@ -15,6 +11,7 @@ describe 'ActivationResendsController' do
 
   describe 'create' do
     it 'should not send email if account is already activated' do
+      account = create(:account)
       lambda do
         post :create, email: account.email
       end.wont_change 'ActionMailer::Base.deliveries.count'
@@ -24,11 +21,12 @@ describe 'ActivationResendsController' do
     end
 
     it 'should not send email for recently activated account' do
+      recently_activated = create(:unactivated, activation_resent_at: Time.current)
       lambda do
         post :create, email: recently_activated.email
       end.wont_change 'ActionMailer::Base.deliveries.count'
       must_respond_with :redirect
-      must_redirect_to message_path
+      must_redirect_to root_path
       flash[:success].must_equal I18n.t('activation_resends.create.recently_activated')
     end
 
@@ -42,11 +40,12 @@ describe 'ActivationResendsController' do
     end
 
     it 'should resend activation mail' do
+      unactivated = create(:unactivated)
       lambda do
         post :create, email: unactivated.email
       end.must_change 'ActionMailer::Base.deliveries.count'
       must_respond_with :redirect
-      must_redirect_to message_path
+      must_redirect_to root_path
       flash[:notice].must_equal I18n.t('activation_resends.create.success')
     end
   end

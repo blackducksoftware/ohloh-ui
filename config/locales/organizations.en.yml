@@ -120,6 +120,7 @@ en:
         links: 'Links:'
         managers: 'Managers:'
         add_new: 'Add a new manager for %{name}'
+        homepage: 'Homepage'
     projects:
       page_title: '%{organization_name} : Portfolio Projects - Open Hub'
       title: 'Portfolio Projects'

@@ -25,3 +25,5 @@ en:
       ohloh_scm: 'Ohloh SCM'
       line_counter_metrics:  'The line counter we use to build the metrics around your project'
       source_code_abstraction: 'The source code abstraction layer we use to grab your code'
+    message:
+      header: "Message"

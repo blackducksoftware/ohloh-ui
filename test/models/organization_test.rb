@@ -114,4 +114,52 @@ class OrganizationTest < ActiveSupport::TestCase
       org.affiliators_count.must_equal 0
     end
   end
+
+  describe 'jobs' do
+    it 'ensure_job should schedule organization job successfully' do
+    end
+
+    it 'ensure_job should not schedule organization job if there is a job already scheduled' do
+      Job.delete_all
+      assert_equal 0, OrganizationJob.count
+      OrganizationJob.create(organization: org, wait_until: Time.now.utc + 6.hours)
+      org.ensure_job
+      assert_equal 1, OrganizationJob.count
+    end
+
+    it 'schedule_analysis should schedule organization job successfully' do
+      Job.delete_all
+      assert_equal 0, OrganizationJob.count
+      org.schedule_analysis
+      assert_equal 1, OrganizationJob.count
+    end
+
+    it 'schedule_analysis should not schedule organization job if there is a job already scheduled' do
+      Job.delete_all
+      OrganizationJob.create(organization: org, wait_until: Time.now.utc + 6.hours)
+      org.schedule_analysis
+      assert_equal 1, OrganizationJob.count
+    end
+
+    it 'changing org_type should schedule an organization job' do
+      Job.delete_all
+      org.update_attribute(:org_type, 3)
+      assert_equal 1, OrganizationJob.count
+    end
+
+    it 'changing other org attrs like name, description should not schedule an organization job' do
+      Job.delete_all
+      org_hash = { name: 'New name', url_name: 'url name', description: 'Desc1', homepage_url: '/org/new' }
+      org_hash.each do |att, val|
+        org.update_attribute(att, val)
+        assert_equal 0, OrganizationJob.count
+      end
+    end
+
+    it 'change in org deleted status should schedule an org job' do
+      Job.delete_all
+      org.update_attribute(:deleted, true)
+      assert_equal 1, OrganizationJob.count
+    end
+  end
 end

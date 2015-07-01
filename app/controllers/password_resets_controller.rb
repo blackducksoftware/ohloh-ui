@@ -13,7 +13,7 @@ class PasswordResetsController < ApplicationController
     if @password_reset.valid?
       @password_reset.refresh_token_and_email_link
 
-      redirect_to message_path, flash: { success: t('.success') }
+      redirect_to root_path, flash: { success: t('.success') }
     else
       render :new
     end
@@ -24,6 +24,7 @@ class PasswordResetsController < ApplicationController
 
   def reset
     @account.reset_password_tokens = nil
+    @account.skip_current_password_check = true unless account_params[:password].blank?
     if @account.update(account_params)
       redirect_to new_session_url(return_to: account_path(@account)), flash: { success: t('.success') }
     else
@@ -34,7 +35,7 @@ class PasswordResetsController < ApplicationController
   private
 
   def account_params
-    params.require(:account).permit(:password, :password_confirmation, :current_password)
+    params.require(:account).permit(:password, :password_confirmation)
   end
 
   def set_account
