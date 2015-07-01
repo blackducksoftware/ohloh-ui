@@ -115,7 +115,8 @@ class Project < ActiveRecord::Base
   end
 
   def update_organzation_project_count
-    return unless organization
-    organization.update_attributes(editor_account: editor_account, projects_count: organization.projects.count)
+    org = Organization.where(id: organization_id || organization_id_was).first
+    return unless org
+    org.update_attributes(editor_account: editor_account, projects_count: org.projects.count)
   end
 end
