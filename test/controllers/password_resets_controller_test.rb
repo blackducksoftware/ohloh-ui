@@ -102,8 +102,7 @@ describe 'PasswordResetsController' do
       password = Faker::Internet.password
 
       patch :reset, account_id: account.login, token: token,
-                    account: { password: password, password_confirmation: password,
-                               current_password: original_password, reset_password_tokens: '' }
+                    account: { password: password, password_confirmation: password }
 
       flash[:success].must_match(/reset success/)
       must_respond_with :redirect

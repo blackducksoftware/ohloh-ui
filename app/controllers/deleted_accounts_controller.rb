@@ -8,7 +8,7 @@ class DeletedAccountsController < ApplicationController
     if params[:reasons].present?
       processed_reasons = process_reason_params(params)
       @deleted_account.update(reasons: processed_reasons[:reasons], reason_other: processed_reasons[:other])
-      redirect_to message_path, flash: { success: t('.success') }
+      redirect_to root_path, flash: { success: t('.success') }
     else
       render 'edit'
     end
@@ -26,10 +26,10 @@ class DeletedAccountsController < ApplicationController
   end
 
   def feedback_time_must_not_be_elapsed
-    redirect_to message_path, flash: { error: t('.expired') } if @deleted_account.feedback_time_elapsed?
+    redirect_to root_path, flash: { error: t('.expired') } if @deleted_account.feedback_time_elapsed?
   end
 
   def account_must_be_deleted
-    redirect_to message_path, flash: { error: t('.invalid_request') } if Account.find_by(login: params[:id])
+    redirect_to root_path, flash: { error: t('.invalid_request') } if Account.find_by(login: params[:id])
   end
 end

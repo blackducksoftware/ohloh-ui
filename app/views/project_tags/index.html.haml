@@ -27,7 +27,10 @@
                          style: remaining_tags > 0 ? '' : 'display: none;', rel: 'tag_edit' }
           %p.strong= t('.add_new_tag')
           .control-group.nomargin
-            %input#input_tags{ type: :text, placeholder: t('.enter_tag_here') }
+            - if @project.edit_authorized?
+              %input#input_tags{ type: :text, placeholder: t('.enter_tag_here') }
+            - else
+              %input{ type: :text, placeholder: t('.enter_tag_here') }
             %p.error.hidden#error &nbsp;
           .control-group
             - if @project.edit_authorized?

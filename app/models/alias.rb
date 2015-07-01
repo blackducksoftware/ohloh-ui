@@ -87,8 +87,7 @@ class Alias < ActiveRecord::Base
   end
 
   def schedule_project_analysis
-    # TODO: project schedule_project_analysis
-    # projects.schedule_delayed_analysis(10.minutes)
+    project.schedule_delayed_analysis(10.minutes)
   end
 
   def update_unclaimed_person

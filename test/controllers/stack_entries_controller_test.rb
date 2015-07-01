@@ -120,4 +120,17 @@ class StackEntriesControllerTest < ActionController::TestCase
     must_respond_with :ok
     stack.stack_entries.count.must_equal 0
   end
+
+  it 'new should return current user stacks and project' do
+    stack = create(:stack)
+    project = create(:project)
+    create(:stack_entry, project: project, stack: stack)
+    login_as stack.account
+
+    get :new, project_id: project.id, ref: 'ProjectWidget%3A%3AUsers'
+    must_respond_with :ok
+    assigns(:project).must_equal project
+    assigns(:stacks).must_equal stack.account.stacks
+    stack.stack_entries.count.must_equal 1
+  end
 end

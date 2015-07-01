@@ -3,9 +3,17 @@ class StackEntriesController < ApplicationController
   helper StacksHelper
 
   before_action :session_required, except: [:show]
-  before_action :find_stack
+  before_action :find_stack, except: :new
   before_action :find_project, only: [:create]
-  before_action :find_stack_entry, except: [:create]
+  before_action :find_stack_entry, except: [:create, :new]
+
+  helper_method :display_as_project_page
+
+  def new
+    @project = Project.from_param(params[:project_id]).take
+    fail ParamRecordNotFound if @project.nil?
+    @stacks = current_user.stacks
+  end
 
   def create
     stack_entry = StackEntry.create(stack_id: @stack.id, project_id: @project.id)
@@ -59,5 +67,9 @@ class StackEntriesController < ApplicationController
   def stack_entry_html(stack_entry)
     locals = { stack_entry: stack_entry, hidden: true, editable: true }
     render_to_string partial: 'stacks/stack_entry.html.haml', locals: locals
+  end
+
+  def display_as_project_page
+    params[:redirect] || params[:ref]
   end
 end

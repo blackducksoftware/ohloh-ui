@@ -2,6 +2,7 @@ class Accounts::AccessesController < ApplicationController
   include SetAccountByAccountId
 
   before_action :check_activation, only: :activate
+  before_action :session_required, only: :make_spammer
   before_action :admin_session_required, only: :make_spammer
   before_action :disabled_during_read_only_mode, only: :activate
 

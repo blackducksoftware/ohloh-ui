@@ -46,4 +46,20 @@ class EnlistmentTest < ActiveSupport::TestCase
       enlistment.analysis_sloc_set.must_equal analysis_sloc_set
     end
   end
+
+  describe 'ensure_forge_and_job' do
+    it 'should create a new job for project' do
+      Repository.any_instance.stubs(:ensure_job).returns(false)
+
+      analysis = create(:analysis, created_at: 2.months.ago)
+      project = create(:project)
+      project.update_column(:best_analysis_id, analysis.id)
+      repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forges(:github).id,
+                                 owner_at_forge: 'rails', name_at_forge: 'rails')
+      enlistment = create(:enlistment, project: project, repository: repo)
+
+      enlistment.ensure_forge_and_job
+      project.jobs.count.must_equal 1
+    end
+  end
 end
