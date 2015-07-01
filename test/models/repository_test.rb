@@ -1,6 +1,28 @@
 require 'test_helper'
 
 class RepositoryTest < ActiveSupport::TestCase
+  describe 'bypass_url_validation=' do
+    it 'must set value to false for 0' do
+      repository = Repository.new(bypass_url_validation: '0')
+      repository.bypass_url_validation.must_equal false
+    end
+
+    it 'must set value to false for nil' do
+      repository = Repository.new(bypass_url_validation: nil)
+      repository.bypass_url_validation.must_equal false
+    end
+
+    it 'must set value to true for 1' do
+      repository = Repository.new(bypass_url_validation: '1')
+      repository.bypass_url_validation.must_equal true
+    end
+
+    it 'must set value to true for any other value' do
+      repository = Repository.new(bypass_url_validation: 'any value')
+      repository.bypass_url_validation.must_equal true
+    end
+  end
+
   describe '#matching' do
     before do
       @forge = forges(:github)
@@ -24,7 +46,7 @@ class RepositoryTest < ActiveSupport::TestCase
   end
 
   describe 'validations' do
-    before { Repository.any_instance.stubs(:should_validate?).returns(true) }
+    before { Repository.any_instance.stubs(:bypass_url_validation) }
 
     describe 'url' do
       it 'wont allow blank url' do

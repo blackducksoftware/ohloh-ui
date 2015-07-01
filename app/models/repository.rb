@@ -8,9 +8,10 @@ class Repository < ActiveRecord::Base
   scope :matching, ->(match) { Repository.forge_match_search(match) }
 
   validates :url, presence: true
-  validate :scm_attributes_and_server_connection
+  validate :scm_attributes_and_server_connection, unless: :bypass_url_validation
 
-  attr_accessor :forge_match, :bypass_url_validation
+  attr_accessor :forge_match
+  attr_reader :bypass_url_validation
 
   def nice_url
     "#{url} #{branch_name}"
@@ -45,6 +46,12 @@ class Repository < ActiveRecord::Base
     job
   end
 
+  # Allows testing/development to skip validation.
+  def bypass_url_validation=(value)
+    modified_value = value == '0' ? false : value.present?
+    @bypass_url_validation = modified_value
+  end
+
   class << self
     def find_existing(repository)
       where(url: repository.url).first
@@ -67,7 +74,6 @@ class Repository < ActiveRecord::Base
   private
 
   def scm_attributes_and_server_connection
-    return unless should_validate?
     normalize_scm_attributes
     source_scm.validate
     source_scm.validate_server_connection
@@ -84,11 +90,6 @@ class Repository < ActiveRecord::Base
     self.branch_name = source_scm.branch_name
     self.username    = source_scm.username
     self.password    = source_scm.password
-  end
-
-  # Allows testing/development to skip validation.
-  def should_validate?
-    bypass_url_validation && bypass_url_validation != '0'
   end
 
   def create_fetch_job(priority)
