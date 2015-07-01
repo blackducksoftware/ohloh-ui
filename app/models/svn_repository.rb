@@ -18,7 +18,7 @@ class SvnRepository < Repository
   private
 
   def set_url_and_branch_name
-    return if !should_validate? || errors.present?
+    return if bypass_url_validation || errors.present?
 
     self.url = source_scm.restrict_url_to_trunk
     self.branch_name = source_scm.branch_name

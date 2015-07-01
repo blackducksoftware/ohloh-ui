@@ -65,6 +65,8 @@ describe 'EnlistmentsControllerTest' do
   end
 
   describe 'create' do
+    before { Repository.any_instance.stubs(:bypass_url_validation).returns(true) }
+
     it 'should create repository and enlistments' do
       login_as @account
       Repository.count.must_equal 1

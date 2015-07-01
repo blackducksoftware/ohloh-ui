@@ -3,7 +3,7 @@ require 'test_helper'
 class CvsRepositoryTest < ActiveSupport::TestCase
   let(:source_scm_class) { CvsRepository.new.source_scm_class }
 
-  before { CvsRepository.any_instance.stubs(:should_validate?).returns(true) }
+  before { CvsRepository.any_instance.stubs(:bypass_url_validation) }
   before { source_scm_class.any_instance.stubs(:validate_server_connection) }
 
   it 'must find existing repository by url and module_name' do
