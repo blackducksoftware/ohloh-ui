@@ -113,7 +113,7 @@ class ProjectsController < ApplicationController
 
   def populate_project_from_forge
     Timeout.timeout(Forge::Match::MAX_FORGE_COMM_TIME) { @project = @match.project } if @match
-  rescue Timeout::Error
+  rescue Timeout::Error, OpenURI::HTTPError
     flash.now[:notice] = t('.forge_time_out', name: @match.forge.name)
   end
 end
