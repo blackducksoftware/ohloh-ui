@@ -7930,7 +7930,7 @@ INSERT INTO schema_migrations (version) VALUES ('20150429084504');
 
 INSERT INTO schema_migrations (version) VALUES ('20150504072306');
 
-INSERT INTO schema_migrations (version) VALUES ('20150429084504');
+INSERT INTO schema_migrations (version) VALUES ('20150701173333');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
