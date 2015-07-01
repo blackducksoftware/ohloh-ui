@@ -1,7 +1,8 @@
 :ruby
   widget ||= @widget
   project = widget.project
-  href  = CGI.unescapeHTML new_stack_entry_url(project_id: project.to_param, ref: widget.class)
+  ref ||= widget.class
+  href  = CGI.unescapeHTML new_stack_entry_url(project_id: project.to_param, ref: ref)
   title = t('.support', name: project.name)
   link = { onMouseOver: 'mouseOverForUsers(this);', onMouseOut: 'mouseOutForUsers(this);' }
   without_css_link = { onMouseOver: 'mouseOverForUsersWithoutStyle(this);',

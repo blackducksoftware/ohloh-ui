@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :stack_entries, only: [:new]
+  resources :stack_entries, only: :new
 
   resources :password_resets, only: [:new, :create] do
     collection do

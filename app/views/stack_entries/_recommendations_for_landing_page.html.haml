@@ -1,0 +1,21 @@
+:ruby
+  suggestions = current_user.stack_core.default.suggest_projects
+
+- if suggestions.any?
+  .nomargin.clearfix
+    - suggestions.each_with_index do |p, i|
+      .col-md-6.pull-left{ class: i.even? ? 'no_margin_left' : 'pull-left' }
+        .logo{ style: 'height:85px; width:85px' }
+          = p.decorate.icon(:small, options: { size: 32 })
+        .text
+          %h4{ style: 'margin-bottom: 0px' }
+            = link_to truncate(h(p.name), length: 26), project_path(p)
+          .right_side
+            %span.small.soft= t('.contributors', count: p.contributions.count)
+            = link_to new_stack_entry_path(project_id: p, ref: params[:ref]), title: t('.link', name: p.name) do
+              = image_tag 'stack/iusethis/mini_i_use_this.png', align: 'right', alt: t('.i_use', name: p.name)
+      - if i.odd?
+        .clearfix &nbsp;
+    - unless current_user.stacks.count > 1
+      .pull-right{ style: 'margin: 1em 3em' }
+        = link_to t('.more'), stack_url(current_user.stack_core.default, dropped: true)
