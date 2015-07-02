@@ -22,6 +22,8 @@ class Forge::Match
     json_api_url = forge.json_api_url(self)
     return {} unless json_api_url
     @json ||= JSON.parse(open(json_api_url, 'User-Agent' => 'Ohloh.net client').read)
+  rescue OpenURI::HTTPError
+    @json = {}
   end
 
   def project

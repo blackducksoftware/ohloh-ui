@@ -251,4 +251,12 @@ class Forge::MatchTest < ActiveSupport::TestCase
       Forge::Match.first('https://jotwiki.svn.sourceforge.net/svnroot/jotwiki/jotwiki/').to_s.must_equal str
     end
   end
+
+  describe 'get_json_api' do
+    it 'should gracefully handle 404s (for instance from private GitHub repos)' do
+      VCR.use_cassette('ForgeMatchSource_get_json_api_PrivateRepo') do
+        Forge::Match.first('https://github.com/blackducksw/ohloh_selenium').get_json_api.blank?.must_equal true
+      end
+    end
+  end
 end
