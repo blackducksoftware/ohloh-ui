@@ -14,6 +14,11 @@ module OrgFilters
     before_action :redirect_ro_explores_pages, only: :index
     before_action :set_project, only: [:claim_project, :remove_project]
     before_action :can_claim_project, only: :claim_project
+    after_action :schedule_analysis, only: [:claim_project, :remove_project]
+  end
+
+  def schedule_analysis
+    @organization.schedule_analysis
   end
 
   private
