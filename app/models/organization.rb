@@ -12,6 +12,7 @@ class Organization < ActiveRecord::Base
   has_many :accounts, -> { where(Account.arel_table[:level].gteq(0)) }
   has_many :manages, -> { where(deleted_at: nil, deleted_by: nil) }, as: 'target'
   has_many :managers, through: :manages, source: :account
+  has_many :jobs
 
   scope :from_param, lambda { |param|
     active.where(Organization.arel_table[:url_name].eq(param).or(Organization.arel_table[:id].eq(param)))

@@ -1,10 +1,6 @@
 module OrganizationJobs
   extend ActiveSupport::Concern
 
-  included do
-    has_many :jobs
-  end
-
   def ensure_job(priority = 0)
     Job.transaction do
       return if jobs.incomplete.any?
