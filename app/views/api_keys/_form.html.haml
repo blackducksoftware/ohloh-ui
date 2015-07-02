@@ -69,7 +69,8 @@
         %input.btn.btn-primary.btn-small{ type: 'submit', value: t(:save_changes) }
         - unless @api_key.new_record?
           %a.btn.btn-small.btn-danger{ href: account_api_key_path(@account, @api_key),
-                                       data: { method: :delete, confirm: t('api_keys.form.delete_confirm') } }
+                                       data: { method: :delete, confirm: t('api_keys.form.delete_confirm') },
+                                       style: 'padding: 6px 6px 5px 6px;' }
             %i.icon-trash= t 'api_keys.form.delete'
 
 .clearfix
