@@ -43,7 +43,7 @@ module ProjectJobs
   private
 
   def create_or_update_analyze_jobs(delay)
-    job = incomplete_job
+    job = incomplete_job || incomplete_repository_job
     if job.nil?
       job = AnalyzeJob.create(project: self, wait_until: Time.current + delay)
     elsif job.is_a? AnalyzeJob
@@ -65,12 +65,16 @@ module ProjectJobs
   def update_activity_level
     return if best_analysis.blank? || best_analysis.updated_on >= 1.month.ago
     activity_index = ACTIVITY_LEVEL[best_analysis.activity_level]
-    update_attributes!(activity_level_index: activity_index) if activity_index != activity_level_index
+    return if activity_index == activity_level_index
+    update_attributes!(activity_level_index: activity_index, editor_account: Account.hamster)
   end
 
   def incomplete_job
-    jobs.where.not(status: Job::STATUS_COMPLETED).first ||
-      jobs.where(repository_id: repositories.pluck(:id)).where.not(status: Job::STATUS_COMPLETED).first
+    jobs.where.not(status: Job::STATUS_COMPLETED).first
+  end
+
+  def incomplete_repository_job
+    Job.where(repository_id: repositories.pluck(:id)).where.not(status: Job::STATUS_COMPLETED).first
   end
 
   def sloc_sets_out_of_date?

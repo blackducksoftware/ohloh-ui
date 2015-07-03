@@ -352,10 +352,22 @@ class ProjectTest < ActiveSupport::TestCase
     it 'should schedule analysis if no existing jobs are found' do
       project = create(:project)
       create_repositiory(project)
+      project.repositories.first.jobs.delete_all
 
       project.jobs.count.must_equal 0
       project.schedule_delayed_analysis
       project.jobs.count.must_equal 1
+    end
+
+    it 'should not schedule analysis if project repository has jobs are found' do
+      project = create(:project)
+      create_repositiory(project)
+      project.repositories.first.jobs.delete_all
+      FetchJob.create(repository_id: project.repositories.first.id)
+
+      project.jobs.count.must_equal 0
+      project.schedule_delayed_analysis
+      project.jobs.count.must_equal 0
     end
 
     it 'should update existing job if present' do
