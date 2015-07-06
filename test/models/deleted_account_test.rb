@@ -33,6 +33,10 @@ class DeletedAccountTest < ActiveSupport::TestCase
     account.save
   end
 
+  it 'it should return login attribute instead of id' do
+    @account.to_param.must_equal @account.login
+  end
+
   private
 
   def create_deleted_account

@@ -1,0 +1,2 @@
+class CompleteJob < Job
+end

@@ -6679,14 +6679,6 @@ ALTER TABLE ONLY api_keys
 
 
 --
--- Name: attachments_parent_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY attachments
-    ADD CONSTRAINT attachments_parent_id_fkey FOREIGN KEY (parent_id) REFERENCES attachments(id);
-
-
---
 -- Name: authorizations_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7937,6 +7929,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150423061349');
 INSERT INTO schema_migrations (version) VALUES ('20150429084504');
 
 INSERT INTO schema_migrations (version) VALUES ('20150504072306');
+
+INSERT INTO schema_migrations (version) VALUES ('20150701173333');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

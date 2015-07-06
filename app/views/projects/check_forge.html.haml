@@ -1,6 +1,6 @@
 :ruby
   @project ||= Project.new
-  content_for(:html_title) { t('.page_title', name: @project.name || 'New Project') }
+  content_for(:html_title) { t('.page_title', name: @project.name.blank? ? 'New Project' : @project.name) }
   page_context[:select_top_menu_nav] = 'select_projects'
   first_repo = @project.repositories.first
 
