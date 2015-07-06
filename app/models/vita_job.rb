@@ -1,5 +1,4 @@
 class VitaJob < Job
-  # NOTE: Replace schedule_vita with schedule_account_analysis
   scope :schedule_account_analysis, lambda { |account, delay = 0|
     delayed_time = Time.now + delay
     job = where(account_id: account.id).where.not(status: Job::STATUS_COMPLETED).take
@@ -13,4 +12,8 @@ class VitaJob < Job
   scope :schedule_account_analysis_for_project, lambda { |project|
     project.positions.includes(:account).each { |position| schedule_account_analysis(position.account) }
   }
+
+  def progress_message
+    "Creating vita for #{account.name}"
+  end
 end
