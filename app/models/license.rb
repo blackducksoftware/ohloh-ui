@@ -1,6 +1,4 @@
 class License < ActiveRecord::Base
-  # TODO: Add I18n for format
-  # validate UrlFormatValidator
   validates :name, uniqueness: { case_sensitive: false }, length: { in: 2..50 },
                    format: { with: /\A[a-zA-Z](\w|-)*\z/ }
   validates :nice_name, uniqueness: { case_sensitive: false }, length: { in: 1..100 }
