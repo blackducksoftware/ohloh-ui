@@ -3,6 +3,8 @@ class Analysis < ActiveRecord::Base
   AVG_SALARY = 55_000
   EARLIEST_DATE = Time.utc(1971, 1, 1)
   EARLIEST_DATE_SQL_STRING = "TIMESTAMP '#{EARLIEST_DATE.strftime('%Y-%m-%d')}'"
+  ACTIVITY_LEVEL_INDEX_MAP = {
+    na: 0, new: 10, inactive: 20, very_low: 30, low: 40, moderate: 50, high: 60, very_high: 70 }
 
   has_one :all_time_summary
   has_one :thirty_day_summary
@@ -12,6 +14,7 @@ class Analysis < ActiveRecord::Base
   has_many :analysis_aliases
   has_many :contributor_facts, class_name: 'ContributorFact'
   has_many :analysis_sloc_sets, dependent: :delete_all
+  has_many :sloc_sets, through: :analysis_sloc_sets
   has_many :named_commits
   has_many :factoids, -> { order('severity DESC') }, dependent: :delete_all
   has_many :activity_facts, dependent: :delete_all

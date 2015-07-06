@@ -47,8 +47,7 @@ class EnlistmentsController < SettingsController
 
   def update
     @enlistment.update(enlistment_params)
-    # TODO: project schedule_delayed_analysis
-    # @enlistment.project.schedule_delayed_analysis(3.minutes)
+    @enlistment.project.schedule_delayed_analysis(3.minutes)
     redirect_to project_enlistments_path(@project), flash: { success: t('.success') }
   end
 

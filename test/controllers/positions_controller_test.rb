@@ -376,7 +376,10 @@ describe 'PositionsController' do
 
     it 'must render index in xml format' do
       key = create(:api_key)
+      create_position(account: account)
+
       get :index, account_id: account, format: :xml, api_key: key.oauth_application.uid
+
       must_respond_with :ok
     end
   end

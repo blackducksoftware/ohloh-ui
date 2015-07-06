@@ -3,6 +3,7 @@ require 'test_helper'
 describe 'ProjectsController' do
   let(:api_key) { create(:api_key) }
   let(:client_id) { api_key.oauth_application.uid }
+  before { Repository.any_instance.stubs(:bypass_url_validation).returns(true) }
 
   # index
   it 'index should handle query param for unlogged users' do

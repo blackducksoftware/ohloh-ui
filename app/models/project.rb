@@ -4,6 +4,7 @@ class Project < ActiveRecord::Base
   include Tsearch
   include ProjectSearchables
   include ProjectScopes
+  include ProjectJobs
 
   acts_as_editable editable_attributes: [:name, :url_name, :logo_id, :organization_id, :best_analysis_id,
                                          :description, :tag_list, :missing_source, :url, :download_url],
@@ -12,8 +13,8 @@ class Project < ActiveRecord::Base
   acts_as_taggable
   link_accessors accessors: { url: :Homepage, download_url: :Download }
 
-  validates :name, presence: true, length: 1..100, allow_nil: false, uniqueness: true, case_sensitive: false
-  validates :url_name, presence: true, length: 1..60, allow_nil: false, uniqueness: true, case_sensitive: false
+  validates :name, presence: true, length: 1..100, allow_nil: false, uniqueness: { case_sensitive: false }
+  validates :url_name, presence: true, length: 1..60, allow_nil: false, uniqueness: { case_sensitive: false }
   validates :description, length: 0..800, allow_nil: true # , if: proc { |p| p.validate_url_name_and_desc == 'true' }
   validates_each :url, :download_url, allow_blank: true do |record, field, value|
     record.errors.add(field, I18n.t(:not_a_valid_url)) unless value.valid_http_url?
@@ -115,7 +116,8 @@ class Project < ActiveRecord::Base
   end
 
   def update_organzation_project_count
-    return unless organization
-    organization.update_attributes(editor_account: editor_account, projects_count: organization.projects.count)
+    org = Organization.where(id: organization_id || organization_id_was).first
+    return unless org
+    org.update_attributes(editor_account: editor_account, projects_count: org.projects.count)
   end
 end

@@ -50,6 +50,7 @@ describe 'EnlistmentsControllerTest' do
     login_as @account
     put :update, project_id: @project_id, id: @enlistment.id,
                  enlistment: { ignore: 'Ignore Me' }
+
     must_respond_with :redirect
     must_redirect_to action: :index
     @enlistment.reload.ignore.must_equal 'Ignore Me'
@@ -64,6 +65,8 @@ describe 'EnlistmentsControllerTest' do
   end
 
   describe 'create' do
+    before { Repository.any_instance.stubs(:bypass_url_validation).returns(true) }
+
     it 'should create repository and enlistments' do
       login_as @account
       Repository.count.must_equal 1
