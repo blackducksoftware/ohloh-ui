@@ -21,6 +21,7 @@ class Project < ActiveRecord::Base
   end
   before_validation :clean_strings_and_urls
   after_save :update_organzation_project_count
+  after_update :remove_people, if: -> project { project.deleted_changed? && project.deleted? }
 
   attr_accessor :managed_by_creator
 
@@ -119,5 +120,9 @@ class Project < ActiveRecord::Base
     org = Organization.where(id: organization_id || organization_id_was).first
     return unless org
     org.update_attributes(editor_account: editor_account, projects_count: org.projects.count)
+  end
+
+  def remove_people
+    Person.where(project_id: id).destroy_all
   end
 end
