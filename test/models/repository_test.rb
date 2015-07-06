@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class RepositoryTest < ActiveSupport::TestCase
-  describe 'english_name' do
+  describe 'name_in_english' do
     it 'should return value base on repository type' do
       repo1 = create(:git_repository)
       repo2 = create(:svn_repository)
@@ -10,12 +10,12 @@ class RepositoryTest < ActiveSupport::TestCase
       repo5 = create(:svn_sync_repository)
       repo6 = create(:cvs_repository)
 
-      repo1.english_name.must_equal 'Git'
-      repo2.english_name.must_equal 'Subversion'
-      repo3.english_name.must_equal 'Bazaar'
-      repo4.english_name.must_equal 'Mercurial'
-      repo5.english_name.must_equal 'Subversion (via SvnSync)'
-      repo6.english_name.must_equal 'CVS'
+      repo1.name_in_english.must_equal 'Git'
+      repo2.name_in_english.must_equal 'Subversion'
+      repo3.name_in_english.must_equal 'Bazaar'
+      repo4.name_in_english.must_equal 'Mercurial'
+      repo5.name_in_english.must_equal 'Subversion (via SvnSync)'
+      repo6.name_in_english.must_equal 'CVS'
     end
   end
 

@@ -17,7 +17,7 @@ class Repository < ActiveRecord::Base
     "#{url} #{branch_name}"
   end
 
-  def english_name
+  def name_in_english
     source_scm.english_name
   end
 

@@ -1,5 +1,5 @@
 class SvnSyncRepository < SvnRepository
-  def english_name
+  def name_in_english
     'Subversion (via SvnSync)'
   end
 
@@ -19,7 +19,6 @@ class SvnSyncRepository < SvnRepository
 
       SvnRepository
     end
-
 
     def find_existing(repository)
       SvnSyncRepository.find_by(url: repository.url)
