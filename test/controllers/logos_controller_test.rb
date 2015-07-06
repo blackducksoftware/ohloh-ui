@@ -106,25 +106,24 @@ class LogosControllerTest < ActionController::TestCase
     must_respond_with :success
   end
 
-  it 'new' do
-    skip('TODO: application')
+  it 'must render the new page successfully' do
     login_as @admin
+
     get :new, project_id: projects(:linux).id
+
     must_respond_with :success
-    'form[action=?]'.must_select project_logos_path do
-      assert_select 'input[type=radio][name=logo_id]'
-      assert_select 'input[type=submit]'
-    end
+    must_render_template :new
   end
 
   it 'new shows flash if user has no permissions' do
-    skip('TODO: manage')
-    Manage.create!(target: projects(:linux), account: create(:account))
-    Permission.create!(project: projects(:linux), 'remainder' => true)
+    project, account = create(:project), create(:account)
+    create(:manage, target: project, account: account)
+    create(:permission, target: project, remainder: true)
 
-    login_as @user
-    get :new, project_id: projects(:linux).id
-    flash[:notice].must_equal 'You can view, but not change this data. Only managers may change this data.'
+    login_as create(:account)
+    get :new, project_id: project.id
+
+    flash[:notice].must_equal I18n.t('permissions.not_manager')
   end
 
   it 'create with logo id' do

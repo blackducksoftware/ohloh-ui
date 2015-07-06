@@ -67,9 +67,9 @@ class Account::Hooks
     AccountMailer.signup_notification(account).deliver_now
   end
 
-  def schedule_organization_analysis(_organization_id)
-    # FIXME: Uncomment when Organization analysis scheduling works.
-    # Organization.find_by_id(organization_id).schedule_analysis
+  def schedule_organization_analysis(organization_id)
+    return unless organization_id
+    Organization.find_by(id: organization_id).schedule_analysis
   end
 
   def destroy_spammer_dependencies(account)
