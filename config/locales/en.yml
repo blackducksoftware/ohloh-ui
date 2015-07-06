@@ -343,7 +343,7 @@ en:
               too_long: The password must not be longer than 32 characters.
               invalid: The password contains illegal characters
 
-  project_experience:
+  project_experiences:
     no_matching_project: No matching open source project with this name.
 
   password_resets:
