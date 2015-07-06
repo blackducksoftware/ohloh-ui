@@ -115,7 +115,10 @@ class Account::HooksTest < ActiveSupport::TestCase
 
   describe 'after_update' do
     it 'should schedule organization analysis on update' do
-      skip('FIXME: add test when implementing schedule_analysis')
+      account = create(:account)
+
+      Organization.any_instance.expects(:schedule_analysis).once
+      account.update!(organization_id: create(:organization).id)
     end
   end
 
