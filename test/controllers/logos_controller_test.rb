@@ -8,7 +8,6 @@ class LogosControllerTest < ActionController::TestCase
   end
 
   it 'user has permissions to edit' do
-    # TODO: acts_as_edited
     Project.any_instance.expects(:edit_authorized?).returns(false)
     login_as @user
     post :create, project_id: projects(:linux).id
