@@ -1,6 +1,24 @@
 require 'test_helper'
 
 class RepositoryTest < ActiveSupport::TestCase
+  describe 'english_name' do
+    it 'should return value base on repository type' do
+      repo1 = create(:git_repository)
+      repo2 = create(:svn_repository)
+      repo3 = create(:bzr_repository)
+      repo4 = create(:hg_repository)
+      repo5 = create(:svn_sync_repository)
+      repo6 = create(:cvs_repository)
+
+      repo1.english_name.must_equal 'Git'
+      repo2.english_name.must_equal 'Subversion'
+      repo3.english_name.must_equal 'Bazaar'
+      repo4.english_name.must_equal 'Mercurial'
+      repo5.english_name.must_equal 'Subversion (via SvnSync)'
+      repo6.english_name.must_equal 'CVS'
+    end
+  end
+
   describe 'bypass_url_validation=' do
     it 'must set value to false for 0' do
       repository = Repository.new(bypass_url_validation: '0')
