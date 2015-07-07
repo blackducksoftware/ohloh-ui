@@ -10,7 +10,7 @@
       %p.icon_search
     #global_statistics
       %p#content-0= t('.counting', count: number_with_delimiter(@home.lines_count.to_i))
-      %p#content-1= t('.indexing', count: number_with_delimiter(Project.cached_count))
+      %p#content-1= t('.indexing', count: number_with_delimiter(Project.active.count))
       %p#content-2= t('.connecting', count: number_with_delimiter(Person.count))
       %p#content-3= t('.tracking', count: number_with_delimiter(Repository.count))
 .home_page_row
