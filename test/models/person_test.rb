@@ -226,49 +226,6 @@ class PersonTest < ActiveSupport::TestCase
     Person.find_by(project: position.project, name: name).must_be :present?
   end
 
-  it 'must remove all names best_analysis is set to null' do
-    skip('TODO: project model')
-    with_editor(accounts(:admin)) do
-      projects(:linux).update_attributes(best_analysis_id: nil)
-    end
-    assert_people
-  end
-
-  it 'test new best analysis when there are no changes to names' do
-    skip('TODO: project model')
-    old_analysis = projects(:linux).best_analysis
-    new_analysis = duplicate_analysis(old_analysis)
-    with_editor(accounts(:admin)) do
-      projects(:linux).update_attributes(best_analysis: new_analysis)
-    end
-    assert_people
-  end
-
-  it 'test new best analysis when a new name is created' do
-    skip('TODO: project model')
-    old_analysis = projects(:linux).best_analysis
-    new_analysis = duplicate_analysis(old_analysis)
-    ContributorFact.create!(analysis_id: new_analysis.id, name: Name.create(name: 'the new guy'))
-    with_editor(accounts(:admin)) do
-      projects(:linux).update_attributes(best_analysis: new_analysis)
-    end
-    assert_people
-  end
-
-  it 'test new best analysis when an old name is deleted' do
-    skip('TODO: project model')
-    old_analysis = projects(:linux).best_analysis
-    new_analysis = duplicate_analysis(old_analysis)
-    assert_difference 'ContributorFact.count', -1 do
-      ContributorFact.find(:first, conditions: "analysis_id = #{new_analysis.id} AND name_id = #{names(:scott).id}")
-        .destroy
-    end
-    with_editor(accounts(:admin)) do
-      projects(:linux).update_attributes(best_analysis: new_analysis)
-    end
-    assert_people
-  end
-
   it 'test_searchable_vector' do
     people(:jason).searchable_vector[:a].must_equal 'admin Allen admin'
   end
