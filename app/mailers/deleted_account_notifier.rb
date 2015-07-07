@@ -10,12 +10,12 @@ class DeletedAccountNotifier < ActionMailer::Base
 
   protected
 
-  def get_org_name(_account)
+  def get_org_name(account)
     return if account.organization_id.nil?
     Organization.where(id: account.organization_id).first.try(:name)
   end
 
-  def get_project_names(_account)
+  def get_project_names(account)
     pids = account.claimed_project_ids
     return if pids.blank?
     Project.select("string_agg(name, ', ') AS names").where(id: pids).first['names']

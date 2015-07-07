@@ -83,8 +83,7 @@ class Account::HooksTest < ActiveSupport::TestCase
       end
       account.positions.count.must_equal 0
       account.posts.count.must_equal 0
-      # TODO: Pass this test while integrating acts_as_editable.
-      # Account.find_or_create_anonymous_account.posts.count.must_equal 5
+      Account.find_or_create_anonymous_account.posts.count.must_equal 3
     end
   end
 
