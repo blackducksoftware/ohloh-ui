@@ -9,8 +9,6 @@ describe PostsController do
 
   #---------------------------User without an account------------------------
   describe 'index sort' do
-    # Remove fixture data.
-    # TODO: Remove when all models are independent of fixture data.
     before { Post.destroy_all }
 
     it 'should render in atom format' do

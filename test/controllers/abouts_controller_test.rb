@@ -11,6 +11,4 @@ describe 'AboutsController' do
     must_respond_with :ok
     must_render_template 'abouts/tools'
   end
-
-  # TODO: Messages and Maintenance not implemented but are referenced in view code.
 end
