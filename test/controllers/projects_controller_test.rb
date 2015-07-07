@@ -237,6 +237,13 @@ describe 'ProjectsController' do
 
       must_respond_with :ok
     end
+
+    it 'new project manager link from quick ref should be linked appropriately' do
+      project = create(:project, name: 'Foo', description: Faker::Lorem.sentence(90))
+      get :show, id: project.to_param
+      must_respond_with :ok
+      assert_select "a[href='#{new_project_manager_path(project.to_param)}']", text: 'Become the first manager for Foo'
+    end
   end
 
   # new

@@ -53,7 +53,7 @@
     - if @project.active_managers.any?
       != project_managers_list
     - else
-      = link_to t('.become_first', what: @project.name), new_project_manage_path(@project)
+      = link_to t('.become_first', what: @project.name), new_project_manager_path(@project)
 - if @project.koders_status.try(:ohloh_code_ready) == true
   - ohloh_code_url = "http://code.openhub.net/project?pid=&ipid=#{@project.koders_status.koders_id}"
   %a.btn.btn-info.browse_code_button{ href: ohloh_code_url,
