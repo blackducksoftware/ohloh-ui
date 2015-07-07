@@ -19,17 +19,14 @@ module HomeHelper
 
   def set_link(project)
     if project.is_a?(Account)
-      # FIXME: Implement avatar_img_path and unstub the tests.
       link_to(image_tag(avatar_img_path(project), height: 32, width: 32), account_path(project), class: 'top_ten_icon')
     else
-      # FIXME: Implement capture_haml and unstub the tests.
       link_to(capture_haml { project_icon(project) }, project_path(project), class: 'top_ten_icon')
     end
   end
 
   def set_path(project)
     path = project.is_a?(Account) ? account_path(project) : project_path(project)
-    # FIXME: Implement this `h` method and unstub the tests.
     link_to(h(project.name), path)
   end
 end

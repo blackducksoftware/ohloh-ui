@@ -1,6 +1,3 @@
-// handles project edit form
-// TODO: Replace all of this with better Javascript. Specifically that cobbled together HTML down there is awful.
-
 ProjectForm = {
   preview_url_name_label: 'label#preview_url_name',
   url_name_input: 'input#project_url_name',
@@ -91,7 +88,7 @@ $(document).ready(function() {
       $(this).prop("checked",true);
     }
   });
-  
+
   $("input[name='stacked']").click(function() {
     if ($(this).prop("checked") == true) {
       var target = $(this).attr("target");
@@ -109,7 +106,7 @@ $(document).ready(function() {
           }
           $(":checked").attr("data-stackentry", data.stack_entry_id);
           $(message).append("<p class=stack-message>stacked</p>");
-        }, 
+        },
         complete: function(){
           $('#related_spinner[target=' + '"' + target + '"' +']').addClass("hidden");
         }

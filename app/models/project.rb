@@ -79,13 +79,6 @@ class Project < ActiveRecord::Base
     koders_status.try(:ohloh_code_ready) == true
   end
 
-  def self.cached_count
-    # TODO: Enable Cache
-    # get_cache('cached_project_count', :expires_in => 5.minutes) do
-    Project.active.count
-    # end
-  end
-
   def newest_contributions
     contributions.sort_by_newest.includes(person: :account, contributor_fact: :primary_language).limit(10)
   end
