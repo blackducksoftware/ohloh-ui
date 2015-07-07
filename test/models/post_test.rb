@@ -25,8 +25,6 @@ class PostTest < ActiveSupport::TestCase
   end
 
   it "should sort 'by_unanswered'" do
-    # TODO: Remove once other tests are
-    # independent from posts.yml file
     Post.destroy_all
     unanswered_post = post
     create(:topic_with_posts)
