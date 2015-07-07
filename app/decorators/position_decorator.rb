@@ -26,8 +26,8 @@ class PositionDecorator < Cherry::Decorator
   end
 
   def project_contributor_or_show_path
-    return [project, contribution] if project && contribution
-    [account, position]
+    return h.project_contributor_path(project, contribution) if project && contribution
+    h.account_position_path(account, position)
   end
 
   def stop_date
