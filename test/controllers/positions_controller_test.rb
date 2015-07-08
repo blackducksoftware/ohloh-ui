@@ -166,25 +166,25 @@ describe 'PositionsController' do
       position.project_experiences.wont_be :present?
     end
 
-    it 'test_update_adjusts_people_table' do
-      skip 'Make this pass after integrating project#contributors'
+    it 'must update project contributions when position.name_id changes' do
       position = create_position
       account = position.account
       project = position.project
-      create(:project_experience, position: position, project: project)
-      create(:language_experience, position: position)
 
-      assert_equal ['Jason', 'Robin Luckey', 'Scott'],
-                   project.contributors.map(&:effective_name).sort
+      project.contributions.map(&:person).map(&:effective_name).must_equal [account.person.effective_name]
 
       login_as(account)
 
+      previous_name = position.name
+      new_name = create(:name)
+      create(:name_fact, analysis: project.best_analysis, name: new_name)
+      create(:person, project: project, name: new_name)
       post :update, account_id: account.to_param, id: position.to_param,
-                    position: { project_oss: project, committer_name: 'Jason' }
+                    position: { project_oss: project.name, committer_name: new_name.name }
 
       must_redirect_to account_positions_path(account)
-      assert_equal ['Robin', 'Robin Luckey', 'Scott'],
-                   project.contributors.map(&:effective_name).sort
+      project.reload.contributions.map(&:person).map(&:effective_name).sort
+        .must_equal [account.person.effective_name, previous_name.name].sort
     end
 
     describe '_destroy project_experiences' do
