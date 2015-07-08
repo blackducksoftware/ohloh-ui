@@ -23,7 +23,7 @@ describe InvitesController do
     end
     assigns(:invite).success_flash.must_equal I18n.t('invites.thank_you_message', name: assigns(:invite).name.name,
                                                                                   email: 'abc@yahoo.com')
-    must_respond_with :redirect
+    must_redirect_to project_contributor_path(assigns(:invite).project, assigns(:invite).contribution_id)
   end
 
   it 'shouldn\'t create a duplicate invite' do

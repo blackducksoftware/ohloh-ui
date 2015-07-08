@@ -37,7 +37,6 @@ class RepositoryJobProgressTest < ActiveSupport::TestCase
 
     it 'should return update complete message' do
       job.update_columns(status: 5)
-      p (Date.current - 2.days)
       repo_progress.stubs(:sloc_set_logged_at).returns(Time.current - 2.days)
       repo_progress.message.must_equal 'Open Hub update completed 2 days ago.'
     end
