@@ -108,8 +108,7 @@ class Organization < ActiveRecord::Base
   def clean_strings_and_urls
     self.name = String.clean_string(name)
     self.description = String.clean_string(description)
-    # TODO: fix these once we have links implemented
-    # self.download_url = String.clean_url(download_url)
+    self.homepage_url = String.clean_url(homepage_url)
   end
 
   def project_claim_edits(undone)

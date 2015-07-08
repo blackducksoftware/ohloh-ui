@@ -84,7 +84,6 @@ class Account::PositionCore < OhDelegator::Base
     # In that case, let's delete the existing position, and create a new one.
     existing_position.try(:destroy)
     # If no existing position, then create a new one including the form attributes(title, desc)
-    # TODO: Consider removing committer_name=.
     Position.create!(attributes)
   end
 

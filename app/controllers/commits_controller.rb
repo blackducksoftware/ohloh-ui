@@ -19,7 +19,6 @@ class CommitsController < SettingsController
   end
 
   def show
-    # NOTE: POSTGRES_QUERY_TIMEOUT is ignored because we have timeout option is database.yml
     @diffs = @named_commit.commit.diffs
              .includes(:fyle)
              .filter_by(params[:query])

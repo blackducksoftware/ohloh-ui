@@ -31,7 +31,6 @@ class AccountDecorator < Cherry::Decorator
     sorted_cbl.sort_by { |_k, v| v[:commits] }.reverse
   end
 
-  # NOTE: Replaces account_vita_status_message in application_helper
   def vita_status_message
     if claimed_positions.any? && best_vita.nil?
       I18n.t('accounts.show.analysis_scheduled')

@@ -3,7 +3,6 @@ class TwitterDetail < Cherry::Decorator
 
   delegate :best_vita, :positions, :markup, :twitter_account, :most_experienced_language, :badges, to: :account
 
-  # NOTE: Replaces twitter_card_description in accounts_helper
   def description
     return '' unless markup
     name_fact = best_vita.vita_fact

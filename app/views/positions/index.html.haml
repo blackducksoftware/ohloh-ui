@@ -20,7 +20,6 @@
     %p= t('.no_contributions_to_display')
 
 - if current_user == @account
-  -# NOTE: Use the following instead of `bootstrap_button_link_to` during migration.
   = link_to new_account_position_path(@account), class: 'btn btn-small btn-primary' do
     %i.icon-plus-sign
       &nbsp;

@@ -79,7 +79,6 @@ module ProjectsHelper
     end.join(', ')
   end
 
-  # NOTE: Replaces ProjectActivityScore.activity_level_text.
   def project_activity_text(project, append_activity)
     activity_level = project_activity_level(project)
     case activity_level
@@ -101,7 +100,6 @@ module ProjectsHelper
     content + ", #{project_activity_text(project, true)}, #{project.user_count} users"
   end
 
-  # NOTE: Replaces ProjectActivityScore.css_class.
   def project_activity_css_class(project, size)
     "#{size}_project_activity_level_#{project_activity_level(project)}"
   end

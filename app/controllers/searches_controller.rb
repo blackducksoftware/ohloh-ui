@@ -1,5 +1,4 @@
 class SearchesController < ApplicationController
-  # NOTE: Replaces accounts#search.
   def account
     if request.xhr?
       accounts = Account.simple_search(params[:term])
