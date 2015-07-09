@@ -5,15 +5,14 @@ module HomeHelper
     [1, count.to_i * 60 / max].max
   end
 
-  def project_count(project, required)
+  def project_count(item, required)
     case required
     when 'most_popular_projects'
-      return project.user_count
+      return item.user_count
     when 'most_active_projects'
-      return project.best_analysis.thirty_day_summary.commits_count unless project.best_analysis.nil?
+      return item.best_analysis.thirty_day_summary.commits_count unless item.best_analysis.blank?
     when 'most_active_contributors'
-      # FIXME: Implement or replace project.best_vita and unstub the tests.
-      project.best_vita.vita_fact.thirty_day_commits unless project.best_vita.vita_fact.nil?
+      item.best_vita.vita_fact.thirty_day_commits unless item.best_vita.vita_fact.blank?
     end
   end
 
