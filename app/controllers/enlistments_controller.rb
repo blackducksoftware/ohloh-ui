@@ -88,8 +88,8 @@ class EnlistmentsController < SettingsController
   end
 
   def initialize_repository
-    @repository_class = safe_constantize(params[:repository][:type])
-    @repository = @repository_class.get_compatible_class(params[:repository][:url]).new(repository_params)
+    @repository_class = safe_constantize(params[:repository][:type]).get_compatible_class(params[:repository][:url])
+    @repository = @repository_class.new(repository_params)
   end
 
   def save_or_update_repository

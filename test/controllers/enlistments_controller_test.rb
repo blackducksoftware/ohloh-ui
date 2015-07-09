@@ -91,6 +91,19 @@ describe 'EnlistmentsControllerTest' do
       flash[:notice].must_equal I18n.t('enlistments.create.notice', url: repository.url)
     end
 
+    it 'must handle duplicate svn urls when passed type is svn_sync' do
+      repository = create(:svn_repository)
+      create(:enlistment, project: Project.find_by(url_name: @project_id), repository: repository)
+
+      assert_no_difference ['Repository.count', 'Enlistment.count'] do
+        post :create, project_id: @project_id,
+                      repository: repository.attributes.merge(type: 'SvnSyncRepository')
+      end
+
+      must_redirect_to action: :index
+      flash[:notice].must_equal I18n.t('enlistments.create.notice', url: repository.url)
+    end
+
     it 'must render error for missing url' do
       post :create, project_id: @project_id, repository: build(:repository, url: '').attributes
 
