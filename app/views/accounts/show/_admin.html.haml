@@ -16,7 +16,7 @@
       class: 'btn btn-warning btn-small', title: t('.spammer.title', name: @account.name)
     &nbsp; &nbsp;
     = link_to t('.delete.link').html_safe, account_path(@account),
-      method: :destroy, data: { confirm: t('.delete.confirm', name: @account.name) },
+      method: :delete, data: { confirm: t('.delete.confirm', name: @account.name) },
     class: 'btn btn-danger btn-small', title: t('.delete.title', name: @account.name)
     = link_to t('.panel.close').html_safe, 'javascript:void(0);', id: 'close_admin_panel'
 
