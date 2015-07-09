@@ -65,10 +65,14 @@ describe 'EnlistmentsControllerTest' do
   end
 
   describe 'create' do
-    before { Repository.any_instance.stubs(:bypass_url_validation).returns(true) }
+    before do
+      Repository.any_instance.stubs(:bypass_url_validation).returns(true)
+      login_as @account
+    end
+
+    let(:repository) { @enlistment.repository }
 
     it 'should create repository and enlistments' do
-      login_as @account
       Repository.count.must_equal 1
       Enlistment.count.must_equal 2
       post :create, project_id: @project_id, repository: build(:repository, url: 'Repo1').attributes
@@ -79,19 +83,41 @@ describe 'EnlistmentsControllerTest' do
     end
 
     it 'should not create repo if already exist' do
-      login_as @account
-      Repository.count.must_equal 1
-      Enlistment.count.must_equal 2
-      post :create, project_id: @project_id, repository: @enlistment.repository.attributes
-      must_respond_with :redirect
+      assert_no_difference ['Repository.count', 'Enlistment.count'] do
+        post :create, project_id: @project_id, repository: repository.attributes
+      end
+
       must_redirect_to action: :index
-      Repository.count.must_equal 1
-      Enlistment.count.must_equal 2
+      flash[:notice].must_equal I18n.t('enlistments.create.notice', url: repository.url)
+    end
+
+    it 'must handle duplicate urls with leading or trailing spaces' do
+      Repository.any_instance.stubs(:bypass_url_validation)
+      GitRepository.new.source_scm_class.any_instance.stubs(:validate_server_connection)
+
+      assert_no_difference ['Repository.count', 'Enlistment.count'] do
+        post :create, project_id: @project_id,
+                      repository: repository.attributes.merge(url: " #{ repository.url } ")
+      end
+
+      must_redirect_to action: :index
+      flash[:notice].must_equal I18n.t('enlistments.create.notice', url: repository.url)
+    end
+
+    it 'must handle duplicate svn urls when passed type is svn_sync' do
+      repository = create(:svn_repository)
+      create(:enlistment, project: Project.find_by(url_name: @project_id), repository: repository)
+
+      assert_no_difference ['Repository.count', 'Enlistment.count'] do
+        post :create, project_id: @project_id,
+                      repository: repository.attributes.merge(type: 'SvnSyncRepository')
+      end
+
+      must_redirect_to action: :index
+      flash[:notice].must_equal I18n.t('enlistments.create.notice', url: repository.url)
     end
 
     it 'must render error for missing url' do
-      login_as @account
-
       post :create, project_id: @project_id, repository: build(:repository, url: '').attributes
 
       assigns(:repository).errors.messages[:url].must_be :present?
