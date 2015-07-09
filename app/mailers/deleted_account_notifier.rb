@@ -1,8 +1,8 @@
 class DeletedAccountNotifier < ActionMailer::Base
   def deletion(account)
     recipient  = ENV['DELETED_ACCOUNT_RECIPIENT']
-    @affiliation = get_org_name(account)
-    @claimed_projects = get_project_names(account)
+    @affiliation = organization_name(account)
+    @claimed_projects = project_names(account)
     @account = account
     mail(to: recipient, subject: 'Open Hub account deleted', from: 'mailer@openhub.net',
          template_path: 'mailers', template_name: 'account_deletion_notification')
@@ -10,12 +10,11 @@ class DeletedAccountNotifier < ActionMailer::Base
 
   protected
 
-  def get_org_name(account)
-    return if account.organization_id.nil?
-    Organization.where(id: account.organization_id).first.try(:name)
+  def organization_name(account)
+    Organization.find_by(id: account.organization_id).try(:name) if account.organization_id
   end
 
-  def get_project_names(account)
+  def project_names(account)
     pids = account.claimed_project_ids
     return if pids.blank?
     projects = Project.select("string_agg(name, ', ') AS names").where(id: pids)
