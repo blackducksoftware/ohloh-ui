@@ -1,0 +1,86 @@
+#stack_entries_new_page
+  .stack_badge div
+    padding-top: 0.5em
+    color: white
+
+  a.stack_verb, a.unstack_verb
+    display: block
+    outline: none
+    height: 19px
+    width: 60px
+    clear: left
+    float: left
+    margin-bottom: 10px
+    margin-right: 10px
+
+    a.stack_verb div, a.unstack_verb div
+      height: 19px
+      width: 60px
+      margin-top: 3px
+
+    a.stack_verb .unstack, a.unstack_verb .unstack
+      background: white assert_url('stack/unstack.gif') no-repeat
+
+    a.stack_verb .stackit, a.unstack_verb .stackit
+      background: white assert_url('stack/stackit.gif') no-repeat
+
+    a.stack_verb .ignore, a.unstack_verb .ignore
+      background: white assert_url('stack/ignore.gif') no-repeat
+
+    a.stack_verb.busy div, a.unstack_verb.busy div
+      background: white assert_url('spinner.gif') center no-repeat
+
+    a.stack_verb .small, a.unstack_verb .small
+      width: 19px
+
+      a.stack_verb .small div, a.unstack_verb .small div
+        width: 19px
+        margin-top: 0
+      a.stack_verb .small .unstack, a.unstack_verb .small .unstack
+        background: white assert_url('stack/sm_unstack.gif') no-repeat
+
+  ul.current_stack
+    position: relative
+    ul.current_stack li.stack_entry
+      clear: both
+      margin: 0
+
+  h4.iusethis
+    margin: 0 0 0.5em 0
+
+  .iusethis
+    margin-right: 3px
+
+  a.iusethis
+    color: #333333
+    font-weight: bold
+    margin: 0.2em 0 0 0
+    font-decoration: none
+    border: 0px none
+    font-size: 100%
+    width: 62px
+    display: block
+    padding-left: 1px
+    a.iusethis:hover
+      text-decoration: underline
+    a.iusethis:hover, a.iusethis:link, a.iusethis:visited
+      color: #333333
+
+  div#iuseit_landing .logo
+    border: 4px solid #e5dfc7
+    display: block
+    float: left
+    padding: 6px
+    margin-right: 7px
+
+  div#iuseit_landing ol li
+    color: black
+    list-style-position: inside
+    list-style-type: decimal
+    margin: 0
+
+  .right_side
+    a
+      position: absolute
+      bottom: 0px
+      right: 10px

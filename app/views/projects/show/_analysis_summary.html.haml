@@ -1,8 +1,8 @@
 .row
   - if @project.enlistments.empty?
-    .alert.alert-info.alert-block.col-md-11
+    .alert.alert-info.alert-block.col-md-11{ style: 'margin-left: 15px;' }
       %h3= bootstrap_icon('icon-info-sign', t('.code_locations_removed'))
-      .indent{ style: 'padding-left: 30px;' }
+      .indent{ style: 'padding: 15px 0 0 15px;' }
         %p= t('.code_locations_removed_explanation')
   .col-md-6
     .well

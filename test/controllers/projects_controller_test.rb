@@ -3,6 +3,7 @@ require 'test_helper'
 describe 'ProjectsController' do
   let(:api_key) { create(:api_key) }
   let(:client_id) { api_key.oauth_application.uid }
+  before { Repository.any_instance.stubs(:bypass_url_validation).returns(true) }
 
   # index
   it 'index should handle query param for unlogged users' do
@@ -244,6 +245,13 @@ describe 'ProjectsController' do
       get :show, id: project, format: 'xml', api_key: api_key.oauth_application.uid
       must_respond_with :ok
       must_render_template :no_analysis
+    end
+
+    it 'new project manager link from quick ref should be linked appropriately' do
+      project = create(:project, name: 'Foo', description: Faker::Lorem.sentence(90))
+      get :show, id: project.to_param
+      must_respond_with :ok
+      assert_select "a[href='#{new_project_manager_path(project.to_param)}']", text: 'Become the first manager for Foo'
     end
   end
 

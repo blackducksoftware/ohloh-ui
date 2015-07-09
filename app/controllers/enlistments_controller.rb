@@ -47,8 +47,7 @@ class EnlistmentsController < SettingsController
 
   def update
     @enlistment.update(enlistment_params)
-    # TODO: project schedule_delayed_analysis
-    # @enlistment.project.schedule_delayed_analysis(3.minutes)
+    @enlistment.project.schedule_delayed_analysis(3.minutes)
     redirect_to project_enlistments_path(@project), flash: { success: t('.success') }
   end
 
@@ -89,12 +88,12 @@ class EnlistmentsController < SettingsController
   end
 
   def initialize_repository
-    @repository_class = safe_constantize(params[:repository][:type])
-    @repository = @repository_class.get_compatible_class(params[:repository][:url]).new(repository_params)
+    @repository_class = safe_constantize(params[:repository][:type]).get_compatible_class(params[:repository][:url])
+    @repository = @repository_class.new(repository_params)
   end
 
   def save_or_update_repository
-    @project_has_repo_url = @project.enlistments.with_repo_url(params[:repository][:url]).exists?
+    @project_has_repo_url = @project.enlistments.with_repo_url(params[:repository][:url].strip).exists?
     existing_repo = @repository_class.find_existing(@repository)
     if existing_repo.present?
       existing_repo.update_attributes(username: @repository.username, password: @repository.password)

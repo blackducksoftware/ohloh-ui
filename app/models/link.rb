@@ -18,7 +18,7 @@ class Link < ActiveRecord::Base
   has_many :accounts, through: :edits
 
   scope :of_category, ->(category_id) { where(link_category_id: category_id) }
-  scope :general, -> { where(link_category_id: [CATEGORIES[:Homepage], CATEGORIES[:Download]]) }
+  scope :general, -> { where.not(link_category_id: [CATEGORIES[:Homepage], CATEGORIES[:Download]]) }
 
   validates :title, length: { in: 3..60 }, allow_blank: true
   validates :title, presence: true

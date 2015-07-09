@@ -1,3 +1,3 @@
 $(document).on 'page:change', ->
-  if $('#handle-organization-selector').length
+  if $('#account_affiliation_type').length
     new App.OrganizationSelector('account')

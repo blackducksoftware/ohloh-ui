@@ -146,7 +146,7 @@ class ApplicationController < ActionController::Base
   end
 
   def store_location
-    return if request.xhr?
+    return if request.xhr? || request_format != 'html'
     session[:return_to] = request.fullpath
   end
 

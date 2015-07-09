@@ -1,13 +1,14 @@
 class PositionsController < ApplicationController
   helper ProjectsHelper
   helper PositionsHelper
-  before_action :session_required, only: [:edit, :new, :create, :delete]
-  before_action :set_account
+  before_action :session_required, only: [:edit, :new, :create, :delete, :one_click_create]
+  before_action :set_account, except: :one_click_create
   before_action :must_own_account, only: [:edit, :update, :new, :create]
   before_action :redirect_to_languages, only: :show, if: :params_id_is_total?
   before_action :set_position, only: [:show, :edit, :update, :destroy, :commits_compound_spark]
   before_action :redirect_to_contribution_if_found, only: :show, unless: :params_id_is_total?
   before_action :account_context
+  before_action :set_project_and_name, only: :one_click_create
 
   helper_method :params_id_is_total?
 
@@ -64,6 +65,19 @@ class PositionsController < ApplicationController
     send_data spark_image, type: 'image/png', filename: 'position_commits_compound_spark.png', disposition: 'inline'
   end
 
+  def one_click_create
+    pos_or_alias_obj = current_user.position_core.ensure_position_or_alias!(@project, @name)
+    return redirect_to_new_position_path unless pos_or_alias_obj
+
+    if pos_or_alias_obj.is_a?(Alias)
+      flash_msg = t('.alias', name: @name.name, preferred_name: pos_or_alias_obj.preferred_name.name)
+    else
+      flash_msg = t('.position', name: @name.name)
+    end
+
+    redirect_to account_positions_path(current_user), flash: { success: flash_msg }
+  end
+
   private
 
   def redirect_to_contribution_if_found
@@ -71,6 +85,12 @@ class PositionsController < ApplicationController
     return unless project && !project.deleted && @position.contribution
 
     redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_new_position_path
+    redirect_to new_account_position_path(current_user, committer_name: @name.name,
+                                                        project_name: @project.name, invite: params[:invite]),
+                flash: { success: t('positions.one_click_create.new_position', name: @name.name) }
   end
 
   def params_id_is_total?
@@ -86,6 +106,12 @@ class PositionsController < ApplicationController
   def set_account
     @account = Account.from_param(params[:account_id]).take
     fail ParamRecordNotFound unless @account
+  end
+
+  def set_project_and_name
+    @project = Project.where(name: params[:project_name]).not_deleted.take
+    @name = Name.where(name: params[:committer_name]).take
+    fail ParamRecordNotFound unless @project && @name
   end
 
   def position_params
