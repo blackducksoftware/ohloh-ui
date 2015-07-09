@@ -1,5 +1,5 @@
 class SlocJob < Job
   def progress_message
-    'Step 3 of 3: Counting lines of source code'
+    I18n.t 'jobs.sloc_job.progress_message'
   end
 end

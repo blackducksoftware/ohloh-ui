@@ -1,5 +1,5 @@
 class ImportJob < Job
   def progress_message
-    'Step 2 of 3: Importing source code into database'
+    I18n.t 'jobs.import_job.progress_message'
   end
 end

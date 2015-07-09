@@ -1,5 +1,5 @@
 class OrganizationJob < Job
   def progress_message
-    "Analyzing organization #{organization.name}"
+    I18n.t 'jobs.organization_job.progress_message', name: organization.name
   end
 end

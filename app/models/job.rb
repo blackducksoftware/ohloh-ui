@@ -19,10 +19,6 @@ class Job < ActiveRecord::Base
   belongs_to :account
   belongs_to :organization
 
-  def progress_message
-    ''
-  end
-
   class << self
     def incomplete_project_job(project_ids)
       where(project_id: project_ids).where.not(status: STATUS_COMPLETED).first

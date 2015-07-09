@@ -14,6 +14,6 @@ class VitaJob < Job
   }
 
   def progress_message
-    "Creating vita for #{account.name}"
+    I18n.t 'jobs.vita_job.progress_message', name: account.name
   end
 end
