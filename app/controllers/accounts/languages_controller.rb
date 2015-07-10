@@ -4,7 +4,6 @@ class Accounts::LanguagesController < ApplicationController
 
   before_action :account_context
 
-  # NOTE: Replaces accounts#language.
   def index
     @contributions = @account.positions.includes(:contribution).map(&:contribution).group_by(&:project_id)
     return if @account.best_vita.nil?

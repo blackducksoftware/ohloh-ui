@@ -6,14 +6,12 @@ class Accounts::AccessesController < ApplicationController
   before_action :admin_session_required, only: :make_spammer
   before_action :disabled_during_read_only_mode, only: :activate
 
-  # NOTE: Replaces accounts#make_spammer.
   def make_spammer
     Account::Access.new(@account).spam!
     flash[:success] = t('.success', name: CGI.escapeHTML(@account.name))
     redirect_to account_path(@account)
   end
 
-  # NOTE: Replaces accounts#activate.
   def activate
     return unless Account::Access.new(@account).activate!(params[:code])
     @account.run_actions(Action::STATUSES[:after_activation])

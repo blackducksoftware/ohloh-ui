@@ -41,42 +41,32 @@ describe 'LinksControllerTest' do
     end
   end
 
-  it 'non-manager index action displays alert' do
-    skip 'TODO: Dependent on restrict_edits_to_managers'
+  it 'must display alert on index action for non manager' do
     restrict_edits_to_managers project
 
-    edit_as(user) do
-      get :index, project_id: project.url_name
+    login_as create(:account)
 
-      assert_select '.alert', text: "×\n\nYou can view, but not change this data. Only managers may change this data."
-    end
+    get :index, project_id: project.url_name
+
+    assert_select '.alert', text: "×\n\nYou can view, but not change this data. Only managers may change this data."
   end
 
-  it 'non-manager new action redirect to a login prompt' do
-    skip 'TODO: Dependent on restrict_edits_to_managers'
+  it 'must redirect to login page on new action for non manager' do
     restrict_edits_to_managers project
 
-    edit_as(user) do
-      get :new, project_id: project.url_name
-      project.reload.wont_be :edit_authorized?
-      must_redirect_to new_session_path
-    end
+    get :new, project_id: project.url_name
+    project.reload.wont_be :edit_authorized?
+    must_redirect_to new_session_path
   end
 
-  it 'non-manager edit action redirect to a login prompt' do
-    skip 'TODO: Dependent on restrict_edits_to_managers'
-    link = nil
-
-    edit_as(admin) do
-      link = create(:link, project_id: project.id)
-    end
+  it 'must redirect to login page on edit action for non manager' do
+    link = create(:link, project_id: project.id)
 
     restrict_edits_to_managers project
 
-    edit_as(user) do
-      get :edit, project_id: project.url_name, id: link.id
-      must_redirect_to new_session_path
-    end
+    get :edit, project_id: project.url_name, id: link.id
+
+    must_redirect_to new_session_path
   end
 
   describe 'single category links' do

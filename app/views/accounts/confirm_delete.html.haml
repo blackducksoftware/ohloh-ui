@@ -24,7 +24,6 @@
   %li= t('.help_11')
 
 .actions.center
-  -# TODO: Move the confirm text to a js function.
   %button.btn.btn-danger{ 'data-toggle' => 'modal', 'data-target' => '#confirm-delete-modal' }
     = t('.delete_my_account')
   = link_to t('cancel'), edit_account_path(@account), class: 'btn btn-default'

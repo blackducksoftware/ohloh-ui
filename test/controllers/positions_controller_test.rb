@@ -258,10 +258,10 @@ describe 'PositionsController' do
       must_select 'div.mini-badges-section a.account-badge[href=?]', 'http://blog.openhub.net/about-badges'
     end
 
-    it 'must call fetch_historical_data' do
-      skip 'cache related'
-      Account.any_instance.expects(:fetch_historical_commits)
-        .returns(start_date: 7.years.ago, facts: [], max_commits: 0)
+    it 'must use CommitsByProject to render page successfully' do
+      CommitsByProject.any_instance.stubs(:history)
+        .returns(start_date: 7.years.ago.to_date, facts: [], max_commits: 0)
+      create_position(account: account)
 
       get :index, account_id: account.to_param
 

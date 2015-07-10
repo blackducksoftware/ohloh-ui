@@ -8,7 +8,6 @@
     %li= link_to_if @forum, @forum.name, forum_path(@forum)
   %h4= t(:post)
   %ul
-    / TODO: Implement posts index after merging with master (OTWO-3350)
     %li= link_to t(:recent_posts), all_posts_path
     %li= link_to t(:unanswered_posts), all_posts_path(unanswered: true)
 

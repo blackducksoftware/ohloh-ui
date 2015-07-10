@@ -3,13 +3,11 @@ class Account::ProjectCore < OhDelegator::Base
     has_many :projects, -> { where(deleted: false) }, through: :manages, source: :target, source_type: 'Project'
   end
 
-  # TODO: Replace stacked_project? with this
   def stacked?(project_id)
     stack = stacks.detect { |s| s.stacked_project?(project_id) }
     stack.present?
   end
 
-  # TODO: Replace i_use_these with this
   def used
     @used_projects ||=
       Project.active.joins(:stacks).where(stacks_account_id)
@@ -20,7 +18,6 @@ class Account::ProjectCore < OhDelegator::Base
     [@used_projects, @used_proj_logos.index_by(&:id)]
   end
 
-  # TODO: Replace stacked_projects_count with this
   def stacked_count
     @stacked_projects_count ||=
       Project.active.joins(:stacks).where(stacks_account_id).distinct.count

@@ -1,4 +1,8 @@
 class SvnSyncRepository < SvnRepository
+  def name_in_english
+    'Subversion (via SvnSync)'
+  end
+
   class << self
     # svnsync is not universally supported.
     # This method checks the URL against a list of known good forges.

@@ -79,11 +79,24 @@ class PositionDecoratorTest < ActiveSupport::TestCase
   end
 
   describe 'project_contributor_or_show_path' do
-    it 'must return an array of account and position when no contribution' do
+    it 'must return account position path when there are no contribution' do
       account = create(:account)
       position = create_position(account: account)
       position.stubs(:contribution)
-      position.decorate.project_contributor_or_show_path.must_equal [account, position]
+      path = "/accounts/#{account.login}/positions/#{position.id}"
+      position.decorate.project_contributor_or_show_path.must_equal path
+    end
+
+    it 'must return project contributior path when there is a contribution' do
+      account = create(:account)
+      account.person.destroy
+      person = create(:person, account: account)
+      contribution = person.contributions.first
+      project = contribution.project
+      position = create_position(account: account, project: project)
+
+      path = "/p/#{project.url_name}/contributors/#{position.contribution.id}"
+      account.positions.first.decorate.project_contributor_or_show_path.must_equal path
     end
   end
 

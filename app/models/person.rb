@@ -25,7 +25,6 @@ class Person < ActiveRecord::Base
 
   alias_attribute :person_name, :effective_name
 
-  # FIXME: Move to analysis backend.
   def searchable_factor
     return 0.0 if kudo_position.nil? || Person.count == 1
     num = (Person.count - kudo_position).to_f

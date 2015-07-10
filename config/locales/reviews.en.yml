@@ -49,4 +49,5 @@ en:
       title: 'New Review'
     summary:
       title: 'The %{name} Open Source Project on Open Hub : Ratings and Reviews Page'
+      rating_and_reviews: 'Ratings and Reviews'
       no_review: 'This project has no reviews.'

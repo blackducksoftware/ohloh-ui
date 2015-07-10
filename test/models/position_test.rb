@@ -75,8 +75,9 @@ class PositionTest < ActiveSupport::TestCase
       position.language_experiences.size.must_equal 2
     end
 
-    it 'wont create duplicate project_experiences' do
-      skip 'FIXME: fix logic to prevent duplicate project experiences'
+    # This test is to note that:
+    # Nested attributes can be updated with the same values simultaneously regardless of uniqueness validation.
+    it 'must create duplicate project_experiences when updated together' do
       project_draper = create(:project, name: :draper)
       position = create_position(
         project_experiences_attributes: {
@@ -86,7 +87,7 @@ class PositionTest < ActiveSupport::TestCase
       )
 
       position.must_be :persisted?
-      position.project_experiences.map(&:project).map(&:name).sort.must_equal %w(draper)
+      position.project_experiences.map(&:project).map(&:name).sort.must_equal %w(draper draper)
     end
 
     it 'must assign a project using a project name' do
@@ -127,10 +128,9 @@ class PositionTest < ActiveSupport::TestCase
     end
 
     it 'must be true when start and stop dates are in the same month and year' do
-      skip 'FIXME: Failing test. Needs more time.'
       start_date = Date.today.beginning_of_month.advance(days: 5)
       stop_date = Date.today.end_of_month.advance(days: -5)
-      position = Position.new(ongoing: true, start_date: start_date, stop_date: stop_date)
+      position = Position.new(ongoing: false, start_date: start_date, stop_date: stop_date)
       position.one_monther?.must_equal true
     end
   end

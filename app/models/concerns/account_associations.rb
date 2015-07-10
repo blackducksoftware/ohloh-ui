@@ -17,6 +17,7 @@ module AccountAssociations
     has_many :invites, class_name: 'Invite', foreign_key: 'invitor_id'
     has_many :vitas
     has_many :manages, -> { where.not(approved_by: nil).where(deleted_by: nil, deleted_at: nil) }
+    has_many :all_manages, -> { where(deleted_by: nil, deleted_at: nil) }, class_name: :Manage
     has_many :edits
   end
 end

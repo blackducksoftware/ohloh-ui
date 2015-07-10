@@ -4,11 +4,9 @@ class Account::PositionCore < OhDelegator::Base
       deleted_projects = Project.select(:id).deleted.arel
       where(arel_table[:project_id].eq(nil).or(arel_table[:project_id].not_in(deleted_projects)))
     }
-    # FIXME: Replace account.has_claimed_positions? with account.claimed_positions.any?
     has_many :claimed_positions, -> { where.not(name_id: nil) }, class_name: :Position
   end
 
-  # FIXME: Replace positions.for_ohloh_projects with position_core.with_projects
   def with_projects
     @positions_with_projects ||=
       positions.joins(:project).where.not(Position.arel_table[:project_id].eq(nil))
@@ -16,7 +14,6 @@ class Account::PositionCore < OhDelegator::Base
   end
 
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-  # FIXME: Replace ordered_positions with position_core.ordered
   def ordered
     preloaded_positions.sort do |position_a, position_b|
       position_a_name_fact = name_facts["#{ position_a.project.best_analysis_id }_#{ position_a.name_id }"].try(:first)
@@ -31,7 +28,6 @@ class Account::PositionCore < OhDelegator::Base
   end
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
-  # FIXME: Replace positions_name_facts with position_core.name_facts
   # Returns a mapping of (position.project.analysis_id)_(position.name_id) => [position.name_fact] for all positions.
   def name_facts
     return @name_facts if @name_facts
@@ -46,7 +42,6 @@ class Account::PositionCore < OhDelegator::Base
     end
   end
 
-  # FIXME: Replace ensure_position_or_alias! with position_core.ensure_position_or_alias!
   # claim a position if there is no existing position for the project or create an alias
   def ensure_position_or_alias!(project, name, try_create = false, position_attributes = {})
     existing_position = project.positions.claimed_by(account).first
@@ -62,14 +57,12 @@ class Account::PositionCore < OhDelegator::Base
     end
   end
 
-  # FIXME: Replace account.positions_logos with account.position_core.logos
   def logos
     logo_ids = preloaded_positions.map { |position| position.project.logo_id }.compact
     @logos ||= Logo.find(logo_ids).index_by(&:id)
   end
 
   class << self
-    # FIXME: Replace account.only_unclaimed_positions account.position_core.with_only_unclaimed
     def with_only_unclaimed
       Account.where('id in (select account_id from positions group by account_id having max(name_id) IS NULL)')
     end
@@ -91,7 +84,6 @@ class Account::PositionCore < OhDelegator::Base
     # In that case, let's delete the existing position, and create a new one.
     existing_position.try(:destroy)
     # If no existing position, then create a new one including the form attributes(title, desc)
-    # TODO: Consider removing committer_name=.
     Position.create!(attributes)
   end
 

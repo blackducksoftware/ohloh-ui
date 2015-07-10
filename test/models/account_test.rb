@@ -291,39 +291,26 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   describe 'most_experienced_language' do
-    it 'should return C as Logic as the most exp language despite make having more commits in Make Lang' do
-      skip 'FIXME: Integrate alongwith Language, vita'
-      make = Language.create(name: :make, nice_name: :Make, category: 2)
-      generate_vita_user
-      vita = accounts(:user).best_vita
-      NameLanguageFact.create(language_id: make.id, total_commits: 300,
-                              vita_id: vita.id, total_activity_lines: 200, total_months: 30)
-      languages(:c).nice_name.must_equal accounts(:user).most_experienced_language.nice_name
+    it 'must return the language having a vita_language_fact' do
+      create(:language, category: 0)
+      lang_2 = create(:language, category: 2)
+      vita = create(:vita)
+      vita.account.update!(best_vita_id: vita.id)
+      create(:vita_language_fact, language: lang_2, vita: vita)
+
+      lang_2.nice_name.must_equal vita.account.most_experienced_language.nice_name
     end
 
-    it 'should return Make as the most exp language when C has no commits' do
-      skip 'FIXME: Integrate alongwith Language, vita'
-      make = Language.create(name: :make, nice_name: :Make, category: 2)
-      generate_vita_user
-      VitaLanguageFact.find_by_language_id(languages(:c).id).delete
-      vita = accounts(:user).best_vita
-      VitaLanguageFact.create(language_id: make.id, total_commits: 300,
-                              vita_id: vita.id, total_activity_lines: 200, total_months: 30)
-      make.nice_name.must_equal accounts(:user).most_experienced_language.nice_name
-    end
+    it 'must return the language with lowest category' do
+      lang_1 = create(:language, category: 0)
+      lang_2 = create(:language, category: 2)
+      vita = create(:vita)
+      vita.account.update!(best_vita_id: vita.id)
+      create(:vita_language_fact, language: lang_1, total_commits: 0, vita: vita)
+      create(:vita_language_fact, language: lang_2, total_commits: 300, vita: vita,
+                                  total_activity_lines: 200, total_months: 30)
 
-    it 'should return HAML as the most exp language when C/Make has no commits' do
-      skip 'FIXME: Integrate alongwith Language, vita'
-      make = Language.create(name: :make, nice_name: :Make, category: 2)
-      haml = Language.create(name: :haml, nice_name: :Haml, category: 1)
-      generate_vita_user
-      VitaLanguageFact.find_by_language_id(languages(:c).id).delete
-      vita = accounts(:user).best_vita
-      VitaLanguageFact.create(language_id: make.id, total_commits: 300, vita_id: vita.id,
-                              total_activity_lines: 200, total_months: 30)
-      VitaLanguageFact.create(language_id: haml.id, total_commits: 200, vita_id: vita.id,
-                              total_activity_lines: 200, total_months: 30)
-      haml.nice_name.must_equal accounts(:user).most_experienced_language.nice_name
+      lang_1.nice_name.must_equal vita.account.most_experienced_language.nice_name
     end
   end
 
@@ -374,7 +361,6 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it '#links' do
-    skip 'FIXME: Integrate alongwith edits'
     linux = projects(:linux)
     linux.editor_account = account
     link = linux.links.new(
@@ -388,7 +374,6 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it 'badges list' do
-    skip 'FIXME: Integrate alongwith Badge.'
     account = accounts(:user)
     badges = %w(badge1 badge2)
     Badge.expects(:all_eligible).with(account).returns(badges)
@@ -488,21 +473,25 @@ class AccountTest < ActiveSupport::TestCase
     account.errors.messages[:url].must_be :present?
   end
 
-  it 'deleting an account creates a organization job for the org' do
-    skip('TODO: Organization job should be scheduled for account organization_id update')
-    accounts(:robin).update_attribute(:organization_id, create(:organization).id)
-    org_id = accounts(:robin).organization_id
+  it 'must create an organization job when account is deleted' do
+    account = create(:account)
+    organization = create(:organization)
+    account.update_attribute(:organization_id, organization.id)
+
     Job.delete_all
-    accounts(:robin).destroy
+    account.destroy
+
     OrganizationJob.count.must_equal 1
-    OrganizationJob.first.organization_id.must_equal org_id
+    OrganizationJob.first.organization_id.must_equal organization.id
   end
 
-  it 'updating an account with different org id creates organization jobs for the affected orgs' do
-    skip('TODO: Organization job should be scheduled for account organization_id update')
-    accounts(:robin).update_attribute(:organization_id, create(:organization).id)
+  it 'must create 2 organization jobs for a change in organization_id' do
+    organization = create(:organization)
+    account = create(:account, organization_id: organization.id)
+
     Job.delete_all
-    accounts(:robin).reload.update_attributes!(organization_id: create(:organization).id)
+    account.update!(organization_id: create(:organization).id)
+
     OrganizationJob.count.must_equal 2
   end
 

@@ -25,7 +25,7 @@
             %td{ width: '50%', valign: 'top' }
               %h4.section_header.thirty_day= t('.thirty_day_summary')
               %small.summary_timespan.thirty_day
-                - if @analysis && @analysis.thirty_day_summary && @analysis.logged_at
+                - if @analysis.present? && @analysis.thirty_day_summary && @analysis.logged_at
                   = (@analysis.logged_at - 30.days).strftime('%b %e %Y')
                   &mdash;
                   = (@analysis.logged_at).strftime('%b %e %Y')
@@ -36,7 +36,7 @@
             %td{ width: '50%', valign: 'top' }
               %h4.section_header.twelve_month= t('.twelve_month_summary')
               %small.summary_timespan
-                - if @analysis && @analysis.twelve_month_summary && @analysis.logged_at
+                - if @analysis.twelve_month_summary.present? && @analysis.logged_at
                   = (@analysis.logged_at - 12.months).strftime('%b %e %Y')
                   &mdash;
                   = (@analysis.logged_at).strftime('%b %e %Y')

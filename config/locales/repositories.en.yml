@@ -1,0 +1,11 @@
+en:
+  repositories:
+    job_progress:
+      waiting: 'Waiting in queue'
+      running_at: 'Running %{at}'
+      running: 'Running'
+      no_job: 'No job is scheduled.'
+      update_completed: 'Open Hub update completed %{at} ago.'
+      complete: 'Complete %{at} ago.'
+      failed: 'Failed'
+      failed_at: 'Failed %{at} ago.'

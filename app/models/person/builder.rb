@@ -1,6 +1,5 @@
 class Person::Builder
   class << self
-    # FIXME: Rename Person.rebuild_kudos.
     def rebuild_kudos
       Person.logger.info { 'Person.rebuild_kudos(): Begin' }
 
@@ -23,7 +22,6 @@ class Person::Builder
     #
     # Instead, we optimize by manually adding new names and removing names that
     # went away.
-    # FIXME: Rename fixup_changed_project_analysis.
     def rebuild_for_analysis_matching_names(project)
       before_names = Person.where(project: project).pluck(:name_id)
       after_names = ContributorFact.unclaimed_for_project(project).pluck(:name_id)
