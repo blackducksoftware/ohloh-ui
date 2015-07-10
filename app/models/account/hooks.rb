@@ -66,17 +66,18 @@ class Account::Hooks
     Organization.find_by(id: organization_id).schedule_analysis
   end
 
+  # rubocop:disable Metrics/AbcSize
   def destroy_spammer_dependencies(account)
-    # FIXME: acts_as_editable, posts, manage
-    # account.posts.each { |post| post.destroy_and_cleanup }
-    # account.all_manages.each { |manage| manage.destroy_by!(account) }
-    # account.edits.each { |edit| edit.undo rescue if edit.undone? }
+    account.posts.each(&:destroy_with_empty_topic)
+    account.all_manages.each { |manage| manage.destroy_by!(account) }
+    account.edits.not_undone.each { |edit| edit.undo!(Account.hamster) }
     account.topics.where(posts_count: 0).destroy_all
     account.person.try(:destroy)
     dependent_destroy(account)
   rescue
     raise ActiveRecord::Rollback
   end
+  # rubocop:enable Metrics/AbcSize
 
   def dependent_destroy(account)
     %w(positions sent_kudos stacks ratings reviews api_keys).each do |association|

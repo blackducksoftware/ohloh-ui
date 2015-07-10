@@ -50,4 +50,44 @@ class PostTest < ActiveSupport::TestCase
     post.reload
     post.body.must_equal 'Bad Tags'
   end
+
+  describe 'destroy_with_empty_topic' do
+    it 'must destroy the post' do
+      post.destroy_with_empty_topic
+
+      Post.find_by(id: post.id).must_be_nil
+    end
+
+    it 'must destroy topic when forum_id is present and no other posts' do
+      topic = post.topic
+      topic.posts.count.must_equal 1
+
+      post.destroy_with_empty_topic
+
+      Post.find_by(id: post.id).must_be_nil
+      Topic.find_by(id: topic.id).must_be_nil
+    end
+
+    it 'wont destroy topic when it has no forum_id' do
+      topic = post.topic
+      topic.posts.count.must_equal 1
+      topic.update!(forum_id: nil)
+
+      post.destroy_with_empty_topic
+
+      Post.find_by(id: post.id).must_be_nil
+      Topic.find_by(id: topic.id).must_be :present?
+    end
+
+    it 'wont destroy topic when it has other posts' do
+      topic = post.topic
+      topic.posts.count.must_equal 1
+      create(:post, topic: topic)
+
+      post.destroy_with_empty_topic
+
+      Post.find_by(id: post.id).must_be_nil
+      Topic.find_by(id: topic.id).must_be :present?
+    end
+  end
 end
