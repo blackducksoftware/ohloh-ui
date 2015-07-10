@@ -238,6 +238,15 @@ describe 'ProjectsController' do
       must_respond_with :ok
     end
 
+    it "must render no analysis template if project's best analysis is nil" do
+      api_key = create(:api_key)
+      project = create(:project)
+      project.update_column(:best_analysis_id, nil)
+      get :show, id: project, format: 'xml', api_key: api_key.oauth_application.uid
+      must_respond_with :ok
+      must_render_template :no_analysis
+    end
+
     it 'new project manager link from quick ref should be linked appropriately' do
       project = create(:project, name: 'Foo', description: Faker::Lorem.sentence(90))
       get :show, id: project.to_param
