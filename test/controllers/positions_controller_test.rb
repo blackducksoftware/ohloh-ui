@@ -287,22 +287,14 @@ describe 'PositionsController' do
     end
 
     it 'must load all positions for a user with graph' do
-      skip 'FIXME: Uncomment after integrating projects_controller#commits.'
       account = create(:account)
-      account.generate_vita
-      # Account.stubs(:find).returns(account)
-      Position.find(2).update_attribute(:description, Faker::Lorem.sentence)
-
+      position = create_position(account: account)
       get :index, account_id: account.to_param
       must_respond_with :success
-      assert assigns(:commits_data)
-      assert_select 'div.one-project-header-right p', "1 Commit \nin mostly C"
-      assert_select 'a.project-organization', '(Linux Foundations)'
-      assert_select 'span.one-project-description', 'wrote the module for wireless card driver ralink rt5390'
-      assert_select 'span.fifteen_project_activity_level_new', 1
-      assert_select 'div h2', 'Contributions'
-      assert_select 'div#all_projects.chart-with-data[datavalue]', 1
-      assert_select 'div#project_contributions_1.chart-with-data[datavalue]', 1
+      language = position.name_fact.primary_language.nice_name
+      response.body.must_match "1\nCommit\n</a>in mostly\n#{language}"
+      response.body.must_match position.name_fact.analysis.project.organization.name
+      assert_select 'div#all_projects.chart-with-data[data-value]', 1
     end
 
     it 'must show project description and title' do
