@@ -33,6 +33,11 @@ module ActsAsEditable
       CreateEdit.find_by(target_type: self.class.to_s, target_id: id)
     end
 
+    def attribute_changed?(attribute)
+      dirty_method = "#{attribute}_is_dirty".to_sym
+      changes_include?(attribute) || (respond_to?(dirty_method) && send(dirty_method))
+    end
+
     private
 
     def create_edit_history!
@@ -70,11 +75,6 @@ module ActsAsEditable
 
     def changed_editable_properties
       editable_attributes.select { |attribute| attribute_changed?(attribute) }.compact
-    end
-
-    def attribute_changed?(attribute)
-      dirty_method = "#{attribute}_is_dirty".to_sym
-      changes_include?(attribute) || (respond_to?(dirty_method) && send(dirty_method))
     end
   end
 end
