@@ -29,6 +29,23 @@ describe 'Accounts::ChartsController' do
     end
   end
 
+  describe 'commits_by_individual_project' do
+    it 'should return json chart data' do
+      get :commits_by_individual_project, account_id: account.id, project_id: account.positions.first.project.id
+      result  = JSON.parse(response.body)
+
+      must_respond_with :ok
+      result['series'].first['data'].must_equal [25, 40, 28, 18, 1, 8, 30, 12] + [0] * 65
+    end
+
+    it 'should redirect if account is disabled' do
+      Account::Access.any_instance.stubs(:disabled?).returns(true)
+
+      get :commits_by_individual_project, account_id: admin.login
+      must_redirect_to disabled_account_url(admin)
+    end
+  end
+
   describe 'commits_by_language' do
     it 'should return json chart data when scope is regular' do
       get :commits_by_language, account_id: account.id, scope: 'regular'

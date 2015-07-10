@@ -89,6 +89,7 @@ Rails.application.routes.draw do
       collection do
         get :commits_by_project
         get :commits_by_language
+        get :commits_by_individual_project
       end
     end
 
