@@ -8,7 +8,8 @@
   %meta{ content: '@Open Hub', name: 'twitter:site' }
   %meta{ content: @project.name, name: 'twitter:title' }
   %meta{ content: project_twitter_description(@project, @analysis), name: 'twitter:description' }
-  %meta{ content: @project.logo.attachment.url(:med), name: 'twitter:image' }
+  - if @project.logo
+    %meta{ content: @project.logo.attachment.url(:med), name: 'twitter:image' }
   %meta{ content: 'https://www.openhub.net', name: 'twitter:domain' }
 
 %div

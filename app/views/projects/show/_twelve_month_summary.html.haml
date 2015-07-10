@@ -1,5 +1,5 @@
 %ul.unstyled.nutshell
-  - if @analysis && @analysis.factoids && @analysis.twelve_month_summary
+  - if @analysis.factoids.any? && @analysis.twelve_month_summary.present?
     :ruby
       commits_fact = @analysis.factoids.select { |f| f.is_a? FactoidActivity }
       committers_fact = @analysis.factoids.select { |f| f.is_a? FactoidStaff }
