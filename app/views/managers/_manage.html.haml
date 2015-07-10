@@ -2,8 +2,8 @@
   account = manage.account
   name = html_escape(account.name)
   target = html_escape(@parent.name)
-  position = nil # TODO: (positions) account.positions.find(:first, :conditions => ["project_id = ?", @parent.id])
-  name_fact = nil # TODO: (name_facts) position && position.name_fact
+  position = account.positions.where(project_id: @parent.id).first
+  name_fact = position && position.name_fact
 - if !manage.pending? || (current_user_can_manage? || current_user == account)
   .row.padding_one_top
     .col-md-2

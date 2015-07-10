@@ -32,7 +32,6 @@ class ChartDecorator
   end
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
-  # NOTE: Replaces chart_watermark & chart_watermark_hash.
   # image_name is used in erb binding.
   # rubocop:disable Lint/UnusedMethodArgument
   def background_style(image_name)
@@ -42,7 +41,6 @@ class ChartDecorator
   end
   # rubocop:enable Lint/UnusedMethodArgument
 
-  # NOTE: Replaces abstract_presenter.create_date_objects
   def string_to_hash(stringified_dates)
     stringified_dates.map do |date_string|
       { commit_month: date_string, stringify: date_string.match(/Jan/) ? date_string.split('-').last : '' }

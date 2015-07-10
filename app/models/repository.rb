@@ -17,8 +17,8 @@ class Repository < ActiveRecord::Base
     "#{url} #{branch_name}"
   end
 
-  def english_name
-    # TODO: scm source adapter
+  def name_in_english
+    source_scm.english_name
   end
 
   def failed?

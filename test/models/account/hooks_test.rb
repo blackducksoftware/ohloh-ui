@@ -83,8 +83,7 @@ class Account::HooksTest < ActiveSupport::TestCase
       end
       account.positions.count.must_equal 0
       account.posts.count.must_equal 0
-      # TODO: Pass this test while integrating acts_as_editable.
-      # Account.find_or_create_anonymous_account.posts.count.must_equal 5
+      Account.find_or_create_anonymous_account.posts.count.must_equal 3
     end
   end
 
@@ -111,31 +110,14 @@ class Account::HooksTest < ActiveSupport::TestCase
         account.save
       end
     end
-
-    it 'should rollback when notification raises an error' do
-      skip('TODO: AccountNotifier')
-
-      account = build(:account, level: Account::Access::DEFAULT)
-      AccountNotifier.stubs(:deliver_signup_notification)
-        .raises(Net::SMTPSyntaxError.new('Bad recipient address syntax'))
-
-      assert_no_difference('Person.count') do
-        Account.transaction do
-          account.save
-        end
-      end
-
-      account.errors.size.must_equal 1
-      # account.errors['email'].must_equal [
-      # "The Black Duck Open Hub could not send registration email to
-      # <strong class='red'>uber@ohloh.net</strong>.
-      # Invalid Email Address provided."]
-    end
   end
 
   describe 'after_update' do
     it 'should schedule organization analysis on update' do
-      skip('FIXME: add test when implementing schedule_analysis')
+      account = create(:account)
+
+      Organization.any_instance.expects(:schedule_analysis).once
+      account.update!(organization_id: create(:organization).id)
     end
   end
 

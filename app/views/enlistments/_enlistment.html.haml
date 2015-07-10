@@ -3,11 +3,9 @@
   %td.col-md-4
     = enlistment.repository.nice_url
   %td.col-md-2
-    -# TODO: repository model.
-    = # enlistment.repository.english_name
+    = enlistment.repository.name_in_english
   %td.col-md-3
-    -# TODO: repository model
-    = # enlistment.repository.progress_message
+    = RepositoryJobProgress.new(enlistment.repository).message
   %td.col-md-2.status
     - ass = enlistment.analysis_sloc_set
     - if ass

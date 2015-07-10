@@ -13,7 +13,7 @@
     %h4.alert-heading.nomargin= t('.alert_info_heading', name: @project.name)
     %p= t('.alert_info_description')
 
-- if @failed_job
+- if @failed_jobs
   .alert.alert-warning.alert-block
     %h4.alert-heading.nomargin= t('.alert_warn_heading')
     %p= t('.alert_warn_description1')

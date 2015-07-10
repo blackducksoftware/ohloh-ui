@@ -1,7 +1,6 @@
 class CommitsByProject < Cherry::Decorator
   LIMIT = 6
 
-  # TODO: Replaces fetch_historical_commits account/reports.rb
   def history
     cbp = for_all_months
     if cbp.blank?
@@ -11,7 +10,6 @@ class CommitsByProject < Cherry::Decorator
     end
   end
 
-  # TODO: Replaces commits_history account/reports.rb
   def history_in_date_range
     facts = in_date_range.group_by { |c| c[:pname] }
     facts = facts.sort_by { |_, afs| -afs.sum { |af| af[:commits].to_i } }
@@ -19,7 +17,6 @@ class CommitsByProject < Cherry::Decorator
     monthly_commits(facts)
   end
 
-  # TODO: Replaces regularize_chart_data account/reports.rb
   def chart_data(project_id = nil)
     months_range = TimeParser.months_in_range(history[:start_date], end_date)
     facts = chart_yaxis_data(project_id)

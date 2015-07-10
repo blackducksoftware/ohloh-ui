@@ -65,7 +65,6 @@ class ClaimCoreTest < ActiveSupport::TestCase
     # delete the alias
     alias_object.stubs(:create_edit).returns(stub(:undo!))
     alias_object.create_edit.undo!(accounts(:user))
-    # FIXME: Remove after integrating analysis logic
     linux.update!(best_analysis_id: nil)
     user.claim_core.instance_variable_set('@name_fact_emails', nil)
     user.claim_core.email_ids.must_be_empty

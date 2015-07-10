@@ -12,12 +12,8 @@ class EnlistmentsController < SettingsController
                    .filter_by(params[:query])
                    .send(parse_sort_term)
                    .paginate(page: params[:page], per_page: 10)
-    # TODO: job model
-    # @failed_jobs = @enlistments.joins([:project, [repository: :jobs]]).incomplete_job.failed_job.any?
-    respond_to do |format|
-      format.html
-      format.xml
-    end
+    @failed_jobs = @enlistments.joins(project: :jobs, repository: :jobs)
+                   .where(jobs: { status: Job::STATUS_FAILED }).any?
   end
 
   def show

@@ -60,10 +60,11 @@ class LinkTest < ActiveSupport::TestCase
     link.link_category_id.must_equal Link::CATEGORIES[:Forums]
   end
 
-  it 'test url' do
-    # TODO: Uncomment after integrating acts_as_editable.
-    # -> { projects(:linux).update(url: 'linux.com') }.must_raise(ActiveRecord::Acts::Editable::MissingEditorError)
+  it 'must raise an exception when creating without editor_account' do
+    -> { create(:link_with_no_editor_account) }.must_raise(ActiveRecord::RecordInvalid)
+  end
 
+  it 'test url' do
     [ # test for basic validity failures.
       'bad url', 'http://\"$', 'ftp://booasd', 'http://',
       'http://;', "http://www.oh.net'", 'http://www.oh.net`'

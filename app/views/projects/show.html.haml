@@ -8,8 +8,7 @@
   %meta{ content: '@Open Hub', name: 'twitter:site' }
   %meta{ content: @project.name, name: 'twitter:title' }
   %meta{ content: project_twitter_description(@project, @analysis), name: 'twitter:description' }
-  / TODO: implement when we have s3_url_for
-  / %meta{ content: s3_url_for(@project.logo, :med), name: 'twitter:image' }
+  %meta{ content: @project.logo.attachment.url(:med), name: 'twitter:image' }
   %meta{ content: 'https://www.openhub.net', name: 'twitter:domain' }
 
 %div

@@ -1,4 +1,3 @@
--# NOTE: Replaces account_kudo_button in kudos helper
 :ruby
   name = @account.name
   kudo = Kudo.where(sender_id: current_user.id, account_id: @account.id).first

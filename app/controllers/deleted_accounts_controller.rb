@@ -3,7 +3,6 @@ class DeletedAccountsController < ApplicationController
   before_action :feedback_time_must_not_be_elapsed
   before_action :account_must_be_deleted
 
-  # NOTE: Replaces accounts#delete_feedback.
   def update
     if params[:reasons].present?
       processed_reasons = process_reason_params(params)

@@ -33,4 +33,11 @@ class VitaJobTest < ActiveSupport::TestCase
     VitaJob.expects(:schedule_account_analysis)
     VitaJob.schedule_account_analysis_for_project(position.project)
   end
+
+  describe 'progress_message' do
+    it 'should return required message' do
+      job = VitaJob.create(account: create(:account))
+      job.progress_message.must_equal "Creating vita for #{job.account.name}"
+    end
+  end
 end

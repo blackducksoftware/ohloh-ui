@@ -21,6 +21,7 @@ class Project < ActiveRecord::Base
   end
   before_validation :clean_strings_and_urls
   after_save :update_organzation_project_count
+  after_update :remove_people, if: -> project { project.deleted_changed? && project.deleted? }
 
   attr_accessor :managed_by_creator
 
@@ -78,13 +79,6 @@ class Project < ActiveRecord::Base
     koders_status.try(:ohloh_code_ready) == true
   end
 
-  def self.cached_count
-    # TODO: Enable Cache
-    # get_cache('cached_project_count', :expires_in => 5.minutes) do
-    Project.active.count
-    # end
-  end
-
   def newest_contributions
     contributions.sort_by_newest.includes(person: :account, contributor_fact: :primary_language).limit(10)
   end
@@ -119,5 +113,9 @@ class Project < ActiveRecord::Base
     org = Organization.where(id: organization_id || organization_id_was).first
     return unless org
     org.update_attributes(editor_account: editor_account, projects_count: org.projects.count)
+  end
+
+  def remove_people
+    Person.where(project_id: id).destroy_all
   end
 end

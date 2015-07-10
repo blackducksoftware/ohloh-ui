@@ -45,7 +45,6 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  # TODO: Fix me when sessions are real
   def session_required
     return if logged_in?
     flash[:notice] = t('sessions.message_html', href: new_account_path)
@@ -179,8 +178,6 @@ class ApplicationController < ActionController::Base
 
   private
 
-  # FIXME: Old source allowed some XML requests without authentication.
-  #        Skip this filter for widgets, sitemap and exhibits.
   def verify_api_access_for_xml_request
     return unless request_format == 'xml'
     client_id = params[:api_key] || doorkeeper_token.try(:application).try(:uid)
@@ -213,9 +210,7 @@ class ApplicationController < ActionController::Base
 
   def access_denied
     store_location
-    # TODO: Check if we really need width options.
-    width_options = params[:width] && { width: 't' }
-    redirect_to new_session_path(width_options)
+    redirect_to new_session_path
   end
 
   def set_session_projects

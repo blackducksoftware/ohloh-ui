@@ -1,11 +1,11 @@
-- popular_projects.each do|project|
+- popular_items.each do|item|
   .top_ten_row
-    = set_link(project)
+    = set_link(item)
     .top_ten_main
       .top_ten_link
-        = set_path(project)
-      .top_ten_bar.pull-left{ class: colors, style: "width:#{width(project, required, max)}%" }
+        = set_path(item)
+      .top_ten_bar.pull-left{ class: colors, style: "width:#{width(item, required, max)}%" }
         &nbsp;
       .top_ten_label.pull-left
-        = pluralize(project_count(project, required), commit)
+        = pluralize(project_count(item, required), commit)
     .clearfix

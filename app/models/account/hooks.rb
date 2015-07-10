@@ -31,7 +31,6 @@ class Account::Hooks
   end
 
   def after_save(account)
-    reindex_person(account) if account.person && !Account::Access.new(account).spam?
     update_person_effective_name(account) if account.person.present? && !Account::Access.new(account).spam?
   end
 
@@ -43,11 +42,6 @@ class Account::Hooks
 
   def update_person_effective_name(account)
     account.person.update!(effective_name: account.name)
-  end
-
-  def reindex_person(_account)
-    # FIXME: Integrate alongwith searchable
-    # account.person.reindex
   end
 
   def activate_using_invite!(account)
@@ -67,9 +61,9 @@ class Account::Hooks
     AccountMailer.signup_notification(account).deliver_now
   end
 
-  def schedule_organization_analysis(_organization_id)
-    # FIXME: Uncomment when Organization analysis scheduling works.
-    # Organization.find_by_id(organization_id).schedule_analysis
+  def schedule_organization_analysis(organization_id)
+    return unless organization_id
+    Organization.find_by(id: organization_id).schedule_analysis
   end
 
   def destroy_spammer_dependencies(account)

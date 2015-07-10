@@ -30,6 +30,16 @@ describe 'EnlistmentsControllerTest' do
       must_render_template :index
       assigns(:enlistments).count.must_equal 0
     end
+
+    it 'should return failed_jobs as true when there failed jobs for the project' do
+      AnalyzeJob.create(project_id: @enlistment.project.id, status: 3)
+
+      get :index, project_id: @enlistment.project.id
+
+      must_respond_with :ok
+      must_render_template :index
+      assigns(:failed_jobs).must_equal true
+    end
   end
 
   it 'new' do

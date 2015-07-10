@@ -2,13 +2,11 @@ class AutocompletesController < ApplicationController
   before_action :check_for_project, only: :contributions
   before_action :set_name_facts, only: :contributions
 
-  # NOTE: Replaces accounts#autocomplete,
   def account
     accounts = Account.simple_search(params[:term])
     render json: accounts.map { |a| { login: a.login, name: a.name, value: a.login, id: a.id } }
   end
 
-  # NOTE: Replaces projects#autocomplete.
   def project
     @projects = Project.not_deleted
                 .where('lower(name) like ?', "%#{ params[:term].downcase }%")
@@ -22,7 +20,6 @@ class AutocompletesController < ApplicationController
     render text: licenses.map { |l| { nice_name: l.nice_name, id: l.id.to_s } }.to_json
   end
 
-  # NOTE: Replaces contributions#autocomplete
   def contributions
     render json: @name_facts.map { |nf| nf.name.name }
   end

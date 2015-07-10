@@ -90,7 +90,6 @@ class Account < ActiveRecord::Base
     update!(activation_resent_at: Time.current)
   end
 
-  # TODO: Replaces get_first_commit_date
   def first_commit_date
     first_checkin = best_vita.vita_fact.first_checkin
     return if first_checkin.blank?
