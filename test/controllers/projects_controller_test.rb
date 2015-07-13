@@ -247,6 +247,13 @@ describe 'ProjectsController' do
       must_render_template :no_analysis
     end
 
+    it 'must not accept api keys from users who are no longer in good standing' do
+      account = create(:spammer)
+      api_key = create(:api_key, account: account)
+      get :show, id: create(:project), format: 'xml', api_key: api_key.oauth_application.uid
+      must_respond_with :unauthorized
+    end
+
     it 'new project manager link from quick ref should be linked appropriately' do
       project = create(:project, name: 'Foo', description: Faker::Lorem.sentence(90))
       get :show, id: project.to_param
@@ -680,7 +687,7 @@ describe 'ProjectsController' do
       end
 
       it 'wont allow access for token matching no application' do
-        token = stub('acceptable?' => true)
+        token = stub(acceptable?: true, application: nil)
         @controller.stubs(:doorkeeper_token).returns(token)
 
         get :index, format: :xml

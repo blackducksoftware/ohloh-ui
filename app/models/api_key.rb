@@ -18,7 +18,7 @@ class ApiKey < ActiveRecord::Base
   filterable_by ['accounts.name', 'oauth_applications.uid', 'api_keys.description',
                  'oauth_applications.name']
 
-  scope :in_good_standing, -> { where.not(status: STATUS_DISABLED) }
+  scope :in_good_standing, -> { joins(:account).where.not(status: STATUS_DISABLED).where('accounts.level >= 0') }
   scope :by_account_name, -> { joins(:account).order('lower(accounts.name)') }
   scope :by_newest, -> { order(created_at: :desc) }
   scope :by_oldest, -> { order(created_at: :asc) }
