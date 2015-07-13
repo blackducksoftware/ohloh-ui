@@ -12,8 +12,7 @@ class EnlistmentsController < SettingsController
                    .filter_by(params[:query])
                    .send(parse_sort_term)
                    .paginate(page: params[:page], per_page: 10)
-    @failed_jobs = @enlistments.joins(project: :jobs, repository: :jobs)
-                   .where(jobs: { status: Job::STATUS_FAILED }).any?
+    @failed_jobs = Enlistment.with_failed_repository_jobs.where(id: @enlistments.map(&:id)).any?
   end
 
   def show

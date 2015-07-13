@@ -32,7 +32,7 @@ describe 'EnlistmentsControllerTest' do
     end
 
     it 'should return failed_jobs as true when there failed jobs for the project' do
-      AnalyzeJob.create(project_id: @enlistment.project.id, status: 3)
+      FetchJob.create(repository_id: @enlistment.repository.id, status: 3)
 
       get :index, project_id: @enlistment.project.id
 
