@@ -15,9 +15,10 @@ class CompareProjectUrlCsvDecorator
 
   def comments_url
     require_best_analysis do |a|
-      return t('compare.no_comments_found') unless a.relative_comments
+      return t('compares.project_cells.comments.no_comments_found') unless a.relative_comments
       f = a.factoids.select { |factoid| factoid.is_a?(FactoidComments) }.first
-      f ? h.project_factoids_url(@project, host: @host, anchor: f.class.name) : t('compare.no_comments_found')
+      return h.project_factoids_url(@project, host: @host, anchor: f.class.name) if f
+      t('compares.project_cells.comments.no_comments_found')
     end
   end
 
@@ -67,7 +68,7 @@ class CompareProjectUrlCsvDecorator
     if !@project.best_analysis.nil? && @project.best_analysis.last_commit_time
       block.call(@project.best_analysis)
     else
-      (@project.enlistments.count > 0) ? t('compare.pending') : t('compare.no_data')
+      (@project.enlistments.count > 0) ? t('compares.pending') : t('compares.no_data')
     end
   end
 
