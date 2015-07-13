@@ -75,7 +75,7 @@ class ManagersController < SettingsController
 
   def find_manage
     account_name = params[:id] || current_user.login
-    @manage = Manage.not_denied.for_account(Account.from_param(account_name).first!).first
+    @manage = Manage.not_denied.for_target(@parent).for_account(Account.from_param(account_name).first!).first
   rescue ActiveRecord::RecordNotFound
     raise ParamRecordNotFound
   end
