@@ -6,9 +6,9 @@ module ProjectScopes
     scope :deleted, -> { where(deleted: true) }
     scope :not_deleted, -> { where(deleted: false) }
     scope :from_param, lambda { |param|
-      not_deleted.where(Project.arel_table[:url_name].eq(param).or(Project.arel_table[:id].eq(param)))
+      not_deleted.by_url_name_or_id(param)
     }
-    scope :deleted_and_not_deleted_from_param, lambda { |param|
+    scope :by_url_name_or_id, lambda { |param|
       where(Project.arel_table[:url_name].eq(param).or(Project.arel_table[:id].eq(param)))
     }
     scope :been_analyzed, -> { where.not(best_analysis_id: nil) }

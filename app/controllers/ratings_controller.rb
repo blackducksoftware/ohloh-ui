@@ -1,7 +1,8 @@
 class RatingsController < ApplicationController
   ALLOWED_PARTIALS = ['projects/show/community_rating', 'reviews/rater']
   before_action :session_required
-  before_action :find_project_and_rating
+  before_action :set_project_or_fail
+  before_action :set_rating
 
   def rate
     @rating.assign_attributes(model_params)
@@ -23,11 +24,8 @@ class RatingsController < ApplicationController
     params.permit(:score)
   end
 
-  def find_project_and_rating
-    @project = Project.find_by_url_name!(params[:id])
+  def set_rating
     @rating = Rating.where(project_id: @project.id, account_id: current_user.id).first_or_initialize
-  rescue ActiveRecord::RecordNotFound
-    raise ParamRecordNotFound
   end
 
   def sanitize_partial(partial)

@@ -372,5 +372,15 @@ describe 'StacksControllerTest' do
       get :project_stacks, id: create(:project), format: :xml, api_key: api_key.oauth_application.uid
       must_respond_with :ok
     end
+
+    it 'must render projects/deleted when project is deleted' do
+      account = create(:account)
+      project = create(:project)
+      project.update!(deleted: true, editor_account: account)
+
+      get :project_stacks, id: project
+
+      must_render_template 'deleted'
+    end
   end
 end

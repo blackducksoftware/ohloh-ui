@@ -2,7 +2,8 @@ class EnlistmentsController < SettingsController
   helper EnlistmentsHelper
   helper ProjectsHelper
   before_action :session_required, only: [:create, :new, :destroy, :edit, :update]
-  before_action :find_project
+  before_action :set_project_or_fail
+  before_action :set_project_editor_account_to_current_user
   before_action :find_enlistment, only: [:show, :edit, :update, :destroy]
   before_action :project_context, only: [:index, :new, :edit, :create, :update]
 
@@ -64,12 +65,6 @@ class EnlistmentsController < SettingsController
 
   def parse_sort_term
     Enlistment.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : 'by_url'
-  end
-
-  def find_project
-    @project = Project.from_param(params[:project_id]).take
-    fail ParamRecordNotFound if @project.nil?
-    @project.editor_account = current_user
   end
 
   def find_enlistment

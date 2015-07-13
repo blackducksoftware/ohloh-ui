@@ -5,7 +5,7 @@ class DuplicatesController < ApplicationController
 
   before_action :session_required
   before_action :admin_session_required, only: [:index, :show, :resolve]
-  before_action :find_project, except: [:index, :show, :resolve]
+  before_action :set_project_or_fail, except: [:index, :show, :resolve]
   before_action :find_duplicate, only: [:edit, :update, :destroy]
   before_action :find_good_project, only: [:create, :update]
   before_action :project_context, except: [:index, :show, :resolve]
@@ -66,11 +66,6 @@ class DuplicatesController < ApplicationController
   end
 
   private
-
-  def find_project
-    @project = Project.from_param(params[:project_id]).take
-    fail ParamRecordNotFound if @project.nil?
-  end
 
   def find_duplicate_without_project_id
     @duplicate = Duplicate.where(id: params[:id]).where.not(resolved: true).take

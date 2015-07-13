@@ -19,6 +19,15 @@ class RatingsControllerTest < ActionController::TestCase
     must_respond_with :ok
   end
 
+  it 'must render projects/deleted when project is deleted' do
+    login_as @account
+    @project.update!(deleted: true, editor_account: @account)
+
+    post :rate, id: @project.to_param, score: '5', show: 'projects/show/community_rating'
+
+    must_render_template 'deleted'
+  end
+
   it 'does not allow rating a project to silly values' do
     rating_score = @project.ratings
     login_as @account
