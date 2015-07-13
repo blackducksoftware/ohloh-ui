@@ -10,7 +10,7 @@
   .clear
 
   .pull-left#inner_content
-    %a.pull-left.logo{ href: project_path(project) }
+    %a.pull-left.logo{ href: project_path(project), style: 'max-width: 64px;' }
       - project_icon(project, :med)
 
     .info.pull-left
