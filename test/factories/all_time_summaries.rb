@@ -6,4 +6,11 @@ FactoryGirl.define do
     outside_committers_count 2_222
     outside_commits_count 2_000
   end
+
+  factory :all_time_summary_summary_with_name_ids, parent: :all_time_summary do
+    after(:create) do |all_time_summary|
+      name_fact = create(:name_fact, analysis: all_time_summary.analysis)
+      all_time_summary.update_attributes(recent_contributors: ['name_ids', name_fact.name.id])
+    end
+  end
 end

@@ -5,5 +5,9 @@ FactoryGirl.define do
 
   factory :best_vita, parent: :vita do
     association :vita_fact
+
+    after(:create) do |vita|
+      vita.account.update_attributes(best_vita_id: vita.id)
+    end
   end
 end
