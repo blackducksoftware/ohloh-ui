@@ -59,6 +59,13 @@ describe 'AccountsController' do
       must_respond_with :ok
     end
 
+    it 'should support accounts with vitas' do
+      best_vita = create(:best_vita)
+      key = create(:api_key, account_id: create(:account).id)
+      get :show, id: best_vita.account.to_param, format: :xml, api_key: key.oauth_application.uid
+      must_respond_with :ok
+    end
+
     it 'should redirect if account is disabled' do
       Account::Access.any_instance.stubs(:disabled?).returns(true)
 

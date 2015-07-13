@@ -209,6 +209,14 @@ describe 'ProjectsController' do
       must_respond_with :ok
     end
 
+    it 'should render for projects with all time summaries with name_ids' do
+      all_time_summary_summary_with_name_ids = create(:all_time_summary_summary_with_name_ids)
+      project = all_time_summary_summary_with_name_ids.analysis.project
+      project.update_attributes(best_analysis: all_time_summary_summary_with_name_ids.analysis)
+      get :show, id: project.to_param
+      must_respond_with :ok
+    end
+
     it 'show should render for projects that have been analyzed' do
       project = create(:project)
       af_1 = create(:activity_fact, analysis: project.best_analysis, code_added: 8_000, comments_added: 8_000)

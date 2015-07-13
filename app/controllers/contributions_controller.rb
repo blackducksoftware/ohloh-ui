@@ -10,6 +10,7 @@ class ContributionsController < ApplicationController
   before_action :set_contributor, only: [:commits_spark, :commits_compound_spark]
   before_action :send_sample_image_if_bot, if: :bot?, only: [:commits_spark, :commits_compound_spark]
   before_action :project_context, only: [:index, :show, :summary]
+  skip_before_action :store_location, only: [:commits_spark, :commits_compound_spark]
 
   def index
     @contributions = @project.contributions

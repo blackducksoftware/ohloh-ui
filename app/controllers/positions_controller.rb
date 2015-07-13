@@ -9,13 +9,13 @@ class PositionsController < ApplicationController
   before_action :redirect_to_contribution_if_found, only: :show, unless: :params_id_is_total?
   before_action :account_context
   before_action :set_project_and_name, only: :one_click_create
+  skip_before_action :store_location, only: [:commits_compound_spark]
 
   helper_method :params_id_is_total?
 
   def new
     # When someone 'claims' to be a committer, we get some params prepopulated.
-    @position = Position.new(committer_name: params[:committer_name],
-                             project_oss: params[:project_name])
+    @position = Position.new(committer_name: params[:committer_name], project_oss: params[:project_name])
   end
 
   def update

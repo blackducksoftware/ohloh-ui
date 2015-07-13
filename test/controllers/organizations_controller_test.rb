@@ -82,6 +82,26 @@ describe 'OrganizationsController' do
     must_respond_with :ok
   end
 
+  it 'show should render for organizations that contain projects that have been analyzed' do
+    organization = create(:organization)
+    project = create(:project, organization: organization)
+    af_1 = create(:activity_fact, analysis: project.best_analysis, code_added: 8_000, comments_added: 8_000)
+    create(:factoid, analysis: project.best_analysis, language: af_1.language)
+    af_2 = create(:activity_fact, analysis: project.best_analysis)
+    create(:factoid, analysis: project.best_analysis, language: af_2.language)
+    af_3 = create(:activity_fact, analysis: project.best_analysis)
+    create(:factoid, analysis: project.best_analysis, language: af_3.language)
+    af_4 = create(:activity_fact, analysis: project.best_analysis)
+    create(:factoid, analysis: project.best_analysis, language: af_4.language)
+    ats = project.best_analysis.all_time_summary
+    ats.update_attributes(recent_contributors: [create(:person).id, create(:person).id])
+    cf = create(:commit_flag)
+    create(:analysis_sloc_set, analysis: project.best_analysis, sloc_set: cf.sloc_set)
+    key = create(:api_key, account_id: create(:account).id)
+    get :show, id: organization.to_param, format: :xml, api_key: key.oauth_application.uid
+    must_respond_with :ok
+  end
+
   it 'should support show page via xhr' do
     xhr :get, :show, id: @organization
     must_respond_with :ok
