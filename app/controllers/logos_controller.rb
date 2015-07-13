@@ -4,6 +4,7 @@ class LogosController < SettingsController
 
   before_action :session_required, except: :new
   before_action :set_project_or_organization, only: [:destroy, :create, :new]
+  before_action :set_editor_account_to_current_user, only: [:destroy, :create, :new]
   before_action :set_logo, only: :destroy
   around_action :edit_authorized?, only: :create
   before_action :show_permissions_alert, only: :new
@@ -58,6 +59,11 @@ class LogosController < SettingsController
               elsif params[:organization_id]
                 @organization = Organization.from_param(params[:organization_id]).take
               end
+
+    fail ParamRecordNotFound unless @parent
+  end
+
+  def set_editor_account_to_current_user
     @parent.editor_account = current_user
   end
 
