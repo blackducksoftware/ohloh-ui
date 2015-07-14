@@ -6,8 +6,8 @@ class AccountTest < ActiveSupport::TestCase
 
   it '#sent_kudos' do
     Kudo.delete_all
-    create(:kudo, sender: admin, account: accounts(:user))
-    create(:kudo, sender: admin, account: accounts(:joe))
+    create(:kudo, sender: admin, account: create(:account, name: 'joe'))
+    create(:kudo, sender: admin, account: create(:account, name: 'moe'))
 
     admin.sent_kudos.count.must_equal 2
   end
@@ -146,7 +146,12 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it 'should return recently active accounts' do
-    name_facts(:vitafact).update_attributes(last_checkin: Time.current)
+    best_vita = create(:best_vita)
+    best_vita.account.update_attributes(best_vita_id: best_vita.id, created_at: Time.current - 4.days)
+    vita_fact = best_vita.vita_fact
+    account = best_vita.account
+    vita_fact.update_attributes(last_checkin: Time.current)
+
     recently_active = Account.recently_active
     recently_active.wont_be_nil
     recently_active.count.must_equal 1
@@ -167,15 +172,15 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it 'facts_joins should accounts with positions projects and name_facts' do
-    analysis = analyses(:linux)
-    project = projects(:linux)
-    project.editor_account = account
-    project.update_attributes! best_analysis_id: analysis.id
+    project = create(:project)
+    name = create(:name)
+    name_fact = create(:name_fact, analysis: project.best_analysis, name: name, vita_id: create(:vita).id)
+    name_fact.vita.account.update_attributes(best_vita_id: name_fact.vita_id, latitude: 30.26, longitude: -97.74)
+    create(:position, project: project, name: name, account: name_fact.vita.account)
 
     accounts_with_facts = Account.with_facts
-    accounts_with_facts.size.must_equal 2
-    accounts_with_facts.first.name.must_equal 'admin Allen'
-    accounts_with_facts.last.name.must_equal 'user Luckey'
+    accounts_with_facts.size.must_equal 1
+    accounts_with_facts.first.must_equal name_fact.vita.account
   end
 
   it 'should validate current password error message' do
@@ -226,14 +231,16 @@ class AccountTest < ActiveSupport::TestCase
     assert account.invalid?
   end
 
-  it 'it should get the first commit date for a account position' do
-    user = accounts(:user)
-    expected_date = Time.strptime('2008-02-09', '%Y-%m-%d').to_date.beginning_of_month
-    user.first_commit_date.must_equal expected_date
-  end
+  describe 'first commit date' do
+    it 'it should get the first checkin for a account position' do
+      vita = create(:best_vita, account_id: account.id)
+      account.update_column(:best_vita_id, vita.id)
+      account.first_commit_date.must_equal Date.today.beginning_of_month
+    end
 
-  it 'it should return nil when account has no best_vita' do
-    admin.first_commit_date.must_be_nil
+    it 'it should return nil when account has no best_vita' do
+      admin.first_commit_date.must_be_nil
+    end
   end
 
   describe 'login validations' do
@@ -321,7 +328,7 @@ class AccountTest < ActiveSupport::TestCase
     end
 
     it 'must return id when login is not urlable' do
-      account = accounts(:user)
+      account = create(:account)
       account.login = '$one'
       account.to_param.must_equal account.id.to_s
     end
@@ -354,16 +361,18 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it '#update_akas' do
-    projects(:ohloh).update!(best_analysis_id: create(:analysis).id, editor_account: accounts(:user))
-    position = create_position(project: projects(:ohloh), account: accounts(:user))
-    accounts(:user).update_akas
-    accounts(:user).akas.split("\n").sort.must_equal [position.name.name, 'User'].sort
+    project = create(:project)
+    account = create(:account)
+    project.update!(best_analysis_id: create(:analysis).id, editor_account: account)
+    position = create_position(project: project, account: account)
+    account.update_akas
+    account.akas.split("\n").sort.must_equal [position.name.name].sort
   end
 
   it '#links' do
-    linux = projects(:linux)
-    linux.editor_account = account
-    link = linux.links.new(
+    project = create(:project)
+    project.editor_account = account
+    link = project.links.new(
       url: 'http://www.google.com',
       title: 'title',
       link_category_id: Link::CATEGORIES[:Other]
@@ -374,7 +383,7 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it 'badges list' do
-    account = accounts(:user)
+    account = create(:account)
     badges = %w(badge1 badge2)
     Badge.expects(:all_eligible).with(account).returns(badges)
     account.badges.must_equal badges
@@ -502,7 +511,9 @@ class AccountTest < ActiveSupport::TestCase
     end
 
     it 'should return kudo_rank' do
-      accounts(:user).kudo_rank.must_equal 10
+      account =create(:account)
+      account.person.update_column(:kudo_rank, 10)
+      account.kudo_rank.must_equal 10
     end
   end
 
