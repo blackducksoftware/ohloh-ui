@@ -2,6 +2,7 @@ require 'test_helper'
 
 class AvatarHelperTest < ActionView::TestCase
   include AvatarHelper
+  let(:person) { create(:account).person }
 
   it 'avatar_img_path should handle accounts' do
     path = avatar_img_path(create(:admin))
@@ -9,7 +10,7 @@ class AvatarHelperTest < ActionView::TestCase
   end
 
   it 'avatar_img_path should handle people' do
-    path = avatar_img_path(people(:jason))
+    path = avatar_img_path(person)
     path.ends_with?('.gif').must_equal true
   end
 
@@ -24,7 +25,7 @@ class AvatarHelperTest < ActionView::TestCase
   end
 
   it 'avatar_for should accept people' do
-    link = avatar_for(people(:jason))
+    link = avatar_for(person)
     link.starts_with?('<a').must_equal true
   end
 
@@ -44,7 +45,7 @@ class AvatarHelperTest < ActionView::TestCase
   end
 
   it 'avatar_for should allow inserting a title for an person' do
-    link = avatar_for(people(:jason), title: true)
+    link = avatar_for(person, title: true)
     link.must_match(/title/)
   end
 
