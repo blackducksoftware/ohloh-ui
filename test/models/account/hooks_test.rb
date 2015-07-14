@@ -3,13 +3,10 @@ require 'test_helper'
 class Account::HooksTest < ActiveSupport::TestCase
   describe 'before_validation' do
     it 'must strip login email and name' do
-      account = accounts(:user)
-      account.login = 'login    '
-      account.email = '     email'
-      account.name = '    name    '
-      account.save
+      account = create(:account, login: 'login   ', email: '   email@test.com', name: '  name  ',
+                                 email_confirmation: 'email@test.com')
       account.login.must_equal 'login'
-      account.email.must_equal 'email'
+      account.email.must_equal 'email@test.com'
       account.name.must_equal 'name'
     end
 
@@ -46,6 +43,7 @@ class Account::HooksTest < ActiveSupport::TestCase
   describe 'before_destroy' do
     it 'should destroy dependencies when marked as spam' do
       account = create(:account)
+      create(:account, login: 'ohloh_slave')
       create_list(:topic, 3, account: account)
       create_list(:post, 3, account: account)
       create_position(account: account)
@@ -77,31 +75,39 @@ class Account::HooksTest < ActiveSupport::TestCase
     end
 
     it 'should rollback when destroy dependencies raises an exception' do
-      account = accounts(:user)
+      topic = create(:topic_with_posts)
+      account = topic.account
+      topic = create(:topic_with_posts, account: account)
+      create_position(account: account)
       Account::Access.any_instance.stubs(:spam?).returns(true)
       Account.any_instance.stubs(:api_keys).raises(ActiveRecord::Rollback)
       account.topics.update_all(posts_count: 0)
-      account.topics.count.must_equal 3
+      account.topics.count.must_equal 2
       account.person.wont_be_nil
       account.positions.count.must_equal 1
       account.save
       account.reload
-      account.topics.count.must_equal 3
+      account.topics.count.must_equal 2
       account.person.wont_be_nil
       account.positions.count.must_equal 1
     end
 
     it 'should destroy dependencies before account destroy' do
-      account = accounts(:user)
+      account = create(:account)
+      topic = create(:topic, account: account)
+      Post.create(topic: topic, account: account, body: 'test1')
+      Post.create(topic: topic, account: account, body: 'test2')
+
+      create_position(account: account)
       account.positions.count.must_equal 1
-      account.posts.count.must_equal 5
+      account.posts.count.must_equal 2
       Account.find_or_create_anonymous_account.posts.count.must_equal 0
       assert_difference('DeletedAccount.count', 1) do
         account.destroy
       end
       account.positions.count.must_equal 0
       account.posts.count.must_equal 0
-      Account.find_or_create_anonymous_account.posts.count.must_equal 3
+      Account.find_or_create_anonymous_account.posts.count.must_equal 2
     end
   end
 
@@ -141,10 +147,10 @@ class Account::HooksTest < ActiveSupport::TestCase
 
   describe 'after_save' do
     it 'must update persons effective_name after save' do
-      account = accounts(:user)
-      account.person.effective_name.must_equal 'Robin Luckey'
-      account.save!
-      account.person.effective_name.must_equal 'user Luckey'
+      account = create(:account, name: 'test name')
+      account.person.effective_name.must_equal 'test name'
+      account.update_attributes! name: 'test new name'
+      account.person.effective_name.must_equal 'test new name'
     end
   end
 end
