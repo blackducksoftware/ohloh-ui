@@ -68,7 +68,7 @@ describe 'ContributionsController' do
       must_respond_with :ok
     end
 
-    it 'must render 404 for deleted projects' do
+    it 'must render projects/deleted for deleted projects' do
       @project.update!(deleted: true, editor_account: create(:account))
 
       get :show, project_id: @project.to_param, id: @contribution.id

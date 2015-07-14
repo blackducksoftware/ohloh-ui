@@ -5,7 +5,7 @@ class ContributionsController < ApplicationController
   helper :kudos, :projects
   helper MapHelper
 
-  before_action :set_project_or_fail
+  before_action :set_project_or_fail, if: -> { params[:project_id] }
   before_action :set_contribution, except: [:commits_spark, :commits_compound_spark, :index, :summary, :near]
   before_action :set_contributor, only: [:commits_spark, :commits_compound_spark]
   before_action :send_sample_image_if_bot, if: :bot?, only: [:commits_spark, :commits_compound_spark]
