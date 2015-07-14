@@ -16,7 +16,7 @@ class CompareProjectCsvDecorator
   end
 
   def user_count
-    pluralize_with_delimiter(@project.user_count, t('compare.user'))
+    pluralize_with_delimiter(@project.user_count, t('compares.user'))
   end
 
   def rating_average
@@ -29,13 +29,13 @@ class CompareProjectCsvDecorator
 
   def licenses
     licenses = @project.licenses
-    return t('compare.no_data') if licenses.blank?
+    return t('compares.no_data') if licenses.blank?
     licenses.map { |license| "#{license.short_name} #{h.license_url(license, host: @host)}" }.join(', ')
   end
 
   def managers
     managers = @project.active_managers
-    return t('compare.position_not_yet_claimed') if managers.blank?
+    return t('compares.position_not_yet_claimed') if managers.blank?
     managers.map { |account| "#{account.name} #{h.account_url(account, host: @host)}" }.join(', ')
   end
 
