@@ -81,7 +81,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user_can_manage?
 
   def current_project_or_org
-    @parent ||= @project || @organization || current_project || current_organization
+    @parent ||= @project || @organization || current_project
     @parent
   end
 
@@ -94,15 +94,6 @@ class ApplicationController < ActionController::Base
     @project
   end
   helper_method :current_project
-
-  def current_organization
-    begin
-      @organization ||= Organization.from_param(params[:organization_id] || params[:id]).first!
-    rescue ActiveRecord::RecordNotFound
-      raise ParamRecordNotFound
-    end
-    @organization
-  end
 
   def read_only_mode?
     ENV['READ_ONLY_MODE'].present?

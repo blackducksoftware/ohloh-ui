@@ -11,9 +11,9 @@ module ProjectsHelper
 
   def project_metric_from_sort(sort)
     case sort
-    when 'by_new'
+    when 'new'
       :created_at
-    when 'by_rating'
+    when 'rating'
       :rating_average
     else
       :users
@@ -110,9 +110,5 @@ module ProjectsHelper
 
   def project_activity_level(project)
     project.best_analysis.activity_level
-  end
-
-  def i_use_this_css
-    logged_in? ? 'stack_trigger' : 'needs_login'
   end
 end

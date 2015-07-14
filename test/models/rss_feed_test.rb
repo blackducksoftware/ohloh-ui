@@ -29,4 +29,24 @@ class RssFeedTest < ActiveSupport::TestCase
     rss_feed.wont_be :valid?
     rss_feed.errors.messages[:url].first.must_equal 'Invalid URL Format'
   end
+
+  it 'should handle time out errors' do
+    url = 'http://rss.roll/never_gonna_sync_you_up.rss'
+    rss_feed = create(:rss_feed, url: url)
+    rss_feed.stubs(:parse).raises Timeout::Error.new
+    rss_feed.fetch(accounts(:admin))
+    rss_feed.error.must_equal I18n.t('rss_feeds.index.timeout_error', url: url)
+  end
+
+  it 'should update any associated projects whenever a successful sync occurs' do
+    before = Time.now - 4.hours
+    rss_feed = create(:rss_feed)
+    project = create(:project)
+    project.update_attributes(updated_at: before)
+    project.reload.updated_at.must_equal before
+    create(:rss_subscription, rss_feed: rss_feed, project: project)
+    rss_feed.url = 'test/fixtures/files/news.rss'
+    rss_feed.fetch(accounts(:admin))
+    project.reload.updated_at.wont_equal before
+  end
 end
