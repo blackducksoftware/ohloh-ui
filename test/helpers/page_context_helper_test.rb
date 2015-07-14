@@ -5,9 +5,9 @@ class PageContextHelperTest < ActionView::TestCase
   attr_accessor :page_context
 
   let(:page_context) { {} }
-  let(:admin) { accounts(:admin) }
+  let(:admin) { create(:admin) }
   let(:linux_organization) { create(:organization, url_name: :linux) }
-  let(:linux) { projects(:linux) }
+  let(:linux) { create(:project) }
   let(:rails) { create(:forum) }
 
   let(:account_menus) do
@@ -44,7 +44,7 @@ class PageContextHelperTest < ActionView::TestCase
   end
 
   it 'should return account page context' do
-    @account = accounts(:admin)
+    @account = create(:admin)
     # PageContextHelper is included in ApplicationController where current_user is available.
     stubs(:current_user).returns(@account)
     account_context
