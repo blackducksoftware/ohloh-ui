@@ -2,15 +2,15 @@ require 'test_helper'
 
 class Account::AuthenticatorTest < ActiveSupport::TestCase
   it 'can authenticate via email' do
-    account = create(:account, email: 'admin@openhub.net', password: 'password')
-    authenticator = Account::Authenticator.new(login: 'admin@openhub.net', password: 'password')
+    account = create(:account, password: 'password')
+    authenticator = Account::Authenticator.new(login: account.email, password: 'password')
     authenticator.must_be :authenticated?
     authenticator.account.must_equal account
   end
 
   it 'can authenticate via login' do
-    account = create(:account, login: 'admin', password: 'password')
-    authenticator = Account::Authenticator.new(login: 'admin', password: 'password')
+    account = create(:account, password: 'password')
+    authenticator = Account::Authenticator.new(login: account.login, password: 'password')
     authenticator.must_be :authenticated?
     authenticator.account.must_equal account
   end
