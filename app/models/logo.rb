@@ -1,5 +1,20 @@
 class Logo < Attachment
   FILE_SIZE_LIMIT = 1..500.kilobytes
+
+  DEFAULT_LOGOS = {
+    15_216 => '.Net Library',
+    1231   => 'C Library',
+    1228   => 'C++ Library',
+    15_212 => 'CakePHP Plugin',
+    1189   => 'Console App',
+    6221   => 'Drupal Module',
+    1183   => 'Java Library',
+    1534   => 'Javascript Library',
+    6236   => 'Perl Module',
+    1174   => 'Python Library',
+    1180   => 'Ruby Library'
+  }
+
   attr_reader :url
 
   has_one :project
@@ -22,6 +37,14 @@ class Logo < Attachment
     self.attachment = uri unless uri.blank?
   rescue
     @invalid_url = true
+  end
+
+  def destroy
+    default? ? true : super
+  end
+
+  def default?
+    DEFAULT_LOGOS[id].present?
   end
 
   class << self
