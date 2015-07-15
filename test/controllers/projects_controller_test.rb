@@ -3,7 +3,7 @@ require 'test_helper'
 describe 'ProjectsController' do
   let(:api_key) { create(:api_key, account: create(:account)) }
   let(:client_id) { api_key.oauth_application.uid }
-  let(:forge) { create(:forge) }
+  let(:forge) { Forge.find_by(name: 'Github') }
 
   before do
     Repository.any_instance.stubs(:bypass_url_validation).returns(true)
