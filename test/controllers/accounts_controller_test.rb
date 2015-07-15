@@ -1,7 +1,6 @@
 require 'test_helper'
 
 describe 'AccountsController' do
-  let(:user) { accounts(:user) }
   let(:start_date) do
     (Date.today - 6.years).beginning_of_month
   end
@@ -18,13 +17,12 @@ describe 'AccountsController' do
   end
 
   let(:user) do
-    account = accounts(:user)
-    account.best_vita.vita_fact.destroy
-    create(:vita_fact, vita_id: account.best_vita_id)
-    account
+    vita = create(:best_vita)
+    create(:vita_fact, vita_id: vita.id)
+    vita.account
   end
 
-  let(:admin) { accounts(:admin) }
+  let(:admin) { create(:admin) }
 
   describe 'index' do
     it 'should return claimed persons with their cbp_map and positions_map' do
