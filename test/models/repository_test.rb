@@ -43,7 +43,7 @@ class RepositoryTest < ActiveSupport::TestCase
 
   describe '#matching' do
     before do
-      @forge = forges(:github)
+      @forge = create(:forge)
       @repo1 = create(:repository, forge_id: @forge.id, name_at_forge: 'github_1')
       @repo2 = create(:repository, forge_id: @forge.id, name_at_forge: 'github_2', owner_at_forge: 'github_owner')
     end
