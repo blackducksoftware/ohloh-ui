@@ -18,10 +18,10 @@ class RssFeed < ActiveRecord::Base
 
   def handle_fetch(url, current_user)
     parse(url, current_user)
-    rescue Timeout::Error
-      self.error = I18n.t('rss_feeds.index.timeout_error', url: url)
-    rescue
-      self.error = I18n.t('rss_feeds.index.error', url: url, message: $ERROR_INFO.message, trace: $ERROR_INFO.backtrace)
+  rescue Timeout::Error
+    self.error = I18n.t('rss_feeds.index.timeout_error', url: url)
+  rescue
+    self.error = I18n.t('rss_feeds.index.error', url: url, message: $ERROR_INFO.message, trace: $ERROR_INFO.backtrace)
   end
 
   def schedule_next_fetch

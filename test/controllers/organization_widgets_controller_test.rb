@@ -14,6 +14,11 @@ describe 'OrganizationWidgetsController' do
       assigns(:widgets).map(&:class).must_equal widget_classes
       assigns(:organization).must_equal org
     end
+
+    it 'should inform client that gifs are not supported' do
+      get :index, organization_id: org.id, format: :gif
+      must_respond_with :not_acceptable
+    end
   end
 
   describe 'open_source_activity' do

@@ -9,17 +9,6 @@ module ProjectsHelper
     haml_tag :div, project_activity_text(project, true), class: project_activity_level_text_class(image_size)
   end
 
-  def project_metric_from_sort(sort)
-    case sort
-    when 'by_new'
-      :created_at
-    when 'by_rating'
-      :rating_average
-    else
-      :users
-    end
-  end
-
   def project_iusethis_button(project)
     haml_tag :a, href: '#', id: "stackit_#{project.to_param}",
                  class: "#{logged_in? ? 'stack_trigger' : 'needs_login'} dontnav btn btn-primary btn-mini" do
@@ -110,9 +99,5 @@ module ProjectsHelper
 
   def project_activity_level(project)
     project.best_analysis.activity_level
-  end
-
-  def i_use_this_css
-    logged_in? ? 'stack_trigger' : 'needs_login'
   end
 end

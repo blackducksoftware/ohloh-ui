@@ -28,8 +28,9 @@ module ProjectFilters
   end
 
   def find_projects_by_params
+    @sort = params[:sort]
     projects = @account ? @account.projects.not_deleted : Project.not_deleted
-    projects.by_collection(params[:ids], params[:sort], params[:query])
+    projects.by_collection(params[:ids], @sort, params[:query])
   end
 
   def find_project

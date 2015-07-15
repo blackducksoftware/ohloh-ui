@@ -82,6 +82,14 @@ class StackEntriesControllerTest < ActionController::TestCase
     stack_entry.reload.note.must_equal 'Changed!'
   end
 
+  it 'update should gracefully handle update failures' do
+    StackEntry.any_instance.stubs(:update_attributes).returns false
+    stack_entry = create(:stack_entry)
+    login_as stack_entry.stack.account
+    put :update, id: stack_entry, stack_id: stack_entry.stack, stack_entry: { note: 'Changed!' }
+    must_respond_with :unprocessable_entity
+  end
+
   # destroy action
   it 'destroy should require a current user' do
     project = create(:project)

@@ -42,6 +42,24 @@ describe 'RssSubscriptionsController' do
     must_redirect_to project_rss_subscriptions_path(@project)
   end
 
+  it 'should gracefully handle locked projects' do
+    Project.any_instance.stubs(:edit_authorized?).returns false
+    post :create, project_id: @project.to_param, rss_feed: { url: 'http://yahoo.com' }
+    must_respond_with :redirect
+    must_redirect_to project_path(@project)
+    flash.notice.must_equal I18n.t(:not_authorized)
+  end
+
+  it 'should recreate a previously deleted rss_subscription if available' do
+    rss_feed = create(:rss_feed, url: 'http://yahoo.com')
+    rss_subscription = create(:rss_subscription, project: @project, rss_feed: rss_feed)
+    rss_subscription.create_edit.undo!(@account)
+    post :create, project_id: @project.to_param, rss_feed: { url: 'http://yahoo.com' }
+    must_respond_with :redirect
+    must_redirect_to project_rss_subscriptions_path(@project)
+    rss_subscription.reload.deleted.must_equal false
+  end
+
   it 'should not create a new rss subscription with invalid param' do
     post :create, project_id: @project.to_param, rss_feed: { url: 'junk' }
     must_render_template 'rss_subscriptions/new'
