@@ -18,5 +18,16 @@ describe 'RssArticlesController' do
 
       must_respond_with :success
     end
+
+    it 'must render projects/deleted when project is deleted' do
+      account = create(:account)
+      project = create(:project)
+      login_as account
+      project.update!(deleted: true, editor_account: account)
+
+      get :index, project_id: project.to_param
+
+      must_render_template 'deleted'
+    end
   end
 end

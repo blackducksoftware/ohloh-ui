@@ -44,6 +44,9 @@ describe 'ContributionsController' do
   end
 
   describe 'show' do
+    let(:api_key) { create(:api_key) }
+    let(:client_id) { api_key.oauth_application.uid }
+
     it 'should return contribution' do
       ContributorFact.any_instance.stubs(:first_checkin).returns(Time.current - 2.days)
       ContributorFact.any_instance.stubs(:last_checkin).returns(Time.current)
@@ -63,6 +66,28 @@ describe 'ContributionsController' do
       get :show, project_id: @project.to_param, id: @contribution.id, format: :xml, api_key: key.oauth_application.uid
 
       must_respond_with :ok
+    end
+
+    it 'must render projects/deleted for deleted projects' do
+      @project.update!(deleted: true, editor_account: create(:account))
+
+      get :show, project_id: @project.to_param, id: @contribution.id
+
+      must_render_template 'deleted'
+    end
+
+    it 'must render projects/deleted for deleted projects using xml api' do
+      @project.update!(deleted: true, editor_account: create(:account))
+
+      get :show, project_id: @project.to_param, id: @contribution.id, format: :xml, api_key: client_id
+
+      must_render_template 'deleted'
+    end
+
+    it 'must handle non existent projects via xml api' do
+      get :show, project_id: 'non-existent', id: @contribution.id, format: :xml, api_key: client_id
+
+      must_render_template 'error.xml'
     end
   end
 

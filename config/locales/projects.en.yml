@@ -197,6 +197,8 @@ en:
     deleted:
       message: '%{name} has been deleted'
       failed: 'failed'
+      project_has_been_deleted: This project has been deleted. It can be reinstated by reapplying the create edit (see the %{link}).
+      project_is_deleted: '%{name} is deleted.'
     users:
       page_title: 'Users Page'
       title: 'Users'

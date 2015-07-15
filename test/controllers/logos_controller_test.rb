@@ -111,6 +111,18 @@ class LogosControllerTest < ActionController::TestCase
     flash[:notice].must_equal I18n.t('permissions.not_manager')
   end
 
+  it 'must render 404 when project is deleted' do
+    project = create(:project)
+    account = create(:account)
+
+    login_as account
+    project.update!(deleted: true, editor_account: account)
+
+    get :new, project_id: project.id
+
+    must_respond_with :not_found
+  end
+
   it 'create with logo id' do
     login_as @admin
     Project.any_instance.expects(:edit_authorized?).returns(true)

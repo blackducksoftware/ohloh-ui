@@ -221,5 +221,17 @@ class ApplicationController < ActionController::Base
       Project.from_param(url_name).take
     end.compact.uniq
   end
+
+  def set_project_or_fail
+    project_id = params[:project_id] || params[:id]
+    @project = Project.by_url_name_or_id(project_id).take
+
+    fail ParamRecordNotFound unless @project
+    render 'projects/deleted' if @project.deleted?
+  end
+
+  def set_project_editor_account_to_current_user
+    @project.editor_account = current_user
+  end
 end
 # rubocop:enable Metrics/ClassLength

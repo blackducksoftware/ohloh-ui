@@ -1,7 +1,7 @@
 class AliasesController < SettingsController
   helper ProjectsHelper
   before_action :session_required, except: :index
-  before_action :find_project, except: [:undo, :redo]
+  before_action :set_project_or_fail, :set_project_editor_account_to_current_user, except: [:undo, :redo]
   before_action :redirect_to_message_if_oversized_project, only: :new
   before_action :project_context, only: [:index, :new, :create]
 
@@ -38,12 +38,6 @@ class AliasesController < SettingsController
   end
 
   private
-
-  def find_project
-    @project = Project.from_param(params[:project_id]).take
-    fail ParamRecordNotFound if @project.nil?
-    @project.editor_account = current_user
-  end
 
   def redirect_to_message_if_oversized_project
     redirect_to root_path, notice: t('aliases.alias_temporarily_disabled') if oversized_project?(@project)

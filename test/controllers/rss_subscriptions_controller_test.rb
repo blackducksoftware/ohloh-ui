@@ -12,6 +12,14 @@ describe 'RssSubscriptionsController' do
     must_respond_with :ok
   end
 
+  it 'must render projects/deleted when project is deleted' do
+    @project.update!(deleted: true, editor_account: @account)
+
+    get :index, project_id: @project.to_param
+
+    must_render_template 'deleted'
+  end
+
   it 'must render the page correctly when rss_subscriptions are present' do
     rss_subscription_1 = create(:rss_subscription, project: @project)
     rss_feed = create(:rss_feed, last_fetch: true)

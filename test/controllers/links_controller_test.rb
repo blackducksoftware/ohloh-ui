@@ -59,6 +59,15 @@ describe 'LinksControllerTest' do
     must_redirect_to new_session_path
   end
 
+  it 'must render projects/deleted when project is deleted' do
+    project = create(:project)
+    project.update!(deleted: true, editor_account: admin)
+
+    get :new, project_id: project.to_param
+
+    must_render_template 'deleted'
+  end
+
   it 'must redirect to login page on edit action for non manager' do
     link = create(:link, project_id: project.id)
 

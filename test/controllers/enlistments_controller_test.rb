@@ -40,6 +40,17 @@ describe 'EnlistmentsControllerTest' do
       must_render_template :index
       assigns(:failed_jobs).must_equal true
     end
+
+    it 'must render projects/deleted when project is deleted' do
+      login_as @account
+      ApplicationController.any_instance.stubs(:current_user_can_manage?).returns(true)
+      project = @enlistment.project
+      project.update!(deleted: true, editor_account: @account)
+
+      get :index, project_id: project.id
+
+      must_render_template 'deleted'
+    end
   end
 
   it 'new' do

@@ -1,7 +1,7 @@
 class CommitsController < SettingsController
   helper ProjectsHelper
 
-  before_action :set_project
+  before_action :set_project_or_fail
   before_action :find_named_commit, only: :show
   before_action :find_contributor_fact, only: [:events, :event_details]
   before_action :redirect_to_message_if_oversized_project, except: :statistics
@@ -53,11 +53,6 @@ class CommitsController < SettingsController
   end
 
   private
-
-  def set_project
-    @project = Project.from_param(params[:project_id]).take
-    fail ParamRecordNotFound if @project.nil?
-  end
 
   def find_named_commit
     @named_commit = NamedCommit.find_by(id: params[:id])

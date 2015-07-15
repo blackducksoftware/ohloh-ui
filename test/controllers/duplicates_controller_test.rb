@@ -120,6 +120,17 @@ describe 'DuplicatesController' do
       get :new, project_id: project.to_param
       assert_response 302
     end
+
+    it 'must render projects/deleted when project is deleted' do
+      account = create(:account)
+      project = create(:project)
+      login_as account
+      project.update!(deleted: true, editor_account: account)
+
+      get :new, project_id: project.to_param
+
+      must_render_template 'deleted'
+    end
   end
 
   describe 'create' do

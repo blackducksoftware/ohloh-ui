@@ -1,6 +1,6 @@
 class RssSubscriptionsController < ApplicationController
   helper :projects
-  before_action :find_project, except: :destroy
+  before_action :set_project_or_fail, :set_project_editor_account_to_current_user
   before_action :project_context, except: :destroy
   before_action :project_edit_authorized, only: [:create, :destroy]
 
@@ -43,12 +43,6 @@ class RssSubscriptionsController < ApplicationController
     end
   end
 
-  def find_project
-    @project = Project.from_param(params[:project_id]).take
-    fail ParamRecordNotFound unless @project
-    @project.editor_account = current_user
-  end
-
   def create_subscription
     @rss_subscription = RssSubscription.create(project_id: @project.id, rss_feed_id: @rss_feed.id,
                                                editor_account: current_user)
@@ -56,7 +50,6 @@ class RssSubscriptionsController < ApplicationController
   end
 
   def project_edit_authorized
-    find_project
     return if @project.edit_authorized?
     flash.now[:notice] = t(:not_authorized)
     redirect_to project_path(@project)

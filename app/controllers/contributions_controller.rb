@@ -5,7 +5,7 @@ class ContributionsController < ApplicationController
   helper :kudos, :projects
   helper MapHelper
 
-  before_action :set_project
+  before_action :set_project_or_fail, if: -> { params[:project_id] }
   before_action :set_contribution, except: [:commits_spark, :commits_compound_spark, :index, :summary, :near]
   before_action :set_contributor, only: [:commits_spark, :commits_compound_spark]
   before_action :send_sample_image_if_bot, if: :bot?, only: [:commits_spark, :commits_compound_spark]
@@ -64,10 +64,5 @@ class ContributionsController < ApplicationController
     # Redirect to the new name if we can find it.
     @contribution ||= Contribution.find_indirectly(contribution_id: params[:id].to_i, project: @project)
     fail ParamRecordNotFound unless @contribution
-  end
-
-  def set_project
-    @project = Project.not_deleted.from_param(params[:project_id]).take
-    render 'projects/deleted' if @project.deleted?
   end
 end

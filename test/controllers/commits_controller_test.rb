@@ -49,6 +49,16 @@ describe 'CommitsController' do
       assigns(:named_commits).count.must_equal 0
       assigns(:named_commits).must_be_empty
     end
+
+    it 'must render projects/deleted when project is deleted' do
+      account = create(:account)
+      login_as account
+      @project.update!(deleted: true, editor_account: account)
+
+      get :index, project_id: @project.id
+
+      must_render_template 'deleted'
+    end
   end
 
   describe 'show' do
