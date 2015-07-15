@@ -4,14 +4,18 @@ describe 'LanguagesController' do
   before do
     @language = create(:language, name: 'html')
   end
+
   let(:date_range) { [3.months.ago, 2.months.ago, 1.month.ago, Date.today].map(&:beginning_of_month) }
+
   let(:create_all_months) do
     date_range.each { |date| create(:all_month, month: date) }
   end
+
   let(:client_id) { create(:api_key).oauth_application.uid }
 
   describe 'index' do
     it 'should return languages' do
+      language = create(:language, name: 'c')
       get :index
       must_respond_with :ok
       must_render_template :index
@@ -35,18 +39,19 @@ describe 'LanguagesController' do
     end
 
     it 'should sort by name' do
+      language = create(:language, name: 'java')
       get :index, sort: 'name'
       must_respond_with :ok
       must_render_template :index
       assigns(:languages).count.must_equal 2
-      assigns(:languages).last.must_equal @language
+      assigns(:languages).last.must_equal language
     end
 
     it 'should respond to xml request' do
       get :index, format: :xml, api_key: client_id
       must_respond_with :ok
       must_render_template :index
-      assigns(:languages).count.must_equal 2
+      assigns(:languages).count.must_equal 1
       response.status.must_equal 200
     end
   end
@@ -127,8 +132,8 @@ describe 'LanguagesController' do
       get :compare
       must_respond_with :ok
       must_render_template :compare
-      assigns(:language_names).count.must_equal 4
-      assigns(:language_names).must_equal %w(c html java php)
+      assigns(:language_names).count.must_equal 3
+      assigns(:language_names).must_equal %w(html java php)
     end
   end
 end
