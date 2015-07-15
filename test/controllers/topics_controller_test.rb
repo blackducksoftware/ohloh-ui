@@ -30,6 +30,7 @@ describe TopicsController do
 
   it 'show with post pagination' do
     create_list(:post, 31, topic: topic)
+    create(:topic, forum: topic.forum, sticky: 0)
 
     get :show, id: topic.id
 

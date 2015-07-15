@@ -374,6 +374,16 @@ describe 'PositionsController' do
 
       must_respond_with :ok
     end
+
+    it 'should have account position url in xml format' do
+      key = create(:api_key)
+      create_position(account: account)
+      Position.any_instance.stubs(:project_id).returns(nil)
+
+      get :index, account_id: account, format: :xml, api_key: key.oauth_application.uid
+
+      must_respond_with :ok
+    end
   end
 
   describe 'show' do

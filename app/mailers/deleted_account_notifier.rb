@@ -17,7 +17,6 @@ class DeletedAccountNotifier < ActionMailer::Base
   def project_names(account)
     pids = account.claimed_project_ids
     return if pids.blank?
-    projects = Project.select("string_agg(name, ', ') AS names").where(id: pids)
-    projects.first.names
+    Project.where(id: pids).pluck(:name).join(', ')
   end
 end

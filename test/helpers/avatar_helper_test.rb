@@ -52,4 +52,15 @@ class AvatarHelperTest < ActionView::TestCase
     link = avatar_for('this was supported before for some reason', url: 'http://cnn.com', title: true)
     link.starts_with?('<a').must_equal true
   end
+
+  describe 'gravatar_url' do
+    it 'should have localhost host name' do
+      ActionController::Base.stubs(:asset_host).returns('localhost')
+      gravatar_url('123', 12).must_equal 'http://gravatar.com/avatar/123?&s=12&rating=PG&d=http%3a%2f%2flocalhost%2fanon32.gif'
+    end
+
+    it 'should contain openhub host name' do
+      gravatar_url('123', 12).must_equal 'http://gravatar.com/avatar/123?&s=12&rating=PG&d=http%3a%2f%2fopenhub.net%2fanon32.gif'
+    end
+  end
 end

@@ -21,4 +21,18 @@ class EditsHelperTest < ActionView::TestCase
       edit_humanize_datetime(other_time).must_match other_time.year.to_s
     end
   end
+
+  describe 'edit_explanation_enlistment' do
+    it 'must return property edit explanation' do
+      edit_explanation_enlistment(create(:property_edit)).must_equal I18n.t('edits.explanation_enlistment_ignored')
+    end
+
+    it 'must return enlistment explanation' do
+      enlistment = create(:enlistment)
+      edit = create(:create_edit, target: enlistment)
+      edit_explanation_enlistment(edit).must_equal I18n.t('edits.explanation_enlistment',
+                                                          url: enlistment.repository.url,
+                                                          name: enlistment.repository.module_name)
+    end
+  end
 end

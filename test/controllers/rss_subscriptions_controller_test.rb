@@ -22,7 +22,7 @@ describe 'RssSubscriptionsController' do
 
   it 'must render the page correctly when rss_subscriptions are present' do
     rss_subscription_1 = create(:rss_subscription, project: @project)
-    rss_feed = create(:rss_feed, last_fetch: true)
+    rss_feed = create(:rss_feed, last_fetch: Time.current)
     rss_subscription_2 = create(:rss_subscription, project: @project, rss_feed: rss_feed)
 
     get :index, project_id: @project.to_param
