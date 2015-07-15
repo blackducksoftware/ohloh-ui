@@ -15,12 +15,12 @@ class RssFeedTest < ActiveSupport::TestCase
   it 'should parse the RSS feed and return true' do
     rss_feed = create(:rss_feed)
     rss_feed.url = 'test/fixtures/files/news.rss'
-    rss_feed.fetch(accounts(:admin))
+    rss_feed.fetch(create(:admin))
   end
 
   it 'shouldn\'t parse the RSS and raise error' do
     rss_feed = create(:rss_feed, url: 'http://www.somedomain.com')
-    rss_feed.fetch(accounts(:admin))
+    rss_feed.fetch(create(:admin))
     rss_feed.errors.wont_be_nil
   end
 
