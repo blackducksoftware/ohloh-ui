@@ -3,6 +3,7 @@ require 'test_helper'
 class ProjectTest < ActiveSupport::TestCase
   let(:project) { create(:project) }
   let(:account) { create(:account) }
+  let(:forge) { Forge.find_by(name: 'Github') }
 
   describe 'hot' do
     it 'should return hot projects' do
@@ -384,7 +385,7 @@ class ProjectTest < ActiveSupport::TestCase
   private
 
   def create_repositiory(project)
-    repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forges(:github).id,
+    repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forge.id,
                                owner_at_forge: 'rails', name_at_forge: 'rails')
     create(:enlistment, project: project, repository: repo)
   end

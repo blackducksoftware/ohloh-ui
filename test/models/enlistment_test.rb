@@ -54,7 +54,8 @@ class EnlistmentTest < ActiveSupport::TestCase
       analysis = create(:analysis, created_at: 2.months.ago)
       project = create(:project)
       project.update_column(:best_analysis_id, analysis.id)
-      repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: create(:forge).id,
+      forge = Forge.find_by(name: 'Github')
+      repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forge.id,
                                  owner_at_forge: 'rails', name_at_forge: 'rails')
       enlistment = create(:enlistment, project: project, repository: repo)
 
