@@ -4,8 +4,8 @@ class Person::BuilderTest < ActiveSupport::TestCase
   before { Rails.cache }
 
   describe 'rebuild_for_analysis_matching_names' do
-    let(:project) { projects(:linux) }
-    let(:analysis) { analyses(:linux) }
+    let(:project) { create(:project) }
+    let(:analysis) { create(:analysis) }
 
     before do
       project.editor_account = create(:admin)
