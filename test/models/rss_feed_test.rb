@@ -43,7 +43,7 @@ class RssFeedTest < ActiveSupport::TestCase
     rss_feed = create(:rss_feed)
     project = create(:project)
     project.update_attributes(updated_at: before)
-    project.reload.updated_at.to_time.must_equal before
+    project.reload.updated_at.to_time.to_i.must_equal before.to_i
     create(:rss_subscription, rss_feed: rss_feed, project: project)
     rss_feed.url = 'test/fixtures/files/news.rss'
     rss_feed.fetch(accounts(:admin))
