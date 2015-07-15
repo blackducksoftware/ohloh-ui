@@ -6,10 +6,9 @@ class CommitsByLanguageTest < ActiveSupport::TestCase
   end
 
   let(:user) do
-    account = accounts(:user)
-    account.best_vita.vita_fact.destroy
-    create(:vita_fact, vita_id: account.best_vita_id)
-    account
+    vita = create(:best_vita)
+    create(:vita_fact, vita_id: vita.id)
+    vita.account
   end
 
   let(:admin) { create(:admin) }
