@@ -12,6 +12,7 @@ require 'minitest/rails'
 require 'mocha/mini_test'
 require 'dotenv'
 require 'test_helpers/setup_hamster_account'
+require 'test_helpers/create_forges'
 Dotenv.overload '.env.test'
 
 ActiveRecord::Migration.maintain_test_schema!
@@ -24,9 +25,11 @@ end
 class ActiveSupport::TestCase
   include FactoryGirl::Syntax::Methods
   extend SetupHamsterAccount
+  extend CreateForges
   extend MiniTest::Spec::DSL
 
   create_hamster_account
+  create_forges
 
   def login_as(account)
     @controller ? controller_login_as(account) : integration_login_as(account)
