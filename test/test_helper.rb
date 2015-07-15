@@ -11,6 +11,7 @@ require 'rails/test_help'
 require 'minitest/rails'
 require 'mocha/mini_test'
 require 'dotenv'
+require 'test_helpers/setup_hamster_account'
 Dotenv.overload '.env.test'
 
 ActiveRecord::Migration.maintain_test_schema!
@@ -21,9 +22,11 @@ VCR.configure do |config|
 end
 
 class ActiveSupport::TestCase
-  fixtures :all
   include FactoryGirl::Syntax::Methods
+  extend SetupHamsterAccount
   extend MiniTest::Spec::DSL
+
+  create_hamster_account
 
   def login_as(account)
     @controller ? controller_login_as(account) : integration_login_as(account)

@@ -7,7 +7,6 @@ describe 'ProjectsController' do
 
   before do
     Repository.any_instance.stubs(:bypass_url_validation).returns(true)
-    create(:account, login: 'ohloh_slave')
   end
 
   # index

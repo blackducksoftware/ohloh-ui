@@ -6,7 +6,6 @@ class PermissionsControllerTest < ActionController::TestCase
 
   setup do
     @project = create(:project)
-    create(:account, login: 'ohloh_slave')
     @permissions = create(:permission, target: @project, remainder: true)
   end
 

@@ -43,7 +43,6 @@ class Account::HooksTest < ActiveSupport::TestCase
   describe 'before_destroy' do
     it 'should destroy dependencies when marked as spam' do
       account = create(:account)
-      create(:account, login: 'ohloh_slave')
       create_list(:topic, 3, account: account)
       create_list(:post, 3, account: account)
       create_position(account: account)

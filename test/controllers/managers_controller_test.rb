@@ -8,7 +8,6 @@ class ManagersControllerTest < ActionController::TestCase
 
   before do
     @proj = create(:project)
-    create(:account, login: 'ohloh_slave')
   end
 
   it 'test index of project for manager' do

@@ -7,7 +7,6 @@ class LogosControllerTest < ActionController::TestCase
     ActionView::Base.any_instance.stubs(:current_user_can_manage?).returns('true')
     @admin = create(:admin)
     @user = create(:account)
-    create(:account, login: 'ohloh_slave')
   end
 
   it 'user should be redirected to login page' do
