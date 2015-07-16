@@ -14,7 +14,7 @@ class RecentlyActiveAccountsCache < ActiveRecord::Base
     end
 
     def recalc!
-      recents = Account.recently_active
+      recents = Account.recently_active.includes(best_vita: [:vita_fact])
       instance.update_attribute(:accounts, recents.map(&:id).to_json)
       recents
     end
