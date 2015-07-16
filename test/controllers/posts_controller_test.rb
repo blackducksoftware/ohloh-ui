@@ -191,11 +191,15 @@ describe PostsController do
 
   describe 'xml index' do
     it 'should render as xml' do
+      post1 = create(:post, account: user, body: 'Elon Musk is cool', popularity_factor: 100)
+      post2 = create(:post, account: user, body: 'Mark Zuckerberg is cool too, I guess...', popularity_factor: 200)
       get :index, format: 'atom'
       must_respond_with :ok
     end
 
     it 'should render as xml for account posts' do
+      post1 = create(:post, account: user, body: 'Elon Musk is cool', popularity_factor: 100)
+      post2 = create(:post, account: user, body: 'Mark Zuckerberg is cool too, I guess...', popularity_factor: 200)
       get :index, account: user, format: 'atom'
       must_respond_with :ok
     end
