@@ -1,10 +1,10 @@
 class HomeDecorator
   def most_popular_projects
-    Project.by_popularity.limit(10)
+    Project.by_popularity.includes(:logo, best_analysis: [:main_language]).limit(10)
   end
 
   def most_active_projects
-    Project.most_active
+    Project.most_active.includes(:logo, best_analysis: [:main_language, :thirty_day_summary])
   end
 
   def most_active_contributors
