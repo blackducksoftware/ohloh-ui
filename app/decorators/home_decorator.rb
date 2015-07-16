@@ -32,4 +32,16 @@ class HomeDecorator
   def lines_count
     Language.pluck(:code, :comments, :blanks).flatten.sum
   end
+
+  def active_project_count
+    Rails.cache.fetch('HomeDecorator-active_project_count-cache') { Project.active.count }
+  end
+
+  def person_count
+    Rails.cache.fetch('HomeDecorator-person_count-cache') { Person.count }
+  end
+
+  def repository_count
+    Rails.cache.fetch('HomeDecorator-repository_count-cache') { Repository.count }
+  end
 end
