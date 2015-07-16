@@ -12,7 +12,7 @@ class HomeDecorator
   end
 
   def most_active_contributors
-    RecentlyActiveAccountsCache.accounts
+    Account.recently_active.includes(best_vita: [:name_fact])
   end
 
   def commit_count

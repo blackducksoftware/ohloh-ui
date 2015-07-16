@@ -28,4 +28,10 @@ module HomeHelper
     path = project.is_a?(Account) ? account_path(project) : project_path(project)
     link_to(h(project.name), path)
   end
+
+  def home_top_lists
+    Rails.cache.fetch 'homepage_top_lists', expires_in: 6.hours do
+      render partial: 'top_lists'
+    end
+  end
 end
