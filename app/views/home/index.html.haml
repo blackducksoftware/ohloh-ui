@@ -10,9 +10,9 @@
       %p.icon_search
     #global_statistics
       %p#content-0= t('.counting', count: number_with_delimiter(@home.lines_count.to_i))
-      %p#content-1= t('.indexing', count: number_with_delimiter(Project.active.count))
-      %p#content-2= t('.connecting', count: number_with_delimiter(Person.count))
-      %p#content-3= t('.tracking', count: number_with_delimiter(Repository.count))
+      %p#content-1= t('.indexing', count: number_with_delimiter(@home.active_project_count))
+      %p#content-2= t('.connecting', count: number_with_delimiter(@home.person_count))
+      %p#content-3= t('.tracking', count: number_with_delimiter(@home.repository_count))
 .home_page_row
   .col-md-4
     %h2.join_now= t('.join_now')
