@@ -14,7 +14,7 @@ class RecentlyActiveAccountsCache < ActiveRecord::Base
     end
 
     def recalc!
-      recents = Account.recently_active.includes(best_vita: [:vita_fact])
+      recents = Account.recently_active.includes(best_vita: [:name_fact])
       instance.update_attribute(:accounts, recents.map(&:id).to_json)
       recents
     end
@@ -22,7 +22,7 @@ class RecentlyActiveAccountsCache < ActiveRecord::Base
     private
 
     def retrieve_accounts_preserving_order(ids)
-      Account.includes(best_vita: [:vita_fact]).find(ids).index_by(&:id).slice(*ids).values
+      Account.includes(best_vita: [:name_fact]).find(ids).index_by(&:id).slice(*ids).values
     end
   end
 end

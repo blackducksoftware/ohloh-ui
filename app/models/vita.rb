@@ -6,7 +6,7 @@ class Vita < ActiveRecord::Base
   has_one :name_fact
 
   def vita_fact
-    VitaFact.where(vita_id: id).first || NilVitaFact.new
+    name_fact || NilVitaFact.new
   end
 
   def language_logos

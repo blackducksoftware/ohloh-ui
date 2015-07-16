@@ -1,6 +1,6 @@
 class HomeDecorator
   def most_popular_projects
-    Project.by_popularity.includes(:logo, best_analysis: [:main_language]).limit(10)
+    Project.active.by_popularity.includes(:logo, best_analysis: [:main_language]).limit(10)
   end
 
   def most_active_projects
@@ -21,7 +21,7 @@ class HomeDecorator
   def vita_count
     contributors = most_active_contributors
     contributors.map do |contributor|
-      contributor.best_vita.vita_fact.thirty_day_commits if contributor.best_vita
+      contributor.best_vita.name_fact.thirty_day_commits if contributor.best_vita
     end
   end
 
