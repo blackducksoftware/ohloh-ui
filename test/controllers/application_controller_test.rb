@@ -132,7 +132,7 @@ class ApplicationControllerTest < ActionController::TestCase
     end
 
     it 'handles garbage page param' do
-      @controller.params = { page: nil}
+      @controller.params = { page: nil }
       @controller.page_param.must_equal 1
     end
   end
