@@ -54,7 +54,7 @@ Rails.application.routes.draw do
     resources :stacks, only: [:index]
     resources :account_widgets, path: :widgets, as: :widgets, only: :index do
       collection do
-        get :detailed
+        get :account_detailed
         get :tiny
         get :rank
       end

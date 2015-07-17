@@ -4,7 +4,7 @@ en:
     missing: 'Missing account_id'
     bbc_or_js:
       alt: 'Open Hub profile for %{name}'
-    detailed:
+    account_detailed:
       image_name: 'acc.name error'
     index:
       page_title: "%{who} : Widgets - Open Hub"

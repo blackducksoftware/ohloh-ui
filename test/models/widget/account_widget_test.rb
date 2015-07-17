@@ -36,7 +36,7 @@ class AccountWidgetTest < ActiveSupport::TestCase
 
   describe 'create_widgets' do
     it 'should create descendan widgets' do
-      widget_classes = [AccountWidget::Detailed, AccountWidget::Rank, AccountWidget::Tiny]
+      widget_classes = [AccountWidget::AccountDetailed, AccountWidget::Rank, AccountWidget::Tiny]
       AccountWidget.create_widgets(account.id).map(&:class).must_equal widget_classes
     end
   end
