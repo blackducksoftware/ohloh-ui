@@ -1,10 +1,10 @@
-class ProjectWidget::Users < ProjectWidget
+class ProjectWidget::ProjectUsers < ProjectWidget
   POSITIONS_MAP = { gray: 13, rainbow: 17, green: 14, red: 15, blue: 16 }
   STYLES = ['gray', 'rainbow', 'green', 'red', 'blue', nil]
   COLOR_MAP = { green: '#197B30', red: '#E11717', gray: '#525456', blue: '#036CB6', rainbow: nil }
 
   def short_nice_name
-    I18n.t('project_widgets.users.short_nice_name', text: style ? style.capitalize : 'Simple')
+    I18n.t('project_widgets.project_users.short_nice_name', text: style ? style.capitalize : 'Simple')
   end
 
   def height

@@ -213,7 +213,7 @@ Rails.application.routes.draw do
         get :factoids
         get :factoids_stats
         get :basic_stats
-        get :users
+        get :project_users
         get :users_logo
         get :search_code
         get :browse_code
