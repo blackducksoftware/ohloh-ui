@@ -36,7 +36,8 @@ class ProjectUsersTest < ActiveSupport::TestCase
 
   describe 'short_nice_name' do
     it 'should return the short_nice_name' do
-      widget.short_nice_name.must_equal I18n.t('project_widgets.project_users.short_nice_name', text: widget.style.capitalize)
+      widget.short_nice_name.must_equal I18n.t('project_widgets.project_users.short_nice_name',
+                                               text: widget.style.capitalize)
     end
   end
 
