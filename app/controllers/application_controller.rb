@@ -1,6 +1,7 @@
 # rubocop:disable Metrics/ClassLength
 class ApplicationController < ActionController::Base
   BOT_REGEX = /\b(Baiduspider|Googlebot|libwww-perl|msnbot|SiteUptime|Slurp)\b/i
+  FORMATS_THAT_SHOULD_BE_TREATED_AS_HTML = ['php']
 
   include PageContextHelper
 
@@ -109,6 +110,7 @@ class ApplicationController < ActionController::Base
   def request_format
     format = 'html' if request.format.html?
     format ||= params[:format]
+    format = nil if FORMATS_THAT_SHOULD_BE_TREATED_AS_HTML.include?(format)
     format || 'html'
   end
 

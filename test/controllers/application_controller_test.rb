@@ -29,6 +29,13 @@ class ApplicationControllerTest < ActionController::TestCase
       response.headers['Content-Type'].must_include('application/xml')
     end
 
+    it 'render_404 with request of php should respond with html' do
+      get :renders_404, format: 'php'
+      must_respond_with :not_found
+      response.body.must_include(I18n.t('application.error.header'))
+      response.headers['Content-Type'].must_include('text/html')
+    end
+
     it 'error message as html' do
       get :error_with_message
       must_respond_with :unauthorized
