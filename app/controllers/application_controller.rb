@@ -43,6 +43,10 @@ class ApplicationController < ActionController::Base
     fail ActionController::RoutingError, "No route matches #{params[:unmatched_route]}"
   end
 
+  def page_param
+    [params[:page].to_i, 1].max
+  end
+
   protected
 
   def session_required

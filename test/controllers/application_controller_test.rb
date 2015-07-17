@@ -123,6 +123,11 @@ class ApplicationControllerTest < ActionController::TestCase
       must_respond_with :ok
       session[:account_id].must_equal admin.id
     end
+
+    it 'handles garbage page param' do
+      @controller.params = { page: nil}
+      @controller.page_param.must_equal 1
+    end
   end
 
   describe 'ProjectsController' do
