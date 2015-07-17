@@ -4,8 +4,8 @@ class CommittersController < UnclaimedController
   before_action :preload_projects_from_positions, only: :save_claim
 
   def index
-    @unclaimed_people = Person.find_unclaimed(q: params[:query], find_by: params[:find_by])
-    @unclaimed_people_count = Person::Count.unclaimed_by(params[:query], params[:find_by])
+    @unclaimed_people = Person.find_unclaimed(q: params[:query] || params[:q], find_by: params[:find_by])
+    @unclaimed_people_count = Person::Count.unclaimed_by(params[:query] || params[:q], params[:find_by])
     preload_emails_from_unclaimed_people
   end
 
