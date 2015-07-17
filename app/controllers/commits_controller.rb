@@ -14,7 +14,7 @@ class CommitsController < SettingsController
                      .includes(:commit, :person, :account)
                      .filter_by(params[:query])
                      .send(parse_sort_term)
-                     .page(params[:page])
+                     .page(page_param)
                      .per_page(20)
   end
 
@@ -23,7 +23,7 @@ class CommitsController < SettingsController
              .includes(:fyle)
              .filter_by(params[:query])
              .order('fyles.name')
-             .page(params[:page])
+             .page(page_param)
              .per_page(10)
     @ignore_prefixes = @named_commit.code_set.ignore_prefixes(@project)
   end
