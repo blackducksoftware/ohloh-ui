@@ -4,6 +4,6 @@ class RssArticlesController < ApplicationController
   before_action :project_context
 
   def index
-    @rss_articles = @project.rss_articles.paginate(page: params[:page], per_page: 10)
+    @rss_articles = @project.rss_articles.paginate(page: [params[:page].to_i, 1].max, per_page: 10)
   end
 end

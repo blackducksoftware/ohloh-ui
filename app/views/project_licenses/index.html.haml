@@ -22,7 +22,7 @@
         %tbody
           - @project_licenses.each do |project_license|
             %tr.license
-              %td.col-md-8.padding_one_top= project_license.license.nice_name
+              %td.col-md-8.padding_one_top= project_license.license ? project_license.license.nice_name : ''
               %td.col-md-4.padding_one_top.last
                 .pull-right
                   - if @project.edit_authorized?
