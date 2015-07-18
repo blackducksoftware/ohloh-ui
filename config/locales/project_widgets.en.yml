@@ -90,7 +90,7 @@ en:
     thin_badge:
       alt: 'Open Hub project report for %{name}'
       short_nice_name: 'Thin badge'
-    users:
+    project_users:
       users: 'USERS'
       i_use_it: 'I USE IT'
       support: 'Support %{name} by adding it to your stack at Open Hub'

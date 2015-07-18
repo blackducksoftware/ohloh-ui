@@ -6,7 +6,7 @@ describe 'ProjectWidgetsController' do
     [ProjectWidget::FactoidsStats, ProjectWidget::Factoids, ProjectWidget::BasicStats,
      ProjectWidget::Languages, ProjectWidget::SearchAllCode, ProjectWidget::Cocomo,
      ProjectWidget::PartnerBadge, ProjectWidget::ThinBadge, ProjectWidget::UsersLogo
-    ] + [ProjectWidget::Users] * 6
+    ] + [ProjectWidget::ProjectUsers] * 6
   end
 
   describe 'index' do
@@ -161,23 +161,23 @@ describe 'ProjectWidgetsController' do
 
   describe 'users' do
     it 'should set project and widget' do
-      get :users, project_id: project.id
+      get :project_users, project_id: project.id
 
       must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::Users
+      assigns(:widget).class.must_equal ProjectWidget::ProjectUsers
       assigns(:project).must_equal project
     end
 
     it 'should render iframe for js format' do
-      get :users, project_id: project.id, format: :js, style: 'blue'
+      get :project_users, project_id: project.id, format: :js, style: 'blue'
 
       must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::Users
+      assigns(:widget).class.must_equal ProjectWidget::ProjectUsers
       assigns(:project).must_equal project
     end
 
     it 'should show not found error' do
-      get :users, project_id: 0
+      get :project_users, project_id: 0
 
       must_respond_with :ok
       @response.body.must_equal I18n.t('widgets.not_found')

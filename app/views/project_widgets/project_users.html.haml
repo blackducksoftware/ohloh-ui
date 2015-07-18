@@ -8,8 +8,8 @@
   without_css_link = { onMouseOver: 'mouseOverForUsersWithoutStyle(this);',
                        onMouseOut: 'mouseOutForUsersWithoutStyle(this);' }
 
-= render partial: 'users_css'
-= render partial: 'users_js'
+= render partial: 'project_users_css'
+= render partial: 'project_users_js'
 
 - if widget.vars[:style].present?
   - background_color = widget.background_color
