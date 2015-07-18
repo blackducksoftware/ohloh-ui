@@ -23,7 +23,7 @@ yAxis:
 tooltip:
   commit_volume_chart: true
 legend:
-  align: 'center'
+  align: 'left'
   verticalAlign: 'bottom'
   x: 0
   y: 0
@@ -32,9 +32,11 @@ legend:
   borderColor: 'white'
   shadow: false
   layout: 'horizontal'
-  width: 390
-  itemWidth: 130
+  itemWidth: 200
   lineHeight: 20
+  margin: 20
+  padding: 15
+  width: 410
   itemStyle:
     fontSize: '0.9em'
 plotOptions:
