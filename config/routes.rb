@@ -219,7 +219,7 @@ Rails.application.routes.draw do
         get :browse_code
         get :search_all_code
         get :languages
-        get :partner_badge
+        get :project_partner_badge
         get :thin_badge
         get :cocomo
       end

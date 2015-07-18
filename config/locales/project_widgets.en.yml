@@ -67,7 +67,7 @@ en:
       not_ready: 'The Open Hub report is not ready yet.'
       title: 'Project Language Statistics'
       percent: '%{percent}%'
-    partner_badge:
+    project_partner_badge:
       short_nice_name: 'Partner Badge'
       lines: "%{count} Lines "
       cost: "$%{count} Cost "

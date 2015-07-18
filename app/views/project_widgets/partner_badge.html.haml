@@ -1,8 +1,0 @@
-:ruby
-  widget ||= @widget
-  project = widget.project
-  ref ||= widget.short_nice_name
-  url = widget_gif_url(partner_badge_project_widgets_url(project), ref)
-
-= link_to project_url(id: project.to_param, ref: ref), target: '_blank' do
-  %img{ src: url, alt: t('.alt', name: project.name), border: '0' }
