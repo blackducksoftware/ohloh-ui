@@ -1,4 +1,4 @@
-class AccountWidget::AccountDetailed < AccountWidget
+class AccountWidget::Detailed < AccountWidget
   def width
     230
   end
@@ -8,7 +8,7 @@ class AccountWidget::AccountDetailed < AccountWidget
   end
 
   def image
-    name = account.name || I18n.t('account_widgets.account_detailed.image_name')
+    name = account.name || I18n.t('account_widgets.detailed.image_name')
     commits = account.best_vita.vita_fact.commits
     WidgetBadge::Account.create(kudo_rank: rank, name: name, kudos: kudos, commits: commits)
   end

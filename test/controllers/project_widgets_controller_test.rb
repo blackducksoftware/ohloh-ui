@@ -5,8 +5,8 @@ describe 'ProjectWidgetsController' do
   let(:widget_classes) do
     [ProjectWidget::FactoidsStats, ProjectWidget::Factoids, ProjectWidget::BasicStats,
      ProjectWidget::Languages, ProjectWidget::SearchAllCode, ProjectWidget::Cocomo,
-     ProjectWidget::ProjectPartnerBadge, ProjectWidget::ThinBadge, ProjectWidget::UsersLogo
-    ] + [ProjectWidget::ProjectUsers] * 6
+     ProjectWidget::PartnerBadge, ProjectWidget::ThinBadge, ProjectWidget::UsersLogo
+    ] + [ProjectWidget::Users] * 6
   end
 
   describe 'index' do
@@ -36,7 +36,7 @@ describe 'ProjectWidgetsController' do
 
   describe 'basic_stats' do
     it 'should set project and widget' do
-      get :basic_stats, project_id: project.id
+      get :project_basic_stats, project_id: project.id
 
       must_respond_with :ok
       assigns(:widget).class.must_equal ProjectWidget::BasicStats
@@ -44,7 +44,7 @@ describe 'ProjectWidgetsController' do
     end
 
     it 'should render iframe for js format' do
-      get :basic_stats, project_id: project.id, format: :js
+      get :project_basic_stats, project_id: project.id, format: :js
 
       must_respond_with :ok
       assigns(:widget).class.must_equal ProjectWidget::BasicStats
@@ -52,7 +52,7 @@ describe 'ProjectWidgetsController' do
     end
 
     it 'should show not found error' do
-      get :basic_stats, project_id: 0
+      get :project_basic_stats, project_id: 0
 
       must_respond_with :ok
       @response.body.must_equal I18n.t('widgets.not_found')
@@ -61,7 +61,7 @@ describe 'ProjectWidgetsController' do
 
   describe 'factoids_stats' do
     it 'should set project and widget' do
-      get :factoids_stats, project_id: project.id
+      get :project_factoids_stats, project_id: project.id
 
       must_respond_with :ok
       assigns(:widget).class.must_equal ProjectWidget::FactoidsStats
@@ -69,7 +69,7 @@ describe 'ProjectWidgetsController' do
     end
 
     it 'should render iframe for js format' do
-      get :factoids_stats, project_id: project.id, format: :js
+      get :project_factoids_stats, project_id: project.id, format: :js
 
       must_respond_with :ok
       assigns(:widget).class.must_equal ProjectWidget::FactoidsStats
@@ -77,7 +77,7 @@ describe 'ProjectWidgetsController' do
     end
 
     it 'should show not found error' do
-      get :factoids_stats, project_id: 0
+      get :project_factoids_stats, project_id: 0
 
       must_respond_with :ok
       @response.body.must_equal I18n.t('widgets.not_found')
@@ -86,7 +86,7 @@ describe 'ProjectWidgetsController' do
 
   describe 'factoids' do
     it 'should set project and widget' do
-      get :factoids, project_id: project.id
+      get :project_factoids, project_id: project.id
 
       must_respond_with :ok
       assigns(:widget).class.must_equal ProjectWidget::Factoids
@@ -94,7 +94,7 @@ describe 'ProjectWidgetsController' do
     end
 
     it 'should render iframe for js format' do
-      get :factoids, project_id: project.id, format: :js
+      get :project_factoids, project_id: project.id, format: :js
 
       must_respond_with :ok
       assigns(:widget).class.must_equal ProjectWidget::Factoids
@@ -102,7 +102,7 @@ describe 'ProjectWidgetsController' do
     end
 
     it 'should show not found error' do
-      get :factoids, project_id: 0
+      get :project_factoids, project_id: 0
 
       must_respond_with :ok
       @response.body.must_equal I18n.t('widgets.not_found')
@@ -111,7 +111,7 @@ describe 'ProjectWidgetsController' do
 
   describe 'search_all_code' do
     it 'should set project and widget' do
-      get :search_all_code, project_id: project.id
+      get :project_search_all_code, project_id: project.id
 
       must_respond_with :ok
       assigns(:widget).class.must_equal ProjectWidget::SearchAllCode
@@ -119,7 +119,7 @@ describe 'ProjectWidgetsController' do
     end
 
     it 'should render iframe for js format' do
-      get :search_all_code, project_id: project.id, format: :js
+      get :project_search_all_code, project_id: project.id, format: :js
 
       must_respond_with :ok
       assigns(:widget).class.must_equal ProjectWidget::SearchAllCode
@@ -127,7 +127,7 @@ describe 'ProjectWidgetsController' do
     end
 
     it 'should show not found error' do
-      get :search_all_code, project_id: 0
+      get :project_search_all_code, project_id: 0
 
       must_respond_with :ok
       @response.body.must_equal I18n.t('widgets.not_found')
@@ -136,7 +136,7 @@ describe 'ProjectWidgetsController' do
 
   describe 'search_code' do
     it 'should set project and widget' do
-      get :search_code, project_id: project.id
+      get :project_search_code, project_id: project.id
 
       must_respond_with :ok
       assigns(:widget).class.must_equal ProjectWidget::SearchCode
@@ -144,7 +144,7 @@ describe 'ProjectWidgetsController' do
     end
 
     it 'should render iframe for js format' do
-      get :search_code, project_id: project.id, format: :js
+      get :project_search_code, project_id: project.id, format: :js
 
       must_respond_with :ok
       assigns(:widget).class.must_equal ProjectWidget::SearchCode
@@ -152,7 +152,7 @@ describe 'ProjectWidgetsController' do
     end
 
     it 'should show not found error' do
-      get :search_code, project_id: 0
+      get :project_search_code, project_id: 0
 
       must_respond_with :ok
       @response.body.must_equal I18n.t('widgets.not_found')
@@ -164,7 +164,7 @@ describe 'ProjectWidgetsController' do
       get :project_users, project_id: project.id
 
       must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::ProjectUsers
+      assigns(:widget).class.must_equal ProjectWidget::Users
       assigns(:project).must_equal project
     end
 
@@ -172,7 +172,7 @@ describe 'ProjectWidgetsController' do
       get :project_users, project_id: project.id, format: :js, style: 'blue'
 
       must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::ProjectUsers
+      assigns(:widget).class.must_equal ProjectWidget::Users
       assigns(:project).must_equal project
     end
 
@@ -186,7 +186,7 @@ describe 'ProjectWidgetsController' do
 
   describe 'users_logo' do
     it 'should set project and widget' do
-      get :users_logo, project_id: project.id
+      get :project_users_logo, project_id: project.id
 
       must_respond_with :ok
       assigns(:widget).class.must_equal ProjectWidget::UsersLogo
@@ -194,7 +194,7 @@ describe 'ProjectWidgetsController' do
     end
 
     it 'should render iframe for js format' do
-      get :users_logo, project_id: project.id, format: :js
+      get :project_users_logo, project_id: project.id, format: :js
 
       must_respond_with :ok
       assigns(:widget).class.must_equal ProjectWidget::UsersLogo
@@ -202,7 +202,7 @@ describe 'ProjectWidgetsController' do
     end
 
     it 'should show not found error' do
-      get :users_logo, project_id: 0
+      get :project_users_logo, project_id: 0
 
       must_respond_with :ok
       @response.body.must_equal I18n.t('widgets.not_found')
@@ -211,7 +211,7 @@ describe 'ProjectWidgetsController' do
 
   describe 'languages' do
     it 'should set project and widget' do
-      get :languages, project_id: project.id
+      get :project_languages, project_id: project.id
 
       must_respond_with :ok
       assigns(:widget).class.must_equal ProjectWidget::Languages
@@ -219,7 +219,7 @@ describe 'ProjectWidgetsController' do
     end
 
     it 'should render iframe for js format' do
-      get :languages, project_id: project.id, format: :js
+      get :project_languages, project_id: project.id, format: :js
 
       must_respond_with :ok
       assigns(:widget).class.must_equal ProjectWidget::Languages
@@ -227,7 +227,7 @@ describe 'ProjectWidgetsController' do
     end
 
     it 'should show not found error' do
-      get :languages, project_id: 0
+      get :project_languages, project_id: 0
 
       must_respond_with :ok
       @response.body.must_equal I18n.t('widgets.not_found')
@@ -236,7 +236,7 @@ describe 'ProjectWidgetsController' do
 
   describe 'cocomo' do
     it 'should set project and widget' do
-      get :cocomo, project_id: project.id
+      get :project_cocomo, project_id: project.id
 
       must_respond_with :ok
       assigns(:widget).class.must_equal ProjectWidget::Cocomo
@@ -244,7 +244,7 @@ describe 'ProjectWidgetsController' do
     end
 
     it 'should render iframe for js format' do
-      get :cocomo, project_id: project.id, format: :js
+      get :project_cocomo, project_id: project.id, format: :js
 
       must_respond_with :ok
       assigns(:widget).class.must_equal ProjectWidget::Cocomo
@@ -252,7 +252,7 @@ describe 'ProjectWidgetsController' do
     end
 
     it 'should show not found error' do
-      get :cocomo, project_id: 0
+      get :project_cocomo, project_id: 0
 
       must_respond_with :ok
       @response.body.must_equal I18n.t('widgets.not_found')
@@ -264,7 +264,7 @@ describe 'ProjectWidgetsController' do
       get :project_partner_badge, project_id: project.id
 
       must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::ProjectPartnerBadge
+      assigns(:widget).class.must_equal ProjectWidget::PartnerBadge
       assigns(:project).must_equal project
     end
 
@@ -272,7 +272,7 @@ describe 'ProjectWidgetsController' do
       get :project_partner_badge, project_id: project.id, format: :gif
 
       must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::ProjectPartnerBadge
+      assigns(:widget).class.must_equal ProjectWidget::PartnerBadge
       assigns(:project).must_equal project
     end
 
@@ -280,7 +280,7 @@ describe 'ProjectWidgetsController' do
       get :project_partner_badge, project_id: project.id, format: :js
 
       must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::ProjectPartnerBadge
+      assigns(:widget).class.must_equal ProjectWidget::PartnerBadge
       assigns(:project).must_equal project
     end
 
@@ -294,7 +294,7 @@ describe 'ProjectWidgetsController' do
 
   describe 'thin_badge' do
     it 'should set project and widget' do
-      get :thin_badge, project_id: project.id
+      get :project_thin_badge, project_id: project.id
 
       must_respond_with :ok
       assigns(:widget).class.must_equal ProjectWidget::ThinBadge
@@ -302,7 +302,7 @@ describe 'ProjectWidgetsController' do
     end
 
     it 'should render image for gif format' do
-      get :thin_badge, project_id: project.id, format: :gif
+      get :project_thin_badge, project_id: project.id, format: :gif
 
       must_respond_with :ok
       assigns(:widget).class.must_equal ProjectWidget::ThinBadge
@@ -310,7 +310,7 @@ describe 'ProjectWidgetsController' do
     end
 
     it 'should render iframe for js format' do
-      get :thin_badge, project_id: project.id, format: :js, ref: 'Thin'
+      get :project_thin_badge, project_id: project.id, format: :js, ref: 'Thin'
 
       must_respond_with :ok
       assigns(:widget).class.must_equal ProjectWidget::ThinBadge
@@ -318,7 +318,7 @@ describe 'ProjectWidgetsController' do
     end
 
     it 'should show not found error' do
-      get :thin_badge, project_id: 0
+      get :project_thin_badge, project_id: 0
 
       must_respond_with :ok
       @response.body.must_equal I18n.t('widgets.not_found')

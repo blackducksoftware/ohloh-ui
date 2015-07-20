@@ -55,8 +55,8 @@ Rails.application.routes.draw do
     resources :account_widgets, path: :widgets, as: :widgets, only: :index do
       collection do
         get :account_detailed
-        get :tiny
-        get :rank
+        get :account_tiny
+        get :account_rank
       end
     end
     resources :kudos, only: [:index, :show] do
@@ -210,18 +210,18 @@ Rails.application.routes.draw do
     resources :rss_articles, only: :index
     resources :project_widgets, path: :widgets, as: :widgets, only: :index do
       collection do
-        get :factoids
-        get :factoids_stats
-        get :basic_stats
+        get :project_factoids
+        get :project_factoids_stats
+        get :project_basic_stats
         get :project_users
-        get :users_logo
-        get :search_code
-        get :browse_code
-        get :search_all_code
-        get :languages
+        get :project_users_logo
+        get :project_search_code
+        get :project_browse_code
+        get :project_search_all_code
+        get :project_languages
         get :project_partner_badge
-        get :thin_badge
-        get :cocomo
+        get :project_thin_badge
+        get :project_cocomo
       end
     end
     resources :ratings
@@ -325,7 +325,7 @@ Rails.application.routes.draw do
     end
     resources :stack_widgets, path: :widgets, as: :widgets, only: :index do
       collection do
-        get :normal
+        get :stack_normal
       end
     end
   end

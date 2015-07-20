@@ -5,7 +5,7 @@ class WidgetsHelperTest < ActionView::TestCase
 
   let(:factoid) { Factoid.new }
   let(:account) { create(:account) }
-  let(:widget) { AccountWidget::AccountDetailed.new(account_id: account.id, test: 'test') }
+  let(:widget) { AccountWidget::Detailed.new(account_id: account.id, test: 'test') }
 
   before do
     stubs(:request).returns(ActionController::TestRequest.new(host: 'http://test.com:3000'))
@@ -63,7 +63,7 @@ class WidgetsHelperTest < ActionView::TestCase
   describe 'widget_url' do
     it 'should return url based on type' do
       path = "http://test.host/accounts/#{account.login}/widgets/account_detailed?format=js&test=test"
-      widget = AccountWidget::AccountDetailed.new(account_id: account.id, test: 'test')
+      widget = AccountWidget::Detailed.new(account_id: account.id, test: 'test')
       widget_url(widget, 'account').must_equal path
     end
   end

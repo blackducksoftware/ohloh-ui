@@ -9,7 +9,7 @@
         = widget.short_nice_name
     .col-md-4.col
       .widget_container.org_widget{ style: widget_iframe_style(widget) }
-        = render template: "#{controller_name}/#{widget.name.underscore}", locals: locals
+        = render template: view_path, locals: locals
     .col-md-7.col.pull-right
       %h6.no_margin_top HTML
       %p= t('.embed')

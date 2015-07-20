@@ -1,6 +1,6 @@
 :ruby
   locals = { widget: widget, ref: 'sample' }
-  widget_html = render(template: "#{controller_name}/#{widget.name.underscore}", locals: locals)
+  widget_html = render(template: "#{controller_name}/account_#{widget.name.underscore}", locals: locals)
 
 .widget_list
   .row{ style: 'margin-left: -15px' }
@@ -19,4 +19,4 @@
       %p
         %span.soft= t('.bbc')
       %pre.prettyprint
-        = h render(template: "#{controller_name}/#{widget.name.underscore}", locals: locals.merge(bbc: true))
+        = h render(template: "#{controller_name}/account_#{widget.name.underscore}", locals: locals.merge(bbc: true))

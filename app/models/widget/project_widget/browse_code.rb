@@ -8,11 +8,11 @@ class ProjectWidget::BrowseCode < ProjectWidget
   end
 
   def short_nice_name
-    I18n.t('project_widgets.browse_code.short_nice_name')
+    I18n.t('project_widgets.project_browse_code.short_nice_name')
   end
 
   def title
-    I18n.t('project_widgets.browse_code.title')
+    I18n.t('project_widgets.project_browse_code.title')
   end
 
   def can_display?

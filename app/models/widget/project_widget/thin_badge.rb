@@ -1,6 +1,6 @@
 class ProjectWidget::ThinBadge < ProjectWidget
   def short_nice_name
-    I18n.t('project_widgets.thin_badge.short_nice_name')
+    I18n.t('project_widgets.project_thin_badge.short_nice_name')
   end
 
   def width

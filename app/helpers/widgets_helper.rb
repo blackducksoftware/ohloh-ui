@@ -20,7 +20,7 @@ module WidgetsHelper
 
   def widget_url(widget, type)
     url_params = widget.vars.dup.delete_if { |k, _| k == "#{type}_id" }
-    send("#{widget.name.underscore}_#{controller_name}_url", widget.send(type)) +
+    send("#{path_start(type)}#{widget.name.underscore}_#{controller_name}_url", widget.send(type)) +
       "?#{url_params.merge(format: 'js').to_query}"
   end
 
@@ -31,10 +31,15 @@ module WidgetsHelper
 
   def widget_url_without_format(widget, type)
     url_params = widget.vars.dup.delete_if { |k, _| k == "#{type}_id" }
-    send("#{widget.name.underscore}_#{controller_name}_url", widget.send(type), url_params)
+    send("#{path_start(type)}#{widget.name.underscore}_#{controller_name}_url",
+         widget.send(type), url_params)
   end
 
   def widget_iframe_style(widget)
     "height: #{widget.height}px; width: #{widget.width}px; border: none"
+  end
+
+  def path_start(type)
+    type == 'organization' ? '' : "#{type}_"
   end
 end
