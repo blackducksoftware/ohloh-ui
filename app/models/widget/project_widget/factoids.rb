@@ -1,6 +1,6 @@
 class ProjectWidget::Factoids < ProjectWidget
   def title
-    I18n.t('project_widgets.factoids.title')
+    I18n.t('project_widgets.project_factoids.title')
   end
 
   def height

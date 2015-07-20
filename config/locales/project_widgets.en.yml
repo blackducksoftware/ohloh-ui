@@ -16,7 +16,7 @@ en:
       regular_updates: 'Projects in the Open Hub directory receive regularly updated source code statistics and online developer profiles.'
       home_link: 'Open Hub Home Page'
       add_project: 'Add this project to Open Hub'
-    basic_stats:
+    project_basic_stats:
       main_language: 'Main Language:'
       total_lines: 'Total Lines of Code:'
       active_contibutors: 'Active Contributors:'
@@ -28,11 +28,11 @@ en:
       title: 'Project Statistics by Open Hub'
     noname_footer:
       updated_time: 'Updated %{time}'
-    browse_code:
+    project_browse_code:
       short_nice_name: 'Browse Code'
       title: 'Browse Code by Open Hub'
       browse: Browse Code from....
-    cocomo:
+    project_cocomo:
       cost: '%{name} - Project Cost'
       include: 'Include'
       title: 'Project Cost Estimator'
@@ -47,12 +47,12 @@ en:
       markup: 'Markup Only'
       markup_and_code: 'Markup And Code'
       estimate: 'Estimated Cost'
-    factoids:
+    project_factoids:
       title: 'Project Analysis Summary'
       mostly_written: 'Mostly written in %{lang}'
       not_ready: 'The Open Hub report is not ready yet.'
       progress: 'See progress.'
-    factoids_stats:
+    project_factoids_stats:
       time_line: 'Commit Activity Timeline:'
       not_ready: 'The Open Hub report is not ready yet.'
       progress: 'See progress.'
@@ -62,7 +62,7 @@ en:
       mostly_written: 'Mostly written in %{lang}'
       short_nice_name: 'Factoids and Stats'
       title: 'Project Factoids and Stats by Open Hub'
-    languages:
+    project_languages:
       languages: 'Languages'
       not_ready: 'The Open Hub report is not ready yet.'
       title: 'Project Language Statistics'
@@ -74,20 +74,20 @@ en:
       developer: "Developer"
       head_count: "%{count} %{text}"
       alt: 'Open Hub project report for %{name}'
-    search_all_code:
+    project_search_all_code:
       search: 'Search Open Source Code for'
       enter: 'Enter Search Terms...'
-    search_code:
+    project_search_code:
       enter: 'Enter Search Terms...'
       search: 'Search Code from....'
       title: 'Search Code by Open Hub'
       short_nice_name: 'Search Code'
-    users_logo:
+    project_users_logo:
       support: 'Support %{name} by adding it to your stack at Open Hub'
       short_nice_name: 'I Use It - Logo'
       title: 'Project Users'
       i_use_it: 'I USE IT'
-    thin_badge:
+    project_thin_badge:
       alt: 'Open Hub project report for %{name}'
       short_nice_name: 'Thin badge'
     project_users:

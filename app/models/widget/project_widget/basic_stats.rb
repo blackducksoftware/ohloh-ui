@@ -8,7 +8,7 @@ class ProjectWidget::BasicStats < ProjectWidget
   end
 
   def title
-    I18n.t('project_widgets.basic_stats.title')
+    I18n.t('project_widgets.project_basic_stats.title')
   end
 
   def position

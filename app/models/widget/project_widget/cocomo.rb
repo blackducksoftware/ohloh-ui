@@ -8,7 +8,7 @@ class ProjectWidget::Cocomo < ProjectWidget
   end
 
   def title
-    I18n.t('project_widgets.cocomo.title')
+    I18n.t('project_widgets.project_cocomo.title')
   end
 
   def salary

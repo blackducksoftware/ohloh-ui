@@ -1,6 +1,6 @@
 class ProjectWidget::Languages < ProjectWidget
   def title
-    I18n.t('project_widgets.languages.title')
+    I18n.t('project_widgets.project_languages.title')
   end
 
   def height
