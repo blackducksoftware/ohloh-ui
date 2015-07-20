@@ -131,8 +131,18 @@ class ApplicationControllerTest < ActionController::TestCase
       session[:account_id].must_equal admin.id
     end
 
-    it 'handles garbage page param' do
+    it 'handles nil page param' do
       @controller.params = { page: nil }
+      @controller.page_param.must_equal 1
+    end
+
+    it 'handles blank page param' do
+      @controller.params = { page: '' }
+      @controller.page_param.must_equal 1
+    end
+
+    it 'handles garbage page param' do
+      @controller.params = { page: 'i_am_a_banana' }
       @controller.page_param.must_equal 1
     end
   end
