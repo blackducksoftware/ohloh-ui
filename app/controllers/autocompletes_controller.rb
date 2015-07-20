@@ -25,7 +25,7 @@ class AutocompletesController < ApplicationController
   end
 
   def tags
-    tags = Tag.autocomplete(params[:project_id], params[:term]).limit(10).pluck(:name)
+    tags = Tag.select(:name).autocomplete(params[:project_id], params[:term]).limit(10).map(&:name)
     render json: tags
   end
 
