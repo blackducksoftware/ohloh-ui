@@ -36,7 +36,7 @@ class WidgetsController < ApplicationController
 
   def handle_xml_format
     return unless request_format == 'xml'
-    @type = WIDGET_TYPES.select{ |klass| controller_name.include?(klass) }[0]
+    @type = WIDGET_TYPES.select { |klass| controller_name.include?(klass) }[0]
     render template: 'widgets/metadata'
   end
 end
