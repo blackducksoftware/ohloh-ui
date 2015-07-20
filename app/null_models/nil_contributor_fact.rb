@@ -5,4 +5,8 @@ class NilContributorFact < NullObject
   def primary_language
     NilLanguage.new
   end
+
+  def name_language_facts
+    []
+  end
 end
