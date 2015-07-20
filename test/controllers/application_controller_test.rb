@@ -132,8 +132,8 @@ class ApplicationControllerTest < ActionController::TestCase
     end
 
     it 'handles garbage page param' do
-      @controller.params = { page: nil }
-      @controller.page_param.must_equal 1
+      @controller.params = { page: '' }
+      @controller.set_page_param_if_blank.must_equal 1
     end
   end
 

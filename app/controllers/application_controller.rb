@@ -22,6 +22,7 @@ class ApplicationController < ActionController::Base
   before_action :strip_query_param
   before_action :clear_reminder
   before_action :verify_api_access_for_xml_request, only: [:show, :index]
+  before_action :set_page_param_if_blank
 
   def initialize(*params)
     @page_context = {}
@@ -44,8 +45,8 @@ class ApplicationController < ActionController::Base
     fail ActionController::RoutingError, "No route matches #{params[:unmatched_route]}"
   end
 
-  def page_param
-    [params[:page].to_i, 1].max
+  def set_page_param_if_blank
+    params[:page] = 1 if params[:page].blank?
   end
 
   protected
