@@ -5,6 +5,7 @@ class WidgetsController < ApplicationController
   before_action :set_widget, except: :index
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   layout :false, except: :index
+  before_action :handle_xml_format, except: :index
 
   private
 
@@ -31,5 +32,11 @@ class WidgetsController < ApplicationController
   def render_iframe_for_js_format
     return unless request.format.js?
     render :iframe
+  end
+
+  def handle_xml_format
+    return unless request_format == 'xml'
+    @type = WIDGET_TYPES.select{ |klass| controller_name.include?(klass) }[0]
+    render template: 'widgets/metadata'
   end
 end
