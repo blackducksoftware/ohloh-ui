@@ -17,8 +17,7 @@ class ProjectsController < ApplicationController
 
   def users
     @accounts = @project.users(params[:query], params[:sort])
-                .paginate(page: params[:page], per_page: 10,
-                          total_entries: @project.users.count('DISTINCT(accounts.id)'))
+                .paginate(page: params[:page], per_page: 10)
   end
 
   def update
