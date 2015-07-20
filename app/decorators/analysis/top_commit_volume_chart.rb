@@ -29,7 +29,7 @@ class Analysis::TopCommitVolumeChart
 
   def data_options
     { 'series' => pivoted_series.map { |name, data| { 'name' => name, 'data' => data } },
-      'xAxis' => { 'categories' => interval_labels }, 'warning' => nil }
+      'xAxis' => { 'categories' => interval_labels }, 'warning' => warning_message(@history[1]) }
   end
 
   def pivoted_series
@@ -53,12 +53,20 @@ class Analysis::TopCommitVolumeChart
   end
 
   def find_count(interval, names)
-    total_count = interval.map(&:last).inject(:+)
+    total_count = interval.map(&:last).inject(:+).to_i
     committer_names.each_with_index do |name, i|
       _name, count = interval.find { |n, _count| n == name }
       names[i][1] << count.to_i
       total_count -= count.to_i
     end
     [names, total_count]
+  end
+
+  def warning_message(s)
+    half = s.map { |_name, count| count }.sum / 2
+    s.each do |name, count|
+      return I18n.t('top_commit_volume_chart.message', name: name) if count > half && name != OTHER
+    end
+    nil
   end
 end

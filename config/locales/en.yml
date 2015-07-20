@@ -380,3 +380,5 @@ en:
     oauth_applications:
       revoke_access:
         success: You have successfully revoked the authorization for %{name}
+  top_commit_volume_chart:
+    message: '%{name} generated more than 50% of all commits during the past 12 months.'
