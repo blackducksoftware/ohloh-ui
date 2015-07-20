@@ -1,5 +1,5 @@
 App.Commit = init: ->
-  $('#commit-details').one 'click', (e) ->
+  $('.commit-details').one 'click', (e) ->
     e.preventDefault()
     commitId = $(this).attr('commit_id')
     projectId = $(this).attr('project_id')
