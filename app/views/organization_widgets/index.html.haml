@@ -7,4 +7,5 @@
 
 .clearfix
   - @widgets.each do |widget|
-    = render partial: 'widget', locals: { widget: widget, type: 'organization' }
+    - view_path = "#{controller_name}/#{widget.name.underscore}"
+    = render partial: 'widget', locals: { widget: widget, type: 'organization', view_path: view_path }

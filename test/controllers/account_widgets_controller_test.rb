@@ -8,7 +8,7 @@ describe 'AccountWidgetsController' do
       get :index, account_id: account.id
 
       must_respond_with :ok
-      widget_classes = [AccountWidget::AccountDetailed, AccountWidget::Rank, AccountWidget::Tiny]
+      widget_classes = [AccountWidget::Detailed, AccountWidget::Rank, AccountWidget::Tiny]
       assigns(:widgets).map(&:class).must_equal widget_classes
       assigns(:account).must_equal account
     end
@@ -19,7 +19,7 @@ describe 'AccountWidgetsController' do
       get :account_detailed, account_id: account.id
 
       must_respond_with :ok
-      assigns(:widget).class.must_equal AccountWidget::AccountDetailed
+      assigns(:widget).class.must_equal AccountWidget::Detailed
       assigns(:account).must_equal account
     end
 
@@ -35,14 +35,14 @@ describe 'AccountWidgetsController' do
       get :account_detailed, account_id: account.id, format: :gif
 
       must_respond_with :ok
-      assigns(:widget).class.must_equal AccountWidget::AccountDetailed
+      assigns(:widget).class.must_equal AccountWidget::Detailed
       assigns(:account).must_equal account
     end
   end
 
   describe 'rank' do
     it 'should set account and widget' do
-      get :rank, account_id: account.id
+      get :account_rank, account_id: account.id
 
       must_respond_with :ok
       assigns(:widget).class.must_equal AccountWidget::Rank
@@ -50,14 +50,14 @@ describe 'AccountWidgetsController' do
     end
 
     it 'should show not found error' do
-      get :rank, account_id: 0
+      get :account_rank, account_id: 0
 
       must_respond_with :ok
       @response.body.must_equal I18n.t('widgets.not_found')
     end
 
     it 'should render image for gif format' do
-      get :rank, account_id: account.id, format: :gif
+      get :account_rank, account_id: account.id, format: :gif
 
       must_respond_with :ok
       assigns(:widget).class.must_equal AccountWidget::Rank
@@ -67,7 +67,7 @@ describe 'AccountWidgetsController' do
 
   describe 'tiny' do
     it 'should set account and widget' do
-      get :tiny, account_id: account.id
+      get :account_tiny, account_id: account.id
 
       must_respond_with :ok
       assigns(:widget).class.must_equal AccountWidget::Tiny
@@ -75,14 +75,14 @@ describe 'AccountWidgetsController' do
     end
 
     it 'should show not found error' do
-      get :tiny, account_id: 0
+      get :account_tiny, account_id: 0
 
       must_respond_with :ok
       @response.body.must_equal I18n.t('widgets.not_found')
     end
 
     it 'should render image for gif format' do
-      get :tiny, account_id: account.id, format: :gif
+      get :account_tiny, account_id: account.id, format: :gif
 
       must_respond_with :ok
       assigns(:widget).class.must_equal AccountWidget::Tiny

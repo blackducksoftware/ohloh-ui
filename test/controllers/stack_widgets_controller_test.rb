@@ -16,7 +16,7 @@ describe 'StackWidgetsController' do
 
   describe 'normal' do
     it 'should set stack and widget' do
-      get :normal, stack_id: stack.id
+      get :stack_normal, stack_id: stack.id
 
       must_respond_with :ok
       assigns(:widget).class.must_equal StackWidget
@@ -24,7 +24,7 @@ describe 'StackWidgetsController' do
     end
 
     it 'should show not found error' do
-      get :normal, stack_id: 0
+      get :stack_normal, stack_id: 0
 
       must_respond_with :ok
       @response.body.must_equal I18n.t('widgets.not_found')

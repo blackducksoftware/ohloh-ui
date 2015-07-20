@@ -9,5 +9,7 @@
     = t('.embed')
     .clearfix
     - @widgets.each do |widget|
+      - view_path = "#{controller_name}/project_#{widget.name.underscore}"
       .project_widget_container
-        = render partial: 'widget', locals: { widget: widget, type: 'project', ref: 'sample' }
+        = render partial: 'widget',
+        locals: { widget: widget, type: 'project', ref: 'sample', view_path: view_path }
