@@ -53,7 +53,7 @@ class Analysis::TopCommitVolumeChart
   end
 
   def find_count(interval, names)
-    total_count = interval.map(&:last).inject(:+)
+    total_count = interval.map(&:last).inject(:+).to_i
     committer_names.each_with_index do |name, i|
       _name, count = interval.find { |n, _count| n == name }
       names[i][1] << count.to_i
