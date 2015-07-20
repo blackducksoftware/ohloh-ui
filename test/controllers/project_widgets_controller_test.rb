@@ -5,8 +5,8 @@ describe 'ProjectWidgetsController' do
   let(:widget_classes) do
     [ProjectWidget::FactoidsStats, ProjectWidget::Factoids, ProjectWidget::BasicStats,
      ProjectWidget::Languages, ProjectWidget::SearchAllCode, ProjectWidget::Cocomo,
-     ProjectWidget::ProjectPartnerBadge, ProjectWidget::ThinBadge, ProjectWidget::UsersLogo
-    ] + [ProjectWidget::ProjectUsers] * 6
+     ProjectWidget::PartnerBadge, ProjectWidget::ThinBadge, ProjectWidget::UsersLogo
+    ] + [ProjectWidget::Users] * 6
   end
 
   describe 'index' do
@@ -161,23 +161,23 @@ describe 'ProjectWidgetsController' do
 
   describe 'users' do
     it 'should set project and widget' do
-      get :project_users, project_id: project.id
+      get :users, project_id: project.id
 
       must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::ProjectUsers
+      assigns(:widget).class.must_equal ProjectWidget::Users
       assigns(:project).must_equal project
     end
 
     it 'should render iframe for js format' do
-      get :project_users, project_id: project.id, format: :js, style: 'blue'
+      get :users, project_id: project.id, format: :js, style: 'blue'
 
       must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::ProjectUsers
+      assigns(:widget).class.must_equal ProjectWidget::Users
       assigns(:project).must_equal project
     end
 
     it 'should show not found error' do
-      get :project_users, project_id: 0
+      get :users, project_id: 0
 
       must_respond_with :ok
       @response.body.must_equal I18n.t('widgets.not_found')
@@ -261,31 +261,31 @@ describe 'ProjectWidgetsController' do
 
   describe 'partner_badge' do
     it 'should set project and widget' do
-      get :project_partner_badge, project_id: project.id
+      get :partner_badge, project_id: project.id
 
       must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::ProjectPartnerBadge
+      assigns(:widget).class.must_equal ProjectWidget::PartnerBadge
       assigns(:project).must_equal project
     end
 
     it 'should render image for gif format' do
-      get :project_partner_badge, project_id: project.id, format: :gif
+      get :partner_badge, project_id: project.id, format: :gif
 
       must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::ProjectPartnerBadge
+      assigns(:widget).class.must_equal ProjectWidget::PartnerBadge
       assigns(:project).must_equal project
     end
 
     it 'should render iframe for js format' do
-      get :project_partner_badge, project_id: project.id, format: :js
+      get :partner_badge, project_id: project.id, format: :js
 
       must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::ProjectPartnerBadge
+      assigns(:widget).class.must_equal ProjectWidget::PartnerBadge
       assigns(:project).must_equal project
     end
 
     it 'should show not found error' do
-      get :project_partner_badge, project_id: 0
+      get :partner_badge, project_id: 0
 
       must_respond_with :ok
       @response.body.must_equal I18n.t('widgets.not_found')

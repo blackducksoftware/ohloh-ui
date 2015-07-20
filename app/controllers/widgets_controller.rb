@@ -1,4 +1,6 @@
 class WidgetsController < ApplicationController
+  WIDGET_TYPES = %w(account project stack)
+
   helper :widgets
   before_action :set_widget, except: :index
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
@@ -11,7 +13,8 @@ class WidgetsController < ApplicationController
   end
 
   def set_widget
-    @widget = Object.const_get("#{controller_name.camelize[0..-2]}::#{action_name.camelize}").new(params)
+    widget_name = action_name.split('_') - WIDGET_TYPES
+    @widget = Object.const_get("#{controller_name.camelize[0..-2]}::#{widget_name.join('_').camelize}").new(params)
   end
 
   def render_image_for_gif_format

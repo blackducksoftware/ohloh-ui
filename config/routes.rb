@@ -54,9 +54,9 @@ Rails.application.routes.draw do
     resources :stacks, only: [:index]
     resources :account_widgets, path: :widgets, as: :widgets, only: :index do
       collection do
-        get :account_detailed
-        get :tiny
-        get :rank
+        get :account_detailed, action: :detailed, as: :detailed
+        get :account_tiny, action: :tiny, as: :tiny
+        get :account_rank, action: :rank, as: :rank
       end
     end
     resources :kudos, only: [:index, :show] do
@@ -210,18 +210,18 @@ Rails.application.routes.draw do
     resources :rss_articles, only: :index
     resources :project_widgets, path: :widgets, as: :widgets, only: :index do
       collection do
-        get :factoids
-        get :factoids_stats
-        get :basic_stats
-        get :project_users
-        get :users_logo
-        get :search_code
-        get :browse_code
-        get :search_all_code
-        get :languages
-        get :project_partner_badge
-        get :thin_badge
-        get :cocomo
+        get :project_factoids, action: :factoids, as: :factoids
+        get :project_factoids_stats, action: :factoids_stats, as: :factoids_stats
+        get :project_basic_stats, action: :basic_stats, as: :basic_stats
+        get :project_users, action: :users, as: :users
+        get :project_users_logo, action: :users_logo, as: :users_logo
+        get :project_search_code, action: :search_code, as: :search_code
+        get :project_browse_code, action: :browse_code, as: :browse_code
+        get :project_search_all_code, action: :search_all_code, as: :search_all_code
+        get :project_languages, action: :languages, as: :languages
+        get :project_partner_badge, action: :partner_badge, as: :partner_badge
+        get :project_thin_badge, action: :thin_badge, as: :thin_badge
+        get :project_cocomo, action: :cocomo, as: :cocomo
       end
     end
     resources :ratings
@@ -325,7 +325,7 @@ Rails.application.routes.draw do
     end
     resources :stack_widgets, path: :widgets, as: :widgets, only: :index do
       collection do
-        get :normal
+        get :stack_normal, action: :normal, as: :normal
       end
     end
   end
