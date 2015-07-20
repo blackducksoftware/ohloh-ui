@@ -57,6 +57,13 @@ describe 'ProjectWidgetsController' do
       must_respond_with :ok
       @response.body.must_equal I18n.t('widgets.not_found')
     end
+
+    it 'should render xml format' do
+      get :basic_stats, project_id: project.id, format: :xml
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::BasicStats
+    end
   end
 
   describe 'factoids_stats' do
