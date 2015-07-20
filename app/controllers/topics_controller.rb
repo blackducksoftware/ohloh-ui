@@ -28,7 +28,7 @@ class TopicsController < ApplicationController
   end
 
   def show
-    @posts = @topic.posts.paginate(page: params[:page], per_page: 25)
+    @posts = @topic.posts.paginate(page: page_param, per_page: 25)
     respond_to do |format|
       format.atom
       format.html

@@ -52,7 +52,7 @@ class EditsController < SettingsController
   end
 
   def find_edits
-    edits = Edit.page(params[:page]).per_page(10).order('edits.created_at DESC, edits.id DESC')
+    edits = Edit.page(page_param).per_page(10).order('edits.created_at DESC, edits.id DESC')
     @edits = add_query_term(add_robotic_term(add_where_term(edits)))
   end
 

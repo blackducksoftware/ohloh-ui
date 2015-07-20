@@ -89,7 +89,7 @@ class PostsController < ApplicationController
     @account = Account::Find.by_id_or_login(params[:account_id])
     redirect_if_disabled
     @posts = @account.posts.includes(:topic).tsearch(params[:query], parse_sort_term)
-             .page(params[:page]).per_page(10)
+             .page(page_param).per_page(10)
   end
 
   def find_posts
@@ -97,7 +97,7 @@ class PostsController < ApplicationController
   end
 
   def find_posts_by_search_params
-    @posts = Post.tsearch(params[:query], parse_sort_term).page(params[:page]).per_page(10)
+    @posts = Post.tsearch(params[:query], parse_sort_term).page(page_param).per_page(10)
   end
 
   def parse_sort_term

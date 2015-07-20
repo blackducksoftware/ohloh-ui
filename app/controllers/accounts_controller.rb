@@ -81,7 +81,7 @@ class AccountsController < ApplicationController
   def find_claimed_people
     total_entries = params[:query].blank? ? Person::Count.claimed : nil
     @people = Person.find_claimed(params[:query], params[:sort])
-              .paginate(page: params[:page], per_page: 10, total_entries: total_entries)
+              .paginate(page: page_param, per_page: 10, total_entries: total_entries)
   end
 
   def set_account

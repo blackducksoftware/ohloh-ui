@@ -22,7 +22,7 @@ module ProjectFilters
   end
 
   def find_projects
-    @projects = find_projects_by_params.page(params[:page]).per_page([25, (params[:per_page] || 10).to_i].min).to_a
+    @projects = find_projects_by_params.page(page_param).per_page([25, (params[:per_page] || 10).to_i].min).to_a
   rescue
     raise ParamRecordNotFound
   end

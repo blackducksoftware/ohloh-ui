@@ -81,7 +81,7 @@ class ApiKeysController < ApplicationController
                 .includes(:account, :oauth_application).references(:all)
                 .send(parse_sort_term)
                 .filter_by(params[:query])
-                .page(params[:page])
+                .page(page_param)
                 .limit(default_or_csv_limit)
   end
 
