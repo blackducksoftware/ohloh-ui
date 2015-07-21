@@ -67,7 +67,7 @@ en:
       not_ready: 'The Open Hub report is not ready yet.'
       title: 'Project Language Statistics'
       percent: '%{percent}%'
-    project_partner_badge:
+    partner_badge:
       short_nice_name: 'Partner Badge'
       lines: "%{count} Lines "
       cost: "$%{count} Cost "
@@ -90,7 +90,7 @@ en:
     thin_badge:
       alt: 'Open Hub project report for %{name}'
       short_nice_name: 'Thin badge'
-    project_users:
+    users:
       users: 'USERS'
       i_use_it: 'I USE IT'
       support: 'Support %{name} by adding it to your stack at Open Hub'

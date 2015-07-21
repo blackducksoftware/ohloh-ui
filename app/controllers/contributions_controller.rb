@@ -18,7 +18,7 @@ class ContributionsController < ApplicationController
                      .filter_by(params[:query])
                      .includes(person: :account, contributor_fact: :primary_language)
                      .references(:all)
-                     .paginate(per_page: 20, page: params[:page])
+                     .paginate(per_page: 20, page: page_param)
   end
 
   def show

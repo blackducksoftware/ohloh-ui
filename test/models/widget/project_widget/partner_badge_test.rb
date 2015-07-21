@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ProjectPartnerBadgeTest < ActiveSupport::TestCase
   let(:project) { create(:project) }
-  let(:widget) { ProjectWidget::ProjectPartnerBadge.new(project_id: project.id) }
+  let(:widget) { ProjectWidget::PartnerBadge.new(project_id: project.id) }
 
   describe 'height' do
     it 'should return 50' do
@@ -31,7 +31,7 @@ class ProjectPartnerBadgeTest < ActiveSupport::TestCase
 
   describe 'short_nice_name' do
     it 'should return the short_nice_name' do
-      widget.short_nice_name.must_equal I18n.t('project_widgets.project_partner_badge.short_nice_name')
+      widget.short_nice_name.must_equal I18n.t('project_widgets.partner_badge.short_nice_name')
     end
   end
 end

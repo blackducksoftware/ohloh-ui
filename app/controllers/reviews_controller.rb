@@ -11,7 +11,7 @@ class ReviewsController < ApplicationController
     @reviews = @parent.reviews
                .find_by_comment_or_title_or_accounts_login(params[:query])
                .sort_by(params[:sort])
-               .paginate(page: params[:page], per_page: 10)
+               .paginate(page: page_param, per_page: 10)
   end
 
   def summary

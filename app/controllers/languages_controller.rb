@@ -9,7 +9,7 @@ class LanguagesController < ApplicationController
   def index
     @languages = Language.filter_by(params[:query])
                  .send(parse_sort_term)
-                 .page(params[:page]).per_page(10)
+                 .page(page_param).per_page(10)
   end
 
   def show
