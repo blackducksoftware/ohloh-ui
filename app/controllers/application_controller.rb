@@ -225,6 +225,7 @@ class ApplicationController < ActionController::Base
     @project = Project.by_url_name_or_id(project_id).take
 
     fail ParamRecordNotFound unless @project
+    project_context
     render 'projects/deleted' if @project.deleted?
   end
 
