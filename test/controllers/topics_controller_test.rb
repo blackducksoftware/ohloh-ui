@@ -45,6 +45,13 @@ describe TopicsController do
     must_respond_with :ok
   end
 
+  it 'show responds to rss format' do
+    create_list(:post, 5, topic: topic)
+    get :show, id: topic, format: 'rss'
+    must_render_template 'show.atom.builder'
+    must_respond_with :ok
+  end
+
   it 'show should render markdown as html' do
     post = create(:post, body: '**Markdown Me**')
     get :show, id: post.topic.id
