@@ -52,6 +52,16 @@ describe 'ReviewsControllerTest' do
       assigns(:reviews).count.must_equal 1
       assigns(:reviews).first.must_equal account_review
     end
+
+    it 'must render projects/deleted when project is deleted' do
+      project = create(:project)
+
+      project.update!(deleted: true, editor_account: create(:account))
+
+      get :index, project_id: project.to_param
+
+      must_render_template 'deleted'
+    end
   end
 
   describe 'summary' do

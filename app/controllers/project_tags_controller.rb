@@ -3,7 +3,7 @@ class ProjectTagsController < SettingsController
   helper TagsHelper
 
   before_action :session_required, only: [:create, :destroy]
-  before_action :find_project
+  before_action :set_project_or_fail, :set_project_editor_account_to_current_user
   before_action :edit_authorized_only!, only: [:create, :destroy]
   before_action :find_related_projects, only: [:index, :related]
   before_action :find_tagging, only: [:destroy]
@@ -32,12 +32,6 @@ class ProjectTagsController < SettingsController
   end
 
   private
-
-  def find_project
-    @project = Project.from_param(params[:project_id]).take
-    fail ParamRecordNotFound if @project.nil?
-    @project.editor_account = current_user
-  end
 
   def find_tagging
     tag = Tag.where(name: params[:id]).take

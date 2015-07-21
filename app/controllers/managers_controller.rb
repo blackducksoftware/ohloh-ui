@@ -82,12 +82,13 @@ class ManagersController < SettingsController
 
   def find_parent
     @parent = if params[:project_id]
-                Project.from_param(params[:project_id]).first!
+                Project.by_url_name_or_id(params[:project_id]).first
               else
-                Organization.from_param(params[:organization_id]).first!
+                Organization.from_param(params[:organization_id]).first
               end
-  rescue ActiveRecord::RecordNotFound
-    raise ParamRecordNotFound
+
+    fail ParamRecordNotFound unless @parent
+    project_context && render('projects/deleted') if @parent.is_a?(Project) && @parent.deleted?
   end
 
   def redirect_to_index
