@@ -51,6 +51,7 @@ class ContributionsController < ApplicationController
   def set_contributor
     @contributor = ContributorFact.where(names: { id: params[:id] }).where(analysis_id: @project.best_analysis_id)
                    .eager_load(:name).first
+    fail ParamRecordNotFound unless @contributor
   end
 
   def send_sample_image_if_bot
