@@ -8,9 +8,7 @@ module ProjectScopes
     scope :from_param, lambda { |param|
       not_deleted.by_url_name_or_id(param)
     }
-    scope :by_url_name_or_id, lambda { |param|
-      where(Project.arel_table[:url_name].eq(param).or(Project.arel_table[:id].eq(param)))
-    }
+    scope :by_url_name_or_id, ->(param) { where('lower(url_name) = ? OR id = ?', param.to_s.downcase, param.to_i) }
     scope :been_analyzed, -> { where.not(best_analysis_id: nil) }
     scope :recently_analyzed, -> { not_deleted.been_analyzed.order(created_at: :desc) }
     scope :hot, lambda { |l_id = nil|
