@@ -1,5 +1,5 @@
 class WidgetsController < ApplicationController
-  WIDGET_TYPES = %w(account project stack)
+  WIDGET_TYPES = %w(account project stack organization)
 
   helper :widgets
   before_action :set_widget, except: :index
