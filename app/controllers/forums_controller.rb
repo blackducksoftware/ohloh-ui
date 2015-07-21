@@ -24,7 +24,7 @@ class ForumsController < ApplicationController
   end
 
   def show
-    @topics = @forum.topics.paginate(page: params[:page], per_page: 15)
+    @topics = @forum.topics.paginate(page: page_param, per_page: 15)
   end
 
   def update

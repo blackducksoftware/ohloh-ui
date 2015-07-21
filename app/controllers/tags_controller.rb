@@ -16,7 +16,7 @@ class TagsController < ApplicationController
     @projects = Project.tagged_with(params[:names])
                 .includes([[best_analysis: :main_language], :logo, :organization, :licenses])
                 .order(user_count: :desc)
-                .page(params[:page]).per_page(10)
+                .page(page_param).per_page(10)
     @projects.each { |proj| proj.editor_account = current_user }
     find_related_tags
   end
@@ -30,7 +30,7 @@ class TagsController < ApplicationController
   end
 
   def find_tags_by_popularity
-    @tags = Tag.popular.paginate(page: params[:page], per_page: 48)
+    @tags = Tag.popular.paginate(page: page_param, per_page: 48)
     render template: 'tags/cloud'
   end
 end

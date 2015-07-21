@@ -1,4 +1,4 @@
-class AccountWidget::AccountDetailed < AccountWidget
+class AccountWidget::Detailed < AccountWidget
   def width
     230
   end

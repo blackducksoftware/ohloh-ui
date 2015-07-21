@@ -4,7 +4,7 @@ class LicensesController < ApplicationController
   before_action :set_license, only: [:show, :edit, :update]
 
   def index
-    @licenses = License.filter_by(params[:query]).by_name.paginate(page: params[:page], per_page: 30)
+    @licenses = License.filter_by(params[:query]).by_name.paginate(page: page_param, per_page: 30)
   end
 
   def new

@@ -13,9 +13,9 @@ class DuplicatesController < ApplicationController
   before_action :find_duplicate_without_project_id, only: [:resolve, :show]
 
   def index
-    @resolved_duplicates = Duplicate.where(resolved: true).order(id: :desc).paginate(per_page: 10, page: params[:page])
+    @resolved_duplicates = Duplicate.where(resolved: true).order(id: :desc).paginate(per_page: 10, page: page_param)
     @unresolved_duplicates = Duplicate.where.not(resolved: true).order(id: :desc)
-                             .paginate(per_page: 10, page: params[:page])
+                             .paginate(per_page: 10, page: page_param)
   end
 
   def new

@@ -6,7 +6,7 @@ class OrganizationsController < ApplicationController
   include OrgFilters
 
   def index
-    @organizations = Organization.search_and_sort(params[:query], params[:sort], params[:page])
+    @organizations = Organization.search_and_sort(params[:query], params[:sort], page_param)
   end
 
   def new
@@ -58,7 +58,7 @@ class OrganizationsController < ApplicationController
     @projects = []
     params[:sort] ||= 'project_name'
     return if params[:query].blank?
-    @projects = Project.active.search_and_sort(params[:query], params[:sort], params[:page])
+    @projects = Project.active.search_and_sort(params[:query], params[:sort], page_param)
   end
 
   def claim_project
@@ -72,7 +72,7 @@ class OrganizationsController < ApplicationController
 
   def manage_projects
     params[:sort] ||= 'new'
-    @projects = @organization.projects.search_and_sort(params[:query], params[:sort], params[:page])
+    @projects = @organization.projects.search_and_sort(params[:query], params[:sort], page_param)
   end
 
   def remove_project
@@ -86,11 +86,11 @@ class OrganizationsController < ApplicationController
   end
 
   def outside_projects
-    @outside_projects = @organization.outside_projects(params[:page], @per_page || 20)
+    @outside_projects = @organization.outside_projects(page_param, @per_page || 20)
   end
 
   def projects
-    @affiliated_projects = @organization.affiliated_projects(params[:page], @per_page || 20)
+    @affiliated_projects = @organization.affiliated_projects(page_param, @per_page || 20)
   end
 
   def portfolio_projects
@@ -102,12 +102,12 @@ class OrganizationsController < ApplicationController
   end
 
   def affiliated_committers
-    @affiliated_committers = @organization.affiliated_committers(params[:page], @per_page || 20)
+    @affiliated_committers = @organization.affiliated_committers(page_param, @per_page || 20)
     @stats_map = Account::CommitCore.new(@affiliated_committers.map(&:id)).most_and_recent_data
   end
 
   def outside_committers
-    @outside_committers = @organization.outside_committers(params[:page], @per_page || 20)
+    @outside_committers = @organization.outside_committers(page_param, @per_page || 20)
   end
 
   private

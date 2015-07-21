@@ -22,9 +22,9 @@ class ProjectWidget < Widget
 
   class << self
     def create_widgets(project_id)
-      widgets_classes = descendants.select { |widget| widget != ProjectWidget::ProjectUsers }
+      widgets_classes = descendants.select { |widget| widget != ProjectWidget::Users }
       widgets = widgets_classes.map { |widget| widget.new(project_id: project_id) }
-      widgets += ProjectWidget::ProjectUsers.instantiate_styled_badges(project_id: project_id)
+      widgets += ProjectWidget::Users.instantiate_styled_badges(project_id: project_id)
       widgets.select(&:can_display?).sort_by(&:position)
     end
   end

@@ -47,6 +47,7 @@ class ApplicationController < ActionController::Base
   def page_param
     [params[:page].to_i, 1].max
   end
+  helper_method :page_param
 
   protected
 

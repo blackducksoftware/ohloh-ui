@@ -56,4 +56,11 @@ class NilContributorFactTest < ActiveSupport::TestCase
       nil_contributor_fact.present?.must_equal false
     end
   end
+
+  describe 'name_language_facts' do
+    it 'should be empty' do
+      nil_contributor_fact.name_language_facts.must_equal []
+      nil_contributor_fact.name_language_facts.must_be_empty
+    end
+  end
 end
