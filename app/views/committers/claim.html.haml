@@ -1,6 +1,6 @@
 - content_for :custom_head do
   %meta{ name: t('.meta_name'), content: t('.meta_content') }
-- content_for(:html_title) { t('.title', current_user: current_user.nil? ? nil : current_user.name.concat(' : ')) }
+- content_for(:html_title) { t('.title', current_user: current_user.nil? ? nil : "#{current_user.name}  : ") }
 - page_context[:select_top_menu_nav] = :select_people
 
 %h1.margin_bottom_15= t('.people')
