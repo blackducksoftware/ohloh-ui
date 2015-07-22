@@ -60,9 +60,9 @@ describe 'AliasesController' do
 
     it 'with user login' do
       login_as @account
-      lambda do
-        post :create, project_id: @project.id, commit_name_id: create(:name).id, preferred_name_id: create(:name).id
-      end.must_change 'Alias.count'
+      before = Alias.count
+      post :create, project_id: @project.id, commit_name_id: create(:name).id, preferred_name_id: create(:name).id
+      Alias.count.must_equal(before + 1)
       must_respond_with :redirect
       must_redirect_to action: :index
     end

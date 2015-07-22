@@ -12,9 +12,9 @@ describe 'ActivationResendsController' do
   describe 'create' do
     it 'should not send email if account is already activated' do
       account = create(:account)
-      lambda do
-        post :create, email: account.email
-      end.wont_change 'ActionMailer::Base.deliveries.count'
+      before = ActionMailer::Base.deliveries.count
+      post :create, email: account.email
+      ActionMailer::Base.deliveries.count.must_equal before
       must_respond_with :redirect
       must_redirect_to new_session_path
       flash[:notice].must_equal I18n.t('activation_resends.create.already_active')
@@ -22,18 +22,18 @@ describe 'ActivationResendsController' do
 
     it 'should not send email for recently activated account' do
       recently_activated = create(:unactivated, activation_resent_at: Time.current)
-      lambda do
-        post :create, email: recently_activated.email
-      end.wont_change 'ActionMailer::Base.deliveries.count'
+      before = ActionMailer::Base.deliveries.count
+      post :create, email: recently_activated.email
+      ActionMailer::Base.deliveries.count.must_equal before
       must_respond_with :redirect
       must_redirect_to root_path
       flash[:success].must_equal I18n.t('activation_resends.create.recently_activated')
     end
 
     it 'Should not allow if email is invalid' do
-      lambda do
-        post :create, email: 'InvalidEmail'
-      end.wont_change 'ActionMailer::Base.deliveries.count'
+      before = ActionMailer::Base.deliveries.count
+      post :create, email: 'InvalidEmail'
+      ActionMailer::Base.deliveries.count.must_equal before
       must_respond_with :ok
       must_render_template :new
       assigns(:errors).must_equal I18n.t('activation_resends.create.no_account')
@@ -41,9 +41,9 @@ describe 'ActivationResendsController' do
 
     it 'should resend activation mail' do
       unactivated = create(:unactivated)
-      lambda do
-        post :create, email: unactivated.email
-      end.must_change 'ActionMailer::Base.deliveries.count'
+      before = ActionMailer::Base.deliveries.count
+      post :create, email: unactivated.email
+      ActionMailer::Base.deliveries.count.must_equal(before + 1)
       must_respond_with :redirect
       must_redirect_to root_path
       flash[:notice].must_equal I18n.t('activation_resends.create.success')
