@@ -135,6 +135,7 @@ Rails.application.routes.draw do
 
   resources :forums do
     resources :topics, shallow: true
+    resources :topics, only: [:show]
   end
 
   resources :topics, except: [:index, :new, :create] do
