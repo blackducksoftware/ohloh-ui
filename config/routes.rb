@@ -14,7 +14,7 @@ Rails.application.routes.draw do
 
   resources :stack_entries, only: :new
 
-  resources :password_resets, only: [:new, :create] do
+  resources :password_resets, as: :password_reset, only: [:new, :create] do
     collection do
       get :confirm
       patch :reset
