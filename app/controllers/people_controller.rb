@@ -1,11 +1,15 @@
 class PeopleController < UnclaimedController
   helper KudosHelper
 
-  before_action :find_index_people, only: [:index]
-  before_action :preload_data, only: [:index]
+  before_action :find_index_people, unless: :query_or_cache_exist, only: [:index]
+  before_action :preload_data, unless: :query_or_cache_exist, only: [:index]
   before_action :find_rankings_people, only: [:rankings]
 
   private
+
+  def query_or_cache_exist
+    params[:query].blank? && Rails.cache.exist?('people_index_page')
+  end
 
   def find_index_people
     @claimed_people = Person.find_claimed(params[:query], 'relevance')
