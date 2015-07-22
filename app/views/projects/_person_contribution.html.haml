@@ -9,6 +9,6 @@
         as
         = h(obfuscate_email(c.committer_name))
   - if contributions.length > 3
-    = link_to "and #{contributions.size} other projects", account_path(person.account_id)
+    = link_to t('.link_others', size: (contributions.size - 3)), account_path(person.account_id)
 - else
-  No Contributions Found
+  = t('.no_contribution_found')
