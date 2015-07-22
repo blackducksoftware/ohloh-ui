@@ -7,5 +7,9 @@ class BzrRepository < Repository
     def find_existing(repository)
       BzrRepository.find_by(url: repository.url)
     end
+
+    def dag?
+      true
+    end
   end
 end

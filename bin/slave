@@ -1,0 +1,117 @@
+#!/usr/bin/env ruby
+require_relative 'lib/daemon_pidfiles'
+
+class SlaveDaemon
+  include Daemonize
+  include Daemonize::DaemonPidfiles
+
+  def pid_filename; "/tmp/slave.pid"; end
+
+  def run!
+    # daemonize :stdout => "/tmp/slave.out", :stderr => "/tmp/slave.err", :chdir => Dir.pwd
+
+    store_pid
+    trap 0 do
+      if recall_pid == Process.pid
+        FileUtils.rm(pid_filename)
+        @@slave.log_info("SlaveDaemon stopped") if @@slave
+      end
+    end
+
+    # Can't require config/environment until we are already daemonized, otherwise we can lose our db connection
+    require File.expand_path(File.dirname(__FILE__) + '/../config/environment')
+
+    begin
+      # Slave.editor = Account.find_by_login("ohloh_slave")
+      @@slave = Slave.local
+      if @@slave.nil?
+        raise "This computer not found in DB"
+      end
+      @@slave.log_info("SlaveDaemon started")
+
+      set_process_title("Checking clumps")
+      @@slave.sync!
+
+      # Activate the Enterprise Ruby copy-on-write memory management if available
+      if GC.respond_to?(:copy_on_write_friendly=)
+        GC.copy_on_write_friendly = true
+      end
+
+      @@pids = []
+      loop { job_loop }
+    rescue
+      if defined?(@@slave) && @@slave
+        @@slave.log_fatal($!.inspect)
+      end
+      raise
+    end
+  end
+
+  def job_loop
+    set_process_title("Updating hardware status")
+    @@slave.reload
+    clean_up_child_processes
+    update_hardware_stats
+    job_count = sync_running_jobs_with_db
+    if @@slave.allowed?
+      10.times do
+        # Spawn a new job
+        while (job_count < Slave.max_jobs && job = @@slave.reload.pick_job) do
+          set_process_title("Spawning #{job.class} #{job.id}")
+          @@pids << job.fork!
+          job_count = job_count + 1
+          sleep 2
+        end
+        set_process_title("Sleeping")
+        sleep 5
+        clean_up_child_processes
+        job_count = sync_running_jobs_with_db
+      end
+    else
+      set_process_title("Permission Denied")
+      sleep 60
+    end
+  end
+
+  def clean_up_child_processes
+    # Clean up any forked processes that have completed
+    @@pids.delete_if { |pid| Process.waitpid(pid, Process::WNOHANG) }
+  end
+
+  def update_hardware_stats
+    @@slave.get_disk_space
+    @@slave.get_load_average
+    @@slave.save!
+  end
+
+  # The database expects that certain jobs are running.
+  # If we can't actually find it running on this machine, mark the job as failed.
+  def sync_running_jobs_with_db
+    running_job_processes = `ps x | grep -i -E -e'Job [0-9]+'`.lines.to_a
+    running_job_ids = running_job_processes.collect { |ps| ps =~ /Job (\d+)/ ? ($1).to_i : nil }.compact
+    job_count = 0
+    @@slave.jobs.where(status: Job::STATUS_RUNNING).each do |job|
+      if running_job_ids.include? job.id
+        job_count = job_count + 1
+      else
+        @@slave.log_error("SlaveDaemon could not find process for job. Marked as failed.", job)
+        job.update_attributes(:status => Job::STATUS_FAILED, :exception => "SlaveDaemon could not find process for job.")
+      end
+    end
+    return job_count
+  end
+
+  def set_process_title(status="Starting")
+    $0 = "JobSpawner: #{status}"
+  end
+end
+
+case ARGV[0]
+when 'stop'
+  SlaveDaemon.new.stop
+when 'start'
+  SlaveDaemon.new.start
+else
+  STDERR.puts "usage: #{__FILE__} [start|stop]"
+  exit 1
+end

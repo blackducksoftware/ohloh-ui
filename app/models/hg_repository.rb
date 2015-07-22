@@ -7,5 +7,9 @@ class HgRepository < Repository
     def find_existing(repository)
       HgRepository.find_by(url: repository.url)
     end
+
+    def dag?
+      true
+    end
   end
 end

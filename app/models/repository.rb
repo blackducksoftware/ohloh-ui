@@ -52,6 +52,10 @@ class Repository < ActiveRecord::Base
     @bypass_url_validation = modified_value
   end
 
+  def clump_class
+    GitClump
+  end
+
   class << self
     def find_existing(repository)
       where(url: repository.url).first
@@ -68,6 +72,14 @@ class Repository < ActiveRecord::Base
       else
         wheres.where(owner_at_forge: nil)
       end
+    end
+
+    def dag?
+      false
+    end
+
+    def has_email_addresses?
+      true
     end
   end
 

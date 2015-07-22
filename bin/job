@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+class JobDaemon
+  def run!(job_id)
+    require File.expand_path(File.dirname(__FILE__) + '/../config/environment')
+
+    # Job.editor = Account.find_by_login("ohloh_slave")
+    @job = Job.find(job_id)
+
+    @job.update_attribute(:slave, Slave.local)
+    pid = @job.fork!
+    STDERR.puts "Started job #{job_id} in process #{pid}."
+  end
+end
+
+if ARGV[0] =~ /\d+/
+  JobDaemon.new.run!(ARGV[0].to_i)
+else
+  STDERR.puts "Usage: #{__FILE__} [job_id]"
+  exit 1
+end

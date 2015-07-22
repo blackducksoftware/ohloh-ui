@@ -1,6 +1,7 @@
 class Commit < ActiveRecord::Base
   belongs_to :code_set
   belongs_to :name
+  belongs_to :email_address
   has_many :fyle, primary_key: :code_set_id, foreign_key: :code_set_id
   has_many :diffs, dependent: :destroy
   has_many :analysis_aliases, foreign_key: :commit_name_id, primary_key: :name_id
