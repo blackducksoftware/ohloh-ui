@@ -21,6 +21,9 @@ en:
     more: "[More]"
     less: "[Less]"
     html_title: "The %{name} Open Source Project on Open Hub : %{title}"
+    person_contribution:
+      no_contribution_found: 'No Contribution Found'
+      link_others: "and %{size} other projects"
     no_analysis:
       no_analysis_message: "No Analysis to display for %{name}."
     header:

@@ -37,6 +37,8 @@ class WidgetsController < ApplicationController
   def handle_xml_format
     return unless request_format == 'xml'
     @type = WIDGET_TYPES.select { |klass| controller_name.include?(klass) }[0]
+    @parent = @widget.send(@type)
+    fail ParamRecordNotFound unless @parent
     render template: 'widgets/metadata'
   end
 end

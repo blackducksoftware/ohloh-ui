@@ -10,6 +10,8 @@ module WidgetBadge
                              align: :center, y_offset: 0 }
 
     def create(image_data)
+      GC.start
+
       tempfile = Tempfile.new(['partner-badge', '.gif'])
       animate(*image_data, tempfile.path)
       image = MiniMagick::Image.open(tempfile.path)

@@ -233,6 +233,11 @@ class ProjectTest < ActiveSupport::TestCase
       project.destroy
       Project.from_param(project.to_param).count.must_equal 0
     end
+
+    it 'should match project url_name case insensitively' do
+      project = create(:project, url_name: 'wOwZeRs')
+      Project.from_param('WoWzErS').first.id.must_equal project.id
+    end
   end
 
   describe 'with_pai_available' do
