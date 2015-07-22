@@ -17,7 +17,7 @@ class ProjectsController < ApplicationController
 
   def users
     @accounts = @project.users(params[:query], params[:sort])
-                .paginate(page: page_param, per_page: 10)
+    @accounts = @accounts.paginate(page: page_param, per_page: 10, total_entries: @accounts.length)
   end
 
   def update
