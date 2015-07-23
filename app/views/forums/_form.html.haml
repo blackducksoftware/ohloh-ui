@@ -1,14 +1,14 @@
 %fieldset
-  .control-group
+  .control-group.clearfix{ style: 'margin: 0;' }
     = f.label :title, t('.title'), class: 'control-label'
     .controls
       = f.text_field :name, class: 'col-md-8', style: 'width: 660px; height: 20px;'
       - error_tag @forum, :name
-  .control-group
+  .control-group.clearfix{ style: 'margin: 0;' }
     = f.label :position, t('.position'), class: 'control-label'
     .controls
       = f.text_field :position, size: 5
-  .control-group
+  .control-group.clearfix{ style: 'margin: 0;' }
     = f.label :description, t('.description'), class: 'control-label'
     .controls
       = f.text_area :description, rows: 10, class: 'col-md-10', style: 'width: 780px; height: 220px;'
