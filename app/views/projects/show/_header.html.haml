@@ -1,7 +1,7 @@
 #project_masthead
   .col-md-1.no_padding#project_icon
     %a{ href: project_path(@project), itemprop: 'url' }
-      - project_icon(@project, :med)
+      = @project.decorate.icon(:med)
 
   .col-md-11#project_header
     .pull-left.project_title
