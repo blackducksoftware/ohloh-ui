@@ -1,7 +1,7 @@
 # rubocop:disable Metrics/ClassLength
 class ApplicationController < ActionController::Base
   BOT_REGEX = /\b(Baiduspider|Googlebot|libwww-perl|msnbot|SiteUptime|Slurp)\b/i
-  FORMATS_THAT_SHOULD_BE_TREATED_AS_HTML = %w(php abe)
+  FORMATS_THAT_SHOULD_BE_TREATED_AS_HTML = %w(php abe txt com cbe)
 
   include PageContextHelper
 
