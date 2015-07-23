@@ -73,6 +73,16 @@ class StackEntriesControllerTest < ActionController::TestCase
     must_respond_with :unprocessable_entity
   end
 
+  it 'create should gracefully handle the POST coming in twice (i.e. - project alreay in stack)' do
+    stack = create(:stack)
+    project = create(:project)
+    create(:stack_entry, stack: stack, project: project)
+    login_as stack.account
+    post :create, stack_id: stack, stack_entry: { project_id: project }
+    must_respond_with :ok
+    StackEntry.where(stack_id: stack.id, project_id: project.id).count.must_equal 1
+  end
+
   # update
   it 'update should allow updating of a stack entrys note' do
     stack_entry = create(:stack_entry)
