@@ -3,7 +3,7 @@
 %meta{ name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW' }
 
 %h1.margin_bottom_15= t('.people')
-
+- binding.pry
 - if @claimed_people.any?
   %h3.margin_bottom_15= t('.account_holders')
   = render partial: 'claimed_person', collection: @claimed_people
