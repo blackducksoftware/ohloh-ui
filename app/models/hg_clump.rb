@@ -1,14 +1,7 @@
 class HgClump < Clump
+  alias_method :path, :url
 
   def scm_class
     OhlohScm::Adapters::HglibAdapter
-  end
-
-  def url
-    if self.slave.local?
-      self.path
-    else
-      "ssh://#{self.slave.hostname}/#{self.path}"
-    end
   end
 end

@@ -27,7 +27,7 @@ class CodeSet < ActiveRecord::Base
         end
         saved_max_steps = [saved_max_steps || 0, inner_max_step + 1].max
         yield(step, saved_max_steps) if block_given?
-        clump.slave.sleep_while_busy if step < inner_max_step
+        Slave.local.sleep_while_busy if step < inner_max_step
       end
     end
 
@@ -36,38 +36,18 @@ class CodeSet < ActiveRecord::Base
   end
 
   def local_clump
-    @local_clump ||= begin
-      s = Slave.local
-      clumps.find_by(slave_id: s.id) || create_clump(s)
-    end
+    @local_clump ||= (clumps.first || create_clump)
   end
-
 
   # Creates a new clump using the correct class of clump.
   # It's not totally trivial because you have to match the class that everyone else is already using.
-  def create_clump(slave)
+  def create_clump
     # What is everyone else using?
     other = Clump.order('updated_at DESC').find_by(code_set_id: id)
     klass = other.class if other
     # If no one is using anything yet, then we are the first. We'll ask the repository what class to use.
     klass ||= self.repository.clump_class
-    klass.create(:code_set => self, :slave => slave)
-  end
-
-  # Attempts to clean up redundant or broken clumps. All things being equal, busy slaves are cleaned up first.
-  #
-  # This method will delete data from disk!
-  #
-  # Do not call this method if other jobs are pending on this code set!
-  # This method does not check against running jobs because it expects to be called WITHIN a running job.
-  def balance_clumps
-    (self.clumps.size - (BACKUP_CLUMPS + 1)).times do
-      clump = self.clumps.find(:first, :include => :slave, :order => "COALESCE(fetched_at, '1970-01-01'), slaves.oldest_clump_timestamp")
-      if clump and clump.slave.online?
-        Slave.local.log_info("Load balancer deleting clump from #{clump.slave.hostname}", clump.code_set)
-        clump.hard_delete
-      end
-    end
+    klass.create(code_set: self)
   end
 
   def import
@@ -78,7 +58,7 @@ class CodeSet < ActiveRecord::Base
       yield(current_step, max_steps)
     end
 
-    self.local_clump.open(:read_only => true) do |clump|
+    self.local_clump.open do |clump|
       last_commit = self.commits.last
 
       opts = {}
@@ -96,7 +76,7 @@ class CodeSet < ActiveRecord::Base
       end
 
       clump.scm.each_commit(opts) do |e|
-        clump.slave.sleep_while_busy
+        Slave.local.sleep_while_busy
 
         current_step += 1
         yield(current_step, max_steps) if block_given?

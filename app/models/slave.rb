@@ -278,12 +278,6 @@ class Slave < ActiveRecord::Base
     end
   end
 
-  def path_from_code_set_id(code_set_id)
-    return nil unless code_set_id
-    j = code_set_id.to_s.rjust(12,"0")
-    "#{self.clump_dir}/#{j[0..2]}/#{j[3..5]}/#{j[6..8]}/#{j[9..-1]}"
-  end
-
   def code_set_id_from_path(path)
     if path =~ /\/(\d\d\d)\/(\d\d\d)\/(\d\d\d)\/?$/
       $3.to_i + $2.to_i * 1000 + $1.to_i * 1000000
