@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class PostsController < ApplicationController
   include RedirectIfDisabled
   helper MarkdownHelper
@@ -12,6 +13,8 @@ class PostsController < ApplicationController
 
   def index
     respond_to do |format|
+      format.html
+      format.atom
       format.rss { render 'index.atom.builder' }
     end
   end
