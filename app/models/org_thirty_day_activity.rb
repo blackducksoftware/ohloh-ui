@@ -29,7 +29,7 @@ class OrgThirtyDayActivity < ActiveRecord::Base
 
     def filter(filter_type)
       filter_type = filter_type.to_sym
-      fail ArgumentError, 'Invalid Filter Type' unless FILTER_TYPES.keys.include?(filter_type)
+      filter_type = :all_orgs unless FILTER_TYPES.keys.include?(filter_type)
       send(FILTER_TYPES[filter_type])
     end
 
