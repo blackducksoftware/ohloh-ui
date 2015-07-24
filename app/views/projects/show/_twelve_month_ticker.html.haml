@@ -1,7 +1,7 @@
 :ruby
-  commits_diff = summary.commits_difference
+  commits_diff = summary.send(diff)
   positive_commits_diff = commits_diff > 0
-  commits_count = summary.commits_count
+  commits_count = summary.send(count)
 
 - if summary.data?
   %span.commits_ticker
@@ -11,7 +11,7 @@
         = positive_commits_diff ? '+' : ''
         = commits_diff
         - if commits_count > 0
-          ( #{(commits_diff.abs.to_f / commits_count.abs.to_f * 100).floor} %)
+          (#{(commits_diff.abs.to_f / commits_count.abs.to_f * 100).floor}%)
       = t(:from_prev_12_mo)
 - elsif young_analysis
   = t('.too_young')
