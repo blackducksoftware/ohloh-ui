@@ -1,5 +1,5 @@
 class HgClump < Clump
-  alias_method :path, :url
+  alias_method :url, :path
 
   def scm_class
     OhlohScm::Adapters::HglibAdapter
