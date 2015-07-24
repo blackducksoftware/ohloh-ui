@@ -33,7 +33,7 @@ class CodeSet < ActiveRecord::Base
   private
 
   def find_or_create_clump
-    clump || code_set.create_clump(type: repository.clump_class.name)
+    clump || create_clump(type: repository.clump_class.name)
   end
 
   def scm_pull
