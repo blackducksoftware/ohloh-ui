@@ -118,5 +118,10 @@ describe 'AutocompletesController' do
       resp.length.must_equal 2
       [resp[0], resp[1]].sort.must_equal ['c', 'c++']
     end
+
+    it 'should not fail if project_id is blank' do
+      get :tags, project_id: '', format: :json
+      must_respond_with :ok
+    end
   end
 end
