@@ -10,6 +10,12 @@ class PostsController < ApplicationController
   before_action :find_post_record, only: [:edit, :update, :destroy]
   before_action :find_posts, only: [:index]
 
+  def index
+    respond_to do |format|
+      format.rss { render 'index.atom.builder' }
+    end
+  end
+
   def create
     @post = build_new_post
     if @post.save
