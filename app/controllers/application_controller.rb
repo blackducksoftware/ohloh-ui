@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from ::Exception do |exception|
     fail exception if Rails.application.config.consider_all_requests_local
-    notify_airbrake(exception)
+    notify_airbrake(exception) unless blank_user_agent?
     render_404
   end
 
@@ -165,6 +165,10 @@ class ApplicationController < ActionController::Base
 
   def bot?
     (request.env['HTTP_USER_AGENT'] =~ BOT_REGEX).present?
+  end
+
+  def blank_user_agent?
+    request.env['HTTP_USER_AGENT'].blank?
   end
 
   def show_permissions_alert
