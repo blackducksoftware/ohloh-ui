@@ -242,7 +242,7 @@ class Slave < ActiveRecord::Base
     code_set_ids.compact.each do |code_set_id|
       cs = CodeSet.find_by(id: code_set_id)
       if cs
-        clump = cs.create_clump(self)
+        clump = cs.find_or_create_clump
         self.log_warning("#{clump.path} found. Added to database.", cs)
       else
         # We have a clump on disk for a code_set that doesn't exist.

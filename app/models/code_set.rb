@@ -30,11 +30,11 @@ class CodeSet < ActiveRecord::Base
     CodeSet::Import.new(self).perform(&block)
   end
 
-  private
-
   def find_or_create_clump
     clump || create_clump(type: repository.clump_class.name)
   end
+
+  private
 
   def scm_pull
     clump.scm.pull(repository.source_scm) do |step, inner_max_step|

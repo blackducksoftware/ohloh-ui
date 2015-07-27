@@ -25,8 +25,6 @@ class Job < ActiveRecord::Base
   end
 
   def fork!
-    # ActiveRecord::Base.remove_connection
-
     pid = Process.fork do
       # daemonize :stdout => "/tmp/out_#{self.id}", :stderr => "/tmp/err_#{self.id}", :chdir => Dir.pwd
 
@@ -37,9 +35,9 @@ class Job < ActiveRecord::Base
       trap_exit
       setup_environment
       run!
-      # ActiveRecord::Base.remove_connection
     end
-    # ActiveRecord::Base.establish_connection
+
+    ActiveRecord::Base.establish_connection
     pid
   end
 
