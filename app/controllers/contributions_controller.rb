@@ -22,7 +22,7 @@ class ContributionsController < ApplicationController
   end
 
   def show
-    redirect_to project_contributor_path(@project, @contribution) && return if @contribution.id != params[:id].to_i
+    return redirect_to project_contributor_path(@project, @contribution) if @contribution.id != params[:id].to_i
     @recent_kudos = @contribution.kudoable.recent_kudos
   end
 
