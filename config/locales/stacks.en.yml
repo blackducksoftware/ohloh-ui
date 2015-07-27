@@ -56,6 +56,8 @@ en:
       unique_project: "unique project"
       no_unique_projects: "No unique projects"
     small_suggestion:
+      i_use_this: "I Use This"
+      skip_this: "Skip This"
       html:
         haml:
           i_use_this: "I Use This"
