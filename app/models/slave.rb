@@ -6,66 +6,45 @@ class Slave < ActiveRecord::Base
   has_many :jobs
   has_many :slave_logs
 
-  MAX_NEW_JOB_LOAD_AVERAGE=10.00 # New jobs will not spawn if load is higher than this
-  MAX_FETCH_LOAD_AVERAGE=10.00 # A running fetch will pause if load exceeds this limit
-  MAX_GIT_LOAD_AVERAGE=10.00 # Git push and pull will be blocked if load is higher than this
+  filterable_by ['hostname']
 
-  SECURE_TREE = {}
-
-  # sortable_by :hostname, {
-    # :hostname => "lower(slaves.hostname) asc",
-    # :available_blocks => "COALESCE(slaves.available_blocks, 0) DESC",
-    # :used_blocks => "COALESCE(slaves.used_blocks, 0) DESC",
-    # :used_percent => "COALESCE(slaves.used_blocks, 0) DESC",
-    # :load_average => "COALESCE(slaves.load_average, 0) DESC",
-    # :lag => "COALESCE(slaves.oldest_clump_timestamp, '1970-01-01')",
-    # :lag_desc => "COALESCE(slaves.oldest_clump_timestamp, '1970-01-01') DESC"
-  # }
-  # filterable_by ['slaves.hostname']
-
-  MAX_DISK_USAGE=98 unless defined?(MAX_DISK_USAGE) # Maximum percent of disk space we will use to store clumps.
+  MAX_DISK_USAGE = 98
 
   DEFAULT_JOB_PRIORITY = -10 # the initial priority of a auto-scheduled complete job
   CLUMPS_TO_SCHEDULE = 50 # number of clumps to schedule in one go when auto-scheduling
 
-  def self.from_param(p)
-    case p
-    when Fixnum
-      find(p)
-    when /^\d+$/
-      find(p.to_i)
-    else
-      find_by_hostname(p)
+  class << self
+    def from_param(param)
+      where('id = ? or hostname = ?', param.to_i, param)
     end
-  end
 
-  # Do not allow more jobs than this to run on a single server
-  def self.max_jobs
-    SECURE_TREE['max_jobs'] || 8
-  end
+    def max_jobs
+      ENV['MAX_SLAVE_JOBS'].to_i
+    end
 
-  # Keeping this number slightly below max_jobs prevents the cluster from being monopolized
-  # by a single job type. For example, if 20,000 SlocJobs are in the queue, we want to make sure
-  # that we continue to do some amount of background fetching, analyzing, etc.
-  def self.max_jobs_per_type
-    SECURE_TREE['max_jobs_per_type'] || 4
+    # Keeping this number slightly below max_jobs prevents the cluster from being monopolized
+    # by a single job type. For example, if 20,000 SlocJobs are in the queue, we want to make sure
+    # that we continue to do some amount of background fetching, analyzing, etc.
+    def max_jobs_per_type
+      ENV['MAX_SLAVE_JOBS_PER_TYPE'].to_i
+    end
   end
 
   # Allows us to put the hostname in the URL, which disallows some characters
   def safe_hostname
-    self.hostname.gsub(/\W/,'_')
+    hostname.gsub(/\W/,'_')
   end
 
   def too_busy_for_git?
-    self.load_average.to_f > (SECURE_TREE["max_git_load_average"] || MAX_GIT_LOAD_AVERAGE)
+    load_average.to_f > ENV['MAX_GIT_LOAD_AVERAGE'].to_f
   end
 
   def too_busy_for_new_job?
-    self.load_average.to_f > (SECURE_TREE["max_new_job_load_average"] || MAX_NEW_JOB_LOAD_AVERAGE)
+    load_average.to_f > ENV['MAX_NEW_JOB_LOAD_AVERAGE'].to_f
   end
 
   def too_busy_for_fetch?
-    self.load_average.to_f > (SECURE_TREE["max_fetch_load_average"] || MAX_FETCH_LOAD_AVERAGE)
+    load_average.to_f > ENV['MAX_FETCH_LOAD_AVERAGE'].to_f
   end
 
   # Puts the process to sleep until the load average on this
