@@ -3,6 +3,7 @@ class ExploreController < ApplicationController
 
   before_action :set_language, only: [:index, :projects]
   before_action :projects_details, only: [:index, :projects]
+  skip_before_action :verify_authenticity_token, only: [:orgs_by_thirty_day_commit_volume]
 
   def index
     render 'explore/projects'
