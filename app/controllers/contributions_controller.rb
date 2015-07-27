@@ -13,6 +13,7 @@ class ContributionsController < ApplicationController
   skip_before_action :store_location, only: [:commits_spark, :commits_compound_spark]
 
   def index
+    fail ParamRecordNotFound unless @project
     @contributions = @project.contributions
                      .sort(params[:sort])
                      .filter_by(params[:query])
@@ -22,8 +23,9 @@ class ContributionsController < ApplicationController
   end
 
   def show
+    fail ParamRecordNotFound unless @project
     return redirect_to project_contributor_path(@project, @contribution) if @contribution.id != params[:id].to_i
-    @recent_kudos = @contribution.kudoable.recent_kudos
+    @recent_kudos = @contribution.kudoable.recent_kudos || []
   end
 
   def summary

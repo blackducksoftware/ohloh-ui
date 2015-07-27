@@ -102,8 +102,8 @@ class EnlistmentsController < SettingsController
       flash[:notice] = t('.notice', url: @repository.url)
     else
       flash[:success] = t('.success', url: @repository.url,
-                                      branch_name: (CGI.escapeHTML @repository.branch_name),
-                                      module_name: (CGI.escapeHTML @repository.module_name))
+                                      branch_name: CGI.escapeHTML(@repository.branch_name || ''),
+                                      module_name: CGI.escapeHTML(@repository.module_name || ''))
     end
   end
 end
