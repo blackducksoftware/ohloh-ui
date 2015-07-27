@@ -38,4 +38,10 @@ class FetchJob < Job
       end
     end
   end
+
+  private
+
+  def can_have_too_long_exception?
+    true
+  end
 end

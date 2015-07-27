@@ -11,4 +11,12 @@ class ActiveRecord::Base
       send("#{column}=", string.fix_encoding_if_invalid!) unless string.blank?
     end
   end
+
+  class << self
+    def boolean_attr_accessor(*names, options)
+      names.each do |name|
+        define_singleton_method(name) { options[:value] }
+      end
+    end
+  end
 end
