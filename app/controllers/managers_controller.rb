@@ -2,7 +2,9 @@ class ManagersController < SettingsController
   helper ProjectsHelper
 
   before_action :session_required, except: :index
-  before_action :find_parent
+  before_action :set_project, if: -> { params[:project_id] }
+  before_action :set_organization, if: -> { params[:organization_id] }
+  before_action :fail_unless_parent
   before_action :find_manages, only: :index
   before_action :find_manage, except: :index
   before_action :show_permissions_alert, only: :index
@@ -80,14 +82,17 @@ class ManagersController < SettingsController
     raise ParamRecordNotFound
   end
 
-  def find_parent
-    @parent = if params[:project_id]
-                Project.from_param(params[:project_id]).first!
-              else
-                Organization.from_param(params[:organization_id]).first!
-              end
-  rescue ActiveRecord::RecordNotFound
-    raise ParamRecordNotFound
+  def set_project
+    @parent = @project = Project.by_url_name_or_id(params[:project_id]).take
+    project_context && render('projects/deleted') if @project.try(:deleted?)
+  end
+
+  def set_organization
+    @parent = @organization = Organization.from_param(params[:organization_id]).take
+  end
+
+  def fail_unless_parent
+    fail ParamRecordNotFound unless @parent
   end
 
   def redirect_to_index

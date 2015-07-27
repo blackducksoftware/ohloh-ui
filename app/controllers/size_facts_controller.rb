@@ -1,4 +1,6 @@
 class SizeFactsController < ApplicationController
+  helper :projects
+
   before_action :set_project_or_fail
 
   LATEST_ID = 'latest'

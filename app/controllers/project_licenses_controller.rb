@@ -1,7 +1,7 @@
 class ProjectLicensesController < SettingsController
   helper ProjectsHelper
 
-  before_action :find_project
+  before_action :set_project_or_fail, :set_project_editor_account_to_current_user
   before_action :project_context
   before_action :project_edit_authorized, only: [:create, :destroy]
   before_action :find_project_license, only: [:destroy]
@@ -41,12 +41,6 @@ class ProjectLicensesController < SettingsController
 
   def project_license_params
     params.permit([:license_id]).merge(project: @project)
-  end
-
-  def find_project
-    @project = Project.from_param(params[:project_id]).take
-    fail ParamRecordNotFound unless @project
-    @project.editor_account = current_user
   end
 
   def find_project_license

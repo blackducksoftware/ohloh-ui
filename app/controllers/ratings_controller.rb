@@ -1,4 +1,6 @@
 class RatingsController < ApplicationController
+  helper :projects
+
   ALLOWED_PARTIALS = ['projects/show/community_rating', 'reviews/rater']
   before_action :session_required
   before_action :set_project_or_fail

@@ -76,6 +76,15 @@ class LogosControllerTest < ActionController::TestCase
     must_respond_with :success
   end
 
+  it 'must render projects/deleted when project is deleted' do
+    project = create(:project)
+    project.update!(deleted: true, editor_account: @user)
+
+    get :new, project_id: project.to_param
+
+    must_render_template 'deleted'
+  end
+
   it 'LogosController destroy resets to NilLogo' do
     project = create(:project)
     login_as @admin
@@ -123,18 +132,6 @@ class LogosControllerTest < ActionController::TestCase
     get :new, project_id: project.id
 
     flash[:notice].must_equal I18n.t('permissions.not_manager')
-  end
-
-  it 'must render 404 when project is deleted' do
-    project = create(:project)
-    account = create(:account)
-
-    login_as account
-    project.update!(deleted: true, editor_account: account)
-
-    get :new, project_id: project.id
-
-    must_respond_with :not_found
   end
 
   it 'create with logo id' do

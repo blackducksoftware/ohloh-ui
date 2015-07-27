@@ -2,7 +2,8 @@ class ReviewsController < ApplicationController
   helper RatingsHelper
   helper ProjectsHelper
   before_action :session_required, except: [:index, :summary]
-  before_action :find_parent, except: :destroy
+  before_action :set_project_or_fail, except: :destroy, if: -> { params[:project_id] }
+  before_action :set_account, except: :destroy, if: -> { params[:account_id] }
   before_action :find_review, only: [:edit, :update, :destroy]
   before_action :own_object?, only: [:edit, :update, :destroy]
   before_action :review_context
@@ -63,9 +64,13 @@ class ReviewsController < ApplicationController
     params.require(:review).permit(:title, :comment)
   end
 
-  def find_parent
-    @parent = @project = Project.from_param(params[:project_id]).take if params[:project_id]
-    @parent = @account = Account.from_param(params[:account_id]).take if params[:account_id]
+  def set_project_or_fail
+    super
+    @parent = @project
+  end
+
+  def set_account
+    @parent = @account = Account.from_param(params[:account_id]).take
     fail ParamRecordNotFound if @parent.nil?
   end
 

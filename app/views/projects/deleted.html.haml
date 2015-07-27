@@ -1,5 +1,5 @@
 .inset
-  %hr.one
+  %br
   %h6= t('.project_is_deleted', name: @project.name)
   %p
     = t('.project_has_been_deleted', link: link_to('Edit History', project_edits_url(@project))).html_safe
