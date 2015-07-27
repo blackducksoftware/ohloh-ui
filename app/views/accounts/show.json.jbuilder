@@ -2,26 +2,24 @@ show_positions = true
 show_about = true
 
 json.account do
-json.id @account.id
-json.name @account.name
+  json.id @account.id
+  json.name @account.name
 
-  if show_about
-    json.about @account.markup ? @account.markup.raw : ''
-  end
+  json.about(@account.markup ? @account.markup.raw : '') if show_about
 
-json.login @account.login
-json.(@account, :created_at, :updated_at)
-json.homepage_url @account.url
-json.twitter_account @account.twitter_account
-json.url account_url(@account, format: 'json')
-json.html_url account_url(@account)
-json.avatar_url "http://www.gravatar.com/avatar.php?gravatar_id=#{@account.email_md5}"
-json.email_sha1 Digest::SHA1.hexdigest("mailto:#{@account.email}")
-json.posts_count @account.posts_count
-json.location @account.location
-json.country_code @account.country_code
-json.latitude @account.latitude
-json.longitude @account.longitude
+  json.login @account.login
+  json.call(@account, :created_at, :updated_at)
+  json.homepage_url @account.url
+  json.twitter_account @account.twitter_account
+  json.url account_url(@account, format: 'json')
+  json.html_url account_url(@account)
+  json.avatar_url "http://www.gravatar.com/avatar.php?gravatar_id=#{@account.email_md5}"
+  json.email_sha1 Digest::SHA1.hexdigest("mailto:#{@account.email}")
+  json.posts_count @account.posts_count
+  json.location @account.location
+  json.country_code @account.country_code
+  json.latitude @account.latitude
+  json.longitude @account.longitude
 
   if @account.person && @account.person.kudo_score
     json.kudo_score do
@@ -45,8 +43,8 @@ json.longitude @account.longitude
   end
 
   if @account.badges.any?
-   json.badges @account.badges do |badge|
-    decorator = BadgeDecorator.new(badge)
+    json.badges @account.badges do |badge|
+      decorator = BadgeDecorator.new(badge)
       json.name badge.name
       json.level badge.level
       json.description badge.short_desc
