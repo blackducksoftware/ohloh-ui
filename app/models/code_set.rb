@@ -25,9 +25,9 @@ class CodeSet < ActiveRecord::Base
     Time.now.utc
   end
 
-  def import
+  def import(&block)
     find_or_create_clump
-    CodeSet::Import.new(self).perform
+    CodeSet::Import.new(self).perform(&block)
   end
 
   private

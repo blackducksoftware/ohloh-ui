@@ -1,4 +1,8 @@
-class CodeSet::Commit
+class CodeSet::CommitFactory
+  DEFAULT_COMMIT_COMMENT = '[no comment]'
+
+  delegate :repository, to: :@code_set
+
   def initialize(code_set, scm_commit)
     @code_set = code_set
     @scm_commit = scm_commit
@@ -10,6 +14,7 @@ class CodeSet::Commit
     update_time
     update_comment
     @commit.save!
+    @commit
   end
 
   private
@@ -60,12 +65,12 @@ class CodeSet::Commit
     return unless email
 
     @email_address_cache ||= {}
-    @email_address_cache[address] ||= EmailAddress.where(address: address).first_or_create
+    @email_address_cache[email] ||= EmailAddress.where(address: email).first_or_create
   end
 
   def trunk_commit_tokens
     return @trunk_commit_tokens if @trunk_commit_tokens
-    return [] unless @code_set.repository.class.dag?
+    return [] unless repository.class.dag?
 
     @code_set.clump.scm.commit_tokens(@options.merge(trunk_only: true))
   end

@@ -1,4 +1,6 @@
 class CodeSet::Diff
+  IGNORED_FILES = %w(ohloh_token .gitignore)
+
   def initialize(commit, scm_commit, code_set)
     @code_set = code_set
     @commit = commit
@@ -22,7 +24,7 @@ class CodeSet::Diff
   end
 
   def file_cache
-    @file_cache ||= FyleCache.new(@scm_commit, code_set.id)
+    @file_cache ||= FyleCache.new(@scm_commit, @code_set.id)
   end
 
   def create(scm_diff, fyle)
