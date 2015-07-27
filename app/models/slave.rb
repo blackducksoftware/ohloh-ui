@@ -1,6 +1,3 @@
-require 'open4'
-require 'socket'
-
 class Slave < ActiveRecord::Base
   has_many :clumps
   has_many :jobs
@@ -27,6 +24,14 @@ class Slave < ActiveRecord::Base
     # that we continue to do some amount of background fetching, analyzing, etc.
     def max_jobs_per_type
       ENV['MAX_SLAVE_JOBS_PER_TYPE'].to_i
+    end
+
+    def local_hostname
+      Socket.gethostname
+    end
+
+    def local
+      Slave.order(:id).find_by(hostname: local_hostname)
     end
   end
 
@@ -121,16 +126,6 @@ class Slave < ActiveRecord::Base
 
   def read_only?
     self.clump_status == 'R'
-  end
-
-  def self.local_hostname
-    @@hostname ||= begin
-      SECURE_TREE["sys_name"] || Socket.gethostname
-    end
-  end
-
-  def self.local
-    Slave.order(:id).find_by(hostname: self.local_hostname)
   end
 
   # Generates helper methods to access slaves by name: Slave.congo, Slave.kenya, etc.
