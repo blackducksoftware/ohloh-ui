@@ -26,6 +26,11 @@ class AccountsController < ApplicationController
     @projects, @logos = @account.project_core.used
     @twitter_detail = TwitterDetail.new(@account)
     page_context[:page_header] = 'accounts/show/header'
+    respond_to do |format|
+      format.html
+      format.xml
+      format.json
+    end
   end
 
   def me

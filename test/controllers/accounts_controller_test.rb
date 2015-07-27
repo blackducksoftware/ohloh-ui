@@ -82,6 +82,13 @@ describe 'AccountsController' do
       get :show, id: account.id
       must_redirect_to disabled_account_url(account)
     end
+
+    it 'should respond to json format' do
+      get :show, id: admin.login, format: 'json'
+
+      must_respond_with :ok
+      assigns(:account).must_equal admin
+    end
   end
 
   describe 'me' do
