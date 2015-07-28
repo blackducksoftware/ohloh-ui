@@ -31,8 +31,7 @@ module LinkAccessors
           cleaned_uri = String.clean_url(uri)
           cached_uri = send cache_method
           return if !cached_uri.nil? && cleaned_uri == cached_uri
-          update_link_uri(accessor, links.of_category(Link::CATEGORIES[link_category]).first_or_initialize,
-                          cleaned_uri, link_category.to_s)
+          update_link_uri(accessor, obtain_link(link_category), cleaned_uri, link_category.to_s)
         end
       end
     end
@@ -49,6 +48,10 @@ module LinkAccessors
         link.assign_attributes(url: uri, title: title, editor_account: editor_account)
         links << link
       end
+    end
+
+    def obtain_link(link_category)
+      Link.where(project_id: id).of_category(Link::CATEGORIES[link_category]).first_or_initialize
     end
   end
 end

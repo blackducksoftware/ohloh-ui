@@ -3,8 +3,8 @@ module ProjectScopes
 
   included do
     scope :active, -> { where.not(deleted: true) }
-    scope :deleted, -> { where(deleted: true) }
-    scope :not_deleted, -> { where(deleted: false) }
+    scope :deleted, -> { where("projects.deleted = 't'") }
+    scope :not_deleted, -> { where("projects.deleted = 'f'") }
     scope :from_param, lambda { |param|
       not_deleted.by_url_name_or_id(param)
     }
