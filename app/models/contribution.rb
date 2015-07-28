@@ -32,7 +32,7 @@ class Contribution < ActiveRecord::Base
   end
 
   def kudoable
-    person.account || self
+    (person && person.account) || self
   end
 
   def recent_kudos(limit = 3)

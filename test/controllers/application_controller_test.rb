@@ -78,6 +78,15 @@ class ApplicationControllerTest < ActionController::TestCase
       Rails.application.config.unstub(:consider_all_requests_local)
     end
 
+    it 'does not invoke airbrake if the user agent string has been set to blank (discount, often buggy bots)' do
+      request.env.delete 'HTTP_USER_AGENT'
+      Rails.application.config.stubs(:consider_all_requests_local).returns false
+      @controller.expects(:notify_airbrake).never
+      get :throws_standard_error
+      must_respond_with :not_found
+      Rails.application.config.unstub(:consider_all_requests_local)
+    end
+
     it 'does not prevent sandard errors from being shown to developers' do
       Rails.application.config.stubs(:consider_all_requests_local).returns true
       @controller.expects(:notify_airbrake).never
