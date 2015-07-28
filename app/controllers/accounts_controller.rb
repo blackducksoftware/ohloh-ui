@@ -26,6 +26,7 @@ class AccountsController < ApplicationController
     @projects, @logos = @account.project_core.used
     @twitter_detail = TwitterDetail.new(@account)
     page_context[:page_header] = 'accounts/show/header'
+    render json: Hash.from_xml(render_to_string('accounts/show.xml'))['response']['result'] if request.format == 'json'
   end
 
   def me
