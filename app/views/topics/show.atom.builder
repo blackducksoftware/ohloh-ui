@@ -3,11 +3,11 @@ atom_feed do |feed|
   xml.rss do
     xml.channel do
       feed.title "Recent Posts in '#{@topic.title}' | Open Hub"
-      feed.link "https://www.openhub.net" + topic_path(@topic)
+      feed.link 'https://www.openhub.net' + topic_path(@topic)
       feed.language 'en-us'
       feed.ttl 60
       feed.description @topic.title
-      xml << render(partial: 'posts/posts.atom.builder', collection: @posts).gsub(/^/, '      ')
+      render partial: 'posts/posts', collection: @posts, xml: feed
     end
   end
 end
