@@ -6,6 +6,7 @@ class WidgetsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   layout :false, except: :index
   before_action :handle_xml_format, except: :index
+  skip_before_action :verify_authenticity_token
 
   private
 
