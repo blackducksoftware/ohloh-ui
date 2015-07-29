@@ -1,5 +1,6 @@
 class CodeSet < ActiveRecord::Base
   belongs_to :repository
+  belongs_to :best_repository, foreign_key: :best_code_set_id, class_name: CodeSet
   belongs_to :best_sloc_set, foreign_key: :best_sloc_set_id, class_name: SlocSet
   has_many :commits, -> { order(:position) }, dependent: :destroy
   has_one :clump
@@ -43,12 +44,6 @@ class CodeSet < ActiveRecord::Base
 
       saved_max_steps = [saved_max_steps || 0, inner_max_step + 1].max
       yield(step, saved_max_steps) if block_given?
-
-      handle_busy_slave(step, inner_max_step)
     end
-  end
-
-  def handle_busy_slave(step, inner_max_step)
-    Slave.local.sleep_while_busy if step < inner_max_step
   end
 end

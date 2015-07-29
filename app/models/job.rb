@@ -4,6 +4,7 @@ class Job < ActiveRecord::Base
   before_validation :set_code_set_id, if: :sloc_set, on: :create
   before_validation :set_repository_id, if: :code_set_id, on: :create
 
+  has_many :clumps
   belongs_to :project
   belongs_to :repository
   belongs_to :code_set

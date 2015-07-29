@@ -8,9 +8,7 @@ class Clump < ActiveRecord::Base
   end
 
   def path
-    return unless code_set_id
-    j = code_set_id.to_s.rjust(12, "0")
-    "#{ DIRECTORY }/#{ j[0..2] }/#{ j[3..5] }/#{ j[6..8] }/#{ j[9..-1] }"
+    ClumpDirectory.new.path(code_set_id)
   end
 
   def branch_name
