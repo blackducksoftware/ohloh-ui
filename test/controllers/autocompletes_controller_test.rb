@@ -4,11 +4,20 @@ describe 'AutocompletesController' do
   describe 'account' do
     it 'should return account hash' do
       xhr :get, :account, term: 'luck'
+      must_respond_with :ok
 
       result = JSON.parse(response.body)
       result.first['login'].must_equal 'user'
       result.first['value'].must_equal 'user'
       result.first['name'].must_equal 'user Luckey'
+    end
+
+    it 'should gracefully handle empty terms' do
+      xhr :get, :account
+      must_respond_with :ok
+
+      result = JSON.parse(response.body)
+      result.length.must_equal 0
     end
   end
 
