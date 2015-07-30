@@ -7,6 +7,7 @@ class WidgetsController < ApplicationController
   layout :false, except: :index
   before_action :handle_xml_format, except: :index
   skip_before_action :verify_authenticity_token
+  after_action :allow_iframe
 
   private
 
