@@ -45,6 +45,6 @@ class WidgetsController < ApplicationController
   end
 
   def allow_iframe
-    response.headers.except! 'X-Frame-Options'
+    response.headers.reject! { |k, _| (k.downcase == 'x-frame-options') || (k.downcase == 'x-xss-protection') }
   end
 end

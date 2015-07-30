@@ -51,6 +51,14 @@ describe 'ProjectWidgetsController' do
       assigns(:project).must_equal project
     end
 
+    it 'must not direct browsers to prevent iframing' do
+      get :basic_stats, project_id: project.id
+
+      must_respond_with :ok
+      response.headers.keys.join(' ').downcase.wont_match 'x-frame-options'
+      response.headers.keys.join(' ').downcase.wont_match 'x-xss-protection'
+    end
+
     it 'should show not found error' do
       get :basic_stats, project_id: 0
 
