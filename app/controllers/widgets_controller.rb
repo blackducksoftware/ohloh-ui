@@ -7,7 +7,6 @@ class WidgetsController < ApplicationController
   layout :false, except: :index
   before_action :handle_xml_format, except: :index
   skip_before_action :verify_authenticity_token
-  after_action :allow_iframe
 
   private
 
@@ -42,9 +41,5 @@ class WidgetsController < ApplicationController
     @parent = @widget.send(@type)
     fail ParamRecordNotFound unless @parent
     render template: 'widgets/metadata'
-  end
-
-  def allow_iframe
-    response.headers.reject! { |k, _| (k.downcase == 'x-frame-options') || (k.downcase == 'x-xss-protection') }
   end
 end

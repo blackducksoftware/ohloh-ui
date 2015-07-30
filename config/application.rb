@@ -32,5 +32,7 @@ module OhlohUi
 
     config.cache_store = :redis_store, { host: ENV['REDIS_HOST'], port: ENV['REDIS_PORT'],
                                          namespace: ENV['REDIS_NAMESPACE'] }
+
+    config.action_dispatch.default_headers = { 'X-Content-Type-Options' => 'nosniff' }
   end
 end
