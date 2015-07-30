@@ -364,7 +364,6 @@ GEM
       execjs (>= 0.3.0)
       json (>= 1.8.0)
     vcr (2.9.3)
-    version (1.0.0)
     webmock (1.21.0)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
@@ -429,7 +428,6 @@ DEPENDENCIES
   twitter-bootstrap-rails
   uglifier
   vcr
-  version
   webmock
   will_paginate
   will_paginate-bootstrap
