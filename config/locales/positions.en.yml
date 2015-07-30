@@ -9,6 +9,8 @@ en:
       claim_contribution: Claim a Contribution
     new:
       provide_extra_information: 'If you like, you may provide some extra information describing this contribution.  Or just hit next.'
+      position_new_title: '%{name} : OpenHub'
+      contribution: 'Contributions'
     commit_information:
       in_mostly: 'in mostly'
     commits_by_individual_projects:
