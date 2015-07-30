@@ -43,4 +43,8 @@ class WidgetsController < ApplicationController
     fail ParamRecordNotFound unless @parent
     render template: 'widgets/metadata'
   end
+
+  def allow_iframe
+    response.headers.except! 'X-Frame-Options'
+  end
 end
