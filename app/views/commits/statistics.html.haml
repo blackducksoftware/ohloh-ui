@@ -21,11 +21,11 @@
     - else
       %li{ style: 'color:green' }
         %span.icon-plus-sign
-        = pluralize(@commit.lines_added(@project.best_analysis_id), t('.line'))
+        = pluralize(@lines_added, t('.line'))
         = t('.added')
       %li{ style: 'color:red' }
         %span.icon-minus-sign
-        = pluralize(@commit.lines_removed(@project.best_analysis_id), t('.line'))
+        = pluralize(@lines_removed, t('.line'))
         = t('.removed')
     %li{ style: 'text-align: right' }
       = link_to t('.more_details'), project_commit_path(@project, @commit)
