@@ -65,7 +65,7 @@ class AccountsController < ApplicationController
   end
 
   def unsubscribe_emails
-    account_id = Ohloh::Cipher.decrypt(CGI.escape(params[:key]))
+    account_id = Ohloh::Cipher.decrypt(CGI.escape(params[:key].to_s))
     @account = Account.where(id: account_id).first
     @status = @account.try(:email_master)
     @account.update_attribute(:email_master, false) if @status

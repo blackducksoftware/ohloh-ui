@@ -106,7 +106,7 @@ class Account < ActiveRecord::Base
 
   class << self
     def resolve_login(login)
-      Account.where('lower(login) = ?', login.downcase).first
+      Account.where('lower(login) = ?', login.to_s.downcase).first
     end
 
     def hamster
