@@ -224,8 +224,6 @@ GEM
     net-ssh (2.9.2)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
-    oboe (2.7.19)
-      json
     oh_delegator (0.0.1)
     ohloh_scm (2.0.1)
     ohno-you-dont (1.0.1)
@@ -353,6 +351,8 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (1.4.1)
+    traceview (3.0.5)
+      json
     twitter-bootstrap-rails (3.2.0)
       actionpack (~> 4.1)
       execjs (~> 2.2)
@@ -405,7 +405,6 @@ DEPENDENCIES
   mini_magick (~> 4.1.1)
   minitest-rails
   mocha
-  oboe
   oh_delegator
   ohloh_scm
   ohno-you-dont
@@ -426,6 +425,7 @@ DEPENDENCIES
   simplecov-rcov
   spring
   therubyracer
+  traceview
   twitter-bootstrap-rails
   uglifier
   vcr
@@ -435,4 +435,4 @@ DEPENDENCIES
   will_paginate-bootstrap
 
 BUNDLED WITH
-   1.10.5
+   1.10.6
