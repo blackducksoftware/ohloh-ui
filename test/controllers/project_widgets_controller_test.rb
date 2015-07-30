@@ -55,8 +55,9 @@ describe 'ProjectWidgetsController' do
       get :basic_stats, project_id: project.id
 
       must_respond_with :ok
-      response.headers.keys.join(' ').downcase.wont_match 'x-frame-options'
-      response.headers.keys.join(' ').downcase.wont_match 'x-xss-protection'
+      response.headers.each do |k, v|
+        v.must_equal '' if k.downcase == 'x-frame-options' || k.downcase == 'x-xss-protection'
+      end
     end
 
     it 'should show not found error' do
