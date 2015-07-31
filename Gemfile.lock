@@ -123,6 +123,7 @@ GEM
     columnize (0.9.0)
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
+    daemons (1.2.3)
     docile (1.1.5)
     doorkeeper (2.2.0)
       railties (>= 3.2)
@@ -378,6 +379,7 @@ DEPENDENCIES
   capistrano-rails
   coffee-rails
   coffee-script-source (~> 1.8.0)
+  daemons
   doorkeeper
   dotenv-rails
   execjs

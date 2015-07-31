@@ -8,6 +8,7 @@ gem 'bluecloth'
 gem 'brakeman'
 gem 'coffee-rails'
 gem 'coffee-script-source', '~>1.8.0'
+gem 'daemons', require: false
 gem 'doorkeeper'
 gem 'dotenv-rails'
 gem 'execjs'
