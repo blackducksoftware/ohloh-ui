@@ -351,7 +351,7 @@ Rails.application.routes.draw do
       get :orgs
       get :projects
       get :demographic_chart
-      get :orgs_by_thirty_day_commit_volume
+      get :orgs_by_thirty_day_commit_volume, defaults: { format: 'js' }
     end
   end
 
