@@ -28,7 +28,7 @@ class OrgThirtyDayActivity < ActiveRecord::Base
     end
 
     def filter(filter_type)
-      filter_type = filter_type.to_sym
+      filter_type = filter_type.to_s.to_sym
       filter_type = :all_orgs unless FILTER_TYPES.keys.include?(filter_type)
       send(FILTER_TYPES[filter_type])
     end
