@@ -56,10 +56,15 @@ module Tsearch
     def set_vector(record)
       [].tap do |set_weight|
         record.searchable_vector.each do |weight, attr_value|
-          attr_value.to_s.gsub!(/['?\\:]/, ' ')
-          set_weight << "setweight(to_tsvector(coalesce('#{attr_value}')), '#{weight.upcase}')"
+          set_weight << "setweight(to_tsvector(coalesce('#{clean_attr_value(attr_value)}')), '#{weight.upcase}')"
         end
       end.join(' ||')
+    end
+
+    def clean_attr_value(attr_value)
+      attr_value = attr_value.to_s
+      attr_value.fix_encoding_if_invalid!.gsub!(/['?\\:]/, ' ')
+      attr_value
     end
   end
 end
