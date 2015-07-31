@@ -51,8 +51,10 @@ class ContributionsController < ApplicationController
   private
 
   def set_contributor
-    @contributor = ContributorFact.where(names: { id: params[:id] }).where(analysis_id: @project.best_analysis_id)
-                   .eager_load(:name).first
+    id = params[:id].to_i
+    @contributor = Contribution.find(id).name_fact if id > (1 << 32)
+    @contributor ||= ContributorFact.where(names: { id: id }).where(analysis_id: @project.best_analysis_id)
+                     .eager_load(:name).first
     fail ParamRecordNotFound unless @contributor
   end
 
