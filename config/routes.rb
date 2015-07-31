@@ -147,8 +147,8 @@ Rails.application.routes.draw do
   get 'maintenance', to: 'abouts#maintenance'
   get 'tools', to: 'abouts#tools'
 
-  get 'p/compare', to: 'compares#projects', as: :compare_projects
-  get 'p/project_graph', to: 'compares#projects_graph', as: :compare_graph_projects
+  get 'p/_compare', to: 'compares#projects', as: :compare_projects
+  get 'p/_project_graph', to: 'compares#projects_graph', as: :compare_graph_projects
   get 'projects/:id/stacks', to: 'stacks#project_stacks', constraints: { format: /xml/ }
   get 'p/:id/stacks', to: 'stacks#project_stacks', as: :project_stacks, constraints: { format: /xml/ }
   get 'p/:id/stacks', to: redirect('/p/%{id}/users'), constraints: { format: /html/ }
