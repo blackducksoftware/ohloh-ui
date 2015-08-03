@@ -1,7 +1,8 @@
 # rubocop:disable Metrics/ClassLength
 class ApplicationController < ActionController::Base
   BOT_REGEX = /\b(Baiduspider|Googlebot|libwww-perl|msnbot|SiteUptime|Slurp)\b/i
-  FORMATS_THAT_WE_SUPPORT = %w(html xml json csv rss atom css js png gif jpg jpeg)
+  FORMATS_THAT_WE_SUPPORT = %w(html xml json csv rss atom css js png gif jpg jpeg empty)
+  FORMATS_THAT_WE_RENDER_ERRORS_FOR = %w(html xml json)
 
   include PageContextHelper
 
@@ -119,6 +120,7 @@ class ApplicationController < ActionController::Base
   end
 
   def error(message:, status:)
+    params[:format] = 'empty' unless FORMATS_THAT_WE_RENDER_ERRORS_FOR.include?(request_format)
     @error = { message: message }
     render_with_format 'error', status: status
   end
