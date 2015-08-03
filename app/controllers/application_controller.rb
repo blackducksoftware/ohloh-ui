@@ -132,7 +132,7 @@ class ApplicationController < ActionController::Base
   end
 
   def render_with_format(action, status: :ok)
-    render "#{action}.#{request_format}", status: status
+    render "#{action}.#{request_format}", layout: 'application', status: status
   end
 
   def clear_reminder
