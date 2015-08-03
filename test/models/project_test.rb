@@ -4,6 +4,12 @@ class ProjectTest < ActiveSupport::TestCase
   let(:project) { create(:project) }
   let(:account) { create(:account) }
 
+  describe 'validations' do
+    it 'should not allow project url_names to start with an underscore as we use those for routing' do
+      build(:project, url_name: '_foobar').valid?.must_equal false
+    end
+  end
+
   describe 'hot' do
     it 'should return hot projects' do
       proj = create(:project, deleted: false)
