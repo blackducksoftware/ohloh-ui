@@ -81,7 +81,6 @@ Rails.application.routes.draw do
     end
 
     collection do
-      get :me
       get :unsubscribe_emails
     end
 
