@@ -93,15 +93,16 @@ describe 'AccountsController' do
 
   describe 'me' do
     it 'should redirect_to sign in page for unlogged users' do
-      get :me
+      get :show, id: 'me'
       must_redirect_to new_session_path
     end
 
-    it 'should redirect_to accounts page for logged users' do
+    it 'should render current_users account page for logged users' do
       account = create(:account)
       login_as account
-      get :me
-      must_redirect_to account_path(account)
+      get :show, id: 'me'
+      assigns(:account).must_equal account
+      must_respond_with :ok
     end
   end
 
