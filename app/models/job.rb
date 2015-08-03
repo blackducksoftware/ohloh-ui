@@ -27,8 +27,6 @@ class Job < ActiveRecord::Base
 
   def fork!
     pid = Process.fork do
-      # daemonize :stdout => "/tmp/out_#{self.id}", :stderr => "/tmp/err_#{self.id}", :chdir => Dir.pwd
-
       ActiveRecord::Base.establish_connection
       set_process_title('Starting')
       slave.log_info("Spawned Job #{ id } in process #{ Process.pid }", self)
@@ -103,9 +101,9 @@ class Job < ActiveRecord::Base
 
   def trap_exit
     trap 'EXIT' do
-      # If the process is exiting for any reason, mark running job as failed.
       if running?
         update(status: Job::STATUS_FAILED, exception: 'Host process killed.')
+        FailureGroup.categorize(@job.id)
         slave.log_error('Host process killed.', self)
       end
     end

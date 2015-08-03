@@ -70,6 +70,7 @@ class Job::Manager
     @job.exception = $ERROR_INFO.message
     @job.backtrace = $ERROR_INFO.backtrace.join("\n")
     @job.save
+    FailureGroup.categorize(@job.id)
   end
 
   def kill_long_running_job
