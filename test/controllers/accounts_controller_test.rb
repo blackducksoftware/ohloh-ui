@@ -92,7 +92,7 @@ describe 'AccountsController' do
   end
 
   describe 'me' do
-    it 'should render current_users account page for logged users' do
+    it 'should redirect_to sign in page for unlogged users' do
       get :show, id: 'me'
       must_redirect_to new_session_path
     end
