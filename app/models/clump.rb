@@ -21,7 +21,7 @@ class Clump < ActiveRecord::Base
 
   # A username and password can be passed in cases where the remote repository
   # requires them (that is, when initializing svnsync against a secured repository).
-  def open(opts = {})
+  def open
     yield self
     # TODO: Consider doing a bare clone for git.
     scm.clean_up_disk if scm.respond_to?(:clean_up_disk)

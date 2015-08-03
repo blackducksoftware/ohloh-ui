@@ -3,7 +3,7 @@ module ClumpDirectory
 
   def path(code_set_id)
     return unless code_set_id
-    j = code_set_id.to_s.rjust(12, "0")
+    j = code_set_id.to_s.rjust(12, '0')
     "#{ DIRECTORY }/#{ j[0..2] }/#{ j[3..5] }/#{ j[6..8] }/#{ j[9..-1] }"
   end
 
@@ -19,6 +19,6 @@ module ClumpDirectory
 
   def find_code_set_id(path)
     return unless path =~ /\/(\d\d\d)\/(\d\d\d)\/(\d\d\d)\/?$/
-    $3.to_i + $2.to_i * 1000 + $1.to_i * 1000000
+    $3.to_i + $2.to_i * 1000 + $1.to_i * 1_000_000
   end
 end

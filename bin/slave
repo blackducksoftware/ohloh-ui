@@ -8,7 +8,7 @@ options = {
   dir_mode: :normal,                              # read `dir` value as an absolute path.
   dir: "#{ app_root_directory }/tmp/pids",
   log_dir: "#{ app_root_directory }/log",         # needs absolute path, see Daemonize#daemonize.
-  log_output: true,
+  log_output: true
 }
 
 Daemons.run('lib/slave_daemon.rb', options)

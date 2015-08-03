@@ -7,4 +7,3 @@ class Slave::JobPickerTest < ActiveSupport::TestCase
     Slave::JobPicker.new.send(:scheduled_job).must_equal repository.jobs.first
   end
 end
-

@@ -24,7 +24,7 @@ class SvnSyncRepository < SvnRepository
       SvnSyncRepository.find_by(url: repository.url)
     end
 
-    def has_email_addresses?
+    def email_addresses?
       false
     end
   end

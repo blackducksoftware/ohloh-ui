@@ -17,7 +17,7 @@ class CvsRepository < Repository
       CvsRepository.find_by(url: repository.url, module_name: repository.module_name)
     end
 
-    def has_email_addresses?
+    def email_addresses?
       false
     end
   end

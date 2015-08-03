@@ -23,7 +23,7 @@ class Job::Manager
   def update_completed_status
     @job.update(status: Job::STATUS_COMPLETED)
     slave.logs.create!(message: I18n.t('slaves.skipping_job'),
-                      job_id: @job.id, code_set_id: @job.code_set_id)
+                       job_id: @job.id, code_set_id: @job.code_set_id)
     set_process_title('Completed')
   end
 
@@ -49,28 +49,25 @@ class Job::Manager
     @job.update(status: Job::STATUS_COMPLETED)
     after_completed
     slave.logs.create!(message: I18n.t('slaves.job_completed'),
-                      job_id: @job.id, code_set_id: @job.code_set_id)
+                       job_id: @job.id, code_set_id: @job.code_set_id)
     set_process_title('Completed')
   end
 
   def handle_too_long_exception
     slave.logs.create!(message: I18n.t('slaves.runtime_exceeded'),
-                      job_id: @job.id, code_set_id: @job.code_set_id)
-    @job.status = Job::STATUS_SCHEDULED
-    @job.wait_until = Time.now.utc + 16.hours
-    @job.exception = $ERROR_INFO.message
-    @job.backtrace = $ERROR_INFO.backtrace.join("\n")
-    @job.save
+                       job_id: @job.id, code_set_id: @job.code_set_id)
+    @job.update(status: Job::STATUS_SCHEDULED, wait_until: Time.now.utc + 16.hours,
+                exception: $ERROR_INFO.message, backtrace: $ERROR_INFO.backtrace.join("\n"))
   end
 
   def handle_exception
     slave.logs.create!(message: I18n.t('slaves.job_failed'),
-                      job_id: @job.id, code_set_id: @job.code_set_id)
+                       job_id: @job.id, code_set_id: @job.code_set_id)
     @job.status = Job::STATUS_FAILED
     @job.exception = $ERROR_INFO.message
     @job.backtrace = $ERROR_INFO.backtrace.join("\n")
     @job.save
-    FailureGroup.categorize(@job.id)
+    @job.categorize_on_failure
   end
 
   def kill_long_running_job

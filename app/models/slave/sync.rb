@@ -18,7 +18,8 @@ class Slave::Sync
   def destroy_clumps_lacking_code_set_directories
     clumps = Clump.where.not(code_set_id: ClumpDirectory.code_set_ids)
     clumps.each do |clump|
-      @slave.logs.create!(message: I18n.t('slaves.clump_not_found', path: ClumpDirectory.path(clump.code_set_id)), code_set_id: clump.code_set_id)
+      @slave.logs.create!(message: I18n.t('slaves.clump_not_found', path: ClumpDirectory.path(clump.code_set_id)),
+                          code_set_id: clump.code_set_id)
     end
     clumps.delete_all
   end

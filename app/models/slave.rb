@@ -6,7 +6,6 @@ class Slave < ActiveRecord::Base
 
   filterable_by ['hostname']
 
-
   class << self
     def from_param(param)
       where('id = ? or hostname = ?', param.to_i, param)

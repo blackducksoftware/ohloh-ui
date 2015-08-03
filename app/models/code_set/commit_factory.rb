@@ -59,7 +59,7 @@ class CodeSet::CommitFactory
   end
 
   def find_or_create_email_address
-    return unless repository.class.has_email_addresses?
+    return unless repository.class.email_addresses?
 
     email = @scm_commit.author_email || @scm_commit.committer_email
     return unless email

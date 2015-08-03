@@ -73,6 +73,12 @@ class Job < ActiveRecord::Base
     $0 = "#{ initial_letter } Job #{ id } (#{ current_step || '-' }/#{ max_steps || '-' }) #{ status }"
   end
 
+  def categorize_on_failure
+    update(failure_group_id: nil)
+    failure_group = FailureGroup.where(FailureGroup.arel_table[:pattern].matches(exception)).first
+    update(failure_group_id: failure_group.id) if failure_group
+  end
+
   class << self
     def incomplete_project_job(project_ids)
       where(project_id: project_ids).where.not(status: STATUS_COMPLETED).first
@@ -104,6 +110,7 @@ class Job < ActiveRecord::Base
       if running?
         update(status: Job::STATUS_FAILED, exception: 'Host process killed.')
         FailureGroup.categorize(@job.id)
+        @job.categorize_on_failure
         slave.log_error('Host process killed.', self)
       end
     end

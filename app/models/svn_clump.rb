@@ -1,5 +1,4 @@
 class SvnClump < Clump
-
   def scm_class
     OhlohScm::Adapters::SvnChainAdapter
   end

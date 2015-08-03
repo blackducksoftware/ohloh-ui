@@ -78,7 +78,7 @@ class Repository < ActiveRecord::Base
       false
     end
 
-    def has_email_addresses?
+    def email_addresses?
       true
     end
   end

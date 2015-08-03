@@ -5,4 +5,3 @@ class BzrClump < Clump
     OhlohScm::Adapters::BzrlibAdapter
   end
 end
-
