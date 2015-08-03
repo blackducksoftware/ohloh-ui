@@ -1,23 +1,21 @@
 class EnlistmentsController < SettingsController
   helper EnlistmentsHelper
   helper ProjectsHelper
+  
   before_action :session_required, :redirect_unverified_account, only: [:create, :new, :destroy, :edit, :update]
   before_action :find_project
+  before_action :set_project_or_fail
+  before_action :set_project_editor_account_to_current_user
   before_action :find_enlistment, only: [:show, :edit, :update, :destroy]
-  before_action :project_context, only: [:index, :new, :edit]
+  before_action :project_context, only: [:index, :new, :edit, :create, :update]
 
   def index
     @enlistments = @project.enlistments
                    .includes(:project, :repository)
                    .filter_by(params[:query])
                    .send(parse_sort_term)
-                   .paginate(page: params[:page], per_page: 10)
-    # TODO: job model
-    # @failed_jobs = @enlistments.joins([:project, [repository: :jobs]]).incomplete_job.failed_job.any?
-    respond_to do |format|
-      format.html
-      format.xml
-    end
+                   .paginate(page: page_param, per_page: 10)
+    @failed_jobs = Enlistment.with_failed_repository_jobs.where(id: @enlistments.map(&:id)).any?
   end
 
   def show
@@ -47,8 +45,7 @@ class EnlistmentsController < SettingsController
 
   def update
     @enlistment.update(enlistment_params)
-    # TODO: project schedule_delayed_analysis
-    # @enlistment.project.schedule_delayed_analysis(3.minutes)
+    @enlistment.project.schedule_delayed_analysis(3.minutes)
     redirect_to project_enlistments_path(@project), flash: { success: t('.success') }
   end
 
@@ -71,12 +68,6 @@ class EnlistmentsController < SettingsController
     Enlistment.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : 'by_url'
   end
 
-  def find_project
-    @project = Project.from_param(params[:project_id]).take
-    fail ParamRecordNotFound if @project.nil?
-    @project.editor_account = current_user
-  end
-
   def find_enlistment
     @enlistment = Enlistment.find_by(id: params[:id])
     fail ParamRecordNotFound if @enlistment.nil?
@@ -89,12 +80,12 @@ class EnlistmentsController < SettingsController
   end
 
   def initialize_repository
-    @repository_class = safe_constantize(params[:repository][:type])
-    @repository = @repository_class.get_compatible_class(params[:repository][:url]).new(repository_params)
+    @repository_class = safe_constantize(params[:repository][:type]).get_compatible_class(params[:repository][:url])
+    @repository = @repository_class.new(repository_params)
   end
 
   def save_or_update_repository
-    @project_has_repo_url = @project.enlistments.with_repo_url(params[:repository][:url]).exists?
+    @project_has_repo_url = @project.enlistments.with_repo_url(params[:repository][:url].strip).exists?
     existing_repo = @repository_class.find_existing(@repository)
     if existing_repo.present?
       existing_repo.update_attributes(username: @repository.username, password: @repository.password)
@@ -113,8 +104,8 @@ class EnlistmentsController < SettingsController
       flash[:notice] = t('.notice', url: @repository.url)
     else
       flash[:success] = t('.success', url: @repository.url,
-                                      branch_name: (CGI.escapeHTML @repository.branch_name),
-                                      module_name: (CGI.escapeHTML @repository.module_name))
+                                      branch_name: (CGI.escapeHTML @repository.branch_name.to_s),
+                                      module_name: (CGI.escapeHTML @repository.module_name.to_s))
     end
   end
 end

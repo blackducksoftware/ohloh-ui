@@ -1,6 +1,15 @@
 require 'test_helper'
 
 class StackEntriesControllerTest < ActionController::TestCase
+  # show
+  it 'show should return good json for a stack entry' do
+    stack_entry = create(:stack_entry)
+    get :show, format: :json, id: stack_entry, stack_id: stack_entry.stack
+    must_respond_with :ok
+    result = JSON.parse(@response.body)
+    result['id'].must_equal stack_entry.id
+  end
+
   # create action
   it 'create should require a current user' do
     stack = create(:stack)
@@ -64,6 +73,33 @@ class StackEntriesControllerTest < ActionController::TestCase
     must_respond_with :unprocessable_entity
   end
 
+  it 'create should gracefully handle the POST coming in twice (i.e. - project alreay in stack)' do
+    stack = create(:stack)
+    project = create(:project)
+    create(:stack_entry, stack: stack, project: project)
+    login_as stack.account
+    post :create, stack_id: stack, stack_entry: { project_id: project }
+    must_respond_with :ok
+    StackEntry.where(stack_id: stack.id, project_id: project.id).count.must_equal 1
+  end
+
+  # update
+  it 'update should allow updating of a stack entrys note' do
+    stack_entry = create(:stack_entry)
+    login_as stack_entry.stack.account
+    put :update, id: stack_entry, stack_id: stack_entry.stack, stack_entry: { note: 'Changed!' }
+    must_respond_with :ok
+    stack_entry.reload.note.must_equal 'Changed!'
+  end
+
+  it 'update should gracefully handle update failures' do
+    StackEntry.any_instance.stubs(:update_attributes).returns false
+    stack_entry = create(:stack_entry)
+    login_as stack_entry.stack.account
+    put :update, id: stack_entry, stack_id: stack_entry.stack, stack_entry: { note: 'Changed!' }
+    must_respond_with :unprocessable_entity
+  end
+
   # destroy action
   it 'destroy should require a current user' do
     project = create(:project)
@@ -101,5 +137,18 @@ class StackEntriesControllerTest < ActionController::TestCase
     xml_http_request :delete, 'destroy', id: stack_entry, stack_id: stack
     must_respond_with :ok
     stack.stack_entries.count.must_equal 0
+  end
+
+  it 'new should return current user stacks and project' do
+    stack = create(:stack)
+    project = create(:project)
+    create(:stack_entry, project: project, stack: stack)
+    login_as stack.account
+
+    get :new, project_id: project.id, ref: 'ProjectWidget%3A%3AUsers'
+    must_respond_with :ok
+    assigns(:project).must_equal project
+    assigns(:stacks).must_equal stack.account.stacks
+    stack.stack_entries.count.must_equal 1
   end
 end

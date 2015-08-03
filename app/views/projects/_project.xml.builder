@@ -28,7 +28,7 @@ xml.project do
       end
     end
   end
-  if include_analysis && project.best_analysis
+  if include_analysis && project.best_analysis.present?
     xml << render(partial: 'analyses/analysis', locals: { analysis: project.best_analysis, builder: xml })
   end
   xml.licenses do
@@ -40,7 +40,7 @@ xml.project do
     end
   end
   xml.project_activity_index do
-    xml.value project.best_analysis.activity_level.to_s
+    xml.value Analysis::ACTIVITY_LEVEL_INDEX_MAP[project.best_analysis.activity_level]
     xml.description t("projects.#{project.best_analysis.activity_level}")
   end
   if project.links.general.any?

@@ -3,6 +3,7 @@ require 'test_helper'
 describe 'ProjectsController' do
   let(:api_key) { create(:api_key) }
   let(:client_id) { api_key.oauth_application.uid }
+  before { Repository.any_instance.stubs(:bypass_url_validation).returns(true) }
 
   # index
   it 'index should handle query param for unlogged users' do
@@ -208,6 +209,14 @@ describe 'ProjectsController' do
       must_respond_with :ok
     end
 
+    it 'should render for projects with all time summaries with name_ids' do
+      all_time_summary_summary_with_name_ids = create(:all_time_summary_summary_with_name_ids)
+      project = all_time_summary_summary_with_name_ids.analysis.project
+      project.update_attributes(best_analysis: all_time_summary_summary_with_name_ids.analysis)
+      get :show, id: project.to_param
+      must_respond_with :ok
+    end
+
     it 'show should render for projects that have been analyzed' do
       project = create(:project)
       af_1 = create(:activity_fact, analysis: project.best_analysis, code_added: 8_000, comments_added: 8_000)
@@ -235,6 +244,38 @@ describe 'ProjectsController' do
       get :show, id: project.to_param
 
       must_respond_with :ok
+    end
+
+    it "must render no analysis template if project's best analysis is nil" do
+      api_key = create(:api_key)
+      project = create(:project)
+      project.update_column(:best_analysis_id, nil)
+      get :show, id: project, format: 'xml', api_key: api_key.oauth_application.uid
+      must_respond_with :ok
+      must_render_template :no_analysis
+    end
+
+    it 'must not accept api keys from users who are no longer in good standing' do
+      account = create(:spammer)
+      api_key = create(:api_key, account: account)
+      get :show, id: create(:project), format: 'xml', api_key: api_key.oauth_application.uid
+      must_respond_with :unauthorized
+    end
+
+    it 'new project manager link from quick ref should be linked appropriately' do
+      project = create(:project, name: 'Foo', description: Faker::Lorem.sentence(90))
+      get :show, id: project.to_param
+      must_respond_with :ok
+      assert_select "a[href='#{new_project_manager_path(project.to_param)}']", text: 'Become the first manager for Foo'
+    end
+
+    it 'must render projects/deleted when project is deleted' do
+      project = create(:project)
+      project.update!(deleted: true, editor_account: create(:account))
+
+      get :show, id: project.to_param
+
+      must_render_template 'deleted'
     end
   end
 
@@ -663,7 +704,7 @@ describe 'ProjectsController' do
       end
 
       it 'wont allow access for token matching no application' do
-        token = stub('acceptable?' => true)
+        token = stub(acceptable?: true, application: nil)
         @controller.stubs(:doorkeeper_token).returns(token)
 
         get :index, format: :xml

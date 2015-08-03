@@ -16,15 +16,11 @@ class PasswordReset
     end
   end
 
-  # NOTE: Replaces init_reset_password!
   def refresh_token_and_email_link
     token = SecureRandom.hex(16)
     account.reset_password_tokens ||= {}
     account.reset_password_tokens[token] = Time.current + PASSWORD_TOKEN_TTL
-
-    # FIXME: Integrate this mailer action and view.
-    # AccountNotifier.reset_password_link(account, token).deliver
-
+    AccountMailer.reset_password_link(account, token).deliver_now
     account.save!
   end
 

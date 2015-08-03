@@ -8,7 +8,6 @@ class PositionDecorator < Cherry::Decorator
     cbp[position.id].present?
   end
 
-  # NOTE: Replaces accounts_helper#affiliation.
   # rubocop:disable Metrics/AbcSize
   def affiliation
     return if position.affiliation_type == 'unaffiliated'
@@ -27,12 +26,10 @@ class PositionDecorator < Cherry::Decorator
   end
 
   def project_contributor_or_show_path
-    # FIXME: Uncomment after migration contributions#show
-    # return [project, contribution] if project && contribution
-    [account, position]
+    return h.project_contributor_path(project, contribution) if project && contribution
+    h.account_position_path(account, position)
   end
 
-  # NOTE: Replaces positions_helper.stop_date
   def stop_date
     return 'Present' if effective_ongoing?
     effective_stop_date.strftime('%b %Y')

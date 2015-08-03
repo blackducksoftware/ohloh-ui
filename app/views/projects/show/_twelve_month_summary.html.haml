@@ -1,5 +1,5 @@
 %ul.unstyled.nutshell
-  - if @analysis && @analysis.factoids && @analysis.twelve_month_summary
+  - if @analysis.factoids.any? && @analysis.twelve_month_summary.present?
     :ruby
       commits_fact = @analysis.factoids.select { |f| f.is_a? FactoidActivity }
       committers_fact = @analysis.factoids.select { |f| f.is_a? FactoidStaff }
@@ -14,7 +14,8 @@
       = link_to t('.commits'), project_commits_path(@project, time_span: '12 months')
       .small{ style: 'padding-left: 22px;' }
         - if summary
-          = render partial: 'projects/show/twelve_month_ticker', locals: ticker_options
+          = render partial: 'projects/show/twelve_month_ticker',
+                   locals: ticker_options.merge!(diff: 'commits_difference', count: 'commits_count')
         - elsif has_old_data
           = t('.must_reanalyize')
         - else
@@ -24,7 +25,8 @@
       = link_to t('.contributors'), project_contributors_path(@project, time_span: '12 months', sort: 'latest_commit')
       .small{ style: 'padding-left: 22px;' }
         - if summary
-          = render partial: 'projects/show/twelve_month_ticker', locals: ticker_options
+          = render partial: 'projects/show/twelve_month_ticker',
+            locals: ticker_options.merge!(diff: 'committers_difference', count: 'committer_count')
         - elsif has_old_data
           = t('.must_reanalyize')
         - else

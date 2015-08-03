@@ -1,7 +1,7 @@
 class CommitsController < SettingsController
   helper ProjectsHelper
 
-  before_action :set_project
+  before_action :set_project_or_fail
   before_action :find_named_commit, only: :show
   before_action :find_contributor_fact, only: [:events, :event_details]
   before_action :redirect_to_message_if_oversized_project, except: :statistics
@@ -14,17 +14,16 @@ class CommitsController < SettingsController
                      .includes(:commit, :person, :account)
                      .filter_by(params[:query])
                      .send(parse_sort_term)
-                     .page(params[:page])
+                     .page(page_param)
                      .per_page(20)
   end
 
   def show
-    # NOTE: POSTGRES_QUERY_TIMEOUT is ignored because we have timeout option is database.yml
     @diffs = @named_commit.commit.diffs
              .includes(:fyle)
              .filter_by(params[:query])
              .order('fyles.name')
-             .page(params[:page])
+             .page(page_param)
              .per_page(10)
     @ignore_prefixes = @named_commit.code_set.ignore_prefixes(@project)
   end
@@ -55,11 +54,6 @@ class CommitsController < SettingsController
 
   private
 
-  def set_project
-    @project = Project.from_param(params[:project_id]).take
-    fail ParamRecordNotFound if @project.nil?
-  end
-
   def find_named_commit
     @named_commit = NamedCommit.find_by(id: params[:id])
     fail ParamRecordNotFound if @named_commit.nil?
@@ -81,6 +75,6 @@ class CommitsController < SettingsController
   end
 
   def redirect_to_message_if_oversized_project
-    redirect_to message_path, notice: t('commits.project_temporarily_disabled') if oversized_project?(@project)
+    redirect_to root_path, notice: t('commits.project_temporarily_disabled') if oversized_project?(@project)
   end
 end

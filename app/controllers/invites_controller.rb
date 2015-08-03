@@ -5,9 +5,8 @@ class InvitesController < ApplicationController
   def create
     if @invite.save
       InviteMailer.send_invite(@invite).deliver_now
-      # TODO: change the redirection once project contributor is implemented
-      # redirect_to project_contributor_path(@invite.project, @invite.contribution_id)
-      redirect_to accounts_path, flash: { sucess: @invite.success_flash } # temporary
+      flash[:success] = @invite.success_flash
+      redirect_to project_contributor_path(@invite.project, @invite.contribution_id)
     else
       render 'new'
     end

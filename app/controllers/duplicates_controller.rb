@@ -1,20 +1,25 @@
 class DuplicatesController < ApplicationController
   helper ProjectsHelper
+  helper RatingsHelper
+  helper TagsHelper
 
   before_action :session_required, :redirect_unverified_account
-  before_action :find_project, except: :index
+  before_action :admin_session_required, only: [:index, :show, :resolve]
+  before_action :set_project_or_fail, except: [:index, :show, :resolve]
   before_action :find_duplicate, only: [:edit, :update, :destroy]
   before_action :find_good_project, only: [:create, :update]
-  before_action :project_context, except: :index
+  before_action :project_context, except: [:index, :show, :resolve]
   before_action :must_own_duplicate, only: [:edit, :update, :destroy]
-  before_action :admin_session_required, only: [:index, :show]
+  before_action :find_duplicate_without_project_id, only: [:resolve, :show]
 
   def index
-    @duplicates = Duplicate.paginate(per_page: 10, page: params[:page]).order(id: :desc)
+    @resolved_duplicates = Duplicate.where(resolved: true).order(id: :desc).paginate(per_page: 10, page: page_param)
+    @unresolved_duplicates = Duplicate.where.not(resolved: true).order(id: :desc)
+                             .paginate(per_page: 10, page: page_param)
   end
 
   def new
-    previous_dupe = @project.duplicates.first
+    previous_dupe = @project.duplicates.unresolved.first
     if previous_dupe
       flash[:notice] = t('.cant_dupe_a_dupe', this: @project.name, that: previous_dupe.bad_project.name)
       return redirect_to project_path(@project)
@@ -51,11 +56,20 @@ class DuplicatesController < ApplicationController
     redirect_to project_path(@duplicate.bad_project)
   end
 
+  def resolve
+    if params[:keep_id].to_i == @duplicate.bad_project_id
+      @duplicate.update_attributes(bad_project: @duplicate.good_project, good_project: @duplicate.bad_project)
+    end
+
+    @duplicate.resolve!(current_user)
+    redirect_to duplicates_path, flash: { success: t('.success') }
+  end
+
   private
 
-  def find_project
-    @project = Project.from_param(params[:project_id]).take
-    fail ParamRecordNotFound if @project.nil?
+  def find_duplicate_without_project_id
+    @duplicate = Duplicate.where(id: params[:id]).where.not(resolved: true).take
+    fail ParamRecordNotFound if @duplicate.nil?
   end
 
   def find_duplicate

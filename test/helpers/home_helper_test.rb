@@ -36,9 +36,8 @@ class HomeHelperTest < ActionView::TestCase
     end
 
     it 'must return thirty_day_commits when most_active_contributors ' do
-      count = 7
-      project = stub(best_vita: stub(vita_fact: stub(thirty_day_commits: count)))
-      project_count(project, 'most_active_contributors').must_equal count
+      best_vita = create(:best_vita)
+      project_count(best_vita.account, 'most_active_contributors').must_equal best_vita.vita_fact.thirty_day_commits
     end
   end
 

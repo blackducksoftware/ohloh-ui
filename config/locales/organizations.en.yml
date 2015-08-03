@@ -65,6 +65,7 @@ en:
       empty_alert: 'Nobody has registered to become a manager of this organization on Open Hub'
       new_manager: 'New Manager'
     claim_projects_list:
+      page_title: '%{name} : Settings : Manage Projects : Claim - Open Hub'
       settings: 'Settings'
       manage_projects: 'Manage Projects'
       claim: ' : Claim'
@@ -120,6 +121,7 @@ en:
         links: 'Links:'
         managers: 'Managers:'
         add_new: 'Add a new manager for %{name}'
+        homepage: 'Homepage'
     projects:
       page_title: '%{organization_name} : Portfolio Projects - Open Hub'
       title: 'Portfolio Projects'

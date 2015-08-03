@@ -7,14 +7,14 @@ class AccountsController < ApplicationController
   before_action :set_account, only: [:destroy, :show, :update, :edit, :confirm_delete, :disabled, :settings]
   before_action :redirect_if_disabled, only: [:show, :update, :edit]
   before_action :disabled_during_read_only_mode, only: [:new, :create, :edit, :update]
-  # FIXME: Integrate this action.
-  # before_action :set_smart_sort, only: [:index]
+  before_action :no_new_accounts, only: [:new, :create]
   before_action :must_own_account, only: [:edit, :update, :destroy, :confirm_delete]
-  before_action :account_context, only: :edit
+  before_action :check_banned_domain, only: :create
+  before_action :captcha_response, only: :create
+  before_action :account_context, only: [:edit, :update, :confirm_delete]
   before_action :find_claimed_people, only: :index
   after_action :create_action_record, only: :create, if: -> { @account.persisted? && params[:_action].present? }
 
-  # FIXME: people have to be sorted. See sorted_and_filtered in older code.
   def index
     @cbp_map = PeopleDecorator.new(@people).commits_by_project_map
     @positions_map = Position.where(id: @cbp_map.values.map(&:first).flatten)
@@ -65,7 +65,7 @@ class AccountsController < ApplicationController
   end
 
   def unsubscribe_emails
-    account_id = Ohloh::Cipher.decrypt(CGI.escape(params[:key]))
+    account_id = Ohloh::Cipher.decrypt(CGI.escape(params[:key].to_s))
     @account = Account.where(id: account_id).first
     @status = @account.try(:email_master)
     @account.update_attribute(:email_master, false) if @status
@@ -76,7 +76,7 @@ class AccountsController < ApplicationController
   def find_claimed_people
     total_entries = params[:query].blank? ? Person::Count.claimed : nil
     @people = Person.find_claimed(params[:query], params[:sort])
-              .paginate(page: params[:page], per_page: 10, total_entries: total_entries)
+              .paginate(page: page_param, per_page: 10, total_entries: total_entries)
   end
 
   def set_account

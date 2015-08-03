@@ -31,7 +31,6 @@ class AccountDecorator < Cherry::Decorator
     sorted_cbl.sort_by { |_k, v| v[:commits] }.reverse
   end
 
-  # NOTE: Replaces account_vita_status_message in application_helper
   def vita_status_message
     if claimed_positions.any? && best_vita.nil?
       I18n.t('accounts.show.analysis_scheduled')
@@ -70,9 +69,8 @@ class AccountDecorator < Cherry::Decorator
       append_setting_menu(menus) if current_or_admin?(current_user)
       # TODO: account reports
       # append_report_menu(menus) if account == current_user && account.reports.exists?
-      if account.claim_core.unclaimed_persons_count > 0 && current_or_admin?(current_user)
-        # FIXME: Uncomment after integrating committers controller.
-        # append_unclaimed_contribution_menu(menus)
+      if !current_user.nil? && (account.id == current_user.id)
+        append_unclaimed_contribution_menu(menus, current_user)
       end
     end
   end
@@ -88,8 +86,9 @@ class AccountDecorator < Cherry::Decorator
     menus.first.insert(1, [:settings, I18n.t(:settings), h.settings_account_path(account)])
   end
 
-  def append_unclaimed_contribution_menu(menus)
-    menus.second << [:unclaimed, I18n.t(:claim_contributions), h.account_unclaimed_committers_path]
+  def append_unclaimed_contribution_menu(menus, current_user)
+    url_options = { query: current_user.claim_core.emails.join(' '), find_by: 'email' }
+    menus.second << [:unclaimed, I18n.t(:claim_contributions), h.committers_path(url_options)]
   end
 
   def append_report_menu(menus)

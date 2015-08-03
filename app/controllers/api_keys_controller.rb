@@ -5,7 +5,7 @@ class ApiKeysController < ApplicationController
   before_action :find_model, only: [:edit, :update, :destroy]
   before_action :check_api_key_limit, only: [:new, :create]
   before_action :must_be_key_owner
-  before_action :account_context, only: [:index, :new, :edit]
+  before_action :account_context, only: [:index, :new, :edit, :create, :update]
 
   API_KEYS_PER_PAGE = 10
 
@@ -81,7 +81,7 @@ class ApiKeysController < ApplicationController
                 .includes(:account, :oauth_application).references(:all)
                 .send(parse_sort_term)
                 .filter_by(params[:query])
-                .page(params[:page])
+                .page(page_param)
                 .limit(default_or_csv_limit)
   end
 

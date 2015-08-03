@@ -9,7 +9,6 @@ class PositionFactoriesController < ApplicationController
   before_action :check_for_committer_existence
   before_action :claim_existing_position_or_create_alias
 
-  # NOTE: Replaces positions_controller#one_click_create
   def create
     # Render new position form to allow users to fill in the affiliation.
     flash[:success] = t('.success', name: CGI.escapeHTML(@name.name))

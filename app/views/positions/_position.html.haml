@@ -10,7 +10,6 @@
                 &nbsp;
               = t('edit')
 
-      -# NOTE: Replaces position_h6
       %h6
         - project_name = position.project.name
         - if project_name
@@ -33,7 +32,6 @@
           - else
             = t('.unknown_dates')
 
-      -# NOTE: Replaces position_title_and_org
       - if position.title? && position.organization.present?
         %p.nomargin
           %span.title= position.title
@@ -42,7 +40,6 @@
 
       %p.nomargin.desc= h position.description
 
-      -# NOTE: Replaces position_metrics(position, link: true).
       - if position.name_fact.try(:analysis_id)
         = link_to [@account, position], class: 'metrics clear' do
           %img.padding_one_top{ src: position.decorate.commits_compound_spark_path,

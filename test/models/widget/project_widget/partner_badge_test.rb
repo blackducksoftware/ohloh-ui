@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class PartnerBadgeTest < ActiveSupport::TestCase
+class ProjectPartnerBadgeTest < ActiveSupport::TestCase
   let(:project) { create(:project) }
   let(:widget) { ProjectWidget::PartnerBadge.new(project_id: project.id) }
 

@@ -334,7 +334,7 @@ en:
               too_long: The password must not be longer than 32 characters.
               invalid: The password contains illegal characters
 
-  project_experience:
+  project_experiences:
     no_matching_project: No matching open source project with this name.
 
   password_resets:
@@ -371,5 +371,6 @@ en:
     oauth_applications:
       revoke_access:
         success: You have successfully revoked the authorization for %{name}
-
   non_activated_message: Please verify your email address to help us communicate with you better. Click %{link} to resend the verification email.
+  top_commit_volume_chart:
+    message: '%{name} generated more than 50% of all commits during the past 12 months.'

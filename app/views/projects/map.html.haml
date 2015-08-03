@@ -1,7 +1,9 @@
 :ruby
   total_users = @project.user_count
   total_contributors = @project.best_analysis.contributor_facts.size
-- content_for(:html_title) { t('.page_title', name: @project.name) }
+  content_for(:html_title) { t('.page_title', name: @project.name) }
+  page_context[:select_footer_nav] = :map
+
 - content_for :javascript do
   - args = "'#{@project.to_param}', #{total_users}, #{total_contributors}"
   = javascript_tag "$(document).on('page:change', function(){ ProjectMap.init(#{args}); });"

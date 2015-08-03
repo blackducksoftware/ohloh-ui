@@ -1,0 +1,14 @@
+en:
+  jobs:
+    analyze_job:
+      progress_message: 'Analyzing project %{name}'
+    fetch_job:
+      progress_message: 'Step 1 of 3: Downloading source code history'
+    import_job:
+      progress_message: 'Step 2 of 3: Importing source code into database'
+    sloc_job:
+      progress_message: 'Step 3 of 3: Counting lines of source code'
+    organization_job:
+      progress_message: 'Analyzing organization %{name}'
+    vita_job:
+      progress_message: 'Creating vita for %{name}'

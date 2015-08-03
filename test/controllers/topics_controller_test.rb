@@ -29,17 +29,26 @@ describe TopicsController do
   end
 
   it 'show with post pagination' do
-    skip 'TODO: This test never ran correctly. It silently failed due to no assertions.'
-    create_list(:post, 31)
+    create_list(:post, 31, topic: topic)
+    create(:topic, forum: topic.forum, sticky: 0)
+
     get :show, id: topic.id
+
     must_respond_with :success
-    # There should be 25 posts max per page
-    css_select 'html body div#page.container div#page-contents div#topics_show_page.col-md-13 div.span12 div', 25
+    assigns(:posts).length.must_equal 25
+    assert_select '.posts', 25
   end
 
   it 'show responds to atom format' do
     create_list(:post, 5, topic: topic)
     get :show, id: topic, format: 'atom'
+    must_respond_with :ok
+  end
+
+  it 'show responds to rss format' do
+    create_list(:post, 5, topic: topic)
+    get :show, id: topic, format: 'rss'
+    must_render_template 'show.atom.builder'
     must_respond_with :ok
   end
 
@@ -142,13 +151,13 @@ describe TopicsController do
   end
 
   it 'user show with post pagination' do
-    skip 'TODO: This test never ran correctly. It silently failed due to no assertions.'
-    create_list(:post, 31)
+    create_list(:post, 31, topic: topic)
     login_as user
+
     get :show, id: topic.id
+
     must_respond_with :success
-    # There should be 25 posts max per page
-    css_select 'html body div#page.container div#page-contents div#topics_show_page.col-md-13 div.span12 div', 25
+    assert_select '.posts', 25
   end
 
   it 'user show responds to atom format' do
@@ -232,12 +241,12 @@ describe TopicsController do
   end
 
   it 'admin show with post pagination' do
-    skip 'TODO: This test never ran correctly. It silently failed due to no assertions.'
-    create_list(:post, 26)
+    create_list(:post, 26, topic: topic)
+
     get :show, id: topic.id
+
     must_respond_with :success
-    # There should be 25 posts max per page
-    css_select 'html body div#page.container div#page-contents div#topics_show_page.col-md-13 div.span12 div', 25
+    assert_select '.posts', 25
   end
 
   it 'admin edit' do

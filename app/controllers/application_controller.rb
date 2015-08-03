@@ -1,6 +1,7 @@
 # rubocop:disable Metrics/ClassLength
 class ApplicationController < ActionController::Base
   BOT_REGEX = /\b(Baiduspider|Googlebot|libwww-perl|msnbot|SiteUptime|Slurp)\b/i
+  FORMATS_THAT_WE_SUPPORT = %w(html xml json csv rss atom css js png gif jpg jpeg)
 
   include PageContextHelper
 
@@ -30,7 +31,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from ::Exception do |exception|
     fail exception if Rails.application.config.consider_all_requests_local
-    notify_airbrake(exception)
+    notify_airbrake(exception) unless blank_user_agent?
     render_404
   end
 
@@ -44,9 +45,13 @@ class ApplicationController < ActionController::Base
     fail ActionController::RoutingError, "No route matches #{params[:unmatched_route]}"
   end
 
+  def page_param
+    [params[:page].to_i, 1].max
+  end
+  helper_method :page_param
+
   protected
 
-  # TODO: Fix me when sessions are real
   def session_required
     return if logged_in?
     flash[:notice] = t('sessions.message_html', href: new_account_path)
@@ -83,7 +88,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user_can_manage?
 
   def current_project_or_org
-    @parent ||= @project || @organization || current_project || current_organization
+    @parent ||= @project || @organization || current_project
     @parent
   end
 
@@ -97,15 +102,6 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_project
 
-  def current_organization
-    begin
-      @organization ||= Organization.from_param(params[:organization_id] || params[:id]).first!
-    rescue ActiveRecord::RecordNotFound
-      raise ParamRecordNotFound
-    end
-    @organization
-  end
-
   def read_only_mode?
     ENV['READ_ONLY_MODE'].present?
   end
@@ -118,8 +114,8 @@ class ApplicationController < ActionController::Base
   end
 
   def request_format
-    format = 'html' if request.format.html?
-    format ||= params[:format]
+    format = request.format.html? ? 'html' : params[:format]
+    format = nil unless FORMATS_THAT_WE_SUPPORT.include?(format)
     format || 'html'
   end
 
@@ -147,7 +143,7 @@ class ApplicationController < ActionController::Base
   end
 
   def store_location
-    return if request.xhr?
+    return if request.xhr? || request_format != 'html'
     session[:return_to] = request.fullpath
   end
 
@@ -172,6 +168,10 @@ class ApplicationController < ActionController::Base
     (request.env['HTTP_USER_AGENT'] =~ BOT_REGEX).present?
   end
 
+  def blank_user_agent?
+    request.env['HTTP_USER_AGENT'].blank?
+  end
+
   def show_permissions_alert
     return if current_user_can_manage?
     return if logged_in? && !current_project_or_org.protection_enabled?
@@ -180,18 +180,19 @@ class ApplicationController < ActionController::Base
 
   private
 
-  # FIXME: Old source allowed some XML requests without authentication.
-  #        Skip this filter for widgets, sitemap and exhibits.
   def verify_api_access_for_xml_request
     return unless request_format == 'xml'
-    client_id = params[:api_key] || doorkeeper_token.try(:application).try(:uid)
-    api_key = ApiKey.in_good_standing.find_by_oauth_application_uid(client_id)
+    api_key = ApiKey.in_good_standing.find_by_oauth_application_uid(api_client_id)
 
-    if api_key.try(:may_i_have_another?)
+    if api_key && api_key.may_i_have_another?
       doorkeeper_authorize! if doorkeeper_token
     else
       render_unauthorized
     end
+  end
+
+  def api_client_id
+    params[:api_key] || (doorkeeper_token && doorkeeper_token.application && doorkeeper_token.application.uid)
   end
 
   def strip_query_param
@@ -214,9 +215,7 @@ class ApplicationController < ActionController::Base
 
   def access_denied
     store_location
-    # TODO: Check if we really need width options.
-    width_options = params[:width] && { width: 't' }
-    redirect_to new_session_path(width_options)
+    redirect_to new_session_path
   end
 
   def set_session_projects
@@ -236,6 +235,19 @@ class ApplicationController < ActionController::Base
 
     flash[:notice] ||= t('non_activated_message',
                          link: view_context.link_to(:here, new_activation_resend_path))
+  end
+
+  def set_project_or_fail
+    project_id = params[:project_id] || params[:id]
+    @project = Project.by_url_name_or_id(project_id).take
+
+    fail ParamRecordNotFound unless @project
+    project_context
+    render 'projects/deleted' if @project.deleted?
+  end
+
+  def set_project_editor_account_to_current_user
+    @project.editor_account = current_user
   end
 end
 # rubocop:enable Metrics/ClassLength

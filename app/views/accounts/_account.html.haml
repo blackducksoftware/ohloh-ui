@@ -14,7 +14,7 @@
     %p.small.word_break_all= truncate(account.markup.try(:first_line), length: 75)
     .small.member_info
       - if account.projects.any?
-        - manages_count_text = t '.manages', count: pluralize(account.projects.count, 'project')
+        - manages_count_text = t 'people.claimed_person.manages', what: pluralize(account.projects.count, 'project')
         %p= link_to manages_count_text, account_projects_path(account)
       %p= t '.member_since', since: account.created_at.strftime('%B %Y')
 

@@ -5,8 +5,29 @@ describe 'RssSubscriptionsController' do
     @account = create(:admin)
     login_as @account
   end
-  it 'should get the RSS articles list' do
+
+  it 'must render the page correctly when no rss_subscriptions' do
     get :index, project_id: @project.to_param
+
+    must_respond_with :ok
+  end
+
+  it 'must render projects/deleted when project is deleted' do
+    @project.update!(deleted: true, editor_account: @account)
+
+    get :index, project_id: @project.to_param
+
+    must_render_template 'deleted'
+  end
+
+  it 'must render the page correctly when rss_subscriptions are present' do
+    rss_subscription_1 = create(:rss_subscription, project: @project)
+    rss_feed = create(:rss_feed, last_fetch: Time.current)
+    rss_subscription_2 = create(:rss_subscription, project: @project, rss_feed: rss_feed)
+
+    get :index, project_id: @project.to_param
+
+    assigns(:rss_subscriptions).must_equal [rss_subscription_1, rss_subscription_2]
     must_respond_with :ok
   end
 
@@ -19,6 +40,24 @@ describe 'RssSubscriptionsController' do
     post :create, project_id: @project.to_param, rss_feed: { url: 'http://yahoo.com' }
     must_respond_with :redirect
     must_redirect_to project_rss_subscriptions_path(@project)
+  end
+
+  it 'should gracefully handle locked projects' do
+    Project.any_instance.stubs(:edit_authorized?).returns false
+    post :create, project_id: @project.to_param, rss_feed: { url: 'http://yahoo.com' }
+    must_respond_with :redirect
+    must_redirect_to project_path(@project)
+    flash.notice.must_equal I18n.t(:not_authorized)
+  end
+
+  it 'should recreate a previously deleted rss_subscription if available' do
+    rss_feed = create(:rss_feed, url: 'http://yahoo.com')
+    rss_subscription = create(:rss_subscription, project: @project, rss_feed: rss_feed)
+    rss_subscription.create_edit.undo!(@account)
+    post :create, project_id: @project.to_param, rss_feed: { url: 'http://yahoo.com' }
+    must_respond_with :redirect
+    must_redirect_to project_rss_subscriptions_path(@project)
+    rss_subscription.reload.deleted.must_equal false
   end
 
   it 'should not create a new rss subscription with invalid param' do

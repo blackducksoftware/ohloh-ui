@@ -1,7 +1,7 @@
 class LinksController < SettingsController
   helper ProjectsHelper
 
-  before_action :set_project
+  before_action :set_project_or_fail, :set_project_editor_account_to_current_user
   before_action :project_context
   before_action :set_link, only: [:edit, :update, :destroy]
   before_action :session_required, :redirect_unverified_account, only: [:create, :new, :edit, :update]
@@ -64,12 +64,6 @@ class LinksController < SettingsController
   def set_link
     @link = Link.find(params[:id])
     @link.editor_account = current_user
-  end
-
-  def set_project
-    @project = Project.from_param(params[:project_id]).first
-    fail ParamRecordNotFound unless @project
-    @project.editor_account = current_user
   end
 
   def set_categories

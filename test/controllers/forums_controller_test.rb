@@ -35,14 +35,14 @@ describe ForumsController do
   end
 
   it 'admin show with pagination' do
-    skip 'TODO: This test never ran correctly. It silently failed due to no assertions.'
-    create_list(:topic, 20)
-    login_as user
-    get :show, id: forum.id
+    create_list(:topic_with_posts, 20, forum: forum)
+    login_as create(:account)
     must_respond_with :success
+
+    get :show, id: forum.id
     # Should have 15 topics per page
-    html = 'div#forums_show_page.col-md-13 table.table.table-striped tbody tr'
-    css_select html, 15
+    html = 'table.table.table-striped tbody tr'
+    assert_select html, 15
   end
 
   it 'admin edit' do
@@ -104,14 +104,16 @@ describe ForumsController do
   end
 
   it 'show with pagination' do
-    skip 'TODO: This test never ran correctly. It silently failed due to no assertions.'
-    create_list(:topic, 20)
-    login_as user
+    create_list(:topic_with_posts, 20, forum: forum)
+    login_as create(:account)
+
     get :show, id: forum.id
+
     must_respond_with :success
+
     # Should have 15 topics per page
-    html = 'div#forums_show_page.col-md-13 table.table.table-striped tbody tr'
-    css_select html, 15
+    html = 'table.table.table-striped tbody tr'
+    assert_select html, 15
   end
 
   it 'edit' do

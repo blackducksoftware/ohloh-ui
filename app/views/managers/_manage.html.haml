@@ -2,8 +2,8 @@
   account = manage.account
   name = html_escape(account.name)
   target = html_escape(@parent.name)
-  position = nil # TODO: (positions) account.positions.find(:first, :conditions => ["project_id = ?", @parent.id])
-  name_fact = nil # TODO: (name_facts) position && position.name_fact
+  position = account.positions.where(project_id: @parent.id).first
+  name_fact = position && position.name_fact
 - if !manage.pending? || (current_user_can_manage? || current_user == account)
   .row.padding_one_top
     .col-md-2
@@ -13,9 +13,12 @@
         = link_to(html_escape(account.name), account_path(account))
         - if manage.pending?
           #{t('.pending')}
-      - if !position.nil? && position.title?
+      - if position && position.title? && position.organization.present?
         .position
-          - position_title_and_org(position)
+          %p.nomargin
+            %span.title= position.title
+            %span.at= t('at')
+            %span.organization= position.organization
       %p.nomargin.soft== #{name_fact ? name_fact.commits : '0'} commits
       = render partial: 'action_buttons', locals: { manage: manage, account: account, name: name, target: target }
     .clear

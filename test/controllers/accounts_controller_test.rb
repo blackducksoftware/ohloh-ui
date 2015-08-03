@@ -59,6 +59,13 @@ describe 'AccountsController' do
       must_respond_with :ok
     end
 
+    it 'should support accounts with vitas' do
+      best_vita = create(:best_vita)
+      key = create(:api_key, account_id: create(:account).id)
+      get :show, id: best_vita.account.to_param, format: :xml, api_key: key.oauth_application.uid
+      must_respond_with :ok
+    end
+
     it 'should redirect if account is disabled' do
       Account::Access.any_instance.stubs(:disabled?).returns(true)
 
@@ -74,6 +81,13 @@ describe 'AccountsController' do
       account.level.must_equal Account::Access::SPAM
       get :show, id: account.id
       must_redirect_to disabled_account_url(account)
+    end
+
+    it 'should respond to json format' do
+      get :show, id: admin.login, format: 'json'
+
+      must_respond_with :ok
+      assigns(:account).must_equal admin
     end
   end
 

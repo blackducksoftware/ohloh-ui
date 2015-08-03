@@ -1,7 +1,7 @@
 class AnalysesController < ApplicationController
   helper :Projects
 
-  before_action :set_project
+  before_action :set_project_or_fail
   before_action :set_analysis
   before_action :fail_if_analysis_not_found, except: :languages_summary
   before_action :project_context, only: :languages_summary
@@ -67,11 +67,6 @@ class AnalysesController < ApplicationController
   end
 
   private
-
-  def set_project
-    @project = Project.from_param(params[:project_id]).take
-    fail ParamRecordNotFound unless @project
-  end
 
   def set_analysis
     @analysis = params[:id] == 'latest' ? @project.best_analysis : Analysis.find_by(id: params[:id])

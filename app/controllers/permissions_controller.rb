@@ -2,10 +2,11 @@ class PermissionsController < ApplicationController
   helper ProjectsHelper
 
   before_action :session_required, :redirect_unverified_account, only: :update
+  before_action :set_project_or_fail
   before_action :find_model
   before_action :require_manage_authorization, only: :update
   before_action :show_permissions_alert, only: :show
-  before_action :project_context, only: :show
+  before_action :project_context, only: [:show, :update]
 
   def update
     if find_model.update(model_params)
@@ -20,8 +21,7 @@ class PermissionsController < ApplicationController
   private
 
   def find_model
-    @project = current_project
-    @permission = current_project.permission || Permission.new(target: current_project)
+    @permission = @project.permission || Permission.new(target: @project)
     @permission.tap { |p| p.editor_account = current_user }
   end
 

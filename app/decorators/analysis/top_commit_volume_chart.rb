@@ -3,7 +3,7 @@ class Analysis::TopCommitVolumeChart
   include ActionView::Helpers::AssetUrlHelper
 
   OTHER = 'Other'
-  NAME_COUNT = 8
+  NAME_COUNT = 5
   INTERVALS = ['50 years', '12 months', '1 month']
 
   def initialize(analysis)
@@ -29,27 +29,44 @@ class Analysis::TopCommitVolumeChart
 
   def data_options
     { 'series' => pivoted_series.map { |name, data| { 'name' => name, 'data' => data } },
-      'xAxis' => { 'categories' => interval_labels }, 'warning' => nil }
-  end
-
-  def series
-    @series ||= @history.map do |data|
-      others_count = data.drop(NAME_COUNT).map(&:last).sum
-      data.take(NAME_COUNT) + [[OTHER, others_count]]
-    end
+      'xAxis' => { 'categories' => interval_labels }, 'warning' => warning_message(@history[1]) }
   end
 
   def pivoted_series
-    @pivoted_series ||= committer_names.map { |name| [name, find_count(name)] }
-  end
-
-  def find_count(name_to_find)
-    series.map do |data|
-      data.find { |name, _| name == name_to_find }.try(:last).to_i
+    names = committer_names.map { |name| [name, []] }
+    others = []
+    @history.each do |interval|
+      result = find_count(interval, names)
+      others << result.last
     end
+    names << [OTHER, others]
   end
 
   def committer_names
-    @comitter_names ||= series.map { |data| data.map(&:first) }.flatten.uniq
+    all_names = []
+    @history.each do |intervals|
+      intervals.first(NAME_COUNT).each do |name, _count|
+        all_names << name unless all_names.include? name
+      end
+    end
+    all_names
+  end
+
+  def find_count(interval, names)
+    total_count = interval.map(&:last).inject(:+).to_i
+    committer_names.each_with_index do |name, i|
+      _name, count = interval.find { |n, _count| n == name }
+      names[i][1] << count.to_i
+      total_count -= count.to_i
+    end
+    [names, total_count]
+  end
+
+  def warning_message(s)
+    half = s.map { |_name, count| count }.sum / 2
+    s.each do |name, count|
+      return I18n.t('top_commit_volume_chart.message', name: name) if count > half && name != OTHER
+    end
+    nil
   end
 end

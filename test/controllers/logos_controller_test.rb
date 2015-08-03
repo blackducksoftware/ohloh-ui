@@ -8,7 +8,6 @@ class LogosControllerTest < ActionController::TestCase
   end
 
   it 'user has permissions to edit' do
-    # TODO: acts_as_edited
     Project.any_instance.expects(:edit_authorized?).returns(false)
     login_as @user
     post :create, project_id: projects(:linux).id
@@ -77,6 +76,15 @@ class LogosControllerTest < ActionController::TestCase
     must_respond_with :success
   end
 
+  it 'must render projects/deleted when project is deleted' do
+    project = create(:project)
+    project.update!(deleted: true, editor_account: @user)
+
+    get :new, project_id: project.to_param
+
+    must_render_template 'deleted'
+  end
+
   it 'LogosController destroy resets to NilLogo' do
     project = create(:project)
     login_as @admin
@@ -87,18 +95,18 @@ class LogosControllerTest < ActionController::TestCase
     NilClass.must_equal project.reload.logo.class
   end
 
-  it 'new logos page for a deleted project is rendered using the projects/deleted template' do
-    skip('TODO: projects')
-    project = projects(:linux)
+  it 'LogosController destroy does not really destroy default logos' do
+    Logo.where(id: 1180).destroy_all
+    logo = create(:logo, id: 1180)
+    project = create(:project, logo_id: logo.id)
 
-    edit_as :robin do
-      project.update_attribute(:deleted, true)
-    end
+    login_as @admin
 
-    get :new, project_id: project.id
+    delete :destroy, project_id: project.id
 
-    must_respond_with :success
-    must_render_template 'projects/deleted'
+    must_redirect_to new_project_logos_path
+    NilClass.must_equal project.reload.logo.class
+    Logo.where(id: 1180).count.must_equal 1
   end
 
   it 'new unauthenticated' do
@@ -106,25 +114,24 @@ class LogosControllerTest < ActionController::TestCase
     must_respond_with :success
   end
 
-  it 'new' do
-    skip('TODO: application')
+  it 'must render the new page successfully' do
     login_as @admin
+
     get :new, project_id: projects(:linux).id
+
     must_respond_with :success
-    'form[action=?]'.must_select project_logos_path do
-      assert_select 'input[type=radio][name=logo_id]'
-      assert_select 'input[type=submit]'
-    end
+    must_render_template :new
   end
 
   it 'new shows flash if user has no permissions' do
-    skip('TODO: manage')
-    Manage.create!(target: projects(:linux), account: create(:account))
-    Permission.create!(project: projects(:linux), 'remainder' => true)
+    project, account = create(:project), create(:account)
+    create(:manage, target: project, account: account)
+    create(:permission, target: project, remainder: true)
 
-    login_as @user
-    get :new, project_id: projects(:linux).id
-    flash[:notice].must_equal 'You can view, but not change this data. Only managers may change this data.'
+    login_as create(:account)
+    get :new, project_id: project.id
+
+    flash[:notice].must_equal I18n.t('permissions.not_manager')
   end
 
   it 'create with logo id' do

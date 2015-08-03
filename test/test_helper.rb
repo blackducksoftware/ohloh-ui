@@ -4,7 +4,7 @@ require 'simplecov-rcov'
 
 SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
 SimpleCov.start 'rails'
-SimpleCov.minimum_coverage 99
+SimpleCov.minimum_coverage 99.3
 
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
@@ -74,9 +74,9 @@ class ActiveSupport::TestCase
     I18n.t("activerecord.errors.models.#{ model }.attributes.#{ key }")
   end
 
-  def restrict_edits_to_managers(organization, account = create(:account))
-    organization.update! editor_account: account
-    permission = organization.create_permission
+  def restrict_edits_to_managers(organization_or_project, account = create(:account))
+    organization_or_project.update! editor_account: account
+    permission = organization_or_project.create_permission
     permission.update!(remainder: true, editor_account: account)
   end
 end

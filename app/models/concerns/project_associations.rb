@@ -2,7 +2,7 @@ module ProjectAssociations
   extend ActiveSupport::Concern
 
   included do
-    has_many :links, -> { where(deleted: false) }
+    has_many :links, -> { where("links.deleted = 'f'") }
     has_one :permission, as: :target
     has_many :analyses
     has_many :analysis_summaries, through: :analyses
@@ -23,13 +23,15 @@ module ProjectAssociations
     has_many :reviews
     has_many :ratings
     has_many :kudos
+    has_many :jobs
+    belongs_to :forge, class_name: 'Forge::Base'
     has_one :koders_status
     has_many :enlistments, -> { where(deleted: false) }
     has_many :repositories, through: :enlistments
-    has_many :project_licenses, -> { where(deleted: false) }
+    has_many :project_licenses, -> { where("project_licenses.deleted = 'f'") }
     has_many :licenses, -> { order('lower(licenses.nice_name)') }, through: :project_licenses
     has_many :duplicates, -> { order(created_at: :desc) }, class_name: 'Duplicate', foreign_key: 'good_project_id'
-    has_one :is_a_duplicate, class_name: 'Duplicate', foreign_key: 'bad_project_id'
+    has_one :is_a_duplicate, -> { where.not(resolved: true) }, class_name: 'Duplicate', foreign_key: 'bad_project_id'
     has_many :named_commits, ->(proj) { where(analysis_id: (proj.best_analysis_id || 0)) }
     has_many :commit_flags, -> { order(time: :desc).where('commit_flags.sloc_set_id = named_commits.sloc_set_id') },
              through: :named_commits

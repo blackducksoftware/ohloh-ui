@@ -1,6 +1,7 @@
 class ForumsController < ApplicationController
   before_action :find_most_recent_topics_from_forum, only: :index
   before_action :find_forum_record, except: [:index, :new, :create]
+  before_action :session_required, except: [:index, :show]
   before_action :admin_session_required, except: [:index, :show]
 
   def index
@@ -23,7 +24,7 @@ class ForumsController < ApplicationController
   end
 
   def show
-    @topics = @forum.topics.paginate(page: params[:page], per_page: 15)
+    @topics = @forum.topics.paginate(page: page_param, per_page: 15)
   end
 
   def update

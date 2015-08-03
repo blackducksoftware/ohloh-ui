@@ -1,6 +1,9 @@
 require 'test_helper'
 
 class PersonTest < ActiveSupport::TestCase
+  let(:account) { create(:account) }
+  let(:project) { create(:project) }
+
   describe 'searchable_factor' do
     let(:person) { create(:account).person }
     before { Person.count.must_equal(7) }
@@ -147,139 +150,80 @@ class PersonTest < ActiveSupport::TestCase
     Person.where(project_id: 2).count.must_equal 2
   end
 
-  it 'deleting and restoring a project deletes and restores the persons associated with it' do
-    skip('TODO: project model')
-    with_editor(accounts(:admin)) do
-      project = projects(:linux)
-      delta = Person.find(:all, conditions: ['project_id = ?', project.id]).count
+  it 'must delete all associated people when project is deleted' do
+    project = create(:project)
+    create(:person, project: project)
 
-      assert_difference 'Person.count', delta * -1 do
-        projects(:linux).destroy
-      end
-      assert_people
-      assert_difference 'Person.count', delta do
-        projects(:linux).create_edit.redo
-      end
-      assert_people
-    end
-  end
-
-  it 'deleting a project removes the persons associated with it' do
-    skip('TODO: project model')
-    project = projects(:linux)
-    delta = Person.find(:all, conditions: ['project_id = ?', project.id]).count
-
-    assert_difference 'Person.count', delta * -1 do
-      Project.delete(projects(:linux).id)
-    end
-    assert_people
-  end
-
-  it 'test_create_and_delete_position_with_name_id' do
-    skip('TODO: position model')
-    position = nil
-    Person.find_by(project: projects(:linux), name: names(:scott)).must_be :present?
     assert_difference 'Person.count', -1 do
-      position = Position.create!(account: accounts(:kyle), project: projects(:linux), name: names(:scott))
+      project.destroy
     end
-    Person.find_by(project: projects(:linux), name: names(:scott)).must_be_nil
-    assert_difference 'Person.count', +1 do
+  end
+
+  it 'must restore all deleted people when project is restored' do
+    create(:person, project: project)
+    project.destroy
+
+    assert_difference 'Person.count', 1 do
+      CreateEdit.find_by(target: project).redo!(account)
+    end
+  end
+
+  it 'must destroy existing person on creating position' do
+    name = create(:name)
+    person = create(:person, name: name, project: project)
+
+    create_position(account: account, project: project, name: name)
+
+    Person.find_by(id: person.id).must_be_nil
+  end
+
+  it 'must create new person when position is destroyed' do
+    name = create(:name)
+    position = create_position(account: account, project: project, name: name)
+
+    assert_difference 'Person.count', 1 do
       position.destroy
     end
-    Person.find_by(project: projects(:linux), name: names(:scott)).must_be :present?
-    assert_people
+
+    Person.find_by(project: project, name: name).must_be :present?
   end
 
-  it 'test_create_and_delete_position_without_name_id' do
-    skip('TODO: position model')
-    position = nil
+  it 'wont affect person when position has no name and project' do
+    account = create(:account)
+    project = create(:project)
+
     assert_no_difference 'Person.count' do
-      position = Position.create!(account: accounts(:kyle), project: projects(:linux),
-                                  start_date: Time.current, stop_date: Time.current)
+      Position.create!(account: account, project: project,
+                       start_date: Time.current, stop_date: Time.current)
     end
+
     assert_no_difference 'Person.count' do
-      position.destroy
+      Position.last.destroy
     end
-    assert_people
   end
 
-  it 'test_edit_position_adds_name_id' do
-    skip('TODO: position model')
-    position = positions(:joe_unclaimed) # Claims a project, but not a name
-    Person.find_by(project: position.project, name: 3).must_be :present?
+  it 'must delete an existing person when matching name is updated' do
+    position = Position.create!(account: account, project: project,
+                                start_date: Time.current, stop_date: Time.current)
+    person = create(:person, project: project)
+    create(:name_fact, analysis: project.best_analysis, name: person.name)
+
     assert_difference 'Person.count', -1 do
-      position.name_id = 3
-      position.save!
+      position.update!(name_id: person.name_id)
     end
-    Person.find_by(project: position.project, name: 3).must_be_nil
+
+    Person.find_by(id: person.id).must_be_nil
   end
 
-  it 'test_edit_position_removes_name_id' do
-    skip('TODO: position model')
-    position = positions(:admin)
-    name_id = position.name_id
-    Person.find_by(project: position.project, name: name_id).must_be_nil
-    assert_difference 'Person.count', +1 do
-      position.update(name: nil, start_date: Time.current, stop_date: Time.current)
-    end
-    Person.find_by(project_id: position.project_id, name_id: name_id).must_be :present?
-  end
+  it 'must create new person when name is updated to null' do
+    position = create_position
+    name = position.name
 
-  it 'test_edit_position_changes_name_id' do
-    skip('TODO: position model')
-    position = positions(:admin)
-    before_name_id = position.name_id
-    after_name_id = 3
-    Person.find_by(project_id: position.project_id, name_id: before_name_id).must_be_nil
-    Person.find_by(project_id: position.project_id, name_id: after_name_id).must_be :present?
-    assert_no_difference 'Person.count' do
-      position.update(name_id: after_name_id, start_date: Time.current, stop_date: Time.current)
+    assert_difference 'Person.count', 1 do
+      position.update!(name: nil, start_date: Time.current, stop_date: Time.current)
     end
-    Person.find_by(project_id: position.project_id, name_id: before_name_id).must_be :present?
-    Person.find_by(project_id: position.project_id, name_id: after_name_id).must_be_nil
-  end
 
-  it 'test_setting_best_analysis_to_null_removes_all_names' do
-    skip('TODO: project model')
-    with_editor(accounts(:admin)) do
-      projects(:linux).update_attributes(best_analysis_id: nil)
-    end
-    assert_people
-  end
-
-  it 'test_new_best_analysis_when_there_are_no_changes_to_names' do
-    skip('TODO: project model')
-    old_analysis = projects(:linux).best_analysis
-    new_analysis = duplicate_analysis(old_analysis)
-    with_editor(accounts(:admin)) do
-      projects(:linux).update_attributes(best_analysis: new_analysis)
-    end
-    assert_people
-  end
-
-  it 'test_new_best_analysis_when_a_new_name_is_created' do
-    skip('TODO: project model')
-    old_analysis = projects(:linux).best_analysis
-    new_analysis = duplicate_analysis(old_analysis)
-    ContributorFact.create!(analysis_id: new_analysis.id, name: Name.create(name: 'the new guy'))
-    with_editor(accounts(:admin)) do
-      projects(:linux).update_attributes(best_analysis: new_analysis)
-    end
-    assert_people
-  end
-
-  it 'test_new_best_analysis_when_an_old_name_is_deleted' do
-    skip('TODO: project model')
-    old_analysis = projects(:linux).best_analysis
-    new_analysis = duplicate_analysis(old_analysis)
-    assert_difference 'ContributorFact.count', -1 do
-      ContributorFact.find(:first, conditions: "analysis_id = #{new_analysis.id} AND name_id = #{names(:scott).id}")
-        .destroy
-    end
-    with_editor(accounts(:admin)) do
-      projects(:linux).update_attributes(best_analysis: new_analysis)
-    end
-    assert_people
+    Person.find_by(project: position.project, name: name).must_be :present?
   end
 
   it 'test_searchable_vector' do
@@ -311,16 +255,12 @@ class PersonTest < ActiveSupport::TestCase
   end
 
   it 'find_unclaimed when deleting project' do
-    skip('TODO: project model')
-    with_editor(:user) do
-      projects(:adium).update_attribute(:deleted, false)
-      projects(:adium).analyze
-    end
-    people = Person.find_unclaimed
-    people.length.must_equal 2 # still 2 unique names
-    people.map(&:last).flatten.length.must_equal 3  # 3 people records
-    people.detect { |k, _v| k == names(:user).id }.last.length.must_equal 2
-    people.detect { |k, _v| k == names(:user).id }.last.find { |p| p.project == projects(:adium) }.must_be :present?
+    Person.find_unclaimed.length.must_equal 2
+    project = create(:project, deleted: true)
+
+    project.update!(deleted: false)
+
+    Person.find_unclaimed.length.must_equal 2 # still 2 unique names
   end
 
   private

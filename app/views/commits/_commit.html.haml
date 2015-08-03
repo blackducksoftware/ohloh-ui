@@ -24,7 +24,7 @@
             = render partial: 'committer_name', locals: { named_commit: named_commit }
         %td{ colspan: '4', class: "commit_#{ commit.to_param }" }
           %span.icon-play-circle{ id: "icon_play_circle_#{ commit.to_param }" }
-            = link_to t('.more'), '#', id: 'commit-details',
+            = link_to t('.more'), '#', class: 'commit-details',
               commit_id: commit.to_param, project_id: @project.to_param
           %span.spinner.hidden{ id: "spinner_#{ commit.to_param }" }
             = image_tag 'spinner.gif'

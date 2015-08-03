@@ -17,6 +17,5 @@
 .clear
 
 #projects_index_list
-  = render partial: 'project_index', collection: @projects, locals: { metric: project_metric_from_sort(@sort),
-                                                                      compare: true, show_active_committers: true }
+  = render partial: 'project_index', collection: @projects, locals: { compare: true, show_active_committers: true }
   = will_paginate @projects

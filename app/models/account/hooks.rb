@@ -31,8 +31,6 @@ class Account::Hooks
   end
 
   def after_save(account)
-    deliver_activation(account) unless account.anonymous?
-    reindex_person(account) if account.person && !Account::Access.new(account).spam?
     update_person_effective_name(account) if account.person.present? && !Account::Access.new(account).spam?
   end
 
@@ -44,11 +42,6 @@ class Account::Hooks
 
   def update_person_effective_name(account)
     account.person.update!(effective_name: account.name)
-  end
-
-  def reindex_person(_account)
-    # FIXME: Integrate alongwith searchable
-    # account.person.reindex
   end
 
   def activate_using_invite!(account)
@@ -64,32 +57,27 @@ class Account::Hooks
     account.name = account.login
   end
 
-  def deliver_signup_notification(_account)
-    # FIXME: Implement alongwith AccountNotifier
-    # AccountMailer.signup_notification(account).deliver_now
+  def deliver_signup_notification(account)
+    AccountMailer.signup_notification(account).deliver_now
   end
 
-  def deliver_activation(_account)
-    # FIXME: Implement alongwith AccountNotifier
-    # AccountMailer.deliver_activation(account).deliver_now
+  def schedule_organization_analysis(organization_id)
+    return unless organization_id
+    Organization.find_by(id: organization_id).schedule_analysis
   end
 
-  def schedule_organization_analysis(_organization_id)
-    # FIXME: Uncomment when Organization analysis scheduling works.
-    # Organization.find_by_id(organization_id).schedule_analysis
-  end
-
+  # rubocop:disable Metrics/AbcSize
   def destroy_spammer_dependencies(account)
-    # FIXME: acts_as_editable, posts, manage
-    # account.posts.each { |post| post.destroy_and_cleanup }
-    # account.all_manages.each { |manage| manage.destroy_by!(account) }
-    # account.edits.each { |edit| edit.undo rescue if edit.undone? }
+    account.posts.each(&:destroy_with_empty_topic)
+    account.all_manages.each { |manage| manage.destroy_by!(account) }
+    account.edits.not_undone.each { |edit| edit.undo!(Account.hamster) }
     account.topics.where(posts_count: 0).destroy_all
     account.person.try(:destroy)
     dependent_destroy(account)
   rescue
     raise ActiveRecord::Rollback
   end
+  # rubocop:enable Metrics/AbcSize
 
   def dependent_destroy(account)
     %w(positions sent_kudos stacks ratings reviews api_keys).each do |association|

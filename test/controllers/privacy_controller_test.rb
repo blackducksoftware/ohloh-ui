@@ -26,6 +26,13 @@ describe 'PrivacyController' do
       must_respond_with :ok
     end
 
+    it 'should allow admins to edit others privacy page' do
+      login_as create(:admin)
+      get :edit, id: account.id
+      must_respond_with :ok
+      flash[:error].must_equal I18n.t(:admin_warning)
+    end
+
     it 'must set oauth_applications with unrevoked tokens' do
       create(:access_token, resource_owner_id: account.id).revoke # revoked application.
       create(:access_token)                                       # unauthorized application.
@@ -50,6 +57,13 @@ describe 'PrivacyController' do
       put :update, id: account.id
       must_respond_with :redirect
       must_redirect_to new_session_path
+    end
+
+    it 'must gracefully handle exceptions' do
+      Account.any_instance.stubs(:update).returns false
+      put :update, id: account.id, account: { email_master: false }
+      must_respond_with :unprocessable_entity
+      must_render_template :edit
     end
 
     it 'should update email master to false' do

@@ -11,6 +11,8 @@ class Kudo < ActiveRecord::Base
   validates :message, length: 0..80, allow_nil: true
   validate :cant_kudo_self
 
+  after_save :notify_recipient
+
   def person
     (account_id && Person.find_by_account_id(account_id)) || Person.find_by_name_id_and_project_id(name_id, project_id)
   end
@@ -66,5 +68,10 @@ class Kudo < ActiveRecord::Base
   def cant_kudo_self
     return unless sender_id == account_id
     errors.add :base, I18n.t('kudos.cant_kudo_self')
+  end
+
+  def notify_recipient
+    return unless errors.empty? && account && account.email_kudos
+    AccountMailer.kudo_recipient(self).deliver_now
   end
 end

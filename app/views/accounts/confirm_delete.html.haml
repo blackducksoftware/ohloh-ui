@@ -17,14 +17,13 @@
 %hr
 
 %h6= t('tldr')
-%ul
+%ul.margin_left_30
   %li= t('.help_8')
   %li= t('.help_9')
   %li= t('.help_10')
   %li= t('.help_11')
 
-.actions.col-md-4.center-block
-  -# TODO: Move the confirm text to a js function.
+.actions.center
   %button.btn.btn-danger{ 'data-toggle' => 'modal', 'data-target' => '#confirm-delete-modal' }
     = t('.delete_my_account')
   = link_to t('cancel'), edit_account_path(@account), class: 'btn btn-default'

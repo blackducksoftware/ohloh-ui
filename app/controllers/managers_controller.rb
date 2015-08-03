@@ -2,7 +2,9 @@ class ManagersController < SettingsController
   helper ProjectsHelper
 
   before_action :session_required, :redirect_unverified_account, except: :index
-  before_action :find_parent
+  before_action :set_project, if: -> { params[:project_id] }
+  before_action :set_organization, if: -> { params[:organization_id] }
+  before_action :fail_unless_parent
   before_action :find_manages, only: :index
   before_action :find_manage, except: :index
   before_action :show_permissions_alert, only: :index
@@ -17,6 +19,7 @@ class ManagersController < SettingsController
     @manage ||= Manage.new
     @manage.assign_attributes(model_params.merge(target: @parent, account: current_user))
     if @manage.save
+      flash[:success] = t '.success'
       redirect_to_index
     else
       render :new, status: :unprocessable_entity
@@ -74,19 +77,22 @@ class ManagersController < SettingsController
 
   def find_manage
     account_name = params[:id] || current_user.login
-    @manage = Manage.not_denied.for_account(Account.from_param(account_name).first!).first
+    @manage = Manage.not_denied.for_target(@parent).for_account(Account.from_param(account_name).first!).first
   rescue ActiveRecord::RecordNotFound
     raise ParamRecordNotFound
   end
 
-  def find_parent
-    @parent = if params[:project_id]
-                Project.from_param(params[:project_id]).first!
-              else
-                Organization.from_param(params[:organization_id]).first!
-              end
-  rescue ActiveRecord::RecordNotFound
-    raise ParamRecordNotFound
+  def set_project
+    @parent = @project = Project.by_url_name_or_id(params[:project_id]).take
+    project_context && render('projects/deleted') if @project.try(:deleted?)
+  end
+
+  def set_organization
+    @parent = @organization = Organization.from_param(params[:organization_id]).take
+  end
+
+  def fail_unless_parent
+    fail ParamRecordNotFound unless @parent
   end
 
   def redirect_to_index

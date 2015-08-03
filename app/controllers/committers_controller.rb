@@ -4,8 +4,8 @@ class CommittersController < UnclaimedController
   before_action :preload_projects_from_positions, only: :save_claim
 
   def index
-    @unclaimed_people = Person.find_unclaimed(q: params[:query], find_by: params[:find_by])
-    @unclaimed_people_count = Person::Count.unclaimed_by(params[:query], params[:find_by])
+    @unclaimed_people = Person.find_unclaimed(q: query_param, find_by: params[:find_by])
+    @unclaimed_people_count = Person::Count.unclaimed_by(query_param, params[:find_by])
     preload_emails_from_unclaimed_people
   end
 
@@ -42,7 +42,7 @@ class CommittersController < UnclaimedController
     @name = Name.from_param(params[:id]).take
     fail ParamRecordNotFound unless @name
 
-    redirect_to message_path, flash: { error: t('.error') } if @name.people.count.zero?
+    redirect_to root_path, flash: { error: t('.error') } if @name.people.count.zero?
   end
 
   def render_claim
@@ -61,5 +61,9 @@ class CommittersController < UnclaimedController
         capture_failed_positions(exception, position)
       end
     end
+  end
+
+  def query_param
+    params[:query] || params[:q]
   end
 end

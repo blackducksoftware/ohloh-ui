@@ -1,5 +1,6 @@
 class Organization < ActiveRecord::Base
   include OrganizationSearchables
+  include OrganizationJobs
   include Tsearch
 
   ORG_TYPES = { 'Commercial' => 1, 'Education' => 2, 'Government' => 3, 'Non-Profit' => 4 }
@@ -11,6 +12,7 @@ class Organization < ActiveRecord::Base
   has_many :accounts, -> { where(Account.arel_table[:level].gteq(0)) }
   has_many :manages, -> { where(deleted_at: nil, deleted_by: nil) }, as: 'target'
   has_many :managers, through: :manages, source: :account
+  has_many :jobs
 
   scope :from_param, lambda { |param|
     active.where(Organization.arel_table[:url_name].eq(param).or(Organization.arel_table[:id].eq(param)))
@@ -28,7 +30,7 @@ class Organization < ActiveRecord::Base
   validates :name, presence: true, length: 3..85, allow_blank: true
   validates :homepage_url, allow_blank: true, url_format: { message: I18n.t('accounts.invalid_url_format') }
   validates :name, presence: true, length: 3..85, uniqueness: { case_sensitive: false }
-  validates :url_name, presence: true, length: 1..60, allow_nil: false, uniqueness: true, case_sensitive: false
+  validates :url_name, presence: true, length: 1..60, allow_nil: false, uniqueness: { case_sensitive: false }
   validates :description, length: 0..800, allow_nil: true
   validates :org_type, inclusion: { in: ORG_TYPES.values }
 
@@ -40,6 +42,7 @@ class Organization < ActiveRecord::Base
 
   after_create :create_restricted_permission
   after_save :check_change_in_delete
+  after_update :schedule_analysis, if: :org_type_changed?
 
   def to_param
     url_name.blank? ? id.to_s : url_name
@@ -90,8 +93,7 @@ class Organization < ActiveRecord::Base
 
   class << self
     def search_and_sort(query, sort, page)
-      sort ||= 'projects'
-      fail ArgumentError, 'Invalid Sort Option' unless ALLOWED_SORT_OPTIONS.include?(sort)
+      sort = 'projects' unless sort && ALLOWED_SORT_OPTIONS.include?(sort)
       tsearch(query, "sort_by_#{sort}").where.not(deleted: true).paginate(page: page, per_page: 10)
     end
   end
@@ -105,8 +107,7 @@ class Organization < ActiveRecord::Base
   def clean_strings_and_urls
     self.name = String.clean_string(name)
     self.description = String.clean_string(description)
-    # TODO: fix these once we have links implemented
-    # self.download_url = String.clean_url(download_url)
+    self.homepage_url = String.clean_url(homepage_url)
   end
 
   def project_claim_edits(undone)
@@ -116,5 +117,6 @@ class Organization < ActiveRecord::Base
   def check_change_in_delete
     return false unless changed.include?('deleted')
     project_claim_edits(!deleted?).each { |edit| edit.send(deleted? ? :undo! : :redo!, editor_account) }
+    schedule_analysis
   end
 end

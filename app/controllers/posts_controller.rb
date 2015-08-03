@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class PostsController < ApplicationController
   include RedirectIfDisabled
   helper MarkdownHelper
@@ -9,6 +10,14 @@ class PostsController < ApplicationController
   before_action :find_relevant_records, except: [:index]
   before_action :find_post_record, only: [:edit, :update, :destroy]
   before_action :find_posts, only: [:index]
+
+  def index
+    respond_to do |format|
+      format.html
+      format.atom
+      format.rss { render 'index.atom.builder' }
+    end
+  end
 
   def create
     @post = build_new_post
@@ -54,7 +63,7 @@ class PostsController < ApplicationController
       rejected = @all_users_preceding_the_last_user.reject { |user| user.id == @user_who_replied.id }
       @all_users_preceding_the_last_user = rejected
     end
-    send_reply_emails_to_everyone(@all_users_preceding_the_last_user.uniq!)
+    send_reply_emails_to_everyone
     send_creation_email
   end
 
@@ -64,8 +73,8 @@ class PostsController < ApplicationController
     @all_users_preceding_the_last_user
   end
 
-  def send_reply_emails_to_everyone(_users)
-    @all_users_preceding_the_last_user.each do |user|
+  def send_reply_emails_to_everyone
+    @all_users_preceding_the_last_user.uniq.each do |user|
       PostNotifier.post_replied_notification(user, @user_who_replied, @topic).deliver_now
     end
   end
@@ -87,9 +96,10 @@ class PostsController < ApplicationController
 
   def find_posts_belonging_to_account
     @account = Account::Find.by_id_or_login(params[:account_id])
+    fail ParamRecordNotFound unless @account
     redirect_if_disabled
     @posts = @account.posts.includes(:topic).tsearch(params[:query], parse_sort_term)
-             .page(params[:page]).per_page(10)
+             .page(page_param).per_page(10)
   end
 
   def find_posts
@@ -97,7 +107,7 @@ class PostsController < ApplicationController
   end
 
   def find_posts_by_search_params
-    @posts = Post.tsearch(params[:query], parse_sort_term).page(params[:page]).per_page(10)
+    @posts = Post.tsearch(params[:query], parse_sort_term).page(page_param).per_page(10)
   end
 
   def parse_sort_term

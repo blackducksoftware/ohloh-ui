@@ -10,7 +10,7 @@
   .clear
 
   .pull-left#inner_content
-    %a.pull-left.logo{ href: project_path(project) }
+    %a.pull-left.logo{ href: project_path(project), style: 'max-width: 64px;' }
       - project_icon(project, :med)
 
     .info.pull-left
@@ -68,7 +68,7 @@
 
   .add-info
     .main_language.pull-left
-      - if project.best_analysis && project.best_analysis.main_language
+      - if project.best_analysis.present? && project.best_analysis.main_language
         - lang = project.best_analysis.main_language.nice_name
         = link_to t('.mostly_written_in', lang: lang), languages_summary_project_analysis_path(project, 'latest')
       - else

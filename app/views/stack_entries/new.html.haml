@@ -1,0 +1,63 @@
+:ruby
+  @auto_stacked = false
+  page_context[:select_top_menu_nav] = 'select_projects'
+  content_for(:html_title) { t('.html_title', name: @project.name) }
+
+
+- if display_as_project_page
+  .col-md-1.margin_top_10
+    = link_to @project.decorate.icon(:med), project_path(@project)
+  .col-md-11
+    .pull-left
+      %h1.pull-left= link_to @project.name, project_path(@project), style: 'color: black'
+  .clearfix
+  .row
+    .col-md-12
+      .mezzo.margin_top_10
+  .col-md-8.margin_top_10.no_padding_left#iuseit_landing
+    - if params[:ref]
+      = render 'welcome'
+    .picker.clearfix
+      = render partial: 'fields', locals: { project: @project } unless @auto_stacked
+    %div{ class: "no_margin_left #{@auto_stacked ? '' : 'piano'}" }
+      %p &nbsp;
+      %h4= t('.support')
+      %ol
+        %li
+          %span.strong= t('.add_more')
+          %br &nbsp;
+          = render partial: 'recommendations_for_landing_page', locals: { project: @project }
+        %li.landing
+          %span.strong= t('.share', project: @project.name)
+          .inset
+            %form.form-inline{ action: "/projects/#{@project.to_param}/recommendations/new" }
+              .control-group
+                %label.control-label{ for: 'search_projects' }= t('.email')
+                .controls
+                  %input.text#search_projects{ type: 'text', name: 'email' }
+              %input.submit.btn{ type: 'submit', value: t('.recommend') }
+          .inset
+            %p.soft= t('.wont_spam')
+        %li
+          %span.strong= t('.statistics', project: @project.name)
+          .clearfix.inset
+            .col-md-3
+              = link_to t('.contributors'), project_contributors_path(@project)
+          .clearfix.inset
+            .col-md-3
+              = link_to t('.overview'), project_path(@project)
+            - unless @project.reviews.empty?
+              .col-md-3.no_margin_left
+                = link_to t('.reviews'), project_reviews_path(@project)
+        %li
+          %span.strong= t('.know')
+          .clearfix.inset
+            = link_to t('.add_to_oh'), new_project_path, class: 'btn'
+
+  - if params[:ref]
+    .col-md-4.margin_top_20
+      = render partial: 'describe_ohloh'
+
+- else
+  .thickbox_padding
+    = render partial: 'fields', locals: { project: @project }

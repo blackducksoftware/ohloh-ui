@@ -3,8 +3,7 @@ class Enlistment < ActiveRecord::Base
   belongs_to :repository
   belongs_to :project
 
-  # TODO: Implement project forge
-  # after_save :ensure_forge_and_job
+  after_save :ensure_forge_and_job
 
   accepts_nested_attributes_for :repository
   acts_as_editable editable_attributes: [:ignore]
@@ -18,6 +17,7 @@ class Enlistment < ActiveRecord::Base
   scope :by_type, -> { order('repositories.type, repositories.url, repositories.module_name') }
   scope :by_module_name, -> { order('repositories.module_name, repositories.url') }
   scope :with_repo_url, ->(url) { joins(:repository).where(Repository.arel_table[:url].eq(url)) }
+  scope :with_failed_repository_jobs, -> { joins(repository: :jobs).where(jobs: { status: Job::STATUS_FAILED }) }
 
   filterable_by ['projects.name', 'repositories.url', 'repositories.module_name',
                  'repositories.type', 'repositories.branch_name']
@@ -29,6 +29,14 @@ class Enlistment < ActiveRecord::Base
 
   def ignore_examples
     repository.best_code_set.fyles.limit(3).pluck(:name).sort if repository.best_code_set
+  end
+
+  def ensure_forge_and_job
+    project.reload
+    unless project.forge_match
+      project.save if project.forge_match = project.guess_forge
+    end
+    project.ensure_job
   end
 
   class << self

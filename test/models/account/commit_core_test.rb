@@ -1,27 +1,23 @@
-require_relative '../../test_helper'
+require 'test_helper'
 
 class Account::CommitCoreTest < ActiveSupport::TestCase
-  def setup
-    @account_1 = create(:admin)
-    account_2 = create(:account)
-
-    analysis = analyses(:linux)
-    project = projects(:linux)
-    project.editor_account = create(:account)
-    project.update_attributes! best_analysis_id: analysis.id
-
-    @account_commits = Account::CommitCore.new([@account_1.id, account_2.id])
-  end
+  let(:account_1) { create(:admin) }
+  let(:account_2) { create(:account) }
+  let(:project) { create(:project) }
+  let(:analysis) { project.best_analysis }
+  let(:account_commits) { Account::CommitCore.new([account_1.id, account_2.id]) }
 
   it 'most_and_recent_data should return values when present' do
-    skip('TODO: Failing due to fix_encoding_if_invalid!')
-    commits_data = @account_commits.most_and_recent_data
+    create_position(project: project, account: account_1)
 
-    commits_data[@account_1.id].size.must_equal 1
-    commits_data[@account_1.id].first.account_id.must_equal 1
-    commits_data[@account_1.id].first.project_id.must_equal 1
-    commits_data[@account_1.id].first.name.must_equal 'Linux'
-    commits_data[@account_1.id].first.url_name.must_equal 'linux'
+    commits_data = account_commits.most_and_recent_data
+
+    commits_data.must_be :present?
+    commits_data[account_1.id].size.must_equal 1
+    commits_data[account_1.id].first.account_id.must_equal account_1.id
+    commits_data[account_1.id].first.project_id.must_equal project.id
+    commits_data[account_1.id].first.name.must_equal project.name
+    commits_data[account_1.id].first.url_name.must_equal project.url_name
   end
 
   it 'most_and_recent_data should return {} when account_ids is empty' do

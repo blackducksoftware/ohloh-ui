@@ -1,9 +1,9 @@
 class Duplicate < ActiveRecord::Base
   RESOLVES = [:stack_entries, :kudos, :tags, :ratings, :reviews, :links, :aliases, :enlistments,
               :positions, :project_experiences, :edits, :self]
-  belongs_to :good_project, class_name: 'Project'
-  belongs_to :bad_project, class_name: 'Project'
-  belongs_to :account
+  include DuplicateAssociations
+
+  scope :unresolved, -> { where.not(resolved: true) }
 
   validate :verify_good_projects
   validate :verify_bad_projects
@@ -34,8 +34,8 @@ class Duplicate < ActiveRecord::Base
   end
 
   def verify_not_already_reported
-    return unless bad_project && bad_project.duplicates.any?
-    dupe = bad_project.duplicates.first
+    dupe = bad_project.duplicates.unresolved.try(:first) if bad_project
+    return unless dupe
     errors.add :bad_project, I18n.t('duplicates.already_reported', this: bad_project.name, that: dupe.bad_project.name)
   end
 
@@ -116,6 +116,6 @@ class Duplicate < ActiveRecord::Base
   def resolve_self!
     bad_project.update_attributes(name: "Duplicate Project #{id}", url_name: '')
     CreateEdit.where(target: bad_project).first.undo!(bad_project.editor_account) unless bad_project.deleted?
-    destroy
+    update_attribute(:resolved, true)
   end
 end

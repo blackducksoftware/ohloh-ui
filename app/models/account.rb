@@ -6,7 +6,7 @@ class Account < ActiveRecord::Base
   include AccountCallbacks
 
   attr_accessor :password, :current_password, :validate_current_password, :invite_code,
-                :password_confirmation, :email_confirmation
+                :password_confirmation, :email_confirmation, :skip_current_password_check
   attr_writer :ip
   attr_reader :about_raw
 
@@ -90,7 +90,6 @@ class Account < ActiveRecord::Base
     update!(activation_resent_at: Time.current)
   end
 
-  # TODO: Replaces get_first_commit_date
   def first_commit_date
     first_checkin = best_vita.vita_fact.first_checkin
     return if first_checkin.blank?
@@ -107,7 +106,7 @@ class Account < ActiveRecord::Base
 
   class << self
     def resolve_login(login)
-      Account.where('lower(login) = ?', login.downcase).first
+      Account.where('lower(login) = ?', login.to_s.downcase).first
     end
 
     def hamster

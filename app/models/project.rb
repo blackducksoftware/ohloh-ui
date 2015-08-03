@@ -4,6 +4,7 @@ class Project < ActiveRecord::Base
   include Tsearch
   include ProjectSearchables
   include ProjectScopes
+  include ProjectJobs
 
   acts_as_editable editable_attributes: [:name, :url_name, :logo_id, :organization_id, :best_analysis_id,
                                          :description, :tag_list, :missing_source, :url, :download_url],
@@ -12,13 +13,15 @@ class Project < ActiveRecord::Base
   acts_as_taggable
   link_accessors accessors: { url: :Homepage, download_url: :Download }
 
-  validates :name, presence: true, length: 1..100, allow_nil: false, uniqueness: true, case_sensitive: false
-  validates :url_name, presence: true, length: 1..60, allow_nil: false, uniqueness: true, case_sensitive: false
+  validates :name, presence: true, length: 1..100, allow_nil: false, uniqueness: { case_sensitive: false }
+  validates :url_name, presence: true, length: 1..60, allow_nil: false, uniqueness: { case_sensitive: false }
   validates :description, length: 0..800, allow_nil: true # , if: proc { |p| p.validate_url_name_and_desc == 'true' }
   validates_each :url, :download_url, allow_blank: true do |record, field, value|
-    record.errors.add(field, I18n.t(:not_a_valid_url)) unless value.valid_http_url?
+    record.errors.add(field, I18n.t(:not_a_valid_url)) unless value.blank? || value.valid_http_url?
   end
   before_validation :clean_strings_and_urls
+  after_save :update_organzation_project_count
+  after_update :remove_people, if: -> project { project.deleted_changed? && project.deleted? }
 
   attr_accessor :managed_by_creator
 
@@ -76,13 +79,6 @@ class Project < ActiveRecord::Base
     koders_status.try(:ohloh_code_ready) == true
   end
 
-  def self.cached_count
-    # TODO: Enable Cache
-    # get_cache('cached_project_count', :expires_in => 5.minutes) do
-    Project.active.count
-    # end
-  end
-
   def newest_contributions
     contributions.sort_by_newest.includes(person: :account, contributor_fact: :primary_language).limit(10)
   end
@@ -111,5 +107,15 @@ class Project < ActiveRecord::Base
 
   def sanitize(sql)
     Project.send :sanitize_sql, sql
+  end
+
+  def update_organzation_project_count
+    org = Organization.where(id: organization_id || organization_id_was).first
+    return unless org
+    org.update_attributes(editor_account: editor_account, projects_count: org.projects.count)
+  end
+
+  def remove_people
+    Person.where(project_id: id).destroy_all
   end
 end

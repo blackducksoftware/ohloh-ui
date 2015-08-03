@@ -1,14 +1,15 @@
 :ruby
   widget ||= @widget
   project = widget.project
-  href  = CGI.unescapeHTML new_stack_entry_url(project_id: project.to_param, ref: widget.class)
+  ref ||= widget.class
+  href  = CGI.unescapeHTML new_stack_entry_url(project_id: project.to_param, ref: ref)
   title = t('.support', name: project.name)
   link = { onMouseOver: 'mouseOverForUsers(this);', onMouseOut: 'mouseOutForUsers(this);' }
   without_css_link = { onMouseOver: 'mouseOverForUsersWithoutStyle(this);',
                        onMouseOut: 'mouseOutForUsersWithoutStyle(this);' }
 
-= render partial: 'users_css'
-= render partial: 'users_js'
+= render partial: 'project_users_css'
+= render partial: 'project_users_js'
 
 - if widget.vars[:style].present?
   - background_color = widget.background_color

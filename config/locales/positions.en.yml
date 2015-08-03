@@ -16,6 +16,10 @@ en:
       less: 'less...'
       no_commits_to_display: There are no commits available to display.
       analysis_is_scheduled: The analysis for this contribution has been scheduled.
+    one_click_create:
+      alias: "Commits by %{name} will be renamed to %{preferred_name} and linked to your Open Hub account. Changes will not take place until the next Open Hub update."
+      position: "Contribution claimed successfully. Work by %{name} will now be linked to your Open Hub account"
+      new_position: "Work by %{name} will be linked to your Open Hub account after submitting this form."
     fields:
       project_name: 'Project Name'
       enter_openhub_project_name: Enter the Open Hub project name of the project you worked on.

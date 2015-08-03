@@ -21,7 +21,16 @@ en:
     more: "[More]"
     less: "[Less]"
     html_title: "The %{name} Open Source Project on Open Hub : %{title}"
+    person_contribution:
+      no_contribution_found: 'No Contribution Found'
+      link_others: "and %{size} other projects"
+    no_analysis:
+      no_analysis_message: "No Analysis to display for %{name}."
     header:
+      edit_duplicate: 'Edit Duplicate'
+      report_duplicate: 'Report Duplicate'
+      title: '%{name} has been stacked by %{count} users. Click here to add it to your stack.'
+      i_use: 'I Use This!'
       i_use_this_title: "%{name} has been stacked by %{count} users. Click here to add it to your stack."
       settings: 'Settings'
       duplicate: 'Report Duplicate'
@@ -191,6 +200,8 @@ en:
     deleted:
       message: '%{name} has been deleted'
       failed: 'failed'
+      project_has_been_deleted: This project has been deleted. It can be reinstated by reapplying the create edit (see the %{link}).
+      project_is_deleted: '%{name} is deleted.'
     users:
       page_title: 'Users Page'
       title: 'Users'
@@ -289,12 +300,6 @@ en:
       message: "We found that the code location %{param} is already in use by the following projects. If you still wish to create a project using this code location, click the \"Create Project\" button below."
       duplicate_found: "Duplicate Project Found"
       submit: "Create Project"
-    header:
-      settings: 'Settings'
-      edit_duplicate: 'Edit Duplicate'
-      report_duplicate: 'Report Duplicate'
-      title: '%{name} has been stacked by %{count} users. Click here to add it to your stack.'
-      i_use: 'I Use This!'
     map:
       page_title: 'The %{name} Open Source Project on Open Hub : User & Contributor Locations Page'
     similar:

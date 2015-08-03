@@ -52,6 +52,16 @@ describe 'ReviewsControllerTest' do
       assigns(:reviews).count.must_equal 1
       assigns(:reviews).first.must_equal account_review
     end
+
+    it 'must render projects/deleted when project is deleted' do
+      project = create(:project)
+
+      project.update!(deleted: true, editor_account: create(:account))
+
+      get :index, project_id: project.to_param
+
+      must_render_template 'deleted'
+    end
   end
 
   describe 'summary' do
@@ -151,9 +161,9 @@ describe 'ReviewsControllerTest' do
   describe 'destroy' do
     it 'should delete review' do
       login_as account
-      lambda do
-        delete :destroy, id: review.id
-      end.must_change 'Review.count', -1
+      before = Review.count
+      delete :destroy, id: review.id
+      Review.count.must_equal(before - 1)
     end
   end
 
@@ -161,20 +171,20 @@ describe 'ReviewsControllerTest' do
     it 'should allow to create only if user logged-in' do
       login_as create(:account)
       project.reload
-      lambda do
-        post :create, project_id: project.to_param, review: review.attributes
-        must_redirect_to summary_project_reviews_path(project)
-      end.must_change 'Review.count'
+      before = Review.count
+      post :create, project_id: project.to_param, review: review.attributes
+      must_redirect_to summary_project_reviews_path(project)
+      Review.count.must_equal(before + 1)
     end
 
     it 'should return error if create fails' do
       login_as account
       Review.any_instance.stubs(:save).returns(false)
-      lambda do
-        post :create, project_id: project.to_param, review: review.attributes
-        must_respond_with :ok
-        must_render_template :new
-      end.must_change 'Review.count', 0
+      before = Review.count
+      post :create, project_id: project.to_param, review: review.attributes
+      must_respond_with :ok
+      must_render_template :new
+      Review.count.must_equal before
     end
   end
 end

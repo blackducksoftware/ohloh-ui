@@ -166,25 +166,25 @@ describe 'PositionsController' do
       position.project_experiences.wont_be :present?
     end
 
-    it 'test_update_adjusts_people_table' do
-      skip 'Make this pass after integrating project#contributors'
+    it 'must update project contributions when position.name_id changes' do
       position = create_position
       account = position.account
       project = position.project
-      create(:project_experience, position: position, project: project)
-      create(:language_experience, position: position)
 
-      assert_equal ['Jason', 'Robin Luckey', 'Scott'],
-                   project.contributors.map(&:effective_name).sort
+      project.contributions.map(&:person).map(&:effective_name).must_equal [account.person.effective_name]
 
       login_as(account)
 
+      previous_name = position.name
+      new_name = create(:name)
+      create(:name_fact, analysis: project.best_analysis, name: new_name)
+      create(:person, project: project, name: new_name)
       post :update, account_id: account.to_param, id: position.to_param,
-                    position: { project_oss: project, committer_name: 'Jason' }
+                    position: { project_oss: project.name, committer_name: new_name.name }
 
       must_redirect_to account_positions_path(account)
-      assert_equal ['Robin', 'Robin Luckey', 'Scott'],
-                   project.contributors.map(&:effective_name).sort
+      project.reload.contributions.map(&:person).map(&:effective_name).sort
+        .must_equal [account.person.effective_name, previous_name.name].sort
     end
 
     describe '_destroy project_experiences' do
@@ -258,10 +258,10 @@ describe 'PositionsController' do
       must_select 'div.mini-badges-section a.account-badge[href=?]', 'http://blog.openhub.net/about-badges'
     end
 
-    it 'must call fetch_historical_data' do
-      skip 'cache related'
-      Account.any_instance.expects(:fetch_historical_commits)
-        .returns(start_date: 7.years.ago, facts: [], max_commits: 0)
+    it 'must use CommitsByProject to render page successfully' do
+      CommitsByProject.any_instance.stubs(:history)
+        .returns(start_date: 7.years.ago.to_date, facts: [], max_commits: 0)
+      create_position(account: account)
 
       get :index, account_id: account.to_param
 
@@ -287,22 +287,14 @@ describe 'PositionsController' do
     end
 
     it 'must load all positions for a user with graph' do
-      skip 'FIXME: Uncomment after integrating projects_controller#commits.'
       account = create(:account)
-      account.generate_vita
-      # Account.stubs(:find).returns(account)
-      Position.find(2).update_attribute(:description, Faker::Lorem.sentence)
-
+      position = create_position(account: account)
       get :index, account_id: account.to_param
       must_respond_with :success
-      assert assigns(:commits_data)
-      assert_select 'div.one-project-header-right p', "1 Commit \nin mostly C"
-      assert_select 'a.project-organization', '(Linux Foundations)'
-      assert_select 'span.one-project-description', 'wrote the module for wireless card driver ralink rt5390'
-      assert_select 'span.fifteen_project_activity_level_new', 1
-      assert_select 'div h2', 'Contributions'
-      assert_select 'div#all_projects.chart-with-data[datavalue]', 1
-      assert_select 'div#project_contributions_1.chart-with-data[datavalue]', 1
+      language = position.name_fact.primary_language.nice_name
+      response.body.must_match "1\nCommit\n</a>in mostly\n#{language}"
+      response.body.must_match position.name_fact.analysis.project.organization.name
+      assert_select 'div#all_projects.chart-with-data[data-value]', 1
     end
 
     it 'must show project description and title' do
@@ -373,6 +365,25 @@ describe 'PositionsController' do
       must_respond_with :success
       response.body.wont_match new_account_position_path(position.account)
     end
+
+    it 'must render index in xml format' do
+      key = create(:api_key)
+      create_position(account: account)
+
+      get :index, account_id: account, format: :xml, api_key: key.oauth_application.uid
+
+      must_respond_with :ok
+    end
+
+    it 'should have account position url in xml format' do
+      key = create(:api_key)
+      create_position(account: account)
+      Position.any_instance.stubs(:project_id).returns(nil)
+
+      get :index, account_id: account, format: :xml, api_key: key.oauth_application.uid
+
+      must_respond_with :ok
+    end
   end
 
   describe 'show' do
@@ -400,6 +411,14 @@ describe 'PositionsController' do
     end
   end
 
+  describe 'commits_compound_spark' do
+    it 'should render positions img' do
+      position = create_position
+      get :commits_compound_spark, account_id: position.account.id, id: position
+      must_respond_with :ok
+    end
+  end
+
   describe 'destroy' do
     it 'must remove positions successfully' do
       position = create_position
@@ -412,6 +431,63 @@ describe 'PositionsController' do
 
       account.reload
       account.positions.size.must_equal 0
+    end
+  end
+
+  describe 'one_click_create' do
+    it 'must be logged in' do
+      get :one_click_create, account_id: account.to_param
+      must_respond_with :redirect
+      must_redirect_to new_session_path
+    end
+
+    it 'must raise if project is not found' do
+      login_as account
+      get :one_click_create, account_id: account.to_param, project_name: 'invalid'
+      must_respond_with :not_found
+    end
+
+    it 'must redirect to claim form if position or alias if not found' do
+      login_as account
+      project_name = create(:project).name
+      committer_name = create(:name).name
+      assert_no_difference ['Position.count', 'Alias.count'] do
+        get :one_click_create, account_id: account.to_param, project_name: project_name, committer_name: committer_name
+      end
+      must_respond_with :redirect
+      must_redirect_to new_account_position_path(account, committer_name: committer_name, project_name: project_name)
+      flash[:success].must_equal I18n.t('positions.one_click_create.new_position', name: committer_name)
+    end
+
+    it 'must create alias if user already has a position' do
+      login_as account
+      position = create_position(account: account)
+      name = create(:person).name.name
+      assert_difference 'Alias.count', 1 do
+        assert_no_difference 'Position.count' do
+          get :one_click_create, account_id: account.to_param, project_name: position.project.name,
+                                 committer_name: name
+        end
+      end
+      must_respond_with :redirect
+      must_redirect_to account_positions_path(account)
+      flash[:success].must_equal I18n.t('positions.one_click_create.alias',
+                                        name: name, preferred_name: position.name.name)
+    end
+
+    it 'must create position if name is missing' do
+      login_as account
+      position = create_position(account: account)
+      NameFact.find_by(name: position.name).destroy
+      name = create(:name)
+      create(:name_fact, analysis: position.project.best_analysis, name: name)
+      assert_no_difference 'Alias.count' do
+        get :one_click_create, account_id: account.to_param, project_name: position.project.name,
+                               committer_name: name.name
+      end
+      must_respond_with :redirect
+      must_redirect_to account_positions_path(account)
+      flash[:success].must_equal I18n.t('positions.one_click_create.position', name: name.name)
     end
   end
 end

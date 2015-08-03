@@ -9,7 +9,7 @@ class PrivacyController < ApplicationController
     if @account.update(account_params)
       redirect_to edit_account_privacy_account_path(@account), notice: t('.success')
     else
-      render 'edit'
+      render 'edit', status: :unprocessable_entity
     end
   end
 

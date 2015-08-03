@@ -30,6 +30,27 @@ describe 'EnlistmentsControllerTest' do
       must_render_template :index
       assigns(:enlistments).count.must_equal 0
     end
+
+    it 'should return failed_jobs as true when there failed jobs for the project' do
+      FetchJob.create(repository_id: @enlistment.repository.id, status: 3)
+
+      get :index, project_id: @enlistment.project.id
+
+      must_respond_with :ok
+      must_render_template :index
+      assigns(:failed_jobs).must_equal true
+    end
+
+    it 'must render projects/deleted when project is deleted' do
+      login_as @account
+      ApplicationController.any_instance.stubs(:current_user_can_manage?).returns(true)
+      project = @enlistment.project
+      project.update!(deleted: true, editor_account: @account)
+
+      get :index, project_id: project.id
+
+      must_render_template 'deleted'
+    end
   end
 
   it 'new' do
@@ -50,6 +71,7 @@ describe 'EnlistmentsControllerTest' do
     login_as @account
     put :update, project_id: @project_id, id: @enlistment.id,
                  enlistment: { ignore: 'Ignore Me' }
+
     must_respond_with :redirect
     must_redirect_to action: :index
     @enlistment.reload.ignore.must_equal 'Ignore Me'
@@ -64,8 +86,14 @@ describe 'EnlistmentsControllerTest' do
   end
 
   describe 'create' do
-    it 'should create repository and enlistments' do
+    before do
+      Repository.any_instance.stubs(:bypass_url_validation).returns(true)
       login_as @account
+    end
+
+    let(:repository) { @enlistment.repository }
+
+    it 'should create repository and enlistments' do
       Repository.count.must_equal 1
       Enlistment.count.must_equal 2
       post :create, project_id: @project_id, repository: build(:repository, url: 'Repo1').attributes
@@ -76,19 +104,41 @@ describe 'EnlistmentsControllerTest' do
     end
 
     it 'should not create repo if already exist' do
-      login_as @account
-      Repository.count.must_equal 1
-      Enlistment.count.must_equal 2
-      post :create, project_id: @project_id, repository: @enlistment.repository.attributes
-      must_respond_with :redirect
+      assert_no_difference ['Repository.count', 'Enlistment.count'] do
+        post :create, project_id: @project_id, repository: repository.attributes
+      end
+
       must_redirect_to action: :index
-      Repository.count.must_equal 1
-      Enlistment.count.must_equal 2
+      flash[:notice].must_equal I18n.t('enlistments.create.notice', url: repository.url)
+    end
+
+    it 'must handle duplicate urls with leading or trailing spaces' do
+      Repository.any_instance.stubs(:bypass_url_validation)
+      GitRepository.new.source_scm_class.any_instance.stubs(:validate_server_connection)
+
+      assert_no_difference ['Repository.count', 'Enlistment.count'] do
+        post :create, project_id: @project_id,
+                      repository: repository.attributes.merge(url: " #{ repository.url } ")
+      end
+
+      must_redirect_to action: :index
+      flash[:notice].must_equal I18n.t('enlistments.create.notice', url: repository.url)
+    end
+
+    it 'must handle duplicate svn urls when passed type is svn_sync' do
+      repository = create(:svn_repository)
+      create(:enlistment, project: Project.find_by(url_name: @project_id), repository: repository)
+
+      assert_no_difference ['Repository.count', 'Enlistment.count'] do
+        post :create, project_id: @project_id,
+                      repository: repository.attributes.merge(type: 'SvnSyncRepository')
+      end
+
+      must_redirect_to action: :index
+      flash[:notice].must_equal I18n.t('enlistments.create.notice', url: repository.url)
     end
 
     it 'must render error for missing url' do
-      login_as @account
-
       post :create, project_id: @project_id, repository: build(:repository, url: '').attributes
 
       assigns(:repository).errors.messages[:url].must_be :present?

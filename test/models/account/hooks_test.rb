@@ -45,17 +45,35 @@ class Account::HooksTest < ActiveSupport::TestCase
 
   describe 'before_destroy' do
     it 'should destroy dependencies when marked as spam' do
-      account = accounts(:user)
-      Account::Access.any_instance.stubs(:spam?).returns(true)
-      account.topics.update_all(posts_count: 0)
+      account = create(:account)
+      create_list(:topic, 3, account: account)
+      create_list(:post, 3, account: account)
+      create_position(account: account)
+      create(:manage, account: account)
+
+      # Create all types of edits to assert that every edit can be undone.
+      Project.last.update!(description: Faker::Lorem.sentence, editor_account: account)
+      ProjectLicense.create!(project: Project.last, license: create(:license), editor_account: account)
+      account.edits.not_undone.map(&:type).sort.must_equal %w(CreateEdit PropertyEdit)
+
       account.topics.count.must_equal 3
       account.person.wont_be_nil
       account.positions.count.must_equal 1
+      account.posts.count.must_equal 3
+      account.manages.count.must_equal 1
+      account.edits.not_undone.count.must_equal 2
+
+      Project.any_instance.stubs(:edit_authorized?).returns(true)
+      Account::Access.any_instance.stubs(:spam?).returns(true)
       account.save!
+
       account.reload
       account.topics.count.must_equal 0
       account.person.must_be_nil
       account.positions.count.must_equal 0
+      account.posts.count.must_equal 0
+      account.manages.count.must_equal 0
+      account.edits.not_undone.count.must_equal 0
     end
 
     it 'should rollback when destroy dependencies raises an exception' do
@@ -83,8 +101,7 @@ class Account::HooksTest < ActiveSupport::TestCase
       end
       account.positions.count.must_equal 0
       account.posts.count.must_equal 0
-      # TODO: Pass this test while integrating acts_as_editable.
-      # Account.find_or_create_anonymous_account.posts.count.must_equal 5
+      Account.find_or_create_anonymous_account.posts.count.must_equal 3
     end
   end
 
@@ -111,31 +128,14 @@ class Account::HooksTest < ActiveSupport::TestCase
         account.save
       end
     end
-
-    it 'should rollback when notification raises an error' do
-      skip('TODO: AccountNotifier')
-
-      account = build(:account, level: Account::Access::DEFAULT)
-      AccountNotifier.stubs(:deliver_signup_notification)
-        .raises(Net::SMTPSyntaxError.new('Bad recipient address syntax'))
-
-      assert_no_difference('Person.count') do
-        Account.transaction do
-          account.save
-        end
-      end
-
-      account.errors.size.must_equal 1
-      # account.errors['email'].must_equal [
-      # "The Black Duck Open Hub could not send registration email to
-      # <strong class='red'>uber@ohloh.net</strong>.
-      # Invalid Email Address provided."]
-    end
   end
 
   describe 'after_update' do
     it 'should schedule organization analysis on update' do
-      skip('FIXME: add test when implementing schedule_analysis')
+      account = create(:account)
+
+      Organization.any_instance.expects(:schedule_analysis).once
+      account.update!(organization_id: create(:organization).id)
     end
   end
 

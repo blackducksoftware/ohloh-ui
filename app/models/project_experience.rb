@@ -8,7 +8,7 @@ class ProjectExperience < ActiveRecord::Base
 
   def project_name=(name)
     @project_name = name
-    self.project = Project.not_deleted.find_by(name: name)
+    self.project = Project.not_deleted.case_insensitive_name(name).first
   end
 
   def project_name

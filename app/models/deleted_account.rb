@@ -15,6 +15,10 @@ class DeletedAccount < ActiveRecord::Base
     where(login: login).order(created_at: :desc).first
   end
 
+  def to_param
+    login
+  end
+
   def feedback_time_elapsed?
     created_at < Time.current - 1.hour
   end

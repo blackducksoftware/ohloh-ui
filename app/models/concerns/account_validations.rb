@@ -23,7 +23,7 @@ module AccountValidations
     validates :twitter_id, uniqueness: true, allow_nil: true
 
     def changing_password?
-      !password.nil?
+      !password.nil? && !skip_current_password_check
     end
   end
 end

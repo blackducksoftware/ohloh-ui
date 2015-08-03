@@ -29,6 +29,13 @@ describe 'ApplicationController' do
       response.headers['Content-Type'].must_include('application/xml')
     end
 
+    it 'render_404 with request of php should respond with html' do
+      get :renders_404, format: 'php'
+      must_respond_with :not_found
+      response.body.must_include(I18n.t('application.error.header'))
+      response.headers['Content-Type'].must_include('text/html')
+    end
+
     it 'error message as html' do
       get :error_with_message
       must_respond_with :unauthorized
@@ -66,6 +73,15 @@ describe 'ApplicationController' do
     it 'does invoke airbrake on generic errors' do
       Rails.application.config.stubs(:consider_all_requests_local).returns false
       @controller.expects(:notify_airbrake).once
+      get :throws_standard_error
+      must_respond_with :not_found
+      Rails.application.config.unstub(:consider_all_requests_local)
+    end
+
+    it 'does not invoke airbrake if the user agent string has been set to blank (discount, often buggy bots)' do
+      request.env.delete 'HTTP_USER_AGENT'
+      Rails.application.config.stubs(:consider_all_requests_local).returns false
+      @controller.expects(:notify_airbrake).never
       get :throws_standard_error
       must_respond_with :not_found
       Rails.application.config.unstub(:consider_all_requests_local)
@@ -122,6 +138,21 @@ describe 'ApplicationController' do
       get :session_required_action
       must_respond_with :ok
       session[:account_id].must_equal admin.id
+    end
+
+    it 'handles nil page param' do
+      @controller.params = { page: nil }
+      @controller.page_param.must_equal 1
+    end
+
+    it 'handles blank page param' do
+      @controller.params = { page: '' }
+      @controller.page_param.must_equal 1
+    end
+
+    it 'handles garbage page param' do
+      @controller.params = { page: 'i_am_a_banana' }
+      @controller.page_param.must_equal 1
     end
   end
 

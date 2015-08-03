@@ -27,4 +27,10 @@ class Post < ActiveRecord::Base
       d: body
     }
   end
+
+  def destroy_with_empty_topic
+    destroy
+    return if topic.forum_id.nil? || topic.posts.exists?
+    topic.destroy
+  end
 end

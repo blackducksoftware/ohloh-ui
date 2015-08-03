@@ -5,6 +5,7 @@ module OrgFilters
     before_action :set_organization, except: [:index, :new, :create, :resolve_url_name, :print_org_infographic, :update]
     before_action :set_organization_based_on_id, only: [:update]
     before_action :organization_context, except: [:print_infographic]
+    before_action :session_required, only: [:new, :create]
     before_action :admin_session_required, only: [:new, :create]
     before_action :handle_default_view, only: :show
     before_action :set_editor, only: [:list_managers, :new_manager, :claim_projects_list, :claim_project]
@@ -13,6 +14,11 @@ module OrgFilters
     before_action :redirect_ro_explores_pages, only: :index
     before_action :set_project, only: [:claim_project, :remove_project]
     before_action :can_claim_project, only: :claim_project
+    after_action :schedule_analysis, only: [:claim_project, :remove_project]
+  end
+
+  def schedule_analysis
+    @organization.schedule_analysis
   end
 
   private

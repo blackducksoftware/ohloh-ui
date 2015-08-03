@@ -1,6 +1,6 @@
 class StacksController < ApplicationController
   helper MapHelper
-  helper RatingsHelper
+  helper RatingsHelper, ProjectsHelper
 
   before_action :session_required, :redirect_unverified_account,
                 except: [:index, :show, :similar, :similar_stacks, :near, :project_stacks]
@@ -8,7 +8,7 @@ class StacksController < ApplicationController
   before_action :can_edit_stack, except: [:index, :show, :create, :similar, :similar_stacks, :near, :project_stacks]
   before_action :find_account, only: [:index, :show, :similar]
   before_action :auto_ignore, only: [:builder]
-  before_action :find_project, only: [:near, :project_stacks]
+  before_action :set_project_or_fail, only: [:near, :project_stacks]
   before_action :account_context, only: [:index, :show, :similar]
   before_action :verify_api_access_for_xml_request, only: [:project_stacks]
   after_action :connect_stack_entry_to_stack, only: [:create], if: :request_is_xhr?
@@ -77,7 +77,7 @@ class StacksController < ApplicationController
   end
 
   def i_use_this
-    find_project
+    set_project_or_fail
     stack_count = current_user.stacks.count + 1
     @stack.auto_generate_title_and_description(stack_count)
   end
@@ -105,11 +105,6 @@ class StacksController < ApplicationController
       proj = Project.find_by_url_name(project_url_name)
       StackIgnore.create(stack_id: @stack.id, project_id: proj.id) if proj
     end
-  end
-
-  def find_project
-    @project = Project.from_param(params[:project_id] || params[:id]).take
-    fail ParamRecordNotFound unless @project
   end
 
   def connect_stack_entry_to_stack

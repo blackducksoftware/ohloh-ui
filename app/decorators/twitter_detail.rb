@@ -3,7 +3,6 @@ class TwitterDetail < Cherry::Decorator
 
   delegate :best_vita, :positions, :markup, :twitter_account, :most_experienced_language, :badges, to: :account
 
-  # NOTE: Replaces twitter_card_description in accounts_helper
   def description
     return '' unless markup
     name_fact = best_vita.vita_fact
@@ -26,8 +25,8 @@ class TwitterDetail < Cherry::Decorator
   end
 
   def language_experience_text
-    experience = I18n.t('accounts.show.experience_in', nice_name: most_experienced_language.nice_name)
-    most_experienced_language ? experience : ''
+    return '' unless most_experienced_language
+    I18n.t('accounts.show.experience_in', nice_name: most_experienced_language.nice_name)
   end
 
   def badges_text

@@ -61,6 +61,15 @@ describe 'AnalysesController' do
       analysis_result['main_language_id'].must_equal analysis.main_language.id.to_s
       analysis_result['main_language_name'].must_equal analysis.main_language.nice_name
     end
+
+    it 'must render projects/deleted when project is deleted' do
+      login_as account
+      project.update!(deleted: true, editor_account: account)
+
+      get :show, project_id: project.to_param, id: analysis.id
+
+      must_render_template 'deleted'
+    end
   end
 
   describe 'languages_summary' do
