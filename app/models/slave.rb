@@ -65,12 +65,14 @@ class Slave < ActiveRecord::Base
   end
 
   def oldest_fetchable_clumps(limit = 1)
+    conditions = "COALESCE(code_sets.logged_at, '1970-01-01') + repositories.update_interval * INTERVAL '1 second'"\
+                 " <= NOW() AT TIME ZONE 'utc'"\
+                 " AND COALESCE(analyses.logged_at, '1970-01-01') >="\
+                 " COALESCE(code_sets.logged_at, '1970-01-01') - INTERVAL '1 second'"
     Clump.joins(code_set: { best_repository: { enlistments: { project: :best_analysis } } })
-      .where(project: { deleted: false })
-      .where("COALESCE(CS.logged_at, '1970-01-01') + R.update_interval * INTERVAL '1 second'
-              <= NOW() AT TIME ZONE 'utc'")
-      .where("COALESCE(A.logged_at, '1970-01-01') >= COALESCE(CS.logged_at, '1970-01-01') - INTERVAL '1 second'")
-      .where(Job.incomplete.where('jobs.repository_id = repositories.id').exists.not)
+      .where(projects: { deleted: false })
+      .where(conditions)
+      .where(Job.where('status != 5 AND jobs.repository_id = repositories.id').exists.not)
       .order('code_sets.logged_at nulls first')
       .limit(limit)
   end
