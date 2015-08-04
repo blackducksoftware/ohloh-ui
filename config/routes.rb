@@ -138,7 +138,7 @@ Rails.application.routes.draw do
     resources :topics, only: [:show]
   end
 
-  resources :topics, except: [:index, :new, :create] do
+  resources :topics, except: [:new, :create] do
     resources :posts, except: [:new]
   end
 
