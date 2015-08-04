@@ -56,6 +56,27 @@ class PositionCoreTest < ActiveSupport::TestCase
     end
   end
 
+  it 'ensure_position_or_alias update an alias if position and alias already exist' do
+    account, person, project, name = create(:account), create(:person), create(:project), create(:name)
+    create_position(account: account, project: project, name: name)
+    alias_obj = create(:alias, project: project, commit_name: person.name)
+    assert_no_difference 'Alias.count' do
+      account.position_core.ensure_position_or_alias!(project, person.name)
+      alias_obj.reload.deleted?.must_equal false
+      alias_obj.preferred_name_id.must_equal name.id
+    end
+  end
+
+  it 'ensure_position_or_alias delete an alias if preferred and existing name are same' do
+    account, project, name = create(:account), create(:project), create(:name)
+    create_position(account: account, project: project, name: name)
+    alias_obj = create(:alias, project: project, commit_name: name)
+    assert_no_difference 'Alias.count' do
+      account.position_core.ensure_position_or_alias!(project, name)
+      alias_obj.reload.deleted?.must_equal true
+    end
+  end
+
   it 'ensure_position_or_alias recreates position if name is missing' do
     account, name, project = create(:account), create(:name), create(:project)
 
