@@ -3,13 +3,18 @@ class TopicsController < ApplicationController
   helper TopicsHelper
   before_action :session_required, only: [:new, :create]
   before_action :admin_session_required, only: [:edit, :update, :destroy]
-  before_action :find_forum_record, only: [:index, :new, :create]
+  before_action :find_forum_record, only: [:new, :create]
   before_action :find_forum_and_topic_records, except: [:index, :new, :create]
   after_action :track_views, only: [:show]
 
   def index
-    @topics = @forum.topics
-    redirect_to forum_path(@forum)
+    if params[:forum_id]
+      find_forum_record
+      @topics = @forum.topics
+      redirect_to forum_path(@forum)
+    else
+      redirect_to forums_path
+    end
   end
 
   def new
