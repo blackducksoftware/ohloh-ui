@@ -2,7 +2,7 @@ class ForumsController < ApplicationController
   before_action :find_most_recent_topics_from_forum, only: :index
   before_action :find_forum_record, except: [:index, :new, :create]
   before_action :session_required, except: [:index, :show]
-  before_action :admin_session_required, except: [:index, :show, :new, :create]
+  before_action :admin_session_required, except: [:index, :show]
 
   def index
     # General Discussion is not on the production website.
