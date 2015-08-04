@@ -23,7 +23,7 @@ class OrgThirtyDayActivity < ActiveRecord::Base
     def most_active_orgs
       commits_per_affliate = (arel_table[:thirty_day_commit_count] / arel_table[:affiliate_count])
       with_commits_and_affiliates
-        .select([Arel.star, commits_per_affliate.as('commits_per_affiliate')])
+        .select([Arel.star, arel_table[:created_at], commits_per_affliate.as('commits_per_affiliate')])
         .order(commits_per_affliate.desc).limit(3)
     end
 
@@ -37,12 +37,14 @@ class OrgThirtyDayActivity < ActiveRecord::Base
 
     def with_commits_and_affiliates
       joins(:organization)
+        .where(Organization.arel_table[:thirty_day_activity_id].eq(arel_table[:id]))
         .where(arel_table[:thirty_day_commit_count].gt(0)
         .and(arel_table[:affiliate_count].gt(0)))
     end
 
     def with_thirty_day_commit_count
       joins(:organization)
+        .where(Organization.arel_table[:thirty_day_activity_id].eq(arel_table[:id]))
         .where.not(thirty_day_commit_count: nil)
         .order(thirty_day_commit_count: :desc)
         .limit(5)
