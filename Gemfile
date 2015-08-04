@@ -1,11 +1,12 @@
 source 'https://rubygems.org'
-source 'http://oh-stage-utility-1.blackducksoftware.com:9292/'
+source 'http://oh-stage-utility-1.blackducksoftware.com:9292'
 
-gem 'activeadmin', github: 'activeadmin'
+gem 'activeadmin', git: 'https://github.com/gregbell/active_admin.git'
 gem 'airbrake'
 gem 'aws-sdk', '< 2.0' # paperclip doesn't work with the new aws-sdk gem
 gem 'bluecloth'
 gem 'brakeman'
+gem 'bundler-audit', git: 'https://github.com/BoboFraggins/bundler-audit'
 gem 'coffee-rails'
 gem 'coffee-script-source', '~>1.8.0'
 gem 'daemons', require: false
@@ -26,14 +27,13 @@ gem 'paperclip'
 gem 'pg'
 gem 'rails'
 gem 'rails-html-sanitizer'
-gem 'recaptcha', github: 'ambethia/recaptcha'
+gem 'recaptcha', git: 'https://github.com/ambethia/recaptcha'
 gem 'redis-rails'
 gem 'rubocop'
 gem 'sass-rails'
 gem 'therubyracer'
 gem 'twitter-bootstrap-rails'
 gem 'uglifier'
-gem 'version'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 gem 'simple-rss'
@@ -68,5 +68,5 @@ group :development, :test do
 end
 
 group :production do
-  gem 'oboe'
+  gem 'traceview'
 end

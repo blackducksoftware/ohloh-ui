@@ -15,4 +15,4 @@
     != rating_stars('average_rating_stars', p.rating_average || 0, true)
 
 %td.center{ style: 'padding-right:15px;' }= p.reviews.count
-%td= expander(h(p.description.to_s), 100, 300)
+%td.wrapword= expander(h(p.description.to_s), 100, 300)

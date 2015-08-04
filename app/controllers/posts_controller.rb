@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class PostsController < ApplicationController
   include RedirectIfDisabled
   helper MarkdownHelper
@@ -9,6 +10,14 @@ class PostsController < ApplicationController
   before_action :find_relevant_records, except: [:index]
   before_action :find_post_record, only: [:edit, :update, :destroy]
   before_action :find_posts, only: [:index]
+
+  def index
+    respond_to do |format|
+      format.html
+      format.atom
+      format.rss { render 'index.atom.builder' }
+    end
+  end
 
   def create
     @post = build_new_post
@@ -87,6 +96,7 @@ class PostsController < ApplicationController
 
   def find_posts_belonging_to_account
     @account = Account::Find.by_id_or_login(params[:account_id])
+    fail ParamRecordNotFound unless @account
     redirect_if_disabled
     @posts = @account.posts.includes(:topic).tsearch(params[:query], parse_sort_term)
              .page(page_param).per_page(10)

@@ -7,6 +7,8 @@ module WidgetBadge
     include BadgeHelper
 
     def create(image_data)
+      GC.start
+
       tempfile = Tempfile.new(['thin-badge', '.gif'])
       animate(*image_data, tempfile.path)
       image = MiniMagick::Image.open(tempfile.path)

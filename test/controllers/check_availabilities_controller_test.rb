@@ -14,6 +14,12 @@ describe 'CheckAvailabilitiesController' do
 
       response.body.must_equal 'false'
     end
+
+    it 'should return false when passed no query string' do
+      xhr :get, :account
+
+      response.body.must_equal 'false'
+    end
   end
 
   describe 'project' do
@@ -26,6 +32,12 @@ describe 'CheckAvailabilitiesController' do
 
     it 'should return false when project is not present' do
       xhr :get, :project, query: 'test'
+
+      response.body.must_equal 'false'
+    end
+
+    it 'should return false when passed no query string' do
+      xhr :get, :project
 
       response.body.must_equal 'false'
     end
@@ -44,6 +56,12 @@ describe 'CheckAvailabilitiesController' do
 
       response.body.must_equal 'false'
     end
+
+    it 'should return false when passed no query string' do
+      xhr :get, :organization
+
+      response.body.must_equal 'false'
+    end
   end
 
   describe 'license' do
@@ -56,6 +74,12 @@ describe 'CheckAvailabilitiesController' do
 
     it 'should return false when license is not present' do
       xhr :get, :license, query: 'test'
+
+      response.body.must_equal 'false'
+    end
+
+    it 'should return false when passed no query string' do
+      xhr :get, :license
 
       response.body.must_equal 'false'
     end

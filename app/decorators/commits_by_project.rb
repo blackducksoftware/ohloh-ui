@@ -45,7 +45,7 @@ class CommitsByProject < Cherry::Decorator
   def chart_yaxis_data(project_id)
     facts = history[:facts]
     facts = facts.group_by { |f| f[:project_id] }[project_id.to_s] if project_id
-    facts.group_by { |f| f[:month].to_date }
+    facts ? facts.group_by { |f| f[:month].to_date } : []
   end
 
   def symbolized

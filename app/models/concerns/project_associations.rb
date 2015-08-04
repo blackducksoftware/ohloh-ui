@@ -2,7 +2,7 @@ module ProjectAssociations
   extend ActiveSupport::Concern
 
   included do
-    has_many :links, -> { where(deleted: false) }
+    has_many :links, -> { where("links.deleted = 'f'") }
     has_one :permission, as: :target
     has_many :analyses
     has_many :analysis_summaries, through: :analyses
@@ -28,7 +28,7 @@ module ProjectAssociations
     has_one :koders_status
     has_many :enlistments, -> { where(deleted: false) }
     has_many :repositories, through: :enlistments
-    has_many :project_licenses, -> { where(deleted: false) }
+    has_many :project_licenses, -> { where("project_licenses.deleted = 'f'") }
     has_many :licenses, -> { order('lower(licenses.nice_name)') }, through: :project_licenses
     has_many :duplicates, -> { order(created_at: :desc) }, class_name: 'Duplicate', foreign_key: 'good_project_id'
     has_one :is_a_duplicate, -> { where.not(resolved: true) }, class_name: 'Duplicate', foreign_key: 'bad_project_id'

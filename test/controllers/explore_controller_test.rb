@@ -36,7 +36,7 @@ describe 'ExploreController' do
     end
 
     describe 'orgs_by_thirty_day_commit_volume' do
-      it 'should return json of filtered record when filter is none' do
+      it 'should return json of filtered record when filter is all_orgs' do
         xhr :get, :orgs_by_thirty_day_commit_volume, format: :js, filter: 'all_orgs'
 
         must_respond_with :ok
@@ -53,6 +53,13 @@ describe 'ExploreController' do
 
       it 'should return json of filtered record when filter is all' do
         xhr :get, :orgs_by_thirty_day_commit_volume, filter: 'all_orgs', format: :js
+
+        must_respond_with :ok
+        assigns(:org_by_30_day_commits).must_equal [ota5, ota4, ota3, ota2, ota1]
+      end
+
+      it 'should return json of filtered record when filter is none' do
+        xhr :get, :orgs_by_thirty_day_commit_volume, format: :js, filter: ''
 
         must_respond_with :ok
         assigns(:org_by_30_day_commits).must_equal [ota5, ota4, ota3, ota2, ota1]

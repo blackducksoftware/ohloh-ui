@@ -4,6 +4,12 @@ class ProjectTest < ActiveSupport::TestCase
   let(:project) { create(:project) }
   let(:account) { create(:account) }
 
+  describe 'validations' do
+    it 'should not allow project url_names to start with an underscore as we use those for routing' do
+      build(:project, url_name: '_foobar').valid?.must_equal false
+    end
+  end
+
   describe 'hot' do
     it 'should return hot projects' do
       proj = create(:project, deleted: false)
@@ -232,6 +238,11 @@ class ProjectTest < ActiveSupport::TestCase
       Project.from_param(project.to_param).count.must_equal 1
       project.destroy
       Project.from_param(project.to_param).count.must_equal 0
+    end
+
+    it 'should match project url_name case insensitively' do
+      project = create(:project, url_name: 'wOwZeRs')
+      Project.from_param('WoWzErS').first.id.must_equal project.id
     end
   end
 

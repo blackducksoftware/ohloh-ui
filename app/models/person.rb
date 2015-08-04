@@ -51,7 +51,6 @@ class Person < ActiveRecord::Base
 
       people = includes({ project: [{ best_analysis: :main_language }, :logo] }, :name, name_fact: :primary_language)
                .where(name_id: limit(limit).unclaimed_people(opts))
-
       group_and_sort_by_kudo_positions_or_effective_name(people)
     end
 
@@ -62,11 +61,13 @@ class Person < ActiveRecord::Base
     end
 
     def unclaimed_people(opts)
-      where.not(name_id: nil)
-        .find_by_name_or_email(opts)
-        .group([:name_id, :effective_name])
-        .reorder('MIN(COALESCE(kudo_position,999999999)), lower(effective_name)')
-        .select(:name_id)
+      sub_query = where.not(name_id: nil)
+      if opts[:q].present?
+        query_with_email_or_name(sub_query, opts)
+      else
+        sub_query.group([:name_id, :effective_name])
+          .reorder('MIN(COALESCE(kudo_position,999999999)), lower(effective_name)').select(:name_id)
+      end
     end
 
     def find_by_name_or_email(opts)
@@ -77,6 +78,11 @@ class Person < ActiveRecord::Base
     end
 
     private
+
+    def query_with_email_or_name(sub_query, opts)
+      sub_query.find_by_name_or_email(opts).group([:name_id, :effective_name])
+        .reorder('MIN(COALESCE(kudo_position,999999999)), lower(effective_name)').select(:name_id)
+    end
 
     def group_and_sort_by_kudo_positions_or_effective_name(people)
       people = people.group_by(&:name_id)

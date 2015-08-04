@@ -3,11 +3,29 @@ class App.TypeAhead
     @element = $(domElement)
     @source = @element.data('source')
     @selectHandlerName = @element.data('select')
+#   The attribute below are for fields that grab information
+#   based on a preceding form field. Example positions#new
+#   field must contain a prerequisiteInput data attribute to work
+    @prerequisiteInput = @element.data('prerequisiteInput')
 
   setup: ->
     @element.autocomplete
       source: @source
       select: (e, ui) => @[@selectHandlerName](ui) if @selectHandlerName
+    if @prerequisiteInput then prerequisiteInput(@element, @source)
+
+  prerequisiteInput = (element, source) ->
+#   If mulitiple fields contain a prerequisiteInput tag another
+#   conditional can be added to accommodate that particular field.
+    if source is '/autocompletes/contributions'
+      element.autocomplete
+        source: (request, response) ->
+          $.ajax({
+            dataType: "json",
+            url: '/autocompletes/contributions',
+            data: "term=#{$('#position_committer_name').val()}&project= #{$('#position_project_oss').val()}",
+            success: response
+          });
 
   submitForm: (ui) ->
     @element.val(ui.item.value)

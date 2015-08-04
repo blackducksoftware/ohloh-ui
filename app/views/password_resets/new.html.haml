@@ -9,7 +9,7 @@
   .row
     .col-md-7
       .well
-        = form_for @password_reset do |f|
+        = form_for @password_reset, url: password_reset_index_path do |f|
           %fieldset
             .form-group
               %label.control-label.required= t('email_address')

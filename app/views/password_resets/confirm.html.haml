@@ -5,7 +5,7 @@
 .row
   .col-md-7
     .well
-      = form_for @account, url: reset_password_resets_path do |f|
+      = form_for @account, url: reset_password_reset_index_path do |f|
         = hidden_field_tag :account_id, @account.to_param
         = hidden_field_tag :token, params[:token]
 

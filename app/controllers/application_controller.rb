@@ -1,7 +1,8 @@
 # rubocop:disable Metrics/ClassLength
 class ApplicationController < ActionController::Base
   BOT_REGEX = /\b(Baiduspider|Googlebot|libwww-perl|msnbot|SiteUptime|Slurp)\b/i
-  FORMATS_THAT_SHOULD_BE_TREATED_AS_HTML = %w(php abe)
+  FORMATS_THAT_WE_SUPPORT = %w(html xml json csv rss atom css js png gif jpg jpeg empty)
+  FORMATS_THAT_WE_RENDER_ERRORS_FOR = %w(html xml json)
 
   include PageContextHelper
 
@@ -19,6 +20,7 @@ class ApplicationController < ActionController::Base
   helper_method :page_context
 
   before_action :store_location
+  before_action :handle_me_account_paths
   before_action :strip_query_param
   before_action :clear_reminder
   before_action :verify_api_access_for_xml_request, only: [:show, :index]
@@ -30,7 +32,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from ::Exception do |exception|
     fail exception if Rails.application.config.consider_all_requests_local
-    notify_airbrake(exception)
+    notify_airbrake(exception) unless blank_user_agent?
     render_404
   end
 
@@ -50,6 +52,15 @@ class ApplicationController < ActionController::Base
   helper_method :page_param
 
   protected
+
+  def handle_me_account_paths
+    return unless params[:account_id] == 'me'
+    if current_user.nil?
+      redirect_to new_session_path
+    else
+      params[:account_id] = current_user.login
+    end
+  end
 
   def session_required
     return if logged_in?
@@ -113,13 +124,13 @@ class ApplicationController < ActionController::Base
   end
 
   def request_format
-    format = 'html' if request.format.html?
-    format ||= params[:format]
-    format = nil if FORMATS_THAT_SHOULD_BE_TREATED_AS_HTML.include?(format)
+    format = request.format.html? ? 'html' : params[:format]
+    format = nil unless FORMATS_THAT_WE_SUPPORT.include?(format)
     format || 'html'
   end
 
   def error(message:, status:)
+    params[:format] = 'empty' unless FORMATS_THAT_WE_RENDER_ERRORS_FOR.include?(request_format)
     @error = { message: message }
     render_with_format 'error', status: status
   end
@@ -133,7 +144,7 @@ class ApplicationController < ActionController::Base
   end
 
   def render_with_format(action, status: :ok)
-    render "#{action}.#{request_format}", status: status
+    render "#{action}.#{request_format}", layout: 'application', status: status
   end
 
   def clear_reminder
@@ -166,6 +177,10 @@ class ApplicationController < ActionController::Base
 
   def bot?
     (request.env['HTTP_USER_AGENT'] =~ BOT_REGEX).present?
+  end
+
+  def blank_user_agent?
+    request.env['HTTP_USER_AGENT'].blank?
   end
 
   def show_permissions_alert
@@ -225,6 +240,7 @@ class ApplicationController < ActionController::Base
     @project = Project.by_url_name_or_id(project_id).take
 
     fail ParamRecordNotFound unless @project
+    project_context
     render 'projects/deleted' if @project.deleted?
   end
 

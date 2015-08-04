@@ -14,8 +14,7 @@ class PositionsController < ApplicationController
   helper_method :params_id_is_total?
 
   def new
-    # When someone 'claims' to be a committer, we get some params prepopulated.
-    @position = Position.new(committer_name: params[:committer_name], project_oss: params[:project_name])
+    @position = Position.new
   end
 
   def update

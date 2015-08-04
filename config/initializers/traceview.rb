@@ -4,16 +4,16 @@
 # More information on instrumenting Ruby applications can be found here:
 # https://support.appneta.com/cloud/installing-ruby-instrumentation
 
-if defined?(Oboe::Config)
+if defined?(TraceView::Config)
   # Tracing Mode determines when traces should be initiated for incoming requests.  Valid
   # options are always, through (when using an instrumented Apache or Nginx) and never.
   #
   # If you're not using an instrumented Apache or Nginx, set this directive to always in
   # order to initiate tracing from Ruby.
-  Oboe::Config[:tracing_mode] = 'through'
+  TraceView::Config[:tracing_mode] = 'through'
 
   # Verbose output of instrumentation initialization
-  # Oboe::Config[:verbose] = false
+  # TraceView::Config[:verbose] = false
 
   # Logging of outgoing HTTP query args
   #
@@ -26,11 +26,11 @@ if defined?(Oboe::Config)
   # option to true and instead disable the instrumenstation specific
   # option <tt>log_args</tt>:
   #
-  #   Oboe::Config[:nethttp][:log_args] = false
-  #   Oboe::Config[:excon][:log_args] = false
-  #   Oboe::Config[:typhoeus][:log_args] = true
+  #   TraceView::Config[:nethttp][:log_args] = false
+  #   TraceView::Config[:excon][:log_args] = false
+  #   TraceView::Config[:typhoeus][:log_args] = true
   #
-  Oboe::Config[:include_url_query_params] = true
+  TraceView::Config[:include_url_query_params] = true
 
   # Logging of incoming HTTP query args
   #
@@ -40,12 +40,12 @@ if defined?(Oboe::Config)
   # This flag is global and currently only affects the Rack
   # instrumentation which reports incoming request URLs and
   # query args by default.
-  Oboe::Config[:include_remote_url_params] = true
+  TraceView::Config[:include_remote_url_params] = true
 
   # The oboe Ruby client has the ability to sanitize query literals
   # from SQL statements.  By default this is disabled.  Enable to
   # avoid collecting and reporting query literals to TraceView.
-  # Oboe::Config[:sanitize_sql] = false
+  # TraceView::Config[:sanitize_sql] = false
 
   # Do Not Trace
   # These two values allow you to configure specific URL patterns to
@@ -63,18 +63,18 @@ if defined?(Oboe::Config)
   #   path = URI.unescape(req.path)
   #
   # Usage:
-  #   Oboe::Config[:dnt_regexp] = "lobster$"
-  #   Oboe::Config[:dnt_opts]   = Regexp::IGNORECASE
+  #   TraceView::Config[:dnt_regexp] = "lobster$"
+  #   TraceView::Config[:dnt_opts]   = Regexp::IGNORECASE
   #
   # This will ignore all requests that end with the string lobster
   # regardless of case
   #
   # Requests with positive matches (non nil) will not be traced.
-  # See lib/oboe/util.rb: Oboe::Util.static_asset?
+  # See lib/oboe/util.rb: TraceView::Util.static_asset?
   #
-  # Oboe::Config[:dnt_regexp] = \
+  # TraceView::Config[:dnt_regexp] = \
   # "\.(jpg|jpeg|gif|png|ico|css|zip|tgz|gz|rar|bz2|pdf|txt|tar|wav|bmp|rtf|js|flv|swf|ttf|woff|svg|less)$"
-  # Oboe::Config[:dnt_opts]   = Regexp::IGNORECASE
+  # TraceView::Config[:dnt_opts]   = Regexp::IGNORECASE
 
   #
   # Rails Exception Logging
@@ -84,7 +84,7 @@ if defined?(Oboe::Config)
   # dashboard by default.  Setting this value to true will
   # report all raised exception regardless.
   #
-  # Oboe::Config[:report_rescued_errors] = false
+  # TraceView::Config[:report_rescued_errors] = false
   #
 
   #
@@ -94,25 +94,25 @@ if defined?(Oboe::Config)
   # can be individually disabled here by setting the :enabled
   # value to false:
   #
-  # Oboe::Config[:action_controller][:enabled] = true
-  # Oboe::Config[:active_record][:enabled] = true
-  # Oboe::Config[:action_view][:enabled] = true
-  # Oboe::Config[:cassandra][:enabled] = true
-  # Oboe::Config[:dalli][:enabled] = true
-  # Oboe::Config[:excon][:enabled] = true
-  # Oboe::Config[:em_http_request][:enabled] = true
-  # Oboe::Config[:faraday][:enabled] = true
-  # Oboe::Config[:httpclient][:enabled] = true
-  # Oboe::Config[:memcache][:enabled] = true
-  # Oboe::Config[:memcached][:enabled] = true
-  # Oboe::Config[:mongo][:enabled] = true
-  # Oboe::Config[:moped][:enabled] = true
-  # Oboe::Config[:nethttp][:enabled] = true
-  # Oboe::Config[:redis][:enabled] = true
-  # Oboe::Config[:resque][:enabled] = true
-  # Oboe::Config[:rest_client][:enabled] = true
-  # Oboe::Config[:sequel][:enabled] = true
-  # Oboe::Config[:typhoeus][:enabled] = true
+  # TraceView::Config[:action_controller][:enabled] = true
+  # TraceView::Config[:active_record][:enabled] = true
+  # TraceView::Config[:action_view][:enabled] = true
+  # TraceView::Config[:cassandra][:enabled] = true
+  # TraceView::Config[:dalli][:enabled] = true
+  # TraceView::Config[:excon][:enabled] = true
+  # TraceView::Config[:em_http_request][:enabled] = true
+  # TraceView::Config[:faraday][:enabled] = true
+  # TraceView::Config[:httpclient][:enabled] = true
+  # TraceView::Config[:memcache][:enabled] = true
+  # TraceView::Config[:memcached][:enabled] = true
+  # TraceView::Config[:mongo][:enabled] = true
+  # TraceView::Config[:moped][:enabled] = true
+  # TraceView::Config[:nethttp][:enabled] = true
+  # TraceView::Config[:redis][:enabled] = true
+  # TraceView::Config[:resque][:enabled] = true
+  # TraceView::Config[:rest_client][:enabled] = true
+  # TraceView::Config[:sequel][:enabled] = true
+  # TraceView::Config[:typhoeus][:enabled] = true
   #
 
   #
@@ -123,25 +123,25 @@ if defined?(Oboe::Config)
   # performance but can be useful when trying to locate the source of
   # a certain call or operation.
   #
-  # Oboe::Config[:action_controller][:collect_backtraces] = true
-  # Oboe::Config[:active_record][:collect_backtraces] = true
-  # Oboe::Config[:action_view][:collect_backtraces] = true
-  # Oboe::Config[:cassandra][:collect_backtraces] = true
-  # Oboe::Config[:dalli][:collect_backtraces] = false
-  # Oboe::Config[:excon][:collect_backtraces] = false
-  # Oboe::Config[:em_http_request][:collect_backtraces] = true
-  # Oboe::Config[:faraday][:collect_backtraces] = false
-  # Oboe::Config[:httpclient][:collect_backtraces] = false
-  # Oboe::Config[:memcache][:collect_backtraces] = false
-  # Oboe::Config[:memcached][:collect_backtraces] = false
-  # Oboe::Config[:mongo][:collect_backtraces] = true
-  # Oboe::Config[:moped][:collect_backtraces] = true
-  # Oboe::Config[:nethttp][:collect_backtraces] = true
-  # Oboe::Config[:redis][:collect_backtraces] = false
-  # Oboe::Config[:resque][:collect_backtraces] = true
-  # Oboe::Config[:rest_client][:collect_backtraces] = true
-  # Oboe::Config[:sequel][:collect_backtraces] = true
-  # Oboe::Config[:typhoeus][:collect_backtraces] = false
+  # TraceView::Config[:action_controller][:collect_backtraces] = true
+  # TraceView::Config[:active_record][:collect_backtraces] = true
+  # TraceView::Config[:action_view][:collect_backtraces] = true
+  # TraceView::Config[:cassandra][:collect_backtraces] = true
+  # TraceView::Config[:dalli][:collect_backtraces] = false
+  # TraceView::Config[:excon][:collect_backtraces] = false
+  # TraceView::Config[:em_http_request][:collect_backtraces] = true
+  # TraceView::Config[:faraday][:collect_backtraces] = false
+  # TraceView::Config[:httpclient][:collect_backtraces] = false
+  # TraceView::Config[:memcache][:collect_backtraces] = false
+  # TraceView::Config[:memcached][:collect_backtraces] = false
+  # TraceView::Config[:mongo][:collect_backtraces] = true
+  # TraceView::Config[:moped][:collect_backtraces] = true
+  # TraceView::Config[:nethttp][:collect_backtraces] = true
+  # TraceView::Config[:redis][:collect_backtraces] = false
+  # TraceView::Config[:resque][:collect_backtraces] = true
+  # TraceView::Config[:rest_client][:collect_backtraces] = true
+  # TraceView::Config[:sequel][:collect_backtraces] = true
+  # TraceView::Config[:typhoeus][:collect_backtraces] = false
   #
 
   #
@@ -153,8 +153,8 @@ if defined?(Oboe::Config)
   #                 !!! Note: Make sure both the enqueue side and the Resque workers are instrumented
   #                 before enabling this or jobs will fail !!!
   #                 (Default: false)
-  # Oboe::Config[:resque][:link_workers] = false
+  # TraceView::Config[:resque][:link_workers] = false
   #
   # Set to true to disable Resque argument logging (Default: false)
-  # Oboe::Config[:resque][:log_args] = false
+  # TraceView::Config[:resque][:log_args] = false
 end

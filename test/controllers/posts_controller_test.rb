@@ -199,6 +199,12 @@ describe PostsController do
       get :index, account: user, format: 'atom'
       must_respond_with :ok
     end
+
+    it 'should render in rss format' do
+      get :index, format: 'rss'
+      must_respond_with :ok
+      must_render_template 'index.atom.builder'
+    end
   end
 
   it 'create fails for user with no account' do

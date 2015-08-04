@@ -1,4 +1,6 @@
 class CheckAvailabilitiesController < ApplicationController
+  before_action :handle_blank_query_param
+
   def account
     render json: Account.resolve_login(params[:query]).present?
   end
@@ -13,5 +15,11 @@ class CheckAvailabilitiesController < ApplicationController
 
   def license
     render json: License.resolve_name(params[:query]).present?
+  end
+
+  private
+
+  def handle_blank_query_param
+    render(json: false) if params[:query].blank?
   end
 end

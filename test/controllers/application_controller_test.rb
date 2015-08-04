@@ -29,6 +29,13 @@ class ApplicationControllerTest < ActionController::TestCase
       response.headers['Content-Type'].must_include('application/xml')
     end
 
+    it 'render_404 as png' do
+      get :renders_404, format: 'png'
+      must_respond_with :not_found
+      response.body.blank?.must_equal true
+      response.headers['Content-Type'].must_include('image/png')
+    end
+
     it 'render_404 with request of php should respond with html' do
       get :renders_404, format: 'php'
       must_respond_with :not_found
@@ -70,9 +77,26 @@ class ApplicationControllerTest < ActionController::TestCase
       Rails.application.config.unstub(:consider_all_requests_local)
     end
 
+    it 'does not invoke airbrake on non-existant PNGs' do
+      Rails.application.config.stubs(:consider_all_requests_local).returns false
+      @controller.expects(:notify_airbrake).never
+      get :renders_404, format: 'png'
+      must_respond_with :not_found
+      Rails.application.config.unstub(:consider_all_requests_local)
+    end
+
     it 'does invoke airbrake on generic errors' do
       Rails.application.config.stubs(:consider_all_requests_local).returns false
       @controller.expects(:notify_airbrake).once
+      get :throws_standard_error
+      must_respond_with :not_found
+      Rails.application.config.unstub(:consider_all_requests_local)
+    end
+
+    it 'does not invoke airbrake if the user agent string has been set to blank (discount, often buggy bots)' do
+      request.env.delete 'HTTP_USER_AGENT'
+      Rails.application.config.stubs(:consider_all_requests_local).returns false
+      @controller.expects(:notify_airbrake).never
       get :throws_standard_error
       must_respond_with :not_found
       Rails.application.config.unstub(:consider_all_requests_local)
