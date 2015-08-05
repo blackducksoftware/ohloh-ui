@@ -81,13 +81,13 @@ class Project < ActiveRecord::Base
   end
 
   def newest_contributions
-    contributions.sort_by_newest.includes(person: :account, contributor_fact: :primary_language).limit(10)
+    contributions.sort_by_newest.joins(:contributor_fact)
+      .preload(person: :account, contributor_fact: :primary_language).limit(10)
   end
 
   def top_contributions
-    contributions.sort_by_twelve_month_commits
-      .includes(person: :account, contributor_fact: :primary_language)
-      .limit(10)
+    contributions.sort_by_twelve_month_commits.joins(:contributor_fact)
+      .preload(person: :account, contributor_fact: :primary_language).limit(10)
   end
 
   class << self
