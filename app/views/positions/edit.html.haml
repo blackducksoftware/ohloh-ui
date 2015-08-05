@@ -1,3 +1,8 @@
+- page_context[:select_footer_nav] = :positions
+
+- content_for :html_title do
+  = t('.edit_title', name: @account.login)
+
 %h3
   = link_to t('contribution'), account_positions_path(@account)
   = precede ' : ' do

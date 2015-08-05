@@ -389,7 +389,7 @@ describe 'PositionsController' do
   describe 'show' do
     let(:account) { create(:account) }
 
-    it 'must redirect to accounts_language_page when position ID is tital' do
+    it 'must redirect to accounts_language_page when position ID is total' do
       login_as(account)
       get :show, account_id: account.to_param, id: 'total'
 
