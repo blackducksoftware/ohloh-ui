@@ -1,5 +1,5 @@
 task new_account: :environment do
-  puts 'Beginning new account creation....''
+  puts 'Beginning new account creation....'
   puts
   puts "Specify the user's name......"
   name = STDIN.gets.chomp
