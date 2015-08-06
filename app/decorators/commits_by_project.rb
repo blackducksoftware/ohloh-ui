@@ -49,12 +49,16 @@ class CommitsByProject < Cherry::Decorator
   end
 
   def symbolized
-    @symbolized ||= account.decorate.symbolized_commits_by_project
+    @symbolized = Rails.cache.fetch("account_#{account.login}_cbp", expires_in: 24.hours) do
+      account.decorate.symbolized_commits_by_project
+    end
   end
 
   def positions
-    @positions ||= Position.where(id: symbolized.map { |c| c[:position_id] }.uniq.sort)
-                   .includes(:project).references(:all).group_by(&:id)
+    @positions = Rails.cache.fetch("account_#{account.login}_positions", expires_in: 24.hours) do
+      Position.where(id: symbolized.map { |c| c[:position_id] }.uniq.sort)
+              .includes(:project).references(:all).group_by(&:id)
+    end
   end
 
   def with_positions
