@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class PositionsController < ApplicationController
   helper ProjectsHelper
   helper PositionsHelper
@@ -22,7 +23,6 @@ class PositionsController < ApplicationController
       @position.language_experiences.delete_all
       @position.update!(position_params)
     end
-
     redirect_to account_positions_path(@account)
   rescue => e
     flash.now[:error] = e.message unless e.is_a?(ActiveRecord::RecordInvalid)
@@ -36,6 +36,9 @@ class PositionsController < ApplicationController
   rescue
     @position = Position.new
     render :new, status: :unprocessable_entity
+  end
+
+  def show
   end
 
   def destroy
