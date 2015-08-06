@@ -29,7 +29,7 @@ class ForumTest < ActiveSupport::TestCase
   end
 
   it 'invalid forum with a number more than 9 digits' do
-    forum.position = 9987654321
+    forum.position = 9_987_654_321
     forum.wont_be :valid?
     forum.wont :save
   end
