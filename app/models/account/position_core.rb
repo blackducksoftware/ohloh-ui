@@ -86,7 +86,7 @@ class Account::PositionCore < OhDelegator::Base
     if commit_name_id == preferred_name_id
       alias_obj.create_edit.undo!(account) unless alias_obj.deleted?
     else
-      alias_obj.create_edit.redo!(account) if alias_obj.deleted?
+      alias_obj.create_edit.redo!(account) if alias_obj.deleted? && alias_obj.create_edit.undone?
       alias_obj.reload.update_attributes!(preferred_name_id: preferred_name_id, editor_account: account)
     end
   end
