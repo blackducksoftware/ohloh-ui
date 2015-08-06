@@ -1,6 +1,7 @@
 - content_for :html_title do
   = t('.edit_post')
 
+%br
 .col-md-12
   = render partial: 'forums/breadcrumb', locals: { forum:  @post.topic.forum }
 .clear

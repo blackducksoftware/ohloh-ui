@@ -3,7 +3,7 @@ en:
     new:
       forums: 'Forums'
       create_topic: 'Post Topic'
-      new_topic: 'New Topics - OpenHub'
+      new_topic: 'New Topic'
     show:
       next_topic_html: 'Next Topic&rarr;'
       previous_topic_html: '&larr;Previous Topic'
@@ -34,7 +34,7 @@ en:
       closed: 'Closed'
       save_changes: 'Save Changes'
       enter_topic_title: "Enter the topic's title."
-      edit_topic: "Edit Topic - Open Hub"
+      edit_topic: "Edit Topic"
     destroy:
       success: "Topic '%{topic_title}' was deleted."
     form:
@@ -48,8 +48,9 @@ en:
       closed: 'closed'
       new: 'new'
       stale: 'stale'
-      recent: 'recent post'
+      recent_post: 'Recent post'
       sticky: 'Sticky:'
+      ago_by: 'ago by %{name}'
     current_discussions:
       discussion: 'Discussion'
       posts: 'Posts'
