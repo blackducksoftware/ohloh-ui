@@ -55,7 +55,7 @@ describe ForumsController do
   it 'admin fails create for position field for floating point' do
     login_as admin
     assert_no_difference('Forum.count') do
-      post :create, forum: { name: 'Valid Forum Name', position: 9987654321 }
+      post :create, forum: { name: 'Valid Forum Name', position: 9_987_654_321 }
     end
     must_render_template :new
     flash[:alert].must_equal 'There was a problem!'
