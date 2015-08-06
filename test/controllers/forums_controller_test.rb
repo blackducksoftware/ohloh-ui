@@ -25,10 +25,19 @@ describe ForumsController do
     must_redirect_to forums_path
   end
 
-  it 'admin fails create' do
+  it 'admin fails create for blank name' do
     login_as admin
     assert_no_difference('Forum.count') do
       post :create, forum: { name: '' }
+    end
+    must_render_template :new
+    flash[:alert].must_equal 'There was a problem!'
+  end
+
+  it 'admin fails create for position field' do
+    login_as admin
+    assert_no_difference('Forum.count') do
+      post :create, forum: { name: 'Valid Forum Name', position: 'abcdef' }
     end
     must_render_template :new
     flash[:alert].must_equal 'There was a problem!'
