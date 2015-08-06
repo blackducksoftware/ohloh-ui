@@ -72,6 +72,19 @@ describe 'PositionsController' do
 
         Position.last.project_experiences.map(&:project).map(&:name).sort.must_equal %w(draper squeel)
       end
+
+      it 'must gracefully handle garbage language_exp values' do
+        account.update!(created_at: Time.current)
+        login_as(account)
+
+        assert_difference 'Position.count', 0 do
+          post :create, account_id: account.to_param, invite: true,
+                        position: { project_oss: project.name, committer_name: name_obj.name,
+                                    language_exp: ['Esperanto'] }
+        end
+
+        must_respond_with :unprocessable_entity
+      end
     end
   end
 
@@ -293,7 +306,7 @@ describe 'PositionsController' do
       must_respond_with :success
       language = position.name_fact.primary_language.nice_name
       response.body.must_match "1\nCommit\n</a>in mostly\n#{language}"
-      response.body.must_match position.name_fact.analysis.project.organization.name
+      response.body.must_match position.name_fact.analysis.project.organization.name.gsub("'", '&#39;')
       assert_select 'div#all_projects.chart-with-data[data-value]', 1
     end
 
