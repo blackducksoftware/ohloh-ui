@@ -16,8 +16,11 @@ class AliasesController < SettingsController
   end
 
   def create
-    Alias.create_for_project(current_user, @project, params[:commit_name_id], params[:preferred_name_id])
+    @alias = Alias.create_for_project(current_user, @project, params[:commit_name_id], params[:preferred_name_id])
     redirect_to action: :index
+  rescue
+    @committer_names = Alias.committer_names(@project)
+    render :new, status: :unprocessable_entity
   end
 
   def undo
