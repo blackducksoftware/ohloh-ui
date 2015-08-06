@@ -9,6 +9,7 @@ class PositionsController < ApplicationController
   before_action :redirect_to_contribution_if_found, only: :show, unless: :params_id_is_total?
   before_action :account_context
   before_action :set_project_and_name, only: :one_click_create
+  after_action  :delete_position_caches, only: [:create, :update, :destroy]
   skip_before_action :store_location, only: [:commits_compound_spark]
 
   helper_method :params_id_is_total?
@@ -54,7 +55,9 @@ class PositionsController < ApplicationController
   end
 
   def index
-    @positions = @account.position_core.ordered
+    @positions = Rails.cache.fetch("account_#{@account.login}_ordered_positions", expires_in: 24.hours) do
+      @account.position_core.ordered
+    end
   end
 
   def commits_compound_spark
@@ -123,5 +126,11 @@ class PositionsController < ApplicationController
 
   def redirect_to_languages
     redirect_to account_languages_path(@account)
+  end
+
+  def delete_position_caches
+    cache_keys = ["account_#{@account.login}_ordered_positions", "account_#{@account.login}_positions",
+                  "account_#{@account.login}_cbp"]
+    cache_keys.each{ |key| Rails.cache.delete(key)}
   end
 end
