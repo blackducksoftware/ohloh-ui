@@ -8,8 +8,14 @@ class AccountDecoratorTest < ActiveSupport::TestCase
     @java = create(:language, name: 'java', nice_name: 'Java')
   end
 
-  let(:admin) { accounts(:admin) }
-  let(:user) { accounts(:user) }
+  let(:admin) { create(:admin) }
+  let(:user) do
+    account = create(:account)
+    vita = create(:best_vita, account_id: account.id)
+    create(:vita_fact, vita_id: vita.id)
+    account.update_column(:best_vita_id, vita.id)
+    account.reload
+  end
 
   let(:cbp) do
     [{ 'month' => Time.parse('2010-04-30 20:00:00 -0400'), 'commits' => '1', 'position_id' => '3' },
@@ -49,24 +55,24 @@ class AccountDecoratorTest < ActiveSupport::TestCase
   let(:sidebars) do
     [
       [
-        [:account_summary, 'Account Summary', '/accounts/admin'],
-        [:stacks, 'Stacks', '/accounts/admin/stacks'],
-        [:widgets, 'Widgets', '/accounts/admin/widgets']
+        [:account_summary, 'Account Summary', "/accounts/#{admin.login}"],
+        [:stacks, 'Stacks', "/accounts/#{admin.login}/stacks"],
+        [:widgets, 'Widgets', "/accounts/#{admin.login}/widgets"]
       ],
       [
         [:contributions, 'Contributions', nil],
-        [:positions, 'Contributions', '/accounts/admin/positions'],
-        [:languages, 'Languages', '/accounts/admin/languages']
+        [:positions, 'Contributions', "/accounts/#{admin.login}/positions"],
+        [:languages, 'Languages', "/accounts/#{admin.login}/languages"]
       ],
       [
         [:recognition, 'Recognition', nil],
-        [:kudos, 'Kudos', '/accounts/admin/kudos']
+        [:kudos, 'Kudos', "/accounts/#{admin.login}/kudos"]
       ],
       [
         [:usage, 'Usage', nil],
-        [:edit_history, 'Website Edits', '/accounts/admin/edits'],
-        [:posts, 'Posts', '/accounts/admin/posts'],
-        [:reviews, 'Reviews', '/accounts/admin/reviews']
+        [:edit_history, 'Website Edits', "/accounts/#{admin.login}/edits"],
+        [:posts, 'Posts', "/accounts/#{admin.login}/posts"],
+        [:reviews, 'Reviews', "/accounts/#{admin.login}/reviews"]
       ]
     ]
   end
@@ -145,17 +151,17 @@ class AccountDecoratorTest < ActiveSupport::TestCase
 
   describe 'vita_status_message' do
     it 'should return ananlyses_scheduled message' do
+      create_position(account: admin, name: create(:name))
       admin.decorate.vita_status_message.must_equal I18n.t('accounts.show.analysis_scheduled')
     end
 
     it 'should return no contributions message' do
-      Account.any_instance.stubs(:positions).returns([])
       user.decorate.vita_status_message.must_equal I18n.t('accounts.show.no_contributions')
     end
 
     it 'should return no commits message' do
-      Account.any_instance.stubs(:claimed_positions).returns([])
-      Account.any_instance.stubs(:positions).returns([true])
+      position = create_position(account: admin)
+      position.update_column(:name_id, nil)
       admin.decorate.vita_status_message.must_equal I18n.t('accounts.show.no_commits')
     end
   end
