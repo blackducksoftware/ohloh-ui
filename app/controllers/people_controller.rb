@@ -1,11 +1,15 @@
 class PeopleController < UnclaimedController
   helper KudosHelper
 
-  before_action :find_index_people, only: [:index]
-  before_action :preload_data, only: [:index]
+  before_action :find_index_people, unless: :query_or_cache_exist, only: [:index]
+  before_action :preload_data, unless: :query_or_cache_exist, only: [:index]
   before_action :find_rankings_people, only: [:rankings]
 
   private
+
+  def query_or_cache_exist
+    params[:query].blank? && Rails.cache.exist?('people_index_page')
+  end
 
   def find_index_people
     @claimed_people = Person.find_claimed(params[:query], 'relevance')
@@ -26,7 +30,7 @@ class PeopleController < UnclaimedController
   def find_rankings_people
     @people = Person.includes(:account).references(:all)
               .filter_by(params[:query]).send(parse_sort_term)
-              .paginate(page: params[:page], per_page: 10)
+              .paginate(page: page_param, per_page: 10)
   end
 
   def parse_sort_term

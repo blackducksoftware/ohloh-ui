@@ -1,5 +1,8 @@
-- content_for(:html_title) { t('.title', name: current_user.nil? ? nil : current_user.name.concat(' : ')) }
-- page_context[:select_top_menu_nav] = :select_people
+:ruby
+  content_for(:html_title) { t('.title', name: current_user.nil? ? nil : "#{current_user.name}  : ") }
+  @account = current_user
+  account_context
+  page_context[:select_footer_nav] = :unclaimed
 
 %h1.margin_bottom_15= t('.people')
 %h3.margin_bottom_15= t('.heading')

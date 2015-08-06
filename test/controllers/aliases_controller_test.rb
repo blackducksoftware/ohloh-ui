@@ -39,6 +39,16 @@ describe 'AliasesController' do
       must_redirect_to new_session_path
       assigns(:committer_names).must_equal nil
     end
+
+    it 'must render projects/deleted when project is deleted' do
+      login_as @account
+      ApplicationController.any_instance.stubs(:current_user_can_manage?).returns(true)
+      @project.update!(deleted: true, editor_account: @account)
+
+      get :new, project_id: @project.id
+
+      must_render_template 'deleted'
+    end
   end
 
   describe 'create' do
@@ -50,9 +60,9 @@ describe 'AliasesController' do
 
     it 'with user login' do
       login_as @account
-      lambda do
-        post :create, project_id: @project.id, commit_name_id: create(:name).id, preferred_name_id: create(:name).id
-      end.must_change 'Alias.count'
+      before = Alias.count
+      post :create, project_id: @project.id, commit_name_id: create(:name).id, preferred_name_id: create(:name).id
+      Alias.count.must_equal(before + 1)
       must_respond_with :redirect
       must_redirect_to action: :index
     end

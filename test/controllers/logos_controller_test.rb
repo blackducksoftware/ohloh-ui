@@ -71,6 +71,15 @@ class LogosControllerTest < ActionController::TestCase
     must_respond_with :success
   end
 
+  it 'must render projects/deleted when project is deleted' do
+    project = create(:project)
+    project.update!(deleted: true, editor_account: @user)
+
+    get :new, project_id: project.to_param
+
+    must_render_template 'deleted'
+  end
+
   it 'LogosController destroy resets to NilLogo' do
     login_as @admin
 
@@ -78,6 +87,20 @@ class LogosControllerTest < ActionController::TestCase
 
     must_redirect_to new_project_logos_path
     NilClass.must_equal project.reload.logo.class
+  end
+
+  it 'LogosController destroy does not really destroy default logos' do
+    Logo.where(id: 1180).destroy_all
+    logo = create(:logo, id: 1180)
+    project = create(:project, logo_id: logo.id)
+
+    login_as @admin
+
+    delete :destroy, project_id: project.id
+
+    must_redirect_to new_project_logos_path
+    NilClass.must_equal project.reload.logo.class
+    Logo.where(id: 1180).count.must_equal 1
   end
 
   it 'new unauthenticated' do

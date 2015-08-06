@@ -23,30 +23,28 @@ class OrgThirtyDayActivity < ActiveRecord::Base
     def most_active_orgs
       commits_per_affliate = (arel_table[:thirty_day_commit_count] / arel_table[:affiliate_count])
       with_commits_and_affiliates
-        .select([Arel.star, commits_per_affliate.as('commits_per_affiliate')])
+        .select([Arel.star, arel_table[:created_at], commits_per_affliate.as('commits_per_affiliate')])
         .order(commits_per_affliate.desc).limit(3)
     end
 
     def filter(filter_type)
-      filter_type = filter_type.to_sym
-      fail ArgumentError, 'Invalid Filter Type' unless FILTER_TYPES.keys.include?(filter_type)
+      filter_type = filter_type.to_s.to_sym
+      filter_type = :all_orgs unless FILTER_TYPES.keys.include?(filter_type)
       send(FILTER_TYPES[filter_type])
     end
 
     private
 
     def with_commits_and_affiliates
-      orgs = Organization.arel_table
       joins(:organization)
-        .where(id: orgs[:thirty_day_activity_id])
+        .where(Organization.arel_table[:thirty_day_activity_id].eq(arel_table[:id]))
         .where(arel_table[:thirty_day_commit_count].gt(0)
         .and(arel_table[:affiliate_count].gt(0)))
     end
 
     def with_thirty_day_commit_count
-      orgs = Organization.arel_table
       joins(:organization)
-        .where(id: orgs[:thirty_day_activity_id])
+        .where(Organization.arel_table[:thirty_day_activity_id].eq(arel_table[:id]))
         .where.not(thirty_day_commit_count: nil)
         .order(thirty_day_commit_count: :desc)
         .limit(5)

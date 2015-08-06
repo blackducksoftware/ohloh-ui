@@ -70,15 +70,12 @@ describe 'SizeFactsControllerTest' do
       end
     end
 
-    it 'should respond with failure if project id deleted' do
-      Project.any_instance.stubs(:deleted?).returns(true)
+    it 'must render deleted if project is deleted' do
+      project.update!(deleted: true, editor_account: account)
 
       get :index, format: 'xml', project_id: project.id, analysis_id: analysis.id, api_key: client_id
-      xml = xml_hash(@response.body)
 
-      must_respond_with :ok
-      xml['response']['status'].must_equal I18n.t('projects.deleted.failed')
-      xml['response']['error'].must_equal I18n.t('projects.deleted.message', name: project.name)
+      must_render_template 'deleted'
     end
 
     it 'should respond with failure if project id does not exist' do

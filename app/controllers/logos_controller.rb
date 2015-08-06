@@ -3,7 +3,10 @@ class LogosController < SettingsController
   helper ProjectsHelper
 
   before_action :session_required, except: :new
-  before_action :set_project_or_organization, only: [:destroy, :create, :new]
+  before_action :set_project, only: [:destroy, :create, :new], if: -> { params[:project_id] }
+  before_action :set_organization, only: [:destroy, :create, :new], if: -> { params[:organization_id] }
+  before_action :fail_unless_parent, only: [:destroy, :create, :new]
+  before_action :set_editor_account_to_current_user, only: [:destroy, :create, :new]
   before_action :set_logo, only: :destroy
   around_action :edit_authorized?, only: :create
   before_action :show_permissions_alert, only: :new
@@ -52,12 +55,20 @@ class LogosController < SettingsController
     @parent.update_attribute(:logo_id, params[:logo_id] || @logo.id)
   end
 
-  def set_project_or_organization
-    @parent = if params[:project_id]
-                @project = Project.from_param(params[:project_id]).take
-              elsif params[:organization_id]
-                @organization = Organization.from_param(params[:organization_id]).take
-              end
+  def set_project
+    @parent = @project = Project.by_url_name_or_id(params[:project_id]).take
+    project_context && render('projects/deleted') if @project.try(:deleted?)
+  end
+
+  def set_organization
+    @parent = @organization = Organization.from_param(params[:organization_id]).take
+  end
+
+  def fail_unless_parent
+    fail ParamRecordNotFound unless @parent
+  end
+
+  def set_editor_account_to_current_user
     @parent.editor_account = current_user
   end
 

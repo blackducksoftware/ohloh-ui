@@ -35,11 +35,11 @@ describe ForumsController do
   end
 
   it 'admin show with pagination' do
-    create_list(:topic, 20, forum: forum)
+    create_list(:topic_with_posts, 20, forum: forum)
     login_as create(:account)
-    get :show, id: forum.id
     must_respond_with :success
 
+    get :show, id: forum.id
     # Should have 15 topics per page
     html = 'table.table.table-striped tbody tr'
     assert_select html, 15
@@ -104,7 +104,7 @@ describe ForumsController do
   end
 
   it 'show with pagination' do
-    create_list(:topic, 20, forum: forum)
+    create_list(:topic_with_posts, 20, forum: forum)
     login_as create(:account)
 
     get :show, id: forum.id

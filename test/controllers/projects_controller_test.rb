@@ -272,6 +272,15 @@ describe 'ProjectsController' do
       must_respond_with :ok
       assert_select "a[href='#{new_project_manager_path(project.to_param)}']", text: 'Become the first manager for Foo'
     end
+
+    it 'must render projects/deleted when project is deleted' do
+      project = create(:project)
+      project.update!(deleted: true, editor_account: create(:account))
+
+      get :show, id: project.to_param
+
+      must_render_template 'deleted'
+    end
   end
 
   # new

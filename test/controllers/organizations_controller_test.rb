@@ -227,6 +227,7 @@ describe 'OrganizationsController' do
 
   describe 'list_managers' do
     it 'should return managers' do
+      login_as account
       create(:manage, target: organization, account: account)
       get :list_managers, id: organization.id
       must_respond_with :ok
@@ -246,9 +247,10 @@ describe 'OrganizationsController' do
     end
 
     it 'should return projects with search term' do
-      pro_1 = create(:project, name: 'test name1')
-      pro_2 = create(:project, name: 'test name2')
-      pro_3 = create(:project, name: 'test name3')
+      login_as account
+      pro_1 = create(:project, name: 'test name1', organization_id: nil)
+      pro_2 = create(:project, name: 'test name2', organization_id: nil)
+      pro_3 = create(:project, name: 'test name3', organization_id: nil)
 
       get :claim_projects_list, id: organization.to_param, query: 'test'
 

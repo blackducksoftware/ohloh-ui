@@ -3,6 +3,7 @@ class ComparesController < ApplicationController
   helper ProjectsHelper
   helper RatingsHelper
   before_action :setup_header, only: [:projects]
+  skip_before_action :verify_authenticity_token, only: [:projects_graph]
 
   def projects
     find_projects

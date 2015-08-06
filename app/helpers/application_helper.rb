@@ -84,6 +84,9 @@ module ApplicationHelper
 
   def project_text_icon(project, size, opts)
     p_name = project.name.first.capitalize
+    main_language = project.main_language
+    opts[:color] = language_text_color(main_language)
+    opts[:bg]    = language_color(main_language)
     haml_tag(:p, p_name, style: default_icon_styles(size, opts))
   end
 

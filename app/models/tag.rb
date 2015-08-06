@@ -19,6 +19,7 @@ class Tag < ActiveRecord::Base
 
   class << self
     def autocomplete(project_id, query)
+      project_id = nil if project_id.blank?
       by_popularity.for_projects
         .where(['tags.name ILIKE ?', "#{Tag.send(:sanitize_sql, query.to_s)}%"])
         .where(['tags.id NOT IN (SELECT tag_id FROM taggings WHERE taggable_id = ?)', project_id])

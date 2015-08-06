@@ -5,8 +5,8 @@ module ProjectFilters
     before_action :session_required, only: [:check_forge, :create, :new, :update]
     before_action :find_account
     before_action :find_projects, only: [:index]
-    before_action :find_project, only: [:show, :edit, :update, :estimated_cost, :users, :settings, :map,
-                                        :similar_by_tags, :similar]
+    before_action :set_project_or_fail, :set_project_editor_account_to_current_user,
+                  only: [:show, :edit, :update, :estimated_cost, :users, :settings, :map, :similar_by_tags, :similar]
     before_action :redirect_new_landing_page, only: :index
     before_action :find_forge_matches, only: :check_forge
     before_action :project_context, only: [:show, :users, :estimated_cost, :edit, :settings, :map, :similar, :update]
@@ -22,20 +22,15 @@ module ProjectFilters
   end
 
   def find_projects
-    @projects = find_projects_by_params.page(params[:page]).per_page([25, (params[:per_page] || 10).to_i].min).to_a
+    @projects = find_projects_by_params.page(page_param).per_page([25, (params[:per_page] || 10).to_i].min).to_a
   rescue
     raise ParamRecordNotFound
   end
 
   def find_projects_by_params
+    @sort = params[:sort]
     projects = @account ? @account.projects.not_deleted : Project.not_deleted
-    projects.by_collection(params[:ids], params[:sort], params[:query])
-  end
-
-  def find_project
-    @project = Project.from_param(params[:id]).take
-    fail ParamRecordNotFound unless @project
-    @project.editor_account = current_user
+    projects.by_collection(params[:ids], @sort, params[:query])
   end
 
   def find_forge_matches

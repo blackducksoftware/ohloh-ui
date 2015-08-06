@@ -26,6 +26,17 @@ class ManagersControllerTest < ActionController::TestCase
     assert_select '.col-md-4 a.btn.btn-primary', text: 'I manage this project on Open Hub'
   end
 
+  it 'must render projects/deleted when project is deleted' do
+    login_as accounts(:admin)
+    project = create(:project)
+
+    project.update!(deleted: true, editor_account: create(:account))
+
+    get :index, project_id: project.to_param
+
+    must_render_template 'deleted'
+  end
+
   it 'test index for i manage this project button for admin when admin is manager' do
     login_as admin
     a = @proj

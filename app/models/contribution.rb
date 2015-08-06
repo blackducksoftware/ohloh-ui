@@ -32,7 +32,7 @@ class Contribution < ActiveRecord::Base
   end
 
   def kudoable
-    person.account || self
+    (person && person.account) || self
   end
 
   def recent_kudos(limit = 3)
@@ -53,8 +53,7 @@ class Contribution < ActiveRecord::Base
 
   class << self
     def sort(key)
-      key ||= :twelve_month_commits
-      fail ArgumentError, 'invalid sort option' unless SORT_OPTIONS.include?(key.to_sym)
+      key = :twelve_month_commits unless key && SORT_OPTIONS.include?(key.to_sym)
       send("sort_by_#{key}")
     end
 

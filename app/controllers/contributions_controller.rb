@@ -5,7 +5,7 @@ class ContributionsController < ApplicationController
   helper :kudos, :projects
   helper MapHelper
 
-  before_action :set_project
+  before_action :set_project_or_fail, if: -> { params[:project_id] }
   before_action :set_contribution, except: [:commits_spark, :commits_compound_spark, :index, :summary, :near]
   before_action :set_contributor, only: [:commits_spark, :commits_compound_spark]
   before_action :send_sample_image_if_bot, if: :bot?, only: [:commits_spark, :commits_compound_spark]
@@ -13,17 +13,19 @@ class ContributionsController < ApplicationController
   skip_before_action :store_location, only: [:commits_spark, :commits_compound_spark]
 
   def index
+    fail ParamRecordNotFound unless @project
     @contributions = @project.contributions
                      .sort(params[:sort])
                      .filter_by(params[:query])
                      .includes(person: :account, contributor_fact: :primary_language)
                      .references(:all)
-                     .paginate(per_page: 20, page: params[:page])
+                     .paginate(per_page: 20, page: page_param)
   end
 
   def show
-    redirect_to project_contributor_path(@project, @contribution) && return if @contribution.id != params[:id].to_i
-    @recent_kudos = @contribution.kudoable.recent_kudos
+    fail ParamRecordNotFound unless @project
+    return redirect_to project_contributor_path(@project, @contribution) if @contribution.id != params[:id].to_i
+    @recent_kudos = @contribution.kudoable.recent_kudos || []
   end
 
   def summary
@@ -49,8 +51,11 @@ class ContributionsController < ApplicationController
   private
 
   def set_contributor
-    @contributor = ContributorFact.where(names: { id: params[:id] }).where(analysis_id: @project.best_analysis_id)
-                   .eager_load(:name).first
+    id = params[:id].to_i
+    @contributor = Contribution.find(id).name_fact if id > (1 << 32)
+    @contributor ||= ContributorFact.where(names: { id: id }).where(analysis_id: @project.best_analysis_id)
+                     .eager_load(:name).first
+    fail ParamRecordNotFound unless @contributor
   end
 
   def send_sample_image_if_bot
@@ -59,15 +64,11 @@ class ContributionsController < ApplicationController
   end
 
   def set_contribution
+    fail ParamRecordNotFound unless @project
     @contribution = @project.contributions.find_by(id: params[:id].to_i)
     # It's possible that the contributor we are looking for has been aliased to a new name.
     # Redirect to the new name if we can find it.
     @contribution ||= Contribution.find_indirectly(contribution_id: params[:id].to_i, project: @project)
     fail ParamRecordNotFound unless @contribution
-  end
-
-  def set_project
-    @project = Project.not_deleted.from_param(params[:project_id]).take
-    render 'projects/deleted' if @project.deleted?
   end
 end

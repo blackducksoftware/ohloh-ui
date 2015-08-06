@@ -3,7 +3,7 @@ class AccountsController < ApplicationController
 
   helper MapHelper
 
-  before_action :session_required, only: [:edit, :destroy, :confirm_delete, :me]
+  before_action :session_required, only: [:edit, :destroy, :confirm_delete]
   before_action :set_account, only: [:destroy, :show, :update, :edit, :confirm_delete, :disabled, :settings]
   before_action :redirect_if_disabled, only: [:show, :update, :edit]
   before_action :disabled_during_read_only_mode, only: [:new, :create, :edit, :update]
@@ -26,10 +26,6 @@ class AccountsController < ApplicationController
     @projects, @logos = @account.project_core.used
     @twitter_detail = TwitterDetail.new(@account)
     page_context[:page_header] = 'accounts/show/header'
-  end
-
-  def me
-    redirect_to account_path(current_user)
   end
 
   # FIXME: uncomment when new account creation is re-enabled.
@@ -65,7 +61,7 @@ class AccountsController < ApplicationController
   end
 
   def unsubscribe_emails
-    account_id = Ohloh::Cipher.decrypt(CGI.escape(params[:key]))
+    account_id = Ohloh::Cipher.decrypt(CGI.escape(params[:key].to_s))
     @account = Account.where(id: account_id).first
     @status = @account.try(:email_master)
     @account.update_attribute(:email_master, false) if @status
@@ -81,11 +77,16 @@ class AccountsController < ApplicationController
   def find_claimed_people
     total_entries = params[:query].blank? ? Person::Count.claimed : nil
     @people = Person.find_claimed(params[:query], params[:sort])
-              .paginate(page: params[:page], per_page: 10, total_entries: total_entries)
+              .paginate(page: page_param, per_page: 10, total_entries: total_entries)
   end
 
   def set_account
-    @account = Account::Find.by_id_or_login(params[:id])
+    @account = if params[:id] == 'me'
+                 return redirect_to new_session_path if current_user.nil?
+                 current_user
+               else
+                 Account::Find.by_id_or_login(params[:id])
+               end
     fail ParamRecordNotFound unless @account
   end
 

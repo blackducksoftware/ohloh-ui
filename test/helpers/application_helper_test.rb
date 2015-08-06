@@ -65,4 +65,22 @@ class ApplicationHelperTest < ActionView::TestCase
       number_with_delimiter(500, delimiter: '_').must_equal '500'
     end
   end
+
+  describe 'iusethis_css_class' do
+    it 'must return stack_trigger if user logged in' do
+      ApplicationHelperTest.any_instance.stubs(:logged_in?).returns(true)
+      iusethis_css_class.must_equal 'stack_trigger'
+    end
+
+    it 'must return needs_login if not logged_in' do
+      ApplicationHelperTest.any_instance.stubs(:logged_in?).returns(false)
+      iusethis_css_class.must_equal 'needs_login'
+    end
+  end
+
+  describe 'strip_tags_and_escaped_html' do
+    it 'must remove html tags' do
+      strip_tags_and_escaped_html('<p>test</p>').must_equal 'test'
+    end
+  end
 end

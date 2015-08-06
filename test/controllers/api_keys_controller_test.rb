@@ -232,6 +232,18 @@ class ApiKeysControllerTest < ActionController::TestCase
     must_respond_with 302
   end
 
+  it 'new should understand the me user for logged users' do
+    login_as @user
+    get :new, account_id: 'me'
+    must_respond_with :ok
+    response.body.must_match 'foo'
+  end
+
+  it 'new should understand the me user' do
+    get :new, account_id: 'me'
+    must_redirect_to new_session_path
+  end
+
   # create action
   it 'create with valid parameters should create an api key' do
     login_as @user

@@ -5,8 +5,11 @@ class ForumsController < ApplicationController
   before_action :admin_session_required, except: [:index, :show]
 
   def index
-    # General Discussion is not on the production website
-    @forums = Forum.where("name != 'General Discussion'")
+    # General Discussion is not on the production website.
+    # The created_at and updated_at fields for all forums have been removed
+    # for some reason. Hence the newest forum will have the highest primary id
+    # and will be sorted by primary id.
+    @forums = Forum.where("name != 'General Discussion'").order(id: :desc).limit(10)
   end
 
   def new
@@ -24,7 +27,7 @@ class ForumsController < ApplicationController
   end
 
   def show
-    @topics = @forum.topics.paginate(page: params[:page], per_page: 15)
+    @topics = @forum.topics.paginate(page: page_param, per_page: 15)
   end
 
   def update

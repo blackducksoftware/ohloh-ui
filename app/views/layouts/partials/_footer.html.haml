@@ -44,3 +44,5 @@
       %a{ href: 'http://www.blackducksoftware.com', target: '_blank' }= 'Black Duck Software, Inc.'
       %br
       All Rights Reserved.
+
+= render partial: 'layouts/partials/google_analytics' if Rails.env.production?

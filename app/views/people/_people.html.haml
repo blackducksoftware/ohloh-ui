@@ -1,0 +1,16 @@
+- if @claimed_people.any?
+  %h3.margin_bottom_15= t('.account_holders')
+  = render partial: 'claimed_person', collection: @claimed_people
+  - if @claimed_people.total_entries > 3
+    %p
+      %a.btn.btn-mini.btn-primary#more_account{ href: accounts_path(q: params[:q]) }= t('.more_account_holders')
+    %p &nbsp;
+
+- if @unclaimed_people.any?
+  %h3.margin_bottom_15= t('.unclaimed_committer_ids')
+  - @unclaimed_people.each do |_, people|
+    = render partial: 'unclaimed_person', locals: { people: people }
+  - if @unclaimed_people_count > 3
+    %p
+      %a.btn.btn-mini.btn-primary#more_unclaimed{ href: committers_path(q: params[:q]) }= t('.more_commiters')
+    %p &nbsp;

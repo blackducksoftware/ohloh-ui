@@ -12,3 +12,4 @@ public/system/
 .idea/
 .idea/runConfigurations
 /config/GIT_SHA
+*.swp

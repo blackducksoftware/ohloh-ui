@@ -40,7 +40,8 @@ class ProjectWidget < Widget
   end
 
   def cost_text
-    { text: I18n.t('project_widgets.partner_badge.cost', count: analysis.cocomo_value.to_human), align: :center }
+    { text: I18n.t('project_widgets.partner_badge.cost', count: analysis.cocomo_value.to_human),
+      align: :center }
   end
 
   def head_count_text

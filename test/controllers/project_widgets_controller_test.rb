@@ -51,11 +51,27 @@ describe 'ProjectWidgetsController' do
       assigns(:project).must_equal project
     end
 
+    it 'must not direct browsers to prevent iframing' do
+      get :basic_stats, project_id: project.id
+
+      must_respond_with :ok
+      response.headers.each do |k, v|
+        v.must_equal '' if k.downcase == 'x-frame-options' || k.downcase == 'x-xss-protection'
+      end
+    end
+
     it 'should show not found error' do
       get :basic_stats, project_id: 0
 
       must_respond_with :ok
       @response.body.must_equal I18n.t('widgets.not_found')
+    end
+
+    it 'should render xml format' do
+      get :basic_stats, project_id: project.id, format: :xml
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::BasicStats
     end
   end
 

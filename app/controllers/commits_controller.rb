@@ -1,7 +1,7 @@
 class CommitsController < SettingsController
   helper ProjectsHelper
 
-  before_action :set_project
+  before_action :set_project_or_fail
   before_action :find_named_commit, only: :show
   before_action :find_contributor_fact, only: [:events, :event_details]
   before_action :redirect_to_message_if_oversized_project, except: :statistics
@@ -14,7 +14,7 @@ class CommitsController < SettingsController
                      .includes(:commit, :person, :account)
                      .filter_by(params[:query])
                      .send(parse_sort_term)
-                     .page(params[:page])
+                     .page(page_param)
                      .per_page(20)
   end
 
@@ -23,7 +23,7 @@ class CommitsController < SettingsController
              .includes(:fyle)
              .filter_by(params[:query])
              .order('fyles.name')
-             .page(params[:page])
+             .page(page_param)
              .per_page(10)
     @ignore_prefixes = @named_commit.code_set.ignore_prefixes(@project)
   end
@@ -53,11 +53,6 @@ class CommitsController < SettingsController
   end
 
   private
-
-  def set_project
-    @project = Project.from_param(params[:project_id]).take
-    fail ParamRecordNotFound if @project.nil?
-  end
 
   def find_named_commit
     @named_commit = NamedCommit.find_by(id: params[:id])

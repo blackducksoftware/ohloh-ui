@@ -12,6 +12,16 @@ module PeopleHelper
     person.kudo_position
   end
 
+  def render_people_list
+    if params[:query].blank?
+      Rails.cache.fetch('people_index_page', expires_in: 4.hours) do
+        render 'people'
+      end
+    else
+      render 'people'
+    end
+  end
+
   private
 
   def people_contribution_list_for_no_account(person)

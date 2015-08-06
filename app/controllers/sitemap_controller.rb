@@ -22,7 +22,7 @@ class SitemapController < ApplicationController
   protected
 
   def offset
-    (params[:page].to_i - 1) * MAX_URLS
+    (page_param - 1) * MAX_URLS
   end
 
   def pages(model)

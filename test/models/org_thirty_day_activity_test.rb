@@ -227,8 +227,9 @@ class OrgThirtyDayActivityTest < ActiveSupport::TestCase
       OrgThirtyDayActivity.filter('educational')
     end
 
-    it 'should raise exception when incorrect fiter is invoked' do
-      proc { OrgThirtyDayActivity.filter('incorrect') }.must_raise ArgumentError
+    it 'should call the correct filter method when filter is unsupported' do
+      OrgThirtyDayActivity.expects(:filter_all_orgs).once
+      OrgThirtyDayActivity.filter('i_am_a_banana')
     end
   end
 end

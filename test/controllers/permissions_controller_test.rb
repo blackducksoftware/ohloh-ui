@@ -59,6 +59,17 @@ class PermissionsControllerTest < ActionController::TestCase
     must_respond_with :not_found
   end
 
+  it 'must render projects/deleted when project is deleted' do
+    account = create(:account)
+    project = create(:project)
+    login_as account
+    project.update!(deleted: true, editor_account: account)
+
+    get :show, id: project.to_param
+
+    must_render_template 'deleted'
+  end
+
   # update action
   it 'unlogged users should 401' do
     login_as nil

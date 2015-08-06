@@ -23,5 +23,5 @@
 #projects_index_list
   - if @projects.any?
     = render partial: 'projects/project_index', collection: @projects,
-             locals: { metric: project_metric_from_sort(@sort), compare: true, show_active_committers: true }
+             locals: { compare: true, show_active_committers: true }
     = will_paginate @projects

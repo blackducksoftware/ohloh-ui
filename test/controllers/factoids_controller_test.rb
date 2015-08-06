@@ -20,5 +20,15 @@ describe 'FactoidsControllerTest' do
       must_respond_with :success
       response.body.must_match '<items_returned>1</items_returned>'
     end
+
+    it 'must render projects/deleted when project is deleted' do
+      account = create(:account)
+      project = @factoid.analysis.project
+      project.update!(deleted: true, editor_account: account)
+
+      get :index, project_id: project.to_param
+
+      must_render_template 'deleted'
+    end
   end
 end
