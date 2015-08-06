@@ -44,6 +44,10 @@ class PositionsController < ApplicationController
   end
   # rubocop:enable Metrics/AbcSize
 
+  def show
+    # Empty action
+  end
+
   def destroy
     if @position.destroy
       redirect_to account_positions_path, notice: t('destroy.success')
