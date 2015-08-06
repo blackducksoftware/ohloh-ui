@@ -26,6 +26,11 @@ describe 'PrivacyController' do
       must_respond_with :ok
     end
 
+    it 'should get account privacy page with me as id' do
+      get :edit, id: 'me'
+      must_respond_with :ok
+    end
+
     it 'should allow admins to edit others privacy page' do
       login_as create(:admin)
       get :edit, id: account.id
