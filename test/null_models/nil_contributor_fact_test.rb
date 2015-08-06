@@ -15,6 +15,12 @@ class NilContributorFactTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'name' do
+    it 'should return nil' do
+      nil_contributor_fact.name.is_a?(NilName).must_equal true
+    end
+  end
+
   describe 'first_checkin' do
     it 'should return nil' do
       nil_contributor_fact.first_checkin.must_equal nil
