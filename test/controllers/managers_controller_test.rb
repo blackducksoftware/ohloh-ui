@@ -27,7 +27,7 @@ class ManagersControllerTest < ActionController::TestCase
   end
 
   it 'must render projects/deleted when project is deleted' do
-    login_as accounts(:admin)
+    login_as admin
     project = create(:project)
 
     project.update!(deleted: true, editor_account: create(:account))
