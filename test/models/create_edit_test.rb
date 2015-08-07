@@ -6,6 +6,7 @@ class CreateEditTest < ActiveSupport::TestCase
   end
 
   it 'test_undo_fails_with_no_editor' do
+    @edit.target.editor_account = nil
     proc { @edit.do_undo }.must_raise ActiveRecord::RecordInvalid
     @edit.target.reload
     @edit.target.deleted.must_equal false
