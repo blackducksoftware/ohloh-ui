@@ -1,11 +1,13 @@
 class CodeSet::CommitFactory
   DEFAULT_COMMIT_COMMENT = '[no comment]'
+  DEFAULT_NAME = '[anonymous]'
 
   delegate :repository, to: :@code_set
 
-  def initialize(code_set, scm_commit)
+  def initialize(code_set, scm_commit, trunk_commit_tokens)
     @code_set = code_set
     @scm_commit = scm_commit
+    @trunk_commit_tokens = trunk_commit_tokens
   end
 
   def find_or_create
@@ -30,8 +32,8 @@ class CodeSet::CommitFactory
   end
 
   def update_on_trunk
-    @commit.on_trunk = repository.class.dag?
-    @commit.on_trunk ||= trunk_commit_tokens.delete(@scm_commit.sha1).to_bool
+    @commit.on_trunk = !repository.class.dag?
+    @commit.on_trunk ||= @trunk_commit_tokens.include?(@commit.sha1)
   end
 
   def update_time
@@ -52,7 +54,7 @@ class CodeSet::CommitFactory
   end
 
   def find_or_create_name
-    name = @scm_commit.author_name || @scm_commit.committer_name || '[anonymous]'
+    name = @scm_commit.author_name || @scm_commit.committer_name || DEFAULT_NAME
 
     @name_cache ||= {}
     @name_cache[name] ||= Name.where(name: name).first_or_create
@@ -66,12 +68,5 @@ class CodeSet::CommitFactory
 
     @email_address_cache ||= {}
     @email_address_cache[email] ||= EmailAddress.where(address: email).first_or_create
-  end
-
-  def trunk_commit_tokens
-    return @trunk_commit_tokens if @trunk_commit_tokens
-    return [] unless repository.class.dag?
-
-    @code_set.clump.scm.commit_tokens(@options.merge(trunk_only: true))
   end
 end

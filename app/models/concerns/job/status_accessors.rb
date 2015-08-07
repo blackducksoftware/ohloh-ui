@@ -10,7 +10,7 @@ module Job::StatusAccessors
     scope :scheduled,  -> { where(status: STATUS_SCHEDULED) }
     scope :running,    -> { where(status: STATUS_RUNNING) }
     scope :failed,     -> { where(status: STATUS_FAILED) }
-    scope :complete,   -> { where(status: STATUS_COMPLETED) }
+    scope :completed,   -> { where(status: STATUS_COMPLETED) }
     scope :incomplete, -> { where.not(status: STATUS_COMPLETED) }
   end
 

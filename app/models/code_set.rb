@@ -15,11 +15,10 @@ class CodeSet < ActiveRecord::Base
   end
 
   def fetch(&block)
-    saved_max_steps = nil
     yield(0, 1) if block_given?
 
     find_or_create_clump
-    scm_pull(&block)
+    saved_max_steps = scm_pull(&block)
 
     yield(saved_max_steps || 1, saved_max_steps || 1) if block_given?
 
@@ -38,6 +37,8 @@ class CodeSet < ActiveRecord::Base
   private
 
   def scm_pull
+    saved_max_steps = nil
+
     clump.scm.pull(repository.source_scm) do |step, inner_max_step|
       # As each rev completes, do some housekeeping and progress notification
       clump.update_fetched_at(Time.now.utc) if step > 0
@@ -45,5 +46,7 @@ class CodeSet < ActiveRecord::Base
       saved_max_steps = [saved_max_steps || 0, inner_max_step + 1].max
       yield(step, saved_max_steps) if block_given?
     end
+
+    saved_max_steps
   end
 end

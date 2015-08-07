@@ -25,11 +25,19 @@ class Job < ActiveRecord::Base
     self.class.to_s[0..0]
   end
 
+  def progress_message
+    '' # Override in derived classes
+  end
+
+  def set_process_title(status = '')
+    $0 = "#{ initial_letter } Job #{ id } (#{ current_step || '-' }/#{ max_steps || '-' }) #{ status }"
+  end
+
   def fork!
     pid = Process.fork do
       ActiveRecord::Base.establish_connection
       set_process_title('Starting')
-      slave.log_info("Spawned Job #{ id } in process #{ Process.pid }", self)
+      slave.logs.create!(message: "Spawned Job #{id} in process #{Process.pid}", job_id: id, code_set_id: code_set_id)
 
       trap_exit
       setup_environment
@@ -39,6 +47,35 @@ class Job < ActiveRecord::Base
     ActiveRecord::Base.establish_connection
     pid
   end
+
+  def schedule!
+    fail 'Cannot schedule a running job.' if running?
+    update(status: STATUS_SCHEDULED, slave: nil, exception: nil, backtrace: nil)
+  end
+
+  def categorize_on_failure
+    update(failure_group_id: nil)
+    failure_group = FailureGroup.where(FailureGroup.arel_table[:pattern].matches(exception)).first
+    update(failure_group_id: failure_group.id) if failure_group
+  end
+
+  class << self
+    def incomplete_project_job(project_ids)
+      incomplete.where(project_id: project_ids).take
+    end
+
+    def clean(older_than = nil)
+      jobs = Job.completed
+      jobs = jobs.where('current_step_at < ?', older_than) if older_than
+      jobs.delete_all
+    end
+
+    def all_types
+      subclasses
+    end
+  end
+
+  private
 
   def setup_environment
     # I can't figure out a set of environment variables that simultaneously pleases both
@@ -57,46 +94,6 @@ class Job < ActiveRecord::Base
     Job::Manager.new(self).run
   end
 
-  def schedule!
-    Job.transaction do
-      reload
-      fail 'Cannot schedule a running job.' if running?
-      update(status: STATUS_SCHEDULED, slave: nil, exception: nil, backtrace: nil)
-    end
-  end
-
-  def progress_message
-    '' # Override in derived classes
-  end
-
-  def set_process_title(status = '')
-    $0 = "#{ initial_letter } Job #{ id } (#{ current_step || '-' }/#{ max_steps || '-' }) #{ status }"
-  end
-
-  def categorize_on_failure
-    update(failure_group_id: nil)
-    failure_group = FailureGroup.where(FailureGroup.arel_table[:pattern].matches(exception)).first
-    update(failure_group_id: failure_group.id) if failure_group
-  end
-
-  class << self
-    def incomplete_project_job(project_ids)
-      where(project_id: project_ids).where.not(status: STATUS_COMPLETED).first
-    end
-
-    def clean(older_than = nil)
-      jobs = Job.where(status: STATUS_COMPLETED)
-      jobs = jobs.where('current_step_at < ?', older_than) if older_than
-      jobs.delete_all
-    end
-
-    def all_types
-      subclasses
-    end
-  end
-
-  private
-
   def set_code_set_id
     self.code_set_id ||= sloc_set.code_set_id
   end
@@ -109,9 +106,9 @@ class Job < ActiveRecord::Base
     trap 'EXIT' do
       if running?
         update(status: Job::STATUS_FAILED, exception: 'Host process killed.')
-        FailureGroup.categorize(@job.id)
-        @job.categorize_on_failure
-        slave.log_error('Host process killed.', self)
+        categorize_on_failure
+        slave.logs.create!(message: 'Host process killed.', job_id: id, code_set_id: code_set_id,
+                           level: SlaveLog::ERROR)
       end
     end
   end

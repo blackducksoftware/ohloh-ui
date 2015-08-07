@@ -15,7 +15,7 @@ class FetchJob < Job
 
   # rubocop:disable Metrics/AbcSize
   def after_completed
-    create_import_job && return if code_set.as_of.nil? || max_steps > 1
+    create_import_job && return if code_set.as_of.nil? || max_steps.to_i > 1
 
     # We didn't find any new code, so just pass along the timestamp of this fetch to
     # the sloc_set and analyses.

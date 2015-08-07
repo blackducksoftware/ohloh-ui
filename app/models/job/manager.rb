@@ -1,5 +1,6 @@
 class Job::Manager
-  delegate :slave, :project, :repository, :after_completed, :set_process_title, :priority, :started_at, to: :@job
+  delegate :slave, :project, :repository, :after_completed, :set_process_title, :priority, :started_at,
+           :code_set_id, :current_step, :max_steps, to: :@job
 
   def initialize(job)
     @job = job
@@ -23,7 +24,7 @@ class Job::Manager
   def update_completed_status
     @job.update(status: Job::STATUS_COMPLETED)
     slave.logs.create!(message: I18n.t('slaves.skipping_job'),
-                       job_id: @job.id, code_set_id: @job.code_set_id)
+                       job_id: @job.id, code_set_id: code_set_id)
     set_process_title('Completed')
   end
 
@@ -31,7 +32,7 @@ class Job::Manager
     if project
       project.deleted?
     elsif repository
-      !repository.projects.any? { |p| !p.deleted? }
+      repository.projects.all?(&:deleted?)
     end
   end
 
@@ -49,20 +50,20 @@ class Job::Manager
     @job.update(status: Job::STATUS_COMPLETED)
     after_completed
     slave.logs.create!(message: I18n.t('slaves.job_completed'),
-                       job_id: @job.id, code_set_id: @job.code_set_id)
+                       job_id: @job.id, code_set_id: code_set_id)
     set_process_title('Completed')
   end
 
   def handle_too_long_exception
     slave.logs.create!(message: I18n.t('slaves.runtime_exceeded'),
-                       job_id: @job.id, code_set_id: @job.code_set_id)
+                       job_id: @job.id, code_set_id: code_set_id)
     @job.update(status: Job::STATUS_SCHEDULED, wait_until: Time.now.utc + 16.hours,
                 exception: $ERROR_INFO.message, backtrace: $ERROR_INFO.backtrace.join("\n"))
   end
 
   def handle_exception
     slave.logs.create!(message: I18n.t('slaves.job_failed'),
-                       job_id: @job.id, code_set_id: @job.code_set_id)
+                       job_id: @job.id, code_set_id: code_set_id)
     @job.status = Job::STATUS_FAILED
     @job.exception = $ERROR_INFO.message
     @job.backtrace = $ERROR_INFO.backtrace.join("\n")
@@ -72,12 +73,13 @@ class Job::Manager
 
   def kill_long_running_job
     return if priority > 0 || !older_than_8_hours? || current_step.to_i >= max_steps.to_i ||
-              !can_have_too_long_exception?
+              !@job.class.can_have_too_long_exception?
 
     fail JobTooLongException.new, 'Runtime limit exceeded.'
   end
 
   def older_than_8_hours?
+    return unless started_at
     started_at < Time.now.utc - 8.hours
   end
 end

@@ -22,9 +22,7 @@ class Repository < ActiveRecord::Base
   end
 
   def failed?
-    job = jobs.incomplete.first
-    return true if job && job.status == Job::STATUS_FAILED
-    false
+    jobs.incomplete.first.try(:failed?)
   end
 
   def source_scm
@@ -54,6 +52,14 @@ class Repository < ActiveRecord::Base
 
   def clump_class
     GitClump
+  end
+
+  def schedule_fetch(priority = 0)
+    if best_code_set
+      CompleteJob.try_create(best_code_set, priority)
+    else
+      ensure_job(priority)
+    end
   end
 
   class << self

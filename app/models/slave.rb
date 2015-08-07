@@ -8,7 +8,7 @@ class Slave < ActiveRecord::Base
 
   class << self
     def from_param(param)
-      where('id = ? or hostname = ?', param.to_i, param)
+      where('id = ? or hostname = ?', param.to_i, param.to_s)
     end
 
     def max_jobs
@@ -42,7 +42,7 @@ class Slave < ActiveRecord::Base
 
   def run(cmd)
     output = `#{ cmd }`
-    fail "#{ cmd } failed: #{ output }" unless $CHILD_STATUS == 0
+    fail "#{ cmd } failed: #{ output }" if command_failed?
     output
   end
 
@@ -50,6 +50,8 @@ class Slave < ActiveRecord::Base
     run "ssh #{ ENV['CLUMP_MACHINE_ADDRESS'] } '#{ cmd }'"
   end
 
+  # NOTE: Replaces get_disk_space.
+  # The columns used_blocks and available_blocks are useful only in the views.
   def update_used_percent
     disk_info = run_on_clump_machine("df -P -m '#{Clump::DIRECTORY}' | tail -1").strip
     self.used_percent = disk_info.slice(/\d+(?=%)/)
@@ -75,5 +77,11 @@ class Slave < ActiveRecord::Base
       .where(Job.where('status != 5 AND jobs.repository_id = repositories.id').exists.not)
       .order('code_sets.logged_at nulls first')
       .limit(limit)
+  end
+
+  private
+
+  def command_failed?
+    $CHILD_STATUS != 0
   end
 end

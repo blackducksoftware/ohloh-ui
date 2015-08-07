@@ -10,4 +10,8 @@ class HgRepositoryTest < ActiveSupport::TestCase
 
     HgRepository.find_existing(repository).must_equal repository
   end
+
+  it 'must return true for dag' do
+    HgRepository.must_be :dag?
+  end
 end

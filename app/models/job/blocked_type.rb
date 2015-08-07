@@ -3,7 +3,7 @@ class Job::BlockedType
 
   def initialize
     @slave = Slave.local
-    @all = Job.send(:subclasses)
+    @all = Job.subclasses
   end
 
   def allowed

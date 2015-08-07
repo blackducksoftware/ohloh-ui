@@ -5,10 +5,9 @@ module SlaveDaemon
   INTERVAL_BEFORE_CHECKING_JOBS_COMPLETION = 5
   DISABLED_SLAVE_LOOP_INTERVAL = 60
 
-  @pids = []
-
   def run
-    change_directory
+    @pids = []
+    Dir.chdir(Rails.root)
     trap_exit
     require_environment_to_ensure_db_connection
     run_job_loop
@@ -70,11 +69,6 @@ module SlaveDaemon
     end
   end
 
-  def change_directory
-    app_root_directory = File.expand_path('../../', __FILE__)
-    Dir.chdir(app_root_directory)
-  end
-
   # TODO: Make this work.
   def trap_exit
     trap 'EXIT' do
@@ -111,4 +105,4 @@ module SlaveDaemon
   end
 end
 
-SlaveDaemon.run
+SlaveDaemon.run unless Rails.env.test?

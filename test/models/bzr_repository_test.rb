@@ -10,4 +10,8 @@ class BzrRepositoryTest < ActiveSupport::TestCase
 
     BzrRepository.find_existing(repository).must_equal repository
   end
+
+  it 'must return true for dag' do
+    BzrRepository.must_be :dag?
+  end
 end

@@ -35,9 +35,9 @@ class Slave::Sync
   end
 
   def create_missing_clumps_for_code_sets_on_disk
-    CodeSet.includes(:clump).where(id: ClumpDirectory.code_set_ids).where(clumps: { id: nil }) do |code_set|
-      clump = code_set.find_or_create_clump
-      @slave.logs.create!(message: I18n.t('slaves.clump_found', path: ClumpDirectory.path(clump.code_set_id)),
+    CodeSet.includes(:clump).where(id: ClumpDirectory.code_set_ids).where(clumps: { id: nil }).each do |code_set|
+      code_set.find_or_create_clump
+      @slave.logs.create!(message: I18n.t('slaves.clump_found', path: ClumpDirectory.path(code_set.id)),
                           code_set_id: code_set.id, level: SlaveLog::WARNING)
     end
   end
