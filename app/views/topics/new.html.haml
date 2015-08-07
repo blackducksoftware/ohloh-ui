@@ -1,14 +1,15 @@
 - content_for :html_title do
   = t('.new_topic')
 
+%br
 %h1.margin_top_0
   %span= link_to t('.forums'), forums_url
   \:
   = link_to @forum.name, forum_path(@forum)
 
 %h2.margin_top_20= t('.new_topic')
-.well.col-md-11.margin_left_20
-  .col-md-9
+.well.col-md-12
+  .col-md-10
     = form_for [@forum, @topic], html: { class: 'topic_form' } do |f|
       = render partial: 'form', locals: { f: f }
       .actions
@@ -16,4 +17,3 @@
   .col-md-2.no_margin_left{ style: 'margin-top: -10px' }
 
   = render 'shared/markdown_help', style: 'margin-left: 90px;'
-  / TODO: Don't forget to fix the markdown syntax

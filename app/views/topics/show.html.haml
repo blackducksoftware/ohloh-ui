@@ -25,10 +25,7 @@
 
   - collection_of_all_topics = @topic.forum.topics
   %ul.pager
-    %li.pull-left
-      = link_to_unless collection_of_all_topics.index(@topic).zero?, t('.previous_topic_html'),
-        previous_topic(collection_of_all_topics, @topic)
-    %li.pull-right
-      = link_to_if next_topic?(collection_of_all_topics, @topic), t('.next_topic_html'),
-        next_topic(collection_of_all_topics, @topic)
-      / TODO: Figure out how to change the classes of these html elements
+    %li.pull-left{ class: ('disabled'  if collection_of_all_topics.index(@topic).zero?) }
+      = link_to t('.previous_topic_html'), previous_topic(collection_of_all_topics, @topic)
+    %li.pull-right{ class: ('disabled'  if collection_of_all_topics.index(@topic).zero?) }
+      = link_to t('.next_topic_html'), next_topic(collection_of_all_topics, @topic)

@@ -7,12 +7,6 @@ GIT
       thor (~> 0.18)
 
 GIT
-  remote: https://github.com/ambethia/recaptcha
-  revision: f4450fb4088e172651cc4d5080edb42cc4af4e3f
-  specs:
-    recaptcha (0.4.0)
-
-GIT
   remote: https://github.com/gregbell/active_admin.git
   revision: 5a2b7b5bc683ae98a114958c3d1eb9c932234c56
   specs:
@@ -282,6 +276,7 @@ GEM
       i18n
       polyamorous (~> 1.2)
     rb-readline (0.5.2)
+    recaptcha (0.4.0)
     redis (3.2.1)
     redis-actionpack (4.0.0)
       actionpack (~> 4)
@@ -414,7 +409,7 @@ DEPENDENCIES
   rails
   rails-html-sanitizer
   rb-readline
-  recaptcha!
+  recaptcha
   redis-rails
   rubocop
   ruby_parser

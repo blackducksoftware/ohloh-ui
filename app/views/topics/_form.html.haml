@@ -1,8 +1,8 @@
 %fieldset
   .control-group
-    %label.control-label.required= t('.title')
+    %label.control-label.required.margin_top_10= t('.title')
     .controls
-      = f.text_field :title, class: 'col-md-6', style: 'width: 80%'
+      = f.text_field :title, class: 'col-md-6', style: 'width: 70%'
       %span.help-inline.margin_top_15
         by #{ current_user.login }
       %span.help-block= t('.enter_topic_title')
@@ -10,7 +10,7 @@
     %label.control-label.required= t('.message')
     .controls
       = f.fields_for :posts do |f2|
-        = f2.text_area :body, rows: 10, cols: 40, style: 'width: 115%'
+        = f2.text_area :body, rows: 10, cols: 40, style: 'width: 95%'
         - error_tag @topic, :'posts.body'
       %p.help-block= t('.first_post')
 
