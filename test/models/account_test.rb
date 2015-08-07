@@ -390,6 +390,7 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it '#non_human_ids' do
+    create(:account, login: 'uber_data_crawler')
     ohloh_slave_id = Account.hamster.id
     uber_data_crawler_id = Account.uber_data_crawler.id
 
