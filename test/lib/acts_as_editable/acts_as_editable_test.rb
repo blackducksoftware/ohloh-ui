@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class ActsAsEditable::ActsAsEditableTest < ActiveSupport::TestCase
-  fixtures :accounts
-
   it 'edits get created on new project' do
     project = create(:project, name: 'Foo', description: 'Best of projects!', created_at: Time.current)
     CreateEdit.where(target: project).count.must_equal 1

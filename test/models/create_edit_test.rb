@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class CreateEditTest < ActiveSupport::TestCase
-  fixtures :accounts, :projects
-
   before do
     @edit = create(:create_edit)
   end
