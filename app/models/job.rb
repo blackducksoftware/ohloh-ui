@@ -34,16 +34,7 @@ class Job < ActiveRecord::Base
   end
 
   def fork!
-    pid = Process.fork do
-      ActiveRecord::Base.establish_connection
-      set_process_title('Starting')
-      slave.logs.create!(message: "Spawned Job #{id} in process #{Process.pid}", job_id: id, code_set_id: code_set_id)
-
-      trap_exit
-      setup_environment
-      run!
-    end
-
+    pid = fork_daemonized_subprocess
     ActiveRecord::Base.establish_connection
     pid
   end
@@ -110,6 +101,21 @@ class Job < ActiveRecord::Base
         slave.logs.create!(message: 'Host process killed.', job_id: id, code_set_id: code_set_id,
                            level: SlaveLog::ERROR)
       end
+    end
+  end
+
+  def fork_daemonized_subprocess
+    Process.fork do
+      require 'daemons'
+      Daemons.daemonize(DAEMONIZATION_OPTIONS)
+
+      ActiveRecord::Base.establish_connection
+      set_process_title('Starting')
+      slave.logs.create!(message: "Spawned Job #{id} in process #{Process.pid}", job_id: id, code_set_id: code_set_id)
+
+      trap_exit
+      setup_environment
+      run!
     end
   end
 end

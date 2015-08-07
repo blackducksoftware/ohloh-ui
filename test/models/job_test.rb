@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'daemons'
 
 class JobTest < ActiveSupport::TestCase
   before do
@@ -7,6 +8,8 @@ class JobTest < ActiveSupport::TestCase
         block.call
       end
     end
+
+    Daemons.stubs(:daemonize)
   end
 
   let(:repository) { create(:git_repository) }

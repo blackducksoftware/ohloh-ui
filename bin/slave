@@ -1,14 +1,6 @@
 #!/usr/bin/env ruby
 
 require 'daemons'
+require File.expand_path('../../config/environment', __FILE__)
 
-app_root_directory = File.expand_path('../../', __FILE__)
-options = {
-  app_name: 'slave',
-  dir_mode: :normal,                              # read `dir` value as an absolute path.
-  dir: "#{ app_root_directory }/tmp/pids",
-  log_dir: "#{ app_root_directory }/log",         # needs absolute path, see Daemonize#daemonize.
-  log_output: true
-}
-
-Daemons.run('lib/slave_daemon.rb', options)
+Daemons.run('lib/slave_daemon.rb', DAEMONIZATION_OPTIONS)
