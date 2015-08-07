@@ -48,7 +48,7 @@ en:
       closed: 'closed'
       new: 'new'
       stale: 'stale'
-      recent_post: 'Recent post'
+      recent_post: 'Recent Post'
       sticky: 'Sticky:'
       ago_by: 'ago by %{name}'
     current_discussions:
