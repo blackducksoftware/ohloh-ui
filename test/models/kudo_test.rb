@@ -1,11 +1,15 @@
 require 'test_helper'
 
 class KudoTest < ActiveSupport::TestCase
+  let(:admin_account) { create(:admin) }
+  let(:user1_account) { create(:account) }
+  let(:user2_account) { create(:account) }
+  let(:project1) { create(:project) }
+  let(:project2) { create(:project) }
+  let(:project3) { create(:project) }
+
   it 'recent' do
     Kudo.delete_all
-    admin_account = create(:admin)
-    user1_account = create(:account)
-    user2_account = create(:account)
     create(:kudo, sender: user1_account, account: admin_account)
     create(:kudo, sender: user2_account, account: admin_account)
 
@@ -22,15 +26,12 @@ class KudoTest < ActiveSupport::TestCase
   describe 'sort_by_created_at' do
     before do
       Kudo.delete_all
-      @admin_account = create(:admin)
-      @user1_account = create(:account)
-      @user2_account = create(:account)
-      @kudo1 = create(:kudo, sender: @admin_account, account: @user1_account,
-                             project_id: 1)
-      @kudo2 = create(:kudo, sender: @admin_account, account: nil,
-                             project_id: 3)
-      @kudo3 = create(:kudo, sender: @admin_account, account: @user2_account,
-                             project_id: 2)
+      @kudo1 = create(:kudo, sender: admin_account, account: user1_account,
+                             project_id: project1.id)
+      @kudo2 = create(:kudo, sender: admin_account, account: nil,
+                             project_id: project2.id)
+      @kudo3 = create(:kudo, sender: admin_account, account: user2_account,
+                             project_id: project3.id)
     end
 
     describe 'no account id' do
@@ -39,31 +40,31 @@ class KudoTest < ActiveSupport::TestCase
       end
 
       it 'must order by created_at DESC' do
-        @admin_account.sent_kudos.sort_by_created_at.must_equal [@kudo3, @kudo2, @kudo1]
+        admin_account.sent_kudos.sort_by_created_at.must_equal [@kudo3, @kudo2, @kudo1]
       end
 
       it 'must order by project_id DESC when created_at is equal' do
-        @kudo2.update!(created_at: @kudo3.created_at)
+        @kudo2.update!(created_at: @kudo3.created_at, project_id: create(:project).id)
 
-        @admin_account.sent_kudos.sort_by_created_at.must_equal [@kudo2, @kudo3, @kudo1]
+        admin_account.sent_kudos.sort_by_created_at.must_equal [@kudo2, @kudo3, @kudo1]
       end
     end
 
     describe 'with or without account id' do
       it 'must work when some kudos have null account_id' do
-        @admin_account.sent_kudos.sort_by_created_at.must_equal [@kudo3, @kudo2, @kudo1]
+        admin_account.sent_kudos.sort_by_created_at.must_equal [@kudo3, @kudo2, @kudo1]
       end
 
       it 'must order by max created_at when kudos have same account_id' do
         @kudo1.update!(account_id: @kudo3.account_id)
 
-        @admin_account.sent_kudos.sort_by_created_at.must_equal [@kudo3, @kudo1, @kudo2]
+        admin_account.sent_kudos.sort_by_created_at.must_equal [@kudo3, @kudo1, @kudo2]
       end
 
       it 'must order by project_id when kudos have same account_id' do
-        @kudo2.update!(project_id: 4, account: @user2_account)
+        @kudo2.update!(project_id: create(:project).id, account: user2_account)
 
-        @admin_account.sent_kudos.sort_by_created_at.must_equal [@kudo2, @kudo3, @kudo1]
+        admin_account.sent_kudos.sort_by_created_at.must_equal [@kudo2, @kudo3, @kudo1]
       end
     end
   end
