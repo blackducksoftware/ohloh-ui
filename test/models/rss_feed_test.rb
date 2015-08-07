@@ -34,7 +34,7 @@ class RssFeedTest < ActiveSupport::TestCase
     url = 'http://rss.roll/never_gonna_sync_you_up.rss'
     rss_feed = create(:rss_feed, url: url)
     rss_feed.stubs(:parse).raises Timeout::Error.new
-    rss_feed.fetch(accounts(:admin))
+    rss_feed.fetch(create(:admin))
     rss_feed.error.must_equal I18n.t('rss_feeds.index.timeout_error', url: url)
   end
 
@@ -46,7 +46,7 @@ class RssFeedTest < ActiveSupport::TestCase
     project.reload.updated_at.to_time.to_i.must_equal before.to_i
     create(:rss_subscription, rss_feed: rss_feed, project: project)
     rss_feed.url = 'test/fixtures/files/news.rss'
-    rss_feed.fetch(accounts(:admin))
+    rss_feed.fetch(create(:admin))
     project.reload.updated_at.to_time.wont_equal before
   end
 end
