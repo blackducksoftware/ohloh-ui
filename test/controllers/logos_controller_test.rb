@@ -52,7 +52,7 @@ class LogosControllerTest < ActionController::TestCase
   it 'upload logo via desktop file' do
     login_as @admin
     Project.any_instance.stubs(:edit_authorized?).returns(true)
-    tempfile = Rack::Test::UploadedFile.new('test/fixtures/files/ruby.png', 'image/png')
+    tempfile = Rack::Test::UploadedFile.new('test/data/files/ruby.png', 'image/png')
     post :create, project_id: project.id, logo: { attachment: tempfile }
     must_redirect_to new_project_logos_path
     project.reload.logo.attachment_file_name.must_equal 'ruby.png'
