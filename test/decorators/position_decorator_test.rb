@@ -1,8 +1,8 @@
 require 'test_helper'
 
 class PositionDecoratorTest < ActiveSupport::TestCase
-  let(:user) { accounts(:user) }
-  let(:admin) { accounts(:admin) }
+  let(:user) { create(:account) }
+  let(:admin) { create(:admin) }
 
   let(:cbp) do
     [{ 'month' => Time.parse('2010-04-30 20:00:00 -0400'), 'commits' => '1', 'position_id' => '3' },
@@ -13,11 +13,19 @@ class PositionDecoratorTest < ActiveSupport::TestCase
 
   describe 'analyzed?' do
     it 'should return false when position is not analyzed' do
+      create_position(account: admin)
       admin.positions.first.decorate.analyzed?.must_equal false
     end
 
     it 'should return true when position is analyzed' do
+      position = create_position(account: user)
+      cbp.first.merge!('position_id' => position.id)
+
+      vita = create(:best_vita, account_id: user.id)
+      vita_fact = create(:vita_fact, vita_id: vita.id)
+      user.update(best_vita_id: vita.id)
       user.best_vita.vita_fact.update(commits_by_project: cbp)
+
       user.positions.first.decorate.analyzed?.must_equal true
     end
   end
