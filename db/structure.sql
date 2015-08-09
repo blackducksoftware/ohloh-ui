@@ -1897,6 +1897,17 @@ CREATE TABLE jobs_backup (
 
 
 --
+-- Name: karthik; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE karthik (
+    id integer,
+    code_set_id integer,
+    as_of integer
+);
+
+
+--
 -- Name: knowledge_base_statuses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 

@@ -235,6 +235,13 @@ describe 'AccountsController' do
       must_redirect_to new_session_path
     end
 
+    it 'must render the edit page if admin' do
+      account = create(:account)
+      login_as admin
+      get :edit, id: account.id
+      must_respond_with :success
+    end
+
     it 'must logout spammer trying to edit or update' do
       account = create(:account)
       login_as account
@@ -310,13 +317,15 @@ describe 'AccountsController' do
     end
 
     it 'must not allow deletion by other accounts' do
-      account = create(:account)
-      login_as create(:account)
+      my_account = create(:account)
+      your_account = create(:account)
+      login_as my_account
+      @controller.session[:account_id] = my_account.id
 
       assert_no_difference 'Account.count' do
-        post :destroy, id: account.to_param
-        flash.now[:error].must_match(/You can't edit another's account/)
+        post :destroy, id: your_account.to_param
       end
+      must_redirect_to edit_deleted_account_path(your_account)
     end
 
     it 'while deleting an account, edits.account_id and edits.undone_by should be marked with Anonymous Coward ID' do
