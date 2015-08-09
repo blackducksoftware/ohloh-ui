@@ -22,6 +22,18 @@ class ForumTest < ActiveSupport::TestCase
     forum.wont :save
   end
 
+  it 'invalid forum with a floating number' do
+    forum.position = 1.2
+    forum.wont_be :valid?
+    forum.wont :save
+  end
+
+  it 'invalid forum with a number more than 9 digits' do
+    forum.position = 9_987_654_321
+    forum.wont_be :valid?
+    forum.wont :save
+  end
+
   it 'forum topics count and posts count are zero by default' do
     forum = Forum.create(name: 'Example Forum')
     forum.posts_count.must_equal 0

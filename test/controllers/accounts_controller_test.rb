@@ -73,6 +73,13 @@ describe 'AccountsController' do
       must_redirect_to disabled_account_url(admin)
     end
 
+    it 'should redirect json requests if account is disabled' do
+      Account::Access.any_instance.stubs(:disabled?).returns(true)
+
+      get :show, id: admin.login, format: :json
+      must_redirect_to disabled_account_url(admin)
+    end
+
     it 'should redirect if account is labeled a spammer' do
       account = create(:account)
       account_access = Account::Access.new(account)
@@ -129,9 +136,14 @@ describe 'AccountsController' do
     end
   end
 
-  describe 'new' do
-    it 'must respond with success' do
+  describe 'disabled' do
+    it 'must respond with success when queried via html' do
       get :disabled, id: create(:spammer).to_param
+      must_respond_with :success
+    end
+
+    it 'must respond with success when queried via json' do
+      get :disabled, id: create(:spammer).to_param, format: :json
       must_respond_with :success
     end
   end

@@ -8,6 +8,7 @@
     = f.label :position, t('.position'), class: 'control-label'
     .controls
       = f.text_field :position, size: 5
+      - error_tag @forum, :position
   .control-group.clearfix{ style: 'margin: 0;' }
     = f.label :description, t('.description'), class: 'control-label'
     .controls

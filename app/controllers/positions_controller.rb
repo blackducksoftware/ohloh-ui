@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class PositionsController < ApplicationController
   helper ProjectsHelper
   helper PositionsHelper
@@ -13,26 +14,23 @@ class PositionsController < ApplicationController
       @position.language_experiences.delete_all
       @position.update!(position_params)
     end
-
     redirect_to account_positions_path(@account)
   rescue => e
     flash.now[:error] = e.message unless e.is_a?(ActiveRecord::RecordInvalid)
     render :edit
   end
 
-  # rubocop:disable Metrics/AbcSize
   def create
-    @position = @account.positions.new(position_params)
-    if @position.save
-      if params[:invite].present? && @account.created_at > 1.day.ago
-        flash[:success] = t('.invite_success')
-      end
-      redirect_to account_positions_path(@account)
-    else
-      render :new
-    end
+    @position = @account.positions.create!(position_params)
+    flash_invite_success_if_needed
+    redirect_to account_positions_path(@account)
+  rescue
+    @position = Position.new
+    render :new, status: :unprocessable_entity
   end
-  # rubocop:enable Metrics/AbcSize
+
+  def show
+  end
 
   def destroy
     if @position.destroy
@@ -68,6 +66,10 @@ class PositionsController < ApplicationController
   end
 
   private
+
+  def flash_invite_success_if_needed
+    flash[:success] = t('.invite_success') if params[:invite].present? && @account.created_at > 1.day.ago
+  end
 
   def redirect_to_new_position_path
     redirect_to new_account_position_path(current_user, committer_name: @name.name,

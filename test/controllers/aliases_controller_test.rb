@@ -66,6 +66,14 @@ describe 'AliasesController' do
       must_respond_with :redirect
       must_redirect_to action: :index
     end
+
+    it 'handles invalid params' do
+      login_as @account
+      before = Alias.count
+      post :create, project_id: @project.id, commit_name_id: create(:name).id
+      Alias.count.must_equal(before)
+      must_respond_with :unprocessable_entity
+    end
   end
 
   it 'undo' do
