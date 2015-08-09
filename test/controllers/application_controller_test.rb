@@ -29,6 +29,13 @@ describe 'ApplicationController' do
       response.headers['Content-Type'].must_include('application/xml')
     end
 
+    it 'render_404 as png' do
+      get :renders_404, format: 'png'
+      must_respond_with :not_found
+      response.body.blank?.must_equal true
+      response.headers['Content-Type'].must_include('image/png')
+    end
+
     it 'render_404 with request of php should respond with html' do
       get :renders_404, format: 'php'
       must_respond_with :not_found
@@ -66,6 +73,14 @@ describe 'ApplicationController' do
       Rails.application.config.stubs(:consider_all_requests_local).returns false
       @controller.expects(:notify_airbrake).never
       get :throws_param_record_not_found
+      must_respond_with :not_found
+      Rails.application.config.unstub(:consider_all_requests_local)
+    end
+
+    it 'does not invoke airbrake on non-existant PNGs' do
+      Rails.application.config.stubs(:consider_all_requests_local).returns false
+      @controller.expects(:notify_airbrake).never
+      get :renders_404, format: 'png'
       must_respond_with :not_found
       Rails.application.config.unstub(:consider_all_requests_local)
     end

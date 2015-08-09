@@ -64,6 +64,7 @@ class ContributionsController < ApplicationController
   end
 
   def set_contribution
+    fail ParamRecordNotFound unless @project
     @contribution = @project.contributions.find_by(id: params[:id].to_i)
     # It's possible that the contributor we are looking for has been aliased to a new name.
     # Redirect to the new name if we can find it.

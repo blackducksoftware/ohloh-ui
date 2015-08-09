@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'admin/comments' => redirect('/404')
   ActiveAdmin.routes(self)
   root to: 'home#index'
 
@@ -80,7 +81,6 @@ Rails.application.routes.draw do
     end
 
     collection do
-      get :me
       get :unsubscribe_emails
     end
 
@@ -139,7 +139,7 @@ Rails.application.routes.draw do
     resources :topics, only: [:show]
   end
 
-  resources :topics, except: [:index, :new, :create] do
+  resources :topics, except: [:new, :create] do
     resources :posts, except: [:new]
   end
 
@@ -148,8 +148,8 @@ Rails.application.routes.draw do
   get 'maintenance', to: 'abouts#maintenance'
   get 'tools', to: 'abouts#tools'
 
-  get 'p/compare', to: 'compares#projects', as: :compare_projects
-  get 'p/project_graph', to: 'compares#projects_graph', as: :compare_graph_projects
+  get 'p/_compare', to: 'compares#projects', as: :compare_projects
+  get 'p/_project_graph', to: 'compares#projects_graph', as: :compare_graph_projects
   get 'projects/:id/stacks', to: 'stacks#project_stacks', constraints: { format: /xml/ }
   get 'p/:id/stacks', to: 'stacks#project_stacks', as: :project_stacks, constraints: { format: /xml/ }
   get 'p/:id/stacks', to: redirect('/p/%{id}/users'), constraints: { format: /html/ }

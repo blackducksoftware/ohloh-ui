@@ -8,9 +8,16 @@ describe TopicsController do
   let(:topic_post) { create(:post) }
 
   #-------------User with no account---------------
-  it 'index' do
-    get :index, forum_id: forum.id
-    must_redirect_to forum_path(forum)
+  describe 'index' do
+    it 'with forum id' do
+      get :index, forum_id: forum.id
+      must_redirect_to forum_path(forum)
+    end
+
+    it 'without forum id' do
+      get :index
+      must_redirect_to forums_path
+    end
   end
 
   it 'new' do
@@ -101,10 +108,17 @@ describe TopicsController do
   end
 
   # #--------------Basic User ----------------------
-  it 'user index' do
-    login_as user
-    get :index, forum_id: forum.id
-    must_redirect_to forum_path(forum)
+  describe 'index' do
+    it 'with forum id' do
+      login_as user
+      get :index, forum_id: forum.id
+      must_redirect_to forum_path(forum)
+    end
+
+    it 'without forum id' do
+      get :index
+      must_redirect_to forums_path
+    end
   end
 
   it 'user new' do
@@ -191,10 +205,17 @@ describe TopicsController do
   end
 
   # #-----------Admin Account------------------------
-  it 'admin index' do
-    login_as admin
-    get :index, forum_id: forum.id
-    must_redirect_to forum_path(forum)
+  describe 'index' do
+    it 'with forum id' do
+      login_as admin
+      get :index, forum_id: forum.id
+      must_redirect_to forum_path(forum)
+    end
+
+    it 'without forum id' do
+      get :index
+      must_redirect_to forums_path
+    end
   end
 
   it 'admin new' do

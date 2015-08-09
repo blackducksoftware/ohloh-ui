@@ -77,7 +77,12 @@ class AccountsController < ApplicationController
   end
 
   def set_account
-    @account = Account::Find.by_id_or_login(params[:id])
+    @account = if params[:id] == 'me'
+                 return redirect_to new_session_path if current_user.nil?
+                 current_user
+               else
+                 Account::Find.by_id_or_login(params[:id])
+               end
     fail ParamRecordNotFound unless @account
   end
 
