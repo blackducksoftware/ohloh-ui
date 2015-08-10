@@ -104,5 +104,3 @@ module SlaveDaemon
     Slave.local
   end
 end
-
-SlaveDaemon.run unless Rails.env.test?

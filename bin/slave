@@ -3,4 +3,4 @@
 require 'daemons'
 require File.expand_path('../../config/environment', __FILE__)
 
-Daemons.run('lib/slave_daemon.rb', DAEMONIZATION_OPTIONS)
+Daemons.run('bin/slave_daemon_runner.rb', DAEMONIZATION_OPTIONS)
