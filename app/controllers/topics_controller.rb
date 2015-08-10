@@ -1,7 +1,7 @@
 class TopicsController < ApplicationController
   helper MarkdownHelper
   helper TopicsHelper
-  before_action :session_required, only: [:new, :create]
+  before_action :session_required, :redirect_unverified_account, only: [:new, :create]
   before_action :admin_session_required, only: [:edit, :update, :destroy]
   before_action :find_forum_record, only: [:new, :create]
   before_action :find_forum_and_topic_records, except: [:index, :new, :create]

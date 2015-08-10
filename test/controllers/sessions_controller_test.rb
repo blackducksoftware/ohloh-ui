@@ -32,14 +32,6 @@ class SessionsControllerTest < ActionController::TestCase
     flash[:error].must_equal I18n.t('sessions.create.disabled_error')
   end
 
-  it 'create with valid credentials for unactivated accounts should not log in' do
-    session[:account_id].must_be_nil
-    post :create, login: { login: 'unactivated', password: 'testy' }
-    must_respond_with :bad_request
-    session[:account_id].must_be_nil
-    flash[:error].must_equal I18n.t('sessions.create.unactivated_error')
-  end
-
   it 'create with remember me set should save the right data to the account and cookies' do
     admin = accounts(:admin)
     admin.remember_token.must_be_nil

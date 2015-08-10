@@ -448,6 +448,8 @@ describe 'PositionsController' do
   end
 
   describe 'one_click_create' do
+    before { account.update_attributes(twitter_id: 1234) } # verify account
+
     it 'must be logged in' do
       get :one_click_create, account_id: account.to_param
       must_respond_with :redirect

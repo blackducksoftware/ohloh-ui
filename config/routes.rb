@@ -24,7 +24,6 @@ Rails.application.routes.draw do
   resources :activation_resends, only: [:new, :create]
 
   resources :api_keys, only: :index
-  resources :domain_blacklists, except: :show
   resources :reviews, only: :destroy do
     resources :helpfuls, only: :create
   end
@@ -104,6 +103,8 @@ Rails.application.routes.draw do
 
     get 'doorkeeper/oauth_applications/:id/revoke_access' =>
       'doorkeeper/oauth_applications#revoke_access', as: :revoke_oauth_access
+
+    resources :verifications, only: [:new, :create], module: :accounts
   end
 
   resources :deleted_accounts, only: [:edit, :update]

@@ -24,6 +24,7 @@ class ApplicationController < ActionController::Base
   before_action :strip_query_param
   before_action :clear_reminder
   before_action :verify_api_access_for_xml_request, only: [:show, :index]
+  after_action :alert_non_activated_account, if: :logged_in?
 
   def initialize(*params)
     @page_context = {}
@@ -233,6 +234,19 @@ class ApplicationController < ActionController::Base
     @session_projects = (session[:session_projects] || []).map do |url_name|
       Project.from_param(url_name).take
     end.compact.uniq
+  end
+
+  def redirect_unverified_account
+    account = find_user_in_session
+    return if Account::Access.new(account).verified?
+    redirect_to new_account_verification_path(account)
+  end
+
+  def alert_non_activated_account
+    return if Account::Access.new(current_user).activated?
+
+    flash[:notice] ||= t('non_activated_message',
+                         link: view_context.link_to(:here, new_activation_resend_path))
   end
 
   def set_project_or_fail

@@ -5,7 +5,7 @@ class PostsController < ApplicationController
   helper PageContextHelper
   helper TopicsHelper
 
-  before_action :session_required, only: [:create, :edit, :update]
+  before_action :session_required, :redirect_unverified_account, only: [:create, :edit, :update]
   before_action :admin_session_required, only: [:destroy]
   before_action :find_relevant_records, except: [:index]
   before_action :find_post_record, only: [:edit, :update, :destroy]
