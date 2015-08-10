@@ -45,7 +45,7 @@ class Project < ActiveRecord::Base
   end
 
   def active_managers
-    Manage.projects.for_target(self).active.to_a.map(&:account)
+    Account.where(id: Manage.projects.for_target(self).active.select(:account_id))
   end
 
   def allow_undo_to_nil?(key)
