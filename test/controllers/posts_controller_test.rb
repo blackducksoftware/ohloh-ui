@@ -205,6 +205,7 @@ describe PostsController do
     end
 
     it 'should render in rss format' do
+      post1 = create(:post, account: user, body: 'Elon Musk is cool', popularity_factor: 100)
       get :index, format: 'rss'
       must_respond_with :ok
       must_render_template 'index.atom.builder'
