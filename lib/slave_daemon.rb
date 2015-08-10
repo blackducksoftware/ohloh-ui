@@ -1,6 +1,4 @@
-module SlaveDaemon
-  module_function
-
+class SlaveDaemon
   INTERVAL_BETWEEN_EACH_JOB_FORK = 2
   INTERVAL_BEFORE_CHECKING_JOBS_COMPLETION = 5
   DISABLED_SLAVE_LOOP_INTERVAL = 60
@@ -13,8 +11,6 @@ module SlaveDaemon
   end
 
   private
-
-  module_function
 
   def pids
     @pids ||= []

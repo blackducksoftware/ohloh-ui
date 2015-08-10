@@ -1,1 +1,1 @@
-SlaveDaemon.run
+SlaveDaemon.new.run
