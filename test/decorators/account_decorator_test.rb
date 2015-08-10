@@ -11,10 +11,10 @@ class AccountDecoratorTest < ActiveSupport::TestCase
   let(:admin) { create(:admin) }
   let(:user) do
     account = create(:account)
-    vita = create(:best_vita, account_id: account.id)
-    create(:vita_fact, vita_id: vita.id)
-    account.update_column(:best_vita_id, vita.id)
-    account.reload
+    vita = create(:best_vita, account: account)
+    create(:vita_fact, vita: vita)
+    account.update!(best_vita: vita)
+    account
   end
 
   let(:cbp) do

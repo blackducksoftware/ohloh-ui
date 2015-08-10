@@ -1,11 +1,26 @@
 require 'test_helper'
+require 'test_helpers/commits_by_project_data'
+require 'test_helpers/commits_by_language_data'
 
 describe 'Accounts::ChartsController' do
-  let(:account) do
-    account = accounts(:user)
-    account.best_vita.vita_fact.destroy
-    create(:vita_fact, vita_id: account.best_vita_id)
-    account
+  let(:account) { create(:account) }
+
+  let(:vita_fact) do
+    vita = create(:best_vita, account_id: account.id)
+    account.update(best_vita_id: vita.id)
+    create(:vita_fact, vita_id: vita.id)
+  end
+
+  let(:position1) { create_position(account: account) }
+  let(:position2) { create_position(account: account) }
+
+  let(:construct_cbp_data) do
+    cbp = CommitsByProjectData.new(position1.id, position2.id).construct
+    vita_fact.update(commits_by_project: cbp)
+  end
+
+  before do
+    construct_cbp_data
   end
 
   let(:admin) { create(:admin) }
@@ -17,8 +32,8 @@ describe 'Accounts::ChartsController' do
 
       must_respond_with :ok
       result['noCommits'].must_equal false
-      result['series'].first['data'].must_equal [nil] * 12 + [25, 40, 28, 18, 1, 8, 26, 9] + [nil] * 65
-      result['series'].first['name'].must_equal 'Linux'
+      result['series'].first['data'].must_equal [nil] * 13 + [25, 40, 28, 18, 1, 8, 26, 9] + [nil] * 64
+      result['series'].first['name'].must_equal position1.project.name
     end
 
     it 'should redirect if account is disabled' do
@@ -35,7 +50,7 @@ describe 'Accounts::ChartsController' do
       result  = JSON.parse(response.body)
 
       must_respond_with :ok
-      result['series'].first['data'].must_equal [25, 40, 28, 18, 1, 8, 30, 12] + [0] * 65
+      result['series'].first['data'].must_equal [25, 40, 28, 18, 1, 8, 26, 9] + [0] * 64
     end
 
     it 'should redirect if account is disabled' do
@@ -48,6 +63,7 @@ describe 'Accounts::ChartsController' do
 
   describe 'commits_by_language' do
     it 'should return json chart data when scope is regular' do
+      vita_fact.update(commits_by_language: CommitsByLanguageData.construct)
       get :commits_by_language, account_id: account.id, scope: 'regular'
       result = JSON.parse(response.body)
 

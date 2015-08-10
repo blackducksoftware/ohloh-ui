@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'test_helpers/commits_by_project_data'
 
 describe 'AccountsController' do
   let(:start_date) do
@@ -16,23 +17,30 @@ describe 'AccountsController' do
     (Time.current - 6.years + month.months).beginning_of_month.strftime('%Y-%m-01 00:00:00')
   end
 
-  let(:user) do
-    vita = create(:best_vita)
+  let(:user) { create(:account) }
+
+  let(:vita_fact) do
+    vita = create(:best_vita, account_id: user.id)
+    user.update(best_vita_id: vita.id)
     create(:vita_fact, vita_id: vita.id)
-    vita.account
   end
+
+  let(:position1) { create_position(account: user) }
+  let(:position2) { create_position(account: user) }
 
   let(:admin) { create(:admin) }
 
   describe 'index' do
     it 'should return claimed persons with their cbp_map and positions_map' do
-      user.best_vita.vita_fact.reload.commits_by_project
+      cbp = CommitsByProjectData.new(position1.id, position2.id).construct
+      vita_fact.update(commits_by_project: cbp)
+
       get :index
 
       must_respond_with :ok
       assigns(:positions_map).length.must_equal 2
-      assigns(:people).length.must_equal 9
-      assigns(:cbp_map).length.must_equal 9
+      assigns(:people).length.must_equal 10
+      assigns(:cbp_map).length.must_equal 10
     end
 
     it 'should support being queried via the api' do

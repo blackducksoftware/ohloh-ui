@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'test_helpers/commits_by_language_data'
 
 class CommitsByLanguageTest < ActiveSupport::TestCase
   let(:start_date) do
@@ -7,7 +8,7 @@ class CommitsByLanguageTest < ActiveSupport::TestCase
 
   let(:user) do
     vita = create(:best_vita)
-    create(:vita_fact, vita_id: vita.id)
+    create(:vita_fact, vita_id: vita.id, commits_by_language: CommitsByLanguageData.construct)
     vita.account
   end
 
