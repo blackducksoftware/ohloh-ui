@@ -46,7 +46,7 @@
       = f.hidden_field :id unless @organization.new_record?
     .actions.pull-left.margin_top_20
       - if logged_in? && @organization.edit_authorized?
-        %input.btn.btn-primary{ type: 'submit', value: t('.save_changes') }
+        %input.btn.btn-primary{ type: 'submit', value: t('.save_changes'), 'data-disable-with' => t('.processing') }
       - else
         = disabled_button(t('.save_changes'), class: 'btn-primary')
     .clearfix
