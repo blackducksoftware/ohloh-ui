@@ -1,6 +1,7 @@
 class EditsController < SettingsController
   helper ProjectsHelper
 
+  skip_before_action :show_permissions_alert, if: :parent_is_account?
   before_action :session_required, :redirect_unverified_account, only: [:update]
   before_action :find_parent, only: [:index]
   before_action :find_edit, only: [:update]
@@ -19,6 +20,10 @@ class EditsController < SettingsController
   end
 
   private
+
+  def parent_is_account?
+    params[:account_id].present?
+  end
 
   def find_parent
     @parent = find_account || find_project || find_organization || find_license
