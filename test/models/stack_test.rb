@@ -37,7 +37,7 @@ class StackTest < ActiveSupport::TestCase
     stack4.projects = [proj4, proj5]
 
     stack3.similar_stacks.map { |h| h[:stack] }.map(&:id).must_equal [stack1.id, stack2.id]
-    stack3.similar_stacks[0][:shared_projects].map(&:id).must_equal [proj1.id, proj3.id]
+    stack3.similar_stacks[0][:shared_projects].map(&:id).sort.must_equal [proj1.id, proj3.id].sort
     stack3.similar_stacks[1][:shared_projects].map(&:id).must_equal [proj3.id]
     stack3.similar_stacks[0][:uniq_projects].map(&:id).must_equal [proj2.id]
     stack3.similar_stacks[1][:uniq_projects].map(&:id).must_equal [proj2.id]

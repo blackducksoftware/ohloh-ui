@@ -1,8 +1,13 @@
+def random_repository_name
+  chars = ('a'..'z').to_a + ('A'..'Z').to_a + ('0'..'9').to_a + ['_', '-', '+', '/', '.']
+  (0...16).map { chars[rand(chars.length)] }.join
+end
+
 FactoryGirl.define do
   factory :repository do
     url { Faker::Internet.url }
-    module_name { Faker::Lorem.characters(16) }
-    branch_name { Faker::Lorem.characters(16) }
+    module_name { random_repository_name }
+    branch_name { random_repository_name }
     type 'GitRepository'
     after(:create) { |repository| create(:enlistment, repository: repository) }
     bypass_url_validation true

@@ -26,19 +26,22 @@ class Analysis::CommitHistory < Analysis::QueryBase
   end
 
   def subquery
-    AnalysisSlocSet.select(subquery_select_clause)
-      .joins(sloc_set: { code_set: :commits })
+    Commit.select(subquery_select_clause)
       .joins(analysis_aliases_joins)
-      .where(subquery_conditions)
+      .where(code_set_id: subquery_conditions)
+      .where(where_clause_conditions)
       .where(preferred_name_id)
       .group('this_month')
-      .order('this_month')
+  end
+
+  def where_clause_conditions
+    analysis_aliases[:analysis_id].eq(@analysis.id)
+      .and(commits[:time].gteq(start_date).and(commits[:time].lteq(end_date)))
   end
 
   def subquery_conditions
-    commits[:position].lteq(analysis_sloc_sets[:as_of])
-      .and(analysis_aliases[:analysis_id].eq(@analysis.id))
-      .and(analysis_sloc_sets[:analysis_id].eq(@analysis.id))
+    AnalysisSlocSet.joins(sloc_set: :code_set).select('code_sets.id')
+      .where(analysis_sloc_sets[:analysis_id].eq(@analysis.id))
   end
 
   def subquery_select_clause
@@ -46,7 +49,7 @@ class Analysis::CommitHistory < Analysis::QueryBase
   end
 
   def analysis_aliases_joins
-    analysis_sloc_sets
+    commits
       .join(analysis_aliases)
       .on(commits[:name_id].eq(analysis_aliases[:commit_name_id]))
       .join_sources
