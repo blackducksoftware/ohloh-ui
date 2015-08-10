@@ -14,7 +14,7 @@ class RssFeedTest < ActiveSupport::TestCase
 
   it 'should parse the RSS feed and return true' do
     rss_feed = create(:rss_feed)
-    rss_feed.url = 'test/fixtures/files/news.rss'
+    rss_feed.url = 'test/data/files/news.rss'
     rss_feed.fetch(create(:admin))
   end
 
@@ -45,7 +45,7 @@ class RssFeedTest < ActiveSupport::TestCase
     project.update_attributes(updated_at: before)
     project.reload.updated_at.to_time.to_i.must_equal before.to_i
     create(:rss_subscription, rss_feed: rss_feed, project: project)
-    rss_feed.url = 'test/fixtures/files/news.rss'
+    rss_feed.url = 'test/data/files/news.rss'
     rss_feed.fetch(create(:admin))
     project.reload.updated_at.to_time.wont_equal before
   end
