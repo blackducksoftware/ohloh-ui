@@ -55,11 +55,8 @@ class SlaveDaemonTest < ActiveSupport::TestCase
       it 'must wait for existing jobs to complete' do
         SlaveDaemon.stubs(:update_hardware_stats)
         SlaveDaemon.stubs(:sync_running_jobs_count_with_db)
-        SlaveDaemon.instance_eval do
-          def fork_jobs
-            @pids = [1]
-          end
-        end
+        SlaveDaemon.stubs(:fork_jobs)
+        SlaveDaemon.stubs(:pids).returns([1])
 
         Process.expects(:waitpid).returns(true)
         SlaveDaemon.run

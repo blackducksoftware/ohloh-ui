@@ -6,7 +6,6 @@ module SlaveDaemon
   DISABLED_SLAVE_LOOP_INTERVAL = 60
 
   def run
-    @pids = []
     Dir.chdir(Rails.root)
     trap_exit
     require_environment_to_ensure_db_connection
@@ -16,6 +15,10 @@ module SlaveDaemon
   private
 
   module_function
+
+  def pids
+    @pids ||= []
+  end
 
   def run_job_loop
     slave.logs.create!(message: I18n.t('slaves.daemon_started'))
@@ -44,7 +47,7 @@ module SlaveDaemon
 
   def wait_for_jobs_to_complete
     # Clean up any forked processes that have completed
-    @pids.delete_if { |pid| Process.waitpid(pid, Process::WNOHANG) }
+    pids.delete_if { |pid| Process.waitpid(pid, Process::WNOHANG) }
   end
 
   def update_hardware_stats
@@ -89,7 +92,7 @@ module SlaveDaemon
     loop do
       job = pick_job_unless_maxed_out
       return unless job
-      @pids << job.fork!
+      pids << job.fork!
       @jobs_count += 1
       sleep INTERVAL_BETWEEN_EACH_JOB_FORK
     end
