@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   get 'admin/comments' => redirect('/404')
   ActiveAdmin.routes(self)
-  root to: 'home#index'
+  root to: 'home#index', defaults: { format: 'html' }
 
   use_doorkeeper do
     skip_controllers :applications, :authorized_applications
