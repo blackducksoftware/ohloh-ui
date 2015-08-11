@@ -12,17 +12,26 @@ class CommitsByLanguageData
              'commits' => { 1 => '9'} },
   }
 
-  def self.construct
-    data = []
-    DEFAULT_COMMITS_DATA.each do |key, value|
-      language_values = { 'l_id' => key, 'l_name' => value['name'], 'l_category' => value['category'],
-                          'l_nice_name' => value['nice_name'] }
-      value['commits'].each do |k, v|
-        data << language_values.merge('month' => (start_date + k.month).to_s, 'commits' => v)
+  class << self
+    def construct
+      data = []
+      DEFAULT_COMMITS_DATA.each do |key, value|
+        language_values = { 'l_id' => key, 'l_name' => value['name'], 'l_category' => value['category'],
+                            'l_nice_name' => value['nice_name'] }
+        value['commits'].each do |k, v|
+          data << language_values.merge('month' => (start_date + k.month).to_s, 'commits' => v)
+        end
       end
+
+      data
     end
 
-    data
+    def sorted
+      [['csharp', { nice_name: 'C#', commits: 148 }], ['xml', { nice_name: 'XML', commits: 60 }],
+       ['html', { nice_name: 'HTML', commits: 9 }], ['ruby', { nice_name: 'Ruby', commits: 5 }],
+       ['sql', { nice_name: 'SQL', commits: 1 }]
+      ]
+    end
   end
 
   private

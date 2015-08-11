@@ -2,21 +2,12 @@ require 'test_helper'
 require 'test_helpers/commits_by_language_data'
 
 class CommitsByLanguageTest < ActiveSupport::TestCase
-  let(:start_date) do
-    (Date.today - 6.years).beginning_of_month
-  end
-
-  let(:user) do
-    vita = create(:best_vita)
-    create(:vita_fact, vita_id: vita.id, commits_by_language: CommitsByLanguageData.construct)
-    vita.account
-  end
-
+  let(:start_date) { (Date.today - 6.years).beginning_of_month }
+  let(:account) { create_account_with_commits_by_language } #do
   let(:admin) { create(:admin) }
-
   let(:cbl_decorator) do
-    user.stubs(:first_commit_date).returns(start_date)
-    CommitsByLanguage.new(user, context: { scope: 'full' })
+    account.stubs(:first_commit_date).returns(start_date)
+    CommitsByLanguage.new(account, context: { scope: 'full' })
   end
 
   describe 'language_experience' do
@@ -49,7 +40,7 @@ class CommitsByLanguageTest < ActiveSupport::TestCase
       le[:date_array].size.must_equal 7 * 12
     end
 
-    it 'should return empty array for user with no positions' do
+    it 'should return empty array for account with no positions' do
       cbl_decorator = CommitsByLanguage.new admin, context: { scope: 'full' }
       le = cbl_decorator.language_experience
       le[:object_array].must_equal []

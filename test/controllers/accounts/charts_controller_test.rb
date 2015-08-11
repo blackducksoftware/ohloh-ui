@@ -3,26 +3,9 @@ require 'test_helpers/commits_by_project_data'
 require 'test_helpers/commits_by_language_data'
 
 describe 'Accounts::ChartsController' do
-  let(:account) { create(:account) }
-
-  let(:vita_fact) do
-    vita = create(:best_vita, account_id: account.id)
-    account.update(best_vita_id: vita.id)
-    create(:vita_fact, vita_id: vita.id)
-  end
-
-  let(:position1) { create_position(account: account) }
-  let(:position2) { create_position(account: account) }
-
-  let(:construct_cbp_data) do
-    cbp = CommitsByProjectData.new(position1.id, position2.id).construct
-    vita_fact.update(commits_by_project: cbp)
-  end
-
-  before do
-    construct_cbp_data
-  end
-
+  let(:account) { create_account_with_commits_by_project }
+  let(:position1) { account.positions.first }
+  let(:position2) { account.positions.last }
   let(:admin) { create(:admin) }
 
   describe 'commits_by_project' do
@@ -63,7 +46,6 @@ describe 'Accounts::ChartsController' do
 
   describe 'commits_by_language' do
     it 'should return json chart data when scope is regular' do
-      vita_fact.update(commits_by_language: CommitsByLanguageData.construct)
       get :commits_by_language, account_id: account.id, scope: 'regular'
       result = JSON.parse(response.body)
 

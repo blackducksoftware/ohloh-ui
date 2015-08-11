@@ -6,33 +6,13 @@ class CommitsByProjectTest < ActiveSupport::TestCase
     (Time.current - 6.years).beginning_of_month
   end
 
-  def start_date_str(month = 0)
-    (Time.current - 6.years + month.months).beginning_of_month.strftime('%Y-%m-01 00:00:00')
-  end
-
-  let(:user) { create(:account) }
-
-  let(:vita_fact) do
-    vita = create(:best_vita, account_id: user.id)
-    user.update(best_vita_id: vita.id)
-    create(:vita_fact, vita_id: vita.id)
-  end
-
-  let(:position1) { create_position(account: user) }
-  let(:position2) { create_position(account: user) }
-
-  let(:construct_cbp_data) do
-    cbp = CommitsByProjectData.new(position1.id, position2.id).construct
-    vita_fact.update(commits_by_project: cbp)
-  end
-
-  before do
-    construct_cbp_data
-  end
+  let(:account) { create_account_with_commits_by_project }
+  let(:position1) { account.positions.first }
+  let(:position2) { account.positions.last }
 
   describe 'history' do
     it 'return commits by project data, start_date and max_commits count' do
-      cbp_decorator = CommitsByProject.new(user)
+      cbp_decorator = CommitsByProject.new(account)
       data = cbp_decorator.history
       data[:facts].size.must_equal 10
       data[:facts].first[:project_id].must_equal position1.project.id.to_s
@@ -56,7 +36,7 @@ class CommitsByProjectTest < ActiveSupport::TestCase
     it 'return commits by project data when date range is specified' do
       start_date = (start_date_val + 4.months).to_date
       end_date = (start_date_val + 6.months).to_date
-      cbp_decorator = CommitsByProject.new(user, context: { start_date: start_date, end_date: end_date })
+      cbp_decorator = CommitsByProject.new(account, context: { start_date: start_date, end_date: end_date })
 
       data = cbp_decorator.history_in_date_range
 
@@ -69,7 +49,7 @@ class CommitsByProjectTest < ActiveSupport::TestCase
     end
 
     it 'return commits by project data when date range is not specified' do
-      cbp_decorator = CommitsByProject.new(user)
+      cbp_decorator = CommitsByProject.new(account)
       data = cbp_decorator.history_in_date_range
 
       data.size.must_equal 2
@@ -83,7 +63,7 @@ class CommitsByProjectTest < ActiveSupport::TestCase
 
   describe 'chart_data' do
     it 'return commits by project data for chart(x_axis, y_axis and max_commits)' do
-      cbp_decorator = CommitsByProject.new(user)
+      cbp_decorator = CommitsByProject.new(account)
       date_range = calculate_date_range(start_date_val.to_date, Date.today.beginning_of_month)
 
       chart_data = cbp_decorator.chart_data
@@ -94,7 +74,7 @@ class CommitsByProjectTest < ActiveSupport::TestCase
     end
 
     it 'return commits by project data for chart(x_axis, y_axis and max_commits) when project_id is given' do
-      cbp_decorator = CommitsByProject.new(user)
+      cbp_decorator = CommitsByProject.new(account)
       start_date = start_date_val.to_date
       end_date = Date.today.beginning_of_month
       date_range = calculate_date_range(start_date, end_date)
@@ -107,7 +87,7 @@ class CommitsByProjectTest < ActiveSupport::TestCase
     end
 
     it 'return commits by project data for chart(x_axis, y_axis and max_commits) when commits_by_project is empty' do
-      cbp_decorator = CommitsByProject.new(user)
+      cbp_decorator = CommitsByProject.new(account)
       date_range = calculate_date_range(start_date_val.to_date, Date.today.beginning_of_month)
 
       chart_data = cbp_decorator.chart_data(position1.project.id)
@@ -115,6 +95,12 @@ class CommitsByProjectTest < ActiveSupport::TestCase
       chart_data[:x_axis].must_equal date_range
       chart_data[:max_commits].must_equal 40
     end
+  end
+
+  private
+
+  def start_date_str(month = 0)
+    (Time.current - 6.years + month.months).beginning_of_month.strftime('%Y-%m-01 00:00:00')
   end
 
   def calculate_date_range(start_date, end_date)

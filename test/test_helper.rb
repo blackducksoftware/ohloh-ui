@@ -85,4 +85,25 @@ class ActiveSupport::TestCase
     permission = organization_or_project.create_permission
     permission.update!(remainder: true, editor_account: account)
   end
+
+  def create_account_with_commits_by_project
+    vita = create(:best_vita)
+    account = vita.account
+    position1 = create_position(account: account)
+    position2 = create_position(account: account)
+    vita.vita_fact.update!(commits_by_project: CommitsByProjectData.new(position1.id, position2.id).construct,
+                           commits_by_language: CommitsByLanguageData.construct)
+    account.reload.best_vita.reload.vita_fact.reload
+    account
+  end
+
+  def create_account_with_commits_by_language
+    vita = create(:best_vita)
+    account = vita.account
+    position1 = create_position(account: account)
+    position2 = create_position(account: account)
+    vita.vita_fact.update!(commits_by_language: CommitsByLanguageData.construct)
+    account.reload.best_vita.reload.vita_fact.reload
+    account
+  end
 end
