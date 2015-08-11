@@ -6,7 +6,7 @@
           %span.soft= t('.sticky')
         %span{ class: "#{'strong' if topic.sticky?}" }
           = link_to h(topic.title), topic_path(topic), class: 'entry-title', rel: 'bookmark'
-        by
+        = t(:by)
         = topic.account.name
     %td.center
       - if topic.closed
@@ -16,12 +16,12 @@
       - elsif topic.posts.last.created_at <= 6.months.ago
         %span.label.label-default.stale_specifications= t('.stale')
       - elsif topic.posts.last.created_at >= 30.minutes.ago
-        %span.label.label-success= t('.recent_post')
+        %span.label.label-success= t('.recent')
     %td.center= (topic.posts_count - 1)
     %td.center= topic.hits
     %td.last.right.small.text-center
       - last_post = topic.posts.last
       - if last_post
-        = time_ago_in_words(last_post.created_at)
-        by
+        = I18n.t(:time_ago, time: time_ago_in_words(last_post.created_at))
+        = t(:by)
         = last_post.account.name
