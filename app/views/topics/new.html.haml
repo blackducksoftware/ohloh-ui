@@ -8,11 +8,10 @@
   = link_to @forum.name, forum_path(@forum)
 
 %h2.margin_top_20= t('.new_topic')
+
+%h2.margin_top_20= t('.title')
 .well.col-md-12
   .col-md-10
-%h2.margin_top_20= t('.title')
-.well.col-md-11.margin_left_20
-  .col-md-9
     = form_for [@forum, @topic], html: { class: 'topic_form' } do |f|
       = render partial: 'form', locals: { f: f }
       .actions
