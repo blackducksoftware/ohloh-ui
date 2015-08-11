@@ -1,8 +1,8 @@
 # rubocop:disable Metrics/ClassLength
+require 'will_paginate/array'
 class PositionsController < ApplicationController
   helper ProjectsHelper
   helper PositionsHelper
-
   include PositionFilters
 
   def new
@@ -41,7 +41,7 @@ class PositionsController < ApplicationController
   end
 
   def index
-    @positions = @account.position_core.ordered
+    @positions = @account.position_core.ordered.paginate(page: page_param, per_page: 10)
   end
 
   def commits_compound_spark
