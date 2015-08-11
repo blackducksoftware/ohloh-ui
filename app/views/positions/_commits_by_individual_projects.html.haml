@@ -38,7 +38,7 @@
       .one_project_information_message
         = t('.no_commits_to_display')
     - elsif position.decorate.analyzed?
-      = render 'commits_by_individual_project_highchart', position: position, index: index
+      = render 'commits_by_individual_project_highchart', position: position
     - else
       .one_project_information_message.padding_left_30.padding_bottom_20
         = t('.analysis_is_scheduled')
