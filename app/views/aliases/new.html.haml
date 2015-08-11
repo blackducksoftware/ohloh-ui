@@ -1,5 +1,8 @@
-- content_for(:html_title) { t('.title', project_name: @project.to_param) }
-- page_context[:select_footer_nav] = nil
+:ruby
+  content_for(:html_title) { t('.title', project_name: @project.to_param) }
+  page_context[:select_footer_nav] = nil
+  @alias ||= Alias.new
+  @committer_names ||= Alias.committer_names(@project)
 
 %h2.pull-left
   = link_to t('settings'), settings_project_path(@project)

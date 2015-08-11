@@ -138,17 +138,6 @@ en:
   up: 'Up'
   down: 'Down'
   from_prev_12_mo: 'from previous 12 months'
-  domain_blacklists:
-    index:
-      notice: 'No Domains Blacklisted'
-    create:
-      success: 'Domain successfully added to blacklist'
-      error: 'Unable to add domain to blacklist'
-    update:
-      success: 'Blacklisted Domain successfully updated'
-      error: 'Unable to update blacklisted domain'
-    destroy:
-      success: 'Blacklisted Domain successfully deleted'
   api_keys:
     api_key:
       none: 'None'
@@ -323,6 +312,8 @@ en:
               invalid: 'Check your current password and try again.'
             organization_name:
               invalid: 'should start with a letter and can include only letters, numbers, _ and -'
+            twitter_id:
+              taken: This Digits account is already associated with another OpenHub account. Please try a new phone number.
         link:
           attributes:
             url:
@@ -380,5 +371,6 @@ en:
     oauth_applications:
       revoke_access:
         success: You have successfully revoked the authorization for %{name}
+  non_activated_message: Please verify your email address to help us communicate with you better. Click %{link} to resend the verification email.
   top_commit_volume_chart:
     message: '%{name} generated more than 50% of all commits during the past 12 months.'

@@ -1,3 +1,7 @@
+- content_for :html_title do
+  = t('.position_new_title', name: @account.name)
+- page_context[:select_footer_nav] = :positions
+
 #positions_new
   .margin_left_15
     %h3

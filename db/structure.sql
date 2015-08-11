@@ -3,24 +3,10 @@
 --
 
 SET statement_timeout = 0;
-SET lock_timeout = 0;
 SET client_encoding = 'SQL_ASCII';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
-
---
--- Name: pg_repack; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS pg_repack WITH SCHEMA public;
-
-
---
--- Name: EXTENSION pg_repack; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION pg_repack IS 'Reorganize tables in PostgreSQL databases with minimal locks';
 
 
 --
@@ -439,6 +425,7 @@ CREATE TABLE accounts (
     organization_id integer,
     affiliation_type text DEFAULT 'unaffiliated'::text NOT NULL,
     organization_name text,
+    twitter_id character varying,
     CONSTRAINT accounts_email_check CHECK ((length(email) >= 3)),
     CONSTRAINT accounts_login_check CHECK ((length(login) >= 3))
 );
@@ -937,7 +924,7 @@ CREATE TABLE sloc_sets (
 --
 
 CREATE VIEW c2 AS
-SELECT commits.id, commits.id AS commit_id, analysis_sloc_sets.analysis_id, projects.id AS project_id, analysis_sloc_sets.sloc_set_id, sloc_sets.code_set_id, positions.id AS position_id, positions.account_id, CASE WHEN (positions.account_id IS NULL) THEN ((((projects.id)::bigint << 32) + (commits.name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint) ELSE (((projects.id)::bigint << 32) + (positions.account_id)::bigint) END AS contribution_id, CASE WHEN (positions.account_id IS NULL) THEN ((((projects.id)::bigint << 32) + (commits.name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint) ELSE (positions.account_id)::bigint END AS person_id FROM (((((analysis_sloc_sets JOIN projects ON ((analysis_sloc_sets.analysis_id = projects.best_analysis_id))) JOIN sloc_sets ON ((sloc_sets.id = analysis_sloc_sets.sloc_set_id))) JOIN commits ON (((commits.code_set_id = sloc_sets.code_set_id) AND (commits."position" <= analysis_sloc_sets.as_of)))) JOIN analysis_aliases ON (((analysis_aliases.analysis_id = projects.best_analysis_id) AND (analysis_aliases.commit_name_id = commits.name_id)))) LEFT JOIN positions ON (((positions.project_id = projects.id) AND (positions.name_id = analysis_aliases.preferred_name_id))));
+    SELECT commits.id, commits.id AS commit_id, analysis_sloc_sets.analysis_id, projects.id AS project_id, analysis_sloc_sets.sloc_set_id, sloc_sets.code_set_id, positions.id AS position_id, positions.account_id, CASE WHEN (positions.account_id IS NULL) THEN ((((projects.id)::bigint << 32) + (commits.name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint) ELSE (((projects.id)::bigint << 32) + (positions.account_id)::bigint) END AS contribution_id, CASE WHEN (positions.account_id IS NULL) THEN ((((projects.id)::bigint << 32) + (commits.name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint) ELSE (positions.account_id)::bigint END AS person_id FROM (((((analysis_sloc_sets JOIN projects ON ((analysis_sloc_sets.analysis_id = projects.best_analysis_id))) JOIN sloc_sets ON ((sloc_sets.id = analysis_sloc_sets.sloc_set_id))) JOIN commits ON (((commits.code_set_id = sloc_sets.code_set_id) AND (commits."position" <= analysis_sloc_sets.as_of)))) JOIN analysis_aliases ON (((analysis_aliases.analysis_id = projects.best_analysis_id) AND (analysis_aliases.commit_name_id = commits.name_id)))) LEFT JOIN positions ON (((positions.project_id = projects.id) AND (positions.name_id = analysis_aliases.preferred_name_id))));
 
 
 --
@@ -1128,7 +1115,7 @@ CREATE TABLE people (
 --
 
 CREATE VIEW contributions AS
-SELECT CASE WHEN (pos.id IS NULL) THEN ((((per.project_id)::bigint << 32) + (per.name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint) ELSE (((pos.project_id)::bigint << 32) + (pos.account_id)::bigint) END AS id, per.id AS person_id, COALESCE(pos.project_id, per.project_id) AS project_id, CASE WHEN (pos.id IS NULL) THEN per.name_fact_id ELSE (SELECT name_facts.id FROM name_facts WHERE ((name_facts.analysis_id = p.best_analysis_id) AND (name_facts.name_id = pos.name_id))) END AS name_fact_id, pos.id AS position_id FROM ((people per LEFT JOIN positions pos ON ((per.account_id = pos.account_id))) JOIN projects p ON ((p.id = COALESCE(pos.project_id, per.project_id))));
+    SELECT CASE WHEN (pos.id IS NULL) THEN ((((per.project_id)::bigint << 32) + (per.name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint) ELSE (((pos.project_id)::bigint << 32) + (pos.account_id)::bigint) END AS id, per.id AS person_id, COALESCE(pos.project_id, per.project_id) AS project_id, CASE WHEN (pos.id IS NULL) THEN per.name_fact_id ELSE (SELECT name_facts.id FROM name_facts WHERE ((name_facts.analysis_id = p.best_analysis_id) AND (name_facts.name_id = pos.name_id))) END AS name_fact_id, pos.id AS position_id FROM ((people per LEFT JOIN positions pos ON ((per.account_id = pos.account_id))) JOIN projects p ON ((p.id = COALESCE(pos.project_id, per.project_id))));
 
 
 --
@@ -1136,7 +1123,7 @@ SELECT CASE WHEN (pos.id IS NULL) THEN ((((per.project_id)::bigint << 32) + (per
 --
 
 CREATE VIEW contributions2 AS
-SELECT CASE WHEN (pos.id IS NULL) THEN ((((per.project_id)::bigint << 32) + (per.name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint) ELSE (((pos.project_id)::bigint << 32) + (pos.account_id)::bigint) END AS id, CASE WHEN (pos.id IS NULL) THEN per.name_fact_id ELSE (SELECT name_facts.id FROM name_facts WHERE ((name_facts.analysis_id = p.best_analysis_id) AND (name_facts.name_id = pos.name_id))) END AS name_fact_id, pos.id AS position_id, per.id AS person_id, COALESCE(pos.project_id, per.project_id) AS project_id FROM ((people per LEFT JOIN positions pos ON ((per.account_id = pos.account_id))) JOIN projects p ON ((p.id = COALESCE(pos.project_id, per.project_id))));
+    SELECT CASE WHEN (pos.id IS NULL) THEN ((((per.project_id)::bigint << 32) + (per.name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint) ELSE (((pos.project_id)::bigint << 32) + (pos.account_id)::bigint) END AS id, CASE WHEN (pos.id IS NULL) THEN per.name_fact_id ELSE (SELECT name_facts.id FROM name_facts WHERE ((name_facts.analysis_id = p.best_analysis_id) AND (name_facts.name_id = pos.name_id))) END AS name_fact_id, pos.id AS position_id, per.id AS person_id, COALESCE(pos.project_id, per.project_id) AS project_id FROM ((people per LEFT JOIN positions pos ON ((per.account_id = pos.account_id))) JOIN projects p ON ((p.id = COALESCE(pos.project_id, per.project_id))));
 
 
 --
@@ -1568,7 +1555,7 @@ CREATE TABLE messages (
 --
 
 CREATE VIEW followed_messages AS
-(SELECT f.owner_id, m.id, m.account_id, m.created_at, m.deleted_at, m.body, m.title FROM ((messages m JOIN message_project_tags mpt ON ((mpt.message_id = m.id))) JOIN follows f ON ((f.project_id = mpt.project_id))) WHERE (m.deleted_at IS NULL) UNION SELECT f.owner_id, m.id, m.account_id, m.created_at, m.deleted_at, m.body, m.title FROM (messages m JOIN follows f ON ((f.account_id = m.account_id))) WHERE (m.deleted_at IS NULL)) UNION SELECT mat.account_id AS owner_id, m.id, m.account_id, m.created_at, m.deleted_at, m.body, m.title FROM (messages m JOIN message_account_tags mat ON ((mat.message_id = m.id))) WHERE (m.deleted_at IS NULL);
+    (SELECT f.owner_id, m.id, m.account_id, m.created_at, m.deleted_at, m.body, m.title FROM ((messages m JOIN message_project_tags mpt ON ((mpt.message_id = m.id))) JOIN follows f ON ((f.project_id = mpt.project_id))) WHERE (m.deleted_at IS NULL) UNION SELECT f.owner_id, m.id, m.account_id, m.created_at, m.deleted_at, m.body, m.title FROM (messages m JOIN follows f ON ((f.account_id = m.account_id))) WHERE (m.deleted_at IS NULL)) UNION SELECT mat.account_id AS owner_id, m.id, m.account_id, m.created_at, m.deleted_at, m.body, m.title FROM (messages m JOIN message_account_tags mat ON ((mat.message_id = m.id))) WHERE (m.deleted_at IS NULL);
 
 
 --
@@ -1776,37 +1763,6 @@ CREATE TABLE helpfuls (
 
 
 --
--- Name: honey_pot_fields; Type: TABLE; Schema: public; Owner: -; Tablespace:
---
-
-CREATE TABLE honey_pot_fields (
-    id integer NOT NULL,
-    token character varying(255),
-    field_name character varying(255),
-    expired boolean DEFAULT false
-);
-
-
---
--- Name: honey_pot_fields_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE honey_pot_fields_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: honey_pot_fields_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE honey_pot_fields_id_seq OWNED BY honey_pot_fields.id;
-
-
---
 -- Name: invites; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
@@ -1924,6 +1880,28 @@ CREATE TABLE jobs_backup (
     do_not_retry boolean,
     failure_group_id integer,
     organization_id integer
+);
+
+
+--
+-- Name: karthik; Type: TABLE; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE TABLE karthik (
+    id integer,
+    code_set_id integer,
+    as_of integer
+);
+
+
+--
+-- Name: karthik1; Type: TABLE; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE TABLE karthik1 (
+    id integer,
+    code_set_id integer,
+    as_of integer
 );
 
 
@@ -2529,7 +2507,7 @@ CREATE TABLE name_language_facts (
 --
 
 CREATE VIEW named_commits AS
-SELECT commits.id, commits.id AS commit_id, analysis_sloc_sets.analysis_id, projects.id AS project_id, analysis_sloc_sets.sloc_set_id, sloc_sets.code_set_id, positions.id AS position_id, positions.account_id, CASE WHEN (positions.account_id IS NULL) THEN ((((projects.id)::bigint << 32) + (analysis_aliases.preferred_name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint) ELSE (((projects.id)::bigint << 32) + (positions.account_id)::bigint) END AS contribution_id, CASE WHEN (positions.account_id IS NULL) THEN ((((projects.id)::bigint << 32) + (analysis_aliases.preferred_name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint) ELSE (positions.account_id)::bigint END AS person_id FROM (((((analysis_sloc_sets JOIN projects ON ((analysis_sloc_sets.analysis_id = projects.best_analysis_id))) JOIN sloc_sets ON ((sloc_sets.id = analysis_sloc_sets.sloc_set_id))) JOIN commits ON (((commits.code_set_id = sloc_sets.code_set_id) AND (commits."position" <= analysis_sloc_sets.as_of)))) JOIN analysis_aliases ON (((analysis_aliases.analysis_id = analysis_sloc_sets.analysis_id) AND (analysis_aliases.commit_name_id = commits.name_id)))) LEFT JOIN positions ON (((positions.project_id = projects.id) AND (positions.name_id = analysis_aliases.preferred_name_id))));
+    SELECT commits.id, commits.id AS commit_id, analysis_sloc_sets.analysis_id, projects.id AS project_id, analysis_sloc_sets.sloc_set_id, sloc_sets.code_set_id, positions.id AS position_id, positions.account_id, CASE WHEN (positions.account_id IS NULL) THEN ((((projects.id)::bigint << 32) + (analysis_aliases.preferred_name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint) ELSE (((projects.id)::bigint << 32) + (positions.account_id)::bigint) END AS contribution_id, CASE WHEN (positions.account_id IS NULL) THEN ((((projects.id)::bigint << 32) + (analysis_aliases.preferred_name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint) ELSE (positions.account_id)::bigint END AS person_id FROM (((((analysis_sloc_sets JOIN projects ON ((analysis_sloc_sets.analysis_id = projects.best_analysis_id))) JOIN sloc_sets ON ((sloc_sets.id = analysis_sloc_sets.sloc_set_id))) JOIN commits ON (((commits.code_set_id = sloc_sets.code_set_id) AND (commits."position" <= analysis_sloc_sets.as_of)))) JOIN analysis_aliases ON (((analysis_aliases.analysis_id = analysis_sloc_sets.analysis_id) AND (analysis_aliases.commit_name_id = commits.name_id)))) LEFT JOIN positions ON (((positions.project_id = projects.id) AND (positions.name_id = analysis_aliases.preferred_name_id))));
 
 
 --
@@ -2853,7 +2831,7 @@ CREATE SEQUENCE pages_id_seq
 --
 
 CREATE VIEW people_view AS
-SELECT a.id, a.name AS effective_name, a.id AS account_id, NULL::integer AS project_id, NULL::integer AS name_id, NULL::integer AS name_fact_id, ks."position" AS kudo_position, ks.score AS kudo_score, ks.rank AS kudo_rank FROM (accounts a LEFT JOIN kudo_scores ks ON ((ks.account_id = a.id))) WHERE (a.level <> (-20)) UNION SELECT ((((p.id)::bigint << 32) + (nf.name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint) AS id, n.name AS effective_name, NULL::integer AS account_id, p.id AS project_id, n.id AS name_id, nf.id AS name_fact_id, ks."position" AS kudo_position, ks.score AS kudo_score, ks.rank AS kudo_rank FROM (((name_facts nf JOIN names n ON ((nf.name_id = n.id))) JOIN projects p ON (((p.best_analysis_id = nf.analysis_id) AND (NOT p.deleted)))) LEFT JOIN kudo_scores ks ON (((ks.name_id = nf.name_id) AND (ks.project_id = p.id)))) WHERE (NOT (nf.name_id IN (SELECT positions.name_id FROM positions WHERE ((positions.project_id = p.id) AND (positions.name_id IS NOT NULL)))));
+    SELECT a.id, a.name AS effective_name, a.id AS account_id, NULL::integer AS project_id, NULL::integer AS name_id, NULL::integer AS name_fact_id, ks."position" AS kudo_position, ks.score AS kudo_score, ks.rank AS kudo_rank FROM (accounts a LEFT JOIN kudo_scores ks ON ((ks.account_id = a.id))) WHERE (a.level <> (-20)) UNION SELECT ((((p.id)::bigint << 32) + (nf.name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint) AS id, n.name AS effective_name, NULL::integer AS account_id, p.id AS project_id, n.id AS name_id, nf.id AS name_fact_id, ks."position" AS kudo_position, ks.score AS kudo_score, ks.rank AS kudo_rank FROM (((name_facts nf JOIN names n ON ((nf.name_id = n.id))) JOIN projects p ON (((p.best_analysis_id = nf.analysis_id) AND (NOT p.deleted)))) LEFT JOIN kudo_scores ks ON (((ks.name_id = nf.name_id) AND (ks.project_id = p.id)))) WHERE (NOT (nf.name_id IN (SELECT positions.name_id FROM positions WHERE ((positions.project_id = p.id) AND (positions.name_id IS NOT NULL)))));
 
 
 --
@@ -2891,27 +2869,6 @@ ALTER SEQUENCE permissions_id_seq OWNED BY permissions.id;
 
 
 SET default_with_oids = true;
-
---
--- Name: pg_ts_cfg; Type: TABLE; Schema: public; Owner: -; Tablespace:
---
-
-CREATE TABLE pg_ts_cfg (
-    ts_name text NOT NULL,
-    prs_name text NOT NULL,
-    locale text
-);
-
-
---
--- Name: pg_ts_cfgmap; Type: TABLE; Schema: public; Owner: -; Tablespace:
---
-
-CREATE TABLE pg_ts_cfgmap (
-    ts_name text NOT NULL,
-    tok_alias text NOT NULL,
-    dict_name text[]
-);
 
 
 --
@@ -3002,7 +2959,7 @@ ALTER SEQUENCE profiles_id_seq OWNED BY profiles.id;
 --
 
 CREATE VIEW project_counts_by_quarter_and_language AS
-SELECT af.language_id, date_trunc('quarter'::text, timezone('utc'::text, (af.month)::timestamp with time zone)) AS quarter, count(DISTINCT af.analysis_id) AS project_count FROM ((activity_facts af JOIN analyses a ON ((a.id = af.analysis_id))) JOIN projects p ON (((p.best_analysis_id = a.id) AND (NOT p.deleted)))) GROUP BY af.language_id, date_trunc('quarter'::text, timezone('utc'::text, (af.month)::timestamp with time zone));
+    SELECT af.language_id, date_trunc('quarter'::text, timezone('utc'::text, (af.month)::timestamp with time zone)) AS quarter, count(DISTINCT af.analysis_id) AS project_count FROM ((activity_facts af JOIN analyses a ON ((a.id = af.analysis_id))) JOIN projects p ON (((p.best_analysis_id = a.id) AND (NOT p.deleted)))) GROUP BY af.language_id, date_trunc('quarter'::text, timezone('utc'::text, (af.month)::timestamp with time zone));
 
 
 --
@@ -3075,7 +3032,7 @@ ALTER SEQUENCE project_experiences_id_seq OWNED BY project_experiences.id;
 --
 
 CREATE VIEW project_gestalt_view AS
-SELECT p.id AS project_id, p.url_name, g.id AS gestalt_id, g.name, g.type FROM ((projects p JOIN project_gestalts pg ON ((p.id = pg.project_id))) JOIN gestalts g ON ((g.id = pg.gestalt_id)));
+    SELECT p.id AS project_id, p.url_name, g.id AS gestalt_id, g.name, g.type FROM ((projects p JOIN project_gestalts pg ON ((p.id = pg.project_id))) JOIN gestalts g ON ((g.id = pg.gestalt_id)));
 
 
 --
@@ -3149,7 +3106,7 @@ ALTER SEQUENCE project_reports_id_seq OWNED BY project_reports.id;
 --
 
 CREATE VIEW projects_by_month AS
-SELECT m.month, (SELECT count(*) AS count FROM (projects p JOIN analyses a ON (((p.best_analysis_id = a.id) AND (NOT p.deleted)))) WHERE (date_trunc('quarter'::text, (a.min_month)::timestamp with time zone) <= date_trunc('quarter'::text, m.month))) AS project_count FROM all_months m;
+    SELECT m.month, (SELECT count(*) AS count FROM (projects p JOIN analyses a ON (((p.best_analysis_id = a.id) AND (NOT p.deleted)))) WHERE (date_trunc('quarter'::text, (a.min_month)::timestamp with time zone) <= date_trunc('quarter'::text, m.month))) AS project_count FROM all_months m;
 
 
 --
@@ -3374,7 +3331,7 @@ CREATE TABLE reviews (
 --
 
 CREATE VIEW robins_contributions_test AS
-SELECT CASE WHEN (pos.id IS NULL) THEN ((((per.project_id)::bigint << 32) + (per.name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint) ELSE (((pos.project_id)::bigint << 32) + (pos.account_id)::bigint) END AS id, per.id AS person_id, COALESCE(pos.project_id, per.project_id) AS project_id, CASE WHEN (pos.id IS NULL) THEN per.name_fact_id ELSE (SELECT name_facts.id FROM name_facts WHERE ((name_facts.analysis_id = p.best_analysis_id) AND (name_facts.name_id = pos.name_id))) END AS name_fact_id, pos.id AS position_id FROM ((people per LEFT JOIN positions pos ON ((per.account_id = pos.account_id))) JOIN projects p ON ((p.id = COALESCE(pos.project_id, per.project_id))));
+    SELECT CASE WHEN (pos.id IS NULL) THEN ((((per.project_id)::bigint << 32) + (per.name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint) ELSE (((pos.project_id)::bigint << 32) + (pos.account_id)::bigint) END AS id, per.id AS person_id, COALESCE(pos.project_id, per.project_id) AS project_id, CASE WHEN (pos.id IS NULL) THEN per.name_fact_id ELSE (SELECT name_facts.id FROM name_facts WHERE ((name_facts.analysis_id = p.best_analysis_id) AND (name_facts.name_id = pos.name_id))) END AS name_fact_id, pos.id AS position_id FROM ((people per LEFT JOIN positions pos ON ((per.account_id = pos.account_id))) JOIN projects p ON ((p.id = COALESCE(pos.project_id, per.project_id))));
 
 
 --
@@ -4069,13 +4026,6 @@ ALTER TABLE ONLY gestalts ALTER COLUMN id SET DEFAULT nextval('gestalts_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY honey_pot_fields ALTER COLUMN id SET DEFAULT nextval('honey_pot_fields_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY invites ALTER COLUMN id SET DEFAULT nextval('invites_id_seq'::regclass);
 
 
@@ -4691,14 +4641,6 @@ ALTER TABLE ONLY helpfuls
 
 
 --
--- Name: honey_pot_fields_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
---
-
-ALTER TABLE ONLY honey_pot_fields
-    ADD CONSTRAINT honey_pot_fields_pkey PRIMARY KEY (id);
-
-
---
 -- Name: invites_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
@@ -4984,22 +4926,6 @@ ALTER TABLE ONLY people
 
 ALTER TABLE ONLY permissions
     ADD CONSTRAINT permissions_pkey PRIMARY KEY (id);
-
-
---
--- Name: pg_ts_cfg_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
---
-
-ALTER TABLE ONLY pg_ts_cfg
-    ADD CONSTRAINT pg_ts_cfg_pkey PRIMARY KEY (ts_name);
-
-
---
--- Name: pg_ts_cfgmap_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
---
-
-ALTER TABLE ONLY pg_ts_cfgmap
-    ADD CONSTRAINT pg_ts_cfgmap_pkey PRIMARY KEY (ts_name, tok_alias);
 
 
 --
@@ -7969,6 +7895,10 @@ INSERT INTO schema_migrations (version) VALUES ('20150423061349');
 INSERT INTO schema_migrations (version) VALUES ('20150429084504');
 
 INSERT INTO schema_migrations (version) VALUES ('20150504072306');
+
+INSERT INTO schema_migrations (version) VALUES ('20150615040531');
+
+INSERT INTO schema_migrations (version) VALUES ('20150615041336');
 
 INSERT INTO schema_migrations (version) VALUES ('20150701173333');
 

@@ -15,12 +15,11 @@ class OrganizationsController < ApplicationController
 
   def create
     @organization = Organization.new({ editor_account: current_user }.merge(organization_params))
-    if @organization.save
-      redirect_to organization_path(@organization), notice: t('.notice')
-    else
-      flash.now[:error] = t('.error')
-      render :new
-    end
+    @organization.save!
+    redirect_to organization_path(@organization), notice: t('.notice')
+  rescue
+    flash.now[:error] = t('.error')
+    render :new
   end
 
   def edit
@@ -29,14 +28,12 @@ class OrganizationsController < ApplicationController
 
   def update
     return render_unauthorized unless @organization.edit_authorized?
-    if @organization.update_attributes(organization_params)
-      redirect_to organization_path(@organization), notice: t('.notice')
-    else
-      @current_object = @organization.clone
-      @organization.reload
-      flash.now[:error] = t('.failure')
-      render :edit, status: :unprocessable_entity
-    end
+    @organization.update_attributes!(organization_params)
+    redirect_to organization_path(@organization), notice: t('.notice')
+  rescue
+    @current_object = @organization
+    flash.now[:error] = t('.failure')
+    render :edit, status: :unprocessable_entity
   end
 
   def show

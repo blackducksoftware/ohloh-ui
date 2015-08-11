@@ -1,7 +1,8 @@
 # rubocop:disable Metrics/ClassLength
 class ApplicationController < ActionController::Base
   BOT_REGEX = /\b(Baiduspider|Googlebot|libwww-perl|msnbot|SiteUptime|Slurp)\b/i
-  FORMATS_THAT_WE_SUPPORT = %w(html xml json csv rss atom css js png gif jpg jpeg)
+  FORMATS_THAT_WE_SUPPORT = %w(html xml json csv rss atom css js png gif jpg jpeg empty)
+  FORMATS_THAT_WE_RENDER_ERRORS_FOR = %w(html xml json)
 
   include PageContextHelper
 
@@ -19,9 +20,11 @@ class ApplicationController < ActionController::Base
   helper_method :page_context
 
   before_action :store_location
+  before_action :handle_me_account_paths
   before_action :strip_query_param
   before_action :clear_reminder
   before_action :verify_api_access_for_xml_request, only: [:show, :index]
+  after_action :alert_non_activated_account, if: :logged_in?
 
   def initialize(*params)
     @page_context = {}
@@ -30,6 +33,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from ::Exception do |exception|
     fail exception if Rails.application.config.consider_all_requests_local
+    request.env[:user_agent] = request.user_agent
     notify_airbrake(exception) unless blank_user_agent?
     render_404
   end
@@ -50,6 +54,15 @@ class ApplicationController < ActionController::Base
   helper_method :page_param
 
   protected
+
+  def handle_me_account_paths
+    return unless params[:account_id] == 'me'
+    if current_user.nil?
+      redirect_to new_session_path
+    else
+      params[:account_id] = current_user.login
+    end
+  end
 
   def session_required
     return if logged_in?
@@ -119,6 +132,7 @@ class ApplicationController < ActionController::Base
   end
 
   def error(message:, status:)
+    params[:format] = 'empty' unless FORMATS_THAT_WE_RENDER_ERRORS_FOR.include?(request_format)
     @error = { message: message }
     render_with_format 'error', status: status
   end
@@ -132,7 +146,7 @@ class ApplicationController < ActionController::Base
   end
 
   def render_with_format(action, status: :ok)
-    render "#{action}.#{request_format}", status: status
+    render "#{action}.#{request_format}", layout: 'application', status: status
   end
 
   def clear_reminder
@@ -221,6 +235,19 @@ class ApplicationController < ActionController::Base
     @session_projects = (session[:session_projects] || []).map do |url_name|
       Project.from_param(url_name).take
     end.compact.uniq
+  end
+
+  def redirect_unverified_account
+    account = find_user_in_session
+    return if Account::Access.new(account).verified?
+    redirect_to new_account_verification_path(account)
+  end
+
+  def alert_non_activated_account
+    return if Account::Access.new(current_user).activated?
+
+    flash[:notice] ||= t('non_activated_message',
+                         link: view_context.link_to(:here, new_activation_resend_path))
   end
 
   def set_project_or_fail

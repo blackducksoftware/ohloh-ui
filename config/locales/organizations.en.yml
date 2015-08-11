@@ -47,6 +47,7 @@ en:
       description: 'Description'
       home: 'Homepage Link'
       save_changes: 'Save Changes'
+      processing: 'Processing'
     new_manager:
       settings: 'Settings'
       managers: 'Managers'

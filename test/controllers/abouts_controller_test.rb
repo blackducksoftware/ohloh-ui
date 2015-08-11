@@ -11,4 +11,10 @@ describe 'AboutsController' do
     must_respond_with :ok
     must_render_template 'abouts/tools'
   end
+
+  it 'gets site maintenance view' do
+    get :maintenance
+    must_respond_with :ok
+    must_render_template 'abouts/maintenance'
+  end
 end

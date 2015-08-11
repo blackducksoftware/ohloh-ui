@@ -13,8 +13,9 @@
         %td
           = link_to project_contributor_path(@project, contribution), class: 'pull-left' do
             = avatar_img_for(contribution.person)
-          = link_to project_contributor_path(@project, contribution), class: 'avatar_name strong' do
-            = truncate(contribution.person.person_name, length: 30)
+          - if contribution.person
+            = link_to project_contributor_path(@project, contribution), class: 'avatar_name strong' do
+              = truncate(contribution.person.person_name, length: 30)
         %td.center
           = fact.commits
         %td.center

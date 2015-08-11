@@ -2,7 +2,7 @@ class LogosController < SettingsController
   helper ManagersHelper
   helper ProjectsHelper
 
-  before_action :session_required, except: :new
+  before_action :session_required, :redirect_unverified_account, except: :new
   before_action :set_project, only: [:destroy, :create, :new], if: -> { params[:project_id] }
   before_action :set_organization, only: [:destroy, :create, :new], if: -> { params[:organization_id] }
   before_action :fail_unless_parent, only: [:destroy, :create, :new]

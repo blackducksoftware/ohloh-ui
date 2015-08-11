@@ -36,6 +36,8 @@
     - else
       %li
         %a.icon-signin.btn.btn-mini.btn-primary{ href: new_session_path }= t :sign_in
+      %li
+        %a.icon-plus-sign.btn.btn-mini.btn-success{ href: new_account_path }= t :join_now
 
 - if read_only_mode?
   %div

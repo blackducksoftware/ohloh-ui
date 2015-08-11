@@ -2,7 +2,7 @@ module ProjectFilters
   extend ActiveSupport::Concern
 
   included do
-    before_action :session_required, only: [:check_forge, :create, :new, :update]
+    before_action :session_required, :redirect_unverified_account, only: [:check_forge, :create, :new, :update]
     before_action :find_account
     before_action :find_projects, only: [:index]
     before_action :set_project_or_fail, :set_project_editor_account_to_current_user,

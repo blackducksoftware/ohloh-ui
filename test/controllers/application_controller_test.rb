@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ApplicationControllerTest < ActionController::TestCase
+describe 'ApplicationController' do
   describe 'TestController' do
     setup do
       @controller = TestController.new
@@ -27,6 +27,13 @@ class ApplicationControllerTest < ActionController::TestCase
       must_respond_with :not_found
       response.body.must_include(I18n.t(:four_oh_four))
       response.headers['Content-Type'].must_include('application/xml')
+    end
+
+    it 'render_404 as png' do
+      get :renders_404, format: 'png'
+      must_respond_with :not_found
+      response.body.blank?.must_equal true
+      response.headers['Content-Type'].must_include('image/png')
     end
 
     it 'render_404 with request of php should respond with html' do
@@ -66,6 +73,14 @@ class ApplicationControllerTest < ActionController::TestCase
       Rails.application.config.stubs(:consider_all_requests_local).returns false
       @controller.expects(:notify_airbrake).never
       get :throws_param_record_not_found
+      must_respond_with :not_found
+      Rails.application.config.unstub(:consider_all_requests_local)
+    end
+
+    it 'does not invoke airbrake on non-existant PNGs' do
+      Rails.application.config.stubs(:consider_all_requests_local).returns false
+      @controller.expects(:notify_airbrake).never
+      get :renders_404, format: 'png'
       must_respond_with :not_found
       Rails.application.config.unstub(:consider_all_requests_local)
     end
@@ -178,6 +193,52 @@ class ApplicationControllerTest < ActionController::TestCase
       @response.body.wont_match(/You can add more projects now./)
       assert_response :success
       action.reload.status.must_equal Action::STATUSES[:completed]
+    end
+  end
+
+  describe 'AccountsController' do
+    before do
+      @controller = AccountsController.new
+      @controller.request = @request
+      @controller.response = @response
+    end
+
+    describe 'alert_non_activated_account' do
+      let(:non_activated_message) do
+        I18n.t('non_activated_message', link: @controller.view_context.link_to(:here, new_activation_resend_path))
+      end
+
+      it 'wont show flash message when logged out' do
+        account = create(:account, activated_at: nil)
+
+        get :show, id: account.id
+        flash[:notice].must_be_nil
+      end
+
+      it 'must set flash message when account is not activated' do
+        account = create(:account, activated_at: nil)
+        login_as account
+
+        get :show, id: account.id
+        flash[:notice].must_equal non_activated_message
+      end
+
+      it 'wont set flash message for activated accounts' do
+        account = create(:account)
+        login_as account
+
+        get :show, id: account.id
+        flash[:notice].wont_equal non_activated_message
+      end
+
+      it 'wont display non activated message when notice already exists' do
+        account = create(:account, activated_at: nil)
+        login_as account
+
+        patch :update, id: account.id, account: { url: Faker::Internet.url }
+
+        flash[:notice].wont_equal non_activated_message
+      end
     end
   end
 end

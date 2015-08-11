@@ -371,6 +371,17 @@ describe 'OrganizationsController' do
       must_redirect_to organization_path(assigns(:organization))
       assigns(:organization).valid?.must_equal true
     end
+
+    it 'should gracefully handle duplicate url_names' do
+      old_org = create(:organization)
+      account.update_column(:level, 10)
+      login_as account
+      post :create, organization: { name: 'test', description: 'tes', url_name: old_org.url_name,
+                                    org_type: '2', homepage_url: 'http://test.com' }
+
+      must_respond_with :ok
+      assigns(:organization).errors[:url_name].must_equal ['has already been taken']
+    end
   end
 
   describe 'update' do

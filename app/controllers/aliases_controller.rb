@@ -1,6 +1,6 @@
 class AliasesController < SettingsController
   helper ProjectsHelper
-  before_action :session_required, except: :index
+  before_action :session_required, :redirect_unverified_account, except: :index
   before_action :set_project_or_fail, :set_project_editor_account_to_current_user, except: [:undo, :redo]
   before_action :redirect_to_message_if_oversized_project, only: :new
   before_action :project_context, only: [:index, :new, :create]
@@ -10,14 +10,11 @@ class AliasesController < SettingsController
     @aliases = Alias.for_project(@project).includes(:commit_name, :preferred_name)
   end
 
-  def new
-    @alias = Alias.new
-    @committer_names = Alias.committer_names(@project)
-  end
-
   def create
-    Alias.create_for_project(current_user, @project, params[:commit_name_id], params[:preferred_name_id])
+    @alias = Alias.create_for_project(current_user, @project, params[:commit_name_id], params[:preferred_name_id])
     redirect_to action: :index
+  rescue
+    render :new, status: :unprocessable_entity
   end
 
   def undo

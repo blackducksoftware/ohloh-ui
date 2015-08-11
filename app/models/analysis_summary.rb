@@ -23,12 +23,11 @@ class AnalysisSummary < ActiveRecord::Base
 
   def find_recent_contribution_persons(has_name_ids)
     if has_name_ids
-      pid, name_ids = analysis.project_id, recent_contributors[1..-1].join(',')
-      Person.find_by_sql AnalysisSummary.send :sanitize_sql, <<-SQL
-        SELECT P.* FROM people P
-        WHERE (P.name_id IN (#{name_ids}) AND P.project_id = #{pid}) OR P.account_id IN
-        (SELECT account_id FROM positions where project_id = #{pid} AND name_id IN (#{name_ids}))
-      SQL
+      pid, name_ids = analysis.project_id, recent_contributors[1..-1]
+      person_with_name_sql = Person.where(project_id: pid, name_id: name_ids).to_sql
+      person_with_account_sql = Person.where(account_id: Position.select(:account_id)
+                                .where(project_id: pid, name_id: name_ids)).to_sql
+      Person.from("(#{person_with_name_sql} union #{person_with_account_sql}) people")
     else
       Person.where(id: recent_contributors)
     end

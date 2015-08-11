@@ -14,7 +14,8 @@ class Project < ActiveRecord::Base
   link_accessors accessors: { url: :Homepage, download_url: :Download }
 
   validates :name, presence: true, length: 1..100, allow_nil: false, uniqueness: { case_sensitive: false }
-  validates :url_name, presence: true, length: 1..60, allow_nil: false, uniqueness: { case_sensitive: false }
+  validates :url_name, presence: true, length: 1..60, allow_nil: false, uniqueness: { case_sensitive: false },
+                       format: { with: /\A[^_].*\Z/ }
   validates :description, length: 0..800, allow_nil: true # , if: proc { |p| p.validate_url_name_and_desc == 'true' }
   validates_each :url, :download_url, allow_blank: true do |record, field, value|
     record.errors.add(field, I18n.t(:not_a_valid_url)) unless value.blank? || value.valid_http_url?
@@ -44,7 +45,7 @@ class Project < ActiveRecord::Base
   end
 
   def active_managers
-    Manage.projects.for_target(self).active.to_a.map(&:account)
+    Account.where(id: Manage.projects.for_target(self).active.select(:account_id))
   end
 
   def allow_undo_to_nil?(key)
@@ -80,13 +81,13 @@ class Project < ActiveRecord::Base
   end
 
   def newest_contributions
-    contributions.sort_by_newest.includes(person: :account, contributor_fact: :primary_language).limit(10)
+    contributions.sort_by_newest.joins(:contributor_fact)
+      .preload(person: :account, contributor_fact: :primary_language).limit(10)
   end
 
   def top_contributions
-    contributions.sort_by_twelve_month_commits
-      .includes(person: :account, contributor_fact: :primary_language)
-      .limit(10)
+    contributions.sort_by_twelve_month_commits.joins(:contributor_fact)
+      .preload(person: :account, contributor_fact: :primary_language).limit(10)
   end
 
   class << self
