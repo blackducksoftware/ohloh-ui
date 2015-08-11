@@ -27,3 +27,10 @@ en:
       source_code_abstraction: 'The source code abstraction layer we use to grab your code'
     message:
       header: "Message"
+    maintenance:
+      maintenance_title: 'Open Hub Site Maintenance'
+      site_maintenance: 'Site Maintenance'
+      performing_upgrades: "We're performing some upgrades to the Open Hub servers."
+      login_disabled: "During this time, login is disabled. All changes to projects and accounts are disabled."
+      inconvenience: "We're really sorry for the inconvenience. We're working quickly to be back online soon!"
+      home_page: 'Return to Open Hub Home Page'

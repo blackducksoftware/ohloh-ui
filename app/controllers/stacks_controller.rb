@@ -2,7 +2,8 @@ class StacksController < ApplicationController
   helper MapHelper
   helper RatingsHelper, ProjectsHelper
 
-  before_action :session_required, except: [:index, :show, :similar, :similar_stacks, :near, :project_stacks]
+  before_action :session_required, :redirect_unverified_account,
+                except: [:index, :show, :similar, :similar_stacks, :near, :project_stacks]
   before_action :find_stack, except: [:index, :create, :near, :project_stacks]
   before_action :can_edit_stack, except: [:index, :show, :create, :similar, :similar_stacks, :near, :project_stacks]
   before_action :find_account, only: [:index, :show, :similar]

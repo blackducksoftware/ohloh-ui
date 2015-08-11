@@ -19,7 +19,7 @@ en:
       no_stack: 'You have not created a stack yet.'
       add_html: 'Start a new stack and add &rdquo;%{name}&ldquo;'
       add_this: 'Add the %{name} project to one of your stacks'
-      create_html: 'Create a new stack and add &rdquo;%{project.name}&ldquo;'
+      create_html: 'Create a new stack and add &rdquo;%{name}&ldquo;'
     describe_ohloh:
       what_is: 'What is Open Hub?'
       it_is: "It's a network connecting you to people through the software you create and use."

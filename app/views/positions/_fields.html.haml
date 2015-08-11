@@ -3,6 +3,7 @@
     %label.control-label.required= t('.project_name')
     .controls
       = f.text_field :project_oss, class: 'col-md-4 autocompletable',
+      value: params[:position].present? ? "#{params[:position][:project_oss]}" : "#{position.try(:project).try(:name)}",
       data: { source: '/autocompletes/project' }
       - error_tag(position, :project_oss)
       %p.help-block= t('.enter_openhub_project_name')

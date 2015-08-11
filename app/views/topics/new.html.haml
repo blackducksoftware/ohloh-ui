@@ -1,18 +1,18 @@
 - content_for :html_title do
   = t('.new_topic')
 
-%h1.margin_top_0
-  %span= link_to t('.forums'), forums_url
-  \:
-  = link_to @forum.name, forum_path(@forum)
+%br
+  %h1.margin_top_0
+    %span= link_to t('.forums'), forums_url
+    \:
+    = link_to @forum.name, forum_path(@forum)
 
-%h2.margin_top_20= t('.new_topic')
+%h2.margin_top_20= t('.title')
 .well.col-md-11.margin_left_20
   .col-md-9
     = form_for [@forum, @topic], html: { class: 'topic_form' } do |f|
       = render partial: 'form', locals: { f: f }
       .actions
       = f.submit t('.create_topic'), class: 'btn btn-primary btn-small', style: 'margin-top: 15px;'
-  .col-md-2.no_margin_left{ style: 'margin-top: -10px' }
-
-  = render 'shared/markdown_help', style: 'margin-left: 20px;'
+  .col-md-3
+    = render 'shared/markdown_help'

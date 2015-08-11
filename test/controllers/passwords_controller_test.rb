@@ -8,6 +8,13 @@ describe 'PasswordsController' do
     must_respond_with :ok
   end
 
+  it 'must reach password edit route with me as id' do
+    account = create(:account)
+    login_as account
+    get :edit, id: 'me'
+    must_respond_with :ok
+  end
+
   it 'must fail to update if all fields are blank' do
     account = create(:account, password: 'testing', password_confirmation: 'testing')
     login_as account

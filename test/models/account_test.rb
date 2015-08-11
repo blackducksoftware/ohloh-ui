@@ -472,6 +472,23 @@ class AccountTest < ActiveSupport::TestCase
 
       account.errors.messages[:organization_name].must_be_nil
     end
+
+    describe 'twitter_id' do
+      it 'wont validate uniqueness when value is nil' do
+        create(:account, twitter_id: nil)
+
+        build(:account, twitter_id: nil).must_be :valid?
+      end
+
+      it 'must validate uniqueness when value is non null' do
+        account = create(:account)
+
+        new_account = build(:account, twitter_id: account.twitter_id)
+
+        new_account.wont_be :valid?
+        new_account.errors.messages[:twitter_id].must_be :present?
+      end
+    end
   end
 
   it 'disallow html tags in url' do

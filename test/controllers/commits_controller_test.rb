@@ -38,6 +38,12 @@ describe 'CommitsController' do
       assigns(:highlight_from).to_a.must_equal thirty_days_ago.to_a
     end
 
+    it 'should gracefully handle garbage time spans' do
+      @project.best_analysis.update_attributes(logged_at: Time.zone.now)
+      get :index, project_id: @project.id, time_span: 'I am a banana'
+      must_respond_with :ok
+    end
+
     it 'should filter the named commits if query param is present' do
       get :index, project_id: @project.id, query: @commit.comment
       assigns(:named_commits).count.must_equal 1

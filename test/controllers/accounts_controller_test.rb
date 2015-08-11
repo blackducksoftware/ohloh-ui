@@ -54,6 +54,13 @@ describe 'AccountsController' do
       must_redirect_to disabled_account_url(admin)
     end
 
+    it 'should redirect json requests if account is disabled' do
+      Account::Access.any_instance.stubs(:disabled?).returns(true)
+
+      get :show, id: admin.login, format: :json
+      must_redirect_to disabled_account_url(admin)
+    end
+
     it 'should redirect if account is labeled a spammer' do
       account = create(:account)
       account_access = Account::Access.new(account)
@@ -99,8 +106,8 @@ describe 'AccountsController' do
   describe 'new' do
     it 'must respond with success' do
       get :new
-      flash[:notice].must_equal I18n.t('accounts.temporarily_suspended')
-      must_respond_with :found
+
+      must_respond_with :success
     end
 
     it 'must redirect to maintenance during read only mode' do
@@ -110,134 +117,97 @@ describe 'AccountsController' do
     end
   end
 
-  describe 'new' do
-    it 'must respond with success' do
+  describe 'disabled' do
+    it 'must respond with success when queried via html' do
       get :disabled, id: create(:spammer).to_param
+      must_respond_with :success
+    end
+
+    it 'must respond with success when queried via json' do
+      get :disabled, id: create(:spammer).to_param, format: :json
       must_respond_with :success
     end
   end
 
-  # FIXME: uncomment when new account creation is re-enabled.
-  # describe 'create' do
-  #   let(:account_attributes) do
-  #     FactoryGirl.attributes_for(:account).select do |k, _v|
-  #       %w(login email email_confirmation password password_confirmation).include?(k.to_s)
-  #     end
-  #   end
-  #
-  #   let(:valid_params) do
-  #     valid_honeypot_and_captcha_params = {
-  #       token: :valid_token, honeypot: '',
-  #       recaptcha_challenge_field: :challenge, recaptcha_response_field: :response }
-  #
-  #     { account: account_attributes }.merge(valid_honeypot_and_captcha_params)
-  #   end
-  #
-  #   before do
-  #     HoneyPotField.create!(field_name: :honeypot, token: :valid_token)
-  #     AccountsController.any_instance.stubs(:verify_recaptcha)
-  #   end
-  #
-  #   it 'must render the new template when validations fail' do
-  #     post :create, valid_params.merge(account: { email: '' })
-  #     assigns(:account).wont_be :valid?
-  #     must_render_template :new
-  #   end
-  #
-  #   it 'must render the new template for invalid captcha' do
-  #     assert_no_difference 'Account.count' do
-  #       stub_verify_recaptcha_to_add_captcha_error
-  #       post :create, valid_params.merge(recaptcha_response_field: '')
-  #
-  #       assigns(:account).errors.messages[:captcha].must_be :present?
-  #       must_render_template :new
-  #     end
-  #   end
-  #
-  #   it 'must redirect for valid captcha' do
-  #     assert_difference 'Account.count', 1 do
-  #       post :create, valid_params
-  #       must_respond_with :redirect
-  #     end
-  #   end
-  #
-  #   it 'must redirect to home page if honeypot field is filled' do
-  #     post :create, valid_params.merge(honeypot: :filled_by_bot)
-  #
-  #     must_redirect_to root_path
-  #   end
-  #
-  #   it 'must redirect to home page if token field value is invalid' do
-  #     post :create, valid_params.merge(token: :invalid_token)
-  #
-  #     must_redirect_to root_path
-  #   end
-  #
-  #   it 'must redirect to home page if token field is expired' do
-  #     HoneyPotField.last.update!(expired: true)
-  #     post :create, valid_params
-  #
-  #     must_redirect_to root_path
-  #   end
-  #
-  #   it 'must redirect to maintenance during read only mode' do
-  #     ApplicationController.any_instance.stubs(:read_only_mode?).returns(true)
-  #     assert_no_difference 'Account.count' do
-  #       post :create, valid_params
-  #       must_redirect_to maintenance_path
-  #     end
-  #   end
-  #
-  #   it 'must require login' do
-  #     assert_no_difference 'Account.count' do
-  #       post :create, valid_params.merge(account: { login: '' })
-  #       assigns(:account).errors.messages[:login].must_be :present?
-  #     end
-  #   end
-  #
-  #   it 'must require password' do
-  #     assert_no_difference 'Account.count' do
-  #       post :create, valid_params.merge(account: { password: '' })
-  #       assigns(:account).errors.messages[:password].must_be :present?
-  #     end
-  #   end
-  #
-  #   it 'must require email and email_confirmation' do
-  #     assert_no_difference 'Account.count' do
-  #       post :create, valid_params.merge(account: { email_confirmation: '', email: '' })
-  #       assigns(:account).errors.messages[:email_confirmation].must_be :present?
-  #       assigns(:account).errors.messages[:email_confirmation].must_be :present?
-  #     end
-  #   end
-  #
-  #   it 'must render the new account page for a blacklisted email domain' do
-  #     bad_domain = 'really_bad_domain.com'
-  #     DomainBlacklist.create(domain: bad_domain)
-  #
-  #     assert_no_difference 'Account.count' do
-  #       email = "bad_guy@#{ bad_domain }"
-  #       post :create, valid_params.merge(account: { email: email, email_confirmation: email })
-  #
-  #       must_render_template :new
-  #       Account.find_by(email: email).wont_be :present?
-  #     end
-  #   end
-  #
-  #   it 'must create an action record when relevant params are passed' do
-  #     person = create(:person)
-  #
-  #     assert_difference 'Action.count', 1 do
-  #       post :create, valid_params.merge(_action: "claim_#{ person.id }")
-  #     end
-  #
-  #     action = Action.last
-  #     action.status.must_equal 'after_activation'
-  #     action.claim_person_id.must_equal person.id
-  #     action.account_id.must_equal Account.last.id
-  #   end
-  # end
+  describe 'create' do
+    let(:account_attributes) do
+      FactoryGirl.attributes_for(:account).select do |k, _v|
+        %w(login email email_confirmation password password_confirmation).include?(k.to_s)
+      end
+    end
+
+    let(:account_params) { { account: account_attributes } }
+
+    it 'must render the new template when validations fail' do
+      post :create, account_params.merge(account: { email: '' })
+      assigns(:account).wont_be :valid?
+      must_render_template :new
+    end
+
+    it 'must redirect to maintenance during read only mode' do
+      ApplicationController.any_instance.stubs(:read_only_mode?).returns(true)
+      assert_no_difference 'Account.count' do
+        post :create, account_params
+        must_redirect_to maintenance_path
+      end
+    end
+
+    it 'must require login' do
+      assert_no_difference 'Account.count' do
+        post :create, account_params.merge(account: { login: '' })
+        assigns(:account).errors.messages[:login].must_be :present?
+      end
+    end
+
+    it 'must require password' do
+      assert_no_difference 'Account.count' do
+        post :create, account_params.merge(account: { password: '' })
+        assigns(:account).errors.messages[:password].must_be :present?
+      end
+    end
+
+    it 'must require email and email_confirmation' do
+      assert_no_difference 'Account.count' do
+        post :create, account_params.merge(account: { email_confirmation: '', email: '' })
+        assigns(:account).errors.messages[:email_confirmation].must_be :present?
+        assigns(:account).errors.messages[:email_confirmation].must_be :present?
+      end
+    end
+
+    it 'must create an action record when relevant params are passed' do
+      person = create(:person)
+
+      assert_difference 'Action.count', 1 do
+        post :create, account_params.merge(_action: "claim_#{ person.id }")
+      end
+
+      action = Action.last
+      action.status.must_equal 'after_activation'
+      action.claim_person_id.must_equal person.id
+      action.account_id.must_equal Account.last.id
+    end
+
+    it 'must redirect to the verification page after account is created' do
+      assert_difference 'Account.count', 1 do
+        post :create, account_params
+      end
+
+      created_account = Account.last
+      @controller.send(:current_user).must_equal created_account
+      must_redirect_to new_account_verification_path(created_account)
+    end
+  end
 
   describe 'edit' do
+    it 'must redirect to verification page when not verified' do
+      account = create(:account, twitter_id: '')
+      login_as account
+
+      get :edit, id: account.id
+
+      must_redirect_to new_account_verification_path(account)
+    end
+
     it 'must respond with unauthorized when account does not exist' do
       get :edit, id: :anything
       must_respond_with :redirect
@@ -257,6 +227,13 @@ describe 'AccountsController' do
       login_as account
       get :edit, id: create(:account).id
       must_redirect_to new_session_path
+    end
+
+    it 'must render the edit page if admin' do
+      account = create(:account)
+      login_as admin
+      get :edit, id: account.id
+      must_respond_with :success
     end
 
     it 'must logout spammer trying to edit or update' do
@@ -334,13 +311,15 @@ describe 'AccountsController' do
     end
 
     it 'must not allow deletion by other accounts' do
-      account = create(:account)
-      login_as create(:account)
+      my_account = create(:account)
+      your_account = create(:account)
+      login_as my_account
+      @controller.session[:account_id] = my_account.id
 
       assert_no_difference 'Account.count' do
-        post :destroy, id: account.to_param
-        flash.now[:error].must_match(/You can't edit another's account/)
+        post :destroy, id: your_account.to_param
       end
+      must_redirect_to edit_deleted_account_path(your_account)
     end
 
     it 'while deleting an account, edits.account_id and edits.undone_by should be marked with Anonymous Coward ID' do
@@ -383,17 +362,6 @@ describe 'AccountsController' do
   describe 'settings' do
     it 'should render settings' do
       get :settings, id: create(:account).id
-    end
-  end
-
-  private
-
-  def stub_verify_recaptcha_to_add_captcha_error
-    AccountsController.any_instance.unstub(:verify_recaptcha)
-    ApplicationController.class_eval do
-      def verify_recaptcha(options)
-        options[:model].errors.add(:captcha, 'some error')
-      end
     end
   end
 end

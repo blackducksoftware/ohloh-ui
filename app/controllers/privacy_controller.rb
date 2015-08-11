@@ -1,5 +1,5 @@
 class PrivacyController < ApplicationController
-  before_action :session_required, only: [:edit, :update]
+  before_action :session_required, :redirect_unverified_account, only: [:edit, :update]
   before_action :set_account
   before_action :update_email_opportunities_visited
   before_action :must_own_account, only: [:edit, :update]
@@ -16,7 +16,12 @@ class PrivacyController < ApplicationController
   private
 
   def set_account
-    @account = Account.from_param(params[:id]).take
+    @account = if params[:id] == 'me'
+                 return redirect_to new_session_path if current_user.nil?
+                 current_user
+               else
+                 Account::Find.by_id_or_login(params[:id])
+               end
     fail ParamRecordNotFound unless @account
   end
 

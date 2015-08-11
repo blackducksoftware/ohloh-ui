@@ -20,7 +20,7 @@
 
     %p &nbsp;
     %h3= t('.compare')
-    %form.projects_compare.margin_left_15{ action: '/p/compare' }
+    %form.projects_compare.margin_left_15{ action: '/p/_compare' }
       - compare_project_inputs.each do |options|
         %input.proj.explore_compare{ options }
       %input.pull-right.btn.btn-primary.btn-small#compare_btn{ type: 'submit', value: 'Compare' }

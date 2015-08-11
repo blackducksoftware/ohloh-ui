@@ -1,6 +1,5 @@
 en:
   accounts:
-    temporarily_suspended: "Account creation is temporarily suspended"
     unsubscribe_emails:
       title: 'You Have Been Unsubscribed'
       sad: 'We are sorry that emails from Open Hub were not helpful to you. You have been unsubscribed from all emails from Open Hub'
@@ -82,8 +81,6 @@ en:
       page_title: 'Account Holders - Open Hub'
       people: 'People'
       header: 'Account Holders'
-    create:
-      success: "Thanks for signing up! Your account information was sent to %{email}. Follow the activation instructions contained in the email before logging in."
     update:
       success: 'Save successful!'
     confirm_delete:
@@ -198,3 +195,11 @@ en:
       change_passwords: 'Change password for the account.'
       api_key_settings:  'API Key settings and deletion, request new API keys.'
       email_settings: 'Opt-in / opt-out for emails from Open Hub, and OAuth access settings for external applications.'
+
+    verifications:
+      new:
+        html_title: Verify Account
+        verification_prompt: We would need your phone number to verify your account. Please click on the button given below to proceed.
+        verify_using_phone_number: Verify Phone Number
+      create:
+        error: There seems to be an issue with the mobile verification. Please try again later.

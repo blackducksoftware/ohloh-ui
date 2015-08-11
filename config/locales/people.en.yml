@@ -5,6 +5,7 @@ en:
     index:
       page_title: "People - Open Hub"
       people: "People"
+    people:
       account_holders: "Account Holders"
       more_account_holders: "More Account Holders"
       unclaimed_committer_ids: "Unclaimed Committer ID's"

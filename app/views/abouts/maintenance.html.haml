@@ -1,0 +1,11 @@
+- content_for :html_title do
+  = t('.maintenance_title')
+end
+
+%div
+  %h1= t('.site_maintenance')
+  %br
+  %p= t('.performing_upgrades')
+  %p= t('.login_disabled')
+  %p= t('.inconvenience')
+  %p= link_to t('.home_page'), root_url

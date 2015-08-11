@@ -56,6 +56,17 @@ describe 'SessionsControllerTest' do
       cookies[:auth_token].must_equal admin.remember_token
     end
 
+    it 'create with remember me set should save the right data to the account and cookies' do
+      admin.remember_token.must_be_nil
+      admin.remember_token_expires_at.must_be_nil
+      post :create, login: { login: admin.login, password: 'password', remember_me: '1' }
+      must_respond_with :found
+      admin.reload
+      admin.remember_token.wont_be_nil
+      admin.remember_token_expires_at.wont_be_nil
+      cookies[:auth_token].must_equal admin.remember_token
+    end
+
     it 'create should inform uninformed users about privacy' do
       account = create(:account, email_opportunities_visited: nil, password: 'password')
       session[:account_id].must_be_nil
