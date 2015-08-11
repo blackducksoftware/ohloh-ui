@@ -1,13 +1,6 @@
 .one_project_graph{ :'data-highcharts-chart' => 1, id: position.project.name_at_forge, style: 'font-size-adjust: 0.50' }
   - pname = position.project.name[0..20]
-  - if index < 0 # show only the first 5 positions using inline chart-data
-    - chart_data = ChartDecorator.new.project_commit_history(@account, position.project_id)
-    .margin_bottom_5
-      .chart-with-data{ id: "project_contributions_#{position.project_id}", 'data-value' => chart_data.as_json,
-                        'data-pname' => pname, style: 'width: 910px; height: 170px' }
-  - else
-    - url = commits_by_individual_project_account_charts_path(@account, project_id: position.project.id).to_s
-    .margin_bottom_5
-      .chart.watermark914{ id: "project_contributions_#{ position.project_id }",
-                           style: 'width: 910px; height: 170px', 'data-pname' => pname, 'datasrc' => url,
-                           'data-chart' => ChartDecorator.new.background_style('watermark_914') }
+  - chart_data = ChartDecorator.new.project_commit_history(@account, position.project_id)
+  .margin_bottom_5
+    .chart-with-data{ id: "project_contributions_#{position.project_id}", 'data-value' => chart_data.as_json,
+                      'data-pname' => pname, style: 'width: 910px; height: 170px' }

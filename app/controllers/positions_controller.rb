@@ -55,9 +55,10 @@ class PositionsController < ApplicationController
   end
 
   def index
-    @positions = Rails.cache.fetch("account_#{@account.login}_ordered_positions", expires_in: 24.hours) do
+    @all_positions = Rails.cache.fetch("account_#{@account.login}_ordered_positions", expires_in: 1.day) do
       @account.position_core.ordered
     end
+    @positions = Kaminari.paginate_array(@all_positions).page(page_param).per(10)
   end
 
   def commits_compound_spark
