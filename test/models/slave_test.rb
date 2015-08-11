@@ -61,6 +61,7 @@ class SlaveTest < ActiveSupport::TestCase
     it 'must raise exception when command fails' do
       command = 'ls -l'
 
+      slave.stubs(:command_failed?).returns(true)
       slave.expects(:`).with(command)
       -> { slave.run(command) }.must_raise(Exception)
     end
