@@ -41,8 +41,7 @@ class PositionsController < ApplicationController
   end
 
   def index
-    @all_positions = @account.position_core.ordered
-    @positions = @all_positions.paginate(page: page_param, per_page: 1)
+    @positions = @account.position_core.ordered.paginate(page: page_param, per_page: 10)
   end
 
   def commits_compound_spark
