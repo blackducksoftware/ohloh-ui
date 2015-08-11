@@ -3,7 +3,8 @@ en:
     new:
       forums: 'Forums'
       create_topic: 'Post Topic'
-      new_topic: 'New Topics - OpenHub'
+      new_topic: 'New Topics - Open Hub'
+      title: 'New Topics'
     show:
       next_topic_html: 'Next Topic&rarr;'
       previous_topic_html: '&larr;Previous Topic'
