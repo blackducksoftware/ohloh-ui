@@ -1,8 +1,8 @@
 # rubocop:disable Metrics/ClassLength
+require 'will_paginate/array'
 class PositionsController < ApplicationController
   helper ProjectsHelper
   helper PositionsHelper
-
   include PositionFilters
 
   def new
@@ -41,10 +41,8 @@ class PositionsController < ApplicationController
   end
 
   def index
-    @all_positions = Rails.cache.fetch("account_#{@account.login}_ordered_positions", expires_in: 1.day) do
-      @account.position_core.ordered
-    end
-    @positions = Kaminari.paginate_array(@all_positions).page(page_param).per(10)
+    @all_positions = @account.position_core.ordered
+    @positions = @all_positions.paginate(page: page_param, per_page: 1)
   end
 
   def commits_compound_spark

@@ -11,8 +11,295 @@ module PositionFilters
     before_action :redirect_to_contribution_if_found, only: :show, unless: :params_id_is_total?
     before_action :account_context
     before_action :set_project_and_name, only: :one_click_create
-    after_action  :delete_position_caches, only: [:create, :update, :destroy]
     skip_before_action :store_location, only: [:commits_compound_spark]
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def redirect_to_contribution_if_found
+    project = @position.project
+    return unless project && !project.deleted && @position.contribution
+
+    redirect_to project_contributor_path(project, @position.contribution)
+  end
+
     helper_method :params_id_is_total?
   end
 
@@ -46,9 +333,4 @@ module PositionFilters
     redirect_to project_contributor_path(project, @position.contribution)
   end
 
-  def delete_position_caches
-    cache_keys = ["account_#{@account.login}_ordered_positions", "account_#{@account.login}_positions",
-                  "account_#{@account.login}_cbp"]
-    cache_keys.each{ |key| Rails.cache.delete(key)}
-  end
 end
