@@ -6,7 +6,7 @@
           %span.soft= t('.sticky')
         %span{ class: "#{'strong' if topic.sticky?}" }
           = link_to h(topic.title), topic_path(topic), class: 'entry-title', rel: 'bookmark'
-        by
+        = t(:by)
         = topic.account.name
     %td.center
       - if topic.closed

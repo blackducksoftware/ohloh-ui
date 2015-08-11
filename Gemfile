@@ -20,7 +20,6 @@ gem 'jquery-ui-rails'
 gem 'mini_magick', '~> 4.1.1'
 gem 'oh_delegator'
 gem 'ohloh_scm'
-gem 'ohno-you-dont', require: 'ohno'
 gem 'open4'
 gem 'paperclip'
 gem 'pg'
@@ -64,6 +63,7 @@ group :development, :test do
   gem 'byebug'
   gem 'pry-rails'
   gem 'rb-readline'
+  gem 'rails-erd'
 end
 
 group :production do

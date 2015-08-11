@@ -1,4 +1,4 @@
-= ohno_form_for @account, html: { id: :account_form, class: :well } do |f|
+= form_for @account, html: { id: :account_form, class: :well } do |f|
   %fieldset
     %legend= t('.new_account')
     .controls
@@ -35,9 +35,5 @@
       - error_tag(@account, :password_confirmation)
       %p.help-block
         = t('.verify_password_help')
-    .control-group
-      = render 'shared/captcha'
-      %p#helps-maintain-a-padding-above-recaptcha-error
-      - error_tag(@account, :captcha)
     .actions
       %input.btn.btn-primary{ type: :submit, value: t('.sign_up') }

@@ -24,7 +24,6 @@ Rails.application.routes.draw do
   resources :activation_resends, only: [:new, :create]
 
   resources :api_keys, only: :index
-  resources :domain_blacklists, except: :show
   resources :reviews, only: :destroy do
     resources :helpfuls, only: :create
   end
@@ -104,6 +103,8 @@ Rails.application.routes.draw do
 
     get 'doorkeeper/oauth_applications/:id/revoke_access' =>
       'doorkeeper/oauth_applications#revoke_access', as: :revoke_oauth_access
+
+    resources :verifications, only: [:new, :create], module: :accounts
   end
 
   resources :deleted_accounts, only: [:edit, :update]
@@ -148,7 +149,7 @@ Rails.application.routes.draw do
   get 'tools', to: 'abouts#tools'
 
   get 'p/_compare', to: 'compares#projects', as: :compare_projects
-  get 'p/_project_graph', to: 'compares#projects_graph', as: :compare_graph_projects
+  get 'p/_project_graph', to: 'compares#projects_graph', as: :compare_graph_projects, defaults: { format: 'js' }
   get 'projects/:id/stacks', to: 'stacks#project_stacks', constraints: { format: /xml/ }
   get 'p/:id/stacks', to: 'stacks#project_stacks', as: :project_stacks, constraints: { format: /xml/ }
   get 'p/:id/stacks', to: redirect('/p/%{id}/users'), constraints: { format: /html/ }

@@ -1,18 +1,9 @@
 # rubocop:disable Metrics/ClassLength
+require 'will_paginate/array'
 class PositionsController < ApplicationController
   helper ProjectsHelper
   helper PositionsHelper
-  before_action :session_required, only: [:edit, :new, :create, :delete, :one_click_create]
-  before_action :set_account, except: :one_click_create
-  before_action :must_own_account, only: [:edit, :update, :new, :create]
-  before_action :redirect_to_languages, only: :show, if: :params_id_is_total?
-  before_action :set_position, only: [:show, :edit, :update, :destroy, :commits_compound_spark]
-  before_action :redirect_to_contribution_if_found, only: :show, unless: :params_id_is_total?
-  before_action :account_context
-  before_action :set_project_and_name, only: :one_click_create
-  skip_before_action :store_location, only: [:commits_compound_spark]
-
-  helper_method :params_id_is_total?
+  include PositionFilters
 
   def new
     @position = Position.new
@@ -50,7 +41,7 @@ class PositionsController < ApplicationController
   end
 
   def index
-    @positions = @account.position_core.ordered
+    @positions = @account.position_core.ordered.paginate(page: page_param, per_page: 10)
   end
 
   def commits_compound_spark
@@ -80,16 +71,10 @@ class PositionsController < ApplicationController
     flash[:success] = t('.invite_success') if params[:invite].present? && @account.created_at > 1.day.ago
   end
 
-  def redirect_to_contribution_if_found
-    project = @position.project
-    return unless project && !project.deleted && @position.contribution
-
-    redirect_to project_contributor_path(project, @position.contribution)
-  end
-
   def redirect_to_new_position_path
     redirect_to new_account_position_path(current_user, committer_name: @name.name,
-                                                        project_name: @project.name, invite: params[:invite]),
+                                                        project_name: @project.name,
+                                                        invite: params[:invite]),
                 flash: { success: t('positions.one_click_create.new_position', name: @name.name) }
   end
 
@@ -97,31 +82,10 @@ class PositionsController < ApplicationController
     params[:id].to_s.downcase == 'total'
   end
 
-  def set_position
-    @position = @account.positions.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    raise ParamRecordNotFound
-  end
-
-  def set_account
-    @account = Account.from_param(params[:account_id]).take
-    fail ParamRecordNotFound unless @account
-  end
-
-  def set_project_and_name
-    @project = Project.where(name: params[:project_name]).not_deleted.take
-    @name = Name.where(name: params[:committer_name]).take
-    fail ParamRecordNotFound unless @project && @name
-  end
-
   def position_params
     params.require(:position)
       .permit(:project_oss, :committer_name, :title, :organization_id, :organization_name,
               :affiliation_type, :description, :start_date, :stop_date, :ongoing, :invite,
               language_exp: [], project_experiences_attributes: [:project_name, :_destroy, :id])
-  end
-
-  def redirect_to_languages
-    redirect_to account_languages_path(@account)
   end
 end

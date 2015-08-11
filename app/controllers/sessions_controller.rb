@@ -26,7 +26,6 @@ class SessionsController < ApplicationController
 
   def initialize_session(account)
     return if disabled_account?(account)
-    return unless activated_account?(account)
     remember_me_if_requested(account)
     initialize_session_variables(account)
     return unless privacy_informed?(account)
@@ -50,13 +49,6 @@ class SessionsController < ApplicationController
     flash[:error] = t '.disabled_error'
     render :new, status: :bad_request
     true
-  end
-
-  def activated_account?(account)
-    return true if Account::Access.new(account).activated?
-    flash[:error] = t '.unactivated_error'
-    render :new, status: :bad_request
-    false
   end
 
   def privacy_informed?(account)

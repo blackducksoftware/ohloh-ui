@@ -3,15 +3,12 @@ class AccountsController < ApplicationController
 
   helper MapHelper
 
-  before_action :session_required, only: [:edit, :destroy, :confirm_delete]
+  before_action :session_required, :redirect_unverified_account, only: [:edit, :destroy, :confirm_delete, :me]
   before_action :set_account, only: [:destroy, :show, :update, :edit, :confirm_delete, :disabled, :settings]
   before_action :redirect_if_disabled, only: [:show, :update, :edit]
   before_action :disabled_during_read_only_mode, only: [:new, :create, :edit, :update]
-  before_action :no_new_accounts, only: [:new, :create]
-  before_action :must_own_account, only: [:edit, :update, :destroy, :confirm_delete]
-  before_action :check_banned_domain, only: :create
-  before_action :captcha_response, only: :create
   before_action :account_context, only: [:edit, :update, :confirm_delete]
+  before_action :must_own_account, only: [:edit, :update, :confirm_delete]
   before_action :find_claimed_people, only: :index
   after_action :create_action_record, only: :create, if: -> { @account.persisted? && params[:_action].present? }
 
@@ -28,20 +25,24 @@ class AccountsController < ApplicationController
     page_context[:page_header] = 'accounts/show/header'
   end
 
-  # FIXME: uncomment when new account creation is re-enabled.
-  # def new
-  #   @account = Account.new
-  # end
-  #
-  # def create
-  #   @account = Account.new(account_params)
-  #
-  #   if @account.save
-  #     redirect_to root_path, flash: { success: t('.success', email: @account.email) }
-  #   else
-  #     render :new
-  #   end
-  # end
+  def me
+    redirect_to account_path(current_user)
+  end
+
+  def new
+    @account = Account.new
+  end
+
+  def create
+    @account = Account.new(account_params)
+
+    if @account.save
+      session[:account_id] = @account.id
+      redirect_to new_account_verification_path(@account)
+    else
+      render :new
+    end
+  end
 
   def update
     if @account.update(account_params)
@@ -69,11 +70,6 @@ class AccountsController < ApplicationController
 
   private
 
-  def no_new_accounts
-    flash[:notice] = t('accounts.temporarily_suspended')
-    redirect_to new_session_path
-  end
-
   def find_claimed_people
     total_entries = params[:query].blank? ? Person::Count.claimed : nil
     @people = Person.find_claimed(params[:query], params[:sort])
@@ -90,22 +86,9 @@ class AccountsController < ApplicationController
     fail ParamRecordNotFound unless @account
   end
 
-  # FIXME: uncomment when new account creation is re-enabled.
-  # def check_banned_domain
-  #   @account = Account.new(account_params)
-  #   return unless @account.email?
-  #   render :new, status: 418 if DomainBlacklist.email_banned?(@account.email)
-  # end
-  #
-  # def captcha_response
-  #   @account = Account.new(account_params)
-  #   verify_recaptcha(model: @account, attribute: :captcha)
-  #   render :new if @account.errors.messages[:captcha].present?
-  # end
-  #
-  # def create_action_record
-  #   Action.create(account: @account, _action: params[:_action], status: :after_activation)
-  # end
+  def create_action_record
+    Action.create(account: @account, _action: params[:_action], status: :after_activation)
+  end
 
   def account_params
     params.require(:account).permit(

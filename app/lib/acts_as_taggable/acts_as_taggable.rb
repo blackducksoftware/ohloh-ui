@@ -26,6 +26,7 @@ module ActsAsTaggable
     private
 
     def parse_tag_list(list)
+      return [] if list.blank?
       list.gsub(/\"/, '').split(/\s/).reject(&:blank?)
     end
   end

@@ -3,7 +3,7 @@ class DuplicatesController < ApplicationController
   helper RatingsHelper
   helper TagsHelper
 
-  before_action :session_required
+  before_action :session_required, :redirect_unverified_account
   before_action :admin_session_required, only: [:index, :show, :resolve]
   before_action :set_project_or_fail, except: [:index, :show, :resolve]
   before_action :find_duplicate, only: [:edit, :update, :destroy]

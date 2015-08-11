@@ -1,5 +1,5 @@
 class PasswordsController < ApplicationController
-  before_action :session_required
+  before_action :session_required, :redirect_unverified_account
   before_action :set_account
   before_action :account_context
 

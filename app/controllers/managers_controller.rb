@@ -1,7 +1,7 @@
 class ManagersController < SettingsController
   helper ProjectsHelper
 
-  before_action :session_required, except: :index
+  before_action :session_required, :redirect_unverified_account, except: :index
   before_action :set_project, if: -> { params[:project_id] }
   before_action :set_organization, if: -> { params[:organization_id] }
   before_action :fail_unless_parent

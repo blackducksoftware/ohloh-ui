@@ -49,4 +49,8 @@ class Account::Access
       @level = @account.level
     end
   end
+
+  def verified?
+    @account.twitter_id?
+  end
 end

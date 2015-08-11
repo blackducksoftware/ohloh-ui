@@ -10,6 +10,9 @@
 %h2.margin_top_20= t('.new_topic')
 .well.col-md-12
   .col-md-10
+%h2.margin_top_20= t('.title')
+.well.col-md-11.margin_left_20
+  .col-md-9
     = form_for [@forum, @topic], html: { class: 'topic_form' } do |f|
       = render partial: 'form', locals: { f: f }
       .actions
@@ -17,3 +20,4 @@
   .col-md-2.no_margin_left{ style: 'margin-top: -10px' }
 
   = render 'shared/markdown_help', style: 'margin-left: 90px;'
+
