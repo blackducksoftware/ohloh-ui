@@ -72,7 +72,6 @@ class SlaveDaemon
     job.update(status: Job::STATUS_FAILED, exception: I18n.t('slaves.could_not_find_process'))
   end
 
-  # TODO: Make this work.
   def trap_exit
     trap 'EXIT' do
       slave.logs.create!(message: I18n.t('slaves.daemon_stopped'))
