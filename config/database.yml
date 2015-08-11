@@ -24,3 +24,6 @@ test:
 
 production:
   <<: *default
+
+postgresql_upgrade_testing:
+  <<: *default
