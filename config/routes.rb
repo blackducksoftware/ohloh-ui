@@ -127,7 +127,7 @@ Rails.application.routes.draw do
   resources :autocompletes, only: [] do
     collection do
       get :account
-      get :project
+      get :project, defaults: { format: 'json' }
       get :licenses
       get :contributions
       get :tags
