@@ -40,7 +40,7 @@ class Job < ActiveRecord::Base
   end
 
   def schedule!
-    fail 'Cannot schedule a running job.' if running?
+    fail I18n.t('slaves.cant_schedule_running_job') if running?
     update(status: STATUS_SCHEDULED, slave: nil, exception: nil, backtrace: nil)
   end
 
@@ -96,9 +96,9 @@ class Job < ActiveRecord::Base
   def trap_exit
     trap 'EXIT' do
       if running?
-        update(status: Job::STATUS_FAILED, exception: 'Host process killed.')
+        update(status: Job::STATUS_FAILED, exception: I18n.t('slaves.host_process_killed'))
         categorize_on_failure
-        slave.logs.create!(message: 'Host process killed.', job_id: id, code_set_id: code_set_id,
+        slave.logs.create!(message: I18n.t('slaves.host_process_killed'), job_id: id, code_set_id: code_set_id,
                            level: SlaveLog::ERROR)
       end
     end
@@ -110,12 +110,17 @@ class Job < ActiveRecord::Base
       Daemons.daemonize(DAEMONIZATION_OPTIONS)
 
       ActiveRecord::Base.establish_connection
-      set_process_title('Starting')
-      slave.logs.create!(message: "Spawned Job #{id} in process #{Process.pid}", job_id: id, code_set_id: code_set_id)
+      set_process_title(I18n.t('slaves.starting'))
+      create_spawned_log
 
       trap_exit
       setup_environment
       run!
     end
+  end
+
+  def create_spawned_log
+    slave.logs.create!(message: I18n.t('slaves.spawned_job', id: id, pid: Process.pid),
+                       job_id: id, code_set_id: code_set_id)
   end
 end

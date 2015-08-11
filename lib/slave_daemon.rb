@@ -61,11 +61,15 @@ class SlaveDaemon
       if running_job_ids.include?(job.id)
         @jobs_count += 1
       else
-        slave.logs.create!(message: I18n.t('slaves.could_not_find_process'),
-                           job_id: job.id, code_set_id: job.code_set_id, level: SlaveLog::ERROR)
-        job.update(status: Job::STATUS_FAILED, exception: 'SlaveDaemon could not find process for job.')
+        log_and_update_failed_status(job)
       end
     end
+  end
+
+  def log_and_update_failed_status(job)
+    slave.logs.create!(message: I18n.t('slaves.could_not_find_process_mark_as_failed'),
+                       job_id: job.id, code_set_id: job.code_set_id, level: SlaveLog::ERROR)
+    job.update(status: Job::STATUS_FAILED, exception: I18n.t('slaves.could_not_find_process'))
   end
 
   # TODO: Make this work.

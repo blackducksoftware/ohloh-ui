@@ -8,7 +8,7 @@ class JobDaemon
     job.update(slave: Slave.local)
     pid = job.fork!
 
-    STDERR.puts "Started job #{ job_id } in process #{ pid }."
+    STDERR.puts I18n.t('slaves.started_job', id: job_id, pid: pid)
   end
 end
 

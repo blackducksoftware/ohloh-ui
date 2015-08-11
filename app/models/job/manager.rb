@@ -25,7 +25,7 @@ class Job::Manager
     @job.update(status: Job::STATUS_COMPLETED)
     slave.logs.create!(message: I18n.t('slaves.skipping_job'),
                        job_id: @job.id, code_set_id: code_set_id)
-    set_process_title('Completed')
+    set_process_title(I18n.t('slaves.completed'))
   end
 
   def inactive_projects?
@@ -40,7 +40,7 @@ class Job::Manager
     @job.work do |step, max_steps|
       @job.update(max_steps: max_steps, current_step: step, current_step_at: Time.now.utc,
                   exception: nil, backtrace: nil)
-      set_process_title('Running')
+      set_process_title(I18n.t('slaves.running'))
 
       kill_long_running_job
     end
@@ -51,11 +51,11 @@ class Job::Manager
     after_completed
     slave.logs.create!(message: I18n.t('slaves.job_completed'),
                        job_id: @job.id, code_set_id: code_set_id)
-    set_process_title('Completed')
+    set_process_title(I18n.t('slaves.completed'))
   end
 
   def handle_too_long_exception
-    slave.logs.create!(message: I18n.t('slaves.runtime_exceeded'),
+    slave.logs.create!(message: I18n.t('slaves.runtime_exceeded_job_rescheduled'),
                        job_id: @job.id, code_set_id: code_set_id)
     @job.update(status: Job::STATUS_SCHEDULED, wait_until: Time.now.utc + 16.hours,
                 exception: $ERROR_INFO.message, backtrace: $ERROR_INFO.backtrace.join("\n"))
@@ -75,7 +75,11 @@ class Job::Manager
     return if priority > 0 || !older_than_8_hours? || current_step.to_i >= max_steps.to_i ||
               !@job.class.can_have_too_long_exception?
 
-    fail JobTooLongException.new, 'Runtime limit exceeded.'
+    fail_too_long_exception
+  end
+
+  def fail_too_long_exception
+    fail JobTooLongException.new, I18n.t('slaves.runtime_exceeded')
   end
 
   def older_than_8_hours?
