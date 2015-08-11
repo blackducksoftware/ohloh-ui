@@ -84,13 +84,15 @@ class EnlistmentsController < SettingsController
   end
 
   def save_or_update_repository
-    @project_has_repo_url = @project.enlistments.with_repo_url(params[:repository][:url].strip).exists?
+    @previous_repository = @project.enlistments.with_repo_url(params[:repository][:url].strip).first
     existing_repo = @repository_class.find_existing(@repository)
     if existing_repo.present?
       existing_repo.update_attributes(username: @repository.username, password: @repository.password)
       @repository  = existing_repo
+    elsif @previous_repository
+      @repository = @previous_repository
     else
-      @repository.save! unless @project_has_repo_url
+      @repository.save!
     end
   end
 
@@ -99,7 +101,7 @@ class EnlistmentsController < SettingsController
   end
 
   def set_flash_message
-    if @project_has_repo_url
+    if @previous_repository
       flash[:notice] = t('.notice', url: @repository.url)
     else
       flash[:success] = t('.success', url: @repository.url,
