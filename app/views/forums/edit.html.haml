@@ -4,8 +4,10 @@
 - if flash[:alert]
   = render 'forums/error_alert'
 
-%h1.margin_top_10
+%br
+%h1.margin_top_0
   %span= link_to t('.forums'), forums_url
+
 .clear
 
 .row
@@ -16,5 +18,5 @@
   .col-md-7
     = form_for @forum do |f|
       = render partial: 'form', locals: { f: f }
-      = f.submit t('.save_forum'), class: 'btn btn-small btn-primary'
+      = f.submit t('.save_forum'), class: 'btn btn-small btn-primary', style: 'height: 33px;'
       = link_to t('.cancel'), forum_path(@forum), class: 'btn btn-small'

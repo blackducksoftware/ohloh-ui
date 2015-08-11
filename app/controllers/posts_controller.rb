@@ -3,7 +3,6 @@ class PostsController < ApplicationController
   include RedirectIfDisabled
   helper MarkdownHelper
   helper PageContextHelper
-  helper TopicsHelper
 
   before_action :session_required, :redirect_unverified_account, only: [:create, :edit, :update]
   before_action :admin_session_required, only: [:destroy]

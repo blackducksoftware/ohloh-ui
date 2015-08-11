@@ -25,9 +25,15 @@
 
   - collection_of_all_topics = @topic.forum.topics
   %ul.pager
-    %li.pull-left
-      = link_to_unless collection_of_all_topics.index(@topic).zero?, t('.previous_topic_html'),
-        previous_topic(collection_of_all_topics, @topic)
-    %li.pull-right
-      = link_to_if next_topic?(collection_of_all_topics, @topic), t('.next_topic_html'),
-        next_topic(collection_of_all_topics, @topic)
+    %li.pull-left{ class: ('disabled' if collection_of_all_topics.index(@topic).zero?) }
+      - if @topic == collection_of_all_topics.first
+        = link_to t('.previous_topic_html'), '#'
+      - else
+        = link_to t('.previous_topic_html'),
+          topic_path(collection_of_all_topics[(collection_of_all_topics.index(@topic) - 1)])
+    %li.pull-right{ class: ('disabled' if collection_of_all_topics.index(@topic).zero?) }
+      - if @topic == collection_of_all_topics.last
+        = link_to t('.next_topic_html'), '#'
+      - else
+        = link_to t('.next_topic_html'),
+          topic_path(collection_of_all_topics[(collection_of_all_topics.index(@topic) + 1)])
