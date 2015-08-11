@@ -295,6 +295,7 @@ en:
       description_help1: "Describe the project focusing on key features and unique aspects."
       description_help2: "Maximum 800 characters, and only new-line formatting is allowed."
       submit: "Save Project"
+      processing: 'Processing..'
     check_forge_duplicate:
       page_title: "Check Forge Projects"
       message: "We found that the code location %{param} is already in use by the following projects. If you still wish to create a project using this code location, click the \"Create Project\" button below."

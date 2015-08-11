@@ -4,7 +4,7 @@ class LinksController < SettingsController
   before_action :set_project_or_fail, :set_project_editor_account_to_current_user
   before_action :project_context
   before_action :set_link, only: [:edit, :update, :destroy]
-  before_action :session_required, only: [:create, :new, :edit, :update]
+  before_action :session_required, :redirect_unverified_account, only: [:create, :new, :edit, :update]
   before_action :set_categories, only: [:create, :new, :edit, :update]
 
   def new

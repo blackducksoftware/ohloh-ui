@@ -12,6 +12,7 @@ module Ignore
 
     def match?(prefixes, fyle_name)
       prefixes.any? do |prefix|
+        prefix = prefix.gsub('\\', '/')
         fyle_name.match(/^#{ prefix }/)
       end
     end

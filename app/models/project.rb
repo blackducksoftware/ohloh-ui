@@ -45,7 +45,7 @@ class Project < ActiveRecord::Base
   end
 
   def active_managers
-    Manage.projects.for_target(self).active.to_a.map(&:account)
+    Account.where(id: Manage.projects.for_target(self).active.select(:account_id))
   end
 
   def allow_undo_to_nil?(key)
@@ -81,13 +81,13 @@ class Project < ActiveRecord::Base
   end
 
   def newest_contributions
-    contributions.sort_by_newest.includes(person: :account, contributor_fact: :primary_language).limit(10)
+    contributions.sort_by_newest.joins(:contributor_fact)
+      .preload(person: :account, contributor_fact: :primary_language).limit(10)
   end
 
   def top_contributions
-    contributions.sort_by_twelve_month_commits
-      .includes(person: :account, contributor_fact: :primary_language)
-      .limit(10)
+    contributions.sort_by_twelve_month_commits.joins(:contributor_fact)
+      .preload(person: :account, contributor_fact: :primary_language).limit(10)
   end
 
   class << self

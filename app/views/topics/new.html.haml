@@ -1,10 +1,11 @@
 - content_for :html_title do
   = t('.new_topic')
 
-%h1.margin_top_0
-  %span= link_to t('.forums'), forums_url
-  \:
-  = link_to @forum.name, forum_path(@forum)
+%br
+  %h1.margin_top_0
+    %span= link_to t('.forums'), forums_url
+    \:
+    = link_to @forum.name, forum_path(@forum)
 
 %h2.margin_top_20= t('.new_topic')
 .well.col-md-11.margin_left_20

@@ -7,7 +7,7 @@ set :application, 'openhub'
 set :repo_url, 'git@github.com:blackducksw/ohloh-ui.git'
 set :user, 'deployer'
 set :use_sudo, false
-set :passenger_restart_with_sudo, true
+set :passenger_restart_with_sudo, false
 set :branch, ENV['branch'] || :master
 
 set :deploy_to, "/var/local/#{ fetch(:application) }"

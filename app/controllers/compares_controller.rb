@@ -32,8 +32,11 @@ class ComparesController < ApplicationController
   def populate_chart_plot_points_and_series
     @series_of_plot_points = {}
     @projects.compact.each do |project|
-      next if project.nil? || project.best_analysis.nil?
-      @series_of_plot_points[project.name] = metric_data(@metric, project)
+      @series_of_plot_points[project.name] = if project.nil? || project.best_analysis.nil?
+                                               []
+                                             else
+                                               metric_data(@metric, project)
+                                             end
       @series_of_plot_points[project.name].pop
     end
   end

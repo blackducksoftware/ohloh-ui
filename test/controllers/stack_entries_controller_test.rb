@@ -3,6 +3,7 @@ require 'test_helper'
 class StackEntriesControllerTest < ActionController::TestCase
   # show
   it 'show should return good json for a stack entry' do
+    login_as(create(:account))
     stack_entry = create(:stack_entry)
     get :show, format: :json, id: stack_entry, stack_id: stack_entry.stack
     must_respond_with :ok

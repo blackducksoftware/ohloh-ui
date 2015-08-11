@@ -65,5 +65,9 @@ class IgnoreTest < ActiveSupport::TestCase
       assert !Ignore.match?(['foobar'], 'foo')
       assert Ignore.match?(%w(bar foo), 'foo')
     end
+
+    it 'should gracefully handle backslashes in the prefixes' do
+      assert !Ignore.match?(['\\c\\autoexec\\'], 'foo')
+    end
   end
 end

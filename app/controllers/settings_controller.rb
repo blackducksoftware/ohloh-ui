@@ -1,5 +1,6 @@
 class SettingsController < ApplicationController
   before_action :show_permissions_alert, only: [:index, :new, :edit]
+  ACCEPTABLE_TIME_UNITS = %w(hours days weeks months years)
 
   def oversized_project?(project)
     return true if defined?(OVERSIZED_PROJECT_IDS) && OVERSIZED_PROJECT_IDS.include?(project.id)
@@ -17,8 +18,12 @@ class SettingsController < ApplicationController
 
   def parse_time_span(time_span)
     return unless @project.best_analysis.logged_at
+    @highlight_from = @project.best_analysis.logged_at - time_span.to_s.split.first.to_i.send(time_units(time_span))
+  end
 
-    time_span_string = time_span.to_s.split
-    @highlight_from = @project.best_analysis.logged_at - time_span_string.first.to_i.send(time_span_string.last)
+  def time_units(time_span)
+    units = time_span.to_s.split.last
+    units = 'months' unless ACCEPTABLE_TIME_UNITS.include?(units)
+    units
   end
 end
