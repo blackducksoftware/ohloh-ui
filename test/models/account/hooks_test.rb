@@ -76,7 +76,7 @@ class Account::HooksTest < ActiveSupport::TestCase
     it 'should rollback when destroy dependencies raises an exception' do
       topic = create(:topic_with_posts)
       account = topic.account
-      topic = create(:topic_with_posts, account: account)
+      create(:topic_with_posts, account: account)
       create_position(account: account)
       Account::Access.any_instance.stubs(:spam?).returns(true)
       Account.any_instance.stubs(:api_keys).raises(ActiveRecord::Rollback)

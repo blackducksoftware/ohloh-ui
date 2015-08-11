@@ -2,10 +2,7 @@ require 'test_helper'
 require 'test_helpers/commits_by_project_data'
 
 class CommitsByProjectTest < ActiveSupport::TestCase
-  let(:start_date_val) do
-    (Time.current - 6.years).beginning_of_month
-  end
-
+  let(:start_date_val) { (Time.current - 6.years).beginning_of_month }
   let(:account) { create_account_with_commits_by_project }
   let(:position1) { account.positions.first }
   let(:position2) { account.positions.last }
@@ -18,7 +15,7 @@ class CommitsByProjectTest < ActiveSupport::TestCase
       data[:facts].first[:project_id].must_equal position1.project.id.to_s
       data[:facts].first[:month].to_s.must_equal start_date_str(1)
       data[:facts].first[:commits].must_equal '25'
-      data[:start_date].to_s.must_equal (start_date_val.to_date + 1.month).to_s
+      data[:start_date].to_s.must_equal((start_date_val.to_date + 1.month).to_s)
       data[:max_commits].must_equal 40
     end
 
@@ -105,6 +102,6 @@ class CommitsByProjectTest < ActiveSupport::TestCase
 
   def calculate_date_range(start_date, end_date)
     range = (start_date..end_date).map { |m| m.strftime('%b-%Y') }.uniq
-    range = range - [range.first]
+    range - [range.first]
   end
 end

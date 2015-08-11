@@ -23,7 +23,7 @@ class Person::CountTest < ActiveSupport::TestCase
 
       ea = EmailAddress.create!(address: 'test@test.com')
       name_fact = create(:name_fact, email_address_ids: "{#{ea.id}}")
-      person = create(:person, name_fact: name_fact)
+      create(:person, name_fact: name_fact)
 
       Person::Count.unclaimed_by('test@test.com', 'email').must_equal 1
     end

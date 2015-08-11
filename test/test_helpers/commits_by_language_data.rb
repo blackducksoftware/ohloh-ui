@@ -5,11 +5,11 @@ class CommitsByLanguageData
     '17' => { 'name' => 'csharp', 'category' => '0', 'nice_name' => 'C#',
               'commits' => { 0 => '24', 1 => '37', 2 => '27', 3 => '16', 4 => '1', 5 => '8', 6 => '26', 7 => '9' } },
     '12' => { 'name' => 'ruby', 'category' => '0', 'nice_name' => 'Ruby',
-             'commits' => { 6 => '2', 7 => '3' } },
+              'commits' => { 6 => '2', 7 => '3' } },
     '30' => { 'name' => 'sql', 'category' => '0', 'nice_name' => 'SQL',
-             'commits' => { 2 => '1'} },
+              'commits' => { 2 => '1' } },
     '1' => { 'name' => 'html', 'category' => '0', 'nice_name' => 'HTML',
-             'commits' => { 1 => '9'} },
+             'commits' => { 1 => '9' } }
   }
 
   class << self
@@ -32,13 +32,11 @@ class CommitsByLanguageData
        ['sql', { nice_name: 'SQL', commits: 1 }]
       ]
     end
-  end
 
-  private
+    private
 
-  def self.start_date
-    (Date.today - 6.years).beginning_of_month
+    def start_date
+      (Date.today - 6.years).beginning_of_month
+    end
   end
 end
-
-

@@ -1,6 +1,6 @@
 class CommitsByProjectData
-  FIRST_POSTION_COMMITS = ['25', '40', '28', '18', '1', '8', '26', '9']
-  SECOND_POSTION_COMMITS = ['4', '3']
+  FIRST_POSTION_COMMITS = %w(25 40 28 18 1 8 26 9)
+  SECOND_POSTION_COMMITS = %w(4 3)
 
   def initialize(first_position_id = '1', second_position_id = '2')
     @first_position_id = first_position_id.to_s

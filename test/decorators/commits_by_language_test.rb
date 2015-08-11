@@ -3,7 +3,7 @@ require 'test_helpers/commits_by_language_data'
 
 class CommitsByLanguageTest < ActiveSupport::TestCase
   let(:start_date) { (Date.today - 6.years).beginning_of_month }
-  let(:account) { create_account_with_commits_by_language } #do
+  let(:account) { create_account_with_commits_by_language }
   let(:admin) { create(:admin) }
   let(:cbl_decorator) do
     account.stubs(:first_commit_date).returns(start_date)

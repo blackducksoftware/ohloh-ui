@@ -24,7 +24,7 @@ class AccountTest < ActiveSupport::TestCase
     account.must_be :valid?
   end
 
-  it 'it should validate email and email_confirmation' do
+  it 'should validate email and email_confirmation' do
     account = build(:account)
     account.email = 'ab'
     account.wont_be :valid?
@@ -35,7 +35,7 @@ class AccountTest < ActiveSupport::TestCase
     account.errors.messages[:email_confirmation].must_equal ['doesn\'t match Email']
   end
 
-  it 'it should validate URL format when value is available' do
+  it 'should validate URL format when value is available' do
     account = build(:account)
     account.must_be :valid?
 
@@ -48,7 +48,7 @@ class AccountTest < ActiveSupport::TestCase
     account.errors.messages[:url].first.must_equal I18n.t('accounts.invalid_url_format')
   end
 
-  it 'it should validate login' do
+  it 'should validate login' do
     account = build(:account)
     account.must_be :valid?
 
@@ -66,7 +66,7 @@ class AccountTest < ActiveSupport::TestCase
     account.errors.messages[:login].must_equal ['has already been taken']
   end
 
-  it 'it should validate password' do
+  it 'should validate password' do
     account = build(:account)
     account.must_be :valid?
 
@@ -82,7 +82,7 @@ class AccountTest < ActiveSupport::TestCase
     error_message.must_equal ['Please enter the same password in the confirmation field.']
   end
 
-  it 'it should validate twitter account only if its present' do
+  it 'should validate twitter account only if its present' do
     account = build(:account)
     account.must_be :valid?
 
@@ -95,7 +95,7 @@ class AccountTest < ActiveSupport::TestCase
     account.errors.messages[:twitter_account].must_equal ['is too long (maximum is 15 characters)']
   end
 
-  it 'it should validate user full name' do
+  it 'should validate user full name' do
     account = build(:account)
     account.must_be :valid?
 
@@ -108,7 +108,7 @@ class AccountTest < ActiveSupport::TestCase
     account.errors.messages[:name].must_equal ['is too long (maximum is 50 characters)']
   end
 
-  it 'it should update the markup(about me) when updating a record' do
+  it 'should update the markup(about me) when updating a record' do
     account = create(:account)
     about_me = Faker::Lorem.paragraph(2)
     account.about_raw = about_me
@@ -116,14 +116,14 @@ class AccountTest < ActiveSupport::TestCase
     account.markup.raw.must_equal about_me
   end
 
-  it 'it should not update the markup(about me) when exceeding the limit' do
+  it 'should not update the markup(about me) when exceeding the limit' do
     about_me = Faker::Lorem.paragraph(130)
     account.about_raw = about_me
     account.wont_be :valid?
     account.markup.errors.must_include(:raw)
   end
 
-  it 'it should error out when affiliation_type is not specified' do
+  it 'should error out when affiliation_type is not specified' do
     account.affiliation_type = ''
     account.wont_be :valid?
     account.errors.must_include(:affiliation_type)
@@ -149,7 +149,6 @@ class AccountTest < ActiveSupport::TestCase
     best_vita = create(:best_vita)
     best_vita.account.update_attributes(best_vita_id: best_vita.id, created_at: Time.current - 4.days)
     vita_fact = best_vita.vita_fact
-    account = best_vita.account
     vita_fact.update_attributes(last_checkin: Time.current)
 
     recently_active = Account.recently_active
@@ -529,7 +528,7 @@ class AccountTest < ActiveSupport::TestCase
     end
 
     it 'should return kudo_rank' do
-      account =create(:account)
+      account = create(:account)
       account.person.update_column(:kudo_rank, 10)
       account.kudo_rank.must_equal 10
     end
