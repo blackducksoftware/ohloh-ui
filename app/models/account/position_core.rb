@@ -36,7 +36,7 @@ class Account::PositionCore < OhDelegator::Base
     name_ids = preloaded_positions.map(&:name_id).compact
 
     name_facts = NameFact.where(analysis_id: analysis_ids, name_id: name_ids)
-    @name_facts = name_facts.group_by do |name_fact|
+    @name_facts ||= name_facts.group_by do |name_fact|
       # Form unique groups
       "#{ name_fact.analysis_id }_#{ name_fact.name_id }"
     end
@@ -101,6 +101,6 @@ class Account::PositionCore < OhDelegator::Base
 
   def preloaded_positions
     @preloaded_positions ||= positions.includes({ project: [{ best_analysis: :main_language }, :organization, :logo] },
-                                                :name, :account, :affiliation)
+                                                :name, :account, :contribution, :affiliation)
   end
 end
