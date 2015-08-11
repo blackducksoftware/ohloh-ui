@@ -40,7 +40,9 @@ Rails.application.routes.draw do
 
   resources :tags, only: [:index, :show]
 
-  resources :accounts do
+  get 'accounts/create/new', to: 'accounts#new', as: :new_account
+  post 'accounts/create/create', to: 'accounts#create', as: :accounts
+  resources :accounts, except: [:new, :create] do
     resources :api_keys, constraints: { format: :html }
     resources :projects, only: [:index]
     resources :positions, only: [:index] do
