@@ -10,7 +10,7 @@
   = render 'accounts/show/vita_timestamp', best_vita: @account.best_vita
 
 .clearfix
-#positions-index-page.infinite-table
+#positions-index-page
   - if @account.positions.exists?
     = render 'commits_by_projects_extended'
     .mezzo.padding_one_top
