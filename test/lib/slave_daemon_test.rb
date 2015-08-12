@@ -46,8 +46,8 @@ class SlaveDaemonTest < ActiveSupport::TestCase
       end
 
       it 'must update hardware statistics' do
-        slave_daemon.stubs(:wait_for_jobs_to_complete)
-        slave_daemon.stubs(:sync_running_jobs_count_with_db)
+        slave_daemon.stubs(:remove_pids_for_completed_processes)
+        slave_daemon.stubs(:reset_jobs_count_and_log_failed_jobs)
         slave_daemon.stubs(:fork_jobs)
 
         Slave.any_instance.expects(:update_used_percent)
@@ -57,7 +57,7 @@ class SlaveDaemonTest < ActiveSupport::TestCase
 
       it 'must wait for existing jobs to complete' do
         slave_daemon.stubs(:update_hardware_stats)
-        slave_daemon.stubs(:sync_running_jobs_count_with_db)
+        slave_daemon.stubs(:reset_jobs_count_and_log_failed_jobs)
         slave_daemon.stubs(:fork_jobs)
         slave_daemon.stubs(:pids).returns([1])
 
@@ -65,7 +65,7 @@ class SlaveDaemonTest < ActiveSupport::TestCase
         slave_daemon.run
       end
 
-      describe 'sync_running_jobs_count_with_db' do
+      describe 'reset_jobs_count_and_log_failed_jobs' do
         before do
           slave_daemon.stubs(:update_hardware_stats)
           slave_daemon.stubs(:fork_jobs)
@@ -89,8 +89,8 @@ class SlaveDaemonTest < ActiveSupport::TestCase
       describe 'fork_jobs' do
         before do
           slave_daemon.stubs(:update_hardware_stats)
-          slave_daemon.stubs(:sync_running_jobs_count_with_db)
-          slave_daemon.stubs(:wait_for_jobs_to_complete)
+          slave_daemon.stubs(:reset_jobs_count_and_log_failed_jobs)
+          slave_daemon.stubs(:remove_pids_for_completed_processes)
           slave_daemon.instance_variable_set('@jobs_count', 1)
 
           job = create(:fetch_job, slave: slave)

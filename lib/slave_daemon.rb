@@ -28,21 +28,20 @@ class SlaveDaemon
 
   def job_loop
     loop do
-      wait_for_jobs_to_complete
+      remove_pids_for_completed_processes
       update_hardware_stats
-      sync_running_jobs_count_with_db
+      reset_jobs_count_and_log_failed_jobs
 
       sleep(DISABLED_SLAVE_LOOP_INTERVAL) && next unless slave.allowed?
 
       fork_jobs
       sleep INTERVAL_BEFORE_CHECKING_JOBS_COMPLETION
-      wait_for_jobs_to_complete
-      sync_running_jobs_count_with_db
+      remove_pids_for_completed_processes
+      reset_jobs_count_and_log_failed_jobs
     end
   end
 
-  def wait_for_jobs_to_complete
-    # Clean up any forked processes that have completed
+  def remove_pids_for_completed_processes
     pids.delete_if { |pid| Process.waitpid(pid, Process::WNOHANG) }
   end
 
@@ -52,24 +51,22 @@ class SlaveDaemon
     slave.save!
   end
 
-  # The database expects that certain jobs are running.
-  # If we can't actually find it running on this machine, mark the job as failed.
-  def sync_running_jobs_count_with_db
-    @jobs_count = 0
-
-    slave.jobs.running.each do |job|
-      if running_job_ids.include?(job.id)
-        @jobs_count += 1
-      else
-        log_and_update_failed_status(job)
-      end
-    end
+  def reset_jobs_count_and_log_failed_jobs
+    job_ids = running_job_ids
+    reset_jobs_count(job_ids)
+    log_failed_jobs(job_ids)
   end
 
-  def log_and_update_failed_status(job)
-    slave.logs.create!(message: I18n.t('slaves.could_not_find_process_mark_as_failed'),
-                       job_id: job.id, code_set_id: job.code_set_id, level: SlaveLog::ERROR)
-    job.update(status: Job::STATUS_FAILED, exception: I18n.t('slaves.could_not_find_process'))
+  def reset_jobs_count(job_ids)
+    @jobs_count = slave.jobs.running.where(id: job_ids).size
+  end
+
+  def log_failed_jobs(job_ids)
+    slave.jobs.running.where.not(id: job_ids).each do |job|
+      slave.logs.create!(message: I18n.t('slaves.could_not_find_process_mark_as_failed'),
+                         job_id: job.id, code_set_id: job.code_set_id, level: SlaveLog::ERROR)
+      job.update(status: Job::STATUS_FAILED, exception: I18n.t('slaves.could_not_find_process'))
+    end
   end
 
   def trap_exit
