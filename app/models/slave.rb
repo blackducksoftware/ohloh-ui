@@ -66,19 +66,6 @@ class Slave < ActiveRecord::Base
     used_percent && (used_percent >= MAX_DISK_USAGE)
   end
 
-  def oldest_fetchable_clumps(limit = 1)
-    conditions = "COALESCE(code_sets.logged_at, '1970-01-01') + repositories.update_interval * INTERVAL '1 second'"\
-                 " <= NOW() AT TIME ZONE 'utc'"\
-                 " AND COALESCE(analyses.logged_at, '1970-01-01') >="\
-                 " COALESCE(code_sets.logged_at, '1970-01-01') - INTERVAL '1 second'"
-    Clump.joins(code_set: { best_repository: { enlistments: { project: :best_analysis } } })
-      .where(projects: { deleted: false })
-      .where(conditions)
-      .where(Job.where('status != 5 AND jobs.repository_id = repositories.id').exists.not)
-      .order('code_sets.logged_at nulls first')
-      .limit(limit)
-  end
-
   private
 
   def command_failed?

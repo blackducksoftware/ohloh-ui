@@ -81,7 +81,7 @@ class Slave::JobPickerTest < ActiveSupport::TestCase
         clump.code_set.update! repository_id: repository.id
         Job.destroy_all
 
-        Slave.any_instance.stubs(:oldest_fetchable_clumps).returns([clump])
+        Clump.stubs(:oldest_fetchable).returns([clump])
         Repository.any_instance.expects(:schedule_fetch)
         job_picker.execute
       end

@@ -42,4 +42,15 @@ class ClumpTest < ActiveSupport::TestCase
       clump.reload.fetched_at.to_i.must_equal newtime.to_i
     end
   end
+
+  describe 'oldest_fetchable' do
+    it 'must return the oldest clump' do
+      clump = create(:git_clump)
+      repository = create(:git_repository)
+      repository.update! best_code_set_id: clump.code_set_id
+      repository.jobs.destroy_all
+
+      Clump.oldest_fetchable.first.must_equal clump
+    end
+  end
 end

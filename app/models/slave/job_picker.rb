@@ -38,7 +38,7 @@ class Slave::JobPicker
   end
 
   def schedule_fetch
-    clumps = @slave.oldest_fetchable_clumps(ENV['SCHEDULABLE_CLUMPS_LIMIT'])
+    clumps = Clump.oldest_fetchable(ENV['SCHEDULABLE_CLUMPS_LIMIT'])
     clumps.each { |clump| schedule_repository_fetch(clump) }
   end
 
