@@ -34,13 +34,10 @@ class Repository < ActiveRecord::Base
   end
 
   def ensure_job(priority = 0)
-    job = nil
-    Job.transaction do
-      job = jobs.incomplete.first
-      return job if job
-      job = create_fetch_job(priority) if best_code_set.blank?
-      job = create_import_or_sloc_jobs(priority) if best_code_set.present?
-    end
+    job = jobs.incomplete.first
+    return job if job
+    job = create_fetch_job(priority) if best_code_set.blank?
+    job = create_import_or_sloc_jobs(priority) if best_code_set.present?
     job
   end
 
@@ -111,7 +108,7 @@ class Repository < ActiveRecord::Base
   end
 
   def create_fetch_job(priority)
-    cs = CodeSet.create(repository: self)
+    cs = CodeSet.where(repository: self).first_or_create
     FetchJob.create(code_set: cs, priority: priority)
   end
 
