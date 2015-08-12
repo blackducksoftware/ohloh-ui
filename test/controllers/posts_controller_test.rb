@@ -212,12 +212,6 @@ describe PostsController do
     end
   end
 
-  it 'create fails for user with no account' do
-    assert_no_difference('Post.count') do
-      post :create, topic_id: topic.id, post: { body: 'Creating a post for testing' }
-    end
-  end
-
   it 'edit' do
     get :edit, topic_id: topic.id, id: post_object.id
     must_respond_with :redirect
@@ -328,6 +322,31 @@ describe PostsController do
     must_redirect_to topic_path(topic.id)
   end
 
+  it 'create fails for user with no account' do
+    assert_no_difference('Post.count') do
+      post :create, topic_id: topic.id, post: { body: 'Creating a post for testing' }
+    end
+  end
+
+  it 'user creates a post with valid recaptcha' do
+    login_as(user)
+    topic = create(:topic)
+    PostsController.any_instance.expects(:verify_recaptcha).returns(true)
+    assert_difference('Post.count', 1) do
+      post :create, topic_id: topic, post: { body: 'Post with valid recaptcha' }
+    end
+    must_redirect_to topic_path(topic.id)
+  end
+
+  it 'user fails to create a post because of invalid recaptcha' do
+    login_as(user)
+    topic = create(:topic)
+    PostsController.any_instance.expects(:verify_recaptcha).returns(false)
+    assert_no_difference('Post.count', 1) do
+      post :create, topic_id: topic, post: { body: 'Post with invalid recaptcha' }
+    end
+  end
+
   it 'user edits their own post' do
     login_as post_object.account
     get :edit, topic_id: post_object.topic.id, id: post_object.id
@@ -384,6 +403,25 @@ describe PostsController do
       post :create, topic_id: topic.id, post: { body: nil }
     end
     must_redirect_to topic_path(topic.id) + '?post%5Bbody%5D=#post_reply'
+  end
+
+  it 'admin creates a post with valid recaptcha' do
+    login_as(admin)
+    topic = create(:topic)
+    PostsController.any_instance.expects(:verify_recaptcha).returns(true)
+    assert_difference('Post.count', 1) do
+      post :create, topic_id: topic, post: { body: 'Post with valid recaptcha' }
+    end
+    must_redirect_to topic_path(topic.id)
+  end
+
+  it 'admin fails to create a post because of invalid recaptcha' do
+    login_as(admin)
+    topic = create(:topic)
+    PostsController.any_instance.expects(:verify_recaptcha).returns(false)
+    assert_no_difference('Post.count', 1) do
+      post :create, topic_id: topic, post: { body: 'Post with invalid recaptcha' }
+    end
   end
 
   it 'admin edit page' do
