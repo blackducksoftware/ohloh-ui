@@ -31,9 +31,8 @@ class SlaveDaemon
       sleep(ENV['DISABLED_SLAVE_LOOP_INTERVAL'].to_i) && next unless slave.allowed?
 
       fork_jobs
+
       sleep ENV['INTERVAL_BEFORE_CHECKING_JOBS_COMPLETION'].to_i
-      remove_pids_for_completed_processes
-      reset_jobs_count_and_log_failed_jobs
     end
   end
 
