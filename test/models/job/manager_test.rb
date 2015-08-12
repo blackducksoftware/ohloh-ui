@@ -90,7 +90,7 @@ class Job::ManagerTest < ActiveSupport::TestCase
       job.reload
       job.must_be :scheduled?
       job.wait_until.must_be :>, Time.now.utc + 15.hours
-      SlaveLog.find_by(message: I18n.t('slaves.runtime_exceeded'), job: job).must_be :present?
+      SlaveLog.find_by(message: I18n.t('slaves.runtime_exceeded_job_rescheduled'), job: job).must_be :present?
     end
 
     it 'must handle exception' do
