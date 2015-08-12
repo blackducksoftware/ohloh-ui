@@ -1,6 +1,4 @@
 class Slave::JobPicker
-  DEFAULT_JOB_PRIORITY = -10
-
   def initialize
     @slave = Slave.local
     @allowed_types = Job::BlockedType.new.allowed
@@ -13,7 +11,7 @@ class Slave::JobPicker
     job = scheduled_job
     return job if job || !@allowed_types.include?(CompleteJob)
 
-    schedule_fetch
+    create_new_repository_jobs
     scheduled_job
   end
 
@@ -37,15 +35,7 @@ class Slave::JobPicker
       .first
   end
 
-  def schedule_fetch
-    Clump.oldest_fetchable(ENV['SCHEDULABLE_CLUMPS_LIMIT'])
-      .each { |clump| schedule_repository_fetch(clump) }
-  end
-
-  def schedule_repository_fetch(clump)
-    clump.code_set.repository.enlistments.map(&:project).each do |project|
-      project.repositories.each { |r| r.schedule_fetch(DEFAULT_JOB_PRIORITY) }
-      @slave.logs.create!(message: I18n.t('slaves.auto_scheduled_fetch', id: project.id, name: project.name))
-    end
+  def create_new_repository_jobs
+    Clump.oldest_fetchable(ENV['SCHEDULABLE_CLUMPS_LIMIT']).each(&:create_new_repository_jobs)
   end
 end

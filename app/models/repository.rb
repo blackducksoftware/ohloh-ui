@@ -54,7 +54,7 @@ class Repository < ActiveRecord::Base
     GitClump
   end
 
-  def schedule_fetch(priority = 0)
+  def create_next_job(priority = 0)
     if best_code_set
       CompleteJob.try_create(best_code_set, priority)
     else

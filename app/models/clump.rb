@@ -2,6 +2,7 @@ class Clump < ActiveRecord::Base
   belongs_to :code_set
 
   DIRECTORY = '/var/spool/clumps'
+  DEFAULT_JOB_PRIORITY = -10
 
   def scm_class
     OhlohScm::Adapters::GitAdapter
@@ -26,6 +27,13 @@ class Clump < ActiveRecord::Base
 
   def update_fetched_at(newtime)
     update(fetched_at: newtime) unless fetched_at && fetched_at > newtime
+  end
+
+  def create_new_repository_jobs
+    code_set.repository.enlistments.map(&:project).each do |project|
+      project.repositories.each { |r| r.create_next_job(DEFAULT_JOB_PRIORITY) }
+      Slave.local.logs.create!(message: I18n.t('slaves.auto_scheduled_fetch', id: project.id, name: project.name))
+    end
   end
 
   class << self

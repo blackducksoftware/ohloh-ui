@@ -62,27 +62,23 @@ class Slave::JobPickerTest < ActiveSupport::TestCase
       end
     end
 
-    describe 'schedule_fetch' do
+    describe 'create_new_repository_jobs' do
+      let(:clump) { create(:git_clump) }
+
       before do
+        Clump.stubs(:oldest_fetchable).returns([clump])
         Job.destroy_all
       end
 
-      it 'wont schedule fetch for all repositories if allowed_types excludes CompleteJob' do
+      it 'wont create new repository jobs if allowed_types excludes CompleteJob' do
         Job::BlockedType.any_instance.stubs(:allowed).returns(Job.subclasses - [CompleteJob])
 
-        job_picker.expects(:schedule_fetch).never
+        Clump.any_instance.expects(:create_new_repository_jobs).never
         job_picker.execute.must_be_nil
       end
 
-      it 'must schedule fetch for all repositories when job is not found' do
-        Repository.count.must_equal 0
-        clump = create(:git_clump)
-        repository = create(:git_repository)
-        clump.code_set.update! repository_id: repository.id
-        Job.destroy_all
-
-        Clump.stubs(:oldest_fetchable).returns([clump])
-        Repository.any_instance.expects(:schedule_fetch)
+      it 'must ask clump to create new repository jobs' do
+        Clump.any_instance.expects(:create_new_repository_jobs)
         job_picker.execute
       end
     end

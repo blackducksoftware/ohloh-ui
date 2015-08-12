@@ -43,6 +43,26 @@ class ClumpTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'create_new_repository_jobs' do
+    let(:clump) { create(:git_clump) }
+    let(:repository) { create(:git_repository) }
+
+    before do
+      clump.code_set.update! repository_id: repository.id
+    end
+
+    it 'must ask each associated repository to create new jobs' do
+      Repository.any_instance.expects(:create_next_job)
+      clump.create_new_repository_jobs
+    end
+
+    it 'must create a slave log' do
+      assert_difference 'SlaveLog.count' do
+        clump.create_new_repository_jobs
+      end
+    end
+  end
+
   describe 'oldest_fetchable' do
     it 'must return the oldest clump' do
       clump = create(:git_clump)
