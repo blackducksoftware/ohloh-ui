@@ -1,8 +1,4 @@
 class SlaveDaemon
-  INTERVAL_BETWEEN_EACH_JOB_FORK = 2
-  INTERVAL_BEFORE_CHECKING_JOBS_COMPLETION = 5
-  DISABLED_SLAVE_LOOP_INTERVAL = 60
-
   def run
     Dir.chdir(Rails.root)
     trap_exit
@@ -32,10 +28,10 @@ class SlaveDaemon
       update_hardware_stats
       reset_jobs_count_and_log_failed_jobs
 
-      sleep(DISABLED_SLAVE_LOOP_INTERVAL) && next unless slave.allowed?
+      sleep(ENV['DISABLED_SLAVE_LOOP_INTERVAL'].to_i) && next unless slave.allowed?
 
       fork_jobs
-      sleep INTERVAL_BEFORE_CHECKING_JOBS_COMPLETION
+      sleep ENV['INTERVAL_BEFORE_CHECKING_JOBS_COMPLETION'].to_i
       remove_pids_for_completed_processes
       reset_jobs_count_and_log_failed_jobs
     end
@@ -90,7 +86,7 @@ class SlaveDaemon
       return unless job
       pids << job.fork!
       @jobs_count += 1
-      sleep INTERVAL_BETWEEN_EACH_JOB_FORK
+      sleep ENV['INTERVAL_BETWEEN_EACH_JOB_FORK'].to_i
     end
   end
 

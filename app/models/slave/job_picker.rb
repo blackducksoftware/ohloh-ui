@@ -1,6 +1,5 @@
 class Slave::JobPicker
   DEFAULT_JOB_PRIORITY = -10
-  CLUMPS_TO_SCHEDULE = 50
 
   def initialize
     @slave = Slave.local
@@ -39,8 +38,7 @@ class Slave::JobPicker
   end
 
   def schedule_fetch
-    clumps = @slave.oldest_fetchable_clumps(CLUMPS_TO_SCHEDULE)
-    return clumps if clumps.empty?
+    clumps = @slave.oldest_fetchable_clumps(ENV['SCHEDULABLE_CLUMPS_LIMIT'])
     clumps.each { |clump| schedule_repository_fetch(clump) }
   end
 
