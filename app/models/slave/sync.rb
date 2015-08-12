@@ -1,6 +1,4 @@
 class Slave::Sync
-  delegate :run, to: :@slave
-
   def initialize
     @slave = Slave.local
   end
