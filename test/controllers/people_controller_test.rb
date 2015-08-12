@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'test_helpers/commits_by_language_data'
 
 describe 'PeopleControllerTest' do
   before do
@@ -12,6 +13,7 @@ describe 'PeopleControllerTest' do
     @unclaimed = create(:person, kudo_score: 12, kudo_rank: 3, effective_name: 'Bubba Amon')
     @project1 = create(:project)
     @project2 = create(:project)
+    best_vita.vita_fact.update_column(:commits_by_language, CommitsByLanguageData.construct)
     create(:name_fact, analysis_id: @project1.best_analysis_id, name_id: @unclaimed.name.id)
     create(:name_fact, analysis_id: @project2.best_analysis_id, name_id: @unclaimed.name.id)
     @unclaimed.name.update_attributes(name: 'Bubba Amon')

@@ -1,128 +1,113 @@
 require 'test_helper'
 
 class ClaimCoreTest < ActiveSupport::TestCase
-  it 'email ids' do
-    linux = projects(:linux)
-    linux.editor_account = accounts(:user)
-    linux.update!(best_analysis_id: 1)
-    accounts(:user).claim_core.email_ids.must_be_empty
-    accounts(:unactivated).claim_core.emails.must_be_empty # no positions
+  let(:project) { create(:project, best_analysis: create(:analysis)) }
+  let(:project2) { create(:project, best_analysis: create(:analysis)) }
+  let(:project2_commit) do
+    create(:enlistment, repository: create(:repository, best_code_set: create(:code_set)), project: project2)
+    create(:commit, code_set: project2.repositories.first.best_code_set)
+  end
+  let(:account) do
+    account = create(:account)
+    account.person.update(name_fact: create(:name_fact))
+    account
+  end
+  let(:unactivated_account) { create(:unactivated) }
+  let(:position) { create_position(account: account, project: project) }
+  let(:position_name) { position.name }
+  let(:email1) { create(:email_address, address: 'test1@test.com') }
+  let(:email2) { create(:email_address, address: 'test2@test.com') }
 
-    email = create(:email_address, address: 'test@test.com')
-    name_facts(:user).update_attribute(:email_address_ids, "{#{email.id}}")
-    accounts(:user).claim_core.instance_variable_set('@name_fact_emails', nil)
-    accounts(:user).claim_core.email_ids.must_equal [email.id]
+  describe 'email_ids' do
+    it 'should return empty for accounts with no email in name_facts' do
+      account.claim_core.email_ids.must_be_empty
+      unactivated_account.claim_core.emails.must_be_empty
+    end
 
-    # claim a new position on a different project
-    email_1 = create(:email_address, address: 'test1@test.com')
-    user, adium = accounts(:user), projects(:adium)
-    adium_commit = commits(:adium1)
-    adium_commit.update_attribute(:email_address_id, email_1.id)
-    adium.editor_account = accounts(:user)
-    adium.update_attribute(:deleted, false)
-    # FIXME: Remove start_fix..end_fix blocks after integrating analysis.
-    # adium.analyze
+    it 'should return emails when account name_facts have emails ids' do
+      position.name_fact.update_attribute(:email_address_ids, "{#{email1.id}}")
+      account.claim_core.email_ids.must_equal [email1.id]
+    end
 
-    position = adium.positions.create(account: user, name: names(:user))
-    # start_fix:
-    adium.update!(best_analysis_id: Analysis.last.id)
-    name_fact = NameFact.all.find { |nf| nf.email_address_ids.empty? }
-    name_fact.update!(email_address_ids: [EmailAddress.last.id],
-                      name_id: position.name_id)
-    # end_fix:
-    accounts(:user).claim_core.instance_variable_set('@name_fact_emails', nil)
-    (user.claim_core.email_ids - [email.id, email_1.id]).must_be_empty
+    it 'should return email ids after claiming a position on a new project' do
+      project2_commit.update_attribute(:email_address_id, email2.id)
+      position = create_position(account: account, project: project2)
 
-    # destroy the position and re-check
-    user.positions.find_by_project_id(adium.id).destroy
-    # start_fix:
-    name_fact.update!(name_id: nil)
-    # end_fix:
-    accounts(:user).claim_core.instance_variable_set('@name_fact_emails', nil)
-    accounts(:user).claim_core.email_ids.must_equal [email.id]
+      position.name_fact.update!(email_address_ids: "{#{email2.id}}", name_id: position_name.id)
+      (account.claim_core.email_ids - [email1.id, email2.id]).must_be_empty
+    end
 
-    # update the position name_id
-    positions(:user).update_attribute(:name_id, names(:scott).id)
-    name_facts(:unclaimed).update_attribute(:email_address_ids, "{#{email_1.id}}")
-    accounts(:user).claim_core.instance_variable_set('@name_fact_emails', nil)
-    accounts(:user).claim_core.email_ids.must_equal [email_1.id]
+    it 'should return email id when claimed position has a new name' do
+      new_name = setup_new_name_with_facts(email2)
+
+      position.update!(name: new_name)
+      account.claim_core.email_ids.must_equal [email2.id]
+    end
+
+    it 'should return email ids when alias has an email' do
+      set_aliases(email1)
+      account.claim_core.email_ids.must_equal [email1.id]
+    end
+
+    it 'should return empty [] when aliased preferred_name name_facts has no emails' do
+      alias_object = set_aliases(email1)
+      account.claim_core.email_ids.must_equal [email1.id]
+
+      alias_object.update!(preferred_name_id: create(:name).id)
+      account.claim_core.email_ids.must_be_empty
+    end
+
+    it 'should return [] when alias is removed' do
+      alias_object = set_aliases(email2)
+      account.claim_core.email_ids.must_equal [email2.id]
+
+      alias_object.create_edit.undo!(account)
+      account.claim_core.email_ids.must_be_empty
+    end
+
+    it 'should return multiple ids when present' do
+      set_aliases(email1)
+      position.name_fact.update_attribute(:email_address_ids, "{#{email2.id}}")
+      ([email1.id, email2.id] - account.claim_core.email_ids).must_be_empty
+    end
+
+    it 'should return single id when multiple emails present are the same' do
+      set_aliases(email1)
+      position.name_fact.update_attribute(:email_address_ids, "{#{email1.id}}")
+      account.claim_core.email_ids.must_equal [email1.id]
+    end
+
+    it 'should return empty [] when project is deleted' do
+      position.name_fact.update_attribute(:email_address_ids, "{#{email1.id}}")
+      account.claim_core.email_ids.must_equal [email1.id]
+
+      position.project.update!(deleted: true, editor_account: account)
+      account.claim_core.email_ids.must_be_empty
+    end
   end
 
-  it 'email_ids for multiple positions or alias' do
-    linux, user, scott = projects(:linux), accounts(:user), names(:scott)
-    email = create(:email_address, address: 'test@test.com')
-    email_1 = create(:email_address, address: 'test1@test.com')
-    name_facts(:unclaimed).update_attribute(:email_address_ids, "{#{email.id}}")
-    user.claim_core.email_ids.must_be_empty
+  describe 'claimed_emails' do
+    it 'should return empty []' do
+      account.claim_core.emails.must_be_empty
+      unactivated_account.claim_core.emails.must_be_empty
+    end
 
-    # alias scott as user. scott is associated with email - email
-    alias_object = create(:alias, commit_name_id: scott.id, preferred_name_id: names(:user).id, project_id: linux.id)
-    linux.editor_account = accounts(:user)
-    linux.update!(best_analysis_id: Analysis.last.id)
-    user.claim_core.instance_variable_set('@name_fact_emails', nil)
-    user.claim_core.email_ids.must_equal [email.id]
-
-    # delete the alias
-    alias_object.stubs(:create_edit).returns(stub(:undo!))
-    alias_object.create_edit.undo!(accounts(:user))
-    linux.update!(best_analysis_id: nil)
-    user.claim_core.instance_variable_set('@name_fact_emails', nil)
-    user.claim_core.email_ids.must_be_empty
-
-    # aliasing scott as admin shouldn't affect user's claimed email ids
-    alias_object.update!(preferred_name_id: names(:admin).id)
-    user.claim_core.instance_variable_set('@name_fact_emails', nil)
-    user.claim_core.email_ids.must_be_empty
-
-    # bring back the old alias
-    alias_object.update!(preferred_name_id: names(:user).id)
-    linux.update!(best_analysis_id: Analysis.last.id)
-    user.claim_core.instance_variable_set('@name_fact_emails', nil)
-    user.claim_core.email_ids.must_equal [email.id]
-
-    # with multiple email ids
-    name_facts(:user).update_attribute(:email_address_ids, "{#{email_1.id}}")
-    user.claim_core.instance_variable_set('@name_fact_emails', nil)
-    ([email.id, email_1.id] - user.claim_core.email_ids).must_be_empty
-
-    # with same email ids
-    name_facts(:user).update_attribute(:email_address_ids, "{#{email.id}}")
-    user.claim_core.instance_variable_set('@name_fact_emails', nil)
-    user.claim_core.email_ids.must_equal [email.id]
+    it 'should return emails' do
+      position.name_fact.update_attribute(:email_address_ids, "{#{email1.id}}")
+      account.claim_core.emails.must_equal ['test1@test.com']
+    end
   end
 
-  it 'email_ids for deleted project' do
-    linux = projects(:linux)
-    linux.editor_account = accounts(:user)
-    linux.update!(best_analysis_id: Analysis.last.id)
-    email = create(:email_address, address: 'test@test.com')
-    name_facts(:user).update_attribute(:email_address_ids, "{#{email.id}}")
-    accounts(:user).claim_core.email_ids.must_equal [email.id]
+  private
 
-    linux = projects(:linux)
-    linux.editor_account = accounts(:user)
-    linux.update!(deleted: true)
-    accounts(:user).claim_core.instance_variable_set('@name_fact_emails', nil)
-    accounts(:user).claim_core.email_ids.must_be_empty
-
-    # add it back
-    linux = projects(:linux)
-    linux.editor_account = accounts(:user)
-    linux.update!(deleted: false)
-    accounts(:user).claim_core.instance_variable_set('@name_fact_emails', nil)
-    accounts(:user).claim_core.email_ids.must_equal [email.id]
+  def setup_new_name_with_facts(email)
+    new_name = create(:name)
+    create(:name_fact, name: new_name, email_address_ids: "{#{email.id}}", analysis: project.best_analysis)
+    new_name
   end
 
-  it 'claimed_emails' do
-    linux = projects(:linux)
-    linux.editor_account = accounts(:user)
-    linux.update!(best_analysis_id: Analysis.last.id)
-    accounts(:user).claim_core.emails.must_be_empty
-    accounts(:unactivated).claim_core.emails.must_be_empty # no positions
-
-    email = create(:email_address, address: 'test@test.com')
-    name_facts(:user).update_attribute(:email_address_ids, "{#{email.id}}")
-    accounts(:user).claim_core.instance_variable_set('@name_fact_emails', nil)
-    accounts(:user).claim_core.emails.must_equal ['test@test.com']
+  def set_aliases(email)
+    new_name = setup_new_name_with_facts(email)
+    create(:alias, commit_name_id: new_name.id, preferred_name_id: position_name.id, project_id: project.id)
   end
 end

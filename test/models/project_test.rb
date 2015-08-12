@@ -3,6 +3,8 @@ require 'test_helper'
 class ProjectTest < ActiveSupport::TestCase
   let(:project) { create(:project) }
   let(:account) { create(:account) }
+  let(:language) { create(:language) }
+  let(:forge) { Forge.find_by(name: 'Github') }
 
   describe 'validations' do
     it 'should not allow project url_names to start with an underscore as we use those for routing' do
@@ -20,16 +22,16 @@ class ProjectTest < ActiveSupport::TestCase
 
     it 'should return hot projects with matching languages' do
       proj = create(:project, deleted: false)
-      analysis = create(:analysis, project_id: proj.id, hotness_score: 999_999, main_language_id: 1)
+      analysis = create(:analysis, project_id: proj.id, hotness_score: 999_999, main_language_id: language.id)
       proj.update_attributes(best_analysis_id: analysis.id)
-      Project.hot(1).to_a.map(&:id).include?(proj.id).must_equal true
+      Project.hot(language.id).to_a.map(&:id).include?(proj.id).must_equal true
     end
 
     it 'should not return hot projects without matching languages' do
       proj = create(:project, deleted: false)
-      analysis = create(:analysis, project_id: proj.id, hotness_score: 999_999, main_language_id: 1)
+      analysis = create(:analysis, project_id: proj.id, hotness_score: 999_999, main_language_id: language.id)
       proj.update_attributes(best_analysis_id: analysis.id)
-      Project.hot(2).to_a.map(&:id).include?(proj.id).must_equal false
+      Project.hot(language.id - 1).to_a.map(&:id).include?(proj.id).must_equal false
     end
   end
 
@@ -395,7 +397,7 @@ class ProjectTest < ActiveSupport::TestCase
   private
 
   def create_repositiory(project)
-    repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forges(:github).id,
+    repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forge.id,
                                owner_at_forge: 'rails', name_at_forge: 'rails')
     create(:enlistment, project: project, repository: repo)
   end

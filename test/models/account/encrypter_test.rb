@@ -55,16 +55,18 @@ class Account::EncrypterTest < ActiveSupport::TestCase
     end
 
     it 'must encrypt email when it changes' do
-      account = accounts(:user)
+      account = create(:account)
       original_email_md5 = account.email_md5
-      account.email = Faker::Internet.email
+      email = Faker::Internet.email
+      account.email = email
+      account.email_confirmation = email
       account.save!
 
       original_email_md5.wont_equal account.email_md5
     end
 
     it 'must not encrypt email when it has not changed' do
-      account = accounts(:user)
+      account = create(:account)
       account.expects(:encrypt_email).never
       account.save!
     end

@@ -3,13 +3,12 @@ require 'test_helper'
 describe 'SearchesController' do
   describe 'account' do
     it 'should return formatted account records as json' do
-      xhr :get, :account, term: 'luck'
+      account = create(:account)
+      xhr :get, :account, term: account.login
 
       result = JSON.parse(response.body)
-      result.first['id'].must_equal 'user'
-      result.first['value'].must_equal 'user'
-      result.last['id'].must_equal 'privacy'
-      result.last['value'].must_equal 'privacy'
+      result.first['id'].must_equal account.login
+      result.first['value'].must_equal account.login
     end
 
     it 'should redirect ro peoples page when request is not ajax' do

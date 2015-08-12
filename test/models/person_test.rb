@@ -2,12 +2,11 @@ require 'test_helper'
 
 class PersonTest < ActiveSupport::TestCase
   let(:account) { create(:account) }
+  let(:admin) { create(:admin) }
   let(:project) { create(:project) }
+  let(:person) { account.person }
 
   describe 'searchable_factor' do
-    let(:person) { create(:account).person }
-    before { Person.count.must_equal(7) }
-
     it 'must return 0.0 when kudo_position is null' do
       person.kudo_position = nil
       person.searchable_factor.must_equal 0.0
@@ -20,12 +19,15 @@ class PersonTest < ActiveSupport::TestCase
     end
 
     it 'must return a significantly lower value when no account_id' do
+      create(:person)
       person.account_id = nil
       person.kudo_position = 1
       person.searchable_factor.must_be_close_to 0.099
     end
 
     it 'must return valid value' do
+      6.times { create(:account) }
+
       person.kudo_position = 1
       person.searchable_factor.must_be_close_to 1.0, 0.01
 
@@ -38,7 +40,6 @@ class PersonTest < ActiveSupport::TestCase
   end
 
   it 'should set id to account id or random' do
-    account = create(:account)
     account.person.id.must_equal account.id
 
     person = create(:person)
@@ -47,7 +48,6 @@ class PersonTest < ActiveSupport::TestCase
   end
 
   it 'should set effective_name to an account name or name' do
-    account = create(:account)
     account.person.effective_name.must_equal account.name
 
     person = create(:person)
@@ -60,72 +60,82 @@ class PersonTest < ActiveSupport::TestCase
   end
 
   it 'should not set name_fact when name_id is not present' do
-    person = people(:jason)
+    account.person.update!(name_id: nil)
     person.name_fact_id.must_be_nil
   end
 
   it 'should change effective_name when account name changed' do
-    a = accounts(:user)
-    a.person.effective_name.wont_equal a.name
-    a.save!
-    a.name.must_equal a.person.reload.effective_name
+    account.name.must_equal account.person.effective_name
+    account.update_attributes(name: 'new_name_test')
+    account.person.effective_name.must_equal 'new_name_test'
   end
 
   it '#find_claimed' do
+    admin.person
+    account.person
     people = Person.find_claimed(nil, nil)
-    people.length.must_equal 7
+    people.length.must_equal 3
   end
 
   it '#find_claimed with sort option' do
-    admin, user = accounts(:admin), accounts(:user)
+    Person.destroy_all
     admin.person.update!(kudo_position: 1)
-    user.person.update!(kudo_position: 2)
+    account.person.update!(kudo_position: 2)
 
     people = Person.find_claimed(nil, 'kudo_position')
-    people.size.must_equal 7
-    people[0].account_id.must_equal admin.id
-    people[1].account_id.must_equal user.id
+    people.size.must_equal 2
+    people[0].account.must_equal admin
+    people[1].account.must_equal account
   end
 
   it '#find_claimed with search option' do
-    people = Person.find_claimed('luckey', nil)
+    people = Person.find_claimed(account.login, nil)
     people.length.must_equal 1
     people.size.must_equal 1
-    people.first.account_id.must_equal 2
+    people.first.account_id.must_equal account.id
   end
 
   it '#find_unclaimed' do
+    create(:person)
+    create(:person)
+
     people = Person.find_unclaimed
     people.length.must_equal 2
-    person = people.first.last.first
-    person.name.must_equal names(:joe)
-    person.project.must_equal projects(:adium)
   end
 
   it '#find_unclaimed with pagination' do
+    create(:person)
     people = Person.find_unclaimed(per_page: 1)
     people.length.must_equal 1
   end
 
   it '#find_unclaimed with sort option' do
-    people = Person.find_unclaimed
-    people.first.last.first.must_equal people(:joe)
-    people.last.last.first.must_equal people(:kyle)
+    Person.destroy_all
+    person1 = create(:person)
+    person2 = create(:person)
+    person3 = create(:person)
 
-    people(:joe).update_attribute(:kudo_position, 20)
+    person1.update_attribute(:kudo_position, 5)
+    person2.update_attribute(:kudo_position, 10)
+    person3.update_attribute(:kudo_position, 20)
 
     people = Person.find_unclaimed
-    people.last.last.first.must_equal people(:joe)
-    people.first.last.first.must_equal people(:kyle)
+    people[0].last.first.must_equal person1
+    people[1].last.first.must_equal person2
+    people[2].last.first.must_equal person3
   end
 
   it '#find_unclaimed with search by name' do
+    create(:person, effective_name: 'joe')
+    create(:person)
     Person.find_unclaimed.length.must_equal 2
     people = Person.find_unclaimed(q: 'joe')
     people.length.must_equal 1
   end
 
   it '#find_unclaimed with search by email' do
+    create(:person)
+    create(:person)
     Person.find_unclaimed.length.must_equal 2
     people = Person.find_unclaimed(find_by: 'email', q: 'test@test.com')
     people.length.must_equal 0
@@ -137,17 +147,19 @@ class PersonTest < ActiveSupport::TestCase
   end
 
   it '#find_unclaimed search by multiple emails' do
-    create_and_update_email_address_to_joe
+    person = create_and_update_email_address_to_joe
 
     people = Person.find_unclaimed(find_by: 'email', q: 'test@test.com test1@test.com')
     people.length.must_equal 1
-    people.first.first.must_equal names(:joe).id
+    people.first.first.must_equal person.name_id
   end
 
   it 'should rebuild by project id' do
-    Person.where(project_id: 2).count.must_equal 2
-    Person.rebuild_by_project_id(1)
-    Person.where(project_id: 2).count.must_equal 2
+    create(:person, project_id: project.id)
+    create(:person, project_id: project.id)
+    Person.where(project_id: project.id).count.must_equal 2
+    Person.rebuild_by_project_id(create(:project).id)
+    Person.where(project_id: project.id).count.must_equal 2
   end
 
   it 'must delete all associated people when project is deleted' do
@@ -227,34 +239,40 @@ class PersonTest < ActiveSupport::TestCase
   end
 
   it 'test_searchable_vector' do
-    people(:jason).searchable_vector[:a].must_equal 'admin Allen admin'
+    account.person.searchable_vector[:a].must_equal "#{account.name} #{account.login}"
   end
 
   it 'find_claimed with search term' do
-    user, admin = accounts(:user), accounts(:admin)
-    user.person.update_columns(kudo_position: 10)
+    account.person.update_columns(kudo_position: 10)
     admin.person.update_columns(kudo_position: 12)
 
-    people = Person.find_claimed('luckey', nil)
+    people = Person.find_claimed(admin.login, nil)
 
     people.length.must_equal 1
     people.size.must_equal 1
-    people.first.account_id.must_equal user.id
+    people.first.account_id.must_equal admin.id
   end
 
   it 'find_unclaimed when destroying positions' do
-    Person.find_unclaimed.count.must_equal 2
-    position = positions(:user)
+    create(:person)
+    create(:person)
+    name = create(:name)
+
+    account.person.update(name: name)
+    Person.find_unclaimed.count.must_equal 3
+
+    position = create_position(account: account)
     position.destroy
-    Person.create!(project: position.project, name: position.name, name_fact: create(:contributor_fact))
-    name_fact_id_and_people = Person.find_unclaimed
-    name_fact_id_and_people.length.must_equal 3
-    people = name_fact_id_and_people.map(&:last).flatten
-    people.length.must_equal 3
-    assert people.any? { |p| p.name == names(:user) }
+    person = Person.find_by(name_id: name.id)
+
+    people = Person.find_unclaimed
+    people.length.must_equal 4
+    people.map(&:last).flatten.any? { |p| p.name == person.name }.must_equal true
   end
 
   it 'find_unclaimed when deleting project' do
+    create(:person)
+    create(:person)
     Person.find_unclaimed.length.must_equal 2
     project = create(:project, deleted: true)
 
@@ -267,7 +285,9 @@ class PersonTest < ActiveSupport::TestCase
 
   def create_and_update_email_address_to_joe
     ea = EmailAddress.create!(address: 'test@test.com')
-    people(:joe).update_attribute(:name_fact, name_facts(:unclaimed))
-    name_facts(:unclaimed).update_attribute(:email_address_ids, "{#{ea.id}}")
+    name_fact = create(:name_fact)
+    person = create(:person, name_fact: name_fact)
+    name_fact.update_attribute(:email_address_ids, "{#{ea.id}}")
+    person
   end
 end

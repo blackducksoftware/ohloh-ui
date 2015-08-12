@@ -65,7 +65,9 @@ class ContributionTest < ActiveSupport::TestCase
 
   describe '#analysis_aliases' do
     it 'must return empty array if contributor_fact is nil' do
-      Contribution.first.analysis_aliases.must_equal []
+      contribution = Contribution.first
+      contribution.stubs(:contributor_fact).returns(nil)
+      contribution.analysis_aliases.must_equal []
     end
 
     it 'must return analysis_aliases if contributor_fact is present' do
@@ -79,7 +81,9 @@ class ContributionTest < ActiveSupport::TestCase
     end
 
     it 'must return empty array if contributor_fact is nil' do
-      Contribution.first.scm_names.must_equal []
+      contribution = Contribution.first
+      contribution.stubs(:contributor_fact).returns(NilContributorFact.new)
+      contribution.scm_names.must_equal []
     end
   end
 
@@ -89,7 +93,9 @@ class ContributionTest < ActiveSupport::TestCase
     end
 
     it 'must return persons effective_name if zero contributors' do
-      Contribution.first.committer_name.must_equal Contribution.first.person.effective_name
+      contribution = Contribution.first
+      contribution.stubs(:name_fact_id).returns(nil)
+      contribution.committer_name.must_equal contribution.person.effective_name
     end
   end
 

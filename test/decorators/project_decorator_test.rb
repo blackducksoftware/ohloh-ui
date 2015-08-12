@@ -1,31 +1,31 @@
 require 'test_helper'
 
 class ProjectDecoratorTest < ActiveSupport::TestCase
-  let(:linux) { projects(:linux) }
+  let(:linux) { create(:project) }
   let(:sidebar) do
     [
       [
-        [:project_summary, 'Project Summary', '/p/linux'],
-        [:rss, 'News', '/p/linux/rss_articles'],
-        [:settings, 'Settings', '/p/linux/settings'],
-        [:widgets, 'Sharing Widgets', '/p/linux/widgets'],
-        [:similar_projects, 'Related Projects', '/p/linux/similar']
+        [:project_summary, 'Project Summary', "/p/#{linux.url_name}"],
+        [:rss, 'News', "/p/#{linux.url_name}/rss_articles"],
+        [:settings, 'Settings', "/p/#{linux.url_name}/settings"],
+        [:widgets, 'Sharing Widgets', "/p/#{linux.url_name}/widgets"],
+        [:similar_projects, 'Related Projects', "/p/#{linux.url_name}/similar"]
       ],
       [
         [:code_data, 'Code Data'],
-        [:languages, 'Languages', '/p/linux/analyses/latest/languages_summary'],
-        [:estimated_cost, 'Cost Estimates', '/p/linux/estimated_cost']
+        [:languages, 'Languages', "/p/#{linux.url_name}/analyses/latest/languages_summary"],
+        [:estimated_cost, 'Cost Estimates', "/p/#{linux.url_name}/estimated_cost"]
       ],
       [
         [:scm_data, 'SCM Data'],
-        [:commits, 'Commits', '/p/linux/commits/summary'],
-        [:contributors, 'Contributors', '/p/linux/contributors/summary']
+        [:commits, 'Commits', "/p/#{linux.url_name}/commits/summary"],
+        [:contributors, 'Contributors', "/p/#{linux.url_name}/contributors/summary"]
       ],
       [
         [:user_data, 'Community Data'],
-        [:users, 'Users', '/p/linux/users'],
-        [:reviews, 'Ratings & Reviews', '/p/linux/reviews/summary'],
-        [:map, 'User & Contributor Locations', '/p/linux/map']
+        [:users, 'Users', "/p/#{linux.url_name}/users"],
+        [:reviews, 'Ratings & Reviews', "/p/#{linux.url_name}/reviews/summary"],
+        [:map, 'User & Contributor Locations', "/p/#{linux.url_name}/map"]
       ]
     ]
   end
