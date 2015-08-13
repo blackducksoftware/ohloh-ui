@@ -65,11 +65,11 @@ class StackEntriesControllerTest < ActionController::TestCase
     StackEntry.where(project_id: project.id).count.must_equal 0
   end
 
-  it 'create should gracefully save errors' do
+  it 'create should gracefully handle save errors' do
     stack = create(:stack)
     project = create(:project)
     login_as stack.account
-    StackEntry.any_instance.expects(:persisted?).twice.returns false
+    StackEntry::ActiveRecord_Relation.any_instance.stubs(:first_or_create!).raises(ActiveRecord::Rollback)
     post :create, stack_id: stack, stack_entry: { project_id: project }
     must_respond_with :unprocessable_entity
   end

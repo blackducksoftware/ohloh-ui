@@ -16,14 +16,12 @@ class StackEntriesController < ApplicationController
   end
 
   def create
-    stack_entry = StackEntry.where(stack_id: @stack.id, project_id: @project.id, deleted_at: nil).first_or_create
-    if stack_entry.persisted?
-      render json: { stack_entry_id: stack_entry.id,
-                     stack_entry: stack_entry_html(stack_entry),
-                     result: 'okay', updated_count: @stack.projects.count }, status: :ok
-    else
-      render json: { result: 'error' }, status: :unprocessable_entity
-    end
+    stack_entry = StackEntry.where(stack_id: @stack.id, project_id: @project.id, deleted_at: nil).first_or_create!
+    render json: { stack_entry_id: stack_entry.id,
+                   stack_entry: stack_entry_html(stack_entry),
+                   result: 'okay', updated_count: @stack.projects.count }, status: :ok
+  rescue
+    render json: { result: 'error' }, status: :unprocessable_entity
   end
 
   def update
