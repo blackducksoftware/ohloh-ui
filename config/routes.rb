@@ -7,6 +7,10 @@ Rails.application.routes.draw do
     skip_controllers :applications, :authorized_applications
   end
 
+  resources :status, only: [] do
+    get :age_spark, on: :collection
+  end
+
   resources :sessions, only: [:new, :create] do
     collection do
       delete :destroy
