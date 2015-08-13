@@ -4,21 +4,16 @@ class Account < ActiveRecord::Base
   include AccountAssociations
   include AccountScopes
   include AccountCallbacks
+  include Account::VirtualAttributes
 
   attr_accessor :password, :current_password, :validate_current_password, :invite_code,
                 :password_confirmation, :email_confirmation, :skip_current_password_check
   attr_writer :ip
-  attr_reader :about_raw
 
   oh_delegators :stack_core, :project_core, :position_core, :claim_core
   strip_attributes :name, :email, :login, :invite_code, :twitter_account
 
   serialize :reset_password_tokens, Hash
-
-  def about_raw=(value)
-    @about_raw = value
-    about_markup_id.nil? ? build_markup(raw: value) : markup.raw = value
-  end
 
   def anonymous?
     login == AnonymousAccount::LOGIN
