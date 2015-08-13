@@ -7,6 +7,8 @@ en:
       contributions_on_open_hub: "%{name}'s Developer Contributions on Open Hub."
       no_contributions_to_display: There are no contributions available to display.
       claim_contribution: Claim a Contribution
+    show:
+      page_title: "%{name} : %{name} - Open Hub"
     new:
       provide_extra_information: 'If you like, you may provide some extra information describing this contribution.  Or just hit next.'
       position_new_title: '%{name} : OpenHub'
