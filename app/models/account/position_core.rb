@@ -49,7 +49,7 @@ class Account::PositionCore < OhDelegator::Base
 
     Account.transaction do
       if existing_position && project.best_analysis.contributor_facts.find_by(name_id: existing_position.name_id)
-        create_alias(project, name, existing_position, position_attributes)
+        create_or_update_alias(project, name, existing_position, position_attributes)
       else
         attributes = position_attributes.merge(account: account, project: project, committer_name: name.name)
         recreate_position(existing_position, attributes)
@@ -70,10 +70,14 @@ class Account::PositionCore < OhDelegator::Base
 
   private
 
-  def create_alias(project, name, existing_position, position_attributes)
+  def create_or_update_alias(project, name, existing_position, position_attributes)
     alias_obj = Alias.where(project_id: project.id, commit_name_id: name.id).take
     return update_alias(alias_obj, existing_position.name_id, name.id) if alias_obj
+    return existing_position if name.id == existing_position.name_id
+    create_alias(project, name, existing_position, position_attributes)
+  end
 
+  def create_alias(project, name, existing_position, position_attributes)
     # Augment the existing, valid position by creating an alias that merges the old and new names.
     Alias.create(project_id: project.id, commit_name_id: name.id, preferred_name_id: existing_position.name_id,
                  editor_account: account).tap do
