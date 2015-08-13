@@ -51,18 +51,18 @@ class SlaveTest < ActiveSupport::TestCase
 
   describe 'run' do
     it 'must run the given command on the system' do
-      command = 'ls -l'
+      slave.run('printf $USER').must_equal(ENV['USER'])
+    end
 
-      slave.stubs(:command_failed?)
-      slave.expects(:`).with(command)
-      slave.run(command)
+    it 'must handle a command with pipe operation and backslashes' do
+      slave.run("printf $HOME | sed 's/^\\/\\w\\+//'").must_equal(ENV['HOME'].sub(/^\/\w+/, ''))
     end
 
     it 'must raise exception when command fails' do
       command = 'ls -l'
 
-      slave.stubs(:command_failed?).returns(true)
-      slave.expects(:`).with(command)
+      stdout = stub(read: 'dummy output')
+      Open3.stubs(:popen3).returns([nil, stdout, 'some error'])
       -> { slave.run(command) }.must_raise(Exception)
     end
   end

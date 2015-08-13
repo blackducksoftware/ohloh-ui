@@ -41,9 +41,9 @@ class Slave < ActiveRecord::Base
   end
 
   def run(cmd)
-    output = `#{ cmd }`
-    fail "#{ cmd } failed: #{ output }" if command_failed?
-    output
+    _stdin, stdout, stderr = Open3.popen3('bash', '-c', cmd)
+    fail "#{ cmd } failed: #{ stderr.read }" if stderr.any?
+    stdout.read
   end
 
   def run_on_clump_machine(cmd)
@@ -64,11 +64,5 @@ class Slave < ActiveRecord::Base
 
   def disk_full?
     used_percent && (used_percent >= MAX_DISK_USAGE)
-  end
-
-  private
-
-  def command_failed?
-    $CHILD_STATUS != 0
   end
 end
