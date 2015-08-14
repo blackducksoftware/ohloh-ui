@@ -3,6 +3,17 @@ require 'test_helper'
 describe 'PositionsController' do
   let(:account) { create(:account) }
 
+  describe 'show' do
+    it 'must render successfully if the position is tied to an account lacking a person' do
+      position = create_position(account: account)
+      position.account.person.delete
+      get :show, account_id: account.to_param, id: position.id
+
+      must_respond_with :success
+      must_render_template :show
+    end
+  end
+
   describe 'new' do
     it 'must render error for logged out user' do
       get :new, account_id: account.to_param
