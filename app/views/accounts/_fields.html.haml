@@ -1,7 +1,7 @@
 = form_for @account, html: { id: :account_form, class: 'well digits-verification' } do |f|
-  = f.hidden_field :digits_credentials
-  = f.hidden_field :digits_service_provider_url
-  = f.hidden_field :digits_oauth_timestamp
+  = f.hidden_field :digits_credentials, id: :digits_credentials
+  = f.hidden_field :digits_service_provider_url, id: :digits_service_provider_url
+  = f.hidden_field :digits_oauth_timestamp, id: :digits_oauth_timestamp
 
   %fieldset
     %legend= t('.new_account')
