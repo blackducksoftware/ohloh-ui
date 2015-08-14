@@ -88,7 +88,7 @@ http {
     include /var/local/config/nginx_passenger_common.inc;
 
         if ($host ~* "^labs\.openhub\.net$") {
-            rewrite ^(.*) http://github.com/blackducksw permanent;
+            rewrite ^(.*) http://github.com/blackducksoftware permanent;
             break;
         }
 
