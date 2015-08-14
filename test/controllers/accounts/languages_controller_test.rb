@@ -1,11 +1,12 @@
 require 'test_helper'
 
 describe 'Accounts::LanguagesController' do
-  let(:account) { accounts(:user) }
-  let(:admin) { accounts(:admin) }
+  let(:account) { create(:account) }
+  let(:admin) { create(:admin) }
 
   describe 'languages' do
     it 'should respond with contributions data when best vita for account is nil' do
+      create_position(account: admin)
       contribution = admin.positions.first.contribution
       project = contribution.project
 
@@ -18,7 +19,10 @@ describe 'Accounts::LanguagesController' do
     end
 
     it 'should respond with contributions and vita language facts data when best vita for account is present' do
-      vita_language_fact = create(:vita_language_fact, vita: account.best_vita)
+      create_position(account: account)
+      vita = create(:best_vita, account: account)
+      account.update_column(:best_vita_id, vita.id)
+      vita_language_fact = create(:vita_language_fact, vita: vita)
       most_commits_project = vita_language_fact.most_commits_project
       recent_commit_project = vita_language_fact.recent_commit_project
 

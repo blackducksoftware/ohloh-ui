@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class PropertyEditTest < ActiveSupport::TestCase
-  fixtures :accounts, :projects
-
   before do
     project = create(:project, description: 'Linux')
     Edit.for_target(project).delete_all

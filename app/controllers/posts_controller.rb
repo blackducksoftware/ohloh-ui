@@ -20,7 +20,7 @@ class PostsController < ApplicationController
 
   def create
     @post = build_new_post
-    if @post.save
+    if verify_recaptcha(model: @post) && @post.save
       post_notification(@post)
       redirect_to topic_path(@topic)
     else

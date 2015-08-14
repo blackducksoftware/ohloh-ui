@@ -19,7 +19,7 @@ class ProjectCoreTest < ActiveSupport::TestCase
     account = create(:admin)
 
     stack = create(:stack, account: account)
-    stack.projects << projects(:linux)
+    stack.projects << create(:project)
     stack.save!
     account.reload
 
@@ -29,15 +29,16 @@ class ProjectCoreTest < ActiveSupport::TestCase
 
   it 'stacked?' do
     account = create(:admin)
+    project = create(:project)
 
-    Stack.any_instance.stubs(:stacked_project?).with(projects(:linux).id).returns(true)
-    account.project_core.stacked?(projects(:linux).id).must_equal false
+    Stack.any_instance.stubs(:stacked_project?).with(project.id).returns(true)
+    account.project_core.stacked?(project.id).must_equal false
 
     stack = create(:stack, account: account)
-    stack.projects << projects(:linux)
+    stack.projects << project
     stack.save!
     account.reload
 
-    account.project_core.stacked?(projects(:linux).id).must_equal true
+    account.project_core.stacked?(project.id).must_equal true
   end
 end

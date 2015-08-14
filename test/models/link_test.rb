@@ -1,13 +1,15 @@
 require 'test_helper'
 
 class LinkTest < ActiveSupport::TestCase
+  let(:project) { create(:project) }
+
   it 'must raise an error when no editor' do
     -> { create(:link_with_no_editor_account) }.must_raise(ActiveRecord::RecordInvalid)
   end
 
   it 'must create a link' do
-    link = create(:link, project: projects(:linux))
-    projects(:linux).links.must_include link
+    link = create(:link, project: project)
+    project.links.must_include link
   end
 
   it 'must prevent blank url' do
@@ -17,15 +19,15 @@ class LinkTest < ActiveSupport::TestCase
   end
 
   it 'must prevent duplicate url' do
-    link = create(:link, project: projects(:linux))
+    link = create(:link, project: project)
     link.errors.must_be :empty?
-    link = build(:link, project: projects(:linux), url: link.url)
+    link = build(:link, project: project, url: link.url)
     link.save
     link.errors.must_include(:url)
   end
 
   it 'must revive or create deleted links' do
-    link = create(:link, project: projects(:linux))
+    link = create(:link, project: project)
     link.destroy
 
     new_title = 'new title'
@@ -45,7 +47,7 @@ class LinkTest < ActiveSupport::TestCase
   it 'must receive or create for new links' do
     new_title = 'new title'
     new_url   = 'http://www.domain.com'
-    new_link = build(:link, url: new_url, project: projects(:linux),
+    new_link = build(:link, url: new_url, project: project,
                             title: new_title, link_category_id: Link::CATEGORIES[:Forums])
     new_link.editor_account = create(:account)
 
@@ -69,7 +71,7 @@ class LinkTest < ActiveSupport::TestCase
       'bad url', 'http://\"$', 'ftp://booasd', 'http://',
       'http://;', "http://www.oh.net'", 'http://www.oh.net`'
     ].each do |url|
-      link = build(:link, url: url, project: projects(:linux))
+      link = build(:link, url: url, project: project)
       link.save
       link.wont_be :valid?
       link.errors[:url].must_be :present?
@@ -79,7 +81,7 @@ class LinkTest < ActiveSupport::TestCase
       'http://www.domain.com', 'https://www.domain.com',
       'http://www.google.com:8080/some/other/path.php', 'http://www.freshvanilla.org:8080/'
     ].each do |url|
-      link = build(:link, url: url, project: projects(:linux))
+      link = build(:link, url: url, project: project)
       link.editor_account = create(:account)
       link.save
       link.must_be :valid?

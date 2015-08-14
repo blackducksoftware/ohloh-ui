@@ -1,24 +1,21 @@
 require 'test_helper'
+require 'test_helpers/commits_by_project_data'
+require 'test_helpers/commits_by_language_data'
 
 class ChartTest < ActiveSupport::TestCase
-  let(:admin) { accounts(:admin) }
-
-  let(:user) do
-    account = accounts(:user)
-    account.best_vita.vita_fact.destroy
-    create(:vita_fact, vita_id: account.best_vita_id)
-    account
-  end
-
-  let(:user_chart) { Chart.new(user) }
+  let(:admin) { create(:admin) }
+  let(:account) { create_account_with_commits_by_project }
+  let(:position1) { account.positions.first }
+  let(:position2) { account.positions.last }
+  let(:account_chart) { Chart.new(account) }
   let(:admin_chart) { Chart.new(admin) }
 
   describe 'commits_by_project' do
     it 'should return chart data for user' do
-      chart_data = JSON.parse(user_chart.commits_by_project)
+      chart_data = JSON.parse(account_chart.commits_by_project)
       chart_data['noCommits'].must_equal false
-      chart_data['series'].first['data'].must_equal [nil] * 12 + [25, 40, 28, 18, 1, 8, 26, 9] + [nil] * 65
-      chart_data['series'].first['name'].must_equal 'Linux'
+      chart_data['series'].first['data'].must_equal [nil] * 13 + [25, 40, 28, 18, 1, 8, 26, 9] + [nil] * 64
+      chart_data['series'].first['name'].must_equal position1.project.name
     end
 
     it 'should return chart data for admin' do
@@ -30,7 +27,7 @@ class ChartTest < ActiveSupport::TestCase
 
   describe 'commits_by_language' do
     it 'should return chart data for user when' do
-      chart_data = JSON.parse(user_chart.commits_by_language)
+      chart_data = JSON.parse(account_chart.commits_by_language)
       first_lanugage = chart_data['object_array'].first['table']
       first_lanugage['language_id'].must_equal '17'
       first_lanugage['name'].must_equal 'csharp'

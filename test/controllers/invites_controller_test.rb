@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe InvitesController do
-  let(:user) { accounts(:user) }
+  let(:user) { create(:account) }
   let(:invite) { build(:invite) }
 
   it 'new invite requires login' do

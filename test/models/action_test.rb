@@ -2,7 +2,8 @@ require 'test_helper'
 
 class ActionTest < ActiveSupport::TestCase
   let(:admin_account) { create(:admin) }
-  let(:linux_project) { projects(:linux) }
+  let(:linux_project) { create(:project) }
+  let(:person) { create(:person) }
 
   it 'test account required' do
     assert_no_difference 'Action.count' do
@@ -20,7 +21,6 @@ class ActionTest < ActiveSupport::TestCase
 
   it 'test create succeeds for claim' do
     assert_difference 'Action.count' do
-      person = people(:joe)
       action = Action.create!(account: admin_account, claim: person)
       action.claim.must_equal person
       action.account.must_equal admin_account
@@ -36,16 +36,17 @@ class ActionTest < ActiveSupport::TestCase
 
   it 'test command for claim' do
     assert_difference 'Action.count' do
-      action_param = "claim_#{people(:joe).id}"
+      action_param = "claim_#{person.id}"
       action = Action.create!(account: admin_account, _action: action_param)
       action.account.must_equal admin_account
-      action.claim.must_equal people(:joe)
+      action.claim.must_equal person
     end
   end
 
   it 'test command for claim of person with no project' do
     assert_no_difference 'Action.count' do
-      action_param = "claim_#{people(:kyle).id}"
+      account = create(:account)
+      action_param = "claim_#{account.person.id}"
       action = Action.create(account: admin_account, _action: action_param)
       action.errors.include?(:claim).must_equal true
       action.errors.must_include(:claim)
@@ -54,7 +55,8 @@ class ActionTest < ActiveSupport::TestCase
 
   it 'test command for claim of person with no name' do
     assert_no_difference 'Action.count' do
-      action_param = "claim_#{people(:robin).id}"
+      account = create(:account)
+      action_param = "claim_#{account.person.id}"
       action = Action.create(account: admin_account, _action: action_param)
       action.errors.must_include(:claim)
     end

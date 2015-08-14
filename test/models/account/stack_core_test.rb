@@ -8,7 +8,7 @@ class StackCoreTest < ActiveSupport::TestCase
     account.stacks.size.must_equal 1
 
     stack = create(:stack, account: account)
-    stack.projects << projects(:linux)
+    stack.projects << create(:project)
     stack.save!
     account.reload
 

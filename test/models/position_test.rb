@@ -31,6 +31,7 @@ class PositionTest < ActiveSupport::TestCase
       project_squeel = create(:project, name: :squeel)
 
       name = create(:name)
+      language = create(:language)
       create(:name_fact, analysis: project_firebug.best_analysis, name: name)
 
       valid_params = {
@@ -38,7 +39,7 @@ class PositionTest < ActiveSupport::TestCase
         project_oss: project_firebug.name,
         committer_name: name.name,
         title: :SDE,
-        language_exp: ['1'],
+        language_exp: [language.id.to_s],
         description: 'worked hard.',
         affiliation_type: :other,
         organization_name: :Microsoft,
@@ -56,7 +57,7 @@ class PositionTest < ActiveSupport::TestCase
       position.name.must_equal name
       position.title.must_equal 'SDE'
       position.language_experiences.size.must_equal 1
-      position.language_experiences[0].language.must_equal languages(:c)
+      position.language_experiences[0].language.must_equal language
       position.start_date.must_be_nil
       position.stop_date.must_be_nil
       position.affiliation_type.must_equal 'other'

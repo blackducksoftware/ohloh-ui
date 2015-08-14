@@ -1,13 +1,11 @@
 require 'test_helper'
+require 'test_helpers/commits_by_project_data'
+require 'test_helpers/commits_by_language_data'
 
 describe 'Accounts::ChartsController' do
-  let(:account) do
-    account = accounts(:user)
-    account.best_vita.vita_fact.destroy
-    create(:vita_fact, vita_id: account.best_vita_id)
-    account
-  end
-
+  let(:account) { create_account_with_commits_by_project }
+  let(:position1) { account.positions.first }
+  let(:position2) { account.positions.last }
   let(:admin) { create(:admin) }
 
   describe 'commits_by_project' do
@@ -17,8 +15,8 @@ describe 'Accounts::ChartsController' do
 
       must_respond_with :ok
       result['noCommits'].must_equal false
-      result['series'].first['data'].must_equal [nil] * 12 + [25, 40, 28, 18, 1, 8, 26, 9] + [nil] * 65
-      result['series'].first['name'].must_equal 'Linux'
+      result['series'].first['data'].must_equal [nil] * 13 + [25, 40, 28, 18, 1, 8, 26, 9] + [nil] * 64
+      result['series'].first['name'].must_equal position1.project.name
     end
 
     it 'should redirect if account is disabled' do
@@ -35,7 +33,7 @@ describe 'Accounts::ChartsController' do
       result  = JSON.parse(response.body)
 
       must_respond_with :ok
-      result['series'].first['data'].must_equal [25, 40, 28, 18, 1, 8, 30, 12] + [0] * 65
+      result['series'].first['data'].must_equal [25, 40, 28, 18, 1, 8, 26, 9] + [0] * 64
     end
 
     it 'should redirect if account is disabled' do

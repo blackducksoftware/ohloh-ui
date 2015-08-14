@@ -1,9 +1,13 @@
 require 'test_helper'
 
 describe 'ProjectsController' do
-  let(:api_key) { create(:api_key) }
+  let(:api_key) { create(:api_key, account: create(:account)) }
   let(:client_id) { api_key.oauth_application.uid }
-  before { Repository.any_instance.stubs(:bypass_url_validation).returns(true) }
+  let(:forge) { Forge.find_by(name: 'Github') }
+
+  before do
+    Repository.any_instance.stubs(:bypass_url_validation).returns(true)
+  end
 
   # index
   it 'index should handle query param for unlogged users' do
@@ -204,7 +208,7 @@ describe 'ProjectsController' do
     end
 
     it 'show accepts being called via api' do
-      api_key = create(:api_key)
+      api_key = create(:api_key, account: create(:account))
       get :show, id: create(:project), format: :xml, api_key: api_key.oauth_application.uid
       must_respond_with :ok
     end
@@ -247,7 +251,7 @@ describe 'ProjectsController' do
     end
 
     it "must render no analysis template if project's best analysis is nil" do
-      api_key = create(:api_key)
+      api_key = create(:api_key, account: create(:account))
       project = create(:project)
       project.update_column(:best_analysis_id, nil)
       get :show, id: project, format: 'xml', api_key: api_key.oauth_application.uid
@@ -306,7 +310,7 @@ describe 'ProjectsController' do
   it 'check_forge should gracefully handle duplicate projects detected' do
     VCR.use_cassette('ProjectControllerCheckForge-rails') do
       proj = create(:project)
-      repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forges(:github).id,
+      repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forge.id,
                                  owner_at_forge: 'rails', name_at_forge: 'rails')
       create(:enlistment, project: proj, repository: repo)
       login_as create(:account)
@@ -321,7 +325,7 @@ describe 'ProjectsController' do
   it 'check_forge should gracefully handle forge timeout errors' do
     VCR.use_cassette('ProjectControllerCheckForge-rails') do
       proj = create(:project)
-      repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forges(:github).id,
+      repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forge.id,
                                  owner_at_forge: 'rails', name_at_forge: 'rails')
       create(:enlistment, project: proj, repository: repo)
       login_as create(:account)
@@ -330,14 +334,14 @@ describe 'ProjectsController' do
       must_respond_with :ok
       must_select "#project_#{proj.id}", 0
       must_select 'form#new_project', 1
-      response.body.must_match I18n.t('projects.check_forge.forge_time_out', name: forges(:github).name)
+      response.body.must_match I18n.t('projects.check_forge.forge_time_out', name: forge.name)
     end
   end
 
   it 'check_forge should allow creating a project that already matches an existing project' do
     VCR.use_cassette('ProjectControllerCheckForge-rails') do
       proj = create(:project)
-      repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forges(:github).id,
+      repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forge.id,
                                  owner_at_forge: 'rails', name_at_forge: 'rails')
       create(:enlistment, project: proj, repository: repo)
       login_as create(:account)
