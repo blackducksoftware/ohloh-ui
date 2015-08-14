@@ -206,7 +206,6 @@ describe 'AccountsController' do
                                                     digits_service_provider_url: digits_service_provider_url,
                                                     digits_oauth_timestamp: digits_oauth_timestamp })
 
-
       assigns(:account).wont_be :valid?
       assigns(:account).digits_credentials.must_equal digits_credentials
       assigns(:account).digits_service_provider_url.must_equal digits_service_provider_url

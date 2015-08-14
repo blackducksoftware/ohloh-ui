@@ -474,8 +474,8 @@ class AccountTest < ActiveSupport::TestCase
 
     describe 'twitter_id' do
       it 'wont validate uniqueness when value is nil' do
-      account = create(:account)
-      account.update!(twitter_id: nil)
+        account = create(:account)
+        account.update!(twitter_id: nil)
 
         build(:account, twitter_id: nil).must_be :valid?
       end
