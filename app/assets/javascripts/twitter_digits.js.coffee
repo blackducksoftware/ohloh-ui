@@ -22,13 +22,13 @@ class App.TwitterDigits
         oAuthHeaders = loginResponse.oauth_echo_headers
         $form = $('.digits-verification')
         authCredentials = oAuthHeaders['X-Verify-Credentials-Authorization']
-        $form.find('#account_digits_credentials').val authCredentials
-        $form.find('#account_digits_service_provider_url').val oAuthHeaders['X-Auth-Service-Provider']
-        $form.find('#account_digits_oauth_timestamp').val authCredentials.match(/oauth_timestamp="(\d+)"/)[1]
+        $form.find('#digits_credentials').val authCredentials
+        $form.find('#digits_service_provider_url').val oAuthHeaders['X-Auth-Service-Provider']
+        $form.find('#digits_oauth_timestamp').val authCredentials.match(/oauth_timestamp="(\d+)"/)[1]
         $form.submit()
 
   oauthTimestampAbsentOrExpired = ($form) ->
-    timestamp = $form.find('#account_digits_oauth_timestamp').val()
+    timestamp = $form.find('#digits_oauth_timestamp').val()
     return true if _(timestamp).isEmpty()
     Number(timestamp) + OAUTH_EXPIRY_INTERVAL < currentTimestamp()
 
