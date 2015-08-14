@@ -67,8 +67,4 @@ class Spark::CompoundSpark < Spark::Base
       (value.to_f / @max_value.to_f * SPARK[:column_variant]).to_i
     end
   end
-
-  def max_value
-    @data.map(&:commits).map(&:to_i).max
-  end
 end

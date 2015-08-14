@@ -79,4 +79,14 @@ class ActiveSupport::TestCase
     permission = organization_or_project.create_permission
     permission.update!(remainder: true, editor_account: account)
   end
+
+  def create_project_and_analysis
+    (0..2).each do |value|
+      2.times do
+        project = create(:project)
+        analysis = create(:analysis, logged_at: Date.today - value.days, project: project)
+        project.update(best_analysis: analysis)
+      end
+    end
+  end
 end
