@@ -8,6 +8,6 @@
     %button.btn.btn-primary#digits-sign-up
       = t('.verify_using_phone_number')
 
-= form_tag account_verifications_path(@account), id: :new_verification do
+= form_tag account_verifications_path(@account), class: 'digits-verification' do
   = hidden_field_tag 'verification[service_provider_url]'
   = hidden_field_tag 'verification[credentials]'

@@ -3,6 +3,7 @@ module Account::VirtualAttributes
 
   included do
     attr_reader :about_raw
+    attr_accessor :digits_credentials, :digits_service_provider_url, :digits_oauth_timestamp
   end
 
   def about_raw=(value)

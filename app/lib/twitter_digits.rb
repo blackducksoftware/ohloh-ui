@@ -2,6 +2,8 @@ module TwitterDigits
   module_function
 
   def get_twitter_id(service_provider_url, credentials)
+    return unless service_provider_url && credentials
+
     uri = URI(service_provider_url)
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true

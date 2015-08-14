@@ -11,6 +11,10 @@ class Account::Hooks
     transfer_associations_to_anonymous_account(account)
   end
 
+  def before_create(account)
+    set_twitter_id(account)
+  end
+
   def after_create(account)
     account.password = nil
     account.current_password = nil
@@ -118,5 +122,9 @@ class Account::Hooks
 
   def update_edit(account_id)
     Edit.where(undone_by: account_id).update_all(undone_by: @anonymous_account)
+  end
+
+  def set_twitter_id(account)
+    account.twitter_id = TwitterDigits.get_twitter_id(account.digits_service_provider_url, account.digits_credentials)
   end
 end

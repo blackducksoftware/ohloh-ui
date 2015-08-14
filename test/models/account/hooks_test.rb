@@ -110,6 +110,14 @@ class Account::HooksTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'before_create' do
+    it 'must set the twitter_id using twitter digits data' do
+      account = build(:account)
+      TwitterDigits.expects(:get_twitter_id)
+      account.save
+    end
+  end
+
   describe 'after_create' do
     it 'must change invitee id and activated date' do
       invite = create(:invite)

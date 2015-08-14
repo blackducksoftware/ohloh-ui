@@ -196,6 +196,22 @@ describe 'AccountsController' do
       @controller.send(:current_user).must_equal created_account
       must_redirect_to new_account_verification_path(created_account)
     end
+
+    it 'must set digits related data to account object when rendering errors' do
+      digits_credentials = Faker::Lorem.sentence
+      digits_service_provider_url = Faker::Internet.url
+      digits_oauth_timestamp = Faker::Number.number(10)
+      post :create, account_params.merge(account: { password: '',
+                                                    digits_credentials: digits_credentials,
+                                                    digits_service_provider_url: digits_service_provider_url,
+                                                    digits_oauth_timestamp: digits_oauth_timestamp })
+
+
+      assigns(:account).wont_be :valid?
+      assigns(:account).digits_credentials.must_equal digits_credentials
+      assigns(:account).digits_service_provider_url.must_equal digits_service_provider_url
+      assigns(:account).digits_oauth_timestamp.must_equal digits_oauth_timestamp
+    end
   end
 
   describe 'edit' do

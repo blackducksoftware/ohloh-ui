@@ -1,4 +1,8 @@
-= form_for @account, html: { id: :account_form, class: :well } do |f|
+= form_for @account, html: { id: :account_form, class: 'well digits-verification' } do |f|
+  = f.hidden_field :digits_credentials
+  = f.hidden_field :digits_service_provider_url
+  = f.hidden_field :digits_oauth_timestamp
+
   %fieldset
     %legend= t('.new_account')
     .controls
@@ -36,4 +40,4 @@
       %p.help-block
         = t('.verify_password_help')
     .actions
-      %input.btn.btn-primary{ type: :submit, value: t('.sign_up') }
+      %input.btn.btn-primary{ type: :button, value: t('.sign_up'), id: 'digits-sign-up' }

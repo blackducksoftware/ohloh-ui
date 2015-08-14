@@ -6,6 +6,7 @@ module AccountCallbacks
     before_validation Account::Encrypter.new
     before_save Account::Encrypter.new
     before_destroy Account::Hooks.new
+    before_create Account::Hooks.new
     after_create Account::Hooks.new
     after_update Account::Hooks.new
     after_destroy Account::Hooks.new
