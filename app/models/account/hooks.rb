@@ -12,7 +12,7 @@ class Account::Hooks
   end
 
   def before_create(account)
-    set_twitter_id(account)
+    account.twitter_id = TwitterDigits.get_twitter_id(account.digits_service_provider_url, account.digits_credentials)
   end
 
   def after_create(account)
@@ -122,9 +122,5 @@ class Account::Hooks
 
   def update_edit(account_id)
     Edit.where(undone_by: account_id).update_all(undone_by: @anonymous_account)
-  end
-
-  def set_twitter_id(account)
-    account.twitter_id = TwitterDigits.get_twitter_id(account.digits_service_provider_url, account.digits_credentials)
   end
 end
