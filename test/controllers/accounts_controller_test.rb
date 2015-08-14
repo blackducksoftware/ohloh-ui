@@ -216,7 +216,8 @@ describe 'AccountsController' do
 
   describe 'edit' do
     it 'must redirect to verification page when not verified' do
-      account = create(:account, twitter_id: '')
+      account = create(:account)
+      account.update!(twitter_id: '')
       login_as account
 
       get :edit, id: account.id
