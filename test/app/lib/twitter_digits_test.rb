@@ -4,6 +4,11 @@ describe 'TwitterDigits' do
   let(:service_provider_url) { Faker::Internet.url }
   let(:credentials) { "oauth_consumer_key=#{ Faker::Internet.password }" }
 
+  before do
+    original_twitter_digits_path = File.expand_path('../../../../app/lib/twitter_digits.rb', __FILE__)
+    load original_twitter_digits_path
+  end
+
   it 'must return the id_str when response is 200' do
     id_str = Faker::Internet.password
     response = stub(code: '200', body: { id_str: id_str }.to_json)
