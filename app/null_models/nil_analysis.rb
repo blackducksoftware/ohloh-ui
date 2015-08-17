@@ -38,4 +38,8 @@ class NilAnalysis < NullObject
   def contributor_facts
     []
   end
+
+  def updated_on
+    Time.zone.now
+  end
 end
