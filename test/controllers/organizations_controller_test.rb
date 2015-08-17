@@ -214,7 +214,7 @@ describe 'OrganizationsController' do
       org['description'].must_equal 'test description'
       org['url_name'].must_equal org_3.url_name
       org['type'].must_equal 'Commercial'
-      org['projects_count'].must_equal '4'
+      org['projects_count'].must_equal "#{org_3.projects_count}"
       org['affiliated_committers'].must_equal '0'
     end
 

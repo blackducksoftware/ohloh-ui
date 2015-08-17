@@ -84,9 +84,8 @@ class Organization < ActiveRecord::Base
     Organization::Outside.new(self).projects(page, limit)
   end
 
-  # OTWO-3853 we are overriding the projects_count attribute so that it refers the right count
   def projects_count
-    projects.count
+    projects.size
   end
 
   def affiliators_count
