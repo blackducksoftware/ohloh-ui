@@ -40,5 +40,6 @@ module ProjectScopes
         .group('projects.id')
         .having('count(*) >= ?', tags.split.flatten.length)
     }
+    scope :with_analysis, -> { active.where.not(best_analysis_id: nil) }
   end
 end

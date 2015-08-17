@@ -6,7 +6,7 @@ class Spark::Base
   def initialize(data, options = {})
     @data = data
     @spark = options
-    @max_value = options[:max_value] || max_commits_value
+    @max_value = options[:max_value] || max_value
   end
 
   private
@@ -25,7 +25,7 @@ class Spark::Base
     width
   end
 
-  def max_commits_value
+  def max_value
     @data.map(&:commits).map(&:to_i).max
   end
 
@@ -33,8 +33,8 @@ class Spark::Base
     index * (@spark[:column_width] + @spark[:column_gap])
   end
 
-  def y1_axis_value(commits_count)
-    dy = commits_count.zero? ? 0 : scale(commits_count)
+  def y1_axis_value(count)
+    dy = count.zero? ? 0 : scale(count)
     column_height - @spark[:column_base] - dy
   end
 
@@ -46,7 +46,7 @@ class Spark::Base
     column_height
   end
 
-  def draw_rectangle_bar(commits_count, index)
-    "rectangle #{x1_axis_value(index)}, #{y1_axis_value(commits_count)} #{x2_axis_value(index)}, #{y2_axis_value}"
+  def draw_rectangle_bar(count, index)
+    "rectangle #{x1_axis_value(index)}, #{y1_axis_value(count)} #{x2_axis_value(index)}, #{y2_axis_value}"
   end
 end

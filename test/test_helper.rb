@@ -104,4 +104,14 @@ class ActiveSupport::TestCase
     account.reload.best_vita.reload.vita_fact.reload
     account
   end
+
+  def create_project_and_analysis
+    (0..2).each do |value|
+      2.times do
+        project = create(:project)
+        analysis = create(:analysis, logged_at: Date.today - value.days, project: project)
+        project.update(best_analysis: analysis)
+      end
+    end
+  end
 end
