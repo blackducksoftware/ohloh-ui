@@ -19,6 +19,10 @@ class OrgThirtyDayActivity < ActiveRecord::Base
   scope :filter_government_orgs, -> { with_thirty_day_commit_count.where(org_type: 3) }
   scope :filter_non_profit_orgs, -> { with_thirty_day_commit_count.where(org_type: 4) }
 
+  def project_count
+    organization.projects_count
+  end
+
   class << self
     def most_active_orgs
       commits_per_affliate = (arel_table[:thirty_day_commit_count] / arel_table[:affiliate_count])
