@@ -483,10 +483,34 @@ class AccountTest < ActiveSupport::TestCase
       it 'must validate uniqueness when value is non null' do
         account = create(:account)
 
+        Account::Hooks.any_instance.stubs(:set_twitter_id)
         new_account = build(:account, twitter_id: account.twitter_id)
 
         new_account.wont_be :valid?
         new_account.errors.messages[:twitter_id].must_be :present?
+      end
+
+      it 'must validate presence on create' do
+        account = build(:account)
+        TwitterDigits.expects(:get_twitter_id)
+
+        account.wont_be :valid?
+        account.errors.messages[:twitter_id].must_be :present?
+      end
+
+      it 'wont validate presence on update' do
+        account = create(:account)
+
+        account.update(twitter_id: nil).must_equal true
+        account.reload.twitter_id.must_be_nil
+      end
+
+      it 'wont override existing twitter_id on update' do
+        account = create(:account)
+        twitter_id = account.twitter_id
+
+        account.update! akas: Faker::Lorem.sentence
+        account.reload.twitter_id.must_equal twitter_id
       end
     end
   end

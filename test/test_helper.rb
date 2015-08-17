@@ -31,6 +31,14 @@ class ActiveSupport::TestCase
   create_hamster_account
   create_forges
 
+  before do
+    TwitterDigits.instance_eval do
+      def get_twitter_id(*_args)
+        Faker::Internet.password
+      end
+    end
+  end
+
   def login_as(account)
     @controller ? controller_login_as(account) : integration_login_as(account)
   end
