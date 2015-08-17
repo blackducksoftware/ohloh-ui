@@ -253,7 +253,7 @@ class AccountTest < ActiveSupport::TestCase
 
     it 'test valid logins' do
       account = build(:account)
-      logins = %w(rockola ROCKOLA Rockola Rock_Ola F323)
+      logins = %w(rockola ROCKOLA Rockola Rock_Ola F323 Géré-my)
 
       logins.each do |login|
         account.login = login

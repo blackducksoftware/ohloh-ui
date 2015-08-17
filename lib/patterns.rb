@@ -1,3 +1,3 @@
 module Patterns
-  LOGIN_FORMAT = /\A[a-zA-Z][\w-]{2,30}\Z/
+  LOGIN_FORMAT = /\A[[:alpha:]][[:alnum:]_-]{2,30}\Z/
 end
