@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class RatingsControllerTest < ActionController::TestCase
-  def setup
+  before do
     @account = create(:account)
     @project = create(:project)
   end
