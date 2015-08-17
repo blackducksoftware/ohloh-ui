@@ -256,7 +256,7 @@ Rails.application.routes.draw do
         get :commits_spark
       end
 
-      resources :activity_facts, only: :index
+      resources :activity_facts, only: :index, defaults: { format: 'xml' }
       resources :size_facts, only: :index
     end
     resources :commits, only: [:index, :show] do
