@@ -8,6 +8,10 @@ class Accounts::VerificationsController < ApplicationController
   before_action :must_own_account
   before_action :redirect_if_verified
 
+  def new
+    render partial: 'fields' if request.xhr?
+  end
+
   def create
     if digits_response_success?
       return redirect_back if update_account_with_twitter_id(@account, twitter_id)

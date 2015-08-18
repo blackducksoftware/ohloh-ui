@@ -1,13 +1,3 @@
 - content_for(:html_title) { t('.html_title') }
 
-.row-fluid
-  .well.well-large.col-md-8.col-md-offset-2.margin_top_20
-    %p
-      = t('.verification_prompt')
-
-    %button.btn.btn-primary#digits-sign-up
-      = t('.verify_using_phone_number')
-
-= form_tag account_verifications_path(@account), class: 'digits-verification' do
-  = hidden_field_tag 'verification[service_provider_url]', nil, id: :digits_service_provider_url
-  = hidden_field_tag 'verification[credentials]', nil, id: :digits_credentials
+= render 'fields'
