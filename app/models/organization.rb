@@ -84,6 +84,10 @@ class Organization < ActiveRecord::Base
     Organization::Outside.new(self).projects(page, limit)
   end
 
+  def projects_count
+    projects.size
+  end
+
   def affiliators_count
     @affiliators_count ||=
       accounts.joins(:person, :positions)
