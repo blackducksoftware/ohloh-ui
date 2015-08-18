@@ -39,5 +39,8 @@
       - error_tag(@account, :password_confirmation)
       %p.help-block
         = t('.verify_password_help')
+
+    - error_tag(@account, :twitter_id)
+
     .actions
       %input.btn.btn-primary{ type: :button, value: t('.sign_up'), id: 'digits-sign-up' }

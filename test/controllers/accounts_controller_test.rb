@@ -211,6 +211,17 @@ describe 'AccountsController' do
       assigns(:account).digits_service_provider_url.must_equal digits_service_provider_url
       assigns(:account).digits_oauth_timestamp.must_equal digits_oauth_timestamp
     end
+
+    it 'must display errors for twitter_id' do
+      existing_account = create(:account)
+
+      TwitterDigits.stubs(:get_twitter_id).returns(existing_account.twitter_id)
+
+      post :create, account_params
+
+      assigns(:account).wont_be :valid?
+      response.body.must_match I18n.t('activerecord.errors.models.account.attributes.twitter_id.taken')
+    end
   end
 
   describe 'edit' do
