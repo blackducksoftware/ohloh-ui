@@ -27,15 +27,19 @@ class Slave::JobPicker
   end
 
   def job_candidate
-    Job.scheduled
-      .where('jobs.slave_id IS NULL OR jobs.slave_id = ?', @slave.id)
-      .where("COALESCE(wait_until, '1980-01-01') <= now() at time zone 'utc'")
-      .where(type: @allowed_types)
-      .order(priority: :desc).order('slave_id IS NULL')
-      .first
+    Semaphore.with_lock(Semaphore::EXECUTION_TYPES[:job_candidate]) do
+      Job.scheduled
+        .where('jobs.slave_id IS NULL OR jobs.slave_id = ?', @slave.id)
+        .where("COALESCE(wait_until, '1980-01-01') <= now() at time zone 'utc'")
+        .where(type: @allowed_types)
+        .order(priority: :desc).order('slave_id IS NULL')
+        .first
+    end
   end
 
   def create_new_repository_jobs
-    Clump.oldest_fetchable(ENV['SCHEDULABLE_CLUMPS_LIMIT']).each(&:create_new_repository_jobs)
+    Semaphore.with_lock(Semaphore::EXECUTION_TYPES[:repo_jobs]) do
+      Clump.oldest_fetchable(ENV['SCHEDULABLE_CLUMPS_LIMIT']).each(&:create_new_repository_jobs)
+    end
   end
 end
