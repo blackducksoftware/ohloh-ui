@@ -7,6 +7,7 @@ module SetupHamsterAccount
   private
 
   def create_new_account
+    TwitterDigits.stubs(:get_twitter_id).returns(Faker::Internet.password)
     Account.create(login: 'ohloh_slave', name: 'hamster', password: 'password', password_confirmation: 'password',
                    email: 'slave@ohloh.net', email_confirmation: 'slave@ohloh.net')
   end

@@ -4,7 +4,7 @@ class PermissionsControllerTest < ActionController::TestCase
   let(:admin) { create(:admin) }
   let(:account) { create(:account) }
 
-  setup do
+  before do
     @project = create(:project)
     @permissions = create(:permission, target: @project, remainder: true)
   end

@@ -21,6 +21,7 @@ module AccountValidations
     validates :twitter_account, length: { maximum: 15 }, allow_blank: true
     validates :name, length: { maximum: 50 }, allow_blank: true
     validates :twitter_id, uniqueness: true, allow_nil: true
+    validates :twitter_id, presence: true, on: :create
 
     def changing_password?
       !password.nil? && !skip_current_password_check

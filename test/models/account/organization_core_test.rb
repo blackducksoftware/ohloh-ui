@@ -1,7 +1,7 @@
 require_relative '../../test_helper'
 
 class Account::OrganizationCoreTest < ActiveSupport::TestCase
-  def setup
+  before do
     @org = create(:organization)
     @account = create(:account, organization: @org)
     @project = create(:project, organization: @org)

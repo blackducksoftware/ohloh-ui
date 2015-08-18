@@ -3,7 +3,7 @@ require_relative '../test_helper.rb'
 class LogosControllerTest < ActionController::TestCase
   let(:project) { create(:project) }
 
-  def setup
+  before do
     ActionView::Base.any_instance.stubs(:current_user_can_manage?).returns('true')
     @admin = create(:admin)
     @user = create(:account)
