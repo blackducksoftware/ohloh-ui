@@ -12,6 +12,16 @@ class ActsAsProtected::ActsAsProtectedTest < ActiveSupport::TestCase
       p.edit_authorized?.must_equal true
     end
 
+    it 'returns false if editor is not verified' do
+      project = create(:project)
+      account = create(:account)
+      account.update!(twitter_id: nil)
+
+      project.editor_account = account
+
+      project.wont_be :edit_authorized?
+    end
+
     it 'returns true if the project is new' do
       p = Project.new
       p.editor_account = create(:account)

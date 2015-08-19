@@ -23,6 +23,7 @@ module ActsAsProtected
     def edit_authorized?
       return false if editor_account.nil?
       return true if Account::Access.new(editor_account).admin?
+      return false unless Account::Access.new(editor_account).verified?
       return allow_edit? if respond_to?(:allow_edit?)
       return true if new_record?
       return true unless protection_enabled?
