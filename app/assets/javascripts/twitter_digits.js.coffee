@@ -2,19 +2,12 @@ class App.TwitterDigits
   # The oauth token expires in 3600 seconds. We are giving our server atleast 5 minutes to use the token.
   OAUTH_EXPIRY_INTERVAL = 3300
 
-  constructor: ->
-    initializeDigits()
-
   authenticate: ($form) ->
     $('#digits-sign-up').click ->
       if oauthTimestampAbsentOrExpired($form)
         requireDigitsLogin($form)
       else
         $form.submit()
-
-  initializeDigits = ->
-    Digits.init
-      consumerKey: $("meta[name='digits-consumer-key']").attr('content')
 
   requireDigitsLogin = ($form) ->
     Digits.logIn()
@@ -35,3 +28,7 @@ class App.TwitterDigits
   currentTimestamp = ->
     currentDate = new Date()
     currentDate.getTime() / 1000
+
+$(document).on 'page:change', ->
+  Digits.init
+    consumerKey: $("meta[name='digits-consumer-key']").attr('content')
