@@ -32,4 +32,10 @@ class NilAccountTest < ActiveSupport::TestCase
       nil_account.blank?.must_equal true
     end
   end
+
+  describe 'twitter_id?' do
+    it 'must return nil' do
+      nil_account.twitter_id?.must_be_nil
+    end
+  end
 end
