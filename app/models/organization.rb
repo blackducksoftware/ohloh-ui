@@ -85,7 +85,7 @@ class Organization < ActiveRecord::Base
   end
 
   def projects_count
-    projects.size
+    projects.count(true)
   end
 
   def affiliators_count
