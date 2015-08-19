@@ -21,7 +21,7 @@ module ActsAsProtected
     end
 
     def edit_authorized?
-      return false if editor_account.nil?
+      return false unless verified_editor_account?
       return true if Account::Access.new(editor_account).admin?
       return allow_edit? if respond_to?(:allow_edit?)
       return true if new_record?
@@ -36,6 +36,10 @@ module ActsAsProtected
     end
 
     private
+
+    def verified_editor_account?
+      editor_account && Account::Access.new(editor_account).verified?
+    end
 
     def aap_authorized_editors
       aap_parent ? send(aap_parent).active_managers : active_managers

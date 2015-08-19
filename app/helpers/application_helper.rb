@@ -148,4 +148,10 @@ module ApplicationHelper
     lang_name = project.best_analysis.main_language
     options.merge(color: language_text_color(lang_name), bg: language_color(lang_name))
   end
+
+  def needs_login_or_verification_or_default(default_class = nil)
+    return default_class if logged_in? && current_user_is_verified?
+    return :needs_login unless logged_in?
+    :needs_verification
+  end
 end

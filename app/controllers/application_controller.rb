@@ -238,10 +238,14 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_unverified_account
-    account = find_user_in_session
-    return if Account::Access.new(account).verified?
-    redirect_to new_account_verification_path(account)
+    return if current_user_is_verified?
+    redirect_to new_account_verification_path(current_user)
   end
+
+  def current_user_is_verified?
+    current_user && Account::Access.new(current_user).verified?
+  end
+  helper_method :current_user_is_verified?
 
   def alert_non_activated_account
     return if Account::Access.new(current_user).activated?

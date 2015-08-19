@@ -1,8 +1,7 @@
 module ButtonHelper
   def disabled_button(text, opts = {})
-    opts[:class] ||= ''
-    opts[:class] << (logged_in? ? ' disabled' : ' needs_login')
-    "<a href='#' class='btn #{opts[:class]}'>#{text}</a>".html_safe
+    css_class = "#{ opts[:class] } #{ needs_login_or_verification_or_default(:disabled) }".strip
+    link_to text, 'javascript:', class: "btn #{ css_class }"
   end
 
   def icon_button(url, options = {})

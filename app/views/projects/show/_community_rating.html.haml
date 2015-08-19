@@ -25,7 +25,7 @@
     - else
       = t('.click_to_add')
   .clear
-    .jrating.pull-left{ id: @project.to_param, class: (logged_in? ? '' : 'needs_login'), score: score,
+    .jrating.pull-left{ id: @project.to_param, class: needs_login_or_verification_or_default, score: score,
       star_style: 'big', style: 'margin-left: 9px', data: { show: 'projects/show/community_rating' } }
     %span.pull-left#rating_spinner
       &nbsp;&nbsp;

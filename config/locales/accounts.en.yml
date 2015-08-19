@@ -199,6 +199,7 @@ en:
     verifications:
       new:
         html_title: Verify Account
+      fields:
         verification_prompt: We would need your phone number to verify your account. Please click on the button given below to proceed.
         verify_using_phone_number: Verify Phone Number
       create:

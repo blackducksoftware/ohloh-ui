@@ -1,5 +1,6 @@
 class RssSubscriptionsController < ApplicationController
   helper :projects
+  before_action :session_required, :redirect_unverified_account, except: [:index]
   before_action :set_project_or_fail, :set_project_editor_account_to_current_user
   before_action :project_context, except: :destroy
   before_action :project_edit_authorized, only: [:create, :destroy]

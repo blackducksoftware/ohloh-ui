@@ -11,4 +11,7 @@ class NilAccount < NullObject
   def id
     nil
   end
+
+  def twitter_id?
+  end
 end
