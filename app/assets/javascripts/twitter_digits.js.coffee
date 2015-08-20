@@ -30,5 +30,8 @@ class App.TwitterDigits
     currentDate.getTime() / 1000
 
 $(document).on 'page:change', ->
+  digits = new App.TwitterDigits()
+  digits.authenticate($('.digits-verification'))
+
   Digits.init
     consumerKey: $("meta[name='digits-consumer-key']").attr('content')
