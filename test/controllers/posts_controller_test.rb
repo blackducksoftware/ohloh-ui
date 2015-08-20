@@ -397,12 +397,14 @@ describe PostsController do
     must_redirect_to topic_path(topic.id)
   end
 
-  it 'admin fails create' do
+  it 'create: must render topic show page on failure' do
     login_as admin
+
     assert_no_difference('Post.count') do
       post :create, topic_id: topic.id, post: { body: nil }
     end
-    must_redirect_to topic_path(topic.id) + '?post%5Bbody%5D=#post_reply'
+
+    must_render_template 'topics/show'
   end
 
   it 'admin creates a post with valid recaptcha' do
