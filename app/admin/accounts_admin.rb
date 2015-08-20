@@ -1,4 +1,6 @@
 ActiveAdmin.register Account do
+  permit_params :level
+
   controller do
     defaults finder: :fetch_by_login_or_email
   end
@@ -60,6 +62,7 @@ ActiveAdmin.register Account do
       f.input :twitter_account, as: :string
       f.input :affiliation_type, as: :string
       f.input :organization_name, as: :string
+      f.input :twitter_id
     end
     f.actions
   end

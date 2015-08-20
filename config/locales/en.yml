@@ -32,6 +32,7 @@ en:
   settings: 'Settings'
   follow: 'Follow'
   profile: 'Profile'
+  admin_dashboard: 'Admin'
   sign_in: 'Sign In'
   logout: 'Logout'
   join_now: 'Join Now'
