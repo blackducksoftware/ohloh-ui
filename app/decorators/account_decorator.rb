@@ -87,7 +87,7 @@ class AccountDecorator < Cherry::Decorator
   end
 
   def append_unclaimed_contribution_menu(menus, current_user)
-    url_options = { query: current_user.claim_core.emails.join(' '), find_by: 'email' }
+    url_options = { query: current_user.claim_core.emails.join(' '), find_by: 'email', flow: 'account' }
     menus.second << [:unclaimed, I18n.t(:claim_contributions), h.committers_path(url_options)]
   end
 
