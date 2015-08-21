@@ -24,7 +24,7 @@ class PostsController < ApplicationController
       post_notification(@post)
       redirect_to topic_path(@topic)
     else
-      @posts = @topic.posts.paginate(page: page_param, per_page: 25)
+      @posts = @topic.posts.paginate(page: page_param, per_page: TopicDecorator::PER_PAGE)
       render 'topics/show'
     end
   end
