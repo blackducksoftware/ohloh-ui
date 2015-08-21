@@ -212,18 +212,39 @@ describe PostsController do
     end
   end
 
-  it 'edit' do
-    get :edit, topic_id: topic.id, id: post_object.id
-    must_respond_with :redirect
-    must_redirect_to new_session_path
-  end
+  describe 'update' do
+    it 'update' do
+      put :update, topic_id: topic.id, id: post_object.id, post: { body: 'Updating the body' }
+      post_object.reload
+      post_object.body.must_equal post_object.body
+      must_respond_with :redirect
+      must_redirect_to new_session_path
+    end
 
-  it 'update' do
-    put :update, topic_id: topic.id, id: post_object.id, post: { body: 'Updating the body' }
-    post_object.reload
-    post_object.body.must_equal post_object.body
-    must_respond_with :redirect
-    must_redirect_to new_session_path
+    it 'user updates their own post' do
+      login_as post_object.account
+      put :update, topic_id: post_object.topic.id, id: post_object.id, post: { body: 'Updating the body' }
+      post_object.reload
+      post_object.body.must_equal 'Updating the body'
+      must_redirect_to topic_path(post_object.topic.id)
+    end
+
+    it 'update gracefully handles errors' do
+      Post.any_instance.expects(:update).returns(false)
+      login_as post_object.account
+      put :update, topic_id: post_object.topic.id, id: post_object.id, post: { body: 'Updating the body' }
+      post_object.reload
+      post_object.body.wont_equal 'Updating the body'
+      must_redirect_to topic_path(post_object.topic.id, post: { body: post_object.body }, anchor: 'post_reply')
+    end
+
+    it 'admin update' do
+      login_as admin
+      put :update, topic_id: topic.id, id: post_object.id, post: { body: 'Admin status edit' }
+      post_object.reload
+      post_object.body.must_equal 'Admin status edit'
+      must_redirect_to topic_path(topic.id)
+    end
   end
 
   it 'delete' do
@@ -240,146 +261,184 @@ describe PostsController do
     must_respond_with :ok
   end
 
-  it 'create action: a user replies to a post for the first time' do
-    topic = create(:topic) do |topic_record|
-      topic_record.posts.build(body: 'Default post that comes with a topic', account_id: topic_record.account_id)
-      topic_record.posts[0].save
+  describe 'create' do
+    it 'must let a user reply to a post for the first time' do
+      topic = create(:topic) do |topic_record|
+        topic_record.posts.build(body: 'Default post that comes with a topic', account_id: topic_record.account_id)
+        topic_record.posts[0].save
+      end
+
+      login_as user
+      ActionMailer::Base.deliveries.clear
+      post :create, topic_id: topic.id, post: { body: 'Replying for the first time' }
+      topic.posts.count.must_equal 2
+      ActionMailer::Base.deliveries.size.must_equal 2
+
+      email = ActionMailer::Base.deliveries
+
+      email.first.to.must_equal [topic.account.email]
+      email.first.subject.must_equal 'Someone has responded to your post'
+      must_redirect_to topic_path(topic.id)
+
+      email.last.to.must_equal [user.email]
+      email.last.subject.must_equal 'Post successfully created'
+      must_redirect_to topic_path(topic.id)
     end
 
-    login_as user
-    ActionMailer::Base.deliveries.clear
-    post :create, topic_id: topic.id, post: { body: 'Replying for the first time' }
-    topic.posts.count.must_equal 2
-    ActionMailer::Base.deliveries.size.must_equal 2
+    it 'users who have posted more than once on a topic receive only one email notification' do
+      topic = create(:topic_with_posts)
+      # Setting the posts
+      # 1. Set the first and last post's account as the creator of the topic
+      #    in order to replicate post creation and reply by the same user.
+      topic.posts[0].account = topic.account
+      topic.posts[1].account = topic.account
+      topic.save
+      topic.reload
+      # Sign in and reply as the last user to reply.
+      last_user = user
+      login_as last_user
 
-    email = ActionMailer::Base.deliveries
+      ActionMailer::Base.deliveries.clear
+      assert_difference(['ActionMailer::Base.deliveries.size'], 3) do
+        post :create, topic_id: topic.id, post: { body: 'This post should trigger a cascade
+                                                                        of emails being sent to all preceding users' }
+      end
+      email = ActionMailer::Base.deliveries
 
-    email.first.to.must_equal [topic.account.email]
-    email.first.subject.must_equal 'Someone has responded to your post'
-    must_redirect_to topic_path(topic.id)
-
-    email.last.to.must_equal [user.email]
-    email.last.subject.must_equal 'Post successfully created'
-    must_redirect_to topic_path(topic.id)
-  end
-
-  it 'create action: users who have posted more than once on a topic receive only one email notification' do
-    topic = create(:topic_with_posts)
-    # Setting the posts
-    # 1. Set the first and last post's account as the creator of the topic
-    #    in order to replicate post creation and reply by the same user.
-    topic.posts[0].account = topic.account
-    topic.posts[1].account = topic.account
-    topic.save
-    topic.reload
-    # Sign in and reply as the last user to reply.
-    last_user = user
-    login_as last_user
-
-    ActionMailer::Base.deliveries.clear
-    assert_difference(['ActionMailer::Base.deliveries.size'], 3) do
-      post :create, topic_id: topic.id, post: { body: 'This post should trigger a cascade
-                                                                      of emails being sent to all preceding users' }
+      # First response email should go to the originator of the topic/post
+      email.first.to.must_equal [topic.posts[0].account.email]
+      email.first.subject.must_equal 'Someone has responded to your post'
+      # Second response email should go to the second person who posted to the original.
+      email[1].to.must_equal [topic.posts[1].account.email]
+      email[1].subject.must_equal 'Someone has responded to your post'
+      # Third email goes to the user who created the last post reply.
+      email.last.to.must_equal [last_user.email]
+      email.last.subject.must_equal 'Post successfully created'
+      must_redirect_to topic_path(topic.id)
     end
-    email = ActionMailer::Base.deliveries
 
-    # First response email should go to the originator of the topic/post
-    email.first.to.must_equal [topic.posts[0].account.email]
-    email.first.subject.must_equal 'Someone has responded to your post'
-    # Second response email should go to the second person who posted to the original.
-    email[1].to.must_equal [topic.posts[1].account.email]
-    email[1].subject.must_equal 'Someone has responded to your post'
-    # Third email goes to the user who created the last post reply.
-    email.last.to.must_equal [last_user.email]
-    email.last.subject.must_equal 'Post successfully created'
-    must_redirect_to topic_path(topic.id)
-  end
+    it 'a user who replies to his own post will not receive a post notification email while everyone else does.' do
+      topic = create(:topic_with_posts)
+      # Setting the posts
+      # 1. Set the first and last post's account as the creator of the topic
+      #    in order to replicate post creation and reply by the same user.
+      topic.posts[0].account = topic.account
+      topic.posts[2].account = topic.account
+      topic.save
+      topic.reload
 
-  it 'create action: A user who replies to his own post will not receive
-        a post notification email while everyone else does.' do
-    topic = create(:topic_with_posts)
-    # Setting the posts
-    # 1. Set the first and last post's account as the creator of the topic
-    #    in order to replicate post creation and reply by the same user.
-    topic.posts[0].account = topic.account
-    topic.posts[2].account = topic.account
-    topic.save
-    topic.reload
+      # Sign in and reply as the last user to reply.
+      last_user = topic.account
+      login_as last_user
 
-    # Sign in and reply as the last user to reply.
-    last_user = topic.account
-    login_as last_user
+      ActionMailer::Base.deliveries.clear
+      post :create, topic_id: topic.id, post: { body: 'last_user replies to his own post' }
 
-    ActionMailer::Base.deliveries.clear
-    post :create, topic_id: topic.id, post: { body: 'last_user replies to his own post' }
+      email = ActionMailer::Base.deliveries
 
-    email = ActionMailer::Base.deliveries
+      email.first.to.must_equal [topic.posts[2].account.email]
+      email.first.subject.must_equal 'Someone has responded to your post'
+      email.last.to.must_equal [last_user.email]
+      email.last.subject.must_equal 'Post successfully created'
+      must_redirect_to topic_path(topic.id)
+    end
 
-    email.first.to.must_equal [topic.posts[2].account.email]
-    email.first.subject.must_equal 'Someone has responded to your post'
-    email.last.to.must_equal [last_user.email]
-    email.last.subject.must_equal 'Post successfully created'
-    must_redirect_to topic_path(topic.id)
-  end
+    it 'fails for user with no account' do
+      assert_no_difference('Post.count') do
+        post :create, topic_id: topic.id, post: { body: 'Creating a post for testing' }
+      end
+    end
 
-  it 'create fails for user with no account' do
-    assert_no_difference('Post.count') do
-      post :create, topic_id: topic.id, post: { body: 'Creating a post for testing' }
+    it 'must create a post with valid recaptcha' do
+      login_as(user)
+      topic = create(:topic)
+      PostsController.any_instance.expects(:verify_recaptcha).returns(true)
+      assert_difference('Post.count', 1) do
+        post :create, topic_id: topic, post: { body: 'Post with valid recaptcha' }
+      end
+      must_redirect_to topic_path(topic.id)
+    end
+
+    it 'wont create a post for invalid recaptcha' do
+      login_as(user)
+      topic = create(:topic)
+      PostsController.any_instance.expects(:verify_recaptcha).returns(false)
+      assert_no_difference('Post.count', 1) do
+        post :create, topic_id: topic, post: { body: 'Post with invalid recaptcha' }
+      end
+    end
+
+    it 'must allow admin to create posts' do
+      login_as admin
+
+      assert_difference('Post.count') do
+        post :create, topic_id: topic.id, post: { body: 'Creating a post for testing' }
+      end
+
+      must_redirect_to topic_path(topic.id)
+    end
+
+    it 'must render topic show page on failure' do
+      login_as admin
+
+      assert_no_difference('Post.count') do
+        post :create, topic_id: topic.id, post: { body: nil }
+      end
+
+      must_render_template 'topics/show'
+    end
+
+    it 'must allow admin to create post with valid recaptcha' do
+      login_as(admin)
+      topic = create(:topic)
+      PostsController.any_instance.expects(:verify_recaptcha).returns(true)
+      assert_difference('Post.count', 1) do
+        post :create, topic_id: topic, post: { body: 'Post with valid recaptcha' }
+      end
+      must_redirect_to topic_path(topic.id)
+    end
+
+    it 'wont allow admin to create post with invalid recaptcha' do
+      login_as(admin)
+      topic = create(:topic)
+      PostsController.any_instance.expects(:verify_recaptcha).returns(false)
+      assert_no_difference('Post.count', 1) do
+        post :create, topic_id: topic, post: { body: 'Post with invalid recaptcha' }
+      end
     end
   end
 
-  it 'user creates a post with valid recaptcha' do
-    login_as(user)
-    topic = create(:topic)
-    PostsController.any_instance.expects(:verify_recaptcha).returns(true)
-    assert_difference('Post.count', 1) do
-      post :create, topic_id: topic, post: { body: 'Post with valid recaptcha' }
+  describe 'edit' do
+    it 'user edits their own post' do
+      login_as post_object.account
+      get :edit, topic_id: post_object.topic.id, id: post_object.id
+      must_respond_with :success
     end
-    must_redirect_to topic_path(topic.id)
-  end
 
-  it 'user fails to create a post because of invalid recaptcha' do
-    login_as(user)
-    topic = create(:topic)
-    PostsController.any_instance.expects(:verify_recaptcha).returns(false)
-    assert_no_difference('Post.count', 1) do
-      post :create, topic_id: topic, post: { body: 'Post with invalid recaptcha' }
+    it 'user cannot edit their own post' do
+      login_as user
+      get :edit, topic_id: post_object.topic.id, id: post_object.id
+      must_redirect_to topic_path(post_object.topic)
     end
-  end
 
-  it 'user edits their own post' do
-    login_as post_object.account
-    get :edit, topic_id: post_object.topic.id, id: post_object.id
-    must_respond_with :success
-  end
+    it 'user cannot edit someone else\'s post' do
+      login_as user
+      get :edit, topic_id: post_object.topic.id, id: post_object.id
+      must_redirect_to topic_path(post_object.topic.id)
+    end
 
-  it 'user cannot edit their own post' do
-    login_as user
-    get :edit, topic_id: post_object.topic.id, id: post_object.id
-    must_redirect_to topic_path(post_object.topic)
-  end
+    it 'admin edit page' do
+      login_as admin
+      topic.id = post_object.topic_id
+      get :edit, topic_id: topic.id, id: post_object.id
+      must_respond_with :success
+    end
 
-  it 'user updates their own post' do
-    login_as post_object.account
-    put :update, topic_id: post_object.topic.id, id: post_object.id, post: { body: 'Updating the body' }
-    post_object.reload
-    post_object.body.must_equal 'Updating the body'
-    must_redirect_to topic_path(post_object.topic.id)
-  end
-
-  it 'update gracefully handles errors' do
-    Post.any_instance.expects(:update).returns(false)
-    login_as post_object.account
-    put :update, topic_id: post_object.topic.id, id: post_object.id, post: { body: 'Updating the body' }
-    post_object.reload
-    post_object.body.wont_equal 'Updating the body'
-    must_redirect_to topic_path(post_object.topic.id, post: { body: post_object.body }, anchor: 'post_reply')
-  end
-
-  it 'user cannot edit someone else\'s post' do
-    login_as user
-    get :edit, topic_id: post_object.topic.id, id: post_object.id
-    must_redirect_to topic_path(post_object.topic.id)
+    it 'edit' do
+      get :edit, topic_id: topic.id, id: post_object.id
+      must_respond_with :redirect
+      must_redirect_to new_session_path
+    end
   end
 
   #-------------------Admin-------------------------------
@@ -387,58 +446,6 @@ describe PostsController do
     login_as admin
     get :index
     must_respond_with :ok
-  end
-
-  it 'admin create' do
-    login_as admin
-    assert_difference('Post.count') do
-      post :create, topic_id: topic.id, post: { body: 'Creating a post for testing' }
-    end
-    must_redirect_to topic_path(topic.id)
-  end
-
-  it 'create: must render topic show page on failure' do
-    login_as admin
-
-    assert_no_difference('Post.count') do
-      post :create, topic_id: topic.id, post: { body: nil }
-    end
-
-    must_render_template 'topics/show'
-  end
-
-  it 'admin creates a post with valid recaptcha' do
-    login_as(admin)
-    topic = create(:topic)
-    PostsController.any_instance.expects(:verify_recaptcha).returns(true)
-    assert_difference('Post.count', 1) do
-      post :create, topic_id: topic, post: { body: 'Post with valid recaptcha' }
-    end
-    must_redirect_to topic_path(topic.id)
-  end
-
-  it 'admin fails to create a post because of invalid recaptcha' do
-    login_as(admin)
-    topic = create(:topic)
-    PostsController.any_instance.expects(:verify_recaptcha).returns(false)
-    assert_no_difference('Post.count', 1) do
-      post :create, topic_id: topic, post: { body: 'Post with invalid recaptcha' }
-    end
-  end
-
-  it 'admin edit page' do
-    login_as admin
-    topic.id = post_object.topic_id
-    get :edit, topic_id: topic.id, id: post_object.id
-    must_respond_with :success
-  end
-
-  it 'admin update' do
-    login_as admin
-    put :update, topic_id: topic.id, id: post_object.id, post: { body: 'Admin status edit' }
-    post_object.reload
-    post_object.body.must_equal 'Admin status edit'
-    must_redirect_to topic_path(topic.id)
   end
 
   it 'admin delete' do
