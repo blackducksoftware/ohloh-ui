@@ -42,8 +42,8 @@ describe TopicsController do
     get :show, id: topic.id
 
     must_respond_with :success
-    assigns(:posts).length.must_equal 25
-    assert_select '.posts', 25
+    assigns(:posts).length.must_equal TopicDecorator::PER_PAGE
+    assert_select '.posts', TopicDecorator::PER_PAGE
   end
 
   it 'show responds to atom format' do
@@ -171,7 +171,7 @@ describe TopicsController do
     get :show, id: topic.id
 
     must_respond_with :success
-    assert_select '.posts', 25
+    assert_select '.posts', TopicDecorator::PER_PAGE
   end
 
   it 'user show responds to atom format' do
@@ -267,7 +267,7 @@ describe TopicsController do
     get :show, id: topic.id
 
     must_respond_with :success
-    assert_select '.posts', 25
+    assert_select '.posts', TopicDecorator::PER_PAGE
   end
 
   it 'admin edit' do
