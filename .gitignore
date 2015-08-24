@@ -13,3 +13,4 @@ public/system/
 .idea/runConfigurations
 /config/GIT_SHA
 *.swp
+tags
