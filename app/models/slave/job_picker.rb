@@ -1,4 +1,7 @@
 class Slave::JobPicker
+  CANDIDATE_LOCK_KEY = 100
+  REPO_JOBS_LOCK_KEY = 200
+
   def initialize
     @slave = Slave.local
     @allowed_types = Job::BlockedType.new.allowed
@@ -27,15 +30,19 @@ class Slave::JobPicker
   end
 
   def job_candidate
-    Job.scheduled
-      .where('jobs.slave_id IS NULL OR jobs.slave_id = ?', @slave.id)
-      .where("COALESCE(wait_until, '1980-01-01') <= now() at time zone 'utc'")
-      .where(type: @allowed_types)
-      .order(priority: :desc).order('slave_id IS NULL')
-      .first
+    Job.with_advisory_lock(CANDIDATE_LOCK_KEY) do
+      Job.scheduled
+        .where('jobs.slave_id IS NULL OR jobs.slave_id = ?', @slave.id)
+        .where("COALESCE(wait_until, '1980-01-01') <= now() at time zone 'utc'")
+        .where(type: @allowed_types)
+        .order(priority: :desc).order('slave_id IS NULL')
+        .first
+    end
   end
 
   def create_new_repository_jobs
-    Clump.oldest_fetchable(ENV['SCHEDULABLE_CLUMPS_LIMIT']).each(&:create_new_repository_jobs)
+    Job.with_advisory_lock(REPO_JOBS_LOCK_KEY) do
+      Clump.oldest_fetchable(ENV['SCHEDULABLE_CLUMPS_LIMIT']).each(&:create_new_repository_jobs)
+    end
   end
 end
