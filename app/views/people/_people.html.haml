@@ -3,7 +3,7 @@
   = render partial: 'claimed_person', collection: @claimed_people
   - if @claimed_people.total_entries > 3
     %p
-      %a.btn.btn-mini.btn-primary#more_account{ href: accounts_path(q: params[:q]) }= t('.more_account_holders')
+      %a.btn.btn-mini.btn-primary#more_account{ href: accounts_path(query: params[:query]) }= t('.more_account_holders')
     %p &nbsp;
 
 - if @unclaimed_people.any?
@@ -12,5 +12,5 @@
     = render partial: 'unclaimed_person', locals: { people: people }
   - if @unclaimed_people_count > 3
     %p
-      %a.btn.btn-mini.btn-primary#more_unclaimed{ href: committers_path(q: params[:q]) }= t('.more_commiters')
+      %a.btn.btn-mini.btn-primary#more_unclaimed{ href: committers_path(query: params[:query]) }= t('.more_commiters')
     %p &nbsp;
