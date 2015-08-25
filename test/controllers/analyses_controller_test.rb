@@ -128,9 +128,9 @@ describe 'AnalysesController' do
       assigns(:analysis).must_equal analysis
       assigns(:project).must_equal project
 
-      result['rangeSelector']['enabled'].must_equal false
+      result['rangeSelector']['enabled'].must_equal true
       result['legend']['enabled'].must_equal false
-      result['scrollbar']['enabled'].must_equal false
+      result['scrollbar']['enabled'].must_equal true
       result['series'].first['data'].last.must_equal [time_integer, 1]
       result['series'].last['data'].last['x'].must_equal time_integer
       result['series'].last['data'].last['y'].must_equal 1
