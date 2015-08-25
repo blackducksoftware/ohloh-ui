@@ -35,11 +35,10 @@ class PostsController < ApplicationController
   end
 
   def update
-    if @post.update(post_params)
+    if verify_recaptcha(model: @post, attribute: :captcha) && @post.update(post_params)
       redirect_to topic_path(@topic)
     else
-      flash[:bad_reply] = t('.blank')
-      redirect_to topic_path(@topic, post: { body: @post.body }, anchor: 'post_reply')
+      render 'edit'
     end
   end
 
