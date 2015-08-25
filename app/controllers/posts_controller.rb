@@ -35,7 +35,7 @@ class PostsController < ApplicationController
   end
 
   def update
-    if @post.update(post_params)
+    if verify_recaptcha(model: @post, attribute: :captcha) && @post.update(post_params)
       redirect_to topic_path(@topic)
     else
       render 'edit'
