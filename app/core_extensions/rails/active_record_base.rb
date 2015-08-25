@@ -13,6 +13,17 @@ class ActiveRecord::Base
   end
 
   class << self
+    def with_advisory_lock(identifier)
+      fail ArgumentError, 'Missing block' unless block_given?
+
+      connection.execute("SELECT pg_advisory_lock(#{identifier})")
+      begin
+        yield
+      ensure
+        connection.execute("SELECT pg_advisory_unlock(#{identifier})")
+      end
+    end
+
     def boolean_attr_accessor(*names, options)
       names.each do |name|
         define_singleton_method(name) { options[:value] }
