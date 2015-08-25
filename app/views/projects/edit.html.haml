@@ -29,6 +29,7 @@
               %span.add-on http://www.openhub.net/p/
               = f.text_field :url_name, class: 'check-availability', autocomplete: 'off',
                                         style: 'width:514px;',
+                                        'data-original-value' => Project.find_by(id: @project).try(:url_name),
                                         'data-ajax-path' => project_check_availabilities_path,
                                         'data-preview-base-url' => projects_url
               - error_tag @project, :url_name, class: 'error url_name'

@@ -13,6 +13,7 @@
     - read_only = @license.persisted? ? true : false
     = f.text_field :name, readonly: read_only, :class => 'check-availability col-md-6',
       autocomplete: 'off',
+      'data-original-value' => License.find_by(id: @license).try(:name),
       'data-ajax-path' => license_check_availabilities_path,
       'data-preview-base-url' => licenses_url
     = render 'shared/availability_preview'
