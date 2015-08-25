@@ -21,6 +21,7 @@
               %label.control-label.required= t('login')
               .controls
                 = f.text_field :login, class: 'form-control check-availability',
+                                       'data-original-value' => Account.find_by(id: @account).try(:login),
                                        'data-ajax-path' => account_check_availabilities_path,
                                        'data-preview-base-url' => accounts_url
                 = render 'shared/availability_preview'
