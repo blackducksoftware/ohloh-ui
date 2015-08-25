@@ -1,3 +1,7 @@
+commits_history_auxillaries:
+  legend:
+    enabled: false
+
 no_auxillaries:
   scrollbar:
     enabled: false

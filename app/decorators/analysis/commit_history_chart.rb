@@ -7,8 +7,9 @@ class Analysis::CommitHistoryChart < Analysis::Chart
 
   def data
     series_and_range_data(@defaults)
-      .deep_merge(ANALYIS_CHARTS_OPTIONS['no_auxillaries'])
+      .deep_merge(ANALYIS_CHARTS_OPTIONS['commits_history_auxillaries'])
       .deep_merge(chart_watermark)
+      .deep_merge('rangeSelector' => { 'enabled' => true }, 'navigator' => { 'enabled' => true })
   end
 
   private
