@@ -45,7 +45,7 @@ class Account::Access
 
   def spam!
     Account.transaction do
-      @account.update_attributes!(level: SPAM)
+      @account.update_attribute(:level, SPAM)
       @level = @account.level
     end
   end

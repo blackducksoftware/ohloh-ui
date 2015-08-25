@@ -11,6 +11,8 @@ module Person::Count
   end
 
   def unclaimed
-    Person.count('distinct name_id')
+    Rails.cache.fetch('unclaimed_people_count', expires_in: 15.minutes) do
+      Person.count('distinct name_id')
+    end
   end
 end

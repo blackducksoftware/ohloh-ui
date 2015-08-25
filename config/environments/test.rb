@@ -40,5 +40,5 @@ Rails.application.configure do
 
   config.active_support.test_order = :sorted
 
-  config.cache_store = :memory_store
+  config.cache_store = :null_store
 end

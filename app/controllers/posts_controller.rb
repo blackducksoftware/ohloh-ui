@@ -20,12 +20,12 @@ class PostsController < ApplicationController
 
   def create
     @post = build_new_post
-    if verify_recaptcha(model: @post) && @post.save
+    if verify_recaptcha(model: @post, attribute: :captcha) && @post.save
       post_notification(@post)
       redirect_to topic_path(@topic)
     else
-      flash[:bad_reply] = t('.blank')
-      redirect_to topic_path(@topic, post: { body: @post.body }, anchor: 'post_reply')
+      @posts = @topic.posts.paginate(page: page_param, per_page: TopicDecorator::PER_PAGE)
+      render 'topics/show'
     end
   end
 
@@ -35,11 +35,10 @@ class PostsController < ApplicationController
   end
 
   def update
-    if @post.update(post_params)
+    if verify_recaptcha(model: @post, attribute: :captcha) && @post.update(post_params)
       redirect_to topic_path(@topic)
     else
-      flash[:bad_reply] = t('.blank')
-      redirect_to topic_path(@topic, post: { body: @post.body }, anchor: 'post_reply')
+      render 'edit'
     end
   end
 

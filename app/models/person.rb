@@ -41,7 +41,7 @@ class Person < ActiveRecord::Base
       sort_by = sort_by.eql?('kudo_position') ? 'sort_by_kudo_position' : nil
       tsearch(query, sort_by)
         .includes(:account)
-        .preload(account: [:projects, :markup])
+        .preload(account: :markup)
         .where.not(account_id: nil)
         .references(:all)
     end

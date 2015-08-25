@@ -33,12 +33,10 @@ class TopicsController < ApplicationController
   end
 
   def show
-    @posts = @topic.posts.paginate(page: page_param, per_page: 25)
-    respond_to do |format|
-      format.rss { render 'show.atom.builder' }
-      format.atom
-      format.html
-    end
+    @posts = @topic.posts.paginate(page: page_param, per_page: TopicDecorator::PER_PAGE)
+    @post = Post.new
+
+    render 'show.atom.builder' if request.format.rss?
   end
 
   def update

@@ -11,12 +11,15 @@ class App.CheckAvailiability
     @$input.trigger('keyup') if @$input.val().length # process value preloaded by soft refresh or back.
 
   appendClass: (className) ->
-    $('span.add-on').addClass(className)
-    $('.error.url_name').addClass('hidden')
+    $inputContainer = @$input.parents('.input-prepend').first()
+    $inputContainer.find('span.add-on')
+      .removeClass('text-danger text-success text-warning')
+      .addClass(className)
+    $inputContainer.find('.error').addClass('hidden')
 
   checkAvailabilityForValidValue: =>
     inputValue = @$input.val()
-    if inputValue == @$input.attr('value')
+    if inputValue == @$input.data('originalValue')
       @$preview.addClass('hidden')
     else
       if inputValue.match(VALID_URL_REGEXP) && not _(RESTRICTED_URLS).contains(inputValue)
@@ -35,14 +38,14 @@ class App.CheckAvailiability
     @$preview.find('.info').addClass('hidden')
     @$preview.find('.value').text("#{ @$input.data('previewBaseUrl') }/#{ @$input.val() }")
 
-  displayAvailabilityPreview: (accountFound) =>
+  displayAvailabilityPreview: (valueFound) =>
     @setupPreviewSection()
-    if accountFound
+    if valueFound
       @$preview.find('.text-danger').removeClass('hidden')
       @appendClass('text-danger')
     else
       @$preview.find('.text-success').removeClass('hidden')
-      @appendClass('text-success')
+      @appendClass('')
 
 $(document).on 'page:change', ->
   new App.CheckAvailiability($('input.check-availability'))

@@ -61,10 +61,11 @@ class Account::HooksTest < ActiveSupport::TestCase
       account.edits.not_undone.count.must_equal 2
 
       Project.any_instance.stubs(:edit_authorized?).returns(true)
-      Account::Access.any_instance.stubs(:spam?).returns(true)
-      account.save!
+      Account::Access.new(account).spam!
 
       account.reload
+      spammer = Account::Access.new(account).spam?
+      spammer.must_equal true
       account.topics.count.must_equal 0
       account.person.must_be_nil
       account.positions.count.must_equal 0
