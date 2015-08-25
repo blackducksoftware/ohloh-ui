@@ -235,7 +235,7 @@ describe PostsController do
       put :update, topic_id: post_object.topic.id, id: post_object.id, post: { body: 'Updating the body' }
       post_object.reload
       post_object.body.wont_equal 'Updating the body'
-      must_redirect_to topic_path(post_object.topic.id, post: { body: post_object.body }, anchor: 'post_reply')
+      must_render_template 'edit'
     end
 
     it 'admin update' do
