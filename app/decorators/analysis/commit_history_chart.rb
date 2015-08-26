@@ -2,12 +2,12 @@ class Analysis::CommitHistoryChart < Analysis::Chart
   def initialize(analysis)
     @analysis = analysis
     @history = Analysis::CommitHistory.new(analysis: analysis).execute
-    @defaults = ANALYSIS_CHART_DEFAULTS.deep_merge(ANALYIS_CHARTS_OPTIONS['commits_history'])
+    @defaults = ANALYSIS_CHART_DEFAULTS.deep_merge(ANALYSIS_CHARTS_OPTIONS['commits_history'])
   end
 
   def data
     series_and_range_data(@defaults)
-      .deep_merge(ANALYIS_CHARTS_OPTIONS['no_auxillaries'])
+      .deep_merge(ANALYSIS_CHARTS_OPTIONS['commits_history_auxillaries'])
       .deep_merge(chart_watermark)
   end
 
