@@ -46,6 +46,3 @@ class App.CheckAvailiability
     else
       @$preview.find('.text-success').removeClass('hidden')
       @appendClass('')
-
-$(document).on 'page:change', ->
-  new App.CheckAvailiability($('input.check-availability'))
