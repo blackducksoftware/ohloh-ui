@@ -7,7 +7,7 @@ class Repository < ActiveRecord::Base
 
   scope :matching, ->(match) { Repository.forge_match_search(match) }
 
-  validates :url, presence: true
+  validates :url, presence: true, if: :bypass_url_validation
   validate :scm_attributes_and_server_connection, unless: :bypass_url_validation
 
   attr_accessor :forge_match
