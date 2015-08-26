@@ -73,6 +73,13 @@ class RepositoryTest < ActiveSupport::TestCase
         repository.wont_be :valid?
         repository.errors.messages[:url].first.must_equal i18n_activerecord(:repository, :url)[:blank]
       end
+
+      it 'must create only a single error message for presence' do
+        repository = build(:repository, url: '')
+
+        repository.wont_be :valid?
+        repository.errors.messages[:url].grep(/can't be blank/).count.must_equal 1
+      end
     end
 
     describe 'branch_name' do
