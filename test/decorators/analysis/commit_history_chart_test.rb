@@ -16,9 +16,9 @@ class Analysis::CommitHistoryChartTest < ActiveSupport::TestCase
       time_integer = AllMonth.all.to_a.last.month.utc.to_i * 1000
       data = Analysis::CommitHistoryChart.new(analysis.reload).data
 
-      data['rangeSelector']['enabled'].must_equal false
+      data['rangeSelector']['enabled'].must_equal true
       data['legend']['enabled'].must_equal false
-      data['scrollbar']['enabled'].must_equal false
+      data['scrollbar']['enabled'].must_equal true
       data['series'].first['data'].last.must_equal [time_integer, 1]
       data['series'].last['data'].last['x'].must_equal time_integer
       data['series'].last['data'].last['y'].must_equal 1

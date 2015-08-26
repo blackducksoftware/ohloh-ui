@@ -1,7 +1,12 @@
 commits_history_auxillaries:
   legend:
     enabled: false
-
+  scrollbar:
+    enabled: true
+  navigator:
+    enabled: true
+  rangeSelector:
+    enabled: true
 no_auxillaries:
   scrollbar:
     enabled: false

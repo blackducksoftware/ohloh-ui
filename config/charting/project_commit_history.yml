@@ -1,9 +1,3 @@
-scrollbar:
-  enabled: true
-navigator:
-  enabled: true
-rangeSelector:
-  enabled: true
 plotOptions:
   series:
     pointWidth:
