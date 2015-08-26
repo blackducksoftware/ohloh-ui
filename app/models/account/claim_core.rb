@@ -25,22 +25,30 @@ class Account::ClaimCore < OhDelegator::Base
   end
 
   def email_ids_joins
-    Project.arel_table.join(Alias.arel_table, Arel::Nodes::OuterJoin).on(aliases_on_clause).join_sources
+    Project.arel_table.join(alias_arel_table, Arel::Nodes::OuterJoin).on(aliases_on_clause).join_sources
   end
 
   def name_fact_conditions
     NameFact.arel_table[:name_id].eq(positions_name_id)
-      .or(NameFact.arel_table[:name_id].eq(Alias.arel_table[:commit_name_id]))
+      .or(NameFact.arel_table[:name_id].eq(alias_arel_table[:commit_name_id]))
   end
 
   def positions_name_id
     Position.arel_table[:name_id]
   end
 
+  def alias_arel_table
+    Alias.arel_table
+  end
+
   def aliases_on_clause
-    aliases = Alias.arel_table
-    aliases[:project_id].eq(Project.arel_table[:id])
-      .and(aliases[:deleted].eq(false))
-      .and(aliases[:preferred_name_id].eq(positions_name_id))
+    alias_arel_table[:project_id].eq(Project.arel_table[:id])
+      .and(alias_arel_table[:deleted].eq(false))
+      .and(aliases_names_conditions)
+  end
+
+  def aliases_names_conditions
+    alias_arel_table[:preferred_name_id].eq(positions_name_id)
+      .and(alias_arel_table[:commit_name_id].eq(NameFact.arel_table[:name_id]))
   end
 end
