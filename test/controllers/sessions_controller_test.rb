@@ -55,6 +55,31 @@ describe 'SessionsControllerTest' do
       session[:account_id].must_equal account.id
       flash[:notice].must_equal I18n.t('sessions.create.learn_about_privacy')
     end
+
+    it 'create should not log for anonymous account' do
+      anonymous = create(:account, password: 'password', login: 'anonymous_coward', email: 'anon@openhub.net')
+      post :create, login: { login: anonymous.login, password: 'password' }
+      must_respond_with :bad_request
+      session[:account_id].must_equal nil
+      flash[:error].must_equal I18n.t('sessions.create.error')
+    end
+
+    it 'create should not log for crawler account' do
+      crawler = create(:account, password: 'password', login: 'uber_data_crawler',
+                                 email: 'uber_data_crawler@ohloh.net')
+      post :create, login: { login: crawler.login, password: 'password' }
+      must_respond_with :bad_request
+      session[:account_id].must_equal nil
+      flash[:error].must_equal I18n.t('sessions.create.error')
+    end
+
+    it 'create should not log for ohloh_slave account' do
+      ohloh_slave = Account.hamster
+      post :create, login: { login: ohloh_slave.login, password: 'password' }
+      must_respond_with :bad_request
+      session[:account_id].must_equal nil
+      flash[:error].must_equal I18n.t('sessions.create.error')
+    end
   end
 
   describe 'destroy' do
