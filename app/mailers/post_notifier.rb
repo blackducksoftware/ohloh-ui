@@ -1,5 +1,5 @@
 class PostNotifier < ActionMailer::Base
-  default from: 'ohlohadmins@blackducksoftware.com'
+  default from: 'mailer@blackducksoftware.com'
 
   def post_creation_notification(user_who_replied, topic)
     @user_who_replied = user_who_replied
