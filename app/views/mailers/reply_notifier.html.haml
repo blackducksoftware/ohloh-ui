@@ -1,4 +1,17 @@
-%p= t('post_notifier.post_replied_notification.message',
-       user: @user_who_needs_reply.name,
-       user2: @user_who_replied.name,
-       topic: @topic.title)
+%p
+  = t('dear')
+  = succeed ',' do
+    = @user_who_needs_reply.name
+
+%p
+  = @user_who_replied.name
+  = t('post_notifier.post_replied_notification.message')
+  = link_to @topic.title, @topic
+
+%p
+  = succeed ':' do
+    = t('post_notifier.post_begins')
+  %br
+  = @post.body.truncate(300)
+
+= render 'mailers/sign_off'

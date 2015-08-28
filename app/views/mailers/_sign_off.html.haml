@@ -1,0 +1,10 @@
+%p
+  = succeed ',' do
+    = t('.greeting')
+  %br
+  The Black Duck Open Hub Team
+
+%p
+  = t('postscript')
+  - privacy_link = link_to(t('edit').downcase, edit_account_privacy_account_url('me'))
+  = t('.unsubscribe_help', link: privacy_link).html_safe

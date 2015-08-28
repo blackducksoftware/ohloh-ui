@@ -1,1 +1,10 @@
-%p= t('post_notifier.post_creation_notification.message', user: @user_who_replied.name, topic_title: @topic.title)
+%p
+  = t('dear')
+  = succeed ',' do
+    = @user_who_replied.name
+
+%p
+  = t('post_notifier.post_creation_notification.message')
+  = link_to @topic.title, @topic
+
+= render 'mailers/sign_off'

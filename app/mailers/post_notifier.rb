@@ -10,10 +10,11 @@ class PostNotifier < ActionMailer::Base
          template_name: 'post_notifier')
   end
 
-  def post_replied_notification(user, user_who_replied, topic)
+  def post_replied_notification(user, user_who_replied, post)
     @user_who_needs_reply = user
     @user_who_replied = user_who_replied
-    @topic = topic
+    @topic = post.topic
+    @post = post
     mail(to: @user_who_needs_reply.email,
          subject: t('.subject'),
          template_path: 'mailers',
