@@ -42,5 +42,7 @@
 
     - error_tag(@account, :twitter_id)
 
+    %p.help-block
+      = t('.mobile_verification_hint')
     .actions
       %input.btn.btn-primary{ type: :button, value: t('.sign_up'), id: 'digits-sign-up' }
