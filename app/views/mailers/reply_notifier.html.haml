@@ -13,6 +13,6 @@
   = succeed ':' do
     = t('post_notifier.post_begins')
   %br
-  = @post.body.truncate(300)
+  = @post.body.strip_tags.truncate(300)
 
 = render 'mailers/sign_off'
