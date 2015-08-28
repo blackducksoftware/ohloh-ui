@@ -5,6 +5,7 @@
 
 %p
   = t('post_notifier.post_creation_notification.message')
-  = link_to @topic.title, @topic
+  = succeed '.' do
+    = link_to @topic.title, @topic
 
 = render 'mailers/sign_off'

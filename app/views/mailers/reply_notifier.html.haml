@@ -6,7 +6,8 @@
 %p
   = @user_who_replied.name
   = t('post_notifier.post_replied_notification.message')
-  = link_to @topic.title, @topic
+  = succeed '.' do
+    = link_to @topic.title, @topic
 
 %p
   = succeed ':' do
