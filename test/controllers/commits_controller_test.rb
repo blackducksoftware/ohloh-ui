@@ -65,6 +65,30 @@ describe 'CommitsController' do
 
       must_render_template 'deleted'
     end
+
+    it 'must render commits within 30 days' do
+      commit_ids = create_commits_and_named_commits
+      named_commits = NamedCommit.where(commit_id: commit_ids[0..1])
+
+      get :index, project_id: @project.id, time_span: '30 days'
+      assigns(:named_commits).count.must_equal 3
+      assigns(:named_commits).must_include @named_commit
+      assigns(:named_commits).must_include named_commits[0]
+      assigns(:named_commits).must_include named_commits[1]
+    end
+
+    it 'should render commits within last 12 months' do
+      commit_ids = create_commits_and_named_commits
+      named_commits = NamedCommit.where(commit_id: commit_ids[0..2])
+
+      get :index, project_id: @project.id, time_span: '12 months'
+
+      assigns(:named_commits).count.must_equal 4
+      assigns(:named_commits).must_include @named_commit
+      assigns(:named_commits).must_include named_commits[0]
+      assigns(:named_commits).must_include named_commits[1]
+      assigns(:named_commits).must_include named_commits[2]
+    end
   end
 
   describe 'show' do
@@ -117,5 +141,20 @@ describe 'CommitsController' do
       assigns(:commits).count.must_equal 1
       assigns(:commits).first.must_equal @commit
     end
+  end
+
+  private
+
+  def create_commits_and_named_commits
+    commits = []
+    commits << create(:commit, code_set_id: @commit.code_set_id, position: 1, name: @commit.name,
+                               comment: 'second commit', time: Time.current - 1.day).id
+    commits << create(:commit, code_set_id: @commit.code_set_id, position: 2, name: @commit.name,
+                               comment: 'third commit', time: Time.current - 1.day).id
+    commits << create(:commit, code_set_id: @commit.code_set_id, position: 1, name: @commit.name,
+                               comment: 'fourth commit', time: Time.current - 2.months).id
+    commits << create(:commit, code_set_id: @commit.code_set_id, position: 2, name: @commit.name,
+                               comment: 'fifth commit', time: Time.current - 2.years).id
+    commits
   end
 end
