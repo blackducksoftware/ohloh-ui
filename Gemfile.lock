@@ -361,7 +361,7 @@ GEM
       railties (~> 4.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-    uglifier (2.7.1)
+    uglifier (2.7.2)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
     vcr (2.9.3)
@@ -427,7 +427,7 @@ DEPENDENCIES
   therubyracer
   traceview
   twitter-bootstrap-rails
-  uglifier
+  uglifier (>= 2.7.2)
   vcr
   webmock
   will_paginate
