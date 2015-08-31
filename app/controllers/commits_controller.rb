@@ -11,6 +11,7 @@ class CommitsController < SettingsController
 
   def index
     @named_commits = @project.named_commits
+                     .within_timespan(params[:time_span])
                      .includes(:commit, :person, :account)
                      .filter_by(params[:query])
                      .send(parse_sort_term)
