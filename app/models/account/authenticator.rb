@@ -1,6 +1,6 @@
 class Account::Authenticator
   def initialize(login:, password:)
-    @account = Account.fetch_by_login_or_email(login)
+    @account = Account.non_anonymous.fetch_by_login_or_email(login)
     @password = password
   end
 

@@ -1,4 +1,7 @@
 module AccountScopes
+  ANONYMOUS_ACCOUNTS = %w(anonymous_coward ohloh_slave uber_data_crawler)
+  ANONYMOUS_ACCOUNTS_EMAILS = %w(anon@openhub.net info@ohloh.net uber_data_crawler@ohloh.net)
+
   extend ActiveSupport::Concern
 
   included do
@@ -26,5 +29,6 @@ module AccountScopes
     scope :in_good_standing, -> { where('level >= 0') }
     scope :from_param, ->(param) { in_good_standing.where(arel_table[:login].eq(param).or(arel_table[:id].eq(param))) }
     scope :active, -> { where(level: 0) }
+    scope :non_anonymous, -> { where.not(login: ANONYMOUS_ACCOUNTS, email: ANONYMOUS_ACCOUNTS_EMAILS) }
   end
 end
