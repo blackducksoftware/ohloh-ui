@@ -11,12 +11,11 @@ class CommitsController < SettingsController
 
   def index
     @named_commits = @project.named_commits
-                     .within_timespan(params[:time_span])
+                     .within_timespan(params[:time_span], @project.best_analysis.logged_at)
                      .includes(:commit, :person, :account)
                      .filter_by(params[:query])
                      .send(parse_sort_term)
                      .page(page_param)
-                     .per_page(20)
   end
 
   def show

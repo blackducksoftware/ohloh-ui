@@ -3,6 +3,15 @@
     %tr{ id: 'dingus-row' }
       %td{ colspan: '7' }
         - if search_dingus
+          - if @project.best_analysis.logged_at.present?
+            %span.commits_date_range.pull-right
+              %i.icon-time
+              - if NamedCommit::TIME_SPANS[params[:time_span]] == :last_30_days
+                = (@project.best_analysis.logged_at - 30.days).to_s(:mdy)
+              - else
+                = (@project.best_analysis.logged_at - 12.months).to_s(:mdy)
+              &mdash;
+              = @project.best_analysis.logged_at.to_s(:mdy)
           = render partial: 'shared/search_dingus', locals: { collection: @named_commits,
             sort_context: nil, no_match_found_type: :flash }
     %tr

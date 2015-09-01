@@ -67,6 +67,7 @@ describe 'CommitsController' do
     end
 
     it 'must render commits within 30 days' do
+      Analysis.any_instance.stubs(:logged_at).returns(Time.current)
       commit_ids = create_commits_and_named_commits
       named_commits = NamedCommit.where(commit_id: commit_ids[0..1])
 
@@ -78,6 +79,7 @@ describe 'CommitsController' do
     end
 
     it 'should render commits within last 12 months' do
+      Analysis.any_instance.stubs(:logged_at).returns(Time.current)
       commit_ids = create_commits_and_named_commits
       named_commits = NamedCommit.where(commit_id: commit_ids[0..2])
 
