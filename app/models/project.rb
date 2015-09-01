@@ -15,7 +15,7 @@ class Project < ActiveRecord::Base
 
   validates :name, presence: true, length: 1..100, allow_nil: false, uniqueness: { case_sensitive: false }
   validates :url_name, presence: true, length: 1..60, allow_nil: false, uniqueness: { case_sensitive: false },
-                       format: { with: /\A[^_].*\Z/ }
+                       default_param_format: true
   validates :description, length: 0..800, allow_nil: true # , if: proc { |p| p.validate_url_name_and_desc == 'true' }
   validates_each :url, :download_url, allow_blank: true do |record, field, value|
     record.errors.add(field, I18n.t(:not_a_valid_url)) unless value.blank? || value.valid_http_url?

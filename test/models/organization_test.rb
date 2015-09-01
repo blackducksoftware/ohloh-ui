@@ -162,4 +162,26 @@ class OrganizationTest < ActiveSupport::TestCase
       assert_equal 1, OrganizationJob.count
     end
   end
+
+  describe 'validations' do
+    describe 'url_name' do
+      it 'must allow valid characters' do
+        valid_url_names = %w(org-name org_name orgé org_)
+
+        valid_url_names.each do |name|
+          organization = build(:organization, url_name: name)
+          organization.wont_be :valid?
+        end
+      end
+
+      it 'wont allow invalid characters' do
+        invalid_url_names = %w(org.name .org -org _org)
+
+        invalid_url_names.each do |name|
+          organization = build(:organization, url_name: name)
+          organization.wont_be :valid?
+        end
+      end
+    end
+  end
 end

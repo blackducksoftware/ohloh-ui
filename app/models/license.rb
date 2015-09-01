@@ -1,6 +1,6 @@
 class License < ActiveRecord::Base
   validates :name, uniqueness: { case_sensitive: false }, length: { in: 2..50 },
-                   format: { with: /\A[a-zA-Z](\w|-)*\z/ }
+                   default_param_format: true
   validates :nice_name, uniqueness: { case_sensitive: false }, length: { in: 1..100 }
   validates :abbreviation, length: {  maximum: 100 }, allow_nil: true
   validates :description, length: { maximum: 50_000 }, allow_nil: true

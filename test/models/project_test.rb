@@ -10,6 +10,26 @@ class ProjectTest < ActiveSupport::TestCase
     it 'should not allow project url_names to start with an underscore as we use those for routing' do
       build(:project, url_name: '_foobar').valid?.must_equal false
     end
+
+    describe 'url_name' do
+      it 'must allow valid characters' do
+        valid_url_names = %w(proj-name proj_name projéct proj_)
+
+        valid_url_names.each do |name|
+          project = build(:project, url_name: name)
+          project.wont_be :valid?
+        end
+      end
+
+      it 'wont allow invalid characters' do
+        invalid_url_names = %w(proj.name .proj -proj _proj)
+
+        invalid_url_names.each do |name|
+          project = build(:project, url_name: name)
+          project.wont_be :valid?
+        end
+      end
+    end
   end
 
   describe 'hot' do

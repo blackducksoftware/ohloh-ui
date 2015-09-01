@@ -17,7 +17,7 @@ module AccountValidations
     validates :url, length: { maximum: 100 }, url_format: true, allow_blank: true
     validates :login, presence: true
     validates :login, length: { in: 3..40 }, uniqueness: { case_sensitive: false },
-                      allow_blank: false, format: { with: Patterns::LOGIN_FORMAT }, if: :login_changed?
+                      allow_blank: false, default_param_format: true, if: :login_changed?
     validates :twitter_account, length: { maximum: 15 }, allow_blank: true
     validates :name, length: { maximum: 50 }, allow_blank: true
     validates :twitter_id, uniqueness: true, allow_nil: true

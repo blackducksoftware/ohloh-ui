@@ -55,8 +55,7 @@ class AccountTest < ActiveSupport::TestCase
     account = build(:account, login: '')
     account.wont_be :valid?
     expected_error_message =
-      ['can\'t be blank', 'is too short (minimum is 3 characters)',
-       I18n.t('activerecord.errors.models.account.attributes.login.invalid')]
+      ['can\'t be blank', 'is too short (minimum is 3 characters)']
     account.errors.messages[:login].must_equal expected_error_message
 
     create(:account, login: 'openhub_dev')
@@ -263,7 +262,7 @@ class AccountTest < ActiveSupport::TestCase
 
     it 'test login not urlable' do
       account = build(:account)
-      bad_logins = %w(123 user.allen $foo])
+      bad_logins = %w(123 user.allen $foo] _user -user)
 
       bad_logins.each do |bad_login|
         account.login = bad_login

@@ -75,11 +75,22 @@ class LicenseTest < ActiveSupport::TestCase
       license.errors[:name].must_equal ['is too short (minimum is 2 characters)']
     end
 
-    it 'should validate format' do
-      license = build(:license, name: '1a')
-      license.valid?.must_equal false
-      license.errors.count.must_equal 2
-      license.errors[:name].must_equal ['should start with a letter and can include only letters, numbers, _ and -']
+    it 'must allow valid characters' do
+      valid_names = %w(license-name license_name licenseé license_)
+
+      valid_names.each do |name|
+        license = build(:license, name: name)
+        license.wont_be :valid?
+      end
+    end
+
+    it 'wont allow invalid characters' do
+      invalid_names = %w(license.name .license -license _license)
+
+      invalid_names.each do |name|
+        license = build(:license, name: name)
+        license.wont_be :valid?
+      end
     end
   end
 
