@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+class JobDaemon
+  def run!(job_id)
+    require File.expand_path('../../config/environment', __FILE__)
+
+    job = Job.find(job_id)
+    job.update(slave: Slave.local)
+    pid = job.fork!
+
+    STDERR.puts I18n.t('slaves.started_job', id: job_id, pid: pid)
+  end
+end
+
+if ARGV[0] =~ /\d+/
+  JobDaemon.new.run!(ARGV[0].to_i)
+else
+  STDERR.puts "Usage: #{ __FILE__ } [job_id]"
+  exit 1
+end

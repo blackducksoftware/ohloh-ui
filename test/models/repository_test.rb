@@ -178,4 +178,21 @@ class RepositoryTest < ActiveSupport::TestCase
       end
     end
   end
+
+  describe 'create_next_job' do
+    it 'must try creating a CompleteJob when best_code_set' do
+      code_set = create(:code_set)
+      repository = create(:repository, best_code_set: code_set)
+
+      CompleteJob.expects(:try_create)
+      repository.create_next_job
+    end
+
+    it 'must ensure a job when no best_code_set' do
+      repository = create(:repository)
+
+      repository.expects(:ensure_job)
+      repository.create_next_job
+    end
+  end
 end

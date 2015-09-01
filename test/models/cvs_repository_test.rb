@@ -18,9 +18,13 @@ class CvsRepositoryTest < ActiveSupport::TestCase
     repository.nice_url.must_equal "#{ repository.url } #{ repository.module_name }"
   end
 
+  it 'email_addresses: must be false' do
+    CvsRepository.wont_be :email_addresses?
+  end
+
   describe 'normalize_scm_attributes' do
     it 'must set the module_name correctly' do
-      module_name = Faker::Name.name
+      module_name = 'master'
       repository = create(:cvs_repository, module_name: module_name, bypass_url_validation: false)
       repository.module_name.must_equal module_name
     end

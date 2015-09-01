@@ -13,6 +13,10 @@ class SvnRepository < Repository
     def find_existing(repository)
       SvnRepository.find_by(url: repository.url)
     end
+
+    def email_addresses?
+      false
+    end
   end
 
   private

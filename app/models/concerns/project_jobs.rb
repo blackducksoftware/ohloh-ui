@@ -70,11 +70,11 @@ module ProjectJobs
   end
 
   def incomplete_job
-    jobs.where.not(status: Job::STATUS_COMPLETED).first
+    jobs.incomplete.take
   end
 
   def incomplete_repository_job
-    Job.where(repository_id: repositories.pluck(:id)).where.not(status: Job::STATUS_COMPLETED).first
+    Job.incomplete.where(repository_id: repositories.pluck(:id)).take
   end
 
   def sloc_sets_out_of_date?

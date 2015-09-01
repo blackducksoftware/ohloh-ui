@@ -9,6 +9,7 @@ gem 'brakeman'
 gem 'bundler-audit', git: 'https://github.com/BoboFraggins/bundler-audit'
 gem 'coffee-rails'
 gem 'coffee-script-source', '~>1.8.0'
+gem 'daemons', require: false
 gem 'doorkeeper'
 gem 'dotenv-rails'
 gem 'execjs'

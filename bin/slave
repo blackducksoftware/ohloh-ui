@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 'daemons'
+require File.expand_path('../../config/environment', __FILE__)
+
+Daemons.run('bin/slave_daemon_runner.rb', DAEMONIZATION_OPTIONS)

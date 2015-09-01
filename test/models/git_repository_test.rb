@@ -10,4 +10,8 @@ class GitRepositoryTest < ActiveSupport::TestCase
 
     GitRepository.find_existing(repository).must_equal repository
   end
+
+  it 'must return true for dag' do
+    GitRepository.must_be :dag?
+  end
 end

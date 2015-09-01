@@ -7,5 +7,9 @@ class GitRepository < Repository
     def find_existing(repository)
       GitRepository.find_by(url: repository.url, branch_name: repository.branch_name)
     end
+
+    def dag?
+      true
+    end
   end
 end

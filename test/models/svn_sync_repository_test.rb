@@ -14,6 +14,10 @@ class SvnSyncRepositoryTest < ActiveSupport::TestCase
     SvnSyncRepository.find_existing(repository).must_equal repository
   end
 
+  it 'email_addresses: must be false' do
+    SvnSyncRepository.wont_be :email_addresses?
+  end
+
   describe 'get_compatible_class' do
     it 'must return SvnSyncRepository for code.sf urls' do
       url = 'https://svn.code.sf.net/p/foo/code/bar'

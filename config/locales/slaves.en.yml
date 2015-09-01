@@ -1,0 +1,24 @@
+en:
+  slaves:
+    could_not_find_process_mark_as_failed: SlaveDaemon could not find process for job. Marked as failed.
+    daemon_started: SlaveDaemon started
+    daemon_stopped: SlaveDaemon stopped
+    skipping_job: 'Skipping Job: Inactive project or repo.'
+    job_completed: 'Job completed'
+    runtime_exceeded_job_rescheduled: Runtime limit exceeded. Job rescheduled.
+    runtime_exceeded: Runtime limit exceeded.
+    job_failed: Job failed
+    jobs_blocked: All job types are blocked due to high load.
+    auto_scheduled_fetch: 'Auto-scheduled fetch for Project %{id} (%{name})'
+    clump_found: '%{path} found. Added to database.'
+    clump_not_found: '%{path} not found. Deleted from database.'
+    no_code_set_exists: 'Clump for code_set %{id} found, but no such code_set exists. Deleted from disk.'
+    syncing_db: Synchronizing database to match clumps found in %{dir}.
+    host_process_killed: Host process killed.
+    spawned_job: Spawned Job %{id} in process %{pid}
+    starting: Starting
+    cant_schedule_running_job: Cannot schedule a running job.
+    completed: Completed
+    running: Running
+    started_job: Started job %{id} in process %{pid}.
+    could_not_find_process: SlaveDaemon could not find process for job.

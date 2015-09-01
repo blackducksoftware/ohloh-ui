@@ -24,3 +24,13 @@ BLOG_LINKS = {
 }
 
 ACCOUNT_DESC_LENGTH = 100
+
+BACKUP_CLUMPS = 0
+
+DAEMONIZATION_OPTIONS = {
+  app_name: 'slave',
+  dir_mode: :normal,                         # read `dir` value as an absolute path.
+  dir: Rails.root.join('tmp/pids'),
+  log_dir: Rails.root.join('log'),           # needs absolute path, see Daemonize#daemonize.
+  log_output: true
+}
