@@ -10,8 +10,8 @@ class LoginChangedNotifier
     end
 
     Account.where("login like '%.%'").each do |account|
-      new_login = account.login.gsub(/\./, '-')
-      account.update!(login: new_login)
+      new_login = account.login.gsub(/[^\w_-]/, '-')
+      account.update_column('login', new_login)
 
       send_email(account) unless Account::Access.new(account).disabled?
     end
