@@ -17,6 +17,7 @@ en:
       html_title: "The %{name} Open Source Project on Open Hub : Commits Listing Page"
       commits: 'Commits'
       listings: ': Listings'
+      no_data: 'There is no commit activity within this time period to display'
     show:
       html_title: "The %{name} Open Source Project on Open Hub : Individual Commit Page"
       commits: 'Commits'
