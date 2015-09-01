@@ -234,7 +234,7 @@ class AccountTest < ActiveSupport::TestCase
     it 'it should get the first checkin for a account position' do
       vita = create(:best_vita, account_id: account.id)
       account.update_column(:best_vita_id, vita.id)
-      account.first_commit_date.must_equal Date.today.beginning_of_month
+      account.first_commit_date.must_equal vita.vita_fact.first_checkin.to_date.beginning_of_month
     end
 
     it 'it should return nil when account has no best_vita' do
