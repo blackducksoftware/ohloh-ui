@@ -33,6 +33,7 @@ ActiveAdmin.register Account do
         status_tag('spammer', :error)
       end
     end
+    column :url
     column :last_seen_ip do |account|
       ip = account.last_seen_ip
       ip.blank? ? '' : link_to(ip, admin_accounts_path('q[last_seen_ip_contains]' => ip, 'commit' => 'Filter'))

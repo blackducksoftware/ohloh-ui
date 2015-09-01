@@ -11,6 +11,9 @@ class Job < ActiveRecord::Base
   end
 
   scope :incomplete, -> { where.not(status: STATUS_COMPLETED) }
+  scope :failed, -> { where(status: STATUS_FAILED) }
+  scope :complete, -> { where(status: STATUS_COMPLETED) }
+  scope :since, ->(time) {where(current_step_at: time...Time.now) }
 
   belongs_to :project
   belongs_to :repository
