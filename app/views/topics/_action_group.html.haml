@@ -1,6 +1,6 @@
 .btn-group.pull-right.margin_top_10
   - if current_user_is_admin?
-    = link_to t('.edit'), edit_topic_path(@topic), method: :get, class: 'btn btn-info btn-mini'
+    = link_to t('.edit'), edit_topic_path(@topic), class: 'btn btn-info btn-mini'
 
     = render 'topics/move_modal'
 
@@ -9,12 +9,12 @@
       class: 'btn btn-mini btn-warning'
 
     - unless @topic.closed?
-      = link_to t('.close'), topic_path(@topic, topic: { closed: true }),
-        method: :put, data: { confirm: t('.close_confirmation') }, class: 'btn btn-mini'
+      = link_to t('.close'), close_topic_path(@topic),
+        data: { confirm: t('.close_confirmation') }, class: 'btn btn-mini'
 
   - if current_user_is_admin? || @topic.account == current_user
     - if @topic.closed?
-      = link_to t('.reopen'), topic_path(@topic, topic: { closed: false }), method: :put,
+      = link_to t('.reopen'), reopen_topic_path(@topic),
         data: { confirm: t('.reopen_confirmation') }, class: 'btn btn-mini btn-info'
 
     - if current_user_is_admin? || @topic.posts.size <= 1

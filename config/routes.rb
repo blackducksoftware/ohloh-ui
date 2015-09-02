@@ -144,6 +144,8 @@ Rails.application.routes.draw do
   end
 
   resources :topics, except: [:new, :create] do
+    get :close, on: :member
+    get :reopen, on: :member
     resources :posts, except: [:new]
   end
 

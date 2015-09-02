@@ -409,4 +409,87 @@ describe TopicsController do
       response.body.must_match(">#{ text }</a>")
     end
   end
+
+  describe 'close' do
+    it 'must allow access to admin users' do
+      login_as admin
+
+      get :close, id: topic
+
+      must_redirect_to topic_path(topic)
+      topic.reload.must_be :closed?
+    end
+
+    it 'wont allow access to non admin creator' do
+      login_as user
+      topic.update!(account: user)
+
+      get :close, id: topic
+
+      must_respond_with :unauthorized
+      topic.reload.wont_be :closed?
+    end
+  end
+
+  describe 'reopen' do
+    it 'must allow access to admin' do
+      topic.update!(closed: true)
+      login_as admin
+
+      get :reopen, id: topic
+
+      must_redirect_to topic_path(topic)
+      topic.reload.wont_be :closed?
+    end
+
+    it 'must allow access to non admin creator' do
+      topic.update!(account: user, closed: true)
+      login_as user
+
+      get :reopen, id: topic
+
+      must_redirect_to topic_path(topic)
+      topic.reload.wont_be :closed?
+    end
+
+    it 'wont allow access to non creator' do
+      topic.update!(closed: true)
+      login_as user
+
+      get :reopen, id: topic
+
+      must_redirect_to new_session_path
+      topic.reload.must_be :closed?
+    end
+  end
+
+  describe 'destroy' do
+    it 'must allow access to admin' do
+      login_as admin
+
+      delete :destroy, id: topic
+
+      must_redirect_to forums_path
+      Topic.find_by(id: topic).must_be_nil
+    end
+
+    it 'must allow access to topic creator' do
+      topic.update!(account: user)
+      login_as user
+
+      delete :destroy, id: topic
+
+      must_redirect_to forums_path
+      Topic.find_by(id: topic).must_be_nil
+    end
+
+    it 'wont allow access to non admin creator' do
+      login_as user
+
+      delete :destroy, id: topic
+
+      must_redirect_to new_session_path
+      topic.reload.must_be :present?
+    end
+  end
 end

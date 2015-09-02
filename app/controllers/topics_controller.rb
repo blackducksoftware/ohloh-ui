@@ -1,10 +1,10 @@
 class TopicsController < ApplicationController
   helper MarkdownHelper
-  before_action :session_required, only: [:new, :create]
-  before_action :session_required, :redirect_unverified_account, only: [:new, :create]
-  before_action :admin_session_required, only: [:edit, :update, :destroy]
+  before_action :session_required, :redirect_unverified_account, only: [:new, :create, :close, :reopen]
+  before_action :admin_session_required, only: [:edit, :update, :close]
   before_action :find_forum_record, only: [:new, :create]
   before_action :find_forum_and_topic_records, except: [:index, :new, :create]
+  before_action :must_be_admin_or_topic_creator, only: [:destroy, :reopen]
   after_action :track_views, only: [:show]
 
   def index
@@ -56,6 +56,16 @@ class TopicsController < ApplicationController
     end
   end
 
+  def close
+    @topic.update!(closed: true)
+    redirect_to topic_path(@topic)
+  end
+
+  def reopen
+    @topic.update!(closed: false)
+    redirect_to topic_path(@topic)
+  end
+
   private
 
   def track_views
@@ -85,5 +95,9 @@ class TopicsController < ApplicationController
     topic.account_id = current_user.id
     topic.posts.last.account_id = current_user.id
     topic
+  end
+
+  def must_be_admin_or_topic_creator
+    access_denied unless current_user_is_admin? || @topic.account == current_user
   end
 end
