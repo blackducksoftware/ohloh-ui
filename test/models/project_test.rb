@@ -399,7 +399,7 @@ class ProjectTest < ActiveSupport::TestCase
     it 'should return contributions within 30 days' do
       project = create(:project)
       created_contributions = create_contributions(project)
-      contributions = project.contributions_within_timespan({ time_span: '30 days' })
+      contributions = project.contributions_within_timespan(time_span: '30 days')
       contributions.size.must_equal 2
       contributions.must_include created_contributions[0]
       contributions.must_include created_contributions[1]
@@ -408,7 +408,7 @@ class ProjectTest < ActiveSupport::TestCase
     it 'should return contributions within 12 months' do
       project = create(:project)
       created_contributions = create_contributions(project)
-      contributions = project.contributions_within_timespan({ time_span: '12 months' })
+      contributions = project.contributions_within_timespan(time_span: '12 months')
       contributions.size.must_equal 3
       contributions.must_include created_contributions[0]
       contributions.must_include created_contributions[1]
