@@ -25,7 +25,7 @@ class TopicsController < ApplicationController
 
   def create
     @topic = build_new_topic
-    if verify_recaptcha(model: @topic) && @topic.save
+    if verify_captcha_for_non_admin && @topic.save
       redirect_to forum_path(@forum)
     else
       render :new
@@ -99,5 +99,10 @@ class TopicsController < ApplicationController
 
   def must_be_admin_or_topic_creator
     access_denied unless current_user_is_admin? || @topic.account == current_user
+  end
+
+  def verify_captcha_for_non_admin
+    return true if current_user_is_admin?
+    verify_recaptcha(model: @topic)
   end
 end

@@ -28,7 +28,9 @@
       %label.checkbox.inline.margin_top_10#closed_specifications
         = f.check_box :closed, choice: t('.closed')
         %span= t('.closed')
-  .controls.margin_top_10
-    = render partial: 'shared/captcha'
+  - else
+    .controls.margin_top_10
+      = render partial: 'shared/captcha'
+
   - if @topic.errors[:base]
     .strong.alert-color= @topic.errors[:base][0]

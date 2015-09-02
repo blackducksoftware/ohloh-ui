@@ -233,23 +233,15 @@ describe TopicsController do
     must_render_template :new
   end
 
-  it 'admin creates a topic/post with valid recaptcha' do
+  it 'must allow admin to create topic without captcha' do
     login_as(admin)
-    TopicsController.any_instance.expects(:verify_recaptcha).returns(true)
+    TopicsController.any_instance.stubs(:verify_recaptcha).returns(false)
+
     assert_difference(['Topic.count', 'Post.count']) do
       post :create, forum_id: forum.id, topic: { title: 'Example Forum', posts_attributes:
                                                 [{ body: 'Post object that comes by default' }] }
     end
-    assert_redirected_to forum_path(forum.id)
-  end
-
-  it 'admin fails to create a topic/post because of invalid recaptcha' do
-    login_as(admin)
-    TopicsController.any_instance.expects(:verify_recaptcha).returns(false)
-    assert_no_difference(['Topic.count', 'Post.count']) do
-      post :create, forum_id: forum.id, topic: { title: 'Example Forum', posts_attributes:
-                                                [{ body: 'Post object that comes by default' }] }
-    end
+    must_redirect_to forum_path(forum.id)
   end
 
   it 'admin show with post pagination' do
