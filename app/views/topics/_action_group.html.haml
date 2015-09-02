@@ -6,17 +6,17 @@
 
     = link_to t('.spam'), make_spammer_account_accesses_path(@topic.account), method: :post,
       data: { confirm: t('.spam_confirmation', user: @topic.posts.first.account.name) },
-      class: 'btn btn-mini btn-warning'
+      class: 'btn btn-mini btn-warning', title: t('.mark_as_spam', name: @topic.posts.first.account.name)
 
     - unless @topic.closed?
-      = link_to t('.close'), close_topic_path(@topic),
+      = link_to t('.close'), close_topic_path(@topic), title: t('.close_topic', title: @topic.title),
         data: { confirm: t('.close_confirmation') }, class: 'btn btn-mini'
 
   - if current_user_is_admin? || @topic.account == current_user
     - if @topic.closed?
-      = link_to t('.reopen'), reopen_topic_path(@topic),
+      = link_to t('.reopen'), reopen_topic_path(@topic), title: t('.reopen_topic', title: @topic.title),
         data: { confirm: t('.reopen_confirmation') }, class: 'btn btn-mini btn-info'
 
     - if current_user_is_admin? || @topic.posts.size <= 1
-      = link_to t('.delete'), topic_path(@topic), method: :delete,
+      = link_to t('.delete'), topic_path(@topic), method: :delete, title: t('.delete_topic', title: @topic.title),
         data: { confirm: t('.delete_confirmation') }, class: 'btn btn-danger btn-mini'
