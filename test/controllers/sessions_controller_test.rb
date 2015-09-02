@@ -101,5 +101,16 @@ describe 'SessionsControllerTest' do
       admin.remember_token_expires_at.must_be_nil
       cookies[:auth_token].must_equal admin.remember_token
     end
+
+    it 'must redirect back to return_to location' do
+      session[:return_to] = people_path
+      session[:account_id] = admin.id
+
+      delete :destroy
+
+      must_redirect_to people_path
+      session[:account_id].must_be_nil
+      session[:return_to].must_be_nil
+    end
   end
 end

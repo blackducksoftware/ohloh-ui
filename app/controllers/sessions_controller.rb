@@ -17,9 +17,9 @@ class SessionsController < ApplicationController
 
   def destroy
     Account::Authenticator.forget(current_user) if logged_in?
+    redirect_back root_path
     reset_session
     flash[:notice] = t '.success'
-    redirect_back root_path
   end
 
   private
