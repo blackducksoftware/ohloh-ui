@@ -26,7 +26,7 @@ class Account < ActiveRecord::Base
   end
 
   def to_param
-    (login && login.match(Patterns::LOGIN_FORMAT)) ? login : id.to_s
+    (login && login.match(Patterns::DEFAULT_PARAM_FORMAT)) ? login : id.to_s
   end
 
   # It's optional, but used if present by acts_as_editable.

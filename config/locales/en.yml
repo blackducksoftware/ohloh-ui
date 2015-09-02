@@ -309,8 +309,6 @@ en:
       models:
         account:
           attributes:
-            login:
-              invalid: 'Must begin with a letter and then only contain letters, numbers, underscore or dash'
             current_password:
               invalid: 'Check your current password and try again.'
             organization_name:
@@ -377,3 +375,5 @@ en:
   non_activated_message: Please verify your email address to help us communicate with you better. Click %{link} to resend the verification email.
   top_commit_volume_chart:
     message: '%{name} generated more than 50% of all commits during the past 12 months.'
+
+  invalid_default_param: 'must begin with a letter and can include only letters, numbers, _ and -'

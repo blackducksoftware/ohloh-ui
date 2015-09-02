@@ -1,5 +1,5 @@
 class App.CheckAvailiability
-  VALID_URL_REGEXP = /^[a-zA-Z][\w\-]{0,59}$/
+  VALID_URL_REGEXP = /^[a-zA-Z][\w_-]*$/
   RESTRICTED_URLS = ['new', 'update', 'show', 'create', 'edit', 'destroy', 'index', 'unsubscribe_emails']
 
   constructor: ($input) ->
