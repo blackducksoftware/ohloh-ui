@@ -195,15 +195,6 @@ describe TopicsController do
     must_respond_with :unauthorized
   end
 
-  it 'user destroy' do
-    login_as user
-    topic2 = create(:topic)
-    assert_no_difference('Topic.count') do
-      post :destroy, id: topic2.id
-    end
-    must_respond_with :unauthorized
-  end
-
   # #-----------Admin Account------------------------
   describe 'index' do
     it 'with forum id' do
