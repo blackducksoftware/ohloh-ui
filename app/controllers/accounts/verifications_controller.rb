@@ -14,7 +14,7 @@ class Accounts::VerificationsController < ApplicationController
 
   def create
     if digits_response_success?
-      return redirect_back if update_account_with_twitter_id(@account, twitter_id)
+      return redirect_back if update_account_and_reverification_with_twitter_id(@account, twitter_id)
       flash[:error] = @account.errors.messages[:twitter_id].first
     else
       flash[:error] = t('.error')
@@ -43,11 +43,12 @@ class Accounts::VerificationsController < ApplicationController
                                                  params[:verification][:credentials])
   end
 
-  def update_account_with_twitter_id(account, proposed_twitter_id)
+  def update_account_and_reverification_with_twitter_id(account, proposed_twitter_id)
     account.twitter_id = proposed_twitter_id
     account.validate
     twitter_id_valid = account.errors.messages[:twitter_id].blank?
     account.update_column(:twitter_id, proposed_twitter_id) if twitter_id_valid
+    account.reverification.update_column(:twitter_reverified, true)
     twitter_id_valid
   end
 end

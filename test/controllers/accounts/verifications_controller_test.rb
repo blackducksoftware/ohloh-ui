@@ -51,13 +51,18 @@ describe 'Accounts::VerificationsController' do
   end
 
   describe 'create' do
-    let(:account) { create(:account) }
+    # Modified the tests to reflect that
+    # all accounts will now have a reverification assoc.
+
+    let(:reverification) { create(:reverification) }
+    let(:account) { reverification.account }
+
     before do
       account.update!(twitter_id: nil)
       login_as(account)
     end
 
-    it 'must update account with non null twitter_id' do
+    it 'must update account and reverification with non null twitter_id' do
       service_provider_url = Faker::Internet.url
       credentials = "oauth_consumer_key=#{ Faker::Internet.password }"
       twitter_id = Faker::Internet.password
@@ -69,6 +74,7 @@ describe 'Accounts::VerificationsController' do
                     verification: { service_provider_url: service_provider_url, credentials: credentials }
 
       account.reload.twitter_id.must_equal twitter_id
+      account.reverification.reload.twitter_reverified.must_equal true
     end
 
     it 'wont report an error when twitter_id is null' do
@@ -82,8 +88,10 @@ describe 'Accounts::VerificationsController' do
 
     it 'wont allow verifying a new account with an used twitter_id' do
       verified_account = create(:account)
+      verified_account.create_reverification(twitter_reverified: true, twitter_reverification_sent_at: Time.now.utc)
       unverified_account = create(:account)
       unverified_account.update!(twitter_id: nil)
+      unverified_account.create_reverification(twitter_reverification_sent_at: Time.now.utc)
       login_as unverified_account
 
       TwitterDigits.stubs(:get_twitter_id).returns(verified_account.twitter_id)
@@ -98,6 +106,7 @@ describe 'Accounts::VerificationsController' do
     it 'will allow verifying an account that is not valid for some unrelated issue' do
       unverified_account = create(:account)
       unverified_account.update_columns(login: '   ', twitter_id: nil)
+      unverified_account.create_reverification(twitter_reverification_sent_at: Time.now.utc)
       login_as unverified_account
 
       service_provider_url = Faker::Internet.url

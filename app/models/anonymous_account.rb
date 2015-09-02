@@ -8,7 +8,6 @@ module AnonymousAccount
                                       password: 'mailpass', password_confirmation: 'mailpass')
       anonymous_account.save!
       Account::Access.new(anonymous_account).activate!(nil)
-
       anonymous_account
     end
   end

@@ -9,6 +9,60 @@ en:
     reset_password_link:
       subject: "Open Hub account reset password"
       body: "%{login}, please follow this link to reset your Open Hub account password:"
+    reverification:
+      subject: "Account Reverification"
+      body: "Hello %{account} as an effort to reduce the number of spam accounts, Open Hub has provided you the following link in order
+            to reverify your account with us. Please click on the reverification link %{verification}
+            within 30 days so that you may continue to enjoy our services. Please note that if you fail
+            to verify your account within 30 days, Open Hub will flag your account as spam. Thank you!"
+      signature: "Sincerely,"
+      openhub_team: "The Open Hub Team"
+      blackduck_address: "8 New England Executive Park, Burlington, MA 01803"
+    one_week_left:
+      subject: "Account Reverification One Week Notice"
+      body: "Hello %{account} as an effort to reduce the number of spam accounts, Open Hub has provided you the following link in order
+            to reverify your account with us. Please click on the reverification link %{verification} so that your account will not be
+            flagged as a spammer and that you may continue to enjoy the services we provide. Please be sure to verify as your account
+            will be disabled in 7 days from the time of this email. Thank you!"
+      signature: "Sincerely,"
+      openhub_team: "The Open Hub Team"
+      blackduck_address: "8 New England Executive Park, Burlington, MA 01803"
+    one_day_left:
+      subject: "Account Reverification One Day Notice"
+      body: "Hello %{account} as an effort to reduce the number of spam accounts, Open Hub has provided you the following link in order
+            to reverify your account with us. Please click on the reverification link %{verification} so that your account will not be
+            flagged as a spammer and that you may continue to enjoy the services we provide. Please be sure to verify as your account
+            will be disabled tomorrow from the time of this email. Thank you!"
+      signature: "Sincerely,"
+      openhub_team: "The Open Hub Team"
+      blackduck_address: "8 New England Executive Park, Burlington, MA 01803"
+    mark_as_spam:
+      subject: "Account Marked as Spam"
+      body: "Hello %{account}. This email is to inform you that your account has been flagged as spam.
+             If you would like to reactivate your account please be sure to contact the Open Hub team and
+             we will see to it that your account is reinstated. Thank you!"
+      signature: "Sincerely,"
+      openhub_team: "The Open Hub Team"
+      blackduck_address: "8 New England Executive Park, Burlington, MA 01803"
+    one_month_left_before_deletion:
+      subject: "Account Deletion Final One Month Notice"
+      body: "Hello %{account}. This email is to inform you that you are receiving your final one month
+             notice before your account is permanently removed from Open Hub's database.
+             Please click on the reverification link %{verification} so that your account may remain valid
+             in our system and you may continue to enjoy our services. If you do not reverify, your account
+             will be deleted in 60 days. Thank You."
+      signature: "Sincerely,"
+      openhub_team: "The Open Hub Team"
+      blackduck_address: "8 New England Executive Park, Burlington, MA 01803"
+    one_day_left_before_deletion:
+      subject: "Account Deletion Final One Day Notice"
+      body: "Hello %{account}. This email is to inform you that you are receiving your final notice
+            regarding the status of your account. Please click on the reverification link %{verification}
+            so that your account may remain valid in our system and you may continue to enjoy our services.
+            If you do not reverify, your account will be automatically removed from our database tomorrow. Thank You."
+      signature: "Sincerely,"
+      openhub_team: "The Open Hub Team"
+      blackduck_address: "8 New England Executive Park, Burlington, MA 01803"
     kudo_recipient:
       subject: "New kudo from %{from}"
       dear_blank: "Dear %{to},"

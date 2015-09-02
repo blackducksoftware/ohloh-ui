@@ -13,6 +13,7 @@ require 'mocha/mini_test'
 require 'dotenv'
 require 'test_helpers/setup_hamster_account'
 require 'test_helpers/create_forges'
+require 'timecop'
 Dotenv.overload '.env.test'
 
 ActiveRecord::Migration.maintain_test_schema!
