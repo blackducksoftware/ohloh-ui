@@ -31,13 +31,13 @@ class BaseballCardTest < ActiveSupport::TestCase
                   css: { style: 'min-height:38px;' },
                   label: I18n.t('accounts.show.baseball_card.contributed_to'),
                   partial: 'accounts/show/orgs',
-                  locals: { orgs: [org], links: true }
+                  locals: { orgs: [org] }
                 },
                 {
                   css: { style: 'min-height:38px;' },
                   label: I18n.t('accounts.show.baseball_card.contributed_for'),
                   partial: 'accounts/show/orgs',
-                  locals: { orgs: [org], links: false }
+                  locals: { orgs: [org] }
                 }]
       BaseballCard.new(best_vita.account).rows.must_equal result
     end
