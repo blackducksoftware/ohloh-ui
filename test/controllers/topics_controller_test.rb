@@ -340,4 +340,73 @@ describe TopicsController do
     get :show, id: topic, format: 'atom'
     must_respond_with :ok
   end
+
+  describe 'show' do
+    before { topic.update!(account: user) }
+
+    it 'must show spam, close and delete links for admin' do
+      login_as admin
+      create_list(:post, 2, topic: topic)
+
+      get :show, id: topic
+
+      %w(spam close delete).each do |name|
+        text = I18n.t("topics.action_group.#{ name }")
+        response.body.must_match(">#{ text }</a>")
+      end
+    end
+
+    it 'must show reopen link for admin when topic is closed' do
+      login_as admin
+      create_list(:post, 2, topic: topic)
+
+      topic.update! closed: true
+      get :show, id: topic
+
+      %w(spam reopen delete).each do |name|
+        text = I18n.t("topics.action_group.#{ name }")
+        response.body.must_match(">#{ text }</a>")
+      end
+    end
+
+    it 'wont show spam or close link to non admin' do
+      login_as user
+
+      get :show, id: topic
+
+      %w(spam close).each do |name|
+        text = I18n.t("topics.action_group.#{ name }")
+        response.body.wont_match(">#{ text }</a>")
+      end
+    end
+
+    it 'wont show delete link to non admin when post count is more than 1' do
+      login_as user
+      create_list(:post, 2, topic: topic)
+
+      get :show, id: topic
+
+      text = I18n.t('topics.action_group.delete')
+      response.body.wont_match(">#{ text }</a>")
+    end
+
+    it 'must show delete link to the non admin creator when post count is less than 2' do
+      login_as user
+
+      get :show, id: topic
+
+      text = I18n.t('topics.action_group.delete')
+      response.body.must_match(">#{ text }</a>")
+    end
+
+    it 'must show reopen link to non admin creator' do
+      login_as user
+
+      topic.update! closed: true
+      get :show, id: topic
+
+      text = I18n.t('topics.action_group.reopen')
+      response.body.must_match(">#{ text }</a>")
+    end
+  end
 end
