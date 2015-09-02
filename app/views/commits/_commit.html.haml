@@ -12,8 +12,16 @@
                 = (@project.best_analysis.logged_at - 12.months).to_s(:mdy)
               &mdash;
               = @project.best_analysis.logged_at.to_s(:mdy)
-          = render partial: 'shared/search_dingus', locals: { collection: @named_commits,
-            sort_context: nil, no_match_found_type: :flash }
+          .margin_top_20#search-dingus
+            %form.form-inline
+              .row
+                = render 'shared/search_dingus/page_entries_info', collection: @named_commits, total_count: 0
+                .col-md-5.no_padding
+                  %label #{t('shared.search_dingus.search_bar.search_text')} &nbsp;
+                  = text_field_tag :query, params[:query]
+                  = hidden_field_tag :time_span, params[:time_span]
+                  %button.btn{ type: 'Submit' }
+                    %i.icon-refresh
     %tr
       %th{ width: '40%' }= t('.commit_message')
       %th{ width: '17%' }= t('.contributor')
@@ -44,4 +52,4 @@
 = will_paginate @named_commits if @named_commits.respond_to?(:total_pages)
 
 - if @named_commits.blank?
-  = render partial: 'shared/alert', locals: { message: t('shared.search_dingus.no_match') }
+  = render partial: 'shared/alert', locals: { message: t('.no_data') }
