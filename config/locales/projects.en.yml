@@ -209,6 +209,7 @@ en:
       default: 'Default'
       contributions: 'Contributions'
       kudo_rank: 'Kudo Rank'
+      no_users: No users for this project yet.
     new:
       page_title: "New Projects"
       call_to_action: "Add a new project to Open Hub"
