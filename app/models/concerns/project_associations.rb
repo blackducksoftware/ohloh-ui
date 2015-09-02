@@ -51,6 +51,15 @@ module ProjectAssociations
         .order('time DESC')
     end
 
+    def contributions_within_timespan(options)
+      contributions
+        .within_timespan(options[:time_span], best_analysis.logged_at)
+        .sort(options[:sort])
+        .filter_by(options[:query])
+        .includes(person: :account, contributor_fact: :primary_language)
+        .references(:all)
+    end
+
     class << self
       def collection_arel(ids = nil, sort = nil, query = nil)
         if !ids.blank?

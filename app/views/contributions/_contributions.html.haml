@@ -3,8 +3,7 @@
     %tr{ id: 'dingus-row' }
       %td{ colspan: 10 }
         - if search_bar
-          = render partial: 'shared/search_dingus',
-          locals: { collection: @contributions, sort_context: :contributions, no_match_found_type: :none }
+          = render 'shared/search_dingus/commits_or_contributor_search', items: contributions, type: :contributions
         - else
           &nbsp;
     %tr
@@ -55,5 +54,4 @@
           - if fact.last_checkin
             %abbr.date{ title: fact.last_checkin }= t('.ago', duration: time_ago_in_words(fact.last_checkin))
 
-- if contributions.empty?
-  = render partial: 'shared/alert', locals: { message: t('shared.search_dingus.no_match') }
+= render partial: 'shared/alert', locals: { message: t('.no_data') } if contributions.empty?

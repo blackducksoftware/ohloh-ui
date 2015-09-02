@@ -3,25 +3,7 @@
     %tr{ id: 'dingus-row' }
       %td{ colspan: '7' }
         - if search_dingus
-          - if @project.best_analysis.logged_at.present?
-            %span.commits_date_range.pull-right
-              %i.icon-time
-              - if NamedCommit::TIME_SPANS[params[:time_span]] == :last_30_days
-                = (@project.best_analysis.logged_at - 30.days).to_s(:mdy)
-              - else
-                = (@project.best_analysis.logged_at - 12.months).to_s(:mdy)
-              &mdash;
-              = @project.best_analysis.logged_at.to_s(:mdy)
-          .margin_top_20#search-dingus
-            %form.form-inline
-              .row
-                = render 'shared/search_dingus/page_entries_info', collection: @named_commits, total_count: 0
-                .col-md-5.no_padding
-                  %label #{t('shared.search_dingus.search_bar.search_text')} &nbsp;
-                  = text_field_tag :query, params[:query]
-                  = hidden_field_tag :time_span, params[:time_span]
-                  %button.btn{ type: 'Submit' }
-                    %i.icon-refresh
+          = render 'shared/search_dingus/commits_or_contributor_search', items: @named_commits, type: :commits
     %tr
       %th{ width: '40%' }= t('.commit_message')
       %th{ width: '17%' }= t('.contributor')
@@ -51,5 +33,4 @@
 
 = will_paginate @named_commits if @named_commits.respond_to?(:total_pages)
 
-- if @named_commits.blank?
-  = render partial: 'shared/alert', locals: { message: t('.no_data') }
+= render partial: 'shared/alert', locals: { message: t('.no_data') } if @named_commits.blank?

@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'test_helpers/create_contributions_data'
 
 class ProjectTest < ActiveSupport::TestCase
   let(:project) { create(:project) }
@@ -391,6 +392,38 @@ class ProjectTest < ActiveSupport::TestCase
       project.jobs.count.must_equal 1
       project.schedule_delayed_analysis(2.hours)
       project.jobs.count.must_equal 1
+    end
+  end
+
+  describe 'contributions_within_timespan' do
+    it 'should return contributions within 30 days' do
+      project = create(:project)
+      created_contributions = create_contributions(project)
+      contributions = project.contributions_within_timespan({ time_span: '30 days' })
+      contributions.size.must_equal 2
+      contributions.must_include created_contributions[0]
+      contributions.must_include created_contributions[1]
+    end
+
+    it 'should return contributions within 12 months' do
+      project = create(:project)
+      created_contributions = create_contributions(project)
+      contributions = project.contributions_within_timespan({ time_span: '12 months' })
+      contributions.size.must_equal 3
+      contributions.must_include created_contributions[0]
+      contributions.must_include created_contributions[1]
+      contributions.must_include created_contributions[2]
+    end
+
+    it 'should return all contributions' do
+      project = create(:project)
+      created_contributions = create_contributions(project)
+      contributions = project.contributions_within_timespan({})
+      contributions.size.must_equal 4
+      contributions.must_include created_contributions[0]
+      contributions.must_include created_contributions[1]
+      contributions.must_include created_contributions[2]
+      contributions.must_include created_contributions[3]
     end
   end
 

@@ -14,12 +14,7 @@ class ContributionsController < ApplicationController
 
   def index
     fail ParamRecordNotFound unless @project
-    @contributions = @project.contributions
-                     .sort(params[:sort])
-                     .filter_by(params[:query])
-                     .includes(person: :account, contributor_fact: :primary_language)
-                     .references(:all)
-                     .paginate(per_page: 20, page: page_param)
+    @contributions = @project.contributions_within_timespan(params).paginate(per_page: 20, page: page_param)
   end
 
   def show

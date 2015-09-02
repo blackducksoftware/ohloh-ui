@@ -1,5 +1,6 @@
 require 'test_helper'
 require 'test_helpers/activity_facts_by_commits_data'
+require 'test_helpers/create_contributions_data'
 
 describe 'ContributionsController' do
   let(:activity_facts_by_commits_data) { ActivityFactsByMonthData.new(true).data }
@@ -20,6 +21,27 @@ describe 'ContributionsController' do
 
       must_respond_with :ok
       assigns(:contributions).must_equal [@contribution]
+    end
+
+    it 'should return contributions within 30 days' do
+      contributions = create_contributions(@project)
+      get :index, project_id: @project.to_param, sort: 'latest_commit', time_span: '30 days'
+
+      must_respond_with :ok
+      assigns(:contributions).size.must_equal 2
+      assigns(:contributions).must_include contributions[0]
+      assigns(:contributions).must_include contributions[1]
+    end
+
+    it 'should return contributions within 12 months' do
+      contributions = create_contributions(@project)
+      get :index, project_id: @project.to_param, sort: 'latest_commit', time_span: '12 months'
+
+      must_respond_with :ok
+      assigns(:contributions).size.must_equal 3
+      assigns(:contributions).must_include contributions[0]
+      assigns(:contributions).must_include contributions[1]
+      assigns(:contributions).must_include contributions[2]
     end
 
     it 'should return contributions in xml format with valid api key' do
