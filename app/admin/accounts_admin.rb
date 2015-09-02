@@ -17,7 +17,7 @@ ActiveAdmin.register Account do
   index do
     column :id
     column :name do |account|
-      link_to account.name, admin_account_path(account)
+      link_to account.name, account_path(account)
     end
     column :login
     column :email
@@ -63,7 +63,7 @@ ActiveAdmin.register Account do
       f.input :twitter_account, as: :string
       f.input :affiliation_type, as: :string
       f.input :organization_name, as: :string
-      f.input :twitter_id
+      f.input :twitter_id, label: "Twitter Digits ID"
     end
     f.actions
   end

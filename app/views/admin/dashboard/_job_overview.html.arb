@@ -31,5 +31,6 @@ panel 'Job Overview' do
       render :partial => 'failed', :locals => {:slave => slave}
     end
     column (:completed) { |slave| slave.jobs.complete.since(get_window).count }
+    column (:oldest_repository) { |slave| time_ago_in_days_hours_minutes(slave.oldest_clump_timestamp) }
   end
 end

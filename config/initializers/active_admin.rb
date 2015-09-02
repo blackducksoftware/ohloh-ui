@@ -231,3 +231,7 @@ ActiveAdmin.setup do |config|
   #
   # config.filters = true
 end
+
+module ActiveAdmin::ViewHelpers
+    include TimeStampHelper 
+end
