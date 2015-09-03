@@ -27,6 +27,7 @@ en:
       inactive: '(Inactive)'
       manager: '(Manager)'
       ago: '%{duration} ago'
+      no_data: 'There are no contributors to display'
     commits_timeline:
       approximately: 'Approximately one year of commit activity shown'
       no_commits: 'Open Hub did not measure any commits by this contributor.'

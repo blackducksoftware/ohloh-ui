@@ -24,3 +24,5 @@ BLOG_LINKS = {
 }
 
 ACCOUNT_DESC_LENGTH = 100
+
+TIME_SPANS = { '30 days' => :last_30_days, '12 months' => :last_year }
