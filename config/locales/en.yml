@@ -67,6 +67,7 @@ en:
   to: to
   logo: Logo
   ago: ago
+  closed: Closed
 
   layouts:
     application:

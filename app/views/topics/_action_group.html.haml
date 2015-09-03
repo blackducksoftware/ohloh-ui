@@ -14,7 +14,7 @@
 
   - if current_user_is_admin? || @topic.account == current_user
     - if @topic.closed?
-      = link_to t('.reopen'), reopen_topic_path(@topic), title: t('.reopen_topic', title: @topic.title),
+      = link_to t('topics.reopen'), reopen_topic_path(@topic), title: t('.reopen_topic', title: @topic.title),
         data: { confirm: t('.reopen_confirmation') }, class: 'btn btn-mini btn-info'
 
     - if current_user_is_admin? || @topic.posts.size <= 1
