@@ -346,10 +346,8 @@ describe TopicsController do
       topic.update! closed: true
       get :show, id: topic
 
-      %w(spam reopen delete).each do |name|
-        text = I18n.t("topics.action_group.#{ name }")
-        response.body.must_match(">#{ text }</a>")
-      end
+      text = I18n.t('topics.reopen')
+      response.body.must_match(">#{ text }</a>")
     end
 
     it 'wont show spam or close link to non admin' do
@@ -388,7 +386,7 @@ describe TopicsController do
       topic.update! closed: true
       get :show, id: topic
 
-      text = I18n.t('topics.action_group.reopen')
+      text = I18n.t('topics.reopen')
       response.body.must_match(">#{ text }</a>")
     end
   end

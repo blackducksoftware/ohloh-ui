@@ -1,5 +1,6 @@
 en:
   topics:
+    reopen: 'Re-open'
     new:
       forums: 'Forums'
       create_topic: 'Post Topic'
@@ -17,7 +18,6 @@ en:
       close: 'Close'
       closed: 'closed'
       delete: 'Delete'
-      reopen: 'Re-open'
       spam: 'SPAM!'
       close_confirmation: 'Are you sure you want to close this topic?'
       delete_confirmation: 'Are you sure you want to delete this topic?'

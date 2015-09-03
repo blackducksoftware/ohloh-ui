@@ -1,6 +1,6 @@
 .btn-group.pull-right.margin_top_10
   - if current_user_is_admin?
-    = link_to t('.edit'), edit_topic_path(@topic), class: 'btn btn-info btn-mini'
+    = link_to t('edit'), edit_topic_path(@topic), class: 'btn btn-info btn-mini' unless @topic.closed?
 
     = render 'topics/move_modal'
 
@@ -14,7 +14,7 @@
 
   - if current_user_is_admin? || @topic.account == current_user
     - if @topic.closed?
-      = link_to t('.reopen'), reopen_topic_path(@topic), title: t('.reopen_topic', title: @topic.title),
+      = link_to t('topics.reopen'), reopen_topic_path(@topic), title: t('.reopen_topic', title: @topic.title),
         data: { confirm: t('.reopen_confirmation') }, class: 'btn btn-mini btn-info'
 
     - if current_user_is_admin? || @topic.posts.size <= 1
