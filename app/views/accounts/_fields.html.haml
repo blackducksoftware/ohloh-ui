@@ -7,13 +7,13 @@
     %legend= t('.new_account')
     .controls
       %label.control-label.required= t('.login')
-      = f.text_field(:login, id: :login)
+      = f.text_field(:login, id: :login, required: true)
       - error_tag(@account, :login)
       %p.help-block
         = t('.login_help')
     .control-group
       %label.control-label.required= t('email_address')
-      = f.text_field(:email, id: :email)
+      = f.text_field(:email, id: :email, required: true)
       - error_tag(@account, :email)
       %p.help-block
         = t('.email_help_1')
@@ -25,17 +25,17 @@
         = t('.email_help_4')
     .control-group
       %label.control-label.required= t('.verify_email_address')
-      = f.text_field(:email_confirmation, id: :email_confirmation)
+      = f.text_field(:email_confirmation, id: :email_confirmation, required: true)
       - error_tag(@account, :email_confirmation)
 
     .control-group
       %label.control-label.required= t('password')
-      = f.password_field(:password, id: :password)
+      = f.password_field(:password, id: :password, required: true)
       - error_tag(@account, :password)
       %p.help-block= t('.password_help')
     .control-group
       %label.control-label.required= t('.verify_password')
-      = f.password_field(:password_confirmation, id: :password_confirmation)
+      = f.password_field(:password_confirmation, id: :password_confirmation, required: true)
       - error_tag(@account, :password_confirmation)
       %p.help-block
         = t('.verify_password_help')
@@ -45,4 +45,4 @@
     %p.help-block
       = t('.mobile_verification_hint')
     .actions
-      %input.btn.btn-primary{ type: :button, value: t('.sign_up'), id: 'digits-sign-up' }
+      %input.btn.btn-primary{ type: :submit, value: t('.sign_up'), id: 'digits-sign-up' }
