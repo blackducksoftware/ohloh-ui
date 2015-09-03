@@ -6,8 +6,9 @@ class RepositoryJobProgress
 
   delegate :best_code_set, to: :@repository
 
-  def initialize(repository)
-    @repository = repository
+  def initialize(enlistment)
+    @repository = enlistment.repository
+    @project = enlistment.project
     @job = @repository.jobs.incomplete.first
   end
 
@@ -49,7 +50,10 @@ class RepositoryJobProgress
     if sloc_set_logged_at
       I18n.t 'repositories.job_progress.update_completed', at: time_ago_in_words(sloc_set_logged_at)
     else
-      I18n.t 'repositories.job_progress.no_job'
+      incomplete_job = Job.where(repository: @project.repositories).incomplete.first
+      return I18n.t 'repositories.job_progress.no_job' unless incomplete_job
+
+      I18n.t('repositories.job_progress.blocked_by', status: STATUS[incomplete_job.status])
     end
   end
 
