@@ -12,6 +12,7 @@ en:
       closed_topic_message_2: 'Comments to this topic are now closed. Please create a new topic to get technical support.'
       closed_topic_message_3: 'The user who created the topic can reopen this topic at any time.'
       topic_show: "%{forum} : %{topic}"
+      closed: Closed
     action_group:
       forums: 'Forums'
       close: 'Close'
