@@ -9,3 +9,4 @@ en:
       complete: 'Complete %{at} ago.'
       failed: 'Failed'
       failed_at: 'Failed %{at} ago.'
+      blocked_by: 'Blocked by %{status} job'
