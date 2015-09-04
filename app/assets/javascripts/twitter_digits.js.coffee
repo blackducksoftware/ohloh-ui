@@ -4,10 +4,14 @@ class App.TwitterDigits
 
   authenticate: ($form) ->
     $('#digits-sign-up').click ->
-      if oauthTimestampAbsentOrExpired($form)
+      if validForm($form) and oauthTimestampAbsentOrExpired($form)
         requireDigitsLogin($form)
+        false
       else
         $form.submit()
+
+  validForm = ($form) ->
+    not $('input').filter('[required]').is (index, element) -> !element.value
 
   requireDigitsLogin = ($form) ->
     Digits.logIn()
