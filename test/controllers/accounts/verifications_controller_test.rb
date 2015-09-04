@@ -86,8 +86,7 @@ describe 'Accounts::VerificationsController' do
       unverified_account.update!(twitter_id: nil)
       login_as unverified_account
 
-      TwitterDigits.stubs(:get_twitter_id).returns(verified_account.twitter_id)
-
+      TwitterDigits.expects(:get_twitter_id).returns(verified_account.twitter_id)
       post :create, account_id: unverified_account.id, verification: {}
 
       unverified_account.reload.twitter_id.must_be_nil

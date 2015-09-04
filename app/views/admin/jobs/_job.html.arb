@@ -1,0 +1,48 @@
+span "Priority: #{job.priority}"
+br
+span "Attempts: #{ActiveSupport::Inflector::ordinalize(job.retry_count + 1)}"
+br
+span "Wait #{distance_of_time_in_words(job.wait_until - Time.now.utc)}" if job.wait_until && job.wait_until > Time.now.utc
+br
+span "Last Activity: #{time_ago_in_words(job.current_step_at)} ago" if job.current_step_at
+br
+span "Progress: (#{job.current_step || '-'} current step of #{job.max_steps || '-'} total steps)"
+br
+para "TODO: Link to the Slave Log"
+
+span "Status: #{job.job_status.name} "
+if job.slave_id
+  span 'on' 
+  a link_to(job.slave.hostname, admin_slafe_path(job.slave_id))
+end
+
+para ''
+
+if job.project_id
+  span "Project: "
+  span "LINK TO Project Name: #{job.project.name}"
+  # a link_to(job.project.name, admin_project_path(job.project_id)
+end
+
+if job.account_id
+  span "Account: "
+  span "LINK TO Account: #{job.account.name}"
+end
+
+if job.repository_id
+  span "Repository: #{job.repository.url}"
+  strong job.repository.module_name
+  strong job.repository.branch_name
+end
+
+if job.organization_id
+  span "Organization: "
+  a link_to job.organization.name, organization_path(job.organization)
+end
+
+para ''
+
+a link_to "Repository #{job.repository_id} FIX MY LINK", admin_root_path if job.repository_id
+a link_to "CodeSet #{job.code_set_id} FIX MY LINK", admin_root_path if job.code_set_id
+a link_to "SlocSet #{job.sloc_set_id} FIX MY LINK", admin_root_path if job.sloc_set_id
+

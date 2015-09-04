@@ -4,6 +4,7 @@ class ActiveAdminTest < ActionDispatch::IntegrationTest
   it 'allows admins in' do
     admin = create(:admin, password: 'xyzzy123456')
     admin.password = 'xyzzy123456'
+    create(:load_average)
     login_as admin
     get admin_root_path
     assert_response :success

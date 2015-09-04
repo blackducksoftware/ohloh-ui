@@ -20,7 +20,7 @@ module AccountValidations
                       allow_blank: false, format: { with: Patterns::LOGIN_FORMAT }, if: :login_changed?
     validates :twitter_account, length: { maximum: 15 }, allow_blank: true
     validates :name, length: { maximum: 50 }, allow_blank: true
-    validates :twitter_id, uniqueness: true, allow_nil: true, on: :create
+    validates :twitter_id, uniqueness: true, allow_nil: true
     validates :twitter_id, presence: true, on: :create
 
     def changing_password?

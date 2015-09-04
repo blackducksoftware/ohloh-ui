@@ -1,4 +1,8 @@
 class Job < ActiveRecord::Base
+  belongs_to :slave
+  belongs_to :job_status, foreign_key: 'status'
+
+
   STATUS_SCHEDULED = 0
   STATUS_RUNNING   = 1
   STATUS_FAILED    = 3
