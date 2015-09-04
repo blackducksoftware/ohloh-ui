@@ -447,6 +447,17 @@ class ProjectTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'stacks_count' do
+    it 'should return user_count' do
+      project = create(:project)
+      create(:stack_entry, project: project)
+      stack_entry1 = create(:stack_entry, project: project)
+      stack_entry2 = create(:stack_entry, project: project)
+      stack_entry1.stack.update_column(:account_id, stack_entry2.stack.account_id)
+      project.stacks_count.must_equal 2
+    end
+  end
+
   private
 
   def create_repositiory(project)

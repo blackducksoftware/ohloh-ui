@@ -60,6 +60,13 @@ module ProjectAssociations
         .references(:all)
     end
 
+    def stacks_count
+      Stack.joins(:stack_entries)
+        .where(stack_entries: { deleted_at: nil, project_id: id })
+        .where(deleted_at: nil)
+        .count('distinct(account_id)')
+    end
+
     class << self
       def collection_arel(ids = nil, sort = nil, query = nil)
         if !ids.blank?
