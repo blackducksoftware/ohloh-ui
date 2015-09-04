@@ -31,8 +31,8 @@ class StackEntry < ActiveRecord::Base
   end
 
   def update_counters
-    stack.update_columns(project_count: stack.stack_entries.count) if stack
-    project.update_columns(user_count: project.stacks.count('distinct(account_id)')) if project
+    stack.update_column(:project_count, stack.stack_entries.count) if stack
+    project.update_column(:user_count, project.stacks_count) if project
   end
 
   class << self
