@@ -104,7 +104,7 @@ en:
         add_a_code_location: "Add a code location"
         no_code_locations: "There are no Code Locations added to this project so Open Hub cannot display the commits per month chart. %{link} to see this information."
         community: "Community"
-      committers_per_month:
+      committers_per_month_chart:
         contributors_per_month: "Contributors per Month"
         add_a_code_location: "Add a code location"
         no_code_locations: "There are no Code Locations added to this project so Open Hub cannot display the contributors per month chart. %{link} to see this information."
