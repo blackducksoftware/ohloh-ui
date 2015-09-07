@@ -86,7 +86,7 @@ class Project < ActiveRecord::Base
   end
 
   def top_contributions
-    contributions.sort_by_twelve_month_commits.joins(:contributor_fact)
+    top_contributors.sort_by_twelve_month_commits.joins(:contributor_fact)
       .preload(person: :account, contributor_fact: :primary_language).limit(10)
   end
 
