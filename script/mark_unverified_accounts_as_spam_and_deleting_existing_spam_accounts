@@ -1,0 +1,24 @@
+#! usr/bin/env ruby
+
+require_relative '../config/environment'
+
+class HandleSpamAccounts
+  def execute
+    unverified_accounts.update_all(level: -20)
+    existing_spammers.destory_all
+  end
+
+  private
+
+  def unverified_accounts
+    Account.joins(:reverification)
+      .where(twitter_id: nil)
+      .where(['reverifications.sent_at < ?', Time.current - 22.days])
+  end
+
+  def existing_spammers
+    Account.where('level = -20 AND updated_at < ?', Time.current - 4.months)
+  end
+end
+
+HandleSpamAccounts.new.execute
