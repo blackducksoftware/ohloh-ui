@@ -1,0 +1,34 @@
+#! /usr/bin/env ruby
+
+require_relative '../config/environment'
+
+class AccountReverification
+  def execute
+    reverifiable_accounts.with_index do |account_batch, batch_no|
+      puts "Updating #{batch_no}"
+      puts "%%%%%%%%%%%%%%%%%%%%%"
+
+      account_batch.each do |account|
+        AccountRevirifactionMailer.notification(account).deliver_now
+        Reverification.create!(account: account, sent_at: Time.current)
+      end
+
+      sleep(15.minutes)
+    end
+  end
+
+  private
+
+  def reverifiable_accounts
+    Account.where(level: 0, twitter_id: nil).find_in_batches
+  end
+end
+
+class AccountRevirifactionMailer < ActionMailer::Base
+  def notification(account)
+    mail to: account.email, subject: 'OpenHub - Verify your mobile no', from: 'mailer@openhub.net',
+         template_path: 'mailers', template_name: 'account_reverification_mailer'
+  end
+end
+
+AccountReverification.new.execute
