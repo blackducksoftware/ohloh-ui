@@ -10,6 +10,15 @@ class ComparesControllerTest < ActionController::TestCase
     assert_select 'input#project_2', 1
   end
 
+  test 'should render projects when names are supplied in a case insensitive manner' do
+    create(:project, name: 'Ruby')
+    create(:project, name: 'Java')
+    get :projects, project_0: 'java', project_1: 'rUby'
+    assert_response :success
+    response.body.must_match 'Java'
+    response.body.must_match 'Ruby'
+  end
+
   test 'should render up to three projects' do
     project1 = create(:project, name: 'Phil')
     project2 = create(:project, name: 'Jerry')

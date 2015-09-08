@@ -24,9 +24,9 @@ class ComparesController < ApplicationController
   end
 
   def find_projects
-    @projects = [Project.where(name: params[:project_0]).first,
-                 Project.where(name: params[:project_1]).first,
-                 Project.where(name: params[:project_2]).first]
+    @projects = [params[:project_0], params[:project_1], params[:project_2]].map do |project_param|
+      project_param.blank? ? nil : Project.case_insensitive_name(project_param).take
+    end
   end
 
   def populate_chart_plot_points_and_series
