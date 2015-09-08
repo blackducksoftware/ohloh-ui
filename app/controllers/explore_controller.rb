@@ -2,7 +2,7 @@ class ExploreController < ApplicationController
   helper :Projects
 
   before_action :set_language, only: [:index, :projects]
-  before_action :projects_details, only: [:index, :projects]
+  before_action :projects_details, unless: :language_or_cache_exist, only: [:index, :projects]
   skip_before_action :verify_authenticity_token, only: [:orgs_by_thirty_day_commit_volume]
 
   def index
@@ -25,6 +25,10 @@ class ExploreController < ApplicationController
   end
 
   private
+
+  def language_or_cache_exist
+    @language.blank? && Rails.cache.exist?('projects_explore_page')
+  end
 
   def projects_details
     @tags = CloudTag.list
