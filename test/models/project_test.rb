@@ -456,6 +456,34 @@ class ProjectTest < ActiveSupport::TestCase
       stack_entry1.stack.update_column(:account_id, stack_entry2.stack.account_id)
       project.stacks_count.must_equal 2
     end
+
+    it 'should return user_count without taking into account disabled or spammer accounts' do
+      project = create(:project)
+      create(:stack_entry, project: project)
+      create(:stack_entry, project: project)
+      stack_entry1 = create(:stack_entry, project: project)
+      stack_entry2 = create(:stack_entry, project: project)
+
+      stack_entry1.stack.account.update_column(:level, -10)
+      stack_entry2.stack.account.update_column(:level, -20)
+
+      project.stacks_count.must_equal 2
+    end
+  end
+
+  describe 'users' do
+    it 'should return users that are not spam or disabled' do
+      project = create(:project)
+      stack_entry = create(:stack_entry, project: project)
+      stack_entry1 = create(:stack_entry, project: project)
+      stack_entry2 = create(:stack_entry, project: project)
+      stack_entry3 = create(:stack_entry, project: project)
+      stack_entry1.stack.account.update_column(:level, -10)
+      stack_entry2.stack.account.update_column(:level, -20)
+
+      result = project.users - [stack_entry.stack.account, stack_entry3.stack.account]
+      result.must_equal []
+    end
   end
 
   private

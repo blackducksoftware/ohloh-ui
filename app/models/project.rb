@@ -72,6 +72,7 @@ class Project < ActiveRecord::Base
     Account.select('DISTINCT(accounts.id), accounts.*, people.kudo_position')
       .joins([{ stacks: :stack_entries }, :person])
       .where(stack_entries: { project_id: id })
+      .where('level >= 0')
       .where(search_term)
       .order(orber_by)
   end

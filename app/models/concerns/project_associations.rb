@@ -61,8 +61,9 @@ module ProjectAssociations
     end
 
     def stacks_count
-      Stack.joins(:stack_entries)
+      Stack.joins(:stack_entries, :account)
         .where(deleted_at: nil, stack_entries: { project_id: id })
+        .where('accounts.level >= 0')
         .count('distinct(account_id)')
     end
 
