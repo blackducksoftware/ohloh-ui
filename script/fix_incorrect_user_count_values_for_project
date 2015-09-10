@@ -6,16 +6,8 @@ module ProjectUserCountFixer
   module_function
 
   def execute
-    Project.select('DISTINCT(projects.id), user_count').joins(:stacks)
-      .find_in_batches.with_index do |project_batch, group_no|
-      puts "Updating batch #{group_no + 1}"
-      puts '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
-
-      project_batch.each do |project|
-        stacks_count = project.stacks_count
-        project.update_column(:user_count, stacks_count) if stacks_count != project.user_count
-      end
-    end
+    projects = Project.select('DISTINCT(projects.id)').joins(stacks: :account).where('accounts.level < 0')
+    projects.each { |project| project.update_column(:user_count, project.stacks_count) }
   end
 end
 

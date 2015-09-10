@@ -578,6 +578,20 @@ describe 'ProjectsController' do
       assigns(:accounts).count.must_equal 1
     end
 
+    it 'should not return an disabled or spammer account' do
+      project = create(:project, logo: nil)
+      account1 = create(:account)
+      account2 = create(:account, level: -10)
+      account3 = create(:account, level: -20)
+      create(:stack_entry, stack: create(:stack, account: account1), project: project)
+      create(:stack_entry, stack: create(:stack, account: account2), project: project)
+      create(:stack_entry, stack: create(:stack, account: account3), project: project)
+
+      get :users, id: project.id
+      must_respond_with :success
+      assigns(:accounts).count.must_equal 1
+    end
+
     it 'should not list a invalid search term' do
       project = create(:project, logo: nil)
       get :users, id: project.id, query: 'unknown_text_to_seach'
