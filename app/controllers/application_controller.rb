@@ -89,7 +89,7 @@ class ApplicationController < ActionController::Base
   helper_method :logged_in?
 
   def current_user_is_admin?
-    Account::Access.new(current_user).admin?
+    current_user.access.admin?
   end
   helper_method :current_user_is_admin?
 
@@ -222,7 +222,7 @@ class ApplicationController < ActionController::Base
 
   def find_previous_user
     previous_user = find_user_in_session || find_remembered_user
-    previous_user = nil if previous_user && Account::Access.new(previous_user).spam?
+    previous_user = nil if previous_user && previous_user.access.spam?
     previous_user
   end
 
@@ -243,12 +243,12 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user_is_verified?
-    current_user && Account::Access.new(current_user).verified?
+    current_user && current_user.access.verified?
   end
   helper_method :current_user_is_verified?
 
   def alert_non_activated_account
-    return if Account::Access.new(current_user).activated?
+    return if current_user.access.activated?
 
     flash[:notice] ||= t('non_activated_message',
                          link: view_context.link_to(:here, new_activation_resend_path))

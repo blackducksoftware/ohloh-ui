@@ -266,7 +266,7 @@ describe 'AccountsController' do
     it 'must logout spammer trying to edit or update' do
       account = create(:account)
       login_as account
-      Account::Access.new(account).spam!
+      account.access.spam!
 
       get :edit, id: account.to_param
       must_respond_with :redirect

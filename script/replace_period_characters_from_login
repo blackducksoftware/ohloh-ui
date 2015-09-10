@@ -13,7 +13,7 @@ class LoginChangedNotifier
       new_login = account.login.gsub(/[^\w_-]/, '-')
       account.update_column('login', new_login)
 
-      send_email(account) unless Account::Access.new(account).disabled?
+      send_email(account) unless account.access.disabled?
     end
   end
 

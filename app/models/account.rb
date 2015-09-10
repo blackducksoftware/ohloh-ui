@@ -10,7 +10,7 @@ class Account < ActiveRecord::Base
                 :password_confirmation, :email_confirmation, :skip_current_password_check
   attr_writer :ip
 
-  oh_delegators :stack_core, :project_core, :position_core, :claim_core
+  oh_delegators :stack_core, :project_core, :position_core, :claim_core, :access
   strip_attributes :name, :email, :login, :invite_code, :twitter_account
 
   serialize :reset_password_tokens, Hash
@@ -21,7 +21,7 @@ class Account < ActiveRecord::Base
 
   def valid_current_password?
     authenticator = Account::Authenticator.new(login: login, password: current_password)
-    return if authenticator.authenticated? && Account::Access.new(authenticator.account).active_and_not_disabled?
+    return if authenticator.authenticated? && authenticator.account.access.active_and_not_disabled?
     errors.add(:current_password)
   end
 

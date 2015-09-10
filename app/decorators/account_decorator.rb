@@ -96,6 +96,6 @@ class AccountDecorator < Cherry::Decorator
   end
 
   def current_or_admin?(current_user)
-    account.eql?(current_user) || Account::Access.new(current_user).admin?
+    account.eql?(current_user) || current_user.access.admin?
   end
 end

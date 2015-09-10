@@ -27,7 +27,7 @@ class License < ActiveRecord::Base
   end
 
   def allow_edit?
-    editor_account && (Account::Access.new(editor_account).admin? || !locked)
+    editor_account && (editor_account.access.admin? || !locked)
   end
 
   def short_name
