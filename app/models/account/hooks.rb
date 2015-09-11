@@ -16,12 +16,12 @@ class Account::Hooks
     account.password = nil
     account.current_password = nil
     activate_using_invite!(account) if account.invite_code.present?
-    create_person!(account) unless Account::Access.new(account).spam?
+    create_person!(account) unless account.access.spam?
     deliver_signup_notification(account) unless account.anonymous?
   end
 
   def after_update(account)
-    destroy_spammer_dependencies(account) if Account::Access.new(account).spam?
+    destroy_spammer_dependencies(account) if account.access.spam?
     return unless account.organization_id_changed?
     schedule_organization_analysis(account.organization_id_was)
     schedule_organization_analysis(account.organization_id)
@@ -32,7 +32,7 @@ class Account::Hooks
   end
 
   def after_save(account)
-    update_person_effective_name(account) if account.person.present? && !Account::Access.new(account).spam?
+    update_person_effective_name(account) if account.person.present? && !account.access.spam?
   end
 
   private
@@ -51,7 +51,7 @@ class Account::Hooks
 
     invite.update!(invitee_id: account.id, activated_at: Time.current)
 
-    Account::Access.new(account).activate!(account.activation_code) if invite.invitee_email.eql?(account.email)
+    account.access.activate!(account.activation_code) if invite.invitee_email.eql?(account.email)
   end
 
   def assign_name_to_login(account)

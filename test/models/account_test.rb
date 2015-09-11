@@ -695,7 +695,7 @@ class AccountTest < ActiveSupport::TestCase
     it 'should not match spammers' do
       account = create(:account)
       Account.from_param(account.to_param).count.must_equal 1
-      Account::Access.new(account).spam!
+      account.access.spam!
       Account.from_param(account.to_param).count.must_equal 0
     end
   end

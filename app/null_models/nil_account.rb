@@ -14,4 +14,8 @@ class NilAccount < NullObject
 
   def twitter_id?
   end
+
+  def access
+    @access ||= Account::Access.new(self)
+  end
 end
