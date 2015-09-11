@@ -281,6 +281,22 @@ describe 'ProjectsController' do
 
       must_render_template 'deleted'
     end
+
+    it 'should show the jobs link for admins' do
+      project = create(:project)
+      login_as create(:admin)
+      get :show, id: project
+      must_respond_with :ok
+      assert_select 'a', text: 'Jobs'
+    end
+
+    it 'should not show the jobs link for non-admins' do
+      project = create(:project)
+      login_as create(:account)
+      get :show, id: project
+      must_respond_with :ok
+      assert_select 'a', false, text: 'Jobs'
+    end
   end
 
   # new

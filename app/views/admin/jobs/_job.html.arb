@@ -1,6 +1,6 @@
 span "Priority: #{job.priority}"
 br
-span "Attempts: #{ActiveSupport::Inflector::ordinalize(job.retry_count + 1)}"
+span "Attempt: #{ActiveSupport::Inflector::ordinalize(job.retry_count + 1)}"
 br
 span "Wait #{distance_of_time_in_words(job.wait_until - Time.now.utc)}" if job.wait_until && job.wait_until > Time.now.utc
 br
@@ -16,33 +16,13 @@ if job.slave_id
   a link_to(job.slave.hostname, admin_slafe_path(job.slave_id))
 end
 
-para ''
+render :partial => 'job_links'
 
-if job.project_id
-  span "Project: "
-  span "LINK TO Project Name: #{job.project.name}"
-  # a link_to(job.project.name, admin_project_path(job.project_id)
-end
+render :partial => 'job_priority'
 
-if job.account_id
-  span "Account: "
-  span "LINK TO Account: #{job.account.name}"
-end
-
-if job.repository_id
-  span "Repository: #{job.repository.url}"
-  strong job.repository.module_name
-  strong job.repository.branch_name
-end
-
-if job.organization_id
-  span "Organization: "
-  a link_to job.organization.name, organization_path(job.organization)
-end
-
-para ''
-
-a link_to "Repository #{job.repository_id} FIX MY LINK", admin_root_path if job.repository_id
-a link_to "CodeSet #{job.code_set_id} FIX MY LINK", admin_root_path if job.code_set_id
-a link_to "SlocSet #{job.sloc_set_id} FIX MY LINK", admin_root_path if job.sloc_set_id
+a link_to "Reschedule Job", reschedule_admin_project_job_path(project, job), method: :put
+span '|'
+a link_to "Rebuild People IMPLEMENT THIS FEATURE", rebuild_people_admin_project_job_path(project, job), method: :put
+span '|'
+a link_to "Delete Job", admin_project_job_path(project, job), method: :delete, data: {confirm: "Are you sure you want to delete this Job?"}
 

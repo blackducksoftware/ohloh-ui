@@ -34,6 +34,7 @@ en:
       i_use_this_title: "%{name} has been stacked by %{count} users. Click here to add it to your stack."
       settings: 'Settings'
       duplicate: 'Report Duplicate'
+      job: 'View Jobs'
     index:
       page_title: "Open Hub Projects"
       page_title_query: "%{query} - Open Hub Project Search"
