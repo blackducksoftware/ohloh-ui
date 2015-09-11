@@ -53,42 +53,42 @@ class LicenseTest < ActiveSupport::TestCase
   end
 
   describe 'from_param' do
-    it 'should match by name' do
+    it 'should match by vanity_url' do
       license = create(:license)
-      License.from_param(license.name).first.id.must_equal license.id
+      License.from_param(license.vanity_url).first.id.must_equal license.id
     end
   end
 
-  describe 'name' do
+  describe 'vanity_url' do
     it 'should validate uniqueness' do
       license_1 = create(:license)
-      license_2 = build(:license, name: license_1.name)
+      license_2 = build(:license, vanity_url: license_1.vanity_url)
       license_2.valid?.must_equal false
       license_2.errors.count.must_equal 2
-      license_2.errors[:name].must_equal ['has already been taken']
+      license_2.errors[:vanity_url].must_equal ['has already been taken']
     end
 
     it 'should validate length' do
-      license = build(:license, name: 'a')
+      license = build(:license, vanity_url: 'a')
       license.valid?.must_equal false
       license.errors.count.must_equal 2
-      license.errors[:name].must_equal ['is too short (minimum is 2 characters)']
+      license.errors[:vanity_url].must_equal ['is too short (minimum is 2 characters)']
     end
 
     it 'must allow valid characters' do
-      valid_names = %w(license-name license_name licenseé license_)
+      valid_vanity_urls = %w(license-name license_name licenseé license_)
 
-      valid_names.each do |name|
-        license = build(:license, name: name)
+      valid_vanity_urls.each do |vanity_url|
+        license = build(:license, vanity_url: vanity_url)
         license.wont_be :valid?
       end
     end
 
     it 'wont allow invalid characters' do
-      invalid_names = %w(license.name .license -license _license)
+      invalid_vanity_urls = %w(license.name .license -license _license)
 
-      invalid_names.each do |name|
-        license = build(:license, name: name)
+      invalid_vanity_urls.each do |vanity_url|
+        license = build(:license, vanity_url: vanity_url)
         license.wont_be :valid?
       end
     end

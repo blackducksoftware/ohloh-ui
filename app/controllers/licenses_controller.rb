@@ -4,7 +4,7 @@ class LicensesController < ApplicationController
   before_action :set_license, only: [:show, :edit, :update]
 
   def index
-    @licenses = License.filter_by(params[:query]).by_name.paginate(page: page_param, per_page: 30)
+    @licenses = License.filter_by(params[:query]).by_vanity_url.paginate(page: page_param, per_page: 30)
   end
 
   def new
@@ -35,7 +35,7 @@ class LicensesController < ApplicationController
   private
 
   def license_params
-    params.require(:license).permit(:nice_name, :name, :abbreviation, :url, :description, :locked)
+    params.require(:license).permit(:nice_name, :vanity_url, :abbreviation, :url, :description, :locked)
   end
 
   def set_license

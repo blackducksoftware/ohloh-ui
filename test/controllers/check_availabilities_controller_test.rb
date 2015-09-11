@@ -66,7 +66,7 @@ describe 'CheckAvailabilitiesController' do
 
   describe 'license' do
     it 'should return true when license is present' do
-      create(:license, name: 'Mario')
+      create(:license, vanity_url: 'Mario')
       xhr :get, :license, query: 'maRio'
 
       response.body.must_equal 'true'

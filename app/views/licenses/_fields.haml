@@ -11,14 +11,14 @@
     .input-prepend.pull-left
       %span.add-on= 'http://www.openhub.net/licenses/'
     - read_only = @license.persisted? ? true : false
-    = f.text_field :name, readonly: read_only, :class => 'check-availability col-md-6',
+    = f.text_field :vanity_url, readonly: read_only, :class => 'check-availability col-md-6',
       autocomplete: 'off',
-      'data-original-value' => License.find_by(id: @license).try(:name),
+      'data-original-value' => License.find_by(id: @license).try(:vanity_url),
       'data-ajax-path' => license_check_availabilities_path,
       'data-preview-base-url' => licenses_url
     = render 'shared/availability_preview'
-    - error_tag @license, :name, class: 'error url_name'
-    %p.help-block= t('.name_help')
+    - error_tag @license, :vanity_url, class: 'error url_name'
+    %p.help-block= t('.vanity_url_help')
 
 .control-group
   %label.control-label= t('.abbreviation')

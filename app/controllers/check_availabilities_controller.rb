@@ -14,7 +14,7 @@ class CheckAvailabilitiesController < ApplicationController
   end
 
   def license
-    render json: License.resolve_name(params[:query]).present?
+    render json: License.resolve_vanity_url(params[:query]).present?
   end
 
   private
