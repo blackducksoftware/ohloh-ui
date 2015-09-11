@@ -237,6 +237,17 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_unverified_account
+    redirect_for_email_activation || redirect_for_spammer_verification
+  end
+
+  def redirect_for_email_activation
+    return if current_user.access.activated?
+
+    flash[:notice] = t('accounts.non_activated_message')
+    redirect_to new_activation_resend_path
+  end
+
+  def redirect_for_spammer_verification
     return if current_user_is_verified?
     redirect_to new_account_verification_path(current_user)
   end

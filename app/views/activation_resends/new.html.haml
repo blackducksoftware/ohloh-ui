@@ -9,7 +9,7 @@
         .control-group
           = label_tag t('.email_address'), nil, class: 'control-label required'
           .controls
-            = text_field_tag :email
+            = text_field_tag :email, current_user.try(:email)
             .error= @errors
             %p.help-block= t('.enter_email')
 
