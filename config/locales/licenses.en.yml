@@ -9,7 +9,7 @@ en:
     fields:
       name: 'Name'
       url_name: 'Open Hub URL Name'
-      nice_name_help: 'This name must be unique for all licenses.'
+      name_help: 'This name must be unique for all licenses.'
       vanity_url_help: 'This is the URL address on Open Hub and must be unique. Only characters, numbers, dashes and underscores allowed.'
       abbreviation: 'Abbreviation'
       abbreviation_help: 'Enter a short abbreviation for the license.'

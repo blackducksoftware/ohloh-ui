@@ -97,7 +97,7 @@ module EditsHelper
   end
 
   def edit_explanation_projectlicense(edit)
-    t('edits.explanation_projectlicense', name: edit.target.license.try(:nice_name))
+    t('edits.explanation_projectlicense', name: edit.target.license.try(:name))
   end
 
   def edit_explanation_rsssubscription(edit)

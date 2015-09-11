@@ -38,17 +38,17 @@ class LicenseTest < ActiveSupport::TestCase
   end
 
   it '#short_name returns abbreviation if present' do
-    create(:license, nice_name: 'Foobar', abbreviation: 'Foo').short_name.must_equal 'Foo'
+    create(:license, name: 'Foobar', abbreviation: 'Foo').short_name.must_equal 'Foo'
   end
 
-  it '#short_name returns nice_name if no abbreviation is available' do
-    create(:license, nice_name: 'Foobar', abbreviation: nil).short_name.must_equal 'Foobar'
+  it '#short_name returns name if no abbreviation is available' do
+    create(:license, name: 'Foobar', abbreviation: nil).short_name.must_equal 'Foobar'
   end
 
   it '#autocomplete returns correct licenses' do
-    license_1 = create(:license, nice_name: 'AutocompleteMIT')
-    create(:license, nice_name: 'AutocompleteBSD')
-    license_3 = create(:license, nice_name: 'AutocompleteMit v2')
+    license_1 = create(:license, name: 'AutocompleteMIT')
+    create(:license, name: 'AutocompleteBSD')
+    license_3 = create(:license, name: 'AutocompleteMit v2')
     License.autocomplete('autocompletemit').map(&:id).sort.must_equal [license_1.id, license_3.id].sort
   end
 
@@ -94,20 +94,20 @@ class LicenseTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'nice_name' do
+  describe 'name' do
     it 'should validate uniqueness' do
       license_1 = create(:license)
-      license = build(:license, nice_name: license_1.nice_name)
+      license = build(:license, name: license_1.name)
       license.valid?.must_equal false
       license.errors.count.must_equal 2
-      license.errors[:nice_name].must_equal ['has already been taken']
+      license.errors[:name].must_equal ['has already been taken']
     end
 
     it 'should validate length' do
-      license = build(:license, nice_name: '')
+      license = build(:license, name: '')
       license.valid?.must_equal false
       license.errors.count.must_equal 2
-      license.errors[:nice_name].must_equal ['is too short (minimum is 1 character)']
+      license.errors[:name].must_equal ['is too short (minimum is 1 character)']
     end
   end
 

@@ -1,9 +1,9 @@
 .control-group
   %label.control-label.required= t('.name')
   .controls
-    = f.text_field :nice_name, class: 'col-md-11'
-    - error_tag @license, :nice_name
-    %p.help-block= t('.nice_name_help')
+    = f.text_field :name, class: 'col-md-11'
+    - error_tag @license, :name
+    %p.help-block= t('.name_help')
 
 .control-group
   %label.control-label.required= t('.url_name')

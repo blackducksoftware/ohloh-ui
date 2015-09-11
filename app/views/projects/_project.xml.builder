@@ -34,8 +34,8 @@ xml.project do
   xml.licenses do
     project.licenses.each do |license|
       xml.license do
+        xml.name license.name
         xml.vanity_url license.vanity_url
-        xml.nice_name license.nice_name
       end
     end
   end

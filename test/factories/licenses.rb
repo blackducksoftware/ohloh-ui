@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :license do
     vanity_url   { Faker::Lorem.word + rand(999_999).to_s }
     url          { Faker::Internet.url }
-    nice_name    { Faker::Lorem.word + rand(999_999).to_s }
+    name         { Faker::Lorem.word + rand(999_999).to_s }
     abbreviation { Faker::Hacker.abbreviation }
     description { Faker::Lorem.sentence }
     locked false

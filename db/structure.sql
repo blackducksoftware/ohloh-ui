@@ -1960,7 +1960,7 @@ ALTER SEQUENCE license_facts_id_seq OWNED BY license_facts.id;
 CREATE TABLE licenses (
     id integer NOT NULL,
     vanity_url text,
-    nice_name text,
+    name text,
     abbreviation text,
     url text,
     description text,
@@ -7894,6 +7894,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150615041336');
 INSERT INTO schema_migrations (version) VALUES ('20150701173333');
 
 INSERT INTO schema_migrations (version) VALUES ('20150911083411');
+
+INSERT INTO schema_migrations (version) VALUES ('20150911094444');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
