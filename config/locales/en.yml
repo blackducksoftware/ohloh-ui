@@ -373,7 +373,6 @@ en:
     oauth_applications:
       revoke_access:
         success: You have successfully revoked the authorization for %{name}
-  non_activated_message: Please verify your email address to help us communicate with you better. Click %{link} to resend the verification email.
   top_commit_volume_chart:
     message: '%{name} generated more than 50% of all commits during the past 12 months.'
 

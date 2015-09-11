@@ -24,7 +24,6 @@ class ApplicationController < ActionController::Base
   before_action :strip_query_param
   before_action :clear_reminder
   before_action :verify_api_access_for_xml_request, only: [:show, :index]
-  after_action :alert_non_activated_account, if: :logged_in?
 
   def initialize(*params)
     @page_context = {}
@@ -246,13 +245,6 @@ class ApplicationController < ActionController::Base
     current_user && current_user.access.verified?
   end
   helper_method :current_user_is_verified?
-
-  def alert_non_activated_account
-    return if current_user.access.activated?
-
-    flash[:notice] ||= t('non_activated_message',
-                         link: view_context.link_to(:here, new_activation_resend_path))
-  end
 
   def set_project_or_fail
     project_id = params[:project_id] || params[:id]
