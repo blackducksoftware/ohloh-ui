@@ -1,5 +1,6 @@
 en:
   accounts:
+    non_activated_message: Please verify your email address before making this change.
     unsubscribe_emails:
       title: 'You Have Been Unsubscribed'
       sad: 'We are sorry that emails from Open Hub were not helpful to you. You have been unsubscribed from all emails from Open Hub'

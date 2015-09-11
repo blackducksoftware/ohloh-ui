@@ -235,6 +235,16 @@ describe 'AccountsController' do
       must_redirect_to new_account_verification_path(account)
     end
 
+    it 'must redirect to email activation page when not activated' do
+      account = create(:account)
+      account.update!(activated_at: nil)
+      login_as account
+
+      get :edit, id: account.id
+
+      must_redirect_to new_activation_resend_path
+    end
+
     it 'must respond with unauthorized when account does not exist' do
       get :edit, id: :anything
       must_respond_with :redirect
