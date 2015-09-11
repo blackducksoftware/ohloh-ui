@@ -38,4 +38,10 @@ class NilAccountTest < ActiveSupport::TestCase
       nil_account.twitter_id?.must_be_nil
     end
   end
+
+  describe 'access' do
+    it 'must return access object for self' do
+      nil_account.access.class.must_equal Account::Access
+    end
+  end
 end
