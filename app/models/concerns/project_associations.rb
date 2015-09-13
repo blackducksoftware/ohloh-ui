@@ -11,6 +11,7 @@ module ProjectAssociations
     belongs_to :best_analysis, foreign_key: :best_analysis_id, class_name: :Analysis
     has_many :aliases, -> { where(deleted: false).where.not(preferred_name_id: nil) }
     has_many :contributions
+    has_many :top_contributors
     has_many :positions
     has_many :stack_entries, -> { where(deleted_at: nil) }
     has_many :stacks, -> { where(deleted_at: nil).where.not(arel_table[:account_id].eq(nil)) }, through: :stack_entries
