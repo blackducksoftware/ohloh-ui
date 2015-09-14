@@ -1,5 +1,6 @@
 class Job < ActiveRecord::Base
   belongs_to :project
+  belongs_to :repository
   belongs_to :slave
   belongs_to :job_status, foreign_key: 'status'
 

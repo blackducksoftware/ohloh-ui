@@ -1,7 +1,9 @@
 ActiveAdmin.register Job do
-  belongs_to :project, :finder => :find_by_url_name!
+  belongs_to :project, :finder => :find_by_url_name!, :optional => true
+  belongs_to :repository, :optional => true
   permit_params :status, :priority, :wait_until, :current_step_at, :notes
   menu :if => proc{false} # work around for ActiveAdmin::NoMenuError
+  filter :slave, only: :index
 
   index do
     column :type
@@ -20,9 +22,12 @@ ActiveAdmin.register Job do
         span link_to job.slave.hostname, admin_slafe_path(job.slave)
       end
     end
-    column "Job Owner" do |job|
+    column "Owners" do |job|
       if job.project_id
-        link_to job.project.name, project_path(job.project)
+        span link_to job.project.name, project_path(job.project)
+      end
+      if job.repository_id
+        span link_to "Repository #{job.repository_id}", admin_repository_path(job.repository_id)
       end
     end
   end
@@ -34,16 +39,29 @@ ActiveAdmin.register Job do
   member_action :reschedule, method: :put do
     p "*********************** PDP Reschedule"
     flash[:success] = "Job has been rescheduled."
-    redirect_to admin_project_job_path(params['project_id'], params['id'])
+    #redirect_to admin_project_job_path(params['project_id'], params['id'])
+    redirect_to :back
   end
 
   member_action :rebuild_people, method: :put do
     p "*********************** PDP rebuild_people"
     flash[:success] = "People records for this project have been rebuilt"
-    redirect_to admin_project_job_path(params['project_id'], params['id'])
+    #redirect_to admin_project_job_path(params['project_id'], params['id'])
+    redirect_to :back
   end
 
   controller do
+    def scoped_collection
+      if params['project_id']
+        project = Project.find_by_url_name(params['project_id'])
+        # This preserves the CollectionProxy class
+        project.jobs << project.repositories.collect(&:jobs).first
+      elsif params['id']
+        #Job.find(params['id'])
+        Job
+      end
+    end
+
     def update
       Job.find(params['id']).update_attributes(permitted_params['job'])
       flash[:success] = "Priority has been updated"
@@ -51,7 +69,14 @@ ActiveAdmin.register Job do
      end
 
     def destroy
+      job = Job.find(params['id'])
       p "**************** DESTROY"
+      flash[:success] = "Job has been deleted"
+      if job.project_id
+        redirect_to admin_project_jobs_path(job.project)
+      elsif job.repository_id
+        redirect_to admin_repository_path(job.repository)
+      end
     end
   end
 end

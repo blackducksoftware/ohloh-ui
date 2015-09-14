@@ -1,6 +1,21 @@
 Rails.application.routes.draw do
   get 'admin/comments' => redirect('/404')
   ActiveAdmin.routes(self)
+  namespace :admin do
+    resources :jobs
+    resources :jobs do
+      put :reschedule, on: :member
+    end
+    resources :projects do
+      resources :jobs
+      resources :complete_jobs
+    end
+    resources :repositories do
+      resources :jobs
+      resources :complete_jobs
+    end
+  end
+
   root to: 'home#index', defaults: { format: 'html' }
 
   use_doorkeeper do

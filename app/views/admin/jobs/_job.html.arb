@@ -20,9 +20,9 @@ render :partial => 'job_links'
 
 render :partial => 'job_priority'
 
-a link_to "Reschedule Job", reschedule_admin_project_job_path(project, job), method: :put
+a link_to "Reschedule Job", reschedule_admin_job_path(job), method: :put
 span '|'
-a link_to "Rebuild People IMPLEMENT THIS FEATURE", rebuild_people_admin_project_job_path(project, job), method: :put
+a link_to "Rebuild People IMPLEMENT THIS FEATURE", rebuild_people_admin_job_path(job), method: :put
 span '|'
-a link_to "Delete Job", admin_project_job_path(project, job), method: :delete, data: {confirm: "Are you sure you want to delete this Job?"}
+a link_to "Delete Job", admin_job_path(job), method: :delete, data: {confirm: "Are you sure you want to delete this Job?"}
 
