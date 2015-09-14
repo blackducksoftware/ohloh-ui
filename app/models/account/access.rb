@@ -17,6 +17,7 @@ class Account::Access < OhDelegator::Base
   def activated?
     account.activated_at.present?
   end
+  alias_method :email_verified?, :activated?
 
   def disabled?
     level.to_i < DEFAULT
@@ -51,6 +52,6 @@ class Account::Access < OhDelegator::Base
   end
 
   def verified?
-    mobile_verified? && activated?
+    mobile_verified? && email_verified?
   end
 end

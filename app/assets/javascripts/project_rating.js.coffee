@@ -15,7 +15,7 @@ App.ProjectRating =
           style: star_style
           instantGratification: true
           curvalue: $(this).attr('score')
-          read_only: $('.needs_login, .needs_verification').length
+          read_only: $('.needs_login, .needs_verification, .needs_email_verification').length
           a_klass: if $(this).hasClass('needs_login') then 'needs_login' else ''
           success: (data) ->
             $('#rating_spinner').hide()
