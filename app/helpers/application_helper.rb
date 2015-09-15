@@ -152,6 +152,7 @@ module ApplicationHelper
   def needs_login_or_verification_or_default(default_class = nil)
     return default_class if logged_in? && current_user_is_verified?
     return :needs_login unless logged_in?
+    return :needs_email_verification unless current_user.access.email_verified?
     :needs_verification
   end
 end

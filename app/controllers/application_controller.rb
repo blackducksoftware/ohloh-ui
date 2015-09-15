@@ -248,7 +248,7 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_for_spammer_verification
-    return if current_user_is_verified?
+    return if current_user && current_user.access.mobile_verified?
     redirect_to new_account_verification_path(current_user)
   end
 
