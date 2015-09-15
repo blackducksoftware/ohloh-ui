@@ -18,3 +18,5 @@ set :copy_exclude, ['.git']
 
 # Defaults to false. If true, it's skip migration if files in db/migrate not modified
 set :conditionally_migrate, true
+
+before 'deploy:check:linked_files', 'deploy:update_configuration'
