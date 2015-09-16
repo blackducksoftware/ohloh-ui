@@ -21,7 +21,7 @@ module ProjectSearchables
 
     def collect_tags_licenses_and_language
       tag_list + main_language.to_s +
-        licenses.pluck(:name).uniq.compact.join(' ')
+        licenses.pluck(:vanity_url).uniq.compact.join(' ')
     end
 
     def split_name_if_camecase_present

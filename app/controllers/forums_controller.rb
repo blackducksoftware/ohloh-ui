@@ -55,7 +55,7 @@ class ForumsController < ApplicationController
   end
 
   def forum_params
-    params.require(:forum).permit(:name, :position)
+    params.require(:forum).permit(:name, :position, :description)
   end
 
   def find_most_recent_topics_from_forum
