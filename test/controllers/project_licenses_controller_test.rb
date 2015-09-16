@@ -30,13 +30,13 @@ class ProjectLicensesControllerTest < ActionController::TestCase
     must_select 'a.new-license.disabled', 0
   end
 
-  it 'index sort licenses by name' do
+  it 'index sort licenses by vanity_url' do
     project = create(:project)
     license_1 = create(:project_license, project: project)
     license_2 = create(:project_license, project: project)
     license_3 = create(:project_license, project: project)
 
-    sorted_licenses = [license_1, license_2, license_3].sort { |a, b| a.license.name <=> b.license.name }
+    sorted_licenses = [license_1, license_2, license_3].sort { |a, b| a.license.vanity_url <=> b.license.vanity_url }
 
     login_as nil
 

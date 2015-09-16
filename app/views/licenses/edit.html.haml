@@ -1,10 +1,10 @@
-- content_for(:html_title) { t('.title', name: @license.nice_name) }
+- content_for(:html_title) { t('.title', name: @license.name) }
 
 #license
   %h1
     = link_to t('.license'), licenses_path
     &nbsp;:
-    = link_to truncate(@license.nice_name, length: 42), license_url(@license), title: @license.nice_name
+    = link_to truncate(@license.name, length: 42), license_url(@license), title: @license.name
   %h2= t('.edit_license')
 
 .col-md-10

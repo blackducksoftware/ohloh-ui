@@ -103,7 +103,7 @@ class ComparesControllerTest < ActionController::TestCase
     project1 = create(:project, name: 'Phil')
     manager = create(:account, name: 'Larry')
     create(:manage, account: manager, target: project1)
-    license = create(:license, name: 'Peter')
+    license = create(:license, vanity_url: 'Peter')
     create(:project_license, project: project1, license: license)
     create(:factoid, analysis: project1.best_analysis, type: 'FactoidActivityIncreasing')
     project2 = create(:project, name: 'Jerry')
