@@ -80,9 +80,10 @@ describe ForumsController do
 
   it 'admin update' do
     login_as admin
-    put :update, id: forum.id, forum: { name: 'Ruby vs. Python vs. Javascript deathmatch' }
+    put :update, id: forum.id, forum: { name: 'Ruby vs. Python vs. Javascript deathmatch', description: 'Ruby' }
     forum.reload
     forum.name.must_equal 'Ruby vs. Python vs. Javascript deathmatch'
+    forum.description.must_equal 'Ruby'
   end
 
   it 'admin fails to update' do
