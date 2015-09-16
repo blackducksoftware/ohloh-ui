@@ -9,7 +9,7 @@ role :db, %w(deployer@oh-stage-utility-2), primary: true
 set :passenger_roles, [:web, :web_1, :web_2, :web_3, :web_5, :web_7]
 set :rails_env, 'staging'
 
-# shared/openhub-config contains environment specific dotenv overrides.
-set :linked_files, %w(openhub-config/.env.staging)
+# shared/.env.staging contains environment specific dotenv overrides.
+set :linked_files, %w(.env.staging)
 
 set :assets_roles, [:web, :web_1, :web_2, :web_3, :web_5, :web_7]

@@ -5,6 +5,6 @@ role :web, ['deployer@prd-oh-web01.dc2.lan', 'deployer@prd-oh-web02.dc2.lan',
 set :passenger_roles, [:web]
 set :rails_env, 'production'
 
-set :linked_files, %w(openhub-config/.env.production)
+set :linked_files, %w(.env.production)
 
 set :assets_roles, [:web]

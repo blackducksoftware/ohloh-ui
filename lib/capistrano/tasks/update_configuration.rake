@@ -9,6 +9,9 @@ namespace :deploy do
       else
         execute(:git, :clone, 'git@github.com:blackducksoftware/openhub-config', config_dir_path)
       end
+
+      config_path = config_dir_path.join('.env.*')
+      execute(:cp, config_path, shared_path)
     end
   end
 end
