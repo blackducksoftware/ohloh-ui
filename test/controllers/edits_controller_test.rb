@@ -102,6 +102,12 @@ describe EditsController do
       must_respond_with :ok
     end
 
+    it 'index should be rendered for logged in user' do
+      login_as create(:account)
+      get :index, organization_id: @organization.to_param
+      must_respond_with :ok
+    end
+
     it 'index should support query param' do
       login_as nil
       @organization.editor_account = create(:account)
