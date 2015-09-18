@@ -1,5 +1,7 @@
 :ruby
   @project ||= Project.new
+  licenses = @project.licenses if @project.persisted?
+  licenses = License.find(@project.project_licenses.map(&:license_id)) unless @project.persisted?
   content_for(:html_title) { t('.page_title', name: @project.name.blank? ? 'New Project' : @project.name) }
   page_context[:select_top_menu_nav] = 'select_projects'
 
@@ -62,7 +64,7 @@
             .control-group
               %label.control-label= t('.chosen_licenses')
               .controls.chosen_licenses
-                - @project.licenses.each do |license|
+                - licenses.each do |license|
                   .license.span5.no_margin_left
                     .col-md-3.no_margin_left
                       = license.name
@@ -71,7 +73,7 @@
                         %i.icon-trash= t '.remove'
                     %input{ type: 'hidden', value: license.id,
                             name: 'project[project_licenses_attributes][][license_id]' }
-                - if @project.licenses.empty?
+                - if licenses.empty?
                   .license.inset= t('.none')
             .clearfix
             .control-group.clear_left
