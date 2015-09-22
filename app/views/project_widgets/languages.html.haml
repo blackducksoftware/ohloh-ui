@@ -8,7 +8,7 @@
 
 .languages
   %h2= t('.languages')
-  - if analysis
+  - if analysis.present?
     - colors = language_percentages.map { |_, _, attr| attr[:color] }
     .analysis
       = image_tag languages_project_analysis_url(project_id: project.to_param, id: 'latest')
