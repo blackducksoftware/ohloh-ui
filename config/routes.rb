@@ -44,7 +44,7 @@ Rails.application.routes.draw do
 
   resources :tags, only: [:index, :show]
 
-  resources :accounts do
+  resources :accounts, except: [:new, :create] do
     resources :api_keys, constraints: { format: :html }
     resources :projects, only: [:index]
     resources :positions, only: [:index] do
@@ -108,7 +108,7 @@ Rails.application.routes.draw do
     get 'doorkeeper/oauth_applications/:id/revoke_access' =>
       'doorkeeper/oauth_applications#revoke_access', as: :revoke_oauth_access
 
-    resources :verifications, module: :accounts do
+    resources :verifications, only: [], module: :accounts do
       get :generate, on: :collection
     end
   end
