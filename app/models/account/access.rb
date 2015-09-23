@@ -48,6 +48,7 @@ class Account::Access < OhDelegator::Base
   end
 
   def mobile_or_oauth_verified?
+    return if account.nil?
     account.verifications.exists?
   end
 
