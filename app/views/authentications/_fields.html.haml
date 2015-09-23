@@ -1,0 +1,20 @@
+.row-fluid
+  .well.well-large.col-md-8.col-md-offset-2.margin_top_20
+    %p
+      = t('registrations.fields.mobile_verification_hint')
+
+    %button.btn.btn-primary#digits-sign-up
+      %i.fa.fa-twitter
+        = t('.verify_using_phone_number')
+
+    OR
+
+    %button.btn.btn-primary#github-verification{ 'data-client-id' => ENV['GITHUB_CLIENT_ID'],
+                                                 'data-redirect-uri' => ENV['GITHUB_REDIRECT_URI'] }
+      %i.fa.fa-github
+        = t('.verify_using_github')
+
+= form_for @account, url: digits_callback_authentications_path, html: { method: 'POST', class: 'digits-verification' } do |f|
+  = f.fields_for :twitter_digits_verification do |digits_form|
+    = digits_form.hidden_field :service_provider_url, id: :service_provider_url
+    = digits_form.hidden_field :credentials, id: :credentials

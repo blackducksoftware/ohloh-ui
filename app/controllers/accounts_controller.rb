@@ -29,21 +29,6 @@ class AccountsController < ApplicationController
     redirect_to account_path(current_user)
   end
 
-  def new
-    @account = Account.new
-  end
-
-  def create
-    @account = Account.new(account_params)
-
-    if @account.save
-      session[:account_id] = @account.id
-      redirect_to new_account_verification_path(@account)
-    else
-      render :new
-    end
-  end
-
   def update
     if @account.update(account_params)
       redirect_to account_path(@account), notice: t('.success')

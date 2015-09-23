@@ -19,5 +19,8 @@ module AccountAssociations
     has_many :manages, -> { where.not(approved_by: nil).where(deleted_by: nil, deleted_at: nil) }
     has_many :all_manages, -> { where(deleted_by: nil, deleted_at: nil) }, class_name: :Manage
     has_many :edits
+    has_many :verifications
+    has_one :github_verification
+    has_one :twitter_digits_verification
   end
 end
