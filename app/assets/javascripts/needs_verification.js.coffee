@@ -1,7 +1,7 @@
 class App.NeedsVerification
   constructor: ($element)->
     $element.click (event) ->
-      url = '/accounts/me/verifications/new?'  # new_account_verification_path
+      url = '/authentications/new?'      # new_authentication_path
       thickboxHelper = new App.ThickboxHelper()
       tb_show 'Mobile Verification Required', thickboxHelper.addParams(url), false
 

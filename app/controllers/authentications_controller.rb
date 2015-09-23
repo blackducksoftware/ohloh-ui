@@ -5,6 +5,7 @@ class AuthenticationsController < ApplicationController
 
   def new
     @account.build_twitter_digits_verification
+    render partial: 'fields' if request.xhr?
   end
 
   def github_callback

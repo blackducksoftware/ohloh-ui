@@ -7,7 +7,9 @@
       %i.fa.fa-twitter
         = t('.verify_using_phone_number')
 
+    %br
     OR
+    %br
 
     %button.btn.btn-primary#github-verification{ 'data-client-id' => ENV['GITHUB_CLIENT_ID'],
                                                  'data-redirect-uri' => ENV['GITHUB_REDIRECT_URI'] }
@@ -18,3 +20,10 @@
   = f.fields_for :twitter_digits_verification do |digits_form|
     = digits_form.hidden_field :service_provider_url, id: :service_provider_url
     = digits_form.hidden_field :credentials, id: :credentials
+
+:javascript
+  digits = new App.TwitterDigits()
+  digits.authenticate($('.digits-verification'))
+
+  githubAuth = new App.GithubAuth()
+  githubAuth.authenticate($('#github-verification'))
