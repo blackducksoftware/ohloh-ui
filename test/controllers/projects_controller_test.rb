@@ -292,7 +292,7 @@ describe 'ProjectsController' do
     get :new
     must_respond_with :redirect
     must_redirect_to new_session_path
-    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_account_path)
+    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_registration_path)
   end
 
   it 'new should render for logged users' do
@@ -307,7 +307,7 @@ describe 'ProjectsController' do
     post :check_forge, codelocation: 'http://cnn.com'
     must_respond_with :redirect
     must_redirect_to new_session_path
-    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_account_path)
+    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_registration_path)
   end
 
   it 'check_forge should gracefully handle duplicate projects detected' do
@@ -361,7 +361,7 @@ describe 'ProjectsController' do
     post :create, project: { name: 'Fail', url_name: 'fail', description: 'It fails.' }
     must_respond_with :redirect
     must_redirect_to new_session_path
-    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_account_path)
+    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_registration_path)
   end
 
   it 'create should persist a valid project to the database' do
@@ -508,7 +508,7 @@ describe 'ProjectsController' do
     put :update, id: project.id, project: { name: 'KoolOSSProject' }
     must_respond_with :redirect
     must_redirect_to new_session_path
-    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_account_path)
+    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_registration_path)
     project.reload.name.wont_equal 'KoolOSSProject'
   end
 
