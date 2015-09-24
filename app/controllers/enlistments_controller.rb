@@ -33,7 +33,7 @@ class EnlistmentsController < SettingsController
     return render :new, status: :unprocessable_entity unless @repository.valid?
     save_or_update_repository
     create_enlistment
-    @first_enlistment = true if @project.enlistments.count == 1
+    flash[:show_first_enlistment_alert] = true if @project.enlistments.count == 1
     set_flash_message
     redirect_to project_enlistments_path(@project)
   end
