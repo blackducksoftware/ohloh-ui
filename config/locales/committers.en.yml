@@ -20,7 +20,7 @@ en:
       nothing_to_claim: 'Nothing to claim'
       save_claim: 'Save Claim'
     index:
-      title: "%{name}Unclaimed Committer ID's - Open Hub"
+      title: "Unclaimed Committer IDs %{text}"
       people: 'People'
       heading: "Unclaimed Committer ID's"
       see_all_committers: "See All Unclaimed Committer ID's"
