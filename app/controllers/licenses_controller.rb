@@ -4,7 +4,7 @@ class LicensesController < ApplicationController
   before_action :set_license, only: [:show, :edit, :update]
 
   def index
-    @licenses = License.filter_by(params[:query]).by_vanity_url.paginate(page: page_param, per_page: 30)
+    @licenses = License.active.filter_by(params[:query]).by_vanity_url.paginate(page: page_param, per_page: 30)
   end
 
   def new
@@ -39,7 +39,7 @@ class LicensesController < ApplicationController
   end
 
   def set_license
-    @license = License.from_param(params[:id]).take
+    @license = License.active.from_param(params[:id]).take
     fail ParamRecordNotFound unless @license
     @license.editor_account = current_user
   end

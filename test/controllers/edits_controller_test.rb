@@ -170,5 +170,13 @@ describe EditsController do
       must_select "#edit_#{PropertyEdit.where(target: @license, value: 'Blah!').first.id}", true
       must_select "#edit_#{PropertyEdit.where(target: @license, value: 'Wat?').first.id}", false
     end
+
+    it 'must work for deleted license' do
+      @license.destroy
+
+      get :index, license_id: @license.to_param
+
+      must_respond_with :ok
+    end
   end
 end
