@@ -118,12 +118,12 @@ describe 'AccountsController' do
   describe 'edit' do
     it 'must redirect to verification page when not verified' do
       account = create(:account)
-      account.update!(twitter_id: '')
+      account.verifications.destroy_all
       login_as account
 
       get :edit, id: account.id
 
-      must_redirect_to new_account_verification_path(account)
+      must_redirect_to new_authentication_path
     end
 
     it 'must redirect to email activation page when not activated' do
