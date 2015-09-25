@@ -45,11 +45,19 @@ class LicenseTest < ActiveSupport::TestCase
     create(:license, name: 'Foobar', abbreviation: nil).short_name.must_equal 'Foobar'
   end
 
-  it '#autocomplete returns correct licenses' do
-    license_1 = create(:license, name: 'AutocompleteMIT')
-    create(:license, name: 'AutocompleteBSD')
-    license_3 = create(:license, name: 'AutocompleteMit v2')
-    License.autocomplete('autocompletemit').map(&:id).sort.must_equal [license_1.id, license_3.id].sort
+  describe 'autocomplete' do
+    it 'must return correct licenses' do
+      license_1 = create(:license, name: 'AutocompleteMIT')
+      create(:license, name: 'AutocompleteBSD')
+      license_3 = create(:license, name: 'AutocompleteMit v2')
+      License.autocomplete('autocompletemit').map(&:id).sort.must_equal [license_1.id, license_3.id].sort
+    end
+
+    it 'must avoid deleted licenses' do
+      license = create(:license)
+      license.destroy
+      License.autocomplete(license.name).must_be :empty?
+    end
   end
 
   describe 'from_param' do

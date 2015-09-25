@@ -83,5 +83,14 @@ describe 'CheckAvailabilitiesController' do
 
       response.body.must_equal 'false'
     end
+
+    it 'must return false if license is deleted' do
+      license = create(:license)
+      license.destroy
+
+      xhr :get, :license, query: license.vanity_url
+
+      response.body.must_equal 'false'
+    end
   end
 end
