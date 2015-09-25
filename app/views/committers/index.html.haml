@@ -1,5 +1,9 @@
 :ruby
-  content_for(:html_title) { t('.title', name: current_user.nil? ? nil : "#{current_user.name}  : ") }
+  content_for(:html_title) do
+    text = params[:query].present? ? ": #{ params[:query] }" : '- Open Hub'
+    t('.title', text: text)
+  end
+
   @account = current_user
   if params[:flow] == 'account'
     account_context

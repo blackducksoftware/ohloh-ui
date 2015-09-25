@@ -34,6 +34,20 @@ describe 'CommittersControllerTest' do
       must_respond_with :ok
       must_render_template :index
     end
+
+    it 'must set title to Open Hub when no query string is present' do
+      get :index
+
+      must_select 'title', I18n.t('committers.index.title', text: '- Open Hub')
+    end
+
+    it 'must set title to query string when it is present' do
+      query = Faker::Lorem.word
+
+      get :index, query: query
+
+      must_select 'title', I18n.t('committers.index.title', text: ": #{ query }")
+    end
   end
 
   describe 'show' do
