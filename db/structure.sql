@@ -425,7 +425,6 @@ CREATE TABLE accounts (
     organization_id integer,
     affiliation_type text DEFAULT 'unaffiliated'::text NOT NULL,
     organization_name text,
-    twitter_id character varying,
     CONSTRAINT accounts_email_check CHECK ((length(email) >= 3)),
     CONSTRAINT accounts_login_check CHECK ((length(login) >= 3))
 );
@@ -8137,6 +8136,10 @@ INSERT INTO schema_migrations (version) VALUES ('20150916192949');
 INSERT INTO schema_migrations (version) VALUES ('20150918080726');
 
 INSERT INTO schema_migrations (version) VALUES ('20150921170458');
+
+INSERT INTO schema_migrations (version) VALUES ('20150925101230');
+
+INSERT INTO schema_migrations (version) VALUES ('20150925101715');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
