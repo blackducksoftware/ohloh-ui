@@ -103,20 +103,6 @@ describe 'AccountsController' do
     end
   end
 
-  describe 'new' do
-    it 'must respond with success' do
-      get :new
-
-      must_respond_with :success
-    end
-
-    it 'must redirect to maintenance during read only mode' do
-      ApplicationController.any_instance.stubs(:read_only_mode?).returns(true)
-      get :new
-      must_redirect_to maintenance_path
-    end
-  end
-
   describe 'disabled' do
     it 'must respond with success when queried via html' do
       get :disabled, id: create(:spammer).to_param

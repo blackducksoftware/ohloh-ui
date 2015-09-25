@@ -6,7 +6,7 @@ class AccountsController < ApplicationController
   before_action :session_required, :redirect_unverified_account, only: [:edit, :destroy, :confirm_delete, :me]
   before_action :set_account, only: [:destroy, :show, :update, :edit, :confirm_delete, :disabled, :settings]
   before_action :redirect_if_disabled, only: [:show, :update, :edit]
-  before_action :disabled_during_read_only_mode, only: [:new, :create, :edit, :update]
+  before_action :disabled_during_read_only_mode, only: [:edit, :update]
   before_action :account_context, only: [:edit, :update, :confirm_delete]
   before_action :must_own_account, only: [:edit, :update, :confirm_delete]
   before_action :find_claimed_people, only: :index
