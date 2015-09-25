@@ -8,7 +8,7 @@
   = project_analysis_timestamp(@project)
 .clearfix
 
-- if @first_enlistment
+- if flash[:show_first_enlistment_alert]
   .alert.alert-info.alert-block
     %h4.alert-heading.nomargin= t('.alert_info_heading', name: @project.name)
     %p= t('.alert_info_description')
