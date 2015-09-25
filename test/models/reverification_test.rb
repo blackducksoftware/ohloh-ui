@@ -41,17 +41,15 @@ class ReverificationTest < ActiveSupport::TestCase
       account.reverification.twitter_reverification_sent_at.class.must_equal ActiveSupport::TimeWithZone
     end
 
-    # TODO: Ask the team how to test this.
-    # it 'should raise an exception if the email could not be delivered' do
-    #   account = build(:account, email: 'notarealemail@somedomain.com', salt: Faker::Lorem.words(15), twitter_id: nil)
-    #   account.save(validate: false)
-    #   ActionMailer::Base.deliveries.clear
-    #   Reverification.send_reverification_emails(0)
-    #   ActionMailer::Base.deliveries.size.must_equal 0
-    #   FAILED_EMAILS.size.must_equal 1
-    #   account.reverification.twitter_reverification_sent_at.class.must_not_equal ActiveSupport::TimeWithZone
-    #   account.reverification.notification_counter.must_equal 0
-    # end
+    it 'should raise an exception if the email could not be delivered' do
+      account = build(:account, email: 'notarealemail@somedomain.com', salt: Faker::Lorem.words(15), twitter_id: nil)
+      account.save(validate: false)
+      ActionMailer::Base.deliveries.clear
+      Reverification.stubs(:send_reverification_emails).with(0)
+      AccountMailer.stubs(:reverification).with(account).raises(Net::SMTPError)
+      ActionMailer::Base.deliveries.size.must_equal 0
+      account.reverification.must_equal nil
+    end
   end
 
   describe 'check_account_status' do
@@ -67,6 +65,20 @@ class ReverificationTest < ActiveSupport::TestCase
         reverification = Reverification.first
         reverification.reminder_sent_at.class.must_equal ActiveSupport::TimeWithZone
         reverification.notification_counter.must_equal 1
+      end
+    end
+
+    it 'should raise an exception if the one week leftemail could not be delivered' do
+      reverification = create(:reverification)
+      initial_notification = reverification.twitter_reverification_sent_at
+      ActionMailer::Base.deliveries.clear
+      Timecop.freeze(initial_notification + 20.days) do
+        Reverification.stubs(:check_account_status)
+        AccountMailer.stubs(:one_week_left).with(reverification.account).raises(Net::SMTPError)
+        ActionMailer::Base.deliveries.size.must_equal 0
+        reverification = Reverification.first
+        reverification.reminder_sent_at.must_equal nil
+        reverification.notification_counter.must_equal 0
       end
     end
 
@@ -89,6 +101,23 @@ class ReverificationTest < ActiveSupport::TestCase
       end
     end
 
+    it 'should raise an exception if the one day left email could not be delivered' do
+      reverification = create(:reverification,
+                              twitter_reverification_sent_at: Time.now.utc,
+                              reminder_sent_at: Time.now.utc + 20.days,
+                              notification_counter: 1)
+      first_reminder_sent_at = reverification.reminder_sent_at
+      ActionMailer::Base.deliveries.clear
+      Timecop.freeze(first_reminder_sent_at + 9.days) do
+        Reverification.stubs(:check_account_status)
+        AccountMailer.stubs(:one_day_left).with(reverification.account).raises(Net::SMTPError)
+        ActionMailer::Base.deliveries.size.must_equal 0
+        reverification = Reverification.first
+        reverification.reminder_sent_at.must_equal first_reminder_sent_at
+        reverification.notification_counter.must_equal 1
+      end
+    end
+
     it 'should flag an account as spam once the time limit criteria has been met' do
       reverification = create(:reverification,
                               reminder_sent_at: Time.now.utc + 29.days,
@@ -105,12 +134,29 @@ class ReverificationTest < ActiveSupport::TestCase
       end
     end
 
+    it 'should raise an exception if the mark as spam email could not be delivered' do
+      reverification = create(:reverification,
+                              twitter_reverification_sent_at: Time.now.utc,
+                              reminder_sent_at: Time.now.utc + 29.days,
+                              notification_counter: 2)
+      reminder_sent_at = reverification.reminder_sent_at
+      ActionMailer::Base.deliveries.clear
+      Timecop.freeze(reminder_sent_at + 1.day) do
+        Reverification.stubs(:check_account_status)
+        AccountMailer.stubs(:mark_as_spam).with(reverification.account).raises(Net::SMTPError)
+        ActionMailer::Base.deliveries.size.must_equal 0
+        reverification = Reverification.first
+        reverification.account.level.must_equal 0
+        reverification.notification_counter.must_equal 2
+      end
+    end
+
     it 'should send the correct notification one month prior to account deletion' do
       reverification = create(:reverification,
                               reminder_sent_at: Time.now.utc,
                               notification_counter: 3)
       ActionMailer::Base.deliveries.clear
-      Timecop.freeze(Time.now.utc.to_datetime + 60) do
+      Timecop.freeze(Time.now.utc + 60.days) do
         Reverification.check_account_status
         ActionMailer::Base.deliveries.size.must_equal 1
         translation = I18n.t('.account_mailer.one_month_left_before_deletion.subject')
@@ -118,6 +164,20 @@ class ReverificationTest < ActiveSupport::TestCase
         reverification = Reverification.first
         reverification.reminder_sent_at.class.must_equal ActiveSupport::TimeWithZone
         reverification.notification_counter.must_equal 4
+      end
+    end
+
+    it 'should raise an exception if the one month before deletion email could not be delivered' do
+      reverification = create(:reverification,
+                              reminder_sent_at: Time.now.utc,
+                              notification_counter: 3)
+      ActionMailer::Base.deliveries.clear
+      Timecop.freeze(Time.now.utc + 60.days) do
+        Reverification.stubs(:check_account_status)
+        AccountMailer.stubs(:one_month_left_before_deletion).with(reverification.account).raises(Net::SMTPError)
+        ActionMailer::Base.deliveries.size.must_equal 0
+        reverification = Reverification.first
+        reverification.notification_counter.must_equal 3
       end
     end
 
@@ -134,6 +194,20 @@ class ReverificationTest < ActiveSupport::TestCase
         reverification = Reverification.first
         reverification.reminder_sent_at.class.must_equal ActiveSupport::TimeWithZone
         reverification.notification_counter.must_equal 5
+      end
+    end
+
+    it 'should raise an exception if the one month before deletion email could not be delivered' do
+      reverification = create(:reverification,
+                              reminder_sent_at: Time.now.utc,
+                              notification_counter: 4)
+      ActionMailer::Base.deliveries.clear
+      Timecop.freeze(Time.now.utc + 29.days) do
+        Reverification.stubs(:check_account_status)
+        AccountMailer.stubs(:one_day_left_before_deletion).with(reverification.account).raises(Net::SMTPError)
+        ActionMailer::Base.deliveries.size.must_equal 0
+        reverification = Reverification.first
+        reverification.notification_counter.must_equal 4
       end
     end
 
