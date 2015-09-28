@@ -1,8 +1,5 @@
 :ruby
-  content_for(:html_title) do
-    text = params[:query].present? ? ": #{ params[:query] }" : '- Open Hub'
-    t('.title', text: text)
-  end
+  content_for(:html_title) { html_title }
 
   @account = current_user
   if params[:flow] == 'account'
