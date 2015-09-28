@@ -36,6 +36,14 @@ describe 'LicensesControllerTest' do
       must_respond_with :ok
       must_render_template :show
     end
+
+    it 'must avoid deleted license' do
+      @license.destroy
+
+      get :show, id: @license.vanity_url
+
+      must_respond_with :not_found
+    end
   end
 
   describe 'new' do

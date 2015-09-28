@@ -13,11 +13,10 @@ class License < ActiveRecord::Base
   filterable_by ['licenses.vanity_url', 'licenses.description', 'licenses.url', 'licenses.abbreviation',
                  'licenses.name']
 
+  scope :active, -> { where(deleted: false) }
   scope :by_vanity_url, -> { order(:vanity_url) }
   scope :from_param, ->(vanity_url) { where(vanity_url: vanity_url) }
   scope :resolve_vanity_url, ->(vanity_url) { where('lower(vanity_url) = ?', vanity_url.downcase) }
-
-  default_scope { where(deleted: false) }
 
   def to_param
     vanity_url
@@ -37,7 +36,7 @@ class License < ActiveRecord::Base
 
   class << self
     def autocomplete(term)
-      License.select([:name, :id]).where(['lower(name) LIKE ?', "#{term.downcase}%"]).limit(10)
+      License.active.select([:name, :id]).where(['lower(name) LIKE ?', "#{term.downcase}%"]).limit(10)
     end
   end
 end
