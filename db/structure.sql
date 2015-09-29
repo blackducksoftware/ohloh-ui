@@ -425,7 +425,6 @@ CREATE TABLE accounts (
     organization_id integer,
     affiliation_type text DEFAULT 'unaffiliated'::text NOT NULL,
     organization_name text,
-    twitter_id character varying,
     CONSTRAINT accounts_email_check CHECK ((length(email) >= 3)),
     CONSTRAINT accounts_login_check CHECK ((length(login) >= 3))
 );
@@ -529,20 +528,6 @@ CREATE SEQUENCE aliases_id_seq
 --
 
 ALTER SEQUENCE aliases_id_seq OWNED BY aliases.id;
-
-
---
--- Name: aliases1; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE aliases1 (
-    id integer DEFAULT nextval('aliases_id_seq'::regclass) NOT NULL,
-    project_id integer NOT NULL,
-    commit_name_id integer NOT NULL,
-    preferred_name_id integer NOT NULL,
-    deleted boolean DEFAULT false NOT NULL,
-    CONSTRAINT alias_noop_check CHECK ((preferred_name_id <> commit_name_id))
-);
 
 
 --
@@ -1049,7 +1034,8 @@ CREATE TABLE code_sets (
     best_sloc_set_id integer,
     as_of integer,
     logged_at timestamp without time zone,
-    clump_count integer DEFAULT 0
+    clump_count integer DEFAULT 0,
+    fetched_at timestamp without time zone
 );
 
 
@@ -1952,59 +1938,6 @@ CREATE TABLE jobs (
 
 
 --
--- Name: jobs_backup; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE jobs_backup (
-    id integer,
-    project_id integer,
-    repository_id integer,
-    status integer,
-    type text,
-    priority integer,
-    current_step integer,
-    current_step_at timestamp without time zone,
-    max_steps integer,
-    exception text,
-    backtrace text,
-    code_set_id integer,
-    sloc_set_id integer,
-    notes text,
-    wait_until timestamp without time zone,
-    account_id integer,
-    logged_at timestamp without time zone,
-    slave_id integer,
-    started_at timestamp without time zone,
-    retry_count integer,
-    do_not_retry boolean,
-    failure_group_id integer,
-    organization_id integer
-);
-
-
---
--- Name: karthik; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE karthik (
-    id integer,
-    code_set_id integer,
-    as_of integer
-);
-
-
---
--- Name: karthik1; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE karthik1 (
-    id integer,
-    code_set_id integer,
-    as_of integer
-);
-
-
---
 -- Name: knowledge_base_statuses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2284,8 +2217,8 @@ CREATE SEQUENCE licenses_id_seq
 
 CREATE TABLE licenses (
     id integer DEFAULT nextval('licenses_id_seq'::regclass) NOT NULL,
+    vanity_url text,
     name text,
-    nice_name text,
     abbreviation text,
     url text,
     description text,
@@ -3776,27 +3709,6 @@ CREATE TABLE slaves (
 
 
 --
--- Name: slaves_backup; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE slaves_backup (
-    id integer,
-    allow_deny text,
-    hostname text,
-    available_blocks integer,
-    used_blocks integer,
-    used_percent integer,
-    updated_at timestamp without time zone,
-    load_average numeric,
-    clump_dir text,
-    clump_status text,
-    oldest_clump_timestamp timestamp without time zone,
-    enable_profiling boolean,
-    blocked_types text
-);
-
-
---
 -- Name: sloc_metrics_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -4026,37 +3938,6 @@ ALTER SEQUENCE tools_id_seq OWNED BY tools.id;
 
 
 --
--- Name: top_contributors_view; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW top_contributors_view AS
- SELECT
-        CASE
-            WHEN (pos.id IS NULL) THEN ((((per.project_id)::bigint << 32) + (per.name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint)
-            ELSE (((pos.project_id)::bigint << 32) + (pos.account_id)::bigint)
-        END AS id,
-    per.id AS person_id,
-    COALESCE(pos.project_id, per.project_id) AS project_id,
-        CASE
-            WHEN (pos.id IS NULL) THEN per.name_fact_id
-            ELSE ( SELECT name_facts.id
-               FROM name_facts
-              WHERE ((name_facts.analysis_id = p.best_analysis_id) AND (name_facts.name_id = pos.name_id)))
-        END AS name_fact_id,
-    pos.id AS position_id
-   FROM ((people per
-     LEFT JOIN positions pos ON ((per.account_id = pos.account_id)))
-     JOIN projects p ON ((p.id = COALESCE(pos.project_id, per.project_id))))
-  WHERE ((per.name_id IN ( SELECT name_facts.name_id
-           FROM name_facts
-          WHERE ((name_facts.type = 'ContributorFact'::text) AND (name_facts.analysis_id = p.best_analysis_id)))) OR (per.account_id IN ( SELECT positions.account_id
-           FROM positions
-          WHERE ((positions.name_id IN ( SELECT name_facts.name_id
-                   FROM name_facts
-                  WHERE ((name_facts.type = 'ContributorFact'::text) AND (name_facts.analysis_id = p.best_analysis_id)))) AND (positions.project_id = p.id)))));
-
-
---
 -- Name: topics_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -4087,6 +3968,39 @@ CREATE TABLE topics (
     replied_by integer,
     last_post_id integer
 );
+
+
+--
+-- Name: verifications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE verifications (
+    id integer NOT NULL,
+    account_id integer,
+    type character varying,
+    auth_id character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: verifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE verifications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: verifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE verifications_id_seq OWNED BY verifications.id;
 
 
 --
@@ -4552,6 +4466,13 @@ ALTER TABLE ONLY tools ALTER COLUMN id SET DEFAULT nextval('tools_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY verifications ALTER COLUMN id SET DEFAULT nextval('verifications_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY vita_analyses ALTER COLUMN id SET DEFAULT nextval('vita_analyses_id_seq'::regclass);
 
 
@@ -4611,14 +4532,6 @@ ALTER TABLE ONLY activity_facts
 
 
 --
--- Name: aliases1_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY aliases1
-    ADD CONSTRAINT aliases1_pkey PRIMARY KEY (id);
-
-
---
 -- Name: aliases_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -4632,14 +4545,6 @@ ALTER TABLE ONLY aliases
 
 ALTER TABLE ONLY aliases
     ADD CONSTRAINT aliases_project_id_name_id UNIQUE (project_id, commit_name_id);
-
-
---
--- Name: aliases_project_id_name_ids; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY aliases1
-    ADD CONSTRAINT aliases_project_id_name_ids UNIQUE (project_id, commit_name_id, preferred_name_id);
 
 
 --
@@ -5627,6 +5532,14 @@ ALTER TABLE ONLY taggings
 
 
 --
+-- Name: verifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY verifications
+    ADD CONSTRAINT verifications_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: vita_analyses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -6140,10 +6053,10 @@ CREATE INDEX index_license_facts_on_analysis_id ON license_facts USING btree (an
 
 
 --
--- Name: index_licenses_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_licenses_on_vanity_url; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_licenses_on_name ON licenses USING btree (name);
+CREATE UNIQUE INDEX index_licenses_on_vanity_url ON licenses USING btree (vanity_url);
 
 
 --
@@ -6347,13 +6260,6 @@ CREATE INDEX index_people_name_id ON people USING btree (name_id) WHERE (name_id
 --
 
 CREATE INDEX index_people_on_account_id ON people USING btree (account_id);
-
-
---
--- Name: index_people_on_account_id_not_null; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_people_on_account_id_not_null ON people USING btree (account_id) WHERE (account_id IS NOT NULL);
 
 
 --
@@ -8089,6 +7995,130 @@ ALTER TABLE ONLY vitae
 
 SET search_path TO "$user",public;
 
+INSERT INTO schema_migrations (version) VALUES ('1');
+
+INSERT INTO schema_migrations (version) VALUES ('10');
+
+INSERT INTO schema_migrations (version) VALUES ('100');
+
+INSERT INTO schema_migrations (version) VALUES ('101');
+
+INSERT INTO schema_migrations (version) VALUES ('102');
+
+INSERT INTO schema_migrations (version) VALUES ('11');
+
+INSERT INTO schema_migrations (version) VALUES ('12');
+
+INSERT INTO schema_migrations (version) VALUES ('13');
+
+INSERT INTO schema_migrations (version) VALUES ('14');
+
+INSERT INTO schema_migrations (version) VALUES ('15');
+
+INSERT INTO schema_migrations (version) VALUES ('16');
+
+INSERT INTO schema_migrations (version) VALUES ('17');
+
+INSERT INTO schema_migrations (version) VALUES ('18');
+
+INSERT INTO schema_migrations (version) VALUES ('19');
+
+INSERT INTO schema_migrations (version) VALUES ('2');
+
+INSERT INTO schema_migrations (version) VALUES ('20');
+
+INSERT INTO schema_migrations (version) VALUES ('20120917115347');
+
+INSERT INTO schema_migrations (version) VALUES ('20121010151415');
+
+INSERT INTO schema_migrations (version) VALUES ('20121010154611');
+
+INSERT INTO schema_migrations (version) VALUES ('20121019120254');
+
+INSERT INTO schema_migrations (version) VALUES ('20121115192205');
+
+INSERT INTO schema_migrations (version) VALUES ('20121203072938');
+
+INSERT INTO schema_migrations (version) VALUES ('20121221075843');
+
+INSERT INTO schema_migrations (version) VALUES ('20130103212213');
+
+INSERT INTO schema_migrations (version) VALUES ('20130204030958');
+
+INSERT INTO schema_migrations (version) VALUES ('20130327120650');
+
+INSERT INTO schema_migrations (version) VALUES ('20130328044901');
+
+INSERT INTO schema_migrations (version) VALUES ('20130420101845');
+
+INSERT INTO schema_migrations (version) VALUES ('20130523194226');
+
+INSERT INTO schema_migrations (version) VALUES ('20130605004148');
+
+INSERT INTO schema_migrations (version) VALUES ('20130606080722');
+
+INSERT INTO schema_migrations (version) VALUES ('20130619111100');
+
+INSERT INTO schema_migrations (version) VALUES ('20130620090419');
+
+INSERT INTO schema_migrations (version) VALUES ('20130701124737');
+
+INSERT INTO schema_migrations (version) VALUES ('20130702025530');
+
+INSERT INTO schema_migrations (version) VALUES ('20130703092324');
+
+INSERT INTO schema_migrations (version) VALUES ('20130724115118');
+
+INSERT INTO schema_migrations (version) VALUES ('20130902064947');
+
+INSERT INTO schema_migrations (version) VALUES ('20130930174253');
+
+INSERT INTO schema_migrations (version) VALUES ('20131025003543');
+
+INSERT INTO schema_migrations (version) VALUES ('20131104041543');
+
+INSERT INTO schema_migrations (version) VALUES ('20131113192205');
+
+INSERT INTO schema_migrations (version) VALUES ('20140205202717');
+
+INSERT INTO schema_migrations (version) VALUES ('20140206140232');
+
+INSERT INTO schema_migrations (version) VALUES ('20140413074943');
+
+INSERT INTO schema_migrations (version) VALUES ('20140507104529');
+
+INSERT INTO schema_migrations (version) VALUES ('20140507172200');
+
+INSERT INTO schema_migrations (version) VALUES ('20140707112715');
+
+INSERT INTO schema_migrations (version) VALUES ('20140707151308');
+
+INSERT INTO schema_migrations (version) VALUES ('20140707202707');
+
+INSERT INTO schema_migrations (version) VALUES ('20140819100329');
+
+INSERT INTO schema_migrations (version) VALUES ('20140902095714');
+
+INSERT INTO schema_migrations (version) VALUES ('20140905072436');
+
+INSERT INTO schema_migrations (version) VALUES ('20141016164532');
+
+INSERT INTO schema_migrations (version) VALUES ('20141024100301');
+
+INSERT INTO schema_migrations (version) VALUES ('20141111214901');
+
+INSERT INTO schema_migrations (version) VALUES ('20141124061121');
+
+INSERT INTO schema_migrations (version) VALUES ('20141209070219');
+
+INSERT INTO schema_migrations (version) VALUES ('20141209070642');
+
+INSERT INTO schema_migrations (version) VALUES ('20150213162109');
+
+INSERT INTO schema_migrations (version) VALUES ('20150423054225');
+
+INSERT INTO schema_migrations (version) VALUES ('20150423061349');
+
 INSERT INTO schema_migrations (version) VALUES ('20150429084504');
 
 INSERT INTO schema_migrations (version) VALUES ('20150504072306');
@@ -8103,7 +8133,191 @@ INSERT INTO schema_migrations (version) VALUES ('20150907212608');
 
 INSERT INTO schema_migrations (version) VALUES ('20150908021134');
 
+INSERT INTO schema_migrations (version) VALUES ('20150911083411');
+
+INSERT INTO schema_migrations (version) VALUES ('20150911094444');
+
+INSERT INTO schema_migrations (version) VALUES ('20150916092930');
+
 INSERT INTO schema_migrations (version) VALUES ('20150916192949');
 
+INSERT INTO schema_migrations (version) VALUES ('20150918080726');
+
 INSERT INTO schema_migrations (version) VALUES ('20150921170458');
+
+INSERT INTO schema_migrations (version) VALUES ('20150925101230');
+
+INSERT INTO schema_migrations (version) VALUES ('20150925101715');
+
+INSERT INTO schema_migrations (version) VALUES ('21');
+
+INSERT INTO schema_migrations (version) VALUES ('22');
+
+INSERT INTO schema_migrations (version) VALUES ('23');
+
+INSERT INTO schema_migrations (version) VALUES ('24');
+
+INSERT INTO schema_migrations (version) VALUES ('25');
+
+INSERT INTO schema_migrations (version) VALUES ('26');
+
+INSERT INTO schema_migrations (version) VALUES ('27');
+
+INSERT INTO schema_migrations (version) VALUES ('28');
+
+INSERT INTO schema_migrations (version) VALUES ('29');
+
+INSERT INTO schema_migrations (version) VALUES ('3');
+
+INSERT INTO schema_migrations (version) VALUES ('30');
+
+INSERT INTO schema_migrations (version) VALUES ('31');
+
+INSERT INTO schema_migrations (version) VALUES ('32');
+
+INSERT INTO schema_migrations (version) VALUES ('33');
+
+INSERT INTO schema_migrations (version) VALUES ('34');
+
+INSERT INTO schema_migrations (version) VALUES ('35');
+
+INSERT INTO schema_migrations (version) VALUES ('36');
+
+INSERT INTO schema_migrations (version) VALUES ('37');
+
+INSERT INTO schema_migrations (version) VALUES ('38');
+
+INSERT INTO schema_migrations (version) VALUES ('39');
+
+INSERT INTO schema_migrations (version) VALUES ('4');
+
+INSERT INTO schema_migrations (version) VALUES ('40');
+
+INSERT INTO schema_migrations (version) VALUES ('41');
+
+INSERT INTO schema_migrations (version) VALUES ('42');
+
+INSERT INTO schema_migrations (version) VALUES ('43');
+
+INSERT INTO schema_migrations (version) VALUES ('44');
+
+INSERT INTO schema_migrations (version) VALUES ('45');
+
+INSERT INTO schema_migrations (version) VALUES ('46');
+
+INSERT INTO schema_migrations (version) VALUES ('47');
+
+INSERT INTO schema_migrations (version) VALUES ('48');
+
+INSERT INTO schema_migrations (version) VALUES ('49');
+
+INSERT INTO schema_migrations (version) VALUES ('5');
+
+INSERT INTO schema_migrations (version) VALUES ('50');
+
+INSERT INTO schema_migrations (version) VALUES ('51');
+
+INSERT INTO schema_migrations (version) VALUES ('52');
+
+INSERT INTO schema_migrations (version) VALUES ('53');
+
+INSERT INTO schema_migrations (version) VALUES ('54');
+
+INSERT INTO schema_migrations (version) VALUES ('55');
+
+INSERT INTO schema_migrations (version) VALUES ('56');
+
+INSERT INTO schema_migrations (version) VALUES ('57');
+
+INSERT INTO schema_migrations (version) VALUES ('58');
+
+INSERT INTO schema_migrations (version) VALUES ('59');
+
+INSERT INTO schema_migrations (version) VALUES ('6');
+
+INSERT INTO schema_migrations (version) VALUES ('60');
+
+INSERT INTO schema_migrations (version) VALUES ('61');
+
+INSERT INTO schema_migrations (version) VALUES ('62');
+
+INSERT INTO schema_migrations (version) VALUES ('63');
+
+INSERT INTO schema_migrations (version) VALUES ('64');
+
+INSERT INTO schema_migrations (version) VALUES ('65');
+
+INSERT INTO schema_migrations (version) VALUES ('66');
+
+INSERT INTO schema_migrations (version) VALUES ('67');
+
+INSERT INTO schema_migrations (version) VALUES ('68');
+
+INSERT INTO schema_migrations (version) VALUES ('69');
+
+INSERT INTO schema_migrations (version) VALUES ('7');
+
+INSERT INTO schema_migrations (version) VALUES ('70');
+
+INSERT INTO schema_migrations (version) VALUES ('71');
+
+INSERT INTO schema_migrations (version) VALUES ('72');
+
+INSERT INTO schema_migrations (version) VALUES ('73');
+
+INSERT INTO schema_migrations (version) VALUES ('74');
+
+INSERT INTO schema_migrations (version) VALUES ('75');
+
+INSERT INTO schema_migrations (version) VALUES ('76');
+
+INSERT INTO schema_migrations (version) VALUES ('77');
+
+INSERT INTO schema_migrations (version) VALUES ('78');
+
+INSERT INTO schema_migrations (version) VALUES ('79');
+
+INSERT INTO schema_migrations (version) VALUES ('8');
+
+INSERT INTO schema_migrations (version) VALUES ('80');
+
+INSERT INTO schema_migrations (version) VALUES ('81');
+
+INSERT INTO schema_migrations (version) VALUES ('82');
+
+INSERT INTO schema_migrations (version) VALUES ('83');
+
+INSERT INTO schema_migrations (version) VALUES ('84');
+
+INSERT INTO schema_migrations (version) VALUES ('85');
+
+INSERT INTO schema_migrations (version) VALUES ('86');
+
+INSERT INTO schema_migrations (version) VALUES ('87');
+
+INSERT INTO schema_migrations (version) VALUES ('88');
+
+INSERT INTO schema_migrations (version) VALUES ('89');
+
+INSERT INTO schema_migrations (version) VALUES ('9');
+
+INSERT INTO schema_migrations (version) VALUES ('90');
+
+INSERT INTO schema_migrations (version) VALUES ('91');
+
+INSERT INTO schema_migrations (version) VALUES ('92');
+
+INSERT INTO schema_migrations (version) VALUES ('93');
+
+INSERT INTO schema_migrations (version) VALUES ('94');
+
+INSERT INTO schema_migrations (version) VALUES ('95');
+
+INSERT INTO schema_migrations (version) VALUES ('96');
+
+INSERT INTO schema_migrations (version) VALUES ('97');
+
+INSERT INTO schema_migrations (version) VALUES ('98');
+
+INSERT INTO schema_migrations (version) VALUES ('99');
 
