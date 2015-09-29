@@ -3,7 +3,7 @@ class App.NeedsVerification
     $element.click (event) ->
       url = '/authentications/new?'      # new_authentication_path
       thickboxHelper = new App.ThickboxHelper()
-      tb_show 'Mobile Verification Required', thickboxHelper.addParams(url), false
+      tb_show 'Verification Required', thickboxHelper.addParams(url), false
 
 $(document).on 'page:change', ->
   new App.NeedsVerification($('.needs_verification'))

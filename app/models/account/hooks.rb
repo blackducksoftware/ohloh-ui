@@ -80,7 +80,7 @@ class Account::Hooks
   # rubocop:enable Metrics/AbcSize
 
   def dependent_destroy(account)
-    %w(positions sent_kudos stacks ratings reviews api_keys).each do |association|
+    %w(positions sent_kudos stacks ratings reviews api_keys verifications).each do |association|
       account.send(association).destroy_all
     end
   end
