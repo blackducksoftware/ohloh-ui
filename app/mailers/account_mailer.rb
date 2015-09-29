@@ -29,7 +29,7 @@ class AccountMailer < ActionMailer::Base
 
   def reverification(account)
     @account = account
-    @twitter_reverification_url = new_account_verification_url(account)
+    @twitter_reverification_url = new_authentication_url
     @unsubscribe_url = edit_account_privacy_account_url(id: account.to_param, host: ENV['URL_HOST'])
     mail to: @account.email, from: 'info@openhub.net',
          subject: t('.subject'), template_name: 'reverification',
@@ -38,7 +38,7 @@ class AccountMailer < ActionMailer::Base
 
   def one_week_left(account)
     @account = account
-    @twitter_reverification_url = new_account_verification_url(account)
+    @twitter_reverification_url = new_authentication_url
     @unsubscribe_url = edit_account_privacy_account_url(id: account.to_param, host: ENV['URL_HOST'])
     mail to: @account.email, from: 'info@openhub.net',
          subject: t('.subject'), template_name: 'reverification',
@@ -47,7 +47,7 @@ class AccountMailer < ActionMailer::Base
 
   def one_day_left(account)
     @account = account
-    @twitter_reverification_url = new_account_verification_url(account)
+    @twitter_reverification_url = new_authentication_url
     @unsubscribe_url = edit_account_privacy_account_url(id: account.to_param, host: ENV['URL_HOST'])
     mail to: @account.email, from: 'info@openhub.net',
          subject: t('.subject'), template_name: 'reverification',
@@ -63,7 +63,7 @@ class AccountMailer < ActionMailer::Base
 
   def one_month_left_before_deletion(account)
     @account = account
-    @twitter_reverification_url = new_account_verification_url(account)
+    @twitter_reverification_url = new_authentication_url
     @unsubscribe_url = edit_account_privacy_account_url(id: account.to_param, host: ENV['URL_HOST'])
     mail to: @account.email, from: 'info@openhub.net',
          subject: t('.subject'), template_name: 'reverification',
@@ -72,7 +72,7 @@ class AccountMailer < ActionMailer::Base
 
   def one_day_left_before_deletion(account)
     @account = account
-    @twitter_reverification_url = new_account_verification_url(account)
+    @twitter_reverification_url = new_authentication_url
     @unsubscribe_url = edit_account_privacy_account_url(id: account.to_param, host: ENV['URL_HOST'])
     mail to: @account.email, from: 'info@openhub.net',
          subject: t('.subject'), template_name: 'reverification',

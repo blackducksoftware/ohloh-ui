@@ -16,7 +16,7 @@ describe AccountMailer do
 
   describe 'reverification' do
     it 'should send a reverification email' do
-      account = build(:account, salt: Faker::Lorem.words(15), twitter_id: nil)
+      account = build(:account, salt: Faker::Lorem.words(15))
       account.save(validation: false)
       before = ActionMailer::Base.deliveries.count
       email = AccountMailer.reverification(account).deliver_now

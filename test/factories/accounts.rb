@@ -22,8 +22,17 @@ FactoryGirl.define do
     email_master true
     email_kudos true
     email_posts true
-
     association :github_verification
+
+    factory :account_with_verifications do
+      transient do
+        verifications_count 1
+      end
+
+      after(:create) do |account, evaluator|
+        create_list(:verification, evaluator.verifications_count, account: account)
+      end
+    end
   end
 
   factory :unactivated, parent: :account do
@@ -45,5 +54,9 @@ FactoryGirl.define do
 
   factory :account_with_markup, parent: :account do
     association :markup
+  end
+
+  factory :account_with_no_verifications, parent: :account do
+    association :github_verification, factory: :github_verification, strategy: :null
   end
 end

@@ -1,8 +1,11 @@
 # Before the reverification process can begin....
-# this task populates the reverification table fields
-# if a user already has a twitter_id column.
+# this task creates and populates a reverification
+# association for every single account.
+# The reverification table will be used in combination
+# with verfications, twitter_digits_verification, and
+# github_verification
 task update_account_reverification_table: :environment do
-  Reverification.populate_reverification_fields
+  Reverification.create_and_populate_reverification_fields
 end
 
 task send_account_reverification_emails: :environment do

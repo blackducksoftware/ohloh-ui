@@ -1,48 +1,40 @@
 require 'test_helper'
 
 class ReverificationTest < ActiveSupport::TestCase
-  # TODO: Ask the team how to test mail failures. I can explore other gems
-  # but maybe there happens to be an easier way to implement that test.
-  # Ask how to test email failures.
-
-  describe 'populate_reverification_fields' do
-    it 'should grab an account with valid twitter_id and populate reverification tables' do
-      # Because ohloh_slave is automatically generated, the count is incremented by 2
+  # Note: ohloh_slave is present in every test and is verified by Github.
+  describe 'create_and_populate_reverification_fields' do
+    it 'should grab every single account, create and then populate a reverification assoc.' do
       reverification_count = Reverification.count
-      create(:account, twitter_id: Faker::Lorem.words(6))
-      Reverification.populate_reverification_fields
+      create(:account_with_no_verifications)
+      Reverification.create_and_populate_reverification_fields
       Reverification.count.must_equal reverification_count + 2
-      Reverification.first.twitter_reverified.must_equal true
-      Reverification.first.twitter_reverification_sent_at.class.must_equal ActiveSupport::TimeWithZone
-      Reverification.first.notification_counter.must_equal 0
-      Reverification.last.twitter_reverified.must_equal true
-      Reverification.last.twitter_reverification_sent_at.class.must_equal ActiveSupport::TimeWithZone
+      Reverification.last.verified.must_equal false
+      Reverification.last.initial_email_sent_at.must_equal nil
       Reverification.last.notification_counter.must_equal 0
     end
 
-    it 'should not grab an account without a twitter_id and populate the reverification tables' do
-      # Because ohloh_slave is automatically generated with a twitter_id, the increment fails.
-      account = build(:account, salt: Faker::Lorem.words(15), twitter_id: nil)
-      account.save(validate: false)
+    it 'should update the reverifications verified column if an account has already been verified' do
       reverification_count = Reverification.count
-      Reverification.populate_reverification_fields
-      Reverification.count.must_equal reverification_count + 1
-      Reverification.count.must_equal 1
+      create(:account_with_verifications)
+      Reverification.create_and_populate_reverification_fields
+      Reverification.count.must_equal reverification_count + 2
+      Reverification.last.verified.must_equal true
+      Reverification.last.initial_email_sent_at.must_equal nil
+      Reverification.last.notification_counter.must_equal 0
     end
   end
 
   describe 'send_reverification_emails' do
-    it 'should send emails to accounts that have not verified with twitter' do
-      account = build(:account, salt: Faker::Lorem.words(15), twitter_id: nil)
-      account.save(validate: false)
+    it 'should send emails to accounts that have not reverified at all' do
+      reverification = create(:reverification)
       ActionMailer::Base.deliveries.clear
       Reverification.send_reverification_emails(0)
       ActionMailer::Base.deliveries.size.must_equal 1
-      account.reverification.twitter_reverification_sent_at.class.must_equal ActiveSupport::TimeWithZone
+      reverification.initial_email_sent_at.class.must_equal ActiveSupport::TimeWithZone
     end
 
     it 'should raise an exception if the email could not be delivered' do
-      account = build(:account, email: 'notarealemail@somedomain.com', salt: Faker::Lorem.words(15), twitter_id: nil)
+      account = build(:account, email: 'notarealemail@somedomain.com', salt: Faker::Lorem.words(15))
       account.save(validate: false)
       ActionMailer::Base.deliveries.clear
       Reverification.stubs(:send_reverification_emails).with(0)
@@ -56,7 +48,7 @@ class ReverificationTest < ActiveSupport::TestCase
     it 'should send the correct reminder email one week prior to account disablement' do
       # Three weeks since initial email
       reverification = create(:reverification)
-      initial_notification = reverification.twitter_reverification_sent_at
+      initial_notification = reverification.initial_email_sent_at
       ActionMailer::Base.deliveries.clear
       Timecop.freeze(initial_notification + 20.days) do
         Reverification.check_account_status
@@ -70,7 +62,7 @@ class ReverificationTest < ActiveSupport::TestCase
 
     it 'should raise an exception if the one week leftemail could not be delivered' do
       reverification = create(:reverification)
-      initial_notification = reverification.twitter_reverification_sent_at
+      initial_notification = reverification.initial_email_sent_at
       ActionMailer::Base.deliveries.clear
       Timecop.freeze(initial_notification + 20.days) do
         Reverification.stubs(:check_account_status)
@@ -84,7 +76,6 @@ class ReverificationTest < ActiveSupport::TestCase
 
     it 'should send the correct reminder email when one day remains before disablement' do
       reverification = create(:reverification,
-                              twitter_reverification_sent_at: Time.now.utc,
                               reminder_sent_at: Time.now.utc + 20.days,
                               notification_counter: 1)
       first_reminder_sent_at = reverification.reminder_sent_at
@@ -103,7 +94,6 @@ class ReverificationTest < ActiveSupport::TestCase
 
     it 'should raise an exception if the one day left email could not be delivered' do
       reverification = create(:reverification,
-                              twitter_reverification_sent_at: Time.now.utc,
                               reminder_sent_at: Time.now.utc + 20.days,
                               notification_counter: 1)
       first_reminder_sent_at = reverification.reminder_sent_at
@@ -113,7 +103,6 @@ class ReverificationTest < ActiveSupport::TestCase
         AccountMailer.stubs(:one_day_left).with(reverification.account).raises(Net::SMTPError)
         ActionMailer::Base.deliveries.size.must_equal 0
         reverification = Reverification.first
-        reverification.reminder_sent_at.must_equal first_reminder_sent_at
         reverification.notification_counter.must_equal 1
       end
     end
@@ -136,7 +125,6 @@ class ReverificationTest < ActiveSupport::TestCase
 
     it 'should raise an exception if the mark as spam email could not be delivered' do
       reverification = create(:reverification,
-                              twitter_reverification_sent_at: Time.now.utc,
                               reminder_sent_at: Time.now.utc + 29.days,
                               notification_counter: 2)
       reminder_sent_at = reverification.reminder_sent_at

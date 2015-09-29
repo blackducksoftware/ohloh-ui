@@ -116,6 +116,7 @@ Rails.application.routes.draw do
   resources :registrations, only: [:new] do
     collection do
       post :validate
+      # Why is there no controller method for this route?
       get :verification_strategies
       get :generate
     end

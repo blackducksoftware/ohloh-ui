@@ -3424,8 +3424,8 @@ CREATE TABLE repositories (
 
 CREATE TABLE reverifications (
     id integer NOT NULL,
-    twitter_reverification_sent_at timestamp without time zone,
-    twitter_reverified boolean,
+    initial_email_sent_at timestamp without time zone,
+    verified boolean DEFAULT false,
     account_id integer,
     reminder_sent_at timestamp without time zone,
     notification_counter integer DEFAULT 0
@@ -6926,6 +6926,14 @@ ALTER TABLE ONLY code_sets
 
 
 --
+-- Name: commit_flags_commit_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY commit_flags
+    ADD CONSTRAINT commit_flags_commit_id_fkey FOREIGN KEY (commit_id) REFERENCES commits(id);
+
+
+--
 -- Name: commit_flags_sloc_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8140,6 +8148,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150921170458');
 INSERT INTO schema_migrations (version) VALUES ('20150925101230');
 
 INSERT INTO schema_migrations (version) VALUES ('20150925101715');
+
+INSERT INTO schema_migrations (version) VALUES ('20150929171219');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

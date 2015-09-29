@@ -29,14 +29,6 @@ class Accounts::VerificationsController < ApplicationController
     redirect_to root_path if @account.access.mobile_or_oauth_verified?
   end
 
-  def update_account_and_reverification_with_twitter_id(account, proposed_twitter_id)
-    account.twitter_id = proposed_twitter_id
-    account.validate
-    twitter_id_valid = account.errors.messages[:twitter_id].blank?
-    account.update_column(:twitter_id, proposed_twitter_id) if twitter_id_valid
-    account.reverification.update_column(:twitter_reverified, true)
-    twitter_id_valid
-
   def check_for_auth_session
     fail ParamRecordNotFound unless session[:auth_params]
   end

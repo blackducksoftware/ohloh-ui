@@ -7,23 +7,25 @@ class Reverification < ActiveRecord::Base
   UndeliverableAccount = Struct.new(:account_id, :error_message)
 
   class << self
-    def populate_reverification_fields
-      Account.where.not(twitter_id: nil).each do |account|
-        account.create_reverification(twitter_reverified: true, twitter_reverification_sent_at: Time.now.utc)
+    # This method creates a seperate reverifications association for the reverification process.
+    def create_and_populate_reverification_fields
+      Account.find_each do |account|
+        account.create_reverification
+        account.reverification.update(verified: true) if Account::Access.new(account).verified?
         account.reload
       end
     end
 
     def send_reverification_emails(time = 900)
-      Account.where(twitter_id: nil).find_in_batches do |batch_of_accounts|
-        process_batch(batch_of_accounts)
+      Reverification.where(verified: false).find_in_batches do |batch_of_reverifications|
+        process_batch(batch_of_reverifications)
         # Sleep for 15 minutes before processing another round of accounts
         sleep time
       end
     end
 
     def check_account_status
-      Reverification.where(twitter_reverified: false).each do |reverification|
+      Reverification.where(verified: false).each do |reverification|
         reverification.calculate_status
         reverification.account.destroy if reverification.notification_counter == 5
         reverification.one_day_left_before_deletion
@@ -34,15 +36,16 @@ class Reverification < ActiveRecord::Base
       end
     end
 
-    def process_batch(batch_of_accounts)
-      batch_of_accounts.each do |account|
+    def process_batch(batch_of_reverifications)
+      batch_of_reverifications.each do |reverification|
+        account = reverification.account
         begin
           AccountMailer.reverification(account).deliver_now
         rescue Net::SMTPError => e
           @@undeliverable_accounts << UndeliverableAccount(account.id, e.message)
           next
         end
-        account.create_reverification(twitter_reverification_sent_at: Time.now.utc)
+        reverification.update(initial_email_sent_at: Time.now.utc)
       end
     end
   end # class << self
@@ -68,7 +71,7 @@ class Reverification < ActiveRecord::Base
   def mark_as_spam
     return if notification_counter < 2
     condition_one = notification_counter == 2
-    condition_two = gt_equal(twitter_reverification_sent_at + 30.days)
+    condition_two = gt_equal(initial_email_sent_at + 30.days)
     process_email('mark_as_spam') if (condition_one) && (condition_two)
   end
 
@@ -82,8 +85,8 @@ class Reverification < ActiveRecord::Base
 
   def one_week_left
     return if notification_counter > 0
-    condition_one = gt_equal(twitter_reverification_sent_at + 20.days)
-    condition_two = less_than(twitter_reverification_sent_at + 29.days)
+    condition_one = gt_equal(initial_email_sent_at + 20.days)
+    condition_two = less_than(initial_email_sent_at + 29.days)
     process_email('one_week_left') if condition_one && condition_two
   end
   # rubocop:enable Metrics/AbcSize
