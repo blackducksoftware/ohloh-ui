@@ -425,7 +425,6 @@ CREATE TABLE accounts (
     organization_id integer,
     affiliation_type text DEFAULT 'unaffiliated'::text NOT NULL,
     organization_name text,
-    twitter_id character varying,
     CONSTRAINT accounts_email_check CHECK ((length(email) >= 3)),
     CONSTRAINT accounts_login_check CHECK ((length(login) >= 3))
 );
@@ -529,20 +528,6 @@ CREATE SEQUENCE aliases_id_seq
 --
 
 ALTER SEQUENCE aliases_id_seq OWNED BY aliases.id;
-
-
---
--- Name: aliases1; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE aliases1 (
-    id integer DEFAULT nextval('aliases_id_seq'::regclass) NOT NULL,
-    project_id integer NOT NULL,
-    commit_name_id integer NOT NULL,
-    preferred_name_id integer NOT NULL,
-    deleted boolean DEFAULT false NOT NULL,
-    CONSTRAINT alias_noop_check CHECK ((preferred_name_id <> commit_name_id))
-);
 
 
 --
@@ -1949,59 +1934,6 @@ CREATE TABLE jobs (
     do_not_retry boolean DEFAULT false,
     failure_group_id integer,
     organization_id integer
-);
-
-
---
--- Name: jobs_backup; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE jobs_backup (
-    id integer,
-    project_id integer,
-    repository_id integer,
-    status integer,
-    type text,
-    priority integer,
-    current_step integer,
-    current_step_at timestamp without time zone,
-    max_steps integer,
-    exception text,
-    backtrace text,
-    code_set_id integer,
-    sloc_set_id integer,
-    notes text,
-    wait_until timestamp without time zone,
-    account_id integer,
-    logged_at timestamp without time zone,
-    slave_id integer,
-    started_at timestamp without time zone,
-    retry_count integer,
-    do_not_retry boolean,
-    failure_group_id integer,
-    organization_id integer
-);
-
-
---
--- Name: karthik; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE karthik (
-    id integer,
-    code_set_id integer,
-    as_of integer
-);
-
-
---
--- Name: karthik1; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE karthik1 (
-    id integer,
-    code_set_id integer,
-    as_of integer
 );
 
 
@@ -3495,7 +3427,8 @@ CREATE TABLE reverifications (
     twitter_reverification_sent_at timestamp without time zone,
     twitter_reverified boolean,
     account_id integer,
-    reminder_sent_at timestamp without time zone
+    reminder_sent_at timestamp without time zone,
+    notification_counter integer DEFAULT 0
 );
 
 
@@ -3776,27 +3709,6 @@ CREATE TABLE slaves (
 
 
 --
--- Name: slaves_backup; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE slaves_backup (
-    id integer,
-    allow_deny text,
-    hostname text,
-    available_blocks integer,
-    used_blocks integer,
-    used_percent integer,
-    updated_at timestamp without time zone,
-    load_average numeric,
-    clump_dir text,
-    clump_status text,
-    oldest_clump_timestamp timestamp without time zone,
-    enable_profiling boolean,
-    blocked_types text
-);
-
-
---
 -- Name: sloc_metrics_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -4026,37 +3938,6 @@ ALTER SEQUENCE tools_id_seq OWNED BY tools.id;
 
 
 --
--- Name: top_contributors_view; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW top_contributors_view AS
- SELECT
-        CASE
-            WHEN (pos.id IS NULL) THEN ((((per.project_id)::bigint << 32) + (per.name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint)
-            ELSE (((pos.project_id)::bigint << 32) + (pos.account_id)::bigint)
-        END AS id,
-    per.id AS person_id,
-    COALESCE(pos.project_id, per.project_id) AS project_id,
-        CASE
-            WHEN (pos.id IS NULL) THEN per.name_fact_id
-            ELSE ( SELECT name_facts.id
-               FROM name_facts
-              WHERE ((name_facts.analysis_id = p.best_analysis_id) AND (name_facts.name_id = pos.name_id)))
-        END AS name_fact_id,
-    pos.id AS position_id
-   FROM ((people per
-     LEFT JOIN positions pos ON ((per.account_id = pos.account_id)))
-     JOIN projects p ON ((p.id = COALESCE(pos.project_id, per.project_id))))
-  WHERE ((per.name_id IN ( SELECT name_facts.name_id
-           FROM name_facts
-          WHERE ((name_facts.type = 'ContributorFact'::text) AND (name_facts.analysis_id = p.best_analysis_id)))) OR (per.account_id IN ( SELECT positions.account_id
-           FROM positions
-          WHERE ((positions.name_id IN ( SELECT name_facts.name_id
-                   FROM name_facts
-                  WHERE ((name_facts.type = 'ContributorFact'::text) AND (name_facts.analysis_id = p.best_analysis_id)))) AND (positions.project_id = p.id)))));
-
-
---
 -- Name: topics_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -4097,7 +3978,7 @@ CREATE TABLE verifications (
     id integer NOT NULL,
     account_id integer,
     type character varying,
-    verifier_id integer,
+    auth_id character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -4651,14 +4532,6 @@ ALTER TABLE ONLY activity_facts
 
 
 --
--- Name: aliases1_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY aliases1
-    ADD CONSTRAINT aliases1_pkey PRIMARY KEY (id);
-
-
---
 -- Name: aliases_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -4672,14 +4545,6 @@ ALTER TABLE ONLY aliases
 
 ALTER TABLE ONLY aliases
     ADD CONSTRAINT aliases_project_id_name_id UNIQUE (project_id, commit_name_id);
-
-
---
--- Name: aliases_project_id_name_ids; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY aliases1
-    ADD CONSTRAINT aliases_project_id_name_ids UNIQUE (project_id, commit_name_id, preferred_name_id);
 
 
 --
@@ -5691,13 +5556,6 @@ ALTER TABLE ONLY vitae
 
 
 --
--- Name: aliases_project_id_preferred_name_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX aliases_project_id_preferred_name_id ON aliases USING btree (project_id, preferred_name_id);
-
-
---
 -- Name: edits_organization_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -6405,13 +6263,6 @@ CREATE INDEX index_people_on_account_id ON people USING btree (account_id);
 
 
 --
--- Name: index_people_on_account_id_not_null; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_people_on_account_id_not_null ON people USING btree (account_id) WHERE (account_id IS NOT NULL);
-
-
---
 -- Name: index_people_on_kudo_position; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -6748,20 +6599,6 @@ CREATE UNIQUE INDEX kudos_uniques ON kudos USING btree (sender_id, (COALESCE(acc
 
 
 --
--- Name: name_facts_name_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX name_facts_name_id ON name_facts USING btree (name_id);
-
-
---
--- Name: name_facts_on_name_id_analysis_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX name_facts_on_name_id_analysis_id ON name_facts USING btree (analysis_id, name_id);
-
-
---
 -- Name: people_on_name_fact_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -7086,14 +6923,6 @@ ALTER TABLE ONLY code_sets
 
 ALTER TABLE ONLY code_sets
     ADD CONSTRAINT code_sets_repository_id_fkey FOREIGN KEY (repository_id) REFERENCES repositories(id) ON DELETE CASCADE;
-
-
---
--- Name: commit_flags_commit_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY commit_flags
-    ADD CONSTRAINT commit_flags_commit_id_fkey FOREIGN KEY (commit_id) REFERENCES commits(id);
 
 
 --
@@ -8305,6 +8134,12 @@ INSERT INTO schema_migrations (version) VALUES ('20150916092930');
 INSERT INTO schema_migrations (version) VALUES ('20150916192949');
 
 INSERT INTO schema_migrations (version) VALUES ('20150918080726');
+
+INSERT INTO schema_migrations (version) VALUES ('20150921170458');
+
+INSERT INTO schema_migrations (version) VALUES ('20150925101230');
+
+INSERT INTO schema_migrations (version) VALUES ('20150925101715');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

@@ -65,7 +65,7 @@ class ApplicationController < ActionController::Base
 
   def session_required
     return if logged_in?
-    flash[:notice] = t('sessions.message_html', href: new_account_path)
+    flash[:notice] = t('sessions.message_html', href: new_registration_path)
     access_denied
   end
 
@@ -248,8 +248,8 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_for_spammer_verification
-    return if current_user && current_user.access.mobile_verified?
-    redirect_to new_account_verification_path(current_user)
+    return if current_user && current_user.access.mobile_or_oauth_verified?
+    redirect_to new_authentication_path
   end
 
   def current_user_is_verified?

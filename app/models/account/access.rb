@@ -47,11 +47,12 @@ class Account::Access < OhDelegator::Base
     end
   end
 
-  def mobile_verified?
-    account.twitter_id?
+  def mobile_or_oauth_verified?
+    return if account.nil?
+    account.verifications.exists?
   end
 
   def verified?
-    mobile_verified? && email_verified?
+    mobile_or_oauth_verified? && email_verified?
   end
 end

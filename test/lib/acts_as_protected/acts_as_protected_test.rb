@@ -15,7 +15,7 @@ class ActsAsProtected::ActsAsProtectedTest < ActiveSupport::TestCase
     it 'returns false if editor is not verified' do
       project = create(:project)
       account = create(:account)
-      account.update!(twitter_id: nil)
+      account.verifications.destroy_all
 
       project.editor_account = account
 
