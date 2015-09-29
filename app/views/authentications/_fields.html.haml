@@ -13,9 +13,7 @@
       %button.btn.btn-primary#github-verification{ 'data-client-id' => ENV['GITHUB_CLIENT_ID'],
                                                    'data-redirect-uri' => ENV['GITHUB_REDIRECT_URI'] }
         %i.fa.fa-github
-          &nbsp;&nbsp;
           = t('.verify_using_github')
-          &nbsp;
 
 - html_options = { method: 'POST', class: 'digits-verification' }
 = form_for @account, url: digits_callback_authentications_path, html: html_options do |f|
