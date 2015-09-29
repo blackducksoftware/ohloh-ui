@@ -470,48 +470,6 @@ class AccountTest < ActiveSupport::TestCase
 
       account.errors.messages[:organization_name].must_be_nil
     end
-
-    describe 'twitter_id' do
-      it 'wont validate uniqueness when value is nil' do
-        account = create(:account)
-        account.update!(twitter_id: nil)
-
-        build(:account, twitter_id: nil).must_be :valid?
-      end
-
-      it 'must validate uniqueness when value is non null' do
-        account = create(:account)
-
-        Account::Hooks.any_instance.stubs(:set_twitter_id)
-        new_account = build(:account, twitter_id: account.twitter_id)
-
-        new_account.wont_be :valid?
-        new_account.errors.messages[:twitter_id].must_be :present?
-      end
-
-      it 'must validate presence on create' do
-        account = build(:account)
-        TwitterDigits.expects(:get_twitter_id)
-
-        account.wont_be :valid?
-        account.errors.messages[:twitter_id].must_be :present?
-      end
-
-      it 'wont validate presence on update' do
-        account = create(:account)
-
-        account.update(twitter_id: nil).must_equal true
-        account.reload.twitter_id.must_be_nil
-      end
-
-      it 'wont override existing twitter_id on update' do
-        account = create(:account)
-        twitter_id = account.twitter_id
-
-        account.update! akas: Faker::Lorem.sentence
-        account.reload.twitter_id.must_equal twitter_id
-      end
-    end
   end
 
   it 'disallow html tags in url' do
@@ -695,7 +653,7 @@ class AccountTest < ActiveSupport::TestCase
     it 'should not match spammers' do
       account = create(:account)
       Account.from_param(account.to_param).count.must_equal 1
-      Account::Access.new(account).spam!
+      account.access.spam!
       Account.from_param(account.to_param).count.must_equal 0
     end
   end

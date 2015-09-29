@@ -12,7 +12,7 @@
       = link_to project.decorate.icon(:med), project_url(project), target: '_blank'
     .main
       %h3= link_to truncate(project.name, length: 50), project_url(project), target: '_blank', title: project.name
-      - if analysis
+      - if analysis.present?
         %ul
           - if analysis.main_language
             %li

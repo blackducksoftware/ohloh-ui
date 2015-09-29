@@ -1,5 +1,6 @@
 en:
   topics:
+    reopen: 'Re-open'
     new:
       forums: 'Forums'
       create_topic: 'Post Topic'
@@ -17,12 +18,15 @@ en:
       close: 'Close'
       closed: 'closed'
       delete: 'Delete'
-      reopen: 'Re-open'
       spam: 'SPAM!'
       close_confirmation: 'Are you sure you want to close this topic?'
       delete_confirmation: 'Are you sure you want to delete this topic?'
       reopen_confirmation: 'Are you sure you want to re-open this topic?'
       spam_confirmation: "Are you sure you want to mark %{user} as a spammer, disabling the account and removing all posts?"
+      close_topic: Close topic '%{title}'
+      mark_as_spam: Mark %{name} as spammer!
+      delete_topic: Delete topic '%{title}'
+      reopen_topic: Re-open topic '%{title}'
     move_modal:
       move: 'Move'
       move_topic: 'Move Topic'

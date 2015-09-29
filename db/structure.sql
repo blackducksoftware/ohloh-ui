@@ -6926,14 +6926,6 @@ ALTER TABLE ONLY code_sets
 
 
 --
--- Name: commit_flags_commit_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY commit_flags
-    ADD CONSTRAINT commit_flags_commit_id_fkey FOREIGN KEY (commit_id) REFERENCES commits(id);
-
-
---
 -- Name: commit_flags_sloc_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 

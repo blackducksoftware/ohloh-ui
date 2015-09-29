@@ -12,7 +12,5 @@
 .col-md-12
   - if analysis.blank?
     = render 'projects/show/no_analysis_summary'
-  - elsif @named_commits.length > 0
-    = render 'commit', named_commits: @named_commits, search_dingus: true
   - else
-    = t('.no_data')
+    = render 'commit', named_commits: @named_commits, search_dingus: true

@@ -1,5 +1,6 @@
 :ruby
-  content_for(:html_title) { t('.title', name: current_user.nil? ? nil : "#{current_user.name}  : ") }
+  content_for(:html_title) { html_title }
+
   @account = current_user
   if params[:flow] == 'account'
     account_context

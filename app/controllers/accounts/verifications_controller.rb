@@ -7,20 +7,15 @@ class Accounts::VerificationsController < ApplicationController
   before_action :redirect_if_disabled
   before_action :must_own_account
   before_action :redirect_if_verified
+  before_action :check_for_auth_session
 
-  def new
-    render partial: 'fields' if request.xhr?
-  end
-
-  def create
-    if digits_response_success?
-      return redirect_back if update_account_and_reverification_with_twitter_id(@account, twitter_id)
-      flash[:error] = @account.errors.messages[:twitter_id].first
+  def generate
+    if @account.update(session[:auth_params])
+      session[:auth_params] = nil
+      redirect_to @account
     else
-      flash[:error] = t('.error')
+      redirect_to new_authentication_path, notice: @account.errors.messages.values.last.last
     end
-
-    render :new
   end
 
   private
@@ -30,17 +25,8 @@ class Accounts::VerificationsController < ApplicationController
     fail ParamRecordNotFound unless @account
   end
 
-  def digits_response_success?
-    twitter_id.present?
-  end
-
   def redirect_if_verified
-    redirect_to root_path if @account.twitter_id?
-  end
-
-  def twitter_id
-    @twitter_id ||= TwitterDigits.get_twitter_id(params[:verification][:service_provider_url],
-                                                 params[:verification][:credentials])
+    redirect_to root_path if @account.access.mobile_or_oauth_verified?
   end
 
   def update_account_and_reverification_with_twitter_id(account, proposed_twitter_id)
@@ -50,5 +36,8 @@ class Accounts::VerificationsController < ApplicationController
     account.update_column(:twitter_id, proposed_twitter_id) if twitter_id_valid
     account.reverification.update_column(:twitter_reverified, true)
     twitter_id_valid
+
+  def check_for_auth_session
+    fail ParamRecordNotFound unless session[:auth_params]
   end
 end

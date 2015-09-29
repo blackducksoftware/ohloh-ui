@@ -22,6 +22,8 @@ FactoryGirl.define do
     email_master true
     email_kudos true
     email_posts true
+
+    association :github_verification
   end
 
   factory :unactivated, parent: :account do

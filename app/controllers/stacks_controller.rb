@@ -1,4 +1,5 @@
 class StacksController < ApplicationController
+  include RedirectIfDisabled
   helper MapHelper
   helper RatingsHelper, ProjectsHelper
 
@@ -6,7 +7,7 @@ class StacksController < ApplicationController
                 except: [:index, :show, :similar, :similar_stacks, :near, :project_stacks]
   before_action :find_stack, except: [:index, :create, :near, :project_stacks]
   before_action :can_edit_stack, except: [:index, :show, :create, :similar, :similar_stacks, :near, :project_stacks]
-  before_action :find_account, only: [:index, :show, :similar]
+  before_action :find_account, :redirect_if_disabled, only: [:index, :show, :similar]
   before_action :auto_ignore, only: [:builder]
   before_action :set_project_or_fail, only: [:near, :project_stacks]
   before_action :account_context, only: [:index, :show, :similar]
@@ -97,7 +98,7 @@ class StacksController < ApplicationController
 
   def find_account
     @account = params[:account_id] ? Account.resolve_login(params[:account_id]) : @stack.account
-    fail ParamRecordNotFound unless @account && Account::Access.new(@account).active_and_not_disabled?
+    fail ParamRecordNotFound unless @account
   end
 
   def auto_ignore

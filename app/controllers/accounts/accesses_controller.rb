@@ -7,13 +7,13 @@ class Accounts::AccessesController < ApplicationController
   before_action :disabled_during_read_only_mode, only: :activate
 
   def make_spammer
-    Account::Access.new(@account).spam!
+    @account.access.spam!
     flash[:success] = t('.success', name: CGI.escapeHTML(@account.name))
     redirect_to account_path(@account)
   end
 
   def activate
-    return unless Account::Access.new(@account).activate!(params[:code])
+    return unless @account.access.activate!(params[:code])
     @account.run_actions(Action::STATUSES[:after_activation])
     session[:account] = @account.id
     redirect_to account_path(@account), flash: { success: t('.success') }
@@ -22,6 +22,6 @@ class Accounts::AccessesController < ApplicationController
   private
 
   def check_activation
-    redirect_to account_path(@account), notice: t('.notice') if Account::Access.new(@account).activated?
+    redirect_to account_path(@account), notice: t('.notice') if @account.access.activated?
   end
 end

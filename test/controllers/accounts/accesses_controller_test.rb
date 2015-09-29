@@ -25,7 +25,7 @@ describe 'Accounts::AccessesController' do
     it 'should redirect already activated message' do
       account = Account.create(login: 'ralph', password: 'abcdef', password_confirmation: 'abcdef',
                                email: 'ralph@mailinator.com', email_confirmation: 'ralph@mailinator.com')
-      Account::Access.new(account).activate!(account.activation_code)
+      account.access.activate!(account.activation_code)
 
       get :activate, account_id: account.to_param, code: account.activation_code
 

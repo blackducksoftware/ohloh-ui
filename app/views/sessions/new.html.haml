@@ -10,7 +10,7 @@
         %li= t('.account_help3')
         %li= t('.account_help4')
     %p
-      %a.btn.btn-success{ href: new_account_path(invite: params[:invite]) }= t('.register_today')
+      %a.btn.btn-success{ href: new_registration_path(invite: params[:invite]) }= t('.register_today')
       != t('.register_today_cta')
   .col-sm-5
     = render 'sessions/sign_in'

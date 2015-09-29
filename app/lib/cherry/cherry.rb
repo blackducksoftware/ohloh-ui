@@ -11,7 +11,7 @@ require_relative 'lib/decoratable'
 #   end
 #
 #   class UserDecorator < Cherry::Decorator
-#     # The decorator can access the decorable object by its inferred name.
+#     # The decorator can access the decoratee object by its inferred name.
 #     delegate :some_logic, to: :user
 #
 #     def view_logic

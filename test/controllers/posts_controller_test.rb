@@ -398,23 +398,15 @@ describe PostsController do
       response.body.must_match(/<input.+id="page".+value="#{ current_page_number }"/)
     end
 
-    it 'must allow admin to create post with valid recaptcha' do
+    it 'must allow admin to create post without captcha' do
       login_as(admin)
       topic = create(:topic)
-      PostsController.any_instance.expects(:verify_recaptcha).returns(true)
+      PostsController.any_instance.stubs(:verify_recaptcha).returns(false)
+
       assert_difference('Post.count', 1) do
-        post :create, topic_id: topic, post: { body: 'Post with valid recaptcha' }
+        post :create, topic_id: topic, post: { body: Faker::Lorem.sentence }
       end
       must_redirect_to topic_path(topic.id)
-    end
-
-    it 'wont allow admin to create post with invalid recaptcha' do
-      login_as(admin)
-      topic = create(:topic)
-      PostsController.any_instance.expects(:verify_recaptcha).returns(false)
-      assert_no_difference('Post.count', 1) do
-        post :create, topic_id: topic, post: { body: 'Post with invalid recaptcha' }
-      end
     end
   end
 

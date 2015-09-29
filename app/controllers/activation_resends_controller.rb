@@ -3,6 +3,10 @@ class ActivationResendsController < ApplicationController
   before_action :prevent_email_delivery_for_active_account, only: :create
   before_action :prevent_email_delivery_for_recently_activated, only: :create
 
+  def new
+    render partial: 'fields' if request.xhr?
+  end
+
   def create
     @account.resend_activation!
     redirect_to root_path, notice: t('.success')
@@ -11,7 +15,7 @@ class ActivationResendsController < ApplicationController
   private
 
   def prevent_email_delivery_for_active_account
-    redirect_to new_session_path, notice: t('.already_active') if Account::Access.new(@account).activated?
+    redirect_to new_session_path, notice: t('.already_active') if @account.access.activated?
   end
 
   def prevent_email_delivery_for_recently_activated

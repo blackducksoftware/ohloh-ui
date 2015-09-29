@@ -29,7 +29,7 @@ module ProjectAssociations
     has_many :enlistments, -> { where(deleted: false) }
     has_many :repositories, through: :enlistments
     has_many :project_licenses, -> { where("project_licenses.deleted = 'f'") }
-    has_many :licenses, -> { order('lower(licenses.nice_name)') }, through: :project_licenses
+    has_many :licenses, -> { order('lower(licenses.name)') }, through: :project_licenses
     has_many :duplicates, -> { order(created_at: :desc) }, class_name: 'Duplicate', foreign_key: 'good_project_id'
     has_one :is_a_duplicate, -> { where.not(resolved: true) }, class_name: 'Duplicate', foreign_key: 'bad_project_id'
     has_many :named_commits, ->(proj) { where(analysis_id: (proj.best_analysis_id || 0)) }
@@ -49,6 +49,22 @@ module ProjectAssociations
       RssArticle.joins(rss_feed: :rss_subscriptions)
         .where("rss_subscriptions.project_id = #{id} and rss_subscriptions.deleted = false")
         .order('time DESC')
+    end
+
+    def contributions_within_timespan(options)
+      contributions
+        .within_timespan(options[:time_span], best_analysis.logged_at)
+        .sort(options[:sort])
+        .filter_by(options[:query])
+        .includes(person: :account, contributor_fact: :primary_language)
+        .references(:all)
+    end
+
+    def stacks_count
+      Stack.joins(:stack_entries, :account)
+        .where(deleted_at: nil, stack_entries: { project_id: id })
+        .where('accounts.level >= 0')
+        .count('distinct(account_id)')
     end
 
     class << self

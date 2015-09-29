@@ -1,0 +1,13 @@
+.col-md-10
+  .well
+    = form_tag action: :create do
+      %fieldset
+        .control-group
+          = label_tag t('email_address'), nil, class: 'control-label required'
+          .controls
+            = text_field_tag :email, current_user.try(:email)
+            .error= @errors
+            %p.help-block= t('.enter_email')
+
+        .actions
+          = submit_tag t('.submit'), class: 'btn btn-primary'

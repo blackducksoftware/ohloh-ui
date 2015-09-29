@@ -195,15 +195,6 @@ describe TopicsController do
     must_respond_with :unauthorized
   end
 
-  it 'user destroy' do
-    login_as user
-    topic2 = create(:topic)
-    assert_no_difference('Topic.count') do
-      post :destroy, id: topic2.id
-    end
-    must_respond_with :unauthorized
-  end
-
   # #-----------Admin Account------------------------
   describe 'index' do
     it 'with forum id' do
@@ -242,23 +233,15 @@ describe TopicsController do
     must_render_template :new
   end
 
-  it 'admin creates a topic/post with valid recaptcha' do
+  it 'must allow admin to create topic without captcha' do
     login_as(admin)
-    TopicsController.any_instance.expects(:verify_recaptcha).returns(true)
+    TopicsController.any_instance.stubs(:verify_recaptcha).returns(false)
+
     assert_difference(['Topic.count', 'Post.count']) do
       post :create, forum_id: forum.id, topic: { title: 'Example Forum', posts_attributes:
                                                 [{ body: 'Post object that comes by default' }] }
     end
-    assert_redirected_to forum_path(forum.id)
-  end
-
-  it 'admin fails to create a topic/post because of invalid recaptcha' do
-    login_as(admin)
-    TopicsController.any_instance.expects(:verify_recaptcha).returns(false)
-    assert_no_difference(['Topic.count', 'Post.count']) do
-      post :create, forum_id: forum.id, topic: { title: 'Example Forum', posts_attributes:
-                                                [{ body: 'Post object that comes by default' }] }
-    end
+    must_redirect_to forum_path(forum.id)
   end
 
   it 'admin show with post pagination' do
@@ -339,5 +322,155 @@ describe TopicsController do
     create_list(:post, 5, topic: topic)
     get :show, id: topic, format: 'atom'
     must_respond_with :ok
+  end
+
+  describe 'show' do
+    before { topic.update!(account: user) }
+
+    it 'must show spam, close and delete links for admin' do
+      login_as admin
+      create_list(:post, 2, topic: topic)
+
+      get :show, id: topic
+
+      %w(spam close delete).each do |name|
+        text = I18n.t("topics.action_group.#{ name }")
+        response.body.must_match(">#{ text }</a>")
+      end
+    end
+
+    it 'must show reopen link for admin when topic is closed' do
+      login_as admin
+      create_list(:post, 2, topic: topic)
+
+      topic.update! closed: true
+      get :show, id: topic
+
+      text = I18n.t('topics.reopen')
+      response.body.must_match(">#{ text }</a>")
+    end
+
+    it 'wont show spam or close link to non admin' do
+      login_as user
+
+      get :show, id: topic
+
+      %w(spam close).each do |name|
+        text = I18n.t("topics.action_group.#{ name }")
+        response.body.wont_match(">#{ text }</a>")
+      end
+    end
+
+    it 'wont show delete link to non admin when post count is more than 1' do
+      login_as user
+      create_list(:post, 2, topic: topic)
+
+      get :show, id: topic
+
+      text = I18n.t('topics.action_group.delete')
+      response.body.wont_match(">#{ text }</a>")
+    end
+
+    it 'must show delete link to the non admin creator when post count is less than 2' do
+      login_as user
+
+      get :show, id: topic
+
+      text = I18n.t('topics.action_group.delete')
+      response.body.must_match(">#{ text }</a>")
+    end
+
+    it 'must show reopen link to non admin creator' do
+      login_as user
+
+      topic.update! closed: true
+      get :show, id: topic
+
+      text = I18n.t('topics.reopen')
+      response.body.must_match(">#{ text }</a>")
+    end
+  end
+
+  describe 'close' do
+    it 'must allow access to admin users' do
+      login_as admin
+
+      get :close, id: topic
+
+      must_redirect_to topic_path(topic)
+      topic.reload.must_be :closed?
+    end
+
+    it 'wont allow access to non admin creator' do
+      login_as user
+      topic.update!(account: user)
+
+      get :close, id: topic
+
+      must_respond_with :unauthorized
+      topic.reload.wont_be :closed?
+    end
+  end
+
+  describe 'reopen' do
+    it 'must allow access to admin' do
+      topic.update!(closed: true)
+      login_as admin
+
+      get :reopen, id: topic
+
+      must_redirect_to topic_path(topic)
+      topic.reload.wont_be :closed?
+    end
+
+    it 'must allow access to non admin creator' do
+      topic.update!(account: user, closed: true)
+      login_as user
+
+      get :reopen, id: topic
+
+      must_redirect_to topic_path(topic)
+      topic.reload.wont_be :closed?
+    end
+
+    it 'wont allow access to non creator' do
+      topic.update!(closed: true)
+      login_as user
+
+      get :reopen, id: topic
+
+      must_redirect_to new_session_path
+      topic.reload.must_be :closed?
+    end
+  end
+
+  describe 'destroy' do
+    it 'must allow access to admin' do
+      login_as admin
+
+      delete :destroy, id: topic
+
+      must_redirect_to forums_path
+      Topic.find_by(id: topic).must_be_nil
+    end
+
+    it 'must allow access to topic creator' do
+      topic.update!(account: user)
+      login_as user
+
+      delete :destroy, id: topic
+
+      must_redirect_to forums_path
+      Topic.find_by(id: topic).must_be_nil
+    end
+
+    it 'wont allow access to non admin creator' do
+      login_as user
+
+      delete :destroy, id: topic
+
+      must_redirect_to new_session_path
+      topic.reload.must_be :present?
+    end
   end
 end

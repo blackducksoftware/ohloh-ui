@@ -20,18 +20,20 @@ describe 'StacksControllerTest' do
   end
 
   it 'index should gracefully handle disabled users' do
-    get :index, account_id: create(:disabled_account)
-    must_respond_with :not_found
+    account = create(:disabled_account)
+    get :index, account_id: account
+    must_redirect_to disabled_account_url(account)
   end
 
   it 'index should gracefully handle spammers' do
-    get :index, account_id: create(:spammer)
-    must_respond_with :not_found
+    account = create(:spammer)
+    get :index, account_id: account
+    must_redirect_to disabled_account_url(account)
   end
 
-  it 'index should gracefully handle unactivated users' do
+  it 'index must allow access to unactivated users' do
     get :index, account_id: create(:unactivated)
-    must_respond_with :not_found
+    must_respond_with :ok
   end
 
   it 'index should display when the stack has no projects associated with it' do
@@ -77,11 +79,12 @@ describe 'StacksControllerTest' do
     must_respond_with :ok
   end
 
-  it 'show should return 404 for disabled users stacks' do
-    stack = create(:stack, account: create(:disabled_account))
+  it 'show: must redirect to disabled page for disabled users stacks' do
+    account = create(:disabled_account)
+    stack = create(:stack, account: account)
     login_as nil
     get :show, id: stack
-    must_respond_with :not_found
+    must_redirect_to disabled_account_url(account)
   end
 
   it 'show should offer edit links to stack owner' do

@@ -103,6 +103,14 @@ describe 'EnlistmentsControllerTest' do
       Enlistment.count.must_equal 3
     end
 
+    it 'must show alert message for adding the first enlistment' do
+      post :create, project_id: @project_id, repository: repository.attributes
+
+      must_redirect_to action: :index
+
+      flash[:show_first_enlistment_alert].must_be :present?
+    end
+
     it 'should not create repo if already exist' do
       assert_no_difference ['Repository.count', 'Enlistment.count'] do
         post :create, project_id: @project_id, repository: repository.attributes

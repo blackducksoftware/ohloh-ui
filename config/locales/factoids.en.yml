@@ -42,7 +42,7 @@ en:
     team_size_small_inline: "a small development team"
     team_size_unknown_inline: "by an unknown number of developers"
     team_size_very_large_inline: "a very large development team"
-    team_size_very_zero_inline: "nobody"
+    team_size_zero_inline: "nobody"
     index:
       page_title: "Project Summary: Factoids"
       project_Summary: "Project Summary"

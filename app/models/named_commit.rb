@@ -1,6 +1,4 @@
 class NamedCommit < ActiveRecord::Base
-  TIME_SPANS = { '30 days' => :last_30_days, '12 months' => :last_year }
-
   self.primary_key = :id
   self.per_page = 20
 

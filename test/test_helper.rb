@@ -33,11 +33,7 @@ class ActiveSupport::TestCase
   create_forges
 
   before do
-    TwitterDigits.instance_eval do
-      def get_twitter_id(*_args)
-        Faker::Internet.password
-      end
-    end
+    GithubVerification.any_instance.stubs(:generate_access_token)
   end
 
   def login_as(account)
@@ -122,5 +118,29 @@ class ActiveSupport::TestCase
         project.update(best_analysis: analysis)
       end
     end
+  end
+
+  def stub_github_verification
+    GithubVerification.any_instance.unstub(:generate_access_token)
+
+    response = stub(body: nil, code: '200')
+    Net::HTTP.any_instance.stubs(:send_request).returns(response)
+
+    access_token = Faker::Internet.password
+    data = { 'access_token' => [access_token] }
+    CGI.stubs(:parse).returns(data)
+
+    access_token
+  end
+
+  def stub_twitter_digits_verification
+    response = stub(body: nil, code: '200')
+    Net::HTTP.any_instance.stubs(:get2).returns(response)
+
+    digits_id = Faker::Internet.password
+    data = { 'id_str' => digits_id }
+    JSON.stubs(:parse).returns(data)
+
+    digits_id
   end
 end

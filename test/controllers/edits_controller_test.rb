@@ -102,6 +102,12 @@ describe EditsController do
       must_respond_with :ok
     end
 
+    it 'index should be rendered for logged in user' do
+      login_as create(:account)
+      get :index, organization_id: @organization.to_param
+      must_respond_with :ok
+    end
+
     it 'index should support query param' do
       login_as nil
       @organization.editor_account = create(:account)
@@ -156,13 +162,21 @@ describe EditsController do
     it 'index should support query param' do
       login_as nil
       @license.editor_account = create(:account)
-      @license.update_attributes(nice_name: 'Blah!')
+      @license.update_attributes(name: 'Blah!')
       @license.editor_account = create(:account)
-      @license.update_attributes(nice_name: 'Wat?')
+      @license.update_attributes(name: 'Wat?')
       get :index, license_id: @license.to_param, query: 'blah'
       must_respond_with :ok
       must_select "#edit_#{PropertyEdit.where(target: @license, value: 'Blah!').first.id}", true
       must_select "#edit_#{PropertyEdit.where(target: @license, value: 'Wat?').first.id}", false
+    end
+
+    it 'must work for deleted license' do
+      @license.destroy
+
+      get :index, license_id: @license.to_param
+
+      must_respond_with :ok
     end
   end
 end

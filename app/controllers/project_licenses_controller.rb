@@ -7,7 +7,7 @@ class ProjectLicensesController < SettingsController
   before_action :find_project_license, only: [:destroy]
 
   def index
-    @project_licenses = @project.project_licenses
+    @project_licenses = @project.project_licenses.includes(:license).order('licenses.vanity_url ASC')
   end
 
   def new

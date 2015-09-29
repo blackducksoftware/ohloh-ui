@@ -44,7 +44,8 @@ Rails.application.configure do
       bucket: ENV['OHLOH_S3_BUCKET_NAME'],
       access_key_id: ENV['OHLOH_S3_ACCESS_KEY'],
       secret_access_key: ENV['OHLOH_S3_SECRET_ACCESS_KEY']
-    }
+    },
+    s3_protocol: :https
   }
   Paperclip::Attachment.default_options[:path] = '/attachments/:id/:basename:style.:extension'
   Paperclip::Attachment.default_options[:use_timestamp] = false

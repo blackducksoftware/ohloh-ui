@@ -1,5 +1,6 @@
 en:
   accounts:
+    non_activated_message: Please verify your email address before making this change.
     unsubscribe_emails:
       title: 'You Have Been Unsubscribed'
       sad: 'We are sorry that emails from Open Hub were not helpful to you. You have been unsubscribed from all emails from Open Hub'
@@ -34,16 +35,6 @@ en:
       make_spammer:
         success: "The account %{name} has been marked as spammer."
 
-    join_now:
-      welcome_bullet_1: 'Claim all of your commits to projects across all of Open Hub, building a complete picture of your contributions to FOSS.'
-      welcome_bullet_2: 'Manage projects.'
-      welcome_bullet_3: 'Create project "stacks" that detail your usage of FOSS, and rate and review the projects you know.'
-    new:
-      html_title: New Open Hub Account
-      login_text: Login now
-      login_link_description: "and start building your FOSS profile &mdash; it's free!"
-      invite_code_message: 'The first step to claim your Open Source contribution is create an Open Hub account.'
-
     edit:
       email_help: 'We use your email address to show your'
       affiliation_help: "Enter the company or organization you're affiliated with."
@@ -58,25 +49,6 @@ en:
       help_3: Open Hub will never show your email addresses to anyone on the site or through the API.
       help_4: Your homepage URL is optional and can be any website. Often, Open Hub users choose to point this link to their blog.
       help_5: Location can be a city, country pair, separated by a comma, or for those countries subdivided into states, city, state, country triples. The map will update after you save changes to show where Open Hub positions your location.
-
-    welcome:
-      title: 'Welcome to Open Hub!'
-      description: 'You can use Open Hub without logging in, or having an account.  But with an account, you can do so much more:'
-
-    fields:
-      new_account: 'New Account'
-      sign_up: 'Sign Up'
-      login_help: 'Your login is your public name on Open Hub and will be associated with all of your contributions.'
-      login: 'Login'
-      email_help_1: 'You must provide a valid email to activate your account.'
-      email_help_2: 'You can opt-in to additional mail from Open Hub on the "Notifications" settings page.'
-      email_help_3: 'If you have a'
-      email_help_4: 'for this email address, Open Hub will use it.'
-      verify_email_address: 'Verify Email Address'
-      verify_password: 'Verify Password'
-      password_help: 'Password must be at least 5 characters long'
-      verify_password_help: 'Verify Password must be at least 5 characters long'
-      mobile_verification_hint: We would need to use your phone number to verify your account. OpenHub will not store or use your phone number for any other purpose.
 
     index:
       page_title: 'Account Holders - Open Hub'
@@ -196,12 +168,3 @@ en:
       change_passwords: 'Change password for the account.'
       api_key_settings:  'API Key settings and deletion, request new API keys.'
       email_settings: 'Opt-in / opt-out for emails from Open Hub, and OAuth access settings for external applications.'
-
-    verifications:
-      new:
-        html_title: Verify Account
-      fields:
-        click_on_link_below: Please click on the button given below to proceed.
-        verify_using_phone_number: Verify Phone Number
-      create:
-        error: There seems to be an issue with the mobile verification. Please try again later.

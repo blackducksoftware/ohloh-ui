@@ -1,9 +1,11 @@
 en:
   committers:
     error: 'Valid committer required'
+    title: "Unclaimed Committer IDs %{text} - Open Hub"
+    user_title: "%{name} : Unclaimed Committer IDs - Open Hub"
     save_claim:
       success: 'Contributions claimed successfully'
-      notice: "Are any of these ID's yours? We found additional committer IDs that might be yours based on the email addresses associated with your claimed IDs"
+      notice: "Are any of these IDs yours? We found additional committer IDs that might be yours based on the email addresses associated with your claimed IDs"
     position:
       your_role: "Your role on %{name}"
       description: 'Description'
@@ -15,18 +17,16 @@ en:
       title: "%{current_user}Claim Contributions - Open Hub"
       people: 'People'
       heading: 'Claim Contributions'
-      unclaimed_committer_ids: "Unclaimed Committer ID's"
+      unclaimed_committer_ids: "Unclaimed Committer IDs"
       claim: ': Claim'
       nothing_to_claim: 'Nothing to claim'
       save_claim: 'Save Claim'
     index:
-      title: "%{name}Unclaimed Committer ID's - Open Hub"
       people: 'People'
-      heading: "Unclaimed Committer ID's"
-      see_all_committers: "See All Unclaimed Committer ID's"
+      heading: "Unclaimed Committer IDs"
+      see_all_committers: "See All Unclaimed Committer IDs"
       no_committer: 'No unclaimed committers'
-      remaining_committers_count: "Plus %{remaining} unshown committer ID's. Please refine your search."
+      remaining_committers_count: "Plus %{remaining} unshown committer IDs. Please refine your search."
     show:
-      title: "%{current_user}Unclaimed Committer ID's : %{name}"
       people: 'People'
-      heading: "Unclaimed Committer ID's"
+      heading: "Unclaimed Committer IDs"

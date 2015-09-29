@@ -23,7 +23,7 @@ ProjectForm = {
     add_license.autocomplete({
       source : '/autocompletes/licenses',
       focus: function(e, ui) {
-        $( "#add_license" ).val( ui.item.nice_name );
+        $( "#add_license" ).val( ui.item.name );
       },
       select: function(event, ui) {
         var $input = $("<input />", {
@@ -34,7 +34,7 @@ ProjectForm = {
                         value: ui.item.id });
         $input.insertAfter($('#add_license'));
 
-        licenses.push(ui.item.nice_name)
+        licenses.push(ui.item.name)
 
         if( $.trim($('.chosen_licenses div:first').html()) === '[None]' ) {
           $('.chosen_licenses').html('');
@@ -42,7 +42,7 @@ ProjectForm = {
 
         var html = (''+
         '<div class="license col-md-5 no_margin_left">'+
-        '  <div class="col-md-6">#{nice_name}</div>'+
+        '  <div class="col-md-6">#{name}</div>'+
         '  <div class="col-md-5 pull-right" style="margin: 0 20px 20px 0">'+
         '     <a href="#" class="btn btn-danger btn-mini remove_license col" data_id="#{id}">'+
         '        <i class="icon-trash"></i> Remove</a>'+
@@ -55,7 +55,7 @@ ProjectForm = {
     ._renderItem = function( ul, item ) {
       return $( "<li></li>" )
         .data( "item.autocomplete", item )
-        .append( "<a>" + item.nice_name + "</a>" )
+        .append( "<a>" + item.name + "</a>" )
         .appendTo( ul );
     };
   }
