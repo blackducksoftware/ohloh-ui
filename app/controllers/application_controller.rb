@@ -94,7 +94,6 @@ class ApplicationController < ActionController::Base
 
   def current_user_can_manage?
     return true if current_user_is_admin?
-    return true if current_project_or_org && current_project_or_org.is_a?(License)
     logged_in? && current_project_or_org && current_project_or_org.active_managers.include?(current_user)
   end
   helper_method :current_user_can_manage?

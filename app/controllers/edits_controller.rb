@@ -3,7 +3,7 @@ class EditsController < SettingsController
 
   before_action :session_required, :redirect_unverified_account, only: [:update]
   before_action :find_parent, only: [:index]
-  before_action :show_permissions_alert, unless: :parent_is_account?
+  before_action :show_permissions_alert, unless: :parent_is_account_or_license?
   before_action :find_edit, only: [:update]
   before_action :find_edits, only: [:index]
 
@@ -21,8 +21,8 @@ class EditsController < SettingsController
 
   private
 
-  def parent_is_account?
-    params[:account_id].present?
+  def parent_is_account_or_license?
+    params[:account_id].present? || params[:license_id].present?
   end
 
   def find_parent
