@@ -51,3 +51,6 @@ en:
       title: 'The %{name} Open Source Project on Open Hub : Ratings and Reviews Page'
       rating_and_reviews: 'Ratings and Reviews'
       no_review: 'This project has no reviews.'
+      see_all_reviews: See all reviews
+      most_recent_reviews: Most Recent Reviews
+      most_helpful_reviews: Most Helpful Reviews
