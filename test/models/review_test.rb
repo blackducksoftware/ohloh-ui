@@ -76,43 +76,49 @@ class ReviewTest < ActiveSupport::TestCase
   end
 
   describe '#sort_by' do
+    let(:review_1) { create(:review) }
+    let(:review_2) { create(:review) }
+    let(:review_3) { create(:review) }
+
     it 'helpful' do
-      create_reviews_for_sort_by
-      Review.sort_by.pluck(:id).must_equal [@review1.id, @review2.id]
+      create(:helpful, review: review_1)
+      create(:helpful, review: review_2, yes: false)
+
+      Review.sort_by.pluck(:id).must_equal [review_1.id, review_2.id]
     end
 
     it 'highest_rated' do
-      create_reviews_for_sort_by
-      Review.sort_by('highest_rated').pluck(:id).must_equal [@review2.id, @review1.id]
+      create(:rating, account: review_1.account, project: review_1.project, score: 3)
+      create(:rating, account: review_2.account, project: review_2.project, score: 4)
+      create(:rating, account: review_3.account, project: review_3.project, score: 1)
+
+      Review.sort_by('highest_rated').must_equal [review_2, review_1, review_3]
     end
 
     it 'lowest_rated' do
-      create_reviews_for_sort_by
-      Review.sort_by('highest_rated').pluck(:id).must_equal [@review2.id, @review1.id]
+      create(:rating, account: review_1.account, project: review_1.project, score: 5)
+      create(:rating, account: review_2.account, project: review_2.project, score: 4)
+      create(:rating, account: review_3.account, project: review_2.project, score: 3)
+
+      Review.sort_by('lowest_rated').must_equal [review_3, review_2, review_1]
     end
 
-    it 'recently_added' do
-      create_reviews_for_sort_by
-      Review.sort_by('recently_added').pluck(:id).must_equal [@review2.id, @review1.id]
+    it 'recently_added: must sort by review.created_at desc' do
+      date_sorted_reviews = [review_1, review_2].sort_by(&:created_at).reverse
+
+      Review.sort_by('recently_added').must_equal date_sorted_reviews
     end
 
-    it 'author' do
-      create_reviews_for_sort_by
-      Review.sort_by('recently_added').pluck(:id).must_equal [@review2.id, @review1.id]
+    it 'author: must sort by account.login' do
+      account_sorted_reviews = [review_1, review_2].sort_by { |review| review.account.login }
+
+      Review.sort_by('author').must_equal account_sorted_reviews
     end
 
-    it 'project' do
-      create_reviews_for_sort_by
-      Review.sort_by('recently_added').pluck(:id).must_equal [@review2.id, @review1.id]
+    it 'project: must sort by project.name' do
+      project_sorted_reviews = [review_1, review_2].sort_by { |review| review.project.name }
+
+      Review.sort_by('project').must_equal project_sorted_reviews
     end
-  end
-
-  private
-
-  def create_reviews_for_sort_by
-    @review1 = create(:review)
-    @review2 = create(:review)
-    create(:helpful, review: @review1)
-    create(:helpful, review: @review2, yes: false)
   end
 end

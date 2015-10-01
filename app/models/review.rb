@@ -24,7 +24,7 @@ class Review < ActiveRecord::Base
       'lowest_rated'    => order(ratings_sql).order(:created_at),
       'project'         => includes(:project).order('projects.name'),
       'recently_added'  => order(created_at: :desc),
-      'author'          => order('accounts.login').order(created_at: :desc)
+      'author'          => joins(:account).order('accounts.login').order(created_at: :desc)
     }.fetch(key, order_by_helpfulness_arel)
   }
 
@@ -64,8 +64,8 @@ class Review < ActiveRecord::Base
     private
 
     def ratings_sql(sort_order = 'ASC')
-      reviews = Review.arel_table
-      sql = Rating.where(account_id: reviews[:account_id], project_id: reviews[:project_id]).select(:score).to_sql
+      sql = Rating.where('ratings.account_id = reviews.account_id AND ratings.project_id = reviews.project_id')
+            .select(:score).to_sql
       sql = "( #{sql} ) #{sort_order.eql?('DESC') ? ' DESC NULLS LAST' : ' ASC NULLS FIRST'}"
       sanitize_sql(sql)
     end

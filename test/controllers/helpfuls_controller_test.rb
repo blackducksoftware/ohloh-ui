@@ -8,8 +8,7 @@ describe 'HelpfulsControllerTest' do
   it 'test login required' do
     login_as nil
     account = @controller.send(:current_user).id
-    post :create, helpful: { account_id: account, review_id: linux_review }, review_id: linux_review.id,
-                  project_id: project.to_param, yes: true
+    post :create, helpful: { account_id: account, review_id: linux_review }, review_id: linux_review.id, yes: true
     must_respond_with :redirect
     must_redirect_to new_session_path
   end
@@ -65,6 +64,6 @@ describe 'HelpfulsControllerTest' do
   def create_helpful(helpful, xhr_request: true)
     account = @controller.send(:current_user).id
     xhr :post, :create, helpful: { account_id: account, review_id: linux_review }, review_id: linux_review.id,
-                        project_id: project.to_param, yes: helpful if xhr_request
+                        yes: helpful if xhr_request
   end
 end
