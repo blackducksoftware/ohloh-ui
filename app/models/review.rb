@@ -24,7 +24,7 @@ class Review < ActiveRecord::Base
       'lowest_rated'    => order(ratings_sql).order(:created_at),
       'project'         => includes(:project).order('projects.name'),
       'recently_added'  => order(created_at: :desc),
-      'author'          => order('accounts.login').order(created_at: :desc)
+      'author'          => joins(:account).order('accounts.login').order(created_at: :desc)
     }.fetch(key, order_by_helpfulness_arel)
   }
 
