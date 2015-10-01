@@ -78,6 +78,7 @@ class ReviewTest < ActiveSupport::TestCase
   describe '#sort_by' do
     let(:review_1) { create(:review) }
     let(:review_2) { create(:review) }
+    let(:review_3) { create(:review) }
 
     it 'helpful' do
       create(:helpful, review: review_1)
@@ -89,15 +90,17 @@ class ReviewTest < ActiveSupport::TestCase
     it 'highest_rated' do
       create(:rating, account: review_1.account, project: review_1.project, score: 3)
       create(:rating, account: review_2.account, project: review_2.project, score: 4)
+      create(:rating, account: review_3.account, project: review_3.project, score: 1)
 
-      Review.sort_by('highest_rated').must_equal [review_2, review_1]
+      Review.sort_by('highest_rated').must_equal [review_2, review_1, review_3]
     end
 
     it 'lowest_rated' do
-      create(:rating, account: review_1.account, project: review_1.project, score: 3)
+      create(:rating, account: review_1.account, project: review_1.project, score: 5)
       create(:rating, account: review_2.account, project: review_2.project, score: 4)
+      create(:rating, account: review_3.account, project: review_2.project, score: 3)
 
-      Review.sort_by('lowest_rated').must_equal [review_1, review_2]
+      Review.sort_by('lowest_rated').must_equal [review_3, review_2, review_1]
     end
 
     it 'recently_added: must sort by review.created_at desc' do
