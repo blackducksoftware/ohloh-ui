@@ -3,7 +3,6 @@ class Account::Hooks
     assign_name_to_login(account) if account.name.blank?
     account.organization_name = nil unless account.affiliation_type_other?
     account.organization_id = nil if account.affiliation_type_other?
-    set_twitter_id(account) if account.new_record?
   end
 
   def before_destroy(account)
@@ -81,7 +80,7 @@ class Account::Hooks
   # rubocop:enable Metrics/AbcSize
 
   def dependent_destroy(account)
-    %w(positions sent_kudos stacks ratings reviews api_keys).each do |association|
+    %w(positions sent_kudos stacks ratings reviews api_keys verifications).each do |association|
       account.send(association).destroy_all
     end
   end
@@ -119,9 +118,5 @@ class Account::Hooks
 
   def update_edit(account_id)
     Edit.where(undone_by: account_id).update_all(undone_by: @anonymous_account)
-  end
-
-  def set_twitter_id(account)
-    account.twitter_id = TwitterDigits.get_twitter_id(account.digits_service_provider_url, account.digits_credentials)
   end
 end

@@ -1,116 +1,49 @@
 require 'test_helper'
 
 describe 'Accounts::VerificationsController' do
-  describe 'new' do
-    it 'must require user to be logged in' do
-      account = create(:account)
-      account.update!(twitter_id: nil)
-      get :new, account_id: account.id
+  let(:account) { create(:account) }
+  before do
+    account.verifications.destroy_all
+    login_as account
+  end
 
-      must_respond_with :redirect
-      must_redirect_to new_session_path
+  describe 'generate' do
+    it 'must save a valid record' do
+      stub_github_verification
+
+      session[:auth_params] = { github_verification_attributes: { code: Faker::Internet.password } }
+
+      get :generate, account_id: account.id
+
+      must_redirect_to account_path(assigns(:account))
+      session[:auth_params].must_be_nil
+      assigns(:account).github_verification.present?.must_equal true
     end
 
-    it 'must redirect to root_path if account is verified' do
-      account = create(:account)
-      login_as account
+    it 'must redirect to new authentication path when code is nil' do
+      session[:auth_params] = { github_verification_attributes: { code: nil } }
 
-      get :new, account_id: account.id
+      get :generate, account_id: account.id
+      must_redirect_to new_authentication_path
+      flash[:notice].must_equal "can't be blank"
+    end
+
+    it 'must respond with not found when session auth params session is missing' do
+      get :generate, account_id: account.id
+      must_respond_with :not_found
+    end
+
+    it 'must redirect to root_path if account is already verified' do
+      Account::Access.any_instance.stubs(:mobile_or_oauth_verified?).returns(true)
+      get :generate, account_id: account.id
 
       must_redirect_to root_path
     end
 
-    it 'must handle disabled account' do
-      account = create(:disabled_account)
-      login_as account
-
-      get :new, account_id: account.id
+    it 'must respond with not found if account is non existant' do
+      get :generate, account_id: Faker::Lorem.word
 
       must_respond_with :not_found
-    end
-
-    it 'wont allow verifying other account' do
-      login_as create(:account)
-      account = create(:account)
-      account.update!(twitter_id: nil)
-      get :new, account_id: account.id
-
-      must_respond_with :redirect
-      must_redirect_to new_session_path
-    end
-
-    it 'must render the view successfully' do
-      account = create(:account)
-      account.update!(twitter_id: nil)
-      login_as account
-
-      get :new, account_id: account.id
-
-      must_render_template :new
-    end
-  end
-
-  describe 'create' do
-    let(:account) { create(:account) }
-    before do
-      account.update!(twitter_id: nil)
-      login_as(account)
-    end
-
-    it 'must update account with non null twitter_id' do
-      service_provider_url = Faker::Internet.url
-      credentials = "oauth_consumer_key=#{ Faker::Internet.password }"
-      twitter_id = Faker::Internet.password
-
-      TwitterDigits.expects(:get_twitter_id).with(service_provider_url, credentials)
-        .returns(twitter_id)
-
-      post :create, account_id: account.id,
-                    verification: { service_provider_url: service_provider_url, credentials: credentials }
-
-      account.reload.twitter_id.must_equal twitter_id
-    end
-
-    it 'wont report an error when twitter_id is null' do
-      TwitterDigits.stubs(:get_twitter_id)
-
-      post :create, account_id: account.id, verification: {}
-
-      flash[:error].must_be :present?
-      must_render_template :new
-    end
-
-    it 'wont allow verifying a new account with an used twitter_id' do
-      verified_account = create(:account)
-      unverified_account = create(:account)
-      unverified_account.update!(twitter_id: nil)
-      login_as unverified_account
-
-      TwitterDigits.stubs(:get_twitter_id).returns(verified_account.twitter_id)
-
-      post :create, account_id: unverified_account.id, verification: {}
-
-      unverified_account.reload.twitter_id.must_be_nil
-      flash[:error].must_equal i18n_activerecord(:account, :twitter_id)[:taken]
-      must_render_template :new
-    end
-
-    it 'will allow verifying an account that is not valid for some unrelated issue' do
-      unverified_account = create(:account)
-      unverified_account.update_columns(login: '   ', twitter_id: nil)
-      login_as unverified_account
-
-      service_provider_url = Faker::Internet.url
-      credentials = "oauth_consumer_key=#{ Faker::Internet.password }"
-      twitter_id = Faker::Internet.password
-
-      TwitterDigits.expects(:get_twitter_id).with(service_provider_url, credentials)
-        .returns(twitter_id)
-
-      post :create, account_id: unverified_account.id,
-                    verification: { service_provider_url: service_provider_url, credentials: credentials }
-
-      unverified_account.reload.twitter_id.must_equal twitter_id
     end
   end
 end

@@ -33,12 +33,6 @@ class NilAccountTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'twitter_id?' do
-    it 'must return nil' do
-      nil_account.twitter_id?.must_be_nil
-    end
-  end
-
   describe 'access' do
     it 'must return access object for self' do
       nil_account.access.class.must_equal Account::Access

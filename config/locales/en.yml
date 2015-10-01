@@ -336,6 +336,16 @@ en:
               too_long: The password must not be longer than 32 characters.
               invalid: The password contains illegal characters
 
+        twitter_digits_verification:
+          attributes:
+            auth_id:
+              taken: This mobile number is already associated with another account.
+
+        github_verification:
+          attributes:
+            auth_id:
+              taken: This Github account is already associated with another account.
+
   project_experiences:
     no_matching_project: No matching open source project with this name.
 
@@ -377,3 +387,12 @@ en:
     message: '%{name} generated more than 50% of all commits during the past 12 months.'
 
   invalid_default_param: 'must begin with a letter and can include only letters, numbers, _ and -'
+
+  authentications:
+    new:
+      html_title: Verify Account
+    fields:
+      verify_using_phone_number: Verify Phone Number
+      verify_using_github: 'Verify using Github'
+    create:
+      error: There seems to be an issue with the mobile verification. Please try again later.

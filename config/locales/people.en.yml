@@ -8,8 +8,8 @@ en:
     people:
       account_holders: "Account Holders"
       more_account_holders: "More Account Holders"
-      unclaimed_committer_ids: "Unclaimed Committer ID's"
-      more_commiters: "More Unclaimed Committer ID's"
+      unclaimed_committer_ids: "Unclaimed Committer IDs"
+      more_commiters: "More Unclaimed Committer IDs"
     rankings:
       page_title: "Open Source People - Open Hub"
       open_source_people: "Open Source People"

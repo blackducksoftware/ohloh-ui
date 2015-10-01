@@ -1,7 +1,7 @@
 - content_for(:html_title) { t('.html_title') }
 
 .col-md-7#welcome-message-container
-  = render 'accounts/welcome'
+  = render 'welcome'
   %p
     = link_to t('.login_text'), new_session_path, class: 'btn btn-success'
     != t('.login_link_description')

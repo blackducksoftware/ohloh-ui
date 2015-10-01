@@ -38,7 +38,7 @@ describe 'CommittersControllerTest' do
     it 'must set title to Open Hub when no query string is present' do
       get :index
 
-      must_select 'title', I18n.t('committers.index.title', text: '- Open Hub')
+      must_select 'title', I18n.t('committers.title', text: '')
     end
 
     it 'must set title to query string when it is present' do
@@ -46,7 +46,17 @@ describe 'CommittersControllerTest' do
 
       get :index, query: query
 
-      must_select 'title', I18n.t('committers.index.title', text: ": #{ query }")
+      must_select 'title', I18n.t('committers.title', text: ": #{ query }")
+    end
+
+    it 'must set title with current_user name when flow is account' do
+      account = create(:account)
+      login_as account
+      query = Faker::Lorem.word
+
+      get :index, query: query, flow: :account
+
+      must_select 'title', I18n.t('committers.user_title', name: account.name)
     end
   end
 
