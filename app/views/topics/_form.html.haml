@@ -1,4 +1,6 @@
 %fieldset
+  = f.hidden_field :account_id
+  = f.hidden_field :forum_id
   .control-group
     %label.control-label.required.margin_top_10= t('.title')
     .controls
@@ -7,12 +9,14 @@
         by #{ current_user.login }
       %span.help-block= t('.enter_topic_title')
       - error_tag @topic, :title
-    %label.control-label.required= t('.message')
-    .controls
-      = f.fields_for :posts do |f2|
-        = f2.text_area :body, rows: 10, cols: 40, style: 'width: 95%'
-        - error_tag @topic, :'posts.body'
-      %p.help-block= t('.first_post')
+    - if @topic.new_record?
+      %label.control-label.required= t('.message')
+      .controls
+        = f.fields_for :posts do |f2|
+          = f2.hidden_field :account_id
+          = f2.text_area :body, rows: 10, cols: 40, style: 'width: 95%'
+          - error_tag @topic, :'posts.body'
+        %p.help-block= t('.first_post')
 
   - if current_user_is_admin? && !@topic.new_record?
     .control-group#topic_forum_id

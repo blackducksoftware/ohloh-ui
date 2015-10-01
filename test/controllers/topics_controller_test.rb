@@ -7,6 +7,11 @@ describe TopicsController do
   let(:topic) { create(:topic) }
   let(:topic_post) { create(:post) }
 
+  let(:topic_params) do
+    { title: Faker::Lorem.sentence, account_id: user.id,
+      posts_attributes: { '0' => { account_id: user.id, body: Faker::Lorem.sentence } } }
+  end
+
   #-------------User with no account---------------
   describe 'index' do
     it 'with forum id' do
@@ -28,8 +33,7 @@ describe TopicsController do
 
   it 'create should fail if not signed in' do
     assert_no_difference(['Topic.count', 'Post.count']) do
-      post :create, forum_id: forum.id, topic: { title: 'Example Topic title', posts_attributes:
-                                                [{ body: 'Example Post body', account_id: nil }] }
+      post :create, forum_id: forum.id, topic: topic_params
     end
     must_respond_with :redirect
     must_redirect_to new_session_path
@@ -71,10 +75,12 @@ describe TopicsController do
     must_respond_with :unauthorized
   end
 
-  it 'update' do
-    put :update, id: topic.id, topic: { title: 'Changed title for test purposes' }
+  it 'admin must be able to update successfully' do
+    login_as admin
+    title = Faker::Lorem.sentence
+    put :update, id: topic.id, topic: { title: title, account_id: user.id }
     topic.reload
-    topic.title.must_equal topic.title
+    topic.title.must_equal title
   end
 
   it 'destroy' do
@@ -130,27 +136,64 @@ describe TopicsController do
   it 'user create a topic and an accompanying post' do
     login_as(user)
     assert_difference(['Topic.count', 'Post.count']) do
-      post :create, forum_id: forum.id, topic: { title: 'Example Forum', posts_attributes:
-                                                [{ body: 'Post object that comes by default' }] }
+      post :create, forum_id: forum.id, topic: topic_params
     end
     must_redirect_to forum_path(forum.id)
   end
 
-  it 'user fails to create a topic and an accompanying post' do
+  it 'wont create a topic with blank title' do
     login_as(user)
+
     assert_no_difference(['Topic.count', 'Post.count']) do
-      post :create, forum_id: forum.id, topic: { title: '', posts_attributes:
-                                                [{ body: '' }] }
+      post :create, forum_id: forum.id, topic: topic_params.merge(title: '')
     end
+
+    assigns(:topic).errors.messages[:title].must_be :present?
     must_render_template :new
   end
 
-  test 'user creates a topic/post with valid recaptcha' do
+  it 'wont create a post with blank body' do
+    login_as(user)
+
+    assert_no_difference(['Topic.count', 'Post.count']) do
+      post :create, forum_id: forum.id, topic: topic_params.deep_merge(
+        posts_attributes: { '0' => { body: '', account_id: user.id } })
+    end
+
+    assigns(:topic).errors.messages[:'posts.body'].must_be :present?
+    must_render_template :new
+  end
+
+  it 'wont create a topic under a different user' do
+    login_as(user)
+    account = create(:account)
+
+    assert_no_difference(['Topic.count', 'Post.count']) do
+      post :create, forum_id: forum.id, topic: topic_params.merge(account_id: account.id)
+    end
+
+    must_redirect_to new_session_path
+    flash[:error].must_equal I18n.t(:cant_edit_other_account)
+  end
+
+  it 'wont create a topic with post having a different user' do
+    login_as(user)
+    account = create(:account)
+
+    assert_no_difference(['Topic.count', 'Post.count']) do
+      post :create, forum_id: forum.id, topic: topic_params.deep_merge(
+        posts_attributes: { '0' => { body: Faker::Lorem.word, account_id: account.id } })
+    end
+
+    must_redirect_to new_session_path
+    flash[:error].must_equal I18n.t(:cant_edit_other_account)
+  end
+
+  it 'user creates a topic/post with valid recaptcha' do
     login_as(user)
     TopicsController.any_instance.expects(:verify_recaptcha).returns(true)
     assert_difference(['Topic.count', 'Post.count']) do
-      post :create, forum_id: forum.id, topic: { title: 'Example Forum', posts_attributes:
-                                                [{ body: 'Post object that comes by default' }] }
+      post :create, forum_id: forum.id, topic: topic_params
     end
     must_redirect_to forum_path(forum.id)
   end
@@ -159,8 +202,7 @@ describe TopicsController do
     login_as(user)
     TopicsController.any_instance.expects(:verify_recaptcha).returns(false)
     assert_no_difference(['Topic.count', 'Post.count']) do
-      post :create, forum_id: forum.id, topic: { title: 'Example Forum', posts_attributes:
-                                                [{ body: 'Post object that comes by default' }] }
+      post :create, forum_id: forum.id, topic: topic_params
     end
   end
 
@@ -187,11 +229,14 @@ describe TopicsController do
     must_respond_with :unauthorized
   end
 
-  it 'user update' do
+  it 'user should not be able to update' do
     login_as user
-    put :update, id: topic.id, topic: { title: 'Changed title for test purposes' }
+    title = Faker::Lorem.sentence
+
+    put :update, id: topic.id, topic: { title: title }
+
     topic.reload
-    topic.title.must_equal topic.title
+    topic.title.wont_equal title
     must_respond_with :unauthorized
   end
 
@@ -218,8 +263,7 @@ describe TopicsController do
   it 'admin create a topic and accompanying post' do
     login_as(admin)
     assert_difference(['Topic.count', 'Post.count']) do
-      post :create, forum_id: forum.id, topic: { title: 'Example Topic', posts_attributes:
-                                                [{ body: 'Post object that comes by default' }] }
+      post :create, forum_id: forum.id, topic: topic_params
     end
     must_redirect_to forum_path(forum.id)
   end
@@ -227,8 +271,7 @@ describe TopicsController do
   it 'admin fails create a topic and an accompanying post' do
     login_as(admin)
     assert_no_difference(['Topic.count', 'Post.count']) do
-      post :create, forum_id: forum.id, topic: { title: '', posts_attributes:
-                                                [{ body: '' }] }
+      post :create, forum_id: forum.id, topic: { title: '', posts_attributes: { '0' => { body: '' } } }
     end
     must_render_template :new
   end
@@ -238,8 +281,7 @@ describe TopicsController do
     TopicsController.any_instance.stubs(:verify_recaptcha).returns(false)
 
     assert_difference(['Topic.count', 'Post.count']) do
-      post :create, forum_id: forum.id, topic: { title: 'Example Forum', posts_attributes:
-                                                [{ body: 'Post object that comes by default' }] }
+      post :create, forum_id: forum.id, topic: topic_params
     end
     must_redirect_to forum_path(forum.id)
   end
@@ -261,9 +303,10 @@ describe TopicsController do
 
   it 'admin update' do
     login_as admin
-    put :update, id: topic.id, topic: { title: 'Changed title for test purposes' }
+    title = Faker::Lorem.sentence
+    put :update, id: topic.id, topic: { title: title }
     topic.reload
-    topic.title.must_equal 'Changed title for test purposes'
+    topic.title.must_equal title
   end
 
   it 'admin fails to update' do

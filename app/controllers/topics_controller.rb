@@ -2,6 +2,7 @@ class TopicsController < ApplicationController
   helper MarkdownHelper
   before_action :session_required, :redirect_unverified_account, only: [:new, :create, :close, :reopen]
   before_action :admin_session_required, only: [:edit, :update, :close]
+  before_action :set_account, :must_own_account, only: :create
   before_action :find_forum_record, only: [:new, :create]
   before_action :find_forum_and_topic_records, except: [:index, :new, :create]
   before_action :must_be_admin_or_topic_creator, only: [:destroy, :reopen]
@@ -18,13 +19,13 @@ class TopicsController < ApplicationController
   end
 
   def new
-    @topic = @forum.topics.build
-    @post = @topic.posts.build
+    @topic = @forum.topics.build(account: current_user)
+    @post = @topic.posts.build(account: current_user)
     redirect_to new_session_path unless logged_in?
   end
 
   def create
-    @topic = build_new_topic
+    @topic = Topic.new(topic_params)
     if verify_captcha_for_non_admin && @topic.save
       redirect_to forum_path(@forum)
     else
@@ -86,15 +87,8 @@ class TopicsController < ApplicationController
   end
 
   def topic_params
-    params.require(:topic).permit(:forum_id, :title, :sticky,
-                                  :hits, :closed, posts_attributes: [:body])
-  end
-
-  def build_new_topic
-    topic = @forum.topics.build(topic_params)
-    topic.account_id = current_user.id
-    topic.posts.last.account_id = current_user.id
-    topic
+    params.require(:topic).permit(:forum_id, :account_id, :title, :sticky,
+                                  :hits, :closed, posts_attributes: [:body, :account_id])
   end
 
   def must_be_admin_or_topic_creator
@@ -104,5 +98,14 @@ class TopicsController < ApplicationController
   def verify_captcha_for_non_admin
     return true if current_user_is_admin?
     verify_recaptcha(model: @topic)
+  end
+
+  def set_account
+    account_id = topic_params[:account_id] if topic_and_post_account_id_match?
+    @account = Account.from_param(account_id).take
+  end
+
+  def topic_and_post_account_id_match?
+    topic_params[:account_id] == topic_params[:posts_attributes]['0'][:account_id]
   end
 end

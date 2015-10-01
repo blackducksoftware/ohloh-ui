@@ -1,8 +1,9 @@
 en:
   topics:
     reopen: 'Re-open'
-    new:
+    fields:
       forums: 'Forums'
+    new:
       create_topic: 'Post Topic'
       new_topic: 'New Topic'
     show:
