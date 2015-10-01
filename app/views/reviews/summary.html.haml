@@ -17,6 +17,6 @@
     = render partial: 'review_summary', collection: @recent_reviews
   .clear
   - if @project.reviews.count > 1
-    = icon_button(project_reviews_path(@project), text: t('.see_all_reviews'), size: 'small')
+    = icon_button(project_reviews_path(@project), text: t('.see_all_reviews'), size: 'small', type: :primary)
 - else
   %p= t('.no_review')
