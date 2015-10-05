@@ -62,6 +62,7 @@ end
 group :development, :test do
   gem 'byebug'
   gem 'pry-rails'
+  gem 'pry-byebug'
   gem 'rb-readline'
   gem 'rails-erd'
 end

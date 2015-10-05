@@ -159,6 +159,12 @@ describe EditsController do
       must_respond_with :ok
     end
 
+    it 'index should show even when a regular user is logged in' do
+      login_as create(:account)
+      get :index, license_id: @license.to_param
+      must_respond_with :ok
+    end
+
     it 'index should support query param' do
       login_as nil
       @license.editor_account = create(:account)
