@@ -14,3 +14,4 @@ public/system/
 /config/GIT_SHA
 *.swp
 tags
+.env.development
