@@ -21,7 +21,8 @@ class WidgetsController < ApplicationController
 
   def render_image_for_gif_format
     return unless request.format.gif?
-    image = Rails.cache.fetch("#{@widget.parent.id}/#{@widget.name}}", expires_in: 2.hours) { @widget.image }
+    cache_key = "#{@widget.parent.class.name}/#{@widget.parent.id}/#{@widget.name}"
+    image = Rails.cache.fetch(cache_key, expires_in: 2.hours) { @widget.image }
     send_data(image, disposition: 'inline', type: 'image/gif', filename: 'widget.gif', status: 200)
   end
 
