@@ -20,6 +20,7 @@ class StackWidget < Widget
   def stack
     @stack ||= Stack.find(stack_id)
   end
+  alias_method :parent, :stack
 
   def stack_entries
     @stack_entries = stack.stack_entries.limit(projects_shown)
