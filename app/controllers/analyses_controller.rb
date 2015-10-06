@@ -63,8 +63,8 @@ class AnalysesController < ApplicationController
   end
 
   def commits_spark
-    monthly_commits = Analysis::MonthlyCommits.new(analysis: @analysis).execute
     spark_image = Rails.cache.fetch("analysis/#{@analysis.id}/commits_spark", expires_in: 4.hours) do
+      monthly_commits = Analysis::MonthlyCommits.new(analysis: @analysis).execute
       Spark::SimpleSpark.new(monthly_commits, max_value: 5000).render.to_blob
     end
     send_data spark_image, type: 'image/png', filename: 'commits.png', disposition: 'inline'
