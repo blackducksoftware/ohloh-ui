@@ -16,8 +16,7 @@ class AnalysesController < ApplicationController
 
   def languages
     pie_chart = Rails.cache.fetch("analysis/#{@analysis.id}/languages_pie", expires_in: 4.hours) do
-      data = Analysis::LanguagePercentages.new(@analysis).collection.map(&:last)
-      Chart::Pie.new(data, params[:width], params[:height]).render.to_blob
+      languages_pie_chart
     end
     send_data pie_chart, disposition: 'inline', type: 'image/png'
   end
@@ -78,5 +77,10 @@ class AnalysesController < ApplicationController
 
   def fail_if_analysis_not_found
     fail ParamRecordNotFound if @analysis.blank?
+  end
+
+  def languages_pie_chart
+    data = Analysis::LanguagePercentages.new(@analysis).collection.map(&:last)
+    Chart::Pie.new(data, params[:width], params[:height]).render.to_blob
   end
 end

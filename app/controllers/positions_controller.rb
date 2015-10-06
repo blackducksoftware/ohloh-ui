@@ -45,9 +45,6 @@ class PositionsController < ApplicationController
   end
 
   def commits_compound_spark
-    @project = @position.project
-    @name_fact = ContributorFact.includes(:name).where(analysis_id: @project.best_analysis_id,
-                                                       name_id: @position.name_id).first
     spark_image = Rails.cache.fetch("position/#{@position.id}/commits_compound_spark", expires_in: 4.hours) do
       Spark::CompoundSpark.new(@name_fact.monthly_commits(11), max_value: 50).render.to_blob
     end
