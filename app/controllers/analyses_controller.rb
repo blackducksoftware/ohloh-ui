@@ -15,8 +15,10 @@ class AnalysesController < ApplicationController
   end
 
   def languages
-    chart_data = Analysis::LanguagePercentages.new(@analysis).collection.map(&:last)
-    pie_chart = Chart::Pie.new(chart_data, params[:width], params[:height]).render.to_blob
+    pie_chart = Rails.cache.fetch("analysis/#{@analysis.id}/languages_pie", expires_in: 2.hours) do
+      data = Analysis::LanguagePercentages.new(@analysis).collection.map(&:last)
+      Chart::Pie.new(data, params[:width], params[:height]).render.to_blob
+    end
     send_data pie_chart, disposition: 'inline', type: 'image/png'
   end
 
@@ -62,7 +64,9 @@ class AnalysesController < ApplicationController
 
   def commits_spark
     monthly_commits = Analysis::MonthlyCommits.new(analysis: @analysis).execute
-    spark_image = Spark::SimpleSpark.new(monthly_commits, max_value: 5000).render.to_blob
+    spark_image = Rails.cache.fetch("analysis/#{@analysis.id}/commits_spark", expires_in: 2.hours) do
+      Spark::SimpleSpark.new(monthly_commits, max_value: 5000).render.to_blob
+    end
     send_data spark_image, type: 'image/png', filename: 'commits.png', disposition: 'inline'
   end
 
