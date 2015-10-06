@@ -15,6 +15,7 @@ class AccountWidget < Widget
   def account
     @account ||= Account.from_param(account_id).first
   end
+  alias_method :parent, :account
 
   def rank
     account.kudo_rank

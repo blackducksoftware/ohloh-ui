@@ -7,6 +7,7 @@ class OrganizationWidget < Widget
   def organization
     @organization ||= Organization.from_param(organization_id).first
   end
+  alias_method :parent, :organization
 
   def title
     I18n.t('organization_widgets.title')
