@@ -1,5 +1,4 @@
 class OrganizationWidget < Widget
-
   def initialize(vars = {})
     fail ArgumentError I18n.t('organization_widgets.missing') unless vars[:organization_id]
     super
