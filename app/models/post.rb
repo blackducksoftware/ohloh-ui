@@ -1,8 +1,7 @@
 class Post < ActiveRecord::Base
   include Tsearch
-  belongs_to :topic, inverse_of: :posts
   belongs_to :forum, counter_cache: true
-  belongs_to :topic, inverse_of: :posts, counter_cache: true
+  belongs_to :topic, inverse_of: :posts, counter_cache: true, touch: true
   belongs_to :account
 
   validates :body, :topic, presence: true
