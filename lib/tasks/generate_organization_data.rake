@@ -1,3 +1,6 @@
+# Usage:
+# rake selenium:prepare_organization_data[mozilla]
+
 namespace :selenium do
   desc 'Prepare Organization data for selenium'
   task :prepare_organization_data, [:organization_name] => :environment do |_t, args|
