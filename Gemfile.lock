@@ -78,6 +78,10 @@ GEM
     aws-sdk-v1 (1.64.0)
       json (~> 1.4)
       nokogiri (>= 1.4.4)
+    better_errors (2.1.1)
+      coderay (>= 1.0.0)
+      erubis (>= 2.6.6)
+      rack (>= 0.9.0)
     bluecloth (2.2.0)
     bourbon (4.2.3)
       sass (~> 3.4)
@@ -110,6 +114,7 @@ GEM
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
     choice (0.2.0)
+    chronic (0.10.2)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.7)
@@ -355,6 +360,7 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (1.4.1)
+    timecop (0.8.0)
     traceview (3.0.5)
       json
     twitter-bootstrap-rails (3.2.0)
@@ -371,6 +377,8 @@ GEM
     webmock (1.21.0)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
+    whenever (0.9.4)
+      chronic (>= 0.6.3)
     will_paginate (3.0.7)
     will_paginate-bootstrap (1.0.1)
       will_paginate (>= 3.0.3)
@@ -382,6 +390,7 @@ DEPENDENCIES
   activeadmin!
   airbrake
   aws-sdk (< 2.0)
+  better_errors
   bluecloth
   brakeman
   bundler-audit!
@@ -395,7 +404,7 @@ DEPENDENCIES
   doorkeeper
   dotenv-rails
   execjs
-  factory_girl_rails
+  factory_girl_rails (~> 4.0)
   faker
   flog
   font-awesome-rails
@@ -429,13 +438,12 @@ DEPENDENCIES
   simplecov-rcov
   spring
   therubyracer
+  timecop
   traceview
   twitter-bootstrap-rails
   uglifier (>= 2.7.2)
   vcr
   webmock
+  whenever
   will_paginate
   will_paginate-bootstrap
-
-BUNDLED WITH
-   1.10.6

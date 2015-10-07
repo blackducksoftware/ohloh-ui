@@ -7,8 +7,6 @@ module AnonymousAccount
                                       email: 'anon@openhub.net', email_confirmation: 'anon@openhub.net',
                                       password: 'mailpass', password_confirmation: 'mailpass')
       anonymous_account.save!
-      anonymous_account.access.activate!(nil)
-
       anonymous_account
     end
   end

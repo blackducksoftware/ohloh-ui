@@ -116,6 +116,7 @@ Rails.application.routes.draw do
   resources :registrations, only: [:new] do
     collection do
       post :validate
+      # Why is there no controller method for this route?
       get :verification_strategies
       get :generate
     end
@@ -398,6 +399,10 @@ Rails.application.routes.draw do
   get 'sitemap_index.xml', controller: 'sitemap', action: 'index', format: 'xml'
   get 'sitemaps/:ctrl/:page.xml', controller: 'sitemap', action: 'show', format: 'xml'
 
+  # Hack I found on stack overflow to allow for the built in ActionMailer Previews.
+  # http://stackoverflow.com/questions/26130130/what-are-the-routes-i-need-to-set-up-to-preview-emails-using-rails-4-1-actionmai
+  get '/rails/mailers' => 'rails/mailers#index'
+  get '/rails/mailers/*path' => 'rails/mailers#preview'
   # the unmatched_route must be last as it matches everything
   match '*unmatched_route', to: 'application#raise_not_found!', via: :all
 end

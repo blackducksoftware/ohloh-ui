@@ -32,6 +32,7 @@ gem 'sass-rails'
 gem 'therubyracer'
 gem 'twitter-bootstrap-rails'
 gem 'uglifier', '>= 2.7.2'
+gem 'whenever', require: false
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 gem 'simple-rss'
@@ -41,11 +42,11 @@ group :development do
   gem 'capistrano-faster-assets'
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
-  gem 'letter_opener'
+  gem 'better_errors'
 end
 
 group :test do
-  gem 'factory_girl_rails'
+  gem 'factory_girl_rails', '~> 4.0'
   gem 'faker'
   gem 'flog'
   gem 'haml-lint', '~> 0.11'
@@ -55,6 +56,7 @@ group :test do
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'spring'
+  gem 'timecop'
   gem 'vcr'
   gem 'webmock'
 end
@@ -65,6 +67,7 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'rb-readline'
   gem 'rails-erd'
+  gem 'letter_opener'
 end
 
 group :production do
