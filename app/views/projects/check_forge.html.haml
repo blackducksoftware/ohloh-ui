@@ -65,11 +65,11 @@
               %label.control-label= t('.chosen_licenses')
               .controls.chosen_licenses
                 - licenses.each do |license|
-                  .license.span5.no_margin_left
-                    .col-md-3.no_margin_left
+                  .license.col-md-5.no_margin_left
+                    .col-md-6
                       = license.name
-                    .col-md-2.no_margin_left
-                      %a.btn.btn-mini.remove_license.btn-danger{ href: '' }
+                    .col-md-5.pull-right{ style: 'margin: 0 20px 20px 0' }
+                      %a.btn.btn-mini.remove_license.btn-danger.col{ href: '#' }
                         %i.icon-trash= t '.remove'
                     %input{ type: 'hidden', value: license.id,
                             name: 'project[project_licenses_attributes][][license_id]' }
