@@ -6,7 +6,7 @@ gem 'airbrake'
 gem 'aws-sdk', '< 2.0' # paperclip doesn't work with the new aws-sdk gem
 gem 'bluecloth'
 gem 'brakeman'
-gem 'bundler-audit'
+gem 'bundler-audit', git: 'https://github.com/BoboFraggins/bundler-audit'
 gem 'coffee-rails'
 gem 'coffee-script-source', '~>1.8.0'
 gem 'doorkeeper'
