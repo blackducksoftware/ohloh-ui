@@ -37,14 +37,14 @@ namespace :selenium do
       project_data.merge!(
         'i_use_this' => number_with_delimiter(project.user_count),
         'description' => project.description.squish,
-        'organization_name' => project.organization.name,
+        'organization_name' => project.organization.try(:name),
         'tags' => project.tags.order(:name).pluck(:name),
         'links' => project.links.collect { |v| [v.category, v.title, v.url] }.group_by(&:first),
         'code_location_count' => project.enlistments.size,
         'licenses' => project.licenses.pluck(:abbreviation, :name),
         'managers' => project.managers.pluck(:name),
         'activity_text' => project_activity_text(project, true),
-        'permission' => project.permission.remainder ? 'Mangers Only' : 'Everyone'
+        'permission' => project.permission.try(:remainder) ? 'Mangers Only' : 'Everyone'
       )
 
       project_data.merge!(
@@ -59,7 +59,7 @@ namespace :selenium do
       ) if analysis.present?
 
       project_data.merge!(
-        'community' => { 'user_count' => project.ratings.count, 'rating_avg' => project.rating_average.round(1) },
+        'community' => { 'user_count' => project.ratings.count, 'rating_avg' => project.rating_average.to_f.round(1) },
         'similar_projects_by_tag' => collect_license_and_languages(project.related_by_tags(10)),
         'similar_projects_by_stack' => collect_license_and_languages(project.related_by_stacks(10))
       )
@@ -224,6 +224,7 @@ namespace :selenium do
 
   def get_new_alias(project)
     committer_name = Alias.committer_names(project).take
+    return if committer_name.nil?
     [committer_name.name, Alias.preferred_names(project, committer_name).take.name]
   end
 
