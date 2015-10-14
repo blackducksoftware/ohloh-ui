@@ -15,7 +15,7 @@
         .controls
           .checkbox
             %input{ check_box_params(stacked, stack, @project) }
-            %span.col-md-2= h(stack.name)
+            %span= h(stack.name)
             %span.status{ style: 'padding: 0 8px 8px' } &nbsp;
     .clearfix
   - if @stacks.size < Stack::MAX_STACKS_PER_ACCOUNT
