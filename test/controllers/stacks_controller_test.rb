@@ -155,18 +155,16 @@ describe 'StacksControllerTest' do
     must_respond_with 302
   end
 
-  it 'create should hande an ajax request for I Use This' do
+  it 'create must respond with stack_url for json requests' do
     account = create(:account)
     project = create(:project)
     login_as account
-    xml_http_request :post, 'create', project_id: project
-    must_render_template 'stacks/i_use_this.js.erb'
-    assert_difference 'Stack.count', 1 do
-      xml_http_request :post, 'create', project_id: project
+
+    assert_difference ['Stack.count', 'StackEntry.count'] do
+      xml_http_request :post, 'create', project_id: project.id, format: :json
     end
-    assert_difference 'StackEntry.count', 1 do
-      xml_http_request :post, 'create', project_id: project
-    end
+
+    JSON.parse(response.body).must_equal('stack_url' => stack_path(assigns(:stack)))
   end
 
   # update action

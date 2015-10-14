@@ -23,7 +23,7 @@ class StacksController < ApplicationController
     if @stack.save
       respond_to do |format|
         format.html { redirect_to stack_path(@stack) }
-        format.js { render action: 'i_use_this.js.erb' }
+        format.json { render json: { stack_url: stack_path(@stack) } }
       end
     else
       redirect_to account_stacks_path(current_user), notice: t('.error')
