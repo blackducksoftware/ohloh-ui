@@ -26,7 +26,6 @@
 #= require ace-element.min
 
 $(document).on 'page:change', ->
-  Edit.init()
   StackVerb.init()
   StackShow.init()
   Expander.init()
