@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class StackEntriesControllerTest < ActionController::TestCase
+describe 'StackEntriesController' do
   # show
   it 'show should return good json for a stack entry' do
     login_as(create(:account))
@@ -140,16 +140,27 @@ class StackEntriesControllerTest < ActionController::TestCase
     stack.stack_entries.count.must_equal 0
   end
 
-  it 'new should return current user stacks and project' do
-    stack = create(:stack)
-    project = create(:project)
-    create(:stack_entry, project: project, stack: stack)
-    login_as stack.account
+  describe 'new' do
+    before do
+      @stack = create(:stack)
+      @project = create(:project)
+      create(:stack_entry, project: @project, stack: @stack)
+      login_as @stack.account
+    end
 
-    get :new, project_id: project.id, ref: 'ProjectWidget%3A%3AUsers'
-    must_respond_with :ok
-    assigns(:project).must_equal project
-    assigns(:stacks).must_equal stack.account.stacks
-    stack.stack_entries.count.must_equal 1
+    it 'must return current user stacks and project' do
+      get :new, project_id: @project.id, ref: 'ProjectWidget%3A%3AUsers'
+
+      must_respond_with :ok
+      assigns(:project).must_equal @project
+      assigns(:stacks).must_equal @stack.account.stacks
+      @stack.stack_entries.count.must_equal 1
+    end
+
+    it 'must render a partial to handle ajax response' do
+      get :new, project_id: @project.id
+
+      must_render_template '_new'
+    end
   end
 end
