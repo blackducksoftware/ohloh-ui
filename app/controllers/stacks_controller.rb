@@ -12,19 +12,16 @@ class StacksController < ApplicationController
   before_action :set_project_or_fail, only: [:near, :project_stacks]
   before_action :account_context, only: [:index, :show, :similar]
   before_action :verify_api_access_for_xml_request, only: [:project_stacks]
-  after_action :connect_stack_entry_to_stack, only: [:create], if: :request_is_xhr?
 
   def index
     @stacks = @account.stacks
   end
 
   def create
-    create_stack
+    build_stack
+
     if @stack.save
-      respond_to do |format|
-        format.html { redirect_to stack_path(@stack) }
-        format.json { render json: { stack_url: stack_path(@stack) } }
-      end
+      redirect_to stack_path(@stack)
     else
       redirect_to account_stacks_path(current_user), notice: t('.error')
     end
@@ -66,10 +63,10 @@ class StacksController < ApplicationController
 
   private
 
-  def create_stack
-    @stack = Stack.new
+  def build_stack
+    @stack = Stack.new(model_params)
     @stack.account = current_user
-    request_is_xhr? ? i_use_this : set_title
+    create_with_stack_entry? ? i_use_this : set_title
   end
 
   def set_title
@@ -84,7 +81,8 @@ class StacksController < ApplicationController
   end
 
   def model_params
-    params.require(:stack).permit([:title, :description])
+    return {} unless params[:stack]
+    params.require(:stack).permit(:title, :description, stack_entries_attributes: [:project_id])
   end
 
   def find_stack
@@ -108,11 +106,7 @@ class StacksController < ApplicationController
     end
   end
 
-  def connect_stack_entry_to_stack
-    StackEntry.create(stack_id: @stack.id, project_id: @project.id)
-  end
-
-  def request_is_xhr?
-    request.xhr?
+  def create_with_stack_entry?
+    model_params.key?(:stack_entries_attributes)
   end
 end
