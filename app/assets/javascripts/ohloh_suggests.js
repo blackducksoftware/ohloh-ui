@@ -4,7 +4,6 @@ StackVerb = {
   init: function() {
     $(".stack_verb, .stack_trigger").not($(".create_and_stack")).unbind().click(StackVerb.stackit);
     $("form.create_stack_entry input[type=checkbox]").unbind().click(StackVerb.checkbox);
-    $(".create_and_stack").unbind().click(StackVerb.create_and_stack);
   },
 
   checkbox: function() {
@@ -29,7 +28,7 @@ StackVerb = {
     var project_id = $(this).attr('id').split("_")[1];
     var data = {};
     if (project_id != "nil") {
-      data = {'initial_project_id':project_id}
+      data = { project_id: project_id }
     }
     $.ajax({
       url: "/stacks.json",

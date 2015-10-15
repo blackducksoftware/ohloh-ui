@@ -5,3 +5,5 @@
     - all_languages.each do |id, language_name|
       %option{ value: @position.id, selected: existing_experience_ids.include?(id) }
         = language_name
+
+- error_tag(@position, :language_experiences)

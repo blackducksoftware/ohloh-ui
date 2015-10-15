@@ -48,6 +48,16 @@ describe 'PositionsController' do
       must_redirect_to new_session_path
     end
 
+    it 'must render errors when validations fail' do
+      login_as(account)
+
+      post :create, account_id: account.to_param,
+                    position: { project_oss: 'unknown' }
+
+      must_render_template 'new'
+      response.body.must_match(I18n.t('position.project_id.blank'))
+    end
+
     describe 'success' do
       let(:project) { create(:project) }
       let(:name_obj) { create(:name) }
@@ -95,6 +105,7 @@ describe 'PositionsController' do
         end
 
         must_respond_with :unprocessable_entity
+        response.body.must_match('is invalid')
       end
     end
   end

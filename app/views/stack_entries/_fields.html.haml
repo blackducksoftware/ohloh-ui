@@ -15,10 +15,13 @@
         .controls
           .checkbox
             %input{ check_box_params(stacked, stack, @project) }
-            %span.col-md-2= h(stack.name)
+            %span= h(stack.name)
             %span.status{ style: 'padding: 0 8px 8px' } &nbsp;
     .clearfix
   - if @stacks.size < Stack::MAX_STACKS_PER_ACCOUNT
     %p
       = link_to '#', class: 'btn create_and_stack', id: "project_#{project.id}_account_#{current_user.id}" do
         = t('.create_html', name: project.name)
+
+:javascript
+  $('.create_and_stack').unbind().click(StackVerb.create_and_stack)

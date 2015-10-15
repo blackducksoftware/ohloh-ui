@@ -21,12 +21,13 @@ class PositionsController < ApplicationController
   end
 
   def create
-    @position = @account.positions.create!(position_params)
-    flash_invite_success_if_needed
-    redirect_to account_positions_path(@account)
-  rescue
-    @position = Position.new
-    render :new, status: :unprocessable_entity
+    @position = @account.positions.new(position_params)
+    if @position.save
+      flash_invite_success_if_needed
+      redirect_to account_positions_path(@account)
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def show

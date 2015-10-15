@@ -13,6 +13,7 @@ class StackEntriesController < ApplicationController
     @project = Project.from_param(params[:project_id]).take
     fail ParamRecordNotFound if @project.nil?
     @stacks = current_user.stacks
+    render partial: 'new'
   end
 
   def create
