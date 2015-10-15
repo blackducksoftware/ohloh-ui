@@ -126,9 +126,6 @@ en:
         login_required: 'Login Required'
       i_use_this:
         i_use_this: 'I Use This!'
-        add_to_stacks: 'Add to Stacks'
-        add_to_your_stack: 'Add the %{project} project to one of your stacks'
-        create_a_new_stack: "Create a new stack and add '%{project}'"
       is_a_duplicate:
         reported: "This project has been reported as a duplicate of %{link}. This project will be deleted upon review by an Open Hub administrator."
         cancel_request: "Cancel this request"

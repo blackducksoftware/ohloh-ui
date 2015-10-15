@@ -141,26 +141,19 @@ describe 'StackEntriesController' do
   end
 
   describe 'new' do
-    before do
-      @stack = create(:stack)
-      @project = create(:project)
-      create(:stack_entry, project: @project, stack: @stack)
-      login_as @stack.account
+    let(:project) { create(:project) }
+    before { login_as(create(:account)) }
+
+    it 'wont work without a valid project param' do
+      get :new, project_id: 'junk'
+
+      must_respond_with :not_found
     end
 
-    it 'must return current user stacks and project' do
-      get :new, project_id: @project.id, ref: 'ProjectWidget%3A%3AUsers'
+    it 'must handle ajax request' do
+      xhr :get, :new, project_id: project.id
 
-      must_respond_with :ok
-      assigns(:project).must_equal @project
-      assigns(:stacks).must_equal @stack.account.stacks
-      @stack.stack_entries.count.must_equal 1
-    end
-
-    it 'must render a partial to handle ajax response' do
-      get :new, project_id: @project.id
-
-      must_render_template '_new'
+      must_render_template 'new'
     end
   end
 end

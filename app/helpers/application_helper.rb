@@ -113,10 +113,6 @@ module ApplicationHelper
       number
   end
 
-  def iusethis_css_class
-    logged_in? ? 'stack_trigger' : 'needs_login'
-  end
-
   def highlight(actual_time, base_time = nil)
     return if actual_time.blank?
     base_time ||= @highlight_from || Time.current
