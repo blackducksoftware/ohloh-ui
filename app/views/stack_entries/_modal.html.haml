@@ -26,5 +26,12 @@
 
       .modal-footer
         .text-center
-          = button_to t('.new_stack', project: @project.name), stacks_path,
-            class: 'btn btn-primary btn-lg stack-align', params: { project_id: @project.id }
+          - stack = Stack.new
+          - stack.stack_entries.build(project_id: @project.id)
+
+          = form_for stack do |f|
+            = hidden_field_tag :project_id, @project.id
+            = f.fields_for :stack_entries do |stack_entry_form|
+              = stack_entry_form.hidden_field :project_id
+
+            = f.submit t('.new_stack', project: @project.name), class: 'btn btn-primary btn-lg stack-align'
