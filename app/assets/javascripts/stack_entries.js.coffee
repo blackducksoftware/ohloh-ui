@@ -1,3 +1,14 @@
+class App.StackEntryModalGenerator
+  constructor: ->
+    $('.new-stack-entry').click ->
+      projectId = $(this).data('projectId')
+      $.ajax
+        url: '/stack_entries/new'
+        data: { project_id: projectId }
+
+$(document).on 'page:change', ->
+  new App.StackEntryModalGenerator()
+
 App.StackEntryCheckboxes =
   setup: ($inputs) ->
     $inputs.each (index) ->
@@ -33,6 +44,3 @@ App.StackEntryCheckboxes =
             $spinner.addClass('hidden')
             $parent.find('.message').html "<span class='label label-default'>unstacked</span>"
             $input.data('stackEntryId', null)
-
-$(document).on 'page:change', ->
-  App.StackEntryCheckboxes.setup $('.stack-checkbox-container input:checkbox')
