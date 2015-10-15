@@ -22,3 +22,6 @@
     %p
       = link_to '#', class: 'btn create_and_stack', id: "project_#{project.id}_account_#{current_user.id}" do
         = t('.create_html', name: project.name)
+
+:javascript
+  $('.create_and_stack').unbind().click(StackVerb.create_and_stack)
