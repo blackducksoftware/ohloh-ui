@@ -18,6 +18,8 @@ class License < ActiveRecord::Base
   scope :from_param, ->(vanity_url) { where(vanity_url: vanity_url) }
   scope :resolve_vanity_url, ->(vanity_url) { where('lower(vanity_url) = ?', vanity_url.downcase) }
 
+  after_update :remove_project_licenses, if: -> license { license.deleted_changed? && license.deleted? }
+
   def to_param
     vanity_url
   end
@@ -37,6 +39,14 @@ class License < ActiveRecord::Base
   class << self
     def autocomplete(term)
       License.active.select([:name, :id]).where(['lower(name) LIKE ?', "#{term.downcase}%"]).limit(10)
+    end
+  end
+
+  private
+
+  def remove_project_licenses
+    ProjectLicense.where(license_id: id).each do |pl|
+      pl.edits.not_undone.each { |edit| edit.undo!(Account.hamster) }
     end
   end
 end
