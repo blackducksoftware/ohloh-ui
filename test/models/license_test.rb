@@ -163,7 +163,7 @@ class LicenseTest < ActiveSupport::TestCase
       license.edits.first.undo!(account) # Undo the CreateEdit i.e. Removing the Licence
       license.reload.deleted?.must_equal true
       project.project_licenses.count.must_equal 0
-      project_license.edits.first.allow_redo?.must_equal false # ProjectLicense shouldn't allow Redo as the License is deleted
+      project_license.edits.first.allow_redo?.must_equal false # ProjectLicense shouldn't allow Redo(License is deleted)
       # Redoing the License should redo the project license as well
       license.edits.first.redo!(account)
       license.reload.deleted?.must_equal false

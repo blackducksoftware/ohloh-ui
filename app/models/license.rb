@@ -45,7 +45,7 @@ class License < ActiveRecord::Base
   private
 
   def undo_redo_project_licenses
-    action = deleted? ? "undo_project_licenses" : "redo_project_licenses"
+    action = deleted? ? 'undo_project_licenses' : 'redo_project_licenses'
     project_licenses = ProjectLicense.where(license_id: id)
     send(action, project_licenses)
   end
