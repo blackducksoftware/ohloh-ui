@@ -7,4 +7,8 @@ class ProjectLicense < ActiveRecord::Base
 
   validates :license_id, presence: true,
                          uniqueness: { scope: :project_id }
+
+  def allow_redo?
+    license.deleted? ? false : true
+  end
 end
