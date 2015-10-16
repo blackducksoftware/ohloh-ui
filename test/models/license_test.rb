@@ -150,4 +150,25 @@ class LicenseTest < ActiveSupport::TestCase
       license.errors[:url].must_equal ['Invalid URL Format']
     end
   end
+
+  describe 'license deleted' do
+    it 'when license is deleted the associated project license should be (soft) deleted' do
+      license = create(:license)
+      project = create(:project)
+      account = create(:account)
+      create(:project_license, project: project, license: license)
+      license.editor_account = account
+      project.project_licenses.count.must_equal 1
+      project_license = project.project_licenses.first
+      license.edits.first.undo!(account) # Undo the CreateEdit i.e. Removing the Licence
+      license.reload.deleted?.must_equal true
+      project.project_licenses.count.must_equal 0
+      project_license.edits.first.allow_redo?.must_equal false # ProjectLicense shouldn't allow Redo(License is deleted)
+      # Redoing the License should redo the project license as well
+      license.edits.first.redo!(account)
+      license.reload.deleted?.must_equal false
+      project.project_licenses.count.must_equal 1
+      project_license.edits.first.allow_undo?.must_equal true
+    end
+  end
 end
