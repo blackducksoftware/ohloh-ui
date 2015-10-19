@@ -99,7 +99,8 @@ namespace :selenium do
         'enlistments' => get_enlistments(project),
         'aliases' => get_aliases(project),
         'new_alias' => get_new_alias(project),
-        'new_license' => License.where.not(id: project.licenses.ids).limit(1).pluck(:name, :abbreviation).flatten
+        'new_license' => License.where.not(id: project.licenses.ids).limit(1).pluck(:name, :abbreviation).flatten,
+        'new_tag' => Tag.where.not(id: project.tags).first.name
       )
 
       projects[project.url_name] = project_data
@@ -169,7 +170,7 @@ namespace :selenium do
 
     commits_diff = summary.send(diff)
     commits_count = summary.send(count)
-    str = (commits_diff > 0 ? 'Up +' : 'Down ') + commits_diff.to_s
+    str = (commits_diff > 0 ? 'Up + ' : 'Down ') + commits_diff.to_s
     str += calc_percentage(commits_diff, commits_count).to_s
     str.concat(' from previous 12 months')
   end
@@ -211,7 +212,7 @@ namespace :selenium do
   def get_reviews(project)
     %w(helpful recently_added highest_rated lowest_rated).each_with_object({}) do |sort_by, hsh|
       hsh[sort_by] = project.reviews.sort_by(sort_by).pluck(:title).first(20)
-    end.merge!(most_helpful: project.reviews.top.pluck(:title).first(20))
+    end.merge!('most_helpful' => project.reviews.top.pluck(:title).first(20))
   end
 
   def get_enlistments(project)
