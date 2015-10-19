@@ -199,7 +199,7 @@ namespace :selenium do
   end
 
   def get_commit_data(commit, named_commit)
-    [get_email(commit.comment), get_email(named_commit.person.person_name),
+    [get_email(commit.comment), get_email(named_commit.person.try(:person_name)),
      commit.diffs.count, commit.lines_added_and_removed(named_commit.project.best_analysis_id),
      commit.code_set.repository.url].flatten
   end
@@ -211,7 +211,7 @@ namespace :selenium do
   def get_reviews(project)
     %w(helpful recently_added highest_rated lowest_rated).each_with_object({}) do |sort_by, hsh|
       hsh[sort_by] = project.reviews.sort_by(sort_by).pluck(:title).first(20)
-    end
+    end.merge!(most_helpful: project.reviews.top.pluck(:title).first(20))
   end
 
   def get_enlistments(project)
@@ -239,7 +239,7 @@ namespace :selenium do
   def collect_license_and_languages(projects)
     projects.each_with_object({}) do |p, hsh|
       hsh[p.name] = {
-        'licenses' => p.licenses.pluck(:abbreviation), 'language' => p.best_analysis.main_language.nice_name,
+        'licenses' => p.licenses.pluck(:abbreviation), 'language' => p.best_analysis.main_language.try(:nice_name),
         'tags' => p.tags.order(:name).pluck(:name), 'activity_text' => project_activity_text(p, true)
       }
     end
