@@ -47,7 +47,7 @@ class RssSubscriptionsController < ApplicationController
   def create_subscription
     @rss_subscription = RssSubscription.create(project_id: @project.id, rss_feed_id: @rss_feed.id,
                                                editor_account: current_user)
-    @rss_feed.fetch(current_user)
+    @rss_feed.fetch
   end
 
   def project_edit_authorized

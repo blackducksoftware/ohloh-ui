@@ -5,19 +5,21 @@ class RssFeed < ActiveRecord::Base
   has_many :rss_subscriptions
   has_many :projects, through: :rss_subscriptions
   has_many :rss_articles
-  default_scope { order('last_fetch DESC') }
+
   validates :url, url_format: true, allow_blank: false
   filterable_by ['rss_feeds.url']
 
-  def fetch(current_user)
-    handle_fetch(url, current_user)
+  def fetch
+    execute_current_fetch
     self.last_fetch ||= Time.current
     schedule_next_fetch
     save(validate: false)
   end
 
-  def handle_fetch(url, current_user)
-    parse(url, current_user)
+  private
+
+  def execute_current_fetch
+    create_rss_articles
   rescue Timeout::Error
     self.error = I18n.t('rss_feeds.index.timeout_error', url: url)
   rescue
@@ -25,38 +27,23 @@ class RssFeed < ActiveRecord::Base
   end
 
   def schedule_next_fetch
-    # If the fetch succeeds, another fetch will be scheduled 24 hours from now.
-    # If the fetch fails, the wait until the next fetch will be doubled.
-    if error
-      self.next_fetch = Time.current + (Time.current - self.last_fetch) * 2
-    else
-      self.next_fetch = self.last_fetch + 1.day
+    next_fetch_date = error ? (Time.current + (Time.current - last_fetch) * 2) : (last_fetch + 1.day)
+    self.next_fetch = next_fetch_date
+  end
+
+  def create_rss_articles
+    new_articles = new_rss_article_items.map { |item| RssArticle.from_item(item) }
+    rss_articles << new_articles
+    projects.update_all(updated_at: Time.current) unless new_articles.empty?
+  end
+
+  def new_rss_article_items
+    rss = SimpleRSS.parse open(url)
+    existing_rss_articles = rss_articles.pluck(:guid)
+
+    rss.items.reject do |item|
+      guid = RssArticle.set_guid(item)
+      existing_rss_articles.include?(guid)
     end
-  end
-
-  # Parses an RSS/Atom feed from a provided IO.
-  # Returns an array of new articles.
-  # If all articles are already known, an empty array is returned.
-  def parse(io, current_user)
-    rss = SimpleRSS.parse open(io)
-    new_articles = rss.items.collect do |item|
-      add_article(RssArticle.from_item(item))
-    end.compact
-    update_projects(current_user) unless new_articles.empty?
-    new_articles
-  end
-
-  def update_projects(current_user)
-    projects.each do |p|
-      p.editor_account = current_user
-      p.update_attribute(:updated_at, Time.current)
-    end
-  end
-
-  # Accepts a new rss_article if it is new, ignores it otherwise.
-  # Returns the article if it was accepted, nil otherwise.
-  def add_article(a)
-    selected_articles = rss_articles.select { |x| x.guid.to_s == a.guid.to_s }
-    rss_articles << a if selected_articles.empty?
   end
 end

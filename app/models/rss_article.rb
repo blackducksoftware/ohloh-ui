@@ -8,7 +8,7 @@ class RssArticle < ActiveRecord::Base
   class << self
     def from_item(item)
       new(title: item.title, link: item.link, description: item.description, author: set_author(item),
-                     time: set_time(item), guid: set_guid(item))
+          time: set_time(item), guid: set_guid(item))
     end
 
     def set_author(item)
