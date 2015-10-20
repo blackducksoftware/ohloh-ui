@@ -1,3 +1,5 @@
+require 'digest/sha1'
+
 class RssArticle < ActiveRecord::Base
   belongs_to :rss_feed
   validates :guid, presence: true
@@ -5,7 +7,7 @@ class RssArticle < ActiveRecord::Base
 
   class << self
     def from_item(item)
-      RssArticle.new(title: item.title, link: item.link, description: item.description, author: set_author(item),
+      new(title: item.title, link: item.link, description: item.description, author: set_author(item),
                      time: set_time(item), guid: set_guid(item))
     end
 
@@ -21,7 +23,7 @@ class RssArticle < ActiveRecord::Base
     end
 
     def set_guid(item)
-      item.guid || item.guid = "#{item.title}|#{item.link}|#{item.description}".hash
+      item.guid || Digest::SHA1.hexdigest("#{item.title}|#{item.link}|#{item.description}")
     end
   end
 end
