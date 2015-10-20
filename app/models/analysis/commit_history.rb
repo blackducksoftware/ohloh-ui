@@ -12,6 +12,15 @@ class Analysis::CommitHistory < Analysis::QueryBase
     Analysis.find_by_sql(query)
   end
 
+  def subquery
+    Commit.select(subquery_select_clause)
+      .joins(analysis_aliases_joins)
+      .where(code_set_id: subquery_conditions)
+      .where(where_clause_conditions)
+      .where(preferred_name_id)
+      .group('this_month')
+  end
+
   private
 
   def query
@@ -23,15 +32,6 @@ class Analysis::CommitHistory < Analysis::QueryBase
 
   def arel_subquery
     subquery.arel.as('counts')
-  end
-
-  def subquery
-    Commit.select(subquery_select_clause)
-      .joins(analysis_aliases_joins)
-      .where(code_set_id: subquery_conditions)
-      .where(where_clause_conditions)
-      .where(preferred_name_id)
-      .group('this_month')
   end
 
   def where_clause_conditions
