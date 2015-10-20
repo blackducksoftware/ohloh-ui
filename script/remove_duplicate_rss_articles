@@ -1,0 +1,18 @@
+#! /usr/bin/env ruby
+
+require_relative '../config/environment'
+
+class RemoveDuplicateRssArticles
+  def execute
+    grouped_rss_articles = RssArticle.select(rss_articles[:id].minimum).group([:title, :link, :description])
+    RssArticle.where.not(id: grouped_rss_articles).delete_all
+  end
+
+  private
+
+  def rss_articles
+    RssArticle.arel_table
+  end
+end
+
+RemoveDuplicateRssArticles.new.execute
