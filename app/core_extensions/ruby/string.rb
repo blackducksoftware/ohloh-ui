@@ -31,7 +31,7 @@ class String
   end
 
   def fix_encoding_if_invalid!
-    force_encoding('utf-8').scrub
+    force_encoding('utf-8').scrub!
   end
 
   def to_bool
