@@ -20,7 +20,7 @@ module ActsAsTaggable
     end
 
     def tag_list
-      tags.pluck(:name).uniq.compact.join(' ')
+      tags.map(&:name).uniq.compact.join(' ')
     end
 
     private

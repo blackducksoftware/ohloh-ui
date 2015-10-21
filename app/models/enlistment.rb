@@ -28,7 +28,7 @@ class Enlistment < ActiveRecord::Base
   end
 
   def ignore_examples
-    repository.best_code_set.fyles.limit(3).pluck(:name).sort if repository.best_code_set
+    repository.best_code_set.fyles.limit(3).map(&:name).sort if repository.best_code_set
   end
 
   def ensure_forge_and_job
