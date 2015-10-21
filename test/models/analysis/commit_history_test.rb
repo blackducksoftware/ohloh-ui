@@ -30,7 +30,7 @@ class Analysis::CommitHistoryTest < ActiveSupport::TestCase
       commit_history = Analysis::CommitHistory.new(analysis: @query_options[:analysis])
       sql_query = commit_history.send(:query).to_sql
 
-      sql_query.wont_match /INNER JOIN "?analysis_aliases/
+      sql_query.wont_match(/INNER JOIN "?analysis_aliases/)
     end
   end
 end
