@@ -62,9 +62,7 @@ module Tsearch
     end
 
     def clean_attr_value(attr_value)
-      attr_value = attr_value.to_s
-      attr_value.fix_encoding_if_invalid!.gsub!(/['?\\:]/, ' ')
-      attr_value
+      attr_value.to_s.gsub(/['?\\:]/, ' ')
     end
   end
 end
