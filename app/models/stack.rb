@@ -6,7 +6,7 @@ class Stack < ActiveRecord::Base
   belongs_to :account
   belongs_to :project
 
-  has_many :stack_entries, -> { where(deleted_at: nil) }, dependent: :destroy
+  has_many :stack_entries, -> { where(deleted_at: nil) }, dependent: :destroy, inverse_of: :stack
   has_many :projects, -> { where.not(deleted: true) }, through: :stack_entries
   has_many :stack_ignores
 
@@ -17,6 +17,8 @@ class Stack < ActiveRecord::Base
   validates :title, length: { within: 0..20 }, allow_nil: true
 
   before_validation :sanitize_description
+
+  accepts_nested_attributes_for :stack_entries, reject_if: :all_blank
 
   def sandox?
     account_id.nil? && project_id.nil? && !session_id.nil?

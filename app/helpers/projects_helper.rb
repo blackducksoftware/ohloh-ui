@@ -10,8 +10,8 @@ module ProjectsHelper
   end
 
   def project_iusethis_button(project)
-    haml_tag :a, href: '#', id: "stackit_#{project.to_param}",
-                 class: "#{logged_in? ? 'stack_trigger' : 'needs_login'} dontnav btn btn-primary btn-mini" do
+    haml_tag :a, href: '#', data: { project_id: project.to_param },
+                 class: "#{ needs_login_or_verification_or_default('new-stack-entry') } btn btn-primary btn-mini" do
       concat t('projects.i_use_this')
     end
   end

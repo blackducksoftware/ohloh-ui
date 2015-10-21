@@ -3,6 +3,15 @@ require 'test_helper'
 class StackTest < ActiveSupport::TestCase
   let(:stack) { create(:stack) }
 
+  it 'must allow creating nested stack_entry alongwith parent record' do
+    account = create(:account)
+    project = create(:project)
+
+    stack = Stack.create!(account_id: account.id, stack_entries_attributes: { '0' => { project_id: project.id } })
+
+    stack.stack_entries.first.project.must_equal project
+  end
+
   it '#sanitize_description leaves nils alone' do
     create(:stack, description: nil).description.must_equal nil
   end

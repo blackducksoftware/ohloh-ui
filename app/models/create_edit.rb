@@ -12,6 +12,6 @@ class CreateEdit < Edit
   end
 
   def allow_redo?
-    true
+    target.respond_to?(:allow_redo?) ? target.allow_redo?(key.to_s.to_sym) : true
   end
 end

@@ -9,6 +9,7 @@ class Edit < ActiveRecord::Base
   before_validation :populate_organization
 
   scope :not_undone, -> { where(undone: false) }
+  scope :undone_by_hamster, -> { where(undone: true, undone_by: Account.hamster.id) }
   scope :similar_to, ->(edit) { similar_to_edit_arel(edit) }
   scope :for_target, ->(target) { where(target_type: target.class.to_s, target_id: target.id) }
   scope :for_editor, ->(editor) { where(account_id: editor.id) }

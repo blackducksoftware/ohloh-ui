@@ -132,40 +132,52 @@ describe 'StacksControllerTest' do
     resp['description'].must_equal stack.description
   end
 
-  # create action
-  it 'create should require a current user' do
-    login_as nil
-    post :create
-    must_respond_with :redirect
-    must_redirect_to new_session_path
-  end
+  describe 'create' do
+    let(:project) { create(:project) }
+    let(:account) { create(:account) }
+    before { login_as(account) }
 
-  it 'create should require a current user' do
-    account = create(:account)
-    login_as account
-    post :create
-    must_respond_with 302
-    Stack.where(account_id: account.id).count.must_equal 1
-  end
+    describe 'default behaviour' do
+      before do
+        post :create
+      end
 
-  it 'create should gracefully handle save errors' do
-    login_as create(:account)
-    Stack.any_instance.expects(:save).returns false
-    post :create
-    must_respond_with 302
-  end
+      it 'must update stack with default data' do
+        stack = assigns(:stack)
 
-  it 'create should hande an ajax request for I Use This' do
-    account = create(:account)
-    project = create(:project)
-    login_as account
-    xml_http_request :post, 'create', project_id: project
-    must_render_template 'stacks/i_use_this.js.erb'
-    assert_difference 'Stack.count', 1 do
-      xml_http_request :post, 'create', project_id: project
+        stack.must_be :persisted?
+        stack.account.must_equal account
+        stack.title.must_equal 'New Stack 1'
+        stack.description.must_be_nil
+      end
     end
-    assert_difference 'StackEntry.count', 1 do
-      xml_http_request :post, 'create', project_id: project
+
+    describe 'with stack_entries_attributes' do
+      let(:stack_entry_params) { { stack_entries_attributes: { '0' => { project_id: project.id } } } }
+
+      it 'must check for a valid project_id' do
+        post :create, stack: stack_entry_params
+
+        must_respond_with :not_found
+      end
+
+      it 'must create stack entries' do
+        post :create, project_id: project.id, stack: stack_entry_params
+
+        stack = assigns(:stack)
+        stack.must_be :persisted?
+        stack.stack_entries.must_be :present?
+      end
+
+      it 'must update stack with default data' do
+        post :create, project_id: project.id, stack: stack_entry_params
+        stack = assigns(:stack)
+
+        stack.must_be :persisted?
+        stack.account.must_equal account
+        stack.title.must_equal 'New Stack 1'
+        stack.description.must_equal "The Projects used for #{ stack.title }"
+      end
     end
   end
 
