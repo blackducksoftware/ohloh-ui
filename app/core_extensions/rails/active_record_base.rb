@@ -5,10 +5,8 @@ class ActiveRecord::Base
   private
 
   def fix_string_column_encodings
-    attributes.keys.each do |column|
-      string = send(column)
-      next unless string.is_a?(String)
-      send("#{column}=", string.fix_encoding_if_invalid!) unless string.blank?
+    attributes.each do |column, value|
+      write_attribute(column, value.fix_encoding_if_invalid!) if value.is_a?(String)
     end
   end
 end
