@@ -28,7 +28,7 @@ describe EditsController do
       get :index, project_id: @project.to_param, query: 'blah'
       must_respond_with :ok
       must_select "#edit_#{PropertyEdit.where(target: @project, value: 'Blah!').first.id}", true
-      must_select "#edit_#{PropertyEdit.where(target: @project, value: 'Wat ').first.id}", false
+      must_select "#edit_#{PropertyEdit.where(target: @project, value: 'Wat?').first.id}", false
     end
 
     # update action
@@ -117,7 +117,7 @@ describe EditsController do
       get :index, organization_id: @organization.to_param, query: 'blah'
       must_respond_with :ok
       must_select "#edit_#{PropertyEdit.where(target: @organization, value: 'Blah!').first.id}", true
-      must_select "#edit_#{PropertyEdit.where(target: @organization, value: 'Wat ').first.id}", false
+      must_select "#edit_#{PropertyEdit.where(target: @organization, value: 'Wat?').first.id}", false
     end
   end
 
