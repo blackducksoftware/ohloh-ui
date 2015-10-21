@@ -29,14 +29,19 @@ class Analysis::CommitHistory < Analysis::QueryBase
     Commit.select(subquery_select_clause)
       .joins(analysis_aliases_joins)
       .where(code_set_id: subquery_conditions)
-      .where(where_clause_conditions)
+      .where(analysis_aliases_equals_analysis_id)
+      .where(commit_time_within_time_span)
       .where(preferred_name_id)
       .group('this_month')
   end
 
-  def where_clause_conditions
+  def analysis_aliases_equals_analysis_id
+    return unless @name_id
     analysis_aliases[:analysis_id].eq(@analysis.id)
-      .and(commits[:time].gteq(start_date).and(commits[:time].lteq(end_date)))
+  end
+
+  def commit_time_within_time_span
+    commits[:time].gteq(start_date).and(commits[:time].lteq(end_date))
   end
 
   def subquery_conditions
@@ -49,6 +54,7 @@ class Analysis::CommitHistory < Analysis::QueryBase
   end
 
   def analysis_aliases_joins
+    return unless @name_id
     commits
       .join(analysis_aliases)
       .on(commits[:name_id].eq(analysis_aliases[:commit_name_id]))
@@ -56,7 +62,8 @@ class Analysis::CommitHistory < Analysis::QueryBase
   end
 
   def preferred_name_id
-    @name_id ? analysis_aliases[:preferred_name_id].eq(@name_id) : nil
+    return unless @name_id
+    analysis_aliases[:preferred_name_id].eq(@name_id)
   end
 
   def coalesce_commits_count
