@@ -37,7 +37,7 @@ class Organization < ActiveRecord::Base
 
   before_validation :clean_strings_and_urls
 
-  acts_as_editable editable_attributes: [:name, :url_name, :org_type, :logo_id, :description, :homepage_url],
+  acts_as_editable editable_attributes: [:name, :url_name, :org_type, :description, :homepage_url],
                    merge_within: 30.minutes
   acts_as_protected
 
