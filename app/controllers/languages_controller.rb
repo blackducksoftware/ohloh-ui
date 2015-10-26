@@ -29,7 +29,7 @@ class LanguagesController < ApplicationController
 
   def compare
     @measure = params[:measure] || 'commits'
-    @languages = Language.by_name.pluck(:nice_name, :name).prepend([t('.none'), '-1'])
+    @languages = Language.by_name.map { |l| [l.nice_name, l.name] }.prepend([t('.none'), '-1'])
   end
 
   private
@@ -41,8 +41,8 @@ class LanguagesController < ApplicationController
   end
 
   def find_languages
-    @language_names = Language.where(name: params[:language_name]).by_name.pluck(:name)
-    @language_names = Language.where(name: Language::DEFAULT_LANGUAGES).by_name.pluck(:name) if @language_names.blank?
+    @language_names = Language.where(name: params[:language_name]).by_name.map(&:name)
+    @language_names = Language.where(name: Language::DEFAULT_LANGUAGES).by_name.map(&:name) if @language_names.blank?
   end
 
   def parse_sort_term
