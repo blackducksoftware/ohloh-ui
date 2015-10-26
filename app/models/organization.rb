@@ -1,6 +1,7 @@
 class Organization < ActiveRecord::Base
   include OrganizationSearchables
   include OrganizationJobs
+  include OrganizationScopes
   include Tsearch
 
   ORG_TYPES = { 'Commercial' => 1, 'Education' => 2, 'Government' => 3, 'Non-Profit' => 4 }
@@ -13,19 +14,6 @@ class Organization < ActiveRecord::Base
   has_many :manages, -> { where(deleted_at: nil, deleted_by: nil) }, as: 'target'
   has_many :managers, through: :manages, source: :account
   has_many :jobs
-
-  scope :from_param, lambda { |param|
-    active.where(Organization.arel_table[:url_name].eq(param).or(Organization.arel_table[:id].eq(param)))
-  }
-  scope :active, -> { where.not(deleted: true) }
-  scope :managed_by, lambda { |account|
-    joins(:manages).where.not(deleted: true, manages: { approved_by: nil }).where(manages: { account_id: account.id })
-  }
-  scope :case_insensitive_url_name, ->(mixed_case) { where(['lower(url_name) = ?', mixed_case.downcase]) }
-  scope :sort_by_newest, -> { order(created_at: :desc) }
-  scope :sort_by_recent, -> { order(updated_at: :desc) }
-  scope :sort_by_name, -> { order(arel_table[:name].lower) }
-  scope :sort_by_projects, -> { order('COALESCE(projects_count, 0) DESC') }
 
   validates :name, presence: true, length: 3..85, allow_blank: true
   validates :homepage_url, allow_blank: true, url_format: { message: I18n.t('accounts.invalid_url_format') }
@@ -94,6 +82,10 @@ class Organization < ActiveRecord::Base
       accounts.joins(:person, :positions)
       .where(NameFact.with_positions)
       .count('DISTINCT(accounts.id)')
+  end
+
+  def allow_undo?(_key)
+    false
   end
 
   class << self
