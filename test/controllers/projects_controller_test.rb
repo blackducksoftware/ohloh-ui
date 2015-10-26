@@ -290,6 +290,28 @@ describe 'ProjectsController' do
       must_render_template 'error.html'
       must_respond_with :not_found
     end
+
+    it 'must mention that analysis is not complete when it is not created' do
+      project = create(:project)
+      create(:enlistment, project: project)
+      project.update! best_analysis_id: nil
+
+      get :show, id: project.to_param
+
+      response.body.must_match(/analysis isn't complete/)
+      response.body.wont_match(/no recognizable source code/)
+    end
+
+    it 'must indicate non recognizable source code when analysis is incomplete' do
+      project = create(:project)
+      create(:enlistment, project: project)
+      project.best_analysis.update! min_month: nil
+
+      get :show, id: project.to_param
+
+      response.body.must_match(/no recognizable source code/)
+      response.body.wont_match(/analysis isn't complete/)
+    end
   end
 
   # new
