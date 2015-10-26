@@ -45,8 +45,8 @@ class BaseballCard < Cherry::Decorator
   end
 
   def contributions
-    return if positions.count == 0
-    link = link_to pluralize(positions.count, 'project'), h.account_positions_path(account)
+    return if positions.active.size == 0
+    link = link_to pluralize(positions.active.size, 'project'), h.account_positions_path(account)
     { label: i18n('contribution'),
       value: link }
   end

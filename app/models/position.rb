@@ -17,6 +17,10 @@ class Position < ActiveRecord::Base
 
   scope :claimed_by, ->(account) { where(account_id: account.id).where.not(name_id: nil) }
   scope :for_project, ->(project) { where(project_id: project.id) }
+  scope :active, lambda {
+    where('EXISTS (SELECT * FROM name_facts INNER JOIN projects ON projects.best_analysis_id = name_facts.analysis_id
+    AND name_facts.name_id = positions.name_id AND projects.id = positions.project_id)')
+  }
 
   after_create Position::Hooks.new
   after_save Position::Hooks.new
