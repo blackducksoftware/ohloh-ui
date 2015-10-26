@@ -19,21 +19,21 @@ describe 'ApplicationController' do
       get :renders_404, format: 'json'
       must_respond_with :not_found
       response.body.must_include(I18n.t(:four_oh_four))
-      response.headers['Content-Type'].must_include('application/json')
+      response.headers['Content-Type'].must_include('text/html')
     end
 
     it 'render_404 as xml' do
       get :renders_404, format: 'xml'
       must_respond_with :not_found
       response.body.must_include(I18n.t(:four_oh_four))
-      response.headers['Content-Type'].must_include('application/xml')
+      response.headers['Content-Type'].must_include('text/html')
     end
 
     it 'render_404 as png' do
       get :renders_404, format: 'png'
       must_respond_with :not_found
-      response.body.blank?.must_equal true
-      response.headers['Content-Type'].must_include('image/png')
+      response.body.blank?.must_equal false
+      response.headers['Content-Type'].must_include('text/html')
     end
 
     it 'render_404 with request of php should respond with html' do

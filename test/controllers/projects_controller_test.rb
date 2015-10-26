@@ -284,6 +284,12 @@ describe 'ProjectsController' do
 
       must_render_template 'deleted'
     end
+
+    it 'must render 404 if unknown format' do
+      get :show, id: create(:project).to_param, format: 'abc'
+      must_render_template 'error.html'
+      must_respond_with :not_found
+    end
   end
 
   # new

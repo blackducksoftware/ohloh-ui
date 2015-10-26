@@ -1,7 +1,6 @@
 # rubocop:disable Metrics/ClassLength
 class ApplicationController < ActionController::Base
   BOT_REGEX = /\b(Baiduspider|Googlebot|libwww-perl|msnbot|SiteUptime|Slurp)\b/i
-  FORMATS_THAT_WE_SUPPORT = %w(html xml json csv rss atom css js png gif jpg jpeg empty)
   FORMATS_THAT_WE_RENDER_ERRORS_FOR = %w(html xml json)
 
   include PageContextHelper
@@ -19,6 +18,7 @@ class ApplicationController < ActionController::Base
   attr_reader :page_context
   helper_method :page_context
 
+  before_action :validate_request_format
   before_action :store_location
   before_action :handle_me_account_paths
   before_action :strip_query_param
@@ -30,6 +30,10 @@ class ApplicationController < ActionController::Base
     super(*params)
   end
 
+  def validate_request_format
+    render_404 if request.format.nil?
+  end
+
   rescue_from ::Exception do |exception|
     fail exception if Rails.application.config.consider_all_requests_local
     request.env[:user_agent] = request.user_agent
@@ -37,7 +41,7 @@ class ApplicationController < ActionController::Base
     render_404
   end
 
-  rescue_from ParamRecordNotFound, ActionController::RoutingError do
+  rescue_from ParamRecordNotFound, ActionController::UnknownFormat, ActionController::RoutingError do
     render_404
   end
 
@@ -126,17 +130,18 @@ class ApplicationController < ActionController::Base
 
   def request_format
     format = request.format.html? ? 'html' : params[:format]
-    format = nil unless FORMATS_THAT_WE_SUPPORT.include?(format)
+    format = nil unless Mime::EXTENSION_LOOKUP.key?(format)
     format || 'html'
   end
 
   def error(message:, status:)
-    params[:format] = 'empty' unless FORMATS_THAT_WE_RENDER_ERRORS_FOR.include?(request_format)
+    params[:format] = 'html' unless FORMATS_THAT_WE_RENDER_ERRORS_FOR.include?(request_format)
     @error = { message: message }
     render_with_format 'error', status: status
   end
 
   def render_404
+    response.content_type = 'text/html'
     error message: t(:four_oh_four), status: :not_found
   end
 

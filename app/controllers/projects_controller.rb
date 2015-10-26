@@ -9,10 +9,7 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    respond_to do |format|
-      format.html
-      format.xml { render 'projects/no_analysis' if @analysis.blank? }
-    end
+    render 'projects/no_analysis' if request.format.xml? && @analysis.blank?
   end
 
   def users
