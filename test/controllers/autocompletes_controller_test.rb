@@ -73,6 +73,18 @@ describe 'AutocompletesController' do
     end
   end
 
+  describe 'project_duplicates' do
+    it 'must render project duplicates json' do
+      create(:project, name: 'Foobar', user_count: 10)
+      create(:project, name: 'Foo', user_count: 13)
+
+      get :project_duplicates, term: 'foo', format: :json
+
+      resp = JSON.parse(response.body)
+      resp.map { |hsh| hsh['value'] }.must_equal %w(Foo Foobar)
+    end
+  end
+
   describe 'licenses' do
     it 'must render valid licenses json' do
       license_1 = create(:license, name: 'ACMIT')

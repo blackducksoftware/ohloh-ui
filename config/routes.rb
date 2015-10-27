@@ -149,6 +149,7 @@ Rails.application.routes.draw do
     collection do
       get :account
       get :project, defaults: { format: 'json' }
+      get :project_duplicates, defaults: { format: 'json' }
       get :licenses
       get :contributions
       get :tags
