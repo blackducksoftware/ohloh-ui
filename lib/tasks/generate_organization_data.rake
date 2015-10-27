@@ -1,6 +1,8 @@
 # Usage:
 # rake selenium:prepare_organization_data[mozilla]
 
+require 'action_view'
+
 namespace :selenium do
   desc 'Prepare Organization data for selenium'
   task :prepare_organization_data, [:organization_name] => :environment do |_t, args|
@@ -10,15 +12,17 @@ namespace :selenium do
     # Organization explore page data
     organizations.merge!(
       'most_active_orgs' => OrgThirtyDayActivity.most_active_orgs
-        .collect { |o| [o.organization.name, o.commits_per_affiliate] },
-      'newest_orgs' => Organization.active.order(created_at: :desc).limit(3).pluck(:name, :projects_count),
+      .collect { |o| [o.organization.name.truncate(24), o.commits_per_affiliate] },
+      'most_active_last_calc' => time_ago_in_words(OrgThirtyDayActivity.most_active_orgs.first.created_at) + ' ago',
+      'newest_orgs' => Organization.active.order(created_at: :desc).limit(3)
+      .collect { |o| [o.name.truncate(24), o.projects_count, time_ago_in_words(o.updated_at) + ' ago'] },
       'stats_by_sector' => OrgStatsBySector.recent
         .collect { |o| [Organization::ORG_TYPES.key(o.org_type), o.average_commits, o.organization_count] },
       '30_day_commmits' => collect_30_days_commit_volume
     )
 
     # Organization show page data
-    args[:organization_name].split(' ').each do |org_name|
+    args[:organization_name].to_s.split(' ').each do |org_name|
       org = Organization.from_param(org_name).take
       if org.blank?
         puts "Organization[#{org_name}] does not exist"
@@ -34,7 +38,8 @@ namespace :selenium do
         'portfolio_count' => org.projects_count,
         'affiliated_committers_count' => org.affiliators_count,
         'outside_committers_stats' => org.outside_committers_stats,
-        'outside_projects_stats' => org.affiliated_committers_stats
+        'outside_projects_stats' => org.affiliated_committers_stats,
+        'claim_this_project' => Project.where.not(id: org.projects.ids).take.name
       )
 
       organization.merge!(
@@ -69,7 +74,7 @@ namespace :selenium do
     {}.tap do |org_by_sector|
       OrgThirtyDayActivity::FILTER_TYPES.keys.each do |key|
         org_by_sector[key.to_s] = OrgThirtyDayActivity.filter(key).collect do |o|
-          [o.name, o.organization.projects_count, o.affiliate_count, o.thirty_day_commit_count]
+          [o.name.truncate(14), o.organization.projects_count, o.affiliate_count, o.thirty_day_commit_count]
         end
       end
     end
