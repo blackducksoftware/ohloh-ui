@@ -54,6 +54,14 @@ class ProjectTest < ActiveSupport::TestCase
       proj.update_attributes(best_analysis_id: analysis.id)
       Project.hot(language.id - 1).to_a.map(&:id).include?(proj.id).must_equal false
     end
+
+    it 'should not return same project twice' do
+      proj = create(:project, deleted: false)
+      analysis1 = create(:analysis, project_id: proj.id, hotness_score: 999_999)
+      create(:analysis, project_id: proj.id, hotness_score: 999_999)
+      proj.update_attribute('best_analysis_id', analysis1.id)
+      Project.hot.count.must_equal 1
+    end
   end
 
   describe 'related_by_stacks' do
