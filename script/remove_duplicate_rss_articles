@@ -4,14 +4,12 @@ require_relative '../config/environment'
 
 class RemoveDuplicateRssArticles
   def execute
-    grouped_rss_articles = RssArticle.select(rss_articles[:id].minimum).group([:title, :link, :description])
-    RssArticle.where.not(id: grouped_rss_articles).delete_all
-  end
-
-  private
-
-  def rss_articles
-    RssArticle.arel_table
+    RssFeed.unscoped.select(:id).order(:id).find_in_batches(batch_size: 100).with_index do |group_feed, index|
+      p "Processing batch #{index}"
+      feed_ids = group_feed.map(&:id)
+      article_ids = RssArticle.where(rss_feed_id: feed_ids).group([:title, :link, :description]).pluck('MAX(id)')
+      RssArticle.where(rss_feed_id: feed_ids).where.not(id: article_ids).delete_all
+    end
   end
 end
 
