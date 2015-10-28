@@ -42,7 +42,7 @@ class RssFeed < ActiveRecord::Base
     existing_rss_articles = rss_articles.pluck(:guid)
 
     rss.items.reject do |item|
-      guid = RssArticle.set_guid(item)
+      guid = RssArticle.guid_from_item(item)
       existing_rss_articles.include?(guid)
     end
   end

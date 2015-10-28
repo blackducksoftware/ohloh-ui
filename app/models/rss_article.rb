@@ -8,7 +8,7 @@ class RssArticle < ActiveRecord::Base
   class << self
     def from_item(item)
       new(title: item.title, link: item.link, description: item.description, author: set_author(item),
-          time: set_time(item), guid: set_guid(item))
+          time: set_time(item), guid: guid_from_item(item))
     end
 
     def set_author(item)
@@ -22,8 +22,8 @@ class RssArticle < ActiveRecord::Base
       time
     end
 
-    def set_guid(item)
-      item.guid || Digest::SHA1.hexdigest("#{item.title}|#{item.link}|#{item.description}")
+    def guid_from_item(item)
+      Digest::SHA1.hexdigest([item.title, item.link, item.description].compact.join('|'))
     end
   end
 end
