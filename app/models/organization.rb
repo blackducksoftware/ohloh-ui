@@ -54,7 +54,7 @@ class Organization < ActiveRecord::Base
   end
 
   def allow_undo_to_nil?(key)
-    ![:name, :org_type].include?(key)
+    ![:name, :org_type, :url_name].include?(key)
   end
 
   def org_type_label
