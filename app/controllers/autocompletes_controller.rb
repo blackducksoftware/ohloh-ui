@@ -15,6 +15,11 @@ class AutocompletesController < ApplicationController
                 .limit(25)
   end
 
+  def project_duplicates
+    @projects = Project.not_deleted.where('lower(name) like ?', "%#{params[:term].to_s.downcase}%").by_users.limit(25)
+    render :project
+  end
+
   def licenses
     licenses = params[:term] ? License.autocomplete(params[:term]) : []
     render text: licenses.map { |l| { name: l.name, id: l.id.to_s } }.to_json
