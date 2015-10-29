@@ -10,6 +10,15 @@ class ComparesControllerTest < ActionController::TestCase
     assert_select 'input#project_2', 1
   end
 
+  test 'should render projects when names are supplied in a case insensitive manner' do
+    create(:project, name: 'Ruby')
+    create(:project, name: 'Java')
+    get :projects, project_0: 'java', project_1: 'rUby'
+    assert_response :success
+    response.body.must_match 'Java'
+    response.body.must_match 'Ruby'
+  end
+
   test 'should render up to three projects' do
     project1 = create(:project, name: 'Phil')
     project2 = create(:project, name: 'Jerry')
@@ -94,7 +103,7 @@ class ComparesControllerTest < ActionController::TestCase
     project1 = create(:project, name: 'Phil')
     manager = create(:account, name: 'Larry')
     create(:manage, account: manager, target: project1)
-    license = create(:license, name: 'Peter')
+    license = create(:license, vanity_url: 'Peter')
     create(:project_license, project: project1, license: license)
     create(:factoid, analysis: project1.best_analysis, type: 'FactoidActivityIncreasing')
     project2 = create(:project, name: 'Jerry')

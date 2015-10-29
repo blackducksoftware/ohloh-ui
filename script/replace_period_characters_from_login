@@ -1,0 +1,36 @@
+#! /usr/bin/env ruby
+
+require_relative '../config/environment'
+
+class LoginChangedNotifier
+  def perform
+    Account.where(login: '.guru').each do |account|
+      account.update!(login: 'gu-ru')
+      send_email(account)
+    end
+
+    Account.where("login like '%.%'").each do |account|
+      new_login = account.login.gsub(/[^\w_-]/, '-')
+      account.update_column('login', new_login)
+
+      send_email(account) unless account.access.disabled?
+    end
+  end
+
+  private
+
+  def send_email(account)
+    account.reload
+    LoginChangedMailer.notification(account).deliver_now
+  end
+end
+
+class LoginChangedMailer < ActionMailer::Base
+  def notification(account)
+    @account = account
+    mail to: account.email, subject: 'Your OpenHub login has been modified', from: 'mailer@openhub.net',
+         template_path: 'mailers', template_name: 'login_changed_notification'
+  end
+end
+
+LoginChangedNotifier.new.perform

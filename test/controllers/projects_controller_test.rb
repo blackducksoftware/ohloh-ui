@@ -4,6 +4,9 @@ describe 'ProjectsController' do
   let(:api_key) { create(:api_key, account: create(:account)) }
   let(:client_id) { api_key.oauth_application.uid }
   let(:forge) { Forge.find_by(name: 'Github') }
+  let(:enlistment_params) do
+    { '0' => { repository_attributes: { type: 'GitRepository', url: 'git://a.com/cb.git', branch_name: 'master' } } }
+  end
 
   before do
     Repository.any_instance.stubs(:bypass_url_validation).returns(true)
@@ -305,7 +308,7 @@ describe 'ProjectsController' do
     get :new
     must_respond_with :redirect
     must_redirect_to new_session_path
-    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_account_path)
+    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_registration_path)
   end
 
   it 'new should render for logged users' do
@@ -320,7 +323,7 @@ describe 'ProjectsController' do
     post :check_forge, codelocation: 'http://cnn.com'
     must_respond_with :redirect
     must_redirect_to new_session_path
-    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_account_path)
+    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_registration_path)
   end
 
   it 'check_forge should gracefully handle duplicate projects detected' do
@@ -374,7 +377,7 @@ describe 'ProjectsController' do
     post :create, project: { name: 'Fail', url_name: 'fail', description: 'It fails.' }
     must_respond_with :redirect
     must_redirect_to new_session_path
-    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_account_path)
+    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_registration_path)
   end
 
   it 'create should persist a valid project to the database' do
@@ -385,9 +388,7 @@ describe 'ProjectsController' do
     post :create, project: { name: 'Cool Beans', url_name: 'cool-beans', description: 'cool beans app',
                              url: 'http://a.com/', download_url: 'http://b.com/', managed_by_creator: '1',
                              project_licenses_attributes: [{ license_id: license1.id }, { license_id: license2.id }],
-                             enlistments_attributes: [repository_attributes: { type: 'GitRepository',
-                                                                               url: 'git://a.com/cb.git',
-                                                                               branch_name: 'master' }] }
+                             enlistments_attributes: enlistment_params }
     must_respond_with 302
     project = Project.where(url_name: 'cool-beans').last
     project.wont_equal nil
@@ -410,9 +411,7 @@ describe 'ProjectsController' do
     post :create, project: { name: 'Cool Beans', url_name: 'cool-beans', description: 'cool beans app',
                              url: 'http://a.com/', download_url: '', managed_by_creator: '1',
                              project_licenses_attributes: [{ license_id: license1.id }, { license_id: license2.id }],
-                             enlistments_attributes: [repository_attributes: { type: 'GitRepository',
-                                                                               url: 'git://a.com/cb.git',
-                                                                               branch_name: 'master' }] }
+                             enlistments_attributes: enlistment_params }
     must_respond_with 302
     project = Project.where(url_name: 'cool-beans').last
     project.wont_equal nil
@@ -433,9 +432,7 @@ describe 'ProjectsController' do
     post :create, project: { name: 'Cool Beans', url_name: 'cool-beans', description: 'cool beans app',
                              url: 'http://a.com/', download_url: 'http://b.com/', managed_by_creator: '1',
                              project_licenses_attributes: [],
-                             enlistments_attributes: [repository_attributes: { type: 'GitRepository',
-                                                                               url: 'git://a.com/cb.git',
-                                                                               branch_name: 'master' }] }
+                             enlistments_attributes: enlistment_params }
     must_respond_with 302
     project = Project.where(url_name: 'cool-beans').last
     project.wont_equal nil
@@ -457,9 +454,7 @@ describe 'ProjectsController' do
     post :create, project: { name: 'Cool Beans', url_name: 'cool-beans', description: 'cool beans app',
                              url: 'http://a.com/', download_url: 'http://b.com/', managed_by_creator: '0',
                              project_licenses_attributes: [{ license_id: license1.id }, { license_id: license2.id }],
-                             enlistments_attributes: [repository_attributes: { type: 'GitRepository',
-                                                                               url: 'git://a.com/cb.git',
-                                                                               branch_name: 'master' }] }
+                             enlistments_attributes: enlistment_params }
     must_respond_with 302
     project = Project.where(url_name: 'cool-beans').last
     project.wont_equal nil
@@ -472,6 +467,18 @@ describe 'ProjectsController' do
     project.repositories[0].type.must_equal 'GitRepository'
     project.repositories[0].url.must_equal 'git://a.com/cb.git'
     project.repositories[0].branch_name.must_equal 'master'
+  end
+
+  it 'create should not lose repo params on validation errors' do
+    login_as create(:account)
+    post :create, project: { name: '', url_name: 'cool-beans', description: 'cool beans app',
+                             url: 'http://a.com/', enlistments_attributes: enlistment_params }
+    must_respond_with :unprocessable_entity
+    must_select 'form#new_project', 1
+    must_select 'p.error'
+    must_select 'input#project_enlistments_attributes_0_repository_attributes_url'
+    must_select 'input#project_enlistments_attributes_0_repository_attributes_branch_name'
+    must_select 'select#repository_type'
   end
 
   it 'create should gracefully handle validation errors' do
@@ -517,7 +524,7 @@ describe 'ProjectsController' do
     put :update, id: project.id, project: { name: 'KoolOSSProject' }
     must_respond_with :redirect
     must_redirect_to new_session_path
-    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_account_path)
+    flash[:notice].must_equal I18n.t('sessions.message_html', href: new_registration_path)
     project.reload.name.wont_equal 'KoolOSSProject'
   end
 
@@ -569,36 +576,60 @@ describe 'ProjectsController' do
     must_select '.no_analysis_message', 1
   end
 
-  it 'should show the project users page' do
-    project = create(:project, logo: nil)
-    account = create(:account)
-    create(:stack_entry, stack: create(:stack, account: account), project: project)
-    create(:stack_entry, stack: create(:stack, account: account), project: project)
-    get :users, id: project.id
-    must_respond_with :success
-    must_select '.advanced_search_tips', 0
-    assigns(:accounts).count.must_equal 2
-  end
+  describe 'users' do
+    it 'should show the project users page' do
+      project = create(:project, logo: nil)
+      account = create(:account)
+      create(:stack_entry, stack: create(:stack, account: account), project: project)
+      create(:stack_entry, stack: create(:stack, account: account), project: project)
+      get :users, id: project.id
+      must_respond_with :success
+      must_select '.advanced_search_tips', 0
+      assigns(:accounts).count.must_equal 2
+    end
 
-  it 'should search for a valid account' do
-    project = create(:project, logo: nil)
-    account1 = create(:account)
-    account2 = create(:account)
-    create(:stack_entry, stack: create(:stack, account: account1), project: project)
-    create(:stack_entry, stack: create(:stack, account: account2), project: project)
+    it 'should search for a valid account' do
+      project = create(:project, logo: nil)
+      account1 = create(:account)
+      account2 = create(:account)
+      create(:stack_entry, stack: create(:stack, account: account1), project: project)
+      create(:stack_entry, stack: create(:stack, account: account2), project: project)
 
-    get :users, id: project.id, query: account1.name
-    must_respond_with :success
-    must_select '.advanced_search_tips', 0
-    assigns(:accounts).count.must_equal 1
-  end
+      get :users, id: project.id, query: account1.name
+      must_respond_with :success
+      must_select '.advanced_search_tips', 0
+      assigns(:accounts).count.must_equal 1
+    end
 
-  it 'should not list a invalid search term' do
-    project = create(:project, logo: nil)
-    get :users, id: project.id, query: 'unknown_text_to_seach'
-    must_respond_with :success
-    must_select '.advanced_search_tips', 1
-    assigns(:accounts).count.must_equal 0
+    it 'should not return an disabled or spammer account' do
+      project = create(:project, logo: nil)
+      account1 = create(:account)
+      account2 = create(:account, level: -10)
+      account3 = create(:account, level: -20)
+      create(:stack_entry, stack: create(:stack, account: account1), project: project)
+      create(:stack_entry, stack: create(:stack, account: account2), project: project)
+      create(:stack_entry, stack: create(:stack, account: account3), project: project)
+
+      get :users, id: project.id
+      must_respond_with :success
+      assigns(:accounts).count.must_equal 1
+    end
+
+    it 'should not list a invalid search term' do
+      project = create(:project, logo: nil)
+      get :users, id: project.id, query: 'unknown_text_to_seach'
+      must_respond_with :success
+      must_select '.advanced_search_tips', 1
+      assigns(:accounts).count.must_equal 0
+    end
+
+    it 'must show a no user message when no users' do
+      project = create(:project, logo: nil)
+      get :users, id: project.to_param
+
+      must_respond_with :success
+      response.body.must_match I18n.t('projects.users.no_users')
+    end
   end
 
   it 'should show the permission alert when not logged in while accessing the setting page' do

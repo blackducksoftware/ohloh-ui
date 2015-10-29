@@ -7,6 +7,7 @@ class ProjectWidget < Widget
   def project
     @project ||= Project.from_param(project_id).first
   end
+  alias_method :parent, :project
 
   def title
     I18n.t('project_widgets.title')

@@ -9,4 +9,4 @@ DEMOGRAPHIC_CHART_DEFAULTS = load_chart_options('demographic.yml')
 
 ANALYSIS_CHART_DEFAULTS = load_chart_options('analysis/defaults.yml')
 TOP_COMMIT_VOLUME_CHART_DEFAULTS = load_chart_options('analysis/top_commit_volume.yml')
-ANALYIS_CHARTS_OPTIONS = load_chart_options('analysis/options_based_on_type.yml')
+ANALYSIS_CHARTS_OPTIONS = load_chart_options('analysis/options_based_on_type.yml')

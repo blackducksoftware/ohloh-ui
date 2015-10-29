@@ -20,7 +20,7 @@ class PostsController < ApplicationController
 
   def create
     @post = build_new_post
-    if verify_recaptcha(model: @post, attribute: :captcha) && @post.save
+    if verify_captcha_for_non_admin && @post.save
       post_notification(@post)
       redirect_to topic_path(@topic)
     else
@@ -35,7 +35,7 @@ class PostsController < ApplicationController
   end
 
   def update
-    if verify_recaptcha(model: @post, attribute: :captcha) && @post.update(post_params)
+    if verify_captcha_for_non_admin && @post.update(post_params)
       redirect_to topic_path(@topic)
     else
       render 'edit'
@@ -73,7 +73,7 @@ class PostsController < ApplicationController
 
   def send_reply_emails_to_everyone
     @all_users_preceding_the_last_user.uniq.each do |user|
-      PostNotifier.post_replied_notification(user, @user_who_replied, @topic).deliver_now
+      PostNotifier.post_replied_notification(user, @user_who_replied, @post).deliver_now
     end
   end
 
@@ -121,5 +121,10 @@ class PostsController < ApplicationController
     post = @topic.posts.build(post_params)
     post.account_id = current_user.id
     post
+  end
+
+  def verify_captcha_for_non_admin
+    return true if current_user_is_admin?
+    verify_recaptcha(model: @post, attribute: :captcha)
   end
 end

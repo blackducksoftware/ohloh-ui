@@ -1,5 +1,7 @@
 - edit.target.editor_account = current_user
-%tr{ id: "edit_#{edit.to_param}", parent_id: (params[:organization_id] || params[:project_id]) }
+- parent_id = (params[:organization_id] || params[:project_id] || params[:account_id])
+
+%tr{ id: "edit_#{edit.to_param}", parent_id: parent_id }
   %td
     - edit_counter ||= 1
     .edit{ class: "#{edit.to_param} #{'alt' if edit_counter.even?}" }

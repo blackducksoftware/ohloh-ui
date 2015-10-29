@@ -6,14 +6,9 @@ class StackEntriesController < ApplicationController
   before_action :find_stack, except: :new
   before_action :find_project, only: [:create]
   before_action :find_stack_entry, except: [:create, :new]
+  before_action :set_project_or_fail, only: :new
 
   helper_method :display_as_project_page
-
-  def new
-    @project = Project.from_param(params[:project_id]).take
-    fail ParamRecordNotFound if @project.nil?
-    @stacks = current_user.stacks
-  end
 
   def create
     stack_entry = StackEntry.where(stack_id: @stack.id, project_id: @project.id, deleted_at: nil).first_or_create!

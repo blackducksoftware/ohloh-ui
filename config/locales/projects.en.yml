@@ -105,7 +105,7 @@ en:
         add_a_code_location: "Add a code location"
         no_code_locations: "There are no Code Locations added to this project so Open Hub cannot display the commits per month chart. %{link} to see this information."
         community: "Community"
-      committers_per_month:
+      committers_per_month_chart:
         contributors_per_month: "Contributors per Month"
         add_a_code_location: "Add a code location"
         no_code_locations: "There are no Code Locations added to this project so Open Hub cannot display the contributors per month chart. %{link} to see this information."
@@ -127,9 +127,6 @@ en:
         login_required: 'Login Required'
       i_use_this:
         i_use_this: 'I Use This!'
-        add_to_stacks: 'Add to Stacks'
-        add_to_your_stack: 'Add the %{project} project to one of your stacks'
-        create_a_new_stack: "Create a new stack and add '%{project}'"
       is_a_duplicate:
         reported: "This project has been reported as a duplicate of %{link}. This project will be deleted upon review by an Open Hub administrator."
         cancel_request: "Cancel this request"
@@ -210,6 +207,7 @@ en:
       default: 'Default'
       contributions: 'Contributions'
       kudo_rank: 'Kudo Rank'
+      no_users: No users for this project yet.
     new:
       page_title: "New Projects"
       call_to_action: "Add a new project to Open Hub"

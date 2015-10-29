@@ -30,6 +30,21 @@ class ProjectLicensesControllerTest < ActionController::TestCase
     must_select 'a.new-license.disabled', 0
   end
 
+  it 'index sort licenses by vanity_url' do
+    project = create(:project)
+    license_1 = create(:project_license, project: project)
+    license_2 = create(:project_license, project: project)
+    license_3 = create(:project_license, project: project)
+
+    sorted_licenses = [license_1, license_2, license_3].sort { |a, b| a.license.vanity_url <=> b.license.vanity_url }
+
+    login_as nil
+
+    get :index, project_id: project.to_param
+    must_respond_with :ok
+    assigns(:project_licenses).must_equal sorted_licenses
+  end
+
   it 'index should offer to allow adding licenses for logged in users' do
     project = create(:project)
     create(:project_license, project: project)

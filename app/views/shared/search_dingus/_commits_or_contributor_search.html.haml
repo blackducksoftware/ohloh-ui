@@ -1,0 +1,23 @@
+- total_count ||= 0
+
+- if type == :commits && @project.best_analysis.logged_at.present?
+  %span.commits_display_date_range.pull-right
+    %i.icon-time
+    - if TIME_SPANS[params[:time_span]] == :last_30_days
+      = (@project.best_analysis.logged_at - 30.days).to_s(:mdy)
+    - else
+      = (@project.best_analysis.logged_at - 12.months).to_s(:mdy)
+    &mdash;
+    = @project.best_analysis.logged_at.to_s(:mdy)
+.margin_top_20#search-dingus
+  %form.form-inline
+    .row
+      = render 'shared/search_dingus/page_entries_info', collection: items, total_count: total_count
+      .col-md-5.no_padding
+        %label #{t('shared.search_dingus.search_bar.search_text')} &nbsp;
+        = text_field_tag :query, params[:query]
+        = hidden_field_tag :time_span, params[:time_span]
+        %button.btn{ type: 'Submit' }
+          %i.icon-refresh
+      - if type == :contributions
+        = render 'shared/search_dingus/sort', sort_context: :contributions, filter_type: nil

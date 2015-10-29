@@ -1,29 +1,22 @@
 .btn-group.pull-right.margin_top_10
   - if current_user_is_admin?
-    = link_to t('.edit'), edit_topic_path(@topic), method: :get, class: 'btn btn-info btn-mini'
+    = link_to t('edit'), edit_topic_path(@topic), class: 'btn btn-info btn-mini' unless @topic.closed?
 
     = render 'topics/move_modal'
 
     = link_to t('.spam'), make_spammer_account_accesses_path(@topic.account), method: :post,
       data: { confirm: t('.spam_confirmation', user: @topic.posts.first.account.name) },
-      class: 'btn btn-mini btn-warning'
+      class: 'btn btn-mini btn-warning', title: t('.mark_as_spam', name: @topic.posts.first.account.name)
 
-    - unless @topic.closed
-      = link_to t('.close'), topic_path(@topic, topic: { closed: true }),
-        method: :put, data: { confirm: t('.close_confirmation') }, class: 'btn btn-mini'
+    - unless @topic.closed?
+      = link_to t('.close'), close_topic_path(@topic), title: t('.close_topic', title: @topic.title),
+        data: { confirm: t('.close_confirmation') }, class: 'btn btn-mini'
 
-    = link_to t('.delete'), topic_path(@topic), method: :delete,
-      data: { confirm: t('.delete_confirmation') }, class: 'btn btn-danger btn-mini'
-
-    - if @topic.closed
-      = link_to t('.reopen'), topic_path(@topic, topic: { closed: false }), method: :put,
+  - if current_user_is_admin? || @topic.account == current_user
+    - if @topic.closed?
+      = link_to t('topics.reopen'), reopen_topic_path(@topic), title: t('.reopen_topic', title: @topic.title),
         data: { confirm: t('.reopen_confirmation') }, class: 'btn btn-mini btn-info'
 
-  - else
-    - if @topic.account == current_user && !@topic.closed
-      = link_to t('.close'), topic_path(@topic, topic: { closed: true }),
-      method: :put, data: { confirm: t('.close_confirmation') }, class: 'btn btn-mini'
-
-    - if @topic.account == current_user && @topic.closed
-      = link_to t('.reopen'), topic_path(@topic, topic: { closed: false }), method: :put,
-      data: { confirm: t('.reopen_confirmation') }, class: 'btn btn-mini btn-info'
+    - if current_user_is_admin? || @topic.posts.size <= 1
+      = link_to t('.delete'), topic_path(@topic), method: :delete, title: t('.delete_topic', title: @topic.title),
+        data: { confirm: t('.delete_confirmation') }, class: 'btn btn-danger btn-mini'

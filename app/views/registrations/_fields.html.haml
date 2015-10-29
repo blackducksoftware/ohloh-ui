@@ -1,8 +1,4 @@
-= form_for @account, html: { id: :account_form, class: 'well digits-verification' } do |f|
-  = f.hidden_field :digits_credentials, id: :digits_credentials
-  = f.hidden_field :digits_service_provider_url, id: :digits_service_provider_url
-  = f.hidden_field :digits_oauth_timestamp, id: :digits_oauth_timestamp
-
+= form_for @account, url: validate_registrations_path, html: { id: :account_form, class: 'well' } do |f|
   %fieldset
     %legend= t('.new_account')
     .controls
@@ -40,7 +36,7 @@
       %p.help-block
         = t('.verify_password_help')
 
-    - error_tag(@account, :twitter_id)
-
+    %p.help-block
+      = t('.mobile_verification_hint')
     .actions
-      %input.btn.btn-primary{ type: :button, value: t('.sign_up'), id: 'digits-sign-up' }
+      %input.btn.btn-primary{ type: :submit, value: t('.sign_up') }

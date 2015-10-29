@@ -5,7 +5,7 @@
   %td.col-md-2
     = enlistment.repository.name_in_english
   %td.col-md-3
-    = RepositoryJobProgress.new(enlistment.repository).message
+    = RepositoryJobProgress.new(enlistment).message
   %td.col-md-2.status
     - ass = enlistment.analysis_sloc_set
     - if ass

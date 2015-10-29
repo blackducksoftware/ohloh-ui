@@ -10,6 +10,7 @@ en:
       code_location: 'Code Location'
       date: 'Date'
       more: 'More...'
+      no_data: 'There are no commits to display'
     committer_name:
       as_comment_html: "as %{name}"
       unknown: 'unknown'

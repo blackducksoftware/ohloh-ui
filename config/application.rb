@@ -14,6 +14,7 @@ module OhlohUi
     config.action_controller.include_all_helpers = false
     config.active_record.schema_format = :sql
     config.active_record.raise_in_transactional_callbacks = true
+    config.action_mailer.default_url_options = { host: ENV['URL_HOST'] }
 
     config.google_maps_api_key = ENV['GOOGLE_MAPS_API']
 

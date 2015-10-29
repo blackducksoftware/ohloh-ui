@@ -38,7 +38,7 @@
                                                            data: { placeholder: t('.select_placeholder') } }
             %option{ value: 'blank' }
             - @licenses.each do |license|
-              %option{ value: license.id }= license.nice_name
+              %option{ value: license.id }= license.name
           %p.clear.help-block
             - link = link_to t('.add_it'), new_license_path
             != t('.add_it_help', link: link)

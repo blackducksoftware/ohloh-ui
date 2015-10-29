@@ -61,10 +61,10 @@ class Account::HooksTest < ActiveSupport::TestCase
       account.edits.not_undone.count.must_equal 2
 
       Project.any_instance.stubs(:edit_authorized?).returns(true)
-      Account::Access.new(account).spam!
+      account.access.spam!
 
       account.reload
-      spammer = Account::Access.new(account).spam?
+      spammer = account.access.spam?
       spammer.must_equal true
       account.topics.count.must_equal 0
       account.person.must_be_nil
@@ -108,14 +108,6 @@ class Account::HooksTest < ActiveSupport::TestCase
       account.positions.count.must_equal 0
       account.posts.count.must_equal 0
       Account.find_or_create_anonymous_account.posts.count.must_equal 2
-    end
-  end
-
-  describe 'before_create' do
-    it 'must set the twitter_id using twitter digits data' do
-      account = build(:account)
-      TwitterDigits.expects(:get_twitter_id)
-      account.save
     end
   end
 

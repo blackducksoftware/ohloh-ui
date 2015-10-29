@@ -1,0 +1,16 @@
+#! /usr/bin/env ruby
+
+require_relative '../config/environment'
+
+module ProjectUrlNameFixer
+  module_function
+
+  def perform
+    Project.where("url_name like '%.%'").each do |project|
+      new_url_name = project.url_name.gsub(/[^\w_-]/, '-')
+      project.update_column('url_name', new_url_name)
+    end
+  end
+end
+
+ProjectUrlNameFixer.perform

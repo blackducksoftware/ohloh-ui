@@ -2,7 +2,7 @@ class Analysis::ContributorHistoryChart < Analysis::Chart
   def initialize(analysis)
     @analysis = analysis
     @history = Analysis::ContributorHistory.new(analysis: analysis).execute
-    @defaults = ANALYSIS_CHART_DEFAULTS.deep_merge(ANALYIS_CHARTS_OPTIONS['committer_history'])
+    @defaults = ANALYSIS_CHART_DEFAULTS.deep_merge(ANALYSIS_CHARTS_OPTIONS['committer_history'])
   end
 
   def data
@@ -10,7 +10,7 @@ class Analysis::ContributorHistoryChart < Analysis::Chart
   end
 
   def data_without_auxillaries
-    data.deep_merge(ANALYIS_CHARTS_OPTIONS['no_auxillaries'])
+    data.deep_merge(ANALYSIS_CHARTS_OPTIONS['no_auxillaries'])
   end
 
   private

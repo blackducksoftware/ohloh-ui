@@ -23,7 +23,7 @@ Doorkeeper.configure do
   # Require admin rights to access the web interface.
   # admin_authenticator do
   #   account = Account.find_by(id: session[:account_id])
-  #   Account::Access.new(account).admin? || redirect_to(new_session_url)
+  #   account.access.admin? || redirect_to(new_session_url)
   # end
 
   # Authorization Code expiration time (default 10 minutes).

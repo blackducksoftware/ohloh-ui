@@ -1,8 +1,9 @@
 :ruby
   @project ||= Project.new
+  licenses = @project.licenses if @project.persisted?
+  licenses = License.find(@project.project_licenses.map(&:license_id)) unless @project.persisted?
   content_for(:html_title) { t('.page_title', name: @project.name.blank? ? 'New Project' : @project.name) }
   page_context[:select_top_menu_nav] = 'select_projects'
-  first_repo = @project.repositories.first
 
 %h1.margin_bottom_20= t('projects.new.call_to_action')
 .row
@@ -12,28 +13,25 @@
         = form_for @project, as: :project, url: projects_path, html: { class: 'styled new_project' } do |f|
           %fieldset
             %legend= t('.create_a_new_project')
-            .control-group{ class: ('nomargin' unless first_repo) }
+            .control-group.nomargin
               %label.control-label.required= t('.project_name')
               .controls
                 %input.col-md-5#project_name{ name: 'project[name]', type: 'text', value: @project.name }
                 - error_tag @project, :name
                 %p.help-block!= t('.project_name_help', link: link_to(t('.contact_us'), blog_url_for(:contact_form)))
-            - if first_repo
-              .control-group.nomargin
-                %label.control-label.required= t('.project_source_code')
-                .controls.chosen#value_select
-                  - nested_repository_prefix = 'project[enlistments_attributes][][repository_attributes]'
-                  %select.chzn-select.value-select#repository_type{ name: "#{nested_repository_prefix}[type]",
-                                                                    style: 'width:100px;' }
-                    = repository_options_for_select(first_repo)
-                  %input#repository_url{ name: "#{nested_repository_prefix}[url]", type: 'text',
-                                         value: first_repo.url, style: 'width: 265px; margin-bottom: 1px;' }
-                  - if first_repo.type == 'GitRepository'
-                    %input#repository_branch_name{ name: "#{nested_repository_prefix}[branch_name]", type: 'text',
-                                                   value: first_repo.branch_name.presence || 'master',
-                                                   style: 'width: 105px; margin-bottom: 1px;' }
-                  .clear_left
-                  - error_tag @project, :repositories
+            = f.fields_for :enlistments do |enlistment_form|
+              = enlistment_form.fields_for :repository do |repo_form|
+                .control-group.nomargin
+                  %label.control-label.required= t('.project_source_code')
+                  .controls.chosen#value_select
+                    = repo_form.select :type, repository_options_for_select(repo_form.object), {},
+                    class: 'chzn-select value-select', id: 'repository_type', style: 'width: 100px'
+                    = repo_form.text_field :url, style: 'width: 265px; margin-bottom: 1px'
+                    - if repo_form.object.type == 'GitRepository'
+                      = repo_form.text_field :branch_name, value: repo_form.object.branch_name || 'master',
+                      style: 'width: 105px; margin-bottom: 1px'
+                    .clear_left
+                    - error_tag @project, :repositories
             .control-group
               .controls
                 %label.checkbox.control-label{ style: 'padding: 0;' }
@@ -66,16 +64,16 @@
             .control-group
               %label.control-label= t('.chosen_licenses')
               .controls.chosen_licenses
-                - @project.licenses.each do |license|
-                  .license.span5.no_margin_left
-                    .col-md-3.no_margin_left
-                      = license.nice_name
-                    .col-md-2.no_margin_left
-                      %a.btn.btn-mini.remove_license.btn-danger{ href: '' }
+                - licenses.each do |license|
+                  .license.col-md-5.no_margin_left
+                    .col-md-6
+                      = license.name
+                    .col-md-5.pull-right{ style: 'margin: 0 20px 20px 0' }
+                      %a.btn.btn-mini.remove_license.btn-danger.col{ href: '#' }
                         %i.icon-trash= t '.remove'
                     %input{ type: 'hidden', value: license.id,
                             name: 'project[project_licenses_attributes][][license_id]' }
-                - if @project.licenses.empty?
+                - if licenses.empty?
                   .license.inset= t('.none')
             .clearfix
             .control-group.clear_left

@@ -10,8 +10,8 @@ module ProjectsHelper
   end
 
   def project_iusethis_button(project)
-    haml_tag :a, href: '#', id: "stackit_#{project.to_param}",
-                 class: "#{logged_in? ? 'stack_trigger' : 'needs_login'} dontnav btn btn-primary btn-mini" do
+    haml_tag :a, href: '#', data: { project_id: project.to_param },
+                 class: "#{ needs_login_or_verification_or_default('new-stack-entry') } btn btn-primary btn-mini" do
       concat t('projects.i_use_this')
     end
   end
@@ -71,11 +71,11 @@ module ProjectsHelper
   def project_activity_text(project, append_activity)
     activity_level = project_activity_level(project)
     case activity_level
-    when :na then "#{t('projects.activity') if append_activity} #{t('projects.not_available')}"
-    when :new then t('projects.new_project')
-    when :inactive then t('projects.inactive')
+    when :na then "#{I18n.t('projects.activity') if append_activity} #{I18n.t('projects.not_available')}"
+    when :new then I18n.t('projects.new_project')
+    when :inactive then I18n.t('projects.inactive')
     else
-      "#{t("projects.#{activity_level}")} #{t('projects.activity') if append_activity }"
+      "#{I18n.t("projects.#{activity_level}")} #{I18n.t('projects.activity') if append_activity }"
     end
   end
 

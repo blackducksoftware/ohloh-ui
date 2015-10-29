@@ -2,7 +2,7 @@ en:
   activation_resends:
     new:
       heading: 'Activation Resend'
-      email_address: 'Email Address'
+    fields:
       enter_email: 'Enter the email you signed up with.'
       submit: 'Resend my activation email'
     create:

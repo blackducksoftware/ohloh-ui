@@ -32,4 +32,34 @@ class Account::AuthenticatorTest < ActiveSupport::TestCase
     authenticator.wont_be :authenticated?
     authenticator.account.must_equal nil
   end
+
+  it 'should not authenicate ananymous accounts' do
+    ohloh_slave = Account.hamster
+    anonymous = create(:account, password: 'password', login: 'anonymous_coward', email: 'anon@openhub.net')
+    crawler = create(:account, password: 'password', login: 'uber_data_crawler', email: 'uber_data_crawler@ohloh.net')
+
+    authenticator = Account::Authenticator.new(login: ohloh_slave.login, password: 'password')
+    authenticator.wont_be :authenticated?
+    authenticator.account.must_equal nil
+
+    authenticator = Account::Authenticator.new(login: ohloh_slave.email, password: 'password')
+    authenticator.wont_be :authenticated?
+    authenticator.account.must_equal nil
+
+    authenticator = Account::Authenticator.new(login: anonymous.login, password: 'password')
+    authenticator.wont_be :authenticated?
+    authenticator.account.must_equal nil
+
+    authenticator = Account::Authenticator.new(login: anonymous.email, password: 'password')
+    authenticator.wont_be :authenticated?
+    authenticator.account.must_equal nil
+
+    authenticator = Account::Authenticator.new(login: crawler.login, password: 'password')
+    authenticator.wont_be :authenticated?
+    authenticator.account.must_equal nil
+
+    authenticator = Account::Authenticator.new(login: crawler.email, password: 'password')
+    authenticator.wont_be :authenticated?
+    authenticator.account.must_equal nil
+  end
 end

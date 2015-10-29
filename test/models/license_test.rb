@@ -38,65 +38,84 @@ class LicenseTest < ActiveSupport::TestCase
   end
 
   it '#short_name returns abbreviation if present' do
-    create(:license, nice_name: 'Foobar', abbreviation: 'Foo').short_name.must_equal 'Foo'
+    create(:license, name: 'Foobar', abbreviation: 'Foo').short_name.must_equal 'Foo'
   end
 
-  it '#short_name returns nice_name if no abbreviation is available' do
-    create(:license, nice_name: 'Foobar', abbreviation: nil).short_name.must_equal 'Foobar'
+  it '#short_name returns name if no abbreviation is available' do
+    create(:license, name: 'Foobar', abbreviation: nil).short_name.must_equal 'Foobar'
   end
 
-  it '#autocomplete returns correct licenses' do
-    license_1 = create(:license, nice_name: 'AutocompleteMIT')
-    create(:license, nice_name: 'AutocompleteBSD')
-    license_3 = create(:license, nice_name: 'AutocompleteMit v2')
-    License.autocomplete('autocompletemit').map(&:id).sort.must_equal [license_1.id, license_3.id].sort
+  describe 'autocomplete' do
+    it 'must return correct licenses' do
+      license_1 = create(:license, name: 'AutocompleteMIT')
+      create(:license, name: 'AutocompleteBSD')
+      license_3 = create(:license, name: 'AutocompleteMit v2')
+      License.autocomplete('autocompletemit').map(&:id).sort.must_equal [license_1.id, license_3.id].sort
+    end
+
+    it 'must avoid deleted licenses' do
+      license = create(:license)
+      license.destroy
+      License.autocomplete(license.name).must_be :empty?
+    end
   end
 
   describe 'from_param' do
-    it 'should match by name' do
+    it 'should match by vanity_url' do
       license = create(:license)
-      License.from_param(license.name).first.id.must_equal license.id
+      License.from_param(license.vanity_url).first.id.must_equal license.id
+    end
+  end
+
+  describe 'vanity_url' do
+    it 'should validate uniqueness' do
+      license_1 = create(:license)
+      license_2 = build(:license, vanity_url: license_1.vanity_url)
+      license_2.valid?.must_equal false
+      license_2.errors.count.must_equal 2
+      license_2.errors[:vanity_url].must_equal ['has already been taken']
+    end
+
+    it 'should validate length' do
+      license = build(:license, vanity_url: 'a')
+      license.valid?.must_equal false
+      license.errors.count.must_equal 2
+      license.errors[:vanity_url].must_equal ['is too short (minimum is 2 characters)']
+    end
+
+    it 'must allow valid characters' do
+      valid_vanity_urls = %w(license-name license_name licenseé license_)
+
+      valid_vanity_urls.each do |vanity_url|
+        license = build(:license, vanity_url: vanity_url)
+        license.wont_be :valid?
+      end
+    end
+
+    it 'wont allow invalid characters' do
+      invalid_vanity_urls = %w(license.name .license -license _license)
+
+      invalid_vanity_urls.each do |vanity_url|
+        license = build(:license, vanity_url: vanity_url)
+        license.wont_be :valid?
+      end
     end
   end
 
   describe 'name' do
     it 'should validate uniqueness' do
       license_1 = create(:license)
-      license_2 = build(:license, name: license_1.name)
-      license_2.valid?.must_equal false
-      license_2.errors.count.must_equal 2
-      license_2.errors[:name].must_equal ['has already been taken']
+      license = build(:license, name: license_1.name)
+      license.valid?.must_equal false
+      license.errors.count.must_equal 2
+      license.errors[:name].must_equal ['has already been taken']
     end
 
     it 'should validate length' do
-      license = build(:license, name: 'a')
+      license = build(:license, name: '')
       license.valid?.must_equal false
       license.errors.count.must_equal 2
-      license.errors[:name].must_equal ['is too short (minimum is 2 characters)']
-    end
-
-    it 'should validate format' do
-      license = build(:license, name: '1a')
-      license.valid?.must_equal false
-      license.errors.count.must_equal 2
-      license.errors[:name].must_equal ['should start with a letter and can include only letters, numbers, _ and -']
-    end
-  end
-
-  describe 'nice_name' do
-    it 'should validate uniqueness' do
-      license_1 = create(:license)
-      license = build(:license, nice_name: license_1.nice_name)
-      license.valid?.must_equal false
-      license.errors.count.must_equal 2
-      license.errors[:nice_name].must_equal ['has already been taken']
-    end
-
-    it 'should validate length' do
-      license = build(:license, nice_name: '')
-      license.valid?.must_equal false
-      license.errors.count.must_equal 2
-      license.errors[:nice_name].must_equal ['is too short (minimum is 1 character)']
+      license.errors[:name].must_equal ['is too short (minimum is 1 character)']
     end
   end
 
@@ -129,6 +148,27 @@ class LicenseTest < ActiveSupport::TestCase
       license.valid?.must_equal false
       license.errors.count.must_equal 2
       license.errors[:url].must_equal ['Invalid URL Format']
+    end
+  end
+
+  describe 'license deleted' do
+    it 'when license is deleted the associated project license should be (soft) deleted' do
+      license = create(:license)
+      project = create(:project)
+      account = create(:account)
+      create(:project_license, project: project, license: license)
+      license.editor_account = account
+      project.project_licenses.count.must_equal 1
+      project_license = project.project_licenses.first
+      license.edits.first.undo!(account) # Undo the CreateEdit i.e. Removing the Licence
+      license.reload.deleted?.must_equal true
+      project.project_licenses.count.must_equal 0
+      project_license.edits.first.allow_redo?.must_equal false # ProjectLicense shouldn't allow Redo(License is deleted)
+      # Redoing the License should redo the project license as well
+      license.edits.first.redo!(account)
+      license.reload.deleted?.must_equal false
+      project.project_licenses.count.must_equal 1
+      project_license.edits.first.allow_undo?.must_equal true
     end
   end
 end

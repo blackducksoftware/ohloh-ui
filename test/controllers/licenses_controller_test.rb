@@ -15,7 +15,7 @@ describe 'LicensesControllerTest' do
     end
 
     it 'should filter based on query' do
-      get :index, query: @license.name
+      get :index, query: @license.vanity_url
       must_respond_with :ok
       must_render_template :index
       assigns(:licenses).count.must_equal 1
@@ -32,9 +32,17 @@ describe 'LicensesControllerTest' do
 
   describe 'show' do
     it 'should show the license' do
-      get :show, id: @license.name
+      get :show, id: @license.vanity_url
       must_respond_with :ok
       must_render_template :show
+    end
+
+    it 'must avoid deleted license' do
+      @license.destroy
+
+      get :show, id: @license.vanity_url
+
+      must_respond_with :not_found
     end
   end
 
@@ -87,7 +95,7 @@ describe 'LicensesControllerTest' do
 
     it 'should update the license' do
       login_as create(:account)
-      put :update, id: @license.name, license: build(:license).attributes
+      put :update, id: @license.vanity_url, license: build(:license).attributes
       must_respond_with :redirect
       must_redirect_to assigns(:license)
       flash[:notice].must_equal 'Save successful!'
@@ -96,7 +104,7 @@ describe 'LicensesControllerTest' do
     it 'should render edit if update fails' do
       login_as create(:account)
       License.any_instance.stubs(:update_attributes).returns(false)
-      put :update, id: @license.name, license: build(:license).attributes
+      put :update, id: @license.vanity_url, license: build(:license).attributes
       must_respond_with :ok
       must_render_template :edit
       flash[:error].must_equal 'There was a problem!'

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class StackEntriesControllerTest < ActionController::TestCase
+describe 'StackEntriesController' do
   # show
   it 'show should return good json for a stack entry' do
     login_as(create(:account))
@@ -140,16 +140,20 @@ class StackEntriesControllerTest < ActionController::TestCase
     stack.stack_entries.count.must_equal 0
   end
 
-  it 'new should return current user stacks and project' do
-    stack = create(:stack)
-    project = create(:project)
-    create(:stack_entry, project: project, stack: stack)
-    login_as stack.account
+  describe 'new' do
+    let(:project) { create(:project) }
+    before { login_as(create(:account)) }
 
-    get :new, project_id: project.id, ref: 'ProjectWidget%3A%3AUsers'
-    must_respond_with :ok
-    assigns(:project).must_equal project
-    assigns(:stacks).must_equal stack.account.stacks
-    stack.stack_entries.count.must_equal 1
+    it 'wont work without a valid project param' do
+      get :new, project_id: 'junk'
+
+      must_respond_with :not_found
+    end
+
+    it 'must handle ajax request' do
+      xhr :get, :new, project_id: project.id
+
+      must_render_template 'new'
+    end
   end
 end

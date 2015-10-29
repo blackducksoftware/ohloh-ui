@@ -14,12 +14,7 @@ class ContributionsController < ApplicationController
 
   def index
     fail ParamRecordNotFound unless @project
-    @contributions = @project.contributions
-                     .sort(params[:sort])
-                     .filter_by(params[:query])
-                     .includes(person: :account, contributor_fact: :primary_language)
-                     .references(:all)
-                     .paginate(per_page: 20, page: page_param)
+    @contributions = @project.contributions_within_timespan(params).paginate(per_page: 20, page: page_param)
   end
 
   def show
@@ -39,12 +34,16 @@ class ContributionsController < ApplicationController
   end
 
   def commits_spark
-    spark_image = Spark::SimpleSpark.new(@contributor.monthly_commits, max_value: 50).render.to_blob
+    spark_image = Rails.cache.fetch("contributor/#{@contributor.id}/commits_spark", expires_in: 4.hours) do
+      Spark::SimpleSpark.new(@contributor.monthly_commits, max_value: 50).render.to_blob
+    end
     send_data spark_image, type: 'image/png', filename: 'commits.png', disposition: 'inline'
   end
 
   def commits_compound_spark
-    spark_image = Spark::CompoundSpark.new(@contributor.monthly_commits(11), max_value: 50).render.to_blob
+    spark_image = Rails.cache.fetch("contributor/#{@contributor.id}/commits_compound_spark", expires_in: 4.hours) do
+      Spark::CompoundSpark.new(@contributor.monthly_commits(11), max_value: 50).render.to_blob
+    end
     send_data spark_image, type: 'image/png', filename: 'commits.png', disposition: 'inline'
   end
 

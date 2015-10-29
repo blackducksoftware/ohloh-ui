@@ -53,7 +53,7 @@ class OrganizationsController < ApplicationController
 
   def claim_projects_list
     @projects = []
-    params[:sort] ||= 'project_name'
+    params[:sort] ||= 'relevance'
     return if params[:query].blank?
     @projects = Project.active.search_and_sort(params[:query], params[:sort], page_param)
   end

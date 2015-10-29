@@ -17,9 +17,10 @@ class HomeDecorator
 
   def commit_count
     projects = most_active_projects
-    projects.map do |project|
+    map = projects.map do |project|
       project.best_analysis.thirty_day_summary.commits_count if project.best_analysis.present?
     end
+    map.compact
   end
 
   def vita_count

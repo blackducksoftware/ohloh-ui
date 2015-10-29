@@ -113,10 +113,6 @@ module ApplicationHelper
       number
   end
 
-  def iusethis_css_class
-    logged_in? ? 'stack_trigger' : 'needs_login'
-  end
-
   def highlight(actual_time, base_time = nil)
     return if actual_time.blank?
     base_time ||= @highlight_from || Time.current
@@ -152,6 +148,7 @@ module ApplicationHelper
   def needs_login_or_verification_or_default(default_class = nil)
     return default_class if logged_in? && current_user_is_verified?
     return :needs_login unless logged_in?
+    return :needs_email_verification unless current_user.access.email_verified?
     :needs_verification
   end
 end

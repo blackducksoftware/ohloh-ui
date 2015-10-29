@@ -15,8 +15,7 @@
       %br
       - if (@topic.account == current_user)
         %p= t('.close_topic_message_1')
-        - url = link_to(t('.reopen'), forum_topics_path(@forum, @topic, topic: { closed: false }), method: :put)
-        %p= t('.reopen_message_html', link: url)
+        %p= t('.reopen_message_html', link: link_to(t('topics.reopen'), reopen_topic_path(@topic)))
       - else
         %p= t('.closed_topic_message_2')
         %p= t('.closed_topic_message_3')

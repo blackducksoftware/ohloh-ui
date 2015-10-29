@@ -11,6 +11,7 @@ module PositionFilters
     before_action :redirect_to_contribution_if_found, only: :show, unless: :params_id_is_total?
     before_action :account_context
     before_action :set_project_and_name, only: :one_click_create
+    before_action :set_project_and_name_fact, only: :commits_compound_spark
     skip_before_action :store_location, only: [:commits_compound_spark]
     helper_method :params_id_is_total?
   end
@@ -42,5 +43,11 @@ module PositionFilters
     project = @position.project
     return unless project && !project.deleted && @position.contribution
     redirect_to project_contributor_path(project, @position.contribution)
+  end
+
+  def set_project_and_name_fact
+    @project = @position.project
+    @name_fact = ContributorFact.includes(:name).where(analysis_id: @project.best_analysis_id,
+                                                       name_id: @position.name_id).first
   end
 end

@@ -4,6 +4,7 @@
       = f.text_area :body, style: 'width: 665px; height: 160px; margin-left: -10px; margin-top: 20px;'
       - error_tag @post, :body
     %div
-      = render partial: 'shared/captcha'
-      - error_tag @post, :captcha
+      - unless current_user_is_admin?
+        = render partial: 'shared/captcha'
+        - error_tag @post, :captcha
       = f.submit t('.submit'), class: 'btn btn-primary btn-small', style: 'margin-top: 20px'

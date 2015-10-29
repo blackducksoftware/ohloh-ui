@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'test_helpers/create_contributions_data'
 
 class ProjectTest < ActiveSupport::TestCase
   let(:project) { create(:project) }
@@ -9,6 +10,26 @@ class ProjectTest < ActiveSupport::TestCase
   describe 'validations' do
     it 'should not allow project url_names to start with an underscore as we use those for routing' do
       build(:project, url_name: '_foobar').valid?.must_equal false
+    end
+
+    describe 'url_name' do
+      it 'must allow valid characters' do
+        valid_url_names = %w(proj-name proj_name projéct proj_)
+
+        valid_url_names.each do |name|
+          project = build(:project, url_name: name)
+          project.wont_be :valid?
+        end
+      end
+
+      it 'wont allow invalid characters' do
+        invalid_url_names = %w(proj.name .proj -proj _proj)
+
+        invalid_url_names.each do |name|
+          project = build(:project, url_name: name)
+          project.wont_be :valid?
+        end
+      end
     end
   end
 
@@ -391,6 +412,77 @@ class ProjectTest < ActiveSupport::TestCase
       project.jobs.count.must_equal 1
       project.schedule_delayed_analysis(2.hours)
       project.jobs.count.must_equal 1
+    end
+  end
+
+  describe 'contributions_within_timespan' do
+    it 'should return contributions within 30 days' do
+      project = create(:project)
+      created_contributions = create_contributions(project)
+      contributions = project.contributions_within_timespan(time_span: '30 days')
+      contributions.size.must_equal 2
+      contributions.must_include created_contributions[0]
+      contributions.must_include created_contributions[1]
+    end
+
+    it 'should return contributions within 12 months' do
+      project = create(:project)
+      created_contributions = create_contributions(project)
+      contributions = project.contributions_within_timespan(time_span: '12 months')
+      contributions.size.must_equal 3
+      contributions.must_include created_contributions[0]
+      contributions.must_include created_contributions[1]
+      contributions.must_include created_contributions[2]
+    end
+
+    it 'should return all contributions' do
+      project = create(:project)
+      created_contributions = create_contributions(project)
+      contributions = project.contributions_within_timespan({})
+      contributions.size.must_equal 4
+      contributions.must_include created_contributions[0]
+      contributions.must_include created_contributions[1]
+      contributions.must_include created_contributions[2]
+      contributions.must_include created_contributions[3]
+    end
+  end
+
+  describe 'stacks_count' do
+    it 'should return user_count' do
+      project = create(:project)
+      create(:stack_entry, project: project)
+      stack_entry1 = create(:stack_entry, project: project)
+      stack_entry2 = create(:stack_entry, project: project)
+      stack_entry1.stack.update_column(:account_id, stack_entry2.stack.account_id)
+      project.stacks_count.must_equal 2
+    end
+
+    it 'should return user_count without taking into account disabled or spammer accounts' do
+      project = create(:project)
+      create(:stack_entry, project: project)
+      create(:stack_entry, project: project)
+      stack_entry1 = create(:stack_entry, project: project)
+      stack_entry2 = create(:stack_entry, project: project)
+
+      stack_entry1.stack.account.update_column(:level, -10)
+      stack_entry2.stack.account.update_column(:level, -20)
+
+      project.stacks_count.must_equal 2
+    end
+  end
+
+  describe 'users' do
+    it 'should return users that are not spam or disabled' do
+      project = create(:project)
+      stack_entry = create(:stack_entry, project: project)
+      stack_entry1 = create(:stack_entry, project: project)
+      stack_entry2 = create(:stack_entry, project: project)
+      stack_entry3 = create(:stack_entry, project: project)
+      stack_entry1.stack.account.update_column(:level, -10)
+      stack_entry2.stack.account.update_column(:level, -20)
+
+      result = project.users - [stack_entry.stack.account, stack_entry3.stack.account]
+      result.must_equal []
     end
   end
 

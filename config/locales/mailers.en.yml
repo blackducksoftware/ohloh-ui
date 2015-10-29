@@ -2,13 +2,17 @@ en:
   mailers:
     greeting: "Greetings from Open Hub,"
     signature: "- The Open Hub Team"
+    sign_off:
+      greeting: Sincerely
+      unsubscribe_help: You're receiving this because your Privacy Settings are configured to get these notifications. You can %{link} your privacy settings to unsubscribe from getting these notifications. If you've received this email in error, may we ask you please notify us by emailing us at info@openhub.net? Thanks!
   post_notifier:
+    post_begins: The post begins
     post_creation_notification:
       subject: "Post successfully created"
-      message: "Hello %{user}, your post has been successfully created under %{topic_title}."
+      message: 'Your post has been successfully created under'
     post_replied_notification:
       subject: "Someone has responded to your post"
-      message: "Hello %{user}, %{user2} has replied to your post under %{topic}"
+      message: responded to the forum topic
   manage_mailer:
     privacy_to_managers: "Privacy is important to Black Duck. We won't share your email address and we're not going to send you follow-up email. Manager information is important though, so we'll continue to update you about manager changes."
     privacy_to_destroyer: "Privacy is important to Black Duck. We do not provide the email address of Open Hub users to third parties.  So we cannot share %{destroyer}'s email address. Similarly, we won't provide your email address to them or any other third party."

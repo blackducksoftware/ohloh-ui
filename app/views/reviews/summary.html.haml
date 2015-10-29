@@ -10,13 +10,13 @@
 .clearfix
 - if @project.reviews.exists?
   .col-md-6.no_padding_left.padding_right_10
-    %h3= link_to 'Most Helpful Reviews', project_reviews_path(@project, sort: 'helpful')
+    %h3= link_to t('.most_helpful_reviews'), project_reviews_path(@project, sort: 'helpful')
     = render partial: 'review_summary', collection: @most_helpful_reviews
   .col-md-6.no_padding_right.padding_left_10
-    %h3= link_to 'Most Recent Reviews', project_reviews_path(@project, sort: 'recently_added')
+    %h3= link_to t('.most_recent_reviews'), project_reviews_path(@project, sort: 'recently_added')
     = render partial: 'review_summary', collection: @recent_reviews
   .clear
   - if @project.reviews.count > 1
-    = icon_button(project_reviews_path(@project), text: 'See all reviews', size: 'small')
+    = icon_button(project_reviews_path(@project), text: t('.see_all_reviews'), size: 'small', type: :primary)
 - else
   %p= t('.no_review')

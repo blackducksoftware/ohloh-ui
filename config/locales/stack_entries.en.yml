@@ -51,3 +51,7 @@ en:
       your_stack: 'your stack'
       is_now: 'is now on'
       success: 'Success!'
+    modal:
+      new_stack: "Create a new stack and add '%{project}'"
+      add_to_stacks: 'Add to Stacks'
+      add_to_your_stack: 'Add the %{project} project to one of your stacks:'

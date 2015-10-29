@@ -20,7 +20,9 @@ class Project::DemographicChart
     end
 
     def count_by_activity_level
-      Project.group(:activity_level_index).with_pai_available
+      Rails.cache.fetch('projects_activity_level_with_pai', expires_in: 1.day) do
+        Project.group(:activity_level_index).with_pai_available
+      end
     end
 
     def total_count

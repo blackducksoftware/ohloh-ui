@@ -17,9 +17,9 @@ class SessionsController < ApplicationController
 
   def destroy
     Account::Authenticator.forget(current_user) if logged_in?
+    redirect_back root_path
     reset_session
     flash[:notice] = t '.success'
-    redirect_back root_path
   end
 
   private
@@ -45,7 +45,7 @@ class SessionsController < ApplicationController
   end
 
   def disabled_account?(account)
-    return false unless Account::Access.new(account).disabled?
+    return false unless account.access.disabled?
     flash[:error] = t '.disabled_error'
     render :new, status: :bad_request
     true

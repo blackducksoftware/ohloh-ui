@@ -9,8 +9,8 @@ en:
     fields:
       name: 'Name'
       url_name: 'Open Hub URL Name'
-      nice_name_help: 'This name must be unique for all licenses.'
-      name_help: 'This is the URL address on Open Hub and must be unique. Only characters, numbers, dashes and underscores allowed.'
+      name_help: 'This name must be unique for all licenses.'
+      vanity_url_help: 'This is the URL address on Open Hub and must be unique. Only characters, numbers, dashes and underscores allowed.'
       abbreviation: 'Abbreviation'
       abbreviation_help: 'Enter a short abbreviation for the license.'
       homepage: 'Homepage'
@@ -46,9 +46,3 @@ en:
       home_page: 'Home Page for License'
       provide_license: 'Provide license text'
       read_more: "Read more about this license at"
-  activerecord:
-    errors:
-      models:
-        license:
-          invalid:
-            'should start with a letter and can include only letters, numbers, _ and -'

@@ -1,4 +1,5 @@
 require 'test_helper'
+require_relative '../../app/models/concerns/on_behalf'
 
 module OnBehalf
   remove_const :MAX_SENT

@@ -55,8 +55,7 @@ class AccountTest < ActiveSupport::TestCase
     account = build(:account, login: '')
     account.wont_be :valid?
     expected_error_message =
-      ['can\'t be blank', 'is too short (minimum is 3 characters)',
-       I18n.t('activerecord.errors.models.account.attributes.login.invalid')]
+      ['can\'t be blank', 'is too short (minimum is 3 characters)']
     account.errors.messages[:login].must_equal expected_error_message
 
     create(:account, login: 'openhub_dev')
@@ -234,7 +233,7 @@ class AccountTest < ActiveSupport::TestCase
     it 'it should get the first checkin for a account position' do
       vita = create(:best_vita, account_id: account.id)
       account.update_column(:best_vita_id, vita.id)
-      account.first_commit_date.must_equal Date.today.beginning_of_month
+      account.first_commit_date.must_equal vita.vita_fact.first_checkin.to_date.beginning_of_month
     end
 
     it 'it should return nil when account has no best_vita' do
@@ -263,7 +262,7 @@ class AccountTest < ActiveSupport::TestCase
 
     it 'test login not urlable' do
       account = build(:account)
-      bad_logins = %w(123 user.allen $foo])
+      bad_logins = %w(123 user.allen $foo] _user -user)
 
       bad_logins.each do |bad_login|
         account.login = bad_login
@@ -471,48 +470,6 @@ class AccountTest < ActiveSupport::TestCase
 
       account.errors.messages[:organization_name].must_be_nil
     end
-
-    describe 'twitter_id' do
-      it 'wont validate uniqueness when value is nil' do
-        account = create(:account)
-        account.update!(twitter_id: nil)
-
-        build(:account, twitter_id: nil).must_be :valid?
-      end
-
-      it 'must validate uniqueness when value is non null' do
-        account = create(:account)
-
-        Account::Hooks.any_instance.stubs(:set_twitter_id)
-        new_account = build(:account, twitter_id: account.twitter_id)
-
-        new_account.wont_be :valid?
-        new_account.errors.messages[:twitter_id].must_be :present?
-      end
-
-      it 'must validate presence on create' do
-        account = build(:account)
-        TwitterDigits.expects(:get_twitter_id)
-
-        account.wont_be :valid?
-        account.errors.messages[:twitter_id].must_be :present?
-      end
-
-      it 'wont validate presence on update' do
-        account = create(:account)
-
-        account.update(twitter_id: nil).must_equal true
-        account.reload.twitter_id.must_be_nil
-      end
-
-      it 'wont override existing twitter_id on update' do
-        account = create(:account)
-        twitter_id = account.twitter_id
-
-        account.update! akas: Faker::Lorem.sentence
-        account.reload.twitter_id.must_equal twitter_id
-      end
-    end
   end
 
   it 'disallow html tags in url' do
@@ -696,7 +653,7 @@ class AccountTest < ActiveSupport::TestCase
     it 'should not match spammers' do
       account = create(:account)
       Account.from_param(account.to_param).count.must_equal 1
-      Account::Access.new(account).spam!
+      account.access.spam!
       Account.from_param(account.to_param).count.must_equal 0
     end
   end

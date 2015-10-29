@@ -3,7 +3,6 @@ class Account::Hooks
     assign_name_to_login(account) if account.name.blank?
     account.organization_name = nil unless account.affiliation_type_other?
     account.organization_id = nil if account.affiliation_type_other?
-    set_twitter_id(account) if account.new_record?
   end
 
   def before_destroy(account)
@@ -16,12 +15,12 @@ class Account::Hooks
     account.password = nil
     account.current_password = nil
     activate_using_invite!(account) if account.invite_code.present?
-    create_person!(account) unless Account::Access.new(account).spam?
+    create_person!(account) unless account.access.spam?
     deliver_signup_notification(account) unless account.anonymous?
   end
 
   def after_update(account)
-    destroy_spammer_dependencies(account) if Account::Access.new(account).spam?
+    destroy_spammer_dependencies(account) if account.access.spam?
     return unless account.organization_id_changed?
     schedule_organization_analysis(account.organization_id_was)
     schedule_organization_analysis(account.organization_id)
@@ -32,7 +31,7 @@ class Account::Hooks
   end
 
   def after_save(account)
-    update_person_effective_name(account) if account.person.present? && !Account::Access.new(account).spam?
+    update_person_effective_name(account) if account.person.present? && !account.access.spam?
   end
 
   private
@@ -51,7 +50,7 @@ class Account::Hooks
 
     invite.update!(invitee_id: account.id, activated_at: Time.current)
 
-    Account::Access.new(account).activate!(account.activation_code) if invite.invitee_email.eql?(account.email)
+    account.access.activate!(account.activation_code) if invite.invitee_email.eql?(account.email)
   end
 
   def assign_name_to_login(account)
@@ -81,7 +80,7 @@ class Account::Hooks
   # rubocop:enable Metrics/AbcSize
 
   def dependent_destroy(account)
-    %w(positions sent_kudos stacks ratings reviews api_keys).each do |association|
+    %w(positions sent_kudos stacks ratings reviews api_keys verifications).each do |association|
       account.send(association).destroy_all
     end
   end
@@ -119,9 +118,5 @@ class Account::Hooks
 
   def update_edit(account_id)
     Edit.where(undone_by: account_id).update_all(undone_by: @anonymous_account)
-  end
-
-  def set_twitter_id(account)
-    account.twitter_id = TwitterDigits.get_twitter_id(account.digits_service_provider_url, account.digits_credentials)
   end
 end

@@ -21,12 +21,13 @@ class PositionsController < ApplicationController
   end
 
   def create
-    @position = @account.positions.create!(position_params)
-    flash_invite_success_if_needed
-    redirect_to account_positions_path(@account)
-  rescue
-    @position = Position.new
-    render :new, status: :unprocessable_entity
+    @position = @account.positions.new(position_params)
+    if @position.save
+      flash_invite_success_if_needed
+      redirect_to account_positions_path(@account)
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def show
@@ -45,10 +46,9 @@ class PositionsController < ApplicationController
   end
 
   def commits_compound_spark
-    @project = @position.project
-    @name_fact = ContributorFact.includes(:name).where(analysis_id: @project.best_analysis_id,
-                                                       name_id: @position.name_id).first
-    spark_image = Spark::CompoundSpark.new(@name_fact.monthly_commits(11), max_value: 50).render.to_blob
+    spark_image = Rails.cache.fetch("position/#{@position.id}/commits_compound_spark", expires_in: 4.hours) do
+      Spark::CompoundSpark.new(@name_fact.monthly_commits(11), max_value: 50).render.to_blob
+    end
     send_data spark_image, type: 'image/png', filename: 'position_commits_compound_spark.png', disposition: 'inline'
   end
 

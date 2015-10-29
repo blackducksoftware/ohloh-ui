@@ -31,7 +31,7 @@ gem 'rubocop'
 gem 'sass-rails'
 gem 'therubyracer'
 gem 'twitter-bootstrap-rails'
-gem 'uglifier'
+gem 'uglifier', '>= 2.7.2'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 gem 'simple-rss'
@@ -62,6 +62,7 @@ end
 group :development, :test do
   gem 'byebug'
   gem 'pry-rails'
+  gem 'pry-byebug'
   gem 'rb-readline'
   gem 'rails-erd'
 end

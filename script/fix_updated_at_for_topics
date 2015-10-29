@@ -1,0 +1,17 @@
+#! /usr/bin/env ruby
+
+require_relative '../config/environment'
+
+class FixUpdatedAtForTopic
+  def execute
+    Topic.find_in_batches.each_with_index do |topic_group, index|
+      puts "Processing batch #{index}"
+      topic_group.each do |topic|
+        last_post_date = topic.posts.maximum(:updated_at)
+        topic.update_column(:updated_at, last_post_date) if last_post_date
+      end
+    end
+  end
+end
+
+FixUpdatedAtForTopic.new.execute

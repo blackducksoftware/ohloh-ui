@@ -8,7 +8,11 @@
   = project_analysis_timestamp(@project)
 
 .clearfix
-= render partial: 'shared/search_dingus', locals: { collection: @accounts, sort_context: :project_users }
+
+- if params[:query].nil? && @accounts.none?
+  = render 'shared/alert', message: t('.no_users')
+- else
+  = render partial: 'shared/search_dingus', locals: { collection: @accounts, sort_context: :project_users }
 
 - @accounts.each do |account|
   .row.margin_bottom_25
