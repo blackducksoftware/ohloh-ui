@@ -1,16 +1,29 @@
+# rubocop:disable all
 #! /usr/bin/env ruby
 
 require_relative '../config/environment'
 
 class RemoveDuplicateRssArticles
   def execute
-    RssFeed.unscoped.select(:id).order(:id).find_in_batches(batch_size: 50).with_index do |group_feed, index|
-      p "Processing batch #{index}"
-      feed_ids = group_feed.map(&:id)
-      article_ids = RssArticle.where(rss_feed_id: feed_ids).group([:title, :link, :description]).pluck('MAX(id)')
-      RssArticle.where(rss_feed_id: feed_ids).where.not(id: article_ids).delete_all
+    RssFeed.transaction do
+      RssFeed.unscoped.select(:id).order(:id).find_in_batches(batch_size: 50).with_index do |group_feed, index|
+        p "Processing batch #{index}"
+        feed_ids = group_feed.map(&:id)
+        article_ids = RssArticle.where(rss_feed_id: feed_ids).group([:title, :link, :description]).pluck('MAX(id)')
+        RssArticle.where(rss_feed_id: feed_ids).where.not(id: article_ids).delete_all
+      end
+
+      update_guid_for_rss_articles
     end
+  end
+
+  private
+
+  def update_guid_for_rss_articles
+    p 'Updating GUIDs'
+    ActiveRecord::Base.connection.execute "UPDATE rss_articles SET guid = replace(digest(concat_ws('|', title, link, description), 'sha1') :: text, '\\x', '');"
   end
 end
 
 RemoveDuplicateRssArticles.new.execute
+# rubocop:enable all
