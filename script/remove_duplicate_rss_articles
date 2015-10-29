@@ -4,7 +4,7 @@ require_relative '../config/environment'
 
 class RemoveDuplicateRssArticles
   def execute
-    RssFeed.unscoped.select(:id).order(:id).find_in_batches(batch_size: 100).with_index do |group_feed, index|
+    RssFeed.unscoped.select(:id).order(:id).find_in_batches(batch_size: 50).with_index do |group_feed, index|
       p "Processing batch #{index}"
       feed_ids = group_feed.map(&:id)
       article_ids = RssArticle.where(rss_feed_id: feed_ids).group([:title, :link, :description]).pluck('MAX(id)')
