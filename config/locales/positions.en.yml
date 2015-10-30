@@ -11,10 +11,10 @@ en:
       page_title: "%{name} : %{name} - Open Hub"
     new:
       provide_extra_information: 'If you like, you may provide some extra information describing this contribution.  Or just hit next.'
-      position_new_title: '%{name} : OpenHub'
+      position_new_title: '%{name} : Open Hub'
       contribution: 'Contributions'
     edit:
-      edit_title: '%{name} : OpenHub'
+      edit_title: '%{name} : Open Hub'
     commit_information:
       in_mostly: 'in mostly'
     commits_by_individual_projects:

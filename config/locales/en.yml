@@ -57,7 +57,7 @@ en:
   all_projects: All Projects
   not_a_valid_url: "not a valid url"
   openhub_show: "Open Hub Forum: %{name}"
-  openhub: "OpenHub"
+  openhub: "Open Hub"
   time_ago: "%{time} ago"
   compare_repositories: 'Compare Repositories'
   compare: Compare
@@ -71,7 +71,7 @@ en:
 
   layouts:
     application:
-      openhub: "OpenHub"
+      openhub: "Open Hub"
 
   destroy:
     success: 'Record deleted!'
@@ -315,7 +315,7 @@ en:
             organization_name:
               invalid: 'should start with a letter and can include only letters, numbers, _ and -'
             twitter_id:
-              taken: This Digits account is already associated with another OpenHub account. Please try a new phone number.
+              taken: This Digits account is already associated with another Open Hub account. Please try a new phone number.
         link:
           attributes:
             url:
