@@ -5,6 +5,12 @@ class RssArticle < ActiveRecord::Base
   validates :guid, presence: true
   validates :title, presence: true
 
+  def absolute_link
+    return link if link =~ URI::regexp
+    uri = URI.parse(rss_feed.url)
+    "#{uri.scheme}://#{uri.host}#{link}"
+  end
+
   class << self
     def from_item(item)
       new(title: item.title, link: item.link, description: item.description, author: set_author(item),
