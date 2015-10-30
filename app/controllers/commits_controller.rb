@@ -10,12 +10,7 @@ class CommitsController < SettingsController
   skip_before_action :show_permissions_alert
 
   def index
-    @named_commits = @project.named_commits
-                     .within_timespan(params[:time_span], @project.best_analysis.logged_at)
-                     .includes(:commit, :person, :account)
-                     .filter_by(params[:query])
-                     .send(parse_sort_term)
-                     .page(page_param)
+    params[:contributor_id].present? ? individual_named_commits : named_commits
   end
 
   def show
@@ -53,6 +48,20 @@ class CommitsController < SettingsController
   end
 
   private
+
+  def individual_named_commits
+    person = Person.find(params[:contributor_id])
+    @named_commits = @project.named_commits.where(person_id: person)
+  end
+
+  def named_commits
+    @named_commits = @project.named_commits
+                     .within_timespan(params[:time_span], @project.best_analysis.logged_at)
+                     .includes(:commit, :person, :account)
+                     .filter_by(params[:query])
+                     .send(parse_sort_term)
+                     .page(page_param)
+  end
 
   def find_named_commit
     @named_commit = NamedCommit.find_by(id: params[:id])
