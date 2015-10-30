@@ -6,11 +6,10 @@ require_relative '../config/environment'
 class RemoveDuplicateRssArticles
   def execute
     RssFeed.transaction do
-      RssFeed.unscoped.select(:id).order(:id).find_in_batches(batch_size: 50).with_index do |group_feed, index|
-        p "Processing batch #{index}"
-        feed_ids = group_feed.map(&:id)
-        article_ids = RssArticle.where(rss_feed_id: feed_ids).group([:title, :link, :description]).pluck('MAX(id)')
-        RssArticle.where(rss_feed_id: feed_ids).where.not(id: article_ids).delete_all
+      RssFeed.unscoped.select(:id).order(:id).find_each(batch_size: 50) do |feed|
+        p "Processing feed #{feed.id}"
+        article_ids = RssArticle.where(rss_feed_id: feed.id).group([:title, :link, :description]).pluck('MAX(id)')
+        RssArticle.where(rss_feed_id: feed.id).where.not(id: article_ids).delete_all
       end
 
       update_guid_for_rss_articles
