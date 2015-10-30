@@ -99,8 +99,6 @@ en:
     claim_project:
       unauthorized: 'Unauthorized!'
       failed: 'Failed.'
-    projects:
-      notice: 'There are no portfolio projects to display'
     remove_project:
       success: 'Removed %{name} successfully'
       error: "Error! Couldn\'t remove this project."
@@ -124,6 +122,7 @@ en:
         add_new: 'Add a new manager for %{name}'
         homepage: 'Homepage'
     projects:
+      notice: 'There are no portfolio projects to display'
       page_title: '%{organization_name} : Portfolio Projects - Open Hub'
       title: 'Portfolio Projects'
       name: 'Name'
