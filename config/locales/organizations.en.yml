@@ -23,7 +23,7 @@ en:
     index:
       no_matches: 'No matches with this filter.'
       title: 'Organizations'
-      page_title: 'Organizations - OpenHub'
+      page_title: 'Organizations - Open Hub'
       add: 'Add a New Organization'
     about_basics:
       about: 'About'
