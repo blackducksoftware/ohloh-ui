@@ -45,7 +45,6 @@ class Position < ActiveRecord::Base
 
   def committer_name=(name)
     @committer_name = name.presence
-
     return unless committer_name_and_project?
     name_fact = find_name_fact_from_project_and_comitter_name
     self.name_id = name_fact.try(:name_id)
