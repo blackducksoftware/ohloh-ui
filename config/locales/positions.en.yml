@@ -14,7 +14,7 @@ en:
       position_new_title: '%{name} : OpenHub'
       contribution: 'Contributions'
     edit:
-      edit_title: '%{name} : OpenHub'
+      edit_title: '%{name} : %{name} - Open Hub'
     commit_information:
       in_mostly: 'in mostly'
     commits_by_individual_projects:
