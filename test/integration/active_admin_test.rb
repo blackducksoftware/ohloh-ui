@@ -1,11 +1,12 @@
 require 'test_helper'
+require 'test_helpers/admin_test_helper'
 
 class ActiveAdminTest < ActionDispatch::IntegrationTest
+  include AdminTestHelper
+
   it 'allows admins in' do
-    admin = create(:admin, password: 'xyzzy123456')
-    admin.password = 'xyzzy123456'
     create(:load_average)
-    login_as admin
+    create_and_login_admin
     get admin_root_path
     assert_response :success
   end

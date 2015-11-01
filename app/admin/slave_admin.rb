@@ -1,11 +1,12 @@
 ActiveAdmin.register Slave do
   config.sort_order = 'id_asc'
   permit_params :hostname, :allow_deny, :enable_profiling
+  remove_filter :jobs
 
   index do
     column :id
     column :hostname do |host|
-      # Seriously, ActiveAdmin?  The singular of "slaves" is "slafe"??!!
+      # Seriously, ActiveAdmin, the singular of "slaves" is "slafe"??!!
       link_to host.hostname, admin_slafe_path(host)
     end
     column :load_average
@@ -22,7 +23,11 @@ ActiveAdmin.register Slave do
     column :used_percent
     column :clump_status
     column 'Clump Age' do |record| 
-      time_ago_in_words(record.oldest_clump_timestamp)
+      if record.oldest_clump_timestamp
+        time_ago_in_words(record.oldest_clump_timestamp)
+      else
+        "no oldest clump"
+      end
     end
     column :blocked_types
     actions

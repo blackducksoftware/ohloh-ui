@@ -1,5 +1,6 @@
 ActiveAdmin.register Account do
   permit_params :level
+  actions :index, :show, :edit
 
   controller do
     defaults finder: :fetch_by_login_or_email
@@ -12,6 +13,7 @@ ActiveAdmin.register Account do
                                            ['Admin', Account::Access::ADMIN],
                                            ['Disabled', Account::Access::DISABLED],
                                            ['Spammer', Account::Access::SPAM]]
+  filter :last_seen_at
   filter :last_seen_ip
 
   index do
@@ -34,6 +36,7 @@ ActiveAdmin.register Account do
       end
     end
     column :url
+    column :last_seen_at 
     column :last_seen_ip do |account|
       ip = account.last_seen_ip
       ip.blank? ? '' : link_to(ip, admin_accounts_path('q[last_seen_ip_contains]' => ip, 'commit' => 'Filter'))
@@ -63,7 +66,6 @@ ActiveAdmin.register Account do
       f.input :twitter_account, as: :string
       f.input :affiliation_type, as: :string
       f.input :organization_name, as: :string
-      f.input :twitter_id, label: "Twitter Digits ID"
     end
     f.actions
   end

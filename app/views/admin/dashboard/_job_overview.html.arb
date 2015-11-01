@@ -12,7 +12,6 @@ panel 'Job Overview' do
 
     column do
       panel 'Key' do
-        status_tag "Scheduled", :yes
         status_tag "Running < 5 minutes", :ok
         status_tag "Running < 1 hour", :warn
         status_tag "Running > 1 hour", :error
@@ -22,6 +21,7 @@ panel 'Job Overview' do
   end
 
   table_for Slave.all.order(:id) do
+    # Seriously.  ActiveAdmin thinks the singular of "slave" is "slafe"  wft?
     column (:hostname) { |slave| link_to slave.hostname, admin_slafe_path(slave)}
     column :load_average
     column (:jobs) do |slave| 

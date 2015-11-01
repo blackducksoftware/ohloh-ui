@@ -5,7 +5,6 @@ columns do
         tbody do
           tr do
             td "Scheduled Jobs:"
-            #td Job.where(slave_id: nil).count(status: Job::STATUS_SCHEDULED)
             td Job.where(status: Job::STATUS_SCHEDULED).count
           end              
           tr do
@@ -25,7 +24,14 @@ columns do
 
   column do
     panel "ActiveAdmin" do
-      para %(Currently deployed: #{`git describe --tags --abbrev=0`}, #{link_to(`git rev-parse --short HEAD`, "https://github.com/blackducksoftware/ohloh-ui/commit/#{`git rev-parse HEAD`}")}).html_safe
+      # check to see if we can get the revision:
+      stdin, stdout, stderr, wait_thr = Open3.popen3('git describe')
+      err = stderr.gets(nil)
+      if err =~ /No names found/
+        para "Unable to show git revision"
+      else
+        para %(Currently deployed: #{`git describe --tags --abbrev=0`}#{link_to(`git rev-parse --short HEAD`, "https://github.com/blackducksoftware/ohloh-ui/commit/#{`git rev-parse HEAD`}")}).html_safe
+      end
     end
   end
 end

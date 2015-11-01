@@ -1,14 +1,16 @@
 para ''
 
 if job.project_id
+  project = Project.find(job.project_id)
   span "Project: "
   span link_to project.name, project_path(project)
   span link_to '(Jobs)', admin_project_jobs_path(project)
 end
 
 if job.account_id
+  account = Account.find(job.account_id)
   span "Account: "
-  span "LINK TO Account: #{job.account.name}"
+  span "LINK TO Account: #{account.name}"
 end
 
 if job.repository_id
@@ -24,6 +26,6 @@ end
 
 para ''
 
-a link_to "Repository #{job.repository_id} FIX MY LINK", admin_root_path if job.repository_id
-a link_to "CodeSet #{job.code_set_id} FIX MY LINK", admin_root_path if job.code_set_id
-a link_to "SlocSet #{job.sloc_set_id} FIX MY LINK", admin_root_path if job.sloc_set_id
+a link_to "Repository #{job.repository_id}" , admin_repository_path(job.repository_id) if job.repository_id
+a link_to "CodeSet #{job.code_set_id}", admin_code_set_path(job.code_set_id) if job.code_set_id
+a link_to "SlocSet #{job.sloc_set_id}", admin_sloc_set_path(job.sloc_set_id) if job.sloc_set_id

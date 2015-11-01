@@ -2,19 +2,21 @@ ActiveAdmin.register Job do
   belongs_to :project, :finder => :find_by_url_name!, :optional => true
   belongs_to :repository, :optional => true
   permit_params :status, :priority, :wait_until, :current_step_at, :notes
-  menu :if => proc{false} # work around for ActiveAdmin::NoMenuError
-  filter :slave, only: :index
+  menu false
+  filter :slave, only: :index, collection: proc {Slave.pluck(:hostname).sort}
 
   index do
     column :type
     column :id do |job|
       link_to job.id, admin_project_job_path(project, job)
     end
-    column "Priority:", :priority
+    column "Priority", :priority
+    column "Last Updated" do |job|
+      time_ago_in_words(job.current_step_at)
+    end 
     column "Progress" do |job|
       "#{job.current_step? ? job.current_step : '-'} of #{job.max_steps? ? job.max_steps : '-'}"
     end
-    column "Log (TO DO)"
     column :status do |job|
       span job.job_status.name
       if job.slave_id
@@ -29,6 +31,9 @@ ActiveAdmin.register Job do
       if job.repository_id
         span link_to "Repository #{job.repository_id}", admin_repository_path(job.repository_id)
       end
+    end
+    column "Log" do |job|
+      span link_to "Slave Log", admin_job_slave_logs_path(job)
     end
   end
   

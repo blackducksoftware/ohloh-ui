@@ -19,7 +19,8 @@ slave.jobs.incomplete
            when Job::STATUS_FAILED then :no
            end
 
-  br '' if i != 0 && i % 4 == 0
+  # Add a line break every 3 jobs
+  br '' if i != 0 && i % 3 == 0
   a href: admin_job_path(job), style:"text-decoration:none;" do
     status_tag("#{job.class.to_s} (#{job.id})", status, title: job.current_step_at)  
   end
