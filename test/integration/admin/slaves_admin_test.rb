@@ -3,16 +3,19 @@ require 'test_helpers/admin_test_helper'
 
 class SlavesAdminTest < ActionDispatch::IntegrationTest
   include AdminTestHelper
+  include ActionView::Helpers::DateHelper
+
+  before do
+    @slave = create(:slave)
+    create_and_login_admin
+  end
 
   it 'renders the slave page' do
-    create_and_login_admin
     get admin_slaves_path
     assert_response :success
   end
 
   it 'shows the correct columns in the index page' do
-    slave = Slave.create(hostname: "Crawler 1")
-    create_and_login_admin
     get admin_slaves_path
     assert_select 'tr' do 
       assert_select 'th', text: "Id"
@@ -27,17 +30,31 @@ class SlavesAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 'shows the Allow status of the slave' do
-    slave = Slave.create(hostname: "Crawler 1", allow_deny: "allow")
-    create_and_login_admin
     get admin_slaves_path
     assert_select "span[class='status_tag allow ok']", text: 'Allow'
   end
 
   it 'shows the Deny status of the slave' do
-    slave = Slave.create(hostname: "Crawler 1", allow_deny: "deny")
-    create_and_login_admin
+    @slave.update_attribute(:allow_deny, 'deny')
     get admin_slaves_path
     assert_select "span[class='status_tag deny error']", text: 'Deny'
+  end
+
+  it 'shows the timestamp of the oldest clump' do
+    clump_timestamp = Time.now - 3.weeks
+    @slave.update_attribute(:oldest_clump_timestamp, clump_timestamp)
+    get admin_slaves_path
+    assert_select "td[class='col col-clump_age']", text: time_ago_in_words(clump_timestamp)
+  end
+
+  it 'renders the slave show page' do
+    get admin_slafe_path(@slave)
+    assert_response :success
+  end
+
+  it 'renders the slave edit page' do
+    get edit_admin_slafe_path(@slave)
+    assert_response :success
   end
 
 end

@@ -22,9 +22,9 @@ ActiveAdmin.register Slave do
     end
     column :used_percent
     column :clump_status
-    column 'Clump Age' do |record| 
-      if record.oldest_clump_timestamp
-        time_ago_in_words(record.oldest_clump_timestamp)
+    column 'Clump Age' do |slave| 
+      if slave.oldest_clump_timestamp
+        time_ago_in_words(slave.oldest_clump_timestamp)
       else
         "no oldest clump"
       end
