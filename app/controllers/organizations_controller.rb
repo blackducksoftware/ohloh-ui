@@ -88,6 +88,8 @@ class OrganizationsController < ApplicationController
 
   def projects
     @affiliated_projects = @organization.affiliated_projects(page_param, @per_page || 20)
+
+    redirect_to organization_path(@organization), notice: t('.notice') if @affiliated_projects.blank?
   end
 
   def portfolio_projects
