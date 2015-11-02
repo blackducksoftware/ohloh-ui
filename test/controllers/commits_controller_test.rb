@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'test_helpers/create_contributions_data'
 
 describe 'CommitsController' do
   before do
@@ -23,9 +24,13 @@ describe 'CommitsController' do
     #   flash.count.must_equal 0
     # end
 
-    it 'should not return commits if invalid project id' do
-      binding.pry
-      get :index, project_id: 'I am banana'
+    # it 'should not return commits if invalid project id' do
+    #   get :index, project_id: 'I am banana'
+    #   assigns(:named_commits).must_equal nil
+    # end
+
+    it 'should render commits from a single contributor' do
+      get :index, project_id: contribution.project.id, contributor_id: contribution.id
       assigns(:named_commits).must_equal nil
     end
 

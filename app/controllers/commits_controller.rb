@@ -50,8 +50,8 @@ class CommitsController < SettingsController
   private
 
   def individual_named_commits
-    person = Person.find(params[:contributor_id])
-    @named_commits = @project.named_commits.where(person_id: person)
+    contribution = Contribution.find(params[:contributor_id])
+    @named_commits = @project.named_commits.where(contribution_id: contribution)
   end
 
   def named_commits
