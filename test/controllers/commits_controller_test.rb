@@ -30,7 +30,7 @@ describe 'CommitsController' do
     # end
 
     it 'should render commits from a contribution for a single contributor' do
-      # binding.pry
+      Project.create(attributes)
       named_commits = build_stubbed_list(:named_commit, 2)
       nc_one, nc_two = named_commits[0], named_commits[1]
       # Assign the named_commits to have the same project
