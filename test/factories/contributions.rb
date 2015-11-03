@@ -1,3 +1,5 @@
+# Note: This factory is useless due to 
+# inability to INSERT into mulitple database views
 FactoryGirl.define do
   factory :contribution do
     association :person

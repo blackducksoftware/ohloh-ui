@@ -4,7 +4,10 @@ FactoryGirl.define do
     association :project
     association :organization
     association :name
-    after(:create) do |instance|
+    
+    # Note: Changing the after method to before eliminates committer name validation
+    # and should remove the need for positions helper in test_helper.rb
+    before(:create) do |instance|
       unless NameFact.where(name_id: instance.name_id).exists?
         best_analysis = instance.project.try(:best_analysis)
         best_analysis = nil if best_analysis.is_a?(NilAnalysis)
