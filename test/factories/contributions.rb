@@ -1,5 +1,6 @@
-# Note: This factory is useless due to 
-# inability to INSERT into mulitple database views
+# Note: This factory cannot be created with FactoryGirl
+# It can be stubbed with FactoryGirl's build_stubbed method
+# Example: contribution = build_stubbed(:contribution)
 FactoryGirl.define do
   factory :contribution do
     association :person

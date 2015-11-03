@@ -30,11 +30,19 @@ describe 'CommitsController' do
     # end
 
     it 'should render commits from a contribution for a single contributor' do
-      get :index, project_id: contribution.project.id, contributor_id: contribution.id
-      assigns(:named_commits).must_equal 3
-      # pseduocode
-      named_commits.contribution.must_equal contribution.person
-      named_commits.contribution.must_not_equal someone_else
+      # binding.pry
+      named_commits = build_stubbed_list(:named_commit, 2)
+      nc_one, nc_two = named_commits[0], named_commits[1]
+      # Assign the named_commits to have the same project
+      nc_one.project = nc_two.project
+      project = nc_one.project
+      binding.pry
+      get :index, project_id: project, contributor_id: nc_one.contribution_id
+      must_respond_with :ok
+      # assigns(:named_commits).must_equal 1
+      # # pseduocode
+      # named_commits.contribution.must_equal contribution.person
+      # named_commits.contribution.must_not_equal someone_else
     end
 
     # it 'should return named commits if valid project' do
