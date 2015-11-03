@@ -29,9 +29,12 @@ describe 'CommitsController' do
     #   assigns(:named_commits).must_equal nil
     # end
 
-    it 'should render commits from a single contributor' do
+    it 'should render commits from a contribution for a single contributor' do
       get :index, project_id: contribution.project.id, contributor_id: contribution.id
-      assigns(:named_commits).must_equal nil
+      assigns(:named_commits).must_equal 3
+      # pseduocode
+      named_commits.contribution.must_equal contribution.person
+      named_commits.contribution.must_not_equal someone_else
     end
 
     # it 'should return named commits if valid project' do
