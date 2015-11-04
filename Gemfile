@@ -65,6 +65,8 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'rb-readline'
   gem 'rails-erd'
+  gem 'jasmine-rails'
+  gem 'teaspoon-jasmine'
 end
 
 group :production do
