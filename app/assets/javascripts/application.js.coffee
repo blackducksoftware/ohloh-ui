@@ -14,7 +14,7 @@
 #= require jquery_ujs
 #= require jquery-ui
 #= require underscore-min
-#= require chosen.min
+#= require jquery.chosen.min
 #= require app
 #= require_tree .
 #= require twitter/bootstrap
