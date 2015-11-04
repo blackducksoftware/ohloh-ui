@@ -23,7 +23,7 @@ ActiveAdmin.register ApiKey do
     end
     column :key do |api_key|
       key = api_key.try(:oauth_application).try(:secret) || api_key.key || I18n.t('api_keys.none')
-      truncate(key, omision: '...', length: 20)
+      truncate(key, length: 20)
     end
     column :status do |api_key|
       case api_key.status
@@ -42,23 +42,8 @@ ActiveAdmin.register ApiKey do
 
   show do
     attributes_table do
-      row :id
-      row :created_at
-      row :account
-      row :key
-      row :description
-      row :daily_count
-      row :daily_limit
-      row :day_began_at
-      row :last_access_at
-      row :total_count
-      row :total_count
-      row :name
-      row :url
-      row :support_url
-      row :callback_url
-      row :secret
-      row :oauth_application_id
+      rows :id, :created_at, :account, :key, :description, :daily_count, :daily_limit, :day_began_at, :last_access_at, :total_count
+      rows :name, :url, :support_url, :callback_url, :secret, :oauth_application_id
       row :oauth_secret_key do |api_key|
         key = api_key.try(:oauth_application).try(:secret)
       end
