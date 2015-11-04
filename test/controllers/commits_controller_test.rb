@@ -30,13 +30,11 @@ describe 'CommitsController' do
     # end
 
     it 'should render commits from a contribution for a single contributor' do
-      Project.create(attributes)
-      named_commits = build_stubbed_list(:named_commit, 2)
-      nc_one, nc_two = named_commits[0], named_commits[1]
-      # Assign the named_commits to have the same project
-      nc_one.project = nc_two.project
-      project = nc_one.project
       binding.pry
+      account = create(:account)
+      project = create(:project)
+      person = create(:person)
+      contribution = Contribution.create(project_id: project, person_id: person, positon_id: position)
       get :index, project_id: project, contributor_id: nc_one.contribution_id
       must_respond_with :ok
       # assigns(:named_commits).must_equal 1
