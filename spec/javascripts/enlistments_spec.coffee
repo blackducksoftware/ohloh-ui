@@ -5,7 +5,6 @@ describe 'Enlistments', ->
 
   it 'shows spinner on submit', ->
     $('.enlistment .submit').trigger('click')
-    console.log @fx.find('.enlistment').find('.spinner').attr('class')
     isSpinnerVisible = $('.enlistment .spinner').is(':visible')
     expect(isSpinnerVisible).toBe(true)
 
