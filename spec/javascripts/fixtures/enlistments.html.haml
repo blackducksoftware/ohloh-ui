@@ -1,0 +1,28 @@
+!!! 5
+
+%html
+  %head
+    %title Enlistments HTML
+  %body
+    %select#repository_type{ name: 'repository[type]' }
+      %option{ value: 'SvnSyncRepository' } Subversion
+      %option{ value: 'CVSRepository' } CVS
+      %option{ value: 'GitRepository' } Git
+      %option{ value: 'HgRepository' } Mercurial
+      %option{ value: 'BzrRepository' } Bazaar
+
+    .enlistment
+      .cvs{ style: 'display: none;' }
+        %p CVS Description
+      .svn
+        %p Svn Description
+      .git{ style: 'display: none;' }
+        %p Git Description
+      .hg{ style: 'display: none;' }
+        %p Hg Description
+      .bzr{ style: 'display: none;' }
+        %p Bzr Description
+
+      %p.spinner{ style: 'display: none;' } Spinner Image
+
+      %button{ type: 'submit' class: 'submit'} Submit
