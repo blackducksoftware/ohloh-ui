@@ -42,10 +42,10 @@ ActiveAdmin.register ApiKey do
 
   show do
     attributes_table do
-      rows :id, :created_at, :account, :key, :description, :daily_count, :daily_limit, :day_began_at, :last_access_at, :total_count
-      rows :name, :url, :support_url, :callback_url, :secret, :oauth_application_id
+      rows :id, :created_at, :account, :key, :description, :daily_count, :daily_limit, :day_began_at, :last_access_at
+      rows :total_count, :name, :url, :support_url, :callback_url, :secret, :oauth_application_id
       row :oauth_secret_key do |api_key|
-        key = api_key.try(:oauth_application).try(:secret)
+        api_key.try(:oauth_application).try(:secret)
       end
     end
   end
