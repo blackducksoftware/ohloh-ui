@@ -1,16 +1,18 @@
 #= require enlistments
 
 describe 'Enlistments', ->
-  beforeEach -> fixture.load('enlistments')
+  beforeEach ->
+    @fixtures = fixture.preload('enlistments')[0]
+    $('body').append($(@fixtures))
+    App.Enlistment.init()
 
-  it 'shows spinner on submit', ->
-    $('.enlistment .submit').trigger('click')
-    isSpinnerVisible = $('.enlistment .spinner').is(':visible')
-    expect(isSpinnerVisible).toBe(true)
+  describe 'submit', ->
+    it 'shows spinner on submit', ->
+      $('.enlistment').find('.submit').trigger('click')
+      isSpinnerVisible = $('.enlistment').find('.spinner').is(':visible')
+      expect(isSpinnerVisible).toBe(true)
 
   describe 'repository type change', ->
-    beforeEach -> fixture.load('enlistments')
-
     it 'should show bzr repository details', ->
       $('#repository_type').val('BzrRepository')
       $('#repository_type').trigger('change')
@@ -24,8 +26,8 @@ describe 'Enlistments', ->
       expect(isDescription).toBe(true)
 
     it 'should show Git repository details', ->
-      $('#repository_type').trigger('change')
       $('#repository_type').val('GitRepository')
+      $('#repository_type').trigger('change')
       isDescription = $('.enlistment .git').is(':visible')
       expect(isDescription).toBe(true)
 
