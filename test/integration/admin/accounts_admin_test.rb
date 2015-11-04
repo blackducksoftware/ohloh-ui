@@ -54,7 +54,7 @@ class AccountsAdminTest < ActionDispatch::IntegrationTest
     create_and_login_admin
     get admin_accounts_path
     assert_select 'td' do
-      assert_select "span[class='status_tag error']"
+      assert_select "span[class='status_tag spammer error']"
       assert_select "span[class='status_tag admin warning']", count: 2 # ohloh_slave and the account we created
       assert_select "span[class='status_tag default ok']", false
     end
