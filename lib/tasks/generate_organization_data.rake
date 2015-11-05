@@ -2,6 +2,7 @@
 # rake selenium:prepare_organization_data[mozilla]
 
 require 'action_view'
+include ActionView::Helpers::NumberHelper
 
 namespace :selenium do
   desc 'Prepare Organization data for selenium'
@@ -30,7 +31,7 @@ namespace :selenium do
       end
 
       organization = org.attributes.except('vector', 'popularity_factor')
-      managers = org.managers.pluck(:name)
+      managers = org.managers.order(name: :desc).pluck(:name)
 
       organization.merge!(
         'org_type' => Organization::ORG_TYPES.key(org.org_type),
@@ -45,22 +46,23 @@ namespace :selenium do
       organization.merge!(
         'widgets' => {
           'open_source_activity' => {
-            'affiliates' => org.affiliators_count,
-            'commits' => org.affiliated_committers_stats['affl_commits_out'].to_i +
-                         org.affiliated_committers_stats['affl_commits'].to_i,
-            'projects' => org.projects.count + org.affiliated_committers_stats['affl_projects_out'].to_i
+            'affiliates' => number_with_delimiter(org.affiliators_count),
+            'commits' => number_with_delimiter(org.affiliated_committers_stats['affl_commits_out'].to_i +
+                         org.affiliated_committers_stats['affl_commits'].to_i),
+            'projects' => number_with_delimiter(org.projects.count +
+                          org.affiliated_committers_stats['affl_projects_out'].to_i)
           },
           'portfolio_activity' => {
-            'people' => org.affiliated_committers_stats['affl_committers'].to_i +
-                        org.outside_committers_stats['out_committers'].to_i,
-            'commits' => org.affiliated_committers_stats['affl_commits'].to_i +
-                         org.outside_committers_stats['out_commits'].to_i,
-            'projects' => org.projects.count
+            'people' => number_with_delimiter(org.affiliated_committers_stats['affl_committers'].to_i +
+                        org.outside_committers_stats['out_committers'].to_i),
+            'commits' => number_with_delimiter(org.affiliated_committers_stats['affl_commits'].to_i +
+                         org.outside_committers_stats['out_commits'].to_i),
+            'projects' => number_with_delimiter(org.projects.count)
           },
           'affiliated_activity' => {
-            'affiliates' => org.affiliators_count,
-            'commits' => org.affiliated_committers_stats['affl_commits'].to_i,
-            'projects' => org.projects.count
+            'affiliates' => number_with_delimiter(org.affiliators_count),
+            'commits' => number_with_delimiter(org.affiliated_committers_stats['affl_commits'].to_i),
+            'projects' => number_with_delimiter(org.projects.count)
           }
         }
       )

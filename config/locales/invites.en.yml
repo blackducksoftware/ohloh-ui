@@ -8,7 +8,7 @@ en:
     invitee_email_blank: "must contain an @ character and a domain, e.g. foo@bar.com"
     new:
       invite_to_join: 'Invite %{email} to join Open Hub'
-      page_title: 'New Invites - OpenHub'
+      page_title: 'New Invites - Open Hub'
     fields:
       email_subject: '%{name} invites you to claim your contribution on the Black Duck Open Hub'
       email_body_html: |

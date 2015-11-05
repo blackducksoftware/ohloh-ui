@@ -12,7 +12,7 @@ module ProjectScopes
     scope :been_analyzed, -> { where.not(best_analysis_id: nil) }
     scope :recently_analyzed, -> { not_deleted.been_analyzed.order(created_at: :desc) }
     scope :hot, lambda { |l_id = nil|
-      not_deleted.been_analyzed.joins(:analyses).merge(Analysis.fresh_and_hot(l_id))
+      not_deleted.joins(:best_analysis).merge(Analysis.fresh_and_hot(l_id))
     }
     scope :by_popularity, -> { where.not(user_count: 0).order(user_count: :desc) }
     scope :by_activity, -> { joins(:analyses).joins(:analysis_summaries).by_popularity.thirty_day_summaries }

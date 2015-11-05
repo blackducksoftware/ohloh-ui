@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   get 'admin/comments' => redirect('/404')
   ActiveAdmin.routes(self)
   root to: 'home#index', defaults: { format: 'html' }
@@ -148,6 +149,7 @@ Rails.application.routes.draw do
     collection do
       get :account
       get :project, defaults: { format: 'json' }
+      get :project_duplicates, defaults: { format: 'json' }
       get :licenses
       get :contributions
       get :tags
