@@ -28,7 +28,6 @@ Rails.application.routes.draw do
   end
   resources :activation_resends, only: [:new, :create]
 
-  resources :api_keys, only: :index
   resources :reviews, only: :destroy do
     resources :helpfuls, only: :create
   end
