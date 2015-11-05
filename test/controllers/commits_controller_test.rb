@@ -3,19 +3,30 @@ require 'test_helpers/create_contributions_data'
 
 describe 'CommitsController' do
   before do
-    @commit = create(:commit, position: 0, comment: 'first commit')
+    @commit1 = create(:commit, position: 0, comment: 'first commit')
+    @commit2 = create(:commit, position: 1, comment: 'second commit', code_set_id: @commit1.code_set_id)
     @project = create(:project)
-    @name = create(:name)
-    create(:diff, commit_id: @commit.id)
-    sloc_set = create(:sloc_set, code_set_id: @commit.code_set_id)
+    @name1 = create(:name)
+    @name2 = create(:name)
+    create(:diff, commit_id: @commit1.id)
+    create(:diff, commit_id: @commit2.id)
+    sloc_set = create(:sloc_set, code_set_id: @commit1.code_set_id)
     analysis_sloc_set = create(:analysis_sloc_set, sloc_set_id: sloc_set.id,
                                                    analysis_id: @project.best_analysis_id, as_of: 2)
-    analysis_alias = create(:analysis_alias, commit_name: @commit.name,
+    analysis_alias = create(:analysis_alias, commit_name: @commit1.name,
                                              analysis_id: analysis_sloc_set.analysis_id,
-                                             preferred_name_id: @name.id)
-    @named_commit = NamedCommit.where(commit_id: @commit.id).take
-    create(:contributor_fact, analysis_id: analysis_sloc_set.analysis_id,
-                              name_id: analysis_alias.preferred_name_id)
+                                             preferred_name_id: @name1.id)
+    analysis_alias = create(:analysis_alias, commit_name: @commit2.name,
+                                             analysis_id: analysis_sloc_set.analysis_id,
+                                             preferred_name_id: @name2.id)
+    #@named_commit = NamedCommit.where(commit_id: @commit1.id).take
+    #create(:contributor_fact, analysis_id: analysis_sloc_set.analysis_id,
+    #                          name_id: analysis_alias.preferred_name_id)
+    @person1 = create(:person, project_id: @project.id)
+    @person2 = create(:person, project_id: @project.id)
+    cfs = ContributorFact.find([@person1.name_fact_id, @person2.name_fact_id])
+    cfs.each {|cf| cf.update_attribute(:analysis_id, @project.best_analysis_id) }
+
   end
 
   describe 'index' do
@@ -29,18 +40,13 @@ describe 'CommitsController' do
     #   assigns(:named_commits).must_equal nil
     # end
 
-    it 'should render commits from a contribution for a single contributor' do
-      binding.pry
-      # account = create(:account)
-      # project = create(:project)
-      # person = create(:person)
-      # contribution = Contribution.create(project_id: project, person_id: person, positon_id: position)
-      get :index, project_id: project, contributor_id: nc_one.contribution_id
-      must_respond_with :ok
-      # assigns(:named_commits).must_equal 1
-      # # pseduocode
-      # named_commits.contribution.must_equal contribution.person
-      # named_commits.contribution.must_not_equal someone_else
+    it 'shoud render commits from a contribution for a single contributor' do
+      byebug
+      get :index, project_id: contribution.project.id, contributor_id: contribution.id
+      assigns(:named_commits).must_equal 3
+      # pseduocode
+      named_commits.contribution.must_equal contribution.person
+      named_commits.contribution.must_not_equal someone_else
     end
 
     # it 'should return named commits if valid project' do
