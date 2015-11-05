@@ -31,10 +31,10 @@ describe 'CommitsController' do
 
     it 'should render commits from a contribution for a single contributor' do
       binding.pry
-      account = create(:account)
-      project = create(:project)
-      person = create(:person)
-      contribution = Contribution.create(project_id: project, person_id: person, positon_id: position)
+      # account = create(:account)
+      # project = create(:project)
+      # person = create(:person)
+      # contribution = Contribution.create(project_id: project, person_id: person, positon_id: position)
       get :index, project_id: project, contributor_id: nc_one.contribution_id
       must_respond_with :ok
       # assigns(:named_commits).must_equal 1
