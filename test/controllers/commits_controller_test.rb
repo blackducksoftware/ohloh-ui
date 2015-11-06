@@ -41,12 +41,17 @@ describe 'CommitsController' do
     end
 
     it 'shoud render commits from a contribution for a single contributor' do
-      contribution = @project.contributions[0]
-      get :index, project_id: @project.id, contributor_id: contribution.id
+      Analysis.any_instance.stubs(:logged_at).returns(Time.current)
+      commit_ids = create_commits_and_named_commits
+      named_commits = NamedCommit.where(commit_id: commit_ids[0..1])
+      unique_contributions = @project.contributions.uniq { |nc| nc.id }
+      contribution_one = unique_contributions[0]
+      contribution_two = unique_contributions[1]
+      get :index, project_id: @project.id, contributor_id: contribution_one.id
       must_respond_with :ok
-      assigns(:named_commits).count.must_equal 1
-      assigns(:named_commits).first.contribution_id.must_equal @project.contributions[0].id
-      assigns(:named_commits).first.contribution_id.wont_equal @project.contributions[1].id
+      assigns(:named_commits).count.must_equal @project.named_commits.where(contribution_id: contribution_one).count
+      assigns(:named_commits).first.contribution_id.must_equal contribution_one.id
+      assigns(:named_commits).first.contribution_id.wont_equal contribution_two.id
     end
 
     it 'should return named commits if valid project' do
@@ -54,7 +59,7 @@ describe 'CommitsController' do
       thirty_days_ago = time_now - 30.days
       @project.best_analysis.update_attributes(logged_at: time_now)
       get :index, project_id: @project.id, time_span: '30 days'
-      assigns(:named_commits).count.must_equal 1
+      assigns(:named_commits).count.must_equal 2
       assigns(:named_commits).first.must_equal @named_commit
       assigns(:highlight_from).to_a.must_equal thirty_days_ago.to_a
     end
@@ -66,7 +71,7 @@ describe 'CommitsController' do
     end
 
     it 'should filter the named commits if query param is present' do
-      get :index, project_id: @project.id, query: @commit.comment
+      get :index, project_id: @project.id, query: @commit1.comment
       assigns(:named_commits).count.must_equal 1
       assigns(:named_commits).first.must_equal @named_commit
     end
@@ -93,7 +98,7 @@ describe 'CommitsController' do
       named_commits = NamedCommit.where(commit_id: commit_ids[0..1])
 
       get :index, project_id: @project.id, time_span: '30 days'
-      assigns(:named_commits).count.must_equal 3
+      assigns(:named_commits).count.must_equal 4
       assigns(:named_commits).must_include @named_commit
       assigns(:named_commits).must_include named_commits[0]
       assigns(:named_commits).must_include named_commits[1]
@@ -106,7 +111,7 @@ describe 'CommitsController' do
 
       get :index, project_id: @project.id, time_span: '12 months'
 
-      assigns(:named_commits).count.must_equal 4
+      assigns(:named_commits).count.must_equal 5
       assigns(:named_commits).must_include @named_commit
       assigns(:named_commits).must_include named_commits[0]
       assigns(:named_commits).must_include named_commits[1]
@@ -123,7 +128,7 @@ describe 'CommitsController' do
     it 'should return diffs' do
       get :show, project_id: @project.id, id: @named_commit.id
       assigns(:diffs).count.must_equal 1
-      assigns(:diffs).must_equal @commit.diffs
+      assigns(:diffs).must_equal @commit1.diffs
     end
 
     it 'should not reutn diffs if invalid commit id' do
@@ -135,15 +140,15 @@ describe 'CommitsController' do
   describe 'summary' do
     it 'should return named_commits' do
       get :summary, project_id: @project.id
-      assigns(:named_commits).count.must_equal 1
+      assigns(:named_commits).count.must_equal 2
       assigns(:named_commits).first.must_equal @named_commit
     end
   end
 
   describe 'statistics' do
     it 'should return commit and total lines added and removed' do
-      get :statistics, id: @commit.id, project_id: @project.id
-      assigns(:commit).must_equal @commit
+      get :statistics, id: @commit1.id, project_id: @project.id
+      assigns(:commit).must_equal @commit1
       assigns(:lines_added).must_equal 0
       assigns(:lines_removed).must_equal 0
     end
@@ -151,18 +156,19 @@ describe 'CommitsController' do
 
   describe 'events' do
     it 'should not respond to html format' do
-      get :events, project_id: @project.id, id: @commit.id, contributor_id: @name.id, format: :xml
-      assigns(:daily_commits).first.time.to_a.must_equal @commit.time.to_a
-      assigns(:daily_commits).first.comment.must_equal @commit.comment
+      binding.pry
+      get :events, project_id: @project.id, id: @commit1.id, contributor_id: @name1.id, format: :xml
+      assigns(:daily_commits).first.time.to_a.must_equal @commit1.time.to_a
+      assigns(:daily_commits).first.comment.must_equal @commit1.comment
     end
   end
 
   describe 'event_details' do
     it 'should return commits' do
-      get :event_details, contributor_id: @name.id, id: @commit.id,
-                          project_id: @project.id, time: "commit_#{@commit.time.to_i}"
-      assigns(:commits).count.must_equal 1
-      assigns(:commits).first.must_equal @commit
+      get :event_details, contributor_id: @name1.id, id: @commit1.id,
+                          project_id: @project.id, time: "commit_#{@commit1.time.to_i}"
+      assigns(:commits).count.must_equal 2
+      assigns(:commits).first.must_equal @commit1
     end
   end
 
@@ -170,13 +176,13 @@ describe 'CommitsController' do
 
   def create_commits_and_named_commits
     commits = []
-    commits << create(:commit, code_set_id: @commit.code_set_id, position: 1, name: @commit.name,
+    commits << create(:commit, code_set_id: @commit1.code_set_id, position: 1, name: @commit1.name,
                                comment: 'second commit', time: Time.current - 1.day).id
-    commits << create(:commit, code_set_id: @commit.code_set_id, position: 2, name: @commit.name,
+    commits << create(:commit, code_set_id: @commit1.code_set_id, position: 2, name: @commit1.name,
                                comment: 'third commit', time: Time.current - 1.day).id
-    commits << create(:commit, code_set_id: @commit.code_set_id, position: 1, name: @commit.name,
+    commits << create(:commit, code_set_id: @commit1.code_set_id, position: 1, name: @commit1.name,
                                comment: 'fourth commit', time: Time.current - 2.months).id
-    commits << create(:commit, code_set_id: @commit.code_set_id, position: 2, name: @commit.name,
+    commits << create(:commit, code_set_id: @commit1.code_set_id, position: 2, name: @commit1.name,
                                comment: 'fifth commit', time: Time.current - 2.years).id
     commits
   end
