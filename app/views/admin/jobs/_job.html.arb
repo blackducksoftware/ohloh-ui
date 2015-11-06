@@ -1,0 +1,28 @@
+span "Priority: #{job.priority}"
+br
+span "Attempt: #{ActiveSupport::Inflector::ordinalize(job.retry_count + 1)}"
+br
+span "Wait #{distance_of_time_in_words(job.wait_until - Time.now.utc)}" if job.wait_until && job.wait_until > Time.now.utc
+br
+span "Last Activity: #{time_ago_in_words(job.current_step_at)} ago" if job.current_step_at
+br
+span "Progress: (#{job.current_step || '-'} current step of #{job.max_steps || '-'} total steps)"
+br
+para "TODO: Link to the Slave Log"
+
+span "Status: #{job.job_status.name} "
+if job.slave_id
+  span 'on' 
+  a link_to(job.slave.hostname, admin_slafe_path(job.slave_id))
+end
+
+render :partial => 'job_links'
+
+render :partial => 'job_priority'
+
+a link_to "Reschedule Job", reschedule_admin_job_path(job), method: :put
+span '|'
+a link_to "Rebuild People IMPLEMENT THIS FEATURE", rebuild_people_admin_job_path(job), method: :put
+span '|'
+a link_to "Delete Job", admin_job_path(job), method: :delete, data: {confirm: "Are you sure you want to delete this Job?"}
+

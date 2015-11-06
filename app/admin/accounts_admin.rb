@@ -1,4 +1,7 @@
 ActiveAdmin.register Account do
+  permit_params :level
+  actions :index, :show, :edit
+
   controller do
     defaults finder: :fetch_by_login_or_email
   end
@@ -10,12 +13,13 @@ ActiveAdmin.register Account do
                                            ['Admin', Account::Access::ADMIN],
                                            ['Disabled', Account::Access::DISABLED],
                                            ['Spammer', Account::Access::SPAM]]
+  filter :last_seen_at
   filter :last_seen_ip
 
   index do
     column :id
     column :name do |account|
-      link_to account.name, admin_account_path(account)
+      link_to account.name, account_path(account)
     end
     column :login
     column :email
@@ -31,6 +35,8 @@ ActiveAdmin.register Account do
         status_tag('spammer', :error)
       end
     end
+    column :url
+    column :last_seen_at 
     column :last_seen_ip do |account|
       ip = account.last_seen_ip
       ip.blank? ? '' : link_to(ip, admin_accounts_path('q[last_seen_ip_contains]' => ip, 'commit' => 'Filter'))

@@ -1,0 +1,36 @@
+panel 'Job Overview' do
+
+  columns do
+    column do
+      panel "Show Results For: #{human_window}" do
+        windows = [:ten_minutes, :one_hour, :two_hours, :eight_hours, :one_day, :two_days, :one_week, :one_month, :all]
+        windows.each do |w|
+          a w.to_s.humanize.titleize, :href => admin_root_path(window: w)
+        end
+      end
+    end #column
+
+    column do
+      panel 'Key' do
+        status_tag "Running < 5 minutes", :ok
+        status_tag "Running < 1 hour", :warn
+        status_tag "Running > 1 hour", :error
+        status_tag "Failed", :no
+      end
+    end
+  end
+
+  table_for Slave.all.order(:id) do
+    # Seriously.  ActiveAdmin thinks the singular of "slave" is "slafe"  wft?
+    column (:hostname) { |slave| link_to slave.hostname, admin_slafe_path(slave)}
+    column :load_average
+    column (:jobs) do |slave| 
+      render :partial => 'slave', :locals => {:slave => slave}
+    end
+    column (:failed) do |slave|
+      render :partial => 'failed', :locals => {:slave => slave}
+    end
+    column (:completed) { |slave| slave.jobs.complete.since(get_window).count }
+    column (:oldest_repository) { |slave| time_ago_in_days_hours_minutes(slave.oldest_clump_timestamp) }
+  end
+end

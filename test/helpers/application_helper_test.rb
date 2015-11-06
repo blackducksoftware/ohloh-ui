@@ -71,4 +71,37 @@ class ApplicationHelperTest < ActionView::TestCase
       strip_tags_and_escaped_html('<p>test</p>').must_equal 'test'
     end
   end
+
+  describe 'time ago in days, hours, and minutes' do
+    it 'must return not available when there is no supplied value' do
+      time_ago_in_days_hours_minutes(nil).must_equal 'not available'
+    end
+
+    it 'must return the correct number of days' do
+      time = Time.now.utc - 3.days
+      time_ago_in_days_hours_minutes(time).must_match /3d/
+    end
+
+    it 'must return the correct number of hours' do
+      time = Time.now.utc - 4.hours
+      time_ago_in_days_hours_minutes(time).must_match /4h/
+      time_ago_in_days_hours_minutes(time).must_match /0d 4h/
+    end
+
+    it 'must return the correct number of days and hours' do
+      time = Time.now.utc - 3.days - 4.hours
+      time_ago_in_days_hours_minutes(time).must_match /3d 4h/
+    end
+
+    it 'must return the correct number of minutes' do
+      time = Time.now.utc - 5.minutes
+      time_ago_in_days_hours_minutes(time).must_match /5m/
+      time_ago_in_days_hours_minutes(time).must_equal "0d 0h 5m"
+    end
+
+    it 'must return the fully correct value' do
+      time = Time.now.utc - 60.days - 22.hours - 59.minutes
+      time_ago_in_days_hours_minutes(time).must_equal '60d 22h 59m'
+    end
+  end
 end

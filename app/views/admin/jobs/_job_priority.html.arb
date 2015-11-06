@@ -1,0 +1,8 @@
+para ''
+
+active_admin_form_for :job, method: :put do |f|
+  inputs 'Priority' do
+    input :priority, :style => 'width;50px;'
+  end
+  button 'Update Priority'
+end

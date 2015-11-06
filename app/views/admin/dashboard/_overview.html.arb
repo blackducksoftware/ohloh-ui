@@ -1,0 +1,37 @@
+columns do
+  column do
+    panel "Overview Statistics" do
+      table style: "width:300px;" do
+        tbody do
+          tr do
+            td "Scheduled Jobs:"
+            td Job.where(status: Job::STATUS_SCHEDULED).count
+          end              
+          tr do
+            td "Database Load Average:"
+            td style: (LoadAverage.first.too_high? ? "color:red;" : '') do
+              LoadAverage.first.current
+            end
+          end
+          tr do
+            td "Updated (last hour)"
+            td Job.where(status: Job::STATUS_COMPLETED).where(logged_at: Time.at(0)...1.hour.ago).count
+          end
+        end #tbody
+      end #table
+    end #panel
+  end
+
+  column do
+    panel "ActiveAdmin" do
+      # check to see if we can get the revision:
+      stdin, stdout, stderr, wait_thr = Open3.popen3('git describe')
+      err = stderr.gets(nil)
+      if err =~ /No names found/
+        para "Unable to show git revision"
+      else
+        para %(Currently deployed: #{`git describe --tags --abbrev=0`}#{link_to(`git rev-parse --short HEAD`, "https://github.com/blackducksoftware/ohloh-ui/commit/#{`git rev-parse HEAD`}")}).html_safe
+      end
+    end
+  end
+end

@@ -1,4 +1,11 @@
 class Job < ActiveRecord::Base
+  belongs_to :project
+  belongs_to :repository
+  belongs_to :slave
+  belongs_to :job_status, foreign_key: 'status'
+  has_many :slave_logs
+
+
   STATUS_SCHEDULED = 0
   STATUS_RUNNING   = 1
   STATUS_FAILED    = 3
@@ -11,6 +18,9 @@ class Job < ActiveRecord::Base
   end
 
   scope :incomplete, -> { where.not(status: STATUS_COMPLETED) }
+  scope :failed, -> { where(status: STATUS_FAILED) }
+  scope :complete, -> { where(status: STATUS_COMPLETED) }
+  scope :since, ->(time) {where(current_step_at: time...Time.now) }
 
   belongs_to :project
   belongs_to :repository
