@@ -13,20 +13,15 @@ describe 'CommitsController' do
     sloc_set = create(:sloc_set, code_set_id: @commit1.code_set_id)
     analysis_sloc_set = create(:analysis_sloc_set, sloc_set_id: sloc_set.id,
                                                    analysis_id: @project.best_analysis_id, as_of: 2)
-    analysis_alias = create(:analysis_alias, commit_name: @commit1.name,
-                                             analysis_id: analysis_sloc_set.analysis_id,
-                                             preferred_name_id: @name1.id)
-    analysis_alias = create(:analysis_alias, commit_name: @commit2.name,
-                                             analysis_id: analysis_sloc_set.analysis_id,
-                                             preferred_name_id: @name2.id)
+    analysis_alias = create(:analysis_alias, commit_name: @commit1.name, analysis_id: analysis_sloc_set.analysis_id,
+                            preferred_name_id: @name1.id)
+    create(:analysis_alias, commit_name: @commit2.name, analysis_id: analysis_sloc_set.analysis_id,
+                            preferred_name_id: @name2.id)
     @named_commit = NamedCommit.where(commit_id: @commit1.id).take
     create(:contributor_fact, analysis_id: analysis_sloc_set.analysis_id,
-                             name_id: analysis_alias.preferred_name_id)
+                              name_id: analysis_alias.preferred_name_id)
     @person1 = create(:person, project_id: @project.id, name_id: @name1.id)
     @person2 = create(:person, project_id: @project.id, name_id: @name2.id)
-    cfs = ContributorFact.find([@person1.name_fact_id, @person2.name_fact_id])
-    cfs.each {|cf| cf.update_attribute(:analysis_id, @project.best_analysis_id) }
-
   end
 
   describe 'index' do
@@ -43,8 +38,8 @@ describe 'CommitsController' do
     it 'shoud render commits from a contribution for a single contributor' do
       Analysis.any_instance.stubs(:logged_at).returns(Time.current)
       commit_ids = create_commits_and_named_commits
-      named_commits = NamedCommit.where(commit_id: commit_ids[0..1])
-      unique_contributions = @project.contributions.uniq { |nc| nc.id }
+      NamedCommit.where(commit_id: commit_ids[0..1])
+      unique_contributions = @project.contributions.uniq(&:id)
       contribution_one = unique_contributions[0]
       contribution_two = unique_contributions[1]
       get :index, project_id: @project.id, contributor_id: contribution_one.id
@@ -156,7 +151,7 @@ describe 'CommitsController' do
 
   describe 'events' do
     it 'should not respond to html format' do
-      binding.pry
+      create(:name_fact, analysis: @project.best_analysis, name: @name1)
       get :events, project_id: @project.id, id: @commit1.id, contributor_id: @name1.id, format: :xml
       assigns(:daily_commits).first.time.to_a.must_equal @commit1.time.to_a
       assigns(:daily_commits).first.comment.must_equal @commit1.comment
@@ -165,9 +160,10 @@ describe 'CommitsController' do
 
   describe 'event_details' do
     it 'should return commits' do
+      create(:name_fact, analysis: @project.best_analysis, name: @name1)
       get :event_details, contributor_id: @name1.id, id: @commit1.id,
                           project_id: @project.id, time: "commit_#{@commit1.time.to_i}"
-      assigns(:commits).count.must_equal 2
+      assigns(:commits).count.must_equal 1
       assigns(:commits).first.must_equal @commit1
     end
   end

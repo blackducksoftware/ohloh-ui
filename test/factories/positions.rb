@@ -4,7 +4,7 @@ FactoryGirl.define do
     association :project
     association :organization
     association :name
-    
+
     # Note: Changing the after method to build passes committer name validation
     # and should remove the need for positions helper in test_helper.rb
     after(:build) do |instance|
