@@ -4,7 +4,7 @@ FactoryGirl.define do
     association :project
     association :organization
     association :name
-    after(:create) do |instance|
+    after(:build) do |instance|
       unless NameFact.where(name_id: instance.name_id).exists?
         best_analysis = instance.project.try(:best_analysis)
         best_analysis = nil if best_analysis.is_a?(NilAnalysis)
