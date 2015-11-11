@@ -16,7 +16,7 @@ en:
       save_forum: 'Save Forum'
       forums: 'Forums'
       cancel: 'Cancel'
-      edit_forum_title: 'Edit Forums - OpenHub'
+      edit_forum_title: 'Edit Forums - Open Hub'
     show:
       forums: 'Forums'
       topic: 'Topic'
@@ -28,7 +28,7 @@ en:
       create: 'Create'
       forums: 'Forums'
       new_forum: 'New Forum'
-      new_forum_title: 'New Forums - OpenHub'
+      new_forum_title: 'New Forums - Open Hub'
     create:
       error: 'There was a problem!'
     update:

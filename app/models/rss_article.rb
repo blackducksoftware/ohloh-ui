@@ -1,12 +1,20 @@
+require 'digest/sha1'
+
 class RssArticle < ActiveRecord::Base
   belongs_to :rss_feed
   validates :guid, presence: true
   validates :title, presence: true
 
+  def absolute_link
+    return link if link =~ URI.regexp
+    uri = URI.parse(rss_feed.url)
+    "#{uri.scheme}://#{uri.host}#{link}"
+  end
+
   class << self
     def from_item(item)
-      RssArticle.new(title: item.title, link: item.link, description: item.description, author: set_author(item),
-                     time: set_time(item), guid: set_guid(item))
+      new(title: item.title, link: item.link, description: item.description, author: set_author(item),
+          time: set_time(item), guid: guid_from_item(item))
     end
 
     def set_author(item)
@@ -20,8 +28,8 @@ class RssArticle < ActiveRecord::Base
       time
     end
 
-    def set_guid(item)
-      item.guid || item.guid = "#{item.title}|#{item.link}|#{item.description}".hash
+    def guid_from_item(item)
+      Digest::SHA1.hexdigest([item.title, item.link, item.description].compact.join('|'))
     end
   end
 end

@@ -1,0 +1,12 @@
+#! /usr/bin/env ruby
+
+require_relative '../config/environment'
+
+class RemoveTrackedLogoIdChangesForOrgsAndProjects
+  def execute
+    PropertyEdit.where(target_type: 'Organization', key: 'logo_id').delete_all
+    PropertyEdit.where(target_type: 'Project', key: 'logo_id').delete_all
+  end
+end
+
+RemoveTrackedLogoIdChangesForOrgsAndProjects.new.execute

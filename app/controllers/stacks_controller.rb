@@ -70,7 +70,7 @@ class StacksController < ApplicationController
   end
 
   def set_title
-    title = (1..30).collect { |i| "New Stack #{i}" } - Stack.where(account_id: @stack.account_id).pluck(:title)
+    title = (1..30).collect { |i| "New Stack #{i}" } - Stack.where(account_id: @stack.account_id).map(&:title)
     @stack.title = title.first
   end
 

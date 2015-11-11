@@ -5,7 +5,7 @@ module OrganizationSearchables
     def searchable_vector
       {
         a: split_name_if_camecase_present,
-        c: projects.pluck(:name).join(' '),
+        c: projects.map(&:name).join(' '),
         d: description
       }
     end

@@ -22,6 +22,21 @@ class PositionTest < ActiveSupport::TestCase
 
       Position.for_project(project).first.must_equal position
     end
+
+    describe 'active' do
+      it 'must return records with contributor_fact' do
+        position = create_position(project: project, name: name_obj)
+
+        project.positions.active.must_include position
+      end
+
+      it 'wont return records without contributor fact' do
+        position = create_position(project: project, name: name_obj)
+        project.best_analysis.contributor_facts.destroy_all
+
+        project.positions.active.wont_include position
+      end
+    end
   end
 
   describe :create do

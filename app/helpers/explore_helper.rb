@@ -14,7 +14,11 @@ module ExploreHelper
   end
 
   def cache_projects_explore_page
-    Rails.cache.fetch('projects_explore_page', expires_in: 1.day) do
+    if @language.blank?
+      Rails.cache.fetch('projects_explore_page', expires_in: 1.day) do
+        render 'projects'
+      end
+    else
       render 'projects'
     end
   end

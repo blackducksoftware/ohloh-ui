@@ -38,4 +38,10 @@ class CreateEditTest < ActiveSupport::TestCase
     @edit.target.reload
     @edit.target.deleted.must_equal false
   end
+
+  it 'shoud not allow undo for organization create_edit' do
+    @edit.target = Organization.last
+    @edit.target.editor_account = create(:admin)
+    @edit.allow_undo?.must_equal false
+  end
 end

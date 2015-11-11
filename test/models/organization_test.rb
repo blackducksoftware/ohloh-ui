@@ -32,6 +32,12 @@ class OrganizationTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'CreateEdit' do
+    it 'should not allow to undo a creat CreateEdit' do
+      org.allow_undo?(nil).must_equal false
+    end
+  end
+
   describe 'from_param' do
     it 'should match organization url_name' do
       organization = create(:organization)

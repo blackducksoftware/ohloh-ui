@@ -1,7 +1,7 @@
 :ruby
   analysis = @analysis || @project.best_analysis
   analysis_not_complete = @project.enlistments.any? && analysis.nil?
-  no_recognized_code = @project.enlistments.any? && analysis && analysis.empty?
+  no_recognized_code = @project.enlistments.any? && !analysis.nil? && analysis.empty?
   no_code_available = @project.enlistments.empty? && analysis.blank?
   message = t('.message_1') if no_recognized_code
   message = t('.message_2') if no_code_available
