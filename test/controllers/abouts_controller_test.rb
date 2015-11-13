@@ -7,9 +7,11 @@ describe 'AboutsController' do
   end
 
   it 'get tools view' do
+    @languages = create_list(:language, 5)
     get :tools
     must_respond_with :ok
     must_render_template 'abouts/tools'
+    assigns(:languages).count.must_equal 5
   end
 
   it 'gets site maintenance view' do
