@@ -3,6 +3,7 @@ class Job < ActiveRecord::Base
   belongs_to :repository
   belongs_to :slave
   belongs_to :job_status, foreign_key: 'status'
+  belongs_to :failure_group
   has_many :slave_logs
 
 
@@ -19,6 +20,7 @@ class Job < ActiveRecord::Base
 
   scope :incomplete, -> { where.not(status: STATUS_COMPLETED) }
   scope :failed, -> { where(status: STATUS_FAILED) }
+  scope :scheduled, -> { where(status: STATUS_SCHEDULED) }
   scope :complete, -> { where(status: STATUS_COMPLETED) }
   scope :since, ->(time) {where(current_step_at: time...Time.now) }
 
@@ -28,6 +30,11 @@ class Job < ActiveRecord::Base
   belongs_to :sloc_set
   belongs_to :account
   belongs_to :organization
+
+  def categorize_failure
+    failure_group = FailureGroup.where('pattern ILIKE ?', exception).first
+    update_column(failure_group_id: failure_group.id) if failure_group
+  end
 
   class << self
     def incomplete_project_job(project_ids)

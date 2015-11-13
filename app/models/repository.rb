@@ -52,6 +52,13 @@ class Repository < ActiveRecord::Base
     @bypass_url_validation = modified_value
   end
 
+  def refetch
+    jobs.scheduled.each(&:destroy)
+    jobs.failed.each(&:destroy)
+
+    FetchJob.create!(code_set: CodeSet.create!(repository: self))
+  end
+
   class << self
     def find_existing(repository)
       where(url: repository.url).first

@@ -13,7 +13,7 @@ ActiveAdmin.register Job do
     column "Priority", :priority
     column "Last Updated" do |job|
       time_ago_in_words(job.current_step_at)
-    end 
+    end
     column "Progress" do |job|
       "#{job.current_step? ? job.current_step : '-'} of #{job.max_steps? ? job.max_steps : '-'}"
     end
@@ -36,7 +36,7 @@ ActiveAdmin.register Job do
       span link_to "Slave Log", admin_job_slave_logs_path(job)
     end
   end
-  
+
   show do
     render :partial => 'job'
   end
@@ -52,6 +52,20 @@ ActiveAdmin.register Job do
     p "*********************** PDP rebuild_people"
     flash[:success] = "People records for this project have been rebuilt"
     #redirect_to admin_project_job_path(params['project_id'], params['id'])
+    redirect_to :back
+  end
+
+  member_action :fail, method: :get do
+    begin
+      @job = Job.find(params[:id])
+      SlaveLog.create(job: @job, message: "Job manually failed by #{current_user.login}.",
+                      level: SlaveLog::WARNING)
+      @job.update_attributes(status: Job::STATUS_FAILED)
+      @job.categorize_failure
+      flash[:notice] = "Job #{ @job.id } marked as failed."
+    rescue
+      flash[:error] = $!.message
+    end
     redirect_to :back
   end
 
@@ -71,7 +85,7 @@ ActiveAdmin.register Job do
       Job.find(params['id']).update_attributes(permitted_params['job'])
       flash[:success] = "Priority has been updated"
       redirect_to admin_job_path(params['id'])
-     end
+    end
 
     def destroy
       job = Job.find(params['id'])
