@@ -76,8 +76,18 @@ class Repository < ActiveRecord::Base
   def scm_attributes_and_server_connection
     normalize_scm_attributes
     source_scm.validate
-    source_scm.validate_server_connection
+    Timeout.timeout(timeout_interval) { source_scm.validate_server_connection }
+  rescue Timeout::Error
+    source_scm.errors << [:url, I18n.t('repositories.timeout')]
+  ensure
+    populate_scm_errors
+  end
 
+  def timeout_interval
+    ENV['SCM_URL_VALIDATION_TIMEOUT'].to_i
+  end
+
+  def populate_scm_errors
     source_scm.errors.each do |attribute, error_message|
       errors.add(attribute, error_message)
     end

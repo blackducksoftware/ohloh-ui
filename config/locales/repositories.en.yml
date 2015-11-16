@@ -10,3 +10,4 @@ en:
       failed: 'Failed'
       failed_at: 'Failed %{at} ago.'
       blocked_by: 'Blocked by %{status} job'
+    timeout: The given server is taking too long to respond. Please try again later.

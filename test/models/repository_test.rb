@@ -80,6 +80,16 @@ class RepositoryTest < ActiveSupport::TestCase
         repository.wont_be :valid?
         repository.errors.messages[:url].grep(/can't be blank/).count.must_equal 1
       end
+
+      it 'must detect non responding server' do
+        repository = build(:repository)
+
+        repository.stubs(:timeout_interval).returns(1)
+        repository.source_scm.stubs(:validate_server_connection).with { sleep(2) }
+
+        repository.wont_be :valid?
+        repository.errors.messages[:url].first.must_equal I18n.t('repositories.timeout')
+      end
     end
 
     describe 'branch_name' do
