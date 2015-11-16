@@ -1,3 +1,5 @@
+- global_search_param = GLOBALLY_SEARCHABLE.include?(controller_name) ? params[:query] : ''
+
 - unless request.path == root_path
   %form.pull-right#quicksearch{ action: projects_path, style: 'margin-top: -8px' }
     .dropdown
@@ -18,7 +20,7 @@
             %a{ val: '//code.openhub.net/search', onclick: 'Forms.OhlohCodeSearch();' }
               %i.icon-share= t('code')
         %input.search.text.global_top_search{ type: :text, name: 'query', placeholder: t('shared.search.search_text'),
-        value: params[:query] }
+        value: global_search_param }
         %input.search.hidden{ type: 'hidden', name: 'search_type', id: 'search_type', value: 'projects' }
         %button.submit.no_padding{ type: 'submit' }
           .icon-search.global_top_search_icon

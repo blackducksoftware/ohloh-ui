@@ -285,7 +285,22 @@ describe 'ProjectsController' do
       must_render_template 'deleted'
     end
 
-<<<<<<< HEAD
+    it 'should show the jobs link for admins' do
+      project = create(:project)
+      login_as create(:admin)
+      get :show, id: project
+      must_respond_with :ok
+      assert_select "a[href='#{admin_project_jobs_path(project)}']", text: /View Jobs/
+    end
+
+    it 'should not show the jobs link for non-admins' do
+      project = create(:project)
+      login_as create(:account)
+      get :show, id: project
+      must_respond_with :ok
+      assert_select "a[href='#{admin_project_jobs_path(project)}']", false, text: /View Jobs/
+    end
+
     it 'must render 404 if unknown format' do
       get :show, id: create(:project).to_param, format: 'abc'
       must_render_template 'error.html'
