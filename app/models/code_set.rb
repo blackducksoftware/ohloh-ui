@@ -11,4 +11,8 @@ class CodeSet < ActiveRecord::Base
     analysis_sloc_set = enlistment.analysis_sloc_set
     analysis_sloc_set.nil? ? CodeSet.none : analysis_sloc_set.ignore_prefixes
   end
+
+  def reimport
+    ImportJob.create!(code_set: CodeSet.create!(repository_id: repository_id))
+  end
 end

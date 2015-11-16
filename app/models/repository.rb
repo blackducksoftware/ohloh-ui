@@ -4,6 +4,7 @@ class Repository < ActiveRecord::Base
   has_many :enlistments, -> { not_deleted }
   has_many :projects, through: :enlistments
   has_many :jobs
+  has_many :code_sets, dependent: :destroy#, -> { order("code_sets.id desc") }
 
   scope :matching, ->(match) { Repository.forge_match_search(match) }
 
@@ -53,10 +54,13 @@ class Repository < ActiveRecord::Base
   end
 
   def refetch
+    remove_pending_jobs
+    FetchJob.create!(code_set: CodeSet.create!(repository: self))
+  end
+
+  def remove_pending_jobs
     jobs.scheduled.each(&:destroy)
     jobs.failed.each(&:destroy)
-
-    FetchJob.create!(code_set: CodeSet.create!(repository: self))
   end
 
   class << self

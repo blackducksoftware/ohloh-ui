@@ -401,12 +401,19 @@ Rails.application.routes.draw do
       member do
         put :reschedule
         get :fail
+        post :refetch
       end
     end
 
-    resources :complete_jobs do
-      post :refetch, on: :member
+    resources :code_sets do
+      post :fetch
+      post :reimport
+      post :resloc
     end
+
+    resources :sloc_jobs, only: [:index, :show, :destroy]
+    resources :complete_jobs, only: [:index, :show, :destroy]
+    resources :fetch_jobs, only: [:index, :show, :destroy]
 
     resources :projects do
       resources :jobs
