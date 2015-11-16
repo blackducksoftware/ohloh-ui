@@ -6,7 +6,6 @@ class Job < ActiveRecord::Base
   belongs_to :failure_group
   has_many :slave_logs
 
-
   STATUS_SCHEDULED = 0
   STATUS_RUNNING   = 1
   STATUS_FAILED    = 3
@@ -22,7 +21,7 @@ class Job < ActiveRecord::Base
   scope :failed, -> { where(status: STATUS_FAILED) }
   scope :scheduled, -> { where(status: STATUS_SCHEDULED) }
   scope :complete, -> { where(status: STATUS_COMPLETED) }
-  scope :since, ->(time) {where(current_step_at: time...Time.now) }
+  scope :since, ->(time) { where(current_step_at: time...Time.now) }
 
   belongs_to :project
   belongs_to :repository

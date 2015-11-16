@@ -4,7 +4,7 @@ class Repository < ActiveRecord::Base
   has_many :enlistments, -> { not_deleted }
   has_many :projects, through: :enlistments
   has_many :jobs
-  has_many :code_sets, dependent: :destroy#, -> { order("code_sets.id desc") }
+  has_many :code_sets, dependent: :destroy
 
   scope :matching, ->(match) { Repository.forge_match_search(match) }
 

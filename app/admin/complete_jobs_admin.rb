@@ -23,8 +23,8 @@ ActiveAdmin.register CompleteJob do
 
       row :re_fetch do
         repo = complete_job.repository
-        confirm = "Are you sure you want to start a completely new download of #{repo.url} #{repo.branch_name.to_s}?"
-        link_to 'Re Fetch', refetch_admin_job_path, { method: :post, confirm: confirm }
+        confirm = "Are you sure you want to start a completely new download of #{repo.url} #{repo.branch_name}?"
+        link_to 'Re Fetch', refetch_admin_job_path, method: :post, confirm: confirm
       end
 
       if complete_job.status == Job::STATUS_RUNNING

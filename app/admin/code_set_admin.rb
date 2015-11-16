@@ -17,7 +17,7 @@ ActiveAdmin.register CodeSet do
       flash[:success] = "CodeSet #{job.code_set_id} and ImportJob #{job.id} created."
       redirect_to admin_job_path(job)
     rescue
-      flash[:error] = "ERROR: #{$!.message}"
+      flash[:error] = "ERROR: #{$ERROR_INFO.message}"
       redirect_to :back
     end
   end

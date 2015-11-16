@@ -233,5 +233,5 @@ ActiveAdmin.setup do |config|
 end
 
 module ActiveAdmin::ViewHelpers
-    include TimeStampHelper 
+  include TimeStampHelper
 end
