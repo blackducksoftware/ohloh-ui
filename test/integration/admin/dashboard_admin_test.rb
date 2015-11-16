@@ -15,8 +15,8 @@ class DashboardAdminTest < ActionDispatch::IntegrationTest
     LoadAverage.create(current: 4.8)
     create_and_login_admin
     get admin_root_path
-    assert_select 'h3', text: "Overview Statistics"
-    assert_select 'h3', text: "Job Overview"
+    assert_select 'h3', text: 'Overview Statistics'
+    assert_select 'h3', text: 'Job Overview'
   end
 
   it 'should list different time windows' do

@@ -23,8 +23,7 @@ ActiveAdmin.register CodeSet do
   end
 
   index do
-    %w(id as_of updated_on clump_count).each { |attr| column(attr) }
-    column :best_sloc_set
+    %w(id as_of updated_on clump_count best_sloc_set).each { |attr| column(attr) }
     column(:sloc_set_count) { |code_set| code_set.sloc_sets.count }
     actions do |code_set|
       a link_to 'Fetch', '#', class: 'member_link'

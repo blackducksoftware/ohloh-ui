@@ -22,11 +22,11 @@ ActiveAdmin.register Slave do
     end
     column :used_percent
     column :clump_status
-    column 'Clump Age' do |slave| 
+    column 'Clump Age' do |slave|
       if slave.oldest_clump_timestamp
         time_ago_in_words(slave.oldest_clump_timestamp)
       else
-        "no oldest clump"
+        'no oldest clump'
       end
     end
     column :blocked_types
@@ -38,9 +38,9 @@ ActiveAdmin.register Slave do
     f.inputs 'Details' do
       f.input :hostname, as: :string
       f.input :allow_deny, as: :select, include_blank: false,
-              collection: {'Allow' => 'allow', 'Deny' => 'deny'}
+                           collection: { 'Allow' => 'allow', 'Deny' => 'deny' }
       f.input :enable_profiling, as: :select, include_blank: false,
-              collection: {'Yes' => 'true', 'No' => 'false'}
+                                 collection: { 'Yes' => 'true', 'No' => 'false' }
       f.input :blocked_types
     end
     f.actions

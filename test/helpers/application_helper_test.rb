@@ -79,24 +79,24 @@ class ApplicationHelperTest < ActionView::TestCase
 
     it 'must return the correct number of days' do
       time = Time.now.utc - 3.days
-      time_ago_in_days_hours_minutes(time).must_match /3d/
+      time_ago_in_days_hours_minutes(time).must_match(/3d/)
     end
 
     it 'must return the correct number of hours' do
       time = Time.now.utc - 4.hours
-      time_ago_in_days_hours_minutes(time).must_match /4h/
-      time_ago_in_days_hours_minutes(time).must_match /0d 4h/
+      time_ago_in_days_hours_minutes(time).must_match(/4h/)
+      time_ago_in_days_hours_minutes(time).must_match(/0d 4h/)
     end
 
     it 'must return the correct number of days and hours' do
       time = Time.now.utc - 3.days - 4.hours
-      time_ago_in_days_hours_minutes(time).must_match /3d 4h/
+      time_ago_in_days_hours_minutes(time).must_match(/3d 4h/)
     end
 
     it 'must return the correct number of minutes' do
       time = Time.now.utc - 5.minutes
-      time_ago_in_days_hours_minutes(time).must_match /5m/
-      time_ago_in_days_hours_minutes(time).must_equal "0d 0h 5m"
+      time_ago_in_days_hours_minutes(time).must_match(/5m/)
+      time_ago_in_days_hours_minutes(time).must_equal('0d 0h 5m')
     end
 
     it 'must return the fully correct value' do

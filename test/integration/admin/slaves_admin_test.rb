@@ -17,15 +17,15 @@ class SlavesAdminTest < ActionDispatch::IntegrationTest
 
   it 'shows the correct columns in the index page' do
     get admin_slaves_path
-    assert_select 'tr' do 
-      assert_select 'th', text: "Id"
-      assert_select 'th', text: "Hostname"
-      assert_select 'th', text: "Load Average"
-      assert_select 'th', text: "Allow Deny"
-      assert_select 'th', text: "Used Percent"
-      assert_select 'th', text: "Clump Status"
-      assert_select 'th', text: "Clump Age"
-      assert_select 'th', text: "Blocked Types"
+    assert_select 'tr' do
+      assert_select 'th', text: 'Id'
+      assert_select 'th', text: 'Hostname'
+      assert_select 'th', text: 'Load Average'
+      assert_select 'th', text: 'Allow Deny'
+      assert_select 'th', text: 'Used Percent'
+      assert_select 'th', text: 'Clump Status'
+      assert_select 'th', text: 'Clump Age'
+      assert_select 'th', text: 'Blocked Types'
     end
   end
 
@@ -56,6 +56,4 @@ class SlavesAdminTest < ActionDispatch::IntegrationTest
     get edit_admin_slafe_path(@slave)
     assert_response :success
   end
-
 end
-

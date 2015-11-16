@@ -327,7 +327,6 @@ describe 'ProjectsController' do
 
       response.body.must_match(/no recognizable source code/)
       response.body.wont_match(/analysis isn't complete/)
->>>>>>> master
     end
   end
 
