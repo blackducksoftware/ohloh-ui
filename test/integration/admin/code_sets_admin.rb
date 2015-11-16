@@ -31,7 +31,7 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
     code_set = create(:code_set)
     admin.password = 'xyzzy123456'
     login_as admin
-    post fetch_admin_code_set_path(code_set)
+    get fetch_admin_code_set_path(code_set)
     job = FetchJob.last
     assert_equal job.code_set, code_set
     assert_redirected_to admin_fetch_job_path(job)
@@ -42,7 +42,7 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
     code_set = create(:code_set)
     admin.password = 'xyzzy123456'
     login_as admin
-    post reimport_admin_code_set_path(code_set)
+    get reimport_admin_code_set_path(code_set)
     job = ImportJob.last
     assert_equal flash[:success], "CodeSet #{job.code_set_id} and ImportJob #{job.id} created."
     assert_redirected_to admin_job_path(job)
@@ -52,7 +52,7 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
     code_set = create(:code_set)
     admin.password = 'xyzzy123456'
     login_as admin
-    post resloc_admin_code_set_path(code_set)
+    get resloc_admin_code_set_path(code_set)
     job = SlocJob.last
     assert_equal job.code_set, code_set
     assert_redirected_to admin_sloc_job_path(job)

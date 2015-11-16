@@ -44,7 +44,7 @@ ActiveAdmin.register FetchJob do
 
       if fetch_job.status == Job::STATUS_RUNNING
         row :fail do
-          link_to 'Fail', fail_admin_job_path(fetch_job)
+          link_to 'Fail', mark_as_failed_admin_job_path(fetch_job)
         end
       end
 

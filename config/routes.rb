@@ -400,15 +400,15 @@ Rails.application.routes.draw do
     resources :jobs do
       member do
         put :reschedule
-        get :fail
+        get :mark_as_failed
         post :refetch
       end
     end
 
     resources :code_sets do
-      post :fetch
-      post :reimport
-      post :resloc
+      get :fetch
+      get :reimport
+      get :resloc
     end
 
     resources :sloc_jobs, only: [:index, :show, :destroy]

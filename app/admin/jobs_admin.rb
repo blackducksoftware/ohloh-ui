@@ -55,14 +55,14 @@ ActiveAdmin.register Job do
     redirect_to :back
   end
 
-  member_action :fail, method: :get do
+  member_action :mark_as_failed, method: :get do
     begin
-      @job = Job.find(params[:id])
-      SlaveLog.create(job: @job, message: "Job manually failed by #{current_user.login}.",
+      job = Job.find(params[:id])
+      SlaveLog.create(job: job, message: "Job manually failed by #{current_user.login}.",
                       level: SlaveLog::WARNING)
-      @job.update_attributes(status: Job::STATUS_FAILED)
-      @job.categorize_failure
-      flash[:notice] = "Job #{ @job.id } marked as failed."
+      job.update_attributes(status: Job::STATUS_FAILED)
+      job.categorize_failure
+      flash[:notice] = "Job #{ job.id } marked as failed."
     rescue
       flash[:error] = $!.message
     end
