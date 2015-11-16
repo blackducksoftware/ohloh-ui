@@ -4,11 +4,11 @@ class AccountDecorator < Cherry::Decorator
   delegate :best_vita, :positions, :claimed_positions, :projects, to: :account
 
   def symbolized_commits_by_project
-    NameFact.where(vita_id: best_vita.id).pluck(:commits_by_project).flatten.compact.map(&:symbolize_keys)
+    NameFact.where(vita_id: best_vita.id).map(&:commits_by_project).flatten.compact.map(&:symbolize_keys)
   end
 
   def symbolized_commits_by_language
-    NameFact.where(vita_id: best_vita.id).pluck(:commits_by_language).flatten.compact.map(&:symbolize_keys)
+    NameFact.where(vita_id: best_vita.id).map(&:commits_by_language).flatten.compact.map(&:symbolize_keys)
   end
 
   def sorted_commits_by_project

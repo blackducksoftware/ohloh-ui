@@ -23,6 +23,20 @@ describe 'ContributionsController' do
       assigns(:contributions).must_equal [@contribution]
     end
 
+    it 'should return contrubutions with valid search param' do
+      get :index, project_id: @project.to_param, sort: 'latest_commit', query: @person.effective_name
+
+      must_respond_with :ok
+      assigns(:contributions).must_equal [@contribution]
+    end
+
+    it 'should not return contrubutions with invalid search param' do
+      get :index, project_id: @project.to_param, sort: 'latest_commit', query: 'dummy'
+
+      must_respond_with :ok
+      assigns(:contributions).must_equal []
+    end
+
     it 'should return contributions within 30 days' do
       contributions = create_contributions(@project)
       get :index, project_id: @project.to_param, sort: 'latest_commit', time_span: '30 days'

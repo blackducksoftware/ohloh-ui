@@ -427,4 +427,19 @@ describe 'OrganizationsController' do
       assigns(:organization).new_record?.must_equal true
     end
   end
+
+  describe 'claimed projects' do
+    it 'should render show page if organization does not have any claimed projects' do
+      get :projects, id: organization.to_param
+      must_respond_with :redirect
+      must_redirect_to organization_path(organization)
+    end
+
+    it 'should render projects page if it has projects page' do
+      create(:project, organization_id: organization.id)
+      get :projects, id: organization.to_param
+      must_respond_with :ok
+      must_render_template :projects
+    end
+  end
 end

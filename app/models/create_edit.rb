@@ -8,7 +8,7 @@ class CreateEdit < Edit
   end
 
   def allow_undo?
-    true
+    target.respond_to?(:allow_undo?) ? target.allow_undo?(key.to_s.to_sym) : true
   end
 
   def allow_redo?

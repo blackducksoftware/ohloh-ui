@@ -22,11 +22,16 @@ class TagsController < ApplicationController
   end
 
   def find_related_tags
-    tags = Tag.where(name: params[:names]).pluck("name||' (' || taggings_count || ')', name")
     related_tags = Tag.related_tags(params[:names])
                    .order(count: :desc)
-                   .pluck("name|| ' (' || count(*) || ')', name")
-    @related_tags = tags + related_tags
+                   .select("name|| ' (' || count(*) || ')' tag, name")
+                   .map { |t| [t.tag, t.name] }
+    @related_tags = find_tags + related_tags
+  end
+
+  def find_tags
+    Tag.where(name: params[:names]).select("name||' (' || taggings_count || ')' tag, name")
+      .map { |t| [t.tag, t.name] }
   end
 
   def find_tags_by_popularity

@@ -98,7 +98,7 @@ class Person < ActiveRecord::Base
     # this function allow us to assign weight value to vector column. 'a' has highest weigtage followed by b,c and d
     return { a: effective_name } if account_id.blank?
 
-    projects_name = Project.where(id: account.positions.pluck(:project_id)).pluck(:name).join(' ')
+    projects_name = Project.where(id: account.positions.pluck(:project_id)).map(&:name).join(' ')
     {
       a: "#{account.name} #{account.login}",
       b: account.akas.to_s.gsub("\n", ' '),

@@ -67,12 +67,12 @@ describe EditsController do
     end
 
     it 'redo of creation edit should delete the project' do
-      login_as create(:admin)
       create_edit = CreateEdit.where(target: @project).first
-      create_edit.undo! create(:admin)
+      login_as create_edit.account
+      @project.destroy
       post :update, id: create_edit.id, undo: 'false'
-      assert_response :success
       assert_equal false, @project.reload.deleted?
+      assert_response :success
     end
 
     it 'redo gracefully handles undo/redo errors' do

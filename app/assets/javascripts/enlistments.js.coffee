@@ -19,6 +19,7 @@ App.Enlistment = init: ->
       when 'Baz'
         $('.enlistment .bzr').show()
   ).change()
+
   $('.enlistment .submit').click ->
     $('.enlistment .spinner').show()
 $(document).on 'page:change', ->
