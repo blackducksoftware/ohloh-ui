@@ -4,6 +4,10 @@ class Repository < ActiveRecord::Base
   has_many :enlistments, -> { not_deleted }
   has_many :projects, through: :enlistments
   has_many :jobs
+  has_many :code_sets
+  has_many :slave_logs, through: :jobs
+  has_many :sloc_sets, through: :code_sets
+  has_many :clumps, through: :code_sets
 
   scope :matching, ->(match) { Repository.forge_match_search(match) }
 
@@ -33,6 +37,12 @@ class Repository < ActiveRecord::Base
 
   def source_scm_class
     OhlohScm::Adapters::AbstractAdapter
+  end
+
+  def refetch
+    jobs.scheduled.destroy_all
+    jobs.failed.destroy_all
+    create_fetch_job(0)
   end
 
   def ensure_job(priority = 0)

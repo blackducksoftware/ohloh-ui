@@ -1,0 +1,2 @@
+class SvnClump < Clump
+end

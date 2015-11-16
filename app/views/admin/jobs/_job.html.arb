@@ -8,7 +8,10 @@ span "Last Activity: #{time_ago_in_words(job.current_step_at)} ago" if job.curre
 br
 span "Progress: (#{job.current_step || '-'} current step of #{job.max_steps || '-'} total steps)"
 br
-para "TODO: Link to the Slave Log"
+span "Log: "
+a link_to('Slave Log', admin_job_slave_logs_path(job))
+br
+br
 
 span "Status: #{job.job_status.name} "
 if job.slave_id

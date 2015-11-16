@@ -9,19 +9,18 @@ end
 
 if job.account_id
   account = Account.find(job.account_id)
-  span "Account: "
-  span "LINK TO Account: #{account.name}"
+  span "Account: #{account.login}"
+  span link_to '(Jobs)', admin_account_vita_jobs_path(account)
 end
 
 if job.repository_id
-  span "Repository: #{job.repository.url}"
-  strong job.repository.module_name
-  strong job.repository.branch_name
+  span "Repository: #{job.repository.nice_url}"
+  span link_to '(Jobs)', admin_repository_jobs_path(job.repository)
 end
 
 if job.organization_id
-  span "Organization: "
-  a link_to job.organization.name, organization_path(job.organization)
+  span "Organization: #{job.organization.url_name}"
+  span link_to '(Jobs)', admin_organization_jobs_path(organization_id: job.organization.url_name)
 end
 
 para ''

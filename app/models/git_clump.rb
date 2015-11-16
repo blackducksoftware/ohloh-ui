@@ -1,0 +1,2 @@
+class GitClump < Clump
+end
