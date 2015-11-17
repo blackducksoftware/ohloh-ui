@@ -56,7 +56,7 @@ class ProjectsController < ApplicationController
   private
 
   def project_params
-    params.require(:project).permit([:name, :description, :url_name, :url, :download_url, :managed_by_creator,
+    params.require(:project).permit([:name, :description, :vanity_url, :url, :download_url, :managed_by_creator,
                                      project_licenses_attributes: [:license_id],
                                      enlistments_attributes: [repository_attributes: [:type, :url, :branch_name]]])
   end

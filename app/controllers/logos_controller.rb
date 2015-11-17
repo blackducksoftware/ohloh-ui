@@ -56,7 +56,7 @@ class LogosController < SettingsController
   end
 
   def set_project
-    @parent = @project = Project.by_url_name_or_id(params[:project_id]).take
+    @parent = @project = Project.by_vanity_url_or_id(params[:project_id]).take
     project_context && render('projects/deleted') if @project.try(:deleted?)
   end
 

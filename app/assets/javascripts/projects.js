@@ -1,6 +1,6 @@
 ProjectForm = {
   preview_url_name_label: 'label#preview_url_name',
-  url_name_input: 'input#project_url_name',
+  url_name_input: 'input#project_vanity_url',
   valid_url_name_re: /^[a-zA-Z][\w-]*$/,
 
   init: function() {

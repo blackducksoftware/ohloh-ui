@@ -40,12 +40,12 @@ class StackEntriesController < ApplicationController
 
   def find_project
     se_params = params[:stack_entry]
-    @project = find_project_by_url_name(se_params[:project_id]) || find_project_by_name(se_params[:project_name])
+    @project = find_project_by_vanity_url(se_params[:project_id]) || find_project_by_name(se_params[:project_name])
     fail ParamRecordNotFound if @project.nil?
   end
 
-  def find_project_by_url_name(url_name)
-    Project.find_by_url_name(url_name) if url_name
+  def find_project_by_vanity_url(vanity_url)
+    Project.find_by_vanity_url(vanity_url) if vanity_url
   end
 
   def find_project_by_name(name)

@@ -36,7 +36,7 @@ class Forge::MatchTest < ActiveSupport::TestCase
       VCR.use_cassette('ForgeMatchBitbucket') do
         project = Forge::Match.first('http://bitbucket.org/durin42/hgsubversion/').project
         project.name.must_equal 'hgsubversion'
-        project.url_name.must_equal 'hgsubversion'
+        project.vanity_url.must_equal 'hgsubversion'
         project.description.must_match 'hgsubversion is an extension for Mercurial'
         project.url.must_equal 'http://groups.google.com/group/hgsubversion/'
       end
@@ -51,7 +51,7 @@ class Forge::MatchTest < ActiveSupport::TestCase
       VCR.use_cassette('ForgeMatchGithub') do
         project = Forge::Match.first('https://github.com/rails/rails').project
         project.name.must_equal 'rails'
-        project.url_name.must_equal 'rails'
+        project.vanity_url.must_equal 'rails'
         project.description.must_match 'Ruby on Rails'
         project.url.must_equal 'http://rubyonrails.org'
       end
@@ -61,7 +61,7 @@ class Forge::MatchTest < ActiveSupport::TestCase
       VCR.use_cassette('ForgeMatchGoogleCode') do
         project = Forge::Match.first('https://code.google.com/p/jwysiwyg/').project
         project.name.must_equal 'jwysiwyg'
-        project.url_name.must_equal 'jwysiwyg'
+        project.vanity_url.must_equal 'jwysiwyg'
         project.description.must_match 'WYSIWYG jQuery Plugin'
         project.url.must_equal 'http://code.google.com/p/jwysiwyg/'
       end
@@ -71,7 +71,7 @@ class Forge::MatchTest < ActiveSupport::TestCase
       VCR.use_cassette('ForgeMatchGoogleCodeOrg') do
         project = Forge::Match.first('http://code.google.com/a/apache-extras.org/p/phpmailer/').project
         project.name.must_equal 'phpmailer'
-        project.url_name.must_equal 'phpmailer'
+        project.vanity_url.must_equal 'phpmailer'
         project.description.must_match 'PHPMailer is a Full Featured Email'
         project.url.must_equal 'http://code.google.com/a/apache-extras.org/p/phpmailer/'
       end
@@ -81,7 +81,7 @@ class Forge::MatchTest < ActiveSupport::TestCase
       VCR.use_cassette('ForgeMatchLaunchPad') do
         project = Forge::Match.first('https://code.launchpad.net/~knny-myer/wagwoord/trunk').project
         project.name.must_equal 'A (mnemonic) password generator'
-        project.url_name.must_equal 'wagwoord'
+        project.vanity_url.must_equal 'wagwoord'
         project.description.must_match 'Python password generator'
       end
     end
@@ -90,7 +90,7 @@ class Forge::MatchTest < ActiveSupport::TestCase
       VCR.use_cassette('ForgeMatchSourceForge') do
         project = Forge::Match.first('https://jotwiki.svn.sourceforge.net/svnroot/jotwiki/jotwiki/').project
         project.name.must_equal 'jotwiki'
-        project.url_name.must_equal 'jotwiki'
+        project.vanity_url.must_equal 'jotwiki'
         project.description.must_match 'a simple but powerful java based WIKI software'
         project.url.must_equal 'http://www.jotwiki.net'
       end
@@ -100,7 +100,7 @@ class Forge::MatchTest < ActiveSupport::TestCase
       VCR.use_cassette('ForgeMatchSourceForgeCVS') do
         project = Forge::Match.first(':pserver:anonymous:@freecaller.cvs.sourceforge.net:/cvsroot/freecaller').project
         project.name.must_equal 'FreeCaller'
-        project.url_name.must_equal 'freecaller'
+        project.vanity_url.must_equal 'freecaller'
         project.description.must_match 'FreeCaller is a Symbian application'
         project.url.must_equal 'http://freecaller.wiki.sourceforge.net'
       end

@@ -100,8 +100,8 @@ class StacksController < ApplicationController
   end
 
   def auto_ignore
-    (params[:ignore] || []).split(',').compact.each do |project_url_name|
-      proj = Project.find_by_url_name(project_url_name)
+    (params[:ignore] || []).split(',').compact.each do |project_vanity_url|
+      proj = Project.find_by_vanity_url(project_vanity_url)
       StackIgnore.create(stack_id: @stack.id, project_id: proj.id) if proj
     end
   end

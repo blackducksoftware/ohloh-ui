@@ -16,7 +16,7 @@ class Forge::Launchpad < Forge
 
   def get_project_attributes(match)
     json = match.get_json_api
-    { name: json['title'] || json['name'], url_name: match.name_at_forge,
+    { name: json['title'] || json['name'], vanity_url: match.name_at_forge,
       description: json['description'] || json['summary'],
       url: json['homepage_url'], download_url: json['download_url'] }
   end

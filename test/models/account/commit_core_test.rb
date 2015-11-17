@@ -17,7 +17,7 @@ class Account::CommitCoreTest < ActiveSupport::TestCase
     commits_data[account_1.id].first.account_id.must_equal account_1.id
     commits_data[account_1.id].first.project_id.must_equal project.id
     commits_data[account_1.id].first.name.must_equal project.name
-    commits_data[account_1.id].first.url_name.must_equal project.url_name
+    commits_data[account_1.id].first.vanity_url.must_equal project.vanity_url
   end
 
   it 'most_and_recent_data should return {} when account_ids is empty' do

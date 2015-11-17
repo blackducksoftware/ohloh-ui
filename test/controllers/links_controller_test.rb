@@ -20,7 +20,7 @@ describe 'LinksControllerTest' do
     edit_as(admin) do
       request.session[:return_to] = 'https://test.host:80/p/linux'
 
-      put :update, project_id: project.url_name, id: link.id,
+      put :update, project_id: project.vanity_url, id: link.id,
                    link: attributes_for(:link)
 
       must_redirect_to project_links_path(project)
@@ -35,7 +35,7 @@ describe 'LinksControllerTest' do
     end
 
     edit_as(user) do
-      put :update, project_id: project.url_name, id: link.id,
+      put :update, project_id: project.vanity_url, id: link.id,
                    link: attributes_for(:link)
       must_redirect_to project_links_path(project)
     end
@@ -46,7 +46,7 @@ describe 'LinksControllerTest' do
 
     login_as create(:account)
 
-    get :index, project_id: project.url_name
+    get :index, project_id: project.vanity_url
 
     assert_select '.alert', text: "×\n\nYou can view, but not change this data. Only managers may change this data."
   end
@@ -54,7 +54,7 @@ describe 'LinksControllerTest' do
   it 'must redirect to login page on new action for non manager' do
     restrict_edits_to_managers project
 
-    get :new, project_id: project.url_name
+    get :new, project_id: project.vanity_url
     project.reload.wont_be :edit_authorized?
     must_redirect_to new_session_path
   end
@@ -73,7 +73,7 @@ describe 'LinksControllerTest' do
 
     restrict_edits_to_managers project
 
-    get :edit, project_id: project.url_name, id: link.id
+    get :edit, project_id: project.vanity_url, id: link.id
 
     must_redirect_to new_session_path
   end
@@ -88,7 +88,7 @@ describe 'LinksControllerTest' do
     describe 'new' do
       it 'must not be shown if the link already exists' do
         as(admin) do
-          get :new, project_id: project.url_name
+          get :new, project_id: project.vanity_url
           assigns(:categories)[:Homepage].must_be_nil
         end
       end
@@ -97,7 +97,7 @@ describe 'LinksControllerTest' do
         as(admin) do
           link.editor_account = admin
           link.destroy
-          get :new, project_id: project.url_name
+          get :new, project_id: project.vanity_url
           assigns(:categories)[:Homepage].must_equal Link::CATEGORIES[:Homepage]
         end
       end
@@ -108,7 +108,7 @@ describe 'LinksControllerTest' do
           link.update!(title: 'Project Download page',
                        link_category_id: Link::CATEGORIES[:Download])
 
-          get :new, project_id: project.url_name
+          get :new, project_id: project.vanity_url
           assigns(:categories)[:Download].must_be_nil
         end
       end
@@ -119,7 +119,7 @@ describe 'LinksControllerTest' do
         as(admin) do
           project.links.first.link_category_id.must_equal Link::CATEGORIES[:Homepage]
 
-          post :create, project_id: project.url_name,
+          post :create, project_id: project.vanity_url,
                         link: attributes_for(:link)
 
           assigns(:categories)[:Homepage].must_be_nil
@@ -131,7 +131,7 @@ describe 'LinksControllerTest' do
           link.editor_account = admin
           link.destroy
 
-          post :create, project_id: project.url_name,
+          post :create, project_id: project.vanity_url,
                         link: attributes_for(:link)
 
           assigns(:categories)[:Homepage].must_equal Link::CATEGORIES[:Homepage]
@@ -143,7 +143,7 @@ describe 'LinksControllerTest' do
           link.editor_account = admin
           link.destroy
 
-          post :create, project_id: project.url_name,
+          post :create, project_id: project.vanity_url,
                         link: attributes_for(:link, link_category_id: Link::CATEGORIES[:Homepage])
 
           assigns(:categories)[:Homepage].must_equal Link::CATEGORIES[:Homepage]
@@ -159,7 +159,7 @@ describe 'LinksControllerTest' do
 
       it 'must be shown if the link is being updated' do
         as(admin) do
-          put :update, id: link.id, project_id: project.url_name, link: { title: nil }
+          put :update, id: link.id, project_id: project.vanity_url, link: { title: nil }
 
           assigns(:categories)[:Homepage].must_equal Link::CATEGORIES[:Homepage]
         end
@@ -170,7 +170,7 @@ describe 'LinksControllerTest' do
           link.editor_account = admin
           link.destroy
 
-          put :update, id: other_link.id, project_id: project.url_name,
+          put :update, id: other_link.id, project_id: project.vanity_url,
                        link: { title: :new_title }
 
           assigns(:categories)[:Homepage].must_equal Link::CATEGORIES[:Homepage]
@@ -180,27 +180,27 @@ describe 'LinksControllerTest' do
 
     it 'must be shown if the link is being edited' do
       as(admin) do
-        get :edit, id: link.id, project_id: project.url_name
+        get :edit, id: link.id, project_id: project.vanity_url
         assigns(:categories)[:Homepage].must_equal Link::CATEGORIES[:Homepage]
       end
     end
   end
 
   it 'index' do
-    get :index, project_id: project.url_name
+    get :index, project_id: project.vanity_url
     must_respond_with :success
   end
 
   it 'new' do
     login_as(admin)
-    get :new, project_id: project.url_name
+    get :new, project_id: project.vanity_url
     must_respond_with :success
   end
 
   it 'edit' do
     link = create(:link, project: project)
     login_as(admin)
-    get :edit, project_id: project.url_name, id: link.id
+    get :edit, project_id: project.vanity_url, id: link.id
     must_respond_with :success
   end
 
@@ -212,7 +212,7 @@ describe 'LinksControllerTest' do
     login_as(admin)
 
     assert_difference('project.reload.links.count', 1) do
-      post :create, project_id: project.url_name,
+      post :create, project_id: project.vanity_url,
                     link: attributes_for(:link, link_category_id: Link::CATEGORIES[:Homepage])
 
       must_redirect_to project_links_path(project)
@@ -223,7 +223,7 @@ describe 'LinksControllerTest' do
   it 'create_without_existing_link' do
     login_as(admin)
     assert_difference('project.reload.links.count', 1) do
-      post :create, project_id: project.url_name,
+      post :create, project_id: project.vanity_url,
                     link: attributes_for(:link, link_category_id: Link::CATEGORIES[:Homepage])
       must_redirect_to project_links_path(project)
       flash[:success].must_equal I18n.t('links.create.success')
@@ -233,7 +233,7 @@ describe 'LinksControllerTest' do
   it 'create' do
     login_as(admin)
     assert_difference('project.reload.links.count', 1) do
-      post :create, project_id: project.url_name,
+      post :create, project_id: project.vanity_url,
                     link: attributes_for(:link, link_category_id: Link::CATEGORIES[:Homepage])
 
       must_redirect_to project_links_path(project)
@@ -244,7 +244,7 @@ describe 'LinksControllerTest' do
     category_id = Link::CATEGORIES[:Homepage]
     login_as(admin)
 
-    get :new, project_id: project.url_name, category_id: category_id
+    get :new, project_id: project.vanity_url, category_id: category_id
     assigns(:category_name).must_equal 'Homepage'
     assigns(:link).title.must_equal 'Homepage'
   end
@@ -252,7 +252,7 @@ describe 'LinksControllerTest' do
   it 'load_category_and_title_for_new_download_link' do
     login_as(admin)
 
-    get :new, project_id: project.url_name, category_id: Link::CATEGORIES[:Download]
+    get :new, project_id: project.vanity_url, category_id: Link::CATEGORIES[:Download]
     assigns(:category_name).must_equal 'Download'
     assigns(:link).title.must_equal 'Downloads'
   end
@@ -261,7 +261,7 @@ describe 'LinksControllerTest' do
     category_id = Link::CATEGORIES[:Other]
     login_as(admin)
 
-    get :new, project_id: project.url_name, category_id: category_id
+    get :new, project_id: project.vanity_url, category_id: category_id
     assigns(:category_name).must_equal 'Other'
     assigns(:link).title.must_be_nil
   end
@@ -273,7 +273,7 @@ describe 'LinksControllerTest' do
     create(:link, project: project, link_category_id: Link::CATEGORIES[:Download])
 
     login_as(admin)
-    delete :destroy, id: link_to_be_deleted.id, project_id: project.url_name
+    delete :destroy, id: link_to_be_deleted.id, project_id: project.vanity_url
 
     project.links.size.must_equal 1
   end
@@ -281,7 +281,7 @@ describe 'LinksControllerTest' do
   it 'should gracefully handle errors when trying to delete a link' do
     link = create(:link, project: create(:project))
     Link.any_instance.stubs(:destroy).returns false
-    delete :destroy, id: link.id, project_id: link.project.url_name
+    delete :destroy, id: link.id, project_id: link.project.vanity_url
     must_respond_with 302
   end
 
@@ -293,7 +293,7 @@ describe 'LinksControllerTest' do
     login_as(admin)
 
     assert_no_difference 'project.links.count' do
-      post :create, project_id: project.url_name,
+      post :create, project_id: project.vanity_url,
                     link: { title: 'A Link', link_category_id: Link::CATEGORIES[:Homepage] }
     end
   end
@@ -306,7 +306,7 @@ describe 'LinksControllerTest' do
     link = Link.find_by_link_category_id(Link::CATEGORIES[:Forums])
     login_as(admin)
 
-    get :edit, project_id: project.url_name, id: link.id
+    get :edit, project_id: project.vanity_url, id: link.id
     assigns(:category_name).must_equal 'Forums'
     assigns(:link).title.must_equal 'Title'
   end

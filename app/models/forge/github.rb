@@ -17,7 +17,7 @@ class Forge::Github < Forge
   def get_project_attributes(match)
     json = match.get_json_api
     url = (json['homepage'].to_s.length > 0) ? json['homepage'] : json['html_url']
-    { name: json['name'], url_name: match.name_at_forge, description: json['description'], url: url }
+    { name: json['name'], vanity_url: match.name_at_forge, description: json['description'], url: url }
   end
 
   def get_repository_attributes(match)

@@ -50,8 +50,8 @@
         = link_to bad_project_edit.account.name, account_path(bad_project_edit.account), class: 'red'
     %tr
       %td= t('.url')
-      %td.good= link_to nil, project_path(@duplicate.good_project.url_name), class: 'green'
-      %td.bad= link_to nil, project_path(@duplicate.bad_project.url_name), class: 'red'
+      %td.good= link_to nil, project_path(@duplicate.good_project.vanity_url), class: 'green'
+      %td.bad= link_to nil, project_path(@duplicate.bad_project.vanity_url), class: 'red'
     %tr
       %td= t('.homepage')
       %td.good= link_to nil, @duplicate.good_project.url, class: 'green'

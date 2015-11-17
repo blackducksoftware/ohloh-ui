@@ -13,7 +13,7 @@ class Forge::Bitbucket < Forge
 
   def get_project_attributes(match)
     json = match.get_json_api
-    { name: json['name'], url_name: match.name_at_forge, description: json['description'], url: json['website'] }
+    { name: json['name'], vanity_url: match.name_at_forge, description: json['description'], url: json['website'] }
   end
 
   def get_repository_attributes(match)

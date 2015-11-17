@@ -21,7 +21,7 @@ class StackIgnoresController < ApplicationController
   end
 
   def find_project
-    @project = Project.find_by_url_name(params[:stack_ignore][:project_id])
+    @project = Project.find_by_vanity_url(params[:stack_ignore][:project_id])
     fail ParamRecordNotFound if @project.nil?
   end
 end

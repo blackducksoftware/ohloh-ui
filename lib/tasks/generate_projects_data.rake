@@ -103,7 +103,7 @@ namespace :selenium do
         'new_tag' => Tag.where.not(id: project.tags).first.name
       )
 
-      projects[project.url_name] = project_data
+      projects[project.vanity_url] = project_data
     end
     yaml_file.puts YAML.dump('projects' => projects)
   end
