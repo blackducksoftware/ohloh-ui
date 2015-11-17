@@ -403,13 +403,16 @@ Rails.application.routes.draw do
         put :reschedule
         get :mark_as_failed
         post :refetch
+        get :recount
       end
     end
 
     resources :code_sets do
-      get :fetch
-      get :reimport
-      get :resloc
+      member do
+        get :fetch
+        get :reimport
+        get :resloc
+      end
     end
 
     resources :sloc_jobs, only: [:index, :show, :destroy]

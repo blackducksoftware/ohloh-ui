@@ -1,0 +1,40 @@
+table do
+  tr do
+    th 'Reset Count'
+  end
+  tr do
+    td do
+      a 'Reset count', href: recount_admin_job_path(job)
+    end
+  end
+end
+
+table do
+  tr do
+    th 'CodeSet'
+    th
+    th 'Updated Date'
+  end
+
+  job.repository.code_sets.each do |code_set|
+    tr do
+      td do
+        a "CodeSet #{code_set.id}", href: admin_code_set_path(code_set.id)
+        span '(Best)' if code_set.repository.best_code_set_id == code_set.id
+        span '(Job)' if job.code_set_id == code_set.id
+      end
+      td do
+        if job.code_set_id == code_set.id
+          a '[Fetch]', href: fetch_admin_code_set_path(code_set.id)
+          if code_set.clumps.exists?
+            a '[Re-Import]', href: reimport_admin_code_set_path(code_set.id)
+            a '[Re-sloc]', href: resloc_admin_code_set_path(code_set.id)
+          end
+        else
+          a '[Fetch]', href: fetch_admin_code_set_path(code_set.id)
+        end
+      end
+      td code_set.updated_on ? time_ago_in_days_hours_minutes(code_set.updated_on) : 'never'
+    end
+  end
+end
