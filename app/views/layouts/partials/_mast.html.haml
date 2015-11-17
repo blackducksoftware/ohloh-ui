@@ -34,7 +34,7 @@
               %li
                 %a{ href: admin_root_path }
                   %i.icon-tachometer
-                    =t :admin_dashboard
+                    = t :admin_dashboard
             %li.divider
             %li
               = link_to("<i class='icon-off'></i> #{t(:logout)}".html_safe, sessions_path, method: :delete)

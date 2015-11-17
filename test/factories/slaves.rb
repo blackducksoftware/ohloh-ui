@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :slave do
-    hostname {Faker::Name.name}
+    hostname { Faker::Name.name }
     allow_deny 'allow'
     available_blocks { rand(999_999) }
     used_blocks { (rand(999_999) - rand(499_999)).abs }

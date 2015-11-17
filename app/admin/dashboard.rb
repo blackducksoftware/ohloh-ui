@@ -1,15 +1,19 @@
 ActiveAdmin.register_page 'Dashboard' do
+  WINDOW = { ten_minutes: 10.minutes.ago, one_hour: 1.hour.ago, two_hours: 2.hours.ago, eight_hours: 8.hours.ago,
+             one_day: 1.day.ago, two_days: 2.days.ago, one_week: 1.week.ago, one_month: 1.month.ago,
+             all: 20.years.ago }
+
   menu priority: 1, label: proc { I18n.t('active_admin.dashboard') }
 
   content title: proc { I18n.t('active_admin.dashboard') } do
     columns do
       column do
-        render :partial => 'overview', :locals => {:window => @window}
+        render partial: 'overview', locals: { window: @window }
 
-        render :partial => 'job_overview', :locals => {:window => @window}
+        render partial: 'job_overview', locals: { window: @window }
       end
     end
-  end # content
+  end
 end
 
 def window_param
@@ -21,16 +25,5 @@ def human_window
 end
 
 def get_window
-  case window_param.to_sym 
-  when :ten_minutes then 10.minutes.ago
-  when :one_hour then 1.hour.ago
-  when :two_hours then 2.hours.ago
-  when :eight_hours then 8.hours.ago
-  when :one_day then 1.day.ago
-  when :two_days then 2.days.ago
-  when :one_week then 1.week.ago
-  when :one_month then 1.month.ago
-  when :all then 20.years.ago #built in obsolesce.  heh.
-  else 1.hour.ago # default
-  end
+  WINDOW[window_param.to_sym] || 1.hour.ago
 end

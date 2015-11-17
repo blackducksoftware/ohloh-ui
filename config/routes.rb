@@ -397,14 +397,29 @@ Rails.application.routes.draw do
 
   ActiveAdmin.routes(self)
   namespace :admin do
-    resources :jobs
     resources :jobs do
-      put :reschedule, on: :member
+      member do
+        put :reschedule
+        get :mark_as_failed
+        post :refetch
+      end
     end
+
+    resources :code_sets do
+      get :fetch
+      get :reimport
+      get :resloc
+    end
+
+    resources :sloc_jobs, only: [:index, :show, :destroy]
+    resources :complete_jobs, only: [:index, :show, :destroy]
+    resources :fetch_jobs, only: [:index, :show, :destroy]
+
     resources :projects do
       resources :jobs
       resources :complete_jobs
     end
+
     resources :repositories do
       resources :jobs
       resources :complete_jobs

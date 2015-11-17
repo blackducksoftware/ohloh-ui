@@ -4,6 +4,7 @@ class Repository < ActiveRecord::Base
   has_many :enlistments, -> { not_deleted }
   has_many :projects, through: :enlistments
   has_many :jobs
+  has_many :code_sets, dependent: :destroy
 
   scope :matching, ->(match) { Repository.forge_match_search(match) }
 
@@ -50,6 +51,16 @@ class Repository < ActiveRecord::Base
   def bypass_url_validation=(value)
     modified_value = value == '0' ? false : value.present?
     @bypass_url_validation = modified_value
+  end
+
+  def refetch
+    remove_pending_jobs
+    FetchJob.create!(code_set: CodeSet.create!(repository: self))
+  end
+
+  def remove_pending_jobs
+    jobs.scheduled.each(&:destroy)
+    jobs.failed.each(&:destroy)
   end
 
   class << self
