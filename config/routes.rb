@@ -403,6 +403,7 @@ Rails.application.routes.draw do
         put :reschedule
         get :mark_as_failed
         post :refetch
+        get :recount
       end
     end
 

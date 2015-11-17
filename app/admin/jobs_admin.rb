@@ -92,6 +92,13 @@ ActiveAdmin.register Job do
     redirect_to admin_fetch_job_path(job)
   end
 
+  member_action :recount do
+    job = Job.find(params[:id])
+    job.update_attributes!(retry_count: 0, wait_until: nil)
+    flash[:notice] = "Job #{ job.id } retry attempts counter has been reset to 0."
+    redirect_to admin_job_path(job)
+  end
+
   controller do
     def scoped_collection
       if params['repository_id']
