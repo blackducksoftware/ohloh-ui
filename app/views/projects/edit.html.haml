@@ -27,12 +27,12 @@
           .controls
             .input-prepend
               %span.add-on http://www.openhub.net/p/
-              = f.text_field :url_name, class: 'check-availability', autocomplete: 'off',
+              = f.text_field :vanity_url, class: 'check-availability', autocomplete: 'off',
                                         style: 'width:514px;',
-                                        'data-original-value' => Project.find_by(id: @project).try(:url_name),
+                                        'data-original-value' => Project.find_by(id: @project).try(:vanity_url),
                                         'data-ajax-path' => project_check_availabilities_path,
                                         'data-preview-base-url' => projects_url
-              - error_tag @project, :url_name, class: 'error url_name'
+              - error_tag @project, :vanity_url, class: 'error vanity_url'
             = render 'shared/availability_preview'
         .clearfix
 

@@ -8,25 +8,25 @@ class ProjectTest < ActiveSupport::TestCase
   let(:forge) { Forge.find_by(name: 'Github') }
 
   describe 'validations' do
-    it 'should not allow project url_names to start with an underscore as we use those for routing' do
-      build(:project, url_name: '_foobar').valid?.must_equal false
+    it 'should not allow project vanity_urls to start with an underscore as we use those for routing' do
+      build(:project, vanity_url: '_foobar').valid?.must_equal false
     end
 
-    describe 'url_name' do
+    describe 'vanity_url' do
       it 'must allow valid characters' do
-        valid_url_names = %w(proj-name proj_name projéct proj_)
+        valid_vanity_urls = %w(proj-name proj_name projéct proj_)
 
-        valid_url_names.each do |name|
-          project = build(:project, url_name: name)
+        valid_vanity_urls.each do |name|
+          project = build(:project, vanity_url: name)
           project.wont_be :valid?
         end
       end
 
       it 'wont allow invalid characters' do
-        invalid_url_names = %w(proj.name .proj -proj _proj)
+        invalid_vanity_urls = %w(proj.name .proj -proj _proj)
 
-        invalid_url_names.each do |name|
-          project = build(:project, url_name: name)
+        invalid_vanity_urls.each do |name|
+          project = build(:project, vanity_url: name)
           project.wont_be :valid?
         end
       end
@@ -116,8 +116,8 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   describe 'to_param' do
-    it 'should return the url_name' do
-      project.to_param.must_equal project.url_name
+    it 'should return the vanity_url' do
+      project.to_param.must_equal project.vanity_url
     end
   end
 
@@ -249,9 +249,9 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   describe 'from_param' do
-    it 'should match project url_name' do
+    it 'should match project vanity_url' do
       project = create(:project)
-      Project.from_param(project.url_name).first.id.must_equal project.id
+      Project.from_param(project.vanity_url).first.id.must_equal project.id
     end
 
     it 'should match project id as string' do
@@ -271,8 +271,8 @@ class ProjectTest < ActiveSupport::TestCase
       Project.from_param(project.to_param).count.must_equal 0
     end
 
-    it 'should match project url_name case insensitively' do
-      project = create(:project, url_name: 'wOwZeRs')
+    it 'should match project vanity_url case insensitively' do
+      project = create(:project, vanity_url: 'wOwZeRs')
       Project.from_param('WoWzErS').first.id.must_equal project.id
     end
   end

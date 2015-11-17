@@ -110,11 +110,11 @@ class Duplicate < ActiveRecord::Base
   end
 
   def resolve_edits!
-    Edit.where(target_id: bad_project_id, target_type: 'Project').where("key = 'name' OR key = 'url_name'").delete_all
+    Edit.where(target_id: bad_project_id, target_type: 'Project').where("key = 'name' OR key = 'vanity_url'").delete_all
   end
 
   def resolve_self!
-    bad_project.update_attributes(name: "Duplicate Project #{id}", url_name: '')
+    bad_project.update_attributes(name: "Duplicate Project #{id}", vanity_url: '')
     CreateEdit.where(target: bad_project).first.undo!(bad_project.editor_account) unless bad_project.deleted?
     update_attribute(:resolved, true)
   end

@@ -236,8 +236,8 @@ class ApplicationController < ActionController::Base
   end
 
   def set_session_projects
-    @session_projects = (session[:session_projects] || []).map do |url_name|
-      Project.from_param(url_name).take
+    @session_projects = (session[:session_projects] || []).map do |vanity_url|
+      Project.from_param(vanity_url).take
     end.compact.uniq
   end
 
@@ -264,7 +264,7 @@ class ApplicationController < ActionController::Base
 
   def set_project_or_fail
     project_id = params[:project_id] || params[:id]
-    @project = Project.by_url_name_or_id(project_id).take
+    @project = Project.by_vanity_url_or_id(project_id).take
 
     fail ParamRecordNotFound unless @project
     project_context

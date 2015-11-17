@@ -3,7 +3,7 @@ require 'test_helper'
 describe 'EnlistmentsControllerTest' do
   before do
     @enlistment = create(:enlistment)
-    @project_id = @enlistment.project.url_name
+    @project_id = @enlistment.project.vanity_url
     @account = create(:account)
   end
 
@@ -135,7 +135,7 @@ describe 'EnlistmentsControllerTest' do
 
     it 'must handle duplicate svn urls when passed type is svn_sync' do
       repository = create(:svn_repository)
-      create(:enlistment, project: Project.find_by(url_name: @project_id), repository: repository)
+      create(:enlistment, project: Project.find_by(vanity_url: @project_id), repository: repository)
 
       assert_no_difference ['Repository.count', 'Enlistment.count'] do
         post :create, project_id: @project_id,

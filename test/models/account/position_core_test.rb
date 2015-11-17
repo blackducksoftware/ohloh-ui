@@ -12,8 +12,8 @@ class PositionCoreTest < ActiveSupport::TestCase
 
     admin = create(:admin)
 
-    project_foo = create(:project, name: :foo, url_name: :foo)
-    project_bar = create(:project, name: :bar, url_name: :bar)
+    project_foo = create(:project, name: :foo, vanity_url: :foo)
+    project_bar = create(:project, name: :bar, vanity_url: :bar)
 
     common_attributes = { account: admin, start_date: Time.current, stop_date: Time.current }
     create_position(common_attributes.merge(project: project_foo))

@@ -6,7 +6,7 @@ class Project < ActiveRecord::Base
   include ProjectScopes
   include ProjectJobs
 
-  acts_as_editable editable_attributes: [:name, :url_name, :organization_id, :best_analysis_id,
+  acts_as_editable editable_attributes: [:name, :vanity_url, :organization_id, :best_analysis_id,
                                          :description, :tag_list, :missing_source, :url, :download_url],
                    merge_within: 30.minutes
   acts_as_protected
@@ -14,9 +14,9 @@ class Project < ActiveRecord::Base
   link_accessors accessors: { url: :Homepage, download_url: :Download }
 
   validates :name, presence: true, length: 1..100, allow_nil: false, uniqueness: { case_sensitive: false }
-  validates :url_name, presence: true, length: 1..60, allow_nil: false, uniqueness: { case_sensitive: false },
+  validates :vanity_url, presence: true, length: 1..60, allow_nil: false, uniqueness: { case_sensitive: false },
                        default_param_format: true
-  validates :description, length: 0..800, allow_nil: true # , if: proc { |p| p.validate_url_name_and_desc == 'true' }
+  validates :description, length: 0..800, allow_nil: true # , if: proc { |p| p.validate_vanity_url_and_desc == 'true' }
   validates_each :url, :download_url, allow_blank: true do |record, field, value|
     record.errors.add(field, I18n.t(:not_a_valid_url)) unless value.blank? || value.valid_http_url?
   end
@@ -27,7 +27,7 @@ class Project < ActiveRecord::Base
   attr_accessor :managed_by_creator
 
   def to_param
-    url_name.blank? ? id.to_s : url_name
+    vanity_url.blank? ? id.to_s : vanity_url
   end
 
   def related_by_stacks(limit = 12)

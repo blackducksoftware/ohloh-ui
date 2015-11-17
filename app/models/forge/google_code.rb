@@ -15,7 +15,7 @@ class Forge::GoogleCode < Forge
 
   def get_project_attributes(match)
     doc = Nokogiri::HTML get_homepage_html(match)
-    { name: project_name(doc), url_name: match.name_at_forge,
+    { name: project_name(doc), vanity_url: match.name_at_forge,
       description: project_description(doc), url: homepage_html_url(match) }
   end
 

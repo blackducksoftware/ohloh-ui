@@ -23,6 +23,20 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
+--
+-- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+
+
 SET search_path = public, pg_catalog;
 
 --
@@ -875,7 +889,7 @@ CREATE TABLE projects (
     old_name text,
     missing_source text,
     logo_id integer,
-    url_name text,
+    vanity_url text,
     downloadable boolean DEFAULT false,
     scraped boolean DEFAULT false,
     vector tsvector,
@@ -1177,6 +1191,19 @@ CREATE VIEW contributions2 AS
    FROM ((people per
      LEFT JOIN positions pos ON ((per.account_id = pos.account_id)))
      JOIN projects p ON ((p.id = COALESCE(pos.project_id, per.project_id))));
+
+
+--
+-- Name: contributions_mock; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE contributions_mock (
+    id bigint,
+    person_id bigint,
+    project_id integer,
+    name_fact_id integer,
+    position_id integer
+);
 
 
 --
@@ -3141,7 +3168,7 @@ ALTER SEQUENCE project_experiences_id_seq OWNED BY project_experiences.id;
 
 CREATE VIEW project_gestalt_view AS
  SELECT p.id AS project_id,
-    p.url_name,
+    p.vanity_url AS url_name,
     g.id AS gestalt_id,
     g.name,
     g.type
@@ -3419,39 +3446,6 @@ CREATE TABLE repositories (
 
 
 --
--- Name: reverifications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE reverifications (
-    id integer NOT NULL,
-    twitter_reverification_sent_at timestamp without time zone,
-    twitter_reverified boolean,
-    account_id integer,
-    reminder_sent_at timestamp without time zone,
-    notification_counter integer DEFAULT 0
-);
-
-
---
--- Name: reverifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE reverifications_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: reverifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE reverifications_id_seq OWNED BY reverifications.id;
-
-
---
 -- Name: reviews_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -3525,6 +3519,22 @@ CREATE TABLE rss_articles (
     guid text NOT NULL,
     "time" timestamp without time zone DEFAULT timezone('utc'::text, now()) NOT NULL,
     title text NOT NULL,
+    description text,
+    author text,
+    link text
+);
+
+
+--
+-- Name: rss_articles_2; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE rss_articles_2 (
+    id integer,
+    rss_feed_id integer,
+    guid text,
+    "time" timestamp without time zone,
+    title text,
     description text,
     author text,
     link text
@@ -4438,13 +4448,6 @@ ALTER TABLE ONLY reports ALTER COLUMN id SET DEFAULT nextval('reports_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY reverifications ALTER COLUMN id SET DEFAULT nextval('reverifications_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY stack_ignores ALTER COLUMN id SET DEFAULT nextval('stack_ignores_id_seq'::regclass);
 
 
@@ -5224,7 +5227,7 @@ ALTER TABLE ONLY projects
 --
 
 ALTER TABLE ONLY projects
-    ADD CONSTRAINT projects_url_name_key UNIQUE (url_name);
+    ADD CONSTRAINT projects_url_name_key UNIQUE (vanity_url);
 
 
 --
@@ -5273,14 +5276,6 @@ ALTER TABLE ONLY reports
 
 ALTER TABLE ONLY repositories
     ADD CONSTRAINT repositories_pkey PRIMARY KEY (id);
-
-
---
--- Name: reverifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY reverifications
-    ADD CONSTRAINT reverifications_pkey PRIMARY KEY (id);
 
 
 --
@@ -6378,7 +6373,7 @@ CREATE INDEX index_projects_on_best_analysis_id ON projects USING btree (best_an
 -- Name: index_projects_on_lower_url_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_projects_on_lower_url_name ON projects USING btree (lower(url_name));
+CREATE INDEX index_projects_on_lower_url_name ON projects USING btree (lower(vanity_url));
 
 
 --
@@ -6923,6 +6918,14 @@ ALTER TABLE ONLY code_sets
 
 ALTER TABLE ONLY code_sets
     ADD CONSTRAINT code_sets_repository_id_fkey FOREIGN KEY (repository_id) REFERENCES repositories(id) ON DELETE CASCADE;
+
+
+--
+-- Name: commit_flags_commit_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY commit_flags
+    ADD CONSTRAINT commit_flags_commit_id_fkey FOREIGN KEY (commit_id) REFERENCES commits(id);
 
 
 --
@@ -8121,25 +8124,19 @@ INSERT INTO schema_migrations (version) VALUES ('20150615041336');
 
 INSERT INTO schema_migrations (version) VALUES ('20150701173333');
 
-INSERT INTO schema_migrations (version) VALUES ('20150907212608');
-
-INSERT INTO schema_migrations (version) VALUES ('20150908021134');
-
 INSERT INTO schema_migrations (version) VALUES ('20150911083411');
 
 INSERT INTO schema_migrations (version) VALUES ('20150911094444');
 
 INSERT INTO schema_migrations (version) VALUES ('20150916092930');
 
-INSERT INTO schema_migrations (version) VALUES ('20150916192949');
-
 INSERT INTO schema_migrations (version) VALUES ('20150918080726');
-
-INSERT INTO schema_migrations (version) VALUES ('20150921170458');
 
 INSERT INTO schema_migrations (version) VALUES ('20150925101230');
 
 INSERT INTO schema_migrations (version) VALUES ('20150925101715');
+
+INSERT INTO schema_migrations (version) VALUES ('20151116113941');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

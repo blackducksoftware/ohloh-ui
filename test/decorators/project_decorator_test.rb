@@ -5,27 +5,27 @@ class ProjectDecoratorTest < ActiveSupport::TestCase
   let(:sidebar) do
     [
       [
-        [:project_summary, 'Project Summary', "/p/#{linux.url_name}"],
-        [:rss, 'News', "/p/#{linux.url_name}/rss_articles"],
-        [:settings, 'Settings', "/p/#{linux.url_name}/settings"],
-        [:widgets, 'Sharing Widgets', "/p/#{linux.url_name}/widgets"],
-        [:similar_projects, 'Related Projects', "/p/#{linux.url_name}/similar"]
+        [:project_summary, 'Project Summary', "/p/#{linux.vanity_url}"],
+        [:rss, 'News', "/p/#{linux.vanity_url}/rss_articles"],
+        [:settings, 'Settings', "/p/#{linux.vanity_url}/settings"],
+        [:widgets, 'Sharing Widgets', "/p/#{linux.vanity_url}/widgets"],
+        [:similar_projects, 'Related Projects', "/p/#{linux.vanity_url}/similar"]
       ],
       [
         [:code_data, 'Code Data'],
-        [:languages, 'Languages', "/p/#{linux.url_name}/analyses/latest/languages_summary"],
-        [:estimated_cost, 'Cost Estimates', "/p/#{linux.url_name}/estimated_cost"]
+        [:languages, 'Languages', "/p/#{linux.vanity_url}/analyses/latest/languages_summary"],
+        [:estimated_cost, 'Cost Estimates', "/p/#{linux.vanity_url}/estimated_cost"]
       ],
       [
         [:scm_data, 'SCM Data'],
-        [:commits, 'Commits', "/p/#{linux.url_name}/commits/summary"],
-        [:contributors, 'Contributors', "/p/#{linux.url_name}/contributors/summary"]
+        [:commits, 'Commits', "/p/#{linux.vanity_url}/commits/summary"],
+        [:contributors, 'Contributors', "/p/#{linux.vanity_url}/contributors/summary"]
       ],
       [
         [:user_data, 'Community Data'],
-        [:users, 'Users', "/p/#{linux.url_name}/users"],
-        [:reviews, 'Ratings & Reviews', "/p/#{linux.url_name}/reviews/summary"],
-        [:map, 'User & Contributor Locations', "/p/#{linux.url_name}/map"]
+        [:users, 'Users', "/p/#{linux.vanity_url}/users"],
+        [:reviews, 'Ratings & Reviews', "/p/#{linux.vanity_url}/reviews/summary"],
+        [:map, 'User & Contributor Locations', "/p/#{linux.vanity_url}/map"]
       ]
     ]
   end

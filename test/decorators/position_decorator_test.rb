@@ -90,7 +90,7 @@ class PositionDecoratorTest < ActiveSupport::TestCase
       project = contribution.project
       position = create_position(account: account, project: project)
 
-      path = "/p/#{project.url_name}/contributors/#{position.contribution.id}"
+      path = "/p/#{project.vanity_url}/contributors/#{position.contribution.id}"
       account.positions.first.decorate.project_contributor_or_show_path.must_equal path
     end
   end

@@ -22,7 +22,7 @@ class Forge::SourceForge < Forge
 
   def get_project_attributes(match)
     json = match.get_json_api
-    { name: json['name'], url_name: match.name_at_forge, description: json['short_description'],
+    { name: json['name'], vanity_url: match.name_at_forge, description: json['short_description'],
       url: json['external_homepage'] || json['url'] }
   end
 

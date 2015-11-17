@@ -189,7 +189,7 @@ describe 'ApplicationController' do
       assert_response :success
       action.reload.status.must_equal Action::STATUSES[:remind]
 
-      get :show, id: create(:project).url_name, clear_action_reminder: action.id
+      get :show, id: create(:project).vanity_url, clear_action_reminder: action.id
       @response.body.wont_match(/You can add more projects now./)
       assert_response :success
       action.reload.status.must_equal Action::STATUSES[:completed]

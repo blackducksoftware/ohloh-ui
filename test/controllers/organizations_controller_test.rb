@@ -151,7 +151,7 @@ describe 'OrganizationsController' do
     end
 
     it 'must alert non managers even if project and organization url name are same' do
-      create(:project, url_name: organization.to_param)
+      create(:project, vanity_url: organization.to_param)
       restrict_edits_to_managers(organization, account)
       login_as account
 
