@@ -419,7 +419,7 @@ Rails.application.routes.draw do
     resources :projects do
       resources :jobs do
         collection do
-          post :schedule
+          post :manually_schedule
         end
       end
       resources :complete_jobs
