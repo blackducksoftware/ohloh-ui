@@ -408,9 +408,11 @@ Rails.application.routes.draw do
     end
 
     resources :code_sets do
-      get :fetch
-      get :reimport
-      get :resloc
+      member do
+        get :fetch
+        get :reimport
+        get :resloc
+      end
     end
 
     resources :sloc_jobs, only: [:index, :show, :destroy]

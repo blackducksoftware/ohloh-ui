@@ -89,7 +89,7 @@ ActiveAdmin.register Job do
     job = Job.find(params[:id])
     job = job.repository.refetch
     flash[:success] = "FetchJob #{job.id} created."
-    redirect_to admin_fetch_job_path(job)
+    redirect_to admin_job_path(job)
   end
 
   member_action :recount do

@@ -18,23 +18,15 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  it 'destroy works' do
-    code_set = create(:code_set)
-    admin.password = 'xyzzy123456'
-    login_as admin
-    delete admin_code_set_path(code_set)
-    assert_redirected_to admin_code_sets_path
-    assert_equal CodeSet.find_by_id(code_set.id), nil
-  end
-
   it 'fetch works' do
     code_set = create(:code_set)
     admin.password = 'xyzzy123456'
     login_as admin
+
     get fetch_admin_code_set_path(code_set)
     job = FetchJob.last
     assert_equal job.code_set, code_set
-    assert_redirected_to admin_fetch_job_path(job)
+    assert_redirected_to admin_job_path(job)
     assert_equal flash[:success], "FetchJob #{job.id} created."
   end
 
@@ -55,7 +47,7 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
     get resloc_admin_code_set_path(code_set)
     job = SlocJob.last
     assert_equal job.code_set, code_set
-    assert_redirected_to admin_sloc_job_path(job)
+    assert_redirected_to admin_job_path(job)
     assert_equal flash[:success], "SlocJob #{job.id} created."
   end
 end
