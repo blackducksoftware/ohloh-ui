@@ -40,7 +40,7 @@ class Organization::Outside < Organization::AccountFacts
 
   def outside_projects_sql
     <<-SQL
-      SELECT P.id, P.name, P.vanity_url, P.user_count, P.rating_average, P.logo_id, P.best_analysis_id, P.organization_id,
+      SELECT #{ project_select_clause },
         COUNT(DISTINCT(A.id)) as contribs_count, COALESCE(SUM(NF.commits),0) as commits
       FROM accounts A #{Organization.send(:sanitize_sql, account_facts_joins)}
       WHERE COALESCE(P.organization_id,0) <> #{Organization.send(:sanitize_sql, @organization.id)}
@@ -49,5 +49,11 @@ class Organization::Outside < Organization::AccountFacts
                P.logo_id, P.best_analysis_id, P.organization_id
       ORDER BY contribs_count DESC
     SQL
+  end
+
+  private
+
+  def project_select_clause
+    'P.id, P.name, P.vanity_url, P.user_count, P.rating_average, P.logo_id, P.best_analysis_id, P.organization_id'
   end
 end
