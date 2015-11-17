@@ -13,7 +13,7 @@ ActiveAdmin.register Project do
     defaults finder: :find_by_url_name!
   end
 
-  action_item only: :show do
+  action_item :jobs, only: :show do
     link_to 'Jobs', admin_project_jobs_path(project)
   end
 

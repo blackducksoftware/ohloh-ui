@@ -5,8 +5,16 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
 
   it 'index loads' do
     admin.password = 'xyzzy123456'
+    create(:clump)
     login_as admin
     get admin_code_sets_path
+    assert_response :success
+  end
+
+  it 'should load index page for repository' do
+    admin.password = 'xyzzy123456'
+    login_as admin
+    get admin_repository_code_sets_path(create(:repository))
     assert_response :success
   end
 

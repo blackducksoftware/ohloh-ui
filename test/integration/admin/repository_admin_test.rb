@@ -1,27 +1,27 @@
 require 'test_helper'
 
-class FetchJobsAdminTest < ActionDispatch::IntegrationTest
+class RepositoryTest < ActionDispatch::IntegrationTest
   let(:admin) { create(:admin, password: 'xyzzy123456') }
-  let(:job) { create(:fetch_job, repository: create(:repository)) }
 
-  it 'index loads' do
+  it 'should render index page' do
     admin.password = 'xyzzy123456'
     login_as admin
-    get admin_fetch_jobs_path
+    create(:repository)
+    get admin_repositories_path
     assert_response :success
   end
 
-  it 'loads show' do
+  it 'should render show page' do
     admin.password = 'xyzzy123456'
     login_as admin
-    get admin_job_path(job)
+    get admin_repository_path(create(:repository))
     assert_response :success
   end
 
-  it 'destroy works' do
+  it 'should refetch the repository' do
     admin.password = 'xyzzy123456'
     login_as admin
-    delete admin_job_path(job)
+    post refetch_admin_repository_path(create(:repository))
     assert_response :redirect
   end
 end

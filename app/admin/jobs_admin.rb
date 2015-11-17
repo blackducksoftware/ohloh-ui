@@ -16,7 +16,7 @@ ActiveAdmin.register Job do
 
   actions :all, except: :new
 
-  action_item only: :index do
+  action_item :manually_schedule, only: :index do
     link_to 'Manually Schedule Update',
             manually_schedule_admin_project_jobs_path(project), method: :post if params[:project_id]
   end
@@ -35,7 +35,7 @@ ActiveAdmin.register Job do
       "#{job.current_step? ? job.current_step : '-'} of #{job.max_steps? ? job.max_steps : '-'}"
     end
     column :status do |job|
-      span job.job_status.name
+      span job.job_status.try(:name)
       if job.slave_id
         span 'on'
         span link_to job.slave.hostname, admin_slafe_path(job.slave)
@@ -58,17 +58,13 @@ ActiveAdmin.register Job do
   end
 
   member_action :reschedule, method: :put do
-    begin
-      job = Job.find(params[:id])
-      if job.running?
-        flash[:warning] = 'Cannot schedule a running job.'
-      else
-        SlaveLog.create!(job: job, message: "Job rescheduled by #{current_user.name}.", level: SlaveLog::INFO)
-        job.update_attributes!(status: Job::STATUS_SCHEDULED, slave: nil, exception: nil, backtrace: nil)
-        flash[:success] = 'Job has been rescheduled.'
-      end
-    rescue
-      flash[:error] = $ERROR_INFO.message
+    job = Job.find(params[:id])
+    if job.running?
+      flash[:warning] = 'Cannot schedule a running job.'
+    else
+      SlaveLog.create!(job: job, message: "Job rescheduled by #{current_user.name}.", level: SlaveLog::INFO)
+      job.update_attributes!(status: Job::STATUS_SCHEDULED, slave: nil, exception: nil, backtrace: nil)
+      flash[:success] = 'Job has been rescheduled.'
     end
     redirect_to :back
   end
@@ -80,16 +76,12 @@ ActiveAdmin.register Job do
   end
 
   member_action :mark_as_failed, method: :get do
-    begin
-      job = Job.find(params[:id])
-      SlaveLog.create(job: job, message: "Job manually failed by #{current_user.login}.",
-                      level: SlaveLog::WARNING)
-      job.update_attributes(status: Job::STATUS_FAILED)
-      job.categorize_failure
-      flash[:notice] = "Job #{ job.id } marked as failed."
-    rescue
-      flash[:error] = $ERROR_INFO.message
-    end
+    job = Job.find(params[:id])
+    SlaveLog.create(job: job, message: "Job manually failed by #{current_user.login}.",
+                    level: SlaveLog::WARNING)
+    job.update_attributes(status: Job::STATUS_FAILED)
+    job.categorize_failure
+    flash[:notice] = "Job #{ job.id } marked as failed."
     redirect_to :back
   end
 
@@ -123,13 +115,8 @@ ActiveAdmin.register Job do
     end
 
     def destroy
-      job = Job.find(params['id'])
       flash[:success] = 'Job has been deleted'
-      if job.project_id
-        redirect_to admin_project_jobs_path(job.project)
-      elsif job.repository_id
-        redirect_to admin_repository_path(job.repository)
-      end
+      redirect_to admin_jobs_path
     end
 
     def manually_schedule

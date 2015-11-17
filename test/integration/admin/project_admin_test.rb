@@ -1,20 +1,21 @@
 require 'test_helper'
 
-class CompleteJobsAdminTest < ActionDispatch::IntegrationTest
+class ProjectTest < ActionDispatch::IntegrationTest
   let(:admin) { create(:admin, password: 'xyzzy123456') }
-  let(:job) { create(:complete_job) }
 
-  it 'index loads' do
+  it 'should render index page' do
     admin.password = 'xyzzy123456'
     login_as admin
-    get admin_complete_jobs_path
+    create(:project)
+
+    get admin_projects_path
     assert_response :success
   end
 
-  it 'should load project show page' do
+  it 'should render show page' do
     admin.password = 'xyzzy123456'
     login_as admin
-    get admin_job_path(job)
+    get admin_project_path(create(:project))
     assert_response :success
   end
 end

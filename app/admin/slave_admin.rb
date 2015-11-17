@@ -16,8 +16,6 @@ ActiveAdmin.register Slave do
         status_tag('Allow', :ok)
       when 'deny'
         status_tag('Deny', :error)
-      else
-        status_tag('ERROR', :error)
       end
     end
     column :used_percent

@@ -14,7 +14,7 @@ ActiveAdmin.register Organization do
     defaults finder: :find_by_url_name
   end
 
-  action_item only: :show do
+  action_item :jobs, only: :show do
     link_to 'Jobs', admin_organization_jobs_path(organization)
   end
 

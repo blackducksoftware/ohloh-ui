@@ -6,19 +6,19 @@ ActiveAdmin.register CodeSet do
 
   actions :show, :index
 
-  action_item only: :show do
+  action_item :fetch, only: :show do
     link_to 'Fetch', fetch_admin_code_set_path(code_set)
   end
 
-  action_item only: :show do
+  action_item :reimport, only: :show do
     link_to 'Re-Import', reimport_admin_code_set_path(code_set) if code_set.clumps.exists?
   end
 
-  action_item only: :show do
+  action_item :resloc, only: :show do
     link_to 'Re-Sloc', resloc_admin_code_set_path(code_set) if code_set.clumps.exists?
   end
 
-  action_item only: :show do
+  action_item :sloc_sets, only: :show do
     link_to 'SlocSets', admin_code_set_sloc_sets_path(code_set)
   end
 
@@ -55,14 +55,9 @@ ActiveAdmin.register CodeSet do
   member_action :reimport, method: :post do
     code_set = CodeSet.find(params[:id])
     code_set.repository.remove_pending_jobs
-    begin
-      job = code_set.reimport
-      flash[:success] = "CodeSet #{job.code_set_id} and ImportJob #{job.id} created."
-      redirect_to admin_job_path(job)
-    rescue
-      flash[:error] = "ERROR: #{$ERROR_INFO.message}"
-      redirect_to :back
-    end
+    job = code_set.reimport
+    flash[:success] = "CodeSet #{job.code_set_id} and ImportJob #{job.id} created."
+    redirect_to admin_job_path(job)
   end
 
   member_action :resloc, method: :post do

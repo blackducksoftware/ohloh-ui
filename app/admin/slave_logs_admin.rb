@@ -23,6 +23,8 @@ ActiveAdmin.register SlaveLog do
         repository.slave_logs
       elsif params[:job_id]
         SlaveLog.where(job_id: params[:job_id])
+      else
+        super
       end
     end
   end

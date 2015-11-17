@@ -26,7 +26,7 @@ ActiveAdmin.register VitaJob do
       "#{job.current_step? ? job.current_step : '-'} of #{job.max_steps? ? job.max_steps : '-'}"
     end
     column :status do |job|
-      span job.job_status.name
+      span job.job_status.try(:name)
       if job.slave_id
         span 'on'
         span link_to job.slave.hostname, admin_slafe_path(job.slave)

@@ -8,15 +8,15 @@ ActiveAdmin.register Repository do
   filter :created_at
   filter :updated_at
 
-  action_item only: :show do
+  action_item :refetch, only: :show do
     link_to 'Re-Fetch', refetch_admin_repository_path(repository), method: :post
   end
 
-  action_item only: :show do
+  action_item :jobs, only: :show do
     link_to 'Jobs', admin_repository_jobs_path(repository)
   end
 
-  action_item only: :show do
+  action_item :code_sets, only: :show do
     link_to 'CodeSets', admin_repository_code_sets_path(repository)
   end
 
@@ -48,7 +48,7 @@ ActiveAdmin.register Repository do
         end
         row :best_code_set
         row 'best_sloc_set' do
-          repository.best_code_set.best_sloc_set
+          repository.best_code_set.best_sloc_set if repository.best_code_set
         end
       end
     end

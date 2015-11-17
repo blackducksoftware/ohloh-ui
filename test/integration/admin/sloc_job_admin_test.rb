@@ -14,15 +14,7 @@ class SlocJobsAdminTest < ActionDispatch::IntegrationTest
   it 'loads show' do
     admin.password = 'xyzzy123456'
     login_as admin
-    get "/admin/sloc_jobs/#{job.id}"
+    get admin_job_path(job)
     assert_response :success
-  end
-
-  it 'destroy works' do
-    admin.password = 'xyzzy123456'
-    login_as admin
-    delete admin_sloc_job_path(job)
-    assert_redirected_to admin_sloc_jobs_path
-    assert_equal Job.find_by_id(job.id), nil
   end
 end

@@ -15,4 +15,12 @@ FactoryGirl.define do
   factory :complete_job, parent: :job, class: :CompleteJob do
     type 'CompleteJob'
   end
+
+  factory :organization_job, parent: :job, class: :OrganizationJob do
+    type 'OrganizationJob'
+  end
+
+  factory :vita_job, parent: :job, class: :VitaJob do
+    type 'VitaJob'
+  end
 end
