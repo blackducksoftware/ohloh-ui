@@ -1,6 +1,6 @@
 ActiveAdmin.register CompleteJob do
   belongs_to :project, finder: :find_by_url_name!, optional: true
-  actions :index, :show, :destroy
+  actions :index, :show, :edit, :destroy
   menu false
   filter :none
 

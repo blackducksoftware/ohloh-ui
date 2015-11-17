@@ -56,6 +56,14 @@ class Repository < ActiveRecord::Base
     @bypass_url_validation = modified_value
   end
 
+  def schedule_fetch
+    return ensure_job unless best_code_set
+
+    return if best_code_set.jobs.incomplete_or_since(Time.now - 5.minutes)
+
+    CompleteJob.create!(repository_id: best_code_set.repository_id, code_set_id: best_code_set.id)
+  end
+
   def refetch
     remove_pending_jobs
     FetchJob.create!(code_set: CodeSet.create!(repository: self))

@@ -7,15 +7,15 @@ ActiveAdmin.register CodeSet do
   actions :show, :index
 
   action_item only: :show do
-    link_to 'Fetch'
+    link_to 'Fetch', fetch_admin_code_set_path(code_set)
   end
 
   action_item only: :show do
-    link_to 'Re-Import' if code_set.clumps.exists?
+    link_to 'Re-Import', reimport_admin_code_set_path(code_set) if code_set.clumps.exists?
   end
 
   action_item only: :show do
-    link_to 'Re-Sloc' if code_set.clumps.exists?
+    link_to 'Re-Sloc', resloc_admin_code_set_path(code_set) if code_set.clumps.exists?
   end
 
   action_item only: :show do
@@ -26,10 +26,10 @@ ActiveAdmin.register CodeSet do
     %w(id as_of updated_on clump_count best_sloc_set).each { |attr| column(attr) }
     column(:sloc_set_count) { |code_set| code_set.sloc_sets.count }
     actions do |code_set|
-      a link_to 'Fetch', '#', class: 'member_link'
+      a link_to 'Fetch', fetch_admin_code_set_path(code_set), class: 'member_link'
       if code_set.clumps.exists?
-        a link_to 'Re-Import', '#', class: 'member_link'
-        a link_to 'Re-Sloc', '#', class: 'member_link'
+        a link_to 'Re-Import', reimport_admin_code_set_path(code_set), class: 'member_link'
+        a link_to 'Re-Sloc', resloc_admin_code_set_path(code_set), class: 'member_link'
       end
     end
   end

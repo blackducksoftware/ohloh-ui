@@ -5,6 +5,7 @@ class CodeSet < ActiveRecord::Base
   has_many :fyles, dependent: :delete_all
   has_many :sloc_sets, dependent: :destroy
   has_many :clumps
+  has_many :jobs
 
   def ignore_prefixes(project)
     enlistment = project.enlistments.find_by(repository_id: repository_id)
