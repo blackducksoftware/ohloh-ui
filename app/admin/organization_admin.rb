@@ -1,6 +1,8 @@
 ActiveAdmin.register Organization do
   menu false
+
   actions :index, :show
+
   filter :name
   filter :url_name
   filter :description

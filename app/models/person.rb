@@ -55,7 +55,7 @@ class Person < ActiveRecord::Base
     end
 
     def rebuild_by_project_id(project_id)
-      project_id = Person.send :sanitize_sql, project_id.to_s
+      return if project_id.blank?
       Person.delete_all(project_id: project_id)
       connection.execute("insert into people (select * from people_view where project_id = #{project_id})")
     end

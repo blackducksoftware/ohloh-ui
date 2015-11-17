@@ -37,6 +37,10 @@ class Job < ActiveRecord::Base
     update_column(failure_group_id: failure_group.id) if failure_group
   end
 
+  def running?
+    status == STATUS_RUNNING
+  end
+
   class << self
     def incomplete_project_job(project_ids)
       where(project_id: project_ids).where.not(status: STATUS_COMPLETED).first

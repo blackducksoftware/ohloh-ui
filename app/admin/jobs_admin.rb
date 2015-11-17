@@ -4,17 +4,21 @@ ActiveAdmin.register Job do
   belongs_to :project, finder: :find_by_url_name!, optional: true
   belongs_to :organization, finder: :find_by_url_name!, optional: true
   belongs_to :account, finder: :find_by_login, optional: true
+
   permit_params :status, :priority, :wait_until, :current_step_at, :notes
+
   filter :slave, collection: proc { Slave.pluck(:hostname).sort }
   filter :type, as: :select
   filter :job_status
   filter :project_url_name, as: :string, label: 'PROJECT URL NAME'
   filter :organization_url_name, as: :string, label: 'ORGANIZATION URL NAME'
   filter :account_login, as: :string, label: 'Account Login'
+
   actions :all, except: :new
 
   action_item only: :index do
-    link_to 'Manually Schedule Update', schedule_admin_project_jobs_path(project), method: :post if params[:project_id]
+    link_to 'Manually Schedule Update',
+            manually_schedule_admin_project_jobs_path(project), method: :post if params[:project_id]
   end
 
   index do
@@ -53,22 +57,26 @@ ActiveAdmin.register Job do
     render partial: 'job'
   end
 
-  member_action :schedule, method: :post do
-    project = Project.find_by_url_name!(params[:project_id])
-    project.repositories.each(&:schedule_fetch)
-    redirect_to admin_project_jobs_path(project), flash: { success: 'Job has been scheduled.' }
-  end
-
   member_action :reschedule, method: :put do
-    flash[:success] = 'Job has been rescheduled.'
-    # redirect_to admin_project_job_path(params['project_id'], params['id'])
+    begin
+      job = Job.find(params[:id])
+      if job.running?
+        flash[:warning] = 'Cannot schedule a running job.'
+      else
+        SlaveLog.create!(job: job, message: "Job rescheduled by #{current_user.name}.", level: SlaveLog::INFO)
+        job.update_attributes!(status: Job::STATUS_SCHEDULED, slave: nil, exception: nil, backtrace: nil)
+        flash[:success] = 'Job has been rescheduled.'
+      end
+    rescue
+      flash[:error] = $ERROR_INFO.message
+    end
     redirect_to :back
   end
 
   member_action :rebuild_people, method: :put do
-    flash[:success] = 'People records for this project have been rebuilt'
-    # redirect_to admin_project_job_path(params['project_id'], params['id'])
-    redirect_to :back
+    job = Job.find(params[:id])
+    Person.rebuild_by_project_id(job.project_id)
+    redirect_to :back, flash: { success: 'People records for this project have been rebuilt' }
   end
 
   member_action :mark_as_failed, method: :get do
@@ -115,6 +123,12 @@ ActiveAdmin.register Job do
       elsif job.repository_id
         redirect_to admin_repository_path(job.repository)
       end
+    end
+
+    def manually_schedule
+      project = Project.find_by_url_name!(params[:project_id])
+      project.repositories.each(&:schedule_fetch)
+      redirect_to admin_project_jobs_path(project), flash: { success: 'Job has been scheduled.' }
     end
   end
 end

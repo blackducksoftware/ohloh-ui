@@ -8,7 +8,7 @@ ActiveAdmin.register SlaveLog do
       time_ago_in_words(slave_log.created_on)
     end
     column 'Host' do |slave_log|
-      Slave.find(slave_log.slave_id).hostname
+      link_to slave_log.slave.hostname, admin_slafe_path(slave_log.slave) if slave_log.slave
     end
     column 'Job' do |slave_log|
       span link_to slave_log.job_id, admin_job_path(slave_log.job_id)
