@@ -37,10 +37,8 @@ ActiveAdmin.register Slave do
     f.semantic_errors(*f.object.errors.keys)
     f.inputs 'Details' do
       f.input :hostname, as: :string
-      f.input :allow_deny, as: :select, include_blank: false,
-                           collection: { 'Allow' => 'allow', 'Deny' => 'deny' }
-      f.input :enable_profiling, as: :select, include_blank: false,
-                                 collection: { 'Yes' => 'true', 'No' => 'false' }
+      f.input :allow_deny, as: :select, include_blank: false, collection: { 'Allow' => 'allow', 'Deny' => 'deny' }
+      f.input :enable_profiling, as: :select, include_blank: false, collection: { 'Yes' => 'true', 'No' => 'false' }
       f.input :blocked_types
     end
     f.actions

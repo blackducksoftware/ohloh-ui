@@ -39,12 +39,6 @@ class Repository < ActiveRecord::Base
     OhlohScm::Adapters::AbstractAdapter
   end
 
-  def refetch
-    jobs.scheduled.destroy_all
-    jobs.failed.destroy_all
-    create_fetch_job(0)
-  end
-
   def ensure_job(priority = 0)
     job = nil
     Job.transaction do
@@ -60,6 +54,16 @@ class Repository < ActiveRecord::Base
   def bypass_url_validation=(value)
     modified_value = value == '0' ? false : value.present?
     @bypass_url_validation = modified_value
+  end
+
+  def refetch
+    remove_pending_jobs
+    FetchJob.create!(code_set: CodeSet.create!(repository: self))
+  end
+
+  def remove_pending_jobs
+    jobs.scheduled.each(&:destroy)
+    jobs.failed.each(&:destroy)
   end
 
   class << self

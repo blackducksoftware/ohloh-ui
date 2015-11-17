@@ -399,8 +399,23 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :jobs do
       resources :slave_logs
-      put :reschedule, on: :member
+      member do
+        put :reschedule
+        get :mark_as_failed
+        post :refetch
+      end
     end
+
+    resources :code_sets do
+      get :fetch
+      get :reimport
+      get :resloc
+    end
+
+    resources :sloc_jobs, only: [:index, :show, :destroy]
+    resources :complete_jobs, only: [:index, :show, :destroy]
+    resources :fetch_jobs, only: [:index, :show, :destroy]
+
     resources :projects do
       resources :jobs do
         collection do

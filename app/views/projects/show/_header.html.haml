@@ -19,7 +19,7 @@
           = link_to bootstrap_icon('icon-flag', t('projects.header.duplicate')), new_project_duplicate_path(@project)
         - if current_user_is_admin?
           |
-          =link_to bootstrap_icon('icon-legal', t('projects.header.job')), admin_project_jobs_path(@project)
+          = link_to bootstrap_icon('icon-legal', t('projects.header.job')), admin_project_jobs_path(@project)
     .col-md-3.pull-right.no_padding#widgets
       .pull-left#project_header_activity_indicator
         - project_activity_level_class(@project, :thirtyfive)
