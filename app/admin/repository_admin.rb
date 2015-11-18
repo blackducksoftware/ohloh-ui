@@ -33,25 +33,7 @@ ActiveAdmin.register Repository do
   end
 
   show do
-    panel 'Repository Overview' do
-      attributes_table_for repository do
-        row :type
-        row 'url' do
-          repository.nice_url
-        end
-        row 'Update Interval' do
-          update_interval = (repository.update_interval < 8.hours) ? 8.hours : repository.update_interval
-          "Updates every #{time_ago_in_days_hours_minutes(Time.now - update_interval)}"
-        end
-        row 'Slave Log' do
-          link_to 'Log', admin_repository_slave_logs_path(repository)
-        end
-        row :best_code_set
-        row 'best_sloc_set' do
-          repository.best_code_set.best_sloc_set if repository.best_code_set
-        end
-      end
-    end
+    render 'admin/repositories/repository', repository: repository, code_sets: repository.code_sets
   end
 
   sidebar 'Repository Details', only: :show do

@@ -57,7 +57,7 @@ class Person < ActiveRecord::Base
     def rebuild_by_project_id(project_id)
       return if project_id.blank?
       Person.delete_all(project_id: project_id)
-      connection.execute("insert into people (select * from people_view where project_id = #{project_id})")
+      connection.execute("insert into people (select * from people_view where project_id = #{sanitize_sql project_id})")
     end
 
     def unclaimed_people(opts)
