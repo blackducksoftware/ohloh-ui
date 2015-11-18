@@ -45,6 +45,10 @@ class ApplicationController < ActionController::Base
     render_404
   end
 
+  def avoid_global_search
+    @avoid_global_search = true
+  end
+
   # Any ActionController::RoutingError raised by ActionDispatch is not caught by ActionController.
   # See: https://github.com/rails/rails/issues/671
   def raise_not_found!

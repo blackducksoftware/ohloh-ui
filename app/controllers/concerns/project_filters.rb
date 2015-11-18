@@ -13,6 +13,7 @@ module ProjectFilters
     before_action :show_permissions_alert, only: [:settings, :edit]
     before_action :set_session_projects, only: :index
     before_action :set_rating_and_score, only: :show
+    before_action :avoid_global_search, only: :index, if: proc { params[:account_id].present? }
   end
 
   private

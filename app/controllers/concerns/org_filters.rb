@@ -15,6 +15,7 @@ module OrgFilters
     before_action :set_project, only: [:claim_project, :remove_project]
     before_action :can_claim_project, only: :claim_project
     after_action :schedule_analysis, only: [:claim_project, :remove_project]
+    before_action :avoid_global_search, only: :manage_projects
   end
 
   def schedule_analysis
