@@ -1,7 +1,7 @@
 ActiveAdmin.register Job do
   config.sort_order = 'current_step_at_desc'
 
-  belongs_to :project, finder: :find_by_url_name!, optional: true
+  belongs_to :project, finder: :find_by_vanity_url!, optional: true
   belongs_to :organization, finder: :find_by_url_name!, optional: true
   belongs_to :account, finder: :find_by_login, optional: true
 
@@ -10,7 +10,7 @@ ActiveAdmin.register Job do
   filter :slave, collection: proc { Slave.pluck(:hostname).sort }
   filter :type, as: :select
   filter :job_status
-  filter :project_url_name, as: :string, label: 'PROJECT URL NAME'
+  filter :project_vanity_url, as: :string, label: 'PROJECT URL NAME'
   filter :organization_url_name, as: :string, label: 'ORGANIZATION URL NAME'
   filter :account_login, as: :string, label: 'Account Login'
 
@@ -120,7 +120,7 @@ ActiveAdmin.register Job do
     end
 
     def manually_schedule
-      project = Project.find_by_url_name!(params[:project_id])
+      project = Project.find_by_vanity_url!(params[:project_id])
       project.repositories.each(&:schedule_fetch)
       redirect_to admin_project_jobs_path(project), flash: { success: 'Job has been scheduled.' }
     end

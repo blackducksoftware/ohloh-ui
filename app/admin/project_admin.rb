@@ -3,14 +3,14 @@ ActiveAdmin.register Project do
   actions :index, :show
 
   filter :name
-  filter :url_name
+  filter :vanity_url
   filter :created_at
   filter :updated_at
   filter :deleted
   filter :user_count
 
   controller do
-    defaults finder: :find_by_url_name!
+    defaults finder: :find_by_vanity_url!
   end
 
   action_item :jobs, only: :show do
@@ -20,8 +20,8 @@ ActiveAdmin.register Project do
   index do
     column :id
     column :name
-    column :url_name do |project|
-      link_to project.url_name, project_path(project)
+    column :vanity_url do |project|
+      link_to project.vanity_url, project_path(project)
     end
     column :description do |project|
       simple_format project.description
