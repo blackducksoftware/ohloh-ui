@@ -6,7 +6,7 @@ class CheckAvailabilitiesController < ApplicationController
   end
 
   def project
-    render json: Project.case_insensitive_url_name(params[:query]).present?
+    render json: Project.case_insensitive_vanity_url(params[:query]).present?
   end
 
   def organization

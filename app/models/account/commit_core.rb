@@ -11,14 +11,14 @@ class Account::CommitCore
     stats = Account.select(select_clause)
             .with_facts
             .where(@accounts_id.in(@account_ids))
-            .group(@accounts_id, @projects[:id], @projects[:name], @projects[:url_name])
+            .group(@accounts_id, @projects[:id], @projects[:name], @projects[:vanity_url])
     stats.group_by { |hsh| hsh['account_id'].to_i }
   end
 
   private
 
   def select_clause
-    [@accounts_id.as('account_id'), @projects[:id].as('project_id'), @projects[:name], @projects[:url_name],
+    [@accounts_id.as('account_id'), @projects[:id].as('project_id'), @projects[:name], @projects[:vanity_url],
      @name_facts[:commits].maximum.as('max_commits'),
      @name_facts[:last_checkin].maximum.as('last_checkin')]
   end

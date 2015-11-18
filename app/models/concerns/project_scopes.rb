@@ -6,9 +6,9 @@ module ProjectScopes
     scope :deleted, -> { where("projects.deleted = 't'") }
     scope :not_deleted, -> { where("projects.deleted = 'f'") }
     scope :from_param, lambda { |param|
-      not_deleted.by_url_name_or_id(param)
+      not_deleted.by_vanity_url_or_id(param)
     }
-    scope :by_url_name_or_id, ->(param) { where('lower(url_name) = ? OR id = ?', param.to_s.downcase, param.to_i) }
+    scope :by_vanity_url_or_id, ->(param) { where('lower(vanity_url) = ? OR id = ?', param.to_s.downcase, param.to_i) }
     scope :been_analyzed, -> { where.not(best_analysis_id: nil) }
     scope :recently_analyzed, -> { not_deleted.been_analyzed.order(created_at: :desc) }
     scope :hot, lambda { |l_id = nil|
@@ -27,7 +27,7 @@ module ProjectScopes
       joins(:manages).where.not(deleted: true, manages: { approved_by: nil }).where(manages: { account_id: account.id })
     }
     scope :case_insensitive_name, ->(mixed_case) { where(['lower(name) = ?', mixed_case.downcase]) }
-    scope :case_insensitive_url_name, ->(mixed_case) { where(['lower(url_name) = ?', mixed_case.downcase]) }
+    scope :case_insensitive_vanity_url, ->(mixed_case) { where(['lower(vanity_url) = ?', mixed_case.downcase]) }
     scope :most_active, lambda {
       joins(best_analysis: :analysis_summaries).where(analysis_summaries: { type: 'ThirtyDaySummary' })
         .active. order(' COALESCE(analysis_summaries.affiliated_commits_count, 0) +

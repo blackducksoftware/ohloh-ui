@@ -24,7 +24,7 @@ describe 'CheckAvailabilitiesController' do
 
   describe 'project' do
     it 'should return true when project is present' do
-      create(:project, url_name: 'Mario')
+      create(:project, vanity_url: 'Mario')
       xhr :get, :project, query: 'maRio'
 
       response.body.must_equal 'true'

@@ -402,7 +402,7 @@ describe 'ProjectsController' do
   # create
   it 'create should require a current user' do
     login_as nil
-    post :create, project: { name: 'Fail', url_name: 'fail', description: 'It fails.' }
+    post :create, project: { name: 'Fail', vanity_url: 'fail', description: 'It fails.' }
     must_respond_with :redirect
     must_redirect_to new_session_path
     flash[:notice].must_equal I18n.t('sessions.message_html', href: new_registration_path)
@@ -413,12 +413,12 @@ describe 'ProjectsController' do
     license1 = create(:license)
     license2 = create(:license)
     login_as account
-    post :create, project: { name: 'Cool Beans', url_name: 'cool-beans', description: 'cool beans app',
+    post :create, project: { name: 'Cool Beans', vanity_url: 'cool-beans', description: 'cool beans app',
                              url: 'http://a.com/', download_url: 'http://b.com/', managed_by_creator: '1',
                              project_licenses_attributes: [{ license_id: license1.id }, { license_id: license2.id }],
                              enlistments_attributes: enlistment_params }
     must_respond_with 302
-    project = Project.where(url_name: 'cool-beans').last
+    project = Project.where(vanity_url: 'cool-beans').last
     project.wont_equal nil
     project.name.must_equal 'Cool Beans'
     project.url.must_equal 'http://a.com/'
@@ -436,12 +436,12 @@ describe 'ProjectsController' do
     license1 = create(:license)
     license2 = create(:license)
     login_as account
-    post :create, project: { name: 'Cool Beans', url_name: 'cool-beans', description: 'cool beans app',
+    post :create, project: { name: 'Cool Beans', vanity_url: 'cool-beans', description: 'cool beans app',
                              url: 'http://a.com/', download_url: '', managed_by_creator: '1',
                              project_licenses_attributes: [{ license_id: license1.id }, { license_id: license2.id }],
                              enlistments_attributes: enlistment_params }
     must_respond_with 302
-    project = Project.where(url_name: 'cool-beans').last
+    project = Project.where(vanity_url: 'cool-beans').last
     project.wont_equal nil
     project.name.must_equal 'Cool Beans'
     project.url.must_equal 'http://a.com/'
@@ -457,12 +457,12 @@ describe 'ProjectsController' do
   it 'create should allow no licenses' do
     account = create(:account)
     login_as account
-    post :create, project: { name: 'Cool Beans', url_name: 'cool-beans', description: 'cool beans app',
+    post :create, project: { name: 'Cool Beans', vanity_url: 'cool-beans', description: 'cool beans app',
                              url: 'http://a.com/', download_url: 'http://b.com/', managed_by_creator: '1',
                              project_licenses_attributes: [],
                              enlistments_attributes: enlistment_params }
     must_respond_with 302
-    project = Project.where(url_name: 'cool-beans').last
+    project = Project.where(vanity_url: 'cool-beans').last
     project.wont_equal nil
     project.name.must_equal 'Cool Beans'
     project.url.must_equal 'http://a.com/'
@@ -479,12 +479,12 @@ describe 'ProjectsController' do
     license1 = create(:license)
     license2 = create(:license)
     login_as create(:account)
-    post :create, project: { name: 'Cool Beans', url_name: 'cool-beans', description: 'cool beans app',
+    post :create, project: { name: 'Cool Beans', vanity_url: 'cool-beans', description: 'cool beans app',
                              url: 'http://a.com/', download_url: 'http://b.com/', managed_by_creator: '0',
                              project_licenses_attributes: [{ license_id: license1.id }, { license_id: license2.id }],
                              enlistments_attributes: enlistment_params }
     must_respond_with 302
-    project = Project.where(url_name: 'cool-beans').last
+    project = Project.where(vanity_url: 'cool-beans').last
     project.wont_equal nil
     project.name.must_equal 'Cool Beans'
     project.url.must_equal 'http://a.com/'
@@ -499,7 +499,7 @@ describe 'ProjectsController' do
 
   it 'create should not lose repo params on validation errors' do
     login_as create(:account)
-    post :create, project: { name: '', url_name: 'cool-beans', description: 'cool beans app',
+    post :create, project: { name: '', vanity_url: 'cool-beans', description: 'cool beans app',
                              url: 'http://a.com/', enlistments_attributes: enlistment_params }
     must_respond_with :unprocessable_entity
     must_select 'form#new_project', 1
@@ -574,15 +574,15 @@ describe 'ProjectsController' do
     must_select 'p.error[rel="name"]', 1
   end
 
-  it 'update should handle blank url_names gracefully and render the edit action' do
+  it 'update should handle blank vanity_urls gracefully and render the edit action' do
     project = create(:project)
     login_as create(:admin)
-    put :update, id: project.id, project: { url_name: '' }
+    put :update, id: project.id, project: { vanity_url: '' }
     must_respond_with :unprocessable_entity
-    project.reload.url_name.blank?.must_equal false
+    project.reload.vanity_url.blank?.must_equal false
     must_respond_with :unprocessable_entity
     must_select 'input.save', 1
-    must_select 'p.error[rel="url_name"]', 1
+    must_select 'p.error[rel="vanity_url"]', 1
   end
 
   # estimated_cost

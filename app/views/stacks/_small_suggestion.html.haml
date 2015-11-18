@@ -1,10 +1,10 @@
 - project ||= small_suggestion
-%li.clear{ id: "suggestion_#{project.url_name}" }
+%li.clear{ id: "suggestion_#{project.vanity_url}" }
   .stack_right
-    %a.btn.btn-mini.btn-primary.command.stack_add{ href: '#', id: "stackit_#{project.url_name}" }
+    %a.btn.btn-mini.btn-primary.command.stack_add{ href: '#', id: "stackit_#{project.vanity_url}" }
       = t('stacks.small_suggestion.i_use_this')
     %span.separator -
-    %a.btn.btn-mini.btn-warning.command.ignore{ href: '#', id: "stackit_#{project.url_name}" }
+    %a.btn.btn-mini.btn-warning.command.ignore{ href: '#', id: "stackit_#{project.vanity_url}" }
       = t('stacks.small_suggestion.skip_this')
   - project_link(project, :small, style: 'float: left;')
   .title

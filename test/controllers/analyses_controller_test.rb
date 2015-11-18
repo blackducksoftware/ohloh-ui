@@ -36,7 +36,7 @@ describe 'AnalysesController' do
     end
 
     it 'must respond with valid data for xml request' do
-      url = "http://test.host/p/#{project.url_name}/analyses/#{analysis.id}"
+      url = "http://test.host/p/#{project.vanity_url}/analyses/#{analysis.id}"
       client_id = api_key.oauth_application.uid
 
       get :show, project_id: project.to_param, id: analysis.id, format: :xml, api_key: client_id

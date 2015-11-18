@@ -38,7 +38,7 @@ class EditsController < SettingsController
 
   def find_project
     return nil unless params[:project_id]
-    Project.by_url_name_or_id(params[:project_id]).take
+    Project.by_vanity_url_or_id(params[:project_id]).take
   end
 
   def find_organization

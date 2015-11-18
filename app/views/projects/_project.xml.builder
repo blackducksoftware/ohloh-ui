@@ -10,7 +10,8 @@ xml.project do
   xml.description project.description
   xml.homepage_url project.url
   xml.download_url project.download_url
-  xml.url_name project.url_name
+  xml.url_name project.vanity_url
+  xml.vanity_url project.vanity_url
   if project.logo_id
     xml.medium_logo_url project.logo.attachment.url(:med)
     xml.small_logo_url project.logo.attachment.url(:small)
