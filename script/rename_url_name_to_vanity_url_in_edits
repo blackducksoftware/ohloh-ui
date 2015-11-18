@@ -1,0 +1,12 @@
+#! /usr/bin/env ruby
+
+fail 'RAILS_ENV is undefined' unless ENV['RAILS_ENV']
+
+require_relative '../config/environment'
+
+ActiveRecord::Base.connection.execute("
+  UPDATE edits SET KEY = 'vanity_url'
+    WHERE type = 'PropertyEdit'
+      AND key = 'url_name'
+      AND target_type = 'Project'
+")
