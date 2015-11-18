@@ -13,10 +13,15 @@ module ProjectFilters
     before_action :show_permissions_alert, only: [:settings, :edit]
     before_action :set_session_projects, only: :index
     before_action :set_rating_and_score, only: :show
-    before_action :avoid_global_search, only: :index, if: proc { params[:account_id].present? }
+    before_action :avoid_global_search_if_parent_is_account, only: :index
+    before_action :avoid_global_search, only: :users
   end
 
   private
+
+  def avoid_global_search_if_parent_is_account
+    avoid_global_search if params[:account_id].present?
+  end
 
   def find_account
     @account = Account.from_param(params[:account_id]).take
