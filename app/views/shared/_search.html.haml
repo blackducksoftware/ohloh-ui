@@ -1,4 +1,6 @@
-- global_search_param = GLOBALLY_SEARCHABLE.include?(controller_name) ? params[:query] : ''
+:ruby
+  global_search_param = GLOBALLY_SEARCHABLE.include?(controller_name) ? params[:query] : ''
+  global_search_param = '' if @avoid_global_search
 
 - unless request.path == root_path
   %form.pull-right#quicksearch{ action: projects_path, style: 'margin-top: -8px' }
