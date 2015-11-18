@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class VitaJobTest < ActionDispatch::IntegrationTest
+class VitaJobAdminTest < ActionDispatch::IntegrationTest
   let(:admin) { create(:admin, password: 'xyzzy123456') }
 
   it 'should render index page' do

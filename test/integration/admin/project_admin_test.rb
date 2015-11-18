@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ProjectTest < ActionDispatch::IntegrationTest
+class ProjectAdminTest < ActionDispatch::IntegrationTest
   let(:admin) { create(:admin, password: 'xyzzy123456') }
 
   it 'should render index page' do
