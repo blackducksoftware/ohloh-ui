@@ -4,8 +4,9 @@ ActiveAdmin.register Job do
   belongs_to :project, finder: :find_by_vanity_url!, optional: true
   belongs_to :organization, finder: :find_by_url_name!, optional: true
   belongs_to :account, finder: :find_by_login, optional: true
+  belongs_to :failure_group, optional: true
 
-  permit_params :status, :priority, :wait_until, :current_step_at, :notes
+  permit_params :status, :priority, :wait_until, :current_step_at, :notes, :do_not_retry
 
   filter :slave, collection: proc { Slave.pluck(:hostname).sort }
   filter :type, as: :select
@@ -43,7 +44,7 @@ ActiveAdmin.register Job do
     end
     column 'Owners' do |job|
       span link_to "Project #{job.project.name}", project_path(job.project) if job.project_id
-      span link_to "Organization #{job.organization.name}", project_path(job.organization) if job.organization_id
+      span link_to "Organization #{job.organization.name}", organization_path(job.organization) if job.organization_id
       span link_to "Account #{job.account.login}", account_path(job.account) if job.account_id
       span link_to "Repository #{job.repository_id}", admin_repository_path(job.repository_id) if job.repository_id
     end

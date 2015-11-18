@@ -1,4 +1,6 @@
 class Repository < ActiveRecord::Base
+  include RepositoryJobs
+
   belongs_to :best_code_set, foreign_key: :best_code_set_id, class_name: CodeSet
   belongs_to :forge, class_name: 'Forge::Base'
   has_many :enlistments, -> { not_deleted }
@@ -27,8 +29,7 @@ class Repository < ActiveRecord::Base
 
   def failed?
     job = jobs.incomplete.first
-    return true if job && job.status == Job::STATUS_FAILED
-    false
+    job.failed?
   end
 
   def source_scm
@@ -39,39 +40,10 @@ class Repository < ActiveRecord::Base
     OhlohScm::Adapters::AbstractAdapter
   end
 
-  def ensure_job(priority = 0)
-    job = nil
-    Job.transaction do
-      job = jobs.incomplete.first
-      return job if job
-      job = create_fetch_job(priority) if best_code_set.blank?
-      job = create_import_or_sloc_jobs(priority) if best_code_set.present?
-    end
-    job
-  end
-
   # Allows testing/development to skip validation.
   def bypass_url_validation=(value)
     modified_value = value == '0' ? false : value.present?
     @bypass_url_validation = modified_value
-  end
-
-  def schedule_fetch
-    return ensure_job unless best_code_set
-
-    return if best_code_set.jobs.incomplete_or_since(Time.now - 5.minutes)
-
-    CompleteJob.create!(repository_id: best_code_set.repository_id, code_set_id: best_code_set.id)
-  end
-
-  def refetch
-    remove_pending_jobs
-    FetchJob.create!(code_set: CodeSet.create!(repository: self))
-  end
-
-  def remove_pending_jobs
-    jobs.scheduled.each(&:destroy)
-    jobs.failed.each(&:destroy)
   end
 
   class << self
@@ -122,19 +94,5 @@ class Repository < ActiveRecord::Base
     self.branch_name = source_scm.branch_name
     self.username    = source_scm.username
     self.password    = source_scm.password
-  end
-
-  def create_fetch_job(priority)
-    cs = CodeSet.create(repository: self)
-    FetchJob.create(code_set: cs, priority: priority)
-  end
-
-  def create_import_or_sloc_jobs(priority)
-    sloc_set = best_code_set.best_sloc_set
-    if sloc_set.blank?
-      ImportJob.create(code_set: best_code_set, priority: priority)
-    elsif sloc_set.as_of.to_i < best_code_set.as_of.to_i
-      SlocJob.create(sloc_set: sloc_set, priority: priority)
-    end
   end
 end

@@ -41,6 +41,10 @@ class Job < ActiveRecord::Base
     status == STATUS_RUNNING
   end
 
+  def failed?
+    status == STATUS_FAILED
+  end
+
   class << self
     def incomplete_project_job(project_ids)
       where(project_id: project_ids).where.not(status: STATUS_COMPLETED).first
