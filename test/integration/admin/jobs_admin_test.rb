@@ -58,7 +58,7 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
     admin.password = 'xyzzy123456'
     login_as admin
     job = create(:fetch_job, repository: create(:repository), slave: create(:slave))
-    put reschedule_admin_job_path(job), {}, 'HTTP_REFERER': admin_jobs_path
+    put reschedule_admin_job_path(job), {}, 'HTTP_REFERER' => admin_jobs_path
     assert_response :redirect
   end
 
@@ -66,7 +66,7 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
     admin.password = 'xyzzy123456'
     login_as admin
     job = create(:fetch_job, repository: create(:repository), slave: create(:slave), status: Job::STATUS_RUNNING)
-    put reschedule_admin_job_path(job), {}, 'HTTP_REFERER': admin_jobs_path
+    put reschedule_admin_job_path(job), {}, 'HTTP_REFERER' => admin_jobs_path
     assert_response :redirect
   end
 
@@ -74,7 +74,7 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
     admin.password = 'xyzzy123456'
     login_as admin
     job = create(:fetch_job, repository: create(:repository), slave: create(:slave))
-    put rebuild_people_admin_job_path(job), {}, 'HTTP_REFERER': admin_jobs_path
+    put rebuild_people_admin_job_path(job), {}, 'HTTP_REFERER' => admin_jobs_path
     assert_response :redirect
   end
 
