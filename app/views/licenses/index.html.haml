@@ -30,6 +30,6 @@
                 %td= link_to license.name, license_url(license)
 
 = render partial: 'shared/alert',
-  locals: { message: t('shared.search_dingus.no_match') } if @licenses.blank? && params[:query].present?
+  locals: { message: t('shared.search_dingus.no_match_found.no_match') } if @licenses.blank? && params[:query].present?
 
 = will_paginate @licenses
