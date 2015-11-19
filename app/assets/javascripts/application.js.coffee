@@ -33,7 +33,7 @@ $(document).on 'page:change', ->
   GaugeProgress.init()
   OrgsFilter.init()
   Cocomo.init()
-  ProjectForm.init()
+  App.ProjectForm.init()
   OrgClaimProject.init()
   new App.CheckAvailiability($('input.check-availability'))
   App.TagCloud.init()
