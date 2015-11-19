@@ -7,4 +7,4 @@
 = render_people_list
 
 - if params[:query].present? && @claimed_people.empty? && @unclaimed_people.empty?
-  = render partial: 'shared/alert', locals: { message: t('shared.search_dingus.no_match') }
+  = render partial: 'shared/alert', locals: { message: t('shared.search_dingus.no_match_found.no_match') }
