@@ -1,31 +1,29 @@
 ActiveAdmin.register_page 'Dashboard' do
+  WINDOW = { ten_minutes: 10.minutes.ago, one_hour: 1.hour.ago, two_hours: 2.hours.ago, eight_hours: 8.hours.ago,
+             one_day: 1.day.ago, two_days: 2.days.ago, one_week: 1.week.ago, one_month: 1.month.ago,
+             all: 20.years.ago }
+
   menu priority: 1, label: proc { I18n.t('active_admin.dashboard') }
 
   content title: proc { I18n.t('active_admin.dashboard') } do
-    div class: '"blank_slate_container', id: 'dashboard_default_message' do
-      span class: 'blank_slate' do
-        span I18n.t('active_admin.dashboard_welcome.welcome')
-        small I18n.t('active_admin.dashboard_welcome.call_to_action')
+    columns do
+      column do
+        render partial: 'overview', locals: { window: @window }
+
+        render partial: 'job_overview', locals: { window: @window }
       end
     end
-    # Here is an example of a simple dashboard with columns and panels.
-    #
-    # columns do
-    #   column do
-    #     panel "Recent Posts" do
-    #       ul do
-    #         Post.recent(5).map do |post|
-    #           li link_to(post.title, admin_post_path(post))
-    #         end
-    #       end
-    #     end
-    #   end
+  end
+end
 
-    #   column do
-    #     panel "Info" do
-    #       para "Welcome to ActiveAdmin."
-    #     end
-    #   end
-    # end
-  end # content
+def window_param
+  params['window'] || 'one_hour'
+end
+
+def human_window
+  window_param.humanize.titleize
+end
+
+def get_window
+  WINDOW[window_param.to_sym] || 1.hour.ago
 end

@@ -1,0 +1,23 @@
+require 'test_helper'
+
+class OrganizationJobAdminTest < ActionDispatch::IntegrationTest
+  let(:admin) { create(:admin, password: 'xyzzy123456') }
+
+  it 'should render index page' do
+    admin.password = 'xyzzy123456'
+    login_as admin
+    create(:organization_job, organization: create(:organization))
+
+    get admin_organization_jobs_path
+    assert_response :success
+  end
+
+  it 'should render show page' do
+    admin.password = 'xyzzy123456'
+    login_as admin
+
+    job = create(:organization_job)
+    get admin_job_path(job)
+    assert_response :success
+  end
+end

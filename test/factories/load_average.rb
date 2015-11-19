@@ -1,0 +1,6 @@
+FactoryGirl.define do
+  factory :load_average do
+    current 2.25
+    max 10.00
+  end
+end

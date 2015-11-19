@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   get 'admin/comments' => redirect('/404')
-  ActiveAdmin.routes(self)
   root to: 'home#index', defaults: { format: 'html' }
 
   use_doorkeeper do
@@ -395,6 +394,51 @@ Rails.application.routes.draw do
   end
 
   resources :session_projects, only: [:index, :create, :destroy]
+
+  ActiveAdmin.routes(self)
+  namespace :admin do
+    resources :jobs do
+      resources :slave_logs
+      member do
+        put :reschedule
+        get :mark_as_failed
+        post :refetch
+        get :recount
+      end
+    end
+
+    resources :code_sets do
+      member do
+        get :fetch
+        get :reimport
+        get :resloc
+      end
+    end
+
+    resources :sloc_jobs, only: [:index, :show, :destroy]
+    resources :complete_jobs, only: [:index, :show, :destroy]
+    resources :fetch_jobs, only: [:index, :show, :destroy]
+
+    resources :projects do
+      resources :jobs do
+        collection do
+          post :manually_schedule
+        end
+      end
+      resources :complete_jobs
+    end
+    resources :organizations do
+      resources :jobs, as: :job
+    end
+    resources :repositories do
+      resources :jobs
+      resources :code_sets
+      resources :sloc_sets
+      resources :clumps
+      resources :slave_logs
+      resources :complete_jobs
+    end
+  end
 
   get 'sitemap_index.xml', controller: 'sitemap', action: 'index', format: 'xml'
   get 'sitemaps/:ctrl/:page.xml', controller: 'sitemap', action: 'show', format: 'xml'

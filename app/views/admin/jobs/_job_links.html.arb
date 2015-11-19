@@ -1,0 +1,30 @@
+para ''
+
+if job.project_id
+  project = Project.find(job.project_id)
+  span "Project: "
+  span link_to project.name, project_path(project)
+  span link_to '(Jobs)', admin_project_jobs_path(project)
+end
+
+if job.account_id
+  account = Account.find(job.account_id)
+  span "Account: #{account.login}"
+  span link_to '(Jobs)', admin_account_vita_jobs_path(account)
+end
+
+if job.repository_id
+  span "Repository: #{job.repository.nice_url}"
+  span link_to '(Jobs)', admin_repository_jobs_path(job.repository)
+end
+
+if job.organization_id
+  span "Organization: #{job.organization.url_name}"
+  span link_to '(Jobs)', admin_organization_jobs_path(organization_id: job.organization.url_name)
+end
+
+para ''
+
+a link_to "Repository #{job.repository_id}" , admin_repository_path(job.repository_id) if job.repository_id
+a link_to "CodeSet #{job.code_set_id}", admin_code_set_path(job.code_set_id) if job.code_set_id
+a link_to "SlocSet #{job.sloc_set_id}", admin_sloc_set_path(job.sloc_set_id) if job.sloc_set_id

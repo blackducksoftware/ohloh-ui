@@ -1,0 +1,77 @@
+span "Priority: #{job.priority}"
+br
+span "Attempt: #{ActiveSupport::Inflector::ordinalize(job.retry_count + 1)}"
+br
+span "Wait #{distance_of_time_in_words(job.wait_until - Time.now.utc)}" if job.wait_until && job.wait_until > Time.now.utc
+br
+span "Last Activity: #{time_ago_in_words(job.current_step_at)} ago" if job.current_step_at
+br
+span "Progress: (#{job.current_step || '-'} current step of #{job.max_steps || '-'} total steps)"
+br
+span "Log: "
+a link_to('Slave Log', admin_job_slave_logs_path(job))
+br
+span "Status: #{job.job_status.try(:name)} "
+if job.slave_id
+  span 'on'
+  a link_to(job.slave.hostname, admin_slafe_path(job.slave_id))
+end
+br
+br
+span 'Enlisted Projects: '
+job.repository.projects.each do |project|
+  a link_to project.name, project_path(project)
+  a link_to '[Jobs]', admin_project_jobs_path(project)
+  br
+end if job.repository
+br
+span 'Failure Group: '
+if job.failure_group
+  a link_to (job.failure_group.name || job.failure_group.id), admin_failure_group_jobs_path(job.failure_group)
+end
+
+
+render :partial => 'job_links'
+
+render :partial => 'job_priority'
+
+br
+if job.running?
+  a link_to 'Set Status to Failed', mark_as_failed_admin_job_path(job)
+  span '|'
+end
+
+if job.failed?
+  a link_to "Reschedule Job", reschedule_admin_job_path(job), method: :put
+  span '|'
+  a link_to "Rebuild People", rebuild_people_admin_job_path(job), method: :put
+  span '|'
+end
+
+unless job.running?
+  a link_to "Delete Job", admin_job_path(job), method: :delete, data: {confirm: "Are you sure you want to delete this Job?"}
+  if job.retry_count > 0
+    span '|'
+    a link_to 'Reset Retry Counter', recount_admin_job_path(job)
+  end
+end
+
+br
+br
+if job.repository
+  render 'admin/repositories/repository', repository: job.repository, code_sets: job.repository.code_sets, job: job
+end
+
+br
+if job.exception
+  panel 'Exception' do
+    h6 'Message'
+    a simple_format job.exception
+    h6 'Backtrace'
+    a simple_format job.backtrace
+  end
+end
+
+panel 'Notes' do
+  simple_format job.notes
+end

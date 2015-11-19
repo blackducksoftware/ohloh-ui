@@ -1,0 +1,14 @@
+para ''
+
+active_admin_form_for :job, method: :put do |f|
+  inputs 'Update' do
+    input :priority, :style => 'width;50px;'
+    li do
+      legend do
+        label 'Do Not Retry'
+        check_box :do_not_retry
+      end
+    end
+  end
+  button 'Update Priority'
+end

@@ -14,6 +14,7 @@ class Organization < ActiveRecord::Base
   has_many :manages, -> { where(deleted_at: nil, deleted_by: nil) }, as: 'target'
   has_many :managers, through: :manages, source: :account
   has_many :jobs
+  has_many :organization_jobs
 
   validates :name, presence: true, length: 3..85, allow_blank: true
   validates :homepage_url, allow_blank: true, url_format: { message: I18n.t('accounts.invalid_url_format') }

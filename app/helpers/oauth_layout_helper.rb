@@ -21,4 +21,8 @@ module OauthLayoutHelper
   def read_only_mode?
     false
   end
+
+  def current_user_is_admin?
+    Account::Access.new(current_user).admin?
+  end
 end
