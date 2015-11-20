@@ -36,7 +36,9 @@ describe 'StackEntriesController' do
     project = create(:project)
     login_as stack.account
     post :create, stack_id: stack, stack_entry: { project_id: project }
+    result = JSON.parse(@response.body)
     must_respond_with :ok
+    result['newly_added'].must_equal true
     StackEntry.where(stack_id: stack.id, project_id: project.id).count.must_equal 1
   end
 
@@ -69,7 +71,7 @@ describe 'StackEntriesController' do
     stack = create(:stack)
     project = create(:project)
     login_as stack.account
-    StackEntry::ActiveRecord_Relation.any_instance.stubs(:first_or_create!).raises(ActiveRecord::Rollback)
+    StackEntry.stubs(:create!).raises(ActiveRecord::Rollback)
     post :create, stack_id: stack, stack_entry: { project_id: project }
     must_respond_with :unprocessable_entity
   end
