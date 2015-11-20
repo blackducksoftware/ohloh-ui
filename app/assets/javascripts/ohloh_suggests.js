@@ -74,7 +74,12 @@ StackShow = {
       return;
     }
     var list = $(".stack_item_list > table")
-    list.prepend(stack_entry);
+
+    if (json.newly_added == true){
+      list.prepend(stack_entry);
+    }else{
+      alert('Project already added to stack')
+    }
     var new_entry = $(list.find('tr'));
     new_entry.slideDown(1000, function() {
       RestInPlace.init();

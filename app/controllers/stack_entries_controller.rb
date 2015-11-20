@@ -11,10 +11,11 @@ class StackEntriesController < ApplicationController
   helper_method :display_as_project_page
 
   def create
-    stack_entry = StackEntry.where(stack_id: @stack.id, project_id: @project.id, deleted_at: nil).first_or_create!
-    render json: { stack_entry_id: stack_entry.id,
-                   stack_entry: stack_entry_html(stack_entry),
-                   result: 'okay', updated_count: @stack.projects.count }, status: :ok
+    existing_entry = StackEntry.where(stack_id: @stack.id, project_id: @project.id, deleted_at: nil).first
+    entry = existing_entry || StackEntry.create!(stack_id: @stack.id, project_id: @project.id, deleted_at: nil)
+    render json: { stack_entry_id: entry.id, stack_entry: stack_entry_html(entry),
+                   result: 'okay', updated_count: @stack.projects.count,
+                   newly_added: existing_entry.nil? }, status: :ok
   rescue
     render json: { result: 'error' }, status: :unprocessable_entity
   end
