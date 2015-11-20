@@ -78,6 +78,10 @@ GEM
     aws-sdk-v1 (1.64.0)
       json (~> 1.4)
       nokogiri (>= 1.4.4)
+    better_errors (2.1.1)
+      coderay (>= 1.0.0)
+      erubis (>= 2.6.6)
+      rack (>= 0.9.0)
     bluecloth (2.2.0)
     bourbon (4.2.3)
       sass (~> 3.4)
@@ -393,6 +397,7 @@ DEPENDENCIES
   activeadmin!
   airbrake
   aws-sdk (< 2.0)
+  better_errors
   bluecloth
   brakeman
   bundler-audit!
