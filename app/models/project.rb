@@ -49,7 +49,7 @@ class Project < ActiveRecord::Base
   end
 
   def allow_undo_to_nil?(key)
-    ![:name].include?(key)
+    ![:vanity_url, :name].include?(key)
   end
 
   def allow_redo?(key)
