@@ -136,6 +136,10 @@ class ProjectTest < ActiveSupport::TestCase
     it 'should return false if key is not :name' do
       project.allow_undo_to_nil?(:test).must_equal true
     end
+
+    it 'should return false if key is vanity_url' do
+      project.allow_undo_to_nil?(:vanity_url).must_equal false
+    end
   end
 
   describe 'allow_redo?' do
