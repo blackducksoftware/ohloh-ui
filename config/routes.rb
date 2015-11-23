@@ -44,6 +44,9 @@ Rails.application.routes.draw do
   resources :tags, only: [:index, :show]
 
   resources :accounts, except: [:new, :create] do
+    resources :autocompletes, only: [] do
+      get :projects_for_stack, on: :collection, defaults: { format: 'json' }
+    end
     resources :api_keys, constraints: { format: :html }
     resources :projects, only: [:index]
     resources :positions, only: [:index] do
