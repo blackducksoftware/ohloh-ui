@@ -59,7 +59,8 @@ class AutocompletesController < ApplicationController
   end
 
   def set_projects_to_ignore
-    account = Account.find(params[:account_id])
-    @projects_to_ignore = Stack.joins(:projects).where(account_id: account.id).pluck('DISTINCT(projects.id)')
+    @projects_to_ignore = Stack.joins(:projects)
+                          .where(account_id: params[:account_id], id: params[:id])
+                          .pluck('DISTINCT(projects.id)')
   end
 end

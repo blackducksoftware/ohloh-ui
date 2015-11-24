@@ -34,7 +34,7 @@ describe 'AutocompletesController' do
       stack.projects << project1
       stack.save!
 
-      get :projects_for_stack, account_id: account.id, term: 'foo', format: :json
+      get :projects_for_stack, id: stack.id, account_id: account.id, term: 'foo', format: :json
 
       must_respond_with :ok
       resp = JSON.parse(response.body)

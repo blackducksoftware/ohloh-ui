@@ -45,8 +45,9 @@
       .clear &nbsp;
       = form_for StackEntry.new, as: :stack_entry, url: stack_stack_entries_path(@stack),
                                  html: { class: 'form-inline', id: 'add_project_form' } do |f|
+        - source_url = "/accounts/#{current_user.id}/autocompletes/#{@stack.id}/projects_for_stack"
         = f.text_field :project_name, size: 20, class: 'autocompletable',
-          data: { source: "/accounts/#{current_user.id}/autocompletes/projects_for_stack", select: 'submitForm' }
+                                      data: { source: source_url, select: 'submitForm' }
         %input.btn.btn-small.btn-primary{ type: 'submit', id: 'new_stack_entry', value: 'Add Project to Stack' }
         = f.hidden_field :stack_id, value: @stack.id
     .stack_item_list
