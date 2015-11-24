@@ -42,7 +42,7 @@ group :development do
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
   gem 'letter_opener'
-  gem "better_errors"
+  gem 'better_errors'
 end
 
 group :test do
