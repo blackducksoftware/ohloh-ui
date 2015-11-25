@@ -6,7 +6,7 @@ class PageContextHelperTest < ActionView::TestCase
 
   let(:page_context) { {} }
   let(:admin) { create(:admin) }
-  let(:linux_organization) { create(:organization, url_name: :linux) }
+  let(:linux_organization) { create(:organization, vanity_url: :linux) }
   let(:linux) { create(:project) }
   let(:rails) { create(:forum) }
 

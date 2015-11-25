@@ -2,9 +2,9 @@ require 'test_helper'
 
 class OrgThirtyDayActivityTest < ActiveSupport::TestCase
   (1..5).to_a.each do |value|
-    let("org#{value}") { create(:organization, name: "org_#{value}", url_name: "org#{value}") }
+    let("org#{value}") { create(:organization, name: "org_#{value}", vanity_url: "org#{value}") }
     let("ota#{value}") do
-      create(:org_thirty_day_activity, name: "org_#{value}", url_name: "org#{value}",
+      create(:org_thirty_day_activity, name: "org_#{value}", vanity_url: "org#{value}",
                                        organization: send("org#{value}"), affiliate_count: 20,
                                        thirty_day_commit_count: 200 * value)
     end

@@ -19,7 +19,7 @@ module OrganizationSearchables
     private
 
     def split_name_if_camecase_present
-      "#{(name.split + name.titleize.split).uniq.join(' ')} #{url_name}"
+      "#{(name.split + name.titleize.split).uniq.join(' ')} #{vanity_url}"
     end
   end
 end

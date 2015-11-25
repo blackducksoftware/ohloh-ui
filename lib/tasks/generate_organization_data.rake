@@ -67,7 +67,7 @@ namespace :selenium do
         }
       )
 
-      organizations[org.url_name] = organization
+      organizations[org.vanity_url] = organization
     end
     yaml_file.puts YAML.dump('organizations' => organizations)
   end

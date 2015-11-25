@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class OrganizationDecoratorTest < ActiveSupport::TestCase
-  let(:linux) { create(:organization, url_name: 'linux') }
+  let(:linux) { create(:organization, vanity_url: 'linux') }
   let(:sidebar) do
     [
       [

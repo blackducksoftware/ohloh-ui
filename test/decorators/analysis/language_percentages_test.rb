@@ -16,19 +16,19 @@ class Analysis::LanguagePercentagesTest < ActiveSupport::TestCase
 
       results.first.first.must_equal 1
       results.first.second.must_equal 'XML'
-      results.first.third[:url_name].must_equal 'xml'
+      results.first.third[:vanity_url].must_equal 'xml'
       results.first.third[:percent].must_equal 30
       results.first.third[:color].must_equal '555555'
 
       results.second.first.must_equal 2
       results.second.second.must_equal 'SQL'
-      results.second.third[:url_name].must_equal 'sql'
+      results.second.third[:vanity_url].must_equal 'sql'
       results.second.third[:percent].must_equal 23
       results.second.third[:color].must_equal '493625'
 
       results.third.first.must_equal 3
       results.third.second.must_equal 'HTML'
-      results.third.third[:url_name].must_equal 'html'
+      results.third.third[:vanity_url].must_equal 'html'
       results.third.third[:percent].must_equal 20
       results.third.third[:color].must_equal '47A400'
 

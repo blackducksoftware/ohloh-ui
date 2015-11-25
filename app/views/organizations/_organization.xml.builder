@@ -9,7 +9,8 @@ xml.org do
   xml.updated_at organization.updated_at.utc.xmlschema
   xml.description organization.description
   xml.homepage_url organization.homepage_url
-  xml.url_name organization.url_name
+  xml.url_name organization.vanity_url
+  xml.vanity_url organization.vanity_url
   xml.type organization.org_type_label
 
   if organization.logo_id

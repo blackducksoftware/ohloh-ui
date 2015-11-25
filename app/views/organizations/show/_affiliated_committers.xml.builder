@@ -19,5 +19,5 @@ xml.affiliated_committers do
       end
     end
   end
-  xml.detailed_page_url "/orgs/#{@organization.url_name}/affiliated_committers"
+  xml.detailed_page_url "/orgs/#{@organization.vanity_url}/affiliated_committers"
 end

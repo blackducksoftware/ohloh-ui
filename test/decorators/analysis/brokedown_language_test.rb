@@ -15,7 +15,7 @@ class Analysis::BrokedownLanguageTest < ActiveSupport::TestCase
     it 'should return percent and color details' do
       brokedown_language.info.first.must_equal 1
       brokedown_language.info.second.must_equal 'C'
-      brokedown_language.info.last[:url_name].must_equal 'c'
+      brokedown_language.info.last[:vanity_url].must_equal 'c'
       brokedown_language.info.last[:percent].must_equal 50
       brokedown_language.info.last[:color].must_equal 'FF8F00'
     end

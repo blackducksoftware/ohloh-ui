@@ -11,14 +11,14 @@ xml.response do
           xml.name outside_committer.name
           xml.kudos outside_committer.person.kudo_rank
           xml.level FOSSerBadge.new(outside_committer, positions_count: outside_committer.positions.count).level
-          xml.affiliated_with outside_committer.organization.try(:name) || "Unaffiliated"
+          xml.affiliated_with outside_committer.organization.try(:name) || 'Unaffiliated'
           xml.contributions_to_portfolio_projects do
-            xml.projects projects.map(&:name).join(", ")
+            xml.projects projects.map(&:name).join(', ')
             xml.twelve_mo_commits outside_committer.twelve_mo_commits
           end
         end
       end
-      xml.detailed_page_url "/orgs/#{@organization.url_name}/outside_committers"
+      xml.detailed_page_url "/orgs/#{@organization.vanity_url}/outside_committers"
     end
   end
 end

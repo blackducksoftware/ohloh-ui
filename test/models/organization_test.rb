@@ -39,9 +39,9 @@ class OrganizationTest < ActiveSupport::TestCase
   end
 
   describe 'from_param' do
-    it 'should match organization url_name' do
+    it 'should match organization vanity_url' do
       organization = create(:organization)
-      Organization.from_param(organization.url_name).first.id.must_equal organization.id
+      Organization.from_param(organization.vanity_url).first.id.must_equal organization.id
     end
 
     it 'should match organization id as string' do
@@ -155,7 +155,7 @@ class OrganizationTest < ActiveSupport::TestCase
 
     it 'changing other org attrs like name, description should not schedule an organization job' do
       Job.delete_all
-      org_hash = { name: 'New name', url_name: 'url name', description: 'Desc1', homepage_url: '/org/new' }
+      org_hash = { name: 'New name', vanity_url: 'url name', description: 'Desc1', homepage_url: '/org/new' }
       org_hash.each do |att, val|
         org.update_attribute(att, val)
         assert_equal 0, OrganizationJob.count
@@ -170,21 +170,21 @@ class OrganizationTest < ActiveSupport::TestCase
   end
 
   describe 'validations' do
-    describe 'url_name' do
+    describe 'vanity_url' do
       it 'must allow valid characters' do
-        valid_url_names = %w(org-name org_name orgé org_)
+        valid_vanity_urls = %w(org-name org_name orgé org_)
 
-        valid_url_names.each do |name|
-          organization = build(:organization, url_name: name)
+        valid_vanity_urls.each do |name|
+          organization = build(:organization, vanity_url: name)
           organization.wont_be :valid?
         end
       end
 
       it 'wont allow invalid characters' do
-        invalid_url_names = %w(org.name .org -org _org)
+        invalid_vanity_urls = %w(org.name .org -org _org)
 
-        invalid_url_names.each do |name|
-          organization = build(:organization, url_name: name)
+        invalid_vanity_urls.each do |name|
+          organization = build(:organization, vanity_url: name)
           organization.wont_be :valid?
         end
       end

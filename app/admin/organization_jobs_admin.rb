@@ -1,12 +1,12 @@
 ActiveAdmin.register OrganizationJob do
   menu false
-  belongs_to :organization, finder: :find_by_url_name!, optional: true
+  belongs_to :organization, finder: :find_by_vanity_url!, optional: true
   config.sort_order = 'current_step_at_desc'
   permit_params :status, :priority, :wait_until, :current_step_at, :notes
 
   filter :slave, collection: proc { Slave.pluck(:hostname).sort }
   filter :job_status
-  filter :organization_url_name, as: :string, label: 'ORGANIZATION URL NAME'
+  filter :organization_vanity_url, as: :string, label: 'ORGANIZATION VANITY URL'
   actions :all, except: :new
 
   index do
