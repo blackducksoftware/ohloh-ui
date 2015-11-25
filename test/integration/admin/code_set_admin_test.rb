@@ -39,7 +39,8 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 're-import works' do
-    code_set = create(:code_set)
+    clump = create(:clump)
+    code_set = clump.code_set
     admin.password = 'xyzzy123456'
     login_as admin
     get reimport_admin_code_set_path(code_set)

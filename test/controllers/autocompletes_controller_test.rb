@@ -22,6 +22,28 @@ describe 'AutocompletesController' do
     end
   end
 
+  describe 'projects_for_stack' do
+    it 'must render a valid project json' do
+      account = create(:account)
+      login_as account
+      project1 = create(:project, name: 'Foo')
+      project2 = create(:project, name: 'Foobar')
+      create(:project, name: 'Goobaz')
+
+      stack = create(:stack, account: account)
+      stack.projects << project1
+      stack.save!
+
+      get :projects_for_stack, id: stack.id, account_id: account.id, term: 'foo', format: :json
+
+      must_respond_with :ok
+      resp = JSON.parse(response.body)
+      resp.length.must_equal 1
+      resp[0]['id'].must_equal project2.id
+      resp[0]['value'].must_equal project2.name
+    end
+  end
+
   describe 'project' do
     it 'must render a valid project json' do
       project1 = create(:project, name: 'Foo')
