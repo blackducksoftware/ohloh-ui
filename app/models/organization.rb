@@ -20,7 +20,7 @@ class Organization < ActiveRecord::Base
   validates :homepage_url, allow_blank: true, url_format: { message: I18n.t('accounts.invalid_url_format') }
   validates :name, presence: true, length: 3..85, uniqueness: { case_sensitive: false }
   validates :vanity_url, presence: true, length: 1..60, allow_nil: false, uniqueness: { case_sensitive: false },
-                       default_param_format: true
+                         default_param_format: true
   validates :description, length: 0..800, allow_nil: true
   validates :org_type, inclusion: { in: ORG_TYPES.values }
 
