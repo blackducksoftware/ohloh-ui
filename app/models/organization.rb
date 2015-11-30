@@ -19,14 +19,14 @@ class Organization < ActiveRecord::Base
   validates :name, presence: true, length: 3..85, allow_blank: true
   validates :homepage_url, allow_blank: true, url_format: { message: I18n.t('accounts.invalid_url_format') }
   validates :name, presence: true, length: 3..85, uniqueness: { case_sensitive: false }
-  validates :url_name, presence: true, length: 1..60, allow_nil: false, uniqueness: { case_sensitive: false },
-                       default_param_format: true
+  validates :vanity_url, presence: true, length: 1..60, allow_nil: false, uniqueness: { case_sensitive: false },
+                         default_param_format: true
   validates :description, length: 0..800, allow_nil: true
   validates :org_type, inclusion: { in: ORG_TYPES.values }
 
   before_validation :clean_strings_and_urls
 
-  acts_as_editable editable_attributes: [:name, :url_name, :org_type, :description, :homepage_url],
+  acts_as_editable editable_attributes: [:name, :vanity_url, :org_type, :description, :homepage_url],
                    merge_within: 30.minutes
   acts_as_protected
 
@@ -35,7 +35,7 @@ class Organization < ActiveRecord::Base
   after_update :schedule_analysis, if: :org_type_changed?
 
   def to_param
-    url_name.blank? ? id.to_s : url_name
+    vanity_url.blank? ? id.to_s : vanity_url
   end
 
   def active_managers
@@ -43,7 +43,7 @@ class Organization < ActiveRecord::Base
   end
 
   def allow_undo_to_nil?(key)
-    ![:name, :org_type, :url_name].include?(key)
+    ![:name, :org_type, :vanity_url].include?(key)
   end
 
   def org_type_label

@@ -12,13 +12,13 @@
       .controls
         .input-prepend
           %span.add-on= 'http://www.openhub.net/orgs/'
-          = f.text_field :url_name, class: 'check-availability',
-            'data-original-value' => Organization.find_by(id: @organization).try(:url_name),
+          = f.text_field :vanity_url, class: 'check-availability',
+            'data-original-value' => Organization.find_by(id: @organization).try(:vanity_url),
             'data-ajax-path' => organization_check_availabilities_path,
             'data-preview-base-url' => organizations_url,
             autocomplete: 'off', style: 'width: 375px'
           = render 'shared/availability_preview'
-      - error_tag @organization, :url_name, class: 'error url_name'
+      - error_tag @organization, :vanity_url, class: 'error vanity_url'
 
     .control-group
       %label.control-label.required= t('.type')

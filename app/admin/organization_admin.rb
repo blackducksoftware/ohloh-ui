@@ -4,14 +4,14 @@ ActiveAdmin.register Organization do
   actions :index, :show
 
   filter :name
-  filter :url_name
+  filter :vanity_url
   filter :description
   filter :created_at
   filter :updated_at
   filter :projects_count
 
   controller do
-    defaults finder: :find_by_url_name
+    defaults finder: :find_by_vanity_url
   end
 
   action_item :jobs, only: :show do
@@ -21,7 +21,7 @@ ActiveAdmin.register Organization do
   index do
     column :id
     column :name
-    column :url_name
+    column :vanity_url
     column(:org_type) { |org| org.org_type_label }
     column :homepage_url
     column :created_at

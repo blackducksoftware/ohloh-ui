@@ -2,7 +2,7 @@ ActiveAdmin.register Job do
   config.sort_order = 'current_step_at_desc'
 
   belongs_to :project, finder: :find_by_vanity_url!, optional: true
-  belongs_to :organization, finder: :find_by_url_name!, optional: true
+  belongs_to :organization, finder: :find_by_vanity_url!, optional: true
   belongs_to :account, finder: :find_by_login, optional: true
   belongs_to :failure_group, optional: true
 
@@ -12,7 +12,7 @@ ActiveAdmin.register Job do
   filter :type, as: :select
   filter :job_status
   filter :project_vanity_url, as: :string, label: 'PROJECT URL NAME'
-  filter :organization_url_name, as: :string, label: 'ORGANIZATION URL NAME'
+  filter :organization_vanity_url, as: :string, label: 'ORGANIZATION VANITY URL'
   filter :account_login, as: :string, label: 'Account Login'
 
   actions :all, except: :new

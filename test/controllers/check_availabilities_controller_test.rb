@@ -45,7 +45,7 @@ describe 'CheckAvailabilitiesController' do
 
   describe 'organization' do
     it 'should return true when organization is present' do
-      create(:organization, url_name: 'Mario')
+      create(:organization, vanity_url: 'Mario')
       xhr :get, :organization, query: 'maRio'
 
       response.body.must_equal 'true'

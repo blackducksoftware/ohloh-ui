@@ -209,10 +209,10 @@ describe 'OrganizationsController' do
       org = xml['result']['org'].first
       xml['result']['org'].length.must_equal 3
       org['name'].must_equal 'test name3'
-      org['url'].must_equal "http://test.host/orgs/#{org_3.url_name}.xml"
-      org['html_url'].must_equal "http://test.host/orgs/#{org_3.url_name}"
+      org['url'].must_equal "http://test.host/orgs/#{org_3.vanity_url}.xml"
+      org['html_url'].must_equal "http://test.host/orgs/#{org_3.vanity_url}"
       org['description'].must_equal 'test description'
-      org['url_name'].must_equal org_3.url_name
+      org['vanity_url'].must_equal org_3.vanity_url
       org['type'].must_equal 'Commercial'
       org['projects_count'].must_equal "#{org_3.projects_count}"
       org['affiliated_committers'].must_equal '0'
@@ -355,32 +355,32 @@ describe 'OrganizationsController' do
     it 'should show validation errors' do
       account.update_column(:level, 10)
       login_as account
-      post :create, organization: { name: 'test', description: 'tes', url_name: '',
+      post :create, organization: { name: 'test', description: 'tes', vanity_url: '',
                                     org_type: '2', homepage_url: 'http://test.com' }
 
       must_respond_with :ok
-      assigns(:organization).errors[:url_name].must_equal ['can\'t be blank', 'is too short (minimum is 1 character)']
+      assigns(:organization).errors[:vanity_url].must_equal ['can\'t be blank', 'is too short (minimum is 1 character)']
     end
 
     it 'should save record successfully' do
       account.update_column(:level, 10)
       login_as account
-      post :create, organization: { name: 'test', description: 'tes', url_name: 'test',
+      post :create, organization: { name: 'test', description: 'tes', vanity_url: 'test',
                                     org_type: '2', homepage_url: 'http://test.com' }
 
       must_redirect_to organization_path(assigns(:organization))
       assigns(:organization).valid?.must_equal true
     end
 
-    it 'should gracefully handle duplicate url_names' do
+    it 'should gracefully handle duplicate vanity_urls' do
       old_org = create(:organization)
       account.update_column(:level, 10)
       login_as account
-      post :create, organization: { name: 'test', description: 'tes', url_name: old_org.url_name,
+      post :create, organization: { name: 'test', description: 'tes', vanity_url: old_org.vanity_url,
                                     org_type: '2', homepage_url: 'http://test.com' }
 
       must_respond_with :ok
-      assigns(:organization).errors[:url_name].must_equal ['has already been taken']
+      assigns(:organization).errors[:vanity_url].must_equal ['has already been taken']
     end
   end
 
@@ -389,7 +389,7 @@ describe 'OrganizationsController' do
       login_as account
       account.update_column(:level, 10)
       org = create(:organization, name: 'test')
-      put :update, id: org.id, organization: { name: '', description: 'tes', url_name: 'test',
+      put :update, id: org.id, organization: { name: '', description: 'tes', vanity_url: 'test',
                                                org_type: '2', homepage_url: 'http://test.com' }
 
       must_respond_with 422
@@ -400,7 +400,7 @@ describe 'OrganizationsController' do
       account.update_column(:level, 10)
       login_as account
       org = create(:organization, name: 'test')
-      put :update, id: org.id, organization: { name: 'test2', description: 'tes', url_name: 'test',
+      put :update, id: org.id, organization: { name: 'test2', description: 'tes', vanity_url: 'test',
                                                org_type: '2', homepage_url: 'http://test.com' }
 
       must_redirect_to organization_path(assigns(:organization))

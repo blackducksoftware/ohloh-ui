@@ -2,7 +2,8 @@ module OrgFilters
   extend ActiveSupport::Concern
 
   included do
-    before_action :set_organization, except: [:index, :new, :create, :resolve_url_name, :print_org_infographic, :update]
+    before_action :set_organization, except: [:index, :new, :create,
+                                              :resolve_vanity_url, :print_org_infographic, :update]
     before_action :set_organization_based_on_id, only: [:update]
     before_action :organization_context, except: [:print_infographic]
     before_action :session_required, only: [:new, :create]
@@ -60,7 +61,7 @@ module OrgFilters
   end
 
   def organization_params
-    params.require(:organization).permit([:name, :description, :url_name, :org_type, :homepage_url])
+    params.require(:organization).permit([:name, :description, :vanity_url, :org_type, :homepage_url])
   end
 
   def redirect_ro_explores_pages

@@ -14,7 +14,7 @@ class Analysis::BrokedownLanguage
   end
 
   def info(percentage_value = percentage)
-    [@id, @nice_name, { url_name: @name, percent: percentage_value, color: language_color(@name) }]
+    [@id, @nice_name, { vanity_url: @name, percent: percentage_value, color: language_color(@name) }]
   end
 
   def brief_info

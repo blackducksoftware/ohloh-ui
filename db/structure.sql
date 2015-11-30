@@ -1194,19 +1194,6 @@ CREATE VIEW contributions2 AS
 
 
 --
--- Name: contributions_mock; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE contributions_mock (
-    id bigint,
-    person_id bigint,
-    project_id integer,
-    name_fact_id integer,
-    position_id integer
-);
-
-
---
 -- Name: countries; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2824,7 +2811,7 @@ CREATE TABLE org_thirty_day_activities (
     id integer NOT NULL,
     name character varying(255),
     organization_id integer,
-    url_name character varying(255),
+    vanity_url character varying(255),
     org_type integer,
     project_count integer,
     affiliate_count integer,
@@ -2860,7 +2847,7 @@ ALTER SEQUENCE org_thirty_day_activities_id_seq OWNED BY org_thirty_day_activiti
 CREATE TABLE organizations (
     id integer NOT NULL,
     name text,
-    url_name text,
+    vanity_url text,
     description text,
     org_type integer,
     homepage_url text,
@@ -6219,7 +6206,7 @@ CREATE INDEX index_org_stats_by_sectors_on_created_at_and_org_type ON org_stats_
 -- Name: index_organizations_on_lower_url_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_organizations_on_lower_url_name ON organizations USING btree (lower(url_name));
+CREATE UNIQUE INDEX index_organizations_on_lower_url_name ON organizations USING btree (lower(vanity_url));
 
 
 --
@@ -8137,6 +8124,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150925101230');
 INSERT INTO schema_migrations (version) VALUES ('20150925101715');
 
 INSERT INTO schema_migrations (version) VALUES ('20151116113941');
+
+INSERT INTO schema_migrations (version) VALUES ('20151124143945');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

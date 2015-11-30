@@ -270,10 +270,10 @@ describe 'AnalysesController' do
 
   describe 'languages' do
     it 'should return pie chart' do
-      data = [[1, 'XMl', { url_name: 'xml', percent: 30, color: '555555' }],
-              [2, 'SQL', { url_name: 'sql', percent: 23, color: '493625' }],
-              [3, 'HTML', { url_name: 'html', percent: 20, color: '47A400' }],
-              [nil, '3 Other', { url_name: 'xml', percent: 27, color: '555555' }]]
+      data = [[1, 'XMl', { vanity_url: 'xml', percent: 30, color: '555555' }],
+              [2, 'SQL', { vanity_url: 'sql', percent: 23, color: '493625' }],
+              [3, 'HTML', { vanity_url: 'html', percent: 20, color: '47A400' }],
+              [nil, '3 Other', { vanity_url: 'xml', percent: 27, color: '555555' }]]
 
       Analysis::LanguagePercentages.any_instance.stubs(:collection).returns(data)
 

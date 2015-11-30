@@ -10,7 +10,7 @@ class CheckAvailabilitiesController < ApplicationController
   end
 
   def organization
-    render json: Organization.case_insensitive_url_name(params[:query]).present?
+    render json: Organization.case_insensitive_vanity_url(params[:query]).present?
   end
 
   def license

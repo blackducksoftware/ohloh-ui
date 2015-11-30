@@ -322,7 +322,7 @@ Rails.application.routes.draw do
     end
 
     collection do
-      get :resolve_url_name
+      get :resolve_vanity_url
     end
 
     resources :edits, only: [:index]
