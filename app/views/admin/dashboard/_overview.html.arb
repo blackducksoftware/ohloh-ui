@@ -5,7 +5,7 @@ columns do
         tbody do
           tr do
             td "Scheduled Jobs:"
-            td Job.where(status: Job::STATUS_SCHEDULED).count
+            td Job.where(status: Job::STATUS_SCHEDULED, slave_id: nil).count
           end              
           tr do
             td "Database Load Average:"
@@ -14,8 +14,8 @@ columns do
             end
           end
           tr do
-            td "Updated (last hour)"
-            td Job.where(status: Job::STATUS_COMPLETED).where(logged_at: Time.at(0)...1.hour.ago).count
+            td "Updated Analyses (#{human_window})"
+            td Analysis.where(updated_on: get_window..Time.now).count
           end
         end #tbody
       end #table
