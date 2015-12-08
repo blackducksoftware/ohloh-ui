@@ -23,8 +23,9 @@ panel 'Job Overview' do
   table_for Slave.all.order(:id) do
     # Seriously.  ActiveAdmin thinks the singular of "slave" is "slafe"  wft?
     column (:hostname) { |slave| link_to slave.hostname, admin_slafe_path(slave)}
+    column :allow_deny
     column :load_average
-    column (:jobs) do |slave| 
+    column (:jobs) do |slave|
       render :partial => 'slave', :locals => {:slave => slave}
     end
     column (:failed) do |slave|
