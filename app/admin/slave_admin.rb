@@ -3,7 +3,7 @@ ActiveAdmin.register Slave do
   permit_params :hostname, :allow_deny, :enable_profiling
   remove_filter :jobs
 
-  index do
+  index row_class: -> elem { 'deny' if elem.deny? } do
     column :id
     column :hostname do |host|
       # Seriously, ActiveAdmin, the singular of "slaves" is "slafe"??!!
@@ -11,7 +11,7 @@ ActiveAdmin.register Slave do
     end
     column :load_average
     column :allow_deny do |ad|
-      case ad.allow_deny
+      case ad.allow_deny.downcase
       when 'allow'
         status_tag('Allow', :ok)
       when 'deny'

@@ -15,3 +15,11 @@
 // For example, to change the default status-tag color:
 //
 //   .status_tag { background: #6090DB; }
+
+.deny {
+    text-decoration: line-through;
+    color: red !important;
+    a, a:link, a:visited {
+      color: red !important;
+    }
+  }
