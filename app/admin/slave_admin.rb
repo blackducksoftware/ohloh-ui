@@ -3,7 +3,25 @@ ActiveAdmin.register Slave do
   permit_params :hostname, :allow_deny, :enable_profiling
   remove_filter :jobs
 
+  config.batch_actions = true
+  batch_action :destroy, false
+
+  batch_action :deny do |ids|
+    Slave.where(id: ids).update_all(allow_deny: 'deny')
+    redirect_to collection_path, alert: 'The slaves have been set to denied.'
+  end
+
+  batch_action :allow do |ids|
+    Slave.where(id: ids).update_all(allow_deny: 'allow')
+    redirect_to collection_path, alert: 'The slaves have been set to allowed.'
+  end
+
+  filter :hostname
+  filter :allow_deny, as: :select
+  filter :blocked_types
+
   index do
+    selectable_column
     column :id
     column :hostname do |host|
       # Seriously, ActiveAdmin, the singular of "slaves" is "slafe"??!!
