@@ -20,15 +20,15 @@ class App.ProjectForm
     
 class App.SimilarProjects
   constructor: ->
-    return if $('#projects_show_page').length == 0
-    projectId = $('#similar_projects').data('project-id')
-    $('#similar_projects').html ''
-    $('#related_spinner').show()
+    return unless $('#projects_show_page').length
+    $('#similar_projects').html('')
+    $('#related_spinner').removeClass('hidden')
+    projectId = $('#similar_projects').data('projectId')
     $.ajax
-      url: "/p/#{projectId}/similar_by_tags"
-      success: (data, textStatus) ->
-        $('#similar_projects').html data
+      url: "/p/#{ projectId }/similar_by_tags"
+      success: (data) ->
+        $('#similar_projects').html(data)
       complete: ->
-        $('#related_spinner').hide()
-  
+        $('#related_spinner').addClass('hidden')
+
 $(document).on 'page:change', -> new App.SimilarProjects()
