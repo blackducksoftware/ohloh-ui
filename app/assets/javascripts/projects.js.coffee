@@ -1,23 +1,31 @@
-class App.ProjectForm 
+class App.ProjectForm
   constructor: ->
-    $(document).delegate 'a.remove_license', 'click', ->
-      $(this).closest('.license').remove()
-      if $('.chosen_licenses').html() == ''
-        $('.chosen_licenses').html '<div class="license inset">[None]</div>'
-      false
+    $('.chosen_licenses').on 'click', 'a.remove_license', ->
+      $('input.license_id_' + $(this).attr('data_id')).remove()
+      $(this).closest('.license-cell').remove()
+      $('.no-license').show() unless $('.license-cell:visible').length
 
     $('#add_license').autocomplete(
       source: '/autocompletes/licenses'
+      focus: (event, ui) ->
+        $('#add_license').val(ui.item.name)
       select: (event, ui) ->
-        if $.trim($('.chosen_licenses div:first').html()) == '[None]'
-          $('.chosen_licenses').html ''
-        $('#license_menu').clone().appendTo($('.chosen_licenses'))
-        $('#license_menu').removeAttr('style')
-        $('#license_name').text(ui.item.name)
-        $('.remove_license').attr('data_id', ui.item.id)
-        $('.chosen_licenses').append $('#license_menu')).autocomplete('instance')._renderItem = (ul, item) ->
+        $input = $('<input />',
+                    type: 'hidden'
+                    name: 'project[project_licenses_attributes][][license_id]'
+                    class: 'license_id_' + ui.item.id
+                    value: ui.item.id)
+        $input.insertAfter($('#add_license'))
+
+        $('.no-license').hide()
+        $license = $('.license-template').clone()
+        $license.removeClass('license-template')
+        $license.find('.license_name').text(ui.item.name)
+        $license.find('.remove_license').attr('data_id', ui.item.id)
+        $('.chosen_licenses').append $license
+      ).autocomplete('instance')._renderItem = (ul, item) ->
         $('<li></li>').data('item.autocomplete', item).append('<p>' + item.name + '</p>').appendTo ul
-    
+
 class App.SimilarProjects
   constructor: ->
     return unless $('#projects_show_page').length
