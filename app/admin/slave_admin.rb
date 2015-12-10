@@ -29,7 +29,7 @@ ActiveAdmin.register Slave do
     end
     column :load_average
     column :allow_deny do |ad|
-      case ad.allow_deny.downcase
+      case ad.allow_deny.to_s.downcase
       when 'allow'
         status_tag('Allow', :ok)
       when 'deny'

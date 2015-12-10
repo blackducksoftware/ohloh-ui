@@ -16,11 +16,11 @@ class Slave < ActiveRecord::Base
   end
 
   def allow?
-    allow_deny.downcase == 'allow'
+    allow_deny.to_s.downcase == 'allow'
   end
 
   def deny?
-    allow_deny.downcase == 'deny'
+    allow_deny.to_s.downcase == 'deny'
   end
 
   private
