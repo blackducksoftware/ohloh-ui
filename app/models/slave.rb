@@ -15,6 +15,10 @@ class Slave < ActiveRecord::Base
     "#{clump_dir}/#{j[0..2]}/#{j[3..5]}/#{j[6..8]}/#{j[9..-1]}"
   end
 
+  def allow?
+    allow_deny.downcase == 'allow'
+  end
+
   def deny?
     allow_deny.downcase == 'deny'
   end
