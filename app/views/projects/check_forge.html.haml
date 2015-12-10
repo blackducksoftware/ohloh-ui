@@ -62,12 +62,14 @@
             .control-group
               %label.control-label= t('.chosen_licenses')
               .controls.chosen_licenses
-                .license.col-md-5.no_margin_left#license_menu{ style: 'display: none' }
-                  .col-md-6#license_name \#{name}
+                .no-license.inset= t('.none')
+
+                .license-cell.col-md-5.no_margin_left.license-template
+                  .col-md-6.license_name
                   .col-md-5.pull-right{ style: 'margin: 0 20px 20px 0' }
-                    %a.btn.btn-danger.btn-mini.remove_license.col{ data_id: '', href: '#' }
+                    %a.btn.btn-danger.btn-mini.remove_license.col{ href: 'javascript:' }
                       %i.icon-trash>
-                      Remove
+                      = t('.remove')
             .clearfix
             .control-group.clear_left
               %label.control-label.required= t('.url')
