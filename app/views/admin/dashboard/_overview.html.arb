@@ -23,14 +23,15 @@ columns do
   end
 
   column do
-    panel "ActiveAdmin" do
-      # check to see if we can get the revision:
-      stdin, stdout, stderr, wait_thr = Open3.popen3('git describe')
-      err = stderr.gets(nil)
-      if err =~ /No names found/
-        para "Unable to show git revision"
-      else
-        para %(Currently deployed: #{`git describe --tags --abbrev=0`}#{link_to(`git rev-parse --short HEAD`, "https://github.com/blackducksoftware/ohloh-ui/commit/#{`git rev-parse HEAD`}")}).html_safe
+    panel "Deployment Details" do
+      begin
+        revision_file = File.open("#{Rails.root}/REVISION")
+        revision = revision_file.read.strip
+        para %(Currently deployed: #{link_to(revision, "https://github.com/blackducksoftware/ohloh-ui/commit/#{revision}")}).html_safe
+        para %(Last Deployed: <b>#{time_ago_in_words(revision_file.mtime)}</b> ago).html_safe
+        revision_file.close
+      rescue Exception => e
+        para e
       end
     end
   end
