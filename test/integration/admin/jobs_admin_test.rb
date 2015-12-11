@@ -46,6 +46,26 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  it 'should render project jobs index page for newly created project' do
+    admin.password = 'xyzzy123456'
+    login_as admin
+    repository = create(:repository)
+    create(:fetch_job, repository: repository, slave: create(:slave))
+    project = create(:project)
+    create(:enlistment, repository: repository, project: project)
+    get admin_jobs_path, project_id: project.vanity_url
+    assert_response :success
+  end
+
+  it 'should render project index page for analses completed project' do
+    admin.password = 'xyzzy123456'
+    login_as admin
+    project = create(:project)
+    create(:fetch_job, project: project, slave: create(:slave))
+    get admin_jobs_path, project_id: project.vanity_url
+    assert_response :success
+  end
+
   it 'should render jobs show page' do
     admin.password = 'xyzzy123456'
     login_as admin

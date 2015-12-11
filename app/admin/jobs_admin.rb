@@ -104,6 +104,8 @@ ActiveAdmin.register Job do
     def scoped_collection
       if params['repository_id']
         Repository.find(params['repository_id']).jobs
+      elsif params[:project_id]
+        project_jobs
       else
         super
       end
@@ -124,6 +126,18 @@ ActiveAdmin.register Job do
       project = Project.find_by_vanity_url!(params[:project_id])
       project.repositories.each(&:schedule_fetch)
       redirect_to admin_project_jobs_path(project), flash: { success: 'Job has been scheduled.' }
+    end
+
+    private
+
+    def project_jobs
+      project = Project.find_by_vanity_url!(params[:project_id])
+      if project.repositories.size.zero?
+        project.jobs
+      else
+        Job.where("project_id = #{project.id} or repository_id in (
+                  select repository_id from enlistments where project_id = #{project.id} and not deleted)")
+      end
     end
   end
 end
