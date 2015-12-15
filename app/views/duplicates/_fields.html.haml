@@ -1,6 +1,4 @@
 - good = @duplicate.good_project
-- content_for :javascript do
-  = javascript_tag '$(document).on("page:change", NewDuplicate.init);'
 
 %fieldset
   %legend= t('.legend', name: truncate_project_name(@duplicate.bad_project.name)).html_safe
