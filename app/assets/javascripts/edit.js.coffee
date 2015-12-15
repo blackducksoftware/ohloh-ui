@@ -4,7 +4,7 @@ class Edit
   @humanEdits: ->
     if $(this).is(':checked')
       humanParam = 'human=true'
-      humanParam = "?#{humanParam}" unless location.search.match('?')
+      humanParam = "?#{humanParam}" unless location.search.match(/\?/)
       humanParam = "&#{humanParam}" if location.search.match(/\?\w+/)
       Edit.setupHumanParam(location.search.replace('&&', '&'), humanParam)
     else
