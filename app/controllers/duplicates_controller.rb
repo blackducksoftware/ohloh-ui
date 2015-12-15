@@ -78,11 +78,11 @@ class DuplicatesController < ApplicationController
   end
 
   def find_good_project
-    @good_project = Project.from_param(duplicate_params[:good_project].downcase).take
+    @good_project = Project.from_param(duplicate_params[:good_project_id].downcase).take
   end
 
   def duplicate_params
-    params.require(:duplicate).permit([:good_project, :bad_project_id, :comment])
+    params.require(:duplicate).permit([:good_project_id, :bad_project_id, :comment])
   end
 
   def must_own_duplicate

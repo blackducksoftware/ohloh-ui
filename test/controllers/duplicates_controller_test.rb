@@ -135,7 +135,7 @@ describe 'DuplicatesController' do
 
   describe 'create' do
     it 'should require a current user' do
-      post :create, project_id: create(:project).to_param, duplicate: { good_project: create(:project).to_param }
+      post :create, project_id: create(:project).to_param, duplicate: { good_project_id: create(:project).to_param }
       assert_response :redirect
       must_redirect_to new_session_path
     end
@@ -144,7 +144,7 @@ describe 'DuplicatesController' do
       good = create(:project)
       bad = create(:project)
       login_as create(:account)
-      post :create, project_id: bad.to_param, duplicate: { good_project: good.to_param, comment: 'Cow says: Moo' }
+      post :create, project_id: bad.to_param, duplicate: { good_project_id: good.to_param, comment: 'Cow says: Moo' }
       assert_response 302
       Duplicate.where(good_project_id: good.id, bad_project_id: bad.id).first.comment.must_equal 'Cow says: Moo'
     end
@@ -154,7 +154,7 @@ describe 'DuplicatesController' do
       bad = create(:project)
       login_as create(:account)
 
-      post :create, project_id: bad.to_param, duplicate: { good_project: 'I_am_a_banana' }
+      post :create, project_id: bad.to_param, duplicate: { good_project_id: 'I_am_a_banana' }
 
       must_render_template 'new'
       assigns('duplicate').errors.messages[:good_project].must_be :present?
@@ -163,7 +163,7 @@ describe 'DuplicatesController' do
     it 'should render the new page if the duplicate fails to save' do
       project = create(:project)
       login_as create(:account)
-      post :create, project_id: project.to_param, duplicate: { good_project: project.to_param }
+      post :create, project_id: project.to_param, duplicate: { good_project_id: project.to_param }
       assert_response :unprocessable_entity
       response.body.must_match I18n.t('duplicates.fields.legend', name: project.name)
     end
@@ -208,7 +208,7 @@ describe 'DuplicatesController' do
       project = create(:project)
       duplicate = create(:duplicate, bad_project: project)
       post :update, project_id: project.to_param, id: duplicate.id,
-                    duplicate: { good_project: duplicate.good_project_id, comment: 'Whatevs!' }
+                    duplicate: { good_project_id: duplicate.good_project_id, comment: 'Whatevs!' }
       assert_response :redirect
       must_redirect_to new_session_path
       duplicate.reload.comment.wont_equal 'Whatevs!'
@@ -219,7 +219,7 @@ describe 'DuplicatesController' do
       duplicate = create(:duplicate, bad_project: project)
       login_as create(:account)
       post :update, project_id: project.to_param, id: duplicate.id,
-                    duplicate: { good_project: duplicate.good_project_id, comment: 'Whatevs!' }
+                    duplicate: { good_project_id: duplicate.good_project_id, comment: 'Whatevs!' }
       assert_response 302
       duplicate.reload.comment.wont_equal 'Whatevs!'
     end
@@ -229,7 +229,7 @@ describe 'DuplicatesController' do
       duplicate = create(:duplicate, bad_project: project)
       login_as duplicate.account
       post :update, project_id: project.to_param, id: duplicate.id,
-                    duplicate: { good_project: duplicate.good_project_id, comment: 'Whatevs!' }
+                    duplicate: { good_project_id: duplicate.good_project_id, comment: 'Whatevs!' }
       assert_response 302
       duplicate.reload.comment.must_equal 'Whatevs!'
     end
@@ -239,7 +239,7 @@ describe 'DuplicatesController' do
       duplicate = create(:duplicate, bad_project: project)
       login_as create(:admin)
       post :update, project_id: project.to_param, id: duplicate.id,
-                    duplicate: { good_project: duplicate.good_project_id, comment: 'Whatevs!' }
+                    duplicate: { good_project_id: duplicate.good_project_id, comment: 'Whatevs!' }
       assert_response 302
       duplicate.reload.comment.must_equal 'Whatevs!'
     end
@@ -249,7 +249,7 @@ describe 'DuplicatesController' do
       duplicate = create(:duplicate, bad_project: project)
       login_as duplicate.account
       post :update, project_id: project.to_param, id: duplicate.id,
-                    duplicate: { good_project: project.to_param, comment: 'Whatevs!' }
+                    duplicate: { good_project_id: project.to_param, comment: 'Whatevs!' }
       assert_response :unprocessable_entity
       duplicate.reload.comment.wont_equal 'Whatevs!'
       response.body.must_match I18n.t('duplicates.fields.legend', name: project.name)
@@ -261,7 +261,7 @@ describe 'DuplicatesController' do
       login_as duplicate.account
 
       post :update, project_id: project.to_param, id: duplicate.id,
-                    duplicate: { good_project: '', comment: 'Whatevs!' }
+                    duplicate: { good_project_id: '', comment: 'Whatevs!' }
 
       must_respond_with :unprocessable_entity
       assigns(:duplicate).errors.messages[:good_project].first.must_equal I18n.t('duplicates.no_valid_project')
