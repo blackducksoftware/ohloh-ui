@@ -5,7 +5,7 @@ en:
       settings_privacy_html: '%{href} : Privacy'
       settings: 'Settings'
       manage_email: 'Manage email from Open Hub'
-      adiministrative_email: 'Administrative Email'
+      administrative_email: 'Administrative Email'
       send_admin_email: 'Open Hub will always send normal administrative email such as activation notices and password change requests.'
       other_openhub_email: 'Other Open Hub Email'
       admin_email_notice: 'Open Hub occassionally sends other email to its members, such as informational notices and site updates.'
