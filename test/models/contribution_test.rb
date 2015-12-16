@@ -51,18 +51,6 @@ class ContributionTest < ActiveSupport::TestCase
   end
 
   describe '#filter_by' do
-    it 'filter_by with query string' do
-      ContributorFact.delete_all
-      Person.delete_all
-      create_people_for_sort_by
-      contribution = Contribution
-                     .includes(person: :account, contributor_fact: :primary_language)
-                     .references(:all)
-                     .filter_by('AA test')
-      contribution.count.must_equal 1
-      contribution.first.must_equal @person2.contributions.first
-    end
-
     it 'filter_by with nil string' do
       Contribution.filter_by(nil).count.must_equal Contribution.count
     end
