@@ -16,7 +16,7 @@ module RepositoryJobs
     def schedule_fetch
       return ensure_job unless best_code_set
 
-      return if best_code_set.jobs.incomplete_or_since(Time.now - 5.minutes)
+      return if best_code_set.jobs.incomplete_or_since(Time.now - 5.minutes).present?
 
       CompleteJob.create!(repository_id: best_code_set.repository_id, code_set_id: best_code_set.id)
     end

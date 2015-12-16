@@ -114,6 +114,12 @@ describe 'ExploreController' do
         assigns(:languages).must_include [lang_1.nice_name, lang_1.name]
         assigns(:languages).must_include [lang_2.nice_name, lang_2.name]
       end
+
+      it 'should render projects explore page with language param' do
+        get :index, lang: lang_1.name
+        must_respond_with :ok
+        must_render_template :projects
+      end
     end
 
     describe 'demographic_chart' do

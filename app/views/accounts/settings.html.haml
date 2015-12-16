@@ -1,5 +1,5 @@
 - content_for :html_title do
-  = t('.settings_title')
+  = t('.settings_title', name: @account.name)
 - account_context
 - page_context[:select_footer_nav] = :settings
 

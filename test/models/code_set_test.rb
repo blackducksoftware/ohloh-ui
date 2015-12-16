@@ -16,4 +16,12 @@ describe CodeSet do
       repository.code_sets.last.must_equal job.code_set
     end
   end
+
+  describe 'ignore_prefixes' do
+    it 'should ignore file names' do
+      enlistment = create(:enlistment)
+      code_set = create(:code_set, repository_id: enlistment.repository_id)
+      code_set.ignore_prefixes(enlistment.project).must_be_empty
+    end
+  end
 end

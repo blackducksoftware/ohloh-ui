@@ -70,7 +70,7 @@ class Account::Hooks
   def destroy_spammer_dependencies(account)
     account.posts.each(&:destroy_with_empty_topic)
     account.all_manages.each { |manage| manage.destroy_by!(account) }
-    account.edits.not_undone.each { |edit| edit.undo!(Account.hamster) }
+    account.edits.not_undone.each { |edit| safe_undo(edit) }
     account.topics.where(posts_count: 0).destroy_all
     account.person.try(:destroy)
     dependent_destroy(account)
@@ -79,6 +79,13 @@ class Account::Hooks
   end
   # rubocop:enable Metrics/AbcSize
 
+  # All edits cannot be undone due to the edits order and validations
+  def safe_undo(edit)
+    edit.undo!(Account.hamster) if edit.allow_undo?
+  rescue
+    Rails.logger.info "Spam undo failed: #{$ERROR_INFO.inspect}\n#{edit.inspect}"
+  end
+
   def dependent_destroy(account)
     %w(positions sent_kudos stacks ratings reviews api_keys verifications).each do |association|
       account.send(association).destroy_all
@@ -86,8 +93,7 @@ class Account::Hooks
   end
 
   def create_deleted_account(account)
-    traits = { login: account.login, email: account.email,
-               organization_id: account.organization_id }
+    traits = { login: account.login, email: account.email, organization_id: account.organization_id }
     pids = account.positions.select('array_agg(project_id) as pids').take.pids
     traits[:claimed_project_ids] = pids if pids
     DeletedAccount.create(traits)

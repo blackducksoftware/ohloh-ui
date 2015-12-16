@@ -56,4 +56,18 @@ class SlavesAdminTest < ActionDispatch::IntegrationTest
     get edit_admin_slafe_path(@slave)
     assert_response :success
   end
+
+  it 'should do deny batch action' do
+    post batch_action_admin_slaves_path(batch_action: 'deny', collection_selection: [@slave.id])
+    assert_response :redirect
+    must_redirect_to admin_slaves_path
+    @slave.allow_deny == 'deny'
+  end
+
+  it 'should do allow batch action' do
+    post batch_action_admin_slaves_path(batch_action: 'allow', collection_selection: [@slave.id])
+    assert_response :redirect
+    must_redirect_to admin_slaves_path
+    @slave.allow_deny == 'allow'
+  end
 end
