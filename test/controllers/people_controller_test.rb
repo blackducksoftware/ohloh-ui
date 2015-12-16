@@ -26,6 +26,12 @@ describe 'PeopleControllerTest' do
       response.body.must_match @claimed.account.name
       response.body.must_match @unclaimed.name.name
     end
+
+    it 'should render the people page' do
+      get :index
+      must_respond_with :ok
+      must_render_template :index
+    end
   end
 
   describe 'rankings' do

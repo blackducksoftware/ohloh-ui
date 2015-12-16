@@ -188,4 +188,13 @@ class RepositoryTest < ActiveSupport::TestCase
       end
     end
   end
+
+  describe 'schedule_fetch' do
+    it 'should create complete job' do
+      code_set = create(:code_set)
+      repository = create(:repository, best_code_set_id: code_set.id)
+      code_set.jobs.update_all(status: Job::STATUS_COMPLETED, current_step_at: 1.day.ago)
+      repository.schedule_fetch
+    end
+  end
 end

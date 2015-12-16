@@ -133,6 +133,12 @@ class OrganizationTest < ActiveSupport::TestCase
       assert_equal 1, OrganizationJob.count
     end
 
+    it 'should create a job if job not exist?' do
+      assert_difference 'OrganizationJob.count', 1 do
+        org.ensure_job
+      end
+    end
+
     it 'schedule_analysis should schedule organization job successfully' do
       Job.delete_all
       assert_equal 0, OrganizationJob.count

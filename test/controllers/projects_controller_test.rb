@@ -243,6 +243,25 @@ describe 'ProjectsController' do
       must_respond_with :ok
     end
 
+    it 'should show render for projects that have been analyzed' do
+      project = create(:project)
+      af_1 = create(:activity_fact, analysis: project.best_analysis, code_added: 8_000, comments_added: 8_000)
+      create(:factoid, analysis: project.best_analysis, language: af_1.language)
+      af_2 = create(:activity_fact, analysis: project.best_analysis)
+      create(:factoid, analysis: project.best_analysis, language: af_2.language)
+      af_3 = create(:activity_fact, analysis: project.best_analysis)
+      create(:factoid, analysis: project.best_analysis, language: af_3.language)
+      af_4 = create(:activity_fact, analysis: project.best_analysis)
+      create(:factoid, analysis: project.best_analysis, language: af_4.language)
+      ats = project.best_analysis.all_time_summary
+      cf = create(:commit_flag)
+      create(:analysis_sloc_set, analysis: project.best_analysis, sloc_set: cf.sloc_set)
+      login_as create(:admin)
+      get :show, id: project.to_param
+      ats.update_attributes(recent_contributors: ['name_ids'])
+      must_respond_with :ok
+    end
+
     it 'must render successfully when analysis has nil dates' do
       project = create(:project)
       project.best_analysis.update! min_month: nil, max_month: nil, logged_at: nil,
