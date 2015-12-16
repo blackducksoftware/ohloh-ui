@@ -15,6 +15,11 @@ class ContributionTest < ActiveSupport::TestCase
       create_people_for_sort_by
     end
 
+    it '#commits when no sort order is specified' do
+      results = Contribution.joins(:contributor_fact).sort(nil).map(&:id)
+      results.must_equal [@person1.id, @person2.id, @person3.id, @person.id]
+    end
+
     it '#name' do
       find_contribution(:person, 'name').must_equal [@person2.id, @person1.id, @person3.id]
     end

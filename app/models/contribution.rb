@@ -59,7 +59,7 @@ class Contribution < ActiveRecord::Base
 
   class << self
     def sort(key)
-      key = :twelve_month_commits unless key && SORT_OPTIONS.include?(key.to_sym)
+      key = :commits unless key && SORT_OPTIONS.include?(key.to_sym)
       send("sort_by_#{key}")
     end
 
