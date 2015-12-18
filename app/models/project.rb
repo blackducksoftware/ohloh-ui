@@ -1,4 +1,8 @@
 class Project < ActiveRecord::Base
+  acts_as_editable editable_attributes: [:name, :vanity_url, :organization_id, :best_analysis_id,
+                                         :description, :tag_list, :missing_source, :url, :download_url],
+                   merge_within: 30.minutes
+
   include ProjectAssociations
   include LinkAccessors
   include Tsearch
@@ -6,9 +10,6 @@ class Project < ActiveRecord::Base
   include ProjectScopes
   include ProjectJobs
 
-  acts_as_editable editable_attributes: [:name, :vanity_url, :organization_id, :best_analysis_id,
-                                         :description, :tag_list, :missing_source, :url, :download_url],
-                   merge_within: 30.minutes
   acts_as_protected
   acts_as_taggable
   link_accessors accessors: { url: :Homepage, download_url: :Download }
