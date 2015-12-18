@@ -2,7 +2,6 @@ require 'test_helper'
 require 'test_helpers/create_contributions_data'
 
 class ProjectTest < ActiveSupport::TestCase
-
   let(:project) { create(:project) }
   let(:account) { create(:account) }
   let(:language) { create(:language) }
@@ -181,11 +180,11 @@ class ProjectTest < ActiveSupport::TestCase
 
     it 'should have project creation edit as the first edit' do
       account = create(:account, password: 'password', level: 10)
-      proj = create(:project, editor_account: account,  url: 'http://openhub.net', download_url: 'http://openhub.net/download')
-      edits = proj.links.map{|l| l.edits}.flatten + proj.edits
+      proj = create(:project, editor_account: account, url: 'http://openhub.net', download_url: 'http://openhub.net/download')
+      edits = proj.links.map(&:edits).flatten + proj.edits
 
-      project_edits = edits.select{|e| e.target_type == 'Project'}
-      link_edits = edits.select{|e| e.target_type == 'Link'}
+      project_edits = edits.select { |e| e.target_type == 'Project' }
+      link_edits = edits.select { |e| e.target_type == 'Link' }
       project_edits.wont_be_empty
       link_edits.wont_be_empty
 

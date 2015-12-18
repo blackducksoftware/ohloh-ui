@@ -1,7 +1,7 @@
 class Project < ActiveRecord::Base
-
   acts_as_editable editable_attributes: [:name, :vanity_url, :organization_id, :best_analysis_id,
-	:description, :tag_list, :missing_source, :url, :download_url], merge_within: 30.minutes
+                                         :description, :tag_list, :missing_source, :url, :download_url],
+                   merge_within: 30.minutes
 
   include ProjectAssociations
   include LinkAccessors
