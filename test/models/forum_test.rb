@@ -49,7 +49,7 @@ class ForumTest < ActiveSupport::TestCase
   it 'forum should have associated posts ordered by updated_at at asc' do
     topic = create(:topic_with_posts)
     forum = topic.forum
-    forum.posts.to_a.reverse.must_equal forum.posts.sort_by(&:updated_at)
+    forum.posts.must_equal forum.posts.sort_by(&:updated_at)
   end
 
   it 'destroying a forum destroys its accompanying topics and posts' do
