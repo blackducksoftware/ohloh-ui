@@ -1,8 +1,6 @@
 Airbrake.configure do |config|
-  config.api_key = ENV['AIRBRAKE_API_KEY']
-  config.host    = ENV['AIRBRAKE_HOST']
-  config.port    = ENV['AIRBRAKE_PORT'].to_i
-  config.secure  = false
+  config.project_key = ENV['AIRBRAKE_API_KEY']
+  config.host = "#{ENV['AIRBRAKE_HOST']}:#{ENV['AIRBRAKE_PORT'].to_i}"
   config.project_id = ENV['AIRBRAKE_API_KEY']
 end
 
