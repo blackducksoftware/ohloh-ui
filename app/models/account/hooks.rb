@@ -81,7 +81,7 @@ class Account::Hooks
 
   # All edits cannot be undone due to the edits order and validations
   def safe_undo(edit)
-    edit.undo!(Account.hamster) if edit.allow_undo?
+    Edit.transaction(requires_new: true) { edit.undo!(Account.hamster) if edit.allow_undo? }
   rescue
     Rails.logger.info "Spam undo failed: #{$ERROR_INFO.inspect}\n#{edit.inspect}"
   end

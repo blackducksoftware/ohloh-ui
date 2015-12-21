@@ -178,6 +178,21 @@ class ProjectTest < ActiveSupport::TestCase
       proj.errors.messages[:download_url].must_equal [I18n.t(:not_a_valid_url)]
     end
 
+    it 'should have project creation edit as the first edit' do
+      account = create(:account, password: 'password', level: 10)
+      proj = create(:project, editor_account: account, url: 'http://openhub.net', download_url: 'http://openhub.net/download')
+      edits = proj.links.map(&:edits).flatten + proj.edits
+
+      project_edits = edits.select { |e| e.target_type == 'Project' }
+      link_edits = edits.select { |e| e.target_type == 'Link' }
+      project_edits.wont_be_empty
+      link_edits.wont_be_empty
+
+      first_edit = edits.min_by(&:created_at)
+      first_edit.type.must_equal 'CreateEdit'
+      first_edit.target_type.must_equal 'Project'
+    end
+
     it 'should support undo of setting url value' do
       proj = create(:project)
       proj.update_attributes(url: 'http://openhub.net/url')
