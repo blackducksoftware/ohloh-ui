@@ -2,19 +2,16 @@
 # rake selenium:prepare_projects_data[firefox]
 
 require 'action_view'
-require "#{Rails.root}/app/helpers/analyses_helper.rb"
-require "#{Rails.root}/app/helpers/projects_helper.rb"
-require "#{Rails.root}/lib/email_obfuscation.rb"
 
-include AnalysesHelper
-include ProjectsHelper
-include EmailObfuscation
 include ActionView::Helpers::NumberHelper
 include ActionView::Helpers::DateHelper
 
 namespace :selenium do
   desc 'Prepare Projects data for selenium'
   task :prepare_projects_data, [:project_name] => :environment do |_t, args|
+    include AnalysesHelper
+    include ProjectsHelper
+    include EmailObfuscation
     yaml_file = File.open('projects_data.yml', 'w')
     projects = {}
 
