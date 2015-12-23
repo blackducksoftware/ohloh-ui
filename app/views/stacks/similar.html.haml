@@ -16,7 +16,7 @@
             %h4.margin_bottom_5= link_to(account.name, account_path(account))
             .stack_name.margin_bottom_5
               %a{ href: stack_path(similar_stack[:stack]) }= similar_stack[:stack].title
-              %span.soft== updated #{ time_ago_in_words(account.updated_at) } ago
+              %span.soft== updated #{time_ago_in_words(account.updated_at)} ago
             = avatar_small_laurels(account.kudo_rank)
             - stack_country_flag(account.country_code)
           .a_right

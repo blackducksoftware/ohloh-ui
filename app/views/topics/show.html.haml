@@ -13,7 +13,7 @@
   .well
     - if @topic.closed?
       %br
-      - if (@topic.account == current_user)
+      - if @topic.account == current_user
         %p= t('.close_topic_message_1')
         %p= t('.reopen_message_html', link: link_to(t('topics.reopen'), reopen_topic_path(@topic)))
       - else
