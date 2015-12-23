@@ -19,7 +19,7 @@ slave.jobs.where(status: Job::STATUS_RUNNING)
            end
 
   a href: admin_job_path(job), style:"text-decoration:none;" do
-    status_tag("#{job.class.to_s.first} #{job.id}", status, title: job.current_step_at)
+    status_tag("#{job.class.to_s.first} #{job.id}", status, title: JobDecorator.new(job).tool_tip)
   end
   br if i.odd?
 end
