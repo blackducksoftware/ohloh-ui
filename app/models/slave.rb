@@ -27,7 +27,7 @@ class Slave < ActiveRecord::Base
 
   def run(cmd)
     _stdin, stdout, stderr = Open3.popen3('bash', '-c', cmd)
-    fail "#{ cmd } failed: #{ stderr.read }" if stderr.any?
+    fail "#{cmd} failed: #{stderr.read}" if stderr.any?
     stdout.read
   end
 

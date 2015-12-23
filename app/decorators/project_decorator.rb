@@ -31,12 +31,12 @@ class ProjectDecorator < Cherry::Decorator
         [:rss,              I18n.t(:news),               h.project_rss_articles_path(project)],
         [:settings,         I18n.t(:settings),           h.settings_project_path(project)],
         [:widgets,          I18n.t(:sharing_widgets),    h.project_widgets_path(project)],
-        [:similar_projects,  I18n.t(:related_projects),  h.similar_project_path(project)]
+        [:similar_projects, I18n.t(:related_projects), h.similar_project_path(project)]
       ],
       [
         [:code_data,        I18n.t(:code_data)],
         [:languages,        I18n.t(:languages_menu), h.languages_summary_project_analysis_path(project, id: 'latest')],
-        [:estimated_cost,   I18n.t(:cost_estimates),     h.estimated_cost_project_path(project)]
+        [:estimated_cost,   I18n.t(:cost_estimates), h.estimated_cost_project_path(project)]
       ],
       [
         [:scm_data,         I18n.t(:scm_data)],

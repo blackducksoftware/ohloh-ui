@@ -41,7 +41,7 @@ class Account < ActiveRecord::Base
   end
 
   def best_vita
-    Vita.where(id: best_vita_id, account_id: id).first || NilVita.new
+    Vita.find_by(id: best_vita_id, account_id: id) || NilVita.new
   end
 
   def email_topics?
@@ -62,7 +62,7 @@ class Account < ActiveRecord::Base
   end
 
   def run_actions(status)
-    actions.where(status: status).each(&:run)
+    actions.where(status: status).find_each(&:run)
   end
 
   # Work around problem with has_many:
@@ -103,7 +103,7 @@ class Account < ActiveRecord::Base
 
   class << self
     def resolve_login(login)
-      Account.where('lower(login) = ?', login.to_s.downcase).first
+      Account.find_by('lower(login) = ?', login.to_s.downcase)
     end
 
     def hamster
@@ -119,7 +119,7 @@ class Account < ActiveRecord::Base
     end
 
     def fetch_by_login_or_email(user_name)
-      where(arel_table[:login].eq(user_name).or(arel_table[:email].eq(user_name))).take
+      find_by(arel_table[:login].eq(user_name).or(arel_table[:email].eq(user_name)))
     end
 
     def find_or_create_anonymous_account

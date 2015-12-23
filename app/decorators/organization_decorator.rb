@@ -9,7 +9,7 @@ class OrganizationDecorator < Cherry::Decorator
       ],
       [
         [:code_data,      I18n.t(:project_portfolio)],
-        [:projects,       I18n.t(:claimed_projects),         h.projects_organization_path(organization)]
+        [:projects,       I18n.t(:claimed_projects), h.projects_organization_path(organization)]
       ]
     ]
   end

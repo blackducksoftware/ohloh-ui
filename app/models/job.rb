@@ -33,7 +33,7 @@ class Job < ActiveRecord::Base
   belongs_to :organization
 
   def categorize_failure
-    failure_group = FailureGroup.where('pattern ILIKE ?', exception).first
+    failure_group = FailureGroup.find_by('pattern ILIKE ?', exception)
     update_column(failure_group_id: failure_group.id) if failure_group
   end
 

@@ -19,7 +19,7 @@ FactoryGirl.define do
 
   factory :cvs_repository, parent: :repository, class: 'CvsRepository' do
     type 'CvsRepository'
-    url { ":pserver:anonymous:@cvs.sourceforge.net:/#{ Faker::Lorem.word }/#{ Faker::Lorem.word }" }
+    url { ":pserver:anonymous:@cvs.sourceforge.net:/#{Faker::Lorem.word}/#{Faker::Lorem.word}" }
   end
 
   factory :git_repository, parent: :repository, class: 'GitRepository' do

@@ -53,7 +53,7 @@ class Person::Builder
       Person.connection.execute <<-SQL
         UPDATE people SET name_fact_id = people_name_facts.name_fact_id
         FROM (
-          #{ people_with_contributor_facts_for_project(project).to_sql }
+          #{people_with_contributor_facts_for_project(project).to_sql}
         ) AS people_name_facts
         WHERE id = people_name_facts.person_id;
       SQL

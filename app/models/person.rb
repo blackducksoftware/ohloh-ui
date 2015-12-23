@@ -101,7 +101,7 @@ class Person < ActiveRecord::Base
     projects_name = Project.where(id: account.positions.pluck(:project_id)).map(&:name).join(' ')
     {
       a: "#{account.name} #{account.login}",
-      b: account.akas.to_s.gsub("\n", ' '),
+      b: account.akas.to_s.tr("\n", ' '),
       d: "#{account.markup.try(:formatted)} #{projects_name}"
     }
   end

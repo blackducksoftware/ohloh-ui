@@ -56,8 +56,8 @@ class LinksController < SettingsController
     @category_name = Link.find_category_by_id(params[:category_id]) || @link.category
     return unless @link && @category_name
     type = nil
-    type = :Homepage if (@category_name.to_s == 'Homepage')
-    type = :Downloads if (@category_name.to_s == 'Download')
+    type = :Homepage if @category_name.to_s == 'Homepage'
+    type = :Downloads if @category_name.to_s == 'Download'
     @link.title ||= type
   end
 

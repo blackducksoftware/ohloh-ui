@@ -48,7 +48,7 @@ class ApiKey < ActiveRecord::Base
     end
 
     def find_by_oauth_application_uid(client_id)
-      joins(:oauth_application).where('oauth_applications.uid' => client_id).first
+      joins(:oauth_application).find_by('oauth_applications.uid' => client_id)
     end
   end
 

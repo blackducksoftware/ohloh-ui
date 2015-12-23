@@ -32,7 +32,7 @@ module WidgetBadge
         gray = 100 - options[:opacity]
 
         convert.font BADGE_FONT_PATH
-        convert.fill "rgb( #{ gray }%, #{ gray }%, #{ gray }% )"
+        convert.fill "rgb( #{gray}%, #{gray}%, #{gray}% )"
         convert.stroke options[:stroke]
         convert.pointsize options[:font_size]
         convert.weight options[:weight]

@@ -176,7 +176,7 @@ describe 'StacksControllerTest' do
         stack.must_be :persisted?
         stack.account.must_equal account
         stack.title.must_equal 'New Stack 1'
-        stack.description.must_equal "The Projects used for #{ stack.title }"
+        stack.description.must_equal "The Projects used for #{stack.title}"
       end
     end
   end
