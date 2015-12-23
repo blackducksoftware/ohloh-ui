@@ -28,7 +28,7 @@ class Repository < ActiveRecord::Base
   end
 
   def failed?
-    job = jobs.incomplete.first
+    job = jobs.order(:current_step_at).reverse.first
     job.failed?
   end
 
