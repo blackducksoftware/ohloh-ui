@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/ClassLength
 require 'will_paginate/array'
 class PositionsController < ApplicationController
   helper ProjectsHelper

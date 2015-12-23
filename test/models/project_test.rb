@@ -328,7 +328,7 @@ class ProjectTest < ActiveSupport::TestCase
       analysis = create(:analysis, created_at: 25.days.ago)
       project = create(:project)
       project.update_column(:best_analysis_id, analysis.id)
-      sloc_set = create(:sloc_set, as_of: 1, logged_at: Date.today)
+      sloc_set = create(:sloc_set, as_of: 1, logged_at: Date.current)
       code_set = create(:code_set, as_of: 1, best_sloc_set: sloc_set)
       analysis_sloc_set = create(:analysis_sloc_set, as_of: 1, analysis: analysis, sloc_set: sloc_set)
       repo = create(:repository, best_code_set: code_set)
@@ -337,7 +337,7 @@ class ProjectTest < ActiveSupport::TestCase
       Repository.any_instance.stubs(:ensure_job).returns(false)
 
       project.ensure_job
-      analysis_sloc_set.reload.logged_at.must_equal Date.today
+      analysis_sloc_set.reload.logged_at.must_equal Date.current
     end
 
     it 'should update activity level index if analsyis is old' do
@@ -371,7 +371,7 @@ class ProjectTest < ActiveSupport::TestCase
     it 'should not create a new job if project already has a job' do
       project = create(:project)
       create_repositiory(project)
-      AnalyzeJob.create(project: project, wait_until: Time.now + 5.hours)
+      AnalyzeJob.create(project: project, wait_until: Time.current + 5.hours)
 
       project.ensure_job
       project.jobs.count.must_equal 1
@@ -434,7 +434,7 @@ class ProjectTest < ActiveSupport::TestCase
     it 'should update existing job if present' do
       project = create(:project)
       create_repositiory(project)
-      AnalyzeJob.create(project: project, wait_until: Time.now + 5.hours)
+      AnalyzeJob.create(project: project, wait_until: Time.current + 5.hours)
 
       project.jobs.count.must_equal 1
       project.schedule_delayed_analysis(2.hours)

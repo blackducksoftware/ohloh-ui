@@ -59,8 +59,8 @@ describe 'ContributionsController' do
     end
 
     it 'should return contributions in xml format with valid api key' do
-      @contributor_fact.first_checkin = Date.today
-      @contributor_fact.last_checkin = Date.today
+      @contributor_fact.first_checkin = Date.current
+      @contributor_fact.last_checkin = Date.current
       @contributor_fact.save
       key = create(:api_key, account_id: create(:account).id)
       get :index, project_id: @project.to_param, api_key: key.oauth_application.uid, format: :xml

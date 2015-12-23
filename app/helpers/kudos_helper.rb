@@ -1,3 +1,4 @@
+# rubocop: disable Metrics/ModuleLength
 module KudosHelper
   def kudos_laurel_link_for(person)
     path = person.nil? ? '#' : rankings_people_path(show: person.id)

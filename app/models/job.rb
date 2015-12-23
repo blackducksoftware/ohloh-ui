@@ -22,7 +22,7 @@ class Job < ActiveRecord::Base
   scope :scheduled, -> { where(status: STATUS_SCHEDULED) }
   scope :complete, -> { where(status: STATUS_COMPLETED) }
   scope :scheduled_or_failed, -> { where(status: [STATUS_SCHEDULED, STATUS_FAILED]) }
-  scope :since, ->(time) { where(current_step_at: time...Time.now) }
+  scope :since, ->(time) { where(current_step_at: time...Time.current) }
   scope :incomplete_or_since, ->(time) { incomplete || since(time) }
 
   belongs_to :project

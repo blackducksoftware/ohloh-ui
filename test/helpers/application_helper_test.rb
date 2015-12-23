@@ -53,7 +53,7 @@ class ApplicationHelperTest < ActionView::TestCase
 
   describe 'xml_date_to_time' do
     it 'should return xml format time for date' do
-      xml_date_to_time(Date.today).must_equal "#{Date.today.strftime('%Y-%m-%d')}T00:00:00Z"
+      xml_date_to_time(Date.current).must_equal "#{Date.current.strftime('%Y-%m-%d')}T00:00:00Z"
     end
   end
 
@@ -78,29 +78,29 @@ class ApplicationHelperTest < ActionView::TestCase
     end
 
     it 'must return the correct number of days' do
-      time = Time.now.utc - 3.days
+      time = Time.current.utc - 3.days
       time_ago_in_days_hours_minutes(time).must_match(/3d/)
     end
 
     it 'must return the correct number of hours' do
-      time = Time.now.utc - 4.hours
+      time = Time.current.utc - 4.hours
       time_ago_in_days_hours_minutes(time).must_match(/4h/)
       time_ago_in_days_hours_minutes(time).must_match(/0d 4h/)
     end
 
     it 'must return the correct number of days and hours' do
-      time = Time.now.utc - 3.days - 4.hours
+      time = Time.current.utc - 3.days - 4.hours
       time_ago_in_days_hours_minutes(time).must_match(/3d 4h/)
     end
 
     it 'must return the correct number of minutes' do
-      time = Time.now.utc - 5.minutes
+      time = Time.current.utc - 5.minutes
       time_ago_in_days_hours_minutes(time).must_match(/5m/)
       time_ago_in_days_hours_minutes(time).must_equal('0d 0h 5m')
     end
 
     it 'must return the fully correct value' do
-      time = Time.now.utc - 60.days - 22.hours - 59.minutes
+      time = Time.current.utc - 60.days - 22.hours - 59.minutes
       time_ago_in_days_hours_minutes(time).must_equal '60d 22h 59m'
     end
   end

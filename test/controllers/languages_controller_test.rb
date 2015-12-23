@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe 'LanguagesController' do
-  let(:date_range) { [3.months.ago, 2.months.ago, 1.month.ago, Date.today].map(&:beginning_of_month) }
+  let(:date_range) { [3.months.ago, 2.months.ago, 1.month.ago, Date.current].map(&:beginning_of_month) }
   let(:create_all_months) { date_range.each { |date| create(:all_month, month: date) } }
   let(:client_id) { create(:api_key).oauth_application.uid }
 

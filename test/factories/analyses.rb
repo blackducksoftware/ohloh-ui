@@ -6,8 +6,8 @@ FactoryGirl.define do
     logic_total 101
     build_total 102
     first_commit_time { Time.current - 1.year }
-    min_month { Date.today - 1.month }
-    max_month { Date.today - 1.day }
+    min_month { Date.current - 1.month }
+    max_month { Date.current - 1.day }
     last_commit_time { Time.current - 1.day }
     after(:create) do |instance|
       instance.update_attributes(thirty_day_summary: create(:thirty_day_summary, analysis: instance))

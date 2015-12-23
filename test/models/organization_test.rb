@@ -128,7 +128,7 @@ class OrganizationTest < ActiveSupport::TestCase
     it 'ensure_job should not schedule organization job if there is a job already scheduled' do
       Job.delete_all
       assert_equal 0, OrganizationJob.count
-      OrganizationJob.create(organization: org, wait_until: Time.now.utc + 6.hours)
+      OrganizationJob.create(organization: org, wait_until: Time.current.utc + 6.hours)
       org.ensure_job
       assert_equal 1, OrganizationJob.count
     end
@@ -148,7 +148,7 @@ class OrganizationTest < ActiveSupport::TestCase
 
     it 'schedule_analysis should not schedule organization job if there is a job already scheduled' do
       Job.delete_all
-      OrganizationJob.create(organization: org, wait_until: Time.now.utc + 6.hours)
+      OrganizationJob.create(organization: org, wait_until: Time.current.utc + 6.hours)
       org.schedule_analysis
       assert_equal 1, OrganizationJob.count
     end

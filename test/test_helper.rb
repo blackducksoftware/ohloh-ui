@@ -113,7 +113,7 @@ class ActiveSupport::TestCase
     (0..2).each do |value|
       2.times do
         project = create(:project)
-        analysis = create(:analysis, logged_at: Date.today - value.days, project: project)
+        analysis = create(:analysis, logged_at: Date.current - value.days, project: project)
         project.update(best_analysis: analysis)
       end
     end

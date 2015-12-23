@@ -39,7 +39,7 @@ class RssFeedTest < ActiveSupport::TestCase
   end
 
   it 'should update any associated projects whenever a successful sync occurs' do
-    before = Time.now - 4.hours
+    before = Time.current - 4.hours
     rss_feed = create(:rss_feed)
     project = create(:project)
     project.update_attributes(updated_at: before)
@@ -51,7 +51,7 @@ class RssFeedTest < ActiveSupport::TestCase
   end
 
   it 'should create new rss_articles when fetch happens' do
-    before = Time.now - 4.hours
+    before = Time.current - 4.hours
     rss_feed = create(:rss_feed)
     project = create(:project)
     project.update_attributes(updated_at: before)

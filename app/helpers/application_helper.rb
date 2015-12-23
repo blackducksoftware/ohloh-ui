@@ -1,3 +1,4 @@
+# rubocop: disable Metrics/ModuleLength
 module ApplicationHelper
   include EmailObfuscation
   include ChartHelper

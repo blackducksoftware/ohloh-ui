@@ -3,15 +3,15 @@ require 'test_helpers/xml_parsing_helpers'
 
 describe 'ActivityFactsControllerTest' do
   let(:account) { create(:account) }
-  let(:analysis) { create(:analysis, min_month: Date.today - 5.months) }
+  let(:analysis) { create(:analysis, min_month: Date.current - 5.months) }
   let(:project) { create(:project) }
   let(:api_key) { create(:api_key, account_id: account.id, daily_limit: 100) }
   let(:client_id) { api_key.oauth_application.uid }
 
   before do
     (1..5).to_a.each do |value|
-      create(:all_month, month: Date.today - value.months)
-      create(:activity_fact, month: Date.today - value.months, analysis_id: analysis.id)
+      create(:all_month, month: Date.current - value.months)
+      create(:activity_fact, month: Date.current - value.months, analysis_id: analysis.id)
     end
   end
 
@@ -29,7 +29,7 @@ describe 'ActivityFactsControllerTest' do
       xml['response']['first_item_position'].must_equal '0'
       xml['response']['result']['activity_fact'].size.must_equal 5
       xml['response']['result']['activity_fact'].reverse.each_with_index do |fact, index|
-        fact['month'].must_equal xml_time(Date.today - (index + 1).months)
+        fact['month'].must_equal xml_time(Date.current - (index + 1).months)
       end
     end
 
@@ -44,7 +44,7 @@ describe 'ActivityFactsControllerTest' do
       xml['response']['first_item_position'].must_equal '0'
       xml['response']['result']['activity_fact'].size.must_equal 5
       xml['response']['result']['activity_fact'].reverse.each_with_index do |fact, index|
-        fact['month'].must_equal xml_time(Date.today - (index + 1).months)
+        fact['month'].must_equal xml_time(Date.current - (index + 1).months)
       end
     end
 

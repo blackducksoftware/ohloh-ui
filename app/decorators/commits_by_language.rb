@@ -17,7 +17,7 @@ class CommitsByLanguage < Cherry::Decorator
 
   def start_date
     return @start_date if @start_date
-    seven_years_ago = Date.today.beginning_of_month.years_ago(7)
+    seven_years_ago = Date.current.beginning_of_month.years_ago(7)
     @start_date = account.first_commit_date if @context[:scope] == 'full'
     @start_date = seven_years_ago if @start_date.nil? || @start_date > seven_years_ago
     @start_date

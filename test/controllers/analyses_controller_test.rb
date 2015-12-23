@@ -12,12 +12,12 @@ describe 'AnalysesController' do
     create(:activity_fact, options)
   end
   let(:analysis) do
-    activity_fact_2.analysis.update!(updated_on: Date.today, logged_at: Date.today)
+    activity_fact_2.analysis.update!(updated_on: Date.current, logged_at: Date.current)
     activity_fact_2.analysis
   end
   let(:project) { analysis.project }
   let(:api_key) { create(:api_key, account_id: account.id, daily_limit: 100) }
-  let(:date_range) { [3.months.ago, 2.months.ago, 1.month.ago, Date.today].map(&:beginning_of_month) }
+  let(:date_range) { [3.months.ago, 2.months.ago, 1.month.ago, Date.current].map(&:beginning_of_month) }
   let(:create_all_months) do
     AllMonth.delete_all
     date_range.each { |date| create(:all_month, month: date) }
@@ -49,9 +49,9 @@ describe 'AnalysesController' do
       analysis_result['id'].must_equal analysis.id.to_s
       analysis_result['url'].must_equal "#{url}.xml"
       analysis_result['project_id'].must_equal project.id.to_s
-      analysis_result['updated_at'].must_equal xml_time(Date.today)
-      analysis_result['min_month'].must_equal((Date.today - 1.month).to_s)
-      analysis_result['max_month'].must_equal((Date.today - 1.day).to_s)
+      analysis_result['updated_at'].must_equal xml_time(Date.current)
+      analysis_result['min_month'].must_equal((Date.current - 1.month).to_s)
+      analysis_result['max_month'].must_equal((Date.current - 1.day).to_s)
       analysis_result['twelve_month_contributor_count'].must_equal nil
       analysis_result['total_contributor_count'].must_equal nil
       analysis_result['twelve_month_commit_count'].must_equal '4'
@@ -116,7 +116,7 @@ describe 'AnalysesController' do
       analysis_sloc_set = create(:analysis_sloc_set, as_of: 1)
       commit = create(:commit, code_set: analysis_sloc_set.sloc_set.code_set, position: 0)
       analysis = analysis_sloc_set.analysis
-      analysis.update_attribute(:created_at, Date.today + 32.days)
+      analysis.update_attribute(:created_at, Date.current + 32.days)
       create(:analysis_alias, commit_name: commit.name, analysis: analysis)
       create_all_months
 
@@ -142,7 +142,7 @@ describe 'AnalysesController' do
       create_all_months
       activity_fact.update_attributes!(month: second_day_of_month)
       create(:activity_fact, month: beginning_of_month, analysis: activity_fact.analysis)
-      analysis.update_attributes!(logged_at: Date.today + 32.days)
+      analysis.update_attributes!(logged_at: Date.current + 32.days)
 
       get :committer_history, project_id: project.to_param, id: analysis.reload.id
 
@@ -166,7 +166,7 @@ describe 'AnalysesController' do
       create_all_months
       activity_fact.update_attribute(:month, second_day_of_month)
       create(:activity_fact, month: beginning_of_month, analysis: activity_fact.analysis)
-      analysis.update_attributes(logged_at: Date.today + 32.days)
+      analysis.update_attributes(logged_at: Date.current + 32.days)
 
       get :contributor_summary, project_id: project.to_param, id: analysis.reload.id
 
