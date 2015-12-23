@@ -81,7 +81,7 @@ class CommitsByProject < Cherry::Decorator
   end
 
   def start_time_of_plot(first_date)
-    time_diff_in_year = (Date.current.beginning_of_month.to_time - first_date.to_time) / 1.year
+    time_diff_in_year = (Time.current.beginning_of_month - Time.parse(first_date).in_time_zone) / 1.year
     return Date.current.beginning_of_month - 5.years if time_diff_in_year <= 5
     first_date.to_date
   end

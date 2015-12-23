@@ -43,11 +43,11 @@ class RssFeedTest < ActiveSupport::TestCase
     rss_feed = create(:rss_feed)
     project = create(:project)
     project.update_attributes(updated_at: before)
-    project.reload.updated_at.to_time.to_i.must_equal before.to_i
+    project.reload.updated_at.to_i.must_equal before.to_i
     create(:rss_subscription, rss_feed: rss_feed, project: project)
     rss_feed.url = 'test/data/files/news.rss'
     rss_feed.fetch
-    project.reload.updated_at.to_time.wont_equal before
+    project.reload.updated_at.wont_equal before
   end
 
   it 'should create new rss_articles when fetch happens' do
@@ -55,7 +55,7 @@ class RssFeedTest < ActiveSupport::TestCase
     rss_feed = create(:rss_feed)
     project = create(:project)
     project.update_attributes(updated_at: before)
-    project.reload.updated_at.to_time.to_i.must_equal before.to_i
+    project.reload.updated_at.to_i.must_equal before.to_i
     create(:rss_subscription, rss_feed: rss_feed, project: project)
     rss_feed.url = 'test/data/files/news.rss'
     rss_feed.rss_articles.must_equal []

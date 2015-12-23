@@ -12,8 +12,9 @@ describe 'SizeFactsControllerTest' do
     AllMonth.delete_all
     (1..5).to_a.each do |value|
       create(:all_month, month: Date.current.at_beginning_of_month - value.months + 5.days)
-      create(:activity_fact, month: Date.current.at_beginning_of_month - value.months + 5.days, analysis_id: analysis.id,
-                             code_added: 10, code_removed: 7, comments_added: 10, comments_removed: 7)
+      create(:activity_fact, month: Date.current.at_beginning_of_month - value.months + 5.days,
+                             analysis_id: analysis.id, code_added: 10, code_removed: 7, comments_added: 10,
+                             comments_removed: 7)
     end
   end
 
