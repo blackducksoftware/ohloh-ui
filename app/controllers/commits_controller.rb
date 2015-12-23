@@ -79,8 +79,8 @@ class CommitsController < SettingsController
 
   def find_start_time
     time_param = params[:time] =~ /commit_(\d+)/ ? $1 : params[:time]
-    time_param = Time.at(time_param.to_i)
-    Time.new(time_param.year, time_param.month, time_param.day)
+    time_param = Time.at(time_param.to_i).in_time_zone
+    Time.new(time_param.year, time_param.month, time_param.day).in_time_zone
   end
 
   def redirect_to_message_if_oversized_project

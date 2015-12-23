@@ -12,7 +12,7 @@ class EditsHelperTest < ActionView::TestCase
 
     it 'drop the year if it was this year' do
       other_time = Time.current - 17.days
-      dont_fail_around_new_years_date = Time.new(Time.current.year, other_time.month, other_time.day)
+      dont_fail_around_new_years_date = Time.new(Time.current.year, other_time.month, other_time.day).in_time_zone
       edit_humanize_datetime(dont_fail_around_new_years_date).wont_match Time.current.year
     end
 
