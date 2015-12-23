@@ -79,7 +79,7 @@ en:
       decreasing: "has seen a substantial decrease in development activity. This could mean many things. It may be a warning sign that interest in this project is waning, or it may indicate a maturing code base that requires fewer fixes and changes. It is also possible that development on this project has moved to a new source control repository somewhere else."
       activity_note: "Open Hub makes this determination by comparing the total number of commits made by all developers during the most recent twelve months with the same figure for the prior twelve months. The number of developers and total lines of code are not considered."
     comments:
-      comments_1: "%{link} is written mostly in %{lang_name}."
+      comments_1_html: "%{link} is written mostly in %{lang_name}."
       comments_2: "Across all %{lang_name} projects on Open Hub, %{percent} all source code lines are comments."
       avg: "For %{name}, this figure is %{percent}."
       only: "For %{name}, this figure is only %{percent}."

@@ -13,9 +13,9 @@
               %p!= link_to_if !api_key.url.blank?, api_key.url, api_key.url
               %p.soft= api_key.description
 
-              %p.nomargin= t('api_keys.api_key_label', key: oauth_application.uid).html_safe
+              %p.nomargin= t('api_keys.api_key_label_html', key: oauth_application.uid)
               - secret = oauth_application.secret || t('api_keys.none')
-              %p= t('api_keys.oath_secret', secret: secret).html_safe
+              %p= t('api_keys.oath_secret_html', secret: secret)
 
               %table.table.unstyled
                 %tbody
