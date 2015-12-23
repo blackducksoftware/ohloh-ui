@@ -3,7 +3,7 @@ module StripAttributes
     before_validation do
       attributes.each do |attribute|
         normalized_value = send(attribute).try(:strip)
-        send("#{ attribute }=", normalized_value)
+        send("#{attribute}=", normalized_value)
       end
     end
   end

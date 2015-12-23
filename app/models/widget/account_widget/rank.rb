@@ -8,7 +8,7 @@ class AccountWidget::Rank < AccountWidget
   end
 
   def image
-    file_path = Rails.root.join("app/assets/images/icons/sm_laurel_#{ rank }.png")
+    file_path = Rails.root.join("app/assets/images/icons/sm_laurel_#{rank}.png")
     File.binread(file_path)
   end
 

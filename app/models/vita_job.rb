@@ -1,6 +1,6 @@
 class VitaJob < Job
   scope :schedule_account_analysis, lambda { |account, delay = 0|
-    delayed_time = Time.now + delay
+    delayed_time = Time.current + delay
     job = where(account_id: account.id).where.not(status: Job::STATUS_COMPLETED).take
     if job
       job.update_attributes(wait_until: delayed_time)

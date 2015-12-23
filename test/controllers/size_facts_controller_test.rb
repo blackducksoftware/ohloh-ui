@@ -3,7 +3,7 @@ require 'test_helpers/xml_parsing_helpers'
 
 describe 'SizeFactsControllerTest' do
   let(:account) { create(:account) }
-  let(:analysis) { create(:analysis, min_month: Date.today - 5.months) }
+  let(:analysis) { create(:analysis, min_month: Date.current - 5.months) }
   let(:project) { create(:project) }
   let(:api_key) { create(:api_key, account_id: account.id, daily_limit: 100) }
   let(:client_id) { api_key.oauth_application.uid }
@@ -11,9 +11,10 @@ describe 'SizeFactsControllerTest' do
   before do
     AllMonth.delete_all
     (1..5).to_a.each do |value|
-      create(:all_month, month: Date.today.at_beginning_of_month - value.months + 5.days)
-      create(:activity_fact, month: Date.today.at_beginning_of_month - value.months + 5.days, analysis_id: analysis.id,
-                             code_added: 10, code_removed: 7, comments_added: 10, comments_removed: 7)
+      create(:all_month, month: Date.current.at_beginning_of_month - value.months + 5.days)
+      create(:activity_fact, month: Date.current.at_beginning_of_month - value.months + 5.days,
+                             analysis_id: analysis.id, code_added: 10, code_removed: 7, comments_added: 10,
+                             comments_removed: 7)
     end
   end
 
@@ -41,7 +42,7 @@ describe 'SizeFactsControllerTest' do
         fact['comment_ratio'].must_equal '0.5'
         fact['commits'].must_equal commits_value
         fact['man_months'].must_equal month_value
-        fact['month'].must_equal xml_time Date.today.at_beginning_of_month - (index + 2).months + 5.days
+        fact['month'].must_equal xml_time Date.current.at_beginning_of_month - (index + 2).months + 5.days
       end
     end
 
@@ -66,7 +67,7 @@ describe 'SizeFactsControllerTest' do
         fact['comment_ratio'].must_equal '0.5'
         fact['commits'].must_equal commits_value
         fact['man_months'].must_equal month_value
-        fact['month'].must_equal xml_time Date.today.at_beginning_of_month - (index + 2).months + 5.days
+        fact['month'].must_equal xml_time Date.current.at_beginning_of_month - (index + 2).months + 5.days
       end
     end
 

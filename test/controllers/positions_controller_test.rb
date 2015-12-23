@@ -340,7 +340,7 @@ describe 'PositionsController' do
 
       get :index, account_id: account.to_param
 
-      assert_select "span#proj_desc_#{ position.id }_lg", description
+      assert_select "span#proj_desc_#{position.id}_lg", description
     end
 
     it 'must show contribution role and affiliation' do

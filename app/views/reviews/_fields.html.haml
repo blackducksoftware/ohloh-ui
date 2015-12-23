@@ -12,7 +12,7 @@
   .control-group.margin_top_5
     %b.required= t('.review')
     .margin_top_5
-      = find_and_preserve do
+      = preserve do
         = f.text_area :comment, max_length: 5000, size: '45x5', class: 'col-md-11'
         - error_tag @review, :comment
 

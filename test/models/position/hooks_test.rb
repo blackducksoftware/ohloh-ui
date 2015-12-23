@@ -24,7 +24,9 @@ class Position::HooksTest < ActiveSupport::TestCase
       it "must transfer unclaimed person's kudos to account.person" do
         position = create_position
         new_name = create(:name)
-        kudo_score, kudo_rank, kudo_position = 5, 3, 2
+        kudo_score = 5
+        kudo_rank = 3
+        kudo_position = 2
         create(:person, project: position.project, name: new_name,
                         kudo_score: kudo_score, kudo_rank: kudo_rank,
                         kudo_position: kudo_position)

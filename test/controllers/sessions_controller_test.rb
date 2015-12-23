@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe 'SessionsControllerTest' do
-  let(:admin) { create(:admin, password: 'password', email_opportunities_visited: Date.today) }
+  let(:admin) { create(:admin, password: 'password', email_opportunities_visited: Date.current) }
 
   describe 'new' do
     it 'the new action should render correctly' do

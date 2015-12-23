@@ -118,7 +118,8 @@ class LogosControllerTest < ActionController::TestCase
   end
 
   it 'new shows flash if user has no permissions' do
-    project, account = create(:project), create(:account)
+    project = create(:project)
+    account = create(:account)
     create(:manage, target: project, account: account)
     create(:permission, target: project, remainder: true)
 

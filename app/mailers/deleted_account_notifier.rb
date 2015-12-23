@@ -1,6 +1,6 @@
 class DeletedAccountNotifier < ActionMailer::Base
   def deletion(account)
-    recipient  = ENV['DELETED_ACCOUNT_RECIPIENT']
+    recipient = ENV['DELETED_ACCOUNT_RECIPIENT']
     @affiliation = organization_name(account)
     @claimed_projects = project_names(account)
     @account = account

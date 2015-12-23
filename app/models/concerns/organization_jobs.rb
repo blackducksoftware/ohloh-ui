@@ -4,7 +4,7 @@ module OrganizationJobs
   def ensure_job(priority = 0)
     Job.transaction do
       return if jobs.incomplete.any?
-      OrganizationJob.create(organization: self, priority: priority, wait_until: Time.now.utc + 1.day)
+      OrganizationJob.create(organization: self, priority: priority, wait_until: Time.current.utc + 1.day)
     end
   end
 
@@ -19,9 +19,9 @@ module OrganizationJobs
 
   def create_update_job(job, delay)
     if job.nil?
-      job = OrganizationJob.create(organization: self, wait_until: Time.now.utc + delay)
+      job = OrganizationJob.create(organization: self, wait_until: Time.current.utc + delay)
     elsif job.is_a? OrganizationJob
-      job.update_attribute(:wait_until, Time.now.utc + delay)
+      job.update_attribute(:wait_until, Time.current.utc + delay)
     end
     job
   end

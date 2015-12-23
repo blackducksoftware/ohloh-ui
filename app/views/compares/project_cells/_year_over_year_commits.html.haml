@@ -1,6 +1,6 @@
 - if !project.best_analysis.nil? && project.best_analysis.last_commit_time
-  - factoid = project.best_analysis.factoids.select { |f| f.is_a?(FactoidActivity) }.first
-  - factoid ||= project.best_analysis.factoids.select { |f| f.is_a?(FactoidTeamSizeZero) }.first
+  - factoid = project.best_analysis.factoids.find { |f| f.is_a?(FactoidActivity) }
+  - factoid ||= project.best_analysis.factoids.find { |f| f.is_a?(FactoidTeamSizeZero) }
   - case factoid
   - when FactoidActivityIncreasing
     %span.status= link_to(t('compares.increasing'), project_factoids_path(project, anchor: factoid.class))

@@ -19,7 +19,7 @@
       style: 'height: 270px;width: 480px' }
   .col-md-4
     - @language_names.each do |name|
-      .col-md-3{ style: "height: 28px;background-color: ##{ language_color(name) }" }
+      .col-md-3{ style: "height: 28px;background-color: ##{language_color(name)}" }
         &nbsp;
       .col-md-9.margin_bottom_10
         #sort_by

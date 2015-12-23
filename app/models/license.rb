@@ -2,7 +2,7 @@ class License < ActiveRecord::Base
   validates :vanity_url, uniqueness: { case_sensitive: false }, length: { in: 2..50 },
                          default_param_format: true
   validates :name, uniqueness: { case_sensitive: false }, length: { in: 1..100 }
-  validates :abbreviation, length: {  maximum: 100 }, allow_nil: true
+  validates :abbreviation, length: { maximum: 100 }, allow_nil: true
   validates :description, length: { maximum: 50_000 }, allow_nil: true
   validates :url, url_format: true, allow_blank: true
 
@@ -18,7 +18,7 @@ class License < ActiveRecord::Base
   scope :from_param, ->(vanity_url) { where(vanity_url: vanity_url) }
   scope :resolve_vanity_url, ->(vanity_url) { where('lower(vanity_url) = ?', vanity_url.downcase) }
 
-  after_update :undo_redo_project_licenses, if: -> license { license.deleted_changed? }
+  after_update :undo_redo_project_licenses, if: -> (license) { license.deleted_changed? }
 
   def to_param
     vanity_url

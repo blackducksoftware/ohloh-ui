@@ -33,13 +33,11 @@ class ChartDecorator
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   # image_name is used in erb binding.
-  # rubocop:disable Lint/UnusedMethodArgument
   def background_style(image_name)
     file_contents = File.read(Rails.root.join('config/charting/chart_background_style.yml.erb'))
     parsed_contents = ERB.new(file_contents).result(binding)
     YAML.load(parsed_contents)
   end
-  # rubocop:enable Lint/UnusedMethodArgument
 
   def string_to_hash(stringified_dates)
     stringified_dates.map do |date_string|

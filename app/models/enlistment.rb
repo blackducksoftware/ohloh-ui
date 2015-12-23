@@ -24,7 +24,7 @@ class Enlistment < ActiveRecord::Base
 
   def analysis_sloc_set
     return if project.best_analysis.nil?
-    AnalysisSlocSet.for_repository(repository_id).where(analysis_id: project.best_analysis_id).first
+    AnalysisSlocSet.for_repository(repository_id).find_by(analysis_id: project.best_analysis_id)
   end
 
   def ignore_examples
@@ -46,7 +46,7 @@ class Enlistment < ActiveRecord::Base
         enlistment.editor_account = editor_account
         enlistment.assign_attributes(ignore: ignore)
         enlistment.save
-        CreateEdit.where(target: enlistment).first.redo!(editor_account) if enlistment.deleted
+        CreateEdit.find_by(target: enlistment).redo!(editor_account) if enlistment.deleted
       end
       enlistment.reload
     end

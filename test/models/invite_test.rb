@@ -8,7 +8,7 @@ end
 
 class InviteTest < ActiveSupport::TestCase
   before { create_must_and_wont_aliases(Invite) }
-  let(:invite) {  build(:invite) }
+  let(:invite) { build(:invite) }
 
   it 'should be valid' do
     invite.must_be :valid?

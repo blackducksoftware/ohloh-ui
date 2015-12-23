@@ -22,7 +22,7 @@ ActiveAdmin.register Organization do
     column :id
     column :name
     column :vanity_url
-    column(:org_type) { |org| org.org_type_label }
+    column(:org_type, &:org_type_label)
     column :homepage_url
     column :created_at
     column :updated_at

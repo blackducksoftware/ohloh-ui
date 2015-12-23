@@ -15,7 +15,7 @@ class CvsRepositoryTest < ActiveSupport::TestCase
   it 'must return the url plus module_name as nice_url' do
     repository = create(:cvs_repository)
 
-    repository.nice_url.must_equal "#{ repository.url } #{ repository.module_name }"
+    repository.nice_url.must_equal "#{repository.url} #{repository.module_name}"
   end
 
   describe 'normalize_scm_attributes' do

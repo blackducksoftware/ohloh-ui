@@ -29,7 +29,7 @@ class Action < ActiveRecord::Base
     case action
     when 'stack'
       projects = Project.arel_table
-      { stack_project: Project.where(projects[:id].eq(id).or(projects[:vanity_url].eq(id))).first }
+      { stack_project: Project.find_by(projects[:id].eq(id).or(projects[:vanity_url].eq(id))) }
     when 'claim'
       { claim: Person.find(id) }
     else

@@ -13,11 +13,11 @@ class Account::PositionCore < OhDelegator::Base
       .order(Project.arel_table[:name].lower)
   end
 
-  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize
   def ordered
     preloaded_positions.sort do |position_a, position_b|
-      position_a_name_fact = name_facts["#{ position_a.project.best_analysis_id }_#{ position_a.name_id }"].try(:first)
-      position_b_name_fact = name_facts["#{ position_b.project.best_analysis_id }_#{ position_b.name_id }"].try(:first)
+      position_a_name_fact = name_facts["#{position_a.project.best_analysis_id}_#{position_a.name_id}"].try(:first)
+      position_b_name_fact = name_facts["#{position_b.project.best_analysis_id}_#{position_b.name_id}"].try(:first)
 
       if position_a_name_fact && position_b_name_fact
         position_a_name_fact <=> position_b_name_fact
@@ -26,7 +26,7 @@ class Account::PositionCore < OhDelegator::Base
       end
     end
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize
 
   # Returns a mapping of (position.project.analysis_id)_(position.name_id) => [position.name_fact] for all positions.
   def name_facts
@@ -38,7 +38,7 @@ class Account::PositionCore < OhDelegator::Base
     name_facts = NameFact.where(analysis_id: analysis_ids, name_id: name_ids)
     @name_facts ||= name_facts.group_by do |name_fact|
       # Form unique groups
-      "#{ name_fact.analysis_id }_#{ name_fact.name_id }"
+      "#{name_fact.analysis_id}_#{name_fact.name_id}"
     end
   end
 
@@ -71,7 +71,7 @@ class Account::PositionCore < OhDelegator::Base
   private
 
   def create_or_update_alias(project, name, existing_position, position_attributes)
-    alias_obj = Alias.where(project_id: project.id, commit_name_id: name.id).take
+    alias_obj = Alias.find_by(project_id: project.id, commit_name_id: name.id)
     return update_alias(alias_obj, existing_position.name_id, name.id) if alias_obj
     return existing_position if name.id == existing_position.name_id
     create_alias(project, name, existing_position, position_attributes)

@@ -56,7 +56,7 @@ class StackEntry < ActiveRecord::Base
       joins(entries1.join(entries2)
         .on(entries1[:stack_id].eq(entries2[:stack_id])
         .and(entries1[:project_id].not_eq(entries2[:project_id]))
-      ).join_sources)
+           ).join_sources)
     end
   end
 

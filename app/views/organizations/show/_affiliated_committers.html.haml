@@ -32,7 +32,8 @@
       - @affiliated_committers.each do |a|
         - stats = organization_affiliated_committers_stats(@stats_map[a.id])
         - next unless stats
-        - most_committed_project, most_recent_project = stats[:most_committed_project], stats[:most_recent_project]
+        - most_committed_project = stats[:most_committed_project]
+        - most_recent_project = stats[:most_recent_project]
         - account_org = Account::OrganizationCore.new(a)
         %tr
           %td

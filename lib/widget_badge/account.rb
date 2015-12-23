@@ -21,10 +21,10 @@ module WidgetBadge
       modified_image = add_name(image, options[:name])
 
       commits_count = options[:commits].to_i
-      commits = "#{ commits_count } commit".pluralize(commits_count) if commits_count > 0
+      commits = "#{commits_count} commit".pluralize(commits_count) if commits_count > 0
 
       kudos_count = options[:kudos].to_i
-      kudos = "#{ kudos_count } kudo".pluralize(kudos_count) if kudos_count > 0
+      kudos = "#{kudos_count} kudo".pluralize(kudos_count) if kudos_count > 0
 
       add_commits_and_kudos(modified_image, commits, kudos)
     end
@@ -37,12 +37,12 @@ module WidgetBadge
         set_font_and_color(convert, options)
         set_gravity(convert, options[:align])
 
-        convert.draw "text 0,#{ options[:y_offset] - 8 } '#{ text.gsub("'", %q(\\\')) }'"
+        convert.draw "text 0,#{options[:y_offset] - 8} '#{text.gsub("'", %q(\\\'))}'"
       end
     end
 
     def kudos_filename(kudo_rank = 1)
-      IMAGE_ICONS_DIR.join("sm_laurel_#{ kudo_rank }.png")
+      IMAGE_ICONS_DIR.join("sm_laurel_#{kudo_rank}.png")
     end
 
     def kudos_image(kudo_rank = 1)
@@ -53,7 +53,7 @@ module WidgetBadge
 
     def add_kudos(image, kudo_rank = 1)
       image.composite(kudos_image(kudo_rank)) do |img|
-        img.geometry "+#{ KUDO_OFFSET[:left] }+5"
+        img.geometry "+#{KUDO_OFFSET[:left]}+5"
       end
     end
 
@@ -62,7 +62,7 @@ module WidgetBadge
 
       options = DEFAULT_FONT_OPTIONS.merge(font_size: 13)
       image.composite(new_text_image(name.truncate(16), options)) do |img|
-        img.geometry "+#{ TEXT_OFFSET[:left] }+5"
+        img.geometry "+#{TEXT_OFFSET[:left]}+5"
       end
     end
 
@@ -72,7 +72,7 @@ module WidgetBadge
 
       options = DEFAULT_FONT_OPTIONS.merge(opacity: 70, font_size: 10)
       image.composite(new_text_image(commits_and_kudos.truncate(26), options)) do |img|
-        img.geometry "+#{ TEXT_OFFSET[:left] }+22"
+        img.geometry "+#{TEXT_OFFSET[:left]}+22"
       end
     end
 

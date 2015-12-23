@@ -30,7 +30,9 @@ class PositionCoreTest < ActiveSupport::TestCase
   end
 
   it 'ensure_position_or_alias creates a position if try_create is set' do
-    account, name, project = create(:account), create(:name), create(:project)
+    account = create(:account)
+    name = create(:name)
+    project = create(:project)
     NameFact.create!(analysis: project.best_analysis, name: name)
     assert_difference('account.positions.count', 1) do
       position = account.position_core.ensure_position_or_alias!(project, name, true)
@@ -52,7 +54,10 @@ class PositionCoreTest < ActiveSupport::TestCase
   end
 
   it 'ensure_position_or_alias creates an alias if a position exists' do
-    account, person, project, name = create(:account), create(:person), create(:project), create(:name)
+    account = create(:account)
+    person = create(:person)
+    project = create(:project)
+    name = create(:name)
     create_position(account: account, project: project, name: name)
     assert_difference 'Alias.count' do
       alias_obj = account.position_core.ensure_position_or_alias!(project, person.name)
@@ -63,7 +68,10 @@ class PositionCoreTest < ActiveSupport::TestCase
   end
 
   it 'ensure_position_or_alias update an alias if position and alias already exist' do
-    account, person, project, name = create(:account), create(:person), create(:project), create(:name)
+    account = create(:account)
+    person = create(:person)
+    project = create(:project)
+    name = create(:name)
     create_position(account: account, project: project, name: name)
     alias_obj = create(:alias, project: project, commit_name: person.name)
     assert_no_difference 'Alias.count' do
@@ -74,7 +82,9 @@ class PositionCoreTest < ActiveSupport::TestCase
   end
 
   it 'ensure_position_or_alias delete an alias if preferred and existing name are same' do
-    account, project, name = create(:account), create(:project), create(:name)
+    account = create(:account)
+    project = create(:project)
+    name = create(:name)
     create_position(account: account, project: project, name: name)
     alias_obj = create(:alias, project: project, commit_name: name)
     assert_no_difference 'Alias.count' do
@@ -84,7 +94,9 @@ class PositionCoreTest < ActiveSupport::TestCase
   end
 
   it 'ensure_position_or_alias recreates position if name is missing' do
-    account, name, project = create(:account), create(:name), create(:project)
+    account = create(:account)
+    name = create(:name)
+    project = create(:project)
 
     old_position = create_position(account: account, project: project, name: name)
     NameFact.find_by(name: name).destroy
@@ -126,8 +138,8 @@ class PositionCoreTest < ActiveSupport::TestCase
       create(:position, project: project_bar, name: name, account: account)
 
       account.position_core.name_facts.keys.must_equal([
-        "#{ name_fact_1.analysis_id }_#{ name.id }",
-        "#{ name_fact_2.analysis_id }_#{ name.id }"
+        "#{name_fact_1.analysis_id}_#{name.id}",
+        "#{name_fact_2.analysis_id}_#{name.id}"
       ])
     end
   end

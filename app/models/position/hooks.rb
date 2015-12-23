@@ -88,13 +88,13 @@ class Position::Hooks
   end
 
   def unlink_affected_kudos
-    Kudo.where(project_id: project_id, name_id: name_id).each do |kudo|
+    Kudo.where(project_id: project_id, name_id: name_id).find_each do |kudo|
       kudo.update(account_id: nil)
     end
   end
 
   def update_affected_kudos
-    Kudo.where(project_id: project_id, name_id: name_id).each do |kudo|
+    Kudo.where(project_id: project_id, name_id: name_id).find_each do |kudo|
       if kudo.sender != account
         kudo.update(account_id: account_id)
       else

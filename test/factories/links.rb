@@ -1,6 +1,6 @@
 FactoryGirl.define do
   sequence :link_title do |n|
-    "link number #{ n }"
+    "link number #{n}"
   end
 
   sequence :link_url do |n|

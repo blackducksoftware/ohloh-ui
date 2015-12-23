@@ -74,6 +74,6 @@ class BaseballCard < Cherry::Decorator
   private
 
   def i18n(string, options = {})
-    I18n.t("accounts.show.baseball_card.#{ string }", options)
+    I18n.t("accounts.show.baseball_card.#{string}", options)
   end
 end

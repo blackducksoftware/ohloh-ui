@@ -33,7 +33,7 @@ class Link < ActiveRecord::Base
 
     return save unless deleted_link
 
-    CreateEdit.where(target: deleted_link).first.redo!(editor_account)
+    CreateEdit.find_by(target: deleted_link).redo!(editor_account)
     deleted_link.editor_account = editor_account
     deleted_link.update_attributes(title: title, link_category_id: link_category_id)
   end

@@ -11,7 +11,7 @@ describe 'Accounts::ChartsController' do
   describe 'commits_by_project' do
     it 'should return json chart data' do
       get :commits_by_project, account_id: account.id
-      result  = JSON.parse(response.body)
+      result = JSON.parse(response.body)
 
       must_respond_with :ok
       result['noCommits'].must_equal false
@@ -30,7 +30,7 @@ describe 'Accounts::ChartsController' do
   describe 'commits_by_individual_project' do
     it 'should return json chart data' do
       get :commits_by_individual_project, account_id: account.id, project_id: account.positions.first.project.id
-      result  = JSON.parse(response.body)
+      result = JSON.parse(response.body)
 
       must_respond_with :ok
       result['series'].first['data'].must_equal [25, 40, 28, 18, 1, 8, 26, 9] + [0] * 64

@@ -8,7 +8,7 @@ class EmailAddress < ActiveRecord::Base
 
       %[SELECT array_agg(id) AS ids
       FROM email_addresses
-      WHERE #{ sanitize_sql_array(conditions) }]
+      WHERE #{sanitize_sql_array(conditions)}]
     end
   end
 end

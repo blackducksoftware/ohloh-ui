@@ -2,7 +2,7 @@ require 'test_helper'
 
 describe 'PasswordResetsController' do
   let(:token) { SecureRandom.hex(16) }
-  let(:original_password) { Faker::Internet.password  }
+  let(:original_password) { Faker::Internet.password }
   let(:account) do
     create(:account, reset_password_tokens: { token => Time.current + 1.hour },
                      password: original_password, password_confirmation: original_password)

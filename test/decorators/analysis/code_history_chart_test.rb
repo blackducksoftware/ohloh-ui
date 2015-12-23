@@ -12,7 +12,7 @@ class Analysis::CodeHistoryChartTest < ActiveSupport::TestCase
 
   before do
     AllMonth.delete_all
-    date_range = [3.months.ago, 2.months.ago, 1.month.ago, Date.today].map(&:beginning_of_month)
+    date_range = [3.months.ago, 2.months.ago, 1.month.ago, Date.current].map(&:beginning_of_month)
     date_range.each do |date|
       create(:all_month, month: date)
     end

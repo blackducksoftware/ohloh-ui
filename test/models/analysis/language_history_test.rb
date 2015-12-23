@@ -6,7 +6,7 @@ class Analysis::LanguageHistoryTest < ActiveSupport::TestCase
 
     before do
       dates = [3.months.ago, 2.months.ago, 1.month.ago]
-      dates << Date.today unless Date.today.day == 1
+      dates << Date.current unless Date.current.day == 1
       date_range = dates.map(&:beginning_of_month)
       date_range.each { |date| create(:all_month, month: date) }
     end

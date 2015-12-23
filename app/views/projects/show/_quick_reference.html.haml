@@ -14,7 +14,7 @@
             = link_category_name
             %i= t('.no_of_links', count: links.size)
         - elsif links.size == 1
-          - link_opts = link_category_name == 'Homepage' ?  { itemprop: 'url' } : {}
+          - link_opts = link_category_name == 'Homepage' ? { itemprop: 'url' } : {}
           = link_to links.first.url, link_opts do
             %i.icon-external-link
             = link_category_name

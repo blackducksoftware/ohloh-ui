@@ -1,3 +1,4 @@
+# rubocop: disable Metrics/ModuleLength
 module ApplicationHelper
   include EmailObfuscation
   include ChartHelper
@@ -109,8 +110,8 @@ module ApplicationHelper
     parts = number.to_s.split('.')
     parts[0].gsub!(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1#{delimiter}")
     parts.join separator
-    rescue
-      number
+  rescue
+    number
   end
 
   def highlight(actual_time, base_time = nil)
@@ -131,10 +132,10 @@ module ApplicationHelper
 
   def render_expander(text, l)
     <<-EXPANDER
-    #{ text[0..l] }
+    #{text[0..l]}
     <span class="expander">
-    <span>... #{ link_to t('expander.more'), 'javascript:void(0);' }</span>
-    <span style="display:none">#{ text[l + 1..-1] } #{ link_to t('expander.less'), 'javascript:void(0);' }</span>
+    <span>... #{link_to t('expander.more'), 'javascript:void(0);'}</span>
+    <span style="display:none">#{text[l + 1..-1]} #{link_to t('expander.less'), 'javascript:void(0);'}</span>
     </span>
     EXPANDER
   end

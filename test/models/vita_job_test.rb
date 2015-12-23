@@ -15,7 +15,7 @@ class VitaJobTest < ActiveSupport::TestCase
     VitaJob.schedule_account_analysis(account, 10.minutes)
     vita_jobs = VitaJob.where(account_id: account.id)
     vita_jobs.count.must_equal 1
-    vita_jobs.first.wait_until.must_equal Time.now + 10.minutes
+    vita_jobs.first.wait_until.must_equal Time.current + 10.minutes
   end
 
   it 'should update job if exist' do
@@ -25,7 +25,7 @@ class VitaJobTest < ActiveSupport::TestCase
     VitaJob.schedule_account_analysis(account, 5.minutes)
     vita_jobs = VitaJob.where(account_id: account.id)
     vita_jobs.count.must_equal 1
-    vita_jobs.first.wait_until.must_equal Time.now + 5.minutes
+    vita_jobs.first.wait_until.must_equal Time.current + 5.minutes
   end
 
   it 'schedule_account_analysis_for_project' do

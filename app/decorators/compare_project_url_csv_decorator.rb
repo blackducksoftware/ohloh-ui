@@ -8,7 +8,7 @@ class CompareProjectUrlCsvDecorator
 
   def year_over_year_commits_url
     require_best_analysis do |a|
-      f = a.factoids.select { |factoid| f.is_a?(FactoidActivity) || factoid.is_a?(FactoidTeamSizeZero) }.first
+      f = a.factoids.find { |factoid| f.is_a?(FactoidActivity) || factoid.is_a?(FactoidTeamSizeZero) }
       h.project_factoids_url(@project, host: @host, anchor: (f ? f.class.name : 'FactoidActivityStable'))
     end
   end
@@ -16,7 +16,7 @@ class CompareProjectUrlCsvDecorator
   def comments_url
     require_best_analysis do |a|
       return t('compares.project_cells.comments.no_comments_found') unless a.relative_comments
-      f = a.factoids.select { |factoid| factoid.is_a?(FactoidComments) }.first
+      f = a.factoids.find { |factoid| factoid.is_a?(FactoidComments) }
       return h.project_factoids_url(@project, host: @host, anchor: f.class.name) if f
       t('compares.project_cells.comments.no_comments_found')
     end

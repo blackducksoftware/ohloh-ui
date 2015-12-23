@@ -46,7 +46,7 @@ describe 'CommittersControllerTest' do
 
       get :index, query: query
 
-      must_select 'title', I18n.t('committers.title', text: ": #{ query }")
+      must_select 'title', I18n.t('committers.title', text: ": #{query}")
     end
 
     it 'must set title with current_user name when flow is account' do
