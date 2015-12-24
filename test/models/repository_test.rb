@@ -30,7 +30,7 @@ class RepositoryTest < ActiveSupport::TestCase
     it 'show be true when the most recent job has failed' do
       @job1.update(repository: @repository, current_step_at: 2.days.ago, status: Job::STATUS_COMPLETED)
       @job2.update(repository: @repository, current_step_at: 5.minutes.ago, status: Job::STATUS_FAILED)
-      @repository.failed?.must_equal true 
+      @repository.failed?.must_equal true
     end
 
     it 'must be false when all jobs have completed' do
