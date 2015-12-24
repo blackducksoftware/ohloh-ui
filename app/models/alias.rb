@@ -77,9 +77,9 @@ class Alias < ActiveRecord::Base
 
     def update_pre_existing_alias(editor_account, alias_obj, commit_name_id, preferred_name_id)
       if commit_name_id == preferred_name_id
-        CreateEdit.where(target: alias_obj).first.undo!(editor_account) unless alias_obj.deleted
+        CreateEdit.find_by(target: alias_obj).undo!(editor_account) unless alias_obj.deleted
       else
-        CreateEdit.where(target: alias_obj).first.redo!(editor_account) if alias_obj.deleted
+        CreateEdit.find_by(target: alias_obj).redo!(editor_account) if alias_obj.deleted
         alias_obj.update_attributes(preferred_name_id: preferred_name_id)
       end
       alias_obj.reload

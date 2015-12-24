@@ -6,7 +6,7 @@
     .controls
       = f.text_field :title, class: 'col-md-6', style: 'width: 70%'
       %span.help-inline.margin_top_15
-        by #{ current_user.login }
+        by #{current_user.login}
       %span.help-block= t('.enter_topic_title')
       - error_tag @topic, :title
     - if @topic.new_record?

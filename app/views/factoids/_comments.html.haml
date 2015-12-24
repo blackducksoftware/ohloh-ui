@@ -5,7 +5,7 @@
   lang_name = sanitize(lang.nice_name).html_safe
   lang_percent = lang.avg_percent_comments * 100.0
   proj_percent = @project.best_analysis.relative_comments.to_f * lang.avg_percent_comments.to_f * 100.0
-%p= t('.comments_1', link: project_link, lang_name: lang_name).html_safe
+%p= t('.comments_1_html', link: project_link, lang_name: lang_name)
 %p= t('.comments_2', lang_name: lang_name, percent: number_to_percentage(lang_percent, precision: precision))
 - unless factoid.is_a? FactoidCommentsAverage
   - if @project.best_analysis.relative_comments <= 0.7

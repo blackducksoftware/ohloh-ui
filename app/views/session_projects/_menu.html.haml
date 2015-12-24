@@ -8,13 +8,13 @@
             = t('.limit_reached')
     %ul.nav.pull-left.margin_top_0
       - @session_projects.each_with_index do |project, i|
-        %li{ class: "#{ 'last' if i == @session_projects.length - 1 }" }
-          = form_tag nil, class: 'sp_form form-inline', id: "sp_frm_#{ project.to_param }" do
+        %li{ class: "#{'last' if i == @session_projects.length - 1}" }
+          = form_tag nil, class: 'sp_form form-inline', id: "sp_frm_#{project.to_param}" do
             %span.sp_label{ title: project.name }
               = project.name.truncate(20)
             %i.sp_input.icon.icon-remove-sign{ project_id: project.to_param }
     %form.sp_form.form_inline.pull-right{ action: compare_projects_path, method: :get }
       - @session_projects.each_with_index do |p, i|
-        %input{ type: 'hidden', name: "project_#{ i }", value: p.name }
+        %input{ type: 'hidden', name: "project_#{i}", value: p.name }
       %input.btn.btn-sm#compare-submit-button{ type: 'submit', value: t('compare') }
     .clearfix

@@ -20,7 +20,7 @@ ActiveAdmin.register Slave do
   filter :allow_deny, as: :select
   filter :blocked_types
 
-  index row_class: -> elem { 'deny' if elem.deny? } do
+  index row_class: -> (elem) { 'deny' if elem.deny? } do
     selectable_column
     column :id
     column :hostname do |host|

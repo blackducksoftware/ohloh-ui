@@ -22,7 +22,7 @@ class Job < ActiveRecord::Base
   scope :scheduled, -> { where(status: STATUS_SCHEDULED) }
   scope :complete, -> { where(status: STATUS_COMPLETED) }
   scope :scheduled_or_failed, -> { where(status: [STATUS_SCHEDULED, STATUS_FAILED]) }
-  scope :since, ->(time) { where(current_step_at: time...Time.now) }
+  scope :since, ->(time) { where(current_step_at: time...Time.current) }
   scope :incomplete_or_since, ->(time) { incomplete || since(time) }
 
   belongs_to :project
@@ -33,7 +33,7 @@ class Job < ActiveRecord::Base
   belongs_to :organization
 
   def categorize_failure
-    failure_group = FailureGroup.where('pattern ILIKE ?', exception).first
+    failure_group = FailureGroup.find_by('pattern ILIKE ?', exception)
     update_column(failure_group_id: failure_group.id) if failure_group
   end
 

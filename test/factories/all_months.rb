@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :all_month do
-    month Date.today
+    month Date.current
   end
 end

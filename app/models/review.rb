@@ -38,7 +38,7 @@ class Review < ActiveRecord::Base
 
   def score
     return 0 unless project_id && account_id
-    Rating.where(project_id: project_id, account_id: account_id).take.try(:score).to_i
+    Rating.find_by(project_id: project_id, account_id: account_id).try(:score).to_i
   end
 
   def helpful_to_account?(account)

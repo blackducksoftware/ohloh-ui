@@ -32,8 +32,8 @@ module WidgetBadge
 
         set_gravity(convert, options[:align])
 
-        convert.motion_blur("0.0x#{ options[:blur] }+90") if options[:blur] != 0
-        convert.draw "text 0,#{ options[:y_offset] } '#{ text }'"
+        convert.motion_blur("0.0x#{options[:blur]}+90") if options[:blur] != 0
+        convert.draw "text 0,#{options[:y_offset]} '#{text}'"
       end
     end
 

@@ -16,7 +16,7 @@ module ProjectJobs
       update_activity_level
       Job.transaction do
         return if deleted? || repositories.empty? || incomplete_job
-        repositories.each { |r| return if r.ensure_job }
+        return if repositories.any?(&:ensure_job)
         create_new_job? ? AnalyzeJob.create(project: self, priority: priority) : update_logged_at
       end
     end

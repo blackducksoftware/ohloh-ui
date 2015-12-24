@@ -69,7 +69,7 @@ en:
       help3: "Project %{project} will be deleted"
       help4: "All reviews, ratings, contributors, etc. from %{name} will be merged into the original project, specified above"
     fields:
-      legend: "Request to Remove Project %{name}"
-      good_label: "%{name} is a duplicate of this original project"
+      legend_html: "Request to Remove Project %{name}"
+      good_label_html: "%{name} is a duplicate of this original project"
       original_url: "URL of the original project"
       comment: "Comment"

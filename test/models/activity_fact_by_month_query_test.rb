@@ -16,11 +16,11 @@ class ActivityFactByMonthQueryTest < ActiveSupport::TestCase
     end
 
     it 'should return activity facts month by month' do
-      analysis.update_column(:min_month, Date.today - 5.months)
+      analysis.update_column(:min_month, Date.current - 5.months)
       facts = []
       (1..5).to_a.each do |value|
-        create(:all_month, month: Date.today - value.months)
-        facts << create(:activity_fact, month: Date.today - value.months, analysis_id: analysis.id)
+        create(:all_month, month: Date.current - value.months)
+        facts << create(:activity_fact, month: Date.current - value.months, analysis_id: analysis.id)
       end
       analysis_fact.execute.map(&:month).must_equal facts.map(&:month).reverse
     end

@@ -20,7 +20,7 @@ class StackDecoratorTest < ActiveSupport::TestCase
 
         it 'must return project name stack when project is present' do
           project = create(:project)
-          stack.decorate.name(account, project).must_equal "#{ project.name }'s Stack"
+          stack.decorate.name(account, project).must_equal "#{project.name}'s Stack"
         end
 
         it 'must return unnamed when no project' do
@@ -33,7 +33,7 @@ class StackDecoratorTest < ActiveSupport::TestCase
 
         it 'must return project name stack when project is present' do
           project = create(:project)
-          stack.decorate.name(account, project).must_equal "#{ project.name }'s Stack"
+          stack.decorate.name(account, project).must_equal "#{project.name}'s Stack"
         end
 
         it 'must return unnamed when no project' do

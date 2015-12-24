@@ -39,7 +39,7 @@ class ProjectsController < ApplicationController
     if @projects.blank? || params[:bypass]
       populate_project_from_forge
     else
-      flash.now[:notice] =  (@projects.length == 1) ? t('.code_location_single') : t('.code_location_multiple')
+      flash.now[:notice] = (@projects.length == 1) ? t('.code_location_single') : t('.code_location_multiple')
       render template: 'projects/check_forge_duplicate'
     end
   end

@@ -10,7 +10,7 @@ class Analysis::LanguageHistoryChartTest < ActiveSupport::TestCase
   describe 'data' do
     it 'should return chart data' do
       AllMonth.delete_all
-      date_range = [3.months.ago, 2.months.ago, 1.month.ago, Date.today].map(&:beginning_of_month)
+      date_range = [3.months.ago, 2.months.ago, 1.month.ago, Date.current].map(&:beginning_of_month)
       date_range.each { |date| create(:all_month, month: date) }
       time_integer = AllMonth.all.to_a.last.month.utc.to_i * 1000
 

@@ -7,10 +7,10 @@ class Analysis::CommitHistoryChartTest < ActiveSupport::TestCase
       analysis_sloc_set = create(:analysis_sloc_set, as_of: 1)
       commit = create(:commit, code_set: analysis_sloc_set.sloc_set.code_set, position: 0)
       analysis = analysis_sloc_set.analysis
-      analysis.update_attribute(:created_at, Date.today + 32.days)
+      analysis.update_attribute(:created_at, Date.current + 32.days)
       create(:analysis_alias, commit_name: commit.name, analysis: analysis)
 
-      date_range = [3.months.ago, 2.months.ago, 1.month.ago, Date.today].map(&:beginning_of_month)
+      date_range = [3.months.ago, 2.months.ago, 1.month.ago, Date.current].map(&:beginning_of_month)
       date_range.each { |date| create(:all_month, month: date) }
 
       time_integer = AllMonth.all.to_a.last.month.utc.to_i * 1000

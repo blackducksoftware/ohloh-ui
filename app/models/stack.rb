@@ -53,7 +53,7 @@ class Stack < ActiveRecord::Base
   end
 
   def stacked_project?(project_id)
-    stack_entries.includes(:stack).where(project_id: project_id, deleted_at: nil).first
+    stack_entries.includes(:stack).find_by(project_id: project_id, deleted_at: nil)
   end
 
   private
@@ -68,7 +68,7 @@ class Stack < ActiveRecord::Base
       FROM stacks S INNER JOIN (#{stack_entry_to_stack_join_sql}) AS se_to_s ON S.id = se_to_s.stack_id
       INNER JOIN ( SELECT count(*), stack_id from stack_entries where deleted_at IS NULL group by stack_id) as s_count
         ON se_to_s.stack_id = s_count.stack_id
-      WHERE S.account_id IS NOT NULL #{ account ? " AND S.account_id != #{account.id} " : '' }
+      WHERE S.account_id IS NOT NULL #{account ? " AND S.account_id != #{account.id} " : ''}
       ORDER BY func DESC LIMIT #{limit}
     SQL
   end

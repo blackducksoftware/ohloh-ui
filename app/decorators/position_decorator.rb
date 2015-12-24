@@ -21,7 +21,7 @@ class PositionDecorator < Cherry::Decorator
 
   def name_fact
     return @name_fact if @name_fact
-    name_facts_map_key = "#{ project.best_analysis_id }_#{ name_id }"
+    name_facts_map_key = "#{project.best_analysis_id}_#{name_id}"
     @name_fact = account.position_core.name_facts[name_facts_map_key].try(:first)
   end
 

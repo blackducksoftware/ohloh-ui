@@ -9,12 +9,12 @@ class Analysis::CommitHistoryTest < ActiveSupport::TestCase
       analysis_alias = create(:analysis_alias, commit_name: commit.name, analysis: analysis)
       name_id = analysis_alias.preferred_name_id
 
-      @date_range = [3.months.ago, 2.months.ago, 1.month.ago, Date.today].map(&:beginning_of_month)
+      @date_range = [3.months.ago, 2.months.ago, 1.month.ago, Date.current].map(&:beginning_of_month)
       @date_range.each do |date|
         FactoryGirl.create(:all_month, month: date)
       end
 
-      @query_options = { analysis: analysis, name_id: name_id, start_date: 3.months.ago, end_date: Date.today }
+      @query_options = { analysis: analysis, name_id: name_id, start_date: 3.months.ago, end_date: Date.current }
     end
 
     it 'must return a list of dates in a range and commits' do

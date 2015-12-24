@@ -1,6 +1,6 @@
 FactoryGirl.define do
   sequence :tags_name do |n|
-    "tags-#{ n }"
+    "tags-#{n}"
   end
 
   factory :tag do

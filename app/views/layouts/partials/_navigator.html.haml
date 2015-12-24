@@ -2,11 +2,11 @@
   .col-md-12
     .mezzo.margin_bottom_5
 - page_context[:footer_menu_list].each do |section|
-  .actions.margin_bottom_20{ class: "#{ 'col-md-3 no_padding' if page_context[:nav_type].eql?('footer_nav') }" }
+  .actions.margin_bottom_20{ class: "#{'col-md-3 no_padding' if page_context[:nav_type].eql?('footer_nav')}" }
     %ul.nav.nav-stacked.nav-pills
       - header, *links = section
       - header_class, header_name, header_url, header_type = header
-      %h4{ class: "#{ 'selected' if header_class == page_context[:select_footer_nav]} #{'linked' if header_url}" }
+      %h4{ class: "#{'selected' if header_class == page_context[:select_footer_nav]} #{'linked' if header_url}" }
         - if header_url
           %a{ href: header_url }
             %i{ class: "icon #{header_class}" }
@@ -19,5 +19,5 @@
       - else
         - links.each do |link|
           - link_class, link_name, link_url = link
-          %li.footer-nav{ class: "#{ 'nav-active' if link_class == page_context[:select_footer_nav] }" }
+          %li.footer-nav{ class: "#{'nav-active' if link_class == page_context[:select_footer_nav]}" }
             %a{ href: link_url }= link_name

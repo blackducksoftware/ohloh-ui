@@ -1,4 +1,4 @@
-.one_project_graph{ :'data-highcharts-chart' => 1, id: position.project.name_at_forge, style: 'font-size-adjust: 0.50' }
+.one_project_graph{ 'data-highcharts-chart' => 1, id: position.project.name_at_forge, style: 'font-size-adjust: 0.50' }
   - pname = position.project.name[0..20]
   - chart_data = ChartDecorator.new.project_commit_history(@account, position.project_id)
   .margin_bottom_5

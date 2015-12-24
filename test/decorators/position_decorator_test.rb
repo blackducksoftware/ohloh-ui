@@ -54,7 +54,7 @@ class PositionDecoratorTest < ActiveSupport::TestCase
     end
 
     it 'must return formatted effective_stop_date when no effective_ongoing' do
-      effective_stop_date = Date.today.end_of_month.advance(days: -5)
+      effective_stop_date = Date.current.end_of_month.advance(days: -5)
       position = Position.new(stop_date: effective_stop_date)
       position.stubs(:effective_ongoing?).returns(false)
 

@@ -110,7 +110,7 @@ describe 'DuplicatesController' do
       login_as create(:account)
       get :new, project_id: project.to_param
       assert_response :ok
-      response.body.must_match I18n.t('duplicates.fields.legend', name: project.name)
+      response.body.must_match I18n.t('duplicates.fields.legend_html', name: project.name)
     end
 
     it 'should not allow setting a project to be a duplicate of something else already marked as good' do
@@ -165,7 +165,7 @@ describe 'DuplicatesController' do
       login_as create(:account)
       post :create, project_id: project.to_param, duplicate: { good_project_id: project.to_param }
       assert_response :unprocessable_entity
-      response.body.must_match I18n.t('duplicates.fields.legend', name: project.name)
+      response.body.must_match I18n.t('duplicates.fields.legend_html', name: project.name)
     end
   end
 
@@ -252,7 +252,7 @@ describe 'DuplicatesController' do
                     duplicate: { good_project_id: project.to_param, comment: 'Whatevs!' }
       assert_response :unprocessable_entity
       duplicate.reload.comment.wont_equal 'Whatevs!'
-      response.body.must_match I18n.t('duplicates.fields.legend', name: project.name)
+      response.body.must_match I18n.t('duplicates.fields.legend_html', name: project.name)
     end
 
     it 'must render error for blank good_project' do

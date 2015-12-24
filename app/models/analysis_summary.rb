@@ -23,7 +23,8 @@ class AnalysisSummary < ActiveRecord::Base
 
   def find_recent_contribution_persons(has_name_ids)
     if has_name_ids
-      pid, name_ids = analysis.project_id, recent_contributors[1..-1]
+      pid = analysis.project_id
+      name_ids = recent_contributors[1..-1]
       person_with_name_sql = Person.where(project_id: pid, name_id: name_ids).to_sql
       person_with_account_sql = Person.where(account_id: Position.select(:account_id)
                                 .where(project_id: pid, name_id: name_ids)).to_sql

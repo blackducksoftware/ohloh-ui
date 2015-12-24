@@ -45,14 +45,14 @@ class Duplicate < ActiveRecord::Base
 
   def resolve_ratings!
     bad_project.ratings.each do |rating|
-      good_rating = Rating.where(account_id: rating.account_id, project_id: good_project_id).first
+      good_rating = Rating.find_by(account_id: rating.account_id, project_id: good_project_id)
       good_rating ? rating.destroy : rating.update_attributes(project_id: good_project_id)
     end
   end
 
   def resolve_reviews!
     bad_project.reviews.each do |review|
-      good_review = Review.where(account_id: review.account_id, project_id: good_project_id).first
+      good_review = Review.find_by(account_id: review.account_id, project_id: good_project_id)
       good_review ? review.destroy : review.update_attributes(project_id: good_project_id)
     end
   end
@@ -60,21 +60,21 @@ class Duplicate < ActiveRecord::Base
   def resolve_links!
     bad_project.links.each do |link|
       link.editor_account = good_project.editor_account
-      good_link = Link.where(url: link.url, project_id: good_project_id).first
+      good_link = Link.find_by(url: link.url, project_id: good_project_id)
       good_link ? link.destroy : link.update_attributes(project_id: good_project_id)
     end
   end
 
   def resolve_stack_entries!
     bad_project.stack_entries.each do |stack_entry|
-      good_stack_entry = StackEntry.where(stack_id: stack_entry.stack_id, project_id: good_project_id).first
+      good_stack_entry = StackEntry.find_by(stack_id: stack_entry.stack_id, project_id: good_project_id)
       good_stack_entry ? stack_entry.destroy : stack_entry.update_attributes(project_id: good_project_id)
     end
   end
 
   def resolve_kudos!
     bad_project.kudos.each do |kudo|
-      good_kudo = Kudo.where(sender_id: kudo.sender_id, project_id: good_project.id, name_id: kudo.name_id).first
+      good_kudo = Kudo.find_by(sender_id: kudo.sender_id, project_id: good_project.id, name_id: kudo.name_id)
       good_kudo ? kudo.destroy : kudo.update_attributes(project_id: good_project_id)
     end
   end
@@ -97,14 +97,14 @@ class Duplicate < ActiveRecord::Base
 
   def resolve_positions!
     bad_project.positions.each do |position|
-      good_position = Position.where(account_id: position.account_id, project_id: good_project_id).first
+      good_position = Position.find_by(account_id: position.account_id, project_id: good_project_id)
       good_position ? position.destroy : position.update_attributes(project_id: good_project_id)
     end
   end
 
   def resolve_project_experiences!
-    ProjectExperience.where(project_id: bad_project_id).each do |pe|
-      good_pe = ProjectExperience.where(position: pe.position_id, project_id: good_project.id).first
+    ProjectExperience.where(project_id: bad_project_id).find_each do |pe|
+      good_pe = ProjectExperience.find_by(position: pe.position_id, project_id: good_project.id)
       good_pe ? pe.destroy : pe.update_attributes(project_id: good_project_id)
     end
   end
@@ -115,7 +115,7 @@ class Duplicate < ActiveRecord::Base
 
   def resolve_self!
     bad_project.update_attributes(name: "Duplicate Project #{id}", vanity_url: '')
-    CreateEdit.where(target: bad_project).first.undo!(bad_project.editor_account) unless bad_project.deleted?
+    CreateEdit.find_by(target: bad_project).undo!(bad_project.editor_account) unless bad_project.deleted?
     update_attribute(:resolved, true)
   end
 end

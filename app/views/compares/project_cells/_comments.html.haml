@@ -1,6 +1,6 @@
 - if project.best_analysis.last_commit_time
   - if project.best_analysis.relative_comments
-    - factoid = project.best_analysis.factoids.select { |f| f.is_a?(FactoidComments) }.first
+    - factoid = project.best_analysis.factoids.find { |f| f.is_a?(FactoidComments) }
     - case factoid
     - when FactoidCommentsVeryHigh
       %span.status.good= link_to(t('.very_high'), project_factoids_path(project, anchor: factoid.type))

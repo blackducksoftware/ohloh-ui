@@ -24,13 +24,13 @@ class CommitsController < SettingsController
   end
 
   def summary
-    @analysis  = @project.best_analysis
+    @analysis = @project.best_analysis
     @named_commits = @analysis.named_commits.includes(:commit).by_newest.limit(10) unless @analysis.nil?
   end
 
   def statistics
     @commit = Commit.find(params[:id])
-    @lines_added, @lines_removed =  @commit.lines_added_and_removed(@project.best_analysis_id)
+    @lines_added, @lines_removed = @commit.lines_added_and_removed(@project.best_analysis_id)
     render layout: false
   end
 
@@ -69,8 +69,8 @@ class CommitsController < SettingsController
   end
 
   def find_contributor_fact
-    @contributor_fact  = ContributorFact.find_by(analysis_id: @project.best_analysis_id,
-                                                 name_id: params[:contributor_id])
+    @contributor_fact = ContributorFact.find_by(analysis_id: @project.best_analysis_id,
+                                                name_id: params[:contributor_id])
   end
 
   def parse_sort_term
@@ -79,8 +79,7 @@ class CommitsController < SettingsController
 
   def find_start_time
     time_param = params[:time] =~ /commit_(\d+)/ ? $1 : params[:time]
-    time_param = Time.at(time_param.to_i)
-    Time.new(time_param.year, time_param.month, time_param.day)
+    Time.at(time_param.to_i).in_time_zone.to_date
   end
 
   def redirect_to_message_if_oversized_project

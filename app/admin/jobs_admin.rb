@@ -82,7 +82,7 @@ ActiveAdmin.register Job do
                     level: SlaveLog::WARNING)
     job.update_attributes(status: Job::STATUS_FAILED)
     job.categorize_failure
-    flash[:notice] = "Job #{ job.id } marked as failed."
+    flash[:notice] = "Job #{job.id} marked as failed."
     redirect_to :back
   end
 
@@ -96,7 +96,7 @@ ActiveAdmin.register Job do
   member_action :recount do
     job = Job.find(params[:id])
     job.update_attributes!(retry_count: 0, wait_until: nil)
-    flash[:notice] = "Job #{ job.id } retry attempts counter has been reset to 0."
+    flash[:notice] = "Job #{job.id} retry attempts counter has been reset to 0."
     redirect_to admin_job_path(job)
   end
 

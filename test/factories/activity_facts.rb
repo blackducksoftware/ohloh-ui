@@ -3,7 +3,7 @@ FactoryGirl.define do
     association :name
     association :language
     analysis
-    month Date.today
+    month Date.current
     code_added 100
     code_removed 100
     comments_added 100

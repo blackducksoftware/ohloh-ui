@@ -24,7 +24,7 @@ class CommitsByProjectTest < ActiveSupport::TestCase
       data = cbp_decorator.history
 
       data[:facts].must_equal []
-      data[:start_date].must_equal Date.today.next_month.beginning_of_month
+      data[:start_date].must_equal Date.current.next_month.beginning_of_month
       data[:max_commits].must_equal 0
     end
   end
@@ -61,7 +61,7 @@ class CommitsByProjectTest < ActiveSupport::TestCase
   describe 'chart_data' do
     it 'return commits by project data for chart(x_axis, y_axis and max_commits)' do
       cbp_decorator = CommitsByProject.new(account)
-      date_range = calculate_date_range(start_date_val.to_date, Date.today.beginning_of_month)
+      date_range = calculate_date_range(start_date_val.to_date, Date.current.beginning_of_month)
 
       chart_data = cbp_decorator.chart_data
 
@@ -73,7 +73,7 @@ class CommitsByProjectTest < ActiveSupport::TestCase
     it 'return commits by project data for chart(x_axis, y_axis and max_commits) when project_id is given' do
       cbp_decorator = CommitsByProject.new(account)
       start_date = start_date_val.to_date
-      end_date = Date.today.beginning_of_month
+      end_date = Date.current.beginning_of_month
       date_range = calculate_date_range(start_date, end_date)
 
       chart_data = cbp_decorator.chart_data
@@ -85,7 +85,7 @@ class CommitsByProjectTest < ActiveSupport::TestCase
 
     it 'return commits by project data for chart(x_axis, y_axis and max_commits) when commits_by_project is empty' do
       cbp_decorator = CommitsByProject.new(account)
-      date_range = calculate_date_range(start_date_val.to_date, Date.today.beginning_of_month)
+      date_range = calculate_date_range(start_date_val.to_date, Date.current.beginning_of_month)
 
       chart_data = cbp_decorator.chart_data(position1.project.id)
       chart_data[:y_axis].must_equal [25, 40, 28, 18, 1, 8, 26, 9] + [0] * 64

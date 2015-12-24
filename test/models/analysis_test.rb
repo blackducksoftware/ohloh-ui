@@ -17,25 +17,25 @@ class AnalysisTest < ActiveSupport::TestCase
     end
 
     it 'returns new for brand new new projects' do
-      analysis.update_attributes(updated_on: Time.current - 5.minute, first_commit_time: Time.current - 10.minute,
-                                 last_commit_time: Time.current - 10.minute, min_month: Time.current - 10.minute)
+      analysis.update_attributes(updated_on: Time.current - 5.minutes, first_commit_time: Time.current - 10.minutes,
+                                 last_commit_time: Time.current - 10.minutes, min_month: Time.current - 10.minutes)
       analysis.activity_level.must_equal :new
     end
 
     it 'returns inactive for abandonned projects' do
-      analysis.update_attributes(updated_on: Time.current - 5.minute)
+      analysis.update_attributes(updated_on: Time.current - 5.minutes)
       analysis.activity_level.must_equal :inactive
     end
 
     it 'returns very low for projects with almost no committers' do
-      analysis.update_attributes(updated_on: Time.current - 5.minute,
-                                 last_commit_time: Time.current - 10.minute, headcount: 1)
+      analysis.update_attributes(updated_on: Time.current - 5.minutes,
+                                 last_commit_time: Time.current - 10.minutes, headcount: 1)
       analysis.activity_level.must_equal :very_low
     end
 
     it 'returns correct values for various activity scores' do
-      analysis.update_attributes(updated_on: Time.current - 5.minute,
-                                 last_commit_time: Time.current - 10.minute,
+      analysis.update_attributes(updated_on: Time.current - 5.minutes,
+                                 last_commit_time: Time.current - 10.minutes,
                                  activity_score: 1)
       analysis.activity_level.must_equal :very_low
 
@@ -85,8 +85,8 @@ class AnalysisTest < ActiveSupport::TestCase
 
   describe 'fresh_and_hot' do
     it 'should return recent analysis' do
-      analysis.update_attributes(updated_on: Time.current - 5.minute,
-                                 last_commit_time: Time.current - 10.minute,
+      analysis.update_attributes(updated_on: Time.current - 5.minutes,
+                                 last_commit_time: Time.current - 10.minutes,
                                  hotness_score: 100)
       Analysis.fresh_and_hot(analysis.main_language_id).must_equal [analysis]
     end
