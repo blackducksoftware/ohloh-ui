@@ -1,25 +1,19 @@
-# OK = greenish
-# Warn = orange
-# Error = red
-# Yes = blue
-# No = gray
-
 slave.jobs.where(status: Job::STATUS_RUNNING)
      .order(:status, :id).limit(20)
      .each_with_index do |job, i|
   status = case job.status
-           when Job::STATUS_SCHEDULED then :yes
+           when Job::STATUS_SCHEDULED then 'scheduled'
            when Job::STATUS_RUNNING
              case
-             when job.current_step_at < Time.at(0) - 5.minutes then :ok
-             when job.current_step_at < Time.at(0) - 1.hour then :warn
-             else :error
+             when job.current_step_at > Time.now.utc - 5.minutes then 'under-five-minute'
+             when job.current_step_at > Time.now.utc - 1.hour then 'under-one-hour'
+             else 'more-than-one-hour'
              end
-           when Job::STATUS_FAILED then :no
+           when Job::STATUS_FAILED then 'failed'
            end
 
   a href: admin_job_path(job), style:"text-decoration:none;" do
-    status_tag("#{job.class.to_s.first} #{job.id}", status, title: JobDecorator.new(job).tool_tip)
+    status_tag("#{job.class.to_s.first} #{job.id}", class: status, title: JobDecorator.new(job).tool_tip)
   end
   br if i.odd?
 end

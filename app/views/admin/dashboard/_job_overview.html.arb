@@ -12,10 +12,11 @@ panel 'Job Overview' do
 
     column do
       panel 'Key' do
-        status_tag "Running < 5 minutes", :ok
-        status_tag "Running < 1 hour", :warn
-        status_tag "Running > 1 hour", :error
-        status_tag "Failed", :no
+        status_tag "Scheduled", class: 'scheduled'
+        status_tag "Running < 5 minutes", class: 'under-five-minute'
+        status_tag "Running < 1 hour", class: 'under-one-hour'
+        status_tag "Running > 1 hour", class: 'more-than-one-hour'
+        status_tag "Failed", class: 'failed'
       end
     end
   end

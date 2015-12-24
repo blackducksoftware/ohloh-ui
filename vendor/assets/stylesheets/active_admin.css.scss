@@ -17,9 +17,29 @@
 //   .status_tag { background: #6090DB; }
 
 .deny {
-    text-decoration: line-through;
+  text-decoration: line-through;
+  color: red !important;
+  a, a:link, a:visited {
     color: red !important;
-    a, a:link, a:visited {
-      color: red !important;
-    }
   }
+}
+
+.scheduled{
+  background-color: #49C;
+}
+
+.under-five-minute{
+  background-color: #3CBC3C;
+}
+
+.under-one-hour{
+  background-color: #008000;
+}
+
+.more-than-one-hour{
+  background-color: #FF7600;
+}
+
+.failed{
+  background-color: #8B0000;
+}
