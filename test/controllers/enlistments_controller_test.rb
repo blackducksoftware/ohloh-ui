@@ -126,7 +126,7 @@ describe 'EnlistmentsControllerTest' do
 
       assert_no_difference ['Repository.count', 'Enlistment.count'] do
         post :create, project_id: @project_id,
-                      repository: repository.attributes.merge(url: " #{ repository.url } ")
+                      repository: repository.attributes.merge(url: " #{repository.url} ")
       end
 
       must_redirect_to action: :index

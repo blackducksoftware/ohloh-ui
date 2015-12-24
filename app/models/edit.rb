@@ -35,7 +35,7 @@ class Edit < ActiveRecord::Base
 
   def swap_doneness(undo, editor)
     fail I18n.t('edits.undo_redo_require_editor') unless editor
-    fail ActsAsEditable::UndoError, I18n.t(undo ? 'edits.cant_undo' : 'edits.cant_redo') if (undone == undo)
+    fail ActsAsEditable::UndoError, I18n.t(undo ? 'edits.cant_undo' : 'edits.cant_redo') if undone == undo
     Edit.transaction do
       undo ? do_undo : do_redo
       self.update_attributes!(undone: undo, undone_at: Time.current, undone_by: editor.id)

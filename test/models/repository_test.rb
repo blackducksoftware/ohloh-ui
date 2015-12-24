@@ -19,6 +19,33 @@ class RepositoryTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'failed?' do
+    before do
+      @repository = create(:repository)
+      @repository.jobs.clear
+      @job1 = create(:complete_job)
+      @job2 = create(:complete_job)
+    end
+
+    it 'show be true when the most recent job has failed' do
+      @job1.update(repository: @repository, current_step_at: 2.days.ago, status: Job::STATUS_COMPLETED)
+      @job2.update(repository: @repository, current_step_at: 5.minutes.ago, status: Job::STATUS_FAILED)
+      @repository.failed?.must_equal true
+    end
+
+    it 'must be false when all jobs have completed' do
+      @job1.update(repository: @repository, current_step_at: 2.days.ago, status: Job::STATUS_COMPLETED)
+      @job2.update(repository: @repository, current_step_at: 5.minutes.ago, status: Job::STATUS_COMPLETED)
+      @repository.failed?.must_equal false
+    end
+
+    it 'must be false when there is a scheduled job' do
+      @job1.update(repository: @repository, current_step_at: 2.days.ago, status: Job::STATUS_COMPLETED)
+      @job2.update(repository: @repository, current_step_at: nil, status: Job::STATUS_SCHEDULED)
+      @repository.failed?.must_equal false
+    end
+  end
+
   describe 'bypass_url_validation=' do
     it 'must set value to false for 0' do
       repository = Repository.new(bypass_url_validation: '0')

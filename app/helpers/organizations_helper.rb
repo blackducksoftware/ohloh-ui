@@ -6,7 +6,7 @@ module OrganizationsHelper
   end
 
   def org_ticker_markup(diff, previous, klass = nil)
-    haml_tag :span, class: "delta #{ diff > 0 ? 'good' : 'bad' } #{klass}" do
+    haml_tag :span, class: "delta #{diff > 0 ? 'good' : 'bad'} #{klass}" do
       percentage = diff.abs.to_f / previous.abs.to_f * 100
       concat "#{'+' if diff > 0}#{diff}"
       concat " (#{percentage.floor}%)" if previous > 0

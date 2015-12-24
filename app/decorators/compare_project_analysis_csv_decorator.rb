@@ -25,7 +25,7 @@ class CompareProjectAnalysisCsvDecorator
 
   def year_over_year_commits
     require_best_analysis do |a|
-      case a.factoids.select { |f| f.is_a?(FactoidActivity) || f.is_a?(FactoidTeamSizeZero) }.first
+      case a.factoids.find { |f| f.is_a?(FactoidActivity) || f.is_a?(FactoidTeamSizeZero) }
       when FactoidActivityIncreasing then t('compares.increasing')
       when FactoidActivityDecreasing then t('compares.decreasing')
       when FactoidTeamSizeZero then t('compares.no_activity')
@@ -36,7 +36,7 @@ class CompareProjectAnalysisCsvDecorator
 
   def comments
     require_best_analysis do |a|
-      f = a.factoids.select { |factoid| factoid.is_a?(FactoidComments) }.first
+      f = a.factoids.find { |factoid| factoid.is_a?(FactoidComments) }
       return t('compares.project_cells.comments.no_comments_found') unless a.relative_comments && f
       t("compares.project_cells.comments.#{f.class.name.gsub('FactoidComments', '').underscore}")
     end

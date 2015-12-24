@@ -11,7 +11,7 @@ module ProjectsHelper
 
   def project_iusethis_button(project)
     haml_tag :a, href: '#', data: { project_id: project.to_param },
-                 class: "#{ needs_login_or_verification_or_default('new-stack-entry') } btn btn-primary btn-mini" do
+                 class: "#{needs_login_or_verification_or_default('new-stack-entry')} btn btn-primary btn-mini" do
       concat t('projects.i_use_this')
     end
   end
@@ -75,7 +75,7 @@ module ProjectsHelper
     when :new then I18n.t('projects.new_project')
     when :inactive then I18n.t('projects.inactive')
     else
-      "#{I18n.t("projects.#{activity_level}")} #{I18n.t('projects.activity') if append_activity }"
+      "#{I18n.t("projects.#{activity_level}")} #{I18n.t('projects.activity') if append_activity}"
     end
   end
 

@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe 'LanguagesController' do
-  let(:date_range) { [3.months.ago, 2.months.ago, 1.month.ago, Date.today].map(&:beginning_of_month) }
+  let(:date_range) { [3.months.ago, 2.months.ago, 1.month.ago, Date.current].map(&:beginning_of_month) }
   let(:create_all_months) { date_range.each { |date| create(:all_month, month: date) } }
   let(:client_id) { create(:api_key).oauth_application.uid }
 
@@ -91,8 +91,8 @@ describe 'LanguagesController' do
     it 'should support muliple language names' do
       create_all_months
       language = create(:language)
-      create(:language_fact, language: @language, loc_changed: 25, month: 3.month.ago.beginning_of_month)
-      create(:language_fact, language: language, loc_changed: 25, month: 3.month.ago.beginning_of_month)
+      create(:language_fact, language: @language, loc_changed: 25, month: 3.months.ago.beginning_of_month)
+      create(:language_fact, language: language, loc_changed: 25, month: 3.months.ago.beginning_of_month)
       get :chart, language_name: [@language.name, language.name]
       must_respond_with :ok
       response_data = JSON.parse(response.body)
@@ -103,7 +103,7 @@ describe 'LanguagesController' do
 
     it 'should support different measures' do
       create_all_months
-      create(:language_fact, language: @language, commits: 25, month: 3.month.ago.beginning_of_month)
+      create(:language_fact, language: @language, commits: 25, month: 3.months.ago.beginning_of_month)
       get :chart, language_name: @language.name, measure: 'commits'
       must_respond_with :ok
       response_data = JSON.parse(response.body)

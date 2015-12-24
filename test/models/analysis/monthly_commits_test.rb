@@ -3,7 +3,7 @@ require 'test_helper'
 class MonthlyCommitsTest < ActiveSupport::TestCase
   describe 'execute' do
     before do
-      date_range = [3.months.ago, 2.months.ago, 1.month.ago, Date.today].map(&:beginning_of_month)
+      date_range = [3.months.ago, 2.months.ago, 1.month.ago, Date.current].map(&:beginning_of_month)
       date_range.each do |date|
         FactoryGirl.create(:all_month, month: date)
       end

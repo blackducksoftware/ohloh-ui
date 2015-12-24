@@ -3,7 +3,7 @@ require 'test_helpers/commits_by_project_data'
 require 'test_helpers/commits_by_language_data'
 
 describe 'AccountsController' do
-  let(:start_date) { (Date.today - 6.years).beginning_of_month }
+  let(:start_date) { (Date.current - 6.years).beginning_of_month }
   let(:admin) { create(:admin) }
 
   describe 'index' do

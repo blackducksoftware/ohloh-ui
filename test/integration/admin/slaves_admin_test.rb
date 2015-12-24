@@ -41,7 +41,7 @@ class SlavesAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 'shows the timestamp of the oldest clump' do
-    clump_timestamp = Time.now - 3.weeks
+    clump_timestamp = Time.current - 3.weeks
     @slave.update_attribute(:oldest_clump_timestamp, clump_timestamp)
     get admin_slaves_path
     assert_select "td[class='col col-clump_age']", text: time_ago_in_words(clump_timestamp)

@@ -13,7 +13,7 @@ class PasswordResetTest < ActiveSupport::TestCase
     end
 
     it 'must accept emails with trailing or leading whitespaces' do
-      password_reset = PasswordReset.new(email: "  #{ account.email } ")
+      password_reset = PasswordReset.new(email: "  #{account.email} ")
       password_reset.must_be :valid?
     end
   end

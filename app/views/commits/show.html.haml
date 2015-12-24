@@ -61,7 +61,7 @@
       %tbody
         - sloc_metrics_summaries.each do |summary|
           %tr{ class: cycle('even', 'odd', name: 'rows') }
-            %td{ width: '1%', style: "background-color: ##{ language_color(summary.name) }" } &nbsp;
+            %td{ width: '1%', style: "background-color: ##{language_color(summary.name)}" } &nbsp;
             = render 'commits/code_added_removed', summary: summary, klass: ''
 
 .clearfix
@@ -85,10 +85,10 @@
         - reset_cycle('rows')
         - @diffs.each do |diff|
           - klass = cycle('even', 'odd', named: 'rows')
-          %tr{ class: "#{ klass } nohover" }
+          %tr{ class: "#{klass} nohover" }
             %td.strong
               - if @named_commit.code_set.repository.is_a? CvsRepository
-                #{ @named_commit.code_set.repository.module_name }/#{ diff.fyle.name }
+                #{@named_commit.code_set.repository.module_name}/#{diff.fyle.name}
               - else
                 = truncate(diff.try(:fyle).try(:name), length: 43)
             - if Ignore.match?(@ignore_prefixes, diff.fyle.name)
@@ -102,7 +102,7 @@
                   = t('.no_source_code_detected')
               - diff_summaries.each_with_index do |summary, i|
                 - if i >= 1
-                  %tr{ class: "#{ klass } nohover" }
+                  %tr{ class: "#{klass} nohover" }
                     %td.no_border &nbsp;
                     = render 'commits/code_added_removed',
                       summary: summary, klass: 'no_border'

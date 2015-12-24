@@ -2,7 +2,7 @@ span "Priority: #{job.priority}"
 br
 span "Attempt: #{ActiveSupport::Inflector::ordinalize(job.retry_count + 1)}"
 br
-span "Wait #{distance_of_time_in_words(job.wait_until - Time.now.utc)}" if job.wait_until && job.wait_until > Time.now.utc
+span "Wait #{distance_of_time_in_words(job.wait_until - Time.current.utc)}" if job.wait_until && job.wait_until > Time.current.utc
 br
 span "Last Activity: #{time_ago_in_words(job.current_step_at)} ago" if job.current_step_at
 br

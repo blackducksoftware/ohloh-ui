@@ -88,7 +88,7 @@ class EnlistmentsController < SettingsController
     existing_repo = @repository_class.find_existing(@repository)
     if existing_repo.present?
       existing_repo.update_attributes(username: @repository.username, password: @repository.password)
-      @repository  = existing_repo
+      @repository = existing_repo
     else
       @repository.save! unless @project_has_repo_url
     end

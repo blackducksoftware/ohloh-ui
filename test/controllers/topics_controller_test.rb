@@ -377,8 +377,8 @@ describe TopicsController do
       get :show, id: topic
 
       %w(spam close delete).each do |name|
-        text = I18n.t("topics.action_group.#{ name }")
-        response.body.must_match(">#{ text }</a>")
+        text = I18n.t("topics.action_group.#{name}")
+        response.body.must_match(">#{text}</a>")
       end
     end
 
@@ -390,7 +390,7 @@ describe TopicsController do
       get :show, id: topic
 
       text = I18n.t('topics.reopen')
-      response.body.must_match(">#{ text }</a>")
+      response.body.must_match(">#{text}</a>")
     end
 
     it 'wont show spam or close link to non admin' do
@@ -399,8 +399,8 @@ describe TopicsController do
       get :show, id: topic
 
       %w(spam close).each do |name|
-        text = I18n.t("topics.action_group.#{ name }")
-        response.body.wont_match(">#{ text }</a>")
+        text = I18n.t("topics.action_group.#{name}")
+        response.body.wont_match(">#{text}</a>")
       end
     end
 
@@ -411,7 +411,7 @@ describe TopicsController do
       get :show, id: topic
 
       text = I18n.t('topics.action_group.delete')
-      response.body.wont_match(">#{ text }</a>")
+      response.body.wont_match(">#{text}</a>")
     end
 
     it 'must show delete link to the non admin creator when post count is less than 2' do
@@ -420,7 +420,7 @@ describe TopicsController do
       get :show, id: topic
 
       text = I18n.t('topics.action_group.delete')
-      response.body.must_match(">#{ text }</a>")
+      response.body.must_match(">#{text}</a>")
     end
 
     it 'must show reopen link to non admin creator' do
@@ -430,7 +430,7 @@ describe TopicsController do
       get :show, id: topic
 
       text = I18n.t('topics.reopen')
-      response.body.must_match(">#{ text }</a>")
+      response.body.must_match(">#{text}</a>")
     end
   end
 

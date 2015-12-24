@@ -15,8 +15,8 @@ module Ohloh
       aes.key = key
       data = Base64.decode64(CGI.unescape(data))
       aes.update(data) + aes.final
-      rescue
-        nil
+    rescue
+      nil
     end
   end
 end

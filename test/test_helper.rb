@@ -4,7 +4,7 @@ require 'simplecov-rcov'
 
 SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
 SimpleCov.start 'rails'
-SimpleCov.minimum_coverage 99.5
+SimpleCov.minimum_coverage 99.47
 
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
@@ -81,7 +81,7 @@ class ActiveSupport::TestCase
   end
 
   def i18n_activerecord(model, key)
-    I18n.t("activerecord.errors.models.#{ model }.attributes.#{ key }")
+    I18n.t("activerecord.errors.models.#{model}.attributes.#{key}")
   end
 
   def restrict_edits_to_managers(organization_or_project, account = create(:account))
@@ -113,7 +113,7 @@ class ActiveSupport::TestCase
     (0..2).each do |value|
       2.times do
         project = create(:project)
-        analysis = create(:analysis, logged_at: Date.today - value.days, project: project)
+        analysis = create(:analysis, logged_at: Date.current - value.days, project: project)
         project.update(best_analysis: analysis)
       end
     end

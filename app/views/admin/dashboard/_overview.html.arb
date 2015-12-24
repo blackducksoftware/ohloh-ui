@@ -15,7 +15,7 @@ columns do
           end
           tr do
             td "Updated Analyses (#{human_window})"
-            td Analysis.where(updated_on: get_window..Time.now).count
+            td Analysis.where(updated_on: get_window..Time.current).count
           end
         end #tbody
       end #table

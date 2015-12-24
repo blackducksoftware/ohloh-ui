@@ -40,9 +40,7 @@ ActiveAdmin.register Duplicate do
         d.account.name
       end
       row :comment
-      row :reported_on do |d|
-        d.created_at
-      end
+      row :reported_on, &:created_at
       row :resolved_status do |d|
         d.resolved? ? 'resolved' : 'unresolved'
       end

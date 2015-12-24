@@ -107,7 +107,7 @@ describe 'PositionFactoriesController' do
 
       must_redirect_to new_account_position_path(account, project_name: project.name, committer_name: name.name)
       account.positions.first.must_be_nil
-      flash[:success].must_equal I18n.t('position_factories.create.success', name: name.name)
+      flash[:success].must_equal I18n.t('position_factories.create.success', name: CGI.escapeHTML(name.name))
     end
   end
 end

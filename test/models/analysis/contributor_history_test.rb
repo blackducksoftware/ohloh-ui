@@ -5,7 +5,7 @@ class Analysis::ContributorHistoryTest < ActiveSupport::TestCase
     let(:activity_fact) { create(:activity_fact, month: 2.months.ago.beginning_of_month) }
 
     before do
-      date_range = [3.months.ago, 2.months.ago, 1.month.ago, Date.today].map(&:beginning_of_month)
+      date_range = [3.months.ago, 2.months.ago, 1.month.ago, Date.current].map(&:beginning_of_month)
       date_range.each { |date| create(:all_month, month: date) }
     end
 

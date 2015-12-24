@@ -5,7 +5,7 @@ class Kudo < ActiveRecord::Base
   belongs_to :name
   has_one :name_fact, foreign_key: :name_id, primary_key: :name_id
 
-  scope :recent, -> limit = 3 { limit(limit) }
+  scope :recent, -> (limit = 3) { limit(limit) }
 
   before_validation :assign_account_from_position
   validates :message, length: 0..80, allow_nil: true
@@ -24,7 +24,7 @@ class Kudo < ActiveRecord::Base
   class << self
     def sort_by_created_at
       select(attribute_names)
-        .select("#{ max_created_at_per_account } AS sort_time")
+        .select("#{max_created_at_per_account} AS sort_time")
         .order('sort_time DESC, project_id DESC')
         .readonly
     end

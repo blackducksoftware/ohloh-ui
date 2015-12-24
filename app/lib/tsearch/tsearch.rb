@@ -46,8 +46,8 @@ module Tsearch
       end
 
       def query_parser(query)
-        return "'' ' || ' #{query.gsub("'", ' ')} ' || ' ''" unless query.match(/[-.\/]/)
-        "''#{query.gsub(/[-.'\/]/, '-' => 'dssh', '.' => 'dtt', '/' => ' ')}'' | ''#{query.gsub("'", '')}''"
+        return "'' ' || ' #{query.tr("'", ' ')} ' || ' ''" unless query.match(/[-.\/]/)
+        "''#{query.gsub(/[-.'\/]/, '-' => 'dssh', '.' => 'dtt', '/' => ' ')}'' | ''#{query.delete("'")}''"
       end
     end
 

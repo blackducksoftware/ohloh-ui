@@ -134,18 +134,18 @@ class PositionTest < ActiveSupport::TestCase
     end
 
     it 'must be false when start and stop dates are in different months' do
-      position = Position.new(ongoing: true, start_date: 1.month.ago, stop_date: Date.today)
+      position = Position.new(ongoing: true, start_date: 1.month.ago, stop_date: Date.current)
       position.one_monther?.must_equal false
     end
 
     it 'must be false when start and stop dates are in different years' do
-      position = Position.new(ongoing: true, start_date: 1.year.ago, stop_date: Date.today)
+      position = Position.new(ongoing: true, start_date: 1.year.ago, stop_date: Date.current)
       position.one_monther?.must_equal false
     end
 
     it 'must be true when start and stop dates are in the same month and year' do
-      start_date = Date.today.beginning_of_month.advance(days: 5)
-      stop_date = Date.today.end_of_month.advance(days: -5)
+      start_date = Date.current.beginning_of_month.advance(days: 5)
+      stop_date = Date.current.end_of_month.advance(days: -5)
       position = Position.new(ongoing: false, start_date: start_date, stop_date: stop_date)
       position.one_monther?.must_equal true
     end
@@ -249,8 +249,8 @@ class PositionTest < ActiveSupport::TestCase
 
   describe '#effective_duration' do
     it 'must return a difference between effective_stop_date and effective_start_date' do
-      effective_start_date = Date.today.beginning_of_month.advance(days: 5)
-      effective_stop_date = Date.today.end_of_month.advance(days: -5)
+      effective_start_date = Date.current.beginning_of_month.advance(days: 5)
+      effective_stop_date = Date.current.end_of_month.advance(days: -5)
       position = Position.new
       position.stubs(:effective_start_date).returns(effective_start_date)
       position.stubs(:effective_stop_date).returns(effective_stop_date)

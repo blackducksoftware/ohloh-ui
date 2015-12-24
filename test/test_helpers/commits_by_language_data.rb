@@ -36,7 +36,7 @@ class CommitsByLanguageData
     private
 
     def start_date
-      (Date.today - 6.years).beginning_of_month
+      (Date.current - 6.years).beginning_of_month
     end
   end
 end

@@ -4,7 +4,7 @@ class CommitsByProject < Cherry::Decorator
   def history
     cbp = for_all_months
     if cbp.blank?
-      { facts: [], start_date: Date.today.next_month.beginning_of_month, max_commits: 0 }
+      { facts: [], start_date: Date.current.next_month.beginning_of_month, max_commits: 0 }
     else
       { facts: cbp, start_date: start_time_of_plot(cbp.first[:month]), max_commits: max_commits }
     end
@@ -81,8 +81,8 @@ class CommitsByProject < Cherry::Decorator
   end
 
   def start_time_of_plot(first_date)
-    time_diff_in_year = (Date.today.beginning_of_month.to_time - first_date.to_time) / 1.year
-    return Date.today.beginning_of_month - 5.years if time_diff_in_year <= 5
+    time_diff_in_year = (Time.current.beginning_of_month - Time.parse(first_date).in_time_zone) / 1.year
+    return Date.current.beginning_of_month - 5.years if time_diff_in_year <= 5
     first_date.to_date
   end
 

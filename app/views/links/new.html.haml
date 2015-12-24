@@ -6,7 +6,8 @@
     = link_to t(:settings), settings_project_path(@project)
     \:
     = link_to t('links.title').pluralize, project_links_path(@project)
-    = %( : #{ t('new') })
+    \:
+    = t('new')
   = project_analysis_timestamp(@project)
 
 .clear

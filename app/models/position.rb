@@ -36,7 +36,7 @@ class Position < ActiveRecord::Base
 
   def name_fact
     return nil unless project.best_analysis_id && name_id
-    @name_fact ||= NameFact.where('analysis_id = ? AND name_id = ?', project.best_analysis_id, name_id).first
+    @name_fact ||= NameFact.find_by('analysis_id = ? AND name_id = ?', project.best_analysis_id, name_id)
   end
 
   def committer_name
@@ -53,7 +53,7 @@ class Position < ActiveRecord::Base
 
   def project_oss=(oss)
     @project_oss = oss
-    self.project = Project.not_deleted.where('lower(name) = ?', oss.to_s.downcase).first
+    self.project = Project.not_deleted.find_by('lower(name) = ?', oss.to_s.downcase)
   end
 
   def one_monther?
@@ -106,7 +106,7 @@ class Position < ActiveRecord::Base
   private
 
   def find_name_fact_from_project_and_comitter_name
-    NameFact.joins(:name).where('analysis_id = ? AND names.name = ?', project.best_analysis_id, committer_name).first
+    NameFact.joins(:name).find_by('analysis_id = ? AND names.name = ?', project.best_analysis_id, committer_name)
   end
 
   def committer_name_and_project?

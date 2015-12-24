@@ -35,7 +35,7 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
     assert_redirected_to admin_job_path(job)
     assert_equal job.retry_count, 0
     assert_equal job.wait_until, nil
-    assert_equal flash[:notice], "Job #{ job.id } retry attempts counter has been reset to 0."
+    assert_equal flash[:notice], "Job #{job.id} retry attempts counter has been reset to 0."
   end
 
   it 'should render index page' do

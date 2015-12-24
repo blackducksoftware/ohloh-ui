@@ -1,9 +1,9 @@
 - good = @duplicate.good_project
 
 %fieldset
-  %legend= t('.legend', name: truncate_project_name(@duplicate.bad_project.name)).html_safe
+  %legend= t('.legend_html', name: truncate_project_name(@duplicate.bad_project.name))
   .control-group.clearfix
-    %label.control-label.required= t('.good_label', name: truncate_project_name(@duplicate.bad_project.name)).html_safe
+    %label.control-label.required= t('.good_label_html', name: truncate_project_name(@duplicate.bad_project.name))
     .controls
       = text_field_tag :good_project, good.try(:name), class: 'autocompletable', style: 'width: 95%;',
       data: { source: '/autocompletes/project_duplicates', select: 'duplicatesSelect' }
@@ -21,7 +21,7 @@
   .control-group.clearfix
     %label.control-label= t('.comment')
     .controls
-      = find_and_preserve do
+      = preserve do
         = form.text_area(:comment, rows: 10, cols: 80, max_length: 1000, style: 'width: 95%;')
 
   = form.hidden_field :bad_project_id

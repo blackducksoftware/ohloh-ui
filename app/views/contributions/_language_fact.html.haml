@@ -7,7 +7,7 @@
 
 %tr.language_row{ class: cycle('even', 'odd') }
   %td
-    .lang_bg{ itemscope: '', itemtype: 'http://schema.org/Language',  style: language_color }
+    .lang_bg{ itemscope: '', itemtype: 'http://schema.org/Language', style: language_color }
       %span{ itemprop: 'name' }
         = link_to language.nice_name.titleize, language_path(language),
         class: 'language_name', style: language_text_color

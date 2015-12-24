@@ -1,7 +1,7 @@
 :ruby
   widget ||= @widget
   project = widget.project
-  href  = CGI.unescapeHTML new_stack_entry_url(project_id: project.to_param, ref: widget.class)
+  href = CGI.unescapeHTML new_stack_entry_url(project_id: project.to_param, ref: widget.class)
 
 = render partial: 'users_logo_css'
 = render partial: 'users_logo_js'

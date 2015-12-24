@@ -24,7 +24,7 @@ ActiveAdmin.register Repository do
     %w(id type url module_name branch_name created_at updated_at).each { |attr| column attr }
     column 'Update Interval' do |repository|
       update_interval = (repository.update_interval < 8.hours) ? 8.hours : repository.update_interval
-      "Updates every #{time_ago_in_days_hours_minutes(Time.now - update_interval)}"
+      "Updates every #{time_ago_in_days_hours_minutes(Time.current - update_interval)}"
     end
 
     actions do |repository|
