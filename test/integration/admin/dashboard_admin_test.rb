@@ -7,6 +7,7 @@ class DashboardAdminTest < ActionDispatch::IntegrationTest
   it 'renders the dashbord' do
     LoadAverage.create(current: 4.8)
     create_and_login_admin
+    create(:fetch_job, status: Job::STATUS_RUNNING, current_step_at: Time.current)
     get admin_root_path
     assert_response :success
   end

@@ -74,7 +74,7 @@ class ProjectDecoratorTest < ActiveSupport::TestCase
 
       sorted_links = project.decorate.sorted_link_list
       sorted_links.keys.must_equal %w(Community Download)
-      sorted_links['Community'].must_equal [link_1, link_2]
+      sorted_links['Community'].map(&:id).sort.must_equal [link_1.id, link_2.id].sort
       sorted_links['Download'].must_equal [link_3]
     end
   end

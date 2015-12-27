@@ -256,7 +256,7 @@ describe 'OrganizationsController' do
 
       must_respond_with :ok
 
-      assigns(:projects).must_equal [pro_1, pro_2, pro_3]
+      assigns(:projects).pluck(:id).sort.must_equal [pro_1.id, pro_2.id, pro_3.id].sort
       assigns(:organization).must_equal organization
     end
 

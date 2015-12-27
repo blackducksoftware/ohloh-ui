@@ -31,7 +31,7 @@ namespace :selenium do
       end
 
       organization = org.attributes.except('vector', 'popularity_factor')
-      managers = org.managers.order(name: :desc).pluck(:name)
+      managers = org.managers.order(name: :desc).map(&:name)
 
       organization.merge!(
         'org_type' => Organization::ORG_TYPES.key(org.org_type),
