@@ -5,6 +5,7 @@ slave.jobs.where(status: Job::STATUS_RUNNING)
            when Job::STATUS_SCHEDULED then 'scheduled'
            when Job::STATUS_RUNNING
              case
+             when job.current_step_at.nil? then 'under-five-minute'
              when job.current_step_at > Time.now.utc - 5.minutes then 'under-five-minute'
              when job.current_step_at > Time.now.utc - 1.hour then 'under-one-hour'
              else 'more-than-one-hour'

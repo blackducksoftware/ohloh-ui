@@ -15,6 +15,15 @@ class DashboardAdminTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  it 'renders the dashboard when a job is newly running but current_step_at has not been updated' do
+    job = create(:complete_job, status: Job::STATUS_RUNNING, current_step_at: nil)
+    get admin_root_path
+    assert_response :success
+    assert_select "a[href='#{admin_job_path(job)}']" do |elements|
+      assert_select 'span.under-five-minute', text: "C #{job.id}"
+    end
+  end
+
   it 'renders the Overviews' do
     get admin_root_path
     assert_select 'h3', text: 'Overview Statistics'
