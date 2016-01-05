@@ -5,7 +5,7 @@ class ReportTest < ActiveSupport::TestCase
     set_date_ranges
     project_analysis = create(:analysis_with_multiple_activity_facts)
     (1..3).to_a.each do |value|
-      create(:all_month, month: Time.utc(Time.current.year, value, 1))
+      create(:all_month, month: Date.current - value.month)
     end
     plot_points = project_analysis.contributor_history(@start_date, @end_date)
     plot_points = plot_points.map { |values| values['contributors'].to_i }
@@ -16,7 +16,7 @@ class ReportTest < ActiveSupport::TestCase
     project_analysis = create(:analysis_with_multiple_activity_facts)
     set_date_ranges
     (1..3).to_a.each do |value|
-      create(:all_month, month: Time.utc(Time.current.year, value, 1))
+      create(:all_month, month: Date.current - value.month)
     end
     plot_points = project_analysis.commit_history(@start_date, @end_date)
     plot_points = plot_points.map { |values| values['commits'].to_i }
@@ -27,7 +27,7 @@ class ReportTest < ActiveSupport::TestCase
     project_analysis = create(:analysis_with_multiple_activity_facts)
     set_date_ranges
     (1..3).to_a.each do |value|
-      create(:all_month, month: Time.utc(Time.current.year, value, 1))
+      create(:all_month, month: Date.current - value.month)
     end
     plot_points = project_analysis.code_total_history(@start_date, @end_date)
     plot_points = plot_points.map { |values| values['code_total'].to_i }
@@ -37,8 +37,8 @@ class ReportTest < ActiveSupport::TestCase
   private
 
   def set_date_ranges
-    @date = Time.utc(Time.current.year, 1, 1)
-    @end_date = Time.current.strftime('%Y-%m-01')
-    @start_date = Time.utc(@date.year, 1, 1).strftime('%Y-%m-01')
+    @date = Date.current
+    @end_date = @date.beginning_of_month.to_s
+    @start_date = (@date - 3.months).beginning_of_month.to_s
   end
 end
