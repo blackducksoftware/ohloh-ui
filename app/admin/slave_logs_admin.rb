@@ -11,7 +11,7 @@ ActiveAdmin.register SlaveLog do
       link_to slave_log.slave.hostname, admin_slafe_path(slave_log.slave) if slave_log.slave
     end
     column 'Job' do |slave_log|
-      span link_to slave_log.job_id, admin_job_path(slave_log.job_id)
+      span link_to slave_log.job_id, admin_job_path(slave_log.job_id) if slave_log.job_id
     end
     column :message
   end
