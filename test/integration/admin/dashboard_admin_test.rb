@@ -43,13 +43,13 @@ class DashboardAdminTest < ActionDispatch::IntegrationTest
     assert_select "a[href='/admin/slaves/#{slave.id}']", text: slave.hostname
     assert_select 'span.allow', text: 'Allow'
     assert_select 'td.col-load_average', text: slave.load_average.to_s
-  end 
+  end
 
   it 'shows the jobs' do
     Slave.delete_all
     slave = create(:slave)
-    job = create(:complete_job, {slave: slave, status: Job::STATUS_RUNNING, current_step_at: Time.now() - 10.minutes})
+    job = create(:complete_job, slave: slave, status: Job::STATUS_RUNNING, current_step_at: Time.current - 10.minutes)
     get admin_root_path
-    assert_select "a[href='/admin/jobs/#{job.id}']", text:"C #{job.id}"
+    assert_select "a[href='/admin/jobs/#{job.id}']", text: "C #{job.id}"
   end
 end
