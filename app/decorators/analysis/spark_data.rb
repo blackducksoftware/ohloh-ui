@@ -13,13 +13,10 @@ class Analysis::SparkData
     end
 
     def default_series
-      (default_start_time..Date.current).to_a.each_with_object({}) do |date, hsh|
+      current_date = Date.current
+      ((current_date - 63)..current_date).to_a.each_with_object({}) do |date, hsh|
         hsh[date.to_time(:utc)] = 0
       end
-    end
-
-    def default_start_time
-      Date.current - 63.days
     end
   end
 end
