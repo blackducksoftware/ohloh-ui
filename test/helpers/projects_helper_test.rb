@@ -2,6 +2,7 @@ require 'test_helper'
 
 class ProjectsHelperTest < ActionView::TestCase
   include ProjectsHelper
+  include ERB::Util
 
   describe 'project_activity_text with appending activity' do
     before do
@@ -122,6 +123,28 @@ class ProjectsHelperTest < ActionView::TestCase
       text = project_activity_text(@project, false)
       text.must_match I18n.t('projects.very_high')
       text.wont_match I18n.t('projects.activity')
+    end
+  end
+
+  describe 'truncate_project_name' do
+    it 'should return content tag if name greater than length' do
+      truncate_project_name('abc123', false, 4).must_match 'a...'
+    end
+
+    it 'should return truncated name if it is a link' do
+      truncate_project_name('abc123', true, 4).must_equal 'a...'
+    end
+
+    it 'should return name if name less than length' do
+      truncate_project_name('abc123').must_equal 'abc123'
+    end
+  end
+
+  describe 'project_managers_list' do
+    it 'should return project managers list' do
+      project_manager = create(:manage)
+      @project = project_manager.target
+      project_managers_list.must_match project_manager.account.name
     end
   end
 end
