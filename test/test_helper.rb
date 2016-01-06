@@ -4,7 +4,7 @@ require 'simplecov-rcov'
 
 SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
 SimpleCov.start 'rails'
-SimpleCov.minimum_coverage 99.47
+SimpleCov.minimum_coverage 99.55
 
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'

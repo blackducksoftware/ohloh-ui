@@ -1,5 +1,6 @@
 require 'test_helper'
 require 'test_helpers/commits_by_project_data'
+require 'test_helpers/commits_by_language_data'
 
 class CommitsByProjectTest < ActiveSupport::TestCase
   let(:start_date_val) { (Time.current - 6.years).beginning_of_month }
@@ -55,6 +56,14 @@ class CommitsByProjectTest < ActiveSupport::TestCase
       project1_data.first[:month].to_s.must_equal((start_date_val - 12.months).to_date.to_s)
       project1_data.first[:commits].must_equal nil
       project1_data.first[:pname].must_equal position1.project.name
+    end
+
+    it 'should reduce to the limit' do
+      commits_data = CommitsByProject.new(account).send(:in_date_range).each { |v| v[:pname] = Faker::Lorem.word }
+      CommitsByProject.any_instance.stubs(:in_date_range).returns(commits_data)
+      cbp_decorator = CommitsByProject.new(account)
+      data = cbp_decorator.history_in_date_range
+      data.size.must_equal 7
     end
   end
 

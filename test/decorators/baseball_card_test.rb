@@ -8,6 +8,7 @@ class BaseballCardTest < ActiveSupport::TestCase
       org = create(:organization)
       best_vita = create(:best_vita)
       best_vita.account.update_attributes(best_vita_id: best_vita.id, created_at: Time.current - 4.days)
+      create(:position, account: best_vita.account)
       Account::OrganizationCore.any_instance.stubs(:positions).returns([create_position])
       Account::OrganizationCore.any_instance.stubs(:orgs_for_my_positions).returns([org])
       Account::OrganizationCore.any_instance.stubs(:affiliations_for_my_positions).returns([org])
@@ -27,6 +28,8 @@ class BaseballCardTest < ActiveSupport::TestCase
                 { css: {}, label: 'Most recent commit', value: last_commit_day },
                 { css: {}, label: 'Has made', value: commits },
                 { css: {}, label: 'Joined Open Hub', value: joined_day },
+                { css: {}, label: 'Contributed to',
+                  value: "<a href=\"/accounts/#{account.login}/positions\">1 project</a>" },
                 {
                   css: { style: 'min-height:38px;' },
                   label: I18n.t('accounts.show.baseball_card.contributed_to'),

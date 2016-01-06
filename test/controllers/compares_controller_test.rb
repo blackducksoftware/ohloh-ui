@@ -45,6 +45,13 @@ class ComparesControllerTest < ActionController::TestCase
     response.body.must_match 'Bob'
   end
 
+  test 'should not fail if project doesnot have analysis' do
+    project1 = create(:project, name: 'The Avenger Initiative')
+    project1.update_attributes!(best_analysis_id: nil)
+    xhr :get, :projects_graph, metric: 'commit', project_0: project1.name, project_1: 'invalid'
+    must_respond_with :ok
+  end
+
   test 'should get projects graph route for contributor history' do
     project1 = create(:project, name: 'The Avenger Initiative')
     project2 = create(:project, name: 'X-MEN')
@@ -67,6 +74,7 @@ class ComparesControllerTest < ActionController::TestCase
     project1 = create(:project, name: 'The Avenger Initiative')
     project2 = create(:project, name: 'X-MEN')
     project3 = create(:project, name: 'Suicide Squad')
+    Analysis.any_instance.stubs(:code_total_history).returns([{ 'code_total' => 5 }])
     xhr :get, :projects_graph, metric: 'code_total', project_0: project1.name,
                                project_1: project2.name, project_2: project3.name
     must_respond_with :ok
