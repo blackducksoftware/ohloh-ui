@@ -19,7 +19,7 @@ class DashboardAdminTest < ActionDispatch::IntegrationTest
     job = create(:complete_job, status: Job::STATUS_RUNNING, current_step_at: nil)
     get admin_root_path
     assert_response :success
-    assert_select "a[href='#{admin_job_path(job)}']" do |elements|
+    assert_select "a[href='#{admin_job_path(job)}']" do
       assert_select 'span.under-five-minute', text: "C #{job.id}"
     end
   end
