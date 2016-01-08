@@ -66,7 +66,7 @@ class PostsController < ApplicationController
   end
 
   def find_collection_of_users(post)
-    @all_users_preceding_the_last_user = post.topic.posts.map(&:account)
+    @all_users_preceding_the_last_user = post.topic.posts.map(&:account).select{ |account| account.email_master }
     @all_users_preceding_the_last_user.pop unless @all_users_preceding_the_last_user.one?
     @all_users_preceding_the_last_user
   end
