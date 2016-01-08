@@ -32,6 +32,8 @@ namespace :selenium do
 
       project_data = project.attributes.except('vector', 'popularity_factor')
       project_data.merge!(
+        'pai' => get_pai_values,
+        'hot_projects' => get_hot_projects,
         'i_use_this' => number_with_delimiter(project.user_count),
         'description' => project.description.squish,
         'organization_name' => project.organization.try(:name),
@@ -231,6 +233,21 @@ namespace :selenium do
     project.aliases.includes(:commit_name, :preferred_name).collect do |alias_obj|
       [alias_obj.commit_name.name, alias_obj.preferred_name.name,
        best_analysis_aliases.include?([alias_obj.commit_name_id, alias_obj.preferred_name_id])]
+    end
+  end
+
+  def get_pai_values
+    project_activity_index = Project.group(:activity_level_index).with_pai_available
+    total_count = project_activity_index.values.sum
+    project_activity_index.each_with_object({}) do |data, hsh|
+      hsh[Project::ACTIVITY_LEVEL.invert[data.first]] = "#{((data.second.to_f / total_count.to_f) * 100).round(1)} %"
+    end
+  end
+
+  def get_hot_projects
+    Project.hot.limit(10).collect do |project|
+      [project.name.to_s.truncate(26), project.organization.try(:name).to_s.truncate(30),
+       project_activity_text(project, true), project.best_analysis.angle.to_s.round(3)]
     end
   end
 
