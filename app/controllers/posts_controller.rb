@@ -62,7 +62,7 @@ class PostsController < ApplicationController
       @all_users_preceding_the_last_user = rejected
     end
     send_reply_emails_to_everyone
-    send_creation_email
+    send_creation_email if @user_who_replied.email_topics?
   end
 
   def find_collection_of_users(post)
