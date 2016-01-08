@@ -343,6 +343,23 @@ describe PostsController do
       must_redirect_to topic_path(topic.id)
     end
 
+    it 'should not send a post notification email respecting their email preference' do
+      topic = create(:topic_with_posts)
+      topic.account.update_column('email_master', false)
+      topic.posts[0].account = topic.account
+      topic.save
+      topic.reload
+
+      # Sign in as someone and post it
+      login_as create(:account)
+
+      ActionMailer::Base.deliveries.clear
+      post :create, topic_id: topic.id, post: { body: 'last_user replies to his own post' }
+      email = ActionMailer::Base.deliveries
+      email.map(&:to).flatten.wont_include topic.account.email
+      must_redirect_to topic_path(topic.id)
+    end
+
     it 'fails for user with no account' do
       assert_no_difference('Post.count') do
         post :create, topic_id: topic.id, post: { body: 'Creating a post for testing' }
