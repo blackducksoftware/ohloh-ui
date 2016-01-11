@@ -37,11 +37,11 @@ namespace :selenium do
         'i_use_this' => number_with_delimiter(project.user_count),
         'description' => project.description.squish,
         'organization_name' => project.organization.try(:name),
-        'tags' => project.tags.order(:name).pluck(:name),
+        'tags' => project.tags.order(:name).map(&:name),
         'links' => project.links.collect { |v| [v.category, v.title, v.url] }.group_by(&:first),
         'code_location_count' => project.enlistments.size,
         'licenses' => project.licenses.pluck(:abbreviation, :name),
-        'managers' => project.managers.pluck(:name),
+        'managers' => project.managers.map(&:name),
         'activity_text' => project_activity_text(project, true),
         'permission' => project.permission.try(:remainder) ? 'Mangers Only' : 'Everyone'
       )
@@ -52,7 +52,7 @@ namespace :selenium do
           '30_day_summary' => thirty_day_summary(analysis),
           '12_month_summary' => twelve_month_summary(analysis)
         },
-        'recent_contributors' => analysis.all_time_summary.recent_contribution_persons.pluck(:effective_name),
+        'recent_contributors' => analysis.all_time_summary.recent_contribution_persons.map(&:effective_name),
         'commits' => get_commits_stats(analysis).merge!('list' => get_commits(project)),
         'total_lines_of_code' => number_with_delimiter(analysis.logic_total)
       ) if analysis.present?
@@ -210,8 +210,8 @@ namespace :selenium do
 
   def get_reviews(project)
     %w(helpful recently_added highest_rated lowest_rated).each_with_object({}) do |sort_by, hsh|
-      hsh[sort_by] = project.reviews.sort_by(sort_by).pluck(:title).first(20)
-    end.merge!('most_helpful' => project.reviews.top.pluck(:title).first(20))
+      hsh[sort_by] = project.reviews.sort_by(sort_by).map(&:title).first(20)
+    end.merge!('most_helpful' => project.reviews.top.map(&:title).first(20))
   end
 
   def get_enlistments(project)
@@ -254,8 +254,8 @@ namespace :selenium do
   def collect_license_and_languages(projects)
     projects.each_with_object({}) do |p, hsh|
       hsh[p.name] = {
-        'licenses' => p.licenses.pluck(:abbreviation), 'language' => p.best_analysis.main_language.try(:nice_name),
-        'tags' => p.tags.order(:name).pluck(:name), 'activity_text' => project_activity_text(p, true)
+        'licenses' => p.licenses.map(&:abbreviation), 'language' => p.best_analysis.main_language.try(:nice_name),
+        'tags' => p.tags.order(:name).map(&:name), 'activity_text' => project_activity_text(p, true)
       }
     end
   end
