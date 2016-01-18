@@ -31,7 +31,7 @@ class PasswordReset
   private
 
   def account
-    @account ||= Account.where('email ILIKE ?', email.strip.downcase).first
+    @account ||= Account.where('lower(email) = ?', email.strip.downcase).first
   end
 
   def account_exists_for_email
