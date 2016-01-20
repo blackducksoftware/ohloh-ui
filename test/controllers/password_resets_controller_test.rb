@@ -63,7 +63,7 @@ describe 'PasswordResetsController' do
       account.update_attribute(:email, 'ThisIsMyAddress@MyDomain.com')
 
       assert_difference(['ActionMailer::Base.deliveries.size'], 1) do
-        post :create, password_reset: {email: account.email.downcase}
+        post :create, password_reset: { email: account.email.downcase }
       end
       must_respond_with :redirect
       flash[:success].must_equal I18n.t('password_resets.create.success')
