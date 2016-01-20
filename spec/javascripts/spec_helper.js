@@ -8,8 +8,8 @@
 // PhantomJS (Teaspoons default driver) doesn't have support for Function.prototype.bind, which has caused confusion.
 // Use this polyfill to avoid the confusion.
 //= require support/phantomjs-shims
-//= require jquery
-//= require app
+//= require support/digits
+//= require application
 //
 // Deferring execution
 // If you're using CommonJS, RequireJS or some other asynchronous library you can defer execution. Call
