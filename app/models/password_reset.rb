@@ -31,7 +31,9 @@ class PasswordReset
   private
 
   def account
+    # rubocop:disable Rails/FindBy
     @account ||= Account.where('lower(email) = ?', email.strip.downcase).first
+    # rubocop:enable Rails/FindBy
   end
 
   def account_exists_for_email
