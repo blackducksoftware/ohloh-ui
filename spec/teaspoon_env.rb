@@ -3,6 +3,7 @@ Teaspoon.configure do |config|
   config.root = nil
   config.asset_paths = ['spec/javascripts', 'spec/javascripts/stylesheets']
   config.fixture_paths = ['spec/javascripts/fixtures']
+  config.use_coverage = :default
 
   config.suite do |suite|
     suite.use_framework :jasmine, '2.3.4'
@@ -12,6 +13,8 @@ Teaspoon.configure do |config|
     suite.body_partial = 'body'
   end
 
-  config.coverage do |_|
+  config.coverage do |coverage|
+    coverage.reports = %w(html)
+    coverage.functions = 23
   end
 end

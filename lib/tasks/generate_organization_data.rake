@@ -18,7 +18,7 @@ namespace :selenium do
       'newest_orgs' => Organization.active.order(created_at: :desc).limit(3)
       .collect { |o| [o.name.truncate(24), o.projects_count, time_ago_in_words(o.updated_at) + ' ago'] },
       'stats_by_sector' => OrgStatsBySector.recent
-        .collect { |o| [Organization::ORG_TYPES.key(o.org_type), o.average_commits, o.organization_count] },
+        .collect { |o| [get_org_type(o), o.average_commits, o.organization_count] },
       '30_day_commmits' => collect_30_days_commit_volume
     )
 
@@ -34,7 +34,7 @@ namespace :selenium do
       managers = org.managers.order(name: :desc).map(&:name)
 
       organization.merge!(
-        'org_type' => Organization::ORG_TYPES.key(org.org_type),
+        'org_type' => get_org_type(org),
         'manager' => { 'names' => managers, 'count' => managers.count },
         'portfolio_count' => org.projects_count,
         'affiliated_committers_count' => org.affiliators_count,
@@ -76,9 +76,14 @@ namespace :selenium do
     {}.tap do |org_by_sector|
       OrgThirtyDayActivity::FILTER_TYPES.keys.each do |key|
         org_by_sector[key.to_s] = OrgThirtyDayActivity.filter(key).collect do |o|
-          [o.name.truncate(14), o.organization.projects_count, o.affiliate_count, o.thirty_day_commit_count]
+          [o.name.truncate(14), get_org_type(o), o.organization.projects_count,
+           o.affiliate_count, o.thirty_day_commit_count]
         end
       end
     end
+  end
+
+  def get_org_type(organization)
+    Organization::ORG_TYPES.key(organization.org_type)
   end
 end

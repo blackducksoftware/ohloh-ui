@@ -57,6 +57,17 @@ describe 'PasswordResetsController' do
       account.reload
       account.reset_password_tokens.keys.first.must_be :present?
     end
+
+    it 'must perform a case insensitive match' do
+      account = create(:account)
+      account.update_attribute(:email, 'ThisIsMyAddress@MyDomain.com')
+
+      assert_difference(['ActionMailer::Base.deliveries.size'], 1) do
+        post :create, password_reset: { email: account.email.downcase }
+      end
+      must_respond_with :redirect
+      flash[:success].must_equal I18n.t('password_resets.create.success')
+    end
   end
 
   describe 'confirm' do
