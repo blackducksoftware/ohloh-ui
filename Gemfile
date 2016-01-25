@@ -36,6 +36,7 @@ gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 gem 'simple-rss'
 gem 'sprockets-rails', '~> 2.3.3'
+#gem 'whenever', :require => false
 
 group :development do
   gem 'capistrano'
@@ -44,6 +45,7 @@ group :development do
   gem 'capistrano-passenger'
   gem 'letter_opener'
   gem 'better_errors'
+  gem 'whenever', require: false
 end
 
 group :test do

@@ -46,16 +46,15 @@ namespace :amazon_ses do
     end
 
     sqs = AWS::SQS.new
-    # bounce_queue = sqs.queues.named('ses-bounces-queue')
+    bounce_queue = sqs.queues.named('ses-bounces-queue')
     complaint_queue = sqs.queues.named('ses-complaints-queue')
 
-    # bounce_queue.poll(initial_time: false, idle_timeout: 10) do |msg|
-    #   puts "==========#{msg.as_sns_message.body_message_as_h}============" 
-    #   process_bounce(msg.as_sns_message.body_message_as_h) 
-    # end
+    bounce_queue.poll(initial_time: false, idle_timeout: 10) do |msg|
+      puts "==========#{msg.as_sns_message.body_message_as_h}============" 
+      process_bounce(msg.as_sns_message.body_message_as_h) 
+    end
     
     complaint_queue.poll(initial_time: false, idle_timeout: 10) do |msg|
-      puts "==========#{msg.as_sns_message.body_message_as_h}============" 
       process_complaint(msg.as_sns_message.body_message_as_h) 
     end
   end
