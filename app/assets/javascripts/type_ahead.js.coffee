@@ -31,6 +31,10 @@ class App.TypeAhead
     @element.val(ui.item.value)
     @element.parents('form.autocomplete-submit').submit()
 
+  submitFormWithId: (ui) ->
+    @element.val(ui.item.id)
+    @element.parents('form.autocomplete-submit').submit()
+
   duplicatesSelect: (ui) ->
     $('#duplicate_good_project_id').val(ui.item.id)
     project_url = "#{$('a#good_project_url').attr('base')}/#{ui.item.id}"

@@ -28,9 +28,9 @@
     %p &nbsp;
     %p &nbsp;
     %h3= t('.similar')
-    %form.similar_projects.margin_left_10{ rel: 'similar_project_jump' }
+    %form.autocomplete-submit.similar_projects.margin_left_10{ rel: 'similar_project_jump' }
       %input.autocompletable.explore_search#project{ type: 'text', placeholder: t('.enter_project'),
-      autocomplete: 'off', data: { source: '/autocompletes/project', select: 'submitForm' } }
+      autocomplete: 'off', data: { source: '/autocompletes/project', select: 'submitFormWithId' } }
       .icon-search.search.submit
       %span.error.hidden= t('.invalid_select')
 
