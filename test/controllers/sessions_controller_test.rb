@@ -80,6 +80,12 @@ describe 'SessionsControllerTest' do
       session[:account_id].must_equal nil
       flash[:error].must_equal I18n.t('sessions.create.error')
     end
+
+    it 'should be case insentive to email address' do
+      account = create(:account, email: 'MixedCase@Domain.com', password: 'password')
+      post :create, login: { login: account.email.downcase, password: 'password' }
+      must_respond_with :found
+    end
   end
 
   describe 'destroy' do
