@@ -6,7 +6,8 @@ module ProjectFilters
     before_action :find_account
     before_action :find_projects, only: [:index]
     before_action :set_project_or_fail, :set_project_editor_account_to_current_user,
-                  only: [:show, :edit, :update, :estimated_cost, :users, :settings, :map, :similar_by_tags, :similar]
+                  only: [:show, :edit, :update, :estimated_cost, :users, :settings, :map, :similar_by_tags]
+    before_action :set_project, only: :similar
     before_action :redirect_new_landing_page, only: :index
     before_action :find_forge_matches, only: :check_forge
     before_action :project_context, only: [:show, :users, :estimated_cost, :edit, :settings, :map, :similar, :update]
@@ -21,6 +22,11 @@ module ProjectFilters
 
   def avoid_global_search_if_parent_is_account
     avoid_global_search if params[:account_id].present?
+  end
+
+  def set_project
+    @project = Project.not_deleted.case_insensitive_name(params[:id]).take
+    fail ParamRecordNotFound unless @project
   end
 
   def find_account
