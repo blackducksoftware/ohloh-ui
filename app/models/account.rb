@@ -119,7 +119,7 @@ class Account < ActiveRecord::Base
     end
 
     def fetch_by_login_or_email(user_name)
-      find_by('login = :user_name or lower(email) = :user_name', user_name: user_name)
+      find_by('login = ? or lower(email) = ?', user_name, user_name.downcase)
     end
 
     def find_or_create_anonymous_account

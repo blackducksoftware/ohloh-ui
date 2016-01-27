@@ -669,4 +669,21 @@ class AccountTest < ActiveSupport::TestCase
       Account.active.wont_include account3
     end
   end
+
+  describe 'fetch_by_login_or_email' do
+    it 'should match for upper case email' do
+      account = create(:account)
+      Account.fetch_by_login_or_email(account.email.upcase).wont_be_nil
+    end
+
+    it 'should match for lower case email' do
+      account = create(:account)
+      Account.fetch_by_login_or_email(account.email.downcase).wont_be_nil
+    end
+
+    it 'should match for mixed case email' do
+      account = create(:account)
+      Account.fetch_by_login_or_email(account.email.titlecase).wont_be_nil
+    end
+  end
 end
