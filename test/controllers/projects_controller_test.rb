@@ -742,16 +742,16 @@ describe 'ProjectsController' do
   end
 
   describe 'similar' do
-    it 'should be searched by name' do
+    it 'should not be searched by name' do
       project = create(:project)
       get :similar, id: project.name
-      must_respond_with :ok
+      must_respond_with :not_found
     end
 
-    it 'should render 404 if searched by url' do
+    it 'should be searched by url' do
       project = create(:project)
       get :similar, id: project.to_param
-      must_respond_with :not_found
+      must_respond_with :ok
     end
 
     it '#similar should return similar projects (both by tags and stacks)' do
@@ -777,7 +777,7 @@ describe 'ProjectsController' do
       create(:tagging, tag: tag, taggable: project2)
       create(:tagging, tag: tag, taggable: project3)
 
-      get :similar, id: project1.name
+      get :similar, id: project1.to_param
 
       assigns(:project).must_equal project1
       assigns(:similar_by_tags).must_include project2
