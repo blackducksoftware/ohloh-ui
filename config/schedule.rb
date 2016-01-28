@@ -19,7 +19,12 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every 1.day, at: '12:00 am' do
-   rake 'amazon_ses:first_reverification_email'
+every 1.day, at: '6:00 am' do
+   rake 'openhub:first_reverification_email'
 end
 
+# This is performed every 3 days because SQS by default holds
+# messages for 4 days. SQS message rention can be extended.
+every 3.days at: '12:00 pm' do
+  rake 'openhub:retry_notification'
+end
