@@ -1,5 +1,16 @@
 namespace :openhub do
-  # Note: This is a test to send one good email
+
+  def test_email_list(number)
+    test_list = []
+    number.times do
+      test_list << "success@simulator.amazonses.com"
+      test_list << "bounce@simulator.amazonses.com"
+      test_list << "ooto@simulator.amazonses.com"
+      test_list << "complaint@simulator.amazonses.com"    
+    end
+    test_list
+  end
+
   def ses
     ses = AWS::SimpleEmailService.new
   end
@@ -8,18 +19,17 @@ namespace :openhub do
     sqs = AWS::SQS.new
   end
 
-  def destroy_account(email_address)
-    account = Account.find_by_email(email_address)
-    account.destroy unless account == nil
+  def destroy_account(email_address) 
+    # account = Account.find_by_email(email_address)
+    # account.destroy unless account == nil
   end
 
   def store_email_for_later_retry(email_address)
-    sqs
     transient_bounce_queue = sqs.queues.named('ses-transientbounces-queue')
     transient_bounce_queue.send_message("#{email_address}")
   end
 
-  def process_bounce(email) # Test for all of these cases
+  def process_bounce(email)
     email_address = email['bounce']['bouncedRecipients'][0]['emailAddress']
     bounce_type = email['bounce']['bounceType']
     bounce_subtype = email['bounce']['bounceSubType']
@@ -58,25 +68,23 @@ namespace :openhub do
 
   desc 'This task begins the initial reverification process'
   task send_first_reverification_email: :environment do
-    # Grab a batch of 200 emails per 24 hour period.
-    ses
-    ses.send_email(
-      to: 'ooto@simulator.amazonses.com',
-      subject: 'SES complaint test',
-      from: 'info@openhub.net',
-      body_text: 'This is a complaint message.'
-      )
-
-    sqs
-    queue
+    abort 'Reached AWS sending limit' unless ses.quotas[:max_24_hour_send] != 200
+    test_email_list(1).each do |email|
+      ses.send_email(
+        to: "#{email}",
+        subject: 'Test Email',
+        from: 'info@openhub.net',
+        body_text: 'This is a test email'
+        )
+      sqs.queue
+    end
   end
 
   desc 'This task resends a reverification notice to soft bounce emails'
   task retry_notification: :environment do
-    sqs
+    abort 'Reached AWS sending limit' unless ses.quotas[:max_24_hour_send] != 200
     transient_bounce_queue = sqs.queues.named('ses-transientbounces-queue')
     transient_bounce_queue.receive_message do |msg|
-      ses
       ses.send_email(
       to: "#{msg.body}",
       subject: 'SES 2nd complaint test',
@@ -84,6 +92,6 @@ namespace :openhub do
       body_text: 'This is a test email.'
       )
     end
-    queue
+    sqs.queue
   end 
 end
