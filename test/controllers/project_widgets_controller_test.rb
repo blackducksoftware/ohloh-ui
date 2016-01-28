@@ -18,6 +18,14 @@ describe 'ProjectWidgetsController' do
       assigns(:project).must_equal project
     end
 
+    it 'should render deleted projects page if project was deleted' do
+      project = create(:project, deleted: true)
+      get :index, project_id: project.id
+
+      must_respond_with :ok
+      must_render_template 'projects/deleted'
+    end
+
     it 'should show not found error' do
       get :index, project_id: 0
 
