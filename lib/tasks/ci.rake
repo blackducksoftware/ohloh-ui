@@ -1,6 +1,7 @@
 namespace :ci do
   desc 'Run the complete build verification'
   task :all_tasks do
+    exit(1) unless system('RAILS_ENV=test rake db:migrate')
     exit(1) unless system('RAILS_ENV=test teaspoon --no-color')
     exit(1) unless system('RAILS_ENV=test rake test')
     exit(1) unless system('rubocop')
