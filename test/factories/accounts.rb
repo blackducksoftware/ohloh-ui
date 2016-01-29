@@ -46,4 +46,24 @@ FactoryGirl.define do
   factory :account_with_markup, parent: :account do
     association :markup
   end
+
+  factory :account_with_no_verifications, parent: :account do
+    association :github_verification, strategy: :null
+
+    trait :hard_bounce do
+      email 'bounce@simulator.amazonses.com'
+    end
+
+    trait :soft_bounce do
+      email 'ooto@simulator.amazonses.com'
+    end
+
+    trait :complaint do
+      email 'complaint@simulator.amazonses.com'
+    end
+
+    trait :success do
+      email 'success@simulator.amazonses.com'
+    end
+  end
 end
