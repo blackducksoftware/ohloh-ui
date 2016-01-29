@@ -15,6 +15,7 @@ class ProjectWidgetsController < WidgetsController
   def set_project
     @project = Project.by_vanity_url_or_id(params[:project_id]).take!
 
+    project_context
     render 'projects/deleted' if @project.deleted?
   end
 end
