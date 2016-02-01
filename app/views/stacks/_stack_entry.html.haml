@@ -13,7 +13,7 @@
             != rating_stars('average_rating_stars', stack_entry.project.rating_average.to_i, true)
         %br
       .note
-        %span.header.note= t('.notes')
+        %span.header.note= t :notes, scope: 'stacks.show'
         %br
         - if editable
           - uri = "/stacks/#{@stack.id}/stack_entries/#{stack_entry.id}"
@@ -27,4 +27,4 @@
     %td{ width: '18%', valign: 'top' }
       %a.btn.btn-mini.btn-danger.command.stack_remove{ href: '#',
                                                        id: "stackit_#{stack_entry.project.vanity_url}" }
-        %i.icon-trash= t '.remove'
+        %i.icon-trash= t :remove, scope: 'stacks.show'
