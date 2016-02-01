@@ -1,5 +1,4 @@
-require 'simple-rss'
-require 'open-uri'
+require 'feedjira'
 
 class RssFeed < ActiveRecord::Base
   has_many :rss_subscriptions
@@ -38,10 +37,10 @@ class RssFeed < ActiveRecord::Base
   end
 
   def new_rss_article_items
-    rss = SimpleRSS.parse open(url)
+    rss = Feedjira::Feed.fetch_and_parse(url)
     existing_rss_articles = rss_articles.pluck(:guid)
 
-    rss.items.reject do |item|
+    rss.sanitize_entries!.reject do |item|
       guid = RssArticle.guid_from_item(item)
       existing_rss_articles.include?(guid)
     end

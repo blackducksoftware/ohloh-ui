@@ -34,8 +34,8 @@ gem 'twitter-bootstrap-rails'
 gem 'uglifier', '>= 2.7.2'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
-gem 'simple-rss'
 gem 'sprockets-rails', '~> 2.3.3'
+gem 'feedjira'
 
 group :development do
   gem 'capistrano'
