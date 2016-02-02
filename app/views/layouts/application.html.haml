@@ -14,6 +14,14 @@
     = csrf_meta_tags
     = javascript_include_tag 'https://www.google.com/recaptcha/api.js'
     = javascript_include_tag 'https://cdn.digits.com/1/sdk.js'
+    - if Rails.env.production?
+      <script type="text/javascript">
+      (function() {
+      var hm = document.createElement('script'); hm.type ='text/javascript'; hm.async = true;
+      hm.src = ('++u-heatmap-it+log-js').replace(/[+]/g,'/').replace(/-/g,'.');
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(hm, s);
+      })();
+      </script>
   %body{ zoom: 1 }
     = yield :session_projects_banner
     .container#page
