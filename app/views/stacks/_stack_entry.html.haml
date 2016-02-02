@@ -13,7 +13,7 @@
             != rating_stars('average_rating_stars', stack_entry.project.rating_average.to_i, true)
         %br
       .note
-        %span.header.note= t('.notes')
+        %span.header.note= t '.notes'
         %br
         - if editable
           - uri = "/stacks/#{@stack.id}/stack_entries/#{stack_entry.id}"
