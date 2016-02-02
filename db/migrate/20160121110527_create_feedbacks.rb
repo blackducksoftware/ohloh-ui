@@ -5,7 +5,7 @@ class CreateFeedbacks < ActiveRecord::Migration
       t.integer :more_info
       t.string :uuid
       t.string :project_name
-
+      t.inet :ip_address
       t.timestamps null: false
     end
   end

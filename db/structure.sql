@@ -1587,6 +1587,7 @@ CREATE TABLE feedbacks (
     more_info integer,
     uuid character varying,
     project_name character varying,
+    ip_address inet,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );

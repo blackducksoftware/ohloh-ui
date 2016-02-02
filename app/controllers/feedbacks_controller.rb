@@ -4,7 +4,7 @@ class FeedbacksController < ApplicationController
   before_action :set_access_control_header
 
   def set_access_control_header
-    headers['Access-Control-Allow-Origin'] = 'http://oh-stage-web-1.blackducksoftware.com'
+    headers['Access-Control-Allow-Origin'] = 'http://security.openhub.net'
   end
 
   def create
@@ -15,6 +15,6 @@ class FeedbacksController < ApplicationController
   private
 
   def feedback_params
-    params.require(:feedback).permit(:rating, :uuid, :more_info, :project_name)
+    params.require(:feedback).permit(:rating, :uuid, :more_info, :project_name, :ip_address)
   end
 end
