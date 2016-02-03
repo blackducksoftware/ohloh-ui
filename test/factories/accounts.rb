@@ -24,6 +24,16 @@ FactoryGirl.define do
     email_posts true
 
     association :github_verification
+
+    trait :with_stacks do
+      transient do
+        number_of_stacks 2
+      end
+
+      after(:create) do |account, evaluator|
+        create_list(:stack, evaluator.number_of_stacks, account: account)
+      end
+    end
   end
 
   factory :unactivated, parent: :account do
