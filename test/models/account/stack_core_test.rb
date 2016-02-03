@@ -4,10 +4,10 @@ class StackCoreTest < ActiveSupport::TestCase
   describe 'parent_scope' do
     let(:account) { create(:account, :with_stacks, number_of_stacks: 10) }
 
-    before {
+    before do
       @older_stack = create(:stack, account: account, updated_at: 1.hour.ago)
       @newer_stack = create(:stack, account: account, updated_at: 1.hour.from_now)
-    }
+    end
 
     it 'should be reverse chronological ordered' do
       account.stacks.first.must_equal @newer_stack
