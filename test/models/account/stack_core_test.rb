@@ -1,6 +1,19 @@
 require_relative '../../test_helper'
 
 class StackCoreTest < ActiveSupport::TestCase
+  describe 'parent_scope' do
+    let(:account) { create(:account, :with_stacks, number_of_stacks: 10) }
+    let(:older_stack) { create(:stack, account: account, updated_at: 1.hour.ago) }
+    let(:newer_stack) { create(:stack, account: account, updated_at: 1.hour.from_now) }
+
+    before { older_stack; newer_stack }
+
+    it 'should be reverse chronological ordered' do
+      account.stacks.first.must_equal newer_stack
+      account.stacks.last.must_equal older_stack
+    end
+  end
+
   it 'default' do
     account = create(:admin)
 
