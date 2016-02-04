@@ -51,18 +51,22 @@ FactoryGirl.define do
     association :github_verification, strategy: :null
 
     trait :hard_bounce do
+      name 'Hard Bounce'
       email 'bounce@simulator.amazonses.com'
     end
 
     trait :soft_bounce do
+      name 'Soft Bounce'
       email 'ooto@simulator.amazonses.com'
     end
 
     trait :complaint do
+      name 'Complaint'
       email 'complaint@simulator.amazonses.com'
     end
 
     trait :success do
+      name 'Success'
       email 'success@simulator.amazonses.com'
     end
   end

@@ -60,7 +60,7 @@ group :test do
   gem 'simplecov-rcov'
   gem 'spring'
   gem 'vcr'
-  gem 'webmock'
+  # gem 'webmock'
 end
 
 group :development, :test do
