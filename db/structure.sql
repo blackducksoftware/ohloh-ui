@@ -386,6 +386,38 @@ ALTER SEQUENCE account_reports_id_seq OWNED BY account_reports.id;
 
 
 --
+-- Name: account_reverifications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE account_reverifications (
+    id integer NOT NULL,
+    account_id integer,
+    status character varying DEFAULT 'initial'::character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: account_reverifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE account_reverifications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: account_reverifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE account_reverifications_id_seq OWNED BY account_reverifications.id;
+
+
+--
 -- Name: accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -4071,6 +4103,13 @@ ALTER TABLE ONLY account_reports ALTER COLUMN id SET DEFAULT nextval('account_re
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY account_reverifications ALTER COLUMN id SET DEFAULT nextval('account_reverifications_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY actions ALTER COLUMN id SET DEFAULT nextval('actions_id_seq'::regclass);
 
 
@@ -4479,6 +4518,14 @@ ALTER TABLE ONLY vitae ALTER COLUMN id SET DEFAULT nextval('vitae_id_seq'::regcl
 
 ALTER TABLE ONLY account_reports
     ADD CONSTRAINT account_reports_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: account_reverifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY account_reverifications
+    ADD CONSTRAINT account_reverifications_pkey PRIMARY KEY (id);
 
 
 --
@@ -8126,6 +8173,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150925101715');
 INSERT INTO schema_migrations (version) VALUES ('20151116113941');
 
 INSERT INTO schema_migrations (version) VALUES ('20151124143945');
+
+INSERT INTO schema_migrations (version) VALUES ('20160209204755');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

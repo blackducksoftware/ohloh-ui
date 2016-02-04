@@ -23,5 +23,6 @@ module AccountAssociations
     has_many :vita_jobs
     has_one :github_verification
     has_one :twitter_digits_verification
+    has_one :account_reverification
   end
 end
