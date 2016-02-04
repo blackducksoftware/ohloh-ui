@@ -2,6 +2,19 @@ require 'test_helper'
 
 class AccountReverificationTest < ActiveSupport::TestCase
 
+  class MsgBody
+    def body_message_as_h
+      byebug
+      hard_bounce_json
+    end
+  end
+
+  class HardBounceMessage
+    def as_sns_message
+      MsgBody.new
+    end
+  end
+
   describe 'AccountReverification' do
    
     # it 'should only select accounts that have no verifications' do
@@ -30,22 +43,25 @@ class AccountReverificationTest < ActiveSupport::TestCase
     # end
 
     it 'should delete an account that returns a hard bounce' do
-    # #   # Create an account that has already had the first notification sent
-    # #   # mock the SQS queue
-    # #   # have the mocked SQS queue expect the :poll message and return a valid bounce message for the above account
-    # #   # Stub AccountReverification.bounced_queue to return the mock
-    # #   # Run the AccountReverification
-    # #   # Verify the created account is no longer in the Accounts table
-
+      # Create an account
       account = create(:account_with_no_verifications, :hard_bounce)
-      email_address = hard_bounce_json['bounce']['bouncedRecipients'][0]['emailAddress']
-      # binding.pry
-      # AWS::SimpleEmailService.any_instance.expects(:send_email).with(AccountReverification.first_reverification_notice(account)).once
-      # AWS::SQS::Queue.any_instance.expects(:poll).with({initial_time: false, idle_timeout: 5}) { |value| AccountReverification.process_bounce(value) }.once
-      AccountReverification.expects(:process_bounce).with(email_address).once
-      AccountReverification.expects(:destroy_account).with(email_address).once
-      AccountReverification.expects(:store_email_for_later_retry).with(email_address).never
+      
+      # mock the SQS queue
+      mock_queue = mock('AWS::SQS::Queue::MOCK')
+
+      # have the mocked SQS queue expect the :poll message and return a valid bounce message for the above account
+      mock_queue.stubs(:poll).yields(HardBounceMessage.new)
+
+      # Stub AccountReverification.bounced_queue to return the mock
+      AccountReverification.stubs(:bounce_queue).returns(mock_queue)
+
+      AccountReverification.expects(:destroy_account).with(account.email)
+      # AccountReverification.expects(:store_email_for_later_retry).never
+
+      # Run the AccountReverification
       AccountReverification.run
+
+      # Verify the created account is no longer in the Accounts table
       assert_not Account.exists?(email: account.email)
     end
 

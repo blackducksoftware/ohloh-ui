@@ -59,6 +59,21 @@ class ActiveSupport::TestCase
     Contribution.find_by_name_fact_id(name_fact.id)
   end
 
+  # This models the data package received from AWS::SES when an email
+  # results in a hard bounce.  Note: the Account factory creates an account 
+  # with this email address when the :hard_bounce type is used.
+  def self.hard_bounce_json
+    {
+     "bounce": {
+     "bounceType":"Permanent",
+     "bouncedRecipients":[
+        {
+           "emailAddress":"bounce@simulator.amazonses.com"
+        }
+     ]
+    } }.with_indifferent_access
+  end
+
   private
 
   def controller_login_as(account)
@@ -143,24 +158,6 @@ class ActiveSupport::TestCase
     digits_id
   end
 
-  def hard_bounce_json
-    {
-     "bounce": {
-     "bounceType":"Permanent",
-     "bounceSubType": "General",
-     "bouncedRecipients":[
-        {
-           "status":"5.0.0",
-           "action":"failed",
-           "diagnosticCode":"smtp; 550 user unknown",
-           "emailAddress":"bounce@simulator.amazonses.com"
-        }
-     ],
-     "reportingMTA": "example.com",
-     "timestamp":"2012-05-25T14:59:38.605-07:00",
-     "feedbackId":"000001378603176d-5a4b5ad9-6f30-4198-a8c3-b1eb0c270a1d-000000"
-    } }.with_indifferent_access
-  end
 
     # { to: "ooto@simulator.amazonses.com",
     #   subject: 'Please reverify your Open Hub account',

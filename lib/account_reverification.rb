@@ -31,14 +31,12 @@ class AccountReverification
     end
 
     def poll_bounce_queue
-      bounce_queue.poll(initial_time: false, idle_timeout: 5) do |msg|
-        puts "#{msg}"
-        process_bounce(msg.as_sns_message.body_message_as_h)
-      end
+      bounce_queue.poll(initial_timeout: 1, idle_timeout: 1) do |msg|
+        p "In poll_bounce_queue with message: #{msg.inspect}"
+        process_bounce(msg.as_sns_message.body_message_as_h) end
     end
 
     def destroy_account(email_address)
-      puts "#{email_address}"
       account = Account.find_by_email(email_address)
       account.destroy if account
     end
@@ -47,9 +45,9 @@ class AccountReverification
       transient_bounce_queue.send_message("#{email_address}")
     end
 
-    def process_bounce(email)
-      email_address = email['bounce']['bouncedRecipients'][0]['emailAddress']
-      bounce_type = email['bounce']['bounceType']
+    def process_bounce(message_body)
+      email_address = message_body['bounce']['bouncedRecipients'][0]['emailAddress']
+      bounce_type = message_body['bounce']['bounceType']
       if bounce_type == 'Permanent'
         destroy_account(email_address)
       else
@@ -76,19 +74,24 @@ class AccountReverification
     def send_first_notification
       return if ses_limit_reached?
       accounts_without_verifications(5).each do |account|
-        puts "#{account}"
         ses.send_email(first_reverification_notice(account))
       end
     end
 
     def run
       # retry_notification if messages_in_the_transient_bounce_queue?
-      # poll_bounce_queue
+      p "About to poll bounce queue"
+      poll_bounce_queue
+
       # poll_complaint_queue
       # send_final_deletion_warnings
       # send_made_spammer_notifications
       # send_making_spammer_warnings
+
+      p "About to send first notification"
       send_first_notification
+
+      p "About to poll bounce queue again"
       poll_bounce_queue
       #poll_complaint_queue
     end
