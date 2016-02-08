@@ -247,7 +247,7 @@ namespace :selenium do
   def get_hot_projects
     Project.hot.limit(10).collect do |project|
       [project.name.to_s.truncate(26), project.organization.try(:name).to_s.truncate(30),
-       project_activity_text(project, true), project.best_analysis.angle.to_s.round(3)]
+       project_activity_text(project, true), project.best_analysis.angle.round(3)]
     end
   end
 
