@@ -1,0 +1,91 @@
+%link{ href: 'http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css', rel: 'stylesheet' }
+%h2
+  Today
+.row
+  .col-lg-4
+    .widget-simple-chart.text-right.card-box
+      .circliful-chart.circliful#today_total_feedback{ 'data-bgcolor' => '#ebeff2', 'data-dimension' => '150', 'data-fgcolor' => '#5fbeaa', 'data-fontsize' => '14', 'data-percent' => "#{today_stats_hash['fcp']}", 'data-text' => "#{today_stats_hash['fcp']}%" }
+      %h3.text-success.counter
+        = today_stats_hash['fc']
+      %p.text-muted.text-nowrap Feedback Count
+  .col-lg-4
+    .card-box.widget-simple-chart.bottomPadding.resetRightPadding
+      .donut_chart
+        %canvas#today_rating{ height: '150', width: '150' }
+      .donut_chart
+        %ul#today_rating_list
+          %li.five_rating
+            %span
+              = "Extremely Helpful (#{today_stats_hash['rating_count']['five_rating']})"
+          %li.four_rating
+            %span
+              = "Very Helpful (#{today_stats_hash['rating_count']['four_rating']})"
+          %li.three_rating
+            %span
+              = "Somewhat Helpful (#{today_stats_hash['rating_count']['three_rating']})"
+          %li.two_rating
+            %span
+              = "Slightly Helpful (#{today_stats_hash['rating_count']['two_rating']})"
+          %li.one_rating
+            %span
+              = "Not Really Helpful (#{today_stats_hash['rating_count']['one_rating']})"
+
+  .col-lg-4
+    .widget-simple-chart.text-right.card-box
+      .circliful-chart.circliful#today_more_info{ 'data-bgcolor' => '#ebeff2', 'data-dimension' => '150', 'data-fgcolor' => '#61a9dc', 'data-fontsize' => '14', 'data-percent' => "#{today_stats_hash['more_info']['yes']}", 'data-text' => "#{today_stats_hash['more_info']['yes']}%" }
+      %h3.text-success.counter
+        = today_stats_hash['yes_info_c']
+      %p.text-muted.text-nowrap interested for more info
+%h2 Last 7 Days
+.row
+  .col-lg-4
+    .widget-simple-chart.text-right.card-box
+      .circliful-chart.circliful#weekly_total_feedback{ 'data-bgcolor' => '#ebeff2', 'data-dimension' => '150', 'data-fgcolor' => '#5fbeaa', 'data-fontsize' => '14', 'data-percent' => "#{weekly_stats_hash['fcp']}", 'data-text' => "#{weekly_stats_hash['fcp']}%" }
+      %h3.text-success.counter
+        = weekly_stats_hash['fc']
+      %p.text-muted.text-nowrap Feedback Count
+  .col-lg-4
+    .card-box.widget-simple-chart.bottomPadding.resetRightPadding
+      .donut_chart
+        %canvas#weekly_rating{ height: '150', width: '150' }
+      .donut_chart
+        %ul#weekly_rating_list
+          %li.five_rating
+            %span
+              = "Extremely Helpful (#{weekly_stats_hash['rating_count']['five_rating']})"
+          %li.four_rating
+            %span
+              = "Very Helpful (#{weekly_stats_hash['rating_count']['four_rating']})"
+          %li.three_rating
+            %span
+              = "Somewhat Helpful (#{weekly_stats_hash['rating_count']['three_rating']})"
+          %li.two_rating
+            %span
+              = "Slightly Helpful (#{weekly_stats_hash['rating_count']['two_rating']})"
+          %li.one_rating
+            %span
+              = "Not Really Helpful (#{weekly_stats_hash['rating_count']['one_rating']})"
+  .col-lg-4
+    .widget-simple-chart.text-right.card-box
+      .circliful-chart.circliful#weekly_more_info{ 'data-bgcolor' => '#ebeff2', 'data-dimension' => '150', 'data-fgcolor' => '#61a9dc', 'data-fontsize' => '14', 'data-percent' => "#{weekly_stats_hash['more_info']['yes']}", 'data-text' => "#{weekly_stats_hash['more_info']['yes']}%" }
+      %h3.text-success.counter
+        = weekly_stats_hash['yes_info_c']
+      %p.text-muted.text-nowrap interested for more info
+
+%h2 Most Interested Projects
+.row
+  - most_interested_hash.each do |project_id, stats_hash|
+    - project = Project.find(project_id)
+    .col-lg-4
+      .card-box.widget-user.padding-20
+        = project.decorate.icon(:med)
+        -#%img.img-responsive.img-circle{ alt: "#{stats_hash['project_name']}", src: '/assets/project-icon.png' }
+        .wid-u-info
+          = link_to project.name, project_admin_feedbacks_path(project_id: project_id), target: '_blank'
+          %h4.text-helpful.counter.display-inline
+            = stats_hash['avg_helpful']
+          %p.display-inline.text-muted.font-16 Average Helpful
+          %br
+          %h4.text-helpful.counter.display-inline
+            = "#{stats_hash['interested']}%"
+          %p.display-inline.text-muted.font-16 Interested in knowing more

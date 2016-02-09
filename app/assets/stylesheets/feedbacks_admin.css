@@ -1,0 +1,168 @@
+.card-box {
+  padding: 25px 25px 90px 25px;
+  border: 1px solid rgba(54, 64, 74, 0.08);
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  background-clip: padding-box;
+  margin-bottom: 20px;
+  background-color: #fff;
+}
+
+.text-right {
+  text-align: right;
+}
+
+
+.text-muted {
+  color: #98a6ad;
+}
+
+.text-success {
+  color: #00b19d;
+}
+.text-helpful {
+  color: #882B3F;
+  font-size: 22px;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+.widget-simple-chart .circliful-chart {
+  float: left;
+  margin-top: -5px;
+}
+
+.bottomPadding{
+  padding-bottom: 20px;
+}
+
+.resetRightPadding {
+  padding-right: 0px;
+}
+
+.donut_chart {
+  display: inline-block;
+}
+
+.donut_chart ul {
+  position: absolute;
+  top: 50px;
+}
+
+.donut_chart ul li {
+  list-style: none;
+  font-size: 120%;
+}
+
+.donut_chart ul li:before {
+  content: '■';
+  width: 1em;
+  float: left;
+}
+
+
+.five_rating {
+  color: #A13D92;
+}
+
+.four_rating {
+  color: #0074d9;
+}
+
+.three_rating {
+  color: #39cccc;
+}
+
+.two_rating {
+  color: #17B91A;
+}
+
+.one_rating {
+  color: #A09A58;
+}
+
+.project-box {
+  padding: 20px 25px 50px 25px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  border: 1px solid rgba(54, 64, 74, 0.08);
+}
+
+img.center {
+  display: block;
+  margin: 0 auto;
+}
+
+.project-fill {
+  padding-top: 10px;
+}
+
+p.project-fill {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+ul h4 {
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  line-height: 0px;
+}
+
+.display-inline {
+  display: inline
+}
+
+.project-box ul {
+  text-align: center;
+}
+
+ul p {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+#weekly_rating_list li span {
+  font-size: 13px;
+  font-family: Verdana, sans-serif;
+}
+
+#today_rating_list li span {
+  font-size: 13px;
+  font-family: Verdana, sans-serif;
+}
+
+.widget-user {
+  min-height: 112px;
+}
+
+.widget-user img {
+  height: 64px;
+  width: 64px;
+  float: left;
+}
+
+.widget-user .wid-u-info {
+  margin-left: 90px;
+}
+
+.m-b-5 {
+  margin-bottom: 5px;
+}
+.m-t-0 {
+  margin-top: 0px;
+}
+
+.padding-20 {
+  padding: 20px 0px 20px 20px;
+}
+.wid-u-info a {
+  text-decoration: none !important;
+  font-size: 24px;
+  display: block;
+  padding-bottom: 10px;
+}
+
+.font-16 {
+  font-size: 16px;
+}
