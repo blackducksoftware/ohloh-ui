@@ -21,7 +21,7 @@ class CodeSet < ActiveRecord::Base
 
   def reimport
     new_code_set = CodeSet.create!(repository_id: repository_id)
-    old_clump = clumps.sort(&:updated_at).last
+    old_clump = clumps.sort{|a,b| a.updated_at <=> b.updated_at}.last
     new_clump = old_clump.class.create(code_set: new_code_set, slave: old_clump.slave)
     old_clump.slave.run_local_or_remote("mv #{old_clump.path} #{new_clump.path}")
     job = ImportJob.create(code_set: new_code_set)
