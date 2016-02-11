@@ -442,6 +442,7 @@ Rails.application.routes.draw do
       resources :complete_jobs
     end
   end
+  resources :feedbacks
 
   get 'sitemap_index.xml', controller: 'sitemap', action: 'index', format: 'xml'
   get 'sitemaps/:ctrl/:page.xml', controller: 'sitemap', action: 'show', format: 'xml'
