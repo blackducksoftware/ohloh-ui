@@ -28,7 +28,7 @@ class CodeSet < ActiveRecord::Base
   private
 
   def old_clump
-    @old_clump ||= clumps.sort { |a, b| a.updated_at <=> b.updated_at }.last
+    @old_clump ||= clumps.sort_by(&:updated_at).last
   end
 
   def new_clump
