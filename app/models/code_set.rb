@@ -14,18 +14,29 @@ class CodeSet < ActiveRecord::Base
     analysis_sloc_set.nil? ? CodeSet.none : analysis_sloc_set.ignore_prefixes
   end
 
-  # impmentation that should be used when clumps are removed
+  # Implementation that should be used when clumps are removed
   # def reimport
   #   ImportJob.create!(code_set: CodeSet.create!(repository_id: repository_id))
   # end
 
+  # After clumps are removed, delete from here ....
   def reimport
-    new_code_set = CodeSet.create!(repository_id: repository_id)
-    old_clump = clumps.sort(&:updated_at).last
-    new_clump = old_clump.class.create(code_set: new_code_set, slave: old_clump.slave)
     old_clump.slave.run_local_or_remote("mv #{old_clump.path} #{new_clump.path}")
-    job = ImportJob.create(code_set: new_code_set)
-    old_clump.delete
-    job
+    return ImportJob.create(code_set: new_code_set) if old_clump.delete
   end
+
+  private
+
+  def old_clump
+    @old_clump ||= clumps.sort_by(&:updated_at).last
+  end
+
+  def new_clump
+    @new_clump ||= old_clump.class.create(code_set: new_code_set, slave: old_clump.slave)
+  end
+
+  def new_code_set
+    @new_code_set ||= CodeSet.create!(repository_id: repository_id)
+  end
+  # .... to here
 end
