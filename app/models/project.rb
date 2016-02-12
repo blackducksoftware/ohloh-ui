@@ -9,7 +9,6 @@ class Project < ActiveRecord::Base
   include ProjectSearchables
   include ProjectScopes
   include ProjectJobs
-
   acts_as_protected
   acts_as_taggable
   link_accessors accessors: { url: :Homepage, download_url: :Download }

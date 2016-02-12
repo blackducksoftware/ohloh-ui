@@ -45,11 +45,6 @@ ActiveAdmin.setup do |config|
   #
   # This will ONLY change the title for the admin section. Other
   # namespaces will continue to use the main "site_title" configuration.
-  config.namespace :admin do |admin|
-    admin.build_menu do |menu|
-      menu.add label: 'Feedback', url: '/admin/feedbacks/dashboard', priority: 11
-    end
-  end
   # == User Authentication
   #
   # Active Admin will automatically call an authentication
@@ -162,7 +157,8 @@ ActiveAdmin.setup do |config|
   # and feel.
   #
   # To load a stylesheet:
-  #   config.register_stylesheet 'my_stylesheet.css'
+  # config.register_stylesheet 'my_stylesheet.css'
+  config.register_stylesheet 'active_admin_openhub.css'
   #
   # You can provide an options hash for more control, which is passed along to stylesheet_link_tag():
   #   config.register_stylesheet 'my_print_stylesheet.css', media: :print
