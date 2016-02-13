@@ -47,7 +47,7 @@ FactoryGirl.define do
     association :markup
   end
 
-  factory :account_with_no_verifications, parent: :account do
+  factory :account_without_verifications, parent: :account do
     association :github_verification, strategy: :null
     association :account_reverification, strategy: :null
 
@@ -66,5 +66,10 @@ FactoryGirl.define do
     trait :success do
       email 'success@simulator.amazonses.com'
     end
+  end
+
+  factory :account_with_an_initial_notification_and_no_verifications, parent: :account do
+    association :github_verification, strategy: :null
+    association :account_reverification
   end
 end
