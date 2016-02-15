@@ -1146,10 +1146,10 @@ CREATE TABLE people (
 
 
 --
--- Name: contributions; Type: VIEW; Schema: public; Owner: -
+-- Name: contributions; Type: MATERIALIZED VIEW; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE VIEW contributions AS
+CREATE MATERIALIZED VIEW contributions AS
  SELECT
         CASE
             WHEN (pos.id IS NULL) THEN ((((per.project_id)::bigint << 32) + (per.name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint)
@@ -1166,7 +1166,8 @@ CREATE VIEW contributions AS
     pos.id AS position_id
    FROM ((people per
      LEFT JOIN positions pos ON ((per.account_id = pos.account_id)))
-     JOIN projects p ON ((p.id = COALESCE(pos.project_id, per.project_id))));
+     JOIN projects p ON ((p.id = COALESCE(pos.project_id, per.project_id))))
+  WITH NO DATA;
 
 
 --
@@ -1537,6 +1538,15 @@ CREATE TABLE factoids (
 
 
 --
+-- Name: failed_email_ids; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE failed_email_ids (
+    account_id integer
+);
+
+
+--
 -- Name: failure_groups; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1566,6 +1576,41 @@ CREATE SEQUENCE failure_groups_id_seq
 --
 
 ALTER SEQUENCE failure_groups_id_seq OWNED BY failure_groups.id;
+
+
+--
+-- Name: feedbacks; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE feedbacks (
+    id integer NOT NULL,
+    rating integer,
+    more_info integer,
+    uuid character varying,
+    ip_address inet,
+    project_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: feedbacks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE feedbacks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: feedbacks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE feedbacks_id_seq OWNED BY feedbacks.id;
 
 
 --
@@ -3968,6 +4013,15 @@ CREATE TABLE topics (
 
 
 --
+-- Name: unknown_email_ids; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE unknown_email_ids (
+    account_id integer
+);
+
+
+--
 -- Name: verifications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -4184,6 +4238,13 @@ ALTER TABLE ONLY exhibits ALTER COLUMN id SET DEFAULT nextval('exhibits_id_seq':
 --
 
 ALTER TABLE ONLY failure_groups ALTER COLUMN id SET DEFAULT nextval('failure_groups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY feedbacks ALTER COLUMN id SET DEFAULT nextval('feedbacks_id_seq'::regclass);
 
 
 --
@@ -4759,6 +4820,14 @@ ALTER TABLE ONLY factoids
 
 ALTER TABLE ONLY failure_groups
     ADD CONSTRAINT failure_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: feedbacks_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY feedbacks
+    ADD CONSTRAINT feedbacks_pkey PRIMARY KEY (id);
 
 
 --
@@ -5801,6 +5870,20 @@ CREATE INDEX index_commits_on_name_id_month ON commits USING btree (name_id, dat
 --
 
 CREATE INDEX index_commits_on_sha1 ON commits USING btree (sha1);
+
+
+--
+-- Name: index_contributions_on_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_contributions_on_id ON contributions USING btree (id);
+
+
+--
+-- Name: index_contributions_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_contributions_on_project_id ON contributions USING btree (project_id);
 
 
 --
@@ -8126,6 +8209,10 @@ INSERT INTO schema_migrations (version) VALUES ('20150925101715');
 INSERT INTO schema_migrations (version) VALUES ('20151116113941');
 
 INSERT INTO schema_migrations (version) VALUES ('20151124143945');
+
+INSERT INTO schema_migrations (version) VALUES ('20160121110527');
+
+INSERT INTO schema_migrations (version) VALUES ('20160215071813');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
