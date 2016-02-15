@@ -1537,15 +1537,6 @@ CREATE TABLE factoids (
 
 
 --
--- Name: failed_email_ids; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE failed_email_ids (
-    account_id integer
-);
-
-
---
 -- Name: failure_groups; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1586,7 +1577,6 @@ CREATE TABLE feedbacks (
     rating integer,
     more_info integer,
     uuid character varying,
-    project_name character varying,
     ip_address inet,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -4008,15 +3998,6 @@ CREATE TABLE topics (
     closed boolean DEFAULT false,
     replied_by integer,
     last_post_id integer
-);
-
-
---
--- Name: unknown_email_ids; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE unknown_email_ids (
-    account_id integer
 );
 
 
