@@ -1,0 +1,6 @@
+- labels = ['Not Really', 'Slightly', 'Somewhat', 'Very', 'Extremely']
+%table#rating_table
+  - labels.each_with_index do |label, i|
+    %tr
+      %td= label + ' Helpful'
+      %td #{scale[i].last}% (#{scale[i].first} votes)
