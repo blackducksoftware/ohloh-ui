@@ -20,6 +20,7 @@ class Person < ActiveRecord::Base
   validates :name_fact_id, presence: true, if: :unclaimed_person?
 
   before_validation Person::Hooks.new
+  after_create Person::Hooks.new
 
   filterable_by ['effective_name', 'accounts.akas']
 
@@ -58,6 +59,7 @@ class Person < ActiveRecord::Base
       return if project_id.blank?
       Person.delete_all(project_id: project_id)
       connection.execute("insert into people (select * from people_view where project_id = #{sanitize_sql project_id})")
+      Contribution.refresh
     end
 
     def unclaimed_people(opts)

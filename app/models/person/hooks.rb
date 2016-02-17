@@ -5,6 +5,10 @@ class Person::Hooks
     set_effective_name_to_account_or_name(person)
   end
 
+  def after_create(*)
+    Contribution.refresh
+  end
+
   private
 
   def set_id_to_account_id_or_random(person)

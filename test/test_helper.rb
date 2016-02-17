@@ -33,6 +33,7 @@ class ActiveSupport::TestCase
 
   before do
     GithubVerification.any_instance.stubs(:generate_access_token)
+    Contribution.connection.execute('REFRESH MATERIALIZED VIEW contributions') # not concurrently the first time
   end
 
   def login_as(account)
@@ -76,7 +77,12 @@ class ActiveSupport::TestCase
 
   def create_position(attributes = {})
     project = attributes[:project] || create(:project)
-    name_fact = create(:name_fact, analysis: project.best_analysis, name: attributes[:name] || create(:name))
+    hash = { analysis: project.best_analysis, name: attributes[:name] }
+    name_fact = NameFact.where(hash)
+    if name_fact.empty?
+      hash[:name] = create(:name)
+      name_fact = create(:name_fact, hash)
+    end
     create :position, { name: name_fact.name, project: project }.merge(attributes)
   end
 

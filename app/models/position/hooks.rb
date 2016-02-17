@@ -7,6 +7,7 @@ class Position::Hooks
 
     update_account_info
     update_affected_kudos if name_id
+    Contribution.refresh
   end
 
   def after_destroy(position)
@@ -16,12 +17,14 @@ class Position::Hooks
     cleanup_aliases
     update_account_info
     unlink_affected_kudos if name_id
+    Contribution.refresh
   end
 
   def after_create(position)
     @position = position
 
     transfer_kudos_and_destroy_previous_unclaimed_person if name_id
+    Contribution.refresh
   end
 
   def after_update(position)

@@ -82,7 +82,7 @@ class PositionDecoratorTest < ActiveSupport::TestCase
       position.decorate.project_contributor_or_show_path.must_equal path
     end
 
-    it 'must return project contributior path when there is a contribution' do
+    it 'must return project contributor path when there is a contribution' do
       account = create(:account)
       account.person.destroy
       person = create(:person, account: account)
