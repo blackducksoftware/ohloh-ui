@@ -347,6 +347,15 @@ describe 'ProjectsController' do
       response.body.must_match(/no recognizable source code/)
       response.body.wont_match(/analysis isn't complete/)
     end
+
+    it 'should get the UUID from BlackDuck KB' do
+      VCR.use_cassette('kb') do
+        project = create(:project, uuid: '', name: 'Eclipse Platform Project')
+        get :show, id: project.to_param
+        project.reload.uuid.must_equal 'e45bf7f2-72ed-4a93-8958-931047ebde3b'
+        must_respond_with :ok
+      end
+    end
   end
 
   # new
