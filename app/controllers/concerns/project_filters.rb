@@ -13,6 +13,7 @@ module ProjectFilters
     before_action :show_permissions_alert, only: [:settings, :edit]
     before_action :set_session_projects, only: :index
     before_action :set_rating_and_score, only: :show
+    before_action :set_uuid, only: :show
     before_action :avoid_global_search_if_parent_is_account, only: :index
     before_action :avoid_global_search, only: :users
   end
@@ -54,5 +55,11 @@ module ProjectFilters
   def redirect_new_landing_page
     return unless @account.nil?
     redirect_to projects_explores_path if request.query_parameters.except('action').empty? && request_format == 'html'
+  end
+
+  def set_uuid
+    return if @project.uuid.present?
+    uuid = OpenhubSecurity.get_uuid(@project.name)
+    @project.update_column('uuid', uuid) unless uuid.nil?
   end
 end

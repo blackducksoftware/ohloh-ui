@@ -79,6 +79,15 @@ module ProjectsHelper
     end
   end
 
+  def browse_security_button(project)
+    css_class = project.uuid.blank? ? 'disabled' : 'btn-primary'
+    project_name = CGI.escape(project.name)
+    url = ENV['OH_SECURITY_URL'] + "/#{project_name}/#{project.uuid}?project_id=#{project.id}"
+    haml_tag :a, href: url, class: "btn #{css_class}", target: '_blank' do
+      concat t('projects.browse_security')
+    end
+  end
+
   private
 
   def project_twitter_description_analysis(project, analysis)

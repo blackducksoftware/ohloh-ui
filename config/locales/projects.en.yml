@@ -21,6 +21,7 @@ en:
     more: "[More]"
     less: "[Less]"
     html_title: "The %{name} Open Source Project on Open Hub : %{title}"
+    browse_security: "Review Security Info"
     person_contribution:
       no_contribution_found: 'No Contribution Found'
       link_others: "and %{size} other projects"
