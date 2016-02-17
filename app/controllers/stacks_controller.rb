@@ -28,7 +28,11 @@ class StacksController < ApplicationController
   end
 
   def update
-    render nothing: true, status: (@stack.update_attributes(model_params) ? :ok : :unprocessable_entity)
+    if @stack.update_attributes(model_params)
+      render nothing: true, status: :ok
+    else
+      render text: ERB::Util.html_escape(@stack.errors.full_messages.to_sentence), status: :unprocessable_entity
+    end
   end
 
   def destroy
