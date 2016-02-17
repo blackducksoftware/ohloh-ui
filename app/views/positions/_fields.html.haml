@@ -1,9 +1,11 @@
+- project_name = params[:position].present? ? params[:position][:project_oss] : position.try(:project).try(:name)
+- project_name ||= params[:project_name]
 %fieldset.row-fluid
   .form-group
     %label.control-label.required= t('.project_name')
     .controls
       = f.text_field :project_oss, class: 'col-md-4 autocompletable',
-      value: params[:position].present? ? "#{params[:position][:project_oss]}" : "#{position.try(:project).try(:name)}",
+      value: project_name,
       data: { source: '/autocompletes/project' }
       - error_tag(position, :project_oss)
       %p.help-block= t('.enter_openhub_project_name')
@@ -12,6 +14,7 @@
     %label.control-label= t('.committer_name')
     .controls
       = f.text_field :committer_name, class: 'col-md-4 autocompletable',
+      value: params[:committer_name],
       data: { source: '/autocompletes/contributions', prerequisite_input: true }
       - error_tag(position, :committer_name)
       %p.help-block
