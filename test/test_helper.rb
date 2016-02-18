@@ -28,12 +28,12 @@ class ActiveSupport::TestCase
   extend CreateForges
   extend MiniTest::Spec::DSL
 
+  Contribution.connection.execute('REFRESH MATERIALIZED VIEW contributions') # not concurrently the first time
   create_hamster_account
   create_forges
 
   before do
     GithubVerification.any_instance.stubs(:generate_access_token)
-    Contribution.connection.execute('REFRESH MATERIALIZED VIEW contributions') # not concurrently the first time
   end
 
   def login_as(account)
