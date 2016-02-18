@@ -80,10 +80,10 @@ module ProjectsHelper
   end
 
   def browse_security_button(project)
-    css_class = project.uuid.blank? ? 'disabled' : 'btn-primary'
+    return if project.uuid.blank?
     project_name = CGI.escape(project.name)
     url = ENV['OH_SECURITY_URL'] + "/#{project_name}/#{project.uuid}?project_id=#{project.id}"
-    haml_tag :a, href: url, class: "btn #{css_class}", target: '_blank' do
+    haml_tag :a, href: url, class: 'btn btn-primary', target: '_blank' do
       concat t('projects.browse_security')
     end
   end
