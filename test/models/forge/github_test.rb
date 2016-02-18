@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class Forge::GithubTest < ActiveSupport::TestCase
+describe Forge::Github do
   describe 'match' do
     it 'should return nil for garbage' do
       Forge::Github.new.match('I am a banana!').must_equal nil
@@ -49,6 +49,34 @@ class Forge::GithubTest < ActiveSupport::TestCase
       mock_match.expects(:name_at_forge).returns('project_name')
       Forge::Github.new.json_api_url(mock_match).must_equal correct_url
       ENV['GITHUB_AUTH_TOKEN'] = old_github_auth_token
+    end
+  end
+
+  describe 'get attribute methods' do
+    URL = 'git://github.com/rails/rails.git'
+    let(:github) { Forge::Github.new }
+    let(:match) { github.match(URL) }
+
+    it 'should have all the project attributes' do
+      VCR.use_cassette('ForgeMatchGithub') do
+        pa = github.get_project_attributes(match)
+        pa.keys.sort.must_equal [:name, :vanity_url, :description, :url].sort
+        pa[:name].must_equal 'rails'
+        pa[:vanity_url].must_equal 'rails'
+        pa[:description].must_equal 'Ruby on Rails'
+        pa[:url].must_equal 'http://rubyonrails.org'
+      end
+    end
+
+    it 'should have all the repository attributes' do
+      VCR.use_cassette('ForgeMatchGithub') do
+        ra = github.get_repository_attributes(match)[0] # return is an array of 1 element
+        ra.keys.sort.must_equal [:type, :forge_match, :branch_name, :url].sort
+        ra[:type].must_equal GitRepository
+        ra[:forge_match].must_be_instance_of Forge::Match
+        ra[:branch_name].must_equal nil
+        ra[:url].must_equal URL
+      end
     end
   end
 end
