@@ -4,13 +4,14 @@ describe 'PositionsController' do
   let(:account) { create(:account) }
 
   describe 'show' do
-    it 'must render successfully if the position is tied to an account lacking a person' do
+    it 'must redirect to the project contribution page if we have one' do
       position = create_position(account: account)
       position.account.person.delete
       get :show, account_id: account.to_param, id: position.id
 
-      must_respond_with :success
-      must_render_template :show
+      # PositionFilters require we show the contribution
+      must_respond_with :redirect
+      must_redirect_to project_contributor_path(position.project, position.contribution)
     end
   end
 

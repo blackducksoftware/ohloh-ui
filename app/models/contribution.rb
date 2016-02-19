@@ -1,31 +1,10 @@
 class Contribution < ActiveRecord::Base
+  include ContributionAssociations
+  include ContributionScopes
+
   SORT_OPTIONS = [:name, :kudo_position, :commits, :twelve_month_commits,
                   :language, :latest_commit, :newest, :oldest]
   self.primary_key = :id
-
-  belongs_to :position
-  belongs_to :project
-  belongs_to :person
-  belongs_to :name_fact
-  belongs_to :contributor_fact, foreign_key: 'name_fact_id'
-  has_many :invites
-  has_many :kudos, ->(contribution) { joins(:name_fact).where(NameFact.arel_table[:id].eq(contribution.name_fact_id)) },
-           primary_key: :project_id, foreign_key: :project_id
-
-  scope :sort_by_name, -> { order('LOWER(people.effective_name)') }
-  scope :sort_by_kudo_position, -> { order('people.kudo_position NULLS LAST') }
-  scope :sort_by_commits, -> { order('name_facts.commits DESC NULLS LAST') }
-  scope :sort_by_twelve_month_commits, -> { order('name_facts.twelve_month_commits DESC NULLS LAST') }
-  scope :sort_by_language, -> { order('lower(languages.nice_name) NULLS LAST, name_facts.commits DESC NULLS LAST') }
-  scope :sort_by_latest_commit, -> { order('name_facts.last_checkin DESC NULLS LAST') }
-  scope :sort_by_newest, -> { order('name_facts.first_checkin DESC NULLS LAST') }
-  scope :sort_by_oldest, -> { order('name_facts.first_checkin NULLS FIRST') }
-  scope :last_30_days, ->(logged_at) { where('name_facts.last_checkin > ?', logged_at - 30.days) }
-  scope :last_year, ->(logged_at) { where('name_facts.last_checkin > ?', logged_at - 12.months) }
-  scope :within_timespan, lambda { |time_span, logged_at|
-    return unless logged_at && TIME_SPANS.keys.include?(time_span)
-    send(TIME_SPANS[time_span], logged_at)
-  }
 
   filterable_by ['effective_name', 'accounts.akas', 'languages.nice_name', 'languages.name']
 
@@ -79,6 +58,10 @@ class Contribution < ActiveRecord::Base
       aka = find_alias_from_name_id(contribution_id, project)
       return unless aka
       find_from_generated_id(project, aka) || find_from_positions(project, aka)
+    end
+
+    def refresh
+      ActiveRecord::Base.connection.execute('REFRESH MATERIALIZED VIEW CONCURRENTLY contributions')
     end
 
     private
