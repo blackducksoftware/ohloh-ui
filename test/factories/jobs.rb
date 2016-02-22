@@ -23,4 +23,9 @@ FactoryGirl.define do
   factory :vita_job, parent: :job, class: :VitaJob do
     type 'VitaJob'
   end
+
+  factory :failed_job, parent: :job do
+    type 'CompleteJob'
+    status Job::STATUS_FAILED
+  end
 end
