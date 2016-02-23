@@ -59,6 +59,7 @@ group :test do
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'spring'
+  gem 'timecop'
   gem 'vcr'
   # gem 'webmock'
 end

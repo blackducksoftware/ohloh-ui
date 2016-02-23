@@ -384,6 +384,7 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.1)
+    timecop (0.8.0)
     tins (1.6.0)
     traceview (3.3.3)
       json
@@ -462,6 +463,7 @@ DEPENDENCIES
   sprockets-rails (~> 2.3.3)
   teaspoon-jasmine
   therubyracer
+  timecop
   traceview
   twitter-bootstrap-rails
   uglifier (>= 2.7.2)
