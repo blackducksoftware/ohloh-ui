@@ -55,9 +55,14 @@
       != project_managers_list
     - else
       = link_to t('.become_first', what: @project.name), new_project_manager_path(@project)
-- if @project.koders_status.try(:ohloh_code_ready) == true
-  - ohloh_code_url = "http://code.openhub.net/project?pid=&ipid=#{@project.koders_status.koders_id}"
-  %a.btn.btn-info.browse_code_button{ href: ohloh_code_url,
-                                      title: t('.browse_the_source', what: @project.name),
-                                      target: '_blank' }
-    = t('.browse_code')
+
+.row
+  .hidden.col-md-5.center#browse_code_button
+    - if @project.koders_status.try(:ohloh_code_ready) == true
+      - ohloh_code_url = "http://code.openhub.net/project?pid=&ipid=#{@project.koders_status.koders_id}"
+      %a.btn.btn-info.browse_code_button{ href: ohloh_code_url,
+                                        title: t('.browse_the_source', what: @project.name),
+                                        target: '_blank' }
+        = t('.browse_code')
+  .col-md-5.pull-right.hidden#browse_security_button
+    - browse_security_button(@project)

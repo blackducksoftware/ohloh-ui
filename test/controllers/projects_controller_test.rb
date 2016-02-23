@@ -347,6 +347,16 @@ describe 'ProjectsController' do
       response.body.must_match(/no recognizable source code/)
       response.body.wont_match(/analysis isn't complete/)
     end
+
+    it 'should get the UUID from BlackDuck KB' do
+      uuid = VCR.use_cassette('kb') do
+        return OpenhubSecurity.get_uuid('rails')
+      end
+      project = create(:project, uuid: '', name: 'Rails')
+      get :show, id: project.to_param
+      project.reload.uuid.must_equal uuid
+      must_respond_with :ok
+    end
   end
 
   # new
