@@ -62,7 +62,7 @@ class ReverificationTracker < ActiveRecord::Base
       success_queue.poll(initial_timeout: 1, idle_timeout: 1) do |msg|
         message_as_hash = msg.as_sns_message.body_message_as_h
         account = find_account_by_email(message_as_hash['mail']['delivery']['recipients'][0])
-        account.reverification_tracker == nil ? create_account_reverification(account) : update_account_reverification(account)
+        account.reverification_tracker == nil ? create_reverification_tracker(account) : update_reverification_tracker(account)
       end
     end
 
@@ -118,7 +118,7 @@ class ReverificationTracker < ActiveRecord::Base
       account.access.spam!
     end
 
-    def update_account_reverification(account)
+    def update_reverification_tracker(account)
       if account.reverification_tracker.status == 'marked for spam'
         convert_to_spam(account)
         account.reverification_tracker.update(status: 'spam', updated_at: DateTime.now.utc)
@@ -127,7 +127,7 @@ class ReverificationTracker < ActiveRecord::Base
       end
     end
 
-    def create_account_reverification(account)
+    def create_reverification_tracker(account)
       account.reverification_tracker = AccountReverification.create
     end
 
