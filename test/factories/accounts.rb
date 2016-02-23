@@ -47,7 +47,7 @@ FactoryGirl.define do
     association :markup
   end
 
-  factory :account_without_verifications, parent: :account do
+  factory :unverified_account, parent: :account do
     association :github_verification, strategy: :null
     association :account_reverification, strategy: :null
 

@@ -1,6 +1,6 @@
-class CreateAccountReverifications < ActiveRecord::Migration
+class CreateReverificationTrackers < ActiveRecord::Migration
   def change
-    create_table :account_reverifications do |t|
+    create_table :reverification_trackers do |t|
       t.integer :account_id
       t.string :status, default: 'initial'
       t.timestamps null: false

@@ -1,5 +1,5 @@
 FactoryGirl.define do 
-  factory :account_reverification do
+  factory :reverification_tracker do
     status 'initial'
     created_at DateTime.now.utc
     updated_at DateTime.now.utc

@@ -386,38 +386,6 @@ ALTER SEQUENCE account_reports_id_seq OWNED BY account_reports.id;
 
 
 --
--- Name: account_reverifications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE account_reverifications (
-    id integer NOT NULL,
-    account_id integer,
-    status character varying DEFAULT 'initial'::character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: account_reverifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE account_reverifications_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: account_reverifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE account_reverifications_id_seq OWNED BY account_reverifications.id;
-
-
---
 -- Name: accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -935,7 +903,6 @@ CREATE TABLE projects (
     kb_id integer,
     organization_id integer,
     activity_level_index integer,
-    uuid character varying,
     CONSTRAINT valid_missing_source CHECK ((((missing_source IS NULL) OR (missing_source = 'not available'::text)) OR (missing_source = 'not supported'::text)))
 );
 
@@ -1570,15 +1537,6 @@ CREATE TABLE factoids (
 
 
 --
--- Name: failed_email_ids; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE failed_email_ids (
-    account_id integer
-);
-
-
---
 -- Name: failure_groups; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1608,41 +1566,6 @@ CREATE SEQUENCE failure_groups_id_seq
 --
 
 ALTER SEQUENCE failure_groups_id_seq OWNED BY failure_groups.id;
-
-
---
--- Name: feedbacks; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE feedbacks (
-    id integer NOT NULL,
-    rating integer,
-    more_info integer,
-    uuid character varying,
-    ip_address inet,
-    project_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: feedbacks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE feedbacks_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: feedbacks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE feedbacks_id_seq OWNED BY feedbacks.id;
 
 
 --
@@ -3510,6 +3433,38 @@ CREATE TABLE repositories (
 
 
 --
+-- Name: reverification_trackers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE reverification_trackers (
+    id integer NOT NULL,
+    account_id integer,
+    status character varying DEFAULT 'initial'::character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: reverification_trackers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE reverification_trackers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: reverification_trackers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE reverification_trackers_id_seq OWNED BY reverification_trackers.id;
+
+
+--
 -- Name: reviews_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -4045,15 +4000,6 @@ CREATE TABLE topics (
 
 
 --
--- Name: unknown_email_ids; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE unknown_email_ids (
-    account_id integer
-);
-
-
---
 -- Name: verifications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -4151,13 +4097,6 @@ ALTER SEQUENCE vitae_id_seq OWNED BY vitae.id;
 --
 
 ALTER TABLE ONLY account_reports ALTER COLUMN id SET DEFAULT nextval('account_reports_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY account_reverifications ALTER COLUMN id SET DEFAULT nextval('account_reverifications_id_seq'::regclass);
 
 
 --
@@ -4277,13 +4216,6 @@ ALTER TABLE ONLY exhibits ALTER COLUMN id SET DEFAULT nextval('exhibits_id_seq':
 --
 
 ALTER TABLE ONLY failure_groups ALTER COLUMN id SET DEFAULT nextval('failure_groups_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY feedbacks ALTER COLUMN id SET DEFAULT nextval('feedbacks_id_seq'::regclass);
 
 
 --
@@ -4535,6 +4467,13 @@ ALTER TABLE ONLY reports ALTER COLUMN id SET DEFAULT nextval('reports_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY reverification_trackers ALTER COLUMN id SET DEFAULT nextval('reverification_trackers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY stack_ignores ALTER COLUMN id SET DEFAULT nextval('stack_ignores_id_seq'::regclass);
 
 
@@ -4579,14 +4518,6 @@ ALTER TABLE ONLY vitae ALTER COLUMN id SET DEFAULT nextval('vitae_id_seq'::regcl
 
 ALTER TABLE ONLY account_reports
     ADD CONSTRAINT account_reports_pkey PRIMARY KEY (id);
-
-
---
--- Name: account_reverifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY account_reverifications
-    ADD CONSTRAINT account_reverifications_pkey PRIMARY KEY (id);
 
 
 --
@@ -4867,14 +4798,6 @@ ALTER TABLE ONLY factoids
 
 ALTER TABLE ONLY failure_groups
     ADD CONSTRAINT failure_groups_pkey PRIMARY KEY (id);
-
-
---
--- Name: feedbacks_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY feedbacks
-    ADD CONSTRAINT feedbacks_pkey PRIMARY KEY (id);
 
 
 --
@@ -5379,6 +5302,14 @@ ALTER TABLE ONLY reports
 
 ALTER TABLE ONLY repositories
     ADD CONSTRAINT repositories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: reverification_trackers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY reverification_trackers
+    ADD CONSTRAINT reverification_trackers_pkey PRIMARY KEY (id);
 
 
 --
@@ -8243,11 +8174,7 @@ INSERT INTO schema_migrations (version) VALUES ('20151116113941');
 
 INSERT INTO schema_migrations (version) VALUES ('20151124143945');
 
-INSERT INTO schema_migrations (version) VALUES ('20160121110527');
-
 INSERT INTO schema_migrations (version) VALUES ('20160209204755');
-
-INSERT INTO schema_migrations (version) VALUES ('20160216095409');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
