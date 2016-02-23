@@ -2,7 +2,6 @@
 http_interactions:
 - request:
     method: get
-    #uri: https://kb.blackducksoftware.com/kbsearch/api/v1/projects?authToken=suite-qa-test-externel-04&q=Eclipse%20Platform%20Project&rows=1&start=0&wt=json
     uri: http://www.vcrlocalhost.org/kb?q=rails
     body:
       encoding: US-ASCII

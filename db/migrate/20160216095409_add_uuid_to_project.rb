@@ -1,4 +1,4 @@
-class AddUuiDtoProject < ActiveRecord::Migration
+class AddUuidtoProject < ActiveRecord::Migration
   def change
     add_column :projects, :uuid, :string
   end

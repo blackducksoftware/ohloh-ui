@@ -83,7 +83,8 @@ module ProjectsHelper
     return if project.uuid.blank?
     project_name = CGI.escape(project.name)
     url = ENV['OH_SECURITY_URL'] + "/#{project_name}/#{project.uuid}?project_id=#{project.id}"
-    haml_tag :a, href: url, class: 'btn btn-primary', target: '_blank' do
+    title = I18n.t('projects.browse_security_btn_title', what: project.name)
+    haml_tag :a, href: url, class: 'btn btn-primary', target: '_blank', title: title do
       concat t('projects.browse_security')
     end
   end
