@@ -68,7 +68,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :account_with_an_initial_notification_and_no_verifications, parent: :account do
+  factory :first_phase_account, parent: :account do
     association :github_verification, strategy: :null
     association :reverification_tracker
   end
