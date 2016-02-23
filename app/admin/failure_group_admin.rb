@@ -1,5 +1,6 @@
 ActiveAdmin.register FailureGroup do
   config.sort_order = :priority_desc
+  permit_params :name, :pattern, :priority, :auto_reschedule
   filter :name
   filter :pattern
   filter :auto_reschedule
@@ -19,13 +20,13 @@ ActiveAdmin.register FailureGroup do
             show_uncategorized_admin_failure_groups_path
   end
 
-  action_item :decategorize, only: :show_uncategorized do
+  action_item :decategorize, only: [:show, :jobs] do
     link_to 'Decategorize',
-            decategorize_admin_failure_group_path(params[:failure_group_id]) if params[:failure_group_id]
+            decategorize_admin_failure_group_path(params[:id])
   end
 
-  action_item :edit, only: :show_uncategorized do
-    link_to :edit, edit_admin_failure_group_path(params[:failure_group_id]) if params[:failure_group_id]
+  action_item :edit, only: :jobs do
+    link_to :edit, edit_admin_failure_group_path(params[:id])
   end
 
   index do
@@ -39,7 +40,7 @@ ActiveAdmin.register FailureGroup do
     column :pattern
     column :auto_reschedule
     column :jobs do |failure_group|
-      link_to failure_group.jobs.count, show_uncategorized_admin_failure_groups_path(failure_group_id: failure_group.id)
+      link_to failure_group.jobs.count, jobs_admin_failure_group_path(failure_group)
     end
     actions
   end
@@ -50,22 +51,44 @@ ActiveAdmin.register FailureGroup do
     redirect_to admin_failure_groups_path, notice: "FailureGroup #{failure_group.name}'s jobs has been decategorized"
   end
 
+  member_action :jobs do
+    failure_group = FailureGroup.find(params[:id])
+    @page_title = failure_group.name
+
+    @jobs = failure_group.jobs.includes(:repository, :slave).failed.with_exception.order(order_by)
+
+    render 'show_uncategorized'
+  end
+
   collection_action :recategorize do
     FailureGroup.recategorize
-    redirect_to :back, notice: 'All failed jobs has been recategorized'
+    redirect_to :back, notice: 'All failed jobs were successfully recategorized'
   end
 
   collection_action :categorize do
     FailureGroup.categorize
-    redirect_to :back, notice: 'Failed jobs has been categorized'
+    redirect_to :back, notice: 'Failed jobs were successfully categorized'
   end
 
   collection_action :show_uncategorized do
-    failure_group_id = params[:failure_group_id]
-    @page_title = failure_group_id ? FailureGroup.find(failure_group_id).name : 'Failure Group Jobs'
-    order_by = params[:order].to_s.gsub(/_asc|_desc/, '_asc' => ' asc', '_desc' => ' desc')
-    order_by = order_by.blank? ? 'current_step_at desc nulls last' : ' nulls last'
-    @jobs = Job.includes(:repository, :slave).order(order_by)
-    @jobs = failure_group_id ? @jobs.for_failure_group(failure_group_id) : @jobs.uncategorized_failure_group
+    @page_title = 'Failure Group Jobs'
+
+    @jobs = Job.includes(:repository, :slave).uncategorized_failure_group.order(order_by)
+  end
+
+  controller do
+    def destroy
+      failure_group = FailureGroup.find(params[:id])
+      failure_group.decategorize
+      failure_group.destroy
+      redirect_to admin_failure_groups_path, notice: 'FailureGroup was successfully deleted'
+    end
+
+    private
+
+    def order_by
+      sort_param = params[:order].to_s.gsub(/_(asc|desc)/, ' \1')
+      sort_param.blank? ? 'current_step_at desc nulls last' : "#{sort_param} nulls last"
+    end
   end
 end

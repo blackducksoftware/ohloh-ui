@@ -26,7 +26,6 @@ class Job < ActiveRecord::Base
   scope :incomplete_or_since, ->(time) { incomplete || since(time) }
   scope :uncategorized_failure_group, -> { where(failure_group_id: nil).failed.with_exception }
   scope :categorized_failure_group, -> { where.not(failure_group_id: nil).failed.with_exception }
-  scope :for_failure_group, ->(failure_group_id) { where(failure_group_id: failure_group_id).failed.with_exception }
   scope :with_exception, -> { where.not(exception: nil) }
 
   belongs_to :project

@@ -1,7 +1,6 @@
 page = params[:page] || 1
-offset = (page.to_i - 1) * 20 + 1
+offset = (page.to_i - 1) * 20
 jobs_collection = jobs.per_page_kaminari(25).offset(offset).limit(20)
-
 paginated_collection(jobs_collection) do
   table_for collection, sortable: true do
     column('Job ID', sortable: 'jobs.id') { |job| link_to job.id, admin_job_path(job)}
