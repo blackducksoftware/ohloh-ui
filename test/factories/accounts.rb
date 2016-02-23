@@ -49,7 +49,7 @@ FactoryGirl.define do
 
   factory :unverified_account, parent: :account do
     association :github_verification, strategy: :null
-    association :account_reverification, strategy: :null
+    association :reverification_tracker, strategy: :null
 
     trait :hard_bounce do
       email 'bounce@simulator.amazonses.com'
@@ -70,16 +70,16 @@ FactoryGirl.define do
 
   factory :account_with_an_initial_notification_and_no_verifications, parent: :account do
     association :github_verification, strategy: :null
-    association :account_reverification
+    association :reverification_tracker
   end
 
   factory :account_with_a_marked_for_spam_notification_and_no_verifications, parent: :account do
     association :github_verification, strategy: :null
-    association :account_reverification, status: 'marked for spam'
+    association :reverification_tracker, status: 'marked for spam'
   end
 
   factory :unverified_spam_account, parent: :account do
     association :github_verification, strategy: :null
-    association :account_reverification, status: 'spam'
+    association :reverification_tracker, status: 'spam'
   end
 end

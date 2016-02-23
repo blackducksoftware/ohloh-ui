@@ -1,4 +1,4 @@
-class AccountReverification < ActiveRecord::Base
+class ReverificationTracker < ActiveRecord::Base
   belongs_to :account
 
   class << self
@@ -13,25 +13,25 @@ class AccountReverification < ActiveRecord::Base
 
     def accounts_with_a_marked_for_spam_notice(limit)
       Account.find_by_sql("SELECT accounts.email FROM accounts
-                            INNER JOIN account_reverifications
-                          ON accounts.id = account_reverifications.account_id 
+                            INNER JOIN reverification_trackers
+                          ON accounts.id = reverification_trackers.account_id 
                             LEFT OUTER JOIN verifications 
                           ON verifications.account_id = accounts.id
                             WHERE verifications.account_id is NULL
-                          AND account_reverifications.status = 'marked for spam' LIMIT #{limit}") 
+                          AND reverification_trackers.status = 'marked for spam' LIMIT #{limit}") 
     end
 
     def accounts_with_initial_notice(limit)
       Account.find_by_sql("SELECT accounts.email FROM accounts
-                            INNER JOIN account_reverifications
-                          ON accounts.id = account_reverifications.account_id 
+                            INNER JOIN reverification_trackers
+                          ON accounts.id = reverification_trackers.account_id 
                             LEFT OUTER JOIN verifications 
                           ON verifications.account_id = accounts.id
                             WHERE verifications.account_id is NULL
-                          AND account_reverifications.status = 'initial' LIMIT #{limit}") 
+                          AND reverification_trackers.status = 'initial' LIMIT #{limit}") 
     end
 
-    def accounts_without_verifications(limit)
+    def unverified_accounts(limit)
       Account.find_by_sql("SELECT accounts.email FROM accounts
                             LEFT OUTER JOIN verifications 
                           ON verifications.account_id = accounts.id
@@ -62,7 +62,7 @@ class AccountReverification < ActiveRecord::Base
       success_queue.poll(initial_timeout: 1, idle_timeout: 1) do |msg|
         message_as_hash = msg.as_sns_message.body_message_as_h
         account = find_account_by_email(message_as_hash['mail']['delivery']['recipients'][0])
-        account.account_reverification == nil ? create_account_reverification(account) : update_account_reverification(account)
+        account.reverification_tracker == nil ? create_account_reverification(account) : update_account_reverification(account)
       end
     end
 
@@ -75,9 +75,9 @@ class AccountReverification < ActiveRecord::Base
       transient_bounce_queue.poll(initial_timeout: 1, idle_timeout: 1) do |msg|
         email_address = msg.body
         account = find_account_by_email(email_address)
-        if account.account_reverification.nil?
+        if account.reverification_tracker.nil?
           ses.send_email(first_reverification_notice(email_address))
-        elsif account.account_reverification.present? && account.account_reverification.status == 'marked for spam'
+        elsif account.reverification_tracker.present? && account.reverification_tracker.status == 'marked for spam'
           ses.send_email(account_is_spam_notice(email_address))
         else 
           ses.send_email(marked_for_spam_notice(email_address))
@@ -119,16 +119,16 @@ class AccountReverification < ActiveRecord::Base
     end
 
     def update_account_reverification(account)
-      if account.account_reverification.status == 'marked for spam'
+      if account.reverification_tracker.status == 'marked for spam'
         convert_to_spam(account)
-        account.account_reverification.update(status: 'spam', updated_at: DateTime.now.utc)
+        account.reverification_tracker.update(status: 'spam', updated_at: DateTime.now.utc)
       else
-        account.account_reverification.update(status: 'marked for spam', updated_at: DateTime.now.utc)
+        account.reverification_tracker.update(status: 'marked for spam', updated_at: DateTime.now.utc)
       end
     end
 
     def create_account_reverification(account)
-      account.account_reverification = AccountReverification.create
+      account.reverification_tracker = AccountReverification.create
     end
 
     def account_is_spam_notice(email)
@@ -194,9 +194,9 @@ class AccountReverification < ActiveRecord::Base
       return if ses_limit_reached?
       accounts_with_a_marked_for_spam_notice(5).each do |account|
         account = find_account_by_email(account.email)
-        created_at = account.account_reverification.created_at
-        updated_at = account.account_reverification.updated_at
-        status = account.account_reverification.status
+        created_at = account.reverification_tracker.created_at
+        updated_at = account.reverification_tracker.updated_at
+        status = account.reverification_tracker.status
         time_is_right?(created_at, updated_at, status) ? ses.send_email(account_is_spam_notice(account.email)) : return
       end
     end
@@ -205,16 +205,16 @@ class AccountReverification < ActiveRecord::Base
       return if ses_limit_reached?
       accounts_with_initial_notice(5).each do |account|
         account = find_account_by_email(account.email)
-        created_at = account.account_reverification.created_at
-        updated_at = account.account_reverification.updated_at
-        status = account.account_reverification.status
+        created_at = account.reverification_tracker.created_at
+        updated_at = account.reverification_tracker.updated_at
+        status = account.reverification_tracker.status
         time_is_right?(created_at, updated_at, status) ? ses.send_email(marked_for_spam_notice(account.email)) : return
       end
     end
 
     def send_first_notification
       return if ses_limit_reached?
-      accounts_without_verifications(5).each do |account|
+      unverified_accounts(5).each do |account|
         ses.send_email(first_reverification_notice(account.email)) 
       end
     end
