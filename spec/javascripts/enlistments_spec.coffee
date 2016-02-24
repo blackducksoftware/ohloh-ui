@@ -4,6 +4,12 @@ describe 'Enlistments', ->
   beforeEach ->
     @fixtures = fixture.preload('enlistments')[0]
     $('body').append($(@fixtures))
+    @bzrUrl = $('.bzr input')
+    @hgUrl = $('.hg input')
+    @cvsUrl = $('.cvs input')
+    @svnUrl = $('.svn input')
+    @svncvsUrl = $('.svn_cvs input')
+    @gitUrl = $('.git input')
     App.Enlistment.init()
 
   describe 'submit', ->
@@ -17,28 +23,42 @@ describe 'Enlistments', ->
       $('#repository_type').val('BzrRepository')
       $('#repository_type').trigger('change')
       isDescription = $('.enlistment .bzr').is(':visible')
-      expect(isDescription).toBe(true)
+      isUrlDisabled = $('.bzr input').is(':disabled')
+      expect(isDescription).toBeTruthy
+      expect(@bzrUrl.is(':disabled')).toBeFalsy
+      expect(@hgUrl.is(':disabled')).toBeTruthy
 
     it 'should show hg repository details', ->
       $('#repository_type').val('HgRepository')
       $('#repository_type').trigger('change')
       isDescription = $('.enlistment .hg').is(':visible')
       expect(isDescription).toBe(true)
+      expect(@hgUrl.is(':disabled')).toBeFalsy
+      expect(@svnUrl.is(':disabled')).toBeTruthy
 
     it 'should show Git repository details', ->
       $('#repository_type').val('GitRepository')
       $('#repository_type').trigger('change')
       isDescription = $('.enlistment .git').is(':visible')
       expect(isDescription).toBe(true)
+      expect(@gitUrl.is(':disabled')).toBeFalsy
+      expect(@svnUrl.is(':disabled')).toBeTruthy
+      expect(@svncvsUrl.is(':disabled')).toBeTruthy
 
     it 'should show cvs repository details', ->
       $('#repository_type').val('CVSRepository')
       $('#repository_type').trigger('change')
       isDescription = $('.enlistment .cvs').is(':visible')
       expect(isDescription).toBe(true)
+      expect(@cvsUrl.is(':disabled')).toBeFalsy
+      expect(@svnUrl.is(':disabled')).toBeTruthy
+      expect(@svncvsUrl.is(':disabled')).toBeFalsy
 
     it 'should show svn repository details', ->
       $('#repository_type').val('SvnSyncRepository')
       $('#repository_type').trigger('change')
       isDescription = $('.enlistment .svn').is(':visible')
       expect(isDescription).toBe(true)
+      expect(@svnUrl.is(':disabled')).toBeFalsy
+      expect(@cvsUrl.is(':disabled')).toBeTruthy
+      expect(@svncvsUrl.is(':disabled')).toBeFalsy
