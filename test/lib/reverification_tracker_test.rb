@@ -265,7 +265,7 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
       end
     end
 
-    describe 'convert account into spam phase' do
+    describe 'convert account into spam phase (3rd phase)' do
       describe 'sending the account is spam notification' do
         it 'should retrieve the correct accounts to convert to spam' do
           create_list(:second_phase_account, 2)
@@ -362,6 +362,13 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
           AWS::SimpleEmailService.any_instance.expects(:send_email).with(wrong_notice_two).never
           ReverificationTracker.poll_transient_bounce_queue
         end
+
+        it 'should not resend if the ses limit is reached' do
+          correct_account = create(:second_phase_account, email: 'ooto@simulator.amazonses.com')
+          ReverificationTracker.expects(:ses_limit_reached?).returns(true)
+          AWS::SimpleEmailService.any_instance.expects(:send_email).with(correct_account).never
+          ReverificationTracker.poll_transient_bounce_queue
+        end
       end
 
       describe 'hard bounce scenario' do
@@ -380,6 +387,128 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
 
         it 'should send a soft bounce to the transient bounce queue' do
           transient_account = create(:second_phase_account, email: 'ooto@simulator.amazonses.com')
+          @mock_queue.stubs(:poll).yields(TransientBounceMessage.new).once
+          ReverificationTracker.stubs(:bounce_queue).returns(@mock_queue)
+          ReverificationTracker.expects(:store_email_for_later_retry).once
+          ReverificationTracker.expects(:destroy_account).never
+          ReverificationTracker.poll_bounce_queue
+        end
+      end
+    end
+
+    describe 'one day left before deletion phase (4th phase)' do
+      describe 'sending the one day left before delteion notification' do
+        it 'should retrieve the correct accounts to convert to spam' do
+          create(:third_phase_spam_account)
+          create(:second_phase_account)
+          create(:first_phase_account)
+          create(:account)
+          assert_equal 1, ReverificationTracker.third_phase_accounts(5).count
+        end
+
+        it "should send the 'one day left before deletion notice' to the correct account when the time is right" do
+          correct_account = create(:third_phase_spam_account)
+          incorrect_account = create(:first_phase_account)
+          incorrect_account_two = create(:unverified_account)
+          incorrect_account_three = create(:account)
+          incorrect_account_four = create(:second_phase_account)
+          one_day_left_before_deletion_notice = ReverificationTracker.one_day_before_deletion_notice(correct_account.email)
+          wrong_notice_one = ReverificationTracker.one_day_before_deletion_notice(incorrect_account.email)
+          wrong_notice_two = ReverificationTracker.one_day_before_deletion_notice(incorrect_account_two.email)
+          wrong_notice_three = ReverificationTracker.one_day_before_deletion_notice(incorrect_account_three.email)
+          wrong_notice_four = ReverificationTracker.one_day_before_deletion_notice(incorrect_account_four.email)
+          ReverificationTracker.expects(:find_account_by_email).with(correct_account.email).returns(correct_account)
+          ReverificationTracker.expects(:find_account_by_email).with(incorrect_account).never
+          ReverificationTracker.expects(:find_account_by_email).with(incorrect_account_two).never
+          ReverificationTracker.expects(:find_account_by_email).with(incorrect_account_three).never
+          ReverificationTracker.stubs(:time_is_right?).returns(true)
+          AWS::SimpleEmailService.any_instance.expects(:send_email).with(one_day_left_before_deletion_notice).once
+          AWS::SimpleEmailService.any_instance.expects(:send_email).with(wrong_notice_one).never
+          AWS::SimpleEmailService.any_instance.expects(:send_email).with(wrong_notice_two).never
+          AWS::SimpleEmailService.any_instance.expects(:send_email).with(wrong_notice_three).never
+          ReverificationTracker.send_one_day_left_before_deletion_notification
+        end
+
+        it "should not send a 'one day left before deletion notice' to an account when the time is premature" do
+          incorrect_account = create(:third_phase_spam_account)
+          ReverificationTracker.expects(:find_account_by_email).with(incorrect_account.email).returns(incorrect_account)
+          ReverificationTracker.stubs(:time_is_right?).returns(false)
+          AWS::SimpleEmailService.any_instance.expects(:send_email).never
+          ReverificationTracker.send_one_day_left_before_deletion_notification
+        end
+
+        it 'should not send an notification when the ses limit is reached' do
+          correct_account = create(:third_phase_spam_account)
+          ReverificationTracker.expects(:ses_limit_reached?).returns(true)
+          AWS::SimpleEmailService.any_instance.expects(:send_email).with(correct_account).never
+          ReverificationTracker.send_one_day_left_before_deletion_notification
+        end
+      end
+
+      describe 'success scenario' do
+         it 'should correctly update the reverification tracker' do
+          correct_account = create(:third_phase_spam_account)
+          mock_queue = mock('AWS::SQS::Queue::MOCK')
+          mock_queue.stubs(:poll).yields(SuccessMessage.new).once
+          ReverificationTracker.stubs(:success_queue).returns(mock_queue)
+          Account.expects(:find_by_email).returns(correct_account).once
+          ReverificationTracker.expects(:update_reverification_tracker).with(correct_account)
+          ReverificationTracker.expects(:convert_to_spam).with(correct_account).never
+          ReverificationTracker.poll_success_queue
+        end
+        
+        it 'should correctly update a reverication trackers fields' do
+          past = DateTime.now.utc - 14.days
+          recent_update = past + 13.days
+          account = create(:third_phase_spam_account, created_at: past, updated_at: recent_update)
+          ReverificationTracker.update_reverification_tracker(account)
+          assert_equal 'final warning', account.reverification_tracker.status
+          assert_equal DateTime.now.in_time_zone.to_i, account.reverification_tracker.updated_at.to_i
+          assert_not_equal past, account.reverification_tracker.updated_at
+        end
+      end
+
+      describe 'transient bounce scenario' do
+         it 'should send the correct retry email' do
+          account = create(:third_phase_spam_account, email: 'ooto@simulator.amazonses.com')
+          one_day_before_deletion_notice = ReverificationTracker.one_day_before_deletion_notice(account.email)
+          wrong_notice_one = ReverificationTracker.account_is_spam_notice(account.email)
+          wrong_notice_two = ReverificationTracker.marked_for_spam_notice(account.email)
+          wrong_notice_three = ReverificationTracker.first_reverification_notice(account.email)
+          mock_queue = mock('AWS::SQS::Queue::MOCK')
+          mock_queue.stubs(:poll).yields(TransientBounceMessage.new).once
+          ReverificationTracker.stubs(:transient_bounce_queue).returns(mock_queue)
+          AWS::SimpleEmailService.any_instance.expects(:send_email).with(one_day_before_deletion_notice).once
+          AWS::SimpleEmailService.any_instance.expects(:send_email).with(wrong_notice_one).never
+          AWS::SimpleEmailService.any_instance.expects(:send_email).with(wrong_notice_two).never
+          AWS::SimpleEmailService.any_instance.expects(:send_email).with(wrong_notice_three).never
+          ReverificationTracker.poll_transient_bounce_queue
+        end
+
+        it 'should not resend if the ses limit is reached' do
+          correct_account = create(:third_phase_spam_account, email: 'ooto@simulator.amazonses.com')
+          ReverificationTracker.expects(:ses_limit_reached?).returns(true)
+          AWS::SimpleEmailService.any_instance.expects(:send_email).with(correct_account).never
+          ReverificationTracker.poll_transient_bounce_queue
+        end
+      end
+
+      describe 'hard bounce scenario' do
+        before do
+          @mock_queue = mock('AWS::SQS::Queue::MOCK')
+        end
+
+        it 'should delete an account that is a hard permanent bounce' do
+          hard_account = create(:third_phase_spam_account, email: 'bounce@simulator.amazonses.com')
+          @mock_queue.stubs(:poll).yields(HardBounceMessage.new).once
+          ReverificationTracker.stubs(:bounce_queue).returns(@mock_queue)
+          ReverificationTracker.expects(:store_email_for_later_retry).never
+          ReverificationTracker.expects(:destroy_account)
+          ReverificationTracker.poll_bounce_queue
+        end
+
+        it 'should send a soft bounce to the transient bounce queue' do
+          transient_account = create(:third_phase_spam_account, email: 'ooto@simulator.amazonses.com')
           @mock_queue.stubs(:poll).yields(TransientBounceMessage.new).once
           ReverificationTracker.stubs(:bounce_queue).returns(@mock_queue)
           ReverificationTracker.expects(:store_email_for_later_retry).once

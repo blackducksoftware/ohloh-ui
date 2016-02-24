@@ -78,7 +78,7 @@ FactoryGirl.define do
     association :reverification_tracker, status: 'marked for spam'
   end
 
-  factory :unverified_spam_account, parent: :account do
+  factory :third_phase_spam_account, parent: :account do
     association :github_verification, strategy: :null
     association :reverification_tracker, status: 'spam'
   end
