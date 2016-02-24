@@ -2,7 +2,6 @@ class ReverificationTracker < ActiveRecord::Base
   belongs_to :account
 
   class << self
-
     def right_now
       @right_now = Time.now.utc
     end
@@ -11,7 +10,7 @@ class ReverificationTracker < ActiveRecord::Base
       right_now >= date
     end
 
-    def accounts_with_a_marked_for_spam_notice(limit)
+    def second_phase_accounts(limit)
       Account.find_by_sql("SELECT accounts.email FROM accounts
                             INNER JOIN reverification_trackers
                           ON accounts.id = reverification_trackers.account_id 
@@ -21,7 +20,7 @@ class ReverificationTracker < ActiveRecord::Base
                           AND reverification_trackers.status = 'marked for spam' LIMIT #{limit}") 
     end
 
-    def accounts_with_initial_notice(limit)
+    def first_phase_accounts(limit)
       Account.find_by_sql("SELECT accounts.email FROM accounts
                             INNER JOIN reverification_trackers
                           ON accounts.id = reverification_trackers.account_id 
@@ -131,6 +130,7 @@ class ReverificationTracker < ActiveRecord::Base
       account.reverification_tracker = AccountReverification.create
     end
 
+    # Note: Don't forget to internationalize and test
     def account_is_spam_notice(email)
        { to: "#{email}",
         subject: 'Your Account Status Has Converted to Spam',
@@ -149,6 +149,7 @@ class ReverificationTracker < ActiveRecord::Base
           8 New England Executive Park, Burlington, MA 01803" }
     end
 
+    # Note: Don't forget to internationalize and test
     def marked_for_spam_notice(email)
       { to: "#{email}",
         subject: 'Account Marked for Spam',
@@ -165,6 +166,7 @@ class ReverificationTracker < ActiveRecord::Base
           8 New England Executive Park, Burlington, MA 01803' }
     end
 
+    # Note: Don't forget to internationalize and test
     def first_reverification_notice(email)
       { to: "#{email}",
         subject: 'Please Reverify Your Open Hub Account',
@@ -181,18 +183,18 @@ class ReverificationTracker < ActiveRecord::Base
           8 New England Executive Park, Burlington, MA 01803' }
     end
 
+    # TODO: This needs to be rigorously tested
     def time_is_right?(created_at, updated_at, status)
       if status == 'marked for spam'
         gt_equal(updated_at + 1.day) 
       else
-        # binding.pry
         gt_equal(created_at + 13.days)
       end
     end
 
     def send_account_is_spam_notification
       return if ses_limit_reached?
-      accounts_with_a_marked_for_spam_notice(5).each do |account|
+      second_phase_accounts(5).each do |account|
         account = find_account_by_email(account.email)
         created_at = account.reverification_tracker.created_at
         updated_at = account.reverification_tracker.updated_at
@@ -203,7 +205,7 @@ class ReverificationTracker < ActiveRecord::Base
 
     def send_marked_for_spam_notification
       return if ses_limit_reached?
-      accounts_with_initial_notice(5).each do |account|
+      first_phase_accounts(5).each do |account|
         account = find_account_by_email(account.email)
         created_at = account.reverification_tracker.created_at
         updated_at = account.reverification_tracker.updated_at
