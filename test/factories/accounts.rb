@@ -82,4 +82,9 @@ FactoryGirl.define do
     association :github_verification, strategy: :null
     association :reverification_tracker, status: 'spam'
   end
+
+  factory :fourth_phase_spam_account, parent: :account do
+    association :github_verification, strategy: :null
+    association :reverification_tracker, status: 'final warning'
+  end
 end

@@ -2,7 +2,6 @@ class ReverificationTracker < ActiveRecord::Base
   belongs_to :account
 
   class << self
-
     def third_phase_accounts(limit)
        Account.find_by_sql("SELECT accounts.email FROM accounts
                             INNER JOIN reverification_trackers
@@ -115,6 +114,15 @@ class ReverificationTracker < ActiveRecord::Base
         destroy_account(email_address)
       else
         store_email_for_later_retry(email_address)
+      end
+    end
+
+    def delete_unverified_spam_accounts
+      Account.where(level: -20).includes(:reverification_tracker).find_each do |account|
+        puts "#{account.inspect}"
+        if account.reverification_tracker.status == 'final_warning' && gt_equal(account.reverification_tracker.updated_at)
+          account.destroy
+        end
       end
     end
 
@@ -272,7 +280,7 @@ class ReverificationTracker < ActiveRecord::Base
       poll_success_queue
       poll_transient_bounce_queue
       poll_bounce_queue
-      # delete_accounts
+      delete_unverified_spam_accounts
       send_one_day_left_before_deletion_notification
       send_account_is_spam_notification
       send_marked_for_spam_notification
@@ -281,5 +289,9 @@ class ReverificationTracker < ActiveRecord::Base
       poll_transient_bounce_queue
       poll_bounce_queue
     end
+
+    # Note: When an account does reverify, make sure I code a method
+    # that will remove the associated reverification_tracker because it
+    # is not needed and might conflict with the sql searches.
   end
 end

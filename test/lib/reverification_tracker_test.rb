@@ -517,5 +517,23 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
         end
       end
     end
+
+    describe 'delete accounts phase' do
+      it 'should delete accounts that have reached the point of no return' do
+        #setup
+        create_list(:account, 5)
+        create_list(:unverified_account,5)
+        create_list(:first_phase_account, 5)
+        create_list(:second_phase_account, 5)
+        create_list(:third_phase_spam_account, 5)
+        create_list(:fourth_phase_spam_account, 5)
+        ReverificationTracker.where(status: 'final warning').each do
+          # 21 days from initial creation is the point of no return
+         |rv| rv.update(updated_at: rv.created_at + 21.day) 
+        end
+        ReverificationTracker.delete_unverified_spam_accounts
+        assert 26, Account.count
+      end
+    end
   end
 end 
