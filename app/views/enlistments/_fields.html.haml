@@ -38,14 +38,13 @@
         %ul.margin_left_20
           %li= t('.description19')
           %li= t('.description20')
-  .cvs.svn
+  .svn_cvs
     .control-group.warning
       %label.control-label= t('.if_required')
       .controls
-        = f.text_field :username, placeholder: 'Username', style: 'display:block;', name: 'repository[username]'
+        = f.text_field :username, placeholder: t('.username'), style: 'display:block;', name: 'repository[username]'
         - error_tag @repository, :username
-        = f.text_field :password, placeholder: 'Password', style: 'display:block;', name: 'repository[password]',
-                                  type: :password
+        = f.text_field :password, placeholder: t('.password'), style: 'display:block;', name: 'repository[password]'
         - error_tag @repository, :password
         %p.help-block.col-md-7
           %strong= t('.warning')
