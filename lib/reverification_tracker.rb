@@ -2,13 +2,6 @@ class ReverificationTracker < ActiveRecord::Base
   belongs_to :account
 
   class << self
-    def right_now
-      @right_now = Time.now.utc
-    end
-
-    def gt_equal(date)
-      right_now >= date
-    end
 
     def second_phase_accounts(limit)
       Account.find_by_sql("SELECT accounts.email FROM accounts
@@ -181,6 +174,14 @@ class ReverificationTracker < ActiveRecord::Base
           The Open Hub Team
 
           8 New England Executive Park, Burlington, MA 01803' }
+    end
+
+    def right_now
+      @right_now = Time.now.utc
+    end
+
+    def gt_equal(date)
+      right_now >= date
     end
 
     # TODO: This needs to be rigorously tested
