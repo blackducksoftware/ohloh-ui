@@ -59,21 +59,6 @@ class ActiveSupport::TestCase
     Contribution.find_by_name_fact_id(name_fact.id)
   end
 
-  # This models the data package received from AWS::SES when an email
-  # results in a hard bounce.  Note: the Account factory creates an account 
-  # with this email address when the :hard_bounce type is used.
-  # def hard_bounce_json
-  #   {
-  #    "bounce": {
-  #    "bounceType":"Permanent",
-  #    "bouncedRecipients":[
-  #       {
-  #          "emailAddress":"bounce@simulator.amazonses.com"
-  #       }
-  #    ]
-  #   } }.with_indifferent_access
-  # end
-
   private
 
   def controller_login_as(account)

@@ -47,6 +47,10 @@ FactoryGirl.define do
     association :markup
   end
 
+  factory :validated_account_with_left_over_tracker, parent: :account do
+    association :reverification_tracker
+  end
+
   factory :unverified_account, parent: :account do
     association :github_verification, strategy: :null
     association :reverification_tracker, strategy: :null
@@ -68,23 +72,23 @@ FactoryGirl.define do
     end
   end
 
-  factory :first_phase_account, parent: :account do
+  factory :initial_phase_account, parent: :account do
     association :github_verification, strategy: :null
     association :reverification_tracker
   end
 
-  factory :second_phase_account, parent: :account do
+  factory :marked_for_spam_phase_account, parent: :account do
     association :github_verification, strategy: :null
-    association :reverification_tracker, status: 'marked for spam'
+    association :reverification_tracker, status: 1
   end
 
-  factory :third_phase_spam_account, parent: :account do
+  factory :spam_phase_account, parent: :account do
     association :github_verification, strategy: :null
-    association :reverification_tracker, status: 'spam'
+    association :reverification_tracker, status: 2
   end
 
-  factory :fourth_phase_spam_account, parent: :account do
+  factory :final_warning_phase_account, parent: :account do
     association :github_verification, strategy: :null
-    association :reverification_tracker, status: 'final warning'
+    association :reverification_tracker, status: 3
   end
 end

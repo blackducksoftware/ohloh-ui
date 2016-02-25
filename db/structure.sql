@@ -3439,7 +3439,7 @@ CREATE TABLE repositories (
 CREATE TABLE reverification_trackers (
     id integer NOT NULL,
     account_id integer,
-    status character varying DEFAULT 'initial'::character varying,
+    status integer DEFAULT 0,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
