@@ -1,4 +1,4 @@
-Explore =
+App.Explore =
   init: () ->
     return if $('#explore_projects_page').length == 0
 
@@ -37,5 +37,5 @@ Explore =
       e.preventDefault()
 
 $(document).on 'page:change', ->
-  Explore.init()
-  Explore.handleMoreLessToggleContent()
+  App.Explore.init()
+  App.Explore.handleMoreLessToggleContent()
