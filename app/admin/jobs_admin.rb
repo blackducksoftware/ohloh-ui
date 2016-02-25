@@ -119,6 +119,7 @@ ActiveAdmin.register Job do
 
     def destroy
       flash[:success] = 'Job has been deleted'
+      Job.find(params['id']).destroy
       redirect_to admin_jobs_path
     end
 

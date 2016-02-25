@@ -117,7 +117,9 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
     admin.password = 'xyzzy123456'
     login_as admin
     job = create(:fetch_job, repository: create(:repository))
-    delete admin_job_path(job)
+    assert_difference 'Job.count', -1 do
+      delete admin_job_path(job)
+    end
     assert_response :redirect
   end
 
