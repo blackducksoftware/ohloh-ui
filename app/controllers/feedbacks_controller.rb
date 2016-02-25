@@ -4,7 +4,7 @@ class FeedbacksController < ApplicationController
   before_action :set_access_control_header
 
   def set_access_control_header
-    headers['Access-Control-Allow-Origin'] = 'http://security.openhub.net'
+    headers['Access-Control-Allow-Origin'] = 'https://security.openhub.net'
   end
 
   def create

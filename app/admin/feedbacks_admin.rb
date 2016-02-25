@@ -23,7 +23,8 @@ ActiveAdmin.register Feedback do
 
   controller do
     def scoped_collection
-      Feedback.select('count(*) as count, project_id').group(:project_id).reorder('count desc')
+      Feedback.select('count(*) as count, project_id').where.not(project_id: nil)
+        .group(:project_id).reorder('count desc')
     end
   end
 end
