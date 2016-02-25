@@ -24,6 +24,9 @@ class Job < ActiveRecord::Base
   scope :scheduled_or_failed, -> { where(status: [STATUS_SCHEDULED, STATUS_FAILED]) }
   scope :since, ->(time) { where(current_step_at: time...Time.current) }
   scope :incomplete_or_since, ->(time) { incomplete || since(time) }
+  scope :uncategorized_failure_group, -> { where(failure_group_id: nil).failed.with_exception }
+  scope :categorized_failure_group, -> { where.not(failure_group_id: nil).failed.with_exception }
+  scope :with_exception, -> { where.not(exception: nil) }
 
   belongs_to :project
   belongs_to :repository
