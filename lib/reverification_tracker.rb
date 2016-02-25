@@ -21,7 +21,6 @@ class ReverificationTracker < ActiveRecord::Base
           8 New England Executive Park, Burlington, MA 01803" }
     end
 
-    # Note: Don't forget to internationalize and test
     def account_is_spam_notice(email)
       { to: "#{email}",
         subject: 'Your Account Status Has Converted to Spam',
@@ -105,28 +104,11 @@ class ReverificationTracker < ActiveRecord::Base
     def poll_success_queue
       success_queue.poll(initial_timeout: 1, idle_timeout: 1) do |msg|
         message_as_hash = msg.as_sns_message.body_message_as_h
-        account = Account.find_by_email(message_as_hash['mail']['delivery']['recipients'][0])
+        account = Account.find_by_email(message_as_hash['delivery']['recipients'][0])
         if account.reverification_tracker.nil?
           create_reverification_tracker(account)
         else
           update_reverification_tracker(account)
-        end
-      end
-    end
-
-    def transient_bounce_queue
-      @transient_bounce_queue ||= sqs.queues.named('ses-transientbounces-queue')
-    end
-
-    def poll_transient_bounce_queue
-      return if ses_limit_reached?
-      transient_bounce_queue.poll(initial_timeout: 1, idle_timeout: 1) do |msg|
-        email_address = msg.body
-        account = Account.find_by_email(email_address)
-        if account.reverification_tracker.present?
-          determine_correct_notification_to_send(account)
-        else
-          ses.send_email(first_reverification_notice(account.email))
         end
       end
     end
@@ -147,7 +129,6 @@ class ReverificationTracker < ActiveRecord::Base
     end
 
     def determine_correct_notification_to_send(account)
-      # I need to figure out how to condense this or disable rubocop warning.
       if account.reverification_tracker.spam?
         ses.send_email(one_day_before_deletion_notice(account.email))
       elsif account.reverification_tracker.marked_for_spam?
@@ -157,18 +138,9 @@ class ReverificationTracker < ActiveRecord::Base
       end
     end
 
-    def store_email_for_later_retry(email_address)
-      transient_bounce_queue.send_message(email_address)
-    end
-
     def process_bounce(message_body)
       email_address = message_body['bounce']['bouncedRecipients'][0]['emailAddress']
-      bounce_type = message_body['bounce']['bounceType']
-      if bounce_type == 'Permanent'
-        destroy_account(email_address)
-      else
-        store_email_for_later_retry(email_address)
-      end
+      destroy_account(email_address) if message_body['bounce']['bounceType'] == 'Permanent'
     end
 
     def delete_unverified_spam_accounts
