@@ -86,13 +86,6 @@ ActiveAdmin.register Job do
     redirect_to :back
   end
 
-  member_action :refetch, method: :post do
-    job = Job.find(params[:id])
-    job = job.repository.refetch
-    flash[:success] = "FetchJob #{job.id} created."
-    redirect_to admin_job_path(job)
-  end
-
   member_action :recount do
     job = Job.find(params[:id])
     job.update_attributes!(retry_count: 0, wait_until: nil)
