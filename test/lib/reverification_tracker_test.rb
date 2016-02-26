@@ -354,5 +354,60 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
         end
       end
     end
+
+    describe 'time_is_right' do
+      it 'should without a doubt be absolutely correct for initial accounts' do
+        account = create(:initial_phase_account)
+        Timecop.freeze(Time.now + 13.days) do
+          assert ReverificationTracker.time_is_right?(account.reverification_tracker)
+        end
+        Timecop.freeze(Time.now + 1.days) do
+          assert_not ReverificationTracker.time_is_right?(account.reverification_tracker)
+        end
+        Timecop.freeze(Time.now + 2.days) do
+          assert_not ReverificationTracker.time_is_right?(account.reverification_tracker)
+        end
+         Timecop.freeze(Time.now + 3.days) do
+          assert_not ReverificationTracker.time_is_right?(account.reverification_tracker)
+        end
+        Timecop.freeze(Time.now + 4.days) do
+          assert_not ReverificationTracker.time_is_right?(account.reverification_tracker)
+        end
+        Timecop.freeze(Time.now + 5.days) do
+          assert_not ReverificationTracker.time_is_right?(account.reverification_tracker)
+        end
+         Timecop.freeze(Time.now + 6.days) do
+          assert_not ReverificationTracker.time_is_right?(account.reverification_tracker)
+        end
+        Timecop.freeze(Time.now + 7.days) do
+          assert_not ReverificationTracker.time_is_right?(account.reverification_tracker)
+        end
+         Timecop.freeze(Time.now + 8.days) do
+          assert_not ReverificationTracker.time_is_right?(account.reverification_tracker)
+        end
+        Timecop.freeze(Time.now + 9.days) do
+          assert_not ReverificationTracker.time_is_right?(account.reverification_tracker)
+        end
+        Timecop.freeze(Time.now + 10.days) do
+          assert_not ReverificationTracker.time_is_right?(account.reverification_tracker)
+        end
+        Timecop.freeze(Time.now + 11.days) do
+          assert_not ReverificationTracker.time_is_right?(account.reverification_tracker)
+        end
+        Timecop.freeze(Time.now + 12.days) do
+          assert_not ReverificationTracker.time_is_right?(account.reverification_tracker)
+        end
+      end
+
+      it 'should without a doubt be absolutely correct for marked as spam accounts' do
+        account = create(:marked_for_spam_phase_account)
+        account.reverification_tracker.updated_at = Timecop.travel(account.created_at + 13.days)
+        assert ReverificationTracker.time_is_right?(account.reverification_tracker)
+      end
+
+      it 'should without a doubt be absolutely correct for final warning accounts' do
+        account = create(:spam_phase_account)
+      end
+    end
   end
 end

@@ -167,12 +167,17 @@ class ReverificationTracker < ActiveRecord::Base
       account.reverification_tracker.initial!
     end
 
+    def less_than(date)
+     Time.now.utc < date
+    end
+
     # TODO: This needs to be rigorously tested!
     def time_is_right?(reverification_tracker)
+      created_at, updated_at = reverification_tracker.created_at, reverification_tracker.updated_at
       if reverification_tracker.spam? || reverification_tracker.marked_for_spam?
-        Time.now.utc >= (updated_at + 1.day)
+        Time.now.utc >= (reverification_tracker.updated_at + 1.day)
       else
-        Time.now.utc >= (updated_at + 1.day)
+        (Time.now.utc >= (created_at + 13.day)) && (Time.now.utc < (created_at + 14.days))
       end
     end
 
