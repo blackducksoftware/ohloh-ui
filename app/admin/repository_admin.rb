@@ -9,7 +9,7 @@ ActiveAdmin.register Repository do
   filter :updated_at
 
   action_item :refetch, only: :show do
-    link_to 'Re-Fetch', refetch_admin_repository_path(repository), method: :post
+    link_to 'Re-Fetch', refetch_admin_repository_path(repository)
   end
 
   action_item :jobs, only: :show do
@@ -42,7 +42,7 @@ ActiveAdmin.register Repository do
     end
   end
 
-  member_action :refetch, method: :post do
+  member_action :refetch do
     Repository.find(params[:id]).refetch
     redirect_to admin_repository_jobs_path(params[:id]), flash: { success: 'FetchJob has been scheduled' }
   end
