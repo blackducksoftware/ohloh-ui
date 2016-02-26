@@ -1,6 +1,6 @@
 ActiveAdmin.register Project do
   menu false
-  actions :index, :show
+  actions :index, :show, :edit
 
   filter :name
   filter :vanity_url
