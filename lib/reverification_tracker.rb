@@ -1,7 +1,9 @@
 # rubocop:disable Metrics/ClassLength
 class ReverificationTracker < ActiveRecord::Base
   belongs_to :account
-  enum status: [:initial, :marked_for_spam, :spam, :final_warning]
+
+  enum status: [:pending, :delivered, :bounced, :complained, :auto_responded]
+  enum phase: [:initial, :marked_for_spam, :spam, :final_warning]
 
   class << self
     def one_day_before_deletion_notice(email)
@@ -73,15 +75,15 @@ class ReverificationTracker < ActiveRecord::Base
           8 New England Executive Park, Burlington, MA 01803' }
     end
 
-    def spam_phase_accounts(limit)
+    def spam_phase_accounts(limit = nil)
       ReverificationTracker.spam.limit(limit)
     end
 
-    def marked_for_spam_phase_accounts(limit)
+    def marked_for_spam_phase_accounts(limit = nil)
       ReverificationTracker.marked_for_spam.limit(limit)
     end
 
-    def initial_phase_accounts(limit)
+    def initial_phase_accounts(limit = nil)
       ReverificationTracker.initial.limit(limit)
     end
 
@@ -101,25 +103,38 @@ class ReverificationTracker < ActiveRecord::Base
       @success_queue ||= sqs.queues.named('ses-success-queue')
     end
 
+    def bounce_queue
+      @bounce_queue ||= sqs.queues.named('ses-bounces-queue')
+    end
+
+    def complaints_queue
+      @complaints_queue ||= sqs.queues.named('ses-complaints-queue')
+    end
+
     def poll_success_queue
       success_queue.poll(initial_timeout: 1, idle_timeout: 1) do |msg|
         message_as_hash = msg.as_sns_message.body_message_as_h
-        account = Account.find_by_email(message_as_hash['delivery']['recipients'][0])
-        if account.reverification_tracker.nil?
-          create_reverification_tracker(account)
-        else
-          update_reverification_tracker(account)
+        message_as_hash['delivery']['recipients'].each do |recipient|
+          account = Account.find_by_email recipient
+          account.reverification_tracker.delivered! if account.reverification_tracker.pending?
         end
       end
-    end
-
-    def bounce_queue
-      @bounce_queue ||= sqs.queues.named('ses-bounces-queue')
     end
 
     def poll_bounce_queue
       bounce_queue.poll(initial_timeout: 1, idle_timeout: 1) do |msg|
         process_bounce(msg.as_sns_message.body_message_as_h)
+      end
+    end
+
+    def poll_complaints_queue
+      complaints_queue.poll(initial_timeout: 1, idle_timeout: 1) do |msg|
+        decoded_msg = msg.as_sns_message.body_message_as_h
+        decoded_msg['complaint']['complainedRecipients'].each do |recipient|
+          account = Account.find_by_email recipient['emailAddress']
+          account.reverification_tracker.complained!
+          account.reverification_tracker.update feedback: decoded_msg['complaint']['complaintFeedbackType']
+        end
       end
     end
 
@@ -162,10 +177,10 @@ class ReverificationTracker < ActiveRecord::Base
       end
     end
 
-    def create_reverification_tracker(account)
-      account.reverification_tracker = AccountReverification.create
-      account.reverification_tracker.initial!
-    end
+    #def create_reverification_tracker(account)
+    #  account.reverification_tracker = AccountReverification.create
+    #  account.reverification_tracker.initial!
+    #end
 
     def less_than(date)
      Time.now.utc < date
@@ -205,7 +220,7 @@ class ReverificationTracker < ActiveRecord::Base
     def send_first_notification
       return if ses_limit_reached?
       Account.unverified_accounts(5).each do |account|
-        ses.send_email(first_reverification_notice(account.email))
+        send_mail(first_reverification_notice(account.email), account, 0)
       end
     end
 
@@ -220,6 +235,15 @@ class ReverificationTracker < ActiveRecord::Base
     def remove_reverification_tracker_for_validated_accounts
       ReverificationTracker.find_each do |rev_tracker|
         rev_tracker.destroy if rev_tracker.account.access.mobile_or_oauth_verified?
+      end
+    end
+
+    def send_mail(template, account, phase)
+      resp = ses.send_email(template)
+      if account.reverification_tracker
+        account.reverification_tracker.update(message_id: resp[:message_id], status: 0, phase: phase)
+      else
+        account.create_reverification_tracker(message_id: resp[:message_id])
       end
     end
   end
