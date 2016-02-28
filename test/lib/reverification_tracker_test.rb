@@ -558,3 +558,4 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
     end
   end
 end
+end
