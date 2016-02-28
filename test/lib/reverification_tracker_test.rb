@@ -30,6 +30,25 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
     end
   end
 
+  class TransientBounceBody
+     def body_message_as_h
+       { 'bounce': { 'bounceType': 'Transient',
+                     'bouncedRecipients': [{ 'emailAddress': 'ooto@simulator.amazonses.com' }]
+         }
+       }.with_indifferent_access
+     end
+   end
+ 
+   class TransientBounceMessage
+     def as_sns_message
+       TransientBounceBody.new
+     end
+ 
+     def body
+       'ooto@simulator.amazonses.com'
+     end
+   end
+
   describe 'ReverificationTracker' do
     describe 'first notification phase' do
       describe 'sending the first notification' do
@@ -83,6 +102,28 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
         end
       end
 
+      describe 'transient bounce scenario' do
+         before do
+           @transient_account = create(:unverified_account, :soft_bounce)
+           @first_notice = ReverificationTracker.first_reverification_notice(@transient_account.email)
+         end
+ 
+        it 'should retry the first reverification notice' do
+          mock_queue = mock('AWS::SQS::Queue::MOCK')
+           mock_queue.stubs(:poll).yields(TransientBounceMessage.new).once
+           ReverificationTracker.stubs(:transient_bounce_queue).returns(mock_queue)
+           ReverificationTracker.stubs(:transient_bounce_queue).returns(mock_queue)
+           AWS::SimpleEmailService.any_instance.expects(:send_email).with(@first_notice).once
+           ReverificationTracker.poll_transient_bounce_queue
+         end
+ 
+        it 'should not resend if the ses limit is reached' do
+          ReverificationTracker.expects(:ses_limit_reached?).returns(true)
+          AWS::SimpleEmailService.any_instance.expects(:send_email).with(@first_notcie).never
+          ReverificationTracker.poll_transient_bounce_queue
+        end
+      end
+
       describe 'hard bounce scenario' do
         before do
           @hard_account = create(:unverified_account, :hard_bounce)
@@ -92,7 +133,16 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
         it 'should delete any account that is a hard permanent bounce' do
           @mock_queue.stubs(:poll).yields(HardBounceMessage.new).once
           ReverificationTracker.stubs(:bounce_queue).returns(@mock_queue)
+          ReverificationTracker.expects(:store_email_for_later_retry).never
           ReverificationTracker.expects(:destroy_account)
+          ReverificationTracker.poll_bounce_queue
+        end
+
+        it 'should send a soft bounce to the transient bounce queue' do
+          @mock_queue.stubs(:poll).yields(TransientBounceMessage.new).once
+          ReverificationTracker.stubs(:bounce_queue).returns(@mock_queue)
+          ReverificationTracker.expects(:store_email_for_later_retry).once
+          ReverificationTracker.expects(:destroy_account).never
           ReverificationTracker.poll_bounce_queue
         end
       end
@@ -155,6 +205,28 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
         end
       end
 
+      describe 'transient bounce scenario' do
+        it 'should retry the correct email' do
+          correct_account = create(:initial_phase_account, email: 'ooto@simulator.amazonses.com')
+          incorrect_account = create(:unverified_account)
+          mock_queue = mock('AWS::SQS::Queue::MOCK')
+          mock_queue.stubs(:poll).yields(TransientBounceMessage.new).once
+          correct_notice = ReverificationTracker.marked_for_spam_notice(correct_account.email)
+          incorrect_notice = ReverificationTracker.marked_for_spam_notice(incorrect_account.email)
+          ReverificationTracker.stubs(:transient_bounce_queue).returns(mock_queue)
+          AWS::SimpleEmailService.any_instance.expects(:send_email).with(correct_notice).once
+          AWS::SimpleEmailService.any_instance.expects(:send_email).with(incorrect_notice).never
+          ReverificationTracker.poll_transient_bounce_queue
+        end
+
+        it 'should not resend if the ses limit is reached' do
+          correct_account = create(:initial_phase_account, email: 'ooto@simulator.amazonses.com')
+          ReverificationTracker.expects(:ses_limit_reached?).returns(true)
+          AWS::SimpleEmailService.any_instance.expects(:send_email).with(correct_account).never
+          ReverificationTracker.poll_transient_bounce_queue
+        end
+      end
+
       describe 'hard bounce scenario' do
         before do
           @mock_queue = mock('AWS::SQS::Queue::MOCK')
@@ -163,7 +235,17 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
         it 'should delete an account that is a hard permanent bounce' do
           @mock_queue.stubs(:poll).yields(HardBounceMessage.new).once
           ReverificationTracker.stubs(:bounce_queue).returns(@mock_queue)
+          ReverificationTracker.expects(:store_email_for_later_retry).never
           ReverificationTracker.expects(:destroy_account)
+          ReverificationTracker.poll_bounce_queue
+        end
+
+
+        it 'should send a soft bounce to the transient bounce queue' do
+          @mock_queue.stubs(:poll).yields(TransientBounceMessage.new).once
+          ReverificationTracker.stubs(:bounce_queue).returns(@mock_queue)
+          ReverificationTracker.expects(:store_email_for_later_retry).once
+          ReverificationTracker.expects(:destroy_account).never
           ReverificationTracker.poll_bounce_queue
         end
       end
@@ -230,6 +312,28 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
           assert_equal DateTime.now.in_time_zone.to_i, account.reverification_tracker.updated_at.to_i
           assert_not_equal past, account.reverification_tracker.updated_at
         end
+      
+      describe 'transient bounce scenario' do
+        it 'should send the correct retry email' do
+          account = create(:marked_for_spam_phase_account, email: 'ooto@simulator.amazonses.com')
+          account_is_spam_notice = ReverificationTracker.account_is_spam_notice(account.email)
+          wrong_notice_one = ReverificationTracker.marked_for_spam_notice(account.email)
+          wrong_notice_two = ReverificationTracker.first_reverification_notice(account.email)
+          mock_queue = mock('AWS::SQS::Queue::MOCK')
+          mock_queue.stubs(:poll).yields(TransientBounceMessage.new).once
+          ReverificationTracker.stubs(:transient_bounce_queue).returns(mock_queue)
+          AWS::SimpleEmailService.any_instance.expects(:send_email).with(account_is_spam_notice).once
+          AWS::SimpleEmailService.any_instance.expects(:send_email).with(wrong_notice_one).never
+          AWS::SimpleEmailService.any_instance.expects(:send_email).with(wrong_notice_two).never
+          ReverificationTracker.poll_transient_bounce_queue
+        end
+ 
+        it 'should not resend if the ses limit is reached' do
+          correct_account = create(:marked_for_spam_phase_account, email: 'ooto@simulator.amazonses.com')
+          ReverificationTracker.expects(:ses_limit_reached?).returns(true)
+          AWS::SimpleEmailService.any_instance.expects(:send_email).with(correct_account).never
+          ReverificationTracker.poll_transient_bounce_queue
+        end
       end
 
       describe 'hard bounce scenario' do
@@ -240,7 +344,16 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
         it 'should delete an account that is a hard permanent bounce' do
           @mock_queue.stubs(:poll).yields(HardBounceMessage.new).once
           ReverificationTracker.stubs(:bounce_queue).returns(@mock_queue)
+          ReverificationTracker.expects(:store_email_for_later_retry).never
           ReverificationTracker.expects(:destroy_account)
+          ReverificationTracker.poll_bounce_queue
+        end
+
+        it 'should send a soft bounce to the transient bounce queue' do
+          @mock_queue.stubs(:poll).yields(TransientBounceMessage.new).once
+          ReverificationTracker.stubs(:bounce_queue).returns(@mock_queue)
+          ReverificationTracker.expects(:store_email_for_later_retry).once
+          ReverificationTracker.expects(:destroy_account).never
           ReverificationTracker.poll_bounce_queue
         end
       end
@@ -312,6 +425,31 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
         end
       end
 
+      describe 'transient bounce scenario' do
+         it 'should send the correct retry email' do
+           account = create(:spam_phase_account, email: 'ooto@simulator.amazonses.com')
+           one_day_before_deletion_notice = ReverificationTracker.one_day_before_deletion_notice(account.email)
+           wrong_notice_one = ReverificationTracker.account_is_spam_notice(account.email)
+           wrong_notice_two = ReverificationTracker.marked_for_spam_notice(account.email)
+           wrong_notice_three = ReverificationTracker.first_reverification_notice(account.email)
+           mock_queue = mock('AWS::SQS::Queue::MOCK')
+           mock_queue.stubs(:poll).yields(TransientBounceMessage.new).once
+           ReverificationTracker.stubs(:transient_bounce_queue).returns(mock_queue)
+           AWS::SimpleEmailService.any_instance.expects(:send_email).with(one_day_before_deletion_notice).once
+           AWS::SimpleEmailService.any_instance.expects(:send_email).with(wrong_notice_one).never
+           AWS::SimpleEmailService.any_instance.expects(:send_email).with(wrong_notice_two).never
+           AWS::SimpleEmailService.any_instance.expects(:send_email).with(wrong_notice_three).never
+           ReverificationTracker.poll_transient_bounce_queue
+         end
+ 
+         it 'should not resend if the ses limit is reached' do
+           correct_account = create(:spam_phase_account, email: 'ooto@simulator.amazonses.com')
+           ReverificationTracker.expects(:ses_limit_reached?).returns(true)
+           AWS::SimpleEmailService.any_instance.expects(:send_email).with(correct_account).never
+           ReverificationTracker.poll_transient_bounce_queue
+         end
+       end
+
       describe 'hard bounce scenario' do
         before do
           @mock_queue = mock('AWS::SQS::Queue::MOCK')
@@ -320,8 +458,17 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
         it 'should delete an account that is a hard permanent bounce' do
           @mock_queue.stubs(:poll).yields(HardBounceMessage.new).once
           ReverificationTracker.stubs(:bounce_queue).returns(@mock_queue)
+          ReverificationTracker.expects(:store_email_for_later_retry).never
           ReverificationTracker.expects(:destroy_account)
           ReverificationTracker.poll_bounce_queue
+        end
+
+        it 'should send a soft bounce to the transient bounce queue' do
+           @mock_queue.stubs(:poll).yields(TransientBounceMessage.new).once
+           ReverificationTracker.stubs(:bounce_queue).returns(@mock_queue)
+           ReverificationTracker.expects(:store_email_for_later_retry).once
+           ReverificationTracker.expects(:destroy_account).never
+           ReverificationTracker.poll_bounce_queue
         end
       end
     end

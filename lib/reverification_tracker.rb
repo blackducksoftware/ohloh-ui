@@ -138,6 +138,10 @@ class ReverificationTracker < ActiveRecord::Base
       end
     end
 
+    def store_email_for_later_retry(email_address)
+      transient_bounce_queue.send_message(email_address)
+    end
+
     def destroy_account(email_address)
       account = Account.find_by_email(email_address)
       account.destroy if account
