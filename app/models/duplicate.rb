@@ -10,7 +10,7 @@ class Duplicate < ActiveRecord::Base
   validates :comment, length: { maximum: 1000 }, allow_blank: true
 
   def resolve!(editor_account)
-    @editor_account = good_project.editor_account = bad_project.editor_account = editor_account
+    @editor_account = editor_account
     Duplicate.transaction { RESOLVES.each { |r| send("resolve_#{r}!") } }
   end
 
@@ -40,7 +40,7 @@ class Duplicate < ActiveRecord::Base
   end
 
   def resolve_tags!
-    good_project.update_attributes(tag_list: "#{good_project.tag_list} #{bad_project.tag_list}")
+    good_project.update(editor_account: @editor_account, tag_list: "#{good_project.tag_list} #{bad_project.tag_list}")
   end
 
   def resolve_ratings!
