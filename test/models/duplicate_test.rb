@@ -2,9 +2,12 @@ require 'test_helper'
 
 class DuplicateTest < ActiveSupport::TestCase
   describe 'resolve!' do
+    let(:good_project) { create(:project) }
+    let(:bad_project) { create(:project) }
+    let(:account_1) { create(:account) }
+    let(:account_2) { create(:account) }
+
     it 'properly cleans up stack_entries' do
-      good_project = create(:project)
-      bad_project = create(:project)
       stack = create(:stack)
       create(:stack_entry, stack: stack, project: good_project)
       bad_stack_entry_1 = create(:stack_entry, stack: stack, project: bad_project)
@@ -18,10 +21,6 @@ class DuplicateTest < ActiveSupport::TestCase
     end
 
     it 'properly cleans up ratings' do
-      good_project = create(:project)
-      bad_project = create(:project)
-      account_1 = create(:account)
-      account_2 = create(:account)
       create(:rating, account: account_1, project: good_project)
       bad_rating_1 = create(:rating, account: account_1, project: bad_project)
       bad_rating_2 = create(:rating, account: account_2, project: bad_project)
@@ -33,10 +32,6 @@ class DuplicateTest < ActiveSupport::TestCase
     end
 
     it 'properly cleans up reviews' do
-      good_project = create(:project)
-      bad_project = create(:project)
-      account_1 = create(:account)
-      account_2 = create(:account)
       create(:review, account: account_1, project: good_project)
       bad_review_1 = create(:review, account: account_1, project: bad_project)
       bad_review_2 = create(:review, account: account_2, project: bad_project)
@@ -52,8 +47,6 @@ class DuplicateTest < ActiveSupport::TestCase
     end
 
     it 'properly cleans up links' do
-      good_project = create(:project)
-      bad_project = create(:project)
       create(:link, url: 'http://pimentoloaf.com', link_category_id: 3, project: good_project)
       bad_link_1 = create(:link, url: 'http://pimentoloaf.com', link_category_id: 5, project: bad_project)
       bad_link_2 = create(:link, url: 'http://salami.com', link_category_id: 6, project: bad_project)
@@ -66,10 +59,6 @@ class DuplicateTest < ActiveSupport::TestCase
     end
 
     it 'properly cleans up kudos' do
-      good_project = create(:project)
-      bad_project = create(:project)
-      account_1 = create(:account)
-      account_2 = create(:account)
       name = create(:name)
       create(:kudo, sender: account_1, name: name, project: good_project)
       bad_kudo_1 = create(:kudo, sender: account_1, name: name, project: bad_project)
@@ -82,8 +71,6 @@ class DuplicateTest < ActiveSupport::TestCase
     end
 
     it 'properly cleans up aliases' do
-      good_project = create(:project)
-      bad_project = create(:project)
       the_alias = create(:alias, project: bad_project)
       commit_name = the_alias.commit_name
       preferred_name = the_alias.preferred_name
@@ -95,10 +82,6 @@ class DuplicateTest < ActiveSupport::TestCase
     end
 
     it 'properly cleans up positions' do
-      good_project = create(:project)
-      bad_project = create(:project)
-      account_1 = create(:account)
-      account_2 = create(:account)
       name_fact_1 = create(:name_fact, analysis: good_project.best_analysis)
       name_fact_2 = create(:name_fact, analysis: bad_project.best_analysis)
       name_fact_3 = create(:name_fact, analysis: bad_project.best_analysis)
@@ -113,8 +96,6 @@ class DuplicateTest < ActiveSupport::TestCase
     end
 
     it 'properly cleans up enlistments' do
-      good_project = create(:project)
-      bad_project = create(:project)
       create(:enlistment, project: good_project)
       bad_enlistment_1 = create(:enlistment, project: bad_project)
       bad_enlistment_2 = create(:enlistment, project: bad_project)
@@ -128,10 +109,6 @@ class DuplicateTest < ActiveSupport::TestCase
     end
 
     it 'properly cleans up project_experiences' do
-      good_project = create(:project)
-      bad_project = create(:project)
-      account_1 = create(:account)
-      account_2 = create(:account)
       name_fact_1 = create(:name_fact, analysis: good_project.best_analysis)
       name_fact_2 = create(:name_fact, analysis: bad_project.best_analysis)
       name_fact_3 = create(:name_fact, analysis: bad_project.best_analysis)
