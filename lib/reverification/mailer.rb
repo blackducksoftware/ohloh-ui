@@ -1,83 +1,63 @@
 module Reverification
   class Mailer
+    SAMPLE_COUNT = 5000
+
     class << self
-      def ses
-        @ses ||= AWS::SimpleEmailService.new
+      def run
+        delete_unverified_spam_accounts
+        send_notifications
       end
 
-      def sqs
-        @sqs ||= AWS::SQS.new
-      end
-
-      def success_queue
-        @success_queue ||= sqs.queues.named('ses-success-queue')
-      end
-
-      def bounce_queue
-        @bounce_queue ||= sqs.queues.named('ses-bounces-queue')
-      end
-
-      def complaints_queue
-        @complaints_queue ||= sqs.queues.named('ses-complaints-queue')
-      end
-
-      def ses_limit_reached?
-        ses.quotas[:sent_last_24_hours] == ses.quotas[:max_24_hour_send]
-      end
-
-      def send(template, account, phase)
-        return if ses_limit_reached?
-        resp = ses.send_email(template)
-        if account.reverification_tracker
-          account.reverification_tracker.update(message_id: resp[:message_id], status: 0, phase: phase)
-        else
-          account.create_reverification_tracker(message_id: resp[:message_id])
+      def send_notifications
+        unless Reverification::Process.ses_limit_reached?
+          send_final_notification
+          send_converted_to_spam_notification
+          send_marked_for_spam_notification
+          send_first_notification
         end
       end
 
-      def poll_success_queue
-        success_queue.poll(initial_timeout: 1, idle_timeout: 1) do |msg|
-          message_as_hash = msg.as_sns_message.body_message_as_h
-          message_as_hash['delivery']['recipients'].each do |recipient|
-            account = Account.find_by_email recipient
-            account.reverification_tracker.delivered! if account.reverification_tracker.pending?
-          end
+      def send_final_notification
+        ReverificationTracker.spam_phase_accounts(SAMPLE_COUNT).each do |rev_track|
+          updated_at = rev_track.updated_at.to_date
+          next unless updated_at + 6.day >= Date.today && updated_at < updated_at + 7.day
+          Reverification::Process.send(Reverification::Template.one_day_before_deletion_notice(rev_track.account.email), rev_track.account, 3)
         end
       end
 
-      def poll_bounce_queue
-        bounce_queue.poll(initial_timeout: 1, idle_timeout: 1) do |msg|
-          decoded_msg = msg.as_sns_message.body_message_as_h
+      def send_converted_to_spam_notification
+        ReverificationTracker.marked_for_spam_phase_accounts(SAMPLE_COUNT).each do |rev_track|
+          next unless rev_track.updated_at.to_date + 1.day >= Date.today
+          Reverification::Process.send(Reverification::Template.account_is_spam_notice(rev_track.account.email), rev_track.account, 2)
+        end
+      end
+
+      def send_marked_for_spam_notification
+        ReverificationTracker.initial_phase_accounts(SAMPLE_COUNT).each do |rev_track|
+          next unless rev_track.updated_at.to_date + 14.days >= Date.today
+          Reverification::Process.send(Reverification::Template.marked_for_spam_notice(rev_track.account.email), rev_track.account, 1)
+        end
+      end
+
+      def send_first_notification
+        Account.reverification_not_initiated(SAMPLE_COUNT).each do |account|
+          notification = Reverification::Template.first_reverification_notice(account.email)
+          # Note: resp is not mocking at all. Figure out why.
+          # Test is breaking at this point
+          resp = Reverification::Process.send(notification, account, 0)
           binding.pry
-          decoded_msg['bounce']['bouncedRecipients'].each do |recipient|
-            case decoded_msg['bounce']['bounceType']
-            when: 'Permanent'
-              ReverificationTracker.destroy_account(recipient['emailAddress'])
-            when: 'Transient'
-              account = Account.find_by_email recipient['emailAddress']
-              account.reverification_tracker.bounced!
-            end
-          end
+          account.create_reverification_tracker(message_id: resp[:message_id])
+          account.reverification_tracker.initial!
+          account.reverification_tracker.pending!
         end
       end
 
-      def poll_complaints_queue
-        complaints_queue.poll(initial_timeout: 1, idle_timeout: 1) do |msg|
-          decoded_msg = msg.as_sns_message.body_message_as_h
-          decoded_msg['complaint']['complainedRecipients'].each do |recipient|
-            account = Account.find_by_email recipient['emailAddress']
-            account.reverification_tracker.complained!
-            account.reverification_tracker.update feedback: decoded_msg['complaint']['complaintFeedbackType']
+      def delete_unverified_spam_accounts
+        accounts = Account.where(level: -20).joins(:reverification_tracker).where.not(id: Verification.select(:account_id))
+        accounts.each do |account|
+          if account.reverification_tracker.final_warning? && account.reverification_tracker.updated_at.to_date >= Date.today
+            account.destroy
           end
-        end
-      end
-
-      # Note: How can I modify this to handle the emails that are also in success queue?
-      def poll_transient_bounce_queue
-        transient_bounce_queue.poll(initial_timeout: 1, idle_timeout: 1) do |msg|
-          email_address = msg.body
-          rev_tracker = Account.find_by_email(email_address).reverification_tracker
-          determine_correct_notification_to_send(rev_tracker)
         end
       end
     end

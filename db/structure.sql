@@ -903,6 +903,7 @@ CREATE TABLE projects (
     kb_id integer,
     organization_id integer,
     activity_level_index integer,
+    uuid character varying,
     CONSTRAINT valid_missing_source CHECK ((((missing_source IS NULL) OR (missing_source = 'not available'::text)) OR (missing_source = 'not supported'::text)))
 );
 
@@ -1566,6 +1567,41 @@ CREATE SEQUENCE failure_groups_id_seq
 --
 
 ALTER SEQUENCE failure_groups_id_seq OWNED BY failure_groups.id;
+
+
+--
+-- Name: feedbacks; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE feedbacks (
+    id integer NOT NULL,
+    rating integer,
+    more_info integer,
+    uuid character varying,
+    ip_address inet,
+    project_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: feedbacks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE feedbacks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: feedbacks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE feedbacks_id_seq OWNED BY feedbacks.id;
 
 
 --
@@ -4225,6 +4261,13 @@ ALTER TABLE ONLY failure_groups ALTER COLUMN id SET DEFAULT nextval('failure_gro
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY feedbacks ALTER COLUMN id SET DEFAULT nextval('feedbacks_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY follows ALTER COLUMN id SET DEFAULT nextval('follows_id_seq'::regclass);
 
 
@@ -4801,6 +4844,14 @@ ALTER TABLE ONLY factoids
 
 ALTER TABLE ONLY failure_groups
     ADD CONSTRAINT failure_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: feedbacks_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY feedbacks
+    ADD CONSTRAINT feedbacks_pkey PRIMARY KEY (id);
 
 
 --
@@ -8177,7 +8228,11 @@ INSERT INTO schema_migrations (version) VALUES ('20151116113941');
 
 INSERT INTO schema_migrations (version) VALUES ('20151124143945');
 
+INSERT INTO schema_migrations (version) VALUES ('20160121110527');
+
 INSERT INTO schema_migrations (version) VALUES ('20160209204755');
+
+INSERT INTO schema_migrations (version) VALUES ('20160216095409');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

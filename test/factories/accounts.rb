@@ -47,48 +47,64 @@ FactoryGirl.define do
     association :markup
   end
 
-  factory :validated_account_with_left_over_tracker, parent: :account do
-    association :reverification_tracker
+  # Note: All code downard is for spammer cleanup/reverifications
+  trait :spammer do
+    level Account::Access::SPAM
+    association :github_verification, strategy: :null
   end
+
+  trait :no_verification do
+    association :github_verification, strategy: :null
+  end
+
+  trait :invalid_spammer do
+    level Account::Access::SPAM
+    association :github_verification
+  end
+
+  # factory :validated_account_with_left_over_tracker, parent: :account do
+  #   association :reverification_tracker
+  # end
 
   factory :unverified_account, parent: :account do
     association :github_verification, strategy: :null
     association :reverification_tracker, strategy: :null
 
-    trait :hard_bounce do
-      email 'bounce@simulator.amazonses.com'
-    end
+  #   trait :hard_bounce do
+  #     email 'bounce@simulator.amazonses.com'
+  #   end
 
-    trait :soft_bounce do
-      email 'ooto@simulator.amazonses.com'
-    end
+  #   trait :soft_bounce do
+  #     email 'ooto@simulator.amazonses.com'
+  #   end
 
-    trait :complaint do
-      email 'complaint@simulator.amazonses.com'
-    end
+  #   trait :complaint do
+  #     email 'complaint@simulator.amazonses.com'
+  #   end
 
-    trait :success do
-      email 'success@simulator.amazonses.com'
-    end
+  #   trait :success do
+  #     email 'success@simulator.amazonses.com'
+  #   end
   end
 
-  factory :initial_phase_account, parent: :account do
-    association :github_verification, strategy: :null
-    association :reverification_tracker
-  end
+  # factory :initial_phase_account, parent: :account do
+  #   association :github_verification, strategy: :null
+  #   association :reverification_tracker
+  # end
 
-  factory :marked_for_spam_phase_account, parent: :account do
-    association :github_verification, strategy: :null
-    association :reverification_tracker, status: 1
-  end
+  # factory :marked_for_spam_phase_account, parent: :account do
+  #   association :github_verification, strategy: :null
+  #   association :reverification_tracker, phase: 1
+  # end
 
-  factory :spam_phase_account, parent: :account do
-    association :github_verification, strategy: :null
-    association :reverification_tracker, status: 2
-  end
+  # factory :spam_phase_account, parent: :account do
+  #   association :github_verification, strategy: :null
+  #   association :reverification_tracker, phase: 2
+  # end
 
-  factory :final_warning_phase_account, parent: :account do
-    association :github_verification, strategy: :null
-    association :reverification_tracker, status: 3
-  end
+  # factory :final_warning_phase_account, parent: :account do
+  #   association :github_verification, strategy: :null
+  #   association :reverification_tracker, phase: 3
+  # end
 end
+
