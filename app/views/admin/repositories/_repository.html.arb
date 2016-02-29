@@ -7,7 +7,7 @@ table class: 'index_table' do
       a link_to repository.id, admin_repository_path(repository)
     end
     td do
-      "#{repository.nice_url} [#{link_to 'Re-Fetch'}]".html_safe
+      "#{repository.nice_url} [#{link_to 'Re-Fetch', refetch_admin_repository_path(repository)}]".html_safe
     end
     td do
       "Updates every #{time_ago_in_days_hours_minutes(Time.current - repository.update_interval)}"
