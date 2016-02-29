@@ -4,11 +4,10 @@ end
 
 every :hour do
   rake 'reverification:poll_success_queue'
-  rake 'reverification:poll_transient_bounce_queue'
   rake 'reverification:poll_bounce_queue'
   rake 'reverification:poll_complaints_queue'
 end
 
 every 1.day, at: '6:00 am' do
-  rake 'reverification:remove_reverification_trackers_for_validated_accounts'
+  rake 'reverification:cleanup'
 end

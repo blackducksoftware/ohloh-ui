@@ -102,13 +102,6 @@ class Account < ActiveRecord::Base
   end
 
   class << self
-    def unverified_accounts(limit)
-      Account.find_by_sql("SELECT accounts.id, accounts.email FROM accounts
-                            LEFT OUTER JOIN verifications
-                          ON verifications.account_id = accounts.id
-                            WHERE verifications.account_id is NULL LIMIT #{limit}")
-    end
-
     def resolve_login(login)
       Account.find_by('lower(login) = ?', login.to_s.downcase)
     end

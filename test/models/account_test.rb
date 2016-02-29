@@ -669,4 +669,20 @@ class AccountTest < ActiveSupport::TestCase
       Account.active.wont_include account3
     end
   end
+
+  describe 'unverified' do
+    it 'should return all unverified accounts' do
+
+    end
+  end
+
+  describe 'reverification_not_initiated' do
+    it 'should return all unverified accounts, for them reverification process is not started'do
+      create(:unverified_account, :success)
+      create(:unverified_account, :complaint)
+      create(:account)
+      assert_equal 2, Account.unverified.size
+      assert_not_equal Account.count, Account.unverified.size
+    end
+  end
 end
