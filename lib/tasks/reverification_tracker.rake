@@ -12,6 +12,11 @@ namespace :reverification do
   end
 
   desc 'This task polls the bounce queue'
+  task poll_transient_bounce_queue: :environment do
+    ReverificationTracker.poll_transient_bounce_queue
+  end
+
+  desc 'This task polls the bounce queue'
   task poll_bounce_queue: :environment do
     ReverificationTracker.poll_bounce_queue
   end

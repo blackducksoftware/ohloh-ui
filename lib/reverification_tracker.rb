@@ -111,6 +111,7 @@ class ReverificationTracker < ActiveRecord::Base
       @complaints_queue ||= sqs.queues.named('ses-complaints-queue')
     end
 
+    # Note: How do I handle the accounts that are in the transient queue simulataneously?
     def poll_success_queue
       success_queue.poll(initial_timeout: 1, idle_timeout: 1) do |msg|
         message_as_hash = msg.as_sns_message.body_message_as_h
@@ -118,6 +119,15 @@ class ReverificationTracker < ActiveRecord::Base
           account = Account.find_by_email recipient
           account.reverification_tracker.delivered! if account.reverification_tracker.pending?
         end
+      end
+    end
+    
+    # Note: How can I modify this to handle the emails that are also in success queue?
+    def poll_transient_bounce_queue
+      transient_bounce_queue.poll(initial_timeout: 1, idle_timeout: 1) do |msg|
+        email_address = msg.body
+        rev_tracker = Account.find_by_email(email_address).reverification_tracker
+        determine_correct_notification_to_send(rev_tracker)
       end
     end
 
@@ -147,14 +157,17 @@ class ReverificationTracker < ActiveRecord::Base
       account.destroy if account
     end
 
-    def determine_correct_notification_to_send(account)
-      if account.reverification_tracker.spam?
-        ses.send_email(one_day_before_deletion_notice(account.email))
-      elsif account.reverification_tracker.marked_for_spam?
-        ses.send_email(account_is_spam_notice(account.email))
-      else
-        ses.send_email(marked_for_spam_notice(account.email))
+    def determine_correct_notification_to_send(rev_tracker)
+      if rev_tracker.initial?
+        send_mail(first_reverification_notice(rev_tracker.account.email), rev_tracker.account, rev_tracker.phase)
       end
+      # if account.reverification_tracker.spam?
+      #   ses.send_email(one_day_before_deletion_notice(account.email))
+      # elsif account.reverification_tracker.marked_for_spam?
+      #   ses.send_email(account_is_spam_notice(account.email))
+      # else
+      #   ses.send_email(marked_for_spam_notice(account.email))
+      # end
     end
 
     def process_bounce(message_body)
@@ -170,21 +183,29 @@ class ReverificationTracker < ActiveRecord::Base
       end
     end
 
-    def update_reverification_tracker(account)
-      if account.reverification_tracker.spam?
-        account.reverification_tracker.final_warning!
-      elsif account.reverification_tracker.marked_for_spam?
-        account.access.spam!
-        account.reverification_tracker.spam!
-      else
-        account.reverification_tracker.marked_for_spam!
+    # This will need to be modified for both statuses.
+    def update_reverification_tracker(account, response_message, phase)
+      if account.reverification_tracker.initial?
+        # Update to the same status it was before
+        account.reverification_tracker.update(message_id: resp[:message_id], status: 0, phase: phase)
+        account.reverification.auto_responded!
       end
+      #
+      # if account.reverification_tracker.spam?
+      #   account.reverification_tracker.final_warning!
+      # elsif account.reverification_tracker.marked_for_spam?
+      #   account.access.spam!
+      #   account.reverification_tracker.spam!
+      # else
+      #   account.reverification_tracker.marked_for_spam!
+      # end
     end
 
-    #def create_reverification_tracker(account)
-    #  account.reverification_tracker = AccountReverification.create
-    #  account.reverification_tracker.initial!
-    #end
+    def create_reverification_tracker(account, response_message)
+      account.reverification_tracker = ReverificationTracker.create(account_id: account.id, message_id: response_message[:message_id])
+      account.reverification_tracker.initial!
+      account.reverification_tracker.pending!
+    end
 
     def less_than(date)
      Time.now.utc < date
@@ -245,9 +266,9 @@ class ReverificationTracker < ActiveRecord::Base
     def send_mail(template, account, phase)
       resp = ses.send_email(template)
       if account.reverification_tracker
-        account.reverification_tracker.update(message_id: resp[:message_id], status: 0, phase: phase)
+        update_reverification_tracker(account, resp, phase)
       else
-        account.create_reverification_tracker(message_id: resp[:message_id])
+        create_reverification_tracker(account, resp)
       end
     end
   end

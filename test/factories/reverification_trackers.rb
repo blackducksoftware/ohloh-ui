@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :reverification_tracker do
     association :account
+    message_id 0
     feedback ''
     phase 0
     status 0

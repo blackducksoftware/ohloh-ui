@@ -4,6 +4,7 @@ end
 
 every :hour do
   rake 'reverification:poll_success_queue'
+  rake 'reverification:poll_transient_bounce_queue'
   rake 'reverification:poll_bounce_queue'
   rake 'reverification:poll_complaints_queue'
 end
