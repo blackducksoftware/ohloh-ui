@@ -22,6 +22,7 @@ class DuplicateTest < ActiveSupport::TestCase
 
     it 'properly cleans up ratings' do
       create(:rating, account: account_1, project: good_project)
+      [account_1, account_2].map(&:verifications).map(&:destroy_all)
       bad_rating_1 = create(:rating, account: account_1, project: bad_project)
       bad_rating_2 = create(:rating, account: account_2, project: bad_project)
 
