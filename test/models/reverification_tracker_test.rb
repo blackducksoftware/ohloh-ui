@@ -1,110 +1,15 @@
 require 'test_helper'
 
 class ReverificationTrackerTest < ActiveSupport::TestCase
-  describe 'ReverificationTracker' do
-    describe 'first notification phase' do
-      describe 'sending the first notification' do
-        it 'should only send notifications to accounts that do not have verifications only' do
-          correct_account = create(:unverified_account, :success)
-          create_list(:account, 4)
-          first_notice = Reverification::Template.first_reverification_notice(correct_account.email)
-          Reverification::Mailer.expects(:send).with(first_notice, correct_account, 0)
-          AWS::SimpleEmailService.any_instance.expects(:send_email).with(first_notice).once
-          Reverification::Mailer.send_first_notification
-        end
+ # Note: The methods in ReverificationTracker.rb will be tested here.
 
-        # it 'it should immediately create a rev_tracker with status pending after notice is sent' do
-        #   message_id = { message_id: "d377dd-93-4a-884382d-000000" }.with_indifferent_access
-        #   correct_account = create(:unverified_account, :success)
-        #   assert_difference 'ReverificationTracker.count', 1 do
-        #      ReverificationTracker.create_reverification_tracker(correct_account, message_id)
-        #      assert ReverificationTracker.first.pending?
-        #      assert ReverificationTracker.first.initial?
-        #   end
-        # end
-
-        # it 'should not resend if the ses limit is reached' do
-        #    ReverificationTracker.expects(:ses_limit_reached?).returns(true)
-        #    AWS::SimpleEmailService.any_instance.expects(:send_email).never
-        #    ReverificationTracker.send_first_notification
-        # end
+  describe 'determine_correct_notifications_to_send' do
+    describe 'initial phase' do
+      it 'should resend the first notification if bounced back' do
+        
       end
-
-      # describe 'success scenario' do
-      #   before do
-      #      @rev_tracker = create(:reverification_tracker)
-      #      mock_queue = mock('AWS::SQS::Queue::MOCK')
-      #      mock_queue.stubs(:poll).yields(SuccessMessage.new).once
-      #      ReverificationTracker.stubs(:success_queue).returns(mock_queue)
-      #   end
-
-      #   it "should update an account's rev_tracker to delivered" do
-      #      Account.expects(:find_by_email).returns(@rev_tracker.account).once
-      #      ReverificationTracker.any_instance.expects(:pending?).returns(true)
-      #      ReverificationTracker.any_instance.expects(:delivered!)
-      #      ReverificationTracker.poll_success_queue
-      #   end
-
-      #   it "should not update an account's rev_tracker to delivered if pending is false" do
-      #      Account.expects(:find_by_email).returns(@rev_tracker.account).once
-      #      ReverificationTracker.any_instance.expects(:pending?).returns(false)
-      #      ReverificationTracker.any_instance.expects(:delivered!).never
-      #      ReverificationTracker.poll_success_queue
-      #   end
-      # end
-
-      # Note: Remember these emails get send to success queue AND transient queue
-      # describe 'transient bounce scenario' do
-      #   before do
-      #     @transient_account = create(:initial_phase_account, email: 'ooto@simulator.amazonses.com')
-      #     @first_notice = ReverificationTracker.first_reverification_notice(@transient_account.email)
-      #   end
- 
-      #   it 'should retry the first reverification notice' do
-      #       mock_queue = mock('AWS::SQS::Queue::MOCK')
-      #       mock_queue.stubs(:poll).yields(TransientBounceMessage.new).once
-      #       ReverificationTracker.stubs(:transient_bounce_queue).returns(mock_queue)
-      #       ReverificationTracker.stubs(:transient_bounce_queue).returns(mock_queue)
-      #       ReverificationTracker.any_instance.expects(:send_mail).with(@first_notice).once
-      #       ReverificationTracker.poll_transient_bounce_queue
-      #   end
-
-      #   it ' should specify that an ooto triggered an auto response' do
-      #   end
- 
-      #   it 'should not resend if the ses limit is reached' do
-      #      ReverificationTracker.expects(:ses_limit_reached?).returns(true)
-      #      ReverificationTracker.any_instance.expects(:send_mail).with(@first_notcie).never
-      #      ReverificationTracker.poll_transient_bounce_queue
-      #   end
-      # end
     end
   end
-end 
-
- #       describe 'hard bounce scenario' do
- #         before do
- #           @hard_account = create(:unverified_account, :hard_bounce)
- #           @mock_queue = mock('AWS::SQS::Queue::MOCK')
- #         end
-
- #         it 'should delete any account that is a hard permanent bounce' do
- #           @mock_queue.stubs(:poll).yields(HardBounceMessage.new).once
- #           ReverificationTracker.stubs(:bounce_queue).returns(@mock_queue)
- #           ReverificationTracker.expects(:store_email_for_later_retry).never
- #           ReverificationTracker.expects(:destroy_account)
- #           ReverificationTracker.poll_bounce_queue
- #         end
-
- #         it 'should send a soft bounce to the transient bounce queue' do
- #           @mock_queue.stubs(:poll).yields(TransientBounceMessage.new).once
- #           ReverificationTracker.stubs(:bounce_queue).returns(@mock_queue)
- #           ReverificationTracker.expects(:store_email_for_later_retry).once
- #           ReverificationTracker.expects(:destroy_account).never
- #           ReverificationTracker.poll_bounce_queue
- #         end
- #       end
- #     end
 
  #     describe 'mark as spam phase (2nd phase)' do
  #       describe 'sending the marked for spam notification' do

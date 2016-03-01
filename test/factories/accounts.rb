@@ -62,6 +62,22 @@ FactoryGirl.define do
     association :github_verification
   end
 
+  trait :success do
+    email 'success@simulator.amazonses.com'
+  end
+
+  trait :hard_bounce do
+    email 'bounce@simulator.amazonses.com'
+  end
+
+  trait :soft_bounce do
+    email 'ooto@simulator.amazonses.com'
+  end
+
+  trait :complaint do
+    email 'complaint@simulator.amazonses.com'
+  end
+
   # factory :validated_account_with_left_over_tracker, parent: :account do
   #   association :reverification_tracker
   # end
@@ -69,22 +85,6 @@ FactoryGirl.define do
   factory :unverified_account, parent: :account do
     association :github_verification, strategy: :null
     association :reverification_tracker, strategy: :null
-
-  #   trait :hard_bounce do
-  #     email 'bounce@simulator.amazonses.com'
-  #   end
-
-  #   trait :soft_bounce do
-  #     email 'ooto@simulator.amazonses.com'
-  #   end
-
-  #   trait :complaint do
-  #     email 'complaint@simulator.amazonses.com'
-  #   end
-
-  #   trait :success do
-  #     email 'success@simulator.amazonses.com'
-  #   end
   end
 
   # factory :initial_phase_account, parent: :account do

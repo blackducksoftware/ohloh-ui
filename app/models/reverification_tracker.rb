@@ -1,8 +1,12 @@
 # rubocop:disable Metrics/ClassLength
 class ReverificationTracker < ActiveRecord::Base
   belongs_to :account
-
-  enum status: [:pending, :delivered, :bounced, :complained, :auto_responded]
+  # Note: I might not need soft_bounced status
+  # Important Note: Determining what notification to send based on these
+  # values are now faulty. Every time a status or phase changes, the upated_at
+  # changes as well. If someone complained, soft_bounces, or pending, then the
+  # updated at could be inaccurate. More testing is needed.
+  enum status: [:pending, :delivered, :soft_bounced, :complained]
   enum phase: [:initial, :marked_for_spam, :spam, :final_warning]
 
   class << self
@@ -25,7 +29,8 @@ class ReverificationTracker < ActiveRecord::Base
 
     def determine_correct_notification_to_send(rev_tracker)
       if rev_tracker.initial?
-        send_mail(first_reverification_notice(rev_tracker.account.email), rev_tracker.account, rev_tracker.phase)
+        Reverification::Process.send(first_reverification_notice(rev_tracker.account.email))
+        rev_tracker.pending!
       end
       # if account.reverification_tracker.spam?
       #   ses.send_email(one_day_before_deletion_notice(account.email))

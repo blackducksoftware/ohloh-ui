@@ -11,11 +11,21 @@ FactoryGirl.define do
 
   factory :initial_rev_tracker, parent: :reverification_tracker do
     association :account, :no_verification
-    phase 0
+  end
+
+  factory :success_initial_rev_tracker, parent: :reverification_tracker do
+    association :account, :success
+  end
+
+  factory :hard_bounce_initial_rev_tracker, parent: :reverification_tracker do
+    association :account, :hard_bounce
+  end
+
+  factory :soft_bounce_initial_rev_tracker, parent: :reverification_tracker do
+    association :account, :soft_bounce
   end
 
   factory :marked_for_spam_rev_tracker, parent: :reverification_tracker do
-    # Note: ':no_verification' is a trait defined in factories/accounts
     association :account, :no_verification
     phase 1
   end
@@ -26,13 +36,11 @@ FactoryGirl.define do
   end
 
   factory :final_warning_rev_tracker, parent: :reverification_tracker do
-    #  Note: ':spammer' is a trait defined in factories/accounts
     association :account, :spammer
     phase 3
   end
 
   factory :invalid_final_warning_rev_tracker, parent: :reverification_tracker do
-    #  Note: ':invalid_spammer' is a trait defined in factories/accounts
     association :account, :invalid_spammer
     phase 3
   end

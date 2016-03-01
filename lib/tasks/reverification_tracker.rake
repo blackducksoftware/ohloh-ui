@@ -4,6 +4,11 @@ namespace :reverification do
     Reverification::Mailer.run
   end
 
+  desc 'This retries to send an email to accounts that have soft bounced'
+  task retry_bounced_responses: :environment do
+    Reverification::Process.poll_transient_bounce_queue
+  end
+
   desc 'This task polls the success queue'
   task poll_success_queue: :environment do
     Reverification::Process.poll_success_queue

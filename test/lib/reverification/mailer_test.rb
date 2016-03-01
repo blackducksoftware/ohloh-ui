@@ -46,20 +46,25 @@ class Reverification::MailerTest < ActiveSupport::TestCase
         Reverification::Mailer.send_marked_for_spam_notification
       end
 
-      it 'should send a first notification to the correct accounts' do
-        create(:unverified_account)
-        Reverification::Process.expects(:send).once
-        Reverification::Mailer.send_first_notification
-      end
+      describe 'send_first_notification' do
+        it 'should send a first notification to the correct accounts' do
+          account = create(:unverified_account)
+          incorrect_account = create(:account)
+          Reverification::Template.expects(:first_reverification_notice).with(account.email)
+          Reverification::Template.expects(:first_reverification_notice).with(incorrect_account.email).never
+          Reverification::Process.expects(:send).returns(aws_response_message_id)
+          Reverification::Mailer.send_first_notification
+        end
 
-      it 'should create a rev_tracker when a first notification is sent' do
-        create(:unverified_account)
-        Reverification::Process.expects(:send).once
-        # This test is breaking because of the blank response from ses.send_email
-        Reverification::Mailer.stubs(:send_first_notification).yields(aws_response_message_id)
-        assert_equal 1, ReverificationTracker.count
-        assert ReverificationTracker.first.initial?
-        assert ReverificationTracker.first.pending?
+        it 'should create a rev_tracker when a first notification is sent' do
+          create(:unverified_account)
+          create(:account)
+          Reverification::Process.stubs(:send).returns(aws_response_message_id).once
+          Reverification::Mailer.send_first_notification
+          assert_equal 1, ReverificationTracker.count
+          assert ReverificationTracker.first.initial?
+          assert ReverificationTracker.first.pending?
+        end
       end
     end
     # ==============================================================

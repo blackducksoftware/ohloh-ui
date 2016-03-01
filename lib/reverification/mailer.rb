@@ -42,10 +42,7 @@ module Reverification
       def send_first_notification
         Account.reverification_not_initiated(SAMPLE_COUNT).each do |account|
           notification = Reverification::Template.first_reverification_notice(account.email)
-          # Note: resp is not mocking at all. Figure out why.
-          # Test is breaking at this point
-          resp = Reverification::Process.send(notification, account, 0)
-          binding.pry
+          resp = Reverification::Process.send(notification)
           account.create_reverification_tracker(message_id: resp[:message_id])
           account.reverification_tracker.initial!
           account.reverification_tracker.pending!
