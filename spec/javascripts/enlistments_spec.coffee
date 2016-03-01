@@ -18,6 +18,11 @@ describe 'Enlistments', ->
       isSpinnerVisible = $('.enlistment').find('.spinner').is(':visible')
       expect(isSpinnerVisible).toBe(true)
 
+    it 'should disable submit button once after the first click', ->
+      submitBtn = $('.enlistment .submit')
+      submitBtn.click()
+      expect(submitBtn.is(':disabled')).toBeTruthy()
+
   describe 'repository type change', ->
     it 'should show bzr repository details', ->
       $('#repository_type').val('BzrRepository')

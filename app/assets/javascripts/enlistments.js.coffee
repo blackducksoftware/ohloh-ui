@@ -34,7 +34,8 @@ App.Enlistment = init: ->
         $('.bzr input').removeAttr('disabled')
   ).change()
 
-  $('.enlistment .submit').click ->
+  $('.enlistment .submit').one 'click', ->
+    $(this).attr('disabled', 'disabled')
     $('.enlistment .spinner').show()
 $(document).on 'page:change', ->
   App.Enlistment.init()
