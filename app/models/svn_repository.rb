@@ -9,12 +9,6 @@ class SvnRepository < Repository
     url
   end
 
-  class << self
-    def find_existing(repository)
-      SvnRepository.where(url: repository.url).first
-    end
-  end
-
   private
 
   def set_url_and_branch_name
