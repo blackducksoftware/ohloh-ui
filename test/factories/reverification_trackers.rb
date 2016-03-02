@@ -1,10 +1,11 @@
 FactoryGirl.define do
   factory :reverification_tracker do
     association :account
-    message_id 0
+    message_id 'XYZ0-1234-AB56-67GJ'
     feedback ''
     phase 0
     status 0
+    sent_at DateTime.now.utc
     created_at DateTime.now.utc
     updated_at DateTime.now.utc
   end

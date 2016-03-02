@@ -29,9 +29,19 @@ module Reverification
         ses.quotas[:sent_last_24_hours] == ses.quotas[:max_24_hour_send]
       end
 
-      def send(template)
+      def send(template, account, phase)
         return if ses_limit_reached?
-        ses.send_email(template)
+        resp = ses.send_email(template)
+        if account.reverification_tracker
+          if phase == ReverificationTracker.phases[account.reverification_tracker.phase]
+            account.reverification_tracker.increment! :attempts
+          else
+            account.reverification_tracker.update attempts: 1
+          end
+          account.reverification_tracker.update(message_id: resp[:message_id], status: 0, phase: phase, sent_at: Time.now)
+        else
+          account.create_reverification_tracker(message_id: resp[:message_id], sent_at: Time.now)
+        end
       end
 
       def send_to_transient_bounce_queue(recipient)
@@ -45,9 +55,7 @@ module Reverification
           message_hash = msg.as_sns_message.body_message_as_h
           message_hash['delivery']['recipients'].each do |recipient|
             account = Account.find_by_email recipient
-            if account.reverification_tracker.pending?
-              account.reverification_tracker.delivered!
-            end
+            account.reverification_tracker.delivered!
           end
         end
       end
@@ -56,13 +64,19 @@ module Reverification
         bounce_queue.poll(initial_timeout: 1, idle_timeout: 1) do |msg|
           decoded_msg = msg.as_sns_message.body_message_as_h
           decoded_msg['bounce']['bouncedRecipients'].each do |recipient|
+            account = Account.find_by_email recipient['emailAddress']
+            notification = account.reverification_tracker
             case decoded_msg['bounce']['bounceType']
             when 'Undetermined'
               send_to_transient_bounce_queue(recipient)
             when 'Permanent'
               ReverificationTracker.destroy_account(recipient['emailAddress'])
             when 'Transient'
-              send_to_transient_bounce_queue(recipient)
+              if notification.pending?
+                notification.soft_bounced!
+              elsif notification.delivered?
+                notification.auto_responded!
+              end
             end
           end
         end

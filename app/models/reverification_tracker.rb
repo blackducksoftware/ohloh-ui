@@ -6,8 +6,16 @@ class ReverificationTracker < ActiveRecord::Base
   # values are now faulty. Every time a status or phase changes, the upated_at
   # changes as well. If someone complained, soft_bounces, or pending, then the
   # updated at could be inaccurate. More testing is needed.
-  enum status: [:pending, :delivered, :soft_bounced, :complained]
+  enum status: [:pending, :delivered, :soft_bounced, :complained, :auto_responded]
   enum phase: [:initial, :marked_for_spam, :spam, :final_warning]
+
+  scope :till_yesterday, -> { where('DATE(sent_at) < DATE(NOW())').order(sent_at: :asc) }
+  scope :max_attempts_not_reached, -> { where("attempts < #{Reverification::Mailer::MAX_ATTEMPTS}") }
+  scope :max_attempts_reached, -> { where("attempts >= #{Reverification::Mailer::MAX_ATTEMPTS}") }
+
+  def max_attempts_reached?
+    attempts >= Reverification::Mailer::MAX_ATTEMPTS
+  end
 
   class << self
     def spam_phase_accounts(limit = nil)

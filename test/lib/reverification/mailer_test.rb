@@ -1,6 +1,41 @@
 require 'test_helper'
 
 class Reverification::MailerTest < ActiveSupport::TestCase
+  let(:verified_account) { create(:account) }
+  let(:unverified_account_sucess) { create(:unverified_account, :success) }
+
+  describe 'send_first_notification' do
+    it 'should send notification to unverified accounts only' do
+      Reverification::Process.stubs(:ses_limit_reached?).returns(false)
+      Account.expects(:reverification_not_initiated).returns([unverified_account_sucess])
+      unverified_account_sucess.reverification_tracker.must_be_nil
+      Reverification::Mailer.send_first_notification
+      unverified_account_sucess.reverification_tracker.must_be :present?
+      unverified_account_sucess.reverification_tracker.phase.must_equal 'initial'
+      unverified_account_sucess.reverification_tracker.attempts.must_equal 1
+    end
+  end
+
+  describe 'send_marked_for_spam_notification' do
+    before do
+      Reverification::Process.stubs(:ses_limit_reached?).returns(false)
+      create(:reverification_tracker, account: unverified_account_sucess, sent_at: Time.now - 14.days)
+    end
+
+    #Note: No clue why Reverfication::Process.send results in argument error at this point; have to fix it.
+    it 'should send marked for spam notifcation after 14 days' do
+      Reverification::Mailer.send_marked_for_spam_notification
+      unverified_account_sucess.reverification_tracker.phase.must_equal 'marked_for_spam'
+      unverified_account_sucess.reverification_tracker.attempts.must_equal 1
+    end
+
+    it 'should not send marked for spam notifcation ahead 14 days' do
+      unverified_account_sucess.reverification_tracker.update(sent_at: Time.now - 13.days)
+      Reverification::Process.expects(:send).never
+      Reverification::Mailer.send_marked_for_spam_notification
+    end
+  end
+
   describe 'run' do
     describe 'send_notifications' do
       it 'should send notifications to accounts' do
@@ -44,27 +79,6 @@ class Reverification::MailerTest < ActiveSupport::TestCase
         create(:initial_rev_tracker, created_at: past, updated_at: past)
         Reverification::Process.expects(:send).once
         Reverification::Mailer.send_marked_for_spam_notification
-      end
-
-      describe 'send_first_notification' do
-        it 'should send a first notification to the correct accounts' do
-          account = create(:unverified_account)
-          incorrect_account = create(:account)
-          Reverification::Template.expects(:first_reverification_notice).with(account.email)
-          Reverification::Template.expects(:first_reverification_notice).with(incorrect_account.email).never
-          Reverification::Process.expects(:send).returns(aws_response_message_id)
-          Reverification::Mailer.send_first_notification
-        end
-
-        it 'should create a rev_tracker when a first notification is sent' do
-          create(:unverified_account)
-          create(:account)
-          Reverification::Process.stubs(:send).returns(aws_response_message_id).once
-          Reverification::Mailer.send_first_notification
-          assert_equal 1, ReverificationTracker.count
-          assert ReverificationTracker.first.initial?
-          assert ReverificationTracker.first.pending?
-        end
       end
     end
     # ==============================================================
