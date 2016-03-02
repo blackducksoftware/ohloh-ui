@@ -1,0 +1,39 @@
+#! /usr/bin/env ruby
+
+require_relative '../config/environment'
+
+class RemoveDuplicateRepositoriesMappedToSameProject
+  def execute
+    puts 'Started'
+    find_duplicate_repositories.each do |repository|
+      duplicate_repositories = find_repository_by_nice_url(repository['repo_url'])
+      Enlistment.where(project_id: repository['project_id'], repository_id: duplicate_repositories).order(:id).offset(1).each do |enlistment|
+        enlistment.create_edit.undo!(Account.hamster) rescue nil
+      end
+      print '.'
+    end
+    puts "\nUnable to delete the following repositories"
+    puts find_duplicate_repositories
+  end
+
+  private
+
+  def find_duplicate_repositories
+    ActiveRecord::Base.connection.select_all("
+      select project_id, repo_url from (
+        select enlistments.project_id, url ||'|'|| branch_name ||'|'|| module_name as repo_url
+        from repositories
+        inner join enlistments on enlistments.repository_id = repositories.id and enlistments.deleted = 'f'
+        group by repo_url, enlistments.project_id
+        having count(*) > 1
+      ) repo where repo_url is not null;
+    ")
+  end
+
+  def find_repository_by_nice_url(nice_url)
+    url, branch_name, module_name = nice_url.strip.split('|')
+    Repository.where(url: url, branch_name: branch_name.to_s, module_name: module_name.to_s)
+  end
+end
+
+RemoveDuplicateRepositoriesMappedToSameProject.new.execute
