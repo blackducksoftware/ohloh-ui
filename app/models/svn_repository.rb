@@ -11,7 +11,7 @@ class SvnRepository < Repository
 
   class << self
     def find_existing(repository)
-      SvnRepository.find_by(url: repository.url)
+      SvnRepository.where(url: repository.url).first
     end
   end
 

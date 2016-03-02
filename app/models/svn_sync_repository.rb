@@ -21,7 +21,7 @@ class SvnSyncRepository < SvnRepository
     end
 
     def find_existing(repository)
-      SvnSyncRepository.find_by(url: repository.url)
+      SvnSyncRepository.where(url: repository.url).first
     end
   end
 end

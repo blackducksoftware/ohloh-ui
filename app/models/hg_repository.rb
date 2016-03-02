@@ -5,7 +5,7 @@ class HgRepository < Repository
 
   class << self
     def find_existing(repository)
-      HgRepository.find_by(url: repository.url)
+      HgRepository.where(url: repository.url).first
     end
   end
 end

@@ -5,7 +5,7 @@ class BzrRepository < Repository
 
   class << self
     def find_existing(repository)
-      BzrRepository.find_by(url: repository.url)
+      BzrRepository.where(url: repository.url).first
     end
   end
 end
