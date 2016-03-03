@@ -209,7 +209,7 @@ class ActiveSupport::TestCase
   end
 
   def aws_response_message_id
-    { message_id: '78765357-sb87cccv-38374602-ghdku3846-gvoekgueta'}
+    { message_id: 'XYZ0-1234-AB56-67GJ' }
   end
 
   class TransientQueueMessage

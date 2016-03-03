@@ -3,7 +3,7 @@ every 1.day, at: '9:00 am' do
 end
 
 every 1.day, at: '9:00 am' do
-  rake 'reverification:retry_bounced_responses'
+  rake 'reverification:retry_soft_bounced_responses'
 end
 
 every :hour do

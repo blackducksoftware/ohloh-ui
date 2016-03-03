@@ -21,10 +21,6 @@ module Reverification
         @complaints_queue ||= sqs.queues.named('ses-complaints-queue')
       end
 
-      def transient_bounce_queue
-        @transient_bounce_queue ||= sqs.queues.named('ses-transientbounces-queue')
-      end
-
       def ses_limit_reached?
         ses.quotas[:sent_last_24_hours] == ses.quotas[:max_24_hour_send]
       end
@@ -33,22 +29,28 @@ module Reverification
         return if ses_limit_reached?
         resp = ses.send_email(template)
         if account.reverification_tracker
-          #Note: Increment the attempts counter for retry. For new notification, resets attempts counter as 1
-          if phase == ReverificationTracker.phases[account.reverification_tracker.phase]
-            account.reverification_tracker.increment! :attempts
+           # Note: Increment the attempts counter for retry. For new notification, resets attempts counter as 1
+
+          # In mailer.rb the send method has hard coded values of 0, 1, 2, 3, 
+          # In addition, the resend_soft_bounced_notifications checks for the correct phase.
+          # Won't the line of code below always be true?
+
+          # if phase == ReverificationTracker.phases[account.reverification_tracker.phase]
+          #   account.reverification_tracker.increment! :attempts
+          # else
+          #   account.reverification_tracker.update attempts: 1
+          # end
+          # account.reverification_tracker.update(message_id: resp[:message_id], status: 0, phase: phase, sent_at: Time.now)
+          
+          if account.reverification_tracker.attempts >= 3
+             account.reverification_tracker.update(message_id: resp[:message_id], status: 0, phase: phase + 1, sent_at: Time.now, attempts: 1)
           else
-            account.reverification_tracker.update attempts: 1
+            account.reverification_tracker.increment! :attempts
+            return
           end
-          account.reverification_tracker.update(message_id: resp[:message_id], status: 0, phase: phase, sent_at: Time.now)
         else
           account.create_reverification_tracker(message_id: resp[:message_id], sent_at: Time.now)
         end
-      end
-
-      def send_to_transient_bounce_queue(recipient)
-        account = Account.find_by_email recipient['emailAddress']
-        account.reverification_tracker.soft_bounced!
-        transient_bounce_queue.send_message recipient['emailAddress']
       end
 
       def poll_success_queue
@@ -85,15 +87,6 @@ module Reverification
             account.reverification_tracker.complained!
             account.reverification_tracker.update feedback: decoded_msg['complaint']['complaintFeedbackType']
           end
-        end
-      end
-
-      # Note: How can I modify this to handle the emails that are also in success queue?
-      def poll_transient_bounce_queue
-        transient_bounce_queue.poll(initial_timeout: 1, idle_timeout: 1) do |msg|
-          email_address = msg.body
-          rev_tracker = Account.find_by_email(email_address).reverification_tracker
-          ReverificationTracker.determine_correct_notification_to_send(rev_tracker)
         end
       end
     end

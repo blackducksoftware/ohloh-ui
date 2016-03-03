@@ -48,6 +48,11 @@ FactoryGirl.define do
   end
 
   # Note: All code downard is for spammer cleanup/reverifications
+  factory :unverified_account, parent: :account do
+    association :github_verification, strategy: :null
+    association :reverification_tracker, strategy: :null
+  end
+  
   trait :spammer do
     level Account::Access::SPAM
     association :github_verification, strategy: :null
@@ -81,34 +86,5 @@ FactoryGirl.define do
   trait :complaint do
     email 'complaint@simulator.amazonses.com'
   end
-
-  # factory :validated_account_with_left_over_tracker, parent: :account do
-  #   association :reverification_tracker
-  # end
-
-  factory :unverified_account, parent: :account do
-    association :github_verification, strategy: :null
-    association :reverification_tracker, strategy: :null
-  end
-
-  # factory :initial_phase_account, parent: :account do
-  #   association :github_verification, strategy: :null
-  #   association :reverification_tracker
-  # end
-
-  # factory :marked_for_spam_phase_account, parent: :account do
-  #   association :github_verification, strategy: :null
-  #   association :reverification_tracker, phase: 1
-  # end
-
-  # factory :spam_phase_account, parent: :account do
-  #   association :github_verification, strategy: :null
-  #   association :reverification_tracker, phase: 2
-  # end
-
-  # factory :final_warning_phase_account, parent: :account do
-  #   association :github_verification, strategy: :null
-  #   association :reverification_tracker, phase: 3
-  # end
 end
 
