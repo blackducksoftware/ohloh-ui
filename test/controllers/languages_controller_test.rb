@@ -15,7 +15,7 @@ describe 'LanguagesController' do
       must_respond_with :ok
       must_render_template :index
       assigns(:languages).count.must_equal 2
-      assigns(:languages).last.must_equal @language
+      assigns(:languages).last.must_equal @language.reload
     end
 
     it 'should filter by name' do
