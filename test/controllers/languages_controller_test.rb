@@ -33,13 +33,24 @@ describe 'LanguagesController' do
       assigns(:languages).count.must_equal 0
     end
 
-    it 'should sort by name' do
-      language = create(:language, name: 'java')
-      get :index, sort: 'name'
+    it 'must sort by nice_name by default' do
+      create(:language, name: 'abc', nice_name: 'xyz')
+      @language.update!(name: 'xyz', nice_name: 'abc')
+      get :index
       must_respond_with :ok
       must_render_template :index
       assigns(:languages).count.must_equal 2
-      assigns(:languages).last.must_equal language
+      assigns(:languages).first.must_equal @language
+    end
+
+    it 'must sort by selected option' do
+      create(:language, commits: 15)
+      @language.update!(commits: 20)
+      get :index, sort: 'commits'
+      must_respond_with :ok
+      must_render_template :index
+      assigns(:languages).count.must_equal 2
+      assigns(:languages).first.must_equal @language
     end
 
     it 'should respond to xml request' do
