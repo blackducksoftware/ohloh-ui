@@ -4,13 +4,6 @@ class ReverificationTracker < ActiveRecord::Base
   enum phase: [:initial, :marked_for_spam, :spam, :final_warning]
 
   scope :till_yesterday, -> { where('DATE(sent_at) < DATE(NOW())').order(sent_at: :asc) }
-  scope :max_attempts_not_reached, -> { where("attempts < #{Reverification::Mailer::MAX_ATTEMPTS}") }
-  scope :max_attempts_reached, -> { where("attempts >= #{Reverification::Mailer::MAX_ATTEMPTS}") }
-  scope :initial_soft_bounced, -> ( limit = nil ) { initial.soft_bounced.limit(limit) }
-
-  def max_attempts_reached?
-    attempts >= Reverification::Mailer::MAX_ATTEMPTS
-  end
 
   class << self
     # def spam_phase_accounts(limit = nil)
