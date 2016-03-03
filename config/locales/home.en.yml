@@ -5,14 +5,15 @@ en:
       discover_message: 'Discover, Track and Compare Open Source'
       join_now: 'Join Now'
       whats_new: "What's New"
-      popular_projects: 'Most Popular Projects'
-      active_projects: 'Most Active Projects'
-      active_contributors: 'Most Active Contributors'
       counting: 'Counting %{count} lines of code'
       indexing: 'Indexing %{count} open source projects'
       connecting: 'Connecting %{count} open source contributors'
       tracking: 'Tracking %{count} source control repositories'
       search_projects: 'Search Projects...'
+    top_lists:
+      popular_projects: 'Most Popular Projects'
+      active_projects: 'Most Active Projects'
+      active_contributors: 'Most Active Contributors'
 
     join_now_home:
       claim: 'Claim'
