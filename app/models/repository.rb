@@ -48,7 +48,7 @@ class Repository < ActiveRecord::Base
 
   class << self
     def find_existing(repository)
-      find_by(url: repository.url)
+      order(:id).find_by_url(repository.url)
     end
 
     def get_compatible_class(_url)
