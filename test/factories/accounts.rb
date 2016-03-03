@@ -74,6 +74,10 @@ FactoryGirl.define do
     email 'ooto@simulator.amazonses.com'
   end
 
+  trait :bounce_undetermined do
+    email 'someone@gmail.com'
+  end
+
   trait :complaint do
     email 'complaint@simulator.amazonses.com'
   end

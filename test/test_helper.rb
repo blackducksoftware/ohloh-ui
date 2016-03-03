@@ -145,7 +145,7 @@ class ActiveSupport::TestCase
 
   # Note: These classes are used for mocking Reverification AWS::SimpleEmailService responses and messages.
   #        Used for the spammer cleanup initiative.
-  class UndeterminedBody
+  class UndeterminedBounceBody
     def body_message_as_h
       { 'bounce': { 'bounceType': 'Undetermined',
                     'bouncedRecipients': [{ 'emailAddress': 'someone@gmail.com' }]
@@ -154,9 +154,9 @@ class ActiveSupport::TestCase
     end
   end
 
-  class UndeterminedMessage
+  class UndeterminedBounceMessage
     def as_sns_message
-      UndeterminedBody.new
+      UndeterminedBounceBody.new
     end
   end
 
@@ -215,6 +215,22 @@ class ActiveSupport::TestCase
   class TransientQueueMessage
     def body
       'ooto@simulator.amazon.ses.com'
+    end
+  end
+
+  class ComplaintBody
+    def body_message_as_h
+      { 'complaint': {
+                    'complainedRecipients': [{ 'emailAddress': 'complaint@simulator.amazonses.com' }],
+                    'complaintFeedbackType': 'abuse'
+        }
+      }.with_indifferent_access
+    end
+  end
+
+  class ComplaintMessage
+    def as_sns_message
+      ComplaintBody.new
     end
   end
 end

@@ -33,6 +33,7 @@ module Reverification
         return if ses_limit_reached?
         resp = ses.send_email(template)
         if account.reverification_tracker
+          #Note: Increment the attempts counter for retry. For new notification, resets attempts counter as 1
           if phase == ReverificationTracker.phases[account.reverification_tracker.phase]
             account.reverification_tracker.increment! :attempts
           else
@@ -55,7 +56,7 @@ module Reverification
           message_hash = msg.as_sns_message.body_message_as_h
           message_hash['delivery']['recipients'].each do |recipient|
             account = Account.find_by_email recipient
-            account.reverification_tracker.delivered!
+            account.reverification_tracker.delivered! if account.reverification_tracker.pending?
           end
         end
       end
@@ -67,16 +68,10 @@ module Reverification
             account = Account.find_by_email recipient['emailAddress']
             notification = account.reverification_tracker
             case decoded_msg['bounce']['bounceType']
-            when 'Undetermined'
-              send_to_transient_bounce_queue(recipient)
             when 'Permanent'
               ReverificationTracker.destroy_account(recipient['emailAddress'])
-            when 'Transient'
-              if notification.pending?
-                notification.soft_bounced!
-              elsif notification.delivered?
-                notification.auto_responded!
-              end
+            when 'Transient', 'Undetermined'
+              notification.soft_bounced!
             end
           end
         end
@@ -84,7 +79,8 @@ module Reverification
 
       def poll_complaints_queue
         complaints_queue.poll(initial_timeout: 1, idle_timeout: 1) do |msg|
-          decoded_msg(msg)['complaint']['complainedRecipients'].each do |recipient|
+          decoded_msg = msg.as_sns_message.body_message_as_h
+          decoded_msg['complaint']['complainedRecipients'].each do |recipient|
             account = Account.find_by_email recipient['emailAddress']
             account.reverification_tracker.complained!
             account.reverification_tracker.update feedback: decoded_msg['complaint']['complaintFeedbackType']
