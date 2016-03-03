@@ -3,6 +3,7 @@ class Language < ActiveRecord::Base
   serialize :experienced_contributors, Array
 
   scope :by_name, -> { order('lower(name)') }
+  scope :by_nice_name, -> { order('lower(nice_name)') }
   scope :by_total, -> { order('(code + comments + blanks) desc').by_name }
   scope :by_code, -> { order(code: :desc).by_name }
   scope :by_comment_ratio, -> { order(avg_percent_comments: :desc).by_name }
