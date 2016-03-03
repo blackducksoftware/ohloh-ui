@@ -1,4 +1,5 @@
 - page_context[:select_footer_nav] = nil
+- content_for(:html_title) { t('.html_title') }
 
 %h2.pull-left
   = link_to t('.settings'), settings_organization_path(@organization)

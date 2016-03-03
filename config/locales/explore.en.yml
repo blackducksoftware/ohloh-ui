@@ -2,7 +2,7 @@ en:
   explore:
     orgs:
       title: 'Organizations'
-      page_title: 'Orgs Explore'
+      page_title: 'Orgs Explore - Open Hub'
     most_active_orgs:
       title: 'Most Active Orgs'
       commits_or_affiliates: 'commits / affiliate'

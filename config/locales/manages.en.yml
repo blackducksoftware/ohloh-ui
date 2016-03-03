@@ -7,7 +7,7 @@ en:
     reject:
       notice: "%{name} is no longer a manager of %{target}"
     index:
-      page_title: "Managers Page"
+      page_title: "Managers Page - Open Hub"
       nobody_manages_yet: "Nobody has registered to become a manager of this project on Open Hub."
       new_manager: "New Manager"
       new_cta: "I manage this project on Open Hub"
@@ -35,13 +35,13 @@ en:
       confirm_delete: "Remove %{name} as a project manager for %{target}?"
       remove_manager: "remove manager"
     new:
-      page_title: "New Manager Page"
+      page_title: "New Manager Page - Open Hub"
       header: "Request Manager status for %{target}"
       explain_header: "What happens after I've submitted my request?"
       explainer_first: "The initial application is automatically approved and subsequent applications must be approved or denied by existing project managers."
       explainer_existing: "The existing managers will be notified about your application by email. You'll be added to the list of pending managers and any of the existing managers will be able to approve or reject your application."
     edit:
-      page_title: "Edit Manager Page"
+      page_title: "Edit Manager Page - Open Hub"
     update:
       notice: "Save successful!"
     form:

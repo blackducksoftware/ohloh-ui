@@ -4,6 +4,7 @@ en:
       remove_from: 'Remove %{project} from %{org}?'
       remove: 'Remove'
     manage_projects:
+      html_title: 'Manage Projects - Open Hub'
       title: ' : Manage Projects'
       settings: 'Settings'
       none_claimed: 'No projects are claimed yet.'
@@ -160,7 +161,7 @@ en:
       unaffiliated: 'Unaffiliated'
       see_all_outside_committers: 'See All %{count} Outside Committers'
     affiliated_committers:
-      page_title: "Affiliated Committers"
+      page_title: "Affiliated Committers - Open Hub"
       no_committers: "There are no affiliated committers to display."
       contrib_name: "Contributor Name"
       kudos: "Kudos"
