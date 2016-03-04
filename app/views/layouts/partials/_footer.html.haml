@@ -37,4 +37,6 @@
       %br
       All Rights Reserved.
 
-= render partial: 'layouts/partials/google_analytics' if Rails.env.production?
+- if Rails.env.production?
+  = render partial: 'layouts/tracking_scripts/google_analytics'
+  = render partial: 'layouts/tracking_scripts/adroll'
