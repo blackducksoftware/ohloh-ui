@@ -240,7 +240,7 @@ en:
     not_manager: "You can view, but not change this data. Only managers may change this data."
     must_log_in: "You must be logged in to change this data. If you don't have an account, Please join."
     show:
-      page_title: "Permissions Page"
+      page_title: "Permissions Page - Open Hub"
       about_permissions_1: "About"
       about_permissions_2: "Permissions"
       settings_may_be_changed_by: "Settings may be changed by:"
@@ -263,7 +263,7 @@ en:
     new:
       meta_title: 'Settings: New Logo Page'
       heading: ': Logo'
-      page_title: 'New Logo Page'
+      page_title: 'New Logo Page - Open Hub'
     about_logos:
       title: 'Logos'
       first: "Open Hub will display the project logo on pages with project data, when users stack a project, and in reports highlighting contributor's work on projects."
@@ -351,7 +351,7 @@ en:
     no_matching_project: No matching open source project with this name.
 
   password_resets:
-    title: 'Password Reset'
+    title: 'Password Reset - Open Hub'
     new:
       enter_email_address: Enter the email you signed up with.
       submit_text: Send me a password reset link
@@ -391,7 +391,7 @@ en:
 
   authentications:
     new:
-      html_title: Verify Account
+      html_title: Verify Account - Open Hub
     fields:
       verify_using_phone_number: Verify Phone Number
       verify_using_github: 'Verify using Github'

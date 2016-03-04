@@ -57,7 +57,7 @@ en:
     update:
       success: 'Save successful!'
     confirm_delete:
-      html_title: 'Delete Account'
+      html_title: 'Delete Account - Open Hub'
       delete_my_account: Delete My Account
       confirm_modal_header: Confirm Delete Account
       confirm_modal_body: Are your sure? This cannot be undone.
