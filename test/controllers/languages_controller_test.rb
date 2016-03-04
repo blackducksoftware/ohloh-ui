@@ -5,11 +5,11 @@ describe 'LanguagesController' do
   let(:create_all_months) { date_range.each { |date| create(:all_month, month: date) } }
   let(:client_id) { create(:api_key).oauth_application.uid }
 
-  before { @language = create(:language, name: 'html') }
+  before { @language = create(:language, name: 'html', nice_name: 'html') }
 
   describe 'index' do
     it 'should return languages' do
-      create(:language, name: 'c')
+      create(:language, name: 'c', nice_name: 'c')
 
       get :index
       must_respond_with :ok
