@@ -29,23 +29,11 @@ module Reverification
         return if ses_limit_reached?
         resp = ses.send_email(template)
         if account.reverification_tracker
-           # Note: Increment the attempts counter for retry. For new notification, resets attempts counter as 1
-
-          # In mailer.rb the send method has hard coded values of 0, 1, 2, 3, 
-          # In addition, the resend_soft_bounced_notifications checks for the correct phase.
-          # Won't the line of code below always be true?
-
-          # if phase == ReverificationTracker.phases[account.reverification_tracker.phase]
-          #   account.reverification_tracker.increment! :attempts
-          # else
-          #   account.reverification_tracker.update attempts: 1
-          # end
-          # account.reverification_tracker.update(message_id: resp[:message_id], status: 0, phase: phase, sent_at: Time.now)
-          
-          if account.reverification_tracker.attempts >= 3
-             account.reverification_tracker.update(message_id: resp[:message_id], status: 0, phase: phase + 1, sent_at: Time.now, attempts: 1)
+          if account.reverification_tracker.attempts == 3
+             account.reverification_tracker.update(message_id: resp[:message_id], status: 1, phase: phase, sent_at: Time.now, attempts: 1)
           else
             account.reverification_tracker.increment! :attempts
+            account.reverification_tracker.update(message_id: resp[:message_id], status: 0, sent_at: Time.now)
             return
           end
         else

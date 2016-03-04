@@ -8,30 +8,6 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
         Reverification::Process.stubs(:ses_limit_reached?).returns(true)
         AWS::SimpleEmailService.any_instance.expects(:send_email).never
       end
-
-      # Ask Peter about this. Why is the test failing?
-
-      # it 'should send an initial email and create a reverification tracker' do
-      #   unverified_account_success = create(:unverified_account, :success)
-      #   template = Reverification::Template.first_reverification_notice(unverified_account_success.email)
-      #   Reverification::Process.stubs(:ses_limit_reached?).returns(true)
-      #   AWS::SimpleEmailService.any_instance.stubs(:send_email).with(template).returns(aws_response_message_id)
-      #   Reverification::Process.send(template, unverified_account_success, 0)
-      #   unverified_account_success.reverification_tracker.must_be :present?
-      #   unverified_account_success.reverification_tracker.phase.must_equal 'initial'
-      #   unverified_account_success.reverification_tracker.attempts.must_equal 1
-      # end
-
-      # Note: Would this test go under send or resend notification. Send method has the code
-      #       that does the updating.
-
-      # it 'should update a reverification trackers status to delivered after the 3rd attempt' do
-      #   rev_tracker = create(:soft_bounce_initial_rev_tracker)
-      #   assert rev_tracker.soft_bounced?
-      #   template = Reverification::Template.first_reverification_notice(rev_tracker.account.email)
-      #   Reverification::Mailer.send(template, rev_tracker.account, 0)
-      #   # assert rev_tracker
-      # end
     end
 
     describe 'poll success queue' do
@@ -93,7 +69,7 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
       end
 
       describe 'undetermined bounce' do
-        it 'shoould update the reverification tracket status to soft_bounced' do
+        it 'should update the reverification tracker status to soft_bounced' do
           mock_queue.stubs(:poll).yields(UndeterminedBounceMessage.new)
           Reverification::Process.stubs(:bounce_queue).returns(mock_queue)
           bounce_undetermined_account.reverification_tracker.wont_be :soft_bounced?
