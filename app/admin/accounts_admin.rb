@@ -1,6 +1,7 @@
 ActiveAdmin.register Account do
-  permit_params :login, :email, :level, :country_code, :location, :url, :hide_experience, :email_master, :email_posts,
-                :email_kudos, :email_new_followers, :twitter_account, :affiliation_type, :organization_name
+  account_params = %i(login email name country_code location url twitter_account
+                      affiliation_type organization_name level)
+  permit_params account_params
   actions :index, :show, :edit, :update
 
   controller do
@@ -48,25 +49,14 @@ ActiveAdmin.register Account do
   form do |f|
     f.semantic_errors(*f.object.errors.keys)
     f.inputs 'Details' do
-      f.input :login, as: :string
-      f.input :email, as: :string
-      f.input :name, as: :string
+      account_params.exclude(:level).each do |field|
+        f.input field, as: :string
+      end
       f.input :level, as: :select, include_blank: false,
                       collection: { 'Default' => Account::Access::DEFAULT,
                                     'Admin' => Account::Access::ADMIN,
                                     'Disabled' => Account::Access::DISABLED,
                                     'Spammer' => Account::Access::SPAM }
-      f.input :country_code, as: :string
-      f.input :location, as: :string
-      f.input :url, as: :url
-      f.input :hide_experience
-      f.input :email_master
-      f.input :email_posts
-      f.input :email_kudos
-      f.input :email_new_followers
-      f.input :twitter_account, as: :string
-      f.input :affiliation_type, as: :string
-      f.input :organization_name, as: :string
     end
     f.actions
   end
