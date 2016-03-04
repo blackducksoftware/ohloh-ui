@@ -1,6 +1,7 @@
 ActiveAdmin.register Account do
-  permit_params :level
-  actions :index, :show, :edit
+  permit_params :login, :email, :level, :country_code, :location, :url, :hide_experience, :email_master, :email_posts,
+                :email_kudos, :email_new_followers, :twitter_account, :affiliation_type, :organization_name
+  actions :index, :show, :edit, :update
 
   controller do
     defaults finder: :fetch_by_login_or_email
