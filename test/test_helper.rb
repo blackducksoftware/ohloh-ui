@@ -208,10 +208,6 @@ class ActiveSupport::TestCase
     end
   end
 
-  def aws_response_message_id
-    { message_id: 'XYZ0-1234-AB56-67GJ' }
-  end
-
   class TransientQueueMessage
     def body
       'ooto@simulator.amazon.ses.com'
@@ -232,5 +228,9 @@ class ActiveSupport::TestCase
     def as_sns_message
       ComplaintBody.new
     end
+  end
+
+  def ses_send_mail_response
+    { message_id: "XYZ0-1234-AB56-67GJ-#{Time.now.utc.to_i}" }
   end
 end

@@ -25,19 +25,18 @@ module Reverification
         ses.quotas[:sent_last_24_hours] == ses.quotas[:max_24_hour_send]
       end
 
-      def send(template, account, phase)
+      def send_email(template, account, phase)
         return if ses_limit_reached?
         resp = ses.send_email(template)
         if account.reverification_tracker
-          if account.reverification_tracker.attempts == 3
-             account.reverification_tracker.update(message_id: resp[:message_id], status: 1, phase: phase, sent_at: Time.now, attempts: 1)
-          else
+          if phase == ReverificationTracker.phases[account.reverification_tracker.phase]
             account.reverification_tracker.increment! :attempts
-            account.reverification_tracker.update(message_id: resp[:message_id], status: 0, sent_at: Time.now)
-            return
+          else
+            account.reverification_tracker.update attempts: 1
           end
+          account.reverification_tracker.update(message_id: resp[:message_id], status: 0, phase: phase, sent_at: Time.now.utc)
         else
-          account.create_reverification_tracker(message_id: resp[:message_id], sent_at: Time.now)
+          account.create_reverification_tracker(message_id: resp[:message_id], sent_at: Time.now.utc)
         end
       end
 

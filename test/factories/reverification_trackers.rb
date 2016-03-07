@@ -17,6 +17,7 @@ FactoryGirl.define do
 
   factory :success_initial_rev_tracker, parent: :reverification_tracker do
     association :account, :success, :no_verification
+    status 1
   end
 
   factory :hard_bounce_initial_rev_tracker, parent: :reverification_tracker do
@@ -26,6 +27,11 @@ FactoryGirl.define do
   factory :soft_bounce_initial_rev_tracker, parent: :reverification_tracker do
     association :account, :soft_bounce, :no_verification
     status 2
+  end
+
+  factory :complained_initial_rev_tracker, parent: :reverification_tracker do
+    association :account, :complaint, :no_verification
+    status 3
   end
 
   factory :marked_for_spam_rev_tracker, parent: :reverification_tracker do
@@ -46,5 +52,17 @@ FactoryGirl.define do
   factory :invalid_final_warning_rev_tracker, parent: :reverification_tracker do
     association :account, :invalid_spammer, :no_verification
     phase 3
+  end
+
+  trait :soft_bounced do
+    status 2
+  end
+
+  trait :complained do
+    status 3
+  end
+
+  trait :delivered do
+    status 1
   end
 end

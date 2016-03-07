@@ -1,97 +1,286 @@
 require 'test_helper'
 
 class Reverification::MailerTest < ActiveSupport::TestCase
+  before do
+    AWS::SimpleEmailService.any_instance.stubs(:send_email).returns(ses_send_mail_response)
+    Reverification::Process.stubs(:ses_limit_reached?).returns(false)
+  end
   let(:verified_account) { create(:account) }
   let(:unverified_account_sucess) { create(:unverified_account, :success) }
 
-  describe 'run' do
-    describe 'send_notifications' do
-      it 'should send notifications to accounts' do
-        Reverification::Process.stubs(:ses_limit_reached?).returns(false)
-        Reverification::Mailer.expects(:send_final_notification)
-        Reverification::Mailer.expects(:send_converted_to_spam_notification)
-        Reverification::Mailer.expects(:send_marked_for_spam_notification)
-        Reverification::Mailer.expects(:send_first_notification)
-        Reverification::Mailer.send_notifications
-      end
-
-      it 'should not send notifications if ses limit is reached' do
-        Reverification::Process.stubs(:ses_limit_reached?).returns(true)
-        Reverification::Mailer.expects(:send_final_notification).never
-        Reverification::Mailer.expects(:send_converted_to_spam_notification).never
-        Reverification::Mailer.expects(:send_marked_for_spam_notification).never
-        Reverification::Mailer.expects(:send_first_notification).never
-        Reverification::Mailer.send_notifications
-      end
-    end
- 
-    describe 'send_first_notification' do
-      it 'should send notification to unverified accounts only' do
-        Reverification::Process.stubs(:ses_limit_reached?).returns(false)
-        Account.expects(:reverification_not_initiated).returns([unverified_account_sucess])
-        unverified_account_sucess.reverification_tracker.must_be_nil
-        Reverification::Mailer.send_first_notification
-        unverified_account_sucess.reverification_tracker.must_be :present?
-        unverified_account_sucess.reverification_tracker.phase.must_equal 'initial'
-        unverified_account_sucess.reverification_tracker.attempts.must_equal 1
-      end
+  describe 'constants' do
+    it 'should have beeen defined' do
+      assert_equal 3, Reverification::Mailer::MAX_ATTEMPTS
+      assert_equal 14, Reverification::Mailer::NOTIFICATION1_DUE_DAYS
+      assert_equal 14, Reverification::Mailer::NOTIFICATION2_DUE_DAYS
+      assert_equal 14, Reverification::Mailer::NOTIFICATION3_DUE_DAYS
+      assert_equal 14, Reverification::Mailer::NOTIFICATION4_DUE_DAYS
     end
   end
 
-  describe 'resend_soft_bounced_notifications' do
-    it 'should send the first reverification to soft_bounced initial phase accounts' do
-      account = create(:soft_bounce_initial_rev_tracker, sent_at: Date.today - 1.day).account
-      template = Reverification::Template.first_reverification_notice(account.email)
-      Reverification::Process.expects(:send).with(template, account, 0)
-      Reverification::Mailer.resend_soft_bounced_notifications
+  describe 'send_notifications' do
+    it 'should send notifications to accounts' do
+      Reverification::Mailer.expects(:send_final_notification)
+      Reverification::Mailer.expects(:send_converted_to_spam_notification)
+      Reverification::Mailer.expects(:send_marked_for_spam_notification)
+      Reverification::Mailer.expects(:send_first_notification)
+      Reverification::Mailer.send_notifications
     end
 
-    # First attempt resend
-    it 'should update the increment account of the rev_tracker by one' do
-      rev_tracker = create(:soft_bounce_initial_rev_tracker, sent_at: Date.today - 1.day)
-      Reverification::Mailer.resend_soft_bounced_notifications
-      rev_tracker.reload
-      assert_equal 2, rev_tracker.attempts
+    it 'should not send notifications if ses limit is reached' do
+      Reverification::Process.stubs(:ses_limit_reached?).returns(true)
+      Reverification::Mailer.expects(:send_final_notification).never
+      Reverification::Mailer.expects(:send_converted_to_spam_notification).never
+      Reverification::Mailer.expects(:send_marked_for_spam_notification).never
+      Reverification::Mailer.expects(:send_first_notification).never
+      Reverification::Mailer.send_notifications
     end
+  end
 
-    # Second attempt resend
-    it 'should update the increment account of the rev_tracker by one' do
-      rev_tracker = create(:soft_bounce_initial_rev_tracker, attempts: 2, sent_at: Date.today - 1.day)
-      Reverification::Mailer.resend_soft_bounced_notifications
-      rev_tracker.reload
-      assert_equal 3, rev_tracker.attempts
-    end
-
-    # Third attempt resend
-    it "it should send the account's rev_tracker to be delivered on the third attempt" do
-      rev_tracker = create(:soft_bounce_initial_rev_tracker, attempts: 3, sent_at: Date.today - 1.day)
-      Reverification::Mailer.resend_soft_bounced_notifications
-      rev_tracker.reload
-      assert rev_tracker.delivered?
-      # Note: I wasn't able to convert the time field to match exactly. 
-      # Although the time is right.
-      assert_equal rev_tracker.sent_at, Date.today
-      assert_equal 1, rev_tracker.attempts
+  describe 'send_first_notification' do
+    it 'should send notification to unverified accounts only' do
+      Account.expects(:reverification_not_initiated).returns([unverified_account_sucess])
+      Reverification::Template.expects(:first_reverification_notice)
+      unverified_account_sucess.reverification_tracker.must_be_nil
+      Reverification::Mailer.send_first_notification
+      unverified_account_sucess.reverification_tracker.must_be :present?
+      unverified_account_sucess.reverification_tracker.phase.must_equal 'initial'
+      unverified_account_sucess.reverification_tracker.attempts.must_equal 1
+      unverified_account_sucess.reverification_tracker.sent_at.to_date.must_equal Date.today
     end
   end
 
   describe 'send_marked_for_spam_notification' do
     before do
-      Reverification::Process.stubs(:ses_limit_reached?).returns(false)
-      create(:reverification_tracker, account: unverified_account_sucess, sent_at: Time.now - 14.days)
+      @rev_tracker = create(:success_initial_rev_tracker, account: unverified_account_sucess, sent_at: Time.now.utc - Reverification::Mailer::NOTIFICATION1_DUE_DAYS.days)
+      ReverificationTracker.expects(:expired_initial_phase_notifications).returns [@rev_tracker]
     end
 
-    #Note: No clue why Reverfication::Mailer.send results in argument error at this point; have to fix it.
-    it 'should send marked for spam notification after 14 days' do
+    it 'should send correct email template' do
+      Reverification::Template.expects(:marked_for_spam_notice)
       Reverification::Mailer.send_marked_for_spam_notification
-      unverified_account_sucess.reverification_tracker.phase.must_equal 'marked_for_spam'
-      unverified_account_sucess.reverification_tracker.attempts.must_equal 1
     end
 
-    it 'should not send marked for spam notification ahead 14 days' do
-      unverified_account_sucess.reverification_tracker.update(sent_at: Time.now - 13.days)
-      Reverification::Process.expects(:send).never
+    it 'should change the phase to marked_for_spam' do
       Reverification::Mailer.send_marked_for_spam_notification
+      @rev_tracker.phase.must_equal 'marked_for_spam'
+    end
+
+    it 'should reset the status to pending' do
+      Reverification::Mailer.send_marked_for_spam_notification
+      @rev_tracker.status.must_equal 'pending'
+    end
+
+    it 'should reset the attempts to 1' do
+      Reverification::Mailer.send_marked_for_spam_notification
+      @rev_tracker.attempts.must_equal 1
+    end
+
+    it 'should update the sent_at time' do
+      Reverification::Mailer.send_marked_for_spam_notification
+      @rev_tracker.sent_at.to_date.must_equal Date.today
+    end
+  end
+
+  describe 'send_converted_to_spam_notification' do
+    before do
+      @rev_tracker = create(:marked_for_spam_rev_tracker, :delivered, account: unverified_account_sucess, sent_at: Time.now.utc - Reverification::Mailer::NOTIFICATION2_DUE_DAYS.days)
+      ReverificationTracker.expects(:expired_second_phase_notifications).returns [@rev_tracker]
+    end
+
+    it 'should send correct email template' do
+      Reverification::Template.expects(:account_is_spam_notice)
+      Reverification::Mailer.send_converted_to_spam_notification
+    end
+
+    it 'should change the phase to spam' do
+      Reverification::Mailer.send_converted_to_spam_notification
+      @rev_tracker.phase.must_equal 'spam'
+    end
+
+    it 'should reset the status to pending' do
+      Reverification::Mailer.send_converted_to_spam_notification
+      @rev_tracker.status.must_equal 'pending'
+    end
+
+    it 'should reset the attempts to 1' do
+      Reverification::Mailer.send_converted_to_spam_notification
+      @rev_tracker.attempts.must_equal 1
+    end
+
+    it 'should update the sent_at time' do
+      Reverification::Mailer.send_converted_to_spam_notification
+      @rev_tracker.sent_at.to_date.must_equal Date.today
+    end
+  end
+
+  describe 'send_final_notification' do
+    before do
+      @rev_tracker = create(:spam_rev_tracker, :delivered, account: unverified_account_sucess, sent_at: Time.now.utc - Reverification::Mailer::NOTIFICATION3_DUE_DAYS.days)
+      ReverificationTracker.expects(:expired_third_phase_notifications).returns [@rev_tracker]
+    end
+
+    it 'should send correct email template' do
+      Reverification::Template.expects(:one_day_before_deletion_notice)
+      Reverification::Mailer.send_final_notification
+    end
+
+    it 'should change the phase to spam' do
+      Reverification::Mailer.send_final_notification
+      @rev_tracker.phase.must_equal 'final_warning'
+    end
+
+    it 'should reset the status to pending' do
+      Reverification::Mailer.send_final_notification
+      @rev_tracker.status.must_equal 'pending'
+    end
+
+    it 'should reset the attempts to 1' do
+      Reverification::Mailer.send_final_notification
+      @rev_tracker.attempts.must_equal 1
+    end
+
+    it 'should update the sent_at time' do
+      Reverification::Mailer.send_final_notification
+      @rev_tracker.sent_at.to_date.must_equal Date.today
+    end
+  end
+
+  describe 'resend_soft_bounced_notifications' do
+    describe 'initial notification' do
+      before do
+        @rev_tracker = create(:reverification_tracker, :soft_bounced, attempts: 1, sent_at: Time.now.utc - 1.day, account: unverified_account_sucess)
+      end
+
+      it 'should send the same email content' do
+        Reverification::Template.expects(:first_reverification_notice)
+        Reverification::Mailer.resend_soft_bounced_notifications
+      end
+
+      it 'should not change the phase' do
+        Reverification::Mailer.resend_soft_bounced_notifications
+        @rev_tracker.reload.must_be :initial?
+      end
+
+      it 'should increment attempts by one' do
+        @rev_tracker.attempts.must_equal 1
+        Reverification::Mailer.resend_soft_bounced_notifications
+        @rev_tracker.reload.attempts.must_equal 2
+      end
+
+      it 'should update the sent_at time' do
+        @rev_tracker.sent_at.to_date.wont_equal Date.today
+        Reverification::Mailer.resend_soft_bounced_notifications
+        @rev_tracker.reload.sent_at.to_date.must_equal Date.today
+      end
+
+      it 'should not resend email when sent_at is not lesser than current date' do
+        @rev_tracker.update sent_at: Time.now.utc
+        Reverification::Template.expects(:first_reverification_notice).never
+        Reverification::Mailer.resend_soft_bounced_notifications
+      end
+    end
+
+    describe 'marked for spam notification' do
+      before do
+        @rev_tracker = create(:marked_for_spam_rev_tracker, :soft_bounced, attempts: 1, sent_at: Time.now.utc - 1.day, account: unverified_account_sucess)
+      end
+
+      it 'should send the same email content' do
+        Reverification::Template.expects(:marked_for_spam_notice)
+        Reverification::Mailer.resend_soft_bounced_notifications
+      end
+
+      it 'should not change the phase' do
+        Reverification::Mailer.resend_soft_bounced_notifications
+        @rev_tracker.reload.must_be :marked_for_spam?
+      end
+
+      it 'should increment attempts by one' do
+        @rev_tracker.attempts.must_equal 1
+        Reverification::Mailer.resend_soft_bounced_notifications
+        @rev_tracker.reload.attempts.must_equal 2
+      end
+
+      it 'should update the sent_at time' do
+        @rev_tracker.sent_at.to_date.wont_equal Date.today
+        Reverification::Mailer.resend_soft_bounced_notifications
+        @rev_tracker.reload.sent_at.to_date.must_equal Date.today
+      end
+
+      it 'should not resend email when sent_at is not lesser than current date' do
+        @rev_tracker.update sent_at: Time.now.utc
+        Reverification::Template.expects(:marked_for_spam_notice).never
+        Reverification::Mailer.resend_soft_bounced_notifications
+      end
+    end
+
+    describe 'spam notification' do
+      before do
+        @rev_tracker = create(:spam_rev_tracker, :soft_bounced, attempts: 1, sent_at: Time.now.utc - 1.day, account: unverified_account_sucess)
+      end
+
+      it 'should send the same email content' do
+        Reverification::Template.expects(:account_is_spam_notice)
+        Reverification::Mailer.resend_soft_bounced_notifications
+      end
+
+      it 'should not change the phase' do
+        Reverification::Mailer.resend_soft_bounced_notifications
+        @rev_tracker.reload.must_be :spam?
+      end
+
+      it 'should increment attempts by one' do
+        @rev_tracker.attempts.must_equal 1
+        Reverification::Mailer.resend_soft_bounced_notifications
+        @rev_tracker.reload.attempts.must_equal 2
+      end
+
+      it 'should update the sent_at time' do
+        @rev_tracker.sent_at.to_date.wont_equal Date.today
+        Reverification::Mailer.resend_soft_bounced_notifications
+        @rev_tracker.reload.sent_at.to_date.must_equal Date.today
+      end
+
+      it 'should not resend email when sent_at is not lesser than current date' do
+        @rev_tracker.update sent_at: Time.now.utc
+        Reverification::Template.expects(:account_is_spam_notice).never
+        Reverification::Mailer.resend_soft_bounced_notifications
+      end
+    end
+
+    describe 'final warning notification' do
+      before do
+        @rev_tracker = create(:final_warning_rev_tracker, :soft_bounced, attempts: 1, sent_at: Time.now.utc - 1.day, account: unverified_account_sucess)
+      end
+
+      it 'should send the same email content' do
+        Reverification::Template.expects(:one_day_before_deletion_notice)
+        Reverification::Mailer.resend_soft_bounced_notifications
+      end
+
+      it 'should not change the phase' do
+        Reverification::Mailer.resend_soft_bounced_notifications
+        @rev_tracker.reload.must_be :final_warning?
+      end
+
+      it 'should increment attempts by one' do
+        @rev_tracker.attempts.must_equal 1
+        Reverification::Mailer.resend_soft_bounced_notifications
+        @rev_tracker.reload.attempts.must_equal 2
+      end
+
+      it 'should update the sent_at time' do
+        @rev_tracker.sent_at.to_date.wont_equal Date.today
+        Reverification::Mailer.resend_soft_bounced_notifications
+        @rev_tracker.reload.sent_at.to_date.must_equal Date.today
+      end
+
+      it 'should not resend email when sent_at is not lesser than current date' do
+        @rev_tracker.update sent_at: Time.now.utc
+        Reverification::Template.expects(:one_day_before_deletion_notice).never
+        Reverification::Mailer.resend_soft_bounced_notifications
+      end
     end
   end
 
