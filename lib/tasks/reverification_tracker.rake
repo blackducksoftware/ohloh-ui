@@ -24,8 +24,13 @@ namespace :reverification do
     Reverification::Process.poll_bounce_queue
   end
 
-  desc 'This task removes the reverificaton_tracker associaton when an account validates'
-  task cleanup: :environment do
-    ReverificationTracker.cleanup
+  desc 'This task removes the reverificaton_tracker associatons when an account validates'
+  task remove_rev_trackers_for_verified_accounts: :environment do
+    ReverificationTracker.remove_reverification_trackers_for_verifed_accounts
+  end
+
+  desc 'This task removes the reverificaton_tracker associatons when an account validates'
+  task delete_expired_accounts: :environment do
+    ReverificationTracker.delete_expired_accounts
   end
 end

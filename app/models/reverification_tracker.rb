@@ -32,23 +32,13 @@ class ReverificationTracker < ActiveRecord::Base
       account.destroy if account
     end
 
-    def determine_correct_notification_to_send(rev_tracker)
-      if rev_tracker.initial?
-        Reverification::Mailer.send(first_reverification_notice(rev_tracker.account.email))
-        rev_tracker.pending!
+    def delete_expired_accounts
+      expired_final_phase_notifications.each do |rev_tracker|
+        rev_tracker.account.destroy
       end
     end
 
-    def delete_unverified_spam_accounts
-      accounts = Account.where(level: -20).joins(:reverification_tracker).where.not(id: Verification.select(:account_id))
-      accounts.each do |account|
-        if account.reverification_tracker.final_warning? && account.reverification_tracker.sent_at.to_date + 2.weeks <= Date.today
-          account.destroy
-        end
-      end
-    end
-
-    def cleanup
+    def remove_reverification_trackers_for_verifed_accounts
       find_each do |rev_tracker|
         rev_tracker.destroy if rev_tracker.account.access.mobile_or_oauth_verified?
       end

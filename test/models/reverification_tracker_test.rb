@@ -5,13 +5,27 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
   let(:suc_acc_2) { create(:unverified_account, email: 'success2@simulator.amazonses.com') }
   let(:sbounce_acc_1) { create(:unverified_account, email: 'ooto1@simulator.amazonses.com') }
 
-  describe 'cleanup' do
+  describe 'remove_reverification_trackers_for_verifed_accounts' do
     it 'should destroy all reverification trackers if account verified' do
       verified = create(:reverification_tracker)
       unverified = create(:initial_rev_tracker)
       assert verified.account.access.mobile_or_oauth_verified?
-      ReverificationTracker.cleanup
+      assert_not unverified.account.access.mobile_or_oauth_verified?
+      ReverificationTracker.remove_reverification_trackers_for_verifed_accounts
       assert_equal 1, ReverificationTracker.count
+    end
+  end
+
+  describe 'delete_expired_accounts' do
+    it 'should retrieve the correct accounts for deletion' do
+      create(:final_warning_rev_tracker, :delivered, attempts: 3, sent_at: Time.now.utc - 15.days)
+      create(:final_warning_rev_tracker, :soft_bounced, sent_at: Time.now.utc - 15.days)
+      create(:final_warning_rev_tracker, :delivered, sent_at: Time.now.utc - 15.days)
+      create(:final_warning_rev_tracker, :delivered, sent_at: Time.now.utc - 14.days)
+      create(:final_warning_rev_tracker, :delivered, sent_at: Time.now.utc - 13.days)
+      ReverificationTracker.delete_expired_accounts
+      assert_equal 2, ReverificationTracker.count
+      assert_equal 3, DeletedAccount.count 
     end
   end
 

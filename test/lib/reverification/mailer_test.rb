@@ -18,21 +18,46 @@ class Reverification::MailerTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'ses quota limit' do
+    before do
+      Reverification::Process.expects(:ses_limit_reached?).returns(true)
+    end
+
+    it 'should not send notifications if ses limit is reached' do
+      Reverification::Mailer.expects(:send_final_notification).never
+      Reverification::Mailer.expects(:send_converted_to_spam_notification).never
+      Reverification::Mailer.expects(:send_marked_for_spam_notification).never
+      Reverification::Mailer.expects(:send_first_notification).never
+      Reverification::Mailer.send_notifications
+    end
+
+    it 'should not send notifications if ses limit is reached' do
+      Reverification::Process.expects(:send_email).never
+      Reverification::Mailer.send_first_notification
+    end
+
+    it 'should not send notifications if ses limit is reached' do
+      Reverification::Process.expects(:send_email).never
+      Reverification::Mailer.send_marked_for_spam_notification
+    end 
+
+    it 'should not send notifications if ses limit is reached' do
+      Reverification::Process.expects(:send_email).never
+      Reverification::Mailer.send_converted_to_spam_notification
+    end 
+
+    it 'should not send notifications if ses limit is reached' do
+      Reverification::Process.expects(:send_email).never
+      Reverification::Mailer.send_final_notification
+    end 
+  end
+
   describe 'send_notifications' do
     it 'should send notifications to accounts' do
       Reverification::Mailer.expects(:send_final_notification)
       Reverification::Mailer.expects(:send_converted_to_spam_notification)
       Reverification::Mailer.expects(:send_marked_for_spam_notification)
       Reverification::Mailer.expects(:send_first_notification)
-      Reverification::Mailer.send_notifications
-    end
-
-    it 'should not send notifications if ses limit is reached' do
-      Reverification::Process.stubs(:ses_limit_reached?).returns(true)
-      Reverification::Mailer.expects(:send_final_notification).never
-      Reverification::Mailer.expects(:send_converted_to_spam_notification).never
-      Reverification::Mailer.expects(:send_marked_for_spam_notification).never
-      Reverification::Mailer.expects(:send_first_notification).never
       Reverification::Mailer.send_notifications
     end
   end
@@ -179,6 +204,12 @@ class Reverification::MailerTest < ActiveSupport::TestCase
         Reverification::Template.expects(:first_reverification_notice).never
         Reverification::Mailer.resend_soft_bounced_notifications
       end
+
+      it 'should not resend an email when ses limit has been reached' do
+        Reverification::Process.expects(:ses_limit_reached?).returns(true)
+        AWS::SimpleEmailService.any_instance.expects(:send_email).never
+        Reverification::Mailer.resend_soft_bounced_notifications
+      end
     end
 
     describe 'marked for spam notification' do
@@ -281,20 +312,6 @@ class Reverification::MailerTest < ActiveSupport::TestCase
         Reverification::Template.expects(:one_day_before_deletion_notice).never
         Reverification::Mailer.resend_soft_bounced_notifications
       end
-    end
-  end
-
-  describe 'delete_unverified_spam_accounts' do
-    it 'should retrieve the correct accounts for deletion' do
-      create(:account) #invalid
-      create(:invalid_final_warning_rev_tracker, sent_at: Date.today - 3.weeks) #invalid
-      create(:final_warning_rev_tracker, sent_at: Date.today - 2.weeks) #correct
-      create(:final_warning_rev_tracker, sent_at: Date.today - 1.weeks) #correct
-      assert_equal 3, ReverificationTracker.count
-      assert_equal 5, Account.count  # 3 we created + Hamster
-      ReverificationTracker.delete_unverified_spam_accounts
-      assert_equal 1, ReverificationTracker.count
-      assert_equal 2, DeletedAccount.count 
     end
   end
 end

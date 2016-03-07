@@ -9,7 +9,6 @@ module Reverification
 
     class << self
       def run
-        delete_unverified_spam_accounts
         resend_soft_bounced_notifications
         send_notifications
       end
@@ -23,6 +22,7 @@ module Reverification
       end
 
       def send_first_notification
+        return if Reverification::Process.ses_limit_reached?
         Account.reverification_not_initiated(SAMPLE_COUNT).each do |account|
           Reverification::Process.send_email(
             Reverification::Template.first_reverification_notice(account.email),
@@ -31,6 +31,7 @@ module Reverification
       end
 
       def send_marked_for_spam_notification
+        return if Reverification::Process.ses_limit_reached?
         ReverificationTracker.expired_initial_phase_notifications(SAMPLE_COUNT).each do |rev_track|
           Reverification::Process.send_email(
             Reverification::Template.marked_for_spam_notice(rev_track.account.email),
@@ -39,6 +40,7 @@ module Reverification
       end
 
       def send_converted_to_spam_notification
+        return if Reverification::Process.ses_limit_reached?
         ReverificationTracker.expired_second_phase_notifications(SAMPLE_COUNT).each do |rev_track|
           Reverification::Process.send_email(
             Reverification::Template.account_is_spam_notice(rev_track.account.email),
@@ -47,6 +49,7 @@ module Reverification
       end
 
       def send_final_notification
+        return if Reverification::Process.ses_limit_reached?
         ReverificationTracker.expired_third_phase_notifications(SAMPLE_COUNT).each do |rev_track|
           Reverification::Process.send_email(
             Reverification::Template.one_day_before_deletion_notice(rev_track.account.email),
