@@ -29,12 +29,7 @@ module Reverification
         return if ses_limit_reached?
         resp = ses.send_email(template)
         if account.reverification_tracker
-          if phase == ReverificationTracker.phases[account.reverification_tracker.phase]
-            account.reverification_tracker.increment! :attempts
-          else
-            account.reverification_tracker.update attempts: 1
-          end
-          account.reverification_tracker.update(message_id: resp[:message_id], status: 0, phase: phase, sent_at: Time.now.utc)
+          update_tracker(account.reverification_tracker, phase, resp)
         else
           account.create_reverification_tracker(message_id: resp[:message_id], sent_at: Time.now.utc)
         end
@@ -54,14 +49,7 @@ module Reverification
         bounce_queue.poll(initial_timeout: 1, idle_timeout: 1) do |msg|
           decoded_msg = msg.as_sns_message.body_message_as_h
           decoded_msg['bounce']['bouncedRecipients'].each do |recipient|
-            account = Account.find_by_email recipient['emailAddress']
-            notification = account.reverification_tracker
-            case decoded_msg['bounce']['bounceType']
-            when 'Permanent'
-              ReverificationTracker.destroy_account(recipient['emailAddress'])
-            when 'Transient', 'Undetermined'
-              notification.soft_bounced!
-            end
+            handle_bounce_notification(decoded_msg['bounce']['bounceType'], recipient['emailAddress'])
           end
         end
       end
@@ -70,9 +58,9 @@ module Reverification
         complaints_queue.poll(initial_timeout: 1, idle_timeout: 1) do |msg|
           decoded_msg = msg.as_sns_message.body_message_as_h
           decoded_msg['complaint']['complainedRecipients'].each do |recipient|
-            account = Account.find_by_email recipient['emailAddress']
-            account.reverification_tracker.complained!
-            account.reverification_tracker.update feedback: decoded_msg['complaint']['complaintFeedbackType']
+            rev_tracker = Account.find_by_email(recipient['emailAddress']).reverification_tracker
+            rev_tracker.complained!
+            rev_tracker.update feedback: decoded_msg['complaint']['complaintFeedbackType']
           end
         end
       end
@@ -86,6 +74,23 @@ module Reverification
       def cleanup
         ReverificationTracker.remove_reverification_trackers_for_verifed_accounts
         ReverificationTracker.delete_expired_accounts
+      end
+
+      def handle_bounce_notification(type, recipient)
+        rev_tracker = Account.find_by_email(recipient).reverification_tracker
+        case type
+        when 'Permanent' then ReverificationTracker.destroy_account(recipient)
+        when 'Transient', 'Undetermined' then rev_tracker.soft_bounced!
+        end
+      end
+
+      def update_tracker(rev_tracker, phase, response)
+        if phase == rev_tracker.phase_value
+          rev_tracker.increment! :attempts
+        else
+          rev_tracker.update attempts: 1
+        end
+        rev_tracker.update(message_id: response[:message_id], status: 0, phase: phase, sent_at: Time.now.utc)
       end
     end
   end

@@ -153,4 +153,61 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
       end
     end
   end
+
+  describe 'cleanup' do
+    it 'should invoke cleanup methods' do
+      ReverificationTracker.expects(:remove_reverification_trackers_for_verifed_accounts)
+      ReverificationTracker.expects(:delete_expired_accounts)
+      Reverification::Process.cleanup
+    end
+  end
+
+  describe 'start_polling_queues' do
+    it 'should invoke polling queues' do
+      Reverification::Process.expects(:poll_success_queue)
+      Reverification::Process.expects(:poll_bounce_queue)
+      Reverification::Process.expects(:poll_complaints_queue)
+      Reverification::Process.start_polling_queues
+    end
+  end
+
+  describe 'sqs' do
+    it 'should return AWS::SQS instance' do
+      Reverification::Process.expects(:sqs).returns(AWS::SQS)
+      Reverification::Process.sqs
+    end
+  end
+
+  describe 'success_queue' do
+    it 'should return AWS::SQS::Queue instance for success queue' do
+      queue_instance = Reverification::Process.success_queue
+      queue_instance.url.must_match /ses-success-queue/
+    end
+  end
+
+  describe 'bounce_queue' do
+    it 'should return AWS::SQS::Queue instance for bounce queue' do
+      queue_instance = Reverification::Process.bounce_queue
+      queue_instance.url.must_match /ses-bounces-queue/
+    end
+  end
+
+  describe 'complaints_queue' do
+    it 'should return AWS::SQS::Queue instance for complaints queue' do
+      queue_instance = Reverification::Process.complaints_queue
+      queue_instance.url.must_match /ses-complaints-queue/
+    end
+  end
+
+  describe 'ses_limit_reached?' do
+    it 'should return true when daily sent quota equals max send quota' do
+      Reverification::Process.expects(:ses_limit_reached?).returns(true)
+      Reverification::Process.ses_limit_reached?
+    end
+
+    it 'should return false when daily sent quota not exceeded max send quota' do
+      Reverification::Process.expects(:ses_limit_reached?).returns(false)
+      Reverification::Process.ses_limit_reached?
+    end
+  end
 end

@@ -60,24 +60,9 @@ module Reverification
 
       def resend_soft_bounced_notifications
         # Grab all the soft_bounced trackers
-        ReverificationTracker.soft_bounced_until_yesterday.max_attempts_not_reached.find_each(batch_size: SAMPLE_COUNT) do |notification|
-          if notification.initial?
-            Reverification::Process.send_email(
-              Reverification::Template.first_reverification_notice(notification.account.email),
-              notification.account, 0)
-          elsif notification.marked_for_spam?
-            Reverification::Process.send_email(
-              Reverification::Template.marked_for_spam_notice(notification.account.email),
-              notification.account, 1)
-          elsif notification.spam?
-            Reverification::Process.send_email(
-              Reverification::Template.account_is_spam_notice(notification.account.email),
-              notification.account, 2)
-          elsif notification.final_warning?
-            Reverification::Process.send_email(
-              Reverification::Template.final_warning_notice(notification.account.email),
-              notification.account, 3)
-          end
+        ReverificationTracker.soft_bounced_until_yesterday.max_attempts_not_reached
+          .find_each(batch_size: SAMPLE_COUNT) do |rev_track|
+          Reverification::Process.send_email(rev_track.template_hash, rev_track.account, rev_track.phase_value)
         end
       end
     end

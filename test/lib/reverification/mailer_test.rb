@@ -53,6 +53,14 @@ class Reverification::MailerTest < ActiveSupport::TestCase
     end 
   end
 
+  describe 'run' do
+    it 'should invoke notifications sending methods' do
+      Reverification::Mailer.expects(:send_notifications)
+      Reverification::Mailer.expects(:resend_soft_bounced_notifications)
+      Reverification::Mailer.run
+    end
+  end
+
   describe 'send_notifications' do
     it 'should send notifications to accounts' do
       Reverification::Mailer.expects(:send_final_notification)
