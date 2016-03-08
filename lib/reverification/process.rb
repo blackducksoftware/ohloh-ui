@@ -76,6 +76,17 @@ module Reverification
           end
         end
       end
+
+      def start_polling_queues
+        poll_success_queue
+        poll_bounce_queue
+        poll_complaints_queue
+      end
+
+      def cleanup
+        ReverificationTracker.remove_reverification_trackers_for_verifed_accounts
+        ReverificationTracker.delete_expired_accounts
+      end
     end
   end
 end

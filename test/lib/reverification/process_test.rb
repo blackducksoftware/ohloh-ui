@@ -9,7 +9,7 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
     end
 
     it 'should retrieve a message in the queue and update rev_tracker to delivered' do
-      rev_tracker = create(:success_initial_rev_tracker)
+      rev_tracker = create(:success_initial_rev_tracker, status: 0)
       assert rev_tracker.pending?
       Reverification::Process.poll_success_queue
       rev_tracker.reload
@@ -48,7 +48,7 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
         ReverificationTracker.find_by(id: hard_bounce_account.reverification_tracker.id).must_be_nil
       end
     end
-  
+
     describe 'soft bounce' do
       it 'should update the reverification tracker status to soft_bounced' do
         mock_queue.stubs(:poll).yields(TransientBounceMessage.new)
@@ -84,6 +84,73 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
       complained_account.reverification_tracker.wont_be :complained?
       Reverification::Process.poll_complaints_queue
       complained_account.reload.reverification_tracker.must_be :complained?
+    end
+  end
+
+  describe 'send_email' do
+    before do
+      AWS::SimpleEmailService.any_instance.stubs(:send_email).returns(ses_send_mail_response)
+      Reverification::Process.stubs(:ses_limit_reached?).returns(false)
+    end
+    let(:unverified_account) { create(:unverified_account) }
+
+    it 'should not send email when daily send quota is reached' do
+      Reverification::Process.stubs(:ses_limit_reached?).returns(true)
+      AWS::SimpleEmailService.any_instance.expects(:send_email).never
+      unverified_account.reverification_tracker.must_be_nil
+      Reverification::Process.send_email('dummy email content', unverified_account, 0)
+      unverified_account.reverification_tracker.must_be_nil
+    end
+
+    describe 'First notification' do
+      before do
+        unverified_account.reverification_tracker.must_be_nil
+      end
+
+      it 'should create a reverification tracker' do
+        Reverification::Process.send_email('dummy email content', unverified_account, 0)
+        unverified_account.reverification_tracker.must_be :present?
+        unverified_account.reverification_tracker.must_be :initial?
+        unverified_account.reverification_tracker.must_be :pending?
+        assert_equal 1, unverified_account.reverification_tracker.attempts
+        assert_equal Date.today, unverified_account.reverification_tracker.sent_at.to_date
+      end
+    end
+
+    describe 'Second/subsequent notification' do
+      before do
+        Reverification::Process.send_email('dummy - first email content', unverified_account, 0)
+        unverified_account.reverification_tracker.delivered!
+      end
+
+      it 'should update reverification tracker attributes - phase, status, attempts and sent_at' do
+        Reverification::Process.send_email('dummy - second email content', unverified_account, 1)
+        unverified_account.reverification_tracker.wont_be :initial?
+        unverified_account.reverification_tracker.must_be :pending?
+        assert_equal 1, unverified_account.reverification_tracker.attempts
+        assert_equal Date.today, unverified_account.reverification_tracker.sent_at.to_date
+      end
+    end
+
+    describe 'Resend notification' do
+      before do
+        Reverification::Process.send_email('dummy - first email content', unverified_account, 0)
+        unverified_account.reverification_tracker.must_be :present?
+        unverified_account.reverification_tracker.must_be :initial?
+        unverified_account.reverification_tracker.must_be :pending?
+        assert_equal 1, unverified_account.reverification_tracker.attempts
+        assert_equal Date.today, unverified_account.reverification_tracker.sent_at.to_date
+        unverified_account.reverification_tracker.soft_bounced!
+        unverified_account.reverification_tracker.must_be :soft_bounced?
+      end
+
+      it 'should update reverification tracker attributes - status, attempts and sent_at' do
+        Reverification::Process.send_email('dummy - first email content', unverified_account, 0)
+        unverified_account.reverification_tracker.must_be :initial?
+        unverified_account.reverification_tracker.must_be :pending?
+        assert_equal 2, unverified_account.reverification_tracker.attempts
+        assert_equal Date.today, unverified_account.reverification_tracker.sent_at.to_date
+      end
     end
   end
 end

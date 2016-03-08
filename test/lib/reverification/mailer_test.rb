@@ -15,6 +15,7 @@ class Reverification::MailerTest < ActiveSupport::TestCase
       assert_equal 14, Reverification::Mailer::NOTIFICATION2_DUE_DAYS
       assert_equal 14, Reverification::Mailer::NOTIFICATION3_DUE_DAYS
       assert_equal 14, Reverification::Mailer::NOTIFICATION4_DUE_DAYS
+      assert_equal 'info@openhub.net', Reverification::Mailer::FROM
     end
   end
 
@@ -146,7 +147,7 @@ class Reverification::MailerTest < ActiveSupport::TestCase
     end
 
     it 'should send correct email template' do
-      Reverification::Template.expects(:one_day_before_deletion_notice)
+      Reverification::Template.expects(:final_warning_notice)
       Reverification::Mailer.send_final_notification
     end
 
@@ -286,7 +287,7 @@ class Reverification::MailerTest < ActiveSupport::TestCase
       end
 
       it 'should send the same email content' do
-        Reverification::Template.expects(:one_day_before_deletion_notice)
+        Reverification::Template.expects(:final_warning_notice)
         Reverification::Mailer.resend_soft_bounced_notifications
       end
 
@@ -309,7 +310,7 @@ class Reverification::MailerTest < ActiveSupport::TestCase
 
       it 'should not resend email when sent_at is not lesser than current date' do
         @rev_tracker.update sent_at: Time.now.utc
-        Reverification::Template.expects(:one_day_before_deletion_notice).never
+        Reverification::Template.expects(:final_warning_notice).never
         Reverification::Mailer.resend_soft_bounced_notifications
       end
     end

@@ -1,5 +1,6 @@
 module Reverification
   class Mailer
+    FROM = 'info@openhub.net'
     SAMPLE_COUNT = 5000
     MAX_ATTEMPTS = 3
     NOTIFICATION1_DUE_DAYS = 14
@@ -52,7 +53,7 @@ module Reverification
         return if Reverification::Process.ses_limit_reached?
         ReverificationTracker.expired_third_phase_notifications(SAMPLE_COUNT).each do |rev_track|
           Reverification::Process.send_email(
-            Reverification::Template.one_day_before_deletion_notice(rev_track.account.email),
+            Reverification::Template.final_warning_notice(rev_track.account.email),
             rev_track.account, 3)
         end
       end
@@ -74,7 +75,7 @@ module Reverification
               notification.account, 2)
           elsif notification.final_warning?
             Reverification::Process.send_email(
-              Reverification::Template.one_day_before_deletion_notice(notification.account.email),
+              Reverification::Template.final_warning_notice(notification.account.email),
               notification.account, 3)
           end
         end
