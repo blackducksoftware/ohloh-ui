@@ -10,7 +10,7 @@ class Duplicate < ActiveRecord::Base
   validates :comment, length: { maximum: 1000 }, allow_blank: true
 
   def resolve!(editor_account)
-    good_project.editor_account = bad_project.editor_account = editor_account
+    @editor_account = editor_account
     Duplicate.transaction { RESOLVES.each { |r| send("resolve_#{r}!") } }
   end
 
@@ -40,7 +40,7 @@ class Duplicate < ActiveRecord::Base
   end
 
   def resolve_tags!
-    good_project.update_attributes(tag_list: "#{good_project.tag_list} #{bad_project.tag_list}")
+    good_project.update(editor_account: @editor_account, tag_list: "#{good_project.tag_list} #{bad_project.tag_list}")
   end
 
   def resolve_ratings!
@@ -59,7 +59,7 @@ class Duplicate < ActiveRecord::Base
 
   def resolve_links!
     bad_project.links.each do |link|
-      link.editor_account = good_project.editor_account
+      link.editor_account = @editor_account
       good_link = Link.find_by(url: link.url, project_id: good_project_id)
       good_link ? link.destroy : link.update_attributes(project_id: good_project_id)
     end
@@ -81,16 +81,16 @@ class Duplicate < ActiveRecord::Base
 
   def resolve_aliases!
     bad_project.aliases.each do |a|
-      a.editor_account = good_project.editor_account
-      Alias.create_for_project(bad_project.editor_account, good_project, a.commit_name_id, a.preferred_name_id)
+      a.editor_account = @editor_account
+      Alias.create_for_project(@editor_account, good_project, a.commit_name_id, a.preferred_name_id)
       a.destroy
     end
   end
 
   def resolve_enlistments!
     bad_project.enlistments.each do |e|
-      e.editor_account = good_project.editor_account
-      Enlistment.enlist_project_in_repository(bad_project.editor_account, good_project, e.repository, e.ignore)
+      e.editor_account = @editor_account
+      Enlistment.enlist_project_in_repository(@editor_account, good_project, e.repository, e.ignore)
       e.destroy
     end
   end
@@ -115,7 +115,7 @@ class Duplicate < ActiveRecord::Base
 
   def resolve_self!
     bad_project.update_attributes(name: "Duplicate Project #{id}", vanity_url: '')
-    CreateEdit.find_by(target: bad_project).undo!(bad_project.editor_account) unless bad_project.deleted?
+    CreateEdit.find_by(target: bad_project).undo!(@editor_account) unless bad_project.deleted?
     update_attribute(:resolved, true)
   end
 end

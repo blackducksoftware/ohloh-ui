@@ -15,7 +15,7 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
     create(:failure_group)
     admin.password = 'xyzzy123456'
     login_as admin
-    get show_uncategorized_admin_failure_groups_path
+    get admin_jobs_path(scope: 'uncategorized_failed_jobs')
     assert_response :ok
   end
 
@@ -24,14 +24,14 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
     create(:failed_job, failure_group_id: failure_group.id)
     admin.password = 'xyzzy123456'
     login_as admin
-    get jobs_admin_failure_group_path(failure_group)
+    get admin_failure_group_jobs_path(failure_group)
     assert_response :ok
   end
 
   describe 'decategorize' do
     it 'should decategorize failure groups ' do
       failure_group = create(:failure_group)
-      create(:failed_job, failure_group_id: failure_group.id)
+      create(:failed_job, failure_group_id: failure_group.id, exception: 'abort')
       admin.password = 'xyzzy123456'
       login_as admin
       failure_group.jobs.count.must_equal 1
@@ -42,8 +42,8 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
     it 'should not decategorize other failure group jobs' do
       failure_group = create(:failure_group)
       failure_group1 = create(:failure_group, pattern: '%Exception%')
-      create(:failed_job, failure_group_id: failure_group.id)
-      create(:failed_job, failure_group_id: failure_group1.id)
+      create(:failed_job, failure_group_id: failure_group.id, exception: 'abort')
+      create(:failed_job, failure_group_id: failure_group1.id, exception: 'abort')
       admin.password = 'xyzzy123456'
       login_as admin
       failure_group.jobs.count.must_equal 1
@@ -118,7 +118,7 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
 
     it 'should decategorize if jobs associated with failure group' do
       failure_group = create(:failure_group)
-      job = create(:failed_job, failure_group_id: failure_group.id)
+      job = create(:failed_job, failure_group_id: failure_group.id, exception: 'abort')
       admin.password = 'xyzzy123456'
       login_as admin
       FailureGroup.count.must_equal 1

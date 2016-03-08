@@ -11,7 +11,7 @@
       no_posts: 'No posts available to display.'
     edit:
       forums: 'Forums'
-      edit_title: 'Edit Post'
+      edit_title: 'Edit Post - Open Hub'
       spam: 'SPAM!'
       spam_confirmation: 'Are you sure you want to mark %{user} as a spammer, disabling the account and removing all posts?'
       delete: 'Delete'
