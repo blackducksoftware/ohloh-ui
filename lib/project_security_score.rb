@@ -9,10 +9,10 @@ module ProjectSecurityScore
   module_function
 
   def get_uri(uuid)
-    return @error['error'] = %w(no_uuid no_uuid) if uuid.empty?
+    return @error['error'] = %w(no_uuid no_uuid) if uuid.blank?
     url = open(ENV['KB_PROJECT_DETAIL'] + uuid + '?authToken=' + ENV['KB_AUTH_TOKEN'])
     json_data = JSON.load(url)
-    @error['error'] = ['#', '#'] if json_data['cves'].nil? || json_data['releases'].nil?
+    @error['error'] = ['#', '#'] if json_data['cves'].empty? || json_data['releases'].empty?
     return json_data
   rescue OpenURI::HTTPError
     return @error['error'] = %w(HTTP_404_Error HTTP_404_Error)
@@ -32,7 +32,7 @@ module ProjectSecurityScore
     version_release_hash, version_raw_score = {}
     version_raw_score = {}
     releases.each do |hash|
-      if range.cover?(hash['releasedOn'])
+      if range.cover?(hash['releasedOn']) && !(validate_version(hash['version']))
         version_release_hash.merge!(hash['version'] => hash['releasedOn'])
         version_raw_score.merge!(severity_stats(hash['version'], hash['cveIds'], cves))
       end
@@ -75,14 +75,6 @@ module ProjectSecurityScore
     (recent_release_date.year * 12 + recent_release_date.month) - (old_release_date.year * 12 + old_release_date.month)
   end
 
-  def update_rvm_hash(month_ver_hash, latest_ver_num)
-    version_arr = month_ver_hash.values.flatten
-    month_ver_hash.values.flatten.each do |version|
-      version_arr -= [version] if version.scan(/\d+/).first == latest_ver_num
-    end
-    month_ver_hash.update(month_ver_hash) { |_key, _v1| version_arr }
-  end
-
   def major_release_weight(version_release_hash)
     major_release = version_release_hash.keys.map { |v| v.scan(/\d+/).first.to_i }.uniq.sort
     latest_vers = get_latest_ver_array(version_release_hash, major_release)
@@ -112,20 +104,6 @@ module ProjectSecurityScore
     version_release_hash.keys.each_with_object([]) do |version, latest_vers|
       latest_vers << version if version.scan(/\d+/).first == major_release.last.to_s
     end
-  end
-
-  def check_for_update_age_weight(age_weight, version_release_hash)
-    major_release = version_release_hash.keys.map { |v| v.scan(/\d+/).first.to_i }.uniq.sort
-    latest_vers = get_latest_ver_array(version_release_hash, major_release.last.to_s)
-    if (latest_vers.map { |version| validate_version(version) }).all?
-      age_weight = update_age_weight(age_weight, latest_vers)
-    end
-    age_weight
-  end
-
-  def update_age_weight(age_weight, latest_vers)
-    recent_release_version = latest_vers.first.scan(/\d+/).first
-    age_weight.update(age_weight) { |_key, month_ver_hash| update_rvm_hash(month_ver_hash, recent_release_version) }
   end
 
   def minor_release_sequence_weight(major_release, version_release_hash)
@@ -205,7 +183,6 @@ module ProjectSecurityScore
   def compute_raw_data(range, version_release_raw_array)
     @age_weight = age_weight(version_release_raw_array[0], range.last, range.first)
     major_release_weight_array = major_release_weight(version_release_raw_array[0])
-    @age_weight = check_for_update_age_weight(@age_weight, version_release_raw_array[0])
     mrsw = minor_release_sequence_weight(major_release_weight_array[0], version_release_raw_array[0])
     version_cve_sum = version_release_raw_array[1]
     get_rvw_stats(@age_weight, major_release_weight_array[1], mrsw, version_cve_sum)
