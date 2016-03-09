@@ -9,9 +9,19 @@
     %meta{ name: 'digits-consumer-key', content: ENV['DIGITS_CONSUMER_KEY'] }
     %meta{ name: 'google-site-verification', content: 'jKkWeVQ0tB1bffJYg7xXAtcIM-nrjjVxhP3ohb8UH2A' }
     = yield :custom_head
-    = javascript_include_tag 'application'
     = stylesheet_link_tag 'application', media: 'all'
     = csrf_meta_tags
+
+  %body{ zoom: 1 }
+    = yield :session_projects_banner
+    .container#page
+      %header= render partial: 'layouts/partials/header'
+      = render partial: 'layouts/partials/page'
+      .clear
+      %footer= render partial: 'layouts/partials/footer'
+
+    = yield(:javascript) if content_for?(:javascript)
+    = javascript_include_tag 'application'
     = javascript_include_tag 'https://www.google.com/recaptcha/api.js'
     = javascript_include_tag 'https://cdn.digits.com/1/sdk.js'
     = javascript_include_tag '//cdn.optimizely.com/js/3568250046.js'
@@ -23,11 +33,3 @@
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(hm, s);
       })();
       </script>
-  %body{ zoom: 1 }
-    = yield :session_projects_banner
-    .container#page
-      %header= render partial: 'layouts/partials/header'
-      = render partial: 'layouts/partials/page'
-      .clear
-      %footer= render partial: 'layouts/partials/footer'
-    = yield(:javascript) if content_for?(:javascript)
