@@ -1,6 +1,5 @@
 module Reverification
   class Process
-    class SesMaxSendLimit < Exception; end
     class << self
       def ses
         @ses ||= AWS::SimpleEmailService.new
@@ -23,12 +22,16 @@ module Reverification
       end
 
       def ses_limit_reached?
-        ses.quotas[:sent_last_24_hours] == ses.quotas[:max_24_hour_send]
+        quotas = ses.quotas
+        quotas[:sent_last_24_hours] == quotas[:max_24_hour_send]
+      end
+
+      def ses_daily_limit_available
+        quotas = ses.quotas
+        quotas[:max_24_hour_send] - quotas[:sent_last_24_hours]
       end
 
       def send_email(template, account, phase)
-        # Make sure we don't hit the limit.  Amazon SES doesn't like that
-        fail SesMaxSendLimit if ses_limit_reached?
         resp = ses.send_email(template)
         if account.reverification_tracker
           update_tracker(account.reverification_tracker, phase, resp)

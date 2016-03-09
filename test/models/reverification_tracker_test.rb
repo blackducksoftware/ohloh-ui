@@ -34,37 +34,6 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
     end
   end
 
-  # Figure out why this is not working
-
-  # describe 'phase_value' do
-  #   before do
-  #     @rev_track_one = create(:initial_rev_tracker)
-  #     @rev_track_two = create(:marked_for_spam_rev_tracker)
-  #     @rev_track_three = create(:spam_rev_tracker)
-  #     @rev_track_four = create(:final_warning_rev_tracker)
-  #   end
-
-  #   it 'should return the phase of the rev_tracker' do
-  #     ReverificationTracker.expects(:phases).with(has_key(@rev_track_one.phase)).returns(0)
-  #     @rev_track_one.phase_value
-  #   end
-
-  #   it 'should return the phase of the rev_tracker' do
-  #     ReverificationTracker.expects(:phases).with(has_key(@rev_track_two.phase)).returns(1)
-  #     @rev_track_two.phase_value
-  #   end
-
-  #   it 'should return the phase of the rev_tracker' do
-  #     ReverificationTracker.expects(:phases).with(has_key(@rev_track_three.phase)).returns(2)
-  #     @rev_track_three.phase_value
-  #   end
-
-  #   it 'should return the phase of the rev_tracker' do
-  #     ReverificationTracker.expects(:phases).with(has_key(@rev_track_four.phase)).returns(3)
-  #     @rev_track_four.phase_value
-  #   end
-  # end
-
   describe 'expired_initial_phase_notifications' do
     before do
       create(:complained_initial_rev_tracker, sent_at: Time.now.utc - 14.days)

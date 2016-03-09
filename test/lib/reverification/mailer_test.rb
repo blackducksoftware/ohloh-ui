@@ -3,7 +3,7 @@ require 'test_helper'
 class Reverification::MailerTest < ActiveSupport::TestCase
   before do
     AWS::SimpleEmailService.any_instance.stubs(:send_email).returns(ses_send_mail_response)
-    Reverification::Process.stubs(:ses_limit_reached?).returns(false)
+    AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(ses_send_quota)
   end
   let(:verified_account) { create(:account) }
   let(:unverified_account_sucess) { create(:unverified_account, :success) }
@@ -189,14 +189,6 @@ class Reverification::MailerTest < ActiveSupport::TestCase
         @rev_tracker.update sent_at: Time.now.utc
         Reverification::Template.expects(:first_reverification_notice).never
         Reverification::Mailer.resend_soft_bounced_notifications
-      end
-
-      it 'should not resend an email when ses limit has been reached' do
-        assert_raise Reverification::Process::SesMaxSendLimit do
-          Reverification::Process.expects(:ses_limit_reached?).returns(true)
-          AWS::SimpleEmailService.any_instance.expects(:send_email).never
-          Reverification::Mailer.resend_soft_bounced_notifications
-        end
       end
     end
 

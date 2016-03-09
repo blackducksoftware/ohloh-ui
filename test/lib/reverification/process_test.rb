@@ -90,19 +90,9 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
   describe 'send_email' do
     before do
       AWS::SimpleEmailService.any_instance.stubs(:send_email).returns(ses_send_mail_response)
-      Reverification::Process.stubs(:ses_limit_reached?).returns(false)
+      AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(ses_send_quota)
     end
     let(:unverified_account) { create(:unverified_account) }
-
-    it 'should not send email when daily send quota is reached' do
-      assert_raise Reverification::Process::SesMaxSendLimit do
-        Reverification::Process.expects(:ses_limit_reached?).returns(true)
-        AWS::SimpleEmailService.any_instance.expects(:send_email).never
-        unverified_account.reverification_tracker.must_be_nil
-        Reverification::Process.send_email('dummy email content', unverified_account, 0)
-        unverified_account.reverification_tracker.must_be_nil
-      end
-    end
 
     describe 'First notification' do
       before do
@@ -202,14 +192,15 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
   end
 
   describe 'ses_limit_reached?' do
-    it 'should return true when daily sent quota equals max send quota' do
-      Reverification::Process.expects(:ses_limit_reached?).returns(true)
-      Reverification::Process.ses_limit_reached?
+    it 'should return false when daily sent quota not reached max daily send quota' do
+      assert_equal false, Reverification::Process.ses_limit_reached?
     end
+  end
 
-    it 'should return false when daily sent quota not exceeded max send quota' do
-      Reverification::Process.expects(:ses_limit_reached?).returns(false)
-      Reverification::Process.ses_limit_reached?
+  describe 'ses_daily_limit_available' do
+    it 'should return the balance send limit available for the day' do
+      AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(ses_send_quota)
+      assert_equal 150, Reverification::Process.ses_daily_limit_available
     end
   end
 

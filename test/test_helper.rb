@@ -232,4 +232,8 @@ class ActiveSupport::TestCase
   def ses_send_mail_response
     { message_id: "XYZ0-1234-AB56-67GJ-#{Time.now.utc.to_i}" }
   end
+
+  def ses_send_quota
+    { max_24_hour_send: 200, max_send_rate: 1.0, sent_last_24_hours: 50 }
+  end
 end

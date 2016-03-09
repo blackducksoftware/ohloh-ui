@@ -686,8 +686,8 @@ class AccountTest < ActiveSupport::TestCase
       create(:unverified_account, :success)
       create(:unverified_account, :complaint)
       create(:account)
-      assert_equal 2, Account.unverified.size
-      assert_not_equal Account.count, Account.unverified.size
+      assert_equal 2, Account.reverification_not_initiated.size
+      assert_not_equal Account.count, Account.reverification_not_initiated.size
     end
   end
 end
