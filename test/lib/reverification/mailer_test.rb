@@ -19,40 +19,6 @@ class Reverification::MailerTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'ses quota limit' do
-    before do
-      Reverification::Process.expects(:ses_limit_reached?).returns(true)
-    end
-
-    it 'should not send notifications if ses limit is reached' do
-      Reverification::Mailer.expects(:send_final_notification).never
-      Reverification::Mailer.expects(:send_converted_to_spam_notification).never
-      Reverification::Mailer.expects(:send_marked_for_spam_notification).never
-      Reverification::Mailer.expects(:send_first_notification).never
-      Reverification::Mailer.send_notifications
-    end
-
-    it 'should not send notifications if ses limit is reached' do
-      Reverification::Process.expects(:send_email).never
-      Reverification::Mailer.send_first_notification
-    end
-
-    it 'should not send notifications if ses limit is reached' do
-      Reverification::Process.expects(:send_email).never
-      Reverification::Mailer.send_marked_for_spam_notification
-    end 
-
-    it 'should not send notifications if ses limit is reached' do
-      Reverification::Process.expects(:send_email).never
-      Reverification::Mailer.send_converted_to_spam_notification
-    end 
-
-    it 'should not send notifications if ses limit is reached' do
-      Reverification::Process.expects(:send_email).never
-      Reverification::Mailer.send_final_notification
-    end 
-  end
-
   describe 'run' do
     it 'should invoke notifications sending methods' do
       Reverification::Mailer.expects(:send_notifications)
@@ -80,13 +46,14 @@ class Reverification::MailerTest < ActiveSupport::TestCase
       unverified_account_sucess.reverification_tracker.must_be :present?
       unverified_account_sucess.reverification_tracker.phase.must_equal 'initial'
       unverified_account_sucess.reverification_tracker.attempts.must_equal 1
-      unverified_account_sucess.reverification_tracker.sent_at.to_date.must_equal Date.today
+      unverified_account_sucess.reverification_tracker.sent_at.to_date.must_equal Time.zone.now.to_date
     end
   end
 
   describe 'send_marked_for_spam_notification' do
     before do
-      @rev_tracker = create(:success_initial_rev_tracker, account: unverified_account_sucess, sent_at: Time.now.utc - Reverification::Mailer::NOTIFICATION1_DUE_DAYS.days)
+      sent_at = Time.now.utc - Reverification::Mailer::NOTIFICATION1_DUE_DAYS.days
+      @rev_tracker = create(:success_initial_rev_tracker, account: unverified_account_sucess, sent_at: sent_at)
       ReverificationTracker.expects(:expired_initial_phase_notifications).returns [@rev_tracker]
     end
 
@@ -112,13 +79,16 @@ class Reverification::MailerTest < ActiveSupport::TestCase
 
     it 'should update the sent_at time' do
       Reverification::Mailer.send_marked_for_spam_notification
-      @rev_tracker.sent_at.to_date.must_equal Date.today
+      @rev_tracker.sent_at.to_date.must_equal Time.zone.now.to_date
     end
   end
 
   describe 'send_converted_to_spam_notification' do
     before do
-      @rev_tracker = create(:marked_for_spam_rev_tracker, :delivered, account: unverified_account_sucess, sent_at: Time.now.utc - Reverification::Mailer::NOTIFICATION2_DUE_DAYS.days)
+      @rev_tracker = create(:marked_for_spam_rev_tracker,
+                            :delivered,
+                            account: unverified_account_sucess,
+                            sent_at: Time.now.utc - Reverification::Mailer::NOTIFICATION2_DUE_DAYS.days)
       ReverificationTracker.expects(:expired_second_phase_notifications).returns [@rev_tracker]
     end
 
@@ -144,13 +114,16 @@ class Reverification::MailerTest < ActiveSupport::TestCase
 
     it 'should update the sent_at time' do
       Reverification::Mailer.send_converted_to_spam_notification
-      @rev_tracker.sent_at.to_date.must_equal Date.today
+      @rev_tracker.sent_at.to_date.must_equal Time.zone.now.to_date
     end
   end
 
   describe 'send_final_notification' do
     before do
-      @rev_tracker = create(:spam_rev_tracker, :delivered, account: unverified_account_sucess, sent_at: Time.now.utc - Reverification::Mailer::NOTIFICATION3_DUE_DAYS.days)
+      @rev_tracker = create(:spam_rev_tracker,
+                            :delivered,
+                            account: unverified_account_sucess,
+                            sent_at: Time.now.utc - Reverification::Mailer::NOTIFICATION3_DUE_DAYS.days)
       ReverificationTracker.expects(:expired_third_phase_notifications).returns [@rev_tracker]
     end
 
@@ -176,14 +149,18 @@ class Reverification::MailerTest < ActiveSupport::TestCase
 
     it 'should update the sent_at time' do
       Reverification::Mailer.send_final_notification
-      @rev_tracker.sent_at.to_date.must_equal Date.today
+      @rev_tracker.sent_at.to_date.must_equal Time.zone.now.to_date
     end
   end
 
   describe 'resend_soft_bounced_notifications' do
     describe 'initial notification' do
       before do
-        @rev_tracker = create(:reverification_tracker, :soft_bounced, attempts: 1, sent_at: Time.now.utc - 1.day, account: unverified_account_sucess)
+        @rev_tracker = create(:reverification_tracker,
+                              :soft_bounced,
+                              account: unverified_account_sucess,
+                              attempts: 1,
+                              sent_at: Time.now.utc - 1.day)
       end
 
       it 'should send the same email content' do
@@ -203,9 +180,9 @@ class Reverification::MailerTest < ActiveSupport::TestCase
       end
 
       it 'should update the sent_at time' do
-        @rev_tracker.sent_at.to_date.wont_equal Date.today
+        @rev_tracker.sent_at.to_date.wont_equal Time.zone.now.to_date
         Reverification::Mailer.resend_soft_bounced_notifications
-        @rev_tracker.reload.sent_at.to_date.must_equal Date.today
+        @rev_tracker.reload.sent_at.to_date.must_equal Time.zone.now.to_date
       end
 
       it 'should not resend email when sent_at is not lesser than current date' do
@@ -215,15 +192,21 @@ class Reverification::MailerTest < ActiveSupport::TestCase
       end
 
       it 'should not resend an email when ses limit has been reached' do
-        Reverification::Process.expects(:ses_limit_reached?).returns(true)
-        AWS::SimpleEmailService.any_instance.expects(:send_email).never
-        Reverification::Mailer.resend_soft_bounced_notifications
+        assert_raise Reverification::Process::SesMaxSendLimit do
+          Reverification::Process.expects(:ses_limit_reached?).returns(true)
+          AWS::SimpleEmailService.any_instance.expects(:send_email).never
+          Reverification::Mailer.resend_soft_bounced_notifications
+        end
       end
     end
 
     describe 'marked for spam notification' do
       before do
-        @rev_tracker = create(:marked_for_spam_rev_tracker, :soft_bounced, attempts: 1, sent_at: Time.now.utc - 1.day, account: unverified_account_sucess)
+        @rev_tracker = create(:marked_for_spam_rev_tracker,
+                              :soft_bounced,
+                              account: unverified_account_sucess,
+                              attempts: 1,
+                              sent_at: Time.now.utc - 1.day)
       end
 
       it 'should send the same email content' do
@@ -243,9 +226,9 @@ class Reverification::MailerTest < ActiveSupport::TestCase
       end
 
       it 'should update the sent_at time' do
-        @rev_tracker.sent_at.to_date.wont_equal Date.today
+        @rev_tracker.sent_at.to_date.wont_equal Time.zone.now.to_date
         Reverification::Mailer.resend_soft_bounced_notifications
-        @rev_tracker.reload.sent_at.to_date.must_equal Date.today
+        @rev_tracker.reload.sent_at.to_date.must_equal Time.zone.now.to_date
       end
 
       it 'should not resend email when sent_at is not lesser than current date' do
@@ -257,7 +240,11 @@ class Reverification::MailerTest < ActiveSupport::TestCase
 
     describe 'spam notification' do
       before do
-        @rev_tracker = create(:spam_rev_tracker, :soft_bounced, attempts: 1, sent_at: Time.now.utc - 1.day, account: unverified_account_sucess)
+        @rev_tracker = create(:spam_rev_tracker,
+                              :soft_bounced,
+                              account: unverified_account_sucess,
+                              attempts: 1,
+                              sent_at: Time.now.utc - 1.day)
       end
 
       it 'should send the same email content' do
@@ -277,9 +264,9 @@ class Reverification::MailerTest < ActiveSupport::TestCase
       end
 
       it 'should update the sent_at time' do
-        @rev_tracker.sent_at.to_date.wont_equal Date.today
+        @rev_tracker.sent_at.to_date.wont_equal Time.zone.now.to_date
         Reverification::Mailer.resend_soft_bounced_notifications
-        @rev_tracker.reload.sent_at.to_date.must_equal Date.today
+        @rev_tracker.reload.sent_at.to_date.must_equal Time.zone.now.to_date
       end
 
       it 'should not resend email when sent_at is not lesser than current date' do
@@ -291,7 +278,11 @@ class Reverification::MailerTest < ActiveSupport::TestCase
 
     describe 'final warning notification' do
       before do
-        @rev_tracker = create(:final_warning_rev_tracker, :soft_bounced, attempts: 1, sent_at: Time.now.utc - 1.day, account: unverified_account_sucess)
+        @rev_tracker = create(:final_warning_rev_tracker,
+                              :soft_bounced,
+                              account: unverified_account_sucess,
+                              attempts: 1,
+                              sent_at: Time.now.utc - 1.day)
       end
 
       it 'should send the same email content' do
@@ -311,9 +302,9 @@ class Reverification::MailerTest < ActiveSupport::TestCase
       end
 
       it 'should update the sent_at time' do
-        @rev_tracker.sent_at.to_date.wont_equal Date.today
+        @rev_tracker.sent_at.to_date.wont_equal Time.zone.now.to_date
         Reverification::Mailer.resend_soft_bounced_notifications
-        @rev_tracker.reload.sent_at.to_date.must_equal Date.today
+        @rev_tracker.reload.sent_at.to_date.must_equal Time.zone.now.to_date
       end
 
       it 'should not resend email when sent_at is not lesser than current date' do

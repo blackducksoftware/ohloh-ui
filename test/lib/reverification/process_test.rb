@@ -95,11 +95,13 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
     let(:unverified_account) { create(:unverified_account) }
 
     it 'should not send email when daily send quota is reached' do
-      Reverification::Process.stubs(:ses_limit_reached?).returns(true)
-      AWS::SimpleEmailService.any_instance.expects(:send_email).never
-      unverified_account.reverification_tracker.must_be_nil
-      Reverification::Process.send_email('dummy email content', unverified_account, 0)
-      unverified_account.reverification_tracker.must_be_nil
+      assert_raise Reverification::Process::SesMaxSendLimit do
+        Reverification::Process.expects(:ses_limit_reached?).returns(true)
+        AWS::SimpleEmailService.any_instance.expects(:send_email).never
+        unverified_account.reverification_tracker.must_be_nil
+        Reverification::Process.send_email('dummy email content', unverified_account, 0)
+        unverified_account.reverification_tracker.must_be_nil
+      end
     end
 
     describe 'First notification' do
@@ -113,7 +115,7 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
         unverified_account.reverification_tracker.must_be :initial?
         unverified_account.reverification_tracker.must_be :pending?
         assert_equal 1, unverified_account.reverification_tracker.attempts
-        assert_equal Date.today, unverified_account.reverification_tracker.sent_at.to_date
+        assert_equal Time.zone.now.to_date, unverified_account.reverification_tracker.sent_at.to_date
       end
     end
 
@@ -128,7 +130,7 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
         unverified_account.reverification_tracker.wont_be :initial?
         unverified_account.reverification_tracker.must_be :pending?
         assert_equal 1, unverified_account.reverification_tracker.attempts
-        assert_equal Date.today, unverified_account.reverification_tracker.sent_at.to_date
+        assert_equal Time.zone.now.to_date, unverified_account.reverification_tracker.sent_at.to_date
       end
     end
 
@@ -139,7 +141,7 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
         unverified_account.reverification_tracker.must_be :initial?
         unverified_account.reverification_tracker.must_be :pending?
         assert_equal 1, unverified_account.reverification_tracker.attempts
-        assert_equal Date.today, unverified_account.reverification_tracker.sent_at.to_date
+        assert_equal Time.zone.now.to_date, unverified_account.reverification_tracker.sent_at.to_date
         unverified_account.reverification_tracker.soft_bounced!
         unverified_account.reverification_tracker.must_be :soft_bounced?
       end
@@ -149,7 +151,7 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
         unverified_account.reverification_tracker.must_be :initial?
         unverified_account.reverification_tracker.must_be :pending?
         assert_equal 2, unverified_account.reverification_tracker.attempts
-        assert_equal Date.today, unverified_account.reverification_tracker.sent_at.to_date
+        assert_equal Time.zone.now.to_date, unverified_account.reverification_tracker.sent_at.to_date
       end
     end
   end
@@ -181,21 +183,21 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
   describe 'success_queue' do
     it 'should return AWS::SQS::Queue instance for success queue' do
       queue_instance = Reverification::Process.success_queue
-      queue_instance.url.must_match /ses-success-queue/
+      queue_instance.url.must_match(/ses-success-queue/)
     end
   end
 
   describe 'bounce_queue' do
     it 'should return AWS::SQS::Queue instance for bounce queue' do
       queue_instance = Reverification::Process.bounce_queue
-      queue_instance.url.must_match /ses-bounces-queue/
+      queue_instance.url.must_match(/ses-bounces-queue/)
     end
   end
 
   describe 'complaints_queue' do
     it 'should return AWS::SQS::Queue instance for complaints queue' do
       queue_instance = Reverification::Process.complaints_queue
-      queue_instance.url.must_match /ses-complaints-queue/
+      queue_instance.url.must_match(/ses-complaints-queue/)
     end
   end
 
@@ -208,6 +210,51 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
     it 'should return false when daily sent quota not exceeded max send quota' do
       Reverification::Process.expects(:ses_limit_reached?).returns(false)
       Reverification::Process.ses_limit_reached?
+    end
+  end
+
+  describe 'handle_bounce_notification' do
+    it 'should execute destroy accoun if type is Permanent' do
+      create(:hard_bounce_initial_rev_tracker)
+      ReverificationTracker.expects(:destroy_account).with('bounce@simulator.amazonses.com')
+      ReverificationTracker.any_instance.expects(:soft_bounced!).never
+      Reverification::Process.handle_bounce_notification('Permanent', 'bounce@simulator.amazonses.com')
+    end
+
+    it 'should execute rev_tracker.soft_bounced when Transient' do
+      create(:soft_bounce_initial_rev_tracker)
+      ReverificationTracker.any_instance.expects(:soft_bounced!)
+      Reverification::Process.handle_bounce_notification('Undetermined', 'ooto@simulator.amazonses.com')
+    end
+
+    it 'should execute rev_tracker.soft_bounced when Undetermined' do
+      create(:soft_bounce_initial_rev_tracker)
+      ReverificationTracker.any_instance.expects(:soft_bounced!)
+      Reverification::Process.handle_bounce_notification('Undetermined', 'ooto@simulator.amazonses.com')
+    end
+  end
+
+  describe 'update_reverification' do
+    before do
+      @rev_tracker = create(:reverification_tracker)
+    end
+
+    it 'should increment attempts when phase equals the phase value' do
+      Reverification::Process.update_tracker(@rev_tracker, 0, ses_send_mail_response)
+      assert_equal 2, @rev_tracker.attempts
+      assert_equal ses_send_mail_response[:message_id], @rev_tracker.message_id
+      assert_equal 'pending', @rev_tracker.status
+      assert_equal 'initial', @rev_tracker.phase
+      assert_equal @rev_tracker.sent_at.to_date, Time.now.utc.to_date
+    end
+
+    it 'should reset attempts to 1 when phase does not match phase value' do
+      Reverification::Process.update_tracker(@rev_tracker, 1, ses_send_mail_response)
+      assert_equal 1, @rev_tracker.attempts
+      assert_equal ses_send_mail_response[:message_id], @rev_tracker.message_id
+      assert_equal 'pending', @rev_tracker.status
+      assert_equal 'marked_for_spam', @rev_tracker.phase
+      assert_equal @rev_tracker.sent_at.to_date, Time.now.utc.to_date
     end
   end
 end

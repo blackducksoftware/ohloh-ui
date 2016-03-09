@@ -190,13 +190,13 @@ class ActiveSupport::TestCase
   end
 
   class TransientBounceBody
-     def body_message_as_h
-       { 'bounce': { 'bounceType': 'Transient',
-                     'bouncedRecipients': [{ 'emailAddress': 'ooto@simulator.amazonses.com' }]
-         }
-       }.with_indifferent_access
-     end
-   end
+    def body_message_as_h
+      { 'bounce': { 'bounceType': 'Transient',
+                    'bouncedRecipients': [{ 'emailAddress': 'ooto@simulator.amazonses.com' }]
+        }
+      }.with_indifferent_access
+    end
+  end
 
   class TransientBounceMessage
     def as_sns_message
@@ -216,9 +216,8 @@ class ActiveSupport::TestCase
 
   class ComplaintBody
     def body_message_as_h
-      { 'complaint': {
-                    'complainedRecipients': [{ 'emailAddress': 'complaint@simulator.amazonses.com' }],
-                    'complaintFeedbackType': 'abuse'
+      { 'complaint': { 'complainedRecipients': [{ 'emailAddress': 'complaint@simulator.amazonses.com' }],
+                       'complaintFeedbackType': 'abuse'
         }
       }.with_indifferent_access
     end

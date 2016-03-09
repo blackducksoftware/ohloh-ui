@@ -52,7 +52,7 @@ FactoryGirl.define do
     association :github_verification, strategy: :null
     association :reverification_tracker, strategy: :null
   end
-  
+
   trait :spammer do
     level Account::Access::SPAM
     association :github_verification, strategy: :null
@@ -87,4 +87,3 @@ FactoryGirl.define do
     email 'complaint@simulator.amazonses.com'
   end
 end
-

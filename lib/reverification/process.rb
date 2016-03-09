@@ -1,5 +1,6 @@
 module Reverification
   class Process
+    class SesMaxSendLimit < Exception; end
     class << self
       def ses
         @ses ||= AWS::SimpleEmailService.new
@@ -26,7 +27,8 @@ module Reverification
       end
 
       def send_email(template, account, phase)
-        return if ses_limit_reached?
+        # Make sure we don't hit the limit.  Amazon SES doesn't like that
+        fail SesMaxSendLimit if ses_limit_reached?
         resp = ses.send_email(template)
         if account.reverification_tracker
           update_tracker(account.reverification_tracker, phase, resp)
