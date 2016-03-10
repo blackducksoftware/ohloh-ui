@@ -1,0 +1,23 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://kb.blackducksoftware.com/kbdetail/api/v1/project/c2ac3ddc-527f-4c18-91ea-8cb8855bf4a2?authToken=suite-qa-test-externel-04
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - kb.blackducksoftware.com
+  response:
+    status:
+      code: 400
+    http_version:
+  recorded_at: Tue, 08 Mar 2016 04:36:54 GMT
+recorded_with: VCR 3.0.0
