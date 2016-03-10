@@ -1,8 +1,8 @@
 $(document).on 'page:change', ->
-  divs = $('p[id^="content-"]').hide()
+  divs = $('p[id^="content-"]')
   i = 0
   do ->
-    divs.eq(i).fadeIn(400).delay(6000).fadeOut 400, arguments.callee
+    divs.eq(i).removeClass('hide').fadeIn(400).delay(6000).fadeOut 400, arguments.callee
     i = ++i % divs.length
 
   $('#icon_text').click ->
