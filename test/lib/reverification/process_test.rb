@@ -1,6 +1,12 @@
 require 'test_helper'
+require 'test_helpers/reverification'
 
 class Reverification::ProcessTest < ActiveSupport::TestCase
+  before do
+    AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(MOCK::AWS::SimpleEmailService.send_quota)
+    AWS::SQS.any_instance.stubs(:queues).returns(MOCK::AWS::SQS::QueueCollection.new)
+  end
+
   describe 'poll success queue' do
     before do
       mock_queue = mock('AWS::SQS::Queue::MOCK')
@@ -89,8 +95,7 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
 
   describe 'send_email' do
     before do
-      AWS::SimpleEmailService.any_instance.stubs(:send_email).returns(ses_send_mail_response)
-      AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(ses_send_quota)
+      AWS::SimpleEmailService.any_instance.stubs(:send_email).returns(MOCK::AWS::SimpleEmailService.response)
     end
     let(:unverified_account) { create(:unverified_account) }
 
@@ -199,7 +204,6 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
 
   describe 'ses_daily_limit_available' do
     it 'should return the balance send limit available for the day' do
-      AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(ses_send_quota)
       assert_equal 150, Reverification::Process.ses_daily_limit_available
     end
   end
@@ -231,18 +235,18 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
     end
 
     it 'should increment attempts when phase equals the phase value' do
-      Reverification::Process.update_tracker(@rev_tracker, 0, ses_send_mail_response)
+      Reverification::Process.update_tracker(@rev_tracker, 0, MOCK::AWS::SimpleEmailService.response)
       assert_equal 2, @rev_tracker.attempts
-      assert_equal ses_send_mail_response[:message_id], @rev_tracker.message_id
+      assert_equal MOCK::AWS::SimpleEmailService.response[:message_id], @rev_tracker.message_id
       assert_equal 'pending', @rev_tracker.status
       assert_equal 'initial', @rev_tracker.phase
       assert_equal @rev_tracker.sent_at.to_date, Time.now.utc.to_date
     end
 
     it 'should reset attempts to 1 when phase does not match phase value' do
-      Reverification::Process.update_tracker(@rev_tracker, 1, ses_send_mail_response)
+      Reverification::Process.update_tracker(@rev_tracker, 1, MOCK::AWS::SimpleEmailService.response)
       assert_equal 1, @rev_tracker.attempts
-      assert_equal ses_send_mail_response[:message_id], @rev_tracker.message_id
+      assert_equal MOCK::AWS::SimpleEmailService.response[:message_id], @rev_tracker.message_id
       assert_equal 'pending', @rev_tracker.status
       assert_equal 'marked_for_spam', @rev_tracker.phase
       assert_equal @rev_tracker.sent_at.to_date, Time.now.utc.to_date

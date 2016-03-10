@@ -1,9 +1,11 @@
 module Reverification
   class Template
+    extend ActionView::Helpers::OutputSafetyHelper
+
     class << self
       def final_warning_notice(email)
         { to: "#{email}", from: Reverification::Mailer::FROM,
-          subject: 'Your Account Will Be Deleted Tomorrow: Please Reverify',
+          subject: 'Your Account Will Be In Two Weeks: Please Reverify',
           body_html: "Hello, you are receiving this notice because Open Hub has determined that this account is spam
             and will be deleted from the website in 2 weeks. If this is incorrect, please click on the reverification
             link <a href=#{ENV['URL_HOST']}/authentications/new /> in order to restore your account. Failure to do so

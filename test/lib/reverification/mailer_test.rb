@@ -1,9 +1,10 @@
 require 'test_helper'
+require 'test_helpers/reverification'
 
 class Reverification::MailerTest < ActiveSupport::TestCase
   before do
-    AWS::SimpleEmailService.any_instance.stubs(:send_email).returns(ses_send_mail_response)
-    AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(ses_send_quota)
+    AWS::SimpleEmailService.any_instance.stubs(:send_email).returns(MOCK::AWS::SimpleEmailService.response)
+    AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(MOCK::AWS::SimpleEmailService.send_quota)
   end
   let(:verified_account) { create(:account) }
   let(:unverified_account_sucess) { create(:unverified_account, :success) }

@@ -17,10 +17,10 @@ Dotenv.overload '.env.test'
 
 ActiveRecord::Migration.maintain_test_schema!
 
-# VCR.configure do |config|
-#   config.cassette_library_dir = 'fixtures/vcr_cassettes'
-#   config.hook_into :webmock
-# end
+VCR.configure do |config|
+  config.cassette_library_dir = 'fixtures/vcr_cassettes'
+  config.hook_into :webmock
+end
 
 class ActiveSupport::TestCase
   include FactoryGirl::Syntax::Methods
@@ -141,93 +141,5 @@ class ActiveSupport::TestCase
     JSON.stubs(:parse).returns(data)
 
     digits_id
-  end
-
-  # Note: These classes are used for mocking Reverification AWS::SimpleEmailService responses and messages.
-  #        Used for the spammer cleanup initiative.
-  class UndeterminedBounceBody
-    def body_message_as_h
-      { bounce: { bounceType: 'Undetermined',
-                  bouncedRecipients: [{ emailAddress: 'someone@gmail.com' }]
-        }
-      }.with_indifferent_access
-    end
-  end
-
-  class UndeterminedBounceMessage
-    def as_sns_message
-      UndeterminedBounceBody.new
-    end
-  end
-
-  class HardBounceBody
-    def body_message_as_h
-      { bounce: { bounceType: 'Permanent',
-                  bouncedRecipients: [{ emailAddress: 'bounce@simulator.amazonses.com' }]
-        }
-      }.with_indifferent_access
-    end
-  end
-
-  class HardBounceMessage
-    def as_sns_message
-      HardBounceBody.new
-    end
-  end
-
-  class SuccessBody
-    def body_message_as_h
-      { delivery:
-          { recipients: ['success@simulator.amazonses.com'] }
-      }.with_indifferent_access
-    end
-  end
-
-  class SuccessMessage
-    def as_sns_message
-      SuccessBody.new
-    end
-  end
-
-  class TransientBounceBody
-    def body_message_as_h
-      { bounce: { bounceType: 'Transient',
-                  bouncedRecipients: [{ emailAddress: 'ooto@simulator.amazonses.com' }]
-        }
-      }.with_indifferent_access
-    end
-  end
-
-  class TransientBounceMessage
-    def as_sns_message
-      TransientBounceBody.new
-    end
-
-    def body
-      'ooto@simulator.amazonses.com'
-    end
-  end
-
-  class ComplaintBody
-    def body_message_as_h
-      { complaint: { complainedRecipients: [{ emailAddress: 'complaint@simulator.amazonses.com' }],
-                     complaintFeedbackType: 'abuse'
-        }
-      }.with_indifferent_access
-    end
-  end
-
-  class ComplaintMessage
-    def as_sns_message
-      ComplaintBody.new
-    end
-  end
-
-  def ses_send_mail_response
-    { message_id: "XYZ0-1234-AB56-67GJ-#{Time.now.utc.to_i}" }
-  end
-
-  def ses_send_quota
-    { max_24_hour_send: 200, max_send_rate: 1.0, sent_last_24_hours: 50 }
   end
 end

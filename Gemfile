@@ -61,7 +61,7 @@ group :test do
   gem 'spring'
   gem 'timecop'
   gem 'vcr'
-  # gem 'webmock'
+  gem 'webmock'
 end
 
 group :development, :test do

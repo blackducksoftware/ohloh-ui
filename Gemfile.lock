@@ -130,6 +130,8 @@ GEM
     coffee-script-source (1.8.0)
     commonjs (0.2.7)
     concurrent-ruby (1.0.0)
+    crack (0.4.3)
+      safe_yaml (~> 1.0.0)
     docile (1.1.5)
     doorkeeper (3.0.1)
       railties (>= 3.2)
@@ -172,6 +174,7 @@ GEM
     has_scope (0.6.0)
       actionpack (>= 3.2, < 5)
       activesupport (>= 3.2, < 5)
+    hashdiff (0.2.3)
     highline (1.7.8)
     html2haml (2.0.0)
       erubis (~> 2.7.0)
@@ -399,6 +402,10 @@ GEM
       execjs (>= 0.3.0)
       json (>= 1.8.0)
     vcr (3.0.0)
+    webmock (1.22.3)
+      addressable (>= 2.3.6)
+      crack (>= 0.3.2)
+      hashdiff
     whenever (0.9.4)
       chronic (>= 0.6.3)
     will_paginate (3.0.7)
@@ -468,6 +475,7 @@ DEPENDENCIES
   twitter-bootstrap-rails
   uglifier (>= 2.7.2)
   vcr
+  webmock
   whenever
   will_paginate
   will_paginate-bootstrap
