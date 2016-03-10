@@ -1,2 +1,3 @@
-class ThirtyDaySummary < AnalysisSummary
+class ThirtyDaySummary < ActiveRecord::Base
+  include AnalysisSummaryCore
 end

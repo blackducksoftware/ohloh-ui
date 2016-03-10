@@ -15,7 +15,7 @@ module ProjectScopes
       not_deleted.joins(:best_analysis).merge(Analysis.fresh_and_hot(l_id))
     }
     scope :by_popularity, -> { where.not(user_count: 0).order(user_count: :desc) }
-    scope :by_activity, -> { joins(:analyses).joins(:analysis_summaries).by_popularity.thirty_day_summaries }
+    scope :by_activity, -> { joins(:analyses, :thirty_day_summaries).by_popularity }
     scope :by_new, -> { order(created_at: :desc) }
     scope :by_users, -> { order(user_count: :desc) }
     scope :by_rating, -> { order('COALESCE(rating_average,0) DESC, user_count DESC, projects.created_at ASC') }
@@ -29,9 +29,8 @@ module ProjectScopes
     scope :case_insensitive_name, ->(mixed_case) { where(['lower(name) = ?', mixed_case.downcase]) }
     scope :case_insensitive_vanity_url, ->(mixed_case) { where(['lower(vanity_url) = ?', mixed_case.downcase]) }
     scope :most_active, lambda {
-      joins(best_analysis: :analysis_summaries).where(analysis_summaries: { type: 'ThirtyDaySummary' })
-        .active. order(' COALESCE(analysis_summaries.affiliated_commits_count, 0) +
-                     COALESCE(analysis_summaries.outside_commits_count, 0) DESC ').limit(10)
+      joins(best_analysis: :thirty_day_summary).active
+        .order('(affiliated_commits_count + outside_commits_count) DESC').limit(10)
     }
     scope :with_pai_available, -> { active.where(arel_table[:activity_level_index].gt(0)).size }
     scope :tagged_with, lambda { |tags|

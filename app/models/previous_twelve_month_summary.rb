@@ -1,4 +1,6 @@
-class PreviousTwelveMonthSummary < AnalysisSummary
+class PreviousTwelveMonthSummary < ActiveRecord::Base
+  include AnalysisSummaryCore
+
   def data?
     committer_count && committer_count > 0 && commits_count && commits_count > 0
   end
