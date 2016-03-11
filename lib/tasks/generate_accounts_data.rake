@@ -28,7 +28,8 @@ namespace :selenium do
       'last_analysed' =>
         @account.best_vita.nil? ? nil : "Analyzed #{time_ago_in_words(@account.best_vita.try(:created_at))} ago",
       'description' => @account.markup.try(:formatted),
-      'projects_used' => @account.projects.map(&:to_param),
+      'projects_used' => Project.active.joins(:stacks).where(stacks: { account_id: @account.id })
+                         .order(:user_count, :name).limit(15).distinct.map(&:to_param),
       'most_exp_lang' => @account.most_experienced_language.try(:nice_name),
       'baseballcard' => BaseballCard.new(@account).rows.collect { |row| row[:value] || row[:locals][:orgs].map(&:name) }
     }
