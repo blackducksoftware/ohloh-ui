@@ -1,2 +1,3 @@
-class TwelveMonthSummary < AnalysisSummary
+class TwelveMonthSummary < ActiveRecord::Base
+  include AnalysisSummaryCore
 end

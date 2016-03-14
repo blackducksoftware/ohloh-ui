@@ -1,2 +1,3 @@
-class AllTimeSummary < AnalysisSummary
+class AllTimeSummary < ActiveRecord::Base
+  include AnalysisSummaryCore
 end
