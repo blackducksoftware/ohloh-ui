@@ -1,6 +1,5 @@
 # rubocop:disable Metrics/MethodLength
 module Reverification
-  # rubocop:disable Metrics/ClassLength
   class Template
     class << self
       delegate :url_helpers, to: 'Rails.application.routes'
@@ -22,7 +21,7 @@ module Reverification
             member of the OpenHub and the Open Source Software community.
             Sincerely,<br><br>The Black Duck OpenHub Team<br><br>Black Duck Software<br>
             781.891.5100<br>8 New England Executive Park<br>Burlington, MA 01803<br>
-            <a href='https:www.openhub.net'>www.openhub.net</a></p>" }
+            <a href='https://www.openhub.net'>www.openhub.net</a></p>" }
       end
 
       def account_is_spam_notice(email)
@@ -46,7 +45,7 @@ module Reverification
             OpenHub and the Open Source Software community.
             Sincerely,<br><br>The Black Duck OpenHub Team<br><br>Black Duck Software<br>
             781.891.5100<br>8 New England Executive Park<br>Burlington, MA 01803<br>
-            <a href='https:www.openhub.net'>www.openhub.net</a></p>" }
+            <a href='https://www.openhub.net'>www.openhub.net</a></p>" }
       end
 
       def marked_for_spam_notice(email)
@@ -58,8 +57,8 @@ module Reverification
             phone number or a GitHub account. Please note the OpenHub will <bold>not</bold>
             retain any personal information; neither your phone number or access to any information
             in your GitHub account. These services are being used solely to verify users behind the
-            accounts on the OpenHub.<br><br>Please use <a href='#{login_link}'>login to your account</a>
-            and then click on this  <a href='#{verify_link}'>reverification link</a> within 2 weeks so
+            accounts on the OpenHub.<br><br>Please use #{login_link}
+            and then click on this #{verify_link} within 2 weeks so
             that you may continue to have access to your account on the OpenHub.<br><br>
             Please note that all accounts that are not reverified will be deactivated and permanently
             deleted within a few months. We understand that this can seem severe and ask
@@ -72,7 +71,7 @@ module Reverification
             and for being a member of the OpenHub and the Open Source Software community.<br><br>
             Sincerely,<br><br>The Black Duck OpenHub Team<br><br>Black Duck Software<br>
             781.891.5100<br>8 New England Executive Park<br>Burlington, MA 01803<br>
-            <a href='https:www.openhub.net'>www.openhub.net</a></p>" }
+            <a href='https://www.openhub.net'>www.openhub.net</a></p>" }
       end
 
       def first_reverification_notice(email)
@@ -85,8 +84,8 @@ module Reverification
             <bold>not</bold> retain any personal information. Specifically, the OpenHub will neither retain your
             phone number nor will the OpenHub have any access to your GitHub account. These services are
             solely for the purpose of verifying users behind the accounts on the OpenHub<br><br>Please use
-            <a href='#{login_link}'>login to your account</a> and then click on this  <a href='#{verify_link}'>
-            reverification link</a> within 2 weeks so that you may continue to have access to your account
+            #{login_link} and then click on this #{verify_link}
+            within 2 weeks so that you may continue to have access to your account
             on the OpenHub.<br><br>Please note that all accounts that are not reverified will be deactivated
             and permanently deleted within a few months. We understand that this can seem severe and ask
             for your understanding as we continue to provide the OpenHub as a free and open service to the
@@ -98,18 +97,17 @@ module Reverification
             and for being a member of the OpenHub and the Open Source Software community.<br><br>
             Sincerely,<br><br>The Black Duck OpenHub Team<br><br>Black Duck Software<br>
             781.891.5100<br>8 New England Executive Park<br>Burlington, MA 01803<br>
-            <a href='https:www.openhub.net'>www.openhub.net</a></p>" }
+            <a href='https://www.openhub.net'>www.openhub.net</a></p>" }
       end
 
       def login_link
-        "<a href=#{url_helpers.new_session_url(host: ENV['URL_HOST'])}>login</a>"
+        "<a href=#{url_helpers.new_session_url(host: ENV['URL_HOST'])}>login to your account</a>"
       end
 
       def verify_link
-        "<a href=#{url_helpers.new_authentication_url(host: ENV['URL_HOST'])}>here</a>"
+        "<a href=#{url_helpers.new_authentication_url(host: ENV['URL_HOST'])}>reverification link</a>"
       end
     end
   end
-  # rubocop:enable Metrics/ClassLength
 end
 # rubocop:enable Metrics/MethodLength
