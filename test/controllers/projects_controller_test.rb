@@ -347,6 +347,16 @@ describe 'ProjectsController' do
       response.body.must_match(/no recognizable source code/)
       response.body.wont_match(/analysis isn't complete/)
     end
+
+    it 'should get the UUID from BlackDuck KB' do
+      uuid = VCR.use_cassette('kb') do
+        return OpenhubSecurity.get_uuid('rails')
+      end
+      project = create(:project, uuid: '', name: 'Rails')
+      get :show, id: project.to_param
+      project.reload.uuid.must_equal uuid
+      must_respond_with :ok
+    end
   end
 
   # new
@@ -741,36 +751,50 @@ describe 'ProjectsController' do
     response.body.wont_match 'Arizona'
   end
 
-  it '#similar should return similar projects (both by tags and stacks)' do
-    project1 = create(:project)
-    project2 = create(:project)
-    project3 = create(:project)
-    stack1 = create(:stack)
-    stack2 = create(:stack)
-    stack3 = create(:stack)
+  describe 'similar' do
+    it 'should not be searched by name' do
+      project = create(:project)
+      get :similar, id: project.name
+      must_respond_with :not_found
+    end
 
-    create(:stack_entry, stack: stack1, project: project1)
-    create(:stack_entry, stack: stack1, project: project2)
-    create(:stack_entry, stack: stack1, project: project3)
-    create(:stack_entry, stack: stack2, project: project1)
-    create(:stack_entry, stack: stack2, project: project2)
-    create(:stack_entry, stack: stack2, project: project3)
-    create(:stack_entry, stack: stack3, project: project1)
-    create(:stack_entry, stack: stack3, project: project2)
-    create(:stack_entry, stack: stack3, project: project3)
+    it 'should be searched by url' do
+      project = create(:project)
+      get :similar, id: project.to_param
+      must_respond_with :ok
+    end
 
-    tag = create(:tag)
-    create(:tagging, tag: tag, taggable: project1)
-    create(:tagging, tag: tag, taggable: project2)
-    create(:tagging, tag: tag, taggable: project3)
+    it '#similar should return similar projects (both by tags and stacks)' do
+      project1 = create(:project)
+      project2 = create(:project)
+      project3 = create(:project)
+      stack1 = create(:stack)
+      stack2 = create(:stack)
+      stack3 = create(:stack)
 
-    get :similar, id: project1.to_param
+      create(:stack_entry, stack: stack1, project: project1)
+      create(:stack_entry, stack: stack1, project: project2)
+      create(:stack_entry, stack: stack1, project: project3)
+      create(:stack_entry, stack: stack2, project: project1)
+      create(:stack_entry, stack: stack2, project: project2)
+      create(:stack_entry, stack: stack2, project: project3)
+      create(:stack_entry, stack: stack3, project: project1)
+      create(:stack_entry, stack: stack3, project: project2)
+      create(:stack_entry, stack: stack3, project: project3)
 
-    assigns(:project).must_equal project1
-    assigns(:similar_by_tags).must_include project2
-    assigns(:similar_by_tags).must_include project3
-    assigns(:similar_by_stacks).must_include project2
-    assigns(:similar_by_stacks).must_include project3
+      tag = create(:tag)
+      create(:tagging, tag: tag, taggable: project1)
+      create(:tagging, tag: tag, taggable: project2)
+      create(:tagging, tag: tag, taggable: project3)
+
+      get :similar, id: project1.to_param
+
+      assigns(:project).must_equal project1
+      assigns(:similar_by_tags).must_include project2
+      assigns(:similar_by_tags).must_include project3
+      assigns(:similar_by_stacks).must_include project2
+      assigns(:similar_by_stacks).must_include project3
+    end
   end
 
   describe 'oauth' do

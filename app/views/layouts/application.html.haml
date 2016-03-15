@@ -9,11 +9,9 @@
     %meta{ name: 'digits-consumer-key', content: ENV['DIGITS_CONSUMER_KEY'] }
     %meta{ name: 'google-site-verification', content: 'jKkWeVQ0tB1bffJYg7xXAtcIM-nrjjVxhP3ohb8UH2A' }
     = yield :custom_head
-    = javascript_include_tag 'application'
     = stylesheet_link_tag 'application', media: 'all'
     = csrf_meta_tags
-    = javascript_include_tag 'https://www.google.com/recaptcha/api.js'
-    = javascript_include_tag 'https://cdn.digits.com/1/sdk.js'
+
   %body{ zoom: 1 }
     = yield :session_projects_banner
     .container#page
@@ -21,4 +19,19 @@
       = render partial: 'layouts/partials/page'
       .clear
       %footer= render partial: 'layouts/partials/footer'
+
     = yield(:javascript) if content_for?(:javascript)
+    = javascript_include_tag 'application',
+                             'https://www.google.com/recaptcha/api.js',
+                             'https://cdn.digits.com/1/sdk.js',
+                             '//cdn.optimizely.com/js/3568250046.js',
+                             cache: 'cached_js_files',
+                             async: true
+    - if Rails.env.production?
+      <script type="text/javascript">
+      (function() {
+      var hm = document.createElement('script'); hm.type ='text/javascript'; hm.async = true;
+      hm.src = ('++u-heatmap-it+log-js').replace(/[+]/g,'/').replace(/-/g,'.');
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(hm, s);
+      })();
+      </script>

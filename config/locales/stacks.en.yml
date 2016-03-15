@@ -39,13 +39,15 @@ en:
       unignore_all: "This will restore all skipped projects to the list"
       show_all_projects: "Show All Projects"
       recommented_projects_desc: 'Add projects to your stack using Recommendations or Add Project, above. You may also choose one of these common stacks to get started:'
-      notes: "Notes:"
       what_is_a_stack: "What is a Stack?"
       stack_explanation: "It's a list of software used to accomplish something. %{link} is an example."
       stack_explanation_empty: "To add a project to your stack, click 'I use it' on the projects you use."
       stack_explanation_with_projects: "To add a project to your stack, click 'Show Recommendations for this Stack' at the top middle of this page and then click 'I use this' on the projects you use."
       more_questions: "More questions?"
       stack_faq: "Stack FAQ"
+    stack_entry:
+      remove: "Remove"
+      notes: "Notes:"
     similar_stacks:
       people_with_similar_stacks: "People with Similar Stacks"
       more: "More..."

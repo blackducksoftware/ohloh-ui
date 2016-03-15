@@ -1,0 +1,43 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://www.vcrlocalhost.org/kb?q=rails
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - kb.blackducksoftware.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.4.6 (Ubuntu)
+      Date:
+      - Wed, 17 Feb 2016 09:28:36 GMT
+      Content-Type:
+      - application/json;charset=UTF-8
+      Content-Length:
+      - '1988'
+      Connection:
+      - keep-alive
+      X-Trace:
+      - 1B9823B027CE9BA05A17F3D77159D8B1B250972ACBD9F085B193987498
+      X-Bds-Authtoken:
+      - suite-qa-test-externel-04
+    body:
+      encoding: UTF-8
+      string: |
+        {"responseHeader":{"status":0,"QTime":89,"params":{"start":"0","q":"Eclipse Platform Project","authToken":"suite-qa-test-externel-04","wt":"json","fq":"integration_project:false","rows":"1"}},"response":{"numFound":224,"start":0,"maxScore":1.7221701,"docs":[{"team_size":5,"links":["http://www.planeteclipse.org","http://download.eclipse.org/eclipse/downloads/","http://wiki.eclipse.org/index.php/Main_Page","http://www.eclipse.org/swt/","http://www.eclipse.org/documentation/","http://github.com/mschrag/org.eclipse.swt","http://www.eclipse.org/eclipse/platform-ui/"],"primary_language":"Java","has_vulns":false,"id":"2_e45bf7f2-72ed-4a93-8958-931047ebde3b","aliases":["Standard Widget Toolkit"],"uuid":"e45bf7f2-72ed-4a93-8958-931047ebde3b","medium_logo_url":"https://s3.amazonaws.com/cloud.ohloh.net/attachments/75471/eclipse64_med.png","ohloh_rating":88,"has_cves":false,"commit_activity":1,"description":"The Eclipse platform is a generic foundation for an IDE. That is, the platform is an IDE without any particular programming language in mind. You can create generic projects, edit files in a generic text editor, and share the projects and files with a Concurrent Versions System (CVS) server. The platform is essentially a glorified version of a file-system browser.","tags":["name","rcp","here","tools","platform","enter","programming","osgi","swt","eclipse","tag"],"release_count":3,"ownership":"1","small_logo_url":"https://s3.amazonaws.com/cloud.ohloh.net/attachments/75471/eclipse64_small.png","doc_type":2,"name":"Eclipse Platform Project","url":"http://github.com/mschrag/org.eclipse.swt","most_recent_commit":"2016-02-16T17:54:09Z","codebase_maturity":3,"score":1.7221701}]},"highlighting":{"2_e45bf7f2-72ed-4a93-8958-931047ebde3b":{"name":["<em>Eclipse</em> <em>Platform</em> <em>Project</em>"],"description":["The <em>Eclipse</em> <em>platform</em> is a generic foundation for an IDE. That is, the <em>platform</em> is an IDE without"],"tags":["<em>platform</em>"]}}}
+    http_version:
+  recorded_at: Wed, 17 Feb 2016 09:28:36 GMT
+recorded_with: VCR 3.0.0

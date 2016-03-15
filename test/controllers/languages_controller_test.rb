@@ -5,11 +5,11 @@ describe 'LanguagesController' do
   let(:create_all_months) { date_range.each { |date| create(:all_month, month: date) } }
   let(:client_id) { create(:api_key).oauth_application.uid }
 
-  before { @language = create(:language, name: 'html') }
+  before { @language = create(:language, name: 'html', nice_name: 'html') }
 
   describe 'index' do
     it 'should return languages' do
-      create(:language, name: 'c')
+      create(:language, name: 'c', nice_name: 'c')
 
       get :index
       must_respond_with :ok
@@ -33,13 +33,24 @@ describe 'LanguagesController' do
       assigns(:languages).count.must_equal 0
     end
 
-    it 'should sort by name' do
-      language = create(:language, name: 'java')
-      get :index, sort: 'name'
+    it 'must sort by nice_name by default' do
+      create(:language, name: 'abc', nice_name: 'xyz')
+      @language.update!(name: 'xyz', nice_name: 'abc')
+      get :index
       must_respond_with :ok
       must_render_template :index
       assigns(:languages).count.must_equal 2
-      assigns(:languages).last.must_equal language
+      assigns(:languages).first.must_equal @language
+    end
+
+    it 'must sort by selected option' do
+      create(:language, commits: 15)
+      @language.update!(commits: 20)
+      get :index, sort: 'commits'
+      must_respond_with :ok
+      must_render_template :index
+      assigns(:languages).count.must_equal 2
+      assigns(:languages).first.must_equal @language
     end
 
     it 'should respond to xml request' do

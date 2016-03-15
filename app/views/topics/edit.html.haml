@@ -1,4 +1,3 @@
-- content_for :html_title do
-  = t('.edit_topic')
+- content_for(:html_title) { t('.html_title') }
 
 = render 'fields', header: t('.edit_topic'), form_object: @topic, submit_text: t('.save_changes')

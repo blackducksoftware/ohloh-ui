@@ -13,9 +13,12 @@ class RssFeedTest < ActiveSupport::TestCase
   end
 
   it 'should parse the RSS feed and return true' do
-    rss_feed = create(:rss_feed)
-    rss_feed.url = 'test/data/files/news.rss'
-    rss_feed.fetch
+    rss_feed = create(:rss_feed, url: 'http://www.vcrlocalhost.org/feed.rss')
+    VCR.use_cassette('RssFeed') do
+      assert_difference 'rss_feed.rss_articles.count' do
+        rss_feed.fetch
+      end
+    end
   end
 
   it 'shouldn\'t parse the RSS and raise error' do
@@ -39,29 +42,42 @@ class RssFeedTest < ActiveSupport::TestCase
   end
 
   it 'should update any associated projects whenever a successful sync occurs' do
-    before = Time.current - 4.hours
-    rss_feed = create(:rss_feed)
-    project = create(:project)
-    project.update_attributes(updated_at: before)
-    project.reload.updated_at.to_i.must_equal before.to_i
-    create(:rss_subscription, rss_feed: rss_feed, project: project)
-    rss_feed.url = 'test/data/files/news.rss'
-    rss_feed.fetch
-    project.reload.updated_at.wont_equal before
+    VCR.use_cassette('RssFeed') do
+      before = Time.current - 4.hours
+      rss_feed = create(:rss_feed)
+      project = create(:project)
+      project.update_attributes(updated_at: before)
+      project.reload.updated_at.to_i.must_equal before.to_i
+      create(:rss_subscription, rss_feed: rss_feed, project: project)
+      rss_feed.url = 'http://www.vcrlocalhost.org/feed.rss'
+      rss_feed.fetch
+      project.reload.updated_at.wont_equal before
+    end
   end
 
   it 'should create new rss_articles when fetch happens' do
-    before = Time.current - 4.hours
-    rss_feed = create(:rss_feed)
-    project = create(:project)
-    project.update_attributes(updated_at: before)
-    project.reload.updated_at.to_i.must_equal before.to_i
-    create(:rss_subscription, rss_feed: rss_feed, project: project)
-    rss_feed.url = 'test/data/files/news.rss'
-    rss_feed.rss_articles.must_equal []
-    rss_feed.fetch
-    rss_feed.rss_articles.count.must_equal 20
-    rss_feed.fetch
-    rss_feed.rss_articles.count.must_equal 20
+    VCR.use_cassette('RssFeed') do
+      before = Time.current - 4.hours
+      rss_feed = create(:rss_feed)
+      project = create(:project)
+      project.update_attributes(updated_at: before)
+      project.reload.updated_at.to_i.must_equal before.to_i
+      create(:rss_subscription, rss_feed: rss_feed, project: project)
+      rss_feed.url = 'http://www.vcrlocalhost.org/feed.rss'
+      rss_feed.rss_articles.must_equal []
+      rss_feed.fetch
+      rss_feed.rss_articles.count.must_equal 1
+      rss_feed.fetch
+      rss_feed.rss_articles.count.must_equal 1
+    end
+  end
+
+  it 'should honor encoding properly' do
+    VCR.use_cassette('RssFeed', preserve_exact_body_bytes: true) do
+      rss_feed = create(:rss_feed)
+      rss_feed.url = 'http://www.vcrlocalhost.org/feed.rss'
+      rss_feed.fetch
+      rss_feed.rss_articles.first.title.must_equal 'It will display ÀāĎĠĦž'
+    end
   end
 end

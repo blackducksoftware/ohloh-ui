@@ -6,16 +6,23 @@
   %option{ value: 'BzrRepository' } Bazaar
 
 .enlistment
+  .svn_cvs
+    %input{ type: 'text', name: 'url' }
   .cvs{ style: 'display: none;' }
     %p CVS Description
+    %input{ type: 'text', name: 'url' }
   .svn
     %p Svn Description
+    %input{ type: 'text', name: 'url' }
   .git{ style: 'display: none;' }
     %p Git Description
+    %input{ type: 'text', name: 'url' }
   .hg{ style: 'display: none;' }
     %p Hg Description
+    %input{ type: 'text', name: 'url' }
   .bzr{ style: 'display: none;' }
     %p Bzr Description
+    %input{ type: 'text', name: 'url' }
 
   %p.spinner{ style: 'display: none;' } Spinner Image
 

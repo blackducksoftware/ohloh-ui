@@ -5,7 +5,7 @@ class GitRepository < Repository
 
   class << self
     def find_existing(repository)
-      GitRepository.find_by(url: repository.url, branch_name: repository.branch_name)
+      order(:id).find_by(url: repository.url, branch_name: repository.branch_name)
     end
   end
 end

@@ -13,23 +13,17 @@ class RssArticle < ActiveRecord::Base
 
   class << self
     def from_item(item)
-      new(title: item.title, link: item.link, description: item.description, author: set_author(item),
+      new(title: item[:title], link: item[:url], description: item[:summary], author: item[:author],
           time: set_time(item), guid: guid_from_item(item))
     end
 
-    def set_author(item)
-      item.name || item.author || item.dc_creator
-    end
-
     def set_time(item)
-      date = (item.published || item.pubDate || item.dc_date || Time.current).to_s
-      time = Time.parse(date).utc
-      time = Time.current if time > Time.current
-      time
+      time = item[:published] || Time.current
+      (time > Time.current) ? Time.current : time
     end
 
     def guid_from_item(item)
-      Digest::SHA1.hexdigest([item.title, item.link, item.description].compact.join('|'))
+      Digest::SHA1.hexdigest([item[:title], item[:url], item[:summary]].compact.join('|'))
     end
   end
 end

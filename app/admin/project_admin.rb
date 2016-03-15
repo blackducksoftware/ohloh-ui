@@ -1,6 +1,9 @@
 ActiveAdmin.register Project do
   menu false
-  actions :index, :show
+  actions :index, :show, :edit, :update
+
+  editable_params = [:uuid, :best_analysis_id]
+  permit_params editable_params
 
   filter :name
   filter :vanity_url
@@ -11,6 +14,10 @@ ActiveAdmin.register Project do
 
   controller do
     defaults finder: :find_by_vanity_url!
+  end
+
+  before_update do |project|
+    project.editor_account = current_user
   end
 
   action_item :jobs, only: :show do
@@ -27,5 +34,17 @@ ActiveAdmin.register Project do
       simple_format project.description
     end
     actions
+  end
+
+  form do |f|
+    f.semantic_errors(*f.object.errors.keys)
+
+    f.inputs do
+      editable_params.each do |attribute|
+        f.input attribute
+      end
+    end
+
+    f.actions
   end
 end

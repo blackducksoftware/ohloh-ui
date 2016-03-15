@@ -36,9 +36,6 @@ en:
       description18: 'https://mywebsite.org/myproject/hg'
       description19: 'bzr://www.mywebsite.org/myproject.bzr'
       description20: 'https://code.launchpad.net/myproject/trunk'
-      if_required: 'If required, enter the login credentials here'
-      warning: 'Warning!'
-      description23: 'The username and password you enter here will become public information. Do not submit a password to Open Hub unless you want everyone to see it.'
       cvs_module_name: 'Enter the CVS module name'
       enter_cvs: 'Enter the name of a single CVS module.'
       create_seperate_enlistment: 'Create separate enlistments for each module in the project.'
@@ -49,6 +46,11 @@ en:
       check_server_connection: 'Checking server connection...'
       choice: 'DEBUG ONLY: Do not validate this repository'
       save_code_location: 'Save Code Location'
+      username: 'Username'
+      password: 'Password'
+      if_required: 'If required, enter the login credentials here'
+      warning: 'Warning!'
+      description23: 'The username and password you enter here will become public information. Do not submit a password to Open Hub unless you want everyone to see it.'
     update:
       success: 'Changes saved. The list of ignored files will be updated during the next Open Hub analysis.'
     create:

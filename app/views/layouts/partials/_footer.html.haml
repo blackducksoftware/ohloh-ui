@@ -12,26 +12,18 @@
 .footer-mid
   %a{ href: 'http://creativecommons.org/licenses/by/3.0/', rel: 'license', target: '_blank' }
     %img{ alt: 'Creative Commons License', src: '//i.creativecommons.org/l/by/3.0/88x31.png' }
-  Copyright
-  %sup &copy;
+  Copyright 2014 -
   = Time.current.year
   %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
     %span{ itemprop: 'publisher' }
-      %a{ href: 'http://www.blackducksoftware.com', target: '_blank' }= 'Black Duck Software, Inc.'
-      All Rights Reserved.
-  and its contributors, Some Rights Reserved. Unless otherwise marked, this work is licensed under a
+      %a{ href: 'http://www.blackducksoftware.com', target: '_blank' }= 'Black Duck Software, Inc.,'
+  %span{ itemprop: 'description' }
+    Open Hub and the Open Hub logo are trademarks of Black Duck Software, Inc. in the United States
+    and/or other jurisdictions. All other trademarks are the property of their respective holders.
   %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
     %span{ itemprop: 'publishingPrinciples' }
       %a{ rel: 'license', href: 'http://creativecommons.org/licenses/by/3.0/', target: '_blank' }
-        Creative Commons Attribution 3.0 Unported License
-  \. Open Hub
-  %span{ itemprop: 'description' }
-    and the Open Hub logo are trademarks of
-    %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
-      %span{ itemprop: 'publisher' }
-        %a{ href: 'http://www.blackducksoftware.com', target: '_blank' }= 'Black Duck'
-        All Rights Reserved.
-    in the United States and/or other jurisdictions. All other trademarks are the property of their respective holders.
+        Creative Commons Attribution 3.0 Unported License.
 
 .footer-right
   %img{ src: image_path('footer/blackduck_mascot.png') }
@@ -45,4 +37,6 @@
       %br
       All Rights Reserved.
 
-= render partial: 'layouts/partials/google_analytics' if Rails.env.production?
+- if Rails.env.production?
+  = render partial: 'layouts/tracking_scripts/google_analytics'
+  = render partial: 'layouts/tracking_scripts/adroll'
