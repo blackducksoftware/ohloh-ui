@@ -26,6 +26,16 @@ module Reverification
         quotas[:sent_last_24_hours] == quotas[:max_24_hour_send]
       end
 
+      # rubocop:disable Metrics/AbcSize
+      def bounce_limit_reached?
+        emails_sent_yesterday = ses.statistics.find_all do |stats|
+          stats[:sent].to_date == Time.now.utc.to_date - 1.day
+        end
+        number_of_bounces = emails_sent_yesterday.count { |emails| emails[:bounces] > 0 }.to_f
+        ((number_of_bounces / emails_sent_yesterday.count) * 100) < 5.00
+      end
+      # rubocop:enable Metrics/AbcSize
+
       def ses_daily_limit_available
         quotas = ses.quotas
         quotas[:max_24_hour_send] - quotas[:sent_last_24_hours]

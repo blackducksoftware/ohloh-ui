@@ -13,6 +13,11 @@ module Reverification
       end
 
       def run
+        begin
+          fail 'Reached 5% Bounce Rate' unless Reverication::Process.bounce_limit_reached?
+        ensure
+          Reverification::Process.start_polling_queues
+        end
         resend_soft_bounced_notifications
         send_notifications
       end

@@ -202,6 +202,20 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'bounce_limit_reached?' do
+    # it 'should return false if bounce statistics have exceeded limit' do
+    #   exceed_bounce_limit = MOCK::AWS::SimpleEmailService.exceed_bounce_limit
+    #   AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(over_bounce_limit)
+    #   assert_not Reverification::Process.bounce_limit_reached?
+    # end
+
+    it 'should return true if bounce statistics have not exceeded limit' do
+      under_bounce_limit = MOCK::AWS::SimpleEmailService.under_bounce_limit
+      AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(under_bounce_limit)
+      assert Reverification::Process.bounce_limit_reached?
+    end
+  end
+
   describe 'ses_daily_limit_available' do
     it 'should return the balance send limit available for the day' do
       assert_equal 150, Reverification::Process.ses_daily_limit_available

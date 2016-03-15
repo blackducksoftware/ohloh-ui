@@ -11,6 +11,54 @@ module MOCK
         def response
           { message_id: "XYZ0-1234-AB56-67GJ-#{Time.now.utc.to_i}" }
         end
+
+        def under_bounce_limit
+          [{ sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc,  delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 }]
+        end
+
+        def over_bounce_limit
+          [{ sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 1, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+           { sent: Time.now.utc,  delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 }]
+        end
       end
     end
 
