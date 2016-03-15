@@ -39,7 +39,8 @@ en:
       closed: 'Closed'
       save_changes: 'Save Changes'
       enter_topic_title: "Enter the topic's title."
-      edit_topic: "Edit Topic"
+      html_title: 'Edit Topic - Open Hub'
+      edit_topic: 'Edit Topic'
     destroy:
       success: "Topic '%{topic_title}' was deleted."
     form:

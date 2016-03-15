@@ -19,9 +19,5 @@ class SvnSyncRepository < SvnRepository
 
       SvnRepository
     end
-
-    def find_existing(repository)
-      SvnSyncRepository.find_by(url: repository.url)
-    end
   end
 end

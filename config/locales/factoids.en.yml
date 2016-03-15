@@ -44,7 +44,7 @@ en:
     team_size_very_large_inline: "a very large development team"
     team_size_zero_inline: "nobody"
     index:
-      page_title: "Project Summary: Factoids"
+      page_title: "Project Summary: Factoids - Open Hub"
       project_Summary: "Project Summary"
       colon_factoids: ": Factoids"
       no_factoids: "No factoids were found for this project."

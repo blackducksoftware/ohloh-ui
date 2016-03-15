@@ -14,7 +14,7 @@ class CvsRepository < Repository
 
   class << self
     def find_existing(repository)
-      CvsRepository.find_by(url: repository.url, module_name: repository.module_name)
+      order(:id).find_by(url: repository.url, module_name: repository.module_name)
     end
   end
 end

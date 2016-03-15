@@ -73,4 +73,11 @@ class AccountsAdminTest < ActionDispatch::IntegrationTest
     get edit_admin_account_path(account)
     assert_response :success
   end
+
+  it 'should update email address' do
+    account = create(:account)
+    create_and_login_admin
+    put admin_account_path(account), account: account.attributes.merge(email: 'test@hotmail.com')
+    account.reload.email.must_equal 'test@hotmail.com'
+  end
 end

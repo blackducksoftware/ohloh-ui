@@ -23,7 +23,7 @@ gem 'ohloh_scm'
 gem 'open4'
 gem 'paperclip'
 gem 'pg'
-gem 'rails'
+gem 'rails', '~> 4.2.5.1'
 gem 'rails-html-sanitizer'
 gem 'recaptcha', require: 'recaptcha/rails'
 gem 'redis-rails'
@@ -34,8 +34,8 @@ gem 'twitter-bootstrap-rails'
 gem 'uglifier', '>= 2.7.2'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
-gem 'simple-rss'
 gem 'sprockets-rails', '~> 2.3.3'
+gem 'feedjira'
 gem 'whenever', require: false
 
 group :development do

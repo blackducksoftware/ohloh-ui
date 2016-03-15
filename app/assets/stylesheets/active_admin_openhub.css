@@ -1,0 +1,32 @@
+#index_table_feedbacks td.col-count{
+  font-size: 20px;
+  font-weight: 900;
+  vertical-align: middle;
+  text-align: center;
+  color: #4c5667;
+}
+
+#index_table_feedbacks td.col-interested{
+  font-size: 18px;
+  font-weight: 900;
+  vertical-align: middle;
+  text-align: center;
+  color: #308014;
+}
+
+#index_table_feedbacks td.col-project_id{
+  font-size: 14px;
+  font-weight: 900;
+  vertical-align: middle;
+  text-align: left;
+  color: #4c5667;
+}
+
+#rating_table {
+  margin-bottom: 0px !important;
+}
+
+#rating_table td{
+  padding: 2px !important;
+  border-bottom: 0px !important;
+}

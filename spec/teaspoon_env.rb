@@ -15,6 +15,6 @@ Teaspoon.configure do |config|
 
   config.coverage do |coverage|
     coverage.reports = %w(html)
-    coverage.functions = 23
+    coverage.functions = 22
   end
 end

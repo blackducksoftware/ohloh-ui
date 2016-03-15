@@ -15,17 +15,6 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
     assert_equal flash[:notice], "Job #{job.id} marked as failed."
   end
 
-  it 'refetch should work' do
-    job = create(:fetch_job, repository: create(:repository))
-    admin.password = 'xyzzy123456'
-    login_as admin
-    post refetch_admin_job_path(job)
-
-    new_job = FetchJob.last
-    assert_redirected_to admin_job_path(new_job)
-    assert_equal flash[:success], "FetchJob #{new_job.id} created."
-  end
-
   it 'recoount should work' do
     job = create(:fetch_job, repository: create(:repository))
     admin.password = 'xyzzy123456'
@@ -117,7 +106,9 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
     admin.password = 'xyzzy123456'
     login_as admin
     job = create(:fetch_job, repository: create(:repository))
-    delete admin_job_path(job)
+    assert_difference 'Job.count', -1 do
+      delete admin_job_path(job)
+    end
     assert_response :redirect
   end
 

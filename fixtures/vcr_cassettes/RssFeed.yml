@@ -1,0 +1,63 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://www.vcrlocalhost.org/feed.rss
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Ohloh.net client
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 20 Mar 2015 13:59:50 GMT
+      Content-Type:
+        - application/rss; charset=utf-8
+      Connection:
+      - close
+      Pragma:
+      - no-cache
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '1882'
+      X-Frame-Options:
+      - SAMEORIGIN
+      Vary:
+      - Accept-Encoding, User-Agent
+    body:
+      encoding: utf-8
+      string: '<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0">
+        <channel>
+        <title>Apple Hot News</title>
+        <link>http://www.apple.com/hotnews/</link>
+        <description>Hot News provided by Apple.</description>
+        <language>en-us</language>
+        <copyright>Copyright 2015, Apple Inc.</copyright>
+        <pubDate>Mon, 27 Apr 2015 14:50:30 PDT</pubDate>
+        <lastBuildDate>Mon, 27 Apr 2015 14:50:30 PDT</lastBuildDate>
+        <category>Apple</category>
+        <generator>In house</generator>
+        <docs>http://blogs.law.harvard.edu/tech/rss/</docs>
+        <item>
+        <title>It will display ÀāĎĠĦž</title>
+        <description></description>
+        </item>
+        </channel>
+        </rss>'
+    http_version:
+  recorded_at: Fri, 20 Mar 2015 14:00:43 GMT
+recorded_with: VCR 2.9.3
+

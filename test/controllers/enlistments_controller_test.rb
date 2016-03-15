@@ -146,6 +146,20 @@ describe 'EnlistmentsControllerTest' do
       flash[:notice].must_equal I18n.t('enlistments.create.notice', url: repository.url)
     end
 
+    it 'should avoid duplicate repository when git url passed as https or in ssh format' do
+      repository1 = create(:git_repository, url: 'git://github.com/test/repo', branch_name: 'master')
+      create(:enlistment, repository: repository1, project: @enlistment.project)
+
+      Repository.any_instance.stubs(:bypass_url_validation).returns(false)
+      OhlohScm::Adapters::GitAdapter.any_instance.stubs(:validate_server_connection)
+
+      assert_no_difference ['Repository.count', 'Enlistment.count'] do
+        post :create, project_id: @project_id,
+                      repository: { url: 'https://github.com/test/repo', branch_name: 'master', type: 'GitRepository' }
+      end
+      assigns(:project_has_repo_url).must_equal true
+    end
+
     it 'must render error for missing url' do
       post :create, project_id: @project_id, repository: build(:repository, url: '').attributes
 

@@ -1,11 +1,15 @@
 require 'test_helper'
 
 class ProjectAdminTest < ActionDispatch::IntegrationTest
-  let(:admin) { create(:admin, password: 'xyzzy123456') }
+  let(:password) { SecureRandom.uuid }
+  let(:admin) { create(:admin, password: password) }
+
+  before do
+    admin.password = password
+    login_as admin
+  end
 
   it 'should render index page' do
-    admin.password = 'xyzzy123456'
-    login_as admin
     create(:project)
 
     get admin_projects_path
@@ -13,9 +17,12 @@ class ProjectAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 'should render show page' do
-    admin.password = 'xyzzy123456'
-    login_as admin
     get admin_project_path(create(:project))
+    assert_response :success
+  end
+
+  it 'must render the edit page' do
+    get edit_admin_project_path(create(:project).to_param)
     assert_response :success
   end
 end

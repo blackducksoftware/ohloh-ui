@@ -21,6 +21,8 @@ en:
     more: "[More]"
     less: "[Less]"
     html_title: "The %{name} Open Source Project on Open Hub : %{title}"
+    browse_security: "Review Security Info"
+    browse_security_btn_title: "Review the Security Information for %{what}"
     person_contribution:
       no_contribution_found: 'No Contribution Found'
       link_others: "and %{size} other projects"
@@ -57,7 +59,7 @@ en:
       no_declared_licenses: "No declared licenses"
       n_more: "%{n} more..."
     index_managed:
-      page_title: "%{name} : Index Projects"
+      page_title: "%{name} : Projects - Open Hub"
       managed_projects: "Managed Projects"
     settings:
       page_title: 'Settings Page'
@@ -209,7 +211,7 @@ en:
       kudo_rank: 'Kudo Rank'
       no_users: No users for this project yet.
     new:
-      page_title: "New Projects"
+      page_title: 'New Project - Open Hub'
       call_to_action: "Add a new project to Open Hub"
       help1: "Open Hub can automatically fetch project information from some forges: Bitbucket, GitHub, Google Code, Launchpad and SourceForge."
       help2: "If your project is not hosted on one of these five forges, add your project manually."
@@ -268,7 +270,7 @@ en:
       forge_time_out: "We couldn't contact %{name}. Please fill out the form below."
       code_location_single: "That code location is already in use by another project"
       code_location_multiple: "That code location is in use by a few other projects"
-      page_title: "%{name} : Check Forge Projects"
+      page_title: "%{name} : Check Forge Projects - Open Hub"
       create_a_new_project: "Create a new project"
       project_name: "Project Name"
       contact_us: "Contact us"
@@ -296,7 +298,7 @@ en:
       submit: "Save Project"
       processing: 'Processing..'
     check_forge_duplicate:
-      page_title: "Check Forge Projects"
+      page_title: "Check Forge Projects - Open Hub"
       message: "We found that the code location %{param} is already in use by the following projects. If you still wish to create a project using this code location, click the \"Create Project\" button below."
       duplicate_found: "Duplicate Project Found"
       submit: "Create Project"

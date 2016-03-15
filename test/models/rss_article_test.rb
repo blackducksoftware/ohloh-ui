@@ -13,8 +13,8 @@ class RssArticleTest < ActiveSupport::TestCase
   end
 
   it 'should test the method from item' do
-    rss = SimpleRSS.parse File.read('test/data/files/news.rss')
-    item = rss.items.first
+    rss = Feedjira::Feed.parse File.read('test/data/files/news.rss')
+    item = rss.entries.first
     article = RssArticle.from_item(item)
     article.must_be :valid?
   end

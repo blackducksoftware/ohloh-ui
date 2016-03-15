@@ -10,14 +10,14 @@ en:
       account_help4: "Create project \"stacks\" that detail your usage of FOSS, and rate and review the projects you know."
       register_today: "Register today"
       register_today_cta: "and start building your FOSS profile &mdash; it's free!"
+      forgot_password: "Forgot Password"
+      resend_activation_email: "Resend Activation Email"
     sign_in:
       log_in_to_open_hub: "Log in to Open Hub"
       login_or_email: "Login or Email"
       password: "Password"
       remember_me: "Remember Me"
       log_in: "Log In"
-      forgot_password: "Forgot Password"
-      resend_activation_email: "Resend Activation Email"
     create:
       success: "Logged in successfully"
       error: "Invalid Login Credentials"

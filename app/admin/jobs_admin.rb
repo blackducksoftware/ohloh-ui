@@ -15,11 +15,18 @@ ActiveAdmin.register Job do
   filter :organization_vanity_url, as: :string, label: 'ORGANIZATION VANITY URL'
   filter :account_login, as: :string, label: 'Account Login'
 
+  scope 'Uncategorized Failed Jobs', :uncategorized_failure_group, if: proc { params[:scope] }
+
   actions :all, except: :new
 
   action_item :manually_schedule, only: :index do
     link_to 'Manually Schedule Update',
             manually_schedule_admin_project_jobs_path(project), method: :post if params[:project_id]
+  end
+
+  action_item :decategorize do
+    link_to 'Decategorize',
+            decategorize_admin_failure_group_path(params[:failure_group_id]) if params[:failure_group_id]
   end
 
   index do
@@ -41,6 +48,9 @@ ActiveAdmin.register Job do
         span 'on'
         span link_to job.slave.hostname, admin_slafe_path(job.slave)
       end
+    end
+    column :exception do |job|
+      job.exception.to_s.truncate(250)
     end
     column 'Owners' do |job|
       span link_to "Project #{job.project.name}", project_path(job.project) if job.project_id
@@ -86,13 +96,6 @@ ActiveAdmin.register Job do
     redirect_to :back
   end
 
-  member_action :refetch, method: :post do
-    job = Job.find(params[:id])
-    job = job.repository.refetch
-    flash[:success] = "FetchJob #{job.id} created."
-    redirect_to admin_job_path(job)
-  end
-
   member_action :recount do
     job = Job.find(params[:id])
     job.update_attributes!(retry_count: 0, wait_until: nil)
@@ -119,6 +122,7 @@ ActiveAdmin.register Job do
 
     def destroy
       flash[:success] = 'Job has been deleted'
+      Job.find(params['id']).destroy
       redirect_to admin_jobs_path
     end
 

@@ -46,6 +46,6 @@ class LanguagesController < ApplicationController
   end
 
   def parse_sort_term
-    Language.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : 'by_name'
+    Language.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : 'by_nice_name'
   end
 end

@@ -150,7 +150,7 @@ languages:
       - contributors
     -
       - Name
-      - name
+      - nice_name
     -
       - Projects
       - projects
@@ -158,7 +158,7 @@ languages:
       - Total Lines
       - total
   default:
-    name
+    nice_name
 
 organizations:
   options:

@@ -3479,6 +3479,8 @@ CREATE TABLE reverification_trackers (
     phase integer DEFAULT 0,
     status integer DEFAULT 0,
     feedback character varying,
+    attempts integer DEFAULT 1,
+    sent_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
