@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://kb.blackducksoftware.com/kbdetail/api/v1/project/c2ac3ddc-527f-4c18-91ea-8cb8855bf4a2?authToken=suite-qa-test-externel-04
+    uri: https://kb.blackducksoftware.com/kbdetail/api/v1/project/1234?authToken=suite-qa-test-externel-04
     body:
       encoding: US-ASCII
       string: ''
@@ -17,7 +17,10 @@ http_interactions:
       - kb.blackducksoftware.com
   response:
     status:
-      code: 404
+      code: 200
+    body:
+      encoding: UTF-8
+      string: '{"releases":[], "cves":[]}'
     http_version:
   recorded_at: Tue, 08 Mar 2016 04:36:54 GMT
 recorded_with: VCR 3.0.0

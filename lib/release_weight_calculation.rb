@@ -1,5 +1,4 @@
 module ReleaseWeightCalculation
-
   def compute_major_release_weight(major_release)
     major_release_weight_hash = {}
     major_release.each_with_index do |version, index|
@@ -9,7 +8,7 @@ module ReleaseWeightCalculation
   end
 
   def major_release_weight
-    major_release = check_major_version #need to work
+    major_release = check_major_version
     mrw = compute_major_release_weight(major_release)
     Hash[mrw.to_a.reverse]
   end
@@ -54,17 +53,22 @@ module ReleaseWeightCalculation
   end
 
   def generate_rvwm(hash, mrw, mrsw, version_cve_sum)
-    rvwm = 0
-    versions_sum = 0
+    rvwm = versions_sum = 0
     hash.values.flatten.each do |version|
-      aw = hash.keys.first
-      mvw = mrw[version.scan(/\d+/).first.to_i]
-      mvw = (mvw == 0 ? 1 : mvw)
-      single_release_version_weight = (aw * mvw * mrsw[version].first * version_cve_sum[version]) / 100.0
-      rvwm += single_release_version_weight
+      mvw = get_mvw(mrw, version)
+      rvwm += compute_rvwm(hash, mrsw, mvw, version_cve_sum, version)
       versions_sum += version_cve_sum[version]
     end
     [rvwm, versions_sum]
+  end
+
+  def get_mvw(mrw, version)
+    mvw = mrw[version.scan(/\d+/).first.to_i]
+    (mvw == 0 ? 1 : mvw)
+  end
+
+  def compute_rvwm(hash, mrsw, mvw, version_cve_sum, version)
+    (hash.keys.first * mvw * mrsw[version].first * version_cve_sum[version]) / 100.0
   end
 
   def genarate_month_credits(month_index, age_weight_hash, versions_sum, release_version_score)
