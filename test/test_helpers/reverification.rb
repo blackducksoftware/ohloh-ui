@@ -37,7 +37,7 @@ module MOCK
         end
 
         def over_bounce_limit
-          [{ sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 1, complaints: 0 },
+          [{ sent: Time.now.utc - 10.hours, delivery_attempts: 1, rejects: 0, bounces: 1, complaints: 0 },
            { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
            { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
            { sent: Time.now.utc - 1.day, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },

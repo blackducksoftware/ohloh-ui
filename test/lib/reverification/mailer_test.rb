@@ -5,6 +5,8 @@ class Reverification::MailerTest < ActiveSupport::TestCase
   before do
     AWS::SimpleEmailService.any_instance.stubs(:send_email).returns(MOCK::AWS::SimpleEmailService.response)
     AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(MOCK::AWS::SimpleEmailService.send_quota)
+    under_bounce_limit = MOCK::AWS::SimpleEmailService.under_bounce_limit
+    AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(under_bounce_limit)
   end
   let(:verified_account) { create(:account) }
   let(:unverified_account_sucess) { create(:unverified_account, :success) }
@@ -21,20 +23,9 @@ class Reverification::MailerTest < ActiveSupport::TestCase
   end
 
   describe 'run' do
-    it 'should not invoke notifications sending methods when bounce limit is > 5%' do
-      Reverification::Process.stubs(:bounce_limit_reached?).returns(true)
-      Reverification::Mailer.expects(:send_notifications).never
-      Reverification::Mailer.expects(:resend_soft_bounced_notifications).never
-      assert_raise Reverification::Mailer::BounceLimitError do
-        Reverification::Mailer.run
-      end
-    end
-
-    it 'should invoke notifications sending methods when bounce is < 5%' do
-      Reverification::Process.stubs(:bounce_limit_reached?).returns(false)
+    it 'should invoke notifications sending methods' do
       Reverification::Mailer.expects(:send_notifications)
       Reverification::Mailer.expects(:resend_soft_bounced_notifications)
-      Reverification::Process.expects(:start_polling_queues).never
       Reverification::Mailer.run
     end
   end

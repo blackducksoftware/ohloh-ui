@@ -1,7 +1,5 @@
 module Reverification
   class Mailer
-    class BounceLimitError < Exception; end
-
     FROM = 'info@openhub.net'
     MAX_ATTEMPTS = 3
     NOTIFICATION1_DUE_DAYS = 14
@@ -15,11 +13,8 @@ module Reverification
       end
 
       def run
-        fail BounceLimitError, 'Reached 5% Bounce Rate' if Reverification::Process.bounce_limit_reached?
         resend_soft_bounced_notifications
         send_notifications
-      rescue
-        Reverification::Process.start_polling_queues
       end
 
       def send_notifications

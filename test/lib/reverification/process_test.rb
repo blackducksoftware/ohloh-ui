@@ -4,6 +4,8 @@ require 'test_helpers/reverification'
 class Reverification::ProcessTest < ActiveSupport::TestCase
   before do
     AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(MOCK::AWS::SimpleEmailService.send_quota)
+    under_bounce_limit = MOCK::AWS::SimpleEmailService.under_bounce_limit
+    AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(under_bounce_limit)
     AWS::SQS.any_instance.stubs(:queues).returns(MOCK::AWS::SQS::QueueCollection.new)
   end
 
@@ -98,6 +100,14 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
       AWS::SimpleEmailService.any_instance.stubs(:send_email).returns(MOCK::AWS::SimpleEmailService.response)
     end
     let(:unverified_account) { create(:unverified_account) }
+
+    it 'should raise exception BounceLimitError if bounce rate reaches 5.0% or higher' do
+      over_bounce_limit = MOCK::AWS::SimpleEmailService.over_bounce_limit
+      AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(over_bounce_limit)
+      assert_raises Reverification::BounceLimitError do
+        Reverification::Process.send_email('dummy email content', unverified_account, 0)
+      end
+    end
 
     describe 'First notification' do
       before do
@@ -199,20 +209,6 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
   describe 'ses_limit_reached?' do
     it 'should return false when daily sent quota not reached max daily send quota' do
       assert_equal false, Reverification::Process.ses_limit_reached?
-    end
-  end
-
-  describe 'bounce_limit_reached?' do
-    it 'should return false if bounce statistics have exceeded limit' do
-      over_bounce_limit = MOCK::AWS::SimpleEmailService.over_bounce_limit
-      AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(over_bounce_limit)
-      assert Reverification::Process.bounce_limit_reached?
-    end
-
-    it 'should return true if bounce statistics have not exceeded limit' do
-      under_bounce_limit = MOCK::AWS::SimpleEmailService.under_bounce_limit
-      AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(under_bounce_limit)
-      assert_not Reverification::Process.bounce_limit_reached?
     end
   end
 

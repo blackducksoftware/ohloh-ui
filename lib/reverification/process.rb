@@ -26,22 +26,24 @@ module Reverification
         quotas[:sent_last_24_hours] == quotas[:max_24_hour_send]
       end
 
-      # rubocop:disable Metrics/AbcSize
-      def bounce_limit_reached?
-        emails_sent_yesterday = ses.statistics.find_all do |stats|
-          stats[:sent].to_date == Time.now.utc.to_date - 1.day
-        end
-        number_of_bounces = emails_sent_yesterday.count { |emails| emails[:bounces] > 0 }.to_f
-        ((number_of_bounces / emails_sent_yesterday.count) * 100) >= 5.00
-      end
-      # rubocop:enable Metrics/AbcSize
-
       def ses_daily_limit_available
         quotas = ses.quotas
         quotas[:max_24_hour_send] - quotas[:sent_last_24_hours]
       end
 
+      def statistics_of_last_24_hrs
+        ses.statistics.find_all { |s| s[:sent].between?(Time.now.utc - 24.hours, Time.now.utc) }
+      end
+
+      def bounce_rate_in_last_24_hrs
+        stats = statistics_of_last_24_hrs
+        no_of_deliveries = stats.inject(0.0) { |a, e| a + e[:delivery_attempts] }
+        no_of_bounces = stats.inject(0.0) { |a, e| a + e[:bounces] }
+        no_of_deliveries.zero? ? 0.0 : (no_of_bounces / no_of_deliveries) * 100
+      end
+
       def send_email(template, account, phase)
+        fail(Reverification::BounceLimitError, 'Reached 5% Bounce Rate') if bounce_rate_in_last_24_hrs >= 5.0
         resp = ses.send_email(template)
         if account.reverification_tracker
           update_tracker(account.reverification_tracker, phase, resp)
