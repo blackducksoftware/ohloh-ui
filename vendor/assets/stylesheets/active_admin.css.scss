@@ -16,6 +16,9 @@
 //
 //   .status_tag { background: #6090DB; }
 
+// Include custom Active Admin styles
+@import "active_admin_openhub";
+
 .deny {
   text-decoration: line-through;
   color: red !important;
