@@ -56,4 +56,44 @@ FactoryGirl.define do
   factory :account_with_markup, parent: :account do
     association :markup
   end
+
+  # Note: All code downard is for spammer cleanup/reverifications
+  factory :unverified_account, parent: :account do
+    association :github_verification, strategy: :null
+    association :reverification_tracker, strategy: :null
+  end
+
+  trait :spammer do
+    level Account::Access::SPAM
+    association :github_verification, strategy: :null
+  end
+
+  trait :no_verification do
+    association :github_verification, strategy: :null
+  end
+
+  trait :invalid_spammer do
+    level Account::Access::SPAM
+    association :github_verification
+  end
+
+  trait :success do
+    email 'success@simulator.amazonses.com'
+  end
+
+  trait :hard_bounce do
+    email 'bounce@simulator.amazonses.com'
+  end
+
+  trait :soft_bounce do
+    email 'ooto@simulator.amazonses.com'
+  end
+
+  trait :bounce_undetermined do
+    email 'someone@gmail.com'
+  end
+
+  trait :complaint do
+    email 'complaint@simulator.amazonses.com'
+  end
 end

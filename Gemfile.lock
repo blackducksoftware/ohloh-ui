@@ -115,6 +115,7 @@ GEM
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
     choice (0.2.0)
+    chronic (0.10.2)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.8)
@@ -396,6 +397,7 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.1)
+    timecop (0.8.0)
     tins (1.6.0)
     traceview (3.3.3)
       json
@@ -414,6 +416,8 @@ GEM
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
+    whenever (0.9.4)
+      chronic (>= 0.6.3)
     will_paginate (3.0.7)
     will_paginate-bootstrap (1.0.1)
       will_paginate (>= 3.0.3)
@@ -476,11 +480,13 @@ DEPENDENCIES
   sprockets-rails (~> 2.3.3)
   teaspoon-jasmine
   therubyracer
+  timecop
   traceview
   twitter-bootstrap-rails
   uglifier (>= 2.7.2)
   vcr
   webmock
+  whenever
   will_paginate
   will_paginate-bootstrap
 

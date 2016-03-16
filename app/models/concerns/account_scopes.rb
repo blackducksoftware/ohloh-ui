@@ -27,8 +27,16 @@ module AccountScopes
     }
 
     scope :in_good_standing, -> { where('level >= 0') }
-    scope :from_param, ->(param) { in_good_standing.where(arel_table[:login].eq(param).or(arel_table[:id].eq(param))) }
+    scope :from_param, -> (param) { in_good_standing.where(arel_table[:login].eq(param).or(arel_table[:id].eq(param))) }
     scope :active, -> { where(level: 0) }
     scope :non_anonymous, -> { where.not(login: ANONYMOUS_ACCOUNTS, email: ANONYMOUS_ACCOUNTS_EMAILS) }
+    scope :unverified, lambda { |limit = nil|
+      select('accounts.id, accounts.email').joins('LEFT OUTER JOIN verifications v ON v.account_id = accounts.id')
+        .where('v.account_id IS NULL').limit(limit)
+    }
+    scope :reverification_not_initiated, lambda { |limit = nil|
+      unverified.joins('LEFT OUTER JOIN reverification_trackers r ON r.account_id = accounts.id')
+        .where('r.account_id IS NULL').limit(limit)
+    }
   end
 end

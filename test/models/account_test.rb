@@ -686,4 +686,25 @@ class AccountTest < ActiveSupport::TestCase
       Account.fetch_by_login_or_email(account.email.titlecase).wont_be_nil
     end
   end
+
+  describe 'unverified' do
+    it 'should return all unverified accounts' do
+      account = create(:account)
+      unverified_account = create(:unverified_account)
+      assert_not_equal Account.unverified[0].id, account.id
+      assert_not_equal Account.unverified[0].email, account.email
+      assert_equal Account.unverified[0].id, unverified_account.id
+      assert_equal Account.unverified[0].email, unverified_account.email
+    end
+  end
+
+  describe 'reverification_not_initiated' do
+    it 'should return all unverified accounts, for them reverification process is not started'do
+      create(:unverified_account, :success)
+      create(:unverified_account, :complaint)
+      create(:account)
+      assert_equal 2, Account.reverification_not_initiated.size
+      assert_not_equal Account.count, Account.reverification_not_initiated.size
+    end
+  end
 end
