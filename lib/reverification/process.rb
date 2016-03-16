@@ -32,7 +32,7 @@ module Reverification
           stats[:sent].to_date == Time.now.utc.to_date - 1.day
         end
         number_of_bounces = emails_sent_yesterday.count { |emails| emails[:bounces] > 0 }.to_f
-        ((number_of_bounces / emails_sent_yesterday.count) * 100) < 5.00
+        ((number_of_bounces / emails_sent_yesterday.count) * 100) >= 5.00
       end
       # rubocop:enable Metrics/AbcSize
 

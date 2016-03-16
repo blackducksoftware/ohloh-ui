@@ -21,9 +21,20 @@ class Reverification::MailerTest < ActiveSupport::TestCase
   end
 
   describe 'run' do
-    it 'should invoke notifications sending methods' do
+    it 'should not invoke notifications sending methods when bounce limit is > 5%' do
+      Reverification::Process.stubs(:bounce_limit_reached?).returns(true)
+      Reverification::Mailer.expects(:send_notifications).never
+      Reverification::Mailer.expects(:resend_soft_bounced_notifications).never
+      assert_raise Reverification::Mailer::BounceLimitError do
+        Reverification::Mailer.run
+      end
+    end
+
+    it 'should invoke notifications sending methods when bounce is < 5%' do
+      Reverification::Process.stubs(:bounce_limit_reached?).returns(false)
       Reverification::Mailer.expects(:send_notifications)
       Reverification::Mailer.expects(:resend_soft_bounced_notifications)
+      Reverification::Process.expects(:start_polling_queues).never
       Reverification::Mailer.run
     end
   end
