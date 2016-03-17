@@ -3469,6 +3469,37 @@ CREATE TABLE repositories (
 
 
 --
+-- Name: reverification_pilot_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE reverification_pilot_accounts (
+    id integer NOT NULL,
+    account_id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: reverification_pilot_accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE reverification_pilot_accounts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: reverification_pilot_accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE reverification_pilot_accounts_id_seq OWNED BY reverification_pilot_accounts.id;
+
+
+--
 -- Name: reverification_trackers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -4515,6 +4546,13 @@ ALTER TABLE ONLY reports ALTER COLUMN id SET DEFAULT nextval('reports_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY reverification_pilot_accounts ALTER COLUMN id SET DEFAULT nextval('reverification_pilot_accounts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY reverification_trackers ALTER COLUMN id SET DEFAULT nextval('reverification_trackers_id_seq'::regclass);
 
 
@@ -5358,6 +5396,14 @@ ALTER TABLE ONLY reports
 
 ALTER TABLE ONLY repositories
     ADD CONSTRAINT repositories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: reverification_pilot_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY reverification_pilot_accounts
+    ADD CONSTRAINT reverification_pilot_accounts_pkey PRIMARY KEY (id);
 
 
 --
@@ -8235,6 +8281,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160121110527');
 INSERT INTO schema_migrations (version) VALUES ('20160209204755');
 
 INSERT INTO schema_migrations (version) VALUES ('20160216095409');
+
+INSERT INTO schema_migrations (version) VALUES ('20160317061932');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

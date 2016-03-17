@@ -45,8 +45,9 @@ class Reverification::MailerTest < ActiveSupport::TestCase
       Account.expects(:reverification_not_initiated).returns([unverified_account_sucess])
       Reverification::Template.expects(:first_reverification_notice)
       unverified_account_sucess.reverification_tracker.must_be_nil
+      ReverificationPilotAccount.copy_accounts # Note: When move on from pilot run, remove this line
       Reverification::Mailer.send_first_notification
-      unverified_account_sucess.reverification_tracker.must_be :present?
+      unverified_account_sucess.reload.reverification_tracker.must_be :present?
       unverified_account_sucess.reverification_tracker.phase.must_equal 'initial'
       unverified_account_sucess.reverification_tracker.attempts.must_equal 1
       unverified_account_sucess.reverification_tracker.sent_at.to_date.must_equal Time.zone.now.to_date

@@ -6,6 +6,11 @@ namespace :reverification do
     Reverification::Process.start_polling_queues
   end
 
+  desc 'This task does the preparation works for pilot'
+  task pilot_preparation: :environment do
+    ReverificationPilotAccount.copy_accounts
+  end
+
   namespace :cleanup do
     desc 'Removes the reverification trackers of verified accounts and removes unverified accounts'
     task all: [:verified, :unverified]
