@@ -1,6 +1,5 @@
 require 'test_helper'
 require 'test_helpers/reverification'
-require_relative Rails.root + 'lib/reverification/ses_email_service_limit_error'
 
 class Reverification::ProcessTest < ActiveSupport::TestCase
   before do
@@ -211,14 +210,14 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'statistics_of_last_24_hrs' do
+  describe 'check_statistics_of_last_24_hrs' do
     it 'should raise SimpleEmailServieLimitError if bounce rate is above 5%' do
       over_bounce_limit = MOCK::AWS::SimpleEmailService.over_bounce_limit
       AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(over_bounce_limit)
       # 3 bounces in over_bounce_limit would be 5% of 60 total sent emails
       AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(sent_last_24_hours: 60)
-      assert_raise Reverification::BounceRateLimitError do
-        Reverification::Process.statistics_of_last_24_hrs
+      assert_raise Reverification::ExceptionHandlers::BounceRateLimitError do
+        Reverification::Process.check_statistics_of_last_24_hrs
       end
     end
 
@@ -226,8 +225,8 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
       under_bounce_limit = MOCK::AWS::SimpleEmailService.under_bounce_limit
       AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(under_bounce_limit)
       AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(sent_last_24_hours: 60)
-      assert_nothing_raised Reverification::BounceRateLimitError do
-        Reverification::Process.statistics_of_last_24_hrs
+      assert_nothing_raised Reverification::ExceptionHandlers::BounceRateLimitError do
+        Reverification::Process.check_statistics_of_last_24_hrs
       end
     end
 
@@ -235,8 +234,8 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
       over_complaint_limit = MOCK::AWS::SimpleEmailService.over_complaint_limit
       AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(over_complaint_limit)
       AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(sent_last_24_hours: 2000)
-      assert_raise Reverification::ComplaintRateLimitError do
-        Reverification::Process.statistics_of_last_24_hrs
+      assert_raise Reverification::ExceptionHandlers::ComplaintRateLimitError do
+        Reverification::Process.check_statistics_of_last_24_hrs
       end
     end
 
@@ -244,8 +243,8 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
       under_complaint_limit = MOCK::AWS::SimpleEmailService.under_complaint_limit
       AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(under_complaint_limit)
       AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(sent_last_24_hours: 1000)
-      assert_nothing_raised Reverification::ComplaintRateLimitError do
-        Reverification::Process.statistics_of_last_24_hrs
+      assert_nothing_raised Reverification::ExceptionHandlers::ComplaintRateLimitError do
+        Reverification::Process.check_statistics_of_last_24_hrs
       end
     end
   end
