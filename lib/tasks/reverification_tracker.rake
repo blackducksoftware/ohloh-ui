@@ -30,7 +30,7 @@ namespace :reverification do
     desc 'This resends soft bounced notifications and sends all phases notifications'
     task all: [:resend, :send]
 
-    desc 'This sends notifiactions of all phases'
+    desc 'This sends notifications of all phases'
     task send: :environment do
       Reverification::Mailer.send_notifications
     end

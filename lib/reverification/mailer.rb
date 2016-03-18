@@ -26,9 +26,9 @@ module Reverification
 
       def send_first_notification
         # Note: When move on from pilot run,
-        # replace the query ReverificationPilotAccount.all.limit(send_limit).map(&:account)
+        # replace the query ReverificationPilotAccount.limit(send_limit).map(&:account)
         # with Account.reverification_not_initiated
-        ReverificationPilotAccount.all.limit(send_limit).map(&:account).each do |account|
+        ReverificationPilotAccount.limit(send_limit).map(&:account).each do |account|
           Reverification::Process.send_email(
             Reverification::Template.first_reverification_notice(account.email),
             account, 0)
