@@ -159,7 +159,7 @@ en:
       disabled_account: "%{user}'s account is disabled."
       disabled_message: 'This account has been disabled. If you are the account owner and wish to discuss this, send email to info@openhub.net.'
     settings:
-      settings_title: '%{name} : Settings Page - Open Hub'
+      settings_title: '%{name} : Settings - Open Hub'
       settings: 'Settings'
       account_basics: 'Account Basics'
       password: 'Password'
