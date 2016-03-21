@@ -3,7 +3,7 @@ en:
     create:
       invite_success: "Congrats! You've created a Black Duck Open Hub account and claimed your contribution. Consider adding some information about yourself by clicking 'Profile' under your name at the top of this page. You can also build a list of the open source projects you use by clicking on the Stack link."
     index:
-      page_title: "%{name} : %{name} - Open Hub"
+      page_title: "%{name} : Positions - Open Hub"
       contributions_on_open_hub: "%{name}'s Developer Contributions on Open Hub."
       no_contributions_to_display: There are no contributions available to display.
       claim_contribution: Claim a Contribution
@@ -14,7 +14,7 @@ en:
       position_new_title: '%{name} : Open Hub'
       contribution: 'Contributions'
     edit:
-      edit_title: '%{name} : %{name} - Open Hub'
+      edit_title: '%{name} : Edit Contribution - Open Hub'
     commit_information:
       in_mostly: 'in mostly'
     commits_by_individual_projects:

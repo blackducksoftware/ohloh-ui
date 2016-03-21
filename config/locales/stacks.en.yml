@@ -8,7 +8,7 @@ en:
     gnome: 'GNOME Desktop'
     gnome_desc: 'GNOME, Firefox, OpenOffice.org, Thunderbird, and GIMP'
     index:
-      page_title: "%{name} : %{name}'s Stacks - Open Hub"
+      page_title: "%{name}'s Stacks - Open Hub"
       new_stack: "New Stack"
       embed: "Embed"
       remove: "Remove"

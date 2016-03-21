@@ -11,7 +11,7 @@ en:
     undo_account: "Are you sure you want to delete kudos received from %{from}?"
     for: "(for %{what})"
     index:
-      page_title: "%{name} : %{name} - Open Hub"
+      page_title: "%{name} : Kudos - Open Hub"
       title: "Kudos"
       kudos_received: "Kudos Received"
       no_kudos_received_yet: "No kudos received yet."
