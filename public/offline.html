@@ -19,27 +19,93 @@
      }
       a {
         color: #eee;
+      }
+
+      footer {
+        background: #9A9A9A;
+        border-top: 5px #DDDDDD solid;
+        padding-top: 10px;
+        color: #EEE;
+        min-height: 140px;
+        font-size: 13px;
+        font-family: Open Sans !important;
+        font-weight: 200;
+      }
+
+      footer .footer-left {
+        float: left;
+        margin-right: 30px;
+        width: 10%;
+      }
+
+      footer .footer-mid {
+        float: left;
+        margin-top: 20px;
+        width: 64%;
+      }
+
+      footer .footer-right {
+        float: right;
+        font-size: 10px;
+        padding-right: 10px;
+        text-align: right;
+        width: 175px;
+      }
+
+      footer a{
+        color: #FFF;
         text-decoration: none;
       }
-      a:visited {
-        color: #eee;
+
+      footer a:hover{
+        text-decoration: underline;
       }
-      .footer {
-        background-color: rgb(154, 154, 154); 
-        padding-top: 10px;
-        padding-left: 40px; 
-        padding-right: 40px; 
-        padding-bottom: 50px;
-        min-height:140px; 
-        color: #EEE; 
-        font-size: 10pt; 
-        line-height: 17pt; 
+
+      .footer-mid a img {
+        float: left;
+        margin-right: 10px;
+      }
+
+      .footer-right img{
+        margin-right: 15px;
+        opacity: 0.5;
+        width: 70px;
+      }
+
+      .nav-pills{
+        padding-left: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+        list-style: none;
+      }
+
+      .nav-pills li{
+        float: left;
+      }
+
+      .nav-pills li a{
+        display: block;
+        position: relative;
+        border-radius: 4px;
+        padding: 8px 12px;
+      }
+
+      .nav-pills li a:hover{
+        background: #0082C6;
+        border-radius: 0;
+        text-decoration: none;
+      }
+
+      .clear:after {
+        content: "";
+        display: table;
+        clear: both;
       }
     </style>
    </head>
    <body>
      <div style="background:#fff; width:980px; height; 450px; margin-right:auto; margin-left:auto">
-       <img alt="Open Hub" style="margin:20px; height:26px;" itemprop="image" src="https://www.openhub.net/images/logo/BD_Open_HUB_logo.png">
+       <img alt="Open Hub" style="margin:20px; height:26px;" itemprop="image" src="https://s3.amazonaws.com/cloud.ohloh.net/logos/bd_oh.png">
        <div style="width: 90%; height: 23px; margin: 0; margin-left:40px; border-bottom: 5px solid #DDD;"></div>
        <div style="margin: 20px; padding: 10px;">
          <h1 style="margin-top: 0px;">The Black Duck Open Hub is currently offline</h1>
@@ -47,33 +113,41 @@
          <p>We're performing some maintenance on the Open Hub servers and expect to be back online in 24 hours.</p>
          <p>We apologize for any inconvenience that this has caused.</p>
        </div>
-       <div class='footer'>
-         <div style="display: block; float:left; width: 675px; margin-top: 30px;" > 
-           <a href="http://creativecommons.org/licenses/by/3.0/" rel="license" target="_blank" style="margin: 5px;">
+       <footer>
+         <div class='footer-left'>
+           <ul class='nav-pills'>
+             <li><a href='http://blog.openhub.net/us'>About</a></li>
+             <li><a href='http://blog.openhub.net/terms'>Terms</a></li>
+             <li><a href='http://blog.openhub.net/privacy'>Privacy</a></li>
+           </ul>
+         </div>
+         <div class='footer-mid'>
+           <a href="http://creativecommons.org/licenses/by/3.0/" rel="license" target="_blank">
              <img alt="Creative Commons License" src="http://i.creativecommons.org/l/by/3.0/88x31.png">
            </a>
-           Copyright
-           <sup>©</sup>
-           2015
-               <a href="http://www.blackducksoftware.com" target="_blank">
-                 Black Duck Software, Inc.
-               </a>
-               
-           All Rights Reserved.  and its contributors, Some Rights Reserved. Unless otherwise marked, this work is licensed under a
+           Copyright <sup>&copy;</sup> 2014 - 2016
+           <span itemscope="" itemtype="http://schema.org/CreativeWork">
+             <span itemprop="publisher">
+               <a href="http://www.blackducksoftware.com" target="_blank">Black Duck Software, Inc.,</a>
+             </span>
+           </span>
+           <span itemprop="description">
+             Open Hub and the Open Hub logo are trademarks of Black Duck Software, Inc. in the United States
+             and/or other jurisdictions. All other trademarks are the property of their respective holders.
+           </span>
+           <span itemscope="" itemtype="http://schema.org/CreativeWork">
+             <span itemprop="publishingPrinciples">
                <a href="http://creativecommons.org/licenses/by/3.0/" rel="license" target="_blank">
-                 Creative Commons Attribution 3.0 Unported License
+                 Creative Commons Attribution 3.0 Unported License.
                </a>
-           . Open Hub <sup>®</sup> and the Open Hub logo are trademarks of
-               <a href="http://www.blackducksoftware.com" target="_blank">
-                 Black Duck
-               </a>
-           All Rights Reserved.  in the United States and/or other jurisdictions. All other trademarks are the property of their respective holders.
+             </span>
+           </span>
          </div>
-       <div style="display:block; float:right; width:140px">
-           <img src="https://www.openhub.net/images/mast/blackduck_mascot.png" style="margin-right: 15px; opacity: 0.5; width: 70px;">
+         <div class='footer-right'>
+           <img src="https://s3.amazonaws.com/cloud.ohloh.net/logos/bd_footer.png">
            <div class="clear">&nbsp;</div>
            <sup>©</sup>
-           2015
+           2016
            <span itemscope="" itemtype="http://schema.org/CreativeWork">
              <span itemprop="publisher">
                <a href="http://www.blackducksoftware.com" target="_blank">
@@ -84,6 +158,7 @@
              </span>
            </span>
          </div>
+       </footer>
       </div>
   </body>
 </html>
