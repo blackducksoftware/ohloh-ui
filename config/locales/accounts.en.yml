@@ -19,7 +19,7 @@ en:
       settings: '&nbsp; Settings'
     languages:
       index:
-        page_title: "%{name} : %{name} - Open Hub"
+        page_title: "%{name} : Languages - Open Hub"
         title: 'Languages'
       commits_by_language:
         title: 'Languages'
@@ -36,6 +36,7 @@ en:
         success: "The account %{name} has been marked as spammer."
 
     edit:
+      page_title: '%{name} : Account Basics - Open Hub'
       email_help: 'We use your email address to show your'
       affiliation_help: "Enter the company or organization you're affiliated with."
       city_and_country: 'City &amp; Country'
@@ -86,7 +87,7 @@ en:
       in: 'in ...'
       to: 'to ...'
     show:
-      page_title: '%{name} : %{name} - Open Hub'
+      page_title: '%{name} - Open Hub'
       total_commits: 'total commits'
       project: 'project'
       analysis_scheduled: 'The analysis for this account has been scheduled.'
@@ -158,7 +159,7 @@ en:
       disabled_account: "%{user}'s account is disabled."
       disabled_message: 'This account has been disabled. If you are the account owner and wish to discuss this, send email to info@openhub.net.'
     settings:
-      settings_title: '%{name} : Settings Page - Open Hub'
+      settings_title: '%{name} : Settings - Open Hub'
       settings: 'Settings'
       account_basics: 'Account Basics'
       password: 'Password'
