@@ -5,6 +5,7 @@ class ReverificationPilotAccount < ActiveRecord::Base
   before_create :check_for_duplicate
 
   def self.copy_accounts(size = TOTAL_SAMPLES)
+    delete_all
     accounts_hash = Account.reverification_not_initiated(size).map(&:id).map { |a| { account_id: a } }
     create accounts_hash
   end
