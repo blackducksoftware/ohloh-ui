@@ -46,6 +46,11 @@ DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT replied_by FROM
 DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM vitae WHERE account_id IN (SELECT account_id FROM failed_accounts));
 
 --
+-- Create a backup table that holds the vetted failed_accounts
+--
+CREATE table guaranteed_spam_accounts as (SELECT * FROM accounts WHERE id IN (SELECT account_id from failed_accounts));
+
+--
 --  Remove the foreign key constraints from the tables account_reports, edits, posts, kudos, etc.
 --
 
