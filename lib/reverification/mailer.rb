@@ -25,10 +25,15 @@ module Reverification
       end
 
       def send_first_notification
-        Account.reverification_not_initiated(send_limit).each do |account|
+        # Note: When move on from pilot run,
+        # replace the query ReverificationPilotAccount.limit(send_limit).map(&:account)
+        # with Account.reverification_not_initiated
+        ReverificationPilotAccount.limit(send_limit).map(&:account).each do |account|
           Reverification::Process.send_email(
             Reverification::Template.first_reverification_notice(account.email),
             account, 0)
+          # Note: When move on from pilot run, remove below line
+          ReverificationPilotAccount.find_by(account_id: account.id).delete
         end
       end
 
@@ -59,7 +64,7 @@ module Reverification
       def resend_soft_bounced_notifications
         # Grab all the soft_bounced trackers
         ReverificationTracker.soft_bounced_until_yesterday.max_attempts_not_reached
-          .find_each(batch_size: send_limit) do |rev_track|
+          .limit(send_limit).each do |rev_track|
           Reverification::Process.send_email(rev_track.template_hash, rev_track.account, rev_track.phase_value)
         end
       end

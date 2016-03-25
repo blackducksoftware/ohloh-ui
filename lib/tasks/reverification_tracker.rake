@@ -6,6 +6,11 @@ namespace :reverification do
     Reverification::Process.start_polling_queues
   end
 
+  desc 'This task does the preparation works for pilot'
+  task pilot_preparation: :environment do
+    ReverificationPilotAccount.copy_accounts
+  end
+
   namespace :cleanup do
     desc 'Removes the reverification trackers of verified accounts and removes unverified accounts'
     task all: [:verified, :unverified]
@@ -25,7 +30,7 @@ namespace :reverification do
     desc 'This resends soft bounced notifications and sends all phases notifications'
     task all: [:resend, :send]
 
-    desc 'This sends notifiactions of all phases'
+    desc 'This sends notifications of all phases'
     task send: :environment do
       Reverification::Mailer.send_notifications
     end

@@ -101,14 +101,6 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
     end
     let(:unverified_account) { create(:unverified_account) }
 
-    it 'should raise exception BounceLimitError if bounce rate reaches 5.0% or higher' do
-      over_bounce_limit = MOCK::AWS::SimpleEmailService.over_bounce_limit
-      AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(over_bounce_limit)
-      assert_raises Reverification::BounceLimitError do
-        Reverification::Process.send_email('dummy email content', unverified_account, 0)
-      end
-    end
-
     describe 'First notification' do
       before do
         unverified_account.reverification_tracker.must_be_nil
@@ -215,6 +207,45 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
   describe 'ses_daily_limit_available' do
     it 'should return the balance send limit available for the day' do
       assert_equal 150, Reverification::Process.ses_daily_limit_available
+    end
+  end
+
+  describe 'check_statistics_of_last_24_hrs' do
+    it 'should raise SimpleEmailServieLimitError if bounce rate is above 5%' do
+      over_bounce_limit = MOCK::AWS::SimpleEmailService.over_bounce_limit
+      AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(over_bounce_limit)
+      # 3 bounces in over_bounce_limit would be 5% of 60 total sent emails
+      AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(sent_last_24_hours: 60)
+      assert_raise Reverification::ExceptionHandlers::BounceRateLimitError do
+        Reverification::Process.check_statistics_of_last_24_hrs
+      end
+    end
+
+    it 'should not raise SimpleEmailServieLimitError if bounce rate is below 5%' do
+      under_bounce_limit = MOCK::AWS::SimpleEmailService.under_bounce_limit
+      AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(under_bounce_limit)
+      AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(sent_last_24_hours: 60)
+      assert_nothing_raised Reverification::ExceptionHandlers::BounceRateLimitError do
+        Reverification::Process.check_statistics_of_last_24_hrs
+      end
+    end
+
+    it 'should raise SimpleEmailServieLimitError if complaint rate is above 0.1%' do
+      over_complaint_limit = MOCK::AWS::SimpleEmailService.over_complaint_limit
+      AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(over_complaint_limit)
+      AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(sent_last_24_hours: 2000)
+      assert_raise Reverification::ExceptionHandlers::ComplaintRateLimitError do
+        Reverification::Process.check_statistics_of_last_24_hrs
+      end
+    end
+
+    it 'should not raise SimpleEmailServieLimitError if complaint rate is below 0.1%' do
+      under_complaint_limit = MOCK::AWS::SimpleEmailService.under_complaint_limit
+      AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(under_complaint_limit)
+      AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(sent_last_24_hours: 1000)
+      assert_nothing_raised Reverification::ExceptionHandlers::ComplaintRateLimitError do
+        Reverification::Process.check_statistics_of_last_24_hrs
+      end
     end
   end
 

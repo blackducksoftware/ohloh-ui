@@ -21,6 +21,7 @@ module Reverification
         @complaints_queue ||= sqs.queues.named('ses-complaints-queue')
       end
 
+      # Note: this method is not used anywhere but might be needed for later.
       def ses_limit_reached?
         quotas = ses.quotas
         quotas[:sent_last_24_hours] == quotas[:max_24_hour_send]
@@ -35,15 +36,22 @@ module Reverification
         ses.statistics.find_all { |s| s[:sent].between?(Time.now.utc - 24.hours, Time.now.utc) }
       end
 
-      def bounce_rate_in_last_24_hrs
+      # rubocop:disable Metrics/AbcSize
+      def check_statistics_of_last_24_hrs
         stats = statistics_of_last_24_hrs
-        no_of_deliveries = stats.inject(0.0) { |a, e| a + e[:delivery_attempts] }
+        sent_last_24_hrs = ses.quotas[:sent_last_24_hours].to_f
         no_of_bounces = stats.inject(0.0) { |a, e| a + e[:bounces] }
-        no_of_deliveries.zero? ? 0.0 : (no_of_bounces / no_of_deliveries) * 100
+        no_of_complaints = stats.inject(0.0) { |a, e| a + e[:complaints] }
+        bounce_rate = sent_last_24_hrs.zero? ? 0.0 : (no_of_bounces / sent_last_24_hrs) * 100
+        complaint_rate = sent_last_24_hrs.zero? ? 0.0 : (no_of_complaints / sent_last_24_hrs) * 100
+        handler_ns = Reverification::ExceptionHandlers
+        fail(handler_ns::BounceRateLimitError, 'Bounce Rate exceeded 5%') if bounce_rate >= 5.0
+        fail(handler_ns::ComplaintRateLimitError, 'Complaint Rate exceeded 0.1%') if complaint_rate >= 0.1
       end
+      # rubocop:enable Metrics/AbcSize
 
       def send_email(template, account, phase)
-        fail(Reverification::BounceLimitError, 'Reached 5% Bounce Rate') if bounce_rate_in_last_24_hrs >= 5.0
+        check_statistics_of_last_24_hrs
         resp = ses.send_email(template)
         if account.reverification_tracker
           update_tracker(account.reverification_tracker, phase, resp)

@@ -21,6 +21,7 @@ module OhlohUi
     config.google_maps_api_key = ENV['GOOGLE_MAPS_API']
 
     config.autoload_paths << "#{Rails.root}/lib"
+    config.autoload_paths << "#{Rails.root}/lib/reverification/**/*"
 
     config.to_prepare do
       Doorkeeper::AuthorizationsController.layout 'application'
