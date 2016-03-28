@@ -206,7 +206,7 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
 
   describe 'ses_daily_limit_available' do
     it 'should return the balance send limit available for the day' do
-      assert_equal 150, Reverification::Process.ses_daily_limit_available
+      assert_equal 4950, Reverification::Process.ses_daily_limit_available
     end
   end
 

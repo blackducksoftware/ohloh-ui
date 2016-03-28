@@ -1,5 +1,6 @@
 module Reverification
   class Process
+    PILOT_AMOUNT = 5000
     class << self
       def ses
         @ses ||= AWS::SimpleEmailService.new
@@ -29,7 +30,7 @@ module Reverification
 
       def ses_daily_limit_available
         quotas = ses.quotas
-        quotas[:max_24_hour_send] - quotas[:sent_last_24_hours]
+        PILOT_AMOUNT - quotas[:sent_last_24_hours]
       end
 
       def statistics_of_last_24_hrs
