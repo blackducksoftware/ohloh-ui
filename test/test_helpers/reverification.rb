@@ -5,7 +5,7 @@ module MOCK
     class SimpleEmailService
       class << self
         def send_quota
-          { max_24_hour_send: 200, max_send_rate: 1.0, sent_last_24_hours: 50 }
+          { max_24_hour_send: 5000, max_send_rate: 1.0, sent_last_24_hours: 50 }
         end
 
         def response
