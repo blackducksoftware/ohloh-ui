@@ -206,12 +206,6 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'ses_limit_reached?' do
-    it 'should return false when daily sent quota not reached max daily send quota' do
-      assert_equal false, Reverification::Process.ses_limit_reached?
-    end
-  end
-
   describe 'ses_daily_limit_available' do
     it 'should return the balance send limit available for the day' do
       assert_equal 4950, Reverification::Process.ses_daily_limit_available
@@ -219,7 +213,8 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
   end
 
   describe 'check_statistics_of_last_24_hrs' do
-    it 'should raise SimpleEmailServieLimitError if bounce rate is above 5%' do
+    # This needs to changed back to 5% once initial testing is complete
+    it 'should raise SimpleEmailServieLimitError if bounce rate is above 20%' do
       over_bounce_limit = MOCK::AWS::SimpleEmailService.over_bounce_limit
       AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(over_bounce_limit)
       # 3 bounces in over_bounce_limit would be 5% of 60 total sent emails
@@ -229,7 +224,8 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
       end
     end
 
-    it 'should not raise SimpleEmailServieLimitError if bounce rate is below 5%' do
+    # This needs to changed back to 5% once initial testing is complete
+    it 'should not raise SimpleEmailServieLimitError if bounce rate is below 20%' do
       under_bounce_limit = MOCK::AWS::SimpleEmailService.under_bounce_limit
       AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(under_bounce_limit)
       AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(sent_last_24_hours: 60)

@@ -1,39 +1,7 @@
 module Reverification
-  # rubocop:disable ClassLength
   class Process
-    PILOT_AMOUNT = 5000
+    extend Amazon
     class << self
-      def ses
-        @ses ||= AWS::SimpleEmailService.new
-      end
-
-      def sqs
-        @sqs ||= AWS::SQS.new
-      end
-
-      def success_queue
-        @success_queue ||= sqs.queues.named('ses-success-queue')
-      end
-
-      def bounce_queue
-        @bounce_queue ||= sqs.queues.named('ses-bounces-queue')
-      end
-
-      def complaints_queue
-        @complaints_queue ||= sqs.queues.named('ses-complaints-queue')
-      end
-
-      # Note: this method is not used anywhere but might be needed for later.
-      def ses_limit_reached?
-        quotas = ses.quotas
-        quotas[:sent_last_24_hours] == quotas[:max_24_hour_send]
-      end
-
-      def ses_daily_limit_available
-        quotas = ses.quotas
-        PILOT_AMOUNT - quotas[:sent_last_24_hours]
-      end
-
       def statistics_of_last_24_hrs
         ses.statistics.find_all { |s| s[:sent].between?(Time.now.utc - 24.hours, Time.now.utc) }
       end
@@ -47,7 +15,8 @@ module Reverification
         bounce_rate = sent_last_24_hrs.zero? ? 0.0 : (no_of_bounces / sent_last_24_hrs) * 100
         complaint_rate = sent_last_24_hrs.zero? ? 0.0 : (no_of_complaints / sent_last_24_hrs) * 100
         handler_ns = Reverification::ExceptionHandlers
-        fail(handler_ns::BounceRateLimitError, 'Bounce Rate exceeded 5%') if bounce_rate >= 5.0
+        # This needs to be changed back to 5% after initial pilot
+        fail(handler_ns::BounceRateLimitError, 'Bounce Rate exceeded 5%') if bounce_rate >= 20.0
         fail(handler_ns::ComplaintRateLimitError, 'Complaint Rate exceeded 0.1%') if complaint_rate >= 0.1
       end
       # rubocop:enable Metrics/AbcSize
@@ -124,5 +93,4 @@ module Reverification
       end
     end
   end
-  # rubocop:enable ClassLength
 end
