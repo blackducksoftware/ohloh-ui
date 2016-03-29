@@ -1,4 +1,5 @@
 module Reverification
+  # rubocop:disable ClassLength
   class Process
     PILOT_AMOUNT = 5000
     class << self
@@ -66,6 +67,7 @@ module Reverification
           message_hash = msg.as_sns_message.body_message_as_h
           message_hash['delivery']['recipients'].each do |recipient|
             account = Account.find_by_email recipient
+            next unless account.reverification_tracker
             account.reverification_tracker.delivered! if account.reverification_tracker.pending?
           end
         end
@@ -85,6 +87,7 @@ module Reverification
           decoded_msg = msg.as_sns_message.body_message_as_h
           decoded_msg['complaint']['complainedRecipients'].each do |recipient|
             rev_tracker = Account.find_by_email(recipient['emailAddress']).reverification_tracker
+            next unless rev_tracker
             rev_tracker.complained!
             rev_tracker.update feedback: decoded_msg['complaint']['complaintFeedbackType']
           end
@@ -104,6 +107,7 @@ module Reverification
 
       def handle_bounce_notification(type, recipient)
         rev_tracker = Account.find_by_email(recipient).reverification_tracker
+        return unless rev_tracker
         case type
         when 'Permanent' then ReverificationTracker.destroy_account(recipient)
         when 'Transient', 'Undetermined' then rev_tracker.soft_bounced!
@@ -120,4 +124,5 @@ module Reverification
       end
     end
   end
+  # rubocop:enable ClassLength
 end

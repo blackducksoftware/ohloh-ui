@@ -31,6 +31,14 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
       rev_tracker.reload
       rev_tracker.wont_be :delivered?
     end
+
+    it 'should skip to polling next feedback notification when reverification tracker does not exist' do
+      rev_tracker = create(:success_initial_rev_tracker, status: 0)
+      rev_tracker.destroy
+      ReverificationTracker.any_instance.expects(:pending?).never
+      ReverificationTracker.any_instance.expects(:delivered?).never
+      Reverification::Process.poll_success_queue
+    end
   end
 
   describe 'poll bounce queue' do
