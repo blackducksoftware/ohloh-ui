@@ -1,5 +1,6 @@
 class RegistrationsController < ApplicationController
   before_action :check_for_account_and_auth_params, only: :generate
+  before_action :redirect_if_logged_in, only: :new
 
   def new
     @account = Account.new
@@ -28,6 +29,10 @@ class RegistrationsController < ApplicationController
   end
 
   private
+
+  def redirect_if_logged_in
+    redirect_to account_path(current_user), notice: t('password_resets.already_logged_in') if logged_in?
+  end
 
   def redirect_to_new_authentication_path
     redirect_to new_authentication_path, notice: @account.errors.messages.values.last.last

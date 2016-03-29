@@ -16,6 +16,16 @@ describe 'RegistrationsController' do
       must_respond_with :success
       assigns(:account).must_be_instance_of Account
     end
+
+    it 'must redirect to accounts show page if logged in' do
+      account = create(:account)
+
+      login_as account
+      get :new
+
+      must_respond_with :redirect
+      must_redirect_to account_path(account)
+    end
   end
 
   describe 'validate' do
