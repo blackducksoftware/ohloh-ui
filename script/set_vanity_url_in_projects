@@ -1,0 +1,10 @@
+#! /usr/bin/env ruby
+
+fail 'RAILS_ENV is undefined' unless ENV['RAILS_ENV']
+
+require_relative '../config/environment'
+
+ActiveRecord::Base.connection.execute("
+  UPDATE projects SET vanity_url = lower(regexp_replace(name, '[^\w\d]+', '_', 'g'))||id
+    WHERE vanity_url is null;
+")
