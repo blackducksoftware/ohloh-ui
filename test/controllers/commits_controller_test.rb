@@ -2,8 +2,8 @@ require 'test_helper'
 
 describe 'CommitsController' do
   before do
-    @commit1 = create(:commit, position: 0, comment: 'first commit')
-    @commit2 = create(:commit, position: 1, comment: 'second commit', code_set_id: @commit1.code_set_id)
+    @commit1 = create(:commit, position: 0, comment: 'first commit', time: Time.current - 1.day)
+    @commit2 = create(:commit, position: 1, comment: 'second commit', time: Time.current - 2.days, code_set_id: @commit1.code_set_id)
     @project = create(:project)
     @name1 = create(:name)
     @name2 = create(:name)
@@ -48,21 +48,21 @@ describe 'CommitsController' do
       assigns(:named_commits).first.contribution_id.wont_equal contribution_two.id
     end
 
-    # it 'should return named commits if valid project' do
-    #   time_now = Time.zone.now
-    #   thirty_days_ago = time_now - 30.days
-    #   @project.best_analysis.update_attributes(logged_at: time_now)
-    #   get :index, project_id: @project.id, time_span: '30 days'
-    #   # ============ I added this code ===========
-    #   must_respond_with :ok
-    #   must_render_template :index
-    #   assert assigns(:named_commits)
-    #   assert_not_nil assigns(:named_commits)
+    it 'should return named commits if valid project' do
+      time_now = Time.zone.now
+      thirty_days_ago = time_now - 30.days
+      @project.best_analysis.update_attributes(logged_at: time_now)
+      get :index, project_id: @project.id, time_span: '30 days'
+      # ============ I added this code ===========
+      must_respond_with :ok
+      must_render_template :index
+      assert assigns(:named_commits)
+      assert_not_nil assigns(:named_commits)
 
-    #   # assigns(:named_commits).count.must_equal 
-    #   # assigns(:named_commits).first.must_equal @named_commit
-    #   assigns(:highlight_from).to_a.must_equal thirty_days_ago.to_a
-    # end
+      # assigns(:named_commits).count.must_equal
+      # assigns(:named_commits).first.must_equal @named_commit
+      assigns(:highlight_from).to_a.must_equal thirty_days_ago.to_a
+    end
 
     it 'should gracefully handle garbage time spans' do
       @project.best_analysis.update_attributes(logged_at: Time.zone.now)
@@ -93,12 +93,11 @@ describe 'CommitsController' do
     end
 
     it 'must render commits within 30 days' do
-      Analysis.any_instance.stubs(:logged_at).returns(Time.current)
+      Analysis.any_instance.stubs(:logged_at).returns(Time.current.beginning_of_day)
       commit_ids = create_commits_and_named_commits
       named_commits = NamedCommit.where(commit_id: commit_ids[0..1])
      
       get :index, project_id: @project.id, time_span: '30 days'
-      binding.pry     
       assigns(:named_commits).count.must_equal 4
       assigns(:named_commits).must_include @named_commit
       assigns(:named_commits).must_include named_commits[0]
@@ -179,9 +178,9 @@ describe 'CommitsController' do
   def create_commits_and_named_commits
     commits = []
     commits << create(:commit, code_set_id: @commit1.code_set_id, position: 2, name: create(:name),
-                               comment: 'third commit', time: Time.current - 1.day).id
+                               comment: 'third commit', time: Time.current - 5.days).id
     commits << create(:commit, code_set_id: @commit1.code_set_id, position: 3, name: create(:name),
-                               comment: 'fourth commit', time: Time.current - 1.day).id
+                               comment: 'fourth commit', time: Time.current - 7.days).id
     commits << create(:commit, code_set_id: @commit1.code_set_id, position: 4, name: create(:name),
                                comment: 'fifth commit', time: Time.current - 2.months).id
     commits << create(:commit, code_set_id: @commit1.code_set_id, position: 5, name: create(:name),
