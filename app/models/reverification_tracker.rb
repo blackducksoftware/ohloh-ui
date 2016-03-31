@@ -43,11 +43,14 @@ class ReverificationTracker < ActiveRecord::Base
 
     def destroy_account(email_address)
       account = Account.find_by_email(email_address)
-      account.destroy if account
+      return unless account
+      account.access.spam!
+      account.destroy
     end
 
     def delete_expired_accounts
       expired_final_phase_notifications.each do |rev_tracker|
+        rev_tracker.account.access.spam!
         rev_tracker.account.destroy
       end
     end
