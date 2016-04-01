@@ -3,7 +3,10 @@ require 'test_helper'
 describe 'CommitsController' do
   before do
     @commit1 = create(:commit, position: 0, comment: 'first commit', time: Time.current - 1.day)
-    @commit2 = create(:commit, position: 1, comment: 'second commit', time: Time.current - 2.days, code_set_id: @commit1.code_set_id)
+    @commit2 = create(:commit, position: 1,
+                               comment: 'second commit',
+                               time: Time.current - 2.days,
+                               code_set_id: @commit1.code_set_id)
     @project = create(:project)
     @name1 = create(:name)
     @name2 = create(:name)
@@ -53,14 +56,8 @@ describe 'CommitsController' do
       thirty_days_ago = time_now - 30.days
       @project.best_analysis.update_attributes(logged_at: time_now)
       get :index, project_id: @project.id, time_span: '30 days'
-      # ============ I added this code ===========
-      must_respond_with :ok
-      must_render_template :index
-      assert assigns(:named_commits)
-      assert_not_nil assigns(:named_commits)
-
-      # assigns(:named_commits).count.must_equal
-      # assigns(:named_commits).first.must_equal @named_commit
+      assigns(:named_commits).count.must_equal 2
+      assigns(:named_commits).first.must_equal @named_commit
       assigns(:highlight_from).to_a.must_equal thirty_days_ago.to_a
     end
 
@@ -96,7 +93,7 @@ describe 'CommitsController' do
       Analysis.any_instance.stubs(:logged_at).returns(Time.current.beginning_of_day)
       commit_ids = create_commits_and_named_commits
       named_commits = NamedCommit.where(commit_id: commit_ids[0..1])
-     
+
       get :index, project_id: @project.id, time_span: '30 days'
       assigns(:named_commits).count.must_equal 4
       assigns(:named_commits).must_include @named_commit
@@ -110,7 +107,7 @@ describe 'CommitsController' do
       named_commits = NamedCommit.where(commit_id: commit_ids[0..2])
 
       get :index, project_id: @project.id, time_span: '12 months'
-     
+
       assigns(:named_commits).count.must_equal 5
       assigns(:named_commits).must_include @named_commit
       assigns(:named_commits).must_include named_commits[0]
@@ -190,8 +187,7 @@ describe 'CommitsController' do
     ass.update!(as_of: 6)
     commits.each do |commit_id|
       commit = Commit.find(commit_id)
-      create(:analysis_alias, commit_name: commit.name, analysis_id: ass.analysis_id,
-              preferred_name_id: commit.name.id)
+      create(:analysis_alias, commit_name: commit.name, analysis_id: ass.analysis_id, preferred_name_id: commit.name.id)
     end
     commits
   end
