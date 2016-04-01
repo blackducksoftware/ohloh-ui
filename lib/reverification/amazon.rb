@@ -10,15 +10,15 @@ module Reverification
     end
 
     def success_queue
-      @success_queue ||= sqs.queues.named('ses-success-queue')
+      @success_queue ||= sqs.queues.named(ENV['AWS_SQS_SUCCESS_QUEUE'])
     end
 
     def bounce_queue
-      @bounce_queue ||= sqs.queues.named('ses-bounces-queue')
+      @bounce_queue ||= sqs.queues.named(ENV['AWS_SQS_BOUNCE_QUEUE'])
     end
 
     def complaints_queue
-      @complaints_queue ||= sqs.queues.named('ses-complaints-queue')
+      @complaints_queue ||= sqs.queues.named(ENV['AWS_SQS_COMPLAINT_QUEUE'])
     end
 
     def ses_daily_limit_available
