@@ -23,7 +23,7 @@ module Reverification
 
       def send_email(template, account, phase)
         check_statistics_of_last_24_hrs
-        sleep(3)
+        sleep(1)
         resp = ses.send_email(template)
         if account.reverification_tracker
           update_tracker(account.reverification_tracker, phase, resp)
