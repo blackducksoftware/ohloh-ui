@@ -5,12 +5,8 @@ BEGIN;
 --
 
 DROP TABLE IF EXISTS unknown_accounts;
-DROP TABLE IF EXISTS temp_unknown_accounts;
-CREATE TEMPORARY TABLE temp_unknown_accounts(id int, username text, email text, status text, details text);
-\COPY temp_unknown_accounts(id, username, email, status, details) FROM '/home/postgres/complete_unknown_list.csv' CSV HEADER DELIMITER AS ',';
 CREATE TABLE unknown_accounts(account_id int);
-INSERT INTO unknown_accounts(account_id) SELECT id FROM temp_unknown_accounts;
-DROP TABLE IF EXISTS temp_unknown_accounts;
+\COPY unknown_accounts(account_id) FROM '/home/postgres/unknown_id_list.csv' CSV;
 
 --
 -- Filter `unknown_accounts` table:
@@ -52,9 +48,8 @@ DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FRO
 --
 -- Create a backup table that holds the vetted unknown_accounts
 --
-CREATE TABLE IF NOT EXISTS guaranteed_spam_accounts(LIKE accounts);
-INSERT INTO guaranteed_spam_accounts (SELECT a.* FROM accounts a INNER JOIN unknown_accounts ua ON a.id=ua.account_id LEFT JOIN guaranteed_spam_accounts sa ON ua.account_id=sa.id WHERE sa.id IS NULL);
-
+CREATE TABLE IF NOT EXISTS unknown_spam_accounts(LIKE accounts);
+INSERT INTO unknown_spam_accounts (SELECT a.* FROM accounts a INNER JOIN unknown_accounts ua ON a.id=ua.account_id LEFT JOIN unknown_spam_accounts sa ON ua.account_id=sa.id WHERE sa.id IS NULL);
 --
 --  Remove the foreign key constraints from the tables account_reports, edits, posts, kudos, etc.
 --
