@@ -188,21 +188,21 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
   describe 'success_queue' do
     it 'should return AWS::SQS::Queue instance for success queue' do
       queue_instance = Reverification::Process.success_queue
-      queue_instance.url.must_match(/ses-success-queue/)
+      queue_instance.url.must_match(/success-queue/)
     end
   end
 
   describe 'bounce_queue' do
     it 'should return AWS::SQS::Queue instance for bounce queue' do
       queue_instance = Reverification::Process.bounce_queue
-      queue_instance.url.must_match(/ses-bounces-queue/)
+      queue_instance.url.must_match(/bounces-queue/)
     end
   end
 
   describe 'complaints_queue' do
     it 'should return AWS::SQS::Queue instance for complaints queue' do
       queue_instance = Reverification::Process.complaints_queue
-      queue_instance.url.must_match(/ses-complaints-queue/)
+      queue_instance.url.must_match(/complaints-queue/)
     end
   end
 
