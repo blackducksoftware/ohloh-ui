@@ -4,6 +4,10 @@ module MOCK
   module AWS
     class SimpleEmailService
       class << self
+        def amazon_stat_settings
+          { bounce_rate: 5.0, amount_of_email: 1000.0 }
+        end
+
         def send_quota
           { max_24_hour_send: 5000, max_send_rate: 1.0, sent_last_24_hours: 50 }
         end
@@ -19,7 +23,7 @@ module MOCK
         end
 
         def over_bounce_limit
-          [{ sent: Time.now.utc - 10.hours, delivery_attempts: 0, rejects: 0, bounces: 15, complaints: 0 },
+          [{ sent: Time.now.utc - 10.hours, delivery_attempts: 0, rejects: 0, bounces: 48, complaints: 0 },
            { sent: Time.now.utc - 8.hours, delivery_attempts: 0, rejects: 0, bounces: 2, complaints: 0 },
            { sent: Time.now.utc - 3.hours, delivery_attempts: 0, rejects: 0, bounces: 6, complaints: 0 }]
         end

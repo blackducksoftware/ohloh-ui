@@ -105,6 +105,9 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
 
   describe 'send_email' do
     before do
+      # Settings need to be below specified settings to avoid statistics checking
+      below_specified_settings = MOCK::AWS::SimpleEmailService.amazon_stat_settings
+      Reverification::Process.stubs(:amazon_stat_settings).returns(below_specified_settings)
       AWS::SimpleEmailService.any_instance.stubs(:send_email).returns(MOCK::AWS::SimpleEmailService.response)
     end
     let(:unverified_account) { create(:unverified_account) }
@@ -213,31 +216,31 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
   end
 
   describe 'check_statistics_of_last_24_hrs' do
-    # This needs to changed back to 5% once initial testing is complete
-    it 'should raise SimpleEmailServieLimitError if bounce rate is above 20%' do
+    it 'should raise SimpleEmailServiceLimitError if bounce rate is above 5%' do
       over_bounce_limit = MOCK::AWS::SimpleEmailService.over_bounce_limit
       AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(over_bounce_limit)
-      # 3 bounces in over_bounce_limit would be 5% of 60 total sent emails
-      AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(sent_last_24_hours: 60)
+      AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(sent_last_24_hours: 1000)
+      Reverification::Process.stubs(:amazon_stat_settings).returns(bounce_rate: 5.0, amount_of_email: 1001.0)
       assert_raise Reverification::ExceptionHandlers::BounceRateLimitError do
         Reverification::Process.check_statistics_of_last_24_hrs
       end
     end
 
-    # This needs to changed back to 5% once initial testing is complete
-    it 'should not raise SimpleEmailServieLimitError if bounce rate is below 20%' do
+    it 'should not raise SimpleEmailServiceLimitError if bounce rate is below 5%' do
       under_bounce_limit = MOCK::AWS::SimpleEmailService.under_bounce_limit
       AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(under_bounce_limit)
       AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(sent_last_24_hours: 60)
+      Reverification::Process.stubs(:amazon_stat_settings).returns(bounce_rate: 5.0, amount_of_email: 100.0)
       assert_nothing_raised Reverification::ExceptionHandlers::BounceRateLimitError do
         Reverification::Process.check_statistics_of_last_24_hrs
       end
     end
 
-    it 'should raise SimpleEmailServieLimitError if complaint rate is above 0.1%' do
+    it 'should raise SimpleEmailServiceLimitError if complaint rate is above 0.1%' do
       over_complaint_limit = MOCK::AWS::SimpleEmailService.over_complaint_limit
       AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(over_complaint_limit)
       AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(sent_last_24_hours: 2000)
+      Reverification::Process.stubs(:amazon_stat_settings).returns(bounce_rate: 5.0, amount_of_email: 1001.0)
       assert_raise Reverification::ExceptionHandlers::ComplaintRateLimitError do
         Reverification::Process.check_statistics_of_last_24_hrs
       end
@@ -247,9 +250,20 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
       under_complaint_limit = MOCK::AWS::SimpleEmailService.under_complaint_limit
       AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(under_complaint_limit)
       AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(sent_last_24_hours: 1000)
+      Reverification::Process.stubs(:amazon_stat_settings).returns(bounce_rate: 5.0, amount_of_email: 1001.0)
       assert_nothing_raised Reverification::ExceptionHandlers::ComplaintRateLimitError do
         Reverification::Process.check_statistics_of_last_24_hrs
       end
+    end
+
+    it 'should not be invoked if sent_last_24_hours is less than specified email amount' do
+      unverified_account = create(:unverified_account)
+      AWS::SimpleEmailService.any_instance.stubs(:send_email).returns(MOCK::AWS::SimpleEmailService.response)
+      amazon_stat_settings = MOCK::AWS::SimpleEmailService.amazon_stat_settings
+      Reverification::Process.stubs(:sent_last_24_hrs).returns(999.0)
+      Reverification::Process.stubs(:amazon_stat_settings).returns(amazon_stat_settings)
+      Reverification::Process.expects(:check_statistics_of_last_24_hrs).never
+      Reverification::Process.send_email('dummy - first email content', unverified_account, 0)
     end
   end
 

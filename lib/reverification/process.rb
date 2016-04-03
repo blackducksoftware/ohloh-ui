@@ -2,27 +2,46 @@ module Reverification
   class Process
     extend Amazon
     class << self
+      def amazon_stat_settings
+        @amazon_stat_settings ||= {}
+      end
+
+      def set_amazon_stat_settings(bounce_rate, amount_of_email)
+        @amazon_stat_settings = {}
+        @amazon_stat_settings[:bounce_rate] = bounce_rate.to_f
+        @amazon_stat_settings[:amount_of_email] = amount_of_email.to_f
+      end
+
+      def sent_last_24_hrs
+        @sent_last_24_hrs ||= ses.quotas[:sent_last_24_hours].to_f
+      end
+
       def statistics_of_last_24_hrs
         ses.statistics.find_all { |s| s[:sent].between?(Time.now.utc - 24.hours, Time.now.utc) }
       end
 
       # rubocop:disable Metrics/AbcSize
+      # rubocop:disable Metrics/MethodLength
       def check_statistics_of_last_24_hrs
         stats = statistics_of_last_24_hrs
-        sent_last_24_hrs = ses.quotas[:sent_last_24_hours].to_f
+        sent_last_24_hrs
         no_of_bounces = stats.inject(0.0) { |a, e| a + e[:bounces] }
         no_of_complaints = stats.inject(0.0) { |a, e| a + e[:complaints] }
         bounce_rate = sent_last_24_hrs.zero? ? 0.0 : (no_of_bounces / sent_last_24_hrs) * 100
         complaint_rate = sent_last_24_hrs.zero? ? 0.0 : (no_of_complaints / sent_last_24_hrs) * 100
         handler_ns = Reverification::ExceptionHandlers
-        # This needs to be changed back to 5% after initial pilot
-        fail(handler_ns::BounceRateLimitError, 'Bounce Rate exceeded 5%') if bounce_rate >= 20.0
+        if bounce_rate >= amazon_stat_settings[:bounce_rate]
+          fail(handler_ns::BounceRateLimitError, 'Bounce Rate exceeded')
+        end
         fail(handler_ns::ComplaintRateLimitError, 'Complaint Rate exceeded 0.1%') if complaint_rate >= 0.1
       end
       # rubocop:enable Metrics/AbcSize
+      # rubocop:enable Metrics/MethodLength
 
       def send_email(template, account, phase)
-        check_statistics_of_last_24_hrs
+        if sent_last_24_hrs >= amazon_stat_settings[:amount_of_email]
+          check_statistics_of_last_24_hrs
+        end
         sleep(1)
         resp = ses.send_email(template)
         if account.reverification_tracker

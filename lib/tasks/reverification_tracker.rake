@@ -1,10 +1,10 @@
 namespace :reverification do
-  desc 'This task begins the initial reverification process'
-  task execute_process: :environment do
-    Reverification::Process.cleanup
-    Reverification::Mailer.run
-    Reverification::Process.start_polling_queues
-  end
+  # desc 'This task begins the initial reverification process'
+  # task execute_process: :environment do
+  #   Reverification::Process.cleanup
+  #   Reverification::Mailer.run
+  #   Reverification::Process.start_polling_queues
+  # end
 
   desc 'This task does the preparation works for pilot'
   task pilot_preparation: :environment do
