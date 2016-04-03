@@ -222,6 +222,12 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
       Account.any_instance.expects(:destroy).never
       ReverificationTracker.destroy_account(@account.email)
     end
+
+    it 'should convert the account as spam before delete it' do
+      Account.any_instance.stubs(:destroy).returns(nil)
+      ReverificationTracker.destroy_account(@account.email)
+      assert @account.reload.access.spam?
+    end
   end
 
   describe 'delete_expired_accounts' do

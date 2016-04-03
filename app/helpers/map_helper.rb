@@ -39,10 +39,12 @@ module MapHelper
 
   def map_js_initialization(id, zoom)
     javascript_tag <<-JSCRIPT
-      $(document).on('page:change', function(){
-        Map.load('#{id}', 25, 12, 2);
-        Map.moveTo(25, 12, #{zoom});
-      });
+      document.onreadystatechange = function () {
+        if (document.readyState == "complete") {
+          Map.load('#{id}', 25, 12, 2);
+          Map.moveTo(25, 12, #{zoom});
+        }
+      };
     JSCRIPT
   end
 
