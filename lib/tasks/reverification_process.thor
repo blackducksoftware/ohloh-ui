@@ -1,8 +1,7 @@
 class ReverificationTask < Thor
 
-  desc 'complete process [BOUNCE_RATE] [EMAIL]', 'Executes the entire reverification process
-        specifying what bounce statistic to stop process after a certain amount
-        of emails are sent'
+  desc 'complete process [BOUNCE_THRESHOLD] [NUM_EMAIL]', 'Executes the entire reverification process
+        specifying when to check statistics through the amount of emails and for what acceptable bounce percentage'
 
   def complete_process(bounce_rate, amount_of_email)
     require File.expand_path('config/environment.rb')
