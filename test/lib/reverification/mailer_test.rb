@@ -42,6 +42,8 @@ class Reverification::MailerTest < ActiveSupport::TestCase
 
   describe 'send_first_notification' do
     it 'should send notification to unverified accounts only' do
+      below_specified_settings = MOCK::AWS::SimpleEmailService.amazon_stat_settings
+      Reverification::Process.stubs(:amazon_stat_settings).returns(below_specified_settings)
       Account.expects(:reverification_not_initiated).returns([unverified_account_sucess])
       Reverification::Template.expects(:first_reverification_notice)
       unverified_account_sucess.reverification_tracker.must_be_nil
@@ -59,6 +61,8 @@ class Reverification::MailerTest < ActiveSupport::TestCase
       sent_at = Time.now.utc - Reverification::Mailer::NOTIFICATION1_DUE_DAYS.days
       @rev_tracker = create(:success_initial_rev_tracker, account: unverified_account_sucess, sent_at: sent_at)
       ReverificationTracker.expects(:expired_initial_phase_notifications).returns [@rev_tracker]
+      below_specified_settings = MOCK::AWS::SimpleEmailService.amazon_stat_settings
+      Reverification::Process.stubs(:amazon_stat_settings).returns(below_specified_settings)
     end
 
     it 'should send correct email template' do
@@ -94,6 +98,8 @@ class Reverification::MailerTest < ActiveSupport::TestCase
                             account: unverified_account_sucess,
                             sent_at: Time.now.utc - Reverification::Mailer::NOTIFICATION2_DUE_DAYS.days)
       ReverificationTracker.expects(:expired_second_phase_notifications).returns [@rev_tracker]
+      below_specified_settings = MOCK::AWS::SimpleEmailService.amazon_stat_settings
+      Reverification::Process.stubs(:amazon_stat_settings).returns(below_specified_settings)
     end
 
     it 'should send correct email template' do
@@ -129,6 +135,8 @@ class Reverification::MailerTest < ActiveSupport::TestCase
                             account: unverified_account_sucess,
                             sent_at: Time.now.utc - Reverification::Mailer::NOTIFICATION3_DUE_DAYS.days)
       ReverificationTracker.expects(:expired_third_phase_notifications).returns [@rev_tracker]
+      below_specified_settings = MOCK::AWS::SimpleEmailService.amazon_stat_settings
+      Reverification::Process.stubs(:amazon_stat_settings).returns(below_specified_settings)
     end
 
     it 'should send correct email template' do
@@ -165,6 +173,8 @@ class Reverification::MailerTest < ActiveSupport::TestCase
                               account: unverified_account_sucess,
                               attempts: 1,
                               sent_at: Time.now.utc - 1.day)
+        below_specified_settings = MOCK::AWS::SimpleEmailService.amazon_stat_settings
+        Reverification::Process.stubs(:amazon_stat_settings).returns(below_specified_settings)
       end
 
       it 'should send the same email content' do
@@ -203,6 +213,8 @@ class Reverification::MailerTest < ActiveSupport::TestCase
                               account: unverified_account_sucess,
                               attempts: 1,
                               sent_at: Time.now.utc - 1.day)
+        below_specified_settings = MOCK::AWS::SimpleEmailService.amazon_stat_settings
+        Reverification::Process.stubs(:amazon_stat_settings).returns(below_specified_settings)
       end
 
       it 'should send the same email content' do
@@ -241,6 +253,8 @@ class Reverification::MailerTest < ActiveSupport::TestCase
                               account: unverified_account_sucess,
                               attempts: 1,
                               sent_at: Time.now.utc - 1.day)
+        below_specified_settings = MOCK::AWS::SimpleEmailService.amazon_stat_settings
+        Reverification::Process.stubs(:amazon_stat_settings).returns(below_specified_settings)
       end
 
       it 'should send the same email content' do
@@ -279,6 +293,8 @@ class Reverification::MailerTest < ActiveSupport::TestCase
                               account: unverified_account_sucess,
                               attempts: 1,
                               sent_at: Time.now.utc - 1.day)
+        below_specified_settings = MOCK::AWS::SimpleEmailService.amazon_stat_settings
+        Reverification::Process.stubs(:amazon_stat_settings).returns(below_specified_settings)
       end
 
       it 'should send the same email content' do

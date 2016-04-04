@@ -1,55 +1,55 @@
 BEGIN;
 
 --
--- Create table `failed_accounts` from failed_id_list.csv file
+-- Create table `unknown_accounts` from complete_unknown_list.csv file
 --
 
-DROP TABLE IF EXISTS failed_accounts;
-CREATE TABLE failed_accounts(account_id int);
-\COPY failed_accounts(account_id) FROM '/home/postgres/failed_id_list.csv' CSV;
+DROP TABLE IF EXISTS unknown_accounts;
+CREATE TABLE unknown_accounts(account_id int);
+\COPY unknown_accounts(account_id) FROM '/home/postgres/unknown_id_list.csv' CSV;
 
 --
--- Filter `failed_accounts` table:
--- If accounts have any associated entries like account reports, events, posts, edits, kudos, etc. remove it from `failed_accounts` table.
+-- Filter `unknown_accounts` table:
+-- If accounts have any associated entries like account reports, events, posts, edits, kudos, etc. remove it from `unknown_accounts` table.
 --
 
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM account_reports  WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM actions WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM api_keys WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM authorizations WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM positions WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM duplicates WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM old_edits WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM edits WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT undone_by FROM old_edits WHERE undone_by IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT undone_by FROM edits WHERE undone_by IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM event_subscription WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT subscriber_id FROM event_subscription WHERE subscriber_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM follows WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT owner_id FROM follows WHERE owner_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM helpfuls WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT invitee_id FROM invites WHERE invitee_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM jobs WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM kudos WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT sender_id FROM kudos WHERE sender_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM manages WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT deleted_by FROM manages WHERE deleted_by IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM messages WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM posts WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM ratings WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT invitee_id FROM recommendations WHERE invitee_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT invitor_id FROM recommendations WHERE invitor_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM reviews WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM stacks WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM topics WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT replied_by FROM topics WHERE replied_by IN (SELECT account_id FROM failed_accounts));
-DELETE FROM failed_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM vitae WHERE account_id IN (SELECT account_id FROM failed_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM account_reports  WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM actions WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM api_keys WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM authorizations WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM positions WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM duplicates WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM old_edits WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM edits WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT undone_by FROM old_edits WHERE undone_by IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT undone_by FROM edits WHERE undone_by IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM event_subscription WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT subscriber_id FROM event_subscription WHERE subscriber_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM follows WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT owner_id FROM follows WHERE owner_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM helpfuls WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT invitee_id FROM invites WHERE invitee_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM jobs WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM kudos WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT sender_id FROM kudos WHERE sender_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM manages WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT deleted_by FROM manages WHERE deleted_by IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM messages WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM posts WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM ratings WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT invitee_id FROM recommendations WHERE invitee_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT invitor_id FROM recommendations WHERE invitor_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM reviews WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM stacks WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM topics WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT replied_by FROM topics WHERE replied_by IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM vitae WHERE account_id IN (SELECT account_id FROM unknown_accounts));
 
 --
--- Create a backup table that holds the vetted failed_accounts
+-- Create a backup table that holds the vetted unknown_accounts
 --
-CREATE TABLE IF NOT EXISTS guaranteed_spam_accounts(LIKE accounts);
-INSERT INTO guaranteed_spam_accounts (SELECT a.* FROM accounts a INNER JOIN failed_accounts fa ON a.id=fa.account_id LEFT JOIN guaranteed_spam_accounts sa ON fa.account_id=sa.id WHERE sa.id IS NULL);
+CREATE TABLE IF NOT EXISTS unknown_spam_accounts(LIKE accounts);
+INSERT INTO unknown_spam_accounts (SELECT a.* FROM accounts a INNER JOIN unknown_accounts ua ON a.id=ua.account_id LEFT JOIN unknown_spam_accounts sa ON ua.account_id=sa.id WHERE sa.id IS NULL);
 --
 --  Remove the foreign key constraints from the tables account_reports, edits, posts, kudos, etc.
 --
@@ -92,21 +92,21 @@ ALTER TABLE topics DROP CONSTRAINT topics_account_id_fkey;
 ALTER TABLE topics DROP CONSTRAINT topics_replied_by_fkey;
 ALTER TABLE vitae DROP CONSTRAINT vitae_account_id_fkey;
 
---
---  Delete the guaranteed spam accounts and its associated messages and people entries.
---
+----
+----  Delete the unknown spam accounts and its associated messages and people entries.
+----
 
-DELETE FROM accounts WHERE id IN (SELECT account_id FROM failed_accounts);
-DELETE FROM actions where claim_person_id IN (SELECT id FROM people WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM people WHERE account_id IN (SELECT account_id FROM failed_accounts);
-DELETE FROM message_account_tags where account_id IN (SELECT account_id FROM failed_accounts);
-DELETE FROM message_account_tags where message_id IN (SELECT id FROM messages WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM message_project_tags where message_id IN (SELECT id FROM messages WHERE account_id IN (SELECT account_id FROM failed_accounts));
-DELETE FROM messages WHERE account_id IN (SELECT account_id FROM failed_accounts);
+DELETE FROM accounts WHERE id IN (SELECT account_id FROM unknown_accounts);
+DELETE FROM actions where claim_person_id IN (SELECT id FROM people WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM people WHERE account_id IN (SELECT account_id FROM unknown_accounts);
+DELETE FROM message_account_tags where account_id IN (SELECT account_id FROM unknown_accounts);
+DELETE FROM message_account_tags where message_id IN (SELECT id FROM messages WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM message_project_tags where message_id IN (SELECT id FROM messages WHERE account_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM messages WHERE account_id IN (SELECT account_id FROM unknown_accounts);
 
---
---  Add again the foreign key constraints to the tables account_reports, edits, posts, kudos, etc.
---
+----
+----  Add again the foreign key constraints to the tables account_reports, edits, posts, kudos, etc.
+----
 
 ALTER TABLE account_reports ADD CONSTRAINT account_reports_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
 ALTER TABLE actions ADD CONSTRAINT actions_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
@@ -146,6 +146,6 @@ ALTER TABLE topics ADD CONSTRAINT topics_account_id_fkey FOREIGN KEY (account_id
 ALTER TABLE topics ADD CONSTRAINT topics_replied_by_fkey FOREIGN KEY (replied_by) REFERENCES accounts(id) ON DELETE CASCADE;
 ALTER TABLE vitae ADD CONSTRAINT vitae_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
 
-DROP TABLE IF EXISTS failed_accounts;
+DROP TABLE IF EXISTS unknown_accounts;
 
 COMMIT;
