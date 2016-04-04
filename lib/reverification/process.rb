@@ -13,7 +13,7 @@ module Reverification
       end
 
       def sent_last_24_hrs
-        @sent_last_24_hrs ||= ses.quotas[:sent_last_24_hours].to_f
+        ses.quotas[:sent_last_24_hours].to_f
       end
 
       def statistics_of_last_24_hrs
@@ -21,10 +21,8 @@ module Reverification
       end
 
       # rubocop:disable Metrics/AbcSize
-      # rubocop:disable Metrics/MethodLength
       def check_statistics_of_last_24_hrs
         stats = statistics_of_last_24_hrs
-        sent_last_24_hrs
         no_of_bounces = stats.inject(0.0) { |a, e| a + e[:bounces] }
         no_of_complaints = stats.inject(0.0) { |a, e| a + e[:complaints] }
         bounce_rate = sent_last_24_hrs.zero? ? 0.0 : (no_of_bounces / sent_last_24_hrs) * 100
@@ -36,7 +34,6 @@ module Reverification
         fail(handler_ns::ComplaintRateLimitError, 'Complaint Rate exceeded 0.1%') if complaint_rate >= 0.1
       end
       # rubocop:enable Metrics/AbcSize
-      # rubocop:enable Metrics/MethodLength
 
       def send_email(template, account, phase)
         if sent_last_24_hrs >= amazon_stat_settings[:amount_of_email]

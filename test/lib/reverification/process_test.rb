@@ -162,6 +162,20 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
         assert_equal Time.zone.now.to_date, unverified_account.reverification_tracker.sent_at.to_date
       end
     end
+
+    it 'should check bounce and complaint rate when
+      total mails sent in last 24 hours reaches the amount_of_email defined' do
+      AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(sent_last_24_hours: 1000)
+      Reverification::Process.expects(:check_statistics_of_last_24_hrs)
+      Reverification::Process.send_email('dummy email content', unverified_account, 0)
+    end
+
+    it 'should not check bounce and complaint rate when
+      total mails sent in last 24 hours below the amount_of_email defined' do
+      AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(sent_last_24_hours: 999)
+      Reverification::Process.expects(:check_statistics_of_last_24_hrs).never
+      Reverification::Process.send_email('dummy email content', unverified_account, 0)
+    end
   end
 
   describe 'cleanup' do
@@ -309,6 +323,13 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
       assert_equal 'pending', @rev_tracker.status
       assert_equal 'marked_for_spam', @rev_tracker.phase
       assert_equal @rev_tracker.sent_at.to_date, Time.now.utc.to_date
+    end
+  end
+
+  describe 'set_amazon_stat_settings' do
+    it 'should set bounce rate benchmark and amount of email' do
+      Reverification::Process.set_amazon_stat_settings(5.0, 1000.0)
+      assert_equal Reverification::Process.amazon_stat_settings, MOCK::AWS::SimpleEmailService.amazon_stat_settings
     end
   end
 end
