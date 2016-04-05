@@ -1,19 +1,30 @@
-App.Enlistment = init: ->
-  $('#repository_type').change(->
+class App.EnlistmentSelect
+  constructor: ->
+    @addCallbacks()
+
+  addCallbacks: ->
+    $('#repository_type').change(->
+      hideAllScmInfo()
+      showRelevantScmInfo()
+    ).change()
+
+    $('.enlistment .submit').click(showSpinnerAndSubmit)
+
+  showSpinnerAndSubmit = ->
+    $(this).attr('disabled', 'disabled')
+    $('.enlistment .spinner').show()
+
+  hideAllScmInfo = ->
     $('.enlistment .scm_info').hide()
     $('.enlistment .scm_info input').attr('disabled', 'disabled')
 
+  showRelevantScmInfo = ->
     repositoryType = $('#repository_type').val()
-    repositoryClass = repositoryType.match(/[A-Z][^A-Z]+/)[0].toLowerCase()
+    repositoryClass = repositoryType.match(/^.[^A-Z]+/)[0].toLowerCase()
     repositoryDiv = $(".enlistment .#{ repositoryClass }")
     repositoryDiv.show()
     repositoryDiv.find('input').removeAttr('disabled')
-  ).change()
 
-  $('.enlistment .submit').click ->
-    $(this).attr('disabled', 'disabled')
-    $('.enlistment .spinner').show()
-    $('.well.enlistment form').submit()
 
 $(document).on 'page:change', ->
-  App.Enlistment.init()
+  new App.EnlistmentSelect()
