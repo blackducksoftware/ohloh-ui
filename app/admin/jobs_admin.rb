@@ -14,6 +14,7 @@ ActiveAdmin.register Job do
   filter :project_vanity_url, as: :string, label: 'PROJECT URL NAME'
   filter :organization_vanity_url, as: :string, label: 'ORGANIZATION VANITY URL'
   filter :account_login, as: :string, label: 'Account Login'
+  filter :exception
 
   scope 'Uncategorized Failed Jobs', :uncategorized_failure_group, if: proc { params[:scope] }
 
