@@ -203,8 +203,9 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
 
   describe 'cleanup' do
     it 'should invoke cleanup methods' do
-      ReverificationTracker.expects(:remove_reverification_trackers_for_verifed_accounts)
+      ReverificationTracker.expects(:remove_reverification_trackers_for_verified_accounts)
       ReverificationTracker.expects(:delete_expired_accounts)
+      ReverificationTracker.expects(:remove_orphans)
       Reverification::Process.cleanup
     end
   end

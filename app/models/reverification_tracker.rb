@@ -50,14 +50,25 @@ class ReverificationTracker < ActiveRecord::Base
 
     def delete_expired_accounts
       expired_final_phase_notifications.each do |rev_tracker|
+        unless rev_tracker.account
+          rev_tracker.destroy
+          next
+        end
         rev_tracker.account.access.spam!
         rev_tracker.account.destroy
       end
     end
 
-    def remove_reverification_trackers_for_verifed_accounts
+    def remove_reverification_trackers_for_verified_accounts
       find_each do |rev_tracker|
+        next unless rev_tracker.account
         rev_tracker.destroy if rev_tracker.account.access.mobile_or_oauth_verified?
+      end
+    end
+
+    def remove_orphans
+      find_each do |rev_tracker|
+        rev_tracker.destroy unless rev_tracker.account
       end
     end
   end

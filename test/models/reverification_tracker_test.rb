@@ -241,16 +241,50 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
       assert_equal 2, ReverificationTracker.count
       assert_equal 3, DeletedAccount.count
     end
+
+    it 'should just delete the tracker if its account does not exist' do
+      rev_tracker = create(:final_warning_rev_tracker, :delivered, attempts: 3, sent_at: Time.now.utc - 15.days)
+      rev_tracker.update_attribute(:account_id, 1010)
+      Account::Access.any_instance.expects(:spam!).never
+      Account.any_instance.expects(:destroy).never
+      ReverificationTracker.any_instance.expects(:destroy)
+      ReverificationTracker.delete_expired_accounts
+    end
   end
 
-  describe 'remove_reverification_trackers_for_verifed_accounts' do
+  describe 'remove_reverification_trackers_for_verified_accounts' do
     it 'should destroy all reverification trackers if account verified' do
       verified = create(:reverification_tracker)
       unverified = create(:initial_rev_tracker)
       assert verified.account.access.mobile_or_oauth_verified?
       assert_not unverified.account.access.mobile_or_oauth_verified?
-      ReverificationTracker.remove_reverification_trackers_for_verifed_accounts
+      ReverificationTracker.remove_reverification_trackers_for_verified_accounts
       assert_equal 1, ReverificationTracker.count
+    end
+
+    it 'should skip to the next rev_tracker for deletion if its account does not exist.' do
+      rev_tracker = create(:reverification_tracker)
+      rev_tracker.update_attribute(:account_id, 1010)
+      assert_not rev_tracker.account
+      ReverificationTracker.any_instance.expects(:destroy).never
+      ReverificationTracker.remove_reverification_trackers_for_verified_accounts
+    end
+  end
+
+  describe '.remove_orphans' do
+    it 'should delete reverification tracker if its account does not exist' do
+      rev_tracker = create(:reverification_tracker)
+      rev_tracker.update_attribute(:account_id, 1010)
+      assert_not rev_tracker.account
+      ReverificationTracker.any_instance.expects(:destroy)
+      ReverificationTracker.remove_orphans
+    end
+
+    it 'should not delete reverification tracker if its account exist' do
+      rev_tracker = create(:reverification_tracker)
+      assert rev_tracker.account
+      ReverificationTracker.any_instance.expects(:destroy).never
+      ReverificationTracker.remove_orphans
     end
   end
 end
