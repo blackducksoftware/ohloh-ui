@@ -243,14 +243,21 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'remove_reverification_trackers_for_verifed_accounts' do
+  describe 'remove_reverification_trackers_for_verified_accounts' do
     it 'should destroy all reverification trackers if account verified' do
       verified = create(:reverification_tracker)
       unverified = create(:initial_rev_tracker)
       assert verified.account.access.mobile_or_oauth_verified?
       assert_not unverified.account.access.mobile_or_oauth_verified?
-      ReverificationTracker.remove_reverification_trackers_for_verifed_accounts
+      ReverificationTracker.remove_reverification_trackers_for_verified_accounts
       assert_equal 1, ReverificationTracker.count
+    end
+
+    it 'should skip to the next rev_tracker for deletion if its account does not exist.' do
+      rev_track_with_nil_account = create(:reverification_with_nil_account)
+      rrev_tracker.update_attribute(:account_id, 100000)
+      ReverificationTracker.any_instance.expects(:destroy).never
+      ReverificationTracker.remove_reverification_trackers_for_verified_accounts
     end
   end
 end

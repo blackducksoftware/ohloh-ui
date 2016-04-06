@@ -17,7 +17,7 @@ namespace :reverification do
 
     desc 'Removes the reverification trackers of verified accounts'
     task verified: :environment do
-      ReverificationTracker.remove_reverification_trackers_for_verifed_accounts
+      ReverificationTracker.remove_reverification_trackers_for_verified_accounts
     end
 
     desc 'Removes unverified accounts'

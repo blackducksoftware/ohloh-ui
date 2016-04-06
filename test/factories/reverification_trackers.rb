@@ -11,6 +11,10 @@ FactoryGirl.define do
     updated_at DateTime.now.utc
   end
 
+  factory :reverification_with_nil_account, parent: :reverification_tracker do
+    association :account, strategy: :null
+  end
+
   factory :initial_rev_tracker, parent: :reverification_tracker do
     association :account, :no_verification
   end
