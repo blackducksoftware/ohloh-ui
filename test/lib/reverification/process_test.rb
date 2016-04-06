@@ -39,6 +39,14 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
       ReverificationTracker.any_instance.expects(:delivered?).never
       Reverification::Process.poll_success_queue
     end
+
+    it 'should skip to polling next feedback notification if email address is not matching any account' do
+      rev_tracker = create(:success_initial_rev_tracker, status: 0)
+      rev_tracker.account.update_attribute(:email, 'test@test.com')
+      ReverificationTracker.any_instance.expects(:pending?).never
+      ReverificationTracker.any_instance.expects(:delivered!).never
+      Reverification::Process.poll_success_queue
+    end
   end
 
   describe 'poll bounce queue' do
@@ -84,6 +92,15 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
         bounce_undetermined_account.reload.reverification_tracker.must_be :soft_bounced?
       end
     end
+
+    it 'should skip to polling next feedback notification if email address is not matching any account' do
+      mock_queue.stubs(:poll).yields(TransientBounceMessage.new)
+      Reverification::Process.stubs(:bounce_queue).returns(mock_queue)
+      soft_bounce_account.update_attribute(:email, 'test@test.com')
+      ReverificationTracker.expects(:destroy_account).never
+      ReverificationTracker.any_instance.expects(:soft_bounced!).never
+      Reverification::Process.poll_bounce_queue
+    end
   end
 
   describe 'poll complaints queue' do
@@ -100,6 +117,12 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
       complained_account.reverification_tracker.wont_be :complained?
       Reverification::Process.poll_complaints_queue
       complained_account.reload.reverification_tracker.must_be :complained?
+    end
+
+    it 'should skip to polling next feedback notification if email address is not matching any account' do
+      complained_account.update_attribute(:email, 'test@test.com')
+      ReverificationTracker.any_instance.expects(:complained!).never
+      Reverification::Process.poll_complaints_queue
     end
   end
 
