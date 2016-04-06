@@ -19,6 +19,28 @@ class RepositoryTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'create_enlistment_for_project' do
+    let(:project) { create(:project) }
+    let(:repository) { create(:repository) }
+
+    it 'must create an enlistment' do
+      r = repository.create_enlistment_for_project(create(:account), project, 'stop ignoring me!')
+      r.project_id.must_equal project.id
+      r.repository_id.must_equal repository.id
+      r.ignore.must_equal 'stop ignoring me!'
+    end
+
+    it 'must undelete old enlistment' do
+      r1 = repository.create_enlistment_for_project(create(:account), project)
+      r1.destroy
+      r1.reload
+      r1.deleted.must_equal true
+      r2 = repository.create_enlistment_for_project(create(:account), project)
+      r2.deleted.must_equal false
+      r1.id.must_equal r2.id
+    end
+  end
+
   describe 'failed?' do
     before do
       @repository = create(:repository)

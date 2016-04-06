@@ -46,6 +46,17 @@ class Repository < ActiveRecord::Base
     @bypass_url_validation = modified_value
   end
 
+  def create_enlistment_for_project(editor_account, project, ignore = nil)
+    enlistment = Enlistment.where(project_id: project.id, repository_id: id).first_or_initialize
+    transaction do
+      enlistment.editor_account = editor_account
+      enlistment.assign_attributes(ignore: ignore)
+      enlistment.save
+      CreateEdit.find_by(target: enlistment).redo!(editor_account) if enlistment.deleted
+    end
+    enlistment.reload
+  end
+
   class << self
     def find_existing(repository)
       order(:id).find_by_url(repository.url)

@@ -95,7 +95,7 @@ class EnlistmentsController < SettingsController
   end
 
   def create_enlistment
-    Enlistment.enlist_project_in_repository(current_user, @project, @repository) unless @project_has_repo_url
+    @repository.create_enlistment_for_project(current_user, @project) unless @project_has_repo_url
   end
 
   def set_flash_message
