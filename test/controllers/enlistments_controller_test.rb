@@ -93,6 +93,57 @@ describe 'EnlistmentsControllerTest' do
 
     let(:repository) { @enlistment.repository }
 
+    it 'must notify errors in github username' do
+      Repository.any_instance.stubs(:bypass_url_validation).returns(true)
+
+      stub_github_user_repositories_call do
+        Repository.count.must_equal 1
+
+        username = 'github.com/stan'
+        post :create, project_id: @project_id, repository: GithubUser.new(url: username).attributes
+
+        assigns(:repository).errors.messages[:url].first.must_equal I18n.t('invalid_github_username')
+        must_render_template :new
+        Repository.count.must_equal 1
+      end
+    end
+
+    it 'must create multiple enlistments using github username' do
+      Repository.any_instance.stubs(:bypass_url_validation).returns(true)
+
+      stub_github_user_repositories_call do
+        project = Project.from_param(@project_id).take
+        Repository.count.must_equal 1
+        project.enlistments.count.must_equal 1
+
+        username = 'stan'
+        post :create, project_id: @project_id, repository: GithubUser.new(url: username).attributes
+        must_respond_with :redirect
+        must_redirect_to action: :index
+
+        flash[:notice].must_equal I18n.t('enlistments.create.github_repos_added', username: username)
+        Repository.count.must_equal 5
+        project.enlistments.count.must_equal 5
+      end
+    end
+
+    it 'must create enlistment for any existing repository' do
+      Repository.any_instance.stubs(:bypass_url_validation).returns(true)
+      username = 'stan'
+      GitRepository.create!(url: "git://github.com/#{username}/sablon.git", branch_name: :master)
+
+      stub_github_user_repositories_call do
+        project = Project.from_param(@project_id).take
+        Repository.count.must_equal 2
+        project.enlistments.count.must_equal 1
+
+        post :create, project_id: @project_id, repository: GithubUser.new(url: username).attributes
+
+        Repository.count.must_equal 5
+        project.enlistments.count.must_equal 5
+      end
+    end
+
     it 'should create repository and enlistments' do
       Repository.count.must_equal 1
       Enlistment.count.must_equal 2

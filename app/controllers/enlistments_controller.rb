@@ -74,7 +74,7 @@ class EnlistmentsController < SettingsController
   end
 
   def safe_constantize(repo)
-    repo.constantize if %w(svnrepository svnsyncrepository repository hgrepository
+    repo.constantize if %w(svnrepository svnsyncrepository repository hgrepository githubuser
                            gitrepository cvsrepository bzrrepository).include?(repo.downcase)
   end
 
@@ -99,6 +99,8 @@ class EnlistmentsController < SettingsController
   end
 
   def set_flash_message
+    return set_github_repos_message if @repository.is_a?(GithubUser)
+
     if @project_has_repo_url
       flash[:notice] = t('.notice', url: @repository.url)
     else
@@ -106,5 +108,9 @@ class EnlistmentsController < SettingsController
                                       branch_name: (CGI.escapeHTML @repository.branch_name.to_s),
                                       module_name: (CGI.escapeHTML @repository.module_name.to_s))
     end
+  end
+
+  def set_github_repos_message
+    flash[:notice] = t('.github_repos_added', username: @repository.url)
   end
 end

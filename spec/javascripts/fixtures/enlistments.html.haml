@@ -1,27 +1,35 @@
 %select#repository_type{ name: 'repository[type]' }
   %option{ value: 'SvnSyncRepository' } Subversion
-  %option{ value: 'CVSRepository' } CVS
+  %option{ value: 'CvsRepository' } CVS
   %option{ value: 'GitRepository' } Git
   %option{ value: 'HgRepository' } Mercurial
   %option{ value: 'BzrRepository' } Bazaar
+  %option{ value: 'GithubUser' } GithubRepositories
 
 .enlistment
-  .svn_cvs
+  .default-url-tags
     %input{ type: 'text', name: 'url' }
-  .cvs{ style: 'display: none;' }
+
+  .svn.cvs.scm_info
+    %p Common Svn and Cvs content
+    %input{ type: 'text', name: 'url' }
+  .cvs.scm_info{ style: 'display: none;' }
     %p CVS Description
     %input{ type: 'text', name: 'url' }
-  .svn
+  .svn.scm_info
     %p Svn Description
     %input{ type: 'text', name: 'url' }
-  .git{ style: 'display: none;' }
+  .git.scm_info{ style: 'display: none;' }
     %p Git Description
     %input{ type: 'text', name: 'url' }
-  .hg{ style: 'display: none;' }
+  .hg.scm_info{ style: 'display: none;' }
     %p Hg Description
     %input{ type: 'text', name: 'url' }
-  .bzr{ style: 'display: none;' }
+  .bzr.scm_info{ style: 'display: none;' }
     %p Bzr Description
+    %input{ type: 'text', name: 'url' }
+  .github.scm_info{ style: 'display: none;' }
+    %p Github User Description
     %input{ type: 'text', name: 'url' }
 
   %p.spinner{ style: 'display: none;' } Spinner Image

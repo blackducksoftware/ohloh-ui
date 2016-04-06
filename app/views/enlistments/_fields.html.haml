@@ -6,17 +6,26 @@
         = options_for_select_type(@repository)
       - error_tag @repository, :type
   .control-group
-    %label.control-label.required= t('.enter_url')
     .controls
-      = f.text_field :url, class: 'col-md-7', value: params[:repository].try(:[], :url), name: 'repository[url]'
-      - error_tag @repository, :url
+      .default-url-tags
+        %label.control-label.required= t('.enter_url')
+        = f.text_field :url, class: 'col-md-7', value: params[:repository].try(:[], :url), name: 'repository[url]'
+        - error_tag @repository, :url
+
+      .github.scm_info{ style: 'display: none;' }
+        %label.control-label.required= t('.enter_github_username')
+        .input-group
+          %span.input-group-addon https://github.com/
+          = f.text_field :url, name: 'repository[url]', class: 'form-control'
+        - error_tag @repository, :url
+
       .clearfix
       .cvs.scm_info{ style: 'display: none;' }
         %p= t('.example')
         %ul.margin_left_20
           %li= t('.description4')
           %li= t('.description5')
-      .svn.scm_info
+      .svn.scm_info{ style: 'display: none;' }
         %p= t('.example')
         %ul.margin_left_20
           %li= t('.description6')
@@ -38,7 +47,12 @@
         %ul.margin_left_20
           %li= t('.description19')
           %li= t('.description20')
-  .svn.cvs.scm_info
+      .github.scm_info{ style: 'display: none;' }
+        %br
+        %p= t('.example')
+        %ul.margin_left_20
+          %li= t('.github_username_example')
+  .svn.cvs.scm_info{ style: 'display: none;' }
     .control-group.warning
       %label.control-label= t('.if_required')
       .controls
@@ -72,6 +86,10 @@
           = t('.enter_git_name')
           %br
           %strong= t('.if_not_sure')
+
+  .github.scm_info{ style: 'display: none;' }
+    %p.help-block
+      = t('.github_username_info')
 
   - if Rails.env.development?
     .control-group

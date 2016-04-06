@@ -8,8 +8,8 @@ module EnlistmentsHelper
       'CVS'              => 'CvsRepository',
       'Git'              => 'GitRepository',
       'Mercurial'        => 'HgRepository',
-      'Bazaar'           => 'BzrRepository'
-    }
+      'Bazaar'           => 'BzrRepository',
+      'Github Repositories' => 'GithubUser' }
 
     options_for_select(options_hash, current_selection)
   end
