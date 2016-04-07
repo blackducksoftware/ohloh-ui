@@ -688,11 +688,15 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   describe 'unverified' do
-    it 'should return all unverified accounts' do
+    it 'should return all unverified accounts that are not spammers' do
       account = create(:account)
       unverified_account = create(:unverified_account)
+      spammer_account = create(:unverified_account, :spammer)
+      assert_equal Account.unverified[0], unverified_account
       assert_not_equal Account.unverified[0].id, account.id
       assert_not_equal Account.unverified[0].email, account.email
+      assert_not_equal Account.unverified[0].id, spammer_account.id
+      assert_not_equal Account.unverified[0].email, spammer_account.email
       assert_equal Account.unverified[0].id, unverified_account.id
       assert_equal Account.unverified[0].email, unverified_account.email
     end
