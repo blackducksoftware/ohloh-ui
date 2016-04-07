@@ -13,7 +13,7 @@ namespace :reverification do
 
   namespace :cleanup do
     desc 'Removes the reverification trackers of verified accounts and removes unverified accounts'
-    task all: [:verified, :unverified]
+    task all: [:verified, :unverified, :orphan_trackers]
 
     desc 'Removes the reverification trackers of verified accounts'
     task verified: :environment do
@@ -23,6 +23,11 @@ namespace :reverification do
     desc 'Removes unverified accounts'
     task unverified: :environment do
       ReverificationTracker.delete_expired_accounts
+    end
+
+    desc 'Removes orphan reverification trackers'
+    task orphan_trackers: :environment do
+      ReverificationTracker.remove_orphans
     end
   end
 
