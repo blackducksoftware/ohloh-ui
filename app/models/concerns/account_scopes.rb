@@ -31,7 +31,7 @@ module AccountScopes
     scope :active, -> { where(level: 0) }
     scope :non_anonymous, -> { where.not(login: ANONYMOUS_ACCOUNTS, email: ANONYMOUS_ACCOUNTS_EMAILS) }
     scope :unverified, lambda { |limit = nil|
-      select('accounts.id, accounts.email').joins('LEFT OUTER JOIN verifications v ON v.account_id = accounts.id')
+      select('accounts.id, accounts.email').where(level: 0).joins('LEFT OUTER JOIN verifications v ON v.account_id = accounts.id')
         .where('v.account_id IS NULL').limit(limit)
     }
     scope :reverification_not_initiated, lambda { |limit = nil|
