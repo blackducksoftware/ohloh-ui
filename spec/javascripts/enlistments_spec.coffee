@@ -10,7 +10,8 @@ describe 'Enlistments', ->
     @svnUrl = $('.svn input')
     @svncvsUrl = $('.svn_cvs input')
     @gitUrl = $('.git input')
-    App.Enlistment.init()
+    @githubUrl = $('.github input')
+    new App.EnlistmentSelect()
 
   describe 'submit', ->
     it 'shows spinner on submit', ->
@@ -51,7 +52,7 @@ describe 'Enlistments', ->
       expect(@svncvsUrl.is(':disabled')).toBeTruthy
 
     it 'should show cvs repository details', ->
-      $('#repository_type').val('CVSRepository')
+      $('#repository_type').val('CvsRepository')
       $('#repository_type').trigger('change')
       isDescription = $('.enlistment .cvs').is(':visible')
       expect(isDescription).toBe(true)
@@ -67,3 +68,16 @@ describe 'Enlistments', ->
       expect(@svnUrl.is(':disabled')).toBeFalsy
       expect(@cvsUrl.is(':disabled')).toBeTruthy
       expect(@svncvsUrl.is(':disabled')).toBeFalsy
+
+    it 'should show github user details', ->
+      $('#repository_type').val('GithubUser')
+      $('#repository_type').trigger('change')
+      expect($('.enlistment .github').is(':visible')).toBeTruthy()
+      expect(@githubUrl.is(':disabled')).toBeFalsy()
+      expect(@svnUrl.is(':disabled')).toBeTruthy()
+
+    it 'should hide the default url field for github repositories', ->
+      $('#repository_type').val('GithubUser')
+      $('#repository_type').trigger('change')
+      expect($('.enlistment .github').is(':visible')).toBeTruthy()
+      expect($('.default-url-tags').is(':visible')).toBeFalsy()

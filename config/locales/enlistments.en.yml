@@ -36,11 +36,14 @@ en:
       description18: 'https://mywebsite.org/myproject/hg'
       description19: 'bzr://www.mywebsite.org/myproject.bzr'
       description20: 'https://code.launchpad.net/myproject/trunk'
+      github_username_example: 'https://github.com/blackducksoftware'
       cvs_module_name: 'Enter the CVS module name'
       enter_cvs: 'Enter the name of a single CVS module.'
       create_seperate_enlistment: 'Create separate enlistments for each module in the project.'
       enter_git: 'Enter an optional Git branch name'
       enter_git_name: 'Enter the name of a single Git branch.'
+      enter_github_username: Enter the GitHub username
+      github_username_info: "This format takes a Github username and adds all of its public repositories to this project. Don't worry about duplicates: we won't add the same repository to the project twice!"
       if_not_sure: 'If not sure, just leave it blank. Open Hub will track the master branch.'
       bypass_url_validation: 'DEBUG ONLY: Do not validate this repository'
       check_server_connection: 'Checking server connection...'
@@ -54,6 +57,7 @@ en:
     update:
       success: 'Changes saved. The list of ignored files will be updated during the next Open Hub analysis.'
     create:
+      github_repos_added: 'Successfully imported all repositories from github.com/%{username}'
       notice:  "A repository with the url: %{url} already exists for this project."
       success:  "Successfully added %{url} %{branch_name} %{module_name}"
     enlistment:

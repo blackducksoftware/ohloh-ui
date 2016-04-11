@@ -1,43 +1,33 @@
-App.Enlistment = init: ->
-  $('#repository_type').change(->
-    select = $('#repository_type')[0]
-    type = select.options[select.selectedIndex].text.substring(0, 3)
-    $('.enlistment .svn_cvs').hide()
-    $('.enlistment .cvs').hide()
-    $('.enlistment .svn').hide()
-    $('.enlistment .git').hide()
-    $('.enlistment .hg').hide()
-    $('.enlistment .bzr').hide()
-    $('.svn_cvs input').attr('disabled', 'disabled')
-    $('.cvs input').attr('disabled', 'disabled')
-    $('.git input').attr('disabled', 'disabled')
-    $('.hg input').attr('disabled', 'disabled')
-    $('.bzr input').attr('disabled', 'disabled')
-    switch type
-      when 'CVS'
-        $('.enlistment .svn_cvs').show()
-        $('.enlistment .cvs').show()
-        $('.svn_cvs input').removeAttr('disabled')
-        $('.cvs input').removeAttr('disabled')
-      when 'Sub'
-        $('.enlistment .svn_cvs').show()
-        $('.enlistment .svn').show()
-        $('.svn_cvs input').removeAttr('disabled')
-      when 'Git'
-        $('.enlistment .git').show()
-        $('.git input').removeAttr('disabled')
-      when 'Mer'
-        $('.enlistment .hg').show()
-        $('.hg input').removeAttr('disabled')
-      when 'Baz'
-        $('.enlistment .bzr').show()
-        $('.bzr input').removeAttr('disabled')
-  ).change()
+class App.EnlistmentSelect
+  constructor: ->
+    addCallbacks()
 
-  $('.enlistment .submit').click ->
+  addCallbacks = ->
+    $('#repository_type').change(->
+      hideAllScmInfo()
+      if githubUserSelected() then $('.default-url-tags').hide() else $('.default-url-tags').show()
+      showRelevantScmInfo()
+    ).change()
+
+    $('.enlistment .submit').click(showSpinnerAndSubmit)
+
+  showSpinnerAndSubmit = ->
     $(this).attr('disabled', 'disabled')
     $('.enlistment .spinner').show()
-    $('.well.enlistment form').submit()
+
+  hideAllScmInfo = ->
+    $('.enlistment .scm_info').hide()
+    $('.enlistment .scm_info input').attr('disabled', 'disabled')
+
+  showRelevantScmInfo = ->
+    repositoryType = $('#repository_type').val()
+    repositoryClass = repositoryType.match(/^.[^A-Z]+/)[0].toLowerCase()
+    $repositoryDiv = $(".enlistment .#{ repositoryClass }")
+    $repositoryDiv.show()
+    $repositoryDiv.find('input').removeAttr('disabled')
+
+  githubUserSelected = ->
+    $('#repository_type').val() == 'GithubUser'
 
 $(document).on 'page:change', ->
-  App.Enlistment.init()
+  new App.EnlistmentSelect()

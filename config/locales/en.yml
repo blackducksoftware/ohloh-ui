@@ -69,6 +69,7 @@ en:
   logo: Logo
   ago: ago
   closed: Closed
+  invalid_github_username: Please enter a valid Github username
 
   layouts:
     application:
