@@ -1,11 +1,6 @@
 # Usage:
 # rake selenium:prepare_homepage_data
 
-require "#{Rails.root}/app/helpers/home_helper"
-
-include ActionView::Helpers::TextHelper
-include HomeHelper
-
 namespace :selenium do
   file :write_data do
     File.open('tmp/homepage_data.yml', 'w+') do |file|
@@ -18,17 +13,16 @@ namespace :selenium do
                                :most_active_projects, :most_active_contributors, :write_data]
 
   task setup: :environment do
+    include ActionView::Helpers::TextHelper
+    include HomeHelper
     @data = {}
     @home_decorator = HomeDecorator.new
   end
 
   task billboard: :environment do
-    @data['billboard'] = [
-      number_with_delimiter(@home_decorator.lines_count.to_i),
-      number_with_delimiter(@home_decorator.active_project_count),
-      number_with_delimiter(@home_decorator.person_count),
-      number_with_delimiter(@home_decorator.repository_count)
-    ]
+    @data['billboard'] = %w(lines_count active_project_count person_count repository_count).map do |attr|
+      number_with_delimiter(@home_decorator.send(attr).to_i)
+    end
   end
 
   task most_popular_projects: :environment do
