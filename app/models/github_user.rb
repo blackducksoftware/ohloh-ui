@@ -1,12 +1,13 @@
 class GithubUser
+  URL_FORMAT = /\A[^\/]+\Z/
   include ActiveModel::Model
 
   attr_accessor :url, :bypass_url_validation
   attr_reader :repositories, :module_name, :password
   alias_method :username, :url
 
-  validates :url, format: { with: /\A[^\/]+\Z/, message: I18n.t('invalid_github_username') }
-  validate :username_must_exist
+  validates :url, format: { with: URL_FORMAT, message: I18n.t('invalid_github_username') }
+  validate :username_must_exist, if: -> { url.match(URL_FORMAT) }
 
   def attributes
     { url: username, type: self.class.name }
