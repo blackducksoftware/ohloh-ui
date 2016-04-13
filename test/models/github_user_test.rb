@@ -22,6 +22,13 @@ class GithubUserTest < ActiveSupport::TestCase
       github_user.valid?
       github_user.errors.messages[:url].first.must_equal I18n.t('invalid_github_username')
     end
+
+    it 'must avoid duplicate error messages for url' do
+      username = 'github.com/stan'
+      github_user = GithubUser.new(url: username)
+      github_user.wont_be :valid?
+      github_user.errors.messages[:url].count.must_equal 1
+    end
   end
 
   describe 'save!' do
