@@ -37,6 +37,7 @@ gem 'will_paginate-bootstrap'
 gem 'sprockets-rails', '~> 2.3.3'
 gem 'feedjira'
 gem 'whenever', require: false
+gem 'posix-spawn'
 
 group :development do
   gem 'capistrano'
