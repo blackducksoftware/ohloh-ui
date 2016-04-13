@@ -703,10 +703,11 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   describe 'reverification_not_initiated' do
-    it 'should return all unverified accounts, for them reverification process is not started'do
+    it 'should return all unverified accounts without positions, for them reverification process is not started' do
       create(:unverified_account, :success)
       create(:unverified_account, :complaint)
       create(:account)
+      create(:position)
       assert_equal 2, Account.reverification_not_initiated.size
       assert_not_equal Account.count, Account.reverification_not_initiated.size
     end
