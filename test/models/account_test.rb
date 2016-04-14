@@ -723,15 +723,4 @@ class AccountTest < ActiveSupport::TestCase
       end
     end
   end
-
-  describe 'create_bulk_manual_verifications' do
-    it 'should create bulk manual verifications for accounts with positions and no verifications' do
-      create_list(:position_with_unverified_account, 5)
-      create(:position)
-      assert_equal 0, ManualVerification.count
-      assert_difference('ManualVerification.count', 5) do
-        Account.create_bulk_manual_verifications
-      end
-    end
-  end
 end
