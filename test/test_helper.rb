@@ -142,4 +142,25 @@ class ActiveSupport::TestCase
 
     digits_id
   end
+
+  def stub_github_user_repositories_call
+    # rubocop:disable NestedMethodDefinition
+    class << Open3
+      def popen3_with_change(_command, github_url)
+        return if github_url.match(/page=2/)
+        file_path = File.expand_path('../data/github_user_repos.json', __FILE__)
+        [nil, File.read(file_path)]
+      end
+
+      alias_method :popen3_without_change, :popen3
+      alias_method :popen3, :popen3_with_change
+    end
+
+    yield
+
+    class << Open3
+      alias_method :popen3, :popen3_without_change
+    end
+    # rubocop:enable NestedMethodDefinition
+  end
 end

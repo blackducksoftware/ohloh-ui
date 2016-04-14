@@ -6,39 +6,53 @@
         = options_for_select_type(@repository)
       - error_tag @repository, :type
   .control-group
-    %label.control-label.required= t('.enter_url')
     .controls
-      = f.text_field :url, class: 'col-md-7', value: params[:repository].try(:[], :url), name: 'repository[url]'
-      - error_tag @repository, :url
+      .default-url-tags
+        %label.control-label.required= t('.enter_url')
+        = f.text_field :url, class: 'col-md-7', value: params[:repository].try(:[], :url), name: 'repository[url]'
+        - error_tag @repository, :url
+
+      .github.scm_info{ style: 'display: none;' }
+        %label.control-label.required= t('.enter_github_username')
+        .input-group
+          %span.input-group-addon https://github.com/
+          = f.text_field :url, name: 'repository[url]', class: 'form-control'
+        - error_tag @repository, :url
+
       .clearfix
-      .cvs{ style: 'display: none;' }
+      .cvs.scm_info{ style: 'display: none;' }
         %p= t('.example')
         %ul.margin_left_20
           %li= t('.description4')
           %li= t('.description5')
-      .svn
+      .svn.scm_info{ style: 'display: none;' }
         %p= t('.example')
         %ul.margin_left_20
           %li= t('.description6')
           %li= t('.description7')
         %p.help-block
           = t('.description8_html')
-      .git{ style: 'display: none;' }
+      .git.scm_info{ style: 'display: none;' }
         %p= t('.example')
         %ul.margin_left_20
           %li= t('.description15')
           %li= t('.description16')
-      .hg{ style: 'display: none;' }
+      .hg.scm_info{ style: 'display: none;' }
         %p= t('.example')
         %ul.margin_left_20
           %li= t('.description17')
           %li= t('.description18')
-      .bzr{ style: 'display: none;' }
+      .bzr.scm_info{ style: 'display: none;' }
         %p= t('.example')
         %ul.margin_left_20
           %li= t('.description19')
           %li= t('.description20')
-  .svn_cvs
+      .github.scm_info{ style: 'display: none;' }
+        %br
+        %p= t('.example')
+        %ul.margin_left_20
+          %li= t('.github_username_example')
+  .svn.cvs.scm_info{ style: 'display: none;' }
     .control-group.warning
       %label.control-label= t('.if_required')
       .controls
@@ -51,7 +65,7 @@
           = t('.description23')
         .clearfix &nbsp;
 
-  .cvs{ style: 'display: none;' }
+  .cvs.scm_info{ style: 'display: none;' }
     .control-group
       %label.cotrol-label.required= t('.cvs_module_name')
       .controls
@@ -62,7 +76,7 @@
           %br
           = t('.create_seperate_enlistment')
 
-  .git{ style: 'display: none;' }
+  .git.scm_info{ style: 'display: none;' }
     .control-group
       %label.control-label= t('.enter_git')
       .controls
@@ -72,6 +86,10 @@
           = t('.enter_git_name')
           %br
           %strong= t('.if_not_sure')
+
+  .github.scm_info{ style: 'display: none;' }
+    %p.help-block
+      = t('.github_username_info')
 
   - if Rails.env.development?
     .control-group

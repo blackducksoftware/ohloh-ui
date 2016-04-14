@@ -38,17 +38,4 @@ class Enlistment < ActiveRecord::Base
     end
     project.ensure_job
   end
-
-  class << self
-    def enlist_project_in_repository(editor_account, project, repository, ignore = nil)
-      enlistment = Enlistment.where(project_id: project.id, repository_id: repository.id).first_or_initialize
-      transaction do
-        enlistment.editor_account = editor_account
-        enlistment.assign_attributes(ignore: ignore)
-        enlistment.save
-        CreateEdit.find_by(target: enlistment).redo!(editor_account) if enlistment.deleted
-      end
-      enlistment.reload
-    end
-  end
 end

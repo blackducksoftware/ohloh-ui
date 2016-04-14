@@ -15,6 +15,5 @@ public/system/
 *.swp
 tags
 .env.development
-.env.test
 .env
 .byebug_history

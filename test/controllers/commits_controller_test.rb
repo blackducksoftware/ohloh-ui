@@ -2,8 +2,11 @@ require 'test_helper'
 
 describe 'CommitsController' do
   before do
-    @commit1 = create(:commit, position: 0, comment: 'first commit')
-    @commit2 = create(:commit, position: 1, comment: 'second commit', code_set_id: @commit1.code_set_id)
+    @commit1 = create(:commit, position: 0, comment: 'first commit', time: Time.current - 1.day)
+    @commit2 = create(:commit, position: 1,
+                               comment: 'second commit',
+                               time: Time.current - 2.days,
+                               code_set_id: @commit1.code_set_id)
     @project = create(:project)
     @name1 = create(:name)
     @name2 = create(:name)
@@ -87,7 +90,7 @@ describe 'CommitsController' do
     end
 
     it 'must render commits within 30 days' do
-      Analysis.any_instance.stubs(:logged_at).returns(Time.current)
+      Analysis.any_instance.stubs(:logged_at).returns(Time.current.beginning_of_day)
       commit_ids = create_commits_and_named_commits
       named_commits = NamedCommit.where(commit_id: commit_ids[0..1])
 
@@ -171,14 +174,21 @@ describe 'CommitsController' do
 
   def create_commits_and_named_commits
     commits = []
-    commits << create(:commit, code_set_id: @commit1.code_set_id, position: 1, name: @commit1.name,
-                               comment: 'second commit', time: Time.current - 1.day).id
-    commits << create(:commit, code_set_id: @commit1.code_set_id, position: 2, name: @commit1.name,
-                               comment: 'third commit', time: Time.current - 1.day).id
-    commits << create(:commit, code_set_id: @commit1.code_set_id, position: 1, name: @commit1.name,
-                               comment: 'fourth commit', time: Time.current - 2.months).id
-    commits << create(:commit, code_set_id: @commit1.code_set_id, position: 2, name: @commit1.name,
-                               comment: 'fifth commit', time: Time.current - 2.years).id
+    commits << create(:commit, code_set_id: @commit1.code_set_id, position: 2, name: create(:name),
+                               comment: 'third commit', time: Time.current - 5.days).id
+    commits << create(:commit, code_set_id: @commit1.code_set_id, position: 3, name: create(:name),
+                               comment: 'fourth commit', time: Time.current - 7.days).id
+    commits << create(:commit, code_set_id: @commit1.code_set_id, position: 4, name: create(:name),
+                               comment: 'fifth commit', time: Time.current - 2.months).id
+    commits << create(:commit, code_set_id: @commit1.code_set_id, position: 5, name: create(:name),
+                               comment: 'sixth commit', time: Time.current - 2.years).id
+    ass = AnalysisSlocSet.where(sloc_set_id: SlocSet.where(code_set_id: @commit1.code_set_id),
+                                analysis_id: @project.best_analysis_id).first
+    ass.update!(as_of: 6)
+    commits.each do |commit_id|
+      commit = Commit.find(commit_id)
+      create(:analysis_alias, commit_name: commit.name, analysis_id: ass.analysis_id, preferred_name_id: commit.name.id)
+    end
     commits
   end
 end
