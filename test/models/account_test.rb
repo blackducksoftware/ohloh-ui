@@ -703,12 +703,35 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   describe 'reverification_not_initiated' do
-    it 'should return all unverified accounts, for them reverification process is not started'do
+    it 'should return all unverified accounts without positions, for them reverification process is not started' do
       create(:unverified_account, :success)
       create(:unverified_account, :complaint)
       create(:account)
+      create(:position)
       assert_equal 2, Account.reverification_not_initiated.size
       assert_not_equal Account.count, Account.reverification_not_initiated.size
+    end
+  end
+
+  describe 'create_manual_verification' do
+    it 'should create a manual verification object for one account' do
+      unverified_account = create(:position_with_unverified_account).account
+      assert_equal [], unverified_account.verifications
+      assert_equal nil, unverified_account.manual_verification
+      assert_difference('ManualVerification.count', 1) do
+        unverified_account.create_manual_verification
+      end
+    end
+  end
+
+  describe 'create_bulk_manual_verifications' do
+    it 'should create bulk manual verifications for accounts with positions and no verifications' do
+      create_list(:position_with_unverified_account, 5)
+      create(:position)
+      assert_equal 0, ManualVerification.count
+      assert_difference('ManualVerification.count', 5) do
+        Account.create_bulk_manual_verifications
+      end
     end
   end
 end

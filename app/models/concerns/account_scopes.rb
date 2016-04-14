@@ -37,7 +37,9 @@ module AccountScopes
     }
     scope :reverification_not_initiated, lambda { |limit = nil|
       unverified.joins('LEFT OUTER JOIN reverification_trackers r ON r.account_id = accounts.id')
-        .where('r.account_id IS NULL').limit(limit)
+        .where('r.account_id IS NULL').joins('LEFT OUTER JOIN positions p ON p.account_id = accounts.id')
+        .where('p.account_id IS NULL')
+        .limit(limit)
     }
   end
 end

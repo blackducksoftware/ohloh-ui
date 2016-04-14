@@ -12,4 +12,8 @@ FactoryGirl.define do
       end
     end
   end
+
+  factory :position_with_unverified_account, parent: :position do
+    association :account, factory: :unverified_account
+  end
 end
