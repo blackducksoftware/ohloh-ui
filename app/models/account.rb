@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/ClassLength
 class Account < ActiveRecord::Base
   include AffiliationValidation
   include AccountValidations
@@ -129,16 +128,6 @@ class Account < ActiveRecord::Base
 
     def find_or_create_anonymous_account
       find_by(login: AnonymousAccount::LOGIN) || AnonymousAccount.create!
-    end
-
-    # Note: Remove this method when its executed only once.
-    def create_bulk_manual_verifications
-      accounts = Account.where(id: Position.select(:account_id).distinct)
-      accounts.find_each do |acc|
-        unless acc.access.mobile_or_oauth_verified?
-          ManualVerification.create(account_id: acc.id, auth_id: acc.id)
-        end
-      end
     end
   end
 end
