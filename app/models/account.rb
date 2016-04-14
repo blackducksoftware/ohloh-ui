@@ -135,7 +135,7 @@ class Account < ActiveRecord::Base
     def create_bulk_manual_verifications
       accounts = Account.where(id: Position.select(:account_id).distinct)
       accounts.find_each do |acc|
-        if acc.access.mobile_or_oauth_verified?
+        unless acc.access.mobile_or_oauth_verified?
           ManualVerification.create(account_id: acc.id, auth_id: acc.id)
         end
       end
