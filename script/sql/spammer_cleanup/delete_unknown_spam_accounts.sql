@@ -29,6 +29,7 @@ DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FRO
 DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT owner_id FROM follows WHERE owner_id IN (SELECT account_id FROM unknown_accounts));
 DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM helpfuls WHERE account_id IN (SELECT account_id FROM unknown_accounts));
 DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT invitee_id FROM invites WHERE invitee_id IN (SELECT account_id FROM unknown_accounts));
+DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT invitor_id FROM invites WHERE invitor_id IN (SELECT account_id FROM unknown_accounts));
 DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM jobs WHERE account_id IN (SELECT account_id FROM unknown_accounts));
 DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM kudos WHERE account_id IN (SELECT account_id FROM unknown_accounts));
 DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT sender_id FROM kudos WHERE sender_id IN (SELECT account_id FROM unknown_accounts));
