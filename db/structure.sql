@@ -1874,6 +1874,51 @@ CREATE TABLE github_project (
 
 
 --
+-- Name: guaranteed_spam_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE guaranteed_spam_accounts (
+    id integer,
+    login text,
+    email text,
+    crypted_password text,
+    salt text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    activation_code text,
+    activated_at timestamp without time zone,
+    remember_token text,
+    remember_token_expires_at timestamp without time zone,
+    level integer,
+    posts_count integer,
+    last_seen_at timestamp without time zone,
+    name text,
+    country_code text,
+    location text,
+    latitude numeric,
+    longitude numeric,
+    best_vita_id integer,
+    url text,
+    about_markup_id integer,
+    hide_experience boolean,
+    email_master boolean,
+    email_posts boolean,
+    email_kudos boolean,
+    email_md5 text,
+    email_opportunities_visited timestamp without time zone,
+    activation_resent_at timestamp without time zone,
+    akas text,
+    email_new_followers boolean,
+    last_seen_ip text,
+    twitter_account text,
+    reset_password_tokens text,
+    organization_id integer,
+    affiliation_type text,
+    organization_name text
+);
+
+
+--
 -- Name: helpfuls_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -3267,6 +3312,40 @@ ALTER SEQUENCE project_reports_id_seq OWNED BY project_reports.id;
 
 
 --
+-- Name: project_vulnerability_reports; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE project_vulnerability_reports (
+    id integer NOT NULL,
+    project_id integer,
+    etag character varying(255),
+    vulnerability_score numeric,
+    security_score numeric,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: project_vulnerability_reports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE project_vulnerability_reports_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: project_vulnerability_reports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE project_vulnerability_reports_id_seq OWNED BY project_vulnerability_reports.id;
+
+
+--
 -- Name: projects_by_month; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -4072,6 +4151,60 @@ CREATE TABLE topics (
 
 
 --
+-- Name: unknown_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE unknown_accounts (
+    account_id integer
+);
+
+
+--
+-- Name: unknown_spam_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE unknown_spam_accounts (
+    id integer,
+    login text,
+    email text,
+    crypted_password text,
+    salt text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    activation_code text,
+    activated_at timestamp without time zone,
+    remember_token text,
+    remember_token_expires_at timestamp without time zone,
+    level integer,
+    posts_count integer,
+    last_seen_at timestamp without time zone,
+    name text,
+    country_code text,
+    location text,
+    latitude numeric,
+    longitude numeric,
+    best_vita_id integer,
+    url text,
+    about_markup_id integer,
+    hide_experience boolean,
+    email_master boolean,
+    email_posts boolean,
+    email_kudos boolean,
+    email_md5 text,
+    email_opportunities_visited timestamp without time zone,
+    activation_resent_at timestamp without time zone,
+    akas text,
+    email_new_followers boolean,
+    last_seen_ip text,
+    twitter_account text,
+    reset_password_tokens text,
+    organization_id integer,
+    affiliation_type text,
+    organization_name text
+);
+
+
+--
 -- Name: verifications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -4512,6 +4645,13 @@ ALTER TABLE ONLY project_gestalts ALTER COLUMN id SET DEFAULT nextval('gestaltin
 --
 
 ALTER TABLE ONLY project_reports ALTER COLUMN id SET DEFAULT nextval('project_reports_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY project_vulnerability_reports ALTER COLUMN id SET DEFAULT nextval('project_vulnerability_reports_id_seq'::regclass);
 
 
 --
@@ -5324,6 +5464,14 @@ ALTER TABLE ONLY project_reports
 
 ALTER TABLE ONLY project_reports
     ADD CONSTRAINT project_reports_project_id_key UNIQUE (project_id, report_id);
+
+
+--
+-- Name: project_vulnerability_reports_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY project_vulnerability_reports
+    ADD CONSTRAINT project_vulnerability_reports_pkey PRIMARY KEY (id);
 
 
 --
@@ -6499,6 +6647,13 @@ CREATE INDEX index_project_reports_on_report_id ON project_reports USING btree (
 
 
 --
+-- Name: index_project_vulnerability_reports_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_project_vulnerability_reports_on_project_id ON project_vulnerability_reports USING btree (project_id);
+
+
+--
 -- Name: index_projects_deleted; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -7288,6 +7443,14 @@ ALTER TABLE ONLY org_thirty_day_activities
 
 
 --
+-- Name: fk_project_ids; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY project_vulnerability_reports
+    ADD CONSTRAINT fk_project_ids FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+
+
+--
 -- Name: fk_rails_8faa63554c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7308,7 +7471,7 @@ ALTER TABLE ONLY follows
 --
 
 ALTER TABLE ONLY follows
-    ADD CONSTRAINT follows_owner_id_fkey FOREIGN KEY (owner_id) REFERENCES accounts(id) ON DELETE CASCADE;
+    ADD CONSTRAINT follows_owner_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
 
 
 --
@@ -7596,7 +7759,7 @@ ALTER TABLE ONLY message_account_tags
 --
 
 ALTER TABLE ONLY message_project_tags
-    ADD CONSTRAINT message_project_tags_message_id_fkey FOREIGN KEY (message_id) REFERENCES messages(id) ON DELETE CASCADE;
+    ADD CONSTRAINT message_project_tags_message_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
 
 
 --
