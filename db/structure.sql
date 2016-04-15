@@ -1874,51 +1874,6 @@ CREATE TABLE github_project (
 
 
 --
--- Name: guaranteed_spam_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE guaranteed_spam_accounts (
-    id integer,
-    login text,
-    email text,
-    crypted_password text,
-    salt text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    activation_code text,
-    activated_at timestamp without time zone,
-    remember_token text,
-    remember_token_expires_at timestamp without time zone,
-    level integer,
-    posts_count integer,
-    last_seen_at timestamp without time zone,
-    name text,
-    country_code text,
-    location text,
-    latitude numeric,
-    longitude numeric,
-    best_vita_id integer,
-    url text,
-    about_markup_id integer,
-    hide_experience boolean,
-    email_master boolean,
-    email_posts boolean,
-    email_kudos boolean,
-    email_md5 text,
-    email_opportunities_visited timestamp without time zone,
-    activation_resent_at timestamp without time zone,
-    akas text,
-    email_new_followers boolean,
-    last_seen_ip text,
-    twitter_account text,
-    reset_password_tokens text,
-    organization_id integer,
-    affiliation_type text,
-    organization_name text
-);
-
-
---
 -- Name: helpfuls_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -4147,60 +4102,6 @@ CREATE TABLE topics (
     closed boolean DEFAULT false,
     replied_by integer,
     last_post_id integer
-);
-
-
---
--- Name: unknown_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE unknown_accounts (
-    account_id integer
-);
-
-
---
--- Name: unknown_spam_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE unknown_spam_accounts (
-    id integer,
-    login text,
-    email text,
-    crypted_password text,
-    salt text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    activation_code text,
-    activated_at timestamp without time zone,
-    remember_token text,
-    remember_token_expires_at timestamp without time zone,
-    level integer,
-    posts_count integer,
-    last_seen_at timestamp without time zone,
-    name text,
-    country_code text,
-    location text,
-    latitude numeric,
-    longitude numeric,
-    best_vita_id integer,
-    url text,
-    about_markup_id integer,
-    hide_experience boolean,
-    email_master boolean,
-    email_posts boolean,
-    email_kudos boolean,
-    email_md5 text,
-    email_opportunities_visited timestamp without time zone,
-    activation_resent_at timestamp without time zone,
-    akas text,
-    email_new_followers boolean,
-    last_seen_ip text,
-    twitter_account text,
-    reset_password_tokens text,
-    organization_id integer,
-    affiliation_type text,
-    organization_name text
 );
 
 
@@ -7471,7 +7372,7 @@ ALTER TABLE ONLY follows
 --
 
 ALTER TABLE ONLY follows
-    ADD CONSTRAINT follows_owner_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
+    ADD CONSTRAINT follows_owner_id_fkey FOREIGN KEY (owner_id) REFERENCES accounts(id) ON DELETE CASCADE;
 
 
 --
@@ -7759,7 +7660,7 @@ ALTER TABLE ONLY message_account_tags
 --
 
 ALTER TABLE ONLY message_project_tags
-    ADD CONSTRAINT message_project_tags_message_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+    ADD CONSTRAINT message_project_tags_message_id_fkey FOREIGN KEY (message_id) REFERENCES messages(id) ON DELETE CASCADE;
 
 
 --
