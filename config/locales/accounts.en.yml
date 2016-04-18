@@ -34,6 +34,8 @@ en:
         success: 'Activation Succeeded!'
       make_spammer:
         success: "The account %{name} has been marked as spammer."
+      manual_verification:
+        success: "The account %{name} has been manually verified"
 
     edit:
       page_title: '%{name} : Account Basics - Open Hub'
@@ -119,6 +121,9 @@ en:
         email: 'Email Address:'
         activity: 'Open Hub Activity'
         actions_title: 'Admin Actions'
+        manual_verification:
+          link: '<i class="icon-check">&nbsp;</i>MANUALLY VERIFY THIS ACCOUNT'
+          title: 'Create a verification for %{name}'
         spammer:
           link: '<i class="icon-check">&nbsp;</i>MARK AS SPAMMER LEVEL'
           confirm: 'Are you sure you want to mark %{name} as a spammer, disabling the account and removing all posts?'
