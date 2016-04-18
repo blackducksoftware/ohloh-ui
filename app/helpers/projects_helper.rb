@@ -1,4 +1,5 @@
 module ProjectsHelper
+  include ProjectVulnerabilityReportsHelper
   def project_activity_level_class(project, image_size)
     haml_tag :a, href: 'http://blog.openhub.net/about-project-activity-icons/', target: '_blank',
                  class: project_activity_css_class(project, image_size),

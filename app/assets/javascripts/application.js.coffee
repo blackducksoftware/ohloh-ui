@@ -24,6 +24,7 @@
 #= require highcharts/solid-gauge
 #= require tagcloud
 #= require ace-element.min
+#= require tipso.min
 
 $(document).on 'page:change', ->
   StackShow.init()
