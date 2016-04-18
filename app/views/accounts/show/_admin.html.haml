@@ -12,7 +12,7 @@
   %p
   %p
     = link_to t('.manual_verification.link').html_safe, manual_verification_account_accesses_path(@account),
-      method: :post, data: { name: @account.name }, class: 'btn btn-primary btn-small', 
+      method: :post, data: { name: @account.name }, class: 'btn btn-primary btn-small',
       title: t('.manual_verification.title', name: @account.name)
     = link_to t('.spammer.link').html_safe, make_spammer_account_accesses_path(@account),
       method: :post, data: { confirm: t('.spammer.confirm', name: @account.name) },
