@@ -2787,7 +2787,55 @@ ALTER SEQUENCE project_reports_id_seq OWNED BY project_reports.id;
 
 
 --
--- Name: projects_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: project_vulnerability_reports; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE project_vulnerability_reports (
+    id integer NOT NULL,
+    project_id integer,
+    etag character varying(255),
+    vulnerability_score numeric,
+    security_score numeric,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: project_vulnerability_reports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE project_vulnerability_reports_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: project_vulnerability_reports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE project_vulnerability_reports_id_seq OWNED BY project_vulnerability_reports.id;
+
+
+--
+-- Name: projects_by_month; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW projects_by_month AS
+ SELECT m.month,
+    ( SELECT count(*) AS count
+           FROM (projects p
+             JOIN analyses a ON (((p.best_analysis_id = a.id) AND (NOT p.deleted))))
+          WHERE (date_trunc('quarter'::text, (a.min_month)::timestamp with time zone) <= date_trunc('quarter'::text, m.month))) AS project_count
+   FROM all_months m;
+
+
+--
+-- Name: ratings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+>>>>>>> master
 --
 
 CREATE SEQUENCE projects_id_seq
@@ -4364,7 +4412,14 @@ ALTER TABLE ONLY sloc_metrics ALTER COLUMN id SET DEFAULT nextval('sloc_metrics_
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY sloc_sets ALTER COLUMN id SET DEFAULT nextval('sloc_sets_id_seq'::regclass);
+ALTER TABLE ONLY project_vulnerability_reports ALTER COLUMN id SET DEFAULT nextval('project_vulnerability_reports_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY recently_active_accounts_cache ALTER COLUMN id SET DEFAULT nextval('recently_active_accounts_cache_id_seq'::regclass);
 
 
 --
@@ -5117,7 +5172,15 @@ ALTER TABLE ONLY project_reports
 
 
 --
--- Name: projects_kb_id_key; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: project_vulnerability_reports_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY project_vulnerability_reports
+    ADD CONSTRAINT project_vulnerability_reports_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: projects_kb_id_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY projects
@@ -6191,7 +6254,14 @@ CREATE INDEX index_project_reports_on_report_id ON project_reports USING btree (
 
 
 --
--- Name: index_projects_deleted; Type: INDEX; Schema: public; Owner: -
+-- Name: index_project_vulnerability_reports_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_project_vulnerability_reports_on_project_id ON project_vulnerability_reports USING btree (project_id);
+
+
+--
+-- Name: index_projects_deleted; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_projects_deleted ON projects USING btree (deleted, id);
@@ -6911,6 +6981,23 @@ ALTER TABLE ONLY org_thirty_day_activities
 
 
 --
+-- Name: fk_project_ids; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY project_vulnerability_reports
+    ADD CONSTRAINT fk_project_ids FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+
+
+--
+-- Name: fk_rails_8faa63554c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY api_keys
+    ADD CONSTRAINT fk_rails_8faa63554c FOREIGN KEY (oauth_application_id) REFERENCES oauth_applications(id);
+
+
+--
+>>>>>>> master
 -- Name: follows_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 

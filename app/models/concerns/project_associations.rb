@@ -35,7 +35,7 @@ module ProjectAssociations
     has_many :named_commits, ->(proj) { where(analysis_id: (proj.best_analysis_id || 0)) }
     has_many :commit_flags, -> { order(time: :desc).where('commit_flags.sloc_set_id = named_commits.sloc_set_id') },
              through: :named_commits
-
+    has_one :project_vulnerability_report
     accepts_nested_attributes_for :enlistments
     accepts_nested_attributes_for :project_licenses
 
