@@ -34,6 +34,8 @@ en:
         success: 'Activation Succeeded!'
       make_spammer:
         success: "The account %{name} has been marked as spammer."
+      manual_verification:
+        success: "The account %{name} has been manually verified"
 
     edit:
       page_title: '%{name} : Account Basics - Open Hub'
@@ -123,6 +125,9 @@ en:
           link: '<i class="icon-check">&nbsp;</i>MARK AS SPAMMER LEVEL'
           confirm: 'Are you sure you want to mark %{name} as a spammer, disabling the account and removing all posts?'
           title: 'Mark %{name} as spammer!'
+        manual_verification:
+          link: '<i class="icon-check">&nbsp;</i>MANUALLY VERIFY THIS ACCOUNT'
+          title: 'Create a verification for %{name}'
         delete:
           link: '<i class="icon-remove-sign">&nbsp;</i>DELETE ACCOUNT'
           confirm: 'Deleting an account is permament and cannot be undone! It will also take several minutes to finish, be patient. Are you sure you want to delete %{name}?'
