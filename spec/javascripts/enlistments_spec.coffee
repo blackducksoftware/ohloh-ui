@@ -24,6 +24,16 @@ describe 'Enlistments', ->
       submitBtn.click()
       expect(submitBtn.is(':disabled')).toBeTruthy()
 
+    it 'should submit the form when user clicks the submit button', ->
+      enlistmentForm  = '.enlistment form'
+      spyEvent = spyOnEvent(enlistmentForm, 'submit')
+      submitBtn = $('.enlistment .submit')
+      submitBtn.click()
+      expect($(enlistmentForm).attr('action'))
+        .toEqual('https://www.openhub.net/p/owasp-owtf/enlistments')
+      expect('submit').toHaveBeenTriggeredOn(enlistmentForm)
+      expect(spyEvent).toHaveBeenTriggered()
+
   describe 'repository type change', ->
     it 'should show bzr repository details', ->
       $('#repository_type').val('BzrRepository')

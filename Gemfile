@@ -71,6 +71,7 @@ group :development, :test do
   gem 'rb-readline'
   gem 'rails-erd'
   gem 'jasmine-rails'
+  gem 'jasmine-jquery-rails'
   gem 'teaspoon-jasmine'
 end
 
