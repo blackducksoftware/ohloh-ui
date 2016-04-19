@@ -122,7 +122,7 @@ en:
         activity: 'Open Hub Activity'
         actions_title: 'Admin Actions'
         manual_verification:
-          link: '<i class="icon-check">&nbsp;</i>MANUALLY VERIFY THIS ACCOUNT'
+          link: 'MANUALLY VERIFY THIS ACCOUNT'
           title: 'Create a verification for %{name}'
         spammer:
           link: '<i class="icon-check">&nbsp;</i>MARK AS SPAMMER LEVEL'
