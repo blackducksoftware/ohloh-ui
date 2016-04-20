@@ -1,17 +1,17 @@
-- content_for(:html_title) { project_pages_title t('permissions.show.page_title') }
+- content_for(:html_title) { t('.page_title', name: @parent.name) }
 - page_context[:select_footer_nav] = nil
 = javascript_include_tag 'permissions.js'
 
 .project_content_title
   %h2.float_left
-    %a{ href: settings_project_path(current_project) }= t :settings
+    = link_to t(:settings), [:settings, @parent]
     &#58; #{t('permissions.permissions')}
-  = project_analysis_timestamp(current_project)
+  = project_analysis_timestamp(@project) if @project
 
 .row
   .col-sm-6.col-sm-offset-2
     .well
-      - url = permissions_project_path(current_project)
+      - url = polymorphic_path([:permissions, @parent])
       = form_for @permission, as: :permission, url: url, html: { method: :put, id: 'permission_show' } do |f|
         %fieldset
           = hidden_field_tag 'permission[baseline_remainder]', @permission.remainder.to_s
@@ -26,7 +26,7 @@
                 = f.radio_button :remainder, 'true', disabled: !current_user_can_manage?
                 = t 'permissions.show.managers_only'
               %p.help-block
-                - path = project_managers_path(current_project)
+                - path = polymorphic_path([@parent, :managers])
                 - linky = link_to t('permissions.show.manager'), path, target: '_blank'
                 != t 'permissions.show.only_an_approved_manager', linky: linky
 
@@ -41,6 +41,7 @@
   = t 'permissions.show.about_permissions_2'
 .col-sm-6
   %ul
-    %li= t 'permissions.show.help_1'
-    %li= t 'permissions.show.help_2'
-    %li= t 'permissions.show.help_3'
+    - parent_name = @parent.class.name
+    %li= t 'permissions.show.help_1', name: parent_name
+    %li= t 'permissions.show.help_2', name: parent_name.downcase
+    %li= t 'permissions.show.help_3', upper_name: parent_name, name: parent_name.downcase
