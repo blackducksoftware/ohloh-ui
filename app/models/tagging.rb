@@ -2,6 +2,9 @@ class Tagging < ActiveRecord::Base
   belongs_to :tag
   belongs_to :taggable, polymorphic: true
 
+  after_create :recalc_weight!
+  after_destroy :recalc_weight!
+
   class << self
     def tag_weight_sql(klass, tag_ids)
       tags = Tag.arel_table
@@ -11,5 +14,11 @@ class Tagging < ActiveRecord::Base
         .where(taggable_type: klass)
         .group(:taggable_id).to_sql
     end
+  end
+
+  private
+
+  def recalc_weight!
+    tag && tag.recalc_weight!
   end
 end

@@ -25,4 +25,17 @@ class Tag < ActiveRecord::Base
         .where(['tags.id NOT IN (SELECT tag_id FROM taggings WHERE taggable_id = ?)', project_id])
     end
   end
+
+  def recalc_weight!
+    recalc_taggings_count
+    update_attribute :weight, (taggings_count == 0 && 1.0) || (1.0 / (1.0 + Math.log10(taggings_count)))
+  end
+
+  def recalc_taggings_count
+    sql = <<-SQL
+      SELECT COUNT(*) FROM taggings AS t INNER JOIN projects p ON t.taggable_id = p.id AND t.taggable_type = 'Project'
+      WHERE t.tag_id = #{id} AND p.deleted = FALSE
+    SQL
+    update_attribute :taggings_count, Tagging.count_by_sql(sql)
+  end
 end
