@@ -1,11 +1,10 @@
 require 'test_helper'
 
 class FailureGroupAdminTest < ActionDispatch::IntegrationTest
-  let(:admin) { create(:admin, password: 'xyzzy123456') }
+  let(:admin) { create(:admin, password: TEST_PASSWORD) }
 
   it 'should render index page' do
     create(:failure_group)
-    admin.password = 'xyzzy123456'
     login_as admin
     get admin_failure_groups_path
     assert_response :ok
@@ -13,7 +12,6 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
 
   it 'should render uncategorized index page' do
     create(:failure_group)
-    admin.password = 'xyzzy123456'
     login_as admin
     get admin_jobs_path(scope: 'uncategorized_failed_jobs')
     assert_response :ok
@@ -22,7 +20,6 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
   it 'should show failure group jobs' do
     failure_group = create(:failure_group)
     create(:failed_job, failure_group_id: failure_group.id)
-    admin.password = 'xyzzy123456'
     login_as admin
     get admin_failure_group_jobs_path(failure_group)
     assert_response :ok
@@ -32,7 +29,6 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
     it 'should decategorize failure groups ' do
       failure_group = create(:failure_group)
       create(:failed_job, failure_group_id: failure_group.id, exception: 'abort')
-      admin.password = 'xyzzy123456'
       login_as admin
       failure_group.jobs.count.must_equal 1
       get decategorize_admin_failure_group_path(failure_group.id)
@@ -44,7 +40,6 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
       failure_group1 = create(:failure_group, pattern: '%Exception%')
       create(:failed_job, failure_group_id: failure_group.id, exception: 'abort')
       create(:failed_job, failure_group_id: failure_group1.id, exception: 'abort')
-      admin.password = 'xyzzy123456'
       login_as admin
       failure_group.jobs.count.must_equal 1
       failure_group1.jobs.count.must_equal 1
@@ -58,7 +53,6 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
     it 'should categorize failure_groups' do
       create(:failure_group)
       job = create(:failed_job, exception: 'abort')
-      admin.password = 'xyzzy123456'
       login_as admin
       job.failure_group_id.must_equal nil
       get categorize_admin_failure_groups_path, {}, 'HTTP_REFERER' => admin_failure_groups_path
@@ -70,7 +64,6 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
       failure_group1 = create(:failure_group, priority: 30)
       job = create(:failed_job, exception: 'abort')
       job1 = create(:failed_job, exception: 'abort', failure_group_id: failure_group1.id)
-      admin.password = 'xyzzy123456'
       login_as admin
       job.failure_group_id.must_equal nil
       job1.failure_group_id.must_equal failure_group1.id
@@ -84,7 +77,6 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
     it 'should recategorize failure_groups' do
       create(:failure_group)
       job = create(:failed_job, exception: 'abort')
-      admin.password = 'xyzzy123456'
       login_as admin
       job.failure_group_id.must_equal nil
       get recategorize_admin_failure_groups_path, {}, 'HTTP_REFERER' => admin_failure_groups_path
@@ -96,7 +88,6 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
       failure_group1 = create(:failure_group, priority: 30)
       job = create(:failed_job, exception: 'abort')
       job1 = create(:failed_job, exception: 'abort', failure_group_id: failure_group1.id)
-      admin.password = 'xyzzy123456'
       login_as admin
       job.failure_group_id.must_equal nil
       job1.failure_group_id.must_equal failure_group1.id
@@ -109,7 +100,6 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
   describe 'destroy' do
     it 'should destroy the failure group' do
       failure_group = create(:failure_group)
-      admin.password = 'xyzzy123456'
       login_as admin
       FailureGroup.count.must_equal 1
       delete admin_failure_group_path(failure_group)
@@ -119,7 +109,6 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
     it 'should decategorize if jobs associated with failure group' do
       failure_group = create(:failure_group)
       job = create(:failed_job, failure_group_id: failure_group.id, exception: 'abort')
-      admin.password = 'xyzzy123456'
       login_as admin
       FailureGroup.count.must_equal 1
       delete admin_failure_group_path(failure_group)

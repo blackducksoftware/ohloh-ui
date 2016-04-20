@@ -27,6 +27,7 @@ class ActiveSupport::TestCase
   extend SetupHamsterAccount
   extend CreateForges
   extend MiniTest::Spec::DSL
+  TEST_PASSWORD = :test_password
 
   create_hamster_account
   create_forges
@@ -68,7 +69,7 @@ class ActiveSupport::TestCase
   def integration_login_as(account)
     if account
       get new_session_path
-      post sessions_path, login: { login: account.email, password: account.password }
+      post sessions_path, login: { login: account.login, password: TEST_PASSWORD }
     else
       delete sessions_path
     end
