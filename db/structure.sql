@@ -3267,6 +3267,40 @@ ALTER SEQUENCE project_reports_id_seq OWNED BY project_reports.id;
 
 
 --
+-- Name: project_vulnerability_reports; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE project_vulnerability_reports (
+    id integer NOT NULL,
+    project_id integer,
+    etag character varying(255),
+    vulnerability_score numeric,
+    security_score numeric,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: project_vulnerability_reports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE project_vulnerability_reports_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: project_vulnerability_reports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE project_vulnerability_reports_id_seq OWNED BY project_vulnerability_reports.id;
+
+
+--
 -- Name: projects_by_month; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -4518,6 +4552,13 @@ ALTER TABLE ONLY project_reports ALTER COLUMN id SET DEFAULT nextval('project_re
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY project_vulnerability_reports ALTER COLUMN id SET DEFAULT nextval('project_vulnerability_reports_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY recently_active_accounts_cache ALTER COLUMN id SET DEFAULT nextval('recently_active_accounts_cache_id_seq'::regclass);
 
 
@@ -5324,6 +5365,14 @@ ALTER TABLE ONLY project_reports
 
 ALTER TABLE ONLY project_reports
     ADD CONSTRAINT project_reports_project_id_key UNIQUE (project_id, report_id);
+
+
+--
+-- Name: project_vulnerability_reports_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY project_vulnerability_reports
+    ADD CONSTRAINT project_vulnerability_reports_pkey PRIMARY KEY (id);
 
 
 --
@@ -6499,6 +6548,13 @@ CREATE INDEX index_project_reports_on_report_id ON project_reports USING btree (
 
 
 --
+-- Name: index_project_vulnerability_reports_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_project_vulnerability_reports_on_project_id ON project_vulnerability_reports USING btree (project_id);
+
+
+--
 -- Name: index_projects_deleted; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -7285,6 +7341,14 @@ ALTER TABLE ONLY factoids
 
 ALTER TABLE ONLY org_thirty_day_activities
     ADD CONSTRAINT fk_organization_ids FOREIGN KEY (organization_id) REFERENCES organizations(id) ON DELETE CASCADE;
+
+
+--
+-- Name: fk_project_ids; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY project_vulnerability_reports
+    ADD CONSTRAINT fk_project_ids FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
 
 
 --

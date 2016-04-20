@@ -9,7 +9,7 @@ module Reverification
 
     class << self
       def send_limit
-        Reverification::Process.ses_daily_limit_available
+        2619
       end
 
       def run
