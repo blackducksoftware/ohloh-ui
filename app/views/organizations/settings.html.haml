@@ -39,3 +39,9 @@
     %span.pull-left
       %a.module_icon.orgs_manage_projects{ href: manage_projects_organization_path(@organization) }
     %span.pull-left.settings_description= t('.held_projects')
+  .col-md-4.settings_module
+    %h4.nomargin
+      = link_to t('.permissions'), permissions_organization_path(@organization)
+    %span.pull-left
+      %a.module_icon.permissions{ href: permissions_organization_path(@organization) }
+    %span.pull-left.settings_description= t('.permissions_desc')

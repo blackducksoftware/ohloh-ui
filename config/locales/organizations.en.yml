@@ -185,3 +185,5 @@ en:
       logo_displayed_for_org: The logo displayed for the organization.
       manage_projects: Manage Projects
       held_projects: Projects that are held under the auspices of this organization.
+      permissions: 'Permissions'
+      permissions_desc: 'Change whether all users or just managers may edit organization settings.'
