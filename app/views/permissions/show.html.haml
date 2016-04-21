@@ -26,7 +26,8 @@
                 = f.radio_button :remainder, 'true', disabled: !current_user_can_manage?
                 = t 'permissions.show.managers_only'
               %p.help-block
-                - path = polymorphic_path([@parent, :managers])
+                - path = @parent.is_a?(Project) && project_managers_path(@parent)
+                - path ||= list_managers_organization_path(@parent)
                 - linky = link_to t('permissions.show.manager'), path, target: '_blank'
                 != t 'permissions.show.only_an_approved_manager', linky: linky
 
