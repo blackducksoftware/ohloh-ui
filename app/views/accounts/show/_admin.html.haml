@@ -13,7 +13,7 @@
   %p
     - if @account.verifications.empty?
       %a.btn.btn-primary.btn-small{ href: manual_verification_account_accesses_path(@account),
-                                    data: { method: 'post'},
+                                    data: { method: 'post' },
                                     title: t('.manual_verification.title', name: @account.name) }
         %i.icon-check
         = t('.manual_verification.link')
