@@ -1,0 +1,14 @@
+#! /usr/bin/env ruby
+
+fail 'RAILS_ENV is undefined' unless ENV['RAILS_ENV']
+
+require_relative '../config/environment'
+
+sql = <<-SQL
+  SELECT t.id FROM (
+  SELECT tag_id, COUNT(*) AS counts FROM taggings AS t
+  INNER JOIN projects p ON t.taggable_id = p.id AND t.taggable_type = 'Project' WHERE p.deleted = FALSE GROUP BY tag_id
+  ) tg INNER JOIN tags t ON t.id = tg.tag_id WHERE t.taggings_count <> tg.counts ORDER BY t.id
+SQL
+tags = Tag.find_by_sql sql
+tags.each(&:recalc_weight!)

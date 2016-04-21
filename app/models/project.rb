@@ -3,12 +3,7 @@ class Project < ActiveRecord::Base
                                          :description, :tag_list, :missing_source, :url, :download_url],
                    merge_within: 30.minutes
 
-  include ProjectAssociations
-  include LinkAccessors
-  include Tsearch
-  include ProjectSearchables
-  include ProjectScopes
-  include ProjectJobs
+  include ProjectAssociations, LinkAccessors, Tsearch, ProjectSearchables, ProjectScopes, ProjectJobs
 
   acts_as_protected
   acts_as_taggable
@@ -24,6 +19,7 @@ class Project < ActiveRecord::Base
   before_validation :clean_strings_and_urls
   after_save :update_organzation_project_count
   after_update :remove_people, if: -> (project) { project.deleted_changed? && project.deleted? }
+  after_update :recalc_tags_weight!, if: -> (project) { project.deleted_changed? }
 
   attr_accessor :managed_by_creator
 
@@ -120,5 +116,9 @@ class Project < ActiveRecord::Base
 
   def remove_people
     Person.where(project_id: id).destroy_all
+  end
+
+  def recalc_tags_weight!
+    tags.each(&:recalc_weight!)
   end
 end

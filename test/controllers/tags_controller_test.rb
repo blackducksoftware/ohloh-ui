@@ -4,6 +4,7 @@ describe 'TagsController' do
   describe 'index' do
     it 'should return tag cloud if no tag names are specified' do
       project = create(:project)
+      Tag.any_instance.stubs(:recalc_weight!)
       create(:tagging, tag: create(:tag, name: 'c', taggings_count: 1000), taggable: project)
       create(:tagging, tag: create(:tag, name: 'algol', taggings_count: 1), taggable: project)
       create(:tagging, tag: create(:tag, name: 'c++', taggings_count: 100), taggable: project)
