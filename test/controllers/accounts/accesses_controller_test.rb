@@ -64,4 +64,18 @@ describe 'Accounts::AccessesController' do
       flash[:success].must_equal expected
     end
   end
+
+  describe 'manual verification' do
+    it 'should create a manual verification for an account' do
+      admin = create(:admin)
+      account = create(:account, :no_verification)
+      login_as admin
+      assert_difference ['Verification.count', 'ManualVerification.count'], 1 do
+        get :manual_verification, account_id: account.id
+        must_redirect_to account_path(account)
+        expected = ERB::Util.html_escape(I18n.t('accounts.accesses.manual_verification.success', name: account.name))
+        flash[:success].must_equal expected
+      end
+    end
+  end
 end

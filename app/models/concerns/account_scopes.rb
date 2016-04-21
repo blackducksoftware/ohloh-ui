@@ -1,6 +1,6 @@
 module AccountScopes
   ANONYMOUS_ACCOUNTS = %w(anonymous_coward ohloh_slave uber_data_crawler)
-  ANONYMOUS_ACCOUNTS_EMAILS = %w(anon@openhub.net info@ohloh.net uber_data_crawler@ohloh.net)
+  ANONYMOUS_ACCOUNTS_EMAILS = %w(anon@openhub.net info@openhub.net uber_data_crawler@openhub.net)
 
   extend ActiveSupport::Concern
 
