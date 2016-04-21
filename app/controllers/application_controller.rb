@@ -141,6 +141,7 @@ class ApplicationController < ActionController::Base
   def error(message:, status:)
     params[:format] = 'html' unless FORMATS_THAT_WE_RENDER_ERRORS_FOR.include?(request_format)
     @error = { message: message }
+    @page_context = {}
     render_with_format 'error', status: status
   end
 
