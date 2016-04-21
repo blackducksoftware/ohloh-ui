@@ -1,10 +1,9 @@
 require 'test_helper'
 
 class VitaJobAdminTest < ActionDispatch::IntegrationTest
-  let(:admin) { create(:admin, password: 'xyzzy123456') }
+  let(:admin) { create(:admin, password: TEST_PASSWORD) }
 
   it 'should render index page' do
-    admin.password = 'xyzzy123456'
     login_as admin
     create(:vita_job)
     get admin_vita_jobs_path

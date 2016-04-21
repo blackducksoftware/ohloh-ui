@@ -320,6 +320,8 @@ Rails.application.routes.draw do
       put :remove_project
       match :new_manager, via: [:get, :post]
       get :manage_projects
+      get 'permissions'  => 'permissions#show',   as: :permissions
+      put 'permissions'  => 'permissions#update', as: :update_permissions
     end
 
     collection do

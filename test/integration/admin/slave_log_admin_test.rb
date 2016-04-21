@@ -1,10 +1,9 @@
 require 'test_helper'
 
 class SlaveLogTest < ActionDispatch::IntegrationTest
-  let(:admin) { create(:admin, password: 'xyzzy123456') }
+  let(:admin) { create(:admin, password: TEST_PASSWORD) }
 
   it 'should render index page' do
-    admin.password = 'xyzzy123456'
     login_as admin
     create(:slave_log, job: create(:complete_job))
     get admin_slave_logs_path
@@ -12,7 +11,6 @@ class SlaveLogTest < ActionDispatch::IntegrationTest
   end
 
   it 'should render repository slave logs' do
-    admin.password = 'xyzzy123456'
     login_as admin
     repository = create(:repository)
     create(:slave_log, code_set_id: create(:code_set, repository: repository).id)
@@ -21,7 +19,6 @@ class SlaveLogTest < ActionDispatch::IntegrationTest
   end
 
   it 'should render job slave logs' do
-    admin.password = 'xyzzy123456'
     login_as admin
     job = create(:complete_job)
     create(:slave_log, job: job)

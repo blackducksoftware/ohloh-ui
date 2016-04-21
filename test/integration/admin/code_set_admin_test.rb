@@ -1,10 +1,9 @@
 require 'test_helper'
 
 class CodeSetAdminTest < ActionDispatch::IntegrationTest
-  let(:admin) { create(:admin, password: 'xyzzy123456') }
+  let(:admin) { create(:admin, password: TEST_PASSWORD) }
 
   it 'index loads' do
-    admin.password = 'xyzzy123456'
     create(:clump)
     login_as admin
     get admin_code_sets_path
@@ -12,7 +11,6 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 'should load index page for repository' do
-    admin.password = 'xyzzy123456'
     login_as admin
     get admin_repository_code_sets_path(create(:repository))
     assert_response :success
@@ -20,7 +18,6 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
 
   it 'loads show' do
     code_set = create(:code_set)
-    admin.password = 'xyzzy123456'
     login_as admin
     get admin_code_set_path(code_set)
     assert_response :success
@@ -28,7 +25,6 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
 
   it 'fetch works' do
     code_set = create(:code_set)
-    admin.password = 'xyzzy123456'
     login_as admin
 
     get fetch_admin_code_set_path(code_set)
@@ -41,7 +37,6 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
   it 're-import works' do
     clump = create(:clump)
     code_set = clump.code_set
-    admin.password = 'xyzzy123456'
     login_as admin
     get reimport_admin_code_set_path(code_set)
     job = ImportJob.last
@@ -51,7 +46,6 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
 
   it 'resloc works' do
     code_set = create(:code_set)
-    admin.password = 'xyzzy123456'
     login_as admin
     get resloc_admin_code_set_path(code_set)
     job = SlocJob.last

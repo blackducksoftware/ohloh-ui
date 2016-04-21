@@ -1,11 +1,10 @@
 require 'test_helper'
 
 class CodeSetAdminTest < ActionDispatch::IntegrationTest
-  let(:admin) { create(:admin, password: 'xyzzy123456') }
+  let(:admin) { create(:admin, password: TEST_PASSWORD) }
 
   it 'mark_as_failed should work' do
     job = create(:sloc_job, repository: create(:repository, best_code_set: create(:code_set)))
-    admin.password = 'xyzzy123456'
     login_as admin
 
     get mark_as_failed_admin_job_path(job), {}, 'HTTP_REFERER' => admin_jobs_path
@@ -17,7 +16,6 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
 
   it 'recoount should work' do
     job = create(:fetch_job, repository: create(:repository))
-    admin.password = 'xyzzy123456'
     login_as admin
     get recount_admin_job_path(job)
 
@@ -28,7 +26,6 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 'should render index page' do
-    admin.password = 'xyzzy123456'
     login_as admin
     create(:fetch_job, repository: create(:repository), slave: create(:slave))
     get admin_jobs_path
@@ -36,7 +33,6 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 'should render project jobs index page for newly created project' do
-    admin.password = 'xyzzy123456'
     login_as admin
     repository = create(:repository)
     create(:fetch_job, repository: repository, slave: create(:slave))
@@ -47,7 +43,6 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 'should render project index page for analses completed project' do
-    admin.password = 'xyzzy123456'
     login_as admin
     project = create(:project)
     create(:fetch_job, project: project, slave: create(:slave))
@@ -56,7 +51,6 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 'should render jobs show page' do
-    admin.password = 'xyzzy123456'
     login_as admin
     job = create(:fetch_job, repository: create(:repository), slave: create(:slave))
     get admin_job_path(job)
@@ -64,7 +58,6 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 'should allow to reschedule' do
-    admin.password = 'xyzzy123456'
     login_as admin
     job = create(:fetch_job, repository: create(:repository), slave: create(:slave))
     put reschedule_admin_job_path(job), {}, 'HTTP_REFERER' => admin_jobs_path
@@ -72,7 +65,6 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 'should not allow to reschedule if job is running' do
-    admin.password = 'xyzzy123456'
     login_as admin
     job = create(:fetch_job, repository: create(:repository), slave: create(:slave), status: Job::STATUS_RUNNING)
     put reschedule_admin_job_path(job), {}, 'HTTP_REFERER' => admin_jobs_path
@@ -80,7 +72,6 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 'should rebuild people' do
-    admin.password = 'xyzzy123456'
     login_as admin
     job = create(:fetch_job, repository: create(:repository), slave: create(:slave))
     put rebuild_people_admin_job_path(job), {}, 'HTTP_REFERER' => admin_jobs_path
@@ -88,14 +79,12 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 'should index repository jobs' do
-    admin.password = 'xyzzy123456'
     login_as admin
     get admin_repository_jobs_path(create(:repository))
     assert_response :success
   end
 
   it 'should update priority' do
-    admin.password = 'xyzzy123456'
     login_as admin
     job = create(:fetch_job, repository: create(:repository))
     put admin_job_path(job), job: { priority: 5 }
@@ -103,7 +92,6 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 'should delete job' do
-    admin.password = 'xyzzy123456'
     login_as admin
     job = create(:fetch_job, repository: create(:repository))
     assert_difference 'Job.count', -1 do
@@ -113,7 +101,6 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 'should manually schedule job' do
-    admin.password = 'xyzzy123456'
     login_as admin
     post manually_schedule_admin_project_jobs_path(create(:project))
     assert_response :redirect

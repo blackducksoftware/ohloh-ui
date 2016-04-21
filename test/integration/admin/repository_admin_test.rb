@@ -1,10 +1,9 @@
 require 'test_helper'
 
 class RepositoryAdminTest < ActionDispatch::IntegrationTest
-  let(:admin) { create(:admin, password: 'xyzzy123456') }
+  let(:admin) { create(:admin, password: TEST_PASSWORD) }
 
   it 'should render index page' do
-    admin.password = 'xyzzy123456'
     login_as admin
     create(:repository)
     get admin_repositories_path
@@ -12,14 +11,12 @@ class RepositoryAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 'should render show page' do
-    admin.password = 'xyzzy123456'
     login_as admin
     get admin_repository_path(create(:repository))
     assert_response :success
   end
 
   it 'should refetch the repository' do
-    admin.password = 'xyzzy123456'
     login_as admin
     get refetch_admin_repository_path(create(:repository))
     assert_response :redirect

@@ -1,10 +1,9 @@
 require 'test_helper'
 
 class OrganizationAdminTest < ActionDispatch::IntegrationTest
-  let(:admin) { create(:admin, password: 'xyzzy123456') }
+  let(:admin) { create(:admin, password: TEST_PASSWORD) }
 
   it 'should render index page' do
-    admin.password = 'xyzzy123456'
     login_as admin
 
     create(:organization)
@@ -13,7 +12,6 @@ class OrganizationAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 'should render show page' do
-    admin.password = 'xyzzy123456'
     login_as admin
     organization = create(:organization)
     get admin_organization_path(organization)

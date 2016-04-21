@@ -1,11 +1,9 @@
 require 'test_helper'
 
 class ProjectAdminTest < ActionDispatch::IntegrationTest
-  let(:password) { SecureRandom.uuid }
-  let(:admin) { create(:admin, password: password) }
+  let(:admin) { create(:admin, password: TEST_PASSWORD) }
 
   before do
-    admin.password = password
     login_as admin
   end
 
