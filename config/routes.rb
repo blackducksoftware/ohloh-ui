@@ -102,7 +102,7 @@ Rails.application.routes.draw do
 
     resources :accesses, only: [], module: :accounts do
       collection do
-        post :manual_verification
+        get :manual_verification
         post :make_spammer
         get :activate
       end
