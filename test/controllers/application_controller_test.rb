@@ -43,6 +43,17 @@ describe 'ApplicationController' do
       response.headers['Content-Type'].must_include('text/html')
     end
 
+    it 'should render error template' do
+      get :error_with_message
+      must_respond_with :unauthorized
+      must_render_template 'application/error.html'
+      assigns(:page_context).must_equal({})
+      assert_select('#project_header', 0)
+      assert_select('#project_masthead', 0)
+      assert_select('#org_icon', 0)
+      assert_select('#mini_account_row', 0)
+    end
+
     it 'error message as html' do
       get :error_with_message
       must_respond_with :unauthorized
