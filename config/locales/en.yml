@@ -20,6 +20,7 @@ en:
   cancel: 'Cancel'
   remove: Remove
   edit: 'Edit'
+  here: 'Here'
   new: 'New'
   is_invalid: 'is invalid'
   cant_be_blank: "can't be blank"

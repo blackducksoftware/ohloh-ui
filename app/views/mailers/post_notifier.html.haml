@@ -8,4 +8,4 @@
   = succeed '.' do
     = link_to @topic.title, @topic
 
-= render 'mailers/sign_off'
+= render 'mailers/sign_off', unsubscribe_emails_url: @unsubscribe_emails_url

@@ -22,8 +22,22 @@ class AccountMailer < ActionMailer::Base
 
   def kudo_recipient(kudo)
     @kudo = kudo
-    @my_account_url = account_url(host: ENV['URL_HOST'], id: 'me')
-    @email_settings_url = edit_account_privacy_account_url(host: ENV['URL_HOST'], id: @kudo.account.to_param)
+    @my_account_url = account_url(id: 'me')
+    @email_settings_url = edit_account_privacy_account_url(id: @kudo.account.to_param)
+    @unsubscribe_emails_url = unsubscribe_emails_url(@kudo.account)
     mail to: @kudo.account.email, subject: t('.subject', from: @kudo.sender.name)
+  end
+
+  private
+
+  def generate_unsubscription_key(account)
+    CGI.unescape(Ohloh::Cipher.encrypt(account.id.to_s))
+  end
+
+  def unsubscribe_emails_url(account)
+    unsubscribe_emails_accounts_url(
+      notification_type: 'kudo',
+      key: generate_unsubscription_key(account)
+    )
   end
 end

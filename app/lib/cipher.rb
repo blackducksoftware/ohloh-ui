@@ -1,6 +1,6 @@
 module Ohloh
   class Cipher
-    KEY = 'A_TEMPORARY_PLACEHOLDER_KEY_FOR_ENCRYPTION'
+    KEY = ENV['OHLOH_CIPHER_KEY']
 
     def self.encrypt(data, key = KEY)
       aes = OpenSSL::Cipher.new('AES-256-CBC')
