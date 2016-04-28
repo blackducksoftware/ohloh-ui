@@ -70,7 +70,7 @@ class ApplicationController < ActionController::Base
     puts "=====Am I logged in?=========="
     puts logged_in?
     puts '-----Is params account id equal to me --------'
-    puts params[:account_id]
+    puts params[:account_id].inspect
     return unless params[:account_id] == 'me'
     if current_user.nil?
       redirect_to new_session_path

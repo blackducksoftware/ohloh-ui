@@ -1,5 +1,5 @@
 class AuthenticationsController < ApplicationController
-  before_action :set_account, only: :new
+  before_action :session_required, :set_account, only: :new
   before_action :session_account_params_or_current_user_required, only: [:new, :github_callback, :digits_callback]
   before_action :redirect_if_current_user_verified
 
@@ -38,7 +38,8 @@ class AuthenticationsController < ApplicationController
   def session_account_params_or_current_user_required
     puts 'session_account_params_or_current_user_required'
     puts "=====Am I logged in?=========="
-    puts logged_in?
+    puts "logged_in?: #{logged_in?}"
+    puts "session[:account_params]: #{session[:account_params].inspect}"
     fail ParamRecordNotFound if session[:account_params].nil? && current_user.nil?
   end
 
@@ -53,7 +54,8 @@ class AuthenticationsController < ApplicationController
   def set_account
     puts 'set_account'
     puts "=====Am I logged in?=========="
-    puts logged_in?
+    puts "logged_in?: #{logged_in?}"
+    puts "current_user: #{current_user.inspect}"
     @account = current_user.present? ? current_user : Account.new
   end
 end
