@@ -68,9 +68,6 @@ class AccountsController < ApplicationController
                else
                  Account::Find.by_id_or_login(params[:id])
                end
-    puts "*" * 80
-    puts "@account: #{@account.inspect}"
-    puts "*" * 80
     fail ParamRecordNotFound unless @account
   end
 

@@ -6,9 +6,6 @@ class AuthenticationsController < ApplicationController
   def new
     @account.build_twitter_digits_verification
     render partial: 'fields' if request.xhr?
-    puts 'new'
-    puts "=====Am I logged in?=========="
-    puts logged_in?
   end
 
   def github_callback
@@ -36,26 +33,15 @@ class AuthenticationsController < ApplicationController
   end
 
   def session_account_params_or_current_user_required
-    puts 'session_account_params_or_current_user_required'
-    puts "=====Am I logged in?=========="
-    puts "logged_in?: #{logged_in?}"
-    puts "session[:account_params]: #{session[:account_params].inspect}"
     fail ParamRecordNotFound if session[:account_params].nil? && current_user.nil?
   end
 
   def redirect_if_current_user_verified
-    puts 'redirect_if_current_user_verified'
-    puts "=====Am I logged in?=========="
-    puts logged_in?
     return if current_user.nil?
     redirect_to root_path if current_user.access.mobile_or_oauth_verified?
   end
 
   def set_account
-    puts 'set_account'
-    puts "=====Am I logged in?=========="
-    puts "logged_in?: #{logged_in?}"
-    puts "current_user: #{current_user.inspect}"
     @account = current_user.present? ? current_user : Account.new
   end
 end
