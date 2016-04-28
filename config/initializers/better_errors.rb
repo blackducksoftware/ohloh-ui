@@ -1,1 +1,1 @@
-BetterErrors.editor = :subl
+BetterErrors.editor = :subl if defined? BetterErrors

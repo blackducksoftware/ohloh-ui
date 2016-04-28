@@ -11,9 +11,6 @@ class RegistrationsController < ApplicationController
     if @account.valid?
       session[:account_params] = account_params
       redirect_to new_authentication_path
-      puts 'validate'
-      puts "=====Am I logged in?=========="
-      puts logged_in?
     else
       render :new
     end
@@ -26,9 +23,6 @@ class RegistrationsController < ApplicationController
       reset_session
       session[:account_id] = @account.id
       redirect_to @account
-      puts 'generate'
-      puts "=====Am I logged in?=========="
-      puts logged_in?
     else
       redirect_to_new_authentication_path
     end

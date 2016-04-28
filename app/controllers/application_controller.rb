@@ -72,7 +72,7 @@ class ApplicationController < ActionController::Base
   end
 
   def session_required
-    return if logged_in?
+    return if logged_in? || session[:account_params].present?
     flash[:notice] = t('sessions.message_html', href: new_registration_path)
     access_denied
   end
@@ -217,7 +217,7 @@ class ApplicationController < ActionController::Base
     params[:api_key] || (doorkeeper_token && doorkeeper_token.application && doorkeeper_token.application.uid)
   end
 
-  def strip_query_param 
+  def strip_query_param
     params[:query] = String.clean_string(params[:query])
   end
 
