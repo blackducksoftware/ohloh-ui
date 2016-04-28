@@ -39,12 +39,14 @@ gem 'feedjira'
 gem 'whenever', require: false
 
 group :development do
+  gem 'better_errors'
+  gem 'binding_of_caller', '~> 0.7.2'
   gem 'capistrano'
   gem 'capistrano-faster-assets'
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
   gem 'letter_opener'
-  gem 'better_errors'
+  gem 'meta_request'
   gem 'whenever', require: false
 end
 

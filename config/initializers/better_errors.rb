@@ -1,0 +1,1 @@
+BetterErrors.editor = :subl

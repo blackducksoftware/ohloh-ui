@@ -31,6 +31,9 @@ class ApplicationController < ActionController::Base
   end
 
   def validate_request_format
+    puts "validate_request_format"
+    puts "=====Am I logged in?=========="
+    puts logged_in?
     render_404 if request.format.nil?
   end
 
@@ -63,11 +66,18 @@ class ApplicationController < ActionController::Base
   protected
 
   def handle_me_account_paths
+    puts 'handle_me_account_paths'
+    puts "=====Am I logged in?=========="
+    puts logged_in?
+    puts '-----Is params account id equal to me --------'
+    puts params[:account_id]
     return unless params[:account_id] == 'me'
     if current_user.nil?
       redirect_to new_session_path
     else
+      puts '---- I am in the else block of handle_me_account_paths ====='
       params[:account_id] = current_user.login
+      puts params[:account_id]
     end
   end
 
@@ -159,12 +169,18 @@ class ApplicationController < ActionController::Base
   end
 
   def clear_reminder
+    puts 'clear_reminder'
+    puts "=====Am I logged in?=========="
+    puts logged_in?
     return unless params[:clear_action_reminder]
     action = current_user.actions.where(id: params[:clear_action_reminder]).first
     action.update_attributes(status: Action::STATUSES[:completed]) if action
   end
 
   def store_location
+    puts 'store_location'
+    puts "=====Am I logged in?=========="
+    puts logged_in?
     return if request.xhr? || request.post? || request_format != 'html'
     session[:return_to] = request.fullpath
   end
@@ -203,6 +219,9 @@ class ApplicationController < ActionController::Base
   private
 
   def verify_api_access_for_xml_request
+    puts 'verify_api_access_for_xml_request'
+    puts 'am i logged in?'
+    puts logged_in?
     return unless request_format == 'xml'
     api_key = ApiKey.in_good_standing.find_by_oauth_application_uid(api_client_id)
 
@@ -217,7 +236,10 @@ class ApplicationController < ActionController::Base
     params[:api_key] || (doorkeeper_token && doorkeeper_token.application && doorkeeper_token.application.uid)
   end
 
-  def strip_query_param
+  def strip_query_param 
+    puts 'strip_query_param '
+    puts "=====Am I logged in?=========="
+    puts logged_in?
     params[:query] = String.clean_string(params[:query])
   end
 
