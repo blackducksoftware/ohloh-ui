@@ -1,21 +1,20 @@
 .accounts_unsubscribe_emails_page
-  - if @status == true
+  - if @status.nil?
+    %h1.margin_bottom_15= t('.unable')
+    %p#unknown_user
+      = t('.cannot')
+      %p= privacy_settings_text
+  - elsif @status
     %h1.margin_bottom_15= t('.title')
     %p#email_unsubscribed
       = t('.sad', notification_type: notification_type_text(@notification_type))
       %p= privacy_settings_text(@account)
       %p= t('.admin_emails')
-
-  - elsif @status == false
+  - else
     %h1.margin_bottom_15= t('.already')
     %p#email_already_unsubscribed
       = t('.not_again')
       %p= privacy_settings_text(@account)
-  - else
-    %h1.margin_bottom_15= t('.unable')
-    %p#unknown_user
-      = t('.cannot')
-      %p= privacy_settings_text
 
   %p
-    = t('.privacy_policy_respect', privacy_policy_link: privacy_policy_link).html_safe
+    = t('.privacy_policy_respect_html', privacy_policy_link: privacy_policy_link)

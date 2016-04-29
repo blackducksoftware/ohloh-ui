@@ -13,4 +13,8 @@ class Account::Subscription
                      end
     account.update_attribute(attribute_name, false)
   end
+
+  def generate_unsubscription_key
+    CGI.unescape(Ohloh::Cipher.encrypt(account.id.to_s))
+  end
 end

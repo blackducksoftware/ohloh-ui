@@ -32,11 +32,11 @@ class AccountsHelperTest < ActionView::TestCase
     end
 
     it 'should return post notification type text' do
-      notification_type_text(:kudo).must_equal t('accounts.unsubscribe_emails.kudo_notification_type')
+      notification_type_text(:post).must_equal t('accounts.unsubscribe_emails.post_notification_type')
     end
 
     it 'should return default notification type text' do
-      notification_type_text(:kudo).must_equal t('accounts.unsubscribe_emails.kudo_notification_type')
+      notification_type_text(nil).must_equal t('accounts.unsubscribe_emails.default_notification_type')
     end
   end
 end

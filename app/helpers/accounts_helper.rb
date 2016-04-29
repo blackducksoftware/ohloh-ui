@@ -12,7 +12,7 @@ module AccountsHelper
   end
 
   def privacy_settings_text(account = nil)
-    t('accounts.unsubscribe_emails.privacy', privacy_settings_link: privacy_settings_link(account)).html_safe
+    t('accounts.unsubscribe_emails.privacy_html', privacy_settings_link: privacy_settings_link(account))
   end
 
   private

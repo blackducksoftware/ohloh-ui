@@ -6,7 +6,7 @@ en:
       sad: 'We are sorry that emails from the Black Duck Open Hub were not helpful to you. You have been unsubscribed from receiving %{notification_type} emails.'
       admin_emails: 'Please note that one cannot unsubscribe from administrative emails.'
       settings: 'Privacy Settings'
-      privacy: 'You may view your %{privacy_settings_link} to review and modify your email preferences.'
+      privacy_html: 'You may view your %{privacy_settings_link} to review and modify your email preferences.'
       already: 'Already unsubscribed'
       not_again: 'You have already unsubscribed from Open Hub emails.'
       unable: 'Unable to unsubscribe'
@@ -15,7 +15,7 @@ en:
       post_notification_type: 'Forum activity'
       default_notification_type: 'all'
       privacy_policy: 'privacy policy'
-      privacy_policy_respect: 'Open Hub respects your privacy. Please refer to our %{privacy_policy_link} for more information.'
+      privacy_policy_respect_html: 'Open Hub respects your privacy. Please refer to our %{privacy_policy_link} for more information.'
     mini_header:
       title: 'Most experienced in %{nice_name}'
       settings: '&nbsp; Settings'
