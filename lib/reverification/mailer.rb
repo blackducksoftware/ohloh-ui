@@ -9,7 +9,11 @@ module Reverification
 
     class << self
       def send_limit
-        2619
+        # This snippet ensures that we will
+        # never reach the limit. This number
+        # should keep decreasing as the process
+        # moves on
+        ReverificationTracker.count
       end
 
       def run
