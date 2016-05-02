@@ -1,6 +1,7 @@
 .DS_Store
 /.bundle
 /coverage
+config/initializers/better_errors.rb
 /db/*.sqlite3
 /db/*.sqlite3-journal
 /log/*.log
@@ -17,3 +18,4 @@ tags
 .env.development
 .env
 .byebug_history
+logfile

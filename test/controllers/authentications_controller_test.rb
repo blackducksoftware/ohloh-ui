@@ -9,7 +9,12 @@ describe 'AuthenticationsController' do
   end
 
   describe 'new' do
-    it 'must render not_found when account_params is missing' do
+    it 'must redirect to the login page for users who have not logged in' do
+      session[:account_params] = nil
+      get :new
+
+      must_respond_with :redirect
+      must_redirect_to new_session_path
     end
 
     it 'must render new page correctly for new users' do
