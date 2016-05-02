@@ -429,6 +429,7 @@ Rails.application.routes.draw do
       resources :jobs do
         collection do
           post :manually_schedule
+          post :analyze
         end
       end
       resources :complete_jobs
@@ -443,6 +444,14 @@ Rails.application.routes.draw do
       resources :clumps
       resources :slave_logs
       resources :complete_jobs
+    end
+
+    resources :accounts do
+      resources :vita_jobs do
+        collection do
+          post :manually_schedule
+        end
+      end
     end
   end
   resources :feedbacks

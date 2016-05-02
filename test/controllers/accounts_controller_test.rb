@@ -77,6 +77,19 @@ describe 'AccountsController' do
       must_respond_with :ok
       assigns(:account).must_equal admin
     end
+
+    it 'should have view jobs link if current user is admin' do
+      login_as admin
+      get :show, id: admin.login
+      must_select "a[href='/admin/accounts/#{admin.login}/vita_jobs']", true
+    end
+
+    it 'should have no view jobs link if current user is not admin' do
+      account = create(:account)
+      login_as account
+      get :show, id: account.login
+      must_select "a[href='/admin/accounts/#{account.login}/vita_jobs']", false
+    end
   end
 
   describe 'me' do

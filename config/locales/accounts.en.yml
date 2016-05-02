@@ -104,6 +104,7 @@ en:
         affiliation:
           unaffiliated: 'Unaffiliated'
           title: 'Add your affiliation!'
+        view_job: 'View Jobs'
       summary:
         title: 'Account Summary'
         projects_used: 'Projects Used'

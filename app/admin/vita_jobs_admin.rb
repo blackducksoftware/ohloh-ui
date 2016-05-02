@@ -12,6 +12,11 @@ ActiveAdmin.register VitaJob do
 
   actions :all, except: :new
 
+  action_item :manually_schedule, only: :index do
+    link_to 'Manually Create Vita Job', manually_schedule_admin_account_vita_jobs_path(account),
+            method: :post if params[:account_id]
+  end
+
   index do
     column :type
     column :id do |job|
@@ -37,6 +42,14 @@ ActiveAdmin.register VitaJob do
     end
     column 'Log' do |job|
       span link_to 'Slave Log', admin_job_slave_logs_path(job)
+    end
+  end
+
+  controller do
+    def manually_schedule
+      account = Account.find_by_login(params[:account_id])
+      VitaJob.create(account: account, priority: 0)
+      redirect_to admin_account_vita_jobs_path(account), flash: { success: 'Vita Job has been created manually.' }
     end
   end
 end
