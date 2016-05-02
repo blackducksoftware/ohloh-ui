@@ -25,6 +25,11 @@ ActiveAdmin.register Job do
             manually_schedule_admin_project_jobs_path(project), method: :post if params[:project_id]
   end
 
+  action_item :project_analysis_job, only: :index do
+    link_to 'Manually Create Analyze Job',
+            analyze_admin_project_jobs_path(project), method: :post if params[:project_id]
+  end
+
   action_item :decategorize do
     link_to 'Decategorize',
             decategorize_admin_failure_group_path(params[:failure_group_id]) if params[:failure_group_id]
@@ -131,6 +136,12 @@ ActiveAdmin.register Job do
       project = Project.find_by_vanity_url!(params[:project_id])
       project.repositories.each(&:schedule_fetch)
       redirect_to admin_project_jobs_path(project), flash: { success: 'Job has been scheduled.' }
+    end
+
+    def analyze
+      project = Project.find_by_vanity_url!(params[:project_id])
+      AnalyzeJob.create(project: project, priority: 0)
+      redirect_to admin_project_jobs_path(project), flash: { success: 'Analysis Job has been created manually.' }
     end
 
     private
