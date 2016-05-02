@@ -1,5 +1,7 @@
 class AuthenticationsController < ApplicationController
-  before_action :session_required, :set_account, only: :new
+  skip_before_action :session_required, if: :account_params_present?, only: :new
+  before_action :session_required, unless: :account_params_present?, only: :new
+  before_action :set_account, only: :new
   before_action :session_account_params_or_current_user_required, only: [:new, :github_callback, :digits_callback]
   before_action :redirect_if_current_user_verified
 
@@ -43,5 +45,9 @@ class AuthenticationsController < ApplicationController
 
   def set_account
     @account = current_user.present? ? current_user : Account.new
+  end
+
+  def account_params_present?
+    session[:account_params].present?
   end
 end

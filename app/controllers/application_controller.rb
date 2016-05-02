@@ -72,7 +72,7 @@ class ApplicationController < ActionController::Base
   end
 
   def session_required
-    return if logged_in? || session[:account_params].present?
+    return if logged_in?
     flash[:notice] = t('sessions.message_html', href: new_registration_path)
     access_denied
   end
