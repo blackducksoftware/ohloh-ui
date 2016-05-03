@@ -52,7 +52,6 @@ class AliasTest < ActiveSupport::TestCase
   it 'expected callbacks when alias is created' do
     Alias.any_instance.expects(:update_unclaimed_person).once
     Alias.any_instance.expects(:schedule_project_analysis).once
-    Alias.any_instance.expects(:remove_unclaimed_person).once
     Alias.any_instance.expects(:move_name_facts_to_preferred_name).never
     create(:alias)
   end
@@ -60,6 +59,7 @@ class AliasTest < ActiveSupport::TestCase
   it 'expected callbacks when alias preferred_name_id is modified' do
     Alias.any_instance.expects(:update_unclaimed_person).never
     Alias.any_instance.expects(:schedule_project_analysis).once
+    Alias.any_instance.expects(:remove_unclaimed_person).once
     Alias.any_instance.expects(:move_name_facts_to_preferred_name).once
     @alias.preferred_name = create(:name)
     @alias.save!
