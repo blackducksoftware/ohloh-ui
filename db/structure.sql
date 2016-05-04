@@ -386,23 +386,11 @@ ALTER SEQUENCE account_reports_id_seq OWNED BY account_reports.id;
 
 
 --
--- Name: accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE accounts_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
 -- Name: accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE accounts (
-    id integer DEFAULT nextval('accounts_id_seq'::regclass) NOT NULL,
+    id integer NOT NULL,
     login text NOT NULL,
     email text NOT NULL,
     crypted_password text NOT NULL,
@@ -445,6 +433,25 @@ CREATE TABLE accounts (
 
 
 --
+-- Name: accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE accounts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE accounts_id_seq OWNED BY accounts.id;
+
+
+--
 -- Name: actions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -479,18 +486,6 @@ ALTER SEQUENCE actions_id_seq OWNED BY actions.id;
 
 
 --
--- Name: activity_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE activity_facts_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
 -- Name: activity_facts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -504,11 +499,30 @@ CREATE TABLE activity_facts (
     blanks_added integer DEFAULT 0,
     blanks_removed integer DEFAULT 0,
     name_id integer NOT NULL,
-    id bigint DEFAULT nextval('activity_facts_id_seq'::regclass) NOT NULL,
+    id bigint NOT NULL,
     analysis_id integer NOT NULL,
     commits integer DEFAULT 0,
     on_trunk boolean DEFAULT true
 );
+
+
+--
+-- Name: activity_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE activity_facts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: activity_facts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE activity_facts_id_seq OWNED BY activity_facts.id;
 
 
 --
@@ -554,23 +568,11 @@ CREATE TABLE all_months (
 
 
 --
--- Name: analyses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE analyses_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
 -- Name: analyses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE analyses (
-    id integer DEFAULT nextval('analyses_id_seq'::regclass) NOT NULL,
+    id integer NOT NULL,
     project_id integer NOT NULL,
     as_of timestamp without time zone,
     updated_on timestamp without time zone,
@@ -591,6 +593,25 @@ CREATE TABLE analyses (
     activity_score integer,
     hotness_score double precision
 );
+
+
+--
+-- Name: analyses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE analyses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: analyses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE analyses_id_seq OWNED BY analyses.id;
 
 
 --
@@ -625,6 +646,21 @@ ALTER SEQUENCE analysis_aliases_id_seq OWNED BY analysis_aliases.id;
 
 
 --
+-- Name: analysis_sloc_sets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE analysis_sloc_sets (
+    id integer NOT NULL,
+    analysis_id integer NOT NULL,
+    sloc_set_id integer NOT NULL,
+    as_of integer,
+    logged_at timestamp without time zone,
+    ignore text,
+    ignored_fyle_count integer
+);
+
+
+--
 -- Name: analysis_sloc_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -637,18 +673,10 @@ CREATE SEQUENCE analysis_sloc_sets_id_seq
 
 
 --
--- Name: analysis_sloc_sets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: analysis_sloc_sets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE analysis_sloc_sets (
-    id integer DEFAULT nextval('analysis_sloc_sets_id_seq'::regclass) NOT NULL,
-    analysis_id integer NOT NULL,
-    sloc_set_id integer NOT NULL,
-    as_of integer,
-    logged_at timestamp without time zone,
-    ignore text,
-    ignored_fyle_count integer
-);
+ALTER SEQUENCE analysis_sloc_sets_id_seq OWNED BY analysis_sloc_sets.id;
 
 
 --
@@ -812,23 +840,11 @@ ALTER SEQUENCE authorizations_id_seq OWNED BY authorizations.id;
 
 
 --
--- Name: commits_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE commits_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
 -- Name: commits; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE commits (
-    id integer DEFAULT nextval('commits_id_seq'::regclass) NOT NULL,
+    id integer NOT NULL,
     sha1 text,
     "time" timestamp without time zone NOT NULL,
     comment text,
@@ -862,23 +878,11 @@ CREATE TABLE positions (
 
 
 --
--- Name: projects_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE projects_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
 -- Name: projects; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE projects (
-    id integer DEFAULT nextval('projects_id_seq'::regclass) NOT NULL,
+    id integer NOT NULL,
     name text,
     description text,
     comments text,
@@ -909,23 +913,11 @@ CREATE TABLE projects (
 
 
 --
--- Name: sloc_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE sloc_sets_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
 -- Name: sloc_sets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE sloc_sets (
-    id integer DEFAULT nextval('sloc_sets_id_seq'::regclass) NOT NULL,
+    id integer NOT NULL,
     code_set_id integer NOT NULL,
     updated_on timestamp without time zone,
     as_of integer,
@@ -960,6 +952,25 @@ CREATE VIEW c2 AS
      JOIN commits ON (((commits.code_set_id = sloc_sets.code_set_id) AND (commits."position" <= analysis_sloc_sets.as_of))))
      JOIN analysis_aliases ON (((analysis_aliases.analysis_id = projects.best_analysis_id) AND (analysis_aliases.commit_name_id = commits.name_id))))
      LEFT JOIN positions ON (((positions.project_id = projects.id) AND (positions.name_id = analysis_aliases.preferred_name_id))));
+
+
+--
+-- Name: claims_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE claims_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: claims_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE claims_id_seq OWNED BY positions.id;
 
 
 --
@@ -1027,6 +1038,22 @@ ALTER SEQUENCE code_set_gestalts_id_seq OWNED BY code_set_gestalts.id;
 
 
 --
+-- Name: code_sets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE code_sets (
+    id integer NOT NULL,
+    repository_id integer NOT NULL,
+    updated_on timestamp without time zone,
+    best_sloc_set_id integer,
+    as_of integer,
+    logged_at timestamp without time zone,
+    clump_count integer DEFAULT 0,
+    fetched_at timestamp without time zone
+);
+
+
+--
 -- Name: code_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1039,19 +1066,10 @@ CREATE SEQUENCE code_sets_id_seq
 
 
 --
--- Name: code_sets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: code_sets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE code_sets (
-    id integer DEFAULT nextval('code_sets_id_seq'::regclass) NOT NULL,
-    repository_id integer NOT NULL,
-    updated_on timestamp without time zone,
-    best_sloc_set_id integer,
-    as_of integer,
-    logged_at timestamp without time zone,
-    clump_count integer DEFAULT 0,
-    fetched_at timestamp without time zone
-);
+ALTER SEQUENCE code_sets_id_seq OWNED BY code_sets.id;
 
 
 --
@@ -1088,10 +1106,10 @@ ALTER SEQUENCE commit_flags_id_seq OWNED BY commit_flags.id;
 
 
 --
--- Name: name_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: commits_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE name_facts_id_seq
+CREATE SEQUENCE commits_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1100,11 +1118,18 @@ CREATE SEQUENCE name_facts_id_seq
 
 
 --
+-- Name: commits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE commits_id_seq OWNED BY commits.id;
+
+
+--
 -- Name: name_facts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE name_facts (
-    id integer DEFAULT nextval('name_facts_id_seq'::regclass) NOT NULL,
+    id integer NOT NULL,
     analysis_id integer,
     name_id integer,
     primary_language_id integer,
@@ -1255,6 +1280,22 @@ CREATE SEQUENCE diff_licenses_id_seq
 
 
 --
+-- Name: diffs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE diffs (
+    id bigint NOT NULL,
+    sha1 text,
+    parent_sha1 text,
+    commit_id integer,
+    fyle_id integer,
+    name text,
+    deleted boolean,
+    updated_at timestamp without time zone DEFAULT now() NOT NULL
+);
+
+
+--
 -- Name: diffs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1267,50 +1308,10 @@ CREATE SEQUENCE diffs_id_seq
 
 
 --
--- Name: diffs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: diffs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE diffs (
-    id bigint DEFAULT nextval('diffs_id_seq'::regclass) NOT NULL,
-    sha1 text,
-    parent_sha1 text,
-    commit_id integer,
-    fyle_id integer,
-    name text,
-    deleted boolean,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL
-);
-
-
---
--- Name: domain_blacklists; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE domain_blacklists (
-    id integer NOT NULL,
-    domain character varying(255),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: domain_blacklists_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE domain_blacklists_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: domain_blacklists_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE domain_blacklists_id_seq OWNED BY domain_blacklists.id;
+ALTER SEQUENCE diffs_id_seq OWNED BY diffs.id;
 
 
 --
@@ -1349,23 +1350,11 @@ ALTER SEQUENCE duplicates_id_seq OWNED BY duplicates.id;
 
 
 --
--- Name: edits_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE edits_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
 -- Name: edits; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE edits (
-    id integer DEFAULT nextval('edits_id_seq'::regclass) NOT NULL,
+    id integer NOT NULL,
     type text,
     target_id integer NOT NULL,
     target_type text NOT NULL,
@@ -1381,6 +1370,62 @@ CREATE TABLE edits (
     project_id integer,
     organization_id integer
 );
+
+
+--
+-- Name: old_edits; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE old_edits (
+    id integer NOT NULL,
+    project_id integer NOT NULL,
+    account_id integer NOT NULL,
+    created_at timestamp without time zone,
+    type text NOT NULL,
+    key text,
+    value text,
+    undone boolean DEFAULT false NOT NULL,
+    undone_at timestamp without time zone,
+    undone_by integer
+);
+
+
+--
+-- Name: edits_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE edits_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: edits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE edits_id_seq OWNED BY old_edits.id;
+
+
+--
+-- Name: edits_id_seq1; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE edits_id_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: edits_id_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE edits_id_seq1 OWNED BY edits.id;
 
 
 --
@@ -1413,6 +1458,21 @@ ALTER SEQUENCE email_addresses_id_seq OWNED BY email_addresses.id;
 
 
 --
+-- Name: enlistments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE enlistments (
+    id integer NOT NULL,
+    project_id integer NOT NULL,
+    repository_id integer NOT NULL,
+    deleted boolean DEFAULT false NOT NULL,
+    created_at timestamp without time zone DEFAULT timezone('UTC'::text, now()) NOT NULL,
+    updated_at timestamp without time zone DEFAULT timezone('UTC'::text, now()) NOT NULL,
+    ignore text
+);
+
+
+--
 -- Name: enlistments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1425,18 +1485,10 @@ CREATE SEQUENCE enlistments_id_seq
 
 
 --
--- Name: enlistments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: enlistments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE enlistments (
-    id integer DEFAULT nextval('enlistments_id_seq'::regclass) NOT NULL,
-    project_id integer NOT NULL,
-    repository_id integer NOT NULL,
-    deleted boolean DEFAULT false NOT NULL,
-    created_at timestamp without time zone DEFAULT timezone('UTC'::text, now()) NOT NULL,
-    updated_at timestamp without time zone DEFAULT timezone('UTC'::text, now()) NOT NULL,
-    ignore text
-);
+ALTER SEQUENCE enlistments_id_seq OWNED BY enlistments.id;
 
 
 --
@@ -1509,6 +1561,23 @@ ALTER SEQUENCE exhibits_id_seq OWNED BY exhibits.id;
 
 
 --
+-- Name: factoids; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE factoids (
+    id integer NOT NULL,
+    severity integer DEFAULT 0,
+    analysis_id integer NOT NULL,
+    type text,
+    license_id integer,
+    language_id integer,
+    previous_count integer DEFAULT 0,
+    current_count integer DEFAULT 0,
+    max_count integer DEFAULT 0
+);
+
+
+--
 -- Name: factoids_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1521,20 +1590,10 @@ CREATE SEQUENCE factoids_id_seq
 
 
 --
--- Name: factoids; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: factoids_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE factoids (
-    id integer DEFAULT nextval('factoids_id_seq'::regclass) NOT NULL,
-    severity integer DEFAULT 0,
-    analysis_id integer NOT NULL,
-    type text,
-    license_id integer,
-    language_id integer,
-    previous_count integer DEFAULT 0,
-    current_count integer DEFAULT 0,
-    max_count integer DEFAULT 0
-);
+ALTER SEQUENCE factoids_id_seq OWNED BY factoids.id;
 
 
 --
@@ -1713,6 +1772,18 @@ ALTER SEQUENCE follows_id_seq OWNED BY follows.id;
 
 
 --
+-- Name: forges; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE forges (
+    id integer NOT NULL,
+    name text NOT NULL,
+    url text NOT NULL,
+    type text
+);
+
+
+--
 -- Name: forges_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1725,14 +1796,24 @@ CREATE SEQUENCE forges_id_seq
 
 
 --
--- Name: forges; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: forges_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE forges (
-    id integer DEFAULT nextval('forges_id_seq'::regclass) NOT NULL,
+ALTER SEQUENCE forges_id_seq OWNED BY forges.id;
+
+
+--
+-- Name: forums; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE forums (
+    id integer NOT NULL,
+    project_id integer,
     name text NOT NULL,
-    url text NOT NULL,
-    type text
+    topics_count integer DEFAULT 0,
+    posts_count integer DEFAULT 0,
+    "position" integer,
+    description text
 );
 
 
@@ -1749,17 +1830,20 @@ CREATE SEQUENCE forums_id_seq
 
 
 --
--- Name: forums; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: forums_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE forums (
-    id integer DEFAULT nextval('forums_id_seq'::regclass) NOT NULL,
-    project_id integer,
+ALTER SEQUENCE forums_id_seq OWNED BY forums.id;
+
+
+--
+-- Name: fyles; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE fyles (
+    id integer NOT NULL,
     name text NOT NULL,
-    topics_count integer DEFAULT 0,
-    posts_count integer DEFAULT 0,
-    "position" integer,
-    description text
+    code_set_id integer NOT NULL
 );
 
 
@@ -1776,14 +1860,10 @@ CREATE SEQUENCE fyles_id_seq
 
 
 --
--- Name: fyles; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: fyles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE fyles (
-    id integer DEFAULT nextval('fyles_id_seq'::regclass) NOT NULL,
-    name text NOT NULL,
-    code_set_id integer NOT NULL
-);
+ALTER SEQUENCE fyles_id_seq OWNED BY fyles.id;
 
 
 --
@@ -1874,6 +1954,18 @@ CREATE TABLE github_project (
 
 
 --
+-- Name: helpfuls; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE helpfuls (
+    id integer NOT NULL,
+    review_id integer,
+    account_id integer NOT NULL,
+    yes boolean DEFAULT true
+);
+
+
+--
 -- Name: helpfuls_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1886,15 +1978,10 @@ CREATE SEQUENCE helpfuls_id_seq
 
 
 --
--- Name: helpfuls; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: helpfuls_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE helpfuls (
-    id integer DEFAULT nextval('helpfuls_id_seq'::regclass) NOT NULL,
-    review_id integer,
-    account_id integer NOT NULL,
-    yes boolean DEFAULT true
-);
+ALTER SEQUENCE helpfuls_id_seq OWNED BY helpfuls.id;
 
 
 --
@@ -1945,23 +2032,11 @@ CREATE TABLE job_statuses (
 
 
 --
--- Name: jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE jobs_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
 -- Name: jobs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE jobs (
-    id integer DEFAULT nextval('jobs_id_seq'::regclass) NOT NULL,
+    id integer NOT NULL,
     project_id integer,
     repository_id integer,
     status integer DEFAULT 0 NOT NULL,
@@ -1985,6 +2060,25 @@ CREATE TABLE jobs (
     failure_group_id integer,
     organization_id integer
 );
+
+
+--
+-- Name: jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE jobs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE jobs_id_seq OWNED BY jobs.id;
 
 
 --
@@ -2192,23 +2286,11 @@ ALTER SEQUENCE language_facts_id_seq OWNED BY language_facts.id;
 
 
 --
--- Name: languages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE languages_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
 -- Name: languages; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE languages (
-    id integer DEFAULT nextval('languages_id_seq'::regclass) NOT NULL,
+    id integer NOT NULL,
     name text,
     nice_name text,
     category integer DEFAULT 0,
@@ -2225,6 +2307,38 @@ CREATE TABLE languages (
 
 
 --
+-- Name: languages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE languages_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: languages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE languages_id_seq OWNED BY languages.id;
+
+
+--
+-- Name: license_facts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE license_facts (
+    license_id integer NOT NULL,
+    file_count integer DEFAULT 0 NOT NULL,
+    scope integer DEFAULT 0 NOT NULL,
+    id integer NOT NULL,
+    analysis_id integer NOT NULL
+);
+
+
+--
 -- Name: license_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -2237,15 +2351,25 @@ CREATE SEQUENCE license_facts_id_seq
 
 
 --
--- Name: license_facts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: license_facts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE license_facts (
-    license_id integer NOT NULL,
-    file_count integer DEFAULT 0 NOT NULL,
-    scope integer DEFAULT 0 NOT NULL,
-    id integer DEFAULT nextval('license_facts_id_seq'::regclass) NOT NULL,
-    analysis_id integer NOT NULL
+ALTER SEQUENCE license_facts_id_seq OWNED BY license_facts.id;
+
+
+--
+-- Name: licenses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE licenses (
+    id integer NOT NULL,
+    vanity_url text,
+    name text,
+    abbreviation text,
+    url text,
+    description text,
+    deleted boolean DEFAULT false,
+    locked boolean DEFAULT false
 );
 
 
@@ -2262,19 +2386,10 @@ CREATE SEQUENCE licenses_id_seq
 
 
 --
--- Name: licenses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: licenses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE licenses (
-    id integer DEFAULT nextval('licenses_id_seq'::regclass) NOT NULL,
-    vanity_url text,
-    name text,
-    abbreviation text,
-    url text,
-    description text,
-    deleted boolean DEFAULT false,
-    locked boolean DEFAULT false
-);
+ALTER SEQUENCE licenses_id_seq OWNED BY licenses.id;
 
 
 --
@@ -2551,10 +2666,10 @@ CREATE SEQUENCE monitorships_id_seq
 
 
 --
--- Name: name_language_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: name_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE name_language_facts_id_seq
+CREATE SEQUENCE name_facts_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2563,11 +2678,18 @@ CREATE SEQUENCE name_language_facts_id_seq
 
 
 --
+-- Name: name_facts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE name_facts_id_seq OWNED BY name_facts.id;
+
+
+--
 -- Name: name_language_facts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE name_language_facts (
-    id integer DEFAULT nextval('name_language_facts_id_seq'::regclass) NOT NULL,
+    id integer NOT NULL,
     name_id integer,
     analysis_id integer,
     language_id integer,
@@ -2582,6 +2704,25 @@ CREATE TABLE name_language_facts (
     recent_commit_project_id integer,
     recent_commit_month timestamp without time zone
 );
+
+
+--
+-- Name: name_language_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE name_language_facts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: name_language_facts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE name_language_facts_id_seq OWNED BY name_language_facts.id;
 
 
 --
@@ -2614,6 +2755,16 @@ CREATE VIEW named_commits AS
 
 
 --
+-- Name: names; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE names (
+    id integer NOT NULL,
+    name text NOT NULL
+);
+
+
+--
 -- Name: names_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -2626,13 +2777,10 @@ CREATE SEQUENCE names_id_seq
 
 
 --
--- Name: names; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: names_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE names (
-    id integer DEFAULT nextval('names_id_seq'::regclass) NOT NULL,
-    name text NOT NULL
-);
+ALTER SEQUENCE names_id_seq OWNED BY names.id;
 
 
 --
@@ -2784,24 +2932,6 @@ CREATE SEQUENCE old_edits_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-
-
---
--- Name: old_edits; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE old_edits (
-    id integer DEFAULT nextval('old_edits_id_seq'::regclass) NOT NULL,
-    project_id integer NOT NULL,
-    account_id integer NOT NULL,
-    created_at timestamp without time zone,
-    type text NOT NULL,
-    key text,
-    value text,
-    undone boolean DEFAULT false NOT NULL,
-    undone_at timestamp without time zone,
-    undone_by integer
-);
 
 
 --
@@ -3042,6 +3172,25 @@ CREATE SEQUENCE positions_id_seq
 ALTER SEQUENCE positions_id_seq OWNED BY positions.id;
 
 
+SET default_with_oids = false;
+
+--
+-- Name: posts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE posts (
+    id integer NOT NULL,
+    account_id integer NOT NULL,
+    topic_id integer NOT NULL,
+    body text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone,
+    notified_at timestamp without time zone,
+    vector tsvector,
+    popularity_factor numeric
+);
+
+
 --
 -- Name: posts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
@@ -3054,23 +3203,11 @@ CREATE SEQUENCE posts_id_seq
     CACHE 1;
 
 
-SET default_with_oids = false;
-
 --
--- Name: posts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: posts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE posts (
-    id integer DEFAULT nextval('posts_id_seq'::regclass) NOT NULL,
-    account_id integer NOT NULL,
-    topic_id integer NOT NULL,
-    body text,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone,
-    notified_at timestamp without time zone,
-    vector tsvector,
-    popularity_factor numeric
-);
+ALTER SEQUENCE posts_id_seq OWNED BY posts.id;
 
 
 --
@@ -3213,6 +3350,18 @@ CREATE TABLE project_gestalts_tmp (
 
 
 --
+-- Name: project_licenses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE project_licenses (
+    id integer NOT NULL,
+    project_id integer,
+    license_id integer,
+    deleted boolean DEFAULT false
+);
+
+
+--
 -- Name: project_licenses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -3225,15 +3374,10 @@ CREATE SEQUENCE project_licenses_id_seq
 
 
 --
--- Name: project_licenses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: project_licenses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE project_licenses (
-    id integer DEFAULT nextval('project_licenses_id_seq'::regclass) NOT NULL,
-    project_id integer,
-    license_id integer,
-    deleted boolean DEFAULT false
-);
+ALTER SEQUENCE project_licenses_id_seq OWNED BY project_licenses.id;
 
 
 --
@@ -3314,6 +3458,39 @@ CREATE VIEW projects_by_month AS
 
 
 --
+-- Name: projects_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE projects_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: projects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE projects_id_seq OWNED BY projects.id;
+
+
+--
+-- Name: ratings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE ratings (
+    id integer NOT NULL,
+    account_id integer NOT NULL,
+    project_id integer NOT NULL,
+    score integer NOT NULL,
+    created_at timestamp without time zone DEFAULT timezone('UTC'::text, now()),
+    updated_at timestamp without time zone DEFAULT timezone('UTC'::text, now())
+);
+
+
+--
 -- Name: ratings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -3326,17 +3503,10 @@ CREATE SEQUENCE ratings_id_seq
 
 
 --
--- Name: ratings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ratings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE ratings (
-    id integer DEFAULT nextval('ratings_id_seq'::regclass) NOT NULL,
-    account_id integer NOT NULL,
-    project_id integer NOT NULL,
-    score integer NOT NULL,
-    created_at timestamp without time zone DEFAULT timezone('UTC'::text, now()),
-    updated_at timestamp without time zone DEFAULT timezone('UTC'::text, now())
-);
+ALTER SEQUENCE ratings_id_seq OWNED BY ratings.id;
 
 
 --
@@ -3469,23 +3639,11 @@ ALTER SEQUENCE reports_id_seq OWNED BY reports.id;
 
 
 --
--- Name: repositories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE repositories_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
 -- Name: repositories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE repositories (
-    id integer DEFAULT nextval('repositories_id_seq'::regclass) NOT NULL,
+    id integer NOT NULL,
     url text,
     module_name text,
     branch_name text,
@@ -3500,6 +3658,25 @@ CREATE TABLE repositories (
     name_at_forge text,
     owner_at_forge text
 );
+
+
+--
+-- Name: repositories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE repositories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: repositories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE repositories_id_seq OWNED BY repositories.id;
 
 
 --
@@ -3571,6 +3748,22 @@ ALTER SEQUENCE reverification_trackers_id_seq OWNED BY reverification_trackers.i
 
 
 --
+-- Name: reviews; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE reviews (
+    id integer NOT NULL,
+    account_id integer NOT NULL,
+    project_id integer NOT NULL,
+    title text,
+    comment text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    helpful_score integer DEFAULT 0 NOT NULL
+);
+
+
+--
 -- Name: reviews_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -3583,19 +3776,10 @@ CREATE SEQUENCE reviews_id_seq
 
 
 --
--- Name: reviews; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: reviews_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE reviews (
-    id integer DEFAULT nextval('reviews_id_seq'::regclass) NOT NULL,
-    account_id integer NOT NULL,
-    project_id integer NOT NULL,
-    title text,
-    comment text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    helpful_score integer DEFAULT 0 NOT NULL
-);
+ALTER SEQUENCE reviews_id_seq OWNED BY reviews.id;
 
 
 --
@@ -3623,23 +3807,11 @@ CREATE VIEW robins_contributions_test AS
 
 
 --
--- Name: rss_articles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE rss_articles_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
 -- Name: rss_articles; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE rss_articles (
-    id integer DEFAULT nextval('rss_articles_id_seq'::regclass) NOT NULL,
+    id integer NOT NULL,
     rss_feed_id integer,
     guid text NOT NULL,
     "time" timestamp without time zone DEFAULT timezone('utc'::text, now()) NOT NULL,
@@ -3667,6 +3839,38 @@ CREATE TABLE rss_articles_2 (
 
 
 --
+-- Name: rss_articles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE rss_articles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: rss_articles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE rss_articles_id_seq OWNED BY rss_articles.id;
+
+
+--
+-- Name: rss_feeds; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE rss_feeds (
+    id integer NOT NULL,
+    url text NOT NULL,
+    last_fetch timestamp without time zone,
+    next_fetch timestamp without time zone,
+    error text
+);
+
+
+--
 -- Name: rss_feeds_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -3679,15 +3883,21 @@ CREATE SEQUENCE rss_feeds_id_seq
 
 
 --
--- Name: rss_feeds; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: rss_feeds_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE rss_feeds (
-    id integer DEFAULT nextval('rss_feeds_id_seq'::regclass) NOT NULL,
-    url text NOT NULL,
-    last_fetch timestamp without time zone,
-    next_fetch timestamp without time zone,
-    error text
+ALTER SEQUENCE rss_feeds_id_seq OWNED BY rss_feeds.id;
+
+
+--
+-- Name: rss_subscriptions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE rss_subscriptions (
+    id integer NOT NULL,
+    project_id integer,
+    rss_feed_id integer,
+    deleted boolean DEFAULT false
 );
 
 
@@ -3704,15 +3914,10 @@ CREATE SEQUENCE rss_subscriptions_id_seq
 
 
 --
--- Name: rss_subscriptions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: rss_subscriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE rss_subscriptions (
-    id integer DEFAULT nextval('rss_subscriptions_id_seq'::regclass) NOT NULL,
-    project_id integer,
-    rss_feed_id integer,
-    deleted boolean DEFAULT false
-);
+ALTER SEQUENCE rss_subscriptions_id_seq OWNED BY rss_subscriptions.id;
 
 
 --
@@ -3721,6 +3926,18 @@ CREATE TABLE rss_subscriptions (
 
 CREATE TABLE schema_migrations (
     version character varying(255) NOT NULL
+);
+
+
+--
+-- Name: sessions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE sessions (
+    id integer NOT NULL,
+    session_id character varying(255),
+    data text,
+    updated_at timestamp without time zone
 );
 
 
@@ -3737,15 +3954,10 @@ CREATE SEQUENCE sessions_id_seq
 
 
 --
--- Name: sessions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: sessions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE sessions (
-    id integer DEFAULT nextval('sessions_id_seq'::regclass) NOT NULL,
-    session_id character varying(255),
-    data text,
-    updated_at timestamp without time zone
-);
+ALTER SEQUENCE sessions_id_seq OWNED BY sessions.id;
 
 
 --
@@ -3784,6 +3996,21 @@ CREATE SEQUENCE size_facts_id_seq
 
 
 --
+-- Name: slave_logs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE slave_logs (
+    id integer NOT NULL,
+    message text,
+    created_on timestamp without time zone,
+    slave_id integer,
+    job_id integer,
+    code_set_id integer,
+    level integer DEFAULT 0
+);
+
+
+--
 -- Name: slave_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -3796,30 +4023,10 @@ CREATE SEQUENCE slave_logs_id_seq
 
 
 --
--- Name: slave_logs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: slave_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE slave_logs (
-    id integer DEFAULT nextval('slave_logs_id_seq'::regclass) NOT NULL,
-    message text,
-    created_on timestamp without time zone,
-    slave_id integer,
-    job_id integer,
-    code_set_id integer,
-    level integer DEFAULT 0
-);
-
-
---
--- Name: slave_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE slave_permissions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+ALTER SEQUENCE slave_logs_id_seq OWNED BY slave_logs.id;
 
 
 --
@@ -3827,7 +4034,7 @@ CREATE SEQUENCE slave_permissions_id_seq
 --
 
 CREATE TABLE slaves (
-    id integer DEFAULT nextval('slave_permissions_id_seq'::regclass) NOT NULL,
+    id integer NOT NULL,
     allow_deny text,
     hostname text NOT NULL,
     available_blocks integer,
@@ -3844,6 +4051,43 @@ CREATE TABLE slaves (
 
 
 --
+-- Name: slave_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE slave_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: slave_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE slave_permissions_id_seq OWNED BY slaves.id;
+
+
+--
+-- Name: sloc_metrics; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE sloc_metrics (
+    id bigint NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
 -- Name: sloc_metrics_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -3856,20 +4100,42 @@ CREATE SEQUENCE sloc_metrics_id_seq
 
 
 --
--- Name: sloc_metrics; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: sloc_metrics_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE sloc_metrics (
-    id bigint DEFAULT nextval('sloc_metrics_id_seq'::regclass) NOT NULL,
-    diff_id bigint,
-    language_id integer,
-    code_added integer DEFAULT 0 NOT NULL,
-    code_removed integer DEFAULT 0 NOT NULL,
-    comments_added integer DEFAULT 0 NOT NULL,
-    comments_removed integer DEFAULT 0 NOT NULL,
-    blanks_added integer DEFAULT 0 NOT NULL,
-    blanks_removed integer DEFAULT 0 NOT NULL,
-    sloc_set_id integer NOT NULL
+ALTER SEQUENCE sloc_metrics_id_seq OWNED BY sloc_metrics.id;
+
+
+--
+-- Name: sloc_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE sloc_sets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sloc_sets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE sloc_sets_id_seq OWNED BY sloc_sets.id;
+
+
+--
+-- Name: stack_entries; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE stack_entries (
+    id integer NOT NULL,
+    stack_id integer,
+    project_id integer,
+    created_at timestamp without time zone NOT NULL,
+    deleted_at timestamp without time zone,
+    note text
 );
 
 
@@ -3886,17 +4152,10 @@ CREATE SEQUENCE stack_entries_id_seq
 
 
 --
--- Name: stack_entries; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: stack_entries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE stack_entries (
-    id integer DEFAULT nextval('stack_entries_id_seq'::regclass) NOT NULL,
-    stack_id integer,
-    project_id integer,
-    created_at timestamp without time zone NOT NULL,
-    deleted_at timestamp without time zone,
-    note text
-);
+ALTER SEQUENCE stack_entries_id_seq OWNED BY stack_entries.id;
 
 
 --
@@ -3931,6 +4190,23 @@ ALTER SEQUENCE stack_ignores_id_seq OWNED BY stack_ignores.id;
 
 
 --
+-- Name: stacks; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE stacks (
+    id integer NOT NULL,
+    account_id integer,
+    session_id character varying(255),
+    project_count integer DEFAULT 0,
+    updated_at timestamp without time zone,
+    title text,
+    description text,
+    project_id integer,
+    deleted_at timestamp without time zone
+);
+
+
+--
 -- Name: stacks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -3943,19 +4219,21 @@ CREATE SEQUENCE stacks_id_seq
 
 
 --
--- Name: stacks; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: stacks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE stacks (
-    id integer DEFAULT nextval('stacks_id_seq'::regclass) NOT NULL,
-    account_id integer,
-    session_id character varying(255),
-    project_count integer DEFAULT 0,
-    updated_at timestamp without time zone,
-    title text,
-    description text,
-    project_id integer,
-    deleted_at timestamp without time zone
+ALTER SEQUENCE stacks_id_seq OWNED BY stacks.id;
+
+
+--
+-- Name: taggings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE taggings (
+    id integer NOT NULL,
+    tag_id integer,
+    taggable_id integer,
+    taggable_type character varying(255)
 );
 
 
@@ -3972,14 +4250,21 @@ CREATE SEQUENCE taggings_id_seq
 
 
 --
--- Name: taggings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: taggings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE taggings (
-    id integer DEFAULT nextval('taggings_id_seq'::regclass) NOT NULL,
-    tag_id integer,
-    taggable_id integer,
-    taggable_type character varying(255)
+ALTER SEQUENCE taggings_id_seq OWNED BY taggings.id;
+
+
+--
+-- Name: tags; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE tags (
+    id integer NOT NULL,
+    name text NOT NULL,
+    taggings_count integer DEFAULT 0 NOT NULL,
+    weight double precision DEFAULT 1.0 NOT NULL
 );
 
 
@@ -3996,15 +4281,10 @@ CREATE SEQUENCE tags_id_seq
 
 
 --
--- Name: tags; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE tags (
-    id integer DEFAULT nextval('tags_id_seq'::regclass) NOT NULL,
-    name text NOT NULL,
-    taggings_count integer DEFAULT 0 NOT NULL,
-    weight double precision DEFAULT 1.0 NOT NULL
-);
+ALTER SEQUENCE tags_id_seq OWNED BY tags.id;
 
 
 --
@@ -4073,23 +4353,11 @@ ALTER SEQUENCE tools_id_seq OWNED BY tools.id;
 
 
 --
--- Name: topics_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE topics_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
 -- Name: topics; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE topics (
-    id integer DEFAULT nextval('topics_id_seq'::regclass) NOT NULL,
+    id integer NOT NULL,
     forum_id integer,
     account_id integer NOT NULL,
     title text,
@@ -4103,6 +4371,25 @@ CREATE TABLE topics (
     replied_by integer,
     last_post_id integer
 );
+
+
+--
+-- Name: topics_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE topics_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: topics_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE topics_id_seq OWNED BY topics.id;
 
 
 --
@@ -4199,10 +4486,28 @@ ALTER SEQUENCE vitae_id_seq OWNED BY vitae.id;
 
 
 --
+-- Name: vw_projecturlnameedits; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW vw_projecturlnameedits AS
+ SELECT edits.project_id,
+    edits.value
+   FROM edits
+  WHERE ((edits.target_type = 'Project'::text) AND (edits.key = 'url_name'::text));
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY account_reports ALTER COLUMN id SET DEFAULT nextval('account_reports_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY accounts ALTER COLUMN id SET DEFAULT nextval('accounts_id_seq'::regclass);
 
 
 --
@@ -4216,6 +4521,13 @@ ALTER TABLE ONLY actions ALTER COLUMN id SET DEFAULT nextval('actions_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY activity_facts ALTER COLUMN id SET DEFAULT nextval('activity_facts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY aliases ALTER COLUMN id SET DEFAULT nextval('aliases_id_seq'::regclass);
 
 
@@ -4223,7 +4535,21 @@ ALTER TABLE ONLY aliases ALTER COLUMN id SET DEFAULT nextval('aliases_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY analyses ALTER COLUMN id SET DEFAULT nextval('analyses_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY analysis_aliases ALTER COLUMN id SET DEFAULT nextval('analysis_aliases_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY analysis_sloc_sets ALTER COLUMN id SET DEFAULT nextval('analysis_sloc_sets_id_seq'::regclass);
 
 
 --
@@ -4272,7 +4598,21 @@ ALTER TABLE ONLY code_set_gestalts ALTER COLUMN id SET DEFAULT nextval('code_set
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY code_sets ALTER COLUMN id SET DEFAULT nextval('code_sets_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY commit_flags ALTER COLUMN id SET DEFAULT nextval('commit_flags_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY commits ALTER COLUMN id SET DEFAULT nextval('commits_id_seq'::regclass);
 
 
 --
@@ -4286,7 +4626,7 @@ ALTER TABLE ONLY deleted_accounts ALTER COLUMN id SET DEFAULT nextval('deleted_a
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY domain_blacklists ALTER COLUMN id SET DEFAULT nextval('domain_blacklists_id_seq'::regclass);
+ALTER TABLE ONLY diffs ALTER COLUMN id SET DEFAULT nextval('diffs_id_seq'::regclass);
 
 
 --
@@ -4300,7 +4640,21 @@ ALTER TABLE ONLY duplicates ALTER COLUMN id SET DEFAULT nextval('duplicates_id_s
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY edits ALTER COLUMN id SET DEFAULT nextval('edits_id_seq1'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY email_addresses ALTER COLUMN id SET DEFAULT nextval('email_addresses_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY enlistments ALTER COLUMN id SET DEFAULT nextval('enlistments_id_seq'::regclass);
 
 
 --
@@ -4315,6 +4669,13 @@ ALTER TABLE ONLY event_subscription ALTER COLUMN id SET DEFAULT nextval('event_s
 --
 
 ALTER TABLE ONLY exhibits ALTER COLUMN id SET DEFAULT nextval('exhibits_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY factoids ALTER COLUMN id SET DEFAULT nextval('factoids_id_seq'::regclass);
 
 
 --
@@ -4342,6 +4703,27 @@ ALTER TABLE ONLY follows ALTER COLUMN id SET DEFAULT nextval('follows_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY forges ALTER COLUMN id SET DEFAULT nextval('forges_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY forums ALTER COLUMN id SET DEFAULT nextval('forums_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY fyles ALTER COLUMN id SET DEFAULT nextval('fyles_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY gestalts ALTER COLUMN id SET DEFAULT nextval('gestalts_id_seq'::regclass);
 
 
@@ -4349,7 +4731,21 @@ ALTER TABLE ONLY gestalts ALTER COLUMN id SET DEFAULT nextval('gestalts_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY helpfuls ALTER COLUMN id SET DEFAULT nextval('helpfuls_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY invites ALTER COLUMN id SET DEFAULT nextval('invites_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY jobs ALTER COLUMN id SET DEFAULT nextval('jobs_id_seq'::regclass);
 
 
 --
@@ -4392,6 +4788,27 @@ ALTER TABLE ONLY language_experiences ALTER COLUMN id SET DEFAULT nextval('langu
 --
 
 ALTER TABLE ONLY language_facts ALTER COLUMN id SET DEFAULT nextval('language_facts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY languages ALTER COLUMN id SET DEFAULT nextval('languages_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY license_facts ALTER COLUMN id SET DEFAULT nextval('license_facts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY licenses ALTER COLUMN id SET DEFAULT nextval('licenses_id_seq'::regclass);
 
 
 --
@@ -4454,6 +4871,27 @@ ALTER TABLE ONLY messages ALTER COLUMN id SET DEFAULT nextval('messages_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY name_facts ALTER COLUMN id SET DEFAULT nextval('name_facts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY name_language_facts ALTER COLUMN id SET DEFAULT nextval('name_language_facts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY names ALTER COLUMN id SET DEFAULT nextval('names_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY oauth_access_grants ALTER COLUMN id SET DEFAULT nextval('oauth_access_grants_id_seq'::regclass);
 
 
@@ -4476,6 +4914,13 @@ ALTER TABLE ONLY oauth_applications ALTER COLUMN id SET DEFAULT nextval('oauth_a
 --
 
 ALTER TABLE ONLY oauth_nonces ALTER COLUMN id SET DEFAULT nextval('oauth_nonces_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY old_edits ALTER COLUMN id SET DEFAULT nextval('edits_id_seq'::regclass);
 
 
 --
@@ -4517,6 +4962,13 @@ ALTER TABLE ONLY positions ALTER COLUMN id SET DEFAULT nextval('positions_id_seq
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY posts ALTER COLUMN id SET DEFAULT nextval('posts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY profiles ALTER COLUMN id SET DEFAULT nextval('profiles_id_seq'::regclass);
 
 
@@ -4545,6 +4997,13 @@ ALTER TABLE ONLY project_gestalts ALTER COLUMN id SET DEFAULT nextval('gestaltin
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY project_licenses ALTER COLUMN id SET DEFAULT nextval('project_licenses_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY project_reports ALTER COLUMN id SET DEFAULT nextval('project_reports_id_seq'::regclass);
 
 
@@ -4553,6 +5012,20 @@ ALTER TABLE ONLY project_reports ALTER COLUMN id SET DEFAULT nextval('project_re
 --
 
 ALTER TABLE ONLY project_vulnerability_reports ALTER COLUMN id SET DEFAULT nextval('project_vulnerability_reports_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY projects ALTER COLUMN id SET DEFAULT nextval('projects_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY ratings ALTER COLUMN id SET DEFAULT nextval('ratings_id_seq'::regclass);
 
 
 --
@@ -4587,6 +5060,13 @@ ALTER TABLE ONLY reports ALTER COLUMN id SET DEFAULT nextval('reports_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY repositories ALTER COLUMN id SET DEFAULT nextval('repositories_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY reverification_pilot_accounts ALTER COLUMN id SET DEFAULT nextval('reverification_pilot_accounts_id_seq'::regclass);
 
 
@@ -4601,7 +5081,98 @@ ALTER TABLE ONLY reverification_trackers ALTER COLUMN id SET DEFAULT nextval('re
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY reviews ALTER COLUMN id SET DEFAULT nextval('reviews_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY rss_articles ALTER COLUMN id SET DEFAULT nextval('rss_articles_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY rss_feeds ALTER COLUMN id SET DEFAULT nextval('rss_feeds_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY rss_subscriptions ALTER COLUMN id SET DEFAULT nextval('rss_subscriptions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY sessions ALTER COLUMN id SET DEFAULT nextval('sessions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY slave_logs ALTER COLUMN id SET DEFAULT nextval('slave_logs_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY slaves ALTER COLUMN id SET DEFAULT nextval('slave_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY sloc_metrics ALTER COLUMN id SET DEFAULT nextval('sloc_metrics_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY sloc_sets ALTER COLUMN id SET DEFAULT nextval('sloc_sets_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY stack_entries ALTER COLUMN id SET DEFAULT nextval('stack_entries_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY stack_ignores ALTER COLUMN id SET DEFAULT nextval('stack_ignores_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY stacks ALTER COLUMN id SET DEFAULT nextval('stacks_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY taggings ALTER COLUMN id SET DEFAULT nextval('taggings_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY tags ALTER COLUMN id SET DEFAULT nextval('tags_id_seq'::regclass);
 
 
 --
@@ -4616,6 +5187,13 @@ ALTER TABLE ONLY thirty_day_summaries ALTER COLUMN id SET DEFAULT nextval('thirt
 --
 
 ALTER TABLE ONLY tools ALTER COLUMN id SET DEFAULT nextval('tools_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY topics ALTER COLUMN id SET DEFAULT nextval('topics_id_seq'::regclass);
 
 
 --
@@ -4837,14 +5415,6 @@ ALTER TABLE ONLY deleted_accounts
 
 ALTER TABLE ONLY diffs
     ADD CONSTRAINT diffs_pkey PRIMARY KEY (id);
-
-
---
--- Name: domain_blacklists_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY domain_blacklists
-    ADD CONSTRAINT domain_blacklists_pkey PRIMARY KEY (id);
 
 
 --
@@ -6160,6 +6730,13 @@ CREATE INDEX index_jobs_on_code_set_id ON jobs USING btree (code_set_id);
 --
 
 CREATE INDEX index_jobs_on_project_id ON jobs USING btree (project_id);
+
+
+--
+-- Name: index_jobs_on_repository_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_jobs_on_repository_id ON jobs USING btree (repository_id);
 
 
 --
@@ -8064,6 +8641,14 @@ ALTER TABLE ONLY slave_logs
 
 
 --
+-- Name: sloc_metrics_diff_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY sloc_metrics
+    ADD CONSTRAINT sloc_metrics_diff_id_fkey FOREIGN KEY (diff_id) REFERENCES diffs(id) ON DELETE CASCADE;
+
+
+--
 -- Name: sloc_metrics_language_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8356,6 +8941,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160216095409');
 INSERT INTO schema_migrations (version) VALUES ('20160317061932');
 
 INSERT INTO schema_migrations (version) VALUES ('20160318131123');
+
+INSERT INTO schema_migrations (version) VALUES ('20160504104102');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
