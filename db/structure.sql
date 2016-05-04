@@ -1283,37 +1283,6 @@ CREATE TABLE diffs (
 
 
 --
--- Name: domain_blacklists; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE domain_blacklists (
-    id integer NOT NULL,
-    domain character varying(255),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: domain_blacklists_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE domain_blacklists_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: domain_blacklists_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE domain_blacklists_id_seq OWNED BY domain_blacklists.id;
-
-
---
 -- Name: duplicates; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -4286,13 +4255,6 @@ ALTER TABLE ONLY deleted_accounts ALTER COLUMN id SET DEFAULT nextval('deleted_a
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY domain_blacklists ALTER COLUMN id SET DEFAULT nextval('domain_blacklists_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY duplicates ALTER COLUMN id SET DEFAULT nextval('duplicates_id_seq'::regclass);
 
 
@@ -4837,14 +4799,6 @@ ALTER TABLE ONLY deleted_accounts
 
 ALTER TABLE ONLY diffs
     ADD CONSTRAINT diffs_pkey PRIMARY KEY (id);
-
-
---
--- Name: domain_blacklists_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY domain_blacklists
-    ADD CONSTRAINT domain_blacklists_pkey PRIMARY KEY (id);
 
 
 --
@@ -8356,6 +8310,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160216095409');
 INSERT INTO schema_migrations (version) VALUES ('20160317061932');
 
 INSERT INTO schema_migrations (version) VALUES ('20160318131123');
+
+INSERT INTO schema_migrations (version) VALUES ('20160504111046');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
