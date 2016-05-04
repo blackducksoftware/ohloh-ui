@@ -71,7 +71,7 @@ class Kudo < ActiveRecord::Base
   end
 
   def notify_recipient
-    return unless errors.empty? && account && account.email_kudos
+    return unless errors.empty? && account && account.email_kudos?
     AccountMailer.kudo_recipient(self).deliver_now
   end
 end

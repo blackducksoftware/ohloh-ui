@@ -49,8 +49,9 @@ class AccountsController < ApplicationController
   def unsubscribe_emails
     account_id = Ohloh::Cipher.decrypt(CGI.escape(params[:key].to_s))
     @account = Account.where(id: account_id).first
+    @notification_type = params[:notification_type].try(:to_sym)
     @status = @account.try(:email_master)
-    @account.update_attribute(:email_master, false) if @status
+    Account::Subscription.new(@account).unsubscribe(@notification_type) if @status
   end
 
   private

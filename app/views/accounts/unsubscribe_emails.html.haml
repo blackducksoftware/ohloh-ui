@@ -1,25 +1,20 @@
-- if @status == true
-  %h1.margin_bottom_15= t('.title')
-  %p#email_unsubscribed
-    = t('.sad')
-    %i= t('.except')
-    = t('admin_emails')
-    = link_to t('.settings'), edit_account_privacy_account_path(@account)
-    = t('.privacy')
+.accounts_unsubscribe_emails_page
+  - if @status.nil?
+    %h1.margin_bottom_15= t('.unable')
+    %p#unknown_user
+      = t('.cannot')
+      %p= privacy_settings_text
+  - elsif @status
+    %h1.margin_bottom_15= t('.title')
+    %p#email_unsubscribed
+      = t('.sad', notification_type: notification_type_text(@notification_type))
+      %p= privacy_settings_text(@account)
+      %p= t('.admin_emails')
+  - else
+    %h1.margin_bottom_15= t('.already')
+    %p#email_already_unsubscribed
+      = t('.not_again')
+      %p= privacy_settings_text(@account)
 
-- elsif @status == false
-  %h1.margin_bottom_15= t('.already')
-  %p#email_already_unsubscribed
-    = t('.not_again')
-    = link_to t('.settings'), edit_account_privacy_account_path(@account)
-    = t('.privacy')
-- else
-  %h1.margin_bottom_15= t('.unable')
-  %p#unknown_user
-    = t('.cannot')
-    = link_to t('.settings'), new_session_path
-    = t('.privacy')
-
-%p
-  = t('.respect')
-  = link_to t('.policy'), 'http://blog.openhub.net/privacy', target: '_blank'
+  %p
+    = t('.privacy_policy_respect_html', privacy_policy_link: privacy_policy_link)

@@ -54,10 +54,7 @@ class Account < ActiveRecord::Base
 
   # To speed up searching, we keep track of an account's 'aliases'.
   def update_akas
-    akas = claimed_positions.includes(:name).map do |p|
-      p.name.name
-    end.uniq.join("\n")
-
+    akas = claimed_positions.includes(:name).map { |p| p.name.name }.uniq.join("\n")
     update_attribute(:akas, akas)
   end
 

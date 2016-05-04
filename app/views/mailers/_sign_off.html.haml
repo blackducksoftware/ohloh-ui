@@ -1,3 +1,6 @@
+- privacy_link = link_to(t('edit').downcase, edit_account_privacy_account_url('me'))
+- unsubscribe_emails_link = link_to(t('here').downcase, unsubscribe_emails_url)
+
 %p
   = succeed ',' do
     = t('.greeting')
@@ -6,5 +9,4 @@
 
 %p
   = t('postscript')
-  - privacy_link = link_to(t('edit').downcase, edit_account_privacy_account_url('me'))
-  = t('.unsubscribe_help', link: privacy_link).html_safe
+  = t('.unsubscribe_help_html', link: privacy_link, unsubscribe_emails_link: unsubscribe_emails_link)
