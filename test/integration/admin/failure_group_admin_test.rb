@@ -25,6 +25,24 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
     assert_response :ok
   end
 
+  describe 'index' do
+    it 'should render failure groups sorted in ascending order' do
+      failure_group = create(:failure_group)
+      create(:failed_job, failure_group_id: failure_group.id)
+      login_as admin
+      get admin_failure_groups_path(order: 'job_count_asc')
+      assert_response :ok
+    end
+
+    it 'should render failure groups sorted in descending order' do
+      failure_group = create(:failure_group)
+      create(:failed_job, failure_group_id: failure_group.id)
+      login_as admin
+      get admin_failure_groups_path(order: 'job_count_desc')
+      assert_response :ok
+    end
+  end
+
   describe 'decategorize' do
     it 'should decategorize failure groups ' do
       failure_group = create(:failure_group)

@@ -35,7 +35,7 @@ ActiveAdmin.register FailureGroup do
     end
     column :pattern
     column :auto_reschedule
-    column :jobs do |failure_group|
+    column :job_count, sortable: :job_count do |failure_group|
       link_to failure_group.jobs.count, admin_failure_group_jobs_path(failure_group)
     end
     actions
@@ -63,6 +63,15 @@ ActiveAdmin.register FailureGroup do
       failure_group.decategorize
       failure_group.destroy
       redirect_to admin_failure_groups_path, notice: 'FailureGroup was successfully deleted'
+    end
+
+    def scoped_collection
+      super.joins(
+        %(LEFT JOIN "jobs" ON "jobs"."failure_group_id" = "failure_groups"."id"
+          AND "jobs"."status" = #{Job::STATUS_FAILED}
+          AND ("jobs"."exception" IS NOT NULL)))
+        .select('failure_groups.*, COUNT(jobs.id) as job_count')
+        .group('failure_groups.id')
     end
   end
 end
