@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     skip_controllers :applications, :authorized_applications
   end
 
+  mount LetterOpenerWeb::Engine, at: '/inbox' if Rails.env.staging?
+
   resources :status, only: [] do
     get :age_spark, on: :collection
   end

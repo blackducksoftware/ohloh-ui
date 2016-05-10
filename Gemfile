@@ -45,7 +45,6 @@ group :development do
   gem 'capistrano-faster-assets'
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
-  gem 'letter_opener'
   gem 'meta_request'
   gem 'whenever', require: false
 end
@@ -80,4 +79,9 @@ end
 group :production do
   gem 'airbrake'
   gem 'traceview'
+end
+
+group :development, :staging do
+  gem 'letter_opener'
+  gem 'letter_opener_web', '~> 1.2.0'
 end
