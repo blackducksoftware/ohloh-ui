@@ -1,4 +1,5 @@
 class Alias < ActiveRecord::Base
+  include AliasScopes
   belongs_to :project
   belongs_to :commit_name, class_name: 'Name', foreign_key: :commit_name_id
   belongs_to :preferred_name, class_name: 'Name', foreign_key: :preferred_name_id
@@ -9,31 +10,12 @@ class Alias < ActiveRecord::Base
   validates :preferred_name_id, presence: true
 
   after_save :update_unclaimed_person, if: proc { |obj| !(obj.changed & %w(id deleted)).blank? }
+  after_update :remove_unclaimed_person
   after_save :schedule_project_analysis, if: proc { |obj| !(obj.changed & %w(preferred_name_id deleted)).blank? }
   after_update :move_name_facts_to_preferred_name, if: proc { |obj| !(obj.changed & %w(preferred_name_id)).blank? }
 
   acts_as_editable editable_attributes: [:preferred_name_id]
   acts_as_protected parent: :project
-
-  scope :not_deleted, -> { where(deleted: false) }
-  scope :for_project, lambda {|project|
-    where(project_id: project.id)
-      .where(deleted: false)
-      .where.not(preferred_name_id: nil)
-  }
-  scope :committer_names, lambda { |project|
-    Name.where(id: Commit.for_project(project).select(:name_id))
-      .where.not(id: for_project(project).select(:commit_name_id))
-      .where.not(id: for_project(project).select(:preferred_name_id))
-      .where.not(id: Position.for_project(project).where.not(name_id: nil).select(:name_id))
-      .order('lower(name)')
-  }
-  scope :preferred_names, lambda { |project, name_id = nil|
-    Name.where(id: Commit.for_project(project).select(:name_id))
-      .where.not(id: for_project(project).select(:commit_name_id))
-      .where.not(id: name_id)
-      .order('lower(name)')
-  }
 
   def allow_undo_to_nil?(key)
     ![:preferred_name_id].include?(key)
@@ -88,6 +70,11 @@ class Alias < ActiveRecord::Base
 
   def schedule_project_analysis
     project.schedule_delayed_analysis(10.minutes)
+  end
+
+  def remove_unclaimed_person
+    return unless Person.exists?(name_id: commit_name_id, project_id: project_id)
+    update_unclaimed_person unless preferred_name_id_changed?
   end
 
   def update_unclaimed_person

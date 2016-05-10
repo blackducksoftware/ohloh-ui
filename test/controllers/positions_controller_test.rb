@@ -524,5 +524,25 @@ describe 'PositionsController' do
       must_redirect_to account_positions_path(account)
       flash[:success].must_equal I18n.t('positions.one_click_create.position', name: name.name)
     end
+
+    it 'should remove contributions record when alias record exists' do
+      login_as account
+      position = create_position(account: account)
+      person = create(:person, project: position.project)
+      name = person.name.name
+      Alias.count.must_equal 0
+      get :one_click_create, account_id: account.to_param, project_name: position.project.name,
+                             committer_name: name
+      Alias.count.must_equal 1
+      new_alias = Alias.first
+      new_person = create(:person, project: position.project)
+      new_person.contributions.reload.count.must_equal 1
+      # DON'T KNOW HOW THIS ALIAS IS BEING CREATED IN DB and so we're simulating the same
+      create(:alias, commit_name_id: new_person.name_id, project_id: position.project.id,
+                     preferred_name_id: new_alias.preferred_name_id)
+      get :one_click_create, account_id: account.to_param, project_name: position.project.name,
+                             committer_name: new_person.name.name
+      new_person.contributions.reload.count.must_equal 0
+    end
   end
 end
