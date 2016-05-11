@@ -64,7 +64,8 @@ Rails.application.configure do
   # Set this to true and configure the email server for immediate delivery to
   # raise delivery errors.
   config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.perform_deliveries = false
+  # config.action_mailer.perform_deliveries = true
+  config.action_mailer.delivery_method = :letter_opener_web
   config.action_mailer.smtp_settings = { address: 'mailrelay.blackducksoftware.com',
                                          openssl_verify_mode: OpenSSL::SSL::VERIFY_NONE }
 
