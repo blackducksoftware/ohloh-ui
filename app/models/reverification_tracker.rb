@@ -1,7 +1,7 @@
 class ReverificationTracker < ActiveRecord::Base
   belongs_to :account
   enum status: [:pending, :delivered, :soft_bounced, :complained]
-  enum phase: [:initial, :marked_for_spam, :spam, :final_warning]
+  enum phase: [:initial, :marked_for_disable, :disabled, :final_warning]
 
   scope :soft_bounced_until_yesterday, -> { soft_bounced.where('DATE(sent_at) < DATE(NOW())').order(sent_at: :asc) }
   scope :max_attempts_not_reached, -> { where("attempts < #{Reverification::Mailer::MAX_ATTEMPTS}") }
@@ -9,8 +9,8 @@ class ReverificationTracker < ActiveRecord::Base
   def template_hash
     templ = case
             when initial? then :first_reverification_notice
-            when marked_for_spam? then :marked_for_spam_notice
-            when spam? then :account_is_spam_notice
+            when marked_for_disable? then :marked_for_disable_notice
+            when disabled? then :account_is_disabled_notice
             when final_warning? then :final_warning_notice
             end
     Reverification::Template.send(templ, account.email)
@@ -27,12 +27,12 @@ class ReverificationTracker < ActiveRecord::Base
     end
 
     def expired_second_phase_notifications(limit = nil)
-      marked_for_spam.where('(status = 1 OR (status = 2 AND attempts = 3))')
+      marked_for_disable.where('(status = 1 OR (status = 2 AND attempts = 3))')
         .where("(NOW()::DATE - sent_at::DATE) >= #{Reverification::Mailer::NOTIFICATION2_DUE_DAYS}").limit(limit)
     end
 
     def expired_third_phase_notifications(limit = nil)
-      spam.where('(status = 1 OR (status = 2 AND attempts = 3))')
+      disabled.where('(status = 1 OR (status = 2 AND attempts = 3))')
         .where("(NOW()::DATE - sent_at::DATE) >= #{Reverification::Mailer::NOTIFICATION3_DUE_DAYS}").limit(limit)
     end
 
@@ -56,6 +56,12 @@ class ReverificationTracker < ActiveRecord::Base
         end
         rev_tracker.account.access.spam!
         rev_tracker.account.destroy
+      end
+    end
+
+    def disable_account
+      ReverificationTracker.where(phase: 2).find_each do |rev_tracker|
+        rev_tracker.account.update_attributes!(level: -10)
       end
     end
 

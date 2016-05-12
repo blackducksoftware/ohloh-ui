@@ -8,8 +8,8 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
   describe 'template_hash' do
     before do
       @rev_track_one = create(:initial_rev_tracker)
-      @rev_track_two = create(:marked_for_spam_rev_tracker)
-      @rev_track_three = create(:spam_rev_tracker)
+      @rev_track_two = create(:marked_for_disable_rev_tracker)
+      @rev_track_three = create(:disable_rev_tracker)
       @rev_track_four = create(:final_warning_rev_tracker)
     end
 
@@ -18,13 +18,13 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
       @rev_track_one.template_hash
     end
 
-    it 'should expect marked_for_spam when marked_for_spam?' do
-      Reverification::Template.expects(:send).with(:marked_for_spam_notice, @rev_track_two.account.email)
+    it 'should expect marked_for_disable when marked_for_disable?' do
+      Reverification::Template.expects(:send).with(:marked_for_disable_notice, @rev_track_two.account.email)
       @rev_track_two.template_hash
     end
 
-    it 'should expect account_is_spam when spam?' do
-      Reverification::Template.expects(:send).with(:account_is_spam_notice, @rev_track_three.account.email)
+    it 'should expect account_is_disable when disable?' do
+      Reverification::Template.expects(:send).with(:account_is_disabled_notice, @rev_track_three.account.email)
       @rev_track_three.template_hash
     end
 
@@ -74,38 +74,38 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
 
   describe 'expired_second_phase_notifications' do
     before do
-      create(:marked_for_spam_rev_tracker, :complained, sent_at: Time.now.utc - 14.days)
+      create(:marked_for_disable_rev_tracker, :complained, sent_at: Time.now.utc - 14.days)
     end
-    let(:marked_spam_tracker1) do
-      create(:marked_for_spam_rev_tracker, :delivered, sent_at: Time.now.utc - 15.days)
+    let(:marked_disable_tracker1) do
+      create(:marked_for_disable_rev_tracker, :delivered, sent_at: Time.now.utc - 15.days)
     end
-    let(:marked_spam_tracker2) do
-      create(:marked_for_spam_rev_tracker, :delivered, account: suc_acc_1, sent_at: Time.now.utc - 14.days)
+    let(:marked_disable_tracker2) do
+      create(:marked_for_disable_rev_tracker, :delivered, account: suc_acc_1, sent_at: Time.now.utc - 14.days)
     end
-    let(:marked_spam_tracker3) do
-      create(:marked_for_spam_rev_tracker, :delivered, account: suc_acc_2, sent_at: Time.now.utc - 13.days)
+    let(:marked_disable_tracker3) do
+      create(:marked_for_disable_rev_tracker, :delivered, account: suc_acc_2, sent_at: Time.now.utc - 13.days)
     end
     let(:soft_bounced_tracker1) do
-      create(:marked_for_spam_rev_tracker, :soft_bounced, attempts: 2, sent_at: Time.now.utc - 14.days)
+      create(:marked_for_disable_rev_tracker, :soft_bounced, attempts: 2, sent_at: Time.now.utc - 14.days)
     end
 
-    it 'should return marked for spam notifications tracker which are not verified within 2weeks/14 days' do
+    it 'should return marked for disable notifications tracker which are not verified within 2weeks/14 days' do
       exp_noti = ReverificationTracker.expired_second_phase_notifications
-      exp_noti.must_equal [marked_spam_tracker1, marked_spam_tracker2]
-      assert_equal ['marked_for_spam'], exp_noti.map(&:phase).uniq
+      exp_noti.must_equal [marked_disable_tracker1, marked_disable_tracker2]
+      assert_equal ['marked_for_disable'], exp_noti.map(&:phase).uniq
       assert_equal [true, true], exp_noti.map { |n| (Time.now.utc - n.sent_at).to_i >= 14 }
     end
 
-    it 'should return marked for spam notifications tracker which are successfully delivered to recipients' do
+    it 'should return marked for disable notifications tracker which are successfully delivered to recipients' do
       exp_noti = ReverificationTracker.expired_second_phase_notifications
       # Note: Here the lazy loading of ActiveRecord::Relation breaks the execution
       # sequence cause of belonging methods not loaded into memory early.
-      exp_noti.must_equal [marked_spam_tracker1, marked_spam_tracker2]
+      exp_noti.must_equal [marked_disable_tracker1, marked_disable_tracker2]
       assert_equal [true, true], exp_noti.map(&:delivered?)
     end
 
-    it 'should return marked for spam notifications tracker which soft bounced 3 times' do
-      soft_bounced_thrice_tracker2 = create(:marked_for_spam_rev_tracker,
+    it 'should return marked for disable notifications tracker which soft bounced 3 times' do
+      soft_bounced_thrice_tracker2 = create(:marked_for_disable_rev_tracker,
                                             :soft_bounced,
                                             account: sbounce_acc_1,
                                             attempts: 3,
@@ -119,38 +119,38 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
 
   describe 'expired_third_phase_notifications' do
     before do
-      create(:spam_rev_tracker, :complained, sent_at: Time.now.utc - 14.days)
+      create(:disable_rev_tracker, :complained, sent_at: Time.now.utc - 14.days)
     end
-    let(:spam_tracker1) do
-      create(:spam_rev_tracker, :delivered, sent_at: Time.now.utc - 15.days)
+    let(:disable_tracker1) do
+      create(:disable_rev_tracker, :delivered, sent_at: Time.now.utc - 15.days)
     end
-    let(:spam_tracker2) do
-      create(:spam_rev_tracker, :delivered, account: suc_acc_1, sent_at: Time.now.utc - 14.days)
+    let(:disable_tracker2) do
+      create(:disable_rev_tracker, :delivered, account: suc_acc_1, sent_at: Time.now.utc - 14.days)
     end
-    let(:spam_tracker3) do
-      create(:spam_rev_tracker, :delivered, account: suc_acc_2, sent_at: Time.now.utc - 13.days)
+    let(:disable_tracker3) do
+      create(:disable_rev_tracker, :delivered, account: suc_acc_2, sent_at: Time.now.utc - 13.days)
     end
     let(:soft_bounced_tracker1) do
-      create(:spam_rev_tracker, :soft_bounced, attempts: 2, sent_at: Time.now.utc - 14.days)
+      create(:disable_rev_tracker, :soft_bounced, attempts: 2, sent_at: Time.now.utc - 14.days)
     end
 
-    it 'should return spammed notifications trackers which are not verified within 2weeks/14 days' do
+    it 'should return disablemed notifications trackers which are not verified within 2weeks/14 days' do
       exp_noti = ReverificationTracker.expired_third_phase_notifications
-      exp_noti.must_equal [spam_tracker1, spam_tracker2]
-      assert_equal ['spam'], exp_noti.map(&:phase).uniq
+      exp_noti.must_equal [disable_tracker1, disable_tracker2]
+      assert_equal ['disabled'], exp_noti.map(&:phase).uniq
       assert_equal [true, true], exp_noti.map { |n| (Time.now.utc - n.sent_at).to_i >= 14 }
     end
 
-    it 'should return spammed notifications trackers which are successfully delivered to recipients' do
+    it 'should return disablemed notifications trackers which are successfully delivered to recipients' do
       exp_noti = ReverificationTracker.expired_third_phase_notifications
       # Note: Here the lazy loading of ActiveRecord::Relation breaks the execution
       # sequence cause of belonging methods not loaded into memory early.
-      exp_noti.must_equal [spam_tracker1, spam_tracker2]
+      exp_noti.must_equal [disable_tracker1, disable_tracker2]
       assert_equal [true, true], exp_noti.map(&:delivered?)
     end
 
-    it 'should return spammed notifications tracker which soft bounced 3 times' do
-      soft_bounced_thrice_tracker2 = create(:spam_rev_tracker,
+    it 'should return disablemed notifications tracker which soft bounced 3 times' do
+      soft_bounced_thrice_tracker2 = create(:disable_rev_tracker,
                                             :soft_bounced,
                                             account: sbounce_acc_1,
                                             attempts: 3,
@@ -223,10 +223,10 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
       ReverificationTracker.destroy_account(@account.email)
     end
 
-    it 'should convert the account as spam before delete it' do
+    it 'should convert the account as disable before delete it' do
       Account.any_instance.stubs(:destroy).returns(nil)
       ReverificationTracker.destroy_account(@account.email)
-      assert @account.reload.access.spam?
+      assert @account.reload.access.disabled?
     end
   end
 
@@ -245,10 +245,18 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
     it 'should just delete the tracker if its account does not exist' do
       rev_tracker = create(:final_warning_rev_tracker, :delivered, attempts: 3, sent_at: Time.now.utc - 15.days)
       rev_tracker.update_attribute(:account_id, 1010)
-      Account::Access.any_instance.expects(:spam!).never
+      Account::Access.any_instance.expects(:disable!).never
       Account.any_instance.expects(:destroy).never
       ReverificationTracker.any_instance.expects(:destroy)
       ReverificationTracker.delete_expired_accounts
+    end
+  end
+
+  describe 'disable account' do
+    it 'should disable an account' do
+      account = create(:reverification_tracker, phase: 2).account
+      ReverificationTracker.disable_account
+      account.reload.access.level.must_equal(-10)
     end
   end
 
