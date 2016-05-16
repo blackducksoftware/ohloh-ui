@@ -255,7 +255,7 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
   describe 'disable account' do
     it 'should disable an account' do
       account = create(:reverification_tracker, phase: 2).account
-      ReverificationTracker.disable_account
+      ReverificationTracker.disable_accounts
       account.reload.access.level.must_equal(-10)
     end
   end
