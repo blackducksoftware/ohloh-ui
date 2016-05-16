@@ -27,7 +27,7 @@ module ReverificationTask
     def clean_all
       ReverificationTracker.remove_reverification_trackers_for_verified_accounts
       ReverificationTracker.delete_expired_accounts
-      ReverificationTracker.disable_account
+      ReverificationTracker.disable_accounts
       ReverificationTracker.remove_orphans
     end
 
