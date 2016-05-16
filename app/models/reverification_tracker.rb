@@ -60,8 +60,8 @@ class ReverificationTracker < ActiveRecord::Base
     end
 
     def disable_accounts
-      ReverificationTracker.where(phase: 2).find_each do |rev_tracker|
-        rev_tracker.account.update_attributes!(level: -10)
+      ReverificationTracker.disabled.find_each do |rev_tracker|
+        rev_tracker.account.update_attributes!(level: -10) unless rev_tracker.account.access.disabled?
       end
     end
 
