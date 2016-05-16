@@ -89,6 +89,7 @@ module Reverification
       def cleanup
         ReverificationTracker.remove_reverification_trackers_for_verified_accounts
         ReverificationTracker.delete_expired_accounts
+        ReverificationTracker.disable_accounts
         ReverificationTracker.remove_orphans
       end
 

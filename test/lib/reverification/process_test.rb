@@ -203,10 +203,14 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
 
   describe 'cleanup' do
     it 'should invoke cleanup methods' do
-      ReverificationTracker.expects(:remove_reverification_trackers_for_verified_accounts)
-      ReverificationTracker.expects(:delete_expired_accounts)
-      ReverificationTracker.expects(:remove_orphans)
+      create(:reverification_tracker)
+      rt_needs_to_be_disabled = create(:rev_tracker_needs_disabling)
+      create(:final_warning_rev_tracker, :delivered, attempts: 3, sent_at: Time.now.utc - 15.days)
+      orphaned_rt = create(:reverification_tracker)
+      orphaned_rt.update_attribute(:account_id, 1010)
       Reverification::Process.cleanup
+      ReverificationTracker.count.must_equal 1
+      rt_needs_to_be_disabled.reload.account.access.level.must_equal(-10)
     end
   end
 
@@ -345,7 +349,7 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
       assert_equal 1, @rev_tracker.attempts
       assert_equal MOCK::AWS::SimpleEmailService.response[:message_id], @rev_tracker.message_id
       assert_equal 'pending', @rev_tracker.status
-      assert_equal 'marked_for_spam', @rev_tracker.phase
+      assert_equal 'marked_for_disable', @rev_tracker.phase
       assert_equal @rev_tracker.sent_at.to_date, Time.now.utc.to_date
     end
   end

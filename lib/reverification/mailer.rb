@@ -13,6 +13,8 @@ module Reverification
         # never reach the limit. This number
         # should keep decreasing as the process
         # moves on
+
+        # Note: Once the pilot is done, replace this with ses_daily_limit_available
         ReverificationTracker.count
       end
 
@@ -23,8 +25,8 @@ module Reverification
 
       def send_notifications
         send_final_notification
-        send_converted_to_spam_notification
-        send_marked_for_spam_notification
+        send_account_is_disabled_notification
+        send_marked_for_disable_notification
         send_first_notification
       end
 
@@ -41,18 +43,18 @@ module Reverification
         end
       end
 
-      def send_marked_for_spam_notification
+      def send_marked_for_disable_notification
         ReverificationTracker.expired_initial_phase_notifications(send_limit).each do |rev_track|
           Reverification::Process.send_email(
-            Reverification::Template.marked_for_spam_notice(rev_track.account.email),
+            Reverification::Template.marked_for_disable_notice(rev_track.account.email),
             rev_track.account, 1)
         end
       end
 
-      def send_converted_to_spam_notification
+      def send_account_is_disabled_notification
         ReverificationTracker.expired_second_phase_notifications(send_limit).each do |rev_track|
           Reverification::Process.send_email(
-            Reverification::Template.account_is_spam_notice(rev_track.account.email),
+            Reverification::Template.account_is_disabled_notice(rev_track.account.email),
             rev_track.account, 2)
         end
       end

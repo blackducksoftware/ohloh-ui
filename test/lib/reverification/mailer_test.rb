@@ -33,8 +33,8 @@ class Reverification::MailerTest < ActiveSupport::TestCase
   describe 'send_notifications' do
     it 'should send notifications to accounts' do
       Reverification::Mailer.expects(:send_final_notification)
-      Reverification::Mailer.expects(:send_converted_to_spam_notification)
-      Reverification::Mailer.expects(:send_marked_for_spam_notification)
+      Reverification::Mailer.expects(:send_account_is_disabled_notification)
+      Reverification::Mailer.expects(:send_marked_for_disable_notification)
       Reverification::Mailer.expects(:send_first_notification)
       Reverification::Mailer.send_notifications
     end
@@ -61,7 +61,7 @@ class Reverification::MailerTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'send_marked_for_spam_notification' do
+  describe 'marked_for_disable_notice' do
     before do
       sent_at = Time.now.utc - Reverification::Mailer::NOTIFICATION1_DUE_DAYS.days
       @rev_tracker = create(:success_initial_rev_tracker, account: unverified_account_sucess, sent_at: sent_at)
@@ -71,34 +71,34 @@ class Reverification::MailerTest < ActiveSupport::TestCase
     end
 
     it 'should send correct email template' do
-      Reverification::Template.expects(:marked_for_spam_notice)
-      Reverification::Mailer.send_marked_for_spam_notification
+      Reverification::Template.expects(:marked_for_disable_notice)
+      Reverification::Mailer.send_marked_for_disable_notification
     end
 
-    it 'should change the phase to marked_for_spam' do
-      Reverification::Mailer.send_marked_for_spam_notification
-      @rev_tracker.phase.must_equal 'marked_for_spam'
+    it 'should change the phase to marked_for_disable' do
+      Reverification::Mailer.send_marked_for_disable_notification
+      @rev_tracker.phase.must_equal 'marked_for_disable'
     end
 
     it 'should reset the status to pending' do
-      Reverification::Mailer.send_marked_for_spam_notification
+      Reverification::Mailer.send_marked_for_disable_notification
       @rev_tracker.status.must_equal 'pending'
     end
 
     it 'should reset the attempts to 1' do
-      Reverification::Mailer.send_marked_for_spam_notification
+      Reverification::Mailer.send_marked_for_disable_notification
       @rev_tracker.attempts.must_equal 1
     end
 
     it 'should update the sent_at time' do
-      Reverification::Mailer.send_marked_for_spam_notification
+      Reverification::Mailer.send_marked_for_disable_notification
       @rev_tracker.sent_at.to_date.must_equal Time.zone.now.to_date
     end
   end
 
-  describe 'send_converted_to_spam_notification' do
+  describe 'send account is disable notice' do
     before do
-      @rev_tracker = create(:marked_for_spam_rev_tracker,
+      @rev_tracker = create(:marked_for_disable_rev_tracker,
                             :delivered,
                             account: unverified_account_sucess,
                             sent_at: Time.now.utc - Reverification::Mailer::NOTIFICATION2_DUE_DAYS.days)
@@ -108,34 +108,34 @@ class Reverification::MailerTest < ActiveSupport::TestCase
     end
 
     it 'should send correct email template' do
-      Reverification::Template.expects(:account_is_spam_notice)
-      Reverification::Mailer.send_converted_to_spam_notification
+      Reverification::Template.expects(:account_is_disabled_notice)
+      Reverification::Mailer.send_account_is_disabled_notification
     end
 
-    it 'should change the phase to spam' do
-      Reverification::Mailer.send_converted_to_spam_notification
-      @rev_tracker.phase.must_equal 'spam'
+    it 'should change the phase to disabled' do
+      Reverification::Mailer.send_account_is_disabled_notification
+      @rev_tracker.phase.must_equal 'disabled'
     end
 
     it 'should reset the status to pending' do
-      Reverification::Mailer.send_converted_to_spam_notification
+      Reverification::Mailer.send_account_is_disabled_notification
       @rev_tracker.status.must_equal 'pending'
     end
 
     it 'should reset the attempts to 1' do
-      Reverification::Mailer.send_converted_to_spam_notification
+      Reverification::Mailer.send_account_is_disabled_notification
       @rev_tracker.attempts.must_equal 1
     end
 
     it 'should update the sent_at time' do
-      Reverification::Mailer.send_converted_to_spam_notification
+      Reverification::Mailer.send_account_is_disabled_notification
       @rev_tracker.sent_at.to_date.must_equal Time.zone.now.to_date
     end
   end
 
   describe 'send_final_notification' do
     before do
-      @rev_tracker = create(:spam_rev_tracker,
+      @rev_tracker = create(:disable_rev_tracker,
                             :delivered,
                             account: unverified_account_sucess,
                             sent_at: Time.now.utc - Reverification::Mailer::NOTIFICATION3_DUE_DAYS.days)
@@ -149,7 +149,7 @@ class Reverification::MailerTest < ActiveSupport::TestCase
       Reverification::Mailer.send_final_notification
     end
 
-    it 'should change the phase to spam' do
+    it 'should change the phase to final warning' do
       Reverification::Mailer.send_final_notification
       @rev_tracker.phase.must_equal 'final_warning'
     end
@@ -211,9 +211,9 @@ class Reverification::MailerTest < ActiveSupport::TestCase
       end
     end
 
-    describe 'marked for spam notification' do
+    describe 'marked for disable notification' do
       before do
-        @rev_tracker = create(:marked_for_spam_rev_tracker,
+        @rev_tracker = create(:marked_for_disable_rev_tracker,
                               :soft_bounced,
                               account: unverified_account_sucess,
                               attempts: 1,
@@ -223,13 +223,13 @@ class Reverification::MailerTest < ActiveSupport::TestCase
       end
 
       it 'should send the same email content' do
-        Reverification::Template.expects(:marked_for_spam_notice)
+        Reverification::Template.expects(:marked_for_disable_notice)
         Reverification::Mailer.resend_soft_bounced_notifications
       end
 
       it 'should not change the phase' do
         Reverification::Mailer.resend_soft_bounced_notifications
-        @rev_tracker.reload.must_be :marked_for_spam?
+        @rev_tracker.reload.must_be :marked_for_disable?
       end
 
       it 'should increment attempts by one' do
@@ -246,14 +246,14 @@ class Reverification::MailerTest < ActiveSupport::TestCase
 
       it 'should not resend email when sent_at is not lesser than current date' do
         @rev_tracker.update sent_at: Time.now.utc
-        Reverification::Template.expects(:marked_for_spam_notice).never
+        Reverification::Template.expects(:marked_for_disable_notice).never
         Reverification::Mailer.resend_soft_bounced_notifications
       end
     end
 
-    describe 'spam notification' do
+    describe 'account is disable notification' do
       before do
-        @rev_tracker = create(:spam_rev_tracker,
+        @rev_tracker = create(:disable_rev_tracker,
                               :soft_bounced,
                               account: unverified_account_sucess,
                               attempts: 1,
@@ -263,13 +263,13 @@ class Reverification::MailerTest < ActiveSupport::TestCase
       end
 
       it 'should send the same email content' do
-        Reverification::Template.expects(:account_is_spam_notice)
+        Reverification::Template.expects(:account_is_disabled_notice)
         Reverification::Mailer.resend_soft_bounced_notifications
       end
 
       it 'should not change the phase' do
         Reverification::Mailer.resend_soft_bounced_notifications
-        @rev_tracker.reload.must_be :spam?
+        @rev_tracker.reload.must_be :disabled?
       end
 
       it 'should increment attempts by one' do
@@ -286,7 +286,7 @@ class Reverification::MailerTest < ActiveSupport::TestCase
 
       it 'should not resend email when sent_at is not lesser than current date' do
         @rev_tracker.update sent_at: Time.now.utc
-        Reverification::Template.expects(:account_is_spam_notice).never
+        Reverification::Template.expects(:account_is_disabled_notice).never
         Reverification::Mailer.resend_soft_bounced_notifications
       end
     end

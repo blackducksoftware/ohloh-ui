@@ -25,9 +25,10 @@ module ReverificationTask
   class Cleanup < Thor
     desc 'clean_all', 'Invokes all three cleanup tasks'
     def clean_all
-      invoke :verified
-      invoke :unverified
-      invoke :delete_orphaned_rev_trackers
+      ReverificationTracker.remove_reverification_trackers_for_verified_accounts
+      ReverificationTracker.delete_expired_accounts
+      ReverificationTracker.disable_account
+      ReverificationTracker.remove_orphans
     end
 
     desc 'verified', 'Removes the reverification trackers of verified accounts'
@@ -43,6 +44,11 @@ module ReverificationTask
     desc 'delete_orphaned_rev_trackers', 'Removes orphan reverification trackers'
     def delete_orphaned_rev_trackers
       ReverificationTracker.remove_orphans
+    end
+
+    desc 'disable_accounts', 'Disables all accounts with phase disable (2)'
+    def disable_accounts
+      ReverificationTracker.disable_account
     end
   end
 

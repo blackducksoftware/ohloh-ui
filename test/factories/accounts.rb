@@ -63,6 +63,11 @@ FactoryGirl.define do
     association :reverification_tracker, strategy: :null
   end
 
+  trait :disabled_account do
+    level Account::Access::DISABLED
+    association :github_verification, strategy: :null
+  end
+
   trait :spammer do
     level Account::Access::SPAM
     association :github_verification, strategy: :null

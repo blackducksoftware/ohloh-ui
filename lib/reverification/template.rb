@@ -24,7 +24,7 @@ module Reverification
             <a href='https://www.openhub.net'>www.openhub.net</a></p>" }
       end
 
-      def account_is_spam_notice(email)
+      def account_is_disabled_notice(email)
         { to: "#{email}", from: Reverification::Mailer::FROM,
           subject: 'Your OpenHub Account has been deactivated.',
           body_html: "<p>Hello;<br><br>You are receiving this notice because there has been
@@ -48,7 +48,7 @@ module Reverification
             <a href='https://www.openhub.net'>www.openhub.net</a></p>" }
       end
 
-      def marked_for_spam_notice(email)
+      def marked_for_disable_notice(email)
         { to: "#{email}", from: Reverification::Mailer::FROM,
           subject: 'Your OpenHub account will be flagged for deactivation',
           body_html: "<p>Hello Again;<br><br>
