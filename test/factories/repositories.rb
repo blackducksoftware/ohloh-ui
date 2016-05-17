@@ -37,4 +37,19 @@ FactoryGirl.define do
   factory :svn_sync_repository, parent: :repository, class: 'SvnSyncRepository' do
     type 'SvnSyncRepository'
   end
+
+  trait :branch do
+    branch_name 'master'
+    module_name nil
+  end
+
+  trait :module do
+    branch_name nil
+    module_name 'trunk/'
+  end
+
+  trait :no_branch_module do
+    branch_name nil
+    module_name nil
+  end
 end
