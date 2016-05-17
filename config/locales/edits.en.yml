@@ -17,7 +17,7 @@ en:
     explanation_create: "Created %{type}[%{id}]"
     explanation_alias_property: "Contributor '%{commit_name}' renamed to '%{name}'"
     explanation_alias_create: "Created alias for name '%{name}'"
-    explanation_enlistment: "Enlisted in %{url} %{name}"
+    explanation_enlistment: "Enlisted in %{url}"
     explanation_enlistment_ignored: "Changed list of files to be ignored"
     explanation_link_key_category: "Changed link %{id}'s %{key} to be '%{category}'"
     explanation_link_key_value: "Changed link %{id}'s %{key} to be '%{value}'"

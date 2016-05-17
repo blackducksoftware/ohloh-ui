@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class EditsHelperTest < ActionView::TestCase
+  include ERB::Util
   include EditsHelper
 
   describe 'edit_humanize_datetime' do
@@ -31,8 +32,33 @@ class EditsHelperTest < ActionView::TestCase
       enlistment = create(:enlistment)
       edit = create(:create_edit, target: enlistment)
       edit_explanation_enlistment(edit).must_equal I18n.t('edits.explanation_enlistment',
-                                                          url: enlistment.repository.url,
-                                                          name: enlistment.repository.module_name)
+                                                          url: enlistment.repository.url)
+    end
+  end
+
+  describe 'edit_show_subject' do
+    describe 'Enlistment' do
+      it 'should display branch name if there is branch_name' do
+        enlistment = create(:enlistment, :ent_branch)
+        @parent = enlistment.project
+        edit = create(:create_edit, target: enlistment)
+        edit_show_subject(edit).must_match "Branch: #{enlistment.repository.branch_name}"
+      end
+
+      it 'should display moudle name if there is module_name' do
+        enlistment = create(:enlistment, :ent_module)
+        @parent = enlistment.project
+        edit = create(:create_edit, target: enlistment)
+        edit_show_subject(edit).must_match "Module: #{enlistment.repository.module_name}"
+      end
+
+      it 'should not display neither branch nor module name if both are empty' do
+        enlistment = create(:enlistment, :ent_no_branch_module)
+        @parent = enlistment.project
+        edit = create(:create_edit, target: enlistment)
+        edit_show_subject(edit).wont_match "Branch: #{enlistment.repository.branch_name}"
+        edit_show_subject(edit).wont_match "Module: #{enlistment.repository.module_name}"
+      end
     end
   end
 end

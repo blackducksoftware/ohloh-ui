@@ -1,4 +1,6 @@
 module EditsHelper
+  include EnlistmentsHelper
+
   def edit_humanize_datetime(datetime)
     now = Time.current
     return t('edits.edit_humanize_datetime', difference: time_ago_in_words(datetime)) if (now - datetime) < 24.hours
@@ -12,7 +14,7 @@ module EditsHelper
 
   def edit_show_subject(edit)
     org_edit = true if params[:organization_id].present? || edit.key == 'organization_id' || edit.key == 'org_type'
-    html_escape(edit_subject(edit, org_edit))
+    html_escape(edit_subject(edit, org_edit)) + ' ' + edit_enlistment_branch_info(edit)
   end
 
   private
@@ -74,8 +76,14 @@ module EditsHelper
     if edit.is_a?(PropertyEdit)
       t('edits.explanation_enlistment_ignored')
     else
-      t('edits.explanation_enlistment', url: edit.target.repository.url, name: edit.target.repository.module_name)
+      t('edits.explanation_enlistment', url: edit.target.repository.url)
     end
+  end
+
+  def edit_enlistment_branch_info(edit)
+    if @parent.is_a?(Project) && edit.target.is_a?(Enlistment) && edit.is_a?(CreateEdit)
+      enlistment_branch_name_html_snippet(edit.target)
+    end.to_s.html_safe
   end
 
   def edit_explanation_link(edit)
