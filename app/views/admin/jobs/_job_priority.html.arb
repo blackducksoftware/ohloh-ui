@@ -2,7 +2,10 @@ para ''
 
 active_admin_form_for :job, method: :put do |f|
   inputs 'Update' do
-    input :priority, :style => 'width;50px;'
+    input :priority, as: :number, input_html: { class: 'short_field_width' }
+    input :wait_until, as: :datepicker, input_html: { class: 'short_field_width' }
+    input :retry_count, as: :number, min: 0, max: 8, input_html: { class: 'short_field_width' }
+
     li do
       legend do
         label 'Do Not Retry'
