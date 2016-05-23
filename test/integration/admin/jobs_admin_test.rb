@@ -91,6 +91,13 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
     assert_response :redirect
   end
 
+  it 'should update retry_count' do
+    login_as admin
+    job = create(:fetch_job, repository: create(:repository))
+    put admin_job_path(job), job: { retry_count: 3 }
+    job.reload.retry_count.must_equal 3
+  end
+
   it 'should delete job' do
     login_as admin
     job = create(:fetch_job, repository: create(:repository))

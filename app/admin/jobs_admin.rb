@@ -6,7 +6,7 @@ ActiveAdmin.register Job do
   belongs_to :account, finder: :find_by_login, optional: true
   belongs_to :failure_group, optional: true
 
-  permit_params :status, :priority, :wait_until, :current_step_at, :notes, :do_not_retry
+  permit_params :status, :priority, :wait_until, :current_step_at, :notes, :do_not_retry, :retry_count
 
   filter :slave, collection: proc { Slave.pluck(:hostname).sort }
   filter :type, as: :select

@@ -23,20 +23,6 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
---
--- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
-
-
---
--- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
-
-
 SET search_path = public, pg_catalog;
 
 --
@@ -128,97 +114,6 @@ where
         m.ts_name=c.ts_name and 
         c.oid=show_curcfg() 
 $_$;
-
-
---
--- Name: <; Type: OPERATOR; Schema: public; Owner: -
---
-
-CREATE OPERATOR < (
-    PROCEDURE = tsvector_lt,
-    LEFTARG = tsvector,
-    RIGHTARG = tsvector,
-    COMMUTATOR = OPERATOR(pg_catalog.>),
-    NEGATOR = OPERATOR(pg_catalog.>=),
-    RESTRICT = contsel,
-    JOIN = contjoinsel
-);
-
-
---
--- Name: <=; Type: OPERATOR; Schema: public; Owner: -
---
-
-CREATE OPERATOR <= (
-    PROCEDURE = tsvector_le,
-    LEFTARG = tsvector,
-    RIGHTARG = tsvector,
-    COMMUTATOR = OPERATOR(pg_catalog.>=),
-    NEGATOR = OPERATOR(pg_catalog.>),
-    RESTRICT = contsel,
-    JOIN = contjoinsel
-);
-
-
---
--- Name: <>; Type: OPERATOR; Schema: public; Owner: -
---
-
-CREATE OPERATOR <> (
-    PROCEDURE = tsvector_ne,
-    LEFTARG = tsvector,
-    RIGHTARG = tsvector,
-    COMMUTATOR = OPERATOR(pg_catalog.<>),
-    NEGATOR = OPERATOR(pg_catalog.=),
-    RESTRICT = neqsel,
-    JOIN = neqjoinsel
-);
-
-
---
--- Name: =; Type: OPERATOR; Schema: public; Owner: -
---
-
-CREATE OPERATOR = (
-    PROCEDURE = tsvector_eq,
-    LEFTARG = tsvector,
-    RIGHTARG = tsvector,
-    COMMUTATOR = OPERATOR(pg_catalog.=),
-    NEGATOR = <>,
-    MERGES,
-    RESTRICT = eqsel,
-    JOIN = eqjoinsel
-);
-
-
---
--- Name: >; Type: OPERATOR; Schema: public; Owner: -
---
-
-CREATE OPERATOR > (
-    PROCEDURE = tsvector_gt,
-    LEFTARG = tsvector,
-    RIGHTARG = tsvector,
-    COMMUTATOR = <,
-    NEGATOR = <=,
-    RESTRICT = contsel,
-    JOIN = contjoinsel
-);
-
-
---
--- Name: >=; Type: OPERATOR; Schema: public; Owner: -
---
-
-CREATE OPERATOR >= (
-    PROCEDURE = tsvector_ge,
-    LEFTARG = tsvector,
-    RIGHTARG = tsvector,
-    COMMUTATOR = <=,
-    NEGATOR = <,
-    RESTRICT = contsel,
-    JOIN = contjoinsel
-);
 
 
 --

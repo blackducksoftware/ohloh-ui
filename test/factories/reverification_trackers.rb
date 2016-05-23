@@ -34,18 +34,23 @@ FactoryGirl.define do
     status 3
   end
 
-  factory :marked_for_spam_rev_tracker, parent: :reverification_tracker do
+  factory :marked_for_disable_rev_tracker, parent: :reverification_tracker do
     association :account, :no_verification
     phase 1
   end
 
-  factory :spam_rev_tracker, parent: :reverification_tracker do
-    association :account, :spammer, :no_verification
+  factory :rev_tracker_needs_disabling, parent: :reverification_tracker do
+    association :account, :no_verification
+    phase 2
+  end
+
+  factory :disable_rev_tracker, parent: :reverification_tracker do
+    association :account, :disabled_account, :no_verification
     phase 2
   end
 
   factory :final_warning_rev_tracker, parent: :reverification_tracker do
-    association :account, :spammer, :no_verification
+    association :account, :disabled_account, :no_verification
     phase 3
   end
 
