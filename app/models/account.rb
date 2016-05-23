@@ -102,6 +102,10 @@ class Account < ActiveRecord::Base
     ManualVerification.create(account_id: id, auth_id: id)
   end
 
+  def bot?
+    settings(:bot_user).enabled == true
+  end
+
   class << self
     def resolve_login(login)
       Account.find_by('lower(login) = ?', login.to_s.downcase)

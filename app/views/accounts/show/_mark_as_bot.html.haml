@@ -1,0 +1,7 @@
+- if @account.bot?
+  = link_to t('.marked_as_bot').html_safe, '#', method: :post,
+    class: 'btn btn-info btn-small disabled', title: t('.title', name: @account.name)
+- else
+  = link_to t('.link').html_safe, make_bot_account_accesses_path(@account),
+    method: :post, data: { confirm: t('.confirm', name: @account.name) },
+    class: 'btn btn-info btn-small', title: t('.title', name: @account.name)

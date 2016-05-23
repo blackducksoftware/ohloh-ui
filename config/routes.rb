@@ -106,6 +106,7 @@ Rails.application.routes.draw do
       collection do
         post :manual_verification
         post :make_spammer
+        post :make_bot
         get :activate
       end
     end
