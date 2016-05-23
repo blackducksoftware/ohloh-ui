@@ -25,5 +25,7 @@ module AccountAssociations
     has_one :github_verification
     has_one :twitter_digits_verification
     has_one :reverification_tracker, dependent: :destroy
+
+    has_settings :bot_user
   end
 end

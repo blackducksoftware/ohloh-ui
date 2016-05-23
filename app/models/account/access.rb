@@ -47,6 +47,11 @@ class Account::Access < OhDelegator::Base
     end
   end
 
+  def make_bot
+    account.settings(:bot_user).enabled = true
+    account.save
+  end
+
   def mobile_or_oauth_verified?
     return if account.nil?
     account.verifications.exists?
