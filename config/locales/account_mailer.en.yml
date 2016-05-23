@@ -13,5 +13,13 @@ en:
       subject: "New kudo from %{from}"
       dear_blank: "Dear %{to},"
       body_1: "%{from} sent you kudos at Open Hub!"
-      body_2: "View your kudos online at %{my_account}"
-      body_3: "Congrats,\nYour friends at Open Hub\n\nP.S. You signed up for Open Hub kudo notifications. Visit %{email_settings_link} to change your email preferences or unsubscribe directly %{unsubscribe_emails_link}.  If you've received this email in error, please let us know by mailing us at info@openhub.net."
+      body_2: |
+        - Congrats, your friends at Open Hub.
+        View your kudos online at %{my_account}.
+      body_3: |
+        P.S. You signed up for Open Hub kudo notifications.
+        Visit %{email_settings_link} to change your email preferences or unsubscribe directly %{unsubscribe_emails_link}.
+        If you've received this email in error, please let us know by mailing us at info@openhub.net."
+      message: |
+        "%{message}"
+        - %{sender}

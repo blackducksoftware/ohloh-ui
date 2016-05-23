@@ -1,0 +1,6 @@
+<%= t('.dear_blank', to: @kudo.account.name) %>
+<%= t('.body_1', from: @kudo.sender.name) %>
+
+<%= t('.message', message: @kudo.message, sender: @kudo.sender.name) unless @kudo.message.blank? %>
+<%= t('.body_2', my_account: @my_account_url) %>
+<%= t('.body_3', email_settings_link: @email_settings_url, unsubscribe_emails_link: @unsubscribe_emails_url) %>
