@@ -34,6 +34,8 @@ en:
       activate:
         notice: 'Account already active'
         success: 'Activation Succeeded!'
+      make_bot:
+         success: "The account %{name} has been marked as BOT."
       make_spammer:
         success: "The account %{name} has been marked as spammer."
       manual_verification:
@@ -120,6 +122,11 @@ en:
         posts_size: '%{size} post(s)'
         no_reviews: 'No project reviewed.'
         reviews_size: '%{size} project review(s)'
+      mark_as_bot:
+        link: 'MARK AS BOT'
+        confirm: "Are you sure you want to mark %{name} as BOT?"
+        title: "Mark %{name} as BOT!"
+        marked_as_bot: '<i class="icon-check">&nbsp;</i>Already Marked AS BOT'
       admin:
         email: 'Email Address:'
         activity: 'Open Hub Activity'

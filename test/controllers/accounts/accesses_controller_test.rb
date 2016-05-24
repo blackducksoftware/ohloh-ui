@@ -65,6 +65,30 @@ describe 'Accounts::AccessesController' do
     end
   end
 
+  describe 'mark as bot' do
+    let(:account) { create(:account) }
+    let(:admin) { create(:admin) }
+
+    it 'user should not be able to mark as BOT' do
+      user2 = create(:account)
+      login_as account
+      post :make_bot, account_id: user2.id
+      must_respond_with :unauthorized
+    end
+
+    it 'should mark an account as BOT' do
+      login_as admin
+      admin.level.must_equal Account::Access::ADMIN
+      account.reload.access.bot?.must_equal false
+      post :make_bot, account_id: account.id
+
+      must_redirect_to account_path(account)
+      account.reload.access.level.must_equal Account::Access::BOT
+      expected = ERB::Util.html_escape(I18n.t('accounts.accesses.make_bot.success', name: account.name))
+      flash[:success].must_equal expected
+    end
+  end
+
   describe 'manual verification' do
     it 'should create a manual verification for an account' do
       admin = create(:admin)

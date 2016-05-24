@@ -1,0 +1,5 @@
+- if @account.access.bot?
+  = disabled_button t('.marked_as_bot'), title: t('.title', name: @account.name)
+- else
+  = icon_button(make_bot_account_accesses_path(@account), text: t('.link'), size: 'small', type: 'info',
+      title: t('.title', name: @account.name), icon: 'check')

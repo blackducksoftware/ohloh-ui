@@ -12,7 +12,8 @@ module AccountScopes
     }
 
     scope :recently_active, lambda {
-      joins(vitas: :vita_fact)
+      where(level: Account::Access::DEFAULT)
+        .joins(vitas: :vita_fact)
         .where(VitaFact.arel_table[:last_checkin].gt(1.month.ago))
         .where(arel_table[:best_vita_id].eq(Vita.arel_table[:id]))
         .where.not(best_vita_id: nil)
