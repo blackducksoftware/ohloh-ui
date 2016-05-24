@@ -10,15 +10,16 @@
 
         = t('.did_this_helpful')
         - if review.helpful_to_account?(current_user)
-          %span.voted= t('reviews.yes')
+          %span.voted= t('reviews.helpful_yes')
         - else
-          %a.set-checkbox-and-submit-form{ href: 'javascript:', 'data-check-box' => 1 }= t('reviews.yes')
+          %a.set-checkbox-and-submit-form{ href: 'javascript:void(0)', 'data-check-box' => 1 }= t('reviews.helpful_yes')
         \|
         - if review.not_helpful_to_account?(current_user)
-          %span.voted= t('reviews.no')
+          %span.voted= t('reviews.helpful_no')
         - else
-          %a.set-checkbox-and-submit-form{ href: 'javascript:', 'data-check-box' => 0 }= t('reviews.no')
+          %a.set-checkbox-and-submit-form{ href: 'javascript:void(0)', 'data-check-box' => 0 }= t('reviews.helpful_no')
   - else
     = t('.did_this_helpful')
     %a.needs_login{ href: 'javascript:void(0)' }= t('reviews.helpful_yes')
+    \|
     %a.needs_login{ href: 'javascript:void(0)' }= t('reviews.helpful_no')
