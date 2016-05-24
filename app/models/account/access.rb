@@ -2,6 +2,7 @@ class Account::Access < OhDelegator::Base
   delegate :level, to: :account
 
   DEFAULT = 0
+  BOT = 5
   ADMIN = 10
   DISABLED = -10
   SPAM = -20
@@ -12,6 +13,10 @@ class Account::Access < OhDelegator::Base
 
   def default?
     level.eql?(DEFAULT)
+  end
+
+  def bot?
+    level.eql?(BOT)
   end
 
   def activated?
@@ -45,6 +50,10 @@ class Account::Access < OhDelegator::Base
     Account.transaction do
       account.update_attribute(:level, SPAM)
     end
+  end
+
+  def bot!
+    account.update_attributes!(level: BOT)
   end
 
   def mobile_or_oauth_verified?
