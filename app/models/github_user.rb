@@ -44,7 +44,10 @@ class GithubUser
 
   def create_repositories
     urls = fetch_repository_urls
-    @repositories ||= urls.map { |url| (repo = GitRepository.find_or_create_by(url: url, branch_name: branch_name)); repo if repo.valid? }.compact!
+    @repositories ||= urls.map do |url|
+      repo = GitRepository.find_or_create_by(url: url, branch_name: branch_name)
+      repo if repo.valid?
+    end.compact!
   end
 
   def fetch_repository_urls
