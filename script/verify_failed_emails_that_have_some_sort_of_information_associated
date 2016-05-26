@@ -1,4 +1,3 @@
-#! /usr/bin/env ruby
 require_relative '../config/environment'
 require 'csv'
 
@@ -17,104 +16,93 @@ class FailedEmails
     @failed_accounts_with_used_projects = []
     @failed_accounts_with_commit_data = []
     @failed_accounts_that_manages = []
+    @failed_accounts_that_have_edits = []
     @failed_accounts = []
   end
 
-  def generate_list_of_failed_accounts
+  def generate_list_of_failed_emails
     CSV.foreach(File.expand_path('../complete_failed_list.csv', __FILE__)) do |row|
       failed_emails << row[2]
     end
     failed_emails.shift
-    find_accounts
   end
 
   def find_accounts
     failed_emails.each do |email|
-      failed_accounts << Account.find_by_email(email)
+      if Account.find_by_email(email).nil?
+        next
+      else
+        failed_accounts << Account.find_by_email(email)
+      end
     end
-    failed_accounts = failed_accounts.to_a.compact
-    puts failed_accounts.include?(nil)
   end
 
   def determine_accounts_with_facts
-    emails_with_facts = Account.with_facts.to_a.map!(&:email).sort
-    failed_accounts_with_facts << (emails_with_facts & failed_emails.sort)
-    failed_accounts_with_facts 
+    failed_accounts_with_facts << (Account.with_facts.sort & failed_accounts.sort)
+    if block_given?
+      yield failed_accounts_with_facts
+    else
+      failed_accounts_with_facts
+    end
   end
 
   def determine_accounts_with_used_projects
     failed_accounts.each do |account|
-      failed_accounts_with_used_projects << email if account.project_core.used[0].count > 0
+      failed_accounts_with_used_projects << account if account.project_core.used[0].count > 0
     end
-    failed_accounts_with_used_projects
+    if block_given?
+      yield failed_accounts_with_used_projects
+    else
+      failed_accounts_with_used_projects
+    end
   end
 
   def determine_accounts_with_commits
     failed_accounts.each do |account|   
-      failed_accounts_with_commit_data << email if CommitsByProject.new(account).history_in_date_range.count || CommitsByLanguage.new(account).language_experience  > 0
+      failed_accounts_with_commit_data << account if CommitsByProject.new(account).history_in_date_range.count || CommitsByLanguage.new(account).language_experience  > 0
     end
-    failed_accounts_with_commit_data
+    if block_given?
+      yield failed_accounts_with_commit_data
+    else
+      failed_accounts_with_commit_data
+    end
   end
 
   def determine_accounts_that_manage
     failed_accounts.each do |account|
-        failed_accounts_that_manages << email if account.projects.count > 0
+      failed_accounts_that_manages << account if account.projects.count > 0
     end
-    failed_accounts_that_manages
+    if block_given?
+      yield failed_accounts_that_manages
+    else
+      failed_accounts_that_manages
+    end
   end
 
   def determine_accounts_that_have_edits
     failed_accounts.each do |account|
-      failed_accounts_that_have_edits << email if account.edits.count > 0
+      failed_accounts_that_have_edits << account if account.edits.count > 0
     end
-    failed_accounts_that_have_edits
-  end
-end
-
-class FailedEmailStatistics < FailedEmails
-
-  def determine_accounts_with_facts_stats
-    emails_with_facts = Account.with_facts.to_a.map!(&:email).sort
-    puts (emails_with_facts & failed_emails.sort).count
-  end
-
-  def determine_accounts_with_used_projects_stats
-    failed_accounts.each do |account|
-      failed_accounts_with_used_projects << account.email if account.project_core.used[0].count > 0
+    if block_given?
+      yield failed_accounts_that_have_edits
+    else
+      failed_accounts_that_have_edits
     end
-    puts failed_accounts_with_used_projects.count
-  end
-
-  def determine_accounts_with_commits_stats
-    failed_accounts.each do |account|
-      failed_accounts_with_commit_data << account.email if CommitsByProject.new(account).history_in_date_range.count || CommitsByLanguage.new(account).language_experience  > 0
-    end
-    puts failed_accounts_with_commit_data.count
-  end
-
-  def determine_accounts_that_manage_stats
-    failed_accounts.each do |account|
-      failed_accounts_that_manages << account.email if account.projects.count > 0
-    end
-    puts failed_accounts_that_manages.count
-  end
-
-  def determine_accounts_that_have_edits_stats
-    failed_accounts.each do |account|
-      failed_accounts_that_have_edits << account.email if account.edits.count > 0
-    end
-    puts failed_accounts_that_have_edits.count
   end
 end
 
 class Verificationz
 
-  def initialize(list_of_accounts)
-    @accounts = list_of_accounts
-  end
-
-  def create_manual_verifications(accounts = [])
-    accounts.each { |acc| ManualVerification.create(account_id: acc.id, auth_id: acc.id) }
+  def create_manual_verifications(accounts)
+    return if accounts.empty?
+    counter = 0
+    accounts.each do |acc|
+      unless acc.verifications.exists?
+        ManualVerification.create(account_id: acc.id, auth_id: acc.id) 
+        counter += 1
+      end
+    end
+    puts counter
   end
 
   def cleanup
@@ -123,10 +111,26 @@ class Verificationz
   end
 end
 
-failed_list = FailedEmailStatistics.new
-failed_list.generate_list_of_failed_accounts
-failed_list.determine_accounts_with_facts_stats
-failed_list.determine_accounts_with_used_projects_stats
-failed_list.determine_accounts_with_commits_stats
-failed_list.determine_accounts_that_manage_stats
-failed_list.determine_accounts_that_have_edits_stats
+failed_emails = FailedEmails.new
+verifications = Verificationz.new
+
+failed_emails.generate_list_of_failed_emails
+
+failed_emails.find_accounts
+
+failed_emails.determine_accounts_with_facts
+verifications.create_manual_verifications(failed_emails.failed_accounts_with_facts.flatten)
+
+failed_emails.determine_accounts_with_used_projects
+verifications.create_manual_verifications(failed_emails.failed_accounts_with_used_projects)
+
+failed_emails.determine_accounts_that_manage
+verifications.create_manual_verifications(failed_emails.failed_accounts_that_manages)
+
+failed_emails.determine_accounts_with_commits
+verifications.create_manual_verifications(failed_emails.failed_accounts_with_commit_data)
+
+failed_emails.determine_accounts_that_have_edits
+verifications.create_manual_verifications(failed_emails.failed_accounts_that_have_edits)
+
+verifications.cleanup
