@@ -44,10 +44,7 @@ class GithubUser
 
   def create_repositories
     urls = fetch_repository_urls
-    @repositories ||= urls.map do |url|
-      repo = GitRepository.find_or_create_by(url: url, branch_name: branch_name)
-      repo if repo.valid?
-    end.compact!
+    @repositories ||= urls.map { |url| GitRepository.find_or_create_by(url: url, branch_name: branch_name) }
   end
 
   def fetch_repository_urls
@@ -59,10 +56,10 @@ class GithubUser
       _stdin, json_repository_data = Open3.popen3('curl', github_url(page))
       repository_data = JSON.load(json_repository_data)
       break unless repository_data.present?
-      repository_urls.concat repository_data.map { |data| data['git_url'] }
+      repository_urls.concat repository_data.map { |data| data['git_url'] unless data['size'].zero? }
     end
 
-    repository_urls
+    repository_urls.compact
   end
 
   def github_url(page)
