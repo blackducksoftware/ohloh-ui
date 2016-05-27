@@ -12,8 +12,7 @@ class Language::Chart
     Language.where(name: @options[:language_name]).to_a.each do |language|
       @series['series'] << { data: LanguageFact.report(language, @options).map(&:percent),
                              color: "##{language_color(language.name)}",
-                             name: language.nice_name
-      }
+                             name: language.nice_name }
     end
     @series.deep_merge(chart_watermark)
   end

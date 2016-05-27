@@ -51,7 +51,7 @@ class ActiveSupport::TestCase
     login_as user
     yield if block_given?
   end
-  alias_method :edit_as, :as
+  alias edit_as as
 
   def get_contribution
     create(:name_with_fact)
@@ -148,7 +148,7 @@ class ActiveSupport::TestCase
     # rubocop:disable NestedMethodDefinition
     class << Open3
       def popen3_with_change(_command, github_url)
-        return if github_url.match(/page=2/)
+        return if github_url =~ /page=2/
         file_path = File.expand_path('../data/github_user_repos.json', __FILE__)
         [nil, File.read(file_path)]
       end

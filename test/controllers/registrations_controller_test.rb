@@ -66,8 +66,11 @@ describe 'RegistrationsController' do
   describe 'generate' do
     it 'must save a valid record' do
       stub_twitter_digits_verification
-      session[:auth_params] = { twitter_digits_verification_attributes: {
-        service_provider_url: Faker::Internet.url, credentials: Faker::Lorem.word } }
+      session[:auth_params] = {
+        twitter_digits_verification_attributes: {
+          service_provider_url: Faker::Internet.url, credentials: Faker::Lorem.word
+        }
+      }
       session[:account_params] = account_params[:account]
 
       get :generate

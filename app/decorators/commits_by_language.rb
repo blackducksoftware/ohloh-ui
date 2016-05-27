@@ -49,7 +49,7 @@ class CommitsByLanguage < Cherry::Decorator
       hsh[f['month']] = f['commits'].to_i
     end
     commits_hash.reverse_merge!(months_without_commits)
-    commits_hash.sort_by { |k| k }.map(&:last)
+    commits_hash.sort.map(&:last)
   end
 
   def months_without_commits

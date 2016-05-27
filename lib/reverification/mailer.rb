@@ -1,6 +1,6 @@
 module Reverification
   class Mailer
-    FROM = 'info@openhub.net'
+    FROM = 'info@openhub.net'.freeze
     MAX_ATTEMPTS = 3
     NOTIFICATION1_DUE_DAYS = 14
     NOTIFICATION2_DUE_DAYS = 14
@@ -37,7 +37,8 @@ module Reverification
         ReverificationPilotAccount.limit(send_limit).map(&:account).each do |account|
           Reverification::Process.send_email(
             Reverification::Template.first_reverification_notice(account.email),
-            account, 0)
+            account, 0
+          )
           # Note: When move on from pilot run, remove below line
           ReverificationPilotAccount.find_by(account_id: account.id).delete
         end
@@ -47,7 +48,8 @@ module Reverification
         ReverificationTracker.expired_initial_phase_notifications(send_limit).each do |rev_track|
           Reverification::Process.send_email(
             Reverification::Template.marked_for_disable_notice(rev_track.account.email),
-            rev_track.account, 1)
+            rev_track.account, 1
+          )
         end
       end
 
@@ -55,7 +57,8 @@ module Reverification
         ReverificationTracker.expired_second_phase_notifications(send_limit).each do |rev_track|
           Reverification::Process.send_email(
             Reverification::Template.account_is_disabled_notice(rev_track.account.email),
-            rev_track.account, 2)
+            rev_track.account, 2
+          )
         end
       end
 
@@ -63,14 +66,15 @@ module Reverification
         ReverificationTracker.expired_third_phase_notifications(send_limit).each do |rev_track|
           Reverification::Process.send_email(
             Reverification::Template.final_warning_notice(rev_track.account.email),
-            rev_track.account, 3)
+            rev_track.account, 3
+          )
         end
       end
 
       def resend_soft_bounced_notifications
         # Grab all the soft_bounced trackers
         ReverificationTracker.soft_bounced_until_yesterday.max_attempts_not_reached
-          .limit(send_limit).each do |rev_track|
+                             .limit(send_limit).each do |rev_track|
           Reverification::Process.send_email(rev_track.template_hash, rev_track.account, rev_track.phase_value)
         end
       end

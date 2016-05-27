@@ -65,7 +65,7 @@ class LogosController < SettingsController
   end
 
   def fail_unless_parent
-    fail ParamRecordNotFound unless @parent
+    raise ParamRecordNotFound unless @parent
   end
 
   def set_editor_account_to_current_user

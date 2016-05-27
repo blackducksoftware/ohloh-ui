@@ -4,7 +4,7 @@ class String
   end
 
   def strip_tags_preserve_line_breaks
-    html = CGI.unescapeHTML(self).gsub(/\r/, '')
+    html = CGI.unescapeHTML(self).delete(/\r/, '')
 
     # Preserve line-breaking tags by converting them to carriage returns
     html.gsub!(/<br\s*\/?>\s*\n?/, "\n")

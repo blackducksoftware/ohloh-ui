@@ -49,8 +49,9 @@ class Analysis::LanguageHistoryTest < ActiveSupport::TestCase
     end
 
     it 'must return results within the given date range' do
-      results = Analysis::LanguageHistory.new(
-        analysis: activity_fact.analysis, start_date: 5.months.ago, end_date: 2.months.ago).execute
+      results = Analysis::LanguageHistory.new(analysis: activity_fact.analysis,
+                                              start_date: 5.months.ago,
+                                              end_date: 2.months.ago).execute
 
       results.length.must_equal 1
     end

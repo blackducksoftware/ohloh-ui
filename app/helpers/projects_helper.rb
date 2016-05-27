@@ -44,7 +44,7 @@ module ProjectsHelper
 
   def project_twitter_description(project, analysis)
     return project_twitter_description_analysis(project, analysis) unless analysis.blank?
-    project.description.to_s.length > 0 ? project.description : ''
+    project.description.to_s.empty? ? '' : project.description
   end
 
   def truncate_project_name(name, link = false, len = 25)

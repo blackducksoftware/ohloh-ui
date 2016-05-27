@@ -49,12 +49,8 @@ class TopicsController < ApplicationController
   end
 
   def destroy
-    if @topic.destroy
-      flash[:notice] = t('.success', topic_title: @topic.title)
-      redirect_to forums_path
-    else
-      redirect_to forums_path
-    end
+    flash[:notice] = t('.success', topic_title: @topic.title) if @topic.destroy
+    redirect_to forums_path
   end
 
   def close
@@ -71,18 +67,18 @@ class TopicsController < ApplicationController
 
   def track_views
     topic = Topic.where(id: params[:id]).take
-    fail ParamRecordNotFound unless topic
+    raise ParamRecordNotFound unless topic
     topic.increment!(:hits) unless logged_in? && (@topic.account == current_user)
   end
 
   def find_forum_record
     @forum = Forum.where(id: params[:forum_id]).take
-    fail ParamRecordNotFound unless @forum
+    raise ParamRecordNotFound unless @forum
   end
 
   def find_forum_and_topic_records
     @topic = Topic.where(id: params[:id]).take
-    fail ParamRecordNotFound unless @topic
+    raise ParamRecordNotFound unless @topic
     @forum = @topic.forum
   end
 

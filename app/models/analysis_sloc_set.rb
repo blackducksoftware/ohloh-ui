@@ -18,8 +18,10 @@ class AnalysisSlocSet < ActiveRecord::Base
 
   private
 
-  def self.sanitize_sql_condition(file_name)
-    sanitize_sql_for_conditions(["fyles.name like '%s%%'", sanitize_sql_like(file_name)])
+  class << self
+    def self.sanitize_sql_condition(file_name)
+      sanitize_sql_for_conditions(["fyles.name like '%s%%'", sanitize_sql_like(file_name)])
+    end
   end
 
   def adjust_leading_slash(file_name)

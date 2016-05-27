@@ -37,7 +37,7 @@ class Kudo < ActiveRecord::Base
         target = target.account ? target.account : target.contributions.first if target.is_a?(Person)
         Kudo.find_by_sender_id_and_project_id_and_name_id(sender.id, target.project_id, target.name_fact.name_id)
       else
-        fail 'Uknown Target Type'
+        raise 'Uknown Target Type'
       end
     end
 

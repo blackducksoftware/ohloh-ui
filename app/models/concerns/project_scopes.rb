@@ -29,16 +29,19 @@ module ProjectScopes
     scope :case_insensitive_name, ->(mixed_case) { where(['lower(name) = ?', mixed_case.downcase]) }
     scope :case_insensitive_vanity_url, ->(mixed_case) { where(['lower(vanity_url) = ?', mixed_case.downcase]) }
     scope :most_active, lambda {
-      joins(best_analysis: :analysis_summaries).where(analysis_summaries: { type: 'ThirtyDaySummary' })
-        .active. order(' COALESCE(analysis_summaries.affiliated_commits_count, 0) +
-                     COALESCE(analysis_summaries.outside_commits_count, 0) DESC ').limit(10)
+      joins(best_analysis: :analysis_summaries)
+        .where(analysis_summaries: { type: 'ThirtyDaySummary' })
+        .active
+        .order(' COALESCE(analysis_summaries.affiliated_commits_count, 0) +
+                 COALESCE(analysis_summaries.outside_commits_count, 0) DESC ')
+        .limit(10)
     }
     scope :with_pai_available, -> { active.where(arel_table[:activity_level_index].gt(0)).size }
     scope :tagged_with, lambda { |tags|
       not_deleted.joins(:tags)
-        .where(tags: { name: tags })
-        .group('projects.id')
-        .having('count(*) >= ?', tags.split.flatten.length)
+                 .where(tags: { name: tags })
+                 .group('projects.id')
+                 .having('count(*) >= ?', tags.split.flatten.length)
     }
     scope :with_analysis, -> { active.where.not(best_analysis_id: nil) }
   end

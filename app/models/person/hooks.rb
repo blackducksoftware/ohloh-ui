@@ -17,6 +17,6 @@ class Person::Hooks
 
   def set_name_fact(person)
     person.name_fact = NameFact.where('name_id = ? and projects.id = ?', person.name_id, person.project_id)
-    .joins(:project).first
+                               .joins(:project).first
   end
 end

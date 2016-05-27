@@ -113,13 +113,13 @@ class Account::Hooks
   def update_invite(account_id)
     invites = Invite.arel_table
     Invite.where(invites[:invitor_id].eq(account_id).or(invites[:invitee_id].eq(account_id)))
-      .update_all(invitor_id: @anonymous_account, invitee_id: @anonymous_account)
+          .update_all(invitor_id: @anonymous_account, invitee_id: @anonymous_account)
   end
 
   def update_manage(account_id)
     manages = Manage.arel_table
     Manage.where(manages[:approved_by].eq(account_id).or(manages[:deleted_by].eq(account_id)))
-      .update_all(approved_by: @anonymous_account, deleted_by: @anonymous_account)
+          .update_all(approved_by: @anonymous_account, deleted_by: @anonymous_account)
   end
 
   def update_edit(account_id)

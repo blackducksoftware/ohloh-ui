@@ -1,12 +1,12 @@
 class OrgThirtyDayActivity < ActiveRecord::Base
   SORT_TYPES = [['All Organizations', 'all_orgs'], %w(Commercial commercial), %w(Education educational),
                 %w(Government government), %w(Non-Profit non_profit), %w(Large large),
-                %w(Medium medium), %w(Small small)]
+                %w(Medium medium), %w(Small small)].freeze
 
   FILTER_TYPES = { all_orgs: :filter_all_orgs, small: :filter_small_orgs, medium: :filter_medium_orgs,
                    large: :filter_large_orgs, commercial: :filter_commercial_orgs,
                    government: :filter_government_orgs, non_profit: :filter_non_profit_orgs,
-                   educational: :filter_educational_orgs }
+                   educational: :filter_educational_orgs }.freeze
 
   belongs_to :organization
 

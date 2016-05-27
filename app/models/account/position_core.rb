@@ -10,7 +10,7 @@ class Account::PositionCore < OhDelegator::Base
   def with_projects
     @positions_with_projects ||=
       positions.joins(:project).where.not(Position.arel_table[:project_id].eq(nil))
-      .order(Project.arel_table[:name].lower)
+               .order(Project.arel_table[:name].lower)
   end
 
   # rubocop:disable Metrics/AbcSize

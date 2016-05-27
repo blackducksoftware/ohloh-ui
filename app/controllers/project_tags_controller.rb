@@ -35,9 +35,9 @@ class ProjectTagsController < SettingsController
 
   def find_tagging
     tag = Tag.where(name: params[:id]).take
-    fail ParamRecordNotFound if tag.nil?
+    raise ParamRecordNotFound if tag.nil?
     @tagging = Tagging.where(taggable: @project, tag_id: tag.id).take
-    fail ParamRecordNotFound if @tagging.nil?
+    raise ParamRecordNotFound if @tagging.nil?
   end
 
   def edit_authorized_only!

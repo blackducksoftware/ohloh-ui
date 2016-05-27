@@ -35,7 +35,7 @@ class AuthenticationsController < ApplicationController
   end
 
   def session_account_params_or_current_user_required
-    fail ParamRecordNotFound if session[:account_params].nil? && current_user.nil?
+    raise ParamRecordNotFound if session[:account_params].nil? && current_user.nil?
   end
 
   def redirect_if_current_user_verified

@@ -1,6 +1,6 @@
 module AccountScopes
-  ANONYMOUS_ACCOUNTS = %w(anonymous_coward ohloh_slave uber_data_crawler)
-  ANONYMOUS_ACCOUNTS_EMAILS = %w(anon@openhub.net info@openhub.net uber_data_crawler@openhub.net)
+  ANONYMOUS_ACCOUNTS = %w(anonymous_coward ohloh_slave uber_data_crawler).freeze
+  ANONYMOUS_ACCOUNTS_EMAILS = %w(anon@openhub.net info@openhub.net uber_data_crawler@openhub.net).freeze
 
   extend ActiveSupport::Concern
 
@@ -32,12 +32,15 @@ module AccountScopes
     scope :active, -> { where(level: 0) }
     scope :non_anonymous, -> { where.not(login: ANONYMOUS_ACCOUNTS, email: ANONYMOUS_ACCOUNTS_EMAILS) }
     scope :unverified, lambda { |limit = nil|
-      select('accounts.id, accounts.email').where(level: 0)
+      select('accounts.id, accounts.email')
+        .where(level: 0)
         .joins('LEFT OUTER JOIN verifications v ON v.account_id = accounts.id')
-        .where('v.account_id IS NULL').limit(limit)
+        .where('v.account_id IS NULL')
+        .limit(limit)
     }
     scope :reverification_not_initiated, lambda { |limit = nil|
-      unverified.joins('LEFT OUTER JOIN reverification_trackers r ON r.account_id = accounts.id')
+      unverified
+        .joins('LEFT OUTER JOIN reverification_trackers r ON r.account_id = accounts.id')
         .where('r.account_id IS NULL').joins('LEFT OUTER JOIN positions p ON p.account_id = accounts.id')
         .where('p.account_id IS NULL')
         .limit(limit)

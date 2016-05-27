@@ -81,8 +81,8 @@ class LinksController < SettingsController
 
   def occupied_category_ids
     @project.links
-      .where(link_category_id: Link::CATEGORIES.values_at(:Homepage, :Download))
-      .pluck(:link_category_id)
+            .where(link_category_id: Link::CATEGORIES.values_at(:Homepage, :Download))
+            .pluck(:link_category_id)
   end
 
   def link_params

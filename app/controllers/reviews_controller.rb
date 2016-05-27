@@ -11,9 +11,9 @@ class ReviewsController < ApplicationController
 
   def index
     @reviews = @parent.reviews
-               .find_by_comment_or_title_or_accounts_login(params[:query])
-               .sort_by(params[:sort])
-               .paginate(page: page_param, per_page: 10)
+                      .find_by_comment_or_title_or_accounts_login(params[:query])
+                      .sort_by(params[:sort])
+                      .paginate(page: page_param, per_page: 10)
   end
 
   def summary
@@ -72,12 +72,12 @@ class ReviewsController < ApplicationController
 
   def set_account
     @parent = @account = Account.from_param(params[:account_id]).take
-    fail ParamRecordNotFound if @parent.nil?
+    raise ParamRecordNotFound if @parent.nil?
   end
 
   def find_review
     @review = Review.find_by_id(params[:id])
-    fail ParamRecordNotFound if @review.nil?
+    raise ParamRecordNotFound if @review.nil?
   end
 
   def own_object?

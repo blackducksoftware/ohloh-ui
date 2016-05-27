@@ -15,7 +15,7 @@ class RemoveDuplicateRepositoriesMappedToSameProject
     find_duplicate_repositories.each do |repository|
       duplicate_repositories = find_repository_by_nice_url(repository['repo_url'])
       Enlistment.where(project_id: repository['project_id'], repository_id: duplicate_repositories)
-        .order(:id).offset(1).each do |enlistment|
+                .order(:id).offset(1).each do |enlistment|
         safe_destroy_enlistment(enlistment)
       end
       print '.'

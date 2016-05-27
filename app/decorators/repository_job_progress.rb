@@ -2,7 +2,7 @@ class RepositoryJobProgress
   include ActionView::Helpers::DateHelper
 
   STATUS = { Job::STATUS_SCHEDULED => :waiting, Job::STATUS_RUNNING => :running,
-             Job::STATUS_FAILED => :failed, Job::STATUS_COMPLETED => :completed }
+             Job::STATUS_FAILED => :failed, Job::STATUS_COMPLETED => :completed }.freeze
 
   delegate :best_code_set, to: :@repository
 

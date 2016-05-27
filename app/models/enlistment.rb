@@ -34,7 +34,7 @@ class Enlistment < ActiveRecord::Base
   def ensure_forge_and_job
     project.reload
     unless project.forge_match
-      project.save if project.forge_match = project.guess_forge
+      project.save if project.forge_match == project.guess_forge
     end
     project.ensure_job
   end

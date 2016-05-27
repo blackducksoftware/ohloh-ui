@@ -9,7 +9,7 @@ class StackWidget < Widget
     p.merge!(vars.symbolize_keys)
     p[:projects_shown] = [MAX_ICONS_SHOWN, p[:projects_shown].to_i].min
 
-    fail ArgumentError, I18n.t('stack_widgets.missing') unless vars[:stack_id]
+    raise ArgumentError, I18n.t('stack_widgets.missing') unless vars[:stack_id]
     super(p)
   end
 
@@ -20,7 +20,7 @@ class StackWidget < Widget
   def stack
     @stack ||= Stack.find(stack_id)
   end
-  alias_method :parent, :stack
+  alias parent stack
 
   def stack_entries
     @stack_entries = stack.stack_entries.limit(projects_shown)

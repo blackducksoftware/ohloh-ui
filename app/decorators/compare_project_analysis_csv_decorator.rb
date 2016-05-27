@@ -104,25 +104,25 @@ class CompareProjectAnalysisCsvDecorator
 
   private
 
-  def require_best_analysis(&block)
+  def require_best_analysis
     if !@project.best_analysis.nil? && @project.best_analysis.last_commit_time
-      block.call(@project.best_analysis)
+      yield @project.best_analysis
     else
       (@project.enlistments.count > 0) ? t('compares.pending') : t('compares.no_data')
     end
   end
 
-  def require_twelve_month(&block)
+  def require_twelve_month
     require_best_analysis do
       tms = @project.best_analysis.twelve_month_summary
-      (tms && tms.committer_count > 0) ? block.call(tms) : t('compares.no_activity')
+      (tms && tms.committer_count > 0) ? yield(tms) : t('compares.no_activity')
     end
   end
 
-  def require_thirty_day(&block)
+  def require_thirty_day
     require_best_analysis do
       tds = @project.best_analysis.thirty_day_summary
-      (tds && tds.committer_count > 0) ? block.call(tds) : t('compares.no_activity')
+      (tds && tds.committer_count > 0) ? yield(tds) : t('compares.no_activity')
     end
   end
 end

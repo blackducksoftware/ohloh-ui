@@ -71,12 +71,11 @@ class OrgInfoGraphics < Cherry::Decorator
   def set_stroke_attributes(type, positioning)
     stroke = @dyamic_value == 0 ? 'none' : ''
     color = @dyamic_value == 0 ? '#DDDAD9' : '#000'
-    if positioning == true
-      return { 'style' => "padding-top:#{set_height(type, @width)}px" }
-    else
-      return { 'tip-height' => "#{@height}", 'stick-height' => "#{@width}", 'stroke' => "#{color}",
-               'fill-color' => "#{stroke}" }
-    end
+
+    return { 'style' => "padding-top:#{set_height(type, @width)}px" } if positioning == true
+
+    { 'tip-height' => @height.to_s, 'stick-height' => @width.to_s, 'stroke' => color.to_s,
+      'fill-color' => stroke.to_s }
   end
 
   def set_height(type, width)

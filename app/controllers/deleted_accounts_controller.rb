@@ -21,7 +21,7 @@ class DeletedAccountsController < ApplicationController
 
   def set_deleted_account
     @deleted_account = DeletedAccount.find_deleted_account(params[:id])
-    fail ParamRecordNotFound unless @deleted_account
+    raise ParamRecordNotFound unless @deleted_account
   end
 
   def feedback_time_must_not_be_elapsed

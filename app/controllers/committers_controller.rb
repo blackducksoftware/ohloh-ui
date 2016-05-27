@@ -11,7 +11,8 @@ class CommittersController < UnclaimedController
 
   def show
     @people = Person.where(name_id: @name.id)
-              .includes({ project: [{ best_analysis: :main_language }, :logo] }, :name, name_fact: :primary_language)
+                    .includes({ project: [{ best_analysis: :main_language }, :logo] },
+                              :name, name_fact: :primary_language)
     preload_emails
   end
 
@@ -40,7 +41,7 @@ class CommittersController < UnclaimedController
 
   def find_committer
     @name = Name.from_param(params[:id]).take
-    fail ParamRecordNotFound unless @name
+    raise ParamRecordNotFound unless @name
 
     redirect_to root_path, flash: { error: t('.error') } if @name.people.count.zero?
   end

@@ -1,13 +1,13 @@
 class ActivityFactByMonthQuery
   SUM_COLUMNS = [:code_added, :code_removed, :blanks_added, :blanks_removed, :comments_added,
-                 :comments_removed, :commits]
+                 :comments_removed, :commits].freeze
 
   def initialize(analysis)
     @analysis = analysis
   end
 
   def execute
-    fail ActiveRecord::RecordNotFound if @analysis.nil?
+    raise ActiveRecord::RecordNotFound if @analysis.nil?
     return [] if @analysis.min_month.blank?
     ActivityFact.find_by_sql(query)
   end
@@ -17,11 +17,11 @@ class ActivityFactByMonthQuery
   def query
     month = months[:month]
     months.project([month, summed_columns, distinct_column])
-      .join(*joins_clause)
-      .on(on_clause)
-      .where(conditions)
-      .group(month)
-      .order(month)
+          .join(*joins_clause)
+          .on(on_clause)
+          .where(conditions)
+          .group(month)
+          .order(month)
   end
 
   def activities

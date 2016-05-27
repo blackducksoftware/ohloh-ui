@@ -1,7 +1,10 @@
 AllCops:
-  RunRailsCops: true
+  TargetRubyVersion: 2.2
   Exclude:
     - vagrant/**/*
+
+Rails:
+  Enabled: true
 
 Metrics/LineLength:
   Max: 120
@@ -19,4 +22,8 @@ Style/PerlBackrefs:
   Enabled: false
 
 Style/RegexpLiteral:
+  Enabled: false
+
+Style/EmptyCaseCondition:
+  Description: 'Avoid empty condition in case statements.'
   Enabled: false

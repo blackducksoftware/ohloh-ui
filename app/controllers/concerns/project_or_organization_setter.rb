@@ -18,7 +18,7 @@ module ProjectOrOrganizationSetter
     end
 
     def fail_unless_parent
-      fail ParamRecordNotFound unless @parent
+      raise ParamRecordNotFound unless @parent
     end
 
     def projects_route?

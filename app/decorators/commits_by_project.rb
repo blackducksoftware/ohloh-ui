@@ -54,7 +54,7 @@ class CommitsByProject < Cherry::Decorator
 
   def positions
     @positions ||= Position.where(id: symbolized.map { |c| c[:position_id] }.uniq.sort)
-                   .includes(:project).references(:all).group_by(&:id)
+                           .includes(:project).references(:all).group_by(&:id)
   end
 
   def with_positions
@@ -113,8 +113,7 @@ class CommitsByProject < Cherry::Decorator
 
   def months_without_commits
     @months_with_nil_commits ||=
-    TimeParser.months_in_range(start_date, end_date).each_with_object([]) do |date, array|
-      array << { month: date.to_date, commits: nil }
-    end
+      TimeParser.months_in_range(start_date, end_date)
+                .each_with_object([]) { |date, array| array << { month: date.to_date, commits: nil } }
   end
 end

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe 'Admin::VitaJobsController'do
+describe 'Admin::VitaJobsController' do
   let(:admin) { create(:admin) }
   let(:account) { create(:account) }
   before { login_as admin }

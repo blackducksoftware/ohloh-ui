@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe 'Admin::JobsController'do
+describe 'Admin::JobsController' do
   let(:admin) { create(:admin) }
   let(:project) { create(:project, name: 'Testing', description: 'This is test project') }
   before { login_as admin }

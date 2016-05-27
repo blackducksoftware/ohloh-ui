@@ -9,7 +9,10 @@ class Action < ActiveRecord::Base
   validate :action_payload_present
   validate :claim_is_claimable, on: :create
 
-  STATUSES = { completed: 'completed', after_activation: 'after_activation', nag_once: 'remind_once', remind: 'remind' }
+  STATUSES = { completed: 'completed',
+               after_activation: 'after_activation',
+               nag_once: 'remind_once',
+               remind: 'remind' }.freeze
 
   def initialize(attributes = {})
     attributes ||= {}

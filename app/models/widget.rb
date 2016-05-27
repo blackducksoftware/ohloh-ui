@@ -1,5 +1,5 @@
 class Widget
-  KEYS_TO_BE_REMOVED = [:controller, :format, :action]
+  KEYS_TO_BE_REMOVED = [:controller, :format, :action].freeze
 
   attr_reader :vars
 

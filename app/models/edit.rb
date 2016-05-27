@@ -33,26 +33,30 @@ class Edit < ActiveRecord::Base
 
   private
 
-  def swap_doneness(undo, editor)
-    fail I18n.t('edits.undo_redo_require_editor') unless editor
-    fail ActsAsEditable::UndoError, I18n.t(undo ? 'edits.cant_undo' : 'edits.cant_redo') if undone == undo
-    Edit.transaction do
-      undo ? do_undo : do_redo
-      self.update_attributes!(undone: undo, undone_at: Time.current, undone_by: editor.id)
+  class << self
+    private
+
+    def similar_to_edit_arel(edit)
+      where(type: edit.class, key: edit.key, target_id: edit.target_id, target_type: edit.target_type)
+        .where.not(id: edit.id)
     end
   end
 
-  def self.similar_to_edit_arel(edit)
-    where(type: edit.class, key: edit.key, target_id: edit.target_id, target_type: edit.target_type)
-      .where.not(id: edit.id)
+  def swap_doneness(undo, editor)
+    raise I18n.t('edits.undo_redo_require_editor') unless editor
+    raise ActsAsEditable::UndoError, I18n.t(undo ? 'edits.cant_undo' : 'edits.cant_redo') if undone == undo
+    Edit.transaction do
+      undo ? do_undo : do_redo
+      update_attributes!(undone: undo, undone_at: Time.current, undone_by: editor.id)
+    end
   end
 
   def find_previous_edit
     Edit.not_undone
-      .similar_to(self)
-      .where(Edit.arel_table[:created_at].lt(created_at))
-      .order(created_at: :desc)
-      .first
+        .similar_to(self)
+        .where(Edit.arel_table[:created_at].lt(created_at))
+        .order(created_at: :desc)
+        .first
   end
 
   def populate_project

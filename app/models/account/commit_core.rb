@@ -9,9 +9,9 @@ class Account::CommitCore
   def most_and_recent_data
     return {} if @account_ids.blank?
     stats = Account.select(select_clause)
-            .with_facts
-            .where(@accounts_id.in(@account_ids))
-            .group(@accounts_id, @projects[:id], @projects[:name], @projects[:vanity_url])
+                   .with_facts
+                   .where(@accounts_id.in(@account_ids))
+                   .group(@accounts_id, @projects[:id], @projects[:name], @projects[:vanity_url])
     stats.group_by { |hsh| hsh['account_id'].to_i }
   end
 

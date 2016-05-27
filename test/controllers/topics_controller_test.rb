@@ -157,7 +157,8 @@ describe TopicsController do
 
     assert_no_difference(['Topic.count', 'Post.count']) do
       post :create, forum_id: forum.id, topic: topic_params.deep_merge(
-        posts_attributes: { '0' => { body: '', account_id: user.id } })
+        posts_attributes: { '0' => { body: '', account_id: user.id } }
+      )
     end
 
     assigns(:topic).errors.messages[:'posts.body'].must_be :present?
@@ -182,7 +183,8 @@ describe TopicsController do
 
     assert_no_difference(['Topic.count', 'Post.count']) do
       post :create, forum_id: forum.id, topic: topic_params.deep_merge(
-        posts_attributes: { '0' => { body: Faker::Lorem.word, account_id: account.id } })
+        posts_attributes: { '0' => { body: Faker::Lorem.word, account_id: account.id } }
+      )
     end
 
     must_redirect_to new_session_path

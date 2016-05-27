@@ -10,7 +10,7 @@ class CommitsByLanguageData
               'commits' => { 2 => '1' } },
     '1' => { 'name' => 'html', 'category' => '0', 'nice_name' => 'HTML',
              'commits' => { 1 => '9' } }
-  }
+  }.freeze
 
   class << self
     def construct
@@ -27,9 +27,10 @@ class CommitsByLanguageData
     end
 
     def sorted
-      [['csharp', { nice_name: 'C#', commits: 148 }], ['xml', { nice_name: 'XML', commits: 60 }],
-       ['html', { nice_name: 'HTML', commits: 9 }], ['ruby', { nice_name: 'Ruby', commits: 5 }],
-       ['sql', { nice_name: 'SQL', commits: 1 }]
+      [
+        ['csharp', { nice_name: 'C#', commits: 148 }], ['xml', { nice_name: 'XML', commits: 60 }],
+        ['html', { nice_name: 'HTML', commits: 9 }], ['ruby', { nice_name: 'Ruby', commits: 5 }],
+        ['sql', { nice_name: 'SQL', commits: 1 }]
       ]
     end
 

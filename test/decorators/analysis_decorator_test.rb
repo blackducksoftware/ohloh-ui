@@ -20,7 +20,7 @@ class AnlysisDecoratorTest < ActiveSupport::TestCase
       commit_difference('affiliated_committers_difference', -2)
     end
 
-    it 'outside_commits_difference'do
+    it 'outside_commits_difference' do
       commit_difference('outside_commits_difference', -2)
     end
 
@@ -49,7 +49,7 @@ class AnlysisDecoratorTest < ActiveSupport::TestCase
       commit_difference('affiliated_committers_difference', -2)
     end
 
-    it 'outside_commits_difference'do
+    it 'outside_commits_difference' do
       commit_difference('outside_commits_difference', -2)
     end
 

@@ -43,11 +43,7 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    if @post.destroy
-      redirect_to topic_path(@topic)
-    else
-      redirect_to topic_path(@topic)
-    end
+    redirect_to topic_path(@topic)
   end
 
   private
@@ -83,21 +79,21 @@ class PostsController < ApplicationController
 
   def find_relevant_records
     @topic = Topic.where(id: params[:topic_id]).take
-    fail ParamRecordNotFound unless @topic
+    raise ParamRecordNotFound unless @topic
     @forum = @topic.forum
   end
 
   def find_post_record
     @post = Post.where(id: params[:id]).take
-    fail ParamRecordNotFound unless @post
+    raise ParamRecordNotFound unless @post
   end
 
   def find_posts_belonging_to_account
     @account = Account::Find.by_id_or_login(params[:account_id])
-    fail ParamRecordNotFound unless @account
+    raise ParamRecordNotFound unless @account
     redirect_if_disabled
     @posts = @account.posts.includes(:topic).tsearch(params[:query], parse_sort_term)
-             .page(page_param).per_page(10)
+                     .page(page_param).per_page(10)
   end
 
   def find_posts

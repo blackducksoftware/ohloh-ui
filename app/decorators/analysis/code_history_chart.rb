@@ -11,8 +11,8 @@ class Analysis::CodeHistoryChart < Analysis::Chart
 
   def data_for_lines_of_code
     data.deep_merge(ANALYSIS_CHARTS_OPTIONS['no_auxillaries'])
-      .deep_merge(ANALYSIS_CHARTS_OPTIONS['lines_of_code'])
-      .deep_merge(chart_watermark)
+        .deep_merge(ANALYSIS_CHARTS_OPTIONS['lines_of_code'])
+        .deep_merge(chart_watermark)
   end
 
   private

@@ -40,7 +40,7 @@ class LicensesController < ApplicationController
 
   def set_license
     @license = License.active.from_param(params[:id]).take
-    fail ParamRecordNotFound unless @license
+    raise ParamRecordNotFound unless @license
     @license.editor_account = current_user
   end
 

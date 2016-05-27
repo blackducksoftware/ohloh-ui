@@ -13,8 +13,8 @@ class PeopleController < UnclaimedController
 
   def find_index_people
     @claimed_people = Person.find_claimed(params[:query], 'relevance')
-                      .preload(account: :markup)
-                      .paginate(page: 1, per_page: 3)
+                            .preload(account: :markup)
+                            .paginate(page: 1, per_page: 3)
     @unclaimed_people = Person.find_unclaimed(q: params[:query], find_by: 'relevance', per_page: 3)
     @unclaimed_people_count = Person::Count.unclaimed_by(params[:query], 'relevance')
   end
@@ -23,14 +23,14 @@ class PeopleController < UnclaimedController
     preload_emails_from_unclaimed_people
     @cbp_map = PeopleDecorator.new(@claimed_people).commits_by_project_map
     @positions_map = Position.where(id: @cbp_map.values.map(&:first).flatten)
-                     .preload(project: [{ best_analysis: :main_language }, :logo])
-                     .index_by(&:id)
+                             .preload(project: [{ best_analysis: :main_language }, :logo])
+                             .index_by(&:id)
   end
 
   def find_rankings_people
     @people = Person.includes(:account).references(:all)
-              .filter_by(params[:query]).send(parse_sort_term)
-              .paginate(page: page_param, per_page: 10)
+                    .filter_by(params[:query]).send(parse_sort_term)
+                    .paginate(page: page_param, per_page: 10)
   end
 
   def parse_sort_term

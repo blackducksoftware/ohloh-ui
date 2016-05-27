@@ -7,7 +7,7 @@ class PositionCoreTest < ActiveSupport::TestCase
     account.positions.count.must_equal 1
   end
 
-  it '#with_projects'do
+  it '#with_projects' do
     Position.delete_all
 
     admin = create(:admin)
@@ -137,10 +137,9 @@ class PositionCoreTest < ActiveSupport::TestCase
       create(:position, project: project_foo, name: name, account: account)
       create(:position, project: project_bar, name: name, account: account)
 
-      account.position_core.name_facts.keys.must_equal([
-        "#{name_fact_1.analysis_id}_#{name.id}",
-        "#{name_fact_2.analysis_id}_#{name.id}"
-      ])
+      account.position_core.name_facts.keys.must_equal(
+        ["#{name_fact_1.analysis_id}_#{name.id}", "#{name_fact_2.analysis_id}_#{name.id}"]
+      )
     end
   end
 

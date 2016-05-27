@@ -27,7 +27,7 @@ class EditsController < SettingsController
 
   def find_parent
     @parent = find_account || find_project || find_organization || find_license
-    fail ParamRecordNotFound unless @parent
+    raise ParamRecordNotFound unless @parent
     send("#{@parent.class.name.downcase}_context") unless @parent.is_a?(License)
   end
 
@@ -53,7 +53,7 @@ class EditsController < SettingsController
 
   def find_edit
     @edit = Edit.where(id: params[:id]).first
-    fail ParamRecordNotFound unless @edit
+    raise ParamRecordNotFound unless @edit
   end
 
   def find_edits
@@ -77,7 +77,7 @@ class EditsController < SettingsController
   end
 
   def add_robotic_term(edits)
-    non_human_ids = params[:human].to_bool ? (Account.non_human_ids) : [0]
+    non_human_ids = params[:human].to_bool ? Account.non_human_ids : [0]
     edits.where.not(account_id: non_human_ids)
   end
 

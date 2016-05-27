@@ -3,7 +3,7 @@ class Forge < ActiveRecord::Base
   has_many :projects
 
   def match(_)
-    fail 'You must override match(url) in each Forge subclass.'
+    raise 'You must override match(url) in each Forge subclass.'
   end
 
   def json_api_url(_)

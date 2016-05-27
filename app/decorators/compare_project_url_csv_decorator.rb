@@ -64,9 +64,9 @@ class CompareProjectUrlCsvDecorator
 
   private
 
-  def require_best_analysis(&block)
+  def require_best_analysis
     if !@project.best_analysis.nil? && @project.best_analysis.last_commit_time
-      block.call(@project.best_analysis)
+      yield @project.best_analysis
     else
       (@project.enlistments.count > 0) ? t('compares.pending') : t('compares.no_data')
     end

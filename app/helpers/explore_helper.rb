@@ -1,5 +1,5 @@
 module ExploreHelper
-  COMPARE_PROJECT_INPUT_NOS = [0, 1, 2]
+  COMPARE_PROJECT_INPUT_NOS = [0, 1, 2].freeze
 
   def scale_to(count, nearest = 100)
     i = (count / nearest.to_f).ceil

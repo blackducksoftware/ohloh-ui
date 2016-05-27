@@ -27,7 +27,7 @@ gem 'rails', '~> 4.2.5.1'
 gem 'rails-html-sanitizer'
 gem 'recaptcha', require: 'recaptcha/rails'
 gem 'redis-rails'
-gem 'rubocop'
+gem 'rubocop', '~> 0.40.0', require: false
 gem 'sass-rails'
 gem 'therubyracer'
 gem 'twitter-bootstrap-rails'

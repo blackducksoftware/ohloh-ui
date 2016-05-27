@@ -3,9 +3,10 @@ require 'test_helper'
 describe 'ProjectWidgetsController' do
   let(:project) { create(:project, name: "apostro'phic") }
   let(:widget_classes) do
-    [ProjectWidget::FactoidsStats, ProjectWidget::Factoids, ProjectWidget::BasicStats,
-     ProjectWidget::Languages, ProjectWidget::SearchAllCode, ProjectWidget::Cocomo,
-     ProjectWidget::PartnerBadge, ProjectWidget::ThinBadge, ProjectWidget::UsersLogo
+    [
+      ProjectWidget::FactoidsStats, ProjectWidget::Factoids, ProjectWidget::BasicStats,
+      ProjectWidget::Languages, ProjectWidget::SearchAllCode, ProjectWidget::Cocomo,
+      ProjectWidget::PartnerBadge, ProjectWidget::ThinBadge, ProjectWidget::UsersLogo
     ] + [ProjectWidget::Users] * 6
   end
 
@@ -64,7 +65,7 @@ describe 'ProjectWidgetsController' do
 
       must_respond_with :ok
       response.headers.each do |k, v|
-        v.must_equal '' if k.downcase == 'x-frame-options' || k.downcase == 'x-xss-protection'
+        v.must_equal '' if k.casecmp('x-frame-options').zero? || k.casecmp('x-xss-protection').zero?
       end
     end
 
