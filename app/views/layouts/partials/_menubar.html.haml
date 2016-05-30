@@ -14,10 +14,6 @@
         = link_to t(:organizations_menu), orgs_explores_path, class: explore_orgs_class
       %li.menu_item.tools
         = link_to t(:tools_menu), tools_path, class: tools_select
-      %li.menu_item.code
-        %a{ href: 'http://code.openhub.net', target: '_blank' }
-          = t :code
-          %i.icon-share
-        %li.menu_item.blog
-          %a{ href: 'http://blog.openhub.net', target: '_blank' }= t :blog
-        = render 'shared/search.html.haml'
+      %li.menu_item.blog
+        %a{ href: 'http://blog.openhub.net', target: '_blank' }= t :blog
+      = render 'shared/search.html.haml'

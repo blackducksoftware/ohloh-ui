@@ -28,10 +28,6 @@ en:
       title: 'Project Statistics by Open Hub'
     noname_footer:
       updated_time: 'Updated %{time}'
-    browse_code:
-      short_nice_name: 'Browse Code'
-      title: 'Browse Code by Open Hub'
-      browse: Browse Code from....
     cocomo:
       cost: '%{name} - Project Cost'
       include: 'Include'
@@ -74,14 +70,6 @@ en:
       developer: "Developer"
       head_count: "%{count} %{text}"
       alt: 'Open Hub project report for %{name}'
-    search_all_code:
-      search: 'Search Open Source Code for'
-      enter: 'Enter Search Terms...'
-    search_code:
-      enter: 'Enter Search Terms...'
-      search: 'Search Code from....'
-      title: 'Search Code by Open Hub'
-      short_nice_name: 'Search Code'
     users_logo:
       support: 'Support %{name} by adding it to your stack at Open Hub'
       short_nice_name: 'I Use It - Logo'
