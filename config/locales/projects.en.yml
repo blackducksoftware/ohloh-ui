@@ -165,8 +165,6 @@ en:
         similar_projects: "Similar Projects:"
         managers: "Managers:"
         become_first: "Become the first manager for %{what}"
-        browse_the_source: "Browse the Source Code for %{what} on Open Hub Code!"
-        browse_code: "Browse Code"
         no_of_links: '( %{count} Links )'
       summary:
         add_desc: "Add description"

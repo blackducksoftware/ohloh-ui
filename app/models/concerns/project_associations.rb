@@ -25,7 +25,6 @@ module ProjectAssociations
     has_many :kudos
     has_many :jobs
     belongs_to :forge, class_name: 'Forge::Base'
-    has_one :koders_status
     has_many :enlistments, -> { where(deleted: false) }
     has_many :repositories, through: :enlistments
     has_many :project_licenses, -> { where("project_licenses.deleted = 'f'") }
