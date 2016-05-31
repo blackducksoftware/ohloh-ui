@@ -57,12 +57,6 @@
       = link_to t('.become_first', what: @project.name), new_project_manager_path(@project)
 
 .row
-  .hidden.col-md-5.center#browse_code_button
-    - if @project.koders_status.try(:ohloh_code_ready) == true
-      - ohloh_code_url = "http://code.openhub.net/project?pid=&ipid=#{@project.koders_status.koders_id}"
-      %a.btn.btn-info.browse_code_button{ href: ohloh_code_url,
-                                        title: t('.browse_the_source', what: @project.name),
-                                        target: '_blank' }
-        = t('.browse_code')
+  .hidden.col-md-5.center
   .col-md-5.pull-right.margin_right_10.hidden#browse_security_button
     - browse_security_button(@project)
