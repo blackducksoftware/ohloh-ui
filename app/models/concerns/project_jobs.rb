@@ -4,7 +4,7 @@ module ProjectJobs
 
   included do
     def schedule_delayed_analysis(delay = 0)
-      return nil if repositories.empty?
+      return nil if code_locations.empty?
       job = nil
       Job.transaction do
         job = create_or_update_analyze_jobs(delay)
@@ -15,8 +15,8 @@ module ProjectJobs
     def ensure_job(priority = 0)
       update_activity_level
       Job.transaction do
-        return if deleted? || repositories.empty? || incomplete_job
-        return if repositories.any?(&:ensure_job)
+        return if deleted? || code_locations.empty? || incomplete_job
+        return if code_locations.any?(&:ensure_job)
         create_new_job? ? AnalyzeJob.create(project: self, priority: priority) : update_logged_at
       end
     end
@@ -43,7 +43,7 @@ module ProjectJobs
   private
 
   def create_or_update_analyze_jobs(delay)
-    job = incomplete_job || incomplete_repository_job
+    job = incomplete_job || incomplete_code_location_job
     if job.nil?
       job = AnalyzeJob.create(project: self, wait_until: Time.current + delay)
     elsif job.is_a? AnalyzeJob
@@ -73,12 +73,12 @@ module ProjectJobs
     jobs.where.not(status: Job::STATUS_COMPLETED).first
   end
 
-  def incomplete_repository_job
-    Job.where(repository_id: repositories.pluck(:id)).where.not(status: Job::STATUS_COMPLETED).first
+  def incomplete_code_location_job
+    Job.incomplete.find_by(code_location_id: code_locations.pluck(:id))
   end
 
   def sloc_sets_out_of_date?
-    best_sloc_set_ids = repositories.map(&:best_code_set).compact.map(&:best_sloc_set_id)
+    best_sloc_set_ids = code_locations_sloc_sets.pluck(:best_sloc_set_id)
     return true if (best_analysis.sloc_sets.pluck(:id) - best_sloc_set_ids).present?
     update_analyis_sloc_sets
   end

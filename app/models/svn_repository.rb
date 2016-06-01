@@ -5,16 +5,11 @@ class SvnRepository < Repository
     OhlohScm::Adapters::SvnChainAdapter
   end
 
-  def nice_url
-    url
-  end
-
   private
 
   def set_url_and_branch_name
-    return if bypass_url_validation || errors.present?
+    return if errors.present?
 
     self.url = source_scm.restrict_url_to_trunk
-    self.branch_name = source_scm.branch_name
   end
 end

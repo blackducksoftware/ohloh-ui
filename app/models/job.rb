@@ -1,6 +1,6 @@
 class Job < ActiveRecord::Base
   belongs_to :project
-  belongs_to :repository
+  belongs_to :code_location
   belongs_to :slave
   belongs_to :job_status, foreign_key: 'status'
   belongs_to :failure_group
@@ -14,7 +14,7 @@ class Job < ActiveRecord::Base
   def initialize(attributes = {})
     super(attributes)
     self.code_set_id ||= sloc_set.code_set_id if sloc_set
-    self.repository_id ||= code_set.repository_id if code_set_id
+    self.code_location_id ||= code_set.code_location_id if code_set_id
   end
 
   scope :incomplete, -> { where.not(status: STATUS_COMPLETED) }
@@ -29,7 +29,7 @@ class Job < ActiveRecord::Base
   scope :with_exception, -> { where.not(exception: nil) }
 
   belongs_to :project
-  belongs_to :repository
+  belongs_to :code_location
   belongs_to :code_set
   belongs_to :sloc_set
   belongs_to :account

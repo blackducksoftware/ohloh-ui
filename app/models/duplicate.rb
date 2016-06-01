@@ -90,7 +90,7 @@ class Duplicate < ActiveRecord::Base
   def resolve_enlistments!
     bad_project.enlistments.each do |e|
       e.editor_account = @editor_account
-      e.repository.create_enlistment_for_project(@editor_account, good_project, e.ignore)
+      e.code_location.create_enlistment_for_project(@editor_account, good_project, e.ignore)
       e.destroy
     end
   end

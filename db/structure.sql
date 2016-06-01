@@ -891,6 +891,40 @@ ALTER SEQUENCE clumps_id_seq OWNED BY clumps.id;
 
 
 --
+-- Name: code_locations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE code_locations (
+    id integer NOT NULL,
+    repository_id integer,
+    module_branch_name text,
+    status integer DEFAULT 1,
+    best_code_set_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: code_locations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE code_locations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: code_locations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE code_locations_id_seq OWNED BY code_locations.id;
+
+
+--
 -- Name: code_set_gestalts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -939,13 +973,14 @@ CREATE SEQUENCE code_sets_id_seq
 
 CREATE TABLE code_sets (
     id integer DEFAULT nextval('code_sets_id_seq'::regclass) NOT NULL,
-    repository_id integer NOT NULL,
+    repository_id integer,
     updated_on timestamp without time zone,
     best_sloc_set_id integer,
     as_of integer,
     logged_at timestamp without time zone,
     clump_count integer DEFAULT 0,
-    fetched_at timestamp without time zone
+    fetched_at timestamp without time zone,
+    code_location_id integer
 );
 
 
@@ -1295,11 +1330,12 @@ CREATE SEQUENCE enlistments_id_seq
 CREATE TABLE enlistments (
     id integer DEFAULT nextval('enlistments_id_seq'::regclass) NOT NULL,
     project_id integer NOT NULL,
-    repository_id integer NOT NULL,
+    repository_id integer,
     deleted boolean DEFAULT false NOT NULL,
     created_at timestamp without time zone DEFAULT timezone('UTC'::text, now()) NOT NULL,
     updated_at timestamp without time zone DEFAULT timezone('UTC'::text, now()) NOT NULL,
-    ignore text
+    ignore text,
+    code_location_id integer
 );
 
 
@@ -1847,7 +1883,8 @@ CREATE TABLE jobs (
     retry_count integer DEFAULT 0,
     do_not_retry boolean DEFAULT false,
     failure_group_id integer,
-    organization_id integer
+    organization_id integer,
+    code_location_id integer
 );
 
 
@@ -4129,6 +4166,13 @@ ALTER TABLE ONLY clumps ALTER COLUMN id SET DEFAULT nextval('clumps_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY code_locations ALTER COLUMN id SET DEFAULT nextval('code_locations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY code_set_gestalts ALTER COLUMN id SET DEFAULT nextval('code_set_gestalts_id_seq'::regclass);
 
 
@@ -4646,6 +4690,22 @@ ALTER TABLE ONLY positions
 
 ALTER TABLE ONLY clumps
     ADD CONSTRAINT clumps_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: code_locations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY code_locations
+    ADD CONSTRAINT code_locations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: code_locations_unique_repository_id_module_branch_name; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY code_locations
+    ADD CONSTRAINT code_locations_unique_repository_id_module_branch_name UNIQUE (repository_id, module_branch_name);
 
 
 --
@@ -5521,19 +5581,19 @@ ALTER TABLE ONLY project_gestalts
 
 
 --
+-- Name: unique_project_id_code_location_id; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY enlistments
+    ADD CONSTRAINT unique_project_id_code_location_id UNIQUE (project_id, code_location_id);
+
+
+--
 -- Name: unique_project_id_name_id; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY positions
     ADD CONSTRAINT unique_project_id_name_id UNIQUE (project_id, name_id);
-
-
---
--- Name: unique_project_id_repository_id; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY enlistments
-    ADD CONSTRAINT unique_project_id_repository_id UNIQUE (project_id, repository_id);
 
 
 --
@@ -5774,6 +5834,20 @@ CREATE INDEX index_clumps_on_code_set_id_slave_id ON clumps USING btree (code_se
 
 
 --
+-- Name: index_code_locations_on_best_code_set_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_code_locations_on_best_code_set_id ON code_locations USING btree (best_code_set_id);
+
+
+--
+-- Name: index_code_locations_on_repository_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_code_locations_on_repository_id ON code_locations USING btree (repository_id);
+
+
+--
 -- Name: index_code_set_gestalts_on_code_set_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -5792,6 +5866,13 @@ CREATE INDEX index_code_set_gestalts_on_gestalt_id ON code_set_gestalts USING bt
 --
 
 CREATE INDEX index_code_sets_on_best_sloc_set_id ON code_sets USING btree (best_sloc_set_id);
+
+
+--
+-- Name: index_code_sets_on_code_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_code_sets_on_code_location_id ON code_sets USING btree (code_location_id);
 
 
 --
@@ -5907,6 +5988,13 @@ CREATE INDEX index_edits_on_edits ON edits USING btree (target_type, target_id, 
 
 
 --
+-- Name: index_enlistments_on_code_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_enlistments_on_code_location_id ON enlistments USING btree (code_location_id);
+
+
+--
 -- Name: index_enlistments_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -5995,6 +6083,13 @@ CREATE INDEX index_helpfuls_on_review_id ON helpfuls USING btree (review_id);
 --
 
 CREATE INDEX index_jobs_on_account_id ON jobs USING btree (account_id);
+
+
+--
+-- Name: index_jobs_on_code_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_jobs_on_code_location_id ON jobs USING btree (code_location_id);
 
 
 --
@@ -6937,6 +7032,14 @@ ALTER TABLE ONLY clumps
 
 
 --
+-- Name: code_locations_best_code_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_locations
+    ADD CONSTRAINT code_locations_best_code_set_id_fkey FOREIGN KEY (best_code_set_id) REFERENCES code_sets(id);
+
+
+--
 -- Name: code_set_gestalts_code_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7198,6 +7301,14 @@ ALTER TABLE ONLY org_thirty_day_activities
 
 ALTER TABLE ONLY project_vulnerability_reports
     ADD CONSTRAINT fk_project_ids FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+
+
+--
+-- Name: fk_rails_0ff5ad97b1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_locations
+    ADD CONSTRAINT fk_rails_0ff5ad97b1 FOREIGN KEY (repository_id) REFERENCES repositories(id);
 
 
 --
@@ -8207,6 +8318,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160317061932');
 INSERT INTO schema_migrations (version) VALUES ('20160318131123');
 
 INSERT INTO schema_migrations (version) VALUES ('20160504111046');
+
+INSERT INTO schema_migrations (version) VALUES ('20160512144023');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

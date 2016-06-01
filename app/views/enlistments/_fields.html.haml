@@ -69,8 +69,7 @@
     .control-group
       %label.cotrol-label.required= t('.cvs_module_name')
       .controls
-        = f.text_field :module_name, name: 'repository[module_name]'
-        - error_tag @repository, :module_name
+        = render 'code_location', f: f
         %p.help-block
           = t('.enter_cvs')
           %br
@@ -80,8 +79,7 @@
     .control-group
       %label.control-label= t('.enter_git')
       .controls
-        = f.text_field :branch_name, name: 'repository[branch_name]'
-        - error_tag @repository, :branch_name
+        = render 'code_location', f: f
         %p.help-block
           = t('.enter_git_name')
           %br

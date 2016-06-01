@@ -2,7 +2,7 @@ require 'test_helper'
 
 class FetchJobsAdminTest < ActionDispatch::IntegrationTest
   let(:admin) { create(:admin, password: TEST_PASSWORD) }
-  let(:job) { create(:fetch_job, repository: create(:repository)) }
+  let(:job) { create(:fetch_job, code_location: create(:code_location)) }
 
   it 'index loads' do
     login_as admin

@@ -10,11 +10,10 @@ class EnlistmentsController < SettingsController
 
   def index
     @enlistments = @project.enlistments
-                   .includes(:project, :repository)
-                   .filter_by(params[:query])
-                   .send(parse_sort_term)
+                   .includes(:project, code_location: :repository)
+                   .filter_by(params[:query]).send(parse_sort_term)
                    .paginate(page: page_param, per_page: 10)
-    @failed_jobs = Enlistment.with_failed_repository_jobs.where(id: @enlistments.map(&:id)).any?
+    @failed_jobs = Enlistment.failed_code_location_jobs.where(id: @enlistments.map(&:id)).any?
   end
 
   def show
@@ -25,13 +24,14 @@ class EnlistmentsController < SettingsController
 
   def new
     @repository = Repository.new
+    @code_location = CodeLocation.new
     @enlistment = Enlistment.new
   end
 
   def create
-    initialize_repository
-    return render :new, status: :unprocessable_entity unless @repository.valid?
-    save_or_update_repository
+    initialize_repository_and_code_location
+    return render :new, status: :unprocessable_entity unless @code_location.valid?
+    save_or_update_code_location
     create_enlistment
     flash[:show_first_enlistment_alert] = true if @project.enlistments.count == 1
     set_flash_message
@@ -60,7 +60,7 @@ class EnlistmentsController < SettingsController
   end
 
   def repository_params
-    params.require(:repository).permit(:url, :module_name, :branch_name, :username, :password, :bypass_url_validation)
+    params.require(:repository).permit(:url, :username, :password, :bypass_url_validation)
   end
 
   def parse_sort_term
@@ -78,24 +78,35 @@ class EnlistmentsController < SettingsController
                            gitrepository cvsrepository bzrrepository).include?(repo.downcase)
   end
 
-  def initialize_repository
+  def initialize_repository_and_code_location
     @repository_class = safe_constantize(params[:repository][:type]).get_compatible_class(params[:repository][:url])
     @repository = @repository_class.new(repository_params)
+    initialize_code_location
   end
 
-  def save_or_update_repository
-    @project_has_repo_url = @project.enlistments.with_repo_url(@repository.url).exists?
-    existing_repo = @repository_class.find_existing(@repository)
-    if existing_repo.present?
-      existing_repo.update_attributes(username: @repository.username, password: @repository.password)
-      @repository = existing_repo
+  def initialize_code_location
+    if @repository.is_a?(GithubUser)
+      @code_location = @repository
     else
-      @repository.save! unless @project_has_repo_url
+      module_branch_name = params[:code_location][:module_branch_name] if params[:code_location]
+      @code_location = CodeLocation.new(repository: @repository, module_branch_name: module_branch_name)
     end
   end
 
+  def save_or_update_code_location
+    @project_has_repo_url = @project.enlistments.with_repo_url(@repository.url).exists?
+    return if @project_has_repo_url
+
+    code_location = CodeLocation.find_existing(@repository.url, @code_location.module_branch_name)
+
+    return @code_location.save! unless code_location
+
+    code_location.repository.update_attributes(username: @repository.username, password: @repository.password)
+    @code_location = code_location
+  end
+
   def create_enlistment
-    @repository.create_enlistment_for_project(current_user, @project) unless @project_has_repo_url
+    @code_location.create_enlistment_for_project(current_user, @project) unless @project_has_repo_url
   end
 
   def set_flash_message
@@ -105,8 +116,7 @@ class EnlistmentsController < SettingsController
       flash[:notice] = t('.notice', url: @repository.url)
     else
       flash[:success] = t('.success', url: @repository.url,
-                                      branch_name: (CGI.escapeHTML @repository.branch_name.to_s),
-                                      module_name: (CGI.escapeHTML @repository.module_name.to_s))
+                                      module_branch_name: (CGI.escapeHTML @code_location.module_branch_name.to_s))
     end
   end
 

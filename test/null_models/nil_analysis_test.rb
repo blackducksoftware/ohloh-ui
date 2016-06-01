@@ -92,4 +92,10 @@ class NilAnalysisTest < ActiveSupport::TestCase
       nil_analysis.empty?.must_equal true
     end
   end
+
+  describe 'updated_on' do
+    it 'should return current time with zone info' do
+      nil_analysis.updated_on.class.must_equal ActiveSupport::TimeWithZone
+    end
+  end
 end

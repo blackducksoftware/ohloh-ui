@@ -11,20 +11,20 @@ describe CodeSet do
       code_set.clumps << GitClump.create(slave: Slave.first)
       code_set.clumps.last.update_attribute(:updated_at, clump.updated_at - 2.days)
       Slave.any_instance.stubs(:run_local_or_remote).returns(true)
-      repository = code_set.repository
+      code_location = code_set.code_location
 
       job = code_set.reimport
 
       Clump.find_by_id(clump.id).must_equal nil
-      repository.code_sets.last.wont_equal code_set
-      repository.code_sets.last.must_equal job.code_set
+      code_location.code_sets.last.wont_equal code_set
+      code_location.code_sets.last.must_equal job.code_set
     end
   end
 
   describe 'ignore_prefixes' do
     it 'should ignore file names' do
       enlistment = create(:enlistment)
-      code_set = create(:code_set, repository_id: enlistment.repository_id)
+      code_set = create(:code_set, code_location_id: enlistment.code_location_id)
       code_set.ignore_prefixes(enlistment.project).must_be_empty
     end
   end

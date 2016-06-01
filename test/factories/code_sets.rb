@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :code_set do
-    association :repository
+    association :code_location
   end
 end

@@ -32,7 +32,7 @@ describe 'EnlistmentsControllerTest' do
     end
 
     it 'should return failed_jobs as true when there failed jobs for the project' do
-      FetchJob.create(repository_id: @enlistment.repository.id, status: 3)
+      FetchJob.create(code_location_id: @enlistment.code_location.id, status: 3)
 
       get :index, project_id: @enlistment.project.id
 
@@ -87,17 +87,16 @@ describe 'EnlistmentsControllerTest' do
 
   describe 'create' do
     before do
-      Repository.any_instance.stubs(:bypass_url_validation).returns(true)
+      CodeLocation.any_instance.stubs(:bypass_url_validation).returns(true)
       login_as @account
     end
 
-    let(:repository) { @enlistment.repository }
+    let(:code_location) { @enlistment.code_location }
 
     it 'must notify errors in github username' do
-      Repository.any_instance.stubs(:bypass_url_validation).returns(true)
-
       stub_github_user_repositories_call do
         Repository.count.must_equal 1
+        CodeLocation.count.must_equal 1
 
         username = 'github.com/stan'
         post :create, project_id: @project_id, repository: GithubUser.new(url: username).attributes
@@ -105,15 +104,15 @@ describe 'EnlistmentsControllerTest' do
         assigns(:repository).errors.messages[:url].first.must_equal I18n.t('invalid_github_username')
         must_render_template :new
         Repository.count.must_equal 1
+        CodeLocation.count.must_equal 1
       end
     end
 
     it 'must create multiple enlistments using github username' do
-      Repository.any_instance.stubs(:bypass_url_validation).returns(true)
-
       stub_github_user_repositories_call do
         project = Project.from_param(@project_id).take
         Repository.count.must_equal 1
+        CodeLocation.count.must_equal 1
         project.enlistments.count.must_equal 1
 
         username = 'stan'
@@ -123,39 +122,45 @@ describe 'EnlistmentsControllerTest' do
 
         flash[:notice].must_equal I18n.t('enlistments.create.github_repos_added', username: username)
         Repository.count.must_equal 5
+        CodeLocation.count.must_equal 5
         project.enlistments.count.must_equal 5
       end
     end
 
     it 'must create enlistment for any existing repository' do
-      Repository.any_instance.stubs(:bypass_url_validation).returns(true)
       username = 'stan'
-      GitRepository.create!(url: "git://github.com/#{username}/sablon.git", branch_name: :master)
+      create(:git_repository, url: "git://github.com/#{username}/sablon.git")
 
       stub_github_user_repositories_call do
         project = Project.from_param(@project_id).take
         Repository.count.must_equal 2
+        CodeLocation.count.must_equal 1
         project.enlistments.count.must_equal 1
 
         post :create, project_id: @project_id, repository: GithubUser.new(url: username).attributes
 
         Repository.count.must_equal 5
+        CodeLocation.count.must_equal 5
         project.enlistments.count.must_equal 5
       end
     end
 
     it 'should create repository and enlistments' do
+      repository = build(:repository, url: 'Repo1')
+      code_location = build(:code_location, repository: repository)
       Repository.count.must_equal 1
+      CodeLocation.count.must_equal 1
       Enlistment.count.must_equal 2
-      post :create, project_id: @project_id, repository: build(:repository, url: 'Repo1').attributes
+      post :create, project_id: @project_id, repository: repository.attributes, code_location: code_location.attributes
       must_respond_with :redirect
       must_redirect_to action: :index
+      CodeLocation.count.must_equal 2
       Repository.count.must_equal 2
       Enlistment.count.must_equal 3
     end
 
     it 'must show alert message for adding the first enlistment' do
-      post :create, project_id: @project_id, repository: repository.attributes
+      post :create, project_id: @project_id, repository: code_location.repository.attributes
 
       must_redirect_to action: :index
 
@@ -164,29 +169,30 @@ describe 'EnlistmentsControllerTest' do
 
     it 'should not create repo if already exist' do
       assert_no_difference ['Repository.count', 'Enlistment.count'] do
-        post :create, project_id: @project_id, repository: repository.attributes
+        post :create, project_id: @project_id, repository: code_location.repository.attributes
       end
 
       must_redirect_to action: :index
-      flash[:notice].must_equal I18n.t('enlistments.create.notice', url: repository.url)
+      flash[:notice].must_equal I18n.t('enlistments.create.notice', url: code_location.repository.url)
     end
 
     it 'must handle duplicate urls with leading or trailing spaces' do
-      Repository.any_instance.stubs(:bypass_url_validation)
+      CodeLocation.any_instance.stubs(:bypass_url_validation)
       GitRepository.new.source_scm_class.any_instance.stubs(:validate_server_connection)
 
       assert_no_difference ['Repository.count', 'Enlistment.count'] do
         post :create, project_id: @project_id,
-                      repository: repository.attributes.merge(url: " #{repository.url} ")
+                      repository: code_location.repository.attributes.merge(url: " #{code_location.repository.url} ")
       end
 
       must_redirect_to action: :index
-      flash[:notice].must_equal I18n.t('enlistments.create.notice', url: repository.url)
+      flash[:notice].must_equal I18n.t('enlistments.create.notice', url: code_location.repository.url)
     end
 
     it 'must handle duplicate svn urls when passed type is svn_sync' do
       repository = create(:svn_repository)
-      create(:enlistment, project: Project.find_by(vanity_url: @project_id), repository: repository)
+      create(:enlistment, project: Project.find_by(vanity_url: @project_id),
+                          code_location: create(:code_location, repository: repository))
 
       assert_no_difference ['Repository.count', 'Enlistment.count'] do
         post :create, project_id: @project_id,
@@ -198,15 +204,18 @@ describe 'EnlistmentsControllerTest' do
     end
 
     it 'should avoid duplicate repository when git url passed as https or in ssh format' do
-      repository1 = create(:git_repository, url: 'git://github.com/test/repo', branch_name: 'master')
-      create(:enlistment, repository: repository1, project: @enlistment.project)
+      repository1 = create(:git_repository, url: 'git://github.com/test/repo')
+      create(:enlistment, code_location: create(:code_location, repository: repository1,
+                                                                module_branch_name: 'master'),
+                          project: @enlistment.project)
 
-      Repository.any_instance.stubs(:bypass_url_validation).returns(false)
+      CodeLocation.any_instance.stubs(:bypass_url_validation).returns(false)
       OhlohScm::Adapters::GitAdapter.any_instance.stubs(:validate_server_connection)
 
       assert_no_difference ['Repository.count', 'Enlistment.count'] do
         post :create, project_id: @project_id,
-                      repository: { url: 'https://github.com/test/repo', branch_name: 'master', type: 'GitRepository' }
+                      repository: { url: 'https://github.com/test/repo', type: 'GitRepository' },
+                      code_location: { module_branch_name: 'master' }
       end
       assigns(:project_has_repo_url).must_equal true
     end

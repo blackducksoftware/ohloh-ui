@@ -4,7 +4,8 @@ class AnalysisSlocSetTest < ActiveSupport::TestCase
   describe 'for_repository' do
     it 'should return AnalysisSlocSet' do
       create_analysis_sloc_set
-      AnalysisSlocSet.for_repository(@analysis_sloc_set.sloc_set.repository.id).first.must_equal @analysis_sloc_set
+      AnalysisSlocSet.for_code_location(@analysis_sloc_set.sloc_set.code_location.id)
+        .first.must_equal @analysis_sloc_set
     end
   end
 
@@ -52,14 +53,14 @@ class AnalysisSlocSetTest < ActiveSupport::TestCase
 
   def create_analysis_sloc_set(ignore = '')
     sloc_set = create(:sloc_set)
-    repository = create(:repository, best_code_set_id: sloc_set.code_set_id)
-    sloc_set.code_set.update_attributes(repository_id: repository.id)
+    code_location = create(:code_location, best_code_set_id: sloc_set.code_set_id)
+    sloc_set.code_set.update_attributes(code_location_id: code_location.id)
     @analysis_sloc_set = create(:analysis_sloc_set, sloc_set: sloc_set, ignore: ignore)
   end
 
   def create_svn_sync_repository(ignore = '')
     repository = create(:svn_sync_repository)
-    code_set = create(:code_set, repository: repository)
+    code_set = create(:code_set, code_location: create(:code_location, repository: repository))
     sloc_set = create(:sloc_set, code_set: code_set)
     @analysis_sloc_set = create(:analysis_sloc_set, sloc_set: sloc_set, ignore: ignore)
   end

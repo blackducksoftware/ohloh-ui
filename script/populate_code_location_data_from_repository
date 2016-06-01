@@ -2,32 +2,21 @@
 
 require_relative '../config/environment'
 
-# cleanup repositories which has both branch_name and module_name
-ActiveRecord::Base.connection.execute("
-  UPDATE repositories set module_name = 'default' where coalesce(module_name, '') = ''
-    and type = 'HgRepository';
-")
-
-ActiveRecord::Base.connection.execute("
-  UPDATE repositories set module_name = 'trunk' where coalesce(module_name, '') = ''
-    and type in ('BzrRepository', 'SvnRepository', 'SvnSyncRepository');
-")
-
 # populate code_locations from repositories
 ActiveRecord::Base.connection.execute("
-  insert into code_locations(repository_id, module_branch_name,
+  insert into code_locations(repository_id, module_branch_name, best_code_set_id,
     created_at, updated_at)
-    select id, module_name, created_at, updated_at
+    select id, module_name, created_at, updated_at, best_code_set_id
     from repositories where
-    type != 'GitRepository'
+    type = 'CvsRepository'
 ")
 
 ActiveRecord::Base.connection.execute("
-  insert into code_locations(repository_id, module_branch_name,
+  insert into code_locations(repository_id, module_branch_name, best_code_set_id
     created_at, updated_at)
-    select id, branch_name, created_at, updated_at
+    select id, branch_name, created_at, updated_at, best_code_set_id
     from repositories where
-    type = 'GitRepository'
+    type != 'CvsRepository'
 ")
 
 # update code_locations status
@@ -41,4 +30,10 @@ ActiveRecord::Base.connection.execute("
 
 ActiveRecord::Base.connection.execute("
   update enlistments E set code_location_id = C.id from code_locations C where C.repository_id = E.repository_id
+")
+ActiveRecord::Base.connection.execute("
+  update code_sets CS set code_location_id = C.id from code_locations C where C.repository_id = CS.repository_id
+")
+ActiveRecord::Base.connection.execute("
+  update jobs J set code_location_id = C.id from code_locations C where C.repository_id = J.repository_id
 ")

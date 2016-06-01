@@ -1,22 +1,26 @@
 module Ohloh
   class Cipher
-    KEY = ENV['OHLOH_CIPHER_KEY']
+    class << self
+      def defaul_key
+        ENV['OHLOH_CIPHER_KEY']
+      end
 
-    def self.encrypt(data, key = KEY)
-      aes = OpenSSL::Cipher.new('AES-256-CBC')
-      aes.encrypt
-      aes.key = key
-      CGI.escape(Base64.encode64(aes.update(data) + aes.final))
-    end
+      def encrypt(data, key = defaul_key)
+        aes = OpenSSL::Cipher.new('AES-256-CBC')
+        aes.encrypt
+        aes.key = key
+        CGI.escape(Base64.encode64(aes.update(data) + aes.final))
+      end
 
-    def self.decrypt(data, key = KEY)
-      aes = OpenSSL::Cipher.new('AES-256-CBC')
-      aes.decrypt
-      aes.key = key
-      data = Base64.decode64(CGI.unescape(data))
-      aes.update(data) + aes.final
-    rescue
-      nil
+      def decrypt(data, key = defaul_key)
+        aes = OpenSSL::Cipher.new('AES-256-CBC')
+        aes.decrypt
+        aes.key = key
+        data = Base64.decode64(CGI.unescape(data))
+        aes.update(data) + aes.final
+      rescue
+        nil
+      end
     end
   end
 end
