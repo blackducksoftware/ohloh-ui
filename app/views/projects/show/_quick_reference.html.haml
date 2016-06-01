@@ -57,6 +57,8 @@
       = link_to t('.become_first', what: @project.name), new_project_manager_path(@project)
 
 .row
-  .hidden.col-md-5.center
-  .col-md-5.pull-right.margin_right_10.hidden#browse_security_button
-    - browse_security_button(@project)
+  .col-md-12.center-block
+    .col-md-4
+    .center-block.col-md-4.hidden#browse_security_button
+      - browse_security_button(@project)
+    .col-md-4
