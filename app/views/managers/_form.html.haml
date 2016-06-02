@@ -11,9 +11,9 @@
       = find_and_preserve(form.text_area(:message, rows: 10, max_length: 200, style: 'width: 100%'))
     %p.help-block
     .center.soft
-      #{t('.message_help1', target_type: @parent.class.to_s.downcase)}
+      = t('.message_help1', target_type: @parent.class.to_s.downcase)
       %br
-      #{t('.message_help2')}
+      = t('.message_help2')
     %br
     %span= t('.promise', target: html_escape(@parent.name), target_type: @parent.class)
 

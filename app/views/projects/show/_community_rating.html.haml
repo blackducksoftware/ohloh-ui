@@ -1,7 +1,4 @@
-- if @project.best_analysis && !@project.best_analysis.blank?
-  - title = t('.page_title_1')
-- else
-  - title = t('.page_title_2')
+- title = @project.best_analysis.present? ? t('.page_title_1') : t('.page_title_2')
 
 .clear#community_rating
 %div

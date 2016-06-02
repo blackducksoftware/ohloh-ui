@@ -16,7 +16,7 @@
     .info.pull-left
       %p
         - if project.organization
-          #{t('.claimed_by')}
+          = t('.claimed_by')
           = link_to truncate(project.organization.name, length: 30),
                     organization_path(project.organization), class: 'claimed-by-org', title: project.organization.name
         - else
@@ -64,7 +64,7 @@
       - project_activity_level_text(project, :twentyfive)
       .stars!= rating_stars('average_rating_stars', project.rating_average.to_f || 0, true)
       .reviews
-        #{link_to pluralize_with_delimiter(project.reviews.count, t('.review')), summary_project_reviews_path(project)}
+        = link_to pluralize_with_delimiter(project.reviews.count, t('.review')), summary_project_reviews_path(project)
 
   .add-info
     .main_language.pull-left

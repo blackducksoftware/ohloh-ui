@@ -26,7 +26,10 @@
         .text-center
           = link_to pluralize_without_count(vf.commits, 'Commit'), account_positions_path(account)
       .pull-left.in= t('.in')
-      - if sorted_cbl.length > 0
+      - if sorted_cbl.empty?
+        .pull-left.language_summary.no_lang_summary
+          = t('.no_lang_summary')
+      - else
         .pull-left.language_summary
           .pull-left{ style: 'min-height: 99px' }
             - sorted_cbl.first(3).each do |lang, lang_hash|
@@ -40,9 +43,6 @@
               = link_to langs_link, account_languages_path(account)
             - else
               = link_to t('.langs_link_text2'), account_languages_path(account)
-      - else
-        .pull-left.language_summary.no_lang_summary
-          = t('.no_lang_summary')
 
       .pull-left.in= t('.to')
       .pull-left.project_summary

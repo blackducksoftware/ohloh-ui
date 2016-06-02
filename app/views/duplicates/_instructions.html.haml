@@ -6,7 +6,7 @@
   %ul{ style: 'margin-left: 30px;' }
     %li= t('.help1')
     %li
-      #{t('.help2')}
+      = t('.help2')
       %ul{ style: 'margin-left: 30px;' }
         - link = link_to(html_escape(@project.name), project_path(@project), title: html_escape(@project.name))
         %li!= t('.help3', project: link)

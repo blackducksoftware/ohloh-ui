@@ -13,6 +13,6 @@
   - if @project.edit_authorized?
     %a{ href: project_tags_path(@project) }= t('.add_some_tags')
   - else
-    #{t('.none')}
+    = t('.none')
 - else
-  #{t('.totally_unique_tags')}
+  = t('.totally_unique_tags')

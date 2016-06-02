@@ -37,12 +37,12 @@
     = link_to t('.licenses'), project_licenses_path(@project)
   %dd{ style: 'margin-bottom: .5em;' }
     - licenses = @project.licenses
-    - if licenses.size > 0
+    - if licenses.empty?
+      = t('.no_license')
+    - else
       %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
         %span{ itemprop: 'publishingPrinciples' }
           = licenses.collect { |l| link_to html_escape(l.short_name), license_url(l.to_param) }.to_sentence.html_safe
-    - else
-      = t('.no_license')
   %dt
     = link_to t('.similar_projects'), similar_project_path(@project)
   %dd{ style: 'margin-bottom: .5em;' }

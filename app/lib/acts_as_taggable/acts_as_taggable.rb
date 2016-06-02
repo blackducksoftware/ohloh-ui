@@ -20,14 +20,14 @@ module ActsAsTaggable
     end
 
     def tag_list
-      tags.uniq.pluck(:name).compact.join(' ')
+      tags.pluck('DISTINCT name').compact.join(' ')
     end
 
     private
 
     def parse_tag_list(list)
       return [] if list.blank?
-      list.delete(/\"/, '').split(/\s/).reject(&:blank?)
+      list.delete('"').split(/\s/).reject(&:blank?)
     end
   end
 end

@@ -1,4 +1,4 @@
-- if project.description && project.description.length > 0
+- if project.description.present?
   .summary
     = simple_format(h(project.description))
 - else

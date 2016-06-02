@@ -23,11 +23,11 @@
             %i.icon-caret-down
           %ul.dropdown-menu.user-menu.pull-right.dropdown-menu.dropdown-yellow.dropdown-caret.dropdown-closer
             %li
-              %a{ href: "#{account_path(current_user)}" }
+              %a{ href: account_path(current_user).to_s }
                 %i.icon-user
                 = t :profile
             %li
-              %a{ href: "#{settings_account_path(current_user)}" }
+              %a{ href: settings_account_path(current_user).to_s }
                 %i.icon-cog
                   = t :settings
             - if current_user_is_admin?

@@ -32,9 +32,11 @@
         %br
         %span
           %a{ href: account_positions_path(account), style: 'font-size: 12px;' }
-            #{pluralize_without_count(vf.commits, t('.commit'))}
+            = pluralize_without_count(vf.commits, t('.commit'))
       .pull-left.in= t('.in_dots')
-      - if sorted_cbl.length > 0
+      - if sorted_cbl.empty?
+        .pull-left.language_summary.no_lang_summary!= t('.no_detected_languages')
+      - else
         .pull-left.language_summary
           .pull-left{ style: 'min-height: 99px;' }
             - sorted_cbl.first(3).each do |lang_name, lang_hash|
@@ -47,8 +49,6 @@
               %a{ href: account_languages_path(account) }= t('.and_thing', thing: pluaral_term)
             - else
               %a{ href: account_languages_path(account) }= t('.see_commits_by_languages')
-      - else
-        .pull-left.language_summary.no_lang_summary!= t('.no_detected_languages')
 
       .pull-left.in to ...
       .pull-left.project_summary

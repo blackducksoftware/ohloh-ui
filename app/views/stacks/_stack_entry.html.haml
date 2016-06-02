@@ -1,6 +1,6 @@
 - hidden ||= false
 
-%tr.stack_entry{ id: "stack_entry_#{stack_entry.id}", style: "#{'display:none;' if hidden}" }
+%tr.stack_entry{ id: "stack_entry_#{stack_entry.id}", style: ('display:none;' if hidden) }
   %td{ width: '13%', valign: 'middle' }
     - project_icon(stack_entry.project, :small)
   %td{ width: '70%', valign: 'top' }

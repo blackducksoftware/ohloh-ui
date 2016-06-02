@@ -3,9 +3,9 @@
   != t('.activity', link: project_link)
   - case factoid
   - when FactoidActivityIncreasing
-    #{t('.increasing')}
+    = t('.increasing')
   - when FactoidActivityStable
-    #{t('.stable')}
+    = t('.stable')
   - else
-    #{t('.decreasing')}
+    = t('.decreasing')
 %p= t('.activity_note')

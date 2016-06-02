@@ -1,4 +1,4 @@
-.count.strong{ class: "#{affiliated_committers_state}" }
+.count.strong{ class: affiliated_committers_state }
   - if @organization.affiliators_count == 0
     %span.disabled= @organization.affiliators_count
     .portfolio_label.disabled= t('organizations.affiliated_committers.page_title')
@@ -9,5 +9,5 @@
       = @organization.affiliators_count
       .portfolio_label.strong.affiliated_committers
         = t('organizations.affiliated_committers.page_title')
-%i.icon-group.center{ class: "#{affiliated_committers_state}" }
+%i.icon-group.center{ class: affiliated_committers_state }
 

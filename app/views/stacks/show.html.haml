@@ -26,19 +26,19 @@
       - show_them = @stack.project_count == 0
       .padding_one_top
         .recommendations
-          .clear{ style: "#{'display:none' if show_them}" }
+          .clear{ style: ('display:none' if show_them) }
             %h4.soft.nomargin.show
               %a.link_no_underline#show= t('.show_recommends')
-          .clear#recommendations{ style: "#{'display:none' unless show_them}" }
+          .clear#recommendations{ style: ('display:none' unless show_them) }
             %h4.soft{ style: 'margin-bottom: 0.3em;' }
-              #{t('.recommends_for_this_stack')}
+              = t('.recommends_for_this_stack')
               &nbsp;
               %a.command#hide= t('.hide')
           .list
             %ul.stack_sm_suggestions
               - if show_them
                 = render partial: 'small_suggestion', collection: @stack.suggest_projects(5)
-          .controls{ style: "#{'display:none' unless show_them}" }
+          .controls{ style: ('display:none' unless show_them) }
             %a.btn.btn-mini.command#skip_all= t('.skip_all')
             %a.command.btn.btn-mini#more{ style: 'display:none' }= t('.show_me_more')
             %a.btn.btn-mini.clear_ignores.command{ title: t('.unignore_all') }= t('.show_all_projects')
@@ -73,7 +73,7 @@
           - else
             = t('.stack_explanation_with_projects')
         %p
-          #{t('.more_questions')}
+          = t('.more_questions')
           = blog_link_to(link: :stack_faq, link_text: t('.stack_faq'))
 
       = render 'similar_stacks', stack: @stack

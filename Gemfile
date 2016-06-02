@@ -53,7 +53,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'flog'
-  gem 'haml_lint', '~> 0.13.0'
+  gem 'haml_lint'
   gem 'minitest-rails'
   gem 'mocha'
   gem 'ruby_parser'

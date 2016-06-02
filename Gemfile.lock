@@ -179,9 +179,10 @@ GEM
       haml (>= 4.0.6, < 5.0)
       html2haml (>= 1.0.1)
       railties (>= 4.0.1)
-    haml_lint (0.13.0)
+    haml_lint (0.17.1)
       haml (~> 4.0)
-      rubocop (>= 0.25.0)
+      rake (>= 10, < 12)
+      rubocop (>= 0.36.0)
       sysexits (~> 1.1)
     has_scope (0.6.0)
       actionpack (>= 3.2, < 5)
@@ -270,7 +271,7 @@ GEM
       cocaine (~> 0.5.5)
       mime-types
       mimemagic (= 0.3.0)
-    parser (2.3.1.0)
+    parser (2.3.1.1)
       ast (~> 2.2)
     pg (0.18.4)
     phantomjs (1.9.8.0)
@@ -409,7 +410,7 @@ GEM
       ref
     thor (0.19.1)
     thread_safe (0.3.5)
-    tilt (2.0.1)
+    tilt (2.0.4)
     timecop (0.8.0)
     traceview (3.3.3)
       json
@@ -463,7 +464,7 @@ DEPENDENCIES
   flog
   font-awesome-rails
   haml-rails
-  haml_lint (~> 0.13.0)
+  haml_lint
   jasmine-jquery-rails
   jasmine-rails
   jbuilder

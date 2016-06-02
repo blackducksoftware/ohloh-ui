@@ -3,7 +3,7 @@
 .col-md-10.center-block
   - if fact.commits.to_i > 0
     - fact_format = fact.last_checkin.strftime('%b %d %Y %H:%M:%S %Z')
-    #timeline{ project_id: "#{contribution.project_id}", name_id: "#{fact.name_id}", date: fact_format }
+    #timeline{ project_id: contribution.project_id.to_s, name_id: fact.name_id.to_s, date: fact_format }
     %p.right.soft.small
       = t('.approximately')
   - else
