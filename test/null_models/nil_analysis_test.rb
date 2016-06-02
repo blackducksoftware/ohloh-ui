@@ -92,4 +92,10 @@ class NilAnalysisTest < ActiveSupport::TestCase
       nil_analysis.empty?.must_equal true
     end
   end
+
+  describe 'updated_on' do
+    it 'should return current time' do
+      assert_in_delta nil_analysis.updated_on, Time.zone.now, 1.second
+    end
+  end
 end

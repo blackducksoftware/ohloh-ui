@@ -46,7 +46,6 @@ group :development do
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
   gem 'meta_request'
-  gem 'whenever', require: false
 end
 
 group :test do

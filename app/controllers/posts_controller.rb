@@ -43,6 +43,7 @@ class PostsController < ApplicationController
   end
 
   def destroy
+    @post.destroy
     redirect_to topic_path(@topic)
   end
 

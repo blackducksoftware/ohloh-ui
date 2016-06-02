@@ -16,13 +16,13 @@ class AnalysisSlocSet < ActiveRecord::Base
     Ignore.parse(ignore).map { |prefix| adjust_leading_slash(prefix) }
   end
 
-  private
-
   class << self
     def sanitize_sql_condition(file_name)
       sanitize_sql_for_conditions(["fyles.name like '%s%%'", sanitize_sql_like(file_name)])
     end
   end
+
+  private
 
   def adjust_leading_slash(file_name)
     if sloc_set.code_set.repository.is_a? SvnSyncRepository

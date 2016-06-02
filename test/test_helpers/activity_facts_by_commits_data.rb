@@ -1,4 +1,4 @@
-freezerequire 'ostruct'
+require 'ostruct'
 
 class ActivityFactsByMonthData
   COMMITS = [5, 42, 7, 20, 19, 18, 24, 16, 39, 0, 20, 65, 22, 24, 23, 30, 54, 6, 9].freeze

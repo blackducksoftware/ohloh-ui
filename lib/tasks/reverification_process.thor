@@ -48,7 +48,7 @@ module ReverificationTask
 
     desc 'disable_accounts', 'Disables all accounts with phase disable (2)'
     def disable_accounts
-      ReverificationTracker.disable_account
+      ReverificationTracker.disable_accounts
     end
   end
 

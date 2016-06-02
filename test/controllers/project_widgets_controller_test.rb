@@ -5,7 +5,7 @@ describe 'ProjectWidgetsController' do
   let(:widget_classes) do
     [
       ProjectWidget::FactoidsStats, ProjectWidget::Factoids, ProjectWidget::BasicStats,
-      ProjectWidget::Languages, ProjectWidget::SearchAllCode, ProjectWidget::Cocomo,
+      ProjectWidget::Languages, ProjectWidget::Cocomo,
       ProjectWidget::PartnerBadge, ProjectWidget::ThinBadge, ProjectWidget::UsersLogo
     ] + [ProjectWidget::Users] * 6
   end
@@ -128,56 +128,6 @@ describe 'ProjectWidgetsController' do
 
     it 'should show not found error' do
       get :factoids, project_id: 0
-
-      must_respond_with :ok
-      @response.body.must_equal I18n.t('widgets.not_found')
-    end
-  end
-
-  describe 'search_all_code' do
-    it 'should set project and widget' do
-      get :search_all_code, project_id: project.id
-
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::SearchAllCode
-      assigns(:project).must_equal project
-    end
-
-    it 'should render iframe for js format' do
-      get :search_all_code, project_id: project.id, format: :js
-
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::SearchAllCode
-      assigns(:project).must_equal project
-    end
-
-    it 'should show not found error' do
-      get :search_all_code, project_id: 0
-
-      must_respond_with :ok
-      @response.body.must_equal I18n.t('widgets.not_found')
-    end
-  end
-
-  describe 'search_code' do
-    it 'should set project and widget' do
-      get :search_code, project_id: project.id
-
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::SearchCode
-      assigns(:project).must_equal project
-    end
-
-    it 'should render iframe for js format' do
-      get :search_code, project_id: project.id, format: :js
-
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::SearchCode
-      assigns(:project).must_equal project
-    end
-
-    it 'should show not found error' do
-      get :search_code, project_id: 0
 
       must_respond_with :ok
       @response.body.must_equal I18n.t('widgets.not_found')

@@ -16,11 +16,11 @@ class Slave < ActiveRecord::Base
   end
 
   def allow?
-    allow_deny.casecmp?('allow').zero?
+    allow_deny.to_s.casecmp('allow').zero?
   end
 
   def deny?
-    allow_deny.casecmp?('deny').zero?
+    allow_deny.to_s.casecmp('deny').zero?
   end
 
   private

@@ -22,7 +22,7 @@
 .row
   .col-md-6
     #project_summary{ itemprop: 'description' }
-      - if @project.description && !@project.description.empty?
+      - if @project.description.present?
         = simple_format(@project.description)
       - else
         = t('.no_description')
