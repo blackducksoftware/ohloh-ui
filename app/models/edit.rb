@@ -31,6 +31,10 @@ class Edit < ActiveRecord::Base
     swap_doneness(false, editor)
   end
 
+  def previous_edit
+    find_previous_edit
+  end
+
   private
 
   class << self

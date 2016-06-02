@@ -58,3 +58,8 @@ class Edit
 $(document).on 'page:change', ->
   $('.edit').find('.undo, .redo').each -> new Edit($(this))
   $('label#human_edits :checkbox').click(Edit.humanEdits)
+
+$ ->
+  $('.show_edit_btn').bind 'ajax:beforeSend', ->
+    $('#edit-details .modal-dialog').css('text-align', 'center')
+    $('#edit-details .modal-dialog').html('<img src=/images/loadingAnimation.gif />')

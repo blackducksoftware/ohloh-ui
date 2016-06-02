@@ -44,7 +44,7 @@ describe EditsController do
     it 'undo of creation edit should delete the project' do
       login_as create(:admin)
       create_edit = CreateEdit.where(target: @project).first
-      post :update, id: create_edit.id, undo: 'true'
+      post :update, id: create_edit.id, project_id: @project.vanity_url, undo: 'true'
       assert_response :success
       assert_equal true, @project.reload.deleted?
     end
@@ -70,7 +70,7 @@ describe EditsController do
       create_edit = CreateEdit.where(target: @project).first
       login_as create_edit.account
       @project.destroy
-      post :update, id: create_edit.id, undo: 'false'
+      post :update, id: create_edit.id, project_id: @project.vanity_url, undo: 'false'
       assert_equal false, @project.reload.deleted?
       assert_response :success
     end
@@ -183,6 +183,48 @@ describe EditsController do
       get :index, license_id: @license.to_param
 
       must_respond_with :ok
+    end
+  end
+
+  describe 'show' do
+    describe '#Project Edit' do
+      it 'should not require a current user' do
+        project = create(:project)
+        login_as nil
+        xhr :get, :show, id: project.edits.first.id, project_id: project.to_param
+        must_respond_with :ok
+        must_render_template '_show'
+      end
+    end
+
+    describe 'Organization Edit' do
+      it 'should not require a current user' do
+        organization = create(:project).organization
+        login_as nil
+        xhr :get, :show, id: organization.edits.first.id, organization_id: organization.to_param
+        must_respond_with :ok
+        must_render_template '_show'
+      end
+    end
+
+    describe 'Account Edit' do
+      it 'should not require a current user' do
+        account = create(:project).editor_account
+        login_as nil
+        xhr :get, :show, id: account.edits.first.id, account_id: account.to_param
+        must_respond_with :ok
+        must_render_template '_show'
+      end
+    end
+
+    describe 'License Edit' do
+      it 'should not require a current user' do
+        license = create(:project_license).license
+        login_as nil
+        xhr :get, :show, id: license.edits.first.id, license_id: license.to_param
+        must_respond_with :ok
+        must_render_template '_show'
+      end
     end
   end
 end

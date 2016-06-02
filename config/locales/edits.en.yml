@@ -14,6 +14,7 @@ en:
     org_explanation_claimed: "Claimed by Organization '%{name}'"
     explanation_property: "Changed %{key} to %{value}"
     nothing: "[nothing]"
+    empty: "(empty)"
     explanation_create: "Created %{type}[%{id}]"
     explanation_alias_property: "Contributor '%{commit_name}' renamed to '%{name}'"
     explanation_alias_create: "Created alias for name '%{name}'"
@@ -65,3 +66,16 @@ en:
     update:
       failed_undo: "Undo failed."
       failed_redo: "Redo failed."
+    show:
+      title_html: "%{type} &nbsp;(ID: %{id})"
+      headings:
+        target: "Target"
+        attribute: "Attribute"
+        new_value: "New Value"
+        previous_value: "Previous Value"
+        edited_by: "Edited By"
+        edited_on: "Edited On"
+        undid_by: "Undid By"
+        undid_on: "Undid On"
+        redid_by: "Redid By"
+        redid_on: "Redid On"
