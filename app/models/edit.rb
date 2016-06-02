@@ -17,8 +17,7 @@ class Edit < ActiveRecord::Base
   filterable_by %w(key value)
 
   def previous_value
-    previous_edit = find_previous_edit
-    previous_edit ? previous_edit.value : nil
+    previous_edit.try(:value)
   end
 
   def undo!(editor)
@@ -29,6 +28,18 @@ class Edit < ActiveRecord::Base
   def redo!(editor)
     target.editor_account = editor
     swap_doneness(false, editor)
+  end
+
+  def previous_edit
+    Edit.not_undone
+        .similar_to(self)
+        .where(Edit.arel_table[:created_at].lt(created_at))
+        .order(created_at: :desc)
+        .first
+  end
+
+  def create_edit?
+    type == 'CreateEdit'
   end
 
   private
@@ -49,14 +60,6 @@ class Edit < ActiveRecord::Base
       undo ? do_undo : do_redo
       update_attributes!(undone: undo, undone_at: Time.current, undone_by: editor.id)
     end
-  end
-
-  def find_previous_edit
-    Edit.not_undone
-        .similar_to(self)
-        .where(Edit.arel_table[:created_at].lt(created_at))
-        .order(created_at: :desc)
-        .first
   end
 
   def populate_project

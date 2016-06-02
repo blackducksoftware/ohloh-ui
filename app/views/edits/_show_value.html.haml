@@ -1,0 +1,6 @@
+- is_link ||= false
+
+.row
+  .col-md-3.list-title.strong= title
+  .col-md-1.list-separator.strong :
+  .col-md-8!= is_link ? (link_to value.to_param, value) : value

@@ -1,5 +1,6 @@
 module EditsHelper
   include EnlistmentsHelper
+  include EditsModalHelper
 
   def edit_humanize_datetime(datetime)
     now = Time.current
@@ -13,22 +14,32 @@ module EditsHelper
   end
 
   def edit_show_subject(edit)
-    org_edit = true if params[:organization_id].present? || edit.key == 'organization_id' || edit.key == 'org_type'
-    html_escape(edit_subject(edit, org_edit)) + ' ' + edit_enlistment_branch_info(edit)
+    html_escape(edit_subject(edit)) + ' ' + edit_enlistment_branch_info(edit)
+  end
+
+  def get_edit_summary(edit)
+    get_edit_explanation(edit)
   end
 
   private
 
-  def edit_subject(edit, org_page = false)
+  def organization_edit?(edit)
+    params[:organization_id].present? || edit.key == 'organization_id' || edit.key == 'org_type'
+  end
+
+  def edit_subject(edit)
     project_term = if @parent.is_a?(Project) || @parent.is_a?(Organization)
                      "#{@parent.class} '#{@parent.name}': "
                    else
                      ''
                    end
     undo_term = edit.undone? ? t('edits.dash_undone') : ''
-    explanation = org_page ? edit_org_explanation(edit) : edit_explanation(edit)
 
-    project_term + explanation + undo_term
+    project_term + get_edit_explanation(edit) + undo_term
+  end
+
+  def get_edit_explanation(edit)
+    organization_edit?(edit) ? edit_org_explanation(edit) : edit_explanation(edit)
   end
 
   def edit_org_explanation(edit)
@@ -47,7 +58,7 @@ module EditsHelper
   end
 
   def edit_explanation(edit)
-    if [Alias, Permission, Enlistment, Link, ProjectLicense, RssSubscription].include?(edit.target.class)
+    if PROJECT_RELATED_CLASSES.include?(edit.target.class)
       return send("edit_explanation_#{edit.target.class.name.downcase}".to_sym, edit)
     end
     edit_explanation_generic(edit)
@@ -73,11 +84,9 @@ module EditsHelper
   end
 
   def edit_explanation_enlistment(edit)
-    if edit.is_a?(PropertyEdit)
-      t('edits.explanation_enlistment_ignored')
-    else
-      t('edits.explanation_enlistment', url: edit.target.repository.url)
-    end
+    return t('edits.explanation_enlistment_ignored') if edit.is_a?(PropertyEdit)
+
+    t('edits.explanation_enlistment', url: edit.target.repository.url)
   end
 
   def edit_enlistment_branch_info(edit)
