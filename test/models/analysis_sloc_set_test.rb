@@ -5,7 +5,7 @@ class AnalysisSlocSetTest < ActiveSupport::TestCase
     it 'should return AnalysisSlocSet' do
       create_analysis_sloc_set
       AnalysisSlocSet.for_code_location(@analysis_sloc_set.sloc_set.code_location.id)
-        .first.must_equal @analysis_sloc_set
+                     .first.must_equal @analysis_sloc_set
     end
   end
 

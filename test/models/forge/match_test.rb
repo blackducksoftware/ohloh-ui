@@ -219,7 +219,7 @@ class Forge::MatchTest < ActiveSupport::TestCase
         code_locations.length.must_equal 1
         code_locations[0].repository.is_a?(CvsRepository).must_equal true
         code_locations[0].repository
-          .url.must_equal ':pserver:anonymous:@freecaller.cvs.sourceforge.net:/cvsroot/freecaller'
+                         .url.must_equal ':pserver:anonymous:@freecaller.cvs.sourceforge.net:/cvsroot/freecaller'
         code_locations[0].repository.forge_match.must_equal match
       end
     end

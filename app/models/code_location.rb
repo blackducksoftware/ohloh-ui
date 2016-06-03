@@ -39,8 +39,8 @@ class CodeLocation < ActiveRecord::Base
   class << self
     def find_existing(url, module_branch_name = nil)
       joins(:repository).where(repositories: { url: url })
-        .where(module_branch_name: module_branch_name)
-        .order(:id).first
+                        .where(module_branch_name: module_branch_name)
+                        .order(:id).first
     end
 
     def get_module_branch_name(module_branch_name)
@@ -91,11 +91,7 @@ class CodeLocation < ActiveRecord::Base
   end
 
   def normalize_scm_attributes
-    if repository.is_a?(CvsRepository)
-      self.module_branch_name = source_scm.module_name
-    else
-      self.module_branch_name = source_scm.branch_name
-    end
+    self.module_branch_name = repository.is_a?(CvsRepository) ? source_scm.module_name : source_scm.branch_name
     normalize_repository_attributes
   end
 
