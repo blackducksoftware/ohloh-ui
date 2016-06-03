@@ -15,8 +15,8 @@ class AccountsController < ApplicationController
   def index
     @cbp_map = PeopleDecorator.new(@people).commits_by_project_map
     @positions_map = Position.where(id: @cbp_map.values.map(&:first).flatten)
-                     .preload(project: [{ best_analysis: :main_language }, :logo])
-                     .index_by(&:id)
+                             .preload(project: [{ best_analysis: :main_language }, :logo])
+                             .index_by(&:id)
   end
 
   def show
@@ -59,7 +59,7 @@ class AccountsController < ApplicationController
   def find_claimed_people
     total_entries = params[:query].blank? ? Person::Count.claimed : nil
     @people = Person.find_claimed(params[:query], params[:sort])
-              .paginate(page: page_param, per_page: 10, total_entries: total_entries)
+                    .paginate(page: page_param, per_page: 10, total_entries: total_entries)
   end
 
   def set_account
@@ -69,7 +69,7 @@ class AccountsController < ApplicationController
                else
                  Account::Find.by_id_or_login(params[:id])
                end
-    fail ParamRecordNotFound unless @account
+    raise ParamRecordNotFound unless @account
   end
 
   def create_action_record
@@ -81,6 +81,7 @@ class AccountsController < ApplicationController
       :login, :email, :email_confirmation, :name, :country_code, :location, :latitude, :longitude,
       :twitter_account, :organization_id, :organization_name, :affiliation_type, :invite_code,
       :digits_credentials, :digits_service_provider_url, :digits_oauth_timestamp,
-      :password, :password_confirmation, :about_raw, :url)
+      :password, :password_confirmation, :about_raw, :url
+    )
   end
 end

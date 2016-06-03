@@ -36,14 +36,14 @@ class Position::Hooks
   # rubocop:disable Metrics/AbcSize
   def cleanup_aliases
     aliases = Alias.joins(:edits)
-              .not_deleted
-              .where(preferred_name_id: name_id)
-              .where('aliases.project_id' => project_id)
-              .where('edits.type' => 'CreateEdit')
-              .where('edits.undone' => false)
-              .where('(edits.account_id = :account_id AND undone_by IS NULL)
-                      OR undone_by = :account_id', account_id: account_id)
-              .uniq
+                   .not_deleted
+                   .where(preferred_name_id: name_id)
+                   .where('aliases.project_id' => project_id)
+                   .where('edits.type' => 'CreateEdit')
+                   .where('edits.undone' => false)
+                   .where('(edits.account_id = :account_id AND undone_by IS NULL)
+                            OR undone_by = :account_id', account_id: account_id)
+                   .uniq
 
     aliases.each { |alias_object| alias_object.find_create_edit.undo!(account) }
   end

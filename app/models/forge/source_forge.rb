@@ -30,7 +30,7 @@ class Forge::SourceForge < Forge
   def get_repository_attributes(match)
     json = match.get_json_api
     mount_point = get_mount_point(json)
-    return [] unless mount_point.length > 0
+    return [] if mount_point.empty?
     repo_type = mount_point.first['name']
     if repo_type == 'cvs'
       location = @url

@@ -34,11 +34,11 @@
               .controls
                 %label.checkbox.control-label{ style: 'padding: 0;' }
                   = f.check_box :managed_by_creator, choice: t('.i_manage_this_project'), class: 'col'
-                  #{t('.i_manage_this_project')}
+                  = t('.i_manage_this_project')
                 %p.help-block
-                  #{t('.i_manage_this_project_help1')}
+                  = t('.i_manage_this_project_help1')
                   %br
-                  #{t('.i_manage_this_project_help2')}
+                  = t('.i_manage_this_project_help2')
             .control-group
               %label.control-label= t('.homepage_page')
               .controls
@@ -56,9 +56,9 @@
               .controls
                 %input.license.col-md-5#add_license{ type: 'text' }
                 %p.help-block
-                  #{t('.add_license_help1')}
+                  = t('.add_license_help1')
                   %br
-                  #{t('.add_license_help2')}
+                  = t('.add_license_help2')
             .control-group
               %label.control-label= t('.chosen_licenses')
               .controls.chosen_licenses
@@ -84,18 +84,18 @@
                 = render 'shared/availability_preview'
                 - error_tag @project, :vanity_url, class: 'error vanity_url'
                 %p.help-block
-                  #{t('.url_help1')}
+                  = t('.url_help1')
                   %br
-                  #{t('.url_help2')}
+                  = t('.url_help2')
             .control-group
               %label.control-label= t('.description')
               .controls
                 = find_and_preserve(f.text_area(:description, max_length: 800, style: 'width: 376px; height: 200px;'))
                 - error_tag @project, :description
                 %p.help-block
-                  #{t('.description_help1')}
+                  = t('.description_help1')
                   %br
-                  #{t('.description_help2')}
+                  = t('.description_help2')
             .actions.clear_left
               %input.btn.btn-primary{ type: 'submit', value: t('.submit'), 'data-disable-with' => t('.processing') }
 

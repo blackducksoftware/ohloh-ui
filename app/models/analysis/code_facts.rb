@@ -9,9 +9,9 @@ class Analysis::CodeFacts < Analysis::QueryBase
 
   def query
     AllMonth.select(select_columns).joins(joins_clause)
-      .where(within_date).where(analysis_conditions)
-      .where.not(activity_fact_conditions)
-      .group(month).order(month)
+            .where(within_date).where(analysis_conditions)
+            .where.not(activity_fact_conditions)
+            .group(month).order(month)
   end
 
   def analysis_conditions

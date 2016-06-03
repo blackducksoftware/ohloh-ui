@@ -7,7 +7,7 @@ module WidgetBadge
     include BadgeHelper
 
     DEFAULT_FONT_OPTIONS = { font_size: 14, blur: 0, opacity: 80, stroke: '#0099ff', weight: 350,
-                             align: :center, y_offset: 0 }
+                             align: :center, y_offset: 0 }.freeze
 
     def create(image_data)
       GC.start

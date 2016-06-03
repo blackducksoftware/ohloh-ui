@@ -15,11 +15,11 @@ class CommitsController < SettingsController
 
   def show
     @diffs = @named_commit.commit.diffs
-             .includes(:fyle)
-             .filter_by(params[:query])
-             .order('fyles.name')
-             .page(page_param)
-             .per_page(10)
+                          .includes(:fyle)
+                          .filter_by(params[:query])
+                          .order('fyles.name')
+                          .page(page_param)
+                          .per_page(10)
     @ignore_prefixes = @named_commit.code_set.ignore_prefixes(@project)
   end
 
@@ -56,16 +56,16 @@ class CommitsController < SettingsController
 
   def named_commits
     @named_commits = @project.named_commits
-                     .within_timespan(params[:time_span], @project.best_analysis.logged_at)
-                     .includes(:commit, :person, :account)
-                     .filter_by(params[:query])
-                     .send(parse_sort_term)
-                     .page(page_param)
+                             .within_timespan(params[:time_span], @project.best_analysis.logged_at)
+                             .includes(:commit, :person, :account)
+                             .filter_by(params[:query])
+                             .send(parse_sort_term)
+                             .page(page_param)
   end
 
   def find_named_commit
     @named_commit = NamedCommit.find_by(id: params[:id])
-    fail ParamRecordNotFound if @named_commit.nil?
+    raise ParamRecordNotFound if @named_commit.nil?
   end
 
   def find_contributor_fact

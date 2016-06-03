@@ -38,7 +38,7 @@ class LogosControllerTest < ActionController::TestCase
     end
   end
 
-  it 'validate failure'do
+  it 'validate failure' do
     VCR.use_cassette('LogoClearGif') do
       login_as @admin
       Project.any_instance.expects(:edit_authorized?).at_least_once.returns(true)

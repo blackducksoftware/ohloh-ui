@@ -22,7 +22,7 @@ class Account::Access < OhDelegator::Base
   def activated?
     account.activated_at.present?
   end
-  alias_method :email_verified?, :activated?
+  alias email_verified? activated?
 
   def disabled?
     level.to_i < DEFAULT

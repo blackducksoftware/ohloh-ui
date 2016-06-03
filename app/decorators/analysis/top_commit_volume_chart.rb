@@ -2,9 +2,9 @@ class Analysis::TopCommitVolumeChart
   include ChartHelper
   include ActionView::Helpers::AssetUrlHelper
 
-  OTHER = 'Other'
+  OTHER = 'Other'.freeze
   NAME_COUNT = 5
-  INTERVALS = ['50 years', '12 months', '1 month']
+  INTERVALS = ['50 years', '12 months', '1 month'].freeze
 
   def initialize(analysis)
     @analysis = analysis

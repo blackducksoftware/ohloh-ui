@@ -1,12 +1,13 @@
 class Analysis::TopCommitVolume < Analysis::QueryBase
-  INTERVAL_ATTRS = { '50 years' => :commits, '12 months' => :twelve_month_commits, '1 month' => :thirty_day_commits }
+  INTERVAL_ATTRS = { '50 years' => :commits, '12 months' => :twelve_month_commits,
+                     '1 month' => :thirty_day_commits }.freeze
 
   arel_tables :contributor_fact, :name
 
   def initialize(analysis, interval)
     @analysis = analysis
     @interval = interval
-    fail ArgumentError, "Unknown interval - #{interval}" unless interval_attr
+    raise ArgumentError, "Unknown interval - #{interval}" unless interval_attr
   end
 
   def collection
@@ -17,8 +18,8 @@ class Analysis::TopCommitVolume < Analysis::QueryBase
 
   def execute
     ContributorFact.select(select_clause).joins(:name)
-      .where(analysis_id: @analysis.id).where(conditions)
-      .order(contributor_facts[interval_attr].desc, names[:name].lower)
+                   .where(analysis_id: @analysis.id).where(conditions)
+                   .order(contributor_facts[interval_attr].desc, names[:name].lower)
   end
 
   def select_clause

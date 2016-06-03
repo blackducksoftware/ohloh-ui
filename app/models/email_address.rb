@@ -1,5 +1,5 @@
 class EmailAddress < ActiveRecord::Base
-  BLACKLISTED_EMAILS = ['root@localhost']
+  BLACKLISTED_EMAILS = ['root@localhost'].freeze
   include EmailObfuscation
 
   class << self

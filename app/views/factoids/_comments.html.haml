@@ -9,19 +9,19 @@
 %p= t('.comments_2', lang_name: lang_name, percent: number_to_percentage(lang_percent, precision: precision))
 - unless factoid.is_a? FactoidCommentsAverage
   - if @project.best_analysis.relative_comments <= 0.7
-    #{t('.avg', name: @project.name, percent: number_to_percentage(proj_percent, precision: precision))}
+    = t('.avg', name: @project.name, percent: number_to_percentage(proj_percent, precision: precision))
   - else
-    #{t('.only', name: @project.name, percent: number_to_percentage(proj_percent, precision: precision))}
+    = t('.only', name: @project.name, percent: number_to_percentage(proj_percent, precision: precision))
 %p
   - case factoid
   - when FactoidCommentsVeryLow
-    #{t('.comments_very_low', name: @project.name, lang_name: lang_name)}
+    = t('.comments_very_low', name: @project.name, lang_name: lang_name)
   - when FactoidCommentsLow
-    #{t('.comments_low', name: @project.name, lang_name: lang_name)}
+    = t('.comments_low', name: @project.name, lang_name: lang_name)
   - when FactoidCommentsAverage
-    #{t('.comments_average', name: @project.name, lang_name: lang_name)}
+    = t('.comments_average', name: @project.name, lang_name: lang_name)
   - when FactoidCommentsHigh
-    #{t('.comments_high', name: @project.name, lang_name: lang_name)}
+    = t('.comments_high', name: @project.name, lang_name: lang_name)
   - when FactoidCommentsVeryHigh
-    #{t('.comments_very_high', name: @project.name, lang_name: lang_name)}
+    = t('.comments_very_high', name: @project.name, lang_name: lang_name)
 %p= t('.comments_note')

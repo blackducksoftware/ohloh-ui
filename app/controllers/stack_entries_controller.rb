@@ -36,13 +36,13 @@ class StackEntriesController < ApplicationController
 
   def find_stack
     @stack = Stack.find_by_id(params[:stack_id])
-    fail ParamRecordNotFound if @stack.nil? || ((@stack.account_id != current_user.id) && (params[:action] != 'show'))
+    raise ParamRecordNotFound if @stack.nil? || ((@stack.account_id != current_user.id) && (params[:action] != 'show'))
   end
 
   def find_project
     se_params = params[:stack_entry]
     @project = find_project_by_vanity_url(se_params[:project_id]) || find_project_by_name(se_params[:project_name])
-    fail ParamRecordNotFound if @project.nil?
+    raise ParamRecordNotFound if @project.nil?
   end
 
   def find_project_by_vanity_url(vanity_url)
@@ -55,7 +55,7 @@ class StackEntriesController < ApplicationController
 
   def find_stack_entry
     @stack_entry = StackEntry.find_by_id(params[:id])
-    fail ParamRecordNotFound if @stack_entry.nil?
+    raise ParamRecordNotFound if @stack_entry.nil?
   end
 
   def stack_entry_html(stack_entry)

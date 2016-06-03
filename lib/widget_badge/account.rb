@@ -5,10 +5,10 @@ module WidgetBadge
     include BadgeHelper
 
     DEFAULT_FONT_OPTIONS = { opacity: 80, font_size: 12, stroke: :none, weight: 800,
-                             align: :left, y_offset: 5 }
+                             align: :left, y_offset: 5 }.freeze
     IMAGE_ICONS_DIR = Rails.root.join('app/assets/images/icons')
-    TEXT_OFFSET = { left: 82 }
-    KUDO_OFFSET = { left: 200 }
+    TEXT_OFFSET = { left: 82 }.freeze
+    KUDO_OFFSET = { left: 200 }.freeze
 
     def create(options = {})
       image = setup_blank
@@ -37,7 +37,7 @@ module WidgetBadge
         set_font_and_color(convert, options)
         set_gravity(convert, options[:align])
 
-        convert.draw "text 0,#{options[:y_offset] - 8} '#{text.gsub("'", %q(\\\'))}'"
+        convert.draw "text 0,#{options[:y_offset] - 8} '#{text.gsub("'") { |ch| '\\' + ch }}'"
       end
     end
 

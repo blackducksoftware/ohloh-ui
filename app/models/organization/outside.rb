@@ -51,8 +51,6 @@ class Organization::Outside < Organization::AccountFacts
     SQL
   end
 
-  private
-
   def project_select_clause
     'P.id, P.name, P.vanity_url, P.user_count, P.rating_average, P.logo_id, P.best_analysis_id, P.organization_id'
   end

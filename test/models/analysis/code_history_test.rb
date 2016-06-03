@@ -40,7 +40,7 @@ class CodeHistoryTest < ActiveSupport::TestCase
     it 'must return nil values for months older than activity_facts.month' do
       results = Analysis::CodeHistory.new(analysis: activity_fact.analysis).execute
       results.select { |result| result.month < activity_fact.month }
-        .map(&:code_total).compact.must_be :empty?
+             .map(&:code_total).compact.must_be :empty?
     end
   end
 end

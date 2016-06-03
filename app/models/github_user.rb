@@ -4,7 +4,7 @@ class GithubUser
 
   attr_accessor :url, :bypass_url_validation
   attr_reader :repositories, :module_name, :password
-  alias_method :username, :url
+  alias username url
 
   validates :url, format: { with: URL_FORMAT, message: I18n.t('invalid_github_username') }
   validate :username_must_exist, if: -> { url.match(URL_FORMAT) }

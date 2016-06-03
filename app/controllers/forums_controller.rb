@@ -40,18 +40,15 @@ class ForumsController < ApplicationController
   end
 
   def destroy
-    if @forum.destroy
-      redirect_to forums_path
-    else
-      redirect_to forums_path
-    end
+    @forum.destroy
+    redirect_to forums_path
   end
 
   private
 
   def find_forum_record
     @forum = Forum.where(id: params[:id]).take
-    fail ParamRecordNotFound unless @forum
+    raise ParamRecordNotFound unless @forum
   end
 
   def forum_params

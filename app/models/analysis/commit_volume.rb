@@ -14,12 +14,12 @@ class Analysis::CommitVolume < Analysis::QueryBase
 
   def execute
     Analysis.select([name.as('committer_name'), Arel.star.count.as('count')])
-      .joins(analysis_sloc_sets: { sloc_set: { code_set: :commits } }, analysis_aliases: :preferred_name)
-      .where(conditions)
-      .where(id: @analysis.id)
-      .where(["commits.time >= analyses.max_month + INTERVAL '1 month' - INTERVAL ? ", @interval])
-      .group(name)
-      .order('count DESC, LOWER(names.name)')
+            .joins(analysis_sloc_sets: { sloc_set: { code_set: :commits } }, analysis_aliases: :preferred_name)
+            .where(conditions)
+            .where(id: @analysis.id)
+            .where(["commits.time >= analyses.max_month + INTERVAL '1 month' - INTERVAL ? ", @interval])
+            .group(name)
+            .order('count DESC, LOWER(names.name)')
   end
 
   def name

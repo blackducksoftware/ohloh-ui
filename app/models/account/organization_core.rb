@@ -9,7 +9,7 @@ class Account::OrganizationCore
   def orgs_for_my_positions
     @orgs_positions ||=
       Organization.active.joins(projects: :positions).where(@positions[:account_id].eq(@id))
-      .order(:id).distinct
+                  .order(:id).distinct
   end
 
   def affiliations_for_my_positions
@@ -30,10 +30,10 @@ class Account::OrganizationCore
 
   def org_contributions_for
     Account.select('positions.project_id')
-      .joins(positions: :project)
-      .joins('INNER JOIN name_facts ON name_facts.name_id = positions.name_id')
-      .where.not(@projects[:deleted].eq(true))
-      .where(id: @id)
-      .where(NameFact.arel_table[:analysis_id].eq(@projects[:best_analysis_id]))
+           .joins(positions: :project)
+           .joins('INNER JOIN name_facts ON name_facts.name_id = positions.name_id')
+           .where.not(@projects[:deleted].eq(true))
+           .where(id: @id)
+           .where(NameFact.arel_table[:analysis_id].eq(@projects[:best_analysis_id]))
   end
 end

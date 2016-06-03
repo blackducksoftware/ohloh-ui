@@ -56,12 +56,12 @@
           %td.center &nbsp;
           %td.center
             %a.logo-small{ href: project_path(most_committed_project), style: 'display: inline-block',
-                           title: "#{most_committed_project.name}" }
+                           title: most_committed_project.name }
               = most_committed_project.decorate.icon(:small)
           %td.center= stats[:max_commits]
           %td.center &nbsp;
           %td.center
-            %a.logo-small{ href: project_path(most_recent_project), title: "#{most_recent_project.name}",
+            %a.logo-small{ href: project_path(most_recent_project), title: most_recent_project.name,
                            style: 'display: inline-block' }
               = most_recent_project.decorate.icon(:small)
           %td.center= stats[:last_checkin].to_date.to_s(:by) if stats[:last_checkin]

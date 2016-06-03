@@ -3,7 +3,7 @@
 
 include ActionView::Helpers::DateHelper
 
-OUTPUT_FILE = 'tmp/accounts_data.yml'
+OUTPUT_FILE = 'tmp/accounts_data.yml'.freeze
 
 namespace :selenium do
   file :generate_data do
@@ -29,7 +29,7 @@ namespace :selenium do
         @account.best_vita.nil? ? nil : "Analyzed #{time_ago_in_words(@account.best_vita.try(:created_at))} ago",
       'description' => @account.markup.try(:formatted),
       'projects_used' => Project.active.joins(:stacks).where(stacks: { account_id: @account.id })
-                         .order(:user_count, :name).limit(15).distinct.map(&:to_param),
+                                .order(:user_count, :name).limit(15).distinct.map(&:to_param),
       'most_exp_lang' => @account.most_experienced_language.try(:nice_name),
       'baseballcard' => BaseballCard.new(@account).rows.collect { |row| row[:value] || row[:locals][:orgs].map(&:name) }
     }

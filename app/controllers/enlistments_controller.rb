@@ -10,10 +10,10 @@ class EnlistmentsController < SettingsController
 
   def index
     @enlistments = @project.enlistments
-                   .includes(:project, :repository)
-                   .filter_by(params[:query])
-                   .send(parse_sort_term)
-                   .paginate(page: page_param, per_page: 10)
+                           .includes(:project, :repository)
+                           .filter_by(params[:query])
+                           .send(parse_sort_term)
+                           .paginate(page: page_param, per_page: 10)
     @failed_jobs = Enlistment.with_failed_repository_jobs.where(id: @enlistments.map(&:id)).any?
   end
 
@@ -69,7 +69,7 @@ class EnlistmentsController < SettingsController
 
   def find_enlistment
     @enlistment = Enlistment.find_by(id: params[:id])
-    fail ParamRecordNotFound if @enlistment.nil?
+    raise ParamRecordNotFound if @enlistment.nil?
     @enlistment.editor_account = current_user
   end
 

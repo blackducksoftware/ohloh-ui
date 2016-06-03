@@ -21,7 +21,7 @@ class PasswordsController < ApplicationController
                else
                  Account::Find.by_id_or_login(params[:id])
                end
-    fail ParamRecordNotFound unless @account
+    raise ParamRecordNotFound unless @account
   end
 
   def account_params

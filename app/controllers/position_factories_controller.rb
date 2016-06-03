@@ -21,7 +21,7 @@ class PositionFactoriesController < ApplicationController
 
   def set_account
     @account = Account.resolve_login(params[:account_id])
-    fail ParamRecordNotFound unless @account
+    raise ParamRecordNotFound unless @account
   end
 
   def load_project_by_project_name

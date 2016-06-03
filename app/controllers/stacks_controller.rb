@@ -91,16 +91,16 @@ class StacksController < ApplicationController
 
   def find_stack
     @stack = Stack.find_by_id(params[:id])
-    fail ParamRecordNotFound if @stack.nil?
+    raise ParamRecordNotFound if @stack.nil?
   end
 
   def can_edit_stack
-    fail ParamRecordNotFound if (@stack.account_id != current_user.id)
+    raise ParamRecordNotFound if @stack.account_id != current_user.id
   end
 
   def find_account
     @account = params[:account_id] ? Account.resolve_login(params[:account_id]) : @stack.account
-    fail ParamRecordNotFound unless @account
+    raise ParamRecordNotFound unless @account
   end
 
   def auto_ignore

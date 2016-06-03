@@ -4,7 +4,7 @@ class ChartDecorator
     report_data = CommitsByProject.new(account).chart_data
     chart = CHART_DEFAULTS.clone
 
-    chart.deep_merge!(YAML.load_file Rails.root.join('config/charting/combined_commit_history.yml'))
+    chart.deep_merge! YAML.load_file Rails.root.join('config/charting/combined_commit_history.yml')
     chart[:yAxis][:max] = report_data[:max_commits]
     chart[:xAxis][:categories] = string_to_hash(report_data[:x_axis])
     chart[:series] = [{ name: I18n.t('all_projects'), data: report_data[:y_axis] }]
@@ -41,7 +41,8 @@ class ChartDecorator
 
   def string_to_hash(stringified_dates)
     stringified_dates.map do |date_string|
-      { commit_month: date_string, stringify: date_string.match(/Jan/) ? date_string.split('-').last : '' }
+      { commit_month: date_string,
+        stringify: (date_string =~ /Jan/) ? date_string.split('-').last : '' }
     end
   end
 
@@ -51,6 +52,6 @@ class ChartDecorator
     chart = CHART_DEFAULTS.clone
 
     chart.deep_merge!(background_style('watermark_white_900'))
-    chart.deep_merge!(YAML.load_file Rails.root.join('config/charting/project_commit_history.yml'))
+    chart.deep_merge! YAML.load_file Rails.root.join('config/charting/project_commit_history.yml')
   end
 end

@@ -1,4 +1,4 @@
-BADGE_IMAGE_ROOT = '/images/badges/'
+BADGE_IMAGE_ROOT = '/images/badges/'.freeze
 
 BLOG_LINKS = {
   terms:                    'terms',
@@ -21,10 +21,10 @@ BLOG_LINKS = {
   badges:                   'about-badges',
   pai_about:                'about-project-activity-icons',
   hotness_score:            '2014/01/about-the-ohloh-hotness-score'
-}
+}.freeze
 
 ACCOUNT_DESC_LENGTH = 100
 
-TIME_SPANS = { '30 days' => :last_30_days, '12 months' => :last_year }
+TIME_SPANS = { '30 days' => :last_30_days, '12 months' => :last_year }.freeze
 
-GLOBALLY_SEARCHABLE = %w(projects organizations accounts people forums)
+GLOBALLY_SEARCHABLE = %w(projects organizations accounts people forums).freeze

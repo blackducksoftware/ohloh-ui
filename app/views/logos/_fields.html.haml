@@ -29,7 +29,7 @@
           %p= t('.message', login: current_user.login)
 
 .row
-  .col-md-12{ class: "#{@organization ? 'hidden' : ''}" }
+  .col-md-12{ class: @organization ? 'hidden' : '' }
     %h5= t('.head.third')
     %p
       = t('.body.second')

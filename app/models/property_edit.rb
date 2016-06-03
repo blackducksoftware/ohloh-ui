@@ -35,16 +35,16 @@ class PropertyEdit < Edit
 
   def fail_unless_authorized!(verb)
     return if !target.respond_to?(:edit_authorized?) || target.edit_authorized?
-    fail ActsAsEditable::UndoError, I18n.t('edits.you_dont_have_permission', verb: verb)
+    raise ActsAsEditable::UndoError, I18n.t('edits.you_dont_have_permission', verb: verb)
   end
 
   def fail_unless_action_allowed!(undo, verb)
     return if (undo && allow_undo?) || (!undo && allow_redo?)
-    fail ActsAsEditable::UndoError, I18n.t('edits.generic_cant', verb: verb)
+    raise ActsAsEditable::UndoError, I18n.t('edits.generic_cant', verb: verb)
   end
 
   def fail_unless_action_succeeded!(verb)
     return if target.errors.empty?
-    fail ActsAsEditable::UndoError, I18n.t('edits.causes_errors', verb: verb)
+    raise ActsAsEditable::UndoError, I18n.t('edits.causes_errors', verb: verb)
   end
 end

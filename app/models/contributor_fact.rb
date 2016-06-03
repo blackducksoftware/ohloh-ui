@@ -4,7 +4,7 @@ class ContributorFact < NameFact
 
   def name_language_facts
     NameLanguageFact.where(name_id: name_id, analysis_id: analysis_id)
-      .order(total_months: :desc, total_commits: :desc, total_activity_lines: :desc)
+                    .order(total_months: :desc, total_commits: :desc, total_activity_lines: :desc)
   end
 
   def person
@@ -31,17 +31,17 @@ class ContributorFact < NameFact
 
   def daily_commits
     Commit.for_contributor_fact(self)
-      .select(daily_commits_select_clause)
-      .where('commits.position <= analysis_sloc_sets.as_of')
-      .group("date_trunc('day', commits.time)")
-      .order("date_trunc('day', commits.time) desc")
-      .limit(300)
+          .select(daily_commits_select_clause)
+          .where('commits.position <= analysis_sloc_sets.as_of')
+          .group("date_trunc('day', commits.time)")
+          .order("date_trunc('day', commits.time) desc")
+          .limit(300)
   end
 
   def commits_within(from, to)
     Commit.for_contributor_fact(self)
-      .where(time: from..to)
-      .order(:time)
+          .where(time: from..to)
+          .order(:time)
   end
 
   def monthly_commits(years = 5)
@@ -52,14 +52,18 @@ class ContributorFact < NameFact
   class << self
     def unclaimed_for_project(project)
       ContributorFact.where.not(name_id: nil)
-        .where(analysis_id: project.best_analysis_id)
-        .where.not(name_id: Position.where.not(name_id: nil).where(project_id: project.id).select(:name_id))
+                     .where(analysis_id: project.best_analysis_id)
+                     .where.not(name_id:
+                        Position.where.not(name_id: nil)
+                                .where(project_id: project.id).select(:name_id))
     end
 
     def first_for_name_id_and_project_id(name_id, project_id)
       ContributorFact.joins(:project).where(projects: { id: project_id })
-        .find_by('name_id = ? or name_id in (?)', name_id,
-                 AnalysisAlias.select(:preferred_name_id).joins(:project).where(commit_name_id: name_id))
+                     .find_by('name_id = ? or name_id in (?)', name_id,
+                              AnalysisAlias.select(:preferred_name_id)
+                              .joins(:project)
+                              .where(commit_name_id: name_id))
     end
   end
 

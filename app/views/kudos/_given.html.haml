@@ -23,7 +23,7 @@
             - other_kudos.each do |kudo|
               %tr
                 %td
-                  #{t('.aka')}
+                  = t('.aka')
                   = kudos_aka_name(kudo)
                   - unless kudo.message.blank?
                     .message &ldquo;#{kudo.message}&rdquo;

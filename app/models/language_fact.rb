@@ -9,9 +9,9 @@ class LanguageFact < ActiveRecord::Base
       measure = options[:measure] || 'loc_changed'
 
       AllMonth.joins(join_clause(language.id))
-        .select(select_clause(measure))
-        .where(month: start_month..end_month)
-        .order(:month)
+              .select(select_clause(measure))
+              .where(month: start_month..end_month)
+              .order(:month)
     end
 
     private
@@ -22,11 +22,11 @@ class LanguageFact < ActiveRecord::Base
 
     def join_clause(language_id)
       all_months.join(arel_table, Arel::Nodes::OuterJoin)
-        .on(
-          all_months[:month].eq(arel_table[:month])
-         .and(arel_table[:language_id].eq(language_id))
-        )
-        .join_sources
+                .on(
+                  all_months[:month].eq(arel_table[:month])
+                 .and(arel_table[:language_id].eq(language_id))
+                )
+                .join_sources
     end
 
     def select_clause(measure)
@@ -41,7 +41,7 @@ class LanguageFact < ActiveRecord::Base
 
     def measure_sum(measure)
       LanguageFact.select(arel_table[measure].sum)
-        .where('language_facts.month = all_months.month').to_sql
+                  .where('language_facts.month = all_months.month').to_sql
     end
   end
 end

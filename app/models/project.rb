@@ -30,15 +30,15 @@ class Project < ActiveRecord::Base
   def related_by_stacks(limit = 12)
     stack_weights = StackEntry.stack_weight_sql(id)
     Project.select('projects.*, shared_stacks, shared_stacks*sqrt(shared_stacks)/projects.user_count as value')
-      .joins(sanitize("INNER JOIN (#{stack_weights}) AS stack_weights ON stack_weights.project_id = projects.id"))
-      .not_deleted.where('shared_stacks > 2').order('value DESC, shared_stacks DESC').limit(limit)
+           .joins(sanitize("INNER JOIN (#{stack_weights}) AS stack_weights ON stack_weights.project_id = projects.id"))
+           .not_deleted.where('shared_stacks > 2').order('value DESC, shared_stacks DESC').limit(limit)
   end
 
   def related_by_tags(limit = 5)
     tag_weights = Tagging.tag_weight_sql(self.class, tags.map(&:id))
     Project.select('projects.*, tag_weights.weight')
-      .joins(sanitize("INNER JOIN (#{tag_weights}) AS tag_weights ON tag_weights.project_id = projects.id"))
-      .not_deleted.where.not(id: id).order('tag_weights.weight DESC, projects.user_count DESC').limit(limit)
+           .joins(sanitize("INNER JOIN (#{tag_weights}) AS tag_weights ON tag_weights.project_id = projects.id"))
+           .not_deleted.where.not(id: id).order('tag_weights.weight DESC, projects.user_count DESC').limit(limit)
   end
 
   def active_managers
@@ -67,11 +67,11 @@ class Project < ActiveRecord::Base
     orber_by = sort.eql?('name') ? 'accounts.name ASC' : 'people.kudo_position ASC'
 
     Account.select('DISTINCT(accounts.id), accounts.*, people.kudo_position')
-      .joins([{ stacks: :stack_entries }, :person])
-      .where(stack_entries: { project_id: id })
-      .where('level >= 0')
-      .where(search_term)
-      .order(orber_by)
+           .joins([{ stacks: :stack_entries }, :person])
+           .where(stack_entries: { project_id: id })
+           .where('level >= 0')
+           .where(search_term)
+           .order(orber_by)
   end
 
   def code_published_in_code_search?
@@ -80,12 +80,12 @@ class Project < ActiveRecord::Base
 
   def newest_contributions
     contributions.sort_by_newest.joins(:contributor_fact)
-      .preload(person: :account, contributor_fact: :primary_language).limit(10)
+                 .preload(person: :account, contributor_fact: :primary_language).limit(10)
   end
 
   def top_contributions
     contributions.sort_by_twelve_month_commits.joins(:contributor_fact)
-      .preload(person: :account, contributor_fact: :primary_language).limit(10)
+                 .preload(person: :account, contributor_fact: :primary_language).limit(10)
   end
 
   class << self

@@ -7,7 +7,7 @@
   - else
     - content_for(:html_title) { t('.account_title', name: @account.name) }
     %h2= t('reviews.reviews_and_ratings')
-  - if @reviews.length > 0
+  - if @reviews.present?
     = render partial: 'shared/search_dingus', locals: { collection: @reviews, sort_context: :reviews,
       no_match_found_type: :flash }
     = render partial: 'review_list', collection: @reviews

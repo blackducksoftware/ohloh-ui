@@ -101,7 +101,7 @@ module EditsHelper
   end
 
   def edit_explanation_permission(edit)
-    t('edits.explanation_permission', who: (edit.value.to_bool) ? t('edits.managers_only') : t('edits.everyone'))
+    t('edits.explanation_permission', who: edit.value.to_bool ? t('edits.managers_only') : t('edits.everyone'))
   end
 
   def edit_explanation_projectlicense(edit)

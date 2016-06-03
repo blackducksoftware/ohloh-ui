@@ -1,6 +1,6 @@
 #! /usr/bin/env ruby
 
-fail 'RAILS_ENV is undefined' unless ENV['RAILS_ENV']
+raise 'RAILS_ENV is undefined' unless ENV['RAILS_ENV']
 
 require_relative '../config/environment'
 

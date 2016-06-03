@@ -5,7 +5,7 @@ module Reverification
       delegate :url_helpers, to: 'Rails.application.routes'
 
       def final_warning_notice(email)
-        { to: "#{email}", from: Reverification::Mailer::FROM,
+        { to: email.to_s, from: Reverification::Mailer::FROM,
           subject: 'Your Account Will Be Deleted In Two Weeks: Please Reverify',
           body_html: "<p>Hello;<br><br>
             This is the fourth and final notice from the Black Duck OpenHub about reverifying your account.
@@ -25,7 +25,7 @@ module Reverification
       end
 
       def account_is_disabled_notice(email)
-        { to: "#{email}", from: Reverification::Mailer::FROM,
+        { to: email.to_s, from: Reverification::Mailer::FROM,
           subject: 'Your OpenHub Account has been deactivated.',
           body_html: "<p>Hello;<br><br>You are receiving this notice because there has been
             no response to the previous two notices sent to this email address about reverifying
@@ -49,7 +49,7 @@ module Reverification
       end
 
       def marked_for_disable_notice(email)
-        { to: "#{email}", from: Reverification::Mailer::FROM,
+        { to: email.to_s, from: Reverification::Mailer::FROM,
           subject: 'Your OpenHub account will be flagged for deactivation',
           body_html: "<p>Hello Again;<br><br>
             This is a second request from the Black Duck OpenHub, which used to be Ohloh,
@@ -75,7 +75,7 @@ module Reverification
       end
 
       def first_reverification_notice(email)
-        { to: "#{email}", from: Reverification::Mailer::FROM,
+        { to: email.to_s, from: Reverification::Mailer::FROM,
           subject: 'Please Reverify Your Open Hub Account',
           body_html: "<p>Hello;<br><br>As an effort to eliminate excessive spam accounts
             in the Black Duck OpenHub (which used to be Ohloh.net), we are asking all account

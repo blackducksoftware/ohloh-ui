@@ -1,6 +1,6 @@
 class AccountWidget < Widget
   def initialize(vars = {})
-    fail ArgumentError I18n.t('account_widgets.missing') unless vars[:account_id]
+    raise ArgumentError I18n.t('account_widgets.missing') unless vars[:account_id]
     super
   end
 
@@ -15,7 +15,7 @@ class AccountWidget < Widget
   def account
     @account ||= Account.from_param(account_id).first
   end
-  alias_method :parent, :account
+  alias parent account
 
   def rank
     account.kudo_rank

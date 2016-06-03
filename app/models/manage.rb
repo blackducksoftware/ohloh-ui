@@ -38,7 +38,7 @@ class Manage < ActiveRecord::Base
   end
 
   def destroy_by!(destroyer)
-    fail I18n.t(:not_authorized) unless can_destroy?(destroyer)
+    raise I18n.t(:not_authorized) unless can_destroy?(destroyer)
     update_attributes!(deleted_by: destroyer.id, deleted_at: Time.current)
   end
 
@@ -57,7 +57,7 @@ class Manage < ActiveRecord::Base
   end
 
   def auto_approve_if_first
-    self.approver = Account.hamster if !target || target.active_managers.length == 0
+    self.approver = Account.hamster if !target || target.active_managers.empty?
   end
 
   def deliver_emails

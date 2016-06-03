@@ -1,7 +1,7 @@
 require 'ostruct'
 
 class ActivityFactsByMonthCompounSparkData
-  COMMITS = [5, 42, 7, 20, 19, 18, 24, 16, 39, 0, 20, 65, 22, 24, 23, 30, 54, 6, 9]
+  COMMITS = [5, 42, 7, 20, 19, 18, 24, 16, 39, 0, 20, 65, 22, 24, 23, 30, 54, 6, 9].freeze
 
   def initialize
     @first_date = Time.parse('2004-04-01 00:00:00 UTC').in_time_zone

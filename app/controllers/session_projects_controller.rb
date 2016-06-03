@@ -32,6 +32,6 @@ class SessionProjectsController < ApplicationController
 
   def set_project
     @project = Project.from_param(params[:project_id]).take
-    fail ActiveRecord::RecordNotFound unless @project
+    raise ActiveRecord::RecordNotFound unless @project
   end
 end

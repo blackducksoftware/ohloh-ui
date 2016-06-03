@@ -1,10 +1,10 @@
 class Spark::CompoundSpark < Spark::Base
   SPARK = { column_width: 3, column_gap: 1, column_base: 1, column_variant: 25, blank_row: 1,
-            label_height: 12, label_point_size: 11, max_value: 100, graph_padding: 27 }
+            label_height: 12, label_point_size: 11, max_value: 100, graph_padding: 27 }.freeze
 
-  LIGHT_GRAY = '#a7a7a7'
-  DARK_GRAY = '#656565'
-  FONT = "#{Rails.root}/app/assets/fonts/OpenSans-Bold.ttf"
+  LIGHT_GRAY = '#a7a7a7'.freeze
+  DARK_GRAY = '#656565'.freeze
+  FONT = "#{Rails.root}/app/assets/fonts/OpenSans-Bold.ttf".freeze
 
   def initialize(data, options = {})
     super(data, SPARK.merge(options))

@@ -1,7 +1,7 @@
 class RatingsController < ApplicationController
   helper :projects
 
-  ALLOWED_PARTIALS = ['projects/show/community_rating', 'reviews/rater']
+  ALLOWED_PARTIALS = ['projects/show/community_rating', 'reviews/rater'].freeze
 
   before_action :session_required, :redirect_unverified_account
   before_action :set_project_or_fail
@@ -32,10 +32,8 @@ class RatingsController < ApplicationController
   end
 
   def sanitize_partial(partial)
-    if ALLOWED_PARTIALS.include? partial
-      @partial = partial
-    else
-      fail StandardError, I18n.t('ratings.partial_not_found', partial: partial)
-    end
+    return @partial = partial if ALLOWED_PARTIALS.include? partial
+
+    raise StandardError, I18n.t('ratings.partial_not_found', partial: partial)
   end
 end

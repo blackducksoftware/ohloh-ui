@@ -45,7 +45,7 @@ class ProjectLicensesController < SettingsController
 
   def find_project_license
     @project_license = ProjectLicense.where(id: params[:id], project_id: @project.id).take
-    fail ParamRecordNotFound unless @project_license
+    raise ParamRecordNotFound unless @project_license
     @project_license.editor_account = current_user
   end
 

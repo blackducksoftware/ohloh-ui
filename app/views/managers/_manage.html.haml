@@ -12,7 +12,7 @@
       %h4.soft.nomargin.no_margin_top
         = link_to(html_escape(account.name), account_path(account))
         - if manage.pending?
-          #{t('.pending')}
+          = t('.pending')
       - if position && position.title? && position.organization.present?
         .position
           %p.nomargin

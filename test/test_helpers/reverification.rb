@@ -64,9 +64,9 @@ end
 
 class UndeterminedBounceBody
   def body_message_as_h
-    { bounce: { bounceType: 'Undetermined',
-                bouncedRecipients: [{ emailAddress: 'someone@gmail.com' }]
-      }
+    {
+      bounce: { bounceType: 'Undetermined',
+                bouncedRecipients: [{ emailAddress: 'someone@gmail.com' }] }
     }.with_indifferent_access
   end
 end
@@ -79,9 +79,9 @@ end
 
 class HardBounceBody
   def body_message_as_h
-    { bounce: { bounceType: 'Permanent',
-                bouncedRecipients: [{ emailAddress: 'bounce@simulator.amazonses.com' }]
-      }
+    {
+      bounce: { bounceType: 'Permanent',
+                bouncedRecipients: [{ emailAddress: 'bounce@simulator.amazonses.com' }] }
     }.with_indifferent_access
   end
 end
@@ -94,9 +94,7 @@ end
 
 class SuccessBody
   def body_message_as_h
-    { delivery:
-        { recipients: ['success@simulator.amazonses.com'] }
-    }.with_indifferent_access
+    { delivery: { recipients: ['success@simulator.amazonses.com'] } }.with_indifferent_access
   end
 end
 
@@ -108,9 +106,9 @@ end
 
 class TransientBounceBody
   def body_message_as_h
-    { bounce: { bounceType: 'Transient',
-                bouncedRecipients: [{ emailAddress: 'ooto@simulator.amazonses.com' }]
-      }
+    {
+      bounce: { bounceType: 'Transient',
+                bouncedRecipients: [{ emailAddress: 'ooto@simulator.amazonses.com' }] }
     }.with_indifferent_access
   end
 end
@@ -127,9 +125,9 @@ end
 
 class ComplaintBody
   def body_message_as_h
-    { complaint: { complainedRecipients: [{ emailAddress: 'complaint@simulator.amazonses.com' }],
-                   complaintFeedbackType: 'abuse'
-      }
+    {
+      complaint: { complainedRecipients: [{ emailAddress: 'complaint@simulator.amazonses.com' }],
+                   complaintFeedbackType: 'abuse' }
     }.with_indifferent_access
   end
 end
