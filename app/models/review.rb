@@ -65,7 +65,7 @@ class Review < ActiveRecord::Base
 
     def ratings_sql(sort_order = 'ASC')
       sql = Rating.where('ratings.account_id = reviews.account_id AND ratings.project_id = reviews.project_id')
-            .select(:score).to_sql
+                  .select(:score).to_sql
       sql = "( #{sql} ) #{sort_order.eql?('DESC') ? ' DESC NULLS LAST' : ' ASC NULLS FIRST'}"
       sanitize_sql(sql)
     end

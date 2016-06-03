@@ -21,7 +21,8 @@
         %h4.nomargin.center.strong.margin_bottom_0= t('.posts')
   %tbody
     - @forums.each do |forum|
-      %tr{ class: "#{'border_bottom_color' if @forums.last == forum}" }
+      - class_name = (@forums.last == forum) ? 'border_bottom_color' : ''
+      %tr{ class: class_name }
         %td.first
           %h3.nomargin
             = link_to forum.name, forum_path(forum)

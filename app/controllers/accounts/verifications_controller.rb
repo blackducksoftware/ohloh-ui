@@ -22,7 +22,7 @@ class Accounts::VerificationsController < ApplicationController
 
   def set_account
     @account = Account.from_param(params[:account_id]).take
-    fail ParamRecordNotFound unless @account
+    raise ParamRecordNotFound unless @account
   end
 
   def redirect_if_verified
@@ -30,6 +30,6 @@ class Accounts::VerificationsController < ApplicationController
   end
 
   def check_for_auth_session
-    fail ParamRecordNotFound unless session[:auth_params]
+    raise ParamRecordNotFound unless session[:auth_params]
   end
 end

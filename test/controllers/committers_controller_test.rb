@@ -106,7 +106,8 @@ describe 'CommittersControllerTest' do
       assert_difference 'Position.count', 2 do
         post :save_claim, id: @person.name.id, positions: [
           { project_id: @project1.id, title: 'project_1_title', description: 'proj_1_desc' },
-          { project_id: @project2.id, title: 'project_2_title', description: 'proj_2_desc' }]
+          { project_id: @project2.id, title: 'project_2_title', description: 'proj_2_desc' }
+        ]
         assigns(:positions).must_be_empty
         must_respond_with :redirect
         must_redirect_to account_positions_url(account)
@@ -119,7 +120,8 @@ describe 'CommittersControllerTest' do
       assert_no_difference 'Position.count' do
         post :save_claim, id: @person.name.id, positions: [
           { project_id: @project1.id, title: 'project_1_title', description: 'proj_1_desc' },
-          { project_id: @project2.id, title: 'project_2_title', description: 'proj_2_desc' }]
+          { project_id: @project2.id, title: 'project_2_title', description: 'proj_2_desc' }
+        ]
         must_respond_with :ok
         must_render_template :claim
         assigns(:positions).count.must_equal 2

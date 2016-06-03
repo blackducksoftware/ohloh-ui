@@ -13,11 +13,11 @@ class Doorkeeper::OauthApplicationsController < ApplicationController
 
   def set_account
     @account = Account.from_param(params[:account_id]).take
-    fail ParamRecordNotFound unless @account
+    raise ParamRecordNotFound unless @account
   end
 
   def set_oauth_application
     @oauth_application = Doorkeeper::Application.find_by(id: params[:id])
-    fail ParamRecordNotFound unless @oauth_application
+    raise ParamRecordNotFound unless @oauth_application
   end
 end

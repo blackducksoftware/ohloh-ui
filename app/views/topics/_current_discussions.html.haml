@@ -11,7 +11,7 @@
         %h4.nomargin.strong.margin_bottom_0= t('.freshness')
   %tbody
     - @recent_topics.each do |topic|
-      %tr{ class: "#{'border_bottom_color' if @recent_topics.last == topic}" }
+      %tr{ class: ('border_bottom_color' if @recent_topics.last == topic) }
         %td.first= link_to h(topic.title), topic_path(topic)
         %td.center= topic.posts_count
         - if topic.posts.last

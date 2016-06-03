@@ -13,7 +13,7 @@ class Logo < Attachment
     6236   => 'Perl Module',
     1174   => 'Python Library',
     1180   => 'Ruby Library'
-  }
+  }.freeze
 
   attr_reader :url
 

@@ -1,13 +1,13 @@
 class ProjectWidget < Widget
   def initialize(vars = {})
-    fail ArgumentError I18n.t('project_widgets.missing') unless vars[:project_id]
+    raise ArgumentError I18n.t('project_widgets.missing') unless vars[:project_id]
     super
   end
 
   def project
     @project ||= Project.from_param(project_id).first
   end
-  alias_method :parent, :project
+  alias parent project
 
   def title
     I18n.t('project_widgets.title')

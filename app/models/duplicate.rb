@@ -1,6 +1,6 @@
 class Duplicate < ActiveRecord::Base
   RESOLVES = [:stack_entries, :kudos, :tags, :ratings, :reviews, :links, :aliases, :enlistments,
-              :positions, :project_experiences, :edits, :self]
+              :positions, :project_experiences, :edits, :self].freeze
   include DuplicateAssociations
 
   scope :unresolved, -> { where.not(resolved: true) }

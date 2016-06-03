@@ -1,10 +1,10 @@
 - if topic.posts.present?
-  %tr{ class: "#{'border_bottom_color' if @topics.last}" }
+  %tr{ class: ('border_bottom_color' if @topics.last) }
     %td
       %p.nomargin
         - if topic.sticky?
           %span.soft= t('.sticky')
-        %span{ class: "#{'strong' if topic.sticky?}" }
+        %span{ class: ('strong' if topic.sticky?) }
           = link_to h(topic.title), topic_path(topic), class: 'entry-title', rel: 'bookmark'
         = t(:by)
         = topic.account.name

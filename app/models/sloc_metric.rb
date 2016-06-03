@@ -8,20 +8,20 @@ class SlocMetric < ActiveRecord::Base
     return none unless analysis_id
 
     SlocMetric.select_summary_attributes.select('languages.nice_name as language_name, languages.name as name')
-      .joins([[diff: [commit: :fyle]], :language])
-      .where(diffs: { commit_id: commit.id })
-      .where('diffs.fyle_id = fyles.id')
-      .where(sloc_set_id: AnalysisSlocSet.for_analysis(analysis_id).select(:sloc_set_id))
-      .ignored_files(analysis_id)
-      .group([:language_id, 'languages.nice_name', 'languages.name'])
+              .joins([[diff: [commit: :fyle]], :language])
+              .where(diffs: { commit_id: commit.id })
+              .where('diffs.fyle_id = fyles.id')
+              .where(sloc_set_id: AnalysisSlocSet.for_analysis(analysis_id).select(:sloc_set_id))
+              .ignored_files(analysis_id)
+              .group([:language_id, 'languages.nice_name', 'languages.name'])
   }
 
   scope :diff_summaries, lambda { |diff, analysis_id|
     SlocMetric.select_summary_attributes.select('languages.nice_name as language_name')
-      .joins(:analysis_sloc_set, :language)
-      .where(analysis_sloc_sets: { analysis_id: analysis_id })
-      .where(diff_id: diff.id)
-      .group([:language_id, 'languages.nice_name'])
+              .joins(:analysis_sloc_set, :language)
+              .where(analysis_sloc_sets: { analysis_id: analysis_id })
+              .where(diff_id: diff.id)
+              .group([:language_id, 'languages.nice_name'])
   }
 
   class << self

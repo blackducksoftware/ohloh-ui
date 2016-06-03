@@ -20,7 +20,7 @@ module BlogLinkHelper
     badges:                   'about-badges',
     pai_about:                'about-project-activity-icons',
     hotness_score:            '2014/01/about-the-ohloh-hotness-score'
-  }
+  }.freeze
 
   def blog_link_to(link:, link_text:)
     "<a class='meta' href='http://blog.openhub.net/#{BLOG_LINKS[link]}' target='_blank'>#{link_text}</a>".html_safe

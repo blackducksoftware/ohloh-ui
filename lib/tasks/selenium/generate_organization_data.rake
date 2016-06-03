@@ -43,29 +43,27 @@ namespace :selenium do
         'claim_this_project' => Project.where.not(id: org.projects.ids).take.name
       )
 
-      organization.merge!(
-        'widgets' => {
-          'open_source_activity' => {
-            'affiliates' => number_with_delimiter(org.affiliators_count),
-            'commits' => number_with_delimiter(org.affiliated_committers_stats['affl_commits_out'].to_i +
-                         org.affiliated_committers_stats['affl_commits'].to_i),
-            'projects' => number_with_delimiter(org.projects.count +
-                          org.affiliated_committers_stats['affl_projects_out'].to_i)
-          },
-          'portfolio_activity' => {
-            'people' => number_with_delimiter(org.affiliated_committers_stats['affl_committers'].to_i +
-                        org.outside_committers_stats['out_committers'].to_i),
-            'commits' => number_with_delimiter(org.affiliated_committers_stats['affl_commits'].to_i +
-                         org.outside_committers_stats['out_commits'].to_i),
-            'projects' => number_with_delimiter(org.projects.count)
-          },
-          'affiliated_activity' => {
-            'affiliates' => number_with_delimiter(org.affiliators_count),
-            'commits' => number_with_delimiter(org.affiliated_committers_stats['affl_commits'].to_i),
-            'projects' => number_with_delimiter(org.projects.count)
-          }
+      organization['widgets'] = {
+        'open_source_activity' => {
+          'affiliates' => number_with_delimiter(org.affiliators_count),
+          'commits' => number_with_delimiter(org.affiliated_committers_stats['affl_commits_out'].to_i +
+                       org.affiliated_committers_stats['affl_commits'].to_i),
+          'projects' => number_with_delimiter(org.projects.count +
+                        org.affiliated_committers_stats['affl_projects_out'].to_i)
+        },
+        'portfolio_activity' => {
+          'people' => number_with_delimiter(org.affiliated_committers_stats['affl_committers'].to_i +
+                      org.outside_committers_stats['out_committers'].to_i),
+          'commits' => number_with_delimiter(org.affiliated_committers_stats['affl_commits'].to_i +
+                       org.outside_committers_stats['out_commits'].to_i),
+          'projects' => number_with_delimiter(org.projects.count)
+        },
+        'affiliated_activity' => {
+          'affiliates' => number_with_delimiter(org.affiliators_count),
+          'commits' => number_with_delimiter(org.affiliated_committers_stats['affl_commits'].to_i),
+          'projects' => number_with_delimiter(org.projects.count)
         }
-      )
+      }
 
       organizations[org.vanity_url] = organization
     end

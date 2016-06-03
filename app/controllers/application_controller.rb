@@ -1,7 +1,7 @@
 # rubocop:disable Metrics/ClassLength
 class ApplicationController < ActionController::Base
   BOT_REGEX = /\b(Baiduspider|Googlebot|libwww-perl|msnbot|SiteUptime|Slurp)\b/i
-  FORMATS_THAT_WE_RENDER_ERRORS_FOR = %w(html xml json)
+  FORMATS_THAT_WE_RENDER_ERRORS_FOR = %w(html xml json).freeze
 
   include PageContextHelper
 
@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from ::Exception do |exception|
-    fail exception if Rails.application.config.consider_all_requests_local
+    raise exception if Rails.application.config.consider_all_requests_local
     request.env[:user_agent] = request.user_agent
     notify_airbrake(exception) unless blank_user_agent?
     render_404
@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
   # Any ActionController::RoutingError raised by ActionDispatch is not caught by ActionController.
   # See: https://github.com/rails/rails/issues/671
   def raise_not_found!
-    fail ActionController::RoutingError, "No route matches #{params[:unmatched_route]}"
+    raise ActionController::RoutingError, "No route matches #{params[:unmatched_route]}"
   end
 
   def page_param
@@ -271,7 +271,7 @@ class ApplicationController < ActionController::Base
     project_id = params[:project_id] || params[:id]
     @project = Project.by_vanity_url_or_id(project_id).take
 
-    fail ParamRecordNotFound unless @project
+    raise ParamRecordNotFound unless @project
     project_context
     render 'projects/deleted' if @project.deleted?
   end

@@ -20,32 +20,37 @@ module Reverification
         ses.statistics.find_all { |s| s[:sent].between?(Time.now.utc - 24.hours, Time.now.utc) }
       end
 
-      # rubocop:disable Metrics/AbcSize
       def check_statistics_of_last_24_hrs
         stats = statistics_of_last_24_hrs
-        no_of_bounces = stats.inject(0.0) { |a, e| a + e[:bounces] }
-        no_of_complaints = stats.inject(0.0) { |a, e| a + e[:complaints] }
-        bounce_rate = sent_last_24_hrs.zero? ? 0.0 : (no_of_bounces / sent_last_24_hrs) * 100
-        complaint_rate = sent_last_24_hrs.zero? ? 0.0 : (no_of_complaints / sent_last_24_hrs) * 100
         handler_ns = Reverification::ExceptionHandlers
-        if bounce_rate >= amazon_stat_settings[:bounce_rate]
-          fail(handler_ns::BounceRateLimitError, 'Bounce Rate exceeded')
+
+        if bounce_rate(stats) >= amazon_stat_settings[:bounce_rate]
+          raise(handler_ns::BounceRateLimitError, 'Bounce Rate exceeded')
         end
-        fail(handler_ns::ComplaintRateLimitError, 'Complaint Rate exceeded 0.1%') if complaint_rate >= 0.1
+        raise(handler_ns::ComplaintRateLimitError, 'Complaint Rate exceeded 0.1%') if complaint_rate(stats) >= 0.1
       end
-      # rubocop:enable Metrics/AbcSize
+
+      def bounce_rate(stats)
+        no_of_bounces = stats.inject(0.0) { |a, e| a + e[:bounces] }
+        sent_last_24_hrs.zero? ? 0.0 : (no_of_bounces / sent_last_24_hrs) * 100
+      end
+
+      def complaint_rate(stats)
+        no_of_complaints = stats.inject(0.0) { |a, e| a + e[:complaints] }
+        sent_last_24_hrs.zero? ? 0.0 : (no_of_complaints / sent_last_24_hrs) * 100
+      end
 
       def send_email(template, account, phase)
-        if sent_last_24_hrs >= amazon_stat_settings[:amount_of_email]
-          check_statistics_of_last_24_hrs
-        end
-        sleep(1)
+        check_statistics_and_wait_to_avoid_exceeding_throttle_limit
         resp = ses.send_email(template)
-        if account.reverification_tracker
-          update_tracker(account.reverification_tracker, phase, resp)
-        else
-          account.create_reverification_tracker(message_id: resp[:message_id], sent_at: Time.now.utc)
-        end
+        return update_tracker(account.reverification_tracker, phase, resp) if account.reverification_tracker
+
+        account.create_reverification_tracker(message_id: resp[:message_id], sent_at: Time.now.utc)
+      end
+
+      def check_statistics_and_wait_to_avoid_exceeding_throttle_limit
+        check_statistics_of_last_24_hrs if sent_last_24_hrs >= amazon_stat_settings[:amount_of_email]
+        sleep(1)
       end
 
       def poll_success_queue

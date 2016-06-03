@@ -76,7 +76,7 @@ class AnalysesController < ApplicationController
   end
 
   def fail_if_analysis_not_found
-    fail ParamRecordNotFound if @analysis.blank?
+    raise ParamRecordNotFound if @analysis.blank?
   end
 
   def languages_pie_chart

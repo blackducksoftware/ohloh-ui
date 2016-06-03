@@ -28,7 +28,7 @@ class ForumsHelperTest < ActionView::TestCase
       [
         [nil, 'Topics'],
         [:new_topic, 'New Topic', "/forums/#{forum.id}/topics/new"],
-        [:forum, "#{forum.name}", "/forums/#{forum.id}"]
+        [:forum, forum.name.to_s, "/forums/#{forum.id}"]
       ],
       [
         [nil, 'Posts'],

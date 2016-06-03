@@ -8,11 +8,11 @@
 .logo
   %a{ href: project_path(project), title: project.name }
     - project_icon(project, :small, class: 'logo')
-.commits{ style: "background-color: ##{bg_color}; color: ##{txt_color} !important", title: "#{emails.join("\n")}" }
+.commits{ style: "background-color: ##{bg_color}; color: ##{txt_color} !important", title: emails.join("\n").to_s }
   %span= name_fact.commits
   .clearfix
   %a{ href: project_contributor_path(project, contributor_id), style: 'display: inline-block;' }
-    #{'commit'.pluralize(name_fact.commits)}
+    = 'commit'.pluralize(name_fact.commits).to_s
 .clearfix
 
 .project_link

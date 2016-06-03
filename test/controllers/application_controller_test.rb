@@ -229,15 +229,15 @@ class TestController < ApplicationController
   end
 
   def throws_param_record_not_found
-    fail ParamRecordNotFound
+    raise ParamRecordNotFound
   end
 
   def throws_routing_error
-    fail ActionController::RoutingError, 'i_am_a_banana'
+    raise ActionController::RoutingError, 'i_am_a_banana'
   end
 
   def throws_standard_error
-    fail StandardError
+    raise StandardError
   end
 end
 

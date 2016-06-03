@@ -14,24 +14,24 @@ class TagsController < ApplicationController
 
   def find_projects_by_names
     @projects = Project.tagged_with(params[:names])
-                .includes([[best_analysis: :main_language], :logo, :organization, :licenses])
-                .order(user_count: :desc)
-                .page(page_param).per_page(10)
+                       .includes([[best_analysis: :main_language], :logo, :organization, :licenses])
+                       .order(user_count: :desc)
+                       .page(page_param).per_page(10)
     @projects.each { |proj| proj.editor_account = current_user }
     find_related_tags
   end
 
   def find_related_tags
     related_tags = Tag.related_tags(params[:names])
-                   .order(count: :desc)
-                   .select("name|| ' (' || count(*) || ')' tag, name")
-                   .map { |t| [t.tag, t.name] }
+                      .order(count: :desc)
+                      .select("name|| ' (' || count(*) || ')' tag, name")
+                      .map { |t| [t.tag, t.name] }
     @related_tags = find_tags + related_tags
   end
 
   def find_tags
     Tag.where(name: params[:names]).select("name||' (' || taggings_count || ')' tag, name")
-      .map { |t| [t.tag, t.name] }
+       .map { |t| [t.tag, t.name] }
   end
 
   def find_tags_by_popularity

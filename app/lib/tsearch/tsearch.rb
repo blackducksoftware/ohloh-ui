@@ -8,7 +8,7 @@ module Tsearch
     # it was treated as a string instead of function
     after_save do |record|
       record.class.where(id: record)
-        .update_all("vector = #{set_vector(record)}, popularity_factor = #{record.searchable_factor}")
+            .update_all("vector = #{set_vector(record)}, popularity_factor = #{record.searchable_factor}")
     end
 
     class << self
@@ -46,7 +46,7 @@ module Tsearch
       end
 
       def query_parser(query)
-        return "'' ' || ' #{query.tr("'", ' ')} ' || ' ''" unless query.match(/[-.\/]/)
+        return "'' ' || ' #{query.tr("'", ' ')} ' || ' ''" unless query =~ /[-.\/]/
         "''#{query.gsub(/[-.'\/]/, '-' => 'dssh', '.' => 'dtt', '/' => ' ')}'' | ''#{query.delete("'")}''"
       end
     end

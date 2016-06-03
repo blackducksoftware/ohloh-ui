@@ -55,11 +55,12 @@ class PositionsController < ApplicationController
     pos_or_alias_obj = current_user.position_core.ensure_position_or_alias!(@project, @name)
     return redirect_to_new_position_path unless pos_or_alias_obj
 
-    if pos_or_alias_obj.is_a?(Alias)
-      flash_msg = t('.alias', name: @name.name, preferred_name: pos_or_alias_obj.preferred_name.name)
-    else
-      flash_msg = t('.position', name: @name.name)
-    end
+    flash_msg =
+      if pos_or_alias_obj.is_a?(Alias)
+        t('.alias', name: @name.name, preferred_name: pos_or_alias_obj.preferred_name.name)
+      else
+        t('.position', name: @name.name)
+      end
 
     redirect_to account_positions_path(current_user), flash: { success: flash_msg }
   end
@@ -78,13 +79,13 @@ class PositionsController < ApplicationController
   end
 
   def params_id_is_total?
-    params[:id].to_s.downcase == 'total'
+    params[:id].casecmp('total').zero?
   end
 
   def position_params
     params.require(:position)
-      .permit(:project_oss, :committer_name, :title, :organization_id, :organization_name,
-              :affiliation_type, :description, :start_date, :stop_date, :ongoing, :invite,
-              language_exp: [], project_experiences_attributes: [:project_name, :_destroy, :id])
+          .permit(:project_oss, :committer_name, :title, :organization_id, :organization_name,
+                  :affiliation_type, :description, :start_date, :stop_date, :ongoing, :invite,
+                  language_exp: [], project_experiences_attributes: [:project_name, :_destroy, :id])
   end
 end

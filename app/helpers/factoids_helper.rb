@@ -13,7 +13,7 @@ module FactoidsHelper
   def get_factoid_type(fact)
     match = "Factoid#{fact.to_s.capitalize}"
     fact = @analysis.factoids.select { |f| f.type.starts_with?(match) }
-    fact.length > 0 ? fact.first : nil
+    fact.empty? ? nil : fact.first
   end
 
   def factiod_info(fact)

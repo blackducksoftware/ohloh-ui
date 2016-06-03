@@ -13,8 +13,8 @@ class Language < ActiveRecord::Base
   scope :from_param, ->(param) { where(Language.arel_table[:name].eq(param).or(Language.arel_table[:id].eq(param))) }
 
   filterable_by ['languages.nice_name']
-  ALL_LANGUAGES = ['All Languages', '']
-  DEFAULT_LANGUAGES = %w(c html java php)
+  ALL_LANGUAGES = ['All Languages', ''].freeze
+  DEFAULT_LANGUAGES = %w(c html java php).freeze
 
   class << self
     def new_languages_for_project(project, days)

@@ -9,7 +9,7 @@ class DeletedAccount < ActiveRecord::Base
     4 => I18n.t('deleted_account.reason_4'),
     5 => I18n.t('deleted_account.reason_5'),
     6 => I18n.t('deleted_account.reason_6')
-  }
+  }.freeze
 
   def self.find_deleted_account(login)
     where(login: login).order(created_at: :desc).first

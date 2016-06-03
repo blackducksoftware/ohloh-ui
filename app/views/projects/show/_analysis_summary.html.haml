@@ -28,7 +28,7 @@
                 - if @analysis.present? && @analysis.thirty_day_summary && @analysis.logged_at
                   = (@analysis.logged_at - 30.days).strftime('%b %e %Y')
                   &mdash;
-                  = (@analysis.logged_at).strftime('%b %e %Y')
+                  = @analysis.logged_at.strftime('%b %e %Y')
                 - else
                   = t('.not_available')
               .clearfix
@@ -39,7 +39,7 @@
                 - if @analysis.twelve_month_summary.present? && @analysis.logged_at
                   = (@analysis.logged_at - 12.months).strftime('%b %e %Y')
                   &mdash;
-                  = (@analysis.logged_at).strftime('%b %e %Y')
+                  = @analysis.logged_at.strftime('%b %e %Y')
                 - else
                   = t('.not_available')
               .clearfix

@@ -15,7 +15,7 @@ class DuplicatesController < ApplicationController
   def index
     @resolved_duplicates = Duplicate.where(resolved: true).order(id: :desc).paginate(per_page: 10, page: page_param)
     @unresolved_duplicates = Duplicate.where.not(resolved: true).order(id: :desc)
-                             .paginate(per_page: 10, page: page_param)
+                                      .paginate(per_page: 10, page: page_param)
   end
 
   def new
@@ -69,12 +69,12 @@ class DuplicatesController < ApplicationController
 
   def find_duplicate_without_project_id
     @duplicate = Duplicate.where(id: params[:id]).where.not(resolved: true).take
-    fail ParamRecordNotFound if @duplicate.nil?
+    raise ParamRecordNotFound if @duplicate.nil?
   end
 
   def find_duplicate
     @duplicate = Duplicate.where(bad_project_id: @project.id).where(id: params[:id]).take
-    fail ParamRecordNotFound if @duplicate.nil?
+    raise ParamRecordNotFound if @duplicate.nil?
   end
 
   def find_good_project

@@ -66,13 +66,14 @@ class Person < ActiveRecord::Base
         query_with_email_or_name(sub_query, opts)
       else
         sub_query.group([:name_id, :effective_name])
-          .reorder('MIN(COALESCE(kudo_position,999999999)), lower(effective_name)').select(:name_id)
+                 .reorder('MIN(COALESCE(kudo_position,999999999)), lower(effective_name)')
+                 .select(:name_id)
       end
     end
 
     def find_by_name_or_email(opts)
       return where("name_facts.email_address_ids && (#{EmailAddress.search_sql(opts[:q])})")
-        .joins(:contributor_fact) if opts[:find_by].eql?('email')
+             .joins(:contributor_fact) if opts[:find_by].eql?('email')
 
       tsearch(opts[:q])
     end
@@ -81,7 +82,8 @@ class Person < ActiveRecord::Base
 
     def query_with_email_or_name(sub_query, opts)
       sub_query.find_by_name_or_email(opts).group([:name_id, :effective_name])
-        .reorder('MIN(COALESCE(kudo_position,999999999)), lower(effective_name)').select(:name_id)
+               .reorder('MIN(COALESCE(kudo_position,999999999)), lower(effective_name)')
+               .select(:name_id)
     end
 
     def group_and_sort_by_kudo_positions_or_effective_name(people)

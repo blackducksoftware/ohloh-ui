@@ -1,5 +1,5 @@
 class Project::DemographicChart
-  SORT_ORDER = ['Inactive', 'Very Low', 'Low', 'Moderate', 'High', 'Very High', 'New']
+  SORT_ORDER = ['Inactive', 'Very Low', 'Low', 'Moderate', 'High', 'Very High', 'New'].freeze
   INACTIVE_INDEX = 20
 
   class << self

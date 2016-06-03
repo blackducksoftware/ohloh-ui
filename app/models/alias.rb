@@ -30,7 +30,7 @@ class Alias < ActiveRecord::Base
       aas = AnalysisAlias.arel_table
       projects = Project.arel_table
       Alias.joins([analysis_alias_join_sql(aas, aliases), project_join_sql(aas, aliases, projects)])
-        .where(aliases[:project_id].eq(projects[:id]).and(projects[:id].eq(project.id)))
+           .where(aliases[:project_id].eq(projects[:id]).and(projects[:id].eq(project.id)))
     end
 
     def create_for_project(editor_account, project, commit_name_id, preferred_name_id, override_permissions = false)
@@ -49,8 +49,8 @@ class Alias < ActiveRecord::Base
 
     def analysis_alias_join_sql(aas, aliases)
       aliases.join(aas)
-        .on(aas[:commit_name_id].eq(aliases[:commit_name_id])
-        .and(aas[:preferred_name_id].not_eq(aas[:commit_name_id]))).join_sources[0].to_sql
+             .on(aas[:commit_name_id].eq(aliases[:commit_name_id])
+             .and(aas[:preferred_name_id].not_eq(aas[:commit_name_id]))).join_sources[0].to_sql
     end
 
     def project_join_sql(aas, aliases, projects)
@@ -92,9 +92,9 @@ class Alias < ActiveRecord::Base
   def move_name_facts_to_preferred_name
     name_fact = contributor_fact_for_commit
     ContributorFact.find_by(name_id: preferred_name_id, analysis_id: project.best_analysis_id)
-      .try(:append_name_fact, name_fact)
+                   .try(:append_name_fact, name_fact)
     ContributorFact.find_by(name_id: changed_attributes[:preferred_name_id], analysis_id: project.best_analysis_id)
-      .try(:remove_name_fact, name_fact)
+                   .try(:remove_name_fact, name_fact)
   end
 
   def contributor_fact_for_commit

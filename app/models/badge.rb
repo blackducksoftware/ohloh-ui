@@ -45,7 +45,7 @@ class Badge
   end
 
   def short_desc
-    fail 'Not implemented'
+    raise 'Not implemented'
   end
 
   def levels?

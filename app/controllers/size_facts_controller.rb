@@ -3,7 +3,7 @@ class SizeFactsController < ApplicationController
 
   before_action :set_project_or_fail
 
-  LATEST_ID = 'latest'
+  LATEST_ID = 'latest'.freeze
 
   def index
     latest_analysis = params[:analysis_id] == LATEST_ID

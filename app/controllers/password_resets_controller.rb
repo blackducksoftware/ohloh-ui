@@ -40,7 +40,7 @@ class PasswordResetsController < ApplicationController
 
   def set_account
     @account = Account.from_param(params[:account_id]).first
-    fail ParamRecordNotFound unless @account
+    raise ParamRecordNotFound unless @account
   end
 
   def check_token_expiration

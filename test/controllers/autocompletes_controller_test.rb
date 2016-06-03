@@ -131,7 +131,7 @@ describe 'AutocompletesController' do
       create(:name_fact, name: name1, analysis: project.best_analysis)
       create(:name_fact, name: name2, analysis: project.best_analysis)
 
-      get :contributions, term: 'test', project: "#{project.name}"
+      get :contributions, term: 'test', project: project.name.to_s
 
       must_respond_with :ok
       result = JSON.parse(response.body)

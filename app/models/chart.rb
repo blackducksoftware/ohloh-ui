@@ -24,7 +24,8 @@ class Chart
 
   def date_objects(stringified_dates)
     stringified_dates.map do |date_string|
-      { commit_month: date_string, stringify: date_string.match(/Jan/) ? date_string.split('-').last : '' }
+      { commit_month: date_string,
+        stringify: (date_string =~ /Jan/) ? date_string.split('-').last : '' }
     end
   end
 end

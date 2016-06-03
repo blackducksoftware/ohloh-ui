@@ -3,7 +3,7 @@ class Analysis::LanguageHistory < Analysis::QueryBase
 
   def execute
     AllMonth.select(select_columns).joins(joins_clause).joins(languages_joins).where(within_date)
-      .group(group_clause).order(languages[:nice_name], month)
+            .group(group_clause).order(languages[:nice_name], month)
   end
 
   private

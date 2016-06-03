@@ -24,7 +24,7 @@ module WidgetBadge
 
       def set_gravity(convert, alignment)
         alignment_options = { right: 'NorthEast', center: 'North', left: 'NorthWest' }
-        gravity = alignment_options[alignment] || fail('No alignment specified')
+        gravity = alignment_options[alignment] || raise('No alignment specified')
         convert.gravity(gravity)
       end
 

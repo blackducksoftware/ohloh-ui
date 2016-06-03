@@ -63,31 +63,28 @@ namespace :selenium do
         'similar_projects_by_stack' => collect_license_and_languages(project.related_by_stacks(10))
       )
 
-      project_data.merge!(
-        'languages' => {
-          'summary' => languages_percentage.collect { |v| [v.second, v.third[:percent]] },
-          'total_lines' => number_with_delimiter(total_lines),
-          'code_lines' => number_with_delimiter(code_lines),
-          'percentage_lines' => analysis_total_percent_detail(code_lines, total_lines),
-          'total_languages' => languages_breakdown.size,
-          'total_comments' => number_with_delimiter(comment_lines),
-          'percentage_comments' => analysis_total_percent_detail(comment_lines, total_lines),
-          'total_blanks' => number_with_delimiter(blank_lines),
-          'percentage_blanks' => analysis_total_percent_detail(blank_lines, total_lines),
-          'list' => get_language_stats(languages_breakdown) }
-      ) if analysis.present?
+      project_data['languages'] = {
+        'summary' => languages_percentage.collect { |v| [v.second, v.third[:percent]] },
+        'total_lines' => number_with_delimiter(total_lines),
+        'code_lines' => number_with_delimiter(code_lines),
+        'percentage_lines' => analysis_total_percent_detail(code_lines, total_lines),
+        'total_languages' => languages_breakdown.size,
+        'total_comments' => number_with_delimiter(comment_lines),
+        'percentage_comments' => analysis_total_percent_detail(comment_lines, total_lines),
+        'total_blanks' => number_with_delimiter(blank_lines),
+        'percentage_blanks' => analysis_total_percent_detail(blank_lines, total_lines),
+        'list' => get_language_stats(languages_breakdown)
+      } if analysis.present?
 
-      project_data.merge!(
-        'contributors' => {
-          'newest_contributions' => newest_contributions(project),
-          'top_contributions' => project.top_contributions.collect do |contribution|
-            fact = contribution.contributor_fact
-            [contribution.person.person_name, fact.twelve_month_commits,
-             fact.commits, fact.primary_language.nice_name, time_ago_in_words(fact.first_checkin) + ' ago',
-             time_ago_in_words(fact.last_checkin) + ' ago']
-          end
-        }
-      )
+      project_data['contributors'] = {
+        'newest_contributions' => newest_contributions(project),
+        'top_contributions' => project.top_contributions.collect do |contribution|
+          fact = contribution.contributor_fact
+          [contribution.person.person_name, fact.twelve_month_commits,
+           fact.commits, fact.primary_language.nice_name, time_ago_in_words(fact.first_checkin) + ' ago',
+           time_ago_in_words(fact.last_checkin) + ' ago']
+        end
+      }
 
       project_data.merge!(
         'users' => get_users(project),

@@ -1,5 +1,5 @@
 module AnonymousAccount
-  LOGIN = 'anonymous_coward'
+  LOGIN = 'anonymous_coward'.freeze
 
   class << self
     def create!

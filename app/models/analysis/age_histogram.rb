@@ -2,12 +2,12 @@ class Analysis::AgeHistogram
   class << self
     def execute
       Analysis.select("count(*) as value, date_trunc('day', logged_at) as logged_date")
-        .joins(:project)
-        .where(project_conditions)
-        .where.not(logged_at: nil)
-        .where(in_last_two_months)
-        .group('logged_date')
-        .order('logged_date')
+              .joins(:project)
+              .where(project_conditions)
+              .where.not(logged_at: nil)
+              .where(in_last_two_months)
+              .group('logged_date')
+              .order('logged_date')
     end
 
     private

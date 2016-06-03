@@ -11,7 +11,7 @@ class Account::ProjectCore < OhDelegator::Base
   def used
     @used_projects ||=
       Project.active.joins(:stacks).where(stacks_account_id)
-      .order(:user_count, :name).limit(15).distinct
+             .order(:user_count, :name).limit(15).distinct
 
     logo_ids = @used_projects.collect(&:logo_id).compact
     @used_proj_logos ||= logo_ids.any? ? Logo.find(logo_ids) : []

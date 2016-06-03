@@ -9,7 +9,8 @@ class Person::Builder
 
         person.update_columns(
           kudo_score: kudo_score.score, kudo_position: kudo_score.position,
-          kudo_rank: kudo_score.rank, popularity_factor: person.searchable_factor)
+          kudo_rank: kudo_score.rank, popularity_factor: person.searchable_factor
+        )
       end
 
       Person.logger.info { 'Person.rebuild_kudos(): Complete' }

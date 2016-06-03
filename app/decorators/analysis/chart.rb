@@ -2,7 +2,7 @@ class Analysis::Chart
   include ChartHelper
   include ActionView::Helpers::AssetUrlHelper
 
-  Y_AXIS_TICKS = [1, 3, 5, 10]
+  Y_AXIS_TICKS = [1, 3, 5, 10].freeze
 
   delegate :min_month, :logged_at, :created_at, to: :@analysis
 

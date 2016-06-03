@@ -1,5 +1,5 @@
 class WidgetsController < ApplicationController
-  WIDGET_TYPES = %w(account project stack organization)
+  WIDGET_TYPES = %w(account project stack organization).freeze
 
   helper :widgets
   before_action :set_widget, except: :index
@@ -41,7 +41,7 @@ class WidgetsController < ApplicationController
     return unless request_format == 'xml'
     @type = WIDGET_TYPES.select { |klass| controller_name.include?(klass) }[0]
     @parent = @widget.send(@type)
-    fail ParamRecordNotFound unless @parent
+    raise ParamRecordNotFound unless @parent
     render template: 'widgets/metadata'
   end
 end

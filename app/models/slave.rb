@@ -16,18 +16,18 @@ class Slave < ActiveRecord::Base
   end
 
   def allow?
-    allow_deny.to_s.downcase == 'allow'
+    allow_deny.to_s.casecmp('allow').zero?
   end
 
   def deny?
-    allow_deny.to_s.downcase == 'deny'
+    allow_deny.to_s.casecmp('deny').zero?
   end
 
   private
 
   def run(cmd)
     _stdin, stdout, stderr = Open3.popen3('bash', '-c', cmd)
-    fail "#{cmd} failed: #{stderr.read}" if stderr.any?
+    raise "#{cmd} failed: #{stderr.read}" if stderr.any?
     stdout.read
   end
 

@@ -16,9 +16,9 @@ class Analysis::CommitHistory < Analysis::QueryBase
 
   def query
     all_months.project([month, coalesce_commits_count])
-      .join(arel_subquery, Arel::Nodes::OuterJoin)
-      .on(month.eq(arel_subquery[:this_month])).where(within_date)
-      .order(month)
+              .join(arel_subquery, Arel::Nodes::OuterJoin)
+              .on(month.eq(arel_subquery[:this_month])).where(within_date)
+              .order(month)
   end
 
   def arel_subquery
@@ -27,12 +27,12 @@ class Analysis::CommitHistory < Analysis::QueryBase
 
   def subquery
     Commit.select(subquery_select_clause)
-      .joins(analysis_aliases_joins)
-      .where(code_set_id: subquery_conditions)
-      .where(analysis_aliases_equals_analysis_id)
-      .where(commit_time_within_time_span)
-      .where(preferred_name_id)
-      .group('this_month')
+          .joins(analysis_aliases_joins)
+          .where(code_set_id: subquery_conditions)
+          .where(analysis_aliases_equals_analysis_id)
+          .where(commit_time_within_time_span)
+          .where(preferred_name_id)
+          .group('this_month')
   end
 
   def analysis_aliases_equals_analysis_id
@@ -46,7 +46,7 @@ class Analysis::CommitHistory < Analysis::QueryBase
 
   def subquery_conditions
     AnalysisSlocSet.joins(sloc_set: :code_set).select('code_sets.id')
-      .where(analysis_sloc_sets[:analysis_id].eq(@analysis.id))
+                   .where(analysis_sloc_sets[:analysis_id].eq(@analysis.id))
   end
 
   def subquery_select_clause

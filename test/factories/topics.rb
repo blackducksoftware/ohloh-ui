@@ -6,9 +6,7 @@ FactoryGirl.define do
     sequence :title do |n|
       "Topic number#{n}"
     end
-    sequence :sticky do |n|
-      "#{n}"
-    end
+    sequence :sticky
     sequence :replied_at do |n|
       Time.current + n
     end

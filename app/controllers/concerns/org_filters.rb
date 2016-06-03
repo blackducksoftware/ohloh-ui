@@ -27,7 +27,7 @@ module OrgFilters
 
   def set_organization
     @organization ||= Organization.from_param(params[:id]).take
-    fail ParamRecordNotFound if @organization.nil?
+    raise ParamRecordNotFound if @organization.nil?
     @organization.editor_account = current_user
   end
 
@@ -74,6 +74,6 @@ module OrgFilters
 
   def set_project
     @project = Project.from_param(params[:project_id]).take
-    fail ParamRecordNotFound unless @project
+    raise ParamRecordNotFound unless @project
   end
 end

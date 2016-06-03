@@ -10,18 +10,18 @@ class AutocompletesController < ApplicationController
 
   def project
     @projects = Project.not_deleted
-                .where('lower(name) like ?', "%#{(params[:term] || '').downcase}%")
-                .where.not(id: params[:exclude_project_id].to_i)
-                .order('length(name)')
-                .limit(25)
+                       .where('lower(name) like ?', "%#{(params[:term] || '').downcase}%")
+                       .where.not(id: params[:exclude_project_id].to_i)
+                       .order('length(name)')
+                       .limit(25)
   end
 
   def projects_for_stack
     @projects = Project.not_deleted
-                .where.not(id: @projects_to_ignore)
-                .where('lower(name) like ?', "%#{(params[:term] || '').downcase}%")
-                .order('length(name)')
-                .limit(25)
+                       .where.not(id: @projects_to_ignore)
+                       .where('lower(name) like ?', "%#{(params[:term] || '').downcase}%")
+                       .order('length(name)')
+                       .limit(25)
     render json: @projects.map { |p| { value: p.name, id: p.id } }
   end
 
@@ -48,8 +48,8 @@ class AutocompletesController < ApplicationController
 
   def set_name_facts
     @name_facts = NameFact.where(analysis_id: @project.best_analysis_id)
-                  .where(['lower(names.name) like ? ', "%#{params[:term].strip.downcase}%"])
-                  .includes(:name).references(:all).order('names.name ASC').limit(10)
+                          .where(['lower(names.name) like ? ', "%#{params[:term].strip.downcase}%"])
+                          .includes(:name).references(:all).order('names.name ASC').limit(10)
   end
 
   def check_for_project
@@ -60,7 +60,7 @@ class AutocompletesController < ApplicationController
 
   def set_projects_to_ignore
     @projects_to_ignore = Stack.joins(:projects)
-                          .where(account_id: params[:account_id], id: params[:id])
-                          .pluck('DISTINCT(projects.id)')
+                               .where(account_id: params[:account_id], id: params[:id])
+                               .pluck('DISTINCT(projects.id)')
   end
 end

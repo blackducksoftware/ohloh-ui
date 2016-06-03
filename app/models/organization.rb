@@ -4,8 +4,8 @@ class Organization < ActiveRecord::Base
   include OrganizationScopes
   include Tsearch
 
-  ORG_TYPES = { 'Commercial' => 1, 'Education' => 2, 'Government' => 3, 'Non-Profit' => 4 }
-  ALLOWED_SORT_OPTIONS = %w(newest recent name projects)
+  ORG_TYPES = { 'Commercial' => 1, 'Education' => 2, 'Government' => 3, 'Non-Profit' => 4 }.freeze
+  ALLOWED_SORT_OPTIONS = %w(newest recent name projects).freeze
 
   belongs_to :logo
   has_one :permission, as: :target
@@ -79,10 +79,9 @@ class Organization < ActiveRecord::Base
   end
 
   def affiliators_count
-    @affiliators_count ||=
-      accounts.joins(:person, :positions)
-      .where(NameFact.with_positions)
-      .count('DISTINCT(accounts.id)')
+    @affiliators_count ||= accounts.joins(:person, :positions)
+                                   .where(NameFact.with_positions)
+                                   .count('DISTINCT(accounts.id)')
   end
 
   def allow_undo?(_key)

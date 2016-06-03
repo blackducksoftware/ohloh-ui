@@ -41,7 +41,7 @@ class PostTest < ActiveSupport::TestCase
   it 'gracefully handles weirdly encoded post bodies' do
     post.body = "* oprava chyby 33731\n* \xFAprava  podle Revize B anglick\xE9ho dokumentu\n"
     post.body.split("\n")
-      .must_equal ['* oprava chyby 33731', '* �prava  podle Revize B anglick�ho dokumentu']
+        .must_equal ['* oprava chyby 33731', '* �prava  podle Revize B anglick�ho dokumentu']
   end
 
   it 'strip tags method removes ' do

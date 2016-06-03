@@ -3,7 +3,8 @@ class BaseballCard < Cherry::Decorator
   include ActionView::Helpers::TextHelper
   include ActionView::Helpers::UrlHelper
 
-  ROW_NAMES = [:first_checkin, :last_checkin, :commits, :joined_at, :contributions, :orgs, :affiliations]
+  ROW_NAMES = [:first_checkin, :last_checkin, :commits, :joined_at, :contributions, :orgs,
+               :affiliations].freeze
 
   delegate :best_vita, :created_at, :positions, to: :account
 
@@ -45,7 +46,7 @@ class BaseballCard < Cherry::Decorator
   end
 
   def contributions
-    return if positions.active.size == 0
+    return if positions.active.empty?
     link = link_to pluralize(positions.active.size, 'project'), h.account_positions_path(account)
     { label: i18n('contribution'),
       value: link }
@@ -57,8 +58,7 @@ class BaseballCard < Cherry::Decorator
     { css: { style: 'min-height:38px;' },
       label: i18n('contributed_to'),
       partial: 'accounts/show/orgs',
-      locals: { orgs: orgs_for_positions }
-    }
+      locals: { orgs: orgs_for_positions } }
   end
 
   def affiliations
@@ -67,11 +67,8 @@ class BaseballCard < Cherry::Decorator
     { css: { style: 'min-height:38px;' },
       label: i18n('contributed_for'),
       partial: 'accounts/show/orgs',
-      locals: { orgs: affiliated_orgs }
-    }
+      locals: { orgs: affiliated_orgs } }
   end
-
-  private
 
   def i18n(string, options = {})
     I18n.t("accounts.show.baseball_card.#{string}", options)

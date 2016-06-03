@@ -1,10 +1,10 @@
 class Spark::AnalysisSpark < Spark::Base
   SPARK = { column_width: 4, column_gap: 1, column_base: 1, column_variant: 75, blank_row: 1,
-            label_height: 14, label_point_size: 12, max_value: 100 }
+            label_height: 14, label_point_size: 12, max_value: 100 }.freeze
 
-  LIGHT_GRAY = '#ddd'
-  DARK_GRAY = '#a7a7a7'
-  FONT = "#{Rails.root}/app/assets/fonts/OpenSans-Bold.ttf"
+  LIGHT_GRAY = '#ddd'.freeze
+  DARK_GRAY = '#a7a7a7'.freeze
+  FONT = "#{Rails.root}/app/assets/fonts/OpenSans-Bold.ttf".freeze
 
   def initialize(data, options = {})
     super(data, SPARK.merge(options))

@@ -44,6 +44,6 @@ class RegistrationsController < ApplicationController
   end
 
   def check_for_account_and_auth_params
-    fail ParamRecordNotFound unless session[:account_params] && session[:auth_params]
+    raise ParamRecordNotFound unless session[:account_params] && session[:auth_params]
   end
 end

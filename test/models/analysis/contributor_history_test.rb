@@ -35,23 +35,23 @@ class Analysis::ContributorHistoryTest < ActiveSupport::TestCase
 
     describe 'date range' do
       it 'must produce results only after the given start_date' do
-        results = Analysis::ContributorHistory.new(
-          analysis: activity_fact.analysis, start_date: 1.month.ago).execute
+        results = Analysis::ContributorHistory.new(analysis: activity_fact.analysis,
+                                                   start_date: 1.month.ago).execute
 
         results.map(&:contributors).must_equal [0, 0]
       end
 
       it 'must produce results only before the given end_date' do
-        results = Analysis::ContributorHistory.new(
-          analysis: activity_fact.analysis, end_date: 3.months.ago).execute
+        results = Analysis::ContributorHistory.new(analysis: activity_fact.analysis,
+                                                   end_date: 3.months.ago).execute
 
         results.map(&:contributors).find { |count| count == 1 }.must_be_nil
       end
 
       it 'must produce results considering the given dates and all_month range' do
-        results = Analysis::ContributorHistory.new(
-          analysis: activity_fact.analysis, start_date: 5.months.ago,
-          end_date: 2.months.ago).execute
+        results = Analysis::ContributorHistory.new(analysis: activity_fact.analysis,
+                                                   start_date: 5.months.ago,
+                                                   end_date: 2.months.ago).execute
 
         results.map(&:contributors).must_equal [0, 1]
       end

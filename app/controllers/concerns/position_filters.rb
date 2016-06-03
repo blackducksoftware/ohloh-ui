@@ -20,7 +20,7 @@ module PositionFilters
 
   def set_account
     @account = Account.from_param(params[:account_id]).take
-    fail ParamRecordNotFound unless @account
+    raise ParamRecordNotFound unless @account
   end
 
   def redirect_to_languages
@@ -36,7 +36,7 @@ module PositionFilters
   def set_project_and_name
     @project = Project.where(name: params[:project_name]).not_deleted.take
     @name = Name.where(name: params[:committer_name]).take
-    fail ParamRecordNotFound unless @project && @name
+    raise ParamRecordNotFound unless @project && @name
   end
 
   def redirect_to_contribution_if_found

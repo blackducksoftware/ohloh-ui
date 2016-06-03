@@ -2,8 +2,8 @@ class Icon < Cherry::Decorator
   include ActionView::Helpers::AssetTagHelper
   include ActionView::Helpers::TagHelper
 
-  IMAGE_SIZES = { med: 64, small: 32, tiny: 16 }
-  FONT_SIZES = { 64 => 56, 48 => 40, 40 => 32, 32 => 26, 24 => 18, 16 => 13 }
+  IMAGE_SIZES = { med: 64, small: 32, tiny: 16 }.freeze
+  FONT_SIZES = { 64 => 56, 48 => 40, 40 => 32, 32 => 26, 24 => 18, 16 => 13 }.freeze
 
   delegate :logo, :name, to: :object
 

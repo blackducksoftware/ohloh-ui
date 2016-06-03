@@ -48,8 +48,8 @@ module ProjectAssociations
 
     def rss_articles
       RssArticle.joins(rss_feed: :rss_subscriptions)
-        .where("rss_subscriptions.project_id = #{id} and rss_subscriptions.deleted = false")
-        .order('time DESC')
+                .where("rss_subscriptions.project_id = #{id} and rss_subscriptions.deleted = false")
+                .order('time DESC')
     end
 
     def contributions_within_timespan(options)
@@ -63,9 +63,9 @@ module ProjectAssociations
 
     def stacks_count
       Stack.joins(:stack_entries, :account)
-        .where(deleted_at: nil, stack_entries: { project_id: id })
-        .where('accounts.level >= 0')
-        .count('distinct(account_id)')
+           .where(deleted_at: nil, stack_entries: { project_id: id })
+           .where('accounts.level >= 0')
+           .count('distinct(account_id)')
     end
 
     class << self

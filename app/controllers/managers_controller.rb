@@ -92,7 +92,7 @@ class ManagersController < SettingsController
   end
 
   def fail_unless_parent
-    fail ParamRecordNotFound unless @parent
+    raise ParamRecordNotFound unless @parent
   end
 
   def redirect_to_index

@@ -17,7 +17,7 @@ class CsvHelperTest < ActionView::TestCase
     end
 
     it 'should escape strings that contain double quotes' do
-      csv_escape('Hello "World!"').must_equal "\"Hello \"\"World!\"\"\""
+      csv_escape('Hello "World!"').must_equal '"Hello ""World!"""'
     end
 
     it 'should convert integers into strings' do

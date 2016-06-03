@@ -7,8 +7,8 @@ class RssSubscriptionsController < ApplicationController
 
   def index
     @rss_subscriptions = @project.rss_subscriptions
-                         .includes(:rss_feed).references(:all).filter_by(params[:query])
-                         .paginate(page: page_param, per_page: 10)
+                                 .includes(:rss_feed).references(:all).filter_by(params[:query])
+                                 .paginate(page: page_param, per_page: 10)
   end
 
   def new

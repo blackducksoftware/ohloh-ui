@@ -83,12 +83,12 @@ describe 'PositionsController' do
 
         assert_difference('ProjectExperience.count', 2) do
           post :create, account_id: account.to_param, invite: true,
-                        position: { project_oss: project.name, committer_name: name_obj.name,
+                        position: { project_oss: project.name,
+                                    committer_name: name_obj.name,
                                     project_experiences_attributes: {
                                       '0' => { project_name: project_squeel.name },
                                       '1' => { project_name: project_draper.name }
-                                    }
-                                  }
+                                    } }
         end
 
         Position.last.project_experiences.map(&:project).map(&:name).sort.must_equal %w(draper squeel)
@@ -219,7 +219,7 @@ describe 'PositionsController' do
 
       must_redirect_to account_positions_path(account)
       project.reload.contributions.map(&:person).map(&:effective_name).sort
-        .must_equal [account.person.effective_name, previous_name.name].sort
+             .must_equal [account.person.effective_name, previous_name.name].sort
     end
 
     describe '_destroy project_experiences' do
@@ -295,7 +295,7 @@ describe 'PositionsController' do
 
     it 'must use CommitsByProject to render page successfully' do
       CommitsByProject.any_instance.stubs(:history)
-        .returns(start_date: 7.years.ago.to_date, facts: [], max_commits: 0)
+                      .returns(start_date: 7.years.ago.to_date, facts: [], max_commits: 0)
       create_position(account: account)
 
       get :index, account_id: account.to_param
