@@ -107,6 +107,7 @@ Rails.application.routes.draw do
         post :manual_verification
         post :make_spammer
         get :activate
+        post :make_bot
       end
     end
 
@@ -250,9 +251,6 @@ Rails.application.routes.draw do
         get :project_basic_stats, action: :basic_stats, as: :basic_stats
         get :project_users, action: :users, as: :users
         get :project_users_logo, action: :users_logo, as: :users_logo
-        get :project_search_code, action: :search_code, as: :search_code
-        get :project_browse_code, action: :browse_code, as: :browse_code
-        get :project_search_all_code, action: :search_all_code, as: :search_all_code
         get :project_languages, action: :languages, as: :languages
         get :project_partner_badge, action: :partner_badge, as: :partner_badge
         get :project_thin_badge, action: :thin_badge, as: :thin_badge

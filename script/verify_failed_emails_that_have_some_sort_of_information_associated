@@ -1,0 +1,136 @@
+require_relative '../config/environment'
+require 'csv'
+
+class FailedEmails
+  attr_accessor :failed_emails
+  attr_accessor :failed_accounts_with_facts
+  attr_accessor :failed_accounts_with_used_projects
+  attr_accessor :failed_accounts_with_commit_data
+  attr_accessor :failed_accounts_that_manages
+  attr_accessor :failed_accounts_that_have_edits
+  attr_accessor :failed_accounts
+
+  def initialize
+    @failed_emails = []
+    @failed_accounts_with_facts = []
+    @failed_accounts_with_used_projects = []
+    @failed_accounts_with_commit_data = []
+    @failed_accounts_that_manages = []
+    @failed_accounts_that_have_edits = []
+    @failed_accounts = []
+  end
+
+  def generate_list_of_failed_emails
+    CSV.foreach(File.expand_path('../complete_failed_list.csv', __FILE__)) do |row|
+      failed_emails << row[2]
+    end
+    failed_emails.shift
+  end
+
+  def find_accounts
+    failed_emails.each do |email|
+      if Account.find_by_email(email).nil?
+        next
+      else
+        failed_accounts << Account.find_by_email(email)
+      end
+    end
+  end
+
+  def determine_accounts_with_facts
+    failed_accounts_with_facts << (Account.with_facts.sort & failed_accounts.sort)
+    if block_given?
+      yield failed_accounts_with_facts
+    else
+      failed_accounts_with_facts
+    end
+  end
+
+  def determine_accounts_with_used_projects
+    failed_accounts.each do |account|
+      failed_accounts_with_used_projects << account if account.project_core.used[0].count > 0
+    end
+    if block_given?
+      yield failed_accounts_with_used_projects
+    else
+      failed_accounts_with_used_projects
+    end
+  end
+
+  def determine_accounts_with_commits
+    failed_accounts.each do |account|   
+      failed_accounts_with_commit_data << account if CommitsByProject.new(account).history_in_date_range.count || CommitsByLanguage.new(account).language_experience  > 0
+    end
+    if block_given?
+      yield failed_accounts_with_commit_data
+    else
+      failed_accounts_with_commit_data
+    end
+  end
+
+  def determine_accounts_that_manage
+    failed_accounts.each do |account|
+      failed_accounts_that_manages << account if account.projects.count > 0
+    end
+    if block_given?
+      yield failed_accounts_that_manages
+    else
+      failed_accounts_that_manages
+    end
+  end
+
+  def determine_accounts_that_have_edits
+    failed_accounts.each do |account|
+      failed_accounts_that_have_edits << account if account.edits.count > 0
+    end
+    if block_given?
+      yield failed_accounts_that_have_edits
+    else
+      failed_accounts_that_have_edits
+    end
+  end
+end
+
+class Verificationz
+
+  def create_manual_verifications(accounts)
+    return if accounts.empty?
+    counter = 0
+    accounts.each do |acc|
+      unless acc.verifications.exists?
+        ManualVerification.create(account_id: acc.id, auth_id: acc.id) 
+        counter += 1
+      end
+    end
+    puts counter
+  end
+
+  def cleanup
+    ReverificationTracker.remove_reverification_trackers_for_verified_accounts
+    ReverificationTracker.remove_orphans
+  end
+end
+
+failed_emails = FailedEmails.new
+verifications = Verificationz.new
+
+failed_emails.generate_list_of_failed_emails
+
+failed_emails.find_accounts
+
+failed_emails.determine_accounts_with_facts
+verifications.create_manual_verifications(failed_emails.failed_accounts_with_facts.flatten)
+
+failed_emails.determine_accounts_with_used_projects
+verifications.create_manual_verifications(failed_emails.failed_accounts_with_used_projects)
+
+failed_emails.determine_accounts_that_manage
+verifications.create_manual_verifications(failed_emails.failed_accounts_that_manages)
+
+failed_emails.determine_accounts_with_commits
+verifications.create_manual_verifications(failed_emails.failed_accounts_with_commit_data)
+
+failed_emails.determine_accounts_that_have_edits
+verifications.create_manual_verifications(failed_emails.failed_accounts_that_have_edits)
+
+verifications.cleanup

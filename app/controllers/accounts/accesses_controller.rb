@@ -2,8 +2,8 @@ class Accounts::AccessesController < ApplicationController
   include SetAccountByAccountId
 
   before_action :check_activation, only: :activate
-  before_action :session_required, only: [:make_spammer, :manual_verification]
-  before_action :admin_session_required, only: [:make_spammer, :manual_verification]
+  before_action :session_required, only: [:make_spammer, :manual_verification, :make_bot]
+  before_action :admin_session_required, only: [:make_spammer, :manual_verification, :make_bot]
   before_action :disabled_during_read_only_mode, only: :activate
 
   def make_spammer
@@ -21,6 +21,12 @@ class Accounts::AccessesController < ApplicationController
 
   def manual_verification
     @account.create_manual_verification
+    flash[:success] = t('.success', name: CGI.escapeHTML(@account.name))
+    redirect_to account_path(@account)
+  end
+
+  def make_bot
+    @account.access.bot!
     flash[:success] = t('.success', name: CGI.escapeHTML(@account.name))
     redirect_to account_path(@account)
   end

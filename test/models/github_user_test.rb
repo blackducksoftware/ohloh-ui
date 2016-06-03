@@ -46,5 +46,17 @@ class GithubUserTest < ActiveSupport::TestCase
         CodeLocation.count.must_equal 4
       end
     end
+
+    it 'must not include invalid repositories' do
+      stub_github_user_repositories_call do
+        Repository.count.must_equal 0
+
+        @github_user = GithubUser.new(url: 'stan')
+        Repository.any_instance.stubs(:valid?).returns(false)
+        @github_user.save!
+
+        Repository.count.must_equal 0
+      end
+    end
   end
 end
