@@ -10,6 +10,8 @@ class AddCodeLocationTable < ActiveRecord::Migration
       t.timestamps
     end
 
+    add_foreign_key :code_locations, :code_sets, column: :best_code_set_id
+
     add_column :enlistments, :code_location_id, :integer
     add_column :jobs, :code_location_id, :integer
     add_column :code_sets, :code_location_id, :integer
@@ -18,28 +20,13 @@ class AddCodeLocationTable < ActiveRecord::Migration
     change_column_null :code_sets, :repository_id, true
 
     add_index :enlistments, :code_location_id
+    add_index :enlistments, [:project_id, :code_location_id], unqiue: true
     add_index :jobs, :code_location_id
     add_index :code_sets, :code_location_id
-
-    # remove_column :enlistments, :repository_id
-
-    # remove_column :repositories, :module_name
-    # remove_column :repositories, :branch_name
-    # remove_column :repositories, :best_code_set_id
-
-    # remove_column :jobs, :repository_id
-    # remove_column :code_sets, :code_location_id
-
-    execute <<-SQL
-      ALTER TABLE code_locations ADD CONSTRAINT code_locations_unique_repository_id_module_branch_name
-        UNIQUE(repository_id, module_branch_name);
-      ALTER TABLE code_locations ADD FOREIGN KEY(best_code_set_id) REFERENCES code_sets(id);
-    SQL
+    add_index :code_locations, [:repository_id, :module_branch_name], unique: true
 
     execute <<-SQL
       ALTER TABLE enlistments DROP CONSTRAINT unique_project_id_repository_id;
-      ALTER TABLE enlistments ADD CONSTRAINT unique_project_id_code_location_id
-        UNIQUE(project_id, code_location_id);
     SQL
   end
 

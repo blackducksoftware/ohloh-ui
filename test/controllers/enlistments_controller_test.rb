@@ -160,7 +160,8 @@ describe 'EnlistmentsControllerTest' do
     end
 
     it 'must show alert message for adding the first enlistment' do
-      post :create, project_id: @project_id, repository: code_location.repository.attributes
+      post :create, project_id: @project_id, repository: code_location.repository.attributes,
+                    code_location: code_location.attributes
 
       must_redirect_to action: :index
 
@@ -169,7 +170,8 @@ describe 'EnlistmentsControllerTest' do
 
     it 'should not create repo if already exist' do
       assert_no_difference ['Repository.count', 'Enlistment.count'] do
-        post :create, project_id: @project_id, repository: code_location.repository.attributes
+        post :create, project_id: @project_id, repository: code_location.repository.attributes,
+                      code_location: code_location.attributes
       end
 
       must_redirect_to action: :index
@@ -181,7 +183,7 @@ describe 'EnlistmentsControllerTest' do
       GitRepository.new.source_scm_class.any_instance.stubs(:validate_server_connection)
 
       assert_no_difference ['Repository.count', 'Enlistment.count'] do
-        post :create, project_id: @project_id,
+        post :create, project_id: @project_id, code_location: code_location.attributes,
                       repository: code_location.repository.attributes.merge(url: " #{code_location.repository.url} ")
       end
 
@@ -194,8 +196,8 @@ describe 'EnlistmentsControllerTest' do
       create(:enlistment, project: Project.find_by(vanity_url: @project_id),
                           code_location: create(:code_location, repository: repository))
 
-      assert_no_difference ['Repository.count', 'Enlistment.count'] do
-        post :create, project_id: @project_id,
+      assert_no_difference ['CodeLocation.count', 'Enlistment.count'] do
+        post :create, project_id: @project_id, code_location: build(:code_location).attributes,
                       repository: repository.attributes.merge(type: 'SvnSyncRepository')
       end
 
@@ -221,7 +223,8 @@ describe 'EnlistmentsControllerTest' do
     end
 
     it 'must render error for missing url' do
-      post :create, project_id: @project_id, repository: build(:repository, url: '').attributes
+      post :create, project_id: @project_id, repository: build(:repository, url: '').attributes,
+                    code_location: build(:code_location).attributes
 
       assigns(:repository).errors.messages[:url].must_be :present?
       must_render_template :new

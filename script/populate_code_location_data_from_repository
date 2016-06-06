@@ -6,22 +6,22 @@ require_relative '../config/environment'
 ActiveRecord::Base.connection.execute("
   insert into code_locations(repository_id, module_branch_name, best_code_set_id,
     created_at, updated_at)
-    select id, module_name, created_at, updated_at, best_code_set_id
+    select id, module_name, best_code_set_id, created_at, updated_at
     from repositories where
     type = 'CvsRepository'
 ")
 
 ActiveRecord::Base.connection.execute("
-  insert into code_locations(repository_id, module_branch_name, best_code_set_id
+  insert into code_locations(repository_id, module_branch_name, best_code_set_id,
     created_at, updated_at)
-    select id, branch_name, created_at, updated_at, best_code_set_id
+    select id, branch_name, best_code_set_id, created_at, updated_at
     from repositories where
     type != 'CvsRepository'
 ")
 
 # update code_locations status
 ActiveRecord::Base.connection.execute("
-  update code_locations set status = 2
+  update code_locations set status = #{CodeLocation::STATUS_DELETED}
   from enlistments
   where deleted and enlistments.repository_id = code_locations.repository_id
 ")

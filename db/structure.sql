@@ -4701,14 +4701,6 @@ ALTER TABLE ONLY code_locations
 
 
 --
--- Name: code_locations_unique_repository_id_module_branch_name; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY code_locations
-    ADD CONSTRAINT code_locations_unique_repository_id_module_branch_name UNIQUE (repository_id, module_branch_name);
-
-
---
 -- Name: code_set_gestalts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -5581,14 +5573,6 @@ ALTER TABLE ONLY project_gestalts
 
 
 --
--- Name: unique_project_id_code_location_id; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY enlistments
-    ADD CONSTRAINT unique_project_id_code_location_id UNIQUE (project_id, code_location_id);
-
-
---
 -- Name: unique_project_id_name_id; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -5848,6 +5832,13 @@ CREATE INDEX index_code_locations_on_repository_id ON code_locations USING btree
 
 
 --
+-- Name: index_code_locations_on_repository_id_and_module_branch_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_code_locations_on_repository_id_and_module_branch_name ON code_locations USING btree (repository_id, module_branch_name);
+
+
+--
 -- Name: index_code_set_gestalts_on_code_set_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -5999,6 +5990,13 @@ CREATE INDEX index_enlistments_on_code_location_id ON enlistments USING btree (c
 --
 
 CREATE INDEX index_enlistments_on_project_id ON enlistments USING btree (project_id) WHERE (deleted IS FALSE);
+
+
+--
+-- Name: index_enlistments_on_project_id_and_code_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_enlistments_on_project_id_and_code_location_id ON enlistments USING btree (project_id, code_location_id);
 
 
 --
@@ -7032,14 +7030,6 @@ ALTER TABLE ONLY clumps
 
 
 --
--- Name: code_locations_best_code_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY code_locations
-    ADD CONSTRAINT code_locations_best_code_set_id_fkey FOREIGN KEY (best_code_set_id) REFERENCES code_sets(id);
-
-
---
 -- Name: code_set_gestalts_code_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7309,6 +7299,14 @@ ALTER TABLE ONLY project_vulnerability_reports
 
 ALTER TABLE ONLY code_locations
     ADD CONSTRAINT fk_rails_0ff5ad97b1 FOREIGN KEY (repository_id) REFERENCES repositories(id);
+
+
+--
+-- Name: fk_rails_2f22a538c9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_locations
+    ADD CONSTRAINT fk_rails_2f22a538c9 FOREIGN KEY (best_code_set_id) REFERENCES code_sets(id);
 
 
 --

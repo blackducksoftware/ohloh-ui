@@ -93,8 +93,9 @@
     .control-group
       .controls
         %label.checkbox
-          = f.check_box :bypass_url_validation, choice: t('.choice')
-          = t('.bypass_url_validation')
+          = f.fields_for @code_location do |ff|
+            = ff.check_box :bypass_url_validation, name: 'code_location[bypass_url_validation]', choice: t('.choice')
+            = t('.bypass_url_validation')
   .control-group
     .controls
       - error_tag @repository, :failed

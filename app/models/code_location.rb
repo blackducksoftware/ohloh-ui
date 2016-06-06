@@ -1,4 +1,9 @@
 class CodeLocation < ActiveRecord::Base
+  include CodeLocationJobs
+
+  STATUS_ACTIVE  = 1
+  STATUS_DELETED = 2
+
   belongs_to :repository
   belongs_to :best_code_set, foreign_key: :best_code_set_id, class_name: CodeSet
   has_many :enlistments
@@ -8,8 +13,6 @@ class CodeLocation < ActiveRecord::Base
   has_many :code_sets
   has_many :sloc_sets, through: :code_sets
   has_many :clumps, through: :code_sets
-
-  include CodeLocationJobs
 
   accepts_nested_attributes_for :repository
 
@@ -41,9 +44,6 @@ class CodeLocation < ActiveRecord::Base
       joins(:repository).where(repositories: { url: url })
                         .where(module_branch_name: module_branch_name)
                         .order(:id).first
-    end
-
-    def get_module_branch_name(module_branch_name)
     end
   end
 

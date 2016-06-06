@@ -2,15 +2,10 @@ class EnlistmentsController < SettingsController
   helper EnlistmentsHelper
   helper ProjectsHelper
 
-  before_action :session_required, :redirect_unverified_account, only: [:create, :new, :destroy, :edit, :update]
-  before_action :set_project_or_fail
-  before_action :set_project_editor_account_to_current_user
-  before_action :find_enlistment, only: [:show, :edit, :update, :destroy]
-  before_action :project_context, only: [:index, :new, :edit, :create, :update]
+  include EnlistmentFilters
 
   def index
-    @enlistments = @project.enlistments
-                           .includes(:project, code_location: :repository)
+    @enlistments = @project.enlistments.includes(code_location: :repository)
                            .filter_by(params[:query]).send(parse_sort_term)
                            .paginate(page: page_param, per_page: 10)
     @failed_jobs = Enlistment.failed_code_location_jobs.where(id: @enlistments.map(&:id)).any?
@@ -29,7 +24,8 @@ class EnlistmentsController < SettingsController
   end
 
   def create
-    initialize_repository_and_code_location
+    initialize_repository
+    initialize_code_location
     return render :new, status: :unprocessable_entity unless @code_location.valid?
     save_or_update_code_location
     create_enlistment
@@ -63,14 +59,12 @@ class EnlistmentsController < SettingsController
     params.require(:repository).permit(:url, :username, :password, :bypass_url_validation)
   end
 
-  def parse_sort_term
-    Enlistment.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : 'by_url'
+  def code_location_params
+    params.require(:code_location).permit(:module_branch_name, :bypass_url_validation) if params[:code_location]
   end
 
-  def find_enlistment
-    @enlistment = Enlistment.find_by(id: params[:id])
-    raise ParamRecordNotFound if @enlistment.nil?
-    @enlistment.editor_account = current_user
+  def parse_sort_term
+    Enlistment.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : 'by_url'
   end
 
   def safe_constantize(repo)
@@ -78,18 +72,17 @@ class EnlistmentsController < SettingsController
                            gitrepository cvsrepository bzrrepository).include?(repo.downcase)
   end
 
-  def initialize_repository_and_code_location
+  def initialize_repository
     @repository_class = safe_constantize(params[:repository][:type]).get_compatible_class(params[:repository][:url])
     @repository = @repository_class.new(repository_params)
-    initialize_code_location
   end
 
   def initialize_code_location
     if @repository.is_a?(GithubUser)
       @code_location = @repository
     else
-      module_branch_name = params[:code_location][:module_branch_name] if params[:code_location]
-      @code_location = CodeLocation.new(repository: @repository, module_branch_name: module_branch_name)
+      @code_location = CodeLocation.new(code_location_params)
+      @code_location.repository = @repository
     end
   end
 
