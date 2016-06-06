@@ -9,6 +9,7 @@ set :user, 'deployer'
 set :use_sudo, false
 set :passenger_restart_with_sudo, false
 set :branch, ENV['branch'] || :master
+set :reverification_server, 'deployer@prd-oh-web02.dc2.lan'
 
 set :deploy_to, "/var/local/#{fetch(:application)}"
 
@@ -18,5 +19,7 @@ set :copy_exclude, ['.git']
 
 # Defaults to false. If true, it's skip migration if files in db/migrate not modified
 set :conditionally_migrate, true
+set :whenever_identifier, -> { "#{fetch(:application)}_#{fetch(:stage)}" }
+set :whenever_roles, -> { :reverification_server }
 
 before 'deploy:check:linked_files', 'deploy:update_configuration'
