@@ -4,7 +4,7 @@ set :whoami, `whoami`.strip
 set :default_env, 'PATH' => '/home/deployer/.rbenv/shims:$PATH'
 
 set :application, 'openhub'
-set :bundle_gemfile, -> { '/var/local/openhub/current'.join('Gemfile') }
+set :bundle_gemfile, -> { '/var/local/openhub/current/Gemfile') }
 set :repo_url, 'git@github.com:blackducksw/ohloh-ui.git'
 set :user, 'deployer'
 set :use_sudo, false
