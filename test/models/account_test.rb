@@ -722,6 +722,21 @@ class AccountTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'recent_kudos' do
+    let(:kudos) { [] }
+    before do
+      4.times { |n| kudos << create(:kudo, sender: admin, account: account, created_at: n.day.ago) }
+    end
+
+    it 'should return 3 recent kudos as default limit' do
+      account.recent_kudos.to_a.must_equal kudos.take(3)
+    end
+
+    it 'should return recent kudos upon argumented limit' do
+      account.recent_kudos(4).to_a.must_equal kudos
+    end
+  end
+
   describe 'create_manual_verification' do
     it 'should create a manual verification object for one account' do
       unverified_account = create(:position_with_unverified_account).account
