@@ -4,13 +4,11 @@ set :whoami, `whoami`.strip
 set :default_env, 'PATH' => '/home/deployer/.rbenv/shims:$PATH'
 
 set :application, 'openhub'
-set :bundle_gemfile, -> { '/var/local/openhub/current/Gemfile' }
 set :repo_url, 'git@github.com:blackducksw/ohloh-ui.git'
 set :user, 'deployer'
 set :use_sudo, false
 set :passenger_restart_with_sudo, false
 set :branch, ENV['branch'] || :master
-role :reverification_server, ['deployer@oh-stage-web-7.blackducksoftware.com']
 
 set :deploy_to, "/var/local/#{fetch(:application)}"
 
@@ -22,6 +20,5 @@ set :copy_exclude, ['.git']
 set :conditionally_migrate, true
 set :whenever_command, 'bundle exec whenever'
 set :whenever_identifier, -> { "#{fetch(:application)}_#{fetch(:stage)}" }
-set :whenever_roles, -> { :reverification_server }
 
 before 'deploy:check:linked_files', 'deploy:update_configuration'
