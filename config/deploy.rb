@@ -4,7 +4,7 @@ set :whoami, `whoami`.strip
 set :default_env, 'PATH' => '/home/deployer/.rbenv/shims:$PATH'
 
 set :application, 'openhub'
-set :bundle_gemfile, -> { release_path.join('Gemfile') }
+set :bundle_gemfile, -> { '/var/local/openhub/current/Gemfile' }
 set :repo_url, 'git@github.com:blackducksw/ohloh-ui.git'
 set :user, 'deployer'
 set :use_sudo, false
@@ -20,7 +20,7 @@ set :copy_exclude, ['.git']
 
 # Defaults to false. If true, it's skip migration if files in db/migrate not modified
 set :conditionally_migrate, true
-set :whenever_command, 'RAILS_ENV=staging bundle exec whenever'
+set :whenever_command, 'bundle exec whenever'
 set :whenever_identifier, -> { "#{fetch(:application)}_#{fetch(:stage)}" }
 set :whenever_roles, -> { :reverification_server }
 
