@@ -49,7 +49,7 @@ ActiveAdmin.register Organization do
         f.input attribute
       end
 
-      text_node "Org type dictionary: #{ Organization::ORG_TYPES }"
+      text_node "Org type dictionary: #{Organization::ORG_TYPES}"
     end
 
     f.actions
