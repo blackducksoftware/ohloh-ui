@@ -45,6 +45,7 @@ group :development do
   gem 'capistrano-faster-assets'
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
+  gem 'capistrano-bundler', '~> 1.1.2'
   gem 'meta_request'
 end
 

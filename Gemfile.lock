@@ -450,6 +450,7 @@ DEPENDENCIES
   bundler-audit!
   byebug
   capistrano
+  capistrano-bundler (~> 1.1.2)
   capistrano-faster-assets
   capistrano-passenger
   capistrano-rails
