@@ -9,6 +9,7 @@ set :user, 'deployer'
 set :use_sudo, false
 set :passenger_restart_with_sudo, false
 set :branch, ENV['branch'] || :master
+role :reverification_server, ['deployer@oh-stage-web-7.blackducksoftware.com']
 
 set :deploy_to, "/var/local/#{fetch(:application)}"
 
