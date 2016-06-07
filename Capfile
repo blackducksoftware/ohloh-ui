@@ -7,6 +7,7 @@ require 'capistrano/deploy'
 require 'capistrano/rails'
 require 'capistrano/faster_assets'
 require 'capistrano/passenger'
+require 'capistrano/bundler'
 require 'whenever/capistrano'
 
 # Load custom tasks from `lib/capistrano/tasks' if you have any defined
