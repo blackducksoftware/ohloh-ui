@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class ReverificationTrackerTest < ActiveSupport::TestCase
+  DUE_DAYS = 60
+
   let(:suc_acc_1) { create(:unverified_account, email: 'success1@simulator.amazonses.com') }
   let(:suc_acc_2) { create(:unverified_account, email: 'success2@simulator.amazonses.com') }
   let(:sbounce_acc_1) { create(:unverified_account, email: 'ooto1@simulator.amazonses.com') }
@@ -39,16 +41,16 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
       create(:complained_initial_rev_tracker, sent_at: Time.now.utc - 14.days)
     end
     now = Time.now.utc
-    let(:initial_tracker1) { create(:success_initial_rev_tracker, sent_at: now - 15.days) }
-    let(:initial_tracker2) { create(:success_initial_rev_tracker, account: suc_acc_1, sent_at: now - 14.days) }
+    let(:initial_tracker1) { create(:success_initial_rev_tracker, sent_at: now - DUE_DAYS.days) }
+    let(:initial_tracker2) { create(:success_initial_rev_tracker, account: suc_acc_1, sent_at: now - 61.days) }
     let(:initial_tracker3) { create(:success_initial_rev_tracker, account: suc_acc_2, sent_at: now - 13.days) }
     let(:soft_bounced_tracker1) { create(:initial_rev_tracker, :soft_bounced, attempts: 2, sent_at: now - 14.days) }
 
-    it 'should return initial notifications tracker which are not verified within 2weeks/14 days' do
+    it 'should return initial notifications tracker which are not verified within 60 days' do
       exp_noti = ReverificationTracker.expired_initial_phase_notifications
       exp_noti.must_equal [initial_tracker1, initial_tracker2]
       assert_equal ['initial'], exp_noti.map(&:phase).uniq
-      assert_equal [true, true], exp_noti.map { |n| (Time.now.utc - n.sent_at).to_i >= 14 }
+      assert_equal [true, true], exp_noti.map { |n| (Time.now.utc - n.sent_at).to_i >= DUE_DAYS }
     end
 
     it 'should return initial notifications tracker which are successfully delivered to recipients' do
@@ -64,7 +66,7 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
                                             :soft_bounced,
                                             account: sbounce_acc_1,
                                             attempts: 3,
-                                            sent_at: Time.now.utc - 14.days)
+                                            sent_at: Time.now.utc - DUE_DAYS.days)
       exp_noti = ReverificationTracker.expired_initial_phase_notifications
       exp_noti.must_include soft_bounced_thrice_tracker2
       assert_equal 3, soft_bounced_thrice_tracker2.attempts
@@ -77,10 +79,10 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
       create(:marked_for_disable_rev_tracker, :complained, sent_at: Time.now.utc - 14.days)
     end
     let(:marked_disable_tracker1) do
-      create(:marked_for_disable_rev_tracker, :delivered, sent_at: Time.now.utc - 15.days)
+      create(:marked_for_disable_rev_tracker, :delivered, sent_at: Time.now.utc - DUE_DAYS.days)
     end
     let(:marked_disable_tracker2) do
-      create(:marked_for_disable_rev_tracker, :delivered, account: suc_acc_1, sent_at: Time.now.utc - 14.days)
+      create(:marked_for_disable_rev_tracker, :delivered, account: suc_acc_1, sent_at: Time.now.utc - 61.days)
     end
     let(:marked_disable_tracker3) do
       create(:marked_for_disable_rev_tracker, :delivered, account: suc_acc_2, sent_at: Time.now.utc - 13.days)
@@ -89,11 +91,11 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
       create(:marked_for_disable_rev_tracker, :soft_bounced, attempts: 2, sent_at: Time.now.utc - 14.days)
     end
 
-    it 'should return marked for disable notifications tracker which are not verified within 2weeks/14 days' do
+    it 'should return marked for disable notifications tracker which are not verified within 60 days' do
       exp_noti = ReverificationTracker.expired_second_phase_notifications
       exp_noti.must_equal [marked_disable_tracker1, marked_disable_tracker2]
       assert_equal ['marked_for_disable'], exp_noti.map(&:phase).uniq
-      assert_equal [true, true], exp_noti.map { |n| (Time.now.utc - n.sent_at).to_i >= 14 }
+      assert_equal [true, true], exp_noti.map { |n| (Time.now.utc - n.sent_at).to_i >= DUE_DAYS }
     end
 
     it 'should return marked for disable notifications tracker which are successfully delivered to recipients' do
@@ -109,7 +111,7 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
                                             :soft_bounced,
                                             account: sbounce_acc_1,
                                             attempts: 3,
-                                            sent_at: Time.now.utc - 14.days)
+                                            sent_at: Time.now.utc - DUE_DAYS.days)
       exp_noti = ReverificationTracker.expired_second_phase_notifications
       exp_noti.must_include soft_bounced_thrice_tracker2
       assert_equal 3, soft_bounced_thrice_tracker2.attempts
@@ -122,10 +124,10 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
       create(:disable_rev_tracker, :complained, sent_at: Time.now.utc - 14.days)
     end
     let(:disable_tracker1) do
-      create(:disable_rev_tracker, :delivered, sent_at: Time.now.utc - 15.days)
+      create(:disable_rev_tracker, :delivered, sent_at: Time.now.utc - DUE_DAYS.days)
     end
     let(:disable_tracker2) do
-      create(:disable_rev_tracker, :delivered, account: suc_acc_1, sent_at: Time.now.utc - 14.days)
+      create(:disable_rev_tracker, :delivered, account: suc_acc_1, sent_at: Time.now.utc - 61.days)
     end
     let(:disable_tracker3) do
       create(:disable_rev_tracker, :delivered, account: suc_acc_2, sent_at: Time.now.utc - 13.days)
@@ -138,7 +140,7 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
       exp_noti = ReverificationTracker.expired_third_phase_notifications
       exp_noti.must_equal [disable_tracker1, disable_tracker2]
       assert_equal ['disabled'], exp_noti.map(&:phase).uniq
-      assert_equal [true, true], exp_noti.map { |n| (Time.now.utc - n.sent_at).to_i >= 14 }
+      assert_equal [true, true], exp_noti.map { |n| (Time.now.utc - n.sent_at).to_i >= DUE_DAYS }
     end
 
     it 'should return disablemed notifications trackers which are successfully delivered to recipients' do
@@ -154,7 +156,7 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
                                             :soft_bounced,
                                             account: sbounce_acc_1,
                                             attempts: 3,
-                                            sent_at: Time.now.utc - 14.days)
+                                            sent_at: Time.now.utc - DUE_DAYS.days)
       exp_noti = ReverificationTracker.expired_third_phase_notifications
       exp_noti.must_include soft_bounced_thrice_tracker2
       assert_equal 3, soft_bounced_thrice_tracker2.attempts
@@ -167,10 +169,10 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
       create(:final_warning_rev_tracker, :complained, sent_at: Time.now.utc - 14.days)
     end
     let(:final_warning_rev_tracker1) do
-      create(:final_warning_rev_tracker, :delivered, sent_at: Time.now.utc - 15.days)
+      create(:final_warning_rev_tracker, :delivered, sent_at: Time.now.utc - DUE_DAYS.days)
     end
     let(:final_warning_rev_tracker2) do
-      create(:final_warning_rev_tracker, :delivered, account: suc_acc_1, sent_at: Time.now.utc - 14.days)
+      create(:final_warning_rev_tracker, :delivered, account: suc_acc_1, sent_at: Time.now.utc - 61.days)
     end
     let(:final_warning_rev_tracker3) do
       create(:final_warning_rev_tracker, :delivered, account: suc_acc_2, sent_at: Time.now.utc - 13.days)
@@ -179,11 +181,11 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
       create(:final_warning_rev_tracker, :soft_bounced, attempts: 2, sent_at: Time.now.utc - 14.days)
     end
 
-    it 'should return final warning notifications trackers which are not verified within 2weeks/14 days' do
+    it 'should return final warning notifications trackers which are not verified within 60 days' do
       exp_noti = ReverificationTracker.expired_final_phase_notifications
       exp_noti.must_equal [final_warning_rev_tracker1, final_warning_rev_tracker2]
       assert_equal ['final_warning'], exp_noti.map(&:phase).uniq
-      assert_equal [true, true], exp_noti.map { |n| (Time.now.utc - n.sent_at).to_i >= 14 }
+      assert_equal [true, true], exp_noti.map { |n| (Time.now.utc - n.sent_at).to_i >= DUE_DAYS }
     end
 
     it 'should return final warning notifications trackers which are successfully delivered to recipients' do
@@ -199,7 +201,7 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
                                             :soft_bounced,
                                             account: sbounce_acc_1,
                                             attempts: 3,
-                                            sent_at: Time.now.utc - 14.days)
+                                            sent_at: Time.now.utc - DUE_DAYS.days)
       exp_noti = ReverificationTracker.expired_final_phase_notifications
       exp_noti.must_include soft_bounced_thrice_tracker2
       assert_equal 3, soft_bounced_thrice_tracker2.attempts
@@ -232,9 +234,9 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
 
   describe 'delete_expired_accounts' do
     it 'should retrieve the correct accounts for deletion' do
-      create(:final_warning_rev_tracker, :delivered, attempts: 3, sent_at: Time.now.utc - 15.days)
-      create(:final_warning_rev_tracker, :soft_bounced, sent_at: Time.now.utc - 15.days)
-      create(:final_warning_rev_tracker, :delivered, sent_at: Time.now.utc - 15.days)
+      create(:final_warning_rev_tracker, :delivered, attempts: 3, sent_at: Time.now.utc - DUE_DAYS.days)
+      create(:final_warning_rev_tracker, :soft_bounced, attempts: 3, sent_at: Time.now.utc - DUE_DAYS.days)
+      create(:final_warning_rev_tracker, :delivered, sent_at: Time.now.utc - DUE_DAYS.days)
       create(:final_warning_rev_tracker, :delivered, sent_at: Time.now.utc - 14.days)
       create(:final_warning_rev_tracker, :delivered, sent_at: Time.now.utc - 13.days)
       ReverificationTracker.delete_expired_accounts
@@ -243,7 +245,7 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
     end
 
     it 'should just delete the tracker if its account does not exist' do
-      rev_tracker = create(:final_warning_rev_tracker, :delivered, attempts: 3, sent_at: Time.now.utc - 15.days)
+      rev_tracker = create(:final_warning_rev_tracker, :delivered, attempts: 3, sent_at: Time.now.utc - DUE_DAYS.days)
       rev_tracker.update_attribute(:account_id, 1010)
       Account::Access.any_instance.expects(:disable!).never
       Account.any_instance.expects(:destroy).never

@@ -205,7 +205,7 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
     it 'should invoke cleanup methods' do
       create(:reverification_tracker)
       rt_needs_to_be_disabled = create(:rev_tracker_needs_disabling)
-      create(:final_warning_rev_tracker, :delivered, attempts: 3, sent_at: Time.now.utc - 15.days)
+      create(:final_warning_rev_tracker, :delivered, attempts: 3, sent_at: Time.now.utc - 60.days)
       orphaned_rt = create(:reverification_tracker)
       orphaned_rt.update_attribute(:account_id, 1010)
       Reverification::Process.cleanup
@@ -248,12 +248,6 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
     it 'should return AWS::SQS::Queue instance for complaints queue' do
       queue_instance = Reverification::Process.complaints_queue
       queue_instance.url.must_match(/complaints-queue/)
-    end
-  end
-
-  describe 'ses_daily_limit_available' do
-    it 'should return the balance send limit available for the day' do
-      assert_equal 4950, Reverification::Process.ses_daily_limit_available
     end
   end
 

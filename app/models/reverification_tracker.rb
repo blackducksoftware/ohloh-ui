@@ -72,6 +72,7 @@ class ReverificationTracker < ActiveRecord::Base
     def remove_reverification_trackers_for_verified_accounts
       includes(:account).find_each do |rev_tracker|
         next unless rev_tracker.account
+        rev_tracker.account.update_attributes!(level: 0) if rev_tracker.account.level == -10
         rev_tracker.destroy if rev_tracker.account.access.mobile_or_oauth_verified?
       end
     end

@@ -1,21 +1,16 @@
 module Reverification
   class Mailer
+    extend Amazon
     FROM = 'info@openhub.net'.freeze
     MAX_ATTEMPTS = 3
-    NOTIFICATION1_DUE_DAYS = 14
-    NOTIFICATION2_DUE_DAYS = 14
-    NOTIFICATION3_DUE_DAYS = 14
-    NOTIFICATION4_DUE_DAYS = 14
+    NOTIFICATION1_DUE_DAYS = 60
+    NOTIFICATION2_DUE_DAYS = 60
+    NOTIFICATION3_DUE_DAYS = 60
+    NOTIFICATION4_DUE_DAYS = 60
 
     class << self
       def send_limit
-        # This snippet ensures that we will
-        # never reach the limit. This number
-        # should keep decreasing as the process
-        # moves on
-
-        # Note: Once the pilot is done, replace this with ses_daily_limit_available
-        ReverificationTracker.count
+        ses.quotas[:max_24_hour_send] - ses.quotas[:sent_last_24_hours]
       end
 
       def run
@@ -31,16 +26,11 @@ module Reverification
       end
 
       def send_first_notification
-        # Note: When move on from pilot run,
-        # replace the query ReverificationPilotAccount.limit(send_limit).map(&:account)
-        # with Account.reverification_not_initiated
-        ReverificationPilotAccount.limit(send_limit).map(&:account).each do |account|
+        Account.reverification_not_initiated(send_limit).each do |account|
           Reverification::Process.send_email(
             Reverification::Template.first_reverification_notice(account.email),
             account, 0
           )
-          # Note: When move on from pilot run, remove below line
-          ReverificationPilotAccount.find_by(account_id: account.id).delete
         end
       end
 
