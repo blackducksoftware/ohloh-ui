@@ -47,6 +47,22 @@ describe PostsController do
       response.body.must_match(/newest.*oldest/m)
     end
 
+    it 'sorts index posts by most recent in default view' do
+      create(:post, body: 'oldest', created_at: Time.current - 2.hours)
+      create(:post, body: 'newest', created_at: Time.current)
+      get :index
+      must_respond_with :ok
+      response.body.must_match(/newest.*oldest/m)
+    end
+
+    it 'shows index posts under open topics only' do
+      create(:topic, :closed, :with_posts, posts_count: 3)
+      create(:topic, :with_posts, posts_count: 5)
+      get :index
+      must_respond_with :ok
+      assigns(:posts).count 5
+    end
+
     it 'sorts index posts by unanswered' do
       create(:post, body: 'post_count_1')
       create_list(:post, 2, body: 'answered', topic: topic)
@@ -57,7 +73,7 @@ describe PostsController do
     end
 
     it 'sorts index posts by relevance' do
-      post1 = create(:post, body: 'Elon Musk is cool', popularity_factor: 100)
+      post1 = create(:post, body: 'Elon Musk is cool', popularity_factor: 100, created_at: 1.day.from_now)
       post2 = create(:post, body: 'Mark Zuckerberg is cool too, I guess...', popularity_factor: 200)
       get :index, query: nil, sort: 'relevance'
       must_respond_with :ok
@@ -179,7 +195,8 @@ describe PostsController do
     end
 
     it 'sorts index posts by relevance' do
-      post1 = create(:post, account: user, body: 'Elon Musk is cool', popularity_factor: 100)
+      post1 = create(:post, account: user, body: 'Elon Musk is cool', popularity_factor: 100,
+                            created_at: 1.day.from_now)
       post2 = create(:post, account: user, body: 'Mark Zuckerberg is cool too, I guess...', popularity_factor: 200)
       get :index, account: user, query: nil, sort: 'relevance'
       must_respond_with :ok
@@ -286,7 +303,7 @@ describe PostsController do
     end
 
     it 'users who have posted more than once on a topic receive only one email notification' do
-      topic = create(:topic_with_posts)
+      topic = create(:topic, :with_posts)
       # Setting the posts
       # 1. Set the first and last post's account as the creator of the topic
       #    in order to replicate post creation and reply by the same user.
@@ -318,7 +335,7 @@ describe PostsController do
     end
 
     it 'a user who replies to his own post will not receive a post notification email while everyone else does.' do
-      topic = create(:topic_with_posts)
+      topic = create(:topic, :with_posts)
       # Setting the posts
       # 1. Set the first and last post's account as the creator of the topic
       #    in order to replicate post creation and reply by the same user.
@@ -344,7 +361,7 @@ describe PostsController do
     end
 
     it 'should not send a post notification email respecting their email preference' do
-      topic = create(:topic_with_posts)
+      topic = create(:topic, :with_posts)
       topic.account.update_column('email_master', false)
       topic.posts[0].account = topic.account
       topic.save

@@ -93,16 +93,16 @@ class PostsController < ApplicationController
     @account = Account::Find.by_id_or_login(params[:account_id])
     raise ParamRecordNotFound unless @account
     redirect_if_disabled
-    @posts = @account.posts.includes(:topic).tsearch(params[:query], parse_sort_term)
-                     .page(page_param).per_page(10)
+    @account.posts.includes(:topic).tsearch(params[:query], parse_sort_term)
   end
 
   def find_posts
-    params[:account_id] ? find_posts_belonging_to_account : find_posts_by_search_params
+    posts = params[:account_id] ? find_posts_belonging_to_account : find_posts_by_search_params
+    @posts = posts.most_recent.open_topics.page(page_param).per_page(10)
   end
 
   def find_posts_by_search_params
-    @posts = Post.tsearch(params[:query], parse_sort_term).page(page_param).per_page(10)
+    Post.tsearch(params[:query], parse_sort_term)
   end
 
   def parse_sort_term
