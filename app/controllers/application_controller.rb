@@ -218,6 +218,7 @@ class ApplicationController < ActionController::Base
   end
 
   def strip_query_param
+    params[:query] ||= params[:q]
     params[:query] = String.clean_string(params[:query])
   end
 
