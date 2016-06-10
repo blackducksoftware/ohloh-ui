@@ -891,6 +891,41 @@ ALTER SEQUENCE clumps_id_seq OWNED BY clumps.id;
 
 
 --
+-- Name: code_location_events; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE code_location_events (
+    id integer NOT NULL,
+    code_location_id integer,
+    type text NOT NULL,
+    value text,
+    commit_sha1 text,
+    status boolean,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: code_location_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE code_location_events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: code_location_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE code_location_events_id_seq OWNED BY code_location_events.id;
+
+
+--
 -- Name: code_locations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -4166,6 +4201,13 @@ ALTER TABLE ONLY clumps ALTER COLUMN id SET DEFAULT nextval('clumps_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY code_location_events ALTER COLUMN id SET DEFAULT nextval('code_location_events_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY code_locations ALTER COLUMN id SET DEFAULT nextval('code_locations_id_seq'::regclass);
 
 
@@ -4690,6 +4732,14 @@ ALTER TABLE ONLY positions
 
 ALTER TABLE ONLY clumps
     ADD CONSTRAINT clumps_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: code_location_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY code_location_events
+    ADD CONSTRAINT code_location_events_pkey PRIMARY KEY (id);
 
 
 --
@@ -5815,6 +5865,13 @@ CREATE INDEX index_claims_on_account_id ON positions USING btree (account_id);
 --
 
 CREATE INDEX index_clumps_on_code_set_id_slave_id ON clumps USING btree (code_set_id, slave_id);
+
+
+--
+-- Name: index_code_location_events_on_code_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_code_location_events_on_code_location_id ON code_location_events USING btree (code_location_id);
 
 
 --
@@ -7310,6 +7367,14 @@ ALTER TABLE ONLY code_locations
 
 
 --
+-- Name: fk_rails_5a0f61d9a6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_location_events
+    ADD CONSTRAINT fk_rails_5a0f61d9a6 FOREIGN KEY (code_location_id) REFERENCES code_locations(id);
+
+
+--
 -- Name: fk_rails_8faa63554c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8318,6 +8383,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160318131123');
 INSERT INTO schema_migrations (version) VALUES ('20160504111046');
 
 INSERT INTO schema_migrations (version) VALUES ('20160512144023');
+
+INSERT INTO schema_migrations (version) VALUES ('20160610142302');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
