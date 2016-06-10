@@ -95,8 +95,16 @@ class CodeLocation < ActiveRecord::Base
     normalize_repository_attributes
   end
 
+  def svn_repository?
+    repository.is_a?(SvnRepository) || repository.is_a?(SvnSyncRepository)
+  end
+
   def normalize_repository_attributes
-    repository.url = source_scm.url
+    repository.url = if svn_repository?
+                       source_scm.restrict_url_to_trunk
+                     else
+                       source_scm.url
+                     end
     repository.username = source_scm.username
     repository.password = source_scm.password
   end
