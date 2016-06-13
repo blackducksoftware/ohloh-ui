@@ -15,7 +15,7 @@ columns do
           end
           tr do
             td "Updated Analyses (#{human_window})"
-            td Analysis.where(updated_on: get_window..Time.current).count
+            td Analysis.where(updated_on: get_window.utc..Time.current).count
           end
           tr do
             td "Last ran Monthly Language Analysis"
