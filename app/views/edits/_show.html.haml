@@ -1,0 +1,52 @@
+.modal-dialog{ role: 'document' }
+  .modal-content
+    .modal-header
+      %button.close{ data: { dismiss: 'modal' }, aria: { label: 'Close' } }
+        %span{ aria: { hidden: true } } &times;
+      %h3.modal-title= t('.title_html', type: @edit.type.gsub(/([A-Z])/, ' \1').strip, id: @edit.id)
+    .modal-body
+      .row
+        .col-md-3.list-title= t('.headings.target')
+        .col-md-1.list-separator :
+        .col-md-8= edit_target_type(@edit)
+      .row
+        .col-md-3.list-title= t('.headings.attribute')
+        .col-md-1.list-separator :
+        .col-md-8= edit_key(@edit)
+      - values = edit_values(@edit)
+      - if values[:new].present?
+        .row
+          .col-md-3.list-title= t('.headings.new_value')
+          .col-md-1.list-separator :
+          .col-md-8= edit_format_value(values[:new])
+      - if values[:old].present?
+        .row
+          .col-md-3.list-title= t('.headings.previous_value')
+          .col-md-1.list-separator :
+          .col-md-8= edit_format_value(values[:old])
+      .row
+        .col-md-3.list-title= t('.headings.edited_by')
+        .col-md-1.list-separator :
+        .col-md-8= @edit.account.name
+      .row
+        .col-md-3.list-title= t('.headings.edited_on')
+        .col-md-1.list-separator :
+        .col-md-8= edit_humanize_datetime(@edit.created_at)
+      - if @edit.undone?
+        .row
+          .col-md-3.list-title= t('.headings.undid_by')
+          .col-md-1.list-separator :
+          .col-md-8= @edit.undoer.name
+        .row
+          .col-md-3.list-title= t('.headings.undid_on')
+          .col-md-1.list-separator :
+          .col-md-8= edit_humanize_datetime(@edit.undone_at)
+      - elsif @edit.undoer
+        .row
+          .col-md-3.list-title= t('.headings.redid_by')
+          .col-md-1.list-separator :
+          .col-md-8= @edit.undoer.name
+        .row
+          .col-md-3.list-title= t('.headings.redid_on')
+          .col-md-1.list-separator :
+          .col-md-8= edit_humanize_datetime(@edit.undone_at)

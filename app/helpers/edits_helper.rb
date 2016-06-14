@@ -1,5 +1,6 @@
 module EditsHelper
   include EnlistmentsHelper
+  include Edits::DetailHelper
 
   def edit_humanize_datetime(datetime)
     now = Time.current
@@ -13,11 +14,15 @@ module EditsHelper
   end
 
   def edit_show_subject(edit)
-    org_edit = true if params[:organization_id].present? || edit.key == 'organization_id' || edit.key == 'org_type'
-    html_escape(edit_subject(edit, org_edit)) + ' ' + edit_enlistment_branch_info(edit)
+    html_escape(edit_subject(edit, org_edit?(edit))) + ' ' + edit_enlistment_branch_info(edit)
   end
 
   private
+
+  def org_edit?(edit)
+    return true if params[:organization_id].present? || edit.key == 'organization_id' || edit.key == 'org_type'
+    false
+  end
 
   def edit_subject(edit, org_page = false)
     project_term = if @parent.is_a?(Project) || @parent.is_a?(Organization)
