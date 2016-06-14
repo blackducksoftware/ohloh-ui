@@ -696,29 +696,21 @@ class AccountTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'unverified' do
-    it 'should return all unverified accounts that are not spammers' do
+  describe 'reverification_not_initiated' do
+    it 'should return all unverified accounts that are in good standing with no associations' do
       account = create(:account)
       unverified_account = create(:unverified_account)
       spammer_account = create(:unverified_account, :spammer)
-      assert_equal Account.unverified[0], unverified_account
-      assert_not_equal Account.unverified[0].id, account.id
-      assert_not_equal Account.unverified[0].email, account.email
-      assert_not_equal Account.unverified[0].id, spammer_account.id
-      assert_not_equal Account.unverified[0].email, spammer_account.email
-      assert_equal Account.unverified[0].id, unverified_account.id
-      assert_equal Account.unverified[0].email, unverified_account.email
-    end
-  end
-
-  describe 'reverification_not_initiated' do
-    it 'should return all unverified accounts without positions, for them reverification process is not started' do
-      create(:unverified_account, :success)
-      create(:unverified_account, :complaint)
-      create(:account)
-      create(:position)
-      assert_equal 2, Account.reverification_not_initiated.size
-      assert_not_equal Account.count, Account.reverification_not_initiated.size
+      disabled_account = create(:disabled_account)
+      account_with_an_edit = create(:create_edit).account
+      account_with_a_post = create(:post).account
+      account_with_a_kudo = create(:kudo).account
+      account_with_a_review = create(:review).account
+      account_with_a_position = create(:position).account
+      account_with_a_stack = create(:stack).account
+      account_that_manages_a_project = create(:manage)
+      assert_equal Account.reverification_not_initiated.count, 1
+      assert_equal Account.reverification_not_initiated[0].id, unverified_account.id
     end
   end
 

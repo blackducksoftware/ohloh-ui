@@ -3,10 +3,10 @@ module Reverification
     extend Amazon
     FROM = 'info@openhub.net'.freeze
     MAX_ATTEMPTS = 3
-    NOTIFICATION1_DUE_DAYS = 60
-    NOTIFICATION2_DUE_DAYS = 60
-    NOTIFICATION3_DUE_DAYS = 60
-    NOTIFICATION4_DUE_DAYS = 60
+    NOTIFICATION1_DUE_DAYS = 21
+    NOTIFICATION2_DUE_DAYS = 140
+    NOTIFICATION3_DUE_DAYS = 28
+    NOTIFICATION4_DUE_DAYS = 14
 
     class << self
       def send_limit
@@ -26,7 +26,8 @@ module Reverification
       end
 
       def send_first_notification
-        Account.reverification_not_initiated(send_limit).each do |account|
+        Account.reverification_not_initiated(send_limit).each do |account_id|
+          account = Account.find(account_id)
           Reverification::Process.send_email(
             Reverification::Template.first_reverification_notice(account.email),
             account, 0

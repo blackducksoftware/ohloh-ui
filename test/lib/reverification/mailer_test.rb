@@ -14,10 +14,10 @@ class Reverification::MailerTest < ActiveSupport::TestCase
   describe 'constants' do
     it 'should have beeen defined' do
       assert_equal 3, Reverification::Mailer::MAX_ATTEMPTS
-      assert_equal 60, Reverification::Mailer::NOTIFICATION1_DUE_DAYS
-      assert_equal 60, Reverification::Mailer::NOTIFICATION2_DUE_DAYS
-      assert_equal 60, Reverification::Mailer::NOTIFICATION3_DUE_DAYS
-      assert_equal 60, Reverification::Mailer::NOTIFICATION4_DUE_DAYS
+      assert_equal 21, Reverification::Mailer::NOTIFICATION1_DUE_DAYS
+      assert_equal 140, Reverification::Mailer::NOTIFICATION2_DUE_DAYS
+      assert_equal 28, Reverification::Mailer::NOTIFICATION3_DUE_DAYS
+      assert_equal 14, Reverification::Mailer::NOTIFICATION4_DUE_DAYS
       assert_equal 'info@openhub.net', Reverification::Mailer::FROM
     end
   end
@@ -42,10 +42,6 @@ class Reverification::MailerTest < ActiveSupport::TestCase
 
   describe 'send_first_notification' do
     it 'should send notification to unverified accounts only' do
-      # Note: This code must be reinstated after the pilot account has finished
-      #       With the current process for ticket OTWO-4203, the first notification
-      #       will not be sent at all, hence this particular test will break.
-
       below_specified_settings = MOCK::AWS::SimpleEmailService.amazon_stat_settings
       Reverification::Process.stubs(:amazon_stat_settings).returns(below_specified_settings)
       Account.expects(:reverification_not_initiated).returns([unverified_account_sucess])
