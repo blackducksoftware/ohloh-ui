@@ -48,7 +48,6 @@ class ReverificationTracker < ActiveRecord::Base
     def destroy_account(email_address)
       account = Account.find_by_email(email_address)
       return unless account
-      account.access.spam!
       account.destroy
     end
 
