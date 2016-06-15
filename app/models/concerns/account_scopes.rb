@@ -40,11 +40,12 @@ module AccountScopes
                     (SELECT DISTINCT(account_id) FROM edits) AND id NOT IN
                     (SELECT DISTINCT(account_id) FROM posts) AND id NOT IN
                     (SELECT DISTINCT(account_id) FROM reviews) AND id NOT IN
+                    (SELECT DISTINCT(account_id) FROM kudos) AND id NOT IN
                     (SELECT DISTINCT(sender_id) FROM kudos) AND id NOT IN 
                     (SELECT DISTINCT(account_id) FROM stacks WHERE account_id IS NOT NULL) AND id NOT IN
-                      (SELECT DISTINCT(account_id) from manages INNER JOIN projects ON manages.id = projects.id 
+                      (SELECT DISTINCT(account_id) from manages INNER JOIN projects ON manages.target_id = projects.id 
                         WHERE projects.deleted = 'f' AND (manages.approved_by IS NOT NULL) 
-                      AND manages.deleted_by IS NULL AND manages.deleted_at iS NULL 
+                      AND manages.deleted_by IS NULL AND manages.deleted_at IS NULL 
                       AND manages.target_type = 'Project')")
     }
   end

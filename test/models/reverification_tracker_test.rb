@@ -168,12 +168,13 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
   end
 
   describe 'expired_final_phase_notifications' do
-    before do
-      create(:final_warning_rev_tracker, :complained, sent_at: Time.now.utc - 14.days)
-    end
+    # before do
+    #   create(:final_warning_rev_tracker, :complained, sent_at: Time.now.utc - 14.days)
+    # end
     let(:final_warning_rev_tracker1) do
       create(:final_warning_rev_tracker, :delivered, sent_at: Time.now.utc - NOTIFICATION4_DUE_DAYS.days)
     end
+    # Change date boundaries one day over and one day behind
     let(:final_warning_rev_tracker2) do
       create(:final_warning_rev_tracker, :delivered, account: suc_acc_1, sent_at: Time.now.utc - 15.days)
     end
@@ -184,7 +185,7 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
       create(:final_warning_rev_tracker, :soft_bounced, attempts: 2, sent_at: Time.now.utc - 14.days)
     end
 
-    it 'should return final warning notifications trackers which are not verified within 15 days' do
+    it 'should return final warning notifications trackers which are not verified within 28 days' do
       exp_noti = ReverificationTracker.expired_final_phase_notifications
       exp_noti.must_equal [final_warning_rev_tracker1, final_warning_rev_tracker2]
       assert_equal ['final_warning'], exp_noti.map(&:phase).uniq
@@ -219,6 +220,9 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
 
     it 'should destroy an account by email' do
       ReverificationTracker.destroy_account(@account.email)
+      # Note: Verify Accounts is decremented
+      # Verify that DeletedAccount table has @account record
+      # Verify that Accounts table does NOT have @account record
       assert_equal 1, DeletedAccount.count
     end
 
@@ -238,12 +242,12 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
   describe 'delete_expired_accounts' do
     it 'should retrieve the correct accounts for deletion' do
       create(:final_warning_rev_tracker, :delivered, sent_at: Time.now.utc - NOTIFICATION4_DUE_DAYS.days)
+      create(:final_warning_rev_tracker, :delivered, sent_at: Time.now.utc - (NOTIFICATION4_DUE_DAYS.days + 1.day))
       create(:final_warning_rev_tracker, :soft_bounced, attempts: 3, sent_at: Time.now.utc - NOTIFICATION4_DUE_DAYS.days)
       create(:final_warning_rev_tracker, :delivered, sent_at: Time.now.utc - 12.days)
-      create(:final_warning_rev_tracker, :delivered, sent_at: Time.now.utc - 11.days)
       ReverificationTracker.delete_expired_accounts
-      assert_equal 2, ReverificationTracker.count
-      assert_equal 2, DeletedAccount.count
+      assert_equal 1, ReverificationTracker.count
+      assert_equal 3, DeletedAccount.count
     end
 
     it 'should just delete the tracker if its account does not exist' do
