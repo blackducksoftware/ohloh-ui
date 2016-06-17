@@ -18,4 +18,10 @@ module EnlistmentsHelper
       content_tag :span, "Module: #{enlistment.repository.module_name}", class: 'edit_enlist_module_name'
     end
   end
+
+  def job_in_progress?
+    key = Setting.get_project_enlistment_key(@project.id)
+    job = Setting.get_value(key)
+    job.present?
+  end
 end

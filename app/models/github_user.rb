@@ -18,6 +18,8 @@ class GithubUser
   end
 
   def create_enlistment_for_project(editor_account, project, ignore = nil)
+    project = Project.find(project)
+    editor_account = Account.find(editor_account)
     repositories.each do |repository|
       repository.create_enlistment_for_project(editor_account, project, ignore)
     end
@@ -66,15 +68,21 @@ class GithubUser
   end
 
   def github_url(page)
-    "#{github_username_url}/repos?page=#{page}&per_page=100"
+    "#{github_username_url}/repos?access_token=#{get_api_key}&page=#{page}&per_page=100"
   end
 
-  def github_username_url
-    "https://api.github.com/users/#{username}"
+  def github_username_url(append_access_token = false)
+    url = "https://api.github.com/users/#{username}"
+    url.concat("?access_token=#{get_api_key}") if append_access_token
+    url
+  end
+
+  def get_api_key
+    ENV['GITHUB_API_BASIC_AUTHENTICATION']
   end
 
   def username_must_exist
-    _stdin, stdout = Open3.popen3('curl', github_username_url)
+    _stdin, stdout = Open3.popen3('curl', github_username_url(_append_access_token = true))
     output = JSON.load(stdout)
     errors.add(:url, I18n.t('invalid_github_username')) if output.is_a?(Hash) && output['message'] == 'Not Found'
   end

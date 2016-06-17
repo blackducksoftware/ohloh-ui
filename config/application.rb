@@ -17,6 +17,7 @@ module OhlohUi
     config.active_record.schema_format = :sql
     config.active_record.raise_in_transactional_callbacks = true
     config.action_mailer.default_url_options = { host: ENV['URL_HOST'] }
+    config.active_job.queue_adapter = :sidekiq
 
     config.google_maps_api_key = ENV['GOOGLE_MAPS_API']
 

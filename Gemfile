@@ -37,6 +37,8 @@ gem 'will_paginate-bootstrap'
 gem 'sprockets-rails', '~> 2.3.3'
 gem 'feedjira'
 gem 'whenever', require: false
+gem 'sidekiq'
+gem 'sidekiq-status'
 
 group :development do
   gem 'better_errors'
