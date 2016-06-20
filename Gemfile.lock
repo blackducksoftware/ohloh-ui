@@ -385,8 +385,6 @@ GEM
       concurrent-ruby (~> 1.0)
       connection_pool (~> 2.2, >= 2.2.0)
       redis (~> 3.2, >= 3.2.1)
-    sidekiq-status (0.6.0)
-      sidekiq (>= 2.7)
     simplecov (0.11.1)
       docile (~> 1.1.0)
       json (~> 1.8)
@@ -504,7 +502,6 @@ DEPENDENCIES
   ruby_parser
   sass-rails
   sidekiq
-  sidekiq-status
   simplecov
   simplecov-rcov
   spring

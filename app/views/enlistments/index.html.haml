@@ -8,7 +8,7 @@
   = project_analysis_timestamp(@project)
 .clearfix
 
-- if job_in_progress?
+- if sidekiq_work_in_progress?
   .alert.alert-info.alert-block
     %h5.alert-heading.nomargin= t('.currently_importing')
 

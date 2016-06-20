@@ -7,7 +7,8 @@ module EnlistmentFilters
     before_action :set_project_editor_account_to_current_user
     before_action :find_enlistment, only: [:show, :edit, :update, :destroy]
     before_action :project_context, only: [:index, :new, :edit, :create, :update]
-    before_action :check_for_existing_job, only: :create
+    before_action :sidekiq_job_exists, only: :create
+    before_action :handle_github_user_flow, only: :create
   end
 
   private
@@ -46,25 +47,16 @@ module EnlistmentFilters
     if existing_repo.present?
       existing_repo.update_attributes(username: @repository.username, password: @repository.password)
       @repository = existing_repo
-    elsif @repository.is_a?(GithubUser)
-      return
     else
       @repository.save! unless @project_has_repo_url
     end
   end
 
   def create_enlistment
-    if @repository.is_a?(GithubUser) && !@project_has_repo_url
-      worker = EnlistmentWorker.perform_async(@repository.url, current_user.id, @project.id)
-      Setting.update_worker(@project.id, worker, @repository.url)
-    else
-      @repository.create_enlistment_for_project(current_user, @project) unless @project_has_repo_url
-    end
+    @repository.create_enlistment_for_project(current_user, @project) unless @project_has_repo_url
   end
 
   def set_flash_message
-    return set_github_repos_message if @repository.is_a?(GithubUser)
-
     if @project_has_repo_url
       flash[:notice] = t('.notice', url: @repository.url)
     else
@@ -74,15 +66,24 @@ module EnlistmentFilters
     end
   end
 
-  def set_github_repos_message
-    flash[:notice] = t('.github_repos_added', username: @repository.url)
-  end
-
-  def check_for_existing_job
+  def sidekiq_job_exists
     key = Setting.get_project_enlistment_key(@project.id)
     job = Setting.get_value(key)
     if job.present? && job.key?(params[:repository][:url])
       redirect_to project_enlistments_path(@project), flash: { error: t('.job_exists') }
     end
+  end
+
+  def handle_github_user_flow
+    return unless params[:repository][:type] == 'GithubUser'
+    @repository = GithubUser.new(repository_params)
+    return render :new, status: :unprocessable_entity unless @repository.valid?
+    create_worker
+  end
+
+  def create_worker
+    worker = EnlistmentWorker.perform_async(@repository.url, current_user.id, @project.id)
+    Setting.update_worker(@project.id, worker, @repository.url)
+    redirect_to project_enlistments_path(@project)
   end
 end

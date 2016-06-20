@@ -432,6 +432,14 @@ describe 'ProjectsController' do
       project.reload.uuid.must_equal uuid
       must_respond_with :ok
     end
+
+    it 'should get the UUID from BlackDuck KB when its nil' do
+      project = create(:project, uuid: '', name: 'rails')
+      OpenhubSecurity.expects(:get_uuid).with(project.name).returns('1234')
+      get :show, id: project.to_param
+      project.reload.uuid.must_equal '1234'
+      must_respond_with :ok
+    end
   end
 
   # new

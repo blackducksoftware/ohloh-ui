@@ -102,7 +102,6 @@ describe 'EnlistmentsControllerTest' do
 
         username = 'github.com/stan'
         post :create, project_id: @project_id, repository: GithubUser.new(url: username).attributes
-
         assigns(:repository).errors.messages[:url].first.must_equal I18n.t('invalid_github_username')
         must_render_template :new
         Repository.count.must_equal 1
@@ -121,8 +120,6 @@ describe 'EnlistmentsControllerTest' do
         post :create, project_id: @project_id, repository: GithubUser.new(url: username).attributes
         must_respond_with :redirect
         must_redirect_to action: :index
-
-        flash[:notice].must_equal I18n.t('enlistments.create.github_repos_added', username: username)
         EnlistmentWorker.jobs.size.must_equal 1
       end
     end

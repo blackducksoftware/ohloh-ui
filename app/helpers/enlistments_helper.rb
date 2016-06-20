@@ -19,9 +19,8 @@ module EnlistmentsHelper
     end
   end
 
-  def job_in_progress?
+  def sidekiq_work_in_progress?
     key = Setting.get_project_enlistment_key(@project.id)
-    job = Setting.get_value(key)
-    job.present?
+    Setting.get_value(key).try(:present?)
   end
 end

@@ -1,5 +1,6 @@
 class GithubUser
   URL_FORMAT = /\A[^\/]+\Z/
+  GITHUB_API_URL = 'https://api.github.com/users/'.freeze
   include ActiveModel::Model
 
   attr_accessor :url, :bypass_url_validation
@@ -68,13 +69,11 @@ class GithubUser
   end
 
   def github_url(page)
-    "#{github_username_url}/repos?access_token=#{get_api_key}&page=#{page}&per_page=100"
+    GITHUB_API_URL + username + "/repos?access_token=#{get_api_key}&page=#{page}&per_page=100"
   end
 
-  def github_username_url(append_access_token = false)
-    url = "https://api.github.com/users/#{username}"
-    url.concat("?access_token=#{get_api_key}") if append_access_token
-    url
+  def github_username_url
+    GITHUB_API_URL + username + "?access_token=#{get_api_key}"
   end
 
   def get_api_key
@@ -82,7 +81,7 @@ class GithubUser
   end
 
   def username_must_exist
-    _stdin, stdout = Open3.popen3('curl', github_username_url(_append_access_token = true))
+    _stdin, stdout = Open3.popen3('curl', github_username_url)
     output = JSON.load(stdout)
     errors.add(:url, I18n.t('invalid_github_username')) if output.is_a?(Hash) && output['message'] == 'Not Found'
   end

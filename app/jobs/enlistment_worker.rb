@@ -1,6 +1,5 @@
 class EnlistmentWorker
   include Sidekiq::Worker
-  include Sidekiq::Status::Worker
 
   def perform(github_username, current_user, project)
     githubuser = GithubUser.new(url: github_username)
