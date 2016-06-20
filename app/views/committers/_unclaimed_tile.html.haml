@@ -2,13 +2,15 @@
   main_lang = name_fact.primary_language.name
   bg_color = language_color(main_lang)
   txt_color = language_text_color(main_lang)
-  emails = name_fact.email_address_ids.compact.map { |email_id| @emails_map[email_id].obfuscate_email }
+  emails = name_fact.email_address_ids.compact
+                    .map { |email_id| @emails_map[email_id].obfuscate_email(@emails_map[email_id].address) }
+  emails = emails.present? ? emails : [t('.no_email_addresses')]
   contributor_id = Contribution.generate_id_from_project_id_and_name_id(project.id, name_fact.name_id)
 
 .logo
   %a{ href: project_path(project), title: project.name }
     - project_icon(project, :small, class: 'logo')
-.commits{ style: "background-color: ##{bg_color}; color: ##{txt_color} !important", title: emails.join("\n").to_s }
+.commits{ style: "background-color: ##{bg_color}; color: ##{txt_color} !important", title: emails.join("\n") }
   %span= name_fact.commits
   .clearfix
   %a{ href: project_contributor_path(project, contributor_id), style: 'display: inline-block;' }
