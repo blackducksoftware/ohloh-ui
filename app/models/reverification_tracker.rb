@@ -1,10 +1,18 @@
 class ReverificationTracker < ActiveRecord::Base
+  MAX_ATTEMPTS = 3
+  NOTIFICATION1_DUE_DAYS = 21
+  NOTIFICATION2_DUE_DAYS = 140
+  NOTIFICATION3_DUE_DAYS = 28
+  NOTIFICATION4_DUE_DAYS = 14
   belongs_to :account
   enum status: [:pending, :delivered, :soft_bounced, :complained]
   enum phase: [:initial, :marked_for_disable, :disabled, :final_warning]
 
-  scope :soft_bounced_until_yesterday, -> { soft_bounced.where('DATE(sent_at) < DATE(NOW())').order(sent_at: :asc) }
-  scope :max_attempts_not_reached, -> { where("attempts < #{Reverification::Mailer::MAX_ATTEMPTS}") }
+  scope :soft_bounced_until_yesterday, lambda {
+    soft_bounced.includes(:account).where('DATE(sent_at) < DATE(NOW())')
+                .order(sent_at: :asc)
+  }
+  scope :max_attempts_not_reached, -> { where("attempts < #{MAX_ATTEMPTS}") }
 
   def template_hash
     templ = case
@@ -22,26 +30,26 @@ class ReverificationTracker < ActiveRecord::Base
 
   class << self
     def expired_initial_phase_notifications(limit = nil)
-      initial.where('(status = 1 OR (status = 2 AND attempts = 3))')
-             .where("(NOW()::DATE - sent_at::DATE) >= #{Reverification::Mailer::NOTIFICATION1_DUE_DAYS}")
+      initial.includes(:account).where('(status = 1 OR (status = 2 AND attempts = 3))')
+             .where("(NOW()::DATE - sent_at::DATE) >= #{NOTIFICATION1_DUE_DAYS}")
              .limit(limit)
     end
 
     def expired_second_phase_notifications(limit = nil)
-      marked_for_disable.where('(status = 1 OR (status = 2 AND attempts = 3))')
-                        .where("(NOW()::DATE - sent_at::DATE) >= #{Reverification::Mailer::NOTIFICATION2_DUE_DAYS}")
+      marked_for_disable.includes(:account).where('(status = 1 OR (status = 2 AND attempts = 3))')
+                        .where("(NOW()::DATE - sent_at::DATE) >= #{NOTIFICATION2_DUE_DAYS}")
                         .limit(limit)
     end
 
     def expired_third_phase_notifications(limit = nil)
-      disabled.where('(status = 1 OR (status = 2 AND attempts = 3))')
-              .where("(NOW()::DATE - sent_at::DATE) >= #{Reverification::Mailer::NOTIFICATION3_DUE_DAYS}")
+      disabled.includes(:account).where('(status = 1 OR (status = 2 AND attempts = 3))')
+              .where("(NOW()::DATE - sent_at::DATE) >= #{NOTIFICATION3_DUE_DAYS}")
               .limit(limit)
     end
 
     def expired_final_phase_notifications(limit = nil)
-      final_warning.where('(status = 1 OR (status = 2 AND attempts = 3))')
-                   .where("(NOW()::DATE - sent_at::DATE) >= #{Reverification::Mailer::NOTIFICATION4_DUE_DAYS}")
+      final_warning.includes(:account).where('(status = 1 OR (status = 2 AND attempts = 3))')
+                   .where("(NOW()::DATE - sent_at::DATE) >= #{NOTIFICATION4_DUE_DAYS}")
                    .limit(limit)
     end
 
@@ -49,6 +57,13 @@ class ReverificationTracker < ActiveRecord::Base
       account = Account.find_by_email(email_address)
       return unless account
       account.destroy
+    end
+
+    def cleanup
+      remove_reverification_trackers_for_verified_accounts
+      delete_expired_accounts
+      disable_accounts
+      remove_orphans
     end
 
     def delete_expired_accounts
@@ -80,6 +95,15 @@ class ReverificationTracker < ActiveRecord::Base
       find_each do |rev_tracker|
         rev_tracker.destroy unless rev_tracker.account
       end
+    end
+
+    def update_tracker(rev_tracker, phase, response)
+      if phase == rev_tracker.phase_value
+        rev_tracker.increment! :attempts
+      else
+        rev_tracker.update attempts: 1
+      end
+      rev_tracker.update(message_id: response[:message_id], status: 0, phase: phase, sent_at: Time.now.utc)
     end
   end
 end

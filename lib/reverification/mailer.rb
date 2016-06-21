@@ -2,15 +2,42 @@ module Reverification
   class Mailer
     extend Amazon
     FROM = 'info@openhub.net'.freeze
-    MAX_ATTEMPTS = 3
-    NOTIFICATION1_DUE_DAYS = 21
-    NOTIFICATION2_DUE_DAYS = 140
-    NOTIFICATION3_DUE_DAYS = 28
-    NOTIFICATION4_DUE_DAYS = 14
 
     class << self
-      def send_limit
-        ses.quotas[:max_24_hour_send] - ses.quotas[:sent_last_24_hours]
+      def first_notice_template(account)
+        Reverification::Template.first_reverification_notice(account.email)
+      end
+
+      def second_notice_template(rev_track)
+        Reverification::Template.marked_for_disable_notice(rev_track.account.email)
+      end
+
+      def third_notice_template(rev_track)
+        Reverification::Template.account_is_disabled_notice(rev_track.account.email)
+      end
+
+      def fourth_notice_template(rev_track)
+        Reverification::Template.final_warning_notice(rev_track.account.email)
+      end
+
+      def initial_accounts
+        Account.reverification_not_initiated(send_limit)
+      end
+
+      def expired_initial_phase_notifications
+        ReverificationTracker.expired_initial_phase_notifications(send_limit)
+      end
+
+      def expired_second_phase_notifications
+        ReverificationTracker.expired_second_phase_notifications(send_limit)
+      end
+
+      def expired_third_phase_notifications
+        ReverificationTracker.expired_third_phase_notifications(send_limit)
+      end
+
+      def soft_bounced_notifications
+        ReverificationTracker.soft_bounced_until_yesterday.max_attempts_not_reached.limit(send_limit)
       end
 
       def run
@@ -25,48 +52,44 @@ module Reverification
         send_first_notification
       end
 
+      def send_email(template, account, phase)
+        check_statistics_and_wait_to_avoid_exceeding_throttle_limit
+        resp = ses.send_email(template)
+        if account.reverification_tracker
+          return ReverificationTracker.update_tracker(account.reverification_tracker, phase, resp)
+        end
+
+        account.create_reverification_tracker(message_id: resp[:message_id], sent_at: Time.now.utc)
+      end
+
       def send_first_notification
-        Account.reverification_not_initiated(send_limit).each do |account_id|
-          account = Account.find(account_id)
-          Reverification::Process.send_email(
-            Reverification::Template.first_reverification_notice(account.email),
-            account, 0
-          )
+        initial_accounts.each do |id|
+          account = Account.find(id)
+          send_email(first_notice_template(account), account, 0)
         end
       end
 
       def send_marked_for_disable_notification
-        ReverificationTracker.expired_initial_phase_notifications(send_limit).each do |rev_track|
-          Reverification::Process.send_email(
-            Reverification::Template.marked_for_disable_notice(rev_track.account.email),
-            rev_track.account, 1
-          )
+        expired_initial_phase_notifications.each do |rev_track|
+          send_email(second_notice_template(rev_track), rev_track.account, 1)
         end
       end
 
       def send_account_is_disabled_notification
-        ReverificationTracker.expired_second_phase_notifications(send_limit).each do |rev_track|
-          Reverification::Process.send_email(
-            Reverification::Template.account_is_disabled_notice(rev_track.account.email),
-            rev_track.account, 2
-          )
+        expired_second_phase_notifications.each do |rev_track|
+          send_email(third_notice_template(rev_track), rev_track.account, 2)
         end
       end
 
       def send_final_notification
-        ReverificationTracker.expired_third_phase_notifications(send_limit).each do |rev_track|
-          Reverification::Process.send_email(
-            Reverification::Template.final_warning_notice(rev_track.account.email),
-            rev_track.account, 3
-          )
+        expired_third_phase_notifications.each do |rev_track|
+          send_email(fourth_notice_template(rev_track), rev_track.account, 3)
         end
       end
 
       def resend_soft_bounced_notifications
-        # Grab all the soft_bounced trackers
-        ReverificationTracker.soft_bounced_until_yesterday.max_attempts_not_reached
-                             .limit(send_limit).each do |rev_track|
-          Reverification::Process.send_email(rev_track.template_hash, rev_track.account, rev_track.phase_value)
+        soft_bounced_notifications.each do |rev_track|
+          send_email(rev_track.template_hash, rev_track.account, rev_track.phase_value)
         end
       end
     end

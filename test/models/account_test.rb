@@ -702,21 +702,25 @@ class AccountTest < ActiveSupport::TestCase
       unverified_account = create(:unverified_account)
       assert_equal Account.reverification_not_initiated.count, 1
       assert_equal Account.reverification_not_initiated[0].id, unverified_account.id
+      Account.reverification_not_initiated.wont_include account
     end
 
     it 'should not include a spam account in the process' do
       spam_account = create(:unverified_account, :spammer)
       assert_equal Account.reverification_not_initiated.count, 0
+      Account.reverification_not_initiated.wont_include spam_account
     end
 
     it 'should not include an admin account in the process' do
       admin_account = create(:unverified_account, :admin)
       assert_equal Account.reverification_not_initiated.count, 0
+      Account.reverification_not_initiated.wont_include admin_account
     end
 
     it 'should not include a disabled account in the process' do
       disabled_account = create(:unverified_account, :disabled_account)
       assert_equal Account.reverification_not_initiated.count, 0
+      Account.reverification_not_initiated.wont_include disabled_account
     end
 
     it 'should not include an unverified account with edits' do
@@ -726,6 +730,7 @@ class AccountTest < ActiveSupport::TestCase
       unverified_account = create(:unverified_account)
       assert_equal Account.reverification_not_initiated.count, 1
       assert_equal Account.reverification_not_initiated[0].id, unverified_account.id
+      Account.reverification_not_initiated.wont_include account
     end
 
     it 'should not include an unverified account with posts' do
@@ -735,6 +740,7 @@ class AccountTest < ActiveSupport::TestCase
       unverified_account = create(:unverified_account)
       assert_equal Account.reverification_not_initiated.count, 1
       assert_equal Account.reverification_not_initiated[0].id, unverified_account.id
+      Account.reverification_not_initiated.wont_include account
     end
 
     it 'should not include an unverified account with kudos' do
@@ -744,6 +750,7 @@ class AccountTest < ActiveSupport::TestCase
       unverified_account = create(:unverified_account)
       assert_equal Account.reverification_not_initiated.count, 1
       assert_equal Account.reverification_not_initiated[0].id, unverified_account.id
+      Account.reverification_not_initiated.wont_include account
     end
 
     it 'should not include an unverified account with reviews' do
@@ -753,6 +760,7 @@ class AccountTest < ActiveSupport::TestCase
       unverified_account = create(:unverified_account)
       assert_equal Account.reverification_not_initiated.count, 1
       assert_equal Account.reverification_not_initiated[0].id, unverified_account.id
+      Account.reverification_not_initiated.wont_include account
     end
 
     it 'should not include an unverified account with positions' do
@@ -762,6 +770,7 @@ class AccountTest < ActiveSupport::TestCase
       unverified_account = create(:unverified_account)
       assert_equal Account.reverification_not_initiated.count, 1
       assert_equal Account.reverification_not_initiated[0].id, unverified_account.id
+      Account.reverification_not_initiated.wont_include account
     end
 
     it 'should not include an unverified account with stacks' do
@@ -771,8 +780,8 @@ class AccountTest < ActiveSupport::TestCase
       unverified_account = create(:unverified_account)
       assert_equal Account.reverification_not_initiated.count, 1
       assert_equal Account.reverification_not_initiated[0].id, unverified_account.id
+      Account.reverification_not_initiated.wont_include account
     end
-
 
     it 'should not include an unverified account that manage' do
       manage = create(:manage)
@@ -781,6 +790,7 @@ class AccountTest < ActiveSupport::TestCase
       unverified_account = create(:unverified_account)
       assert_equal Account.reverification_not_initiated.count, 1
       assert_equal Account.reverification_not_initiated[0].id, unverified_account.id
+      Account.reverification_not_initiated.wont_include manage
     end
   end
 
