@@ -63,8 +63,8 @@ module Reverification
       end
 
       def send_first_notification
-        initial_accounts.each do |id|
-          account = Account.find(id)
+        initial_accounts.each do |account|
+          account = Account.find(account.id)
           send_email(first_notice_template(account), account, 0)
         end
       end
