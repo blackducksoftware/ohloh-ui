@@ -31,19 +31,22 @@ module AccountScopes
     scope :from_param, -> (param) { in_good_standing.where(arel_table[:login].eq(param).or(arel_table[:id].eq(param))) }
     scope :active, -> { where(level: 0) }
     scope :non_anonymous, -> { where.not(login: ANONYMOUS_ACCOUNTS, email: ANONYMOUS_ACCOUNTS_EMAILS) }
-    scope :unverified, lambda { |limit = nil|
-      select('accounts.id, accounts.email')
-        .where(level: 0)
-        .joins('LEFT OUTER JOIN verifications v ON v.account_id = accounts.id')
-        .where('v.account_id IS NULL')
-        .limit(limit)
-    }
-    scope :reverification_not_initiated, lambda { |limit = nil|
-      unverified
-        .joins('LEFT OUTER JOIN reverification_trackers r ON r.account_id = accounts.id')
-        .where('r.account_id IS NULL').joins('LEFT OUTER JOIN positions p ON p.account_id = accounts.id')
-        .where('p.account_id IS NULL')
-        .limit(limit)
+
+    scope :reverification_not_initiated, lambda {
+      find_by_sql("SELECT DISTINCT(accounts.id) FROM accounts WHERE level = 0 AND id NOT IN
+                    (SELECT DISTINCT(account_id) FROM reverification_trackers) AND id NOT IN
+                    (SELECT DISTINCT(account_id) FROM verifications) AND id NOT IN
+                    (SELECT DISTINCT(account_id) FROM positions) AND id NOT IN
+                    (SELECT DISTINCT(account_id) FROM edits) AND id NOT IN
+                    (SELECT DISTINCT(account_id) FROM posts) AND id NOT IN
+                    (SELECT DISTINCT(account_id) FROM reviews) AND id NOT IN
+                    (SELECT DISTINCT(account_id) FROM kudos) AND id NOT IN
+                    (SELECT DISTINCT(sender_id) FROM kudos) AND id NOT IN
+                    (SELECT DISTINCT(account_id) FROM stacks WHERE account_id IS NOT NULL) AND id NOT IN
+                      (SELECT DISTINCT(account_id) from manages INNER JOIN projects ON manages.target_id = projects.id
+                        WHERE projects.deleted = 'f' AND (manages.approved_by IS NOT NULL)
+                      AND manages.deleted_by IS NULL AND manages.deleted_at IS NULL
+                      AND manages.target_type = 'Project')")
     }
   end
 end

@@ -13,11 +13,11 @@ class Reverification::MailerTest < ActiveSupport::TestCase
 
   describe 'constants' do
     it 'should have beeen defined' do
-      assert_equal 3, Reverification::Mailer::MAX_ATTEMPTS
-      assert_equal 14, Reverification::Mailer::NOTIFICATION1_DUE_DAYS
-      assert_equal 14, Reverification::Mailer::NOTIFICATION2_DUE_DAYS
-      assert_equal 14, Reverification::Mailer::NOTIFICATION3_DUE_DAYS
-      assert_equal 14, Reverification::Mailer::NOTIFICATION4_DUE_DAYS
+      assert_equal 3, ReverificationTracker::MAX_ATTEMPTS
+      assert_equal 21, ReverificationTracker::NOTIFICATION1_DUE_DAYS
+      assert_equal 140, ReverificationTracker::NOTIFICATION2_DUE_DAYS
+      assert_equal 28, ReverificationTracker::NOTIFICATION3_DUE_DAYS
+      assert_equal 14, ReverificationTracker::NOTIFICATION4_DUE_DAYS
       assert_equal 'info@openhub.net', Reverification::Mailer::FROM
     end
   end
@@ -40,34 +40,104 @@ class Reverification::MailerTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'send_email' do
+    before do
+      # Settings need to be below specified settings to avoid statistics checking
+      below_specified_settings = MOCK::AWS::SimpleEmailService.amazon_stat_settings
+      Reverification::Mailer.stubs(:amazon_stat_settings).returns(below_specified_settings)
+      AWS::SimpleEmailService.any_instance.stubs(:send_email).returns(MOCK::AWS::SimpleEmailService.response)
+    end
+    let(:unverified_account) { create(:unverified_account) }
+
+    describe 'First notification' do
+      before do
+        unverified_account.reverification_tracker.must_be_nil
+      end
+
+      it 'should create a reverification tracker' do
+        Reverification::Mailer.send_email('dummy email content', unverified_account, 0)
+        unverified_account.reverification_tracker.must_be :present?
+        unverified_account.reverification_tracker.must_be :initial?
+        unverified_account.reverification_tracker.must_be :pending?
+        assert_equal 1, unverified_account.reverification_tracker.attempts
+        assert_equal Time.zone.now.to_date, unverified_account.reverification_tracker.sent_at.to_date
+      end
+    end
+
+    describe 'Second/subsequent notification' do
+      before do
+        Reverification::Mailer.send_email('dummy - first email content', unverified_account, 0)
+        unverified_account.reverification_tracker.delivered!
+      end
+
+      it 'should update reverification tracker attributes - phase, status, attempts and sent_at' do
+        Reverification::Mailer.send_email('dummy - second email content', unverified_account, 1)
+        unverified_account.reverification_tracker.wont_be :initial?
+        unverified_account.reverification_tracker.must_be :pending?
+        assert_equal 1, unverified_account.reverification_tracker.attempts
+        assert_equal Time.zone.now.to_date, unverified_account.reverification_tracker.sent_at.to_date
+      end
+    end
+
+    describe 'Resend notification' do
+      before do
+        Reverification::Mailer.send_email('dummy - first email content', unverified_account, 0)
+        unverified_account.reverification_tracker.must_be :present?
+        unverified_account.reverification_tracker.must_be :initial?
+        unverified_account.reverification_tracker.must_be :pending?
+        assert_equal 1, unverified_account.reverification_tracker.attempts
+        assert_equal Time.zone.now.to_date, unverified_account.reverification_tracker.sent_at.to_date
+        unverified_account.reverification_tracker.soft_bounced!
+        unverified_account.reverification_tracker.must_be :soft_bounced?
+      end
+
+      it 'should update reverification tracker attributes - status, attempts and sent_at' do
+        Reverification::Mailer.send_email('dummy - first email content', unverified_account, 0)
+        unverified_account.reverification_tracker.must_be :initial?
+        unverified_account.reverification_tracker.must_be :pending?
+        assert_equal 2, unverified_account.reverification_tracker.attempts
+        assert_equal Time.zone.now.to_date, unverified_account.reverification_tracker.sent_at.to_date
+      end
+    end
+
+    it 'should check bounce and complaint rate when
+      total mails sent in last 24 hours reaches the amount_of_email defined' do
+      AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(sent_last_24_hours: 1000)
+      Reverification::Mailer.expects(:check_statistics_of_last_24_hrs)
+      Reverification::Mailer.send_email('dummy email content', unverified_account, 0)
+    end
+
+    it 'should not check bounce and complaint rate when
+      total mails sent in last 24 hours below the amount_of_email defined' do
+      AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(sent_last_24_hours: 999)
+      Reverification::Mailer.expects(:check_statistics_of_last_24_hrs).never
+      Reverification::Mailer.send_email('dummy email content', unverified_account, 0)
+    end
+  end
+
   describe 'send_first_notification' do
     it 'should send notification to unverified accounts only' do
-      # Note: This code must be reinstated after the pilot account has finished
-      #       With the current process for ticket OTWO-4203, the first notification
-      #       will not be sent at all, hence this particular test will break.
+      below_specified_settings = MOCK::AWS::SimpleEmailService.amazon_stat_settings
+      Reverification::Mailer.stubs(:amazon_stat_settings).returns(below_specified_settings)
+      Account.expects(:reverification_not_initiated).returns([unverified_account_sucess])
+      Reverification::Template.expects(:first_reverification_notice)
+      unverified_account_sucess.reverification_tracker.must_be_nil
 
-      # below_specified_settings = MOCK::AWS::SimpleEmailService.amazon_stat_settings
-      # Reverification::Process.stubs(:amazon_stat_settings).returns(below_specified_settings)
-      # Account.expects(:reverification_not_initiated).returns([unverified_account_sucess])
-      # Reverification::Template.expects(:first_reverification_notice)
-      # unverified_account_sucess.reverification_tracker.must_be_nil
-      # byebug
-      # ReverificationPilotAccount.copy_accounts # Note: When move on from pilot run, remove this line
-      # Reverification::Mailer.send_first_notification
-      # unverified_account_sucess.reload.reverification_tracker.must_be :present?
-      # unverified_account_sucess.reverification_tracker.phase.must_equal 'initial'
-      # unverified_account_sucess.reverification_tracker.attempts.must_equal 1
-      # unverified_account_sucess.reverification_tracker.sent_at.to_date.must_equal Time.zone.now.to_date
+      Reverification::Mailer.send_first_notification
+      unverified_account_sucess.reload.reverification_tracker.must_be :present?
+      unverified_account_sucess.reverification_tracker.phase.must_equal 'initial'
+      unverified_account_sucess.reverification_tracker.attempts.must_equal 1
+      unverified_account_sucess.reverification_tracker.sent_at.to_date.must_equal Time.zone.now.to_date
     end
   end
 
   describe 'marked_for_disable_notice' do
     before do
-      sent_at = Time.now.utc - Reverification::Mailer::NOTIFICATION1_DUE_DAYS.days
+      sent_at = Time.now.utc - ReverificationTracker::NOTIFICATION1_DUE_DAYS.days
       @rev_tracker = create(:success_initial_rev_tracker, account: unverified_account_sucess, sent_at: sent_at)
       ReverificationTracker.expects(:expired_initial_phase_notifications).returns [@rev_tracker]
       below_specified_settings = MOCK::AWS::SimpleEmailService.amazon_stat_settings
-      Reverification::Process.stubs(:amazon_stat_settings).returns(below_specified_settings)
+      Reverification::Mailer.stubs(:amazon_stat_settings).returns(below_specified_settings)
     end
 
     it 'should send correct email template' do
@@ -101,10 +171,10 @@ class Reverification::MailerTest < ActiveSupport::TestCase
       @rev_tracker = create(:marked_for_disable_rev_tracker,
                             :delivered,
                             account: unverified_account_sucess,
-                            sent_at: Time.now.utc - Reverification::Mailer::NOTIFICATION2_DUE_DAYS.days)
+                            sent_at: Time.now.utc - ReverificationTracker::NOTIFICATION2_DUE_DAYS.days)
       ReverificationTracker.expects(:expired_second_phase_notifications).returns [@rev_tracker]
       below_specified_settings = MOCK::AWS::SimpleEmailService.amazon_stat_settings
-      Reverification::Process.stubs(:amazon_stat_settings).returns(below_specified_settings)
+      Reverification::Mailer.stubs(:amazon_stat_settings).returns(below_specified_settings)
     end
 
     it 'should send correct email template' do
@@ -138,10 +208,10 @@ class Reverification::MailerTest < ActiveSupport::TestCase
       @rev_tracker = create(:disable_rev_tracker,
                             :delivered,
                             account: unverified_account_sucess,
-                            sent_at: Time.now.utc - Reverification::Mailer::NOTIFICATION3_DUE_DAYS.days)
+                            sent_at: Time.now.utc - ReverificationTracker::NOTIFICATION3_DUE_DAYS.days)
       ReverificationTracker.expects(:expired_third_phase_notifications).returns [@rev_tracker]
       below_specified_settings = MOCK::AWS::SimpleEmailService.amazon_stat_settings
-      Reverification::Process.stubs(:amazon_stat_settings).returns(below_specified_settings)
+      Reverification::Mailer.stubs(:amazon_stat_settings).returns(below_specified_settings)
     end
 
     it 'should send correct email template' do
@@ -179,7 +249,7 @@ class Reverification::MailerTest < ActiveSupport::TestCase
                               attempts: 1,
                               sent_at: Time.now.utc - 1.day)
         below_specified_settings = MOCK::AWS::SimpleEmailService.amazon_stat_settings
-        Reverification::Process.stubs(:amazon_stat_settings).returns(below_specified_settings)
+        Reverification::Mailer.stubs(:amazon_stat_settings).returns(below_specified_settings)
       end
 
       it 'should send the same email content' do
@@ -211,7 +281,7 @@ class Reverification::MailerTest < ActiveSupport::TestCase
       end
     end
 
-    describe 'marked for disable notification' do
+    describe 'resend marked for disable notification' do
       before do
         @rev_tracker = create(:marked_for_disable_rev_tracker,
                               :soft_bounced,
@@ -219,7 +289,7 @@ class Reverification::MailerTest < ActiveSupport::TestCase
                               attempts: 1,
                               sent_at: Time.now.utc - 1.day)
         below_specified_settings = MOCK::AWS::SimpleEmailService.amazon_stat_settings
-        Reverification::Process.stubs(:amazon_stat_settings).returns(below_specified_settings)
+        Reverification::Mailer.stubs(:amazon_stat_settings).returns(below_specified_settings)
       end
 
       it 'should send the same email content' do
@@ -259,7 +329,7 @@ class Reverification::MailerTest < ActiveSupport::TestCase
                               attempts: 1,
                               sent_at: Time.now.utc - 1.day)
         below_specified_settings = MOCK::AWS::SimpleEmailService.amazon_stat_settings
-        Reverification::Process.stubs(:amazon_stat_settings).returns(below_specified_settings)
+        Reverification::Mailer.stubs(:amazon_stat_settings).returns(below_specified_settings)
       end
 
       it 'should send the same email content' do
@@ -299,7 +369,7 @@ class Reverification::MailerTest < ActiveSupport::TestCase
                               attempts: 1,
                               sent_at: Time.now.utc - 1.day)
         below_specified_settings = MOCK::AWS::SimpleEmailService.amazon_stat_settings
-        Reverification::Process.stubs(:amazon_stat_settings).returns(below_specified_settings)
+        Reverification::Mailer.stubs(:amazon_stat_settings).returns(below_specified_settings)
       end
 
       it 'should send the same email content' do

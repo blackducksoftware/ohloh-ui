@@ -696,29 +696,101 @@ class AccountTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'unverified' do
-    it 'should return all unverified accounts that are not spammers' do
+  describe 'reverification_not_initiated' do
+    it 'should return all unverified accounts that are in good standing with no associations' do
       account = create(:account)
       unverified_account = create(:unverified_account)
-      spammer_account = create(:unverified_account, :spammer)
-      assert_equal Account.unverified[0], unverified_account
-      assert_not_equal Account.unverified[0].id, account.id
-      assert_not_equal Account.unverified[0].email, account.email
-      assert_not_equal Account.unverified[0].id, spammer_account.id
-      assert_not_equal Account.unverified[0].email, spammer_account.email
-      assert_equal Account.unverified[0].id, unverified_account.id
-      assert_equal Account.unverified[0].email, unverified_account.email
+      assert_equal Account.reverification_not_initiated.count, 1
+      assert_equal Account.reverification_not_initiated[0].id, unverified_account.id
+      Account.reverification_not_initiated.wont_include account
     end
-  end
 
-  describe 'reverification_not_initiated' do
-    it 'should return all unverified accounts without positions, for them reverification process is not started' do
-      create(:unverified_account, :success)
-      create(:unverified_account, :complaint)
-      create(:account)
-      create(:position)
-      assert_equal 2, Account.reverification_not_initiated.size
-      assert_not_equal Account.count, Account.reverification_not_initiated.size
+    it 'should not include a spam account in the process' do
+      spam_account = create(:unverified_account, :spammer)
+      assert_equal Account.reverification_not_initiated.count, 0
+      Account.reverification_not_initiated.wont_include spam_account
+    end
+
+    it 'should not include an admin account in the process' do
+      admin_account = create(:unverified_account, :admin)
+      assert_equal Account.reverification_not_initiated.count, 0
+      Account.reverification_not_initiated.wont_include admin_account
+    end
+
+    it 'should not include a disabled account in the process' do
+      disabled_account = create(:unverified_account, :disabled_account)
+      assert_equal Account.reverification_not_initiated.count, 0
+      Account.reverification_not_initiated.wont_include disabled_account
+    end
+
+    it 'should not include an unverified account with edits' do
+      account = create(:account, :no_verification)
+      account.edits << create(:create_edit)
+      account.edits[0].update_attributes!(account_id: account.id)
+      unverified_account = create(:unverified_account)
+      assert_equal Account.reverification_not_initiated.count, 1
+      assert_equal Account.reverification_not_initiated[0].id, unverified_account.id
+      Account.reverification_not_initiated.wont_include account
+    end
+
+    it 'should not include an unverified account with posts' do
+      account = create(:account, :no_verification)
+      account.posts << create(:post)
+      account.posts[0].update_attributes!(account_id: account.id)
+      unverified_account = create(:unverified_account)
+      assert_equal Account.reverification_not_initiated.count, 1
+      assert_equal Account.reverification_not_initiated[0].id, unverified_account.id
+      Account.reverification_not_initiated.wont_include account
+    end
+
+    it 'should not include an unverified account with kudos' do
+      account = create(:account, :no_verification)
+      account.kudos << create(:kudo)
+      account.kudos[0].update_attributes!(account_id: account.id)
+      unverified_account = create(:unverified_account)
+      assert_equal Account.reverification_not_initiated.count, 1
+      assert_equal Account.reverification_not_initiated[0].id, unverified_account.id
+      Account.reverification_not_initiated.wont_include account
+    end
+
+    it 'should not include an unverified account with reviews' do
+      account = create(:account, :no_verification)
+      account.reviews << create(:review)
+      account.reviews[0].update_attributes!(account_id: account.id)
+      unverified_account = create(:unverified_account)
+      assert_equal Account.reverification_not_initiated.count, 1
+      assert_equal Account.reverification_not_initiated[0].id, unverified_account.id
+      Account.reverification_not_initiated.wont_include account
+    end
+
+    it 'should not include an unverified account with positions' do
+      account = create(:account, :no_verification)
+      account.positions << create(:position)
+      account.positions[0].update_attributes!(account_id: account.id)
+      unverified_account = create(:unverified_account)
+      assert_equal Account.reverification_not_initiated.count, 1
+      assert_equal Account.reverification_not_initiated[0].id, unverified_account.id
+      Account.reverification_not_initiated.wont_include account
+    end
+
+    it 'should not include an unverified account with stacks' do
+      account = create(:account, :no_verification)
+      account.stacks << create(:stack)
+      account.stacks[0].update_attributes!(account_id: account.id)
+      unverified_account = create(:unverified_account)
+      assert_equal Account.reverification_not_initiated.count, 1
+      assert_equal Account.reverification_not_initiated[0].id, unverified_account.id
+      Account.reverification_not_initiated.wont_include account
+    end
+
+    it 'should not include an unverified account that manage' do
+      manage = create(:manage)
+      manage.account.github_verification.destroy
+      manage.reload
+      unverified_account = create(:unverified_account)
+      assert_equal Account.reverification_not_initiated.count, 1
+      assert_equal Account.reverification_not_initiated[0].id, unverified_account.id
+      Account.reverification_not_initiated.wont_include manage
     end
   end
 

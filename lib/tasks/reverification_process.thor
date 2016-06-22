@@ -15,13 +15,6 @@ module ReverificationTask
     end
   end
 
-  class Preparation < Thor
-    desc 'pilot_preparation', 'This task does the preparation work for the pilot process'
-    def pilot_preparation
-      ReverificationPilotAccount.copy_accounts
-    end
-  end
-
   class Cleanup < Thor
     desc 'clean_all', 'Invokes all three cleanup tasks'
     def clean_all
