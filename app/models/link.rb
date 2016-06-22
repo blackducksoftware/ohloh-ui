@@ -58,7 +58,7 @@ class Link < ActiveRecord::Base
     def find_category_by_id(category_id)
       return unless category_id
 
-      CATEGORIES.find { |_k, v| v == category_id.to_i }.first
+      CATEGORIES.invert[category_id.to_i]
     end
   end
 end

@@ -3857,7 +3857,7 @@ CREATE TABLE sessions (
 
 
 --
--- Name: settings; Type: TABLE; Schema: public; Owner: -
+-- Name: settings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE settings (
@@ -3889,7 +3889,11 @@ ALTER SEQUENCE settings_id_seq OWNED BY settings.id;
 
 
 --
+<<<<<<< HEAD
 -- Name: sf_vhosted; Type: TABLE; Schema: public; Owner: -
+=======
+-- Name: sf_vhosted; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+>>>>>>> master
 --
 
 CREATE TABLE sf_vhosted (
@@ -4773,6 +4777,13 @@ ALTER TABLE ONLY reports ALTER COLUMN id SET DEFAULT nextval('reports_id_seq'::r
 --
 
 ALTER TABLE ONLY reverification_trackers ALTER COLUMN id SET DEFAULT nextval('reverification_trackers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY settings ALTER COLUMN id SET DEFAULT nextval('settings_id_seq'::regclass);
 
 
 --
@@ -5705,7 +5716,11 @@ ALTER TABLE ONLY sessions
 
 
 --
+<<<<<<< HEAD
 -- Name: settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+=======
+-- Name: settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+>>>>>>> master
 --
 
 ALTER TABLE ONLY settings
@@ -5713,7 +5728,11 @@ ALTER TABLE ONLY settings
 
 
 --
+<<<<<<< HEAD
 -- Name: slave_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+=======
+-- Name: slave_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+>>>>>>> master
 --
 
 ALTER TABLE ONLY slave_logs
@@ -6894,14 +6913,22 @@ CREATE INDEX index_sessions_on_session_id ON sessions USING btree (session_id);
 
 
 --
+<<<<<<< HEAD
 -- Name: index_settings_on_key; Type: INDEX; Schema: public; Owner: -
+=======
+-- Name: index_settings_on_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+>>>>>>> master
 --
 
 CREATE UNIQUE INDEX index_settings_on_key ON settings USING btree (key);
 
 
 --
+<<<<<<< HEAD
 -- Name: index_slave_logs_on_code_sets_id; Type: INDEX; Schema: public; Owner: -
+=======
+-- Name: index_slave_logs_on_code_sets_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+>>>>>>> master
 --
 
 CREATE INDEX index_slave_logs_on_code_sets_id ON slave_logs USING btree (code_set_id);
@@ -8588,6 +8615,7 @@ INSERT INTO schema_migrations (version) VALUES ('20160321061931');
 
 INSERT INTO schema_migrations (version) VALUES ('20160504111046');
 
+<<<<<<< HEAD
 INSERT INTO schema_migrations (version) VALUES ('20160512144023');
 
 INSERT INTO schema_migrations (version) VALUES ('20160517100031');
@@ -8598,6 +8626,10 @@ INSERT INTO schema_migrations (version) VALUES ('20160608090419');
 
 INSERT INTO schema_migrations (version) VALUES ('20160608194402');
 
+=======
+INSERT INTO schema_migrations (version) VALUES ('20160608090419');
+
+>>>>>>> master
 INSERT INTO schema_migrations (version) VALUES ('21');
 
 INSERT INTO schema_migrations (version) VALUES ('22');

@@ -22,12 +22,12 @@
         %br
         = t('.leave_this_blank')
 
-  .form-group
+  .form-group.position_affiliation
     %label.control-label= t('affiliation')
     .controls.chosen#value_select
       = f.select :organization_id, OrganizationDecorator.select_options, {}, class: 'col-md-4 chzn-select value-select'
       - error_tag(position, :organization_id)
-      = f.text_field :organization_name, class: 'col-md-4 hidden', style: 'margin-bottom: 0px;'
+      = f.text_field :organization_name, class: 'col-md-4 hidden', placeholder: t('.affiliation.placeholder')
       = f.hidden_field :affiliation_type
       - error_tag(position, :organization_name)
       %p.help-block= t('.enter_name_of_company_or_organization')

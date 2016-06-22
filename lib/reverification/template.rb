@@ -19,7 +19,7 @@ module Reverification
             <a href='http://blog.openhub.net/2015/08/new-accounts-are-back-but-so-are-the-spammers/'>New
             Accounts are Back. But so are the spammers.</a><br><br> We thank you for your understanding and for being a
             member of the OpenHub and the Open Source Software community.
-            Sincerely,<br><br>The Black Duck OpenHub Team<br><br>Black Duck Software<br>
+            <br><br>Sincerely,<br><br>The Black Duck OpenHub Team<br><br>Black Duck Software<br>
             781.891.5100<br>8 New England Executive Park<br>Burlington, MA 01803<br>
             <a href='https://www.openhub.net'>www.openhub.net</a></p>" }
       end
@@ -43,7 +43,7 @@ module Reverification
             Accounts are Back. But so are the spammers.</a><br><br>
             We thank you for your understanding and for being a member of the
             OpenHub and the Open Source Software community.
-            Sincerely,<br><br>The Black Duck OpenHub Team<br><br>Black Duck Software<br>
+            <br><br>Sincerely,<br><br>The Black Duck OpenHub Team<br><br>Black Duck Software<br>
             781.891.5100<br>8 New England Executive Park<br>Burlington, MA 01803<br>
             <a href='https://www.openhub.net'>www.openhub.net</a></p>" }
       end

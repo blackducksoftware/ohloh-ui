@@ -6,7 +6,7 @@ columns do
           tr do
             td "Scheduled Jobs:"
             td Job.where(status: Job::STATUS_SCHEDULED, slave_id: nil).count
-          end              
+          end
           tr do
             td "Database Load Average:"
             td style: (LoadAverage.first.too_high? ? "color:red;" : '') do
@@ -15,7 +15,15 @@ columns do
           end
           tr do
             td "Updated Analyses (#{human_window})"
-            td Analysis.where(updated_on: get_window..Time.current).count
+            td Analysis.where(updated_on: get_window.utc..Time.current).count
+          end
+          tr do
+            td "Last ran Monthly Language Analysis"
+            td Analysis::MonthlyLanguage.last_run
+          end
+          tr do
+            td 'Oldest Repository'
+            td time_ago_in_days_hours_minutes(CodeSet.oldest_code_set.first.try(:logged_at))
           end
         end #tbody
       end #table
