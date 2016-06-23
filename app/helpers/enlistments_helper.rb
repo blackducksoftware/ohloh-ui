@@ -18,4 +18,9 @@ module EnlistmentsHelper
       content_tag :span, "Module: #{enlistment.repository.module_name}", class: 'edit_enlist_module_name'
     end
   end
+
+  def sidekiq_work_in_progress?
+    key = Setting.get_project_enlistment_key(@project.id)
+    Setting.get_value(key).try(:present?)
+  end
 end
