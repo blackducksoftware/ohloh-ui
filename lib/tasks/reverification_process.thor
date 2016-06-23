@@ -9,7 +9,7 @@ module ReverificationTask
     option :num_email, :aliases => '-e', :desc => 'Sets the amount of email', :required => true, :type => :numeric
     def execute
       Reverification::Process.set_amazon_stat_settings(options[:bounce_threshold], options[:num_email])
-      Reverification::Process.cleanup
+      ReverificationTracker.cleanup
       Reverification::Mailer.run
       Reverification::Process.start_polling_queues
     end
