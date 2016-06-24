@@ -2,7 +2,7 @@ module EditsModalHelper
   PROJECT_RELATED_CLASSES = [Alias, Permission, Enlistment, Link, ProjectLicense, RssSubscription].freeze
 
   def edit_show_value(edit)
-    get_edit_value(edit) || edit.value
+    expander(get_edit_value(edit) || edit.value, 300, 340)
   end
 
   def show_edit_path(edit)

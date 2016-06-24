@@ -15,16 +15,7 @@
           = position.title
         = position.decorate.affiliation
         - if position.description && position.description.strip.size > 179
-          %span.one-project-description{ id: "proj_desc_#{position.id}_sm", style: 'display: inline' }
-            = truncate(position.description, length: 180)
-            %a{ href: 'javascript:', id: "more_desc_#{position.id}" }
-              = t('.more')
-
-          %span.one-project-description.hidden{ id: "proj_desc_#{position.id}_lg" }
-            = position.description
-            %a{ href: 'javascript:', id: "less_desc_#{position.id}" }
-              = t('.less')
-
+          %span.one-project-description= expander(position.description, 150, 180)
         - elsif position.description
           %span.one-project-description{ style: 'display: inline', id: "proj_desc_#{position.id}_lg" }
             = position.description
