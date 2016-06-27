@@ -37,6 +37,7 @@ gem 'will_paginate-bootstrap'
 gem 'sprockets-rails', '~> 2.3.3'
 gem 'feedjira'
 gem 'whenever', require: false
+gem 'sidekiq'
 
 group :development do
   gem 'better_errors'
@@ -45,6 +46,7 @@ group :development do
   gem 'capistrano-faster-assets'
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
+  gem 'capistrano-sidekiq'
   gem 'meta_request'
 end
 
