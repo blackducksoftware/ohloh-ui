@@ -13,6 +13,9 @@ require 'mocha/mini_test'
 require 'dotenv'
 require 'test_helpers/setup_hamster_account'
 require 'test_helpers/create_forges'
+require 'sidekiq/testing'
+Sidekiq::Testing.fake!
+
 Dotenv.overload '.env.test'
 
 ActiveRecord::Migration.maintain_test_schema!
