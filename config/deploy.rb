@@ -20,14 +20,6 @@ set :copy_exclude, ['.git']
 # Defaults to false. If true, it's skip migration if files in db/migrate not modified
 set :conditionally_migrate, true
 
-#set :sidekiq_config, -> { File.join(shared_path, 'config', 'sidekiq.yml') }
 set :pty,  false
 
 before 'deploy:check:linked_files', 'deploy:update_configuration'
-
-task :add_default_hooks do
-  after 'deploy:starting', 'sidekiq:quiet'
-  after 'deploy:updated', 'sidekiq:stop'
-  after 'deploy:reverted', 'sidekiq:stop'
-  after 'deploy:published', 'sidekiq:start'
-end
