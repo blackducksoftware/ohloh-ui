@@ -24,8 +24,7 @@ ActiveAdmin.register CodeLocation do
   end
 
   show do
-    render 'admin/repositories/repository', repository: code_location.repository,
-                                            code_sets: code_location.repository.code_sets
+    render 'admin/repositories/repository', repository: code_location.repository
   end
 
   sidebar 'CodeLocation Details', only: :show do

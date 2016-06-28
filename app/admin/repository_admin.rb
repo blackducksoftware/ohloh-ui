@@ -31,7 +31,7 @@ ActiveAdmin.register Repository do
   end
 
   show do
-    render 'admin/repositories/repository', repository: repository, code_sets: repository.code_sets
+    render 'admin/repositories/repository', repository: repository
   end
 
   sidebar 'Repository Details', only: :show do

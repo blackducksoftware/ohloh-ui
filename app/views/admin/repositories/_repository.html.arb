@@ -16,7 +16,8 @@ table class: 'index_table' do
       link_to 'Log', admin_repository_slave_logs_path(repository)
     end
   end
-  code_sets.each_with_index do |code_set, index|
+
+  repository.code_sets.each_with_index do |code_set, index|
     tr class: "#{index.even? ? 'even' : 'odd'}" do
       td do
         a 'CodeSet'
@@ -60,26 +61,6 @@ table class: 'index_table' do
         td do
           "as of #{sloc_set.as_of.to_i}"
         end
-      end
-    end
-
-    code_set.clumps.each do |clump|
-      tr class: "#{index.even? ? 'even' : 'odd'}" do
-        td do
-          a clump.class
-          a clump.id
-        end
-        td do
-          link_to clump.slave.hostname, admin_slafe_path(clump.slave.hostname)
-        end
-        td do
-          if clump.fetched_at
-            "#{time_ago_in_days_hours_minutes(clump.fetched_at)} ago"
-          else
-            'Unknown'
-          end
-        end
-        td
       end
     end
   end
