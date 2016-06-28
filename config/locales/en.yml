@@ -325,13 +325,16 @@ en:
               taken: 'has already been submitted'
               invalid_url: 'Invalid Link URL'
 
+        code_location:
+          attributes:
+            branch_name:
+              too_long: The branch name must not be longer than 80 characters.
+              invalid: The branch name may contain only letters, numbers, spaces, and the special characters '_', '-', '+', '/', '^', and '.'
+
         repository:
           attributes:
             url:
               blank: The URL can't be blank.
-            branch_name:
-              too_long: The branch name must not be longer than 80 characters.
-              invalid: The branch name may contain only letters, numbers, spaces, and the special characters '_', '-', '+', '/', '^', and '.'
             username:
               too_long: The username must not be longer than 32 characters.
               invalid: The username may contain only A-Z, a-z, 0-9, and underscore (_)

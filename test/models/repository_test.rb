@@ -19,6 +19,16 @@ class RepositoryTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'code_locations' do
+    it 'must assign prime_code_location correctly' do
+      branch_name = Faker::Name.first_name
+      repository = create(:repository, prime_code_location_attributes: { branch_name: branch_name })
+
+      repository.code_locations.count.must_equal 1
+      repository.code_locations.first.must_equal repository.prime_code_location
+    end
+  end
+
   describe 'create_enlistment_for_project' do
     let(:project) { create(:project) }
     let(:repository) { create(:repository) }
@@ -145,21 +155,22 @@ class RepositoryTest < ActiveSupport::TestCase
       it 'wont allow longer than 80 chars' do
         branch_name = 'x' * 81
 
-        repository = build(:repository, branch_name: branch_name)
+        repository = build(:repository, prime_code_location_attributes: { branch_name: branch_name })
 
         repository.wont_be :valid?
 
-        error_message = i18n_activerecord(:repository, :branch_name)[:too_long]
-        repository.errors.messages[:branch_name].first.must_equal error_message
+        error_message = i18n_activerecord(:code_location, :branch_name)[:too_long]
+        repository.prime_code_location.errors.messages[:branch_name].first.must_equal error_message
       end
 
       it 'wont allow invalid branch_name format' do
         branch_name = '^some$'
 
-        repository = build(:repository, branch_name: branch_name)
+        repository = build(:repository, prime_code_location_attributes: { branch_name: branch_name })
 
         repository.wont_be :valid?
-        repository.errors.messages[:branch_name].first.must_equal i18n_activerecord(:repository, :branch_name)[:invalid]
+        error_message = i18n_activerecord(:code_location, :branch_name)[:invalid]
+        repository.prime_code_location.errors.messages[:branch_name].first.must_equal error_message
       end
     end
 

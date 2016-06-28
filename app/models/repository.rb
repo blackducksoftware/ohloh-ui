@@ -1,8 +1,11 @@
 class Repository < ActiveRecord::Base
   include RepositoryJobs
+  include ScmValidation
 
   belongs_to :best_code_set, foreign_key: :best_code_set_id, class_name: CodeSet
   belongs_to :forge, class_name: 'Forge::Base'
+  belongs_to :prime_code_location, class_name: CodeLocation
+  has_many :code_locations
   has_many :enlistments, -> { not_deleted }
   has_many :projects, through: :enlistments
   has_many :jobs
@@ -14,13 +17,16 @@ class Repository < ActiveRecord::Base
   scope :matching, ->(match) { Repository.forge_match_search(match) }
 
   validates :url, presence: true, if: :bypass_url_validation
-  validate :scm_attributes_and_server_connection, unless: :bypass_url_validation
 
-  attr_accessor :forge_match
+  after_create :set_repository_id_for_prime_code_location, if: :prime_code_location
+
+  attr_accessor :forge_match, :branch_name # forge.get_repository_attributes
   attr_reader :bypass_url_validation
 
+  accepts_nested_attributes_for :prime_code_location
+
   def nice_url
-    "#{url} #{branch_name}"
+    "#{url} #{prime_code_location.try(:branch_name)}"
   end
 
   def name_in_english
@@ -33,7 +39,9 @@ class Repository < ActiveRecord::Base
   end
 
   def source_scm
-    @source_scm ||= source_scm_class.new(attributes.symbolize_keys.merge(public_urls_only: !ENV['INTEGRATION_TEST']))
+    traits = attributes.symbolize_keys.merge(public_urls_only: !ENV['INTEGRATION_TEST'])
+    traits[branch_or_module_name] = prime_code_location.try(:branch_name)
+    @source_scm ||= source_scm_class.new(traits)
   end
 
   def source_scm_class
@@ -57,9 +65,19 @@ class Repository < ActiveRecord::Base
     enlistment.reload
   end
 
+  def branch_or_module_name
+    :branch_name
+  end
+
+  def prime_code_location_attributes=(traits)
+    traits[:repository] = self
+    super(traits)
+  end
+
   class << self
     def find_existing(repository)
-      order(:id).find_by_url(repository.url)
+      branch_name = repository.prime_code_location.try(:branch_name)
+      joins(:prime_code_location).order(:id).find_by(url: repository.url, code_locations: { branch_name: branch_name })
     end
 
     def get_compatible_class(_url)
@@ -78,32 +96,7 @@ class Repository < ActiveRecord::Base
 
   private
 
-  def scm_attributes_and_server_connection
-    normalize_scm_attributes
-    source_scm.validate
-    Timeout.timeout(timeout_interval) { source_scm.validate_server_connection }
-  rescue Timeout::Error
-    source_scm.errors << [:url, I18n.t('repositories.timeout')]
-  ensure
-    populate_scm_errors
-  end
-
-  def timeout_interval
-    ENV['SCM_URL_VALIDATION_TIMEOUT'].to_i
-  end
-
-  def populate_scm_errors
-    source_scm.errors.each do |attribute, error_message|
-      errors.add(attribute, error_message)
-    end
-  end
-
-  def normalize_scm_attributes
-    source_scm.normalize
-
-    self.url         = source_scm.url
-    self.branch_name = source_scm.branch_name
-    self.username    = source_scm.username
-    self.password    = source_scm.password
+  def set_repository_id_for_prime_code_location
+    prime_code_location.update_attribute :repository_id, id
   end
 end

@@ -1,4 +1,5 @@
 repository = enlistment.repository
+code_location = repository.prime_code_location
 
 xml.enlistment do
   xml.id enlistment.id
@@ -8,7 +9,7 @@ xml.enlistment do
     xml.id repository.id
     xml.type repository.class.to_s
     xml.url repository.url
-    xml.module_name repository.module_name if repository.module_name && !repository.module_name.blank?
+    xml.module_name code_location.branch_name if code_location.try(:branch_name?)
     xml.username repository.username
     xml.password repository.password
     xml.logged_at repository.best_code_set_id ? xml_date_to_time(repository.best_code_set.logged_at) : nil

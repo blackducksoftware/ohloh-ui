@@ -996,6 +996,39 @@ ALTER SEQUENCE clumps_id_seq OWNED BY clumps.id;
 
 
 --
+-- Name: code_locations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE code_locations (
+    id integer NOT NULL,
+    repository_id integer,
+    branch_name text,
+    status_code integer DEFAULT 1,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: code_locations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE code_locations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: code_locations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE code_locations_id_seq OWNED BY code_locations.id;
+
+
+--
 -- Name: code_set_gestalts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -3512,7 +3545,8 @@ CREATE TABLE repositories (
     updated_at timestamp without time zone DEFAULT timezone('UTC'::text, now()) NOT NULL,
     update_interval integer DEFAULT 3600,
     name_at_forge text,
-    owner_at_forge text
+    owner_at_forge text,
+    prime_code_location_id integer
 );
 
 
@@ -4325,6 +4359,13 @@ ALTER TABLE ONLY clumps ALTER COLUMN id SET DEFAULT nextval('clumps_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY code_locations ALTER COLUMN id SET DEFAULT nextval('code_locations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY code_set_gestalts ALTER COLUMN id SET DEFAULT nextval('code_set_gestalts_id_seq'::regclass);
 
 
@@ -4842,6 +4883,14 @@ ALTER TABLE ONLY positions
 
 ALTER TABLE ONLY clumps
     ADD CONSTRAINT clumps_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: code_locations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY code_locations
+    ADD CONSTRAINT code_locations_pkey PRIMARY KEY (id);
 
 
 --
@@ -5967,6 +6016,13 @@ CREATE INDEX index_claims_on_account_id ON positions USING btree (account_id);
 --
 
 CREATE INDEX index_clumps_on_code_set_id_slave_id ON clumps USING btree (code_set_id, slave_id);
+
+
+--
+-- Name: index_code_locations_on_repository_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_code_locations_on_repository_id ON code_locations USING btree (repository_id);
 
 
 --
@@ -8416,6 +8472,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160504111046');
 INSERT INTO schema_migrations (version) VALUES ('20160608090419');
 
 INSERT INTO schema_migrations (version) VALUES ('20160608194402');
+
+INSERT INTO schema_migrations (version) VALUES ('20160628075648');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

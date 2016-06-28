@@ -39,25 +39,19 @@ class EditsHelperTest < ActionView::TestCase
   describe 'edit_show_subject' do
     describe 'Enlistment' do
       it 'should display branch name if there is branch_name' do
-        enlistment = create(:enlistment, :ent_branch)
+        enlistment = create(:enlistment)
         @parent = enlistment.project
         edit = create(:create_edit, target: enlistment)
-        edit_show_subject(edit).must_match "Branch: #{enlistment.repository.branch_name}"
+        edit_show_subject(edit).must_match "Branch: #{enlistment.code_location.branch_name}"
       end
 
-      it 'should display moudle name if there is module_name' do
-        enlistment = create(:enlistment, :ent_module)
+      it 'wont display branch name if it is empty' do
+        enlistment = create(:enlistment)
+        enlistment.code_location.destroy
+        enlistment.reload
         @parent = enlistment.project
         edit = create(:create_edit, target: enlistment)
-        edit_show_subject(edit).must_match "Module: #{enlistment.repository.module_name}"
-      end
-
-      it 'should not display neither branch nor module name if both are empty' do
-        enlistment = create(:enlistment, :ent_no_branch_module)
-        @parent = enlistment.project
-        edit = create(:create_edit, target: enlistment)
-        edit_show_subject(edit).wont_match "Branch: #{enlistment.repository.branch_name}"
-        edit_show_subject(edit).wont_match "Module: #{enlistment.repository.module_name}"
+        edit_show_subject(edit).wont_match 'Branch:'
       end
     end
   end

@@ -4,8 +4,10 @@ describe 'ProjectsController' do
   let(:api_key) { create(:api_key, account: create(:account)) }
   let(:client_id) { api_key.oauth_application.uid }
   let(:forge) { Forge.find_by(name: 'Github') }
+  let(:branch_name) { Faker::Name.first_name }
   let(:enlistment_params) do
-    { '0' => { repository_attributes: { type: 'GitRepository', url: 'git://a.com/cb.git', branch_name: 'master' } } }
+    { '0' => { repository_attributes: { type: 'GitRepository', url: 'git://a.com/cb.git',
+                                        prime_code_location_attributes: { branch_name: branch_name } } } }
   end
 
   before do
@@ -532,7 +534,7 @@ describe 'ProjectsController' do
     project.repositories.length.must_equal 1
     project.repositories[0].type.must_equal 'GitRepository'
     project.repositories[0].url.must_equal 'git://a.com/cb.git'
-    project.repositories[0].branch_name.must_equal 'master'
+    project.repositories[0].prime_code_location.branch_name.must_equal branch_name
   end
 
   it 'create should allow no download_url' do
@@ -555,7 +557,7 @@ describe 'ProjectsController' do
     project.repositories.length.must_equal 1
     project.repositories[0].type.must_equal 'GitRepository'
     project.repositories[0].url.must_equal 'git://a.com/cb.git'
-    project.repositories[0].branch_name.must_equal 'master'
+    project.repositories[0].prime_code_location.branch_name.must_equal branch_name
   end
 
   it 'create should allow no licenses' do
@@ -576,7 +578,7 @@ describe 'ProjectsController' do
     project.repositories.length.must_equal 1
     project.repositories[0].type.must_equal 'GitRepository'
     project.repositories[0].url.must_equal 'git://a.com/cb.git'
-    project.repositories[0].branch_name.must_equal 'master'
+    project.repositories[0].prime_code_location.branch_name.must_equal branch_name
   end
 
   it 'create should allow the creator not being automatically the manager' do
@@ -598,7 +600,7 @@ describe 'ProjectsController' do
     project.repositories.length.must_equal 1
     project.repositories[0].type.must_equal 'GitRepository'
     project.repositories[0].url.must_equal 'git://a.com/cb.git'
-    project.repositories[0].branch_name.must_equal 'master'
+    project.repositories[0].prime_code_location.branch_name.must_equal branch_name
   end
 
   it 'create should not lose repo params on validation errors' do
@@ -609,7 +611,8 @@ describe 'ProjectsController' do
     must_select 'form#new_project', 1
     must_select 'p.error'
     must_select 'input#project_enlistments_attributes_0_repository_attributes_url'
-    must_select 'input#project_enlistments_attributes_0_repository_attributes_branch_name'
+    branch_name_attribute = 'prime_code_location_attributes_branch_name'
+    must_select "input#project_enlistments_attributes_0_repository_attributes_#{branch_name_attribute}"
     must_select 'select#repository_type'
   end
 
