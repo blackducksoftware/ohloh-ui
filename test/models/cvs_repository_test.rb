@@ -15,14 +15,16 @@ class CvsRepositoryTest < ActiveSupport::TestCase
   it 'must return the url plus module_name as nice_url' do
     repository = create(:cvs_repository)
 
-    repository.nice_url.must_equal "#{repository.url} #{repository.module_name}"
+    repository.nice_url.must_equal "#{repository.url} #{repository.prime_code_location.branch_name}"
   end
 
   describe 'normalize_scm_attributes' do
     it 'must set the module_name correctly' do
       module_name = Faker::Lorem.word
-      repository = create(:cvs_repository, module_name: module_name, bypass_url_validation: false)
-      repository.module_name.must_equal module_name
+      repository = create(:cvs_repository, bypass_url_validation: false,
+                                           prime_code_location_attributes: { branch_name: module_name })
+      repository.reload
+      repository.prime_code_location.branch_name.must_equal module_name
     end
   end
 end

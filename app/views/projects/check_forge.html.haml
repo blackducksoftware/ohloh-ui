@@ -26,8 +26,10 @@
                     class: 'chzn-select value-select', id: 'repository_type', style: 'width: 100px'
                     = repo_form.text_field :url, style: 'width: 265px; margin-bottom: 1px'
                     - if repo_form.object.type == 'GitRepository'
-                      = repo_form.text_field :branch_name, value: repo_form.object.branch_name || 'master',
-                      style: 'width: 105px; margin-bottom: 1px'
+                      - repo_form.object.build_prime_code_location
+                      = repo_form.fields_for :prime_code_location_attributes do |ff|
+                        = ff.text_field :branch_name, value: repo_form.object.branch_name || 'master',
+                        style: 'width: 105px; margin-bottom: 1px'
                     .clear_left
                     - error_tag @project, :repositories
             .control-group

@@ -10,7 +10,7 @@ class EnlistmentsController < SettingsController
 
   def index
     @enlistments = @project.enlistments
-                           .includes(:project, :repository)
+                           .includes(:project, :repository, :code_location)
                            .filter_by(params[:query])
                            .send(parse_sort_term)
                            .paginate(page: page_param, per_page: 10)
@@ -25,6 +25,7 @@ class EnlistmentsController < SettingsController
 
   def new
     @repository = Repository.new
+    @repository.build_prime_code_location
     @enlistment = Enlistment.new
   end
 
@@ -60,7 +61,8 @@ class EnlistmentsController < SettingsController
   end
 
   def repository_params
-    params.require(:repository).permit(:url, :module_name, :branch_name, :username, :password, :bypass_url_validation)
+    params.require(:repository).permit(:url, :username, :password, :bypass_url_validation,
+                                       prime_code_location_attributes: [:branch_name])
   end
 
   def parse_sort_term
@@ -104,9 +106,8 @@ class EnlistmentsController < SettingsController
     if @project_has_repo_url
       flash[:notice] = t('.notice', url: @repository.url)
     else
-      flash[:success] = t('.success', url: @repository.url,
-                                      branch_name: (CGI.escapeHTML @repository.branch_name.to_s),
-                                      module_name: (CGI.escapeHTML @repository.module_name.to_s))
+      branch_name = CGI.escapeHTML(@repository.prime_code_location.try(:branch_name).to_s)
+      flash[:success] = t('.success', url: @repository.url, branch_name: branch_name)
     end
   end
 

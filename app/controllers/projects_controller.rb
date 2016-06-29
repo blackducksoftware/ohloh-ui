@@ -56,9 +56,10 @@ class ProjectsController < ApplicationController
   private
 
   def project_params
+    repository_attributes = { repository_attributes: [:type, :url, prime_code_location_attributes: [:branch_name]] }
     params.require(:project).permit([:name, :description, :vanity_url, :url, :download_url, :managed_by_creator,
                                      project_licenses_attributes: [:license_id],
-                                     enlistments_attributes: [repository_attributes: [:type, :url, :branch_name]]])
+                                     enlistments_attributes: [repository_attributes]])
   end
 
   def create_project_from_params

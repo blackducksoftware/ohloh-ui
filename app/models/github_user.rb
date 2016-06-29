@@ -36,7 +36,7 @@ class GithubUser
     end
 
     def find_existing_repository(url)
-      GitRepository.find_by(url: url, branch_name: new.branch_name)
+      GitRepository.find_by(url: url)
     end
   end
 
@@ -45,7 +45,8 @@ class GithubUser
   def create_repositories
     urls = fetch_repository_urls
     @repositories ||= urls.each_with_object([]) do |url, repositories|
-      r = GitRepository.find_or_create_by(url: url, branch_name: branch_name)
+      r = GitRepository.find_by(url: url)
+      r ||= GitRepository.create(url: url, prime_code_location_attributes: { branch_name: branch_name })
       repositories.push r unless r.new_record?
     end
   end

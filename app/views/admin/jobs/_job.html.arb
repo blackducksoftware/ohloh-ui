@@ -59,7 +59,7 @@ end
 br
 br
 if job.repository
-  render 'admin/repositories/repository', repository: job.repository, code_sets: job.repository.code_sets, job: job
+  render 'admin/repositories/repository', repository: job.repository, job: job
 end
 
 br

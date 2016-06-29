@@ -130,7 +130,7 @@ describe 'EnlistmentsControllerTest' do
     it 'must create enlistment for any existing repository' do
       Repository.any_instance.stubs(:bypass_url_validation).returns(true)
       username = 'stan'
-      GitRepository.create!(url: "git://github.com/#{username}/sablon.git", branch_name: :master)
+      GitRepository.create!(url: "git://github.com/#{username}/sablon.git")
 
       stub_github_user_repositories_call do
         project = Project.from_param(@project_id).take
@@ -144,14 +144,19 @@ describe 'EnlistmentsControllerTest' do
       end
     end
 
-    it 'should create repository and enlistments' do
+    it 'must create repository, enlistments and code_location' do
       Repository.count.must_equal 1
       Enlistment.count.must_equal 2
-      post :create, project_id: @project_id, repository: build(:repository, url: 'Repo1').attributes
+      traits = build(:repository, url: 'Repo1').attributes
+                                               .merge(prime_code_location_attributes: { branch_name: :master })
+      post :create, project_id: @project_id, repository: traits
       must_respond_with :redirect
       must_redirect_to action: :index
       Repository.count.must_equal 2
       Enlistment.count.must_equal 3
+      repository = Repository.last
+      repository.code_locations.count.must_equal 1
+      repository.prime_code_location_id.must_equal CodeLocation.last.id
     end
 
     it 'must show alert message for adding the first enlistment' do
@@ -198,7 +203,7 @@ describe 'EnlistmentsControllerTest' do
     end
 
     it 'should avoid duplicate repository when git url passed as https or in ssh format' do
-      repository1 = create(:git_repository, url: 'git://github.com/test/repo', branch_name: 'master')
+      repository1 = create(:git_repository, url: 'git://github.com/test/repo')
       create(:enlistment, repository: repository1, project: @enlistment.project)
 
       Repository.any_instance.stubs(:bypass_url_validation).returns(false)
@@ -206,7 +211,7 @@ describe 'EnlistmentsControllerTest' do
 
       assert_no_difference ['Repository.count', 'Enlistment.count'] do
         post :create, project_id: @project_id,
-                      repository: { url: 'https://github.com/test/repo', branch_name: 'master', type: 'GitRepository' }
+                      repository: { url: 'https://github.com/test/repo', type: 'GitRepository' }
       end
       assigns(:project_has_repo_url).must_equal true
     end

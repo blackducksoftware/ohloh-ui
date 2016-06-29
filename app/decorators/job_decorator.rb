@@ -26,7 +26,7 @@ class JobDecorator < Cherry::Decorator
   end
 
   def repository_text
-    repository ? "\n#{repository.url} #{repository.module_name}" : ''
+    repository ? "\n#{repository.url} #{repository.prime_code_location.try(:branch_name)}" : ''
   end
 
   def exception_text

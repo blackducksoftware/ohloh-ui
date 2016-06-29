@@ -1,5 +1,5 @@
 class SvnRepository < Repository
-  after_validation :set_url_and_branch_name
+  after_validation :restrict_url_to_trunk
 
   def source_scm_class
     OhlohScm::Adapters::SvnChainAdapter
@@ -11,10 +11,9 @@ class SvnRepository < Repository
 
   private
 
-  def set_url_and_branch_name
+  def restrict_url_to_trunk
     return if bypass_url_validation || errors.present?
 
     self.url = source_scm.restrict_url_to_trunk
-    self.branch_name = source_scm.branch_name
   end
 end

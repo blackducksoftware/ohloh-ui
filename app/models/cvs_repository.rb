@@ -3,18 +3,7 @@ class CvsRepository < Repository
     OhlohScm::Adapters::CvsAdapter
   end
 
-  def nice_url
-    [url, module_name].join(' ')
-  end
-
-  def normalize_scm_attributes
-    super
-    self.module_name = source_scm.module_name
-  end
-
-  class << self
-    def find_existing(repository)
-      order(:id).find_by(url: repository.url, module_name: repository.module_name)
-    end
+  def branch_or_module_name
+    :module_name
   end
 end
