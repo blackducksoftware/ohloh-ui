@@ -17,18 +17,6 @@ module ProjectsHelper
     end
   end
 
-  def project_description(project)
-    text1 = description(project.description.truncate(340), t('projects.more'), style: 'display: inline',
-                                                                               id: "proj_desc_#{project.id}_sm",
-                                                                               link_id: "proj_more_desc_#{project.id}",
-                                                                               css_class: 'proj_desc_toggle')
-    text2 = description(project.description, t('projects.less'), style: 'display: none',
-                                                                 id: "proj_desc_#{project.id}_lg",
-                                                                 link_id: "proj_less_desc_#{project.id}",
-                                                                 css_class: 'proj_desc_toggle')
-    "#{text1.html_safe}#{text2.html_safe}".html_safe
-  end
-
   def project_compare_button(project, label = project.name)
     selected = (@session_projects || []).include?(project)
     haml_tag :form, class: "sp_form styled form-inline #{'selected' if selected}",

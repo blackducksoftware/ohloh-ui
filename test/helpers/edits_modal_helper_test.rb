@@ -2,6 +2,7 @@ require 'test_helper'
 
 describe EditsModalHelper do
   include EditsHelper
+  include ApplicationHelper
 
   describe '#edit_show_value' do
     it 'should return value for edit' do

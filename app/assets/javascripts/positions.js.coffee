@@ -5,9 +5,6 @@ $(document).on 'page:change', ->
     new SetupNestedProjectExperienceFields
     new SetupCommitDateRadioBindings
 
-  if $('#positions-index-page').length
-    new ToggleProjectDescriptionExpansion
-
 class SetupNestedProjectExperienceFields
   constructor: ->
     @$form = $('#project-experience-form')
@@ -97,10 +94,3 @@ class SetupCommitDateRadioBindings
   clearSelectedOption = ($element) ->
     $element.find('option').first().prop('selected', true)
     $element.trigger('liszt:updated')
-
-class ToggleProjectDescriptionExpansion
-  constructor: ->
-    $('a[id^=more_desc_], a[id^=less_desc_]').click ->
-      $parent = $(this).parent()
-      $parent.toggleClass('hidden')
-      $parent.siblings('.one-project-description').toggleClass('hidden')
