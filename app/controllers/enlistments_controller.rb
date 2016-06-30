@@ -2,11 +2,7 @@ class EnlistmentsController < SettingsController
   helper EnlistmentsHelper
   helper ProjectsHelper
 
-  before_action :session_required, :redirect_unverified_account, only: [:create, :new, :destroy, :edit, :update]
-  before_action :set_project_or_fail
-  before_action :set_project_editor_account_to_current_user
-  before_action :find_enlistment, only: [:show, :edit, :update, :destroy]
-  before_action :project_context, only: [:index, :new, :edit, :create, :update]
+  include EnlistmentFilters
 
   def index
     @enlistments = @project.enlistments
@@ -51,66 +47,5 @@ class EnlistmentsController < SettingsController
   def destroy
     @enlistment.create_edit.undo!(current_user)
     redirect_to project_enlistments_path(@project), flash: { success: t('.success', name: @project.name) }
-  end
-
-  private
-
-  def enlistment_params
-    params.require(:enlistment).permit(:ignore)
-  end
-
-  def repository_params
-    params.require(:repository).permit(:url, :module_name, :branch_name, :username, :password, :bypass_url_validation)
-  end
-
-  def parse_sort_term
-    Enlistment.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : 'by_url'
-  end
-
-  def find_enlistment
-    @enlistment = Enlistment.find_by(id: params[:id])
-    raise ParamRecordNotFound if @enlistment.nil?
-    @enlistment.editor_account = current_user
-  end
-
-  def safe_constantize(repo)
-    repo.constantize if %w(svnrepository svnsyncrepository repository hgrepository githubuser
-                           gitrepository cvsrepository bzrrepository).include?(repo.downcase)
-  end
-
-  def initialize_repository
-    @repository_class = safe_constantize(params[:repository][:type]).get_compatible_class(params[:repository][:url])
-    @repository = @repository_class.new(repository_params)
-  end
-
-  def save_or_update_repository
-    @project_has_repo_url = @project.enlistments.with_repo_url(@repository.url).exists?
-    existing_repo = @repository_class.find_existing(@repository)
-    if existing_repo.present?
-      existing_repo.update_attributes(username: @repository.username, password: @repository.password)
-      @repository = existing_repo
-    else
-      @repository.save! unless @project_has_repo_url
-    end
-  end
-
-  def create_enlistment
-    @repository.create_enlistment_for_project(current_user, @project) unless @project_has_repo_url
-  end
-
-  def set_flash_message
-    return set_github_repos_message if @repository.is_a?(GithubUser)
-
-    if @project_has_repo_url
-      flash[:notice] = t('.notice', url: @repository.url)
-    else
-      flash[:success] = t('.success', url: @repository.url,
-                                      branch_name: (CGI.escapeHTML @repository.branch_name.to_s),
-                                      module_name: (CGI.escapeHTML @repository.module_name.to_s))
-    end
-  end
-
-  def set_github_repos_message
-    flash[:notice] = t('.github_repos_added', username: @repository.url)
   end
 end

@@ -1,5 +1,6 @@
 class GithubUser
   URL_FORMAT = /\A[^\/]+\Z/
+  GITHUB_API_URL = 'https://api.github.com/users/'.freeze
   include ActiveModel::Model
 
   attr_accessor :url, :bypass_url_validation
@@ -18,6 +19,8 @@ class GithubUser
   end
 
   def create_enlistment_for_project(editor_account, project, ignore = nil)
+    project = Project.find(project)
+    editor_account = Account.find(editor_account)
     repositories.each do |repository|
       repository.create_enlistment_for_project(editor_account, project, ignore)
     end
@@ -66,11 +69,15 @@ class GithubUser
   end
 
   def github_url(page)
-    "#{github_username_url}/repos?page=#{page}&per_page=100"
+    GITHUB_API_URL + username + "/repos?access_token=#{get_api_key}&page=#{page}&per_page=100"
   end
 
   def github_username_url
-    "https://api.github.com/users/#{username}"
+    GITHUB_API_URL + username + "?access_token=#{get_api_key}"
+  end
+
+  def get_api_key
+    ENV['GITHUB_API_BASIC_AUTHENTICATION']
   end
 
   def username_must_exist
