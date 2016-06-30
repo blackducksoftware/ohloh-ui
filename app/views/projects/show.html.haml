@@ -23,7 +23,7 @@
   .col-md-6
     #project_summary{ itemprop: 'description' }
       - if @project.description.present?
-        = simple_format(@project.description)
+        = simple_format(@project.description.escape)
       - else
         = t('.no_description')
         = link_to t('.add_description'), edit_project_path(@project)
