@@ -16,6 +16,7 @@ set :deploy_to, "/var/local/#{fetch(:application)}"
 # Use remote cache for deployment
 set :deploy_via, :remote_cache
 set :copy_exclude, ['.git']
+set :pty, false
 
 # Defaults to false. If true, it's skip migration if files in db/migrate not modified
 set :conditionally_migrate, true
