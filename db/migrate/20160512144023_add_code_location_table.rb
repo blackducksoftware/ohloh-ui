@@ -20,7 +20,7 @@ class AddCodeLocationTable < ActiveRecord::Migration
     change_column_null :code_sets, :repository_id, true
 
     add_index :enlistments, :code_location_id
-    add_index :enlistments, [:project_id, :code_location_id], unqiue: true
+    add_index :enlistments, [:project_id, :code_location_id], unique: true
     add_index :jobs, :code_location_id
     add_index :code_sets, :code_location_id
     add_index :code_locations, [:repository_id, :module_branch_name], unique: true
