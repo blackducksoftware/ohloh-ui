@@ -11,7 +11,7 @@ table class: 'index_table' do
       "#{code_location.nice_url} [#{link_to 'Re-Fetch', refetch_admin_code_location_path(code_location)}]".html_safe
     end
     td do
-      "Updates every #{time_ago_in_days_hours_minutes(Time.current - repository.update_interval)}"
+      "Updates every #{time_ago_in_days_hours_minutes(Time.current - code_location.update_interval)}"
     end
     td do
       link_to 'Log', admin_code_location_slave_logs_path(code_location)

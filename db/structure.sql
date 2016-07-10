@@ -936,7 +936,8 @@ CREATE TABLE code_locations (
     status integer DEFAULT 1,
     best_code_set_id integer,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    update_interval integer DEFAULT 3600
 );
 
 
@@ -8385,6 +8386,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160504111046');
 INSERT INTO schema_migrations (version) VALUES ('20160512144023');
 
 INSERT INTO schema_migrations (version) VALUES ('20160610142302');
+
+INSERT INTO schema_migrations (version) VALUES ('20160710125644');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
