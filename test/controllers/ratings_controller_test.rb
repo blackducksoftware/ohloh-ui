@@ -79,4 +79,10 @@ class RatingsControllerTest < ActionController::TestCase
     must_respond_with :ok
     @project.ratings.must_equal []
   end
+
+  it 'must raise an exception when partial is not allowed' do
+    create(:rating, account: @account, project: @project, score: '3')
+    login_as @account
+    -> { post :unrate, id: @project.to_param, show: 'undefined' }.must_raise(StandardError)
+  end
 end
