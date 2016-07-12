@@ -1,7 +1,4 @@
 source 'https://rubygems.org'
-source 'http://oh-stage-utility-1.blackducksoftware.com:9292' do
-  gem 'oh_delegator'
-end
 
 gem 'activeadmin', git: 'https://github.com/gregbell/active_admin.git'
 gem 'airbrake'
@@ -21,6 +18,7 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'mini_magick', '~> 4.1.1'
 gem 'nokogiri', '~> 1.6.8'
+gem 'oh_delegator', source: 'http://oh-stage-utility-1.blackducksoftware.com:9292'
 gem 'ohloh_scm'
 gem 'open4'
 gem 'paperclip'
