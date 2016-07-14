@@ -926,6 +926,39 @@ ALTER SEQUENCE code_location_events_id_seq OWNED BY code_location_events.id;
 
 
 --
+-- Name: code_location_tarballs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE code_location_tarballs (
+    id integer NOT NULL,
+    code_location_id integer,
+    commit_sha1 text,
+    filepath text,
+    status integer DEFAULT 0,
+    created_at timestamp without time zone
+);
+
+
+--
+-- Name: code_location_tarballs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE code_location_tarballs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: code_location_tarballs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE code_location_tarballs_id_seq OWNED BY code_location_tarballs.id;
+
+
+--
 -- Name: code_locations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1920,7 +1953,8 @@ CREATE TABLE jobs (
     do_not_retry boolean DEFAULT false,
     failure_group_id integer,
     organization_id integer,
-    code_location_id integer
+    code_location_id integer,
+    code_location_tarball_id integer
 );
 
 
@@ -4209,6 +4243,13 @@ ALTER TABLE ONLY code_location_events ALTER COLUMN id SET DEFAULT nextval('code_
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY code_location_tarballs ALTER COLUMN id SET DEFAULT nextval('code_location_tarballs_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY code_locations ALTER COLUMN id SET DEFAULT nextval('code_locations_id_seq'::regclass);
 
 
@@ -4741,6 +4782,14 @@ ALTER TABLE ONLY clumps
 
 ALTER TABLE ONLY code_location_events
     ADD CONSTRAINT code_location_events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: code_location_tarballs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY code_location_tarballs
+    ADD CONSTRAINT code_location_tarballs_pkey PRIMARY KEY (id);
 
 
 --
@@ -5873,6 +5922,20 @@ CREATE INDEX index_clumps_on_code_set_id_slave_id ON clumps USING btree (code_se
 --
 
 CREATE INDEX index_code_location_events_on_code_location_id ON code_location_events USING btree (code_location_id);
+
+
+--
+-- Name: index_code_location_tarballs_on_code_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_code_location_tarballs_on_code_location_id ON code_location_tarballs USING btree (code_location_id);
+
+
+--
+-- Name: index_code_location_tarballs_on_commit_sha1; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_code_location_tarballs_on_commit_sha1 ON code_location_tarballs USING btree (commit_sha1);
 
 
 --
@@ -7360,6 +7423,14 @@ ALTER TABLE ONLY code_locations
 
 
 --
+-- Name: fk_rails_24196d6a51; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_location_tarballs
+    ADD CONSTRAINT fk_rails_24196d6a51 FOREIGN KEY (code_location_id) REFERENCES code_locations(id);
+
+
+--
 -- Name: fk_rails_2f22a538c9; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8388,6 +8459,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160512144023');
 INSERT INTO schema_migrations (version) VALUES ('20160610142302');
 
 INSERT INTO schema_migrations (version) VALUES ('20160710125644');
+
+INSERT INTO schema_migrations (version) VALUES ('20160713124305');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
