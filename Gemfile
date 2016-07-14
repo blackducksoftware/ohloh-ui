@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-source 'http://oh-stage-utility-1.blackducksoftware.com:9292'
+source 'http://oh-utility01.dc1.lan:9292'
 
 gem 'activeadmin', git: 'https://github.com/gregbell/active_admin.git'
 gem 'airbrake'
