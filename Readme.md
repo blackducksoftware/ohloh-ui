@@ -71,3 +71,5 @@ Once these commands are executed to setup the template for the host database, ex
 **`rake db:test:prepare`**
 
 Afterwards testing should execute as normal.
+
+** TEST **
