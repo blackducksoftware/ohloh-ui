@@ -15,10 +15,23 @@ class RssFeed < ActiveRecord::Base
     save(validate: false)
   end
 
+  class << self
+    def sync
+      RssFeed.where(id: RssSubscription.not_deleted.select('rss_feed_id'))
+             .where("(next_fetch IS NULL OR next_fetch <= NOW() AT TIME ZONE 'UTC')")
+             .find_each do |feed|
+               yield feed if block_given?
+               feed.fetch
+             end
+    end
+  end
+
   private
 
   def execute_current_fetch
     create_rss_articles
+    self.last_fetch = Time.current
+    self.error = nil
   rescue Timeout::Error
     self.error = I18n.t('rss_feeds.index.timeout_error', url: url)
   rescue
