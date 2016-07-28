@@ -31,7 +31,8 @@ class ProjectsController < ApplicationController
     if @project.save
       redirect_to project_path(@project)
     else
-      render :check_forge, status: :unprocessable_entity, notice: t('.failure')
+      flash.now[:error] = t('.failure')
+      render :check_forge, status: :unprocessable_entity
     end
   end
 
