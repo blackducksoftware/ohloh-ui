@@ -970,7 +970,8 @@ CREATE TABLE code_locations (
     best_code_set_id integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    update_interval integer DEFAULT 3600
+    update_interval integer DEFAULT 3600,
+    best_repository_directory_id integer
 );
 
 
@@ -3469,8 +3470,40 @@ CREATE TABLE repositories (
     updated_at timestamp without time zone DEFAULT timezone('UTC'::text, now()) NOT NULL,
     update_interval integer DEFAULT 3600,
     name_at_forge text,
-    owner_at_forge text
+    owner_at_forge text,
+    best_repository_directory_id integer
 );
+
+
+--
+-- Name: repository_directories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE repository_directories (
+    id integer NOT NULL,
+    code_location_id integer,
+    repository_id integer,
+    fetched_at timestamp without time zone
+);
+
+
+--
+-- Name: repository_directories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE repository_directories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: repository_directories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE repository_directories_id_seq OWNED BY repository_directories.id;
 
 
 --
@@ -4572,6 +4605,13 @@ ALTER TABLE ONLY reports ALTER COLUMN id SET DEFAULT nextval('reports_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY repository_directories ALTER COLUMN id SET DEFAULT nextval('repository_directories_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY reverification_pilot_accounts ALTER COLUMN id SET DEFAULT nextval('reverification_pilot_accounts_id_seq'::regclass);
 
 
@@ -5446,6 +5486,14 @@ ALTER TABLE ONLY reports
 
 ALTER TABLE ONLY repositories
     ADD CONSTRAINT repositories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: repository_directories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY repository_directories
+    ADD CONSTRAINT repository_directories_pkey PRIMARY KEY (id);
 
 
 --
@@ -6695,6 +6743,20 @@ CREATE INDEX index_repositories_on_forge_id ON repositories USING btree (forge_i
 
 
 --
+-- Name: index_repository_directories_on_code_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_repository_directories_on_code_location_id ON repository_directories USING btree (code_location_id);
+
+
+--
+-- Name: index_repository_directories_on_repository_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_repository_directories_on_repository_id ON repository_directories USING btree (repository_id);
+
+
+--
 -- Name: index_reviews_on_account_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -7452,6 +7514,22 @@ ALTER TABLE ONLY code_location_events
 
 ALTER TABLE ONLY api_keys
     ADD CONSTRAINT fk_rails_8faa63554c FOREIGN KEY (oauth_application_id) REFERENCES oauth_applications(id);
+
+
+--
+-- Name: fk_rails_d33c461543; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY repository_directories
+    ADD CONSTRAINT fk_rails_d33c461543 FOREIGN KEY (code_location_id) REFERENCES code_locations(id);
+
+
+--
+-- Name: fk_rails_d36c79e15c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY repository_directories
+    ADD CONSTRAINT fk_rails_d36c79e15c FOREIGN KEY (repository_id) REFERENCES repositories(id);
 
 
 --
@@ -8461,6 +8539,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160610142302');
 INSERT INTO schema_migrations (version) VALUES ('20160710125644');
 
 INSERT INTO schema_migrations (version) VALUES ('20160713124305');
+
+INSERT INTO schema_migrations (version) VALUES ('20160725154001');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
