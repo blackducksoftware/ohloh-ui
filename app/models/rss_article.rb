@@ -25,5 +25,9 @@ class RssArticle < ActiveRecord::Base
     def guid_from_item(item)
       Digest::SHA1.hexdigest([item[:title], item[:url], item[:summary]].compact.join('|'))
     end
+
+    def remove_duplicates(articles)
+      articles.map(&:guid).uniq.map { |guid| articles.detect { |article| article.guid == guid } }
+    end
   end
 end

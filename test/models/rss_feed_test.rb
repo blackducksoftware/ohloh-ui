@@ -132,4 +132,20 @@ class RssFeedTest < ActiveSupport::TestCase
       end
     end
   end
+
+  describe '#fetch' do
+    it 'should remove duplicate new feeds before saving into rss_articles table' do
+      VCR.use_cassette('RssFeedDuplicate', allow_playback_repeats: true) do
+        rss_feed = create(:rss_feed, url: 'http://www.vcrlocalhost.org/duplicate-feeds.rss')
+        create(:rss_subscription, rss_feed: rss_feed)
+        rss_feed.rss_articles.must_equal []
+        rss_feed.fetch
+        rss_feed.rss_articles.count.must_equal 1
+        rss_feed.rss_articles.delete_all
+        articles = rss_feed.send(:new_rss_article_items).map { |item| RssArticle.from_item(item) }
+        articles.count.must_equal 2
+        RssArticle.remove_duplicates(articles).count.must_equal 1
+      end
+    end
+  end
 end

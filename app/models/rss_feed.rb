@@ -45,7 +45,7 @@ class RssFeed < ActiveRecord::Base
 
   def create_rss_articles
     new_articles = new_rss_article_items.map { |item| RssArticle.from_item(item) }
-    rss_articles << new_articles
+    rss_articles << RssArticle.remove_duplicates(new_articles)
     projects.update_all(updated_at: Time.current) unless new_articles.empty?
   end
 
