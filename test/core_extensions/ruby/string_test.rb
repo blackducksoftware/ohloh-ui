@@ -146,6 +146,8 @@ class StringTest < ActiveSupport::TestCase
       'welcome to <blackduck org>'.escape_invalid_tags.must_equal 'welcome to &lt;blackduck org&gt;'
       'welcome to <a href=/>blackduck</a>'.escape_invalid_tags.must_equal 'welcome to <a href=/>blackduck</a>'
       '<openhub>Org</openhub>'.escape_invalid_tags.must_equal '&lt;openhub&gt;Org&lt;/openhub&gt;'
+      '<(15 Right to Use.* [You] may use the (Original|fake) Work in all ways.>'.escape_invalid_tags.must_equal '&lt;'\
+      '(15 Right to Use.* [You] may use the (Original|fake) Work in all ways.&gt;'
     end
 
     it 'should escape internal javascript to prevent from XSS attack' do
@@ -156,6 +158,14 @@ class StringTest < ActiveSupport::TestCase
   describe '#escape' do
     it 'should escape unclosed and invalid html tags' do
       'welcome <to <a href=/><hub></a>'.escape_invalid_tags.wont_equal 'welcome &lt;to <a href=/>&lt;hub&gt;</a>'
+    end
+  end
+
+  describe '#escape_special_characters' do
+    it 'should escape any special characters excluding letters, numbers and white spaces' do
+      'draft letter'.escape_special_characters.must_equal 'draft letter'
+      '123456'.escape_special_characters.must_equal '123456'
+      '[]{}()*+?^$.-,|'.escape_special_characters.must_equal '\[\]\{\}\(\)\*\+\?\^\$\.\-\,\|'
     end
   end
 end

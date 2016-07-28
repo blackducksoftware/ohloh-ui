@@ -14,7 +14,7 @@ module ActionView::Helpers::SanitizeHelper
     invalid_tags = html.scan(/<([^<>]*)>/).uniq.map do |tag|
       tag[0] if ActionView::Base.sanitized_allowed_tags.exclude?(tag[0].gsub(/(\/)|(\s.*)/, '').downcase)
     end.compact
-    invalid_tags.each { |tag| html.gsub!(/<(#{tag}[^<>]*)>/, '&lt;\\1&gt;') }
+    invalid_tags.map(&:escape_special_characters).each { |tag| html.gsub!(/<(#{tag}[^<>]*)>/, '&lt;\\1&gt;') }
     html
   end
 end

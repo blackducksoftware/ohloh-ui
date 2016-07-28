@@ -50,6 +50,10 @@ class String
     ActionController::Base.helpers.escape_invalid_tags self
   end
 
+  def escape_special_characters
+    gsub(/[^\w\s]/) { |char| '\\' + char }
+  end
+
   class << self
     def clean_string(str)
       return str if str.blank?
