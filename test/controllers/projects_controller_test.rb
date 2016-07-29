@@ -619,6 +619,7 @@ describe 'ProjectsController' do
     must_select 'input#project_enlistments_attributes_0_repository_attributes_url'
     must_select 'input#project_enlistments_attributes_0_repository_attributes_branch_name'
     must_select 'select#repository_type'
+    flash[:error].must_equal I18n.t('projects.create.failure')
   end
 
   it 'create should gracefully handle validation errors' do

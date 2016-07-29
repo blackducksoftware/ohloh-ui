@@ -240,7 +240,7 @@ en:
     update:
       success: "Project changes were saved successfully!"
     create:
-      failure: "There was a problem!"
+      failure: "There was a problem and the repository could not be verified.  Please check URL and branch."
     estimated_cost:
       page_title: "The %{name} Open Source Project on Open Hub : Estimated Cost Page"
       estimated_cost: "Estimated Cost"
