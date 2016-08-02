@@ -24,6 +24,7 @@ module CodeLocationJobs
     def refetch
       remove_pending_jobs
       FetchJob.create!(code_set: CodeSet.create!(code_location: self))
+      create_repository_directory
     end
 
     def remove_pending_jobs
@@ -32,6 +33,12 @@ module CodeLocationJobs
     end
 
     private
+
+    def create_repository_directory
+      object = parent_repository_directory
+      repository_directory = object.repository_directories.create!
+      object.update(best_repository_directory_id: repository_directory.id)
+    end
 
     def create_fetch_job(priority)
       cs = CodeSet.create(code_location: self)
