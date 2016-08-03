@@ -902,7 +902,8 @@ CREATE TABLE code_location_events (
     commit_sha1 text,
     status boolean,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    repository_id integer
 );
 
 
@@ -3507,6 +3508,38 @@ ALTER SEQUENCE repository_directories_id_seq OWNED BY repository_directories.id;
 
 
 --
+-- Name: repository_tags; Type: TABLE; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE TABLE repository_tags (
+    id integer NOT NULL,
+    repository_id integer,
+    name text,
+    commit_sha1 text,
+    message text
+);
+
+
+--
+-- Name: repository_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE repository_tags_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: repository_tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE repository_tags_id_seq OWNED BY repository_tags.id;
+
+
+--
 -- Name: reverification_pilot_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -4612,6 +4645,13 @@ ALTER TABLE ONLY repository_directories ALTER COLUMN id SET DEFAULT nextval('rep
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY repository_tags ALTER COLUMN id SET DEFAULT nextval('repository_tags_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY reverification_pilot_accounts ALTER COLUMN id SET DEFAULT nextval('reverification_pilot_accounts_id_seq'::regclass);
 
 
@@ -5497,6 +5537,14 @@ ALTER TABLE ONLY repository_directories
 
 
 --
+-- Name: repository_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+--
+
+ALTER TABLE ONLY repository_tags
+    ADD CONSTRAINT repository_tags_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: reverification_pilot_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -5970,6 +6018,13 @@ CREATE INDEX index_clumps_on_code_set_id_slave_id ON clumps USING btree (code_se
 --
 
 CREATE INDEX index_code_location_events_on_code_location_id ON code_location_events USING btree (code_location_id);
+
+
+--
+-- Name: index_code_location_events_on_repository_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_code_location_events_on_repository_id ON code_location_events USING btree (repository_id);
 
 
 --
@@ -6757,6 +6812,13 @@ CREATE INDEX index_repository_directories_on_repository_id ON repository_directo
 
 
 --
+-- Name: index_repository_tags_on_repository_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_repository_tags_on_repository_id ON repository_tags USING btree (repository_id);
+
+
+--
 -- Name: index_reviews_on_account_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -7493,6 +7555,14 @@ ALTER TABLE ONLY code_location_tarballs
 
 
 --
+-- Name: fk_rails_275a40dd6e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY repository_tags
+    ADD CONSTRAINT fk_rails_275a40dd6e FOREIGN KEY (repository_id) REFERENCES repositories(id);
+
+
+--
 -- Name: fk_rails_2f22a538c9; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7530,6 +7600,14 @@ ALTER TABLE ONLY repository_directories
 
 ALTER TABLE ONLY repository_directories
     ADD CONSTRAINT fk_rails_d36c79e15c FOREIGN KEY (repository_id) REFERENCES repositories(id);
+
+
+--
+-- Name: fk_rails_f43796d023; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_location_events
+    ADD CONSTRAINT fk_rails_f43796d023 FOREIGN KEY (repository_id) REFERENCES repositories(id);
 
 
 --
@@ -8541,6 +8619,10 @@ INSERT INTO schema_migrations (version) VALUES ('20160710125644');
 INSERT INTO schema_migrations (version) VALUES ('20160713124305');
 
 INSERT INTO schema_migrations (version) VALUES ('20160725154001');
+
+INSERT INTO schema_migrations (version) VALUES ('20160803102211');
+
+INSERT INTO schema_migrations (version) VALUES ('20160804081950');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
