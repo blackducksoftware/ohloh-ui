@@ -932,11 +932,12 @@ ALTER SEQUENCE code_location_events_id_seq OWNED BY code_location_events.id;
 
 CREATE TABLE code_location_tarballs (
     id integer NOT NULL,
-    code_location_id integer,
-    commit_sha1 text,
+    reference text,
     filepath text,
     status integer DEFAULT 0,
-    created_at timestamp without time zone
+    created_at timestamp without time zone,
+    code_location_id integer,
+    type text
 );
 
 
@@ -3508,7 +3509,7 @@ ALTER SEQUENCE repository_directories_id_seq OWNED BY repository_directories.id;
 
 
 --
--- Name: repository_tags; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: repository_tags; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE repository_tags (
@@ -5537,7 +5538,7 @@ ALTER TABLE ONLY repository_directories
 
 
 --
--- Name: repository_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: repository_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY repository_tags
@@ -6028,17 +6029,10 @@ CREATE INDEX index_code_location_events_on_repository_id ON code_location_events
 
 
 --
--- Name: index_code_location_tarballs_on_code_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_code_location_tarballs_on_reference; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_code_location_tarballs_on_code_location_id ON code_location_tarballs USING btree (code_location_id);
-
-
---
--- Name: index_code_location_tarballs_on_commit_sha1; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_code_location_tarballs_on_commit_sha1 ON code_location_tarballs USING btree (commit_sha1);
+CREATE INDEX index_code_location_tarballs_on_reference ON code_location_tarballs USING btree (reference);
 
 
 --
@@ -8623,6 +8617,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160725154001');
 INSERT INTO schema_migrations (version) VALUES ('20160803102211');
 
 INSERT INTO schema_migrations (version) VALUES ('20160804081950');
+
+INSERT INTO schema_migrations (version) VALUES ('20160808163201');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
