@@ -1,4 +1,4 @@
-= render partial: 'layouts/partials/mast'
+= render partial: 'layouts/partials/mast', locals: { black_bg_logo: black_bg_logo }
 = render partial: 'layouts/partials/menubar'
 = render partial: 'layouts/partials/stacked_nag', locals: { reminder: find_nag_reminder }
 = render partial: 'layouts/partials/alert' unless page_context[:page_header]

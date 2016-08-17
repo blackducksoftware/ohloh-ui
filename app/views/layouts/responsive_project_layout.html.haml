@@ -14,11 +14,11 @@
 
   %body{ zoom: 1 }
     = yield :session_projects_banner
-    .container#page
-      %header= render partial: 'layouts/partials/header', locals: { black_bg_logo: '' }
-      = render partial: 'layouts/partials/page', locals: { responsive_layout: false }
+    .container#project_container
+      %header= render partial: 'layouts/partials/header', locals: { black_bg_logo: 'black_bg_logo.png'}
+      = render partial: 'layouts/partials/page', locals: { responsive_layout: true }
       .clear
-      %footer= render partial: 'layouts/partials/footer'
+      %footer.fluid_footer= render partial: 'layouts/partials/fluid_footer'
 
     = yield(:javascript) if content_for?(:javascript)
     = javascript_include_tag 'application',

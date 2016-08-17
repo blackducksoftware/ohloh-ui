@@ -1,9 +1,9 @@
 .navbar
-  %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
+  %span.logo-container{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
     %span.hidden{ itemprop: 'author' } openhub.net
     %span.hidden{ itemprop: 'publisher' } Black Duck Software, Inc.
     %a.logo_link{ href: root_path }
-      %img{ itemprop: 'image', src: image_path('header/logo.png'), alt: 'Open Hub' }
+      %img{ itemprop: 'image', src: image_path("header/logo.png"), alt: 'Open Hub' }
   %ul#top_nav_actions
     %li.twitter_follow
       :ruby
