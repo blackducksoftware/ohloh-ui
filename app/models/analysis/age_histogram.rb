@@ -1,6 +1,15 @@
 class Analysis::AgeHistogram
   class << self
     def execute
+      histogram_data = Struct.new(:value, :logged_date)
+      Analysis.connection.execute(select_manager.to_sql).values.collect do |v|
+        histogram_data.new(v[0].to_i, Time.zone.parse(v[1] + ' UTC'))
+      end
+    end
+
+    private
+
+    def select_manager
       select_manager = analyses.project(count_star, date_trunc)
                                .join(projects)
                                .on(project_conditions)
@@ -8,13 +17,8 @@ class Analysis::AgeHistogram
                                .where(in_last_two_months)
                                .group('logged_date')
                                .order('logged_date')
-       histogram_data = Struct.new(:value, :logged_date)
-       Analysis.connection.execute(select_manager.to_sql).values.collect do |v|
-         histogram_data.new(v[0].to_i, Time.parse(v[1] + " UTC"))
-       end
+      select_manager
     end
-
-    private
 
     def projects
       Project.arel_table
