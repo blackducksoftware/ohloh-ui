@@ -2,7 +2,7 @@ class ProjectsController < ApplicationController
   [AnalysesHelper, FactoidsHelper, MapHelper, RatingsHelper,
    RepositoriesHelper, TagsHelper].each { |help| helper help }
 
-  layout "responsive_project_layout", only: [:show]
+  layout 'responsive_project_layout', only: :show
 
   include ProjectFilters
 
