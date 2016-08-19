@@ -21,7 +21,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
       :background-position -#{$multiplier * $dimension}px 0
       :background-repeat no-repeat
       :position absolute
-      :top 15px
+      :top 1rem
 
 #projects_index_list, #managed_projects_list
   :margin 20px 0 0 0
@@ -117,13 +117,14 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
       overflow: auto
 
 #project_masthead
+  :margin-top 1rem
   :height 85px
 
   #project_icon
     margin-top: 8px
 
   #widgets
-    width: 190px
+    width: 31rem
 
   #project_header
     padding-right: 0px
@@ -136,7 +137,13 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     margin-top: 10px
     li
       margin: 15px 0 15px 30px
+#add_this
+  margin-top: 5.3rem
 
+#project_container
+  #project_masthead
+    #widgets
+      width: 31rem
 // settings page styles
 .settings_module
   :cursor pointer
@@ -269,4 +276,3 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
 
 .pvr_link
   color: #000 !important
-

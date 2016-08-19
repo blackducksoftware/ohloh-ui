@@ -3,18 +3,56 @@
 body
   background-color: #555
   font-family: Open Sans
-  font-size: 13px
+  font-size: 1.3rem
   margin: 0
   color: #000
 
 #page
+  width: 980px
   background-color: white
   margin: 0 auto
   padding: 10px 10px 0 10px
-  width: 980px
 
 header
   margin-bottom: 0px
+
+#nav-top-bar
+  border-bottom: 0.4rem #DDD solid
+  margin: 11px 0 0 0
+  .new_main_menu
+    list-style: none
+    margin: 0
+    padding: 0
+    li
+      display: inline-block
+      margin-right: 16px
+      a
+        text-transform: uppercase
+        color: #0082c6
+        font-size: 13pt
+        text-decoration: none
+        &:hover
+          padding-bottom: 0px
+          border-bottom: 0.4rem #0082C6 solid
+          color: black
+
+#project_container
+  background-color: white
+  #page-contents
+    width: auto
+    #project_masthead
+      .no_padding
+        margin-left: 1rem
+      #project_header_activity_indicator.no_padding
+        margin-left: 2rem
+    #project_header
+      padding-left: 0
+      margin-left: -1rem
+  .thirtyfive_project_activity_text
+    margin-top: 3.5rem
+    line-height: 1.3rem
+  .thirtyfive_project_activity_level_na
+    top: 1rem
 
 .navbar
   border-width: 0
@@ -92,34 +130,15 @@ header
       overflow: hidden
       border-bottom: 1px solid #e5e5e5
 
-#nav-top-bar
-  border-bottom: 5px #DDD solid
-  margin: 11px 0 0 0
-  .new_main_menu
-    list-style: none
-    margin: 0
-    padding: 0
-    li
-      display: inline-block
-      margin-right: 16px
-      a
-        text-transform: uppercase
-        color: #0082c6
-        font-size: 13pt
-        text-decoration: none
-        &:hover
-          padding-bottom: 0px
-          border-bottom: 5px #0082C6 solid
-          color: black
 
 #flash-msg .alert
   border-radius: 0
   margin-top: 10px
 
 #page-contents
-  width: 940px
   margin-left: 10px
   margin-right: 10px
+  width: 940px
 
 .no_padding
   padding: 0px !important
@@ -233,3 +252,25 @@ fieldset
   word-wrap: break-word
   word-break: break-all
   white-space: normal
+.container#project_container
+  .navbar
+    margin-bottom: 1.5rem
+    #top_nav_actions
+      margin-top: 1.6rem
+    .logo_link
+      img
+        margin-top: 1.6rem
+  @media screen and (max-width: 1279)
+    width: 980px !important
+  @media screen and (min-width: 1280px) and (max-width:1365px)
+    width: 1250px
+  @media screen and (min-width: 1366px) and (max-width:1919px)
+    width: 1346px
+    #project_masthead
+      .project_title
+        margin-left: -2rem
+  @media screen and (min-width: 1920px)
+    width: 1890px
+    #project_masthead
+      .project_title
+        margin-left: -4rem
