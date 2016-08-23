@@ -325,3 +325,6 @@ en:
       most_written: 'Mostly written in'
       licence: 'License:'
       unknown: 'Unknown'
+    security:
+      page_title: 'Security Page'
+      title: 'Security'
