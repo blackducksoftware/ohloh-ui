@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :project_security_set do
-    association :project
-    uuid { Faker::Lorem.word }
+    uuid { SecureRandom.uuid }
+    etag { SecureRandom.hex }
   end
 end

@@ -36,7 +36,8 @@ class ProjectDecorator < Cherry::Decorator
       [
         [:code_data,        I18n.t(:code_data)],
         [:languages,        I18n.t(:languages_menu), h.languages_summary_project_analysis_path(project, id: 'latest')],
-        [:estimated_cost,   I18n.t(:cost_estimates), h.estimated_cost_project_path(project)]
+        [:estimated_cost,   I18n.t(:cost_estimates), h.estimated_cost_project_path(project)],
+        [:project_vulnerabilities, I18n.t(:project_vulnerabilities), h.vulnerabilities_project_path(project)]
       ],
       [
         [:scm_data,         I18n.t(:scm_data)],
