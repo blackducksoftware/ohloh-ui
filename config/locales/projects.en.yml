@@ -169,6 +169,8 @@ en:
       summary:
         add_desc: "Add description"
         no_desc: "No description has been added for this project. %{link}"
+      vulnerabilities_per_version:
+        vulnerabilities: "Project Security"
       vulnerability_report:
         no_data: 'No Project Vulnerability Data available'
         title_security_score: 'Project Security Score'
