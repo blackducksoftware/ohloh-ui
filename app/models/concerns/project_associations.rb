@@ -19,6 +19,8 @@ module ProjectAssociations
     belongs_to :organization
     has_many :manages, -> { where(deleted_at: nil, deleted_by: nil) }, as: 'target'
     has_many :managers, through: :manages, source: :account
+    has_many :project_security_sets
+    belongs_to :best_project_security_set, foreign_key: :best_project_security_set_id, class_name: :ProjectSecuritySet
     has_many :rss_subscriptions, -> { where(deleted: false) }
     has_many :rss_feeds, through: :rss_subscriptions
     has_many :reviews
