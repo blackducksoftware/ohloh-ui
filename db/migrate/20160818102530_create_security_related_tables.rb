@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/AbcSize
 class CreateSecurityRelatedTables < ActiveRecord::Migration
   def change
     create_table :project_security_sets do |t|
