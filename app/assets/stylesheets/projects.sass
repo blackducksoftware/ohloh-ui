@@ -235,36 +235,41 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
 .license-template
   display: none
 
-#vulnerability_report
-  width: 150px
-  margin-top: 15px
-  margin-right: 20px
-  padding: 0px !important
-#pss_bg
-  height: 13px
-  background: -webkit-linear-gradient(left, red, orange, yellow, green)
-  background: -o-linear-gradient(left, red, orange, yellow, green)
-  background: -moz-linear-gradient(left, red, orange, yellow, green)
+#vulnerability-report
+  word-wrap: break-word
+  .score-card
+    .range-good
+      padding-left: 0
+    .range-poor
+      padding-right: 0
+    .indicator
+      padding-left: 10px
+      padding-right: 10px
+    .range-good, .range-poor
+      font-size: 1.2rem
+      text-align: center
+
+#pss_bg, #pvs_bg
+  height: 45px
+  background: -webkit-linear-gradient(left, #4586BE, #9DC7F1)
+  background: -o-linear-gradient(left, #4586BE, #9DC7F1)
+  background: -moz-linear-gradient(left, #4586BE, #9DC7F1)
   //standard syntax
-  background: linear-gradient(to right, red, orange, yellow, green)
+  background: linear-gradient(to right, #4586BE, #9DC7F1)
+
+#pss_bg
   .meter
     height: 10px
     width: 88%
     background: #ccc
 #pvs_bg
-  height: 13px
-  background: -webkit-linear-gradient(right, red, orange, yellow, green)
-  background: -o-linear-gradient(right, red, orange, yellow, green)
-  background: -moz-linear-gradient(right, red, orange, yellow, green)
-  //standard syntax
-  background: linear-gradient(to left, red, orange, yellow, green)
   margin-bottom: 9px
 
 .pointer
-  width: 25px
-  height: 22px
+  width: 10px
+  height: 55px
   display: inline-block
-  background: #0082C6
+  background: #717171
   margin-top: -5px
 
 .pointer-value
@@ -278,8 +283,6 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
 #report-divider
   margin-top: 14px
 
-.pvr_no_data
-  opacity: 0.2
-
 .pvr_link
-  color: #000 !important
+  float: right
+  padding: 10px
