@@ -24,12 +24,10 @@ class Analysis::CodeHistoryChartTest < ActiveSupport::TestCase
   describe 'data' do
     it 'should return code_history chart data' do
       series = chart.data['series']
-      chart_options = chart.data['chart']
 
       series.first['id'].must_equal 'code'
       series.map { |d| d['data'].last }.must_equal [[@time_integer, 5], [@time_integer, 10], [@time_integer, 3]]
       series.map { |d| d['name'] }.must_equal %w(Code Comments Blanks)
-      chart_options['width'].must_equal 950
       chart.data['scrollbar'].must_equal nil
     end
   end
@@ -42,7 +40,6 @@ class Analysis::CodeHistoryChartTest < ActiveSupport::TestCase
       series.first['id'].must_equal 'code'
       series.map { |d| d['name'] }.must_equal %w(Code Comments Blanks)
       series.map { |d| d['data'].last }.must_equal [[@time_integer, 5], [@time_integer, 10], [@time_integer, 3]]
-      data['chart']['width'].must_equal 460
       data['scrollbar']['enabled'].must_equal false
     end
   end
