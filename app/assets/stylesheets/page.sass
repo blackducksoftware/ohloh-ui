@@ -53,7 +53,8 @@ header
     line-height: 1.3rem
   .thirtyfive_project_activity_level_na
     top: 1rem
-
+  .quick_reference_heading, .nutshell_heading
+    padding-left: 2rem
 .navbar
   border-width: 0
   margin: 0
@@ -252,6 +253,21 @@ fieldset
   word-wrap: break-word
   word-break: break-all
   white-space: normal
+
+.right_border
+  margin-top: 1.5rem
+  margin-bottom: 4rem
+  border-right: 1px solid #ccc
+  &.top_section
+    margin-bottom: 0
+    padding-bottom: 0
+  &.bottom_section
+    margin-top: 0
+    padding-top: 0
+
+.analysis_blank_container
+  margin-top: 15px
+
 .container#project_container
   .navbar
     margin-bottom: 1.5rem
@@ -260,17 +276,135 @@ fieldset
     .logo_link
       img
         margin-top: 1.6rem
+  .no_padding_right
+    padding-right: 0
+  .no_padding_left
+    padding-left: 0
+  .manage_padding
+    padding: 0 2rem
+    &.chart_container
+      padding-top: 2rem !important
+  .community_container
+  .highcharts-container
+    width: 100% !important
+  .project_row
+    .col-md-4
+      padding: 0 5rem
+    .resize_well
+      height: 100%
+    .community_well, .activity_well
+      height: 100%
+    .bottom_section
+      margin-bottom: 4rem
+      &.languages_container
+        display: flex
+        justify-content: center
+        .language_table_container
+          align-self: center
+    .community_container.top_section
+      margin-top: 1.5rem
+    .language_table_container
+      .language_table
+        width: 30rem
+        .language_stat_box
+          width: 15rem
+          .language_legends
+            width: 12rem
+          .language_percentage_indicator
+            width: 2rem
+    .quick_reference_container,.nutshell_container,.project_summary_container
+      margin-bottom: 3rem
+      .well
+        height: 100%
+        margin-bottom: 0
+
   @media screen and (max-width: 1279)
     width: 980px !important
   @media screen and (min-width: 1280px) and (max-width:1365px)
     width: 1250px
+    .project_row
+      padding: 0 2rem 0rem 2rem
+      .col-md-4
+        padding: 0 1rem
+      .resize_well
+        padding: 0
+      .manage_padding
+        padding: 0
+      .community_well, .activity_well
+        margin-bottom: 0
+      .language_table_container
+        .language_table
+          width: 29rem
+          .language_stat_box
+            width: 14rem
+            .language_legends
+              width: 12rem
+            .language_percentage_indicator
+              width: 2rem
+      .quick_reference_container
+        .well
+          .col-xs-4
+            padding-left: 0
+
   @media screen and (min-width: 1366px) and (max-width:1919px)
     width: 1346px
     #project_masthead
       .project_title
         margin-left: -2rem
+    .project_row
+      padding: 0 5rem 2rem 5rem
+      .resize_well
+        padding: 0 1.5rem
+        .col-md-4
+        padding: 0 1.5rem
+      .col-md-4
+        padding: 0 1rem
+      .community_well, .activity_well
+        margin-bottom: 0
+      .language_pie_image
+        width: 6rem
+        img
+          width: 100%
+      .language_table_container
+        .language_table
+          width: 27rem
+          .language_stat_box
+            width: 13rem
+
   @media screen and (min-width: 1920px)
     width: 1890px
     #project_masthead
       .project_title
         margin-left: -4rem
+    .project_row
+      padding: 0 10rem 0rem 10rem
+      .resize_well
+        padding: 0
+      .manage_padding
+        padding: 0
+      .community_well, .activity_well
+        padding-right: 4rem
+        padding-left: 4rem
+        margin-bottom: 0
+      .language_table_container
+        .language_table
+          width: 37rem
+          .language_stat_box
+            width: 18rem
+            .language_legends
+              width: 14rem
+            .language_percentage_indicator
+              width: 3rem
+  @media screen and (min-width: 992px) and  (max-width: 1279px)
+    .project_row
+      .col-md-4
+        padding: 0 1rem
+      .language_table_container
+        .language_table
+          width: 24rem
+          .language_stat_box
+            width: 12rem
+            .language_legends
+              width: 14rem
+            .language_percentage_indicator
+              width: 3rem

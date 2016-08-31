@@ -1,12 +1,13 @@
-%h4{ style: 'margin-bottom: .3em;' } Quick Reference
-%dl.dl-horizontal.unstyled
+%h4.quick_reference_heading= t('.quick_reference')
+.col-xs-12
   - if @project.organization
-    %dt= t('.organization')
-    %dd{ style: 'margin-bottom: .5em;' }
+    .col-xs-5.text-right= t('.organization')
+    .col-xs-7{ style: 'margin-bottom: .5em;' }
       = link_to @project.organization.name, organization_path(@project.organization)
-  %dt
+  .clearfix
+  .col-xs-5.text-right.text-right
     = link_to t('.proj_links'), project_links_path(@project)
-  %dd{ style: 'margin-bottom: .5em;' }
+  .col-xs-7{ style: 'margin-bottom: .5em;' }
     - if @project.decorate.sorted_link_list.any?
       - @project.decorate.sorted_link_list.each do |link_category_name, links|
         - if links.size > 1
@@ -21,9 +22,10 @@
         %br
     - else
       = link_to t('.add_proj_links'), project_links_path(@project)
-  %dt
+  .clearfix
+  .col-xs-5.text-right
     = link_to t('.code_locations'), project_enlistments_path(@project)
-  %dd{ style: 'margin-bottom: .5em;' }
+  .col-xs-7{ style: 'margin-bottom: .5em;' }
     - enlistments = @project.enlistments
     - if enlistments.present?
       - if enlistments.size > 1
@@ -33,9 +35,10 @@
       %br
     - else
       = link_to t('.add_code_location'), project_enlistments_path(@project)
-  %dt
+  .clearfix
+  .col-xs-5.text-right
     = link_to t('.licenses'), project_licenses_path(@project)
-  %dd{ style: 'margin-bottom: .5em;' }
+  .col-xs-7{ style: 'margin-bottom: .5em;' }
     - licenses = @project.licenses
     - if licenses.empty?
       = t('.no_license')
@@ -43,22 +46,17 @@
       %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
         %span{ itemprop: 'publishingPrinciples' }
           = licenses.collect { |l| link_to html_escape(l.short_name), license_url(l.to_param) }.to_sentence.html_safe
-  %dt
+  .clearfix
+  .col-xs-5.text-right
     = link_to t('.similar_projects'), similar_project_path(@project)
-  %dd{ style: 'margin-bottom: .5em;' }
+  .col-xs-7{ style: 'margin-bottom: .5em;' }
     #similar_projects{ data: { project_id: @project.to_param } }
     .hidden#related_spinner= image_tag('spinner.gif')
-  %dt
+  .clearfix
+  .col-xs-5.text-right
     = link_to t('.managers'), project_managers_path(@project)
-  %dd{ style: 'margin-bottom: .5em;' }
+  .col-xs-7{ style: 'margin-bottom: .5em;' }
     - if @project.active_managers.present?
       != project_managers_list
     - else
       = link_to t('.become_first', what: @project.name), new_project_manager_path(@project)
-
-.row
-  .col-md-12.center-block
-    .col-md-4
-    .center-block.col-md-4.hidden#browse_security_button
-      - browse_security_button(@project)
-    .col-md-4
