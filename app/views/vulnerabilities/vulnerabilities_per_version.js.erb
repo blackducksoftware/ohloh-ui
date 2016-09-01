@@ -1,20 +1,13 @@
 $(function () {
     $('#vulnerabilities').highcharts({
-        exporting: {
-            chartOptions: { // specific options for the exported image
-                plotOptions: {
-                    series: {
-                        dataLabels: {
-                            enabled: true
-                        }
-                    }
-                }
-            },
-            scale: 3,
-            fallbackToExportServer: false
-        },
         chart: {
-            type: 'column'
+            type: 'column',
+            events: {
+            load: function() {
+                this.renderer.image('http://i64.tinypic.com/25irqt5.png', 60, 30, 280, 30)
+                    .add();
+                }
+            }
         },
         credits: {
             enabled: false

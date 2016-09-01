@@ -17,8 +17,6 @@
 #= require chosen.jquery.min
 #= require highcharts/highstock
 #= require highcharts/highcharts-more
-#= require highcharts/export
-#= require highcharts/offline-export
 #= require highcharts/solid-gauge
 #= require app
 #= require_tree .
