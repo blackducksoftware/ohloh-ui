@@ -51,8 +51,6 @@ group :development do
 end
 
 group :test do
-  gem 'factory_girl_rails'
-  gem 'faker'
   gem 'flog'
   gem 'haml_lint'
   gem 'minitest-rails'
@@ -67,6 +65,8 @@ group :test do
 end
 
 group :development, :test do
+  gem 'faker'
+  gem 'factory_girl_rails'
   gem 'byebug'
   gem 'pry-rails'
   gem 'pry-byebug'
