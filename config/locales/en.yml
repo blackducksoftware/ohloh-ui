@@ -121,6 +121,7 @@ en:
   related_projects: 'Related Projects'
   code_data: 'Code Data'
   cost_estimates: 'Cost Estimates'
+  project_vulnerabilities: 'Security'
   scm_data: 'SCM Data'
   contributors: 'Contributors'
   commits_menu: 'Commits'
