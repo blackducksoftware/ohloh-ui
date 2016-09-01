@@ -49,8 +49,8 @@
   .col-md-4.quick_reference_container
     .well
       = render partial: 'projects/show/quick_reference'
-.mezzo.project_security_row{style: 'margin-bottom: 20rem'}
-  %h4 Project Security
+.mezzo.project_security
+  = render partial: 'projects/show/security'
 
 .mezzo
 - if @analysis.blank?

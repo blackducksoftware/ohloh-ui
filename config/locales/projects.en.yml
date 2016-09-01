@@ -173,10 +173,17 @@ en:
         no_desc: "No description has been added for this project. %{link}"
       vulnerability_report:
         no_data: 'No Project Vulnerability Data available'
-        title_security_score: 'Project Security Score'
-        title_vulnerability_score: 'Project Vulnerability Score'
         pvs_tooltip: 'Score: %{score} <br/> Rank: %{rank} of %{max_rank}'
         title: 'Project Vulnerability Report'
+        blog_link: 'About Project Vulnerability Report'
+        pvs:
+          title: 'Vulnerability Exposure Index'
+          good: 'Few reported vulnerabilities'
+          poor: 'Many reported vulnerabilities'
+        pss:
+          title: 'Security Confidence Index'
+          good: 'Favorable security track-record'
+          poor: 'Poor security track-record'
       thirty_day_summary:
         commit: "Commit"
         commits: "Commits"
@@ -203,6 +210,9 @@ en:
         ending: ending with its
         first_commit_in: first commit in %{time}
         most_recent_commit: most recent commit %{time}
+      security:
+        title: 'Project Security'
+        title_nvd: 'This Project has No vulnerabilities Reported Against it'
     deleted:
       message: '%{name} has been deleted'
       failed: 'failed'
