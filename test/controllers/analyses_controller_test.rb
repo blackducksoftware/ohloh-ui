@@ -220,12 +220,10 @@ describe 'AnalysesController' do
       assigns(:project).must_equal project
 
       series = result['series']
-      chart_options = result['chart']
 
       series.first['id'].must_equal 'code'
       series.map { |d| d['data'].last }.must_equal [[time_integer, 5], [time_integer, 10], [time_integer, 3]]
       series.map { |d| d['name'] }.must_equal %w(Code Comments Blanks)
-      chart_options['width'].must_equal 950
       result['scrollbar'].must_equal nil
     end
   end
@@ -247,12 +245,10 @@ describe 'AnalysesController' do
       assigns(:project).must_equal project
 
       series = result['series']
-      chart_options = result['chart']
 
       series.first['id'].must_equal 'code'
       series.map { |d| d['data'].last }.must_equal [[time_integer, 5], [time_integer, 10], [time_integer, 3]]
       series.map { |d| d['name'] }.must_equal %w(Code Comments Blanks)
-      chart_options['width'].must_equal 460
       result['scrollbar']['enabled'].must_equal false
     end
   end

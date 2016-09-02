@@ -1,0 +1,17 @@
+.row.project_row
+  - if @project.project_vulnerability_report
+    %h4= t('.title')
+    .col-md-4#vulnerability_per_version
+      .well
+        %p Project vulnerabilities per version chart goes here
+    .col-md-4#vulnerability-report
+      .well
+        = render partial: 'projects/show/vulnerability_report'
+    .col-md-4#did_you_know
+      .well
+        %p Did you know goes here
+  - else
+    .col-md-12#did_you_know
+      %h4= t('.title_nvd')
+      %p Did you know goes here
+
