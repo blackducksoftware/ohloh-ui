@@ -9,6 +9,7 @@ module ProjectAssociations
     has_many :taggings, as: :taggable
     has_many :tags, through: :taggings
     belongs_to :best_analysis, foreign_key: :best_analysis_id, class_name: :Analysis
+    belongs_to :best_project_security_set, foreign_key: :best_project_security_set, class_name: :ProjectSecuritySet
     has_many :aliases, -> { where(deleted: false).where.not(preferred_name_id: nil) }
     has_many :contributions
     has_many :positions
