@@ -201,6 +201,7 @@ Rails.application.routes.draw do
       get :map
       get :settings
       get :estimated_cost
+      get 'security' => 'vulnerabilities#vulnerabilities_per_version', as: :vulnerabilities, defaults: { format: 'js' }
       get :similar_by_tags
       get :similar
       get 'permissions'  => 'permissions#show',   as: :permissions

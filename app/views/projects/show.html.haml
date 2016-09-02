@@ -45,6 +45,10 @@
     .well
       = render partial: 'projects/show/quick_reference'
 
+- if @project.best_project_security_set
+  .col-md-6
+    = render partial: 'projects/show/vulnerabilities_per_version', locals: { project: @project }
+
 - if @analysis.blank?
   = render partial: 'projects/show/no_analysis_summary'
   .col-md-3#proj_rating= render 'projects/show/community_rating', title: t('.community_rating'), score: @score

@@ -1,0 +1,88 @@
+$(function () {
+     $('#vulnerabilities').highcharts({
+         chart: {
+             type: 'column',
+             events: {
+             load: function() {
+                 this.renderer.image('http://i64.tinypic.com/25irqt5.png', 60, 30, 280, 30)
+                     .add();
+                 }
+             }
+         },
+         credits: {
+             enabled: false
+         },
+         title: {
+             text: null
+         },
+         legend: {
+             align:  'left',
+           itemWidth: 127
+         },
+         xAxis: {
+             categories: <%= @release_versions.html_safe %>
+         },
+         yAxis: {
+             min: 0,
+             allowDecimals: false,
+             title: {
+                 text: 'Vulnerabilities'
+             },
+             stackLabels: {
+                 enabled: false,
+                 style: {
+                     fontWeight: 'bold',
+                     color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                 }
+             }
+         },
+         tooltip: {
+             headerFormat: '<b>{point.x}</b><br/>',
+             pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+         },
+         plotOptions: {
+             column: {
+                 stacking: 'normal',
+                 dataLabels: {
+                     enabled: false,
+                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                     style: {
+                         textShadow: '0 0 3px black'
+                     }
+                 }
+             }
+         },
+         series: [{
+             name: 'High Severity',
+             data: <%= @vulnerabilities[2] %>,
+             color:'#4586BE'
+         }, {
+             name: 'Medium Severity',
+             data: <%= @vulnerabilities[1] %>,
+             color:'#64AAF1'
+         }, {
+             name: 'Low Severity',
+             data: <%= @vulnerabilities[0] %>,
+             color:'#9DC7F1'
+         }]
+     });
+ });
+ 
+ $(".chart-export").each(function() {
+   var jThis = $(this),
+       chartSelector = jThis.data("chartSelector"),
+       chart = $(chartSelector).highcharts();
+ 
+   $("*[data-type]", this).each(function() {
+     var jThis = $(this),
+         type = jThis.data("type");
+     if(Highcharts.exporting.supports(type)) {
+       jThis.click(function() {
+         chart.exportChartLocal({ type: type });
+       });
+     }
+     else {
+       jThis.attr("disabled", "disabled");
+     }
+   });
+});
