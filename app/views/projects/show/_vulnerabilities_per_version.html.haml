@@ -1,0 +1,15 @@
+%script{ src: 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js' }
+
+- vanity_url = project.vanity_url
+:javascript
+  $(document).ready(function() {
+    $.ajax({
+      url: "/p/#{vanity_url}/security.js"
+    });
+  })
+
+%h4.margin_left_30
+  = link_to(t('.vulnerabilities'), project_vulnerabilities_url(project))
+
+#vulnerabilities{ style: 'max-width: 405px; height: 300px; margin: 0 auto' }
+
