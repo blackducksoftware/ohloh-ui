@@ -3,8 +3,6 @@ ActiveAdmin.register Release do
   filter :version
   filter :project_security_set_id
 
-  belongs_to :project_security_set
-
   actions :index, :show
 
   index do
@@ -19,5 +17,11 @@ ActiveAdmin.register Release do
     column :created_at
     column :updated_at
     actions
+  end
+
+  controller do
+    def scoped_collection
+      ProjectSecuritySet.find(params[:project_security_set_id]).releases
+    end
   end
 end
