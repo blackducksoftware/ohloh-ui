@@ -280,5 +280,9 @@ class ApplicationController < ActionController::Base
   def set_project_editor_account_to_current_user
     @project.editor_account = current_user
   end
+
+  def check_project_authorization
+    render_unauthorized unless @project.edit_authorized?
+  end
 end
 # rubocop:enable Metrics/ClassLength
