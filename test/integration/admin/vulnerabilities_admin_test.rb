@@ -3,8 +3,9 @@ require 'test_helpers/admin_test_helper'
 
 class VulnerabilitiesAdminTest < ActionDispatch::IntegrationTest
   let(:admin) { create(:admin, password: TEST_PASSWORD) }
-  let(:vulnerability) { create(:vulnerability) }
-  let(:release) { vulnerability.release }
+  let(:pss_release_vulnerability) { create(:pss_release_vulnerability) }
+  let(:vulnerability) { pss_release_vulnerability.vulnerability }
+  let(:release) { pss_release_vulnerability.release }
 
   it 'should render index page' do
     login_as admin
