@@ -184,6 +184,8 @@ en:
           title: 'Security Confidence Index'
           good: 'Favorable security track-record'
           poor: 'Poor security track-record'
+      vulnerabilities_per_version:
+        title: 'Vulnerabilities per Version'
       thirty_day_summary:
         commit: "Commit"
         commits: "Commits"
@@ -340,3 +342,8 @@ en:
     security:
       page_title: 'Security Page'
       title: 'Security'
+    vulnerabilities:
+      severity:
+        low: 'Low Severity'
+        medium: 'Medium Severity'
+        high: 'High Severity'

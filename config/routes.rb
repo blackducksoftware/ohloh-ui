@@ -202,6 +202,7 @@ Rails.application.routes.draw do
       get :settings
       get :estimated_cost
       get :security
+      get 'vulnerabilities_version_chart' => 'vulnerabilities#version_chart', defaults: { format: 'js' }
       get :similar_by_tags
       get :similar
       get 'permissions'  => 'permissions#show',   as: :permissions
