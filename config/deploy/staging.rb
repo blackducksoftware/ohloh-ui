@@ -6,6 +6,8 @@ role :web_5, %w(serv-deployer@oh-web05.dc1.lan)
 role :web_6, %w(serv-deployer@oh-web06.dc1.lan)
 role :web_7, %w(serv-deployer@oh-web07.dc1.lan)
 
+role :selenium, %w(serv-deployer@oh-web03.dc1.lan)
+
 role :web_0, %w(core@10.1.1.106)
 
 role :db, %w(serv-deployer@oh-utility01.dc1.lan), primary: true
