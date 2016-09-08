@@ -53,18 +53,38 @@ describe 'EnlistmentsControllerTest' do
     end
   end
 
-  it 'new' do
-    login_as @account
-    get :new, project_id: @project_id
-    must_respond_with :ok
-    must_render_template :new
+  describe 'new' do
+    it 'must render the new page' do
+      login_as @account
+      get :new, project_id: @project_id
+      must_respond_with :ok
+      must_render_template :new
+    end
+
+    it 'should disallow non-managers from viewing the page' do
+      project = @enlistment.project
+      create(:permission, target: project, remainder: true)
+      login_as create(:account)
+      get :new, project_id: project.vanity_url
+      assert_response :unauthorized
+    end
   end
 
-  it 'edit' do
-    login_as @account
-    get :edit, project_id: @project_id, id: @enlistment.id
-    must_respond_with :ok
-    must_render_template :edit
+  describe 'edit' do
+    it 'must render the edit page' do
+      login_as @account
+      get :edit, project_id: @project_id, id: @enlistment.id
+      must_respond_with :ok
+      must_render_template :edit
+    end
+
+    it 'should prevent non-managers from editing' do
+      project = @enlistment.project
+      create(:permission, target: project, remainder: true)
+      login_as create(:account)
+      get :edit, project_id: project.vanity_url, id: @enlistment.id
+      assert_response :unauthorized
+    end
   end
 
   it 'update' do
@@ -138,6 +158,14 @@ describe 'EnlistmentsControllerTest' do
 
         EnlistmentWorker.jobs.size.must_equal 1
       end
+    end
+
+    it 'must prevent non-managers from creating enlistments' do
+      project = @enlistment.project
+      create(:permission, target: project, remainder: true)
+      login_as create(:account)
+      post :create, project_id: project.vanity_url, repository: GithubUser.new(url: :stan).attributes
+      assert_response :unauthorized
     end
 
     it 'should not create job for a existing githubuser_name' do
