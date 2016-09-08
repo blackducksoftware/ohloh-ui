@@ -89,4 +89,8 @@ module ProjectsHelper
   def project_activity_level(project)
     project.best_analysis.activity_level
   end
+
+  def project_description_size_breached?(project)
+    project.description && project.description.size > 800 ? true : false
+  end
 end
