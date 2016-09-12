@@ -172,7 +172,7 @@ en:
         add_desc: "Add description"
         no_desc: "No description has been added for this project. %{link}"
       vulnerability_report:
-        no_data: 'No Project Vulnerability Data available'
+        no_data: 'No data available'
         pvs_tooltip: 'Score: %{score} <br/> Rank: %{rank} of %{max_rank}'
         title: 'Project Vulnerability Report'
         blog_link: 'About Project Vulnerability Report'
@@ -186,6 +186,7 @@ en:
           poor: 'Poor security track-record'
       vulnerabilities_per_version:
         title: 'Vulnerabilities per Version'
+        no_data: 'No data available'
       thirty_day_summary:
         commit: "Commit"
         commits: "Commits"
