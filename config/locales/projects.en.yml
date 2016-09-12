@@ -96,6 +96,8 @@ en:
       add_tags: "add some now"
       community_rating: "Community Rating"
       in_a_nutshell: "In a Nutshell, %{name}"
+      site_features:
+        did_you_know: 'Did You Know'
       analysis_summary:
         code_locations_removed: "Code locations have been removed since last analysis"
         code_locations_removed_explanation: "At one point, Open Hub analyzed source code for this project based on code location(s) available at that time. Since then, the code locations have been removed."

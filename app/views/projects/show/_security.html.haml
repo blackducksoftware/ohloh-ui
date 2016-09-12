@@ -6,9 +6,9 @@
     .col-md-4#vulnerability-report
       .well= render partial: 'projects/show/vulnerability_report'
     .col-md-4#did_you_know
-      .well
-        %p Did you know goes here
+      = render 'projects/show/site_features'
   - else
     .col-md-12#did_you_know
       %h4= t('.title_nvd')
-      %p Did you know goes here
+      = render 'projects/show/site_features'
+
