@@ -52,7 +52,10 @@
 .mezzo.project_security
   = render partial: 'projects/show/security'
 
-.mezzo
+- if @project.best_project_security_set
+  .col-md-6
+    = render partial: 'projects/show/vulnerabilities_per_version'
+
 - if @analysis.blank?
   .analysis_blank_container
     = render partial: 'projects/show/no_analysis_summary'
