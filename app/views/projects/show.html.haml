@@ -22,7 +22,7 @@
   .col-md-4.project_summary_container
     .well
       %h4.text-left= t('.project_summary')
-      #project_summary{ itemprop: 'description' }
+      #project_summary{ itemprop: 'description', class: "#{ 'vertical_scroll_bar' if project_description_size_breached?(@project) }"}
         - if @project.description.present?
           = simple_format(@project.description.escape)
         - else
