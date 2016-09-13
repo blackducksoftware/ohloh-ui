@@ -96,6 +96,8 @@ en:
       add_tags: "add some now"
       community_rating: "Community Rating"
       in_a_nutshell: "In a Nutshell, %{name}"
+      site_features:
+        did_you_know: 'Did You Know'
       analysis_summary:
         code_locations_removed: "Code locations have been removed since last analysis"
         code_locations_removed_explanation: "At one point, Open Hub analyzed source code for this project based on code location(s) available at that time. Since then, the code locations have been removed."
@@ -172,7 +174,7 @@ en:
         add_desc: "Add description"
         no_desc: "No description has been added for this project. %{link}"
       vulnerability_report:
-        no_data: 'No Project Vulnerability Data available'
+        no_data: 'No data available'
         pvs_tooltip: 'Score: %{score} <br/> Rank: %{rank} of %{max_rank}'
         title: 'Project Vulnerability Report'
         blog_link: 'About Project Vulnerability Report'
@@ -184,6 +186,9 @@ en:
           title: 'Security Confidence Index'
           good: 'Favorable security track-record'
           poor: 'Poor security track-record'
+      vulnerabilities_per_version:
+        title: 'Vulnerabilities per Version'
+        no_data: 'No data available'
       thirty_day_summary:
         commit: "Commit"
         commits: "Commits"
@@ -340,3 +345,8 @@ en:
     security:
       page_title: 'Security Page'
       title: 'Security'
+    vulnerabilities:
+      severity:
+        low: 'Low Severity'
+        medium: 'Medium Severity'
+        high: 'High Severity'
