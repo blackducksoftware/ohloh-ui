@@ -1,0 +1,29 @@
+:ruby
+  content_for(:html_title) { t('projects.html_title', name: @project.name, title: t('.page_title')) }
+  page_context[:select_top_menu_nav] = 'select_projects'
+  page_context[:select_footer_nav] = :project_security
+
+= Gon::Base.render_data()
+
+%div
+  %h2.pull-left= t('.security')
+  = project_analysis_timestamp(@project)
+.row
+  .col-md-12
+    %h3.margin_left_15{ style: 'font-weight: normal' }= t('.vulns_per_version')
+.row
+  - if @project.best_project_security_set
+    .col-md-6
+      %h3{ style: 'font-weight: normal' }= t('.major_versions')
+      = select_tag 'release_version', options_for_select(major_releases(@release_data)), include_blank: 'All', style: 'max-width: 30%'
+    .col-md-6
+      .pull-right.btn-group{ 'aria-label' => '...', :role => 'group' }
+        %button.btn.btn-default#one{ 'date' => 1 } 1yr
+        %button.btn.btn-default#three{ 'date' => 3 } 3yr
+        %button.btn.btn-default#five{ 'date' => 5 } 5yr
+        %button.btn.btn-default#ten{ 'date' => 10 } 10yr
+        %button.btn.btn-default#all{ 'date' => 'all'} all
+    #container{ style: 'min-width: 310px; height: 400px; margin: 0 auto'}
+  - else
+    %p.text-center= t('.no_data')
+.clear
