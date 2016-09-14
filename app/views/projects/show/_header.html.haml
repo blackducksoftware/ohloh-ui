@@ -49,8 +49,6 @@
                   = render 'sessions/sign_in'
 
 .clearfix
-.row.project-header-divider
-  .col-md-12
-    .mezzo
+.row.mezzo
 = yield :header_title if content_for?(:header_title)
 = render partial: 'layouts/partials/alert'

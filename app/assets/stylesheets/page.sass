@@ -268,7 +268,11 @@ fieldset
 .analysis_blank_container
   margin-top: 15px
 
-.container#project_container
+.container-fluid#project_container
+  .row.mezzo
+    margin: 0 -10px
+  .page-contents
+    margin: 0
   .navbar
     margin-bottom: 1.5rem
     #top_nav_actions
@@ -288,14 +292,13 @@ fieldset
   .highcharts-container
     width: 100% !important
   .project_row
-    .col-md-4
-      padding: 0 5rem
     .resize_well
       height: 100%
+      padding: 0
     .community_well, .activity_well
       height: 100%
     .bottom_section
-      margin-bottom: 4rem
+      margin-bottom: 1.5rem
       &.languages_container
         display: flex
         justify-content: center
@@ -312,7 +315,7 @@ fieldset
             width: 12rem
           .language_percentage_indicator
             width: 2rem
-    .quick_reference_container,.nutshell_container,.project_summary_container
+    .quick_reference_container,.nutshell_container,.project_summary_container,#vulnerability_per_version,#vulnerability-report,#did_you_know
       margin-bottom: 3rem
       .well
         height: 100%
@@ -322,19 +325,16 @@ fieldset
       overflow-y: scroll
       overflow-x: hidden
       word-wrap: break-word
-    #did_you_know
-      &.col-md-12
-        padding: 0 1rem !important
-  @media screen and (max-width: 1279)
-    width: 980px !important
+    #community_rating
+      .community_rating_header
+        margin-bottom: 0.7em
+      .add_rating_container
+        margin-top: 0.7rem
+
   @media screen and (min-width: 1280px) and (max-width:1365px)
-    width: 1250px
     .project_row
       padding: 0 2rem 0rem 2rem
-      .col-md-4
-        padding: 0 1rem
-      .resize_well
-        padding: 0
+
       .manage_padding
         padding: 0
       .community_well, .activity_well
@@ -354,18 +354,11 @@ fieldset
             padding-left: 0
 
   @media screen and (min-width: 1366px) and (max-width:1919px)
-    width: 1346px
     #project_masthead
       .project_title
         margin-left: -2rem
     .project_row
-      padding: 0 5rem 2rem 5rem
-      .resize_well
-        padding: 0 1.5rem
-        .col-md-4
-        padding: 0 1.5rem
-      .col-md-4
-        padding: 0 1rem
+      padding: 0 5rem 0rem 5rem
       .community_well, .activity_well
         margin-bottom: 0
       .language_pie_image
@@ -379,14 +372,11 @@ fieldset
             width: 13rem
 
   @media screen and (min-width: 1920px)
-    width: 1890px
     #project_masthead
       .project_title
         margin-left: -4rem
     .project_row
       padding: 0 10rem 0rem 10rem
-      .resize_well
-        padding: 0
       .manage_padding
         padding: 0
       .community_well, .activity_well
@@ -402,13 +392,9 @@ fieldset
               width: 14rem
             .language_percentage_indicator
               width: 3rem
-      #did_you_know
-        &.col-md-12
-          padding: 0 5rem !important
+
   @media screen and (min-width: 992px) and  (max-width: 1279px)
     .project_row
-      .col-md-4
-        padding: 0 1rem
       .language_table_container
         .language_table
           width: 24rem

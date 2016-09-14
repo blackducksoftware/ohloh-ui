@@ -49,9 +49,10 @@
   .col-md-4.quick_reference_container
     .well
       = render partial: 'projects/show/quick_reference'
-.mezzo.project_security
+.row.mezzo
+.project_security
   = render partial: 'projects/show/security'
-
+.row.mezzo
 - if @analysis.blank?
   .analysis_blank_container
     = render partial: 'projects/show/no_analysis_summary'
