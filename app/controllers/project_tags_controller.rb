@@ -4,7 +4,7 @@ class ProjectTagsController < SettingsController
 
   before_action :session_required, :redirect_unverified_account, only: [:create, :destroy]
   before_action :set_project_or_fail, :set_project_editor_account_to_current_user
-  before_action :edit_authorized_only!, only: [:create, :destroy]
+  before_action :check_project_authorization, only: [:create, :destroy]
   before_action :find_related_projects, only: [:index, :related]
   before_action :find_tagging, only: [:destroy]
   before_action :project_context
@@ -38,10 +38,6 @@ class ProjectTagsController < SettingsController
     raise ParamRecordNotFound if tag.nil?
     @tagging = Tagging.where(taggable: @project, tag_id: tag.id).take
     raise ParamRecordNotFound if @tagging.nil?
-  end
-
-  def edit_authorized_only!
-    render_unauthorized unless @project.edit_authorized?
   end
 
   def find_related_projects
