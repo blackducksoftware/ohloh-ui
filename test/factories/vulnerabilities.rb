@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :vulnerability do
-    cve_id { Faker::Lorem.word }
+    sequence :cve_id
   end
 end

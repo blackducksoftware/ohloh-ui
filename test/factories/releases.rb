@@ -1,7 +1,9 @@
 FactoryGirl.define do
   factory :release do
-    association :project_security_set
-    kb_release_id
+    sequence :kb_release_id
+    sequence :version do |n|
+      "V#{n}"
+    end
+    released_on { Time.now.utc }
   end
-  sequence(:kb_release_id) { |n| "#{Faker::Lorem.word}-#{n}" }
 end
