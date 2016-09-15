@@ -1,11 +1,10 @@
 FactoryGirl.define do
   factory :release do
-    association :project_security_set
     sequence :version do |n|
       "#{n}.#{n}.#{n}"
     end
-    kb_release_id { Faker::Lorem.word }
-    released_on { Faker::Date.between(6.years.ago, Time.zone.today) }
+    kb_release_id { Faker::Lorem.characters(10)}
+    released_on { Faker::Date.between(15.years.ago, Time.zone.today) }
   end
 
   factory :major_release_one, parent: :release do

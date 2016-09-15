@@ -5,6 +5,5 @@ FactoryGirl.define do
     generated_on { Faker::Date.backward(14) }
     score 1.0
     severity 'low'
-    association :release
   end
 end

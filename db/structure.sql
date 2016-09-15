@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.4.7
+-- Dumped from database version 9.5.1
 -- Dumped by pg_dump version 9.5.1
 
 SET statement_timeout = 0;
@@ -909,7 +909,7 @@ CREATE TABLE projects (
     activity_level_index integer,
     uuid character varying,
     best_project_security_set_id integer,
-    CONSTRAINT valid_missing_source CHECK ((((missing_source IS NULL) OR (missing_source = 'not available'::text)) OR (missing_source = 'not supported'::text)))
+    CONSTRAINT valid_missing_source CHECK (((missing_source IS NULL) OR (missing_source = 'not available'::text) OR (missing_source = 'not supported'::text)))
 );
 
 
@@ -1010,7 +1010,7 @@ CREATE TABLE code_location_events (
     type text NOT NULL,
     value text,
     commit_sha1 text,
-    status boolean,
+    published boolean DEFAULT false,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     repository_id integer
@@ -1254,7 +1254,7 @@ CREATE TABLE people (
     kudo_rank integer,
     vector tsvector,
     popularity_factor numeric,
-    CONSTRAINT people_name_fact_id_account_id CHECK (((((name_fact_id IS NOT NULL) AND (name_id IS NOT NULL)) AND (project_id IS NOT NULL)) OR (account_id IS NOT NULL)))
+    CONSTRAINT people_name_fact_id_account_id CHECK ((((name_fact_id IS NOT NULL) AND (name_id IS NOT NULL) AND (project_id IS NOT NULL)) OR (account_id IS NOT NULL)))
 );
 
 
@@ -2232,7 +2232,7 @@ CREATE TABLE kudos (
     name_id integer,
     created_at timestamp without time zone,
     message character varying(80),
-    CONSTRAINT not_all_null CHECK ((NOT (((account_id IS NULL) AND (project_id IS NULL)) AND (name_id IS NULL))))
+    CONSTRAINT not_all_null CHECK ((NOT ((account_id IS NULL) AND (project_id IS NULL) AND (name_id IS NULL))))
 );
 
 
@@ -3074,7 +3074,7 @@ CREATE VIEW people_view AS
     ks.rank AS kudo_rank
    FROM (accounts a
      LEFT JOIN kudo_scores ks ON ((ks.account_id = a.id)))
-  WHERE (a.level <> (-20))
+  WHERE (a.level <> '-20'::integer)
 UNION
  SELECT ((((p.id)::bigint << 32) + (nf.name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint) AS id,
     n.name AS effective_name,
@@ -3246,7 +3246,7 @@ CREATE VIEW project_counts_by_quarter_and_language AS
    FROM ((activity_facts af
      JOIN analyses a ON ((a.id = af.analysis_id)))
      JOIN projects p ON (((p.best_analysis_id = a.id) AND (NOT p.deleted))))
-  GROUP BY af.language_id, date_trunc('quarter'::text, timezone('utc'::text, (af.month)::timestamp with time zone));
+  GROUP BY af.language_id, (date_trunc('quarter'::text, timezone('utc'::text, (af.month)::timestamp with time zone)));
 
 
 --
@@ -3476,7 +3476,7 @@ CREATE VIEW projects_by_month AS
 
 
 --
--- Name: pss_release_vulnerabilities; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: pss_release_vulnerabilities; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE pss_release_vulnerabilities (
@@ -5851,10 +5851,7 @@ ALTER TABLE ONLY projects
 
 
 --
-<<<<<<< HEAD
--- Name: ratings_account_id_key; Type: CONSTRAINT; Schema: public; Owner: -
-=======
--- Name: pss_release_vulnerabilities_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: pss_release_vulnerabilities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY pss_release_vulnerabilities
@@ -5862,8 +5859,7 @@ ALTER TABLE ONLY pss_release_vulnerabilities
 
 
 --
--- Name: ratings_account_id_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
->>>>>>> e1c1a9d... OTWO-4358: Create join table for release and vulnerabilities
+-- Name: ratings_account_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ratings
@@ -7175,58 +7171,42 @@ CREATE INDEX index_projects_on_vector_gin ON projects USING gin (vector);
 
 
 --
-<<<<<<< HEAD
--- Name: index_ratings_on_project_id; Type: INDEX; Schema: public; Owner: -
-=======
--- Name: index_pss_release_vulnerabilities_on_project_security_set_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
->>>>>>> e1c1a9d... OTWO-4358: Create join table for release and vulnerabilities
+-- Name: index_pss_release_vulnerabilities_on_project_security_set_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_pss_release_vulnerabilities_on_project_security_set_id ON pss_release_vulnerabilities USING btree (project_security_set_id);
 
 
 --
-<<<<<<< HEAD
--- Name: index_recommend_entries_on_project_id; Type: INDEX; Schema: public; Owner: -
-=======
--- Name: index_pss_release_vulnerabilities_on_release_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
->>>>>>> e1c1a9d... OTWO-4358: Create join table for release and vulnerabilities
+-- Name: index_pss_release_vulnerabilities_on_release_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_pss_release_vulnerabilities_on_release_id ON pss_release_vulnerabilities USING btree (release_id);
 
 
 --
--- Name: index_pss_release_vulnerabilities_on_vulnerability_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_pss_release_vulnerabilities_on_vulnerability_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_pss_release_vulnerabilities_on_vulnerability_id ON pss_release_vulnerabilities USING btree (vulnerability_id);
 
 
 --
-<<<<<<< HEAD
--- Name: index_releases_on_project_security_set_id; Type: INDEX; Schema: public; Owner: -
-=======
--- Name: index_ratings_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
->>>>>>> e1c1a9d... OTWO-4358: Create join table for release and vulnerabilities
+-- Name: index_ratings_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_ratings_on_project_id ON ratings USING btree (project_id);
 
 
 --
--- Name: index_recommend_entries_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_recommend_entries_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_recommend_entries_on_project_id ON recommend_entries USING btree (project_id);
 
 
 --
-<<<<<<< HEAD
--- Name: index_releases_on_release_id; Type: INDEX; Schema: public; Owner: -
-=======
--- Name: index_releases_on_kb_release_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
->>>>>>> e1c1a9d... OTWO-4358: Create join table for release and vulnerabilities
+-- Name: index_releases_on_kb_release_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_releases_on_kb_release_id ON releases USING btree (kb_release_id);
@@ -7432,18 +7412,7 @@ CREATE INDEX index_vitae_on_account_id ON vitae USING btree (account_id);
 -- Name: index_vulnerabilities_on_cve_id; Type: INDEX; Schema: public; Owner: -
 --
 
-<<<<<<< HEAD
-CREATE INDEX index_vulnerabilities_on_cve_id ON vulnerabilities USING btree (cve_id);
-
-
---
--- Name: index_vulnerabilities_on_release_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_vulnerabilities_on_release_id ON vulnerabilities USING btree (release_id);
-=======
 CREATE UNIQUE INDEX index_vulnerabilities_on_cve_id ON vulnerabilities USING btree (cve_id);
->>>>>>> e1c1a9d... OTWO-4358: Create join table for release and vulnerabilities
 
 
 --
@@ -8936,7 +8905,7 @@ ALTER TABLE ONLY vitae
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user",public;
+SET search_path TO "$user", public;
 
 INSERT INTO schema_migrations (version) VALUES ('1');
 
@@ -9113,6 +9082,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160610142302');
 INSERT INTO schema_migrations (version) VALUES ('20160710125644');
 
 INSERT INTO schema_migrations (version) VALUES ('20160713124305');
+
+INSERT INTO schema_migrations (version) VALUES ('20160718080707');
 
 INSERT INTO schema_migrations (version) VALUES ('20160725154001');
 
