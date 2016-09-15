@@ -18,11 +18,11 @@
       = select_tag 'release_version', options_for_select(major_releases(@release_data)), include_blank: 'All', style: 'max-width: 30%'
     .col-md-6
       .pull-right.btn-group{ 'aria-label' => '...', :role => 'group' }
-        %button.btn.btn-default#one{ 'date' => 1 } 1yr
-        %button.btn.btn-default#three{ 'date' => 3 } 3yr
-        %button.btn.btn-default#five{ 'date' => 5 } 5yr
-        %button.btn.btn-default#ten{ 'date' => 10 } 10yr
-        %button.btn.btn-default#all{ 'date' => 'all'} all
+        .btn.btn.btn-default#one{ 'date' => 1 } 1yr
+        .btn.btn.btn-default#three{ 'date' => 3 } 3yr
+        .btn.btn.btn-default#five{ 'date' => 5 } 5yr
+        .btn.btn.btn-default#ten{ 'date' => 10 } 10yr
+        .btn.btn.btn-default#all{ 'date' => 'all'} all
     #container{ style: 'min-width: 310px; height: 400px; margin: 0 auto'}
   - else
     %p.text-center= t('.no_data')
