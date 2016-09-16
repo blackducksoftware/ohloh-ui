@@ -147,4 +147,11 @@ class ProjectsHelperTest < ActionView::TestCase
       project_managers_list.must_match project_manager.account.name
     end
   end
+
+  describe 'project_description_size_breached?' do
+    it 'should return false if project description size is less than 800' do
+      @project = create(:project_with_less_summary)
+      project_description_size_breached?(@project).must_equal false
+    end
+  end
 end
