@@ -13,6 +13,7 @@ gem 'doorkeeper'
 gem 'dotenv-rails'
 gem 'execjs'
 gem 'font-awesome-rails'
+gem 'gon'
 gem 'haml-rails'
 gem 'jbuilder'
 gem 'jquery-rails'
@@ -51,8 +52,6 @@ group :development do
 end
 
 group :test do
-  gem 'factory_girl_rails'
-  gem 'faker'
   gem 'flog'
   gem 'haml_lint'
   gem 'minitest-rails'
@@ -67,6 +66,8 @@ group :test do
 end
 
 group :development, :test do
+  gem 'factory_girl_rails'
+  gem 'faker'
   gem 'byebug'
   gem 'pry-rails'
   gem 'pry-byebug'

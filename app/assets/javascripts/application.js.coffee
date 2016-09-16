@@ -13,6 +13,7 @@
 #= require jquery
 #= require jquery_ujs
 #= require jquery-ui
+#= require twitter/bootstrap
 #= require underscore-min
 #= require chosen.jquery.min
 #= require highcharts/highstock
@@ -20,7 +21,6 @@
 #= require highcharts/solid-gauge
 #= require app
 #= require_tree .
-#= require twitter/bootstrap
 #= require d3.min
 #= require tagcloud
 #= require ace-element.min
