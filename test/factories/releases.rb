@@ -4,7 +4,7 @@ FactoryGirl.define do
     sequence :version do |n|
       "#{n}.#{n}.#{n}"
     end
-    release_id { Faker::Lorem.word }
+    kb_release_id { Faker::Lorem.word }
     released_on { Faker::Date.between(6.years.ago, Time.zone.today) }
   end
 

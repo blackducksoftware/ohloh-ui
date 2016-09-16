@@ -3476,6 +3476,37 @@ CREATE VIEW projects_by_month AS
 
 
 --
+-- Name: pss_release_vulnerabilities; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE pss_release_vulnerabilities (
+    id integer NOT NULL,
+    project_security_set_id integer,
+    release_id integer,
+    vulnerability_id integer
+);
+
+
+--
+-- Name: pss_release_vulnerabilities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE pss_release_vulnerabilities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: pss_release_vulnerabilities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE pss_release_vulnerabilities_id_seq OWNED BY pss_release_vulnerabilities.id;
+
+
+--
 -- Name: ratings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -3605,10 +3636,9 @@ ALTER SEQUENCE recommendations_id_seq OWNED BY recommendations.id;
 
 CREATE TABLE releases (
     id integer NOT NULL,
-    release_id character varying NOT NULL,
+    kb_release_id character varying NOT NULL,
     released_on timestamp without time zone,
     version character varying,
-    project_security_set_id integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 );
@@ -4511,7 +4541,6 @@ ALTER SEQUENCE vitae_id_seq OWNED BY vitae.id;
 CREATE TABLE vulnerabilities (
     id integer NOT NULL,
     cve_id character varying NOT NULL,
-    release_id integer,
     generated_on timestamp without time zone,
     published_on timestamp without time zone,
     severity integer,
@@ -4916,6 +4945,13 @@ ALTER TABLE ONLY project_security_sets ALTER COLUMN id SET DEFAULT nextval('proj
 --
 
 ALTER TABLE ONLY project_vulnerability_reports ALTER COLUMN id SET DEFAULT nextval('project_vulnerability_reports_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY pss_release_vulnerabilities ALTER COLUMN id SET DEFAULT nextval('pss_release_vulnerabilities_id_seq'::regclass);
 
 
 --
@@ -5815,7 +5851,15 @@ ALTER TABLE ONLY projects
 
 
 --
--- Name: ratings_account_id_key; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: pss_release_vulnerabilities_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY pss_release_vulnerabilities
+    ADD CONSTRAINT pss_release_vulnerabilities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ratings_account_id_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY ratings
@@ -7127,31 +7171,45 @@ CREATE INDEX index_projects_on_vector_gin ON projects USING gin (vector);
 
 
 --
--- Name: index_ratings_on_project_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_pss_release_vulnerabilities_on_project_security_set_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_pss_release_vulnerabilities_on_project_security_set_id ON pss_release_vulnerabilities USING btree (project_security_set_id);
+
+
+--
+-- Name: index_pss_release_vulnerabilities_on_release_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_pss_release_vulnerabilities_on_release_id ON pss_release_vulnerabilities USING btree (release_id);
+
+
+--
+-- Name: index_pss_release_vulnerabilities_on_vulnerability_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_pss_release_vulnerabilities_on_vulnerability_id ON pss_release_vulnerabilities USING btree (vulnerability_id);
+
+
+--
+-- Name: index_ratings_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_ratings_on_project_id ON ratings USING btree (project_id);
 
 
 --
--- Name: index_recommend_entries_on_project_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_recommend_entries_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_recommend_entries_on_project_id ON recommend_entries USING btree (project_id);
 
 
 --
--- Name: index_releases_on_project_security_set_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_releases_on_kb_release_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_releases_on_project_security_set_id ON releases USING btree (project_security_set_id);
-
-
---
--- Name: index_releases_on_release_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_releases_on_release_id ON releases USING btree (release_id);
+CREATE UNIQUE INDEX index_releases_on_kb_release_id ON releases USING btree (kb_release_id);
 
 
 --
@@ -7354,14 +7412,8 @@ CREATE INDEX index_vitae_on_account_id ON vitae USING btree (account_id);
 -- Name: index_vulnerabilities_on_cve_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_vulnerabilities_on_cve_id ON vulnerabilities USING btree (cve_id);
 
-
---
--- Name: index_vulnerabilities_on_release_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_vulnerabilities_on_release_id ON vulnerabilities USING btree (release_id);
+CREATE UNIQUE INDEX index_vulnerabilities_on_cve_id ON vulnerabilities USING btree (cve_id);
 
 
 --
@@ -7963,14 +8015,6 @@ ALTER TABLE ONLY code_locations
 
 
 --
--- Name: fk_rails_4bdcc57500; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY releases
-    ADD CONSTRAINT fk_rails_4bdcc57500 FOREIGN KEY (project_security_set_id) REFERENCES project_security_sets(id);
-
-
---
 -- Name: fk_rails_5a0f61d9a6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7984,14 +8028,6 @@ ALTER TABLE ONLY code_location_events
 
 ALTER TABLE ONLY api_keys
     ADD CONSTRAINT fk_rails_8faa63554c FOREIGN KEY (oauth_application_id) REFERENCES oauth_applications(id);
-
-
---
--- Name: fk_rails_a405b24f10; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY vulnerabilities
-    ADD CONSTRAINT fk_rails_a405b24f10 FOREIGN KEY (release_id) REFERENCES releases(id);
 
 
 --
@@ -9057,6 +9093,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160804081950');
 INSERT INTO schema_migrations (version) VALUES ('20160808163201');
 
 INSERT INTO schema_migrations (version) VALUES ('20160818102530');
+
+INSERT INTO schema_migrations (version) VALUES ('20160907122530');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
