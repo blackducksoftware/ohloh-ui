@@ -202,7 +202,8 @@ Rails.application.routes.draw do
       get :settings
       get :estimated_cost
       get 'security' => 'vulnerabilities#index'
-      get 'vulnerabilities_version_chart' => 'vulnerabilities#version_chart', defaults: { format: 'js' }
+      get 'all_vulnerabilities_version_chart' => 'vulnerabilities#all_version_chart', defaults: { format: 'js' }
+      get 'recent_vulnerabilities_version_chart' => 'vulnerabilities#recent_version_chart', defaults: { format: 'js' }
       get :similar_by_tags
       get :similar
       get 'permissions'  => 'permissions#show',   as: :permissions
@@ -306,7 +307,6 @@ Rails.application.routes.draw do
         post :redo
       end
     end
-    resources :vulnerabilities, only: :index
   end
 
   resources :organizations, path: :orgs do
