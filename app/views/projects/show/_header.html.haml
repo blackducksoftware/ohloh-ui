@@ -20,12 +20,18 @@
         - if current_user_is_admin?
           |
           = link_to bootstrap_icon('icon-legal', t('projects.header.job')), admin_project_jobs_path(@project)
-    .col-md-3.pull-right.no_padding#widgets
-      .pull-left#project_header_activity_indicator
-        - project_activity_level_class(@project, :thirtyfive)
-        - project_activity_level_text(@project, :thirtyfive)
-      %div{ itemtype: 'CreativeWork', itemprop: 'interactionCount' }
-        .pull-right#i_use_this_container
+    .pull-right.no_padding#widgets
+      .pull-left
+        #add_this{ 'data-analytics-id' => ENV['ADDTHIS_ANALYTICS_ID'] }
+          %p
+            .addthis_custom_sharing.addthis
+              %script{src: "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-500da8c658f6dda7"}
+      .pull-left#project_header_activity_indicator.no_padding
+        / - project_activity_level_class(@project, :thirtyfive)
+        / - project_activity_level_text(@project, :thirtyfive)
+
+      .pull-right{ itemtype: 'CreativeWork', itemprop: 'interactionCount' }
+        #i_use_this_container
           .use_count
             = link_to number_with_delimiter(@project.user_count), users_project_path(@project)
         - if logged_in?
@@ -42,12 +48,7 @@
                 .model-body
                   = render 'sessions/sign_in'
 
-    .col-md-3.pull-right#vulnerability_report
-      = render 'projects/show/vulnerability_report'
-
 .clearfix
-.row
-  .col-md-12
-    .mezzo
+.row.mezzo
 = yield :header_title if content_for?(:header_title)
 = render partial: 'layouts/partials/alert'

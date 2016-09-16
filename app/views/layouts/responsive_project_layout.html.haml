@@ -1,0 +1,23 @@
+!!!5
+%html
+  %head
+    - page_title = content_for?(:html_title) ? yield(:html_title).to_s : t('.openhub')
+    %title= page_title
+    %meta{ name: 'viewport', content: 'width=device-width, initial-scale=1.0' }
+    %meta{ name: 'description', content: page_context[:description] }
+    %meta{ name: 'keywords', content: page_context[:keywords] }
+    %meta{ name: 'digits-consumer-key', content: ENV['DIGITS_CONSUMER_KEY'] }
+    %meta{ name: 'google-site-verification', content: 'jKkWeVQ0tB1bffJYg7xXAtcIM-nrjjVxhP3ohb8UH2A' }
+    = yield :custom_head
+    = stylesheet_link_tag 'application', media: 'all'
+    = csrf_meta_tags
+
+  %body{ zoom: 1 }
+    = yield :session_projects_banner
+    .container-fluid#project_container
+      %header= render partial: 'layouts/partials/header'
+      = render partial: 'layouts/partials/page', locals: { responsive_layout: true }
+      .clear
+      %footer.fluid_footer= render partial: 'layouts/partials/fluid_footer'
+
+    = render partial: 'layouts/partials/js_scripts'

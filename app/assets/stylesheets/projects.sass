@@ -21,7 +21,16 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
       :background-position -#{$multiplier * $dimension}px 0
       :background-repeat no-repeat
       :position absolute
-      :top 15px
+      :top 1rem
+
+.margin_top_two
+  margin-top: 2rem
+
+.row-eq-height
+  display: -webkit-box
+  display: -webkit-flex
+  display: -ms-flexbox
+  display:         flex
 
 #projects_index_list, #managed_projects_list
   :margin 20px 0 0 0
@@ -95,9 +104,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     :margin-top 10px
 
 .proj_community_ratings
-  float: left
-  margin-left: -4px
-  width: 206px
+
 
 .cocomo-form
   :border 2px solid #E0E4E8
@@ -117,13 +124,14 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
       overflow: auto
 
 #project_masthead
+  :margin-top 1rem
   :height 85px
 
   #project_icon
     margin-top: 8px
 
   #widgets
-    width: 190px
+    width: 31rem
 
   #project_header
     padding-right: 0px
@@ -136,7 +144,13 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     margin-top: 10px
     li
       margin: 15px 0 15px 30px
+#add_this
+  margin-top: 5.3rem
 
+#project_container
+  #project_masthead
+    #widgets
+      width: 31rem
 // settings page styles
 .settings_module
   :cursor pointer
@@ -221,36 +235,41 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
 .license-template
   display: none
 
-#vulnerability_report
-  width: 150px
-  margin-top: 15px
-  margin-right: 20px
-  padding: 0px !important
-#pss_bg
-  height: 13px
-  background: -webkit-linear-gradient(left, red, orange, yellow, green)
-  background: -o-linear-gradient(left, red, orange, yellow, green)
-  background: -moz-linear-gradient(left, red, orange, yellow, green)
+#vulnerability-report
+  word-wrap: break-word
+  .score-card
+    .range-good
+      padding-left: 0
+    .range-poor
+      padding-right: 0
+    .indicator
+      padding-left: 10px
+      padding-right: 10px
+    .range-good, .range-poor
+      font-size: 1.2rem
+      text-align: center
+
+#pss_bg, #pvs_bg
+  height: 45px
+  background: -webkit-linear-gradient(left, #4586BE, #9DC7F1)
+  background: -o-linear-gradient(left, #4586BE, #9DC7F1)
+  background: -moz-linear-gradient(left, #4586BE, #9DC7F1)
   //standard syntax
-  background: linear-gradient(to right, red, orange, yellow, green)
+  background: linear-gradient(to right, #4586BE, #9DC7F1)
+
+#pss_bg
   .meter
     height: 10px
     width: 88%
     background: #ccc
 #pvs_bg
-  height: 13px
-  background: -webkit-linear-gradient(right, red, orange, yellow, green)
-  background: -o-linear-gradient(right, red, orange, yellow, green)
-  background: -moz-linear-gradient(right, red, orange, yellow, green)
-  //standard syntax
-  background: linear-gradient(to left, red, orange, yellow, green)
   margin-bottom: 9px
 
 .pointer
-  width: 25px
-  height: 22px
+  width: 10px
+  height: 55px
   display: inline-block
-  background: #0082C6
+  background: #717171
   margin-top: -5px
 
 .pointer-value
@@ -264,9 +283,30 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
 #report-divider
   margin-top: 14px
 
-.pvr_no_data
-  opacity: 0.2
-
 .pvr_link
-  color: #000 !important
+  float: right
+  padding: 10px
 
+#did_you_know
+  &.col-md-4
+    li
+      margin-bottom: 1.2em
+      padding: 0 20px
+  &.col-md-12
+    li
+      display: table-cell
+      width: 1%
+      padding: 0 2em
+#vulnerability_version_chart
+  margin: 0 auto
+  width: 100%
+  height: 250px
+
+#vulnerability_per_version
+  .well
+    background: #fff
+    padding: 19px 0 0 0
+
+.project_security
+  .security-panel-title
+    padding-left: 1rem

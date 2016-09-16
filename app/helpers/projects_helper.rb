@@ -1,5 +1,7 @@
 module ProjectsHelper
   include ProjectVulnerabilityReportsHelper
+  include SiteFeaturesHelper
+
   def project_activity_level_class(project, image_size)
     haml_tag :a, href: 'http://blog.openhub.net/about-project-activity-icons/', target: '_blank',
                  class: project_activity_css_class(project, image_size),
@@ -68,16 +70,6 @@ module ProjectsHelper
     end
   end
 
-  def browse_security_button(project)
-    return if project.uuid.blank?
-    project_name = CGI.escape(project.name)
-    url = ENV['OH_SECURITY_URL'] + "/#{project_name}/#{project.uuid}?project_id=#{project.id}"
-    title = I18n.t('projects.browse_security_btn_title', what: project.name)
-    haml_tag :a, href: url, class: 'btn btn-primary', target: '_blank', title: title do
-      concat t('projects.browse_security')
-    end
-  end
-
   private
 
   def project_twitter_description_analysis(project, analysis)
@@ -98,5 +90,9 @@ module ProjectsHelper
 
   def project_activity_level(project)
     project.best_analysis.activity_level
+  end
+
+  def project_description_size_breached?(project)
+    project.description && project.description.size > 800 ? true : false
   end
 end

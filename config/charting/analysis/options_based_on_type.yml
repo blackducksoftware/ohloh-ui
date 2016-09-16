@@ -34,7 +34,6 @@ commits_history:
 code_history:
   chart:
     defaultSeriesType: 'area'
-    width: 950
   title: 'Total Lines'
   plotOptions:
     area:
@@ -61,13 +60,10 @@ committer_history:
 
 language_history:
   title: 'Lines'
-  chart:
-    width: 950
 
 lines_of_code:
   chart:
     marginLeft: 0
-    width: 460
   legend:
     enabled: true
     layout: 'horizontal'
