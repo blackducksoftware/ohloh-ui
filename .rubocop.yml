@@ -6,6 +6,9 @@ AllCops:
 Rails:
   Enabled: true
 
+HasAndBelongsToMany:
+  Enabled: false
+
 Metrics/LineLength:
   Max: 120
 
