@@ -47,6 +47,7 @@ group :development do
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
   gem 'capistrano-sidekiq'
+  gem 'capistrano-rbenv', '~> 2.0'
   gem 'meta_request'
 end
 
