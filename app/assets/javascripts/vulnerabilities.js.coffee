@@ -1,66 +1,22 @@
-$("#one").on 'click', ->
-  chart = $('#vulnerability_version_chart').highcharts()
+getReleaseData = () ->
   releaseObjects = document.getElementById('release_version').dataset.releases
-  releaseData = JSON.parse(releaseObjects)
-  yearDiff = $("#one").attr('date')
-  endDate = new Date(releaseData[0].released_on)
-  startDate = new Date(endDate.getFullYear() - yearDiff, endDate.getMonth(), endDate.getDay(), endDate.getSeconds(), endDate.getMilliseconds())
-  filteredReleases = releaseData.filter((item) ->
-    time = new Date(item.released_on).getTime()
-    startDate < time && time < endDate.getTime()
-  )
-  chart.xAxis[0].setCategories(calculateCategory(filteredReleases))
-  chart.series[0].setData(calculateY(filteredReleases), calculateHighVulns(filteredReleases))
-  chart.series[1].setData(calculateY(filteredReleases), calculateMediumVulns(filteredReleases))
-  chart.series[2].setData(calculateY(filteredReleases), calculateLowVulns(filteredReleases))
+  data = JSON.parse(releaseObjects)
 
-$("#three").on 'click', ->
+reRenderChart = (releases) ->
   chart = $('#vulnerability_version_chart').highcharts()
-  releaseObjects = document.getElementById('release_version').dataset.releases
-  releaseData = JSON.parse(releaseObjects)
-  yearDiff = $("#three").attr('date')
-  endDate = new Date(releaseData[0].released_on)
-  startDate = new Date(endDate.getFullYear() - yearDiff, endDate.getMonth(), endDate.getDay(), endDate.getSeconds(), endDate.getMilliseconds())
-  filteredReleases = releaseData.filter((item) ->
-    time = new Date(item.released_on).getTime()
-    startDate < time && time < endDate.getTime()
-  )
-  chart.xAxis[0].setCategories(calculateCategory(filteredReleases))
-  chart.series[0].setData(calculateY(filteredReleases), calculateHighVulns(filteredReleases))
-  chart.series[1].setData(calculateY(filteredReleases), calculateMediumVulns(filteredReleases))
-  chart.series[2].setData(calculateY(filteredReleases), calculateLowVulns(filteredReleases))
+  chart.xAxis[0].setCategories(calculateCategory(releases))
+  chart.xAxis[0].setExtremes(0, releases.length - 1)
+  chart.series[0].setData(calculateY(releases), calculateHighVulns(releases))
+  chart.series[1].setData(calculateY(releases), calculateMediumVulns(releases))
+  chart.series[2].setData(calculateY(releases), calculateLowVulns(releases))
 
-$("#five").on 'click', ->
-  chart = $('#vulnerability_version_chart').highcharts()
-  releaseObjects = document.getElementById('release_version').dataset.releases
-  releaseData = JSON.parse(releaseObjects)
-  yearDiff = $("#five").attr('date')
-  endDate = new Date(releaseData[0].released_on)
-  startDate = new Date(endDate.getFullYear() - yearDiff, endDate.getMonth(), endDate.getDay(), endDate.getSeconds(), endDate.getMilliseconds())
-  filteredReleases = releaseData.filter((item) ->
+filterByDate = (releases, filter) ->
+  endDate = new Date(releases[releases.length - 1].released_on)
+  startDate = new Date(endDate.getFullYear() - filter, endDate.getMonth(), endDate.getDay(), endDate.getSeconds(), endDate.getMilliseconds())
+  filteredReleases = releases.filter((item) ->
     time = new Date(item.released_on).getTime()
     startDate < time && time < endDate.getTime()
   )
-  chart.xAxis[0].setCategories(calculateCategory(filteredReleases))
-  chart.series[0].setData(calculateY(filteredReleases), calculateHighVulns(filteredReleases))
-  chart.series[1].setData(calculateY(filteredReleases), calculateMediumVulns(filteredReleases))
-  chart.series[2].setData(calculateY(filteredReleases), calculateLowVulns(filteredReleases))
-
-$("#ten").on 'click', ->
-  chart = $('#vulnerability_version_chart').highcharts()
-  releaseObjects = document.getElementById('release_version').dataset.releases
-  releaseData = JSON.parse(releaseObjects)
-  yearDiff = $("#ten").attr('date')
-  endDate = new Date(releaseData[0].released_on)
-  startDate = new Date(endDate.getFullYear() - yearDiff, endDate.getMonth(), endDate.getDay(), endDate.getSeconds(), endDate.getMilliseconds())
-  filteredReleases = releaseData.filter((item) ->
-    time = new Date(item.released_on).getTime()
-    startDate < time && time < endDate.getTime()
-  )
-  chart.xAxis[0].setCategories(calculateCategory(filteredReleases))
-  chart.series[0].setData(calculateY(filteredReleases), calculateHighVulns(filteredReleases))
-  chart.series[1].setData(calculateY(filteredReleases), calculateMediumVulns(filteredReleases))
-  chart.series[2].setData(calculateY(filteredReleases), calculateLowVulns(filteredReleases))
   
 calculateCategory = (releases) ->
   labels = []
@@ -95,16 +51,38 @@ calculateY = (releases, vulnData) ->
   indices.forEach (idx) ->
     yData.push vulnData[idx]
 
+$("#one").on 'click', ->
+  releaseData = getReleaseData()
+  yearDiff = $("#one").attr('date')
+  filteredReleases = filterByDate(releaseData, yearDiff)
+  reRenderChart(filteredReleases)
+
+$("#three").on 'click', ->
+  releaseData = getReleaseData()
+  yearDiff = $("#three").attr('date')
+  filteredReleases = filterByDate(releaseData, yearDiff)
+  reRenderChart(filteredReleases)
+
+$("#five").on 'click', ->
+  releaseData = getReleaseData()
+  yearDiff = $("#five").attr('date')
+  filteredReleases = filterByDate(releaseData, yearDiff)
+  reRenderChart(filteredReleases)
+
+$("#ten").on 'click', ->
+  releaseData = getReleaseData()
+  yearDiff = $("#ten").attr('date')
+  filteredReleases = filterByDate(releaseData, yearDiff)
+  reRenderChart(filteredReleases)
+
+$("#all").on 'click', ->
+  releaseData = getReleaseData()
+  reRenderChart(releaseData)
+
 $('#release_version').on 'change', ->
-  chart = $('#vulnerability_version_chart').highcharts()
   selVal = $('#release_version').val()
-  releaseHtmlSelector = document.getElementById('release_version')
-  releaseObjects = releaseHtmlSelector.dataset.releases
-  filteredReleases = JSON.parse(releaseObjects).filter((item) ->
+  releaseData = getReleaseData()
+  filteredReleases = releaseData.filter((item) ->
     ///^#{selVal}///.test item.version
   )
-  chart.xAxis[0].setCategories(calculateCategory(filteredReleases))
-  chart.series[0].setData(calculateY(filteredReleases), calculateHighVulns(filteredReleases))
-  chart.series[1].setData(calculateY(filteredReleases), calculateMediumVulns(filteredReleases))
-  chart.series[2].setData(calculateY(filteredReleases), calculateLowVulns(filteredReleases))
-  
+  reRenderChart(filteredReleases)

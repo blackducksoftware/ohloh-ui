@@ -24,6 +24,6 @@ class VulnerabilitiesController < ApplicationController
   end
 
   def all_releases
-    @releases = @best_project_security_set.releases
+    @releases = @best_project_security_set.all_releases
   end
 end
