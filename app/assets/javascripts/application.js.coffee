@@ -19,6 +19,7 @@
 #= require highcharts/highstock
 #= require highcharts/highcharts-more
 #= require highcharts/solid-gauge
+#= require highcharts/exporting
 #= require app
 #= require_tree .
 #= require d3.min
