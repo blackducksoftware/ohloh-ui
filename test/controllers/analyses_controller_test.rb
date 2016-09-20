@@ -12,7 +12,7 @@ describe 'AnalysesController' do
     create(:activity_fact, options)
   end
   let(:analysis) do
-    activity_fact_2.analysis.update!(updated_on: Date.current, logged_at: Date.current)
+    activity_fact_2.analysis.update!(updated_on: Date.current, oldest_code_set_time: Date.current)
     activity_fact_2.analysis
   end
   let(:project) { analysis.project }
@@ -142,7 +142,7 @@ describe 'AnalysesController' do
       create_all_months
       activity_fact.update_attributes!(month: second_day_of_month)
       create(:activity_fact, month: beginning_of_month, analysis: activity_fact.analysis)
-      analysis.update_attributes!(logged_at: Date.current + 32.days)
+      analysis.update_attributes!(oldest_code_set_time: Date.current + 32.days)
 
       get :committer_history, project_id: project.to_param, id: analysis.reload.id
 
@@ -166,7 +166,7 @@ describe 'AnalysesController' do
       create_all_months
       activity_fact.update_attribute(:month, second_day_of_month)
       create(:activity_fact, month: beginning_of_month, analysis: activity_fact.analysis)
-      analysis.update_attributes(logged_at: Date.current + 32.days)
+      analysis.update_attributes(oldest_code_set_time: Date.current + 32.days)
 
       get :contributor_summary, project_id: project.to_param, id: analysis.reload.id
 

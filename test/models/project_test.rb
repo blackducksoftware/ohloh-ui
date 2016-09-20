@@ -313,7 +313,7 @@ class ProjectTest < ActiveSupport::TestCase
       analysis = create(:analysis, created_at: 25.days.ago)
       project = create(:project)
       project.update_column(:best_analysis_id, analysis.id)
-      sloc_set = create(:sloc_set, as_of: 1, logged_at: Date.current)
+      sloc_set = create(:sloc_set, as_of: 1, code_set_time: Date.current)
       code_set = create(:code_set, as_of: 1, best_sloc_set: sloc_set)
       analysis_sloc_set = create(:analysis_sloc_set, as_of: 1, analysis: analysis, sloc_set: sloc_set)
       repo = create(:repository, best_code_set: code_set)
@@ -322,7 +322,7 @@ class ProjectTest < ActiveSupport::TestCase
       Repository.any_instance.stubs(:ensure_job).returns(false)
 
       project.ensure_job
-      analysis_sloc_set.reload.logged_at.must_equal Date.current
+      analysis_sloc_set.reload.code_set_time.must_equal Date.current
     end
 
     it 'should update activity level index if analsyis is old' do

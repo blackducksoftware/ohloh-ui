@@ -1,5 +1,5 @@
 class NilAnalysis < NullObject
-  attr_reader :main_language, :logged_at
+  attr_reader :main_language, :oldest_code_set_time
 
   nought_methods :logic_total, :markup_total, :build_total, :code_total, :headcount
 

@@ -53,7 +53,7 @@ module ProjectAssociations
 
     def contributions_within_timespan(options)
       contributions
-        .within_timespan(options[:time_span], best_analysis.logged_at)
+        .within_timespan(options[:time_span], best_analysis.oldest_code_set_time)
         .sort(options[:sort])
         .filter_by(options[:query])
         .includes(person: :account, contributor_fact: :primary_language)

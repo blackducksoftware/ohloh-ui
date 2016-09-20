@@ -56,7 +56,7 @@ class CommitsController < SettingsController
 
   def named_commits
     @named_commits = @project.named_commits
-                             .within_timespan(params[:time_span], @project.best_analysis.logged_at)
+                             .within_timespan(params[:time_span], @project.best_analysis.oldest_code_set_time)
                              .includes(:commit, :person, :account)
                              .filter_by(params[:query])
                              .send(parse_sort_term)
