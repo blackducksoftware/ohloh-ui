@@ -6,7 +6,7 @@ class VulnerabilitiesController < ApplicationController
   before_action :recent_releases, only: [:recent_version_chart]
 
   def all_version_chart
-    render json: Vulnerability::VersionChart.new(@releases).data
+    render json: Vulnerability::AllVersionChart.new(@releases).data
   end
 
   def recent_version_chart
