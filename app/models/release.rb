@@ -1,4 +1,4 @@
 class Release < ActiveRecord::Base
-  has_many :pss_release_vulnerabilities
-  has_many :vulnerabilities, -> { uniq }, through: :pss_release_vulnerabilities
+  belongs_to :project_security_set
+  has_and_belongs_to_many :vulnerabilities
 end
