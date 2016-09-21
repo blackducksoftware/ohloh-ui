@@ -8,3 +8,33 @@
   = project_analysis_timestamp(@project)
 
 .clear
+
+.row
+  .col-md-1
+    &nbsp;
+  .col-md-10
+    - if @vulnerabilites
+      %table.table.table-striped#table
+        %thead
+          %tr
+            %th.col-md-1 CVE ID
+            %th.col-md-1 Severity
+            %th.col-md-1 Date Published
+            %th.col-md-3 Description
+            %th.col-md-3 Versions Affected
+        %tbody
+          - @vulnerabilites.each do |vulnerability|
+            %tr
+              %td= vulnerability.cve_id
+              %td= vulnerability.severity.titleize
+              %td= vulnerability.published_on.to_s(:mdy)
+              %td Sed consequat erat et lacus ullamcorper, vitae euismod felis finibus. Quisque rutrum laoreet nibh, ac lacinia mauris convallis vitae. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean at massa sit amet felis semper condimentum a eu neque.
+              %td
+                .versions_affected= vulnerability.releases.pluck(:version).join(', ')
+      .text-center
+        = will_paginate @vulnerabilites
+    - else
+      .no_vulnerability= t('.no_vulnerability')
+
+  .col-md-1
+    &nbsp;
