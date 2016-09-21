@@ -353,6 +353,12 @@ en:
   project_experiences:
     no_matching_project: No matching open source project with this name.
 
+  vulnerabilities:
+    index:
+      security: 'Security'
+      vulns_per_version: 'Vulnerabilities per Version'
+      major_versions: 'Major Versions'
+
   password_resets:
     title: 'Password Reset - Open Hub'
     new:
