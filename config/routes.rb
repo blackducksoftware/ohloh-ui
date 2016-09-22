@@ -424,10 +424,6 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :project_security_sets do
-      resources :releases
-    end
-
     resources :sloc_jobs, only: [:index, :show, :destroy]
     resources :complete_jobs, only: [:index, :show, :destroy]
     resources :fetch_jobs, only: [:index, :show, :destroy]
