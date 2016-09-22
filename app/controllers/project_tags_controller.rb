@@ -10,7 +10,7 @@ class ProjectTagsController < SettingsController
   before_action :project_context
 
   def create
-    @project.update_attributes(tag_list: "#{@project.tag_list} #{params[:tag_name]}")
+    @project.update_attributes!(tag_list: "#{@project.tag_list} #{params[:tag_name]}")
     render text: ERB::Util.html_escape(@project.tag_list).split.sort.join("\n")
   rescue
     render_create_error
@@ -45,7 +45,14 @@ class ProjectTagsController < SettingsController
   end
 
   def render_create_error
-    text = @project.errors.full_messages.map { |msg| ERB::Util.html_escape(msg) }.join('<br/>')
-    render text: text, status: :unprocessable_entity
+    error_msg = @project.errors.full_messages
+                        .map { |msg| ERB::Util.html_escape(msg) }
+                        .join('<br/>') unless @project.errors[:descrirtion].empty?
+    error_msg ||= custom_description_error
+    render text: error_msg, status: :unprocessable_entity
+  end
+
+  def custom_description_error
+    I18n.t('project_tags.description_error_message_html', url: edit_project_url(@project))
   end
 end
