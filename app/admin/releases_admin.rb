@@ -5,6 +5,8 @@ ActiveAdmin.register Release do
 
   actions :index, :show
 
+  belongs_to :project_security_set
+
   index do
     column :id
     column :release_id, label: :release_id
@@ -17,11 +19,5 @@ ActiveAdmin.register Release do
     column :created_at
     column :updated_at
     actions
-  end
-
-  controller do
-    def scoped_collection
-      ProjectSecuritySet.find(params[:project_security_set_id]).releases
-    end
   end
 end
