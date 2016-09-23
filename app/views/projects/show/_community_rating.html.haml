@@ -1,7 +1,7 @@
 - title = @project.best_analysis.present? ? t('.page_title_1') : t('.page_title_2')
 
 .clear
-%div.col-xs-12.no_padding#community_rating
+.col-xs-12.no_padding#community_rating
   .col-xs-6
     %h4.community_rating_header= link_to title, summary_project_reviews_path(@project)
     - if @project.ratings.count != 0

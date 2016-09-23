@@ -2,13 +2,20 @@ getReleaseData = () ->
   releaseObjects = document.getElementById('release_version').dataset.releases
   data = JSON.parse(releaseObjects)
 
-reRenderChart = (releases) ->
-  chart = $('#vulnerability_version_chart').highcharts()
-  chart.xAxis[0].setCategories(calculateCategory(releases))
-  chart.xAxis[0].setExtremes(0, releases.length - 1)
-  chart.series[0].setData(calculateY(releases), calculateHighVulns(releases))
-  chart.series[1].setData(calculateY(releases), calculateMediumVulns(releases))
-  chart.series[2].setData(calculateY(releases), calculateLowVulns(releases))
+calculateHighVulns = (releases) ->
+  highVulns = releases.map((obj) ->
+    obj.high_vulns.length
+  )
+
+calculateMediumVulns = (releaseData) ->
+  mediumVulns = releaseData.map((obj) ->
+    obj.medium_vulns.length
+  )
+
+calculateLowVulns = (releaseData) ->
+  lowVulns = releaseData.map((obj) ->
+    obj.low_vulns.length
+  )
 
 filterByDate = (releases, filter) ->
   endDate = new Date(releases[releases.length - 1].released_on)
@@ -17,39 +24,25 @@ filterByDate = (releases, filter) ->
     time = new Date(item.released_on).getTime()
     startDate < time && time < endDate.getTime()
   )
-  
-calculateCategory = (releases) ->
-  labels = []
-  releases.forEach (item) ->
-    labels.push item.version
-  JSON.parse(JSON.stringify(labels))
 
-calculateHighVulns = (releases) ->
-  highVulns = []
-  releases.forEach (item) ->
-    highVulns.push item.high_vulns
-  highVulns
-
-calculateMediumVulns = (releases) ->
-  mediumVulns = []
-  releases.forEach (item) ->
-    mediumVulns.push item.medium_vulns
-  mediumVulns
-
-calculateLowVulns = (releases) ->
-  lowVulns = []
-  releases.forEach (item) ->
-    lowVulns.push item.low_vulns
-  lowVulns
-
-calculateY = (releases, vulnData) ->
-  indices = []
-  yData = []
-  releases.forEach (item) ->
-    index = releases.indexOf(item)
-    indices.push index
-  indices.forEach (idx) ->
-    yData.push vulnData[idx]
+reRenderChart = (releases) ->
+  versions = releases.map((obj) ->
+    obj.version
+  )
+  chart = $('#vulnerability_version_chart').highcharts()
+  chart.xAxis[0].update {
+    categories: versions
+  } , true, false
+  chart.series[2].update {
+    data: calculateHighVulns(releases)
+  }, false
+  chart.series[1].update {
+    data: calculateMediumVulns(releases)
+  }, false
+  chart.series[0].update { 
+    data: calculateLowVulns(releases)
+  }, false
+  chart.redraw()
 
 $("#one").on 'click', ->
   releaseData = getReleaseData()

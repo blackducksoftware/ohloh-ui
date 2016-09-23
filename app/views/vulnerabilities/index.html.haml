@@ -10,17 +10,23 @@
   .col-md-12
     %h3.margin_left_15{ style: 'font-weight: normal' }= t('.vulns_per_version')
 .row
-  - if @project.best_project_security_set
-    .col-md-6
-      %h3{ style: 'font-weight: normal' }= t('.major_versions')
-      = select_tag 'release_version', options_for_select(major_releases(@releases)), include_blank: 'All', style: 'max-width: 30%', data: { releases: @releases } 
-    .col-md-6
-      .pull-right.btn-group{ 'aria-label' => '...', :role => 'group' }
-        .btn.btn.btn-default#one{ 'date' => 1 } 1yr
-        .btn.btn.btn-default#three{ 'date' => 3 } 3yr
-        .btn.btn.btn-default#five{ 'date' => 5 } 5yr
-        .btn.btn.btn-default#ten{ 'date' => 10 } 10yr
-        .btn.btn.btn-default#all{ 'date' => 'all'} all
+  - if @project.best_project_security_set.try(:most_recent_vulnerabilities?)
+    .col-md-12
+      .pull-left
+        %h3.margin_left_15{ style: 'font-weight: normal' }= t('.major_versions')
+      .pull-left
+        - release_data = map_vulnerabilities_to_releases(@releases)
+        - select_opts = options_for_select(major_releases(@releases))
+        - html_opts = { include_blank: 'All',
+                        style: 'max-width: 30%; margin-top: 14px; margin-left: 10px',
+                        data: { releases: release_data } }
+        = select_tag 'release_version', select_opts, html_opts
+      .pull-right.btn-toolbar{ 'aria-label' => '...', :role => 'group', style: 'margin-top: 17px' }
+        .btn.btn-info.btn-mini#one{ 'date' => 1 } 1yr
+        .btn.btn-info.btn-mini#three{ 'date' => 3 } 3yr
+        .btn.btn-info.btn-mini#five{ 'date' => 5 } 5yr
+        .btn.btn-info.btn-mini#ten{ 'date' => 10 } 10yr
+        .btn.btn-info.btn-mini#all{ 'date' => 'all' } all
     .watermark440#vulnerability_version_chart{ data: { src: all_vulnerabilities_version_chart_project_url(@project) } }
   - else
     %p.text-center= t('.no_data')

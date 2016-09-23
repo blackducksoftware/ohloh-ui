@@ -24,6 +24,7 @@ class VulnerabilitiesController < ApplicationController
   end
 
   def all_releases
+    return unless @best_project_security_set
     @releases = @best_project_security_set.all_releases
   end
 end

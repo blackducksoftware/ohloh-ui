@@ -12,17 +12,27 @@ FactoryGirl.define do
     sequence :version do |n|
       "1.#{n}.#{n}"
     end
+    released_on { Faker::Date.between(20.years.ago, 15.years.ago) }
   end
 
   factory :major_release_two, parent: :release do
     sequence :version do |n|
       "2.#{n}.#{n}"
     end
+    released_on { Faker::Date.between(14.years.ago, 10.years.ago) }
   end
 
   factory :major_release_three, parent: :release do
     sequence :version do |n|
       "3.#{n}.#{n}"
     end
+    released_on { Faker::Date.between(9.years.ago, 5.years.ago) }
+  end
+
+  factory :major_release_four, parent: :release do
+    sequence :version do |n|
+      "4.#{n}.#{n}"
+    end
+    released_on { Faker::Date.between(4.years.ago, Time.zone.today) }
   end
 end

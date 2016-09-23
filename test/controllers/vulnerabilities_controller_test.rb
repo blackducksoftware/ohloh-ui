@@ -6,10 +6,9 @@ describe 'VulnerabilitiesControllerTest' do
   before do
     project.editor_account = create(:admin)
     project.update!(best_project_security_set_id: create(:project_security_set, project: project).id)
-    pss_releases = create_list(:pss_release_vulnerability, 20, project_security_set: project.best_project_security_set,
-                                                               vulnerability: nil)
+    pss_releases = project.best_project_security_set.releases << create_list(:release, 20)
     pss_releases.each do |pss|
-      create(:pss_release_vulnerability, project_security_set: project.best_project_security_set, release: pss.release)
+      create(:vulnerability)
     end
   end
 
