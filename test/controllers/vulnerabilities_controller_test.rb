@@ -7,8 +7,8 @@ describe 'VulnerabilitiesControllerTest' do
     project.editor_account = create(:admin)
     project.update!(best_project_security_set_id: create(:project_security_set, project: project).id)
     pss_releases = project.best_project_security_set.releases << create_list(:release, 20)
-    pss_releases.each do |pss|
-      create(:vulnerability)
+    pss_releases.each do |r|
+      r.vulnerabilities << create(:vulnerability)
     end
   end
 
