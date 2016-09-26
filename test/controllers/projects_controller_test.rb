@@ -941,17 +941,9 @@ describe 'ProjectsController' do
     end
 
     it 'should show project security table' do
-      project = create(:project)
-      project.editor_account = create(:admin)
-      project.update!(best_project_security_set_id: create(:project_security_set, project: project).id)
-      pss_releases = create_list(:pss_release_vulnerability, 10,
-                                 project_security_set: project.best_project_security_set,
-                                 vulnerability: nil)
-      pss_releases.each do |pss|
-        create(:pss_release_vulnerability, project_security_set: project.best_project_security_set,
-                                           release: pss.release)
-      end
-      get :security, id: project.to_param
+      release = create(:release)
+      create_list(:releases_vulnerability, 10, release: release)
+      get :security, id: release.project_security_set.project.to_param
       assigns(:vulnerabilites).count.must_equal 10
     end
   end

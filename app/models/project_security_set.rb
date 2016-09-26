@@ -16,6 +16,6 @@ class ProjectSecuritySet < ActiveRecord::Base
   end
 
   def vulnerabilities_by_cve
-     vulnerabilities.includes(:releases).order(cve_id: :desc)
+    vulnerabilities.order(cve_id: :desc)
   end
 end
