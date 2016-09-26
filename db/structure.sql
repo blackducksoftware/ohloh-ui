@@ -4417,7 +4417,8 @@ CREATE TABLE vulnerabilities (
     severity integer,
     score numeric,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    description text
 );
 
 
@@ -8772,6 +8773,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160818102530');
 INSERT INTO schema_migrations (version) VALUES ('20160907122530');
 
 INSERT INTO schema_migrations (version) VALUES ('20160916124401');
+
+INSERT INTO schema_migrations (version) VALUES ('20160926144901');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
