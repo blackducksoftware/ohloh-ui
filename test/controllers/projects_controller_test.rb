@@ -931,4 +931,20 @@ describe 'ProjectsController' do
       end
     end
   end
+
+  describe 'Project Security Page' do
+    it 'should not show the project security table when no vulnerability reported' do
+      get :security, id: create(:project).to_param
+      must_respond_with :success
+      assigns(:vulnerabilities).must_equal nil
+      response.body.must_match I18n.t('projects.security.no_vulnerability')
+    end
+
+    it 'should show project security table' do
+      release = create(:release)
+      create_list(:releases_vulnerability, 10, release: release)
+      get :security, id: release.project_security_set.project.to_param
+      assigns(:vulnerabilites).count.must_equal 10
+    end
+  end
 end

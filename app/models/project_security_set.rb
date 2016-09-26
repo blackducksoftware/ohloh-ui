@@ -14,4 +14,8 @@ class ProjectSecuritySet < ActiveRecord::Base
   def most_recent_vulnerabilities?
     most_recent_releases.present? && most_recent_vulnerabilities.flatten.present?
   end
+
+  def vulnerabilities_by_cve
+    vulnerabilities.order(cve_id: :desc)
+  end
 end
