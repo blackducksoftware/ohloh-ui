@@ -1,10 +1,11 @@
 class ProjectsController < ApplicationController
   [AnalysesHelper, FactoidsHelper, MapHelper, RatingsHelper,
-   RepositoriesHelper, TagsHelper].each { |help| helper help }
+   RepositoriesHelper, TagsHelper, VulnerabilitiesHelper].each { |help| helper help }
 
   layout 'responsive_project_layout', only: [:show, :security]
 
   include ProjectFilters
+  include VulnerabilitiesHelper
 
   def index
     render template: @account ? 'projects/index_managed' : 'projects/index' if request_format == 'html'
@@ -57,8 +58,10 @@ class ProjectsController < ApplicationController
   end
 
   def security
-    pss = @project.best_project_security_set
-    @vulnerabilites = pss.vulnerabilities_by_cve.paginate(page: page_param, per_page: 10) if pss
+  end
+
+  def vulnerabilities_filter
+    render layout: false
   end
 
   private
@@ -79,5 +82,40 @@ class ProjectsController < ApplicationController
     Timeout.timeout(Forge::Match::MAX_FORGE_COMM_TIME) { @project = @match.project } if @match
   rescue Timeout::Error, OpenURI::HTTPError, URI::InvalidURIError
     flash.now[:notice] = t('.forge_time_out', name: @match.forge.name)
+  end
+
+  def find_security_data
+    return unless best_security_set && best_security_set.releases.present?
+    find_latest_version
+    find_minor_versions
+    find_vulnerabilities
+  end
+
+  def best_security_set
+    @project.best_project_security_set
+  end
+
+  def find_latest_version
+    @latest_version = Release.find_by_id(filter_version_param) ||
+                      best_security_set.find_latest_release_from_major_version(filter_major_version_param) ||
+                      best_security_set.releases.latest
+  end
+
+  def find_minor_versions
+    @minor_versions = if filter_major_version_param.present?
+                        @latest_version.minor_versions.sort_by_release_date
+                      else
+                        best_security_set.releases.sort_by_release_date
+                      end
+    @minor_versions = @minor_versions.where("(released_on::DATE <= NOW()::DATE) AND \
+      (released_on::DATE >= (NOW() - '#{filter_period_param} year'::INTERVAL)::DATE)") if filter_period_param.present?
+  end
+
+  def find_vulnerabilities
+    return unless @latest_version && @minor_versions.present?
+    @vulnerabilities = @latest_version.vulnerabilities
+    @vulnerabilities = @vulnerabilities.send(filter_severity_param) if @vulnerabilities.present? &&
+                                                                       filter_severity_param
+    @vulnerabilities = @vulnerabilities.sort_by_cve_id.paginate(page: page_param, per_page: 10)
   end
 end

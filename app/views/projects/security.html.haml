@@ -12,29 +12,32 @@
 .row
   .col-md-1
     &nbsp;
-  .col-md-10
-    - if @vulnerabilites
-      %table.table.table-striped#table
-        %thead
-          %tr
-            %th.col-md-1 CVE ID
-            %th.col-md-1 Severity
-            %th.col-md-1 Date Published
-            %th.col-md-3 Description
-            %th.col-md-3 Versions Affected
-        %tbody
-          - @vulnerabilites.each do |vulnerability|
+  .col-md-10#vulnerabilities-data
+    .vulnerabilities-filter
+      = render partial: 'vulnerabilities/filter'
+    .vulnerabilities-datatable
+      - if @vulnerabilities
+        %table.table.table-striped#table
+          %thead
             %tr
-              %td= vulnerability.cve_id
-              %td= vulnerability.severity.titleize
-              %td= vulnerability.published_on.to_s(:mdy)
-              %td Sed consequat erat et lacus ullamcorper, vitae euismod felis finibus. Quisque rutrum laoreet nibh, ac lacinia mauris convallis vitae. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean at massa sit amet felis semper condimentum a eu neque.
-              %td
-                .versions_affected= vulnerability.recent_releases
-      .text-center
-        = will_paginate @vulnerabilites
-    - else
-      .no_vulnerability= t('.no_vulnerability')
+              %th.col-md-1 CVE ID
+              %th.col-md-1 Severity
+              %th.col-md-1 Date Published
+              %th.col-md-3 Description
+              %th.col-md-3 Versions Affected
+          %tbody
+            - @vulnerabilities.each do |vulnerability|
+              %tr
+                %td= vulnerability.cve_id
+                %td= vulnerability.severity.titleize
+                %td= vulnerability.published_on.to_s(:mdy)
+                %td Sed consequat erat et lacus ullamcorper, vitae euismod felis finibus. Quisque rutrum laoreet nibh, ac lacinia mauris convallis vitae. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean at massa sit amet felis semper condimentum a eu neque.
+                %td
+                  .versions_affected= vulnerability.recent_releases
+        .text-center
+          = will_paginate @vulnerabilities
+      - else
+        .no_vulnerability= t('.no_vulnerability')
 
   .col-md-1
     &nbsp;

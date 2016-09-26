@@ -1,0 +1,18 @@
+%div
+  %span= t('.major_version')
+  = select_tag 'vulnerability[filter][major_version]', options_for_select(best_security_set_releases.map(&:major_version_number).uniq, filter_major_version_param), include_blank: 'All', class: 'vulnerability_main_filter'
+
+%div
+  %span= t('.period')
+  = select_tag 'vulnerability[filter][period]', options_for_select([1, 3, 5, 10], filter_period_param), include_blank: 'All', class: 'vulnerability_main_filter'
+
+%br
+%hr
+%br
+
+.vulnerability_filter_wrapper.vulnerability_filter_version
+  %span.title= t('.version')
+  = select_tag 'vulnerability[filter][version]', options_from_collection_for_select(@minor_versions.presence || no_versions_available, 'id', 'version', filter_version_param), class: 'ctrl vulnerability_filter'
+.vulnerability_filter_wrapper.vulnerability_filter_severity
+  %span.title= t('.severity')
+  = select_tag 'vulnerability[filter][severity]', options_for_severities_filter, include_blank: 'All', class: 'ctrl vulnerability_filter', disabled: @minor_versions.blank?

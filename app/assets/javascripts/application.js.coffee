@@ -25,6 +25,8 @@
 #= require tagcloud
 #= require ace-element.min
 #= require tipso.min
+#= require datatables/datatables-jquery.min
+#= require datatables/datatables-bootstrap.min
 
 $(document).on 'page:change', ->
   StackShow.init()
