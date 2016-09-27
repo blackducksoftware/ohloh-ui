@@ -54,11 +54,6 @@ class ProjectsController < ApplicationController
     @similar_by_stacks = @project.related_by_stacks(10)
   end
 
-  # def security
-  #   pss = @project.best_project_security_set
-  #   @vulnerabilites = pss.vulnerabilities_by_cve.paginate(page: page_param, per_page: 10) if pss
-  # end
-
   private
 
   def project_params

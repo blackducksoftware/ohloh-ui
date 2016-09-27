@@ -4,54 +4,61 @@
   page_context[:select_footer_nav] = :project_security
 
 %div
-  %h2.pull-left= t('.security')
   = project_analysis_timestamp(@project)
-.row
+
+.col-md-12{ style: 'margin-left: 200px' }
+  .row
+    .col-md-12
+      .row
+        %h2.pull-left{ style: 'margin-left: 68px' }= t('.security')
+      .row
+        %h3.pull-left{ style: 'font-weight: normal; margin-left: 68px' }= t('.vulns_per_version')
+  .row
+    - if @project.best_project_security_set
+      .col-md-8
+        .pull-left
+          %h3.margin_left_35{ style: 'font-weight: normal' }= t('.major_versions')
+        .pull-left
+          - release_data = map_vulnerabilities_to_releases(@releases)
+          - select_opts = options_for_select(major_releases(@releases))
+          - html_release_opts = { include_blank: 'All',
+                          style: 'max-width: 30%; margin-top: 14px; margin-left: 10px',
+                          data: { releases: release_data } }
+          = select_tag 'release_version', select_opts, html_release_opts
+        .pull-right.btn-toolbar{ 'aria-label' => '...', :role => 'group', style: 'margin-top: 17px' }
+          .btn.btn-info.btn-mini#one{ 'date' => 1 } 1yr
+          .btn.btn-info.btn-mini#three{ 'date' => 3 } 3yr
+          .btn.btn-info.btn-mini#five{ 'date' => 5 } 5yr
+          .btn.btn-info.btn-mini#ten{ 'date' => 10 } 10yr
+          .btn.btn-info.btn-mini#all{ 'date' => 'all' } all
+      .col-md-8
+        - chart_url = all_vulnerabilities_version_chart_project_url(@project)
+        .watermark440#vulnerability_version_chart{ data: { src: chart_url } }
+    - else
+      %p.text-center= t('.no_data')
+  .clear
+
+  .row
   .col-md-12
-    %h3.margin_left_15{ style: 'font-weight: normal' }= t('.vulns_per_version')
-.row
-  - if @project.best_project_security_set
-    .col-md-12
-      .pull-left
-        %h3.margin_left_15{ style: 'font-weight: normal' }= t('.major_versions')
-      .pull-left
-        - release_data = map_vulnerabilities_to_releases(@releases)
-        - select_opts = options_for_select(major_releases(@releases))
-        - html_opts = { include_blank: 'All',
-                        style: 'max-width: 30%; margin-top: 14px; margin-left: 10px',
-                        data: { releases: release_data } }
-        = select_tag 'release_version', select_opts, html_opts
-      .pull-right.btn-toolbar{ 'aria-label' => '...', :role => 'group', style: 'margin-top: 17px' }
-        .btn.btn-info.btn-mini#one{ 'date' => 1 } 1yr
-        .btn.btn-info.btn-mini#three{ 'date' => 3 } 3yr
-        .btn.btn-info.btn-mini#five{ 'date' => 5 } 5yr
-        .btn.btn-info.btn-mini#ten{ 'date' => 10 } 10yr
-        .btn.btn-info.btn-mini#all{ 'date' => 'all' } all
-    .col-md-12
-    .watermark440#vulnerability_version_chart{ data: { src: all_vulnerabilities_version_chart_project_url(@project) } }
-  - else
-    %p.text-center= t('.no_data')
-.clear
-.row
-  .col-md-1
     &nbsp;
-  .col-md-10
+  .row
+  .col-md-8
     - if @vulnerabilites
       %table.table.table-striped#table
         %thead
           %tr
-            %th.col-md-1 CVE ID
-            %th.col-md-1 Severity
-            %th.col-md-1 Date Published
-            %th.col-md-3 Description
-            %th.col-md-3 Versions Affected
+            %th.col-md-1= t('.cve_id')
+            %th.col-md-1= t('.severity')
+            %th.col-md-1= t('.date_published')
+            %th.col-md-3= t('.description')
+            %th.col-md-3= t('.versions_affected')
         %tbody
           - @vulnerabilites.each do |vulnerability|
             %tr
               %td= vulnerability.cve_id
               %td= vulnerability.severity.titleize
               %td= vulnerability.published_on.to_s(:mdy)
-              %td Sed consequat erat et lacus ullamcorper, vitae euismod felis finibus. Quisque rutrum laoreet nibh, ac lacinia mauris convallis vitae. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean at massa sit amet felis semper condimentum a eu neque.
+              %td Sample Text.....
               %td
                 .versions_affected= vulnerability.recent_releases
       .text-center
@@ -61,4 +68,3 @@
 
   .col-md-1
     &nbsp;
-

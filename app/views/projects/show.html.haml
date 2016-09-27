@@ -46,7 +46,7 @@
     .well
       - p_name = truncate_project_name(@project.name, false, 40)
       %h4.nutshell_heading= t('.in_a_nutshell', name: @project.name.length > 40 ? p_name : p_name + '...')
-      - unless @analysis.blank?
+      - if @analysis.present?
         = render 'projects/show/factoids'
       - else
         = render partial: 'projects/show/no_analysis_summary'

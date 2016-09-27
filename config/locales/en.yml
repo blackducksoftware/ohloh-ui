@@ -358,6 +358,11 @@ en:
       security: 'Security'
       vulns_per_version: 'Vulnerabilities per Version'
       major_versions: 'Major Versions'
+      cve_id: CVE ID
+      severity: Severity
+      date_published: Date Published
+      description: Description
+      versions_affected: Versions Affected
 
   password_resets:
     title: 'Password Reset - Open Hub'
