@@ -1,7 +1,9 @@
 class VulnerabilitiesController < ApplicationController
+  layout 'responsive_project_layout', only: [:index]
   helper VulnerabilitiesHelper
   before_action :set_project_or_fail
   before_action :set_best_project_security_set
+  before_action :set_vulnerabilities, only: [:index]
   before_action :all_releases, only: [:all_version_chart, :index]
   before_action :recent_releases, only: [:recent_version_chart]
 
@@ -17,6 +19,10 @@ class VulnerabilitiesController < ApplicationController
 
   def set_best_project_security_set
     @best_project_security_set = @project.best_project_security_set
+  end
+
+  def set_vulnerabilities
+    @vulnerabilites = @best_project_security_set.vulnerabilities_by_cve.paginate(page: page_param, per_page: 10) if @best_project_security_set
   end
 
   def recent_releases
