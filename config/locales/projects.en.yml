@@ -345,6 +345,7 @@ en:
     security:
       page_title: 'Security Page'
       title: 'Security'
+      no_vulnerability: 'There are no reported vulnerabilities'
     vulnerabilities:
       severity:
         low: 'Low Severity'

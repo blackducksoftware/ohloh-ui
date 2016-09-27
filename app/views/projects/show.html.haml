@@ -41,12 +41,15 @@
             = t('.no_tags')
             - if @project.edit_authorized?
               = link_to t('.add_tags'), project_tags_path(@project)
-  - unless @analysis.blank?
-    .col-md-4.nutshell_container
-      .well
-        - p_name = truncate_project_name(@project.name, false, 40)
-        %h4.nutshell_heading= t('.in_a_nutshell', name: @project.name.length > 40 ? p_name : p_name + '...')
+
+  .col-md-4.nutshell_container
+    .well
+      - p_name = truncate_project_name(@project.name, false, 40)
+      %h4.nutshell_heading= t('.in_a_nutshell', name: @project.name.length > 40 ? p_name : p_name + '...')
+      - unless @analysis.blank?
         = render 'projects/show/factoids'
+      - else
+        = render partial: 'projects/show/no_analysis_summary'
   .col-md-4.quick_reference_container
     .well
       = render partial: 'projects/show/quick_reference'
@@ -56,9 +59,12 @@
 .row.mezzo
 - if @analysis.blank?
   .analysis_blank_container
-    = render partial: 'projects/show/no_analysis_summary'
-    .col-md-4#proj_rating= render 'projects/show/community_rating', title: t('.community_rating'), score: @score
-    - if @project.enlistments.empty? && @analysis.blank?
-      = image_tag('sample_ohloh_analysis.jpg', class: 'col-md-12')
+    .row.project_row
+      .col-md-12.blank_message_container
+        .col-md-8.analysis_alert_container
+          = render partial: 'projects/show/no_analysis_summary'
+        .col-md-4#proj_rating= render 'projects/show/community_rating', title: t('.community_rating'), score: @score
+        - if @project.enlistments.empty? && @analysis.blank?
+          = image_tag('sample_ohloh_analysis.jpg', class: 'col-md-12')
 - else
   = render partial: 'projects/show/analysis_summary'

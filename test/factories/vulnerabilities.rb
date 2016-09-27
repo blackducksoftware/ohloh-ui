@@ -1,9 +1,9 @@
 FactoryGirl.define do
   factory :vulnerability do
     sequence :cve_id
-    published_on { Faker::Date.backward(14) }
-    generated_on { Faker::Date.backward(14) }
     score 1.0
-    severity 'low'
+    generated_on { 1.year.ago }
+    published_on { 1.year.ago }
+    severity { rand(0..2) }
   end
 end

@@ -10,7 +10,7 @@
   .col-md-12
     %h3.margin_left_15{ style: 'font-weight: normal' }= t('.vulns_per_version')
 .row
-  - if @project.best_project_security_set.try(:most_recent_vulnerabilities?)
+  - if @project.best_project_security_set
     .col-md-12
       .pull-left
         %h3.margin_left_15{ style: 'font-weight: normal' }= t('.major_versions')
