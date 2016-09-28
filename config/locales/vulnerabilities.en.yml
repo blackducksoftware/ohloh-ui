@@ -5,4 +5,6 @@ en:
       period: Period
       version: 'Security Vulnerabilities for Version:'
       severity: 'Severities:'
-      no_versions_available: No versions in specified filters
+      vulnerabilities:
+        filter:
+          no_versions_available: No versions in specified filters
