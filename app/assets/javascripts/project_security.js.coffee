@@ -13,7 +13,6 @@ ProjectVulnerabilityFilter =
   init: () ->
     this.mainFilter(this)
     this.filter(this)
-    this.convertToDatatable()
     this.reloadPageOnHistoryNavigation()
 
   mainFilter: (_klass) ->
@@ -37,19 +36,6 @@ ProjectVulnerabilityFilter =
         success: (vulTable) ->
           window.history.pushState('', document.title, projectUrl + 'security?' + $.param(queryStr))
           $('#vulnerabilities-data').html(vulTable)
-          _klass.convertToDatatable()
-
-  convertToDatatable: () ->
-    $('.vulnerabilities-datatable table').DataTable(
-      info: false
-      paging: false
-      searching: false
-      columnDefs: [
-          { targets: [0, 1, 2], orderable: true},
-          { targets: '_all', orderable: false }
-      ]
-      order: [0, 'desc']
-    )
 
   reloadPageOnHistoryNavigation: () ->
     window.addEventListener 'popstate', (event) ->
