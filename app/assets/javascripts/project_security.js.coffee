@@ -74,5 +74,10 @@ extendChartOptions = (options) ->
 $(document).on 'page:change', ->
   ProjectVulnerabilityVersionChart.init()
   ProjectVulnerabilityFilter.init()
-  $('tr.nvd_link').click ->
+
+  $('#vulnerabilities_index_page').on 'click', 'tr.nvd_link', ->
     window.open($(this).data('nvd-link'), '_blank')
+
+  $('#vulnerabilities_index_page').on 'click', 'span#read_more a, span#read_less a', (e) ->
+    e.stopPropagation()
+    $(this).closest('td').find('span').toggle()
