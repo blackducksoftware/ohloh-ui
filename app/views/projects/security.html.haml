@@ -14,21 +14,23 @@
     &nbsp;
   .col-md-10
     - if @vulnerabilites
-      %table.table.table-striped#table
+      %table.table.table-striped
         %thead
+          %tr#dingus-row
+            %td{colspan: 5} &nbsp;
           %tr
-            %th.col-md-1 CVE ID
-            %th.col-md-1 Severity
-            %th.col-md-1 Date Published
-            %th.col-md-3 Description
-            %th.col-md-3 Versions Affected
+            %th.col-md-1= t('.cve_id')
+            %th.col-md-1= t('.severity')
+            %th.col-md-1= t('.date_published')
+            %th.col-md-3= t('.description')
+            %th.col-md-3= t('.versions_affected')
         %tbody
           - @vulnerabilites.each do |vulnerability|
-            %tr
+            %tr.nvd_link{'data-nvd-link' => "#{ENV['NVD_LINK'] + vulnerability.cve_id}"}
               %td= vulnerability.cve_id
               %td= vulnerability.severity.titleize
               %td= vulnerability.published_on.to_s(:mdy)
-              %td= vulnerability.description
+              %td.vul_description= vulnerability.description
               %td
                 .versions_affected= vulnerability.recent_releases
       .text-center

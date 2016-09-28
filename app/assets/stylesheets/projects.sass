@@ -318,13 +318,16 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
 #projects_security_page
   .no_vulnerability
     height: 35vh
-
-.security_blog_link
-  float: right
-  padding: 0 30px 10px 0
-  margin-top: -20px
-
+  tr.nvd_link:hover
+    cursor: pointer
+  .vul_description
+    padding-right: 30px
+    text-align: justify
 .rating_stars_value
   float: left
   padding-top: 4px
   padding-left: 2px
+.security_blog_link
+  float: right
+  padding: 0 30px 10px 0
+  margin-top: -20px

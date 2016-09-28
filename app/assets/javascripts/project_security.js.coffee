@@ -11,3 +11,6 @@ ProjectVulnerabilityVersionChart =
 
 $(document).on 'page:change', ->
   ProjectVulnerabilityVersionChart.init()
+
+  $('tr.nvd_link').click ->
+    window.open($(this).data('nvd-link'), '_blank')

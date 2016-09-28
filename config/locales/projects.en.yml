@@ -347,6 +347,11 @@ en:
       page_title: 'Security Page'
       title: 'Security'
       no_vulnerability: 'There are no reported vulnerabilities'
+      cve_id: 'CVE ID'
+      severity: 'Severity'
+      date_published: 'Date Published'
+      description: 'Description'
+      versions_affected: 'Versions Affected'
     vulnerabilities:
       severity:
         low: 'Low Severity'
