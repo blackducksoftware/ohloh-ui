@@ -944,7 +944,74 @@ describe 'ProjectsController' do
       release = create(:release)
       create_list(:releases_vulnerability, 10, release: release)
       get :security, id: release.project_security_set.project.to_param
-      assigns(:vulnerabilites).count.must_equal 10
+      assigns(:vulnerabilities).count.must_equal 10
+    end
+
+    describe 'Security data filter' do
+      let(:security_set) { create(:project_security_set) }
+      let(:r1_0) { create(:release, version: '1.0', released_on: 11.years.ago, project_security_set: security_set) }
+      let(:r1_1) { create(:release, version: '1.1', released_on: 8.years.ago, project_security_set: security_set) }
+      let(:r1_2) { create(:release, version: '1.2', released_on: 3.years.ago, project_security_set: security_set) }
+      let(:r1_3) { create(:release, version: '1.3', released_on: 8.months.ago, project_security_set: security_set) }
+      let(:r2_2) { create(:release, version: '2.2', released_on: 5.months.ago, project_security_set: security_set) }
+      let(:r3_3) { create(:release, version: '3.3', released_on: 1.month.ago, project_security_set: security_set) }
+
+      before do
+        [r1_0, r1_1, r1_2, r1_3, r2_2, r3_3].each do |r|
+          3.times do |s|
+            create(:releases_vulnerability, release: r, vulnerability: create(:vulnerability, severity: s))
+          end
+        end
+      end
+
+      it 'should return all vulnerabilities of the most recent version for default filtering' do
+        get :security, id: security_set.project.to_param
+        must_render_template :security
+        must_render_template 'vulnerabilities/_filter'
+        assigns(:latest_version).must_equal r3_3
+        assigns(:minor_versions).to_a.must_equal [r3_3, r2_2, r1_3, r1_2, r1_1, r1_0]
+        assigns(:vulnerabilities).to_a.must_equal r3_3.vulnerabilities.sort_by_cve_id
+      end
+
+      it 'should return the vulnerabilities of the most recent minor version within the chosen major version' do
+        get :security, id: security_set.project.to_param, filter: { major_version: '1' }
+        assigns(:latest_version).must_equal r1_3
+        assigns(:minor_versions).to_a.must_equal [r1_3, r1_2, r1_1, r1_0]
+        assigns(:vulnerabilities).to_a.must_equal r1_3.vulnerabilities.sort_by_cve_id
+      end
+
+      it 'should return the vulnerabilities of the most recent minor version within the chosen time span' do
+        get :security, id: security_set.project.to_param, filter: { major_version: '1', period: '1' }
+        assigns(:latest_version).must_equal r1_3
+        assigns(:minor_versions).to_a.must_equal [r1_3]
+        assigns(:vulnerabilities).to_a.must_equal r1_3.vulnerabilities.sort_by_cve_id
+      end
+
+      it 'should return the vulnerabilities of the chosen version' do
+        get :vulnerabilities_filter, id: security_set.project.to_param,
+                                     filter: { major_version: '1', version: r1_2.id, period: '5' }, xhr: true
+        must_render_template :vulnerabilities_filter
+        must_render_template 'vulnerabilities/_filter'
+        assigns(:latest_version).must_equal r1_2
+        assigns(:minor_versions).to_a.must_equal [r1_3, r1_2]
+        assigns(:vulnerabilities).to_a.must_equal r1_2.vulnerabilities.sort_by_cve_id
+      end
+
+      it 'should return the vulnerabilities of the chosen severity' do
+        get :vulnerabilities_filter, id: security_set.project.to_param,
+                                     filter: { major_version: '1', severity: 'medium' }, xhr: true
+        assigns(:latest_version).must_equal r1_3
+        assigns(:vulnerabilities).count.must_equal 1
+        assigns(:vulnerabilities).to_a.must_equal r1_3.vulnerabilities.medium.sort_by_cve_id
+      end
+
+      it 'should return the vulnerabilities of all severity types when severity param is blank' do
+        get :vulnerabilities_filter, id: security_set.project.to_param,
+                                     filter: { major_version: '1', severity: '' }, xhr: true
+        assigns(:latest_version).must_equal r1_3
+        assigns(:vulnerabilities).count.must_equal 3
+        assigns(:vulnerabilities).to_a.must_equal r1_3.vulnerabilities.sort_by_cve_id
+      end
     end
   end
 end

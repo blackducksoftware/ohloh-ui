@@ -1,6 +1,9 @@
 FactoryGirl.define do
   factory :release do
     kb_release_id { Faker::Lorem.word }
+    sequence :version do |n|
+      "#{n}.0.0"
+    end
     association :project_security_set
     released_on 6.months.ago
     after(:create) do |release|
