@@ -8,7 +8,8 @@
         %ul
           - header, *links = section
           - header_class, header_name, header_url, header_type = header
-          %li.footer-nav{ class: [('selected' if header_class == page_context[:select_footer_nav]), ('linked' if header_url)] }
+          - header_condition = header_class == page_context[:select_footer_nav]
+          %li.footer-nav{ class: [('selected' if header_condition), ('linked' if header_url)] }
             - if header_url
               %a{ href: header_url }
                 = header_name
