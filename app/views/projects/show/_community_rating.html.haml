@@ -11,8 +11,8 @@
         .col-md-12
           .pull-left
             != rating_stars('average_rating_stars', @project.rating_average.to_f || 0)
-          .pull-left{ style: 'padding-left: 10px;' }
-          #{number_with_precision(@project.rating_average || 0, precision: 1)}/5.0
+            .rating_stars_value
+              #{number_with_precision(@project.rating_average || 0, precision: 1)}/5.0
     - else
       %span{ style: 'padding-left: 8px; display: block;' }= t('.be_the_first')
   .col-xs-6.add_rating_container
@@ -23,7 +23,7 @@
         = t('.click_to_add')
     .clear
       .jrating.pull-left{ id: @project.to_param, class: needs_login_or_verification_or_default, score: score,
-        star_style: 'big', style: 'margin-left: 9px', data: { show: 'projects/show/community_rating' } }
+        star_style: 'big', style: 'margin-left: 9px; margin-bottom: 5px;', data: { show: 'projects/show/community_rating' } }
       %span.pull-left#rating_spinner
         &nbsp;&nbsp;
         = image_tag('spinner.gif')
@@ -35,6 +35,5 @@
                                                         show: 'projects/show/community_rating'),
                                                         method: :delete
     - unless current_user && Review.by_account(current_user).for_project(@project).count > 0
-      .clearfix &nbsp;
       %span{ style: 'margin-left: 5px;' }
         = link_to t('.review_this_project'), new_project_review_path(@project)

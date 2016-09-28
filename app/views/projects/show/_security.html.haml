@@ -10,6 +10,7 @@
         .well= render partial: 'projects/show/vulnerability_report'
       .col-md-4#did_you_know
         = render 'projects/show/site_features'
+    = link_to t('.blog_link'), 'javascript:void(0);', class: 'security_blog_link', target: '_blank'
   - else
     .col-md-12#did_you_know
       %h4= t('.title_nvd')
