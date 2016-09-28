@@ -1,0 +1,8 @@
+en:
+  vulnerabilities:
+    filter:
+      major_version: Major Version
+      period: Period
+      version: 'Security Vulnerabilities for Version:'
+      severity: 'Severities:'
+      no_versions_available: No versions in specified filters
