@@ -15,3 +15,4 @@ en:
       help4: "Open Hub shows you projects with similar tags as an assist in selecting good tags. By seeing the tags of similar projects, you can see how Open Hub's tagging will identify similar projects, while also choosing some tags that differentiate this one from others like it."
       help5: "Of course, you are able to add a new tag that is not already in use, but we strongly encourage you to pick from the existing tag set whenever possible."
       help6: "For projects tagged prior to the implementation of the %{max} tag limit, those tags are grandfathered in, but when you edit a project with more than %{max}, you'll be required to reduce the number to %{max} or fewer."
+    description_error_message_html: "Sorry, this project can't be updated. The project description should be less than 800 characters, please <a href=%{url}>click here</a> to update the description."
