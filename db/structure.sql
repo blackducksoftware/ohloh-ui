@@ -581,7 +581,7 @@ CREATE TABLE analyses (
     headcount integer,
     min_month date,
     max_month date,
-    logged_at timestamp without time zone,
+    oldest_code_set_time timestamp without time zone,
     committers_all_time integer,
     first_commit_time timestamp without time zone,
     last_commit_time timestamp without time zone,
@@ -645,7 +645,7 @@ CREATE TABLE analysis_sloc_sets (
     analysis_id integer NOT NULL,
     sloc_set_id integer NOT NULL,
     as_of integer,
-    logged_at timestamp without time zone,
+    code_set_time timestamp without time zone,
     ignore text,
     ignored_fyle_count integer
 );
@@ -930,7 +930,7 @@ CREATE TABLE sloc_sets (
     code_set_id integer NOT NULL,
     updated_on timestamp without time zone,
     as_of integer,
-    logged_at timestamp without time zone
+    code_set_time timestamp without time zone
 );
 
 
@@ -6147,7 +6147,7 @@ CREATE INDEX index_activity_facts_on_name_id ON activity_facts USING btree (name
 -- Name: index_analyses_on_logged_at_day; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_analyses_on_logged_at_day ON analyses USING btree (logged_at, date_trunc('day'::text, logged_at)) WHERE (logged_at IS NOT NULL);
+CREATE INDEX index_analyses_on_logged_at_day ON analyses USING btree (oldest_code_set_time, date_trunc('day'::text, oldest_code_set_time)) WHERE (oldest_code_set_time IS NOT NULL);
 
 
 --
@@ -8773,6 +8773,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160818102530');
 INSERT INTO schema_migrations (version) VALUES ('20160907122530');
 
 INSERT INTO schema_migrations (version) VALUES ('20160916124401');
+
+INSERT INTO schema_migrations (version) VALUES ('20160920113102');
 
 INSERT INTO schema_migrations (version) VALUES ('20160926144901');
 

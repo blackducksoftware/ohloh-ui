@@ -339,7 +339,7 @@ describe 'ProjectsController' do
 
     it 'must render successfully when analysis has nil dates' do
       project = create(:project)
-      project.best_analysis.update! min_month: nil, max_month: nil, logged_at: nil,
+      project.best_analysis.update! min_month: nil, max_month: nil, oldest_code_set_time: nil,
                                     first_commit_time: nil, last_commit_time: nil
 
       get :show, id: project.to_param

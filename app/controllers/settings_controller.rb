@@ -17,8 +17,9 @@ class SettingsController < ApplicationController
   private
 
   def parse_time_span(time_span)
-    return unless @project.best_analysis.logged_at
-    @highlight_from = @project.best_analysis.logged_at - time_span.to_s.split.first.to_i.send(time_units(time_span))
+    return unless @project.best_analysis.oldest_code_set_time
+    @highlight_from =
+      @project.best_analysis.oldest_code_set_time - time_span.to_s.split.first.to_i.send(time_units(time_span))
   end
 
   def time_units(time_span)
