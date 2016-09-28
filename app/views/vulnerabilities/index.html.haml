@@ -33,6 +33,8 @@
           .btn.btn-info.btn-mini#all{ 'date' => 'all' } all
       .col-md-8
         - chart_url = all_vulnerabilities_version_chart_project_url(@project)
+        .col-xs-3.col-xs-offset-9
+          .h6= t('.click_and_zoom')
         .watermark440#vulnerability_version_chart{ data: { src: chart_url } }
     - else
       %p.text-center= t('.no_data')

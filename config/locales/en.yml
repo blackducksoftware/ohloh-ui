@@ -357,6 +357,7 @@ en:
     index:
       security: 'Security'
       vulns_per_version: 'Vulnerabilities per Version'
+      click_and_zoom: 'click and drag to zoom'
       major_versions: 'Major Versions'
       cve_id: CVE ID
       severity: Severity

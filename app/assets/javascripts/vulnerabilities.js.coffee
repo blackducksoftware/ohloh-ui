@@ -25,7 +25,14 @@ filterByDate = (releases, filter) ->
     startDate < time && time < endDate.getTime()
   )
 
+renderNoData = (releases) ->
+  chart = $('#vulnerability_version_chart').highcharts()
+  renderer = new Highcharts.Renderer($('#vulnerability_version_chart')[0],10,10)
+  reRenderChart(releases)
+  chart.renderer.text('There are no reported vulnerabilities', 250, 70).css({fontSize: '12px'}).add()
+
 reRenderChart = (releases) ->
+  $('tspan').remove() if $('tspan').html() == "There are no reported vulnerabilities"
   versions = releases.map((obj) ->
     obj.version
   )
@@ -48,29 +55,44 @@ $("#one").on 'click', ->
   releaseData = getReleaseData()
   yearDiff = $("#one").attr('date')
   filteredReleases = filterByDate(releaseData, yearDiff)
-  reRenderChart(filteredReleases)
+  if filteredReleases.length == 0
+    renderNoData(filteredReleases)
+  else
+    reRenderChart(filteredReleases)
 
 $("#three").on 'click', ->
   releaseData = getReleaseData()
   yearDiff = $("#three").attr('date')
   filteredReleases = filterByDate(releaseData, yearDiff)
-  reRenderChart(filteredReleases)
+  if filteredReleases.length == 0
+    renderNoData(filteredReleases)
+  else
+    reRenderChart(filteredReleases)
 
 $("#five").on 'click', ->
   releaseData = getReleaseData()
   yearDiff = $("#five").attr('date')
   filteredReleases = filterByDate(releaseData, yearDiff)
-  reRenderChart(filteredReleases)
+  if filteredReleases.length == 0
+    renderNoData(filteredReleases)
+  else
+    reRenderChart(filteredReleases)
 
 $("#ten").on 'click', ->
   releaseData = getReleaseData()
   yearDiff = $("#ten").attr('date')
   filteredReleases = filterByDate(releaseData, yearDiff)
-  reRenderChart(filteredReleases)
+  if filteredReleases.length == 0
+    renderNoData(filteredReleases)
+  else
+    reRenderChart(filteredReleases)
 
 $("#all").on 'click', ->
   releaseData = getReleaseData()
-  reRenderChart(releaseData)
+  if filteredReleases.length == 0
+    renderNoData(releaseData)
+  else
+    reRenderChart(releaseData)
 
 $('#release_version').on 'change', ->
   selVal = $('#release_version').val()
