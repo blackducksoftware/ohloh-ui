@@ -3431,37 +3431,6 @@ CREATE VIEW projects_by_month AS
 
 
 --
--- Name: pss_release_vulnerabilities; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE pss_release_vulnerabilities (
-    id integer NOT NULL,
-    project_security_set_id integer,
-    release_id integer,
-    vulnerability_id integer
-);
-
-
---
--- Name: pss_release_vulnerabilities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE pss_release_vulnerabilities_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: pss_release_vulnerabilities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE pss_release_vulnerabilities_id_seq OWNED BY pss_release_vulnerabilities.id;
-
-
---
 -- Name: ratings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -3595,7 +3564,8 @@ CREATE TABLE releases (
     released_on timestamp without time zone,
     version character varying,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    project_security_set_id integer
 );
 
 
@@ -3616,6 +3586,16 @@ CREATE SEQUENCE releases_id_seq
 --
 
 ALTER SEQUENCE releases_id_seq OWNED BY releases.id;
+
+
+--
+-- Name: releases_vulnerabilities; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE releases_vulnerabilities (
+    release_id integer NOT NULL,
+    vulnerability_id integer NOT NULL
+);
 
 
 --
@@ -4437,7 +4417,8 @@ CREATE TABLE vulnerabilities (
     severity integer,
     score numeric,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    description text
 );
 
 
@@ -4829,13 +4810,6 @@ ALTER TABLE ONLY project_security_sets ALTER COLUMN id SET DEFAULT nextval('proj
 --
 
 ALTER TABLE ONLY project_vulnerability_reports ALTER COLUMN id SET DEFAULT nextval('project_vulnerability_reports_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY pss_release_vulnerabilities ALTER COLUMN id SET DEFAULT nextval('pss_release_vulnerabilities_id_seq'::regclass);
 
 
 --
@@ -5710,14 +5684,6 @@ ALTER TABLE ONLY projects
 
 ALTER TABLE ONLY projects
     ADD CONSTRAINT projects_url_name_key UNIQUE (vanity_url);
-
-
---
--- Name: pss_release_vulnerabilities_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY pss_release_vulnerabilities
-    ADD CONSTRAINT pss_release_vulnerabilities_pkey PRIMARY KEY (id);
 
 
 --
@@ -6976,27 +6942,6 @@ CREATE INDEX index_projects_on_vector_gin ON projects USING gin (vector);
 
 
 --
--- Name: index_pss_release_vulnerabilities_on_project_security_set_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_pss_release_vulnerabilities_on_project_security_set_id ON pss_release_vulnerabilities USING btree (project_security_set_id);
-
-
---
--- Name: index_pss_release_vulnerabilities_on_release_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_pss_release_vulnerabilities_on_release_id ON pss_release_vulnerabilities USING btree (release_id);
-
-
---
--- Name: index_pss_release_vulnerabilities_on_vulnerability_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_pss_release_vulnerabilities_on_vulnerability_id ON pss_release_vulnerabilities USING btree (vulnerability_id);
-
-
---
 -- Name: index_ratings_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -7014,7 +6959,7 @@ CREATE INDEX index_recommend_entries_on_project_id ON recommend_entries USING bt
 -- Name: index_releases_on_kb_release_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_releases_on_kb_release_id ON releases USING btree (kb_release_id);
+CREATE INDEX index_releases_on_kb_release_id ON releases USING btree (kb_release_id);
 
 
 --
@@ -7196,7 +7141,7 @@ CREATE INDEX index_vitae_on_account_id ON vitae USING btree (account_id);
 -- Name: index_vulnerabilities_on_cve_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_vulnerabilities_on_cve_id ON vulnerabilities USING btree (cve_id);
+CREATE INDEX index_vulnerabilities_on_cve_id ON vulnerabilities USING btree (cve_id);
 
 
 --
@@ -8827,7 +8772,11 @@ INSERT INTO schema_migrations (version) VALUES ('20160818102530');
 
 INSERT INTO schema_migrations (version) VALUES ('20160907122530');
 
+INSERT INTO schema_migrations (version) VALUES ('20160916124401');
+
 INSERT INTO schema_migrations (version) VALUES ('20160920113102');
+
+INSERT INTO schema_migrations (version) VALUES ('20160926144901');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
