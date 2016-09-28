@@ -18,7 +18,6 @@ module ProjectFilters
     before_action :set_uuid, only: :show
     before_action :avoid_global_search_if_parent_is_account, only: :index
     before_action :avoid_global_search, only: :users
-    before_action :find_security_data, only: [:security, :vulnerabilities_filter]
   end
 
   private

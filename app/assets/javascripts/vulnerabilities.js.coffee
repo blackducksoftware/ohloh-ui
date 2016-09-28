@@ -1,5 +1,5 @@
 getReleaseData = () ->
-  releaseObjects = document.getElementById('release_version').dataset.releases
+  releaseObjects = document.getElementById('vulnerability_filter_major_version').dataset.releases
   data = JSON.parse(releaseObjects)
 
 calculateHighVulns = (releases) ->
@@ -51,53 +51,34 @@ reRenderChart = (releases) ->
   }, false
   chart.redraw()
 
-$("#one").on 'click', ->
+$('.release_timespan').click ->
+  return if $(this).hasClass('selected')
+  yearDiff = $(this).attr('date')
+  $('#vulnerability_filter_period').val(yearDiff)
+  $('#vulnerability_filter_period').trigger('change')
+  $('.release_timespan').removeClass('selected')
+  $(this).addClass('selected')
   releaseData = getReleaseData()
-  yearDiff = $("#one").attr('date')
-  filteredReleases = filterByDate(releaseData, yearDiff)
+  if yearDiff == ''
+    filteredReleases = releaseData
+  else
+    filteredReleases = filterByDate(releaseData, yearDiff)
   if filteredReleases.length == 0
     renderNoData(filteredReleases)
   else
     reRenderChart(filteredReleases)
 
-$("#three").on 'click', ->
-  releaseData = getReleaseData()
-  yearDiff = $("#three").attr('date')
-  filteredReleases = filterByDate(releaseData, yearDiff)
-  if filteredReleases.length == 0
-    renderNoData(filteredReleases)
-  else
-    reRenderChart(filteredReleases)
-
-$("#five").on 'click', ->
-  releaseData = getReleaseData()
-  yearDiff = $("#five").attr('date')
-  filteredReleases = filterByDate(releaseData, yearDiff)
-  if filteredReleases.length == 0
-    renderNoData(filteredReleases)
-  else
-    reRenderChart(filteredReleases)
-
-$("#ten").on 'click', ->
-  releaseData = getReleaseData()
-  yearDiff = $("#ten").attr('date')
-  filteredReleases = filterByDate(releaseData, yearDiff)
-  if filteredReleases.length == 0
-    renderNoData(filteredReleases)
-  else
-    reRenderChart(filteredReleases)
-
-$("#all").on 'click', ->
-  releaseData = getReleaseData()
-  if filteredReleases.length == 0
-    renderNoData(releaseData)
-  else
-    reRenderChart(releaseData)
-
-$('#release_version').on 'change', ->
-  selVal = $('#release_version').val()
+$('#vulnerability_filter_major_version').on 'change', ->
+  selVal = $('#vulnerability_filter_major_version').val()
   releaseData = getReleaseData()
   filteredReleases = releaseData.filter((item) ->
     ///^#{selVal}///.test item.version
   )
   reRenderChart(filteredReleases)
+
+highlightReleaseTimespan = () ->
+  yearDiff = $('#vulnerability_filter_period').val()
+  $('.release_timespan[date="' + yearDiff + '"]').addClass('selected')
+
+$(document).on 'page:change', ->
+  highlightReleaseTimespan()

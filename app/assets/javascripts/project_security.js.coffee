@@ -16,14 +16,20 @@ ProjectVulnerabilityFilter =
     this.reloadPageOnHistoryNavigation()
 
   mainFilter: (_klass) ->
-    $('#vulnerabilities-data').on 'change', '.vulnerability_main_filter', (event) ->
+    $('#vulnerabilities_index_page').on 'change', '.vulnerability_main_filter', (event) ->
       queryStr = filter:
         major_version: $('#vulnerability_filter_major_version').val()
         period: $('#vulnerability_filter_period').val()
-      window.location.href = _klass.getProjectUrl() + 'security?' + $.param(queryStr)
+      projectUrl = _klass.getProjectUrl()
+      $.ajax
+        url: projectUrl.concat('vulnerabilities_filter'),
+        data: queryStr
+        success: (vulTable) ->
+          window.history.pushState('', document.title, projectUrl + 'security?' + $.param(queryStr))
+          $('#vulnerabilities-data').html(vulTable)
 
   filter: (_klass) ->
-    $('#vulnerabilities-data').on 'change', '.vulnerability_filter', (event) ->
+    $('#vulnerabilities_index_page').on 'change', '.vulnerability_filter', (event) ->
       queryStr = filter:
         major_version: $('#vulnerability_filter_major_version').val()
         period: $('#vulnerability_filter_period').val()

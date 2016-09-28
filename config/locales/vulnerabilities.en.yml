@@ -1,6 +1,6 @@
 en:
   vulnerabilities:
-    filter:
+    version_filter:
       major_version: Major Version
       period: Period
       version: 'Security Vulnerabilities for Version:'
