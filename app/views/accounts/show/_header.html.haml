@@ -19,7 +19,7 @@
           - if @account.location.present?
             %span.seperator &nbsp;|&nbsp;
           = link_to settings_account_path(@account) do
-            %i.icon-cogs=  t('.account_settings)
+            %i.icon-cogs=  t('.account_settings')
         - if current_user_is_admin?
           |
           = link_to bootstrap_icon('icon-legal', t('.view_job')), admin_account_vita_jobs_path(@account)
