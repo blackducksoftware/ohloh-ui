@@ -4,7 +4,7 @@
 .col-xs-12.no_padding#community_rating
   .col-xs-6
     %h4.community_rating_header= link_to title, summary_project_reviews_path(@project)
-    - if @project.ratings.nonzero?
+    - if @project.ratings.any?
       .col-md-12
         = t((@project.ratings.count == 1 ? '.one_user_rate' : '.users_rate'), n: @project.ratings.count)
       .clear
