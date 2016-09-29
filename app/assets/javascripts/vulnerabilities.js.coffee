@@ -1,6 +1,14 @@
-getReleaseData = () ->
+@getReleaseData = () ->
   releaseObjects = document.getElementById('vulnerability_filter_major_version').dataset.releases
   data = JSON.parse(releaseObjects)
+
+@find_release_by_version = (version) ->
+  release = undefined
+  $.each getReleaseData(), (i, r) ->
+    if r.version == version
+      release = r
+      return false
+  release
 
 calculateHighVulns = (releases) ->
   highVulns = releases.map((obj) ->
