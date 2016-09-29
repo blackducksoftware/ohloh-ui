@@ -7,6 +7,7 @@ ProjectVulnerabilityVersionChart =
       cache: false
       success: (data) ->
         return if (data == null)
+        extendChartOptions(data)
         chart = new Highcharts.Chart(data);
 
 ProjectVulnerabilityFilter =
@@ -20,7 +21,7 @@ ProjectVulnerabilityFilter =
       queryStr = filter:
         major_version: $('#vulnerability_filter_major_version').val()
         period: $('#vulnerability_filter_period').val()
-      projectUrl = _klass.getProjectUrl()
+      projectUrl = getProjectUrl()
       $.ajax
         url: projectUrl.concat('vulnerabilities_filter'),
         data: queryStr
@@ -35,7 +36,7 @@ ProjectVulnerabilityFilter =
         period: $('#vulnerability_filter_period').val()
         version: $('#vulnerability_filter_version').val()
         severity: $('#vulnerability_filter_severity').find(':selected').val()
-      projectUrl = _klass.getProjectUrl()
+      projectUrl = getProjectUrl()
       $.ajax
         url: projectUrl.concat('vulnerabilities_filter'),
         data: queryStr
@@ -47,8 +48,26 @@ ProjectVulnerabilityFilter =
     window.addEventListener 'popstate', (event) ->
       window.location.reload()
 
-  getProjectUrl: () ->
-    window.location.href.match(/\/p\/.+\//)[0]
+@getProjectUrl = () ->
+  window.location.href.match(/\/p\/.+\//)[0]
+
+extendChartOptions = (options) ->
+  return if $('#vulnerability_version_chart').parents('#vulnerabilities_index_page').length == 0
+  options.plotOptions['series'] =
+    cursor: 'pointer'
+    point:
+      events:
+        click: (event) ->
+          queryStr = filter:
+            version: find_release_by_version(this.category).id
+          projectUrl = getProjectUrl()
+          $.ajax
+            url: projectUrl.concat('vulnerabilities_filter'),
+            data: queryStr
+            success: (vulTable) ->
+              window.history.pushState('', document.title, projectUrl + 'security?' + $.param(queryStr))
+              $('#vulnerabilities-data').html(vulTable)
+
 
 $(document).on 'page:change', ->
   ProjectVulnerabilityVersionChart.init()
