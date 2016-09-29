@@ -42,10 +42,10 @@
               %td.col-xs-5.no_padding_left{valign: 'top' }
                 %h4.section_header.thirty_day= t('.thirty_day_summary')
                 %small.summary_timespan.thirty_day
-                  - if @analysis.present? && @analysis.thirty_day_summary && @analysis.logged_at
-                    = (@analysis.logged_at - 30.days).strftime('%b %e %Y')
+                  - if @analysis.present? && @analysis.thirty_day_summary && @analysis.oldest_code_set_time
+                    = (@analysis.oldest_code_set_time - 30.days).strftime('%b %e %Y')
                     &mdash;
-                    = @analysis.logged_at.strftime('%b %e %Y')
+                    = @analysis.oldest_code_set_time.strftime('%b %e %Y')
                   - else
                     = t('.not_available')
                 .clearfix
@@ -53,10 +53,10 @@
               %td.col-xs-5.col-xs-offset-1.no_padding_right{ valign: 'top' }
                 %h4.section_header.twelve_month= t('.twelve_month_summary')
                 %small.summary_timespan
-                  - if @analysis.twelve_month_summary.present? && @analysis.logged_at
-                    = (@analysis.logged_at - 12.months).strftime('%b %e %Y')
+                  - if @analysis.twelve_month_summary.present? && @analysis.oldest_code_set_time
+                    = (@analysis.oldest_code_set_time - 12.months).strftime('%b %e %Y')
                     &mdash;
-                    = @analysis.logged_at.strftime('%b %e %Y')
+                    = @analysis.oldest_code_set_time.strftime('%b %e %Y')
                   - else
                     = t('.not_available')
                 .clearfix
