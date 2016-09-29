@@ -1,0 +1,61 @@
+:ruby
+  content_for(:html_title) { t('projects.html_title', name: @project.name, title: t('.page_title')) }
+  page_context[:select_top_menu_nav] = 'select_projects'
+  page_context[:select_footer_nav] = :project_security
+
+%div
+  = project_analysis_timestamp(@project)
+
+.col-md-10.col-md-offset-2
+.row
+  .col-md-1
+    &nbsp;
+  .col-md-10
+    .row
+      %h2= t('.security')
+    .row
+      %h3{ style: 'font-weight: normal; font-size: 1.4em;' }= t('.vulns_per_version')
+  .col-md-1
+    &nbsp;
+.row
+  .col-md-1
+    &nbsp;
+  .col-md-10
+    - if @project.best_project_security_set
+      .row
+        %h4.pull-left= t('.major_versions')
+        .pull-left
+          - release_data = map_vulnerabilities_to_releases(@releases)
+          - select_opts = options_for_select(major_releases(@releases), filter_major_version_param)
+          - html_release_opts = { include_blank: 'All',
+                          style: 'max-width: 30%; margin-left: 10px',
+                          data: { releases: release_data }, class: 'vulnerability_main_filter' }
+          = select_tag 'vulnerability_filter_major_version', select_opts, html_release_opts
+        .pull-right.btn-toolbar{ 'aria-label' => '...', :role => 'group', style: 'margin-top: 17px' }
+          .btn.btn-info.btn-mini.release_timespan{ 'date' => 1 } 1yr
+          .btn.btn-info.btn-mini.release_timespan{ 'date' => 3 } 3yr
+          .btn.btn-info.btn-mini.release_timespan{ 'date' => 5 } 5yr
+          .btn.btn-info.btn-mini.release_timespan{ 'date' => 10 } 10yr
+          .btn.btn-info.btn-mini.release_timespan{ 'date' => '' } all
+          = hidden_field_tag 'vulnerability_filter_period', filter_period_param, class: 'vulnerability_main_filter'
+      .row
+        - chart_url = all_vulnerabilities_version_chart_project_url(@project)
+        .pull-right
+          .h6= t('.click_and_zoom')
+        .watermark440#vulnerability_version_chart{ data: { src: chart_url } }
+    - else
+      %p.text-center= t('.no_data')
+  .col-md-1
+    &nbsp;
+
+.row
+  .col-md-12#vulnerability-chart-divider
+    .mezzo.margin_bottom_5
+
+.row
+  .col-md-1
+    &nbsp;
+  .col-md-10#vulnerabilities-data
+    = render partial: 'vulnerability_table'
+  .col-md-1
+    &nbsp;

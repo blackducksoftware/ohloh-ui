@@ -39,7 +39,7 @@
         %table.unstyled#activity_table{ width: 'auto' }
           %tbody
             %tr
-              %td.col-xs-5.no_padding_left{valign: 'top' }
+              %td.col-xs-5.no_padding_left{ valign: 'top' }
                 %h4.section_header.thirty_day= t('.thirty_day_summary')
                 %small.summary_timespan.thirty_day
                   - if @analysis.present? && @analysis.thirty_day_summary && @analysis.oldest_code_set_time
@@ -67,7 +67,8 @@
         .row
           .col-xs-12
             = render partial: 'projects/show/community_recent_committers'
-        .row.proj_community_ratings#proj_rating= render partial: 'projects/show/community_rating', locals: { score: @score }
+        .row.proj_community_ratings#proj_rating
+          = render partial: 'projects/show/community_rating', locals: { score: @score }
     .row.manage_padding
       .col-md-12 &nbsp;
     .row.manage_padding

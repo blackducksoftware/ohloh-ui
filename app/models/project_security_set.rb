@@ -15,7 +15,11 @@ class ProjectSecuritySet < ActiveRecord::Base
     most_recent_releases.present? && most_recent_vulnerabilities.flatten.present?
   end
 
-  def vulnerabilities_by_cve
-    vulnerabilities.order(cve_id: :desc)
+  def matching_releases(version_number)
+    releases.where("version ~ '^#{version_number}[\.]' OR version ~ '^#{version_number}$'")
+  end
+
+  def find_latest_release_from_major_version(version_number)
+    matching_releases(version_number).latest
   end
 end

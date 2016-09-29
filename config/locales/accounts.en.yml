@@ -108,6 +108,7 @@ en:
         affiliation:
           unaffiliated: 'Unaffiliated'
           title: 'Add your affiliation!'
+        account_settings: '&nbsp; Settings'
         view_job: 'View Jobs'
       summary:
         title: 'Account Summary'

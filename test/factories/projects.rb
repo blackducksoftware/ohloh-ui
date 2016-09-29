@@ -14,7 +14,7 @@ FactoryGirl.define do
       description { Faker::Lorem.characters(820) }
       to_create { |instance| instance.save(validate: false) }
     end
-      
+
     factory :project_with_big_summary do
       description { Faker::Lorem.characters(850) }
     end
