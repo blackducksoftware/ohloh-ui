@@ -8,7 +8,9 @@ ProjectVulnerabilityVersionChart =
       success: (data) ->
         return if (data == null)
         extendChartOptions(data)
-        chart = new Highcharts.Chart(data);
+        chart = new Highcharts.Chart(data)
+        if $('#vulnerability_version_chart').parents('#vulnerabilities_index_page').length > 0
+          reDrawVulnerabilityChart()
 
 ProjectVulnerabilityFilter =
   init: () ->

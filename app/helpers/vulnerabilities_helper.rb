@@ -41,7 +41,7 @@ module VulnerabilitiesHelper
   end
 
   def no_versions_available
-    [Release.new(id: '', version: t('vulnerabilities.filter.no_versions_available'))]
+    [Release.new(id: '', version: t('.vulnerabilities.filter.no_versions_available'))]
   end
 
   def disabled_severities

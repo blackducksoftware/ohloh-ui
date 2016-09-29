@@ -1,8 +1,20 @@
 en:
   vulnerabilities:
     version_filter:
-      major_version: Major Version
-      period: Period
       version: 'Security Vulnerabilities for Version:'
       severity: 'Severities:'
-      no_versions_available: No versions in specified filters
+      vulnerabilities:
+        filter:
+          no_versions_available: No versions in specified filters
+    index:
+      page_title: Security Page
+      security: Security
+      vulns_per_version: Vulnerabilities per Version
+      click_and_zoom: click and drag to zoom
+      major_versions: Major Versions
+      cve_id: CVE ID
+      severity: Severity
+      date_published: Date Published
+      description: Description
+      versions_affected: Versions Affected
+      no_vulnerability: There are no reported security vulnerabilities
