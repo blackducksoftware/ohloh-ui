@@ -25,11 +25,7 @@
         #add_this{ 'data-analytics-id' => ENV['ADDTHIS_ANALYTICS_ID'] }
           %p
             .addthis_custom_sharing.addthis
-              %script{src: "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-500da8c658f6dda7"}
-      .pull-left#project_header_activity_indicator.no_padding
-        - project_activity_level_class(@project, :thirtyfive)
-        - project_activity_level_text(@project, :thirtyfive)
-
+              %script{ src: '//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-500da8c658f6dda7' }
       .pull-right{ itemtype: 'CreativeWork', itemprop: 'interactionCount' }
         #i_use_this_container
           .use_count

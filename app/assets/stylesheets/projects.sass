@@ -315,9 +315,10 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
   height: 70px !important
   overflow-y: scroll
 
-#projects_security_page
+#vulnerabilities_index_page
   .no_vulnerability
-    height: 35vh
+    text-align: center
+    margin-bottom: 25px
   tr.nvd_link:hover
     cursor: pointer
   .vul_description
@@ -331,3 +332,27 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
   float: right
   padding: 0 30px 10px 0
   margin-top: -20px
+
+.vulnerability_filter_severity
+  .title
+    font-weight: 400
+    font-size: 1.1em
+    line-height: 1.2
+
+.vulnerability_filter_version
+  .title
+    font-weight: 400
+    font-size: 1.25em
+    line-height: 1.2
+
+.vulnerability_filter_wrapper
+  .ctrl
+    width: auto
+  .title
+    padding-right: 1rem
+
+.release_timespan.selected
+  background-color: #0082C6 !important
+
+#vulnerability-chart-divider
+  padding: 40px 4rem 20px 4rem !important

@@ -343,15 +343,6 @@ en:
       most_written: 'Mostly written in'
       licence: 'License:'
       unknown: 'Unknown'
-    security:
-      page_title: 'Security Page'
-      title: 'Security'
-      no_vulnerability: 'There are no reported vulnerabilities'
-      cve_id: 'CVE ID'
-      severity: 'Severity'
-      date_published: 'Date Published'
-      description: 'Description'
-      versions_affected: 'Versions Affected'
     vulnerabilities:
       severity:
         low: 'Low Severity'

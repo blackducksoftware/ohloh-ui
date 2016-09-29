@@ -1,19 +1,21 @@
 class VulnerabilitiesController < ApplicationController
-  before_action :set_project_or_fail
-  before_action :set_best_project_security_set
-  before_action :set_releases
+  layout 'responsive_project_layout', only: [:index]
 
-  def version_chart
-    render json: Vulnerability::VersionChart.new(@releases).data
+  helper VulnerabilitiesHelper
+
+  include VulnerabilityFilters, VulnerabilitiesHelper
+
+  def all_version_chart
+    @releases = @releases.order(released_on: :asc) if @releases.present?
+    render json: Vulnerability::AllVersionChart.new(@releases).data
   end
 
-  private
-
-  def set_best_project_security_set
-    @best_project_security_set = @project.best_project_security_set
+  def recent_version_chart
+    @releases = @best_security_set.most_recent_releases if @best_security_set
+    render json: Vulnerability::RecentVersionChart.new(@releases).data
   end
 
-  def set_releases
-    @releases = @best_project_security_set.most_recent_releases
+  def filter
+    render partial: 'vulnerability_table', layout: false
   end
 end
