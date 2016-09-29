@@ -95,11 +95,14 @@ en:
       no_tags: "No tags have been added"
       add_tags: "add some now"
       community_rating: "Community Rating"
+      in_a_nutshell: "In a Nutshell, %{name}"
+      site_features:
+        did_you_know: 'Did You Know'
       analysis_summary:
         code_locations_removed: "Code locations have been removed since last analysis"
         code_locations_removed_explanation: "At one point, Open Hub analyzed source code for this project based on code location(s) available at that time. Since then, the code locations have been removed."
-        in_a_nutshell: "In a Nutshell, %{name}"
         activity: "Activity"
+        code: 'Code'
         thirty_day_summary: "30 Day Summary"
         not_available: "not available"
         twelve_month_summary: "12 Month Summary"
@@ -154,6 +157,7 @@ en:
         check_its_progress: "check its progress"
         how_it_computes: "The Open Hub computes statistics on FOSS projects by examining source code and commit history in source code management systems. The source code for this project has been located, but the analysis isn't complete. Feel free to %{link}."
       quick_reference:
+        quick_reference: 'Quick Reference'
         organization: "Organization:"
         proj_links: "Project Links:"
         add_proj_links: "Add some Project Link(s)"
@@ -170,11 +174,21 @@ en:
         add_desc: "Add description"
         no_desc: "No description has been added for this project. %{link}"
       vulnerability_report:
-        no_data: 'No Project Vulnerability Data available'
-        title_security_score: 'Project Security Score'
-        title_vulnerability_score: 'Project Vulnerability Score'
+        no_data: 'No data available'
         pvs_tooltip: 'Score: %{score} <br/> Rank: %{rank} of %{max_rank}'
         title: 'Project Vulnerability Report'
+        blog_link: 'About Project Vulnerability Report'
+        pvs:
+          title: 'Vulnerability Exposure Index'
+          good: 'Few reported vulnerabilities'
+          poor: 'Many reported vulnerabilities'
+        pss:
+          title: 'Security Confidence Index'
+          good: 'Favorable security track-record'
+          poor: 'Poor security track-record'
+      vulnerabilities_per_version:
+        title: 'Vulnerabilities per Version'
+        no_data: 'No data available'
       thirty_day_summary:
         commit: "Commit"
         commits: "Commits"
@@ -201,6 +215,10 @@ en:
         ending: ending with its
         first_commit_in: first commit in %{time}
         most_recent_commit: most recent commit %{time}
+      security:
+        title: 'Project Security'
+        title_nvd: 'This Project has No vulnerabilities Reported Against it'
+        blog_link: 'About Project Security'
     deleted:
       message: '%{name} has been deleted'
       failed: 'failed'
@@ -325,3 +343,17 @@ en:
       most_written: 'Mostly written in'
       licence: 'License:'
       unknown: 'Unknown'
+    security:
+      page_title: 'Security Page'
+      title: 'Security'
+      no_vulnerability: 'There are no reported vulnerabilities'
+      cve_id: 'CVE ID'
+      severity: 'Severity'
+      date_published: 'Date Published'
+      description: 'Description'
+      versions_affected: 'Versions Affected'
+    vulnerabilities:
+      severity:
+        low: 'Low Severity'
+        medium: 'Medium Severity'
+        high: 'High Severity'

@@ -1,25 +1,26 @@
 :ruby
   languages_image_options = { project_id: @project.to_param, id: 'latest', height: 75, width: 75 }
 
-- if @analysis
-  - if @analysis.empty?
-    = t('.no_source')
-  - else
-    %h4= link_to t('.languages'), languages_summary_project_analysis_path(@project, id: 'latest')
-    .pull-left{ style: 'padding-right: 10px;' }
-      = image_tag languages_project_analysis_url(languages_image_options)
+.col-md-12.manage_padding.language_table_container
+  - if @analysis
+    - if @analysis.empty?
+      = t('.no_source')
+    - else
+      %h4= link_to t('.languages'), languages_summary_project_analysis_path(@project, id: 'latest')
+      .pull-left.language_pie_image{ style: 'padding-right: 0.5rem;' }
+        = image_tag languages_project_analysis_url(languages_image_options)
 
-    %table.table.table-striped.unstyled.pull-left{ style: 'width: 300px;' }
-      - Analysis::LanguagePercentages.new(@analysis).collection.each do |id, name, attr|
-        - percent = attr[:percent] > 0 ? attr[:percent] : '<1'
-        %tr.pull-left{ style: 'width: 150px;' }
-          - color = attr[:color]
-          %td{ style: 'width: 120px;' }
-            .pull-left{ style: "width:5px;height:12px;margin-top:5px;margin-right:10px;background-color:##{color}" }
-            = id ? link_to(name, language_path(id), itemprop: 'name') : name
-          %td{ style: 'width: 20px;' }
-            %span{ itemscope: '', itemprop: 'aggregateRating', itemtype: 'http://schema.org/AggregateRating' }
-              %span{ itemprop: 'ratingValue' } #{percent}%
-- else
-  %h4= t('.languages')
-  %p!= t('.no_code_locations', link: link_to(t('.add_a_code_location'), new_project_enlistment_path(@project)))
+      %table.table.table-striped.unstyled.pull-left.language_table
+        - Analysis::LanguagePercentages.new(@analysis).collection.each do |id, name, attr|
+          - percent = attr[:percent] > 0 ? attr[:percent] : '<1'
+          %tr.pull-left.language_stat_box
+            - color = attr[:color]
+            %td.language_legends
+              .pull-left{ style: "width:5px;height:12px;margin-top:5px;margin-right:10px;background-color:##{color}" }
+              = id ? link_to(name, language_path(id), itemprop: 'name') : name
+            %td.language_percentage_indicator
+              %span{ itemscope: '', itemprop: 'aggregateRating', itemtype: 'http://schema.org/AggregateRating' }
+                %span{ itemprop: 'ratingValue' } #{percent}%
+  - else
+    %h4= t('.languages')
+    %p!= t('.no_code_locations', link: link_to(t('.add_a_code_location'), new_project_enlistment_path(@project)))
