@@ -102,7 +102,7 @@ describe 'VulnerabilitiesControllerTest' do
       it 'should return the vulnerabilities of the chosen version' do
         get :filter, id: security_set.project.to_param,
                      filter: { major_version: '1', version: r1_2.id, period: '5' }, xhr: true
-        must_render_template :filter
+        must_render_template 'vulnerabilities/_vulnerability_table'
         must_render_template 'vulnerabilities/_version_filter'
         assigns(:latest_version).must_equal r1_2
         assigns(:minor_versions).to_a.must_equal [r1_3, r1_2]
