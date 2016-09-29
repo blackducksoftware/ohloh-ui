@@ -25,13 +25,34 @@ calculateLowVulns = (releaseData) ->
     obj.low_vulns.length
   )
 
-filterByDate = (releases, filter) ->
-  endDate = new Date(releases[releases.length - 1].released_on)
-  startDate = new Date(endDate.getFullYear() - filter, endDate.getMonth(), endDate.getDay(), endDate.getSeconds(), endDate.getMilliseconds())
-  filteredReleases = releases.filter((item) ->
-    time = new Date(item.released_on).getTime()
-    startDate < time && time < endDate.getTime()
-  )
+filterReleases = () ->
+  majorVersion = $('#vulnerability_filter_major_version').val()
+  filteredReleases = filterReleasesByMajorVersion(getReleaseData(), majorVersion)
+  year = $('#vulnerability_filter_period').val()
+  filteredReleases = filterReleasesByYear(filteredReleases, year)
+
+filterReleasesByYear = (releases, year) ->
+  return releases if year == ''
+  currentDate = new Date()
+  currentDate.setHours(0,0,0,0)
+  pastDate = new Date()
+  pastDate.setHours(0,0,0,0)
+  pastDate.setFullYear(pastDate.getFullYear() - year)
+  releases.filter (item) ->
+    releasedDate = new Date(item.released_on).setHours(0,0,0,0)
+    releasedDate <= currentDate && releasedDate >= pastDate
+
+filterReleasesByMajorVersion = (releases, majorVersion) ->
+  return releases if majorVersion == ''
+  releases.filter (release) ->
+    ///^#{majorVersion}[\.]///.test(release.version) || ///^#{majorVersion}$///.test(release.version)
+
+@reDrawVulnerabilityChart = () ->
+  releases = filterReleases()
+  if releases.length == 0
+    renderNoData(releases)
+  else
+    reRenderChart(releases)
 
 renderNoData = (releases) ->
   chart = $('#vulnerability_version_chart').highcharts()
@@ -48,41 +69,27 @@ reRenderChart = (releases) ->
   chart.xAxis[0].update {
     categories: versions
   } , true, false
-  chart.series[2].update {
+  chart.series[0].update {
     data: calculateHighVulns(releases)
   }, false
   chart.series[1].update {
     data: calculateMediumVulns(releases)
   }, false
-  chart.series[0].update { 
+  chart.series[2].update {
     data: calculateLowVulns(releases)
   }, false
   chart.redraw()
 
 $('.release_timespan').click ->
   return if $(this).hasClass('selected')
-  yearDiff = $(this).attr('date')
-  $('#vulnerability_filter_period').val(yearDiff)
+  $('#vulnerability_filter_period').val($(this).attr('date'))
   $('#vulnerability_filter_period').trigger('change')
+  reDrawVulnerabilityChart()
   $('.release_timespan').removeClass('selected')
   $(this).addClass('selected')
-  releaseData = getReleaseData()
-  if yearDiff == ''
-    filteredReleases = releaseData
-  else
-    filteredReleases = filterByDate(releaseData, yearDiff)
-  if filteredReleases.length == 0
-    renderNoData(filteredReleases)
-  else
-    reRenderChart(filteredReleases)
 
 $('#vulnerability_filter_major_version').on 'change', ->
-  selVal = $('#vulnerability_filter_major_version').val()
-  releaseData = getReleaseData()
-  filteredReleases = releaseData.filter((item) ->
-    ///^#{selVal}///.test item.version
-  )
-  reRenderChart(filteredReleases)
+  reDrawVulnerabilityChart()
 
 highlightReleaseTimespan = () ->
   yearDiff = $('#vulnerability_filter_period').val()
