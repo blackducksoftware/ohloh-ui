@@ -18,3 +18,5 @@ en:
       description: Description
       versions_affected: Versions Affected
       no_vulnerability: There are no reported security vulnerabilities
+      more: 'more...'
+      less: 'less...'
