@@ -22,4 +22,8 @@ class ProjectSecuritySet < ActiveRecord::Base
   def find_latest_release_from_major_version(version_number)
     matching_releases(version_number).latest
   end
+
+  def oldest_vulnerability
+    vulnerabilities.order(published_on: :asc).first
+  end
 end
