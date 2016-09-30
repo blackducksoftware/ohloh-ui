@@ -32,12 +32,7 @@
                           data: { releases: release_data }, class: 'vulnerability_main_filter' }
           = select_tag 'vulnerability_filter_major_version', select_opts, html_release_opts
         .pull-right.btn-toolbar{ 'aria-label' => '...', :role => 'group', style: 'margin-top: 17px' }
-          .btn.btn-info.btn-mini.release_timespan{ 'date' => 1 } 1yr
-          .btn.btn-info.btn-mini.release_timespan{ 'date' => 3 } 3yr
-          .btn.btn-info.btn-mini.release_timespan{ 'date' => 5 } 5yr
-          .btn.btn-info.btn-mini.release_timespan{ 'date' => 10 } 10yr
-          .btn.btn-info.btn-mini.release_timespan{ 'date' => '' } all
-          = hidden_field_tag 'vulnerability_filter_period', filter_period_param, class: 'vulnerability_main_filter'
+          = release_timespan_widget
       .row
         - chart_url = all_vulnerabilities_version_chart_project_url(@project)
         .pull-right

@@ -108,12 +108,12 @@ ProjectVulnerabilityPagination =
   ajaxPagination: (_klass) ->
     $('#vulnerabilities_index_page').on 'click', '.pagination a', (event) ->
       projectUrl = getProjectUrl()
-      extraUrl = $(this).attr('href').split('?')[1]
+      queryStr = $(this).attr('href').split('?')[1]
       remote_url = $(this).attr('href')
       $.ajax
         url: remote_url,
         success: (vulTable) ->
-          window.history.pushState('', document.title, projectUrl + 'security?' + extraUrl)
+          window.history.pushState('', document.title, projectUrl + 'security?' + queryStr)
           $('#vulnerabilities-data').html(vulTable)
       return false
 
@@ -123,6 +123,9 @@ $(document).on 'page:change', ->
   ProjectVulnerabilityFilter.init()
   ProjectVulnerabilitySort.init()
   ProjectVulnerabilityPagination.init()
-  $('tr.nvd_link').click ->
+  $('#vulnerabilities_index_page').on 'click', 'tr.nvd_link', ->
     window.open($(this).data('nvd-link'), '_blank')
 
+  $('#vulnerabilities_index_page').on 'click', 'span#read_more a, span#read_less a', (e) ->
+    e.stopPropagation()
+    $(this).closest('td').find('span').toggle()
