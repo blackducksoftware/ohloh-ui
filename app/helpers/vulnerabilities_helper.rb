@@ -57,4 +57,34 @@ module VulnerabilitiesHelper
   def severities
     Vulnerability.severities.keys
   end
+
+  def release_timespan_widget
+    html = ''
+    timespan = releaase_timespan_options
+    timespan.each do |label, options|
+      html << content_tag(:div, label,
+                          class: "btn btn-info btn-mini release_timespan #{(options[1..2] || []).join(' ')}".strip,
+                          date: options[0])
+    end
+    html << hidden_field_tag('vulnerability_filter_period', filter_period_param, class: 'vulnerability_main_filter')
+    html.html_safe
+  end
+
+  def releaase_timespan_options
+    timespan = {}
+    Release::TIMESPAN.each { |label, values| timespan[label] = values.dup }
+    disable_timespan(timespan)
+    set_default_timespan(timespan)
+  end
+
+  def set_default_timespan(timespan)
+    timespan.tap { |ts| ts[@default_timespan].push 'selected' }
+  end
+
+  def disable_timespan(timespan)
+    timespan.each do |_label, values|
+      next if values[0].blank?
+      values.push(@best_security_set.releases.select_within_years(values[0]).blank? ? 'disabled' : '')
+    end
+  end
 end

@@ -1,8 +1,6 @@
 class VulnerabilitiesController < ApplicationController
   layout 'responsive_project_layout', only: [:index]
 
-  helper VulnerabilitiesHelper
-
   include VulnerabilityFilters, VulnerabilitiesHelper
 
   def all_version_chart
