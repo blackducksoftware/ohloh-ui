@@ -7,6 +7,7 @@ class Release < ActiveRecord::Base
     where("(released_on::DATE <= NOW()::DATE) AND \
       (released_on::DATE >= (NOW() - '#{year} year'::INTERVAL)::DATE)")
   }
+  scope :semantic_versions, -> { where("version ~ '^\\d+\.\\d+\.\\d+$'") }
 
   TIMESPAN = { '1yr' => [1], '3yr' => [3], '5yr' => [5], '10yr' => [10], 'All' => [''] }.freeze
 

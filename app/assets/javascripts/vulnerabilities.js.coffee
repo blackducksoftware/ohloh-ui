@@ -46,7 +46,7 @@ filterReleasesByYear = (releases, year) ->
 filterReleasesByMajorVersion = (releases, majorVersion) ->
   return releases if majorVersion == ''
   releases.filter (release) ->
-    ///^#{majorVersion}[\.]///.test(release.version) || ///^#{majorVersion}$///.test(release.version)
+    ///^#{majorVersion}\.\d+\.\d+$///.test(release.version)
 
 @reDrawVulnerabilityChart = () ->
   releases = filterReleases()

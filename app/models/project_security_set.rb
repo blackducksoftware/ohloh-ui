@@ -16,7 +16,7 @@ class ProjectSecuritySet < ActiveRecord::Base
   end
 
   def matching_releases(version_number)
-    releases.where("version ~ '^#{version_number}[\.]' OR version ~ '^#{version_number}$'")
+    releases.where("version ~ '^#{version_number}\.\\d+\.\\d+$'")
   end
 
   def find_latest_release_from_major_version(version_number)
