@@ -71,10 +71,58 @@ extendChartOptions = (options) ->
               $('#vulnerabilities-data').html(vulTable)
 
 
+
+ProjectVulnerabilitySort =
+  init: () ->
+    this.sortButtonUpdate(this)
+
+  sortButtonUpdate: (_klass) ->
+    $('#vulnerabilities_index_page').on 'click', '.vulnerability_sort_btn i', (event) ->
+      if $(this).hasClass('disable')
+        sortDirection = $(this).data('direction')
+      else
+        sortDirection = $(this).siblings().data('direction')
+      queryStr =
+               filter:
+                 major_version: $('#vulnerability_filter_major_version').val()
+                 period: $('#vulnerability_filter_period').val()
+                 version: $('#vulnerability_filter_version').val()
+                 severity: $('#vulnerability_filter_severity').find(':selected').val()
+               sort:
+                 col: $(this).parents('.vulnerability_sort_btn').data('source')
+                 direction: sortDirection
+      projectUrl = getProjectUrl()
+      $.ajax
+        url: projectUrl.concat('vulnerabilities_filter'),
+        data: queryStr
+        success: (vulTable) ->
+          window.history.pushState('', document.title, projectUrl + 'security?' + $.param(queryStr))
+          $('#vulnerabilities-data').html(vulTable)
+      return false
+
+
+ProjectVulnerabilityPagination =
+  init: () ->
+    this.ajaxPagination(this)
+
+  ajaxPagination: (_klass) ->
+    $('#vulnerabilities_index_page').on 'click', '.pagination a', (event) ->
+      projectUrl = getProjectUrl()
+      queryStr = $(this).attr('href').split('?')[1]
+      remote_url = $(this).attr('href')
+      $.ajax
+        url: remote_url,
+        success: (vulTable) ->
+          window.history.pushState('', document.title, projectUrl + 'security?' + queryStr)
+          $('#vulnerabilities-data').html(vulTable)
+      return false
+
+
 $(document).on 'page:change', ->
   ProjectVulnerabilityVersionChart.init()
   ProjectVulnerabilityFilter.init()
-
+  ProjectVulnerabilitySort.init()
+  ProjectVulnerabilityPagination.init()
   $('#vulnerabilities_index_page').on 'click', 'tr.nvd_link', ->
     window.open($(this).data('nvd-link'), '_blank')
 

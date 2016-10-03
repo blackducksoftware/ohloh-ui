@@ -313,7 +313,8 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
 
 .versions_affected
   height: 70px !important
-  overflow-y: scroll
+  overflow-y: auto
+  word-break: break-word
 
 #vulnerabilities_index_page
   .no_vulnerability
@@ -369,3 +370,15 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
 
 #vulnerability-chart-divider
   padding: 40px 4rem 20px 4rem !important
+
+.vulnerabilities-datatable
+  btn i
+    display: inline
+    color: #0082C6
+    &.disable
+      color: #ccc
+    &:hover
+      cursor: pointer
+    &.fa.fa-sort-amount-desc, &.fa.fa-sort-amount-asc
+      padding-top: 3px
+
