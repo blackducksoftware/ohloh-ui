@@ -4,7 +4,7 @@ FactoryGirl.define do
     sequence :version do |n|
       "#{n}.#{n}.#{n}"
     end
-    released_on { Faker::Date.between(20.years.ago, Time.zone.today) }
+    released_on { Faker::Date.between(2.years.ago, Time.zone.today) }
     association :project_security_set
   end
 

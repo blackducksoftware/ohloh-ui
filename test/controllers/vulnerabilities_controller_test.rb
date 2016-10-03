@@ -31,7 +31,7 @@ describe 'VulnerabilitiesControllerTest' do
     it 'should return all release data from oldest to newest' do
       get :all_version_chart, id: project.id, xhr: true
       assert_response :success
-      assigns(:releases).must_equal(project.best_project_security_set.releases.order(released_on: :asc))
+      assigns(:releases).must_equal project.best_project_security_set.releases.semantic_versions.order released_on: :asc
     end
   end
 
@@ -39,7 +39,7 @@ describe 'VulnerabilitiesControllerTest' do
     it 'the index page should have all release data from oldest to newest' do
       get :index, id: project.id
       assert_response :success
-      assigns(:releases).must_equal(project.best_project_security_set.releases)
+      assigns(:releases).must_equal(project.best_project_security_set.releases.semantic_versions)
     end
 
     it 'should not show the project security table when no vulnerability reported' do
@@ -58,15 +58,17 @@ describe 'VulnerabilitiesControllerTest' do
 
   describe 'Security data filtering' do
     let(:security_set) { create(:project_security_set) }
-    let(:r1_0) { create(:release, version: '1.0', released_on: 11.years.ago, project_security_set: security_set) }
-    let(:r1_1) { create(:release, version: '1.1', released_on: 8.years.ago, project_security_set: security_set) }
-    let(:r1_2) { create(:release, version: '1.2', released_on: 3.years.ago, project_security_set: security_set) }
-    let(:r1_3) { create(:release, version: '1.3', released_on: 8.months.ago, project_security_set: security_set) }
-    let(:r2_2) { create(:release, version: '2.2', released_on: 5.months.ago, project_security_set: security_set) }
-    let(:r3_3) { create(:release, version: '3.3', released_on: 1.month.ago, project_security_set: security_set) }
+    let(:r1_0) { create(:release, version: '1.0.0', released_on: 11.years.ago, project_security_set: security_set) }
+    let(:r1_1) { create(:release, version: '1.1.0', released_on: 8.years.ago, project_security_set: security_set) }
+    let(:r1_2) { create(:release, version: '1.2.0', released_on: 3.years.ago, project_security_set: security_set) }
+    let(:r1_3) { create(:release, version: '1.3.0', released_on: 8.months.ago, project_security_set: security_set) }
+    let(:r2_2) { create(:release, version: '2.2.0', released_on: 5.months.ago, project_security_set: security_set) }
+    let(:r3_3) { create(:release, version: '3.3.0', released_on: 1.month.ago, project_security_set: security_set) }
+    let(:ns_r1) { create(:release, version: '1.0-rel', released_on: 1.month.ago, project_security_set: security_set) }
+    let(:ns_r2) { create(:release, version: 'rel-2.0', released_on: 1.month.ago, project_security_set: security_set) }
 
     before do
-      [r1_0, r1_1, r1_2, r1_3, r2_2, r3_3].each do |r|
+      [r1_0, r1_1, r1_2, r1_3, r2_2, r3_3, ns_r1, ns_r2].each do |r|
         3.times do |s|
           create(:releases_vulnerability, release: r, vulnerability: create(:vulnerability, severity: s))
         end
@@ -80,6 +82,15 @@ describe 'VulnerabilitiesControllerTest' do
         must_render_template 'vulnerabilities/_version_filter'
         assigns(:latest_version).must_equal r3_3
         assigns(:minor_versions).to_a.must_equal [r3_3, r2_2, r1_3]
+        assigns(:vulnerabilities).to_a.must_equal r3_3.vulnerabilities.sort_by
+      end
+
+      it 'should return not include non-semantic versioned releases' do
+        get :index, id: security_set.project.to_param, filter: { major_version: '', period: '' }
+        security_set.releases.count.must_equal 8
+        security_set.releases.semantic_versions.count.must_equal 6
+        assigns(:releases).must_equal security_set.releases.semantic_versions
+        assigns(:minor_versions).to_a.must_equal [r3_3, r2_2, r1_3, r1_2, r1_1, r1_0]
         assigns(:vulnerabilities).to_a.must_equal r3_3.vulnerabilities.sort_by
       end
 
