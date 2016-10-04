@@ -39,7 +39,8 @@ filterReleasesByYear = (releases, year) ->
   pastDate.setHours(0,0,0,0)
   pastDate.setFullYear(pastDate.getFullYear() - year)
   releases.filter (item) ->
-    releasedDate = new Date(item.released_on).setHours(0,0,0,0)
+    releasedDate = new Date(item.released_on)
+    releasedDate.setHours(0,0,0,0)
     releasedDate <= currentDate && releasedDate >= pastDate
 
 filterReleasesByMajorVersion = (releases, majorVersion) ->
@@ -90,10 +91,3 @@ $('.release_timespan').click ->
 
 $('#vulnerability_filter_major_version').on 'change', ->
   reDrawVulnerabilityChart()
-
-highlightReleaseTimespan = () ->
-  yearDiff = $('#vulnerability_filter_period').val()
-  $('.release_timespan[date="' + yearDiff + '"]').addClass('selected')
-
-$(document).on 'page:change', ->
-  highlightReleaseTimespan()

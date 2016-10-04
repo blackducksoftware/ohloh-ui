@@ -17,4 +17,6 @@ en:
       date_published: Date Published
       description: Description
       versions_affected: Versions Affected
-      no_vulnerability: There are no reported security vulnerabilities
+      no_vulnerability: There are no reported vulnerabilities
+      more: 'more...'
+      less: 'less...'
