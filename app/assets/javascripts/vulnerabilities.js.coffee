@@ -30,6 +30,11 @@ filterReleases = () ->
   filteredReleases = filterReleasesByMajorVersion(getReleaseData(), majorVersion)
   year = $('#vulnerability_filter_period').val()
   filteredReleases = filterReleasesByYear(filteredReleases, year)
+  filteredReleases.sort (a, b) ->
+    if a.released_on > b.released_on
+      return 1
+    if a.released_on < b.released_on
+      return -1
 
 filterReleasesByYear = (releases, year) ->
   return releases if year == ''

@@ -1,7 +1,7 @@
 module VulnerabilitiesHelper
   def major_releases(releases)
     releases.map do |r|
-      r[:version].scan(/^\d+/)
+      r[:version].to_i
     end.flatten.uniq.sort
   end
 
