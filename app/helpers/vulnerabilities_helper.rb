@@ -5,17 +5,8 @@ module VulnerabilitiesHelper
     end.flatten.uniq.sort
   end
 
-  def map_vulnerabilities_to_releases(releases)
-    data = []
-    releases.each do |r|
-      data << { id: r.id,
-                version: r.version,
-                released_on: r.released_on,
-                high_vulns: r.vulnerabilities.high,
-                medium_vulns: r.vulnerabilities.medium,
-                low_vulns: r.vulnerabilities.low }
-    end
-    data
+  def map_vulnerabilities_to_releases
+    @project.best_project_security_set.release_history.map { |r| r.attributes.except('id') }
   end
 
   def filter_severity_param

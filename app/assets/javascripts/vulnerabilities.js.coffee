@@ -12,17 +12,17 @@
 
 calculateHighVulns = (releases) ->
   highVulns = releases.map((obj) ->
-    obj.high_vulns.length
+    obj.high
   )
 
 calculateMediumVulns = (releaseData) ->
   mediumVulns = releaseData.map((obj) ->
-    obj.medium_vulns.length
+    obj.medium
   )
 
 calculateLowVulns = (releaseData) ->
   lowVulns = releaseData.map((obj) ->
-    obj.low_vulns.length
+    obj.low
   )
 
 filterReleases = () ->
