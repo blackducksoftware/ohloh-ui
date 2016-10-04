@@ -188,6 +188,7 @@ en:
           poor: 'Poor security track-record'
       vulnerabilities_per_version:
         title: 'Vulnerabilities per Version'
+        title_detail: '( last 10 releases )'
         no_data: 'No data available'
       thirty_day_summary:
         commit: "Commit"
