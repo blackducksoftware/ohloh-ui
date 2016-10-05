@@ -22,8 +22,7 @@
     &nbsp;
   .col-md-10
     - if @best_security_set && @releases.present?
-      :ruby
-        chart_data = Vulnerability::AllVersionChart.new(@release_history).data
+      - chart_data = Vulnerability::AllVersionChart.new(@release_history).data
       .row
         %h4.pull-left= t('.major_versions')
         .pull-left
@@ -37,21 +36,7 @@
       .row
         .pull-right
           .h6= t('.click_and_zoom')
-        .watermark440#vulnerability_all_version_chart
-      :javascript
-        if(window.addEventListener){
-          window.addEventListener('load', initializeVulnerabilityChart)
-        }
-        else if(window.attachEvent){
-          window.attachEvent('onload', initializeVulnerabilityChart)
-        }
-
-        function initializeVulnerabilityChart(){
-          chart_options = JSON.parse('#{ j chart_data.to_json }');
-          extendVulnerabilityChartOptions(chart_options);
-          new Highcharts.Chart(chart_options);
-          reDrawVulnerabilityChart()
-        }
+        .watermark440#vulnerability_all_version_chart{ data: { chart: chart_data.to_json } }
     - else
       %p.text-center= t('.no_vulnerability')
   .col-md-1

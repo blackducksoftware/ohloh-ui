@@ -96,3 +96,10 @@ $('.release_timespan').click ->
 
 $('#vulnerability_filter_major_version').on 'change', ->
   reDrawVulnerabilityChart()
+
+$(document).on 'page:change', ->
+  if $('#vulnerability_all_version_chart').length
+    chartOptions = $('#vulnerability_all_version_chart').data('chart')
+    extendVulnerabilityChartOptions(chartOptions)
+    new Highcharts.Chart(chartOptions)
+    reDrawVulnerabilityChart()
