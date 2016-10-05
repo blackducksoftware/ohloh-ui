@@ -5,10 +5,6 @@ module VulnerabilitiesHelper
     end.flatten.uniq.sort
   end
 
-  def map_vulnerabilities_to_releases
-    @project.best_project_security_set.release_history.map { |r| r.attributes.except('id') }
-  end
-
   def filter_severity_param
     return nil unless Vulnerability.severity_exists?(params.fetch(:filter, {})[:severity])
     params[:filter][:severity]

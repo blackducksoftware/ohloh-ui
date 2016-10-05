@@ -202,7 +202,6 @@ Rails.application.routes.draw do
       get :settings
       get :estimated_cost
       get 'security' => 'vulnerabilities#index'
-      get 'all_vulnerabilities_version_chart' => 'vulnerabilities#all_version_chart', defaults: { format: 'js' }
       get 'recent_vulnerabilities_version_chart' => 'vulnerabilities#recent_version_chart', defaults: { format: 'js' }
       get 'vulnerabilities_filter' => 'vulnerabilities#filter'
       get :similar_by_tags
