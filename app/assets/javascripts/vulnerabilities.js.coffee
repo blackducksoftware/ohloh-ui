@@ -12,17 +12,17 @@
 
 calculateHighVulns = (releases) ->
   highVulns = releases.map((obj) ->
-    obj.high_vulns.length
+    obj.high
   )
 
 calculateMediumVulns = (releaseData) ->
   mediumVulns = releaseData.map((obj) ->
-    obj.medium_vulns.length
+    obj.medium
   )
 
 calculateLowVulns = (releaseData) ->
   lowVulns = releaseData.map((obj) ->
-    obj.low_vulns.length
+    obj.low
   )
 
 filterReleases = () ->
@@ -30,6 +30,11 @@ filterReleases = () ->
   filteredReleases = filterReleasesByMajorVersion(getReleaseData(), majorVersion)
   year = $('#vulnerability_filter_period').val()
   filteredReleases = filterReleasesByYear(filteredReleases, year)
+  filteredReleases.sort (a, b) ->
+    if a.released_on > b.released_on
+      return 1
+    if a.released_on < b.released_on
+      return -1
 
 filterReleasesByYear = (releases, year) ->
   return releases if year == ''
@@ -39,7 +44,8 @@ filterReleasesByYear = (releases, year) ->
   pastDate.setHours(0,0,0,0)
   pastDate.setFullYear(pastDate.getFullYear() - year)
   releases.filter (item) ->
-    releasedDate = new Date(item.released_on).setHours(0,0,0,0)
+    releasedDate = new Date(item.released_on)
+    releasedDate.setHours(0,0,0,0)
     releasedDate <= currentDate && releasedDate >= pastDate
 
 filterReleasesByMajorVersion = (releases, majorVersion) ->
@@ -90,10 +96,3 @@ $('.release_timespan').click ->
 
 $('#vulnerability_filter_major_version').on 'change', ->
   reDrawVulnerabilityChart()
-
-highlightReleaseTimespan = () ->
-  yearDiff = $('#vulnerability_filter_period').val()
-  $('.release_timespan[date="' + yearDiff + '"]').addClass('selected')
-
-$(document).on 'page:change', ->
-  highlightReleaseTimespan()

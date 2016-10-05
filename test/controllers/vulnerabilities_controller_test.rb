@@ -74,27 +74,53 @@ describe 'VulnerabilitiesControllerTest' do
     end
 
     describe 'index' do
-      it 'should return all vulnerabilities of the most recent version for default filtering' do
+      it 'should return all vulnerabilities of the matching most recent version for default filtering' do
         get :index, id: security_set.project.to_param
         must_render_template :index
         must_render_template 'vulnerabilities/_version_filter'
         assigns(:latest_version).must_equal r3_3
-        assigns(:minor_versions).to_a.must_equal [r3_3, r2_2, r1_3, r1_2, r1_1, r1_0]
-        assigns(:vulnerabilities).to_a.must_equal r3_3.vulnerabilities.sort_by_cve_id
+        assigns(:minor_versions).to_a.must_equal [r3_3, r2_2, r1_3]
+        assigns(:vulnerabilities).to_a.must_equal r3_3.vulnerabilities.sort_by
       end
 
       it 'should return the vulnerabilities of the most recent minor version within the chosen major version' do
         get :index, id: security_set.project.to_param, filter: { major_version: '1' }
         assigns(:latest_version).must_equal r1_3
-        assigns(:minor_versions).to_a.must_equal [r1_3, r1_2, r1_1, r1_0]
-        assigns(:vulnerabilities).to_a.must_equal r1_3.vulnerabilities.sort_by_cve_id
+        assigns(:minor_versions).to_a.must_equal [r1_3]
+        assigns(:vulnerabilities).to_a.must_equal r1_3.vulnerabilities.sort_by
       end
 
       it 'should return the vulnerabilities of the most recent minor version within the chosen time span' do
         get :index, id: security_set.project.to_param, filter: { major_version: '1', period: '1' }
         assigns(:latest_version).must_equal r1_3
         assigns(:minor_versions).to_a.must_equal [r1_3]
-        assigns(:vulnerabilities).to_a.must_equal r1_3.vulnerabilities.sort_by_cve_id
+        assigns(:vulnerabilities).to_a.must_equal r1_3.vulnerabilities.sort_by
+      end
+
+      it 'Release timespan should be disable if there are no releases availble within the timespan' do
+        security_set = create(:project_security_set)
+        create(:release, version: '1.0', released_on: 5.years.ago, project_security_set: security_set)
+        get :index, id: security_set.project.to_param
+        response.body.must_match '<div class="btn btn-info btn-mini release_timespan disabled" date="1">1yr</div>'
+        response.body.must_match '<div class="btn btn-info btn-mini release_timespan disabled" date="3">3yr</div>'
+      end
+
+      describe 'Default timespan' do
+        describe 'when oldest vulnerability is reported 5 years ago or more' do
+          it 'should return vulnerabilities of the releases available within 3 years' do
+            r1_3.vulnerabilities.first.update published_on: 6.years.ago
+            get :index, id: security_set.project.to_param
+            assigns(:minor_versions).to_a.must_equal [r3_3, r2_2, r1_3, r1_2]
+          end
+        end
+
+        describe 'when oldest vulnerability is reported 5 years below' do
+          it 'should return vulnerabilities of the releases available within 1 year' do
+            r2_2.vulnerabilities.first.update published_on: 4.years.ago
+            get :index, id: security_set.project.to_param
+            assigns(:minor_versions).to_a.must_equal [r3_3, r2_2, r1_3]
+          end
+        end
       end
     end
 
@@ -106,7 +132,7 @@ describe 'VulnerabilitiesControllerTest' do
         must_render_template 'vulnerabilities/_version_filter'
         assigns(:latest_version).must_equal r1_2
         assigns(:minor_versions).to_a.must_equal [r1_3, r1_2]
-        assigns(:vulnerabilities).to_a.must_equal r1_2.vulnerabilities.sort_by_cve_id
+        assigns(:vulnerabilities).to_a.must_equal r1_2.vulnerabilities.sort_by
       end
 
       it 'should return the vulnerabilities of the chosen severity' do
@@ -114,7 +140,7 @@ describe 'VulnerabilitiesControllerTest' do
                      filter: { major_version: '1', severity: 'medium' }, xhr: true
         assigns(:latest_version).must_equal r1_3
         assigns(:vulnerabilities).count.must_equal 1
-        assigns(:vulnerabilities).to_a.must_equal r1_3.vulnerabilities.medium.sort_by_cve_id
+        assigns(:vulnerabilities).to_a.must_equal r1_3.vulnerabilities.medium.sort_by
       end
 
       it 'should return the vulnerabilities of all severity types when severity param is blank' do
@@ -122,7 +148,7 @@ describe 'VulnerabilitiesControllerTest' do
                      filter: { major_version: '1', severity: '' }, xhr: true
         assigns(:latest_version).must_equal r1_3
         assigns(:vulnerabilities).count.must_equal 3
-        assigns(:vulnerabilities).to_a.must_equal r1_3.vulnerabilities.sort_by_cve_id
+        assigns(:vulnerabilities).to_a.must_equal r1_3.vulnerabilities.sort_by
       end
     end
   end

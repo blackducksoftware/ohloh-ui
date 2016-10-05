@@ -307,13 +307,18 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     background: #fff
     padding: 19px 0 0 0
 
+  .title span
+    font-size: 12px
+    font-style: italic
+
 .project_security
   .security-panel-title
     padding-left: 1rem
 
 .versions_affected
   height: 70px !important
-  overflow-y: scroll
+  overflow-y: auto
+  word-break: break-word
 
 #vulnerabilities_index_page
   .no_vulnerability
@@ -324,10 +329,26 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
   .vul_description
     padding-right: 30px
     text-align: justify
+  .release_timespan
+    width: 40px
+    height: 26px
+    padding: 0
+    text-align: center
+    line-height: 23px
+    border: 0
+    &.selected
+      background-color: #0082C6 !important
+      font-weight: bold !important
+    &.disabled
+      background-color: #9A9A9A !important
+    &:hover
+      font-weight: bold !important
+
 .rating_stars_value
   float: left
   padding-top: 4px
   padding-left: 2px
+
 .security_blog_link
   float: right
   padding: 0 30px 10px 0
@@ -351,8 +372,17 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
   .title
     padding-right: 1rem
 
-.release_timespan.selected
-  background-color: #0082C6 !important
-
 #vulnerability-chart-divider
   padding: 40px 4rem 20px 4rem !important
+
+.vulnerabilities-datatable
+  btn i
+    display: inline
+    color: #0082C6
+    &.disable
+      color: #ccc
+    &:hover
+      cursor: pointer
+    &.fa.fa-sort-amount-desc, &.fa.fa-sort-amount-asc
+      padding-top: 3px
+

@@ -1,8 +1,8 @@
 class ProjectsController < ApplicationController
   [AnalysesHelper, FactoidsHelper, MapHelper, RatingsHelper,
-   RepositoriesHelper, TagsHelper, VulnerabilitiesHelper].each { |help| helper help }
+   RepositoriesHelper, TagsHelper].each { |help| helper help }
 
-  layout 'responsive_project_layout', only: [:show, :security]
+  layout 'responsive_project_layout', only: [:show]
 
   include ProjectFilters
 
