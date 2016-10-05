@@ -7,10 +7,7 @@ ProjectVulnerabilityVersionChart =
       cache: false
       success: (data) ->
         return if (data == null)
-        extendChartOptions(data)
-        chart = new Highcharts.Chart(data)
-        if $('#vulnerability_version_chart').parents('#vulnerabilities_index_page').length > 0
-          reDrawVulnerabilityChart()
+        new Highcharts.Chart(data)
 
 ProjectVulnerabilityFilter =
   init: () ->
@@ -53,15 +50,17 @@ ProjectVulnerabilityFilter =
 @getProjectUrl = () ->
   window.location.href.match(/\/p\/.+\//)[0]
 
-extendChartOptions = (options) ->
-  return if $('#vulnerability_version_chart').parents('#vulnerabilities_index_page').length == 0
+@extendVulnerabilityChartOptions = (options) ->
   options.plotOptions['series'] =
     cursor: 'pointer'
     point:
       events:
         click: (event) ->
           queryStr = filter:
+            major_version: $('#vulnerability_filter_major_version').val()
+            period: $('#vulnerability_filter_period').val()
             version: find_release_by_version(this.category).id
+            severity: $('#vulnerability_filter_severity').find(':selected').val()
           projectUrl = getProjectUrl()
           $.ajax
             url: projectUrl.concat('vulnerabilities_filter'),
@@ -116,7 +115,6 @@ ProjectVulnerabilityPagination =
           window.history.pushState('', document.title, projectUrl + 'security?' + queryStr)
           $('#vulnerabilities-data').html(vulTable)
       return false
-
 
 $(document).on 'page:change', ->
   ProjectVulnerabilityVersionChart.init()

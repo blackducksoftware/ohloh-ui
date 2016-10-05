@@ -3,14 +3,14 @@ class VulnerabilitiesController < ApplicationController
 
   include VulnerabilityFilters, VulnerabilitiesHelper
 
-  def all_version_chart
-    @releases = @releases.order(released_on: :asc) if @releases.present?
-    render json: Vulnerability::AllVersionChart.new(@releases, @best_security_set).data
+  def recent_version_chart
+    @releases = @best_security_set.most_recent_releases
+    release_history = @best_security_set.release_history(@releases.map(&:id))
+    render json: Vulnerability::RecentVersionChart.new(release_history).data
   end
 
-  def recent_version_chart
-    @releases = @best_security_set.most_recent_releases if @best_security_set
-    render json: Vulnerability::RecentVersionChart.new(@releases, @best_security_set).data
+  def index
+    @release_history = @best_security_set.try(:release_history) || []
   end
 
   def filter

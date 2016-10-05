@@ -61,8 +61,8 @@ filterReleasesByMajorVersion = (releases, majorVersion) ->
     reRenderChart(releases)
 
 renderNoData = (releases) ->
-  chart = $('#vulnerability_version_chart').highcharts()
-  renderer = new Highcharts.Renderer($('#vulnerability_version_chart')[0],10,10)
+  chart = $('#vulnerability_all_version_chart').highcharts()
+  renderer = new Highcharts.Renderer($('#vulnerability_all_version_chart')[0],10,10)
   reRenderChart(releases)
   chart.renderer.text('There are no reported vulnerabilities', 450, 70).css({fontSize: '12px'}).add()
 
@@ -71,7 +71,7 @@ reRenderChart = (releases) ->
   versions = releases.map((obj) ->
     obj.version
   )
-  chart = $('#vulnerability_version_chart').highcharts()
+  chart = $('#vulnerability_all_version_chart').highcharts()
   chart.xAxis[0].update {
     categories: versions
   } , true, false
