@@ -50,10 +50,13 @@
 
 @fetchVulnerabilityData = (queryStr) ->
   $.ajax
-    url: getProjectUrl().concat('vulnerabilities_filter'),
+    url: getProjectUrl().concat('vulnerabilities_filter')
     data: queryStr
+    beforeSend: ->
+      $('.overlay-loader').show()
     success: (vulTable) ->
       $('.vulnerabilities-datatable').html(vulTable)
+      $('.overlay-loader').hide()
 
 
 @updateSeverityFilter = (release) ->
