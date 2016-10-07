@@ -14,6 +14,7 @@ class VulnerabilitiesController < ApplicationController
   end
 
   def filter
+    find_vulnerabilities
     render partial: 'vulnerability_table', layout: false
   end
 end
