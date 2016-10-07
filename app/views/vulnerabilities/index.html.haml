@@ -53,6 +53,7 @@
     .row
       .vulnerabilities-filter
         = render partial: 'version_filter'
-      = render partial: 'vulnerability_table'
+      .vulnerabilities-datatable
+        = render partial: 'vulnerability_table'
   .col-md-1
     &nbsp;
