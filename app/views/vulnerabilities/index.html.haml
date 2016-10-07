@@ -50,6 +50,9 @@
   .col-md-1
     &nbsp;
   .col-md-10#vulnerabilities-data{ "data-source": security_project_path(@project) }
-    = render partial: 'vulnerability_table'
+    .row
+      .vulnerabilities-filter
+        = render partial: 'version_filter'
+      = render partial: 'vulnerability_table'
   .col-md-1
     &nbsp;
