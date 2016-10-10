@@ -3122,6 +3122,40 @@ ALTER SEQUENCE profiles_id_seq OWNED BY profiles.id;
 
 
 --
+-- Name: project_badges; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE project_badges (
+    id integer NOT NULL,
+    repository_id integer,
+    project_id integer,
+    url character varying,
+    type character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: project_badges_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE project_badges_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: project_badges_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE project_badges_id_seq OWNED BY project_badges.id;
+
+
+--
 -- Name: project_counts_by_quarter_and_language; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -4691,6 +4725,13 @@ ALTER TABLE ONLY profiles ALTER COLUMN id SET DEFAULT nextval('profiles_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY project_badges ALTER COLUMN id SET DEFAULT nextval('project_badges_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY project_events ALTER COLUMN id SET DEFAULT nextval('project_events_id_seq'::regclass);
 
 
@@ -5497,6 +5538,14 @@ ALTER TABLE ONLY posts
 
 ALTER TABLE ONLY profiles
     ADD CONSTRAINT profiles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: project_badges_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY project_badges
+    ADD CONSTRAINT project_badges_pkey PRIMARY KEY (id);
 
 
 --
@@ -6703,6 +6752,20 @@ CREATE INDEX index_profiles_on_job_id ON profiles USING btree (job_id);
 
 
 --
+-- Name: index_project_badges_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_project_badges_on_project_id ON project_badges USING btree (project_id);
+
+
+--
+-- Name: index_project_badges_on_repository_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_project_badges_on_repository_id ON project_badges USING btree (repository_id);
+
+
+--
 -- Name: index_project_events_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -7602,6 +7665,22 @@ ALTER TABLE ONLY org_thirty_day_activities
 
 ALTER TABLE ONLY project_vulnerability_reports
     ADD CONSTRAINT fk_project_ids FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+
+
+--
+-- Name: fk_rails_580a21f8c6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY project_badges
+    ADD CONSTRAINT fk_rails_580a21f8c6 FOREIGN KEY (project_id) REFERENCES projects(id);
+
+
+--
+-- Name: fk_rails_60edffb8dd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY project_badges
+    ADD CONSTRAINT fk_rails_60edffb8dd FOREIGN KEY (repository_id) REFERENCES repositories(id);
 
 
 --
@@ -8645,6 +8724,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160920113102');
 INSERT INTO schema_migrations (version) VALUES ('20160926144901');
 
 INSERT INTO schema_migrations (version) VALUES ('20161006072823');
+
+INSERT INTO schema_migrations (version) VALUES ('20161007083447');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
