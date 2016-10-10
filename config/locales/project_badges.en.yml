@@ -1,0 +1,13 @@
+en:
+  project_badges:
+    index:
+      page_title: "The %{name} Open Source Project on Open Hub : Badges Page"
+      title: "Badges"
+      new_badge: "New Badge"
+      repo_url: "Repository Url"
+      badge_type: "Badge Type"
+      badge_url: "Badge Url"
+      badge_image: "Badge Image"
+      actions: "Actions"
+      save_badge: "Save Badge"
+      remove: "Remove"
