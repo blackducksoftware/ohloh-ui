@@ -200,6 +200,8 @@ Rails.application.routes.draw do
       get :users
       get :map
       get :settings
+      get :badges
+      get :get_external_badge_url
       get :estimated_cost
       get 'security' => 'vulnerabilities#index'
       get 'recent_vulnerabilities_version_chart' => 'vulnerabilities#recent_version_chart', defaults: { format: 'js' }

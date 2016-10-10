@@ -2,7 +2,7 @@ class ProjectsController < ApplicationController
   [AnalysesHelper, FactoidsHelper, MapHelper, RatingsHelper,
    RepositoriesHelper, TagsHelper].each { |help| helper help }
 
-  layout 'responsive_project_layout', only: [:show]
+  layout 'responsive_project_layout', only: [:show, :badges]
 
   include ProjectFilters
 
@@ -56,6 +56,13 @@ class ProjectsController < ApplicationController
     @similar_by_stacks = @project.related_by_stacks(10)
   end
 
+  def badges
+
+  end
+
+  def get_external_badge_url
+    render json: { badge_template: render_badge_url_template}
+  end
   private
 
   def project_params
@@ -74,5 +81,13 @@ class ProjectsController < ApplicationController
     Timeout.timeout(Forge::Match::MAX_FORGE_COMM_TIME) { @project = @match.project } if @match
   rescue Timeout::Error, OpenURI::HTTPError, URI::InvalidURIError
     flash.now[:notice] = t('.forge_time_out', name: @match.forge.name)
+  end
+
+  def render_badge_url_template
+    if params[:badge][:type] == "Travis CI"
+      "https://api.travis-ci.org/ <input type='text' name='url' id='badge_url'>"
+    else
+      "https://bestpractices.coreinfrastructure.org/projects/<input type='text' name='url' id='badge_url'>/badges"
+    end
   end
 end

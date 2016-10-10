@@ -1,0 +1,33 @@
+:ruby
+  content_for(:html_title) { t('.page_title', name: @project.name) }
+#project_badges_page
+  %h1 badges
+  .table-responsive
+    %table.col-xs-12.table.table-striped
+      %thead
+        %tr
+          %th.col-xs-2 Repository Url
+          %th.col-xs-2 Badge Type
+          %th.col-xs-3 Badge Url
+          %th.col-xs-3 Badge Image
+          %th.col-xs-2 Actions
+      %tbody
+        %tr
+          %td.col-xs-2 git://github.com/rails/rails.git master
+          %td.col-xs-2 Travis CI
+          %td.col-xs-3 https://api.travis-ci.org/rails/rails.svg?branch=master
+          %td.col-xs-3
+            = image_tag "https://api.travis-ci.org/rails/rails.svg?branch=master"
+          %td.col-xs-2
+            sd,fjjkdshfidshifuhsdiuhfisdhfiudshiuf
+        %tr.add-new.hidden
+          = form_for :project_badge do |f|
+            %th.col-xs-2
+              = f.select :repo_id, @project.repositories.map{|r| [r.url, r.id]}, {}, id: 'select_project_repo'
+            %th.col-xs-2
+              = f.select :badge_type, [ ['Travis CI'],['Core Infrastructure Initiative'], {}, id: 'select_project_badge'
+            %th.col-xs-4
+            %th.col-xs-3
+            %th.col-xs-1
+              = f.submit
+
