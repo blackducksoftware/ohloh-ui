@@ -1,0 +1,3 @@
+class TravisBadge < ProjectBadge
+
+end
