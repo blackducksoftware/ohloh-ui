@@ -71,21 +71,21 @@ describe 'VulnerabilitiesControllerTest' do
         get :index, id: security_set.project.to_param
         must_render_template :index
         must_render_template 'vulnerabilities/_version_filter'
-        assigns(:latest_version).must_equal r3_3
+        assigns(:release).must_equal r3_3
         assigns(:minor_versions).to_a.must_equal [r3_3, r2_2, r1_3]
         assigns(:vulnerabilities).to_a.must_equal r3_3.vulnerabilities.sort_by
       end
 
       it 'should return the vulnerabilities of the most recent minor version within the chosen major version' do
         get :index, id: security_set.project.to_param, filter: { major_version: '1' }
-        assigns(:latest_version).must_equal r1_3
+        assigns(:release).must_equal r1_3
         assigns(:minor_versions).to_a.must_equal [r1_3]
         assigns(:vulnerabilities).to_a.must_equal r1_3.vulnerabilities.sort_by
       end
 
       it 'should return the vulnerabilities of the most recent minor version within the chosen time span' do
         get :index, id: security_set.project.to_param, filter: { major_version: '1', period: '1' }
-        assigns(:latest_version).must_equal r1_3
+        assigns(:release).must_equal r1_3
         assigns(:minor_versions).to_a.must_equal [r1_3]
         assigns(:vulnerabilities).to_a.must_equal r1_3.vulnerabilities.sort_by
       end
@@ -120,26 +120,21 @@ describe 'VulnerabilitiesControllerTest' do
     describe 'filter' do
       it 'should return the vulnerabilities of the chosen version' do
         get :filter, id: security_set.project.to_param,
-                     filter: { major_version: '1', version: r1_2.id, period: '5' }, xhr: true
+                     filter: { version: r1_3.id }, xhr: true
         must_render_template 'vulnerabilities/_vulnerability_table'
-        must_render_template 'vulnerabilities/_version_filter'
-        assigns(:latest_version).must_equal r1_2
-        assigns(:minor_versions).to_a.must_equal [r1_3, r1_2]
-        assigns(:vulnerabilities).to_a.must_equal r1_2.vulnerabilities.sort_by
+        assigns(:vulnerabilities).to_a.must_equal r1_3.vulnerabilities.sort_by
       end
 
       it 'should return the vulnerabilities of the chosen severity' do
         get :filter, id: security_set.project.to_param,
-                     filter: { major_version: '1', severity: 'medium' }, xhr: true
-        assigns(:latest_version).must_equal r1_3
+                     filter: { version: r1_3.id, severity: 'medium' }, xhr: true
         assigns(:vulnerabilities).count.must_equal 1
         assigns(:vulnerabilities).to_a.must_equal r1_3.vulnerabilities.medium.sort_by
       end
 
       it 'should return the vulnerabilities of all severity types when severity param is blank' do
         get :filter, id: security_set.project.to_param,
-                     filter: { major_version: '1', severity: '' }, xhr: true
-        assigns(:latest_version).must_equal r1_3
+                     filter: { version: r1_3.id, severity: '' }, xhr: true
         assigns(:vulnerabilities).count.must_equal 3
         assigns(:vulnerabilities).to_a.must_equal r1_3.vulnerabilities.sort_by
       end
