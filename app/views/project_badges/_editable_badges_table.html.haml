@@ -1,0 +1,15 @@
+.table-responsive
+  %table.table
+    %thead
+      %tr
+        %th.col-xs-2.no-left-padding= t('project_badges.repo_url')
+        %th.col-xs-2=  t('project_badges.badge_type')
+        %th.col-xs-3= t('project_badges.badge_url')
+        %th.col-xs-3= t('project_badges.badge_image')
+        %th.col-xs-2= t('project_badges.actions')
+    %tbody
+      - @active_badges.each do |badge|
+        = render partial: 'edit_badge', locals: { badge: badge }
+      - display_new_badge = 'display: none' if @project_badge.errors.empty?
+      %tr#add_new_badge_form{ style: display_new_badge }
+        = render partial: 'new_badge_form'
