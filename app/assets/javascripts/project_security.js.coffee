@@ -9,6 +9,14 @@ ProjectVulnerabilityVersionChart =
         return if (data == null)
         new Highcharts.Chart(data)
 
+ProjectVulnerabilityAllVersionChart =
+  init: () ->
+    if $('#vulnerability_all_version_chart').length
+      chartOptions = $('#vulnerability_all_version_chart').data('chart')
+      extendVulnerabilityChartOptions(chartOptions)
+      new Highcharts.Chart(chartOptions)
+      reDrawVulnerabilityChart()
+
 ProjectVulnerabilityFilter =
   init: () ->
     this.mainFilter(this)
@@ -17,65 +25,34 @@ ProjectVulnerabilityFilter =
 
   mainFilter: (_klass) ->
     $('#vulnerabilities_index_page').on 'change', '.vulnerability_main_filter', (event) ->
-      queryStr = filter:
-        major_version: $('#vulnerability_filter_major_version').val()
-        period: $('#vulnerability_filter_period').val()
-      projectUrl = getProjectUrl()
-      $.ajax
-        url: projectUrl.concat('vulnerabilities_filter'),
-        data: queryStr
-        success: (vulTable) ->
-          window.history.pushState('', document.title, projectUrl + 'security?' + $.param(queryStr))
-          $('#vulnerabilities-data').html(vulTable)
+      refreshVulnerabilityTable()
+
+    $('#vulnerability_filter_major_version').on 'change', ->
+      reDrawVulnerabilityChart()
+
+    $('.release_timespan').click ->
+      return if $(this).hasClass('selected')
+      $('#vulnerability_filter_period').val($(this).attr('date')).change()
+      reDrawVulnerabilityChart()
+      $('.release_timespan').removeClass('selected')
+      $(this).addClass('selected')
 
   filter: (_klass) ->
     $('#vulnerabilities_index_page').on 'change', '.vulnerability_filter', (event) ->
       queryStr = filter:
-        major_version: $('#vulnerability_filter_major_version').val()
-        period: $('#vulnerability_filter_period').val()
         version: $('#vulnerability_filter_version').val()
-        severity: $('#vulnerability_filter_severity').find(':selected').val()
-      projectUrl = getProjectUrl()
-      $.ajax
-        url: projectUrl.concat('vulnerabilities_filter'),
-        data: queryStr
-        success: (vulTable) ->
-          window.history.pushState('', document.title, projectUrl + 'security?' + $.param(queryStr))
-          $('#vulnerabilities-data').html(vulTable)
+        severity: $('#vulnerability_filter_severity :selected').val()
+      currentRelease = find_release_by_id(queryStr.filter.version)
+      updateBrowserHistory()
+      updateSeverityFilter(currentRelease)
+      fetchVulnerabilityData(queryStr)
 
   reloadPageOnHistoryNavigation: () ->
     window.addEventListener 'popstate', (event) ->
       window.location.reload()
 
-@getProjectUrl = () ->
-  window.location.href.match(/\/p\/.+\//)[0]
-
-@extendVulnerabilityChartOptions = (options) ->
-  options.plotOptions['series'] =
-    cursor: 'pointer'
-    point:
-      events:
-        click: (event) ->
-          queryStr = filter:
-            major_version: $('#vulnerability_filter_major_version').val()
-            period: $('#vulnerability_filter_period').val()
-            version: find_release_by_version(this.category).id
-            severity: $('#vulnerability_filter_severity').find(':selected').val()
-          projectUrl = getProjectUrl()
-          $.ajax
-            url: projectUrl.concat('vulnerabilities_filter'),
-            data: queryStr
-            success: (vulTable) ->
-              window.history.pushState('', document.title, projectUrl + 'security?' + $.param(queryStr))
-              $('#vulnerabilities-data').html(vulTable)
-
-
-
 ProjectVulnerabilitySort =
   init: () ->
-    this.sortButtonUpdate(this)
-
-  sortButtonUpdate: (_klass) ->
     $('#vulnerabilities_index_page').on 'click', '.vulnerability_sort_btn i', (event) ->
       if $(this).hasClass('disable')
         sortDirection = $(this).data('direction')
@@ -83,44 +60,31 @@ ProjectVulnerabilitySort =
         sortDirection = $(this).siblings().data('direction')
       queryStr =
                filter:
-                 major_version: $('#vulnerability_filter_major_version').val()
-                 period: $('#vulnerability_filter_period').val()
                  version: $('#vulnerability_filter_version').val()
                  severity: $('#vulnerability_filter_severity').find(':selected').val()
                sort:
                  col: $(this).parents('.vulnerability_sort_btn').data('source')
                  direction: sortDirection
-      projectUrl = getProjectUrl()
-      $.ajax
-        url: projectUrl.concat('vulnerabilities_filter'),
-        data: queryStr
-        success: (vulTable) ->
-          window.history.pushState('', document.title, projectUrl + 'security?' + $.param(queryStr))
-          $('#vulnerabilities-data').html(vulTable)
+      updateBrowserHistory(queryStr)
+      fetchVulnerabilityData(queryStr)
       return false
 
 
 ProjectVulnerabilityPagination =
   init: () ->
-    this.ajaxPagination(this)
-
-  ajaxPagination: (_klass) ->
     $('#vulnerabilities_index_page').on 'click', '.pagination a', (event) ->
-      projectUrl = getProjectUrl()
       queryStr = $(this).attr('href').split('?')[1]
-      remote_url = $(this).attr('href')
-      $.ajax
-        url: remote_url,
-        success: (vulTable) ->
-          window.history.pushState('', document.title, projectUrl + 'security?' + queryStr)
-          $('#vulnerabilities-data').html(vulTable)
+      window.history.pushState('', document.title, getProjectUrl() + 'security?' + queryStr)
+      fetchVulnerabilityData(queryStr)
       return false
 
 $(document).on 'page:change', ->
   ProjectVulnerabilityVersionChart.init()
+  ProjectVulnerabilityAllVersionChart.init()
   ProjectVulnerabilityFilter.init()
   ProjectVulnerabilitySort.init()
   ProjectVulnerabilityPagination.init()
+
   $('#vulnerabilities_index_page').on 'click', 'tr.nvd_link', ->
     window.open($(this).data('nvd-link'), '_blank')
 

@@ -10,25 +10,73 @@
       return false
   release
 
-calculateHighVulns = (releases) ->
-  highVulns = releases.map((obj) ->
-    obj.high
-  )
+@find_release_by_id = (id) ->
+  release = undefined
+  id = parseInt(id)
+  $.each getReleaseData(), (i, r) ->
+    if r.id == id
+      release = r
+      return false
+  release
 
-calculateMediumVulns = (releaseData) ->
-  mediumVulns = releaseData.map((obj) ->
-    obj.medium
-  )
+@getProjectUrl = () ->
+  window.location.href.match(/\/p\/.+\//)[0]
 
-calculateLowVulns = (releaseData) ->
-  lowVulns = releaseData.map((obj) ->
-    obj.low
-  )
+@extendVulnerabilityChartOptions = (options) ->
+  options.plotOptions['series'] =
+    cursor: 'pointer'
+    point:
+      events:
+        click: (event) ->
+          currentRelease = find_release_by_version(this.category)
+          oldReleaseId = parseInt $('#vulnerability_filter_version').val()
+          loadCurrentRelease(currentRelease, oldReleaseId)
+
+@reDrawVulnerabilityChart = () ->
+  releases = filterReleases()
+  if releases.length == 0
+    renderNoData(releases)
+  else
+    reRenderChart(releases)
+
+@refreshVulnerabilityTable = () ->
+  releases = filterReleases().reverse()
+  currentRelease = releases[0]
+  unless currentRelease
+    return noReportedVulnerabilities()
+  oldReleaseId = parseInt $('#vulnerability_filter_version').val()
+  updateVersionFilter(releases)
+  loadCurrentRelease(currentRelease, oldReleaseId)
+
+@fetchVulnerabilityData = (queryStr) ->
+  $.ajax
+    url: getProjectUrl().concat('vulnerabilities_filter')
+    data: queryStr
+    beforeSend: ->
+      $('.overlay-loader').show()
+    success: (vulTable) ->
+      $('.vulnerabilities-datatable').html(vulTable)
+      $('.overlay-loader').hide()
+
+
+@updateSeverityFilter = (release) ->
+  $('#vulnerability_filter_severity').prop('disabled', false)
+  $.each ['low', 'medium', 'high'], (index, severity) ->
+    $("#vulnerability_filter_severity option[value=#{severity}]").prop('disabled', release[severity] == 0)
+
+@updateBrowserHistory = (queryStr) ->
+  if queryStr == undefined
+    queryStr = filter:
+      major_version: $('#vulnerability_filter_major_version').val()
+      period: $('#vulnerability_filter_period').val()
+      version: $('#vulnerability_filter_version').val()
+      severity: $('#vulnerability_filter_severity').find(':selected').val()
+  window.history.pushState('', document.title, getProjectUrl() + 'security?' + $.param(queryStr))
 
 filterReleases = () ->
   majorVersion = $('#vulnerability_filter_major_version').val()
-  filteredReleases = filterReleasesByMajorVersion(getReleaseData(), majorVersion)
   year = $('#vulnerability_filter_period').val()
+  filteredReleases = filterReleasesByMajorVersion(getReleaseData(), majorVersion)
   filteredReleases = filterReleasesByYear(filteredReleases, year)
   filteredReleases.sort (a, b) ->
     if a.released_on > b.released_on
@@ -51,14 +99,23 @@ filterReleasesByYear = (releases, year) ->
 filterReleasesByMajorVersion = (releases, majorVersion) ->
   return releases if majorVersion == ''
   releases.filter (release) ->
-    ///^#{majorVersion}[\.]///.test(release.version) || ///^#{majorVersion}$///.test(release.version)
+    ///^#{majorVersion}\.\d+\.\d+$///.test(release.version)
 
-@reDrawVulnerabilityChart = () ->
-  releases = filterReleases()
-  if releases.length == 0
-    renderNoData(releases)
-  else
-    reRenderChart(releases)
+
+calculateHighVulns = (releases) ->
+  highVulns = releases.map((obj) ->
+    obj.high
+  )
+
+calculateMediumVulns = (releaseData) ->
+  mediumVulns = releaseData.map((obj) ->
+    obj.medium
+  )
+
+calculateLowVulns = (releaseData) ->
+  lowVulns = releaseData.map((obj) ->
+    obj.low
+  )
 
 renderNoData = (releases) ->
   chart = $('#vulnerability_all_version_chart').highcharts()
@@ -86,20 +143,23 @@ reRenderChart = (releases) ->
   }, false
   chart.redraw()
 
-$('.release_timespan').click ->
-  return if $(this).hasClass('selected')
-  $('#vulnerability_filter_period').val($(this).attr('date'))
-  $('#vulnerability_filter_period').trigger('change')
-  reDrawVulnerabilityChart()
-  $('.release_timespan').removeClass('selected')
-  $(this).addClass('selected')
+noReportedVulnerabilities = () ->
+  $('#vulnerability_filter_version').html("<option value=''>No versions in specified filters</option>")
+  $('#vulnerability_filter_severity').prop('disabled', true)
+  $('.vulnerabilities-datatable').html('<div class="no_vulnerability">There are no reported vulnerabilities</div>')
+  queryStr = filter:
+    major_version: $('#vulnerability_filter_major_version').val()
+    period: $('#vulnerability_filter_period').val()
+  updateBrowserHistory(queryStr)
 
-$('#vulnerability_filter_major_version').on 'change', ->
-  reDrawVulnerabilityChart()
+loadCurrentRelease = (currentRelease, oldReleaseId) ->
+  if currentRelease.id == oldReleaseId
+    updateBrowserHistory()
+  else
+    $('#vulnerability_filter_version').val(currentRelease.id).change()
 
-$(document).on 'page:change', ->
-  if $('#vulnerability_all_version_chart').length
-    chartOptions = $('#vulnerability_all_version_chart').data('chart')
-    extendVulnerabilityChartOptions(chartOptions)
-    new Highcharts.Chart(chartOptions)
-    reDrawVulnerabilityChart()
+updateVersionFilter = (releases) ->
+  releases_option = releases.map((release) ->
+    "<option value=#{release.id}>#{release.version}</option>"
+  ).join('')
+  $('#vulnerability_filter_version').html(releases_option)
