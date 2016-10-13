@@ -2,6 +2,8 @@ class ProjectsController < ApplicationController
   [AnalysesHelper, FactoidsHelper, MapHelper, RatingsHelper,
    RepositoriesHelper, TagsHelper].each { |help| helper help }
 
+  [CiiBadge, TravisBadge] if Rails.env == 'development'
+
   layout 'responsive_project_layout', only: [:show, :badges]
 
   include ProjectFilters
@@ -57,7 +59,23 @@ class ProjectsController < ApplicationController
   end
 
   def badges
+    @badges = ProjectBadge.subclasses.map(&:name)
+    @project_badge = ProjectBadge.new
+  end
 
+  def create_badge
+    @project_badge = @project.project_badges.create(params[:project_badge].permit!)
+    if @project_badge && @project.valid?
+      render json: { success: true , content: render_to_string('_badges_table', :layout => false) }
+    else
+      render json: { success: false }
+    end
+  end
+
+  def destroy_badge
+    @badge = ProjectBadge.find(params[:badge_id])
+    @badge.destroy
+    redirect_to badges_project_path(@project)
   end
 
   def get_external_badge_url
@@ -84,10 +102,10 @@ class ProjectsController < ApplicationController
   end
 
   def render_badge_url_template
-    if params[:badge][:type] == "Travis CI"
-      "https://api.travis-ci.org/ <input type='text' name='url' id='badge_url'>"
+    if params[:badge_type] == "TravisBadge"
+      TravisBadge.badge_template
     else
-      "https://bestpractices.coreinfrastructure.org/projects/<input type='text' name='url' id='badge_url'>/badges"
+      CiiBadge.badge_template
     end
   end
 end

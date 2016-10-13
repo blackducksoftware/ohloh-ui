@@ -1,0 +1,9 @@
+= form_for @project_badge, url: create_badge_project_path(@project), remote: true do |f|
+  .col-xs-2
+    = f.select :repository_id, @project.repositories.map{|r| [r.url, r.id]}, {}, id: 'select_project_repo',class: 'col-xs-10'
+  .col-xs-2
+    = f.select :type, @badges, { include_blank: true }, id: 'select_project_badge', class: 'col-xs-10', data: { target_url: get_external_badge_url_project_path(@project) }
+  .col-xs-4#badge_url_input_container
+  .col-xs-3#badge_image_container
+  .col-xs-1
+    %a.icon-edit.btn.btn-mini.btn-primary#save_badge{ href: '#'} Save badge

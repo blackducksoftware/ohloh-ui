@@ -202,6 +202,8 @@ Rails.application.routes.draw do
       get :settings
       get :badges
       get :get_external_badge_url
+      post :create_badge
+      delete :destroy_badge
       get :estimated_cost
       get 'security' => 'vulnerabilities#index'
       get 'recent_vulnerabilities_version_chart' => 'vulnerabilities#recent_version_chart', defaults: { format: 'js' }
@@ -249,6 +251,8 @@ Rails.application.routes.draw do
     resources :enlistments
     resources :factoids, only: [:index]
     resources :rss_articles, only: :index
+    resources :project_badges
+
     resources :project_widgets, path: :widgets, as: :widgets, only: :index do
       collection do
         get :project_factoids, action: :factoids, as: :factoids
