@@ -3,6 +3,8 @@ source 'http://oh-utility01.dc1.lan:9292'
 
 gem 'activeadmin', git: 'https://github.com/gregbell/active_admin.git'
 gem 'airbrake'
+puts "hello"
+gem 'awesome_print'
 gem 'aws-sdk', '< 2.0' # paperclip doesn't work with the new aws-sdk gem
 gem 'bluecloth'
 gem 'brakeman'
@@ -47,7 +49,14 @@ group :development do
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
   gem 'capistrano-sidekiq'
+  gem 'guard'
+  gem 'guard-rubocop'
+  gem 'guard-minitest'
+  gem 'guard-haml_lint'
+  gem 'guard-coffeescript'
+  gem 'guard-livereload', '~> 2.5', '>= 2.5.2', require: false
   gem 'meta_request'
+  gem 'quiet_assets'
 end
 
 group :test do
