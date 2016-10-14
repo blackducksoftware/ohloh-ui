@@ -86,15 +86,15 @@ filterReleases = () ->
 
 filterReleasesByYear = (releases, year) ->
   return releases if year == ''
-  currentDate = new Date()
-  currentDate.setHours(0,0,0,0)
-  pastDate = new Date()
-  pastDate.setHours(0,0,0,0)
-  pastDate.setFullYear(pastDate.getFullYear() - year)
+  mostRecentReleaseDate = new Date(releases[(releases.length - 1)].released_on).setHours(0,0,0,0)
+  yearDiff = new Date(mostRecentReleaseDate).getFullYear() - year
+  month = new Date(mostRecentReleaseDate).getMonth()
+  day = new Date(mostRecentReleaseDate).getDay()
+  pastDate = new Date(yearDiff,month,day).setHours(0,0,0,0)
   releases.filter (item) ->
     releasedDate = new Date(item.released_on)
     releasedDate.setHours(0,0,0,0)
-    releasedDate <= currentDate && releasedDate >= pastDate
+    releasedDate <= mostRecentReleaseDate && releasedDate >= pastDate
 
 filterReleasesByMajorVersion = (releases, majorVersion) ->
   return releases if majorVersion == ''
