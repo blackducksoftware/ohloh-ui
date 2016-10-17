@@ -18,4 +18,4 @@
             = image_tag badge.try(:badge_image)
           - if logged_in?
             %td.col-xs-2
-              %a.icon-trash.btn.btn-mini.btn-danger{ href:  destroy_badge_project_path(@project, badge_id: badge.id), method: :delete} delete badge
+              %a.icon-trash.btn.btn-mini.btn-danger{ href:  project_project_badge_path(@project, badge.id), method: :delete} delete badge

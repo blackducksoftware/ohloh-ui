@@ -2,8 +2,6 @@ class ProjectsController < ApplicationController
   [AnalysesHelper, FactoidsHelper, MapHelper, RatingsHelper,
    RepositoriesHelper, TagsHelper].each { |help| helper help }
 
-  [CiiBadge, TravisBadge] if Rails.env == 'development'
-
   layout 'responsive_project_layout', only: [:show, :badges]
 
   include ProjectFilters
@@ -58,29 +56,6 @@ class ProjectsController < ApplicationController
     @similar_by_stacks = @project.related_by_stacks(10)
   end
 
-  def badges
-    @badges = ProjectBadge.subclasses.map(&:name)
-    @project_badge = ProjectBadge.new
-  end
-
-  def create_badge
-    @project_badge = @project.project_badges.create(params[:project_badge].permit!)
-    if @project_badge && @project.valid?
-      render json: { success: true , content: render_to_string('_badges_table', :layout => false) }
-    else
-      render json: { success: false }
-    end
-  end
-
-  def destroy_badge
-    @badge = ProjectBadge.find(params[:badge_id])
-    @badge.destroy
-    redirect_to badges_project_path(@project)
-  end
-
-  def get_external_badge_url
-    render json: { badge_template: render_badge_url_template}
-  end
   private
 
   def project_params
@@ -99,13 +74,5 @@ class ProjectsController < ApplicationController
     Timeout.timeout(Forge::Match::MAX_FORGE_COMM_TIME) { @project = @match.project } if @match
   rescue Timeout::Error, OpenURI::HTTPError, URI::InvalidURIError
     flash.now[:notice] = t('.forge_time_out', name: @match.forge.name)
-  end
-
-  def render_badge_url_template
-    if params[:badge_type] == "TravisBadge"
-      TravisBadge.badge_template
-    else
-      CiiBadge.badge_template
-    end
   end
 end

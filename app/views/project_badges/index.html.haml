@@ -1,11 +1,9 @@
 :ruby
   content_for(:html_title) { t('.page_title', name: @project.name) }
 #project_badges_page
-  %h1 badges
+  %h1.title= t('.title')
   .badge_table_container
     = render partial: 'badges_table'
   .clearfix
-  .add-new.hidden
-    .table-responsive
-      %table.col-xs-12.table
-        = render partial: 'add_new_badge'
+  - if @project_badge.errors.empty?
+    %btn.btn.btn-primary#add_badge_btn= t('.new_badge')
