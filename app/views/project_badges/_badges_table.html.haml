@@ -27,7 +27,7 @@
             = f.select :repository_id, @project.repositories.map{|r| [r.url, r.id]}, {}, id: 'select_project_repo',class: 'col-xs-10 chzn-select'
             - error_tag @project_badge, :repository_id
           %td.col-xs-2
-            = f.select :type, @badges, { include_blank: true }, id: 'select_project_badge', class: 'col-xs-10 chzn-select', data: { target_url: get_external_badge_url_project_path(@project) }
+            = f.select :type, @badges, { include_blank: true }, id: 'select_project_badge', class: 'col-xs-10 chzn-select'
             - error_tag @project_badge, :type
           %td.col-xs-4#badge_url_input_container
             = f.hidden_field :url, id: 'project_badge_url'
