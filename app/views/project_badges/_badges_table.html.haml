@@ -1,13 +1,13 @@
+- has_permission = logged_in? && @project.edit_authorized?
 .table-responsive
-  %table.col-xs-12.table.table-striped
+  %table.table.table-striped
     %thead
       %tr
         %th.col-xs-2.no-left-padding= t('.repo_url')
         %th.col-xs-2=  t('.badge_type')
         %th.col-xs-3= t('.badge_url')
         %th.col-xs-3= t('.badge_image')
-        - if logged_in?
-          %th.col-xs-2= t('.actions')
+        %th.col-xs-2= t('.actions')
     %tbody
       - @project.project_badges.undeleted.each do |badge|
         - if badge.valid?
@@ -18,8 +18,10 @@
             %td.col-xs-3
               = image_tag badge.try(:badge_image)
             %td.col-xs-2
-              - if logged_in?
-                = link_to 'delete badge', project_project_badge_path(@project, badge), class: 'icon-trash btn btn-mini btn-danger', method: :delete
+              - if has_permission
+                = link_to t('.remove'), project_project_badge_path(@project, badge), class: 'icon-trash btn btn-mini btn-danger', method: :delete
+              - else
+                = disabled_button bootstrap_icon('icon-trash', t('.remove')), class: 'btn-mini btn-danger pull-right'
       %tr#add_new_badge_form{ style: "#{'display: none' if @project_badge.errors.empty?}"}
         = form_for @project_badge, url: project_project_badges_path(@project) do |f|
           %td.col-xs-2.no-left-padding
