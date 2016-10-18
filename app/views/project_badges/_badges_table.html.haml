@@ -7,7 +7,6 @@
         %th.col-xs-3= t('.badge_url')
         %th.col-xs-3= t('.badge_image')
         - if logged_in?
-          %th.col-xs-2
           %th.col-xs-2= t('.actions')
     %tbody
       - @project.project_badges.undeleted.each do |badge|
@@ -19,7 +18,7 @@
             %td.col-xs-3
               = image_tag badge.try(:badge_image)
             %td.col-xs-2
-              - unless logged_in?
+              - if logged_in?
                 = link_to 'delete badge', project_project_badge_path(@project, badge), class: 'icon-trash btn btn-mini btn-danger', method: :delete
       %tr#add_new_badge_form{ style: "#{'display: none' if @project_badge.errors.empty?}"}
         = form_for @project_badge, url: project_project_badges_path(@project) do |f|
@@ -30,14 +29,13 @@
             = f.select :type, @badges, { include_blank: true }, id: 'select_project_badge', class: 'col-xs-10 chzn-select'
             - error_tag @project_badge, :type
           %td.col-xs-4#badge_url_input_container
-            = f.hidden_field :url, id: 'project_badge_url'
             .cii_badge_url.badge_template{class: "#{'hidden' unless @project_badge.type=='CiiBadge'}"}
               = "https://bestpractices.coreinfrastructure.org/projects/"
-              = text_field_tag('badge_url', @project_badge.url ,{class: 'badge_url_holder'})
+              = f.text_field :url, {class: 'badge_url_holder'}
               = "/badge"
             .travis_badge_url.badge_template{class: "#{'hidden' unless @project_badge.type=='TravisBadge'}"}
               = "https://api.travis-ci.org/"
-              = text_field_tag('badge_url', @project_badge.url ,{class: 'badge_url_holder'})
+              = f.text_field :url, {class: 'badge_url_holder'}
             - error_tag @project_badge, :url
           %td.col-xs-3#badge_image_container
             = image_tag @project_badge.try(:badge_image)
