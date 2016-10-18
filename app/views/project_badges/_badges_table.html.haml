@@ -19,9 +19,9 @@
               = image_tag badge.try(:badge_image)
             %td.col-xs-2
               - if has_permission
-                = link_to t('.remove'), project_project_badge_path(@project, badge), class: 'icon-trash btn btn-mini btn-danger', method: :delete
+                = link_to t('.remove'), project_project_badge_path(@project, badge), class: 'icon-trash btn btn-mini btn-danger col-xs-12', method: :delete
               - else
-                = disabled_button bootstrap_icon('icon-trash', t('.remove')), class: 'btn-mini btn-danger pull-right'
+                = disabled_button bootstrap_icon('icon-trash', t('.remove')), class: 'btn-mini btn-danger pull-right col-xs-12'
       %tr#add_new_badge_form{ style: "#{'display: none' if @project_badge.errors.empty?}"}
         = form_for @project_badge, url: project_project_badges_path(@project) do |f|
           %td.col-xs-2.no-left-padding
@@ -30,7 +30,7 @@
           %td.col-xs-2
             = f.select :type, @badges, { include_blank: true }, id: 'select_project_badge', class: 'col-xs-10 chzn-select'
             - error_tag @project_badge, :type
-          %td.col-xs-4#badge_url_input_container
+          %td.col-xs-3#badge_url_input_container
             .cii_badge_url.badge_template{class: "#{'hidden' unless @project_badge.type=='CiiBadge'}"}
               = "https://bestpractices.coreinfrastructure.org/projects/"
               = f.text_field :url, {class: 'badge_url_holder'}
@@ -41,5 +41,5 @@
             - error_tag @project_badge, :url
           %td.col-xs-3#badge_image_container
             = image_tag @project_badge.try(:badge_image)
-          %td.col-xs-1
-            %btn.icon-edit.btn.btn-mini.btn-primary#save_badge= t('.save_badge')
+          %td.col-xs-2
+            %btn.icon-edit.btn.btn-mini.btn-primary.col-xs-12#save_badge= t('.save_badge')

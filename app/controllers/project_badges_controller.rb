@@ -1,18 +1,16 @@
 class ProjectBadgesController < ApplicationController
   before_action :set_project_or_fail
-  before_action :session_required, :redirect_unverified_account, only: [:create,:destroy]
+  before_action :session_required, :redirect_unverified_account, only: [:create, :destroy]
   before_action :set_project_editor_account_to_current_user
   before_action :check_project_authorization, except: [:index]
-  before_action :find_enlistment, only: [:show, :edit, :update, :destroy]
-  before_action :project_context, only: [:index, :new, :edit, :create, :update]
-
+  before_action :project_context, only: [:index, :create]
+  before_action :set_badges, only: [:index, :create]
   [CiiBadge, TravisBadge] if Rails.env == 'development'
 
   helper ProjectsHelper
   layout 'responsive_project_layout'
 
   def index
-    @badges = ProjectBadge.subclasses.map(&:name)
     @project_badge = ProjectBadge.new
   end
 
@@ -21,7 +19,6 @@ class ProjectBadgesController < ApplicationController
     if @project_badge && @project_badge.valid?
       save_and_redirect_valid_badge
     else
-      @badges = ProjectBadge.subclasses.map(&:name)
       flash[:warning] = 'Badge cannot be created.'
       render :index
     end
@@ -52,5 +49,9 @@ class ProjectBadgesController < ApplicationController
     else
       params.require(:travis_badge).permit(:repository_id, :type, :url)
     end
+  end
+
+  def set_badges
+    @badges = ProjectBadge.subclasses.map{ |b| [b.method(:badge_name).call, b.name] }
   end
 end
