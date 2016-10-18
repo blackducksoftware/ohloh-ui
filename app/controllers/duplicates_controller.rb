@@ -62,7 +62,7 @@ class DuplicatesController < ApplicationController
     end
 
     @duplicate.resolve!(current_user)
-    redirect_to duplicates_path, flash: { success: t('.success') }
+    redirect_to admin_duplicates_path, flash: { success: t('.success') }
   end
 
   private

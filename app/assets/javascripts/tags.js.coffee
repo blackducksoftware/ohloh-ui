@@ -44,8 +44,8 @@ App.TagEdit =
     text = text.replace('.', '', 'g')
     taglinks = $("a.tag[tagname='#{text}']");
     taglinks.unbind('click', App.TagEdit.onTagAddClick).removeClass('add')
-    $('.spinner').show()
-    $('#error').hide()
+    $('.spinner').removeClass('hidden')
+    $('#error').addClass('hidden')
     $('#submit').attr("disabled",'')
     project = $('form#edit_tags').attr('project')
 
@@ -59,12 +59,12 @@ App.TagEdit =
         App.TagEdit.update_status(text)
         taglinks.click(App.TagEdit.onTagDeleteClick).addClass('delete')
         App.TagEdit.setTagArray(data.split('\n'))
-        $('.spinner').hide()
+        $('.spinner').addClass('hidden')
         $('#submit').removeAttr('disabled')
 
       error: (resp) ->
-        $('#error').html(resp.responseText).show()
-        $('.spinner').hide()
+        $('#error').html(resp.responseText).removeClass('hidden')
+        $('.spinner').addClass('hidden')
         $('#submit').removeAttr('disabled')
 
   update_status: (text) ->

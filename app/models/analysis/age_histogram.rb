@@ -13,7 +13,7 @@ class Analysis::AgeHistogram
       select_manager = analyses.project(count_star, date_trunc)
                                .join(projects)
                                .on(project_conditions)
-                               .where(logged_at_not_null)
+                               .where(oldest_code_set_time_not_null)
                                .where(in_last_two_months)
                                .group('logged_date')
                                .order('logged_date')
@@ -33,19 +33,19 @@ class Analysis::AgeHistogram
     end
 
     def date_trunc
-      Arel::Nodes::NamedFunction.new('DATE_TRUNC', [Arel.sql("'day'"), analyses[:logged_at]], 'logged_date')
+      Arel::Nodes::NamedFunction.new('DATE_TRUNC', [Arel.sql("'day'"), analyses[:oldest_code_set_time]], 'logged_date')
     end
 
     def project_conditions
       projects[:best_analysis_id].eq(analyses[:id])
     end
 
-    def logged_at_not_null
-      analyses[:logged_at].not_eq(nil)
+    def oldest_code_set_time_not_null
+      analyses[:oldest_code_set_time].not_eq(nil)
     end
 
     def in_last_two_months
-      analyses[:logged_at].gt(Time.current - 63.days)
+      analyses[:oldest_code_set_time].gt(Time.current - 63.days)
     end
   end
 end

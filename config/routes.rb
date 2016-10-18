@@ -201,6 +201,9 @@ Rails.application.routes.draw do
       get :map
       get :settings
       get :estimated_cost
+      get 'security' => 'vulnerabilities#index'
+      get 'recent_vulnerabilities_version_chart' => 'vulnerabilities#recent_version_chart', defaults: { format: 'js' }
+      get 'vulnerabilities_filter' => 'vulnerabilities#filter'
       get :similar_by_tags
       get :similar
       get 'permissions'  => 'permissions#show',   as: :permissions
@@ -419,10 +422,6 @@ Rails.application.routes.draw do
         get :reimport
         get :resloc
       end
-    end
-
-    resources :project_security_sets do
-      resources :releases
     end
 
     resources :sloc_jobs, only: [:index, :show, :destroy]

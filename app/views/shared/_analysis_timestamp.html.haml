@@ -9,8 +9,8 @@
 
     - if project.is_a?(Organization)
       = t('.project_may_be_current')
-    - elsif analysis.logged_at.present?
+    - elsif analysis.oldest_code_set_time.present?
       = t('.based_on')
-      %abbr{ title: analysis.logged_at.to_s(:full) }
-        = time_ago_in_words analysis.logged_at
+      %abbr{ title: analysis.oldest_code_set_time.to_s(:full) }
+        = time_ago_in_words analysis.oldest_code_set_time
       = t('.ago')

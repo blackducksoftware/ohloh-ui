@@ -38,7 +38,7 @@ describe 'CommitsController' do
     end
 
     it 'shoud render commits from a contribution for a single contributor' do
-      Analysis.any_instance.stubs(:logged_at).returns(Time.current)
+      Analysis.any_instance.stubs(:oldest_code_set_time).returns(Time.current)
       commit_ids = create_commits_and_named_commits
       NamedCommit.where(commit_id: commit_ids[0..1])
       unique_contributions = @project.contributions.uniq(&:id)
@@ -54,7 +54,7 @@ describe 'CommitsController' do
     it 'should return named commits if valid project' do
       time_now = Time.zone.now
       thirty_days_ago = time_now - 30.days
-      @project.best_analysis.update_attributes(logged_at: time_now)
+      @project.best_analysis.update_attributes(oldest_code_set_time: time_now)
       get :index, project_id: @project.id, time_span: '30 days'
       assigns(:named_commits).count.must_equal 2
       assigns(:named_commits).first.must_equal @named_commit
@@ -62,7 +62,7 @@ describe 'CommitsController' do
     end
 
     it 'should gracefully handle garbage time spans' do
-      @project.best_analysis.update_attributes(logged_at: Time.zone.now)
+      @project.best_analysis.update_attributes(oldest_code_set_time: Time.zone.now)
       get :index, project_id: @project.id, time_span: 'I am a banana'
       must_respond_with :ok
     end
@@ -90,7 +90,7 @@ describe 'CommitsController' do
     end
 
     it 'must render commits within 30 days' do
-      Analysis.any_instance.stubs(:logged_at).returns(Time.current.beginning_of_day)
+      Analysis.any_instance.stubs(:oldest_code_set_time).returns(Time.current.beginning_of_day)
       commit_ids = create_commits_and_named_commits
       named_commits = NamedCommit.where(commit_id: commit_ids[0..1])
 
@@ -102,7 +102,7 @@ describe 'CommitsController' do
     end
 
     it 'should render commits within last 12 months' do
-      Analysis.any_instance.stubs(:logged_at).returns(Time.current)
+      Analysis.any_instance.stubs(:oldest_code_set_time).returns(Time.current)
       commit_ids = create_commits_and_named_commits
       named_commits = NamedCommit.where(commit_id: commit_ids[0..2])
 

@@ -30,7 +30,7 @@ class CodeSet < ActiveRecord::Base
     def oldest_code_set
       conditions = "COALESCE(code_sets.logged_at, '1970-01-01') + "\
                    "repositories.update_interval * INTERVAL '1 second' <= NOW() AT TIME ZONE 'utc'"\
-                   " AND COALESCE(analyses.logged_at, '1970-01-01') >="\
+                   " AND COALESCE(analyses.oldest_code_set_time, '1970-01-01') >="\
                    " COALESCE(code_sets.logged_at, '1970-01-01') - INTERVAL '1 second'"
       joins(best_repository: { enlistments: { project: :best_analysis } })
         .where(projects: { deleted: false })

@@ -1,40 +1,40 @@
 - title = @project.best_analysis.present? ? t('.page_title_1') : t('.page_title_2')
 
-.clear#community_rating
-%div
-  %h4{ style: 'margin-left:5px;' }= link_to title, summary_project_reviews_path(@project)
-  - if @project.ratings.count != 0
-    %span{ style: 'margin-left: 8px;' }
-      = t((@project.ratings.count == 1 ? '.one_user_rate' : '.users_rate'), n: @project.ratings.count)
-    .clear
-      %span
-        .pull-left{ style: 'margin-left:7px;' }
-          != rating_stars('average_rating_stars', @project.rating_average.to_f || 0)
-      %span.pull-left{ style: 'padding-left: 10px; padding-top: 3px;' }
-        #{number_with_precision(@project.rating_average || 0, precision: 1)}/5.0
-  - else
-    %span{ style: 'padding-left: 8px; display: block;' }= t('.be_the_first')
-
-  .clear &nbsp;
-  %span{ style: 'margin-left: 8px;' }
-    - if @rating
-      = t('.click_to_edit')
+.clear
+.col-xs-12.no_padding#community_rating
+  .col-xs-6
+    %h4.community_rating_header= link_to title, summary_project_reviews_path(@project)
+    - if @project.ratings.any?
+      .col-md-12
+        = t((@project.ratings.count == 1 ? '.one_user_rate' : '.users_rate'), n: @project.ratings.count)
+      .clear
+        .col-md-12
+          .pull-left
+            != rating_stars('average_rating_stars', @project.rating_average.to_f || 0)
+            .rating_stars_value
+              #{number_with_precision(@project.rating_average || 0, precision: 1)}/5.0
     - else
-      = t('.click_to_add')
-  .clear
-    .jrating.pull-left{ id: @project.to_param, class: needs_login_or_verification_or_default, score: score,
-      star_style: 'big', style: 'margin-left: 9px', data: { show: 'projects/show/community_rating' } }
-    %span.pull-left#rating_spinner
-      &nbsp;&nbsp;
-      = image_tag('spinner.gif')
+      %span{ style: 'padding-left: 8px; display: block;' }= t('.be_the_first')
+  .col-xs-6.add_rating_container
+    .col-xs-12.no_padding
+      - if @rating
+        = t('.click_to_edit')
+      - else
+        = t('.click_to_add')
+    .clear
+      .jrating.pull-left{ id: @project.to_param, class: needs_login_or_verification_or_default, score: score,
+        star_style: 'big', style: 'margin-left: 9px; margin-bottom: 5px;',
+          data: { show: 'projects/show/community_rating' } }
+      %span.pull-left#rating_spinner
+        &nbsp;&nbsp;
+        = image_tag('spinner.gif')
 
-    - if @rating
-      %span.pull-left.clearfix#clear{ style: 'padding-left: 10px;' }
-        = link_to t('.clear'), 'javascript:void(0);', class: 'btn btn-mini',
-                                                      'data-url' => unrate_project_path(@project,
-                                                      show: 'projects/show/community_rating'),
-                                                      method: :delete
-  - unless current_user && Review.by_account(current_user).for_project(@project).count > 0
-    .clearfix &nbsp;
-    %span{ style: 'margin-left: 5px;' }
-      = link_to t('.review_this_project'), new_project_review_path(@project)
+      - if @rating
+        %span.pull-left.clearfix#clear{ style: 'padding-left: 10px;' }
+          = link_to t('.clear'), 'javascript:void(0);', class: 'btn btn-mini',
+                                                        'data-url' => unrate_project_path(@project,
+                                                        show: 'projects/show/community_rating'),
+                                                        method: :delete
+    - unless current_user && Review.by_account(current_user).for_project(@project).count > 0
+      %span{ style: 'margin-left: 5px;' }
+        = link_to t('.review_this_project'), new_project_review_path(@project)

@@ -4,7 +4,7 @@ module TagsHelper
   end
 
   def tag_icon_link(project)
-    link_to_if project.edit_authorized?, tag_icon, project_tags_path(project), class: 'noborder'
+    link_to_if project.edit_authorized?, t('.tags'), project_tags_path(project), class: 'noborder'
   end
 
   def tag_links(tag_list, max_tags = tag_list.length)

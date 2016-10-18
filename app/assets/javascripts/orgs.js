@@ -65,7 +65,10 @@ var GaugeProgress = {
           }
         }
       },
-      series: [{data: [data], dataLabels: { format: '<p style="text-align:center;">{y}</p>'} }]
+      series: [{data: [data], dataLabels: { format: '<p style="text-align:center;">{y}</p>'} }],
+      exporting: {
+        enabled: false
+      }
     }
   },
 

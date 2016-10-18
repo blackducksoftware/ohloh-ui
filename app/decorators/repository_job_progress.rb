@@ -47,8 +47,8 @@ class RepositoryJobProgress
   end
 
   def no_job
-    if sloc_set_logged_at
-      I18n.t 'repositories.job_progress.update_completed', at: time_ago_in_words(sloc_set_logged_at)
+    if sloc_set_code_set_time
+      I18n.t 'repositories.job_progress.update_completed', at: time_ago_in_words(sloc_set_code_set_time)
     else
       incomplete_job = Job.where(repository: @project.repositories).incomplete.first
       return I18n.t 'repositories.job_progress.no_job' unless incomplete_job
@@ -57,7 +57,7 @@ class RepositoryJobProgress
     end
   end
 
-  def sloc_set_logged_at
-    best_code_set && best_code_set.best_sloc_set && best_code_set.best_sloc_set.logged_at
+  def sloc_set_code_set_time
+    best_code_set && best_code_set.best_sloc_set && best_code_set.best_sloc_set.code_set_time
   end
 end
