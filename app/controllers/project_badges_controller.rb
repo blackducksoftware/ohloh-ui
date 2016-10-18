@@ -15,7 +15,6 @@ class ProjectBadgesController < ApplicationController
   end
 
   def create
-    binding.pry
     @project_badge = @project.project_badges.find_or_initialize_by(badge_params)
     if @project_badge && @project_badge.valid?
       save_and_redirect_valid_badge
