@@ -42,13 +42,8 @@ class ProjectBadgesController < ApplicationController
   end
 
   def badge_params
-    if params[:project_badge]
-      params.require(:project_badge).permit(:repository_id, :type, :url)
-    elsif params[:cii_badge]
-      params.require(:cii_badge).permit(:repository_id, :type, :url)
-    else
-      params.require(:travis_badge).permit(:repository_id, :type, :url)
-    end
+    (params.require(:project_badge) || params.require(:cii_badge) || params.require(:travis_badge))
+    .permit(:repository_id, :type, :url)
   end
 
   def set_badges
