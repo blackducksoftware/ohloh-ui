@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 source 'http://oh-utility01.dc1.lan:9292'
 
 gem 'activeadmin', git: 'https://github.com/gregbell/active_admin.git'
-gem 'airbrake'
+gem 'airbrake', '~> 5.5'
 gem 'aws-sdk', '< 2.0' # paperclip doesn't work with the new aws-sdk gem
 gem 'bluecloth'
 gem 'brakeman'
@@ -21,7 +21,7 @@ gem 'mini_magick', '~> 4.1.1'
 gem 'oh_delegator'
 gem 'ohloh_scm'
 gem 'open4'
-gem 'paperclip'
+gem 'paperclip', '< 5.0'
 gem 'pg'
 gem 'rails', '~> 4.2.5.1'
 gem 'rails-html-sanitizer'
@@ -78,7 +78,6 @@ group :development, :test do
 end
 
 group :production do
-  gem 'airbrake'
   gem 'traceview'
 end
 
