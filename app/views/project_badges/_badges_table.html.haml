@@ -13,7 +13,7 @@
         - if badge.valid?
           %tr
             %td.col-xs-2.no-left-padding= badge.repository.try(:url)
-            %td.col-xs-2= badge.class.name
+            %td.col-xs-2= badge.class.badge_name
             %td.col-xs-3= badge.try(:badge_image)
             %td.col-xs-3
               = image_tag badge.try(:badge_image)
@@ -25,10 +25,10 @@
       %tr#add_new_badge_form{ style: "#{'display: none' if @project_badge.errors.empty?}"}
         = form_for @project_badge, url: project_project_badges_path(@project) do |f|
           %td.col-xs-2.no-left-padding
-            = f.select :repository_id, @project.repositories.map{|r| [r.url, r.id]}, {}, id: 'select_project_repo',class: 'col-xs-10 chzn-select'
+            = f.select :repository_id, @project.repositories.map{|r| [r.url, r.id]}, {}, id: 'select_project_repo',class: 'chzn-select'
             - error_tag @project_badge, :repository_id
           %td.col-xs-2
-            = f.select :type, @badges, { include_blank: true }, id: 'select_project_badge', class: 'col-xs-10 chzn-select'
+            = f.select :type, @badges, { include_blank: true }, id: 'select_project_badge', class: 'chzn-select'
             - error_tag @project_badge, :type
           %td.col-xs-3#badge_url_input_container
             .cii_badge_url.badge_template{class: "#{'hidden' unless @project_badge.type=='CiiBadge'}"}
