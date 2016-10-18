@@ -43,10 +43,10 @@ class ProjectBadgesController < ApplicationController
 
   def badge_params
     (params.require(:project_badge) || params.require(:cii_badge) || params.require(:travis_badge))
-    .permit(:repository_id, :type, :url)
+      .permit(:repository_id, :type, :url)
   end
 
   def set_badges
-    @badges = ProjectBadge.subclasses.map{ |b| [b.method(:badge_name).call, b.name] }
+    @badges = ProjectBadge.subclasses.map { |b| [b.method(:badge_name).call, b.name] }
   end
 end
