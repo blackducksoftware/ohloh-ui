@@ -74,11 +74,12 @@ GEM
       activesupport (>= 3.0.0)
     arel (6.0.3)
     ast (2.3.0)
-    aws-sdk (1.66.0)
-      aws-sdk-v1 (= 1.66.0)
-    aws-sdk-v1 (1.66.0)
-      json (~> 1.4)
-      nokogiri (>= 1.4.4)
+    aws-sdk (2.6.11)
+      aws-sdk-resources (= 2.6.11)
+    aws-sdk-core (2.6.11)
+      jmespath (~> 1.0)
+    aws-sdk-resources (2.6.11)
+      aws-sdk-core (= 2.6.11)
     better_errors (2.1.1)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
@@ -211,6 +212,7 @@ GEM
     jbuilder (2.6.0)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
+    jmespath (1.3.1)
     jquery-rails (4.2.1)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -448,7 +450,7 @@ PLATFORMS
 DEPENDENCIES
   activeadmin!
   airbrake
-  aws-sdk (< 2.0)
+  aws-sdk (~> 2)
   better_errors
   binding_of_caller (~> 0.7.2)
   bluecloth
@@ -518,4 +520,4 @@ DEPENDENCIES
   will_paginate-bootstrap
 
 BUNDLED WITH
-   1.13.1
+   1.13.2
