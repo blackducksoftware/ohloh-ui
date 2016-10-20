@@ -2,10 +2,11 @@
   content_for(:html_title) { t('.page_title', name: @project.name) }
 #project_badges_page
   %h1.title= t('.title')
-  .badge_table_container
-    = render partial: 'badges_table'
-  .clearfix
   - if logged_in? && @project.edit_authorized? && @project_badge.errors.empty?
+    .badge_table_container
+      = render 'editable_badges_table'
+    .clearfix
     %btn.btn.btn-primary#add_badge_btn= t('.new_badge')
   - else
-    = disabled_button t('.new_badge'), class: 'btn-primary'
+    .badge_table_container
+      = render 'badges_table'

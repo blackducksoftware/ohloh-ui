@@ -5,7 +5,7 @@ class ProjectBadgesController < ApplicationController
   before_action :check_project_authorization, except: [:index]
   before_action :project_context, only: [:index, :create]
   before_action :set_badges, only: [:index, :create]
-  [CiiBadge, TravisBadge] if Rails.env == 'development'
+  before_action :avoid_duplicate_creation, only: [:create]
 
   helper ProjectsHelper
   layout 'responsive_project_layout'
@@ -16,7 +16,7 @@ class ProjectBadgesController < ApplicationController
 
   def create
     @project_badge = @project.project_badges.find_or_initialize_by(badge_params)
-    if @project_badge && @project_badge.valid?
+    if @project_badge.save
       save_and_redirect_valid_badge
     else
       flash[:warning] = 'Badge cannot be created.'
@@ -47,6 +47,11 @@ class ProjectBadgesController < ApplicationController
   end
 
   def set_badges
-    @badges = ProjectBadge.subclasses.map { |b| [b.method(:badge_name).call, b.name] }
+    @badges = ProjectBadge.subclasses.map { |b| [b.badge_name, b.name] }
+  end
+
+  def avoid_duplicate_creation
+    condition = @project.project_badges.undeleted.where(badge_params).first
+    redirect_to project_project_badges_path, flash: { error: 'Badge already exist for this repository' }
   end
 end
