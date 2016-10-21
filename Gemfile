@@ -3,8 +3,7 @@ source 'http://oh-utility01.dc1.lan:9292'
 
 gem 'activeadmin', git: 'https://github.com/gregbell/active_admin.git'
 gem 'airbrake'
-#gem 'aws-sdk', '< 2.0' # paperclip doesn't work with the new aws-sdk gem
-gem 'aws-sdk', '~> 2'
+gem 'aws-sdk', '< 2.0' # paperclip doesn't work with the new aws-sdk gem
 gem 'bluecloth'
 gem 'brakeman'
 gem 'bundler-audit', git: 'https://github.com/BoboFraggins/bundler-audit'
@@ -22,7 +21,7 @@ gem 'mini_magick', '~> 4.1.1'
 gem 'oh_delegator'
 gem 'ohloh_scm'
 gem 'open4'
-gem 'paperclip'
+gem 'paperclip', '~> 4.3.2'
 gem 'pg'
 gem 'rails', '~> 4.2.7.1'
 gem 'rails-html-sanitizer'
