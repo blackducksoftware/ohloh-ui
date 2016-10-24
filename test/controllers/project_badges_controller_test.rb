@@ -38,14 +38,15 @@ describe 'ProjectBadgesController' do
       assert_response :unauthorized
     end
 
-    it 'Should not create ciibadge if url is not a empty' do
+    it 'Should not create ciibadge if url empty' do
       login_as @account
       post :create, project_id: @project_id,
                     project_badge: build(:project_badge,
                                          project: @project,
                                          repository: @repository,
                                          type: 'CiiBadge',
-                                         url: '').attributes
+                                         identifier: '',
+                                         status: 1 ).attributes
       must_render_template :index
       @project.project_badges.size.must_equal 0
     end
@@ -57,7 +58,8 @@ describe 'ProjectBadgesController' do
                                          project: @project,
                                          repository: @repository,
                                          type: 'CiiBadge',
-                                         url: '1').attributes
+                                         identifier: '1',
+                                         status: 1 ).attributes
       must_redirect_to action: :index
       flash[:success].must_be :present?
       @project.project_badges.size.must_equal 1
@@ -66,7 +68,7 @@ describe 'ProjectBadgesController' do
 
   describe 'destroy' do
     it 'Should not soft delete a badge if use is not logged in' do
-      project_badge = create(:project_badge, project: @project, repository: @repository, type: 'CiiBadge', url: '1')
+      project_badge = create(:project_badge, project: @project, repository: @repository, type: 'CiiBadge', identifier: '1')
       create(:permission, target: @project, remainder: true)
       login_as create(:account)
       delete :destroy, project_id: @project_id, id: project_badge.id
@@ -74,7 +76,7 @@ describe 'ProjectBadgesController' do
     end
 
     it 'should soft delete the badge if authorized user sends delete request' do
-      project_badge = create(:project_badge, project: @project, repository: @repository, type: 'CiiBadge', url: '1')
+      project_badge = create(:project_badge, project: @project, repository: @repository, type: 'CiiBadge', identifier: '1')
       login_as @account
       delete :destroy, project_id: @project_id, id: project_badge.id
       flash[:success].must_be :present?

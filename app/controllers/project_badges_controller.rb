@@ -7,10 +7,13 @@ class ProjectBadgesController < ApplicationController
   before_action :set_badges, only: [:index, :create]
   before_action :avoid_duplicate_creation, only: [:create]
 
+  [TravisBadge, CiiBadge] if Rails.env == 'development'
+
   helper ProjectsHelper
   layout 'responsive_project_layout'
 
   def index
+    @active_badges = @project.project_badges.active
     @project_badge = ProjectBadge.new
   end
 
@@ -19,39 +22,48 @@ class ProjectBadgesController < ApplicationController
     if @project_badge.save
       save_and_redirect_valid_badge
     else
-      flash[:warning] = 'Badge cannot be created.'
-      render :index
+      @active_badges = @project.project_badges.active
+      render :index, flash: { error: 'Badge cannot be created.' }
+    end
+  end
+
+  def update
+    @badge = @project.project_badges.find(params[:id])
+    @badge = @badge.update_attributes(params[:project_badge].permit!)
+    if @badge
+      render json: { success: true, message: 'Badge updated successfully' }
+    else
+      render json: { success: false, message: 'Badge not updated' }
     end
   end
 
   def destroy
     @project_badge = ProjectBadge.find(params[:id])
-    @project_badge.deleted = true
+    @project_badge.status = 0
     @project_badge.save
-    flash[:success] = 'Badge deleted successfully.'
-    redirect_to project_project_badges_path
+    redirect_to project_project_badges_path, flash: { success: 'Badge deleted successfully.' }
   end
 
   private
 
   def save_and_redirect_valid_badge
-    @project_badge.deleted = false
+    @project_badge.status = 1
     @project_badge.save
-    flash[:success] = 'Badge created successfully.'
-    redirect_to project_project_badges_path
+    redirect_to project_project_badges_path, flash: { success: 'Badge created successfully.' }
   end
 
   def badge_params
-    (params.require(:project_badge) || params.require(:cii_badge) || params.require(:travis_badge))
-      .permit(:repository_id, :type, :url)
+    (params[:project_badge] || params[:cii_badge] || params[:travis_badge])
+      .permit(:repository_id, :type, :identifier)
   end
 
   def set_badges
+    @repositories = @project.repositories.map { |r| [r.url, r.id] }
     @badges = ProjectBadge.subclasses.map { |b| [b.badge_name, b.name] }
   end
 
   def avoid_duplicate_creation
-    condition = @project.project_badges.undeleted.where(badge_params).first
-    redirect_to project_project_badges_path, flash: { error: 'Badge already exist for this repository' }
+    condition = @project.project_badges.active.where(badge_params).first
+    redirect_to project_project_badges_path, flash: { error: 'Badge already exist for this repository' } if condition
   end
 end

@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :project_badge do
-    url 'MyString'
+    identifier 'MyString'
   end
 end

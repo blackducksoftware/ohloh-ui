@@ -1,8 +1,9 @@
 class CiiBadge < ProjectBadge
-  validates :url, numericality: { only_integer: true }
+  validates :identifier, numericality: { only_integer: true }
+  API_BASE_URL = 'https://bestpractices.coreinfrastructure.org'.freeze
 
   def badge_image
-    "https://bestpractices.coreinfrastructure.org/projects/#{url}/badge"
+    "#{API_BASE_URL}/projects/#{identifier}/badge"
   end
 
   def self.badge_name

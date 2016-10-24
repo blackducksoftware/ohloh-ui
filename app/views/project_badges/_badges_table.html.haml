@@ -7,7 +7,7 @@
         %th.col-xs-3= t('.badge_url')
         %th.col-xs-3= t('.badge_image')
     %tbody
-      - @project.project_badges.undeleted.each do |badge|
+      - @active_badges.each do |badge|
         - if badge.valid?
           %tr
             %td.col-xs-2.no-left-padding= badge.repository.try(:url)

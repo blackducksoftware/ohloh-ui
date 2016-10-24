@@ -44,9 +44,9 @@ SET search_path = public, pg_catalog;
 --
 
 CREATE TYPE statinfo AS (
-	word text,
-	ndoc integer,
-	nentry integer
+    word text,
+    ndoc integer,
+    nentry integer
 );
 
 
@@ -55,8 +55,8 @@ CREATE TYPE statinfo AS (
 --
 
 CREATE TYPE tokenout AS (
-	tokid integer,
-	token text
+    tokid integer,
+    token text
 );
 
 
@@ -65,9 +65,9 @@ CREATE TYPE tokenout AS (
 --
 
 CREATE TYPE tokentype AS (
-	tokid integer,
-	alias text,
-	descr text
+    tokid integer,
+    alias text,
+    descr text
 );
 
 
@@ -76,12 +76,12 @@ CREATE TYPE tokentype AS (
 --
 
 CREATE TYPE tsdebug AS (
-	ts_name text,
-	tok_type text,
-	description text,
-	token text,
-	dict_name text[],
-	tsvector tsvector
+    ts_name text,
+    tok_type text,
+    description text,
+    token text,
+    dict_name text[],
+    tsvector tsvector
 );
 
 
@@ -3129,11 +3129,11 @@ CREATE TABLE project_badges (
     id integer NOT NULL,
     repository_id integer,
     project_id integer,
-    url character varying,
+    identifier character varying,
     type character varying,
-    deleted boolean DEFAULT false,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    status integer DEFAULT 1
 );
 
 
@@ -8727,6 +8727,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160926144901');
 INSERT INTO schema_migrations (version) VALUES ('20161006072823');
 
 INSERT INTO schema_migrations (version) VALUES ('20161007083447');
+
+INSERT INTO schema_migrations (version) VALUES ('20161024095609');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
