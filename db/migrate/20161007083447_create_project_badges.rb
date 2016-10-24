@@ -3,9 +3,9 @@ class CreateProjectBadges < ActiveRecord::Migration
     create_table :project_badges do |t|
       t.references :repository, index: true, foreign_key: true
       t.references :project, index: true, foreign_key: true
-      t.string :identifier
+      t.string :url
       t.string :type
-      t.integer :status, default: 1
+      t.boolean :deleted, default: :false
       t.timestamps null: false
     end
   end

@@ -8901,4 +8901,3 @@ INSERT INTO schema_migrations (version) VALUES ('97');
 INSERT INTO schema_migrations (version) VALUES ('98');
 
 INSERT INTO schema_migrations (version) VALUES ('99');
-
