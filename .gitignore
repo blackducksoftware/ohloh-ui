@@ -16,6 +16,7 @@ public/system/
 *.swp
 tags
 .env.development
+.env.staging
 .env
 .byebug_history
 logfile
