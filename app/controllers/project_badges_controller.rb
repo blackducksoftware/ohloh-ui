@@ -18,22 +18,25 @@ class ProjectBadgesController < ApplicationController
   end
 
   def create
-    @project_badge = @project.project_badges.find_or_initialize_by(badge_params)
+    @project_badge = @project.project_badges.inactive.find_or_initialize_by(badge_params.except('identifier'))
+    @project_badge.identifier = badge_params['identifier']
     if @project_badge.save
       save_and_redirect_valid_badge
     else
       @active_badges = @project.project_badges.active
-      render :index, flash: { error: 'Badge cannot be created.' }
+      render :index, flash: { error: I18n.t('project_badges.create_failed') }
     end
   end
 
   def update
     @badge = @project.project_badges.find(params[:id])
-    @badge = @badge.update_attributes(params[:project_badge].permit!)
-    if @badge
-      render json: { success: true, message: 'Badge updated successfully' }
+    if @badge.update(identifier: params[:project_badge][:identifier])
+      render json: { success: true,
+                     message: I18n.t('project_badges.update_success'),
+                     value: @badge.identifier }
     else
-      render json: { success: false, message: 'Badge not updated' }
+      render json: { success: false,
+                     errors: @badge.errors.full_messages.join(', ') }
     end
   end
 
@@ -41,7 +44,7 @@ class ProjectBadgesController < ApplicationController
     @project_badge = ProjectBadge.find(params[:id])
     @project_badge.status = 0
     @project_badge.save
-    redirect_to project_project_badges_path, flash: { success: 'Badge deleted successfully.' }
+    redirect_to project_project_badges_path, flash: { success: I18n.t('project_badges.delete_success') }
   end
 
   private
@@ -49,7 +52,7 @@ class ProjectBadgesController < ApplicationController
   def save_and_redirect_valid_badge
     @project_badge.status = 1
     @project_badge.save
-    redirect_to project_project_badges_path, flash: { success: 'Badge created successfully.' }
+    redirect_to project_project_badges_path, flash: { success: I18n.t('project_badges.create_success') }
   end
 
   def badge_params
@@ -64,7 +67,7 @@ class ProjectBadgesController < ApplicationController
 
   def avoid_duplicate_creation
     if @project.project_badges.active.where(badge_params).first
-      redirect_to project_project_badges_path, flash: { error: 'Badge already exist for this repository' }
+      redirect_to project_project_badges_path, flash: { error: I18n.t('project_badges.already_exist') }
     end
   end
 end

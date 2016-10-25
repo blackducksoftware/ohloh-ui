@@ -12,3 +12,20 @@ en:
       actions: "Actions"
       save_badge: "Save Badge"
       remove: "Remove"
+    editable_badges_table:
+      repo_url: "Repository URL"
+      badge_type: "Badge Type"
+      badge_url: "Badge URL"
+      badge_image: "Badge Image"
+      actions: "Actions"
+      save_badge: "Save Badge"
+      remove: "Remove"
+      travis_base_url: "https://api.travis-ci.org/"
+      cii_base_url: "https://bestpractices.coreinfrastructure.org/"
+      cii_mid_url: "projects/"
+      cii_end_url: "/badge"
+    create_failed: 'Badge cannot be created.'
+    update_success: 'Badge updated successfully'
+    delete_success: 'Badge deleted successfully.'
+    create_success: 'Badge created successfully.'
+    already_exist: 'Badge already exist for this repository'
