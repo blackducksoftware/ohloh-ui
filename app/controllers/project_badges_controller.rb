@@ -63,7 +63,8 @@ class ProjectBadgesController < ApplicationController
   end
 
   def avoid_duplicate_creation
-    condition = @project.project_badges.active.where(badge_params).first
-    redirect_to project_project_badges_path, flash: { error: 'Badge already exist for this repository' } if condition
+    if @project.project_badges.active.where(badge_params).first
+      redirect_to project_project_badges_path, flash: { error: 'Badge already exist for this repository' }
+    end
   end
 end
