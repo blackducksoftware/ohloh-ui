@@ -98,9 +98,13 @@ filterReleasesByYear = (releases, year) ->
 
 filterReleasesByMajorVersion = (releases, majorVersion) ->
   return releases if majorVersion == ''
-  releases.filter (release) ->
-    ///^#{majorVersion}\.\d+\.\d+$///.test(release.version)
-
+  # Temporary fix for Android
+  if releases[0].version.match(/^android-\d+.\d+.r1|^android-\d+.\d+.\d_r1/i)
+    releases.filter (release) ->
+      ///^#{majorVersion}///.test(release.version)
+  else
+    releases.filter (release) ->    
+      ///^#{majorVersion}\.\d+\.\d+$///.test(release.version)
 
 calculateHighVulns = (releases) ->
   highVulns = releases.map((obj) ->

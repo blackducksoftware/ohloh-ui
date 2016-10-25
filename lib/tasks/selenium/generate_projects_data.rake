@@ -105,7 +105,9 @@ namespace :selenium do
   end
 
   def twelve_month_summary(analysis)
-    { 'date' => "#{pretty_date(analysis.oldest_code_set_time - 12.months)} - #{pretty_date(analysis.oldest_code_set_time)}",
+    old_date = pretty_date(analysis.oldest_code_set_time)
+    old_date_12_months_ago = pretty_date(analysis.oldest_code_set_time - 12.months)
+    { 'date' => "#{old_date_12_months_ago} - #{old_date}",
       'commits' => analysis.twelve_month_summary.commits_count,
       'previous_commits' => previous_12_month_summary(analysis.previous_twelve_month_summary,
                                                       'commits_difference', 'commits_count'),
@@ -115,7 +117,9 @@ namespace :selenium do
   end
 
   def thirty_day_summary(analysis)
-    { 'date' => "#{pretty_date(analysis.oldest_code_set_time - 30.days)} - #{pretty_date(analysis.oldest_code_set_time)}",
+    old_date = pretty_date(analysis.oldest_code_set_time)
+    old_date_30_days_ago = pretty_date(analysis.oldest_code_set_time - 30.days)
+    { 'date' => "#{old_date_30_days_ago} - #{old_date}",
       'commits' => analysis.thirty_day_summary.commits_count,
       'contributors' => analysis.thirty_day_summary.committer_count,
       'new_contributors' => analysis.thirty_day_summary.new_contributors_count }
