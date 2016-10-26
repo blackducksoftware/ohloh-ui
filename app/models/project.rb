@@ -84,6 +84,11 @@ class Project < ActiveRecord::Base
                  .preload(person: :account, contributor_fact: :primary_language).limit(10)
   end
 
+  def badges_summary
+    badges = travis_badges.active.first(2) + cii_badges.active.first(2)
+    [badges[0], badges[2] || badges[1]].compact
+  end
+
   class << self
     def search_and_sort(query, sort, page)
       sort_by = (sort == 'relevance') ? nil : "by_#{sort}"

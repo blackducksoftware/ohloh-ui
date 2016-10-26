@@ -7,4 +7,6 @@ class ProjectBadge < ActiveRecord::Base
                             uniqueness: { scope: [:project_id, :type],
                                           message: I18n.t('.project_badges.repo_validation') }
   enum status: [:inactive, :active]
+
+  SUMMARY_LIMIT = 2
 end
