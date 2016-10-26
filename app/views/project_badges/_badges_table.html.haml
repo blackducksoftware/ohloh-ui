@@ -2,10 +2,10 @@
   %table.table.table-striped
     %thead
       %tr
-        %th.col-xs-2.no-left-padding= t('.repo_url')
-        %th.col-xs-2=  t('.badge_type')
-        %th.col-xs-3= t('.badge_url')
-        %th.col-xs-3= t('.badge_image')
+        %th.col-xs-2.no-left-padding= t('project_badges.repo_url')
+        %th.col-xs-2=  t('project_badges.badge_type')
+        %th.col-xs-3= t('project_badges.badge_url')
+        %th.col-xs-3= t('project_badges.badge_image')
     %tbody
       - @active_badges.each do |badge|
         - if badge.valid?

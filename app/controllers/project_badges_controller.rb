@@ -6,6 +6,7 @@ class ProjectBadgesController < ApplicationController
   before_action :project_context, only: [:index, :create]
   before_action :set_badges, only: [:index, :create]
   before_action :avoid_duplicate_creation, only: [:create]
+  before_action :find_badge, only: [:update, :destroy]
 
   [TravisBadge, CiiBadge] if Rails.env == 'development'
 
@@ -29,7 +30,6 @@ class ProjectBadgesController < ApplicationController
   end
 
   def update
-    @badge = @project.project_badges.find(params[:id])
     if @badge.update(identifier: params[:project_badge][:identifier])
       render json: { success: true,
                      message: I18n.t('project_badges.update_success'),
@@ -41,17 +41,18 @@ class ProjectBadgesController < ApplicationController
   end
 
   def destroy
-    @project_badge = ProjectBadge.find(params[:id])
-    @project_badge.status = 0
-    @project_badge.save
+    @badge.inactive!
     redirect_to project_project_badges_path, flash: { success: I18n.t('project_badges.delete_success') }
   end
 
   private
 
+  def find_badge
+    @badge = ProjectBadge.find(params[:id])
+  end
+
   def save_and_redirect_valid_badge
-    @project_badge.status = 1
-    @project_badge.save
+    @project_badge.active!
     redirect_to project_project_badges_path, flash: { success: I18n.t('project_badges.create_success') }
   end
 

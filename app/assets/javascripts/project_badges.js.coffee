@@ -43,9 +43,13 @@ ProjectNewBadge =
     $('#project_badges_page').on 'click', '.url_update_btn', (event) ->
       currentElement = $(this)
       urlFieldVal = $(this).siblings('.dirty_url_field').val()
+      selectedBadge = $(this).parents('.dirty_url_container').siblings('.badge_url_holder').val()
       if urlFieldVal == ''
         alert("Url can't be empty")
-        false
+        return
+      if (selectedBadge != 'Travis Badge') && parseInt(urlFieldVal) != NaN
+        alert("URL entry Should be a number for CII Badge")
+        return
       $.ajax
         method: 'PUT'
         data: project_badge:
@@ -53,7 +57,6 @@ ProjectNewBadge =
         url: $(this).parents('.col-xs-3').find('.edit_url_field').data('url')
         success: (data) ->
           if data.success==true
-            alert(data.message)
             parentContainer = $(currentElement).parents('.dirty_url_container')
             $(parentContainer).siblings('.edit_url_field').val(data.value)
             $(this).siblings('.dirty_url_field').val(data.value)
