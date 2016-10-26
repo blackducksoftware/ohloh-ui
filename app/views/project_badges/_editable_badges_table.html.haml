@@ -1,12 +1,12 @@
 .table-responsive
-  %table.table.table-striped
+  %table.table
     %thead
       %tr
-        %th.col-xs-2.no-left-padding= t('.repo_url')
-        %th.col-xs-2=  t('.badge_type')
-        %th.col-xs-3= t('.badge_url')
-        %th.col-xs-3= t('.badge_image')
-        %th.col-xs-2= t('.actions')
+        %th.col-xs-2.no-left-padding= t('project_badges.repo_url')
+        %th.col-xs-2=  t('project_badges.badge_type')
+        %th.col-xs-3= t('project_badges.badge_url')
+        %th.col-xs-3= t('project_badges.badge_image')
+        %th.col-xs-2= t('project_badges.actions')
     %tbody
       - @active_badges.each do |badge|
         - if badge.valid?
@@ -15,19 +15,19 @@
             %td.col-xs-2.selected_badge_val= badge.class.badge_name
             %td.col-xs-3
               - if badge.type == "TravisBadge"
-                = t('.travis_base_url')
+                = t('project_badges.travis_base_url')
               - else
-                = "#{t('.cii_base_url')}#{t('.cii_mid_url')}"
+                = "#{t('project_badges.cii_base_url')}#{t('project_badges.cii_mid_url')}"
               = text_field_tag('url', badge.identifier, class: 'edit_url_field badge_url_holder', 'data-url':project_project_badge_path(@project, badge))
               .dirty_url_container.hidden
                 = text_field_tag('dirty_url', badge.identifier, class: 'dirty_url_field form-control')
                 %i.fa.fa-check-circle.url_update_btn{ data: { 'url': project_project_badge_path(@project, badge)}}
                 %i.fa.fa-times-circle.edit_url_close_btn
-              = t('.cii_end_url') if badge.type == "CiiBadge"
+              = t('project_badges.cii_end_url') if badge.type == "CiiBadge"
             %td.col-xs-3.badge_image_container
               = image_tag badge.try(:badge_url)
             %td.col-xs-2
-              = link_to t('.remove'), project_project_badge_path(@project, badge), class: 'icon-trash btn btn-mini btn-danger col-xs-12', method: :delete
+              = link_to t('project_badges.remove'), project_project_badge_path(@project, badge), class: 'icon-trash btn btn-mini btn-danger col-xs-12', method: :delete
       %tr#add_new_badge_form{ style: "#{'display: none' if @project_badge.errors.empty?}"}
         = form_for @project_badge, url: project_project_badges_path(@project), html: { id: 'new_project_badge' } do |f|
           %td.col-xs-2.no-left-padding
@@ -39,14 +39,14 @@
           %td.col-xs-3#badge_url_input_container
             = f.hidden_field :identifier, class: 'badge_url_field'
             .cii_badge_url.badge_template{class: "#{'hidden' unless @project_badge.type=='CiiBadge'}"}
-              = "#{t('.cii_base_url')}#{t('.cii_mid_url')}"
+              = "#{t('project_badges.cii_base_url')}#{t('project_badges.cii_mid_url')}"
               = text_field_tag('cii_url', @project_badge.identifier, class: 'badge_url_holder')
-              = "#{t('.cii_end_url')}"
+              = "#{t('project_badges.cii_end_url')}"
             .travis_badge_url.badge_template{class: "#{'hidden' unless @project_badge.type=='TravisBadge'}"}
-              = t('.travis_base_url')
+              = t('project_badges.travis_base_url')
               = text_field_tag('travis_url', @project_badge.identifier, class: 'badge_url_holder')
             - error_tag @project_badge, :identifier
           %td.col-xs-3.badge_image_container
-            = image_tag @project_badge.try(:badge_url) unless @project_badge.identifier
+            = image_tag @project_badge.try(:badge_url) if @project_badge.identifier
           %td.col-xs-2
-            %btn.icon-edit.btn.btn-mini.btn-primary.col-xs-12#save_badge= t('.save_badge')
+            %btn.icon-edit.btn.btn-mini.btn-primary.col-xs-12#save_badge= t('project_badges.save_badge')

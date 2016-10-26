@@ -6,6 +6,7 @@ ProjectNewBadge =
   initializeNewBadge: (_klass) ->
     $("#add_badge_btn").on 'click', (event) ->
       $('#add_badge_btn, #add_new_badge_form').toggle()
+      $('.chzn-select').chosen()
 
   handleEvents: (_klass) ->
     $('#project_badges_page').on 'change', '#select_project_badge', (event) ->
@@ -37,15 +38,22 @@ ProjectNewBadge =
       $(this).siblings('.dirty_url_container').find('.dirty_url_field').focus()
 
     $('#project_badges_page').on 'click', '.edit_url_close_btn', (event) ->
+      urlValObject = $(this).parents('.dirty_url_container').siblings('.edit_url_field.badge_url_holder')
+      $(this).siblings('.dirty_url_field').val($(urlValObject).val())
       $(this).parents('.dirty_url_container').addClass('hidden')
-      $(this).parents('.dirty_url_container').siblings('.edit_url_field.badge_url_holder').removeClass('hidden')
+      $(urlValObject).removeClass('hidden')
 
     $('#project_badges_page').on 'click', '.url_update_btn', (event) ->
       currentElement = $(this)
       urlFieldVal = $(this).siblings('.dirty_url_field').val()
+      selectedBadge = $(this).parents('tr').find('.selected_badge_val').html()
       if urlFieldVal == ''
         alert("Url can't be empty")
-        false
+        return
+      debugger
+      if (selectedBadge != 'Travis CI') && !Number.isInteger(parseInt(urlFieldVal))
+        alert("Please enter a numeric value")
+        return
       $.ajax
         method: 'PUT'
         data: project_badge:
@@ -53,7 +61,6 @@ ProjectNewBadge =
         url: $(this).parents('.col-xs-3').find('.edit_url_field').data('url')
         success: (data) ->
           if data.success==true
-            alert(data.message)
             parentContainer = $(currentElement).parents('.dirty_url_container')
             $(parentContainer).siblings('.edit_url_field').val(data.value)
             $(this).siblings('.dirty_url_field').val(data.value)
@@ -62,7 +69,6 @@ ProjectNewBadge =
             $(parentContainer).siblings('.edit_url_field').trigger('change')
           else
             alert(data.errors)
-        complete: ->
 
 $(document).on 'page:change', ->
   ProjectNewBadge.init()
