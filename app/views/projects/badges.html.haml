@@ -1,0 +1,12 @@
+:ruby
+  content_for(:html_title) { t('.page_title', name: @project.name) }
+#project_badges_page
+  %h1 badges
+  .badge_table_container
+    = render partial: 'badges_table'
+  .clearfix
+  .add-new.hidden
+    .table-responsive
+      %table.col-xs-12.table
+        = render partial: 'add_new_badge'
+

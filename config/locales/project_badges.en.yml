@@ -1,0 +1,22 @@
+en:
+  project_badges:
+    index:
+      page_title: "The %{name} Open Source Project on Open Hub : Badges Page"
+      title: "Badges"
+      new_badge: "New Badge"
+    create_failed: 'Badge cannot be created.'
+    update_success: 'Badge updated successfully'
+    delete_success: 'Badge deleted successfully.'
+    create_success: 'Badge created successfully.'
+    already_exist: 'Badge already exist for this repository'
+    travis_base_url: "https://api.travis-ci.org/"
+    cii_base_url: "https://bestpractices.coreinfrastructure.org/"
+    cii_mid_url: "projects/"
+    cii_end_url: "/badge"
+    repo_url: "Repository URL"
+    badge_type: "Badge Type"
+    badge_url: "Badge URL"
+    badge_image: "Badge Image"
+    actions: "Actions"
+    save_badge: "Save Badge"
+    remove: "Remove"

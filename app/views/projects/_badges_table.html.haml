@@ -1,0 +1,21 @@
+.table-responsive
+  %table.col-xs-12.table.table-striped
+    %thead
+      %tr
+        %th.col-xs-2 Repository Url
+        %th.col-xs-2 Badge Type
+        %th.col-xs-3 Badge Url
+        %th.col-xs-3 Badge Image
+        - if logged_in?
+          %th.col-xs-2 Actions
+    %tbody
+      - @project.project_badges.each do |badge|
+        %tr
+          %td.col-xs-2= badge.repository.try(:url)
+          %td.col-xs-2= badge.class.name
+          %td.col-xs-3= badge.try(:badge_image)
+          %td.col-xs-3
+            = image_tag badge.try(:badge_image)
+          - if logged_in?
+            %td.col-xs-2
+              %a.icon-trash.btn.btn-mini.btn-danger{ href:  project_project_badge_path(@project, badge.id), method: :delete} delete badge
