@@ -38,6 +38,8 @@ module ProjectAssociations
              through: :named_commits
     has_one :project_vulnerability_report
     has_many :project_badges
+    has_many :travis_badges
+    has_many :cii_badges
     accepts_nested_attributes_for :enlistments
     accepts_nested_attributes_for :project_licenses
 
