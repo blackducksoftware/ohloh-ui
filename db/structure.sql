@@ -997,37 +997,6 @@ ALTER SEQUENCE clumps_id_seq OWNED BY clumps.id;
 
 
 --
--- Name: code_set_gestalts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE code_set_gestalts (
-    id integer NOT NULL,
-    date timestamp without time zone NOT NULL,
-    code_set_id integer,
-    gestalt_id integer
-);
-
-
---
--- Name: code_set_gestalts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE code_set_gestalts_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: code_set_gestalts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE code_set_gestalts_id_seq OWNED BY code_set_gestalts.id;
-
-
---
 -- Name: code_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1757,68 +1726,6 @@ CREATE TABLE fyles (
 
 
 --
--- Name: project_gestalts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE project_gestalts (
-    id integer NOT NULL,
-    date timestamp without time zone NOT NULL,
-    project_id integer,
-    gestalt_id integer
-);
-
-
---
--- Name: gestaltings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE gestaltings_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: gestaltings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE gestaltings_id_seq OWNED BY project_gestalts.id;
-
-
---
--- Name: gestalts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE gestalts (
-    id integer NOT NULL,
-    type text NOT NULL,
-    name text NOT NULL,
-    description text
-);
-
-
---
--- Name: gestalts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE gestalts_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: gestalts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE gestalts_id_seq OWNED BY gestalts.id;
-
-
---
 -- Name: github_project; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2031,41 +1938,6 @@ CREATE SEQUENCE knowledge_base_statuses_id_seq
 --
 
 ALTER SEQUENCE knowledge_base_statuses_id_seq OWNED BY knowledge_base_statuses.id;
-
-
---
--- Name: koders_statuses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE koders_statuses (
-    id integer NOT NULL,
-    project_id integer NOT NULL,
-    koders_id integer,
-    flags integer DEFAULT 0 NOT NULL,
-    ohloh_updated_at timestamp without time zone,
-    koders_updated_at timestamp without time zone,
-    error text,
-    ohloh_code_ready boolean DEFAULT false
-);
-
-
---
--- Name: koders_statuses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE koders_statuses_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: koders_statuses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE koders_statuses_id_seq OWNED BY koders_statuses.id;
 
 
 --
@@ -2802,24 +2674,6 @@ CREATE SEQUENCE old_edits_id_seq
 
 
 --
--- Name: old_edits; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE old_edits (
-    id integer DEFAULT nextval('old_edits_id_seq'::regclass) NOT NULL,
-    project_id integer NOT NULL,
-    account_id integer NOT NULL,
-    created_at timestamp without time zone,
-    type text NOT NULL,
-    key text,
-    value text,
-    undone boolean DEFAULT false NOT NULL,
-    undone_at timestamp without time zone,
-    undone_by integer
-);
-
-
---
 -- Name: org_stats_by_sectors; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -3122,6 +2976,41 @@ ALTER SEQUENCE profiles_id_seq OWNED BY profiles.id;
 
 
 --
+-- Name: project_badges; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE project_badges (
+    id integer NOT NULL,
+    repository_id integer,
+    project_id integer,
+    identifier character varying,
+    type character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    status integer DEFAULT 1
+);
+
+
+--
+-- Name: project_badges_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE project_badges_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: project_badges_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE project_badges_id_seq OWNED BY project_badges.id;
+
+
+--
 -- Name: project_counts_by_quarter_and_language; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -3198,21 +3087,6 @@ CREATE SEQUENCE project_experiences_id_seq
 --
 
 ALTER SEQUENCE project_experiences_id_seq OWNED BY project_experiences.id;
-
-
---
--- Name: project_gestalt_view; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW project_gestalt_view AS
- SELECT p.id AS project_id,
-    p.vanity_url AS url_name,
-    g.id AS gestalt_id,
-    g.name,
-    g.type
-   FROM ((projects p
-     JOIN project_gestalts pg ON ((p.id = pg.project_id)))
-     JOIN gestalts g ON ((g.id = pg.gestalt_id)));
 
 
 --
@@ -4439,13 +4313,6 @@ ALTER TABLE ONLY clumps ALTER COLUMN id SET DEFAULT nextval('clumps_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY code_set_gestalts ALTER COLUMN id SET DEFAULT nextval('code_set_gestalts_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY commit_flags ALTER COLUMN id SET DEFAULT nextval('commit_flags_id_seq'::regclass);
 
 
@@ -4509,13 +4376,6 @@ ALTER TABLE ONLY follows ALTER COLUMN id SET DEFAULT nextval('follows_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY gestalts ALTER COLUMN id SET DEFAULT nextval('gestalts_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY invites ALTER COLUMN id SET DEFAULT nextval('invites_id_seq'::regclass);
 
 
@@ -4524,13 +4384,6 @@ ALTER TABLE ONLY invites ALTER COLUMN id SET DEFAULT nextval('invites_id_seq'::r
 --
 
 ALTER TABLE ONLY knowledge_base_statuses ALTER COLUMN id SET DEFAULT nextval('knowledge_base_statuses_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY koders_statuses ALTER COLUMN id SET DEFAULT nextval('koders_statuses_id_seq'::regclass);
 
 
 --
@@ -4691,6 +4544,13 @@ ALTER TABLE ONLY profiles ALTER COLUMN id SET DEFAULT nextval('profiles_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY project_badges ALTER COLUMN id SET DEFAULT nextval('project_badges_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY project_events ALTER COLUMN id SET DEFAULT nextval('project_events_id_seq'::regclass);
 
 
@@ -4699,13 +4559,6 @@ ALTER TABLE ONLY project_events ALTER COLUMN id SET DEFAULT nextval('project_eve
 --
 
 ALTER TABLE ONLY project_experiences ALTER COLUMN id SET DEFAULT nextval('project_experiences_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY project_gestalts ALTER COLUMN id SET DEFAULT nextval('gestaltings_id_seq'::regclass);
 
 
 --
@@ -4980,14 +4833,6 @@ ALTER TABLE ONLY clumps
 
 
 --
--- Name: code_set_gestalts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY code_set_gestalts
-    ADD CONSTRAINT code_set_gestalts_pkey PRIMARY KEY (id);
-
-
---
 -- Name: code_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -5033,14 +4878,6 @@ ALTER TABLE ONLY diffs
 
 ALTER TABLE ONLY duplicates
     ADD CONSTRAINT duplicates_pkey PRIMARY KEY (id);
-
-
---
--- Name: edits_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY old_edits
-    ADD CONSTRAINT edits_pkey PRIMARY KEY (id);
 
 
 --
@@ -5156,14 +4993,6 @@ ALTER TABLE ONLY fyles
 
 
 --
--- Name: gestalts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY gestalts
-    ADD CONSTRAINT gestalts_pkey PRIMARY KEY (id);
-
-
---
 -- Name: github_project_project_id_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -5209,30 +5038,6 @@ ALTER TABLE ONLY knowledge_base_statuses
 
 ALTER TABLE ONLY knowledge_base_statuses
     ADD CONSTRAINT knowledge_base_statuses_project_id_key UNIQUE (project_id);
-
-
---
--- Name: koders_statuses_koders_id_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY koders_statuses
-    ADD CONSTRAINT koders_statuses_koders_id_key UNIQUE (koders_id);
-
-
---
--- Name: koders_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY koders_statuses
-    ADD CONSTRAINT koders_statuses_pkey PRIMARY KEY (id);
-
-
---
--- Name: koders_statuses_project_id_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY koders_statuses
-    ADD CONSTRAINT koders_statuses_project_id_key UNIQUE (project_id);
 
 
 --
@@ -5500,6 +5305,14 @@ ALTER TABLE ONLY profiles
 
 
 --
+-- Name: project_badges_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY project_badges
+    ADD CONSTRAINT project_badges_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: project_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -5513,14 +5326,6 @@ ALTER TABLE ONLY project_events
 
 ALTER TABLE ONLY project_experiences
     ADD CONSTRAINT project_experiences_pkey PRIMARY KEY (id);
-
-
---
--- Name: project_gestalts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY project_gestalts
-    ADD CONSTRAINT project_gestalts_pkey PRIMARY KEY (id);
 
 
 --
@@ -5828,14 +5633,6 @@ ALTER TABLE ONLY authorizations
 
 
 --
--- Name: unique_code_set_gestalts_code_set_id_date_gestalt_id; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY code_set_gestalts
-    ADD CONSTRAINT unique_code_set_gestalts_code_set_id_date_gestalt_id UNIQUE (code_set_id, date, gestalt_id);
-
-
---
 -- Name: unique_diffs_on_commit_id_fyle_id; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -5857,14 +5654,6 @@ ALTER TABLE ONLY oauth_nonces
 
 ALTER TABLE ONLY project_events
     ADD CONSTRAINT unique_project_events UNIQUE (project_id, type, key);
-
-
---
--- Name: unique_project_gestalts_project_id_date_gestalt_id; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY project_gestalts
-    ADD CONSTRAINT unique_project_gestalts_project_id_date_gestalt_id UNIQUE (project_id, date, gestalt_id);
 
 
 --
@@ -6129,20 +5918,6 @@ CREATE INDEX index_clumps_on_code_set_id_slave_id ON clumps USING btree (code_se
 
 
 --
--- Name: index_code_set_gestalts_on_code_set_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_code_set_gestalts_on_code_set_id ON code_set_gestalts USING btree (code_set_id);
-
-
---
--- Name: index_code_set_gestalts_on_gestalt_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_code_set_gestalts_on_gestalt_id ON code_set_gestalts USING btree (gestalt_id);
-
-
---
 -- Name: index_code_sets_on_best_sloc_set_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -6329,13 +6104,6 @@ CREATE INDEX index_fyles_on_code_set_id ON fyles USING btree (code_set_id);
 --
 
 CREATE INDEX index_fyles_on_name ON fyles USING btree (name);
-
-
---
--- Name: index_gestalts_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_gestalts_on_name ON gestalts USING btree (name);
 
 
 --
@@ -6703,6 +6471,20 @@ CREATE INDEX index_profiles_on_job_id ON profiles USING btree (job_id);
 
 
 --
+-- Name: index_project_badges_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_project_badges_on_project_id ON project_badges USING btree (project_id);
+
+
+--
+-- Name: index_project_badges_on_repository_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_project_badges_on_repository_id ON project_badges USING btree (repository_id);
+
+
+--
 -- Name: index_project_events_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -6714,20 +6496,6 @@ CREATE INDEX index_project_events_on_project_id ON project_events USING btree (p
 --
 
 CREATE INDEX index_project_experiences_on_position_id ON project_experiences USING btree (position_id);
-
-
---
--- Name: index_project_gestalts_on_gestalt_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_project_gestalts_on_gestalt_id ON project_gestalts USING btree (gestalt_id);
-
-
---
--- Name: index_project_gestalts_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_project_gestalts_on_project_id ON project_gestalts USING btree (project_id);
 
 
 --
@@ -7341,22 +7109,6 @@ ALTER TABLE ONLY clumps
 
 
 --
--- Name: code_set_gestalts_code_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY code_set_gestalts
-    ADD CONSTRAINT code_set_gestalts_code_set_id_fkey FOREIGN KEY (code_set_id) REFERENCES code_sets(id) ON DELETE CASCADE;
-
-
---
--- Name: code_set_gestalts_gestalt_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY code_set_gestalts
-    ADD CONSTRAINT code_set_gestalts_gestalt_id_fkey FOREIGN KEY (gestalt_id) REFERENCES gestalts(id) ON DELETE CASCADE;
-
-
---
 -- Name: code_sets_best_sloc_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7453,14 +7205,6 @@ ALTER TABLE ONLY duplicates
 
 
 --
--- Name: edits_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY old_edits
-    ADD CONSTRAINT edits_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id);
-
-
---
 -- Name: edits_account_id_fkey1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7477,27 +7221,11 @@ ALTER TABLE ONLY edits
 
 
 --
--- Name: edits_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY old_edits
-    ADD CONSTRAINT edits_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
-
-
---
 -- Name: edits_project_id_fkey1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY edits
     ADD CONSTRAINT edits_project_id_fkey1 FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
-
-
---
--- Name: edits_undone_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY old_edits
-    ADD CONSTRAINT edits_undone_by_fkey FOREIGN KEY (undone_by) REFERENCES accounts(id);
 
 
 --
@@ -7605,6 +7333,22 @@ ALTER TABLE ONLY project_vulnerability_reports
 
 
 --
+-- Name: fk_rails_580a21f8c6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY project_badges
+    ADD CONSTRAINT fk_rails_580a21f8c6 FOREIGN KEY (project_id) REFERENCES projects(id);
+
+
+--
+-- Name: fk_rails_60edffb8dd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY project_badges
+    ADD CONSTRAINT fk_rails_60edffb8dd FOREIGN KEY (repository_id) REFERENCES repositories(id);
+
+
+--
 -- Name: fk_rails_8faa63554c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7666,22 +7410,6 @@ ALTER TABLE ONLY forums
 
 ALTER TABLE ONLY fyles
     ADD CONSTRAINT fyles_code_set_id_fkey FOREIGN KEY (code_set_id) REFERENCES code_sets(id) ON DELETE CASCADE;
-
-
---
--- Name: gestaltings_gestalt_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY project_gestalts
-    ADD CONSTRAINT gestaltings_gestalt_id_fkey FOREIGN KEY (gestalt_id) REFERENCES gestalts(id) ON DELETE CASCADE;
-
-
---
--- Name: gestaltings_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY project_gestalts
-    ADD CONSTRAINT gestaltings_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
 
 
 --
@@ -7794,14 +7522,6 @@ ALTER TABLE ONLY jobs
 
 ALTER TABLE ONLY knowledge_base_statuses
     ADD CONSTRAINT knowledge_base_statuses_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
-
-
---
--- Name: koders_statuses_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY koders_statuses
-    ADD CONSTRAINT koders_statuses_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
 
 
 --
@@ -8645,6 +8365,12 @@ INSERT INTO schema_migrations (version) VALUES ('20160920113102');
 INSERT INTO schema_migrations (version) VALUES ('20160926144901');
 
 INSERT INTO schema_migrations (version) VALUES ('20161006072823');
+
+INSERT INTO schema_migrations (version) VALUES ('20161007083447');
+
+INSERT INTO schema_migrations (version) VALUES ('20161024095609');
+
+INSERT INTO schema_migrations (version) VALUES ('20161027065200');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

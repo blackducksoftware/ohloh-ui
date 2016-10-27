@@ -5,7 +5,7 @@ class Release < ActiveRecord::Base
   scope :sort_by_release_date, -> (order = :desc) { order(released_on: order) }
   scope :select_within_years, lambda { |year|
     where("(released_on::DATE <= NOW()::DATE) AND \
-      (released_on::DATE >= (NOW() - '#{year} year'::INTERVAL)::DATE)")
+      (released_on::DATE >= (NOW() - '? year'::INTERVAL)::DATE)", year.to_i)
   }
 
   TIMESPAN = { '1yr' => [1], '3yr' => [3], '5yr' => [5], '10yr' => [10], 'All' => [''] }.freeze

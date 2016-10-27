@@ -1,10 +1,10 @@
-lock '3.4.0'
+lock '3.6.1'
 
 set :whoami, `whoami`.strip
 set :default_env, 'PATH' => '/home/deployer/.rbenv/shims:$PATH', 'BASH_ENV' => '/home/deployer/.production_vars'
 
 set :application, ENV['APP'] || 'openhub'
-set :repo_url, 'git@github.com:blackducksw/ohloh-ui.git'
+set :repo_url, 'git@github.com:blackducksoftware/ohloh-ui.git'
 set :user, 'deployer'
 set :use_sudo, false
 set :passenger_restart_with_sudo, false
