@@ -85,3 +85,9 @@
     %span.pull-left
       %a.module_icon.news{ href: project_rss_subscriptions_path(@project) }
     %span.pull-left.settings_description= t('.news_desc')
+  .col-md-4.settings_module
+    %h4.nomargin
+      = link_to t('.badges'), project_project_badges_path(@project)
+    %span.pull-left
+      %a.module_icon.badges{ href: project_project_badges_path(@project) }
+    %span.pull-left.settings_description= t('.badges_desc')
