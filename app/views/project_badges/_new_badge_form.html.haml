@@ -1,0 +1,25 @@
+= form_for @project_badge, url: project_project_badges_path(@project), html: { id: 'new_project_badge' } do |f|
+  %td.col-xs-2.no-left-padding
+    = f.select :repository_id, @repositories, {}, id: 'select_project_repo', class: 'chzn-select'
+    - error_tag @project_badge, :repository_id
+  %td.col-xs-2
+    = f.select :type, @badges, { include_blank: true },
+                      id: 'select_project_badge',
+                      class: 'chzn-select badge_image_val selected_badge_val'
+    - error_tag @project_badge, :type
+  %td.col-xs-3#badge_url_input_container
+    = f.hidden_field :identifier, class: 'badge_url_field'
+    - badge_temp_class = 'hidden' unless @project_badge.type == 'CiiBadge'
+    .cii_badge_url.badge_template{ class: badge_temp_class }
+      = ENV['CII_API_BASE_URL'] + 'projects'
+      = text_field_tag('cii_url', @project_badge.identifier, class: 'badge_url_holder')
+      = '/badge'
+    - badge_temp_class = 'hidden' unless @project_badge.type == 'TravisBadge'
+    .travis_badge_url.badge_template{ class: badge_temp_class }
+      = ENV['TRAVIS_API_BASE_URL']
+      = text_field_tag('travis_url', @project_badge.identifier, class: 'badge_url_holder')
+    - error_tag @project_badge, :identifier
+  %td.col-xs-3.badge_image_container
+    = image_tag @project_badge.try(:badge_url) if @project_badge.identifier
+  %td.col-xs-2
+    %btn.icon-edit.btn.btn-mini.btn-primary.col-xs-12#save_badge= t('project_badges.save_badge')

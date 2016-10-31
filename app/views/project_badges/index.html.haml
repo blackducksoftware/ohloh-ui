@@ -1,0 +1,13 @@
+:ruby
+  content_for(:html_title) { t('.page_title', name: @project.name) }
+#project_badges_page
+  %h1.title= t('.title')
+  - if logged_in? && @project.edit_authorized?
+    .badge_table_container
+      = render 'editable_badges_table'
+    .clearfix
+    - btn_class = 'hidden' unless @project_badge.errors.empty?
+    %btn.btn.btn-primary#add_badge_btn{ class: btn_class }= t('.new_badge')
+  - else
+    .badge_table_container
+      = render 'badges_table'
