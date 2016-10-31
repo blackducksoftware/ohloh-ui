@@ -1,0 +1,21 @@
+:css
+  th{
+    background: #0082c6;
+    color: #fff;
+    text-align: left;
+  }
+
+%table{ cellspacing: 0, cellpadding: 5 }
+  %thead
+    %tr
+      %th= t('.id')
+      %th= t('.name')
+      %th= t('.homepage_url')
+      %th= t('.repo_url')
+  %tbody
+    - @projects.each do |p|
+      %tr
+        %td= link_to p.id, "#{ENV['CII_API_BASE_URL']}projects/#{p.id}"
+        %td= link_to p.name, "#{ENV['CII_API_BASE_URL']}projects/#{p.id}"
+        %td= link_to p.homepage_url, p.homepage_url
+        %td= link_to p.repo_url, p.repo_url
