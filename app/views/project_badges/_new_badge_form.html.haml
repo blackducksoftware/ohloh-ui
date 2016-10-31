@@ -1,4 +1,4 @@
-= form_for @project_badge, url: project_project_badges_path(@project), html: { id: 'new_project_badge' } do |f|
+= form_for @project_badge, url: project_project_badges_path(@project), method: :post, html: { id: 'new_project_badge' } do |f|
   %td.col-xs-2.no-left-padding
     = f.select :repository_id, @repositories, {}, id: 'select_project_repo', class: 'chzn-select'
     - error_tag @project_badge, :repository_id
