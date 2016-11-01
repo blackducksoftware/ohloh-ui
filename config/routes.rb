@@ -214,6 +214,7 @@ Rails.application.routes.draw do
     collection do
       post :check_forge
     end
+    resources :project_badges
     resources :contributions, path: :contributors, as: :contributors, only: [:index, :show] do
       resources :commits
       collection do
