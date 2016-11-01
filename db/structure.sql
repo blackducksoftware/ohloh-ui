@@ -903,7 +903,8 @@ CREATE TABLE code_location_events (
     status boolean,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    repository_id integer
+    repository_id integer,
+    component_id integer
 );
 
 
@@ -8619,6 +8620,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160803102211');
 INSERT INTO schema_migrations (version) VALUES ('20160804081950');
 
 INSERT INTO schema_migrations (version) VALUES ('20160808163201');
+
+INSERT INTO schema_migrations (version) VALUES ('20161101134545');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
