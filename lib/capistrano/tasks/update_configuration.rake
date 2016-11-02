@@ -13,8 +13,5 @@ namespace :deploy do
       config_path = config_dir_path.join('.env.*')
       execute(:cp, config_path, shared_path)
     end
-    on roles(:sidekiq) do
-      set :linked_files, %w(.env.production log/sidekiq.log)
-    end
   end
 end

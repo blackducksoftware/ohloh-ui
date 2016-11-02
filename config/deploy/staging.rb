@@ -26,4 +26,5 @@ set :rails_env, 'staging'
 # shared/.env.staging contains environment specific dotenv overrides.
 set :linked_files, %w(.env.staging)
 
+set :sidekiq_env =>  fetch(:rails_env)
 set :assets_roles, [:web_1, :web_3, :web_4, :web_5, :web_6, :web_7]

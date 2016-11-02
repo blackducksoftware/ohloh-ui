@@ -9,5 +9,6 @@ set :passenger_roles, [:web]
 set :rails_env, 'production'
 
 set :linked_files, %w(.env.production)
+set :sidekiq_env =>  fetch(:rails_env)
 
 set :assets_roles, [:web]
