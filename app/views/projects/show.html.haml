@@ -23,15 +23,15 @@
     .well
       %h4.text-left= t('.project_summary')
       - size_breach = project_description_size_breached?(@project)
-      #project_summary{ itemprop: 'description', class: ('vertical_scroll_bar' if size_breach) }
+      %section#project_summary{ itemprop: 'description', class: ('vertical_scroll_bar' if size_breach) }
         - if @project.description.present?
           = simple_format(@project.description.escape)
         - else
           = t('.no_description')
           = link_to t('.add_description'), edit_project_path(@project)
 
-      #project_tags{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
-        %h4= tag_icon_link(@project)
+      %section#project_tags{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
+        %h4.title= tag_icon_link(@project)
         %p.tags
           %span
           - tags = @project.tag_list.split(' ')
@@ -41,6 +41,11 @@
             = t('.no_tags')
             - if @project.edit_authorized?
               = link_to t('.add_tags'), project_tags_path(@project)
+      - if @project.project_badges.active.present?
+        %section#project_badges
+          %h4.title= link_to t('project_badges.index.title'), project_project_badges_path(@project)
+          = show_badges
+          = more_badges_link
 
   .col-md-4.nutshell_container
     .well

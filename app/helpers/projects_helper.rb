@@ -70,6 +70,21 @@ module ProjectsHelper
     end
   end
 
+  def show_badges
+    content_tag :div, class: 'badges' do
+      @project.badges_summary.map do |badge|
+        concat content_tag(:img, nil, src: badge.badge_url)
+      end
+    end
+  end
+
+  def more_badges_link
+    return if @project.project_badges.active.count <= ProjectBadge::SUMMARY_LIMIT
+    content_tag :div, class: 'more_badges clearfix' do
+      content_tag :p, link_to('more', project_project_badges_path(@project))
+    end
+  end
+
   private
 
   def project_twitter_description_analysis(project, analysis)
