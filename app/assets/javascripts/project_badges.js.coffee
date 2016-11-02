@@ -33,6 +33,12 @@ ProjectNewBadge =
       $('#new_project_badge').submit()
       false
 
+    $('#project_badges_page').on 'click', '#cancel_badge', (event) ->
+      window.history.pushState('', document.title, window.location.pathname)
+      $('#new_project_badge')[0].reset()
+      $('#add_new_badge_form .error').empty().removeClass('error')
+      $('#add_new_badge_form, #add_badge_btn').toggle()
+
     $('#project_badges_page').on 'focus', '.edit_url_field', (event) ->
       $(this).addClass('hidden')
       $(this).siblings('.dirty_url_container').removeClass('hidden')

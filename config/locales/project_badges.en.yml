@@ -17,3 +17,4 @@ en:
     save_badge: "Save Badge"
     remove: "Remove"
     repo_validation: "Repository already has the selected badge"
+    cancel: "Cancel"
