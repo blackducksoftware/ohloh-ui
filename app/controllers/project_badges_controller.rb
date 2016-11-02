@@ -33,7 +33,7 @@ class ProjectBadgesController < ApplicationController
                      value: @badge.identifier }
     else
       render json: { success: false,
-                     errors: @badge.errors.full_messages.join(', ') }
+                     errors: @badge.errors[:identifier].join(', ') }
     end
   end
 
