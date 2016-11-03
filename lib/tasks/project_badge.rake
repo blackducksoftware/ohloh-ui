@@ -17,6 +17,7 @@ namespace :project_badge do
         page += 1
       end
       ProjectBadgeMailer.check_cii_projects(cii_projects).deliver_now if cii_projects.present?
+      Setting.find_or_initialize_by(key: 'check_cii_projects').update(value: Time.current)
       puts "End Time: #{Time.current}"
       puts "New CII projects found: #{cii_projects.size}"
       puts "-------------- CII projects check finished ----------\n"
