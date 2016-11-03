@@ -1,0 +1,5 @@
+en:
+  admins:
+    dashboard:
+      overview:
+        check_cii_projects_last_ran: Last ran CII Projects

@@ -42,3 +42,10 @@ en:
     removal:
       subject: "%{target} manager update: %{destroyer} removed you from the managers of this %{target_type}."
       body: "Your position as manager of %{link1} was deleted by %{link2}."
+  project_badge_mailer:
+    check_cii_projects:
+      subject: "CII Best Practices Badge - Found %{count} new projects"
+      id: CII Project Id
+      name: CII Project Name
+      homepage_url: CII Project Homepage url
+      repo_url: CII Project Repository url
