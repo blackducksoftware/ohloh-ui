@@ -55,11 +55,11 @@ class ProjectBadgesController < ApplicationController
 
   def badge_params
     (params[:project_badge] || params[:cii_badge] || params[:travis_badge])
-      .permit(:repository_id, :type, :identifier)
+      .permit(:enlistment_id, :type, :identifier)
   end
 
   def set_badges
-    @repositories = @project.repositories.map { |r| [r.url, r.id] }
+    @enlistments = @project.enlistments.map { |e| [e.repository.url, e.id] }
     @badges = ProjectBadge.subclasses.map { |b| [b.badge_name, b.name] }
   end
 

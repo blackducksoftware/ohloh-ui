@@ -4,12 +4,10 @@ describe 'ProjectBadgesController' do
   before do
     @enlistment = create(:enlistment)
     @project = @enlistment.project
-    @repository = @enlistment.repository
     @project_id = @project.vanity_url
     @account = create(:account)
     @proj_badge_build = build(:project_badge,
-                              project: @project,
-                              repository: @repository,
+                              enlistment: @enlistment,
                               type: 'CiiBadge').attributes
   end
 
@@ -39,8 +37,7 @@ describe 'ProjectBadgesController' do
       login_as @account
       post :create, project_id: @project_id,
                     project_badge: build(:project_badge,
-                                         project: @project,
-                                         repository: @repository,
+                                         enlistment: @enlistment,
                                          type: 'CiiBadge',
                                          identifier: '',
                                          status: 1).attributes
@@ -52,8 +49,7 @@ describe 'ProjectBadgesController' do
       login_as @account
       post :create, project_id: @project_id,
                     project_badge: build(:project_badge,
-                                         project: @project,
-                                         repository: @repository,
+                                         enlistment: @enlistment,
                                          type: 'CiiBadge',
                                          identifier: '1',
                                          status: 1).attributes
@@ -65,15 +61,13 @@ describe 'ProjectBadgesController' do
     it 'should redirect if project badge is already present' do
       login_as @account
       @project_badge = create(:project_badge,
-                              project: @project,
-                              repository: @repository,
+                              enlistment: @enlistment,
                               type: 'CiiBadge',
                               identifier: '1',
                               status: 1)
       post :create, project_id: @project_id,
                     project_badge: build(:project_badge,
-                                         project: @project,
-                                         repository: @repository,
+                                         enlistment: @enlistment,
                                          type: 'CiiBadge',
                                          identifier: '1',
                                          status: 1).attributes
@@ -84,8 +78,7 @@ describe 'ProjectBadgesController' do
   describe 'update' do
     it 'should be successful for valid edit param' do
       @project_badge = create(:project_badge,
-                              project: @project,
-                              repository: @repository,
+                              enlistment: @enlistment,
                               type: 'CiiBadge',
                               identifier: '1',
                               status: 1)
@@ -99,8 +92,7 @@ describe 'ProjectBadgesController' do
 
     it 'should be unsuccessfill for in valid edit param' do
       @project_badge = create(:project_badge,
-                              project: @project,
-                              repository: @repository,
+                              enlistment: @enlistment,
                               type: 'CiiBadge',
                               identifier: '1',
                               status: 1)
@@ -115,8 +107,7 @@ describe 'ProjectBadgesController' do
   describe 'destroy' do
     it 'Should not soft delete a badge if use is not logged in' do
       project_badge = create(:project_badge,
-                             project: @project,
-                             repository: @repository,
+                             enlistment: @enlistment,
                              type: 'CiiBadge',
                              identifier: '1')
       create(:permission, target: @project, remainder: true)
@@ -127,8 +118,7 @@ describe 'ProjectBadgesController' do
 
     it 'should soft delete the badge if authorized user sends delete request' do
       project_badge = create(:project_badge,
-                             project: @project,
-                             repository: @repository,
+                             enlistment: @enlistment,
                              type: 'CiiBadge',
                              identifier: '1')
       login_as @account
