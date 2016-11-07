@@ -1,8 +1,7 @@
 FactoryGirl.define do
   factory :project_badge do
     identifier 'MyString'
-    association :project
-    association :repository
+    association :enlistment
   end
 end
 

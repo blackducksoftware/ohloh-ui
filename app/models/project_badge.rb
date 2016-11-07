@@ -1,10 +1,10 @@
 class ProjectBadge < ActiveRecord::Base
-  belongs_to :project
-  belongs_to :repository
+  belongs_to :enlistment
+  delegate :project, :repository, to: :enlistment
 
   validates :identifier, presence: true
-  validates :repository_id, presence: true,
-                            uniqueness: { scope: [:project_id, :type],
+  validates :enlistment_id, presence: true,
+                            uniqueness: { scope: [:type],
                                           message: I18n.t('.project_badges.repo_validation') }
   enum status: [:inactive, :active]
 

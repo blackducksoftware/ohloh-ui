@@ -448,10 +448,7 @@ describe 'ProjectsController' do
 
       describe 'Badges' do
         it 'should have badges row when badges are available for project' do
-          create(:travis_badge, project: project, repository: enl1.repository)
-          create(:cii_badge, project: project, repository: enl1.repository)
-          create(:travis_badge, project: project, repository: enl2.repository)
-          create(:cii_badge, project: project, repository: enl2.repository)
+          create(:travis_badge, enlistment: enl1)
           get :show, id: project.to_param
           response.body.must_match(/<section id='project_badges'>/)
         end
@@ -462,10 +459,10 @@ describe 'ProjectsController' do
         end
 
         it 'should have more link to bages page when more than 2 badges are available' do
-          create(:travis_badge, project: project, repository: enl1.repository)
-          create(:cii_badge, project: project, repository: enl1.repository)
-          create(:travis_badge, project: project, repository: enl2.repository)
-          create(:cii_badge, project: project, repository: enl2.repository)
+          create(:travis_badge, enlistment: enl1)
+          create(:cii_badge, enlistment: enl1)
+          create(:travis_badge, enlistment: enl2)
+          create(:cii_badge, enlistment: enl2)
           get :show, id: project.to_param
           assert_select "a[href='/p/#{project.to_param}/project_badges']", text: 'more'
         end
