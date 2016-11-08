@@ -52,8 +52,20 @@ ul#factoids
 .analysis_in_progress
   :color $soft_gray
 
-#similar_projects td img
-  :max-width none
+#similar_projects
+  table
+    :width 20rem
+    tr
+      :height 35px
+    td
+      :display inline
+      img
+        :max-width none
+      a
+        :margin-right 2px
+        :margin-bottom 5px
+      a.proj-name
+        :width 7rem
 
 small.summary_timespan
   :display block
