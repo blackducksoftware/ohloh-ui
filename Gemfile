@@ -18,6 +18,7 @@ gem 'jbuilder'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'mini_magick', '~> 4.1.1'
+gem 'newrelic_rpm'
 gem 'oh_delegator'
 gem 'ohloh_scm'
 gem 'open4'
@@ -86,7 +87,6 @@ group :development, :test do
 end
 
 group :production do
-  gem 'traceview'
 end
 
 group :development, :staging do
