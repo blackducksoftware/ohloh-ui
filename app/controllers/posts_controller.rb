@@ -20,6 +20,7 @@ class PostsController < ApplicationController
   def create
     @post = build_new_post
     if verify_captcha_for_non_admin && @post.save
+      post_notification(@post)
       redirect_to topic_path(@topic), notice: t('.create')
     else
       @posts = @topic.posts.paginate(page: page_param, per_page: TopicDecorator::PER_PAGE)
@@ -93,4 +94,34 @@ class PostsController < ApplicationController
     return true if current_user_is_admin?
     verify_recaptcha(model: @post, attribute: :captcha)
   end
+
+  def post_notification(post)
+    @user_who_began_topic = post.topic.account
+    @user_who_replied = post.account
+    @topic = post.topic
+    find_collection_of_users(post)
+    unless @user_who_replied != @user_who_began_topic
+      rejected = @all_users_preceding_the_last_user.reject { |user| user.id == @user_who_replied.id }
+      @all_users_preceding_the_last_user = rejected
+    end
+    send_reply_emails_to_everyone
+    send_creation_email if @user_who_replied.email_topics?
+   end
+
+   def find_collection_of_users(post)
+     @all_users_preceding_the_last_user = post.topic.posts.map(&:account).select(&:email_topics?)
+     @all_users_preceding_the_last_user.pop unless @all_users_preceding_the_last_user.one?
+     @all_users_preceding_the_last_user
+   end
+
+   def send_reply_emails_to_everyone
+     @all_users_preceding_the_last_user.uniq.each do |user|
+       PostNotifier.post_replied_notification(user, @user_who_replied, @post).deliver_now
+     end
+   end
+
+   def send_creation_email
+     PostNotifier.post_creation_notification(@user_who_replied, @topic).deliver_now
+   end
+
 end
