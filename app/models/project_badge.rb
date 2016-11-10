@@ -2,7 +2,7 @@ class ProjectBadge < ActiveRecord::Base
   belongs_to :enlistment
   delegate :project, :repository, to: :enlistment
 
-  validates :identifier, presence: true
+  validates :type, :identifier, presence: true
   validates :enlistment_id, presence: true,
                             uniqueness: { scope: [:type],
                                           message: I18n.t('.project_badges.repo_validation') }
