@@ -2,11 +2,11 @@ ProjectNewBadge =
   init: () ->
     this.initializeNewBadge(this)
     this.handleEvents(this)
+    $('#project_badges_page .chzn-select').chosen()
 
   initializeNewBadge: (_klass) ->
     $("#add_badge_btn").on 'click', (event) ->
       $('#add_badge_btn, #add_new_badge_form').toggle()
-      $('.chzn-select').chosen()
 
   handleEvents: (_klass) ->
     $('#project_badges_page').on 'change', '#select_project_badge', (event) ->
