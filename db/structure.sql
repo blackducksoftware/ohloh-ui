@@ -6723,6 +6723,13 @@ CREATE INDEX index_sloc_metrics_on_diff_id ON sloc_metrics USING btree (diff_id)
 
 
 --
+-- Name: index_sloc_metrics_on_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_sloc_metrics_on_id ON sloc_metrics USING btree (id);
+
+
+--
 -- Name: index_sloc_metrics_on_sloc_set_id_language_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -8371,6 +8378,8 @@ INSERT INTO schema_migrations (version) VALUES ('20161007083447');
 INSERT INTO schema_migrations (version) VALUES ('20161024095609');
 
 INSERT INTO schema_migrations (version) VALUES ('20161027065200');
+
+INSERT INTO schema_migrations (version) VALUES ('20161114063801');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
