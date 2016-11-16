@@ -20,6 +20,7 @@ class PostsController < ApplicationController
   def create
     @post = build_new_post
     if verify_captcha_for_non_admin && @post.save
+      post_notification(@post)
       redirect_to topic_path(@topic), notice: t('.create')
     else
       @posts = @topic.posts.paginate(page: page_param, per_page: TopicDecorator::PER_PAGE)
@@ -92,5 +93,24 @@ class PostsController < ApplicationController
   def verify_captcha_for_non_admin
     return true if current_user_is_admin?
     verify_recaptcha(model: @post, attribute: :captcha)
+  end
+
+  def post_notification(post)
+    @user_who_began_topic = post.topic.account
+    @user_who_replied = post.account
+    @topic = post.topic
+    find_collection_of_users(post)
+    send_reply_emails_to_everyone
+  end
+
+  def find_collection_of_users(post)
+    @all_users_preceding_the_last_user = post.topic.posts.map(&:account).select(&:email_topics?)
+    @all_users_preceding_the_last_user.delete(@user_who_replied)
+  end
+
+  def send_reply_emails_to_everyone
+    @all_users_preceding_the_last_user.uniq.each do |user|
+      PostNotifier.post_replied_notification(user, @user_who_replied, @post).deliver_now
+    end
   end
 end
