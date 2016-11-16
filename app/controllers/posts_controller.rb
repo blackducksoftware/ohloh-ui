@@ -100,28 +100,17 @@ class PostsController < ApplicationController
     @user_who_replied = post.account
     @topic = post.topic
     find_collection_of_users(post)
-    unless @user_who_replied != @user_who_began_topic
-      rejected = @all_users_preceding_the_last_user.reject { |user| user.id == @user_who_replied.id }
-      @all_users_preceding_the_last_user = rejected
-    end
     send_reply_emails_to_everyone
-    send_creation_email if @user_who_replied.email_topics?
-   end
+  end
 
-   def find_collection_of_users(post)
-     @all_users_preceding_the_last_user = post.topic.posts.map(&:account).select(&:email_topics?)
-     @all_users_preceding_the_last_user.pop unless @all_users_preceding_the_last_user.one?
-     @all_users_preceding_the_last_user
-   end
+  def find_collection_of_users(post)
+    @all_users_preceding_the_last_user = post.topic.posts.map(&:account).select(&:email_topics?)
+    @all_users_preceding_the_last_user.delete(@user_who_replied)
+  end
 
-   def send_reply_emails_to_everyone
-     @all_users_preceding_the_last_user.uniq.each do |user|
-       PostNotifier.post_replied_notification(user, @user_who_replied, @post).deliver_now
-     end
-   end
-
-   def send_creation_email
-     PostNotifier.post_creation_notification(@user_who_replied, @topic).deliver_now
-   end
-
+  def send_reply_emails_to_everyone
+    @all_users_preceding_the_last_user.uniq.each do |user|
+      PostNotifier.post_replied_notification(user, @user_who_replied, @post).deliver_now
+    end
+  end
 end

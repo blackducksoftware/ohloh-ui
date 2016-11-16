@@ -289,16 +289,12 @@ describe PostsController do
       ActionMailer::Base.deliveries.clear
       post :create, topic_id: topic.id, post: { body: 'Replying for the first time' }
       topic.posts.count.must_equal 2
-      ActionMailer::Base.deliveries.size.must_equal 2
+      ActionMailer::Base.deliveries.size.must_equal 1
 
       email = ActionMailer::Base.deliveries
 
       email.first.to.must_equal [topic.account.email]
       email.first.subject.must_equal 'Someone has responded to your post'
-      must_redirect_to topic_path(topic.id)
-
-      email.last.to.must_equal [user.email]
-      email.last.subject.must_equal 'Post successfully created'
       must_redirect_to topic_path(topic.id)
     end
 
@@ -316,21 +312,14 @@ describe PostsController do
       login_as last_user
 
       ActionMailer::Base.deliveries.clear
-      assert_difference(['ActionMailer::Base.deliveries.size'], 3) do
+      assert_difference(['ActionMailer::Base.deliveries.size'], 2) do
         post :create, topic_id: topic.id, post: { body: 'This post should trigger a cascade
                                                                         of emails being sent to all preceding users' }
       end
       email = ActionMailer::Base.deliveries
 
-      # First response email should go to the originator of the topic/post
-      email.first.to.must_equal [topic.posts[0].account.email]
+      email.first.to.must_equal [topic.posts[1].account.email]
       email.first.subject.must_equal 'Someone has responded to your post'
-      # Second response email should go to the second person who posted to the original.
-      email[1].to.must_equal [topic.posts[1].account.email]
-      email[1].subject.must_equal 'Someone has responded to your post'
-      # Third email goes to the user who created the last post reply.
-      email.last.to.must_equal [last_user.email]
-      email.last.subject.must_equal 'Post successfully created'
       must_redirect_to topic_path(topic.id)
     end
 
@@ -355,8 +344,6 @@ describe PostsController do
 
       email.first.to.must_equal [topic.posts[2].account.email]
       email.first.subject.must_equal 'Someone has responded to your post'
-      email.last.to.must_equal [last_user.email]
-      email.last.subject.must_equal 'Post successfully created'
       must_redirect_to topic_path(topic.id)
     end
 
