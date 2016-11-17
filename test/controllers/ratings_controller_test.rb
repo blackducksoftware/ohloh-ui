@@ -79,4 +79,12 @@ class RatingsControllerTest < ActionController::TestCase
     must_respond_with :ok
     @project.ratings.must_equal []
   end
+
+  it 'should throw a error when a wrong partial is provided' do
+    create(:rating, account: @account, project: @project, score: '3')
+    login_as @account
+    assert_raises StandardError do
+      post :unrate, id: @project.to_param, show: 'no_partial'
+    end
+  end
 end

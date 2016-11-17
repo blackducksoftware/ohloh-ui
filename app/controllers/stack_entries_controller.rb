@@ -8,8 +8,6 @@ class StackEntriesController < ApplicationController
   before_action :find_stack_entry, except: [:create, :new]
   before_action :set_project_or_fail, only: :new
 
-  helper_method :display_as_project_page
-
   def create
     existing_entry = StackEntry.where(stack_id: @stack.id, project_id: @project.id, deleted_at: nil).first
     entry = existing_entry || StackEntry.create!(stack_id: @stack.id, project_id: @project.id, deleted_at: nil)
@@ -61,9 +59,5 @@ class StackEntriesController < ApplicationController
   def stack_entry_html(stack_entry)
     locals = { stack_entry: stack_entry, hidden: true, editable: true }
     render_to_string partial: 'stacks/stack_entry.html.haml', locals: locals
-  end
-
-  def display_as_project_page
-    params[:redirect] || params[:ref]
   end
 end
