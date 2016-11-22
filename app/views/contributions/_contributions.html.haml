@@ -31,7 +31,7 @@
           %span.small.contribution_title.pull-left
             - if contribution.position.title.present?
               = t('.position_title', title: contribution.position.title)
-            - elsif !contribution.position.active?
+            - elsif contribution.position.present? && !contribution.position.active?
               = t('.inactive')
             - elsif @project.active_managers.include?(contribution.person.account)
               = t('.manager')

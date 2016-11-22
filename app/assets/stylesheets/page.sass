@@ -3,19 +3,58 @@
 body
   background-color: #555
   font-family: Open Sans
-  font-size: 13px
+  font-size: 1.3rem
   margin: 0
   color: #000
 
 #page
+  width: 980px
   background-color: white
   margin: 0 auto
   padding: 10px 10px 0 10px
-  width: 980px
 
 header
   margin-bottom: 0px
 
+#nav-top-bar
+  border-bottom: 0.4rem #DDD solid
+  margin: 11px 0 0 0
+  .new_main_menu
+    list-style: none
+    margin: 0
+    padding: 0
+    li
+      display: inline-block
+      margin-right: 16px
+      a
+        text-transform: uppercase
+        color: #0082c6
+        font-size: 13pt
+        text-decoration: none
+        &:hover
+          padding-bottom: 0px
+          border-bottom: 0.4rem #0082C6 solid
+          color: black
+
+#project_container
+  background-color: white
+  #page-contents
+    width: auto
+    #project_masthead
+      .no_padding
+        margin-left: 1rem
+      #project_header_activity_indicator.no_padding
+        margin-left: 2rem
+    #project_header
+      padding-left: 0
+      margin-left: -1rem
+  .thirtyfive_project_activity_text
+    margin-top: 3.5rem
+    line-height: 1.3rem
+  .thirtyfive_project_activity_level_na
+    top: 1rem
+  .quick_reference_heading, .nutshell_heading
+    padding-left: 2rem
 .navbar
   border-width: 0
   margin: 0
@@ -92,34 +131,15 @@ header
       overflow: hidden
       border-bottom: 1px solid #e5e5e5
 
-#nav-top-bar
-  border-bottom: 5px #DDD solid
-  margin: 11px 0 0 0
-  .new_main_menu
-    list-style: none
-    margin: 0
-    padding: 0
-    li
-      display: inline-block
-      margin-right: 16px
-      a
-        text-transform: uppercase
-        color: #0082c6
-        font-size: 13pt
-        text-decoration: none
-        &:hover
-          padding-bottom: 0px
-          border-bottom: 5px #0082C6 solid
-          color: black
 
 #flash-msg .alert
   border-radius: 0
   margin-top: 10px
 
 #page-contents
-  width: 940px
   margin-left: 10px
   margin-right: 10px
+  width: 940px
 
 .no_padding
   padding: 0px !important
@@ -233,3 +253,166 @@ fieldset
   word-wrap: break-word
   word-break: break-all
   white-space: normal
+
+.right_border
+  margin-top: 1.5rem
+  margin-bottom: 4rem
+  border-right: 1px solid #ccc
+  &.top_section
+    margin-bottom: 0
+    padding-bottom: 0
+  &.bottom_section
+    margin-top: 0
+    padding-top: 0
+
+.container-fluid#project_container
+  .row.mezzo
+    margin: 0 -10px
+  .page-contents
+    margin: 0
+  .navbar
+    margin-bottom: 1.5rem
+    #top_nav_actions
+      margin-top: 1.6rem
+    .logo_link
+      img
+        margin-top: 1.6rem
+  .no_padding_right
+    padding-right: 0
+  .no_padding_left
+    padding-left: 0
+  .manage_padding
+    padding: 0 2rem
+    &.chart_container
+      padding-top: 2rem !important
+  .highcharts-container
+    width: 100% !important
+  .project_row
+    #did_you_know
+      padding-left: 15px !important
+      padding-right: 15px !important
+    .resize_well
+      height: 100%
+      padding: 0
+    .community_well, .activity_well
+      height: 100%
+    .bottom_section
+      margin-bottom: 1.5rem
+      &.languages_container
+        display: flex
+        justify-content: center
+        .language_table_container
+          align-self: center
+    .community_container.top_section
+      margin-top: 1.5rem
+    .language_table_container
+      .language_table
+        width: 30rem
+        .language_stat_box
+          width: 15rem
+          .language_legends
+            width: 12rem
+          .language_percentage_indicator
+            width: 2rem
+    .quick_reference_container,.nutshell_container,.project_summary_container,#vulnerability_per_version,#vulnerability-report,#did_you_know
+      margin-bottom: 3rem
+      word-wrap: break-word
+      .well
+        height: 100%
+        margin-bottom: 0
+      .no_analysis_message .alert
+        background-color: #f5f5f5
+        border-color: #f5f5f5
+        .title h3
+          margin-top: 0
+    .vertical_scroll_bar
+      height: 250px
+      overflow-y: scroll
+      overflow-x: hidden
+      word-wrap: break-word
+    #community_rating
+      .community_rating_header
+        margin-bottom: 0.7em
+      .add_rating_container
+        margin-top: 0.7rem
+        padding-top: 0.5rem
+  .analysis_blank_container
+    .blank_message_container
+      padding: 0 15px !important
+      margin-top: 15px
+      .analysis_alert_container
+        padding-left: 0
+
+  @media screen and (min-width: 1280px) and (max-width:1365px)
+    .project_row
+      padding: 0 2rem 0rem 2rem
+
+      .manage_padding
+        padding: 0
+      .community_well, .activity_well
+        margin-bottom: 0
+      .language_table_container
+        .language_table
+          width: 29rem
+          .language_stat_box
+            width: 14rem
+            .language_legends
+              width: 12rem
+            .language_percentage_indicator
+              width: 2rem
+      .quick_reference_container
+        .well
+          .col-xs-4
+            padding-left: 0
+
+  @media screen and (min-width: 1366px) and (max-width:1919px)
+    #project_masthead
+      .project_title
+        margin-left: -2rem
+    .project_row
+      padding: 0 5rem 0rem 5rem
+      .community_well, .activity_well
+        margin-bottom: 0
+      .language_pie_image
+        width: 6rem
+        img
+          width: 100%
+      .language_table_container
+        .language_table
+          width: 27rem
+          .language_stat_box
+            width: 13rem
+
+  @media screen and (min-width: 1920px)
+    #project_masthead
+      .project_title
+        margin-left: -4rem
+    .project_row
+      padding: 0 10rem 0rem 10rem
+      .manage_padding
+        padding: 0
+      .community_well, .activity_well
+        padding-right: 4rem
+        padding-left: 4rem
+        margin-bottom: 0
+      .language_table_container
+        .language_table
+          width: 37rem
+          .language_stat_box
+            width: 18rem
+            .language_legends
+              width: 14rem
+            .language_percentage_indicator
+              width: 3rem
+
+  @media screen and (min-width: 992px) and  (max-width: 1279px)
+    .project_row
+      .language_table_container
+        .language_table
+          width: 24rem
+          .language_stat_box
+            width: 12rem
+            .language_legends
+              width: 14rem
+            .language_percentage_indicator
+              width: 3rem

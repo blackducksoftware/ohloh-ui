@@ -1,68 +1,76 @@
-.row
+.row.project_row.row-eq-height
   - if @project.enlistments.empty?
     .alert.alert-info.alert-block.col-md-11{ style: 'margin-left: 15px;' }
       %h3= bootstrap_icon('icon-info-sign', t('.code_locations_removed'))
       .indent{ style: 'padding: 15px 0 0 15px;' }
         %p= t('.code_locations_removed_explanation')
-  .col-md-6
-    .well
-      - p_name = truncate_project_name(@project.name, false, 40)
-      %h4= t('.in_a_nutshell', name: @project.name.length > 40 ? p_name : p_name + '...')
-      = render 'projects/show/factoids'
-  .col-md-6{ itemscope: '', itemtype: 'http://schema.org/Language' }
-    = render partial: 'projects/show/languages'
-    .clearfix
+
+  .col-md-4.right_border.top_section{ itemscope: '', itemtype: 'http://schema.org/Language' }
+    %h2.center= t('.code')
     = render partial: 'projects/show/lines_of_code_chart'
-  .clearfix
-.mezzo
-  %h3= t('.activity')
-.row
-  .col-md-6
-    .well{ style: 'min-height: 200px;' }
-      %table.unstyled#activity_table{ width: '100%' }
-        %tbody
-          %tr
-            %td{ width: '50%', valign: 'top' }
-              %h4.section_header.thirty_day= t('.thirty_day_summary')
-              %small.summary_timespan.thirty_day
-                - if @analysis.present? && @analysis.thirty_day_summary && @analysis.logged_at
-                  = (@analysis.logged_at - 30.days).strftime('%b %e %Y')
-                  &mdash;
-                  = @analysis.logged_at.strftime('%b %e %Y')
-                - else
-                  = t('.not_available')
-              .clearfix
-              = render partial: 'projects/show/thirty_day_summary'
-            %td{ width: '50%', valign: 'top' }
-              %h4.section_header.twelve_month= t('.twelve_month_summary')
-              %small.summary_timespan
-                - if @analysis.twelve_month_summary.present? && @analysis.logged_at
-                  = (@analysis.logged_at - 12.months).strftime('%b %e %Y')
-                  &mdash;
-                  = @analysis.logged_at.strftime('%b %e %Y')
-                - else
-                  = t('.not_available')
-              .clearfix
-              = render partial: 'projects/show/twelve_month_summary'
-  .col-md-6
-    - if @analysis.present?
-      - chart_url = commits_history_project_analysis_url(project_id: @project.to_param, id: 'latest')
-      %h4= link_to t('.commits_per_month'), summary_project_commits_path(@project)
-      .col-md-4{ style: 'margin: -20px 0 0 -10px;' }
-        .chart.watermark440{ 'datasrc' => chart_url, style: 'width: 460px; min-height: 210px' }
-    - else
-      %h4= t('.commits_per_month')
-      - add_code_link = link_to t('.add_a_code_location'), new_project_enlistment_path(@project)
-      %p= t('.no_code_locations', link: add_code_link)
-.mezzo
-  %h3= t('.community')
-%div
-  .proj_community_ratings#proj_rating= render partial: 'projects/show/community_rating', locals: { score: @score }
-  .pull-left{ style: 'width: 280px;' }= render partial: 'projects/show/community_recent_committers'
-  .pull-left{ style: 'width: 450px;' }= render partial: 'projects/show/committers_per_month_chart'
-.row
-  .col-md-12 &nbsp;
-.row
-  .col-md-6#stackoverflow_recent_questions
-  .col-md-6#stackoverflow_popular_questions
-  -# tags = @project.tags.sort_by(&:weight).collect(&:name).join(';')
+
+  .col-md-4.right_border.top_section
+    %h2.center= t('.activity')
+    .col-md-12.manage_padding.chart_container
+      - if @analysis.present?
+        - chart_url = commits_history_project_analysis_url(project_id: @project.to_param, id: 'latest')
+        %h4= link_to t('.commits_per_month'), summary_project_commits_path(@project)
+        .col-md-12.manage_padding
+          .chart.watermark440{ 'datasrc' => chart_url, style: 'width: 100%; min-height: 210px' }
+      - else
+        %h4= t('.commits_per_month')
+        - add_code_link = link_to t('.add_a_code_location'), new_project_enlistment_path(@project)
+        %p= t('.no_code_locations', link: add_code_link)
+    .clearfix
+
+  .col-md-4.community_container.top_section
+    %h2.center= t('.community')
+    .col-md-12.manage_padding.chart_container
+      %div{ style: 'width: 100%;' }= render partial: 'projects/show/committers_per_month_chart'
+      .clearfix
+    .clearfix
+
+.row.project_row.row-eq-height
+  .col-md-4.right_border.bottom_section.languages_container
+    = render partial: 'projects/show/languages'
+  .col-md-4.right_border.bottom_section
+    .col-xs-12.resize_well
+      .well.activity_well
+        %table.unstyled#activity_table{ width: 'auto' }
+          %tbody
+            %tr
+              %td.col-xs-5.no_padding_left{ valign: 'top' }
+                %h4.section_header.thirty_day= t('.thirty_day_summary')
+                %small.summary_timespan.thirty_day
+                  - if @analysis.present? && @analysis.thirty_day_summary && @analysis.oldest_code_set_time
+                    = (@analysis.oldest_code_set_time - 30.days).strftime('%b %e %Y')
+                    &mdash;
+                    = @analysis.oldest_code_set_time.strftime('%b %e %Y')
+                  - else
+                    = t('.not_available')
+                .clearfix
+                = render partial: 'projects/show/thirty_day_summary'
+              %td.col-xs-5.col-xs-offset-1.no_padding_right{ valign: 'top' }
+                %h4.section_header.twelve_month= t('.twelve_month_summary')
+                %small.summary_timespan
+                  - if @analysis.twelve_month_summary.present? && @analysis.oldest_code_set_time
+                    = (@analysis.oldest_code_set_time - 12.months).strftime('%b %e %Y')
+                    &mdash;
+                    = @analysis.oldest_code_set_time.strftime('%b %e %Y')
+                  - else
+                    = t('.not_available')
+                .clearfix
+                = render partial: 'projects/show/twelve_month_summary'
+  .col-md-4.community_container.bottom_section
+    .col-xs-12.resize_well
+      .well.community_well
+        .row
+          .col-xs-12
+            = render partial: 'projects/show/community_recent_committers'
+        .row.proj_community_ratings#proj_rating
+          = render partial: 'projects/show/community_rating', locals: { score: @score }
+    .row.manage_padding
+      .col-md-12 &nbsp;
+    .row.manage_padding
+      .col-md-6#stackoverflow_recent_questions
+      .col-md-6#stackoverflow_popular_questions

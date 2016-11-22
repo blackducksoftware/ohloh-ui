@@ -3,6 +3,8 @@ class App.OrganizationSelector
     @$affiliationType = $("##{ type }_affiliation_type")
     @$organizationId = $("##{ type }_organization_id")
     @$organizationName = $("##{ type }_organization_name")
+    if @$affiliationType.val() is 'other'
+      @$organizationId.find('option:contains(Other)').attr('selected', true)
 
     @$organizationId.change(@fillAffiliationAndToggleOrganization)
     @fillAffiliationAndToggleOrganization()

@@ -1,0 +1,12 @@
+#! /usr/bin/env ruby
+
+raise 'RAILS_ENV is undefined' unless ENV['RAILS_ENV']
+
+require_relative '../config/environment'
+
+ActiveRecord::Base.connection.execute("
+
+  INSERT INTO settings (key, value, created_at, updated_at) VALUES
+  ( 'monthly_language_analysis', now(), now(), now() );
+
+")

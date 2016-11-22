@@ -16,22 +16,8 @@
     = yield :session_projects_banner
     .container#page
       %header= render partial: 'layouts/partials/header'
-      = render partial: 'layouts/partials/page'
+      = render partial: 'layouts/partials/page', locals: { responsive_layout: false }
       .clear
       %footer= render partial: 'layouts/partials/footer'
 
-    = yield(:javascript) if content_for?(:javascript)
-    = javascript_include_tag 'application',
-                             'https://www.google.com/recaptcha/api.js',
-                             'https://cdn.digits.com/1/sdk.js',
-                             '//cdn.optimizely.com/js/3568250046.js',
-                             cache: 'cached_js_files',
-                             async: true
-    - if Rails.env.production?
-      <script type="text/javascript">
-      (function() {
-      var hm = document.createElement('script'); hm.type ='text/javascript'; hm.async = true;
-      hm.src = ('++u-heatmap-it+log-js').replace(/[+]/g,'/').replace(/-/g,'.');
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(hm, s);
-      })();
-      </script>
+    = render partial: 'layouts/partials/js_scripts'

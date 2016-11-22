@@ -1,7 +1,7 @@
-- if @analysis && @analysis.thirty_day_summary && @analysis.logged_at
+- if @analysis && @analysis.thirty_day_summary && @analysis.oldest_code_set_time
   %ul.unstyled#thirty_day_summary
     - thirty_day_summary = @analysis.thirty_day_summary
-    - thirty_days_ago = @analysis.logged_at - 30.days
+    - thirty_days_ago = @analysis.oldest_code_set_time - 30.days
     - new_contributors_count = thirty_day_summary.new_contributors_count || 0
     - new_languages = Language.new_languages_for_project(@project, thirty_days_ago)
 

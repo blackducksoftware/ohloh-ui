@@ -77,6 +77,14 @@ describe 'ContributionsController' do
       assigns(:top_contributions).must_equal [@contribution]
       assigns(:analysis).must_equal @project.best_analysis
     end
+
+    it 'wont show unclaimed positions as inactive' do
+      get :summary, project_id: @project.to_param
+
+      must_respond_with :ok
+      @project.contributions.where('position_id IS NOT NULL').must_be :empty?
+      response.body.wont_match(I18n.t('contributions.contributions.inactive'))
+    end
   end
 
   describe 'show' do

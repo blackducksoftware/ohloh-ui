@@ -48,6 +48,8 @@ en:
       describe_open_source_projects: What open source projects did you use?
       enter_project_name: Enter the open source project that you used.
       delete_forever: Delete this position forever?
+      affiliation:
+        placeholder: 'Enter your Organization Name'
     language_selector:
       select_prompt: Please select an option
     position:

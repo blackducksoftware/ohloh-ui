@@ -21,6 +21,7 @@
       blank: "can't be blank"
     create:
       blank: "can't be blank"
+      create: 'Your post has been succesfully created.'
     reply:
       post_a_response: 'Post a Response'
       submit: 'Submit'

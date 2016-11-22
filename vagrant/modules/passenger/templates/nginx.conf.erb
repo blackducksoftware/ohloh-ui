@@ -62,7 +62,7 @@ http {
   ##
 
    passenger_root /usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini;
-   passenger_ruby /home/deployer/.rbenv/shims/ruby;
+   passenger_ruby /home/serv-deployer/.rbenv/shims/ruby;
          include        /var/local/config/nginx_passenger_http.inc;
 
         log_format  normal '$http_x_real_ip - $remote_user [$time_local] '

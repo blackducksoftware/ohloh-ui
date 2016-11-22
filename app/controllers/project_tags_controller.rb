@@ -4,13 +4,13 @@ class ProjectTagsController < SettingsController
 
   before_action :session_required, :redirect_unverified_account, only: [:create, :destroy]
   before_action :set_project_or_fail, :set_project_editor_account_to_current_user
-  before_action :edit_authorized_only!, only: [:create, :destroy]
+  before_action :check_project_authorization, only: [:create, :destroy]
   before_action :find_related_projects, only: [:index, :related]
   before_action :find_tagging, only: [:destroy]
   before_action :project_context
 
   def create
-    @project.update_attributes(tag_list: "#{@project.tag_list} #{params[:tag_name]}")
+    @project.update_attributes!(tag_list: "#{@project.tag_list} #{params[:tag_name]}")
     render text: ERB::Util.html_escape(@project.tag_list).split.sort.join("\n")
   rescue
     render_create_error
@@ -40,16 +40,19 @@ class ProjectTagsController < SettingsController
     raise ParamRecordNotFound if @tagging.nil?
   end
 
-  def edit_authorized_only!
-    render_unauthorized unless @project.edit_authorized?
-  end
-
   def find_related_projects
     @related_projects = @project.related_by_tags
   end
 
   def render_create_error
-    text = @project.errors.full_messages.map { |msg| ERB::Util.html_escape(msg) }.join('<br/>')
-    render text: text, status: :unprocessable_entity
+    error_msg = @project.errors.full_messages
+                        .map { |msg| ERB::Util.html_escape(msg) }
+                        .join('<br/>') unless @project.errors[:descrirtion].empty?
+    error_msg ||= custom_description_error
+    render text: error_msg, status: :unprocessable_entity
+  end
+
+  def custom_description_error
+    I18n.t('project_tags.description_error_message_html', url: edit_project_url(@project))
   end
 end

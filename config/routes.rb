@@ -40,7 +40,7 @@ Rails.application.routes.draw do
   resources :edits, only: [:update]
 
   resources :licenses do
-    resources :edits, only: [:index]
+    resources :edits, only: [:index, :show]
   end
 
   resources :tags, only: [:index, :show]
@@ -72,7 +72,7 @@ Rails.application.routes.draw do
         get :sent
       end
     end
-    resources :edits, only: [:index]
+    resources :edits, only: [:index, :show]
     resources :posts, only: [:index]
     resources :reviews, only: [:index]
     resources :positions
@@ -201,6 +201,9 @@ Rails.application.routes.draw do
       get :map
       get :settings
       get :estimated_cost
+      get 'security' => 'vulnerabilities#index'
+      get 'recent_vulnerabilities_version_chart' => 'vulnerabilities#recent_version_chart', defaults: { format: 'js' }
+      get 'vulnerabilities_filter' => 'vulnerabilities#filter'
       get :similar_by_tags
       get :similar
       get 'permissions'  => 'permissions#show',   as: :permissions
@@ -240,7 +243,7 @@ Rails.application.routes.draw do
       end
     end
     resources :manages, only: [:new]
-    resources :edits, only: [:index]
+    resources :edits, only: [:index, :show]
     resources :enlistments
     resources :factoids, only: [:index]
     resources :rss_articles, only: :index
@@ -328,7 +331,7 @@ Rails.application.routes.draw do
       get :resolve_vanity_url
     end
 
-    resources :edits, only: [:index]
+    resources :edits, only: [:index, :show]
     resource :logos, only: [:new, :create, :destroy]
     resources :managers, only: [:index, :new, :create, :edit, :update] do
       member do

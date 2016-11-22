@@ -31,6 +31,7 @@ module ApplicationHelper
   end
 
   def expander(text, min = 250, max = 350, regex = /\s/, regex_offset = -1)
+    text = text.escape.sanitize
     return text.html_safe if text.length < max
 
     l = (text[0..min].rindex(regex) || min + 1) + regex_offset
@@ -97,10 +98,6 @@ module ApplicationHelper
     haml_tag :a, inner, opts
   end
 
-  def description(content, more_or_less, opts)
-    render partial: 'application/description', locals: { content: content, more_or_less: more_or_less, opts: opts }
-  end
-
   def xml_date_to_time(date)
     return '' if date.nil?
     Time.gm(date.year, date.month, date.day).xmlschema
@@ -134,8 +131,8 @@ module ApplicationHelper
     <<-EXPANDER
     #{text[0..l]}
     <span class="expander">
-    <span>... #{link_to t('expander.more'), 'javascript:void(0);'}</span>
-    <span style="display:none">#{text[l + 1..-1]} #{link_to t('expander.less'), 'javascript:void(0);'}</span>
+    <span x-wrapper>... #{link_to t('expander.more'), 'javascript:void(0);', class: 'ctrl'}</span>
+    <span x-wrapper style="display:none">#{text[l + 1..-1]} #{link_to t('expander.less'), 'javascript:void(0);', class: 'ctrl'}</span>
     </span>
     EXPANDER
   end

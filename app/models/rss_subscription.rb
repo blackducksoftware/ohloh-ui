@@ -9,6 +9,8 @@ class RssSubscription < ActiveRecord::Base
 
   filterable_by ['rss_feeds.url']
 
+  scope :not_deleted, -> { where(deleted: false) }
+
   def explain_yourself
     I18n.t('.rss_subscriptions.index.explain', url: rss_feed.url)
   end
