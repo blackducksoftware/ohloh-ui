@@ -8,6 +8,10 @@
   = project_analysis_timestamp(@project)
 .clearfix
 
+- if sidekiq_work_in_progress?
+  .alert.alert-info.alert-block
+    %h5.alert-heading.nomargin= t('.currently_importing')
+
 - if flash[:show_first_enlistment_alert]
   .alert.alert-info.alert-block
     %h4.alert-heading.nomargin= t('.alert_info_heading', name: @project.name)

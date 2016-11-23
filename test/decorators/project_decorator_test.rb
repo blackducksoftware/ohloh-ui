@@ -14,7 +14,8 @@ class ProjectDecoratorTest < ActiveSupport::TestCase
       [
         [:code_data, 'Code Data'],
         [:languages, 'Languages', "/p/#{linux.vanity_url}/analyses/latest/languages_summary"],
-        [:estimated_cost, 'Cost Estimates', "/p/#{linux.vanity_url}/estimated_cost"]
+        [:estimated_cost, 'Cost Estimates', "/p/#{linux.vanity_url}/estimated_cost"],
+        [:project_security, 'Security', "/p/#{linux.vanity_url}/security"]
       ],
       [
         [:scm_data, 'SCM Data'],

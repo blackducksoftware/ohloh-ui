@@ -1,0 +1,24 @@
+.row
+  .col-md-12
+    .mezzo.margin_bottom_5
+.link-contents.col-md-10.col-md-offset-1
+  .col-md-12.link_container
+    - page_context[:footer_menu_list].each do |section|
+      .actions.margin_bottom_20{ class: ('col-md-3 no_padding' if page_context[:nav_type].eql?('footer_nav')) }
+        %ul
+          - header, *links = section
+          - header_class, header_name, header_url, header_type = header
+          - header_condition = header_class == page_context[:select_footer_nav]
+          %li.footer-nav{ class: [('selected' if header_condition), ('linked' if header_url)] }
+            - if header_url
+              %a{ href: header_url }
+                = header_name
+            - else
+              = header_name
+          - if header_type.eql?('select')
+            = select(:language, :url, options_for_select(links), {}, id: 'nav-select', class: 'chzn-select')
+          - else
+            - links.each do |link|
+              - link_class, link_name, link_url = link
+              %li.footer-nav{ class: ('nav-active' if link_class == page_context[:select_footer_nav]) }
+                %a{ href: link_url }= link_name

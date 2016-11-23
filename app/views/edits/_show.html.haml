@@ -1,0 +1,44 @@
+:ruby
+  parent_target = @edit.project || @edit.organization
+
+  target = parent_target || @edit.target
+  previous_edit = @edit.previous_edit
+
+  attribute = @edit.target_type
+  attribute += @edit.key.dup.prepend("'s ") if @edit.key
+
+.modal-dialog{ role: 'document' }
+  .modal-content
+    .modal-header
+      %button.close{ data: { dismiss: 'modal' }, aria: { label: 'Close' } }
+        &times;
+      %h3.modal-title= t('.title_html', type: @edit.type.gsub(/([A-Z])/, ' \1').strip, id: @edit.id)
+    .modal-body
+      - if @edit.organization
+        = render 'show_value', title: 'Organization', value: @edit.organization, is_link: true
+
+      - if @edit.project
+        = render 'show_value', title: 'Project', value: @edit.project, is_link: true
+
+      - unless parent_target
+        = render 'show_value', title: target.class.name, value: target, is_link: true
+
+      = render 'show_value', title: t('.Description'), value: get_edit_summary(@edit)
+
+      = render 'show_value', title: t('.attribute'), value: attribute
+
+      = render 'show_value', title: t('.value'), value: edit_show_value(@edit)
+
+      - if previous_edit
+        = render 'show_value', title: t('.previous_value'), value: edit_show_value(previous_edit)
+
+      = render 'show_value', title: t('.edited_by'), value: @edit.account, is_link: true
+      = render 'show_value', title: t('.edited_on'), value: edit_humanize_datetime(@edit.created_at)
+
+      - if @edit.undone?
+        = render 'show_value', title: t('.undid_by'), value: @edit.undoer, is_link: true
+        = render 'show_value', title: t('.undid_on'), value: edit_humanize_datetime(@edit.undone_at)
+
+      - elsif @edit.undoer
+        = render 'show_value', title: t('.redid_by'), value: @edit.undoer, is_link: true
+        = render 'show_value', title: t('.redid_on'), value: edit_humanize_datetime(@edit.undone_at)

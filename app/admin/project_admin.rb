@@ -30,8 +30,12 @@ ActiveAdmin.register Project do
     column :vanity_url do |project|
       link_to project.vanity_url, project_path(project)
     end
+    column :uuid
     column :description do |project|
       simple_format project.description
+    end
+    column :project_security_set do |project|
+      link_to project.best_project_security_set_id, admin_project_security_sets_path(project.best_project_security_set)
     end
     actions
   end

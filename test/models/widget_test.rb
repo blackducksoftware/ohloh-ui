@@ -52,9 +52,13 @@ class WidgetTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'style' do
+  describe 'method_missing' do
     it 'should return value passed on initialize' do
       widget.style.must_equal 'test'
+    end
+
+    it 'should throw NoMethodError exception when it mismatches value passed on initialize' do
+      -> { widget.not_a_method }.must_raise NoMethodError
     end
   end
 end

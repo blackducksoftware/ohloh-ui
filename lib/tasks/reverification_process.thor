@@ -8,17 +8,10 @@ module ReverificationTask
     option :bounce_threshold, :aliases => '-bt', :desc => 'Sets bounce rate', :required => true, :type => :numeric
     option :num_email, :aliases => '-e', :desc => 'Sets the amount of email', :required => true, :type => :numeric
     def execute
-      Reverification::Process.set_amazon_stat_settings(options[:bounce_threshold], options[:num_email])
-      Reverification::Process.cleanup
+      Reverification::Mailer.set_amazon_stat_settings(options[:bounce_threshold], options[:num_email])
+      ReverificationTracker.cleanup
       Reverification::Mailer.run
       Reverification::Process.start_polling_queues
-    end
-  end
-
-  class Preparation < Thor
-    desc 'pilot_preparation', 'This task does the preparation work for the pilot process'
-    def pilot_preparation
-      ReverificationPilotAccount.copy_accounts
     end
   end
 
@@ -62,12 +55,12 @@ module ReverificationTask
             and sends email [BOUNCE_THRESHOLD] [NUM_EMAIL]'
 
       def resend_to_soft_bounced_emails
-        Reverification::Process.set_amazon_stat_settings(options[:bounce_threshold], options[:num_email])
+        Reverification::Mailer.set_amazon_stat_settings(options[:bounce_threshold], options[:num_email])
         Reverification::Mailer.resend_soft_bounced_notifications
       end
 
       def send_email
-        Reverification::Process.set_amazon_stat_settings(options[:bounce_threshold], options[:num_email])
+        Reverification::Mailer.set_amazon_stat_settings(options[:bounce_threshold], options[:num_email])
         Reverification::Mailer.send_notifications
       end
     end
@@ -77,7 +70,7 @@ module ReverificationTask
     desc 'resend_to_soft_bounced_emails [BOUNCE_THRESHOLD] [NUM_EMAIL]', 'Resends to all accounts that soft bounced
           specifying when to check statistics through the amount of emails and for what acceptable bounce percentage'
     def resend_to_soft_bounced_emails
-      Reverification::Process.set_amazon_stat_settings(options[:bounce_threshold], options[:num_email])
+      Reverification::Mailer.set_amazon_stat_settings(options[:bounce_threshold], options[:num_email])
       Reverification::Mailer.resend_soft_bounced_notifications
     end
 
@@ -86,7 +79,7 @@ module ReverificationTask
     desc 'send_emails [BOUNCE_THRESHOLD] [NUM_EMAIL]', 'sends to accounts specifying when to check statistics
           through the amount of emails and for what acceptable bounce percentage'
     def send_emails
-      Reverification::Process.set_amazon_stat_settings(options[:bounce_threshold], options[:num_email])
+      Reverification::Mailer.set_amazon_stat_settings(options[:bounce_threshold], options[:num_email])
       Reverification::Mailer.send_notifications
     end
   end

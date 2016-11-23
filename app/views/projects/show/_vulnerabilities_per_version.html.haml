@@ -1,0 +1,8 @@
+%h4.title
+  = link_to t('.title'), security_project_path(@project)
+  %span= t('.title_detail')
+- if @project.best_project_security_set.try(:most_recent_vulnerabilities?)
+  - chart_url = recent_vulnerabilities_version_chart_project_path(@project)
+  .watermark440#vulnerability_version_chart{ data: { src: chart_url } }
+- else
+  %p.text-center= t('vulnerabilities.index.no_vulnerability')

@@ -1,14 +1,14 @@
 - total_count ||= 0
 
-- if type == :commits && @project.best_analysis.logged_at.present?
+- if type == :commits && @project.best_analysis.oldest_code_set_time.present?
   %span.commits_display_date_range.pull-right
     %i.icon-time
     - if TIME_SPANS[params[:time_span]] == :last_30_days
-      = (@project.best_analysis.logged_at - 30.days).to_s(:mdy)
+      = (@project.best_analysis.oldest_code_set_time - 30.days).to_s(:mdy)
     - else
-      = (@project.best_analysis.logged_at - 12.months).to_s(:mdy)
+      = (@project.best_analysis.oldest_code_set_time - 12.months).to_s(:mdy)
     &mdash;
-    = @project.best_analysis.logged_at.to_s(:mdy)
+    = @project.best_analysis.oldest_code_set_time.to_s(:mdy)
 .margin_top_20#search-dingus
   %form.form-inline
     .row

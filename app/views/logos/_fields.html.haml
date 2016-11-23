@@ -35,21 +35,20 @@
       = t('.body.second')
       = link_to t('.link.forum'), topic_path(id: 1478)
       = t('.body.third')
-    %table.col-md-8
+    .col-md-10
       - default_logos.in_groups_of(3).each do |logo_set|
-        %tr.float_left
-          - logo_set.each do |label, logo|
-            %td.col-md-1
-              - if logo.nil?
-                &nbsp;
-              - else
-                %input{ id: 'logo_' + logo.id.to_s, type: 'radio', name: 'logo_id', value: logo.id }
+        - logo_set.each do |label, logo|
+          .col-md-1
+            - if logo.nil?
+              &nbsp;
+            - else
+              %input{ id: 'logo_' + logo.id.to_s, type: 'radio', name: 'logo_id', value: logo.id }
 
-            %td.col-md-2
-              - unless logo.nil?
-                %label{ for: 'logo_' + logo.id.to_s }
-                  %img{ src: logo.attachment.url(:small) }
-                %label{ for: 'logo_' + logo.id.to_s }= label
+          .col-md-2
+            - unless logo.nil?
+              %label{ for: 'logo_' + logo.id.to_s }
+                %img{ src: logo.attachment.url(:small) }
+              %label{ for: 'logo_' + logo.id.to_s }= label
 
 .row.margin_top_30
   .col-md-12

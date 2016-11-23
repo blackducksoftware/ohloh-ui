@@ -42,8 +42,8 @@ en:
       invalid_select: 'Please select a valid Project'
       add: 'Add a Project:'
       community: 'Open Hub is community driven web site that thrives when members tell us about new FOSS projects.'
-      favorite: "If you don't find a favorite project on Open Hub, "
-      add_here: 'add it here'
+      dont_see_a_project: "If you don't see a project for which you are looking:"
+      add_new_project: 'Add New Project'
     hot_projects:
       title: 'Hot Projects on Open Hub'
       filter: 'Filter by Language:'

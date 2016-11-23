@@ -17,16 +17,16 @@
                                     title: t('.manual_verification.title', name: @account.name) }
         %i.icon-check
         = t('.manual_verification.link')
-    = link_to t('.spammer.link').html_safe, make_spammer_account_accesses_path(@account),
+    = link_to t('.spammer.link_html'), make_spammer_account_accesses_path(@account),
       method: :post, data: { confirm: t('.spammer.confirm', name: @account.name) },
       class: 'btn btn-warning btn-small', title: t('.spammer.title', name: @account.name)
     &nbsp; &nbsp;
-    = link_to t('.delete.link').html_safe, account_path(@account),
+    = link_to t('.delete.link_html'), account_path(@account),
       method: :delete, data: { confirm: t('.delete.confirm', name: @account.name) },
     class: 'btn btn-danger btn-small', title: t('.delete.title', name: @account.name)
     &nbsp; &nbsp;
     = render partial: 'accounts/show/mark_as_bot'
-    = link_to t('.panel.close').html_safe, 'javascript:void(0);', id: 'close_admin_panel'
+    = link_to t('.panel.close'), 'javascript:void(0);', id: 'close_admin_panel'
 
 .well#admin_actions_closed
   = link_to t('.panel.open'), 'javascript:void(0);', id: 'open_admin_panel'

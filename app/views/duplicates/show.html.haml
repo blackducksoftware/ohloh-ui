@@ -69,13 +69,13 @@
     %tr
       %td= t('.last_analyzed')
       %td.good
-        - if @duplicate.good_project.best_analysis.logged_at
-          = time_ago_in_words(@duplicate.good_project.best_analysis.logged_at) + t('.ago')
+        - if @duplicate.good_project.best_analysis.oldest_code_set_time
+          = time_ago_in_words(@duplicate.good_project.best_analysis.oldest_code_set_time) + t('.ago')
         - else
           = t('.never')
       %td.bad
-        - if @duplicate.bad_project.best_analysis.logged_at
-          = time_ago_in_words(@duplicate.bad_project.best_analysis.logged_at) + t('.ago')
+        - if @duplicate.bad_project.best_analysis.oldest_code_set_time
+          = time_ago_in_words(@duplicate.bad_project.best_analysis.oldest_code_set_time) + t('.ago')
         - else
           = t('.never')
     %tr

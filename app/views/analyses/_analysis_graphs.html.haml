@@ -4,18 +4,19 @@
     language_chart = language_history_project_analysis_url(project_id: project.to_param, id: 'latest')
     show_chart, reason = analysis.decorate.display_chart?
 
-  .row
-    - if show_chart
+  - if show_chart
+    .row
       .col-md-12.no_margin_left
-        .col-md-12
-          %h4= t('.code_comments_blanks')
-          .chart.watermark914#code_analysis_chart{ 'datasrc' => code_chart, style: 'height: 340px' }
-        .col-md-12
-          %br
-          %br
-          %h4= t('.loc')
-          .chart.watermark914#language_analysis_chart{ 'datasrc' => language_chart, style: 'height: 340px' }
-    - else
+        %h4= t('.code_comments_blanks')
+        .chart.watermark914#code_analysis_chart{ 'datasrc' => code_chart, style: 'height: 340px' }
+    .row
+      .col-md-12
+        %br
+        %br
+        %h4= t('.loc')
+        .chart.watermark914#language_analysis_chart{ 'datasrc' => language_chart, style: 'height: 340px' }
+  - else
+    .row
       .code_analysis_error
         - if reason == :no_understood_lang
           %p.no_lang= t('.no_lang')
