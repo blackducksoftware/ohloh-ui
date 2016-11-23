@@ -1,8 +1,5 @@
 source 'https://rubygems.org'
-<<<<<<< HEAD
-=======
 source 'http://oh-utility01.dc1.lan:9292'
->>>>>>> master
 
 gem 'activeadmin', git: 'https://github.com/gregbell/active_admin.git'
 gem 'airbrake', '~> 5.5'
@@ -21,13 +18,9 @@ gem 'jbuilder'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'mini_magick', '~> 4.1.1'
-<<<<<<< HEAD
 gem 'nokogiri', '~> 1.6.8'
-gem 'oh_delegator', source: 'http://oh-stage-utility-1.blackducksoftware.com:9292'
-=======
 gem 'newrelic_rpm'
 gem 'oh_delegator'
->>>>>>> master
 gem 'ohloh_scm'
 gem 'open4'
 gem 'paperclip', '< 5.0 '

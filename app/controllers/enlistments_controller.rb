@@ -48,7 +48,6 @@ class EnlistmentsController < SettingsController
     @enlistment.create_edit.undo!(current_user)
     redirect_to project_enlistments_path(@project), flash: { success: t('.success', name: @project.name) }
   end
-<<<<<<< HEAD
 
   private
 
@@ -117,6 +116,4 @@ class EnlistmentsController < SettingsController
   def set_github_repos_message
     flash[:notice] = t('.github_repos_added', username: @repository.url)
   end
-=======
->>>>>>> master
 end

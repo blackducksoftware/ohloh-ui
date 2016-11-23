@@ -19,15 +19,10 @@ class GithubUser
   end
 
   def create_enlistment_for_project(editor_account, project, ignore = nil)
-<<<<<<< HEAD
-    code_locations.each do |code_location|
-      code_location.create_enlistment_for_project(editor_account, project, ignore) unless code_location.new_record?
-=======
     project = Project.find(project)
     editor_account = Account.find(editor_account)
-    repositories.each do |repository|
-      repository.create_enlistment_for_project(editor_account, project, ignore)
->>>>>>> master
+    code_locations.each do |code_location|
+      code_location.create_enlistment_for_project(editor_account, project, ignore) unless code_location.new_record?
     end
   end
 

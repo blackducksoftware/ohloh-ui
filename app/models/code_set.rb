@@ -1,10 +1,6 @@
 class CodeSet < ActiveRecord::Base
-<<<<<<< HEAD
   belongs_to :code_location
-=======
-  belongs_to :repository
-  has_one :best_repository, foreign_key: :best_code_set_id, class_name: 'Repository'
->>>>>>> master
+  has_one :best_code_location, foreign_key: :best_code_location_id, class_name: 'CodeLocation'
   belongs_to :best_sloc_set, foreign_key: :best_sloc_set_id, class_name: SlocSet
   has_many :commits, -> { order(:position) }, dependent: :destroy
   has_many :fyles, dependent: :delete_all
@@ -37,7 +33,7 @@ class CodeSet < ActiveRecord::Base
                    "repositories.update_interval * INTERVAL '1 second' <= NOW() AT TIME ZONE 'utc'"\
                    " AND COALESCE(analyses.oldest_code_set_time, '1970-01-01') >="\
                    " COALESCE(code_sets.logged_at, '1970-01-01') - INTERVAL '1 second'"
-      joins(best_repository: { enlistments: { project: :best_analysis } })
+      joins(best_code_location: { enlistments: { project: :best_analysis } })
         .where(projects: { deleted: false })
         .where(conditions)
         .where(Job.where("status != #{Job::STATUS_COMPLETED} AND jobs.repository_id = repositories.id").exists.not)

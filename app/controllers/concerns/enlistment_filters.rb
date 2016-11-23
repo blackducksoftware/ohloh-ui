@@ -5,22 +5,15 @@ module EnlistmentFilters
     before_action :session_required, :redirect_unverified_account, only: [:create, :new, :destroy, :edit, :update]
     before_action :set_project_or_fail
     before_action :set_project_editor_account_to_current_user
-<<<<<<< HEAD
-    before_action :find_enlistment, only: [:show, :edit, :update, :destroy]
-    before_action :project_context, only: [:index, :new, :edit, :create, :update]
-=======
     before_action :check_project_authorization, except: [:index, :show]
     before_action :find_enlistment, only: [:show, :edit, :update, :destroy]
     before_action :project_context, only: [:index, :new, :edit, :create, :update]
     before_action :sidekiq_job_exists, only: :create
     before_action :handle_github_user_flow, only: :create
->>>>>>> master
   end
 
   private
 
-<<<<<<< HEAD
-=======
   def enlistment_params
     params.require(:enlistment).permit(:ignore)
   end
@@ -33,14 +26,11 @@ module EnlistmentFilters
     Enlistment.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : 'by_url'
   end
 
->>>>>>> master
   def find_enlistment
     @enlistment = Enlistment.find_by(id: params[:id])
     raise ParamRecordNotFound if @enlistment.nil?
     @enlistment.editor_account = current_user
   end
-<<<<<<< HEAD
-=======
 
   def safe_constantize(repo)
     repo.constantize if %w(svnrepository svnsyncrepository repository hgrepository githubuser
@@ -97,5 +87,4 @@ module EnlistmentFilters
     Setting.update_worker(@project.id, worker, @repository.url)
     redirect_to project_enlistments_path(@project)
   end
->>>>>>> master
 end

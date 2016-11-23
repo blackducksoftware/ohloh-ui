@@ -60,12 +60,8 @@ en:
     create:
       github_repos_added: 'Successfully imported all repositories from github.com/%{username}'
       notice:  "A repository with the url: %{url} already exists for this project."
-<<<<<<< HEAD
       success:  "Successfully added %{url} %{module_branch_name}"
-=======
-      success:  "Successfully added %{url} %{branch_name} %{module_name}"
       job_exists: 'A Job is already importing the repositories from the same username.'
->>>>>>> master
     enlistment:
       file: 'file'
       description1: 'Open Hub ignored'

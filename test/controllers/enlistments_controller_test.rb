@@ -128,13 +128,9 @@ describe 'EnlistmentsControllerTest' do
       end
     end
 
-<<<<<<< HEAD
-    it 'must create multiple enlistments using github username' do
-=======
     it 'must create enlistments jobs using github username' do
       Repository.any_instance.stubs(:bypass_url_validation).returns(true)
 
->>>>>>> master
       stub_github_user_repositories_call do
         project = Project.from_param(@project_id).take
         Repository.count.must_equal 1
@@ -145,20 +141,10 @@ describe 'EnlistmentsControllerTest' do
         post :create, project_id: @project_id, repository: GithubUser.new(url: username).attributes
         must_respond_with :redirect
         must_redirect_to action: :index
-<<<<<<< HEAD
-
         flash[:notice].must_equal I18n.t('enlistments.create.github_repos_added', username: username)
         Repository.count.must_equal 5
         CodeLocation.count.must_equal 5
         project.enlistments.count.must_equal 5
-      end
-    end
-
-    it 'must create enlistment for any existing repository' do
-      username = 'stan'
-      create(:git_repository, url: "git://github.com/#{username}/sablon.git")
-
-=======
         EnlistmentWorker.jobs.size.must_equal 1
       end
     end
@@ -168,7 +154,6 @@ describe 'EnlistmentsControllerTest' do
       username = 'stan'
       GitRepository.create!(url: "git://github.com/#{username}/sablon.git", branch_name: :master)
       EnlistmentWorker.jobs.size.must_equal 0
->>>>>>> master
       stub_github_user_repositories_call do
         project = Project.from_param(@project_id).take
         Repository.count.must_equal 2
@@ -177,13 +162,10 @@ describe 'EnlistmentsControllerTest' do
 
         post :create, project_id: @project_id, repository: GithubUser.new(url: username).attributes
 
-<<<<<<< HEAD
         Repository.count.must_equal 5
         CodeLocation.count.must_equal 5
         project.enlistments.count.must_equal 5
-=======
         EnlistmentWorker.jobs.size.must_equal 1
->>>>>>> master
       end
     end
 

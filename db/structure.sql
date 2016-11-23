@@ -997,7 +997,6 @@ ALTER SEQUENCE clumps_id_seq OWNED BY clumps.id;
 
 
 --
-<<<<<<< HEAD
 -- Name: code_location_events; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1039,11 +1038,11 @@ ALTER SEQUENCE code_location_events_id_seq OWNED BY code_location_events.id;
 
 CREATE TABLE code_location_tarballs (
     id integer NOT NULL,
+    code_location_id integer,
     reference text,
     filepath text,
     status integer DEFAULT 0,
     created_at timestamp without time zone,
-    code_location_id integer,
     type text
 );
 
@@ -1104,39 +1103,6 @@ ALTER SEQUENCE code_locations_id_seq OWNED BY code_locations.id;
 
 
 --
--- Name: code_set_gestalts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE code_set_gestalts (
-    id integer NOT NULL,
-    date timestamp without time zone NOT NULL,
-    code_set_id integer,
-    gestalt_id integer
-);
-
-
---
--- Name: code_set_gestalts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE code_set_gestalts_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: code_set_gestalts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE code_set_gestalts_id_seq OWNED BY code_set_gestalts.id;
-
-
---
-=======
->>>>>>> master
 -- Name: code_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -3626,7 +3592,6 @@ CREATE TABLE repository_directories (
 
 
 --
-<<<<<<< HEAD
 -- Name: repository_directories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -3678,39 +3643,6 @@ ALTER SEQUENCE repository_tags_id_seq OWNED BY repository_tags.id;
 
 
 --
--- Name: reverification_pilot_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE reverification_pilot_accounts (
-    id integer NOT NULL,
-    account_id integer NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: reverification_pilot_accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE reverification_pilot_accounts_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: reverification_pilot_accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE reverification_pilot_accounts_id_seq OWNED BY reverification_pilot_accounts.id;
-
-
---
-=======
->>>>>>> master
 -- Name: reverification_trackers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -4555,7 +4487,6 @@ ALTER TABLE ONLY clumps ALTER COLUMN id SET DEFAULT nextval('clumps_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-<<<<<<< HEAD
 ALTER TABLE ONLY code_location_events ALTER COLUMN id SET DEFAULT nextval('code_location_events_id_seq'::regclass);
 
 
@@ -4577,15 +4508,6 @@ ALTER TABLE ONLY code_locations ALTER COLUMN id SET DEFAULT nextval('code_locati
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY code_set_gestalts ALTER COLUMN id SET DEFAULT nextval('code_set_gestalts_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-=======
->>>>>>> master
 ALTER TABLE ONLY commit_flags ALTER COLUMN id SET DEFAULT nextval('commit_flags_id_seq'::regclass);
 
 
@@ -4887,7 +4809,13 @@ ALTER TABLE ONLY releases ALTER COLUMN id SET DEFAULT nextval('releases_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-<<<<<<< HEAD
+ALTER TABLE ONLY reports ALTER COLUMN id SET DEFAULT nextval('reports_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY repository_directories ALTER COLUMN id SET DEFAULT nextval('repository_directories_id_seq'::regclass);
 
 
@@ -4896,16 +4824,6 @@ ALTER TABLE ONLY repository_directories ALTER COLUMN id SET DEFAULT nextval('rep
 --
 
 ALTER TABLE ONLY repository_tags ALTER COLUMN id SET DEFAULT nextval('repository_tags_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY reverification_pilot_accounts ALTER COLUMN id SET DEFAULT nextval('reverification_pilot_accounts_id_seq'::regclass);
-=======
-ALTER TABLE ONLY reports ALTER COLUMN id SET DEFAULT nextval('reports_id_seq'::regclass);
->>>>>>> master
 
 
 --
@@ -5124,7 +5042,6 @@ ALTER TABLE ONLY clumps
 
 
 --
-<<<<<<< HEAD
 -- Name: code_location_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -5149,16 +5066,6 @@ ALTER TABLE ONLY code_locations
 
 
 --
--- Name: code_set_gestalts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY code_set_gestalts
-    ADD CONSTRAINT code_set_gestalts_pkey PRIMARY KEY (id);
-
-
---
-=======
->>>>>>> master
 -- Name: code_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -5775,7 +5682,6 @@ ALTER TABLE ONLY repositories
 
 
 --
-<<<<<<< HEAD
 -- Name: repository_directories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -5792,16 +5698,6 @@ ALTER TABLE ONLY repository_tags
 
 
 --
--- Name: reverification_pilot_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY reverification_pilot_accounts
-    ADD CONSTRAINT reverification_pilot_accounts_pkey PRIMARY KEY (id);
-
-
---
-=======
->>>>>>> master
 -- Name: reverification_trackers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -6263,7 +6159,6 @@ CREATE INDEX index_clumps_on_code_set_id_slave_id ON clumps USING btree (code_se
 
 
 --
-<<<<<<< HEAD
 -- Name: index_code_location_events_on_code_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -6275,6 +6170,13 @@ CREATE INDEX index_code_location_events_on_code_location_id ON code_location_eve
 --
 
 CREATE INDEX index_code_location_events_on_repository_id ON code_location_events USING btree (repository_id);
+
+
+--
+-- Name: index_code_location_tarballs_on_code_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_code_location_tarballs_on_code_location_id ON code_location_tarballs USING btree (code_location_id);
 
 
 --
@@ -6306,22 +6208,6 @@ CREATE UNIQUE INDEX index_code_locations_on_repository_id_and_module_branch_name
 
 
 --
--- Name: index_code_set_gestalts_on_code_set_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_code_set_gestalts_on_code_set_id ON code_set_gestalts USING btree (code_set_id);
-
-
---
--- Name: index_code_set_gestalts_on_gestalt_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_code_set_gestalts_on_gestalt_id ON code_set_gestalts USING btree (gestalt_id);
-
-
---
-=======
->>>>>>> master
 -- Name: index_code_sets_on_best_sloc_set_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -7793,7 +7679,6 @@ ALTER TABLE ONLY project_vulnerability_reports
 
 
 --
-<<<<<<< HEAD
 -- Name: fk_rails_0ff5ad97b1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7826,12 +7711,6 @@ ALTER TABLE ONLY code_locations
 
 
 --
--- Name: fk_rails_5a0f61d9a6; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY code_location_events
-    ADD CONSTRAINT fk_rails_5a0f61d9a6 FOREIGN KEY (code_location_id) REFERENCES code_locations(id);
-=======
 -- Name: fk_rails_580a21f8c6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7840,12 +7719,19 @@ ALTER TABLE ONLY project_badges
 
 
 --
+-- Name: fk_rails_5a0f61d9a6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_location_events
+    ADD CONSTRAINT fk_rails_5a0f61d9a6 FOREIGN KEY (code_location_id) REFERENCES code_locations(id);
+
+
+--
 -- Name: fk_rails_60edffb8dd; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY project_badges
     ADD CONSTRAINT fk_rails_60edffb8dd FOREIGN KEY (repository_id) REFERENCES repositories(id);
->>>>>>> master
 
 
 --
@@ -7857,7 +7743,14 @@ ALTER TABLE ONLY api_keys
 
 
 --
-<<<<<<< HEAD
+-- Name: fk_rails_c67f665226; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY projects
+    ADD CONSTRAINT fk_rails_c67f665226 FOREIGN KEY (best_project_security_set_id) REFERENCES project_security_sets(id);
+
+
+--
 -- Name: fk_rails_d33c461543; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7874,26 +7767,19 @@ ALTER TABLE ONLY repository_directories
 
 
 --
--- Name: fk_rails_f43796d023; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY code_location_events
-    ADD CONSTRAINT fk_rails_f43796d023 FOREIGN KEY (repository_id) REFERENCES repositories(id);
-=======
--- Name: fk_rails_c67f665226; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY projects
-    ADD CONSTRAINT fk_rails_c67f665226 FOREIGN KEY (best_project_security_set_id) REFERENCES project_security_sets(id);
-
-
---
 -- Name: fk_rails_efaa9c9657; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY project_security_sets
     ADD CONSTRAINT fk_rails_efaa9c9657 FOREIGN KEY (project_id) REFERENCES projects(id);
->>>>>>> master
+
+
+--
+-- Name: fk_rails_f43796d023; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_location_events
+    ADD CONSTRAINT fk_rails_f43796d023 FOREIGN KEY (repository_id) REFERENCES repositories(id);
 
 
 --
@@ -8874,8 +8760,11 @@ INSERT INTO schema_migrations (version) VALUES ('20160321061931');
 
 INSERT INTO schema_migrations (version) VALUES ('20160504111046');
 
-<<<<<<< HEAD
 INSERT INTO schema_migrations (version) VALUES ('20160512144023');
+
+INSERT INTO schema_migrations (version) VALUES ('20160608090419');
+
+INSERT INTO schema_migrations (version) VALUES ('20160608194402');
 
 INSERT INTO schema_migrations (version) VALUES ('20160610142302');
 
@@ -8890,10 +8779,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160803102211');
 INSERT INTO schema_migrations (version) VALUES ('20160804081950');
 
 INSERT INTO schema_migrations (version) VALUES ('20160808163201');
-=======
-INSERT INTO schema_migrations (version) VALUES ('20160608090419');
-
-INSERT INTO schema_migrations (version) VALUES ('20160608194402');
 
 INSERT INTO schema_migrations (version) VALUES ('20160818102530');
 
@@ -8914,7 +8799,6 @@ INSERT INTO schema_migrations (version) VALUES ('20161024095609');
 INSERT INTO schema_migrations (version) VALUES ('20161027065200');
 
 INSERT INTO schema_migrations (version) VALUES ('20161114063801');
->>>>>>> master
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

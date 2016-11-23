@@ -131,11 +131,11 @@ class AliasTest < ActiveSupport::TestCase
     before do
       @person2 = create(:person, name_id: @alias.commit_name_id,
                                  project_id: @alias.project.id,
-                                 name_fact: create(:contributor_fact, commits: 2)
-                                )
+                                 name_fact: create(:contributor_fact, commits: 2))
       @person1 = create(:person, project_id: @alias.project.id)
-      @contributor_fact = create(:contributor_fact, name_id: @alias.preferred_name_id, analysis_id: @project.best_analysis_id,
-                                                   commits: 8)
+      @contributor_fact = create(:contributor_fact, name_id: @alias.preferred_name_id,
+                                                    analysis_id: @project.best_analysis_id,
+                                                    commits: 8)
     end
     it 'should increment count only if preferred_name_id is changed ' do
       @alias.update_attributes(deleted: false)
