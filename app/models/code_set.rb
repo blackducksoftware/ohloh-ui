@@ -1,6 +1,6 @@
 class CodeSet < ActiveRecord::Base
   belongs_to :code_location
-  has_one :best_code_location, foreign_key: :best_code_location_id, class_name: 'CodeLocation'
+  has_one :best_code_location, foreign_key: :best_code_set_id, class_name: 'CodeLocation'
   belongs_to :best_sloc_set, foreign_key: :best_sloc_set_id, class_name: SlocSet
   has_many :commits, -> { order(:position) }, dependent: :destroy
   has_many :fyles, dependent: :delete_all
@@ -30,13 +30,13 @@ class CodeSet < ActiveRecord::Base
   class << self
     def oldest_code_set
       conditions = "COALESCE(code_sets.logged_at, '1970-01-01') + "\
-                   "repositories.update_interval * INTERVAL '1 second' <= NOW() AT TIME ZONE 'utc'"\
+                   "code_locations.update_interval * INTERVAL '1 second' <= NOW() AT TIME ZONE 'utc'"\
                    " AND COALESCE(analyses.oldest_code_set_time, '1970-01-01') >="\
                    " COALESCE(code_sets.logged_at, '1970-01-01') - INTERVAL '1 second'"
       joins(best_code_location: { enlistments: { project: :best_analysis } })
         .where(projects: { deleted: false })
         .where(conditions)
-        .where(Job.where("status != #{Job::STATUS_COMPLETED} AND jobs.repository_id = repositories.id").exists.not)
+        .where(Job.where("status != #{Job::STATUS_COMPLETED} AND jobs.code_location_id = code_locations.id").exists.not)
         .order('code_sets.logged_at nulls first')
         .limit(1)
     end

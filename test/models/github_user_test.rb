@@ -59,12 +59,4 @@ class GithubUserTest < ActiveSupport::TestCase
       end
     end
   end
-
-  describe '.find_existing_repository' do
-    let(:git_repository) { create(:git_repository, branch_name: :master) }
-
-    it 'should find existing repository from URL' do
-      GithubUser.find_existing_repository(git_repository.url).must_equal git_repository
-    end
-  end
 end

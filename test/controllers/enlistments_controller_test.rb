@@ -141,10 +141,6 @@ describe 'EnlistmentsControllerTest' do
         post :create, project_id: @project_id, repository: GithubUser.new(url: username).attributes
         must_respond_with :redirect
         must_redirect_to action: :index
-        flash[:notice].must_equal I18n.t('enlistments.create.github_repos_added', username: username)
-        Repository.count.must_equal 5
-        CodeLocation.count.must_equal 5
-        project.enlistments.count.must_equal 5
         EnlistmentWorker.jobs.size.must_equal 1
       end
     end
@@ -162,9 +158,6 @@ describe 'EnlistmentsControllerTest' do
 
         post :create, project_id: @project_id, repository: GithubUser.new(url: username).attributes
 
-        Repository.count.must_equal 5
-        CodeLocation.count.must_equal 5
-        project.enlistments.count.must_equal 5
         EnlistmentWorker.jobs.size.must_equal 1
       end
     end
