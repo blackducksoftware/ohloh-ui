@@ -1,4 +1,4 @@
-module RepositoryJobs
+module CodeLocationJobs
   extend ActiveSupport::Concern
 
   included do
@@ -18,12 +18,12 @@ module RepositoryJobs
 
       return if best_code_set.jobs.incomplete_or_since(Time.current - 5.minutes).present?
 
-      CompleteJob.create!(repository_id: best_code_set.repository_id, code_set_id: best_code_set.id)
+      CompleteJob.create!(code_location_id: best_code_set.code_location_id, code_set_id: best_code_set.id)
     end
 
     def refetch
       remove_pending_jobs
-      FetchJob.create!(code_set: CodeSet.create!(repository: self))
+      FetchJob.create!(code_set: CodeSet.create!(code_location: self))
     end
 
     def remove_pending_jobs
@@ -34,7 +34,7 @@ module RepositoryJobs
     private
 
     def create_fetch_job(priority)
-      cs = CodeSet.create(repository: self)
+      cs = CodeSet.create(code_location: self)
       FetchJob.create(code_set: cs, priority: priority)
     end
 

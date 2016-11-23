@@ -9,7 +9,7 @@ describe 'AliasesController' do
     @alias   = create(:alias, project_id: @project.id, commit_name_id: @commit_name.id,
                               preferred_name_id: @preferred_name.id)
     @commit  = create(:commit)
-    @commit_project = @commit.code_set.repository.projects.first
+    @commit_project = @commit.code_set.code_location.projects.first
   end
 
   it 'index' do

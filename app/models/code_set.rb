@@ -1,5 +1,5 @@
 class CodeSet < ActiveRecord::Base
-  belongs_to :repository
+  belongs_to :code_location
   has_one :best_repository, foreign_key: :best_code_set_id, class_name: 'Repository'
   belongs_to :best_sloc_set, foreign_key: :best_sloc_set_id, class_name: SlocSet
   has_many :commits, -> { order(:position) }, dependent: :destroy
@@ -7,9 +7,10 @@ class CodeSet < ActiveRecord::Base
   has_many :sloc_sets, dependent: :destroy
   has_many :clumps
   has_many :jobs
+  has_one :repository, through: :code_location
 
   def ignore_prefixes(project)
-    enlistment = project.enlistments.find_by(repository_id: repository_id)
+    enlistment = project.enlistments.find_by(code_location_id: code_location_id)
     return CodeSet.none if enlistment.nil?
     analysis_sloc_set = enlistment.analysis_sloc_set
     analysis_sloc_set.nil? ? CodeSet.none : analysis_sloc_set.ignore_prefixes
@@ -52,7 +53,7 @@ class CodeSet < ActiveRecord::Base
   end
 
   def new_code_set
-    @new_code_set ||= CodeSet.create!(repository_id: repository_id)
+    @new_code_set ||= CodeSet.create!(code_location_id: code_location_id)
   end
   # .... to here
 end

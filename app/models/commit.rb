@@ -8,7 +8,7 @@ class Commit < ActiveRecord::Base
   include EmailObfuscation
 
   scope :for_project, lambda { |project|
-    joins(code_set: { repository: { enlistments: :project } })
+    joins(code_set: { code_location: { enlistments: :project } })
       .where(enlistments: { deleted: false })
       .where(projects: { id: project.id })
   }

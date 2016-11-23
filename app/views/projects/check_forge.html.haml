@@ -18,18 +18,20 @@
                 - error_tag @project, :name
                 %p.help-block!= t('.project_name_help', link: link_to(t('.contact_us'), blog_url_for(:contact_form)))
             = f.fields_for :enlistments do |enlistment_form|
-              = enlistment_form.fields_for :repository do |repo_form|
-                .control-group.nomargin
-                  %label.control-label.required= t('.project_source_code')
-                  .controls.chosen#value_select
-                    = repo_form.select :type, repository_options_for_select(repo_form.object), {},
-                    class: 'chzn-select value-select', id: 'repository_type', style: 'width: 100px'
-                    = repo_form.text_field :url, style: 'width: 265px; margin-bottom: 1px'
-                    - if repo_form.object.type == 'GitRepository'
-                      = repo_form.text_field :branch_name, value: repo_form.object.branch_name || 'master',
-                      style: 'width: 105px; margin-bottom: 1px'
-                    .clear_left
-                    - error_tag @project, :repositories
+              = enlistment_form.fields_for :code_location do |code_location_form|
+                = code_location_form.fields_for :repository do |repo_form|
+                  .control-group.nomargin
+                    %label.control-label.required= t('.project_source_code')
+                    .controls.chosen#value_select
+                      = repo_form.select :type, repository_options_for_select(repo_form.object), {},
+                      class: 'chzn-select value-select', id: 'repository_type', style: 'width: 100px'
+                      = repo_form.text_field :url, style: 'width: 265px; margin-bottom: 1px'
+                      - if repo_form.object.type == 'GitRepository'
+                        = code_location_form.text_field :module_branch_name,
+                          value: code_location_form.object.module_branch_name || 'master',
+                          style: 'width: 105px; margin-bottom: 1px'
+                      .clear_left
+                      - error_tag @project, :code_locations
             .control-group
               .controls
                 %label.checkbox.control-label{ style: 'padding: 0;' }

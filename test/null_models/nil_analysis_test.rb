@@ -94,7 +94,8 @@ class NilAnalysisTest < ActiveSupport::TestCase
   end
 
   describe 'updated_on' do
-    it 'should return current time' do
+    it 'should return current time with zone info' do
+      nil_analysis.updated_on.class.must_equal ActiveSupport::TimeWithZone
       assert_in_delta nil_analysis.updated_on, Time.zone.now, 1.second
     end
   end

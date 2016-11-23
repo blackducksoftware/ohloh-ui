@@ -1,11 +1,11 @@
 - has_permission = logged_in? && @project.edit_authorized?
 %tr.enlistment
   %td.col-md-4
-    = enlistment.repository.nice_url
+    = enlistment.code_location.nice_url
   %td.col-md-2
     = enlistment.repository.name_in_english
   %td.col-md-3
-    = RepositoryJobProgress.new(enlistment).message
+    = CodeLocationJobProgress.new(enlistment).message
   %td.col-md-2.status
     - ass = enlistment.analysis_sloc_set
     - if ass

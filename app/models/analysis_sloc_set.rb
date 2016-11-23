@@ -2,7 +2,9 @@ class AnalysisSlocSet < ActiveRecord::Base
   belongs_to :analysis
   belongs_to :sloc_set
 
-  scope :for_repository, ->(repository_id) { joins(sloc_set: :repository).where(repositories: { id: repository_id }) }
+  scope :for_code_location, lambda { |code_location_id|
+    joins(sloc_set: :code_location).where(code_locations: { id: code_location_id })
+  }
   scope :for_analysis, ->(analysis_id) { where(analysis_id: analysis_id) }
 
   def ignore_tuples

@@ -10,7 +10,7 @@ class EnlistmentTest < ActiveSupport::TestCase
     end
 
     it 'should return fyles' do
-      enlistment.repository.best_code_set_id = fyle.code_set_id
+      enlistment.code_location.best_code_set_id = fyle.code_set_id
       enlistment.ignore_examples.count.must_equal 1
       enlistment.ignore_examples.first.must_equal fyle.name
     end
@@ -23,22 +23,23 @@ class EnlistmentTest < ActiveSupport::TestCase
 
     it 'should return analysis_sloc_set' do
       analysis_sloc_set = create(:analysis_sloc_set, analysis: enlistment.project.best_analysis)
-      enlistment.repository.update(best_code_set_id: analysis_sloc_set.sloc_set.code_set_id)
+      enlistment.code_location.update(best_code_set_id: analysis_sloc_set.sloc_set.code_set_id)
       enlistment.analysis_sloc_set.must_equal analysis_sloc_set
     end
   end
 
   describe 'ensure_forge_and_job' do
     it 'should create a new job for project' do
-      Repository.any_instance.stubs(:ensure_job).returns(false)
+      CodeLocation.any_instance.stubs(:ensure_job).returns(false)
 
       analysis = create(:analysis, created_at: 2.months.ago)
       project = create(:project)
       project.update_column(:best_analysis_id, analysis.id)
       forge = Forge.find_by(name: 'Github')
-      repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forge.id,
-                                 owner_at_forge: 'rails', name_at_forge: 'rails')
-      enlistment = create(:enlistment, project: project, repository: repo)
+      repository = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forge.id,
+                                       owner_at_forge: 'rails', name_at_forge: 'rails')
+      code_location = create(:code_location, repository: repository)
+      enlistment = create(:enlistment, project: project, code_location: code_location)
 
       enlistment.ensure_forge_and_job
       project.jobs.count.must_equal 1

@@ -33,26 +33,26 @@ class GithubUserTest < ActiveSupport::TestCase
 
   describe 'save!' do
     before do
-      Repository.any_instance.stubs(:bypass_url_validation).returns(true)
+      CodeLocation.any_instance.stubs(:bypass_url_validation).returns(true)
     end
 
-    it 'must create repositories from given username' do
+    it 'must create code_locations from given username' do
       stub_github_user_repositories_call do
-        Repository.count.must_equal 0
+        CodeLocation.count.must_equal 0
 
         @github_user = GithubUser.new(url: 'stan')
         @github_user.save!
 
-        Repository.count.must_equal 4
+        CodeLocation.count.must_equal 4
       end
     end
 
-    it 'must not include invalid repositories' do
+    it 'must not include existing repositories' do
       stub_github_user_repositories_call do
         Repository.count.must_equal 0
 
         @github_user = GithubUser.new(url: 'stan')
-        Repository.any_instance.stubs(:valid?).returns(false)
+        CodeLocation.stubs(:find_existing).returns(true)
         @github_user.save!
 
         Repository.count.must_equal 0
