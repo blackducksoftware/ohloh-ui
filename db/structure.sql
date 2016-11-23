@@ -1006,7 +1006,7 @@ CREATE TABLE code_location_events (
     type text NOT NULL,
     value text,
     commit_sha1 text,
-    status boolean,
+    published boolean DEFAULT false,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     repository_id integer
@@ -8769,6 +8769,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160608194402');
 INSERT INTO schema_migrations (version) VALUES ('20160610142302');
 
 INSERT INTO schema_migrations (version) VALUES ('20160710125644');
+
+INSERT INTO schema_migrations (version) VALUES ('20160718080707');
 
 INSERT INTO schema_migrations (version) VALUES ('20160713124305');
 
