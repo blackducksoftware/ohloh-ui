@@ -6,6 +6,7 @@ class CodeLocation < ActiveRecord::Base
 
   belongs_to :repository
   belongs_to :best_code_set, foreign_key: :best_code_set_id, class_name: CodeSet
+  belongs_to :best_repository_directory, foreign_key: :best_repository_directory_id, class_name: RepositoryDirectory
   has_many :enlistments
   has_many :jobs
   has_many :slave_logs, through: :jobs
@@ -13,6 +14,7 @@ class CodeLocation < ActiveRecord::Base
   has_many :code_sets
   has_many :sloc_sets, through: :code_sets
   has_many :clumps, through: :code_sets
+  has_many :repository_directories
 
   accepts_nested_attributes_for :repository
 
@@ -26,6 +28,15 @@ class CodeLocation < ActiveRecord::Base
 
   def failed?
     jobs.order(:current_step_at).reverse.first.failed?
+  end
+
+  def repository_directory
+    parent_repository_directory.best_repository_directory
+  end
+
+  def parent_repository_directory
+    return repository if repository.class.dag? && !repository.is_a?(BzrRepository)
+    self
   end
 
   def create_enlistment_for_project(editor_account, project, ignore = nil)

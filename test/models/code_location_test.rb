@@ -148,6 +148,25 @@ class CodeLocationTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'repository_directory' do
+    it "should return repository's best_repository_directory" do
+      repository_directory = create(:repository_directory)
+      repository = create(:git_repository, best_repository_directory_id: repository_directory.id)
+      code_location = create(:code_location, repository: repository)
+      code_location.parent_repository_directory.must_equal repository
+      code_location.repository_directory.must_equal repository_directory
+    end
+
+    it "should return code_location's best_repository_directory" do
+      repository_directory = create(:repository_directory)
+      repository = create(:svn_repository)
+      code_location = create(:code_location, repository: repository,
+                                             best_repository_directory_id: repository_directory.id)
+      code_location.parent_repository_directory.must_equal code_location
+      code_location.repository_directory.must_equal repository_directory
+    end
+  end
+
   private
 
   def clear_jobs

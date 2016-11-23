@@ -18,7 +18,9 @@ class CodeLocationAdminTest < ActionDispatch::IntegrationTest
 
   it 'should refetch the code_location' do
     login_as admin
-    get refetch_admin_code_location_path(create(:code_location))
+    assert_difference 'RepositoryDirectory.count' do
+      get refetch_admin_code_location_path(create(:code_location))
+    end
     assert_response :redirect
   end
 end
