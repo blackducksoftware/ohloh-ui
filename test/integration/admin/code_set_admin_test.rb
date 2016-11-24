@@ -10,9 +10,9 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  it 'should load index page for repository' do
+  it 'should load index page for code_location' do
     login_as admin
-    get admin_repository_code_sets_path(create(:repository))
+    get admin_code_location_code_sets_path(create(:code_location))
     assert_response :success
   end
 

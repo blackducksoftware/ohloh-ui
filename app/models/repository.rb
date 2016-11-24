@@ -1,35 +1,15 @@
 class Repository < ActiveRecord::Base
-  include RepositoryJobs
-
-  belongs_to :best_code_set, foreign_key: :best_code_set_id, class_name: CodeSet
   belongs_to :forge, class_name: 'Forge::Base'
-  has_many :enlistments, -> { not_deleted }
-  has_many :projects, through: :enlistments
-  has_many :jobs
-  has_many :code_sets
-  has_many :slave_logs, through: :jobs
-  has_many :sloc_sets, through: :code_sets
-  has_many :clumps, through: :code_sets
+  has_many :code_locations
 
   scope :matching, ->(match) { Repository.forge_match_search(match) }
 
-  validates :url, presence: true, if: :bypass_url_validation
-  validate :scm_attributes_and_server_connection, unless: :bypass_url_validation
+  validates :url, presence: true
 
   attr_accessor :forge_match
-  attr_reader :bypass_url_validation
-
-  def nice_url
-    "#{url} #{branch_name}"
-  end
 
   def name_in_english
     source_scm.english_name
-  end
-
-  def failed?
-    job = jobs.order(:current_step_at).reverse.first
-    job.failed?
   end
 
   def source_scm
@@ -40,28 +20,7 @@ class Repository < ActiveRecord::Base
     OhlohScm::Adapters::AbstractAdapter
   end
 
-  # Allows testing/development to skip validation.
-  def bypass_url_validation=(value)
-    modified_value = value == '0' ? false : value.present?
-    @bypass_url_validation = modified_value
-  end
-
-  def create_enlistment_for_project(editor_account, project, ignore = nil)
-    enlistment = Enlistment.where(project_id: project.id, repository_id: id).first_or_initialize
-    transaction do
-      enlistment.editor_account = editor_account
-      enlistment.assign_attributes(ignore: ignore)
-      enlistment.save
-      CreateEdit.find_by(target: enlistment).redo!(editor_account) if enlistment.deleted
-    end
-    enlistment.reload
-  end
-
   class << self
-    def find_existing(repository)
-      order(:id).find_by_url(repository.url)
-    end
-
     def get_compatible_class(_url)
       self
     end
@@ -74,36 +33,5 @@ class Repository < ActiveRecord::Base
         wheres.where(owner_at_forge: nil)
       end
     end
-  end
-
-  private
-
-  def scm_attributes_and_server_connection
-    normalize_scm_attributes
-    source_scm.validate
-    Timeout.timeout(timeout_interval) { source_scm.validate_server_connection }
-  rescue Timeout::Error
-    source_scm.errors << [:url, I18n.t('repositories.timeout')]
-  ensure
-    populate_scm_errors
-  end
-
-  def timeout_interval
-    ENV['SCM_URL_VALIDATION_TIMEOUT'].to_i
-  end
-
-  def populate_scm_errors
-    source_scm.errors.each do |attribute, error_message|
-      errors.add(attribute, error_message)
-    end
-  end
-
-  def normalize_scm_attributes
-    source_scm.normalize
-
-    self.url         = source_scm.url
-    self.branch_name = source_scm.branch_name
-    self.username    = source_scm.username
-    self.password    = source_scm.password
   end
 end

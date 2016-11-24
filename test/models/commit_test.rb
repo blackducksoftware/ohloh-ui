@@ -7,7 +7,7 @@ class CommitTest < ActiveSupport::TestCase
 
   describe '#for_project' do
     it 'should return commits' do
-      project = commit.code_set.repository.enlistments.first.project
+      project = commit.code_set.code_location.enlistments.first.project
       commits = Commit.for_project(project)
       commits.count.must_equal 1
       commits.first.must_equal commit
@@ -56,31 +56,32 @@ class CommitTest < ActiveSupport::TestCase
 
   describe 'nice_id' do
     it 'should return nil if not a git, svn or hg' do
+      commit.code_set.code_location = create(:code_location, repository: create(:cvs_repository))
       commit.nice_id.must_equal nil
     end
 
     it 'should return commit id if SvnSyncRepository' do
-      commit.code_set.repository = SvnSyncRepository.new
+      commit.code_set.code_location = create(:code_location, repository: create(:svn_sync_repository))
       commit.nice_id.must_equal commit.sha1.prepend('r')
     end
 
     it 'should return commit id if GitRepository' do
-      commit.code_set.repository = GitRepository.new
+      commit.code_set.code_location = create(:code_location, repository: create(:git_repository))
       commit.nice_id.must_equal commit.sha1
     end
 
     it 'should truncate commit if short params' do
-      commit.code_set.repository = GitRepository.new
+      commit.code_set.code_location = create(:code_location, repository: create(:git_repository))
       commit.nice_id(short: true).must_equal commit.sha1.to(7)
     end
 
     it 'should return commit id if HgRepository' do
-      commit.code_set.repository = HgRepository.new
+      commit.code_set.code_location = create(:code_location, repository: create(:hg_repository))
       commit.nice_id.must_equal commit.sha1
     end
 
     it 'must truncate 12 chars of commit if short params is passed' do
-      commit.code_set.repository = HgRepository.new
+      commit.code_set.code_location = create(:code_location, repository: create(:hg_repository))
       commit.nice_id(short: true).must_equal commit.sha1.to(11)
     end
   end

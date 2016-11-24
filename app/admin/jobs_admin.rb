@@ -62,7 +62,9 @@ ActiveAdmin.register Job do
       span link_to "Project #{job.project.name}", project_path(job.project) if job.project_id
       span link_to "Organization #{job.organization.name}", organization_path(job.organization) if job.organization_id
       span link_to "Account #{job.account.login}", account_path(job.account) if job.account_id
-      span link_to "Repository #{job.repository_id}", admin_repository_path(job.repository_id) if job.repository_id
+      if job.code_location_id
+        span link_to "CodeLocation #{job.code_location_id}", admin_code_location_path(job.code_location_id)
+      end
     end
 
     actions defaults: false do |job|
@@ -111,8 +113,8 @@ ActiveAdmin.register Job do
 
   controller do
     def scoped_collection
-      if params['repository_id']
-        Repository.find(params['repository_id']).jobs
+      if params['code_location_id']
+        CodeLocation.find(params['code_location_id']).jobs
       elsif params[:project_id]
         project_jobs
       else
@@ -134,7 +136,7 @@ ActiveAdmin.register Job do
 
     def manually_schedule
       project = Project.find_by_vanity_url!(params[:project_id])
-      project.repositories.each(&:schedule_fetch)
+      project.code_locations.each(&:schedule_fetch)
       redirect_to admin_project_jobs_path(project), flash: { success: 'Job has been scheduled.' }
     end
 
@@ -148,11 +150,11 @@ ActiveAdmin.register Job do
 
     def project_jobs
       project = Project.find_by_vanity_url!(params[:project_id])
-      if project.repositories.size.zero?
+      if project.code_locations.size.zero?
         project.jobs
       else
-        Job.where("project_id = #{project.id} or repository_id in (
-                  select repository_id from enlistments where project_id = #{project.id} and not deleted)")
+        Job.where("project_id = #{project.id} or code_location_id in (
+                  select code_location_id from enlistments where project_id = #{project.id} and not deleted)")
       end
     end
   end

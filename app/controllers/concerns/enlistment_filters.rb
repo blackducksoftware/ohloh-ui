@@ -78,6 +78,7 @@ module EnlistmentFilters
   def handle_github_user_flow
     return unless params[:repository][:type] == 'GithubUser'
     @repository = GithubUser.new(repository_params)
+    @code_location = CodeLocation.new
     return render :new, status: :unprocessable_entity unless @repository.valid?
     create_worker
   end
