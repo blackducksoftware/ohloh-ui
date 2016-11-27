@@ -15,3 +15,5 @@ Dir.glob('lib/capistrano/tasks/*.rake').each { |r| import r }
 require 'capistrano/rbenv'
 set :rbenv_type, :user
 set :rbenv_ruby, '2.2.3'
+
+require 'new_relic/recipes'
