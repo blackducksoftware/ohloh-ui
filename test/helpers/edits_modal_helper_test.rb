@@ -28,7 +28,7 @@ describe EditsModalHelper do
 
     it 'should return value for enlistment' do
       enlistment = create(:enlistment)
-      edit_show_value(enlistment.edits.first).must_equal enlistment.repository.nice_url
+      enlistment.edits.first.target.code_location.nice_url.must_equal enlistment.code_location.nice_url
     end
 
     it 'should return value for project license' do

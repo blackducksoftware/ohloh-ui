@@ -1,0 +1,39 @@
+#! /usr/bin/env ruby
+
+require_relative '../config/environment'
+
+# populate code_locations from repositories
+ActiveRecord::Base.connection.execute("
+  insert into code_locations(repository_id, module_branch_name, best_code_set_id,
+    created_at, updated_at)
+    select id, module_name, best_code_set_id, created_at, updated_at
+    from repositories where
+    type = 'CvsRepository'
+")
+
+ActiveRecord::Base.connection.execute("
+  insert into code_locations(repository_id, module_branch_name, best_code_set_id,
+    created_at, updated_at)
+    select id, branch_name, best_code_set_id, created_at, updated_at
+    from repositories where
+    type != 'CvsRepository'
+")
+
+# update code_locations status
+ActiveRecord::Base.connection.execute("
+  update code_locations set status = #{CodeLocation::STATUS_DELETED}
+  from enlistments
+  where deleted and enlistments.repository_id = code_locations.repository_id
+")
+
+# Fill code_location ids in reference tables
+
+ActiveRecord::Base.connection.execute("
+  update enlistments E set code_location_id = C.id from code_locations C where C.repository_id = E.repository_id
+")
+ActiveRecord::Base.connection.execute("
+  update code_sets CS set code_location_id = C.id from code_locations C where C.repository_id = CS.repository_id
+")
+ActiveRecord::Base.connection.execute("
+  update jobs J set code_location_id = C.id from code_locations C where C.repository_id = J.repository_id
+")

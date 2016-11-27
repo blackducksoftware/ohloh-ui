@@ -440,7 +440,9 @@ Rails.application.routes.draw do
     resources :organizations do
       resources :jobs, as: :job
     end
-    resources :repositories do
+    resources :repositories
+
+    resources :code_locations do
       resources :jobs
       resources :code_sets
       resources :sloc_sets
