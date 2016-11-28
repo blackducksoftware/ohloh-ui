@@ -997,6 +997,113 @@ ALTER SEQUENCE clumps_id_seq OWNED BY clumps.id;
 
 
 --
+-- Name: code_location_events; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE code_location_events (
+    id integer NOT NULL,
+    code_location_id integer,
+    type text NOT NULL,
+    value text,
+    commit_sha1 text,
+    status boolean,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    repository_id integer,
+    code_location_events integer
+);
+
+
+--
+-- Name: code_location_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE code_location_events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: code_location_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE code_location_events_id_seq OWNED BY code_location_events.id;
+
+
+--
+-- Name: code_location_tarballs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE code_location_tarballs (
+    id integer NOT NULL,
+    code_location_id integer,
+    reference text,
+    filepath text,
+    status integer DEFAULT 0,
+    created_at timestamp without time zone,
+    type text
+);
+
+
+--
+-- Name: code_location_tarballs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE code_location_tarballs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: code_location_tarballs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE code_location_tarballs_id_seq OWNED BY code_location_tarballs.id;
+
+
+--
+-- Name: code_locations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE code_locations (
+    id integer NOT NULL,
+    repository_id integer,
+    module_branch_name text,
+    status integer DEFAULT 1,
+    best_code_set_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    update_interval integer DEFAULT 3600,
+    best_repository_directory_id integer
+);
+
+
+--
+-- Name: code_locations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE code_locations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: code_locations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE code_locations_id_seq OWNED BY code_locations.id;
+
+
+--
 -- Name: code_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1014,13 +1121,14 @@ CREATE SEQUENCE code_sets_id_seq
 
 CREATE TABLE code_sets (
     id integer DEFAULT nextval('code_sets_id_seq'::regclass) NOT NULL,
-    repository_id integer NOT NULL,
+    repository_id integer,
     updated_on timestamp without time zone,
     best_sloc_set_id integer,
     as_of integer,
     logged_at timestamp without time zone,
     clump_count integer DEFAULT 0,
-    fetched_at timestamp without time zone
+    fetched_at timestamp without time zone,
+    code_location_id integer
 );
 
 
@@ -1370,11 +1478,12 @@ CREATE SEQUENCE enlistments_id_seq
 CREATE TABLE enlistments (
     id integer DEFAULT nextval('enlistments_id_seq'::regclass) NOT NULL,
     project_id integer NOT NULL,
-    repository_id integer NOT NULL,
+    repository_id integer,
     deleted boolean DEFAULT false NOT NULL,
     created_at timestamp without time zone DEFAULT timezone('UTC'::text, now()) NOT NULL,
     updated_at timestamp without time zone DEFAULT timezone('UTC'::text, now()) NOT NULL,
-    ignore text
+    ignore text,
+    code_location_id integer
 );
 
 
@@ -1905,7 +2014,9 @@ CREATE TABLE jobs (
     retry_count integer DEFAULT 0,
     do_not_retry boolean DEFAULT false,
     failure_group_id integer,
-    organization_id integer
+    organization_id integer,
+    code_location_id integer,
+    code_location_tarball_id integer
 );
 
 
@@ -3463,8 +3574,72 @@ CREATE TABLE repositories (
     updated_at timestamp without time zone DEFAULT timezone('UTC'::text, now()) NOT NULL,
     update_interval integer DEFAULT 3600,
     name_at_forge text,
-    owner_at_forge text
+    owner_at_forge text,
+    best_repository_directory_id integer
 );
+
+
+--
+-- Name: repository_directories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE repository_directories (
+    id integer NOT NULL,
+    code_location_id integer,
+    repository_id integer,
+    fetched_at timestamp without time zone
+);
+
+
+--
+-- Name: repository_directories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE repository_directories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: repository_directories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE repository_directories_id_seq OWNED BY repository_directories.id;
+
+
+--
+-- Name: repository_tags; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE repository_tags (
+    id integer NOT NULL,
+    repository_id integer,
+    name text,
+    commit_sha1 text,
+    message text
+);
+
+
+--
+-- Name: repository_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE repository_tags_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: repository_tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE repository_tags_id_seq OWNED BY repository_tags.id;
 
 
 --
@@ -4312,6 +4487,27 @@ ALTER TABLE ONLY clumps ALTER COLUMN id SET DEFAULT nextval('clumps_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY code_location_events ALTER COLUMN id SET DEFAULT nextval('code_location_events_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_location_tarballs ALTER COLUMN id SET DEFAULT nextval('code_location_tarballs_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_locations ALTER COLUMN id SET DEFAULT nextval('code_locations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY commit_flags ALTER COLUMN id SET DEFAULT nextval('commit_flags_id_seq'::regclass);
 
 
@@ -4620,6 +4816,20 @@ ALTER TABLE ONLY reports ALTER COLUMN id SET DEFAULT nextval('reports_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY repository_directories ALTER COLUMN id SET DEFAULT nextval('repository_directories_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY repository_tags ALTER COLUMN id SET DEFAULT nextval('repository_tags_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY reverification_trackers ALTER COLUMN id SET DEFAULT nextval('reverification_trackers_id_seq'::regclass);
 
 
@@ -4829,6 +5039,30 @@ ALTER TABLE ONLY positions
 
 ALTER TABLE ONLY clumps
     ADD CONSTRAINT clumps_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: code_location_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY code_location_events
+    ADD CONSTRAINT code_location_events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: code_location_tarballs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY code_location_tarballs
+    ADD CONSTRAINT code_location_tarballs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: code_locations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY code_locations
+    ADD CONSTRAINT code_locations_pkey PRIMARY KEY (id);
 
 
 --
@@ -5448,6 +5682,22 @@ ALTER TABLE ONLY repositories
 
 
 --
+-- Name: repository_directories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY repository_directories
+    ADD CONSTRAINT repository_directories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: repository_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY repository_tags
+    ADD CONSTRAINT repository_tags_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: reverification_trackers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -5661,14 +5911,6 @@ ALTER TABLE ONLY project_events
 
 ALTER TABLE ONLY positions
     ADD CONSTRAINT unique_project_id_name_id UNIQUE (project_id, name_id);
-
-
---
--- Name: unique_project_id_repository_id; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY enlistments
-    ADD CONSTRAINT unique_project_id_repository_id UNIQUE (project_id, repository_id);
 
 
 --
@@ -5917,10 +6159,66 @@ CREATE INDEX index_clumps_on_code_set_id_slave_id ON clumps USING btree (code_se
 
 
 --
+-- Name: index_code_location_events_on_code_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_code_location_events_on_code_location_id ON code_location_events USING btree (code_location_id);
+
+
+--
+-- Name: index_code_location_events_on_repository_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_code_location_events_on_repository_id ON code_location_events USING btree (repository_id);
+
+
+--
+-- Name: index_code_location_tarballs_on_code_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_code_location_tarballs_on_code_location_id ON code_location_tarballs USING btree (code_location_id);
+
+
+--
+-- Name: index_code_location_tarballs_on_reference; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_code_location_tarballs_on_reference ON code_location_tarballs USING btree (reference);
+
+
+--
+-- Name: index_code_locations_on_best_code_set_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_code_locations_on_best_code_set_id ON code_locations USING btree (best_code_set_id);
+
+
+--
+-- Name: index_code_locations_on_repository_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_code_locations_on_repository_id ON code_locations USING btree (repository_id);
+
+
+--
+-- Name: index_code_locations_on_repository_id_and_module_branch_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_code_locations_on_repository_id_and_module_branch_name ON code_locations USING btree (repository_id, module_branch_name);
+
+
+--
 -- Name: index_code_sets_on_best_sloc_set_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_code_sets_on_best_sloc_set_id ON code_sets USING btree (best_sloc_set_id);
+
+
+--
+-- Name: index_code_sets_on_code_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_code_sets_on_code_location_id ON code_sets USING btree (code_location_id);
 
 
 --
@@ -6036,10 +6334,24 @@ CREATE INDEX index_edits_on_edits ON edits USING btree (target_type, target_id, 
 
 
 --
+-- Name: index_enlistments_on_code_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_enlistments_on_code_location_id ON enlistments USING btree (code_location_id);
+
+
+--
 -- Name: index_enlistments_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_enlistments_on_project_id ON enlistments USING btree (project_id) WHERE (deleted IS FALSE);
+
+
+--
+-- Name: index_enlistments_on_project_id_and_code_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_enlistments_on_project_id_and_code_location_id ON enlistments USING btree (project_id, code_location_id);
 
 
 --
@@ -6117,6 +6429,13 @@ CREATE INDEX index_helpfuls_on_review_id ON helpfuls USING btree (review_id);
 --
 
 CREATE INDEX index_jobs_on_account_id ON jobs USING btree (account_id);
+
+
+--
+-- Name: index_jobs_on_code_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_jobs_on_code_location_id ON jobs USING btree (code_location_id);
 
 
 --
@@ -6631,6 +6950,27 @@ CREATE INDEX index_repositories_on_forge_id ON repositories USING btree (forge_i
 
 
 --
+-- Name: index_repository_directories_on_code_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_repository_directories_on_code_location_id ON repository_directories USING btree (code_location_id);
+
+
+--
+-- Name: index_repository_directories_on_repository_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_repository_directories_on_repository_id ON repository_directories USING btree (repository_id);
+
+
+--
+-- Name: index_repository_tags_on_repository_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_repository_tags_on_repository_id ON repository_tags USING btree (repository_id);
+
+
+--
 -- Name: index_reviews_on_account_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -6712,6 +7052,13 @@ CREATE INDEX index_slave_logs_on_slave_id ON slave_logs USING btree (slave_id);
 --
 
 CREATE INDEX index_sloc_metrics_on_diff_id ON sloc_metrics USING btree (diff_id);
+
+
+--
+-- Name: index_sloc_metrics_on_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_sloc_metrics_on_id ON sloc_metrics USING btree (id);
 
 
 --
@@ -7325,11 +7672,51 @@ ALTER TABLE ONLY project_vulnerability_reports
 
 
 --
+-- Name: fk_rails_0ff5ad97b1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_locations
+    ADD CONSTRAINT fk_rails_0ff5ad97b1 FOREIGN KEY (repository_id) REFERENCES repositories(id);
+
+
+--
+-- Name: fk_rails_24196d6a51; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_location_tarballs
+    ADD CONSTRAINT fk_rails_24196d6a51 FOREIGN KEY (code_location_id) REFERENCES code_locations(id);
+
+
+--
+-- Name: fk_rails_275a40dd6e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY repository_tags
+    ADD CONSTRAINT fk_rails_275a40dd6e FOREIGN KEY (repository_id) REFERENCES repositories(id);
+
+
+--
+-- Name: fk_rails_2f22a538c9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_locations
+    ADD CONSTRAINT fk_rails_2f22a538c9 FOREIGN KEY (best_code_set_id) REFERENCES code_sets(id);
+
+
+--
 -- Name: fk_rails_4c3c9e5c61; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY project_badges
     ADD CONSTRAINT fk_rails_4c3c9e5c61 FOREIGN KEY (enlistment_id) REFERENCES enlistments(id);
+
+
+--
+-- Name: fk_rails_5a0f61d9a6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_location_events
+    ADD CONSTRAINT fk_rails_5a0f61d9a6 FOREIGN KEY (code_location_id) REFERENCES code_locations(id);
 
 
 --
@@ -7349,11 +7736,35 @@ ALTER TABLE ONLY projects
 
 
 --
+-- Name: fk_rails_d33c461543; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY repository_directories
+    ADD CONSTRAINT fk_rails_d33c461543 FOREIGN KEY (code_location_id) REFERENCES code_locations(id);
+
+
+--
+-- Name: fk_rails_d36c79e15c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY repository_directories
+    ADD CONSTRAINT fk_rails_d36c79e15c FOREIGN KEY (repository_id) REFERENCES repositories(id);
+
+
+--
 -- Name: fk_rails_efaa9c9657; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY project_security_sets
     ADD CONSTRAINT fk_rails_efaa9c9657 FOREIGN KEY (project_id) REFERENCES projects(id);
+
+
+--
+-- Name: fk_rails_f43796d023; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_location_events
+    ADD CONSTRAINT fk_rails_f43796d023 FOREIGN KEY (repository_id) REFERENCES repositories(id);
 
 
 --
@@ -8334,9 +8745,25 @@ INSERT INTO schema_migrations (version) VALUES ('20160321061931');
 
 INSERT INTO schema_migrations (version) VALUES ('20160504111046');
 
+INSERT INTO schema_migrations (version) VALUES ('20160512144023');
+
 INSERT INTO schema_migrations (version) VALUES ('20160608090419');
 
 INSERT INTO schema_migrations (version) VALUES ('20160608194402');
+
+INSERT INTO schema_migrations (version) VALUES ('20160610142302');
+
+INSERT INTO schema_migrations (version) VALUES ('20160710125644');
+
+INSERT INTO schema_migrations (version) VALUES ('20160713124305');
+
+INSERT INTO schema_migrations (version) VALUES ('20160725154001');
+
+INSERT INTO schema_migrations (version) VALUES ('20160803102211');
+
+INSERT INTO schema_migrations (version) VALUES ('20160804081950');
+
+INSERT INTO schema_migrations (version) VALUES ('20160808163201');
 
 INSERT INTO schema_migrations (version) VALUES ('20160818102530');
 
@@ -8356,7 +8783,11 @@ INSERT INTO schema_migrations (version) VALUES ('20161024095609');
 
 INSERT INTO schema_migrations (version) VALUES ('20161027065200');
 
+INSERT INTO schema_migrations (version) VALUES ('20161101134545');
+
 INSERT INTO schema_migrations (version) VALUES ('20161103153643');
+
+INSERT INTO schema_migrations (version) VALUES ('20161114063801');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

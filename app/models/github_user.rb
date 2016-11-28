@@ -4,7 +4,7 @@ class GithubUser
   include ActiveModel::Model
 
   attr_accessor :url, :bypass_url_validation
-  attr_reader :repositories, :module_name, :password
+  attr_reader :code_locations, :module_branch_name, :password
   alias username url
 
   validates :url, format: { with: URL_FORMAT, message: I18n.t('invalid_github_username') }
@@ -15,41 +15,39 @@ class GithubUser
   end
 
   def save!
-    create_repositories
+    create_code_locations
   end
 
   def create_enlistment_for_project(editor_account, project, ignore = nil)
     project = Project.find(project)
     editor_account = Account.find(editor_account)
-    repositories.each do |repository|
-      repository.create_enlistment_for_project(editor_account, project, ignore)
+    code_locations.each do |code_location|
+      code_location.create_enlistment_for_project(editor_account, project, ignore) unless code_location.new_record?
     end
   end
 
   def branch_name
-    :master
+    'master'
   end
 
   class << self
     def get_compatible_class(_url)
       self
     end
-
-    def find_existing(_repository)
-    end
-
-    def find_existing_repository(url)
-      GitRepository.find_by(url: url, branch_name: new.branch_name)
-    end
   end
 
   private
 
-  def create_repositories
-    urls = fetch_repository_urls
-    @repositories ||= urls.each_with_object([]) do |url, repositories|
-      r = GitRepository.find_or_create_by(url: url, branch_name: branch_name)
-      repositories.push r unless r.new_record?
+  def create_code_locations
+    @code_locations ||= begin
+      fetch_repository_urls.collect do |url|
+        code_location = CodeLocation.find_existing(url, branch_name)
+        unless code_location
+          repository = GitRepository.find_or_initialize_by(url: url)
+          code_location = CodeLocation.create(repository: repository, module_branch_name: branch_name)
+        end
+        code_location
+      end
     end
   end
 

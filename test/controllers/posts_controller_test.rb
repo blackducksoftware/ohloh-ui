@@ -286,8 +286,81 @@ describe PostsController do
       end
 
       login_as user
+      ActionMailer::Base.deliveries.clear
       post :create, topic_id: topic.id, post: { body: 'Replying for the first time' }
       topic.posts.count.must_equal 2
+      ActionMailer::Base.deliveries.size.must_equal 1
+
+      email = ActionMailer::Base.deliveries
+
+      email.first.to.must_equal [topic.account.email]
+      email.first.subject.must_equal 'Someone has responded to your post'
+      must_redirect_to topic_path(topic.id)
+    end
+
+    it 'users who have posted more than once on a topic receive only one email notification' do
+      topic = create(:topic, :with_posts)
+      # Setting the posts
+      # 1. Set the first and last post's account as the creator of the topic
+      #    in order to replicate post creation and reply by the same user.
+      topic.posts[0].account = topic.account
+      topic.posts[1].account = topic.account
+      topic.save
+      topic.reload
+      # Sign in and reply as the last user to reply.
+      last_user = user
+      login_as last_user
+
+      ActionMailer::Base.deliveries.clear
+      assert_difference(['ActionMailer::Base.deliveries.size'], 2) do
+        post :create, topic_id: topic.id, post: { body: 'This post should trigger a cascade
+                                                                        of emails being sent to all preceding users' }
+      end
+      email = ActionMailer::Base.deliveries
+
+      email.first.to.must_equal [topic.posts[1].account.email]
+      email.first.subject.must_equal 'Someone has responded to your post'
+      must_redirect_to topic_path(topic.id)
+    end
+
+    it 'a user who replies to his own post will not receive a post notification email while everyone else does.' do
+      topic = create(:topic, :with_posts)
+      # Setting the posts
+      # 1. Set the first and last post's account as the creator of the topic
+      #    in order to replicate post creation and reply by the same user.
+      topic.posts[0].account = topic.account
+      topic.posts[2].account = topic.account
+      topic.save
+      topic.reload
+
+      # Sign in and reply as the last user to reply.
+      last_user = topic.account
+      login_as last_user
+
+      ActionMailer::Base.deliveries.clear
+      post :create, topic_id: topic.id, post: { body: 'last_user replies to his own post' }
+
+      email = ActionMailer::Base.deliveries
+
+      email.first.to.must_equal [topic.posts[2].account.email]
+      email.first.subject.must_equal 'Someone has responded to your post'
+      must_redirect_to topic_path(topic.id)
+    end
+
+    it 'should not send a post notification email respecting their email preference' do
+      topic = create(:topic, :with_posts)
+      topic.account.update_column('email_master', false)
+      topic.posts[0].account = topic.account
+      topic.save
+      topic.reload
+
+      # Sign in as someone and post it
+      login_as create(:account)
+
+      ActionMailer::Base.deliveries.clear
+      post :create, topic_id: topic.id, post: { body: 'last_user replies to his own post' }
+      email = ActionMailer::Base.deliveries
+      email.map(&:to).flatten.wont_include topic.account.email
       must_redirect_to topic_path(topic.id)
     end
 

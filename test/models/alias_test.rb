@@ -9,7 +9,7 @@ class AliasTest < ActiveSupport::TestCase
     @alias   = create(:alias, project_id: @project.id, commit_name_id: @commit_name.id,
                               preferred_name_id: @preferred_name.id)
     @commit  = create(:commit)
-    @commit_project = @commit.code_set.repository.projects.first
+    @commit_project = @commit.code_set.code_location.projects.first
   end
 
   it 'should validate commit_name_id presence' do
@@ -125,5 +125,28 @@ class AliasTest < ActiveSupport::TestCase
 
   it 'allow_undo_to_nil?' do
     assert @alias.allow_undo_to_nil?(@alias.preferred_name_id)
+  end
+
+  describe '#remove_unclaimed_person' do
+    before do
+      @person2 = create(:person, name_id: @alias.commit_name_id,
+                                 project_id: @alias.project.id,
+                                 name_fact: create(:contributor_fact, commits: 2))
+      @person1 = create(:person, project_id: @alias.project.id)
+      @contributor_fact = create(:contributor_fact, name_id: @alias.preferred_name_id,
+                                                    analysis_id: @project.best_analysis_id,
+                                                    commits: 8)
+    end
+    it 'should increment count only if preferred_name_id is changed ' do
+      @alias.update_attributes(deleted: false)
+      @contributor_fact.reload.commits.must_equal 8
+    end
+
+    it 'should increment count only if preferred_name_id is changed-positive' do
+      contributor_fact1 = create(:contributor_fact, name_id: @person1.name_id, analysis_id: @project.best_analysis_id,
+                                                    commits: 8)
+      @alias.update_attributes(preferred_name_id: contributor_fact1.name_id)
+      contributor_fact1.reload.commits.must_equal 10
+    end
   end
 end

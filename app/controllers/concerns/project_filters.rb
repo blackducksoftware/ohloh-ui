@@ -44,7 +44,8 @@ module ProjectFilters
   def find_forge_matches
     @match = Forge::Match.first(params[:codelocation])
     return unless @match
-    @projects = Project.where(id: Repository.matching(@match).joins(:projects).select('projects.id')).not_deleted
+    @projects = Project.where(id: Repository.matching(@match).joins(code_locations: :projects)
+                                    .select('projects.id')).not_deleted
   end
 
   def set_rating_and_score

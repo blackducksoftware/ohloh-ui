@@ -305,6 +305,7 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (3.2.0)
+    newrelic_rpm (3.17.1.326)
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
@@ -471,8 +472,6 @@ GEM
     thread_safe (0.3.5)
     tilt (2.0.5)
     timecop (0.8.1)
-    traceview (3.8.3)
-      json
     twitter-bootstrap-rails (3.2.2)
       actionpack (>= 3.1)
       execjs (>= 2.2.2, >= 2.2)
@@ -542,6 +541,8 @@ DEPENDENCIES
   mini_magick (~> 4.1.1)
   minitest-rails
   mocha
+  newrelic_rpm
+  nokogiri (~> 1.6.8)
   oh_delegator
   ohloh_scm
   open4
@@ -567,7 +568,6 @@ DEPENDENCIES
   teaspoon-jasmine
   therubyracer
   timecop
-  traceview
   twitter-bootstrap-rails
   uglifier (>= 2.7.2)
   vcr
@@ -577,4 +577,4 @@ DEPENDENCIES
   will_paginate-bootstrap
 
 BUNDLED WITH
-   1.13.4
+   1.13.6

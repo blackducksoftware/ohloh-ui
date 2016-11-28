@@ -25,12 +25,16 @@ class Forge::Match
   end
 
   def project
-    Project.new(forge.get_project_attributes(self).merge(repositories: repositories))
+    Project.new(forge.get_project_attributes(self).merge(code_locations: code_locations))
   end
 
-  def repositories
+  def code_locations
     forge.get_repository_attributes(self).map do |r|
-      r[:type] ? r[:type].new(r.reject { |k, _| k == :type }) : nil
+      next unless r[:type]
+
+      module_branch_name = r.delete(:branch_name) || r.delete(:module_name)
+      CodeLocation.new(module_branch_name: module_branch_name,
+                       repository: r[:type].new(r.reject { |k, _| k == :type }))
     end.uniq
   end
 

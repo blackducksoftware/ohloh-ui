@@ -31,7 +31,9 @@ module ProjectAssociations
     has_many :jobs
     belongs_to :forge, class_name: 'Forge::Base'
     has_many :enlistments, -> { where(deleted: false) }
-    has_many :repositories, through: :enlistments
+    has_many :code_locations, through: :enlistments
+    has_many :repositories, through: :code_locations
+    has_many :code_locations_sloc_sets, through: :code_locations, source: :best_code_set
     has_many :project_licenses, -> { where("project_licenses.deleted = 'f'") }
     has_many :licenses, -> { order('lower(licenses.name)') }, through: :project_licenses
     has_many :duplicates, -> { order(created_at: :desc) }, class_name: 'Duplicate', foreign_key: 'good_project_id'

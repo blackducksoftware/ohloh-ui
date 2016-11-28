@@ -19,11 +19,11 @@ end
 br
 br
 span 'Enlisted Projects: '
-job.repository.projects.each do |project|
+job.code_location.projects.each do |project|
   a link_to project.name, project_path(project)
   a link_to '[Jobs]', admin_project_jobs_path(project)
   br
-end if job.repository
+end if job.code_location
 br
 span 'Failure Group: '
 if job.failure_group
@@ -58,8 +58,8 @@ end
 
 br
 br
-if job.repository
-  render 'admin/repositories/repository', repository: job.repository, code_sets: job.repository.code_sets, job: job
+if job.code_location
+  render 'admin/repositories/repository', code_location: job.code_location, code_sets: job.code_location.code_sets, job: job
 end
 
 br

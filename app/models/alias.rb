@@ -74,7 +74,7 @@ class Alias < ActiveRecord::Base
 
   def remove_unclaimed_person
     return unless Person.exists?(name_id: commit_name_id, project_id: project_id)
-    update_unclaimed_person unless preferred_name_id_changed?
+    update_unclaimed_person if preferred_name_id_changed?
   end
 
   def update_unclaimed_person

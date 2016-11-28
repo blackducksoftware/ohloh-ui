@@ -1,16 +1,7 @@
-def random_repository_name
-  chars = ('a'..'z').to_a + ('A'..'Z').to_a + ('0'..'9').to_a + ['_', '-', '+', '/', '.']
-  (0...16).map { chars[rand(chars.length)] }.join
-end
-
 FactoryGirl.define do
   factory :repository do
     url { Faker::Internet.url }
-    module_name { random_repository_name }
-    branch_name { random_repository_name }
     type 'GitRepository'
-    after(:create) { |repository| create(:enlistment, repository: repository) }
-    bypass_url_validation true
   end
 
   factory :bzr_repository, parent: :repository, class: 'BzrRepository' do
@@ -38,18 +29,18 @@ FactoryGirl.define do
     type 'SvnSyncRepository'
   end
 
-  trait :branch do
-    branch_name 'master'
-    module_name nil
-  end
-
-  trait :module do
-    branch_name nil
-    module_name 'trunk/'
-  end
-
-  trait :no_branch_module do
-    branch_name nil
-    module_name nil
-  end
+  #  trait :branch do
+  #    branch_name 'master'
+  #    module_name nil
+  #  end
+  #
+  #  trait :module do
+  #    branch_name nil
+  #    module_name 'trunk/'
+  #  end
+  #
+  #  trait :no_branch_module do
+  #    branch_name nil
+  #    module_name nil
+  #  end
 end

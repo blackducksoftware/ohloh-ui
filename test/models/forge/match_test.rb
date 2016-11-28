@@ -107,119 +107,120 @@ class Forge::MatchTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'repositories' do
-    it 'should return new repository for Forge::Bitbucket match' do
+  describe 'code_locations' do
+    it 'should return new code_location for Forge::Bitbucket match' do
       match = Forge::Match.first('http://bitbucket.org/durin42/hgsubversion/')
-      repositories = match.repositories
-      repositories.length.must_equal 1
-      repositories[0].is_a?(HgRepository).must_equal true
-      repositories[0].url.must_equal 'https://bitbucket.org/durin42/hgsubversion'
-      repositories[0].forge_match.must_equal match
+      code_locations = match.code_locations
+      code_locations.length.must_equal 1
+      code_locations[0].repository.is_a?(HgRepository).must_equal true
+      code_locations[0].repository.url.must_equal 'https://bitbucket.org/durin42/hgsubversion'
+      code_locations[0].repository.forge_match.must_equal match
     end
 
-    it 'should return new repository for Forge::Codeplex match' do
+    it 'should return new code_location for Forge::Codeplex match' do
       match = Forge::Match.first('https://smextensionlib.svn.codeplex.com/svn')
-      repositories = match.repositories
-      repositories.length.must_equal 0
+      code_locations = match.code_locations
+      code_locations.length.must_equal 0
     end
 
-    it 'should return new repository for Forge::Github match' do
+    it 'should return new code_location for Forge::Github match' do
       VCR.use_cassette('ForgeMatchGithub') do
         match = Forge::Match.first('https://github.com/rails/rails')
-        repositories = match.repositories
-        repositories.length.must_equal 1
-        repositories[0].is_a?(GitRepository).must_equal true
-        repositories[0].url.must_equal 'git://github.com/rails/rails.git'
-        repositories[0].branch_name.must_equal nil
-        repositories[0].forge_match.must_equal match
+        code_locations = match.code_locations
+        code_locations.length.must_equal 1
+        code_locations[0].repository.is_a?(GitRepository).must_equal true
+        code_locations[0].repository.url.must_equal 'git://github.com/rails/rails.git'
+        code_locations[0].module_branch_name.must_equal nil
+        code_locations[0].repository.forge_match.must_equal match
       end
     end
 
-    it 'should return new repository for Forge::GoogleCode (svn) match' do
+    it 'should return new code_location for Forge::GoogleCode (svn) match' do
       VCR.use_cassette('ForgeMatchGoogleCodeRepository') do
         match = Forge::Match.first('https://code.google.com/p/jwysiwyg/')
-        repositories = match.repositories
-        repositories.length.must_equal 1
-        repositories[0].is_a?(SvnRepository).must_equal true
-        repositories[0].url.must_equal 'http://jwysiwyg.googlecode.com/svn/trunk/'
-        repositories[0].forge_match.must_equal match
+        code_locations = match.code_locations
+        code_locations.length.must_equal 1
+        code_locations[0].repository.is_a?(SvnRepository).must_equal true
+        code_locations[0].repository.url.must_equal 'http://jwysiwyg.googlecode.com/svn/trunk/'
+        code_locations[0].repository.forge_match.must_equal match
       end
     end
 
-    it 'should return new repository for Forge::GoogleCode (hg) match' do
+    it 'should return new code_location for Forge::GoogleCode (hg) match' do
       VCR.use_cassette('ForgeMatchGoogleCodeRepositoryHg') do
         match = Forge::Match.first('https://pdd-by.googlecode.com/hg/')
-        repositories = match.repositories
-        repositories.length.must_equal 1
-        repositories[0].is_a?(HgRepository).must_equal true
-        repositories[0].url.must_equal 'https://code.google.com/p/pdd-by/'
-        repositories[0].forge_match.must_equal match
+        code_locations = match.code_locations
+        code_locations.length.must_equal 1
+        code_locations[0].repository.is_a?(HgRepository).must_equal true
+        code_locations[0].repository.url.must_equal 'https://code.google.com/p/pdd-by/'
+        code_locations[0].repository.forge_match.must_equal match
       end
     end
 
-    it 'should return new repository for Forge::GoogleCode (git) match' do
+    it 'should return new code_location for Forge::GoogleCode (git) match' do
       VCR.use_cassette('ForgeMatchGoogleCodeRepositoryGit') do
         match = Forge::Match.first('http://cryptsetup.googlecode.com/git')
-        repositories = match.repositories
-        repositories.length.must_equal 1
-        repositories[0].is_a?(GitRepository).must_equal true
-        repositories[0].url.must_equal 'https://code.google.com/p/cryptsetup/'
-        repositories[0].forge_match.must_equal match
+        code_locations = match.code_locations
+        code_locations.length.must_equal 1
+        code_locations[0].repository.is_a?(GitRepository).must_equal true
+        code_locations[0].repository.url.must_equal 'https://code.google.com/p/cryptsetup/'
+        code_locations[0].repository.forge_match.must_equal match
       end
     end
 
-    it 'should return new repository for Forge::LaunchPad match' do
+    it 'should return new code_location for Forge::LaunchPad match' do
       VCR.use_cassette('ForgeMatchLaunchPadRepository') do
         match = Forge::Match.first('https://code.launchpad.net/~knny-myer/wagwoord/trunk')
-        repositories = match.repositories
-        repositories.length.must_equal 1
-        repositories[0].is_a?(BzrRepository).must_equal true
-        repositories[0].url.must_equal 'lp:wagwoord'
-        repositories[0].forge_match.must_equal match
+        code_locations = match.code_locations
+        code_locations.length.must_equal 1
+        code_locations[0].repository.is_a?(BzrRepository).must_equal true
+        code_locations[0].repository.url.must_equal 'lp:wagwoord'
+        code_locations[0].repository.forge_match.must_equal match
       end
     end
 
-    it 'should return new repository for Forge::LaunchPad (alt) match' do
+    it 'should return new code_location for Forge::LaunchPad (alt) match' do
       VCR.use_cassette('ForgeMatchLaunchPadRepositoryAlt') do
         match = Forge::Match.first('https://code.launchpad.net/maas/1.5')
-        repositories = match.repositories
-        repositories.length.must_equal 1
-        repositories[0].is_a?(BzrRepository).must_equal true
-        repositories[0].url.must_equal 'lp:maas'
-        repositories[0].forge_match.must_equal match
+        code_locations = match.code_locations
+        code_locations.length.must_equal 1
+        code_locations[0].repository.is_a?(BzrRepository).must_equal true
+        code_locations[0].repository.url.must_equal 'lp:maas'
+        code_locations[0].repository.forge_match.must_equal match
       end
     end
 
-    it 'should return new repository for Forge::LaunchPad (alt) match' do
+    it 'should return new code_location for Forge::LaunchPad (alt) match' do
       VCR.use_cassette('ForgeMatchLaunchPadRepositoryAlt2') do
         match = Forge::Match.first('http://launchpad.net/ampoule')
-        repositories = match.repositories
-        repositories.length.must_equal 1
-        repositories[0].is_a?(BzrRepository).must_equal true
-        repositories[0].url.must_equal 'lp:ampoule'
-        repositories[0].forge_match.must_equal match
+        code_locations = match.code_locations
+        code_locations.length.must_equal 1
+        code_locations[0].repository.is_a?(BzrRepository).must_equal true
+        code_locations[0].repository.url.must_equal 'lp:ampoule'
+        code_locations[0].repository.forge_match.must_equal match
       end
     end
 
-    it 'should return new repository for Forge::SourceForge match' do
+    it 'should return new code_location for Forge::SourceForge match' do
       VCR.use_cassette('ForgeMatchSourceForge') do
         match = Forge::Match.first('https://jotwiki.svn.sourceforge.net/svnroot/jotwiki/jotwiki/')
-        repositories = match.repositories
-        repositories.length.must_equal 1
-        repositories[0].is_a?(SvnRepository).must_equal true
-        repositories[0].url.must_equal 'svn://svn.code.sf.net/p/jotwiki/code'
-        repositories[0].forge_match.must_equal match
+        code_locations = match.code_locations
+        code_locations.length.must_equal 1
+        code_locations[0].repository.is_a?(SvnRepository).must_equal true
+        code_locations[0].repository.url.must_equal 'svn://svn.code.sf.net/p/jotwiki/code'
+        code_locations[0].repository.forge_match.must_equal match
       end
     end
 
-    it 'should return new repository for Forge::SourceForge (cvs) match' do
+    it 'should return new code_location for Forge::SourceForge (cvs) match' do
       VCR.use_cassette('ForgeMatchSourceForgeCVS') do
         match = Forge::Match.first(':pserver:anonymous:@freecaller.cvs.sourceforge.net:/cvsroot/freecaller')
-        repositories = match.repositories
-        repositories.length.must_equal 1
-        repositories[0].is_a?(CvsRepository).must_equal true
-        repositories[0].url.must_equal ':pserver:anonymous:@freecaller.cvs.sourceforge.net:/cvsroot/freecaller'
-        repositories[0].forge_match.must_equal match
+        code_locations = match.code_locations
+        code_locations.length.must_equal 1
+        code_locations[0].repository.is_a?(CvsRepository).must_equal true
+        code_locations[0].repository
+                         .url.must_equal ':pserver:anonymous:@freecaller.cvs.sourceforge.net:/cvsroot/freecaller'
+        code_locations[0].repository.forge_match.must_equal match
       end
     end
   end

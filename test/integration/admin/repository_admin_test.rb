@@ -15,10 +15,4 @@ class RepositoryAdminTest < ActionDispatch::IntegrationTest
     get admin_repository_path(create(:repository))
     assert_response :success
   end
-
-  it 'should refetch the repository' do
-    login_as admin
-    get refetch_admin_repository_path(create(:repository))
-    assert_response :redirect
-  end
 end
