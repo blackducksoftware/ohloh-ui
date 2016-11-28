@@ -38,7 +38,8 @@
     input
       width: 14px
 
-#nav-top-bar .new_main_menu form#quicksearch
+#quicksearch
+  margin-top: 11px
   button.submit
     background: none
     border: 0
@@ -46,31 +47,51 @@
     border-radius: 0px
     margin-top: -10px
     li
-      display: inline
+      display: block
+      padding: 0
+      margin: 0
+      cursor: pointer
       a
-        color: #0082c6
+        background: transparent
         font-size: 14px
         text-transform: none
+        color: #0082C6
+        margin: 0
+        padding: 7px 20px
         &:hover
-          color: #fff
-          background-color: #0082C6
+          background-color: #66CEF6
+          color: #333
+          border: 0
   .btn-small
     font-size: 17px
     border-width: 2px !important
+    color: #333 !important
     .selection
       font-weight: 100
       text-transform: none
-    background-color: #0082C6 !important
-    border-color: #0082C6
+    background-color: #66CEF6 !important
+    border-color: #66CEF6
     &:hover
-      background-color: #0082C6 !important
-      border-color: #0082C6 !important
+      background-color: #66CEF6 !important
+      border-color: #66CEF6 !important
 
 .global_top_search
   margin-left: 5px
   height: 18px !important
-  border-color: rgba(82, 168, 236, 0.8) !important
+  background: #DDDDDD !important
+  border-color: #9A9A9A !important
+  color: #797979
+  font-style: italic
+  &:-moz-placeholder
+    color: #9A9A9A
+  &::-moz-placeholder
+    color: #9A9A9A
+  &:-ms-input-placeholder
+    color: #9A9A9A
+  &::-webkit-input-placeholder
+    color: #9A9A9A
 
 .global_top_search_icon
-  color: rgba(82, 168, 236, 0.8) !important
-  font-size: 18px
+  color: #66CEF6 !important
+  font-size: 22px
+  margin-left: 3px
