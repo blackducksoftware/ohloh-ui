@@ -1,6 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
-APP_USER_NAME = "deployer"
+APP_USER_NAME = "serv-deployer"
 APP_USER_ID = 1002
 APP_RAILS_ENV = "development"
 APP_MOUNT_POINT = "/mnt/ohloh-ui"

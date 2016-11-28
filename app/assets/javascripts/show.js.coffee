@@ -7,7 +7,6 @@ PersonSummaryAdminPanel =
   init: () ->
     $('#close_admin_panel, #open_admin_panel').click ->
       $('#admin_actions_opened, #admin_actions_closed').toggleClass('hidden')
-
 $(document).on 'page:change', ->
   PersonSummaryAccountAbout.init()
   PersonSummaryAdminPanel.init()

@@ -108,6 +108,7 @@ en:
         affiliation:
           unaffiliated: 'Unaffiliated'
           title: 'Add your affiliation!'
+        account_settings: '&nbsp;Settings'
         view_job: 'View Jobs'
       summary:
         title: 'Account Summary'
@@ -135,11 +136,11 @@ en:
           link: 'MANUALLY VERIFY THIS ACCOUNT'
           title: 'Create a verification for %{name}'
         spammer:
-          link: '<i class="icon-check">&nbsp;</i>MARK AS SPAMMER LEVEL'
+          link_html: '<i class="icon-check">&nbsp;</i>MARK AS SPAMMER LEVEL'
           confirm: 'Are you sure you want to mark %{name} as a spammer, disabling the account and removing all posts?'
           title: 'Mark %{name} as spammer!'
         delete:
-          link: '<i class="icon-remove-sign">&nbsp;</i>DELETE ACCOUNT'
+          link_html: '<i class="icon-remove-sign">&nbsp;</i>DELETE ACCOUNT'
           confirm: 'Deleting an account is permament and cannot be undone! It will also take several minutes to finish, be patient. Are you sure you want to delete %{name}?'
           title: 'Delete %{name}'
         panel:

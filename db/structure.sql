@@ -23,6 +23,20 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
+--
+-- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+
+
 SET search_path = public, pg_catalog;
 
 --
@@ -114,6 +128,97 @@ where
         m.ts_name=c.ts_name and 
         c.oid=show_curcfg() 
 $_$;
+
+
+--
+-- Name: <; Type: OPERATOR; Schema: public; Owner: -
+--
+
+CREATE OPERATOR < (
+    PROCEDURE = tsvector_lt,
+    LEFTARG = tsvector,
+    RIGHTARG = tsvector,
+    COMMUTATOR = OPERATOR(pg_catalog.>),
+    NEGATOR = OPERATOR(pg_catalog.>=),
+    RESTRICT = contsel,
+    JOIN = contjoinsel
+);
+
+
+--
+-- Name: <=; Type: OPERATOR; Schema: public; Owner: -
+--
+
+CREATE OPERATOR <= (
+    PROCEDURE = tsvector_le,
+    LEFTARG = tsvector,
+    RIGHTARG = tsvector,
+    COMMUTATOR = OPERATOR(pg_catalog.>=),
+    NEGATOR = OPERATOR(pg_catalog.>),
+    RESTRICT = contsel,
+    JOIN = contjoinsel
+);
+
+
+--
+-- Name: <>; Type: OPERATOR; Schema: public; Owner: -
+--
+
+CREATE OPERATOR <> (
+    PROCEDURE = tsvector_ne,
+    LEFTARG = tsvector,
+    RIGHTARG = tsvector,
+    COMMUTATOR = OPERATOR(pg_catalog.<>),
+    NEGATOR = OPERATOR(pg_catalog.=),
+    RESTRICT = neqsel,
+    JOIN = neqjoinsel
+);
+
+
+--
+-- Name: =; Type: OPERATOR; Schema: public; Owner: -
+--
+
+CREATE OPERATOR = (
+    PROCEDURE = tsvector_eq,
+    LEFTARG = tsvector,
+    RIGHTARG = tsvector,
+    COMMUTATOR = OPERATOR(pg_catalog.=),
+    NEGATOR = <>,
+    MERGES,
+    RESTRICT = eqsel,
+    JOIN = eqjoinsel
+);
+
+
+--
+-- Name: >; Type: OPERATOR; Schema: public; Owner: -
+--
+
+CREATE OPERATOR > (
+    PROCEDURE = tsvector_gt,
+    LEFTARG = tsvector,
+    RIGHTARG = tsvector,
+    COMMUTATOR = <,
+    NEGATOR = <=,
+    RESTRICT = contsel,
+    JOIN = contjoinsel
+);
+
+
+--
+-- Name: >=; Type: OPERATOR; Schema: public; Owner: -
+--
+
+CREATE OPERATOR >= (
+    PROCEDURE = tsvector_ge,
+    LEFTARG = tsvector,
+    RIGHTARG = tsvector,
+    COMMUTATOR = <=,
+    NEGATOR = <,
+    RESTRICT = contsel,
+    JOIN = contjoinsel
+);
 
 
 --
@@ -476,7 +581,7 @@ CREATE TABLE analyses (
     headcount integer,
     min_month date,
     max_month date,
-    logged_at timestamp without time zone,
+    oldest_code_set_time timestamp without time zone,
     committers_all_time integer,
     first_commit_time timestamp without time zone,
     last_commit_time timestamp without time zone,
@@ -540,7 +645,7 @@ CREATE TABLE analysis_sloc_sets (
     analysis_id integer NOT NULL,
     sloc_set_id integer NOT NULL,
     as_of integer,
-    logged_at timestamp without time zone,
+    code_set_time timestamp without time zone,
     ignore text,
     ignored_fyle_count integer
 );
@@ -799,6 +904,7 @@ CREATE TABLE projects (
     organization_id integer,
     activity_level_index integer,
     uuid character varying,
+    best_project_security_set_id integer,
     CONSTRAINT valid_missing_source CHECK ((((missing_source IS NULL) OR (missing_source = 'not available'::text)) OR (missing_source = 'not supported'::text)))
 );
 
@@ -824,7 +930,7 @@ CREATE TABLE sloc_sets (
     code_set_id integer NOT NULL,
     updated_on timestamp without time zone,
     as_of integer,
-    logged_at timestamp without time zone
+    code_set_time timestamp without time zone
 );
 
 
@@ -904,7 +1010,7 @@ CREATE TABLE code_location_events (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     repository_id integer,
-    component_id integer
+    code_location_events integer
 );
 
 
@@ -933,11 +1039,11 @@ ALTER SEQUENCE code_location_events_id_seq OWNED BY code_location_events.id;
 
 CREATE TABLE code_location_tarballs (
     id integer NOT NULL,
+    code_location_id integer,
     reference text,
     filepath text,
     status integer DEFAULT 0,
     created_at timestamp without time zone,
-    code_location_id integer,
     type text
 );
 
@@ -995,37 +1101,6 @@ CREATE SEQUENCE code_locations_id_seq
 --
 
 ALTER SEQUENCE code_locations_id_seq OWNED BY code_locations.id;
-
-
---
--- Name: code_set_gestalts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE code_set_gestalts (
-    id integer NOT NULL,
-    date timestamp without time zone NOT NULL,
-    code_set_id integer,
-    gestalt_id integer
-);
-
-
---
--- Name: code_set_gestalts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE code_set_gestalts_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: code_set_gestalts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE code_set_gestalts_id_seq OWNED BY code_set_gestalts.id;
 
 
 --
@@ -1760,68 +1835,6 @@ CREATE TABLE fyles (
 
 
 --
--- Name: project_gestalts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE project_gestalts (
-    id integer NOT NULL,
-    date timestamp without time zone NOT NULL,
-    project_id integer,
-    gestalt_id integer
-);
-
-
---
--- Name: gestaltings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE gestaltings_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: gestaltings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE gestaltings_id_seq OWNED BY project_gestalts.id;
-
-
---
--- Name: gestalts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE gestalts (
-    id integer NOT NULL,
-    type text NOT NULL,
-    name text NOT NULL,
-    description text
-);
-
-
---
--- Name: gestalts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE gestalts_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: gestalts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE gestalts_id_seq OWNED BY gestalts.id;
-
-
---
 -- Name: github_project; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1843,6 +1856,51 @@ CREATE TABLE github_project (
     project_created timestamp without time zone,
     note text,
     organization text
+);
+
+
+--
+-- Name: guaranteed_spam_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE guaranteed_spam_accounts (
+    id integer,
+    login text,
+    email text,
+    crypted_password text,
+    salt text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    activation_code text,
+    activated_at timestamp without time zone,
+    remember_token text,
+    remember_token_expires_at timestamp without time zone,
+    level integer,
+    posts_count integer,
+    last_seen_at timestamp without time zone,
+    name text,
+    country_code text,
+    location text,
+    latitude numeric,
+    longitude numeric,
+    best_vita_id integer,
+    url text,
+    about_markup_id integer,
+    hide_experience boolean,
+    email_master boolean,
+    email_posts boolean,
+    email_kudos boolean,
+    email_md5 text,
+    email_opportunities_visited timestamp without time zone,
+    activation_resent_at timestamp without time zone,
+    akas text,
+    email_new_followers boolean,
+    last_seen_ip text,
+    twitter_account text,
+    reset_password_tokens text,
+    organization_id integer,
+    affiliation_type text,
+    organization_name text
 );
 
 
@@ -1991,41 +2049,6 @@ CREATE SEQUENCE knowledge_base_statuses_id_seq
 --
 
 ALTER SEQUENCE knowledge_base_statuses_id_seq OWNED BY knowledge_base_statuses.id;
-
-
---
--- Name: koders_statuses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE koders_statuses (
-    id integer NOT NULL,
-    project_id integer NOT NULL,
-    koders_id integer,
-    flags integer DEFAULT 0 NOT NULL,
-    ohloh_updated_at timestamp without time zone,
-    koders_updated_at timestamp without time zone,
-    error text,
-    ohloh_code_ready boolean DEFAULT false
-);
-
-
---
--- Name: koders_statuses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE koders_statuses_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: koders_statuses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE koders_statuses_id_seq OWNED BY koders_statuses.id;
 
 
 --
@@ -2762,24 +2785,6 @@ CREATE SEQUENCE old_edits_id_seq
 
 
 --
--- Name: old_edits; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE old_edits (
-    id integer DEFAULT nextval('old_edits_id_seq'::regclass) NOT NULL,
-    project_id integer NOT NULL,
-    account_id integer NOT NULL,
-    created_at timestamp without time zone,
-    type text NOT NULL,
-    key text,
-    value text,
-    undone boolean DEFAULT false NOT NULL,
-    undone_at timestamp without time zone,
-    undone_by integer
-);
-
-
---
 -- Name: org_stats_by_sectors; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -3082,6 +3087,41 @@ ALTER SEQUENCE profiles_id_seq OWNED BY profiles.id;
 
 
 --
+-- Name: project_badges; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE project_badges (
+    id integer NOT NULL,
+    repository_id integer,
+    project_id integer,
+    identifier character varying,
+    type character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    status integer DEFAULT 1
+);
+
+
+--
+-- Name: project_badges_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE project_badges_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: project_badges_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE project_badges_id_seq OWNED BY project_badges.id;
+
+
+--
 -- Name: project_counts_by_quarter_and_language; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -3161,21 +3201,6 @@ ALTER SEQUENCE project_experiences_id_seq OWNED BY project_experiences.id;
 
 
 --
--- Name: project_gestalt_view; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW project_gestalt_view AS
- SELECT p.id AS project_id,
-    p.vanity_url AS url_name,
-    g.id AS gestalt_id,
-    g.name,
-    g.type
-   FROM ((projects p
-     JOIN project_gestalts pg ON ((p.id = pg.project_id)))
-     JOIN gestalts g ON ((g.id = pg.gestalt_id)));
-
-
---
 -- Name: project_gestalts_tmp; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -3239,6 +3264,39 @@ CREATE SEQUENCE project_reports_id_seq
 --
 
 ALTER SEQUENCE project_reports_id_seq OWNED BY project_reports.id;
+
+
+--
+-- Name: project_security_sets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE project_security_sets (
+    id integer NOT NULL,
+    project_id integer,
+    uuid character varying NOT NULL,
+    etag character varying,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: project_security_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE project_security_sets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: project_security_sets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE project_security_sets_id_seq OWNED BY project_security_sets.id;
 
 
 --
@@ -3413,6 +3471,50 @@ ALTER SEQUENCE recommendations_id_seq OWNED BY recommendations.id;
 
 
 --
+-- Name: releases; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE releases (
+    id integer NOT NULL,
+    kb_release_id character varying NOT NULL,
+    released_on timestamp without time zone,
+    version character varying,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    project_security_set_id integer
+);
+
+
+--
+-- Name: releases_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE releases_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: releases_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE releases_id_seq OWNED BY releases.id;
+
+
+--
+-- Name: releases_vulnerabilities; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE releases_vulnerabilities (
+    release_id integer NOT NULL,
+    vulnerability_id integer NOT NULL
+);
+
+
+--
 -- Name: reports; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -3539,37 +3641,6 @@ CREATE SEQUENCE repository_tags_id_seq
 --
 
 ALTER SEQUENCE repository_tags_id_seq OWNED BY repository_tags.id;
-
-
---
--- Name: reverification_pilot_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE reverification_pilot_accounts (
-    id integer NOT NULL,
-    account_id integer NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: reverification_pilot_accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE reverification_pilot_accounts_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: reverification_pilot_accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE reverification_pilot_accounts_id_seq OWNED BY reverification_pilot_accounts.id;
 
 
 --
@@ -3785,6 +3856,38 @@ CREATE TABLE sessions (
     data text,
     updated_at timestamp without time zone
 );
+
+
+--
+-- Name: settings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE settings (
+    id integer NOT NULL,
+    key character varying,
+    value character varying,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: settings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE settings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: settings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE settings_id_seq OWNED BY settings.id;
 
 
 --
@@ -4145,6 +4248,51 @@ CREATE TABLE topics (
 
 
 --
+-- Name: unknown_spam_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE unknown_spam_accounts (
+    id integer NOT NULL,
+    login text NOT NULL,
+    email text NOT NULL,
+    crypted_password text NOT NULL,
+    salt text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    activation_code text,
+    activated_at timestamp without time zone,
+    remember_token text,
+    remember_token_expires_at timestamp without time zone,
+    level integer NOT NULL,
+    posts_count integer,
+    last_seen_at timestamp without time zone,
+    name text,
+    country_code text,
+    location text,
+    latitude numeric,
+    longitude numeric,
+    best_vita_id integer,
+    url text,
+    about_markup_id integer,
+    hide_experience boolean,
+    email_master boolean,
+    email_posts boolean,
+    email_kudos boolean,
+    email_md5 text,
+    email_opportunities_visited timestamp without time zone,
+    activation_resent_at timestamp without time zone,
+    akas text,
+    email_new_followers boolean,
+    last_seen_ip text,
+    twitter_account text,
+    reset_password_tokens text,
+    organization_id integer,
+    affiliation_type text NOT NULL,
+    organization_name text
+);
+
+
+--
 -- Name: verifications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -4238,6 +4386,42 @@ ALTER SEQUENCE vitae_id_seq OWNED BY vitae.id;
 
 
 --
+-- Name: vulnerabilities; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE vulnerabilities (
+    id integer NOT NULL,
+    cve_id character varying NOT NULL,
+    generated_on timestamp without time zone,
+    published_on timestamp without time zone,
+    severity integer,
+    score numeric,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    description text
+);
+
+
+--
+-- Name: vulnerabilities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE vulnerabilities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: vulnerabilities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE vulnerabilities_id_seq OWNED BY vulnerabilities.id;
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -4325,13 +4509,6 @@ ALTER TABLE ONLY code_locations ALTER COLUMN id SET DEFAULT nextval('code_locati
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY code_set_gestalts ALTER COLUMN id SET DEFAULT nextval('code_set_gestalts_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY commit_flags ALTER COLUMN id SET DEFAULT nextval('commit_flags_id_seq'::regclass);
 
 
@@ -4395,13 +4572,6 @@ ALTER TABLE ONLY follows ALTER COLUMN id SET DEFAULT nextval('follows_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY gestalts ALTER COLUMN id SET DEFAULT nextval('gestalts_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY invites ALTER COLUMN id SET DEFAULT nextval('invites_id_seq'::regclass);
 
 
@@ -4410,13 +4580,6 @@ ALTER TABLE ONLY invites ALTER COLUMN id SET DEFAULT nextval('invites_id_seq'::r
 --
 
 ALTER TABLE ONLY knowledge_base_statuses ALTER COLUMN id SET DEFAULT nextval('knowledge_base_statuses_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY koders_statuses ALTER COLUMN id SET DEFAULT nextval('koders_statuses_id_seq'::regclass);
 
 
 --
@@ -4577,6 +4740,13 @@ ALTER TABLE ONLY profiles ALTER COLUMN id SET DEFAULT nextval('profiles_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY project_badges ALTER COLUMN id SET DEFAULT nextval('project_badges_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY project_events ALTER COLUMN id SET DEFAULT nextval('project_events_id_seq'::regclass);
 
 
@@ -4591,14 +4761,14 @@ ALTER TABLE ONLY project_experiences ALTER COLUMN id SET DEFAULT nextval('projec
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_gestalts ALTER COLUMN id SET DEFAULT nextval('gestaltings_id_seq'::regclass);
+ALTER TABLE ONLY project_reports ALTER COLUMN id SET DEFAULT nextval('project_reports_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_reports ALTER COLUMN id SET DEFAULT nextval('project_reports_id_seq'::regclass);
+ALTER TABLE ONLY project_security_sets ALTER COLUMN id SET DEFAULT nextval('project_security_sets_id_seq'::regclass);
 
 
 --
@@ -4633,6 +4803,13 @@ ALTER TABLE ONLY recommendations ALTER COLUMN id SET DEFAULT nextval('recommenda
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY releases ALTER COLUMN id SET DEFAULT nextval('releases_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY reports ALTER COLUMN id SET DEFAULT nextval('reports_id_seq'::regclass);
 
 
@@ -4654,14 +4831,14 @@ ALTER TABLE ONLY repository_tags ALTER COLUMN id SET DEFAULT nextval('repository
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY reverification_pilot_accounts ALTER COLUMN id SET DEFAULT nextval('reverification_pilot_accounts_id_seq'::regclass);
+ALTER TABLE ONLY reverification_trackers ALTER COLUMN id SET DEFAULT nextval('reverification_trackers_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY reverification_trackers ALTER COLUMN id SET DEFAULT nextval('reverification_trackers_id_seq'::regclass);
+ALTER TABLE ONLY settings ALTER COLUMN id SET DEFAULT nextval('settings_id_seq'::regclass);
 
 
 --
@@ -4704,6 +4881,13 @@ ALTER TABLE ONLY vita_analyses ALTER COLUMN id SET DEFAULT nextval('vita_analyse
 --
 
 ALTER TABLE ONLY vitae ALTER COLUMN id SET DEFAULT nextval('vitae_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY vulnerabilities ALTER COLUMN id SET DEFAULT nextval('vulnerabilities_id_seq'::regclass);
 
 
 --
@@ -4883,14 +5067,6 @@ ALTER TABLE ONLY code_locations
 
 
 --
--- Name: code_set_gestalts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY code_set_gestalts
-    ADD CONSTRAINT code_set_gestalts_pkey PRIMARY KEY (id);
-
-
---
 -- Name: code_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -4936,14 +5112,6 @@ ALTER TABLE ONLY diffs
 
 ALTER TABLE ONLY duplicates
     ADD CONSTRAINT duplicates_pkey PRIMARY KEY (id);
-
-
---
--- Name: edits_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY old_edits
-    ADD CONSTRAINT edits_pkey PRIMARY KEY (id);
 
 
 --
@@ -5059,14 +5227,6 @@ ALTER TABLE ONLY fyles
 
 
 --
--- Name: gestalts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY gestalts
-    ADD CONSTRAINT gestalts_pkey PRIMARY KEY (id);
-
-
---
 -- Name: github_project_project_id_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -5112,30 +5272,6 @@ ALTER TABLE ONLY knowledge_base_statuses
 
 ALTER TABLE ONLY knowledge_base_statuses
     ADD CONSTRAINT knowledge_base_statuses_project_id_key UNIQUE (project_id);
-
-
---
--- Name: koders_statuses_koders_id_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY koders_statuses
-    ADD CONSTRAINT koders_statuses_koders_id_key UNIQUE (koders_id);
-
-
---
--- Name: koders_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY koders_statuses
-    ADD CONSTRAINT koders_statuses_pkey PRIMARY KEY (id);
-
-
---
--- Name: koders_statuses_project_id_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY koders_statuses
-    ADD CONSTRAINT koders_statuses_project_id_key UNIQUE (project_id);
 
 
 --
@@ -5403,6 +5539,14 @@ ALTER TABLE ONLY profiles
 
 
 --
+-- Name: project_badges_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY project_badges
+    ADD CONSTRAINT project_badges_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: project_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -5416,14 +5560,6 @@ ALTER TABLE ONLY project_events
 
 ALTER TABLE ONLY project_experiences
     ADD CONSTRAINT project_experiences_pkey PRIMARY KEY (id);
-
-
---
--- Name: project_gestalts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY project_gestalts
-    ADD CONSTRAINT project_gestalts_pkey PRIMARY KEY (id);
 
 
 --
@@ -5448,6 +5584,14 @@ ALTER TABLE ONLY project_reports
 
 ALTER TABLE ONLY project_reports
     ADD CONSTRAINT project_reports_project_id_key UNIQUE (project_id, report_id);
+
+
+--
+-- Name: project_security_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY project_security_sets
+    ADD CONSTRAINT project_security_sets_pkey PRIMARY KEY (id);
 
 
 --
@@ -5515,6 +5659,14 @@ ALTER TABLE ONLY recommendations
 
 
 --
+-- Name: releases_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY releases
+    ADD CONSTRAINT releases_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: reports_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -5544,14 +5696,6 @@ ALTER TABLE ONLY repository_directories
 
 ALTER TABLE ONLY repository_tags
     ADD CONSTRAINT repository_tags_pkey PRIMARY KEY (id);
-
-
---
--- Name: reverification_pilot_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY reverification_pilot_accounts
-    ADD CONSTRAINT reverification_pilot_accounts_pkey PRIMARY KEY (id);
 
 
 --
@@ -5616,6 +5760,14 @@ ALTER TABLE ONLY sessions
 
 ALTER TABLE ONLY sessions
     ADD CONSTRAINT sessions_session_id_key UNIQUE (session_id);
+
+
+--
+-- Name: settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY settings
+    ADD CONSTRAINT settings_pkey PRIMARY KEY (id);
 
 
 --
@@ -5731,14 +5883,6 @@ ALTER TABLE ONLY authorizations
 
 
 --
--- Name: unique_code_set_gestalts_code_set_id_date_gestalt_id; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY code_set_gestalts
-    ADD CONSTRAINT unique_code_set_gestalts_code_set_id_date_gestalt_id UNIQUE (code_set_id, date, gestalt_id);
-
-
---
 -- Name: unique_diffs_on_commit_id_fyle_id; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -5760,14 +5904,6 @@ ALTER TABLE ONLY oauth_nonces
 
 ALTER TABLE ONLY project_events
     ADD CONSTRAINT unique_project_events UNIQUE (project_id, type, key);
-
-
---
--- Name: unique_project_gestalts_project_id_date_gestalt_id; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY project_gestalts
-    ADD CONSTRAINT unique_project_gestalts_project_id_date_gestalt_id UNIQUE (project_id, date, gestalt_id);
 
 
 --
@@ -5824,6 +5960,14 @@ ALTER TABLE ONLY vita_analyses
 
 ALTER TABLE ONLY vitae
     ADD CONSTRAINT vitae_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: vulnerabilities_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY vulnerabilities
+    ADD CONSTRAINT vulnerabilities_pkey PRIMARY KEY (id);
 
 
 --
@@ -5935,7 +6079,7 @@ CREATE INDEX index_activity_facts_on_name_id ON activity_facts USING btree (name
 -- Name: index_analyses_on_logged_at_day; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_analyses_on_logged_at_day ON analyses USING btree (logged_at, date_trunc('day'::text, logged_at)) WHERE (logged_at IS NOT NULL);
+CREATE INDEX index_analyses_on_logged_at_day ON analyses USING btree (oldest_code_set_time, date_trunc('day'::text, oldest_code_set_time)) WHERE (oldest_code_set_time IS NOT NULL);
 
 
 --
@@ -6030,6 +6174,13 @@ CREATE INDEX index_code_location_events_on_repository_id ON code_location_events
 
 
 --
+-- Name: index_code_location_tarballs_on_code_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_code_location_tarballs_on_code_location_id ON code_location_tarballs USING btree (code_location_id);
+
+
+--
 -- Name: index_code_location_tarballs_on_reference; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -6055,20 +6206,6 @@ CREATE INDEX index_code_locations_on_repository_id ON code_locations USING btree
 --
 
 CREATE UNIQUE INDEX index_code_locations_on_repository_id_and_module_branch_name ON code_locations USING btree (repository_id, module_branch_name);
-
-
---
--- Name: index_code_set_gestalts_on_code_set_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_code_set_gestalts_on_code_set_id ON code_set_gestalts USING btree (code_set_id);
-
-
---
--- Name: index_code_set_gestalts_on_gestalt_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_code_set_gestalts_on_gestalt_id ON code_set_gestalts USING btree (gestalt_id);
 
 
 --
@@ -6279,13 +6416,6 @@ CREATE INDEX index_fyles_on_code_set_id ON fyles USING btree (code_set_id);
 --
 
 CREATE INDEX index_fyles_on_name ON fyles USING btree (name);
-
-
---
--- Name: index_gestalts_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_gestalts_on_name ON gestalts USING btree (name);
 
 
 --
@@ -6660,6 +6790,20 @@ CREATE INDEX index_profiles_on_job_id ON profiles USING btree (job_id);
 
 
 --
+-- Name: index_project_badges_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_project_badges_on_project_id ON project_badges USING btree (project_id);
+
+
+--
+-- Name: index_project_badges_on_repository_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_project_badges_on_repository_id ON project_badges USING btree (repository_id);
+
+
+--
 -- Name: index_project_events_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -6671,20 +6815,6 @@ CREATE INDEX index_project_events_on_project_id ON project_events USING btree (p
 --
 
 CREATE INDEX index_project_experiences_on_position_id ON project_experiences USING btree (position_id);
-
-
---
--- Name: index_project_gestalts_on_gestalt_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_project_gestalts_on_gestalt_id ON project_gestalts USING btree (gestalt_id);
-
-
---
--- Name: index_project_gestalts_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_project_gestalts_on_project_id ON project_gestalts USING btree (project_id);
 
 
 --
@@ -6706,6 +6836,13 @@ CREATE INDEX index_project_reports_on_project_id ON project_reports USING btree 
 --
 
 CREATE INDEX index_project_reports_on_report_id ON project_reports USING btree (report_id);
+
+
+--
+-- Name: index_project_security_sets_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_project_security_sets_on_project_id ON project_security_sets USING btree (project_id);
 
 
 --
@@ -6776,6 +6913,34 @@ CREATE INDEX index_ratings_on_project_id ON ratings USING btree (project_id);
 --
 
 CREATE INDEX index_recommend_entries_on_project_id ON recommend_entries USING btree (project_id);
+
+
+--
+-- Name: index_releases_on_kb_release_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_releases_on_kb_release_id ON releases USING btree (kb_release_id);
+
+
+--
+-- Name: index_releases_on_project_security_set_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_releases_on_project_security_set_id ON releases USING btree (project_security_set_id);
+
+
+--
+-- Name: index_releases_vulnerabilities_on_release_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_releases_vulnerabilities_on_release_id ON releases_vulnerabilities USING btree (release_id);
+
+
+--
+-- Name: index_releases_vulnerabilities_on_vulnerability_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_releases_vulnerabilities_on_vulnerability_id ON releases_vulnerabilities USING btree (vulnerability_id);
 
 
 --
@@ -6856,6 +7021,13 @@ CREATE INDEX index_sessions_on_session_id ON sessions USING btree (session_id);
 
 
 --
+-- Name: index_settings_on_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_settings_on_key ON settings USING btree (key);
+
+
+--
 -- Name: index_slave_logs_on_code_sets_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -6888,6 +7060,13 @@ CREATE INDEX index_slave_logs_on_slave_id ON slave_logs USING btree (slave_id);
 --
 
 CREATE INDEX index_sloc_metrics_on_diff_id ON sloc_metrics USING btree (diff_id);
+
+
+--
+-- Name: index_sloc_metrics_on_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_sloc_metrics_on_id ON sloc_metrics USING btree (id);
 
 
 --
@@ -6965,6 +7144,13 @@ CREATE INDEX index_vita_analyses_on_vita_id ON vita_analyses USING btree (vita_i
 --
 
 CREATE INDEX index_vitae_on_account_id ON vitae USING btree (account_id);
+
+
+--
+-- Name: index_vulnerabilities_on_cve_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_vulnerabilities_on_cve_id ON vulnerabilities USING btree (cve_id);
 
 
 --
@@ -7270,22 +7456,6 @@ ALTER TABLE ONLY clumps
 
 
 --
--- Name: code_set_gestalts_code_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY code_set_gestalts
-    ADD CONSTRAINT code_set_gestalts_code_set_id_fkey FOREIGN KEY (code_set_id) REFERENCES code_sets(id) ON DELETE CASCADE;
-
-
---
--- Name: code_set_gestalts_gestalt_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY code_set_gestalts
-    ADD CONSTRAINT code_set_gestalts_gestalt_id_fkey FOREIGN KEY (gestalt_id) REFERENCES gestalts(id) ON DELETE CASCADE;
-
-
---
 -- Name: code_sets_best_sloc_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7382,14 +7552,6 @@ ALTER TABLE ONLY duplicates
 
 
 --
--- Name: edits_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY old_edits
-    ADD CONSTRAINT edits_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id);
-
-
---
 -- Name: edits_account_id_fkey1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7406,27 +7568,11 @@ ALTER TABLE ONLY edits
 
 
 --
--- Name: edits_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY old_edits
-    ADD CONSTRAINT edits_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
-
-
---
 -- Name: edits_project_id_fkey1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY edits
     ADD CONSTRAINT edits_project_id_fkey1 FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
-
-
---
--- Name: edits_undone_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY old_edits
-    ADD CONSTRAINT edits_undone_by_fkey FOREIGN KEY (undone_by) REFERENCES accounts(id);
 
 
 --
@@ -7566,6 +7712,14 @@ ALTER TABLE ONLY code_locations
 
 
 --
+-- Name: fk_rails_580a21f8c6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY project_badges
+    ADD CONSTRAINT fk_rails_580a21f8c6 FOREIGN KEY (project_id) REFERENCES projects(id);
+
+
+--
 -- Name: fk_rails_5a0f61d9a6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7574,11 +7728,27 @@ ALTER TABLE ONLY code_location_events
 
 
 --
+-- Name: fk_rails_60edffb8dd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY project_badges
+    ADD CONSTRAINT fk_rails_60edffb8dd FOREIGN KEY (repository_id) REFERENCES repositories(id);
+
+
+--
 -- Name: fk_rails_8faa63554c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY api_keys
     ADD CONSTRAINT fk_rails_8faa63554c FOREIGN KEY (oauth_application_id) REFERENCES oauth_applications(id);
+
+
+--
+-- Name: fk_rails_c67f665226; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY projects
+    ADD CONSTRAINT fk_rails_c67f665226 FOREIGN KEY (best_project_security_set_id) REFERENCES project_security_sets(id);
 
 
 --
@@ -7595,6 +7765,14 @@ ALTER TABLE ONLY repository_directories
 
 ALTER TABLE ONLY repository_directories
     ADD CONSTRAINT fk_rails_d36c79e15c FOREIGN KEY (repository_id) REFERENCES repositories(id);
+
+
+--
+-- Name: fk_rails_efaa9c9657; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY project_security_sets
+    ADD CONSTRAINT fk_rails_efaa9c9657 FOREIGN KEY (project_id) REFERENCES projects(id);
 
 
 --
@@ -7618,7 +7796,7 @@ ALTER TABLE ONLY follows
 --
 
 ALTER TABLE ONLY follows
-    ADD CONSTRAINT follows_owner_id_fkey FOREIGN KEY (owner_id) REFERENCES accounts(id) ON DELETE CASCADE;
+    ADD CONSTRAINT follows_owner_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
 
 
 --
@@ -7643,22 +7821,6 @@ ALTER TABLE ONLY forums
 
 ALTER TABLE ONLY fyles
     ADD CONSTRAINT fyles_code_set_id_fkey FOREIGN KEY (code_set_id) REFERENCES code_sets(id) ON DELETE CASCADE;
-
-
---
--- Name: gestaltings_gestalt_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY project_gestalts
-    ADD CONSTRAINT gestaltings_gestalt_id_fkey FOREIGN KEY (gestalt_id) REFERENCES gestalts(id) ON DELETE CASCADE;
-
-
---
--- Name: gestaltings_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY project_gestalts
-    ADD CONSTRAINT gestaltings_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
 
 
 --
@@ -7771,14 +7933,6 @@ ALTER TABLE ONLY jobs
 
 ALTER TABLE ONLY knowledge_base_statuses
     ADD CONSTRAINT knowledge_base_statuses_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
-
-
---
--- Name: koders_statuses_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY koders_statuses
-    ADD CONSTRAINT koders_statuses_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
 
 
 --
@@ -7906,7 +8060,7 @@ ALTER TABLE ONLY message_account_tags
 --
 
 ALTER TABLE ONLY message_project_tags
-    ADD CONSTRAINT message_project_tags_message_id_fkey FOREIGN KEY (message_id) REFERENCES messages(id) ON DELETE CASCADE;
+    ADD CONSTRAINT message_project_tags_message_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
 
 
 --
@@ -8603,9 +8757,15 @@ INSERT INTO schema_migrations (version) VALUES ('20160317061932');
 
 INSERT INTO schema_migrations (version) VALUES ('20160318131123');
 
+INSERT INTO schema_migrations (version) VALUES ('20160321061931');
+
 INSERT INTO schema_migrations (version) VALUES ('20160504111046');
 
 INSERT INTO schema_migrations (version) VALUES ('20160512144023');
+
+INSERT INTO schema_migrations (version) VALUES ('20160608090419');
+
+INSERT INTO schema_migrations (version) VALUES ('20160608194402');
 
 INSERT INTO schema_migrations (version) VALUES ('20160610142302');
 
@@ -8620,6 +8780,26 @@ INSERT INTO schema_migrations (version) VALUES ('20160803102211');
 INSERT INTO schema_migrations (version) VALUES ('20160804081950');
 
 INSERT INTO schema_migrations (version) VALUES ('20160808163201');
+
+INSERT INTO schema_migrations (version) VALUES ('20160818102530');
+
+INSERT INTO schema_migrations (version) VALUES ('20160907122530');
+
+INSERT INTO schema_migrations (version) VALUES ('20160916124401');
+
+INSERT INTO schema_migrations (version) VALUES ('20160920113102');
+
+INSERT INTO schema_migrations (version) VALUES ('20160926144901');
+
+INSERT INTO schema_migrations (version) VALUES ('20161006072823');
+
+INSERT INTO schema_migrations (version) VALUES ('20161007083447');
+
+INSERT INTO schema_migrations (version) VALUES ('20161024095609');
+
+INSERT INTO schema_migrations (version) VALUES ('20161027065200');
+
+INSERT INTO schema_migrations (version) VALUES ('20161114063801');
 
 INSERT INTO schema_migrations (version) VALUES ('20161101134545');
 

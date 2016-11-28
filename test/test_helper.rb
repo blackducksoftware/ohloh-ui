@@ -4,7 +4,7 @@ require 'simplecov-rcov'
 
 SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
 SimpleCov.start 'rails'
-SimpleCov.minimum_coverage 99.55
+SimpleCov.minimum_coverage 99.36
 
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
@@ -13,6 +13,9 @@ require 'mocha/mini_test'
 require 'dotenv'
 require 'test_helpers/setup_hamster_account'
 require 'test_helpers/create_forges'
+require 'sidekiq/testing'
+Sidekiq::Testing.fake!
+
 Dotenv.overload '.env.test'
 
 ActiveRecord::Migration.maintain_test_schema!
@@ -114,7 +117,7 @@ class ActiveSupport::TestCase
     (0..2).each do |value|
       2.times do
         project = create(:project)
-        analysis = create(:analysis, logged_at: Date.current - value.days, project: project)
+        analysis = create(:analysis, oldest_code_set_time: Date.current - value.days, project: project)
         project.update(best_analysis: analysis)
       end
     end

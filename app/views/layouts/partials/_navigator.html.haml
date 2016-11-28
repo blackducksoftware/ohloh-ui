@@ -1,6 +1,3 @@
-.row
-  .col-md-12
-    .mezzo.margin_bottom_5
 - page_context[:footer_menu_list].each do |section|
   .actions.margin_bottom_20{ class: ('col-md-3 no_padding' if page_context[:nav_type].eql?('footer_nav')) }
     %ul.nav.nav-stacked.nav-pills

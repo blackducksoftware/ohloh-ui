@@ -17,6 +17,7 @@ en:
       ignored_files: 'Ignored Files'
       actions: 'Actions'
       new_code_location: 'New Code Location'
+      currently_importing: 'We are currently working on importing your GitHub Repositories.'
     new:
       page_title: 'The %{name} Open Source Project on Open Hub : New Code Location Page'
       code_locations: 'Code Locations'
@@ -60,6 +61,7 @@ en:
       github_repos_added: 'Successfully imported all repositories from github.com/%{username}'
       notice:  "A repository with the url: %{url} already exists for this project."
       success:  "Successfully added %{url} %{module_branch_name}"
+      job_exists: 'A Job is already importing the repositories from the same username.'
     enlistment:
       file: 'file'
       description1: 'Open Hub ignored'

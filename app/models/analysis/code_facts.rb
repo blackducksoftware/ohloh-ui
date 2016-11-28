@@ -27,7 +27,7 @@ class Analysis::CodeFacts < Analysis::QueryBase
   end
 
   def end_date
-    last_month = [@analysis.activity_facts.maximum(:month), logged_at].compact.max
+    last_month = [@analysis.activity_facts.maximum(:month), oldest_code_set_time].compact.max
     truncate_date(last_month.to_date)
   end
 

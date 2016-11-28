@@ -74,10 +74,6 @@ class Project < ActiveRecord::Base
            .order(orber_by)
   end
 
-  def code_published_in_code_search?
-    koders_status.try(:ohloh_code_ready) == true
-  end
-
   def newest_contributions
     contributions.sort_by_newest.joins(:contributor_fact)
                  .preload(person: :account, contributor_fact: :primary_language).limit(10)

@@ -21,7 +21,7 @@ en:
       getting_started: 'Getting Started'
       examples: 'Examples'
       open_source_projects: 'Open Source Projects'
-      ohcount: 'Ohcount'
+      ohcount: 'Ohcount:'
       ohloh_scm: 'Ohloh SCM'
       line_counter_metrics:  'The line counter we use to build the metrics around your project'
       source_code_abstraction: 'The source code abstraction layer we use to grab your code'

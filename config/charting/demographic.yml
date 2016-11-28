@@ -34,3 +34,5 @@ plotOptions:
 credits:
   enabled: false
 series: [{type: 'pie'}]
+exporting:
+  enabled: false

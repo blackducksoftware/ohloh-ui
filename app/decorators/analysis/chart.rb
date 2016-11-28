@@ -4,7 +4,7 @@ class Analysis::Chart
 
   Y_AXIS_TICKS = [1, 3, 5, 10].freeze
 
-  delegate :min_month, :logged_at, :created_at, to: :@analysis
+  delegate :min_month, :oldest_code_set_time, :created_at, to: :@analysis
 
   private
 
@@ -30,7 +30,7 @@ class Analysis::Chart
   end
 
   def latest_date
-    @latest_date ||= (logged_at || created_at).at_beginning_of_month
+    @latest_date ||= (oldest_code_set_time || created_at).at_beginning_of_month
   end
 
   def y_axis_ticks

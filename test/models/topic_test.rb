@@ -37,7 +37,7 @@ class TopicTest < ActiveSupport::TestCase
   end
 
   it 'a topic should have associated posts ordered by created at asc' do
-    topic = create(:topic_with_posts)
+    topic = create(:topic, :with_posts)
     topic.posts.to_a.must_equal topic.posts.sort_by(&:created_at)
   end
 end

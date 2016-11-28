@@ -1,7 +1,8 @@
 source 'https://rubygems.org'
+source 'http://oh-utility01.dc1.lan:9292'
 
 gem 'activeadmin', git: 'https://github.com/gregbell/active_admin.git'
-gem 'airbrake'
+gem 'airbrake', '~> 5.5'
 gem 'aws-sdk', '< 2.0' # paperclip doesn't work with the new aws-sdk gem
 gem 'bluecloth'
 gem 'brakeman'
@@ -18,12 +19,13 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'mini_magick', '~> 4.1.1'
 gem 'nokogiri', '~> 1.6.8'
-gem 'oh_delegator', source: 'http://oh-stage-utility-1.blackducksoftware.com:9292'
+gem 'newrelic_rpm'
+gem 'oh_delegator'
 gem 'ohloh_scm'
 gem 'open4'
-gem 'paperclip'
+gem 'paperclip', '< 5.0 '
 gem 'pg'
-gem 'rails', '~> 4.2.5.1'
+gem 'rails', '~> 4.2.7.1'
 gem 'rails-html-sanitizer'
 gem 'recaptcha', require: 'recaptcha/rails'
 gem 'redis-rails'
@@ -37,6 +39,7 @@ gem 'will_paginate-bootstrap'
 gem 'sprockets-rails', '~> 2.3.3'
 gem 'feedjira'
 gem 'whenever', require: false
+gem 'sidekiq'
 
 group :development do
   gem 'better_errors'
@@ -45,12 +48,19 @@ group :development do
   gem 'capistrano-faster-assets'
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
+  gem 'capistrano-sidekiq'
+  gem 'capistrano-rbenv', '~> 2.0'
+  gem 'guard'
+  gem 'guard-rubocop'
+  gem 'guard-minitest'
+  gem 'guard-haml_lint'
+  gem 'guard-coffeescript'
+  gem 'guard-livereload', '~> 2.5', '>= 2.5.2', require: false
   gem 'meta_request'
+  gem 'quiet_assets'
 end
 
 group :test do
-  gem 'factory_girl_rails'
-  gem 'faker'
   gem 'flog'
   gem 'haml_lint'
   gem 'minitest-rails'
@@ -65,6 +75,8 @@ group :test do
 end
 
 group :development, :test do
+  gem 'factory_girl_rails'
+  gem 'faker'
   gem 'byebug'
   gem 'pry-rails'
   gem 'pry-byebug'
@@ -76,8 +88,6 @@ group :development, :test do
 end
 
 group :production do
-  gem 'airbrake'
-  gem 'traceview'
 end
 
 group :development, :staging do

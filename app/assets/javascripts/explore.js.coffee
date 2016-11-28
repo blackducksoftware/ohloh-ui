@@ -30,12 +30,5 @@ App.Explore =
         $(this).attr('disabled', 'disabled')
       $(this).parents('form').attr('action', document.location).submit()
 
-  handleMoreLessToggleContent: ->
-    $('a[id^=proj_more_desc_], a[id^=proj_less_desc_]').click (e) ->
-      $(e.currentTarget).parent().toggle()
-      $(e.currentTarget).parent().siblings('.proj_desc_toggle').toggle()
-      e.preventDefault()
-
 $(document).on 'page:change', ->
   App.Explore.init()
-  App.Explore.handleMoreLessToggleContent()

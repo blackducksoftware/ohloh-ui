@@ -47,7 +47,7 @@ class ForumTest < ActiveSupport::TestCase
   end
 
   it 'forum should have associated posts ordered by updated_at at asc' do
-    topic = create(:topic_with_posts)
+    topic = create(:topic, :with_posts)
     forum = topic.forum
     forum.posts.must_equal forum.posts.sort_by(&:updated_at)
   end

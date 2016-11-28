@@ -38,9 +38,11 @@ ul#factoids
     :padding 0px
     :margin-bottom 0px
     &.thirty_day
-      :width 190px
+      //:width 190px
+      :width 100%
     &.twelve_month
-      :width 200px
+      //:width 200px
+      :width 100%
   ul
     li
       span.small
@@ -50,8 +52,20 @@ ul#factoids
 .analysis_in_progress
   :color $soft_gray
 
-#similar_projects td img
-  :max-width none
+#similar_projects
+  table
+    :width 20rem
+    tr
+      :height 35px
+    td
+      :display inline
+      img
+        :max-width none
+      a
+        :margin-right 2px
+        :margin-bottom 5px
+      a.proj-name
+        :width 7rem
 
 small.summary_timespan
   :display block
@@ -63,6 +77,8 @@ small.summary_timespan
   :color #999
   :font-weight normal
   :margin 0 0 5px
-  :width 200px
+  //:width 200px
+  :width 100%
   &.thirty_day
-    :width 190px
+    //:width 190px
+    :width 100%
