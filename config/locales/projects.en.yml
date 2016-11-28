@@ -86,6 +86,8 @@ en:
       managers_desc: 'Users who manage the project settings and oversee the project on Open Hub.'
       news: 'News Feeds'
       news_desc: 'URLs for RSS and other news feeds for this project.'
+      badges: 'Badges'
+      badges_desc: 'Listing of badges that can be displayed for this project'
     show:
       page_title: "The %{name} Open Source Project on Open Hub"
       project_summary: "Project Summary"

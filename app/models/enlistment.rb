@@ -1,5 +1,8 @@
 class Enlistment < ActiveRecord::Base
   has_one :create_edit, as: :target
+  has_many :project_badges
+  has_many :travis_badges
+  has_many :cii_badges
   belongs_to :code_location
   belongs_to :project
 

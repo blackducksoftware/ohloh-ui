@@ -441,6 +441,34 @@ describe 'ProjectsController' do
       project.reload.uuid.must_equal '1234'
       must_respond_with :ok
     end
+
+    describe 'Project summary section' do
+      let(:project) { create(:project, name: 'Rails') }
+      let(:enl1) { create(:enlistment, project: project, repository: create(:repository)) }
+      let(:enl2) { create(:enlistment, project: project, repository: create(:repository)) }
+
+      describe 'Badges' do
+        it 'should have badges row when badges are available for project' do
+          create(:travis_badge, enlistment: enl1)
+          get :show, id: project.to_param
+          response.body.must_match(/<section id='project_badges'>/)
+        end
+
+        it 'should not have badges row when no badges are available' do
+          get :show, id: project.to_param
+          response.body.wont_match(/<section id='project_badges'>/)
+        end
+
+        it 'should have more link to bages page when more than 2 badges are available' do
+          create(:travis_badge, enlistment: enl1)
+          create(:cii_badge, enlistment: enl1)
+          create(:travis_badge, enlistment: enl2)
+          create(:cii_badge, enlistment: enl2)
+          get :show, id: project.to_param
+          assert_select "a[href='/p/#{project.to_param}/project_badges']", text: 'more'
+        end
+      end
+    end
   end
 
   # new

@@ -22,6 +22,10 @@ columns do
             td Analysis::MonthlyLanguage.last_run
           end
           tr do
+            td t('admins.dashboard.overview.check_cii_projects_last_ran')
+            td ProjectBadge.check_cii_projects_last_run
+          end
+          tr do
             td 'Oldest Repository'
             td time_ago_in_days_hours_minutes(CodeSet.oldest_code_set.first.try(:logged_at))
           end
