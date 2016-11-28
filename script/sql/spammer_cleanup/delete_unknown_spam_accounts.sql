@@ -6,7 +6,7 @@ BEGIN;
 
 DROP TABLE IF EXISTS unknown_accounts;
 CREATE TABLE unknown_accounts(account_id int);
-\COPY unknown_accounts(account_id) FROM '/home/postgres/unknown_id_list.csv' CSV;
+\COPY unknown_accounts(account_id) FROM 'unknown_email_list.csv' CSV;
 
 --
 -- Filter `unknown_accounts` table:
@@ -19,9 +19,7 @@ DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FRO
 DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM authorizations WHERE account_id IN (SELECT account_id FROM unknown_accounts));
 DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM positions WHERE account_id IN (SELECT account_id FROM unknown_accounts));
 DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM duplicates WHERE account_id IN (SELECT account_id FROM unknown_accounts));
-DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM old_edits WHERE account_id IN (SELECT account_id FROM unknown_accounts));
 DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM edits WHERE account_id IN (SELECT account_id FROM unknown_accounts));
-DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT undone_by FROM old_edits WHERE undone_by IN (SELECT account_id FROM unknown_accounts));
 DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT undone_by FROM edits WHERE undone_by IN (SELECT account_id FROM unknown_accounts));
 DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT account_id FROM event_subscription WHERE account_id IN (SELECT account_id FROM unknown_accounts));
 DELETE FROM unknown_accounts WHERE account_id IN (SELECT DISTINCT subscriber_id FROM event_subscription WHERE subscriber_id IN (SELECT account_id FROM unknown_accounts));
@@ -61,9 +59,7 @@ ALTER TABLE api_keys DROP CONSTRAINT api_keys_account_id_fkey;
 ALTER TABLE authorizations DROP CONSTRAINT authorizations_account_id_fkey;
 ALTER TABLE positions DROP CONSTRAINT claims_account_id_fkey;
 ALTER TABLE duplicates DROP CONSTRAINT duplicates_account_id_fkey;
-ALTER TABLE old_edits DROP CONSTRAINT edits_account_id_fkey;
 ALTER TABLE edits DROP CONSTRAINT edits_account_id_fkey1;
-ALTER TABLE old_edits DROP CONSTRAINT edits_undone_by_fkey;
 ALTER TABLE edits DROP CONSTRAINT edits_undone_by_fkey1;
 ALTER TABLE event_subscription DROP CONSTRAINT event_subscription_account_id_fkey;
 ALTER TABLE event_subscription DROP CONSTRAINT event_subscription_subscriber_id_fkey;
@@ -115,9 +111,7 @@ ALTER TABLE api_keys ADD CONSTRAINT api_keys_account_id_fkey FOREIGN KEY (accoun
 ALTER TABLE authorizations ADD CONSTRAINT authorizations_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
 ALTER TABLE positions ADD CONSTRAINT claims_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
 ALTER TABLE duplicates ADD CONSTRAINT duplicates_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
-ALTER TABLE old_edits ADD CONSTRAINT edits_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id);
 ALTER TABLE edits ADD CONSTRAINT edits_account_id_fkey1 FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
-ALTER TABLE old_edits ADD CONSTRAINT edits_undone_by_fkey FOREIGN KEY (undone_by) REFERENCES accounts(id);
 ALTER TABLE edits ADD CONSTRAINT edits_undone_by_fkey1 FOREIGN KEY (undone_by) REFERENCES accounts(id);
 ALTER TABLE event_subscription ADD CONSTRAINT event_subscription_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
 ALTER TABLE event_subscription ADD CONSTRAINT event_subscription_subscriber_id_fkey FOREIGN KEY (subscriber_id) REFERENCES accounts(id) ON DELETE CASCADE;
