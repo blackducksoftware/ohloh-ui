@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   FORMATS_THAT_WE_RENDER_ERRORS_FOR = %w(html xml json).freeze
 
   include PageContextHelper
+  layout 'responsive_project_layout'
 
   helper FooterHelper
 
