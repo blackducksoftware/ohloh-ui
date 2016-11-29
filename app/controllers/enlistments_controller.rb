@@ -51,20 +51,8 @@ class EnlistmentsController < SettingsController
 
   private
 
-  def enlistment_params
-    params.require(:enlistment).permit(:ignore)
-  end
-
-  def repository_params
-    params.require(:repository).permit(:url, :username, :password, :bypass_url_validation)
-  end
-
   def code_location_params
     params.require(:code_location).permit(:module_branch_name, :bypass_url_validation) if params[:code_location]
-  end
-
-  def parse_sort_term
-    Enlistment.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : 'by_url'
   end
 
   def safe_constantize(repo)
