@@ -49,6 +49,9 @@
   margin-left: 10px
   margin-bottom: 10px
 
+.one-project-contribution
+  word-wrap: break-word
+
 #position_form
   input
     ~ .help-block
@@ -59,3 +62,20 @@
     // Fixes a known problem with applying chosen on hidden elements.
     .chzn-container
       width: 220px !important
+
+#position_organization_name
+  float: initial
+  margin-bottom: 0
+  &:-moz-placeholder
+    color: #202020
+  &:-ms-input-placeholder
+    color: #202020
+  &::-webkit-input-placeholder
+    color: #202020
+
+.position_affiliation .field_with_errors
+  display: inline
+
+.position_affiliation p.error
+  display: inline-block
+  margin: 5px 0 !important

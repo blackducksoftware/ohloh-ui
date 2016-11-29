@@ -37,8 +37,6 @@ class AnalysisDecorator < Cherry::Decorator
   def year_ago_summary_difference(column)
     if twelve_month_summary.respond_to?(column)
       twelve_month_summary.send(column).to_i - previous_twelve_month_summary.send(column).to_i
-    else
-      0
     end
   end
 end

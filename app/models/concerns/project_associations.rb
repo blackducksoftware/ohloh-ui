@@ -8,7 +8,11 @@ module ProjectAssociations
     has_many :analysis_summaries, through: :analyses
     has_many :taggings, as: :taggable
     has_many :tags, through: :taggings
+    has_many :project_badges, through: :enlistments
+    has_many :travis_badges, through: :enlistments
+    has_many :cii_badges, through: :enlistments
     belongs_to :best_analysis, foreign_key: :best_analysis_id, class_name: :Analysis
+    belongs_to :best_project_security_set, foreign_key: :best_project_security_set_id, class_name: :ProjectSecuritySet
     has_many :aliases, -> { where(deleted: false).where.not(preferred_name_id: nil) }
     has_many :contributions
     has_many :positions
@@ -18,6 +22,7 @@ module ProjectAssociations
     belongs_to :organization
     has_many :manages, -> { where(deleted_at: nil, deleted_by: nil) }, as: 'target'
     has_many :managers, through: :manages, source: :account
+    has_many :project_security_sets
     has_many :rss_subscriptions, -> { where(deleted: false) }
     has_many :rss_feeds, through: :rss_subscriptions
     has_many :reviews
@@ -54,7 +59,7 @@ module ProjectAssociations
 
     def contributions_within_timespan(options)
       contributions
-        .within_timespan(options[:time_span], best_analysis.logged_at)
+        .within_timespan(options[:time_span], best_analysis.oldest_code_set_time)
         .sort(options[:sort])
         .filter_by(options[:query])
         .includes(person: :account, contributor_fact: :primary_language)

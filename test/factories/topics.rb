@@ -11,7 +11,8 @@ FactoryGirl.define do
       Time.current + n
     end
 
-    factory :topic_with_posts, parent: :topic do
+    trait(:closed) { closed true }
+    trait :with_posts do
       transient do
         posts_count 3
       end

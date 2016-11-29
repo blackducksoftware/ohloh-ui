@@ -69,6 +69,14 @@ describe 'ProjectTagsController' do
       assert_response :unprocessable_entity
       project.reload.tag_list.must_equal ''
     end
+
+    it 'should return status 422 and project edit url if project description is invalid' do
+      project = create(:project_with_invalid_description)
+      login_as create(:account)
+      post :create, project_id: project.to_param, tag_name: 'zesty'
+      assert_response 422
+      @response.body.must_match edit_project_url(project)
+    end
   end
 
   describe 'destroy' do

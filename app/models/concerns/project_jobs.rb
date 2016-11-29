@@ -60,7 +60,7 @@ module ProjectJobs
 
   def update_logged_at
     sloc_set_ids = AnalysisSlocSet.where(analysis_id: best_analysis_id).pluck(:sloc_set_id)
-    best_analysis.update_attributes(logged_at: SlocSet.where(id: sloc_set_ids).minimum(:logged_at))
+    best_analysis.update_attributes(oldest_code_set_time: SlocSet.where(id: sloc_set_ids).minimum(:code_set_time))
   end
 
   def update_activity_level
@@ -88,7 +88,7 @@ module ProjectJobs
     sloc_sets_out_of_date = false
     best_analysis.analysis_sloc_sets.each do |ass|
       sloc_sets_out_of_date = true && break if ass.as_of != ass.sloc_set.as_of
-      ass.update_attributes(logged_at: ass.sloc_set.logged_at)
+      ass.update_attributes(code_set_time: ass.sloc_set.code_set_time)
     end
     sloc_sets_out_of_date
   end

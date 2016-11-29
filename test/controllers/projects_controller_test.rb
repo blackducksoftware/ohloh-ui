@@ -26,8 +26,26 @@ describe 'ProjectsController' do
     must_select "div.well#project_#{project3.id}", false
   end
 
+  it 'index should handle the q param for unlogged users' do
+    project1 = create(:project, name: 'Foo', description: Faker::Lorem.sentence(90))
+    project2 = create(:project, name: 'FooBar', description: Faker::Lorem.sentence(90))
+    project3 = create(:project, name: 'Goobaz', description: Faker::Lorem.sentence(90))
+    login_as nil
+    get :index, q: 'foo'
+    must_respond_with :ok
+    must_select "div.well#project_#{project1.id}", true
+    must_select "div.well#project_#{project2.id}", true
+    must_select "div.well#project_#{project3.id}", false
+  end
+
   it 'index should handle query param that matches no project' do
     get :index, query: 'qwertyuioplkjhgfdsazxcvbnm'
+    must_respond_with :ok
+    must_select 'div.advanced_search_tips', true
+  end
+
+  it 'index should handle q param that matches no project' do
+    get :index, q: 'qwertyuioplkjhgfdsazxcvbnm'
     must_respond_with :ok
     must_select 'div.advanced_search_tips', true
   end
@@ -41,11 +59,29 @@ describe 'ProjectsController' do
     response.body.must_match(/first.*second/m)
   end
 
+  it 'index should handle q param sorting by new' do
+    create(:project, name: 'Foo_new', description: 'second', created_at: Time.current - 3.hours)
+    create(:project, name: 'FooBar_new', description: 'first')
+    login_as nil
+    get :index, q: 'foo', sort: 'new'
+    must_respond_with :ok
+    response.body.must_match(/first.*second/m)
+  end
+
   it 'index should handle query param sorting by "activity_level"' do
     create(:project, name: 'Foo_activity_level', description: 'second', activity_level_index: 0)
     create(:project, name: 'FooBar_activity_level', description: 'first', activity_level_index: 20)
     login_as nil
     get :index, query: 'foo', sort: 'activity_level'
+    must_respond_with :ok
+    response.body.must_match(/first.*second/m)
+  end
+
+  it 'index should handle q param sorting by "activity_level"' do
+    create(:project, name: 'Foo_activity_level', description: 'second', activity_level_index: 0)
+    create(:project, name: 'FooBar_activity_level', description: 'first', activity_level_index: 20)
+    login_as nil
+    get :index, q: 'foo', sort: 'activity_level'
     must_respond_with :ok
     response.body.must_match(/first.*second/m)
   end
@@ -59,11 +95,29 @@ describe 'ProjectsController' do
     response.body.must_match(/first.*second/m)
   end
 
+  it 'index should handle q param sorting by "users"' do
+    create(:project, name: 'Foo_users', description: 'second', user_count: 1)
+    create(:project, name: 'FooBar_users', description: 'first', user_count: 20)
+    login_as nil
+    get :index, q: 'foo', sort: 'users'
+    must_respond_with :ok
+    response.body.must_match(/first.*second/m)
+  end
+
   it 'index should handle query param sorting by "rating"' do
     create(:project, name: 'Foo_rating', description: 'second', rating_average: 2)
     create(:project, name: 'FooBar_rating', description: 'first', rating_average: 4)
     login_as nil
     get :index, query: 'foo', sort: 'rating'
+    must_respond_with :ok
+    response.body.must_match(/first.*second/m)
+  end
+
+  it 'index should handle q param sorting by "rating"' do
+    create(:project, name: 'Foo_rating', description: 'second', rating_average: 2)
+    create(:project, name: 'FooBar_rating', description: 'first', rating_average: 4)
+    login_as nil
+    get :index, q: 'foo', sort: 'rating'
     must_respond_with :ok
     response.body.must_match(/first.*second/m)
   end
@@ -77,11 +131,32 @@ describe 'ProjectsController' do
     response.body.must_match(/first.*second/m)
   end
 
+  it 'index should handle q param sorting by "active_committers"' do
+    create(:project, name: 'Foo_active_committers', description: 'second', active_committers: 23)
+    create(:project, name: 'FooBar_active_committers', description: 'first', active_committers: 42)
+    login_as nil
+    get :index, q: 'foo', sort: 'active_committers'
+    must_respond_with :ok
+    response.body.must_match(/first.*second/m)
+  end
+
   it 'index should handle query param with atom format' do
     create(:project, name: 'Foo_atom', description: 'second', rating_average: 2)
     create(:project, name: 'FooBar_atom', description: 'first', rating_average: 4)
     login_as nil
     get :index, query: 'foo', sort: 'rating', format: 'atom'
+    must_respond_with :ok
+    nodes = Nokogiri::XML(response.body).css('entry')
+    nodes.length.must_equal 2
+    nodes[0].css('title').children.to_s.must_equal 'FooBar_atom'
+    nodes[1].css('title').children.to_s.must_equal 'Foo_atom'
+  end
+
+  it 'index should handle q param with atom format' do
+    create(:project, name: 'Foo_atom', description: 'second', rating_average: 2)
+    create(:project, name: 'FooBar_atom', description: 'first', rating_average: 4)
+    login_as nil
+    get :index, q: 'foo', sort: 'rating', format: 'atom'
     must_respond_with :ok
     nodes = Nokogiri::XML(response.body).css('entry')
     nodes.length.must_equal 2
@@ -265,7 +340,7 @@ describe 'ProjectsController' do
 
     it 'must render successfully when analysis has nil dates' do
       project = create(:project)
-      project.best_analysis.update! min_month: nil, max_month: nil, logged_at: nil,
+      project.best_analysis.update! min_month: nil, max_month: nil, oldest_code_set_time: nil,
                                     first_commit_time: nil, last_commit_time: nil
 
       get :show, id: project.to_param
@@ -357,6 +432,42 @@ describe 'ProjectsController' do
       get :show, id: project.to_param
       project.reload.uuid.must_equal uuid
       must_respond_with :ok
+    end
+
+    it 'should get the UUID from BlackDuck KB when its nil' do
+      project = create(:project, uuid: '', name: 'rails')
+      OpenhubSecurity.expects(:get_uuid).with(project.name).returns('1234')
+      get :show, id: project.to_param
+      project.reload.uuid.must_equal '1234'
+      must_respond_with :ok
+    end
+
+    describe 'Project summary section' do
+      let(:project) { create(:project, name: 'Rails') }
+      let(:enl1) { create(:enlistment, project: project, repository: create(:repository)) }
+      let(:enl2) { create(:enlistment, project: project, repository: create(:repository)) }
+
+      describe 'Badges' do
+        it 'should have badges row when badges are available for project' do
+          create(:travis_badge, enlistment: enl1)
+          get :show, id: project.to_param
+          response.body.must_match(/<section id='project_badges'>/)
+        end
+
+        it 'should not have badges row when no badges are available' do
+          get :show, id: project.to_param
+          response.body.wont_match(/<section id='project_badges'>/)
+        end
+
+        it 'should have more link to bages page when more than 2 badges are available' do
+          create(:travis_badge, enlistment: enl1)
+          create(:cii_badge, enlistment: enl1)
+          create(:travis_badge, enlistment: enl2)
+          create(:cii_badge, enlistment: enl2)
+          get :show, id: project.to_param
+          assert_select "a[href='/p/#{project.to_param}/project_badges']", text: 'more'
+        end
+      end
     end
   end
 
@@ -537,6 +648,7 @@ describe 'ProjectsController' do
     must_select 'input#project_enlistments_attributes_0_code_location_attributes_repository_attributes_url'
     must_select 'input#project_enlistments_attributes_0_code_location_attributes_module_branch_name'
     must_select 'select#repository_type'
+    flash[:error].must_equal I18n.t('projects.create.failure')
   end
 
   it 'create should gracefully handle validation errors' do

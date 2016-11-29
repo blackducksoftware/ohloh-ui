@@ -91,10 +91,6 @@ class AccountDecorator < Cherry::Decorator
     menus.second << [:unclaimed, I18n.t(:claim_contributions), h.committers_path(url_options)]
   end
 
-  def append_report_menu(menus)
-    menus.first << [:reports, 'My Reports', account_reports_path(account)]
-  end
-
   def current_or_admin?(current_user)
     account.eql?(current_user) || current_user.access.admin?
   end

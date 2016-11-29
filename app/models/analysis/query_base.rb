@@ -3,7 +3,7 @@ class Analysis::QueryBase
                  [:comments_added, :comments_removed, :comments_total],
                  [:blanks_added, :blanks_removed, :blanks_total]].freeze
 
-  delegate :logged_at, :updated_on, :empty?, to: :@analysis
+  delegate :oldest_code_set_time, :updated_on, :empty?, to: :@analysis
 
   class << self
     def arel_tables(*args)

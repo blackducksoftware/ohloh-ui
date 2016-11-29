@@ -1,5 +1,6 @@
 .well.col-md-3.margin_left_10.margin_top_20#explore_sidebar
-  %div{ style: 'margin-top: -12px' }
+  = link_to t('.add_new_project'), new_project_path, class: 'btn btn-primary btn-mini add_new_project_btn_top'
+  %div
     %h3= t('.search')
     .margin_left_10
       %form.search#explore_search_form{ action: projects_path }
@@ -38,6 +39,6 @@
     %h3= t('.add')
     %p.justify.margin_left_10.margin_top_20{ style: 'line-height: 20px' }
       = t('.community')
-    %p.justify.margin_left_10{ style: 'line-height: 20px' }
-      = t('.favorite')
-      = link_to t('.add_here'), new_project_path
+      = t('.dont_see_a_project')
+    .text-center.add_new_project_btn_bottom
+      = link_to t('.add_new_project'), new_project_path, class: 'btn btn-primary btn-small'

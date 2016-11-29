@@ -62,7 +62,7 @@ describe ForumsController do
   end
 
   it 'admin show with pagination' do
-    create_list(:topic_with_posts, 20, forum: forum)
+    create_list(:topic, 20, :with_posts, forum: forum)
     login_as create(:account)
     must_respond_with :success
 
@@ -132,7 +132,7 @@ describe ForumsController do
   end
 
   it 'show with pagination' do
-    create_list(:topic_with_posts, 20, forum: forum)
+    create_list(:topic, 20, :with_posts, forum: forum)
     login_as create(:account)
 
     get :show, id: forum.id

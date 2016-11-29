@@ -185,4 +185,46 @@ describe EditsController do
       must_respond_with :ok
     end
   end
+
+  describe 'show' do
+    describe '#Project Edit' do
+      it 'should not require a current user' do
+        project = create(:project)
+        login_as nil
+        xhr :get, :show, id: project.edits.first.id, project_id: project.to_param
+        must_respond_with :ok
+        must_render_template '_show'
+      end
+    end
+
+    describe 'Organization Edit' do
+      it 'should not require a current user' do
+        organization = create(:project).organization
+        login_as nil
+        xhr :get, :show, id: organization.edits.first.id, organization_id: organization.to_param
+        must_respond_with :ok
+        must_render_template '_show'
+      end
+    end
+
+    describe 'Account Edit' do
+      it 'should not require a current user' do
+        account = create(:project).editor_account
+        login_as nil
+        xhr :get, :show, id: account.edits.first.id, account_id: account.to_param
+        must_respond_with :ok
+        must_render_template '_show'
+      end
+    end
+
+    describe 'License Edit' do
+      it 'should not require a current user' do
+        license = create(:project_license).license
+        login_as nil
+        xhr :get, :show, id: license.edits.first.id, license_id: license.to_param
+        must_respond_with :ok
+        must_render_template '_show'
+      end
+    end
+  end
 end

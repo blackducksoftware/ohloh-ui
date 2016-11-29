@@ -98,6 +98,19 @@ class ClaimCoreTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'unclaimed_persons_count' do
+    before { create(:person, name_fact: position.name_fact) }
+
+    it 'should return zero' do
+      account.claim_core.unclaimed_persons_count.must_equal 0
+    end
+
+    it 'should return unclaimed persons count' do
+      position.name_fact.update_attribute(:email_address_ids, "{#{email1.id}}")
+      account.claim_core.unclaimed_persons_count.must_equal 1
+    end
+  end
+
   private
 
   def setup_new_name_with_facts(email)

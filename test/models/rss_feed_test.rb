@@ -80,4 +80,72 @@ class RssFeedTest < ActiveSupport::TestCase
       rss_feed.rss_articles.first.title.must_equal 'It will display ÀāĎĠĦž'
     end
   end
+
+  describe '.sync' do
+    it 'should sync only the feeds which next_fetch time is less than or equal to current time' do
+      VCR.use_cassette('RssFeed') do
+        before = Time.current - 4.hours
+        rss_feed = create(:rss_feed, url: 'http://www.vcrlocalhost.org/feed.rss', next_fetch: Time.current + 1.day)
+        project = create(:project)
+        project.update_attributes(updated_at: before)
+        create(:rss_subscription, rss_feed: rss_feed, project: project)
+        rss_feed.rss_articles.must_equal []
+        project.reload.updated_at.to_i.must_equal before.to_i
+        RssFeed.sync
+        rss_feed.reload.rss_articles.must_equal []
+        project.reload.updated_at.to_i.must_equal before.to_i
+
+        rss_feed = create(:rss_feed, url: 'http://www.vcrlocalhost.org/feed.rss')
+        project = create(:project)
+        project.update_attributes(updated_at: before)
+        create(:rss_subscription, rss_feed: rss_feed, project: project)
+        rss_feed.rss_articles.must_equal []
+        project.reload.updated_at.to_i.must_equal before.to_i
+        RssFeed.sync
+        rss_feed.reload.rss_articles.count.must_equal 1
+        project.reload.updated_at.to_i.wont_equal before.to_i
+      end
+    end
+
+    it 'should sync only subscribed feeds' do
+      VCR.use_cassette('RssFeed') do
+        before = Time.current - 4.hours
+        rss_feed = create(:rss_feed, url: 'http://www.vcrlocalhost.org/feed.rss', next_fetch: Time.current - 1.day)
+        project = create(:project)
+        project.update_attributes(updated_at: before)
+        create(:rss_subscription, rss_feed: rss_feed, project: project, deleted: true)
+        rss_feed.rss_articles.must_equal []
+        project.reload.updated_at.to_i.must_equal before.to_i
+        RssFeed.sync
+        rss_feed.reload.rss_articles.must_equal []
+        project.reload.updated_at.to_i.must_equal before.to_i
+
+        rss_feed = create(:rss_feed, url: 'http://www.vcrlocalhost.org/feed.rss', next_fetch: Time.current - 1.day)
+        project = create(:project)
+        project.update_attributes(updated_at: before)
+        create(:rss_subscription, rss_feed: rss_feed, project: project, deleted: false)
+        rss_feed.rss_articles.must_equal []
+        project.reload.updated_at.to_i.must_equal before.to_i
+        RssFeed.sync
+        rss_feed.reload.rss_articles.count.must_equal 1
+        project.reload.updated_at.to_i.wont_equal before.to_i
+      end
+    end
+  end
+
+  describe '#fetch' do
+    it 'should remove duplicate new feeds before saving into rss_articles table' do
+      VCR.use_cassette('RssFeedDuplicate', allow_playback_repeats: true) do
+        rss_feed = create(:rss_feed, url: 'http://www.vcrlocalhost.org/duplicate-feeds.rss')
+        create(:rss_subscription, rss_feed: rss_feed)
+        rss_feed.rss_articles.must_equal []
+        rss_feed.fetch
+        rss_feed.rss_articles.count.must_equal 1
+        rss_feed.rss_articles.delete_all
+        articles = rss_feed.send(:new_rss_article_items).map { |item| RssArticle.from_item(item) }
+        articles.count.must_equal 2
+        RssArticle.remove_duplicates(articles).count.must_equal 1
+      end
+    end
+  end
 end

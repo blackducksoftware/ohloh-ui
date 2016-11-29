@@ -11,6 +11,13 @@ class Post < ActiveRecord::Base
 
   scope :by_newest, -> { order('posts.created_at desc') }
   scope :by_unanswered, -> { joins(:topic).where(topics: { posts_count: 1 }).by_newest }
+  # DISTINCT ON is a Postgres extension to the SQL standard so it won't work on other databases.
+  scope :most_recent, lambda {
+    joins("INNER JOIN (
+            SELECT DISTINCT ON (topic_id) topic_id, id FROM posts ORDER BY topic_id, created_at DESC
+          ) most_recent ON (most_recent.id=posts.id)")
+  }
+  scope :open_topics, -> { joins(:topic).where(topics: { closed: false }).by_newest }
 
   def body=(value)
     super(value ? value.fix_encoding_if_invalid!.strip_tags.strip : nil)

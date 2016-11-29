@@ -57,9 +57,9 @@ class NilAnalysisTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'logged_at' do
+  describe 'oldest_code_set_time' do
     it 'should return nil' do
-      nil_analysis.logged_at.must_equal nil
+      nil_analysis.oldest_code_set_time.must_equal nil
     end
   end
 

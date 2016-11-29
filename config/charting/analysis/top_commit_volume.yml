@@ -44,3 +44,5 @@ plotOptions:
     stacking: 'percent'
     dataLabels:
       enabled: false
+exporting:
+  enabled: false

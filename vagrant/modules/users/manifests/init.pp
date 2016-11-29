@@ -27,7 +27,7 @@ class users {
     require => User[$app_user_name]
   }
 
-  exec { "mark deployer as being set up":
+  exec { "mark serv-deployer as being set up":
     command => "/usr/bin/touch /tmp/deployer_configured",
     user => root,
     creates => "/tmp/deployer_configured",

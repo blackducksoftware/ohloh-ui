@@ -9,5 +9,18 @@ FactoryGirl.define do
     association :logo
     association :organization
     after(:create) { |instance| instance.update_attributes(best_analysis: create(:analysis, project: instance)) }
+
+    factory :project_with_invalid_description do
+      description { Faker::Lorem.characters(820) }
+      to_create { |instance| instance.save(validate: false) }
+    end
+
+    factory :project_with_big_summary do
+      description { Faker::Lorem.characters(850) }
+    end
+
+    factory :project_with_less_summary do
+      description { Faker::Lorem.characters(420) }
+    end
   end
 end

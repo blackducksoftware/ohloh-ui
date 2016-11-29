@@ -12,7 +12,7 @@ describe 'AnalysesController' do
     create(:activity_fact, options)
   end
   let(:analysis) do
-    activity_fact_2.analysis.update!(updated_on: Date.current, logged_at: Date.current)
+    activity_fact_2.analysis.update!(updated_on: Date.current, oldest_code_set_time: Date.current)
     activity_fact_2.analysis
   end
   let(:project) { analysis.project }
@@ -142,7 +142,7 @@ describe 'AnalysesController' do
       create_all_months
       activity_fact.update_attributes!(month: second_day_of_month)
       create(:activity_fact, month: beginning_of_month, analysis: activity_fact.analysis)
-      analysis.update_attributes!(logged_at: Date.current + 32.days)
+      analysis.update_attributes!(oldest_code_set_time: Date.current + 32.days)
 
       get :committer_history, project_id: project.to_param, id: analysis.reload.id
 
@@ -166,7 +166,7 @@ describe 'AnalysesController' do
       create_all_months
       activity_fact.update_attribute(:month, second_day_of_month)
       create(:activity_fact, month: beginning_of_month, analysis: activity_fact.analysis)
-      analysis.update_attributes(logged_at: Date.current + 32.days)
+      analysis.update_attributes(oldest_code_set_time: Date.current + 32.days)
 
       get :contributor_summary, project_id: project.to_param, id: analysis.reload.id
 
@@ -220,12 +220,10 @@ describe 'AnalysesController' do
       assigns(:project).must_equal project
 
       series = result['series']
-      chart_options = result['chart']
 
       series.first['id'].must_equal 'code'
       series.map { |d| d['data'].last }.must_equal [[time_integer, 5], [time_integer, 10], [time_integer, 3]]
       series.map { |d| d['name'] }.must_equal %w(Code Comments Blanks)
-      chart_options['width'].must_equal 950
       result['scrollbar'].must_equal nil
     end
   end
@@ -247,12 +245,10 @@ describe 'AnalysesController' do
       assigns(:project).must_equal project
 
       series = result['series']
-      chart_options = result['chart']
 
       series.first['id'].must_equal 'code'
       series.map { |d| d['data'].last }.must_equal [[time_integer, 5], [time_integer, 10], [time_integer, 3]]
       series.map { |d| d['name'] }.must_equal %w(Code Comments Blanks)
-      chart_options['width'].must_equal 460
       result['scrollbar']['enabled'].must_equal false
     end
   end

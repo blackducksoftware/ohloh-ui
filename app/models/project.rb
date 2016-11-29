@@ -74,10 +74,6 @@ class Project < ActiveRecord::Base
            .order(orber_by)
   end
 
-  def code_published_in_code_search?
-    koders_status.try(:ohloh_code_ready) == true
-  end
-
   def newest_contributions
     contributions.sort_by_newest.joins(:contributor_fact)
                  .preload(person: :account, contributor_fact: :primary_language).limit(10)
@@ -86,6 +82,11 @@ class Project < ActiveRecord::Base
   def top_contributions
     contributions.sort_by_twelve_month_commits.joins(:contributor_fact)
                  .preload(person: :account, contributor_fact: :primary_language).limit(10)
+  end
+
+  def badges_summary
+    badges = travis_badges.active.first(2) + cii_badges.active.first(2)
+    [badges[0], badges[2] || badges[1]].compact
   end
 
   class << self
