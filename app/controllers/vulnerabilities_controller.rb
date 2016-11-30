@@ -1,5 +1,4 @@
 class VulnerabilitiesController < ApplicationController
-  layout 'responsive_project_layout', only: [:index]
   helper ProjectsHelper
 
   include VulnerabilityFilters, VulnerabilitiesHelper
