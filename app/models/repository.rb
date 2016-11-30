@@ -1,6 +1,8 @@
 class Repository < ActiveRecord::Base
   belongs_to :forge, class_name: 'Forge::Base'
+  belongs_to :best_repository_directory, foreign_key: :best_repository_directory_id, class_name: RepositoryDirectory
   has_many :code_locations
+  has_many :repository_directories
 
   scope :matching, ->(match) { Repository.forge_match_search(match) }
 
@@ -23,6 +25,10 @@ class Repository < ActiveRecord::Base
   class << self
     def get_compatible_class(_url)
       self
+    end
+
+    def dag?
+      false
     end
 
     def forge_match_search(m)
