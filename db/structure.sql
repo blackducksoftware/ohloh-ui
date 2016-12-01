@@ -1009,7 +1009,8 @@ CREATE TABLE code_location_events (
     status boolean,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    repository_id integer
+    repository_id integer,
+    component_id integer
 );
 
 
@@ -1649,6 +1650,37 @@ CREATE SEQUENCE feedbacks_id_seq
 --
 
 ALTER SEQUENCE feedbacks_id_seq OWNED BY feedbacks.id;
+
+
+--
+-- Name: fifty_thousand_batch_pilot_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE fifty_thousand_batch_pilot_accounts (
+    id integer NOT NULL,
+    account_id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: fifty_thousand_batch_pilot_accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE fifty_thousand_batch_pilot_accounts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: fifty_thousand_batch_pilot_accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE fifty_thousand_batch_pilot_accounts_id_seq OWNED BY fifty_thousand_batch_pilot_accounts.id;
 
 
 --
@@ -3091,13 +3123,12 @@ ALTER SEQUENCE profiles_id_seq OWNED BY profiles.id;
 
 CREATE TABLE project_badges (
     id integer NOT NULL,
-    repository_id integer,
-    project_id integer,
     identifier character varying,
     type character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    status integer DEFAULT 1
+    status integer DEFAULT 1,
+    enlistment_id integer
 );
 
 
@@ -4564,6 +4595,13 @@ ALTER TABLE ONLY feedbacks ALTER COLUMN id SET DEFAULT nextval('feedbacks_id_seq
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY fifty_thousand_batch_pilot_accounts ALTER COLUMN id SET DEFAULT nextval('fifty_thousand_batch_pilot_accounts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY follows ALTER COLUMN id SET DEFAULT nextval('follows_id_seq'::regclass);
 
 
@@ -5183,6 +5221,14 @@ ALTER TABLE ONLY failure_groups
 
 ALTER TABLE ONLY feedbacks
     ADD CONSTRAINT feedbacks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: fifty_thousand_batch_pilot_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY fifty_thousand_batch_pilot_accounts
+    ADD CONSTRAINT fifty_thousand_batch_pilot_accounts_pkey PRIMARY KEY (id);
 
 
 --
@@ -6789,17 +6835,10 @@ CREATE INDEX index_profiles_on_job_id ON profiles USING btree (job_id);
 
 
 --
--- Name: index_project_badges_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_project_badges_on_enlistment_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_project_badges_on_project_id ON project_badges USING btree (project_id);
-
-
---
--- Name: index_project_badges_on_repository_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_project_badges_on_repository_id ON project_badges USING btree (repository_id);
+CREATE INDEX index_project_badges_on_enlistment_id ON project_badges USING btree (enlistment_id);
 
 
 --
@@ -7185,6 +7224,13 @@ CREATE INDEX posts_topic_ic ON posts USING btree (topic_id);
 --
 
 CREATE INDEX robin ON name_facts USING btree (last_checkin) WHERE (type = 'VitaFact'::text);
+
+
+--
+-- Name: sloc_metrics_pkey; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX sloc_metrics_pkey ON sloc_metrics USING btree (id);
 
 
 --
@@ -7711,11 +7757,11 @@ ALTER TABLE ONLY code_locations
 
 
 --
--- Name: fk_rails_580a21f8c6; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_4c3c9e5c61; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY project_badges
-    ADD CONSTRAINT fk_rails_580a21f8c6 FOREIGN KEY (project_id) REFERENCES projects(id);
+    ADD CONSTRAINT fk_rails_4c3c9e5c61 FOREIGN KEY (enlistment_id) REFERENCES enlistments(id);
 
 
 --
@@ -7724,14 +7770,6 @@ ALTER TABLE ONLY project_badges
 
 ALTER TABLE ONLY code_location_events
     ADD CONSTRAINT fk_rails_5a0f61d9a6 FOREIGN KEY (code_location_id) REFERENCES code_locations(id);
-
-
---
--- Name: fk_rails_60edffb8dd; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY project_badges
-    ADD CONSTRAINT fk_rails_60edffb8dd FOREIGN KEY (repository_id) REFERENCES repositories(id);
 
 
 --
@@ -8798,7 +8836,13 @@ INSERT INTO schema_migrations (version) VALUES ('20161024095609');
 
 INSERT INTO schema_migrations (version) VALUES ('20161027065200');
 
+INSERT INTO schema_migrations (version) VALUES ('20161101134545');
+
+INSERT INTO schema_migrations (version) VALUES ('20161103153643');
+
 INSERT INTO schema_migrations (version) VALUES ('20161114063801');
+
+INSERT INTO schema_migrations (version) VALUES ('20161128183115');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

@@ -3,7 +3,7 @@
   global_search_param = '' if @avoid_global_search
 
 - unless request.path == root_path
-  %form.pull-right#quicksearch{ action: projects_path, style: 'margin-top: -8px' }
+  %form.pull-right#quicksearch{ action: projects_path }
     .dropdown
       .btn-group.ux-dropdown
         %a.btn.btn-small.dropdown-toggle{ 'data-toggle' => 'dropdown' }

@@ -147,7 +147,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
 #add_this
   margin-top: 5.3rem
 
-#project_container
+.container-fluid
   #project_masthead
     #widgets
       width: 31rem
@@ -182,6 +182,8 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
         :background-position -360px -40px
       &.news
         :background-position -400px -40px
+      &.badges
+        :background-position -891px -40px
   .settings_description
     :width 240px
     :padding-left 10px
@@ -219,6 +221,8 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
       :width 36px
     &.news
       :background-position -400px 0px
+    &.badges
+      :background-position -890px 0px
 
 #projects_similar_page
   .project_content_title
@@ -401,3 +405,49 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     margin-top: 5px
     margin-left: auto
     margin-right: auto
+
+#project_badges_page
+  margin-bottom: 2rem
+  .title
+    margin-bottom: 2rem
+  .no-left-padding
+    padding-left: 0
+  .badge_table_container
+    .table-responsive
+      .table
+        tbody
+          tr td
+            padding-top: 1.5rem
+            padding-bottom: 1.5rem
+            vertical-align: top !important
+            .btn-mini.col-xs-12
+              padding: 0.12rem 1.5rem
+              width: 100%
+            .url_update_btn
+              color: green
+              font-size: 2.1rem
+              cursor: pointer
+            .edit_url_close_btn
+              color: red
+              font-size: 2.1rem
+              cursor: pointer
+            #save_badge
+              margin-bottom: 0.5rem
+
+.project_summary_container
+  section
+    margin-bottom: 1em
+    &:last-child
+      margin-bottom: 0
+
+#project_tags, #project_badges
+  .title
+    margin-bottom: 0.3em
+
+#project_badges
+  .badges img
+    margin-left: 5px
+    &:first-child
+      margin-left: 0
+  .more_badges p
+    float: right

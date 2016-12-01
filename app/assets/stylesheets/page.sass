@@ -7,6 +7,9 @@ body
   margin: 0
   color: #333
 
+a
+  color: #0082C6
+
 #page
   width: 980px
   background-color: white
@@ -17,8 +20,8 @@ header
   margin-bottom: 0px
 
 #nav-top-bar
-  border-bottom: 0.4rem #DDD solid
-  margin: 11px 0 0 0
+  padding-bottom: 8px
+  margin: 11px 0 4px 0
   .new_main_menu
     list-style: none
     margin: 0
@@ -28,15 +31,15 @@ header
       margin-right: 16px
       a
         text-transform: uppercase
-        color: #0082c6
+        color: #fff
         font-size: 13pt
         text-decoration: none
         &:hover
           padding-bottom: 0px
-          border-bottom: 0.4rem #0082C6 solid
-          color: black
+          border-bottom: 0.4rem #fff solid
+          color: #fff
 
-#project_container
+.container-fluid
   background-color: white
   #page-contents
     width: auto
@@ -62,8 +65,9 @@ header
   min-height: 33px
   .logo_link
     float: left
+    margin-left: -7px
     img
-      margin-top: 7px
+      margin-top: 2px
       width: 280px
   .btn
     border: 0
@@ -74,18 +78,17 @@ header
     padding: 1px 6px 0 7px
   .follow_btn
     background-color: #DDD !important
+    color: #888 !important
     display: inline-block
     padding: 0 0 0 4px
     &:hover
-      background-color: #BBB !important
+      color: #333 !important
       text-decoration: none
     height: 24px
     i, p, img
-      color: #888
       display: inline-block
       vertical-align: top
     i
-      color: #555
       vertical-align: middle
       &:before
         padding-right: 0
@@ -107,30 +110,38 @@ header
   float: right
 
 #logged_user_menu
+  display: inline-block
   a
     color: #777777
     text-transform: none
     text-decoration: none
-    margin: 8px 0px 15px
-    padding-right: 10px
+    margin: 2px 0
+    padding: 0
   ul
-    margin-top: 40px
+    margin-top: 8px
     border-radius: 0
+    min-width: 150px
     li
-      width: 150px
+      float: none
+      padding: 0
       a
-        color: black
+        color: #0082C6
         margin: 0
+        padding: 7px 15px
         &:hover
-          background-color: #0082C6 !important
-          color: #fff !important
+          background-color: #66CEF6 !important
+          color: #333 !important
     .divider
       width: 100%
       height: 1px
-      margin: 13px 0
+      margin: 3px 0
       overflow: hidden
       border-bottom: 1px solid #e5e5e5
 
+
+#logged_in_user
+  color: #BCBCBC !important
+  font-size: 14px
 
 #flash-msg .alert
   border-radius: 0
@@ -262,7 +273,7 @@ fieldset
     margin-top: 0
     padding-top: 0
 
-.container-fluid#project_container
+.container-fluid
   .row.mezzo
     margin: 0 -10px
   .page-contents
@@ -270,10 +281,12 @@ fieldset
   .navbar
     margin-bottom: 1.5rem
     #top_nav_actions
-      margin-top: 1.6rem
+      margin-top: 1.5rem
+      ul li:first-child
+        padding-left: 0
     .logo_link
       img
-        margin-top: 1.6rem
+        margin-top: 2px
   .no_padding_right
     padding-right: 0
   .no_padding_left
@@ -413,3 +426,8 @@ fieldset
               width: 14rem
             .language_percentage_indicator
               width: 3rem
+
+@media (max-width: 767px)
+  .container-fluid
+    padding-left: 10px
+    padding-right: 10px

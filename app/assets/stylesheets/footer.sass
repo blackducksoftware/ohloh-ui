@@ -1,61 +1,44 @@
 footer
-  background: #9A9A9A
-  border-top: 5px #DDDDDD solid
-  color: #EEE
-  font-weight: 200
-  margin: 0 -10px
-  min-height: 175px
-  padding-top: 10px
-  width: 980px
-  a
-    color: white
-    &:hover
-      color: white
+  background: #242021
+  min-height: 120px
+  margin: 0
+  padding: 15px 15px 0 15px
 
-  .footer-left
-    float: left
-    margin-right: 30px
-    width: 10%
-    ul li
-      margin: 0
-      a
-        padding: 8px 12px
-        &:hover
-          background: #0082C6
-          border-radius: 0
+#footer-logo
+  margin-left: -5px
 
-  .footer-mid
-    float: left
-    margin-top: 20px
-    width: 64%
-    a img
-      float: left
-      margin-right: 10px
+#footer-navigation
+  display: inline-block
+  li
+    margin: 0 40px
+    a
+      color: #66CEF6
+      font-size: 14px
+      &:hover
+        background: none
+        color: #fff
 
-  .footer-right
-    float: right
-    font-size: 10px
-    padding-right: 10px
-    text-align: right
-    width: 175px
-    img
-      margin-right: 15px
-      opacity: 0.5
-      width: 70px
+#copyright
+  margin-top: 10px
+  p
+    margin-top: 7px
+    font-size: 0.62vw
+    vertical-align: bottom
+    color: #AEAEAE
+    text-align: center
 
-footer.fluid_footer
-  width: auto
-  margin: 0 -15px
-  padding-left: 50px
-  padding-right: 50px
-  .footer-left
-    width: 8.33333333%
-    ul
-      li
-        a
-          padding: 1rem 2rem
-          font-weight: bold
-  .footer-mid
-    width: 50%
-    text-align: left
-    font-weight: bold
+@media (max-width: 379px)
+  #footer-navigation
+    margin-left: 20px
+    li
+      margin: 0 5px
+
+@media (min-width: 380px) and (max-width: 991px)
+  #footer-navigation
+    li
+      margin: 0 20px
+
+@media (max-width: 1244px)
+  #copyright p
+    margin-top: 0
+    font-size: 0.62em

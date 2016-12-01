@@ -214,6 +214,7 @@ Rails.application.routes.draw do
     collection do
       post :check_forge
     end
+    resources :project_badges
     resources :contributions, path: :contributors, as: :contributors, only: [:index, :show] do
       resources :commits
       collection do
@@ -247,6 +248,8 @@ Rails.application.routes.draw do
     resources :enlistments
     resources :factoids, only: [:index]
     resources :rss_articles, only: :index
+    resources :project_badges
+
     resources :project_widgets, path: :widgets, as: :widgets, only: :index do
       collection do
         get :project_factoids, action: :factoids, as: :factoids
