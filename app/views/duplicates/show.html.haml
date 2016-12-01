@@ -83,11 +83,11 @@
       %td.good
         = link_to pluralize(@duplicate.good_project.enlistments.count, 'repository'),
         project_enlistments_path(@duplicate.good_project), class: 'green',
-        title: @duplicate.good_project.enlistments[0..20].map { |e| h(e.repository.nice_url) }.join('\n')
+        title: @duplicate.good_project.enlistments[0..20].map { |e| h(e.code_location.nice_url) }.join('\n')
       %td.bad
         = link_to pluralize(@duplicate.bad_project.enlistments.count, 'repository'),
         project_enlistments_path(@duplicate.bad_project), class: 'red',
-        title: @duplicate.bad_project.enlistments[0..20].map { |e| h(e.repository.nice_url) }.join('\n')
+        title: @duplicate.bad_project.enlistments[0..20].map { |e| h(e.code_location.nice_url) }.join('\n')
     %tr.suggestion
       %td= t('.suggests')
       %td.good
