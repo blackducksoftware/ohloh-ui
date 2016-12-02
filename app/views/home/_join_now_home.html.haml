@@ -1,19 +1,16 @@
-.join_now_home
-  %p
-    %img{ alt: 'cliam contribution', src: image_path('home/icon-claim.png') }
-    &nbsp;&nbsp;
-    %span.green= t('.claim')
+.container.join_now_home
+  .col-md-4.text-center
+    %span.icon.icon-group
+    %span.bold= t('.claim')
     = t('.contributions')
-  %p
-    %span.green= t('.manage')
+  .col-md-4.text-center
+    %span.icon.icon-cogs
+    %span.bold= t('.manage')
     = t('.projects_data')
-    &nbsp;&nbsp;
-    %img{ alt: 'Manage', src: image_path('home/icon-manage.png') }
-  %p
-    %img{ alt: 'Build', src: image_path('home/icon-build.png') }
-    &nbsp;&nbsp;
-    %span.green= t('.highlight')
+  .col-md-4.text-center
+    %span.icon.icon-hand-right
+    %span.bold= t('.highlight')
     = t('.use')
-  %br
-  %p
-    = link_to t('.join_now'), new_registration_path(invite: params[:invite], ref: 'homepage'), class: 'btn btn_join_now'
+  .clearfix
+  .text-center.col-md-12
+    = link_to t('.join_now'), new_registration_path(invite: params[:invite], ref: 'homepage'), class: 'btn btn_join_now btn-lg btn-default'

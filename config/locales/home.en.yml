@@ -3,7 +3,7 @@ en:
     index:
       page_title: 'Open Hub, the open source network'
       discover_message: 'Discover, Track and Compare Open Source'
-      join_now: 'Join Now'
+      join_now: 'Join Now!'
       whats_new: "What's New"
       counting: 'Counting %{count} lines of code'
       indexing: 'Indexing %{count} open source projects'

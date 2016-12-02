@@ -1,67 +1,85 @@
 .showcase
-  clear: both
-  margin: 1em auto
-  padding-top: 20px
-  position: relative
-  width: 800px
-.billboard
-  background: none repeat scroll 0 0 #3399ff
+  width: 100%
+  height: 212px
+  background-color: #005481
+  left: 0px
+  margin-top: 40px
   color: white
-  height: 160px
-  left: -90px
-  padding: 1px 0 20px
-  position: relative
   text-align: center
-  top: 0
-  width: 980px
-  z-index: 2
-#global_statistics
-  padding-top: 1px
-  p
-    margin-top: -20px
+  h1
     text-align: center
+    font-size: 2.1em important
+    font-weight: 500
+    color: white
+    padding-top: 23px
+    letter-spacing: 0
+  #search_form_container
+    margin-top: 26px
+    .for_search_all_code
+      width: 350px
+
+#global_statistics
+  p
+    margin-top: 29px
+    text-align: center
+    font-weight: 400
     font-size: 14px
-    font-weight: 200 !important
-.join_now
-  border-bottom: 3px solid #89A54E
-  padding-bottom: 5px
-  padding-left: 12px
+
 .join_now_home
   p
     font-size: 14px
   .green
     color: #65880d !important
     font-size: 1.2em !important
+  .icon
+    font-size: 2.1em
+    margin-right: 10px
+    vertical-align: -15%
 .home_page_row
+  background-color: white
+  .join_now_container
+    min-height: 212px
+  h2.join_now
+    text-align: center
+    font-size: 2.1em
+    font-weight: 600
+    color: #074438
+    padding-top: 10px
+    margin-bottom: 28px
+    margin-top: 20px
+  h2.wh_new
+    text-align: center
+    font-size: 2.1em
+    font-weight: 500
+    color: white
+    padding-top: 30px
+    margin-bottom: 32px
+    margin-top: 20px
+  section.what_new
+    height: 350px
+    background-color: #9F4F0A
   .whats_new
     margin-right: -25px !important
   .col-md-8
     h2
       margin-right: -25px !important
-  .col-md-4
-    margin-left: -14px !important
-    padding-right: 0px
+.whats_new_container
+  margin: 0 auto
+  min-width: 300px
+  max-width: 622px
+
 .btn.btn_join_now
-  background-color: #7b9343 !important
-  border-color: #7b9343 !important
-  font-weight: bold !important
-  margin-left: 60px !important
-  width: 161px !important
+  background-color: #074438 !important
+  color: white !important
+  margin-top: 24px
+  padding: 17px
+  width: 160px
+  border: none
+  font-size: 18px
 .new_this_year
   background: asset_url("home/oh_sec_check.jpg") 0 0 no-repeat
   height: 205px
-  margin-top: 25px
-
-::-webkit-input-placeholder
-  color:    black
-\:-moz-placeholder
-  color:    black
-  opacity:  1
-::-moz-placeholder
-  color:    black
-  opacity:  1
-\:-ms-input-placeholder
-  color:    #909
+  margin-top: 12px
 
 input:focus::-webkit-input-placeholder
   color: transparent
@@ -71,25 +89,31 @@ input:focus::-ms-input-placeholder
   color: transparent
 
 .landing
-  margin-left: -14px
 .top_ten_main
   padding-left: 40px !important
   padding-bottom: 6px !important
 .top_ten_row
-  padding-left: 9px !important
-  padding-bottom: 15px
+  padding-left: 0
+  height: 80px
 .top_ten_bar
-  line-height: 0.6em
+  line-height: 0.45em
   width: 30%
   background: #AA4643
-  margin-top: 7px
 .top_ten_label
-  line-height: 1.5em
-  padding-left: 8px
+  line-height: 1.45em
+  padding-left: 3px
   color: #555
+  font-size: .76em
+  line-height: .76em
+  margin-left: .3em
+  float: left
 .top_ten.last
   h3
     margin-right: -25px !important
+
+.last_section
+  .top_ten
+    margin-top: 20px
 .top_ten_icon
   img
     background-color: #EEE
@@ -103,28 +127,34 @@ input:focus::-ms-input-placeholder
     margin-bottom: 0
     margin-top: 0
     margin-right: 2px
+.top_ten.well
+  border: 1px solid #e3e3e3 !important
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05) !important
+  padding-top: 0 !important
+
 .for_search_all_code
-  height: 23px !important
-  margin-top: -108px
-  width: 413px
-  color: black !important
+  width: 360px
+  height: 30px
+  background-color: white
+  margin-bottom: 0 !important
+  padding: 4px !important
 .image_icon
   img
-    margin-left: -24px
-    margin-top: -115px
+    margin-left: -35px
+    margin-top: 0
     padding-bottom: 3px
-    width: 13px !important
-    height: 17px !important
+    width: 33px !important
+    height: 42px !important
     cursor: pointer
 .top_ten_link
   a
     border: 0
+    color: #0082C6
+
 .discover_msg
   font-size: 2.1em !important
   font-weight: 500 !important
-  margin-bottom: 88px !important
-  h1
-    line-height: 1.2em !important
+  line-height: 1.1em !important
 .icon_search
   font-family: open sans
   font-size: 14px
@@ -132,26 +162,39 @@ input:focus::-ms-input-placeholder
   margin-top: -37px
   margin-left: -71px
   text-align: center
-.wh_new
-  border-bottom: 3px solid #AA4643
-  padding-bottom: 5px
-  padding-left: 12px
 .common
-  padding-left: 6px
-  padding-bottom: 3px
+  text-align: center
   font-size: 1.4em
-  font-weight: normal
-  color: #000000
+  font-weight: 500
+  padding-top: 30px
+  margin-bottom: 28px
+  color: #005481
 .most_popular_projects
-  border-bottom: 2px solid #AA4643
+  color: #005481
 .most_active_projects
-  border-bottom: 2px solid #4572A7
-  margin-left: -1px
+  color: #074438
 .most_active_contributors
-  border-bottom: 2px solid #89A54E
+  color: #9F4F0A
 .popular
-  background: #AA4643 !important
+  background: #005481 !important
 .active
-  background: #4572A7 !important
+  background: #074438 !important
 .contributor
-  background: #89A54E !important
+  background: #9F4F0A !important
+
+\::-webkit-input-placeholder
+  color: #575757
+  font-style: italic
+
+\:-moz-placeholder
+  color: #575757
+  font-style: italic
+
+\::-moz-placeholder
+  color: #575757
+  font-style: italic
+
+\:-ms-input-placeholder
+  color: #575757
+  font-style: italic
+
