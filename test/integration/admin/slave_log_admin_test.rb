@@ -12,9 +12,9 @@ class SlaveLogTest < ActionDispatch::IntegrationTest
 
   it 'should render repository slave logs' do
     login_as admin
-    repository = create(:repository)
-    create(:slave_log, code_set_id: create(:code_set, repository: repository).id)
-    get admin_repository_slave_logs_path(repository)
+    code_location = create(:code_location)
+    create(:slave_log, code_set_id: create(:code_set, code_location: code_location))
+    get admin_code_location_slave_logs_path(code_location)
     assert_response :success
   end
 

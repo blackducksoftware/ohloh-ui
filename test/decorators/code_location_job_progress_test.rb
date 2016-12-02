@@ -1,9 +1,9 @@
 require 'test_helper'
 
-class RepositoryJobProgressTest < ActiveSupport::TestCase
+class CodeLocationJobProgressTest < ActiveSupport::TestCase
   let(:enlistment) { create(:enlistment) }
-  let(:repo_progress) { RepositoryJobProgress.new(enlistment) }
-  let(:job) { enlistment.repository.jobs.incomplete.first }
+  let(:repo_progress) { CodeLocationJobProgress.new(enlistment) }
+  let(:job) { enlistment.code_location.jobs.incomplete.first }
 
   describe 'message' do
     it 'should return waiting message' do
@@ -37,8 +37,8 @@ class RepositoryJobProgressTest < ActiveSupport::TestCase
 
     it 'should return blocked job message' do
       job.update_columns(status: 5)
-      repository = create(:repository)
-      repository.enlistments.first.update_columns(project_id: enlistment.project_id)
+      code_location = create(:code_location)
+      code_location.enlistments.first.update_columns(project_id: enlistment.project_id)
 
       repo_progress.message.must_equal I18n.t('repositories.job_progress.blocked_by', status: 'waiting')
     end

@@ -1,13 +1,12 @@
 require 'test_helper'
 
 class BzrRepositoryTest < ActiveSupport::TestCase
-  let(:source_scm_class) { BzrRepository.new.source_scm_class }
-
-  before { source_scm_class.any_instance.stubs(:validate_server_connection) }
-
   it 'must find existing repository by url' do
-    repository = create(:bzr_repository, bypass_url_validation: false)
+    repository = create(:bzr_repository)
+    repository.source_scm_class.must_equal OhlohScm::Adapters::BzrlibAdapter
+  end
 
-    BzrRepository.find_existing(repository).must_equal repository
+  it 'must return true for dag?' do
+    BzrRepository.dag?.must_equal true
   end
 end

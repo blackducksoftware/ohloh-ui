@@ -1,5 +1,5 @@
 role :web_1, %w(serv-deployer@oh-web01.dc1.lan)
-# role :web_2, %w(serv-deployer@oh-web02.dc1.lan) NOTE: Dedicated for eFisbot
+role :web_2, %w(serv-deployer@oh-web02.dc1.lan)
 role :web_3, %w(serv-deployer@oh-web03.dc1.lan)
 role :web_4, %w(serv-deployer@oh-web04.dc1.lan)
 role :web_5, %w(serv-deployer@oh-web05.dc1.lan)

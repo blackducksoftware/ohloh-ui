@@ -5,11 +5,12 @@ describe 'ProjectsController' do
   let(:client_id) { api_key.oauth_application.uid }
   let(:forge) { Forge.find_by(name: 'Github') }
   let(:enlistment_params) do
-    { '0' => { repository_attributes: { type: 'GitRepository', url: 'git://a.com/cb.git', branch_name: 'master' } } }
+    { '0' => { code_location_attributes: { repository_attributes: { type: 'GitRepository', url: 'git://a.com/cb.git' },
+                                           module_branch_name: 'master' } } }
   end
 
   before do
-    Repository.any_instance.stubs(:bypass_url_validation).returns(true)
+    CodeLocation.any_instance.stubs(:bypass_url_validation).returns(true)
   end
 
   # index
@@ -440,6 +441,34 @@ describe 'ProjectsController' do
       project.reload.uuid.must_equal '1234'
       must_respond_with :ok
     end
+
+    describe 'Project summary section' do
+      let(:project) { create(:project, name: 'Rails') }
+      let(:enl1) { create(:enlistment, project: project, repository: create(:repository)) }
+      let(:enl2) { create(:enlistment, project: project, repository: create(:repository)) }
+
+      describe 'Badges' do
+        it 'should have badges row when badges are available for project' do
+          create(:travis_badge, enlistment: enl1)
+          get :show, id: project.to_param
+          response.body.must_match(/<section id='project_badges'>/)
+        end
+
+        it 'should not have badges row when no badges are available' do
+          get :show, id: project.to_param
+          response.body.wont_match(/<section id='project_badges'>/)
+        end
+
+        it 'should have more link to bages page when more than 2 badges are available' do
+          create(:travis_badge, enlistment: enl1)
+          create(:cii_badge, enlistment: enl1)
+          create(:travis_badge, enlistment: enl2)
+          create(:cii_badge, enlistment: enl2)
+          get :show, id: project.to_param
+          assert_select "a[href='/p/#{project.to_param}/project_badges']", text: 'more'
+        end
+      end
+    end
   end
 
   # new
@@ -471,7 +500,7 @@ describe 'ProjectsController' do
       proj = create(:project)
       repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forge.id,
                                  owner_at_forge: 'rails', name_at_forge: 'rails')
-      create(:enlistment, project: proj, repository: repo)
+      create(:enlistment, project: proj, code_location: create(:code_location, repository: repo))
       login_as create(:account)
       post :check_forge, codelocation: 'https://github.com/rails/rails'
       must_respond_with :ok
@@ -486,7 +515,7 @@ describe 'ProjectsController' do
       proj = create(:project)
       repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forge.id,
                                  owner_at_forge: 'rails', name_at_forge: 'rails')
-      create(:enlistment, project: proj, repository: repo)
+      create(:enlistment, project: proj, code_location: create(:code_location, repository: repo))
       login_as create(:account)
       Forge::Match.any_instance.expects(:project).raises Timeout::Error
       post :check_forge, codelocation: 'https://github.com/rails/rails', bypass: true
@@ -502,7 +531,7 @@ describe 'ProjectsController' do
       proj = create(:project)
       repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forge.id,
                                  owner_at_forge: 'rails', name_at_forge: 'rails')
-      create(:enlistment, project: proj, repository: repo)
+      create(:enlistment, project: proj, code_location: create(:code_location, repository: repo))
       login_as create(:account)
       post :check_forge, codelocation: 'https://github.com/rails/rails', bypass: true
       must_respond_with :ok
@@ -537,10 +566,10 @@ describe 'ProjectsController' do
     project.download_url.must_equal 'http://b.com/'
     project.active_managers.must_equal [account]
     project.licenses.map(&:id).sort.must_equal [license1.id, license2.id].sort
-    project.repositories.length.must_equal 1
-    project.repositories[0].type.must_equal 'GitRepository'
-    project.repositories[0].url.must_equal 'git://a.com/cb.git'
-    project.repositories[0].branch_name.must_equal 'master'
+    project.code_locations.length.must_equal 1
+    project.code_locations[0].repository.type.must_equal 'GitRepository'
+    project.code_locations[0].repository.url.must_equal 'git://a.com/cb.git'
+    project.code_locations[0].module_branch_name.must_equal 'master'
   end
 
   it 'create should allow no download_url' do
@@ -560,10 +589,10 @@ describe 'ProjectsController' do
     project.download_url.must_equal nil
     project.active_managers.must_equal [account]
     project.licenses.map(&:id).sort.must_equal [license1.id, license2.id].sort
-    project.repositories.length.must_equal 1
-    project.repositories[0].type.must_equal 'GitRepository'
-    project.repositories[0].url.must_equal 'git://a.com/cb.git'
-    project.repositories[0].branch_name.must_equal 'master'
+    project.code_locations.length.must_equal 1
+    project.code_locations[0].repository.type.must_equal 'GitRepository'
+    project.code_locations[0].repository.url.must_equal 'git://a.com/cb.git'
+    project.code_locations[0].module_branch_name.must_equal 'master'
   end
 
   it 'create should allow no licenses' do
@@ -581,10 +610,10 @@ describe 'ProjectsController' do
     project.download_url.must_equal 'http://b.com/'
     project.active_managers.must_equal [account]
     project.licenses.must_equal []
-    project.repositories.length.must_equal 1
-    project.repositories[0].type.must_equal 'GitRepository'
-    project.repositories[0].url.must_equal 'git://a.com/cb.git'
-    project.repositories[0].branch_name.must_equal 'master'
+    project.code_locations.length.must_equal 1
+    project.code_locations[0].repository.type.must_equal 'GitRepository'
+    project.code_locations[0].repository.url.must_equal 'git://a.com/cb.git'
+    project.code_locations[0].module_branch_name.must_equal 'master'
   end
 
   it 'create should allow the creator not being automatically the manager' do
@@ -603,10 +632,10 @@ describe 'ProjectsController' do
     project.download_url.must_equal 'http://b.com/'
     project.active_managers.must_equal []
     project.licenses.map(&:id).sort.must_equal [license1.id, license2.id].sort
-    project.repositories.length.must_equal 1
-    project.repositories[0].type.must_equal 'GitRepository'
-    project.repositories[0].url.must_equal 'git://a.com/cb.git'
-    project.repositories[0].branch_name.must_equal 'master'
+    project.code_locations.length.must_equal 1
+    project.code_locations[0].repository.type.must_equal 'GitRepository'
+    project.code_locations[0].repository.url.must_equal 'git://a.com/cb.git'
+    project.code_locations[0].module_branch_name.must_equal 'master'
   end
 
   it 'create should not lose repo params on validation errors' do
@@ -616,8 +645,8 @@ describe 'ProjectsController' do
     must_respond_with :unprocessable_entity
     must_select 'form#new_project', 1
     must_select 'p.error'
-    must_select 'input#project_enlistments_attributes_0_repository_attributes_url'
-    must_select 'input#project_enlistments_attributes_0_repository_attributes_branch_name'
+    must_select 'input#project_enlistments_attributes_0_code_location_attributes_repository_attributes_url'
+    must_select 'input#project_enlistments_attributes_0_code_location_attributes_module_branch_name'
     must_select 'select#repository_type'
     flash[:error].must_equal I18n.t('projects.create.failure')
   end

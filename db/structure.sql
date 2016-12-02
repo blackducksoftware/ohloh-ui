@@ -1009,7 +1009,8 @@ CREATE TABLE code_location_events (
     status boolean,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    repository_id integer
+    repository_id integer,
+    code_location_events integer
 );
 
 
@@ -3122,13 +3123,12 @@ ALTER SEQUENCE profiles_id_seq OWNED BY profiles.id;
 
 CREATE TABLE project_badges (
     id integer NOT NULL,
-    repository_id integer,
-    project_id integer,
     identifier character varying,
     type character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    status integer DEFAULT 1
+    status integer DEFAULT 1,
+    enlistment_id integer
 );
 
 
@@ -3607,6 +3607,50 @@ CREATE TABLE repositories (
     name_at_forge text,
     owner_at_forge text,
     best_repository_directory_id integer
+);
+
+
+--
+-- Name: repository_directories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE repository_directories (
+    id integer NOT NULL,
+    code_location_id integer,
+    repository_id integer,
+    fetched_at timestamp without time zone
+);
+
+
+--
+-- Name: repository_directories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE repository_directories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: repository_directories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE repository_directories_id_seq OWNED BY repository_directories.id;
+
+
+--
+-- Name: repository_tags; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE repository_tags (
+    id integer NOT NULL,
+    repository_id integer,
+    name text,
+    commit_sha1 text,
+    message text
 );
 
 
@@ -6835,17 +6879,10 @@ CREATE INDEX index_profiles_on_job_id ON profiles USING btree (job_id);
 
 
 --
--- Name: index_project_badges_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_project_badges_on_enlistment_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_project_badges_on_project_id ON project_badges USING btree (project_id);
-
-
---
--- Name: index_project_badges_on_repository_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_project_badges_on_repository_id ON project_badges USING btree (repository_id);
+CREATE INDEX index_project_badges_on_enlistment_id ON project_badges USING btree (enlistment_id);
 
 
 --
@@ -7767,8 +7804,16 @@ ALTER TABLE ONLY code_locations
 -- Name: fk_rails_580a21f8c6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_badges
-    ADD CONSTRAINT fk_rails_580a21f8c6 FOREIGN KEY (project_id) REFERENCES projects(id);
+ALTER TABLE ONLY code_locations
+    ADD CONSTRAINT fk_rails_0ff5ad97b1 FOREIGN KEY (repository_id) REFERENCES repositories(id);
+
+
+--
+-- Name: fk_rails_24196d6a51; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_location_tarballs
+    ADD CONSTRAINT fk_rails_24196d6a51 FOREIGN KEY (code_location_id) REFERENCES code_locations(id);
 
 
 --
@@ -7781,10 +7826,36 @@ ALTER TABLE ONLY code_location_events
 
 --
 -- Name: fk_rails_60edffb8dd; Type: FK CONSTRAINT; Schema: public; Owner: -
+=======
+-- Name: fk_rails_275a40dd6e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY repository_tags
+    ADD CONSTRAINT fk_rails_275a40dd6e FOREIGN KEY (repository_id) REFERENCES repositories(id);
+
+
+--
+-- Name: fk_rails_2f22a538c9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_locations
+    ADD CONSTRAINT fk_rails_2f22a538c9 FOREIGN KEY (best_code_set_id) REFERENCES code_sets(id);
+
+
+--
+-- Name: fk_rails_4c3c9e5c61; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY project_badges
-    ADD CONSTRAINT fk_rails_60edffb8dd FOREIGN KEY (repository_id) REFERENCES repositories(id);
+    ADD CONSTRAINT fk_rails_4c3c9e5c61 FOREIGN KEY (enlistment_id) REFERENCES enlistments(id);
+
+
+--
+-- Name: fk_rails_5a0f61d9a6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_location_events
+    ADD CONSTRAINT fk_rails_5a0f61d9a6 FOREIGN KEY (code_location_id) REFERENCES code_locations(id);
 
 
 --
@@ -8851,9 +8922,11 @@ INSERT INTO schema_migrations (version) VALUES ('20161024095609');
 
 INSERT INTO schema_migrations (version) VALUES ('20161027065200');
 
-INSERT INTO schema_migrations (version) VALUES ('20161114063801');
+INSERT INTO schema_migrations (version) VALUES ('20161101134545');
 
-INSERT INTO schema_migrations (version) VALUES ('20161128183115');
+INSERT INTO schema_migrations (version) VALUES ('20161103153643');
+
+INSERT INTO schema_migrations (version) VALUES ('20161114063801');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

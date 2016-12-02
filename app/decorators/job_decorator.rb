@@ -1,10 +1,10 @@
 class JobDecorator < Cherry::Decorator
   include ActionView::Helpers::DateHelper
   delegate :current_step, :max_steps, :current_step_at, :project, :account,
-           :repository, :exception, :failed?, to: :object
+           :code_location, :exception, :failed?, to: :object
 
   def tool_tip
-    step_text + current_step_text + project_name + account_name + repository_text + exception_text
+    step_text + current_step_text + project_name + account_name + code_location_text + exception_text
   end
 
   private
@@ -25,8 +25,8 @@ class JobDecorator < Cherry::Decorator
     account ? "\n#{account.name}" : ''
   end
 
-  def repository_text
-    repository ? "\n#{repository.url} #{repository.module_name}" : ''
+  def code_location_text
+    code_location ? "\n#{code_location.repository.url} #{code_location.module_branch_name}" : ''
   end
 
   def exception_text

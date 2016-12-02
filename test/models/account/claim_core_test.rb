@@ -4,8 +4,8 @@ class ClaimCoreTest < ActiveSupport::TestCase
   let(:project) { create(:project, best_analysis: create(:analysis)) }
   let(:project2) { create(:project, best_analysis: create(:analysis)) }
   let(:project2_commit) do
-    create(:enlistment, repository: create(:repository, best_code_set: create(:code_set)), project: project2)
-    create(:commit, code_set: project2.repositories.first.best_code_set)
+    create(:enlistment, code_location: create(:code_location, :with_code_set), project: project2)
+    create(:commit, code_set: project2.code_locations.first.best_code_set)
   end
   let(:account) do
     account = create(:account)

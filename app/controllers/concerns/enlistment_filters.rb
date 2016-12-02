@@ -32,41 +32,6 @@ module EnlistmentFilters
     @enlistment.editor_account = current_user
   end
 
-  def safe_constantize(repo)
-    repo.constantize if %w(svnrepository svnsyncrepository repository hgrepository githubuser
-                           gitrepository cvsrepository bzrrepository).include?(repo.downcase)
-  end
-
-  def initialize_repository
-    @repository_class = safe_constantize(params[:repository][:type]).get_compatible_class(params[:repository][:url])
-    @repository = @repository_class.new(repository_params)
-  end
-
-  def save_or_update_repository
-    @project_has_repo_url = @project.enlistments.with_repo_url(@repository.url).exists?
-    existing_repo = @repository_class.find_existing(@repository)
-    if existing_repo.present?
-      existing_repo.update_attributes(username: @repository.username, password: @repository.password)
-      @repository = existing_repo
-    else
-      @repository.save! unless @project_has_repo_url
-    end
-  end
-
-  def create_enlistment
-    @repository.create_enlistment_for_project(current_user, @project) unless @project_has_repo_url
-  end
-
-  def set_flash_message
-    if @project_has_repo_url
-      flash[:notice] = t('.notice', url: @repository.url)
-    else
-      flash[:success] = t('.success', url: @repository.url,
-                                      branch_name: (CGI.escapeHTML @repository.branch_name.to_s),
-                                      module_name: (CGI.escapeHTML @repository.module_name.to_s))
-    end
-  end
-
   def sidekiq_job_exists
     key = Setting.get_project_enlistment_key(@project.id)
     job = Setting.get_value(key)
@@ -78,6 +43,7 @@ module EnlistmentFilters
   def handle_github_user_flow
     return unless params[:repository][:type] == 'GithubUser'
     @repository = GithubUser.new(repository_params)
+    @code_location = CodeLocation.new
     return render :new, status: :unprocessable_entity unless @repository.valid?
     create_worker
   end

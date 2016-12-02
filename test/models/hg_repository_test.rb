@@ -1,13 +1,12 @@
 require 'test_helper'
 
 class HgRepositoryTest < ActiveSupport::TestCase
-  let(:source_scm_class) { HgRepository.new.source_scm_class }
+  it 'must find return hg adapter' do
+    repository = create(:hg_repository)
+    repository.source_scm_class.must_equal OhlohScm::Adapters::HglibAdapter
+  end
 
-  before { source_scm_class.any_instance.stubs(:validate_server_connection) }
-
-  it 'must find existing repository by url' do
-    repository = create(:hg_repository, bypass_url_validation: false)
-
-    HgRepository.find_existing(repository).must_equal repository
+  it 'must return true for dag?' do
+    HgRepository.dag?.must_equal true
   end
 end

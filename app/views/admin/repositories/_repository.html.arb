@@ -1,4 +1,5 @@
 job ||= nil
+repository = code_location.repository
 
 table class: 'index_table' do
   tr do
@@ -7,13 +8,13 @@ table class: 'index_table' do
       a link_to repository.id, admin_repository_path(repository)
     end
     td do
-      "#{repository.nice_url} [#{link_to 'Re-Fetch', refetch_admin_repository_path(repository)}]".html_safe
+      "#{code_location.nice_url} [#{link_to 'Re-Fetch', refetch_admin_code_location_path(code_location)}]".html_safe
     end
     td do
-      "Updates every #{time_ago_in_days_hours_minutes(Time.current - repository.update_interval)}"
+      "Updates every #{time_ago_in_days_hours_minutes(Time.current - code_location.update_interval)}"
     end
     td do
-      link_to 'Log', admin_repository_slave_logs_path(repository)
+      link_to 'Log', admin_code_location_slave_logs_path(code_location)
     end
   end
   code_sets.each_with_index do |code_set, index|
@@ -21,7 +22,7 @@ table class: 'index_table' do
       td do
         a 'CodeSet'
         a link_to code_set.id, admin_code_set_path(code_set)
-        a '(Best)' if repository.best_code_set_id == code_set.id
+        a '(Best)' if code_location.best_code_set_id == code_set.id
         a '(Job)' if job && job.code_set_id == code_set.id
       end
       td do

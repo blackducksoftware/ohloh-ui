@@ -2,7 +2,7 @@ class ProjectsController < ApplicationController
   [AnalysesHelper, FactoidsHelper, MapHelper, RatingsHelper,
    RepositoriesHelper, TagsHelper].each { |help| helper help }
 
-  layout 'responsive_project_layout', only: [:show]
+  layout 'responsive_project_layout', only: [:show, :badges]
 
   include ProjectFilters
 
@@ -59,9 +59,11 @@ class ProjectsController < ApplicationController
   private
 
   def project_params
-    params.require(:project).permit([:name, :description, :vanity_url, :url, :download_url, :managed_by_creator,
-                                     project_licenses_attributes: [:license_id],
-                                     enlistments_attributes: [repository_attributes: [:type, :url, :branch_name]]])
+    params.require(:project).permit(
+      [:name, :description, :vanity_url, :url, :download_url, :managed_by_creator,
+       project_licenses_attributes: [:license_id],
+       enlistments_attributes: [code_location_attributes: [:module_branch_name, repository_attributes: [:url, :type]]]]
+    )
   end
 
   def create_project_from_params

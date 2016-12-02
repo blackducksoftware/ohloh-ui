@@ -542,6 +542,7 @@ DEPENDENCIES
   minitest-rails
   mocha
   newrelic_rpm
+  nokogiri (~> 1.6.8)
   oh_delegator
   ohloh_scm
   open4

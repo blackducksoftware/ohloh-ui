@@ -1,15 +1,15 @@
-class RepositoryJobProgress
+class CodeLocationJobProgress
   include ActionView::Helpers::DateHelper
 
   STATUS = { Job::STATUS_SCHEDULED => :waiting, Job::STATUS_RUNNING => :running,
              Job::STATUS_FAILED => :failed, Job::STATUS_COMPLETED => :completed }.freeze
 
-  delegate :best_code_set, to: :@repository
+  delegate :best_code_set, to: :@code_location
 
   def initialize(enlistment)
-    @repository = enlistment.repository
+    @code_location = enlistment.code_location
     @project = enlistment.project
-    @job = @repository.jobs.incomplete.first
+    @job = @code_location.jobs.incomplete.first
   end
 
   def message
@@ -50,7 +50,7 @@ class RepositoryJobProgress
     if sloc_set_code_set_time
       I18n.t 'repositories.job_progress.update_completed', at: time_ago_in_words(sloc_set_code_set_time)
     else
-      incomplete_job = Job.where(repository: @project.repositories).incomplete.first
+      incomplete_job = Job.where(code_location: @project.code_locations).incomplete.first
       return I18n.t 'repositories.job_progress.no_job' unless incomplete_job
 
       I18n.t('repositories.job_progress.blocked_by', status: STATUS[incomplete_job.status])

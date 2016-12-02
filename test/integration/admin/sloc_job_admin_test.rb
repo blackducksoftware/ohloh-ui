@@ -2,7 +2,7 @@ require 'test_helper'
 
 class SlocJobsAdminTest < ActionDispatch::IntegrationTest
   let(:admin) { create(:admin, password: TEST_PASSWORD) }
-  let(:job) { create(:sloc_job, repository: create(:repository, best_code_set: create(:code_set))) }
+  let(:job) { create(:sloc_job, code_location: create(:code_location, best_code_set: create(:code_set))) }
 
   it 'index loads' do
     login_as admin

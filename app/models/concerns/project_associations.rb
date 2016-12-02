@@ -8,6 +8,9 @@ module ProjectAssociations
     has_many :analysis_summaries, through: :analyses
     has_many :taggings, as: :taggable
     has_many :tags, through: :taggings
+    has_many :project_badges, through: :enlistments
+    has_many :travis_badges, through: :enlistments
+    has_many :cii_badges, through: :enlistments
     belongs_to :best_analysis, foreign_key: :best_analysis_id, class_name: :Analysis
     belongs_to :best_project_security_set, foreign_key: :best_project_security_set_id, class_name: :ProjectSecuritySet
     has_many :aliases, -> { where(deleted: false).where.not(preferred_name_id: nil) }
@@ -28,7 +31,9 @@ module ProjectAssociations
     has_many :jobs
     belongs_to :forge, class_name: 'Forge::Base'
     has_many :enlistments, -> { where(deleted: false) }
-    has_many :repositories, through: :enlistments
+    has_many :code_locations, through: :enlistments
+    has_many :repositories, through: :code_locations
+    has_many :code_locations_sloc_sets, through: :code_locations, source: :best_code_set
     has_many :project_licenses, -> { where("project_licenses.deleted = 'f'") }
     has_many :licenses, -> { order('lower(licenses.name)') }, through: :project_licenses
     has_many :duplicates, -> { order(created_at: :desc) }, class_name: 'Duplicate', foreign_key: 'good_project_id'

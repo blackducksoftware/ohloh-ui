@@ -100,13 +100,13 @@ class DuplicateTest < ActiveSupport::TestCase
       create(:enlistment, project: good_project)
       bad_enlistment_1 = create(:enlistment, project: bad_project)
       bad_enlistment_2 = create(:enlistment, project: bad_project)
-      repository = bad_enlistment_2.repository
+      code_location = bad_enlistment_2.code_location
 
       create(:duplicate, good_project: good_project, bad_project: bad_project).resolve!(create(:admin))
 
       bad_enlistment_1.reload.deleted.must_equal true
       bad_enlistment_2.reload.deleted.must_equal true
-      Enlistment.where(project: good_project, repository: repository).count.must_equal 1
+      Enlistment.where(project: good_project, code_location: code_location).count.must_equal 1
     end
 
     it 'properly cleans up project_experiences' do

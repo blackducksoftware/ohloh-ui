@@ -12,6 +12,7 @@ namespace :selenium do
     include AnalysesHelper
     include ProjectsHelper
     include EmailObfuscation
+    include ProjectVulnerabilityReportsHelper
     yaml_file = File.open('projects_data.yml', 'w')
     projects = {}
 
@@ -29,6 +30,7 @@ namespace :selenium do
       code_lines = analysis_total_detail(languages_breakdown, 'code_total')
       comment_lines = analysis_total_detail(languages_breakdown, 'comments_total')
       blank_lines = analysis_total_detail(languages_breakdown, 'blanks_total')
+      pvr = project.project_vulnerability_report
 
       project_data = project.attributes.except('vector', 'popularity_factor')
       project_data.merge!(
@@ -56,6 +58,11 @@ namespace :selenium do
         'commits' => get_commits_stats(analysis).merge!('list' => get_commits(project)),
         'total_lines_of_code' => number_with_delimiter(analysis.logic_total)
       ) if analysis.present?
+
+      if pvr.present?
+        project_data['pss'] = pss_content(pvr)
+        project_data['pvs'] = pvs_content(pvr)
+      end
 
       project_data.merge!(
         'community' => { 'user_count' => project.ratings.count, 'rating_avg' => project.rating_average.to_f.round(1) },
