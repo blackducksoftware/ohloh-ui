@@ -33,7 +33,7 @@
         - if logged_in?
           = render 'projects/show/i_use_this'
         - else
-          .btn.btn-mini.margin_left_15{ 'data-target' => '#LoginModal', 'data-toggle' => 'modal' }= t('.i_use_this')
+          .btn.btn-mini.i_use_this_btn{ 'data-target' => '#LoginModal', 'data-toggle' => 'modal' }= t('.i_use_this')
           .modal.fade#LoginModal{ 'aria-hidden' => 'true', 'aria-labelledby' => 'LoginModalLabel', :role => 'dialog' }
             .modal-dialog.modal-sm
               .modal-content{ style: 'width: 398px' }
@@ -43,7 +43,7 @@
                   %h4.modal-title#LoginModalLabel= t('.login_required')
                 .model-body
                   = render 'sessions/sign_in'
-      .no_padding.pull_left#project_header_activity_indicator
+      .pull-left#project_header_activity_indicator
         - project_activity_level_class(@project, :thirtyfive)
         - project_activity_level_text(@project, :thirtyfive)
 
