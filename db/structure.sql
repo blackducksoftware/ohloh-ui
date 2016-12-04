@@ -1653,6 +1653,37 @@ ALTER SEQUENCE feedbacks_id_seq OWNED BY feedbacks.id;
 
 
 --
+-- Name: fifty_thousand_batch_pilot_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE fifty_thousand_batch_pilot_accounts (
+    id integer NOT NULL,
+    account_id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: fifty_thousand_batch_pilot_accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE fifty_thousand_batch_pilot_accounts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: fifty_thousand_batch_pilot_accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE fifty_thousand_batch_pilot_accounts_id_seq OWNED BY fifty_thousand_batch_pilot_accounts.id;
+
+
+--
 -- Name: follows; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -4474,6 +4505,13 @@ ALTER TABLE ONLY feedbacks ALTER COLUMN id SET DEFAULT nextval('feedbacks_id_seq
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY fifty_thousand_batch_pilot_accounts ALTER COLUMN id SET DEFAULT nextval('fifty_thousand_batch_pilot_accounts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY follows ALTER COLUMN id SET DEFAULT nextval('follows_id_seq'::regclass);
 
 
@@ -5093,6 +5131,14 @@ ALTER TABLE ONLY failure_groups
 
 ALTER TABLE ONLY feedbacks
     ADD CONSTRAINT feedbacks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: fifty_thousand_batch_pilot_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY fifty_thousand_batch_pilot_accounts
+    ADD CONSTRAINT fifty_thousand_batch_pilot_accounts_pkey PRIMARY KEY (id);
 
 
 --
@@ -8707,6 +8753,8 @@ INSERT INTO schema_migrations (version) VALUES ('20161101134545');
 INSERT INTO schema_migrations (version) VALUES ('20161103153643');
 
 INSERT INTO schema_migrations (version) VALUES ('20161114063801');
+
+INSERT INTO schema_migrations (version) VALUES ('20161128183115');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
