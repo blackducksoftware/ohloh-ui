@@ -7825,8 +7825,6 @@ ALTER TABLE ONLY code_location_events
 
 
 --
--- Name: fk_rails_60edffb8dd; Type: FK CONSTRAINT; Schema: public; Owner: -
-=======
 -- Name: fk_rails_275a40dd6e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
