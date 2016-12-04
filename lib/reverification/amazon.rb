@@ -36,7 +36,8 @@ module Reverification
     end
 
     def send_limit
-      ses.quotas[:max_24_hour_send] - ses.quotas[:sent_last_24_hours]
+      # ses.quotas[:max_24_hour_send] - ses.quotas[:sent_last_24_hours]
+      2000
     end
 
     def statistics_of_last_24_hrs
@@ -54,7 +55,7 @@ module Reverification
 
     def check_statistics_and_wait_to_avoid_exceeding_throttle_limit
       check_statistics_of_last_24_hrs if sent_last_24_hrs >= amazon_stat_settings[:amount_of_email]
-      sleep(1)
+      sleep(3)
     end
   end
 end
