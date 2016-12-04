@@ -1006,11 +1006,11 @@ CREATE TABLE code_location_events (
     type text NOT NULL,
     value text,
     commit_sha1 text,
-    status boolean,
+    published boolean DEFAULT false,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     repository_id integer,
-    code_location_events integer
+    component_id integer
 );
 
 
@@ -1653,37 +1653,6 @@ ALTER SEQUENCE feedbacks_id_seq OWNED BY feedbacks.id;
 
 
 --
--- Name: fifty_thousand_batch_pilot_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE fifty_thousand_batch_pilot_accounts (
-    id integer NOT NULL,
-    account_id integer NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: fifty_thousand_batch_pilot_accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE fifty_thousand_batch_pilot_accounts_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: fifty_thousand_batch_pilot_accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE fifty_thousand_batch_pilot_accounts_id_seq OWNED BY fifty_thousand_batch_pilot_accounts.id;
-
-
---
 -- Name: follows; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1887,51 +1856,6 @@ CREATE TABLE github_project (
     project_created timestamp without time zone,
     note text,
     organization text
-);
-
-
---
--- Name: guaranteed_spam_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE guaranteed_spam_accounts (
-    id integer,
-    login text,
-    email text,
-    crypted_password text,
-    salt text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    activation_code text,
-    activated_at timestamp without time zone,
-    remember_token text,
-    remember_token_expires_at timestamp without time zone,
-    level integer,
-    posts_count integer,
-    last_seen_at timestamp without time zone,
-    name text,
-    country_code text,
-    location text,
-    latitude numeric,
-    longitude numeric,
-    best_vita_id integer,
-    url text,
-    about_markup_id integer,
-    hide_experience boolean,
-    email_master boolean,
-    email_posts boolean,
-    email_kudos boolean,
-    email_md5 text,
-    email_opportunities_visited timestamp without time zone,
-    activation_resent_at timestamp without time zone,
-    akas text,
-    email_new_followers boolean,
-    last_seen_ip text,
-    twitter_account text,
-    reset_password_tokens text,
-    organization_id integer,
-    affiliation_type text,
-    organization_name text
 );
 
 
@@ -3655,50 +3579,6 @@ CREATE TABLE repository_tags (
 
 
 --
--- Name: repository_directories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE repository_directories (
-    id integer NOT NULL,
-    code_location_id integer,
-    repository_id integer,
-    fetched_at timestamp without time zone
-);
-
-
---
--- Name: repository_directories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE repository_directories_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: repository_directories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE repository_directories_id_seq OWNED BY repository_directories.id;
-
-
---
--- Name: repository_tags; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE repository_tags (
-    id integer NOT NULL,
-    repository_id integer,
-    name text,
-    commit_sha1 text,
-    message text
-);
-
-
---
 -- Name: repository_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -4322,51 +4202,6 @@ CREATE TABLE topics (
 
 
 --
--- Name: unknown_spam_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE unknown_spam_accounts (
-    id integer NOT NULL,
-    login text NOT NULL,
-    email text NOT NULL,
-    crypted_password text NOT NULL,
-    salt text NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    activation_code text,
-    activated_at timestamp without time zone,
-    remember_token text,
-    remember_token_expires_at timestamp without time zone,
-    level integer NOT NULL,
-    posts_count integer,
-    last_seen_at timestamp without time zone,
-    name text,
-    country_code text,
-    location text,
-    latitude numeric,
-    longitude numeric,
-    best_vita_id integer,
-    url text,
-    about_markup_id integer,
-    hide_experience boolean,
-    email_master boolean,
-    email_posts boolean,
-    email_kudos boolean,
-    email_md5 text,
-    email_opportunities_visited timestamp without time zone,
-    activation_resent_at timestamp without time zone,
-    akas text,
-    email_new_followers boolean,
-    last_seen_ip text,
-    twitter_account text,
-    reset_password_tokens text,
-    organization_id integer,
-    affiliation_type text NOT NULL,
-    organization_name text
-);
-
-
---
 -- Name: verifications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -4633,13 +4468,6 @@ ALTER TABLE ONLY failure_groups ALTER COLUMN id SET DEFAULT nextval('failure_gro
 --
 
 ALTER TABLE ONLY feedbacks ALTER COLUMN id SET DEFAULT nextval('feedbacks_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY fifty_thousand_batch_pilot_accounts ALTER COLUMN id SET DEFAULT nextval('fifty_thousand_batch_pilot_accounts_id_seq'::regclass);
 
 
 --
@@ -5265,14 +5093,6 @@ ALTER TABLE ONLY failure_groups
 
 ALTER TABLE ONLY feedbacks
     ADD CONSTRAINT feedbacks_pkey PRIMARY KEY (id);
-
-
---
--- Name: fifty_thousand_batch_pilot_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY fifty_thousand_batch_pilot_accounts
-    ADD CONSTRAINT fifty_thousand_batch_pilot_accounts_pkey PRIMARY KEY (id);
 
 
 --
@@ -7801,46 +7621,6 @@ ALTER TABLE ONLY code_locations
 
 
 --
--- Name: fk_rails_580a21f8c6; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY code_locations
-    ADD CONSTRAINT fk_rails_0ff5ad97b1 FOREIGN KEY (repository_id) REFERENCES repositories(id);
-
-
---
--- Name: fk_rails_24196d6a51; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY code_location_tarballs
-    ADD CONSTRAINT fk_rails_24196d6a51 FOREIGN KEY (code_location_id) REFERENCES code_locations(id);
-
-
---
--- Name: fk_rails_5a0f61d9a6; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY code_location_events
-    ADD CONSTRAINT fk_rails_5a0f61d9a6 FOREIGN KEY (code_location_id) REFERENCES code_locations(id);
-
-
---
--- Name: fk_rails_275a40dd6e; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY repository_tags
-    ADD CONSTRAINT fk_rails_275a40dd6e FOREIGN KEY (repository_id) REFERENCES repositories(id);
-
-
---
--- Name: fk_rails_2f22a538c9; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY code_locations
-    ADD CONSTRAINT fk_rails_2f22a538c9 FOREIGN KEY (best_code_set_id) REFERENCES code_sets(id);
-
-
---
 -- Name: fk_rails_4c3c9e5c61; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8893,6 +8673,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160610142302');
 INSERT INTO schema_migrations (version) VALUES ('20160710125644');
 
 INSERT INTO schema_migrations (version) VALUES ('20160713124305');
+
+INSERT INTO schema_migrations (version) VALUES ('20160718080707');
 
 INSERT INTO schema_migrations (version) VALUES ('20160725154001');
 
