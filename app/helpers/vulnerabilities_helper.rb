@@ -1,8 +1,15 @@
 module VulnerabilitiesHelper
-  def major_releases(releases)
-    releases.map do |r|
-      r[:version].to_i
-    end.flatten.uniq.sort
+  def major_releases(releases, project)
+    # Note: This is a temporary fix for the android project
+    if project.vanity_url == 'android'
+      releases.map do |r|
+        r[:version]
+      end
+    else
+      releases.map do |r|
+        r[:version].to_i
+      end.flatten.uniq.sort
+    end
   end
 
   def filter_severity_param
