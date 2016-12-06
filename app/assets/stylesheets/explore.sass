@@ -1,40 +1,98 @@
 #explore_projects_page
   #explore_sidebar
     box-shadow: none
-    width: 28%
     min-height: 650px
     border-radius: 0px
     border: none
     #tagcloud
-      a
-        line-height: 17px
+      min-height: 100px
+      margin: 15px 0 15px 15px
+      line-height: 1.45em
     .icon-search
       &.search
         cursor: pointer
         font-size: 18px
         position: relative
-        top: 3px
+        top: 7px
+        margin-left: 2%
+      &:before
+        width: 1px
     input
-      color: #202020
+      color: #9A9A9A
+      border: 1px #9A9A9A solid
       &:-moz-placeholder
-        color: #202020
+        color: #9A9A9A
+        font-style: italic
+      &::-moz-placeholder
+        color: #9A9A9A
         font-style: italic
       &:-ms-input-placeholder
-        color: #202020
+        color: #9A9A9A
         font-style: italic
       &::-webkit-input-placeholder
-        color: #202020
+        color: #9A9A9A
         font-style: italic
+    input[type=text]
+      padding: 1.5%
+    &.well
+      border: 1px solid #e3e3e3
+    .sidebar-row
+      margin-top: 25px
+      &:first-child
+        margin-top: 0
+    #explore-search-wrapper
+      margin-top: 0
+      h2
+        margin-top: 0
+    #explore_search_form
+      margin-left: 15px
+      input
+        width: 88%
+        margin-bottom: 0
+    #explore-tags-wrapper
+      form
+        input
+          margin: 0
+    #explore-compare-wrapper
+      form
+        margin-left: 15px
+        input
+          margin-top: 15px
+          margin-bottom: 0
+          width: 96%
+        .compare-btn
+          text-align: right
+          #compare_btn
+            width: auto
+            height: auto
+            line-height: 34px
+            padding: 0 10px
+    #explore-similar-wrapper
+      clear: both
+      form
+        margin-left: 15px
+        input
+          margin: 10px 0 0 0
+          width: 88%
+    #explore-add-wrapper
+      .summary
+        padding-left: 15px
+        text-align: justify
+        line-height: 20px
+
   .explore_search
     width: 173px
-    margin-top: 7px
     &.tag_autocomplete
       width: 194px
   .explore_compare
     width: 194px
 
+  #hot-projects-column
+    .hot-project-title
+      margin-top: 0
+
   #hot_projects td
-    :padding 5px
+    :padding 8px
     &.pai
       position: relative
     a[class^="twentyfive_project_activity_level_"]
@@ -57,9 +115,6 @@
     width: 245px
     margin-left: 10px
 
-  #tagcloud
-    :margin 5px
-
   span.tag.container
     background: none
     border: none
@@ -72,14 +127,12 @@
     width: 400px
 
   .add_new_project_btn_bottom
-    margin-top: 25px
-    margin-left: -10px
-
+    margin-top: 15px
+    text-align: center
+    a
+      padding: 6px 12px
+      border-width: 2px
   .add_new_project_btn_top
-    float: right
-    top: -9px
-    left: 9px
-    height: 30px
+    font-size: 14px
     &.btn-mini
-      padding: 3px 5px !important
-
+      padding: 6px 12px !important

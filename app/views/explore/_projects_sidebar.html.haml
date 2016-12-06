@@ -1,44 +1,41 @@
-.well.col-md-3.margin_left_10.margin_top_20#explore_sidebar
+.sidebar-row.text-right
   = link_to t('.add_new_project'), new_project_path, class: 'btn btn-primary btn-mini add_new_project_btn_top'
-  %div
-    %h3= t('.search')
-    .margin_left_10
-      %form.search#explore_search_form{ action: projects_path }
-        %input{ type: :hidden, name: 'ref', value: 'explore_project' }
-        %input.explore_search.margin_top_10{ type: :text, name: 'query', placeholder: t('.enter_string') }
-        .icon-search.search.submit
+.sidebar-row#explore-search-wrapper
+  %h2= t('.search')
+  %form.search#explore_search_form{ action: projects_path }
+    %input{ type: :hidden, name: 'ref', value: 'explore_project' }
+    %input.explore_search.margin_top_10{ type: :text, name: 'query', placeholder: t('.enter_string') }
+    .icon-search.search.submit
 
-    %h3= t('.tags')
-    .margin_left_10{ style: 'min-height: 100px; padding-left: 15px' }
-      .row
-        #tagcloud
-          - @tags.each do |tag|
-            = link_to tag[0], tags_path(names: tag[0]), data: { weight: tag[1] }
-    .margin_left_10
-      %form.autocomplete-submit{ rel: 'tag_jump' }
-        %input.explore_search.tag_autocomplete.autocompletable#input_tag{ type: :text, placeholder: t('.enter_tag'),
-        data: { source: '/autocompletes/tags', select: 'submitForm' } }
+.sidebar-row#explore-tags-wrapper
+  %h2= t('.tags')
+  #tagcloud
+    - @tags.each do |tag|
+      = link_to tag[0], tags_path(names: tag[0]), data: { weight: tag[1] }
+  %form.autocomplete-submit.text-center{ rel: 'tag_jump' }
+    %input.explore_search.tag_autocomplete.autocompletable#input_tag{ type: :text, placeholder: t('.enter_tag'),
+    data: { source: '/autocompletes/tags', select: 'submitForm' } }
 
-    %p &nbsp;
-    %h3= t('.compare')
-    %form.projects_compare.margin_left_15{ action: '/p/_compare' }
-      - compare_project_inputs.each do |options|
-        %input.proj.explore_compare{ options }
-      %input.pull-right.btn.btn-primary.btn-small#compare_btn{ type: 'submit', value: 'Compare' }
+.sidebar-row#explore-compare-wrapper
+  %h2= t('.compare')
+  %form.projects_compare{ action: '/p/_compare' }
+    - compare_project_inputs.each do |options|
+      %input.proj.explore_compare{ options }
+    .compare-btn
+      %input.btn.btn-primary.btn-small#compare_btn{ type: 'submit', value: 'Compare' }
 
-    %p &nbsp;
-    %p &nbsp;
-    %h3= t('.similar')
-    %form.autocomplete-submit.similar_projects.margin_left_10{ rel: 'similar_project_jump' }
-      %input.autocompletable.explore_search#project{ type: 'text', placeholder: t('.enter_project'),
-      autocomplete: 'off', data: { source: '/autocompletes/project', select: 'submitFormWithId' } }
-      .icon-search.search.submit
-      %span.error.hidden= t('.invalid_select')
+.sidebar-row#explore-similar-wrapper
+  %h2= t('.similar')
+  %form.autocomplete-submit.similar_projects{ rel: 'similar_project_jump' }
+    %input.autocompletable.explore_search#project{ type: 'text', placeholder: t('.enter_project'),
+    autocomplete: 'off', data: { source: '/autocompletes/project', select: 'submitFormWithId' } }
+    .icon-search.search.submit
+    %span.error.hidden= t('.invalid_select')
 
-    %p &nbsp;
-    %h3= t('.add')
-    %p.justify.margin_left_10.margin_top_20{ style: 'line-height: 20px' }
-      = t('.community')
-      = t('.dont_see_a_project')
-    .text-center.add_new_project_btn_bottom
-      = link_to t('.add_new_project'), new_project_path, class: 'btn btn-primary btn-small'
+.sidebar-row#explore-add-wrapper
+  %h2= t('.add')
+  %p.summary
+    = t('.community')
+    = t('.dont_see_a_project')
+  .add_new_project_btn_bottom
+    = link_to t('.add_new_project'), new_project_path, class: 'btn btn-primary btn-small'

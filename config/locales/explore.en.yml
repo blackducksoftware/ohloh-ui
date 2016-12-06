@@ -34,7 +34,7 @@ en:
     projects_sidebar:
       search: 'Search:'
       tags: 'Explore Tags:'
-      enter_string: 'Enter search string'
+      enter_string: 'Enter search string...'
       enter_tag: 'Enter different tag'
       enter_project: 'Enter a project name'
       compare: 'Compare:'
@@ -46,7 +46,7 @@ en:
       add_new_project: 'Add New Project'
     hot_projects:
       title: 'Hot Projects on Open Hub'
-      filter: 'Filter by Language:'
+      filter: 'Filter by:'
       rank: 'Rank'
       name: 'Name'
       claimed: 'Claimed By'

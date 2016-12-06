@@ -8,7 +8,7 @@
       org = project.organization
       org_name = truncate(org.name, length: 30) if org
     %tr
-      %td.center
+      %td.text-left
         = (index + 1)
       %td
         = project.decorate.icon(:small)

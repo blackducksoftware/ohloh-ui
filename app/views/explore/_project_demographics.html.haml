@@ -1,7 +1,6 @@
-.pull-right.col-md-8#project_demographics
-  %h2
-    = t('.demographics_by')
-    = link_to 'PAI', blog_url_for(:pai_about), target: '_blank'
-  = number_with_delimiter(@with_pai_count)
-  = t '.out_of', count: number_with_delimiter(@total_count)
-  #demographics_chart{ data: { src: demographic_chart_explores_url } }
+%h2
+  = t('.demographics_by')
+  = link_to 'PAI', blog_url_for(:pai_about), target: '_blank'
+= number_with_delimiter(@with_pai_count)
+= t '.out_of', count: number_with_delimiter(@total_count)
+#demographics_chart{ data: { src: demographic_chart_explores_url } }

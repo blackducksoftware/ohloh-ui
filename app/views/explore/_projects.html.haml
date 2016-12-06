@@ -1,5 +1,9 @@
-= render 'projects_sidebar'
-
-= render 'hot_projects'
-
-= render 'project_demographics'
+.well.col-lg-offset-1.col-lg-4#explore_sidebar
+  = render 'projects_sidebar'
+.col-lg-offset-1.col-lg-5#hot-projects-column
+  .row
+    .col-lg-12
+      = render 'hot_projects'
+  .row
+    .col-lg-12#project_demographics
+      = render 'project_demographics'
