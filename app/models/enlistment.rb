@@ -21,10 +21,11 @@ class Enlistment < ActiveRecord::Base
   scope :by_project, -> { order('projects.name, repositories.url, code_locations.module_branch_name') }
   scope :by_type, -> { order('repositories.type, repositories.url, code_locations.module_branch_name') }
   scope :by_module_name, -> { order('code_locations.module_branch_name, repositories.url') }
+  scope :by_last_update, -> { joins(code_location: :code_sets).order('code_sets.updated_on DESC') }
   scope :with_repo_url, ->(url) { joins(code_location: :repository).where(Repository.arel_table[:url].eq(url)) }
   scope :failed_code_location_jobs, -> { joins(code_location: :jobs).where(jobs: { status: Job::STATUS_FAILED }) }
 
-  filterable_by ['projects.name', 'repositories.url', 'code_locations.module_branch_name', 'repositories.type']
+  filterable_by ['projects.name', 'repositories.url', 'code_locations.module_branch_name', 'code_locations.code']
 
   def analysis_sloc_set
     return if project.best_analysis.nil?
