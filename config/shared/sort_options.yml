@@ -131,6 +131,9 @@ enlistments:
     -
       - Module Name
       - by_module_name
+    -
+      - Last Updated
+      - last_update
   default:
     by_url
 
