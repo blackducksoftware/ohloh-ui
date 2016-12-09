@@ -3,6 +3,7 @@ require 'test_helper'
 class EnlistmentTest < ActiveSupport::TestCase
   let(:enlistment) { create(:enlistment) }
   let(:fyle) { create(:fyle) }
+
   describe 'ignore_examples' do
     it 'should return empty array' do
       enlistment.ignore_examples.must_equal nil
@@ -19,15 +20,15 @@ class EnlistmentTest < ActiveSupport::TestCase
     it 'should order based on the jobs last executed' do
       code_location = create(:code_location)
       Job.destroy_all
-      job1 = create(:failed_job, code_location: code_location, current_step_at: 1.month.ago)
-      job2 = create(:failed_job, code_location: code_location, current_step_at: 5.minutes.ago)
+      create(:failed_job, code_location: code_location, current_step_at: 1.month.ago)
+      create(:failed_job, code_location: code_location, current_step_at: 5.minutes.ago)
       Enlistment.failed_code_location_jobs.count.must_equal 2
     end
 
     it 'should order and should not list any failed jobs' do
       code_location = create(:code_location)
       Job.destroy_all
-      job1 = create(:failed_job, code_location: code_location, current_step_at: 1.month.ago)
+      create(:failed_job, code_location: code_location, current_step_at: 1.month.ago)
       Enlistment.by_last_update.count.must_equal 0
     end
   end
