@@ -133,8 +133,7 @@ enlistments:
       - by_module_name
     -
       - Last Updated
-      - by_last_update
-
+      - last_update
   default:
     by_url
 

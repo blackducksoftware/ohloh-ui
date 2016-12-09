@@ -23,7 +23,7 @@ module EnlistmentFilters
   end
 
   def parse_sort_term
-    Enlistment.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : 'by_last_update'
+    Enlistment.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : 'by_url'
   end
 
   def find_enlistment
