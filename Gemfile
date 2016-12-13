@@ -32,6 +32,7 @@ gem 'redis-rails'
 gem 'rubocop', '~> 0.40.0', require: false
 gem 'sass-rails'
 gem 'therubyracer'
+gem 'thor'
 gem 'twitter-bootstrap-rails'
 gem 'uglifier', '>= 2.7.2'
 gem 'will_paginate'
