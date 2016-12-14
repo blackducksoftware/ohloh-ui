@@ -567,6 +567,7 @@ DEPENDENCIES
   sprockets-rails (~> 2.3.3)
   teaspoon-jasmine
   therubyracer
+  thor
   timecop
   twitter-bootstrap-rails
   uglifier (>= 2.7.2)
