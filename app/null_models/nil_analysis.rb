@@ -42,4 +42,8 @@ class NilAnalysis < NullObject
   def updated_on
     Time.zone.now
   end
+
+  def commit_count
+    nil
+  end
 end

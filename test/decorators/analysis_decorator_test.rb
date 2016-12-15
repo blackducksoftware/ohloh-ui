@@ -84,6 +84,24 @@ class AnlysisDecoratorTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'working with nil objects' do
+    let(:na) { NilAnalysis.new }
+    let(:ad) { AnalysisDecorator.new(na) }
+
+    it 'should have 0 for all differences' do
+      ad.commits_difference.must_equal 0
+      ad.committers_difference.must_equal 0
+      ad.affiliated_commits_difference.must_equal 0
+      ad.affiliated_committers_difference.must_equal 0
+      ad.outside_commits_difference.must_equal 0
+      ad.outside_committers_difference.must_equal 0
+    end
+
+    it 'should not display a chart' do
+      ad.display_chart?.must_equal [false, :no_commits]
+    end
+  end
+
   private
 
   def create_summaries
