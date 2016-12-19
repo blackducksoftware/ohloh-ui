@@ -1659,8 +1659,8 @@ ALTER SEQUENCE feedbacks_id_seq OWNED BY feedbacks.id;
 CREATE TABLE fifty_thousand_batch_pilot_accounts (
     id integer NOT NULL,
     account_id integer NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 
@@ -1887,6 +1887,51 @@ CREATE TABLE github_project (
     project_created timestamp without time zone,
     note text,
     organization text
+);
+
+
+--
+-- Name: guaranteed_spam_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE guaranteed_spam_accounts (
+    id integer,
+    login text,
+    email text,
+    crypted_password text,
+    salt text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    activation_code text,
+    activated_at timestamp without time zone,
+    remember_token text,
+    remember_token_expires_at timestamp without time zone,
+    level integer,
+    posts_count integer,
+    last_seen_at timestamp without time zone,
+    name text,
+    country_code text,
+    location text,
+    latitude numeric,
+    longitude numeric,
+    best_vita_id integer,
+    url text,
+    about_markup_id integer,
+    hide_experience boolean,
+    email_master boolean,
+    email_posts boolean,
+    email_kudos boolean,
+    email_md5 text,
+    email_opportunities_visited timestamp without time zone,
+    activation_resent_at timestamp without time zone,
+    akas text,
+    email_new_followers boolean,
+    last_seen_ip text,
+    twitter_account text,
+    reset_password_tokens text,
+    organization_id integer,
+    affiliation_type text,
+    organization_name text
 );
 
 
@@ -4229,6 +4274,51 @@ CREATE TABLE topics (
     closed boolean DEFAULT false,
     replied_by integer,
     last_post_id integer
+);
+
+
+--
+-- Name: unknown_spam_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE unknown_spam_accounts (
+    id integer NOT NULL,
+    login text NOT NULL,
+    email text NOT NULL,
+    crypted_password text NOT NULL,
+    salt text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    activation_code text,
+    activated_at timestamp without time zone,
+    remember_token text,
+    remember_token_expires_at timestamp without time zone,
+    level integer NOT NULL,
+    posts_count integer,
+    last_seen_at timestamp without time zone,
+    name text,
+    country_code text,
+    location text,
+    latitude numeric,
+    longitude numeric,
+    best_vita_id integer,
+    url text,
+    about_markup_id integer,
+    hide_experience boolean,
+    email_master boolean,
+    email_posts boolean,
+    email_kudos boolean,
+    email_md5 text,
+    email_opportunities_visited timestamp without time zone,
+    activation_resent_at timestamp without time zone,
+    akas text,
+    email_new_followers boolean,
+    last_seen_ip text,
+    twitter_account text,
+    reset_password_tokens text,
+    organization_id integer,
+    affiliation_type text NOT NULL,
+    organization_name text
 );
 
 

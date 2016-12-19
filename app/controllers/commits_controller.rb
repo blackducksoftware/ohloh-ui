@@ -51,7 +51,7 @@ class CommitsController < SettingsController
 
   def individual_named_commits
     contribution = Contribution.find(params[:contributor_id])
-    @named_commits = @project.named_commits.where(contribution_id: contribution)
+    @named_commits = @project.named_commits.where(contribution_id: contribution).page(page_param).per_page(10)
   end
 
   def named_commits

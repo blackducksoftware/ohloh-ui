@@ -16,6 +16,23 @@ class EnlistmentTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'Filtering Enlistments' do
+    it 'should order based on the jobs last executed' do
+      code_location = create(:code_location)
+      Job.destroy_all
+      create(:failed_job, code_location: code_location, current_step_at: 1.month.ago)
+      create(:failed_job, code_location: code_location, current_step_at: 5.minutes.ago)
+      Enlistment.failed_code_location_jobs.count.must_equal 2
+    end
+
+    it 'should order and should not list any failed jobs' do
+      code_location = create(:code_location)
+      Job.destroy_all
+      create(:failed_job, code_location: code_location, current_step_at: 1.month.ago)
+      Enlistment.by_last_update.count.must_equal 0
+    end
+  end
+
   describe 'analysis_sloc_set' do
     it 'should return nil if best_analysis is nil' do
       enlistment.analysis_sloc_set.must_equal nil
