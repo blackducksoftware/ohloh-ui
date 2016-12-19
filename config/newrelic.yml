@@ -25,7 +25,7 @@ common: &default_settings
   log_level: info
 
   # Turn off unless web server
-  monitor_mode: false unless `hostname`.match /web/
+  monitor_mode: <%= `hostname`.match(/web/)? true : false %>
 
 
 # Environment-specific settings are in this section.
