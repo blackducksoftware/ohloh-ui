@@ -3,6 +3,6 @@ chart:
   marginLeft: 50
   style:
     backgroundColor: '#eee'
-    background-image: url('/charts/<%= image_name %>.png')
+    background-image: url(<%= chart_background_image(image_name + '.png') %>)
     background-repeat: no-repeat
     background-position: '50% 50%'

@@ -6,7 +6,7 @@ chart:
   width: 950
   backgroundColor: 'transparent'
   style:
-    background-image: "url('/charts/watermark_692.png')"
+    background-image: url(<%= chart_background_image('watermark_692.png') %>)
     background-repeat: 'no-repeat'
     background-position: '18% 50%'
 legend:

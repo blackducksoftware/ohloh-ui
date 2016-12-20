@@ -3,8 +3,16 @@ def load_chart_options(source)
   defaults.with_indifferent_access
 end
 
+def chart_background_image(image_name)
+  ApplicationController.helpers.asset_url('charts/' + image_name)
+end
+
 CHART_DEFAULTS = load_chart_options('defaults.yml')
-COMMITS_BY_PROJECT_CHART_DEFAULTS = load_chart_options('commits_by_project.yml')
+ActiveSupport.on_load(:after_initialize) do
+  COMMITS_BY_PROJECT_CHART_DEFAULTS = YAML.load(ERB.new(File.read(
+    Rails.root.join('config/charting/commits_by_project.yml'))).result(binding))
+end
+
 DEMOGRAPHIC_CHART_DEFAULTS = load_chart_options('demographic.yml')
 
 ANALYSIS_CHART_DEFAULTS = load_chart_options('analysis/defaults.yml')
