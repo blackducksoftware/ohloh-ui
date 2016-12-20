@@ -26,6 +26,18 @@
         %a{ rel: 'license', href: 'http://creativecommons.org/licenses/by/3.0/', target: '_blank' }
           = t('copyright.license_text')
 
+  .footer-right
+    %p.careers
+      %a{ href: 'https://www.blackducksoftware.com/about/careers/openings', target: '_blank' }= t('copyright.careers')
+    .clear &nbsp;
+    %sup &copy;
+    = Time.current.year
+    %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
+      %span{ itemprop: 'publisher' }
+        %a{ href: 'http://www.blackducksoftware.com', target: '_blank' }= t('copyright.company_name')
+        %br
+        = t('copyright.rights_text')
+
 - if Rails.env.production?
   = render partial: 'layouts/tracking_scripts/google_analytics'
   = render partial: 'layouts/tracking_scripts/adroll'
