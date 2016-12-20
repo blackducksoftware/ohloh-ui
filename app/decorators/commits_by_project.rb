@@ -81,12 +81,12 @@ class CommitsByProject < Cherry::Decorator
   end
 
   def start_time_of_plot(first_date)
-    return Date.current.beginning_of_month - 5.years if first_date_older_than_5_years?
+    return Date.current.beginning_of_month - 5.years if older_than?(first_date, 5)
     first_date.to_s.to_date
   end
 
-  def first_date_older_than_5_years?
-    ((Time.current.beginning_of_month - Time.parse(first_date.to_s).in_time_zone) / 1.year) <= 5
+  def older_than?(first_date, num_years)
+    ((Time.current.beginning_of_month - Time.parse(first_date.to_s).in_time_zone) / 1.year) <= num_years
   end
 
   def max_commits
