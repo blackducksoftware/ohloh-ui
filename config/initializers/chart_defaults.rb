@@ -10,7 +10,8 @@ end
 CHART_DEFAULTS = load_chart_options('defaults.yml')
 ActiveSupport.on_load(:after_initialize) do
   COMMITS_BY_PROJECT_CHART_DEFAULTS = YAML.load(ERB.new(File.read(
-    Rails.root.join('config/charting/commits_by_project.yml'))).result(binding))
+                                                          Rails.root.join('config/charting/commits_by_project.yml')
+  )).result(binding))
 end
 
 DEMOGRAPHIC_CHART_DEFAULTS = load_chart_options('demographic.yml')
