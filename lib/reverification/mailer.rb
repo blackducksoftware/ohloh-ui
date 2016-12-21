@@ -52,15 +52,21 @@ module Reverification
         send_first_notification
       end
 
+      # rubocop:disable Metrics/MethodLength
       def send_email(template, account, phase)
         check_statistics_and_wait_to_avoid_exceeding_throttle_limit
-        resp = ses.send_email(template)
-        if account.reverification_tracker
-          return ReverificationTracker.update_tracker(account.reverification_tracker, phase, resp)
+        begin
+          resp = ses.send_email(template)
+        rescue AWS::SimpleEmailService::Errors::InvalidParameterValue
+          bad_email_queue.send_message(id: account.id, email: account.email)
+        else
+          if account.reverification_tracker
+            return ReverificationTracker.update_tracker(account.reverification_tracker, phase, resp)
+          end
+          account.create_reverification_tracker(message_id: resp[:message_id], sent_at: Time.now.utc)
         end
-
-        account.create_reverification_tracker(message_id: resp[:message_id], sent_at: Time.now.utc)
       end
+      # rubocop:enable Metrics/MethodLength
 
       def send_first_notification
         initial_accounts.each do |account|

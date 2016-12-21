@@ -22,6 +22,10 @@ module Reverification
       @complaints_queue ||= sqs.queues.named(ENV['AWS_SQS_COMPLAINT_QUEUE'])
     end
 
+    def bad_email_queue
+      @bad_email_queue ||= sqs.queues.named(ENV['AWS_SQS_BAD_EMAIL_QUEUE'])
+    end
+
     def amazon_stat_settings
       @amazon_stat_settings ||= {}
     end

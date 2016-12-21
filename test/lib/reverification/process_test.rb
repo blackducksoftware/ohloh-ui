@@ -194,7 +194,7 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
       end
     end
 
-    it 'should not raise SimpleEmailServieLimitError if complaint rate is below 0.1%' do
+    it 'should not raise SimpleEmailServiceLimitError if complaint rate is below 0.1%' do
       under_complaint_limit = MOCK::AWS::SimpleEmailService.under_complaint_limit
       AWS::SimpleEmailService.any_instance.stubs(:statistics).returns(under_complaint_limit)
       AWS::SimpleEmailService.any_instance.stubs(:quotas).returns(sent_last_24_hours: 1000)
