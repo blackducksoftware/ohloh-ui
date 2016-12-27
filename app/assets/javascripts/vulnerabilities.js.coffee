@@ -103,8 +103,8 @@ filterReleasesByMajorVersion = (releases, majorVersion) ->
     releases.filter (release) ->
       ///^#{majorVersion}///.test(release.version)
   else
-    releases.filter (release) ->    
-      ///^#{majorVersion}\.\d+\.\d+$///.test(release.version)
+    releases.filter (release) ->
+      ///^#{majorVersion}+(?:\.\d+)+$///.test(release.version)
 
 calculateHighVulns = (releases) ->
   highVulns = releases.map((obj) ->
