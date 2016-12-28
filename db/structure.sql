@@ -3650,7 +3650,8 @@ CREATE TABLE repository_tags (
     repository_id integer,
     name text,
     commit_sha1 text,
-    message text
+    message text,
+    timestamp timestamp without time zone
 );
 
 
@@ -8845,6 +8846,8 @@ INSERT INTO schema_migrations (version) VALUES ('20161103153643');
 INSERT INTO schema_migrations (version) VALUES ('20161114063801');
 
 INSERT INTO schema_migrations (version) VALUES ('20161128183115');
+
+INSERT INTO schema_migrations (version) VALUES ('20161227165430');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
