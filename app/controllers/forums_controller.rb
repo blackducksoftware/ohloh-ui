@@ -56,6 +56,6 @@ class ForumsController < ApplicationController
   end
 
   def find_most_recent_topics_from_forum
-    @recent_topics = Topic.all.order('replied_at DESC').limit(10)
+    @recent_topics = Topic.recent
   end
 end
