@@ -40,4 +40,21 @@ class TopicTest < ActiveSupport::TestCase
     topic = create(:topic, :with_posts)
     topic.posts.to_a.must_equal topic.posts.sort_by(&:created_at)
   end
+
+  describe 'recent' do
+    let(:closed_topic) { create(:topic, closed: true) }
+
+    it 'should return open topic' do
+      Topic.recent.must_include topic
+    end
+
+    it 'should not return closed topic' do
+      Topic.recent.wont_include closed_topic
+    end
+
+    it 'should return only 10 topics' do
+      create_list(:topic, 11)
+      Topic.recent.length.must_equal 10
+    end
+  end
 end

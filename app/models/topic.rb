@@ -8,4 +8,6 @@ class Topic < ActiveRecord::Base
   has_many :posts, -> { order('created_at asc') }, inverse_of: :topic, dependent: :destroy
 
   accepts_nested_attributes_for :posts
+
+  scope :recent, -> { where(closed: false).order(replied_at: :desc).limit(10) }
 end
