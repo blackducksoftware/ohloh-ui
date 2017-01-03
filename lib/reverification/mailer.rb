@@ -54,12 +54,13 @@ module Reverification
 
       def send_email(template, account, phase)
         check_statistics_and_wait_to_avoid_exceeding_throttle_limit
-        resp = ses.send_email(template)
-        if account.reverification_tracker
-          return ReverificationTracker.update_tracker(account.reverification_tracker, phase, resp)
+        begin
+          resp = ses.send_email(template)
+        rescue AWS::SimpleEmailService::Errors::InvalidParameterValue
+          bad_email_queue.send_message(id: account.id, email: account.email)
+        else
+          create_or_update_reverification_tracker(account, phase, resp)
         end
-
-        account.create_reverification_tracker(message_id: resp[:message_id], sent_at: Time.now.utc)
       end
 
       def send_first_notification
@@ -91,6 +92,15 @@ module Reverification
         soft_bounced_notifications.each do |rev_track|
           send_email(rev_track.template_hash, rev_track.account, rev_track.phase_value)
         end
+      end
+
+      private
+
+      def create_or_update_reverification_tracker(account, phase, resp)
+        if account.reverification_tracker
+          return ReverificationTracker.update_tracker(account.reverification_tracker, phase, resp)
+        end
+        account.create_reverification_tracker(message_id: resp[:message_id], sent_at: Time.now.utc)
       end
     end
   end
