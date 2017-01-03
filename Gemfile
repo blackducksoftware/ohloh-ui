@@ -53,7 +53,6 @@ group :development do
   gem 'capistrano-rbenv', '~> 2.0'
   gem 'guard'
   gem 'guard-rubocop'
-  gem 'guard-minitest'
   gem 'guard-haml_lint'
   gem 'guard-coffeescript'
   gem 'guard-livereload', '~> 2.5', '>= 2.5.2', require: false
@@ -65,6 +64,7 @@ group :test do
   gem 'flog'
   gem 'haml_lint'
   gem 'minitest-rails'
+  gem 'm', '~> 1.5.0'
   gem 'mocha'
   gem 'ruby_parser'
   gem 'simplecov'

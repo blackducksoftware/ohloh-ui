@@ -163,6 +163,13 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'bad_email_queue' do
+    it 'should return AWS::SQS::Queue instance for badly formatted emails queue' do
+      queue_instance = Reverification::Process.bad_email_queue
+      queue_instance.url.must_match(/bad-email-queue/)
+    end
+  end
+
   describe 'check_statistics_of_last_24_hrs' do
     it 'should raise SimpleEmailServiceLimitError if bounce rate is above 5%' do
       over_bounce_limit = MOCK::AWS::SimpleEmailService.over_bounce_limit

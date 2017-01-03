@@ -52,7 +52,6 @@ module Reverification
         send_first_notification
       end
 
-      # rubocop:disable Metrics/MethodLength
       def send_email(template, account, phase)
         check_statistics_and_wait_to_avoid_exceeding_throttle_limit
         begin
@@ -60,13 +59,9 @@ module Reverification
         rescue AWS::SimpleEmailService::Errors::InvalidParameterValue
           bad_email_queue.send_message(id: account.id, email: account.email)
         else
-          if account.reverification_tracker
-            return ReverificationTracker.update_tracker(account.reverification_tracker, phase, resp)
-          end
-          account.create_reverification_tracker(message_id: resp[:message_id], sent_at: Time.now.utc)
+          create_or_update_reverification_tracker(account, phase, resp)
         end
       end
-      # rubocop:enable Metrics/MethodLength
 
       def send_first_notification
         initial_accounts.each do |account|
@@ -97,6 +92,15 @@ module Reverification
         soft_bounced_notifications.each do |rev_track|
           send_email(rev_track.template_hash, rev_track.account, rev_track.phase_value)
         end
+      end
+
+      private
+
+      def create_or_update_reverification_tracker(account, phase, resp)
+        if account.reverification_tracker
+          return ReverificationTracker.update_tracker(account.reverification_tracker, phase, resp)
+        end
+        account.create_reverification_tracker(message_id: resp[:message_id], sent_at: Time.now.utc)
       end
     end
   end
