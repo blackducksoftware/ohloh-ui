@@ -3,6 +3,7 @@ class Repository < ActiveRecord::Base
   belongs_to :best_repository_directory, foreign_key: :best_repository_directory_id, class_name: RepositoryDirectory
   has_many :code_locations
   has_many :repository_directories
+  has_many :enlistments, through: :code_locations
 
   scope :matching, ->(match) { Repository.forge_match_search(match) }
 
