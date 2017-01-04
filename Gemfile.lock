@@ -1,12 +1,4 @@
 GIT
-  remote: https://github.com/BoboFraggins/bundler-audit
-  revision: 67a368888b3cf717b4c7739b91862bee0eb8c0c6
-  specs:
-    bundler-audit (0.4.0)
-      bundler (~> 1.2)
-      thor (~> 0.18)
-
-GIT
   remote: https://github.com/gregbell/active_admin.git
   revision: d01155f73a0e2cc27d712792270357e2b3759d05
   specs:
@@ -91,6 +83,9 @@ GEM
       thor (~> 0.19)
     brakeman (3.4.0)
     builder (3.2.2)
+    bundler-audit (0.5.0)
+      bundler (~> 1.2)
+      thor (~> 0.18)
     byebug (9.0.5)
     callsite (0.0.11)
     capistrano (3.6.1)
@@ -468,7 +463,7 @@ GEM
     therubyracer (0.12.2)
       libv8 (~> 3.16.14.0)
       ref
-    thor (0.19.1)
+    thor (0.19.4)
     thread_safe (0.3.5)
     tilt (2.0.5)
     timecop (0.8.1)
@@ -504,7 +499,7 @@ DEPENDENCIES
   binding_of_caller (~> 0.7.2)
   bluecloth
   brakeman
-  bundler-audit!
+  bundler-audit
   byebug
   capistrano
   capistrano-faster-assets
