@@ -119,8 +119,8 @@ class Account < ActiveRecord::Base
       where(login: %w(ohloh_slave uber_data_crawler)).pluck(:id)
     end
 
-    def fetch_by_login_or_email(user_name)
-      find_by('login = ? or lower(email) = ?', user_name, user_name.downcase)
+    def fetch_by_login_or_email(username_or_email)
+      find_by('login = ? or email = ?', username_or_email.downcase, username_or_email.downcase)
     end
 
     def find_or_create_anonymous_account
