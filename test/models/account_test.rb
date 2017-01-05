@@ -35,6 +35,25 @@ class AccountTest < ActiveSupport::TestCase
     account.errors.messages[:email_confirmation].must_equal ['doesn\'t match Email']
   end
 
+  it 'should validate that email is unique' do
+    create(:account, email: 'unique1@gmail.com')
+    bad_account_one = build(:account, email: 'unique1@gmail.com')
+    bad_account_two = build(:account, email: 'UNIQUE1@gmail.com')
+    unique_account = build(:account, email: 'unique2@gmail.com')
+
+    bad_account_one.wont_be :valid?
+    bad_account_two.wont_be :valid?
+
+    bad_account_one.errors.must_include(:email)
+    bad_account_one.errors.messages[:email].must_include 'has already been taken'
+
+    bad_account_two.errors.must_include(:email)
+    bad_account_two.errors.messages[:email].must_include 'has already been taken'
+
+    unique_account.must_be :valid?
+  end
+
+
   it 'should validate URL format when value is available' do
     account = build(:account)
     account.must_be :valid?
@@ -46,6 +65,21 @@ class AccountTest < ActiveSupport::TestCase
     account.wont_be :valid?
     account.errors.must_include(:url)
     account.errors.messages[:url].first.must_equal I18n.t('accounts.invalid_url_format')
+  end
+
+  it 'should validate that login is unique' do
+    create(:account, login: 'warmachine')
+    bad_account_one = build(:account, login: 'warmachine')
+    bad_account_two = build(:account, login: 'WARMACHINE')
+
+    bad_account_one.wont_be :valid?
+    bad_account_two.wont_be :valid?
+
+    bad_account_one.errors.must_include(:login)
+    bad_account_one.errors.messages[:login].must_include 'has already been taken'
+
+    bad_account_two.errors.must_include(:login)
+    bad_account_two.errors.messages[:login].must_include 'has already been taken'
   end
 
   it 'should validate login' do
