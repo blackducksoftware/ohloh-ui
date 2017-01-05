@@ -46,7 +46,7 @@ class Reverification::MailerTest < ActiveSupport::TestCase
       Reverification::Mailer.stubs(:bad_email_queue).returns(bad_email_queue)
       AWS::SimpleEmailService.any_instance.stubs(:send_email).with(template)
                              .raises(AWS::SimpleEmailService::Errors::InvalidParameterValue)
-      bad_email_queue.expects(:send_message).with(id: bad_account.id, email: bad_account.email)
+      bad_email_queue.expects(:send_message).with("Account id: #{bad_account.id} with email: #{bad_account.email}")
       Reverification::Mailer.send_email(template, bad_account, 0)
       bad_account.reverification_tracker.must_be_nil
     end

@@ -57,7 +57,7 @@ module Reverification
         begin
           resp = ses.send_email(template)
         rescue AWS::SimpleEmailService::Errors::InvalidParameterValue
-          bad_email_queue.send_message(id: account.id, email: account.email)
+          bad_email_queue.send_message("Account id: #{account.id} with email: #{account.email}")
         else
           create_or_update_reverification_tracker(account, phase, resp)
         end
