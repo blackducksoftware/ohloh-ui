@@ -314,6 +314,10 @@ en:
       models:
         account:
           attributes:
+            email:
+              unique: 'has already been taken'
+            login:
+              unique: 'has already been taken'
             current_password:
               invalid: 'Check your current password and try again.'
             organization_name:

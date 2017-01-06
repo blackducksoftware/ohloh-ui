@@ -8,8 +8,6 @@ role :web_7, %w(serv-deployer@oh-web07.dc1.lan)
 
 role :selenium, %w(serv-deployer@oh-web03.dc1.lan)
 
-role :web_0, %w(core@10.1.1.106)
-
 role :db, %w(serv-deployer@oh-utility01.dc1.lan), primary: true
 
 role :sidekiq, %w(serv-deployer@oh-utility01.dc1.lan)
@@ -27,4 +25,4 @@ set :rails_env, 'staging'
 set :linked_files, %w(.env.staging)
 
 set sidekiq_env: fetch(:rails_env)
-set :assets_roles, [:web_1, :web_3, :web_4, :web_5, :web_6, :web_7]
+set :assets_roles, [:web_1, :web_2, :web_3, :web_4, :web_5, :web_6, :web_7]

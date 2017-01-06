@@ -44,11 +44,13 @@ class AccountTest < ActiveSupport::TestCase
     bad_account_one.wont_be :valid?
     bad_account_two.wont_be :valid?
 
+    expected_error_message = [I18n.t('activerecord.errors.models.account.attributes.email.unique')]
+
     bad_account_one.errors.must_include(:email)
-    bad_account_one.errors.messages[:email].must_include 'has already been taken'
+    bad_account_one.errors.messages[:email].must_equal expected_error_message
 
     bad_account_two.errors.must_include(:email)
-    bad_account_two.errors.messages[:email].must_include 'has already been taken'
+    bad_account_two.errors.messages[:email].must_equal expected_error_message
 
     unique_account.must_be :valid?
   end
@@ -74,11 +76,13 @@ class AccountTest < ActiveSupport::TestCase
     bad_account_one.wont_be :valid?
     bad_account_two.wont_be :valid?
 
+    expected_error_message = [I18n.t('activerecord.errors.models.account.attributes.login.unique')]
+
     bad_account_one.errors.must_include(:login)
-    bad_account_one.errors.messages[:login].must_include 'has already been taken'
+    bad_account_one.errors.messages[:login].must_equal expected_error_message
 
     bad_account_two.errors.must_include(:login)
-    bad_account_two.errors.messages[:login].must_include 'has already been taken'
+    bad_account_two.errors.messages[:login].must_equal expected_error_message
   end
 
   it 'should validate login' do
@@ -723,28 +727,28 @@ class AccountTest < ActiveSupport::TestCase
     it 'should match for lower case email' do
       account = create(:account)
       Account.fetch_by_login_or_email(account.email.downcase).wont_be_nil
-      fetch_account = Account.fetch_by_login_or_email(account.email.upcase)
+      fetch_account = Account.fetch_by_login_or_email(account.email.downcase)
       fetch_account.must_equal account
     end
 
     it 'should match for mixed case email' do
       account = create(:account)
       Account.fetch_by_login_or_email(account.email.titlecase).wont_be_nil
-      fetch_account = Account.fetch_by_login_or_email(account.email.upcase)
+      fetch_account = Account.fetch_by_login_or_email(account.email.titlecase)
       fetch_account.must_equal account
     end
 
     it 'should match for upper case login' do
       account = create(:account)
       Account.fetch_by_login_or_email(account.login.upcase).wont_be_nil
-      fetch_account = Account.fetch_by_login_or_email(account.email.upcase)
+      fetch_account = Account.fetch_by_login_or_email(account.login.upcase)
       fetch_account.must_equal account
     end
 
     it 'should match for lower case login' do
       account = create(:account)
       Account.fetch_by_login_or_email(account.login.downcase).wont_be_nil
-      fetch_account = Account.fetch_by_login_or_email(account.email.upcase)
+      fetch_account = Account.fetch_by_login_or_email(account.email.downcase)
       fetch_account.must_equal account
     end
   end
