@@ -5,7 +5,22 @@ en:
       body: "Your Open Hub account %{login} was created. Follow this link to activate your account:"
     activation:
       subject: "Your account has been activated!"
-      body: "%{login}, your account has been activated.  You may now start adding your plugins:"
+      dear: "Dear %{login};"
+      body1: "<p>Thank you for activating your Open Hub account and becoming a member of the Black Duck Open Hub!</p>"
+      body2: | 
+        <p>Please update your bio at %{edit_account_link} and start claming your open source activity at %{position_link}.</p>
+        <p>Please feel free to post any question on our Forums at %{forum_link} and contact us at info@openhub.net if you have any questions that haven't been answered on the Forums.</p>
+        <p>Note that you can change your privacy options at %{privacy_link}.</p>
+      sign: |
+        <p>Sincerely Yours,</p>
+        <p>The Open Hub Team<br/>
+        ------------------------------<br/>
+        The Black Duck Open Hub<br/>
+        %{url}</p>
+        <p>Black Duck Software<br/>
+        800 District Ave<br/>
+        Burlington, MA 01803<br/>
+        <a href="https://www.blackducksoftware.com">https://www.blackducksoftware.com/</a></p>
     reset_password_link:
       subject: "Open Hub account reset password"
       body: "%{login}, please follow this link to reset your Open Hub account password:"

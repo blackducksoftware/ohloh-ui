@@ -1,2 +1,8 @@
-= t('.body', login: @account.login)
-!= @url
+= t('.dear', login: @account.login)
+!= t('.body1')
+!= t('.body2', forum_link: link_to(nil, forums_url(host: ENV['URL_HOST'])), 
+   privacy_link: link_to(nil, account_privacy_account_url(@account, host: ENV['URL_HOST'])),
+   edit_account_link: link_to(nil, edit_account_url(@account, host: ENV['URL_HOST'])),
+   position_link: link_to(nil, new_account_position_url(@account, host: ENV['URL_HOST'])))
+!= t('.sign', url: link_to(nil, @url))
+
