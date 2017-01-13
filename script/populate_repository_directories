@@ -12,7 +12,8 @@ require_relative '../config/environment'
 
 if direction == 'up'
   # Create repository directories with id = repository.best_code_set_id
-  ## For git & hg we associate repository_directory with code_location.
+  ## For non git & hg repos we need a separate directory for each branch,
+  ## hence we associate repository_directory with code_location.
   ActiveRecord::Base.connection.execute("
     insert into repository_directories(id, code_location_id, fetched_at)
       select repositories.best_code_set_id, code_locations.id, fetched_at
@@ -21,17 +22,17 @@ if direction == 'up'
         join code_locations on code_locations.repository_id = repositories.id
       where not exists(select 1 from repository_directories where id = repositories.best_code_set_id)
         and code_locations.status != #{CodeLocation::STATUS_DELETED}
-        and repositories.type in ('GitRepository', 'HgRepository')
+        and repositories.type not in ('GitRepository', 'HgRepository')
   ")
-  ## For others we associate repository_directory with repository.
+  ## For git & hg we associate repository_directory with repository.
   ActiveRecord::Base.connection.execute("
     insert into repository_directories(id, repository_id, fetched_at)
       select repositories.best_code_set_id, repositories.id, fetched_at
       from repositories
         join code_sets on repositories.best_code_set_id = code_sets.id
       where not exists(select 1 from repository_directories where id = repositories.best_code_set_id)
-        and repositories.type not in ('GitRepository', 'HgRepository')
         and not exists(select 1 from enlistments where repository_id = repositories.id and deleted is true)
+        and repositories.type in ('GitRepository', 'HgRepository')
   ")
   puts 'Created repository_directory for each repository having a best_code_set_id'
 else
