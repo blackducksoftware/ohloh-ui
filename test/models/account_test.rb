@@ -757,7 +757,6 @@ class AccountTest < ActiveSupport::TestCase
     it 'should return all unverified accounts that are in good standing with no associations' do
       account = create(:account)
       unverified_account = create(:unverified_account)
-      FiftyThousandBatchPilotAccount.create(account_id: unverified_account.id)
       assert_equal Account.reverification_not_initiated(5).count, 1
       assert_equal Account.reverification_not_initiated(5)[0].id, unverified_account.id
       Account.reverification_not_initiated(5).wont_include account
@@ -786,7 +785,6 @@ class AccountTest < ActiveSupport::TestCase
       account.edits << create(:create_edit)
       account.edits[0].update_attributes!(account_id: account.id)
       unverified_account = create(:unverified_account)
-      FiftyThousandBatchPilotAccount.create(account_id: unverified_account.id)
       assert_equal Account.reverification_not_initiated(5).count, 1
       assert_equal Account.reverification_not_initiated(5)[0].id, unverified_account.id
       Account.reverification_not_initiated(5).wont_include account
@@ -797,7 +795,6 @@ class AccountTest < ActiveSupport::TestCase
       account.posts << create(:post)
       account.posts[0].update_attributes!(account_id: account.id)
       unverified_account = create(:unverified_account)
-      FiftyThousandBatchPilotAccount.create(account_id: unverified_account.id)
       assert_equal Account.reverification_not_initiated(5).count, 1
       assert_equal Account.reverification_not_initiated(5)[0].id, unverified_account.id
       Account.reverification_not_initiated(5).wont_include account
@@ -811,7 +808,6 @@ class AccountTest < ActiveSupport::TestCase
       account.verifications[0].destroy
       sender.reload
       account.reload
-      FiftyThousandBatchPilotAccount.create(account_id: account.id)
       assert_equal Account.reverification_not_initiated(5).count, 1
       assert_equal Account.reverification_not_initiated(5)[0].id, account.id
       Account.reverification_not_initiated(5).wont_include sender
@@ -822,7 +818,6 @@ class AccountTest < ActiveSupport::TestCase
       account.reviews << create(:review)
       account.reviews[0].update_attributes!(account_id: account.id)
       unverified_account = create(:unverified_account)
-      FiftyThousandBatchPilotAccount.create(account_id: unverified_account.id)
       assert_equal Account.reverification_not_initiated(5).count, 1
       assert_equal Account.reverification_not_initiated(5)[0].id, unverified_account.id
       Account.reverification_not_initiated(5).wont_include account
@@ -833,7 +828,6 @@ class AccountTest < ActiveSupport::TestCase
       account.positions << create(:position)
       account.positions[0].update_attributes!(account_id: account.id)
       unverified_account = create(:unverified_account)
-      FiftyThousandBatchPilotAccount.create(account_id: unverified_account.id)
       assert_equal Account.reverification_not_initiated(5).count, 1
       assert_equal Account.reverification_not_initiated(5)[0].id, unverified_account.id
       Account.reverification_not_initiated(5).wont_include account
@@ -844,7 +838,6 @@ class AccountTest < ActiveSupport::TestCase
       account.stacks << create(:stack)
       account.stacks[0].update_attributes!(account_id: account.id)
       unverified_account = create(:unverified_account)
-      FiftyThousandBatchPilotAccount.create(account_id: unverified_account.id)
       assert_equal Account.reverification_not_initiated(5).count, 1
       assert_equal Account.reverification_not_initiated(5)[0].id, unverified_account.id
       Account.reverification_not_initiated(5).wont_include account
@@ -855,7 +848,6 @@ class AccountTest < ActiveSupport::TestCase
       manage.account.github_verification.destroy
       manage.reload
       unverified_account = create(:unverified_account)
-      FiftyThousandBatchPilotAccount.create(account_id: unverified_account.id)
       assert_equal Account.reverification_not_initiated(5).count, 1
       assert_equal Account.reverification_not_initiated(5)[0].id, unverified_account.id
       Account.reverification_not_initiated(5).wont_include manage

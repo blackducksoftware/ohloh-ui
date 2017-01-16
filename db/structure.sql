@@ -4,7 +4,7 @@
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
-SET client_encoding = 'SQL_ASCII';
+SET client_encoding = 'LATIN1';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
@@ -997,43 +997,6 @@ ALTER SEQUENCE clumps_id_seq OWNED BY clumps.id;
 
 
 --
--- Name: code_location_events; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE code_location_events (
-    id integer NOT NULL,
-    code_location_id integer,
-    type text NOT NULL,
-    value text,
-    commit_sha1 text,
-    published boolean DEFAULT false,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    repository_id integer,
-    component_id integer
-);
-
-
---
--- Name: code_location_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE code_location_events_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: code_location_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE code_location_events_id_seq OWNED BY code_location_events.id;
-
-
---
 -- Name: code_location_tarballs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1653,22 +1616,28 @@ ALTER SEQUENCE feedbacks_id_seq OWNED BY feedbacks.id;
 
 
 --
--- Name: fifty_thousand_batch_pilot_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: fisbot_events; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE fifty_thousand_batch_pilot_accounts (
+CREATE TABLE fisbot_events (
     id integer NOT NULL,
-    account_id integer NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    code_location_id integer,
+    type text NOT NULL,
+    value text,
+    commit_sha1 text,
+    status boolean,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    repository_id integer,
+    component_id integer
 );
 
 
 --
--- Name: fifty_thousand_batch_pilot_accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: fisbot_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE fifty_thousand_batch_pilot_accounts_id_seq
+CREATE SEQUENCE fisbot_events_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1677,10 +1646,10 @@ CREATE SEQUENCE fifty_thousand_batch_pilot_accounts_id_seq
 
 
 --
--- Name: fifty_thousand_batch_pilot_accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: fisbot_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE fifty_thousand_batch_pilot_accounts_id_seq OWNED BY fifty_thousand_batch_pilot_accounts.id;
+ALTER SEQUENCE fisbot_events_id_seq OWNED BY fisbot_events.id;
 
 
 --
@@ -1895,18 +1864,18 @@ CREATE TABLE github_project (
 --
 
 CREATE TABLE guaranteed_spam_accounts (
-    id integer,
-    login text,
-    email text,
-    crypted_password text,
-    salt text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    id integer NOT NULL,
+    login text NOT NULL,
+    email text NOT NULL,
+    crypted_password text NOT NULL,
+    salt text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     activation_code text,
     activated_at timestamp without time zone,
     remember_token text,
     remember_token_expires_at timestamp without time zone,
-    level integer,
+    level integer NOT NULL,
     posts_count integer,
     last_seen_at timestamp without time zone,
     name text,
@@ -1930,7 +1899,7 @@ CREATE TABLE guaranteed_spam_accounts (
     twitter_account text,
     reset_password_tokens text,
     organization_id integer,
-    affiliation_type text,
+    affiliation_type text NOT NULL,
     organization_name text
 );
 
@@ -3651,7 +3620,7 @@ CREATE TABLE repository_tags (
     name text,
     commit_sha1 text,
     message text,
-    timestamp timestamp without time zone
+    "timestamp" timestamp without time zone
 );
 
 
@@ -4519,13 +4488,6 @@ ALTER TABLE ONLY clumps ALTER COLUMN id SET DEFAULT nextval('clumps_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY code_location_events ALTER COLUMN id SET DEFAULT nextval('code_location_events_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY code_location_tarballs ALTER COLUMN id SET DEFAULT nextval('code_location_tarballs_id_seq'::regclass);
 
 
@@ -4596,7 +4558,7 @@ ALTER TABLE ONLY feedbacks ALTER COLUMN id SET DEFAULT nextval('feedbacks_id_seq
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY fifty_thousand_batch_pilot_accounts ALTER COLUMN id SET DEFAULT nextval('fifty_thousand_batch_pilot_accounts_id_seq'::regclass);
+ALTER TABLE ONLY fisbot_events ALTER COLUMN id SET DEFAULT nextval('fisbot_events_id_seq'::regclass);
 
 
 --
@@ -5081,14 +5043,6 @@ ALTER TABLE ONLY clumps
 
 
 --
--- Name: code_location_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY code_location_events
-    ADD CONSTRAINT code_location_events_pkey PRIMARY KEY (id);
-
-
---
 -- Name: code_location_tarballs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -5225,11 +5179,11 @@ ALTER TABLE ONLY feedbacks
 
 
 --
--- Name: fifty_thousand_batch_pilot_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: fisbot_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY fifty_thousand_batch_pilot_accounts
-    ADD CONSTRAINT fifty_thousand_batch_pilot_accounts_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY fisbot_events
+    ADD CONSTRAINT fisbot_events_pkey PRIMARY KEY (id);
 
 
 --
@@ -6206,20 +6160,6 @@ CREATE INDEX index_clumps_on_code_set_id_slave_id ON clumps USING btree (code_se
 
 
 --
--- Name: index_code_location_events_on_code_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_code_location_events_on_code_location_id ON code_location_events USING btree (code_location_id);
-
-
---
--- Name: index_code_location_events_on_repository_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_code_location_events_on_repository_id ON code_location_events USING btree (repository_id);
-
-
---
 -- Name: index_code_location_tarballs_on_code_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -6318,27 +6258,6 @@ CREATE INDEX index_commits_on_name_id_month ON commits USING btree (name_id, dat
 
 
 --
--- Name: index_commits_on_sha1; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_commits_on_sha1 ON commits USING btree (sha1);
-
-
---
--- Name: index_diffs_on_commit_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_diffs_on_commit_id ON diffs USING btree (commit_id);
-
-
---
--- Name: index_diffs_on_fyle_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_diffs_on_fyle_id ON diffs USING btree (fyle_id);
-
-
---
 -- Name: index_duplicates_on_bad_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -6427,6 +6346,20 @@ CREATE INDEX index_factoids_on_analysis_id ON factoids USING btree (analysis_id)
 --
 
 CREATE INDEX index_failure_groups_on_priority_name ON failure_groups USING btree (priority, name);
+
+
+--
+-- Name: index_fisbot_events_on_code_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_fisbot_events_on_code_location_id ON fisbot_events USING btree (code_location_id);
+
+
+--
+-- Name: index_fisbot_events_on_repository_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_fisbot_events_on_repository_id ON fisbot_events USING btree (repository_id);
 
 
 --
@@ -7518,59 +7451,11 @@ ALTER TABLE ONLY code_sets
 
 
 --
--- Name: commit_flags_commit_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY commit_flags
-    ADD CONSTRAINT commit_flags_commit_id_fkey FOREIGN KEY (commit_id) REFERENCES commits(id);
-
-
---
 -- Name: commit_flags_sloc_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY commit_flags
     ADD CONSTRAINT commit_flags_sloc_set_id_fkey FOREIGN KEY (sloc_set_id) REFERENCES sloc_sets(id) ON DELETE CASCADE;
-
-
---
--- Name: commits_code_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY commits
-    ADD CONSTRAINT commits_code_set_id_fkey FOREIGN KEY (code_set_id) REFERENCES code_sets(id) ON DELETE CASCADE;
-
-
---
--- Name: commits_email_address_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY commits
-    ADD CONSTRAINT commits_email_address_id_fkey FOREIGN KEY (email_address_id) REFERENCES email_addresses(id);
-
-
---
--- Name: commits_name_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY commits
-    ADD CONSTRAINT commits_name_id_fkey FOREIGN KEY (name_id) REFERENCES names(id);
-
-
---
--- Name: diffs_commit_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY diffs
-    ADD CONSTRAINT diffs_commit_id_fkey FOREIGN KEY (commit_id) REFERENCES commits(id) ON DELETE CASCADE;
-
-
---
--- Name: diffs_fyle_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY diffs
-    ADD CONSTRAINT diffs_fyle_id_fkey FOREIGN KEY (fyle_id) REFERENCES fyles(id);
 
 
 --
@@ -7769,7 +7654,7 @@ ALTER TABLE ONLY project_badges
 -- Name: fk_rails_5a0f61d9a6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY code_location_events
+ALTER TABLE ONLY fisbot_events
     ADD CONSTRAINT fk_rails_5a0f61d9a6 FOREIGN KEY (code_location_id) REFERENCES code_locations(id);
 
 
@@ -7817,7 +7702,7 @@ ALTER TABLE ONLY project_security_sets
 -- Name: fk_rails_f43796d023; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY code_location_events
+ALTER TABLE ONLY fisbot_events
     ADD CONSTRAINT fk_rails_f43796d023 FOREIGN KEY (repository_id) REFERENCES repositories(id);
 
 
@@ -7851,14 +7736,6 @@ ALTER TABLE ONLY follows
 
 ALTER TABLE ONLY forums
     ADD CONSTRAINT forums_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id);
-
-
---
--- Name: fyles_code_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY fyles
-    ADD CONSTRAINT fyles_code_set_id_fkey FOREIGN KEY (code_set_id) REFERENCES code_sets(id) ON DELETE CASCADE;
 
 
 --
@@ -8502,22 +8379,6 @@ ALTER TABLE ONLY slave_logs
 
 
 --
--- Name: sloc_metrics_language_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY sloc_metrics
-    ADD CONSTRAINT sloc_metrics_language_id_fkey FOREIGN KEY (language_id) REFERENCES languages(id);
-
-
---
--- Name: sloc_metrics_sloc_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY sloc_metrics
-    ADD CONSTRAINT sloc_metrics_sloc_set_id_fkey FOREIGN KEY (sloc_set_id) REFERENCES sloc_sets(id) ON DELETE CASCADE;
-
-
---
 -- Name: sloc_sets_code_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8811,8 +8672,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160710125644');
 
 INSERT INTO schema_migrations (version) VALUES ('20160713124305');
 
-INSERT INTO schema_migrations (version) VALUES ('20160718080707');
-
 INSERT INTO schema_migrations (version) VALUES ('20160725154001');
 
 INSERT INTO schema_migrations (version) VALUES ('20160803102211');
@@ -8845,9 +8704,9 @@ INSERT INTO schema_migrations (version) VALUES ('20161103153643');
 
 INSERT INTO schema_migrations (version) VALUES ('20161114063801');
 
-INSERT INTO schema_migrations (version) VALUES ('20161128183115');
-
 INSERT INTO schema_migrations (version) VALUES ('20161227165430');
+
+INSERT INTO schema_migrations (version) VALUES ('20170112183242');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

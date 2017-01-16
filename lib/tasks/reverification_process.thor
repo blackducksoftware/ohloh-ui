@@ -46,29 +46,11 @@ module ReverificationTask
   end
 
   class Notifications < Thor
-    class ResendAndSend < Thor::Group
-      class_option :bounce_threshold, :aliases => '-bt', :desc => 'Sets bounce rate', :required => true, :type => :numeric
-      class_option :num_email, :aliases => '-e', :desc => 'Sets the amount of email', :required => true, :type => :numeric
-
-      desc 'specifies amazon stat settings,
-            begins resending to soft bounced accounts,
-            and sends email [BOUNCE_THRESHOLD] [NUM_EMAIL]'
-
-      def resend_to_soft_bounced_emails
-        Reverification::Mailer.set_amazon_stat_settings(options[:bounce_threshold], options[:num_email])
-        Reverification::Mailer.resend_soft_bounced_notifications
-      end
-
-      def send_email
-        Reverification::Mailer.set_amazon_stat_settings(options[:bounce_threshold], options[:num_email])
-        Reverification::Mailer.send_notifications
-      end
-    end
-
     option :bounce_threshold, :aliases => '-bt', :desc => 'Sets bounce rate', :required => true, :type => :numeric
     option :num_email, :aliases => '-e', :desc => 'Sets the amount of email', :required => true, :type => :numeric
     desc 'resend_to_soft_bounced_emails [BOUNCE_THRESHOLD] [NUM_EMAIL]', 'Resends to all accounts that soft bounced
           specifying when to check statistics through the amount of emails and for what acceptable bounce percentage'
+
     def resend_to_soft_bounced_emails
       Reverification::Mailer.set_amazon_stat_settings(options[:bounce_threshold], options[:num_email])
       Reverification::Mailer.resend_soft_bounced_notifications
@@ -78,6 +60,7 @@ module ReverificationTask
     option :num_email, :aliases => '-e', :desc => 'Sets the amount of email', :required => true, :type => :numeric
     desc 'send_emails [BOUNCE_THRESHOLD] [NUM_EMAIL]', 'sends to accounts specifying when to check statistics
           through the amount of emails and for what acceptable bounce percentage'
+          
     def send_emails
       Reverification::Mailer.set_amazon_stat_settings(options[:bounce_threshold], options[:num_email])
       Reverification::Mailer.send_notifications

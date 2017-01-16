@@ -40,8 +40,7 @@ module Reverification
     end
 
     def send_limit
-      # ses.quotas[:max_24_hour_send] - ses.quotas[:sent_last_24_hours]
-      2000
+      ses.quotas[:max_24_hour_send] - ses.quotas[:sent_last_24_hours]
     end
 
     def statistics_of_last_24_hrs
