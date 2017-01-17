@@ -4,7 +4,7 @@
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
-SET client_encoding = 'LATIN1';
+SET client_encoding = 'SQL_ASCII';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
@@ -21,20 +21,6 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
---
--- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
-
-
---
--- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 
 
 SET search_path = public, pg_catalog;
@@ -1613,6 +1599,37 @@ CREATE SEQUENCE feedbacks_id_seq
 --
 
 ALTER SEQUENCE feedbacks_id_seq OWNED BY feedbacks.id;
+
+
+--
+-- Name: fifty_thousand_batch_pilot_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE fifty_thousand_batch_pilot_accounts (
+    id integer NOT NULL,
+    account_id integer NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: fifty_thousand_batch_pilot_accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE fifty_thousand_batch_pilot_accounts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: fifty_thousand_batch_pilot_accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE fifty_thousand_batch_pilot_accounts_id_seq OWNED BY fifty_thousand_batch_pilot_accounts.id;
 
 
 --
@@ -3761,22 +3778,6 @@ CREATE TABLE rss_articles (
 
 
 --
--- Name: rss_articles_2; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE rss_articles_2 (
-    id integer,
-    rss_feed_id integer,
-    guid text,
-    "time" timestamp without time zone,
-    title text,
-    description text,
-    author text,
-    link text
-);
-
-
---
 -- Name: rss_feeds_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -4558,6 +4559,13 @@ ALTER TABLE ONLY feedbacks ALTER COLUMN id SET DEFAULT nextval('feedbacks_id_seq
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY fifty_thousand_batch_pilot_accounts ALTER COLUMN id SET DEFAULT nextval('fifty_thousand_batch_pilot_accounts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY fisbot_events ALTER COLUMN id SET DEFAULT nextval('fisbot_events_id_seq'::regclass);
 
 
@@ -5091,14 +5099,6 @@ ALTER TABLE ONLY deleted_accounts
 
 
 --
--- Name: diffs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY diffs
-    ADD CONSTRAINT diffs_pkey PRIMARY KEY (id);
-
-
---
 -- Name: duplicates_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -5176,6 +5176,14 @@ ALTER TABLE ONLY failure_groups
 
 ALTER TABLE ONLY feedbacks
     ADD CONSTRAINT feedbacks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: fifty_thousand_batch_pilot_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY fifty_thousand_batch_pilot_accounts
+    ADD CONSTRAINT fifty_thousand_batch_pilot_accounts_pkey PRIMARY KEY (id);
 
 
 --
@@ -5880,14 +5888,6 @@ ALTER TABLE ONLY positions
 
 ALTER TABLE ONLY authorizations
     ADD CONSTRAINT unique_authorizations_token UNIQUE (token);
-
-
---
--- Name: unique_diffs_on_commit_id_fyle_id; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY diffs
-    ADD CONSTRAINT unique_diffs_on_commit_id_fyle_id UNIQUE (commit_id, fyle_id);
 
 
 --
@@ -8709,8 +8709,6 @@ INSERT INTO schema_migrations (version) VALUES ('20161128183115');
 INSERT INTO schema_migrations (version) VALUES ('20161227165430');
 
 INSERT INTO schema_migrations (version) VALUES ('20170112183242');
-
-INSERT INTO schema_migrations (version) VALUES ('20170117164106');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
