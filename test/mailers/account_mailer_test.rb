@@ -12,7 +12,7 @@ describe AccountMailer do
     email.body.encoded.must_match I18n.t('.account_mailer.signup_notification.body', login: user.login)
   end
 
-  describe "#activation" do
+  describe '#activation' do
     let(:url_helpers)  { Rails.application.routes.url_helpers }
     let(:account)      { create(:account, activated_at: Time.current) }
     let(:mail)         { AccountMailer.activation(account) }
