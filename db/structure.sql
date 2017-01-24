@@ -23,6 +23,20 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
+--
+-- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+
+
 SET search_path = public, pg_catalog;
 
 --
@@ -1850,18 +1864,18 @@ CREATE TABLE github_project (
 --
 
 CREATE TABLE guaranteed_spam_accounts (
-    id integer NOT NULL,
-    login text NOT NULL,
-    email text NOT NULL,
-    crypted_password text NOT NULL,
-    salt text NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
+    id integer,
+    login text,
+    email text,
+    crypted_password text,
+    salt text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     activation_code text,
     activated_at timestamp without time zone,
     remember_token text,
     remember_token_expires_at timestamp without time zone,
-    level integer NOT NULL,
+    level integer,
     posts_count integer,
     last_seen_at timestamp without time zone,
     name text,
@@ -1885,7 +1899,7 @@ CREATE TABLE guaranteed_spam_accounts (
     twitter_account text,
     reset_password_tokens text,
     organization_id integer,
-    affiliation_type text NOT NULL,
+    affiliation_type text,
     organization_name text
 );
 
@@ -3747,6 +3761,22 @@ CREATE TABLE rss_articles (
 
 
 --
+-- Name: rss_articles_2; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE rss_articles_2 (
+    id integer,
+    rss_feed_id integer,
+    guid text,
+    "time" timestamp without time zone,
+    title text,
+    description text,
+    author text,
+    link text
+);
+
+
+--
 -- Name: rss_feeds_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -5061,6 +5091,14 @@ ALTER TABLE ONLY deleted_accounts
 
 
 --
+-- Name: diffs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY diffs
+    ADD CONSTRAINT diffs_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: duplicates_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -5845,6 +5883,14 @@ ALTER TABLE ONLY authorizations
 
 
 --
+-- Name: unique_diffs_on_commit_id_fyle_id; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY diffs
+    ADD CONSTRAINT unique_diffs_on_commit_id_fyle_id UNIQUE (commit_id, fyle_id);
+
+
+--
 -- Name: unique_oauth_nonces_nonce_timestamp; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -6209,6 +6255,27 @@ CREATE INDEX index_commits_on_code_set_id_time ON commits USING btree (code_set_
 --
 
 CREATE INDEX index_commits_on_name_id_month ON commits USING btree (name_id, date_trunc('month'::text, "time"));
+
+
+--
+-- Name: index_commits_on_sha1; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_commits_on_sha1 ON commits USING btree (sha1);
+
+
+--
+-- Name: index_diffs_on_commit_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_diffs_on_commit_id ON diffs USING btree (commit_id);
+
+
+--
+-- Name: index_diffs_on_fyle_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_diffs_on_fyle_id ON diffs USING btree (fyle_id);
 
 
 --
@@ -7115,13 +7182,6 @@ CREATE INDEX robin ON name_facts USING btree (last_checkin) WHERE (type = 'VitaF
 
 
 --
--- Name: sloc_metrics_pkey; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX sloc_metrics_pkey ON sloc_metrics USING btree (id);
-
-
---
 -- Name: stack_entry_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -7405,11 +7465,59 @@ ALTER TABLE ONLY code_sets
 
 
 --
+-- Name: commit_flags_commit_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY commit_flags
+    ADD CONSTRAINT commit_flags_commit_id_fkey FOREIGN KEY (commit_id) REFERENCES commits(id);
+
+
+--
 -- Name: commit_flags_sloc_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY commit_flags
     ADD CONSTRAINT commit_flags_sloc_set_id_fkey FOREIGN KEY (sloc_set_id) REFERENCES sloc_sets(id) ON DELETE CASCADE;
+
+
+--
+-- Name: commits_code_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY commits
+    ADD CONSTRAINT commits_code_set_id_fkey FOREIGN KEY (code_set_id) REFERENCES code_sets(id) ON DELETE CASCADE;
+
+
+--
+-- Name: commits_email_address_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY commits
+    ADD CONSTRAINT commits_email_address_id_fkey FOREIGN KEY (email_address_id) REFERENCES email_addresses(id);
+
+
+--
+-- Name: commits_name_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY commits
+    ADD CONSTRAINT commits_name_id_fkey FOREIGN KEY (name_id) REFERENCES names(id);
+
+
+--
+-- Name: diffs_commit_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY diffs
+    ADD CONSTRAINT diffs_commit_id_fkey FOREIGN KEY (commit_id) REFERENCES commits(id) ON DELETE CASCADE;
+
+
+--
+-- Name: diffs_fyle_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY diffs
+    ADD CONSTRAINT diffs_fyle_id_fkey FOREIGN KEY (fyle_id) REFERENCES fyles(id);
 
 
 --
@@ -7690,6 +7798,14 @@ ALTER TABLE ONLY follows
 
 ALTER TABLE ONLY forums
     ADD CONSTRAINT forums_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id);
+
+
+--
+-- Name: fyles_code_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY fyles
+    ADD CONSTRAINT fyles_code_set_id_fkey FOREIGN KEY (code_set_id) REFERENCES code_sets(id) ON DELETE CASCADE;
 
 
 --
@@ -8333,6 +8449,22 @@ ALTER TABLE ONLY slave_logs
 
 
 --
+-- Name: sloc_metrics_language_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY sloc_metrics
+    ADD CONSTRAINT sloc_metrics_language_id_fkey FOREIGN KEY (language_id) REFERENCES languages(id);
+
+
+--
+-- Name: sloc_metrics_sloc_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY sloc_metrics
+    ADD CONSTRAINT sloc_metrics_sloc_set_id_fkey FOREIGN KEY (sloc_set_id) REFERENCES sloc_sets(id) ON DELETE CASCADE;
+
+
+--
 -- Name: sloc_sets_code_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8662,9 +8794,9 @@ INSERT INTO schema_migrations (version) VALUES ('20161128183115');
 
 INSERT INTO schema_migrations (version) VALUES ('20161227165430');
 
-INSERT INTO schema_migrations (version) VALUES ('20170112183242');
-
 INSERT INTO schema_migrations (version) VALUES ('20170117164106');
+
+INSERT INTO schema_migrations (version) VALUES ('20170127062247');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

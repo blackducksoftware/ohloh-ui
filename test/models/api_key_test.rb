@@ -27,6 +27,9 @@ class ApiKeyTest < ActiveSupport::TestCase
   it 'may_i_have_another? when reached limit' do
     api_key = create(:api_key, daily_count: ApiKey::DEFAULT_DAILY_LIMIT)
     api_key.may_i_have_another?.must_equal false
+    api_key.reload
+    api_key.daily_count.must_equal ApiKey::DEFAULT_DAILY_LIMIT
+    api_key.total_count.must_equal 0
   end
 
   it 'may_i_have_another? false always for disabled_accounts' do

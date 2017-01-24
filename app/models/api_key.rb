@@ -31,13 +31,8 @@ class ApiKey < ActiveRecord::Base
   end
 
   def may_i_have_another?
-    now = Time.current
     daily_reset!
-    update_attributes!(last_access_at: now,
-                       day_began_at: day_began_at || now,
-                       daily_count: daily_count + 1,
-                       total_count: total_count + 1,
-                       status: exceeded_daily_allotment? ? STATUS_LIMIT_EXCEEDED : status)
+    exceeded_daily_allotment? ? set_status_to_limit_exceeded! : update_api_counters!
     status == STATUS_OK
   end
 
@@ -62,6 +57,19 @@ class ApiKey < ActiveRecord::Base
   end
 
   def exceeded_daily_allotment?
-    (daily_count >= daily_limit) && status == STATUS_OK
+    (daily_count >= daily_limit)
+  end
+
+  def set_status_to_limit_exceeded!
+    update_attributes!(day_began_at: day_began_at || Time.current,
+                       status: (status == STATUS_OK) ? STATUS_LIMIT_EXCEEDED : status)
+  end
+
+  def update_api_counters!
+    update_attributes!(last_access_at: Time.current,
+                       day_began_at: day_began_at || Time.current,
+                       daily_count: daily_count + 1,
+                       total_count: total_count + 1,
+                       status: status)
   end
 end
