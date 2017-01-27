@@ -334,8 +334,7 @@ describe 'PositionsController' do
 
     it 'must show project description and title' do
       account = create(:account)
-      description = Faker::Lorem.paragraph(1)
-      description.size.must_be :<, 180
+      description = Faker::Lorem.sentence(15) # Keep below the 180 character limit
       position = create_position(account: account, description: description)
 
       get :index, account_id: account.to_param
