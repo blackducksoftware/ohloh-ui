@@ -1,5 +1,7 @@
 class RenameCodeLocationEventsToFisbotEvents < ActiveRecord::Migration
   def change
-    rename_table :code_location_events, :fisbot_events
+    if table_exists? :code_location_events
+      rename_table :code_location_events, :fisbot_events
+    end
   end
 end
