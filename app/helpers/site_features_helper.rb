@@ -8,7 +8,7 @@ module SiteFeaturesHelper
          target='_blank'>Open Hub blog</a>",
         "data presented on the Open Hub is available through our
          <a href='https://github.com/blackducksoftware/ohloh_api#ohloh-api-documentation' target='_blank'>API</a>",
-        "you can embedded <a href=#{project_widgets_path(project_id: @project.to_param)}
+        "you can embed <a href=#{project_widgets_path(project_id: @project.to_param)}
          target='_self'>statistics from Open Hub</a> on your site",
         'by exploring contributors within projects, you can view details on every commit
          they have made to that project',
@@ -21,12 +21,12 @@ module SiteFeaturesHelper
       ],
 
       'Offers' => [
-        "Black Duck offers a <a href='https://info.blackducksoftware.com/Security-Checker.html'
-         target='_blank'>free tool</a> to discover if there are open source vulnerabilities in your code"
+        "Black Duck offers a <a href='https://www.blackducksoftware.com/hub-free-trial'
+         target='_blank'>free trial</a> so you can discover if there are open source vulnerabilities in your code"
       ],
 
       'Security' => [
-        'there are 3xxx projects on the Open Hub with security vulnerabilities reported against them',
+        'there are over 3,000 projects on the Open Hub with security vulnerabilities reported against them',
         'use of OSS increased in 65% of companies in 2016',
         '65% of companies leverage OSS to speed application development in 2016',
         '55% of companies leverage OSS for production infrastructure',
