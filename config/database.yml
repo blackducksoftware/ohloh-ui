@@ -21,6 +21,7 @@ test:
   username: <%= ENV["TEST_DB_USERNAME"] %>
   password: <%= ENV["TEST_DB_PASSWORD"] %>
   database: <%= ENV["TEST_DB_NAME"] %>
+  template: template0
 
 production:
   <<: *default

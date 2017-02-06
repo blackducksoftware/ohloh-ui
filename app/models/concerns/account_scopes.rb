@@ -33,7 +33,8 @@ module AccountScopes
     scope :non_anonymous, -> { where.not(login: ANONYMOUS_ACCOUNTS, email: ANONYMOUS_ACCOUNTS_EMAILS) }
 
     scope :reverification_not_initiated, lambda { |limit = 0|
-      find_by_sql ["SELECT DISTINCT(accounts.id) FROM accounts WHERE level = 0 AND id NOT IN
+      find_by_sql ["SELECT DISTINCT(accounts.id) FROM accounts WHERE level = 0 AND id IN
+                    (SELECT DISTINCT(account_id) FROM successful_accounts) AND id NOT IN
                     (SELECT DISTINCT(account_id) FROM reverification_trackers) AND id NOT IN
                     (SELECT DISTINCT(account_id) FROM verifications) AND id NOT IN
                     (SELECT DISTINCT(account_id) FROM positions) AND id NOT IN
