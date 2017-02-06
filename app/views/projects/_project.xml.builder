@@ -32,6 +32,17 @@ xml.project do
   if include_analysis && project.best_analysis.present?
     xml << render(partial: 'analyses/analysis', locals: { analysis: project.best_analysis, builder: xml })
   end
+  xml.similar_projects do
+    unless project.related_by_tags(4).empty?
+      project.related_by_tags(4).each do |project|
+        xml.project do
+          xml.id project.id
+          xml.name project.name
+          xml.vanity_url project.vanity_url
+        end
+      end
+    end
+  end
   xml.licenses do
     project.licenses.each do |license|
       xml.license do
