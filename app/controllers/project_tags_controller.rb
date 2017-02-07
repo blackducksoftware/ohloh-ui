@@ -51,8 +51,4 @@ class ProjectTagsController < SettingsController
     error_msg ||= custom_description_error
     render text: error_msg, status: :unprocessable_entity
   end
-
-  def custom_description_error
-    I18n.t('project_tags.description_error_message_html', url: edit_project_url(@project))
-  end
 end

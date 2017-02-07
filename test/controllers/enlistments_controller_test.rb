@@ -85,6 +85,16 @@ describe 'EnlistmentsControllerTest' do
       get :edit, project_id: project.vanity_url, id: @enlistment.id
       assert_response :unauthorized
     end
+
+    it 'should redirect to index page if the project is invalid' do
+      login_as @account
+      project = create(:project_with_invalid_description)
+      code_location = create(:code_location)
+      enlistment = create(:enlistment, project: project, code_location: code_location)
+      get :edit, project_id: project.vanity_url, id: enlistment.id
+      must_redirect_to action: :index
+      flash[:error].must_be :present?
+    end
   end
 
   it 'update' do
@@ -97,12 +107,23 @@ describe 'EnlistmentsControllerTest' do
     @enlistment.reload.ignore.must_equal 'Ignore Me'
   end
 
-  it 'destroy' do
-    login_as @account
-    delete :destroy, id: @enlistment.id, project_id: @project_id
-    must_respond_with :redirect
-    must_redirect_to action: :index
-    @enlistment.reload.deleted.must_equal true
+  describe 'destroy' do
+    it 'destroy successfully' do
+      login_as @account
+      delete :destroy, id: @enlistment.id, project_id: @project_id
+      must_respond_with :redirect
+      must_redirect_to action: :index
+      @enlistment.reload.deleted.must_equal true
+    end
+    it 'should redirect to index page if the project is invalid' do
+      login_as @account
+      project = create(:project_with_invalid_description)
+      code_location = create(:code_location)
+      enlistment = create(:enlistment, project: project, code_location: code_location)
+      delete :destroy, project_id: project.vanity_url, id: enlistment.id
+      must_redirect_to action: :index
+      flash[:error].must_be :present?
+    end
   end
 
   describe 'create' do

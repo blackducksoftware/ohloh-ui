@@ -8,6 +8,7 @@ module EnlistmentFilters
     before_action :check_project_authorization, except: [:index, :show]
     before_action :find_enlistment, only: [:show, :edit, :update, :destroy]
     before_action :project_context, only: [:index, :new, :edit, :create, :update]
+    before_action :validate_project, only: [:edit, :update, :destroy]
     before_action :sidekiq_job_exists, only: :create
     before_action :handle_github_user_flow, only: :create
   end
@@ -52,5 +53,18 @@ module EnlistmentFilters
     worker = EnlistmentWorker.perform_async(@repository.url, current_user.id, @project.id)
     Setting.update_worker(@project.id, worker, @repository.url)
     redirect_to project_enlistments_path(@project)
+  end
+
+  def validate_project
+    unless @project.valid?
+      error_msg = @project.errors.include?(:description) ? add_custom_error_msg : @project.errors.full_messages
+      flash[:error] = error_msg.join(', ')
+      redirect_to project_enlistments_path
+    end
+  end
+
+  def add_custom_error_msg
+    @project.errors.delete(:description)
+    @project.errors.full_messages.unshift(custom_description_error)
   end
 end

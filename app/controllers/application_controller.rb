@@ -71,6 +71,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def custom_description_error
+    I18n.t('project_tags.description_error_message_html', url: edit_project_url(@project))
+  end
+
   def session_required
     return if logged_in?
     flash[:notice] = t('sessions.message_html', href: new_registration_path)
