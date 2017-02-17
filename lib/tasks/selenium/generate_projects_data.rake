@@ -223,7 +223,7 @@ namespace :selenium do
   def get_enlistments(project)
     %w(by_url by_project by_type).each_with_object({}) do |sort_by, hsh|
       hsh[sort_by] = project.enlistments.includes(:project, :repository).send(sort_by).first(20).collect do |e|
-        [e.repository.nice_url, e.repository.name_in_english, RepositoryJobProgress.new(e).message]
+        [e.code_location.nice_url, e.repository.name_in_english, CodeLocationJobProgress.new(e).message]
       end
     end
   end
