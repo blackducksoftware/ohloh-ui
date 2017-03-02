@@ -29,6 +29,8 @@ en:
   four_oh_four: 'Not Found'
   must_be_logged_in: 'You must be signed in to perform that action.'
   not_authorized: 'You do not have permission to perform that action.'
+  missing_api_key: 'The requests has no API key. You can generate a new API key from your OpenHub Account Settings Page.'
+  invalid_api_key: 'The requests has either invalid API key or exceeded the daily quota. You can find/generate the API key from your OpenHub Account Settings Page.'
   search_filet_label: 'Search / Filter on:'
   no_matches: 'No matches with this filter.'
   sort_by: 'Sort by:'

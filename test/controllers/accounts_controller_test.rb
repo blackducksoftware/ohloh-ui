@@ -40,6 +40,25 @@ describe 'AccountsController' do
       must_respond_with :ok
     end
 
+    it 'should show error messages being queried without API key' do
+      key = create(:api_key, account_id: create(:account).id)
+      get :show, id: admin.login, format: :xml
+      must_respond_with :not_found
+    end
+
+    it 'should show error messages being queried with Invalid API key' do
+      key = create(:api_key, account_id: create(:account).id)
+      get :show, id: admin.login, format: :xml, api_key: 'inavlid_key'
+      must_respond_with :not_found
+    end
+
+    it 'should show the account queried via email MD5 and a valid API key' do
+      account = create(:account)
+      key = create(:api_key, account_id: account.id)
+      get :show, id: account.email_md5, format: :xml, api_key: key.oauth_application.uid
+      must_respond_with :ok
+    end
+
     it 'should support accounts with vitas' do
       best_vita = create(:best_vita)
       key = create(:api_key, account_id: create(:account).id)

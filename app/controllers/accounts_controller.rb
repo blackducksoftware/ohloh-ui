@@ -63,13 +63,18 @@ class AccountsController < ApplicationController
   end
 
   def set_account
-    @account = if params[:id] == 'me'
-                 return redirect_to new_session_path if current_user.nil?
-                 current_user
-               else
-                 Account::Find.by_id_or_login(params[:id])
-               end
+    set_account_by_email_md5
+    @account ||= if params[:id] == 'me'
+                   return redirect_to new_session_path if current_user.nil?
+                   current_user
+                 else
+                   Account::Find.by_id_or_login(params[:id])
+                 end
     raise ParamRecordNotFound unless @account
+  end
+
+  def set_account_by_email_md5
+    @account = Account.find_by_email_md5(params[:id]) if request_format == 'xml'
   end
 
   def create_action_record

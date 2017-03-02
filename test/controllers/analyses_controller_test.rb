@@ -32,7 +32,7 @@ describe 'AnalysesController' do
 
     it 'should respond with 401 if api_key is wrong' do
       get :show, project_id: project.to_param, id: analysis.id, format: :xml, api_key: 'badkey'
-      must_respond_with :unauthorized
+      must_respond_with :not_found
     end
 
     it 'must respond with valid data for xml request' do

@@ -158,6 +158,14 @@ class ApplicationController < ActionController::Base
     error(message: t(:not_authorized), status: :unauthorized)
   end
 
+  def render_missing_api_key
+    error(message: t(:missing_api_key), status: :not_found)
+  end
+
+  def render_invalid_api_key
+    error(message: t(:invalid_api_key), status: :not_found)
+  end
+
   def render_with_format(action, status: :ok)
     render "#{action}.#{request_format}", layout: 'application', status: status
   end
@@ -208,12 +216,12 @@ class ApplicationController < ActionController::Base
 
   def verify_api_access_for_xml_request
     return unless request_format == 'xml'
+    return render_missing_api_key if params[:api_key].blank?
     api_key = ApiKey.in_good_standing.find_by_oauth_application_uid(api_client_id)
-
     if api_key && api_key.may_i_have_another?
       doorkeeper_authorize! if doorkeeper_token
     else
-      render_unauthorized
+      render_invalid_api_key
     end
   end
 

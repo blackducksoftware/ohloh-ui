@@ -60,8 +60,8 @@ describe 'ActivityFactsControllerTest' do
       get :index, format: 'xml', project_id: project.id, analysis_id: analysis.id, api_key: 'dummy_key'
       xml = xml_hash(@response.body)
 
-      must_respond_with :unauthorized
-      xml['error']['message'].must_equal I18n.t(:not_authorized)
+      must_respond_with :not_found
+      xml['error']['message'].must_equal I18n.t(:invalid_api_key)
     end
   end
 end
