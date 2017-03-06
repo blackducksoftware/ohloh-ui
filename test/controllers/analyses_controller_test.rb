@@ -30,9 +30,9 @@ describe 'AnalysesController' do
       must_redirect_to project_path(project)
     end
 
-    it 'should respond with 401 if api_key is wrong' do
+    it 'should respond with 400 if api_key is wrong' do
       get :show, project_id: project.to_param, id: analysis.id, format: :xml, api_key: 'badkey'
-      must_respond_with :not_found
+      must_respond_with :bad_request
     end
 
     it 'must respond with valid data for xml request' do

@@ -41,15 +41,13 @@ describe 'AccountsController' do
     end
 
     it 'should show error messages being queried without API key' do
-      key = create(:api_key, account_id: create(:account).id)
       get :show, id: admin.login, format: :xml
-      must_respond_with :not_found
+      must_respond_with :bad_request
     end
 
     it 'should show error messages being queried with Invalid API key' do
-      key = create(:api_key, account_id: create(:account).id)
       get :show, id: admin.login, format: :xml, api_key: 'inavlid_key'
-      must_respond_with :not_found
+      must_respond_with :bad_request
     end
 
     it 'should show the account queried via email MD5 and a valid API key' do

@@ -220,7 +220,7 @@ describe 'OrganizationsController' do
 
     it 'should return unauthorized if api key is invalid' do
       get :index, format: :xml, api_key: 'dummy_id'
-      must_respond_with :not_found
+      must_respond_with :bad_request
     end
   end
 

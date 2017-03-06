@@ -159,11 +159,15 @@ class ApplicationController < ActionController::Base
   end
 
   def render_missing_api_key
-    error(message: t(:missing_api_key), status: :not_found)
+    error(message: t(:missing_api_key), status: :bad_request)
   end
 
   def render_invalid_api_key
-    error(message: t(:invalid_api_key), status: :not_found)
+    error(message: t(:invalid_api_key), status: :bad_request)
+  end
+
+  def render_limit_exceeded_api_key(limit)
+    error(message: t(:overlimit_api_key, limit: limit), status: :unauthorized)
   end
 
   def render_with_format(action, status: :ok)
@@ -217,9 +221,15 @@ class ApplicationController < ActionController::Base
   def verify_api_access_for_xml_request
     return unless request_format == 'xml'
     return render_missing_api_key if params[:api_key].blank?
+    verify_api_key_standing
+  end
+
+  def verify_api_key_standing
     api_key = ApiKey.in_good_standing.find_by_oauth_application_uid(api_client_id)
     if api_key && api_key.may_i_have_another?
       doorkeeper_authorize! if doorkeeper_token
+    elsif api_key && api_key.send(:exceeded_daily_allotment?)
+      render_limit_exceeded_api_key(api_key.daily_limit)
     else
       render_invalid_api_key
     end

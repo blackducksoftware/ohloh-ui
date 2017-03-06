@@ -60,7 +60,7 @@ describe 'ActivityFactsControllerTest' do
       get :index, format: 'xml', project_id: project.id, analysis_id: analysis.id, api_key: 'dummy_key'
       xml = xml_hash(@response.body)
 
-      must_respond_with :not_found
+      must_respond_with :bad_request
       xml['error']['message'].must_equal I18n.t(:invalid_api_key)
     end
   end
