@@ -31,7 +31,7 @@
           .use_count
             = link_to number_with_delimiter(@project.user_count), users_project_path(@project)
         - if logged_in?
-          = render 'projects/show/i_use_this'
+          = render partial: 'projects/show/i_use_this', locals: { project: @project }
         - else
           .btn.btn-mini.i_use_this_btn{ 'data-target' => '#LoginModal', 'data-toggle' => 'modal' }= t('.i_use_this')
           .modal.fade#LoginModal{ 'aria-hidden' => 'true', 'aria-labelledby' => 'LoginModalLabel', :role => 'dialog' }
