@@ -56,7 +56,7 @@ class KudosControllerTest < ActionController::TestCase
   it 'index should not respond to xml format without an api_key' do
     login_as nil
     get :index, account_id: @kudo.account, format: :xml
-    must_respond_with :unauthorized
+    must_respond_with :bad_request
   end
 
   it 'index should not respond to xml format with a banned api_key' do
@@ -64,7 +64,7 @@ class KudosControllerTest < ActionController::TestCase
 
     get :index, account_id: @kudo.account, api_key: client_id, format: :xml
 
-    must_respond_with :unauthorized
+    must_respond_with :bad_request
   end
 
   it 'index should not respond to xml format with an over-limit api_key' do
@@ -85,7 +85,7 @@ class KudosControllerTest < ActionController::TestCase
   it 'sent should not respond to xml format without an api_key' do
     login_as nil
     get :sent, account_id: @kudo.account, format: :xml
-    must_respond_with :unauthorized
+    must_respond_with :bad_request
   end
 
   it 'sent should not respond to xml format with a banned api_key' do
@@ -93,7 +93,7 @@ class KudosControllerTest < ActionController::TestCase
     api_key.update!(status: ApiKey::STATUS_DISABLED)
 
     get :sent, account_id: @kudo.account, api_key: client_id, format: :xml
-    must_respond_with :unauthorized
+    must_respond_with :bad_request
   end
 
   it 'sent should not respond to xml format with an over-limit api_key' do

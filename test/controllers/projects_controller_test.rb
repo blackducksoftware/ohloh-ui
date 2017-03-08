@@ -167,7 +167,7 @@ describe 'ProjectsController' do
   it 'index should not respond to xml format without an api_key' do
     login_as nil
     get :index, query: 'foo', sort: 'rating', format: 'xml'
-    must_respond_with :unauthorized
+    must_respond_with :bad_request
   end
 
   it 'index should not respond to xml format with a banned api_key' do
@@ -175,7 +175,7 @@ describe 'ProjectsController' do
 
     api_key.update!(status: ApiKey::STATUS_DISABLED)
     get :index, query: 'foo', sort: 'rating', api_key: client_id, format: :xml
-    must_respond_with :unauthorized
+    must_respond_with :bad_request
   end
 
   it 'index should not respond to xml format with an over-limit api_key' do
@@ -361,7 +361,7 @@ describe 'ProjectsController' do
       account = create(:spammer)
       api_key = create(:api_key, account: account)
       get :show, id: create(:project), format: 'xml', api_key: api_key.oauth_application.uid
-      must_respond_with :unauthorized
+      must_respond_with :bad_request
     end
 
     it 'new project manager link from quick ref should be linked appropriately' do
@@ -920,14 +920,14 @@ describe 'ProjectsController' do
 
         get :index, format: :xml
 
-        must_respond_with :unauthorized
+        must_respond_with :bad_request
       end
 
       it 'wont allow access with an over-limit api_key' do
         @controller.stubs(:doorkeeper_token).returns(token)
         api_key.update! daily_count: 999_999
 
-        get :index, format: :xml
+        get :index, format: :xml, api_key: api_key.oauth_application.uid
 
         must_respond_with :unauthorized
       end
@@ -935,7 +935,7 @@ describe 'ProjectsController' do
       it 'wont allow access without oauth token' do
         get :index, format: :xml
 
-        must_respond_with :unauthorized
+        must_respond_with :bad_request
       end
 
       it 'wont allow access for token matching no application' do
@@ -944,14 +944,14 @@ describe 'ProjectsController' do
 
         get :index, format: :xml
 
-        must_respond_with :unauthorized
+        must_respond_with :bad_request
       end
 
       it 'must allow access for a valid token' do
         @controller.stubs(:doorkeeper_token).returns(token)
         create(:project, name: 'Foo_xml', description: 'second', rating_average: 2)
         create(:project, name: 'FooBar_xml', description: 'first', rating_average: 4)
-        get :index, query: 'foo', sort: 'rating', format: :xml
+        get :index, query: 'foo', sort: 'rating', format: :xml, api_key: api_key.oauth_application.uid
         must_respond_with :ok
         nodes = Nokogiri::XML(response.body).css('project')
         nodes.length.must_equal 2
