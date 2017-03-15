@@ -47,7 +47,7 @@ test:
 staging:
   <<: *default_settings
   app_name: Open Hub (Staging)
-  monitor_mode: ENV['MONITOR_NEW_RELIC'] 
+  monitor_mode: <%= ENV['MONITOR_NEW_RELIC'] %>
 
 production:
   <<: *default_settings
