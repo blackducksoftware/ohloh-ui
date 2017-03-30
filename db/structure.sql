@@ -1089,7 +1089,6 @@ CREATE SEQUENCE code_sets_id_seq
 
 CREATE TABLE code_sets (
     id integer DEFAULT nextval('code_sets_id_seq'::regclass) NOT NULL,
-    repository_id integer,
     updated_on timestamp without time zone,
     best_sloc_set_id integer,
     as_of integer,
@@ -3570,7 +3569,6 @@ CREATE TABLE repositories (
     url text,
     module_name text,
     branch_name text,
-    best_code_set_id integer,
     forge_id integer,
     username text,
     password text,
@@ -6265,13 +6263,6 @@ CREATE INDEX index_code_sets_on_logged_at ON code_sets USING btree ((COALESCE(lo
 
 
 --
--- Name: index_code_sets_on_repository_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_code_sets_on_repository_id ON code_sets USING btree (repository_id);
-
-
---
 -- Name: index_commit_flags_on_commit_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6965,13 +6956,6 @@ CREATE INDEX index_releases_vulnerabilities_on_vulnerability_id ON releases_vuln
 
 
 --
--- Name: index_repositories_on_best_code_set_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_repositories_on_best_code_set_id ON repositories USING btree (best_code_set_id);
-
-
---
 -- Name: index_repositories_on_forge_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7489,14 +7473,6 @@ ALTER TABLE ONLY clumps
 
 ALTER TABLE ONLY code_sets
     ADD CONSTRAINT code_sets_best_sloc_set_id_fkey FOREIGN KEY (best_sloc_set_id) REFERENCES sloc_sets(id);
-
-
---
--- Name: code_sets code_sets_repository_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY code_sets
-    ADD CONSTRAINT code_sets_repository_id_fkey FOREIGN KEY (repository_id) REFERENCES repositories(id) ON DELETE CASCADE;
 
 
 --
@@ -8340,14 +8316,6 @@ ALTER TABLE ONLY recommendations
 
 
 --
--- Name: repositories repositories_best_code_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY repositories
-    ADD CONSTRAINT repositories_best_code_set_id_fkey FOREIGN KEY (best_code_set_id) REFERENCES code_sets(id);
-
-
---
 -- Name: repositories repositories_forge_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8762,6 +8730,8 @@ INSERT INTO schema_migrations (version) VALUES ('20170112183242');
 INSERT INTO schema_migrations (version) VALUES ('20170117164106');
 
 INSERT INTO schema_migrations (version) VALUES ('20170206161036');
+
+INSERT INTO schema_migrations (version) VALUES ('20170320110140');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
