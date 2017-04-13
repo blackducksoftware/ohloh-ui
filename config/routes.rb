@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
+  get '/', to: 'codeopenhub#index', constraints: { subdomain: 'code' }
   get 'admin/comments' => redirect('/404')
   root to: 'home#index', defaults: { format: 'html' }
 
