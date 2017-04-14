@@ -5,4 +5,9 @@ describe 'CodeopenhubController' do
     get :index
     assert_response :success
   end
+
+  it 'should hit the code openhub page with a call to code.openhub.net/*' do
+    get :index 
+    assert_response :success
+  end
 end
