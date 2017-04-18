@@ -3,10 +3,19 @@ class TagsController < ApplicationController
   helper RatingsHelper
 
   before_action :set_session_projects, only: :index
+  before_action :find_tag_names, only: :index
   before_action :find_models, only: [:index]
   before_action :show_permissions_alert, only: :select
 
   private
+
+  def find_tag_names
+    params[:names] ||= get_tag_names
+  end
+
+  def get_tag_names
+    params[:name].split('/') if params[:name]
+  end
 
   def find_models
     params[:names] ? find_projects_by_names : find_tags_by_popularity
