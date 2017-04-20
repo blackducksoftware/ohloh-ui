@@ -51,7 +51,7 @@ class App.ChosenSelect
     $('.nav-select-container .chzn-search').show()
     $('.value-select').chosen()
 
-$(document).on 'page:change', ->
+$(document).ready ->
   new App.ChosenSelect
   $('.autocompletable').each ->
     autocomplete = new App.TypeAhead($(this))
