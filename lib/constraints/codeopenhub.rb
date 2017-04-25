@@ -1,5 +1,5 @@
 class Codeopenhub
   def self.matches?(request)
-    request.subdomain.include?(ENV['CODE_SUBDOMAIN'])
+    request.subdomain.include?('code')
   end
 end

@@ -111,6 +111,13 @@ GEM
     capistrano-sidekiq (0.5.4)
       capistrano
       sidekiq (>= 3.4)
+    capybara (2.13.0)
+      addressable
+      mime-types (>= 1.16)
+      nokogiri (>= 1.3.3)
+      rack (>= 1.0.0)
+      rack-test (>= 0.5.4)
+      xpath (~> 2.0)
     choice (0.2.0)
     chronic (0.10.2)
     climate_control (0.0.3)
@@ -487,6 +494,8 @@ GEM
     will_paginate (3.1.0)
     will_paginate-bootstrap (1.0.1)
       will_paginate (>= 3.0.3)
+    xpath (2.0.0)
+      nokogiri (~> 1.3)
 
 PLATFORMS
   ruby
@@ -507,6 +516,7 @@ DEPENDENCIES
   capistrano-rails
   capistrano-rbenv (~> 2.0)
   capistrano-sidekiq
+  capybara
   coffee-rails
   coffee-script-source (~> 1.8.0)
   doorkeeper
@@ -573,4 +583,4 @@ DEPENDENCIES
   will_paginate-bootstrap
 
 BUNDLED WITH
-   1.13.6
+   1.13.7
