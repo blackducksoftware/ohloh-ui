@@ -7,6 +7,8 @@ class Commit < ActiveRecord::Base
 
   include EmailObfuscation
 
+  filterable_by ['comment']
+
   scope :for_project, lambda { |project|
     joins(code_set: { code_location: { enlistments: :project } })
       .where(enlistments: { deleted: false })
@@ -14,14 +16,28 @@ class Commit < ActiveRecord::Base
   }
 
   scope :for_contributor_fact, lambda { |contributor_fact|
-    joins([[code_set: [sloc_sets: :analysis_sloc_sets]], :analysis_aliases])
-      .where(analysis_aliases: { analysis_id: contributor_fact.analysis_id })
-      .where(analysis_sloc_sets: { analysis_id: contributor_fact.analysis_id })
-      .where(analysis_aliases: { preferred_name_id: contributor_fact.name_id })
+    commit_name_ids = AnalysisAlias.commit_name_ids(contributor_fact)
+    by_analysis(contributor_fact.analysis).where(name_id: commit_name_ids)
+  }
+
+  scope :by_analysis, lambda { |analysis|
+    analysis_sloc_sets = analysis.analysis_sloc_sets
+    query = analysis_sloc_sets.collect do |analysis_sloc_set|
+      code_set_id = analysis_sloc_set.sloc_set.code_set_id
+      "(commits.code_set_id = #{code_set_id} and commits.position <= #{analysis_sloc_set.as_of.to_i})"
+    end.join(' or ')
+    where(query)
+  }
+  scope :last_30_days, ->(logged_at) { where('commits.time > ?', logged_at - 30.days) }
+  scope :last_year, ->(logged_at) { where('commits.time > ?', logged_at - 12.months) }
+  scope :within_timespan, lambda { |time_span, logged_at|
+    return unless logged_at && TIME_SPANS.keys.include?(time_span)
+    send(TIME_SPANS[time_span], logged_at)
   }
 
   def lines_added_and_removed(analysis_id)
-    summaries = SlocMetric.commit_summaries(self, analysis_id)
+    summaries = get_summaries(analysis_id)
+
     lines_added = lines_removed = 0
     summaries.each do |summary|
       lines_added += summary.code_added + summary.comments_added + summary.blanks_added
@@ -39,5 +55,11 @@ class Commit < ActiveRecord::Base
     when HgRepository
       params[:short] ? sha1.to_s.truncate(12, omission: '') : sha1
     end
+  end
+
+  private
+
+  def get_summaries(analysis_id)
+    SlocMetric.by_commit_id_and_analysis_id(id, analysis_id)
   end
 end

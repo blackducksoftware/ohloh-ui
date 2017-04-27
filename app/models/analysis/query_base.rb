@@ -21,7 +21,28 @@ class Analysis::QueryBase
     @end_date = end_date.beginning_of_month
   end
 
+  def monthly_commit_histories
+    each_month_commits = monthly_commits + missing_month_commits
+    each_month_commits.select { |commit| commit.month >= start_date && commit.month <= end_date }.sort_by(&:month)
+  end
+
   private
+
+  def monthly_commits
+    @monthly_commits ||= parsed_monthly_commits.map do |commit_date, commit_count|
+      MonthlyCommitHistory.new(month: Time.zone.parse(commit_date), commits: commit_count)
+    end
+  end
+
+  def parsed_monthly_commits
+    JSON.parse(MonthlyCommitHistory.find_by(analysis_id: @analysis.id).try(:json) || {}.to_json)
+  end
+
+  def missing_month_commits
+    AllMonth.where.not(month: monthly_commits.map(&:month)).map do |all_month|
+      MonthlyCommitHistory.new(month: all_month.month, commits: 0)
+    end
+  end
 
   def month
     all_months[:month]

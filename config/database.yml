@@ -9,6 +9,18 @@ default: &default
   password: <%= ENV["DB_PASSWORD"] %>
   database: <%= ENV["DB_NAME"] %>
 
+foreign_db_default: &foreign_db_default
+  adapter: postgresql
+  pool: 5
+  timeout: 5000
+  encoding: SQL_ASCII
+  host: <%= ENV["FOREIGN_DB_HOST"] %>
+  port: <%= ENV["FOREIGN_DB_PORT"] %>
+  username: <%= ENV["FOREIGN_DB_USERNAME"] %>
+  password: <%= ENV["FOREIGN_DB_PASSWORD"] %>
+  database: <%= ENV["FOREIGN_DB_NAME"] %>
+
+
 development:
   <<: *default
 
@@ -25,3 +37,16 @@ test:
 
 production:
   <<: *default
+
+secondbase:
+  development:
+    <<: *foreign_db_default
+
+  staging:
+    <<: *foreign_db_default
+
+  test:
+    <<: *foreign_db_default
+
+  production:
+    <<: *foreign_db_default
