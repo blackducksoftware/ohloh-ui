@@ -113,11 +113,10 @@ describe 'AnalysesController' do
 
   describe 'commits_history' do
     it 'should return chart data' do
-      analysis_sloc_set = create(:analysis_sloc_set, as_of: 1)
-      commit = create(:commit, code_set: analysis_sloc_set.sloc_set.code_set, position: 0)
-      analysis = analysis_sloc_set.analysis
+      monthly_commit_history = create(:monthly_commit_history, json: "{\"#{Date.current.strftime('%Y-%m-01')}\" : 1}")
+      analysis = monthly_commit_history.analysis
       analysis.update_attribute(:created_at, Date.current + 32.days)
-      create(:analysis_alias, commit_name: commit.name, analysis: analysis)
+
       create_all_months
 
       get :commits_history, project_id: project.to_param, id: analysis.id

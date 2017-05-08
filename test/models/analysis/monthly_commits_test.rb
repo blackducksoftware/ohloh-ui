@@ -10,14 +10,9 @@ class MonthlyCommitsTest < ActiveSupport::TestCase
     end
 
     it 'must return a list of months and commit count' do
-      analysis_sloc_set = FactoryGirl.create(:analysis_sloc_set, as_of: 1)
-      analysis = analysis_sloc_set.analysis
+      monthly_commit_history = create(:monthly_commit_history, json: "{\"#{2.months.ago.strftime('%Y-%m-01')}\" : 1}")
 
-      commit = FactoryGirl.create(:commit, code_set: analysis_sloc_set.sloc_set.code_set,
-                                           position: 0, time: 2.months.ago)
-      create(:analysis_alias, commit_name: commit.name, analysis: analysis)
-
-      results = Analysis::MonthlyCommits.new(analysis: analysis).execute
+      results = Analysis::MonthlyCommits.new(analysis: monthly_commit_history.analysis).execute
 
       results.first.month.must_equal 3.months.ago.beginning_of_month
       results.map(&:commits).must_equal [0, 1, 0, 0]

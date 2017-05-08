@@ -3,7 +3,7 @@
     %tr{ id: 'dingus-row' }
       %td{ colspan: '7' }
         - if search_dingus
-          = render 'shared/search_dingus/commits_or_contributor_search', items: @named_commits, type: :commits
+          = render 'shared/search_dingus/commits_or_contributor_search', items: @commits, type: :commits
     %tr
       %th{ width: '40%' }= t('.commit_message')
       %th{ width: '17%' }= t('.contributor')
@@ -13,14 +13,14 @@
       %th.center{ width: '18%' }= t('.code_location')
       %th{ width: '10%' }= t('.date')
   %tbody
-    - @named_commits.each do |named_commit|
-      - commit = named_commit.commit
+    - @commits.each do |commit|
+      - commit_contributor = @commit_contributor || @commit_contributors.find_by(name_id: commit.name_id)
       %tr{ class: highlight(commit.time) }
         %td= link_to h(commit.obfuscate_email(commit.comment).split("\n").first), project_commit_path(@project, commit)
         %td
-          = avatar_for(named_commit.person)
+          = avatar_for(commit_contributor.person)
           .committer_name{ style: 'padding-top:5px;' }
-            = render partial: 'committer_name', locals: { named_commit: named_commit }
+            = render partial: 'committer_name', locals: { commit_contributor: commit_contributor }
         %td{ colspan: '4', class: "commit_#{commit.to_param}" }
           %span.icon-play-circle{ id: "icon_play_circle_#{commit.to_param}" }
             = link_to t('.more'), '#', class: 'commit-details',
@@ -30,7 +30,6 @@
         %td
           %abbr.date{ title: commit.time.to_s }
             = t('time_ago', time: time_ago_in_words(commit.time))
+= will_paginate @commits if @commits.respond_to?(:total_pages)
 
-= will_paginate @named_commits if @named_commits.respond_to?(:total_pages)
-
-= render partial: 'shared/alert', locals: { message: t('.no_data') } if @named_commits.blank?
+= render partial: 'shared/alert', locals: { message: t('.no_data') } if @commits.blank?

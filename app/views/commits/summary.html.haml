@@ -52,5 +52,5 @@
 
     .clearfix
     %h4= link_to t('.most_recent_commits'), project_commits_path(@project)
-    = render 'commit', named_commits: @named_commits, search_dingus: false
+    = render 'commit', commits: @commits, search_dingus: false
     = link_to t('.see_all_commits'), project_commits_path(@project), class: 'btn btn-small btn-primary'

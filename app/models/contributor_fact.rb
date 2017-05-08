@@ -32,7 +32,6 @@ class ContributorFact < NameFact
   def daily_commits
     Commit.for_contributor_fact(self)
           .select(daily_commits_select_clause)
-          .where('commits.position <= analysis_sloc_sets.as_of')
           .group("date_trunc('day', commits.time)")
           .order("date_trunc('day', commits.time) desc")
           .limit(300)
