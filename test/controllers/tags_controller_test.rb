@@ -38,5 +38,22 @@ describe 'TagsController' do
       response.body.wont_match 'Apple'
       response.body.must_match 'Blue'
     end
+
+    it 'should support old syntax structure' do
+      get :index, name: 'php/ruby/web'
+      assert_response :success
+    end
+
+    it 'should support old syntax structure with content' do
+      project1 = create(:project, name: 'PHP')
+      tag1 = create(:tag, name: 'web')
+      tag2 = create(:tag, name: 'ruby')
+      create(:tagging, tag: tag1, taggable: project1)
+      create(:tagging, tag: tag2, taggable: project1)
+      get :index, name: 'web/ruby'
+      assert_response :success
+      response.body.must_match 'web'
+      response.body.must_match 'ruby'
+    end
   end
 end

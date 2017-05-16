@@ -1,8 +1,8 @@
 :ruby
   content_for(:html_title) { t('.html_title', name: @project.name) }
   page_context[:select_footer_nav] = :commits
-  commit = @named_commit.commit
-  lines_added, lines_removed = commit.lines_added_and_removed(@project.best_analysis_id)
+  lines_added, lines_removed = @commit.lines_added_and_removed(@project.best_analysis_id)
+  commit_contributor = CommitContributor.where(analysis_id: @project.best_analysis_id).find_by(name_id: @commit.name_id)
 
 .project_content_title
   %h2.pull-left
@@ -14,35 +14,35 @@
   .well
     %p.commit_id
       = t('.commit_id')
-      = commit.nice_id
+      = @commit.nice_id
     %table.commit_info
       %tr
         %td.text-top{ width: '13%', rowspan: '4' }
-          = avatar_for(@named_commit.person, size: 64)
+          = avatar_for(commit_contributor.person, size: 64)
         %td.text-right{ width: '15%' }= t('.contributor')
         %td.info{ width: '40%' }
-          = render 'committer_name', named_commit: @named_commit
+          = render 'committer_name', commit_contributor: commit_contributor
         %td.text-right{ width: '20%' }= t('.files_modified')
-        %td.info{ width: '20%' }= commit.diffs.count
+        %td.info{ width: '20%' }= @commit.diffs.count
       %tr
         %td.text-right= t('.date')
-        %td.info= commit.time.strftime('%d-%B-%Y at %H:%M')
+        %td.info= @commit.time.strftime('%d-%B-%Y at %H:%M')
         %td.text-right= t('.lines_added')
         %td.info= lines_added
       %tr
         %td.text-right= t('.repository')
         %td.info
-          = link_to @named_commit.code_set.repository.url, @named_commit.code_set.repository.url
-          = @named_commit.code_set.code_location.module_branch_name
+          = link_to commit_contributor.code_set.repository.url, commit_contributor.code_set.repository.url
+          = commit_contributor.code_set.code_location.module_branch_name
         %td.text-right= t('.lines_removed')
         %td.info= lines_removed
       %tr
         %td.text-right{ valign: 'top' }= t('.commit_comment')
-        %td.info.pre-line{ colspan: '3' }= h(commit.obfuscate_email(commit.comment))
+        %td.info.pre-line{ colspan: '3' }= h(@commit.obfuscate_email(@commit.comment))
 
 .clearfix
 %h4= t('.changes_by_language')
-- sloc_metrics_summaries = SlocMetric.commit_summaries(commit, @project.best_analysis_id)
+- sloc_metrics_summaries = SlocMetric.commit_summaries(@commit, @project.best_analysis_id)
 - if sloc_metrics_summaries.blank?
   %p.inset= t('.no_code_detected')
 - else
@@ -86,15 +86,15 @@
           - klass = cycle('even', 'odd', named: 'rows')
           %tr{ class: "#{klass} nohover" }
             %td.strong
-              - if @named_commit.code_set.repository.is_a? CvsRepository
-                #{@named_commit.code_set.code_location.module_branch_name}/#{diff.fyle.name}
+              - if commit_contributor.code_set.repository.is_a? CvsRepository
+                #{commit_contributor.code_set.code_location.module_branch_name}/#{diff.fyle.name}
               - else
                 = truncate(diff.try(:fyle).try(:name), length: 43)
             - if Ignore.match?(@ignore_prefixes, diff.fyle.name)
               %td &nbsp;
               %td.ignored{ colspan: 7 }= t('.ignored_by_req')
             - else
-              - diff_summaries = SlocMetric.diff_summaries(diff, @named_commit.analysis_id)
+              - diff_summaries = SlocMetric.diff_summaries(diff, commit_contributor.analysis_id)
               - if diff_summaries.blank?
                 %td &nbsp;
                 %td.ignored{ colspan: 7 }

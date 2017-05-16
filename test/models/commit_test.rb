@@ -18,7 +18,9 @@ class CommitTest < ActiveSupport::TestCase
     it 'should return commits' do
       sloc_set = create(:sloc_set, code_set_id: commit.code_set_id)
       analysis_sloc_set = create(:analysis_sloc_set, sloc_set_id: sloc_set.id)
-      analysis_alias = create(:analysis_alias, commit_name: commit.name, analysis_id: analysis_sloc_set.analysis_id)
+      analysis_alias = create(:analysis_alias, commit_name: commit.name,
+                                               analysis_id: analysis_sloc_set.analysis_id,
+                                               preferred_name_id: commit.name_id)
       contributor_fact = create(:contributor_fact, analysis_id: analysis_sloc_set.analysis_id,
                                                    name_id: analysis_alias.preferred_name_id)
       commits = Commit.for_contributor_fact(contributor_fact)
@@ -29,25 +31,17 @@ class CommitTest < ActiveSupport::TestCase
 
   describe 'lines_added_and_removed' do
     it 'should return total lines added and removed' do
-      sloc_metric = create(:sloc_metric)
-      commit = sloc_metric.diff.commit
-      sloc_metric.diff.commit.update_attributes(code_set_id: sloc_metric.diff.fyle.code_set_id)
-      sloc_metric.sloc_set.update_attributes(code_set_id: sloc_metric.diff.fyle.code_set_id)
-      analysis_sloc_set = create(:analysis_sloc_set, sloc_set_id: sloc_metric.sloc_set_id)
-      summary = commit.lines_added_and_removed(analysis_sloc_set.analysis_id)
+      commit, analysis_id, sloc_metric = create_commit
+
+      summary = commit.lines_added_and_removed(analysis_id)
       summary.count.must_equal 2
       summary.first.must_equal sloc_metric.code_added + sloc_metric.blanks_added + sloc_metric.comments_added
       summary.second.must_equal sloc_metric.code_removed + sloc_metric.blanks_removed + sloc_metric.comments_removed
     end
 
     it 'should return nil if fyle is ignored' do
-      sloc_metric = create(:sloc_metric)
-      commit = sloc_metric.diff.commit
-      sloc_metric.diff.commit.update_attributes(code_set_id: sloc_metric.diff.fyle.code_set_id)
-      sloc_metric.sloc_set.update_attributes(code_set_id: sloc_metric.diff.fyle.code_set_id)
-      analysis_sloc_set = create(:analysis_sloc_set, sloc_set_id: sloc_metric.sloc_set_id,
-                                                     ignore: "Disallow: #{sloc_metric.diff.fyle.name}")
-      summary = commit.lines_added_and_removed(analysis_sloc_set.analysis_id)
+      commit, analysis_id = create_commit(ignore_files: true)
+      summary = commit.lines_added_and_removed(analysis_id)
       summary.count.must_equal 2
       summary.first.must_equal 0
       summary.second.must_equal 0
@@ -84,5 +78,18 @@ class CommitTest < ActiveSupport::TestCase
       commit.code_set.code_location = create(:code_location, repository: create(:hg_repository))
       commit.nice_id(short: true).must_equal commit.sha1.to(11)
     end
+  end
+
+  private
+
+  def create_commit(ignore_files: false)
+    sloc_set = create(:sloc_set)
+    commit = create(:commit, code_set: sloc_set.code_set)
+    fyle = create(:fyle, code_set: sloc_set.code_set)
+    diff = create(:diff, commit: commit, fyle: fyle)
+    sloc_metric = create(:sloc_metric, sloc_set: sloc_set, diff: diff)
+    ignore_tuples = "Disallow: #{fyle.name}" if ignore_files
+    analysis_sloc_set = create(:analysis_sloc_set, sloc_set: sloc_set, ignore: ignore_tuples)
+    [commit, analysis_sloc_set.analysis_id, sloc_metric]
   end
 end

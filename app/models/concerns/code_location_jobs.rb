@@ -23,8 +23,8 @@ module CodeLocationJobs
 
     def refetch
       remove_pending_jobs
-      FetchJob.create!(code_set: CodeSet.create!(code_location: self))
       create_repository_directory
+      FetchJob.create!(code_set: CodeSet.create!(code_location: self))
     end
 
     def remove_pending_jobs

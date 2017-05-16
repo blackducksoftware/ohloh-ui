@@ -2,7 +2,7 @@ class CommitsController < SettingsController
   helper ProjectsHelper
 
   before_action :set_project_or_fail
-  before_action :find_named_commit, only: :show
+  before_action :find_commit, only: :show
   before_action :find_contributor_fact, only: [:events, :event_details]
   before_action :redirect_to_message_if_oversized_project, except: :statistics
   before_action :set_sort_and_highlight, only: :index
@@ -14,22 +14,25 @@ class CommitsController < SettingsController
   end
 
   def show
-    @diffs = @named_commit.commit.diffs
-                          .includes(:fyle)
-                          .filter_by(params[:query])
-                          .order('fyles.name')
-                          .page(page_param)
-                          .per_page(10)
-    @ignore_prefixes = @named_commit.code_set.ignore_prefixes(@project)
+    @diffs = @commit.diffs.includes(:fyle).filter_by(params[:query])
+                    .order('fyles.name').page(page_param).per_page(10)
+    @ignore_prefixes = @commit.code_set.ignore_prefixes(@project)
   end
 
   def summary
     @analysis = @project.best_analysis
-    @named_commits = @analysis.named_commits.includes(:commit).by_newest.limit(10) unless @analysis.nil?
+    return unless @project.best_analysis
+    get_project_commits
+    get_commit_contributors
+  end
+
+  def get_commit_contributors
+    @commit_contributors = CommitContributor.where(analysis_id: @analysis.id)
   end
 
   def statistics
     @commit = Commit.find(params[:id])
+
     @lines_added, @lines_removed = @commit.lines_added_and_removed(@project.best_analysis_id)
     render layout: false
   end
@@ -50,31 +53,37 @@ class CommitsController < SettingsController
   private
 
   def individual_named_commits
-    contribution = Contribution.find(params[:contributor_id])
-    @named_commits = @project.named_commits.where(contribution_id: contribution).page(page_param).per_page(10)
+    get_commit_contributor
+    @commits = Commit.joins(:analysis_aliases)
+                     .where(code_set_id: @commit_contributor.code_set_id, name_id: @commit_contributor.name_id)
+                     .where('commits.position <= ?', @commit_contributor.code_set.as_of.to_i)
+                     .where(analysis_aliases: { analysis_id: @commit_contributor.analysis_id })
+                     .page(page_param).per_page(10)
   end
 
   def named_commits
-    @named_commits = @project.named_commits
-                             .within_timespan(params[:time_span], @project.best_analysis.oldest_code_set_time)
-                             .includes(:commit, :person, :account)
-                             .filter_by(params[:query])
-                             .send(parse_sort_term)
-                             .page(page_param)
+    @analysis = @project.best_analysis
+    return unless @project.best_analysis
+
+    get_project_commits
+    get_commit_contributors
   end
 
-  def find_named_commit
-    @named_commit = NamedCommit.find_by(id: params[:id])
-    raise ParamRecordNotFound if @named_commit.nil?
+  def get_project_commits
+    @commits = Commit.by_analysis(@analysis).joins(:analysis_aliases)
+                     .within_timespan(params[:time_span], @analysis.oldest_code_set_time)
+                     .where(analysis_aliases: { analysis_id: @analysis.id }).filter_by(params[:query])
+                     .order(time: :desc).page(page_param)
+  end
+
+  def find_commit
+    @commit = Commit.find_by(id: params[:id])
+    raise ParamRecordNotFound if @commit.nil?
   end
 
   def find_contributor_fact
     @contributor_fact = ContributorFact.find_by(analysis_id: @project.best_analysis_id,
                                                 name_id: params[:contributor_id])
-  end
-
-  def parse_sort_term
-    NamedCommit.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : 'by_newest'
   end
 
   def find_start_time
@@ -84,5 +93,9 @@ class CommitsController < SettingsController
 
   def redirect_to_message_if_oversized_project
     redirect_to root_path, notice: t('commits.project_temporarily_disabled') if oversized_project?(@project)
+  end
+
+  def get_commit_contributor
+    @commit_contributor = @project.commit_contributors.find_by(contribution_id: params[:contributor_id])
   end
 end

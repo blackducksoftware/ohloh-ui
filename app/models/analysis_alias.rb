@@ -10,4 +10,9 @@ class AnalysisAlias < ActiveRecord::Base
 
     where(preferred_name_id: name_fact.name_id).where(analysis_id: name_fact.analysis_id)
   }
+
+  scope :commit_name_ids, lambda { |contributor_fact|
+    where(preferred_name_id: contributor_fact.name_id, analysis_id: contributor_fact.analysis_id)
+      .pluck(:commit_name_id)
+  }
 end
