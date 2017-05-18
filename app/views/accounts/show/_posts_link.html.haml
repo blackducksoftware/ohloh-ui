@@ -1,0 +1,11 @@
+:ruby
+  open_posts_count = posts.most_recent.open_topics.count
+
+%p.nomargin
+  - if open_posts_count > 0
+    = link_to t('.open_posts_size', size: open_posts_count), account_posts_url(@account)
+    = t('.total_size_with_parenthesis', size: posts.count)
+  - elsif posts.count > 0
+    = t('.total_posts_size', size: posts.count)
+  - else
+    = t('.no_posts')
