@@ -1,4 +1,4 @@
-class SlocMetric < ActiveRecord::Base
+class SlocMetric < SecondBase::Base
   belongs_to :diff
   belongs_to :language
   belongs_to :sloc_set

@@ -78,9 +78,9 @@ class CommitsController < SettingsController
   end
 
   def get_project_commits
-    @commits = Commit.by_analysis(@analysis).joins(:analysis_aliases)
+    @commits = Commit.by_analysis(@analysis)
                      .within_timespan(params[:time_span], @analysis.oldest_code_set_time)
-                     .where(analysis_aliases: { analysis_id: @analysis.id }).filter_by(params[:query])
+                     .filter_by(params[:query])
                      .order(time: :desc).page(page_param)
   end
 
