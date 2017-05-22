@@ -4,6 +4,7 @@
 config/initializers/better_errors.rb
 /db/*.sqlite3
 /db/*.sqlite3-journal
+/db
 /log/*.log
 /tmp
 /vagrant/.vagrant
@@ -13,6 +14,7 @@ public/system/
 .idea/
 .idea/runConfigurations
 /config/GIT_SHA
+/config/database.yml
 *.swp
 tags
 .env.development

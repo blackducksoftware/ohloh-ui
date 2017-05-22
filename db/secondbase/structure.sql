@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.2
--- Dumped by pg_dump version 9.6.2
+-- Dumped from database version 9.6.3
+-- Dumped by pg_dump version 9.6.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -10248,3 +10248,4 @@ ALTER TABLE ONLY sloc_metrics
 SET search_path TO "$user", public;
 
 INSERT INTO schema_migrations (version) VALUES ('20170112183242');
+

@@ -30,10 +30,18 @@ class CommitsController < SettingsController
     @commit_contributors = CommitContributor.where(analysis_id: @analysis.id)
   end
 
+  # def statistics
+  #   @commit = Commit.find(params[:id])
+
+  #   @lines_added, @lines_removed = @commit.lines_added_and_removed(@project.best_analysis_id)
+  #   render layout: false
+  # end
+
   def statistics
     @commit = Commit.find(params[:id])
-
-    @lines_added, @lines_removed = @commit.lines_added_and_removed(@project.best_analysis_id)
+    sloc_set_ids = @project.best_analysis.analysis_sloc_sets.pluck(:sloc_set_id)
+    
+    @lines_added, @lines_removed = @commit.lines_added_and_removed(sloc_set_ids, @project.best_analysis_id)
     render layout: false
   end
 

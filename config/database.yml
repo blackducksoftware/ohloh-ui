@@ -47,6 +47,7 @@ secondbase:
 
   test:
     <<: *foreign_db_default
+    template: template0
 
   production:
     <<: *foreign_db_default

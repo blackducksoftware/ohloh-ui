@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.2
--- Dumped by pg_dump version 9.6.2
+-- Dumped from database version 9.6.3
+-- Dumped by pg_dump version 9.6.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -411,7 +411,7 @@ ALTER TEXT SEARCH CONFIGURATION pg
 --
 
 CREATE SERVER fis FOREIGN DATA WRAPPER postgres_fdw OPTIONS (
-    dbname 'fis_development',
+    dbname 'fis_test',
     host 'localhost',
     port '5432'
 );
@@ -10492,3 +10492,4 @@ INSERT INTO schema_migrations (version) VALUES ('97');
 INSERT INTO schema_migrations (version) VALUES ('98');
 
 INSERT INTO schema_migrations (version) VALUES ('99');
+
