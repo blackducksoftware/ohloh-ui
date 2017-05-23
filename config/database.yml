@@ -47,6 +47,12 @@ secondbase:
 
   test:
     <<: *foreign_db_default
+    host: <%= ENV["FOREIGN_TEST_DB_HOST"] %>
+    port: <%= ENV["FOREIGN_TEST_DB_PORT"] %>
+    username: <%= ENV["FOREIGN_TEST_DB_USERNAME"] %>
+    password: <%= ENV["FOREIGN_TEST_DB_PASSWORD"] %>
+    database: <%= ENV["FOREIGN_TEST_DB_NAME"] %>
+    template: template0
 
   production:
     <<: *foreign_db_default
