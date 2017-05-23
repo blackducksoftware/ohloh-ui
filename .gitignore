@@ -4,7 +4,8 @@
 config/initializers/better_errors.rb
 /db/*.sqlite3
 /db/*.sqlite3-journal
-/db
+/db/secondbase/structure.sql
+/db/structure.sql
 /log/*.log
 /tmp
 /vagrant/.vagrant
