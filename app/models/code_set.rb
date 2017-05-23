@@ -1,4 +1,4 @@
-class CodeSet < ActiveRecord::Base
+class CodeSet < SecondBase::Base
   belongs_to :code_location
   has_one :best_code_location, foreign_key: :best_code_set_id, class_name: 'CodeLocation'
   belongs_to :best_sloc_set, foreign_key: :best_sloc_set_id, class_name: SlocSet
@@ -55,5 +55,4 @@ class CodeSet < ActiveRecord::Base
   def new_code_set
     @new_code_set ||= CodeSet.create!(code_location_id: code_location_id)
   end
-  # .... to here
 end

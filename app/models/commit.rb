@@ -1,4 +1,4 @@
-class Commit < ActiveRecord::Base
+class Commit < SecondBase::Base
   belongs_to :code_set
   belongs_to :name
   has_many :fyle, primary_key: :code_set_id, foreign_key: :code_set_id
@@ -21,30 +21,17 @@ class Commit < ActiveRecord::Base
   }
 
   scope :by_analysis, lambda { |analysis|
-    analysis_sloc_sets = analysis.analysis_sloc_sets
-    query = analysis_sloc_sets.collect do |analysis_sloc_set|
-      code_set_id = analysis_sloc_set.sloc_set.code_set_id
-      "(commits.code_set_id = #{code_set_id} and commits.position <= #{analysis_sloc_set.as_of.to_i})"
-    end.join(' or ')
-    where(query)
+    joins(code_set: [sloc_sets: :analysis_sloc_sets])
+      .joins('and commits.position <= analysis_sloc_sets.as_of')
+      .where(analysis_sloc_sets: { analysis_id: analysis.id })
   }
+
   scope :last_30_days, ->(logged_at) { where('commits.time > ?', logged_at - 30.days) }
   scope :last_year, ->(logged_at) { where('commits.time > ?', logged_at - 12.months) }
   scope :within_timespan, lambda { |time_span, logged_at|
     return unless logged_at && TIME_SPANS.keys.include?(time_span)
     send(TIME_SPANS[time_span], logged_at)
   }
-
-  def lines_added_and_removed(analysis_id)
-    summaries = get_summaries(analysis_id)
-
-    lines_added = lines_removed = 0
-    summaries.each do |summary|
-      lines_added += summary.code_added + summary.comments_added + summary.blanks_added
-      lines_removed += summary.code_removed + summary.comments_removed + summary.blanks_removed
-    end
-    [lines_added, lines_removed]
-  end
 
   def nice_id(params = {})
     case code_set.repository
@@ -55,11 +42,5 @@ class Commit < ActiveRecord::Base
     when HgRepository
       params[:short] ? sha1.to_s.truncate(12, omission: '') : sha1
     end
-  end
-
-  private
-
-  def get_summaries(analysis_id)
-    SlocMetric.by_commit_id_and_analysis_id(id, analysis_id)
   end
 end

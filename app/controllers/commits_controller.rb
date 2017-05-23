@@ -31,9 +31,14 @@ class CommitsController < SettingsController
   end
 
   def statistics
-    @commit = Commit.find(params[:id])
-
-    @lines_added, @lines_removed = @commit.lines_added_and_removed(@project.best_analysis_id)
+    @commit = Commit.includes(diffs: :sloc_metrics).where(id: params[:id]).first
+    @lines_added = @lines_removed = 0
+    @commit.diffs.each do |d|
+      d.sloc_metrics.each do |s|
+        @lines_added += s.code_added + s.comments_added + s.blanks_added
+        @lines_removed += s.code_removed + s.comments_removed + s.blanks_removed
+      end
+    end
     render layout: false
   end
 
@@ -70,9 +75,9 @@ class CommitsController < SettingsController
   end
 
   def get_project_commits
-    @commits = Commit.by_analysis(@analysis).joins(:analysis_aliases)
+    @commits = Commit.by_analysis(@analysis)
                      .within_timespan(params[:time_span], @analysis.oldest_code_set_time)
-                     .where(analysis_aliases: { analysis_id: @analysis.id }).filter_by(params[:query])
+                     .filter_by(params[:query])
                      .order(time: :desc).page(page_param)
   end
 
