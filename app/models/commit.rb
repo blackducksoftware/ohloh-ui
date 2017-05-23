@@ -33,31 +33,6 @@ class Commit < SecondBase::Base
     send(TIME_SPANS[time_span], logged_at)
   }
 
-  # def lines_added_and_removed(analysis_id)
-  #   summaries = get_summaries(analysis_id)
-
-  #   lines_added = lines_removed = 0
-  #   summaries.each do |summary|
-  #     lines_added += summary.code_added + summary.comments_added + summary.blanks_added
-  #     lines_removed += summary.code_removed + summary.comments_removed + summary.blanks_removed
-  #   end
-  #   [lines_added, lines_removed]
-  # end
-
-  def lines_added_and_removed(sloc_set_ids, analysis_id)
-    summaries = get_summaries(sloc_set_ids, analysis_id)
-    
-    lines_added = lines_removed = 0
-    
-    summaries.each do |summary|
-      # byebug
-      lines_added += summary[0] + summary[1] + summary[2]
-      lines_removed += summary[3] + summary[4] + summary[5]
-    end
-    # byebug
-    [lines_added, lines_removed]
-  end
-
   def nice_id(params = {})
     case code_set.repository
     when SvnSyncRepository
@@ -67,15 +42,5 @@ class Commit < SecondBase::Base
     when HgRepository
       params[:short] ? sha1.to_s.truncate(12, omission: '') : sha1
     end
-  end
-
-  private
-
-  # def get_summaries(analysis_id)
-  #   SlocMetric.by_commit_id_and_analysis_id(id, analysis_id)
-  # end
-
-  def get_summaries(sloc_set_ids, analysis_id)
-    SlocMetric.by_commit_id_sloc_set_ids_and_analysis_id(id, sloc_set_ids, analysis_id).pluck(:code_added, :comments_added, :blanks_added, :code_removed, :comments_removed, :blanks_removed)
   end
 end

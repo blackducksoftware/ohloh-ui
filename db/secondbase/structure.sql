@@ -72,6 +72,15 @@ CREATE FUNCTION actions_id_seq_view() RETURNS integer
 
 
 --
+-- Name: activity_facts_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION activity_facts_id_seq_view() RETURNS bigint
+    LANGUAGE sql
+    AS $$select id from activity_facts_id_seq_view$$;
+
+
+--
 -- Name: aliases_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1035,23 +1044,153 @@ CREATE FUNCTION vulnerabilities_id_seq_view() RETURNS integer
 
 
 --
--- Name: openhub; Type: SERVER; Schema: -; Owner: -
+-- Name: default; Type: TEXT SEARCH CONFIGURATION; Schema: public; Owner: -
 --
 
-CREATE SERVER openhub FOREIGN DATA WRAPPER postgres_fdw OPTIONS (
+CREATE TEXT SEARCH CONFIGURATION "default" (
+    PARSER = pg_catalog."default" );
+
+ALTER TEXT SEARCH CONFIGURATION "default"
+    ADD MAPPING FOR asciiword WITH english_stem;
+
+ALTER TEXT SEARCH CONFIGURATION "default"
+    ADD MAPPING FOR word WITH english_stem;
+
+ALTER TEXT SEARCH CONFIGURATION "default"
+    ADD MAPPING FOR numword WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION "default"
+    ADD MAPPING FOR email WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION "default"
+    ADD MAPPING FOR url WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION "default"
+    ADD MAPPING FOR host WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION "default"
+    ADD MAPPING FOR sfloat WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION "default"
+    ADD MAPPING FOR version WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION "default"
+    ADD MAPPING FOR hword_numpart WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION "default"
+    ADD MAPPING FOR hword_part WITH english_stem;
+
+ALTER TEXT SEARCH CONFIGURATION "default"
+    ADD MAPPING FOR hword_asciipart WITH english_stem;
+
+ALTER TEXT SEARCH CONFIGURATION "default"
+    ADD MAPPING FOR numhword WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION "default"
+    ADD MAPPING FOR asciihword WITH english_stem;
+
+ALTER TEXT SEARCH CONFIGURATION "default"
+    ADD MAPPING FOR hword WITH english_stem;
+
+ALTER TEXT SEARCH CONFIGURATION "default"
+    ADD MAPPING FOR url_path WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION "default"
+    ADD MAPPING FOR file WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION "default"
+    ADD MAPPING FOR "float" WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION "default"
+    ADD MAPPING FOR "int" WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION "default"
+    ADD MAPPING FOR uint WITH simple;
+
+
+--
+-- Name: pg; Type: TEXT SEARCH CONFIGURATION; Schema: public; Owner: -
+--
+
+CREATE TEXT SEARCH CONFIGURATION pg (
+    PARSER = pg_catalog."default" );
+
+ALTER TEXT SEARCH CONFIGURATION pg
+    ADD MAPPING FOR asciiword WITH english_stem;
+
+ALTER TEXT SEARCH CONFIGURATION pg
+    ADD MAPPING FOR word WITH english_stem;
+
+ALTER TEXT SEARCH CONFIGURATION pg
+    ADD MAPPING FOR numword WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION pg
+    ADD MAPPING FOR email WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION pg
+    ADD MAPPING FOR url WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION pg
+    ADD MAPPING FOR host WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION pg
+    ADD MAPPING FOR sfloat WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION pg
+    ADD MAPPING FOR version WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION pg
+    ADD MAPPING FOR hword_numpart WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION pg
+    ADD MAPPING FOR hword_part WITH english_stem;
+
+ALTER TEXT SEARCH CONFIGURATION pg
+    ADD MAPPING FOR hword_asciipart WITH english_stem;
+
+ALTER TEXT SEARCH CONFIGURATION pg
+    ADD MAPPING FOR numhword WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION pg
+    ADD MAPPING FOR asciihword WITH english_stem;
+
+ALTER TEXT SEARCH CONFIGURATION pg
+    ADD MAPPING FOR hword WITH english_stem;
+
+ALTER TEXT SEARCH CONFIGURATION pg
+    ADD MAPPING FOR url_path WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION pg
+    ADD MAPPING FOR file WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION pg
+    ADD MAPPING FOR "float" WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION pg
+    ADD MAPPING FOR "int" WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION pg
+    ADD MAPPING FOR uint WITH simple;
+
+
+--
+-- Name: ohloh; Type: SERVER; Schema: -; Owner: -
+--
+
+CREATE SERVER ohloh FOREIGN DATA WRAPPER postgres_fdw OPTIONS (
     dbname 'ohloh_development',
-    host 'localhost',
+    host 'oh-db01.dc1.lan',
     port '5432'
 );
 
 
 --
--- Name: USER MAPPING ohloh_user SERVER openhub; Type: USER MAPPING; Schema: -; Owner: -
+-- Name: USER MAPPING fisbot_app_stage SERVER ohloh; Type: USER MAPPING; Schema: -; Owner: -
 --
 
-CREATE USER MAPPING FOR ohloh_user SERVER openhub OPTIONS (
-    password 'password',
-    "user" 'ohloh_user'
+CREATE USER MAPPING FOR fisbot_app_stage SERVER ohloh OPTIONS (
+    password 'Qvnp8Q3mih8IJfMv',
+    "user" 'ohloh_ui_app_stage'
 );
 
 
@@ -1066,7 +1205,7 @@ CREATE FOREIGN TABLE account_reports (
     account_id integer NOT NULL,
     report_id integer NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'account_reports'
@@ -1101,7 +1240,7 @@ CREATE SEQUENCE account_reports_id_seq
 CREATE FOREIGN TABLE account_reports_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'account_reports_id_seq_view'
@@ -1154,7 +1293,7 @@ CREATE FOREIGN TABLE accounts (
     affiliation_type text DEFAULT 'unaffiliated'::text NOT NULL,
     organization_name text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'accounts'
@@ -1291,7 +1430,7 @@ CREATE SEQUENCE accounts_id_seq
 CREATE FOREIGN TABLE accounts_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'accounts_id_seq_view'
@@ -1314,7 +1453,7 @@ CREATE FOREIGN TABLE actions (
     stack_project_id integer,
     claim_person_id bigint
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'actions'
@@ -1361,7 +1500,7 @@ CREATE SEQUENCE actions_id_seq
 CREATE FOREIGN TABLE actions_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'actions_id_seq_view'
@@ -1369,18 +1508,6 @@ OPTIONS (
 ALTER FOREIGN TABLE actions_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-
-
---
--- Name: activity_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE activity_facts_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
 
 
 --
@@ -1397,12 +1524,12 @@ CREATE FOREIGN TABLE activity_facts (
     blanks_added integer DEFAULT 0,
     blanks_removed integer DEFAULT 0,
     name_id integer NOT NULL,
-    id bigint DEFAULT nextval('activity_facts_id_seq'::regclass) NOT NULL,
+    id bigint DEFAULT activity_facts_id_seq_view() NOT NULL,
     analysis_id integer NOT NULL,
     commits integer DEFAULT 0,
     on_trunk boolean DEFAULT true
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'activity_facts'
@@ -1449,13 +1576,25 @@ ALTER FOREIGN TABLE activity_facts ALTER COLUMN on_trunk OPTIONS (
 
 
 --
+-- Name: activity_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE activity_facts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
 -- Name: activity_facts_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
 CREATE FOREIGN TABLE activity_facts_id_seq_view (
-    id integer
+    id bigint
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'activity_facts_id_seq_view'
@@ -1476,7 +1615,7 @@ CREATE FOREIGN TABLE aliases (
     preferred_name_id integer NOT NULL,
     deleted boolean DEFAULT false NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'aliases'
@@ -1517,7 +1656,7 @@ CREATE SEQUENCE aliases_id_seq
 CREATE FOREIGN TABLE aliases_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'aliases_id_seq_view'
@@ -1534,7 +1673,7 @@ ALTER FOREIGN TABLE aliases_id_seq_view ALTER COLUMN id OPTIONS (
 CREATE FOREIGN TABLE all_months (
     month timestamp without time zone
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'all_months'
@@ -1570,7 +1709,7 @@ CREATE FOREIGN TABLE analyses (
     activity_score integer,
     hotness_score double precision
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'analyses'
@@ -1656,7 +1795,7 @@ CREATE SEQUENCE analyses_id_seq
 CREATE FOREIGN TABLE analyses_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'analyses_id_seq_view'
@@ -1666,32 +1805,17 @@ ALTER FOREIGN TABLE analyses_id_seq_view ALTER COLUMN id OPTIONS (
 );
 
 
+SET default_with_oids = false;
+
 --
--- Name: analysis_aliases; Type: FOREIGN TABLE; Schema: public; Owner: -
+-- Name: analysis_aliases; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE analysis_aliases (
-    id integer DEFAULT analysis_aliases_id_seq_view() NOT NULL,
+CREATE TABLE analysis_aliases (
+    id integer NOT NULL,
     analysis_id integer NOT NULL,
     commit_name_id integer NOT NULL,
     preferred_name_id integer NOT NULL
-)
-SERVER openhub
-OPTIONS (
-    schema_name 'public',
-    table_name 'analysis_aliases'
-);
-ALTER FOREIGN TABLE analysis_aliases ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
-ALTER FOREIGN TABLE analysis_aliases ALTER COLUMN analysis_id OPTIONS (
-    column_name 'analysis_id'
-);
-ALTER FOREIGN TABLE analysis_aliases ALTER COLUMN commit_name_id OPTIONS (
-    column_name 'commit_name_id'
-);
-ALTER FOREIGN TABLE analysis_aliases ALTER COLUMN preferred_name_id OPTIONS (
-    column_name 'preferred_name_id'
 );
 
 
@@ -1708,61 +1832,18 @@ CREATE SEQUENCE analysis_aliases_id_seq
 
 
 --
--- Name: analysis_aliases_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
+-- Name: analysis_aliases_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE analysis_aliases_id_seq_view (
-    id integer
-)
-SERVER openhub
-OPTIONS (
-    schema_name 'public',
-    table_name 'analysis_aliases_id_seq_view'
-);
-ALTER FOREIGN TABLE analysis_aliases_id_seq_view ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
+ALTER SEQUENCE analysis_aliases_id_seq OWNED BY analysis_aliases.id;
 
 
 --
--- Name: analysis_sloc_sets; Type: FOREIGN TABLE; Schema: public; Owner: -
+-- Name: analysis_aliases_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE analysis_sloc_sets (
-    id integer DEFAULT analysis_sloc_sets_id_seq_view() NOT NULL,
-    analysis_id integer NOT NULL,
-    sloc_set_id integer NOT NULL,
-    as_of integer,
-    code_set_time timestamp without time zone,
-    ignore text,
-    ignored_fyle_count integer
-)
-SERVER openhub
-OPTIONS (
-    schema_name 'public',
-    table_name 'analysis_sloc_sets'
-);
-ALTER FOREIGN TABLE analysis_sloc_sets ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
-ALTER FOREIGN TABLE analysis_sloc_sets ALTER COLUMN analysis_id OPTIONS (
-    column_name 'analysis_id'
-);
-ALTER FOREIGN TABLE analysis_sloc_sets ALTER COLUMN sloc_set_id OPTIONS (
-    column_name 'sloc_set_id'
-);
-ALTER FOREIGN TABLE analysis_sloc_sets ALTER COLUMN as_of OPTIONS (
-    column_name 'as_of'
-);
-ALTER FOREIGN TABLE analysis_sloc_sets ALTER COLUMN code_set_time OPTIONS (
-    column_name 'code_set_time'
-);
-ALTER FOREIGN TABLE analysis_sloc_sets ALTER COLUMN ignore OPTIONS (
-    column_name 'ignore'
-);
-ALTER FOREIGN TABLE analysis_sloc_sets ALTER COLUMN ignored_fyle_count OPTIONS (
-    column_name 'ignored_fyle_count'
-);
+CREATE VIEW analysis_aliases_id_seq_view AS
+ SELECT (nextval('analysis_aliases_id_seq'::regclass))::integer AS id;
 
 
 --
@@ -1778,20 +1859,26 @@ CREATE SEQUENCE analysis_sloc_sets_id_seq
 
 
 --
--- Name: analysis_sloc_sets_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
+-- Name: analysis_sloc_sets; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE analysis_sloc_sets_id_seq_view (
-    id integer
-)
-SERVER openhub
-OPTIONS (
-    schema_name 'public',
-    table_name 'analysis_sloc_sets_id_seq_view'
+CREATE TABLE analysis_sloc_sets (
+    id integer DEFAULT nextval('analysis_sloc_sets_id_seq'::regclass) NOT NULL,
+    analysis_id integer NOT NULL,
+    sloc_set_id integer NOT NULL,
+    as_of integer,
+    code_set_time timestamp without time zone,
+    ignore text,
+    ignored_fyle_count integer
 );
-ALTER FOREIGN TABLE analysis_sloc_sets_id_seq_view ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
+
+
+--
+-- Name: analysis_sloc_sets_id_seq_view; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW analysis_sloc_sets_id_seq_view AS
+ SELECT (nextval('analysis_sloc_sets_id_seq'::regclass))::integer AS id;
 
 
 --
@@ -1815,7 +1902,7 @@ CREATE FOREIGN TABLE analysis_summaries (
     outside_committers_count integer,
     outside_commits_count integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'analysis_summaries'
@@ -1880,7 +1967,7 @@ CREATE SEQUENCE analysis_summaries_id_seq
 CREATE FOREIGN TABLE analysis_summaries_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'analysis_summaries_id_seq_view'
@@ -1913,7 +2000,7 @@ CREATE FOREIGN TABLE api_keys (
     secret text,
     oauth_application_id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'api_keys'
@@ -1990,7 +2077,7 @@ CREATE SEQUENCE api_keys_id_seq
 CREATE FOREIGN TABLE api_keys_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'api_keys_id_seq_view'
@@ -2016,7 +2103,7 @@ CREATE FOREIGN TABLE attachments (
     height integer,
     is_default boolean DEFAULT false NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'attachments'
@@ -2072,7 +2159,7 @@ CREATE SEQUENCE attachments_id_seq
 CREATE FOREIGN TABLE attachments_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'attachments_id_seq_view'
@@ -2098,7 +2185,7 @@ CREATE FOREIGN TABLE authorizations (
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'authorizations'
@@ -2154,29 +2241,12 @@ CREATE SEQUENCE authorizations_id_seq
 CREATE FOREIGN TABLE authorizations_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'authorizations_id_seq_view'
 );
 ALTER FOREIGN TABLE authorizations_id_seq_view ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
-
-
---
--- Name: claims_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
---
-
-CREATE FOREIGN TABLE claims_id_seq_view (
-    id integer
-)
-SERVER openhub
-OPTIONS (
-    schema_name 'public',
-    table_name 'claims_id_seq_view'
-);
-ALTER FOREIGN TABLE claims_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -2193,7 +2263,7 @@ CREATE FOREIGN TABLE clumps (
     type text NOT NULL,
     fetched_at timestamp without time zone
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'clumps'
@@ -2237,7 +2307,7 @@ CREATE SEQUENCE clumps_id_seq
 CREATE FOREIGN TABLE clumps_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'clumps_id_seq_view'
@@ -2260,7 +2330,7 @@ CREATE FOREIGN TABLE code_location_tarballs (
     created_at timestamp without time zone,
     type text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'code_location_tarballs'
@@ -2307,7 +2377,7 @@ CREATE SEQUENCE code_location_tarballs_id_seq
 CREATE FOREIGN TABLE code_location_tarballs_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'code_location_tarballs_id_seq_view'
@@ -2332,7 +2402,7 @@ CREATE FOREIGN TABLE code_locations (
     update_interval integer DEFAULT 3600,
     best_repository_directory_id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'code_locations'
@@ -2385,58 +2455,13 @@ CREATE SEQUENCE code_locations_id_seq
 CREATE FOREIGN TABLE code_locations_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'code_locations_id_seq_view'
 );
 ALTER FOREIGN TABLE code_locations_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
-);
-
-
---
--- Name: code_sets; Type: FOREIGN TABLE; Schema: public; Owner: -
---
-
-CREATE FOREIGN TABLE code_sets (
-    id integer DEFAULT code_sets_id_seq_view() NOT NULL,
-    updated_on timestamp without time zone,
-    best_sloc_set_id integer,
-    as_of integer,
-    logged_at timestamp without time zone,
-    clump_count integer DEFAULT 0,
-    fetched_at timestamp without time zone,
-    code_location_id integer
-)
-SERVER openhub
-OPTIONS (
-    schema_name 'public',
-    table_name 'code_sets'
-);
-ALTER FOREIGN TABLE code_sets ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
-ALTER FOREIGN TABLE code_sets ALTER COLUMN updated_on OPTIONS (
-    column_name 'updated_on'
-);
-ALTER FOREIGN TABLE code_sets ALTER COLUMN best_sloc_set_id OPTIONS (
-    column_name 'best_sloc_set_id'
-);
-ALTER FOREIGN TABLE code_sets ALTER COLUMN as_of OPTIONS (
-    column_name 'as_of'
-);
-ALTER FOREIGN TABLE code_sets ALTER COLUMN logged_at OPTIONS (
-    column_name 'logged_at'
-);
-ALTER FOREIGN TABLE code_sets ALTER COLUMN clump_count OPTIONS (
-    column_name 'clump_count'
-);
-ALTER FOREIGN TABLE code_sets ALTER COLUMN fetched_at OPTIONS (
-    column_name 'fetched_at'
-);
-ALTER FOREIGN TABLE code_sets ALTER COLUMN code_location_id OPTIONS (
-    column_name 'code_location_id'
 );
 
 
@@ -2453,69 +2478,221 @@ CREATE SEQUENCE code_sets_id_seq
 
 
 --
--- Name: code_sets_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
+-- Name: code_sets; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE code_sets_id_seq_view (
-    id integer
-)
-SERVER openhub
-OPTIONS (
-    schema_name 'public',
-    table_name 'code_sets_id_seq_view'
+CREATE TABLE code_sets (
+    id integer DEFAULT nextval('code_sets_id_seq'::regclass) NOT NULL,
+    updated_on timestamp without time zone,
+    best_sloc_set_id integer,
+    as_of integer,
+    logged_at timestamp without time zone,
+    clump_count integer DEFAULT 0,
+    fetched_at timestamp without time zone,
+    code_location_id integer
 );
-ALTER FOREIGN TABLE code_sets_id_seq_view ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
 
 
 --
--- Name: commit_contributors; Type: FOREIGN TABLE; Schema: public; Owner: -
+-- Name: code_sets_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE commit_contributors (
-    id integer,
-    code_set_id integer,
-    name_id integer,
-    analysis_id integer,
+CREATE VIEW code_sets_id_seq_view AS
+ SELECT (nextval('code_sets_id_seq'::regclass))::integer AS id;
+
+
+--
+-- Name: positions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE positions (
+    id integer NOT NULL,
     project_id integer,
-    position_id integer,
-    account_id integer,
-    contribution_id bigint,
-    person_id bigint
+    name_id integer,
+    account_id integer NOT NULL,
+    created_at timestamp without time zone,
+    title text,
+    organization_name text,
+    description text,
+    start_date timestamp without time zone,
+    stop_date timestamp without time zone,
+    ongoing boolean,
+    organization_id integer,
+    affiliation_type text DEFAULT 'unaffiliated'::text NOT NULL
+);
+
+
+--
+-- Name: projects; Type: FOREIGN TABLE; Schema: public; Owner: -
+--
+
+CREATE FOREIGN TABLE projects (
+    id integer DEFAULT projects_id_seq_view() NOT NULL,
+    name text,
+    description text,
+    comments text,
+    best_analysis_id integer,
+    deleted boolean DEFAULT false NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    old_name text,
+    missing_source text,
+    logo_id integer,
+    vanity_url text,
+    downloadable boolean DEFAULT false,
+    scraped boolean DEFAULT false,
+    vector tsvector,
+    popularity_factor numeric,
+    user_count integer DEFAULT 0 NOT NULL,
+    rating_average real,
+    forge_id integer,
+    name_at_forge text,
+    owner_at_forge text,
+    active_committers integer DEFAULT 0,
+    kb_id integer,
+    organization_id integer,
+    activity_level_index integer,
+    uuid character varying,
+    best_project_security_set_id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
-    table_name 'commit_contributors'
+    table_name 'projects'
 );
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE projects ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN code_set_id OPTIONS (
-    column_name 'code_set_id'
+ALTER FOREIGN TABLE projects ALTER COLUMN name OPTIONS (
+    column_name 'name'
 );
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN name_id OPTIONS (
-    column_name 'name_id'
+ALTER FOREIGN TABLE projects ALTER COLUMN description OPTIONS (
+    column_name 'description'
 );
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN analysis_id OPTIONS (
-    column_name 'analysis_id'
+ALTER FOREIGN TABLE projects ALTER COLUMN comments OPTIONS (
+    column_name 'comments'
 );
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN project_id OPTIONS (
-    column_name 'project_id'
+ALTER FOREIGN TABLE projects ALTER COLUMN best_analysis_id OPTIONS (
+    column_name 'best_analysis_id'
 );
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN position_id OPTIONS (
-    column_name 'position_id'
+ALTER FOREIGN TABLE projects ALTER COLUMN deleted OPTIONS (
+    column_name 'deleted'
 );
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN account_id OPTIONS (
-    column_name 'account_id'
+ALTER FOREIGN TABLE projects ALTER COLUMN created_at OPTIONS (
+    column_name 'created_at'
 );
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN contribution_id OPTIONS (
-    column_name 'contribution_id'
+ALTER FOREIGN TABLE projects ALTER COLUMN updated_at OPTIONS (
+    column_name 'updated_at'
 );
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN person_id OPTIONS (
-    column_name 'person_id'
+ALTER FOREIGN TABLE projects ALTER COLUMN old_name OPTIONS (
+    column_name 'old_name'
 );
+ALTER FOREIGN TABLE projects ALTER COLUMN missing_source OPTIONS (
+    column_name 'missing_source'
+);
+ALTER FOREIGN TABLE projects ALTER COLUMN logo_id OPTIONS (
+    column_name 'logo_id'
+);
+ALTER FOREIGN TABLE projects ALTER COLUMN vanity_url OPTIONS (
+    column_name 'vanity_url'
+);
+ALTER FOREIGN TABLE projects ALTER COLUMN downloadable OPTIONS (
+    column_name 'downloadable'
+);
+ALTER FOREIGN TABLE projects ALTER COLUMN scraped OPTIONS (
+    column_name 'scraped'
+);
+ALTER FOREIGN TABLE projects ALTER COLUMN vector OPTIONS (
+    column_name 'vector'
+);
+ALTER FOREIGN TABLE projects ALTER COLUMN popularity_factor OPTIONS (
+    column_name 'popularity_factor'
+);
+ALTER FOREIGN TABLE projects ALTER COLUMN user_count OPTIONS (
+    column_name 'user_count'
+);
+ALTER FOREIGN TABLE projects ALTER COLUMN rating_average OPTIONS (
+    column_name 'rating_average'
+);
+ALTER FOREIGN TABLE projects ALTER COLUMN forge_id OPTIONS (
+    column_name 'forge_id'
+);
+ALTER FOREIGN TABLE projects ALTER COLUMN name_at_forge OPTIONS (
+    column_name 'name_at_forge'
+);
+ALTER FOREIGN TABLE projects ALTER COLUMN owner_at_forge OPTIONS (
+    column_name 'owner_at_forge'
+);
+ALTER FOREIGN TABLE projects ALTER COLUMN active_committers OPTIONS (
+    column_name 'active_committers'
+);
+ALTER FOREIGN TABLE projects ALTER COLUMN kb_id OPTIONS (
+    column_name 'kb_id'
+);
+ALTER FOREIGN TABLE projects ALTER COLUMN organization_id OPTIONS (
+    column_name 'organization_id'
+);
+ALTER FOREIGN TABLE projects ALTER COLUMN activity_level_index OPTIONS (
+    column_name 'activity_level_index'
+);
+ALTER FOREIGN TABLE projects ALTER COLUMN uuid OPTIONS (
+    column_name 'uuid'
+);
+ALTER FOREIGN TABLE projects ALTER COLUMN best_project_security_set_id OPTIONS (
+    column_name 'best_project_security_set_id'
+);
+
+
+--
+-- Name: sloc_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE sloc_sets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sloc_sets; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE sloc_sets (
+    id integer DEFAULT nextval('sloc_sets_id_seq'::regclass) NOT NULL,
+    code_set_id integer NOT NULL,
+    updated_on timestamp without time zone,
+    as_of integer,
+    code_set_time timestamp without time zone
+);
+
+
+--
+-- Name: commit_contributors; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW commit_contributors AS
+ SELECT analysis_aliases.commit_name_id AS id,
+    sloc_sets.code_set_id,
+    analysis_aliases.commit_name_id AS name_id,
+    analysis_sloc_sets.analysis_id,
+    projects.id AS project_id,
+    positions.id AS position_id,
+    positions.account_id,
+        CASE
+            WHEN (positions.account_id IS NULL) THEN ((((projects.id)::bigint << 32) + (analysis_aliases.preferred_name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint)
+            ELSE (((projects.id)::bigint << 32) + (positions.account_id)::bigint)
+        END AS contribution_id,
+        CASE
+            WHEN (positions.account_id IS NULL) THEN ((((projects.id)::bigint << 32) + (analysis_aliases.preferred_name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint)
+            ELSE (positions.account_id)::bigint
+        END AS person_id
+   FROM ((((analysis_sloc_sets
+     JOIN sloc_sets ON ((analysis_sloc_sets.sloc_set_id = sloc_sets.id)))
+     JOIN projects ON ((analysis_sloc_sets.analysis_id = projects.best_analysis_id)))
+     JOIN analysis_aliases ON ((analysis_aliases.analysis_id = analysis_sloc_sets.analysis_id)))
+     LEFT JOIN positions ON (((positions.project_id = projects.id) AND (positions.name_id = analysis_aliases.preferred_name_id))));
 
 
 --
@@ -2530,7 +2707,7 @@ CREATE FOREIGN TABLE commit_flags (
     type text NOT NULL,
     data text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'commit_flags'
@@ -2574,44 +2751,13 @@ CREATE SEQUENCE commit_flags_id_seq
 CREATE FOREIGN TABLE commit_flags_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'commit_flags_id_seq_view'
 );
 ALTER FOREIGN TABLE commit_flags_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
-);
-
-
---
--- Name: commit_spark_analysis_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE commit_spark_analysis_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-SET default_with_oids = false;
-
---
--- Name: commits; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE commits (
-    id integer NOT NULL,
-    sha1 text,
-    "time" timestamp without time zone NOT NULL,
-    comment text,
-    code_set_id integer NOT NULL,
-    name_id integer NOT NULL,
-    "position" integer,
-    on_trunk boolean DEFAULT true,
-    email_address_id integer
 );
 
 
@@ -2628,10 +2774,20 @@ CREATE SEQUENCE commits_id_seq
 
 
 --
--- Name: commits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: commits; Type: TABLE; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE commits_id_seq OWNED BY commits.id;
+CREATE TABLE commits (
+    id integer DEFAULT nextval('commits_id_seq'::regclass) NOT NULL,
+    sha1 text,
+    "time" timestamp without time zone NOT NULL,
+    comment text,
+    code_set_id integer NOT NULL,
+    name_id integer NOT NULL,
+    "position" integer,
+    on_trunk boolean DEFAULT true,
+    email_address_id integer
+);
 
 
 --
@@ -2653,7 +2809,7 @@ CREATE FOREIGN TABLE contributions (
     name_fact_id integer,
     position_id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'contributions'
@@ -2686,7 +2842,7 @@ CREATE FOREIGN TABLE contributions2 (
     person_id bigint,
     project_id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'contributions2'
@@ -2718,7 +2874,7 @@ CREATE FOREIGN TABLE countries (
     name text,
     region text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'countries'
@@ -2752,7 +2908,7 @@ CREATE FOREIGN TABLE deleted_accounts (
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'deleted_accounts'
@@ -2805,7 +2961,7 @@ CREATE SEQUENCE deleted_accounts_id_seq
 CREATE FOREIGN TABLE deleted_accounts_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'deleted_accounts_id_seq_view'
@@ -2816,47 +2972,19 @@ ALTER FOREIGN TABLE deleted_accounts_id_seq_view ALTER COLUMN id OPTIONS (
 
 
 --
--- Name: diff_licenses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE diff_licenses_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
 -- Name: diff_licenses_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
 CREATE FOREIGN TABLE diff_licenses_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'diff_licenses_id_seq_view'
 );
 ALTER FOREIGN TABLE diff_licenses_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
-);
-
-
---
--- Name: diffs; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE diffs (
-    id bigint NOT NULL,
-    sha1 text,
-    parent_sha1 text,
-    commit_id integer,
-    fyle_id integer,
-    name text,
-    deleted boolean,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -2873,10 +3001,19 @@ CREATE SEQUENCE diffs_id_seq
 
 
 --
--- Name: diffs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: diffs; Type: TABLE; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE diffs_id_seq OWNED BY diffs.id;
+CREATE TABLE diffs (
+    id bigint DEFAULT nextval('diffs_id_seq'::regclass) NOT NULL,
+    sha1 text,
+    parent_sha1 text,
+    commit_id integer,
+    fyle_id integer,
+    name text,
+    deleted boolean,
+    updated_at timestamp without time zone DEFAULT now() NOT NULL
+);
 
 
 --
@@ -2900,7 +3037,7 @@ CREATE FOREIGN TABLE duplicates (
     created_at timestamp without time zone,
     resolved boolean DEFAULT false
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'duplicates'
@@ -2947,7 +3084,7 @@ CREATE SEQUENCE duplicates_id_seq
 CREATE FOREIGN TABLE duplicates_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'duplicates_id_seq_view'
@@ -2978,7 +3115,7 @@ CREATE FOREIGN TABLE edits (
     project_id integer,
     organization_id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'edits'
@@ -3043,30 +3180,13 @@ CREATE SEQUENCE edits_id_seq
 
 
 --
--- Name: edits_id_seq1_view; Type: FOREIGN TABLE; Schema: public; Owner: -
---
-
-CREATE FOREIGN TABLE edits_id_seq1_view (
-    id integer
-)
-SERVER openhub
-OPTIONS (
-    schema_name 'public',
-    table_name 'edits_id_seq1_view'
-);
-ALTER FOREIGN TABLE edits_id_seq1_view ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
-
-
---
 -- Name: edits_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
 CREATE FOREIGN TABLE edits_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'edits_id_seq_view'
@@ -3084,7 +3204,7 @@ CREATE FOREIGN TABLE email_addresses (
     id integer DEFAULT email_addresses_id_seq_view() NOT NULL,
     address text NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'email_addresses'
@@ -3116,7 +3236,7 @@ CREATE SEQUENCE email_addresses_id_seq
 CREATE FOREIGN TABLE email_addresses_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'email_addresses_id_seq_view'
@@ -3140,7 +3260,7 @@ CREATE FOREIGN TABLE enlistments (
     ignore text,
     code_location_id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'enlistments'
@@ -3190,7 +3310,7 @@ CREATE SEQUENCE enlistments_id_seq
 CREATE FOREIGN TABLE enlistments_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'enlistments_id_seq_view'
@@ -3213,7 +3333,7 @@ CREATE FOREIGN TABLE event_subscription (
     account_id integer,
     created_at timestamp without time zone NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'event_subscription'
@@ -3260,7 +3380,7 @@ CREATE SEQUENCE event_subscription_id_seq
 CREATE FOREIGN TABLE event_subscription_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'event_subscription_id_seq_view'
@@ -3284,7 +3404,7 @@ CREATE FOREIGN TABLE exhibits (
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'exhibits'
@@ -3334,7 +3454,7 @@ CREATE SEQUENCE exhibits_id_seq
 CREATE FOREIGN TABLE exhibits_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'exhibits_id_seq_view'
@@ -3359,7 +3479,7 @@ CREATE FOREIGN TABLE factoids (
     current_count integer DEFAULT 0,
     max_count integer DEFAULT 0
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'factoids'
@@ -3412,7 +3532,7 @@ CREATE SEQUENCE factoids_id_seq
 CREATE FOREIGN TABLE factoids_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'factoids_id_seq_view'
@@ -3433,7 +3553,7 @@ CREATE FOREIGN TABLE failure_groups (
     priority integer DEFAULT 0,
     auto_reschedule boolean DEFAULT false
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'failure_groups'
@@ -3474,7 +3594,7 @@ CREATE SEQUENCE failure_groups_id_seq
 CREATE FOREIGN TABLE failure_groups_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'failure_groups_id_seq_view'
@@ -3498,7 +3618,7 @@ CREATE FOREIGN TABLE feedbacks (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'feedbacks'
@@ -3548,13 +3668,24 @@ CREATE SEQUENCE feedbacks_id_seq
 CREATE FOREIGN TABLE feedbacks_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'feedbacks_id_seq_view'
 );
 ALTER FOREIGN TABLE feedbacks_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
+);
+
+
+--
+-- Name: fis_tests; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE fis_tests (
+    id integer,
+    name text,
+    test_id integer
 );
 
 
@@ -3574,7 +3705,7 @@ CREATE FOREIGN TABLE fisbot_events (
     repository_id integer,
     component_id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'fisbot_events'
@@ -3630,7 +3761,7 @@ CREATE SEQUENCE fisbot_events_id_seq
 CREATE FOREIGN TABLE fisbot_events_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'fisbot_events_id_seq_view'
@@ -3653,7 +3784,7 @@ CREATE FOREIGN TABLE followed_messages (
     body text,
     title text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'followed_messages'
@@ -3692,7 +3823,7 @@ CREATE FOREIGN TABLE follows (
     account_id integer,
     created_at timestamp without time zone NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'follows'
@@ -3733,7 +3864,7 @@ CREATE SEQUENCE follows_id_seq
 CREATE FOREIGN TABLE follows_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'follows_id_seq_view'
@@ -3753,7 +3884,7 @@ CREATE FOREIGN TABLE forges (
     url text NOT NULL,
     type text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'forges'
@@ -3791,7 +3922,7 @@ CREATE SEQUENCE forges_id_seq
 CREATE FOREIGN TABLE forges_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'forges_id_seq_view'
@@ -3814,7 +3945,7 @@ CREATE FOREIGN TABLE forums (
     "position" integer,
     description text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'forums'
@@ -3861,24 +3992,13 @@ CREATE SEQUENCE forums_id_seq
 CREATE FOREIGN TABLE forums_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'forums_id_seq_view'
 );
 ALTER FOREIGN TABLE forums_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
-);
-
-
---
--- Name: fyles; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE fyles (
-    id integer NOT NULL,
-    name text NOT NULL,
-    code_set_id integer NOT NULL
 );
 
 
@@ -3895,10 +4015,14 @@ CREATE SEQUENCE fyles_id_seq
 
 
 --
--- Name: fyles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: fyles; Type: TABLE; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE fyles_id_seq OWNED BY fyles.id;
+CREATE TABLE fyles (
+    id integer DEFAULT nextval('fyles_id_seq'::regclass) NOT NULL,
+    name text NOT NULL,
+    code_set_id integer NOT NULL
+);
 
 
 --
@@ -3932,7 +4056,7 @@ CREATE FOREIGN TABLE github_project (
     note text,
     organization text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'github_project'
@@ -4033,7 +4157,7 @@ CREATE FOREIGN TABLE guaranteed_spam_accounts (
     affiliation_type text NOT NULL,
     organization_name text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'guaranteed_spam_accounts'
@@ -4161,7 +4285,7 @@ CREATE FOREIGN TABLE helpfuls (
     account_id integer NOT NULL,
     yes boolean DEFAULT true
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'helpfuls'
@@ -4199,7 +4323,7 @@ CREATE SEQUENCE helpfuls_id_seq
 CREATE FOREIGN TABLE helpfuls_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'helpfuls_id_seq_view'
@@ -4225,7 +4349,7 @@ CREATE FOREIGN TABLE invites (
     name_id integer,
     contribution_id bigint
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'invites'
@@ -4281,7 +4405,7 @@ CREATE SEQUENCE invites_id_seq
 CREATE FOREIGN TABLE invites_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'invites_id_seq_view'
@@ -4299,7 +4423,7 @@ CREATE FOREIGN TABLE job_statuses (
     id integer NOT NULL,
     name text NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'job_statuses'
@@ -4343,7 +4467,7 @@ CREATE FOREIGN TABLE jobs (
     code_location_id integer,
     code_location_tarball_id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'jobs'
@@ -4444,7 +4568,7 @@ CREATE SEQUENCE jobs_id_seq
 CREATE FOREIGN TABLE jobs_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'jobs_id_seq_view'
@@ -4464,7 +4588,7 @@ CREATE FOREIGN TABLE knowledge_base_statuses (
     in_sync boolean DEFAULT false,
     updated_at timestamp without time zone
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'knowledge_base_statuses'
@@ -4502,7 +4626,7 @@ CREATE SEQUENCE knowledge_base_statuses_id_seq
 CREATE FOREIGN TABLE knowledge_base_statuses_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'knowledge_base_statuses_id_seq_view'
@@ -4528,7 +4652,7 @@ CREATE FOREIGN TABLE kudo_scores (
     "position" integer,
     rank integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'kudo_scores'
@@ -4584,7 +4708,7 @@ CREATE SEQUENCE kudo_scores_id_seq
 CREATE FOREIGN TABLE kudo_scores_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'kudo_scores_id_seq_view'
@@ -4607,7 +4731,7 @@ CREATE FOREIGN TABLE kudos (
     created_at timestamp without time zone,
     message character varying(80)
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'kudos'
@@ -4654,7 +4778,7 @@ CREATE SEQUENCE kudos_id_seq
 CREATE FOREIGN TABLE kudos_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'kudos_id_seq_view'
@@ -4673,7 +4797,7 @@ CREATE FOREIGN TABLE language_experiences (
     position_id integer NOT NULL,
     language_id integer NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'language_experiences'
@@ -4708,7 +4832,7 @@ CREATE SEQUENCE language_experiences_id_seq
 CREATE FOREIGN TABLE language_experiences_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'language_experiences_id_seq_view'
@@ -4732,7 +4856,7 @@ CREATE FOREIGN TABLE language_facts (
     projects bigint,
     contributors bigint
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'language_facts'
@@ -4782,7 +4906,7 @@ CREATE SEQUENCE language_facts_id_seq
 CREATE FOREIGN TABLE language_facts_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'language_facts_id_seq_view'
@@ -4811,7 +4935,7 @@ CREATE FOREIGN TABLE languages (
     active_contributors text,
     experienced_contributors text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'languages'
@@ -4876,7 +5000,7 @@ CREATE SEQUENCE languages_id_seq
 CREATE FOREIGN TABLE languages_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'languages_id_seq_view'
@@ -4897,7 +5021,7 @@ CREATE FOREIGN TABLE license_facts (
     id integer DEFAULT license_facts_id_seq_view() NOT NULL,
     analysis_id integer NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'license_facts'
@@ -4938,7 +5062,7 @@ CREATE SEQUENCE license_facts_id_seq
 CREATE FOREIGN TABLE license_facts_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'license_facts_id_seq_view'
@@ -4962,7 +5086,7 @@ CREATE FOREIGN TABLE licenses (
     deleted boolean DEFAULT false,
     locked boolean DEFAULT false
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'licenses'
@@ -5012,7 +5136,7 @@ CREATE SEQUENCE licenses_id_seq
 CREATE FOREIGN TABLE licenses_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'licenses_id_seq_view'
@@ -5042,7 +5166,7 @@ CREATE FOREIGN TABLE link_categories_deleted (
     id integer DEFAULT nextval('link_categories_id_seq'::regclass) NOT NULL,
     name text NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'link_categories_deleted'
@@ -5062,7 +5186,7 @@ ALTER FOREIGN TABLE link_categories_deleted ALTER COLUMN name OPTIONS (
 CREATE FOREIGN TABLE link_categories_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'link_categories_id_seq_view'
@@ -5086,7 +5210,7 @@ CREATE FOREIGN TABLE links (
     created_at timestamp without time zone,
     helpful_score integer DEFAULT 0 NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'links'
@@ -5136,7 +5260,7 @@ CREATE SEQUENCE links_id_seq
 CREATE FOREIGN TABLE links_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'links_id_seq_view'
@@ -5155,7 +5279,7 @@ CREATE FOREIGN TABLE load_averages (
     id integer DEFAULT load_averages_id_seq_view() NOT NULL,
     max numeric DEFAULT 3.0
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'load_averages'
@@ -5190,7 +5314,7 @@ CREATE SEQUENCE load_averages_id_seq
 CREATE FOREIGN TABLE load_averages_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'load_averages_id_seq_view'
@@ -5216,7 +5340,7 @@ CREATE FOREIGN TABLE manages (
     deleted_at timestamp without time zone,
     target_type text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'manages'
@@ -5272,7 +5396,7 @@ CREATE SEQUENCE manages_id_seq
 CREATE FOREIGN TABLE manages_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'manages_id_seq_view'
@@ -5291,7 +5415,7 @@ CREATE FOREIGN TABLE markups (
     raw text,
     formatted text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'markups'
@@ -5326,7 +5450,7 @@ CREATE SEQUENCE markups_id_seq
 CREATE FOREIGN TABLE markups_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'markups_id_seq_view'
@@ -5345,7 +5469,7 @@ CREATE FOREIGN TABLE message_account_tags (
     message_id integer,
     account_id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'message_account_tags'
@@ -5380,7 +5504,7 @@ CREATE SEQUENCE message_account_tags_id_seq
 CREATE FOREIGN TABLE message_account_tags_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'message_account_tags_id_seq_view'
@@ -5399,7 +5523,7 @@ CREATE FOREIGN TABLE message_project_tags (
     message_id integer,
     project_id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'message_project_tags'
@@ -5434,7 +5558,7 @@ CREATE SEQUENCE message_project_tags_id_seq
 CREATE FOREIGN TABLE message_project_tags_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'message_project_tags_id_seq_view'
@@ -5456,7 +5580,7 @@ CREATE FOREIGN TABLE messages (
     body text,
     title text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'messages'
@@ -5500,7 +5624,7 @@ CREATE SEQUENCE messages_id_seq
 CREATE FOREIGN TABLE messages_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'messages_id_seq_view'
@@ -5539,7 +5663,7 @@ CREATE FOREIGN TABLE mistaken_jobs (
     failure_group_id integer,
     organization_id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'mistaken_jobs'
@@ -5622,7 +5746,7 @@ ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN organization_id OPTIONS (
 CREATE FOREIGN TABLE moderatorships_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'moderatorships_id_seq_view'
@@ -5639,7 +5763,7 @@ ALTER FOREIGN TABLE moderatorships_id_seq_view ALTER COLUMN id OPTIONS (
 CREATE FOREIGN TABLE monitorships_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'monitorships_id_seq_view'
@@ -5658,7 +5782,7 @@ CREATE FOREIGN TABLE monthly_commit_histories (
     analysis_id integer,
     json text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'monthly_commit_histories'
@@ -5693,7 +5817,7 @@ CREATE SEQUENCE monthly_commit_histories_id_seq
 CREATE FOREIGN TABLE monthly_commit_histories_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'monthly_commit_histories_id_seq_view'
@@ -5728,7 +5852,7 @@ CREATE FOREIGN TABLE name_facts (
     commits_by_language text,
     email_address_ids integer[] DEFAULT '{}'::integer[]
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'name_facts'
@@ -5811,7 +5935,7 @@ CREATE SEQUENCE name_facts_id_seq
 CREATE FOREIGN TABLE name_facts_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'name_facts_id_seq_view'
@@ -5841,7 +5965,7 @@ CREATE FOREIGN TABLE name_language_facts (
     recent_commit_project_id integer,
     recent_commit_month timestamp without time zone
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'name_language_facts'
@@ -5909,7 +6033,7 @@ CREATE SEQUENCE name_language_facts_id_seq
 CREATE FOREIGN TABLE name_language_facts_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'name_language_facts_id_seq_view'
@@ -5920,6 +6044,36 @@ ALTER FOREIGN TABLE name_language_facts_id_seq_view ALTER COLUMN id OPTIONS (
 
 
 --
+-- Name: named_commits; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW named_commits AS
+ SELECT commits.id,
+    commits.id AS commit_id,
+    commits."time",
+    analysis_sloc_sets.analysis_id,
+    projects.id AS project_id,
+    analysis_sloc_sets.sloc_set_id,
+    sloc_sets.code_set_id,
+    positions.id AS position_id,
+    positions.account_id,
+        CASE
+            WHEN (positions.account_id IS NULL) THEN ((((projects.id)::bigint << 32) + (analysis_aliases.preferred_name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint)
+            ELSE (((projects.id)::bigint << 32) + (positions.account_id)::bigint)
+        END AS contribution_id,
+        CASE
+            WHEN (positions.account_id IS NULL) THEN ((((projects.id)::bigint << 32) + (analysis_aliases.preferred_name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint)
+            ELSE (positions.account_id)::bigint
+        END AS person_id
+   FROM (((((analysis_sloc_sets
+     JOIN projects ON ((analysis_sloc_sets.analysis_id = projects.best_analysis_id)))
+     JOIN sloc_sets ON ((sloc_sets.id = analysis_sloc_sets.sloc_set_id)))
+     JOIN commits ON (((commits.code_set_id = sloc_sets.code_set_id) AND (commits."position" <= analysis_sloc_sets.as_of))))
+     JOIN analysis_aliases ON (((analysis_aliases.analysis_id = analysis_sloc_sets.analysis_id) AND (analysis_aliases.commit_name_id = commits.name_id))))
+     LEFT JOIN positions ON (((positions.project_id = projects.id) AND (positions.name_id = analysis_aliases.preferred_name_id))));
+
+
+--
 -- Name: names; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
@@ -5927,7 +6081,7 @@ CREATE FOREIGN TABLE names (
     id integer DEFAULT names_id_seq_view() NOT NULL,
     name text NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'names'
@@ -5959,7 +6113,7 @@ CREATE SEQUENCE names_id_seq
 CREATE FOREIGN TABLE names_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'names_id_seq_view'
@@ -5984,7 +6138,7 @@ CREATE FOREIGN TABLE oauth_access_grants (
     revoked_at timestamp without time zone,
     scopes character varying
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'oauth_access_grants'
@@ -6037,7 +6191,7 @@ CREATE SEQUENCE oauth_access_grants_id_seq
 CREATE FOREIGN TABLE oauth_access_grants_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'oauth_access_grants_id_seq_view'
@@ -6062,7 +6216,7 @@ CREATE FOREIGN TABLE oauth_access_tokens (
     created_at timestamp without time zone NOT NULL,
     scopes character varying
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'oauth_access_tokens'
@@ -6115,7 +6269,7 @@ CREATE SEQUENCE oauth_access_tokens_id_seq
 CREATE FOREIGN TABLE oauth_access_tokens_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'oauth_access_tokens_id_seq_view'
@@ -6139,7 +6293,7 @@ CREATE FOREIGN TABLE oauth_applications (
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'oauth_applications'
@@ -6189,7 +6343,7 @@ CREATE SEQUENCE oauth_applications_id_seq
 CREATE FOREIGN TABLE oauth_applications_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'oauth_applications_id_seq_view'
@@ -6210,7 +6364,7 @@ CREATE FOREIGN TABLE oauth_nonces (
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'oauth_nonces'
@@ -6251,7 +6405,7 @@ CREATE SEQUENCE oauth_nonces_id_seq
 CREATE FOREIGN TABLE oauth_nonces_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'oauth_nonces_id_seq_view'
@@ -6268,7 +6422,7 @@ ALTER FOREIGN TABLE oauth_nonces_id_seq_view ALTER COLUMN id OPTIONS (
 CREATE FOREIGN TABLE old_edits_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'old_edits_id_seq_view'
@@ -6292,7 +6446,7 @@ CREATE FOREIGN TABLE org_stats_by_sectors (
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'org_stats_by_sectors'
@@ -6342,7 +6496,7 @@ CREATE SEQUENCE org_stats_by_sectors_id_seq
 CREATE FOREIGN TABLE org_stats_by_sectors_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'org_stats_by_sectors_id_seq_view'
@@ -6368,7 +6522,7 @@ CREATE FOREIGN TABLE org_thirty_day_activities (
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'org_thirty_day_activities'
@@ -6424,7 +6578,7 @@ CREATE SEQUENCE org_thirty_day_activities_id_seq
 CREATE FOREIGN TABLE org_thirty_day_activities_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'org_thirty_day_activities_id_seq_view'
@@ -6454,7 +6608,7 @@ CREATE FOREIGN TABLE organizations (
     projects_count integer DEFAULT 0,
     thirty_day_activity_id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'organizations'
@@ -6522,7 +6676,7 @@ CREATE SEQUENCE organizations_id_seq
 CREATE FOREIGN TABLE organizations_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'organizations_id_seq_view'
@@ -6539,7 +6693,7 @@ ALTER FOREIGN TABLE organizations_id_seq_view ALTER COLUMN id OPTIONS (
 CREATE FOREIGN TABLE pages_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'pages_id_seq_view'
@@ -6566,7 +6720,7 @@ CREATE FOREIGN TABLE people (
     vector tsvector,
     popularity_factor numeric
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'people'
@@ -6621,7 +6775,7 @@ CREATE FOREIGN TABLE people_view (
     kudo_score numeric,
     kudo_rank integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'people_view'
@@ -6668,7 +6822,7 @@ CREATE FOREIGN TABLE permissions (
     downloads boolean DEFAULT false,
     target_type text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'permissions'
@@ -6715,7 +6869,7 @@ CREATE SEQUENCE permissions_id_seq
 CREATE FOREIGN TABLE permissions_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'permissions_id_seq_view'
@@ -6734,7 +6888,7 @@ CREATE FOREIGN TABLE pg_ts_cfg (
     prs_name text NOT NULL,
     locale text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'pg_ts_cfg'
@@ -6759,7 +6913,7 @@ CREATE FOREIGN TABLE pg_ts_cfgmap (
     tok_alias text NOT NULL,
     dict_name text[]
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'pg_ts_cfgmap'
@@ -6776,71 +6930,6 @@ ALTER FOREIGN TABLE pg_ts_cfgmap ALTER COLUMN dict_name OPTIONS (
 
 
 --
--- Name: positions; Type: FOREIGN TABLE; Schema: public; Owner: -
---
-
-CREATE FOREIGN TABLE positions (
-    id integer DEFAULT positions_id_seq_view() NOT NULL,
-    project_id integer,
-    name_id integer,
-    account_id integer NOT NULL,
-    created_at timestamp without time zone,
-    title text,
-    organization_name text,
-    description text,
-    start_date timestamp without time zone,
-    stop_date timestamp without time zone,
-    ongoing boolean,
-    organization_id integer,
-    affiliation_type text DEFAULT 'unaffiliated'::text NOT NULL
-)
-SERVER openhub
-OPTIONS (
-    schema_name 'public',
-    table_name 'positions'
-);
-ALTER FOREIGN TABLE positions ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
-ALTER FOREIGN TABLE positions ALTER COLUMN project_id OPTIONS (
-    column_name 'project_id'
-);
-ALTER FOREIGN TABLE positions ALTER COLUMN name_id OPTIONS (
-    column_name 'name_id'
-);
-ALTER FOREIGN TABLE positions ALTER COLUMN account_id OPTIONS (
-    column_name 'account_id'
-);
-ALTER FOREIGN TABLE positions ALTER COLUMN created_at OPTIONS (
-    column_name 'created_at'
-);
-ALTER FOREIGN TABLE positions ALTER COLUMN title OPTIONS (
-    column_name 'title'
-);
-ALTER FOREIGN TABLE positions ALTER COLUMN organization_name OPTIONS (
-    column_name 'organization_name'
-);
-ALTER FOREIGN TABLE positions ALTER COLUMN description OPTIONS (
-    column_name 'description'
-);
-ALTER FOREIGN TABLE positions ALTER COLUMN start_date OPTIONS (
-    column_name 'start_date'
-);
-ALTER FOREIGN TABLE positions ALTER COLUMN stop_date OPTIONS (
-    column_name 'stop_date'
-);
-ALTER FOREIGN TABLE positions ALTER COLUMN ongoing OPTIONS (
-    column_name 'ongoing'
-);
-ALTER FOREIGN TABLE positions ALTER COLUMN organization_id OPTIONS (
-    column_name 'organization_id'
-);
-ALTER FOREIGN TABLE positions ALTER COLUMN affiliation_type OPTIONS (
-    column_name 'affiliation_type'
-);
-
-
---
 -- Name: positions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -6853,13 +6942,20 @@ CREATE SEQUENCE positions_id_seq
 
 
 --
+-- Name: positions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE positions_id_seq OWNED BY positions.id;
+
+
+--
 -- Name: positions_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
 CREATE FOREIGN TABLE positions_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'positions_id_seq_view'
@@ -6884,7 +6980,7 @@ CREATE FOREIGN TABLE posts (
     vector tsvector,
     popularity_factor numeric
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'posts'
@@ -6937,7 +7033,7 @@ CREATE SEQUENCE posts_id_seq
 CREATE FOREIGN TABLE posts_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'posts_id_seq_view'
@@ -6959,7 +7055,7 @@ CREATE FOREIGN TABLE profiles (
     "time" numeric NOT NULL,
     created_at timestamp without time zone NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'profiles'
@@ -7003,7 +7099,7 @@ CREATE SEQUENCE profiles_id_seq
 CREATE FOREIGN TABLE profiles_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'profiles_id_seq_view'
@@ -7026,7 +7122,7 @@ CREATE FOREIGN TABLE project_badges (
     status integer DEFAULT 1,
     enlistment_id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'project_badges'
@@ -7073,7 +7169,7 @@ CREATE SEQUENCE project_badges_id_seq
 CREATE FOREIGN TABLE project_badges_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'project_badges_id_seq_view'
@@ -7092,7 +7188,7 @@ CREATE FOREIGN TABLE project_counts_by_quarter_and_language (
     quarter timestamp without time zone,
     project_count bigint
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'project_counts_by_quarter_and_language'
@@ -7121,7 +7217,7 @@ CREATE FOREIGN TABLE project_events (
     "time" timestamp without time zone NOT NULL,
     created_at timestamp without time zone NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'project_events'
@@ -7168,7 +7264,7 @@ CREATE SEQUENCE project_events_id_seq
 CREATE FOREIGN TABLE project_events_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'project_events_id_seq_view'
@@ -7188,7 +7284,7 @@ CREATE FOREIGN TABLE project_experiences (
     project_id integer NOT NULL,
     promote boolean DEFAULT false NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'project_experiences'
@@ -7226,7 +7322,7 @@ CREATE SEQUENCE project_experiences_id_seq
 CREATE FOREIGN TABLE project_experiences_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'project_experiences_id_seq_view'
@@ -7246,7 +7342,7 @@ CREATE FOREIGN TABLE project_gestalts_tmp (
     project_id integer,
     gestalt_id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'project_gestalts_tmp'
@@ -7275,7 +7371,7 @@ CREATE FOREIGN TABLE project_licenses (
     license_id integer,
     deleted boolean DEFAULT false
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'project_licenses'
@@ -7313,7 +7409,7 @@ CREATE SEQUENCE project_licenses_id_seq
 CREATE FOREIGN TABLE project_licenses_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'project_licenses_id_seq_view'
@@ -7332,7 +7428,7 @@ CREATE FOREIGN TABLE project_reports (
     project_id integer NOT NULL,
     report_id integer NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'project_reports'
@@ -7367,7 +7463,7 @@ CREATE SEQUENCE project_reports_id_seq
 CREATE FOREIGN TABLE project_reports_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'project_reports_id_seq_view'
@@ -7389,7 +7485,7 @@ CREATE FOREIGN TABLE project_security_sets (
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'project_security_sets'
@@ -7433,7 +7529,7 @@ CREATE SEQUENCE project_security_sets_id_seq
 CREATE FOREIGN TABLE project_security_sets_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'project_security_sets_id_seq_view'
@@ -7456,7 +7552,7 @@ CREATE FOREIGN TABLE project_vulnerability_reports (
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'project_vulnerability_reports'
@@ -7503,134 +7599,13 @@ CREATE SEQUENCE project_vulnerability_reports_id_seq
 CREATE FOREIGN TABLE project_vulnerability_reports_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'project_vulnerability_reports_id_seq_view'
 );
 ALTER FOREIGN TABLE project_vulnerability_reports_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
-);
-
-
---
--- Name: projects; Type: FOREIGN TABLE; Schema: public; Owner: -
---
-
-CREATE FOREIGN TABLE projects (
-    id integer DEFAULT projects_id_seq_view() NOT NULL,
-    name text,
-    description text,
-    comments text,
-    best_analysis_id integer,
-    deleted boolean DEFAULT false NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    old_name text,
-    missing_source text,
-    logo_id integer,
-    vanity_url text,
-    downloadable boolean DEFAULT false,
-    scraped boolean DEFAULT false,
-    vector tsvector,
-    popularity_factor numeric,
-    user_count integer DEFAULT 0 NOT NULL,
-    rating_average real,
-    forge_id integer,
-    name_at_forge text,
-    owner_at_forge text,
-    active_committers integer DEFAULT 0,
-    kb_id integer,
-    organization_id integer,
-    activity_level_index integer,
-    uuid character varying,
-    best_project_security_set_id integer
-)
-SERVER openhub
-OPTIONS (
-    schema_name 'public',
-    table_name 'projects'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN name OPTIONS (
-    column_name 'name'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN description OPTIONS (
-    column_name 'description'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN comments OPTIONS (
-    column_name 'comments'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN best_analysis_id OPTIONS (
-    column_name 'best_analysis_id'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN deleted OPTIONS (
-    column_name 'deleted'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN created_at OPTIONS (
-    column_name 'created_at'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN updated_at OPTIONS (
-    column_name 'updated_at'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN old_name OPTIONS (
-    column_name 'old_name'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN missing_source OPTIONS (
-    column_name 'missing_source'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN logo_id OPTIONS (
-    column_name 'logo_id'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN vanity_url OPTIONS (
-    column_name 'vanity_url'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN downloadable OPTIONS (
-    column_name 'downloadable'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN scraped OPTIONS (
-    column_name 'scraped'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN vector OPTIONS (
-    column_name 'vector'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN popularity_factor OPTIONS (
-    column_name 'popularity_factor'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN user_count OPTIONS (
-    column_name 'user_count'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN rating_average OPTIONS (
-    column_name 'rating_average'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN forge_id OPTIONS (
-    column_name 'forge_id'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN name_at_forge OPTIONS (
-    column_name 'name_at_forge'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN owner_at_forge OPTIONS (
-    column_name 'owner_at_forge'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN active_committers OPTIONS (
-    column_name 'active_committers'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN kb_id OPTIONS (
-    column_name 'kb_id'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN organization_id OPTIONS (
-    column_name 'organization_id'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN activity_level_index OPTIONS (
-    column_name 'activity_level_index'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN uuid OPTIONS (
-    column_name 'uuid'
-);
-ALTER FOREIGN TABLE projects ALTER COLUMN best_project_security_set_id OPTIONS (
-    column_name 'best_project_security_set_id'
 );
 
 
@@ -7642,7 +7617,7 @@ CREATE FOREIGN TABLE projects_by_month (
     month timestamp without time zone,
     project_count bigint
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'projects_by_month'
@@ -7674,7 +7649,7 @@ CREATE SEQUENCE projects_id_seq
 CREATE FOREIGN TABLE projects_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'projects_id_seq_view'
@@ -7696,7 +7671,7 @@ CREATE FOREIGN TABLE ratings (
     created_at timestamp without time zone DEFAULT timezone('UTC'::text, now()),
     updated_at timestamp without time zone DEFAULT timezone('UTC'::text, now())
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'ratings'
@@ -7740,7 +7715,7 @@ CREATE SEQUENCE ratings_id_seq
 CREATE FOREIGN TABLE ratings_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'ratings_id_seq_view'
@@ -7760,7 +7735,7 @@ CREATE FOREIGN TABLE recently_active_accounts_cache (
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'recently_active_accounts_cache'
@@ -7798,7 +7773,7 @@ CREATE SEQUENCE recently_active_accounts_cache_id_seq
 CREATE FOREIGN TABLE recently_active_accounts_cache_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'recently_active_accounts_cache_id_seq_view'
@@ -7818,7 +7793,7 @@ CREATE FOREIGN TABLE recommend_entries (
     project_id_recommends integer,
     weight double precision
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'recommend_entries'
@@ -7856,7 +7831,7 @@ CREATE SEQUENCE recommend_entries_id_seq
 CREATE FOREIGN TABLE recommend_entries_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'recommend_entries_id_seq_view'
@@ -7880,7 +7855,7 @@ CREATE FOREIGN TABLE recommendations (
     project_id integer,
     activation_code text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'recommendations'
@@ -7930,7 +7905,7 @@ CREATE SEQUENCE recommendations_id_seq
 CREATE FOREIGN TABLE recommendations_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'recommendations_id_seq_view'
@@ -7953,7 +7928,7 @@ CREATE FOREIGN TABLE releases (
     updated_at timestamp without time zone,
     project_security_set_id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'releases'
@@ -8000,7 +7975,7 @@ CREATE SEQUENCE releases_id_seq
 CREATE FOREIGN TABLE releases_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'releases_id_seq_view'
@@ -8018,7 +7993,7 @@ CREATE FOREIGN TABLE releases_vulnerabilities (
     release_id integer NOT NULL,
     vulnerability_id integer NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'releases_vulnerabilities'
@@ -8041,7 +8016,7 @@ CREATE FOREIGN TABLE reports (
     updated_at timestamp without time zone,
     title text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'reports'
@@ -8079,7 +8054,7 @@ CREATE SEQUENCE reports_id_seq
 CREATE FOREIGN TABLE reports_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'reports_id_seq_view'
@@ -8109,7 +8084,7 @@ CREATE FOREIGN TABLE repositories (
     owner_at_forge text,
     best_repository_directory_id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'repositories'
@@ -8177,7 +8152,7 @@ CREATE SEQUENCE repositories_id_seq
 CREATE FOREIGN TABLE repositories_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'repositories_id_seq_view'
@@ -8197,7 +8172,7 @@ CREATE FOREIGN TABLE repository_directories (
     repository_id integer,
     fetched_at timestamp without time zone
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'repository_directories'
@@ -8235,7 +8210,7 @@ CREATE SEQUENCE repository_directories_id_seq
 CREATE FOREIGN TABLE repository_directories_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'repository_directories_id_seq_view'
@@ -8257,7 +8232,7 @@ CREATE FOREIGN TABLE repository_tags (
     message text,
     "timestamp" timestamp without time zone
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'repository_tags'
@@ -8301,7 +8276,7 @@ CREATE SEQUENCE repository_tags_id_seq
 CREATE FOREIGN TABLE repository_tags_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'repository_tags_id_seq_view'
@@ -8327,7 +8302,7 @@ CREATE FOREIGN TABLE reverification_trackers (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'reverification_trackers'
@@ -8383,7 +8358,7 @@ CREATE SEQUENCE reverification_trackers_id_seq
 CREATE FOREIGN TABLE reverification_trackers_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'reverification_trackers_id_seq_view'
@@ -8407,7 +8382,7 @@ CREATE FOREIGN TABLE reviews (
     updated_at timestamp without time zone,
     helpful_score integer DEFAULT 0 NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'reviews'
@@ -8457,7 +8432,7 @@ CREATE SEQUENCE reviews_id_seq
 CREATE FOREIGN TABLE reviews_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'reviews_id_seq_view'
@@ -8478,7 +8453,7 @@ CREATE FOREIGN TABLE robins_contributions_test (
     name_fact_id integer,
     position_id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'robins_contributions_test'
@@ -8514,7 +8489,7 @@ CREATE FOREIGN TABLE rss_articles (
     author text,
     link text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'rss_articles'
@@ -8546,51 +8521,6 @@ ALTER FOREIGN TABLE rss_articles ALTER COLUMN link OPTIONS (
 
 
 --
--- Name: rss_articles_2; Type: FOREIGN TABLE; Schema: public; Owner: -
---
-
-CREATE FOREIGN TABLE rss_articles_2 (
-    id integer,
-    rss_feed_id integer,
-    guid text,
-    "time" timestamp without time zone,
-    title text,
-    description text,
-    author text,
-    link text
-)
-SERVER openhub
-OPTIONS (
-    schema_name 'public',
-    table_name 'rss_articles_2'
-);
-ALTER FOREIGN TABLE rss_articles_2 ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
-ALTER FOREIGN TABLE rss_articles_2 ALTER COLUMN rss_feed_id OPTIONS (
-    column_name 'rss_feed_id'
-);
-ALTER FOREIGN TABLE rss_articles_2 ALTER COLUMN guid OPTIONS (
-    column_name 'guid'
-);
-ALTER FOREIGN TABLE rss_articles_2 ALTER COLUMN "time" OPTIONS (
-    column_name 'time'
-);
-ALTER FOREIGN TABLE rss_articles_2 ALTER COLUMN title OPTIONS (
-    column_name 'title'
-);
-ALTER FOREIGN TABLE rss_articles_2 ALTER COLUMN description OPTIONS (
-    column_name 'description'
-);
-ALTER FOREIGN TABLE rss_articles_2 ALTER COLUMN author OPTIONS (
-    column_name 'author'
-);
-ALTER FOREIGN TABLE rss_articles_2 ALTER COLUMN link OPTIONS (
-    column_name 'link'
-);
-
-
---
 -- Name: rss_articles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -8609,7 +8539,7 @@ CREATE SEQUENCE rss_articles_id_seq
 CREATE FOREIGN TABLE rss_articles_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'rss_articles_id_seq_view'
@@ -8630,7 +8560,7 @@ CREATE FOREIGN TABLE rss_feeds (
     next_fetch timestamp without time zone,
     error text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'rss_feeds'
@@ -8671,7 +8601,7 @@ CREATE SEQUENCE rss_feeds_id_seq
 CREATE FOREIGN TABLE rss_feeds_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'rss_feeds_id_seq_view'
@@ -8691,7 +8621,7 @@ CREATE FOREIGN TABLE rss_subscriptions (
     rss_feed_id integer,
     deleted boolean DEFAULT false
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'rss_subscriptions'
@@ -8729,7 +8659,7 @@ CREATE SEQUENCE rss_subscriptions_id_seq
 CREATE FOREIGN TABLE rss_subscriptions_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'rss_subscriptions_id_seq_view'
@@ -8758,7 +8688,7 @@ CREATE FOREIGN TABLE sessions (
     data text,
     updated_at timestamp without time zone
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'sessions'
@@ -8796,7 +8726,7 @@ CREATE SEQUENCE sessions_id_seq
 CREATE FOREIGN TABLE sessions_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'sessions_id_seq_view'
@@ -8817,7 +8747,7 @@ CREATE FOREIGN TABLE settings (
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'settings'
@@ -8858,7 +8788,7 @@ CREATE SEQUENCE settings_id_seq
 CREATE FOREIGN TABLE settings_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'settings_id_seq_view'
@@ -8875,7 +8805,7 @@ ALTER FOREIGN TABLE settings_id_seq_view ALTER COLUMN id OPTIONS (
 CREATE FOREIGN TABLE sf_vhosted (
     domain text NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'sf_vhosted'
@@ -8897,7 +8827,7 @@ CREATE FOREIGN TABLE sfprojects (
     downloads boolean DEFAULT false,
     downloads_vhosted boolean DEFAULT false
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'sfprojects'
@@ -8929,7 +8859,7 @@ ALTER FOREIGN TABLE sfprojects ALTER COLUMN downloads_vhosted OPTIONS (
 CREATE FOREIGN TABLE size_facts_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'size_facts_id_seq_view'
@@ -8952,7 +8882,7 @@ CREATE FOREIGN TABLE slave_logs (
     code_set_id integer,
     level integer DEFAULT 0
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'slave_logs'
@@ -8999,7 +8929,7 @@ CREATE SEQUENCE slave_logs_id_seq
 CREATE FOREIGN TABLE slave_logs_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'slave_logs_id_seq_view'
@@ -9028,7 +8958,7 @@ CREATE SEQUENCE slave_permissions_id_seq
 CREATE FOREIGN TABLE slave_permissions_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'slave_permissions_id_seq_view'
@@ -9057,7 +8987,7 @@ CREATE FOREIGN TABLE slaves (
     enable_profiling boolean DEFAULT false,
     blocked_types text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'slaves'
@@ -9104,11 +9034,23 @@ ALTER FOREIGN TABLE slaves ALTER COLUMN blocked_types OPTIONS (
 
 
 --
+-- Name: sloc_metrics_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE sloc_metrics_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
 -- Name: sloc_metrics; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE sloc_metrics (
-    id bigint NOT NULL,
+    id bigint DEFAULT nextval('sloc_metrics_id_seq'::regclass) NOT NULL,
     diff_id bigint,
     language_id integer,
     code_added integer DEFAULT 0 NOT NULL,
@@ -9122,25 +9064,6 @@ CREATE TABLE sloc_metrics (
 
 
 --
--- Name: sloc_metrics_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE sloc_metrics_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sloc_metrics_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE sloc_metrics_id_seq OWNED BY sloc_metrics.id;
-
-
---
 -- Name: sloc_metrics_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -9149,65 +9072,11 @@ CREATE VIEW sloc_metrics_id_seq_view AS
 
 
 --
--- Name: sloc_sets; Type: FOREIGN TABLE; Schema: public; Owner: -
+-- Name: sloc_sets_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE sloc_sets (
-    id integer DEFAULT sloc_sets_id_seq_view() NOT NULL,
-    code_set_id integer NOT NULL,
-    updated_on timestamp without time zone,
-    as_of integer,
-    code_set_time timestamp without time zone
-)
-SERVER openhub
-OPTIONS (
-    schema_name 'public',
-    table_name 'sloc_sets'
-);
-ALTER FOREIGN TABLE sloc_sets ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
-ALTER FOREIGN TABLE sloc_sets ALTER COLUMN code_set_id OPTIONS (
-    column_name 'code_set_id'
-);
-ALTER FOREIGN TABLE sloc_sets ALTER COLUMN updated_on OPTIONS (
-    column_name 'updated_on'
-);
-ALTER FOREIGN TABLE sloc_sets ALTER COLUMN as_of OPTIONS (
-    column_name 'as_of'
-);
-ALTER FOREIGN TABLE sloc_sets ALTER COLUMN code_set_time OPTIONS (
-    column_name 'code_set_time'
-);
-
-
---
--- Name: sloc_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE sloc_sets_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sloc_sets_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
---
-
-CREATE FOREIGN TABLE sloc_sets_id_seq_view (
-    id integer
-)
-SERVER openhub
-OPTIONS (
-    schema_name 'public',
-    table_name 'sloc_sets_id_seq_view'
-);
-ALTER FOREIGN TABLE sloc_sets_id_seq_view ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
+CREATE VIEW sloc_sets_id_seq_view AS
+ SELECT (nextval('sloc_sets_id_seq'::regclass))::integer AS id;
 
 
 --
@@ -9222,7 +9091,7 @@ CREATE FOREIGN TABLE stack_entries (
     deleted_at timestamp without time zone,
     note text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'stack_entries'
@@ -9266,7 +9135,7 @@ CREATE SEQUENCE stack_entries_id_seq
 CREATE FOREIGN TABLE stack_entries_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'stack_entries_id_seq_view'
@@ -9286,7 +9155,7 @@ CREATE FOREIGN TABLE stack_ignores (
     created_at timestamp without time zone NOT NULL,
     stack_id integer NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'stack_ignores'
@@ -9324,7 +9193,7 @@ CREATE SEQUENCE stack_ignores_id_seq
 CREATE FOREIGN TABLE stack_ignores_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'stack_ignores_id_seq_view'
@@ -9349,7 +9218,7 @@ CREATE FOREIGN TABLE stacks (
     project_id integer,
     deleted_at timestamp without time zone
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'stacks'
@@ -9402,7 +9271,7 @@ CREATE SEQUENCE stacks_id_seq
 CREATE FOREIGN TABLE stacks_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'stacks_id_seq_view'
@@ -9420,7 +9289,7 @@ CREATE FOREIGN TABLE successful_accounts (
     id integer DEFAULT successful_accounts_id_seq_view() NOT NULL,
     account_id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'successful_accounts'
@@ -9452,7 +9321,7 @@ CREATE SEQUENCE successful_accounts_id_seq
 CREATE FOREIGN TABLE successful_accounts_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'successful_accounts_id_seq_view'
@@ -9472,7 +9341,7 @@ CREATE FOREIGN TABLE taggings (
     taggable_id integer,
     taggable_type character varying(255)
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'taggings'
@@ -9510,7 +9379,7 @@ CREATE SEQUENCE taggings_id_seq
 CREATE FOREIGN TABLE taggings_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'taggings_id_seq_view'
@@ -9530,7 +9399,7 @@ CREATE FOREIGN TABLE tags (
     taggings_count integer DEFAULT 0 NOT NULL,
     weight double precision DEFAULT 1.0 NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'tags'
@@ -9568,7 +9437,7 @@ CREATE SEQUENCE tags_id_seq
 CREATE FOREIGN TABLE tags_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'tags_id_seq_view'
@@ -9592,7 +9461,7 @@ CREATE FOREIGN TABLE thirty_day_summaries (
     lines_removed integer,
     created_at timestamp without time zone
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'thirty_day_summaries'
@@ -9642,7 +9511,7 @@ CREATE SEQUENCE thirty_day_summaries_id_seq
 CREATE FOREIGN TABLE thirty_day_summaries_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'thirty_day_summaries_id_seq_view'
@@ -9661,7 +9530,7 @@ CREATE FOREIGN TABLE tools (
     name text NOT NULL,
     description text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'tools'
@@ -9696,7 +9565,7 @@ CREATE SEQUENCE tools_id_seq
 CREATE FOREIGN TABLE tools_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'tools_id_seq_view'
@@ -9725,7 +9594,7 @@ CREATE FOREIGN TABLE topics (
     replied_by integer,
     last_post_id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'topics'
@@ -9790,13 +9659,174 @@ CREATE SEQUENCE topics_id_seq
 CREATE FOREIGN TABLE topics_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'topics_id_seq_view'
 );
 ALTER FOREIGN TABLE topics_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
+);
+
+
+--
+-- Name: unknown_spam_accounts; Type: FOREIGN TABLE; Schema: public; Owner: -
+--
+
+CREATE FOREIGN TABLE unknown_spam_accounts (
+    id integer NOT NULL,
+    login text NOT NULL,
+    email text NOT NULL,
+    crypted_password text NOT NULL,
+    salt text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    activation_code text,
+    activated_at timestamp without time zone,
+    remember_token text,
+    remember_token_expires_at timestamp without time zone,
+    level integer NOT NULL,
+    posts_count integer,
+    last_seen_at timestamp without time zone,
+    name text,
+    country_code text,
+    location text,
+    latitude numeric,
+    longitude numeric,
+    best_vita_id integer,
+    url text,
+    about_markup_id integer,
+    hide_experience boolean,
+    email_master boolean,
+    email_posts boolean,
+    email_kudos boolean,
+    email_md5 text,
+    email_opportunities_visited timestamp without time zone,
+    activation_resent_at timestamp without time zone,
+    akas text,
+    email_new_followers boolean,
+    last_seen_ip text,
+    twitter_account text,
+    reset_password_tokens text,
+    organization_id integer,
+    affiliation_type text NOT NULL,
+    organization_name text
+)
+SERVER ohloh
+OPTIONS (
+    schema_name 'public',
+    table_name 'unknown_spam_accounts'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN login OPTIONS (
+    column_name 'login'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN email OPTIONS (
+    column_name 'email'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN crypted_password OPTIONS (
+    column_name 'crypted_password'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN salt OPTIONS (
+    column_name 'salt'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN created_at OPTIONS (
+    column_name 'created_at'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN updated_at OPTIONS (
+    column_name 'updated_at'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN activation_code OPTIONS (
+    column_name 'activation_code'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN activated_at OPTIONS (
+    column_name 'activated_at'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN remember_token OPTIONS (
+    column_name 'remember_token'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN remember_token_expires_at OPTIONS (
+    column_name 'remember_token_expires_at'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN level OPTIONS (
+    column_name 'level'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN posts_count OPTIONS (
+    column_name 'posts_count'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN last_seen_at OPTIONS (
+    column_name 'last_seen_at'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN name OPTIONS (
+    column_name 'name'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN country_code OPTIONS (
+    column_name 'country_code'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN location OPTIONS (
+    column_name 'location'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN latitude OPTIONS (
+    column_name 'latitude'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN longitude OPTIONS (
+    column_name 'longitude'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN best_vita_id OPTIONS (
+    column_name 'best_vita_id'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN url OPTIONS (
+    column_name 'url'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN about_markup_id OPTIONS (
+    column_name 'about_markup_id'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN hide_experience OPTIONS (
+    column_name 'hide_experience'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN email_master OPTIONS (
+    column_name 'email_master'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN email_posts OPTIONS (
+    column_name 'email_posts'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN email_kudos OPTIONS (
+    column_name 'email_kudos'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN email_md5 OPTIONS (
+    column_name 'email_md5'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN email_opportunities_visited OPTIONS (
+    column_name 'email_opportunities_visited'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN activation_resent_at OPTIONS (
+    column_name 'activation_resent_at'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN akas OPTIONS (
+    column_name 'akas'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN email_new_followers OPTIONS (
+    column_name 'email_new_followers'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN last_seen_ip OPTIONS (
+    column_name 'last_seen_ip'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN twitter_account OPTIONS (
+    column_name 'twitter_account'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN reset_password_tokens OPTIONS (
+    column_name 'reset_password_tokens'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN organization_id OPTIONS (
+    column_name 'organization_id'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN affiliation_type OPTIONS (
+    column_name 'affiliation_type'
+);
+ALTER FOREIGN TABLE unknown_spam_accounts ALTER COLUMN organization_name OPTIONS (
+    column_name 'organization_name'
 );
 
 
@@ -9812,7 +9842,7 @@ CREATE FOREIGN TABLE verifications (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'verifications'
@@ -9856,7 +9886,7 @@ CREATE SEQUENCE verifications_id_seq
 CREATE FOREIGN TABLE verifications_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'verifications_id_seq_view'
@@ -9875,7 +9905,7 @@ CREATE FOREIGN TABLE vita_analyses (
     vita_id integer,
     analysis_id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'vita_analyses'
@@ -9910,7 +9940,7 @@ CREATE SEQUENCE vita_analyses_id_seq
 CREATE FOREIGN TABLE vita_analyses_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'vita_analyses_id_seq_view'
@@ -9929,7 +9959,7 @@ CREATE FOREIGN TABLE vitae (
     account_id integer NOT NULL,
     created_at timestamp without time zone
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'vitae'
@@ -9964,7 +9994,7 @@ CREATE SEQUENCE vitae_id_seq
 CREATE FOREIGN TABLE vitae_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'vitae_id_seq_view'
@@ -9989,7 +10019,7 @@ CREATE FOREIGN TABLE vulnerabilities (
     updated_at timestamp without time zone,
     description text
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'vulnerabilities'
@@ -10042,7 +10072,7 @@ CREATE SEQUENCE vulnerabilities_id_seq
 CREATE FOREIGN TABLE vulnerabilities_id_seq_view (
     id integer
 )
-SERVER openhub
+SERVER ohloh
 OPTIONS (
     schema_name 'public',
     table_name 'vulnerabilities_id_seq_view'
@@ -10053,52 +10083,57 @@ ALTER FOREIGN TABLE vulnerabilities_id_seq_view ALTER COLUMN id OPTIONS (
 
 
 --
--- Name: vw_projecturlnameedits; Type: FOREIGN TABLE; Schema: public; Owner: -
+-- Name: analysis_aliases id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE vw_projecturlnameedits (
-    project_id integer,
-    value text
-)
-SERVER openhub
-OPTIONS (
-    schema_name 'public',
-    table_name 'vw_projecturlnameedits'
-);
-ALTER FOREIGN TABLE vw_projecturlnameedits ALTER COLUMN project_id OPTIONS (
-    column_name 'project_id'
-);
-ALTER FOREIGN TABLE vw_projecturlnameedits ALTER COLUMN value OPTIONS (
-    column_name 'value'
-);
+ALTER TABLE ONLY analysis_aliases ALTER COLUMN id SET DEFAULT nextval('analysis_aliases_id_seq'::regclass);
 
 
 --
--- Name: commits id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: positions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY commits ALTER COLUMN id SET DEFAULT nextval('commits_id_seq'::regclass);
-
-
---
--- Name: diffs id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY diffs ALTER COLUMN id SET DEFAULT nextval('diffs_id_seq'::regclass);
+ALTER TABLE ONLY positions ALTER COLUMN id SET DEFAULT nextval('positions_id_seq'::regclass);
 
 
 --
--- Name: fyles id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: analysis_aliases analysis_aliases_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY fyles ALTER COLUMN id SET DEFAULT nextval('fyles_id_seq'::regclass);
+ALTER TABLE ONLY analysis_aliases
+    ADD CONSTRAINT analysis_aliases_pkey PRIMARY KEY (id);
 
 
 --
--- Name: sloc_metrics id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: analysis_aliases analysis_aliases_unique_analysis_id_and_commit_name_id; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY sloc_metrics ALTER COLUMN id SET DEFAULT nextval('sloc_metrics_id_seq'::regclass);
+ALTER TABLE ONLY analysis_aliases
+    ADD CONSTRAINT analysis_aliases_unique_analysis_id_and_commit_name_id UNIQUE (analysis_id, commit_name_id);
+
+
+--
+-- Name: analysis_sloc_sets analysis_sloc_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY analysis_sloc_sets
+    ADD CONSTRAINT analysis_sloc_sets_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: positions claims_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY positions
+    ADD CONSTRAINT claims_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: code_sets code_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_sets
+    ADD CONSTRAINT code_sets_pkey PRIMARY KEY (id);
 
 
 --
@@ -10126,25 +10161,62 @@ ALTER TABLE ONLY fyles
 
 
 --
--- Name: diffs unique_diffs_on_commit_id_fyle_id; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: sloc_sets sloc_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY diffs
-    ADD CONSTRAINT unique_diffs_on_commit_id_fyle_id UNIQUE (commit_id, fyle_id);
-
-
---
--- Name: index_commits_on_code_set_id_time; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_commits_on_code_set_id_time ON commits USING btree (code_set_id, "time");
+ALTER TABLE ONLY sloc_sets
+    ADD CONSTRAINT sloc_sets_pkey PRIMARY KEY (id);
 
 
 --
--- Name: index_commits_on_name_id_month; Type: INDEX; Schema: public; Owner: -
+-- Name: positions unique_account_id_project_id; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-CREATE INDEX index_commits_on_name_id_month ON commits USING btree (name_id, date_trunc('month'::text, "time"));
+ALTER TABLE ONLY positions
+    ADD CONSTRAINT unique_account_id_project_id UNIQUE (account_id, project_id);
+
+
+--
+-- Name: positions unique_project_id_name_id; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY positions
+    ADD CONSTRAINT unique_project_id_name_id UNIQUE (project_id, name_id);
+
+
+--
+-- Name: analysis_aliases_preferred_name_id_fkey; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX analysis_aliases_preferred_name_id_fkey ON analysis_aliases USING btree (analysis_id, preferred_name_id);
+
+
+--
+-- Name: index_analysis_sloc_sets_on_analysis_id_sloc_set_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_analysis_sloc_sets_on_analysis_id_sloc_set_id ON analysis_sloc_sets USING btree (analysis_id, sloc_set_id);
+
+
+--
+-- Name: index_analysis_sloc_sets_on_sloc_set_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_analysis_sloc_sets_on_sloc_set_id ON analysis_sloc_sets USING btree (sloc_set_id);
+
+
+--
+-- Name: index_claims_on_account_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_claims_on_account_id ON positions USING btree (account_id);
+
+
+--
+-- Name: index_code_sets_on_code_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_code_sets_on_code_location_id ON code_sets USING btree (code_location_id);
 
 
 --
@@ -10183,10 +10255,31 @@ CREATE INDEX index_fyles_on_name ON fyles USING btree (name);
 
 
 --
--- Name: index_on_commits_code_set_id_position; Type: INDEX; Schema: public; Owner: -
+-- Name: index_on_commits_code_set_id_and_position; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_on_commits_code_set_id_position ON commits USING btree (code_set_id, "position");
+CREATE INDEX index_on_commits_code_set_id_and_position ON commits USING btree (code_set_id, "position");
+
+
+--
+-- Name: index_on_commits_name_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_on_commits_name_id ON commits USING btree (name_id);
+
+
+--
+-- Name: index_on_commits_time; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_on_commits_time ON commits USING btree ("time");
+
+
+--
+-- Name: index_positions_on_organization_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_positions_on_organization_id ON positions USING btree (organization_id);
 
 
 --
@@ -10197,17 +10290,10 @@ CREATE INDEX index_sloc_metrics_on_diff_id ON sloc_metrics USING btree (diff_id)
 
 
 --
--- Name: index_sloc_metrics_on_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_sloc_sets_on_code_set_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_sloc_metrics_on_id ON sloc_metrics USING btree (id);
-
-
---
--- Name: index_sloc_metrics_on_sloc_set_id_language_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_sloc_metrics_on_sloc_set_id_language_id ON sloc_metrics USING btree (sloc_set_id, language_id);
+CREATE INDEX index_sloc_sets_on_code_set_id ON sloc_sets USING btree (code_set_id);
 
 
 --
@@ -10218,27 +10304,27 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 
 --
--- Name: diffs diffs_commit_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: analysis_sloc_sets analysis_sloc_sets_sloc_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY diffs
-    ADD CONSTRAINT diffs_commit_id_fkey FOREIGN KEY (commit_id) REFERENCES commits(id) ON DELETE CASCADE;
-
-
---
--- Name: diffs diffs_fyle_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY diffs
-    ADD CONSTRAINT diffs_fyle_id_fkey FOREIGN KEY (fyle_id) REFERENCES fyles(id);
+ALTER TABLE ONLY analysis_sloc_sets
+    ADD CONSTRAINT analysis_sloc_sets_sloc_set_id_fkey FOREIGN KEY (sloc_set_id) REFERENCES sloc_sets(id);
 
 
 --
--- Name: sloc_metrics sloc_metrics_diff_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: code_sets code_sets_best_sloc_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY sloc_metrics
-    ADD CONSTRAINT sloc_metrics_diff_id_fkey FOREIGN KEY (diff_id) REFERENCES diffs(id) ON DELETE CASCADE;
+ALTER TABLE ONLY code_sets
+    ADD CONSTRAINT code_sets_best_sloc_set_id_fkey FOREIGN KEY (best_sloc_set_id) REFERENCES sloc_sets(id);
+
+
+--
+-- Name: sloc_sets sloc_sets_code_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY sloc_sets
+    ADD CONSTRAINT sloc_sets_code_set_id_fkey FOREIGN KEY (code_set_id) REFERENCES code_sets(id) ON DELETE CASCADE;
 
 
 --
@@ -10247,5 +10333,5 @@ ALTER TABLE ONLY sloc_metrics
 
 SET search_path TO "$user", public;
 
-INSERT INTO schema_migrations (version) VALUES ('20170112183242');
+
 

@@ -55,5 +55,4 @@ class CodeSet < SecondBase::Base
   def new_code_set
     @new_code_set ||= CodeSet.create!(code_location_id: code_location_id)
   end
-  # .... to here
 end
