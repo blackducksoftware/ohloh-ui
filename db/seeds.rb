@@ -18,7 +18,8 @@ user = test_env ? ENV['FOREIGN_TEST_DB_USERNAME'] : ENV['FOREIGN_DB_USERNAME']
 password = test_env ? ENV['FOREIGN_TEST_DB_PASSWORD'] : ENV['FOREIGN_DB_PASSWORD']
 
 puts 'Alter foreign server'
-ActiveRecord::Base.connection.execute("ALTER SERVER fis OPTIONS(set host '#{host}', set dbname '#{name}', set port '#{port}')")
+ActiveRecord::Base.connection.execute("ALTER SERVER fis OPTIONS(set host '#{host}',
+                                      set dbname '#{name}', set port '#{port}')")
 
 puts 'Alter foreign user mapping'
 ActiveRecord::Base.connection.execute("ALTER USER MAPPING FOR #{user} SERVER fis OPTIONS(SET password '#{password}')")
