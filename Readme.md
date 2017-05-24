@@ -1,63 +1,87 @@
 OhlohUI
 =======
 
+Dependencies:
+----------------
+
+* OhlohUI uses the ruby version 2.2.5. Please install ruby 2.
+* OhlohUI uses the postgresql database. Please install postgresql and create a new user on it.
+
 Getting Started:
 ----------------
 
-* Install Vagrant
-* Clone this repository
-* **`cd vagrant`**
-* **`vagrant up`**
-
-The initial provisioning of the virtual machine will take roughly five minutes.
-
-After the inital sync, you need only run **`vagrant provision`** as that will
-run bundle install and restart the server for you. That should take just a few seconds.
-
-Experimental Docker Support:
-----------------------------
-
-Install boot2docker:
 ```
-brew update
-brew install boot2docker
-boot2docker init
-boot2docker up
-boot2docker ssh
-echo 'EXTRA_ARGS="--insecure-registry coreos.blackducksoftware.com:5000"' | sudo tee -a /var/lib/boot2docker/profile
-sudo /etc/init.d/docker restart
-exit
-eval "$(boot2docker shellinit)"
-```
-Build the application:
-
-```
-cd ~/src/ohloh-ui
-rake docker:build
-rake docker:run
-rake docker:status
-rake docker:open
-rake docker:tag
+$ git clone git@github.com:blackducksoftware/ohloh-ui.git
+$ cd ohloh-ui
+$ gem install bundler
+$ bundle install
 ```
 
-To see which builds are available for running, look here:
+The OhlohUI data is split between two databases in production. The development setup needs to reflect the same.
+The database names are configured in a file specific to each environment. For development, create a file **env.development**, with the following contents.
 
-http://coreos.blackducksoftware.com:5000/v1/repositories/ohloh-ui/tags
+```
+DB_HOST = localhost
+DB_NAME =
+DB_USERNAME =
+DB_PASSWORD =
 
-Pull Request Poller:
+FOREIGN_DB_HOST = localhost
+FOREIGN_DB_NAME =
+FOREIGN_DB_USERNAME =
+FOREIGN_DB_PASSWORD =
+
+TEST_DB_HOST = localhost
+TEST_DB_NAME =
+TEST_DB_USERNAME =
+TEST_DB_PASSWORD =
+```
+
+The *_USERNAME and *_PASSWORD entries need to reflect the user created in postgresql. The *DB_NAME entries should be new database names. These will be created during our setup.
+
+```
+$ rake db:create
+$ rake db:structure:load
+$ rake db:second_base:structure:load
+```
+
+Setup a default admin user. The arguments are optional. By default a user with the login **admin_user**, password **admin_password** and email **admin@example.com** will be created.
+
+```
+$ ruby script/setup_default_admin.rb <login> <passsword> <email>
+```
+
+This might throw a bunch of errors about relations and constraints already existing. Please ignore them and proceed.
+
+```
+$ rails s
+```
+
+Visit **localhost:3000** to checkout the site.
+
+Tests:
 --------------------
 
-* Runs all tests and generates code coverage information
-* Runs Rubocop
-* Runs Brakeman
-* Runs haml-lint
+```
+$ rake test
+```
 
-To view the automated Pull Request testing statuses,
-go to: stage-utility-1:8080/job/ohloh-ui-pull-request-sanitizer/
+Pull Request Builder:
+--------------------
 
-If you wish to run a similar thing locally do this:
+The OhlohUI CI uses the following task to verify PR compatibility.
 
-* **`rake && rubocop && brakeman -q && haml-lint .`**
+```
+$ rake ci:all_tasks
+```
+
+This runs:
+* rubocop
+* haml-lint
+* brakeman
+* bundle audit
+* teaspoon
+* rake test
 
 Note Mac OS X
 -------------------
