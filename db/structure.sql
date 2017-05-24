@@ -114,12 +114,57 @@ CREATE FUNCTION _get_parser_from_curcfg() RETURNS text
 
 
 --
+-- Name: analysis_aliases_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION analysis_aliases_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from analysis_aliases_id_seq_view$$;
+
+
+--
+-- Name: analysis_sloc_sets_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION analysis_sloc_sets_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from analysis_sloc_sets_id_seq_view$$;
+
+
+--
 -- Name: check_jobs(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION check_jobs(integer) RETURNS integer
     LANGUAGE sql
     AS $_$select repository_id as RESULT from jobs where status != 5 AND  repository_id= $1;$_$;
+
+
+--
+-- Name: code_location_tarballs_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION code_location_tarballs_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from code_location_tarballs_id_seq_view$$;
+
+
+--
+-- Name: code_sets_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION code_sets_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from code_sets_id_seq_view$$;
+
+
+--
+-- Name: commit_flags_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION commit_flags_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from commit_flags_id_seq_view$$;
 
 
 --
@@ -141,6 +186,24 @@ CREATE FUNCTION diffs_id_seq_view() RETURNS integer
 
 
 --
+-- Name: email_addresses_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION email_addresses_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from email_addresses_id_seq_view$$;
+
+
+--
+-- Name: fisbot_events_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION fisbot_events_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from fisbot_events_id_seq_view$$;
+
+
+--
 -- Name: fyles_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -150,12 +213,48 @@ CREATE FUNCTION fyles_id_seq_view() RETURNS integer
 
 
 --
+-- Name: load_averages_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION load_averages_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from load_averages_id_seq_view$$;
+
+
+--
+-- Name: slave_logs_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION slave_logs_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from slave_logs_id_seq_view$$;
+
+
+--
+-- Name: slave_permissions_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION slave_permissions_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from slave_permissions_id_seq_view$$;
+
+
+--
 -- Name: sloc_metrics_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION sloc_metrics_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from sloc_metrics_id_seq_view$$;
+
+
+--
+-- Name: sloc_sets_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION sloc_sets_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from sloc_sets_id_seq_view$$;
 
 
 --
@@ -739,14 +838,31 @@ CREATE VIEW analyses_id_seq_view AS
 
 
 --
--- Name: analysis_aliases; Type: TABLE; Schema: public; Owner: -
+-- Name: analysis_aliases; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE analysis_aliases (
-    id integer NOT NULL,
+CREATE FOREIGN TABLE analysis_aliases (
+    id integer DEFAULT analysis_aliases_id_seq_view() NOT NULL,
     analysis_id integer NOT NULL,
     commit_name_id integer NOT NULL,
     preferred_name_id integer NOT NULL
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'analysis_aliases'
+);
+ALTER FOREIGN TABLE analysis_aliases ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE analysis_aliases ALTER COLUMN analysis_id OPTIONS (
+    column_name 'analysis_id'
+);
+ALTER FOREIGN TABLE analysis_aliases ALTER COLUMN commit_name_id OPTIONS (
+    column_name 'commit_name_id'
+);
+ALTER FOREIGN TABLE analysis_aliases ALTER COLUMN preferred_name_id OPTIONS (
+    column_name 'preferred_name_id'
 );
 
 
@@ -763,32 +879,60 @@ CREATE SEQUENCE analysis_aliases_id_seq
 
 
 --
--- Name: analysis_aliases_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: analysis_aliases_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE analysis_aliases_id_seq OWNED BY analysis_aliases.id;
+CREATE FOREIGN TABLE analysis_aliases_id_seq_view (
+    id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'analysis_aliases_id_seq_view'
+);
+ALTER FOREIGN TABLE analysis_aliases_id_seq_view ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
 
 
 --
--- Name: analysis_aliases_id_seq_view; Type: VIEW; Schema: public; Owner: -
+-- Name: analysis_sloc_sets; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE VIEW analysis_aliases_id_seq_view AS
- SELECT (nextval('analysis_aliases_id_seq'::regclass))::integer AS id;
-
-
---
--- Name: analysis_sloc_sets; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE analysis_sloc_sets (
-    id integer NOT NULL,
+CREATE FOREIGN TABLE analysis_sloc_sets (
+    id integer DEFAULT analysis_sloc_sets_id_seq_view() NOT NULL,
     analysis_id integer NOT NULL,
     sloc_set_id integer NOT NULL,
     as_of integer,
     code_set_time timestamp without time zone,
     ignore text,
     ignored_fyle_count integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'analysis_sloc_sets'
+);
+ALTER FOREIGN TABLE analysis_sloc_sets ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE analysis_sloc_sets ALTER COLUMN analysis_id OPTIONS (
+    column_name 'analysis_id'
+);
+ALTER FOREIGN TABLE analysis_sloc_sets ALTER COLUMN sloc_set_id OPTIONS (
+    column_name 'sloc_set_id'
+);
+ALTER FOREIGN TABLE analysis_sloc_sets ALTER COLUMN as_of OPTIONS (
+    column_name 'as_of'
+);
+ALTER FOREIGN TABLE analysis_sloc_sets ALTER COLUMN code_set_time OPTIONS (
+    column_name 'code_set_time'
+);
+ALTER FOREIGN TABLE analysis_sloc_sets ALTER COLUMN ignore OPTIONS (
+    column_name 'ignore'
+);
+ALTER FOREIGN TABLE analysis_sloc_sets ALTER COLUMN ignored_fyle_count OPTIONS (
+    column_name 'ignored_fyle_count'
 );
 
 
@@ -805,18 +949,20 @@ CREATE SEQUENCE analysis_sloc_sets_id_seq
 
 
 --
--- Name: analysis_sloc_sets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: analysis_sloc_sets_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE analysis_sloc_sets_id_seq OWNED BY analysis_sloc_sets.id;
-
-
---
--- Name: analysis_sloc_sets_id_seq_view; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW analysis_sloc_sets_id_seq_view AS
- SELECT (nextval('analysis_sloc_sets_id_seq'::regclass))::integer AS id;
+CREATE FOREIGN TABLE analysis_sloc_sets_id_seq_view (
+    id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'analysis_sloc_sets_id_seq_view'
+);
+ALTER FOREIGN TABLE analysis_sloc_sets_id_seq_view ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
 
 
 --
@@ -1101,17 +1247,43 @@ CREATE VIEW clumps_id_seq_view AS
 
 
 --
--- Name: code_location_tarballs; Type: TABLE; Schema: public; Owner: -
+-- Name: code_location_tarballs; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE code_location_tarballs (
-    id integer NOT NULL,
+CREATE FOREIGN TABLE code_location_tarballs (
+    id integer DEFAULT code_location_tarballs_id_seq_view() NOT NULL,
     code_location_id integer,
     reference text,
     filepath text,
     status integer DEFAULT 0,
     created_at timestamp without time zone,
     type text
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'code_location_tarballs'
+);
+ALTER FOREIGN TABLE code_location_tarballs ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE code_location_tarballs ALTER COLUMN code_location_id OPTIONS (
+    column_name 'code_location_id'
+);
+ALTER FOREIGN TABLE code_location_tarballs ALTER COLUMN reference OPTIONS (
+    column_name 'reference'
+);
+ALTER FOREIGN TABLE code_location_tarballs ALTER COLUMN filepath OPTIONS (
+    column_name 'filepath'
+);
+ALTER FOREIGN TABLE code_location_tarballs ALTER COLUMN status OPTIONS (
+    column_name 'status'
+);
+ALTER FOREIGN TABLE code_location_tarballs ALTER COLUMN created_at OPTIONS (
+    column_name 'created_at'
+);
+ALTER FOREIGN TABLE code_location_tarballs ALTER COLUMN type OPTIONS (
+    column_name 'type'
 );
 
 
@@ -1128,18 +1300,20 @@ CREATE SEQUENCE code_location_tarballs_id_seq
 
 
 --
--- Name: code_location_tarballs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: code_location_tarballs_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE code_location_tarballs_id_seq OWNED BY code_location_tarballs.id;
-
-
---
--- Name: code_location_tarballs_id_seq_view; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW code_location_tarballs_id_seq_view AS
- SELECT (nextval('code_location_tarballs_id_seq'::regclass))::integer AS id;
+CREATE FOREIGN TABLE code_location_tarballs_id_seq_view (
+    id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'code_location_tarballs_id_seq_view'
+);
+ALTER FOREIGN TABLE code_location_tarballs_id_seq_view ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
 
 
 --
@@ -1187,11 +1361,11 @@ CREATE VIEW code_locations_id_seq_view AS
 
 
 --
--- Name: code_sets; Type: TABLE; Schema: public; Owner: -
+-- Name: code_sets; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE code_sets (
-    id integer NOT NULL,
+CREATE FOREIGN TABLE code_sets (
+    id integer DEFAULT code_sets_id_seq_view() NOT NULL,
     updated_on timestamp without time zone,
     best_sloc_set_id integer,
     as_of integer,
@@ -1199,6 +1373,35 @@ CREATE TABLE code_sets (
     clump_count integer DEFAULT 0,
     fetched_at timestamp without time zone,
     code_location_id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'code_sets'
+);
+ALTER FOREIGN TABLE code_sets ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE code_sets ALTER COLUMN updated_on OPTIONS (
+    column_name 'updated_on'
+);
+ALTER FOREIGN TABLE code_sets ALTER COLUMN best_sloc_set_id OPTIONS (
+    column_name 'best_sloc_set_id'
+);
+ALTER FOREIGN TABLE code_sets ALTER COLUMN as_of OPTIONS (
+    column_name 'as_of'
+);
+ALTER FOREIGN TABLE code_sets ALTER COLUMN logged_at OPTIONS (
+    column_name 'logged_at'
+);
+ALTER FOREIGN TABLE code_sets ALTER COLUMN clump_count OPTIONS (
+    column_name 'clump_count'
+);
+ALTER FOREIGN TABLE code_sets ALTER COLUMN fetched_at OPTIONS (
+    column_name 'fetched_at'
+);
+ALTER FOREIGN TABLE code_sets ALTER COLUMN code_location_id OPTIONS (
+    column_name 'code_location_id'
 );
 
 
@@ -1215,107 +1418,105 @@ CREATE SEQUENCE code_sets_id_seq
 
 
 --
--- Name: code_sets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: code_sets_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE code_sets_id_seq OWNED BY code_sets.id;
-
-
---
--- Name: code_sets_id_seq_view; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW code_sets_id_seq_view AS
- SELECT (nextval('code_sets_id_seq'::regclass))::integer AS id;
-
-
---
--- Name: projects; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE projects (
-    id integer NOT NULL,
-    name text,
-    description text,
-    comments text,
-    best_analysis_id integer,
-    deleted boolean DEFAULT false NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    old_name text,
-    missing_source text,
-    logo_id integer,
-    vanity_url text,
-    downloadable boolean DEFAULT false,
-    scraped boolean DEFAULT false,
-    vector tsvector,
-    popularity_factor numeric,
-    user_count integer DEFAULT 0 NOT NULL,
-    rating_average real,
-    forge_id integer,
-    name_at_forge text,
-    owner_at_forge text,
-    active_committers integer DEFAULT 0,
-    kb_id integer,
-    organization_id integer,
-    activity_level_index integer,
-    uuid character varying,
-    best_project_security_set_id integer,
-    CONSTRAINT valid_missing_source CHECK (((missing_source IS NULL) OR (missing_source = 'not available'::text) OR (missing_source = 'not supported'::text)))
+CREATE FOREIGN TABLE code_sets_id_seq_view (
+    id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'code_sets_id_seq_view'
+);
+ALTER FOREIGN TABLE code_sets_id_seq_view ALTER COLUMN id OPTIONS (
+    column_name 'id'
 );
 
 
 --
--- Name: sloc_sets; Type: TABLE; Schema: public; Owner: -
+-- Name: commit_contributors; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE sloc_sets (
-    id integer NOT NULL,
-    code_set_id integer NOT NULL,
-    updated_on timestamp without time zone,
-    as_of integer,
-    code_set_time timestamp without time zone
+CREATE FOREIGN TABLE commit_contributors (
+    id integer,
+    code_set_id integer,
+    name_id integer,
+    analysis_id integer,
+    project_id integer,
+    position_id integer,
+    account_id integer,
+    contribution_id bigint,
+    person_id bigint
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'commit_contributors'
+);
+ALTER FOREIGN TABLE commit_contributors ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE commit_contributors ALTER COLUMN code_set_id OPTIONS (
+    column_name 'code_set_id'
+);
+ALTER FOREIGN TABLE commit_contributors ALTER COLUMN name_id OPTIONS (
+    column_name 'name_id'
+);
+ALTER FOREIGN TABLE commit_contributors ALTER COLUMN analysis_id OPTIONS (
+    column_name 'analysis_id'
+);
+ALTER FOREIGN TABLE commit_contributors ALTER COLUMN project_id OPTIONS (
+    column_name 'project_id'
+);
+ALTER FOREIGN TABLE commit_contributors ALTER COLUMN position_id OPTIONS (
+    column_name 'position_id'
+);
+ALTER FOREIGN TABLE commit_contributors ALTER COLUMN account_id OPTIONS (
+    column_name 'account_id'
+);
+ALTER FOREIGN TABLE commit_contributors ALTER COLUMN contribution_id OPTIONS (
+    column_name 'contribution_id'
+);
+ALTER FOREIGN TABLE commit_contributors ALTER COLUMN person_id OPTIONS (
+    column_name 'person_id'
 );
 
 
 --
--- Name: commit_contributors; Type: VIEW; Schema: public; Owner: -
+-- Name: commit_flags; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE VIEW commit_contributors AS
- SELECT analysis_aliases.commit_name_id AS id,
-    sloc_sets.code_set_id,
-    analysis_aliases.commit_name_id AS name_id,
-    analysis_sloc_sets.analysis_id,
-    projects.id AS project_id,
-    positions.id AS position_id,
-    positions.account_id,
-        CASE
-            WHEN (positions.account_id IS NULL) THEN ((((projects.id)::bigint << 32) + (analysis_aliases.preferred_name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint)
-            ELSE (((projects.id)::bigint << 32) + (positions.account_id)::bigint)
-        END AS contribution_id,
-        CASE
-            WHEN (positions.account_id IS NULL) THEN ((((projects.id)::bigint << 32) + (analysis_aliases.preferred_name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint)
-            ELSE (positions.account_id)::bigint
-        END AS person_id
-   FROM ((((analysis_sloc_sets
-     JOIN sloc_sets ON ((analysis_sloc_sets.sloc_set_id = sloc_sets.id)))
-     JOIN projects ON ((analysis_sloc_sets.analysis_id = projects.best_analysis_id)))
-     JOIN analysis_aliases ON ((analysis_aliases.analysis_id = analysis_sloc_sets.analysis_id)))
-     LEFT JOIN positions ON (((positions.project_id = projects.id) AND (positions.name_id = analysis_aliases.preferred_name_id))));
-
-
---
--- Name: commit_flags; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE commit_flags (
-    id integer NOT NULL,
+CREATE FOREIGN TABLE commit_flags (
+    id integer DEFAULT commit_flags_id_seq_view() NOT NULL,
     sloc_set_id integer NOT NULL,
     commit_id integer NOT NULL,
     "time" timestamp without time zone NOT NULL,
     type text NOT NULL,
     data text
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'commit_flags'
+);
+ALTER FOREIGN TABLE commit_flags ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE commit_flags ALTER COLUMN sloc_set_id OPTIONS (
+    column_name 'sloc_set_id'
+);
+ALTER FOREIGN TABLE commit_flags ALTER COLUMN commit_id OPTIONS (
+    column_name 'commit_id'
+);
+ALTER FOREIGN TABLE commit_flags ALTER COLUMN "time" OPTIONS (
+    column_name 'time'
+);
+ALTER FOREIGN TABLE commit_flags ALTER COLUMN type OPTIONS (
+    column_name 'type'
+);
+ALTER FOREIGN TABLE commit_flags ALTER COLUMN data OPTIONS (
+    column_name 'data'
 );
 
 
@@ -1332,18 +1533,20 @@ CREATE SEQUENCE commit_flags_id_seq
 
 
 --
--- Name: commit_flags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: commit_flags_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE commit_flags_id_seq OWNED BY commit_flags.id;
-
-
---
--- Name: commit_flags_id_seq_view; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW commit_flags_id_seq_view AS
- SELECT (nextval('commit_flags_id_seq'::regclass))::integer AS id;
+CREATE FOREIGN TABLE commit_flags_id_seq_view (
+    id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'commit_flags_id_seq_view'
+);
+ALTER FOREIGN TABLE commit_flags_id_seq_view ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
 
 
 --
@@ -1468,6 +1671,42 @@ CREATE TABLE people (
     vector tsvector,
     popularity_factor numeric,
     CONSTRAINT people_name_fact_id_account_id CHECK ((((name_fact_id IS NOT NULL) AND (name_id IS NOT NULL) AND (project_id IS NOT NULL)) OR (account_id IS NOT NULL)))
+);
+
+
+--
+-- Name: projects; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE projects (
+    id integer NOT NULL,
+    name text,
+    description text,
+    comments text,
+    best_analysis_id integer,
+    deleted boolean DEFAULT false NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    old_name text,
+    missing_source text,
+    logo_id integer,
+    vanity_url text,
+    downloadable boolean DEFAULT false,
+    scraped boolean DEFAULT false,
+    vector tsvector,
+    popularity_factor numeric,
+    user_count integer DEFAULT 0 NOT NULL,
+    rating_average real,
+    forge_id integer,
+    name_at_forge text,
+    owner_at_forge text,
+    active_committers integer DEFAULT 0,
+    kb_id integer,
+    organization_id integer,
+    activity_level_index integer,
+    uuid character varying,
+    best_project_security_set_id integer,
+    CONSTRAINT valid_missing_source CHECK (((missing_source IS NULL) OR (missing_source = 'not available'::text) OR (missing_source = 'not supported'::text)))
 );
 
 
@@ -1783,12 +2022,23 @@ CREATE VIEW edits_id_seq_view AS
 
 
 --
--- Name: email_addresses; Type: TABLE; Schema: public; Owner: -
+-- Name: email_addresses; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE email_addresses (
-    id integer NOT NULL,
+CREATE FOREIGN TABLE email_addresses (
+    id integer DEFAULT email_addresses_id_seq_view() NOT NULL,
     address text NOT NULL
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'email_addresses'
+);
+ALTER FOREIGN TABLE email_addresses ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE email_addresses ALTER COLUMN address OPTIONS (
+    column_name 'address'
 );
 
 
@@ -1805,18 +2055,20 @@ CREATE SEQUENCE email_addresses_id_seq
 
 
 --
--- Name: email_addresses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: email_addresses_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE email_addresses_id_seq OWNED BY email_addresses.id;
-
-
---
--- Name: email_addresses_id_seq_view; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW email_addresses_id_seq_view AS
- SELECT (nextval('email_addresses_id_seq'::regclass))::integer AS id;
+CREATE FOREIGN TABLE email_addresses_id_seq_view (
+    id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'email_addresses_id_seq_view'
+);
+ALTER FOREIGN TABLE email_addresses_id_seq_view ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
 
 
 --
@@ -2075,11 +2327,11 @@ CREATE VIEW feedbacks_id_seq_view AS
 
 
 --
--- Name: fisbot_events; Type: TABLE; Schema: public; Owner: -
+-- Name: fisbot_events; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE fisbot_events (
-    id integer NOT NULL,
+CREATE FOREIGN TABLE fisbot_events (
+    id integer DEFAULT fisbot_events_id_seq_view() NOT NULL,
     code_location_id integer,
     type text NOT NULL,
     value text,
@@ -2089,6 +2341,41 @@ CREATE TABLE fisbot_events (
     updated_at timestamp without time zone NOT NULL,
     repository_id integer,
     component_id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'fisbot_events'
+);
+ALTER FOREIGN TABLE fisbot_events ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE fisbot_events ALTER COLUMN code_location_id OPTIONS (
+    column_name 'code_location_id'
+);
+ALTER FOREIGN TABLE fisbot_events ALTER COLUMN type OPTIONS (
+    column_name 'type'
+);
+ALTER FOREIGN TABLE fisbot_events ALTER COLUMN value OPTIONS (
+    column_name 'value'
+);
+ALTER FOREIGN TABLE fisbot_events ALTER COLUMN commit_sha1 OPTIONS (
+    column_name 'commit_sha1'
+);
+ALTER FOREIGN TABLE fisbot_events ALTER COLUMN status OPTIONS (
+    column_name 'status'
+);
+ALTER FOREIGN TABLE fisbot_events ALTER COLUMN created_at OPTIONS (
+    column_name 'created_at'
+);
+ALTER FOREIGN TABLE fisbot_events ALTER COLUMN updated_at OPTIONS (
+    column_name 'updated_at'
+);
+ALTER FOREIGN TABLE fisbot_events ALTER COLUMN repository_id OPTIONS (
+    column_name 'repository_id'
+);
+ALTER FOREIGN TABLE fisbot_events ALTER COLUMN component_id OPTIONS (
+    column_name 'component_id'
 );
 
 
@@ -2105,18 +2392,20 @@ CREATE SEQUENCE fisbot_events_id_seq
 
 
 --
--- Name: fisbot_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: fisbot_events_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE fisbot_events_id_seq OWNED BY fisbot_events.id;
-
-
---
--- Name: fisbot_events_id_seq_view; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW fisbot_events_id_seq_view AS
- SELECT (nextval('fisbot_events_id_seq'::regclass))::integer AS id;
+CREATE FOREIGN TABLE fisbot_events_id_seq_view (
+    id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'fisbot_events_id_seq_view'
+);
+ALTER FOREIGN TABLE fisbot_events_id_seq_view ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
 
 
 --
@@ -3015,13 +3304,27 @@ CREATE VIEW links_id_seq_view AS
 
 
 --
--- Name: load_averages; Type: TABLE; Schema: public; Owner: -
+-- Name: load_averages; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE load_averages (
+CREATE FOREIGN TABLE load_averages (
     current numeric DEFAULT 0.0,
-    id integer NOT NULL,
+    id integer DEFAULT load_averages_id_seq_view() NOT NULL,
     max numeric DEFAULT 3.0
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'load_averages'
+);
+ALTER FOREIGN TABLE load_averages ALTER COLUMN current OPTIONS (
+    column_name 'current'
+);
+ALTER FOREIGN TABLE load_averages ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE load_averages ALTER COLUMN max OPTIONS (
+    column_name 'max'
 );
 
 
@@ -3038,18 +3341,20 @@ CREATE SEQUENCE load_averages_id_seq
 
 
 --
--- Name: load_averages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: load_averages_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE load_averages_id_seq OWNED BY load_averages.id;
-
-
---
--- Name: load_averages_id_seq_view; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW load_averages_id_seq_view AS
- SELECT (nextval('load_averages_id_seq'::regclass))::integer AS id;
+CREATE FOREIGN TABLE load_averages_id_seq_view (
+    id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'load_averages_id_seq_view'
+);
+ALTER FOREIGN TABLE load_averages_id_seq_view ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
 
 
 --
@@ -5116,17 +5421,43 @@ CREATE VIEW size_facts_id_seq_view AS
 
 
 --
--- Name: slave_logs; Type: TABLE; Schema: public; Owner: -
+-- Name: slave_logs; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE slave_logs (
-    id integer NOT NULL,
+CREATE FOREIGN TABLE slave_logs (
+    id integer DEFAULT slave_logs_id_seq_view() NOT NULL,
     message text,
     created_on timestamp without time zone,
     slave_id integer,
     job_id integer,
     code_set_id integer,
     level integer DEFAULT 0
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'slave_logs'
+);
+ALTER FOREIGN TABLE slave_logs ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE slave_logs ALTER COLUMN message OPTIONS (
+    column_name 'message'
+);
+ALTER FOREIGN TABLE slave_logs ALTER COLUMN created_on OPTIONS (
+    column_name 'created_on'
+);
+ALTER FOREIGN TABLE slave_logs ALTER COLUMN slave_id OPTIONS (
+    column_name 'slave_id'
+);
+ALTER FOREIGN TABLE slave_logs ALTER COLUMN job_id OPTIONS (
+    column_name 'job_id'
+);
+ALTER FOREIGN TABLE slave_logs ALTER COLUMN code_set_id OPTIONS (
+    column_name 'code_set_id'
+);
+ALTER FOREIGN TABLE slave_logs ALTER COLUMN level OPTIONS (
+    column_name 'level'
 );
 
 
@@ -5143,38 +5474,19 @@ CREATE SEQUENCE slave_logs_id_seq
 
 
 --
--- Name: slave_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: slave_logs_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE slave_logs_id_seq OWNED BY slave_logs.id;
-
-
---
--- Name: slave_logs_id_seq_view; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW slave_logs_id_seq_view AS
- SELECT (nextval('slave_logs_id_seq'::regclass))::integer AS id;
-
-
---
--- Name: slaves; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE slaves (
-    id integer NOT NULL,
-    allow_deny text,
-    hostname text NOT NULL,
-    available_blocks integer,
-    used_blocks integer,
-    used_percent integer,
-    updated_at timestamp without time zone,
-    load_average numeric,
-    clump_dir text,
-    clump_status text,
-    oldest_clump_timestamp timestamp without time zone,
-    enable_profiling boolean DEFAULT false,
-    blocked_types text
+CREATE FOREIGN TABLE slave_logs_id_seq_view (
+    id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'slave_logs_id_seq_view'
+);
+ALTER FOREIGN TABLE slave_logs_id_seq_view ALTER COLUMN id OPTIONS (
+    column_name 'id'
 );
 
 
@@ -5191,18 +5503,85 @@ CREATE SEQUENCE slave_permissions_id_seq
 
 
 --
--- Name: slave_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: slave_permissions_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE slave_permissions_id_seq OWNED BY slaves.id;
+CREATE FOREIGN TABLE slave_permissions_id_seq_view (
+    id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'slave_permissions_id_seq_view'
+);
+ALTER FOREIGN TABLE slave_permissions_id_seq_view ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
 
 
 --
--- Name: slave_permissions_id_seq_view; Type: VIEW; Schema: public; Owner: -
+-- Name: slaves; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE VIEW slave_permissions_id_seq_view AS
- SELECT (nextval('slave_permissions_id_seq'::regclass))::integer AS id;
+CREATE FOREIGN TABLE slaves (
+    id integer DEFAULT slave_permissions_id_seq_view() NOT NULL,
+    allow_deny text,
+    hostname text NOT NULL,
+    available_blocks integer,
+    used_blocks integer,
+    used_percent integer,
+    updated_at timestamp without time zone,
+    load_average numeric,
+    clump_dir text,
+    clump_status text,
+    oldest_clump_timestamp timestamp without time zone,
+    enable_profiling boolean DEFAULT false,
+    blocked_types text
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'slaves'
+);
+ALTER FOREIGN TABLE slaves ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE slaves ALTER COLUMN allow_deny OPTIONS (
+    column_name 'allow_deny'
+);
+ALTER FOREIGN TABLE slaves ALTER COLUMN hostname OPTIONS (
+    column_name 'hostname'
+);
+ALTER FOREIGN TABLE slaves ALTER COLUMN available_blocks OPTIONS (
+    column_name 'available_blocks'
+);
+ALTER FOREIGN TABLE slaves ALTER COLUMN used_blocks OPTIONS (
+    column_name 'used_blocks'
+);
+ALTER FOREIGN TABLE slaves ALTER COLUMN used_percent OPTIONS (
+    column_name 'used_percent'
+);
+ALTER FOREIGN TABLE slaves ALTER COLUMN updated_at OPTIONS (
+    column_name 'updated_at'
+);
+ALTER FOREIGN TABLE slaves ALTER COLUMN load_average OPTIONS (
+    column_name 'load_average'
+);
+ALTER FOREIGN TABLE slaves ALTER COLUMN clump_dir OPTIONS (
+    column_name 'clump_dir'
+);
+ALTER FOREIGN TABLE slaves ALTER COLUMN clump_status OPTIONS (
+    column_name 'clump_status'
+);
+ALTER FOREIGN TABLE slaves ALTER COLUMN oldest_clump_timestamp OPTIONS (
+    column_name 'oldest_clump_timestamp'
+);
+ALTER FOREIGN TABLE slaves ALTER COLUMN enable_profiling OPTIONS (
+    column_name 'enable_profiling'
+);
+ALTER FOREIGN TABLE slaves ALTER COLUMN blocked_types OPTIONS (
+    column_name 'blocked_types'
+);
 
 
 --
@@ -5288,6 +5667,39 @@ ALTER FOREIGN TABLE sloc_metrics_id_seq_view ALTER COLUMN id OPTIONS (
 
 
 --
+-- Name: sloc_sets; Type: FOREIGN TABLE; Schema: public; Owner: -
+--
+
+CREATE FOREIGN TABLE sloc_sets (
+    id integer DEFAULT sloc_sets_id_seq_view() NOT NULL,
+    code_set_id integer NOT NULL,
+    updated_on timestamp without time zone,
+    as_of integer,
+    code_set_time timestamp without time zone
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'sloc_sets'
+);
+ALTER FOREIGN TABLE sloc_sets ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE sloc_sets ALTER COLUMN code_set_id OPTIONS (
+    column_name 'code_set_id'
+);
+ALTER FOREIGN TABLE sloc_sets ALTER COLUMN updated_on OPTIONS (
+    column_name 'updated_on'
+);
+ALTER FOREIGN TABLE sloc_sets ALTER COLUMN as_of OPTIONS (
+    column_name 'as_of'
+);
+ALTER FOREIGN TABLE sloc_sets ALTER COLUMN code_set_time OPTIONS (
+    column_name 'code_set_time'
+);
+
+
+--
 -- Name: sloc_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -5300,18 +5712,20 @@ CREATE SEQUENCE sloc_sets_id_seq
 
 
 --
--- Name: sloc_sets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: sloc_sets_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE sloc_sets_id_seq OWNED BY sloc_sets.id;
-
-
---
--- Name: sloc_sets_id_seq_view; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW sloc_sets_id_seq_view AS
- SELECT (nextval('sloc_sets_id_seq'::regclass))::integer AS id;
+CREATE FOREIGN TABLE sloc_sets_id_seq_view (
+    id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'sloc_sets_id_seq_view'
+);
+ALTER FOREIGN TABLE sloc_sets_id_seq_view ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
 
 
 --
@@ -5897,20 +6311,6 @@ ALTER TABLE ONLY analyses ALTER COLUMN id SET DEFAULT nextval('analyses_id_seq':
 
 
 --
--- Name: analysis_aliases id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY analysis_aliases ALTER COLUMN id SET DEFAULT nextval('analysis_aliases_id_seq'::regclass);
-
-
---
--- Name: analysis_sloc_sets id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY analysis_sloc_sets ALTER COLUMN id SET DEFAULT nextval('analysis_sloc_sets_id_seq'::regclass);
-
-
---
 -- Name: analysis_summaries id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -5946,31 +6346,10 @@ ALTER TABLE ONLY clumps ALTER COLUMN id SET DEFAULT nextval('clumps_id_seq'::reg
 
 
 --
--- Name: code_location_tarballs id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY code_location_tarballs ALTER COLUMN id SET DEFAULT nextval('code_location_tarballs_id_seq'::regclass);
-
-
---
 -- Name: code_locations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY code_locations ALTER COLUMN id SET DEFAULT nextval('code_locations_id_seq'::regclass);
-
-
---
--- Name: code_sets id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY code_sets ALTER COLUMN id SET DEFAULT nextval('code_sets_id_seq'::regclass);
-
-
---
--- Name: commit_flags id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY commit_flags ALTER COLUMN id SET DEFAULT nextval('commit_flags_id_seq'::regclass);
 
 
 --
@@ -5985,13 +6364,6 @@ ALTER TABLE ONLY deleted_accounts ALTER COLUMN id SET DEFAULT nextval('deleted_a
 --
 
 ALTER TABLE ONLY duplicates ALTER COLUMN id SET DEFAULT nextval('duplicates_id_seq'::regclass);
-
-
---
--- Name: email_addresses id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY email_addresses ALTER COLUMN id SET DEFAULT nextval('email_addresses_id_seq'::regclass);
 
 
 --
@@ -6034,13 +6406,6 @@ ALTER TABLE ONLY failure_groups ALTER COLUMN id SET DEFAULT nextval('failure_gro
 --
 
 ALTER TABLE ONLY feedbacks ALTER COLUMN id SET DEFAULT nextval('feedbacks_id_seq'::regclass);
-
-
---
--- Name: fisbot_events id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY fisbot_events ALTER COLUMN id SET DEFAULT nextval('fisbot_events_id_seq'::regclass);
 
 
 --
@@ -6153,13 +6518,6 @@ ALTER TABLE ONLY link_categories_deleted ALTER COLUMN id SET DEFAULT nextval('li
 --
 
 ALTER TABLE ONLY links ALTER COLUMN id SET DEFAULT nextval('links_id_seq'::regclass);
-
-
---
--- Name: load_averages id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY load_averages ALTER COLUMN id SET DEFAULT nextval('load_averages_id_seq'::regclass);
 
 
 --
@@ -6471,27 +6829,6 @@ ALTER TABLE ONLY settings ALTER COLUMN id SET DEFAULT nextval('settings_id_seq':
 
 
 --
--- Name: slave_logs id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY slave_logs ALTER COLUMN id SET DEFAULT nextval('slave_logs_id_seq'::regclass);
-
-
---
--- Name: slaves id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY slaves ALTER COLUMN id SET DEFAULT nextval('slave_permissions_id_seq'::regclass);
-
-
---
--- Name: sloc_sets id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY sloc_sets ALTER COLUMN id SET DEFAULT nextval('sloc_sets_id_seq'::regclass);
-
-
---
 -- Name: stack_entries id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -6655,30 +6992,6 @@ ALTER TABLE ONLY analyses
 
 
 --
--- Name: analysis_aliases analysis_aliases_analysis_id_commit_name_id; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY analysis_aliases
-    ADD CONSTRAINT analysis_aliases_analysis_id_commit_name_id UNIQUE (analysis_id, commit_name_id);
-
-
---
--- Name: analysis_aliases analysis_aliases_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY analysis_aliases
-    ADD CONSTRAINT analysis_aliases_pkey PRIMARY KEY (id);
-
-
---
--- Name: analysis_sloc_sets analysis_sloc_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY analysis_sloc_sets
-    ADD CONSTRAINT analysis_sloc_sets_pkey PRIMARY KEY (id);
-
-
---
 -- Name: analysis_summaries analysis_summaries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6735,35 +7048,11 @@ ALTER TABLE ONLY clumps
 
 
 --
--- Name: code_location_tarballs code_location_tarballs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY code_location_tarballs
-    ADD CONSTRAINT code_location_tarballs_pkey PRIMARY KEY (id);
-
-
---
 -- Name: code_locations code_locations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY code_locations
     ADD CONSTRAINT code_locations_pkey PRIMARY KEY (id);
-
-
---
--- Name: code_sets code_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY code_sets
-    ADD CONSTRAINT code_sets_pkey PRIMARY KEY (id);
-
-
---
--- Name: commit_flags commit_flags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY commit_flags
-    ADD CONSTRAINT commit_flags_pkey PRIMARY KEY (id);
 
 
 --
@@ -6788,22 +7077,6 @@ ALTER TABLE ONLY duplicates
 
 ALTER TABLE ONLY edits
     ADD CONSTRAINT edits_pkey1 PRIMARY KEY (id);
-
-
---
--- Name: email_addresses email_addresses_address_key; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY email_addresses
-    ADD CONSTRAINT email_addresses_address_key UNIQUE (address);
-
-
---
--- Name: email_addresses email_addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY email_addresses
-    ADD CONSTRAINT email_addresses_pkey PRIMARY KEY (id);
 
 
 --
@@ -6852,14 +7125,6 @@ ALTER TABLE ONLY failure_groups
 
 ALTER TABLE ONLY feedbacks
     ADD CONSTRAINT feedbacks_pkey PRIMARY KEY (id);
-
-
---
--- Name: fisbot_events fisbot_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY fisbot_events
-    ADD CONSTRAINT fisbot_events_pkey PRIMARY KEY (id);
 
 
 --
@@ -7020,14 +7285,6 @@ ALTER TABLE ONLY link_categories_deleted
 
 ALTER TABLE ONLY links
     ADD CONSTRAINT links_pkey PRIMARY KEY (id);
-
-
---
--- Name: load_averages load_averages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY load_averages
-    ADD CONSTRAINT load_averages_pkey PRIMARY KEY (id);
 
 
 --
@@ -7447,30 +7704,6 @@ ALTER TABLE ONLY settings
 
 
 --
--- Name: slave_logs slave_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY slave_logs
-    ADD CONSTRAINT slave_logs_pkey PRIMARY KEY (id);
-
-
---
--- Name: slaves slave_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY slaves
-    ADD CONSTRAINT slave_permissions_pkey PRIMARY KEY (id);
-
-
---
--- Name: sloc_sets sloc_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY sloc_sets
-    ADD CONSTRAINT sloc_sets_pkey PRIMARY KEY (id);
-
-
---
 -- Name: stack_entries stack_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7661,13 +7894,6 @@ CREATE INDEX edits_project_id ON edits USING btree (project_id) WHERE (project_i
 
 
 --
--- Name: foo; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX foo ON slaves USING btree (clump_status) WHERE (oldest_clump_timestamp IS NOT NULL);
-
-
---
 -- Name: github_project_owner_idx; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7766,27 +7992,6 @@ CREATE INDEX index_analyses_on_project_id ON analyses USING btree (project_id);
 
 
 --
--- Name: index_analysis_aliases_on_analysis_id_preferred_name_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_analysis_aliases_on_analysis_id_preferred_name_id ON analysis_aliases USING btree (analysis_id, preferred_name_id);
-
-
---
--- Name: index_analysis_sloc_sets_on_analysis_id_sloc_set_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_analysis_sloc_sets_on_analysis_id_sloc_set_id ON analysis_sloc_sets USING btree (analysis_id, sloc_set_id);
-
-
---
--- Name: index_analysis_sloc_sets_on_sloc_set_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_analysis_sloc_sets_on_sloc_set_id ON analysis_sloc_sets USING btree (sloc_set_id);
-
-
---
 -- Name: index_analysis_summaries_on_analysis_id_type; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7836,20 +8041,6 @@ CREATE INDEX index_clumps_on_code_set_id_slave_id ON clumps USING btree (code_se
 
 
 --
--- Name: index_code_location_tarballs_on_code_location_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_code_location_tarballs_on_code_location_id ON code_location_tarballs USING btree (code_location_id);
-
-
---
--- Name: index_code_location_tarballs_on_reference; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_code_location_tarballs_on_reference ON code_location_tarballs USING btree (reference);
-
-
---
 -- Name: index_code_locations_on_best_code_set_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7868,48 +8059,6 @@ CREATE INDEX index_code_locations_on_repository_id ON code_locations USING btree
 --
 
 CREATE UNIQUE INDEX index_code_locations_on_repository_id_and_module_branch_name ON code_locations USING btree (repository_id, module_branch_name);
-
-
---
--- Name: index_code_sets_on_best_sloc_set_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_code_sets_on_best_sloc_set_id ON code_sets USING btree (best_sloc_set_id);
-
-
---
--- Name: index_code_sets_on_code_location_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_code_sets_on_code_location_id ON code_sets USING btree (code_location_id);
-
-
---
--- Name: index_code_sets_on_logged_at; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_code_sets_on_logged_at ON code_sets USING btree ((COALESCE(logged_at, '1970-01-01 00:00:00'::timestamp without time zone)));
-
-
---
--- Name: index_commit_flags_on_commit_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_commit_flags_on_commit_id ON commit_flags USING btree (commit_id);
-
-
---
--- Name: index_commit_flags_on_sloc_set_id_commit_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_commit_flags_on_sloc_set_id_commit_id ON commit_flags USING btree (sloc_set_id, commit_id);
-
-
---
--- Name: index_commit_flags_on_sloc_set_id_time; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_commit_flags_on_sloc_set_id_time ON commit_flags USING btree (sloc_set_id, "time" DESC);
 
 
 --
@@ -8001,20 +8150,6 @@ CREATE INDEX index_factoids_on_analysis_id ON factoids USING btree (analysis_id)
 --
 
 CREATE INDEX index_failure_groups_on_priority_name ON failure_groups USING btree (priority, name);
-
-
---
--- Name: index_fisbot_events_on_code_location_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_fisbot_events_on_code_location_id ON fisbot_events USING btree (code_location_id);
-
-
---
--- Name: index_fisbot_events_on_repository_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_fisbot_events_on_repository_id ON fisbot_events USING btree (repository_id);
 
 
 --
@@ -8641,41 +8776,6 @@ CREATE UNIQUE INDEX index_settings_on_key ON settings USING btree (key);
 
 
 --
--- Name: index_slave_logs_on_code_sets_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_slave_logs_on_code_sets_id ON slave_logs USING btree (code_set_id);
-
-
---
--- Name: index_slave_logs_on_created_on; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_slave_logs_on_created_on ON slave_logs USING btree (created_on);
-
-
---
--- Name: index_slave_logs_on_job_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_slave_logs_on_job_id ON slave_logs USING btree (job_id);
-
-
---
--- Name: index_slave_logs_on_slave_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_slave_logs_on_slave_id ON slave_logs USING btree (slave_id);
-
-
---
--- Name: index_sloc_sets_on_code_set_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_sloc_sets_on_code_set_id ON sloc_sets USING btree (code_set_id);
-
-
---
 -- Name: index_stack_entries_on_project_stack_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8936,46 +9036,6 @@ ALTER TABLE ONLY analyses
 
 
 --
--- Name: analysis_aliases analysis_aliases_analysis_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY analysis_aliases
-    ADD CONSTRAINT analysis_aliases_analysis_id_fkey FOREIGN KEY (analysis_id) REFERENCES analyses(id) ON DELETE CASCADE;
-
-
---
--- Name: analysis_aliases analysis_aliases_commit_name_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY analysis_aliases
-    ADD CONSTRAINT analysis_aliases_commit_name_id_fkey FOREIGN KEY (commit_name_id) REFERENCES names(id) ON DELETE CASCADE;
-
-
---
--- Name: analysis_aliases analysis_aliases_preferred_name_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY analysis_aliases
-    ADD CONSTRAINT analysis_aliases_preferred_name_id_fkey FOREIGN KEY (preferred_name_id) REFERENCES names(id) ON DELETE CASCADE;
-
-
---
--- Name: analysis_sloc_sets analysis_sloc_sets_analysis_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY analysis_sloc_sets
-    ADD CONSTRAINT analysis_sloc_sets_analysis_id_fkey FOREIGN KEY (analysis_id) REFERENCES analyses(id) ON DELETE CASCADE;
-
-
---
--- Name: analysis_sloc_sets analysis_sloc_sets_sloc_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY analysis_sloc_sets
-    ADD CONSTRAINT analysis_sloc_sets_sloc_set_id_fkey FOREIGN KEY (sloc_set_id) REFERENCES sloc_sets(id);
-
-
---
 -- Name: analysis_summaries analysis_summaries_analysis_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9029,38 +9089,6 @@ ALTER TABLE ONLY positions
 
 ALTER TABLE ONLY positions
     ADD CONSTRAINT claims_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
-
-
---
--- Name: clumps clumps_code_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY clumps
-    ADD CONSTRAINT clumps_code_set_id_fkey FOREIGN KEY (code_set_id) REFERENCES code_sets(id) ON DELETE CASCADE;
-
-
---
--- Name: clumps clumps_slave_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY clumps
-    ADD CONSTRAINT clumps_slave_id_fkey FOREIGN KEY (slave_id) REFERENCES slaves(id) ON DELETE CASCADE;
-
-
---
--- Name: code_sets code_sets_best_sloc_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY code_sets
-    ADD CONSTRAINT code_sets_best_sloc_set_id_fkey FOREIGN KEY (best_sloc_set_id) REFERENCES sloc_sets(id);
-
-
---
--- Name: commit_flags commit_flags_sloc_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY commit_flags
-    ADD CONSTRAINT commit_flags_sloc_set_id_fkey FOREIGN KEY (sloc_set_id) REFERENCES sloc_sets(id) ON DELETE CASCADE;
 
 
 --
@@ -9224,14 +9252,6 @@ ALTER TABLE ONLY code_locations
 
 
 --
--- Name: code_location_tarballs fk_rails_24196d6a51; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY code_location_tarballs
-    ADD CONSTRAINT fk_rails_24196d6a51 FOREIGN KEY (code_location_id) REFERENCES code_locations(id);
-
-
---
 -- Name: repository_tags fk_rails_275a40dd6e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9240,27 +9260,11 @@ ALTER TABLE ONLY repository_tags
 
 
 --
--- Name: code_locations fk_rails_2f22a538c9; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY code_locations
-    ADD CONSTRAINT fk_rails_2f22a538c9 FOREIGN KEY (best_code_set_id) REFERENCES code_sets(id);
-
-
---
 -- Name: project_badges fk_rails_4c3c9e5c61; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY project_badges
     ADD CONSTRAINT fk_rails_4c3c9e5c61 FOREIGN KEY (enlistment_id) REFERENCES enlistments(id);
-
-
---
--- Name: fisbot_events fk_rails_5a0f61d9a6; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY fisbot_events
-    ADD CONSTRAINT fk_rails_5a0f61d9a6 FOREIGN KEY (code_location_id) REFERENCES code_locations(id);
 
 
 --
@@ -9301,14 +9305,6 @@ ALTER TABLE ONLY repository_directories
 
 ALTER TABLE ONLY project_security_sets
     ADD CONSTRAINT fk_rails_efaa9c9657 FOREIGN KEY (project_id) REFERENCES projects(id);
-
-
---
--- Name: fisbot_events fk_rails_f43796d023; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY fisbot_events
-    ADD CONSTRAINT fk_rails_f43796d023 FOREIGN KEY (repository_id) REFERENCES repositories(id);
 
 
 --
@@ -9400,14 +9396,6 @@ ALTER TABLE ONLY jobs
 
 
 --
--- Name: jobs jobs_code_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY jobs
-    ADD CONSTRAINT jobs_code_set_id_fkey FOREIGN KEY (code_set_id) REFERENCES code_sets(id) ON DELETE CASCADE;
-
-
---
 -- Name: jobs jobs_failure_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9429,22 +9417,6 @@ ALTER TABLE ONLY jobs
 
 ALTER TABLE ONLY jobs
     ADD CONSTRAINT jobs_repository_id_fkey FOREIGN KEY (repository_id) REFERENCES repositories(id) ON DELETE CASCADE;
-
-
---
--- Name: jobs jobs_slave_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY jobs
-    ADD CONSTRAINT jobs_slave_id_fkey FOREIGN KEY (slave_id) REFERENCES slaves(id) ON DELETE CASCADE;
-
-
---
--- Name: jobs jobs_sloc_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY jobs
-    ADD CONSTRAINT jobs_sloc_set_id_fkey FOREIGN KEY (sloc_set_id) REFERENCES sloc_sets(id) ON DELETE CASCADE;
 
 
 --
@@ -9949,38 +9921,6 @@ ALTER TABLE ONLY rss_subscriptions
 
 ALTER TABLE ONLY sfprojects
     ADD CONSTRAINT sfprojects_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id);
-
-
---
--- Name: slave_logs slave_logs_code_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY slave_logs
-    ADD CONSTRAINT slave_logs_code_set_id_fkey FOREIGN KEY (code_set_id) REFERENCES code_sets(id) ON DELETE CASCADE;
-
-
---
--- Name: slave_logs slave_logs_job_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY slave_logs
-    ADD CONSTRAINT slave_logs_job_id_fkey FOREIGN KEY (job_id) REFERENCES jobs(id) ON DELETE CASCADE;
-
-
---
--- Name: slave_logs slave_logs_slave_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY slave_logs
-    ADD CONSTRAINT slave_logs_slave_id_fkey FOREIGN KEY (slave_id) REFERENCES slaves(id) ON DELETE CASCADE;
-
-
---
--- Name: sloc_sets sloc_sets_code_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY sloc_sets
-    ADD CONSTRAINT sloc_sets_code_set_id_fkey FOREIGN KEY (code_set_id) REFERENCES code_sets(id) ON DELETE CASCADE;
 
 
 --
@@ -10492,3 +10432,4 @@ INSERT INTO schema_migrations (version) VALUES ('97');
 INSERT INTO schema_migrations (version) VALUES ('98');
 
 INSERT INTO schema_migrations (version) VALUES ('99');
+
