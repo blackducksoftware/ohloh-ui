@@ -2,7 +2,7 @@ default: &default
   adapter: postgresql
   pool: 5
   timeout: 5000
-  encoding: SQL_ASCII
+  encoding: <%= ENV["DB_ENCODING"] %>
   host: <%= ENV["DB_HOST"] %>
   port: <%= ENV["DB_PORT"] %>
   username: <%= ENV["DB_USERNAME"] %>
@@ -10,16 +10,12 @@ default: &default
   database: <%= ENV["DB_NAME"] %>
 
 foreign_db_default: &foreign_db_default
-  adapter: postgresql
-  pool: 5
-  timeout: 5000
-  encoding: SQL_ASCII
+  <<: *default
   host: <%= ENV["FOREIGN_DB_HOST"] %>
   port: <%= ENV["FOREIGN_DB_PORT"] %>
   username: <%= ENV["FOREIGN_DB_USERNAME"] %>
   password: <%= ENV["FOREIGN_DB_PASSWORD"] %>
   database: <%= ENV["FOREIGN_DB_NAME"] %>
-
 
 development:
   <<: *default
@@ -33,7 +29,6 @@ test:
   username: <%= ENV["TEST_DB_USERNAME"] %>
   password: <%= ENV["TEST_DB_PASSWORD"] %>
   database: <%= ENV["TEST_DB_NAME"] %>
-  template: template0
 
 production:
   <<: *default
@@ -48,11 +43,9 @@ secondbase:
   test:
     <<: *foreign_db_default
     host: <%= ENV["FOREIGN_TEST_DB_HOST"] %>
-    port: <%= ENV["FOREIGN_TEST_DB_PORT"] %>
     username: <%= ENV["FOREIGN_TEST_DB_USERNAME"] %>
     password: <%= ENV["FOREIGN_TEST_DB_PASSWORD"] %>
     database: <%= ENV["FOREIGN_TEST_DB_NAME"] %>
-    template: template0
 
   production:
     <<: *foreign_db_default
