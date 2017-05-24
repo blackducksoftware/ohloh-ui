@@ -31,6 +31,7 @@ class CommitsController < SettingsController
   end
 
   def statistics
+    puts "Hello World"
     @commit = Commit.find(params[:id])
 
     @lines_added, @lines_removed = @commit.lines_added_and_removed(@project.best_analysis_id)

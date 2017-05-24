@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.2
--- Dumped by pg_dump version 9.6.2
+-- Dumped from database version 9.6.3
+-- Dumped by pg_dump version 9.6.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -114,12 +114,39 @@ CREATE FUNCTION _get_parser_from_curcfg() RETURNS text
 
 
 --
+-- Name: analysis_aliases_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION analysis_aliases_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from analysis_aliases_id_seq_view$$;
+
+
+--
+-- Name: analysis_sloc_sets_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION analysis_sloc_sets_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from analysis_sloc_sets_id_seq_view$$;
+
+
+--
 -- Name: check_jobs(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION check_jobs(integer) RETURNS integer
     LANGUAGE sql
     AS $_$select repository_id as RESULT from jobs where status != 5 AND  repository_id= $1;$_$;
+
+
+--
+-- Name: code_sets_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION code_sets_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from code_sets_id_seq_view$$;
 
 
 --
@@ -156,6 +183,15 @@ CREATE FUNCTION fyles_id_seq_view() RETURNS integer
 CREATE FUNCTION sloc_metrics_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from sloc_metrics_id_seq_view$$;
+
+
+--
+-- Name: sloc_sets_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION sloc_sets_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from sloc_sets_id_seq_view$$;
 
 
 --
@@ -414,6 +450,16 @@ CREATE SERVER fis FOREIGN DATA WRAPPER postgres_fdw OPTIONS (
     dbname 'fis_development',
     host 'localhost',
     port '5432'
+);
+
+
+--
+-- Name: USER MAPPING ohloh_ui_app_stage SERVER fis; Type: USER MAPPING; Schema: -; Owner: -
+--
+
+CREATE USER MAPPING FOR ohloh_ui_app_stage SERVER fis OPTIONS (
+    password 'hLj1pcHxYvq39jKE',
+    "user" 'fisbot_app_stage'
 );
 
 
@@ -5554,6 +5600,16 @@ CREATE VIEW tags_id_seq_view AS
 
 
 --
+-- Name: tests; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE tests (
+    id integer,
+    name text
+);
+
+
+--
 -- Name: thirty_day_summaries; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -5680,6 +5736,51 @@ ALTER SEQUENCE topics_id_seq OWNED BY topics.id;
 
 CREATE VIEW topics_id_seq_view AS
  SELECT (nextval('topics_id_seq'::regclass))::integer AS id;
+
+
+--
+-- Name: unknown_spam_accounts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE unknown_spam_accounts (
+    id integer NOT NULL,
+    login text NOT NULL,
+    email text NOT NULL,
+    crypted_password text NOT NULL,
+    salt text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    activation_code text,
+    activated_at timestamp without time zone,
+    remember_token text,
+    remember_token_expires_at timestamp without time zone,
+    level integer NOT NULL,
+    posts_count integer,
+    last_seen_at timestamp without time zone,
+    name text,
+    country_code text,
+    location text,
+    latitude numeric,
+    longitude numeric,
+    best_vita_id integer,
+    url text,
+    about_markup_id integer,
+    hide_experience boolean,
+    email_master boolean,
+    email_posts boolean,
+    email_kudos boolean,
+    email_md5 text,
+    email_opportunities_visited timestamp without time zone,
+    activation_resent_at timestamp without time zone,
+    akas text,
+    email_new_followers boolean,
+    last_seen_ip text,
+    twitter_account text,
+    reset_password_tokens text,
+    organization_id integer,
+    affiliation_type text NOT NULL,
+    organization_name text
+);
 
 
 --
@@ -10253,6 +10354,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160317061932');
 
 INSERT INTO schema_migrations (version) VALUES ('20160318131123');
 
+INSERT INTO schema_migrations (version) VALUES ('20160321061931');
+
 INSERT INTO schema_migrations (version) VALUES ('20160504104102');
 
 INSERT INTO schema_migrations (version) VALUES ('20160504111046');
@@ -10492,3 +10595,4 @@ INSERT INTO schema_migrations (version) VALUES ('97');
 INSERT INTO schema_migrations (version) VALUES ('98');
 
 INSERT INTO schema_migrations (version) VALUES ('99');
+
