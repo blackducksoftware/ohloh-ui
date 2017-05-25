@@ -1,4 +1,4 @@
-class Commit < SecondBase::Base
+class Commit < ActiveRecord::Base
   belongs_to :code_set
   belongs_to :name
   has_many :fyle, primary_key: :code_set_id, foreign_key: :code_set_id
@@ -21,11 +21,13 @@ class Commit < SecondBase::Base
   }
 
   scope :by_analysis, lambda { |analysis|
-    joins(code_set: [sloc_sets: :analysis_sloc_sets])
-      .joins('and commits.position <= analysis_sloc_sets.as_of')
-      .where(analysis_sloc_sets: { analysis_id: analysis.id })
+    analysis_sloc_sets = analysis.analysis_sloc_sets
+    query = analysis_sloc_sets.collect do |analysis_sloc_set|
+      code_set_id = analysis_sloc_set.sloc_set.code_set_id
+      "(commits.code_set_id = #{code_set_id} and commits.position <= #{analysis_sloc_set.as_of.to_i})"
+    end.join(' or ')
+    where(query)
   }
-
   scope :last_30_days, ->(logged_at) { where('commits.time > ?', logged_at - 30.days) }
   scope :last_year, ->(logged_at) { where('commits.time > ?', logged_at - 12.months) }
   scope :within_timespan, lambda { |time_span, logged_at|
