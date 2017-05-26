@@ -10,16 +10,17 @@
 puts '***** Seeding Data Start *****'
 puts '***** Alter Foreign Data Wrapper configurations based on ENV file *****'
 
-test_env = Rails.env == 'test'
-host = test_env ? ENV['FOREIGN_TEST_DB_HOST'] : ENV['FOREIGN_DB_HOST']
-name = test_env ? ENV['FOREIGN_TEST_DB_NAME'] : ENV['FOREIGN_DB_NAME']
-port = test_env ? ENV['FOREIGN_TEST_DB_PORT'] : ENV['FOREIGN_DB_PORT']
-user = test_env ? ENV['FOREIGN_TEST_DB_USERNAME'] : ENV['FOREIGN_DB_USERNAME']
-password = test_env ? ENV['FOREIGN_TEST_DB_PASSWORD'] : ENV['FOREIGN_DB_PASSWORD']
+config = ActiveRecord::Base.configurations['secondbase'][Rails.env]
+host = config['host']
+name = config['database']
+port = config['port']
+user = config['username']
+password = config['password']
 
 puts 'Alter foreign server'
-ActiveRecord::Base.connection.execute("ALTER SERVER fis OPTIONS(set host '#{host}',
-                                      set dbname '#{name}', set port '#{port}')")
+cmd = "ALTER SERVER fis OPTIONS(set host '#{host}', set dbname '#{name}', set port '#{port}')"
+ActiveRecord::Base.connection.execute(cmd)
 
 puts 'Alter foreign user mapping'
-ActiveRecord::Base.connection.execute("ALTER USER MAPPING FOR #{user} SERVER fis OPTIONS(SET password '#{password}')")
+cmd = "ALTER USER MAPPING FOR #{user} SERVER fis OPTIONS(SET password '#{password}')"
+ActiveRecord::Base.connection.execute(cmd)
