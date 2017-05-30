@@ -1,7 +1,6 @@
-slave.jobs.failed
-  .where("current_step_at is null or current_step_at > '#{get_window}'")
-  .order(:status, :id).limit(20)
-  .each_with_index do |job, i|
+failed_jobs = slave.failed_jobs
+failed_jobs = params['window'] ? failed_jobs.where("current_step_at is null or current_step_at > '#{get_window}'") : failed_jobs
+failed_jobs.each_with_index do |job, i|
     a href: admin_job_path(job), style:"text-decoration:none;" do
       status_tag("#{job.class.to_s.first} #{job.id}", 'failed', title: JobDecorator.new(job).tool_tip)
     end

@@ -1,5 +1,4 @@
-slave.jobs.where(status: Job::STATUS_RUNNING)
-     .order(:status, :id).limit(20)
+slave.running_jobs
      .each_with_index do |job, i|
   status = case job.status
            when Job::STATUS_SCHEDULED then 'scheduled'

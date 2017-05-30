@@ -4,7 +4,7 @@
   %h6= t('.activity')
   %p.ohloh_activity
     = render partial: 'accounts/show/action_link', locals: { action: 'edits', path: account_edits_url(@account) }
-    = render partial: 'accounts/show/action_link', locals: { action: 'posts', path: account_posts_url(@account) }
+    = render partial: 'accounts/show/posts_link', locals: { posts: @account.posts }
     = render partial: 'accounts/show/action_link',
     locals: { action: 'reviews', css: '', path: account_reviews_url(@account) }
 

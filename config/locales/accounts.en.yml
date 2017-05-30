@@ -119,10 +119,13 @@ en:
       action_link:
         no_edits: 'No Open Hub edits.'
         edits_size: '%{size} Open Hub website edit(s)'
-        no_posts: 'No forum posts.'
-        posts_size: '%{size} post(s)'
         no_reviews: 'No project reviewed.'
         reviews_size: '%{size} project review(s)'
+      posts_link:
+        no_posts: 'No forum posts.'
+        open_posts_size: '%{size} open posts'
+        total_size_with_parenthesis: '(%{size} total)'
+        total_posts_size: '%{size} total posts'
       mark_as_bot:
         link: 'MARK AS BOT'
         confirm: "Are you sure you want to mark %{name} as BOT?"

@@ -21,6 +21,14 @@ class Job < ActiveRecord::Base
   scope :failed, -> { where(status: STATUS_FAILED) }
   scope :scheduled, -> { where(status: STATUS_SCHEDULED) }
   scope :complete, -> { where(status: STATUS_COMPLETED) }
+  scope :running, -> { where(status: STATUS_RUNNING) }
+
+  scope :slave_recent_jobs, lambda {|count = 20|
+    rankings = 'select id, RANK() OVER (PARTITION BY slave_id ORDER BY id ASC) rank FROM jobs'
+    joins("INNER JOIN (#{rankings}) rankings ON rankings.id = jobs.id")
+      .where('rankings.rank < :count', count: count.next)
+      .order(id: :asc)
+  }
   scope :scheduled_or_failed, -> { where(status: [STATUS_SCHEDULED, STATUS_FAILED]) }
   scope :since, ->(time) { where(current_step_at: time...Time.current) }
   scope :incomplete_or_since, ->(time) { incomplete || since(time) }
