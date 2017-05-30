@@ -8067,6 +8067,15 @@ ALTER FOREIGN TABLE rss_subscriptions_id_seq_view ALTER COLUMN id OPTIONS (
 
 
 --
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE schema_migrations (
+    version character varying NOT NULL
+);
+
+
+--
 -- Name: sessions; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
@@ -9593,6 +9602,13 @@ CREATE INDEX index_sloc_sets_on_code_set_id ON sloc_sets USING btree (code_set_i
 
 
 --
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
+
+
+--
 -- Name: analysis_sloc_sets analysis_sloc_sets_sloc_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9661,4 +9677,6 @@ ALTER TABLE ONLY sloc_sets
 --
 
 SET search_path TO "$user", public;
+
+INSERT INTO schema_migrations (version) VALUES ('20170112183242');
 
