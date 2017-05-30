@@ -1,7 +1,7 @@
 require 'open3'
 require 'socket'
 
-class Slave < ActiveRecord::Base
+class Slave < SecondBase::Base
   has_many :jobs
 
   # all these methods below can be removed after removing clumps
