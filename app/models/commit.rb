@@ -36,7 +36,7 @@ class Commit < ActiveRecord::Base
   }
 
   def lines_added_and_removed(analysis_id)
-    summaries = get_summaries(analysis_id)
+    summaries = SlocMetric.commit_summaries(self, analysis_id)
 
     lines_added = lines_removed = 0
     summaries.each do |summary|
@@ -55,11 +55,5 @@ class Commit < ActiveRecord::Base
     when HgRepository
       params[:short] ? sha1.to_s.truncate(12, omission: '') : sha1
     end
-  end
-
-  private
-
-  def get_summaries(analysis_id)
-    SlocMetric.by_commit_id_and_analysis_id(id, analysis_id)
   end
 end
