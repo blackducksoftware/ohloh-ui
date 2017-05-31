@@ -17,7 +17,7 @@ class CommitTest < ActiveSupport::TestCase
   describe '#for_contributor_fact' do
     it 'should return commits' do
       sloc_set = create(:sloc_set, code_set_id: commit.code_set_id)
-      analysis_sloc_set = create(:analysis_sloc_set, sloc_set_id: sloc_set.id)
+      analysis_sloc_set = create(:analysis_sloc_set, sloc_set_id: sloc_set.id, as_of: 1)
       analysis_alias = create(:analysis_alias, commit_name: commit.name,
                                                analysis_id: analysis_sloc_set.analysis_id,
                                                preferred_name_id: commit.name_id)

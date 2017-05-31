@@ -2,6 +2,10 @@ require 'test_helper'
 
 describe 'CommitsController' do
   before do
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.start
+    SecondBase.on_base { DatabaseCleaner.start }
+
     @commit1 = create(:commit, position: 0, comment: 'first commit', time: Time.current - 1.day)
     @commit2 = create(:commit, position: 1,
                                comment: 'second commit',
@@ -23,6 +27,12 @@ describe 'CommitsController' do
                               name_id: analysis_alias.preferred_name_id)
     @person1 = create(:person, project_id: @project.id, name_id: @name1.id)
     @person2 = create(:person, project_id: @project.id, name_id: @name2.id)
+  end
+
+  after do
+    DatabaseCleaner.clean
+    SecondBase.on_base { DatabaseCleaner.clean }
+    DatabaseCleaner.strategy = :transaction
   end
 
   describe 'index' do

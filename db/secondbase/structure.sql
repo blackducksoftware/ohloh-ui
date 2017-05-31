@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.2
--- Dumped by pg_dump version 9.6.2
+-- Dumped from database version 9.6.3
+-- Dumped by pg_dump version 9.6.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1666,6 +1666,8 @@ ALTER FOREIGN TABLE analyses_id_seq_view ALTER COLUMN id OPTIONS (
 );
 
 
+SET default_with_oids = false;
+
 --
 -- Name: analysis_aliases; Type: TABLE; Schema: public; Owner: -
 --
@@ -2563,10 +2565,10 @@ CREATE TABLE sloc_sets (
 
 
 --
--- Name: commit_contributor; Type: VIEW; Schema: public; Owner: -
+-- Name: commit_contributors; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW commit_contributor AS
+CREATE VIEW commit_contributors AS
  SELECT analysis_aliases.commit_name_id AS id,
     sloc_sets.code_set_id,
     analysis_aliases.commit_name_id AS name_id,
@@ -2587,55 +2589,6 @@ CREATE VIEW commit_contributor AS
      JOIN projects ON ((analysis_sloc_sets.analysis_id = projects.best_analysis_id)))
      JOIN analysis_aliases ON ((analysis_aliases.analysis_id = analysis_sloc_sets.analysis_id)))
      LEFT JOIN positions ON (((positions.project_id = projects.id) AND (positions.name_id = analysis_aliases.preferred_name_id))));
-
-
---
--- Name: commit_contributors; Type: FOREIGN TABLE; Schema: public; Owner: -
---
-
-CREATE FOREIGN TABLE commit_contributors (
-    id integer,
-    code_set_id integer,
-    name_id integer,
-    analysis_id integer,
-    project_id integer,
-    position_id integer,
-    account_id integer,
-    contribution_id bigint,
-    person_id bigint
-)
-SERVER openhub
-OPTIONS (
-    schema_name 'public',
-    table_name 'commit_contributors'
-);
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN code_set_id OPTIONS (
-    column_name 'code_set_id'
-);
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN name_id OPTIONS (
-    column_name 'name_id'
-);
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN analysis_id OPTIONS (
-    column_name 'analysis_id'
-);
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN project_id OPTIONS (
-    column_name 'project_id'
-);
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN position_id OPTIONS (
-    column_name 'position_id'
-);
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN account_id OPTIONS (
-    column_name 'account_id'
-);
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN contribution_id OPTIONS (
-    column_name 'contribution_id'
-);
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN person_id OPTIONS (
-    column_name 'person_id'
-);
 
 
 --

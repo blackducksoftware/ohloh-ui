@@ -18,7 +18,7 @@ class UnclaimedController < ApplicationController
   def preload_emails_and_name_facts_from_projects(projects)
     name_facts = NameFact.where(analysis_id: projects.map(&:best_analysis_id)).where(name_id: @name.id)
     @name_facts_map = name_facts.index_by(&:analysis_id)
-    find_emails(name_facts.pluck(&:email_address_ids))
+    find_emails(name_facts.pluck(:email_address_ids))
   end
 
   def preload_emails

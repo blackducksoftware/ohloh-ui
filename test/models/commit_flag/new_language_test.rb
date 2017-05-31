@@ -14,7 +14,6 @@ class CommitFlag::NewLanguageTest < ActiveSupport::TestCase
     nl = CommitFlag::NewLanguage.find(cf.id)
     nl.language_id = lang.id
     nl.save!
-    nl.reload
     nl.language.id.must_equal lang.id
   end
 end
