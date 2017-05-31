@@ -41,7 +41,6 @@ gem 'sprockets-rails', '~> 2.3.3'
 gem 'feedjira'
 gem 'whenever', require: false
 gem 'sidekiq'
-gem 'secondbase'
 
 group :development do
   gem 'better_errors'

@@ -1,4 +1,4 @@
-class Diff < SecondBase::Base
+class Diff < SecondBase
   belongs_to :commit
   belongs_to :fyle
   has_many :sloc_metrics, dependent: :destroy

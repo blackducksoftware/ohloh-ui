@@ -1,4 +1,4 @@
-class Commit < SecondBase::Base
+class Commit < SecondBase
   belongs_to :code_set
   belongs_to :name
   has_many :fyle, primary_key: :code_set_id, foreign_key: :code_set_id
