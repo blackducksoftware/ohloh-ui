@@ -26,11 +26,24 @@ VCR.configure do |config|
 end
 
 class ActiveSupport::TestCase
+  self.use_transactional_fixtures = false
   include FactoryGirl::Syntax::Methods
   extend SetupHamsterAccount
   extend CreateForges
   extend MiniTest::Spec::DSL
   TEST_PASSWORD = :test_password
+  DatabaseCleaner.strategy = :truncation
+  SecondBase.on_base { DatabaseCleaner.strategy = :truncation }
+
+  before do
+    DatabaseCleaner.start
+    SecondBase.on_base { DatabaseCleaner.start }
+  end
+
+  after do
+    DatabaseCleaner.clean
+    SecondBase.on_base { DatabaseCleaner.clean }
+  end
 
   create_hamster_account
   create_forges
