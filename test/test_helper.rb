@@ -14,9 +14,6 @@ require 'dotenv'
 require 'test_helpers/setup_hamster_account'
 require 'test_helpers/create_forges'
 require 'sidekiq/testing'
-require 'capybara/rails'
-require 'capybara/minitest'
-require 'capybara/minitest/spec'
 Sidekiq::Testing.fake!
 
 Dotenv.overload '.env.test'
