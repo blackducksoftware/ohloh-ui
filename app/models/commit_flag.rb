@@ -1,4 +1,4 @@
-class CommitFlag < ActiveRecord::Base
+class CommitFlag < FisBase
   serialize :data
 
   belongs_to :commit

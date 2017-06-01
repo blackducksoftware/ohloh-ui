@@ -1,4 +1,4 @@
-class CodeSet < SecondBase::Base
+class CodeSet < FisBase
   belongs_to :code_location
   has_one :best_code_location, foreign_key: :best_code_set_id, class_name: 'CodeLocation'
   belongs_to :best_sloc_set, foreign_key: :best_sloc_set_id, class_name: SlocSet
