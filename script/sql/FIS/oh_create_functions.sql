@@ -2,3 +2,14 @@ create function commits_id_seq_view() returns int as 'select id from commits_id_
 create function diffs_id_seq_view() returns int as 'select id from diffs_id_seq_view' language sql;
 create function fyles_id_seq_view() returns int as 'select id from fyles_id_seq_view' language sql;
 create function sloc_metrics_id_seq_view() returns int as 'select id from sloc_metrics_id_seq_view' language sql;
+create function analysis_aliases_id_seq_view() returns int as 'select id from analysis_aliases_id_seq_view' language sql;
+create function analysis_sloc_sets_id_seq_view() returns int as 'select id from analysis_sloc_sets_id_seq_view' language sql;
+create function code_location_tarballs_id_seq_view() returns int as 'select id from code_location_tarballs_id_seq_view' language sql;
+create function code_sets_id_seq_view() returns int as 'select id from code_sets_id_seq_view' language sql;
+create function commit_flags_id_seq_view() returns int as 'select id from commit_flags_id_seq_view' language sql;
+create function email_addresses_id_seq_view() returns int as 'select id from email_addresses_id_seq_view' language sql;
+create function fisbot_events_id_seq_view() returns int as 'select id from fisbot_events_id_seq_view' language sql;
+create function load_averages_id_seq_view() returns int as 'select id from load_averages_id_seq_view' language sql;
+create function slave_logs_id_seq_view() returns int as 'select id from slave_logs_id_seq_view' language sql;
+create function slave_permissions_id_seq_view() returns int as 'select id from slave_permissions_id_seq_view' language sql;
+create function sloc_sets_id_seq_view() returns int as 'select id from sloc_sets_id_seq_view' language sql;

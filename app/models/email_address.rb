@@ -1,4 +1,4 @@
-class EmailAddress < ActiveRecord::Base
+class EmailAddress < SecondBase::Base
   BLACKLISTED_EMAILS = ['root@localhost'].freeze
   include EmailObfuscation
 

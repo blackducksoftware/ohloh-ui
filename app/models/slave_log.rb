@@ -1,4 +1,4 @@
-class SlaveLog < ActiveRecord::Base
+class SlaveLog < SecondBase::Base
   INFO = 1
   WARNING = 2
 
