@@ -28,6 +28,7 @@ describe 'CommitsController' do
                                                analysis_id: @project.best_analysis_id,
                                                contribution_id: @project.contributions.first.id,
                                                person_id: @person1.id)
+    CommitContributor.stubs(:includes).returns(stub(where: stub(where: [commit_contributor])))
     CommitContributor.stubs(:where).returns(stub(find_by: commit_contributor))
     Project.any_instance.stubs(:commit_contributors).returns(stub(find_by: commit_contributor))
   end
