@@ -22,7 +22,7 @@ class Commit < SecondBase
 
   scope :by_analysis, lambda { |analysis|
     joins(code_set: [sloc_sets: :analysis_sloc_sets])
-      .joins('and commits.position <= analysis_sloc_sets.as_of')
+      .joins('and commits.position <= coalesce(analysis_sloc_sets.as_of,0)')
       .where(analysis_sloc_sets: { analysis_id: analysis.id })
   }
 
