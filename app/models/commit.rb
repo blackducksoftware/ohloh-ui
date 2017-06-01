@@ -1,4 +1,4 @@
-class Commit < SecondBase::Base
+class Commit < SecondBase
   belongs_to :code_set
   belongs_to :name
   has_many :fyle, primary_key: :code_set_id, foreign_key: :code_set_id
@@ -22,7 +22,7 @@ class Commit < SecondBase::Base
 
   scope :by_analysis, lambda { |analysis|
     joins(code_set: [sloc_sets: :analysis_sloc_sets])
-      .joins('and commits.position <= analysis_sloc_sets.as_of')
+      .joins('and commits.position <= coalesce(analysis_sloc_sets.as_of,0)')
       .where(analysis_sloc_sets: { analysis_id: analysis.id })
   }
 

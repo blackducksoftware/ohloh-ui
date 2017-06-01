@@ -1,4 +1,4 @@
-class AnalysisSlocSet < SecondBase::Base
+class AnalysisSlocSet < SecondBase
   belongs_to :analysis
   belongs_to :sloc_set
   has_many :commit_flags, class_name: CommitFlag, foreign_key: :sloc_set_id, primary_key: :sloc_set_id

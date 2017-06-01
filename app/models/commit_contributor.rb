@@ -1,4 +1,4 @@
-class CommitContributor < SecondBase::Base
+class CommitContributor < SecondBase
   belongs_to :person
   belongs_to :name
   belongs_to :code_set
