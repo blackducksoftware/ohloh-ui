@@ -1,6 +1,7 @@
 require 'test_helper'
 
 describe 'CommitsController' do
+  self.use_transactional_fixtures = false
   before do
     DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.start
