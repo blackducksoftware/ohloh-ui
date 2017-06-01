@@ -1,12 +1,7 @@
 require 'test_helper'
 
 describe 'CommitsController' do
-  self.use_transactional_fixtures = false
   before do
-    DatabaseCleaner.strategy = :truncation
-    DatabaseCleaner.start
-    SecondBase.on_base { DatabaseCleaner.start }
-
     @commit1 = create(:commit, position: 0, comment: 'first commit', time: Time.current - 1.day)
     @commit2 = create(:commit, position: 1,
                                comment: 'second commit',
@@ -24,16 +19,17 @@ describe 'CommitsController' do
                                              preferred_name_id: @name1.id)
     create(:analysis_alias, commit_name: @commit2.name, analysis_id: analysis_sloc_set.analysis_id,
                             preferred_name_id: @name2.id)
-    create(:contributor_fact, analysis_id: analysis_sloc_set.analysis_id,
-                              name_id: analysis_alias.preferred_name_id)
+    contribution = create(:contributor_fact, analysis_id: analysis_sloc_set.analysis_id,
+                                             name_id: analysis_alias.preferred_name_id)
     @person1 = create(:person, project_id: @project.id, name_id: @name1.id)
     @person2 = create(:person, project_id: @project.id, name_id: @name2.id)
-  end
-
-  after do
-    DatabaseCleaner.clean
-    SecondBase.on_base { DatabaseCleaner.clean }
-    DatabaseCleaner.strategy = :transaction
+    commit_contributor = CommitContributor.new(code_set_id: @commit1.code_set_id,
+                                               name_id: @commit1.name_id,
+                                               analysis_id: @project.best_analysis_id,
+                                               contribution_id: @project.contributions.first.id,
+                                               person_id: @person1.id)
+    CommitContributor.stubs(:where).returns(stub(find_by: commit_contributor))
+    Project.any_instance.stubs(:commit_contributors).returns(stub(find_by: commit_contributor))
   end
 
   describe 'index' do
