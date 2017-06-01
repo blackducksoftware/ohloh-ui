@@ -498,11 +498,27 @@ class ProjectTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'set project to deleted' do
+    it 'should delete associated enlistments' do
+      project = create(:project)
+      project.update_column(:best_analysis_id, nil)
+      create_code_location(project)
+
+      project.enlistments.count.must_equal 1
+      project.enlistments.first.deleted.must_equal false
+      project.deleted = true
+      project.save
+      project.enlistments.first.deleted.must_equal true
+    end
+  end
+
   private
 
   def create_code_location(project)
     repository = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forge.id,
                                      owner_at_forge: 'rails', name_at_forge: 'rails')
+
+    code_set = create(:code_set)
     code_location = create(:code_location, repository: repository)
     create(:enlistment, project: project, code_location: code_location)
   end
