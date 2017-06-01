@@ -19,8 +19,8 @@ describe 'CommitsController' do
                                              preferred_name_id: @name1.id)
     create(:analysis_alias, commit_name: @commit2.name, analysis_id: analysis_sloc_set.analysis_id,
                             preferred_name_id: @name2.id)
-    contribution = create(:contributor_fact, analysis_id: analysis_sloc_set.analysis_id,
-                                             name_id: analysis_alias.preferred_name_id)
+    create(:contributor_fact, analysis_id: analysis_sloc_set.analysis_id,
+                              name_id: analysis_alias.preferred_name_id)
     @person1 = create(:person, project_id: @project.id, name_id: @name1.id)
     @person2 = create(:person, project_id: @project.id, name_id: @name2.id)
     commit_contributor = CommitContributor.new(code_set_id: @commit1.code_set_id,
