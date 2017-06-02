@@ -60,4 +60,18 @@ class EditsHelperTest < ActionView::TestCase
       end
     end
   end
+
+  describe 'edit_get_value_enlistment' do
+    it 'should return nice_url of code_location for create edit' do
+      enlistment = create(:enlistment)
+      edit = create(:create_edit, target: enlistment)
+      edit_get_value_enlistment(edit).must_match enlistment.code_location.nice_url
+    end
+
+    it 'should return nil for property edit' do
+      enlistment = create(:enlistment)
+      edit = create(:property_edit, target: enlistment)
+      edit_get_value_enlistment(edit).must_be_nil
+    end
+  end
 end
