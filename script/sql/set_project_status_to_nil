@@ -2,7 +2,7 @@
 
 raise 'RAILS_ENV is undefined' unless ENV['RAILS_ENV']
 
-require_relative '../config/environment'
+require_relative '../../config/environment'
 
 class SetCodeLocationStatus
   def execute
@@ -15,13 +15,16 @@ class SetCodeLocationStatus
  
    file = File.open('tmp/oh-code-locations.csv', 'r')
    while !file.eof?
+     puts 'reading file'
      # Add row to copy data
      rc.put_copy_data(file.readline)
     end
  
     # We are done adding copy data
     rc.put_copy_end
-  
-  
   end
 end
+
+puts 'starting script'
+SetCodeLocationStatus.new.execute
+puts 'finished script'
