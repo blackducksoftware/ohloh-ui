@@ -37,7 +37,7 @@ module EditsModalHelper
   end
 
   def edit_get_value_enlistment(edit)
-    edit.target.repository.nice_url if edit.create_edit?
+    edit.target.code_location.nice_url if edit.create_edit?
   end
 
   def edit_get_value_link(edit)
