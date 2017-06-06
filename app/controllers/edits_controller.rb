@@ -24,7 +24,9 @@ class EditsController < SettingsController
 
   def perform_undo
     @edit.undo!(current_user)
-    @parent.undo_enlistments(current_user) if @parent.is_a? Project
+     Rails.logger.debug("PERFORM_UNDO!! #{current_user}")
+     Rails.logger.debug("IS A PROJECT!!") if @parent.is_a? Project
+    @parent.remove_enlistments(current_user) if @parent.is_a? Project
   end
   
   def parent_is_account_or_license?
