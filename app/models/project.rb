@@ -20,7 +20,7 @@ class Project < ActiveRecord::Base
   after_save :update_organzation_project_count
   after_update :remove_people, if: -> (project) { project.deleted_changed? && project.deleted? }
   after_update :recalc_tags_weight!, if: -> (project) { project.deleted_changed? }
-  after_update :remove_enlistments, if: -> (project) { project.deleted_changed? && project.deleted? }
+  #after_update :remove_enlistments, if: -> (project) { project.deleted_changed? && project.deleted? }// msk rolled back change
 
   attr_accessor :managed_by_creator
 
