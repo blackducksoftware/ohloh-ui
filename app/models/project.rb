@@ -122,8 +122,7 @@ class Project < ActiveRecord::Base
 
   def remove_enlistments
     enlistments.each do |enlistment|
-        enlistment.deleted = true
-        enlistment.save
+      enlistment.create_edit.undo!(current_user) if enlistment.create_edit.allow_undo?
     end
   end
 
