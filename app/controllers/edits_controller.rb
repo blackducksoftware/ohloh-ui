@@ -13,14 +13,20 @@ class EditsController < SettingsController
 
   def update
     undo = params[:undo].to_bool
-    undo ? @edit.undo!(current_user) : @edit.redo!(current_user)
+    undo ? perform_undo : @edit.redo!(current_user)
     render template: 'edits/edit', layout: false
-  rescue StandardError
+  rescue StandardError => e
+    Rails.logger.debug("ERROR!! #{e}")
     render text: undo ? t('.failed_undo') : t('.failed_redo'), status: 406
   end
 
   private
 
+  def perform_undo
+    @edit.undo!(current_user)
+    @parent.undo_enlistments(current_user) if @parent.is_a? Project
+  end
+  
   def parent_is_account_or_license?
     params[:account_id].present? || params[:license_id].present?
   end

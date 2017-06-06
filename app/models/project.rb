@@ -20,8 +20,7 @@ class Project < ActiveRecord::Base
   after_save :update_organzation_project_count
   after_update :remove_people, if: -> (project) { project.deleted_changed? && project.deleted? }
   after_update :recalc_tags_weight!, if: -> (project) { project.deleted_changed? }
-  after_update :remove_enlistments, if: -> (project) { project.deleted_changed? && project.deleted? }
-
+  
   attr_accessor :managed_by_creator
 
   def to_param
@@ -120,7 +119,7 @@ class Project < ActiveRecord::Base
     Person.where(project_id: id).destroy_all
   end
 
-  def remove_enlistments
+  def remove_enlistments(current_user)
     enlistments.each do |enlistment|
       enlistment.create_edit.undo!(current_user) if enlistment.create_edit.allow_undo?
     end
