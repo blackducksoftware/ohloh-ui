@@ -48,7 +48,6 @@ describe EditsController do
       assigns(:parent).wont_be_nil
     end
 
-
     it 'undo of creation edit should delete the project' do
       login_as create(:admin)
       create_edit = CreateEdit.where(target: @project).first
