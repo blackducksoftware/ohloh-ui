@@ -2,7 +2,7 @@ class EditsController < SettingsController
   helper ProjectsHelper
 
   before_action :session_required, :redirect_unverified_account, only: [:update]
-  before_action :find_parent, only: [:index, :show]
+  before_action :find_parent, only: [:index, :show, :update]
   before_action :show_permissions_alert, only: :index, unless: :parent_is_account_or_license?
   before_action :find_edit, only: [:show, :update]
   before_action :find_edits, only: [:index]
@@ -24,11 +24,11 @@ class EditsController < SettingsController
 
   def perform_undo
     @edit.undo!(current_user)
-     Rails.logger.debug("PERFORM_UNDO!! #{current_user}")
+     Rails.logger.debug("PERFORM_UNDO!! #{current_user} on #{@parent.class}")
      Rails.logger.debug("IS A PROJECT!!") if @parent.is_a? Project
     @parent.remove_enlistments(current_user) if @parent.is_a? Project
   end
-  
+
   def parent_is_account_or_license?
     params[:account_id].present? || params[:license_id].present?
   end

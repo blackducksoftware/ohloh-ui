@@ -20,7 +20,7 @@ class Project < ActiveRecord::Base
   after_save :update_organzation_project_count
   after_update :remove_people, if: -> (project) { project.deleted_changed? && project.deleted? }
   after_update :recalc_tags_weight!, if: -> (project) { project.deleted_changed? }
-  
+
   attr_accessor :managed_by_creator
 
   def to_param
@@ -87,6 +87,10 @@ class Project < ActiveRecord::Base
   def badges_summary
     badges = travis_badges.active.first(2) + cii_badges.active.first(2)
     [badges[0], badges[2] || badges[1]].compact
+  end
+
+  def after_undo(current_user)
+    remove_enlistments(current_user)
   end
 
   class << self
