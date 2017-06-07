@@ -19,6 +19,7 @@ foreign_db_default: &foreign_db_default
 
 development:
   <<: *default
+  template: template0
 
 staging:
   <<: *default
@@ -29,6 +30,7 @@ test:
   username: <%= ENV["TEST_DB_USERNAME"] %>
   password: <%= ENV["TEST_DB_PASSWORD"] %>
   database: <%= ENV["TEST_DB_NAME"] %>
+  template: template0
 
 production:
   <<: *default
@@ -36,6 +38,7 @@ production:
 secondbase:
   development:
     <<: *foreign_db_default
+    template: template0
 
   staging:
     <<: *foreign_db_default
@@ -47,6 +50,7 @@ secondbase:
     password: <%= ENV["FOREIGN_TEST_DB_PASSWORD"] %>
     database: <%= ENV["FOREIGN_TEST_DB_NAME"] %>
     port : <%= ENV["FOREIGN_TEST_DB_PORT"] %>
+    template: template0
 
   production:
     <<: *foreign_db_default
