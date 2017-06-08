@@ -36,6 +36,14 @@ describe 'StacksControllerTest' do
     must_respond_with :ok
   end
 
+  it 'index should paginate by 10 entries' do
+    account = create(:account, :with_stacks, number_of_stacks: 12)
+    login_as account
+    get :index, account_id: account
+    stacks = assigns(:stacks)
+    stacks.size.must_equal 10
+  end
+
   it 'index should display when the stack has no projects associated with it' do
     stack = create(:stack, title: 'i_am_there')
     login_as stack.account
@@ -122,6 +130,13 @@ describe 'StacksControllerTest' do
     response.body.must_match 'rating_stars'
   end
 
+  it 'show should paginate by 10 entries' do
+    stack = create(:stack)
+    create_list(:stack_entry, 12, stack: stack)
+    get :show, id: stack
+    stack_entries = assigns(:stack_entries)
+    stack_entries.size.must_equal 10
+  end
   it 'show should support format: json' do
     stack = create(:stack)
     login_as nil

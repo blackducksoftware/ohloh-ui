@@ -11,6 +11,10 @@ class EditsController < SettingsController
     render template: "edits/index_#{@parent.class.name.downcase}"
   end
 
+  def show
+    render nothing: true, status: :ok unless request.xhr?
+  end
+
   def update
     undo = params[:undo].to_bool
     undo ? perform_undo : @edit.redo!(current_user)
@@ -24,9 +28,6 @@ class EditsController < SettingsController
 
   def perform_undo
     @edit.undo!(current_user)
-     Rails.logger.debug("PERFORM_UNDO!! #{current_user} on #{@parent.class}")
-     Rails.logger.debug("IS A PROJECT!!") if @parent.is_a? Project
-    #  @parent.after_undo(current_user) if @parent.responds_to?('after_undo')
     @parent.after_undo(current_user)
   end
 

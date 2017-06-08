@@ -498,22 +498,6 @@ class ProjectTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'set project to deleted' do
-    it 'should delete associated enlistments' do
-          byebug
-      project = create(:project)
-      project.update_column(:best_analysis_id, nil)
-      create_code_location(project)
-
-      project.enlistments.count.must_equal 1
-      project.enlistments.first.deleted.must_equal false
-      project.deleted = true
-  
-      project.save
-      project.enlistments.first.deleted.must_equal true
-    end
-  end
-
   private
 
   def create_code_location(project)

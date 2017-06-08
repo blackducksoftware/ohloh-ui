@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class Project < ActiveRecord::Base
   acts_as_editable editable_attributes: [:name, :vanity_url, :organization_id, :best_analysis_id,
                                          :description, :tag_list, :missing_source, :url, :download_url],
@@ -124,7 +125,6 @@ class Project < ActiveRecord::Base
   end
 
   def remove_enlistments(current_user)
-    Rails.logger.debug("REMOVING ENLISTMENTS!!")
     enlistments.each do |enlistment|
       enlistment.create_edit.undo!(current_user) if enlistment.create_edit.allow_undo?
     end

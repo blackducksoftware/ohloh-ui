@@ -13,7 +13,6 @@ class UpdateEnlistmentsForDeletedProjects
 
   def execute
     puts 'starting script'
-    
     # update enlistments deleted field for all deleted projects
     Project.where(deleted: true).find_in_batches do |projects|
       projects.each do |project|
@@ -22,7 +21,7 @@ class UpdateEnlistmentsForDeletedProjects
           project.enlistments.each do |enlistment|
             enlistment.create_edit.undo!(@editor) if enlistment.create_edit.allow_undo?
           end
-        rescue Exception => e
+        rescue => e
           @log.error "error: #{project.id} - #{e.inspect}"
         end
       end
@@ -32,4 +31,3 @@ class UpdateEnlistmentsForDeletedProjects
 end
 
 UpdateEnlistmentsForDeletedProjects.new.execute
-

@@ -30,7 +30,7 @@ class CommitsController < SettingsController
     @commit_contributors = CommitContributor.includes(:name, :person)
                                             .where(analysis_id: @analysis.id)
                                             .where(name_id: @commits.map(&:name_id))
-                                            .group_by{|v| v.name_id}
+                                            .group_by(&:name_id)
   end
 
   def statistics
