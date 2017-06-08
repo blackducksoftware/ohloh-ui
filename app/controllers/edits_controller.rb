@@ -20,7 +20,6 @@ class EditsController < SettingsController
     undo ? perform_undo : @edit.redo!(current_user)
     render template: 'edits/edit', layout: false
   rescue StandardError => e
-    Rails.logger.debug("ERROR!! #{e}")
     render text: undo ? t('.failed_undo') : t('.failed_redo'), status: 406
   end
 
