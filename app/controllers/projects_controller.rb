@@ -48,7 +48,9 @@ class ProjectsController < ApplicationController
   end
 
   def similar_by_tags
-    render partial: 'projects/show/similar_by_tags', locals: { similar_by_tags: @project.related_by_tags(4) }
+    respond_to do |format|
+      format.js
+    end
   end
 
   def similar

@@ -33,9 +33,7 @@ class App.SimilarProjects
     $('#related_spinner').removeClass('hidden')
     projectId = $('#similar_projects').data('projectId')
     $.ajax
-      url: "/p/#{ projectId }/similar_by_tags"
-      success: (data) ->
-        $('#similar_projects').html(data)
+      url: "/p/#{ projectId }/similar_by_tags.js"
       complete: ->
         $('#related_spinner').addClass('hidden')
 

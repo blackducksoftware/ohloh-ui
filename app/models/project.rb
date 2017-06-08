@@ -133,3 +133,4 @@ class Project < ActiveRecord::Base
     tags.each(&:recalc_weight!)
   end
 end
+# rubocop:enable Metrics/ClassLength
