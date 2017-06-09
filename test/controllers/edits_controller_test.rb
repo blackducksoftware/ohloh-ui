@@ -243,20 +243,21 @@ describe EditsController do
     end
   end
   describe 'set project to deleted' do
+    before do
+      @project = create(:project)
+      @project.update_column(:best_analysis_id, nil)
+      create_code_location(@project)
+    end
     it 'should delete associated enlistments' do
-      project = create(:project)
-      project.update_column(:best_analysis_id, nil)
-      create_code_location(project)
-
-      project.enlistments.count.must_equal 1
-      project.enlistments.first.deleted.must_equal false
+      @project.enlistments.count.must_equal 1
+      @project.enlistments.first.deleted.must_equal false
       login_as create(:admin)
-      create_edit = CreateEdit.where(target: project).first
-      post :update, id: create_edit.id, undo: 'true', project_id: project.to_param
+      create_edit = CreateEdit.where(target: @project).first
+      post :update, id: create_edit.id, undo: 'true', project_id: @project.to_param
       assert_response :success
-      assert_equal true, project.reload.deleted?
-      assert_equal true, Enlistment.find_by(project_id: project.id).deleted?
-   end
+      assert_equal true, @project.reload.deleted?
+      assert_equal true, Enlistment.find_by(project_id: @project.id).deleted?
+    end
   end
 
    private
