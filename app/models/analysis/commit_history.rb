@@ -9,68 +9,6 @@ class Analysis::CommitHistory < Analysis::QueryBase
   end
 
   def execute
-    Analysis.find_by_sql(query)
-  end
-
-  private
-
-  def query
-    all_months.project([month, coalesce_commits_count])
-              .join(arel_subquery, Arel::Nodes::OuterJoin)
-              .on(month.eq(arel_subquery[:this_month])).where(within_date)
-              .order(month)
-  end
-
-  def arel_subquery
-    subquery.arel.as('counts')
-  end
-
-  def subquery
-    Commit.select(subquery_select_clause)
-          .joins(analysis_aliases_joins)
-          .where(code_set_id: subquery_conditions)
-          .where(analysis_aliases_equals_analysis_id)
-          .where(commit_time_within_time_span)
-          .where(preferred_name_id)
-          .group('this_month')
-  end
-
-  def analysis_aliases_equals_analysis_id
-    return unless @name_id
-    analysis_aliases[:analysis_id].eq(@analysis.id)
-  end
-
-  def commit_time_within_time_span
-    commits[:time].gteq(start_date).and(commits[:time].lteq(end_date))
-  end
-
-  def subquery_conditions
-    AnalysisSlocSet.joins(sloc_set: :code_set).select('code_sets.id')
-                   .where(analysis_sloc_sets[:analysis_id].eq(@analysis.id))
-  end
-
-  def subquery_select_clause
-    [Arel.star.count.as('count'), commit_date]
-  end
-
-  def analysis_aliases_joins
-    return unless @name_id
-    commits
-      .join(analysis_aliases)
-      .on(commits[:name_id].eq(analysis_aliases[:commit_name_id]))
-      .join_sources
-  end
-
-  def preferred_name_id
-    return unless @name_id
-    analysis_aliases[:preferred_name_id].eq(@name_id)
-  end
-
-  def coalesce_commits_count
-    Arel::Nodes::NamedFunction.new('COALESCE', [arel_subquery[:count], 0]).as('commits')
-  end
-
-  def commit_date
-    Arel::Nodes::NamedFunction.new('date_trunc', [Arel.sql("'month'"), commits[:time]]).as('this_month')
+    monthly_commit_histories
   end
 end

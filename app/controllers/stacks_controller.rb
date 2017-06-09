@@ -14,7 +14,11 @@ class StacksController < ApplicationController
   before_action :verify_api_access_for_xml_request, only: [:project_stacks]
 
   def index
-    @stacks = @account.stacks
+    @stacks = @account.stacks.paginate(page: page_param, per_page: 10)
+  end
+
+  def show
+    @stack_entries = @stack.stack_entries.paginate(page: page_param, per_page: 10)
   end
 
   def create

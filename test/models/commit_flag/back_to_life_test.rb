@@ -12,7 +12,6 @@ class CommitFlag::BackToLifeTest < ActiveSupport::TestCase
     btl = CommitFlag::BackToLife.find(cf.id)
     btl.time_elapsed = 123.0
     btl.save!
-    btl.reload
     btl.time_elapsed.must_equal 123.0
   end
 end

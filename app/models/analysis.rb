@@ -16,7 +16,6 @@ class Analysis < ActiveRecord::Base
   has_many :contributor_facts, class_name: 'ContributorFact'
   has_many :analysis_sloc_sets, dependent: :delete_all
   has_many :sloc_sets, through: :analysis_sloc_sets
-  has_many :named_commits
   has_many :factoids, -> { order('severity DESC') }, dependent: :delete_all
   has_many :activity_facts, dependent: :delete_all
 

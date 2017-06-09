@@ -1,6 +1,8 @@
-class AnalysisSlocSet < ActiveRecord::Base
+class AnalysisSlocSet < FisBase
   belongs_to :analysis
   belongs_to :sloc_set
+  has_many :commit_flags, class_name: CommitFlag, foreign_key: :sloc_set_id, primary_key: :sloc_set_id
+  has_one :project, primary_key: :analysis_id, foreign_key: :best_analysis_id
 
   scope :for_code_location, lambda { |code_location_id|
     joins(sloc_set: :code_location).where(code_locations: { id: code_location_id })

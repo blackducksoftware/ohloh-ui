@@ -4,6 +4,11 @@ class ApplicationHelperTest < ActionView::TestCase
   include ApplicationHelper
 
   describe 'expander' do
+    it 'should not have any effect if text is nil' do
+      text = expander(nil)
+      text.must_equal nil
+    end
+
     it 'should truncate strings on a word boundary' do
       text = expander('It was the best of times.', 5, 10)
       text.gsub(/\s/, '')[0..6].must_equal('It<span')

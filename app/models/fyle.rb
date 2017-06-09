@@ -1,3 +1,3 @@
-class Fyle < ActiveRecord::Base
+class Fyle < FisBase
   belongs_to :code_set
 end

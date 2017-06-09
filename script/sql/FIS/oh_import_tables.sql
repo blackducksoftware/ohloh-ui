@@ -1,0 +1,1 @@
+import foreign schema public LIMIT TO(diffs, fyles, commits, sloc_metrics, diffs_id_seq_view, fyles_id_seq_view, commits_id_seq_view, sloc_metrics_id_seq_view) from server fis into public options(import_default 'true');

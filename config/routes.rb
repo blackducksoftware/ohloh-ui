@@ -1,11 +1,5 @@
 Rails.application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
-
-  constraints(Codeopenhub) do
-    get '/', to: 'codeopenhub#index'
-    get '/*other', to: 'codeopenhub#index'
-  end
-
   get 'admin/comments' => redirect('/404')
   root to: 'home#index', defaults: { format: 'html' }
 
@@ -49,6 +43,8 @@ Rails.application.routes.draw do
     resources :edits, only: [:index, :show]
   end
 
+  # support old syntax URLs like tags/php/ruby or tags/ruby
+  get 'tags/*name', to: 'tags#index', via: :get
   resources :tags, only: [:index, :show]
 
   resources :accounts, except: [:new, :create] do

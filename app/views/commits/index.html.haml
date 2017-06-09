@@ -13,4 +13,4 @@
   - if analysis.blank?
     = render 'projects/show/no_analysis_summary'
   - else
-    = render 'commit', named_commits: @named_commits, search_dingus: true
+    = render 'commit', commits: @commits, search_dingus: true

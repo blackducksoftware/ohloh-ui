@@ -1,7 +1,7 @@
-- if named_commit.person
-  = link_to h(obfuscate_email(named_commit.person.person_name)), avatar_path(named_commit.person)
-  - if named_commit.person.person_name != named_commit.commit.name.name
+- if commit_contributor.person
+  = link_to h(obfuscate_email(commit_contributor.person.person_name)), avatar_path(commit_contributor.person)
+  - if commit_contributor.person.person_name != commit_contributor.name.name
     .small
-      = t('.as_comment_html', name: obfuscate_email(named_commit.commit.name.name))
+      = t('.as_comment_html', name: obfuscate_email(commit_contributor.name.name))
 - else
   = t('.unknown')

@@ -4,7 +4,7 @@ require 'simplecov-rcov'
 
 SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
 SimpleCov.start 'rails'
-SimpleCov.minimum_coverage 99.60
+SimpleCov.minimum_coverage 99.58
 
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
@@ -14,9 +14,6 @@ require 'dotenv'
 require 'test_helpers/setup_hamster_account'
 require 'test_helpers/create_forges'
 require 'sidekiq/testing'
-require 'capybara/rails'
-require 'capybara/minitest'
-require 'capybara/minitest/spec'
 Sidekiq::Testing.fake!
 
 Dotenv.overload '.env.test'

@@ -1,4 +1,4 @@
-class SlocMetric < ActiveRecord::Base
+class SlocMetric < FisBase
   belongs_to :diff
   belongs_to :language
   belongs_to :sloc_set
@@ -7,9 +7,10 @@ class SlocMetric < ActiveRecord::Base
   scope :commit_summaries, lambda { |commit, analysis_id|
     return none unless analysis_id
 
-    SlocMetric.select_summary_attributes.select('languages.nice_name as language_name, languages.name as name')
+    SlocMetric.select_summary_attributes
+              .select('languages.nice_name as language_name, languages.name as name')
               .joins([[diff: [commit: :fyle]], :language])
-              .where(diffs: { commit_id: commit.id })
+              .where(diffs: { commit_id: commit })
               .where('diffs.fyle_id = fyles.id')
               .where(sloc_set_id: AnalysisSlocSet.for_analysis(analysis_id).select(:sloc_set_id))
               .ignored_files(analysis_id)

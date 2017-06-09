@@ -1,4 +1,4 @@
-class AnalysisAlias < ActiveRecord::Base
+class AnalysisAlias < FisBase
   belongs_to :analysis
   belongs_to :commit_name, class_name: 'Name', foreign_key: :commit_name_id
   belongs_to :preferred_name, class_name: 'Name', foreign_key: :preferred_name_id
@@ -9,5 +9,10 @@ class AnalysisAlias < ActiveRecord::Base
     return AnalysisAlias.none if name_fact.nil?
 
     where(preferred_name_id: name_fact.name_id).where(analysis_id: name_fact.analysis_id)
+  }
+
+  scope :commit_name_ids, lambda { |contributor_fact|
+    where(preferred_name_id: contributor_fact.name_id, analysis_id: contributor_fact.analysis_id)
+      .pluck(:commit_name_id)
   }
 end

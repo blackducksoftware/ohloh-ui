@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class Project < ActiveRecord::Base
   acts_as_editable editable_attributes: [:name, :vanity_url, :organization_id, :best_analysis_id,
                                          :description, :tag_list, :missing_source, :url, :download_url],
@@ -20,6 +21,8 @@ class Project < ActiveRecord::Base
   after_save :update_organzation_project_count
   after_update :remove_people, if: -> (project) { project.deleted_changed? && project.deleted? }
   after_update :recalc_tags_weight!, if: -> (project) { project.deleted_changed? }
+  # msk rolled back change
+  # after_update :remove_enlistments, if: -> (project) { project.deleted_changed? && project.deleted? }
 
   attr_accessor :managed_by_creator
 
@@ -118,6 +121,13 @@ class Project < ActiveRecord::Base
   def remove_people
     Person.where(project_id: id).destroy_all
   end
+
+  # def remove_enlistments
+  #   enlistments.each do |enlistment|
+  #     enlistment.deleted = true
+  #     enlistment.save
+  #   end
+  # end
 
   def recalc_tags_weight!
     tags.each(&:recalc_weight!)

@@ -196,18 +196,24 @@ namespace :selenium do
   end
 
   def get_commits(project)
-    named_commits = project.named_commits.includes(:commit, :person, :account).by_newest.first(60)
+    analysis = project.best_analysis
+    code_set_id = project.analysis_sloc_sets.joins(sloc_set: :code_set).pluck('code_sets.id').last
+    commits = Commit.joins(:analysis_aliases).where(code_set_id: code_set_id)
+                    .where(analysis_aliases: { analysis_id: analysis.id }).order(time: :desc).first(60)
 
-    named_commits.collect do |named_commit|
-      commit = named_commit.commit
-      get_commit_data(commit, named_commit)
+    commits.collect do |commit|
+      get_commit_data(commit, analysis)
     end
   end
 
-  def get_commit_data(commit, named_commit)
-    [get_email(commit.comment), get_email(named_commit.person.try(:person_name)),
-     commit.diffs.count, commit.lines_added_and_removed(named_commit.project.best_analysis_id),
+  def get_commit_data(commit, analysis)
+    [get_email(commit.comment), get_email(get_commit_contributor(commit, analysis).try(:person)),
+     commit.diffs.count, commit.lines_added_and_removed(analysis.id),
      commit.code_set.repository.url].flatten
+  end
+
+  def get_commit_contributor(commit, analysis)
+    CommitContributor.where(analysis_id: analysis.id, name_id: commit.name_id).first
   end
 
   def get_email(attr)

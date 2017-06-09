@@ -38,10 +38,10 @@ module ProjectAssociations
     has_many :licenses, -> { order('lower(licenses.name)') }, through: :project_licenses
     has_many :duplicates, -> { order(created_at: :desc) }, class_name: 'Duplicate', foreign_key: 'good_project_id'
     has_one :is_a_duplicate, -> { where.not(resolved: true) }, class_name: 'Duplicate', foreign_key: 'bad_project_id'
-    has_many :named_commits, ->(proj) { where(analysis_id: (proj.best_analysis_id || 0)) }
-    has_many :commit_flags, -> { order(time: :desc).where('commit_flags.sloc_set_id = named_commits.sloc_set_id') },
-             through: :named_commits
+    has_many :analysis_sloc_sets, primary_key: :best_analysis_id, foreign_key: :analysis_id
+    has_many :commit_flags, -> { order(time: :desc) }, through: :analysis_sloc_sets
     has_one :project_vulnerability_report
+    has_many :commit_contributors
     accepts_nested_attributes_for :enlistments
     accepts_nested_attributes_for :project_licenses
 

@@ -31,6 +31,7 @@ module ApplicationHelper
   end
 
   def expander(text, min = 250, max = 350, regex = /\s/, regex_offset = -1)
+    return unless text
     text = text.escape.sanitize
     return text.html_safe if text.length < max
 

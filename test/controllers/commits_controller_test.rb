@@ -19,11 +19,18 @@ describe 'CommitsController' do
                                              preferred_name_id: @name1.id)
     create(:analysis_alias, commit_name: @commit2.name, analysis_id: analysis_sloc_set.analysis_id,
                             preferred_name_id: @name2.id)
-    @named_commit = NamedCommit.where(commit_id: @commit1.id).take
     create(:contributor_fact, analysis_id: analysis_sloc_set.analysis_id,
                               name_id: analysis_alias.preferred_name_id)
     @person1 = create(:person, project_id: @project.id, name_id: @name1.id)
     @person2 = create(:person, project_id: @project.id, name_id: @name2.id)
+    commit_contributor = CommitContributor.new(code_set_id: @commit1.code_set_id,
+                                               name_id: @commit1.name_id,
+                                               analysis_id: @project.best_analysis_id,
+                                               contribution_id: @project.contributions.first.id,
+                                               person_id: @person1.id)
+    CommitContributor.stubs(:includes).returns(stub(where: stub(where: [commit_contributor])))
+    CommitContributor.stubs(:where).returns(stub(find_by: commit_contributor))
+    Project.any_instance.stubs(:commit_contributors).returns(stub(find_by: commit_contributor))
   end
 
   describe 'index' do
@@ -34,30 +41,28 @@ describe 'CommitsController' do
 
     it 'should not return commits if invalid project id' do
       get :index, project_id: 'I am banana'
-      assigns(:named_commits).must_equal nil
+      assigns(:commits).must_equal nil
     end
 
     it 'shoud render commits from a contribution for a single contributor' do
       Analysis.any_instance.stubs(:oldest_code_set_time).returns(Time.current)
-      commit_ids = create_commits_and_named_commits
-      NamedCommit.where(commit_id: commit_ids[0..1])
+      # commit_ids = create_commits
       unique_contributions = @project.contributions.uniq(&:id)
       contribution_one = unique_contributions[0]
       contribution_two = unique_contributions[1]
       get :index, project_id: @project.id, contributor_id: contribution_one.id
       must_respond_with :ok
-      assigns(:named_commits).count.must_equal @project.named_commits.where(contribution_id: contribution_one).count
-      assigns(:named_commits).first.contribution_id.must_equal contribution_one.id
-      assigns(:named_commits).first.contribution_id.wont_equal contribution_two.id
+      assigns(:commit_contributor).contribution_id.must_equal contribution_one.id
+      assigns(:commit_contributor).contribution_id.wont_equal contribution_two.id
     end
 
-    it 'should return named commits if valid project' do
+    it 'should return commits if valid project' do
       time_now = Time.zone.now
       thirty_days_ago = time_now - 30.days
       @project.best_analysis.update_attributes(oldest_code_set_time: time_now)
       get :index, project_id: @project.id, time_span: '30 days'
-      assigns(:named_commits).count.must_equal 2
-      assigns(:named_commits).first.must_equal @named_commit
+      assigns(:commits).count.must_equal 2
+      assigns(:commits).first.must_equal @commit1
       assigns(:highlight_from).to_a.must_equal thirty_days_ago.to_a
     end
 
@@ -67,16 +72,16 @@ describe 'CommitsController' do
       must_respond_with :ok
     end
 
-    it 'should filter the named commits if query param is present' do
+    it 'should filter the commits if query param is present' do
       get :index, project_id: @project.id, query: @commit1.comment
-      assigns(:named_commits).count.must_equal 1
-      assigns(:named_commits).first.must_equal @named_commit
+      assigns(:commits).count.must_equal 1
+      assigns(:commits).first.must_equal @commit1
     end
 
     it 'should return nil if invalid filter param' do
       get :index, project_id: @project.id, query: 'oops invalid'
-      assigns(:named_commits).count.must_equal 0
-      assigns(:named_commits).must_be_empty
+      assigns(:commits).count.must_equal 0
+      assigns(:commits).must_be_empty
     end
 
     it 'must render projects/deleted when project is deleted' do
@@ -91,28 +96,25 @@ describe 'CommitsController' do
 
     it 'must render commits within 30 days' do
       Analysis.any_instance.stubs(:oldest_code_set_time).returns(Time.current.beginning_of_day)
-      commit_ids = create_commits_and_named_commits
-      named_commits = NamedCommit.where(commit_id: commit_ids[0..1])
+      commit_ids = create_commits[0..1]
 
       get :index, project_id: @project.id, time_span: '30 days'
-      assigns(:named_commits).count.must_equal 4
-      assigns(:named_commits).must_include @named_commit
-      assigns(:named_commits).must_include named_commits[0]
-      assigns(:named_commits).must_include named_commits[1]
+
+      assigns(:commits).count.must_equal 4
+      assigns(:commits).pluck(:id).must_include commit_ids[0]
+      assigns(:commits).pluck(:id).must_include commit_ids[1]
     end
 
     it 'should render commits within last 12 months' do
       Analysis.any_instance.stubs(:oldest_code_set_time).returns(Time.current)
-      commit_ids = create_commits_and_named_commits
-      named_commits = NamedCommit.where(commit_id: commit_ids[0..2])
+      commit_ids = create_commits[0..2]
 
       get :index, project_id: @project.id, time_span: '12 months'
 
-      assigns(:named_commits).count.must_equal 5
-      assigns(:named_commits).must_include @named_commit
-      assigns(:named_commits).must_include named_commits[0]
-      assigns(:named_commits).must_include named_commits[1]
-      assigns(:named_commits).must_include named_commits[2]
+      assigns(:commits).count.must_equal 5
+      assigns(:commits).ids.must_include commit_ids[0]
+      assigns(:commits).ids.must_include commit_ids[1]
+      assigns(:commits).ids.must_include commit_ids[2]
     end
   end
 
@@ -123,7 +125,7 @@ describe 'CommitsController' do
     end
 
     it 'should return diffs' do
-      get :show, project_id: @project.id, id: @named_commit.id
+      get :show, project_id: @project.id, id: @commit1.id
       assigns(:diffs).count.must_equal 1
       assigns(:diffs).must_equal @commit1.diffs
     end
@@ -135,10 +137,10 @@ describe 'CommitsController' do
   end
 
   describe 'summary' do
-    it 'should return named_commits' do
+    it 'should return commits' do
       get :summary, project_id: @project.id
-      assigns(:named_commits).count.must_equal 2
-      assigns(:named_commits).first.must_equal @named_commit
+      assigns(:commits).count.must_equal 2
+      assigns(:commits).first.must_equal @commit1
     end
   end
 
@@ -172,7 +174,7 @@ describe 'CommitsController' do
 
   private
 
-  def create_commits_and_named_commits
+  def create_commits
     commits = []
     commits << create(:commit, code_set_id: @commit1.code_set_id, position: 2, name: create(:name),
                                comment: 'third commit', time: Time.current - 5.days).id
