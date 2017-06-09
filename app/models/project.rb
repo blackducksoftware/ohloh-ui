@@ -1,4 +1,5 @@
 # rubocop:disable Metrics/ClassLength
+
 class Project < ActiveRecord::Base
   acts_as_editable editable_attributes: [:name, :vanity_url, :organization_id, :best_analysis_id,
                                          :description, :tag_list, :missing_source, :url, :download_url],
@@ -134,3 +135,4 @@ class Project < ActiveRecord::Base
     tags.each(&:recalc_weight!)
   end
 end
+# rubocop:enable Metrics/ClassLength
