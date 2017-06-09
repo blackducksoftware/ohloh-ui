@@ -20,8 +20,6 @@ class Project < ActiveRecord::Base
   after_save :update_organzation_project_count
   after_update :remove_people, if: -> (project) { project.deleted_changed? && project.deleted? }
   after_update :recalc_tags_weight!, if: -> (project) { project.deleted_changed? }
-  # msk rolled back change
-  # after_update :remove_enlistments, if: -> (project) { project.deleted_changed? && project.deleted? }
 
   attr_accessor :managed_by_creator
 
@@ -91,6 +89,10 @@ class Project < ActiveRecord::Base
     [badges[0], badges[2] || badges[1]].compact
   end
 
+  def after_undo(current_user)
+    remove_enlistments(current_user)
+  end
+
   class << self
     def search_and_sort(query, sort, page)
       sort_by = (sort == 'relevance') ? nil : "by_#{sort}"
@@ -121,12 +123,11 @@ class Project < ActiveRecord::Base
     Person.where(project_id: id).destroy_all
   end
 
-  # def remove_enlistments
-  #   enlistments.each do |enlistment|
-  #     enlistment.deleted = true
-  #     enlistment.save
-  #   end
-  # end
+  def remove_enlistments(current_user)
+    enlistments.each do |enlistment|
+      enlistment.create_edit.undo!(current_user) if enlistment.create_edit.allow_undo?
+    end
+  end
 
   def recalc_tags_weight!
     tags.each(&:recalc_weight!)
