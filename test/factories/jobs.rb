@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :job do
-    slave Slave.where(hostname: Socket.gethostname).first_or_create!
+    association :slave
     association :code_location
     status Job::STATUS_SCHEDULED
   end
