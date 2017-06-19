@@ -42,7 +42,7 @@ class SetCodeLocationStatus
     rc = @conn.raw_connection
     rc.exec('COPY kbLocations (id) FROM STDIN WITH CSV')
 
-    file = File.open('tmp/oh-code-locations.csv', 'r')
+    file = File.open('vendor/oh-code-locations.csv', 'r')
     # Add each row to copy data
     rc.put_copy_data(file.readline) until file.eof?
 
