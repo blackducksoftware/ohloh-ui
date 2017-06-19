@@ -2,7 +2,7 @@ class EditsController < SettingsController
   helper ProjectsHelper
 
   before_action :session_required, :redirect_unverified_account, only: [:update]
-  before_action :find_parent, only: [:index, :show, :update]
+  before_action :find_parent, only: [:index, :show]
   before_action :show_permissions_alert, only: :index, unless: :parent_is_account_or_license?
   before_action :find_edit, only: [:show, :update]
   before_action :find_edits, only: [:index]
@@ -11,24 +11,15 @@ class EditsController < SettingsController
     render template: "edits/index_#{@parent.class.name.downcase}"
   end
 
-  def show
-    render nothing: true, status: :ok unless request.xhr?
-  end
-
   def update
     undo = params[:undo].to_bool
-    undo ? perform_undo : @edit.redo!(current_user)
+    undo ? @edit.undo!(current_user) : @edit.redo!(current_user)
     render template: 'edits/edit', layout: false
   rescue StandardError
     render text: undo ? t('.failed_undo') : t('.failed_redo'), status: 406
   end
 
   private
-
-  def perform_undo
-    @edit.undo!(current_user)
-    @parent.after_undo(current_user)
-  end
 
   def parent_is_account_or_license?
     params[:account_id].present? || params[:license_id].present?

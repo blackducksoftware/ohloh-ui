@@ -1,5 +1,3 @@
-# rubocop:disable Metrics/ClassLength
-
 class Project < ActiveRecord::Base
   acts_as_editable editable_attributes: [:name, :vanity_url, :organization_id, :best_analysis_id,
                                          :description, :tag_list, :missing_source, :url, :download_url],
@@ -91,10 +89,6 @@ class Project < ActiveRecord::Base
     [badges[0], badges[2] || badges[1]].compact
   end
 
-  def after_undo(current_user)
-    remove_enlistments(current_user)
-  end
-
   class << self
     def search_and_sort(query, sort, page)
       sort_by = (sort == 'relevance') ? nil : "by_#{sort}"
@@ -125,14 +119,7 @@ class Project < ActiveRecord::Base
     Person.where(project_id: id).destroy_all
   end
 
-  def remove_enlistments(current_user)
-    enlistments.each do |enlistment|
-      enlistment.create_edit.undo!(current_user) if enlistment.create_edit.allow_undo?
-    end
-  end
-
   def recalc_tags_weight!
     tags.each(&:recalc_weight!)
   end
 end
-# rubocop:enable Metrics/ClassLength

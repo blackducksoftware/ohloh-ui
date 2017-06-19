@@ -503,7 +503,6 @@ class ProjectTest < ActiveSupport::TestCase
   def create_code_location(project)
     repository = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forge.id,
                                      owner_at_forge: 'rails', name_at_forge: 'rails')
-
     code_location = create(:code_location, repository: repository)
     create(:enlistment, project: project, code_location: code_location)
   end

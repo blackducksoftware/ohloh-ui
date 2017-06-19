@@ -10,8 +10,8 @@ class KudosController < ApplicationController
 
   def index
     @person = @account.person || Person.new(account_id: @account.id, effective_name: @account.name)
-    @received_kudos = @account.kudos.includes(sender: :person).sort_by_created_at
-    @sent_kudos = @account.sent_kudos.includes(:project, :name, sender: :person, account: :person).sort_by_created_at
+    @received_kudos = @account.kudos.sort_by_created_at
+    @sent_kudos = @account.sent_kudos.sort_by_created_at
   end
 
   def sent

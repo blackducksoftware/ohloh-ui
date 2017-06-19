@@ -1,6 +1,7 @@
 :ruby
   content_for(:html_title) { t('.page_title', who: @stack.account.name, what: @stack.title) }
   editable = current_user && (@stack.account == current_user)
+  stack_entries = @stack.stack_entries
   page_context[:select_top_menu_nav] = 'select_people'
   page_context[:select_footer_nav] = :stacks
 
@@ -51,8 +52,8 @@
         = f.hidden_field :stack_id, value: @stack.id
     .stack_item_list
       %table.table.table-bordered.stack_list{ id: "stack_list_#{@stack.id}" }
-        = render partial: 'stack_entry', collection: @stack_entries, locals: { editable: editable }
-      - if @stack_entries.blank?
+        = render partial: 'stack_entry', collection: stack_entries, locals: { editable: editable }
+      - if stack_entries.blank?
         #empty_stack_text
           - if editable
             %p= t('.recommented_projects_desc')
@@ -60,7 +61,6 @@
               = render 'sample_stacks', stack: @stack
           - else
             %p= t('.empty_stack_msg')
-    = will_paginate @stack_entries
   .col-md-3
     .well
       .inset.stack_definition

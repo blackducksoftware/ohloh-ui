@@ -177,7 +177,7 @@ en:
         no_desc: "No description has been added for this project. %{link}"
       vulnerability_report:
         no_data: 'No data available'
-        pvs_tooltip: 'Score: %{score} <br/> Percentage: %{percentage} <br/> Rank: %{rank} of %{max_rank}'
+        pvs_tooltip: 'Score: %{score} <br/> Rank: %{rank} of %{max_rank}'
         title: 'Project Vulnerability Report'
         blog_link: 'About Project Vulnerability Report'
         pvs:
