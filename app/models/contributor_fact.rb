@@ -58,11 +58,8 @@ class ContributorFact < NameFact
     end
 
     def first_for_name_id_and_project_id(name_id, project_id)
-      ContributorFact.joins(:project).where(projects: { id: project_id })
-                     .find_by('name_id = ? or name_id in (?)', name_id,
-                              AnalysisAlias.select(:preferred_name_id)
-                              .joins(:project)
-                              .where(commit_name_id: name_id))
+      analysis_id = Project.find(project_id).best_analysis_id
+      ContributorFact.where(analysis_id: analysis_id).find_by('name_id = ?', name_id) if analysis_id
     end
   end
 

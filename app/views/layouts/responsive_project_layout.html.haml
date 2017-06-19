@@ -14,6 +14,7 @@
 
   %body{ zoom: 1 }
     = yield :session_projects_banner
+    = render partial: 'layouts/partials/copilot', locals: { responsive_layout: true }
     .container-fluid#project_container
       %header= render partial: 'layouts/partials/header'
       = render partial: 'layouts/partials/page', locals: { responsive_layout: true }

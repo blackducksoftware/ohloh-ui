@@ -35,16 +35,23 @@ describe EditsController do
     it 'undo should require a logged in user' do
       login_as nil
       create_edit = CreateEdit.where(target: @project).first
-      post :update, id: create_edit.id, undo: 'true'
+      post :update, id: create_edit.id, undo: 'true', project_id: @project.to_param
       assert_response :redirect
       must_redirect_to new_session_path
       assert_equal false, @project.reload.deleted?
     end
 
+    it 'should set the parent' do
+      login_as create(:admin)
+      create_edit = CreateEdit.where(target: @project).first
+      post :update, id: create_edit.id, undo: 'true', project_id: @project.to_param
+      assigns(:parent).wont_be_nil
+    end
+
     it 'undo of creation edit should delete the project' do
       login_as create(:admin)
       create_edit = CreateEdit.where(target: @project).first
-      post :update, id: create_edit.id, undo: 'true'
+      post :update, id: create_edit.id, undo: 'true', project_id: @project.to_param
       assert_response :success
       assert_equal true, @project.reload.deleted?
     end
@@ -52,7 +59,7 @@ describe EditsController do
     it 'undo gracefully handles undo/redo errors' do
       login_as create(:admin)
       Edit.any_instance.stubs(:undo!).raises(ActiveRecord::Rollback)
-      post :update, id: CreateEdit.where(target: @project).first.id, undo: 'true'
+      post :update, id: CreateEdit.where(target: @project).first.id, undo: 'true', project_id: @project.to_param
       assert_response 406
     end
 
@@ -60,7 +67,7 @@ describe EditsController do
       login_as nil
       create_edit = CreateEdit.where(target: @project).first
       create_edit.undo! create(:admin)
-      post :update, id: create_edit.id, undo: 'false'
+      post :update, id: create_edit.id, undo: 'false', project_id: @project.to_param
       assert_response :redirect
       must_redirect_to new_session_path
       assert_equal true, @project.reload.deleted?
@@ -70,7 +77,7 @@ describe EditsController do
       create_edit = CreateEdit.where(target: @project).first
       login_as create_edit.account
       @project.destroy
-      post :update, id: create_edit.id, undo: 'false'
+      post :update, id: create_edit.id, undo: 'false', project_id: @project.to_param
       assert_equal false, @project.reload.deleted?
       assert_response :success
     end
@@ -80,7 +87,7 @@ describe EditsController do
       create_edit = CreateEdit.where(target: @project).first
       create_edit.undo! create(:admin)
       Edit.any_instance.stubs(:redo!).raises(ActiveRecord::Rollback)
-      post :update, id: create_edit.id, undo: 'false'
+      post :update, id: create_edit.id, undo: 'false', project_id: @project.to_param
       assert_response 406
     end
   end
@@ -226,5 +233,41 @@ describe EditsController do
         must_render_template '_show'
       end
     end
+
+    it 'should not render if it is not a xhr request' do
+      license = create(:project_license).license
+      login_as nil
+      get :show, id: license.edits.first.id, license_id: license.to_param, format: :js
+      must_respond_with :ok
+      assert_template nil
+    end
+  end
+  describe 'set project to deleted' do
+    before do
+      @project = create(:project)
+      @project.update_column(:best_analysis_id, nil)
+      create_code_location(@project)
+    end
+    it 'should delete associated enlistments' do
+      @project.enlistments.count.must_equal 1
+      @project.enlistments.first.deleted.must_equal false
+      login_as create(:admin)
+      create_edit = CreateEdit.where(target: @project).first
+      post :update, id: create_edit.id, undo: 'true', project_id: @project.to_param
+      assert_response :success
+      assert_equal true, @project.reload.deleted?
+      assert_equal true, Enlistment.find_by(project_id: @project.id).deleted?
+    end
+  end
+
+   private
+
+  def create_code_location(project)
+    forge = Forge.find_by(name: 'Github')
+    repository = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forge.id,
+                                     owner_at_forge: 'rails', name_at_forge: 'rails')
+
+    code_location = create(:code_location, repository: repository)
+    create(:enlistment, project: project, code_location: code_location)
   end
 end
