@@ -510,7 +510,7 @@ ALTER TEXT SEARCH CONFIGURATION pg
 --
 
 CREATE SERVER fis FOREIGN DATA WRAPPER postgres_fdw OPTIONS (
-    dbname 'fis_development',
+    dbname 'fis_test',
     host 'localhost',
     port '5432'
 );
@@ -1324,7 +1324,7 @@ CREATE TABLE code_locations (
     id integer NOT NULL,
     repository_id integer,
     module_branch_name text,
-    status integer DEFAULT 1,
+    status integer DEFAULT 0,
     best_code_set_id integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
@@ -10260,6 +10260,10 @@ INSERT INTO schema_migrations (version) VALUES ('20170320110140');
 INSERT INTO schema_migrations (version) VALUES ('20170323130035');
 
 INSERT INTO schema_migrations (version) VALUES ('20170411054438');
+
+INSERT INTO schema_migrations (version) VALUES ('20170609195100');
+
+INSERT INTO schema_migrations (version) VALUES ('20170616152705');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
