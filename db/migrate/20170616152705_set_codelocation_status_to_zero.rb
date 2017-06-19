@@ -1,4 +1,4 @@
-class SetCodelocationStatusToNil < ActiveRecord::Migration
+class SetCodelocationStatusToZero < ActiveRecord::Migration
   def up
     SetCodeLocationStatus.new.execute
   end
@@ -56,7 +56,7 @@ class SetCodeLocationStatus
   end
 
   def get_possible_selection
-    condition = @rollback ? 'status IS NULL' : "status != #{CodeLocation::STATUS_DELETED}"
+    condition = @rollback ? "status = #{CodeLocation::STATUS_UNDEFINED}" : "status != #{CodeLocation::STATUS_DELETED}"
 
     code_location_count = @conn.select_value("SELECT count(*)
                         FROM code_locations cl
@@ -70,7 +70,7 @@ class SetCodeLocationStatus
   def update_code_location_status
     print '      updating code location status.....'
     get_possible_selection
-    @conn.execute("UPDATE Code_Locations cl SET status = NULL
+    @conn.execute("UPDATE Code_Locations cl SET status = #{CodeLocation::STATUS_UNDEFINED}
       WHERE status !=  #{CodeLocation::STATUS_DELETED} AND
       NOT EXISTS
       (SELECT id FROM kbLocations kb WHERE kb.id = cl.id);")
@@ -79,8 +79,8 @@ class SetCodeLocationStatus
   def rollback_code_location_status
     print '      rolling back code location status.....'
     get_possible_selection
-    @conn.execute("UPDATE Code_Locations cl SET status = 1
-      WHERE status IS NULL AND
+    @conn.execute("UPDATE Code_Locations cl SET status = #{CodeLocation::STATUS_ACTIVE}
+      WHERE status = #{CodeLocation::STATUS_UNDEFINED} AND
       NOT EXISTS
       (SELECT id FROM kbLocations kb WHERE kb.id = cl.id);")
   end

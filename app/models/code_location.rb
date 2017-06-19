@@ -1,6 +1,7 @@
 class CodeLocation < ActiveRecord::Base
   include CodeLocationJobs
 
+  STATUS_UNDEFINED = 0
   STATUS_ACTIVE  = 1
   STATUS_DELETED = 2
 
