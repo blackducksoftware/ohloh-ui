@@ -510,7 +510,7 @@ ALTER TEXT SEARCH CONFIGURATION pg
 --
 
 CREATE SERVER fis FOREIGN DATA WRAPPER postgres_fdw OPTIONS (
-    dbname 'fis_development',
+    dbname 'fis_test',
     host 'localhost',
     port '5432'
 );
