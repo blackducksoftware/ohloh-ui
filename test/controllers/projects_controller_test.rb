@@ -834,15 +834,20 @@ describe 'ProjectsController' do
   end
 
   # similar_by_tags
-  it 'similar_by_tags should display for projects with no tags' do
+  it 'similar_by_tags should reject requests if not ajax' do
     get :similar_by_tags, id: create(:project).to_param
+    must_respond_with :missing
+  end
+
+  it 'similar_by_tags should display for projects with no tags' do
+    xhr :get, :similar_by_tags, id: create(:project).to_param
     must_respond_with :success
     response.body.must_match I18n.t('projects.show.similar_by_tags.none')
   end
 
   it 'similar_by_tags should invite users to add tags for projects with no tags' do
     login_as create(:account)
-    get :similar_by_tags, id: create(:project).to_param
+    xhr :get, :similar_by_tags, id: create(:project).to_param
     must_respond_with :success
     response.body.must_match I18n.t('projects.show.similar_by_tags.add_some_tags')
   end
@@ -856,7 +861,7 @@ describe 'ProjectsController' do
     create(:tagging, taggable: project1, tag: tag)
     create(:tagging, taggable: project2, tag: tag)
     create(:tagging, taggable: project3, tag: tag)
-    get :similar_by_tags, id: project1.to_param
+    xhr :get, :similar_by_tags, id: project1.to_param, format: :js
     must_respond_with :success
     response.body.wont_match 'California'
     response.body.must_match 'Oregon'

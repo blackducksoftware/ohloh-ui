@@ -212,7 +212,7 @@ Rails.application.routes.draw do
       get 'security' => 'vulnerabilities#index'
       get 'recent_vulnerabilities_version_chart' => 'vulnerabilities#recent_version_chart', defaults: { format: 'js' }
       get 'vulnerabilities_filter' => 'vulnerabilities#filter'
-      get :similar_by_tags
+      get :similar_by_tags, constraints: { format: 'js' }
       get :similar
       get 'permissions'  => 'permissions#show',   as: :permissions
       put 'permissions'  => 'permissions#update', as: :update_permissions
