@@ -3,3 +3,7 @@ en:
     dashboard:
       overview:
         check_cii_projects_last_ran: Last ran CII Projects
+    code_location:
+      form:
+        repo_url: 'Repository URL'
+        repo_type: 'Repository Type'
