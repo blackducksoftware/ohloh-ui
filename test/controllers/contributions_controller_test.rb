@@ -16,21 +16,21 @@ describe 'ContributionsController' do
   end
 
   describe 'index' do
-    it 'should return contrubutions' do
+    it 'should return contributions' do
       get :index, project_id: @project.to_param, sort: 'latest_commit'
 
       must_respond_with :ok
       assigns(:contributions).must_equal [@contribution]
     end
 
-    it 'should return contrubutions with valid search param' do
+    it 'should return contributions with valid search param' do
       get :index, project_id: @project.to_param, sort: 'latest_commit', query: @person.effective_name
 
       must_respond_with :ok
       assigns(:contributions).must_equal [@contribution]
     end
 
-    it 'should not return contrubutions with invalid search param' do
+    it 'should not return contributions with invalid search param' do
       get :index, project_id: @project.to_param, sort: 'latest_commit', query: 'dummy'
 
       must_respond_with :ok

@@ -49,4 +49,18 @@ class ContributorFactTest < ActiveSupport::TestCase
       contributor_fact.kudo_rank.must_equal person.kudo_rank
     end
   end
+
+  describe 'monthly_commits' do
+    let(:other_contributor_fact) { create(:contributor_fact, analysis_id: create(:analysis)) }
+
+    before { create(:commit, name_id: contributor_fact.name_id) }
+
+    it 'should return contributor monthly commits' do
+      contributor_fact.monthly_commits.wont_be_empty
+    end
+
+    it 'should return different monthly commits for different contributors' do
+      other_contributor_fact.monthly_commits.wont_equal contributor_fact.monthly_commits
+    end
+  end
 end
