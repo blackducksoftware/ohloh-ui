@@ -22,7 +22,8 @@ class Analysis::QueryBase
   end
 
   def monthly_commit_histories
-    each_month_commits = monthly_commits + missing_month_commits
+    each_month_commits = @name_id ? contributor_monthly_commits : monthly_commits
+    each_month_commits += missing_month_commits
     each_month_commits.select { |commit| commit.month >= start_date && commit.month <= end_date }.sort_by(&:month)
   end
 
@@ -39,8 +40,16 @@ class Analysis::QueryBase
   end
 
   def missing_month_commits
-    AllMonth.where.not(month: monthly_commits.map(&:month)).map do |all_month|
+    commit_histories = @name_id ? contributor_monthly_commits : monthly_commits
+    AllMonth.where.not(month: commit_histories.map(&:month)).map do |all_month|
       MonthlyCommitHistory.new(month: all_month.month, commits: 0)
+    end
+  end
+
+  def contributor_monthly_commits
+    @contributor_monthly_commits ||= Commit.where(name_id: @name_id).group("to_char(date(time),'MON,YYYY')")
+                                           .count.map do |commit_date, commit_count|
+      MonthlyCommitHistory.new(month: DateTime.parse(commit_date).in_time_zone, commits: commit_count)
     end
   end
 
