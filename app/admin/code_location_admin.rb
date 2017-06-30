@@ -1,7 +1,9 @@
 ActiveAdmin.register CodeLocation do
+  actions :index, :show, :edit, :update
   filter :module_branch_name
   filter :repository_url, as: :string
   filter :repository_type, as: :select, collection: proc { Repository.subclasses.map(&:name) }
+  permit_params :status, :update_interval, :module_branch_name, repository_attributes: [:type, :url]
 
   action_item :refetch, only: :show do
     link_to 'Re-Fetch', refetch_admin_code_location_path(code_location)
@@ -40,6 +42,22 @@ ActiveAdmin.register CodeLocation do
 
   show do
     render 'admin/repositories/repository', code_location: code_location, code_sets: code_location.code_sets
+  end
+
+  form do |f|
+    f.semantic_errors(*f.object.errors.keys)
+    f.inputs 'Edit Code Location' do
+      f.semantic_fields_for :repository do |repo|
+        repo.input :url, as: :string, label: t('admins.code_location.form.repo_url')
+        repo.input :type, as: :select, label: t('admins.code_location.form.repo_type'),
+                          include_blank: false,
+                          collection: Repository.subclasses.map(&:name)
+      end
+      f.input :module_branch_name, as: :string
+      f.input :status
+      f.input :update_interval
+    end
+    f.actions
   end
 
   sidebar 'CodeLocation Details', only: :show do
