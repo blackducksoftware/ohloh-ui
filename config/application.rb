@@ -9,6 +9,7 @@ Dotenv.load '.env.local', ".env.#{Rails.env}"
 module OhlohUi
   class Application < Rails::Application
     config.middleware.use Rack::Deflater
+    config.middleware.use Oink::Middleware
 
     config.generators.stylesheets = false
     config.generators.javascripts = false
