@@ -14,6 +14,11 @@ class AccountMailer < ActionMailer::Base
     mail to: account.email, subject: t('.subject')
   end
 
+  def spam_notification(path)
+    attachments['spammers.txt'] = File.read(path)
+    mail to: 'sdas@blackducksoftware.com', subject: 'Suspected spam accounts', bcc: 'info@openhub.net'
+  end
+
   def reset_password_link(account, token)
     @url = confirm_password_reset_index_url(host: ENV['URL_HOST'], account_id: account.to_param, token: token)
     @account = account
