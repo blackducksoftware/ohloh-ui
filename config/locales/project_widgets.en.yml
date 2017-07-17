@@ -87,3 +87,56 @@ en:
     ohloh_code_footer:
       with: '...with'
       code: 'Code'
+    vulnerability_exposure_badge:
+      alt: 'Open Hub project vulnerability Exposure Index for %{name}'
+      short_nice_name: 'Vulnerability Exposure Badge'
+      rank_text: 'Rank: %{value} of %{max_rank}'
+      score_text: 'Score: %{value}'
+      percentage_text: 'Percentage: %{value}'
+      text: 'Vulnerability Index'
+    security_exposure_badge:
+      alt: 'Open Hub project security Exposure Index for %{name}'
+      short_nice_name: 'Security Exposure Badge'
+      text: 'Security Index'
+    language_badge:
+      alt: 'Open Hub project language breakdown for %{name}'
+      short_nice_name: 'Language Badge'
+      language: 'Language'
+      total_count: '%{count} %{text}'
+    last_update_badge:
+      alt: 'Open Hub project %{name} update'
+      short_nice_name: 'Last Update Badge'
+      last_analysed: "Last analysed"
+      last_fetched: "Last code collected"
+    ratings_badge:
+      alt: 'Open Hub project ratings & reviews for %{name}'
+      short_nice_name: 'Ratings Badge'
+      avg_rating: 'Avg Rating: %{value}'
+      rating: 'Rating'
+      review: 'Review'
+      rating_text: '%{value} %{text}'
+      review_text: '%{value} %{text}'
+    recent_contributors_badge:
+      alt: 'Open Hub project recent contributors for %{name}'
+      short_nice_name: 'Recent Contributors Badge'
+      text: 'Recent Contributors'
+    monthly_statistics_badge:
+      alt: 'Open Hub project 30 Day Statistics for %{name}'
+      short_nice_name: '30 Day Statistics Badge'
+      text: '30 Day Statistics'
+      commit: 'Commit'
+      contributor: 'Contributor'
+      new_contributor: 'New Contributor'
+      commit_text: '%{value} %{text}'
+      contributor_text: '%{value} %{text}'
+      new_contributor_text: '%{value} %{text}'
+    yearly_statistics_badge:
+      alt: 'Open Hub project 12 Month Statistics for %{name}'
+      short_nice_name: '12 Month Statistics Badge'
+      text: '12 Month Statistics'
+      commit: 'Commit'
+      contributor: 'Contributor'
+      commit_text: '%{value} %{text}'
+      contributor_text: '%{value} %{text}'
+      positive_diff: '%{value} more in 12 month'
+      negative_diff: '%{value} less in 12 month'

@@ -7,7 +7,11 @@ describe 'ProjectWidgetsController' do
       ProjectWidget::FactoidsStats, ProjectWidget::Factoids, ProjectWidget::BasicStats,
       ProjectWidget::Languages, ProjectWidget::Cocomo,
       ProjectWidget::PartnerBadge, ProjectWidget::ThinBadge, ProjectWidget::UsersLogo
-    ] + [ProjectWidget::Users] * 6
+    ] + [ProjectWidget::Users] * 6 + [ProjectWidget::LastUpdateBadge, ProjectWidget::RatingBadge,
+                                      ProjectWidget::RecentContributorsBadge,
+                                      ProjectWidget::LanguageBadge, ProjectWidget::MonthlyStatisticsBadge,
+                                      ProjectWidget::YearlyStatisticsBadge, ProjectWidget::SecurityExposureBadge,
+                                      ProjectWidget::VulnerabilityExposureBadge]
   end
 
   describe 'index' do
@@ -294,6 +298,285 @@ describe 'ProjectWidgetsController' do
 
     it 'should show not found error' do
       get :thin_badge, project_id: 0
+
+      must_respond_with :ok
+      @response.body.must_equal I18n.t('widgets.not_found')
+    end
+  end
+
+  describe 'vulnerability_exposure_badge' do
+    before do
+      create(:project_vulnerability_report, project: project)
+    end
+
+    it 'should set project and widget' do
+      get :vulnerability_exposure_badge, project_id: project.id
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::VulnerabilityExposureBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should render image for gif format' do
+      get :vulnerability_exposure_badge, project_id: project.id, format: :gif
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::VulnerabilityExposureBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should render iframe for js format' do
+      get :vulnerability_exposure_badge, project_id: project.id, format: :js, ref: 'Thin'
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::VulnerabilityExposureBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should show not found error' do
+      get :vulnerability_exposure_badge, project_id: 0
+
+      must_respond_with :ok
+      @response.body.must_equal I18n.t('widgets.not_found')
+    end
+  end
+
+  describe 'security_exposure_badge' do
+    before do
+      create(:project_vulnerability_report, project: project)
+    end
+
+    it 'should set project and widget' do
+      get :security_exposure_badge, project_id: project.id
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::SecurityExposureBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should render image for gif format' do
+      get :security_exposure_badge, project_id: project.id, format: :gif
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::SecurityExposureBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should render iframe for js format' do
+      get :security_exposure_badge, project_id: project.id, format: :js, ref: 'Thin'
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::SecurityExposureBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should show not found error' do
+      get :security_exposure_badge, project_id: 0
+
+      must_respond_with :ok
+      @response.body.must_equal I18n.t('widgets.not_found')
+    end
+  end
+
+  describe 'language_badge' do
+    it 'should set project and widget' do
+      get :language_badge, project_id: project.id
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::LanguageBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should render image for gif format' do
+      create(:activity_fact, analysis: project.best_analysis, code_added: 6,
+                             code_removed: 5, comments_added: 5, comments_removed: 4)
+
+      get :language_badge, project_id: project.id, format: :gif
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::LanguageBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should render iframe for js format' do
+      get :language_badge, project_id: project.id, format: :js, ref: 'Thin'
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::LanguageBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should show not found error' do
+      get :language_badge, project_id: 0
+
+      must_respond_with :ok
+      @response.body.must_equal I18n.t('widgets.not_found')
+    end
+  end
+
+  describe 'last_update_badge' do
+    it 'should set project and widget' do
+      get :last_update_badge, project_id: project.id
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::LastUpdateBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should render image for gif format' do
+      project.best_analysis.update_attribute(:oldest_code_set_time, Time.zone.now)
+      get :last_update_badge, project_id: project.id, format: :gif
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::LastUpdateBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should render iframe for js format' do
+      get :last_update_badge, project_id: project.id, format: :js, ref: 'Thin'
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::LastUpdateBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should show not found error' do
+      get :last_update_badge, project_id: 0
+
+      must_respond_with :ok
+      @response.body.must_equal I18n.t('widgets.not_found')
+    end
+  end
+
+  describe 'rating_badge' do
+    it 'should set project and widget' do
+      get :rating_badge, project_id: project.id
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::RatingBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should render image for gif format' do
+      get :rating_badge, project_id: project.id, format: :gif
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::RatingBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should render iframe for js format' do
+      get :rating_badge, project_id: project.id, format: :js, ref: 'Thin'
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::RatingBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should show not found error' do
+      get :rating_badge, project_id: 0
+
+      must_respond_with :ok
+      @response.body.must_equal I18n.t('widgets.not_found')
+    end
+  end
+
+  describe 'recent_contributors_badge' do
+    it 'should set project and widget' do
+      get :recent_contributors_badge, project_id: project.id
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::RecentContributorsBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should render image for gif format' do
+      all_time_summary = create(:all_time_summary_summary_with_name_ids, analysis: project.best_analysis)
+      create(:person, name_id: all_time_summary.recent_contributors.drop(1).first, project: project)
+      get :recent_contributors_badge, project_id: project.id, format: :gif
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::RecentContributorsBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should render iframe for js format' do
+      get :recent_contributors_badge, project_id: project.id, format: :js, ref: 'Thin'
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::RecentContributorsBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should show not found error' do
+      get :recent_contributors_badge, project_id: 0
+
+      must_respond_with :ok
+      @response.body.must_equal I18n.t('widgets.not_found')
+    end
+  end
+
+  describe 'monthly_statistics_badge' do
+    it 'should set project and widget' do
+      get :monthly_statistics_badge, project_id: project.id
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::MonthlyStatisticsBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should render image for gif format' do
+      get :monthly_statistics_badge, project_id: project.id, format: :gif
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::MonthlyStatisticsBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should render iframe for js format' do
+      get :monthly_statistics_badge, project_id: project.id, format: :js, ref: 'Thin'
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::MonthlyStatisticsBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should show not found error' do
+      get :monthly_statistics_badge, project_id: 0
+
+      must_respond_with :ok
+      @response.body.must_equal I18n.t('widgets.not_found')
+    end
+  end
+
+  describe 'yearly_statistics_badge' do
+    it 'should set project and widget' do
+      get :yearly_statistics_badge, project_id: project.id
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::YearlyStatisticsBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should render image for gif format' do
+      project.best_analysis.twelve_month_summary.update_attributes(affiliated_commits_count: 8)
+      get :yearly_statistics_badge, project_id: project.id, format: :gif
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::YearlyStatisticsBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should render iframe for js format' do
+      get :yearly_statistics_badge, project_id: project.id, format: :js, ref: 'Thin'
+
+      must_respond_with :ok
+      assigns(:widget).class.must_equal ProjectWidget::YearlyStatisticsBadge
+      assigns(:project).must_equal project
+    end
+
+    it 'should show not found error' do
+      get :yearly_statistics_badge, project_id: 0
 
       must_respond_with :ok
       @response.body.must_equal I18n.t('widgets.not_found')
