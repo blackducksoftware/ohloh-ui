@@ -1,6 +1,6 @@
-path_to_ML_job = Rails.root.join('lib', 'ML_verification', 'job.py').to_s
-cmd_ML = 'python3 ' + path_to_ML_job
-exec(cmd_ML)
+path_to_ml_job = Rails.root.join('lib', 'ML_verification', 'job.py').to_s
+cmd_ml = 'python3 ' + path_to_ml_job
+exec(cmd_ml)
 
 path_to_spammers = Rails.root.join('lib', 'ML_verification', 'spammers.txt').to_s
 
