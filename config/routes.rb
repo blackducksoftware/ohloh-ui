@@ -253,6 +253,7 @@ Rails.application.routes.draw do
     end
     resources :manages, only: [:new]
     resources :edits, only: [:index, :show]
+    get 'edits/refresh/:id', to: 'edits#refresh'
     resources :enlistments
     resources :factoids, only: [:index]
     resources :rss_articles, only: :index

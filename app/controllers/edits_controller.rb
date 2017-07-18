@@ -2,9 +2,9 @@ class EditsController < SettingsController
   helper ProjectsHelper
 
   before_action :session_required, :redirect_unverified_account, only: [:update]
-  before_action :find_parent, only: [:index, :show, :update]
+  before_action :find_parent, only: [:index, :show, :update, :refresh]
   before_action :show_permissions_alert, only: :index, unless: :parent_is_account_or_license?
-  before_action :find_edit, only: [:show, :update]
+  before_action :find_edit, only: [:show, :update, :refresh]
   before_action :find_edits, only: [:index]
 
   def index
@@ -13,6 +13,10 @@ class EditsController < SettingsController
 
   def show
     render nothing: true, status: :ok unless request.xhr?
+  end
+
+  def refresh
+    render template: 'edits/edit', layout: false
   end
 
   def update

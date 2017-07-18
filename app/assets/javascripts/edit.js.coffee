@@ -42,18 +42,39 @@ class Edit
     else if location.pathname.match('/accounts/')
       BUTTON_TYPES['account']
 
-  setupUndoOrRedo: ->
-    $(@editButton).unbind('click').html('Working...')
-    $.ajax
-      object_id: @objectId
-      type: 'POST'
-      url: "/edits/#{@objectId}?ajax=1&#{@buttonType()}=#{@parentId}"
-      data: {_method: 'put', undo: @undoOrRedoFlag }
-      success: (data, textStatus) =>
-        $("#edit_#{@objectId}").replaceWith(data)
-        new Edit($("#edit_#{@objectId}").find('.undo, .redo'))
-      error: (xml_http_request, textStatus, errorThrown) ->
-        alert("Error: #{errorThrown}")
+   setupUndoOrRedo: ->
+      $(@editButton).unbind('click').html('Working...')
+      $.ajax
+        object_id: @objectId
+        type: 'POST'
+        url: "/edits/#{@objectId}?ajax=1&#{@buttonType()}=#{@parentId}"
+        data: {_method: 'put', undo: @undoOrRedoFlag }
+        success: (data, textStatus) =>
+          $("#edit_#{@objectId}").replaceWith(data)
+          new Edit($("#edit_#{@objectId}").find('.undo, .redo'))
+
+          if $(@editButton).hasClass('project') && @undoOrRedoFlag
+            @refreshEnlistment()
+        error: (xml_http_request, textStatus, errorThrown) ->
+              alert("Error: #{errorThrown}")
+
+   refreshEnlistment: ->
+    enlistments = $('.enlistment.undo')
+    i = 0
+    while i < enlistments.length
+      element = enlistments[i]
+      @objectId = $(element).closest('tr')[0].id.slice(5)
+      $.ajax
+       type: 'GET'
+       url: "/p/#{@parentId}/edits/refresh/#{@objectId}?ajax=1"
+       success: (data, textStatus) ->
+        tr = $(data).closest('tr').attr('id')
+        $('#' + tr).replaceWith(data)
+
+       error: (xml_http_request, textStatus, errorThrown) ->
+        alert 'Error: ' + errorThrown
+      i++
+
 
 $(document).on 'page:change', ->
   $('.edit').find('.undo, .redo').each -> new Edit($(this))
