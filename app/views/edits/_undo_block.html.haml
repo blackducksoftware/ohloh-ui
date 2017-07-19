@@ -1,7 +1,8 @@
 - if edit.undone?
   - can_redo = edit.allow_redo?
+  - target_css = edit.target_type.downcase if edit.type == 'CreateEdit'
   - if edit.target.edit_authorized? && can_redo
-    %a.btn.btn-mini.btn-warning{ href: '#', class: needs_login_or_verification_or_default(:redo) }
+    %a.btn.btn-mini.btn-warning{ href: '#', class: "#{needs_login_or_verification_or_default(:redo)} #{target_css}" }
       %i.icon-repeat= t('.redo')
   - else
     - btn_text = "<i class='icon-repeat'></i> #{can_redo ? t('.redo') : t('.cant_redo')}"
@@ -13,7 +14,7 @@
 - else
   - can_undo = edit.allow_undo?
   - if edit.target.edit_authorized? && can_undo
-    %a.btn.btn-mini.btn-primary{ href: '#', class: needs_login_or_verification_or_default(:undo) }
+    %a.btn.btn-mini.btn-primary{ href: '#', class: "#{needs_login_or_verification_or_default(:undo)} #{target_css}" }
       %i.icon-undo= t('.undo')
   - else
     - btn_text = "<i class='icon-undo'></i> #{can_undo ? t('.undo') : t('.cant_undo')}"
