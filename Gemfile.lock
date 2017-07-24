@@ -19,7 +19,6 @@ GIT
 
 GEM
   remote: https://rubygems.org/
-  remote: http://oh-utility01.dc1.lan:9292/
   specs:
     actionmailer (4.2.7.1)
       actionpack (= 4.2.7.1)
