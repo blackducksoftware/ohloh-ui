@@ -104,6 +104,7 @@ class Account::Hooks
     account.posts.update_all(account_id: @anonymous_account)
     # account.account_reports.update_all(account_id: @anonymous_account)
     account.topics.update_all(account_id: @anonymous_account)
+    Topic.where(replied_by: account.id).update_all(replied_by: @anonymous_account.id)
     account.edits.update_all(account_id: @anonymous_account)
     update_edit(account.id)
     update_invite(account.id)
