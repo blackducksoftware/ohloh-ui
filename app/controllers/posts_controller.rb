@@ -43,7 +43,12 @@ class PostsController < ApplicationController
 
   def destroy
     @post.destroy
-    redirect_to topic_path(@topic)
+
+    if @post.topic.persisted?
+      redirect_to topic_path(@topic)
+    else
+      redirect_to forums_path
+    end
   end
 
   private
