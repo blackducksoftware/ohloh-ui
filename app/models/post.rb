@@ -23,7 +23,9 @@ class Post < ActiveRecord::Base
   after_destroy :update_topic
 
   def update_topic_with_post_data
-    topic.update_attributes(replied_at: created_at, replied_by: account_id, last_post_id: id)
+    topic.update_attributes(replied_at: updated_at,
+                            replied_by: account_id,
+                            last_post_id: id)
   end
 
   def update_topic
