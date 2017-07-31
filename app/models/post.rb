@@ -27,8 +27,10 @@ class Post < ActiveRecord::Base
   end
 
   def update_topic
-    last_post = topic.posts.last
-    if last_post
+    if topic.reload.posts_count.zero?
+      topic.destroy
+    else
+      last_post = topic.posts.last
       topic.update_attributes(replied_at: last_post.created_at,
                               replied_by: last_post.account_id,
                               last_post_id: last_post.id)

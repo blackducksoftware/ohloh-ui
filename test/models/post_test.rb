@@ -68,17 +68,6 @@ class PostTest < ActiveSupport::TestCase
       Topic.find_by(id: topic.id).must_be_nil
     end
 
-    it 'wont destroy topic when it has no forum_id' do
-      topic = post.topic
-      topic.posts.count.must_equal 1
-      topic.update!(forum_id: nil)
-
-      post.destroy_with_empty_topic
-
-      Post.find_by(id: post.id).must_be_nil
-      Topic.find_by(id: topic.id).must_be :present?
-    end
-
     it 'wont destroy topic when it has other posts' do
       topic = post.topic
       topic.posts.count.must_equal 1
@@ -88,6 +77,23 @@ class PostTest < ActiveSupport::TestCase
 
       Post.find_by(id: post.id).must_be_nil
       Topic.find_by(id: topic.id).must_be :present?
+    end
+  end
+
+  describe 'callbacks' do
+    describe 'after_destroy' do
+      it 'wont destroy topic if it has other posts' do
+        topic = post.topic
+        create(:post, topic: topic)
+        post.destroy
+        topic.persisted?.must_equal true
+      end
+
+      it 'must destroy topic' do
+        topic = post.topic
+        post.destroy
+        topic.persisted?.must_equal false
+      end
     end
   end
 end
