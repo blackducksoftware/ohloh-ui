@@ -19,6 +19,8 @@ class Post < ActiveRecord::Base
   }
   scope :open_topics, -> { joins(:topic).where(topics: { closed: false }).by_newest }
 
+  after_destroy :delete_topic
+
   def body=(value)
     super(value ? value.fix_encoding_if_invalid!.strip_tags.strip : nil)
   end
@@ -38,5 +40,11 @@ class Post < ActiveRecord::Base
     destroy
     return if topic.forum_id.nil? || topic.posts.exists?
     topic.destroy
+  end
+
+  private
+
+  def delete_topic
+    topic.destroy if topic.reload.posts_count.zero?
   end
 end

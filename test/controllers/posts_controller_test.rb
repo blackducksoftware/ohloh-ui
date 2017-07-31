@@ -473,11 +473,22 @@ describe PostsController do
 
   it 'admin delete' do
     login_as admin
-    post_object2 = create(:post)
+    post_object2 = create(:post, topic: topic)
+    create(:post, topic: topic)
+
     assert_difference('Post.count', -1) do
       delete :destroy, topic_id: post_object2.topic.id, id: post_object2.id
     end
     must_redirect_to topic_path(post_object2.topic.id)
+  end
+
+  it 'must redirect to forum path' do
+    login_as admin
+    post_object2 = create(:post)
+    assert_difference('Post.count', -1) do
+      delete :destroy, topic_id: post_object2.topic.id, id: post_object2.id
+    end
+    must_redirect_to forums_path
   end
 
   it 'destroy gracefully handles errors' do

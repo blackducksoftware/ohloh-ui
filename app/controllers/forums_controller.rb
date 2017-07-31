@@ -27,7 +27,7 @@ class ForumsController < ApplicationController
   end
 
   def show
-    @topics = @forum.topics.paginate(page: page_param, per_page: 15)
+    @topics = @forum.topics.includes(:account, posts: :account).paginate(page: page_param, per_page: 15)
   end
 
   def update
