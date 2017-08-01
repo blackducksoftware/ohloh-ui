@@ -24,6 +24,10 @@ class String
     text
   end
 
+  def escape_single_quote
+    gsub("'", "\\\\'")
+  end
+
   def valid_http_url?
     URI.parse(self).is_a?(URI::HTTP)
   rescue URI::InvalidURIError

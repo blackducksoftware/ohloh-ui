@@ -12,7 +12,7 @@ class ProjectWidget::PartnerBadge < ProjectWidget
   end
 
   def image
-    image_data = [{ text: project.name.truncate(16).shellescape, align: :center }]
+    image_data = [{ text: project.name.truncate(16).escape_single_quote, align: :center }]
     image_data += [lines_text, cost_text, head_count_text] if analysis.present?
 
     WidgetBadge::Partner.create(image_data)
