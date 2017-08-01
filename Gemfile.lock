@@ -76,7 +76,6 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-    bluecloth (2.2.0)
     bourbon (4.2.7)
       sass (~> 3.4)
       thor (~> 0.19)
@@ -244,7 +243,7 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
-    json (1.8.3)
+    json (1.8.6)
     kaminari (0.17.0)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -386,8 +385,9 @@ GEM
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
     rb-readline (0.5.3)
-    recaptcha (3.3.0)
+    recaptcha (4.3.1)
       json
+    redcarpet (3.4.0)
     redis (3.3.1)
     redis-actionpack (5.0.0)
       actionpack (>= 4.0.0, < 6)
@@ -444,6 +444,7 @@ GEM
     simplecov-html (0.10.0)
     simplecov-rcov (0.2.3)
       simplecov (>= 0.4.1)
+    simplemde-rails (1.10.2)
     slop (3.6.0)
     spring (1.7.2)
     sprockets (3.7.0)
@@ -498,7 +499,6 @@ DEPENDENCIES
   aws-sdk (< 2.0)
   better_errors
   binding_of_caller (~> 0.7.2)
-  bluecloth
   brakeman
   bundler-audit
   byebug
@@ -552,6 +552,7 @@ DEPENDENCIES
   rails-html-sanitizer
   rb-readline
   recaptcha
+  redcarpet
   redis-rails
   rubocop (~> 0.40.0)
   ruby_parser
@@ -560,6 +561,7 @@ DEPENDENCIES
   sidekiq
   simplecov
   simplecov-rcov
+  simplemde-rails
   spring
   sprockets-rails (~> 2.3.3)
   teaspoon-jasmine

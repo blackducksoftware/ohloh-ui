@@ -26,6 +26,7 @@
 #= require tagcloud
 #= require ace-element.min
 #= require tipso.min
+#= require simplemde.min
 
 $(document).on 'page:change', ->
   StackShow.init()
