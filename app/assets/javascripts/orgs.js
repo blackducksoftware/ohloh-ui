@@ -119,3 +119,6 @@ var OrgClaimProject = {
     });
   }
 }
+$(document).ready(function() {
+  OrgClaimProject.init()
+});
