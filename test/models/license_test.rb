@@ -180,12 +180,30 @@ class LicenseTest < ActiveSupport::TestCase
     it 'can have required license_permissions' do
       lp = create(:license_permission)
       l = create(:license)
-      l.add_required_license_permission(lp)
-      l.required_permissions.count.must_equal 1
-      rp = l.required_permissions.first
-      rp.name.must_equal lp.name
-      rp.description.must_equal lp.description
-      rp.icon.must_equal lp.icon
+      l.license_permissions << lp
+      l.license_permissions.count.must_equal 1
+      l.license_permissions.first.must_equal lp
+    end
+
+    it 'will get the correct license_permissions' do
+      create(:license) do |l|
+        # Add a Permitted permission
+        lp = create(:license_permission, name: 'Permitted')
+        l.license_permission_roles.create(license_permission: lp, status: 'permitted')
+
+        # Add a Forbidden permission
+        lp = create(:license_permission, name: 'Forbidden')
+        l.license_permission_roles.create(license_permission: lp, status: 'forbidden')
+
+        # Add a Required permission
+        lp = create(:license_permission, name: 'Required')
+        l.license_permission_roles.create(license_permission: lp, status: 'required')
+
+        l.license_permissions.count.must_equal 3
+        l.permitted_license_permissions.count.must_equal 1
+        l.forbidden_license_permissions.count.must_equal 1
+        l.required_license_permissions.count.must_equal 1
+      end
     end
   end
 end
