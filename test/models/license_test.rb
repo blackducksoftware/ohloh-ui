@@ -171,4 +171,21 @@ class LicenseTest < ActiveSupport::TestCase
       project_license.edits.first.allow_undo?.must_equal true
     end
   end
+
+  describe 'license permissions' do
+    it 'can have a set of license permission' do
+      create(:license).must_respond_to(:license_permissions)
+    end
+
+    it 'can have required license_permissions' do
+      lp = create(:license_permission)
+      l = create(:license)
+      l.add_required_license_permission(lp)
+      l.required_permissions.count.must_equal 1
+      rp = l.required_permissions.first
+      rp.name.must_equal lp.name
+      rp.description.must_equal lp.description
+      rp.icon.must_equal lp.icon
+    end
+  end
 end

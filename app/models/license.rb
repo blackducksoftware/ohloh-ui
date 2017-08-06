@@ -61,4 +61,8 @@ class License < ActiveRecord::Base
       pl.edits.undone_by_hamster.each { |edit| edit.redo!(Account.hamster) }
     end
   end
+
+  def add_required_license_permission(licence_permission)
+  end
 end
+  
