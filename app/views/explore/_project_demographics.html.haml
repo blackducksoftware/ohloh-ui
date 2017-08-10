@@ -4,4 +4,4 @@
     = link_to 'PAI', blog_url_for(:pai_about), target: '_blank'
   = number_with_delimiter(@with_pai_count)
   = t '.out_of', count: number_with_delimiter(@total_count)
-  #demographics_chart{ data: { src: demographic_chart_explores_url } }
+  #demographics_chart{ data: { src: demographic_chart_explores_path } }
