@@ -1,3 +1,5 @@
+# rubocop:disable Metrics/ClassLength
+
 class Account::Hooks
   def before_validation(account)
     assign_name_to_login(account) if account.name.blank?
@@ -8,6 +10,7 @@ class Account::Hooks
   def before_destroy(account)
     dependent_destroy(account)
     create_deleted_account(account)
+    transfer_topics_replied_by_to_anonymous_account(account)
     transfer_associations_to_anonymous_account(account)
   end
 
@@ -108,6 +111,11 @@ class Account::Hooks
     update_edit(account.id)
     update_invite(account.id)
     update_manage(account.id)
+  end
+
+  def transfer_topics_replied_by_to_anonymous_account(account)
+    @anonymous_account = Account.find_or_create_anonymous_account
+    Topic.where(replied_by: account.id).update_all(replied_by: @anonymous_account.id)
   end
 
   def update_invite(account_id)

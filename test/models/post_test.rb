@@ -94,6 +94,22 @@ class PostTest < ActiveSupport::TestCase
         post.destroy
         topic.persisted?.must_equal false
       end
+
+      it 'must update topic replied_at if post body is changed' do
+        topic = post.topic
+        create(:post, topic: topic)
+        post.body = 'Edited post body'
+        post.save
+        topic.replied_at.must_equal post.updated_at
+      end
+
+      it 'must not update replied_at if any other attribute is changed' do
+        topic = post.topic
+        create(:post, topic: topic)
+        post.updated_at = Time.now.to_f
+        post.save
+        topic.replied_at.wont_equal post.updated_at
+      end
     end
   end
 end
