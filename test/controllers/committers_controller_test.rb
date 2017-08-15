@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'support/unclaimed_controller_test'
 
 describe 'CommittersControllerTest' do
   before do
@@ -25,6 +26,10 @@ describe 'CommittersControllerTest' do
       assigns(:unclaimed_people_count).must_equal 1
       must_respond_with :ok
       must_render_template :index
+    end
+
+    it 'must limit results when it exceeds OBJECT_MEMORY_CAP' do
+      UnclaimedControllerTest.limit_by_memory_cap(self)
     end
 
     it 'should not return if query is not found' do
@@ -67,6 +72,24 @@ describe 'CommittersControllerTest' do
       assigns(:people).first.must_equal @person
       must_respond_with :ok
       must_render_template :show
+    end
+
+    it 'must limit results by OBJECT_MEMORY_CAP' do
+      limit = 3
+      original_object_memory_cap = OBJECT_MEMORY_CAP
+      Object.send(:remove_const, 'OBJECT_MEMORY_CAP')
+      Object.const_set('OBJECT_MEMORY_CAP', limit)
+
+      name = create(:name_with_fact)
+      name_fact = name.name_facts.first
+      create_list(:person, limit + 1, name: name, name_fact: name_fact)
+
+      get :show, id: name.id
+
+      assigns(:people).count.must_equal OBJECT_MEMORY_CAP
+
+      Object.send(:remove_const, 'OBJECT_MEMORY_CAP')
+      Object.const_set('OBJECT_MEMORY_CAP', original_object_memory_cap)
     end
 
     it 'should raise if invalid committer' do

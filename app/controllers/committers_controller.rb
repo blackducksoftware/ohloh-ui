@@ -4,15 +4,13 @@ class CommittersController < UnclaimedController
   before_action :preload_projects_from_positions, only: :save_claim
 
   def index
-    @unclaimed_people = Person.find_unclaimed(q: query_param, find_by: params[:find_by])
+    @unclaimed_people = unclaimed_people(query_param, params[:find_by])
     @unclaimed_people_count = Person::Count.unclaimed_by(query_param, params[:find_by])
     preload_emails_from_unclaimed_people
   end
 
   def show
-    @people = Person.where(name_id: @name.id)
-                    .includes({ project: [{ best_analysis: :main_language }, :logo] },
-                              :name, name_fact: :primary_language)
+    @people = Person.include_relations_and_order_by_kudo_position_and_name(@name.id).limit(OBJECT_MEMORY_CAP)
     preload_emails
   end
 

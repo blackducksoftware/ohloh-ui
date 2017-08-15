@@ -34,4 +34,21 @@ class UnclaimedController < ApplicationController
   def find_emails(email_ids)
     @emails_map = EmailAddress.where(id: email_ids.flatten).index_by(&:id)
   end
+
+  def unclaimed_people(query, find_by, per_page = nil)
+    if query && Person.find_by_name_or_email(q: query).size > OBJECT_MEMORY_CAP
+      unclaimed_people_with_limit(query, find_by)
+    else
+      Person.find_unclaimed(q: query, find_by: find_by, per_page: per_page)
+    end
+  end
+
+  # NOTE: Since this approach avoids the *includes*, it takes 3x DB time. However this prevents memory hog.
+  def unclaimed_people_with_limit(query, find_by)
+    unclaimed_name_ids = Person.unclaimed_people(q: query, find_by: find_by).limit(10).pluck(:name_id)
+
+    unclaimed_name_ids.map do |name_id|
+      [name_id, Person.include_relations_and_order_by_kudo_position_and_name(name_id).limit(UNCLAIMED_TILE_LIMIT)]
+    end
+  end
 end

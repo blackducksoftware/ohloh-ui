@@ -60,6 +60,12 @@ class Person < ActiveRecord::Base
       connection.execute("insert into people (select * from people_view where project_id = #{sanitize_sql project_id})")
     end
 
+    def include_relations_and_order_by_kudo_position_and_name(name_id)
+      includes({ project: [{ best_analysis: :main_language }, :logo] }, :name, name_fact: :primary_language)
+        .where(name_id: name_id)
+        .order('COALESCE(kudo_position, 999999999), lower(effective_name)')
+    end
+
     def unclaimed_people(opts)
       sub_query = where.not(name_id: nil)
       if opts[:q].present?
