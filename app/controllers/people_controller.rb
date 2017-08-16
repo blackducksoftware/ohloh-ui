@@ -15,7 +15,7 @@ class PeopleController < UnclaimedController
     @claimed_people = Person.find_claimed(params[:query], 'relevance')
                             .preload(account: :markup)
                             .paginate(page: 1, per_page: 3)
-    @unclaimed_people = Person.find_unclaimed(q: params[:query], find_by: 'relevance', per_page: 3)
+    @unclaimed_people = unclaimed_people(params[:query], 'relevance', 3)
     @unclaimed_people_count = Person::Count.unclaimed_by(params[:query], 'relevance')
   end
 
