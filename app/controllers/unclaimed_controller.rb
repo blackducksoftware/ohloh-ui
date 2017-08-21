@@ -36,17 +36,21 @@ class UnclaimedController < ApplicationController
   end
 
   def unclaimed_people(query, find_by, per_page = nil)
-    if query && Person.find_by_name_or_email(q: query).size > OBJECT_MEMORY_CAP
-      unclaimed_people_with_limit(query, find_by)
+    name_ids ||= Person.unclaimed_people(q: query, find_by: find_by).limit(10).pluck(:name_id)
+
+    if exceeds_memory_cap?(name_ids) || query && Person.find_by_name_or_email(q: query).size > OBJECT_MEMORY_CAP
+      unclaimed_people_with_limit(name_ids)
     else
       Person.find_unclaimed(q: query, find_by: find_by, per_page: per_page)
     end
   end
 
-  # NOTE: Since this approach avoids the *includes*, it takes 3x DB time. However this prevents memory hog.
-  def unclaimed_people_with_limit(query, find_by)
-    unclaimed_name_ids = Person.unclaimed_people(q: query, find_by: find_by).limit(10).pluck(:name_id)
+  def exceeds_memory_cap?(unclaimed_name_ids)
+    unclaimed_name_ids.map { |name_id| Person.where(name_id: name_id).size }.max.to_i > OBJECT_MEMORY_CAP
+  end
 
+  # NOTE: Since this approach avoids the *includes*, it takes 3x DB time. However this prevents memory hog.
+  def unclaimed_people_with_limit(unclaimed_name_ids)
     unclaimed_name_ids.map do |name_id|
       [name_id, Person.include_relations_and_order_by_kudo_position_and_name(name_id).limit(UNCLAIMED_TILE_LIMIT)]
     end
