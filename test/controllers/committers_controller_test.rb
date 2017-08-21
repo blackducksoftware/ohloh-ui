@@ -28,8 +28,12 @@ describe 'CommittersControllerTest' do
       must_render_template :index
     end
 
-    it 'must limit results when it exceeds OBJECT_MEMORY_CAP' do
+    it 'must limit queried results when it exceeds OBJECT_MEMORY_CAP' do
       UnclaimedControllerTest.limit_by_memory_cap(self)
+    end
+
+    it 'must limit results when it exceeds OBJECT_MEMORY_CAP' do
+      UnclaimedControllerTest.limit_by_memory_cap(self, false)
     end
 
     it 'should not return if query is not found' do
