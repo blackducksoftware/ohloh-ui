@@ -13,6 +13,8 @@ class License < ActiveRecord::Base
   filterable_by ['licenses.vanity_url', 'licenses.description', 'licenses.url', 'licenses.abbreviation',
                  'licenses.name']
 
+  has_many :license_permission_roles
+  has_many :license_permissions, through: :license_permission_roles, dependent: :destroy
   scope :active, -> { where(deleted: false) }
   scope :by_vanity_url, -> { order(:vanity_url) }
   scope :from_param, ->(vanity_url) { where(vanity_url: vanity_url) }
@@ -34,6 +36,18 @@ class License < ActiveRecord::Base
 
   def short_name
     abbreviation.blank? ? name : abbreviation
+  end
+
+  def permitted_license_permissions
+    license_permissions.merge(LicensePermissionRole.permitted)
+  end
+
+  def forbidden_license_permissions
+    license_permissions.merge(LicensePermissionRole.forbidden)
+  end
+
+  def required_license_permissions
+    license_permissions.merge(LicensePermissionRole.required)
   end
 
   class << self
@@ -61,4 +75,8 @@ class License < ActiveRecord::Base
       pl.edits.undone_by_hamster.each { |edit| edit.redo!(Account.hamster) }
     end
   end
+
+  def add_required_license_permission(licence_permission)
+  end
 end
+  
