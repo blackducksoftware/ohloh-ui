@@ -1,4 +1,5 @@
 #! /usr/bin/env ruby
+# rubocop:disable LineLength
 
 raise 'RAILS_ENV is undefined' unless ENV['RAILS_ENV']
 
@@ -22,28 +23,28 @@ permissions = [
   ['Use Patent Claims', 'Describes the rights to use patent claims of contributors to the code', 'fa-gavel'],
   ['Include Install Instructions', 'If the software is part of a consumer device, you must include installation information to modify and reinstall the software.', 'fa-book'],
   ['Give Credit', 'Include a notice in each source file', 'fa-users'],
-  ['Compensate Damages','If part of commercial product, you must defend and compensate the contributor from lawsuits & damages caused by your commercial offering', 'fa-money'],
+  ['Compensate Damages', 'If part of commercial product, you must defend and compensate the contributor from lawsuits & damagescaused by your commercial offering', 'fa-money'],
   ['Rename', 'Describes the ability or requirement to change the software\'s name if modified or distributed', 'fa-angle-double-right']
 ]
 
-puts "About to create permissions..."
+puts 'About to create permissions...'
 
 permissions.each do |permission|
   print '.'
   LicensePermission.find_or_create_by(name: permission[0], description: permission[1], icon: permission[2])
 end
 
-puts "...done."
+puts '...done.'
 
 def assign_permission(license, permission, role)
   perm = LicensePermission.find_by(name: permission)
-  raise "Type: #{permission} not found!" unless perm
+  raise 'Type: #{permission} not found!' unless perm
   license.license_permission_roles.find_or_create_by(license_permission: perm, status: role)
 end
 
 ################################################################################
-puts "About to assign permissions to licenses"
-puts "GPL-2.0+"
+puts 'About to assign permissions to licenses'
+puts 'GPL-2.0+'
 license = License.find(3)
 ['Commercial Use', 'Modify', 'Distribute', 'Place Warranty'].each do |permitted|
   assign_permission(license, permitted, 'permitted')
@@ -56,7 +57,7 @@ end
 end
 
 ################################################################################
-puts "Apache-2.0"
+puts 'Apache-2.0'
 license = License.find(16)
 ['Commercial Use', 'Modify', 'Distribute', 'Place Warranty', 'Private Use', 'Use Patent Claims', 'Sub-License'].each do |permitted|
   assign_permission(license, permitted, 'permitted')
@@ -77,7 +78,7 @@ end
 ['Sub-License', 'Hold Liable'].each do |forbidden|
   assign_permission(license, forbidden, 'forbidden')
 end
-['Include Copyright', 'Include License', 'Distribute Original', 'Disclose Source', 'State Changes',  'Include Install Instructions'].each do |required|
+['Include Copyright', 'Include License', 'Distribute Original', 'Disclose Source', 'State Changes', 'Include Install Instructions'].each do |required|
   assign_permission(license, required, 'required')
 end
 
@@ -103,7 +104,7 @@ end
 ['Sub-License', 'Hold Liable'].each do |forbidden|
   assign_permission(license, forbidden, 'forbidden')
 end
-['Include Copyright', 'Include License', 'Distribute Original', 'Disclose Source', 'State Changes',  'Include Install Instructions'].each do |required|
+['Include Copyright', 'Include License', 'Distribute Original', 'Disclose Source', 'State Changes', 'Include Install Instructions'].each do |required|
   assign_permission(license, required, 'required')
 end
 
@@ -168,7 +169,7 @@ end
 ['Sub-License', 'Hold Liable'].each do |forbidden|
   assign_permission(license, forbidden, 'forbidden')
 end
-['Include Copyright', 'Include License', 'Distribute Original', 'Disclose Source', 'State Changes',  'Include Install Instructions'].each do |required|
+['Include Copyright', 'Include License', 'Distribute Original', 'Disclose Source', 'State Changes', 'Include Install Instructions'].each do |required|
   assign_permission(license, required, 'required')
 end
 
@@ -181,8 +182,6 @@ end
 ['Use Trademarks', 'Hold Liable'].each do |forbidden|
   assign_permission(license, forbidden, 'forbidden')
 end
-['Include Copyright', 'Include License', 'Distribute Original', 'Disclose Source',  'Include Install Instructions', 'Compensate Damages'].each do |required|
+['Include Copyright', 'Include License', 'Distribute Original', 'Disclose Source', 'Include Install Instructions', 'Compensate Damages'].each do |required|
   assign_permission(license, required, 'required')
 end
-
-

@@ -1,4 +1,4 @@
-- license= @project.licenses.first
+- license = @project.licenses.first
 .license_details
   %h5= license.name
   .row
@@ -6,19 +6,30 @@
       .well
         %h5 Permitted
         - permissions = license.permitted_license_permissions
-        - permissions.each do |p|
-          %p!= "<span title='#{p.description}'>#{p.name}</span> <i class='fa #{p.icon} float_right' aria-hidden='true'></i>"
+        - permissions.each do |permission|
+          %p
+            %span{ title: 'permission.description.to_s' }
+              = permission.name.to_s
+            %i.fa.float_right{ 'aria-hidden' => 'true', :class => '\#{permission.icon}' }
     .col-md-4#forbidden
       .well
         %h5 Forbidden
         - permissions = license.forbidden_license_permissions
-        - permissions.each do |p|
-          %p!= "<span title='#{p.description}'>#{p.name}</span> <i class='fa #{p.icon} float_right' aria-hidden='true'></i>"
+        - permissions.each do |permission|
+          %p
+            %span{ title: 'permission.description.to_s' }
+              = permission.name.to_s
+            %i.fa.float_right{ 'aria-hidden' => 'true', :class => '\#{permission.icon}' }
     .col-md-4#required
       .well
         %h5 Required
         - permissions = license.required_license_permissions
-        - permissions.each do |p|
-          %p!= "<span title='#{p.description}'>#{p.name}</span> <i class='fa #{p.icon} float_right' aria-hidden='true'></i>"
+        - permissions.each do |permission|
+          %p
+            %span{ title: 'permission.description.to_s' }
+              = permission.name.to_s
+            %i.fa.float_right{ 'aria-hidden' => 'true', :class => '\#{permission.icon}' }
   .row
-    %p.text-muted.small.center  These details are provided for information only. No information here is legal advice and should not be used as such.
+    %p.text-muted.small.center
+      These details are provided for information only.
+      No information here is legal advice and should not be used as such.
