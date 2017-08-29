@@ -1,0 +1,51 @@
+#! /usr/bin/env ruby
+
+raise 'RAILS_ENV is undefined' unless ENV['RAILS_ENV']
+
+require_relative '../config/environment'
+require 'logger'
+
+class DeleteGoogleCodeProjects
+  def initialize
+    @log = Logger.new('log/deleted_googlecode_log_file.log')
+    @editor = Account.find_by_login('ohloh_slave')
+  end
+
+  def execute
+    puts 'starting script'
+    @project_ids = fetch_googlecode_projects_array
+    puts "Attempting to delete #{@project_ids.length} google code projects"
+
+    # update project deleted field for all googlecode projects
+    until (projects = Project.find(@project_ids.slice!(0..2))).empty?
+      projects.each do |project|
+        delete_project(project)
+      end
+    end
+    puts 'Successfully completed script - Please check deleted_googlecode_log_file.log to view any exceptions'
+  end
+
+  def fetch_googlecode_projects_array
+    @project_ids = ActiveRecord::Base.connection.select_values("SELECT p.id as project_id
+        FROM code_locations cl inner join repositories r ON cl.repository_id = r.id
+        INNER JOIN enlistments e ON e.code_location_id = cl.id
+        INNER JOIN projects p ON e.project_id = p.id
+        INNER JOIN (SELECT project_id
+           FROM enlistments
+           GROUP BY project_id
+           HAVING count(*) = 1)e1 ON e1.project_id = p.id
+           WHERE r.url like '%googlecode.com%' AND p.deleted = False")
+  end
+
+  def delete_project(project)
+    puts "Processing project #{project.id}"
+    begin
+      project.create_edit.undo!(@editor) if project.create_edit.allow_undo?
+
+    rescue => e
+      @log.error "error: #{project.id} - #{e.inspect}"
+    end
+  end
+end
+
+DeleteGoogleCodeProjects.new.execute
