@@ -16,17 +16,17 @@ class DeleteGoogleCodeProjects
     @project_ids = fetch_googlecode_projects_array
     puts "Attempting to delete #{@project_ids.length} google code projects"
 
-    # update project deleted field for all googlecode projects
-    until (projects = Project.find(@project_ids.slice!(0..2))).empty?
+    # update project deleted field for all googlecode projects in batches of 1000
+    until (projects = Project.find(@project_ids.slice!(0..999))).empty?
       projects.each do |project|
-        delete_project(project)
+        undo_project(project)
       end
     end
     puts 'Successfully completed script - Please check deleted_googlecode_log_file.log to view any exceptions'
   end
 
   def fetch_googlecode_projects_array
-    @project_ids = ActiveRecord::Base.connection.select_values("SELECT p.id as project_id
+    ActiveRecord::Base.connection.select_values("SELECT p.id as project_id
         FROM code_locations cl inner join repositories r ON cl.repository_id = r.id
         INNER JOIN enlistments e ON e.code_location_id = cl.id
         INNER JOIN projects p ON e.project_id = p.id
@@ -37,7 +37,7 @@ class DeleteGoogleCodeProjects
            WHERE r.url like '%googlecode.com%' AND p.deleted = False")
   end
 
-  def delete_project(project)
+  def undo_project(project)
     puts "Processing project #{project.id}"
     begin
       project.create_edit.undo!(@editor) if project.create_edit.allow_undo?
