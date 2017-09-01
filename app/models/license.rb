@@ -79,4 +79,3 @@ class License < ActiveRecord::Base
   def add_required_license_permission(licence_permission)
   end
 end
-  
