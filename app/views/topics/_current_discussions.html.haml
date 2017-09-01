@@ -16,4 +16,4 @@
         %td.center= topic.posts_count
         - if topic.posts.last
           %td= topic.posts.last.account.name
-          %td.freshness= t('.freshness_time', date: time_ago_in_words(topic.posts.last.created_at))
+          %td.freshness= t('.freshness_time', date: time_ago_in_words(topic.replied_at))

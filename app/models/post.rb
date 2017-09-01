@@ -19,7 +19,25 @@ class Post < ActiveRecord::Base
   }
   scope :open_topics, -> { joins(:topic).where(topics: { closed: false }).by_newest }
 
-  after_destroy :delete_topic
+  after_save :update_topic_with_post_data, if: :body_changed?
+  after_destroy :update_topic
+
+  def update_topic_with_post_data
+    topic.update_attributes(replied_at: updated_at,
+                            replied_by: account_id,
+                            last_post_id: id)
+  end
+
+  def update_topic
+    if topic.reload.posts_count.zero?
+      topic.destroy
+    else
+      last_post = topic.posts.last
+      topic.update_attributes(replied_at: last_post.created_at,
+                              replied_by: last_post.account_id,
+                              last_post_id: last_post.id)
+    end
+  end
 
   def body=(value)
     super(value ? value.fix_encoding_if_invalid!.strip_tags.strip : nil)
@@ -40,11 +58,5 @@ class Post < ActiveRecord::Base
     destroy
     return if topic.forum_id.nil? || topic.posts.exists?
     topic.destroy
-  end
-
-  private
-
-  def delete_topic
-    topic.destroy if topic.reload.posts_count.zero?
   end
 end

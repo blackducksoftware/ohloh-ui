@@ -1,5 +1,6 @@
 require 'test_helper'
 require 'test_helpers/commits_by_language_data'
+require 'support/unclaimed_controller_test'
 
 describe 'PeopleControllerTest' do
   before do
@@ -25,6 +26,10 @@ describe 'PeopleControllerTest' do
       must_respond_with :ok
       response.body.must_match @claimed.account.name
       response.body.must_match @unclaimed.name.name
+    end
+
+    it 'must limit results when it exceeds OBJECT_MEMORY_CAP' do
+      UnclaimedControllerTest.limit_by_memory_cap(self)
     end
 
     it 'should render the people page' do

@@ -7,35 +7,3 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-puts '***** Seeding Data Start *****'
-puts '***** Alter Foreign Data Wrapper configurations based on ENV file *****'
-
-config = ActiveRecord::Base.configurations['secondbase'][Rails.env]
-host = config['host']
-name = config['database']
-port = config['port']
-user = config['username']
-password = config['password']
-
-puts 'Alter foreign server'
-cmd = "ALTER SERVER fis OPTIONS(set host '#{host}', set dbname '#{name}', set port '#{port}')"
-ActiveRecord::Base.connection.execute(cmd)
-
-puts 'Alter foreign user mapping'
-cmd = "ALTER USER MAPPING FOR #{user} SERVER fis OPTIONS(SET password '#{password}')"
-ActiveRecord::Base.connection.execute(cmd)
-
-config = ActiveRecord::Base.configurations[Rails.env]
-host = config['host']
-name = config['database']
-port = config['port']
-user = config['username']
-password = config['password']
-
-puts 'Alter foreign server'
-cmd = "ALTER SERVER openhub OPTIONS(set host '#{host}', set dbname '#{name}', set port '#{port}')"
-SecondBase::Base.connection.execute(cmd)
-
-puts 'Alter foreign user mapping'
-cmd = "ALTER USER MAPPING FOR #{user} SERVER openhub OPTIONS(SET password '#{password}')"
-SecondBase::Base.connection.execute(cmd)
