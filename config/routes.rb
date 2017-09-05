@@ -139,6 +139,7 @@ Rails.application.routes.draw do
     collection do
       post :digits_callback
       get :github_callback
+      post :firebase_callback
     end
   end
 

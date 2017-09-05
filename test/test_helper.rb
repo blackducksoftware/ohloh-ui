@@ -14,6 +14,8 @@ require 'dotenv'
 require 'test_helpers/setup_hamster_account'
 require 'test_helpers/create_forges'
 require 'sidekiq/testing'
+require 'webmock/minitest'
+
 Sidekiq::Testing.fake!
 
 Dotenv.overload '.env.test'
@@ -145,6 +147,23 @@ class ActiveSupport::TestCase
     JSON.stubs(:parse).returns(data)
 
     digits_id
+  end
+
+  def stub_firebase_verification(sub = '123', alg = 'RS256', kid = '745c7128cba10e251b9fe712aed52613388a6699')
+    decoded_val = [{  'iss' => 'https://securetoken.google.com/fir-sample-8bb3e',
+                      'aud' => 'fir-sample-8bb3e',
+                      'auth_time' => 1_505_737_344,
+                      'user_id' => '123',
+                      'sub' => sub,
+                      'iat' => 1_505_737_344,
+                      'exp' => 1_505_740_944,
+                      'phone_number' => '+919999999999',
+                      'firebase' => { 'identities' => { 'phone' => ['+919999999999'] },
+                                      'sign_in_provider' => 'phone' } },
+                   { 'alg' => alg,
+                     'kid' => kid },
+                   nil]
+    decoded_val
   end
 
   def stub_github_user_repositories_call

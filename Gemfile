@@ -43,6 +43,7 @@ gem 'whenever', require: false
 gem 'sidekiq'
 gem 'secondbase'
 gem 'simplemde-rails'
+gem 'jwt'
 
 group :development do
   gem 'better_errors'
