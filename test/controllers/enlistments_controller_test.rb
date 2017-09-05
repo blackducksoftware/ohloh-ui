@@ -169,7 +169,7 @@ describe 'EnlistmentsControllerTest' do
     it 'must create enlistment jobs for any existing repository' do
       Repository.any_instance.stubs(:bypass_url_validation).returns(true)
       username = 'stan'
-      GitRepository.create!(url: "git://github.com/#{username}/sablon.git", branch_name: :master)
+      GitRepository.create!(url: "git://github.com/#{username}/sablon.git")
       EnlistmentWorker.jobs.size.must_equal 0
       stub_github_user_repositories_call do
         project = Project.from_param(@project_id).take

@@ -4917,8 +4917,6 @@ CREATE VIEW reports_id_seq_view AS
 CREATE TABLE repositories (
     id integer NOT NULL,
     url text,
-    module_name text,
-    branch_name text,
     forge_id integer,
     username text,
     password text,
@@ -10264,6 +10262,8 @@ INSERT INTO schema_migrations (version) VALUES ('20170411054438');
 INSERT INTO schema_migrations (version) VALUES ('20170609195100');
 
 INSERT INTO schema_migrations (version) VALUES ('20170616152705');
+
+INSERT INTO schema_migrations (version) VALUES ('20170904072947');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
