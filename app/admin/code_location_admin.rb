@@ -1,5 +1,5 @@
 ActiveAdmin.register CodeLocation do
-  actions :index, :show, :edit, :update
+  actions :index, :show, :update
   filter :module_branch_name
   filter :repository_url, as: :string
   filter :repository_type, as: :select, collection: proc { Repository.subclasses.map(&:name) }
