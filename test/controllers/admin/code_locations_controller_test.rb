@@ -23,12 +23,4 @@ describe 'Admin::CodeLocationsController' do
       must_render_template :show
     end
   end
-
-  describe '#edit' do
-    it 'should render edit form when valid code_location is passesd' do
-      get :edit, id: code_location
-      must_respond_with :ok
-      must_render_template :edit
-    end
-  end
 end
