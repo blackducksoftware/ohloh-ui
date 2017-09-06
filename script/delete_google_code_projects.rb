@@ -40,6 +40,7 @@ class DeleteGoogleCodeProjects
   def undo_project(project)
     puts "Processing project #{project.id}"
     begin
+      project.tags.delete_all
       project.create_edit.undo!(@editor) if project.create_edit.allow_undo?
 
     rescue => e
