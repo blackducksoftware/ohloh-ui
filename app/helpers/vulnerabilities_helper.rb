@@ -33,11 +33,6 @@ module VulnerabilitiesHelper
     params.fetch(:sort, {})[:col]
   end
 
-  def best_security_set_releases
-    return [] unless @project.best_project_security_set
-    @project.best_project_security_set.releases.sort_by_release_date
-  end
-
   def no_versions_available
     [Release.new(id: '', version: t('.vulnerabilities.filter.no_versions_available'))]
   end
