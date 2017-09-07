@@ -27,7 +27,13 @@ ActiveAdmin.register CodeLocation do
     end
     column :module_branch_name
     column :status do |code_location|
-      code_location.status == 1 ? 'Active' : 'Deleted'
+      if code_location.status == 1
+        'Active'
+      elsif code_location.status == 2
+        'Deleted'
+      else
+        'Undefined'
+      end
     end
     column :created_at
     column :updated_at
