@@ -1,5 +1,5 @@
 ActiveAdmin.register CodeLocation do
-  actions :index, :show, :edit, :update
+  actions :index, :show, :update
   filter :module_branch_name
   filter :repository_url, as: :string
   filter :repository_type, as: :select, collection: proc { Repository.subclasses.map(&:name) }
@@ -27,7 +27,13 @@ ActiveAdmin.register CodeLocation do
     end
     column :module_branch_name
     column :status do |code_location|
-      code_location.status == 1 ? 'Active' : 'Deleted'
+      if code_location.status == 1
+        'Active'
+      elsif code_location.status == 2
+        'Deleted'
+      else
+        'Undefined'
+      end
     end
     column :created_at
     column :updated_at
@@ -42,22 +48,6 @@ ActiveAdmin.register CodeLocation do
 
   show do
     render 'admin/repositories/repository', code_location: code_location, code_sets: code_location.code_sets
-  end
-
-  form do |f|
-    f.semantic_errors(*f.object.errors.keys)
-    f.inputs 'Edit Code Location' do
-      f.semantic_fields_for :repository do |repo|
-        repo.input :url, as: :string, label: t('admins.code_location.form.repo_url')
-        repo.input :type, as: :select, label: t('admins.code_location.form.repo_type'),
-                          include_blank: false,
-                          collection: Repository.subclasses.map(&:name)
-      end
-      f.input :module_branch_name, as: :string
-      f.input :status
-      f.input :update_interval
-    end
-    f.actions
   end
 
   sidebar 'CodeLocation Details', only: :show do
