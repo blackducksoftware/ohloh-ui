@@ -27,6 +27,7 @@
 #= require ace-element.min
 #= require tipso.min
 #= require simplemde.min
+#= require slick.min
 
 $(document).on 'page:change', ->
   StackShow.init()

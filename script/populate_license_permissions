@@ -1,0 +1,187 @@
+#! /usr/bin/env ruby
+# rubocop:disable LineLength
+
+raise 'RAILS_ENV is undefined' unless ENV['RAILS_ENV']
+
+require_relative '../config/environment'
+
+permissions = [
+  ['Commercial Use', 'Describes how the software be used commercially', 'fa-briefcase'],
+  ['Modify', 'Describes how the software be modified and derivatives created', 'fa-pencil-square-o'],
+  ['Distribute', 'Describes if the software be distributed and the impact of modification', 'fa-share-square-o'],
+  ['Place Warranty', 'Describes the ability to place a warranty on the software', 'fa-shield'],
+  ['Sub-License', 'Describes if the license permits sub-licensing', 'fa-balance-scale'],
+  ['Hold Liable', 'Describes the warranty and if the software or license owner can be held liable for damages', 'fa-exclamation-triangle'],
+  ['Distribute Original', 'Describes whether the original software, or instructions to the original, must be distributed', 'fa-clone'],
+  ['Disclose Source', 'Describes whether the source code must be made available', 'fa-files-o'],
+  ['Include Copyright', 'Describes whether the original copyright must be included', 'fa-copyright'],
+  ['State Changes', 'Describes whether significant changes to the original source must be disclosed', 'fa-pencil-square-o'],
+  ['Include License', 'Describes whether the full text of the license must be included in the modified software', 'fa-balance-scale'],
+  ['Private Use', 'Describes whether the software may be used for private use', 'fa-user-secret'],
+  ['Use Trademarks', 'Describes the allowance of using contributor names, trademarks or logos', 'fa-trademark'],
+  ['Include Notice', 'Describes whether a notice must be included in documentation and what that notice must contain', 'fa-sticky-note-o'],
+  ['Use Patent Claims', 'Describes the rights to use patent claims of contributors to the code', 'fa-gavel'],
+  ['Include Install Instructions', 'If the software is part of a consumer device, you must include installation information to modify and reinstall the software.', 'fa-book'],
+  ['Give Credit', 'Include a notice in each source file', 'fa-users'],
+  ['Compensate Damages', 'If part of commercial product, you must defend and compensate the contributor from lawsuits & damages caused by your commercial offering', 'fa-money'],
+  ['Rename', 'Describes the ability or requirement to change the software\'s name if modified or distributed', 'fa-angle-double-right']
+]
+
+puts 'About to create permissions...'
+
+permissions.each do |permission|
+  print '.'
+  LicensePermission.find_or_create_by(name: permission[0], description: permission[1], icon: permission[2])
+end
+
+puts '...done.'
+
+def assign_permission(license, permission, role)
+  perm = LicensePermission.find_by(name: permission)
+  raise 'Type: #{permission} not found!' unless perm
+  license.license_permission_roles.find_or_create_by(license_permission: perm, status: role)
+end
+
+################################################################################
+puts 'About to assign permissions to licenses'
+puts 'GPL-2.0+'
+license = License.find(3)
+['Commercial Use', 'Modify', 'Distribute', 'Place Warranty'].each do |permitted|
+  assign_permission(license, permitted, 'permitted')
+end
+['Sub-License', 'Hold Liable'].each do |forbidden|
+  assign_permission(license, forbidden, 'forbidden')
+end
+['Include Copyright', 'Include License', 'Distribute Original', 'Disclose Source', 'State Changes'].each do |required|
+  assign_permission(license, required, 'required')
+end
+
+################################################################################
+puts 'Apache-2.0'
+license = License.find(16)
+['Commercial Use', 'Modify', 'Distribute', 'Place Warranty', 'Private Use', 'Use Patent Claims', 'Sub-License'].each do |permitted|
+  assign_permission(license, permitted, 'permitted')
+end
+['Use Trademarks', 'Hold Liable'].each do |forbidden|
+  assign_permission(license, forbidden, 'forbidden')
+end
+['Include Copyright', 'Include License', 'State Changes', 'Include Notice'].each do |required|
+  assign_permission(license, required, 'required')
+end
+
+################################################################################
+puts 'GPL-3.0+'
+license = License.find(161)
+['Commercial Use', 'Modify', 'Distribute', 'Place Warranty', 'Use Patent Claims'].each do |permitted|
+  assign_permission(license, permitted, 'permitted')
+end
+['Sub-License', 'Hold Liable'].each do |forbidden|
+  assign_permission(license, forbidden, 'forbidden')
+end
+['Include Copyright', 'Include License', 'Distribute Original', 'Disclose Source', 'State Changes', 'Include Install Instructions'].each do |required|
+  assign_permission(license, required, 'required')
+end
+
+################################################################################
+puts 'MIT'
+license = License.find(13)
+['Commercial Use', 'Modify', 'Distribute', 'Private Use', 'Sub-License'].each do |permitted|
+  assign_permission(license, permitted, 'permitted')
+end
+['Hold Liable'].each do |forbidden|
+  assign_permission(license, forbidden, 'forbidden')
+end
+['Include Copyright', 'Include License'].each do |required|
+  assign_permission(license, required, 'required')
+end
+
+################################################################################
+puts 'LGPL'
+license = License.find(1)
+['Commercial Use', 'Modify', 'Distribute', 'Place Warranty', 'Use Patent Claims'].each do |permitted|
+  assign_permission(license, permitted, 'permitted')
+end
+['Sub-License', 'Hold Liable'].each do |forbidden|
+  assign_permission(license, forbidden, 'forbidden')
+end
+['Include Copyright', 'Include License', 'Distribute Original', 'Disclose Source', 'State Changes', 'Include Install Instructions'].each do |required|
+  assign_permission(license, required, 'required')
+end
+
+################################################################################
+puts 'BSD-4-Clause-UC'
+license = License.find(7)
+['Commercial Use', 'Modify', 'Distribute', 'Place Warranty'].each do |permitted|
+  assign_permission(license, permitted, 'permitted')
+end
+['Use Trademarks', 'Hold Liable'].each do |forbidden|
+  assign_permission(license, forbidden, 'forbidden')
+end
+['Include Copyright', 'Include License'].each do |required|
+  assign_permission(license, required, 'required')
+end
+
+################################################################################
+puts 'Artistic GPL'
+license = License.find(206)
+['Commercial Use', 'Modify', 'Distribute'].each do |permitted|
+  assign_permission(license, permitted, 'permitted')
+end
+['Use Trademarks', 'Hold Liable'].each do |forbidden|
+  assign_permission(license, forbidden, 'forbidden')
+end
+['State Changes'].each do |required|
+  assign_permission(license, required, 'required')
+end
+
+################################################################################
+puts 'MS-PL'
+license = License.find(150)
+['Commercial Use', 'Modify', 'Distribute', 'Sub-License'].each do |permitted|
+  assign_permission(license, permitted, 'permitted')
+end
+['Use Trademarks', 'Hold Liable'].each do |forbidden|
+  assign_permission(license, forbidden, 'forbidden')
+end
+['Include Copyright', 'Include License'].each do |required|
+  assign_permission(license, required, 'required')
+end
+
+################################################################################
+puts 'Ms-PL'
+license = License.find(357)
+['Commercial Use', 'Modify', 'Distribute', 'Sub-License'].each do |permitted|
+  assign_permission(license, permitted, 'permitted')
+end
+['Use Trademarks', 'Hold Liable'].each do |forbidden|
+  assign_permission(license, forbidden, 'forbidden')
+end
+['Include Copyright', 'Include License'].each do |required|
+  assign_permission(license, required, 'required')
+end
+
+##########################################################################
+puts 'MPL-1.1'
+license = License.find(29)
+['Commercial Use', 'Modify', 'Distribute', 'Place Warranty', 'Use Patent Claims'].each do |permitted|
+  assign_permission(license, permitted, 'permitted')
+end
+['Sub-License', 'Hold Liable'].each do |forbidden|
+  assign_permission(license, forbidden, 'forbidden')
+end
+['Include Copyright', 'Include License', 'Distribute Original', 'Disclose Source', 'State Changes', 'Include Install Instructions'].each do |required|
+  assign_permission(license, required, 'required')
+end
+
+##########################################################################
+puts 'EPL-1.0'
+license = License.find(19)
+['Commercial Use', 'Modify', 'Distribute', 'Private Use', 'Use Patent Claims', 'Sub-License'].each do |permitted|
+  assign_permission(license, permitted, 'permitted')
+end
+['Use Trademarks', 'Hold Liable'].each do |forbidden|
+  assign_permission(license, forbidden, 'forbidden')
+end
+['Include Copyright', 'Include License', 'Distribute Original', 'Disclose Source', 'Include Install Instructions', 'Compensate Damages'].each do |required|
+  assign_permission(license, required, 'required')
+end
