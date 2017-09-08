@@ -14,7 +14,7 @@ end
 
 def fix_remote_server_fdw_credentials
   config = ActiveRecord::Base.configurations[Rails.env]
-  server = 'openhub'
+  server = 'ohloh'
   second_base_execute(alter_fdw_server_query(server, config))
   second_base_execute(drop_user_mapping(server, config))
   second_base_execute(create_user_mapping(server, config))
