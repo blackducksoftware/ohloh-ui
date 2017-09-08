@@ -1,0 +1,11 @@
+- if @project.licenses.count > 0
+  .row.mezzo
+  .project_licenses
+    .row.project_row
+      .col-md-12.license_title_container
+        %h4.license_panel_title License Details
+      .clearfix
+        .col-md-2
+        .col-md-8#license_details
+          .well= render partial: 'projects/show/license_details'
+        .col-md-2
