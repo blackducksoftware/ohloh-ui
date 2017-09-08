@@ -23,7 +23,7 @@ permissions = [
   ['Use Patent Claims', 'Describes the rights to use patent claims of contributors to the code', 'fa-gavel'],
   ['Include Install Instructions', 'If the software is part of a consumer device, you must include installation information to modify and reinstall the software.', 'fa-book'],
   ['Give Credit', 'Include a notice in each source file', 'fa-users'],
-  ['Compensate Damages', 'If part of commercial product, you must defend and compensate the contributor from lawsuits & damagescaused by your commercial offering', 'fa-money'],
+  ['Compensate Damages', 'If part of commercial product, you must defend and compensate the contributor from lawsuits & damages caused by your commercial offering', 'fa-money'],
   ['Rename', 'Describes the ability or requirement to change the software\'s name if modified or distributed', 'fa-angle-double-right']
 ]
 

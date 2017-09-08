@@ -103,9 +103,6 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     :clear left
     :margin-top 10px
 
-.proj_community_ratings
-
-
 .cocomo-form
   :border 2px solid #E0E4E8
   .control-label
@@ -318,17 +315,51 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
 .project_licenses
   .license_title_container
     padding-left: 1em
+    h4
+      margin-bottom: 0
   .license_panel_title
     padding-left: 1em
   .license_details
-    min-height: 70px
+    min-height: 50px
+    i.fa
+      margin-top: 0.3em
+    p
+      margin: 0 0 3px
+    h5
+      margin-bottom: 0.5em
+    .license_title
+      margin-top: 0
+      margin-bottom: 1em
+  .license_details > .row:first-of-type
+    display: flex
+  .tipso_style
+    border-bottom: medium none
+    cursor: pointer
   #permitted
     color: green
+    margin-top: -20px
+    .well
+      padding-bottom: 0
+      padding-top: 0
+      height: 78%
   #forbidden
     color: red
+    margin-top: -20px
+    padding-left: 0
+    .well
+      padding-bottom: 0
+      padding-top: 0
+      height: 78%
   #required
     color: blue
-
+    margin-top: -20px
+    padding-left: 0
+    .well
+      padding-bottom: 0
+      padding-top: 0
+      height: 78%
+    h5
+      margin-top: 1em
 .project_security
   .security-panel-title
     padding-left: 1em
@@ -465,3 +496,8 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
       margin-left: 0
   .more_badges p
     float: right
+
+.license_link
+  float: right
+  margin-top: -2em
+  padding: 0 2em 1em 0
