@@ -260,7 +260,21 @@ describe EditsController do
     end
   end
 
-   private
+  describe '#refresh' do
+    before do
+      @project = create(:project)
+      @project.update_column(:best_analysis_id, nil)
+      create_code_location(@project)
+    end
+
+    it 'should render edit template' do
+      create_edit = CreateEdit.where(target: @project).first
+      post :refresh, id: create_edit.id, project_id: @project.to_param
+      must_render_template 'edits/edit'
+    end
+  end
+
+  private
 
   def create_code_location(project)
     forge = Forge.find_by(name: 'Github')
