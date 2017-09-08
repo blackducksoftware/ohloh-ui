@@ -5,7 +5,10 @@ class CodeLocationAdminTest < ActionDispatch::IntegrationTest
 
   it 'should render index page' do
     login_as admin
-    create(:code_location)
+    repository = create(:repository, url: 'git://github.com/rails/rails.git')
+    create(:code_location, status: 0, repository: repository, update_interval: 3600)
+    create(:code_location, status: 1, repository: repository)
+    create(:code_location, status: 2, repository: repository)
     get admin_code_locations_path
     assert_response :success
   end

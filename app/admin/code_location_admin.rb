@@ -50,22 +50,6 @@ ActiveAdmin.register CodeLocation do
     render 'admin/repositories/repository', code_location: code_location, code_sets: code_location.code_sets
   end
 
-  form do |f|
-    f.semantic_errors(*f.object.errors.keys)
-    f.inputs 'Edit Code Location' do
-      f.semantic_fields_for :repository do |repo|
-        repo.input :url, as: :string, label: t('admins.code_location.form.repo_url')
-        repo.input :type, as: :select, label: t('admins.code_location.form.repo_type'),
-                          include_blank: false,
-                          collection: Repository.subclasses.map(&:name)
-      end
-      f.input :module_branch_name, as: :string
-      f.input :status
-      f.input :update_interval
-    end
-    f.actions
-  end
-
   sidebar 'CodeLocation Details', only: :show do
     attributes_table_for code_location do
       rows(*code_location.attribute_names)
