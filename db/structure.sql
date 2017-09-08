@@ -3181,6 +3181,72 @@ CREATE VIEW license_facts_id_seq_view AS
 
 
 --
+-- Name: license_permission_roles; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE license_permission_roles (
+    id integer NOT NULL,
+    license_id integer,
+    license_permission_id integer,
+    status integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: license_permission_roles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE license_permission_roles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: license_permission_roles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE license_permission_roles_id_seq OWNED BY license_permission_roles.id;
+
+
+--
+-- Name: license_permissions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE license_permissions (
+    id integer NOT NULL,
+    name character varying,
+    description character varying,
+    icon character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: license_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE license_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: license_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE license_permissions_id_seq OWNED BY license_permissions.id;
+
+
+--
 -- Name: licenses; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -6500,6 +6566,20 @@ ALTER TABLE ONLY license_facts ALTER COLUMN id SET DEFAULT nextval('license_fact
 
 
 --
+-- Name: license_permission_roles id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY license_permission_roles ALTER COLUMN id SET DEFAULT nextval('license_permission_roles_id_seq'::regclass);
+
+
+--
+-- Name: license_permissions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY license_permissions ALTER COLUMN id SET DEFAULT nextval('license_permissions_id_seq'::regclass);
+
+
+--
 -- Name: licenses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -7253,6 +7333,22 @@ ALTER TABLE ONLY languages
 
 ALTER TABLE ONLY license_facts
     ADD CONSTRAINT license_facts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: license_permission_roles license_permission_roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY license_permission_roles
+    ADD CONSTRAINT license_permission_roles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: license_permissions license_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY license_permissions
+    ADD CONSTRAINT license_permissions_pkey PRIMARY KEY (id);
 
 
 --
@@ -10264,6 +10360,10 @@ INSERT INTO schema_migrations (version) VALUES ('20170411054438');
 INSERT INTO schema_migrations (version) VALUES ('20170609195100');
 
 INSERT INTO schema_migrations (version) VALUES ('20170616152705');
+
+INSERT INTO schema_migrations (version) VALUES ('20170806122538');
+
+INSERT INTO schema_migrations (version) VALUES ('20170806141217');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
