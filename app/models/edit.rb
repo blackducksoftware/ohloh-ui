@@ -54,12 +54,18 @@ class Edit < ActiveRecord::Base
   end
 
   def swap_doneness(undo, editor)
-    raise I18n.t('edits.undo_redo_require_editor') unless editor
-    raise ActsAsEditable::UndoError, I18n.t(undo ? 'edits.cant_undo' : 'edits.cant_redo') if undone == undo
+    check_exceptions(undo, editor)
     Edit.transaction do
       undo ? do_undo : do_redo
-      update_attributes!(undone: undo, undone_at: Time.current, undone_by: editor.id)
+      swap_done = update_attributes!(undone: undo, undone_at: Time.current, undone_by: editor.id)
+      target.after_undo(editor) if undo && target.respond_to?(:after_undo)
+      swap_done
     end
+  end
+
+  def check_exceptions(undo, editor)
+    raise I18n.t('edits.undo_redo_require_editor') unless editor
+    raise ActsAsEditable::UndoError, I18n.t(undo ? 'edits.cant_undo' : 'edits.cant_redo') if undone == undo
   end
 
   def populate_project

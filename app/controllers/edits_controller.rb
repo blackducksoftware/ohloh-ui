@@ -31,7 +31,6 @@ class EditsController < SettingsController
 
   def perform_undo
     @edit.undo!(current_user)
-    @parent.after_undo(current_user)
   end
 
   def parent_is_account_or_license?

@@ -37,17 +37,6 @@
       = link_to t('.add_code_location'), project_enlistments_path(@project)
   .clearfix
   .col-xs-5.text-right
-    = link_to t('.licenses'), project_licenses_path(@project)
-  .col-xs-7{ style: 'margin-bottom: .5em;' }
-    - licenses = @project.licenses
-    - if licenses.empty?
-      = t('.no_license')
-    - else
-      %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
-        %span{ itemprop: 'publishingPrinciples' }
-          = licenses.collect { |l| link_to html_escape(l.short_name), license_url(l.to_param) }.to_sentence.html_safe
-  .clearfix
-  .col-xs-5.text-right
     = link_to t('.similar_projects'), similar_project_path(@project)
   .col-xs-7{ style: 'margin-bottom: .5em;' }
     #similar_projects{ data: { project_id: @project.to_param } }
