@@ -2,10 +2,23 @@ require 'test_helper'
 
 class LicensePermissionRoleTest < ActiveSupport::TestCase
   describe 'attributes' do
-    it 'must have a license' do
+    it 'must have a license and license_permission' do
+      lpr = create(:license_permission_role)
+      lpr.license.blank?.must_equal false
+      lpr.license_permission.blank?.must_equal false
+    end
+
+    it 'must have a unique license permission for a license' do
       license = create(:license)
-      lpr = create(:license_permission_role, license: license)
-      lpr.license.must_equal license
+      lp = create(:license_permission)
+      create(:license_permission_role, license_permission: lp, license: license)
+      lpr_2 = build(:license_permission_role, license_permission: lp, license: license)
+      lpr_2.valid?.must_equal false
+    end
+
+    it 'is not valid if it does not have a license permission or license' do
+      lpr = build(:license_permission_role, license_permission: nil, license: nil)
+      lpr.valid?.must_equal false
     end
 
     it 'must be one of the valid states' do
