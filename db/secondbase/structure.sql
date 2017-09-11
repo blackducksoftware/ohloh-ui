@@ -4348,7 +4348,6 @@ ALTER FOREIGN TABLE job_statuses ALTER COLUMN name OPTIONS (
 CREATE FOREIGN TABLE jobs (
     id integer DEFAULT jobs_id_seq_view() NOT NULL,
     project_id integer,
-    repository_id integer,
     status integer DEFAULT 0 NOT NULL,
     type text NOT NULL,
     priority integer DEFAULT 0 NOT NULL,
@@ -4382,9 +4381,6 @@ ALTER FOREIGN TABLE jobs ALTER COLUMN id OPTIONS (
 );
 ALTER FOREIGN TABLE jobs ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN repository_id OPTIONS (
-    column_name 'repository_id'
 );
 ALTER FOREIGN TABLE jobs ALTER COLUMN status OPTIONS (
     column_name 'status'
@@ -10341,4 +10337,6 @@ INSERT INTO schema_migrations (version) VALUES ('20170615183328');
 INSERT INTO schema_migrations (version) VALUES ('20170622141518');
 
 INSERT INTO schema_migrations (version) VALUES ('20170905123152');
+
+INSERT INTO schema_migrations (version) VALUES ('20170911100003');
 

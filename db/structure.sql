@@ -2830,7 +2830,6 @@ CREATE TABLE job_statuses (
 CREATE TABLE jobs (
     id integer NOT NULL,
     project_id integer,
-    repository_id integer,
     status integer DEFAULT 0 NOT NULL,
     type text NOT NULL,
     priority integer DEFAULT 0 NOT NULL,
@@ -8207,20 +8206,6 @@ CREATE INDEX index_jobs_on_project_id ON jobs USING btree (project_id);
 
 
 --
--- Name: index_jobs_on_repository_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_jobs_on_repository_id ON jobs USING btree (repository_id);
-
-
---
--- Name: index_jobs_on_repository_id_status; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_jobs_on_repository_id_status ON jobs USING btree (repository_id, status);
-
-
---
 -- Name: index_jobs_on_slave_id_status; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -9410,14 +9395,6 @@ ALTER TABLE ONLY jobs
 
 
 --
--- Name: jobs jobs_repository_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY jobs
-    ADD CONSTRAINT jobs_repository_id_fkey FOREIGN KEY (repository_id) REFERENCES repositories(id) ON DELETE CASCADE;
-
-
---
 -- Name: knowledge_base_statuses knowledge_base_statuses_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -10264,6 +10241,8 @@ INSERT INTO schema_migrations (version) VALUES ('20170609195100');
 INSERT INTO schema_migrations (version) VALUES ('20170616152705');
 
 INSERT INTO schema_migrations (version) VALUES ('20170904072947');
+
+INSERT INTO schema_migrations (version) VALUES ('20170911071916');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
