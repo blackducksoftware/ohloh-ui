@@ -1,0 +1,13 @@
+- if @project.licenses.count > 0
+  .row.mezzo
+  .project_licenses
+    .row.project_row
+      .col-md-12.license_title_container
+        %h4.license_panel_title
+          = link_to t('.title'), project_licenses_path(@project)
+      .clearfix
+      .col-md-2
+      .col-md-8#license_details
+        .well= render partial: 'projects/show/license_details', collection: @project.licenses, as: :license
+      .col-md-2
+    = link_to t('.all'), licenses_path, target: '_blank', class: 'license_link'
