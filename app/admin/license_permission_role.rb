@@ -1,8 +1,8 @@
 ActiveAdmin.register LicensePermissionRole do
   permit_params :status, :license_id, :license_permission_id
 
-  filter :license, collection: proc {License.order(:name)}
-  filter :license_permission, collection: proc {LicensePermission.order(:name)}
+  filter :license, collection: proc { License.order(:name) }
+  filter :license_permission, collection: proc { LicensePermission.order(:name) }
   # filter :status, as: :select, collection: ['permitted', 'forbidden', 'required']
   filter :status
 
