@@ -1039,7 +1039,7 @@ CREATE FUNCTION vulnerabilities_id_seq_view() RETURNS integer
 --
 
 CREATE SERVER ohloh FOREIGN DATA WRAPPER postgres_fdw OPTIONS (
-    dbname 'ohloh_development',
+    dbname 'ohloh_test',
     host 'localhost',
     port '5432'
 );

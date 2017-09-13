@@ -222,6 +222,11 @@ en:
         title: 'Project Security'
         title_nvd: 'This Project has No vulnerabilities Reported Against it'
         blog_link: 'About Project Security'
+      licenses:
+        title: 'Licenses'
+        all: 'All Licenses'
+      license_details:
+        info: 'These details are provided for information only. No information here is legal advice and should not be used as such.'
     deleted:
       message: '%{name} has been deleted'
       failed: 'failed'
