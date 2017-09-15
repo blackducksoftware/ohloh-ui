@@ -1,1 +1,1 @@
-Rails.application.middleware.use( Oink::Middleware, :instruments => :memory )
+Rails.application.middleware.use(Oink::Middleware, instruments: :memory)
