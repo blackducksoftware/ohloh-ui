@@ -24,6 +24,6 @@ ActiveAdmin.register LicensePermissionRole do
   end
 
   action_item :add_another_new, only: :show do
-    link_to "Add another License Permission role",  new_admin_license_permission_role_path
+    link_to 'Add another License Permission role', new_admin_license_permission_role_path
   end
 end
