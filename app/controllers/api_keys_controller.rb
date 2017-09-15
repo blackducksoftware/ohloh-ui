@@ -78,6 +78,7 @@ class ApiKeysController < ApplicationController
 
   def find_models
     @api_keys = (@account ? @account.api_keys : ApiKey)
+                .joins(:account, :oauth_application)
                 .includes(:account, :oauth_application).references(:all)
                 .send(parse_sort_term)
                 .filter_by(params[:query])

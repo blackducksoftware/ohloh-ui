@@ -1039,7 +1039,7 @@ CREATE FUNCTION vulnerabilities_id_seq_view() RETURNS integer
 --
 
 CREATE SERVER ohloh FOREIGN DATA WRAPPER postgres_fdw OPTIONS (
-    dbname 'ohloh_development',
+    dbname 'ohloh_test',
     host 'localhost',
     port '5432'
 );
@@ -2203,6 +2203,39 @@ ALTER FOREIGN TABLE clumps_id_seq_view ALTER COLUMN id OPTIONS (
 
 
 --
+-- Name: code_location_job_feeders; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE code_location_job_feeders (
+    id integer NOT NULL,
+    code_location_id integer,
+    url text,
+    status integer DEFAULT 0,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: code_location_job_feeders_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE code_location_job_feeders_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: code_location_job_feeders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE code_location_job_feeders_id_seq OWNED BY code_location_job_feeders.id;
+
+
+--
 -- Name: code_location_tarballs; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2252,7 +2285,7 @@ CREATE FOREIGN TABLE code_locations (
     id integer DEFAULT code_locations_id_seq_view() NOT NULL,
     repository_id integer,
     module_branch_name text,
-    status integer DEFAULT 1,
+    status integer DEFAULT 0,
     best_code_set_id integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
@@ -4315,7 +4348,6 @@ ALTER FOREIGN TABLE job_statuses ALTER COLUMN name OPTIONS (
 CREATE FOREIGN TABLE jobs (
     id integer DEFAULT jobs_id_seq_view() NOT NULL,
     project_id integer,
-    repository_id integer,
     status integer DEFAULT 0 NOT NULL,
     type text NOT NULL,
     priority integer DEFAULT 0 NOT NULL,
@@ -4349,9 +4381,6 @@ ALTER FOREIGN TABLE jobs ALTER COLUMN id OPTIONS (
 );
 ALTER FOREIGN TABLE jobs ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN repository_id OPTIONS (
-    column_name 'repository_id'
 );
 ALTER FOREIGN TABLE jobs ALTER COLUMN status OPTIONS (
     column_name 'status'
@@ -7890,8 +7919,6 @@ ALTER FOREIGN TABLE reports_id_seq_view ALTER COLUMN id OPTIONS (
 CREATE FOREIGN TABLE repositories (
     id integer DEFAULT repositories_id_seq_view() NOT NULL,
     url text,
-    module_name text,
-    branch_name text,
     forge_id integer,
     username text,
     password text,
@@ -7913,12 +7940,6 @@ ALTER FOREIGN TABLE repositories ALTER COLUMN id OPTIONS (
 );
 ALTER FOREIGN TABLE repositories ALTER COLUMN url OPTIONS (
     column_name 'url'
-);
-ALTER FOREIGN TABLE repositories ALTER COLUMN module_name OPTIONS (
-    column_name 'module_name'
-);
-ALTER FOREIGN TABLE repositories ALTER COLUMN branch_name OPTIONS (
-    column_name 'branch_name'
 );
 ALTER FOREIGN TABLE repositories ALTER COLUMN forge_id OPTIONS (
     column_name 'forge_id'
@@ -9773,6 +9794,13 @@ ALTER TABLE ONLY analysis_sloc_sets ALTER COLUMN id SET DEFAULT nextval('analysi
 
 
 --
+-- Name: code_location_job_feeders id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_location_job_feeders ALTER COLUMN id SET DEFAULT nextval('code_location_job_feeders_id_seq'::regclass);
+
+
+--
 -- Name: code_location_tarballs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -9885,6 +9913,14 @@ ALTER TABLE ONLY analysis_aliases
 
 ALTER TABLE ONLY analysis_sloc_sets
     ADD CONSTRAINT analysis_sloc_sets_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: code_location_job_feeders code_location_job_feeders_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_location_job_feeders
+    ADD CONSTRAINT code_location_job_feeders_pkey PRIMARY KEY (id);
 
 
 --
@@ -10295,4 +10331,12 @@ ALTER TABLE ONLY sloc_sets
 SET search_path TO "$user", public;
 
 INSERT INTO schema_migrations (version) VALUES ('20170112183242');
+
+INSERT INTO schema_migrations (version) VALUES ('20170615183328');
+
+INSERT INTO schema_migrations (version) VALUES ('20170622141518');
+
+INSERT INTO schema_migrations (version) VALUES ('20170905123152');
+
+INSERT INTO schema_migrations (version) VALUES ('20170911100003');
 
