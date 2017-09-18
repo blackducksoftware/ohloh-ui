@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
   before_action :clear_reminder
   before_action :verify_api_access_for_xml_request, only: [:show, :index]
   before_action do
-    if current_user && current_user.is_admin?
+    if current_user && current_user.admin?
       Rack::MiniProfiler.authorize_request
     end
   end
