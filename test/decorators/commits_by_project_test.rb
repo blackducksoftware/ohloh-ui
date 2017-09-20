@@ -54,7 +54,7 @@ class CommitsByProjectTest < ActiveSupport::TestCase
       project1_data = data[position1.project.name]
       project1_data.size.must_equal 85
       project1_data.first[:month].to_s.must_equal((start_date_val - 12.months).to_date.to_s)
-      project1_data.first[:commits].must_equal nil
+      assert_nil project1_data.first[:commits]
       project1_data.first[:pname].must_equal position1.project.name
     end
 

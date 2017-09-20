@@ -147,7 +147,7 @@ class LogosControllerTest < ActionController::TestCase
     login_as @user
     desired_new_logo_id = create(:attachment).id
     post :create, project_id: project.id, logo_id: desired_new_logo_id
-    project.reload.logo_id.must_equal nil
+    assert_nil project.reload.logo_id
     must_redirect_to new_session_path
     flash[:error].must_match(/authorized/)
   end

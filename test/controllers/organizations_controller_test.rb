@@ -321,7 +321,7 @@ describe 'OrganizationsController' do
 
       must_redirect_to manage_projects_organization_path(organization)
       flash[:success].must_equal I18n.t('organizations.remove_project.success', name: pro_1.name)
-      pro_1.reload.organization_id.must_equal nil
+      assert_nil pro_1.reload.organization_id
     end
 
     it 'should remove project from org and redirect to claim_projects_list' do
@@ -332,7 +332,7 @@ describe 'OrganizationsController' do
 
       must_redirect_to claim_projects_list_organization_path(organization)
       flash[:success].must_equal I18n.t('organizations.remove_project.success', name: pro_1.name)
-      pro_1.reload.organization_id.must_equal nil
+      assert_nil pro_1.reload.organization_id
     end
   end
 

@@ -6,6 +6,6 @@ class ForgeTest < ActiveSupport::TestCase
   end
 
   it 'by default returns a nil json_api_url' do
-    Forge.new.json_api_url('anything').must_equal nil
+    assert_nil Forge.new.json_api_url('anything')
   end
 end

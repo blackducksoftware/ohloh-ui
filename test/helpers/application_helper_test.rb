@@ -6,7 +6,7 @@ class ApplicationHelperTest < ActionView::TestCase
   describe 'expander' do
     it 'should not have any effect if text is nil' do
       text = expander(nil)
-      text.must_equal nil
+      assert_nil text
     end
 
     it 'should truncate strings on a word boundary' do

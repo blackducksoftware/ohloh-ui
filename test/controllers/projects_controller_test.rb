@@ -586,7 +586,7 @@ describe 'ProjectsController' do
     project.wont_equal nil
     project.name.must_equal 'Cool Beans'
     project.url.must_equal 'http://a.com/'
-    project.download_url.must_equal nil
+    assert_nil project.download_url
     project.active_managers.must_equal [account]
     project.licenses.map(&:id).sort.must_equal [license1.id, license2.id].sort
     project.code_locations.length.must_equal 1

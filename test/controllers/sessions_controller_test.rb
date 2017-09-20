@@ -60,7 +60,7 @@ describe 'SessionsControllerTest' do
       anonymous = create(:account, password: 'password', login: 'anonymous_coward', email: 'anon@openhub.net')
       post :create, login: { login: anonymous.login, password: 'password' }
       must_respond_with :bad_request
-      session[:account_id].must_equal nil
+      assert_nil session[:account_id]
       flash[:error].must_equal I18n.t('sessions.create.error')
     end
 
@@ -69,7 +69,7 @@ describe 'SessionsControllerTest' do
                                  email: 'uber_data_crawler@ohloh.net')
       post :create, login: { login: crawler.login, password: 'password' }
       must_respond_with :bad_request
-      session[:account_id].must_equal nil
+      assert_nil session[:account_id]
       flash[:error].must_equal I18n.t('sessions.create.error')
     end
 
@@ -77,7 +77,7 @@ describe 'SessionsControllerTest' do
       ohloh_slave = Account.hamster
       post :create, login: { login: ohloh_slave.login, password: 'password' }
       must_respond_with :bad_request
-      session[:account_id].must_equal nil
+      assert_nil session[:account_id]
       flash[:error].must_equal I18n.t('sessions.create.error')
     end
 

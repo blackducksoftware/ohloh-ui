@@ -37,7 +37,7 @@ describe 'SessionProjectsController' do
       must_respond_with :forbidden
 
       response.body.must_equal ''
-      session[:session_projects].must_equal nil
+      assert_nil session[:session_projects]
     end
 
     it 'wont store duplicates in session' do
@@ -106,7 +106,7 @@ describe 'SessionProjectsController' do
       xhr :delete, :destroy, id: project.to_param
 
       must_respond_with :forbidden
-      session[:session_projects].must_equal nil
+      assert_nil session[:session_projects]
     end
 
     it 'wont fail when session has no projects' do

@@ -18,19 +18,19 @@ class Account::AuthenticatorTest < ActiveSupport::TestCase
   it 'wrong password does not authenticate via email' do
     authenticator = Account::Authenticator.new(login: 'admin@openhub.net', password: 'wrong')
     authenticator.wont_be :authenticated?
-    authenticator.account.must_equal nil
+    assert_nil authenticator.account
   end
 
   it 'wrong password does not authenticate via login' do
     authenticator = Account::Authenticator.new(login: 'admin', password: 'wrong')
     authenticator.wont_be :authenticated?
-    authenticator.account.must_equal nil
+    assert_nil authenticator.account
   end
 
   it 'unknown user does not authenticate via email' do
     authenticator = Account::Authenticator.new(login: 'I am a banana!', password: 'does not matter')
     authenticator.wont_be :authenticated?
-    authenticator.account.must_equal nil
+    assert_nil authenticator.account
   end
 
   it 'should not authenicate ananymous accounts' do
@@ -40,26 +40,26 @@ class Account::AuthenticatorTest < ActiveSupport::TestCase
 
     authenticator = Account::Authenticator.new(login: ohloh_slave.login, password: 'password')
     authenticator.wont_be :authenticated?
-    authenticator.account.must_equal nil
+    assert_nil authenticator.account
 
     authenticator = Account::Authenticator.new(login: ohloh_slave.email, password: 'password')
     authenticator.wont_be :authenticated?
-    authenticator.account.must_equal nil
+    assert_nil authenticator.account
 
     authenticator = Account::Authenticator.new(login: anonymous.login, password: 'password')
     authenticator.wont_be :authenticated?
-    authenticator.account.must_equal nil
+    assert_nil authenticator.account
 
     authenticator = Account::Authenticator.new(login: anonymous.email, password: 'password')
     authenticator.wont_be :authenticated?
-    authenticator.account.must_equal nil
+    assert_nil authenticator.account
 
     authenticator = Account::Authenticator.new(login: crawler.login, password: 'password')
     authenticator.wont_be :authenticated?
-    authenticator.account.must_equal nil
+    assert_nil authenticator.account
 
     authenticator = Account::Authenticator.new(login: crawler.email, password: 'password')
     authenticator.wont_be :authenticated?
-    authenticator.account.must_equal nil
+    assert_nil authenticator.account
   end
 end

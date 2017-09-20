@@ -44,7 +44,7 @@ class ProjectDecoratorTest < ActiveSupport::TestCase
   describe 'icon' do
     it 'should return icon image for project' do
       Icon.any_instance.expects(:image).returns(nil)
-      linux.decorate.icon.must_equal nil
+      assert_nil linux.decorate.icon
     end
   end
 

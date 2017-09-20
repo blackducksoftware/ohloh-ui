@@ -5,7 +5,7 @@ class NilPositionTest < ActiveSupport::TestCase
 
   describe 'title' do
     it 'should return nil' do
-      nil_position.title.must_equal nil
+      assert_nil nil_position.title
     end
   end
 

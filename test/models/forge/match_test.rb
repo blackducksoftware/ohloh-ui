@@ -3,7 +3,7 @@ require 'test_helper'
 class Forge::MatchTest < ActiveSupport::TestCase
   describe 'first' do
     it 'should return nil for unknown url' do
-      Forge::Match.first('http://lolcats.com').must_equal nil
+      assert_nil Forge::Match.first('http://lolcats.com')
     end
 
     it 'should return a Forge::Bitbucket for bitbucket url' do
@@ -44,7 +44,7 @@ class Forge::MatchTest < ActiveSupport::TestCase
 
     it 'should return new Project object for Forge::Codeplex match' do
       project = Forge::Match.first('https://smextensionlib.svn.codeplex.com/svn').project
-      project.name.must_equal nil
+      assert_nil project.name
     end
 
     it 'should return new Project object for Forge::Github match' do
@@ -130,7 +130,7 @@ class Forge::MatchTest < ActiveSupport::TestCase
         code_locations.length.must_equal 1
         code_locations[0].repository.is_a?(GitRepository).must_equal true
         code_locations[0].repository.url.must_equal 'git://github.com/rails/rails.git'
-        code_locations[0].module_branch_name.must_equal nil
+        assert_nil code_locations[0].module_branch_name
         code_locations[0].repository.forge_match.must_equal match
       end
     end

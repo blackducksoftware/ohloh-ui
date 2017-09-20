@@ -249,7 +249,7 @@ describe 'StacksControllerTest' do
     login_as create(:account)
     delete :destroy, id: stack
     must_respond_with :not_found
-    stack.reload.deleted_at.must_equal nil
+    assert_nil stack.reload.deleted_at
   end
 
   it 'destroy should destroy stack' do

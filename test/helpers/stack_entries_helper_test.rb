@@ -11,7 +11,7 @@ class StackEntriesHelperTest < ActionView::TestCase
 
     it 'should not include checked if requested to not do so' do
       opts = check_box_params(false, create(:stack), create(:project))
-      opts[:checked].must_equal nil
+      assert_nil opts[:checked]
     end
   end
 end

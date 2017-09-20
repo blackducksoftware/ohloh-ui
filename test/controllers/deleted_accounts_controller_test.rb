@@ -60,8 +60,8 @@ describe 'DeletedAccountsController' do
       end
 
       it 'wont update deleted_account' do
-        assigns(:deleted_account).reasons.must_equal nil
-        assigns(:deleted_account).reason_other.must_equal nil
+        assert_nil assigns(:deleted_account).reasons
+        assert_nil assigns(:deleted_account).reason_other
       end
 
       it 'must render edit template' do

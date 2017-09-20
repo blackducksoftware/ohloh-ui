@@ -111,7 +111,7 @@ describe 'StackEntriesController' do
     post :destroy, id: stack_entry, stack_id: stack_entry.stack, stack_entry: { project_id: project }
     must_respond_with :redirect
     must_redirect_to new_session_path
-    stack_entry.reload.deleted_at.must_equal nil
+    assert_nil stack_entry.reload.deleted_at
   end
 
   it 'destroy should require the current user matches the stack owner' do
@@ -120,7 +120,7 @@ describe 'StackEntriesController' do
     login_as create(:account)
     post :destroy, id: stack_entry, stack_id: stack_entry.stack, stack_entry: { project_id: project }
     must_respond_with :not_found
-    stack_entry.reload.deleted_at.must_equal nil
+    assert_nil stack_entry.reload.deleted_at
   end
 
   it 'destroy should mark the stack entry as deleted' do

@@ -37,7 +37,7 @@ describe 'AliasesController' do
       get :new, project_id: @project.id
       must_respond_with :redirect
       must_redirect_to new_session_path
-      assigns(:committer_names).must_equal nil
+      assert_nil assigns(:committer_names)
     end
 
     it 'must render projects/deleted when project is deleted' do

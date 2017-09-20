@@ -17,7 +17,7 @@ class NilAnalysisTest < ActiveSupport::TestCase
 
   describe 'main_language' do
     it 'should return nil' do
-      nil_analysis.main_language.must_equal nil
+      assert_nil nil_analysis.main_language
     end
   end
 
@@ -59,7 +59,7 @@ class NilAnalysisTest < ActiveSupport::TestCase
 
   describe 'oldest_code_set_time' do
     it 'should return nil' do
-      nil_analysis.oldest_code_set_time.must_equal nil
+      assert_nil nil_analysis.oldest_code_set_time
     end
   end
 

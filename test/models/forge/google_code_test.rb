@@ -3,11 +3,11 @@ require 'test_helper'
 class Forge::GoogleCodeTest < ActiveSupport::TestCase
   describe 'match' do
     it 'should return nil for garbage' do
-      Forge::GoogleCode.new.match('I am a banana!').must_equal nil
+      assert_nil Forge::GoogleCode.new.match('I am a banana!')
     end
 
     it 'should return nil for random URL' do
-      Forge::GoogleCode.new.match('http://lolcats.com').must_equal nil
+      assert_nil Forge::GoogleCode.new.match('http://lolcats.com')
     end
 
     it 'should accept organization url and create a new Forge::Match with the correct initialization parameters' do
@@ -43,7 +43,7 @@ class Forge::GoogleCodeTest < ActiveSupport::TestCase
 
   describe 'json_api_url' do
     it 'does not have a json metadata url' do
-      Forge::GoogleCode.new.json_api_url(mock).must_equal nil
+      assert_nil Forge::GoogleCode.new.json_api_url(mock)
     end
   end
 end

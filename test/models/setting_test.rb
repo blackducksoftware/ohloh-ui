@@ -11,7 +11,7 @@ class SettingTest < ActiveSupport::TestCase
   end
 
   it 'should return nil when a invalid key is provided' do
-    Setting.get_value('invalid_key').must_equal nil
+    assert_nil Setting.get_value('invalid_key')
   end
 
   it 'should return the project enlistment key' do

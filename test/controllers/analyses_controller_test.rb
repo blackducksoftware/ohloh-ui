@@ -52,10 +52,10 @@ describe 'AnalysesController' do
       analysis_result['updated_at'].must_equal xml_time(Date.current)
       analysis_result['min_month'].must_equal((Date.current - 1.month).to_s)
       analysis_result['max_month'].must_equal((Date.current - 1.day).to_s)
-      analysis_result['twelve_month_contributor_count'].must_equal nil
-      analysis_result['total_contributor_count'].must_equal nil
+      assert_nil analysis_result['twelve_month_contributor_count']
+      assert_nil analysis_result['total_contributor_count']
       analysis_result['twelve_month_commit_count'].must_equal '4'
-      analysis_result['total_commit_count'].must_equal nil
+      assert_nil analysis_result['total_commit_count']
       analysis_result['total_code_lines'].must_equal '303'
       analysis_result['languages']['graph_url'].must_equal "#{url}/languages.png"
       analysis_result['main_language_id'].must_equal analysis.main_language.id.to_s
@@ -223,7 +223,7 @@ describe 'AnalysesController' do
       series.first['id'].must_equal 'code'
       series.map { |d| d['data'].last }.must_equal [[time_integer, 5], [time_integer, 10], [time_integer, 3]]
       series.map { |d| d['name'] }.must_equal %w(Code Comments Blanks)
-      result['scrollbar'].must_equal nil
+      assert_nil result['scrollbar']
     end
   end
 

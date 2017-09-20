@@ -15,8 +15,8 @@ class OrganizationTest < ActiveSupport::TestCase
     org.destroy
     pe1.reload.undone.must_equal true
     pe2.reload.undone.must_equal true
-    proj1.reload.organization_id.must_equal nil
-    proj2.reload.organization_id.must_equal nil
+    assert_nil proj1.reload.organization_id
+    assert_nil proj2.reload.organization_id
     CreateEdit.where(target: org).first.redo!(create(:admin))
     pe1.reload.undone.must_equal false
     pe2.reload.undone.must_equal false

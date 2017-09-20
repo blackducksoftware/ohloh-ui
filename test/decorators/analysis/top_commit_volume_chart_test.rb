@@ -11,7 +11,7 @@ class TopCommitVolumeChartTest < ActiveSupport::TestCase
       data['series'].first['data'].must_equal [50, 8, 5]
       data['series'].last['name'].must_equal 'Other'
       data['series'].last['data'].must_equal [0, 0, 0]
-      data['warnining'].must_equal nil
+      assert_nil data['warnining']
     end
   end
 end

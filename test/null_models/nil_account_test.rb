@@ -5,13 +5,13 @@ class NilAccountTest < ActiveSupport::TestCase
 
   describe 'id' do
     it 'should return nil' do
-      nil_account.id.must_equal nil
+      assert_nil nil_account.id
     end
   end
 
   describe 'level' do
     it 'should return nil' do
-      nil_account.level.must_equal nil
+      assert_nil nil_account.level
     end
   end
 

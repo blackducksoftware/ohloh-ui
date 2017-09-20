@@ -15,7 +15,7 @@ describe CodeSet do
 
       job = code_set.reimport
 
-      Clump.find_by_id(clump.id).must_equal nil
+      assert_nil Clump.find_by_id(clump.id)
       code_location.code_sets.last.wont_equal code_set
       code_location.code_sets.last.must_equal job.code_set
     end

@@ -5,13 +5,13 @@ class NilVitaFactTest < ActiveSupport::TestCase
 
   describe 'first_checkin' do
     it 'should return nil' do
-      nil_vita_fact.first_checkin.must_equal nil
+      assert_nil nil_vita_fact.first_checkin
     end
   end
 
   describe 'last_checkin' do
     it 'should return nil' do
-      nil_vita_fact.last_checkin.must_equal nil
+      assert_nil nil_vita_fact.last_checkin
     end
   end
 

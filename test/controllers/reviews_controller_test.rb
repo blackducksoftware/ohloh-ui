@@ -42,7 +42,7 @@ describe 'ReviewsControllerTest' do
     it 'should not return for null query string' do
       get :index, project_id: project.to_param, query: 'NULL'
       assigns(:reviews).count.must_equal 0
-      assigns(:reviews).first.must_equal nil
+      assert_nil assigns(:reviews).first
     end
 
     it 'should return for account id' do
@@ -76,7 +76,7 @@ describe 'ReviewsControllerTest' do
       most_helpful_reviews.first.must_equal review
       recent_reviews.count.must_equal 5
       recent_reviews.last.must_equal review
-      assigns(:account_reviews).must_equal nil
+      assert_nil assigns(:account_reviews)
     end
 
     it 'should return account_review when user logged-in' do

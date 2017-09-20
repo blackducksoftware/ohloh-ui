@@ -37,7 +37,7 @@ describe 'VulnerabilitiesControllerTest' do
 
     it 'should not show the project security table when no vulnerability reported' do
       get :index, id: create(:project).to_param
-      assigns(:vulnerabilities).must_equal nil
+      assert_nil assigns(:vulnerabilities)
       response.body.must_match I18n.t('vulnerabilities.index.no_vulnerability')
     end
 
