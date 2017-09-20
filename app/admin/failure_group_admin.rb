@@ -27,7 +27,7 @@ ActiveAdmin.register FailureGroup do
 
   index do
     total_categorized_jobs = number_with_delimiter(Job.categorized_failure_group.count)
-    status_tag "Showing #{total_categorized_jobs} categorized jobs in #{FailureGroup.count} failure group", :ok
+    status_tag "Showing #{total_categorized_jobs} categorized jobs in #{FailureGroup.count} failure group", class: 'ok'
 
     column :priority
     column :name do |failure_group|
