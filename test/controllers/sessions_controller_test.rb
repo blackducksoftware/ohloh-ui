@@ -105,7 +105,7 @@ describe 'SessionsControllerTest' do
       admin.reload
       admin.remember_token.must_be_nil
       admin.remember_token_expires_at.must_be_nil
-      cookies[:auth_token].must_equal admin.remember_token
+      assert_nil cookies[:auth_token]
     end
 
     it 'must redirect back to return_to location' do
