@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'activeadmin', git: 'https://github.com/gregbell/active_admin.git'
+gem 'activeadmin'
 gem 'airbrake', '~> 5.5'
 gem 'aws-sdk', '< 2.0' # paperclip doesn't work with the new aws-sdk gem
 gem 'redcarpet'
