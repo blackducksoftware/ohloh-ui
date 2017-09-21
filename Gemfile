@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'activeadmin'
+gem 'activeadmin', '1.0.0'
 gem 'airbrake', '~> 5.5'
 gem 'aws-sdk', '< 2.0' # paperclip doesn't work with the new aws-sdk gem
 gem 'redcarpet'
@@ -14,8 +14,8 @@ gem 'execjs'
 gem 'font-awesome-rails'
 gem 'haml-rails', '~> 1.0'
 gem 'jbuilder'
-gem 'jquery-rails', '~> 4.3.1'
-gem 'jquery-ui-rails', '~> 6.0.1'
+gem 'jquery-rails', '~> 4.2.1'
+gem 'jquery-ui-rails', '~> 5.0.5'
 gem 'mini_magick', '~> 4.1.1'
 gem 'nokogiri', '~> 1.7.2'
 gem 'newrelic_rpm'

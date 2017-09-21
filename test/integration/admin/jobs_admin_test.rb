@@ -9,7 +9,7 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
 
     get mark_as_failed_admin_job_path(job), {}, 'HTTP_REFERER' => admin_jobs_path
 
-    assert_equal job.failure_group, nil
+    assert_nil job.failure_group
     assert_equal SlaveLog.last.job, job
     assert_equal flash[:notice], "Job #{job.id} marked as failed."
   end
