@@ -11,7 +11,7 @@ class ActivityFactByMonthQueryTest < ActiveSupport::TestCase
     end
 
     it 'should return [] if analysis min_month is nil' do
-      analysis.min_month.must_equal nil
+      assert_nil analysis.min_month
       analysis_fact.execute.must_equal []
     end
 

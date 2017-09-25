@@ -28,11 +28,11 @@ ActiveAdmin.register ApiKey do
     column :status do |api_key|
       case api_key.status
       when ApiKey::STATUS_OK
-        status_tag('active', :ok)
+        status_tag('active', class: 'ok')
       when ApiKey::STATUS_LIMIT_EXCEEDED
-        status_tag('limit exceeded', :warning)
+        status_tag('limit exceeded', class: 'warning')
       else
-        status_tag('disabled', :error)
+        status_tag('disabled', class: 'error')
       end
     end
     column :total_count

@@ -292,7 +292,7 @@ describe 'AccountsController' do
       project.update!(best_analysis_id: nil, editor_account: account)
 
       project.edits.first.account_id.must_equal account.id
-      project.edits.first.undone_by.must_equal nil
+      assert_nil project.edits.first.undone_by
 
       post :destroy, id: account.to_param
 

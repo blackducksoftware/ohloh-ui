@@ -14,8 +14,8 @@ describe 'Accounts::LanguagesController' do
 
       must_respond_with :ok
       assigns(:contributions)[project.id].must_equal [contribution]
-      assigns(:vlfs).must_equal nil
-      assigns(:logos_map).must_equal nil
+      assert_nil assigns(:vlfs)
+      assert_nil assigns(:logos_map)
     end
 
     it 'should respond with contributions and vita language facts data when best vita for account is present' do

@@ -13,7 +13,7 @@ class StackTest < ActiveSupport::TestCase
   end
 
   it '#sanitize_description leaves nils alone' do
-    create(:stack, description: nil).description.must_equal nil
+    assert_nil create(:stack, description: nil).description
   end
 
   it '#sanitize_description strips html tags' do

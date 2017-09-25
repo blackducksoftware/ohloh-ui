@@ -202,7 +202,7 @@ class ProjectTest < ActiveSupport::TestCase
       prop_edits[0].key.must_equal 'url'
       prop_edits[0].value.must_equal 'http://openhub.net/url'
       prop_edits[0].undo!(create(:admin))
-      proj.reload.url.must_equal nil
+      assert_nil proj.reload.url
     end
 
     it 'should support undo of setting download_url value' do
@@ -214,7 +214,7 @@ class ProjectTest < ActiveSupport::TestCase
       prop_edits[0].key.must_equal 'download_url'
       prop_edits[0].value.must_equal 'http://openhub.net/download_url'
       prop_edits[0].undo!(create(:admin))
-      proj.reload.download_url.must_equal nil
+      assert_nil proj.reload.download_url
     end
   end
 

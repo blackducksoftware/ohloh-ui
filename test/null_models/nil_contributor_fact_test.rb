@@ -5,7 +5,7 @@ class NilContributorFactTest < ActiveSupport::TestCase
 
   describe 'name_id' do
     it 'should return nil' do
-      nil_contributor_fact.name_id.must_equal nil
+      assert_nil nil_contributor_fact.name_id
     end
   end
 
@@ -23,13 +23,13 @@ class NilContributorFactTest < ActiveSupport::TestCase
 
   describe 'first_checkin' do
     it 'should return nil' do
-      nil_contributor_fact.first_checkin.must_equal nil
+      assert_nil nil_contributor_fact.first_checkin
     end
   end
 
   describe 'last_checkin' do
     it 'should return nil' do
-      nil_contributor_fact.last_checkin.must_equal nil
+      assert_nil nil_contributor_fact.last_checkin
     end
   end
 

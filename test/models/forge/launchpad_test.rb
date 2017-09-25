@@ -3,11 +3,11 @@ require 'test_helper'
 class Forge::LaunchpadTest < ActiveSupport::TestCase
   describe 'match' do
     it 'should return nil for garbage' do
-      Forge::Launchpad.new.match('I am a banana!').must_equal nil
+      assert_nil Forge::Launchpad.new.match('I am a banana!')
     end
 
     it 'should return nil for random URL' do
-      Forge::Launchpad.new.match('http://lolcats.com').must_equal nil
+      assert_nil Forge::Launchpad.new.match('http://lolcats.com')
     end
 
     it 'should accept code url and create a new Forge::Match with the correct initialization parameters' do

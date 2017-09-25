@@ -28,7 +28,7 @@ class Analysis::CodeHistoryChartTest < ActiveSupport::TestCase
       series.first['id'].must_equal 'code'
       series.map { |d| d['data'].last }.must_equal [[@time_integer, 5], [@time_integer, 10], [@time_integer, 3]]
       series.map { |d| d['name'] }.must_equal %w(Code Comments Blanks)
-      chart.data['scrollbar'].must_equal nil
+      assert_nil chart.data['scrollbar']
     end
   end
 

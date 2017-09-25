@@ -84,7 +84,7 @@ describe 'LanguagesController' do
       get :show, id: @language.name, format: :xml, api_key: client_id
       must_respond_with :ok
       must_render_template :show
-      assigns(:language_facts).must_equal nil
+      assert_nil assigns(:language_facts)
     end
   end
 

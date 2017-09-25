@@ -78,7 +78,7 @@ class ManageTest < ActiveSupport::TestCase
 
     # create a manage entry for admin
     manage = Manage.create!(account: @admin, target: @proj1)
-    manage.destroyer.must_equal nil
+    assert_nil manage.destroyer
 
     # user destroys it
     @proj1.reload.managers.must_include(@admin)
@@ -91,7 +91,7 @@ class ManageTest < ActiveSupport::TestCase
     # create a manage entry for admin
     manage = Manage.create!(account: @admin, target: @proj1)
     manage.update_attributes!(approver: @user1)
-    manage.destroyer.must_equal nil
+    assert_nil manage.destroyer
 
     # user destroys it
     -> { manage.destroy_by!(@user1) }.must_raise(RuntimeError)
@@ -104,7 +104,7 @@ class ManageTest < ActiveSupport::TestCase
 
     # create a manage entry for admin
     manage = Manage.create!(account: @admin, target: @proj1)
-    manage.destroyer.must_equal nil
+    assert_nil manage.destroyer
 
     # user destroys it
     -> { manage.destroy_by!(@user1) }.must_raise(RuntimeError)
@@ -117,7 +117,7 @@ class ManageTest < ActiveSupport::TestCase
 
     # create a manage entry for admin
     manage2 = Manage.create!(account: @admin, target: @proj1)
-    manage2.destroyer.must_equal nil
+    assert_nil manage2.destroyer
 
     # user destroys it
     -> { manage2.destroy_by!(@user1) }.must_raise(RuntimeError)
@@ -151,7 +151,7 @@ class ManageTest < ActiveSupport::TestCase
     m1 = Manage.create!(target: @proj1, account: @admin)
     m1.approver.must_equal Account.hamster
     m2 = Manage.create!(target: @proj1, account: @user1)
-    m2.approver.must_equal nil
+    assert_nil m2.approver
     m2.approve!(@admin)
     @proj1.active_managers.must_include(@user1)
   end

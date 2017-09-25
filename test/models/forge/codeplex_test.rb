@@ -3,11 +3,11 @@ require 'test_helper'
 class Forge::CodeplexTest < ActiveSupport::TestCase
   describe 'match' do
     it 'should return nil for garbage' do
-      Forge::Codeplex.new.match('I am a banana!').must_equal nil
+      assert_nil Forge::Codeplex.new.match('I am a banana!')
     end
 
     it 'should return nil for random URL' do
-      Forge::Codeplex.new.match('http://lolcats.com').must_equal nil
+      assert_nil Forge::Codeplex.new.match('http://lolcats.com')
     end
 
     it 'should accept svn url and create a new Forge::Match with the correct initialization parameters' do
@@ -31,7 +31,7 @@ class Forge::CodeplexTest < ActiveSupport::TestCase
 
   describe 'json_api_url' do
     it 'does not have a json metadata url' do
-      Forge::Codeplex.new.json_api_url(mock).must_equal nil
+      assert_nil Forge::Codeplex.new.json_api_url(mock)
     end
   end
 end

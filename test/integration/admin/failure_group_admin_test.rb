@@ -72,7 +72,7 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
       create(:failure_group)
       job = create(:failed_job, exception: 'abort')
       login_as admin
-      job.failure_group_id.must_equal nil
+      assert_nil job.failure_group_id
       get categorize_admin_failure_groups_path, {}, 'HTTP_REFERER' => admin_failure_groups_path
       job.reload.failure_group_id.wont_equal nil
     end
@@ -83,7 +83,7 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
       job = create(:failed_job, exception: 'abort')
       job1 = create(:failed_job, exception: 'abort', failure_group_id: failure_group1.id)
       login_as admin
-      job.failure_group_id.must_equal nil
+      assert_nil job.failure_group_id
       job1.failure_group_id.must_equal failure_group1.id
       get categorize_admin_failure_groups_path, {}, 'HTTP_REFERER' => admin_failure_groups_path
       job.reload.failure_group_id.must_equal failure_group.id
@@ -96,7 +96,7 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
       create(:failure_group)
       job = create(:failed_job, exception: 'abort')
       login_as admin
-      job.failure_group_id.must_equal nil
+      assert_nil job.failure_group_id
       get recategorize_admin_failure_groups_path, {}, 'HTTP_REFERER' => admin_failure_groups_path
       job.reload.failure_group_id.wont_equal nil
     end
@@ -107,7 +107,7 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
       job = create(:failed_job, exception: 'abort')
       job1 = create(:failed_job, exception: 'abort', failure_group_id: failure_group1.id)
       login_as admin
-      job.failure_group_id.must_equal nil
+      assert_nil job.failure_group_id
       job1.failure_group_id.must_equal failure_group1.id
       get recategorize_admin_failure_groups_path, {}, 'HTTP_REFERER' => admin_failure_groups_path
       job.reload.failure_group_id.must_equal failure_group.id
@@ -131,7 +131,7 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
       FailureGroup.count.must_equal 1
       delete admin_failure_group_path(failure_group)
       FailureGroup.count.must_equal 0
-      job.reload.failure_group_id.must_equal nil
+      assert_nil job.reload.failure_group_id
     end
   end
 end

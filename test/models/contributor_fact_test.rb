@@ -45,8 +45,8 @@ class ContributorFactTest < ActiveSupport::TestCase
 
   describe 'kudo_rank' do
     it 'should return kudo_rank' do
-      person = create(:person, name_id: name_object.id, project_id: analysis.project_id)
-      contributor_fact.kudo_rank.must_equal person.kudo_rank
+      _person = create(:person, name_id: name_object.id, project_id: analysis.project_id)
+      assert_nil contributor_fact.kudo_rank
     end
   end
 

@@ -93,7 +93,7 @@ class StringTest < ActiveSupport::TestCase
   end
 
   it 'clean_url does nothing to nils' do
-    String.clean_url(nil).must_equal nil
+    assert_nil String.clean_url(nil)
   end
 
   it 'clean_url strips whitespace' do

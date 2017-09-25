@@ -3,11 +3,11 @@ require 'test_helper'
 class Forge::BitbucketTest < ActiveSupport::TestCase
   describe 'match' do
     it 'should return nil for garbage' do
-      Forge::Bitbucket.new.match('I am a banana!').must_equal nil
+      assert_nil Forge::Bitbucket.new.match('I am a banana!')
     end
 
     it 'should return nil for random URL' do
-      Forge::Bitbucket.new.match('http://lolcats.com').must_equal nil
+      assert_nil Forge::Bitbucket.new.match('http://lolcats.com')
     end
 
     it 'should accept https url and create a new Forge::Match with the correct initialization parameters' do

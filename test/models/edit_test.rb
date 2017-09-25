@@ -15,7 +15,7 @@ class EditTest < ActiveSupport::TestCase
   end
 
   it 'test_that_previous_value_returns_nil_on_initial_edit' do
-    @previous_edit.previous_value.must_equal nil
+    assert_nil @previous_edit.previous_value
   end
 
   it 'test_that_undo_and_redo_work' do
@@ -49,21 +49,21 @@ class EditTest < ActiveSupport::TestCase
     p = create(:project)
     edit = CreateEdit.where(target: p).first
     edit.project_id.must_equal edit.target.id
-    edit.organization_id.must_equal nil
+    assert_nil edit.organization_id
   end
 
   it 'test_that_project_gets_filled_in_automatically_for_project_license_edits' do
     pl = create(:project_license, project: create(:project), license: create(:license))
     edit = CreateEdit.where(target: pl).first
     edit.project_id.must_equal edit.target.project.id
-    edit.organization_id.must_equal nil
+    assert_nil edit.organization_id
   end
 
   it 'test_that_organization_gets_filled_in_automatically_for_organization_edits' do
     org = create(:organization)
     edit = CreateEdit.where(target: org).first
     edit.organization_id.must_equal edit.target.id
-    edit.project_id.must_equal nil
+    assert_nil edit.project_id
   end
 
   it 'test_that_project_and_organization_get_filled_in_automatically_when_associating_project_to_an_org' do
@@ -78,7 +78,7 @@ class EditTest < ActiveSupport::TestCase
   it 'test_that_nothing_gets_filled_in_automatically_for_license_edits' do
     l = create(:license)
     edit = CreateEdit.where(target: l).first
-    edit.project_id.must_equal nil
-    edit.organization_id.must_equal nil
+    assert_nil edit.project_id
+    assert_nil edit.organization_id
   end
 end

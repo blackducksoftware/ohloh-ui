@@ -28,13 +28,13 @@ ActiveAdmin.register Account do
     column :level do |account|
       case account.level
       when Account::Access::DEFAULT
-        status_tag('default', :ok)
+        status_tag('default', class: 'ok')
       when Account::Access::ADMIN
-        status_tag('admin', :warning)
+        status_tag('admin', class: 'warning')
       when Account::Access::DISABLED
-        status_tag('disabled', :error)
+        status_tag('disabled', class: 'error')
       else
-        status_tag('spammer', :error)
+        status_tag('spammer', class: 'error')
       end
     end
     column :url

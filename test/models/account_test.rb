@@ -576,7 +576,7 @@ class AccountTest < ActiveSupport::TestCase
 
   describe 'most_experienced_language' do
     it 'should return nil when vita_language_facts is empty' do
-      admin.most_experienced_language.must_equal nil
+      assert_nil admin.most_experienced_language
     end
 
     it 'should return language name when vita_language_facts is present' do
@@ -881,7 +881,7 @@ class AccountTest < ActiveSupport::TestCase
     it 'should create a manual verification object for one account' do
       unverified_account = create(:position_with_unverified_account).account
       assert_equal [], unverified_account.verifications
-      assert_equal nil, unverified_account.manual_verification
+      assert_nil unverified_account.manual_verification
       assert_difference('ManualVerification.count', 1) do
         unverified_account.create_manual_verification
       end

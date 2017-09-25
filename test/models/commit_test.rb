@@ -51,7 +51,7 @@ class CommitTest < ActiveSupport::TestCase
   describe 'nice_id' do
     it 'should return nil if not a git, svn or hg' do
       commit.code_set.code_location = create(:code_location, repository: create(:cvs_repository))
-      commit.nice_id.must_equal nil
+      assert_nil commit.nice_id
     end
 
     it 'should return commit id if SvnSyncRepository' do

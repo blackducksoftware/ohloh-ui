@@ -9,7 +9,7 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
 
     get mark_as_failed_admin_job_path(job), {}, 'HTTP_REFERER' => admin_jobs_path
 
-    assert_equal job.failure_group, nil
+    assert_nil job.failure_group
     assert_equal SlaveLog.last.job, job
     assert_equal flash[:notice], "Job #{job.id} marked as failed."
   end
@@ -21,7 +21,7 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to admin_job_path(job)
     assert_equal job.retry_count, 0
-    assert_equal job.wait_until, nil
+    assert_nil job.wait_until
     assert_equal flash[:notice], "Job #{job.id} retry attempts counter has been reset to 0."
   end
 

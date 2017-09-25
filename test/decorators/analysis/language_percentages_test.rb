@@ -32,7 +32,7 @@ class Analysis::LanguagePercentagesTest < ActiveSupport::TestCase
       results.third.third[:percent].must_equal 20
       results.third.third[:color].must_equal '47A400'
 
-      results.fourth.first.must_equal nil
+      assert_nil results.fourth.first
       results.fourth.second.must_equal '3 Other'
       results.fourth.third[:percent].must_equal 27
       results.fourth.third[:color].must_equal '000000'

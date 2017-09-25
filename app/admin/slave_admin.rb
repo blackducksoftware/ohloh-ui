@@ -31,9 +31,9 @@ ActiveAdmin.register Slave do
     column :allow_deny do |ad|
       case ad.allow_deny.to_s.downcase
       when 'allow'
-        status_tag('Allow', :ok)
+        status_tag('Allow', class: 'ok')
       when 'deny'
-        status_tag('Deny', :error)
+        status_tag('Deny', class: 'error')
       end
     end
     column :used_percent

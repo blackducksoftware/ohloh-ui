@@ -5,25 +5,25 @@ class NilKudoScoreTest < ActiveSupport::TestCase
 
   describe 'id' do
     it 'should' do
-      nil_kudo_score.id.must_equal nil
+      assert_nil nil_kudo_score.id
     end
   end
 
   describe 'position' do
     it 'should' do
-      nil_kudo_score.position.must_equal nil
+      assert_nil nil_kudo_score.position
     end
   end
 
   describe 'score' do
     it 'should' do
-      nil_kudo_score.score.must_equal nil
+      assert_nil nil_kudo_score.score
     end
   end
 
   describe 'rank' do
     it 'should' do
-      nil_kudo_score.rank.must_equal nil
+      assert_nil nil_kudo_score.rank
     end
   end
 

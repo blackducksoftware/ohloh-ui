@@ -6,7 +6,7 @@ class EnlistmentTest < ActiveSupport::TestCase
 
   describe 'ignore_examples' do
     it 'should return empty array' do
-      enlistment.ignore_examples.must_equal nil
+      assert_nil enlistment.ignore_examples
     end
 
     it 'should return fyles' do
@@ -35,7 +35,7 @@ class EnlistmentTest < ActiveSupport::TestCase
 
   describe 'analysis_sloc_set' do
     it 'should return nil if best_analysis is nil' do
-      enlistment.analysis_sloc_set.must_equal nil
+      assert_nil enlistment.analysis_sloc_set
     end
 
     it 'should return analysis_sloc_set' do

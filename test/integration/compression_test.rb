@@ -13,7 +13,7 @@ class CompressionTest < ActionDispatch::IntegrationTest
   describe 'when a visitor\'s browser does not support compression' do
     it 'doesn\'t responds with a deflate/gzip content-encoding' do
       get root_path
-      assert_equal nil, response.headers['Content-Encoding']
+      assert_nil response.headers['Content-Encoding']
     end
   end
 end

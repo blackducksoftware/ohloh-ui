@@ -16,7 +16,7 @@ class DuplicateTest < ActiveSupport::TestCase
       create(:duplicate, good_project: good_project, bad_project: bad_project).resolve!(create(:admin))
 
       StackEntry.where(id: bad_stack_entry_1.id).first.deleted_at.wont_equal nil
-      StackEntry.where(id: bad_stack_entry_2.id).first.deleted_at.must_equal nil
+      assert_nil StackEntry.where(id: bad_stack_entry_2.id).first.deleted_at
       StackEntry.where(id: bad_stack_entry_2.id).first.project_id.must_equal good_project.id
     end
 

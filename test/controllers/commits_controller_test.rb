@@ -41,7 +41,7 @@ describe 'CommitsController' do
 
     it 'should not return commits if invalid project id' do
       get :index, project_id: 'I am banana'
-      assigns(:commits).must_equal nil
+      assert_nil assigns(:commits)
     end
 
     it 'shoud render commits from a contribution for a single contributor' do
