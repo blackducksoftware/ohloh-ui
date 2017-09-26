@@ -8,7 +8,7 @@ class EnlistmentsController < SettingsController
     @enlistments = @project.enlistments.includes(:project, code_location: :repository)
                            .filter_by(params[:query]).send(parse_sort_term)
                            .paginate(page: page_param, per_page: 10)
-    @failed_jobs = Enlistment.failed_code_location_jobs.where(id: @enlistments.map(&:id)).any?
+    @failed_jobs = Enlistment.failed_code_location_jobs.where(id: @enlistments.pluck(:id)).any?
   end
 
   def show

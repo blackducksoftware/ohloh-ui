@@ -17,7 +17,7 @@ class EnlistmentTest < ActiveSupport::TestCase
   end
 
   describe 'Filtering Enlistments' do
-    it 'should order based on the jobs last executed' do
+    it 'should return failed job' do
       code_location = create(:code_location)
       Job.destroy_all
       create(:failed_job, code_location: code_location, current_step_at: 1.month.ago)
@@ -25,11 +25,19 @@ class EnlistmentTest < ActiveSupport::TestCase
       Enlistment.failed_code_location_jobs.count.must_equal 2
     end
 
-    it 'should order and should not list any failed jobs' do
+    it 'should order and sort the result by last update' do
       code_location = create(:code_location)
       Job.destroy_all
       create(:failed_job, code_location: code_location, current_step_at: 1.month.ago)
-      Enlistment.by_last_update.count.must_equal 0
+      Enlistment.by_last_update.count.must_equal 1
+    end
+
+    it 'should order based on the jobs last executed' do
+      code_location1 = create(:code_location)
+      code_location2 = create(:code_location)
+      create(:failed_job, code_location: code_location2, current_step_at: 1.month.ago)
+      create(:fetch_job, code_location: code_location1, current_step_at: 5.minutes.ago)
+      Enlistment.by_update_status.must_equal [code_location2.enlistments.first, code_location1.enlistments.first]
     end
   end
 
