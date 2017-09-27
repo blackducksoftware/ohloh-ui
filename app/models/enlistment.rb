@@ -22,23 +22,18 @@ class Enlistment < ActiveRecord::Base
   scope :by_type, -> { order('repositories.type, repositories.url, code_locations.module_branch_name') }
   scope :by_module_name, -> { order('code_locations.module_branch_name, repositories.url') }
   scope :with_repo_url, ->(url) { joins(code_location: :repository).where(Repository.arel_table[:url].eq(url)) }
+  scope :failed_code_location_jobs, -> { joins(code_location: :jobs).where(jobs: { status: Job::STATUS_FAILED }) }
+  scope :by_last_update, lambda {
+    joins(:code_location)
+      .joins('left join code_sets on code_sets.id = code_locations.best_code_set_id')
+      .order('code_sets.updated_on DESC')
+  }
+  scope :by_update_status, lambda {
+    joins('left join jobs on jobs.code_location_id = enlistments.code_location_id')
+      .group('enlistments.id').order('min(jobs.status)')
+  }
 
   filterable_by ['projects.name', 'repositories.url', 'code_locations.module_branch_name', 'repositories.type']
-
-  class << self
-    def by_last_update
-      joins(code_location: :best_code_set)
-        .joins('LEFT JOIN jobs ON enlistments.code_location_id = jobs.code_location_id')
-        .where('jobs.id IS NULL').order('code_sets.updated_on DESC')
-    end
-
-    def failed_code_location_jobs
-      joins(code_location: :jobs)
-        .where(jobs: { status: Job::STATUS_FAILED }).order('jobs.current_step_at DESC')
-    end
-
-    alias by_update_status failed_code_location_jobs
-  end
 
   def analysis_sloc_set
     return if project.best_analysis.nil?
