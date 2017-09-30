@@ -35,7 +35,7 @@ class RegistrationsController < ApplicationController
   end
 
   def redirect_to_new_authentication_path
-    redirect_to new_authentication_path, notice: @account.errors.messages.values.last.last
+    redirect_to new_authentication_path, notice: @account.errors.messages.values.last.join(', ')
   end
 
   def account_params

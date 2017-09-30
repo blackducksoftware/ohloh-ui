@@ -137,8 +137,8 @@ Rails.application.routes.draw do
 
   resources :authentications, only: [:new] do
     collection do
-      post :digits_callback
       get :github_callback
+      post :firebase_callback
     end
   end
 

@@ -240,6 +240,7 @@ GEM
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
     json (1.8.6)
+    jwt (2.0.0)
     kaminari (1.0.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.0.1)
@@ -541,6 +542,7 @@ DEPENDENCIES
   jbuilder
   jquery-rails (~> 4.2.1)
   jquery-ui-rails (~> 5.0.5)
+  jwt
   letter_opener
   letter_opener_web (~> 1.2.0)
   m (~> 1.5.0)

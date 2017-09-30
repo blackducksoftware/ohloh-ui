@@ -24,7 +24,7 @@ describe 'AuthenticationsController' do
 
       must_respond_with :ok
       assigns(:account).must_be :present?
-      assigns(:account).twitter_digits_verification.must_be :present?
+      assigns(:account).firebase_verification.must_be :present?
     end
 
     it 'must render new page correctly for logged in users' do
@@ -35,7 +35,7 @@ describe 'AuthenticationsController' do
 
       must_respond_with :ok
       assigns(:account).must_be :present?
-      assigns(:account).twitter_digits_verification.must_be :present?
+      assigns(:account).firebase_verification.must_be :present?
     end
 
     it 'wont allow access to verified users' do
@@ -70,15 +70,14 @@ describe 'AuthenticationsController' do
     end
   end
 
-  describe 'digits_callback' do
+  describe 'firebase_callback' do
     it 'should set auth_params for existing accounts' do
       account.verifications.destroy_all
       login_as account
 
-      auth_params = { 'twitter_digits_verification_attributes' => { 'service_provider_url' => Faker::Internet.url,
-                                                                    'credentials' => Faker::Lorem.word } }
+      auth_params = { 'firebase_verification_attributes' => { 'credentials' => Faker::Lorem.word } }
 
-      get :digits_callback, account: auth_params
+      get :firebase_callback, account: auth_params
 
       must_redirect_to generate_account_verifications_path(account)
       session[:auth_params].must_equal(auth_params)
@@ -86,10 +85,9 @@ describe 'AuthenticationsController' do
 
     it 'should set auth params for new accounts' do
       session[:account_params] = account_params
-      auth_params = { 'twitter_digits_verification_attributes' => { 'service_provider_url' => Faker::Internet.url,
-                                                                    'credentials' => Faker::Lorem.word } }
+      auth_params = { 'firebase_verification_attributes' => { 'credentials' => Faker::Lorem.word } }
 
-      get :digits_callback, account: auth_params
+      get :firebase_callback, account: auth_params
 
       must_redirect_to generate_registrations_path
       session[:auth_params].must_equal(auth_params)
