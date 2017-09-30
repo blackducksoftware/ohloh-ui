@@ -8,7 +8,7 @@ class FirebaseVerification < Verification
   private
 
   def generate_auth_id
-    firebase = FirebaseService.new(ENV['FIREBASE_APP_ID'])
+    firebase = FirebaseService.new(ENV['FIREBASE_PROJECT_ID'])
     decoded_token = firebase.decode(credentials)
     if decoded_token
       self.auth_id = decoded_token[0]['user_id']
