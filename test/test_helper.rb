@@ -138,17 +138,6 @@ class ActiveSupport::TestCase
     access_token
   end
 
-  def stub_twitter_digits_verification
-    response = stub(body: nil, code: '200')
-    Net::HTTP.any_instance.stubs(:get2).returns(response)
-
-    digits_id = Faker::Internet.password
-    data = { 'id_str' => digits_id }
-    JSON.stubs(:parse).returns(data)
-
-    digits_id
-  end
-
   def stub_firebase_verification(sub = '123', alg = 'RS256', kid = '745c7128cba10e251b9fe712aed52613388a6699')
     decoded_val = [{  'iss' => 'https://securetoken.google.com/fir-sample-8bb3e',
                       'aud' => 'fir-sample-8bb3e',

@@ -65,11 +65,10 @@ describe 'RegistrationsController' do
 
   describe 'generate' do
     it 'must save a valid record' do
-      stub_twitter_digits_verification
+      decoded_val = stub_firebase_verification
+      FirebaseService.any_instance.stubs(:decode).returns(decoded_val)
       session[:auth_params] = {
-        twitter_digits_verification_attributes: {
-          service_provider_url: Faker::Internet.url, credentials: Faker::Lorem.word
-        }
+        firebase_verification_attributes: { credentials: Faker::Lorem.word }
       }
       session[:account_params] = account_params[:account]
 
@@ -77,17 +76,15 @@ describe 'RegistrationsController' do
 
       account = assigns(:account)
       account.login.must_equal account_params[:account][:login]
-      account.twitter_digits_verification.must_be :present?
+      account.firebase_verification.auth_id.must_equal decoded_val[0]['user_id']
       session[:auth_params].must_be_nil
       session[:account_params].must_be_nil
       must_redirect_to account
     end
 
-    it 'must render new authentication action when digits credentials are invalid' do
-      session[:auth_params] = { twitter_digits_verification_attributes: { service_provider_url: nil,
-                                                                          credentials: nil } }
+    it 'must render new authentication action when firebase credentials are invalid' do
+      session[:auth_params] = { firebase_verification_attributes: { credentials: nil } }
       session[:account_params] = account_params[:account]
-      TwitterDigitsVerification.any_instance.stubs(:generate_auth_id)
 
       get :generate
 

@@ -70,32 +70,6 @@ describe 'AuthenticationsController' do
     end
   end
 
-  describe 'digits_callback' do
-    it 'should set auth_params for existing accounts' do
-      account.verifications.destroy_all
-      login_as account
-
-      auth_params = { 'twitter_digits_verification_attributes' => { 'service_provider_url' => Faker::Internet.url,
-                                                                    'credentials' => Faker::Lorem.word } }
-
-      get :digits_callback, account: auth_params
-
-      must_redirect_to generate_account_verifications_path(account)
-      session[:auth_params].must_equal(auth_params)
-    end
-
-    it 'should set auth params for new accounts' do
-      session[:account_params] = account_params
-      auth_params = { 'twitter_digits_verification_attributes' => { 'service_provider_url' => Faker::Internet.url,
-                                                                    'credentials' => Faker::Lorem.word } }
-
-      get :digits_callback, account: auth_params
-
-      must_redirect_to generate_registrations_path
-      session[:auth_params].must_equal(auth_params)
-    end
-  end
-
   describe 'firebase_callback' do
     it 'should set auth_params for existing accounts' do
       account.verifications.destroy_all

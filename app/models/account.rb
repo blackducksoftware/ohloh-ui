@@ -15,7 +15,7 @@ class Account < ActiveRecord::Base
 
   serialize :reset_password_tokens, Hash
 
-  accepts_nested_attributes_for :github_verification, :twitter_digits_verification, :firebase_verification
+  accepts_nested_attributes_for :github_verification, :firebase_verification
 
   def anonymous?
     login == AnonymousAccount::LOGIN

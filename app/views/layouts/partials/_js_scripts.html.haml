@@ -1,4 +1,5 @@
 = yield(:javascript) if content_for?(:javascript)
+%script{ src: 'https://cdn.firebase.com/libs/firebaseui/2.3.0/firebaseui.js' }
 = javascript_include_tag 'application',
                          'https://www.google.com/recaptcha/api.js',
                          'https://cdn.digits.com/1/sdk.js',
@@ -8,16 +9,6 @@
                          'https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js',
                          cache: 'cached_js_files',
                          async: true
-%script{ src: 'https://cdn.firebase.com/libs/firebaseui/2.3.0/firebaseui.js' }
-
-:javascript
-  // Initialize Firebase
-  var config = {
-    apiKey: document.querySelector("meta[name='firebase-consumer-key']").getAttribute('content'),
-    authDomain: document.querySelector("meta[name='firebase-app-url']").getAttribute('content'),
-    projectId: document.querySelector("meta[name='firebase-app-id']").getAttribute('content')
-  };
-  firebase.initializeApp(config);
 
 - if Rails.env.production?
   <script type="text/javascript">
