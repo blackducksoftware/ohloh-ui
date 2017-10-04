@@ -270,6 +270,15 @@ Rails.application.routes.draw do
         get :project_partner_badge, action: :partner_badge, as: :partner_badge
         get :project_thin_badge, action: :thin_badge, as: :thin_badge
         get :project_cocomo, action: :cocomo, as: :cocomo
+        get :project_vulnerability_exposure_badge, action: :vulnerability_exposure_badge,
+                                                   as: :vulnerability_exposure_badge
+        get :project_security_exposure_badge, action: :security_exposure_badge, as: :security_exposure_badge
+        get :project_language_badge, action: :language_badge, as: :language_badge
+        get :project_last_update_badge, action: :last_update_badge, as: :last_update_badge
+        get :project_rating_badge, action: :rating_badge, as: :rating_badge
+        get :project_recent_contributors_badge, action: :recent_contributors_badge, as: :recent_contributors_badge
+        get :project_monthly_statistics_badge, action: :monthly_statistics_badge, as: :monthly_statistics_badge
+        get :project_yearly_statistics_badge, action: :yearly_statistics_badge, as: :yearly_statistics_badge
       end
     end
     resources :ratings

@@ -36,11 +36,17 @@ class ProjectWidgetTest < ActiveSupport::TestCase
 
   describe 'create_widgets' do
     it 'should raise error for missing id' do
-      widgets_classes = [
-        ProjectWidget::FactoidsStats, ProjectWidget::Factoids, ProjectWidget::BasicStats,
-        ProjectWidget::Languages, ProjectWidget::Cocomo,
-        ProjectWidget::PartnerBadge, ProjectWidget::ThinBadge, ProjectWidget::UsersLogo
-      ] + [ProjectWidget::Users] * 6
+      widgets_classes =
+        [
+          ProjectWidget::FactoidsStats, ProjectWidget::Factoids, ProjectWidget::BasicStats,
+          ProjectWidget::Languages, ProjectWidget::Cocomo,
+          ProjectWidget::PartnerBadge, ProjectWidget::ThinBadge, ProjectWidget::UsersLogo
+        ] + [ProjectWidget::Users] * 6 + [ProjectWidget::LastUpdateBadge, ProjectWidget::RatingBadge,
+                                          ProjectWidget::RecentContributorsBadge,
+                                          ProjectWidget::LanguageBadge, ProjectWidget::MonthlyStatisticsBadge,
+                                          ProjectWidget::YearlyStatisticsBadge, ProjectWidget::SecurityExposureBadge,
+                                          ProjectWidget::VulnerabilityExposureBadge]
+
       ProjectWidget.create_widgets(project.id).map(&:class).must_equal widgets_classes
     end
   end
