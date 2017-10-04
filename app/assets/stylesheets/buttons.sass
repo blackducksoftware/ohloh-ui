@@ -1,4 +1,6 @@
-/** buttons
+@import "oh-colors"
+
+/** buttons **/
 
 .btn
   font-family: 'Open Sans' !important
@@ -76,11 +78,11 @@ button.btn:active
   background-color: #abbac3 !important
 
 .btn-primary
-  background-color: #0082C6 !important
-  border-color: #0082C6
+  background-color: $secondary-blue !important
+  border-color: $secondary-blue 
   &:hover
-    background-color: #005481 !important
-    border-color: #005481 !important
+    background-color: $secondary-blue-80 !important
+    border-color: $secondary-blue-80 !important
   &.no-border:hover
     border-color: #005481
   &.no-hover:hover
@@ -92,27 +94,29 @@ button.btn:active
     background-color: #0082C6 !important
 
 .btn-info
-  background-color: #66B7E8 !important
-  border-color: #66B7E8
+  background-color: $primary-blue !important
+  border-color: $primary-blue !important
   &:hover
-    background-color: #0082C6 !important
+    background-color: $primary-blue-darker !important
+    border-color: $primary-blue-darker !important
   &.no-border:hover
-    border-color: #0082C6 !important
+    border-color: $secondary-blue-80 !important
   &.no-hover:hover
-    background-color: #0082C6 !important
+    background-color: $secondary-blue-80 !important
   &.active, &.no-border.active
-    background-color: #66B7E8 !important
-    border-color: #66B7E8
+    background-color: $primary-blue-60 !important
+    border-color: $primary-blue-60
   &.disabled, &[disabled]
-    background-color: #66CEF6 !important
+    background-color: $primary-blue-40 !important
 
 .btn-success
-  background-color: #7AB247 !important
-  border-color: #7AB247
+  background-color: $secondary-green-2 !important
+  border-color: $secondary-green-2
   &:hover
-    background-color: #437417 !important
+    background-color: $secondary-green-2-80 !important
+    border-color: $secondary_green-2-80 !important
   &.no-border:hover
-    border-color: #437417
+    border-color: #659965
   &.no-hover:hover
     background-color: #437417 !important
   &.active, &.no-border.active
