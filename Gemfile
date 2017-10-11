@@ -43,6 +43,7 @@ gem 'whenever', require: false
 gem 'sidekiq'
 gem 'secondbase'
 gem 'simplemde-rails'
+gem 'slowpoke'
 gem 'jwt'
 
 group :development do
