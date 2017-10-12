@@ -1,3 +1,12 @@
+GIT
+  remote: git://github.com/notalex/oink.git
+  revision: e66c8f232a3d5f88ed7a3b8049ae7cadf80c660c
+  branch: request_url
+  specs:
+    oink (0.10.1)
+      activerecord
+      hodel_3000_compliant_logger
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -313,9 +322,6 @@ GEM
     oh_delegator (0.1.0)
     ohloh_scm (2.2.2)
       posix-spawn (~> 0.3)
-    oink (0.10.1)
-      activerecord
-      hodel_3000_compliant_logger
     open4 (1.3.4)
     paperclip (4.3.2)
       activemodel (>= 3.2.0)
@@ -554,7 +560,7 @@ DEPENDENCIES
   nokogiri (~> 1.7.2)
   oh_delegator
   ohloh_scm
-  oink
+  oink!
   open4
   paperclip (< 5.0)
   pg

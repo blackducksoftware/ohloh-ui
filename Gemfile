@@ -21,7 +21,7 @@ gem 'nokogiri', '~> 1.7.2'
 gem 'newrelic_rpm'
 gem 'oh_delegator'
 gem 'ohloh_scm'
-gem 'oink'
+gem 'oink', github: 'notalex/oink', branch: :request_url
 gem 'open4'
 gem 'paperclip', '< 5.0 '
 gem 'pg'
