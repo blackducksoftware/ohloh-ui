@@ -30,7 +30,7 @@ class Enlistment < ActiveRecord::Base
   }
   scope :by_update_status, lambda {
     joins('left join jobs on jobs.code_location_id = enlistments.code_location_id')
-      .group('enlistments.id').order('min(jobs.status)')
+      .group('enlistments.id').order('min(jobs.status), max(jobs.current_step_at) DESC')
   }
 
   filterable_by ['projects.name', 'repositories.url', 'code_locations.module_branch_name', 'repositories.type']
