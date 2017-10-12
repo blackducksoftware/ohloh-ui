@@ -17,4 +17,11 @@ class OrganizationAdminTest < ActionDispatch::IntegrationTest
     get admin_organization_path(organization)
     assert_response :success
   end
+
+  it 'should render edit page' do
+    login_as admin
+    organization = create(:organization)
+    get edit_admin_organization_path(organization)
+    assert_response :success
+  end
 end
