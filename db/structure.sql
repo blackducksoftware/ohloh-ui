@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.2
--- Dumped by pg_dump version 9.6.2
+-- Dumped from database version 9.6.3
+-- Dumped by pg_dump version 9.6.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1329,7 +1329,8 @@ CREATE TABLE code_locations (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     update_interval integer DEFAULT 3600,
-    best_repository_directory_id integer
+    best_repository_directory_id integer,
+    do_not_fetch boolean DEFAULT false
 );
 
 
@@ -10343,6 +10344,8 @@ INSERT INTO schema_migrations (version) VALUES ('20170806141217');
 INSERT INTO schema_migrations (version) VALUES ('20170904072947');
 
 INSERT INTO schema_migrations (version) VALUES ('20170911071916');
+
+INSERT INTO schema_migrations (version) VALUES ('20171017162841');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
