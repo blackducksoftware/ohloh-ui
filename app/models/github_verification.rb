@@ -23,6 +23,6 @@ class GithubVerification < Verification
 
   def data
     CGI.unescape({ code: code, client_id: ENV['GITHUB_CLIENT_ID'], client_secret: ENV['GITHUB_CLIENT_SECRET'],
-                   redirect_uri: ENV['OAUTH_REDIRECT_URI'] }.to_query)
+                   redirect_uri: ENV['GITHUB_REDIRECT_URI'] }.to_query)
   end
 end
