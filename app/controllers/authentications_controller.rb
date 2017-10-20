@@ -2,11 +2,11 @@ class AuthenticationsController < ApplicationController
   skip_before_action :session_required, if: :account_params_present?, only: :new
   before_action :session_required, unless: :account_params_present?, only: :new
   before_action :set_account, only: :new
-  before_action :session_account_params_or_current_user_required, only: [:new, :github_callback, :digits_callback]
+  before_action :session_account_params_or_current_user_required, only: [:new, :github_callback, :firebase_callback]
   before_action :redirect_if_current_user_verified
 
   def new
-    @account.build_twitter_digits_verification
+    @account.build_firebase_verification
     render partial: 'fields' if request.xhr?
   end
 
@@ -14,8 +14,8 @@ class AuthenticationsController < ApplicationController
     create(github_verification_params)
   end
 
-  def digits_callback
-    create(digits_verification_params)
+  def firebase_callback
+    create(firebase_verification_params)
   end
 
   private
@@ -26,8 +26,8 @@ class AuthenticationsController < ApplicationController
     redirect_to(current_user.present? ? generate_account_verifications_path(current_user) : generate_registrations_path)
   end
 
-  def digits_verification_params
-    params.require(:account).permit(twitter_digits_verification_attributes: [:service_provider_url, :credentials])
+  def firebase_verification_params
+    params.require(:account).permit(firebase_verification_attributes: [:credentials])
   end
 
   def github_verification_params

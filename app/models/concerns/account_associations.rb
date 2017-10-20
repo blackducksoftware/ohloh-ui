@@ -23,7 +23,7 @@ module AccountAssociations
     has_many :vita_jobs
     has_one :manual_verification
     has_one :github_verification
-    has_one :twitter_digits_verification
+    has_one :firebase_verification
     has_one :reverification_tracker, dependent: :destroy
   end
 end

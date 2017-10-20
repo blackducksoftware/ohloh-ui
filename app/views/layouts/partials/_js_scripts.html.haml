@@ -1,10 +1,15 @@
 = yield(:javascript) if content_for?(:javascript)
+%script{ src: 'https://cdn.firebase.com/libs/firebaseui/2.3.0/firebaseui.js' }
 = javascript_include_tag 'application',
                          'https://www.google.com/recaptcha/api.js',
                          'https://cdn.digits.com/1/sdk.js',
                          '//cdn.optimizely.com/js/3568250046.js',
+                         'https://www.gstatic.com/firebasejs/4.3.0/firebase.js',
+                         'https://www.gstatic.com/firebasejs/4.2.0/firebase-app.js',
+                         'https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js',
                          cache: 'cached_js_files',
                          async: true
+
 - if Rails.env.production?
   <script type="text/javascript">
   (function() {

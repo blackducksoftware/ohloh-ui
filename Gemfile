@@ -5,6 +5,7 @@ gem 'airbrake', '~> 5.5'
 gem 'aws-sdk', '< 2.0' # paperclip doesn't work with the new aws-sdk gem
 gem 'redcarpet'
 gem 'brakeman'
+gem 'byebug', platforms: :ruby_20
 gem 'bundler-audit'
 gem 'coffee-rails'
 gem 'coffee-script-source', '~>1.8.0'
@@ -21,7 +22,7 @@ gem 'nokogiri', '~> 1.7.2'
 gem 'newrelic_rpm'
 gem 'oh_delegator'
 gem 'ohloh_scm'
-gem 'oink'
+gem 'oink', github: 'notalex/oink', branch: :request_url
 gem 'open4'
 gem 'paperclip', '< 5.0 '
 gem 'pg'
@@ -43,6 +44,8 @@ gem 'whenever', require: false
 gem 'sidekiq'
 gem 'secondbase'
 gem 'simplemde-rails'
+gem 'slowpoke'
+gem 'jwt'
 
 group :development do
   gem 'better_errors'

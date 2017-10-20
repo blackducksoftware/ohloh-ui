@@ -32,12 +32,18 @@ class EnlistmentTest < ActiveSupport::TestCase
       Enlistment.by_last_update.count.must_equal 1
     end
 
-    it 'should order based on the jobs last executed' do
-      code_location1 = create(:code_location)
-      code_location2 = create(:code_location)
-      create(:failed_job, code_location: code_location2, current_step_at: 1.month.ago)
-      create(:fetch_job, code_location: code_location1, current_step_at: 5.minutes.ago)
-      Enlistment.by_update_status.must_equal [code_location2.enlistments.first, code_location1.enlistments.first]
+    it 'should order based on the jobs.status and current_step_at' do
+      cl_1 = create(:code_location)
+      cl_2 = create(:code_location)
+      cl_3 = create(:code_location)
+      cl_4 = create(:code_location)
+      Job.destroy_all
+      create(:failed_job, code_location: cl_4, current_step_at: 1.minute.ago)
+      create(:sloc_job, code_location: cl_3, current_step_at: 1.day.ago)
+      create(:complete_job, code_location: cl_2, current_step_at: 1.month.ago)
+      create(:failed_job, code_location: cl_2, current_step_at: 1.hour.ago)
+      create(:fetch_job, code_location: cl_1, current_step_at: 1.week.ago)
+      Enlistment.by_update_status.pluck(:code_location_id).must_equal [cl_2.id, cl_3.id, cl_1.id, cl_4.id]
     end
   end
 

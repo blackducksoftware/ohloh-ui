@@ -217,6 +217,18 @@ describe 'EnlistmentsControllerTest' do
       Enlistment.count.must_equal 3
     end
 
+    it 'must update code_location.repository if code_location already exists' do
+      code_location = create(:code_location)
+      repository = code_location.repository
+      new_repository = build(:repository, url: repository.url, username: Faker::Name.name)
+
+      post :create, project_id: @project_id, repository: new_repository.attributes,
+                    code_location: code_location.attributes
+
+      must_redirect_to action: :index
+      Repository.find(repository.id).username.must_equal new_repository.username
+    end
+
     it 'must show alert message for adding the first enlistment' do
       post :create, project_id: @project_id, repository: code_location.repository.attributes,
                     code_location: code_location.attributes
