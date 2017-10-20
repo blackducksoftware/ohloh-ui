@@ -1,3 +1,5 @@
+@import oh-colors
+
 #accounts_index_page, #people_index_page
   .account_details
     width: 220px
@@ -5,7 +7,7 @@
     position: relative
     height: 128px
   .commits_summary
-    background-color: #dadada
+    background-color: $primary-black-40
     width: 455px
     margin: 5px 0px
     height: 118px
@@ -18,9 +20,9 @@
       div
         height: 23px
       .project_name
-        background-color: #FF8F00
-        color: #000
-        border: 1px dashed #000
+        background-color: $secondary-orange
+        color: white
+        border: 1px dashed white
         font-size: 18px
         line-height: 24px
         width: 24px
@@ -43,7 +45,7 @@
       a
         color: inherit
     .other_language
-      color: #000
+      color: white
       font-size: 10px
       white-space: nowrap
       line-height: 10px
@@ -56,7 +58,7 @@
     text-align: center
     padding: 50px
     font-size: 15px
-    color: #bbb
+    color: $primary-black-60
   .member_info
     position: absolute
     bottom: 0px
@@ -79,7 +81,7 @@
       font-size: 12px
       text-align: center !important
     a
-      color: #005580 !important
+      color: $secondary-blue-2-darker !important
 
 #analysis_timestamp
   :margin-top 0px

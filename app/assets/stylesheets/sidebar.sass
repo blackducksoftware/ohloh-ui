@@ -1,6 +1,8 @@
+@import oh-colors
+
 .footer-navigation
   a
-    color: #369
+    color: $secondary-blue
   .sidebar-nav
     line-height: 12px
     &:hover
@@ -9,20 +11,20 @@
       border-radius: 0px
       padding-left: 5px
       padding-right: 10px
-    &.active
-      a
-        background-color: #E86D1F !important
+  //  &.active
+  //    a
+  //      background-color: #E86D1F !important
 
   .nav-active
-    :background #CCE6F4
-    :border-left 3px solid #e86d1f
+    :background $primary-blue-20
+    :border-left 3px solid $primary-blue-darker
     :margin-left -3px
-    :color #183057
+    :color $primary-blue-darker
 
   .nav-hover
-    :background #eee
-    :border-left 3px solid #aaa
-    :color #183057
+    :background $primary-black-20
+    :border-left 3px solid $primary-black-80
+    :color $secondary-blue-darker
     :border-radius 0px
     :margin-left -3px
 
@@ -54,7 +56,7 @@
       :margin-top 8px
       :margin-bottom 0px
       a
-        color: #369
+        color: $primary-blue-darker
         &:hover
           text-decoration: none
       .icon
