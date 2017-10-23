@@ -18,7 +18,7 @@ module CodeLocationJobs
 
       return if best_code_set.jobs.incomplete_or_since(Time.current - 5.minutes).present?
 
-      CompleteJob.create!(code_location_id: best_code_set.code_location_id, code_set_id: best_code_set.id)
+      create_job(CompleteJob, code_location_id: best_code_set.code_location_id, code_set_id: best_code_set.id)
     end
 
     def refetch
@@ -48,10 +48,19 @@ module CodeLocationJobs
     def create_import_or_sloc_jobs(priority)
       sloc_set = best_code_set.best_sloc_set
       if sloc_set.blank?
-        ImportJob.create(code_set: best_code_set, priority: priority)
+        create_job(ImportJob,code_set: best_code_set, priority: priority)
       elsif sloc_set.as_of.to_i < best_code_set.as_of.to_i
-        SlocJob.create(sloc_set: sloc_set, priority: priority)
+        create_job(SlocJob, sloc_set: sloc_set, priority: priority)
       end
+    end
+
+    def create_job(job_class, **params)
+      update_do_not_fetch if do_not_fetch
+      job_class.create!(params)
+    end
+
+    def update_do_not_fetch
+      update(do_not_fetch: false)
     end
   end
 end

@@ -146,7 +146,17 @@ class CodeLocationTest < ActiveSupport::TestCase
       code_location.jobs.count.must_equal 1
       code_location.jobs.first.class.must_equal CompleteJob
     end
+
+    it 'should set the code_location.do_not_fetch to false' do
+      code_location = create(:code_location, :with_code_set, do_not_fetch: true)
+      clear_jobs
+      code_location.do_not_fetch.must_equal true
+      code_location.jobs.count.must_equal 0
+      code_location.schedule_fetch
+      code_location.do_not_fetch.must_equal false
+    end
   end
+
 
   describe 'repository_directory' do
     it "should return repository's best_repository_directory" do
