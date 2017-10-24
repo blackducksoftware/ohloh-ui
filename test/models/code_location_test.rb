@@ -157,7 +157,6 @@ class CodeLocationTest < ActiveSupport::TestCase
     end
   end
 
-
   describe 'repository_directory' do
     it "should return repository's best_repository_directory" do
       repository_directory = create(:repository_directory)

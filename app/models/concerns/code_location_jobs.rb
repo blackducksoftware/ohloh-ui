@@ -48,7 +48,7 @@ module CodeLocationJobs
     def create_import_or_sloc_jobs(priority)
       sloc_set = best_code_set.best_sloc_set
       if sloc_set.blank?
-        create_job(ImportJob,code_set: best_code_set, priority: priority)
+        create_job(ImportJob, code_set: best_code_set, priority: priority)
       elsif sloc_set.as_of.to_i < best_code_set.as_of.to_i
         create_job(SlocJob, sloc_set: sloc_set, priority: priority)
       end
