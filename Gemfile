@@ -5,7 +5,6 @@ gem 'airbrake', '~> 5.5'
 gem 'aws-sdk', '< 2.0' # paperclip doesn't work with the new aws-sdk gem
 gem 'redcarpet'
 gem 'brakeman'
-gem 'debugger', platforms: :ruby_19
 gem 'bundler-audit'
 gem 'coffee-rails'
 gem 'coffee-script-source', '~>1.8.0'

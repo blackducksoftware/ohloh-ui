@@ -528,7 +528,6 @@ DEPENDENCIES
   capistrano-sidekiq
   coffee-rails
   coffee-script-source (~> 1.8.0)
-  debugger
   doorkeeper
   dotenv-rails
   execjs
