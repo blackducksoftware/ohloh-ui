@@ -1,0 +1,157 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://github.com/login/oauth/access_token
+    body:
+      encoding: UTF-8
+      string: client_id=fake_client_id&client_secret=fake_client_secret&code=663a92c0728e35c83176&redirect_uri=http://lvh.me:3000/authentications/github_callback
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 18 Oct 2017 10:43:56 GMT
+      Content-Type:
+      - application/x-www-form-urlencoded; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Server:
+      - GitHub.com
+      Status:
+      - 200 OK
+      Cache-Control:
+      - no-cache
+      Vary:
+      - Accept-Encoding
+      - X-PJAX
+      X-Ua-Compatible:
+      - IE=Edge,chrome=1
+      X-Request-Id:
+      - f8a61c00c5f7912b805d05bb15731c41
+      X-Runtime:
+      - '0.024108'
+      Expect-Ct:
+      - max-age=2592000; report-uri="https://api.github.com/_private/browser/errors"
+      Content-Security-Policy:
+      - 'default-src ''none''; base-uri ''self''; block-all-mixed-content; child-src
+        render.githubusercontent.com; connect-src ''self'' uploads.github.com status.github.com
+        collector.githubapp.com api.github.com www.google-analytics.com github-cloud.s3.amazonaws.com
+        github-production-repository-file-5c1aeb.s3.amazonaws.com github-production-upload-manifest-file-7fdce7.s3.amazonaws.com
+        github-production-user-asset-6210df.s3.amazonaws.com wss://live.github.com;
+        font-src assets-cdn.github.com; form-action ''self'' github.com gist.github.com;
+        frame-ancestors ''none''; img-src ''self'' data: assets-cdn.github.com identicons.github.com
+        collector.githubapp.com github-cloud.s3.amazonaws.com *.githubusercontent.com;
+        media-src ''none''; script-src assets-cdn.github.com; style-src ''unsafe-inline''
+        assets-cdn.github.com'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Public-Key-Pins:
+      - max-age=5184000; pin-sha256="WoiWRyIOVNa9ihaBciRSC7XHjliYS9VwUGOIud4PB18=";
+        pin-sha256="RRM1dGqnDFsCJXBTHky16vi1obOlCgFFn/yOhI/y+ho="; pin-sha256="k2v657xBsOVe1PQRwOsHsw3bsGT2VzIqz5K+59sNQws=";
+        pin-sha256="K87oWBWM9UZfyddvDfoxL+8lpNyoUB2ptGtn0fv6G2Q="; pin-sha256="IQBnNBEiFuhj+8x6X8XLgh01V9Ic5/V3IRQLNFFc7v4=";
+        pin-sha256="iie1VXtL7HzAMF+/PVPR9xzT80kQxdZeJ+zduCB3uj0="; pin-sha256="LvRiGEjRqfzurezaWuj8Wie2gyHMrW5Q06LspMnox7A=";
+        includeSubDomains
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '0.028451'
+      X-Github-Request-Id:
+      - A3AC:15AE5:47A412:6E72DD:59E7306C
+    body:
+      encoding: UTF-8
+      string: access_token=e068fc1968fakef5c7e7fake6369336fake4bab9&scope=&token_type=bearer
+    http_version: 
+  recorded_at: Wed, 18 Oct 2017 10:43:57 GMT
+- request:
+    method: get
+    uri: https://api.github.com/user
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - token e068fc1968fakef5c7e7fake6369336fake4bab9
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 18 Oct 2017 10:44:02 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Server:
+      - GitHub.com
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4999'
+      X-Ratelimit-Reset:
+      - '1508327042'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      Etag:
+      - W/"00febaacdbb2d6ecb1dda9bed005a77f"
+      Last-Modified:
+      - Wed, 11 Oct 2017 11:24:10 GMT
+      X-Oauth-Scopes:
+      - ''
+      X-Accepted-Oauth-Scopes:
+      - ''
+      X-Oauth-Client-Id:
+      - fake_client_id
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Expect-Ct:
+      - max-age=2592000; report-uri="https://api.github.com/_private/browser/errors"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '0.041666'
+      X-Github-Request-Id:
+      - E4F6:D7DE:DBF8488:11BA5153:59E73071
+    body:
+      encoding: ASCII-8BIT
+      string: '{"login":"notalex","id":7007,"avatar_url":"https://avatars3.githubusercontent.com/u/007?v=4","gravatar_id":"","url":"https://api.github.com/users/notalex","html_url":"https://github.com/notalex","followers_url":"https://api.github.com/users/notalex/followers","following_url":"https://api.github.com/users/notalex/following{/other_user}","gists_url":"https://api.github.com/users/notalex/gists{/gist_id}","starred_url":"https://api.github.com/users/notalex/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/notalex/subscriptions","organizations_url":"https://api.github.com/users/notalex/orgs","repos_url":"https://api.github.com/users/notalex/repos","events_url":"https://api.github.com/users/notalex/events{/privacy}","received_events_url":"https://api.github.com/users/notalex/received_events","type":"User","site_admin":false,"name":"Alex","company":null,"blog":"","location":null,"email":"alex@example.com","hireable":null,"bio":null,"public_repos":38,"public_gists":4,"followers":8,"following":1,"created_at":"2000-01-10T18:11:00Z","updated_at":"2017-10-11T11:24:10Z"}'
+    http_version: 
+  recorded_at: Wed, 18 Oct 2017 10:44:02 GMT
+recorded_with: VCR 3.0.3
