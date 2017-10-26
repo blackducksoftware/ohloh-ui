@@ -1,4 +1,4 @@
-Rack::Timeout.service_timeout = 20.minutes.to_i
+Rack::Timeout.service_timeout = 5.minutes.to_i
 
 Rack::Timeout::Logger.disable # default logs are not useful to us.
 
