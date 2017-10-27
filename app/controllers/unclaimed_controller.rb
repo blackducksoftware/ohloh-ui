@@ -35,8 +35,8 @@ class UnclaimedController < ApplicationController
     @emails_map = EmailAddress.where(id: email_ids.flatten).index_by(&:id)
   end
 
-  def unclaimed_people(query, find_by, per_page = nil)
-    name_ids = Person.unclaimed_people(q: query, find_by: find_by).limit(10).pluck(:name_id)
+  def unclaimed_people(query, find_by, per_page = 10)
+    name_ids = Person.unclaimed_people(q: query, find_by: find_by).limit(per_page).pluck(:name_id)
     unclaimed_people_with_limit(name_ids)
   end
 
