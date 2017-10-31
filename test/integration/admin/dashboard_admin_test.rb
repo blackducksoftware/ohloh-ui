@@ -50,9 +50,9 @@ class DashboardAdminTest < ActionDispatch::IntegrationTest
     Slave.delete_all
     slave = create(:slave)
     get admin_root_path
-    assert_select "a[href='/admin/slaves/#{slave.id}']", false  # text: slave.hostname
-    assert_select 'span.allow', false  # text: 'Allow'
-    assert_select 'td.col-load_average', false  # text: slave.load_average.to_s
+    assert_select "a[href='/admin/slaves/#{slave.id}']", false # text: slave.hostname
+    assert_select 'span.allow', false # text: 'Allow'
+    assert_select 'td.col-load_average', false # text: slave.load_average.to_s
   end
 
   it 'shows the jobs' do
@@ -60,6 +60,6 @@ class DashboardAdminTest < ActionDispatch::IntegrationTest
     slave = create(:slave)
     job = create(:complete_job, slave: slave, status: Job::STATUS_RUNNING, current_step_at: Time.current - 10.minutes)
     get admin_root_path
-    assert_select "a[href='/admin/jobs/#{job.id}']", false  # text: "C #{job.id}"
+    assert_select "a[href='/admin/jobs/#{job.id}']", false # text: "C #{job.id}"
   end
 end
