@@ -3,11 +3,11 @@ require 'test_helper'
 class Analysis::CommitVolumeTest < ActiveSupport::TestCase
   describe 'collection' do
     before do
-      analysis_sloc_set = FactoryGirl.create(:analysis_sloc_set, as_of: 1)
+      analysis_sloc_set = FactoryBot.create(:analysis_sloc_set, as_of: 1)
       @analysis = analysis_sloc_set.analysis
 
-      commit = FactoryGirl.create(:commit, code_set: analysis_sloc_set.sloc_set.code_set,
-                                           position: 0)
+      commit = FactoryBot.create(:commit, code_set: analysis_sloc_set.sloc_set.code_set,
+                                          position: 0)
       @analysis_alias = create(:analysis_alias, commit_name: commit.name, analysis: @analysis)
     end
 

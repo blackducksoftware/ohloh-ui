@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :failure_group do
     name { Faker::Name.name }
     pattern '%%'

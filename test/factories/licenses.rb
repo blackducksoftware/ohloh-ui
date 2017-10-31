@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :license do
     vanity_url   { Faker::Lorem.word + rand(999_999).to_s }
     url          { Faker::Internet.url }

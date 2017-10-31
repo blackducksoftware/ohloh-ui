@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :release do
     kb_release_id { Faker::Lorem.word }
     sequence :version do |n|

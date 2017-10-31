@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :feedback do
     association :project
     more_info 1

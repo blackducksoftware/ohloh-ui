@@ -67,7 +67,7 @@ class InviteTest < ActiveSupport::TestCase
 
   it 'invitor should not send beyond 5 invites' do
     invitor = create(:account)
-    FactoryGirl.create_list(:invite, 5, invitor: invitor)
+    FactoryBot.create_list(:invite, 5, invitor: invitor)
 
     error_invite = build(:invite, invitor: invitor)
     error_invite.wont :save
@@ -76,7 +76,7 @@ class InviteTest < ActiveSupport::TestCase
   end
 
   it 'invitee should not receive beyond 5 invites' do
-    FactoryGirl.create_list(:invite, 5, invitee_email: 'max_received@domain.com')
+    FactoryBot.create_list(:invite, 5, invitee_email: 'max_received@domain.com')
     error_invite = build(:invite, invitee_email: 'max_received@domain.com')
     error_invite.wont :save
     error_invite.errors.must_include(:send_limit)

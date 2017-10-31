@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :invite do
     association :project
     activation_code { Faker::Lorem.characters(10) }

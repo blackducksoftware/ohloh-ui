@@ -28,7 +28,7 @@ VCR.configure do |config|
 end
 
 class ActiveSupport::TestCase
-  include FactoryGirl::Syntax::Methods
+  include FactoryBot::Syntax::Methods
   extend SetupHamsterAccount
   extend CreateForges
   extend MiniTest::Spec::DSL

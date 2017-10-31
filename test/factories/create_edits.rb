@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :create_edit do
     association :target, factory: :project, description: 'Linux'
     association :account, factory: :account

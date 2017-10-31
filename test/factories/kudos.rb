@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :kudo do
     association :sender, factory: :account
     association :account

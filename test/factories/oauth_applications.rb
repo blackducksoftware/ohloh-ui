@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :oauth_application, class: Doorkeeper::Application do
     name { Faker::Company.name }
     redirect_uri { Faker::Internet.url }

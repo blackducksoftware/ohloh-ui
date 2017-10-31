@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :analysis do
     association :project
     association :main_language, factory: :language

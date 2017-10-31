@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   sequence :account_login do |n|
     "login-#{n}"
   end
