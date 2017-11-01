@@ -290,7 +290,7 @@ GEM
     mime-types-data (3.2016.0521)
     mimemagic (0.3.0)
     mini_magick (4.1.1)
-    mini_portile2 (2.1.0)
+    mini_portile2 (2.3.0)
     minitest (5.10.3)
     minitest-rails (2.2.1)
       minitest (~> 5.7)
@@ -304,8 +304,8 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (3.2.0)
     newrelic_rpm (3.17.1.326)
-    nokogiri (1.7.2)
-      mini_portile2 (~> 2.1.0)
+    nokogiri (1.8.1)
+      mini_portile2 (~> 2.3.0)
     notiffany (0.1.1)
       nenv (~> 0.1)
       shellany (~> 0.0)
@@ -548,7 +548,7 @@ DEPENDENCIES
   minitest-rails
   mocha
   newrelic_rpm
-  nokogiri (~> 1.7.2)
+  nokogiri (~> 1.8.1)
   oh_delegator
   ohloh_scm
   open4
