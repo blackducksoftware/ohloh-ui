@@ -28,6 +28,11 @@ class LicensePermissionRoleAdminTest < ActionDispatch::IntegrationTest
     end
   end
 
+  it 'should load the index page' do
+    get admin_license_permission_roles_path
+    assert_response :success
+  end
+
   it 'should load the show page' do
     license_permission_role = create(:license_permission_role)
     get admin_license_permission_role_path(license_permission_role)
