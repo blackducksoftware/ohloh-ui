@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :forge do
     name 'Github'
     url 'git://github.com'

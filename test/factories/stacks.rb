@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :stack do
     association :account
     title { Faker::Lorem.characters(20) }

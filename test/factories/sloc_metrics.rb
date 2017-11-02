@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :sloc_metric do
     association :sloc_set
     association :diff

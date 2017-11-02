@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :reverification_tracker do
     association :account
     message_id 'XYZ0-1234-AB56-67GJ'

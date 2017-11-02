@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :rss_subscription do
     association :project
     association :rss_feed

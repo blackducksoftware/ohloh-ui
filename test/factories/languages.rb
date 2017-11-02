@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :language do
     category 0
     name { Faker::Lorem.characters(10) }

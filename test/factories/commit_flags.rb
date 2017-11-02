@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :commit_flag do
     association :commit
     association :sloc_set

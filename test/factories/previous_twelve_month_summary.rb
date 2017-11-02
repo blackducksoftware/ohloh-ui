@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :previous_twelve_month_summary do
     affiliated_committers_count 4
     affiliated_commits_count 4

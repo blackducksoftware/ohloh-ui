@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :vita_language_fact do
     association :vita, factory: :best_vita
     association :most_commits_project, factory: :project

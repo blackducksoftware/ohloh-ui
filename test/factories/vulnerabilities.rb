@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :vulnerability do
     sequence :cve_id
     score 1.0

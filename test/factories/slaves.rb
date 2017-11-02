@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :slave do
     hostname { Faker::Name.name }
     allow_deny 'allow'

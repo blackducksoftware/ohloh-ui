@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :rss_article do
     title { Faker::Lorem.paragraph }
     description { Faker::Lorem.paragraph }
