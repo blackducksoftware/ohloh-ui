@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :logo do
     type 'Logo'
     filename 'test_logo.png'

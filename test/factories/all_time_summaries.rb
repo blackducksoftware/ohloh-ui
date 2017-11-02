@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :all_time_summary do
     association :analysis
     affiliated_committers_count 2_999

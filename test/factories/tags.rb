@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   sequence :tags_name do |n|
     "tags-#{n}"
   end

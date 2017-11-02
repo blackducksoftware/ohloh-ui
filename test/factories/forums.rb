@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :forum do
     name { Faker::Name.title + rand(999_999).to_s }
     description { Faker::Lorem.sentence }

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :property_edit do
     type 'PropertyEdit'
     association :target, factory: :project, description: 'Linux'

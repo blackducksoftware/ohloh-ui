@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :license_permission_role do |f|
     f.association :license
     f.association :license_permission

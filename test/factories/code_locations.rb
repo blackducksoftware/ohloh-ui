@@ -3,7 +3,7 @@ def random_repository_name
   (0...16).map { chars[rand(chars.length)] }.join
 end
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :code_location do
     association :repository
     module_branch_name { random_repository_name }

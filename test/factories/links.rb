@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   sequence :link_title do |n|
     "link number #{n}"
   end

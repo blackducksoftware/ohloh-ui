@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :organization do
     name        { Faker::Company.name + rand(999_999).to_s }
     vanity_url  { Faker::Lorem.word + rand(999_999).to_s }

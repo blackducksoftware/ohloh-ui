@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :license_permission do
     name 'MyString'
     description 'MyString'

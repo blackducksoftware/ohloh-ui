@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :repository do
     url { Faker::Internet.url }
     type 'GitRepository'

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :thirty_day_summary do
     association :analysis
     files_modified 4

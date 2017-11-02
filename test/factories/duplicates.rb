@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :duplicate do
     association :account
     association :good_project, factory: :project
