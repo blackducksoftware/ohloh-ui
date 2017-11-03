@@ -7,8 +7,12 @@ ActiveAdmin.register LicensePermissionRole do
 
   index do
     column :id
-    column :license_id
-    column :license_permission_id
+    column 'License' do |license|
+      License.find(license.license_id).name
+    end
+    column 'License Permission' do |permission|
+      LicensePermission.find(permission.license_permission_id).name
+    end
     column :status
     actions
   end

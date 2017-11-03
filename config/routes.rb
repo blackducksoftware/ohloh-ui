@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   end
 
   get 'admin/comments' => redirect('/404')
+  get 'admin', to: redirect('admin_not_found')
+  get 'admin/dashboard', to: redirect('dashboard_not_found')
+
   root to: 'home#index', defaults: { format: 'html' }
 
   use_doorkeeper do

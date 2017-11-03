@@ -8,18 +8,18 @@ class ActiveAdminTest < ActionDispatch::IntegrationTest
     create(:load_average)
     create_and_login_admin
     get admin_root_path
-    assert_response :success
+    assert_response :redirect
   end
 
   it 'disallows regular users' do
     login_as create(:account)
     get admin_root_path
-    assert_response :unauthorized
+    assert_response :redirect
   end
 
   it 'disallows unlogged users' do
     login_as nil
     get admin_root_path
-    assert_response :unauthorized
+    assert_response :redirect
   end
 end
