@@ -33,7 +33,7 @@ describe CodeSet do
     it 'should return the oldest code set' do
       enlistment = create(:enlistment)
 
-      analysis = create(:analysis, min_month: Date.current - 5.months, oldest_code_set_time: Time.now)
+      analysis = create(:analysis, min_month: Date.current - 5.months, oldest_code_set_time: Time.zone.now)
       enlistment.project.update_column(:best_analysis_id, analysis.id)
       code_set = create(:code_set, code_location_id: enlistment.code_location_id)
       code_location = CodeLocation.find(enlistment.code_location_id)
