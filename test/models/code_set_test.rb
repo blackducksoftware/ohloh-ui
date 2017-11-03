@@ -42,5 +42,4 @@ describe CodeSet do
       assert CodeSet.oldest_code_set.count == 0
     end
   end
-
 end
