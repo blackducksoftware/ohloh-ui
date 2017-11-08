@@ -1,4 +1,3 @@
-!!!5
 %html
   %head
     - page_title = content_for?(:html_title) ? yield(:html_title).to_s : t('.openhub')
@@ -17,7 +16,6 @@
 
   %body{ zoom: 1 }
     = yield :session_projects_banner
-    = render partial: 'layouts/partials/copilot', locals: { responsive_layout: false }
     .container#page
       %header= render partial: 'layouts/partials/header'
       = render partial: 'layouts/partials/page', locals: { responsive_layout: false }

@@ -1,18 +1,25 @@
 - content_for(:html_title) { t('.page_title') }
 .showcase
   .billboard
-    %h1.discover_msg
-      = t('.discover_message')
-    %form.search#search_form{ action: projects_path }
-      %input{ type: :hidden, name: 'ref', value: 'homepage' }
-      %input.for_search_all_code{ type: :text, name: 'query', placeholder: t('.search_projects'), id: 'text' }
-        %span.image_icon= image_tag(asset_url('search_icon2.png'), id: 'icon_text')
-      %p.icon_search
-    #global_statistics
-      %p.hide#content-0= t('.counting', count: number_with_delimiter(@home.lines_count.to_i))
-      %p.hide#content-1= t('.indexing', count: number_with_delimiter(@home.active_project_count))
-      %p.hide#content-2= t('.connecting', count: number_with_delimiter(@home.person_count))
-      %p.hide#content-3= t('.tracking', count: number_with_delimiter(@home.repository_count))
+    .row
+      .col-md-12
+        %h1.discover_msg
+          = t('.discover_message')
+    .row
+      .col-md-12.billboard_search
+        %form.search#search_form{ action: projects_path }
+          %input{ type: :hidden, name: 'ref', value: 'homepage' }
+          %input.for_search_all_code{ type: :text, name: 'query', placeholder: t('.search_projects'), id: 'text' }
+            %span.image_icon= image_tag(asset_url('search_icon2.png'), id: 'icon_text')
+          %p.icon_search
+    .row
+      .col-md-12
+        .global_stats
+          #global_statistics
+            %p.hide#content-0= t('.counting', count: number_with_delimiter(@home.lines_count.to_i))
+            %p.hide#content-1= t('.indexing', count: number_with_delimiter(@home.active_project_count))
+            %p.hide#content-2= t('.connecting', count: number_with_delimiter(@home.person_count))
+            %p.hide#content-3= t('.tracking', count: number_with_delimiter(@home.repository_count))
 .home_page_row
   .col-md-4
     %h2.join_now= t('.join_now')
