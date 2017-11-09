@@ -517,12 +517,12 @@ CREATE SERVER fis FOREIGN DATA WRAPPER postgres_fdw OPTIONS (
 
 
 --
--- Name: USER MAPPING ohloh_user SERVER fis; Type: USER MAPPING; Schema: -; Owner: -
+-- Name: USER MAPPING openhub_user SERVER fis; Type: USER MAPPING; Schema: -; Owner: -
 --
 
-CREATE USER MAPPING FOR ohloh_user SERVER fis OPTIONS (
-    password 'password',
-    "user" 'ohloh_user'
+CREATE USER MAPPING FOR openhub_user SERVER fis OPTIONS (
+    password 'openhub_password',
+    "user" 'openhub_user'
 );
 
 
