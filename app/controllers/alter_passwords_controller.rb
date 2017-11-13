@@ -1,4 +1,4 @@
-class PasswordsController < ApplicationController
+class AlterPasswordsController < ApplicationController
   before_action :session_required, :redirect_unverified_account
   before_action :set_account
   before_action :account_context

@@ -14,12 +14,6 @@ class AccountMailer < ActionMailer::Base
     mail to: account.email, subject: t('.subject')
   end
 
-  def reset_password_link(account, token)
-    @url = confirm_password_reset_index_url(host: ENV['URL_HOST'], account_id: account.to_param, token: token)
-    @account = account
-    mail to: account.email, subject: t('.subject'), bcc: 'pdegenportnoy@blackducksoftware.com'
-  end
-
   def kudo_recipient(kudo)
     @kudo = kudo
     @my_account_url = account_url(id: 'me')

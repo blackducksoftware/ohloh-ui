@@ -22,7 +22,7 @@ Rails.application.routes.draw do
     get :age_spark, on: :collection
   end
 
-  resources :sessions, only: [:new, :create] do
+  resources :sessions, controller: 'clearance/sessions', only: [:new, :create] do
     collection do
       delete :destroy
     end
@@ -30,12 +30,6 @@ Rails.application.routes.draw do
 
   resources :stack_entries, only: :new
 
-  resources :password_resets, as: :password_reset, only: [:new, :create] do
-    collection do
-      get :confirm
-      patch :reset
-    end
-  end
   resources :activation_resends, only: [:new, :create]
 
   resources :reviews, only: :destroy do
@@ -55,6 +49,11 @@ Rails.application.routes.draw do
   # support old syntax URLs like tags/php/ruby or tags/ruby
   get 'tags/*name', to: 'tags#index', via: :get
   resources :tags, only: [:index, :show]
+
+  resources :passwords, controller: 'password_resets', only: %w(new create)
+  resources :user, only: [] do
+    resource :password, controller: 'password_resets', only: %w(edit update)
+  end
 
   resources :accounts, except: [:new, :create] do
     resources :autocompletes, only: [] do
@@ -93,8 +92,8 @@ Rails.application.routes.draw do
       get :confirm_delete
       get :disabled
       get :settings
-      get 'password/edit', to: 'passwords#edit'
-      patch 'password/edit', to: 'passwords#update'
+      get 'alter_password/edit', to: 'alter_passwords#edit'
+      patch 'alter_password/edit', to: 'alter_passwords#update'
       get :edit_privacy, to: 'privacy#edit', as: :edit_account_privacy
       patch :edit_privacy, to: 'privacy#update', as: :account_privacy
     end

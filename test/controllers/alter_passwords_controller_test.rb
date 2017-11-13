@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe 'PasswordsController' do
+describe 'AlterPasswordsController' do
   it 'must reach password edit route' do
     account = create(:account)
     login_as account

@@ -6,6 +6,7 @@ gem 'aws-sdk', '< 2.0' # paperclip doesn't work with the new aws-sdk gem
 gem 'redcarpet'
 gem 'brakeman'
 gem 'bundler-audit'
+gem 'clearance'
 gem 'coffee-rails'
 gem 'coffee-script-source', '~>1.8.0'
 gem 'doorkeeper'

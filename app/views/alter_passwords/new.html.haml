@@ -1,7 +1,7 @@
-- content_for(:html_title) { t('password_resets.title') }
+- content_for(:html_title) { t('passwords.title') }
 
 .col-md-12
-  %h3= t('password_resets.title')
+  %h3= t('passwords.title')
 
   - if flash[:notice]
     .alert.alert-info= flash[:notice]
@@ -9,13 +9,13 @@
   .row
     .col-md-7
       .well
-        = form_for @password_reset, url: password_reset_index_path do |f|
+        = form_for :password, url: passwords_path do |f|
           %fieldset
             .form-group
               %label.control-label.required= t('email_address')
               .controls
-                = f.text_field :email
-                - error_tag @password_reset, :email
+                = f.text_field :email, type: :email
+                - error_tag @password, :email
                 %p.help-block= t('.enter_email_address')
 
             .actions

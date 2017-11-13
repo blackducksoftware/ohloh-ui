@@ -5,9 +5,11 @@ class Account < ActiveRecord::Base
   include AccountScopes
   include AccountCallbacks
   include Account::VirtualAttributes
+  include Account::ClearanceUser
 
-  attr_accessor :password, :current_password, :validate_current_password, :invite_code,
+  attr_accessor :current_password, :validate_current_password, :invite_code,
                 :password_confirmation, :email_confirmation, :skip_current_password_check
+  attr_reader :password
   attr_writer :ip
 
   oh_delegators :stack_core, :project_core, :position_core, :claim_core, :access
@@ -22,8 +24,7 @@ class Account < ActiveRecord::Base
   end
 
   def valid_current_password?
-    authenticator = Account::Authenticator.new(login: login, password: current_password)
-    return if authenticator.authenticated? && authenticator.account.access.active_and_not_disabled?
+    return if authenticated?(current_password) && access.active_and_not_disabled?
     errors.add(:current_password)
   end
 

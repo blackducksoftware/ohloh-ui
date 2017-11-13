@@ -40,7 +40,7 @@ class AccountsController < ApplicationController
   def destroy
     @account.destroy
     unless current_user_is_admin?
-      cookies.delete(:auth_token)
+      cookies.delete(:remember_token)
       reset_session
     end
     redirect_to edit_deleted_account_path(@account.login)

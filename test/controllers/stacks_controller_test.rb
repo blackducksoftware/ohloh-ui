@@ -299,8 +299,7 @@ describe 'StacksControllerTest' do
     stack = create(:stack)
     login_as nil
     get :builder, id: stack, format: :json
-    must_respond_with :redirect
-    must_redirect_to new_session_path
+    must_respond_with :unauthorized
   end
 
   it 'builder should require real owner' do

@@ -27,6 +27,7 @@ module ApplicationHelper
   end
 
   def find_nag_reminder
+    return unless current_user
     current_user.actions.where(status: [Action::STATUSES[:nag_once], Action::STATUSES[:remind]]).first
   end
 

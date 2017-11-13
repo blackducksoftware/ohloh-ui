@@ -576,7 +576,7 @@ CREATE TABLE accounts (
     id integer NOT NULL,
     login text NOT NULL,
     email text NOT NULL,
-    crypted_password text NOT NULL,
+    encrypted_password character varying NOT NULL,
     salt text NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -606,7 +606,7 @@ CREATE TABLE accounts (
     email_new_followers boolean DEFAULT false,
     last_seen_ip text,
     twitter_account text,
-    reset_password_tokens text,
+    confirmation_token character varying,
     organization_id integer,
     affiliation_type text DEFAULT 'unaffiliated'::text NOT NULL,
     organization_name text,
@@ -10346,6 +10346,8 @@ INSERT INTO schema_migrations (version) VALUES ('20170904072947');
 INSERT INTO schema_migrations (version) VALUES ('20170911071916');
 
 INSERT INTO schema_migrations (version) VALUES ('20171017162841');
+
+INSERT INTO schema_migrations (version) VALUES ('20171107131744');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

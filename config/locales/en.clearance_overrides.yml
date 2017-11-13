@@ -1,0 +1,5 @@
+en:
+  clearance:
+    models:
+      clearance_mailer:
+        change_password: OpenHub account reset password

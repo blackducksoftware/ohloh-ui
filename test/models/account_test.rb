@@ -237,7 +237,7 @@ class AccountTest < ActiveSupport::TestCase
   it 'should update password and password_confirmation with valid passwords' do
     account = create(:account, password: 'testing', password_confirmation: 'testing')
     account.update(password: 'newpassword', password_confirmation: 'newpassword', current_password: 'testing')
-    account.reload.crypted_password.must_equal Account::Authenticator.encrypt('newpassword', account.salt)
+    account.reload.encrypted_password.must_equal account.encrypt('newpassword', account.salt)
   end
 
   it 'should not update password and password_confirmation if current_password is an empty string' do

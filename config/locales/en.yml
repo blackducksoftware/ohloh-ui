@@ -360,7 +360,7 @@ en:
   project_experiences:
     no_matching_project: No matching open source project with this name.
 
-  password_resets:
+  passwords:
     title: 'Password Reset - Open Hub'
     new:
       enter_email_address: Enter the email you signed up with.
