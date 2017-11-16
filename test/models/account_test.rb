@@ -109,7 +109,7 @@ class AccountTest < ActiveSupport::TestCase
     account = build(:account, password: '')
     account.wont_be :valid?
     account.errors.must_include(:password)
-    account.errors.messages[:password].first.must_equal 'Please provide a password.'
+    account.errors.messages[:password].must_include 'Please provide a password.'
 
     account = build(:account, password: 'abc12345', password_confirmation: 'ABC12345')
     account.wont_be :valid?
@@ -228,7 +228,8 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it 'should validate current password error message' do
-    account.update(password: 'newpassword', password_confirmation: 'newpassword', current_password: 'dummy password')
+    account.update(password: 'newpassword', password_confirmation: 'newpassword',
+                   current_password: 'dummy password', validate_current_password: true)
     account.errors.size.must_equal 1
     error_message = [I18n.t('activerecord.errors.models.account.attributes.current_password.invalid')]
     error_message.must_equal account.errors[:current_password]
@@ -241,8 +242,9 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it 'should not update password and password_confirmation if current_password is an empty string' do
-    account.update(password: 'newpassword', password_confirmation: 'newpassword', current_password: '')
-    assert_not_equal account.reload.crypted_password, Account::Authenticator.encrypt('newpassword', account.salt)
+    account.update(password: 'newpassword', password_confirmation: 'newpassword',
+                   current_password: '', validate_current_password: true)
+    assert_not_equal account.reload.encrypted_password, account.encrypt('newpassword', account.salt)
   end
 
   it 'should not update if password and password_confirmation do not match' do
@@ -454,7 +456,7 @@ class AccountTest < ActiveSupport::TestCase
 
     it 'should require password confirmation' do
       assert_no_difference 'Account.count' do
-        user = build(:account, password_confirmation: nil)
+        user = build(:account, password: 'one', password_confirmation: 'two')
         user.valid?
         user.errors.messages[:password_confirmation].must_be :present?
       end

@@ -8,7 +8,7 @@ class PasswordStrategyTest < ActiveSupport::TestCase
       original_salt = account.salt
       new_password = :new_password
       account.update!(password: new_password, password_confirmation: new_password,
-                      current_password: old_password)
+                      current_password: old_password, validate_current_password: true)
       account.salt.wont_equal original_salt
     end
 
@@ -16,7 +16,7 @@ class PasswordStrategyTest < ActiveSupport::TestCase
       password = :testing
       account = create(:account, password: password, password_confirmation: password)
       account.update!(password: nil, password_confirmation: nil,
-                      current_password: password)
+                      current_password: password, validate_current_password: true)
       original_crypted_password = account.encrypted_password
 
       account.save!
@@ -31,7 +31,7 @@ class PasswordStrategyTest < ActiveSupport::TestCase
       new_password = :new_password
 
       account.update!(password: new_password, password_confirmation: new_password,
-                      current_password: old_password)
+                      current_password: old_password, validate_current_password: true)
 
       original_encrypted_password.wont_equal account.encrypted_password
     end

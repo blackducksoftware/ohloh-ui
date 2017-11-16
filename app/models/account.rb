@@ -7,8 +7,7 @@ class Account < ActiveRecord::Base
   include Account::VirtualAttributes
   include Account::ClearanceUser
 
-  attr_accessor :current_password, :validate_current_password, :invite_code,
-                :password_confirmation, :email_confirmation, :skip_current_password_check
+  attr_accessor :current_password, :validate_current_password, :invite_code, :email_confirmation
   attr_reader :password
   attr_writer :ip
 
@@ -21,11 +20,6 @@ class Account < ActiveRecord::Base
 
   def anonymous?
     login == AnonymousAccount::LOGIN
-  end
-
-  def valid_current_password?
-    return if authenticated?(current_password) && access.active_and_not_disabled?
-    errors.add(:current_password)
   end
 
   def to_param

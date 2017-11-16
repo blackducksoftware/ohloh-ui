@@ -4,6 +4,7 @@ class AlterPasswordsController < ApplicationController
   before_action :account_context
 
   def update
+    @account.validate_current_password = true
     if @account.update_attributes(account_params)
       redirect_to account_path, flash: { success: t('.password_changed') }
     else
