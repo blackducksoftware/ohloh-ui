@@ -40,8 +40,13 @@ describe 'Accounts::LanguagesController' do
       assigns(:logos_map).must_equal logos_map
     end
 
-    it 'should not display for spammer accounts' do
-      get :index, account_id: create(:spammer).to_param
+    it 'must redirect for disabled account' do
+      account = create(:account)
+      login_as account
+      account.access.spam!
+
+      get :index, account_id: account.id
+
       must_respond_with 302
     end
   end

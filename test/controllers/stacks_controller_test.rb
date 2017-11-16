@@ -19,15 +19,13 @@ describe 'StacksControllerTest' do
     must_respond_with :not_found
   end
 
-  it 'index should gracefully handle disabled users' do
-    account = create(:disabled_account)
-    get :index, account_id: account
-    must_redirect_to disabled_account_url(account)
-  end
+  it 'must redirect for disabled account' do
+    account = create(:account)
+    login_as account
+    account.access.spam!
 
-  it 'index should gracefully handle spammers' do
-    account = create(:spammer)
     get :index, account_id: account
+
     must_redirect_to disabled_account_url(account)
   end
 
@@ -88,9 +86,10 @@ describe 'StacksControllerTest' do
   end
 
   it 'show: must redirect to disabled page for disabled users stacks' do
-    account = create(:disabled_account)
+    account = create(:account)
+    login_as account
+    account.access.spam!
     stack = create(:stack, account: account)
-    login_as nil
     get :show, id: stack
     must_redirect_to disabled_account_url(account)
   end

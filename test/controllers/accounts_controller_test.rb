@@ -65,6 +65,7 @@ describe 'AccountsController' do
     end
 
     it 'should redirect if account is disabled' do
+      login_as admin
       Account::Access.any_instance.stubs(:disabled?).returns(true)
 
       get :show, id: admin.login
@@ -72,6 +73,7 @@ describe 'AccountsController' do
     end
 
     it 'should redirect json requests if account is disabled' do
+      login_as admin
       Account::Access.any_instance.stubs(:disabled?).returns(true)
 
       get :show, id: admin.login, format: :json
@@ -80,9 +82,8 @@ describe 'AccountsController' do
 
     it 'should redirect if account is labeled a spammer' do
       account = create(:account)
-      account_access = Account::Access.new(account)
-      account_access.spam!
-      account_access.spam?.must_equal true
+      login_as account
+      account.access.spam!
       account.level.must_equal Account::Access::SPAM
       get :show, id: account.id
       must_redirect_to disabled_account_url(account)
@@ -197,14 +198,14 @@ describe 'AccountsController' do
     it 'must logout spammer trying to edit or update' do
       account = create(:account)
       login_as account
+      cookies[:remember_token] = account.remember_token
       account.access.spam!
 
       get :edit, id: account.to_param
       must_respond_with :redirect
-      must_redirect_to new_session_path
-      session[:account_id].must_be_nil
-      account.reload.remember_token.must_be_nil
-      cookies[:auth_token].must_be_nil
+      must_redirect_to disabled_account_url(account.to_param)
+      @request.env[:clearance].current_user.must_be_nil
+      cookies[:remember_token].must_be_nil
     end
   end
 

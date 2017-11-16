@@ -139,8 +139,13 @@ describe PostsController do
       must_select 'div#no-posts', true
     end
 
-    it 'redirects away from spammers' do
-      get :index, account_id: create(:spammer).to_param
+    it 'must redirect for disabled account' do
+      account = create(:account)
+      login_as account
+      account.access.spam!
+
+      get :index, account_id: account.id
+
       must_respond_with 302
     end
 
