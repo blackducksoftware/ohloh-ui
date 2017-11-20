@@ -4,7 +4,7 @@ task fix_fdw_credentials: :environment do
   fix_remote_server_fdw_credentials
 end
 
-def fix_primary_server_fdw_credentials
+def fix_remote_server_fdw_credentials
   config = ActiveRecord::Base.configurations['secondbase'][Rails.env]
   server = 'fis'
   active_record_execute(alter_fdw_server_query(server, config))
@@ -12,7 +12,7 @@ def fix_primary_server_fdw_credentials
   active_record_execute(create_user_mapping(server, config))
 end
 
-def fix_remote_server_fdw_credentials
+def fix_primary_server_fdw_credentials
   config = ActiveRecord::Base.configurations[Rails.env]
   server = 'ohloh'
   second_base_execute(alter_fdw_server_query(server, config))
