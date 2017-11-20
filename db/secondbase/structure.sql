@@ -1039,19 +1039,19 @@ CREATE FUNCTION vulnerabilities_id_seq_view() RETURNS integer
 --
 
 CREATE SERVER ohloh FOREIGN DATA WRAPPER postgres_fdw OPTIONS (
-    dbname 'ohloh_test',
+    dbname 'openhub_test',
     host 'localhost',
     port '5432'
 );
 
 
 --
--- Name: USER MAPPING ohloh_user SERVER ohloh; Type: USER MAPPING; Schema: -; Owner: -
+-- Name: USER MAPPING openhub_user SERVER ohloh; Type: USER MAPPING; Schema: -; Owner: -
 --
 
-CREATE USER MAPPING FOR ohloh_user SERVER ohloh OPTIONS (
-    password 'password',
-    "user" 'ohloh_user'
+CREATE USER MAPPING FOR openhub_user SERVER ohloh OPTIONS (
+    password 'openhub_password',
+    "user" 'openhub_user'
 );
 
 
