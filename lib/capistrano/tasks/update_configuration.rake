@@ -10,8 +10,9 @@ namespace :deploy do
         execute(:git, :clone, 'git@github.com:blackducksoftware/openhub-config', config_dir_path)
       end
 
-      config_path = config_dir_path.join('.env.*')
+      config_path = config_dir_path.join('.env.*.openhub')
       execute(:cp, config_path, shared_path)
+      execute :rename, '-f', "'s/\\.openhub//'", shared_path.join('.env.*.openhub')
     end
   end
 end
