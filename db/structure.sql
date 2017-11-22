@@ -582,7 +582,7 @@ CREATE TABLE accounts (
     updated_at timestamp without time zone NOT NULL,
     activation_code text,
     activated_at timestamp without time zone,
-    remember_token text,
+    remember_token character varying(128) NOT NULL,
     remember_token_expires_at timestamp without time zone,
     level integer DEFAULT 0 NOT NULL,
     posts_count integer DEFAULT 0,
