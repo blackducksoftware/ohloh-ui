@@ -273,7 +273,6 @@ describe 'AccountsController' do
       my_account = create(:account)
       your_account = create(:account)
       login_as my_account
-      @controller.session[:account_id] = my_account.id
 
       assert_no_difference 'Account.count' do
         post :destroy, id: your_account.to_param
