@@ -196,7 +196,6 @@ describe 'EnlistmentsControllerTest' do
       post :create, project_id: @project_id, repository: GithubUser.new(url: username).attributes
       EnlistmentWorker.jobs.size.must_equal 1
 
-      # Again posting the same username
       post :create, project_id: @project_id, repository: GithubUser.new(url: username).attributes
       must_redirect_to action: :index
       EnlistmentWorker.jobs.size.must_equal 1
@@ -230,10 +229,15 @@ describe 'EnlistmentsControllerTest' do
     end
 
     it 'must show alert message for adding the first enlistment' do
-      post :create, project_id: @project_id, repository: code_location.repository.attributes,
+      project = create(:project)
+      code_location = build(:code_location, repository: build(:repository))
+      repository = code_location.repository
+      build(:enlistment, project: project,
+                         code_location: build(:code_location, repository: build(:repository)))
+      post :create, project_id: project.id, repository: repository.attributes,
                     code_location: code_location.attributes
 
-      must_redirect_to action: :index
+      must_redirect_to project_enlistments_path(project)
 
       flash[:show_first_enlistment_alert].must_be :present?
     end
@@ -245,7 +249,9 @@ describe 'EnlistmentsControllerTest' do
       end
 
       must_redirect_to action: :index
-      flash[:notice].must_equal I18n.t('enlistments.create.notice', url: code_location.repository.url)
+      flash[:notice].must_equal I18n.t('enlistments.create.notice',
+                                       url: code_location.repository.url,
+                                       module_branch_name: code_location.module_branch_name)
     end
 
     it 'must handle duplicate urls with leading or trailing spaces' do
@@ -258,21 +264,26 @@ describe 'EnlistmentsControllerTest' do
       end
 
       must_redirect_to action: :index
-      flash[:notice].must_equal I18n.t('enlistments.create.notice', url: code_location.repository.url)
+      flash[:notice].must_equal I18n.t('enlistments.create.notice',
+                                       url: code_location.repository.url,
+                                       module_branch_name: code_location.module_branch_name)
     end
 
     it 'must handle duplicate svn urls when passed type is svn_sync' do
       repository = create(:svn_repository)
+      code_location = create(:code_location, repository: repository)
       create(:enlistment, project: Project.find_by(vanity_url: @project_id),
-                          code_location: create(:code_location, repository: repository))
+                          code_location: code_location)
 
       assert_no_difference ['CodeLocation.count', 'Enlistment.count'] do
-        post :create, project_id: @project_id, code_location: build(:code_location).attributes,
+        post :create, project_id: @project_id, code_location: code_location.attributes,
                       repository: repository.attributes.merge(type: 'SvnSyncRepository')
       end
 
       must_redirect_to action: :index
-      flash[:notice].must_equal I18n.t('enlistments.create.notice', url: repository.url)
+      flash[:notice].must_equal I18n.t('enlistments.create.notice',
+                                       url: repository.url,
+                                       module_branch_name: code_location.module_branch_name)
     end
 
     it 'should avoid duplicate repository when git url passed as https or in ssh format' do
@@ -289,7 +300,6 @@ describe 'EnlistmentsControllerTest' do
                       repository: { url: 'https://github.com/test/repo', type: 'GitRepository' },
                       code_location: { module_branch_name: 'master' }
       end
-      assigns(:project_has_repo_url).must_equal true
     end
 
     it 'must render error for missing url' do

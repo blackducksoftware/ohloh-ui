@@ -59,7 +59,7 @@ en:
       success: 'Changes saved. The list of ignored files will be updated during the next Open Hub analysis.'
     create:
       github_repos_added: 'Successfully imported all repositories from github.com/%{username}'
-      notice:  "A repository with the url: %{url} already exists for this project."
+      notice:  "A repository with the url: %{url} and branch_name %{module_branch_name} already exists for this project."
       success:  "Successfully added %{url} %{module_branch_name}"
       job_exists: 'A Job is already importing the repositories from the same username.'
     enlistment:
