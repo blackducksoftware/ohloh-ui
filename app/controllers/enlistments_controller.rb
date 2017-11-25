@@ -51,22 +51,13 @@ class EnlistmentsController < SettingsController
     params.require(:code_location).permit(:module_branch_name, :bypass_url_validation) if params[:code_location]
   end
 
-  def safe_constantize(repo)
-    repo.constantize if %w(svnrepository svnsyncrepository repository hgrepository githubuser
-                           gitrepository cvsrepository bzrrepository).include?(repo.downcase)
-  end
-
   def create_enlistment
     @code_location.create_enlistment_for_project(current_user, @project)
   end
 
   def set_flash_message
     flash[:show_first_enlistment_alert] = true if @project.enlistments.count == 1
-    if @repository.is_a?(GithubUser)
-      flash[:notice] = t('.github_repos_added', username: @repository.url)
-    else
-      flash[:success] = t('.success', url: @repository.url,
-                                      module_branch_name: (CGI.escapeHTML @code_location.module_branch_name.to_s))
-    end
+    flash[:success] = t('.success', url: @repository.url,
+                                    module_branch_name: (CGI.escapeHTML @code_location.module_branch_name.to_s))
   end
 end

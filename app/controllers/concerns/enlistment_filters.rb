@@ -54,6 +54,7 @@ module EnlistmentFilters
   def create_worker
     worker = EnlistmentWorker.perform_async(@repository.url, current_user.id, @project.id)
     Setting.update_worker(@project.id, worker, @repository.url)
+    flash[:notice] = t('.github_repos_added', username: @repository.url)
     redirect_to project_enlistments_path(@project)
   end
 

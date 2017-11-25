@@ -30,12 +30,6 @@ class GithubUser
     'master'
   end
 
-  class << self
-    def get_compatible_class(_url)
-      self
-    end
-  end
-
   private
 
   def create_code_locations
