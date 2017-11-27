@@ -16,6 +16,6 @@
     = render 'sessions/sign_in'
     .inset
       %p
-        %a.command{ href: new_password_reset_path }= t('.forgot_password')
+        %a.command{ href: new_password_path }= t('.forgot_password')
         %br
         %a.command{ href: new_activation_resend_path }= t('.resend_activation_email')

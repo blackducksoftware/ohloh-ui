@@ -80,6 +80,27 @@ $ rake db:test:prepare
 $ rake test
 ```
 
+Integration Tests:
+--------------------
+
+The following packages need to be installed to make the feature specs work:
+
+#### Mac OSX
+
+```sh
+$ brew install brew-cask
+$ brew cask install google-chrome
+$ brew install chromedriver
+```
+
+#### Ubuntu
+
+```sh
+$ sudo apt-get install chromium-browser
+$ sudo apt-get install chromium-chromedriver
+$ sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver
+```
+
 Pull Request Builder:
 --------------------
 
@@ -96,3 +117,4 @@ This runs:
 * bundle audit
 * teaspoon
 * rake test
+* spinach

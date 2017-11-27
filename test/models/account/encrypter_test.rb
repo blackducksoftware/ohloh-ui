@@ -18,42 +18,6 @@ class Account::EncrypterTest < ActiveSupport::TestCase
   end
 
   describe 'before_save' do
-    it 'must not change salt' do
-      account = create(:account, password: 'testing', password_confirmation: 'testing')
-      account.password = 'new_password'
-      account.password_confirmation = 'new_password'
-      account.current_password = 'testing'
-      original_salt = account.salt
-
-      account.save!
-
-      account.salt.must_equal original_salt
-    end
-
-    it 'must not change crypted_password when password is blank' do
-      account = create(:account, password: 'testing', password_confirmation: 'testing')
-      account.password = nil
-      account.password_confirmation = nil
-      account.current_password = 'testing'
-      original_crypted_password = account.crypted_password
-
-      account.save!
-
-      account.crypted_password.must_equal original_crypted_password
-    end
-
-    it 'must change crypted_password if password is not blank' do
-      account = create(:account, password: 'testing', password_confirmation: 'testing')
-      account.password = 'new_password'
-      account.password_confirmation = 'new_password'
-      account.current_password = 'testing'
-      original_crypted_password = account.crypted_password
-
-      account.save!
-
-      original_crypted_password.wont_equal account.crypted_password
-    end
-
     it 'must encrypt email when it changes' do
       account = create(:account)
       original_email_md5 = account.email_md5

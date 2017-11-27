@@ -3,9 +3,9 @@ class AccountsController < ApplicationController
 
   helper MapHelper
 
+  before_action :redirect_if_disabled, only: [:show, :update, :edit]
   before_action :session_required, :redirect_unverified_account, only: [:edit, :destroy, :confirm_delete, :me]
   before_action :set_account, only: [:destroy, :show, :update, :edit, :confirm_delete, :disabled, :settings]
-  before_action :redirect_if_disabled, only: [:show, :update, :edit]
   before_action :disabled_during_read_only_mode, only: [:edit, :update]
   before_action :account_context, only: [:edit, :update, :confirm_delete]
   before_action :must_own_account, only: [:edit, :update, :confirm_delete]
@@ -40,7 +40,7 @@ class AccountsController < ApplicationController
   def destroy
     @account.destroy
     unless current_user_is_admin?
-      cookies.delete(:auth_token)
+      cookies.delete(:remember_token)
       reset_session
     end
     redirect_to edit_deleted_account_path(@account.login)

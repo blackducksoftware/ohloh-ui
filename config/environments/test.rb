@@ -41,4 +41,8 @@ Rails.application.configure do
   config.active_support.test_order = :sorted
 
   config.cache_store = :null_store
+
+  config.middleware.use Clearance::BackDoor do |login|
+    Clearance.configuration.user_model.find_by(login: login)
+  end
 end

@@ -1,5 +1,6 @@
 # rubocop:disable Metrics/ClassLength
 class ApplicationController < ActionController::Base
+  include ClearanceSetup
   BOT_REGEX = /\b(Baiduspider|Googlebot|libwww-perl|msnbot|SiteUptime|Slurp)\b/i
   FORMATS_THAT_WE_RENDER_ERRORS_FOR = %w(html xml json).freeze
 
@@ -24,6 +25,8 @@ class ApplicationController < ActionController::Base
   before_action :strip_query_param
   before_action :clear_reminder
   before_action :verify_api_access_for_xml_request, only: [:show, :index]
+
+  alias session_required require_login
 
   def initialize(*params)
     @page_context = {}
@@ -75,27 +78,12 @@ class ApplicationController < ActionController::Base
     I18n.t('project_tags.description_error_message_html', url: edit_project_url(@project))
   end
 
-  def session_required
-    return if logged_in?
-    flash[:notice] = t('sessions.message_html', href: new_registration_path)
-    access_denied
-  end
-
   def admin_session_required
     render_unauthorized unless current_user_is_admin?
   end
 
-  def current_user
-    return @cached_current_user if @cached_current_user_checked
-    @cached_current_user_checked = true
-    @cached_current_user = find_previous_user || NilAccount.new
-    session[:account_id] = @cached_current_user.id
-    @cached_current_user
-  end
-  helper_method :current_user
-
   def logged_in?
-    current_user.id != nil
+    signed_in?
   end
   helper_method :logged_in?
 
@@ -242,20 +230,6 @@ class ApplicationController < ActionController::Base
   def strip_query_param
     params[:query] ||= params[:q]
     params[:query] = String.clean_string(params[:query])
-  end
-
-  def find_user_in_session
-    Account.where(id: session[:account_id]).first
-  end
-
-  def find_remembered_user
-    cookies[:auth_token] ? Account.where(remember_token: cookies[:auth_token]).first : nil
-  end
-
-  def find_previous_user
-    previous_user = find_user_in_session || find_remembered_user
-    previous_user = nil if previous_user && previous_user.access.spam?
-    previous_user
   end
 
   def access_denied

@@ -1,6 +1,8 @@
 module RedirectIfDisabled
   def redirect_if_disabled
-    return unless @account && (@account.access.disabled? || @account.access.spam?)
-    redirect_to disabled_account_url(@account)
+    account = current_user
+    return unless account && account.access.disabled?
+    request.env[:clearance].sign_out
+    redirect_to disabled_account_url(account)
   end
 end

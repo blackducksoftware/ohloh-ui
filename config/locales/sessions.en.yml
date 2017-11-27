@@ -1,6 +1,5 @@
 en:
   sessions:
-    message_html: 'Login Required. <a href=%{href}>Sign up now</a> -- its free!'
     new:
       page_title: "Open Hub Login"
       page_header: "Welcome to Open Hub!"
@@ -21,7 +20,6 @@ en:
     create:
       success: "Logged in successfully"
       error: "Invalid Login Credentials"
-      disabled_error: "This account is disabled."
       learn_about_privacy: "Almost done. Before using your account, please configure these email notification settings."
     destroy:
       success: "You have been logged out."
