@@ -1046,10 +1046,10 @@ CREATE SERVER ohloh FOREIGN DATA WRAPPER postgres_fdw OPTIONS (
 
 
 --
--- Name: USER MAPPING openhub_user SERVER ohloh; Type: USER MAPPING; Schema: -; Owner: -
+-- Name: USER MAPPING fis_user SERVER ohloh; Type: USER MAPPING; Schema: -; Owner: -
 --
 
-CREATE USER MAPPING FOR openhub_user SERVER ohloh OPTIONS (
+CREATE USER MAPPING FOR fis_user SERVER ohloh OPTIONS (
     password 'openhub_password',
     "user" 'openhub_user'
 );

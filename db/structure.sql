@@ -521,8 +521,8 @@ CREATE SERVER fis FOREIGN DATA WRAPPER postgres_fdw OPTIONS (
 --
 
 CREATE USER MAPPING FOR openhub_user SERVER fis OPTIONS (
-    password 'openhub_password',
-    "user" 'openhub_user'
+    password 'fis_password',
+    "user" 'fis_user'
 );
 
 
