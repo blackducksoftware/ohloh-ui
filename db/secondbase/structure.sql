@@ -1119,13 +1119,13 @@ CREATE FOREIGN TABLE accounts (
     id integer DEFAULT accounts_id_seq_view() NOT NULL,
     login text NOT NULL,
     email text NOT NULL,
-    crypted_password text NOT NULL,
+    encrypted_password character varying NOT NULL,
     salt text NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     activation_code text,
     activated_at timestamp without time zone,
-    remember_token text,
+    remember_token character varying(128) NOT NULL,
     remember_token_expires_at timestamp without time zone,
     level integer DEFAULT 0 NOT NULL,
     posts_count integer DEFAULT 0,
@@ -1149,7 +1149,7 @@ CREATE FOREIGN TABLE accounts (
     email_new_followers boolean DEFAULT false,
     last_seen_ip text,
     twitter_account text,
-    reset_password_tokens text,
+    confirmation_token character varying,
     organization_id integer,
     affiliation_type text DEFAULT 'unaffiliated'::text NOT NULL,
     organization_name text
@@ -1168,8 +1168,8 @@ ALTER FOREIGN TABLE accounts ALTER COLUMN login OPTIONS (
 ALTER FOREIGN TABLE accounts ALTER COLUMN email OPTIONS (
     column_name 'email'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN crypted_password OPTIONS (
-    column_name 'crypted_password'
+ALTER FOREIGN TABLE accounts ALTER COLUMN encrypted_password OPTIONS (
+    column_name 'encrypted_password'
 );
 ALTER FOREIGN TABLE accounts ALTER COLUMN salt OPTIONS (
     column_name 'salt'
@@ -1258,8 +1258,8 @@ ALTER FOREIGN TABLE accounts ALTER COLUMN last_seen_ip OPTIONS (
 ALTER FOREIGN TABLE accounts ALTER COLUMN twitter_account OPTIONS (
     column_name 'twitter_account'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN reset_password_tokens OPTIONS (
-    column_name 'reset_password_tokens'
+ALTER FOREIGN TABLE accounts ALTER COLUMN confirmation_token OPTIONS (
+    column_name 'confirmation_token'
 );
 ALTER FOREIGN TABLE accounts ALTER COLUMN organization_id OPTIONS (
     column_name 'organization_id'
