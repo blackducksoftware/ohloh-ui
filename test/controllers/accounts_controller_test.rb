@@ -64,31 +64,6 @@ describe 'AccountsController' do
       must_respond_with :ok
     end
 
-    it 'should redirect if account is disabled' do
-      login_as admin
-      Account::Access.any_instance.stubs(:disabled?).returns(true)
-
-      get :show, id: admin.login
-      must_redirect_to disabled_account_url(admin)
-    end
-
-    it 'should redirect json requests if account is disabled' do
-      login_as admin
-      Account::Access.any_instance.stubs(:disabled?).returns(true)
-
-      get :show, id: admin.login, format: :json
-      must_redirect_to disabled_account_url(admin)
-    end
-
-    it 'should redirect if account is labeled a spammer' do
-      account = create(:account)
-      login_as account
-      account.access.spam!
-      account.level.must_equal Account::Access::SPAM
-      get :show, id: account.id
-      must_redirect_to disabled_account_url(account)
-    end
-
     it 'should respond to json format' do
       get :show, id: admin.login, format: 'json'
 
@@ -107,6 +82,46 @@ describe 'AccountsController' do
       login_as account
       get :show, id: account.login
       must_select "a[href='/admin/accounts/#{account.login}/vita_jobs']", false
+    end
+  end
+
+  describe 'redirect_if_disabled' do
+    it 'must redirect active user trying to access disabled account' do
+      account = create(:account)
+      login_as create(:account)
+      account.access.spam!
+
+      get :show, id: account.login
+
+      must_redirect_to disabled_account_url(account)
+      @controller.current_user.wont_be_nil
+    end
+
+    it 'must sign out and redirect if current account is disabled' do
+      login_as admin
+      Account::Access.any_instance.stubs(:disabled?).returns(true)
+
+      get :show, id: admin.login
+
+      must_redirect_to disabled_account_url(admin)
+      @controller.current_user.must_be_nil
+    end
+
+    it 'should redirect json requests if account is disabled' do
+      login_as admin
+      Account::Access.any_instance.stubs(:disabled?).returns(true)
+
+      get :show, id: admin.login, format: :json
+      must_redirect_to disabled_account_url(admin)
+    end
+
+    it 'should redirect if account is labeled a spammer' do
+      account = create(:account)
+      login_as account
+      account.access.spam!
+      account.level.must_equal Account::Access::SPAM
+      get :show, id: account.id
+      must_redirect_to disabled_account_url(account)
     end
   end
 
