@@ -90,7 +90,7 @@ class Account::Hooks
   end
 
   def dependent_destroy(account)
-    %w(positions sent_kudos stacks ratings reviews api_keys verifications).each do |association|
+    %w(positions sent_kudos stacks ratings reviews api_keys).each do |association|
       account.send(association).destroy_all
     end
   end
