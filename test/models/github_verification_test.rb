@@ -10,4 +10,15 @@ class GithubVerificationTest < ActiveSupport::TestCase
       end
     end
   end
+
+  it 'wont allow reusing verification from spam account' do
+    account = create(:account)
+    account.access.spam!
+
+    verification = build(:github_verification, auth_id: account.github_verification.auth_id)
+    new_account = build(:account, github_verification: verification)
+
+    new_account.wont_be :valid?
+    new_account.errors.messages[:'github_verification.auth_id'].must_be :present?
+  end
 end
