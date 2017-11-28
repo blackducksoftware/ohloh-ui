@@ -1,6 +1,6 @@
 ## This task correctly sets up the Foreign Database Wrapper that communicates between openhub and fisbot
 ## The task is intended to be used for staging, development, and test.
-## The end result of the task will have the following configuration: 
+## The end result of the task will have the following configuration:
 
 ## OpenHub
 ## Server: fis
