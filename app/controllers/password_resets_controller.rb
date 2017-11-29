@@ -1,59 +1,14 @@
-class PasswordResetsController < ApplicationController
-  before_action :redirect_if_logged_in
-  before_action :set_account, only: [:confirm, :reset]
-  before_action :check_token_expiration, only: [:confirm, :reset]
-
-  def new
-    @password_reset = PasswordReset.new
-  end
-
-  def create
-    @password_reset = PasswordReset.new(params[:password_reset])
-
-    if @password_reset.valid?
-      @password_reset.refresh_token_and_email_link
-
-      redirect_to root_path, flash: { success: t('.success') }
-    else
-      render :new
-    end
-  end
-
-  def confirm
-  end
-
-  def reset
-    @account.reset_password_tokens = nil
-    @account.skip_current_password_check = true unless account_params[:password].blank?
-    if @account.update(account_params)
-      redirect_to new_session_url(return_to: account_path(@account)), flash: { success: t('.success') }
-    else
-      render :confirm
-    end
-  end
-
+class PasswordResetsController < Clearance::PasswordsController
   private
 
-  def account_params
-    params.require(:account).permit(:password, :password_confirmation)
+  def deliver_email(account)
+    ::ClearanceMailer.change_password(account).deliver_now
   end
 
-  def set_account
-    @account = Account.from_param(params[:account_id]).first
-    raise ParamRecordNotFound unless @account
-  end
+  def find_user_by_id_and_confirmation_token
+    token = params[:token] || session[:password_reset_token]
 
-  def check_token_expiration
-    token_expires_at = @account.reset_password_tokens[params[:token]]
-    return render_404 unless token_expires_at
-    return if token_expires_at > Time.current
-
-    redirect_to new_password_reset_path, flash: { error: t('password_resets.token_expired_error') }
-  end
-
-  def redirect_if_logged_in
-    return unless logged_in?
-
-    redirect_to account_path(current_user), notice: t('password_resets.already_logged_in')
+    Clearance.configuration.user_model
+             .find_by_login_and_confirmation_token params[:user_id], token.to_s
   end
 end

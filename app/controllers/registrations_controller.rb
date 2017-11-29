@@ -21,7 +21,7 @@ class RegistrationsController < ApplicationController
 
     if @account.save
       reset_session
-      session[:account_id] = @account.id
+      clearance_session.sign_in @account
       redirect_to @account
     else
       redirect_to_new_authentication_path

@@ -3,6 +3,7 @@ module SetAccountByAccountId
 
   included do
     include RedirectIfDisabled
+
     before_action :set_account_by_account_id
     before_action :redirect_if_disabled
   end

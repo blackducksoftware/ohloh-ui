@@ -8,6 +8,10 @@ describe 'Accounts::ChartsController' do
   let(:position2) { account.positions.last }
   let(:admin) { create(:admin) }
 
+  before do
+    login_as admin
+  end
+
   describe 'commits_by_project' do
     it 'should return json chart data' do
       get :commits_by_project, account_id: account.id

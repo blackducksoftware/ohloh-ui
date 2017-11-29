@@ -1,7 +1,7 @@
 Doorkeeper.configure do
   # This block will be called to check whether the resource owner is authenticated or not.
   resource_owner_authenticator do
-    Account.find_by(id: session[:account_id]) || redirect_to(new_session_url)
+    request.env[:clearance].current_user || redirect_to(new_session_url)
   end
 
   # Change the native redirect uri for client apps

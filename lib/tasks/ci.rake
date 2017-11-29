@@ -11,6 +11,8 @@ namespace :ci do
     system('bundle exec bundle-audit update && bundle exec bundle-audit check')
     puts '*** Running teaspoon'
     exit(1) unless system('RAILS_ENV=test teaspoon --no-color')
+    puts '*** Running Spinach Integration specs'
+    exit(1) unless system('spinach -r console')
     puts '*** Running Rake Test'
     exit(1) unless system('RAILS_ENV=test rake test')
     puts 'PASSED'

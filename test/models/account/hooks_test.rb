@@ -53,6 +53,7 @@ class Account::HooksTest < ActiveSupport::TestCase
       ProjectLicense.create!(project: Project.last, license: create(:license), editor_account: account)
       account.edits.not_undone.map(&:type).sort.must_equal %w(CreateEdit PropertyEdit)
 
+      account.verifications.count.must_equal 1
       account.topics.count.must_equal 3
       account.person.wont_be_nil
       account.positions.count.must_equal 1
@@ -62,16 +63,19 @@ class Account::HooksTest < ActiveSupport::TestCase
 
       Project.any_instance.stubs(:edit_authorized?).returns(true)
       account.access.spam!
-
       account.reload
-      spammer = account.access.spam?
-      spammer.must_equal true
+      account.access.spam?.must_equal true
+
+      # verifications must be retained.
+      account.verifications.count.must_equal 1
       account.topics.count.must_equal 0
       account.person.must_be_nil
       account.positions.count.must_equal 0
       account.posts.count.must_equal 0
       account.manages.count.must_equal 0
+      # edits must be undone but still belong to spam account.
       account.edits.not_undone.count.must_equal 0
+      account.edits.count.must_equal 2
     end
 
     it 'should rollback when destroy dependencies raises an exception' do

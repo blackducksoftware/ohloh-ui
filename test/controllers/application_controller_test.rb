@@ -158,12 +158,11 @@ describe 'ApplicationController' do
 
     it 'remember me functionality automatically logs users in' do
       login_as nil
-      admin = create(:admin)
-      Account::Authenticator.remember(admin)
-      @request.cookies[:auth_token] = admin.remember_token
+      admin = create(:admin, remember_token: 'old-token')
+      @request.cookies[:remember_token] = admin.remember_token
       get :session_required_action
       must_respond_with :ok
-      session[:account_id].must_equal admin.id
+      @request.env[:clearance].current_user.id.must_equal admin.id
     end
 
     it 'handles nil page param' do
