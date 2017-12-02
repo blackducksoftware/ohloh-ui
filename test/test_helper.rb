@@ -15,6 +15,7 @@ require 'test_helpers/setup_hamster_account'
 require 'test_helpers/create_forges'
 require 'sidekiq/testing'
 require 'webmock/minitest'
+require 'clearance/test_unit'
 
 Sidekiq::Testing.fake!
 
@@ -42,7 +43,7 @@ class ActiveSupport::TestCase
   end
 
   def login_as(account)
-    @controller ? controller_login_as(account) : integration_login_as(account)
+    request && request.env[:clearance] ? controller_login_as(account) : integration_login_as(account)
   end
 
   def create_must_and_wont_aliases(*classes)
@@ -68,7 +69,11 @@ class ActiveSupport::TestCase
   private
 
   def controller_login_as(account)
-    @controller.session[:account_id] = account ? account.id : nil
+    if account
+      request.env[:clearance].sign_in(account)
+    else
+      request.env[:clearance].sign_out
+    end
   end
 
   def integration_login_as(account)

@@ -1,5 +1,6 @@
 en:
   accounts:
+    disabled_error: 'This account is disabled.'
     non_activated_message: Please verify your email address before making this change.
     unsubscribe_emails:
       title: 'You have been unsubscribed'

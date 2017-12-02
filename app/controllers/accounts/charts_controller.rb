@@ -1,8 +1,5 @@
 class Accounts::ChartsController < ApplicationController
   include SetAccountByAccountId
-  include RedirectIfDisabled
-
-  before_action :redirect_if_disabled
 
   # NOTE: Replaces accounts#commits_history
   def commits_by_project

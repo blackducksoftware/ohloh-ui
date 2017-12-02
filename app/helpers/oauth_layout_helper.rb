@@ -15,7 +15,7 @@ module OauthLayoutHelper
   end
 
   def current_user
-    Account.find_by(id: session[:account_id])
+    request.env[:clearance].current_user
   end
 
   def read_only_mode?
