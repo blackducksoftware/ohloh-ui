@@ -11,6 +11,8 @@ module EnlistmentFilters
     before_action :validate_project, only: [:edit, :update, :destroy]
     before_action :sidekiq_job_exists, only: :create
     before_action :handle_github_user_flow, only: :create
+    before_action :valid_code_location?, only: :create
+    before_action :code_location_exist?, only: :create
   end
 
   private
@@ -29,7 +31,7 @@ module EnlistmentFilters
 
   def find_enlistment
     @enlistment = Enlistment.find_by(id: params[:id])
-    raise ParamRecordNotFound if @enlistment.nil?
+    raise ParamRecordNotFound unless @enlistment
     @enlistment.editor_account = current_user
   end
 
@@ -52,6 +54,7 @@ module EnlistmentFilters
   def create_worker
     worker = EnlistmentWorker.perform_async(@repository.url, current_user.id, @project.id)
     Setting.update_worker(@project.id, worker, @repository.url)
+    flash[:notice] = t('.github_repos_added', username: @repository.url)
     redirect_to project_enlistments_path(@project)
   end
 
@@ -64,7 +67,36 @@ module EnlistmentFilters
   end
 
   def add_custom_error_msg
-    @project.errors.delete(:description)
-    @project.errors.full_messages.unshift(custom_description_error)
+    project_errors = @project.errors
+    project_errors.delete(:description)
+    project_errors.full_messages.unshift(custom_description_error)
+  end
+
+  def build_code_location
+    CodeLocationBuilder.build do |builder|
+      builder.type = params[:repository][:type]
+      builder.url = params[:repository][:url]
+      builder.repo_params = repository_params
+      builder.code_location_params = code_location_params
+    end
+  end
+
+  def valid_code_location?
+    @code_location = build_code_location
+    @repository = @code_location.repository
+    return render :new, status: :unprocessable_entity unless @code_location.valid?
+  end
+
+  def code_location_exist?
+    code_location = CodeLocation.find_existing(@repository.url, @code_location.module_branch_name)
+    return unless code_location
+    update_repo_username_and_password(code_location)
+
+    flash[:notice] = t('.notice', url: @repository.url, module_branch_name: @code_location.module_branch_name)
+    redirect_to project_enlistments_path(@project)
+  end
+
+  def update_repo_username_and_password(code_location)
+    code_location.repository.update_attributes(username: @repository.username, password: @repository.password)
   end
 end
