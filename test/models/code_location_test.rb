@@ -155,6 +155,15 @@ class CodeLocationTest < ActiveSupport::TestCase
       code_location.schedule_fetch
       code_location.do_not_fetch.must_equal false
     end
+
+    it 'should schedule a complete job even if there is a failed TarballJob' do
+      code_location = create(:code_location, :with_code_set, do_not_fetch: true)
+      clear_jobs
+      create(:failed_tarball_job, code_location: code_location, code_set: code_location.best_code_set)
+      code_location.jobs.count.must_equal 1
+      code_location.schedule_fetch
+      code_location.jobs.count.must_equal 2
+    end
   end
 
   describe 'repository_directory' do
