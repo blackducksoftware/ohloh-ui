@@ -11,7 +11,7 @@ class CodeLocationBuilder
 
   def code_location
     return repository if repository.is_a?(GithubUser)
-    build_code_location
+    find_or_build_code_location
   end
 
   private
@@ -22,7 +22,20 @@ class CodeLocationBuilder
     @repository ||= repo_class.new(@repo_params)
   end
 
-  def build_code_location
-    CodeLocation.new(@code_location_params.merge(repository: repository))
+  def code_location_parameters
+    @code_location_params.merge(repository: repository)
+  end
+
+  def set_repo_username_and_password(code_location)
+    repository = code_location.repository
+    repository.username = @repo_params[:username]
+    repository.password = @repo_params[:password]
+    code_location
+  end
+
+  def find_or_build_code_location
+    code_location = CodeLocation.find_existing(repository.url, @code_location_params[:module_branch_name])
+    return set_repo_username_and_password(code_location) if code_location.present?
+    CodeLocation.new(code_location_parameters)
   end
 end

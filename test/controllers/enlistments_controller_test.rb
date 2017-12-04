@@ -217,15 +217,15 @@ describe 'EnlistmentsControllerTest' do
     end
 
     it 'must update code_location.repository if code_location already exists' do
-      code_location = create(:code_location)
+      code_location = @enlistment.code_location
       repository = code_location.repository
-      new_repository = build(:repository, url: repository.url, username: Faker::Name.name)
+      username = Faker::Name.name
 
-      post :create, project_id: @project_id, repository: new_repository.attributes,
+      post :create, project_id: @project_id, repository: repository.attributes.merge(username: username),
                     code_location: code_location.attributes
 
       must_redirect_to action: :index
-      Repository.find(repository.id).username.must_equal new_repository.username
+      repository.reload.username.must_equal username
     end
 
     it 'must show alert message for adding the first enlistment' do
@@ -308,6 +308,36 @@ describe 'EnlistmentsControllerTest' do
 
       assigns(:repository).errors.messages[:url].must_be :present?
       must_render_template :new
+    end
+
+    describe 'a code_location can be added to multiple projects' do
+      describe 'when code_location already exist for a project' do
+        it 'should not add the code_location' do
+          enlistment = create(:enlistment)
+          code_location = enlistment.code_location
+          repository = enlistment.code_location.repository
+          assert_no_difference ['Enlistment.count', 'CodeLocation.count', 'Repository.count'] do
+            post :create, project_id: enlistment.project.vanity_url,
+                          repository: repository.attributes,
+                          code_location: code_location.attributes
+          end
+        end
+      end
+
+      describe 'when code_location exist for a different project' do
+        it 'should add a enlistment and reuse existing code_location' do
+          enlistment = create(:enlistment)
+          code_location = enlistment.code_location
+          repository = enlistment.code_location.repository
+          assert_difference 'Enlistment.count' do
+            assert_no_difference ['CodeLocation.count', 'Repository.count'] do
+              post :create, project_id: create(:project).vanity_url,
+                            repository: repository.attributes,
+                            code_location: code_location.attributes
+            end
+          end
+        end
+      end
     end
   end
 

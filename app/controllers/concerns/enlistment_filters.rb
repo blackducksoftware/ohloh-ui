@@ -12,7 +12,7 @@ module EnlistmentFilters
     before_action :sidekiq_job_exists, only: :create
     before_action :handle_github_user_flow, only: :create
     before_action :valid_code_location?, only: :create
-    before_action :code_location_exist?, only: :create
+    before_action :project_has_code_location?, only: :create
   end
 
   private
@@ -87,8 +87,8 @@ module EnlistmentFilters
     return render :new, status: :unprocessable_entity unless @code_location.valid?
   end
 
-  def code_location_exist?
-    code_location = CodeLocation.find_existing(@repository.url, @code_location.module_branch_name)
+  def project_has_code_location?
+    code_location = @project.code_locations.find_existing(@repository.url, @code_location.module_branch_name)
     return unless code_location
     update_repo_username_and_password(code_location)
 
