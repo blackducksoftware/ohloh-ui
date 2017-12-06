@@ -204,6 +204,16 @@ describe 'ApplicationController' do
       assert_response :success
       action.reload.status.must_equal Action::STATUSES[:completed]
     end
+
+    it 'must redirect spam accounts' do
+      account = create(:account)
+      login_as account
+      account.access.spam!
+
+      get :new
+
+      must_redirect_to new_authentication_path
+    end
   end
 end
 
