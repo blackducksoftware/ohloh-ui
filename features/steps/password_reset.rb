@@ -60,4 +60,14 @@ class Spinach::Features::PasswordReset < Spinach::FeatureSteps
   step 'it should sign me in' do
     current_path.must_equal account_path(:me)
   end
+
+  step 'double click submit button' do
+    ActionMailer::Base.deliveries = []
+    element = find_button('Reset password')
+    page.driver.browser.action.double_click(element.native).perform
+  end
+
+  step 'it should send only one password reset email' do
+    ActionMailer::Base.deliveries.length.must_equal 1
+  end
 end

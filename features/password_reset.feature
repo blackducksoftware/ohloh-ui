@@ -15,6 +15,14 @@ Feature: Password Reset
     And submit the form
     Then it should send me a password reset email
 
+  @javascript
+  Scenario: Multiple submission of password reset form
+    Given I have an Openhub account
+    And I am on the password reset page
+    When I enter my email
+    And double click submit button
+    Then it should send only one password reset email
+
   Scenario: Resetting my password through the email link
     Given I have an Openhub account
     And I have raised a password reset request
