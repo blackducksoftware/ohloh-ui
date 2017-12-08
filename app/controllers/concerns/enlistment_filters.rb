@@ -22,7 +22,11 @@ module EnlistmentFilters
   end
 
   def repository_params
-    params.require(:repository).permit(:url, :module_name, :branch_name, :username, :password, :bypass_url_validation)
+    return @repository_params if @repository_params
+    @repository_params = params.require(:repository)
+                               .permit(:url, :module_name, :branch_name, :username, :password, :bypass_url_validation)
+    @repository_params[:url] = params[:repository][:url].chomp('/')
+    @repository_params
   end
 
   def parse_sort_term
@@ -38,7 +42,7 @@ module EnlistmentFilters
   def sidekiq_job_exists
     key = Setting.get_project_enlistment_key(@project.id)
     job = Setting.get_value(key)
-    if job.present? && job.key?(params[:repository][:url])
+    if job.present? && job.key?(repository_params[:url])
       redirect_to project_enlistments_path(@project), flash: { error: t('.job_exists') }
     end
   end
@@ -75,7 +79,7 @@ module EnlistmentFilters
   def build_code_location
     CodeLocationBuilder.build do |builder|
       builder.type = params[:repository][:type]
-      builder.url = params[:repository][:url]
+      builder.url = repository_params[:url]
       builder.repo_params = repository_params
       builder.code_location_params = code_location_params
     end
