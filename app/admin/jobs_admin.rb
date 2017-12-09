@@ -153,8 +153,8 @@ ActiveAdmin.register Job do
       if project.code_locations.size.zero?
         project.jobs
       else
-        Job.where("project_id = #{project.id} or code_location_id in (
-                  select code_location_id from enlistments where project_id = #{project.id} and not deleted)")
+        code_location_ids = Enlistment.where(project_id: project.id, deleted: false).pluck(:code_location_id)
+        Job.where("project_id = #{project.id} or code_location_id in (#{code_location_ids.join(',') || 0})")
       end
     end
   end
