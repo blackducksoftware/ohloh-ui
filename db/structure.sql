@@ -4886,6 +4886,31 @@ CREATE VIEW recommendations_id_seq_view AS
 
 
 --
+-- Name: registration_keys; Type: FOREIGN TABLE; Schema: public; Owner: -
+--
+
+CREATE FOREIGN TABLE registration_keys (
+    id uuid NOT NULL,
+    client_name text NOT NULL,
+    description text
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'registration_keys'
+);
+ALTER FOREIGN TABLE registration_keys ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE registration_keys ALTER COLUMN client_name OPTIONS (
+    column_name 'client_name'
+);
+ALTER FOREIGN TABLE registration_keys ALTER COLUMN description OPTIONS (
+    column_name 'description'
+);
+
+
+--
 -- Name: releases; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -10350,6 +10375,8 @@ INSERT INTO schema_migrations (version) VALUES ('20171017162841');
 INSERT INTO schema_migrations (version) VALUES ('20171107131744');
 
 INSERT INTO schema_migrations (version) VALUES ('20171127153012');
+
+INSERT INTO schema_migrations (version) VALUES ('20171209123301');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

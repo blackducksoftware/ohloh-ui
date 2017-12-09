@@ -42,6 +42,20 @@ CREATE EXTENSION IF NOT EXISTS postgres_fdw WITH SCHEMA public;
 COMMENT ON EXTENSION postgres_fdw IS 'foreign-data wrapper for remote PostgreSQL servers';
 
 
+--
+-- Name: uuid-ossp; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
+
+
 SET search_path = public, pg_catalog;
 
 --
@@ -69,6 +83,301 @@ CREATE FUNCTION accounts_id_seq_view() RETURNS integer
 CREATE FUNCTION actions_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from actions_id_seq_view$$;
+
+
+--
+-- Name: admin_insert_cl_added_stats(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION admin_insert_cl_added_stats() RETURNS jsonb
+    LANGUAGE plpgsql
+    AS $$
+
+DECLARE
+  result jsonb;
+BEGIN
+  WITH locations AS (SELECT created_at FROM code_locations
+                WHERE created_at  BETWEEN
+                      date_trunc('year', now())::timestamp - interval '14 days' AND DATE 'tomorrow'),
+        series AS (SELECT generate_series( date_trunc('week', date_trunc('year', now()::timestamp)), DATE 'tomorrow',
+            '1 week'::INTERVAL)::date AS bow),
+        range AS (SELECT EXTRACT(Week from bow) as weeknumber, bow, (bow + 6) AS eow, (bow - 14) AS biweekly,
+                  EXTRACT(quarter FROM bow) AS quarter, EXTRACT(month from bow) AS month,
+                  EXTRACT(Year from bow) AS year
+                FROM series)
+          SELECT array_to_json(array_agg(row_to_json(t))) FROM (
+            SELECT * FROM
+              (SELECT weeknumber, bow,eow, biweekly, month, year,
+              (SELECT count(*) FROM locations WHERE created_at BETWEEN bow AND eow) as weekly,
+              (SELECT count(*) FROM locations WHERE created_at BETWEEN biweekly and bow) as biweekly,
+              (SELECT count(*) FROM locations WHERE EXTRACT(MONTH from created_at) = month
+                  AND EXTRACT(YEAR from created_at) = year) as monthly,
+              (SELECT count(*) FROM locations WHERE EXTRACT(QUARTER from created_at) = quarter
+                  AND EXTRACT(YEAR from created_at) = year) as quarterly,
+              (SELECT count(*) FROM locations WHERE EXTRACT(YEAR from created_at) = year) as yearly
+          FROM range) n1 where weeknumber = EXTRACT('week' from CURRENT_DATE)
+              AND YEAR = EXTRACT('year' from CURRENT_DATE))t INTO result;
+   INSERT INTO admin_dashboard_stats (stat_type, data, created_at, updated_at)
+      VALUES ('cl_added', result, current_timestamp, current_timestamp) ;
+
+  RETURN result;
+END;
+
+$$;
+
+
+--
+-- Name: admin_insert_cl_py_ages_stats(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION admin_insert_cl_py_ages_stats() RETURNS jsonb
+    LANGUAGE plpgsql
+    AS $$
+
+DECLARE
+  result jsonb;
+BEGIN
+    SELECT array_to_json(array_agg(row_to_json(t))) FROM (
+      SELECT eow as week_ending, count(*) FROM code_sets
+        INNER JOIN code_locations ON code_locations.best_code_set_id = code_sets.id
+        INNER JOIN ( SELECT generate_series( date_trunc('year', now()),
+                                             now() + interval '1 week', '1 week'::INTERVAL)::date
+        AS eow ) series ON EXTRACT('week' from series.eow) = EXTRACT('week' from code_sets.logged_at)
+        LEFT OUTER JOIN (SELECT DISTINCT enlistments.code_location_id, enlistments.deleted FROM enlistments
+            WHERE enlistments.deleted = false) e1 ON e1.code_location_id = code_locations.id
+        WHERE (COALESCE(code_sets.logged_at, '1970-01-01') + code_locations.update_interval * INTERVAL '1 second'
+            <= NOW() AT TIME ZONE 'utc' )
+        AND code_locations.do_not_fetch = false
+        AND ( (code_locations.status = 0  AND e1.deleted = false) OR code_locations.status = 1)
+        AND code_sets.logged_at >= date_trunc('year', now()) group by eow order by eow desc)t INTO result;
+
+    INSERT INTO admin_dashboard_stats (stat_type, data, created_at, updated_at)
+        VALUES ('cl_py_ages', result, current_timestamp, current_timestamp) ;
+
+    RETURN result;
+END;
+
+$$;
+
+
+--
+-- Name: admin_insert_cl_py_by_month_stats(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION admin_insert_cl_py_by_month_stats() RETURNS jsonb
+    LANGUAGE plpgsql
+    AS $$
+
+DECLARE
+  result jsonb;
+BEGIN
+  SELECT array_to_json(array_agg(row_to_json(t))) FROM (
+      SELECT bom, count(*) FROM code_sets
+                 INNER JOIN code_locations ON code_locations.best_code_set_id = code_sets.id
+                 INNER JOIN (SELECT generate_series(make_date(EXTRACT(year from now() - interval '1 year')::int,01,01),
+                   make_date(EXTRACT(year from now() - interval '1 year')::int, 12,31),'1 month'::INTERVAL)::date AS bom
+                 ) series ON EXTRACT('month' from series.bom) = EXTRACT('month' from code_sets.logged_at)
+                 LEFT OUTER JOIN (SELECT DISTINCT enlistments.code_location_id, enlistments.deleted FROM enlistments
+                     WHERE enlistments.deleted = false) e1 ON e1.code_location_id = code_locations.id
+                 WHERE (COALESCE(code_sets.logged_at,'1970-01-01')+ code_locations.update_interval * INTERVAL '1 second'
+                 <= NOW() AT TIME ZONE 'utc' ) AND ( (code_locations.status = 0  AND e1.deleted = false)
+                 OR code_locations.status = 1) AND code_sets.logged_at < date_trunc('year', now())
+                 AND code_sets.logged_at >= make_date(EXTRACT(year from now() - interval '1 year')::int, 01,01)
+                 group by bom order by bom desc)t INTO result;
+   INSERT INTO admin_dashboard_stats (stat_type, data, created_at, updated_at)
+    VALUES ('cl_py_by_month', result, current_timestamp, current_timestamp) ;
+
+  RETURN result;
+END;
+
+$$;
+
+
+--
+-- Name: admin_insert_cl_total_stats(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION admin_insert_cl_total_stats() RETURNS jsonb
+    LANGUAGE plpgsql
+    AS $$
+
+  DECLARE
+    result jsonb;
+  BEGIN
+    WITH locations AS (SELECT id, status, do_not_fetch, update_interval, best_code_set_id FROM code_locations),
+
+    dnf AS (Select * from locations WHERE do_not_fetch = true),
+
+    unsubscribed AS (SELECT cl.*
+      FROM locations cl
+       LEFT OUTER JOIN (SELECT DISTINCT enlistments.code_location_id, enlistments.deleted FROM enlistments
+                  WHERE enlistments.deleted = false) e1 ON e1.code_location_id = cl.id
+       WHERE (cl.status = 0 AND e1.code_location_id IS NULL) AND do_not_fetch = false AND best_code_set_id IS NOT NULL),
+
+    inactive AS (SELECT * from locations WHERE status = 2 AND do_not_fetch = false),
+
+    subscribed AS ( SELECT  locations.id, status, do_not_fetch, best_code_set_id
+             FROM code_sets
+             INNER JOIN locations ON locations.best_code_set_id = code_sets.id
+                LEFT OUTER JOIN (SELECT DISTINCT enlistments.code_location_id, enlistments.deleted FROM enlistments
+                     WHERE enlistments.deleted = false) e1 ON e1.code_location_id = locations.id
+             WHERE (COALESCE(code_sets.logged_at, '1970-01-01') +
+                  locations.update_interval * INTERVAL '1 second'
+                  <= NOW() AT TIME ZONE 'utc' AND locations.do_not_fetch = false)
+                AND ( (locations.status = 0  AND e1.deleted = false) OR locations.status = 1)
+            AND locations.do_not_fetch = false),
+
+    timely AS (SELECT locations.id, locations.status, do_not_fetch, update_interval, best_code_set_id FROM locations
+            INNER JOIN code_sets cs ON  locations.best_code_set_id = cs.id
+            LEFT OUTER JOIN (SELECT DISTINCT enlistments.code_location_id, enlistments.deleted
+                  FROM enlistments
+                     WHERE enlistments.deleted = false) e1 ON e1.code_location_id = locations.id
+          WHERE (COALESCE(cs.logged_at, '1970-01-01') +
+             locations.update_interval * INTERVAL '1 second'
+          > NOW() AT TIME ZONE 'utc' AND locations.do_not_fetch = false)
+                AND ( (locations.status = 0  AND e1.deleted = false) OR locations.status = 1)
+            AND locations.do_not_fetch = false),
+
+    no_best_code AS (select * from locations where best_code_set_id IS NULL AND do_not_fetch = false AND status <> 2)
+
+    SELECT array_to_json(array_agg(row_to_json(t))) FROM (
+    SELECT * FROM
+      (SELECT count(*) as total FROM locations) as total,
+      (SELECT count(*) as dnf FROM dnf) as dnf,
+      (SELECT count(*) as inactive FROM inactive) as inactive,
+      (SELECT count(*) as unsubscribed FROM unsubscribed) as unsubscribed,
+      (SELECT count(*) as wait_until FROM timely) as wait_until,
+      (SELECT count(*) as no_best_code FROM no_best_code) as no_best_code,
+      (SELECT count(*) as subscribed FROM subscribed) as subscribed,
+      (SELECT count(*) as idk
+        FROM locations cl
+        LEFT OUTER JOIN dnf ON cl.id = dnf.id
+        LEFT OUTER JOIN unsubscribed us ON cl.id = us.id
+        LEFT OUTER JOIN inactive ina ON cl.id = ina.id
+        LEFT OUTER JOIN subscribed sb ON cl.id = sb.id
+        LEFT OUTER JOIN timely tml ON cl.id = tml.id
+        LEFT OUTER JOIN no_best_code nbc ON cl.id = nbc.id
+      WHERE dnf.id IS NULL
+      AND us.id IS NULL
+      AND ina.id IS NULL
+      AND sb.id IS NULL
+      AND tml.id IS NULL
+      AND nbc.id IS NULL) as idk)t
+    INTO result;
+
+    INSERT INTO admin_dashboard_stats (stat_type, data, created_at, updated_at)
+      VALUES ('cl_total', result, current_timestamp, current_timestamp) ;
+
+    RETURN result;
+  END;
+
+  $$;
+
+
+--
+-- Name: admin_insert_cl_visited_stats(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION admin_insert_cl_visited_stats() RETURNS jsonb
+    LANGUAGE plpgsql
+    AS $$
+
+DECLARE
+  result jsonb;
+BEGIN
+  SELECT admin_select_cl_visited_stats() ||
+  		 admin_select_cl_visited_stats('3 days') ||
+  		 admin_select_cl_visited_stats('1 month') ||
+         admin_select_kb_cl_visited_stats() ||
+         admin_select_kb_cl_visited_stats('3 days') ||
+         admin_select_kb_cl_visited_stats('1 month') INTO result;
+
+  INSERT INTO admin_dashboard_stats (stat_type, data, created_at, updated_at)
+    VALUES ('cl_visited', result, current_timestamp, current_timestamp) ;
+  RETURN result;
+END;
+
+$$;
+
+
+--
+-- Name: admin_select_cl_visited_stats(character varying); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION admin_select_cl_visited_stats(interval_span character varying DEFAULT NULL::character varying) RETURNS jsonb
+    LANGUAGE plpgsql
+    AS $_$
+
+    DECLARE
+      result jsonb;
+      columnName varchar ;
+      query varchar ;
+    BEGIN
+      columnName := '_' || COALESCE(REPLACE($1, ' ', ''), 'all') ;
+      query :=
+      'SELECT array_to_json(array_agg(row_to_json(t))) FROM (
+      SELECT  count(*) as ' || columnName ||
+                ' FROM code_sets
+                INNER JOIN code_locations ON code_locations.best_code_set_id = code_sets.id
+                LEFT OUTER JOIN (SELECT DISTINCT enlistments.code_location_id, enlistments.deleted FROM enlistments
+                    WHERE enlistments.deleted = false) e1 ON e1.code_location_id = code_locations.id
+                WHERE (COALESCE(code_sets.logged_at, ''1970-01-01'') +
+                  code_locations.update_interval * INTERVAL ''1 second''
+                  <= NOW() AT TIME ZONE ''utc'')
+                AND ( (code_locations.status = 0  AND e1.deleted = false) OR code_locations.status = 1) ' ;
+
+      IF $1 IS NOT NULL THEN
+        query := query || ' AND logged_at > now() - interval ''' || ($1)::interval || '''' ;
+      ELSE
+        query := query || ' AND code_locations.do_not_fetch = false' ;
+      END IF ;
+
+      query := query || ' )t' ;
+
+      EXECUTE query INTO result;
+      RETURN result;
+    END;
+
+  $_$;
+
+
+--
+-- Name: admin_select_kb_cl_visited_stats(character varying); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION admin_select_kb_cl_visited_stats(interval_span character varying DEFAULT NULL::character varying) RETURNS jsonb
+    LANGUAGE plpgsql
+    AS $_$
+
+      DECLARE
+        result jsonb;
+        columnName varchar ;
+        query varchar ;
+      BEGIN
+        columnName := '_kb_' || COALESCE(REPLACE($1, ' ', ''), 'all') ;
+        query :=
+        'SELECT array_to_json(array_agg(row_to_json(t))) FROM (
+        SELECT  count(*) as ' || columnName ||
+                    ' FROM code_sets
+                    INNER JOIN code_locations ON code_locations.best_code_set_id = code_sets.id
+                    WHERE (COALESCE(code_sets.logged_at, ''1970-01-01'') +
+                      code_locations.update_interval * INTERVAL ''1 second''
+                      <= NOW() AT TIME ZONE ''utc'')
+                    AND (code_locations.status = 1) ' ;
+
+        IF $1 IS NOT NULL THEN
+          query := query || ' AND logged_at > now() - interval ''' || ($1)::interval || '''' ;
+        ELSE
+          query := query || ' AND code_locations.do_not_fetch = false' ;
+        END IF ;
+
+        query := query || ' )t' ;
+
+        EXECUTE query INTO result;
+        RETURN result;
+      END;
+
+      $_$;
 
 
 --
@@ -1046,7 +1355,7 @@ CREATE SERVER ohloh FOREIGN DATA WRAPPER postgres_fdw OPTIONS (
 
 
 --
--- Name: USER MAPPING fis_user SERVER ohloh; Type: USER MAPPING; Schema: -; Owner: -
+-- Name: USER MAPPING openhub_user SERVER ohloh; Type: USER MAPPING; Schema: -; Owner: -
 --
 
 CREATE USER MAPPING FOR fis_user SERVER ohloh OPTIONS (
@@ -1465,6 +1774,40 @@ ALTER FOREIGN TABLE activity_facts_id_seq_view ALTER COLUMN id OPTIONS (
 );
 
 
+SET default_with_oids = false;
+
+--
+-- Name: admin_dashboard_stats; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE admin_dashboard_stats (
+    id integer NOT NULL,
+    stat_type character varying,
+    data jsonb,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: admin_dashboard_stats_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE admin_dashboard_stats_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: admin_dashboard_stats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE admin_dashboard_stats_id_seq OWNED BY admin_dashboard_stats.id;
+
+
 --
 -- Name: aliases; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
@@ -1665,8 +2008,6 @@ ALTER FOREIGN TABLE analyses_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
-
-SET default_with_oids = false;
 
 --
 -- Name: analysis_aliases; Type: TABLE; Schema: public; Owner: -
@@ -2290,7 +2631,8 @@ CREATE FOREIGN TABLE code_locations (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     update_interval integer DEFAULT 3600,
-    best_repository_directory_id integer
+    best_repository_directory_id integer,
+    do_not_fetch boolean DEFAULT false
 )
 SERVER ohloh
 OPTIONS (
@@ -7764,6 +8106,17 @@ ALTER FOREIGN TABLE recommendations_id_seq_view ALTER COLUMN id OPTIONS (
 
 
 --
+-- Name: registration_keys; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE registration_keys (
+    id uuid DEFAULT uuid_generate_v4() NOT NULL,
+    client_name text NOT NULL,
+    description text
+);
+
+
+--
 -- Name: releases; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
@@ -9780,6 +10133,13 @@ ALTER FOREIGN TABLE vw_projecturlnameedits ALTER COLUMN value OPTIONS (
 
 
 --
+-- Name: admin_dashboard_stats id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY admin_dashboard_stats ALTER COLUMN id SET DEFAULT nextval('admin_dashboard_stats_id_seq'::regclass);
+
+
+--
 -- Name: analysis_aliases id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -9889,6 +10249,14 @@ ALTER TABLE ONLY sloc_metrics ALTER COLUMN id SET DEFAULT nextval('sloc_metrics_
 --
 
 ALTER TABLE ONLY sloc_sets ALTER COLUMN id SET DEFAULT nextval('sloc_sets_id_seq'::regclass);
+
+
+--
+-- Name: admin_dashboard_stats admin_dashboard_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY admin_dashboard_stats
+    ADD CONSTRAINT admin_dashboard_stats_pkey PRIMARY KEY (id);
 
 
 --
@@ -10004,6 +10372,14 @@ ALTER TABLE ONLY load_averages
 
 
 --
+-- Name: registration_keys registration_keys_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY registration_keys
+    ADD CONSTRAINT registration_keys_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: slave_logs slave_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -10040,6 +10416,20 @@ ALTER TABLE ONLY diffs
 --
 
 CREATE INDEX foo ON slaves USING btree (clump_status) WHERE (oldest_clump_timestamp IS NOT NULL);
+
+
+--
+-- Name: index_admin_dashboard_stats_on_data; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_admin_dashboard_stats_on_data ON admin_dashboard_stats USING gin (data);
+
+
+--
+-- Name: index_admin_dashboard_stats_on_stat_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_admin_dashboard_stats_on_stat_type ON admin_dashboard_stats USING btree (stat_type);
 
 
 --
@@ -10339,4 +10729,34 @@ INSERT INTO schema_migrations (version) VALUES ('20170622141518');
 INSERT INTO schema_migrations (version) VALUES ('20170905123152');
 
 INSERT INTO schema_migrations (version) VALUES ('20170911100003');
+
+INSERT INTO schema_migrations (version) VALUES ('20170913160134');
+
+INSERT INTO schema_migrations (version) VALUES ('20170925190632');
+
+INSERT INTO schema_migrations (version) VALUES ('20170925192153');
+
+INSERT INTO schema_migrations (version) VALUES ('20170925192352');
+
+INSERT INTO schema_migrations (version) VALUES ('20170925192829');
+
+INSERT INTO schema_migrations (version) VALUES ('20170925193357');
+
+INSERT INTO schema_migrations (version) VALUES ('20170925195815');
+
+INSERT INTO schema_migrations (version) VALUES ('20171020021211');
+
+INSERT INTO schema_migrations (version) VALUES ('20171025191016');
+
+INSERT INTO schema_migrations (version) VALUES ('20171030153430');
+
+INSERT INTO schema_migrations (version) VALUES ('20171030154453');
+
+INSERT INTO schema_migrations (version) VALUES ('20171127181222');
+
+INSERT INTO schema_migrations (version) VALUES ('20171128174144');
+
+INSERT INTO schema_migrations (version) VALUES ('20171204165745');
+
+INSERT INTO schema_migrations (version) VALUES ('20171209110545');
 
