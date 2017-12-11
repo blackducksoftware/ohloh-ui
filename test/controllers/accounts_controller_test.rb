@@ -5,6 +5,81 @@ require 'test_helpers/commits_by_language_data'
 describe 'AccountsController' do
   let(:start_date) { (Date.current - 6.years).beginning_of_month }
   let(:admin) { create(:admin) }
+  let(:account_attributes) do
+    FactoryBot.attributes_for(:account).select do |k, _v|
+      %w(login email email_confirmation password password_confirmation).include?(k.to_s)
+    end
+  end
+
+  let(:account_params) { { account: account_attributes } }
+
+  describe 'new' do
+    it 'must build a new account' do
+      get :new
+
+      must_respond_with :success
+      assigns(:account).must_be_instance_of Account
+    end
+
+    it 'must redirect to accounts show page if logged in' do
+      account = create(:account)
+
+      login_as account
+      get :new
+
+      must_respond_with :redirect
+      must_redirect_to account_path(account)
+    end
+  end
+
+  describe 'create' do
+    it 'must return errors for invalid email' do
+      post :create, account_params.merge(account: { email: '' })
+      assigns(:account).wont_be :valid?
+      must_render_template :new
+    end
+
+    it 'must render the new template when validations fail' do
+      post :create, account_params.merge(account: { email: '' })
+
+      assigns(:account).wont_be :valid?
+      must_render_template :new
+    end
+
+    it 'must require login' do
+      post :create, account_params.merge(account: { login: '' })
+      assigns(:account).errors.messages[:login].must_be :present?
+    end
+
+    it 'must require password' do
+      post :create, account_params.merge(account: { password: '' })
+      assigns(:account).errors.messages[:password].must_be :present?
+    end
+
+    it 'must require email and email_confirmation' do
+      post :create, account_params.merge(account: { email_confirmation: '', email: '' })
+      assigns(:account).errors.messages[:email_confirmation].must_be :present?
+    end
+
+    it 'must redirect to accounts page after create' do
+      post :create, account_params
+
+      must_redirect_to Account.last
+    end
+
+    it 'must return error when phone number is a duplicate' do
+      existing_account = create(:account)
+      firebase_token = [{ 'user_id' => Faker::Internet.password }]
+      FirebaseService.any_instance.stubs(:decode).returns(firebase_token)
+      create(:firebase_verification, account: existing_account)
+
+      params = account_params[:account].merge(firebase_verification_attributes: { credentials: Faker::Lorem.word })
+      post :create, account: params
+
+      assigns(:account).wont_be :valid?
+      assigns(:account).errors['firebase_verification.unique_id'].must_be :present?
+    end
+  end
 
   describe 'index' do
     it 'should return claimed persons with their cbp_map and positions_map' do

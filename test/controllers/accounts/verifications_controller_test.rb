@@ -10,8 +10,7 @@ describe 'Accounts::VerificationsController' do
   describe 'generate' do
     it 'must save a valid record' do
       VCR.use_cassette('GithubVerification') do
-        GithubVerification.any_instance.unstub(:generate_access_token)
-        session[:auth_params] = { github_verification_attributes: { code: Faker::Internet.password } }
+        session[:auth_params] = { github_verification_attributes: build(:github_verification).attributes }
 
         get :generate, account_id: account.id
 
@@ -21,8 +20,8 @@ describe 'Accounts::VerificationsController' do
       end
     end
 
-    it 'must redirect to new authentication path when code is nil' do
-      session[:auth_params] = { github_verification_attributes: { code: nil } }
+    it 'must redirect to new authentication path when token is nil' do
+      session[:auth_params] = { github_verification_attributes: { token: nil } }
 
       get :generate, account_id: account.id
       must_redirect_to new_authentication_path

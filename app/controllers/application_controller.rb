@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
   helper ButtonHelper
   helper BlogLinkHelper
   helper ColorsHelper
+  helper GithubHelper
 
   protect_from_forgery with: :exception
 

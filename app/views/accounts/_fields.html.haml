@@ -1,4 +1,6 @@
-= form_for @account, url: validate_registrations_path, html: { id: :account_form, class: 'well' } do |f|
+= form_for @account, html: { id: :account_form, class: 'well' } do |f|
+  = f.fields_for :firebase_verification do |firebase_form|
+    = firebase_form.hidden_field :credentials, id: :credentials
   %fieldset
     %legend= t('.new_account')
     .controls
@@ -36,7 +38,14 @@
       %p.help-block
         = t('.verify_password_help')
 
+    - firebase_attribute = 'firebase_verification.unique_id'
+    - if @account.errors.none? || @account.errors[firebase_attribute]
+      .control-group
+        #firebaseui-auth-container
+        - error_tag(@account, firebase_attribute)
+
     %p.help-block
-      = t('.mobile_verification_hint')
+      = t('.phone_disclaimer')
+
     .actions
       %input.btn.btn-primary{ type: :submit, value: t('.sign_up') }

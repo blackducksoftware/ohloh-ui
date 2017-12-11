@@ -48,25 +48,93 @@ describe 'AuthenticationsController' do
   end
 
   describe 'github_callback' do
+    let(:expected_attributes) { { unique_id: 'notalex', token: 'e068fc1968fakef5c7e7fake6369336fake4bab9' } }
+
     it 'must set auth_params for existing accounts' do
-      account.verifications.destroy_all
-      login_as account
-      code = Faker::Lorem.word
+      VCR.use_cassette('GithubVerification') do
+        account.verifications.destroy_all
+        login_as account
 
-      get :github_callback, code: code
+        get :github_callback, code: Faker::Lorem.word
 
-      must_redirect_to generate_account_verifications_path(account)
-      session[:auth_params].must_equal(github_verification_attributes: { code: code })
+        must_redirect_to generate_account_verifications_path(account)
+        session[:auth_params].must_equal(github_verification_attributes: expected_attributes)
+      end
     end
 
     it 'must set auth params for new accounts' do
-      session[:account_params] = account_params
-      code = Faker::Lorem.word
+      VCR.use_cassette('GithubVerification') do
+        session[:account_params] = account_params
+        get :github_callback, code: Faker::Lorem.word
 
-      get :github_callback, code: code
+        must_redirect_to generate_registrations_path
+        session[:auth_params].must_equal(github_verification_attributes: expected_attributes)
+      end
+    end
 
-      must_redirect_to generate_registrations_path
-      session[:auth_params].must_equal(github_verification_attributes: { code: code })
+    it 'must sign in an existing user through github' do
+      github_stub = stub(email: account.email, access_token: Faker::Lorem.word)
+      @controller.stubs(:github_api).returns(github_stub)
+
+      get :github_callback, code: Faker::Lorem.word
+
+      must_redirect_to account
+      request.env[:clearance].current_user.id.must_equal account.id
+    end
+
+    it 'must create a github verification record for a matching unverified account' do
+      account.github_verification.destroy
+      github_stub = stub(email: account.email, login: account.login, access_token: Faker::Lorem.word)
+      @controller.stubs(:github_api).returns(github_stub)
+
+      get :github_callback, code: Faker::Lorem.word
+
+      account.reload
+      account.github_verification.token.must_equal github_stub.access_token
+      account.github_verification.unique_id.must_equal github_stub.login
+    end
+
+    it 'must activate email for a matching github email' do
+      account.update! activated_at: nil, activation_code: Faker::Lorem.word
+      github_stub = stub(email: account.email, login: account.login, access_token: Faker::Lorem.word)
+      @controller.stubs(:github_api).returns(github_stub)
+
+      get :github_callback, code: Faker::Lorem.word
+
+      account.reload
+      account.access.activated_at.must_be :present?
+      account.access.activation_code.must_be_nil
+    end
+
+    it 'must assign a random password and set activated_at for new github user' do
+      github_stub = stub(email: Faker::Internet.email, login: Faker::Lorem.word, access_token: Faker::Lorem.word)
+      @controller.stubs(:github_api).returns(github_stub)
+
+      get :github_callback, code: Faker::Lorem.word
+
+      session[:account_params][:password].must_be :present?
+      session[:account_params][:activated_at].must_be :present?
+    end
+
+    it 'must assign a random login when github login already exists' do
+      github_stub = stub(email: Faker::Internet.email, login: account.login, access_token: Faker::Lorem.word)
+      @controller.stubs(:github_api).returns(github_stub)
+
+      get :github_callback, code: Faker::Lorem.word
+
+      session[:account_params][:login].must_match account.login
+      session[:account_params][:login].wont_equal account.login
+    end
+
+    it 'must refresh github verification token on every login' do
+      new_access_token = Faker::Internet.password
+      github_stub = stub(email: account.email, login: account.login, access_token: new_access_token)
+      @controller.stubs(:github_api).returns(github_stub)
+
+      get :github_callback, code: Faker::Lorem.word
+
+      account.reload
+      account.github_verification.token.must_equal new_access_token
     end
   end
 

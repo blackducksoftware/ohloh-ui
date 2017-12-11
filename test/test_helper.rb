@@ -38,10 +38,6 @@ class ActiveSupport::TestCase
   create_hamster_account
   create_forges
 
-  before do
-    GithubVerification.any_instance.stubs(:generate_access_token)
-  end
-
   def login_as(account)
     request && request.env[:clearance] ? controller_login_as(account) : integration_login_as(account)
   end

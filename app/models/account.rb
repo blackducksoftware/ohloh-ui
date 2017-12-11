@@ -94,7 +94,7 @@ class Account < ActiveRecord::Base
   end
 
   def create_manual_verification
-    ManualVerification.create(account_id: id, auth_id: id)
+    ManualVerification.create(account_id: id, unique_id: id)
   end
 
   class << self

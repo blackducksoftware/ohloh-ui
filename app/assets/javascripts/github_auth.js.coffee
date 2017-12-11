@@ -7,9 +7,10 @@ class App.GithubAuth
         AUTH_URL
         '?client_id=', $(this).data('clientId')
         '&redirect_uri=', $(this).data('redirectUri')
+        '&scope=', $(this).data('scope')
       ]
       window.location.href = github_url_params.join('')
 
 $(document).on 'page:change', ->
   githubAuth = new App.GithubAuth()
-  githubAuth.authenticate($('#github-verification'))
+  githubAuth.authenticate($('.github-oauth'))

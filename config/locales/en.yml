@@ -74,6 +74,7 @@ en:
   closed: Closed
   invalid_github_username: Please enter a valid Github username
   no_data: No Data
+  sign_in_github: Sign in with Github
 
   layouts:
     application:
@@ -405,6 +406,7 @@ en:
     fields:
       verify_using_phone_number: Verify Phone Number
       verify_using_github: 'Verify using Github'
+      mobile_verification_hint: Please verify your account using either your mobile number or Github account. OpenHub will not store your mobile number. Only your Github email and login will be kept by OpenHub.
     create:
       error: There seems to be an issue with the mobile verification. Please try again later.
   copyright:

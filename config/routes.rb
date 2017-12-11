@@ -55,7 +55,7 @@ Rails.application.routes.draw do
     resource :password, controller: 'password_resets', only: %w(edit update)
   end
 
-  resources :accounts, except: [:new, :create] do
+  resources :accounts do
     resources :autocompletes, only: [] do
       get :projects_for_stack, on: :member, defaults: { format: 'json' }
     end

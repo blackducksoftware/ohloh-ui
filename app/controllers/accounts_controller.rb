@@ -10,7 +10,23 @@ class AccountsController < ApplicationController
   before_action :account_context, only: [:edit, :update, :confirm_delete]
   before_action :must_own_account, only: [:edit, :update, :confirm_delete]
   before_action :find_claimed_people, only: :index
-  after_action :create_action_record, only: :create, if: -> { @account.persisted? && params[:_action].present? }
+  before_action :redirect_if_logged_in, only: :new
+
+  def new
+    @account = Account.new
+    @account.build_firebase_verification
+  end
+
+  def create
+    @account = Account.new(account_params)
+
+    if @account.save
+      clearance_session.sign_in @account
+      redirect_to @account
+    else
+      render :new
+    end
+  end
 
   def index
     @cbp_map = PeopleDecorator.new(@people).commits_by_project_map
@@ -85,7 +101,11 @@ class AccountsController < ApplicationController
     params.require(:account).permit(
       :login, :email, :email_confirmation, :name, :country_code, :location, :latitude, :longitude,
       :twitter_account, :organization_id, :organization_name, :affiliation_type, :invite_code,
-      :password, :password_confirmation, :about_raw, :url
+      :password, :password_confirmation, :about_raw, :url, firebase_verification_attributes: [:credentials]
     )
+  end
+
+  def redirect_if_logged_in
+    redirect_to account_path(current_user), notice: t('password_resets.already_logged_in') if logged_in?
   end
 end

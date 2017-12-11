@@ -1,0 +1,12 @@
+en:
+  activerecord:
+    errors:
+      models:
+        firebase_verification:
+          attributes:
+            unique_id:
+              taken: This phone number is already in use
+        github_verification:
+          attributes:
+            unique_id:
+              taken: This Github account is already in use

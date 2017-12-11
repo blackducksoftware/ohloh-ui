@@ -3,7 +3,10 @@ require 'test_helper'
 class Account::EncrypterTest < ActiveSupport::TestCase
   describe 'before_create' do
     it 'must set activation code to random hash' do
-      account = create(:account)
+      email = Faker::Internet.email
+      password = Faker::Internet.password
+      account = Account.create!(login: Faker::Name.first_name, email: email, email_confirmation: email,
+                                password: password, password_confirmation: password)
       account.activation_code.wont_be_empty
       account.activation_code.length.must_equal 40
       account.activation_code.wont_match(/[^a-z0-9]/)

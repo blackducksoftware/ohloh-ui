@@ -3,9 +3,8 @@ uiConfig = ->
   'callbacks':
     'signInSuccess': (user) ->
       user.getIdToken().then (idToken) ->
-        $form = $('.digits-verification')
-        $form.find('#credentials').val idToken
-        $form.submit()
+        $('#credentials').val idToken
+        $('.phone-verification-form').submit()
       false
   'signInFlow': 'popup'
   'signInOptions': [ {
@@ -25,7 +24,15 @@ displayUI = ->
   ui = new firebaseui.auth.AuthUI(firebase.auth())
   ui.start '#firebaseui-auth-container', uiConfig()
 
+startFirebase = ->
+  initializeFirebase()
+  displayUI()
+
 $(document).on 'page:change', ->
-  $('#digits-sign-up').click ->
-    initializeFirebase()
-    displayUI()
+  if $('#digits-sign-up').length
+    $('#digits-sign-up').click ->
+      $('#sign-up-options').remove()
+      $('#sign-up-fields').show()
+      startFirebase()
+  else if $('#firebaseui-auth-container').length
+    setTimeout(startFirebase, 1000)

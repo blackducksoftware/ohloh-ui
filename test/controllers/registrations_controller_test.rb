@@ -9,66 +9,12 @@ describe 'RegistrationsController' do
 
   let(:account_params) { { account: account_attributes } }
 
-  describe 'new' do
-    it 'must build a new account' do
-      get :new
-
-      must_respond_with :success
-      assigns(:account).must_be_instance_of Account
-    end
-
-    it 'must redirect to accounts show page if logged in' do
-      account = create(:account)
-
-      login_as account
-      get :new
-
-      must_respond_with :redirect
-      must_redirect_to account_path(account)
-    end
-  end
-
-  describe 'validate' do
-    it 'must return errors for invalid email' do
-      post :validate, account_params.merge(account: { email: '' })
-      assigns(:account).wont_be :valid?
-      must_render_template :new
-    end
-
-    it 'must render the new template when validations fail' do
-      post :validate, account_params.merge(account: { email: '' })
-      assigns(:account).wont_be :valid?
-      must_render_template :new
-    end
-
-    it 'must require login' do
-      post :validate, account_params.merge(account: { login: '' })
-      assigns(:account).errors.messages[:login].must_be :present?
-    end
-
-    it 'must require password' do
-      post :validate, account_params.merge(account: { password: '' })
-      assigns(:account).errors.messages[:password].must_be :present?
-    end
-
-    it 'must require email and email_confirmation' do
-      post :validate, account_params.merge(account: { email_confirmation: '', email: '' })
-      assigns(:account).errors.messages[:email_confirmation].must_be :present?
-    end
-
-    it 'must redirect to verification step when account is valid' do
-      post :validate, account_params
-      session[:account_params].must_equal account_params[:account].stringify_keys
-      must_redirect_to new_authentication_path
-    end
-  end
-
   describe 'generate' do
     it 'must save a valid record' do
-      decoded_val = stub_firebase_verification
-      FirebaseService.any_instance.stubs(:decode).returns(decoded_val)
+      github_login = Faker::Name.first_name
+      access_token = Faker::Lorem.word
       session[:auth_params] = {
-        firebase_verification_attributes: { credentials: Faker::Lorem.word }
+        github_verification_attributes: { token: access_token, unique_id: github_login }
       }
       session[:account_params] = account_params[:account]
 
@@ -76,20 +22,21 @@ describe 'RegistrationsController' do
 
       account = assigns(:account)
       account.login.must_equal account_params[:account][:login]
-      account.firebase_verification.auth_id.must_equal decoded_val[0]['user_id']
+      account.github_verification.unique_id.must_equal github_login
+      account.github_verification.token.must_equal access_token
       session[:auth_params].must_be_nil
       session[:account_params].must_be_nil
       must_redirect_to account
     end
 
-    it 'must render new authentication action when firebase credentials are invalid' do
-      session[:auth_params] = { firebase_verification_attributes: { credentials: nil } }
+    it 'must render to new account page when invalid github credentials' do
+      session[:auth_params] = { github_verification_attributes: { token: nil } }
       session[:account_params] = account_params[:account]
 
       get :generate
 
-      must_redirect_to new_authentication_path
-      flash[:notice].must_equal "can't be blank"
+      must_redirect_to new_account_path
+      flash[:notice].must_match(/can't be blank/)
     end
 
     it 'must respond with not found when account or auth params session is missing' do

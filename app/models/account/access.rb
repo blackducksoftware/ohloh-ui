@@ -64,4 +64,19 @@ class Account::Access < OhDelegator::Base
   def verified?
     mobile_or_oauth_verified? && email_verified?
   end
+
+  def verify_existing_github_user(github_api)
+    update_github_verification(github_api)
+    account.update_attributes!(activated_at: Time.current, activation_code: nil) unless activated?
+  end
+
+  private
+
+  def update_github_verification(github_api)
+    if account.github_verification
+      account.github_verification.update!(token: github_api.access_token)
+    else
+      account.create_github_verification!(token: github_api.access_token, unique_id: github_api.login)
+    end
+  end
 end
