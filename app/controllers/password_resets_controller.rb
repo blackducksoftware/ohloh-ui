@@ -11,4 +11,8 @@ class PasswordResetsController < Clearance::PasswordsController
     Clearance.configuration.user_model
              .find_by_login_and_confirmation_token params[:user_id], token.to_s
   end
+
+  def flash_failure_when_forbidden
+    flash.now[:error] = t('passwords.token_expired_error')
+  end
 end
