@@ -4890,7 +4890,7 @@ CREATE VIEW recommendations_id_seq_view AS
 --
 
 CREATE FOREIGN TABLE registration_keys (
-    id uuid NOT NULL,
+    id uuid DEFAULT uuid_generate_v4() NOT NULL,
     client_name text NOT NULL,
     description text
 )
