@@ -420,6 +420,7 @@ Rails.application.routes.draw do
 
   ActiveAdmin.routes(self)
   namespace :admin do
+    resources :registration_keys
     resources :jobs do
       resources :slave_logs
       member do

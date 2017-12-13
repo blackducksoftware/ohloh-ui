@@ -3,7 +3,7 @@ class ImportForeignTableRegistrationKeys < ActiveRecord::Migration
     reversible do |dir|
       dir.up do
         execute <<-SQL
-          IMPORT FOREIGN SCHEMA public LIMIT TO (registration_keys) FROM SERVER fis INTO PUBLIC
+          IMPORT FOREIGN SCHEMA public LIMIT TO (registration_keys) FROM SERVER fis INTO PUBLIC options(import_default 'true')
         SQL
       end
 
