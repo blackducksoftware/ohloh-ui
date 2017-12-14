@@ -65,7 +65,7 @@ class PostsController < ApplicationController
   end
 
   def find_posts_belonging_to_account
-    @account = Account::Find.by_id_or_login(params[:account_id])
+    @account = AccountFind.by_id_or_login(params[:account_id])
     raise ParamRecordNotFound unless @account
     redirect_if_disabled
     @account.posts.includes(:topic).tsearch(params[:query], parse_sort_term)

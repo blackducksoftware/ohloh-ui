@@ -11,7 +11,7 @@ module SetAccountByAccountId
   private
 
   def set_account_by_account_id
-    @account = Account::Find.by_id_or_login(params[:account_id])
+    @account = AccountFind.by_id_or_login(params[:account_id])
     raise ParamRecordNotFound unless @account
   end
 end

@@ -20,7 +20,7 @@ class AlterPasswordsController < ApplicationController
                  return redirect_to new_session_path if current_user.nil?
                  current_user
                else
-                 Account::Find.by_id_or_login(params[:id])
+                 AccountFind.by_id_or_login(params[:id])
                end
     raise ParamRecordNotFound unless @account
   end
