@@ -3,7 +3,7 @@ require 'test_helper'
 describe 'RegistrationsController' do
   let(:account_attributes) do
     FactoryBot.attributes_for(:account).select do |k, _v|
-      %w(login email email_confirmation password password_confirmation).include?(k.to_s)
+      %w(login email password).include?(k.to_s)
     end
   end
 

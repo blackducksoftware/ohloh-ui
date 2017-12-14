@@ -99,9 +99,9 @@ class AccountsController < ApplicationController
 
   def account_params
     params.require(:account).permit(
-      :login, :email, :email_confirmation, :name, :country_code, :location, :latitude, :longitude,
+      :login, :email, :password, :name, :country_code, :location, :latitude, :longitude,
       :twitter_account, :organization_id, :organization_name, :affiliation_type, :invite_code,
-      :password, :password_confirmation, :about_raw, :url, firebase_verification_attributes: [:credentials]
+      :about_raw, :url, firebase_verification_attributes: [:credentials]
     )
   end
 

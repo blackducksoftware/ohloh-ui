@@ -5,8 +5,7 @@ class Account::EncrypterTest < ActiveSupport::TestCase
     it 'must set activation code to random hash' do
       email = Faker::Internet.email
       password = Faker::Internet.password
-      account = Account.create!(login: Faker::Name.first_name, email: email, email_confirmation: email,
-                                password: password, password_confirmation: password)
+      account = Account.create!(login: Faker::Name.first_name, email: email, password: password)
       account.activation_code.wont_be_empty
       account.activation_code.length.must_equal 40
       account.activation_code.wont_match(/[^a-z0-9]/)
@@ -26,7 +25,6 @@ class Account::EncrypterTest < ActiveSupport::TestCase
       original_email_md5 = account.email_md5
       email = Faker::Internet.email
       account.email = email
-      account.email_confirmation = email
       account.save!
 
       original_email_md5.wont_equal account.email_md5

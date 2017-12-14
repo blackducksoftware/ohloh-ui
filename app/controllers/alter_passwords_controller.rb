@@ -26,6 +26,6 @@ class AlterPasswordsController < ApplicationController
   end
 
   def account_params
-    params.require(:account).permit(:current_password, :password, :password_confirmation)
+    params.require(:account).permit(:current_password, :password)
   end
 end

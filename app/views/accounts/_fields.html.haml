@@ -21,22 +21,12 @@
         = t('.email_help_3')
         = link_to t('gravatar'), 'http://gravatar.com', target: '_blank'
         = t('.email_help_4')
-    .control-group
-      %label.control-label.required= t('.verify_email_address')
-      = f.text_field(:email_confirmation, id: :email_confirmation)
-      - error_tag(@account, :email_confirmation)
 
     .control-group
       %label.control-label.required= t('password')
       = f.password_field(:password, id: :password)
       - error_tag(@account, :password)
       %p.help-block= t('.password_help')
-    .control-group
-      %label.control-label.required= t('.verify_password')
-      = f.password_field(:password_confirmation, id: :password_confirmation)
-      - error_tag(@account, :password_confirmation)
-      %p.help-block
-        = t('.verify_password_help')
 
     - firebase_attribute = 'firebase_verification.unique_id'
     - if @account.errors.none? || @account.errors[firebase_attribute]

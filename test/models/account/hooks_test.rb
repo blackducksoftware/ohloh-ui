@@ -3,8 +3,7 @@ require 'test_helper'
 class Account::HooksTest < ActiveSupport::TestCase
   describe 'before_validation' do
     it 'must strip login email and name' do
-      account = create(:account, login: 'login   ', email: '   email@test.com', name: '  name  ',
-                                 email_confirmation: 'email@test.com')
+      account = create(:account, login: 'login   ', email: '   email@test.com', name: '  name  ')
       account.login.must_equal 'login'
       account.email.must_equal 'email@test.com'
       account.name.must_equal 'name'

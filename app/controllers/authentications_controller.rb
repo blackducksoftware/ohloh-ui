@@ -48,8 +48,7 @@ class AuthenticationsController < ApplicationController
   def set_session_account_params
     login = get_unique_login(github_api.login)
     password = SecureRandom.uuid
-    session[:account_params] = { login: login, email: github_api.email, email_confirmation: github_api.email,
-                                 password: password, password_confirmation: password, activated_at: Time.current }
+    session[:account_params] = { login: login, email: github_api.email, password: password, activated_at: Time.current }
   end
 
   def get_unique_login(account_login)

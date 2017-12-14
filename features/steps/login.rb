@@ -2,7 +2,7 @@ class Spinach::Features::Login < Spinach::FeatureSteps
   step 'I am an OpenHub User' do
     @password = 'test_password'
     GithubVerification.any_instance.stubs(:generate_access_token)
-    @account = FactoryBot.create(:account, password: @password, password_confirmation: @password)
+    @account = FactoryBot.create(:account, password: @password)
   end
 
   step 'I visit the sign in page' do
@@ -22,7 +22,7 @@ class Spinach::Features::Login < Spinach::FeatureSteps
   step 'I have a spam OpenHub account' do
     @password = 'test_password'
     GithubVerification.any_instance.stubs(:generate_access_token)
-    @account = FactoryBot.create(:account, password: @password, password_confirmation: @password)
+    @account = FactoryBot.create(:account, password: @password)
     @account.access.spam!
   end
 

@@ -3,8 +3,7 @@ require 'test_helper'
 describe 'Accounts::AccessesController' do
   describe 'activate' do
     it 'should successfully activate account' do
-      account = Account.create(login: 'ralph', password: 'abcdef', password_confirmation: 'abcdef',
-                               email: 'ralph@mailinator.com', email_confirmation: 'ralph@mailinator.com')
+      account = Account.create(login: 'ralph', password: 'abcdef', email: 'ralph@mailinator.com')
 
       get :activate, account_id: account.to_param, code: account.activation_code
 
@@ -15,16 +14,14 @@ describe 'Accounts::AccessesController' do
 
     it 'should redirect to maintainance page in diabled mode' do
       ApplicationController.any_instance.stubs(:read_only_mode?).returns(true)
-      account = Account.create(login: 'ralph', password: 'abcdef', password_confirmation: 'abcdef',
-                               email: 'ralph@mailinator.com', email_confirmation: 'ralph@mailinator.com')
+      account = Account.create(login: 'ralph', password: 'abcdef', email: 'ralph@mailinator.com')
       get :activate, account_id: account.to_param, code: account.activation_code
 
       must_redirect_to maintenance_path
     end
 
     it 'should redirect already activated message' do
-      account = Account.create(login: 'ralph', password: 'abcdef', password_confirmation: 'abcdef',
-                               email: 'ralph@mailinator.com', email_confirmation: 'ralph@mailinator.com')
+      account = Account.create(login: 'ralph', password: 'abcdef', email: 'ralph@mailinator.com')
       account.access.activate!(account.activation_code)
 
       get :activate, account_id: account.to_param, code: account.activation_code

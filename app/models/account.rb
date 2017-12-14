@@ -7,7 +7,7 @@ class Account < ActiveRecord::Base
   include Account::VirtualAttributes
   include Account::ClearanceUser
 
-  attr_accessor :current_password, :validate_current_password, :invite_code, :email_confirmation
+  attr_accessor :current_password, :validate_current_password, :invite_code
   attr_reader :password
   attr_writer :ip
 

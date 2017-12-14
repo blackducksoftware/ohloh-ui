@@ -7,7 +7,7 @@ describe 'AccountsController' do
   let(:admin) { create(:admin) }
   let(:account_attributes) do
     FactoryBot.attributes_for(:account).select do |k, _v|
-      %w(login email email_confirmation password password_confirmation).include?(k.to_s)
+      %w(login email password).include?(k.to_s)
     end
   end
 
@@ -56,9 +56,9 @@ describe 'AccountsController' do
       assigns(:account).errors.messages[:password].must_be :present?
     end
 
-    it 'must require email and email_confirmation' do
-      post :create, account_params.merge(account: { email_confirmation: '', email: '' })
-      assigns(:account).errors.messages[:email_confirmation].must_be :present?
+    it 'must require email' do
+      post :create, account_params.merge(account: { email: '' })
+      assigns(:account).errors.messages[:email].must_be :present?
     end
 
     it 'must redirect to accounts page after create' do
