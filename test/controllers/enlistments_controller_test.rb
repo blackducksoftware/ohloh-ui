@@ -216,6 +216,19 @@ describe 'EnlistmentsControllerTest' do
       Enlistment.count.must_equal 3
     end
 
+    it 'wont create duplicate repositories within the same project' do
+      repository = create(:git_repository)
+      @enlistment.code_location.update!(repository_id: repository.id)
+
+      new_repository = build(:git_repository, url: repository.url)
+      code_location = build(:code_location, repository: repository)
+      params = { project_id: @project_id, repository: repository.attributes, code_location: code_location.attributes }
+
+      assert_no_difference('Repository.count') do
+        post :create, params
+      end
+    end
+
     it 'must update code_location.repository if code_location already exists' do
       code_location = @enlistment.code_location
       repository = code_location.repository
