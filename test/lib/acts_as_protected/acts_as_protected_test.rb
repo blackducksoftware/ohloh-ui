@@ -22,6 +22,16 @@ class ActsAsProtected::ActsAsProtectedTest < ActiveSupport::TestCase
       project.wont_be :edit_authorized?
     end
 
+    it 'returns false if editor is disabled' do
+      project = create(:project)
+      account = create(:account)
+
+      account.access.spam!
+      project.editor_account = account
+
+      project.wont_be :edit_authorized?
+    end
+
     it 'returns true if the project is new' do
       p = Project.new
       p.editor_account = create(:account)
