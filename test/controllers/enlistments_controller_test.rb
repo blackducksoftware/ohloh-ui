@@ -222,7 +222,8 @@ describe 'EnlistmentsControllerTest' do
 
       new_repository = build(:git_repository, url: repository.url)
       code_location = build(:code_location, repository: repository)
-      params = { project_id: @project_id, repository: repository.attributes, code_location: code_location.attributes }
+      params = { project_id: @project_id, repository: new_repository.attributes,
+                 code_location: code_location.attributes }
 
       assert_no_difference('Repository.count') do
         post :create, params

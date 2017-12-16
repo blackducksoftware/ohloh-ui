@@ -19,7 +19,7 @@ class CodeLocationBuilder
   def repository
     repo_type = @type.constantize
     repo_class = repo_type.get_compatible_class(@url)
-    @repository ||= repo_class.new(@repo_params)
+    @repository ||= repo_class.create_with(@repo_params).find_or_initialize_by(@repo_params)
   end
 
   def code_location_parameters
