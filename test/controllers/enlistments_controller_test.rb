@@ -269,6 +269,20 @@ describe 'EnlistmentsControllerTest' do
                                        module_branch_name: code_location.module_branch_name)
     end
 
+    it 'must handle duplicate urls with trailing backslash' do
+      CodeLocation.any_instance.stubs(:bypass_url_validation)
+      GitRepository.new.source_scm_class.any_instance.stubs(:validate_server_connection)
+
+      assert_no_difference ['Repository.count', 'Enlistment.count'] do
+        post :create, project_id: @project_id, code_location: code_location.attributes,
+                      repository: code_location.repository.attributes.merge(url: "#{code_location.repository.url}/")
+      end
+
+      must_redirect_to action: :index
+      code_location_params = { url: code_location.repository.url, module_branch_name: code_location.module_branch_name }
+      flash[:notice].must_equal I18n.t('enlistments.create.notice', code_location_params)
+    end
+
     it 'must handle duplicate svn urls when passed type is svn_sync' do
       repository = create(:svn_repository)
       code_location = create(:code_location, repository: repository)

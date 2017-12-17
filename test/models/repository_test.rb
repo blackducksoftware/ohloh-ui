@@ -108,4 +108,14 @@ class RepositoryTest < ActiveSupport::TestCase
       end
     end
   end
+
+  describe 'hooks' do
+    describe 'url' do
+      it 'must remove trailing backslash' do
+        repository_attributes = build(:repository, url: 'test.example.com/').attributes
+        repository = Repository.create!(repository_attributes)
+        repository.url.must_equal repository_attributes['url'].chomp('/')
+      end
+    end
+  end
 end
