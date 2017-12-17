@@ -230,6 +230,17 @@ describe 'EnlistmentsControllerTest' do
       end
     end
 
+    it 'wont create new repository when username is changed' do
+      repository = create(:git_repository)
+      params = { project_id: @project_id, repository: repository.attributes.merge(username: Faker::Lorem.word),
+                 code_location: build(:code_location).attributes }
+      assert_no_difference 'Repository.count' do
+        assert_difference ['CodeLocation.count', 'Enlistment.count'], 1 do
+          post :create, params
+        end
+      end
+    end
+
     it 'must update code_location.repository if code_location already exists' do
       code_location = @enlistment.code_location
       repository = code_location.repository
