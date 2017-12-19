@@ -11,6 +11,8 @@ class Repository < ActiveRecord::Base
 
   attr_accessor :forge_match
 
+  before_save :remove_trailing_slash, if: :url_changed?
+
   def name_in_english
     source_scm.english_name
   end
@@ -40,5 +42,11 @@ class Repository < ActiveRecord::Base
         wheres.where(owner_at_forge: nil)
       end
     end
+  end
+
+  private
+
+  def remove_trailing_slash
+    self.url = url.chomp('/')
   end
 end

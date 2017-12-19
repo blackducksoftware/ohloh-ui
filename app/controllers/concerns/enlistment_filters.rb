@@ -12,7 +12,7 @@ module EnlistmentFilters
     before_action :sidekiq_job_exists, only: :create
     before_action :handle_github_user_flow, only: :create
     before_action :valid_code_location?, only: :create
-    before_action :code_location_exist?, only: :create
+    before_action :project_has_code_location?, only: :create
   end
 
   private
@@ -22,7 +22,11 @@ module EnlistmentFilters
   end
 
   def repository_params
-    params.require(:repository).permit(:url, :module_name, :branch_name, :username, :password, :bypass_url_validation)
+    return @repository_params if @repository_params
+    @repository_params = params.require(:repository)
+                               .permit(:url, :module_name, :branch_name, :username, :password, :bypass_url_validation)
+    @repository_params[:url] = params[:repository][:url].chomp('/')
+    @repository_params
   end
 
   def parse_sort_term
@@ -38,7 +42,7 @@ module EnlistmentFilters
   def sidekiq_job_exists
     key = Setting.get_project_enlistment_key(@project.id)
     job = Setting.get_value(key)
-    if job.present? && job.key?(params[:repository][:url])
+    if job.present? && job.key?(repository_params[:url])
       redirect_to project_enlistments_path(@project), flash: { error: t('.job_exists') }
     end
   end
@@ -75,7 +79,7 @@ module EnlistmentFilters
   def build_code_location
     CodeLocationBuilder.build do |builder|
       builder.type = params[:repository][:type]
-      builder.url = params[:repository][:url]
+      builder.url = repository_params[:url]
       builder.repo_params = repository_params
       builder.code_location_params = code_location_params
     end
@@ -87,8 +91,8 @@ module EnlistmentFilters
     return render :new, status: :unprocessable_entity unless @code_location.valid?
   end
 
-  def code_location_exist?
-    code_location = CodeLocation.find_existing(@repository.url, @code_location.module_branch_name)
+  def project_has_code_location?
+    code_location = @project.code_locations.find_existing(@repository.url, @code_location.module_branch_name)
     return unless code_location
     update_repo_username_and_password(code_location)
 
