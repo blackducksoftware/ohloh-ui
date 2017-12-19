@@ -29,7 +29,7 @@ gem 'rack-timeout'
 gem 'rails', '~> 4.2.7.1'
 gem 'rails-html-sanitizer'
 gem 'recaptcha', require: 'recaptcha/rails'
-gem 'redis-rails'
+gem 'redis-rails', '>= 5.0.2'
 gem 'rubocop', '~> 0.40.0', require: false
 gem 'sass-rails'
 gem 'therubyracer'
