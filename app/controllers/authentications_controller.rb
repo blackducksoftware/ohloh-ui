@@ -51,27 +51,39 @@ class AuthenticationsController < ApplicationController
     { github_verification_attributes: { unique_id: github_api.login, token: github_api.access_token } }
   end
 
+  def github_api_account
+    @account ||= Account.find_by(email: github_api.email)
+  end
+
   def redirect_matching_account
-    account = Account.find_by_email(github_api.email)
+    account = github_api_account
     return unless account
-    account.access.verify_existing_github_user(github_api)
+    account.update!(activated_at: Time.current, activation_code: nil) unless account.access.activated?
+    verification = build_github_verification
+    if verification.save
+      sign_in_and_redirect_to(account)
+    else
+      redirect_to new_session_path, notice: t('github_sign_in_failed')
+    end
+  end
+
+  def build_github_verification
+    GithubVerification.find_or_initialize_by(account_id: github_api_account.id).tap do |verification|
+      verification.token = github_api.access_token
+      verification.unique_id = github_api.login
+    end
+  end
+
+  def sign_in_and_redirect_to(account)
     reset_session
     clearance_session.sign_in account
     redirect_to account
   end
 
   def github_account_params
-    login = get_unique_login(github_api.login)
+    login = Account::LoginFormatter.new(github_api.login).sanitized_and_unique
     password = SecureRandom.uuid
     { login: login, email: github_api.email, password: password, activated_at: Time.current }
-  end
-
-  def get_unique_login(account_login)
-    login = account_login
-    while Account.exists?(login: login)
-      login = account_login + Random.rand(999).to_s
-    end
-    login
   end
 
   def github_api

@@ -75,6 +75,7 @@ en:
   invalid_github_username: Please enter a valid Github username
   no_data: No Data
   sign_in_github: Sign in with Github
+  github_sign_in_failed: Github sign in failed
 
   layouts:
     application:

@@ -20,7 +20,7 @@ class GithubApi
 
     response = request.send_request('POST', token_uri.path, config)
     data = CGI.parse(response.body)
-    return if response.code != '200'
+    raise StandardError, data['error_description'] if data['error'].present?
     @access_token = data['access_token'].first
   end
 
