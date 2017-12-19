@@ -28,6 +28,10 @@
               Email & Password
 
     %div{ id: ('sign-in-fields' if request.get?) }
+      = link_to 'javascript:', { class: 'btn btn-primary btn-block github-oauth' }.merge(github_data_attributes) do
+        = t('.sign_in_with')
+        %i.fa.fa-github
+          Github
       = render 'sessions/sign_in'
     .inset
       %p
