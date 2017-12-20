@@ -10,10 +10,29 @@
         %li= t('.account_help3')
         %li= t('.account_help4')
     %p
-      %a.btn.btn-success{ href: new_registration_path(invite: params[:invite]) }= t('.register_today')
+      %a.btn.btn-success{ href: new_account_path(invite: params[:invite]) }= t('.register_today')
       != t('.register_today_cta')
   .col-sm-5
-    = render 'sessions/sign_in'
+    - if request.get?
+      #sign-in-options
+        = link_to 'javascript:', { class: 'btn btn-primary btn-block github-oauth' }.merge(github_data_attributes) do
+          = t('.sign_in_with')
+          %br
+            %i.fa.fa-github
+              Github
+
+        = link_to 'javascript:', id: 'sign-in-email', class: 'btn btn-primary btn-block' do
+          = t('.sign_in_with')
+          %br
+            %i.fa.fa-envelope-o
+              Email & Password
+
+    %div{ id: ('sign-in-fields' if request.get?) }
+      = link_to 'javascript:', { class: 'btn btn-primary btn-block github-oauth' }.merge(github_data_attributes) do
+        = t('.sign_in_with')
+        %i.fa.fa-github
+          Github
+      = render 'sessions/sign_in'
     .inset
       %p
         %a.command{ href: new_password_path }= t('.forgot_password')

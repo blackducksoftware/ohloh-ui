@@ -3,17 +3,18 @@ class FirebaseVerification < Verification
 
   validates :credentials, presence: true
 
-  before_validation :generate_auth_id, on: :create
+  before_validation :generate_token, on: :create
 
   private
 
-  def generate_auth_id
+  def generate_token
     firebase = FirebaseService.new(ENV['FIREBASE_PROJECT_ID'])
     decoded_token = firebase.decode(credentials)
     if decoded_token
-      self.auth_id = decoded_token[0]['user_id']
+      self.token = decoded_token[0]['user_id']
+      self.unique_id = token
     else
-      errors.add(:auth_id, 'Phone Verification failed please try again')
+      errors.add(:unique_id, 'Phone Verification failed please try again')
     end
   end
 end

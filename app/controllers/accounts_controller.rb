@@ -3,6 +3,7 @@ class AccountsController < ApplicationController
 
   helper MapHelper
 
+  skip_before_action :store_location, only: [:new, :create]
   before_action :session_required, only: [:edit, :destroy, :confirm_delete, :me]
   before_action :set_account, only: [:destroy, :show, :update, :edit, :confirm_delete, :disabled, :settings]
   before_action :redirect_if_disabled, only: [:show, :update, :edit]
@@ -11,7 +12,23 @@ class AccountsController < ApplicationController
   before_action :account_context, only: [:edit, :update, :confirm_delete]
   before_action :must_own_account, only: [:edit, :update, :confirm_delete]
   before_action :find_claimed_people, only: :index
-  after_action :create_action_record, only: :create, if: -> { @account.persisted? && params[:_action].present? }
+  before_action :redirect_if_logged_in, only: :new
+
+  def new
+    @account = Account.new
+    @account.build_firebase_verification
+  end
+
+  def create
+    @account = Account.new(account_params)
+
+    if @account.save
+      clearance_session.sign_in @account
+      redirect_to @account
+    else
+      render :new
+    end
+  end
 
   def index
     @cbp_map = PeopleDecorator.new(@people).commits_by_project_map
@@ -69,7 +86,7 @@ class AccountsController < ApplicationController
                    return redirect_to new_session_path if current_user.nil?
                    current_user
                  else
-                   Account::Find.by_id_or_login(params[:id])
+                   AccountFind.by_id_or_login(params[:id])
                  end
     raise ParamRecordNotFound unless @account
   end
@@ -84,9 +101,13 @@ class AccountsController < ApplicationController
 
   def account_params
     params.require(:account).permit(
-      :login, :email, :email_confirmation, :name, :country_code, :location, :latitude, :longitude,
+      :login, :email, :password, :name, :country_code, :location, :latitude, :longitude,
       :twitter_account, :organization_id, :organization_name, :affiliation_type, :invite_code,
-      :password, :password_confirmation, :about_raw, :url
+      :about_raw, :url, firebase_verification_attributes: [:credentials]
     )
+  end
+
+  def redirect_if_logged_in
+    redirect_to account_path(current_user), notice: t('password_resets.already_logged_in') if logged_in?
   end
 end

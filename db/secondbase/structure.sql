@@ -9514,9 +9514,10 @@ CREATE FOREIGN TABLE verifications (
     id integer DEFAULT verifications_id_seq_view() NOT NULL,
     account_id integer,
     type character varying,
-    auth_id character varying,
+    token character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    unique_id character varying
 )
 SERVER ohloh
 OPTIONS (
@@ -9532,14 +9533,17 @@ ALTER FOREIGN TABLE verifications ALTER COLUMN account_id OPTIONS (
 ALTER FOREIGN TABLE verifications ALTER COLUMN type OPTIONS (
     column_name 'type'
 );
-ALTER FOREIGN TABLE verifications ALTER COLUMN auth_id OPTIONS (
-    column_name 'auth_id'
+ALTER FOREIGN TABLE verifications ALTER COLUMN token OPTIONS (
+    column_name 'token'
 );
 ALTER FOREIGN TABLE verifications ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
 ALTER FOREIGN TABLE verifications ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
+);
+ALTER FOREIGN TABLE verifications ALTER COLUMN unique_id OPTIONS (
+    column_name 'unique_id'
 );
 
 

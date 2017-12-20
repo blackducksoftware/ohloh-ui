@@ -3,8 +3,7 @@ require 'test_helper'
 class Account::HooksTest < ActiveSupport::TestCase
   describe 'before_validation' do
     it 'must strip login email and name' do
-      account = create(:account, login: 'login   ', email: '   email@test.com', name: '  name  ',
-                                 email_confirmation: 'email@test.com')
+      account = create(:account, login: 'login   ', email: '   email@test.com', name: '  name  ')
       account.login.must_equal 'login'
       account.email.must_equal 'email@test.com'
       account.name.must_equal 'name'
@@ -109,6 +108,7 @@ class Account::HooksTest < ActiveSupport::TestCase
       assert_difference('DeletedAccount.count', 1) do
         account.destroy
       end
+      account.verifications.must_be :empty?
       account.positions.count.must_equal 0
       account.posts.count.must_equal 0
       Account.find_or_create_anonymous_account.posts.count.must_equal 2
@@ -136,6 +136,24 @@ class Account::HooksTest < ActiveSupport::TestCase
 
       assert_no_difference('Person.count') do
         account.save
+      end
+    end
+
+    it 'must request for email address verification' do
+      account = build(:account, activated_at: nil)
+
+      assert_difference('ActionMailer::Base.deliveries.size', 1) do
+        account.save!
+      end
+
+      email = ActionMailer::Base.deliveries.last
+      email.to.must_equal [account.email]
+      email.body.raw_source.must_match I18n.t('account_mailer.signup_notification.body', login: account.login)
+    end
+
+    it 'wont request email address verification when activation_at is already set' do
+      assert_no_difference('ActionMailer::Base.deliveries.size') do
+        create(:account, activated_at: Time.current)
       end
     end
   end

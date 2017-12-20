@@ -9,6 +9,7 @@ class Account::Hooks
 
   def before_destroy(account)
     dependent_destroy(account)
+    account.verifications.destroy_all
     create_deleted_account(account)
     transfer_topics_replied_by_to_anonymous_account(account)
     transfer_associations_to_anonymous_account(account)
@@ -19,7 +20,7 @@ class Account::Hooks
     account.current_password = nil
     activate_using_invite!(account) if account.invite_code.present?
     create_person!(account) unless account.access.spam?
-    deliver_signup_notification(account) unless account.anonymous?
+    deliver_signup_notification(account) unless account.anonymous? || account.access.activated?
   end
 
   def after_update(account)

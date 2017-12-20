@@ -3,10 +3,9 @@ module AccountValidations
 
   included do
     validates :email, presence: :true, length: { in: 3..100 }, uniqueness: { case_sensitive: false },
-                      confirmation: true, email_format: true, allow_blank: false
-    validates :email_confirmation, email_format: true, presence: true, allow_blank: false, on: :create
+                      email_format: true, allow_blank: false
 
-    validates :password, length: { in: 5..40 }, confirmation: true, unless: :skip_password_validation?
+    validates :password, length: { in: 5..40 }, unless: :skip_password_validation?
 
     validate :valid_current_password?, on: :update, if: :validate_current_password
 

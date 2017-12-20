@@ -7,7 +7,7 @@ class Account < ActiveRecord::Base
   include Account::VirtualAttributes
   include Account::ClearanceUser
 
-  attr_accessor :current_password, :validate_current_password, :invite_code, :email_confirmation
+  attr_accessor :current_password, :validate_current_password, :invite_code
   attr_reader :password
   attr_writer :ip
 
@@ -94,7 +94,7 @@ class Account < ActiveRecord::Base
   end
 
   def create_manual_verification
-    ManualVerification.create(account_id: id, auth_id: id)
+    ManualVerification.create(account_id: id, unique_id: id)
   end
 
   class << self

@@ -6168,9 +6168,10 @@ CREATE TABLE verifications (
     id integer NOT NULL,
     account_id integer,
     type character varying,
-    auth_id character varying,
+    token character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    unique_id character varying
 );
 
 
@@ -10350,6 +10351,10 @@ INSERT INTO schema_migrations (version) VALUES ('20171017162841');
 INSERT INTO schema_migrations (version) VALUES ('20171107131744');
 
 INSERT INTO schema_migrations (version) VALUES ('20171127153012');
+
+INSERT INTO schema_migrations (version) VALUES ('20171204073648');
+
+INSERT INTO schema_migrations (version) VALUES ('20171220032437');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

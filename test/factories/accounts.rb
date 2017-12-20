@@ -7,11 +7,9 @@ FactoryBot.define do
     sequence :email do |n|
       "someone#{n}@gmail.com"
     end
-    email_confirmation { |account| account.send :email }
     url { Faker::Internet.url }
     login { generate(:account_login) }
     password { Faker::Internet.password }
-    password_confirmation { |account| account.send(:password) }
     current_password { |account| account.send(:password) }
     twitter_account 'openhub'
     name { Faker::Name.name + rand(999_999).to_s }

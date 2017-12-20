@@ -4,6 +4,12 @@ class AccountTest < ActiveSupport::TestCase
   let(:account) { create(:account) }
   let(:admin) { create(:admin) }
 
+  it 'must create account without email and password confirmation' do
+    assert_difference('Account.count', 1) do
+      create(:account)
+    end
+  end
+
   it '#sent_kudos' do
     Kudo.delete_all
     create(:kudo, sender: admin, account: create(:account, name: 'joe'))
@@ -24,15 +30,13 @@ class AccountTest < ActiveSupport::TestCase
     account.must_be :valid?
   end
 
-  it 'should validate email and email_confirmation' do
+  it 'should validate email' do
     account = build(:account)
     account.email = 'ab'
     account.wont_be :valid?
     account.errors.must_include(:email)
-    account.errors.must_include(:email_confirmation)
     expected_error_message = ['is too short (minimum is 3 characters)', I18n.t('accounts.invalid_email_address')]
     account.errors.messages[:email].must_equal expected_error_message
-    account.errors.messages[:email_confirmation].must_equal ['doesn\'t match Email']
   end
 
   it 'should validate that email is unique' do
@@ -110,12 +114,6 @@ class AccountTest < ActiveSupport::TestCase
     account.wont_be :valid?
     account.errors.must_include(:password)
     account.errors.messages[:password].must_include 'Please provide a password.'
-
-    account = build(:account, password: 'abc12345', password_confirmation: 'ABC12345')
-    account.wont_be :valid?
-    account.errors.must_include(:password_confirmation)
-    error_message = account.errors.messages[:password_confirmation]
-    error_message.must_equal ['Please enter the same password in the confirmation field.']
   end
 
   it 'should validate twitter account only if its present' do
@@ -168,10 +166,10 @@ class AccountTest < ActiveSupport::TestCase
 
   it 'should search by login and sort by position and char length' do
     create(:account, login: 'test')
-    create(:account, login: 'account_test', email: 'test2@openhub.net', email_confirmation: 'test2@openhub.net')
-    create(:account, login: 'tester', email: 'test3@openhub.net', email_confirmation: 'test3@openhub.net')
-    create(:account, login: 'unittest', email: 'test4@openhub.net', email_confirmation: 'test4@openhub.net')
-    create(:account, login: 'unittest1', email: 'test5@openhub.net', email_confirmation: 'test5@openhub.net')
+    create(:account, login: 'account_test', email: 'test2@openhub.net')
+    create(:account, login: 'tester', email: 'test3@openhub.net')
+    create(:account, login: 'unittest', email: 'test4@openhub.net')
+    create(:account, login: 'unittest1', email: 'test5@openhub.net')
     account_search = Account.simple_search('test')
     account_search.size.must_equal 5
     account_search.first.login.must_equal 'test'
@@ -228,52 +226,32 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it 'should validate current password error message' do
-    account.update(password: 'newpassword', password_confirmation: 'newpassword',
-                   current_password: 'dummy password', validate_current_password: true)
+    account.update(password: 'newpassword', current_password: 'dummy password', validate_current_password: true)
     account.errors.size.must_equal 1
     error_message = [I18n.t('activerecord.errors.models.account.attributes.current_password.invalid')]
     error_message.must_equal account.errors[:current_password]
   end
 
-  it 'should update password and password_confirmation with valid passwords' do
-    account = create(:account, password: 'testing', password_confirmation: 'testing')
-    account.update(password: 'newpassword', password_confirmation: 'newpassword', current_password: 'testing')
+  it 'should update password with valid passwords' do
+    account = create(:account, password: 'testing')
+    account.update(password: 'newpassword', current_password: 'testing')
     account.reload.encrypted_password.must_equal account.encrypt('newpassword', account.salt)
   end
 
-  it 'should not update password and password_confirmation if current_password is an empty string' do
-    account.update(password: 'newpassword', password_confirmation: 'newpassword',
-                   current_password: '', validate_current_password: true)
+  it 'should not update password if current_password is an empty string' do
+    account.update(password: 'newpassword', current_password: '', validate_current_password: true)
     assert_not_equal account.reload.encrypted_password, account.encrypt('newpassword', account.salt)
   end
 
-  it 'should not update if password and password_confirmation do not match' do
-    account = create(:account, password: 'testing', password_confirmation: 'testing')
-    account.update(password: 'foobar', password_confirmation: 'barfoo', current_password: 'testing')
-    assert account.invalid?
-  end
-
-  it 'should not update if password and password_confirmation are blank' do
-    account = create(:account, password: 'testing', password_confirmation: 'testing')
-    account.update(password: '', password_confirmation: '', current_password: 'testing')
-    assert account.invalid?
-  end
-
   it 'should not update if password is blank' do
-    account = create(:account, password: 'testing', password_confirmation: 'testing')
-    account.update(password: '', password_confirmation: 'foobar', current_password: 'testing')
-    assert account.invalid?
-  end
-
-  it 'should not update if password_confirmation is blank' do
-    account = create(:account, password: 'testing', password_confirmation: 'testing')
-    account.update(password: 'foobar', password_confirmation: '', current_password: 'testing')
+    account = create(:account, password: 'testing')
+    account.update(password: '', current_password: 'testing')
     assert account.invalid?
   end
 
   it 'should not update password if password is less than 5 characters' do
-    account = create(:account, password: 'testing', password_confirmation: 'testing')
-    account.update(password: 'pass', password_confirmation: 'pass', current_password: 'testing')
+    account = create(:account, password: 'testing')
+    account.update(password: 'pass', current_password: 'testing')
     assert account.invalid?
   end
 
@@ -454,39 +432,12 @@ class AccountTest < ActiveSupport::TestCase
       end
     end
 
-    it 'should require password confirmation' do
+    it 'email shouldn\'t be blank' do
       assert_no_difference 'Account.count' do
-        user = build(:account, password: 'one', password_confirmation: 'two')
+        user = build(:account, email: '')
         user.valid?
-        user.errors.messages[:password_confirmation].must_be :present?
-      end
-    end
-
-    it 'it should require email confirmation' do
-      assert_no_difference 'Account.count' do
-        user = build(:account, email_confirmation: '')
-        user.valid?
-        user.errors.messages[:email_confirmation].must_be :present?
-        user.errors.messages[:email_confirmation].first.must_equal %(doesn't match Email)
-      end
-    end
-
-    it 'email & email confirmation shouldn\'t be blank' do
-      assert_no_difference 'Account.count' do
-        user = build(:account, email_confirmation: '', email: '')
-        user.valid?
-        user.errors.messages[:email_confirmation].must_be :present?
-
-        user.errors.messages[:email_confirmation].first.must_equal I18n.t('accounts.invalid_email_address')
-      end
-    end
-
-    it 'email & email confirmation is blank and should raise error' do
-      assert_no_difference 'Account.count' do
-        user = build(:account, email_confirmation: '', email: 'rapbhan@rapbhan.com')
-        user.valid?
-        user.errors.messages[:email_confirmation].must_be :present?
-        user.errors.messages[:email_confirmation].first.must_equal %(doesn't match Email)
+        user.errors.messages[:email].must_be :present?
+        user.errors.messages[:email].last.must_equal I18n.t('accounts.invalid_email_address')
       end
     end
 

@@ -55,7 +55,7 @@ Rails.application.routes.draw do
     resource :password, controller: 'password_resets', only: %w(edit update)
   end
 
-  resources :accounts, except: [:new, :create] do
+  resources :accounts do
     resources :autocompletes, only: [] do
       get :projects_for_stack, on: :member, defaults: { format: 'json' }
     end
@@ -123,18 +123,6 @@ Rails.application.routes.draw do
 
     get 'doorkeeper/oauth_applications/:id/revoke_access' =>
       'doorkeeper/oauth_applications#revoke_access', as: :revoke_oauth_access
-
-    resources :verifications, only: [], module: :accounts do
-      get :generate, on: :collection
-    end
-  end
-
-  resources :registrations, only: [:new] do
-    collection do
-      post :validate
-      get :verification_strategies
-      get :generate
-    end
   end
 
   resources :authentications, only: [:new] do

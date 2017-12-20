@@ -11,6 +11,7 @@ en:
       register_today_cta: "and start building your FOSS profile &mdash; it's free!"
       forgot_password: "Forgot Password"
       resend_activation_email: "Resend Activation Email"
+      sign_in_with: Sign in with
     sign_in:
       log_in_to_open_hub: "Log in to Open Hub"
       login_or_email: "Login or Email"
