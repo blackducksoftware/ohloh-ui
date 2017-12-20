@@ -8,6 +8,7 @@ class Spinach::Features::SignUpAndVerify < Spinach::FeatureSteps
   end
 
   step 'I should see a form to enter my phone number' do
+    sleep 1
     page.must_have_content 'Enter your phone number'
   end
 end
