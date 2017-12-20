@@ -29,13 +29,16 @@
       %p.help-block= t('.password_help')
 
     - firebase_attribute = 'firebase_verification.unique_id'
-    - if @account.errors.none? || @account.errors[firebase_attribute]
+    - verified = @account.firebase_verification.try(:unique_id?) && @account.errors[firebase_attribute].empty?
+    .label.label-info.verified{ id: ('hidden-verified-label' unless verified) }
+      = t('.phone_number_verified')
+    - unless verified
       .control-group
         #firebaseui-auth-container
         - error_tag(@account, firebase_attribute)
 
-    %p.help-block
-      = t('.phone_disclaimer')
+      %p.help-block
+        = t('.phone_disclaimer')
 
     .actions
       %input.btn.btn-primary{ type: :submit, value: t('.sign_up') }

@@ -4,6 +4,7 @@ uiConfig = ->
     'signInSuccess': (user) ->
       user.getIdToken().then (idToken) ->
         $('#credentials').val idToken
+        $('#hidden-verified-label').show()
         $('.phone-verification-form').submit()
       false
   'signInFlow': 'popup'
