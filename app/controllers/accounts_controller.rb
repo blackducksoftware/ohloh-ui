@@ -3,6 +3,7 @@ class AccountsController < ApplicationController
 
   helper MapHelper
 
+  skip_before_action :store_location, only: [:new, :create]
   before_action :session_required, :redirect_unverified_account, only: [:edit, :destroy, :confirm_delete, :me]
   before_action :set_account, only: [:destroy, :show, :update, :edit, :confirm_delete, :disabled, :settings]
   before_action :redirect_if_disabled, only: [:show, :update, :edit]

@@ -10,3 +10,5 @@ en:
           attributes:
             unique_id:
               taken: This Github account is already in use
+
+  verification_completed: 'Your account has been verified'

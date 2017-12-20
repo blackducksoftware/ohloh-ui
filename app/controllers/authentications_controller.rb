@@ -1,4 +1,5 @@
 class AuthenticationsController < ApplicationController
+  skip_before_action :store_location
   before_action :session_required, only: [:new, :firebase_callback]
   before_action :redirect_matching_account, only: :github_callback, unless: -> { current_user.present? }
   before_action :redirect_if_current_user_verified
@@ -26,7 +27,8 @@ class AuthenticationsController < ApplicationController
   def save_account(auth_params)
     account = current_user
     if account.update(auth_params)
-      redirect_to account
+      flash[:notice] = t('verification_completed')
+      redirect_back(account)
     else
       redirect_to new_authentication_path, notice: account.errors.messages.values.last.last
     end
@@ -37,7 +39,7 @@ class AuthenticationsController < ApplicationController
 
     if account.save
       clearance_session.sign_in account
-      redirect_to account
+      redirect_back(account)
     else
       redirect_to new_account_path, notice: account.errors.full_messages.join(', ')
     end

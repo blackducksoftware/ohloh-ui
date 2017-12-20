@@ -11,14 +11,14 @@ class LoginFormatterTest < ActiveSupport::TestCase
     it 'must fix a login that is less than 3 chars long' do
       login = 'ex'
       sanitized_login = Account::LoginFormatter.new(login).sanitized_and_unique
-      sanitized_login.must_match(/#{ login }\d{3}/)
+      sanitized_login.must_match(/#{ login }\d{1,3}/)
     end
 
     it 'must return a value that does not match an existing account.login' do
       account = create(:account)
       login = account.login
       sanitized_login = Account::LoginFormatter.new(login).sanitized_and_unique
-      sanitized_login.must_match(/#{ login }\d{3}/)
+      sanitized_login.must_match(/#{ login }\d{1,3}/)
     end
   end
 end

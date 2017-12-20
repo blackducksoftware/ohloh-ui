@@ -50,7 +50,20 @@ describe 'AuthenticationsController' do
       end
     end
 
+    it 'must redirect back to path stored in session after github signup' do
+      session[:return_to] = projects_path
+      github_stub = stub(email: Faker::Internet.email, login: Faker::Name.first_name, access_token: Faker::Lorem.word)
+      @controller.stubs(:github_api).returns(github_stub)
+
+      assert_difference('Account.count') do
+        get :github_callback, code: Faker::Lorem.word
+      end
+
+      must_redirect_to projects_path
+    end
+
     it 'must create verification for logged in user' do
+      session[:return_to] = projects_path
       login_as account
       account.verifications.delete_all
       github_stub = stub(email: account.email, login: account.login, access_token: Faker::Lorem.word)
@@ -61,7 +74,8 @@ describe 'AuthenticationsController' do
       end
 
       account.reload
-      must_redirect_to account
+      must_redirect_to projects_path
+      flash[:notice].must_equal I18n.t('verification_completed')
       account.github_verification.must_be :present?
     end
 
