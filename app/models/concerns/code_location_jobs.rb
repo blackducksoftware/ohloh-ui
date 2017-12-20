@@ -15,10 +15,7 @@ module CodeLocationJobs
 
     def schedule_fetch
       return ensure_job unless best_code_set
-
-      return if best_code_set.jobs.incomplete_or_since(Time.current - 5.minutes).present?
-
-      create_job(CompleteJob, code_location_id: best_code_set.code_location_id, code_set_id: best_code_set.id)
+      create_complete_job
     end
 
     def refetch
@@ -33,6 +30,18 @@ module CodeLocationJobs
     end
 
     private
+
+    def create_complete_job
+      return if any_incomplete_or_recent?
+      create_job(CompleteJob, code_location_id: best_code_set.code_location_id, code_set_id: best_code_set.id)
+    end
+
+    def any_incomplete_or_recent?
+      jobs = best_code_set.jobs.incomplete_or_since(Time.current - 5.minutes)
+      # Filter out TarballJobs
+      jobs = jobs.to_a.delete_if { |j| j.type == 'TarballJob' }
+      jobs.present?
+    end
 
     def create_repository_directory
       object = parent_repository_directory

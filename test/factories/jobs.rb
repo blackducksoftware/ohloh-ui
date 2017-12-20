@@ -29,4 +29,9 @@ FactoryBot.define do
     type 'CompleteJob'
     status Job::STATUS_FAILED
   end
+
+  factory :failed_tarball_job, parent: :job do
+    type 'TarballJob'
+    status Job::STATUS_FAILED
+  end
 end

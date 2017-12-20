@@ -38,7 +38,7 @@ module ActsAsProtected
     private
 
     def verified_editor_account?
-      editor_account && editor_account.access.verified?
+      editor_account && !editor_account.access.disabled? && editor_account.access.verified?
     end
 
     def aap_authorized_editors

@@ -5,7 +5,7 @@ module ClearanceSetup
     include Clearance::Controller
 
     def authenticate(params)
-      account = Account.find_by_login(params[:login][:login])
+      account = Account.fetch_by_login_or_email(params[:login][:login])
       return unless account
       return account if account.authenticated?(params[:login][:password])
     end
