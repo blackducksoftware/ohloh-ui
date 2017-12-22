@@ -1,5 +1,5 @@
 class CodeLocationBuilder
-  attr_writer :type, :url, :repo_params, :code_location_params
+  attr_writer :type, :url, :repo_params
 
   class << self
     def build
@@ -12,6 +12,10 @@ class CodeLocationBuilder
   def code_location
     return repository if repository.is_a?(GithubUser)
     find_or_build_code_location
+  end
+
+  def code_location_params=(params)
+    @code_location_params = params || {}
   end
 
   private
