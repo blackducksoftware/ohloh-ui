@@ -191,7 +191,15 @@ describe 'EnlistmentsControllerTest' do
       assert_response :unauthorized
     end
 
-    it 'should not create job for a existing githubuser_name' do
+    it 'must handle blank code location parameters for hg repositories' do
+      assert_difference ['Enlistment.count', 'Repository.count', 'CodeLocation.count'] do
+        post :create, project_id: @project_id, repository: build(:hg_repository).attributes
+      end
+
+      must_redirect_to action: :index
+    end
+
+    it 'should not create job for a existing github user_name' do
       username = 'stan'
       post :create, project_id: @project_id, repository: GithubUser.new(url: username).attributes
       EnlistmentWorker.jobs.size.must_equal 1
