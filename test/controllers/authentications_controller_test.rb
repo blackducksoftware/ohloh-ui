@@ -8,6 +8,14 @@ describe 'AuthenticationsController' do
     end
   end
 
+  let(:github_stub) do
+    stub(email: Faker::Internet.email, login: Faker::Name.first_name, access_token: Faker::Lorem.word)
+  end
+
+  let(:github_account_stub) do
+    stub(email: account.email, login: account.login, access_token: Faker::Lorem.word)
+  end
+
   describe 'new' do
     it 'must redirect to the login page for users who have not logged in' do
       get :new
@@ -52,7 +60,6 @@ describe 'AuthenticationsController' do
 
     it 'must redirect back to path stored in session after github signup' do
       session[:return_to] = projects_path
-      github_stub = stub(email: Faker::Internet.email, login: Faker::Name.first_name, access_token: Faker::Lorem.word)
       @controller.stubs(:github_api).returns(github_stub)
 
       assert_difference('Account.count') do
@@ -66,8 +73,7 @@ describe 'AuthenticationsController' do
       session[:return_to] = projects_path
       login_as account
       account.verifications.delete_all
-      github_stub = stub(email: account.email, login: account.login, access_token: Faker::Lorem.word)
-      @controller.stubs(:github_api).returns(github_stub)
+      @controller.stubs(:github_api).returns(github_account_stub)
 
       assert_no_difference('Account.count') do
         get :github_callback, code: Faker::Lorem.word
@@ -82,8 +88,8 @@ describe 'AuthenticationsController' do
     it 'must show errors when github verification fails for logged in user' do
       login_as account
       account.verifications.delete_all
-      github_stub = stub(email: account.email, login: account.login, access_token: '')
-      @controller.stubs(:github_api).returns(github_stub)
+      github_account_stub.stubs(:access_token).returns('')
+      @controller.stubs(:github_api).returns(github_account_stub)
 
       assert_no_difference('Account.count') do
         get :github_callback, code: Faker::Lorem.word
@@ -97,7 +103,7 @@ describe 'AuthenticationsController' do
     end
 
     it 'must display errors when github signup fails for new user' do
-      github_stub = stub(email: Faker::Internet.email, login: Faker::Lorem.word, access_token: '')
+      github_stub.stubs(:access_token).returns('')
       @controller.stubs(:github_api).returns(github_stub)
 
       assert_no_difference('Account.count') do
@@ -109,7 +115,6 @@ describe 'AuthenticationsController' do
     end
 
     it 'must assign a random password and set activated_at for new github user' do
-      github_stub = stub(email: Faker::Internet.email, login: Faker::Name.first_name, access_token: Faker::Lorem.word)
       @controller.stubs(:github_api).returns(github_stub)
 
       assert_difference('Account.count', 1) do
@@ -123,7 +128,7 @@ describe 'AuthenticationsController' do
     end
 
     it 'must assign a random login when github login already exists' do
-      github_stub = stub(email: Faker::Internet.email, login: account.login, access_token: Faker::Lorem.word)
+      github_stub.stubs(:login).returns(account.login)
       @controller.stubs(:github_api).returns(github_stub)
 
       assert_difference('Account.count', 1) do
@@ -136,7 +141,7 @@ describe 'AuthenticationsController' do
     end
 
     it 'must fix github login if it begins with a number' do
-      github_stub = stub(email: Faker::Internet.email, login: '007', access_token: Faker::Lorem.word)
+      github_stub.stubs(:login).returns('007')
       @controller.stubs(:github_api).returns(github_stub)
 
       assert_difference('Account.count', 1) do
@@ -148,7 +153,7 @@ describe 'AuthenticationsController' do
     end
 
     it 'must modify login if default github login is less than 3 chars' do
-      github_stub = stub(email: Faker::Internet.email, login: 'xy', access_token: Faker::Lorem.word)
+      github_stub.stubs(:login).returns('xy')
       @controller.stubs(:github_api).returns(github_stub)
 
       assert_difference('Account.count', 1) do
@@ -161,33 +166,30 @@ describe 'AuthenticationsController' do
 
     describe 'redirect_matching_account' do
       it 'must sign in an existing user through github' do
-        github_stub = stub(email: account.email, login: account.login, access_token: Faker::Lorem.word)
-        @controller.stubs(:github_api).returns(github_stub)
+        @controller.stubs(:github_api).returns(github_account_stub)
 
         get :github_callback, code: Faker::Lorem.word
 
         account.reload
         must_redirect_to account
         request.env[:clearance].current_user.id.must_equal account.id
-        account.github_verification.token.must_equal github_stub.access_token
+        account.github_verification.token.must_equal github_account_stub.access_token
       end
 
       it 'must create a github verification record for a matching unverified account' do
         account.github_verification.destroy
-        github_stub = stub(email: account.email, login: account.login, access_token: Faker::Lorem.word)
-        @controller.stubs(:github_api).returns(github_stub)
+        @controller.stubs(:github_api).returns(github_account_stub)
 
         get :github_callback, code: Faker::Lorem.word
 
         account.reload
-        account.github_verification.token.must_equal github_stub.access_token
-        account.github_verification.unique_id.must_equal github_stub.login
+        account.github_verification.token.must_equal github_account_stub.access_token
+        account.github_verification.unique_id.must_equal github_account_stub.login
       end
 
       it 'must activate email for a matching github email' do
         account.update! activated_at: nil, activation_code: Faker::Lorem.word
-        github_stub = stub(email: account.email, login: account.login, access_token: Faker::Lorem.word)
-        @controller.stubs(:github_api).returns(github_stub)
+        @controller.stubs(:github_api).returns(github_account_stub)
 
         get :github_callback, code: Faker::Lorem.word
 
@@ -199,8 +201,9 @@ describe 'AuthenticationsController' do
       it 'must refresh github verification token and unique_id on every login' do
         new_access_token = Faker::Internet.password
         new_login = Faker::Name.first_name
-        github_stub = stub(email: account.email, login: new_login, access_token: new_access_token)
-        @controller.stubs(:github_api).returns(github_stub)
+        github_account_stub.stubs(:login).returns(new_login)
+        github_account_stub.stubs(:access_token).returns(new_access_token)
+        @controller.stubs(:github_api).returns(github_account_stub)
 
         get :github_callback, code: Faker::Lorem.word
 
@@ -210,8 +213,9 @@ describe 'AuthenticationsController' do
       end
 
       it 'must handle github login failure' do
-        github_stub = stub(email: account.email, login: '', access_token: '')
-        @controller.stubs(:github_api).returns(github_stub)
+        github_account_stub.stubs(:login).returns('')
+        github_account_stub.stubs(:access_token).returns('')
+        @controller.stubs(:github_api).returns(github_account_stub)
 
         get :github_callback, code: Faker::Lorem.word
 
