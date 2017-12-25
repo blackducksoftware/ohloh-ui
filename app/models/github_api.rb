@@ -1,6 +1,7 @@
 class GithubApi
   GITHUB_USER_URI = 'https://api.github.com/user'.freeze
   GITHUB_ACCESS_TOKEN_URI = 'https://github.com/login/oauth/access_token'.freeze
+  REPO_LIMIT = 10
 
   def initialize(code)
     @code = code
@@ -13,6 +14,16 @@ class GithubApi
   def email
     return user_response['email'] if user_response['email']
     fetch_private_email
+  end
+
+  def created_at
+    Time.zone.parse(user_response['created_at'])
+  end
+
+  def repository_has_language?
+    repositories_response.any? do |repository_hash|
+      repository_hash['language'].present?
+    end
   end
 
   def access_token
@@ -37,6 +48,12 @@ class GithubApi
     @user_response = get_response_using_token(user_uri)
   end
 
+  def repositories_response
+    params = { type: :owner, sort: :pushed, per_page: REPO_LIMIT }
+    repositories_uri = URI(GITHUB_USER_URI + "/repos?#{params.to_query}")
+    get_response_using_token(repositories_uri)
+  end
+
   def config
     CGI.unescape({ code: @code, client_id: ENV['GITHUB_CLIENT_ID'], client_secret: ENV['GITHUB_CLIENT_SECRET'],
                    redirect_uri: ENV['GITHUB_REDIRECT_URI'] }.to_query)
@@ -57,7 +74,7 @@ class GithubApi
   def get_response_using_token(uri)
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
-    response = http.get2(uri.path, 'Authorization' => "token #{access_token}")
+    response = http.get2(uri.request_uri, 'Authorization' => "token #{access_token}")
     JSON.parse(response.body)
   end
 end

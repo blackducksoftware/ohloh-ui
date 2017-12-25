@@ -1,0 +1,304 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://github.com/login/oauth/access_token
+    body:
+      encoding: UTF-8
+      string: client_id=fake_client_id&client_secret=fake_client_secret&code=663a92c0728e35c83176&redirect_uri=http://lvh.me:3000/authentications/github_callback
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 18 Oct 2017 10:43:56 GMT
+      Content-Type:
+      - application/x-www-form-urlencoded; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Server:
+      - GitHub.com
+      Status:
+      - 200 OK
+      Cache-Control:
+      - no-cache
+      Vary:
+      - Accept-Encoding
+      - X-PJAX
+      X-Ua-Compatible:
+      - IE=Edge,chrome=1
+      X-Request-Id:
+      - f8a61c00c5f7912b805d05bb15731c41
+      X-Runtime:
+      - '0.024108'
+      Expect-Ct:
+      - max-age=2592000; report-uri="https://api.github.com/_private/browser/errors"
+      Content-Security-Policy:
+      - 'default-src ''none''; base-uri ''self''; block-all-mixed-content; child-src
+        render.githubusercontent.com; connect-src ''self'' uploads.github.com status.github.com
+        collector.githubapp.com api.github.com www.google-analytics.com github-cloud.s3.amazonaws.com
+        github-production-repository-file-5c1aeb.s3.amazonaws.com github-production-upload-manifest-file-7fdce7.s3.amazonaws.com
+        github-production-user-asset-6210df.s3.amazonaws.com wss://live.github.com;
+        font-src assets-cdn.github.com; form-action ''self'' github.com gist.github.com;
+        frame-ancestors ''none''; img-src ''self'' data: assets-cdn.github.com identicons.github.com
+        collector.githubapp.com github-cloud.s3.amazonaws.com *.githubusercontent.com;
+        media-src ''none''; script-src assets-cdn.github.com; style-src ''unsafe-inline''
+        assets-cdn.github.com'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Public-Key-Pins:
+      - max-age=5184000; pin-sha256="WoiWRyIOVNa9ihaBciRSC7XHjliYS9VwUGOIud4PB18=";
+        pin-sha256="RRM1dGqnDFsCJXBTHky16vi1obOlCgFFn/yOhI/y+ho="; pin-sha256="k2v657xBsOVe1PQRwOsHsw3bsGT2VzIqz5K+59sNQws=";
+        pin-sha256="K87oWBWM9UZfyddvDfoxL+8lpNyoUB2ptGtn0fv6G2Q="; pin-sha256="IQBnNBEiFuhj+8x6X8XLgh01V9Ic5/V3IRQLNFFc7v4=";
+        pin-sha256="iie1VXtL7HzAMF+/PVPR9xzT80kQxdZeJ+zduCB3uj0="; pin-sha256="LvRiGEjRqfzurezaWuj8Wie2gyHMrW5Q06LspMnox7A=";
+        includeSubDomains
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '0.028451'
+      X-Github-Request-Id:
+      - A3AC:15AE5:47A412:6E72DD:59E7306C
+    body:
+      encoding: UTF-8
+      string: access_token=e068fc1968fakef5c7e7fake6369336fake4bab9&scope=&token_type=bearer
+    http_version:
+  recorded_at: Wed, 18 Oct 2017 10:43:57 GMT
+- request:
+    method: get
+    uri: https://api.github.com/user
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - token 4l83bx041fd52144bc14622ca97e4123fb5bfake
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Mon, 25 Dec 2017 04:41:27 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4992'
+      X-Ratelimit-Reset:
+      - '1514178020'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      Etag:
+      - W/"89a30eb7ab731ec15075cff456dd6b20"
+      Last-Modified:
+      - Sun, 24 Dec 2017 19:46:30 GMT
+      X-Oauth-Scopes:
+      - public_repo, read:user, user:email
+      X-Accepted-Oauth-Scopes:
+      - ''
+      X-Oauth-Client-Id:
+      - fake_client_id
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '0.050602'
+      X-Github-Request-Id:
+      - C12C:4195:70C225:DB0DB4:5A408177
+    body:
+      encoding: ASCII-8BIT
+      string: '{"login":"alex-bds","id":34818342,"avatar_url":"https://avatars3.githubusercontent.com/u/34818342?v=4","gravatar_id":"","url":"https://api.github.com/users/alex-bds","html_url":"https://github.com/alex-bds","followers_url":"https://api.github.com/users/alex-bds/followers","following_url":"https://api.github.com/users/alex-bds/following{/other_user}","gists_url":"https://api.github.com/users/alex-bds/gists{/gist_id}","starred_url":"https://api.github.com/users/alex-bds/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/alex-bds/subscriptions","organizations_url":"https://api.github.com/users/alex-bds/orgs","repos_url":"https://api.github.com/users/alex-bds/repos","events_url":"https://api.github.com/users/alex-bds/events{/privacy}","received_events_url":"https://api.github.com/users/alex-bds/received_events","type":"User","site_admin":false,"name":null,"company":null,"blog":"","location":null,"email":null,"hireable":null,"bio":null,"public_repos":1,"public_gists":0,"followers":0,"following":0,"created_at":"2017-12-24T19:46:30Z","updated_at":"2017-12-24T19:46:30Z","private_gists":0,"total_private_repos":0,"owned_private_repos":0,"disk_usage":15,"collaborators":0,"two_factor_authentication":false,"plan":{"name":"free","space":976562499,"collaborators":0,"private_repos":0}}'
+    http_version:
+  recorded_at: Mon, 25 Dec 2017 04:41:28 GMT
+- request:
+    method: get
+    uri: https://api.github.com/user/emails
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - token 4l83bx041fd52144bc14622ca97e4123fb5bfake
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Mon, 25 Dec 2017 04:41:31 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4991'
+      X-Ratelimit-Reset:
+      - '1514178020'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      Etag:
+      - W/"d9a6cb7e7ee6a69944a5c94a3713d662"
+      X-Oauth-Scopes:
+      - public_repo, read:user, user:email
+      X-Accepted-Oauth-Scopes:
+      - user, user:email
+      X-Oauth-Client-Id:
+      - fake_client_id
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '0.027714'
+      X-Github-Request-Id:
+      - C12E:4195:70C2D5:DB0EF7:5A408179
+    body:
+      encoding: ASCII-8BIT
+      string: '[{"email":"ajohnson@blackducksoftware.com","primary":true,"verified":true,"visibility":"private"},{"email":"34818342+alex-bds@users.noreply.github.com","primary":false,"verified":true,"visibility":null}]'
+    http_version:
+  recorded_at: Mon, 25 Dec 2017 04:41:31 GMT
+- request:
+    method: get
+    uri: https://api.github.com/user/repos?per_page=10&sort=pushed&type=owner
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - token 4l83bx041fd52144bc14622ca97e4123fb5bfake
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Mon, 25 Dec 2017 04:41:33 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4990'
+      X-Ratelimit-Reset:
+      - '1514178020'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      Etag:
+      - W/"890450aee07c02a1cd6df00d9a9eb202"
+      X-Oauth-Scopes:
+      - public_repo, read:user, user:email
+      X-Accepted-Oauth-Scopes:
+      - ''
+      X-Oauth-Client-Id:
+      - fake_client_id
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '0.042152'
+      X-Github-Request-Id:
+      - 8EBA:4193:43BC39:938DD7:5A40817C
+    body:
+      encoding: ASCII-8BIT
+      string: '[{"id":115284624,"name":"repository_1","full_name":"alex-bds/repository_1","owner":{"login":"alex-bds","id":34818342,"avatar_url":"https://avatars3.githubusercontent.com/u/34818342?v=4","gravatar_id":"","url":"https://api.github.com/users/alex-bds","html_url":"https://github.com/alex-bds","followers_url":"https://api.github.com/users/alex-bds/followers","following_url":"https://api.github.com/users/alex-bds/following{/other_user}","gists_url":"https://api.github.com/users/alex-bds/gists{/gist_id}","starred_url":"https://api.github.com/users/alex-bds/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/alex-bds/subscriptions","organizations_url":"https://api.github.com/users/alex-bds/orgs","repos_url":"https://api.github.com/users/alex-bds/repos","events_url":"https://api.github.com/users/alex-bds/events{/privacy}","received_events_url":"https://api.github.com/users/alex-bds/received_events","type":"User","site_admin":false},"private":false,"html_url":"https://github.com/alex-bds/repository_1","description":"Test
+        repository","fork":false,"url":"https://api.github.com/repos/alex-bds/repository_1","forks_url":"https://api.github.com/repos/alex-bds/repository_1/forks","keys_url":"https://api.github.com/repos/alex-bds/repository_1/keys{/key_id}","collaborators_url":"https://api.github.com/repos/alex-bds/repository_1/collaborators{/collaborator}","teams_url":"https://api.github.com/repos/alex-bds/repository_1/teams","hooks_url":"https://api.github.com/repos/alex-bds/repository_1/hooks","issue_events_url":"https://api.github.com/repos/alex-bds/repository_1/issues/events{/number}","events_url":"https://api.github.com/repos/alex-bds/repository_1/events","assignees_url":"https://api.github.com/repos/alex-bds/repository_1/assignees{/user}","branches_url":"https://api.github.com/repos/alex-bds/repository_1/branches{/branch}","tags_url":"https://api.github.com/repos/alex-bds/repository_1/tags","blobs_url":"https://api.github.com/repos/alex-bds/repository_1/git/blobs{/sha}","git_tags_url":"https://api.github.com/repos/alex-bds/repository_1/git/tags{/sha}","git_refs_url":"https://api.github.com/repos/alex-bds/repository_1/git/refs{/sha}","trees_url":"https://api.github.com/repos/alex-bds/repository_1/git/trees{/sha}","statuses_url":"https://api.github.com/repos/alex-bds/repository_1/statuses/{sha}","languages_url":"https://api.github.com/repos/alex-bds/repository_1/languages","stargazers_url":"https://api.github.com/repos/alex-bds/repository_1/stargazers","contributors_url":"https://api.github.com/repos/alex-bds/repository_1/contributors","subscribers_url":"https://api.github.com/repos/alex-bds/repository_1/subscribers","subscription_url":"https://api.github.com/repos/alex-bds/repository_1/subscription","commits_url":"https://api.github.com/repos/alex-bds/repository_1/commits{/sha}","git_commits_url":"https://api.github.com/repos/alex-bds/repository_1/git/commits{/sha}","comments_url":"https://api.github.com/repos/alex-bds/repository_1/comments{/number}","issue_comment_url":"https://api.github.com/repos/alex-bds/repository_1/issues/comments{/number}","contents_url":"https://api.github.com/repos/alex-bds/repository_1/contents/{+path}","compare_url":"https://api.github.com/repos/alex-bds/repository_1/compare/{base}...{head}","merges_url":"https://api.github.com/repos/alex-bds/repository_1/merges","archive_url":"https://api.github.com/repos/alex-bds/repository_1/{archive_format}{/ref}","downloads_url":"https://api.github.com/repos/alex-bds/repository_1/downloads","issues_url":"https://api.github.com/repos/alex-bds/repository_1/issues{/number}","pulls_url":"https://api.github.com/repos/alex-bds/repository_1/pulls{/number}","milestones_url":"https://api.github.com/repos/alex-bds/repository_1/milestones{/number}","notifications_url":"https://api.github.com/repos/alex-bds/repository_1/notifications{?since,all,participating}","labels_url":"https://api.github.com/repos/alex-bds/repository_1/labels{/name}","releases_url":"https://api.github.com/repos/alex-bds/repository_1/releases{/id}","deployments_url":"https://api.github.com/repos/alex-bds/repository_1/deployments","created_at":"2017-12-24T20:02:08Z","updated_at":"2017-12-24T20:02:08Z","pushed_at":"2017-12-24T20:02:09Z","git_url":"git://github.com/alex-bds/repository_1.git","ssh_url":"git@github.com:alex-bds/repository_1.git","clone_url":"https://github.com/alex-bds/repository_1.git","svn_url":"https://github.com/alex-bds/repository_1","homepage":null,"size":15,"stargazers_count":0,"watchers_count":0,"language":null,"has_issues":true,"has_projects":true,"has_downloads":true,"has_wiki":true,"has_pages":false,"forks_count":0,"mirror_url":null,"archived":false,"open_issues_count":0,"license":{"key":"gpl-3.0","name":"GNU
+        General Public License v3.0","spdx_id":"GPL-3.0","url":"https://api.github.com/licenses/gpl-3.0"},"forks":0,"open_issues":0,"watchers":0,"default_branch":"master","permissions":{"admin":true,"push":true,"pull":true}}]'
+    http_version:
+  recorded_at: Mon, 25 Dec 2017 04:41:33 GMT
+recorded_with: VCR 3.0.3

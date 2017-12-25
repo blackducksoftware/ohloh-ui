@@ -9,11 +9,13 @@ describe 'AuthenticationsController' do
   end
 
   let(:github_stub) do
-    stub(email: Faker::Internet.email, login: Faker::Name.first_name, access_token: Faker::Lorem.word)
+    stub(email: Faker::Internet.email, login: Faker::Name.first_name, access_token: Faker::Lorem.word,
+         'created_at' => 2.months.ago, 'repository_has_language?' => true)
   end
 
   let(:github_account_stub) do
-    stub(email: account.email, login: account.login, access_token: Faker::Lorem.word)
+    stub(email: account.email, login: account.login, access_token: Faker::Lorem.word,
+         'created_at' => 2.months.ago, 'repository_has_language?' => true)
   end
 
   describe 'new' do
@@ -83,6 +85,35 @@ describe 'AuthenticationsController' do
       must_redirect_to projects_path
       flash[:notice].must_equal I18n.t('verification_completed')
       account.github_verification.must_be :present?
+    end
+
+    it 'must only allow accounts that are atleast a month old' do
+      VCR.use_cassette('GithubVerificationSpammer') do
+        GithubApi.any_instance.stubs(:repository_has_language?).returns(true)
+
+        assert_no_difference('Account.count', 1) do
+          get :github_callback, code: Faker::Lorem.word
+        end
+
+        request.env[:clearance].current_user.must_be_nil
+        must_redirect_to new_account_path
+        flash[:notice].must_equal I18n.t('authentications.github_callback.invalid_github_account')
+      end
+    end
+
+    it 'must stop accounts that have no repository with valid language' do
+      VCR.use_cassette('GithubVerificationSpammer') do
+        login_as account
+        account.verifications.delete_all
+        GithubApi.any_instance.stubs(:created_at).returns(2.months.ago)
+
+        assert_no_difference('Account.count', 1) do
+          get :github_callback, code: Faker::Lorem.word
+        end
+
+        must_redirect_to new_authentication_path
+        flash[:notice].must_equal I18n.t('authentications.github_callback.invalid_github_account')
+      end
     end
 
     it 'must show errors when github verification fails for logged in user' do
@@ -174,6 +205,27 @@ describe 'AuthenticationsController' do
         must_redirect_to account
         request.env[:clearance].current_user.id.must_equal account.id
         account.github_verification.token.must_equal github_account_stub.access_token
+      end
+
+      it 'must sign in a verified user regardless of github restrictions' do
+        github_account_stub.stubs(:created_at).returns(Time.current)
+        @controller.stubs(:github_api).returns(github_account_stub)
+
+        get :github_callback, code: Faker::Lorem.word
+
+        request.env[:clearance].current_user.id.must_equal account.id
+      end
+
+      it 'wont sign in a non github verified user which fails github restrictions' do
+        github_account_stub.stubs(:created_at).returns(Time.current)
+        @controller.stubs(:github_api).returns(github_account_stub)
+        account.verifications.delete_all
+        FirebaseVerification.any_instance.stubs(:generate_token)
+        create(:firebase_verification, account: account)
+
+        get :github_callback, code: Faker::Lorem.word
+
+        request.env[:clearance].current_user.must_be_nil
       end
 
       it 'must create a github verification record for a matching unverified account' do
