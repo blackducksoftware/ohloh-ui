@@ -214,6 +214,37 @@ describe 'ApplicationController' do
 
       must_redirect_to new_authentication_path
     end
+
+    describe '#update_last_seen_at_and_ip' do
+      let(:time_now) { Time.now }
+      let(:account) { create(:account, last_seen_at: time_now) }
+      let(:ip) { '1.1.1.1' }
+      it 'should update last seen at and ip address when user logged in' do
+        login_as account
+        account.last_seen_ip.must_be_nil
+        account.last_seen_at.must_equal time_now
+        get :new
+        account.reload.last_seen_at.to_i.must_be_within_epsilon (time_now + 1).to_i, Time.now.to_i
+        account.last_seen_ip.must_equal '0.0.0.0'
+      end
+
+      it 'should not update last seen at and ip when user not logged in' do
+        last_seen_at = account.last_seen_at
+        account.last_seen_ip.must_be_nil
+        account.last_seen_at.must_equal time_now
+        get :index
+        account.reload.last_seen_ip.must_be_nil
+        account.reload.last_seen_at.to_i.must_equal time_now.to_i
+      end
+
+      it 'should pick right ip addr' do
+        login_as account
+        ip = '192.168.0.1'
+        ActionDispatch::Request.any_instance.stubs(:remote_ip).returns(ip)
+        get :index
+        account.reload.last_seen_ip.must_equal ip
+      end
+    end
   end
 end
 
