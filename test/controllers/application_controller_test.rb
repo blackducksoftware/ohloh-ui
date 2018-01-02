@@ -216,7 +216,7 @@ describe 'ApplicationController' do
     end
 
     describe '#update_last_seen_at_and_ip' do
-      let(:time_now) { Time.now }
+      let(:time_now) { Time.current }
       let(:account) { create(:account, last_seen_at: time_now) }
       let(:ip) { '1.1.1.1' }
       it 'should update last seen at and ip address when user logged in' do
@@ -229,7 +229,6 @@ describe 'ApplicationController' do
       end
 
       it 'should not update last seen at and ip when user not logged in' do
-        last_seen_at = account.last_seen_at
         account.last_seen_ip.must_be_nil
         account.last_seen_at.must_equal time_now
         get :index
