@@ -1,4 +1,4 @@
-lock '3.6.1'
+lock '3.10.1'
 
 set :whoami, `whoami`.strip
 set :default_env, 'PATH' => '/home/deployer/.rbenv/shims:$PATH', 'BASH_ENV' => '/home/deployer/.production_vars'
