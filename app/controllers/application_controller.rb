@@ -26,6 +26,7 @@ class ApplicationController < ActionController::Base
   before_action :strip_query_param
   before_action :clear_reminder
   before_action :verify_api_access_for_xml_request, only: [:show, :index]
+  before_action :update_last_seen_at_and_ip
 
   alias session_required require_login
 
@@ -280,6 +281,11 @@ class ApplicationController < ActionController::Base
 
   def check_project_authorization
     render_unauthorized unless @project.edit_authorized?
+  end
+
+  def update_last_seen_at_and_ip
+    return unless logged_in?
+    current_user.update_columns(last_seen_at: Time.current, last_seen_ip: request.remote_ip)
   end
 end
 # rubocop:enable Metrics/ClassLength
