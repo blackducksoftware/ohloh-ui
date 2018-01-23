@@ -26,6 +26,7 @@ class EnlistmentsController < SettingsController
   def create
     @code_location.save!
     create_enlistment
+    manage_code_location_subscription('create')
     set_flash_message
     redirect_to project_enlistments_path(@project)
   end
@@ -42,6 +43,7 @@ class EnlistmentsController < SettingsController
 
   def destroy
     @enlistment.create_edit.undo!(current_user)
+    manage_code_location_subscription('delete')
     redirect_to project_enlistments_path(@project), flash: { success: t('.success', name: @project.name) }
   end
 
@@ -59,5 +61,10 @@ class EnlistmentsController < SettingsController
     flash[:show_first_enlistment_alert] = true if @project.enlistments.count == 1
     flash[:success] = t('.success', url: @repository.url,
                                     module_branch_name: (CGI.escapeHTML @code_location.module_branch_name.to_s))
+  end
+
+  def manage_code_location_subscription(manage)
+    code_location_id = @code_location.try(:id) || @enlistment.code_location_id
+    CodeLocationSubscription.new(code_location_id).send(manage)
   end
 end

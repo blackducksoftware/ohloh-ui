@@ -110,7 +110,9 @@ describe 'EnlistmentsControllerTest' do
   describe 'destroy' do
     it 'destroy successfully' do
       login_as @account
-      delete :destroy, id: @enlistment.id, project_id: @project_id
+      stub_code_location_subscription_api_call('delete') do
+        delete :destroy, id: @enlistment.id, project_id: @project_id
+      end
       must_respond_with :redirect
       must_redirect_to action: :index
       @enlistment.reload.deleted.must_equal true
@@ -192,10 +194,11 @@ describe 'EnlistmentsControllerTest' do
     end
 
     it 'must handle blank code location parameters for hg repositories' do
-      assert_difference ['Enlistment.count', 'Repository.count', 'CodeLocation.count'] do
-        post :create, project_id: @project_id, repository: build(:hg_repository).attributes
+      stub_code_location_subscription_api_call do
+        assert_difference ['Enlistment.count', 'Repository.count', 'CodeLocation.count'] do
+          post :create, project_id: @project_id, repository: build(:hg_repository).attributes
+        end
       end
-
       must_redirect_to action: :index
     end
 
@@ -216,7 +219,10 @@ describe 'EnlistmentsControllerTest' do
       Repository.count.must_equal 1
       CodeLocation.count.must_equal 1
       Enlistment.count.must_equal 2
-      post :create, project_id: @project_id, repository: repository.attributes, code_location: code_location.attributes
+      stub_code_location_subscription_api_call do
+        post :create, project_id: @project_id, repository: repository.attributes,
+                      code_location: code_location.attributes
+      end
       must_respond_with :redirect
       must_redirect_to action: :index
       CodeLocation.count.must_equal 2
@@ -234,7 +240,9 @@ describe 'EnlistmentsControllerTest' do
                  code_location: code_location.attributes }
 
       assert_no_difference('Repository.count') do
-        post :create, params
+        stub_code_location_subscription_api_call do
+          post :create, params
+        end
       end
     end
 
@@ -244,7 +252,9 @@ describe 'EnlistmentsControllerTest' do
                  code_location: build(:code_location).attributes }
       assert_no_difference 'Repository.count' do
         assert_difference ['CodeLocation.count', 'Enlistment.count'], 1 do
-          post :create, params
+          stub_code_location_subscription_api_call do
+            post :create, params
+          end
         end
       end
     end
@@ -267,8 +277,10 @@ describe 'EnlistmentsControllerTest' do
       repository = code_location.repository
       build(:enlistment, project: project,
                          code_location: build(:code_location, repository: build(:repository)))
-      post :create, project_id: project.id, repository: repository.attributes,
-                    code_location: code_location.attributes
+      stub_code_location_subscription_api_call do
+        post :create, project_id: project.id, repository: repository.attributes,
+                      code_location: code_location.attributes
+      end
 
       must_redirect_to project_enlistments_path(project)
 
@@ -376,11 +388,13 @@ describe 'EnlistmentsControllerTest' do
           enlistment = create(:enlistment)
           code_location = enlistment.code_location
           repository = enlistment.code_location.repository
-          assert_difference 'Enlistment.count' do
-            assert_no_difference ['CodeLocation.count', 'Repository.count'] do
-              post :create, project_id: create(:project).vanity_url,
-                            repository: repository.attributes,
-                            code_location: code_location.attributes
+          stub_code_location_subscription_api_call do
+            assert_difference 'Enlistment.count' do
+              assert_no_difference ['CodeLocation.count', 'Repository.count'] do
+                post :create, project_id: create(:project).vanity_url,
+                              repository: repository.attributes,
+                              code_location: code_location.attributes
+              end
             end
           end
         end

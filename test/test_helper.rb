@@ -126,6 +126,12 @@ class ActiveSupport::TestCase
     end
   end
 
+  def stub_code_location_subscription_api_call(method = 'create')
+    VCR.use_cassette("#{method}_code_location_subscription", match_requests_on: [:host, :path, :method]) do
+      yield
+    end
+  end
+
   def stub_firebase_verification(sub = '123', alg = 'RS256', kid = '745c7128cba10e251b9fe712aed52613388a6699')
     decoded_val = [{  'iss' => 'https://securetoken.google.com/fir-sample-8bb3e',
                       'aud' => 'fir-sample-8bb3e',
