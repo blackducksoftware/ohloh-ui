@@ -91,6 +91,7 @@ describe 'AuthenticationsController' do
       VCR.use_cassette('GithubVerificationSpammer') do
         GithubApi.any_instance.stubs(:repository_has_language?).returns(true)
 
+        GithubApi.any_instance.stubs(:created_at).returns(20.days.ago)
         assert_no_difference('Account.count', 1) do
           get :github_callback, code: Faker::Lorem.word
         end

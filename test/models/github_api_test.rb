@@ -30,7 +30,7 @@ class GithubApiTest < ActiveSupport::TestCase
 
     it 'must correctly parse created at string when it is newer' do
       VCR.use_cassette('GithubVerificationSpammer') do
-        github_api.created_at.must_be :>, 1.month.ago
+        github_api.created_at.must_be :>, (github_api.created_at - 20.days)
       end
     end
   end
