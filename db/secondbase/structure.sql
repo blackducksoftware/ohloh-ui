@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.3
--- Dumped by pg_dump version 9.6.3
+-- Dumped from database version 9.6.6
+-- Dumped by pg_dump version 9.6.6
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -42,6 +42,20 @@ CREATE EXTENSION IF NOT EXISTS postgres_fdw WITH SCHEMA public;
 COMMENT ON EXTENSION postgres_fdw IS 'foreign-data wrapper for remote PostgreSQL servers';
 
 
+--
+-- Name: uuid-ossp; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
+
+
 SET search_path = public, pg_catalog;
 
 --
@@ -69,6 +83,316 @@ CREATE FUNCTION accounts_id_seq_view() RETURNS integer
 CREATE FUNCTION actions_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from actions_id_seq_view$$;
+
+
+--
+-- Name: admin_insert_cl_added_stats(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION admin_insert_cl_added_stats() RETURNS jsonb
+    LANGUAGE plpgsql
+    AS $$
+
+DECLARE
+  result jsonb;
+BEGIN
+  WITH locations AS (SELECT created_at FROM code_locations
+                WHERE created_at  BETWEEN
+                      date_trunc('year', now())::timestamp - interval '14 days' AND DATE 'tomorrow'),
+        series AS (SELECT generate_series( date_trunc('week', date_trunc('year', now()::timestamp)), DATE 'tomorrow',
+            '1 week'::INTERVAL)::date AS bow),
+        range AS (SELECT EXTRACT(Week from bow) as weeknumber, bow, (bow + 6) AS eow, (bow - 14) AS biweekly,
+                  EXTRACT(quarter FROM bow) AS quarter, EXTRACT(month from bow) AS month,
+                  EXTRACT(Year from bow) AS year
+                FROM series)
+          SELECT array_to_json(array_agg(row_to_json(t))) FROM (
+            SELECT * FROM
+              (SELECT weeknumber, bow,eow, biweekly, month, year,
+              (SELECT count(*) FROM locations WHERE created_at BETWEEN bow AND eow) as weekly,
+              (SELECT count(*) FROM locations WHERE created_at BETWEEN biweekly and bow) as biweekly,
+              (SELECT count(*) FROM locations WHERE EXTRACT(MONTH from created_at) = month
+                  AND EXTRACT(YEAR from created_at) = year) as monthly,
+              (SELECT count(*) FROM locations WHERE EXTRACT(QUARTER from created_at) = quarter
+                  AND EXTRACT(YEAR from created_at) = year) as quarterly,
+              (SELECT count(*) FROM locations WHERE EXTRACT(YEAR from created_at) = year) as yearly
+          FROM range) n1 where weeknumber = EXTRACT('week' from CURRENT_DATE)
+              AND YEAR = EXTRACT('year' from CURRENT_DATE))t INTO result;
+   INSERT INTO admin_dashboard_stats (stat_type, data, created_at, updated_at)
+      VALUES ('cl_added', result, current_timestamp, current_timestamp) ;
+
+  RETURN result;
+END;
+
+$$;
+
+
+--
+-- Name: admin_insert_cl_py_ages_stats(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION admin_insert_cl_py_ages_stats() RETURNS jsonb
+    LANGUAGE plpgsql
+    AS $$
+
+DECLARE
+  result jsonb;
+BEGIN
+WITH codesets AS (SELECT logged_at
+FROM code_sets
+INNER JOIN code_locations ON code_locations.best_code_set_id = code_sets.id
+LEFT OUTER JOIN (SELECT DISTINCT enlistments.code_location_id, enlistments.deleted FROM enlistments
+          WHERE enlistments.deleted = false) e1 ON e1.code_location_id = code_locations.id
+
+WHERE (COALESCE(code_sets.logged_at, '1970-01-01') + code_locations.update_interval * INTERVAL '1 second'
+        <= NOW() AT TIME ZONE 'utc' )
+AND code_locations.do_not_fetch = false
+      AND ( (code_locations.status = 0  AND e1.deleted = false) OR code_locations.status = 1)),
+
+series AS (SELECT generate_series( date_trunc('year', now()),
+                                   now() + interval '1 week',
+                                   '1 week'::INTERVAL)::date AS eow ),
+
+min_date AS (SELECT MIN(eow) as eow FROM series),
+
+py_month AS (SELECT series.eow as week_ending, count(*) as count
+FROM codesets
+INNER JOIN series ON EXTRACT('week' from series.eow) = EXTRACT('week' from codesets.logged_at)
+WHERE codesets.logged_at >= date_trunc('year', now())
+group by series.eow order by series.eow desc)
+
+SELECT array_to_json(array_agg(row_to_json(t))) FROM (
+SELECT 'cy' as type, week_ending, count FROM py_month
+UNION
+SELECT 'ly' as type, (SELECT eow FROM min_date) as week_ending, count(*)  as count  from codesets
+WHERE logged_at < (SELECT eow FROM min_date)
+order by type asc, week_ending desc)t INTO result;
+
+INSERT INTO admin_dashboard_stats (stat_type, data, created_at, updated_at)
+        VALUES ('cl_py_ages', result, current_timestamp, current_timestamp) ;
+
+    RETURN result;
+END;
+
+$$;
+
+
+--
+-- Name: admin_insert_cl_py_by_month_stats(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION admin_insert_cl_py_by_month_stats() RETURNS jsonb
+    LANGUAGE plpgsql
+    AS $$
+
+DECLARE
+  result jsonb;
+BEGIN
+  SELECT array_to_json(array_agg(row_to_json(t))) FROM (
+      SELECT bom, count(*) FROM code_sets
+                 INNER JOIN code_locations ON code_locations.best_code_set_id = code_sets.id
+                 INNER JOIN (SELECT generate_series(make_date(EXTRACT(year from now() - interval '1 year')::int,01,01),
+                   make_date(EXTRACT(year from now())::int, 12,31),'1 month'::INTERVAL)::date AS bom
+                 ) series ON EXTRACT('month' from series.bom) = EXTRACT('month' from code_sets.logged_at)
+                 LEFT OUTER JOIN (SELECT DISTINCT enlistments.code_location_id, enlistments.deleted FROM enlistments
+                     WHERE enlistments.deleted = false) e1 ON e1.code_location_id = code_locations.id
+                 WHERE code_locations.do_not_fetch = false
+                   AND ((code_locations.status = 0  AND e1.deleted = false) OR code_locations.status = 1)
+                 AND code_sets.logged_at >= make_date(EXTRACT(year from now() - interval '1 year')::int, 01,01)
+                 group by bom order by bom desc)t INTO result;
+   INSERT INTO admin_dashboard_stats (stat_type, data, created_at, updated_at)
+    VALUES ('cl_py_by_month', result, current_timestamp, current_timestamp) ;
+
+  RETURN result;
+END;
+
+$$;
+
+
+--
+-- Name: admin_insert_cl_total_stats(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION admin_insert_cl_total_stats() RETURNS jsonb
+    LANGUAGE plpgsql
+    AS $$
+
+  DECLARE
+    result jsonb;
+  BEGIN
+    WITH locations AS (SELECT id, status, do_not_fetch, update_interval, best_code_set_id FROM code_locations),
+
+    dnf AS (Select * from locations WHERE do_not_fetch = true),
+
+    unsubscribed AS (SELECT cl.*
+      FROM locations cl
+       LEFT OUTER JOIN (SELECT DISTINCT enlistments.code_location_id, enlistments.deleted FROM enlistments
+                  WHERE enlistments.deleted = false) e1 ON e1.code_location_id = cl.id
+       WHERE (cl.status = 0 AND e1.code_location_id IS NULL) AND do_not_fetch = false AND best_code_set_id IS NOT NULL),
+
+    inactive AS (SELECT * from locations WHERE status = 2 AND do_not_fetch = false),
+
+    subscribed AS ( SELECT  locations.id, status, do_not_fetch, best_code_set_id
+             FROM code_sets
+             INNER JOIN locations ON locations.best_code_set_id = code_sets.id
+                LEFT OUTER JOIN (SELECT DISTINCT enlistments.code_location_id, enlistments.deleted FROM enlistments
+                     WHERE enlistments.deleted = false) e1 ON e1.code_location_id = locations.id
+             WHERE (COALESCE(code_sets.logged_at, '1970-01-01') +
+                  locations.update_interval * INTERVAL '1 second'
+                  <= NOW() AT TIME ZONE 'utc' AND locations.do_not_fetch = false)
+                AND ( (locations.status = 0  AND e1.deleted = false) OR locations.status = 1)
+            AND locations.do_not_fetch = false),
+
+    timely AS (SELECT locations.id, locations.status, do_not_fetch, update_interval, best_code_set_id FROM locations
+            INNER JOIN code_sets cs ON  locations.best_code_set_id = cs.id
+            LEFT OUTER JOIN (SELECT DISTINCT enlistments.code_location_id, enlistments.deleted
+                  FROM enlistments
+                     WHERE enlistments.deleted = false) e1 ON e1.code_location_id = locations.id
+          WHERE (COALESCE(cs.logged_at, '1970-01-01') +
+             locations.update_interval * INTERVAL '1 second'
+          > NOW() AT TIME ZONE 'utc' AND locations.do_not_fetch = false)
+                AND ( (locations.status = 0  AND e1.deleted = false) OR locations.status = 1)
+            AND locations.do_not_fetch = false),
+
+    no_best_code AS (select * from locations where best_code_set_id IS NULL AND do_not_fetch = false AND status <> 2)
+
+    SELECT array_to_json(array_agg(row_to_json(t))) FROM (
+    SELECT * FROM
+      (SELECT count(*) as total FROM locations) as total,
+      (SELECT count(*) as dnf FROM dnf) as dnf,
+      (SELECT count(*) as inactive FROM inactive) as inactive,
+      (SELECT count(*) as unsubscribed FROM unsubscribed) as unsubscribed,
+      (SELECT count(*) as wait_until FROM timely) as wait_until,
+      (SELECT count(*) as no_best_code FROM no_best_code) as no_best_code,
+      (SELECT count(*) as subscribed FROM subscribed) as subscribed,
+      (SELECT count(*) as idk
+        FROM locations cl
+        LEFT OUTER JOIN dnf ON cl.id = dnf.id
+        LEFT OUTER JOIN unsubscribed us ON cl.id = us.id
+        LEFT OUTER JOIN inactive ina ON cl.id = ina.id
+        LEFT OUTER JOIN subscribed sb ON cl.id = sb.id
+        LEFT OUTER JOIN timely tml ON cl.id = tml.id
+        LEFT OUTER JOIN no_best_code nbc ON cl.id = nbc.id
+      WHERE dnf.id IS NULL
+      AND us.id IS NULL
+      AND ina.id IS NULL
+      AND sb.id IS NULL
+      AND tml.id IS NULL
+      AND nbc.id IS NULL) as idk)t
+    INTO result;
+
+    INSERT INTO admin_dashboard_stats (stat_type, data, created_at, updated_at)
+      VALUES ('cl_total', result, current_timestamp, current_timestamp) ;
+
+    RETURN result;
+  END;
+
+  $$;
+
+
+--
+-- Name: admin_insert_cl_visited_stats(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION admin_insert_cl_visited_stats() RETURNS jsonb
+    LANGUAGE plpgsql
+    AS $$
+
+DECLARE
+  result jsonb;
+BEGIN
+  SELECT admin_select_cl_visited_stats() ||
+  		 admin_select_cl_visited_stats('3 days') ||
+  		 admin_select_cl_visited_stats('1 month') ||
+         admin_select_kb_cl_visited_stats() ||
+         admin_select_kb_cl_visited_stats('3 days') ||
+         admin_select_kb_cl_visited_stats('1 month') INTO result;
+
+  INSERT INTO admin_dashboard_stats (stat_type, data, created_at, updated_at)
+    VALUES ('cl_visited', result, current_timestamp, current_timestamp) ;
+  RETURN result;
+END;
+
+$$;
+
+
+--
+-- Name: admin_select_cl_visited_stats(character varying); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION admin_select_cl_visited_stats(interval_span character varying DEFAULT NULL::character varying) RETURNS jsonb
+    LANGUAGE plpgsql
+    AS $_$
+
+    DECLARE
+      result jsonb;
+      columnName varchar ;
+      query varchar ;
+    BEGIN
+      columnName := '_' || COALESCE(REPLACE($1, ' ', ''), 'all') ;
+      query :=
+      'SELECT array_to_json(array_agg(row_to_json(t))) FROM (
+      SELECT  count(*) as ' || columnName ||
+                ' FROM code_sets
+                INNER JOIN code_locations ON code_locations.best_code_set_id = code_sets.id
+                LEFT OUTER JOIN (SELECT DISTINCT enlistments.code_location_id, enlistments.deleted FROM enlistments
+                    WHERE enlistments.deleted = false) e1 ON e1.code_location_id = code_locations.id
+                WHERE (COALESCE(code_sets.logged_at, ''1970-01-01'') +
+                  code_locations.update_interval * INTERVAL ''1 second''
+                  <= NOW() AT TIME ZONE ''utc'')
+                AND ( (code_locations.status = 0  AND e1.deleted = false) OR code_locations.status = 1) ' ;
+
+      IF $1 IS NOT NULL THEN
+        query := query || ' AND logged_at > now() - interval ''' || ($1)::interval || '''' ;
+      ELSE
+        query := query || ' AND code_locations.do_not_fetch = false' ;
+      END IF ;
+
+      query := query || ' )t' ;
+
+      EXECUTE query INTO result;
+      RETURN result;
+    END;
+
+  $_$;
+
+
+--
+-- Name: admin_select_kb_cl_visited_stats(character varying); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION admin_select_kb_cl_visited_stats(interval_span character varying DEFAULT NULL::character varying) RETURNS jsonb
+    LANGUAGE plpgsql
+    AS $_$
+
+      DECLARE
+        result jsonb;
+        columnName varchar ;
+        query varchar ;
+      BEGIN
+        columnName := '_kb_' || COALESCE(REPLACE($1, ' ', ''), 'all') ;
+        query :=
+        'SELECT array_to_json(array_agg(row_to_json(t))) FROM (
+        SELECT  count(*) as ' || columnName ||
+                    ' FROM code_sets
+                    INNER JOIN code_locations ON code_locations.best_code_set_id = code_sets.id
+                    WHERE (COALESCE(code_sets.logged_at, ''1970-01-01'') +
+                      code_locations.update_interval * INTERVAL ''1 second''
+                      <= NOW() AT TIME ZONE ''utc'')
+                    AND (code_locations.status = 1) ' ;
+
+        IF $1 IS NOT NULL THEN
+          query := query || ' AND logged_at > now() - interval ''' || ($1)::interval || '''' ;
+        ELSE
+          query := query || ' AND code_locations.do_not_fetch = false' ;
+        END IF ;
+
+        query := query || ' )t' ;
+
+        EXECUTE query INTO result;
+        RETURN result;
+      END;
+
+      $_$;
 
 
 --
@@ -159,15 +483,6 @@ CREATE FUNCTION clumps_id_seq_view() RETURNS integer
 CREATE FUNCTION code_location_tarballs_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from code_location_tarballs_id_seq_view$$;
-
-
---
--- Name: code_locations_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION code_locations_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from code_locations_id_seq_view$$;
 
 
 --
@@ -270,15 +585,6 @@ CREATE FUNCTION factoids_id_seq_view() RETURNS integer
 
 
 --
--- Name: failure_groups_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION failure_groups_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from failure_groups_id_seq_view$$;
-
-
---
 -- Name: feedbacks_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -306,15 +612,6 @@ CREATE FUNCTION follows_id_seq_view() RETURNS integer
 
 
 --
--- Name: forges_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION forges_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from forges_id_seq_view$$;
-
-
---
 -- Name: forums_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -339,15 +636,6 @@ CREATE FUNCTION helpfuls_id_seq_view() RETURNS integer
 CREATE FUNCTION invites_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from invites_id_seq_view$$;
-
-
---
--- Name: jobs_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION jobs_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from jobs_id_seq_view$$;
 
 
 --
@@ -789,33 +1077,6 @@ CREATE FUNCTION releases_id_seq_view() RETURNS integer
 CREATE FUNCTION reports_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from reports_id_seq_view$$;
-
-
---
--- Name: repositories_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION repositories_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from repositories_id_seq_view$$;
-
-
---
--- Name: repository_directories_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION repository_directories_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from repository_directories_id_seq_view$$;
-
-
---
--- Name: repository_tags_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION repository_tags_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from repository_tags_id_seq_view$$;
 
 
 --
@@ -1465,6 +1726,40 @@ ALTER FOREIGN TABLE activity_facts_id_seq_view ALTER COLUMN id OPTIONS (
 );
 
 
+SET default_with_oids = false;
+
+--
+-- Name: admin_dashboard_stats; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE admin_dashboard_stats (
+    id integer NOT NULL,
+    stat_type character varying,
+    data jsonb,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: admin_dashboard_stats_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE admin_dashboard_stats_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: admin_dashboard_stats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE admin_dashboard_stats_id_seq OWNED BY admin_dashboard_stats.id;
+
+
 --
 -- Name: aliases; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
@@ -1665,8 +1960,6 @@ ALTER FOREIGN TABLE analyses_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
-
-SET default_with_oids = false;
 
 --
 -- Name: analysis_aliases; Type: TABLE; Schema: public; Owner: -
@@ -2278,11 +2571,11 @@ CREATE VIEW code_location_tarballs_id_seq_view AS
 
 
 --
--- Name: code_locations; Type: FOREIGN TABLE; Schema: public; Owner: -
+-- Name: code_locations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE code_locations (
-    id integer DEFAULT code_locations_id_seq_view() NOT NULL,
+CREATE TABLE code_locations (
+    id integer NOT NULL,
     repository_id integer,
     module_branch_name text,
     status integer DEFAULT 0,
@@ -2290,39 +2583,8 @@ CREATE FOREIGN TABLE code_locations (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     update_interval integer DEFAULT 3600,
-    best_repository_directory_id integer
-)
-SERVER ohloh
-OPTIONS (
-    schema_name 'public',
-    table_name 'code_locations'
-);
-ALTER FOREIGN TABLE code_locations ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
-ALTER FOREIGN TABLE code_locations ALTER COLUMN repository_id OPTIONS (
-    column_name 'repository_id'
-);
-ALTER FOREIGN TABLE code_locations ALTER COLUMN module_branch_name OPTIONS (
-    column_name 'module_branch_name'
-);
-ALTER FOREIGN TABLE code_locations ALTER COLUMN status OPTIONS (
-    column_name 'status'
-);
-ALTER FOREIGN TABLE code_locations ALTER COLUMN best_code_set_id OPTIONS (
-    column_name 'best_code_set_id'
-);
-ALTER FOREIGN TABLE code_locations ALTER COLUMN created_at OPTIONS (
-    column_name 'created_at'
-);
-ALTER FOREIGN TABLE code_locations ALTER COLUMN updated_at OPTIONS (
-    column_name 'updated_at'
-);
-ALTER FOREIGN TABLE code_locations ALTER COLUMN update_interval OPTIONS (
-    column_name 'update_interval'
-);
-ALTER FOREIGN TABLE code_locations ALTER COLUMN best_repository_directory_id OPTIONS (
-    column_name 'best_repository_directory_id'
+    best_repository_directory_id integer,
+    do_not_fetch boolean DEFAULT false
 );
 
 
@@ -2339,20 +2601,18 @@ CREATE SEQUENCE code_locations_id_seq
 
 
 --
--- Name: code_locations_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
+-- Name: code_locations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE code_locations_id_seq_view (
-    id integer
-)
-SERVER ohloh
-OPTIONS (
-    schema_name 'public',
-    table_name 'code_locations_id_seq_view'
-);
-ALTER FOREIGN TABLE code_locations_id_seq_view ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
+ALTER SEQUENCE code_locations_id_seq OWNED BY code_locations.id;
+
+
+--
+-- Name: code_locations_id_seq_view; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW code_locations_id_seq_view AS
+ SELECT (nextval('code_locations_id_seq'::regclass))::integer AS id;
 
 
 --
@@ -3489,35 +3749,15 @@ ALTER FOREIGN TABLE factoids_id_seq_view ALTER COLUMN id OPTIONS (
 
 
 --
--- Name: failure_groups; Type: FOREIGN TABLE; Schema: public; Owner: -
+-- Name: failure_groups; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE failure_groups (
-    id integer DEFAULT failure_groups_id_seq_view() NOT NULL,
+CREATE TABLE failure_groups (
+    id integer NOT NULL,
     name text NOT NULL,
     pattern text NOT NULL,
     priority integer DEFAULT 0,
     auto_reschedule boolean DEFAULT false
-)
-SERVER ohloh
-OPTIONS (
-    schema_name 'public',
-    table_name 'failure_groups'
-);
-ALTER FOREIGN TABLE failure_groups ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
-ALTER FOREIGN TABLE failure_groups ALTER COLUMN name OPTIONS (
-    column_name 'name'
-);
-ALTER FOREIGN TABLE failure_groups ALTER COLUMN pattern OPTIONS (
-    column_name 'pattern'
-);
-ALTER FOREIGN TABLE failure_groups ALTER COLUMN priority OPTIONS (
-    column_name 'priority'
-);
-ALTER FOREIGN TABLE failure_groups ALTER COLUMN auto_reschedule OPTIONS (
-    column_name 'auto_reschedule'
 );
 
 
@@ -3534,20 +3774,18 @@ CREATE SEQUENCE failure_groups_id_seq
 
 
 --
--- Name: failure_groups_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
+-- Name: failure_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE failure_groups_id_seq_view (
-    id integer
-)
-SERVER ohloh
-OPTIONS (
-    schema_name 'public',
-    table_name 'failure_groups_id_seq_view'
-);
-ALTER FOREIGN TABLE failure_groups_id_seq_view ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
+ALTER SEQUENCE failure_groups_id_seq OWNED BY failure_groups.id;
+
+
+--
+-- Name: failure_groups_id_seq_view; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW failure_groups_id_seq_view AS
+ SELECT (nextval('failure_groups_id_seq'::regclass))::integer AS id;
 
 
 --
@@ -3773,31 +4011,14 @@ ALTER FOREIGN TABLE follows_id_seq_view ALTER COLUMN id OPTIONS (
 
 
 --
--- Name: forges; Type: FOREIGN TABLE; Schema: public; Owner: -
+-- Name: forges; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE forges (
-    id integer DEFAULT forges_id_seq_view() NOT NULL,
+CREATE TABLE forges (
+    id integer NOT NULL,
     name text NOT NULL,
     url text NOT NULL,
     type text
-)
-SERVER ohloh
-OPTIONS (
-    schema_name 'public',
-    table_name 'forges'
-);
-ALTER FOREIGN TABLE forges ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
-ALTER FOREIGN TABLE forges ALTER COLUMN name OPTIONS (
-    column_name 'name'
-);
-ALTER FOREIGN TABLE forges ALTER COLUMN url OPTIONS (
-    column_name 'url'
-);
-ALTER FOREIGN TABLE forges ALTER COLUMN type OPTIONS (
-    column_name 'type'
 );
 
 
@@ -3814,20 +4035,18 @@ CREATE SEQUENCE forges_id_seq
 
 
 --
--- Name: forges_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
+-- Name: forges_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE forges_id_seq_view (
-    id integer
-)
-SERVER ohloh
-OPTIONS (
-    schema_name 'public',
-    table_name 'forges_id_seq_view'
-);
-ALTER FOREIGN TABLE forges_id_seq_view ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
+ALTER SEQUENCE forges_id_seq OWNED BY forges.id;
+
+
+--
+-- Name: forges_id_seq_view; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW forges_id_seq_view AS
+ SELECT (nextval('forges_id_seq'::regclass))::integer AS id;
 
 
 --
@@ -4342,11 +4561,11 @@ ALTER FOREIGN TABLE job_statuses ALTER COLUMN name OPTIONS (
 
 
 --
--- Name: jobs; Type: FOREIGN TABLE; Schema: public; Owner: -
+-- Name: jobs; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE jobs (
-    id integer DEFAULT jobs_id_seq_view() NOT NULL,
+CREATE TABLE jobs (
+    id integer NOT NULL,
     project_id integer,
     status integer DEFAULT 0 NOT NULL,
     type text NOT NULL,
@@ -4370,83 +4589,6 @@ CREATE FOREIGN TABLE jobs (
     organization_id integer,
     code_location_id integer,
     code_location_tarball_id integer
-)
-SERVER ohloh
-OPTIONS (
-    schema_name 'public',
-    table_name 'jobs'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN project_id OPTIONS (
-    column_name 'project_id'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN status OPTIONS (
-    column_name 'status'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN type OPTIONS (
-    column_name 'type'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN priority OPTIONS (
-    column_name 'priority'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN current_step OPTIONS (
-    column_name 'current_step'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN current_step_at OPTIONS (
-    column_name 'current_step_at'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN max_steps OPTIONS (
-    column_name 'max_steps'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN exception OPTIONS (
-    column_name 'exception'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN backtrace OPTIONS (
-    column_name 'backtrace'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN code_set_id OPTIONS (
-    column_name 'code_set_id'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN sloc_set_id OPTIONS (
-    column_name 'sloc_set_id'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN notes OPTIONS (
-    column_name 'notes'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN wait_until OPTIONS (
-    column_name 'wait_until'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN account_id OPTIONS (
-    column_name 'account_id'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN logged_at OPTIONS (
-    column_name 'logged_at'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN slave_id OPTIONS (
-    column_name 'slave_id'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN started_at OPTIONS (
-    column_name 'started_at'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN retry_count OPTIONS (
-    column_name 'retry_count'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN do_not_retry OPTIONS (
-    column_name 'do_not_retry'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN failure_group_id OPTIONS (
-    column_name 'failure_group_id'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN organization_id OPTIONS (
-    column_name 'organization_id'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN code_location_id OPTIONS (
-    column_name 'code_location_id'
-);
-ALTER FOREIGN TABLE jobs ALTER COLUMN code_location_tarball_id OPTIONS (
-    column_name 'code_location_tarball_id'
 );
 
 
@@ -4463,20 +4605,18 @@ CREATE SEQUENCE jobs_id_seq
 
 
 --
--- Name: jobs_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
+-- Name: jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE jobs_id_seq_view (
-    id integer
-)
-SERVER ohloh
-OPTIONS (
-    schema_name 'public',
-    table_name 'jobs_id_seq_view'
-);
-ALTER FOREIGN TABLE jobs_id_seq_view ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
+ALTER SEQUENCE jobs_id_seq OWNED BY jobs.id;
+
+
+--
+-- Name: jobs_id_seq_view; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW jobs_id_seq_view AS
+ SELECT (nextval('jobs_id_seq'::regclass))::integer AS id;
 
 
 --
@@ -7764,6 +7904,17 @@ ALTER FOREIGN TABLE recommendations_id_seq_view ALTER COLUMN id OPTIONS (
 
 
 --
+-- Name: registration_keys; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE registration_keys (
+    id uuid DEFAULT uuid_generate_v4() NOT NULL,
+    client_name text NOT NULL,
+    description text
+);
+
+
+--
 -- Name: releases; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
@@ -7913,11 +8064,11 @@ ALTER FOREIGN TABLE reports_id_seq_view ALTER COLUMN id OPTIONS (
 
 
 --
--- Name: repositories; Type: FOREIGN TABLE; Schema: public; Owner: -
+-- Name: repositories; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE repositories (
-    id integer DEFAULT repositories_id_seq_view() NOT NULL,
+CREATE TABLE repositories (
+    id integer NOT NULL,
     url text,
     forge_id integer,
     username text,
@@ -7929,47 +8080,6 @@ CREATE FOREIGN TABLE repositories (
     name_at_forge text,
     owner_at_forge text,
     best_repository_directory_id integer
-)
-SERVER ohloh
-OPTIONS (
-    schema_name 'public',
-    table_name 'repositories'
-);
-ALTER FOREIGN TABLE repositories ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
-ALTER FOREIGN TABLE repositories ALTER COLUMN url OPTIONS (
-    column_name 'url'
-);
-ALTER FOREIGN TABLE repositories ALTER COLUMN forge_id OPTIONS (
-    column_name 'forge_id'
-);
-ALTER FOREIGN TABLE repositories ALTER COLUMN username OPTIONS (
-    column_name 'username'
-);
-ALTER FOREIGN TABLE repositories ALTER COLUMN password OPTIONS (
-    column_name 'password'
-);
-ALTER FOREIGN TABLE repositories ALTER COLUMN type OPTIONS (
-    column_name 'type'
-);
-ALTER FOREIGN TABLE repositories ALTER COLUMN created_at OPTIONS (
-    column_name 'created_at'
-);
-ALTER FOREIGN TABLE repositories ALTER COLUMN updated_at OPTIONS (
-    column_name 'updated_at'
-);
-ALTER FOREIGN TABLE repositories ALTER COLUMN update_interval OPTIONS (
-    column_name 'update_interval'
-);
-ALTER FOREIGN TABLE repositories ALTER COLUMN name_at_forge OPTIONS (
-    column_name 'name_at_forge'
-);
-ALTER FOREIGN TABLE repositories ALTER COLUMN owner_at_forge OPTIONS (
-    column_name 'owner_at_forge'
-);
-ALTER FOREIGN TABLE repositories ALTER COLUMN best_repository_directory_id OPTIONS (
-    column_name 'best_repository_directory_id'
 );
 
 
@@ -7986,48 +8096,29 @@ CREATE SEQUENCE repositories_id_seq
 
 
 --
--- Name: repositories_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
+-- Name: repositories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE repositories_id_seq_view (
-    id integer
-)
-SERVER ohloh
-OPTIONS (
-    schema_name 'public',
-    table_name 'repositories_id_seq_view'
-);
-ALTER FOREIGN TABLE repositories_id_seq_view ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
+ALTER SEQUENCE repositories_id_seq OWNED BY repositories.id;
 
 
 --
--- Name: repository_directories; Type: FOREIGN TABLE; Schema: public; Owner: -
+-- Name: repositories_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE repository_directories (
-    id integer DEFAULT repository_directories_id_seq_view() NOT NULL,
+CREATE VIEW repositories_id_seq_view AS
+ SELECT (nextval('repositories_id_seq'::regclass))::integer AS id;
+
+
+--
+-- Name: repository_directories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE repository_directories (
+    id integer NOT NULL,
     code_location_id integer,
     repository_id integer,
     fetched_at timestamp without time zone
-)
-SERVER ohloh
-OPTIONS (
-    schema_name 'public',
-    table_name 'repository_directories'
-);
-ALTER FOREIGN TABLE repository_directories ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
-ALTER FOREIGN TABLE repository_directories ALTER COLUMN code_location_id OPTIONS (
-    column_name 'code_location_id'
-);
-ALTER FOREIGN TABLE repository_directories ALTER COLUMN repository_id OPTIONS (
-    column_name 'repository_id'
-);
-ALTER FOREIGN TABLE repository_directories ALTER COLUMN fetched_at OPTIONS (
-    column_name 'fetched_at'
 );
 
 
@@ -8044,56 +8135,31 @@ CREATE SEQUENCE repository_directories_id_seq
 
 
 --
--- Name: repository_directories_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
+-- Name: repository_directories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE repository_directories_id_seq_view (
-    id integer
-)
-SERVER ohloh
-OPTIONS (
-    schema_name 'public',
-    table_name 'repository_directories_id_seq_view'
-);
-ALTER FOREIGN TABLE repository_directories_id_seq_view ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
+ALTER SEQUENCE repository_directories_id_seq OWNED BY repository_directories.id;
 
 
 --
--- Name: repository_tags; Type: FOREIGN TABLE; Schema: public; Owner: -
+-- Name: repository_directories_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE repository_tags (
-    id integer DEFAULT repository_tags_id_seq_view() NOT NULL,
+CREATE VIEW repository_directories_id_seq_view AS
+ SELECT (nextval('repository_directories_id_seq'::regclass))::integer AS id;
+
+
+--
+-- Name: repository_tags; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE repository_tags (
+    id integer NOT NULL,
     repository_id integer,
     name text,
     commit_sha1 text,
     message text,
     "timestamp" timestamp without time zone
-)
-SERVER ohloh
-OPTIONS (
-    schema_name 'public',
-    table_name 'repository_tags'
-);
-ALTER FOREIGN TABLE repository_tags ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
-ALTER FOREIGN TABLE repository_tags ALTER COLUMN repository_id OPTIONS (
-    column_name 'repository_id'
-);
-ALTER FOREIGN TABLE repository_tags ALTER COLUMN name OPTIONS (
-    column_name 'name'
-);
-ALTER FOREIGN TABLE repository_tags ALTER COLUMN commit_sha1 OPTIONS (
-    column_name 'commit_sha1'
-);
-ALTER FOREIGN TABLE repository_tags ALTER COLUMN message OPTIONS (
-    column_name 'message'
-);
-ALTER FOREIGN TABLE repository_tags ALTER COLUMN "timestamp" OPTIONS (
-    column_name 'timestamp'
 );
 
 
@@ -8110,20 +8176,18 @@ CREATE SEQUENCE repository_tags_id_seq
 
 
 --
--- Name: repository_tags_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
+-- Name: repository_tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE repository_tags_id_seq_view (
-    id integer
-)
-SERVER ohloh
-OPTIONS (
-    schema_name 'public',
-    table_name 'repository_tags_id_seq_view'
-);
-ALTER FOREIGN TABLE repository_tags_id_seq_view ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
+ALTER SEQUENCE repository_tags_id_seq OWNED BY repository_tags.id;
+
+
+--
+-- Name: repository_tags_id_seq_view; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW repository_tags_id_seq_view AS
+ SELECT (nextval('repository_tags_id_seq'::regclass))::integer AS id;
 
 
 --
@@ -9119,6 +9183,39 @@ ALTER FOREIGN TABLE stacks_id_seq_view ALTER COLUMN id OPTIONS (
 
 
 --
+-- Name: subscriptions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE subscriptions (
+    id integer NOT NULL,
+    code_location_id integer NOT NULL,
+    registration_key_id uuid NOT NULL,
+    client_token text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: subscriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE subscriptions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: subscriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE subscriptions_id_seq OWNED BY subscriptions.id;
+
+
+--
 -- Name: successful_accounts; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
@@ -9507,6 +9604,42 @@ ALTER FOREIGN TABLE topics_id_seq_view ALTER COLUMN id OPTIONS (
 
 
 --
+-- Name: users; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE users (
+    id integer NOT NULL,
+    level integer DEFAULT 0,
+    email character varying NOT NULL,
+    activated boolean DEFAULT false,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    encrypted_password character varying(128) NOT NULL,
+    confirmation_token character varying(128),
+    remember_token character varying(128) NOT NULL
+);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
 -- Name: verifications; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
@@ -9784,6 +9917,13 @@ ALTER FOREIGN TABLE vw_projecturlnameedits ALTER COLUMN value OPTIONS (
 
 
 --
+-- Name: admin_dashboard_stats id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY admin_dashboard_stats ALTER COLUMN id SET DEFAULT nextval('admin_dashboard_stats_id_seq'::regclass);
+
+
+--
 -- Name: analysis_aliases id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -9809,6 +9949,13 @@ ALTER TABLE ONLY code_location_job_feeders ALTER COLUMN id SET DEFAULT nextval('
 --
 
 ALTER TABLE ONLY code_location_tarballs ALTER COLUMN id SET DEFAULT nextval('code_location_tarballs_id_seq'::regclass);
+
+
+--
+-- Name: code_locations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_locations ALTER COLUMN id SET DEFAULT nextval('code_locations_id_seq'::regclass);
 
 
 --
@@ -9847,10 +9994,24 @@ ALTER TABLE ONLY email_addresses ALTER COLUMN id SET DEFAULT nextval('email_addr
 
 
 --
+-- Name: failure_groups id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY failure_groups ALTER COLUMN id SET DEFAULT nextval('failure_groups_id_seq'::regclass);
+
+
+--
 -- Name: fisbot_events id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY fisbot_events ALTER COLUMN id SET DEFAULT nextval('fisbot_events_id_seq'::regclass);
+
+
+--
+-- Name: forges id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY forges ALTER COLUMN id SET DEFAULT nextval('forges_id_seq'::regclass);
 
 
 --
@@ -9861,10 +10022,38 @@ ALTER TABLE ONLY fyles ALTER COLUMN id SET DEFAULT nextval('fyles_id_seq'::regcl
 
 
 --
+-- Name: jobs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY jobs ALTER COLUMN id SET DEFAULT nextval('jobs_id_seq'::regclass);
+
+
+--
 -- Name: load_averages id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY load_averages ALTER COLUMN id SET DEFAULT nextval('load_averages_id_seq'::regclass);
+
+
+--
+-- Name: repositories id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY repositories ALTER COLUMN id SET DEFAULT nextval('repositories_id_seq'::regclass);
+
+
+--
+-- Name: repository_directories id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY repository_directories ALTER COLUMN id SET DEFAULT nextval('repository_directories_id_seq'::regclass);
+
+
+--
+-- Name: repository_tags id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY repository_tags ALTER COLUMN id SET DEFAULT nextval('repository_tags_id_seq'::regclass);
 
 
 --
@@ -9893,6 +10082,28 @@ ALTER TABLE ONLY sloc_metrics ALTER COLUMN id SET DEFAULT nextval('sloc_metrics_
 --
 
 ALTER TABLE ONLY sloc_sets ALTER COLUMN id SET DEFAULT nextval('sloc_sets_id_seq'::regclass);
+
+
+--
+-- Name: subscriptions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY subscriptions ALTER COLUMN id SET DEFAULT nextval('subscriptions_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Name: admin_dashboard_stats admin_dashboard_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY admin_dashboard_stats
+    ADD CONSTRAINT admin_dashboard_stats_pkey PRIMARY KEY (id);
 
 
 --
@@ -9933,6 +10144,14 @@ ALTER TABLE ONLY code_location_job_feeders
 
 ALTER TABLE ONLY code_location_tarballs
     ADD CONSTRAINT code_location_tarballs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: code_locations code_locations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_locations
+    ADD CONSTRAINT code_locations_pkey PRIMARY KEY (id);
 
 
 --
@@ -9984,11 +10203,35 @@ ALTER TABLE ONLY email_addresses
 
 
 --
+-- Name: failure_groups failure_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY failure_groups
+    ADD CONSTRAINT failure_groups_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: fisbot_events fisbot_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY fisbot_events
     ADD CONSTRAINT fisbot_events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: forges forges_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY forges
+    ADD CONSTRAINT forges_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: forges forges_type_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY forges
+    ADD CONSTRAINT forges_type_key UNIQUE (type);
 
 
 --
@@ -10000,11 +10243,51 @@ ALTER TABLE ONLY fyles
 
 
 --
+-- Name: jobs jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY jobs
+    ADD CONSTRAINT jobs_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: load_averages load_averages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY load_averages
     ADD CONSTRAINT load_averages_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: registration_keys registration_keys_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY registration_keys
+    ADD CONSTRAINT registration_keys_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: repositories repositories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY repositories
+    ADD CONSTRAINT repositories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: repository_directories repository_directories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY repository_directories
+    ADD CONSTRAINT repository_directories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: repository_tags repository_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY repository_tags
+    ADD CONSTRAINT repository_tags_pkey PRIMARY KEY (id);
 
 
 --
@@ -10032,6 +10315,14 @@ ALTER TABLE ONLY sloc_sets
 
 
 --
+-- Name: subscriptions subscriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY subscriptions
+    ADD CONSTRAINT subscriptions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: diffs unique_diffs_on_commit_id_fyle_id; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -10040,10 +10331,32 @@ ALTER TABLE ONLY diffs
 
 
 --
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: foo; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX foo ON slaves USING btree (clump_status) WHERE (oldest_clump_timestamp IS NOT NULL);
+
+
+--
+-- Name: index_admin_dashboard_stats_on_data; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_admin_dashboard_stats_on_data ON admin_dashboard_stats USING gin (data);
+
+
+--
+-- Name: index_admin_dashboard_stats_on_stat_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_admin_dashboard_stats_on_stat_type ON admin_dashboard_stats USING btree (stat_type);
 
 
 --
@@ -10079,6 +10392,27 @@ CREATE INDEX index_code_location_tarballs_on_code_location_id ON code_location_t
 --
 
 CREATE INDEX index_code_location_tarballs_on_reference ON code_location_tarballs USING btree (reference);
+
+
+--
+-- Name: index_code_locations_on_best_code_set_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_code_locations_on_best_code_set_id ON code_locations USING btree (best_code_set_id);
+
+
+--
+-- Name: index_code_locations_on_repository_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_code_locations_on_repository_id ON code_locations USING btree (repository_id);
+
+
+--
+-- Name: index_code_locations_on_repository_id_and_module_branch_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_code_locations_on_repository_id_and_module_branch_name ON code_locations USING btree (repository_id, module_branch_name);
 
 
 --
@@ -10159,6 +10493,13 @@ CREATE INDEX index_diffs_on_fyle_id ON diffs USING btree (fyle_id);
 
 
 --
+-- Name: index_failure_groups_on_priority_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_failure_groups_on_priority_name ON failure_groups USING btree (priority, name);
+
+
+--
 -- Name: index_fisbot_events_on_code_location_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -10187,10 +10528,87 @@ CREATE INDEX index_fyles_on_name ON fyles USING btree (name);
 
 
 --
+-- Name: index_jobs_on_account_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jobs_on_account_id ON jobs USING btree (account_id);
+
+
+--
+-- Name: index_jobs_on_code_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jobs_on_code_location_id ON jobs USING btree (code_location_id);
+
+
+--
+-- Name: index_jobs_on_code_set_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jobs_on_code_set_id ON jobs USING btree (code_set_id);
+
+
+--
+-- Name: index_jobs_on_priority; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jobs_on_priority ON jobs USING btree (priority);
+
+
+--
+-- Name: index_jobs_on_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jobs_on_project_id ON jobs USING btree (project_id);
+
+
+--
+-- Name: index_jobs_on_sloc_set_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jobs_on_sloc_set_id ON jobs USING btree (sloc_set_id);
+
+
+--
+-- Name: index_jobs_on_status_type_wait_until; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jobs_on_status_type_wait_until ON jobs USING btree (status, type, (COALESCE(wait_until, '1980-01-01 00:00:00'::timestamp without time zone)));
+
+
+--
 -- Name: index_on_commits_code_set_id_position; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_on_commits_code_set_id_position ON commits USING btree (code_set_id, "position");
+
+
+--
+-- Name: index_repositories_on_forge_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_repositories_on_forge_id ON repositories USING btree (forge_id);
+
+
+--
+-- Name: index_repository_directories_on_code_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_repository_directories_on_code_location_id ON repository_directories USING btree (code_location_id);
+
+
+--
+-- Name: index_repository_directories_on_repository_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_repository_directories_on_repository_id ON repository_directories USING btree (repository_id);
+
+
+--
+-- Name: index_repository_tags_on_repository_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_repository_tags_on_repository_id ON repository_tags USING btree (repository_id);
 
 
 --
@@ -10250,6 +10668,34 @@ CREATE INDEX index_sloc_sets_on_code_set_id ON sloc_sets USING btree (code_set_i
 
 
 --
+-- Name: index_subscriptions_client_token_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_subscriptions_client_token_id ON subscriptions USING btree (code_location_id, registration_key_id, client_token) WHERE (client_token IS NOT NULL);
+
+
+--
+-- Name: index_subscriptions_null_client_token_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_subscriptions_null_client_token_id ON subscriptions USING btree (code_location_id, registration_key_id) WHERE (client_token IS NULL);
+
+
+--
+-- Name: index_subscriptions_on_code_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_subscriptions_on_code_location_id ON subscriptions USING btree (code_location_id);
+
+
+--
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_email ON users USING btree (email);
+
+
+--
 -- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -10294,6 +10740,62 @@ ALTER TABLE ONLY diffs
 
 ALTER TABLE ONLY diffs
     ADD CONSTRAINT diffs_fyle_id_fkey FOREIGN KEY (fyle_id) REFERENCES fyles(id);
+
+
+--
+-- Name: code_locations fk_rails_0ff5ad97b1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY code_locations
+    ADD CONSTRAINT fk_rails_0ff5ad97b1 FOREIGN KEY (repository_id) REFERENCES repositories(id);
+
+
+--
+-- Name: repository_tags fk_rails_275a40dd6e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY repository_tags
+    ADD CONSTRAINT fk_rails_275a40dd6e FOREIGN KEY (repository_id) REFERENCES repositories(id);
+
+
+--
+-- Name: subscriptions fk_rails_481c653bad; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY subscriptions
+    ADD CONSTRAINT fk_rails_481c653bad FOREIGN KEY (registration_key_id) REFERENCES registration_keys(id);
+
+
+--
+-- Name: repository_directories fk_rails_d33c461543; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY repository_directories
+    ADD CONSTRAINT fk_rails_d33c461543 FOREIGN KEY (code_location_id) REFERENCES code_locations(id);
+
+
+--
+-- Name: repository_directories fk_rails_d36c79e15c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY repository_directories
+    ADD CONSTRAINT fk_rails_d36c79e15c FOREIGN KEY (repository_id) REFERENCES repositories(id);
+
+
+--
+-- Name: jobs jobs_failure_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY jobs
+    ADD CONSTRAINT jobs_failure_group_id_fkey FOREIGN KEY (failure_group_id) REFERENCES failure_groups(id);
+
+
+--
+-- Name: repositories repositories_forge_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY repositories
+    ADD CONSTRAINT repositories_forge_id_fkey FOREIGN KEY (forge_id) REFERENCES forges(id);
 
 
 --
@@ -10343,4 +10845,44 @@ INSERT INTO schema_migrations (version) VALUES ('20170622141518');
 INSERT INTO schema_migrations (version) VALUES ('20170905123152');
 
 INSERT INTO schema_migrations (version) VALUES ('20170911100003');
+
+INSERT INTO schema_migrations (version) VALUES ('20170913160134');
+
+INSERT INTO schema_migrations (version) VALUES ('20170925190632');
+
+INSERT INTO schema_migrations (version) VALUES ('20170925192153');
+
+INSERT INTO schema_migrations (version) VALUES ('20170925192352');
+
+INSERT INTO schema_migrations (version) VALUES ('20170925192829');
+
+INSERT INTO schema_migrations (version) VALUES ('20170925193357');
+
+INSERT INTO schema_migrations (version) VALUES ('20170925195815');
+
+INSERT INTO schema_migrations (version) VALUES ('20171020021211');
+
+INSERT INTO schema_migrations (version) VALUES ('20171025191016');
+
+INSERT INTO schema_migrations (version) VALUES ('20171030153430');
+
+INSERT INTO schema_migrations (version) VALUES ('20171030154453');
+
+INSERT INTO schema_migrations (version) VALUES ('20171127181222');
+
+INSERT INTO schema_migrations (version) VALUES ('20171128174144');
+
+INSERT INTO schema_migrations (version) VALUES ('20171204165745');
+
+INSERT INTO schema_migrations (version) VALUES ('20171206203036');
+
+INSERT INTO schema_migrations (version) VALUES ('20171207154419');
+
+INSERT INTO schema_migrations (version) VALUES ('20171209110545');
+
+INSERT INTO schema_migrations (version) VALUES ('20171212162720');
+
+INSERT INTO schema_migrations (version) VALUES ('20180104114359');
+
+INSERT INTO schema_migrations (version) VALUES ('20180116211819');
 
