@@ -23,14 +23,14 @@ class GithubApiTest < ActiveSupport::TestCase
 
   describe 'created_at' do
     it 'must correctly parse github account created at string' do
-      VCR.use_cassette('GithubVerification') do
-        github_api.created_at.must_be :<, 1.month.ago
+      VCR.use_cassette('GithubVerification') do |cassette|
+        github_api.created_at.must_be :<, relative_time(cassette, months: -1)
       end
     end
 
     it 'must correctly parse created at string when it is newer' do
-      VCR.use_cassette('GithubVerificationSpammer') do
-        github_api.created_at.must_be :>, 1.month.ago
+      VCR.use_cassette('GithubVerificationSpammer') do |cassette|
+        github_api.created_at.must_be :>, relative_time(cassette, months: -1)
       end
     end
   end
@@ -48,4 +48,8 @@ class GithubApiTest < ActiveSupport::TestCase
       end
     end
   end
+end
+
+def relative_time(cassette, months:)
+  cassette.originally_recorded_at.advance(months: months)
 end

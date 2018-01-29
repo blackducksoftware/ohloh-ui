@@ -8955,6 +8955,13 @@ CREATE INDEX posts_topic_ic ON posts USING btree (topic_id);
 
 
 --
+-- Name: releases_vulnerabilities_release_id_vulnerability_id_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX releases_vulnerabilities_release_id_vulnerability_id_idx ON releases_vulnerabilities USING btree (release_id, vulnerability_id);
+
+
+--
 -- Name: robin; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -10355,6 +10362,8 @@ INSERT INTO schema_migrations (version) VALUES ('20171127153012');
 INSERT INTO schema_migrations (version) VALUES ('20171204073648');
 
 INSERT INTO schema_migrations (version) VALUES ('20171220032437');
+
+INSERT INTO schema_migrations (version) VALUES ('20180109182901');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
