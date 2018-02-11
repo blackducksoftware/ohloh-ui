@@ -35,43 +35,6 @@ ActiveAdmin.register Job do
             decategorize_admin_failure_group_path(params[:failure_group_id]) if params[:failure_group_id]
   end
 
-  index do
-    column :type
-    column :id do |job|
-      link_to job.id, admin_job_path(job)
-    end
-    column 'Priority', :priority
-    column :current_step_at
-    column 'Last Updated' do |job|
-      time_ago_in_words(job.current_step_at) if job.current_step_at
-    end
-    column 'Progress' do |job|
-      "#{job.current_step? ? job.current_step : '-'} of #{job.max_steps? ? job.max_steps : '-'}"
-    end
-    column :status do |job|
-      span job.job_status.try(:name)
-      if job.slave_id
-        span 'on'
-        span link_to job.slave.hostname, admin_slafe_path(job.slave)
-      end
-    end
-    column :exception do |job|
-      job.exception.to_s.truncate(250)
-    end
-    column 'Owners' do |job|
-      span link_to "Project #{job.project.name}", project_path(job.project) if job.project_id
-      span link_to "Organization #{job.organization.name}", organization_path(job.organization) if job.organization_id
-      span link_to "Account #{job.account.login}", account_path(job.account) if job.account_id
-      if job.code_location_id
-        span link_to "CodeLocation #{job.code_location_id}", admin_code_location_path(job.code_location_id)
-      end
-    end
-
-    actions defaults: false do |job|
-      link_to 'Slave Log', admin_job_slave_logs_path(job)
-    end
-  end
-
   show do
     render partial: 'job'
   end
@@ -120,6 +83,10 @@ ActiveAdmin.register Job do
       else
         super
       end
+    end
+
+    def index
+      redirect_to oh_admin_project_jobs_path if params[:project_id]
     end
 
     def update

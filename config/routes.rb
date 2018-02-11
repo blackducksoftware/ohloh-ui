@@ -463,6 +463,13 @@ Rails.application.routes.draw do
   end
   resources :feedbacks
 
+  namespace :oh_admin do
+    resources :projects do
+      resources :jobs do
+      end
+    end
+  end
+
   get 'sitemap_index.xml', controller: 'sitemap', action: 'index', format: 'xml'
   get 'sitemaps/:ctrl/:page.xml', controller: 'sitemap', action: 'show', format: 'xml'
 
