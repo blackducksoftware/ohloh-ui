@@ -24,6 +24,7 @@ module OhlohUi
     config.autoload_paths << "#{Rails.root}/lib"
     config.autoload_paths << "#{Rails.root}/lib/reverification/**/*"
     config.autoload_paths << "#{Rails.root}/lib/constraints"
+    config.autoload_paths << "#{Rails.root}/lib/fisbot"
 
     config.to_prepare do
       Doorkeeper::AuthorizationsController.layout 'application'
