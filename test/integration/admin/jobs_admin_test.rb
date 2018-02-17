@@ -98,9 +98,10 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
     assert_response :redirect
   end
 
-  it 'should manually schedule job' do
+  it 'should redirect to OhAdmin for project jobs' do
     login_as admin
-    post manually_schedule_admin_project_jobs_path(create(:project))
+    project = create(:project)
+    get admin_project_jobs_path(project_id: project)
     assert_response :redirect
   end
 end

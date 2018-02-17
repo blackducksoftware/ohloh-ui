@@ -6,8 +6,6 @@ class OhAdmin::JobsController < ApplicationController
 
   def index
     @response = JSON.parse(ApiJob.new(@project.id, params[:page]).get)
-    numbers = (1..@response['total_entries']).to_a
-    @pagination = numbers.paginate(page: @response['current_page'], per_page: @response['per_page'])
   end
 
   private

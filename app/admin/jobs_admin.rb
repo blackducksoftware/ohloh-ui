@@ -20,16 +20,6 @@ ActiveAdmin.register Job do
 
   actions :all, except: :new
 
-  action_item :manually_schedule, only: :index do
-    link_to 'Manually Schedule Update',
-            manually_schedule_admin_project_jobs_path(project), method: :post if params[:project_id]
-  end
-
-  action_item :project_analysis_job, only: :index do
-    link_to 'Manually Create Analyze Job',
-            analyze_admin_project_jobs_path(project), method: :post if params[:project_id]
-  end
-
   action_item :decategorize do
     link_to 'Decategorize',
             decategorize_admin_failure_group_path(params[:failure_group_id]) if params[:failure_group_id]
@@ -78,8 +68,6 @@ ActiveAdmin.register Job do
     def scoped_collection
       if params['code_location_id']
         CodeLocation.find(params['code_location_id']).jobs
-      elsif params[:project_id]
-        project_jobs
       else
         super
       end
@@ -99,30 +87,6 @@ ActiveAdmin.register Job do
       flash[:success] = 'Job has been deleted'
       Job.find(params['id']).destroy
       redirect_to admin_jobs_path
-    end
-
-    def manually_schedule
-      project = Project.find_by_vanity_url!(params[:project_id])
-      project.code_locations.each(&:schedule_fetch)
-      redirect_to admin_project_jobs_path(project), flash: { success: 'Job has been scheduled.' }
-    end
-
-    def analyze
-      project = Project.find_by_vanity_url!(params[:project_id])
-      AnalyzeJob.create(project: project, priority: 0)
-      redirect_to admin_project_jobs_path(project), flash: { success: 'Analysis Job has been created manually.' }
-    end
-
-    private
-
-    def project_jobs
-      project = Project.find_by_vanity_url!(params[:project_id])
-      if project.code_locations.size.zero?
-        project.jobs
-      else
-        code_location_ids = Enlistment.where(project_id: project.id, deleted: false).pluck(:code_location_id)
-        Job.where("project_id = #{project.id} or code_location_id in (#{code_location_ids.join(',') || 0})")
-      end
     end
   end
 end

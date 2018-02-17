@@ -41,6 +41,6 @@
               %td
                 = link_to 'Slave Log', admin_job_slave_logs_path(job_id: job['id'])
 
-    = will_paginate(@pagination)
+    = api_pagination(@response)
   - else
     %h2= 'Sorry, No Jobs Found'

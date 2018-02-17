@@ -9,15 +9,4 @@ describe 'Admin::JobsController' do
     get :index, project_id: project.vanity_url
     must_respond_with :redirect
   end
-
-  it 'should create a analysis job for the project' do
-    assert_difference 'AnalyzeJob.count' do
-      get :analyze, project_id: project.vanity_url
-    end
-  end
-
-  it 'should redirect to index' do
-    get :analyze, project_id: project.vanity_url
-    must_redirect_to admin_project_jobs_path(project)
-  end
 end

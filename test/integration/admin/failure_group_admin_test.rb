@@ -10,15 +10,6 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
     assert_response :ok
   end
 
-  it 'should show failure group jobs' do
-    skip('need to revisit')
-    failure_group = create(:failure_group)
-    create(:failed_job, failure_group_id: failure_group.id)
-    login_as admin
-    get admin_failure_group_jobs_path(failure_group)
-    assert_response :ok
-  end
-
   describe 'index' do
     it 'should render failure groups sorted in ascending order' do
       failure_group = create(:failure_group)
