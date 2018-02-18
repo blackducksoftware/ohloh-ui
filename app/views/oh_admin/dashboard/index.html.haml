@@ -1,0 +1,63 @@
+:ruby
+  accounts_hash   = { regular: 0, spam: -20, admin: 10, disabled: -10 }
+  accounts_color  = ['bg-blue', 'bg-red', 'bg-yellow', 'bg-gray-active']
+  accounts_icons  = ['fa-users', 'fa-exclamation-triangle', 'fa-user-secret', 'fa-ban']
+
+  project_titles  = ['Updated Analysis (in last hour)', 'Active Projects', 'Projects (with active Enlistment)']
+  project_colors  = ['bg-aqua', 'bg-green', 'bg-light-blue-active']
+  project_icons   = ['fa-area-chart', 'fa-bar-chart', 'fa-shield']
+  analyses_count  = Analysis.where(updated_on: get_window.utc..Time.current).count
+  project_values  = [analyses_count, Project.active.count, Project.active_enlistments.uniq.count(:project_id)]
+
+  last_activity_icons = ['fa-calendar', 'fa-check-square', 'fa-server']
+  last_activity_text  = ['Monthly Language Analysis', 'CII Projects', 'Deployment']
+  last_activity_info  = [Analysis::MonthlyLanguage.last_run, ProjectBadge.check_cii_projects_last_run, last_deployment]
+  last_activity_bg    = ['bg-aqua', 'bg-green', 'bg-yellow']
+
+
+%h1 Project Stats Overview
+%p
+.row
+  - 3.times do |i|
+    .col-lg-3.col-xs-6
+      .small-box{ class: project_colors[i] }
+        .inner
+          %h3= number_with_delimiter(project_values[i])
+          %p= project_titles[i]
+        .icon
+          %i.fa{ class: project_icons[i] }
+
+%p &nbsp;
+
+%h1 Accounts Overview
+%p
+.row
+  - accounts_hash.each_with_index do |(key, level), i|
+    .col-lg-3.col-xs-6
+      .small-box{ class: accounts_color[i] }
+        .inner
+          %h3= accounts_count(level)
+          %p= key.to_s.capitalize + ' Accounts'
+        .icon
+          %i.fa{ class: accounts_icons[i] }
+        %a.small-box-footer{ href: accounts_link(level) }
+          More info
+          %i.fa.fa-arrow-circle-right
+
+%p &nbsp;
+
+%h1 Last Activities
+%p
+.row
+  - 3.times do |i|
+    .col-md-4
+      .info-box{ class: last_activity_bg[i] }
+        %span.info-box-icon
+          %i.fa{ class: last_activity_icons[i] }
+        .info-box-content
+          %span.info-box-text= last_activity_text[i]
+          %span.info-box-number= last_activity_info[i]
+          .progress
+            .progress-bar{ style: 'width: 100%' }
+          %span.progress-description
+
