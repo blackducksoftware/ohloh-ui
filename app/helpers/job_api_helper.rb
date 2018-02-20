@@ -9,11 +9,10 @@ module JobApiHelper
 
   def status_tag(status)
     case status
-    when 0 then ['scheduled', 'label-warning']
-    when 1 then ['running',   'label-primary']
-    when 2 then ['paused',    'label-warning']
-    when 3 then ['failed',    'label-danger']
-    when 5 then ['completed', 'label-success']
+    when Job::STATUS_SCHEDULED  then ['scheduled', 'label-warning']
+    when Job::STATUS_RUNNING    then ['running',   'label-primary']
+    when Job::STATUS_FAILED     then ['failed',    'label-danger']
+    when Job::STATUS_COMPLETED  then ['completed', 'label-success']
     end
   end
 

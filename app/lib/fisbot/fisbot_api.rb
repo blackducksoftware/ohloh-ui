@@ -1,7 +1,7 @@
 class FisbotApi
   API_URI = URI(ENV['FISBOT_API_URL']).freeze
 
-  def get
+  def fetch
     url = API_URI + "/api/v1/#{@endpoint}.json"
     url.query = URI.encode_www_form(params)
     Net::HTTP.get_response(url).body
