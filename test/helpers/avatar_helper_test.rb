@@ -61,7 +61,7 @@ class AvatarHelperTest < ActionView::TestCase
     end
 
     it 'should contain openhub host name' do
-      gravatar_url('123', 12).must_equal 'https://gravatar.com/avatar/123?&s=12&rating=PG&d=http%3a%2f%2fopenhub.net%2fanon32.gif'
+      gravatar_url('123', 12).must_equal 'https://gravatar.com/avatar/123?&s=12&rating=PG&d=https%3a%2f%2fopenhub.net%2fanon32.gif'
     end
   end
 end
