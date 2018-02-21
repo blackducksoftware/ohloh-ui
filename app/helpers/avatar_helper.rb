@@ -55,7 +55,7 @@ module AvatarHelper
                     "http#{'s' if request && request.ssl?}%3a%2f%2f#{ActionController::Base.asset_host}"
                   end
     default_url << "%2fanon#{avatar_default_size(size)}.gif"
-    gravatar_host = (request && request.ssl?) ? 'https://gravatar.com' : 'http://gravatar.com'
+    gravatar_host = 'https://gravatar.com'
     "#{gravatar_host}/avatar/#{md5}?&s=#{size}&rating=PG&d=#{default_url}"
   end
 

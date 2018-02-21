@@ -14,7 +14,7 @@ xml.account do
   xml.twitter_account account.twitter_account
   xml.url account_url(account, format: 'xml')
   xml.html_url account_url(account)
-  xml.avatar_url "http://www.gravatar.com/avatar.php?gravatar_id=#{account.email_md5}"
+  xml.avatar_url "https://www.gravatar.com/avatar.php?gravatar_id=#{account.email_md5}"
   xml.email_sha1 Digest::SHA1.hexdigest("mailto:#{account.email}")
   xml.posts_count account.posts_count
   xml.location account.location
