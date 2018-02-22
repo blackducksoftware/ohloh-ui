@@ -20,56 +20,9 @@ ActiveAdmin.register Job do
 
   actions :all, except: :new
 
-  action_item :manually_schedule, only: :index do
-    link_to 'Manually Schedule Update',
-            manually_schedule_admin_project_jobs_path(project), method: :post if params[:project_id]
-  end
-
-  action_item :project_analysis_job, only: :index do
-    link_to 'Manually Create Analyze Job',
-            analyze_admin_project_jobs_path(project), method: :post if params[:project_id]
-  end
-
   action_item :decategorize do
     link_to 'Decategorize',
             decategorize_admin_failure_group_path(params[:failure_group_id]) if params[:failure_group_id]
-  end
-
-  index do
-    column :type
-    column :id do |job|
-      link_to job.id, admin_job_path(job)
-    end
-    column 'Priority', :priority
-    column :current_step_at
-    column 'Last Updated' do |job|
-      time_ago_in_words(job.current_step_at) if job.current_step_at
-    end
-    column 'Progress' do |job|
-      "#{job.current_step? ? job.current_step : '-'} of #{job.max_steps? ? job.max_steps : '-'}"
-    end
-    column :status do |job|
-      span job.job_status.try(:name)
-      if job.slave_id
-        span 'on'
-        span link_to job.slave.hostname, admin_slafe_path(job.slave)
-      end
-    end
-    column :exception do |job|
-      job.exception.to_s.truncate(250)
-    end
-    column 'Owners' do |job|
-      span link_to "Project #{job.project.name}", project_path(job.project) if job.project_id
-      span link_to "Organization #{job.organization.name}", organization_path(job.organization) if job.organization_id
-      span link_to "Account #{job.account.login}", account_path(job.account) if job.account_id
-      if job.code_location_id
-        span link_to "CodeLocation #{job.code_location_id}", admin_code_location_path(job.code_location_id)
-      end
-    end
-
-    actions defaults: false do |job|
-      link_to 'Slave Log', admin_job_slave_logs_path(job)
-    end
   end
 
   show do
@@ -115,11 +68,13 @@ ActiveAdmin.register Job do
     def scoped_collection
       if params['code_location_id']
         CodeLocation.find(params['code_location_id']).jobs
-      elsif params[:project_id]
-        project_jobs
       else
         super
       end
+    end
+
+    def index
+      redirect_to oh_admin_project_jobs_path if params[:project_id]
     end
 
     def update
@@ -132,30 +87,6 @@ ActiveAdmin.register Job do
       flash[:success] = 'Job has been deleted'
       Job.find(params['id']).destroy
       redirect_to admin_jobs_path
-    end
-
-    def manually_schedule
-      project = Project.find_by_vanity_url!(params[:project_id])
-      project.code_locations.each(&:schedule_fetch)
-      redirect_to admin_project_jobs_path(project), flash: { success: 'Job has been scheduled.' }
-    end
-
-    def analyze
-      project = Project.find_by_vanity_url!(params[:project_id])
-      AnalyzeJob.create(project: project, priority: 0)
-      redirect_to admin_project_jobs_path(project), flash: { success: 'Analysis Job has been created manually.' }
-    end
-
-    private
-
-    def project_jobs
-      project = Project.find_by_vanity_url!(params[:project_id])
-      if project.code_locations.size.zero?
-        project.jobs
-      else
-        code_location_ids = Enlistment.where(project_id: project.id, deleted: false).pluck(:code_location_id)
-        Job.where("project_id = #{project.id} or code_location_id in (#{code_location_ids.join(',') || 0})")
-      end
     end
   end
 end

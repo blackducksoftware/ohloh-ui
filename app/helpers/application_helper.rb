@@ -127,6 +127,11 @@ module ApplicationHelper
     logged_in? ? '' : 'needs_login'
   end
 
+  def api_pagination(response)
+    numbers = (1..response['total_entries']).to_a
+    will_paginate(numbers.paginate(page: response['current_page'], per_page: response['per_page']))
+  end
+
   private
 
   def render_expander(text, l)

@@ -10,21 +10,6 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
     assert_response :ok
   end
 
-  it 'should render uncategorized index page' do
-    create(:failure_group)
-    login_as admin
-    get admin_jobs_path(scope: 'uncategorized_failed_jobs')
-    assert_response :ok
-  end
-
-  it 'should show failure group jobs' do
-    failure_group = create(:failure_group)
-    create(:failed_job, failure_group_id: failure_group.id)
-    login_as admin
-    get admin_failure_group_jobs_path(failure_group)
-    assert_response :ok
-  end
-
   describe 'index' do
     it 'should render failure groups sorted in ascending order' do
       failure_group = create(:failure_group)

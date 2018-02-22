@@ -1,0 +1,46 @@
+- project_name = @project.name.capitalize
+%h1
+  %strong
+    = project_name
+  Project Jobs
+
+%section.content
+  - if @response['entries']
+    .box
+      .box-body.table-responsive.no-padding
+        %table.table.table-striped.table-hover
+          %tr
+            %th Type
+            %th Job Id
+            %th Priority
+            %th Current Step At
+            %th.text-left Progress
+            %th.text-center Last Updated
+            %th.text-center Status
+            %th Exception
+            %th Owner
+            %th Slave Log
+          - @response['entries'].each do |entry|
+            - job = entry.values.first
+            - status = status_tag(job['status'])
+            %tr
+              %td= entry.keys[0].titleize
+              %td= link_to(job['id'], admin_job_path(id: job['id']))
+              %td.text-left= job['priority']
+              %td.text-left= current_step_at(job['current_step_at'])
+              %td
+                = capture_haml { job_progress(job) }
+                %span.label{ style: 'color:black' }= step_message(job)
+              %td.text-center= last_updated(job['current_step_at'])
+              %td.text-center
+                %span.label{ class: status[1] }= status[0]
+                %span= slave_host(job['slave_id'])
+              %td= job['exception'].to_s.truncate(250)
+              %td
+                = link_to "Project #{project_name}", project_url(@project)
+              %td
+                = link_to 'Slave Log', admin_job_slave_logs_path(job_id: job['id'])
+
+    = api_pagination(@response)
+  - else
+    %h2= 'Sorry, No Jobs Found'

@@ -25,28 +25,25 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
     assert_equal flash[:notice], "Job #{job.id} retry attempts counter has been reset to 0."
   end
 
-  it 'should render index page' do
-    login_as admin
-    create(:fetch_job, code_location: create(:code_location), slave: create(:slave))
-    get admin_jobs_path
-    assert_response :success
-  end
-
   it 'should render project jobs index page for newly created project' do
     login_as admin
     code_location = create(:code_location)
-    create(:fetch_job, code_location: code_location, slave: create(:slave))
+    create(:fetch_job, code_location: code_location, slave: create(:slave, id: 1))
     project = create(:project)
     create(:enlistment, code_location: code_location, project: project)
-    get admin_jobs_path, project_id: project.vanity_url
+    VCR.use_cassette('project_jobs', match_requests_on: [:path]) do
+      get oh_admin_project_jobs_path(project_id: project.vanity_url)
+    end
     assert_response :success
   end
 
   it 'should render project index page for analses completed project' do
     login_as admin
     project = create(:project)
-    create(:fetch_job, project: project, slave: create(:slave))
-    get admin_jobs_path, project_id: project.vanity_url
+    create(:fetch_job, project: project, slave: create(:slave, id: 1))
+    VCR.use_cassette('project_jobs', match_requests_on: [:path]) do
+      get oh_admin_project_jobs_path(project_id: project.vanity_url)
+    end
     assert_response :success
   end
 
@@ -78,12 +75,6 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
     assert_response :redirect
   end
 
-  it 'should index code_location jobs' do
-    login_as admin
-    get admin_code_location_jobs_path(create(:code_location))
-    assert_response :success
-  end
-
   it 'should update priority' do
     login_as admin
     job = create(:fetch_job, code_location: create(:code_location))
@@ -107,9 +98,10 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
     assert_response :redirect
   end
 
-  it 'should manually schedule job' do
+  it 'should redirect to OhAdmin for project jobs' do
     login_as admin
-    post manually_schedule_admin_project_jobs_path(create(:project))
+    project = create(:project)
+    get admin_project_jobs_path(project_id: project)
     assert_response :redirect
   end
 end

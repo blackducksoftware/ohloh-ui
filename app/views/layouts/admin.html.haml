@@ -1,0 +1,42 @@
+!!!
+%html
+  %head
+    %meta{ content: 'text/html; charset=UTF-8', 'http-equiv': 'Content-Type' }
+    %meta{ charset: 'utf-8' }
+    %title OpenHub Admin
+    %meta{ content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no', name: 'viewport' }
+    = stylesheet_link_tag 'admin', media: 'all'
+    %link{ href: '//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic' }
+  %body.hold-transition.skin-blue.sidebar-mini
+    .wrapper
+      %header.main-header
+        %a.logo
+          %span.logo-lg
+            %b OpenHub Admin
+        %nav.navbar.navbar-static-top
+          .navbar-custom-menu
+            %ul.nav.navbar-nav
+              %li.dropdown.user.user-menu
+                %a.dropdown-toggle{ 'data-toggle': 'dropdown' }
+                  %img.user-image{ alt: 'User Image', src: avatar_img_path(current_user) }
+                  %span.hidden-xs= current_user.name
+      %aside.main-sidebar
+        %section.sidebar
+          .user-panel
+            .pull-left.image
+              %img.img-circle{ alt: 'User Image', src: avatar_img_path(current_user, 160) }
+            .pull-left.info
+              %p
+                = current_user.name
+              %a{ href: '#' }
+                %i.fa.fa-circle.text-success
+                Online
+          %ul.sidebar-menu{ 'data-widget': 'tree' }
+            %li.header MAIN NAVIGATION
+            %li
+              %a{ href: '#' }
+                %i.fa.fa-book
+                %span Project Jobs
+      .content-wrapper
+        %section.content-header
+          = yield
