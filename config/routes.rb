@@ -7,8 +7,8 @@ Rails.application.routes.draw do
   end
 
   get 'admin/comments' => redirect('/404')
-  get 'admin', to: redirect('admin_not_found')
-  get 'admin/dashboard', to: redirect('dashboard_not_found')
+  get 'admin', to: 'oh_admin/dashboard#index'
+  get 'admin/dashboard', to: 'oh_admin/dashboard#index'
 
   root to: 'home#index', defaults: { format: 'html' }
 
@@ -464,6 +464,7 @@ Rails.application.routes.draw do
   resources :feedbacks
 
   namespace :oh_admin do
+    root to: 'dashboard#index'
     resources :projects do
       resources :jobs do
       end
