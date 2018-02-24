@@ -19,7 +19,7 @@
           = link_to bootstrap_icon('icon-flag', t('projects.header.duplicate')), new_project_duplicate_path(@project)
         - if current_user_is_admin?
           |
-          = link_to bootstrap_icon('icon-legal', t('projects.header.job')), admin_project_jobs_path(@project)
+          = link_to bootstrap_icon('icon-legal', t('projects.header.job')), oh_admin_project_jobs_path(@project)
     .pull-right.no_padding#widgets
       .pull-left
         #add_this{ 'data-analytics-id' => ENV['ADDTHIS_ANALYTICS_ID'] }
