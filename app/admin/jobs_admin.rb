@@ -74,7 +74,7 @@ ActiveAdmin.register Job do
     end
 
     def index
-      redirect_to oh_admin_project_jobs_path if params[:project_id]
+      params[:project_id] ? redirect_to(oh_admin_project_jobs_path) : super
     end
 
     def update
