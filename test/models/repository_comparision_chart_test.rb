@@ -3,7 +3,7 @@ require 'test_helper'
 class RepositoryComparisionChartTest < ActiveSupport::TestCase
   describe 'build' do
     it 'must combine repository data with default values' do
-      RepositoryComparisionChart.stubs(:combine_svn_and_svn_sync_count).returns([])
+      RepositoryComparisionChart.stubs(:combine_svn_count).returns([])
       CodeLocation.stubs(:scm_type_count).returns([])
       data = RepositoryComparisionChart.build.with_indifferent_access
 
@@ -22,13 +22,13 @@ class RepositoryComparisionChartTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'combine_svn_and_svn_sync_count' do
-    it 'must combine svn and svn_sync data into a single unit' do
-      data = [{ type: 'svn', count: 3 }, { type: 'svn_sync', count: 2 }]
+  describe 'combine_svn_count' do
+    it 'must combine all svn data into a single unit' do
+      data = [{ type: 'svn', count: 3 }, { type: 'svn_sync', count: 2 }, { type: 'git_svn', count: 1 }]
       CodeLocation.stubs(:scm_type_count).returns(data)
 
-      expected_result = [{ type: 'svn', count: 5 }]
-      RepositoryComparisionChart.combine_svn_and_svn_sync_count(data).must_equal expected_result
+      expected_result = [{ type: 'svn', count: 6 }]
+      RepositoryComparisionChart.combine_svn_count(data).must_equal expected_result
     end
   end
 end

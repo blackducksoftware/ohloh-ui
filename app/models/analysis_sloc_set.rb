@@ -32,7 +32,7 @@ class AnalysisSlocSet < FisBase
   private
 
   def adjust_leading_slash(file_name)
-    if sloc_set.code_set.code_location.scm_type.to_s == 'svn_sync'
+    if sloc_set.code_set.code_location.scm_type.to_s =~ /svn/
       file_name.gsub(/^[^\/]/, '/\0')
     else
       file_name.gsub(/^\//, '')

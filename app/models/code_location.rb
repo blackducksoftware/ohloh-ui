@@ -1,7 +1,7 @@
 class CodeLocation < FisbotApi
   include CodeLocationJobs
   extend ActiveModel::Naming # for model_name used by form_for.
-  SCM_NAME_DICT = { git: :Git, hg: :Mercurial, cvs: :CVS, bzr: :Bazaar,
+  SCM_NAME_DICT = { git: :Git, hg: :Mercurial, cvs: :CVS, bzr: :Bazaar, git_svn: :Subversion,
                     svn: :Subversion, svn_sync: 'Subversion (via SvnSync)' }.freeze
 
   STATUS_UNDEFINED = 0

@@ -40,7 +40,7 @@ class Commit < FisBase
 
   def nice_id(params = {})
     case code_set.code_location.scm_type.to_s
-    when 'svn_sync'
+    when /svn/
       "r#{sha1}"
     when 'git'
       git_sha1(params[:short])
