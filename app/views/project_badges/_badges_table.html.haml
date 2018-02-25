@@ -9,7 +9,7 @@
     %tbody
       - @active_badges.each do |badge|
         %tr
-          %td.col-xs-3.no-left-padding= badge.repository.url
+          %td.col-xs-3.no-left-padding= badge.code_location.url
           %td.col-xs-3= badge.class.badge_name
           %td.col-xs-3= badge.badge_url
           %td.col-xs-3

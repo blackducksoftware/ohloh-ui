@@ -5,7 +5,7 @@ class OhAdmin::JobsController < ApplicationController
   helper JobApiHelper
 
   def index
-    @response = JSON.parse(JobApi.new(@project.id, params[:page]).fetch)
+    @response = JSON.parse(JobApi.new(id: @project.id, page: params[:page]).fetch)
   end
 
   private

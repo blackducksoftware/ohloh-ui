@@ -33,8 +33,8 @@ module ProjectJobs
     end
 
     def guess_forge
-      if repositories.any?
-        matches = repositories.map(&:forge_match).compact.sort.uniq
+      if code_locations.any?
+        matches = code_locations.map(&:forge_match).compact.sort.uniq
         return matches.first if matches.size == 1
       end
       Forge::Match.first(url)
@@ -75,11 +75,11 @@ module ProjectJobs
   end
 
   def incomplete_code_location_job
-    Job.incomplete.find_by(code_location_id: code_locations.pluck(:id))
+    Job.incomplete.find_by(code_location_id: code_locations.map(&:id))
   end
 
   def sloc_sets_out_of_date?
-    best_sloc_set_ids = code_locations_sloc_sets.pluck(:best_sloc_set_id)
+    best_sloc_set_ids = CodeSet.where(id: code_locations.map(&:best_code_set_id)).pluck(:best_sloc_set_id)
     return true if (best_analysis.sloc_sets.pluck(:id) - best_sloc_set_ids).present?
     update_analyis_sloc_sets
   end

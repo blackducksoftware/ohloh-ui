@@ -5,13 +5,10 @@ describe 'ProjectsController' do
   let(:client_id) { api_key.oauth_application.uid }
   let(:forge) { Forge.find_by(name: 'Github') }
   let(:enlistment_params) do
-    { '0' => { code_location_attributes: { repository_attributes: { type: 'GitRepository', url: 'git://a.com/cb.git' },
-                                           module_branch_name: 'master' } } }
+    { '0' => { code_location_attributes: { type: 'git', url: 'https://github.com/rails/rails',
+                                           branch: 'master', scm_type: 'git' } } }
   end
-
-  before do
-    CodeLocation.any_instance.stubs(:bypass_url_validation).returns(true)
-  end
+  let(:project) { create(:project) }
 
   # index
   it 'index should handle query param for unlogged users' do
@@ -403,6 +400,7 @@ describe 'ProjectsController' do
     end
 
     it 'must mention that analysis is not complete when it is not created' do
+      Enlistment.any_instance.stubs(:code_location).returns(code_location_stub)
       project = create(:project)
       create(:enlistment, project: project)
       project.update! best_analysis_id: nil
@@ -414,6 +412,7 @@ describe 'ProjectsController' do
     end
 
     it 'must indicate non recognizable source code when analysis is incomplete' do
+      Enlistment.any_instance.stubs(:code_location).returns(code_location_stub)
       project = create(:project)
       create(:enlistment, project: project)
       project.best_analysis.update! min_month: nil
@@ -444,8 +443,12 @@ describe 'ProjectsController' do
 
     describe 'Project summary section' do
       let(:project) { create(:project, name: 'Rails') }
-      let(:enl1) { create(:enlistment, project: project, repository: create(:repository)) }
-      let(:enl2) { create(:enlistment, project: project, repository: create(:repository)) }
+      let(:enl1) { create_enlistment_with_code_location(project) }
+      let(:enl2) { create_enlistment_with_another_code_location(project) }
+
+      before do
+        Enlistment.any_instance.stubs(:code_location).returns(code_location_stub)
+      end
 
       describe 'Badges' do
         it 'should have badges row when badges are available for project' do
@@ -496,48 +499,48 @@ describe 'ProjectsController' do
   end
 
   it 'check_forge should gracefully handle duplicate projects detected' do
-    VCR.use_cassette('ProjectControllerCheckForge-rails') do
-      proj = create(:project)
-      repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forge.id,
-                                 owner_at_forge: 'rails', name_at_forge: 'rails')
-      create(:enlistment, project: proj, code_location: create(:code_location, repository: repo))
+    code_location_id = create_code_location_with_forge_params
+    VCR.use_cassette('ProjectControllerCheckForge-rails', erb: { code_location_id: code_location_id }) do
       login_as create(:account)
       post :check_forge, codelocation: 'https://github.com/rails/rails'
       must_respond_with :ok
-      must_select "#project_#{proj.id}", 1
+      must_select "#project_#{project.id}", 1
       must_select 'form#new_project', 0
       response.body.must_match 'already'
     end
   end
 
   it 'check_forge should gracefully handle forge timeout errors' do
-    VCR.use_cassette('ProjectControllerCheckForge-rails') do
-      proj = create(:project)
-      repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forge.id,
-                                 owner_at_forge: 'rails', name_at_forge: 'rails')
-      create(:enlistment, project: proj, code_location: create(:code_location, repository: repo))
+    code_location_id = create_code_location_with_forge_params
+    VCR.use_cassette('ProjectControllerCheckForge-rails', erb: { code_location_id: code_location_id }) do
       login_as create(:account)
       Forge::Match.any_instance.expects(:project).raises Timeout::Error
       post :check_forge, codelocation: 'https://github.com/rails/rails', bypass: true
       must_respond_with :ok
-      must_select "#project_#{proj.id}", 0
+      must_select "#project_#{project.id}", 0
       must_select 'form#new_project', 1
       response.body.must_match I18n.t('projects.check_forge.forge_time_out', name: forge.name)
     end
   end
 
   it 'check_forge should allow creating a project that already matches an existing project' do
-    VCR.use_cassette('ProjectControllerCheckForge-rails') do
-      proj = create(:project)
-      repo = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forge.id,
-                                 owner_at_forge: 'rails', name_at_forge: 'rails')
-      create(:enlistment, project: proj, code_location: create(:code_location, repository: repo))
+    code_location_id = create_code_location_with_forge_params
+    VCR.use_cassette('ProjectControllerCheckForge-rails', erb: { code_location_id: code_location_id }) do
       login_as create(:account)
       post :check_forge, codelocation: 'https://github.com/rails/rails', bypass: true
       must_respond_with :ok
-      must_select "#project_#{proj.id}", 0
+      must_select "#project_#{project.id}", 0
       must_select 'form#new_project', 1
     end
+  end
+
+  it 'check_forge wont render code location fields when no forge matches' do
+    login_as create(:account)
+    Forge::Match.stubs(:first)
+    post :check_forge, codelocation: 'foo_url'
+    must_respond_with :ok
+    must_select('input#branch', false)
+    must_select('input#url', false)
   end
 
   # create
@@ -549,15 +552,26 @@ describe 'ProjectsController' do
     flash[:notice].must_equal I18n.t('flashes.failure_when_not_signed_in')
   end
 
+  it 'create must be able to create project without code location data' do
+    login_as create(:account)
+    assert_difference 'Project.count' do
+      post :create, project: { name: 'Foo Bar', vanity_url: 'foo_bar' }
+    end
+    must_respond_with 302
+  end
+
   it 'create should persist a valid project to the database' do
+    CodeLocation.any_instance.stubs(:valid?).returns(true)
     account = create(:account)
     license1 = create(:license)
     license2 = create(:license)
     login_as account
-    post :create, project: { name: 'Cool Beans', vanity_url: 'cool-beans', description: 'cool beans app',
-                             url: 'http://a.com/', download_url: 'http://b.com/', managed_by_creator: '1',
-                             project_licenses_attributes: [{ license_id: license1.id }, { license_id: license2.id }],
-                             enlistments_attributes: enlistment_params }
+    webmock_create_code_location_and_subscription do
+      post :create, project: { name: 'Cool Beans', vanity_url: 'cool-beans', description: 'cool beans app',
+                               url: 'http://a.com/', download_url: 'http://b.com/', managed_by_creator: '1',
+                               project_licenses_attributes: [{ license_id: license1.id }, { license_id: license2.id }],
+                               enlistments_attributes: enlistment_params }
+    end
     must_respond_with 302
     project = Project.where(vanity_url: 'cool-beans').last
     project.wont_equal nil
@@ -566,21 +580,27 @@ describe 'ProjectsController' do
     project.download_url.must_equal 'http://b.com/'
     project.active_managers.must_equal [account]
     project.licenses.map(&:id).sort.must_equal [license1.id, license2.id].sort
+    project.enlistments.where('code_location_id is not null').must_be :exists?
+    WebMocker.get_project_code_locations
     project.code_locations.length.must_equal 1
-    project.code_locations[0].repository.type.must_equal 'GitRepository'
-    project.code_locations[0].repository.url.must_equal 'git://a.com/cb.git'
-    project.code_locations[0].module_branch_name.must_equal 'master'
+    code_location = project.code_locations[0]
+    code_location.scm_type.must_equal 'git'
+    code_location.url.must_equal 'git://github.com/rails/rails'
+    code_location.branch.must_equal 'master'
   end
 
   it 'create should allow no download_url' do
+    CodeLocation.any_instance.stubs(:valid?).returns(true)
     account = create(:account)
     license1 = create(:license)
     license2 = create(:license)
     login_as account
-    post :create, project: { name: 'Cool Beans', vanity_url: 'cool-beans', description: 'cool beans app',
-                             url: 'http://a.com/', download_url: '', managed_by_creator: '1',
-                             project_licenses_attributes: [{ license_id: license1.id }, { license_id: license2.id }],
-                             enlistments_attributes: enlistment_params }
+    webmock_create_code_location_and_subscription do
+      post :create, project: { name: 'Cool Beans', vanity_url: 'cool-beans', description: 'cool beans app',
+                               url: 'http://a.com/', download_url: '', managed_by_creator: '1',
+                               project_licenses_attributes: [{ license_id: license1.id }, { license_id: license2.id }],
+                               enlistments_attributes: enlistment_params }
+    end
     must_respond_with 302
     project = Project.where(vanity_url: 'cool-beans').last
     project.wont_equal nil
@@ -589,19 +609,19 @@ describe 'ProjectsController' do
     assert_nil project.download_url
     project.active_managers.must_equal [account]
     project.licenses.map(&:id).sort.must_equal [license1.id, license2.id].sort
-    project.code_locations.length.must_equal 1
-    project.code_locations[0].repository.type.must_equal 'GitRepository'
-    project.code_locations[0].repository.url.must_equal 'git://a.com/cb.git'
-    project.code_locations[0].module_branch_name.must_equal 'master'
+    project.enlistments.where('code_location_id is not null').must_be :exists?
   end
 
   it 'create should allow no licenses' do
+    CodeLocation.any_instance.stubs(:valid?).returns(true)
     account = create(:account)
     login_as account
-    post :create, project: { name: 'Cool Beans', vanity_url: 'cool-beans', description: 'cool beans app',
-                             url: 'http://a.com/', download_url: 'http://b.com/', managed_by_creator: '1',
-                             project_licenses_attributes: [],
-                             enlistments_attributes: enlistment_params }
+    webmock_create_code_location_and_subscription do
+      post :create, project: { name: 'Cool Beans', vanity_url: 'cool-beans', description: 'cool beans app',
+                               url: 'http://a.com/', download_url: 'http://b.com/', managed_by_creator: '1',
+                               project_licenses_attributes: [],
+                               enlistments_attributes: enlistment_params }
+    end
     must_respond_with 302
     project = Project.where(vanity_url: 'cool-beans').last
     project.wont_equal nil
@@ -610,20 +630,20 @@ describe 'ProjectsController' do
     project.download_url.must_equal 'http://b.com/'
     project.active_managers.must_equal [account]
     project.licenses.must_equal []
-    project.code_locations.length.must_equal 1
-    project.code_locations[0].repository.type.must_equal 'GitRepository'
-    project.code_locations[0].repository.url.must_equal 'git://a.com/cb.git'
-    project.code_locations[0].module_branch_name.must_equal 'master'
+    project.enlistments.where('code_location_id is not null').must_be :exists?
   end
 
   it 'create should allow the creator not being automatically the manager' do
+    CodeLocation.any_instance.stubs(:valid?).returns(true)
     license1 = create(:license)
     license2 = create(:license)
     login_as create(:account)
-    post :create, project: { name: 'Cool Beans', vanity_url: 'cool-beans', description: 'cool beans app',
-                             url: 'http://a.com/', download_url: 'http://b.com/', managed_by_creator: '0',
-                             project_licenses_attributes: [{ license_id: license1.id }, { license_id: license2.id }],
-                             enlistments_attributes: enlistment_params }
+    webmock_create_code_location_and_subscription do
+      post :create, project: { name: 'Cool Beans', vanity_url: 'cool-beans', description: 'cool beans app',
+                               url: 'http://a.com/', download_url: 'http://b.com/', managed_by_creator: '0',
+                               project_licenses_attributes: [{ license_id: license1.id }, { license_id: license2.id }],
+                               enlistments_attributes: enlistment_params }
+    end
     must_respond_with 302
     project = Project.where(vanity_url: 'cool-beans').last
     project.wont_equal nil
@@ -632,22 +652,21 @@ describe 'ProjectsController' do
     project.download_url.must_equal 'http://b.com/'
     project.active_managers.must_equal []
     project.licenses.map(&:id).sort.must_equal [license1.id, license2.id].sort
-    project.code_locations.length.must_equal 1
-    project.code_locations[0].repository.type.must_equal 'GitRepository'
-    project.code_locations[0].repository.url.must_equal 'git://a.com/cb.git'
-    project.code_locations[0].module_branch_name.must_equal 'master'
+    project.enlistments.where('code_location_id is not null').must_be :exists?
   end
 
   it 'create should not lose repo params on validation errors' do
+    CodeLocation.any_instance.stubs(:valid?).returns(true)
     login_as create(:account)
     post :create, project: { name: '', vanity_url: 'cool-beans', description: 'cool beans app',
                              url: 'http://a.com/', enlistments_attributes: enlistment_params }
     must_respond_with :unprocessable_entity
     must_select 'form#new_project', 1
     must_select 'p.error'
-    must_select 'input#project_enlistments_attributes_0_code_location_attributes_repository_attributes_url'
-    must_select 'input#project_enlistments_attributes_0_code_location_attributes_module_branch_name'
-    must_select 'select#repository_type'
+    must_select('input#url').first.attr('value').must_equal enlistment_params['0'][:code_location_attributes][:url]
+    expected_branch = enlistment_params['0'][:code_location_attributes][:branch]
+    must_select('input#branch').first.attr('value').must_equal expected_branch
+    assert_select('select#repository_type').search("option[@selected='selected']").first.attr('value').must_equal 'git'
     flash[:error].must_equal I18n.t('projects.create.failure')
   end
 
@@ -965,4 +984,24 @@ describe 'ProjectsController' do
       end
     end
   end
+end
+
+# TODO: Remove dependence on code_locations and repositories when we remove Forge.
+def create_code_location_with_forge_params
+  url = 'git://github.com/rails/rails.git'
+  Enlistment.connection.execute("insert into repositories (type, url, forge_id, owner_at_forge, name_at_forge)
+                                 values ('GitRepository', '#{url}', #{forge.id}, 'rails', 'rails')")
+  repository_id = Enlistment.connection.execute('select max(id) from repositories').values[0][0]
+  Enlistment.connection.execute("insert into code_locations (repository_id) values (#{repository_id})")
+  code_location_id = Enlistment.connection.execute('select max(id) from code_locations').values[0][0]
+  create(:enlistment, project: project, code_location_id: code_location_id)
+  code_location_id
+end
+
+def webmock_create_code_location_and_subscription
+  WebMocker.create_code_location
+  WebMocker.get_project_code_locations(false)
+  WebMocker.create_subscription
+  yield
+  WebMock.reset!
 end

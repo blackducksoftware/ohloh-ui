@@ -21,10 +21,10 @@ class Forge::Launchpad < Forge
       url: json['homepage_url'], download_url: json['download_url'] }
   end
 
-  def get_repository_attributes(match)
+  def get_code_location_attributes(match)
     doc = Nokogiri::HTML get_homepage_html(match)
     url = repository_url(doc)
-    url ? [{ type: BzrRepository, forge_match: match, url: url }] : []
+    url ? [{ scm_type: :bzr, forge_match: match, url: url }] : []
   end
 
   private

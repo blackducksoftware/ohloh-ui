@@ -19,8 +19,7 @@ ActiveAdmin.register SlaveLog do
   controller do
     def scoped_collection
       if params[:code_location_id]
-        code_location = CodeLocation.find(params[:code_location_id])
-        code_location.slave_logs
+        Job.where(code_location_id: params[:code_location_id]).slave_logs
       elsif params[:job_id]
         SlaveLog.where(job_id: params[:job_id])
       else

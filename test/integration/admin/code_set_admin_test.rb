@@ -10,12 +10,6 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  it 'should load index page for code_location' do
-    login_as admin
-    get admin_code_location_code_sets_path(create(:code_location))
-    assert_response :success
-  end
-
   it 'loads show' do
     code_set = create(:code_set)
     login_as admin
@@ -24,6 +18,7 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 'fetch works' do
+    CodeSet.any_instance.stubs(:code_location).returns(code_location_stub)
     code_set = create(:code_set)
     login_as admin
 
@@ -35,6 +30,7 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 're-import works' do
+    CodeSet.any_instance.stubs(:code_location).returns(code_location_stub)
     clump = create(:clump)
     code_set = clump.code_set
     login_as admin
@@ -45,6 +41,7 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 'resloc works' do
+    CodeSet.any_instance.stubs(:code_location).returns(code_location_stub)
     code_set = create(:code_set)
     login_as admin
     get resloc_admin_code_set_path(code_set)

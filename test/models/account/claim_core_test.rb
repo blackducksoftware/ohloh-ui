@@ -4,8 +4,7 @@ class ClaimCoreTest < ActiveSupport::TestCase
   let(:project) { create(:project, best_analysis: create(:analysis)) }
   let(:project2) { create(:project, best_analysis: create(:analysis)) }
   let(:project2_commit) do
-    create(:enlistment, code_location: create(:code_location, :with_code_set), project: project2)
-    create(:commit, code_set: project2.code_locations.first.best_code_set)
+    create(:commit, code_set: create(:code_set))
   end
   let(:account) do
     account = create(:account)
@@ -120,6 +119,7 @@ class ClaimCoreTest < ActiveSupport::TestCase
   end
 
   def set_aliases(email)
+    Project.any_instance.stubs(:code_locations).returns([])
     new_name = setup_new_name_with_facts(email)
     create(:alias, commit_name_id: new_name.id, preferred_name_id: position_name.id, project_id: project.id)
   end

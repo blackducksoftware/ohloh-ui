@@ -4,11 +4,14 @@ class EnlistmentsController < SettingsController
 
   include EnlistmentFilters
 
+  # TODO: Remove dependence on code_locations table here.
   def index
-    @enlistments = @project.enlistments.includes(:project, code_location: :repository)
+    @enlistments = @project.enlistments.joins(:project)
+                           .joins('join code_locations on code_location_id = code_locations.id
+                                   join repositories on code_locations.repository_id = repositories.id')
                            .filter_by(params[:query]).send(parse_sort_term)
                            .paginate(page: page_param, per_page: 10)
-    @failed_jobs = Enlistment.failed_code_location_jobs.where(id: @enlistments.pluck(:id)).any?
+    @failed_jobs = Job.failed.where(code_location_id: @enlistments.pluck(:code_location_id)).exists?
   end
 
   def show
@@ -18,17 +21,19 @@ class EnlistmentsController < SettingsController
   end
 
   def new
-    @repository = Repository.new
     @code_location = CodeLocation.new
     @enlistment = Enlistment.new
   end
 
   def create
-    @code_location.save!
-    create_enlistment
-    manage_code_location_subscription('create')
-    set_flash_message
-    redirect_to project_enlistments_path(@project)
+    if @code_location.save
+      create_enlistment
+      set_flash_message
+      redirect_to project_enlistments_path(@project)
+    else
+      flash[:error] = @code_location.errors['error']
+      return render :new, status: :unprocessable_entity
+    end
   end
 
   def edit
@@ -43,15 +48,11 @@ class EnlistmentsController < SettingsController
 
   def destroy
     @enlistment.create_edit.undo!(current_user)
-    manage_code_location_subscription('delete')
+    delete_code_location_subscription
     redirect_to project_enlistments_path(@project), flash: { success: t('.success', name: @project.name) }
   end
 
   private
-
-  def code_location_params
-    params.require(:code_location).permit(:module_branch_name, :bypass_url_validation) if params[:code_location]
-  end
 
   def create_enlistment
     @code_location.create_enlistment_for_project(current_user, @project)
@@ -59,12 +60,16 @@ class EnlistmentsController < SettingsController
 
   def set_flash_message
     flash[:show_first_enlistment_alert] = true if @project.enlistments.count == 1
-    flash[:success] = t('.success', url: @repository.url,
-                                    module_branch_name: (CGI.escapeHTML @code_location.module_branch_name.to_s))
+    flash[:success] = t('.success', url: @code_location.url,
+                                    module_branch_name: (CGI.escapeHTML @code_location.branch.to_s))
   end
 
-  def manage_code_location_subscription(manage)
+  def delete_code_location_subscription
     code_location_id = @code_location.try(:id) || @enlistment.code_location_id
-    CodeLocationSubscription.new(code_location_id).send(manage)
+    CodeLocationSubscription.new(code_location_id: code_location_id, client_relation_id: @project.id).delete
+  end
+
+  def code_location_params
+    params[:code_location].select { |k, _v| %w(url branch scm_type).include?(k) }
   end
 end

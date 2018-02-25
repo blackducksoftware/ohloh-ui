@@ -1,6 +1,6 @@
 class Job < ActiveRecord::Base
   belongs_to :project
-  belongs_to :code_location
+  # belongs_to :code_location
   belongs_to :slave
   belongs_to :job_status, foreign_key: 'status'
   belongs_to :failure_group
@@ -37,7 +37,7 @@ class Job < ActiveRecord::Base
   scope :with_exception, -> { where.not(exception: nil) }
 
   belongs_to :project
-  belongs_to :code_location
+  # belongs_to :code_location
   belongs_to :code_set
   belongs_to :sloc_set
   belongs_to :account
@@ -46,6 +46,7 @@ class Job < ActiveRecord::Base
   def categorize_failure
     failure_group = FailureGroup.find_by('pattern ILIKE ?', exception)
     update_column(failure_group_id: failure_group.id) if failure_group
+    # Used by admin
     code_location.update(do_not_fetch: true) if failure_group.present? && !failure_group.auto_reschedule
   end
 
@@ -55,6 +56,10 @@ class Job < ActiveRecord::Base
 
   def failed?
     status == STATUS_FAILED
+  end
+
+  def code_location
+    @code_location ||= CodeLocation.find(code_location_id)
   end
 
   class << self

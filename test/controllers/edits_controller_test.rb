@@ -3,6 +3,7 @@ require 'test_helper'
 describe EditsController do
   describe 'project edits pages' do
     before do
+      Project.any_instance.stubs(:code_locations).returns([])
       @project = create(:project)
       create(:enlistment, project: @project, ignore: 'Ignored!')
       create(:link, project: @project)
@@ -94,6 +95,7 @@ describe EditsController do
 
   describe 'organization edits pages' do
     before do
+      Project.any_instance.stubs(:code_locations).returns([])
       project = create(:project)
       @organization = project.organization
       create(:alias, project: project)
@@ -277,11 +279,8 @@ describe EditsController do
   private
 
   def create_code_location(project)
-    forge = Forge.find_by(name: 'Github')
-    repository = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forge.id,
-                                     owner_at_forge: 'rails', name_at_forge: 'rails')
-
-    code_location = create(:code_location, repository: repository)
-    create(:enlistment, project: project, code_location: code_location)
+    code_location = code_location_stub_with_id
+    Project.any_instance.stubs(:code_locations).returns([code_location])
+    create(:enlistment, project: project, code_location_id: code_location.id)
   end
 end

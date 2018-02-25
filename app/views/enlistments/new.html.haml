@@ -10,7 +10,7 @@
 
 .col-md-8.col-md-offset-2
   .well.enlistment
-    = form_for @repository, url: project_enlistments_url, html: { method: 'post' } do |f|
+    = form_for CodeLocation.new, url: project_enlistments_url, html: { method: 'post' } do |f|
       = render partial: 'fields', locals: { f: f }
 .clearfix
 = render partial: 'about_code_locations'

@@ -19,10 +19,10 @@ class Forge::GoogleCode < Forge
       description: project_description(doc), url: homepage_html_url(match) }
   end
 
-  def get_repository_attributes(match)
+  def get_code_location_attributes(match)
     doc = Nokogiri::HTML get_source_html(match)
     type, url = repository_type_and_url(doc)
-    [{ forge_match: match, type: type, url: url }]
+    [{ forge_match: match, scm_type: type, url: url }]
   end
 
   private
@@ -63,11 +63,11 @@ class Forge::GoogleCode < Forge
     case e && e.inner_html
     when /svn checkout .+http.+(:\S+) .+/
       # HTML fragment contains <strong> and <em>, which must be stripped away
-      [SvnSyncRepository, "http#{$1}"]
+      [:svn_sync, "http#{$1}"]
     when /git clone (.+)/
-      [GitRepository, $1]
+      [:git, $1]
     when /hg clone (.+)/
-      [HgRepository, $1]
+      [:hg, $1]
     end
   end
 end

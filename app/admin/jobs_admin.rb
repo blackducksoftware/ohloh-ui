@@ -67,7 +67,7 @@ ActiveAdmin.register Job do
   controller do
     def scoped_collection
       if params['code_location_id']
-        CodeLocation.find(params['code_location_id']).jobs
+        Job.where(code_location_id: params['code_location_id'])
       else
         super
       end

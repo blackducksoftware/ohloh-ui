@@ -2,22 +2,22 @@
   .control-group
     %label.control-label.required= t('.scm_type')
     .controls.chosen#value_select
-      %select.chzn-select.value-select{ name: 'repository[type]', id: 'repository_type' }
-        = options_for_select_type(@repository)
-      - error_tag @repository, :type
+      %select.chzn-select.value-select{ name: 'code_location[scm_type]', id: 'repository_type' }
+        = options_for_select_type(@code_location.scm_type)
+      - error_tag @code_location, :scm_type
   .control-group
     .controls
       .default-url-tags
         %label.control-label.required= t('.enter_url')
-        = f.text_field :url, class: 'col-md-7', value: params[:repository].try(:[], :url), name: 'repository[url]'
-        - error_tag @repository, :url
+        = f.text_field :url, class: 'col-md-7'
+        - error_tag @code_location, :url
 
       .github.scm_info{ style: 'display: none;' }
         %label.control-label.required= t('.enter_github_username')
         .input-group
           %span.input-group-addon https://github.com/
-          = f.text_field :url, name: 'repository[url]', class: 'form-control'
-        - error_tag @repository, :url
+          = f.text_field :url, class: 'form-control'
+        - error_tag @code_location, :url
 
       .clearfix
       .cvs.scm_info{ style: 'display: none;' }
@@ -56,10 +56,10 @@
     .control-group.warning
       %label.control-label= t('.if_required')
       .controls
-        = f.text_field :username, placeholder: t('.username'), style: 'display:block;', name: 'repository[username]'
-        - error_tag @repository, :username
-        = f.text_field :password, placeholder: t('.password'), style: 'display:block;', name: 'repository[password]'
-        - error_tag @repository, :password
+        = f.text_field :username, placeholder: t('.username'), style: 'display:block;'
+        - error_tag @code_location, :username
+        = f.text_field :password, placeholder: t('.password'), style: 'display:block;'
+        - error_tag @code_location, :password
         %p.help-block.col-md-7
           %strong= t('.warning')
           = t('.description23')
@@ -69,7 +69,8 @@
     .control-group
       %label.cotrol-label.required= t('.cvs_module_name')
       .controls
-        = render 'code_location', f: f
+        = f.text_field :branch
+        - error_tag @code_location, :branch
         %p.help-block
           = t('.enter_cvs')
           %br
@@ -79,7 +80,8 @@
     .control-group
       %label.control-label= t('.enter_git')
       .controls
-        = render 'code_location', f: f
+        = f.text_field :branch
+        - error_tag @code_location, :branch
         %p.help-block
           = t('.enter_git_name')
           %br
@@ -88,17 +90,9 @@
   .github.scm_info{ style: 'display: none;' }
     %p.help-block
       = t('.github_username_info')
-
-  - if Rails.env.development?
-    .control-group
-      .controls
-        %label.checkbox
-          = f.fields_for @code_location do |ff|
-            = ff.check_box :bypass_url_validation, name: 'code_location[bypass_url_validation]', choice: t('.choice')
-            = t('.bypass_url_validation')
   .control-group
     .controls
-      - error_tag @repository, :failed
+      - error_tag @code_location, :failed
 
   .actions
     - if logged_in? && @project.edit_authorized?

@@ -12,6 +12,7 @@ class OrganizationJobAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 'should render show page' do
+    Job.any_instance.stubs(:code_location).returns(code_location_stub)
     login_as admin
 
     job = create(:organization_job)

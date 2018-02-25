@@ -2,14 +2,21 @@ require 'test_helper'
 
 describe 'AliasesController' do
   before do
+    Project.any_instance.stubs(:code_locations).returns([])
+    Enlistment.any_instance.stubs(:code_location).returns(code_location_stub)
     @account = create(:account)
     @project = create(:project)
     @commit_name = create(:name)
     @preferred_name = create(:name)
-    @alias   = create(:alias, project_id: @project.id, commit_name_id: @commit_name.id,
-                              preferred_name_id: @preferred_name.id)
-    @commit  = create(:commit)
-    @commit_project = @commit.code_set.code_location.projects.first
+    @alias = create(:alias, project_id: @project.id, commit_name_id: @commit_name.id,
+                            preferred_name_id: @preferred_name.id)
+    enlistment = create_enlistment_with_code_location
+    code_set = create(:code_set, code_location_id: enlistment.code_location_id)
+    code_location = CodeLocation.new(id: enlistment.code_location_id, url: 'url')
+    Project.any_instance.stubs(:code_locations).returns([code_location])
+    CodeSet.any_instance.stubs(:code_location).returns(code_location)
+    @commit = create(:commit, code_set: code_set)
+    @commit_project = enlistment.project
   end
 
   it 'index' do

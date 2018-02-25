@@ -16,8 +16,8 @@ class Forge::Bitbucket < Forge
     { name: json['name'], vanity_url: match.name_at_forge, description: json['description'], url: json['website'] }
   end
 
-  def get_repository_attributes(match)
-    [{ type: HgRepository,
+  def get_code_location_attributes(match)
+    [{ scm_type: :hg,
        url: "https://bitbucket.org/#{match.owner_at_forge}/#{match.name_at_forge}",
        forge_match: match }]
   end

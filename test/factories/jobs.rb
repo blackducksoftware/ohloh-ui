@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :job do
     association :slave
-    association :code_location
     status Job::STATUS_SCHEDULED
+    code_location_id { Faker::Number.number(4) }
   end
 
   factory :fetch_job, parent: :job, class: :FetchJob do

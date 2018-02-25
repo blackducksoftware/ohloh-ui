@@ -2,7 +2,7 @@ require 'test_helper'
 
 class FetchJobsAdminTest < ActionDispatch::IntegrationTest
   let(:admin) { create(:admin, password: TEST_PASSWORD) }
-  let(:job) { create(:fetch_job, code_location: create(:code_location)) }
+  let(:job) { create(:fetch_job) }
 
   it 'index loads' do
     login_as admin
@@ -12,6 +12,7 @@ class FetchJobsAdminTest < ActionDispatch::IntegrationTest
 
   it 'loads show' do
     login_as admin
+    Job.any_instance.stubs(:code_location).returns(code_location_stub)
     get admin_job_path(job)
     assert_response :success
   end

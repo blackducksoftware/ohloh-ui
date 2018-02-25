@@ -144,6 +144,8 @@ class Position::HooksTest < ActiveSupport::TestCase
       let(:preferred_name) { create(:name) }
       let(:position) { create_position(project: project, name: preferred_name, account: account) }
 
+      before { Project.any_instance.stubs(:code_locations).returns([]) }
+
       it 'must delete associated aliases' do
         create_project_alias(project, commit_name.id, preferred_name.id, account)
         project.aliases.count.must_equal 1

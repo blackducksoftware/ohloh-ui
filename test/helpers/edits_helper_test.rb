@@ -30,33 +30,29 @@ class EditsHelperTest < ActionView::TestCase
 
     it 'must return enlistment explanation' do
       enlistment = create(:enlistment)
+      enlistment.stubs(:code_location).returns(code_location_stub)
       edit = create(:create_edit, target: enlistment)
       edit_explanation_enlistment(edit).must_equal I18n.t('edits.explanation_enlistment',
-                                                          url: enlistment.repository.url)
+                                                          url: enlistment.code_location.url)
     end
   end
 
   describe 'edit_show_subject' do
     describe 'Enlistment' do
       it 'should display branch name if there is branch_name' do
-        enlistment = create(:enlistment)
+        WebMocker.get_code_location
+        enlistment = create_enlistment_with_code_location
         @parent = enlistment.project
         edit = create(:create_edit, target: enlistment)
-        edit_show_subject(edit).must_match "Branch: #{enlistment.code_location.module_branch_name}"
-      end
-
-      it 'should display moudle name if there is module_name' do
-        enlistment = create(:enlistment)
-        @parent = enlistment.project
-        edit = create(:create_edit, target: enlistment)
-        edit_show_subject(edit).must_match "Branch: #{enlistment.code_location.module_branch_name}"
+        edit_show_subject(edit).must_match "Branch: #{enlistment.code_location.branch}"
       end
 
       it 'should not display neither branch nor module name if both are empty' do
-        enlistment = create(:enlistment, code_location: create(:code_location, module_branch_name: nil))
+        enlistment = create(:enlistment)
+        enlistment.code_location = CodeLocation.new
         @parent = enlistment.project
         edit = create(:create_edit, target: enlistment)
-        edit_show_subject(edit).wont_match "Branch: #{enlistment.code_location.module_branch_name}"
+        edit_show_subject(edit).wont_match 'Branch: '
       end
     end
   end
@@ -64,6 +60,7 @@ class EditsHelperTest < ActionView::TestCase
   describe 'edit_get_value_enlistment' do
     it 'should return nice_url of code_location for create edit' do
       enlistment = create(:enlistment)
+      enlistment.stubs(:code_location).returns(code_location_stub)
       edit = create(:create_edit, target: enlistment)
       edit_get_value_enlistment(edit).must_match enlistment.code_location.nice_url
     end

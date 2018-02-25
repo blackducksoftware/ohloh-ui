@@ -13,8 +13,10 @@ require 'mocha/mini_test'
 require 'dotenv'
 require 'test_helpers/setup_hamster_account'
 require 'test_helpers/create_forges'
+require 'test_helpers/api_factories'
 require 'sidekiq/testing'
 require 'webmock/minitest'
+require 'test_helpers/web_mocker'
 require 'clearance/test_unit'
 
 Sidekiq::Testing.fake!

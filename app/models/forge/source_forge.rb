@@ -27,7 +27,7 @@ class Forge::SourceForge < Forge
   end
 
   # Returns an array of hashes of repository attributes, one per repository.
-  def get_repository_attributes(match)
+  def get_code_location_attributes(match)
     json = match.get_json_api
     mount_point = get_mount_point(json)
     return [] if mount_point.empty?
@@ -48,11 +48,8 @@ class Forge::SourceForge < Forge
     end
   end
 
-  def repo_class(type)
-    { svn: SvnSyncRepository, hg: HgRepository, git: GitRepository, cvs: CvsRepository }[type.to_sym]
-  end
-
   def fetch_repo_attrs(match, type, location)
-    [{ forge_match: match, type: repo_class(type), url: location }]
+    type = :svn_sync if type == 'svn'
+    [{ forge_match: match, scm_type: type, url: location }]
   end
 end
