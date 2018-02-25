@@ -7,7 +7,7 @@ describe 'OhAdmin::JobsController' do
   it 'should render index template for a logged admin user' do
     login_as admin
     create(:slave, id: 1)
-    VCR.use_cassette('project_jobs') do
+    VCR.use_cassette('project_jobs', match_requests_on: [:path]) do
       get :index, project_id: project.vanity_url, page: 1
       must_respond_with :success
     end

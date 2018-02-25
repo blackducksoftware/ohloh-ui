@@ -2,10 +2,10 @@
 http_interactions:
 - request:
     method: post
-    uri: http://vcrlocalhost.org:4004/api/v1/code_locations.json
+    uri: http://vcrlocalhost.org:4004/api/v1/code_locations.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
     body:
       encoding: US-ASCII
-      string: api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d&url=http%3A%2F%2Fstrosin.co%2Fwade&scm_type=git&username&password&branch=master&forge_match&best_code_set_id&do_not_fetch&client_relation_id=6360
+      string: url=http%3A%2F%2Fstrosin.co%2Fwade&scm_type=git&username&password&branch=master&forge_match&best_code_set_id&do_not_fetch&client_relation_id=6360
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -53,10 +53,10 @@ http_interactions:
   recorded_at: Thu, 15 Feb 2018 18:00:46 GMT
 - request:
     method: post
-    uri: http://vcrlocalhost.org:4004/api/v1/code_locations.json
+    uri: http://vcrlocalhost.org:4004/api/v1/code_locations.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
     body:
       encoding: US-ASCII
-      string: api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d&url=http%3A%2F%2Fmurray.biz%2Fcelia&scm_type=git&username&password&branch=master&forge_match&best_code_set_id&do_not_fetch&client_relation_id=6361
+      string: url=http%3A%2F%2Fmurray.biz%2Fcelia&scm_type=git&username&password&branch=master&forge_match&best_code_set_id&do_not_fetch&client_relation_id=6361
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -104,10 +104,10 @@ http_interactions:
   recorded_at: Thu, 15 Feb 2018 18:00:46 GMT
 - request:
     method: post
-    uri: http://vcrlocalhost.org:4004/api/v1/code_locations.json
+    uri: http://vcrlocalhost.org:4004/api/v1/code_locations.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
     body:
       encoding: US-ASCII
-      string: api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d&url=http%3A%2F%2Fwhitelarkin.co%2Flaverna_beahan&scm_type=git&username&password&branch=master&forge_match&best_code_set_id&do_not_fetch&client_relation_id=6361
+      string: url=http%3A%2F%2Fwhitelarkin.co%2Flaverna_beahan&scm_type=git&username&password&branch=master&forge_match&best_code_set_id&do_not_fetch&client_relation_id=6361
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3

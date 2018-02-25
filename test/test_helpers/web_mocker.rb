@@ -20,18 +20,21 @@ module WebMocker
 
   def code_location_exists(record_exists)
     response_body = record_exists ? '1' : '0'
-    stub_request(:get, %r{#{api_url}/subscriptions/code_location_exists/\d+.json\?#{api_key_param}.+url})
+    url_with_stub = subscriptions_api.resource_uri('code_location_exists/42').to_s
+    stub_request(:get, %r{#{url_with_stub.sub('42', '\d+').sub('?', '\?')}.+url})
       .to_return(body: response_body)
   end
 
   def get_project_code_locations(valid_result = true, hsh = {})
     response_body = valid_result ? [code_location_params(hsh)] : []
-    stub_request(:get, %r{#{api_url}/subscriptions/code_locations/\d+.json\?#{api_key_param}})
+    url_with_stub = subscriptions_api.resource_uri('code_locations/42').to_s
+    stub_request(:get, %r{#{url_with_stub.sub('42', '\d+').sub('?', '\?')}})
       .to_return(body: response_body.to_json)
   end
 
   def create_subscription
-    stub_request(:post, "#{api_url}/subscriptions.json").to_return(body: 'Subscription Added Successfully')
+    stub_request(:post, subscriptions_api.resource_uri)
+      .to_return(body: 'Subscription Added Successfully')
   end
 
   def create_code_location_url_failure
@@ -40,32 +43,27 @@ module WebMocker
   end
 
   def scm_type_count(expected_response)
-    stub_request(:get, "#{api_url}/code_locations/scm_type_count.json?#{api_key_param}")
+    stub_request(:get, code_locations_api.resource_uri(:scm_type_count))
       .to_return(body: expected_response.to_json)
   end
 
   def code_location_find_by_failure(branch_name)
-    stub_request(:get, "#{api_url}/code_locations/find_by.json?#{api_key_param}&branch=#{branch_name}")
+    stub_request(:get, code_locations_api.resource_uri(:find_by, branch: branch_name))
       .to_return(body: 'long html backtrace', status: 500)
   end
 
   # ---- private ----
 
-  def api_url
-    "#{ENV['FISBOT_API_URL']}/api/v1"
+  def subscriptions_api
+    ApiAccess.new(:subscriptions)
   end
 
-  def api_key
-    ENV['FISBOT_CLIENT_REGISTRATION_ID']
-  end
-
-  def api_key_param
-    "api_key=#{api_key}"
+  def code_locations_api
+    ApiAccess.new(:code_locations)
   end
 
   def code_locations_url(id = nil)
-    return "#{api_url}/code_locations.json" unless id
-    "#{api_url}/code_locations/#{id}.json?#{api_key_param}"
+    code_locations_api.resource_uri(id)
   end
 
   def rails_git_url

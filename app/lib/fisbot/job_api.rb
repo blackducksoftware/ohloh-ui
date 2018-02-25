@@ -1,6 +1,6 @@
 class JobApi < FisbotApi
   class << self
-    def endpoint
+    def resource
       'jobs/project_jobs'
     end
   end

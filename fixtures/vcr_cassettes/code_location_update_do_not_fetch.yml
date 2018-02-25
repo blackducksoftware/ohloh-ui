@@ -2,10 +2,10 @@
 http_interactions:
 - request:
     method: patch
-    uri: http://vcrlocalhost.org:4004/api/v1/code_locations/<%=id%>.json
+    uri: http://vcrlocalhost.org:4004/api/v1/code_locations/<%=id%>.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
     body:
       encoding: UTF-8
-      string: api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d&do_not_fetch=false
+      string: do_not_fetch=false
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3

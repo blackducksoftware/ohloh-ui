@@ -49,10 +49,10 @@ http_interactions:
   recorded_at: Thu, 15 Feb 2018 19:42:46 GMT
 - request:
     method: post
-    uri: http://vcrlocalhost.org:4004/api/v1/code_locations.json
+    uri: http://vcrlocalhost.org:4004/api/v1/code_locations.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
     body:
       encoding: US-ASCII
-      string: api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d&url=git%3A%2F%2Fgithub.com%2Fstan%2FjQuery-Knob.git&scm_type&username&password&branch=master&forge_match&best_code_set_id&do_not_fetch
+      string: url=git%3A%2F%2Fgithub.com%2Fstan%2FjQuery-Knob.git&scm_type&username&password&branch=master&forge_match&best_code_set_id&do_not_fetch
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -147,10 +147,10 @@ http_interactions:
   recorded_at: Thu, 15 Feb 2018 19:42:46 GMT
 - request:
     method: post
-    uri: http://vcrlocalhost.org:4004/api/v1/code_locations.json
+    uri: http://vcrlocalhost.org:4004/api/v1/code_locations.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
     body:
       encoding: US-ASCII
-      string: api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d&url=git%3A%2F%2Fgithub.com%2Fstan%2Fname_directory.git&scm_type&username&password&branch=master&forge_match&best_code_set_id&do_not_fetch
+      string: url=git%3A%2F%2Fgithub.com%2Fstan%2Fname_directory.git&scm_type&username&password&branch=master&forge_match&best_code_set_id&do_not_fetch
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -245,10 +245,10 @@ http_interactions:
   recorded_at: Thu, 15 Feb 2018 19:42:46 GMT
 - request:
     method: post
-    uri: http://vcrlocalhost.org:4004/api/v1/code_locations.json
+    uri: http://vcrlocalhost.org:4004/api/v1/code_locations.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
     body:
       encoding: US-ASCII
-      string: api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d&url=git%3A%2F%2Fgithub.com%2Fstan%2Frailskart.git&scm_type&username&password&branch=master&forge_match&best_code_set_id&do_not_fetch
+      string: url=git%3A%2F%2Fgithub.com%2Fstan%2Frailskart.git&scm_type&username&password&branch=master&forge_match&best_code_set_id&do_not_fetch
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -343,10 +343,10 @@ http_interactions:
   recorded_at: Thu, 15 Feb 2018 19:42:46 GMT
 - request:
     method: post
-    uri: http://vcrlocalhost.org:4004/api/v1/code_locations.json
+    uri: http://vcrlocalhost.org:4004/api/v1/code_locations.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
     body:
       encoding: US-ASCII
-      string: api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d&url=git%3A%2F%2Fgithub.com%2Fstan%2Fsablon.git&scm_type&username&password&branch=master&forge_match&best_code_set_id&do_not_fetch
+      string: url=git%3A%2F%2Fgithub.com%2Fstan%2Fsablon.git&scm_type&username&password&branch=master&forge_match&best_code_set_id&do_not_fetch
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3

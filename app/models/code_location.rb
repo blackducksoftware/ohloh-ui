@@ -55,7 +55,7 @@ class CodeLocation < FisbotApi
 
   class << self
     def scm_type_count
-      uri = URI("#{FisbotApi::API_URI}/api/v1/#{endpoint}/scm_type_count.json?api_key=#{FisbotApi::API_KEY}")
+      uri = api_access.resource_uri(:scm_type_count)
       JSON.parse(Net::HTTP.get(uri))
     end
   end
