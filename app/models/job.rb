@@ -1,6 +1,5 @@
 class Job < ActiveRecord::Base
   belongs_to :project
-  # belongs_to :code_location
   belongs_to :slave
   belongs_to :job_status, foreign_key: 'status'
   belongs_to :failure_group
@@ -36,8 +35,6 @@ class Job < ActiveRecord::Base
   scope :categorized_failure_group, -> { where.not(failure_group_id: nil).failed.with_exception }
   scope :with_exception, -> { where.not(exception: nil) }
 
-  belongs_to :project
-  # belongs_to :code_location
   belongs_to :code_set
   belongs_to :sloc_set
   belongs_to :account

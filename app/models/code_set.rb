@@ -12,10 +12,6 @@ class CodeSet < FisBase
     @code_location ||= CodeLocation.find(code_location_id)
   end
 
-  def best_code_location
-    CodeLocation.find_by(best_code_set_id: id)
-  end
-
   def ignore_prefixes(project)
     enlistment = project.enlistments.find_by(code_location_id: code_location_id)
     return CodeSet.none if enlistment.nil?

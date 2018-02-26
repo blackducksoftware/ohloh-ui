@@ -32,6 +32,13 @@ module WebMocker
       .to_return(body: response_body.to_json)
   end
 
+  def code_location_valid(valid_url = true)
+    error_message = 'The URL does not appear to be a valid server connection string.'
+    expected_response = valid_url ? '' : { error: { url: [error_message] } }
+    status = valid_url ? 200 : 400
+    stub_request(:post, code_locations_url(:valid)).to_return(body: expected_response.to_json, status: status)
+  end
+
   def create_subscription
     stub_request(:post, subscriptions_api.resource_uri)
       .to_return(body: 'Subscription Added Successfully')
