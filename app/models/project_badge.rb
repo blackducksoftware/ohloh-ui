@@ -1,6 +1,6 @@
 class ProjectBadge < ActiveRecord::Base
   belongs_to :enlistment
-  delegate :project, :repository, to: :enlistment
+  delegate :project, :code_location, to: :enlistment
 
   validates :type, :identifier, presence: true
   validates :enlistment_id, presence: true,

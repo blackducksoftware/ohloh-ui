@@ -10,8 +10,8 @@ module CodeLocationJobs
         # NOTE: PDP 2018-02-01 This method doesn't schedule a Fetch or Complete if the CL
         # hasn't been updated recently.  It should create a CompleteJob if there isn't one scheduled
         # However, it creates a FetchJob only if there is no best_code_set. How does this ensure a CL is updated?
-        job = create_fetch_job(priority) if best_code_set.blank?
-        job = create_import_or_sloc_jobs(priority) if best_code_set.present?
+        job = create_fetch_job(priority) unless best_code_set_id
+        job = create_import_or_sloc_jobs(priority) if best_code_set_id
       end
       job
     end
@@ -21,22 +21,20 @@ module CodeLocationJobs
       create_complete_job
     end
 
-    def refetch
-      remove_pending_jobs
-      create_repository_directory
-      FetchJob.create!(code_set: CodeSet.create!(code_location: self))
-    end
-
     def remove_pending_jobs
       jobs.scheduled.each(&:destroy)
       jobs.failed.each(&:destroy)
+    end
+
+    def jobs
+      Job.where(code_location_id: @id)
     end
 
     private
 
     def create_complete_job
       return if any_incomplete_or_recent?
-      create_job(CompleteJob, code_location_id: best_code_set.code_location_id, code_set_id: best_code_set.id)
+      create_job(CompleteJob, code_location_id: @id, code_set_id: best_code_set_id)
     end
 
     def any_incomplete_or_recent?
@@ -46,14 +44,8 @@ module CodeLocationJobs
       jobs.present?
     end
 
-    def create_repository_directory
-      object = parent_repository_directory
-      repository_directory = object.repository_directories.create!
-      object.update(best_repository_directory_id: repository_directory.id)
-    end
-
     def create_fetch_job(priority)
-      cs = CodeSet.create(code_location: self)
+      cs = CodeSet.create(code_location_id: @id)
       FetchJob.create(code_set: cs, priority: priority)
     end
 

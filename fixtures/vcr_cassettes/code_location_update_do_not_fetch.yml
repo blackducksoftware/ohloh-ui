@@ -1,11 +1,11 @@
 ---
 http_interactions:
 - request:
-    method: post
-    uri: http://vcrlocalhost.org:4004/api/v1/subscriptions.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
+    method: patch
+    uri: http://vcrlocalhost.org:4004/api/v1/code_locations/<%=id%>.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
     body:
-      encoding: US-ASCII
-      string: code_location_id=263
+      encoding: UTF-8
+      string: do_not_fetch=false
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -13,10 +13,6 @@ http_interactions:
       - "*/*"
       User-Agent:
       - Ruby
-      Host:
-      - 172.18.0.5:3001
-      Content-Type:
-      - application/x-www-form-urlencoded
   response:
     status:
       code: 200
@@ -31,24 +27,24 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Etag:
-      - W/"70b56a6d44a133781c7c24113760d6f5"
+      - W/"88f99497b84e9cda633e5971d3e072ba"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 6addabb6-b0ea-4da7-a3b7-b4f82ce1d860
+      - 740cbabe-1f3f-4b04-b028-0501a73b25a4
       X-Runtime:
-      - '0.253301'
+      - '0.024577'
       Server:
       - WEBrick/1.3.1 (Ruby/2.2.3/2015-08-18)
       Date:
-      - Tue, 23 Jan 2018 14:11:24 GMT
+      - Tue, 13 Feb 2018 18:28:55 GMT
       Content-Length:
-      - '31'
+      - '146'
       Connection:
       - Keep-Alive
     body:
       encoding: UTF-8
-      string: Subscription Added Successfully
+      string: '{"id":52,"scm_type":"git","url":"https://github.com/rails/rails","branch":"master","best_code_set_id":null,"do_not_fetch":false,"status":"active"}'
     http_version:
-  recorded_at: Tue, 23 Jan 2018 14:11:24 GMT
+  recorded_at: Tue, 13 Feb 2018 18:28:55 GMT
 recorded_with: VCR 3.0.3

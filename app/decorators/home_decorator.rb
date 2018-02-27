@@ -43,6 +43,9 @@ class HomeDecorator
   end
 
   def repository_count
-    Rails.cache.fetch('HomeDecorator-repository_count-cache') { Repository.count }
+    Rails.cache.fetch('HomeDecorator-repository_count-cache') do
+      # TODO: Replace this repositories table call.
+      Enlistment.connection.execute('select count(*) from repositories').values[0][0].to_i
+    end
   end
 end

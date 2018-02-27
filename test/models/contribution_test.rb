@@ -113,6 +113,7 @@ class ContributionTest < ActiveSupport::TestCase
   describe '#find_indirectly' do
     it 'via alias' do
       project = create(:project)
+      project.stubs(:code_locations).returns([])
       person1 = create(:person, project: project)
       person2 = create(:person, project: project)
       create(:alias, project: project, commit_name_id: person1.name_id, preferred_name_id: person2.name_id)
@@ -123,6 +124,7 @@ class ContributionTest < ActiveSupport::TestCase
 
     it 'via position' do
       project = create(:project)
+      project.stubs(:code_locations).returns([])
       person1 = create(:person, project: project)
       create(:person, project: project)
       name = create(:name)

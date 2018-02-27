@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   [AnalysesHelper, FactoidsHelper, MapHelper, RatingsHelper,
-   RepositoriesHelper, TagsHelper].each { |help| helper help }
+   ScmHelper, TagsHelper].each { |help| helper help }
 
   layout 'responsive_project_layout', only: [:show, :badges]
 
@@ -31,8 +31,10 @@ class ProjectsController < ApplicationController
   def create
     create_project_from_params
     if @project.save
+      create_code_location_subscription if @project.enlistments.exists?
       redirect_to project_path(@project)
     else
+      @project.code_location_object = @project.enlistments.last.try(:code_location)
       flash.now[:error] = t('.failure')
       render :check_forge, status: :unprocessable_entity
     end
@@ -62,9 +64,9 @@ class ProjectsController < ApplicationController
 
   def project_params
     params.require(:project).permit(
-      [:name, :description, :vanity_url, :url, :download_url, :managed_by_creator,
-       project_licenses_attributes: [:license_id],
-       enlistments_attributes: [code_location_attributes: [:module_branch_name, repository_attributes: [:url, :type]]]]
+      :name, :description, :vanity_url, :url, :download_url, :managed_by_creator,
+      project_licenses_attributes: [:license_id],
+      enlistments_attributes: [code_location_attributes: [:branch, :url, :scm_type]]
     )
   end
 
@@ -78,5 +80,10 @@ class ProjectsController < ApplicationController
     Timeout.timeout(Forge::Match::MAX_FORGE_COMM_TIME) { @project = @match.project } if @match
   rescue Timeout::Error, OpenURI::HTTPError, URI::InvalidURIError
     flash.now[:notice] = t('.forge_time_out', name: @match.forge.name)
+  end
+
+  def create_code_location_subscription
+    CodeLocationSubscription.create(code_location_id: @project.enlistments.last.code_location_id,
+                                    client_relation_id: @project.id)
   end
 end

@@ -9,12 +9,6 @@ class Commit < FisBase
 
   filterable_by ['comment']
 
-  scope :for_project, lambda { |project|
-    joins(code_set: { code_location: { enlistments: :project } })
-      .where(enlistments: { deleted: false })
-      .where(projects: { id: project.id })
-  }
-
   scope :for_contributor_fact, lambda { |contributor_fact|
     commit_name_ids = AnalysisAlias.commit_name_ids(contributor_fact)
     by_analysis(contributor_fact.analysis).where(name_id: commit_name_ids)
@@ -45,13 +39,32 @@ class Commit < FisBase
   end
 
   def nice_id(params = {})
-    case code_set.repository
-    when SvnSyncRepository
+    case code_set.code_location.scm_type.to_s
+    when /svn/
       "r#{sha1}"
-    when GitRepository
-      params[:short] ? sha1.to_s.truncate(8, omission: '') : sha1
-    when HgRepository
-      params[:short] ? sha1.to_s.truncate(12, omission: '') : sha1
+    when 'git'
+      git_sha1(params[:short])
+    when 'hg'
+      hg_sha1(params[:short])
     end
+  end
+
+  class << self
+    def for_project(project)
+      joins(:code_set).joins('join enlistments on enlistments.code_location_id = code_sets.code_location_id
+                              join projects on project_id = projects.id')
+                      .where(enlistments: { deleted: false })
+                      .where(projects: { id: project.id })
+    end
+  end
+
+  private
+
+  def hg_sha1(short)
+    short ? sha1.to_s.truncate(12, omission: '') : sha1
+  end
+
+  def git_sha1(short)
+    short ? sha1.to_s.truncate(8, omission: '') : sha1
   end
 end

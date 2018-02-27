@@ -9,7 +9,7 @@ class CodeLocationJobProgress
   def initialize(enlistment)
     @code_location = enlistment.code_location
     @project = enlistment.project
-    @job = @code_location.jobs.incomplete.first
+    @job = Job.where(code_location_id: @code_location.id).incomplete.first
   end
 
   def message
@@ -50,7 +50,7 @@ class CodeLocationJobProgress
     if sloc_set_code_set_time
       I18n.t 'repositories.job_progress.update_completed', at: time_ago_in_words(sloc_set_code_set_time)
     else
-      incomplete_job = Job.where(code_location: @project.code_locations).incomplete.first
+      incomplete_job = Job.where(code_location_id: @project.enlistments.pluck(:code_location_id)).incomplete.first
       return I18n.t 'repositories.job_progress.no_job' unless incomplete_job
 
       I18n.t('repositories.job_progress.blocked_by', status: STATUS[incomplete_job.status])

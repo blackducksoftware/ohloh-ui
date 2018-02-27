@@ -54,6 +54,7 @@ class PositionCoreTest < ActiveSupport::TestCase
   end
 
   it 'ensure_position_or_alias creates an alias if a position exists' do
+    Project.any_instance.stubs(:code_locations).returns([])
     account = create(:account)
     person = create(:person)
     project = create(:project)
@@ -68,6 +69,7 @@ class PositionCoreTest < ActiveSupport::TestCase
   end
 
   it 'ensure_position_or_alias update an alias if position and alias already exist' do
+    Project.any_instance.stubs(:code_locations).returns([])
     account = create(:account)
     person = create(:person)
     project = create(:project)
@@ -82,6 +84,7 @@ class PositionCoreTest < ActiveSupport::TestCase
   end
 
   it 'ensure_position_or_alias delete an alias if preferred and existing name are same' do
+    Project.any_instance.stubs(:code_locations).returns([])
     account = create(:account)
     project = create(:project)
     name = create(:name)

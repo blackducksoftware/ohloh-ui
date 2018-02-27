@@ -21,7 +21,7 @@ panel 'Job Overview' do
     end
   end
 
-  table_for Slave.includes(:running_jobs, failed_jobs: [code_location: :repository]).order(:id), row_class: -> elem { 'deny' if elem.deny? } do
+  table_for Slave.includes(:running_jobs, :failed_jobs).order(:id), row_class: -> elem { 'deny' if elem.deny? } do
     # Seriously.  ActiveAdmin thinks the singular of "slave" is "slafe"  wft?
     column (:hostname) { |slave| link_to slave.hostname, admin_slafe_path(slave)}
     column :allow_deny do |allow_deny|

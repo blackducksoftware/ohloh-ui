@@ -125,6 +125,7 @@ describe 'CommitsController' do
     end
 
     it 'should return diffs' do
+      CodeSet.any_instance.stubs(:code_location).returns(code_location_stub)
       get :show, project_id: @project.id, id: @commit1.id
       assigns(:diffs).count.must_equal 1
       assigns(:diffs).must_equal @commit1.diffs
@@ -146,6 +147,7 @@ describe 'CommitsController' do
 
   describe 'statistics' do
     it 'should return commit and total lines added and removed' do
+      CodeSet.any_instance.stubs(:code_location).returns(code_location_stub)
       get :statistics, id: @commit1.id, project_id: @project.id
       assigns(:commit).must_equal @commit1
       assigns(:lines_added).must_equal 0

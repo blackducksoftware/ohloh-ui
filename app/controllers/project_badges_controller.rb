@@ -59,7 +59,7 @@ class ProjectBadgesController < ApplicationController
   end
 
   def set_badges
-    @enlistments = @project.enlistments.map { |e| [e.repository.url, e.id] }
+    @enlistments = @project.enlistments.map { |e| [e.code_location.url, e.id] }
     @badges = ProjectBadge.subclasses.map { |b| [b.badge_name, b.name] }
   end
 

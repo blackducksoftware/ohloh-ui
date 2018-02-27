@@ -1,2 +1,0 @@
-class GitSvnRepository < SvnRepository
-end

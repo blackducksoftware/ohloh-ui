@@ -2,16 +2,16 @@
   %td.center= @commit.diffs.count
   %td.center= @lines_added
   %td.center= @lines_removed
-  %td.center{ title: @commit.code_set.repository.url.to_s.reverse.truncate(25).reverse,
+  %td.center{ title: @commit.code_set.code_location.url.to_s.reverse.truncate(25).reverse,
               style: 'word-break: break-all' }
-    = @commit.code_set.repository.url
+    = @commit.code_set.code_location.url
 - else
   %ul.nomargin.unstyled
     %li
-      - if @commit.code_set.repository.url =~ /github\.com/
+      - if @commit.code_set.code_location.url =~ /github\.com/
         %span.icon-github-sign
       = t('.repository')
-      %strong= h @commit.code_set.repository.url
+      %strong= h @commit.code_set.code_location.url
     %li
       %span.icon-file
       = pluralize(@commit.diffs.count, 'file')

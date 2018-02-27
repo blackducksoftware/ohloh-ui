@@ -1,0 +1,250 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://vcrlocalhost.org:4004/api/v1/code_locations.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
+    body:
+      encoding: US-ASCII
+      string: url=http%3A%2F%2Fstrosin.co%2Fwade&scm_type=git&username&password&branch=master&forge_match&best_code_set_id&do_not_fetch&client_relation_id=6360
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - vcrlocalhost.org:4004
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 201
+      message: 'Created '
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - W/"ed4fb6bc4eda24c1787ddf42d749d46e"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - ce47eceb-0332-47fa-a6a3-e3321795fc2e
+      X-Runtime:
+      - '0.442573'
+      Server:
+      - WEBrick/1.3.1 (Ruby/2.2.3/2015-08-18)
+      Date:
+      - Thu, 15 Feb 2018 18:00:46 GMT
+      Content-Length:
+      - '139'
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '{"id":2082,"scm_type":"git","url":"http://strosin.co/wade","branch":"master","best_code_set_id":null,"do_not_fetch":null,"status":"active"}'
+    http_version:
+  recorded_at: Thu, 15 Feb 2018 18:00:46 GMT
+- request:
+    method: post
+    uri: http://vcrlocalhost.org:4004/api/v1/code_locations.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
+    body:
+      encoding: US-ASCII
+      string: url=http%3A%2F%2Fmurray.biz%2Fcelia&scm_type=git&username&password&branch=master&forge_match&best_code_set_id&do_not_fetch&client_relation_id=6361
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - vcrlocalhost.org:4004
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 201
+      message: 'Created '
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - W/"76d4f2f0a6cea728d02efd75cad1f7d0"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 875ee20f-face-48fd-89f7-aa4748fc62a5
+      X-Runtime:
+      - '0.067869'
+      Server:
+      - WEBrick/1.3.1 (Ruby/2.2.3/2015-08-18)
+      Date:
+      - Thu, 15 Feb 2018 18:00:46 GMT
+      Content-Length:
+      - '140'
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '{"id":2083,"scm_type":"git","url":"http://murray.biz/celia","branch":"master","best_code_set_id":null,"do_not_fetch":null,"status":"active"}'
+    http_version:
+  recorded_at: Thu, 15 Feb 2018 18:00:46 GMT
+- request:
+    method: post
+    uri: http://vcrlocalhost.org:4004/api/v1/code_locations.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
+    body:
+      encoding: US-ASCII
+      string: url=http%3A%2F%2Fwhitelarkin.co%2Flaverna_beahan&scm_type=git&username&password&branch=master&forge_match&best_code_set_id&do_not_fetch&client_relation_id=6361
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - vcrlocalhost.org:4004
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 201
+      message: 'Created '
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - W/"ddde9581838a76bf1b16fb908503abcb"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - b47c94c7-f8e8-48f1-9538-ca507cf40777
+      X-Runtime:
+      - '0.053368'
+      Server:
+      - WEBrick/1.3.1 (Ruby/2.2.3/2015-08-18)
+      Date:
+      - Thu, 15 Feb 2018 18:00:46 GMT
+      Content-Length:
+      - '153'
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '{"id":2084,"scm_type":"git","url":"http://whitelarkin.co/laverna_beahan","branch":"master","best_code_set_id":null,"do_not_fetch":null,"status":"active"}'
+    http_version:
+  recorded_at: Thu, 15 Feb 2018 18:00:46 GMT
+- request:
+    method: get
+    uri: http://vcrlocalhost.org:4004/api/v1/code_locations/2083.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: 'OK '
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - W/"76d4f2f0a6cea728d02efd75cad1f7d0"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 90dd9ec3-ee9d-42c4-be3b-06c059431dc5
+      X-Runtime:
+      - '0.026998'
+      Server:
+      - WEBrick/1.3.1 (Ruby/2.2.3/2015-08-18)
+      Date:
+      - Thu, 15 Feb 2018 18:00:47 GMT
+      Content-Length:
+      - '140'
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '{"id":2083,"scm_type":"git","url":"http://murray.biz/celia","branch":"master","best_code_set_id":null,"do_not_fetch":null,"status":"active"}'
+    http_version:
+  recorded_at: Thu, 15 Feb 2018 18:00:47 GMT
+- request:
+    method: get
+    uri: http://vcrlocalhost.org:4004/api/v1/code_locations/2084.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: 'OK '
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - W/"ddde9581838a76bf1b16fb908503abcb"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - d48428f1-a03d-4393-8154-2ad3f4a1beba
+      X-Runtime:
+      - '0.026729'
+      Server:
+      - WEBrick/1.3.1 (Ruby/2.2.3/2015-08-18)
+      Date:
+      - Thu, 15 Feb 2018 18:00:47 GMT
+      Content-Length:
+      - '153'
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '{"id":2084,"scm_type":"git","url":"http://whitelarkin.co/laverna_beahan","branch":"master","best_code_set_id":null,"do_not_fetch":null,"status":"active"}'
+    http_version:
+  recorded_at: Thu, 15 Feb 2018 18:00:47 GMT
+recorded_with: VCR 3.0.3

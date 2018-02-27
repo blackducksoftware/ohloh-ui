@@ -15,7 +15,6 @@ end
 
 if job.code_location_id
   span "CodeLocation: #{job.code_location.nice_url}"
-  span link_to '(Jobs)', admin_code_location_jobs_path(job.code_location)
 end
 
 if job.organization_id
@@ -25,6 +24,5 @@ end
 
 para ''
 
-a link_to "CodeLocation #{job.code_location_id}", admin_code_location_path(job.code_location_id) if job.code_location_id
 a link_to "CodeSet #{job.code_set_id}", admin_code_set_path(job.code_set_id) if job.code_set_id
 a link_to "SlocSet #{job.sloc_set_id}", admin_sloc_set_path(job.sloc_set_id) if job.sloc_set_id

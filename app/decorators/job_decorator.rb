@@ -26,7 +26,7 @@ class JobDecorator < Cherry::Decorator
   end
 
   def code_location_text
-    code_location ? "\n#{code_location.repository.url} #{code_location.module_branch_name}" : ''
+    code_location ? "\n#{code_location.url} #{code_location.branch}" : ''
   end
 
   def exception_text

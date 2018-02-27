@@ -13,6 +13,7 @@ describe 'ProjectBadgesController' do
 
   describe 'index' do
     it 'Should render index template for valid project' do
+      Enlistment.any_instance.stubs(:code_location).returns(code_location_stub_with_id)
       get :index, project_id: @project_id
       assert_response :success
     end
@@ -34,6 +35,7 @@ describe 'ProjectBadgesController' do
     end
 
     it 'Should not create ciibadge if url empty' do
+      Enlistment.any_instance.stubs(:code_location).returns(code_location_stub)
       login_as @account
       post :create, project_id: @project_id,
                     project_badge: build(:project_badge,
@@ -46,6 +48,7 @@ describe 'ProjectBadgesController' do
     end
 
     it 'Should create badge if user is logged in and correct badge param is passed' do
+      Enlistment.any_instance.stubs(:code_location).returns(code_location_stub)
       login_as @account
       post :create, project_id: @project_id,
                     project_badge: build(:project_badge,
@@ -59,6 +62,7 @@ describe 'ProjectBadgesController' do
     end
 
     it 'should redirect if project badge is already present' do
+      Enlistment.any_instance.stubs(:code_location).returns(code_location_stub)
       login_as @account
       @project_badge = create(:project_badge,
                               enlistment: @enlistment,

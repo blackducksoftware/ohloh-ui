@@ -76,6 +76,7 @@ en:
   no_data: No Data
   sign_in_github: Sign in with Github
   github_sign_in_failed: Github sign in failed
+  api_exception: Fisbot API had an exception
 
   layouts:
     application:

@@ -20,6 +20,24 @@ describe Slave do
     end
   end
 
+  describe 'allow_deny' do
+    it 'allow must be true when value is allow' do
+      slave = Slave.new(allow_deny: 'allow')
+      slave.must_be :allow?
+    end
+
+    it 'deny must be true when value is deny' do
+      slave = Slave.new(allow_deny: 'deny')
+      slave.must_be :deny?
+    end
+
+    it 'allow or deny must be false when value is invalid' do
+      slave = Slave.new(allow_deny: 'junk')
+      slave.wont_be :allow?
+      slave.wont_be :deny?
+    end
+  end
+
   describe 'path_from_code_set_id' do
     it 'should return path based on the given code_set_id' do
       slave.path_from_code_set_id(300).must_equal '/var/local/clumps/000/000/000/300'

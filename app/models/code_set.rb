@@ -1,13 +1,16 @@
 class CodeSet < FisBase
-  belongs_to :code_location
-  has_one :best_code_location, foreign_key: :best_code_set_id, class_name: 'CodeLocation'
   belongs_to :best_sloc_set, foreign_key: :best_sloc_set_id, class_name: SlocSet
   has_many :commits, -> { order(:position) }, dependent: :destroy
   has_many :fyles, dependent: :delete_all
   has_many :sloc_sets, dependent: :destroy
   has_many :clumps
   has_many :jobs
-  has_one :repository, through: :code_location
+
+  attr_writer :code_location
+
+  def code_location
+    @code_location ||= CodeLocation.find(code_location_id)
+  end
 
   def ignore_prefixes(project)
     enlistment = project.enlistments.find_by(code_location_id: code_location_id)
@@ -28,17 +31,24 @@ class CodeSet < FisBase
   end
 
   class << self
+    # TODO: Remove this direct code_location table access once we stop using this method in activeadmin.
     def oldest_code_set
-      conditions = "COALESCE(code_sets.logged_at, '1970-01-01') + "\
-                   "code_locations.update_interval * INTERVAL '1 second' <= NOW() AT TIME ZONE 'utc'"\
-                   " AND COALESCE(analyses.oldest_code_set_time, '1970-01-01') >="\
-                   " COALESCE(code_sets.logged_at, '1970-01-01') - INTERVAL '1 second'"
-      joins(best_code_location: { enlistments: { project: :best_analysis } })
+      joins('join code_locations on best_code_set_id = code_sets.id
+             join enlistments on enlistments.code_location_id = code_locations.id
+             join projects on enlistments.project_id = projects.id
+             join analyses on best_analysis_id = analyses.id')
         .where(projects: { deleted: false })
-        .where(conditions)
+        .where(code_set_conditions)
         .where(Job.where("status != #{Job::STATUS_COMPLETED} AND jobs.code_location_id = code_locations.id").exists.not)
         .order('code_sets.logged_at nulls first')
         .limit(1)
+    end
+
+    def code_set_conditions
+      "COALESCE(code_sets.logged_at, '1970-01-01') + "\
+      "code_locations.update_interval * INTERVAL '1 second' <= NOW() AT TIME ZONE 'utc'"\
+      " AND COALESCE(analyses.oldest_code_set_time, '1970-01-01') >="\
+      " COALESCE(code_sets.logged_at, '1970-01-01') - INTERVAL '1 second'"
     end
   end
 

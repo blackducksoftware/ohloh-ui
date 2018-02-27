@@ -31,9 +31,6 @@ module ProjectAssociations
     has_many :jobs
     belongs_to :forge, class_name: 'Forge::Base'
     has_many :enlistments, -> { where(deleted: false) }
-    has_many :code_locations, through: :enlistments
-    has_many :repositories, through: :code_locations
-    has_many :code_locations_sloc_sets, through: :code_locations, source: :best_code_set
     has_many :project_licenses, -> { where("project_licenses.deleted = 'f'") }
     has_many :licenses, -> { order('lower(licenses.name)') }, through: :project_licenses
     has_many :duplicates, -> { order(created_at: :desc) }, class_name: 'Duplicate', foreign_key: 'good_project_id'
@@ -46,6 +43,12 @@ module ProjectAssociations
     accepts_nested_attributes_for :project_licenses
 
     scope :by_collection, ->(ids, sort, query) { collection_arel(ids, sort, query) }
+
+    attr_accessor :code_location_object
+
+    def code_locations
+      @code_locations ||= CodeLocationSubscription.code_locations_for_project(id)
+    end
 
     def assign_editor_account_to_associations
       [aliases, enlistments, project_licenses, links].flatten.each { |obj| obj.editor_account = editor_account }

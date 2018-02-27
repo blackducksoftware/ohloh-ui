@@ -72,6 +72,7 @@ class DuplicateTest < ActiveSupport::TestCase
     end
 
     it 'properly cleans up aliases' do
+      Project.any_instance.stubs(:code_locations).returns([])
       the_alias = create(:alias, project: bad_project)
       commit_name = the_alias.commit_name
       preferred_name = the_alias.preferred_name
@@ -97,16 +98,20 @@ class DuplicateTest < ActiveSupport::TestCase
     end
 
     it 'properly cleans up enlistments' do
-      create(:enlistment, project: good_project)
-      bad_enlistment_1 = create(:enlistment, project: bad_project)
-      bad_enlistment_2 = create(:enlistment, project: bad_project)
-      code_location = bad_enlistment_2.code_location
+      VCR.use_cassette('multiple_enlistment_calls_with_code_location') do
+        Enlistment.any_instance.stubs(:ensure_forge_and_job)
+        WebMocker.delete_subscription
+        unmocked_create_enlistment_with_code_location(good_project)
+        bad_enlistment_1 = unmocked_create_enlistment_with_code_location(bad_project)
+        bad_enlistment_2 = unmocked_create_enlistment_with_code_location(bad_project)
+        code_location_id = bad_enlistment_2.code_location_id
 
-      create(:duplicate, good_project: good_project, bad_project: bad_project).resolve!(create(:admin))
+        create(:duplicate, good_project: good_project, bad_project: bad_project).resolve!(create(:admin))
 
-      bad_enlistment_1.reload.deleted.must_equal true
-      bad_enlistment_2.reload.deleted.must_equal true
-      Enlistment.where(project: good_project, code_location: code_location).count.must_equal 1
+        bad_enlistment_1.reload.deleted.must_equal true
+        bad_enlistment_2.reload.deleted.must_equal true
+        Enlistment.where(project: good_project, code_location_id: code_location_id).count.must_equal 1
+      end
     end
 
     it 'properly cleans up project_experiences' do

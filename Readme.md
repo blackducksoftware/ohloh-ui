@@ -101,6 +101,16 @@ $ sudo apt-get install chromium-chromedriver
 $ sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver
 ```
 
+### Recording/fixing VCR cassettes for Fisbot API:
+
+Define an alias for vcr.localhost.org in `/etc/hosts`:
+```sh
+127.0.0.1 vcrlocalhost.org
+```
+
+Start the fisbot server(test environment) at localhost:4004.
+Manually clean the fisbot tables after each recording.
+
 Pull Request Builder:
 --------------------
 

@@ -112,9 +112,9 @@ class Forge::MatchTest < ActiveSupport::TestCase
       match = Forge::Match.first('http://bitbucket.org/durin42/hgsubversion/')
       code_locations = match.code_locations
       code_locations.length.must_equal 1
-      code_locations[0].repository.is_a?(HgRepository).must_equal true
-      code_locations[0].repository.url.must_equal 'https://bitbucket.org/durin42/hgsubversion'
-      code_locations[0].repository.forge_match.must_equal match
+      code_locations[0].scm_type.must_equal :hg
+      code_locations[0].url.must_equal 'https://bitbucket.org/durin42/hgsubversion'
+      code_locations[0].forge_match.must_equal match
     end
 
     it 'should return new code_location for Forge::Codeplex match' do
@@ -128,10 +128,10 @@ class Forge::MatchTest < ActiveSupport::TestCase
         match = Forge::Match.first('https://github.com/rails/rails')
         code_locations = match.code_locations
         code_locations.length.must_equal 1
-        code_locations[0].repository.is_a?(GitRepository).must_equal true
-        code_locations[0].repository.url.must_equal 'git://github.com/rails/rails.git'
-        assert_nil code_locations[0].module_branch_name
-        code_locations[0].repository.forge_match.must_equal match
+        code_locations[0].scm_type.must_equal :git
+        code_locations[0].url.must_equal 'git://github.com/rails/rails.git'
+        assert_nil code_locations[0].branch
+        code_locations[0].forge_match.must_equal match
       end
     end
 
@@ -140,9 +140,9 @@ class Forge::MatchTest < ActiveSupport::TestCase
         match = Forge::Match.first('https://code.google.com/p/jwysiwyg/')
         code_locations = match.code_locations
         code_locations.length.must_equal 1
-        code_locations[0].repository.is_a?(SvnRepository).must_equal true
-        code_locations[0].repository.url.must_equal 'http://jwysiwyg.googlecode.com/svn/trunk/'
-        code_locations[0].repository.forge_match.must_equal match
+        code_locations[0].scm_type.must_equal :svn_sync
+        code_locations[0].url.must_equal 'http://jwysiwyg.googlecode.com/svn/trunk/'
+        code_locations[0].forge_match.must_equal match
       end
     end
 
@@ -151,9 +151,9 @@ class Forge::MatchTest < ActiveSupport::TestCase
         match = Forge::Match.first('https://pdd-by.googlecode.com/hg/')
         code_locations = match.code_locations
         code_locations.length.must_equal 1
-        code_locations[0].repository.is_a?(HgRepository).must_equal true
-        code_locations[0].repository.url.must_equal 'https://code.google.com/p/pdd-by/'
-        code_locations[0].repository.forge_match.must_equal match
+        code_locations[0].scm_type.must_equal :hg
+        code_locations[0].url.must_equal 'https://code.google.com/p/pdd-by/'
+        code_locations[0].forge_match.must_equal match
       end
     end
 
@@ -162,9 +162,9 @@ class Forge::MatchTest < ActiveSupport::TestCase
         match = Forge::Match.first('http://cryptsetup.googlecode.com/git')
         code_locations = match.code_locations
         code_locations.length.must_equal 1
-        code_locations[0].repository.is_a?(GitRepository).must_equal true
-        code_locations[0].repository.url.must_equal 'https://code.google.com/p/cryptsetup/'
-        code_locations[0].repository.forge_match.must_equal match
+        code_locations[0].scm_type.must_equal :git
+        code_locations[0].url.must_equal 'https://code.google.com/p/cryptsetup/'
+        code_locations[0].forge_match.must_equal match
       end
     end
 
@@ -173,9 +173,9 @@ class Forge::MatchTest < ActiveSupport::TestCase
         match = Forge::Match.first('https://code.launchpad.net/~knny-myer/wagwoord/trunk')
         code_locations = match.code_locations
         code_locations.length.must_equal 1
-        code_locations[0].repository.is_a?(BzrRepository).must_equal true
-        code_locations[0].repository.url.must_equal 'lp:wagwoord'
-        code_locations[0].repository.forge_match.must_equal match
+        code_locations[0].scm_type.must_equal :bzr
+        code_locations[0].url.must_equal 'lp:wagwoord'
+        code_locations[0].forge_match.must_equal match
       end
     end
 
@@ -184,9 +184,9 @@ class Forge::MatchTest < ActiveSupport::TestCase
         match = Forge::Match.first('https://code.launchpad.net/maas/1.5')
         code_locations = match.code_locations
         code_locations.length.must_equal 1
-        code_locations[0].repository.is_a?(BzrRepository).must_equal true
-        code_locations[0].repository.url.must_equal 'lp:maas'
-        code_locations[0].repository.forge_match.must_equal match
+        code_locations[0].scm_type.must_equal :bzr
+        code_locations[0].url.must_equal 'lp:maas'
+        code_locations[0].forge_match.must_equal match
       end
     end
 
@@ -195,9 +195,9 @@ class Forge::MatchTest < ActiveSupport::TestCase
         match = Forge::Match.first('http://launchpad.net/ampoule')
         code_locations = match.code_locations
         code_locations.length.must_equal 1
-        code_locations[0].repository.is_a?(BzrRepository).must_equal true
-        code_locations[0].repository.url.must_equal 'lp:ampoule'
-        code_locations[0].repository.forge_match.must_equal match
+        code_locations[0].scm_type.must_equal :bzr
+        code_locations[0].url.must_equal 'lp:ampoule'
+        code_locations[0].forge_match.must_equal match
       end
     end
 
@@ -206,9 +206,9 @@ class Forge::MatchTest < ActiveSupport::TestCase
         match = Forge::Match.first('https://jotwiki.svn.sourceforge.net/svnroot/jotwiki/jotwiki/')
         code_locations = match.code_locations
         code_locations.length.must_equal 1
-        code_locations[0].repository.is_a?(SvnRepository).must_equal true
-        code_locations[0].repository.url.must_equal 'svn://svn.code.sf.net/p/jotwiki/code'
-        code_locations[0].repository.forge_match.must_equal match
+        code_locations[0].scm_type.must_equal :svn_sync
+        code_locations[0].url.must_equal 'svn://svn.code.sf.net/p/jotwiki/code'
+        code_locations[0].forge_match.must_equal match
       end
     end
 
@@ -217,10 +217,9 @@ class Forge::MatchTest < ActiveSupport::TestCase
         match = Forge::Match.first(':pserver:anonymous:@freecaller.cvs.sourceforge.net:/cvsroot/freecaller')
         code_locations = match.code_locations
         code_locations.length.must_equal 1
-        code_locations[0].repository.is_a?(CvsRepository).must_equal true
-        code_locations[0].repository
-                         .url.must_equal ':pserver:anonymous:@freecaller.cvs.sourceforge.net:/cvsroot/freecaller'
-        code_locations[0].repository.forge_match.must_equal match
+        code_locations[0].scm_type.must_equal 'cvs'
+        code_locations[0].url.must_equal ':pserver:anonymous:@freecaller.cvs.sourceforge.net:/cvsroot/freecaller'
+        code_locations[0].forge_match.must_equal match
       end
     end
   end

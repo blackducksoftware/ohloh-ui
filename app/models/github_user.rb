@@ -3,15 +3,14 @@ class GithubUser
   GITHUB_API_URL = 'https://api.github.com/users/'.freeze
   include ActiveModel::Model
 
-  attr_accessor :url, :bypass_url_validation
-  attr_reader :code_locations, :module_branch_name, :password
+  attr_accessor :url
   alias username url
 
   validates :url, format: { with: URL_FORMAT, message: I18n.t('invalid_github_username') }
   validate :username_must_exist, if: -> { url.match(URL_FORMAT) }
 
   def attributes
-    { url: username, type: self.class.name }
+    { url: username, scm_type: self.class.name }
   end
 
   def save!
@@ -21,8 +20,8 @@ class GithubUser
   def create_enlistment_for_project(editor_account, project, ignore = nil)
     project = Project.find(project)
     editor_account = Account.find(editor_account)
-    code_locations.each do |code_location|
-      code_location.create_enlistment_for_project(editor_account, project, ignore) unless code_location.new_record?
+    @code_locations.each do |code_location|
+      code_location.create_enlistment_for_project(editor_account, project, ignore)
     end
   end
 
@@ -34,13 +33,8 @@ class GithubUser
 
   def create_code_locations
     @code_locations ||= begin
-      fetch_repository_urls.collect do |url|
-        code_location = CodeLocation.find_existing(url, branch_name)
-        unless code_location
-          repository = GitRepository.find_or_initialize_by(url: url)
-          code_location = CodeLocation.create(repository: repository, module_branch_name: branch_name)
-        end
-        code_location
+      fetch_repository_urls.map do |url|
+        CodeLocation.create(url: url, branch: branch_name)
       end
     end
   end

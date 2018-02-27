@@ -17,21 +17,24 @@
                 %input.col-md-5#project_name{ name: 'project[name]', type: 'text', value: @project.name }
                 - error_tag @project, :name
                 %p.help-block!= t('.project_name_help', link: link_to(t('.contact_us'), blog_url_for(:contact_form)))
-            = f.fields_for :enlistments do |enlistment_form|
-              = enlistment_form.fields_for :code_location do |code_location_form|
-                = code_location_form.fields_for :repository do |repo_form|
-                  .control-group.nomargin
-                    %label.control-label.required= t('.project_source_code')
-                    .controls.chosen#value_select
-                      = repo_form.select :type, repository_options_for_select(repo_form.object), {},
-                      class: 'chzn-select value-select', id: 'repository_type', style: 'width: 100px'
-                      = repo_form.text_field :url, style: 'width: 265px; margin-bottom: 1px'
-                      - if repo_form.object.type == 'GitRepository'
-                        = code_location_form.text_field :module_branch_name,
-                          value: code_location_form.object.module_branch_name || 'master',
-                          style: 'width: 105px; margin-bottom: 1px'
-                      .clear_left
-                      - error_tag @project, :code_locations
+            .control-group.nomargin
+              %label.control-label.required= t('.project_source_code')
+              .controls.chosen#value_select
+                - if @project.code_location_object
+                  - scm_type = @project.code_location_object.scm_type
+                  = select_tag :scm_type, scm_options_for_select(scm_type),
+                    name: 'project[enlistments_attributes][0][code_location_attributes][scm_type]',
+                    class: 'chzn-select value-select', id: 'repository_type', style: 'width: 100px'
+                  = text_field_tag :url, @project.code_location_object.url,
+                    style: 'width: 265px; margin-bottom: 1px',
+                    name: 'project[enlistments_attributes][0][code_location_attributes][url]'
+                  - if scm_type.to_s == 'git'
+                    = text_field_tag :branch,
+                      @project.code_location_object.branch || 'master',
+                      style: 'width: 105px; margin-bottom: 1px',
+                      name: 'project[enlistments_attributes][0][code_location_attributes][branch]'
+                  .clear_left
+                  - error_tag @project, :code_location_object
             .control-group
               .controls
                 %label.checkbox.control-label{ style: 'padding: 0;' }

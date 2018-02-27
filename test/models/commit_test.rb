@@ -7,7 +7,10 @@ class CommitTest < ActiveSupport::TestCase
 
   describe '#for_project' do
     it 'should return commits' do
-      project = commit.code_set.code_location.enlistments.first.project
+      enlistment = create_enlistment_with_code_location
+      commit.code_set.update!(code_location_id: enlistment.code_location_id)
+      CodeSet.any_instance.stubs(:code_location).returns(CodeLocation.new(id: enlistment.code_location_id))
+      project = enlistment.project
       commits = Commit.for_project(project)
       commits.count.must_equal 1
       commits.first.must_equal commit
@@ -40,6 +43,10 @@ class CommitTest < ActiveSupport::TestCase
     end
 
     it 'should return nil if fyle is ignored' do
+      enlistment = create_enlistment_with_code_location
+      commit.code_set.update!(code_location_id: enlistment.code_location_id)
+      CodeSet.any_instance.stubs(:code_location).returns(CodeLocation.new(id: enlistment.code_location_id))
+
       commit, analysis_id = create_commit(ignore_files: true)
       summary = commit.lines_added_and_removed(analysis_id)
       summary.count.must_equal 2
@@ -50,32 +57,32 @@ class CommitTest < ActiveSupport::TestCase
 
   describe 'nice_id' do
     it 'should return nil if not a git, svn or hg' do
-      commit.code_set.code_location = create(:code_location, repository: create(:cvs_repository))
-      assert_nil commit.nice_id
+      commit.code_set.code_location = CodeLocation.new(scm_type: :cvs)
+      commit.nice_id.must_be_nil
     end
 
     it 'should return commit id if SvnSyncRepository' do
-      commit.code_set.code_location = create(:code_location, repository: create(:svn_sync_repository))
+      commit.code_set.code_location = CodeLocation.new(scm_type: :svn_sync)
       commit.nice_id.must_equal commit.sha1.prepend('r')
     end
 
     it 'should return commit id if GitRepository' do
-      commit.code_set.code_location = create(:code_location, repository: create(:git_repository))
+      commit.code_set.code_location = CodeLocation.new(scm_type: :git)
       commit.nice_id.must_equal commit.sha1
     end
 
     it 'should truncate commit if short params' do
-      commit.code_set.code_location = create(:code_location, repository: create(:git_repository))
+      commit.code_set.code_location = CodeLocation.new(scm_type: :git)
       commit.nice_id(short: true).must_equal commit.sha1.to(7)
     end
 
     it 'should return commit id if HgRepository' do
-      commit.code_set.code_location = create(:code_location, repository: create(:hg_repository))
+      commit.code_set.code_location = CodeLocation.new(scm_type: :hg)
       commit.nice_id.must_equal commit.sha1
     end
 
     it 'must truncate 12 chars of commit if short params is passed' do
-      commit.code_set.code_location = create(:code_location, repository: create(:hg_repository))
+      commit.code_set.code_location = CodeLocation.new(scm_type: :hg)
       commit.nice_id(short: true).must_equal commit.sha1.to(11)
     end
   end

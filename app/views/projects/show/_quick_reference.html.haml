@@ -31,7 +31,7 @@
       - if enlistments.size > 1
         %i= link_to t('.n_locations', n: enlistments.size), project_enlistments_path(@project)
       - else
-        = enlistments.first.repository.url.truncate(35)
+        = enlistments.first.code_location.url.truncate(35)
       %br
     - else
       = link_to t('.add_code_location'), project_enlistments_path(@project)

@@ -19,11 +19,12 @@ end
 br
 br
 span 'Enlisted Projects: '
-job.code_location.projects.each do |project|
+projects = Project.joins(:enlistments).where('enlistments.code_location_id': job.code_location_id)
+projects.each do |project|
   a link_to project.name, project_path(project)
   a link_to '[Jobs]', admin_project_jobs_path(project)
   br
-end if job.code_location
+end if job.code_location_id
 br
 span 'Failure Group: '
 if job.failure_group
@@ -54,12 +55,6 @@ unless job.running?
     span '|'
     a link_to 'Reset Retry Counter', recount_admin_job_path(job)
   end
-end
-
-br
-br
-if job.code_location
-  render 'admin/repositories/repository', code_location: job.code_location, code_sets: job.code_location.code_sets, job: job
 end
 
 br

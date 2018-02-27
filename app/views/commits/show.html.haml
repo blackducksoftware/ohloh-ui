@@ -32,8 +32,8 @@
       %tr
         %td.text-right= t('.repository')
         %td.info
-          = link_to commit_contributor.code_set.repository.url, commit_contributor.code_set.repository.url
-          = commit_contributor.code_set.code_location.module_branch_name
+          = link_to commit_contributor.code_set.code_location.url, commit_contributor.code_set.code_location.url
+          = commit_contributor.code_set.code_location.branch
         %td.text-right= t('.lines_removed')
         %td.info= lines_removed
       %tr
@@ -86,8 +86,8 @@
           - klass = cycle('even', 'odd', named: 'rows')
           %tr{ class: "#{klass} nohover" }
             %td.strong
-              - if commit_contributor.code_set.repository.is_a? CvsRepository
-                #{commit_contributor.code_set.code_location.module_branch_name}/#{diff.fyle.name}
+              - if commit_contributor.code_set.code_location.scm_type == 'cvs'
+                #{commit_contributor.code_set.code_location.branch}/#{diff.fyle.name}
               - else
                 = truncate(diff.try(:fyle).try(:name), length: 43)
             - if Ignore.match?(@ignore_prefixes, diff.fyle.name)

@@ -442,16 +442,6 @@ Rails.application.routes.draw do
     resources :organizations do
       resources :jobs, as: :job
     end
-    resources :repositories
-
-    resources :code_locations do
-      resources :jobs
-      resources :code_sets
-      resources :sloc_sets
-      resources :clumps
-      resources :slave_logs
-      resources :complete_jobs
-    end
 
     resources :accounts do
       resources :vita_jobs do

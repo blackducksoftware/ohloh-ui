@@ -2,10 +2,10 @@
 http_interactions:
 - request:
     method: delete
-    uri: http://www.vcrlocalhost.org/api/v1/subscriptions/delete.json
+    uri: http://vcrlocalhost.org:4004/api/v1/subscriptions/delete.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
     body:
       encoding: US-ASCII
-      string: api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d&code_location_id=263
+      string: code_location_id=263
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3

@@ -311,17 +311,19 @@ class ProjectTest < ActiveSupport::TestCase
   describe 'ensure_job' do
     it 'should update analysis sloc set logged at date if out of date' do
       analysis = create(:analysis, created_at: 25.days.ago)
-      project = create(:project)
       project.update_column(:best_analysis_id, analysis.id)
-      sloc_set = create(:sloc_set, as_of: 1, code_set_time: Date.current)
+      sloc_set = create(:sloc_set, as_of: 1)
       code_set = create(:code_set, as_of: 1, best_sloc_set: sloc_set)
       analysis_sloc_set = create(:analysis_sloc_set, as_of: 1, analysis: analysis, sloc_set: sloc_set)
-      code_location = create(:code_location, best_code_set: code_set)
-      create(:enlistment, project: project, code_location: code_location)
 
+      sloc_set.update!(code_set_time: Date.current)
+      WebMocker.create_code_location(201, best_code_set_id: code_set.id)
+      unmocked_create_enlistment_with_code_location(project, best_code_set_id: code_set.id)
       CodeLocation.any_instance.stubs(:ensure_job).returns(false)
 
+      WebMocker.get_project_code_locations(true, best_code_set_id: code_set.id)
       project.ensure_job
+
       analysis_sloc_set.reload.code_set_time.must_equal Date.current
     end
 
@@ -332,13 +334,14 @@ class ProjectTest < ActiveSupport::TestCase
       project.update_columns(best_analysis_id: analysis.id, activity_level_index: 40)
 
       project.activity_level_index.must_equal 40
+      project.stubs(:code_locations).returns([])
       project.ensure_job
       project.reload.activity_level_index.must_equal 10
     end
 
     it 'should not create a new job if project is deleted' do
       project = create(:project, deleted: true)
-      create_code_location(project)
+      project.stubs(:code_locations).returns([code_location_stub])
 
       project.ensure_job
       project.jobs.count.must_equal 0
@@ -346,8 +349,7 @@ class ProjectTest < ActiveSupport::TestCase
 
     it 'should not create a new job if project has no code_locations' do
       project = create(:project)
-      create_code_location(project)
-      project.code_locations.delete_all
+      project.stubs(:code_locations).returns([])
 
       project.ensure_job
       project.jobs.count.must_equal 0
@@ -355,7 +357,7 @@ class ProjectTest < ActiveSupport::TestCase
 
     it 'should not create a new job if project already has a job' do
       project = create(:project)
-      create_code_location(project)
+      project.stubs(:code_locations).returns([code_location_stub])
       AnalyzeJob.create(project: project, wait_until: Time.current + 5.hours)
 
       project.ensure_job
@@ -365,7 +367,7 @@ class ProjectTest < ActiveSupport::TestCase
     it 'should create new analyze job if project has no analysis' do
       project = create(:project)
       project.update_column(:best_analysis_id, nil)
-      create_code_location(project)
+      project.stubs(:code_locations).returns([code_location_stub])
       CodeLocation.any_instance.stubs(:ensure_job).returns(false)
 
       project.jobs.count.must_equal 0
@@ -377,7 +379,7 @@ class ProjectTest < ActiveSupport::TestCase
       analysis = create(:analysis, created_at: 2.months.ago)
       project = create(:project)
       project.update_column(:best_analysis_id, analysis.id)
-      create_code_location(project)
+      project.stubs(:code_locations).returns([code_location_stub])
 
       CodeLocation.any_instance.stubs(:ensure_job).returns(false)
 
@@ -390,6 +392,7 @@ class ProjectTest < ActiveSupport::TestCase
   describe 'schedule_delayed_analysis' do
     it 'should not create a job if no code_location is available for the project' do
       project = create(:project)
+      project.stubs(:code_locations).returns([])
 
       project.schedule_delayed_analysis
       project.jobs.count.must_equal 0
@@ -397,8 +400,7 @@ class ProjectTest < ActiveSupport::TestCase
 
     it 'should schedule analysis if no existing jobs are found' do
       project = create(:project)
-      create_code_location(project)
-      project.code_locations.first.jobs.delete_all
+      project.stubs(:code_locations).returns([code_location_stub])
 
       project.jobs.count.must_equal 0
       project.schedule_delayed_analysis
@@ -407,9 +409,9 @@ class ProjectTest < ActiveSupport::TestCase
 
     it 'should not schedule analysis if project code_location has jobs are found' do
       project = create(:project)
-      create_code_location(project)
-      project.code_locations.first.jobs.delete_all
-      FetchJob.create(code_location_id: project.code_locations.first.id)
+      code_location = code_location_stub_with_id
+      project.stubs(:code_locations).returns([code_location])
+      FetchJob.create(code_location_id: code_location.id)
 
       project.jobs.count.must_equal 0
       project.schedule_delayed_analysis
@@ -418,7 +420,7 @@ class ProjectTest < ActiveSupport::TestCase
 
     it 'should update existing job if present' do
       project = create(:project)
-      create_code_location(project)
+      project.stubs(:code_locations).returns([code_location_stub])
       AnalyzeJob.create(project: project, wait_until: Time.current + 5.hours)
 
       project.jobs.count.must_equal 1
@@ -496,15 +498,5 @@ class ProjectTest < ActiveSupport::TestCase
       result = project.users - [stack_entry.stack.account, stack_entry3.stack.account]
       result.must_equal []
     end
-  end
-
-  private
-
-  def create_code_location(project)
-    repository = create(:repository, url: 'git://github.com/rails/rails.git', forge_id: forge.id,
-                                     owner_at_forge: 'rails', name_at_forge: 'rails')
-
-    code_location = create(:code_location, repository: repository)
-    create(:enlistment, project: project, code_location: code_location)
   end
 end

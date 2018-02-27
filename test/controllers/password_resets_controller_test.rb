@@ -24,5 +24,18 @@ describe 'PasswordResetsController' do
 
       assigns(:user).id.must_equal account.id
     end
+
+    it 'must render error when token is expired' do
+      Account.any_instance.stubs(:update_password)
+
+      account = create(:account)
+      account.update!(confirmation_token: Clearance::Token.new)
+
+      put :update, user_id: account.login, token: Faker::Internet.password,
+                   password_reset: { password: Faker::Internet.password }
+
+      must_render_template 'passwords/new'
+      flash[:error].must_equal I18n.t('passwords.token_expired_error')
+    end
   end
 end

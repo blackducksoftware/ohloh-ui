@@ -18,6 +18,7 @@ class SlocMetricTest < ActiveSupport::TestCase
     end
 
     it 'should not return if file is ignored' do
+      CodeSet.any_instance.stubs(:code_location).returns(code_location_stub)
       @analysis_sloc_set.update_attributes(ignore: "Disallow: #{@diff.fyle.name}")
       summary = SlocMetric.commit_summaries(@diff.commit, @analysis_sloc_set.analysis_id)
       summary.length.must_equal 0

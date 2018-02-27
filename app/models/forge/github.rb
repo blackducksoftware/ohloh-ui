@@ -20,8 +20,8 @@ class Forge::Github < Forge
     { name: json['name'], vanity_url: match.name_at_forge, description: json['description'], url: url }
   end
 
-  def get_repository_attributes(match)
+  def get_code_location_attributes(match)
     json = match.get_json_api
-    [{ type: GitRepository, forge_match: match, branch_name: json['master_branch'], url: json['git_url'] }]
+    [{ scm_type: :git, forge_match: match, branch: json['master_branch'], url: json['git_url'] }]
   end
 end

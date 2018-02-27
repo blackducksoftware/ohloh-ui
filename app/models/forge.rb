@@ -14,7 +14,7 @@ class Forge < ActiveRecord::Base
     {}
   end
 
-  def get_repository_attributes(_)
+  def get_code_location_attributes(_)
     []
   end
 end

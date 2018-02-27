@@ -16,6 +16,7 @@ describe EditsModalHelper do
     end
 
     it 'should return vlaue for alias name' do
+      Alias.any_instance.stubs(:schedule_project_analysis)
       alias_obj = create(:alias)
       edit = create(:property_edit, target: alias_obj, value: alias_obj.preferred_name_id)
       edit_show_value(edit).must_equal alias_obj.preferred_name.name
@@ -27,7 +28,8 @@ describe EditsModalHelper do
     end
 
     it 'should return value for enlistment' do
-      enlistment = create(:enlistment)
+      WebMocker.get_code_location
+      enlistment = create_enlistment_with_code_location
       enlistment.edits.first.target.code_location.nice_url.must_equal enlistment.code_location.nice_url
     end
 

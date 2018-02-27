@@ -2,14 +2,18 @@ require 'test_helper'
 
 class AliasTest < ActiveSupport::TestCase
   before do
+    Alias.any_instance.stubs(:schedule_project_analysis)
     @account = create(:account)
     @project = create(:project)
     @commit_name = create(:name)
     @preferred_name = create(:name)
-    @alias   = create(:alias, project_id: @project.id, commit_name_id: @commit_name.id,
-                              preferred_name_id: @preferred_name.id)
-    @commit  = create(:commit)
-    @commit_project = @commit.code_set.code_location.projects.first
+    @alias = create(:alias, project_id: @project.id, commit_name_id: @commit_name.id,
+                            preferred_name_id: @preferred_name.id)
+
+    enlistment = create_enlistment_with_code_location
+    @commit = create(:commit)
+    @commit.code_set.update!(code_location_id: enlistment.code_location_id)
+    @commit_project = enlistment.project
   end
 
   it 'should validate commit_name_id presence' do

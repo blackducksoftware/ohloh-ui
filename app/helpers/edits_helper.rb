@@ -86,7 +86,7 @@ module EditsHelper
   def edit_explanation_enlistment(edit)
     return t('edits.explanation_enlistment_ignored') if edit.is_a?(PropertyEdit)
 
-    t('edits.explanation_enlistment', url: edit.target.repository.url)
+    t('edits.explanation_enlistment', url: edit.target.code_location.url)
   end
 
   def edit_enlistment_branch_info(edit)

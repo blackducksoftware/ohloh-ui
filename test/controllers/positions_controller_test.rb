@@ -494,6 +494,7 @@ describe 'PositionsController' do
     end
 
     it 'must create alias if user already has a position' do
+      Project.any_instance.stubs(:code_locations).returns([])
       login_as account
       position = create_position(account: account)
       name = create(:person).name.name
@@ -525,6 +526,7 @@ describe 'PositionsController' do
     end
 
     it 'should remove contributions record when alias record exists' do
+      Project.any_instance.stubs(:code_locations).returns([])
       login_as account
       position = create_position(account: account)
       person = create(:person, project: position.project)

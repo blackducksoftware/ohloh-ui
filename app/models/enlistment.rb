@@ -3,29 +3,27 @@ class Enlistment < ActiveRecord::Base
   has_many :project_badges
   has_many :travis_badges
   has_many :cii_badges
-  belongs_to :code_location
   belongs_to :project
 
-  has_one :repository, through: :code_location
-
+  before_save :save_code_location, if: -> { @nested_code_location }
   after_save :ensure_forge_and_job
+  after_update :update_subscription, if: :deleted_changed?
 
-  accepts_nested_attributes_for :code_location
   acts_as_editable editable_attributes: [:ignore]
   acts_as_protected parent: :project
 
   validates :ignore, length: { maximum: 1000 }, allow_nil: true
+  validate :validate_code_location, if: -> { @nested_code_location }
 
   scope :not_deleted, -> { where(deleted: false) }
   scope :by_url, -> { order('repositories.url, code_locations.module_branch_name') }
   scope :by_project, -> { order('projects.name, repositories.url, code_locations.module_branch_name') }
   scope :by_type, -> { order('repositories.type, repositories.url, code_locations.module_branch_name') }
   scope :by_module_name, -> { order('code_locations.module_branch_name, repositories.url') }
-  scope :with_repo_url, ->(url) { joins(code_location: :repository).where(Repository.arel_table[:url].eq(url)) }
-  scope :failed_code_location_jobs, -> { joins(code_location: :jobs).where(jobs: { status: Job::STATUS_FAILED }) }
+  # TODO: Check history to see where this was being used before.
+  # scope :with_repo_url, ->(url) { joins(code_location: :repository).where(Repository.arel_table[:url].eq(url)) }
   scope :by_last_update, lambda {
-    joins(:code_location)
-      .joins('left join code_sets on code_sets.id = code_locations.best_code_set_id')
+    joins('left join code_sets on code_sets.id = code_locations.best_code_set_id')
       .order('code_sets.updated_on DESC')
   }
   scope :by_update_status, lambda {
@@ -34,6 +32,17 @@ class Enlistment < ActiveRecord::Base
   }
 
   filterable_by ['projects.name', 'repositories.url', 'code_locations.module_branch_name', 'repositories.type']
+
+  attr_writer :code_location
+
+  def code_location
+    @code_location ||= CodeLocation.find(code_location_id)
+  end
+
+  def code_location_attributes=(hsh)
+    @nested_code_location = true
+    @code_location = CodeLocation.new(hsh)
+  end
 
   def analysis_sloc_set
     return if project.best_analysis.nil?
@@ -51,5 +60,23 @@ class Enlistment < ActiveRecord::Base
       project.save if forge_match
     end
     project.ensure_job
+  end
+
+  def save_code_location
+    if @code_location.save
+      self.code_location_id = @code_location.id
+    else
+      errors.add(:base, 'CodeLocation not saved')
+    end
+  end
+
+  def validate_code_location
+    errors.add(:base, 'Invalid url or branch name') unless @code_location.valid?
+  end
+
+  def update_subscription
+    params = { code_location_id: code_location_id, client_relation_id: project_id }
+    return CodeLocationSubscription.new(params).delete if deleted
+    CodeLocationSubscription.create(params)
   end
 end
