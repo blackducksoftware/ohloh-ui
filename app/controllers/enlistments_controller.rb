@@ -48,7 +48,6 @@ class EnlistmentsController < SettingsController
 
   def destroy
     @enlistment.create_edit.undo!(current_user)
-    delete_code_location_subscription
     redirect_to project_enlistments_path(@project), flash: { success: t('.success', name: @project.name) }
   end
 
@@ -62,11 +61,6 @@ class EnlistmentsController < SettingsController
     flash[:show_first_enlistment_alert] = true if @project.enlistments.count == 1
     flash[:success] = t('.success', url: @code_location.url,
                                     module_branch_name: (CGI.escapeHTML @code_location.branch.to_s))
-  end
-
-  def delete_code_location_subscription
-    code_location_id = @code_location.try(:id) || @enlistment.code_location_id
-    CodeLocationSubscription.new(code_location_id: code_location_id, client_relation_id: @project.id).delete
   end
 
   def code_location_params

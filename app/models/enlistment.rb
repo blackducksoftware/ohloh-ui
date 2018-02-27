@@ -7,6 +7,7 @@ class Enlistment < ActiveRecord::Base
 
   before_save :save_code_location, if: -> { @nested_code_location }
   after_save :ensure_forge_and_job
+  after_update :update_subscription, if: :deleted_changed?
 
   acts_as_editable editable_attributes: [:ignore]
   acts_as_protected parent: :project
@@ -71,5 +72,11 @@ class Enlistment < ActiveRecord::Base
 
   def validate_code_location
     errors.add(:base, 'Invalid url or branch name') unless @code_location.valid?
+  end
+
+  def update_subscription
+    params = { code_location_id: code_location_id, client_relation_id: project_id }
+    return CodeLocationSubscription.new(params).delete if deleted
+    CodeLocationSubscription.create(params)
   end
 end

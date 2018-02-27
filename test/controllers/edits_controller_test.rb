@@ -4,6 +4,7 @@ describe EditsController do
   describe 'project edits pages' do
     before do
       Project.any_instance.stubs(:code_locations).returns([])
+      Enlistment.any_instance.stubs(:update_subscription)
       @project = create(:project)
       create(:enlistment, project: @project, ignore: 'Ignored!')
       create(:link, project: @project)
@@ -255,10 +256,38 @@ describe EditsController do
       @project.enlistments.first.deleted.must_equal false
       login_as create(:admin)
       create_edit = CreateEdit.where(target: @project).first
+      WebMocker.delete_subscription
       post :update, id: create_edit.id, undo: 'true', project_id: @project.to_param
       assert_response :success
       assert_equal true, @project.reload.deleted?
       assert_equal true, Enlistment.find_by(project_id: @project.id).deleted?
+    end
+  end
+
+  describe 'enlistment undo/redo' do
+    it 'undo must attempt to delete subscription' do
+      login_as create(:admin)
+      enlistment = create_enlistment_with_code_location
+      edit = CreateEdit.where(target_id: enlistment.id, target_type: 'Enlistment', undone: false).first
+      CodeLocationSubscription.any_instance.expects(:delete).once
+      Enlistment.any_instance.stubs(:code_location).returns(code_location_stub)
+      put :update, id: edit.id, undo: 'true', project_id: enlistment.project_id
+      assert_response :success
+      enlistment.reload.must_be :deleted?
+    end
+
+    it 'redo must attempt to recreate subscription' do
+      account = create(:admin)
+      login_as account
+      enlistment = create_enlistment_with_code_location
+      CodeLocationSubscription.any_instance.expects(:delete).once
+      enlistment.create_edit.undo!(account)
+      edit = CreateEdit.where(target_id: enlistment.id, target_type: 'Enlistment', undone: true).first
+      CodeLocationSubscription.expects(:create).once
+      Enlistment.any_instance.stubs(:code_location).returns(code_location_stub)
+      put :update, id: edit.id, undo: 'false', project_id: enlistment.project_id
+      assert_response :success
+      enlistment.reload.wont_be :deleted?
     end
   end
 

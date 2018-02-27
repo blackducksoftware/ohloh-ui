@@ -44,6 +44,11 @@ module WebMocker
       .to_return(body: 'Subscription Added Successfully')
   end
 
+  def delete_subscription
+    stub_request(:delete, subscriptions_api.resource_uri(:delete))
+      .to_return(body: 'Subscription Deleted Successfully')
+  end
+
   def create_code_location_url_failure
     stub_request(:post, code_locations_url)
       .to_return(body: { error: { url: 'Either URL or branch parameter is missing' } }.to_json, status: 400)

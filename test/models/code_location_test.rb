@@ -16,9 +16,11 @@ class CodeLocationTest < ActiveSupport::TestCase
     it 'must undelete old enlistment' do
       Enlistment.any_instance.stubs(:ensure_forge_and_job)
       r1 = code_location.create_enlistment_for_project(create(:account), project)
+      WebMocker.delete_subscription
       r1.destroy
       r1.reload
       r1.deleted.must_equal true
+      WebMocker.create_subscription
       r2 = code_location.create_enlistment_for_project(create(:account), project)
       r2.deleted.must_equal false
       r1.id.must_equal r2.id
