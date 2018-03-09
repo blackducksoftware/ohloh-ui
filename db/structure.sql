@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.3
--- Dumped by pg_dump version 9.6.3
+-- Dumped from database version 9.6.6
+-- Dumped by pg_dump version 9.6.6
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -195,6 +195,15 @@ CREATE FUNCTION email_addresses_id_seq_view() RETURNS integer
 
 
 --
+-- Name: failure_groups_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION failure_groups_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from failure_groups_id_seq_view$$;
+
+
+--
 -- Name: fisbot_events_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -210,6 +219,15 @@ CREATE FUNCTION fisbot_events_id_seq_view() RETURNS integer
 CREATE FUNCTION fyles_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from fyles_id_seq_view$$;
+
+
+--
+-- Name: jobs_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION jobs_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from jobs_id_seq_view$$;
 
 
 --
@@ -2245,15 +2263,35 @@ CREATE VIEW factoids_id_seq_view AS
 
 
 --
--- Name: failure_groups; Type: TABLE; Schema: public; Owner: -
+-- Name: failure_groups; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE failure_groups (
-    id integer NOT NULL,
+CREATE FOREIGN TABLE failure_groups (
+    id integer DEFAULT failure_groups_id_seq_view() NOT NULL,
     name text NOT NULL,
     pattern text NOT NULL,
     priority integer DEFAULT 0,
     auto_reschedule boolean DEFAULT false
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'failure_groups'
+);
+ALTER FOREIGN TABLE failure_groups ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE failure_groups ALTER COLUMN name OPTIONS (
+    column_name 'name'
+);
+ALTER FOREIGN TABLE failure_groups ALTER COLUMN pattern OPTIONS (
+    column_name 'pattern'
+);
+ALTER FOREIGN TABLE failure_groups ALTER COLUMN priority OPTIONS (
+    column_name 'priority'
+);
+ALTER FOREIGN TABLE failure_groups ALTER COLUMN auto_reschedule OPTIONS (
+    column_name 'auto_reschedule'
 );
 
 
@@ -2270,18 +2308,20 @@ CREATE SEQUENCE failure_groups_id_seq
 
 
 --
--- Name: failure_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: failure_groups_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE failure_groups_id_seq OWNED BY failure_groups.id;
-
-
---
--- Name: failure_groups_id_seq_view; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW failure_groups_id_seq_view AS
- SELECT (nextval('failure_groups_id_seq'::regclass))::integer AS id;
+CREATE FOREIGN TABLE failure_groups_id_seq_view (
+    id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'failure_groups_id_seq_view'
+);
+ALTER FOREIGN TABLE failure_groups_id_seq_view ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
 
 
 --
@@ -2825,11 +2865,11 @@ CREATE TABLE job_statuses (
 
 
 --
--- Name: jobs; Type: TABLE; Schema: public; Owner: -
+-- Name: jobs; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE jobs (
-    id integer NOT NULL,
+CREATE FOREIGN TABLE jobs (
+    id integer DEFAULT jobs_id_seq_view() NOT NULL,
     project_id integer,
     status integer DEFAULT 0 NOT NULL,
     type text NOT NULL,
@@ -2853,6 +2893,83 @@ CREATE TABLE jobs (
     organization_id integer,
     code_location_id integer,
     code_location_tarball_id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'jobs'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN project_id OPTIONS (
+    column_name 'project_id'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN status OPTIONS (
+    column_name 'status'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN type OPTIONS (
+    column_name 'type'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN priority OPTIONS (
+    column_name 'priority'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN current_step OPTIONS (
+    column_name 'current_step'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN current_step_at OPTIONS (
+    column_name 'current_step_at'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN max_steps OPTIONS (
+    column_name 'max_steps'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN exception OPTIONS (
+    column_name 'exception'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN backtrace OPTIONS (
+    column_name 'backtrace'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN code_set_id OPTIONS (
+    column_name 'code_set_id'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN sloc_set_id OPTIONS (
+    column_name 'sloc_set_id'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN notes OPTIONS (
+    column_name 'notes'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN wait_until OPTIONS (
+    column_name 'wait_until'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN account_id OPTIONS (
+    column_name 'account_id'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN logged_at OPTIONS (
+    column_name 'logged_at'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN slave_id OPTIONS (
+    column_name 'slave_id'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN started_at OPTIONS (
+    column_name 'started_at'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN retry_count OPTIONS (
+    column_name 'retry_count'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN do_not_retry OPTIONS (
+    column_name 'do_not_retry'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN failure_group_id OPTIONS (
+    column_name 'failure_group_id'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN organization_id OPTIONS (
+    column_name 'organization_id'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN code_location_id OPTIONS (
+    column_name 'code_location_id'
+);
+ALTER FOREIGN TABLE jobs ALTER COLUMN code_location_tarball_id OPTIONS (
+    column_name 'code_location_tarball_id'
 );
 
 
@@ -2869,18 +2986,20 @@ CREATE SEQUENCE jobs_id_seq
 
 
 --
--- Name: jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: jobs_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE jobs_id_seq OWNED BY jobs.id;
-
-
---
--- Name: jobs_id_seq_view; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW jobs_id_seq_view AS
- SELECT (nextval('jobs_id_seq'::regclass))::integer AS id;
+CREATE FOREIGN TABLE jobs_id_seq_view (
+    id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'jobs_id_seq_view'
+);
+ALTER FOREIGN TABLE jobs_id_seq_view ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
 
 
 --
@@ -6460,13 +6579,6 @@ ALTER TABLE ONLY factoids ALTER COLUMN id SET DEFAULT nextval('factoids_id_seq':
 
 
 --
--- Name: failure_groups id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY failure_groups ALTER COLUMN id SET DEFAULT nextval('failure_groups_id_seq'::regclass);
-
-
---
 -- Name: feedbacks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -6506,13 +6618,6 @@ ALTER TABLE ONLY helpfuls ALTER COLUMN id SET DEFAULT nextval('helpfuls_id_seq':
 --
 
 ALTER TABLE ONLY invites ALTER COLUMN id SET DEFAULT nextval('invites_id_seq'::regclass);
-
-
---
--- Name: jobs id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY jobs ALTER COLUMN id SET DEFAULT nextval('jobs_id_seq'::regclass);
 
 
 --
@@ -7191,14 +7296,6 @@ ALTER TABLE ONLY factoids
 
 
 --
--- Name: failure_groups failure_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY failure_groups
-    ADD CONSTRAINT failure_groups_pkey PRIMARY KEY (id);
-
-
---
 -- Name: feedbacks feedbacks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7260,14 +7357,6 @@ ALTER TABLE ONLY helpfuls
 
 ALTER TABLE ONLY invites
     ADD CONSTRAINT invites_pkey PRIMARY KEY (id);
-
-
---
--- Name: jobs jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY jobs
-    ADD CONSTRAINT jobs_pkey PRIMARY KEY (id);
 
 
 --
@@ -8241,13 +8330,6 @@ CREATE INDEX index_factoids_on_analysis_id ON factoids USING btree (analysis_id)
 
 
 --
--- Name: index_failure_groups_on_priority_name; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_failure_groups_on_priority_name ON failure_groups USING btree (priority, name);
-
-
---
 -- Name: index_follows_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8273,55 +8355,6 @@ CREATE INDEX index_follows_on_project_id ON follows USING btree (project_id);
 --
 
 CREATE INDEX index_helpfuls_on_review_id ON helpfuls USING btree (review_id);
-
-
---
--- Name: index_jobs_on_account_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_jobs_on_account_id ON jobs USING btree (account_id);
-
-
---
--- Name: index_jobs_on_code_location_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_jobs_on_code_location_id ON jobs USING btree (code_location_id);
-
-
---
--- Name: index_jobs_on_code_set_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_jobs_on_code_set_id ON jobs USING btree (code_set_id);
-
-
---
--- Name: index_jobs_on_project_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_jobs_on_project_id ON jobs USING btree (project_id);
-
-
---
--- Name: index_jobs_on_slave_id_status; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_jobs_on_slave_id_status ON jobs USING btree (slave_id, status);
-
-
---
--- Name: index_jobs_on_slave_id_status_current_step; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_jobs_on_slave_id_status_current_step ON jobs USING btree (slave_id, status, current_step_at);
-
-
---
--- Name: index_jobs_on_sloc_set_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_jobs_on_sloc_set_id ON jobs USING btree (sloc_set_id);
 
 
 --
@@ -9476,30 +9509,6 @@ ALTER TABLE ONLY invites
 
 
 --
--- Name: jobs jobs_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY jobs
-    ADD CONSTRAINT jobs_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
-
-
---
--- Name: jobs jobs_failure_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY jobs
-    ADD CONSTRAINT jobs_failure_group_id_fkey FOREIGN KEY (failure_group_id) REFERENCES failure_groups(id);
-
-
---
--- Name: jobs jobs_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY jobs
-    ADD CONSTRAINT jobs_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
-
-
---
 -- Name: knowledge_base_statuses knowledge_base_statuses_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9793,14 +9802,6 @@ ALTER TABLE ONLY posts
 
 ALTER TABLE ONLY posts
     ADD CONSTRAINT posts_topic_id_fkey FOREIGN KEY (topic_id) REFERENCES topics(id) ON DELETE CASCADE;
-
-
---
--- Name: profiles profiles_job_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY profiles
-    ADD CONSTRAINT profiles_job_id_fkey FOREIGN KEY (job_id) REFERENCES jobs(id) ON DELETE CASCADE;
 
 
 --
