@@ -20,3 +20,5 @@ tags
 .env
 .byebug_history
 logfile
+.vscode/settings.json
+.vscode/launch.json

@@ -39,9 +39,8 @@ class FisbotApi
   end
 
   def delete
-    uri = api_access.resource_uri(:delete)
+    uri = api_access.resource_uri(attributes.values.join('/'))
     request = Net::HTTP::Delete.new(uri)
-    request.set_form_data(attributes)
     Net::HTTP.new(uri.host, uri.port).request(request)
   end
 
