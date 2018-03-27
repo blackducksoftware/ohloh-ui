@@ -112,7 +112,7 @@ describe 'EnlistmentsControllerTest' do
     it 'destroy successfully' do
       login_as @account
       Enlistment.any_instance.stubs(:ensure_forge_and_job)
-      stub_code_location_subscription_api_call('delete') do
+      stub_code_location_subscription_api_call(@enlistment.code_location_id, @enlistment.project_id, 'delete') do
         delete :destroy, id: @enlistment.id, project_id: @project_id
       end
       must_respond_with :redirect

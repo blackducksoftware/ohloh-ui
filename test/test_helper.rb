@@ -128,8 +128,10 @@ class ActiveSupport::TestCase
     end
   end
 
-  def stub_code_location_subscription_api_call(method = 'create')
-    VCR.use_cassette("#{method}_code_location_subscription", match_requests_on: [:host, :path, :method]) do
+  def stub_code_location_subscription_api_call(code_location_id, project_id, method = 'create')
+    VCR.use_cassette("#{method}_code_location_subscription",
+                     erb: { code_location_id: code_location_id, client_relation_id: project_id },
+                     match_requests_on: [:host, :path, :method]) do
       yield
     end
   end
