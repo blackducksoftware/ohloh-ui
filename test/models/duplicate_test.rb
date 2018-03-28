@@ -105,7 +105,6 @@ class DuplicateTest < ActiveSupport::TestCase
         bad_enlistment_1 = unmocked_create_enlistment_with_code_location(bad_project)
         bad_enlistment_2 = unmocked_create_enlistment_with_code_location(bad_project)
         code_location_id = bad_enlistment_2.code_location_id
-        
         create(:duplicate, good_project: good_project, bad_project: bad_project).resolve!(create(:admin))
 
         bad_enlistment_1.reload.deleted.must_equal true
