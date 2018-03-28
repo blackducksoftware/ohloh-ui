@@ -256,7 +256,7 @@ describe EditsController do
       @project.enlistments.first.deleted.must_equal false
       login_as create(:admin)
       create_edit = CreateEdit.where(target: @project).first
-      WebMocker.delete_subscription
+      WebMocker.delete_subscription(@project.code_locations.first.id, @project.id)
       post :update, id: create_edit.id, undo: 'true', project_id: @project.to_param
       assert_response :success
       assert_equal true, @project.reload.deleted?

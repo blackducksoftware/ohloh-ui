@@ -44,8 +44,8 @@ module WebMocker
       .to_return(body: 'Subscription Added Successfully')
   end
 
-  def delete_subscription
-    stub_request(:delete, subscriptions_api.resource_uri(:delete))
+  def delete_subscription(code_location_id, client_relation_id)
+    stub_request(:delete, subscriptions_api.resource_uri("#{code_location_id}/#{client_relation_id}"))
       .to_return(body: 'Subscription Deleted Successfully')
   end
 

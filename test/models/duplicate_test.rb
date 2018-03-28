@@ -100,12 +100,11 @@ class DuplicateTest < ActiveSupport::TestCase
     it 'properly cleans up enlistments' do
       VCR.use_cassette('multiple_enlistment_calls_with_code_location') do
         Enlistment.any_instance.stubs(:ensure_forge_and_job)
-        WebMocker.delete_subscription
+        Enlistment.any_instance.stubs(:update_subscription)
         unmocked_create_enlistment_with_code_location(good_project)
         bad_enlistment_1 = unmocked_create_enlistment_with_code_location(bad_project)
         bad_enlistment_2 = unmocked_create_enlistment_with_code_location(bad_project)
         code_location_id = bad_enlistment_2.code_location_id
-
         create(:duplicate, good_project: good_project, bad_project: bad_project).resolve!(create(:admin))
 
         bad_enlistment_1.reload.deleted.must_equal true

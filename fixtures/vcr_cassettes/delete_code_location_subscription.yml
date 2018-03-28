@@ -2,21 +2,7 @@
 http_interactions:
 - request:
     method: delete
-    uri: http://vcrlocalhost.org:4004/api/v1/subscriptions/delete.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
-    body:
-      encoding: US-ASCII
-      string: code_location_id=263
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-      User-Agent:
-      - Ruby
-      Host:
-      - 172.18.0.5:3001
-      Content-Type:
-      - application/x-www-form-urlencoded
+    uri: http://vcrlocalhost.org:4004/api/v1/subscriptions/<%=code_location_id%>/<%=client_relation_id%>.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
   response:
     status:
       code: 200
