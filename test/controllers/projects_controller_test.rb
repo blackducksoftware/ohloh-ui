@@ -499,10 +499,11 @@ describe 'ProjectsController' do
   end
 
   it 'check_forge should gracefully handle duplicate projects detected' do
-    code_location_id = create_code_location_with_forge_params
-    VCR.use_cassette('ProjectControllerCheckForge-rails', erb: { code_location_id: code_location_id }) do
+    VCR.use_cassette('code_location_find_by_url') do
+      url = 'git://github.com/rails/rails.git'
+      unmocked_create_enlistment_with_code_location(project, {}, url)
       login_as create(:account)
-      post :check_forge, codelocation: 'https://github.com/rails/rails'
+      post :check_forge, codelocation: url
       must_respond_with :ok
       must_select "#project_#{project.id}", 1
       must_select 'form#new_project', 0
@@ -511,11 +512,11 @@ describe 'ProjectsController' do
   end
 
   it 'check_forge should gracefully handle forge timeout errors' do
-    code_location_id = create_code_location_with_forge_params
-    VCR.use_cassette('ProjectControllerCheckForge-rails', erb: { code_location_id: code_location_id }) do
+    VCR.use_cassette('code_location_find_by_url') do
+      url = 'git://github.com/rails/rails.git'
       login_as create(:account)
       Forge::Match.any_instance.expects(:project).raises Timeout::Error
-      post :check_forge, codelocation: 'https://github.com/rails/rails', bypass: true
+      post :check_forge, codelocation: url, bypass: true
       must_respond_with :ok
       must_select "#project_#{project.id}", 0
       must_select 'form#new_project', 1
@@ -524,10 +525,12 @@ describe 'ProjectsController' do
   end
 
   it 'check_forge should allow creating a project that already matches an existing project' do
-    code_location_id = create_code_location_with_forge_params
-    VCR.use_cassette('ProjectControllerCheckForge-rails', erb: { code_location_id: code_location_id }) do
+    VCR.use_cassette('code_location_find_by_url') do
+      url = 'git://github.com/rails/rails.git'
+      WebMocker.github_api('https://api.github.com/repos/rails/rails', url)
+      unmocked_create_enlistment_with_code_location(project, {}, url)
       login_as create(:account)
-      post :check_forge, codelocation: 'https://github.com/rails/rails', bypass: true
+      post :check_forge, codelocation: url, bypass: true
       must_respond_with :ok
       must_select "#project_#{project.id}", 0
       must_select 'form#new_project', 1
@@ -537,6 +540,7 @@ describe 'ProjectsController' do
   it 'check_forge wont render code location fields when no forge matches' do
     login_as create(:account)
     Forge::Match.stubs(:first)
+    CodeLocation.stubs(:all).returns([])
     post :check_forge, codelocation: 'foo_url'
     must_respond_with :ok
     must_select('input#branch', false)

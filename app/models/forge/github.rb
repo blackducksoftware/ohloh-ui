@@ -22,6 +22,6 @@ class Forge::Github < Forge
 
   def get_code_location_attributes(match)
     json = match.get_json_api
-    [{ scm_type: :git, forge_match: match, branch: json['master_branch'], url: json['git_url'] }]
+    [{ scm_type: :git, forge_match: match, branch: json['default_branch'], url: json['git_url'] }]
   end
 end

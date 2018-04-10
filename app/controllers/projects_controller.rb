@@ -77,9 +77,10 @@ class ProjectsController < ApplicationController
   end
 
   def populate_project_from_forge
-    Timeout.timeout(Forge::Match::MAX_FORGE_COMM_TIME) { @project = @match.project } if @match
+    match = Forge::Match.first(params[:codelocation])
+    Timeout.timeout(Forge::Match::MAX_FORGE_COMM_TIME) { @project = match.project } if match
   rescue Timeout::Error, OpenURI::HTTPError, URI::InvalidURIError
-    flash.now[:notice] = t('.forge_time_out', name: @match.forge.name)
+    flash.now[:notice] = t('.forge_time_out', name: match.forge.name)
   end
 
   def create_code_location_subscription

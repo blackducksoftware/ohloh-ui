@@ -64,6 +64,12 @@ module WebMocker
       .to_return(body: 'long html backtrace', status: 500)
   end
 
+  def github_api(url, git_url)
+    body = { id: Faker::Number.number(3), default_branch: 'master', git_url: git_url,
+             homepage: Faker::Internet.url, name: Faker::Company.name }
+    stub_request(:get, url).to_return(body: body.to_json)
+  end
+
   # ---- private ----
 
   def subscriptions_api

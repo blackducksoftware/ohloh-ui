@@ -1,0 +1,109 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://vcrlocalhost.org:4004/api/v1/code_locations.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
+    body:
+      encoding: US-ASCII
+      string: url=git%3A%2F%2Fgithub.com%2Frails%2Frails.git&scm_type=git&username&password&branch=master&forge_match&best_code_set_id&do_not_fetch&client_relation_id=23
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - vcrlocalhost.org:4004
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 201
+      message: 'Created '
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - W/"0003f379c842ac0c01d7b5048e52526b"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 069c3f8e-9687-4bd5-a320-9c58705e55c6
+      X-Runtime:
+      - '11.769537'
+      Server:
+      - WEBrick/1.3.1 (Ruby/2.2.3/2015-08-18)
+      Date:
+      - Mon, 09 Apr 2018 23:38:15 GMT
+      Content-Length:
+      - '148'
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '{"id":11,"scm_type":"git","url":"git://github.com/rails/rails.git","branch":"master","best_code_set_id":null,"do_not_fetch":false,"status":"active"}'
+    http_version: 
+  recorded_at: Mon, 09 Apr 2018 23:38:15 GMT
+- request:
+    method: get
+    uri: http://vcrlocalhost.org:4004/api/v1/code_locations.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d&url=git://github.com/rails/rails.git
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - vcrlocalhost.org:4004
+  response:
+    status:
+      code: 200
+      message: 'OK '
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Responses:
+      - '30'
+      X-Page:
+      - '1'
+      Total:
+      - '1'
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - W/"76dd06137df65a44857dad7d4e19a302"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 376c8693-f46c-4aa4-88aa-0d95421f902b
+      X-Runtime:
+      - '0.019298'
+      Server:
+      - WEBrick/1.3.1 (Ruby/2.2.3/2015-08-18)
+      Date:
+      - Mon, 09 Apr 2018 23:38:15 GMT
+      Content-Length:
+      - '150'
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '[{"id":11,"scm_type":"git","url":"git://github.com/rails/rails.git","branch":"master","best_code_set_id":null,"do_not_fetch":false,"status":"active"}]'
+    http_version: 
+  recorded_at: Mon, 09 Apr 2018 23:38:15 GMT
+recorded_with: VCR 3.0.3
