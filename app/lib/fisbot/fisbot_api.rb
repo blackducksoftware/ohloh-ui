@@ -58,11 +58,10 @@ class FisbotApi
       handle_errors(response) { new(JSON.parse(response.body)) }
     end
 
-    def find_by(data)
-      uri = api_access.resource_uri(:find_by)
-      uri.query = data.to_query
+    def all(params)
+      uri = api_access.resource_uri(nil, params)
       response = Net::HTTP.get_response(uri)
-      handle_errors(response) { new(JSON.parse(response.body)) }
+      handle_errors(response) { build_objects(response) }
     end
 
     def resource
@@ -86,6 +85,11 @@ class FisbotApi
 
     def api_access
       ApiAccess.new(resource)
+    end
+
+    def build_objects(response)
+      return [] if response.is_a?(Net::HTTPNoContent)
+      JSON.parse(response.body).map { |hsh| new(hsh) }
     end
   end
 
