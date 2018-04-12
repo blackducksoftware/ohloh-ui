@@ -191,7 +191,7 @@ describe 'EnlistmentsControllerTest' do
       must_redirect_to action: :index
       enlistment = Enlistment.last
       enlistment.code_location.branch.must_equal branch_name
-      enlistment.code_location.url.must_equal url.sub('https', 'git')
+      enlistment.code_location.url.must_equal url
     end
 
     it 'wont create duplicate repositories within the same project' do

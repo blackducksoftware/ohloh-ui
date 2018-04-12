@@ -15,7 +15,7 @@ describe 'FisbotApi' do
 
     it 'must return true when attributes are valid' do
       WebMocker.code_location_valid
-      code_location = CodeLocation.new(url: WebMocker.rails_git_url)
+      code_location = CodeLocation.new(url: WebMocker.rails_https_url)
       code_location.must_be :valid?
     end
   end
