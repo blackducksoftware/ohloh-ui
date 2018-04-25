@@ -48,7 +48,7 @@ class GithubUser
       _stdin, json_repository_data = Open3.popen3('curl', github_url(page))
       repository_data = JSON.load(json_repository_data)
       break unless repository_data.present?
-      repository_urls.concat repository_data.map { |data| data['git_url'] }
+      repository_urls.concat repository_data.map { |data| data['html_url'] }
     end
 
     repository_urls

@@ -64,8 +64,8 @@ module WebMocker
       .to_return(body: 'long html backtrace', status: 500)
   end
 
-  def github_api(url, git_url)
-    body = { id: Faker::Number.number(3), default_branch: 'master', git_url: git_url,
+  def github_api(url, html_url)
+    body = { id: Faker::Number.number(3), default_branch: 'master', html_url: html_url,
              homepage: Faker::Internet.url, name: Faker::Company.name }
     stub_request(:get, url).to_return(body: body.to_json)
   end
@@ -84,12 +84,12 @@ module WebMocker
     code_locations_api.resource_uri(id)
   end
 
-  def rails_git_url
-    'git://github.com/rails/rails'
+  def rails_https_url
+    'https://github.com/rails/rails'
   end
 
   def code_location_params(id: 42, best_code_set_id: nil)
-    { id: id, scm_type: :git, url: rails_git_url, branch: :master,
+    { id: id, scm_type: :git, url: rails_https_url, branch: :master,
       best_code_set_id: best_code_set_id, do_not_fetch: false, status: :active }
   end
 end

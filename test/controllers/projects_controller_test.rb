@@ -589,7 +589,7 @@ describe 'ProjectsController' do
     project.code_locations.length.must_equal 1
     code_location = project.code_locations[0]
     code_location.scm_type.must_equal 'git'
-    code_location.url.must_equal 'git://github.com/rails/rails'
+    code_location.url.must_equal 'https://github.com/rails/rails'
     code_location.branch.must_equal 'master'
   end
 
