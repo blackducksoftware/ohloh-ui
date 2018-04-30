@@ -5,7 +5,7 @@ class AccountMailer < ActionMailer::Base
     @account = account
     @url = activate_account_accesses_url(account_id: account.to_param, code: account.activation_code,
                                          host: ENV['URL_HOST'], protocol: 'https')
-    mail to: account.email, subject: t('.subject'), bcc: 'pdegenportnoy@blackducksoftware.com'
+    mail to: account.email, subject: t('.subject'), bcc: 'peterdp@synopsys.com'
   end
 
   def activation(account)
