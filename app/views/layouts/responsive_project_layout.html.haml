@@ -18,5 +18,5 @@
       = render partial: 'layouts/partials/page', locals: { responsive_layout: true }
       .clear
       %footer.fluid_footer= render partial: 'layouts/partials/fluid_footer'
-
+      = render 'cookies/consent_banner' unless cookies[:cookie_consented]
     = render partial: 'layouts/partials/js_scripts'
