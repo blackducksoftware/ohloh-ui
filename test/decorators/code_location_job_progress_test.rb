@@ -15,6 +15,11 @@ class CodeLocationJobProgressTest < ActiveSupport::TestCase
       repo_progress.message.must_equal 'Step 1 of 3: Downloading source code history (Waiting in queue)'
     end
 
+    it 'should return waiting message when its queued' do
+      @job.update_columns(status: 2)
+      repo_progress.message.must_equal 'Step 1 of 3: Downloading source code history (Waiting in queue)'
+    end
+
     it 'should return running message' do
       @job.update_columns(status: 1)
       repo_progress.message.must_equal 'Step 1 of 3: Downloading source code history (Running)'
