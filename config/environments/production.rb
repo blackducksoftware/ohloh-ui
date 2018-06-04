@@ -64,7 +64,7 @@ Rails.application.configure do
   # Set this to true and configure the email server for immediate delivery to
   # raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.smtp_settings = { address: 'mailrelay.blackducksoftware.com',
+  config.action_mailer.smtp_settings = { address: 'prd-ops-mail-test01.dc2.lan',
                                          openssl_verify_mode: OpenSSL::SSL::VERIFY_NONE }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
