@@ -76,8 +76,34 @@ module EnlistmentFilters
   def project_has_code_location?
     return unless CodeLocationSubscription.code_location_exists?(@project.id, @code_location.url,
                                                                  @code_location.branch, code_location_params[:scm_type])
-
-    flash[:notice] = t('.notice', url: @code_location.url, module_branch_name: @code_location.branch)
+    manage_deleted_enlistment
     redirect_to project_enlistments_path(@project)
+  end
+
+  def manage_deleted_enlistment
+    if enlistment_deleted?
+      restore_deleted_enlistment
+    else
+      flash[:notice] = t('.notice', url: @code_location.url, module_branch_name: @code_location.branch)
+    end
+  end
+
+  def enlistment_deleted?
+    enlistment = get_enlistment
+    enlistment.try(:deleted?) ? true : false
+  end
+
+  def get_code_location_id
+    response = CodeLocationApi.new(url: @code_location.url, branch: @code_location.branch).fetch
+    JSON.parse(response).first['id'] unless response.nil?
+  end
+
+  def get_enlistment
+    Enlistment.where(project_id: @project.id, code_location_id: get_code_location_id).first
+  end
+
+  def restore_deleted_enlistment
+    CreateEdit.find_by(target: get_enlistment).redo!(current_user)
+    flash[:success] = 'Deleted CodeLocation has been successfully restored.'
   end
 end

@@ -195,11 +195,32 @@ describe 'EnlistmentsControllerTest' do
     end
 
     it 'wont create duplicate repositories within the same project' do
+      @controller.stubs(:get_code_location_id).returns('1')
       code_location = code_location_stub
       CodeLocationSubscription.stubs(:code_location_exists?).returns(true)
       post :create, project_id: project.to_param, code_location: code_location.scm_attributes
       must_redirect_to action: :index
       flash[:notice].must_match 'already exists for this project'
+    end
+
+    it 'should restore deleted enlistments within the same project' do
+      CodeLocationSubscription.stubs(:code_location_exists?)
+      branch_name = 'master'
+      url = 'https://github.com/rails/rails'
+      post :create, project_id: project.to_param, code_location: { branch: branch_name, url: url, scm_type: 'git' }
+      enlistment = Enlistment.last
+      enlistment.update_column('deleted', true)
+      enlistment.create_edit.update_column('undone', true)
+
+      CodeLocationSubscription.stubs(:code_location_exists?).returns(true)
+      CodeLocationApi.any_instance.stubs(:fetch).returns("[{\"id\":#{enlistment.code_location_id}}]")
+      VCR.use_cassette('create_code_location_subscription') do
+        post :create, project_id: project.to_param, code_location: { branch: branch_name, url: url, scm_type: 'git' }
+      end
+
+      must_respond_with :redirect
+      must_redirect_to action: :index
+      flash[:success].must_match 'Deleted CodeLocation has been successfully restored.'
     end
 
     it 'must show alert message for adding the first enlistment' do
@@ -241,6 +262,7 @@ describe 'EnlistmentsControllerTest' do
 
           assert_no_difference 'Enlistment.count' do
             WebMocker.code_location_exists(true)
+            @controller.stubs(:get_code_location_id).returns('1')
             post :create, project_id: project.to_param, code_location: code_location.scm_attributes
           end
 
