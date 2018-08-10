@@ -14,6 +14,7 @@
   last_activity_info  = [Analysis::MonthlyLanguage.last_run, ProjectBadge.check_cii_projects_last_run, last_deployment]
   last_activity_bg    = ['bg-aqua', 'bg-green', 'bg-yellow']
 
+  chart_url = charts_oh_admin_accounts_url.to_s
 
 %h1 Project Stats Overview
 %p
@@ -44,7 +45,28 @@
           More info
           %i.fa.fa-arrow-circle-right
 
-%p &nbsp;
+%h1
+  Accounts BreakDown Stats
+  .btn-group#account_window{ 'data-toggle' => 'buttons' }
+    %label.btn.btn-primary.active
+      %input#option1{ checked: 'checked', name: 'options', type: 'radio', value: '3' } 3 Months
+    %label.btn.btn-primary
+      %input#option2{ name: 'options', type: 'radio', value: '6' } 6 Months
+    %label.btn.btn-primary
+      %input#option3{ name: 'options', type: 'radio', value: '12' } 1 Year
+
+#three_months
+  %h1 3 Months Accounts Creation Trend
+  .chart{ 'datasrc' => chart_url + '?period=3' }
+
+#six_months
+  %h1 6 Months Accounts Creation Trend
+  .chart{ 'datasrc' => chart_url + '?period=6' }
+
+#one_year
+  %h1 1 Year Accounts Creation Trend
+  .chart{ 'datasrc' => chart_url + '?period=12' }
+
 
 %h1 Last Activities
 %p

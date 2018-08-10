@@ -21,3 +21,4 @@ TOP_COMMIT_VOLUME_CHART_DEFAULTS = load_chart_options('analysis/top_commit_volum
 ANALYSIS_CHARTS_OPTIONS = load_chart_options('analysis/options_based_on_type.yml')
 
 VULNERABILITY_VERSION_CHART_DEFAULTS = load_chart_options('project_vulnerability_version.yml')
+ACCOUNTS_CHART_DEFAULTS = load_chart_options('accounts.yml')
