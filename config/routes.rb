@@ -455,6 +455,11 @@ Rails.application.routes.draw do
 
   namespace :oh_admin do
     root to: 'dashboard#index'
+    resources :accounts do
+      collection do
+        get :charts
+      end
+    end
     resources :projects do
       resources :jobs do
       end
