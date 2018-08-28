@@ -9,7 +9,8 @@
     %meta{ name: 'firebase-app-id', content: ENV['FIREBASE_PROJECT_ID'] }
     %meta{ name: 'firebase-app-url', content: ENV['FIREBASE_AUTH_DOMAIN'] }
     %meta{ name: 'google-site-verification', content: 'jKkWeVQ0tB1bffJYg7xXAtcIM-nrjjVxhP3ohb8UH2A' }
-    %link{ href: 'https://cdn.firebase.com/libs/firebaseui/2.3.0/firebaseui.css', rel: 'stylesheet', type: 'text/css' }/
+    %link{ href: 'https://cdn.firebase.com/libs/firebaseui/3.4.0/firebaseui.css', rel: 'stylesheet', type: 'text/css' }/
+
     = yield :custom_head
     = stylesheet_link_tag 'application', media: 'all'
     = csrf_meta_tags

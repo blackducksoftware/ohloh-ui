@@ -1,7 +1,8 @@
 uiConfig = ->
   'signInSuccessUrl': '/'
   'callbacks':
-    'signInSuccess': (user) ->
+    'signInSuccessWithAuthResult': (authResult) ->
+      user = authResult.user
       user.getIdToken().then (idToken) ->
         $('#credentials').val idToken
         $('#hidden-verified-label').show()
@@ -13,6 +14,8 @@ uiConfig = ->
     recaptchaParameters: size: 'invisible'
   } ]
   'tosUrl': 'https://blog.openhub.net/terms/'
+  'privacyPolicyUrl': ->
+     window.location.assign 'https://blog.openhub.net/privacy/'
 
 initializeFirebase = ->
   firebase.initializeApp(
