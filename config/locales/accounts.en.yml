@@ -205,7 +205,7 @@ en:
       note_bullet_1: 'Accounts must be created for an individual.'
       note_bullet_2: 'Accounts created to represent a company will be disabled.'
       note_bullet_3: 'Accounts created for the purpose of advertising, link generation, marketing, or SEO, etc. will be disabled.'
-      we_dont_like_disabling: "We don\'t like disabling accounts any more than you would like to have your account disabled, but we like it even less when folks try to abuse this free service. Please help us keep the Open Hub a useful service to all. Thanks!"
+      we_dont_like_disabling: "We don't like disabling accounts any more than you would like to have your account disabled, but we like it even less when folks try to abuse this free service. Please help us keep the Open Hub a useful service to all. Thanks!"
       welcome_bullet_1: 'Claim all of your commits to projects across all of Open Hub, building a complete picture of your contributions to FOSS.'
       welcome_bullet_2: 'Manage projects.'
       welcome_bullet_3: 'Create project "stacks" that detail your usage of FOSS, and rate and review the projects you know.'

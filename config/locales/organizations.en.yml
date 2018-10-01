@@ -102,7 +102,7 @@ en:
       failed: 'Failed.'
     remove_project:
       success: 'Removed %{name} successfully'
-      error: "Error! Couldn\'t remove this project."
+      error: "Error! Couldn't remove this project."
     show:
       loading: 'Loading.....'
       page_title: '%{organization_name} : Organization Summary - Open Hub'
