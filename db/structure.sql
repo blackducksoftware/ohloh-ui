@@ -264,7 +264,7 @@ CREATE FUNCTION sloc_sets_id_seq_view() RETURNS integer
 CREATE FUNCTION ts_debug(text) RETURNS SETOF tsdebug
     LANGUAGE sql STRICT
     AS $_$
-select 
+select
         m.ts_name,
         t.alias as tok_type,
         t.descr as description,
@@ -278,9 +278,9 @@ from
         pg_ts_cfg as c
 where
         t.tokid=p.tokid and
-        t.alias = m.tok_alias and 
-        m.ts_name=c.ts_name and 
-        c.oid=show_curcfg() 
+        t.alias = m.tok_alias and
+        m.ts_name=c.ts_name and
+        c.oid=show_curcfg()
 $_$;
 
 
@@ -1156,6 +1156,35 @@ ALTER SEQUENCE authorizations_id_seq OWNED BY authorizations.id;
 CREATE VIEW authorizations_id_seq_view AS
  SELECT (nextval('authorizations_id_seq'::regclass))::integer AS id;
 
+--
+-- Name: broken_links; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE broken_links (
+    id integer NOT NULL,
+    link_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: broken_links_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE broken_links_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: broken_links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE broken_links_id_seq OWNED BY broken_links.id;
 
 --
 -- Name: positions; Type: TABLE; Schema: public; Owner: -
@@ -6402,6 +6431,12 @@ ALTER TABLE ONLY attachments ALTER COLUMN id SET DEFAULT nextval('attachments_id
 
 ALTER TABLE ONLY authorizations ALTER COLUMN id SET DEFAULT nextval('authorizations_id_seq'::regclass);
 
+--
+-- Name: broken_links id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY broken_links ALTER COLUMN id SET DEFAULT nextval('public.broken_links_id_seq'::regclass);
+
 
 --
 -- Name: clumps id; Type: DEFAULT; Schema: public; Owner: -
@@ -7108,6 +7143,14 @@ ALTER TABLE ONLY attachments
 
 ALTER TABLE ONLY authorizations
     ADD CONSTRAINT authorizations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: broken_links broken_links_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY broken_links
+    ADD CONSTRAINT broken_links_pkey PRIMARY KEY (id);
 
 
 --
@@ -10364,6 +10407,8 @@ INSERT INTO schema_migrations (version) VALUES ('20171204073648');
 INSERT INTO schema_migrations (version) VALUES ('20171220032437');
 
 INSERT INTO schema_migrations (version) VALUES ('20180109182901');
+
+INSERT INTO schema_migrations (version) VALUES ('20180925181605');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
