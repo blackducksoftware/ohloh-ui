@@ -1,4 +1,6 @@
 module VulnerabilitiesHelper
+  EMPTY_SEVERITY = 'unknown_severity'.freeze
+
   def major_releases(releases, project)
     # Note: This is a temporary fix for the android project
     if project.vanity_url == 'android'
@@ -13,8 +15,9 @@ module VulnerabilitiesHelper
   end
 
   def filter_severity_param
-    return nil unless Vulnerability.severity_exists?(params.fetch(:filter, {})[:severity])
-    params[:filter][:severity]
+    severity = params.fetch(:filter, {})[:severity]
+    return nil unless Vulnerability.severity_exists?(severity) || severity == EMPTY_SEVERITY
+    severity
   end
 
   def filter_version_param
@@ -39,11 +42,11 @@ module VulnerabilitiesHelper
 
   def disabled_severities
     return [] unless @release
-    severities.select { |s| @release.vulnerabilities.send(s).empty? }
+    (severities + [EMPTY_SEVERITY]).select { |s| @release.vulnerabilities.send(s).empty? }
   end
 
   def options_for_severities_filter
-    options_for_select(severities.collect { |s| [s.capitalize, s] },
+    options_for_select(severities.collect { |s| [s.capitalize, s] } + [['Unknown', EMPTY_SEVERITY]],
                        selected: filter_severity_param, disabled: disabled_severities)
   end
 
