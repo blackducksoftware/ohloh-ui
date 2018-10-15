@@ -13,13 +13,8 @@ task check_broken_links: :environment do
 end
 
 def valid_url?(url)
-  uri = URI.parse(url)
-  if uri.is_a?(URI::HTTP) && !uri.host.nil?
-    res = Net::HTTP.get_response(u)
-    ['200'].include?(res.code)
-  else
-    false
-  end
+  uri = URI.parse(url.gsub(' ', '%20'))
+  uri.is_a?(URI::HTTP) && !uri.host.nil?
 rescue URI::InvalidURIError
   false
 end
