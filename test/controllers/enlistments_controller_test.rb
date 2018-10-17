@@ -120,6 +120,16 @@ describe 'EnlistmentsControllerTest' do
       @enlistment.reload.deleted.must_equal true
     end
 
+    it 'wont delete enlistment when there is an error in fisbot api' do
+      login_as @account
+      Enlistment.any_instance.stubs(:ensure_forge_and_job)
+      error_response = Net::HTTPServerError.new('1.1', '503', 'error')
+      error_response.stubs(:body).returns('Api error')
+      Net::HTTP.any_instance.stubs(:request).returns(error_response)
+      -> { delete :destroy, id: @enlistment.id, project_id: @project_id }.must_raise(StandardError)
+      @enlistment.reload.deleted.must_equal false
+    end
+
     it 'should redirect to index page if the project is invalid' do
       login_as @account
       @enlistment.project.update_attribute(:description, Faker::Lorem.characters(820))

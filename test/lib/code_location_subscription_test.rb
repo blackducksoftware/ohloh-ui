@@ -14,4 +14,12 @@ class CodeLocationSubscriptionTest < ActiveSupport::TestCase
       response_body.body.must_match 'Subscription Deleted Successfully'
     end
   end
+
+  it 'must handle errors in fisbot api during DELETE' do
+    VCR.use_cassette('delete_code_location_subscription_failed') do
+      lambda do
+        CodeLocationSubscription.new(code_location_id: 42, client_relation_id: 100).delete
+      end.must_raise(StandardError)
+    end
+  end
 end

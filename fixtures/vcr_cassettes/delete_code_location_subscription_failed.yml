@@ -1,0 +1,50 @@
+---
+http_interactions:
+- request:
+    method: delete
+    uri: http://localhost:4004/api/v1/subscriptions/42/100.json?api_key=6db3af9a-06b4-4afb-a809-9bb04b5f5e08
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - localhost:4004
+  response:
+    status:
+      code: 400
+      message: 'Bad Request '
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      X-Request-Id:
+      - 3ddc9c95-af36-483e-902f-86dabcedacb3
+      X-Runtime:
+      - '0.018206'
+      Server:
+      - WEBrick/1.3.1 (Ruby/2.3.0/2015-12-25)
+      Date:
+      - Tue, 23 Oct 2018 10:08:00 GMT
+      Content-Length:
+      - '28'
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: code location does not exist
+    http_version: 
+  recorded_at: Tue, 23 Oct 2018 10:08:00 GMT
+recorded_with: VCR 3.0.3

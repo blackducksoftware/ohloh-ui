@@ -41,7 +41,8 @@ class FisbotApi
   def delete
     uri = api_access.resource_uri(attributes.values.join('/'))
     request = Net::HTTP::Delete.new(uri)
-    Net::HTTP.new(uri.host, uri.port).request(request)
+    response = Net::HTTP.new(uri.host, uri.port).request(request)
+    self.class.handle_errors(response) { response }
   end
 
   def set_attributes(hsh)
@@ -79,7 +80,7 @@ class FisbotApi
       when Net::HTTPSuccess
         yield
       when Net::HTTPServerError
-        raise StandardError, "#{I18n.t('api_exception')} : #{response.message}"
+        raise StandardError, "#{I18n.t('api_exception')} : #{response.message} => #{response.body}"
       end
     end
 
