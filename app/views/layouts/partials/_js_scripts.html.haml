@@ -1,5 +1,6 @@
 = yield(:javascript) if content_for?(:javascript)
 %script{ src: 'https://cdn.firebase.com/libs/firebaseui/3.4.0/firebaseui.js' }
+%script{ src: 'https://www.google.com/recaptcha/api.js', async: '', defer: '' }
 = javascript_include_tag 'application',
                          'https://www.gstatic.com/firebasejs/5.4.1/firebase-app.js',
                          'https://www.gstatic.com/firebasejs/5.4.1/firebase-auth.js',
