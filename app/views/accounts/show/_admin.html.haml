@@ -21,9 +21,14 @@
       method: :post, data: { confirm: t('.spammer.confirm', name: @account.name) },
       class: 'btn btn-warning btn-small', title: t('.spammer.title', name: @account.name)
     &nbsp; &nbsp;
-    = link_to t('.delete.link_html'), account_path(@account),
-      method: :delete, data: { confirm: t('.delete.confirm', name: @account.name) },
-    class: 'btn btn-danger btn-small', title: t('.delete.title', name: @account.name)
+    - if @account.access.verified?
+      = link_to t('.delete.link_html'), account_path(@account),
+        method: :delete, data: { confirm: t('.delete.confirm', name: @account.name) },
+        class: 'btn btn-danger btn-small', title: t('.delete.title', name: @account.name)
+    - else
+      %span{ title: t('.delete.need_verification') }
+        %button.btn.btn-default.btn-small{ disabled: 'disabled' }
+          = t('.delete.link_html')
     &nbsp; &nbsp;
     = render partial: 'accounts/show/mark_as_bot'
     = link_to t('.panel.close'), 'javascript:void(0);', id: 'close_admin_panel'
