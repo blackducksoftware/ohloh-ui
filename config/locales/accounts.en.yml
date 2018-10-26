@@ -147,6 +147,7 @@ en:
           link_html: '<i class="icon-remove-sign">&nbsp;</i>DELETE ACCOUNT'
           confirm: 'Deleting an account is permament and cannot be undone! It will also take several minutes to finish, be patient. Are you sure you want to delete %{name}?'
           title: 'Delete %{name}'
+          need_verification: 'This account has to be Manually Verified to enable deleting this account.'
         panel:
           close: 'close admin panel'
           open: 'open admin panel'
