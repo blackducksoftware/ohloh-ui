@@ -12,10 +12,6 @@ span "Log: "
 a link_to('Slave Log', admin_job_slave_logs_path(job))
 br
 span "Status: #{job.job_status.try(:name)} "
-if job.slave_id
-  span 'on'
-  a link_to(job.slave.hostname, admin_slafe_path(job.slave_id))
-end
 br
 br
 span 'Enlisted Projects: '

@@ -24,10 +24,6 @@ ActiveAdmin.register OrganizationJob do
     end
     column :status do |job|
       span job.job_status.try(:name)
-      if job.slave_id
-        span 'on'
-        span link_to job.slave.hostname, admin_slafe_path(job.slave)
-      end
     end
     column 'Owners' do |job|
       span link_to "Organization #{job.organization.name}", project_path(job.organization) if job.organization_id
