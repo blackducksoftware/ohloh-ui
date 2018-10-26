@@ -30,18 +30,8 @@ ActiveAdmin.register VitaJob do
     column 'Progress' do |job|
       "#{job.current_step? ? job.current_step : '-'} of #{job.max_steps? ? job.max_steps : '-'}"
     end
-    column :status do |job|
-      span job.job_status.try(:name)
-      if job.slave_id
-        span 'on'
-        span link_to job.slave.hostname, admin_slafe_path(job.slave)
-      end
-    end
     column 'Owners' do |job|
       span link_to "Account #{job.account.login}", account_path(job.account) if job.account_id
-    end
-    column 'Log' do |job|
-      span link_to 'Slave Log', admin_job_slave_logs_path(job)
     end
   end
 
