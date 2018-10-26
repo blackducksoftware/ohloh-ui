@@ -41,8 +41,8 @@ module MapHelper
     javascript_tag <<-JSCRIPT
       document.onreadystatechange = function () {
         if (document.readyState == "complete") {
-          Map.load('#{id}', 25, 12, 2);
-          Map.moveTo(25, 12, #{zoom});
+          OH_Map.load('#{id}', 25, 12, 2);
+          OH_Map.moveTo(25, 12, #{zoom});
         }
       };
     JSCRIPT

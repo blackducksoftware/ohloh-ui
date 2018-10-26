@@ -8,11 +8,11 @@ var ProjectMap = {
     $('#a_contributors').unbind('change');
     $('#a_users').attr('checked',true);
 
-    Map.clearMarkers();
+    OH_Map.clearMarkers();
     $('#map_status').innerHTML='Loading users...';
-    Map.defaultIconImage = $("#map_container").data("icon-image");
-    Map.url='/p/' + document.mapParams['project_param'] + '/stacks/near';
-    Map.onComplete=function(jsonData){
+    OH_Map.defaultIconImage = $("#map_container").data("icon-image");
+    OH_Map.url='/p/' + document.mapParams['project_param'] + '/stacks/near';
+    OH_Map.onComplete=function(jsonData){
       if(jsonData && jsonData.accounts && jsonData.accounts.length > 0){
         uri = '/p/' + document.mapParams['project_param'] + '/users';
         if (document.mapParams['totalUsers'] == 1) {
@@ -26,7 +26,7 @@ var ProjectMap = {
       }
       $('#a_contributors').bind('change',ProjectMap.getContributors);
     };
-    Map.getMarkers();
+    OH_Map.getMarkers();
     return false;
   },
   getContributors: function() {
@@ -34,11 +34,11 @@ var ProjectMap = {
     $('#a_contributors').unbind('change');
     $('#a_contributors').attr('checked',true);
 
-    Map.clearMarkers();
+    OH_Map.clearMarkers();
     $('#map_status').innerHTML='Loading contributors...';
-    Map.defaultIconImage=$("#map_container").data("icon-image");
-    Map.url='/p/' + document.mapParams['project_param'] + '/contributors/near';
-    Map.onComplete=function(jsonData){
+    OH_Map.defaultIconImage=$("#map_container").data("icon-image");
+    OH_Map.url='/p/' + document.mapParams['project_param'] + '/contributors/near';
+    OH_Map.onComplete=function(jsonData){
       if(jsonData && jsonData.accounts && jsonData.accounts.length > 0){
         if (document.mapParams['totalContributors'] == null) {
           link = ' contributor(s).';
@@ -52,7 +52,7 @@ var ProjectMap = {
       }
       $('#a_users').bind('change', ProjectMap.getStacks);
     };
-    Map.getMarkers();
+    OH_Map.getMarkers();
     return false;
   }
 }
