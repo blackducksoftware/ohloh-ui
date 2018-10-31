@@ -12,9 +12,10 @@ class FisbotApi
   def save
     uri = api_access.resource_uri
     response = Net::HTTP.post_form(uri, attributes)
-    hsh = JSON.parse(response.body)
-
-    set_attributes_or_errors(response, hsh)
+    self.class.handle_errors(response) do
+      hsh = JSON.parse(response.body)
+      set_attributes_or_errors(response, hsh)
+    end
   rescue JSON::ParserError
     response.body
   end
@@ -41,7 +42,8 @@ class FisbotApi
   def delete
     uri = api_access.resource_uri(attributes.values.join('/'))
     request = Net::HTTP::Delete.new(uri)
-    Net::HTTP.new(uri.host, uri.port).request(request)
+    response = Net::HTTP.new(uri.host, uri.port).request(request)
+    self.class.handle_errors(response) { response }
   end
 
   def set_attributes(hsh)
@@ -76,10 +78,10 @@ class FisbotApi
 
     def handle_errors(response)
       case response
-      when Net::HTTPSuccess
-        yield
       when Net::HTTPServerError
-        raise StandardError, "#{I18n.t('api_exception')} : #{response.message}"
+        raise StandardError, "#{I18n.t('api_exception')} : #{response.message} => #{response.body}"
+      else
+        yield
       end
     end
 
