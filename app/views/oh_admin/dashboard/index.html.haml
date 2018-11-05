@@ -3,11 +3,11 @@
   accounts_color  = ['bg-blue', 'bg-red', 'bg-yellow', 'bg-gray-active']
   accounts_icons  = ['fa-users', 'fa-exclamation-triangle', 'fa-user-secret', 'fa-ban']
 
-  project_titles  = ['Updated Analysis (in last hour)', 'Active Projects', 'Projects (with active Enlistment)']
-  project_colors  = ['bg-aqua', 'bg-green', 'bg-light-blue-active']
+  project_titles  = ['Updated Analysis (in last hour)', 'Active Projects', 'Projects (with active Enlistment)', 'Projects with enlistments & Best Analysis (Updated within last 3 days)', 'Projects with enlistments & Best Analysis (Updated between last 2 weeks & 3 days ago)', 'Projects with enlistments & Best Analysis (Not updated since 2 weeks)']
+  project_colors  = ['bg-aqua', 'bg-green', 'bg-light-blue-active', 'bg-green', 'bg-yellow', 'bg-red']
   project_icons   = ['fa-area-chart', 'fa-bar-chart', 'fa-shield']
   analyses_count  = Analysis.where(updated_on: get_window.utc..Time.current).count
-  project_values  = [analyses_count, Project.active.count, Project.active_enlistments.uniq.count(:project_id)]
+  project_values  = [analyses_count, Project.active.count, active_projects_count, updated_projects_count(3.days), updated_projects_count(2.weeks, 3.days), outdated_projects(2.weeks.ago.to_date)]
 
   last_activity_icons = ['fa-calendar', 'fa-check-square', 'fa-server']
   last_activity_text  = ['Monthly Language Analysis', 'CII Projects', 'Deployment']
@@ -27,6 +27,14 @@
           %p= project_titles[i]
         .icon
           %i.fa{ class: project_icons[i] }
+.row
+  - 3.times do |i|
+    - i = i + 3
+    .col-lg-3.col-xs-6
+      .small-box{ class: project_colors[i] }
+        .inner
+          %h3= number_with_delimiter(project_values[i])
+          %p= project_titles[i]
 
 %p &nbsp;
 
@@ -82,4 +90,3 @@
           .progress
             .progress-bar{ style: 'width: 100%' }
           %span.progress-description
-
