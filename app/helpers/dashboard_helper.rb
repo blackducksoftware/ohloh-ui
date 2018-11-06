@@ -27,4 +27,26 @@ module DashboardHelper
   def accounts_count(level)
     number_with_delimiter(Account.where(level: level).count)
   end
+
+  def updated_projects_count(from, to = nil)
+    from = convert_to_datetime(from)
+    to = convert_to_datetime(to) || Time.current
+    projects_count = Project.active_enlistments.joins(:best_analysis)
+                            .where(analyses: { updated_on: from..to }).uniq.count
+    number_to_percentage((projects_count.to_f / active_projects_count) * 100, precision: 2)
+  end
+
+  def outdated_projects(date)
+    projects_count = Project.active_enlistments.joins(:best_analysis)
+                            .where('analyses.updated_on < ?', date).uniq.count
+    number_to_percentage((projects_count.to_f / active_projects_count) * 100, precision: 2)
+  end
+
+  def convert_to_datetime(value)
+    Time.current.ago(value).utc if value
+  end
+
+  def active_projects_count
+    Project.active_enlistments.uniq.count
+  end
 end
