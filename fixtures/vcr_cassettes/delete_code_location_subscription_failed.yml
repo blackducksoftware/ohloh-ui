@@ -17,8 +17,8 @@ http_interactions:
       - localhost:4004
   response:
     status:
-      code: 400
-      message: 'Bad Request '
+      code: 500
+      message: 'Server Error'
     headers:
       X-Frame-Options:
       - SAMEORIGIN
@@ -45,6 +45,6 @@ http_interactions:
     body:
       encoding: UTF-8
       string: code location does not exist
-    http_version: 
+    http_version:
   recorded_at: Tue, 23 Oct 2018 10:08:00 GMT
 recorded_with: VCR 3.0.3
