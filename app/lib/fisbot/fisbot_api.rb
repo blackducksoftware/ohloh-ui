@@ -24,8 +24,10 @@ class FisbotApi
     uri = api_access.resource_uri(@id)
     http = Net::HTTP.new(uri.host, uri.port)
     response = http.send_request('PATCH', uri, data.to_query)
-    hsh = JSON.parse(response.body)
-    set_attributes_or_errors(response, hsh)
+    self.class.handle_errors(response) do
+      hsh = JSON.parse(response.body)
+      set_attributes_or_errors(response, hsh)
+    end
   end
 
   def valid?
@@ -36,7 +38,8 @@ class FisbotApi
 
   def fetch
     uri = api_access.resource_uri(nil, attributes)
-    Net::HTTP.get_response(uri).body
+    response = Net::HTTP.get_response(uri)
+    self.class.handle_errors(response) { response.body }
   end
 
   def delete
@@ -79,7 +82,7 @@ class FisbotApi
     def handle_errors(response)
       case response
       when Net::HTTPServerError
-        raise StandardError, "#{I18n.t('api_exception')} : #{response.message} => #{response.body}"
+        raise FisbotApiError, "#{response.message} => #{response.body}"
       else
         yield
       end

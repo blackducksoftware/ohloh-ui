@@ -76,7 +76,7 @@ en:
   no_data: No Data
   sign_in_github: Sign in with Github
   github_sign_in_failed: Github sign in failed
-  api_exception: Fisbot API had an exception
+  api_exception: We apologize but we encountered an internal error. Please try again later or contact info@openhub.net if the problem persists.
 
   layouts:
     application:

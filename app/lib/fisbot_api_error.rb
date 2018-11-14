@@ -1,0 +1,2 @@
+class FisbotApiError < StandardError
+end

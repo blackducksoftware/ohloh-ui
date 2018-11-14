@@ -42,8 +42,15 @@ class ApplicationController < ActionController::Base
   rescue_from ::Exception do |exception|
     raise exception if Rails.application.config.consider_all_requests_local
     request.env[:user_agent] = request.user_agent
-    notify_airbrake(exception) unless blank_user_agent?
-    render_404
+    case exception
+    when SocketError, Errno::ECONNREFUSED, FisbotApiError
+      NewRelic::Agent.notice_error(exception)
+      flash[:notice] = t(:api_exception)
+      redirect_back
+    else
+      notify_airbrake(exception) unless blank_user_agent?
+      render_404
+    end
   end
 
   rescue_from ParamRecordNotFound, ActionController::UnknownFormat, ActionController::RoutingError do
