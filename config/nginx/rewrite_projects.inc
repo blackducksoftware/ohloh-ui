@@ -257,6 +257,11 @@ rewrite  ^/announcements$  http://blog.openhub.net permanent;
 rewrite  ^/api$  http://blog.openhub.net permanent;
 rewrite  ^/about$  http://blog.openhub.net permanent;
 
+rewrite "^/licenses/Ms-PL/(.*)" /licenses/Microsoft_Public_License/$1 permanent;
+rewrite "^/licenses/Ms-PL$" /licenses/Microsoft_Public_License permanent;
+rewrite "^/licenses/Microsoft_Public_License_/(.*)" /licenses/Microsoft_Public_License/$1 permanent;
+rewrite "^/licenses/Microsoft_Public_License_$" /licenses/Microsoft_Public_License permanent;
+
 location ~ ^/blog$ {
     if ($args ~ "^format=rss$") {
         set $args "";
