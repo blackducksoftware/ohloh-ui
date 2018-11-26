@@ -3,11 +3,11 @@ module Reverification
     include Reverification::ExceptionHandlers
 
     def ses
-      @ses ||= AWS::SimpleEmailService.new
+      @ses ||= Aws::SES::Client.new
     end
 
     def sqs
-      @sqs ||= AWS::SQS.new
+      @sqs ||= Aws::SQS::Resource.new
     end
 
     def success_queue
@@ -36,15 +36,18 @@ module Reverification
     end
 
     def sent_last_24_hrs
-      ses.quotas[:sent_last_24_hours].to_f
+      response = ses.get_send_quota
+      response.sent_last_24_hours
     end
 
     def send_limit
-      ses.quotas[:max_24_hour_send] - ses.quotas[:sent_last_24_hours]
+      response = ses.get_send_quota
+      response.max_24_hour_send - response.sent_last_24_hours
     end
 
     def statistics_of_last_24_hrs
-      ses.statistics.find_all { |s| s[:sent].between?(Time.now.utc - 24.hours, Time.now.utc) }
+      response = ses.get_send_statistics.to_h
+      response[:send_data_points].find_all { |s| s[:timestamp].between?(Time.now.utc - 24.hours, Time.now.utc) }
     end
 
     def check_statistics_of_last_24_hrs

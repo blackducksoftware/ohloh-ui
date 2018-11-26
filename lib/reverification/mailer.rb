@@ -56,7 +56,7 @@ module Reverification
         check_statistics_and_wait_to_avoid_exceeding_throttle_limit
         begin
           resp = ses.send_email(template)
-        rescue AWS::SimpleEmailService::Errors::InvalidParameterValue
+        rescue Aws::SES::Errors::InvalidParameterValue
           bad_email_queue.send_message("Account id: #{account.id} with email: #{account.email}")
         else
           create_or_update_reverification_tracker(account, phase, resp)
