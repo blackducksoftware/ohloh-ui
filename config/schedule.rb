@@ -1,5 +1,6 @@
 set :environment, 'production'
-every 2.days, at: '11.00 am', roles: [:sidekiq] do
+set :output, error: 'cron_error.log', standard: 'cron.log'
+every 2.weeks, at: '11.00 am', roles: [:sidekiq] do
   rake 'check_broken_links'
 end
 
