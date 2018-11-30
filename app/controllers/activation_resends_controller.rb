@@ -24,7 +24,7 @@ class ActivationResendsController < ApplicationController
   end
 
   def find_account_by_email
-    @account = Account.find_by_email(params[:email])
+    @account = Account.find_by(email: params[:email])
     return unless @account.nil?
     @errors = t('.no_account')
     render :new

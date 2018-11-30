@@ -3,9 +3,9 @@ class LinksController < SettingsController
 
   before_action :set_project_or_fail, :set_project_editor_account_to_current_user
   before_action :project_context
-  before_action :set_link, only: [:edit, :update, :destroy]
-  before_action :session_required, :redirect_unverified_account, only: [:create, :new, :edit, :update]
-  before_action :set_categories, only: [:create, :new, :edit, :update]
+  before_action :set_link, only: %i[edit update destroy]
+  before_action :session_required, :redirect_unverified_account, only: %i[create new edit update]
+  before_action :set_categories, only: %i[create new edit update]
 
   def new
     @link = Link.new
@@ -72,7 +72,7 @@ class LinksController < SettingsController
 
   def applicable_categories
     return Link::CATEGORIES if occupied_category_ids.empty? ||
-                               %w(edit update).include?(action_name)
+                               %w[edit update].include?(action_name)
 
     Link::CATEGORIES.reject do |_k, category_id|
       occupied_category_ids.include?(category_id)
@@ -86,6 +86,6 @@ class LinksController < SettingsController
   end
 
   def link_params
-    params.require(:link).permit([:title, :url, :project_id, :link_category_id])
+    params.require(:link).permit(%i[title url project_id link_category_id])
   end
 end

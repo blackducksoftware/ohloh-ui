@@ -1,6 +1,6 @@
 ActiveAdmin.register Account do
-  account_params = %i(login email name country_code location url twitter_account
-                      affiliation_type organization_name level)
+  account_params = %i[login email name country_code location url twitter_account
+                      affiliation_type organization_name level]
   permit_params account_params
   actions :index, :show, :edit, :update
 

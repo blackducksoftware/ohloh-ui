@@ -21,7 +21,9 @@ module OrganizationJobs
     if job.nil?
       job = OrganizationJob.create(organization: self, wait_until: Time.current.utc + delay)
     elsif job.is_a? OrganizationJob
+      # rubocop:disable Rails/SkipsModelValidations # We want to skip validations here.
       job.update_attribute(:wait_until, Time.current.utc + delay)
+      # rubocop:enable Rails/SkipsModelValidations
     end
     job
   end

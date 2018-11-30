@@ -5,7 +5,7 @@ class Organization < ActiveRecord::Base
   include Tsearch
 
   ORG_TYPES = { 'Commercial' => 1, 'Education' => 2, 'Government' => 3, 'Non-Profit' => 4 }.freeze
-  ALLOWED_SORT_OPTIONS = %w(newest recent name projects).freeze
+  ALLOWED_SORT_OPTIONS = %w[newest recent name projects].freeze
 
   belongs_to :logo
   has_one :permission, as: :target
@@ -26,7 +26,7 @@ class Organization < ActiveRecord::Base
 
   before_validation :clean_strings_and_urls
 
-  acts_as_editable editable_attributes: [:name, :vanity_url, :org_type, :description, :homepage_url],
+  acts_as_editable editable_attributes: %i[name vanity_url org_type description homepage_url],
                    merge_within: 30.minutes
   acts_as_protected
 
@@ -43,7 +43,7 @@ class Organization < ActiveRecord::Base
   end
 
   def allow_undo_to_nil?(key)
-    ![:name, :org_type, :vanity_url].include?(key)
+    !%i[name org_type vanity_url].include?(key)
   end
 
   def org_type_label

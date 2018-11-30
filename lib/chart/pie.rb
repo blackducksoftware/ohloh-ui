@@ -31,7 +31,7 @@ class Chart::Pie
     @data.each do |language|
       convert.fill "##{language[:color]}"
       degrees = language_degrees(language[:percent])
-      next if degrees == 0
+      next if degrees.zero?
       end_angle = start_angle + degrees
       convert.draw wedge(start_angle, end_angle)
       start_angle = end_angle
@@ -61,7 +61,7 @@ class Chart::Pie
   end
 
   def arc_scale(angle0, angle1)
-    (angle1 - angle0 > 180) ? 1 : 0
+    angle1 - angle0 > 180 ? 1 : 0
   end
 
   def x_value(radians)

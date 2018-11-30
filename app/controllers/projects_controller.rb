@@ -2,7 +2,7 @@ class ProjectsController < ApplicationController
   [AnalysesHelper, FactoidsHelper, MapHelper, RatingsHelper,
    ScmHelper, TagsHelper].each { |help| helper help }
 
-  layout 'responsive_project_layout', only: [:show, :badges]
+  layout 'responsive_project_layout', only: %i[show badges]
 
   include ProjectFilters
 
@@ -44,7 +44,7 @@ class ProjectsController < ApplicationController
     if @projects.blank? || params[:bypass]
       populate_project_from_forge
     else
-      flash.now[:notice] = (@projects.length == 1) ? t('.code_location_single') : t('.code_location_multiple')
+      flash.now[:notice] = @projects.length == 1 ? t('.code_location_single') : t('.code_location_multiple')
       render template: 'projects/check_forge_duplicate'
     end
   end
@@ -66,7 +66,7 @@ class ProjectsController < ApplicationController
     params.require(:project).permit(
       :name, :description, :vanity_url, :url, :download_url, :managed_by_creator,
       project_licenses_attributes: [:license_id],
-      enlistments_attributes: [code_location_attributes: [:branch, :url, :scm_type]]
+      enlistments_attributes: [code_location_attributes: %i[branch url scm_type]]
     )
   end
 

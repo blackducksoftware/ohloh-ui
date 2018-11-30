@@ -44,9 +44,16 @@ class CompareProjectCsvDecorator
   end
 
   def method_missing(method, *args)
-    return @url_decorator.send(method, *args) if @url_decorator.respond_to? method
-    return @analysis_decorator.send(method, *args) if @analysis_decorator.respond_to? method
-    @project.send(method, *args)
+    return @url_decorator.send(method, *args) if @url_decorator.respond_to?(method)
+    return @analysis_decorator.send(method, *args) if @analysis_decorator.respond_to?(method)
+    return @project.send(method, *args) if @project.respond_to?(method)
+    super
+  end
+
+  def respond_to_missing?(method)
+    @url_decorator.respond_to?(method) ||
+      @analysis_decorator.respond_to?(method) ||
+      @project.respond_to?(method)
   end
 
   private

@@ -278,7 +278,7 @@ class AccountTest < ActiveSupport::TestCase
 
     it 'test valid logins' do
       account = build(:account)
-      logins = %w(rockola ROCKOLA Rockola Rock_Ola F323 Géré-my)
+      logins = %w[rockola ROCKOLA Rockola Rock_Ola F323 Géré-my]
 
       logins.each do |login|
         account.login = login
@@ -324,24 +324,24 @@ class AccountTest < ActiveSupport::TestCase
   describe 'most_experienced_language' do
     it 'must return the language having a vita_language_fact' do
       create(:language, category: 0)
-      lang_2 = create(:language, category: 2)
+      lang2 = create(:language, category: 2)
       vita = create(:vita)
       vita.account.update!(best_vita_id: vita.id)
-      create(:vita_language_fact, language: lang_2, vita: vita)
+      create(:vita_language_fact, language: lang2, vita: vita)
 
-      lang_2.nice_name.must_equal vita.account.most_experienced_language.nice_name
+      lang2.nice_name.must_equal vita.account.most_experienced_language.nice_name
     end
 
     it 'must return the language with lowest category' do
-      lang_1 = create(:language, category: 0)
-      lang_2 = create(:language, category: 2)
+      lang1 = create(:language, category: 0)
+      lang2 = create(:language, category: 2)
       vita = create(:vita)
       vita.account.update!(best_vita_id: vita.id)
-      create(:vita_language_fact, language: lang_1, total_commits: 0, vita: vita)
-      create(:vita_language_fact, language: lang_2, total_commits: 300, vita: vita,
+      create(:vita_language_fact, language: lang1, total_commits: 0, vita: vita)
+      create(:vita_language_fact, language: lang2, total_commits: 300, vita: vita,
                                   total_activity_lines: 200, total_months: 30)
 
-      lang_1.nice_name.must_equal vita.account.most_experienced_language.nice_name
+      lang1.nice_name.must_equal vita.account.most_experienced_language.nice_name
     end
   end
 
@@ -408,7 +408,7 @@ class AccountTest < ActiveSupport::TestCase
 
   it 'badges list' do
     account = create(:account)
-    badges = %w(badge1 badge2)
+    badges = %w[badge1 badge2]
     Badge.expects(:all_eligible).with(account).returns(badges)
     account.badges.must_equal badges
   end

@@ -1,4 +1,4 @@
-accs = @affiliated_committers.reject { |acc| !organization_affiliated_committers_stats(@stats_map[acc.id]) }
+accs = @affiliated_committers.select { |acc| organization_affiliated_committers_stats(@stats_map[acc.id]) }
 
 xml.instruct!
 xml.response do

@@ -2,8 +2,8 @@ module WidgetBadge
   module BadgeHelper
     extend ActiveSupport::Concern
 
-    BADGE_FONT_PATH = Rails.root.join('app/assets/fonts/OpenSans-Regular.ttf')
-    IMAGE_DIR = Rails.root.join('app/assets/images/widget_logos')
+    BADGE_FONT_PATH = Rails.root.join('app', 'assets', 'fonts', 'OpenSans-Regular.ttf')
+    IMAGE_DIR = Rails.root.join('app', 'assets', 'images', 'widget_logos')
 
     module ClassMethods
       include MiniMagickHelper

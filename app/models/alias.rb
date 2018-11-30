@@ -9,10 +9,10 @@ class Alias < ActiveRecord::Base
   validates :commit_name_id, presence: true
   validates :preferred_name_id, presence: true
 
-  after_save :update_unclaimed_person, if: proc { |obj| !(obj.changed & %w(id deleted)).blank? }
+  after_save :update_unclaimed_person, if: proc { |obj| (obj.changed & %w[id deleted]).present? }
   after_update :remove_unclaimed_person
-  after_save :schedule_project_analysis, if: proc { |obj| !(obj.changed & %w(preferred_name_id deleted)).blank? }
-  after_update :move_name_facts_to_preferred_name, if: proc { |obj| !(obj.changed & %w(preferred_name_id)).blank? }
+  after_save :schedule_project_analysis, if: proc { |obj| (obj.changed & %w[preferred_name_id deleted]).present? }
+  after_update :move_name_facts_to_preferred_name, if: proc { |obj| (obj.changed & %w[preferred_name_id]).present? }
 
   acts_as_editable editable_attributes: [:preferred_name_id]
   acts_as_protected parent: :project

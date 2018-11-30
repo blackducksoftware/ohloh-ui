@@ -2,7 +2,7 @@
 class ApplicationController < ActionController::Base
   include ClearanceSetup
   BOT_REGEX = /\b(Baiduspider|Googlebot|libwww-perl|msnbot|SiteUptime|Slurp)\b/i
-  FORMATS_THAT_WE_RENDER_ERRORS_FOR = %w(html xml json).freeze
+  FORMATS_THAT_WE_RENDER_ERRORS_FOR = %w[html xml json].freeze
 
   include PageContextHelper
 
@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
   before_action :handle_me_account_paths
   before_action :strip_query_param
   before_action :clear_reminder
-  before_action :verify_api_access_for_xml_request, only: [:show, :index]
+  before_action :verify_api_access_for_xml_request, only: %i[show index]
   before_action :update_last_seen_at_and_ip
 
   alias session_required require_login
@@ -222,7 +222,7 @@ class ApplicationController < ActionController::Base
   end
 
   def verify_api_key_standing
-    api_key = ApiKey.in_good_standing.find_by_oauth_application_uid(api_client_id)
+    api_key = ApiKey.in_good_standing.find_for_oauth_application_uid(api_client_id)
     if api_key && api_key.may_i_have_another?
       doorkeeper_authorize! if doorkeeper_token
     elsif api_key && api_key.send(:exceeded_daily_allotment?)
@@ -292,6 +292,7 @@ class ApplicationController < ActionController::Base
 
   def update_last_seen_at_and_ip
     return unless logged_in?
+    # rubocop:disable Rails/SkipsModelValidations # We want to skip validations here.
     current_user.update_columns(last_seen_at: Time.current, last_seen_ip: request.remote_ip)
   end
 end

@@ -81,7 +81,7 @@ describe 'LinksControllerTest' do
   describe 'single category links' do
     let(:link) do
       as(admin) do
-        project.links.find_by_link_category_id(Link::CATEGORIES[:Homepage])
+        project.links.find_by(link_category_id: Link::CATEGORIES[:Homepage])
       end
     end
 
@@ -303,7 +303,7 @@ describe 'LinksControllerTest' do
 
     create(:link, title: 'Title', project: project, link_category_id: category_id)
 
-    link = Link.find_by_link_category_id(Link::CATEGORIES[:Forums])
+    link = Link.find_by(link_category_id: Link::CATEGORIES[:Forums])
     login_as(admin)
 
     get :edit, project_id: project.vanity_url, id: link.id

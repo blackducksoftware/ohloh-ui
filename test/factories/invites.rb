@@ -8,7 +8,7 @@ FactoryBot.define do
     after(:build) do |obj|
       name_fact = NameFact.last
       Person.rebuild_by_project_id(name_fact.analysis.project_id)
-      obj.contribution = Contribution.find_by_name_fact_id(name_fact.id)
+      obj.contribution = Contribution.find_by(name_fact_id: name_fact.id)
     end
   end
 end

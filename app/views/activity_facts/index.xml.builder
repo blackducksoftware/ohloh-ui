@@ -1,5 +1,5 @@
 xml.instruct!
-xml.response do |activity_fact|
+xml.response do
   xml.status 'success'
   xml.items_returned @activity_facts.size
   xml.items_available @activity_facts.size

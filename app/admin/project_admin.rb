@@ -2,7 +2,7 @@ ActiveAdmin.register Project do
   menu false
   actions :index, :show, :edit, :update
 
-  editable_params = [:uuid, :best_analysis_id]
+  editable_params = %i[uuid best_analysis_id]
   permit_params editable_params
 
   filter :name

@@ -1,13 +1,13 @@
 class ProjectBadgesController < ApplicationController
   before_action :set_project_or_fail
-  before_action :session_required, :redirect_unverified_account, only: [:create, :destroy]
+  before_action :session_required, :redirect_unverified_account, only: %i[create destroy]
   before_action :set_project_editor_account_to_current_user
   before_action :check_project_authorization, except: [:index]
-  before_action :project_context, only: [:index, :create]
-  before_action :set_badges, only: [:index, :create]
-  before_action :set_active_badges, only: [:index, :create]
+  before_action :project_context, only: %i[index create]
+  before_action :set_badges, only: %i[index create]
+  before_action :set_active_badges, only: %i[index create]
   before_action :avoid_duplicate_creation, only: [:create]
-  before_action :find_badge, only: [:update, :destroy]
+  before_action :find_badge, only: %i[update destroy]
 
   helper ProjectsHelper
   layout 'responsive_project_layout'
@@ -64,9 +64,8 @@ class ProjectBadgesController < ApplicationController
   end
 
   def avoid_duplicate_creation
-    if @active_badges.where(badge_params).first
-      redirect_to project_project_badges_path, flash: { error: I18n.t('project_badges.already_exist') }
-    end
+    return unless @active_badges.where(badge_params).first
+    redirect_to project_project_badges_path, flash: { error: I18n.t('project_badges.already_exist') }
   end
 
   def set_active_badges

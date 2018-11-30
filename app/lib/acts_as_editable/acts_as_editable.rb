@@ -77,8 +77,7 @@ module ActsAsEditable
       editable_attributes.select { |attribute| attribute_changed?(attribute) }.compact
     end
 
-    def after_undo(current_user)
-    end
+    def after_undo(current_user); end
   end
 end
 

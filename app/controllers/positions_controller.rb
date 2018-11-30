@@ -29,8 +29,7 @@ class PositionsController < ApplicationController
     end
   end
 
-  def show
-  end
+  def show; end
 
   def destroy
     if @position.destroy
@@ -86,6 +85,6 @@ class PositionsController < ApplicationController
     params.require(:position)
           .permit(:project_oss, :committer_name, :title, :organization_id, :organization_name,
                   :affiliation_type, :description, :start_date, :stop_date, :ongoing, :invite,
-                  language_exp: [], project_experiences_attributes: [:project_name, :_destroy, :id])
+                  language_exp: [], project_experiences_attributes: %i[project_name _destroy id])
   end
 end

@@ -3,10 +3,10 @@ class PostsController < ApplicationController
   helper MarkdownHelper
   helper PageContextHelper
 
-  before_action :session_required, :redirect_unverified_account, only: [:create, :edit, :update]
+  before_action :session_required, :redirect_unverified_account, only: %i[create edit update]
   before_action :admin_session_required, only: [:destroy]
   before_action :find_relevant_records, except: [:index]
-  before_action :find_post_record, only: [:edit, :update, :destroy]
+  before_action :find_post_record, only: %i[edit update destroy]
   before_action :find_posts, only: [:index]
 
   def index

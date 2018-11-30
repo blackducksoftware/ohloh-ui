@@ -48,16 +48,18 @@ namespace :selenium do
         'permission' => project.permission.try(:remainder) ? 'Mangers Only' : 'Everyone'
       )
 
-      project_data.merge!(
-        'main_language' => analysis.main_language.nice_name,
-        'activity' => {
-          '30_day_summary' => thirty_day_summary(analysis),
-          '12_month_summary' => twelve_month_summary(analysis)
-        },
-        'recent_contributors' => analysis.all_time_summary.recent_contribution_persons.map(&:effective_name),
-        'commits' => get_commits_stats(analysis).merge!('list' => get_commits(project)),
-        'total_lines_of_code' => number_with_delimiter(analysis.logic_total)
-      ) if analysis.present?
+      if analysis.present?
+        project_data.merge!(
+          'main_language' => analysis.main_language.nice_name,
+          'activity' => {
+            '30_day_summary' => thirty_day_summary(analysis),
+            '12_month_summary' => twelve_month_summary(analysis)
+          },
+          'recent_contributors' => analysis.all_time_summary.recent_contribution_persons.map(&:effective_name),
+          'commits' => get_commits_stats(analysis).merge!('list' => get_commits(project)),
+          'total_lines_of_code' => number_with_delimiter(analysis.logic_total)
+        )
+      end
 
       if pvr.present?
         project_data['pss'] = pss_content(pvr)
@@ -70,18 +72,20 @@ namespace :selenium do
         'similar_projects_by_stack' => collect_license_and_languages(project.related_by_stacks(10))
       )
 
-      project_data['languages'] = {
-        'summary' => languages_percentage.collect { |v| [v.second, v.third[:percent]] },
-        'total_lines' => number_with_delimiter(total_lines),
-        'code_lines' => number_with_delimiter(code_lines),
-        'percentage_lines' => analysis_total_percent_detail(code_lines, total_lines),
-        'total_languages' => languages_breakdown.size,
-        'total_comments' => number_with_delimiter(comment_lines),
-        'percentage_comments' => analysis_total_percent_detail(comment_lines, total_lines),
-        'total_blanks' => number_with_delimiter(blank_lines),
-        'percentage_blanks' => analysis_total_percent_detail(blank_lines, total_lines),
-        'list' => get_language_stats(languages_breakdown)
-      } if analysis.present?
+      if analysis.present?
+        project_data['languages'] = {
+          'summary' => languages_percentage.collect { |v| [v.second, v.third[:percent]] },
+          'total_lines' => number_with_delimiter(total_lines),
+          'code_lines' => number_with_delimiter(code_lines),
+          'percentage_lines' => analysis_total_percent_detail(code_lines, total_lines),
+          'total_languages' => languages_breakdown.size,
+          'total_comments' => number_with_delimiter(comment_lines),
+          'percentage_comments' => analysis_total_percent_detail(comment_lines, total_lines),
+          'total_blanks' => number_with_delimiter(blank_lines),
+          'percentage_blanks' => analysis_total_percent_detail(blank_lines, total_lines),
+          'list' => get_language_stats(languages_breakdown)
+        }
+      end
 
       project_data['contributors'] = {
         'newest_contributions' => newest_contributions(project),
@@ -190,7 +194,7 @@ namespace :selenium do
     thirty_day_summary = analysis.thirty_day_summary || NilAnalysisSummaryWithNa.new
 
     commits_summary = [all_time_summary, twelve_month_summary, thirty_day_summary]
-    %w(commits_count committer_count files_modified lines_added lines_removed).each_with_object({}) do |key, hsh|
+    %w[commits_count committer_count files_modified lines_added lines_removed].each_with_object({}) do |key, hsh|
       hsh[key] = commits_summary.map(&key.to_sym)
     end
   end
@@ -221,13 +225,13 @@ namespace :selenium do
   end
 
   def get_reviews(project)
-    %w(helpful recently_added highest_rated lowest_rated).each_with_object({}) do |sort_by, hsh|
+    %w[helpful recently_added highest_rated lowest_rated].each_with_object({}) do |sort_by, hsh|
       hsh[sort_by] = project.reviews.sort_by(sort_by).map(&:title).first(20)
     end.merge!('most_helpful' => project.reviews.top.map(&:title).first(20))
   end
 
   def get_enlistments(project)
-    %w(by_url by_project by_type).each_with_object({}) do |sort_by, hsh|
+    %w[by_url by_project by_type].each_with_object({}) do |sort_by, hsh|
       hsh[sort_by] = project.enlistments.includes(:project, :repository).send(sort_by).first(20).collect do |e|
         [e.code_location.nice_url, e.repository.name_in_english, CodeLocationJobProgress.new(e).message]
       end

@@ -78,7 +78,7 @@ module ProjectAssociations
 
     class << self
       def collection_arel(ids = nil, sort = nil, query = nil)
-        if !ids.blank?
+        if ids.present?
           where(id: ids.split(',')).order(:id)
         else
           tsearch(query, respond_to?("by_#{sort}") ? "by_#{sort}" : nil)

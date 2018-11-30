@@ -6,8 +6,8 @@ class PermissionsController < ApplicationController
   before_action :find_model
   before_action :require_manage_authorization, only: :update
   before_action :show_permissions_alert, only: :show
-  before_action :project_context, only: [:show, :update], if: :projects_route?
-  before_action :organization_context, only: [:show, :update], if: :organizations_route?
+  before_action :project_context, only: %i[show update], if: :projects_route?
+  before_action :organization_context, only: %i[show update], if: :organizations_route?
 
   def update
     if find_model.update(model_params)

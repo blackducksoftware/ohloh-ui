@@ -46,7 +46,9 @@ class RssFeed < ActiveRecord::Base
   def create_rss_articles
     new_articles = new_rss_article_items.map { |item| RssArticle.from_item(item) }
     rss_articles << RssArticle.remove_duplicates(new_articles)
+    # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
     projects.update_all(updated_at: Time.current) unless new_articles.empty?
+    # rubocop:enable Rails/SkipsModelValidations
   end
 
   def new_rss_article_items

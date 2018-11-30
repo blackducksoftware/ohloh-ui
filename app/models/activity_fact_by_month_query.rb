@@ -1,6 +1,6 @@
 class ActivityFactByMonthQuery
-  SUM_COLUMNS = [:code_added, :code_removed, :blanks_added, :blanks_removed, :comments_added,
-                 :comments_removed, :commits].freeze
+  SUM_COLUMNS = %i[code_added code_removed blanks_added blanks_removed
+                   comments_added comments_removed commits].freeze
 
   def initialize(analysis)
     @analysis = analysis

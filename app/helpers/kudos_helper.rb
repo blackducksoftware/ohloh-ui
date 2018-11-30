@@ -17,7 +17,7 @@ module KudosHelper
   def kudo_button(target)
     target = target.account ? target.account : target.contributions.first if target.is_a?(Person)
     return nil if !logged_in? || current_user == kudo_button_target_account(target)
-    kudo = Kudo.find_by_sender_and_target(current_user, target)
+    kudo = Kudo.find_for_sender_and_target(current_user, target)
     kudo ? remove_kudos_button(kudo) : give_kudos_button(target)
   end
 
@@ -54,7 +54,7 @@ module KudosHelper
   end
 
   def kudos_aka_name(kudo)
-    pos = Position.find_by_project_id_and_name_id(kudo.project_id, kudo.name_id)
+    pos = Position.find_by(project_id: kudo.project_id, name_id: kudo.name_id)
     contribution_id = pos && Contribution.generate_id_from_project_id_and_account_id(kudo.project_id, pos.account_id)
     if pos && contribution_id
       path = project_contributor_path(kudo.project, contribution_id)

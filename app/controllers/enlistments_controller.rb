@@ -32,7 +32,7 @@ class EnlistmentsController < SettingsController
       redirect_to project_enlistments_path(@project)
     else
       flash[:error] = @code_location.errors['error']
-      return render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -64,6 +64,6 @@ class EnlistmentsController < SettingsController
   end
 
   def code_location_params
-    params[:code_location].select { |k, _v| %w(url branch scm_type).include?(k) }
+    params[:code_location].select { |k, _v| %w[url branch scm_type].include?(k) }
   end
 end

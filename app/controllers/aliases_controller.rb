@@ -1,9 +1,9 @@
 class AliasesController < SettingsController
   helper ProjectsHelper
   before_action :session_required, :redirect_unverified_account, except: :index
-  before_action :set_project_or_fail, :set_project_editor_account_to_current_user, except: [:undo, :redo]
+  before_action :set_project_or_fail, :set_project_editor_account_to_current_user, except: %i[undo redo]
   before_action :redirect_to_message_if_oversized_project, only: :new
-  before_action :project_context, only: [:index, :new, :create]
+  before_action :project_context, only: %i[index new create]
 
   def index
     @best_analysis_aliases = Alias.best_analysis_aliases(@project)

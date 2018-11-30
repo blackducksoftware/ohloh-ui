@@ -4,7 +4,7 @@ describe 'AuthenticationsController' do
   let(:account) { create(:account) }
   let(:account_params) do
     FactoryBot.attributes_for(:account).select do |k, _v|
-      %w(login email password).include?(k.to_s)
+      %w[login email password].include?(k.to_s)
     end
   end
 

@@ -1,5 +1,5 @@
 def load_chart_options(source)
-  defaults = YAML.load File.read(Rails.root.join("config/charting/#{source}"))
+  defaults = YAML.safe_load File.read(Rails.root.join("config/charting/#{source}"))
   defaults.with_indifferent_access
 end
 
@@ -9,9 +9,8 @@ end
 
 CHART_DEFAULTS = load_chart_options('defaults.yml')
 ActiveSupport.on_load(:after_initialize) do
-  COMMITS_BY_PROJECT_CHART_DEFAULTS = YAML.load(ERB.new(File.read(
-                                                          Rails.root.join('config/charting/commits_by_project.yml')
-  )).result(binding))
+  path = Rails.root.join('config', 'charting', 'commits_by_project.yml')
+  COMMITS_BY_PROJECT_CHART_DEFAULTS = YAML.safe_load(ERB.new(File.read(path)).result(binding))
 end
 
 DEMOGRAPHIC_CHART_DEFAULTS = load_chart_options('demographic.yml')

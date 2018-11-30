@@ -1,5 +1,5 @@
 class CommittersController < UnclaimedController
-  before_action :session_required, :redirect_unverified_account, only: [:claim, :save_claim]
+  before_action :session_required, :redirect_unverified_account, only: %i[claim save_claim]
   before_action :find_committer, except: :index
   before_action :preload_projects_from_positions, only: :save_claim
 

@@ -9,7 +9,7 @@ class PasswordResetsController < Clearance::PasswordsController
     token = params[:token] || session[:password_reset_token]
 
     Clearance.configuration.user_model
-             .find_by_login_and_confirmation_token params[:user_id], token.to_s
+             .find_by(login: params[:user_id], confirmation_token: token.to_s)
   end
 
   def flash_failure_when_forbidden

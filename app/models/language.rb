@@ -14,7 +14,7 @@ class Language < ActiveRecord::Base
 
   filterable_by ['languages.nice_name']
   ALL_LANGUAGES = ['All Languages', ''].freeze
-  DEFAULT_LANGUAGES = %w(c html java php).freeze
+  DEFAULT_LANGUAGES = %w[c html java php].freeze
 
   class << self
     def new_languages_for_project(project, days)

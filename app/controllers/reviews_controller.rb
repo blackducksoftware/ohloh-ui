@@ -2,18 +2,20 @@ class ReviewsController < ApplicationController
   helper RatingsHelper
   helper ProjectsHelper
 
-  before_action :session_required, :redirect_unverified_account, except: [:index, :summary]
+  before_action :session_required, :redirect_unverified_account, except: %i[index summary]
   before_action :set_project_or_fail, except: :destroy, if: -> { params[:project_id] }
   before_action :set_account, except: :destroy, if: -> { params[:account_id] }
-  before_action :find_review, only: [:edit, :update, :destroy]
-  before_action :own_object?, only: [:edit, :update, :destroy]
+  before_action :find_review, only: %i[edit update destroy]
+  before_action :own_object?, only: %i[edit update destroy]
   before_action :review_context
 
   def index
+    # rubocop:disable Rails/DynamicFindBy # find_by... here is a predefined scope.
     @reviews = @parent.reviews
                       .find_by_comment_or_title_or_accounts_login(params[:query])
                       .sort_by(params[:sort])
                       .paginate(page: page_param, per_page: 10)
+    # rubocop:enable Rails/DynamicFindBy
   end
 
   def summary
@@ -76,7 +78,7 @@ class ReviewsController < ApplicationController
   end
 
   def find_review
-    @review = Review.find_by_id(params[:id])
+    @review = Review.find_by(id: params[:id])
     raise ParamRecordNotFound if @review.nil?
   end
 

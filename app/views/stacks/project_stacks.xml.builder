@@ -3,7 +3,7 @@ stacks = @project.stacks.joins(:account).includes(:account, :stack_entries).orde
 stacks = stacks.paginate(page: page_param, per_page: 10)
 
 xml.instruct!
-xml.response do |activity_fact|
+xml.response do
   xml.status 'success'
   xml.items_returned stacks.size
   xml.items_available stacks.total_entries

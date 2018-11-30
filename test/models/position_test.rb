@@ -103,7 +103,7 @@ class PositionTest < ActiveSupport::TestCase
       )
 
       position.must_be :persisted?
-      position.project_experiences.map(&:project).map(&:name).sort.must_equal %w(draper draper)
+      position.project_experiences.map(&:project).map(&:name).sort.must_equal %w[draper draper]
     end
 
     it 'must assign a project using a project name' do

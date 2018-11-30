@@ -40,18 +40,18 @@ describe 'PositionFactoriesController' do
     describe 'current user already has a valid position' do
       it 'must create an alias' do
         project = create(:project)
-        name_1 = create(:name)
-        name_2 = create(:name)
+        name1 = create(:name)
+        name2 = create(:name)
 
-        create_position(account: account, name: name_1, project: project)
-        Alias.expects(:create).returns(Alias.new(preferred_name: name_1))
+        create_position(account: account, name: name1, project: project)
+        Alias.expects(:create).returns(Alias.new(preferred_name: name1))
 
         login_as(account)
-        post :create, account_id: account.to_param, project_name: project.name, committer_name: name_2.name
+        post :create, account_id: account.to_param, project_name: project.name, committer_name: name2.name
 
         must_redirect_to account_positions_path(account)
         flash[:success].must_equal I18n.t('position_factories.create.rename_commit_author',
-                                          name: name_2.name, preferred_name: name_1.name)
+                                          name: name2.name, preferred_name: name1.name)
       end
 
       # Covers the case in which the user already has a position, and is trying to claim a second name.
@@ -61,18 +61,18 @@ describe 'PositionFactoriesController' do
         create(:manage, account: account, target: project)
         create(:permission, target: project, remainder: true)
 
-        name_1 = create(:name)
-        name_2 = create(:name)
+        name1 = create(:name)
+        name2 = create(:name)
 
-        create_position(account: account, name: name_1, project: project)
-        Alias.expects(:create).returns(Alias.new(preferred_name: name_1))
+        create_position(account: account, name: name1, project: project)
+        Alias.expects(:create).returns(Alias.new(preferred_name: name1))
 
         login_as(account)
-        post :create, account_id: account.to_param, project_name: project.name, committer_name: name_2.name
+        post :create, account_id: account.to_param, project_name: project.name, committer_name: name2.name
 
         must_redirect_to account_positions_path(account)
         flash[:success].must_equal I18n.t('position_factories.create.rename_commit_author',
-                                          name: name_2.name, preferred_name: name_1.name)
+                                          name: name2.name, preferred_name: name1.name)
       end
     end
 

@@ -68,7 +68,7 @@ class CompareProjectUrlCsvDecorator
     if !@project.best_analysis.nil? && @project.best_analysis.last_commit_time
       yield @project.best_analysis
     else
-      (@project.enlistments.count > 0) ? t('compares.pending') : t('compares.no_data')
+      @project.enlistments.count > 0 ? t('compares.pending') : t('compares.no_data')
     end
   end
 

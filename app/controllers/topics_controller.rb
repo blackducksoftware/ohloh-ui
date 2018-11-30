@@ -1,11 +1,11 @@
 class TopicsController < ApplicationController
   helper MarkdownHelper
-  before_action :session_required, :redirect_unverified_account, only: [:new, :create, :close, :reopen]
-  before_action :admin_session_required, only: [:edit, :update, :close]
+  before_action :session_required, :redirect_unverified_account, only: %i[new create close reopen]
+  before_action :admin_session_required, only: %i[edit update close]
   before_action :set_account, :must_own_account, only: :create
-  before_action :find_forum_record, only: [:new, :create]
-  before_action :find_forum_and_topic_records, except: [:index, :new, :create]
-  before_action :must_be_admin_or_topic_creator, only: [:destroy, :reopen]
+  before_action :find_forum_record, only: %i[new create]
+  before_action :find_forum_and_topic_records, except: %i[index new create]
+  before_action :must_be_admin_or_topic_creator, only: %i[destroy reopen]
   after_action :track_views, only: [:show]
 
   def index
@@ -68,7 +68,9 @@ class TopicsController < ApplicationController
   def track_views
     topic = Topic.where(id: params[:id]).take
     raise ParamRecordNotFound unless topic
+    # rubocop:disable Rails/SkipsModelValidations # We want to skip validations here.
     topic.increment!(:hits) unless logged_in? && (@topic.account == current_user)
+    # rubocop:enable Rails/SkipsModelValidations
   end
 
   def find_forum_record
@@ -84,7 +86,7 @@ class TopicsController < ApplicationController
 
   def topic_params
     params.require(:topic).permit(:forum_id, :account_id, :title, :sticky,
-                                  :hits, :closed, posts_attributes: [:body, :account_id])
+                                  :hits, :closed, posts_attributes: %i[body account_id])
   end
 
   def must_be_admin_or_topic_creator

@@ -6,13 +6,15 @@ atom_feed do |feed|
   feed.rss do
     if @account.present? && @account.posts.count > 0
       xml << render(partial: 'posts/account_header.atom.builder').gsub(/^/, '   ')
-    elsif @account.present? && @account.posts.count == 0
+    elsif @account.present? && @account.posts.count.zero?
       xml << render(partial: 'posts/account_header.atom.builder').gsub(/^/, '   ')
     else
       xml.channel do
-        feed.title "Recent Posts | OpenHub"
+        feed.title 'Recent Posts | OpenHub'
         feed.link @base_url if params[:query].blank? && params[:sort].blank?
-        feed.link @base_url + "?query=#{params[:query]}&sort=#{params[:sort]}" if params[:query].present? && params[:sort].present?
+        if params[:query].present? && params[:sort].present?
+          feed.link @base_url + "?query=#{params[:query]}&sort=#{params[:sort]}"
+        end
         feed.language 'en-us'
         feed.ttl 60
         xml << render(partial: 'posts/posts.atom.builder', collection: @posts).gsub(/^/, '      ')
@@ -20,4 +22,3 @@ atom_feed do |feed|
     end
   end
 end
-

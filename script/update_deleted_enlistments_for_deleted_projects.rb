@@ -8,7 +8,7 @@ require 'logger'
 class UpdateEnlistmentsForDeletedProjects
   def initialize
     @log = Logger.new('update_deleted_enlistments_log_file.log')
-    @editor = Account.find_by_login('ohloh_slave')
+    @editor = Account.find_by(login: 'ohloh_slave')
   end
 
   def execute

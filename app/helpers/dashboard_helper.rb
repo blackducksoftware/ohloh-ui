@@ -4,7 +4,7 @@ module DashboardHelper
   end
 
   def last_deployment
-    File.exist?("#{Rails.root}/REVISION") ? get_last_deployment : 'N/A'
+    File.exist?(Rails.root.join('REVISION')) ? get_last_deployment : 'N/A'
   end
 
   def get_last_deployment
@@ -13,11 +13,13 @@ module DashboardHelper
     link_text = " (#{revision[0..7]}) "
     deployed = time_ago_in_words(file_modified) + ' ago '
     link = link_to(link_text, github_url, style: 'color: #fff', target: '_blank')
+    # rubocop:disable Rails/OutputSafety # Known variables used internally.
     (deployed + link).html_safe
+    # rubocop:enable Rails/OutputSafety
   end
 
   def get_revision_details
-    revision_file = File.open("#{Rails.root}/REVISION")
+    revision_file = File.open(Rails.root.join('REVISION'))
     revision = revision_file.read.strip
     file_modified = revision_file.mtime
     revision_file.close

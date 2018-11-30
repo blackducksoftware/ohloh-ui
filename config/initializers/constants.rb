@@ -27,7 +27,7 @@ ACCOUNT_DESC_LENGTH = 100
 
 TIME_SPANS = { '30 days' => :last_30_days, '12 months' => :last_year }.freeze
 
-GLOBALLY_SEARCHABLE = %w(projects organizations accounts people forums).freeze
+GLOBALLY_SEARCHABLE = %w[projects organizations accounts people forums].freeze
 
 UNCLAIMED_TILE_LIMIT = 11
 OBJECT_MEMORY_CAP = 20_000

@@ -4,8 +4,8 @@ class ChartDecorator
     report_data = CommitsByProject.new(account).chart_data
     chart = CHART_DEFAULTS.clone
 
-    chart.deep_merge! YAML.load(ERB.new(File.read(
-                                          Rails.root.join('config/charting/combined_commit_history.yml')
+    chart.deep_merge! YAML.safe_load(ERB.new(File.read(
+                                               Rails.root.join('config', 'charting', 'combined_commit_history.yml')
     )).result(binding))
     chart[:yAxis][:max] = report_data[:max_commits]
     chart[:xAxis][:categories] = string_to_hash(report_data[:x_axis])
@@ -36,15 +36,15 @@ class ChartDecorator
 
   # image_name is used in erb binding.
   def background_style(image_name)
-    file_contents = File.read(Rails.root.join('config/charting/chart_background_style.yml.erb'))
+    file_contents = File.read(Rails.root.join('config', 'charting', 'chart_background_style.yml.erb'))
     parsed_contents = ERB.new(file_contents).result(binding)
-    YAML.load(parsed_contents)
+    YAML.safe_load(parsed_contents)
   end
 
   def string_to_hash(stringified_dates)
     stringified_dates.map do |date_string|
       { commit_month: date_string,
-        stringify: (date_string =~ /Jan/) ? date_string.split('-').last : '' }
+        stringify: date_string =~ /Jan/ ? date_string.split('-').last : '' }
     end
   end
 
@@ -54,6 +54,6 @@ class ChartDecorator
     chart = CHART_DEFAULTS.clone
 
     chart.deep_merge!(background_style('watermark_white_900'))
-    chart.deep_merge! YAML.load_file Rails.root.join('config/charting/project_commit_history.yml')
+    chart.deep_merge! YAML.load_file Rails.root.join('config', 'charting', 'project_commit_history.yml')
   end
 end

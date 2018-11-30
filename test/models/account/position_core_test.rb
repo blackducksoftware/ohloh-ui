@@ -133,15 +133,15 @@ class PositionCoreTest < ActiveSupport::TestCase
       project_bar = create(:project, name: :bar)
 
       name = create(:name)
-      name_fact_1 = create(:name_fact, analysis: project_foo.best_analysis, name: name)
-      name_fact_2 = create(:name_fact, analysis: project_bar.best_analysis, name: name)
+      name_fact1 = create(:name_fact, analysis: project_foo.best_analysis, name: name)
+      name_fact2 = create(:name_fact, analysis: project_bar.best_analysis, name: name)
 
       account = create(:account)
       create(:position, project: project_foo, name: name, account: account)
       create(:position, project: project_bar, name: name, account: account)
 
       account.position_core.name_facts.keys.must_equal(
-        ["#{name_fact_1.analysis_id}_#{name.id}", "#{name_fact_2.analysis_id}_#{name.id}"]
+        ["#{name_fact1.analysis_id}_#{name.id}", "#{name_fact2.analysis_id}_#{name.id}"]
       )
     end
   end
@@ -156,10 +156,10 @@ class PositionCoreTest < ActiveSupport::TestCase
       create(:name_fact, analysis: project_bar.best_analysis, name: name, last_checkin: 1.day.ago)
 
       account = create(:account)
-      position_1 = create(:position, project: project_foo, name: name, account: account)
-      position_2 = create(:position, project: project_bar, name: name, account: account)
+      position1 = create(:position, project: project_foo, name: name, account: account)
+      position2 = create(:position, project: project_bar, name: name, account: account)
 
-      account.position_core.ordered.must_equal [position_2, position_1]
+      account.position_core.ordered.must_equal [position2, position1]
     end
 
     it 'must sort positions by project_name when no name_fact' do

@@ -10,7 +10,7 @@ class ActivityFactsByMonthData
   end
 
   def commits_for_first_29_months
-    (@with_intitial_value == false) ? [0] * 29 : [1] * 29
+    @with_intitial_value == false ? [0] * 29 : [1] * 29
   end
 
   def data

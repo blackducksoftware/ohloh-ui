@@ -35,7 +35,7 @@ class PositionFactoriesController < ApplicationController
   end
 
   def load_name_by_committer_name
-    @name = Name.find_by_name(params[:committer_name])
+    @name = Name.find_by(name: params[:committer_name])
   end
 
   def check_for_committer_existence
@@ -49,9 +49,11 @@ class PositionFactoriesController < ApplicationController
     result = @account.position_core.ensure_position_or_alias!(@project, @name)
     return unless result
 
-    flash[:success] = t('.rename_commit_author',
-                        name: CGI.escapeHTML(@name.name),
-                        preferred_name: CGI.escapeHTML(result.preferred_name.name)) if result.is_a?(Alias)
+    if result.is_a?(Alias)
+      flash[:success] = t('.rename_commit_author',
+                          name: CGI.escapeHTML(@name.name),
+                          preferred_name: CGI.escapeHTML(result.preferred_name.name))
+    end
     flash[:success] = t('contribution_claimed', name: CGI.escapeHTML(@name.name)) if result.is_a?(Position)
 
     redirect_to account_positions_path(@account)

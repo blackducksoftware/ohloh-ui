@@ -32,11 +32,11 @@ class ProjectLicensesControllerTest < ActionController::TestCase
 
   it 'index sort licenses by vanity_url' do
     project = create(:project)
-    license_1 = create(:project_license, project: project)
-    license_2 = create(:project_license, project: project)
-    license_3 = create(:project_license, project: project)
+    license1 = create(:project_license, project: project)
+    license2 = create(:project_license, project: project)
+    license3 = create(:project_license, project: project)
 
-    sorted_licenses = [license_1, license_2, license_3].sort { |a, b| a.license.vanity_url <=> b.license.vanity_url }
+    sorted_licenses = [license1, license2, license3].sort { |a, b| a.license.vanity_url <=> b.license.vanity_url }
 
     login_as nil
 

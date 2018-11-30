@@ -46,7 +46,7 @@ class FirebaseService
 
   def valid_sub?(sub)
     flag = true
-    if sub.nil? || sub.empty?
+    if sub.blank?
       Rails.logger.info("Invalid access token. 'Subject' (sub) must be a non-empty string.")
       flag = false
     end

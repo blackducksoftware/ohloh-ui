@@ -6,11 +6,11 @@ class ContributionsController < ApplicationController
   helper MapHelper
 
   before_action :set_project_or_fail, if: -> { params[:project_id] }
-  before_action :set_contribution, except: [:commits_spark, :commits_compound_spark, :index, :summary, :near]
-  before_action :set_contributor, only: [:commits_spark, :commits_compound_spark]
-  before_action :send_sample_image_if_bot, if: :bot?, only: [:commits_spark, :commits_compound_spark]
-  before_action :project_context, only: [:index, :show, :summary]
-  skip_before_action :store_location, only: [:commits_spark, :commits_compound_spark]
+  before_action :set_contribution, except: %i[commits_spark commits_compound_spark index summary near]
+  before_action :set_contributor, only: %i[commits_spark commits_compound_spark]
+  before_action :send_sample_image_if_bot, if: :bot?, only: %i[commits_spark commits_compound_spark]
+  before_action :project_context, only: %i[index show summary]
+  skip_before_action :store_location, only: %i[commits_spark commits_compound_spark]
 
   def index
     raise ParamRecordNotFound unless @project
@@ -58,7 +58,7 @@ class ContributionsController < ApplicationController
   end
 
   def send_sample_image_if_bot
-    image_path = "#{Rails.root}/#{self.class.const_get(action_name.upcase + '_IMAGE')}"
+    image_path = Rails.root.join(self.class.const_get(action_name.upcase + '_IMAGE'))
     send_file image_path, filename: 'commits.png', type: 'image/png', disposition: 'inline'
   end
 

@@ -33,7 +33,7 @@ class SlocMetric < FisBase
 
     def select_summary_attributes
       sloc_metrics_arel = SlocMetric.arel_table
-      attributes = [:code_added, :code_removed, :comments_added, :comments_removed, :blanks_added, :blanks_removed]
+      attributes = %i[code_added code_removed comments_added comments_removed blanks_added blanks_removed]
       select([:language_id,
               attributes.map { |x| sloc_metrics_arel[x].sum.as(x.to_s) }])
         .order('code_added desc, code_removed desc, comments_added desc, comments_removed desc,

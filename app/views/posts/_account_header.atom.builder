@@ -1,7 +1,7 @@
 xml.channel do
-  xml.title "Recent Posts | OpenHub"
+  xml.title 'Recent Posts | OpenHub'
   if params[:query].blank? && params[:sort].blank?
-    xml.link @account_base_url 
+    xml.link @account_base_url
   else
     xml.link @account_base_url + "?query=#{params[:query]}&sort=#{params[:sort]}"
   end

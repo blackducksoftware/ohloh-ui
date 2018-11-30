@@ -1,6 +1,6 @@
 class Duplicate < ActiveRecord::Base
-  RESOLVES = [:stack_entries, :kudos, :tags, :ratings, :reviews, :links, :aliases, :enlistments,
-              :positions, :project_experiences, :edits, :self].freeze
+  RESOLVES = %i[stack_entries kudos tags ratings reviews links aliases enlistments
+                positions project_experiences edits self].freeze
   include DuplicateAssociations
 
   scope :unresolved, -> { where.not(resolved: true) }
@@ -116,6 +116,7 @@ class Duplicate < ActiveRecord::Base
   def resolve_self!
     bad_project.update_attributes(name: "Duplicate Project #{id}", vanity_url: '')
     CreateEdit.find_by(target: bad_project).undo!(@editor_account) unless bad_project.deleted?
+    # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
     update_attribute(:resolved, true)
   end
 end

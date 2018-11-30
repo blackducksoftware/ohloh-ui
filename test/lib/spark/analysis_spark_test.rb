@@ -9,7 +9,7 @@ class Spark::AnalysisSparkTest < ActiveSupport::TestCase
         data.push << [Date.parse("2015-01-#{value}").to_time(:utc), value]
       end
 
-      expected_image_path = Rails.root.join('test/data/spark/age_spark.png')
+      expected_image_path = Rails.root.join('test', 'data', 'spark', 'age_spark.png')
       result_file = Spark::AnalysisSpark.new(data, max_value: 31).render
 
       compare_images(result_file.path, expected_image_path, 0.14)

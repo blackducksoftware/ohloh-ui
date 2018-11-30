@@ -12,8 +12,8 @@ class LicensePermissionRoleTest < ActiveSupport::TestCase
       license = create(:license)
       lp = create(:license_permission)
       create(:license_permission_role, license_permission: lp, license: license)
-      lpr_2 = build(:license_permission_role, license_permission: lp, license: license)
-      lpr_2.valid?.must_equal false
+      lpr2 = build(:license_permission_role, license_permission: lp, license: license)
+      lpr2.valid?.must_equal false
     end
 
     it 'is not valid if it does not have a license permission or license' do

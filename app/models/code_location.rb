@@ -8,7 +8,7 @@ class CodeLocation < FisbotApi
   STATUS_ACTIVE  = 1
   STATUS_DELETED = 2
 
-  TRAITS = %w(url scm_type username password branch forge_match best_code_set_id do_not_fetch).freeze
+  TRAITS = %w[url scm_type username password branch forge_match best_code_set_id do_not_fetch].freeze
   attr_accessor(*TRAITS)
   attr_reader :to_key # to_key is used by form_for.
 

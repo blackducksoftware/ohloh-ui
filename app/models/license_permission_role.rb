@@ -4,5 +4,5 @@ class LicensePermissionRole < ActiveRecord::Base
   validates :license_id, :license_permission_id, presence: true
   validates :license_permission_id, uniqueness: { scope: :license_id }
 
-  enum status: [:permitted, :forbidden, :required]
+  enum status: %i[permitted forbidden required]
 end

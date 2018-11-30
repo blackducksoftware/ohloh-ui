@@ -6,7 +6,7 @@ module WidgetBadge
 
     DEFAULT_FONT_OPTIONS = { opacity: 80, font_size: 12, stroke: :none, weight: 800,
                              align: :left, y_offset: 5 }.freeze
-    IMAGE_ICONS_DIR = Rails.root.join('app/assets/images/icons')
+    IMAGE_ICONS_DIR = Rails.root.join('app', 'assets', 'images', 'icons')
     TEXT_OFFSET = { left: 82 }.freeze
     KUDO_OFFSET = { left: 200 }.freeze
 

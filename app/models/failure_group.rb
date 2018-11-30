@@ -1,6 +1,7 @@
 class FailureGroup < ActiveRecord::Base
   has_many :jobs, -> { where(status: Job::STATUS_FAILED).with_exception }
 
+  # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update in the following methods.
   def decategorize
     jobs.update_all(failure_group_id: nil)
   end

@@ -17,14 +17,14 @@ class Job < ActiveRecord::Base
     self.code_location_id ||= code_set.code_location_id if code_set_id
   end
 
-  scope :incomplete_fis_jobs, -> { where.not(type: %w(TarballJob VulnerabilityJob), status: STATUS_COMPLETED) }
+  scope :incomplete_fis_jobs, -> { where.not(type: %w[TarballJob VulnerabilityJob], status: STATUS_COMPLETED) }
   scope :incomplete, -> { where.not(status: STATUS_COMPLETED) }
   scope :failed, -> { where(status: STATUS_FAILED) }
   scope :scheduled, -> { where(status: STATUS_SCHEDULED) }
   scope :complete, -> { where(status: STATUS_COMPLETED) }
   scope :running, -> { where(status: STATUS_RUNNING) }
 
-  scope :slave_recent_jobs, lambda {|count = 20|
+  scope :slave_recent_jobs, lambda { |count = 20|
     rankings = 'select id, RANK() OVER (PARTITION BY slave_id, status ORDER BY id ASC) rank FROM jobs'
     joins("INNER JOIN (#{rankings}) rankings ON rankings.id = jobs.id")
       .where('rankings.rank < :count', count: count.next)
@@ -44,7 +44,9 @@ class Job < ActiveRecord::Base
 
   def categorize_failure
     failure_group = FailureGroup.find_by('pattern ILIKE ?', exception)
+    # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
     update_column(failure_group_id: failure_group.id) if failure_group
+    # rubocop:enable Rails/SkipsModelValidations
     # Used by admin
     code_location.update(do_not_fetch: true) if failure_group.present? && !failure_group.auto_reschedule
   end

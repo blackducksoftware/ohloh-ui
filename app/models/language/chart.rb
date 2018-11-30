@@ -4,7 +4,7 @@ class Language::Chart
 
   def initialize(options)
     @options = options
-    @series = YAML.load_file(Rails.root.join('config/charting/language.yml'))
+    @series = YAML.load_file(Rails.root.join('config', 'charting', 'language.yml'))
   end
 
   def data

@@ -3,7 +3,7 @@ class ProjectLicensesController < SettingsController
 
   before_action :set_project_or_fail, :set_project_editor_account_to_current_user
   before_action :project_context
-  before_action :project_edit_authorized, only: [:create, :destroy]
+  before_action :project_edit_authorized, only: %i[create destroy]
   before_action :find_project_license, only: [:destroy]
 
   def index

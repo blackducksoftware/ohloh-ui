@@ -21,8 +21,9 @@ ActiveAdmin.register Job do
   actions :all, except: :new
 
   action_item :decategorize do
-    link_to 'Decategorize',
-            decategorize_admin_failure_group_path(params[:failure_group_id]) if params[:failure_group_id]
+    if params[:failure_group_id]
+      link_to 'Decategorize', decategorize_admin_failure_group_path(params[:failure_group_id])
+    end
   end
 
   show do

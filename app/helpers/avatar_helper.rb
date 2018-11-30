@@ -1,7 +1,7 @@
 module AvatarHelper
   def avatar_for(who, options = {})
     return '' unless who
-    title = (options[:title] == true) ? avatar_title(who) : options[:title]
+    title = options[:title] == true ? avatar_title(who) : options[:title]
     attributes = { title: title, class: options[:class] || 'avatar' }
     url = options[:url] || avatar_path(who)
     link_to avatar_img_for(who, options[:size] || 32), url, attributes
@@ -28,6 +28,7 @@ module AvatarHelper
     end
   end
 
+  # rubocop:disable Rails/OutputSafety # `rank` is known kudo_rank
   def avatar_small_laurels(rank)
     avatar_laurels_img(rank, 'sm_laurel').html_safe
   end
@@ -39,6 +40,7 @@ module AvatarHelper
   def avatar_tiny_laurels(rank)
     avatar_laurels_img(rank, 'tn_laurel').html_safe
   end
+  # rubocop:enable Rails/OutputSafety
 
   private
 
@@ -74,6 +76,7 @@ module AvatarHelper
   end
 
   def avatar_laurels_img(rank, imag_base)
+    # rubocop:disable Rails/OutputSafety # `rank` is the kudo_rank.
     "<img src='" + image_path("icons/#{imag_base}_#{rank || 1}.png") + "' alt='KudoRank #{rank || 1}'/>".html_safe
   end
 end

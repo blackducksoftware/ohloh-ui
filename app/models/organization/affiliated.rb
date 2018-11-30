@@ -12,7 +12,7 @@ class Organization::Affiliated < Organization::AccountFacts
   end
 
   def committers(page = 1, limit = 10)
-    accounts = @organization.accounts.joins([:person, :positions])
+    accounts = @organization.accounts.joins(%i[person positions])
     accounts = accounts.group('accounts.id, people.kudo_position').order('kudo_position nulls last')
     accounts.paginate(per_page: limit, page: page)
     Account.paginate_by_sql(accounts.to_sql, per_page: limit, page: page)
@@ -20,8 +20,8 @@ class Organization::Affiliated < Organization::AccountFacts
 
   def projects(page = 1, limit = 10)
     @organization.projects.order('projects.user_count DESC')
-                 .includes([:logo, best_analysis: [:twelve_month_summary,
-                                                   :previous_twelve_month_summary, :main_language]])
+                 .includes([:logo, best_analysis: %i[twelve_month_summary
+                                                     previous_twelve_month_summary main_language]])
                  .paginate(per_page: limit, page: page)
   end
 

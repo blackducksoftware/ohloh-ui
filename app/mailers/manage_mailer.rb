@@ -50,7 +50,7 @@ class ManageMailer < ActionMailer::Base
   class << self
     def deliver_emails(manage)
       return if manage.changed.blank?
-      [:check_automatic_approval, :check_removed, :check_approved, :check_applied].each do |message|
+      %i[check_automatic_approval check_removed check_approved check_applied].each do |message|
         break if send(message, manage)
       end
       send(:check_rejection, manage)
@@ -86,7 +86,7 @@ class ManageMailer < ActionMailer::Base
 
     def deliver_deletion(manager, manage)
       if manage.approver.nil?
-        method = (manage.destroyer == manage.account) ? :withdrawn : :denied
+        method = manage.destroyer == manage.account ? :withdrawn : :denied
         send(method, manager, manage).deliver_now
       else
         removed(manager, manage).deliver_now

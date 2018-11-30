@@ -12,6 +12,7 @@ class Rating < ActiveRecord::Base
 
   def update_project_rating_average
     project.editor_account = account
+    # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
     project.update_attribute(:rating_average, project.ratings.average(:score))
   end
 end

@@ -13,7 +13,7 @@ namespace :selenium do
   end
 
   desc 'Prepare Accounts data for selenium'
-  task prepare_accounts_data: [:set_account, :account_summary, :generate_data]
+  task prepare_accounts_data: %i[set_account account_summary generate_data]
 
   task set_account: :environment do
     @account = Account.from_param(ENV['ACCOUNT_NAME']).take
