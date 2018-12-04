@@ -12,7 +12,9 @@ class HomeDecorator
   end
 
   def most_active_contributors
-    Account.recently_active.includes(best_vita: [:name_fact])
+    Rails.cache.fetch('HomeDecorator-recently_active_accounts-cache') do
+      Account.recently_active.includes(best_vita: [:name_fact]) if Rails.env.test?
+    end
   end
 
   def commit_count
