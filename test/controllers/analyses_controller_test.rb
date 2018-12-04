@@ -222,7 +222,7 @@ describe 'AnalysesController' do
 
       series.first['id'].must_equal 'code'
       series.map { |d| d['data'].last }.must_equal [[time_integer, 5], [time_integer, 10], [time_integer, 3]]
-      series.map { |d| d['name'] }.must_equal %w(Code Comments Blanks)
+      series.map { |d| d['name'] }.must_equal %w[Code Comments Blanks]
       assert_nil result['scrollbar']
     end
   end
@@ -247,7 +247,7 @@ describe 'AnalysesController' do
 
       series.first['id'].must_equal 'code'
       series.map { |d| d['data'].last }.must_equal [[time_integer, 5], [time_integer, 10], [time_integer, 3]]
-      series.map { |d| d['name'] }.must_equal %w(Code Comments Blanks)
+      series.map { |d| d['name'] }.must_equal %w[Code Comments Blanks]
       result['scrollbar']['enabled'].must_equal false
     end
   end

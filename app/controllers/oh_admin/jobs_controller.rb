@@ -11,7 +11,7 @@ class OhAdmin::JobsController < ApplicationController
   private
 
   def find_project
-    @project = Project.find_by_vanity_url(params[:project_id])
+    @project = Project.find_by(vanity_url: params[:project_id])
     raise ParamRecordNotFound if @project.nil?
   end
 end

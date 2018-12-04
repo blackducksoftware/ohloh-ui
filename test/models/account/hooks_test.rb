@@ -50,7 +50,7 @@ class Account::HooksTest < ActiveSupport::TestCase
       # Create all types of edits to assert that every edit can be undone.
       Project.last.update!(description: Faker::Lorem.sentence, editor_account: account)
       ProjectLicense.create!(project: Project.last, license: create(:license), editor_account: account)
-      account.edits.not_undone.map(&:type).sort.must_equal %w(CreateEdit PropertyEdit)
+      account.edits.not_undone.map(&:type).sort.must_equal %w[CreateEdit PropertyEdit]
 
       account.verifications.count.must_equal 1
       account.topics.count.must_equal 3

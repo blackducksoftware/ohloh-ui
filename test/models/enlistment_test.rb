@@ -32,17 +32,17 @@ class EnlistmentTest < ActiveSupport::TestCase
 
     it 'should order based on the jobs.status and current_step_at' do
       Enlistment.any_instance.stubs(:ensure_forge_and_job)
-      cl_1 = create_code_location_with_code_set_and_enlistment
-      cl_2 = create_code_location_with_code_set_and_enlistment
-      cl_3 = create_code_location_with_code_set_and_enlistment
-      cl_4 = create_code_location_with_code_set_and_enlistment
+      cl1 = create_code_location_with_code_set_and_enlistment
+      cl2 = create_code_location_with_code_set_and_enlistment
+      cl3 = create_code_location_with_code_set_and_enlistment
+      cl4 = create_code_location_with_code_set_and_enlistment
       Job.destroy_all
-      create(:failed_job, code_location_id: cl_4, current_step_at: 1.minute.ago)
-      create(:sloc_job, code_location_id: cl_3, current_step_at: 1.day.ago)
-      create(:complete_job, code_location_id: cl_2, current_step_at: 1.month.ago)
-      create(:failed_job, code_location_id: cl_2, current_step_at: 1.hour.ago)
-      create(:fetch_job, code_location_id: cl_1, current_step_at: 1.week.ago)
-      Enlistment.by_update_status.pluck(:code_location_id).must_equal [cl_2, cl_3, cl_1, cl_4].map(&:to_i)
+      create(:failed_job, code_location_id: cl4, current_step_at: 1.minute.ago)
+      create(:sloc_job, code_location_id: cl3, current_step_at: 1.day.ago)
+      create(:complete_job, code_location_id: cl2, current_step_at: 1.month.ago)
+      create(:failed_job, code_location_id: cl2, current_step_at: 1.hour.ago)
+      create(:fetch_job, code_location_id: cl1, current_step_at: 1.week.ago)
+      Enlistment.by_update_status.pluck(:code_location_id).must_equal [cl2, cl3, cl1, cl4].map(&:to_i)
     end
   end
 

@@ -2,7 +2,8 @@ class VulnerabilitiesController < ApplicationController
   layout 'responsive_project_layout', only: [:index]
   helper ProjectsHelper
 
-  include VulnerabilityFilters, VulnerabilitiesHelper
+  include VulnerabilityFilters
+  include VulnerabilitiesHelper
 
   def recent_version_chart
     @releases = @best_security_set.most_recent_releases

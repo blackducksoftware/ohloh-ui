@@ -26,7 +26,7 @@ class Spark::SimpleSpark < Spark::Base
     image do |convert|
       @data.each_with_index do |commits_by_month, i|
         time = commits_by_month.month
-        color = (time.month == 1) ? 'black' : nil
+        color = time.month == 1 ? 'black' : nil
         commits_count = commits_by_month.commits.to_i
         color ||= commits_count.zero? ? LIGHT_GRAY : DARK_GRAY
         convert.fill color

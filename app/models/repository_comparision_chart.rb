@@ -10,7 +10,7 @@ module RepositoryComparisionChart
   }.stringify_keys
 
   def build
-    YAML.load_file(Rails.root.join('config/charting/repository_comparision_chart.yml')).tap do |chart|
+    YAML.load_file(Rails.root.join('config', 'charting', 'repository_comparision_chart.yml')).tap do |chart|
       chart['series'][0]['data'] = chart_data
     end
   end
@@ -25,7 +25,7 @@ module RepositoryComparisionChart
   end
 
   def combine_svn_count(data)
-    other_svn_type = -> (hsh) { %w(git_svn svn_sync).include?(hsh[:type]) }
+    other_svn_type = ->(hsh) { %w[git_svn svn_sync].include?(hsh[:type]) }
     other_svn_count = data.select(&other_svn_type).sum { |hsh| hsh[:count] }
     svn_data = data.find { |hsh| hsh[:type] == 'svn' }
     svn_data[:count] += other_svn_count

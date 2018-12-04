@@ -34,7 +34,7 @@ class Logo < Attachment
   validate { errors.add(:url, I18n.t('logos.invalid_url')) if @invalid_url }
 
   def url=(uri)
-    self.attachment = uri unless uri.blank?
+    self.attachment = uri if uri.present?
   rescue
     @invalid_url = true
   end

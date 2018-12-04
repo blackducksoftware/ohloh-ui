@@ -38,11 +38,13 @@ class ApiKey < ActiveRecord::Base
 
   class << self
     def reset_all!
+      # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
       ApiKey.update_all(daily_count: 0, day_began_at: Time.current)
       ApiKey.where(status: STATUS_LIMIT_EXCEEDED).update_all(status: STATUS_OK)
+      # rubocop:enable Rails/SkipsModelValidations
     end
 
-    def find_by_oauth_application_uid(client_id)
+    def find_for_oauth_application_uid(client_id)
       joins(:oauth_application).find_by('oauth_applications.uid' => client_id)
     end
   end
@@ -53,7 +55,7 @@ class ApiKey < ActiveRecord::Base
     return unless day_began_at && day_began_at < (Time.current - 1.day)
     assign_attributes(day_began_at: Time.current,
                       daily_count: 0,
-                      status: (status == STATUS_LIMIT_EXCEEDED) ? STATUS_OK : status)
+                      status: status == STATUS_LIMIT_EXCEEDED ? STATUS_OK : status)
   end
 
   def exceeded_daily_allotment?
@@ -62,7 +64,7 @@ class ApiKey < ActiveRecord::Base
 
   def set_status_to_limit_exceeded!
     update_attributes!(day_began_at: day_began_at || Time.current,
-                       status: (status == STATUS_OK) ? STATUS_LIMIT_EXCEEDED : status)
+                       status: status == STATUS_OK ? STATUS_LIMIT_EXCEEDED : status)
   end
 
   def update_api_counters!

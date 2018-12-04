@@ -48,7 +48,9 @@ module ProjectJobs
     if job.nil?
       job = AnalyzeJob.create(project: self, wait_until: Time.current + delay)
     elsif job.is_a? AnalyzeJob
+      # rubocop:disable Rails/SkipsModelValidations # We want to skip validations here.
       job.update_attribute(:wait_until, Time.current + delay)
+      # rubocop:enable Rails/SkipsModelValidations
     end
     job
   end

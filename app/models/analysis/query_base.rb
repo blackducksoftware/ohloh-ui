@@ -1,7 +1,7 @@
 class Analysis::QueryBase
-  SUM_COLUMNS = [[:code_added, :code_removed, :code_total],
-                 [:comments_added, :comments_removed, :comments_total],
-                 [:blanks_added, :blanks_removed, :blanks_total]].freeze
+  SUM_COLUMNS = [%i[code_added code_removed code_total],
+                 %i[comments_added comments_removed comments_total],
+                 %i[blanks_added blanks_removed blanks_total]].freeze
 
   delegate :oldest_code_set_time, :updated_on, :empty?, to: :@analysis
 

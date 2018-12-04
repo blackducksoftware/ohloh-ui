@@ -4,7 +4,7 @@ xml.response do
   xml.result do
     c_fact = @contribution.contributor_fact
     xml.contributor_fact do
-      xml.contributor_id      @contribution.id
+      xml.contributor_id @contribution.id
 
       if @contribution.person.account_id
         xml.account_id        @contribution.person.account_id

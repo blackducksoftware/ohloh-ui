@@ -18,7 +18,9 @@ module JobApiHelper
 
   def slave_host(slave_id)
     return unless slave_id
+    # rubocop:disable Rails/OutputSafety # The variables used here are known values.
     "on #{link_to Slave.find(slave_id).hostname, '#'}".html_safe
+    # rubocop:enable Rails/OutputSafety
   end
 
   def job_progress(job)

@@ -40,7 +40,7 @@ class OrganizationDecoratorTest < ActiveSupport::TestCase
       options.shift && options.pop
       _name, id = options.first
       Organization.find(id).must_be :present?
-      options.map(&:first).must_equal %w(Alcatel Pontac Zumba)
+      options.map(&:first).must_equal %w[Alcatel Pontac Zumba]
     end
 
     it 'must sort organization names by lower name' do
@@ -48,7 +48,7 @@ class OrganizationDecoratorTest < ActiveSupport::TestCase
       create(:organization, name: 'zzzz')
       organization_names = OrganizationDecorator.select_options.map(&:first)
       organization_names.shift && organization_names.pop
-      organization_names.must_equal %w(Alcatel Pontac zambi Zumba zzzz)
+      organization_names.must_equal %w[Alcatel Pontac zambi Zumba zzzz]
     end
   end
 end

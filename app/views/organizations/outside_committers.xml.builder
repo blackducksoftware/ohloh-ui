@@ -6,7 +6,7 @@ xml.response do
   xml.result do
     xml.outside_committers do
       @outside_committers.each do |outside_committer|
-        projects = Project.where(id: outside_committer.projs) unless outside_committer.projs.blank?
+        projects = Project.where(id: outside_committer.projs) if outside_committer.projs.present?
         xml.contributor do
           xml.name outside_committer.name
           xml.kudos outside_committer.person.kudo_rank

@@ -19,7 +19,7 @@ class RssArticle < ActiveRecord::Base
 
     def set_time(item)
       time = item[:published] || Time.current
-      (time > Time.current) ? Time.current : time
+      time > Time.current ? Time.current : time
     end
 
     def guid_from_item(item)

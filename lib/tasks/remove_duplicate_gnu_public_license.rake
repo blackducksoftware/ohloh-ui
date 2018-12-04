@@ -9,6 +9,7 @@ task remove_duplicate_gnu_general_public_license: :environment do
   duplicate_license_ids << License.find(301).id  # GNU GENERAL PUBLIC LICENSE(GPLv3)
   duplicate_license_ids << License.find(485).id  # GNU General Public License 3 or later(GPLv3plus)
 
+  # rubocop:disable Rails/SkipsModelValidations
   # Update project licenses
   ProjectLicense.where(license_id: duplicate_license_ids).update_all(license_id: original_license.id)
 

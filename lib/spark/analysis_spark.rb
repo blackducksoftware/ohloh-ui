@@ -4,7 +4,7 @@ class Spark::AnalysisSpark < Spark::Base
 
   LIGHT_GRAY = '#ddd'.freeze
   DARK_GRAY = '#a7a7a7'.freeze
-  FONT = "#{Rails.root}/app/assets/fonts/OpenSans-Bold.ttf".freeze
+  FONT = Rails.root.join('app', 'assets', 'fonts', 'OpenSans-Bold.ttf').freeze
 
   def initialize(data, options = {})
     super(data, SPARK.merge(options))

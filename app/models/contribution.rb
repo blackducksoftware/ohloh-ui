@@ -1,6 +1,6 @@
 class Contribution < ActiveRecord::Base
-  SORT_OPTIONS = [:name, :kudo_position, :commits, :twelve_month_commits,
-                  :language, :latest_commit, :newest, :oldest].freeze
+  SORT_OPTIONS = %i[name kudo_position commits twelve_month_commits
+                    language latest_commit newest oldest].freeze
   self.primary_key = :id
 
   belongs_to :position

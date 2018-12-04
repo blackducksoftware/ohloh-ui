@@ -14,7 +14,7 @@ class Edit < ActiveRecord::Base
   scope :for_target, ->(target) { where(target_type: target.class.to_s, target_id: target.id) }
   scope :for_editor, ->(editor) { where(account_id: editor.id) }
   scope :for_ip, ->(ip) { where(ip: ip) }
-  filterable_by %w(key value)
+  filterable_by %w[key value]
 
   def previous_value
     previous_edit.try(:value)
@@ -85,11 +85,11 @@ class Edit < ActiveRecord::Base
   end
 
   def project_id_from_targets_target
-    (target.respond_to?(:target_id) && target.target_type == 'Project') ? target.target_id : nil
+    target.respond_to?(:target_id) && target.target_type == 'Project' ? target.target_id : nil
   end
 
   def org_id_when_associating_to_org
-    (key == :organization_id) ? value : nil
+    key == :organization_id ? value : nil
   end
 
   def org_id_for_org

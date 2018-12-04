@@ -74,8 +74,8 @@ module ColorsHelper
     LANGUAGE_COLORS[name] || 'EEE'
   end
 
-  BLACK_TEXT_LANGUAGES = %w(ada augeas bat boo c cncpp coq ec html lisp logtalk objective_c
-                            ocaml perl r scala scheme scilab tcl vala).freeze
+  BLACK_TEXT_LANGUAGES = %w[ada augeas bat boo c cncpp coq ec html lisp logtalk objective_c
+                            ocaml perl r scala scheme scilab tcl vala].freeze
 
   def language_text_color(name)
     BLACK_TEXT_LANGUAGES.include?(name) || language_color(name) == 'EEE' ? '000' : 'FFF'

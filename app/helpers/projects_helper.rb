@@ -33,7 +33,7 @@ module ProjectsHelper
   end
 
   def project_twitter_description(project, analysis)
-    return project_twitter_description_analysis(project, analysis) unless analysis.blank?
+    return project_twitter_description_analysis(project, analysis) if analysis.present?
     project.description.to_s.empty? ? '' : project.description
   end
 

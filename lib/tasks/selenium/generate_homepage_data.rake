@@ -9,8 +9,8 @@ namespace :selenium do
   end
 
   desc 'Generates test data for home page'
-  task prepare_homepage_data: [:setup, :billboard, :most_popular_projects,
-                               :most_active_projects, :most_active_contributors, :write_data]
+  task prepare_homepage_data: %i[setup billboard most_popular_projects
+                                 most_active_projects most_active_contributors write_data]
 
   task setup: :environment do
     include ActionView::Helpers::TextHelper
@@ -20,7 +20,7 @@ namespace :selenium do
   end
 
   task billboard: :environment do
-    @data['billboard'] = %w(lines_count active_project_count person_count repository_count).map do |attr|
+    @data['billboard'] = %w[lines_count active_project_count person_count repository_count].map do |attr|
       number_with_delimiter(@home_decorator.send(attr).to_i)
     end
   end

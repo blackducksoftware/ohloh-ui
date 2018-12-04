@@ -3,8 +3,8 @@ class BaseballCard < Cherry::Decorator
   include ActionView::Helpers::TextHelper
   include ActionView::Helpers::UrlHelper
 
-  ROW_NAMES = [:first_checkin, :last_checkin, :commits, :joined_at, :contributions, :orgs,
-               :affiliations].freeze
+  ROW_NAMES = %i[first_checkin last_checkin commits joined_at contributions orgs
+                 affiliations].freeze
 
   delegate :best_vita, :created_at, :positions, to: :account
 

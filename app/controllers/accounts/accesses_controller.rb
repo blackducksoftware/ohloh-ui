@@ -2,8 +2,8 @@ class Accounts::AccessesController < ApplicationController
   include SetAccountByAccountId
 
   before_action :check_activation, only: :activate
-  before_action :session_required, only: [:make_spammer, :manual_verification, :make_bot]
-  before_action :admin_session_required, only: [:make_spammer, :manual_verification, :make_bot]
+  before_action :session_required, only: %i[make_spammer manual_verification make_bot]
+  before_action :admin_session_required, only: %i[make_spammer manual_verification make_bot]
   before_action :disabled_during_read_only_mode, only: :activate
 
   def make_spammer

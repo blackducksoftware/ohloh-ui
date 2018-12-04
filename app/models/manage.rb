@@ -7,7 +7,7 @@ class Manage < ActiveRecord::Base
   belongs_to :destroyer, class_name: 'Account', foreign_key: :deleted_by
 
   validates :target_type, presence: true,
-                          uniqueness: { scope: [:target_id, :account_id, :deleted_at],
+                          uniqueness: { scope: %i[target_id account_id deleted_at],
                                         message: I18n.t('manage.already_manager') }
   validates :account, presence: true
   validates :message, length: 0..200, allow_nil: true

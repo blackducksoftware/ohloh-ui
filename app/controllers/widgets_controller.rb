@@ -1,5 +1,5 @@
 class WidgetsController < ApplicationController
-  WIDGET_TYPES = %w(account project stack organization).freeze
+  WIDGET_TYPES = %w[account project stack organization].freeze
 
   helper :widgets
   before_action :set_widget, except: :index

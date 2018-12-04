@@ -4,13 +4,13 @@ class DuplicatesController < ApplicationController
   helper TagsHelper
 
   before_action :session_required, :redirect_unverified_account
-  before_action :admin_session_required, only: [:index, :show, :resolve]
-  before_action :set_project_or_fail, except: [:index, :show, :resolve]
-  before_action :find_duplicate, only: [:edit, :update, :destroy]
-  before_action :find_good_project, only: [:create, :update]
-  before_action :project_context, except: [:index, :show, :resolve]
-  before_action :must_own_duplicate, only: [:edit, :update, :destroy]
-  before_action :find_duplicate_without_project_id, only: [:resolve, :show]
+  before_action :admin_session_required, only: %i[index show resolve]
+  before_action :set_project_or_fail, except: %i[index show resolve]
+  before_action :find_duplicate, only: %i[edit update destroy]
+  before_action :find_good_project, only: %i[create update]
+  before_action :project_context, except: %i[index show resolve]
+  before_action :must_own_duplicate, only: %i[edit update destroy]
+  before_action :find_duplicate_without_project_id, only: %i[resolve show]
 
   def index
     @resolved_duplicates = Duplicate.where(resolved: true).order(id: :desc).paginate(per_page: 10, page: page_param)
@@ -82,7 +82,7 @@ class DuplicatesController < ApplicationController
   end
 
   def duplicate_params
-    params.require(:duplicate).permit([:good_project_id, :bad_project_id, :comment])
+    params.require(:duplicate).permit(%i[good_project_id bad_project_id comment])
   end
 
   def must_own_duplicate

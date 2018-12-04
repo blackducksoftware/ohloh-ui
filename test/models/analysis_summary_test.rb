@@ -15,8 +15,8 @@ class AnalysisSummaryTest < ActiveSupport::TestCase
     it 'must return people matching the name_ids in recent_contributors' do
       account = create(:account)
       person.update!(account: account)
-      name_2 = create(:name)
-      analysis_summary.stubs(:recent_contributors).returns(['name_ids', name_2.id, person.name.id])
+      name2 = create(:name)
+      analysis_summary.stubs(:recent_contributors).returns(['name_ids', name2.id, person.name.id])
       analysis_summary.recent_contribution_persons.must_equal [person]
     end
   end

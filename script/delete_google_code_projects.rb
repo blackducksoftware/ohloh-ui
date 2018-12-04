@@ -8,7 +8,7 @@ require 'logger'
 class DeleteGoogleCodeProjects
   def initialize
     @log = Logger.new('log/deleted_googlecode_log_file.log')
-    @editor = Account.find_by_login('ohloh_slave')
+    @editor = Account.find_by(login: 'ohloh_slave')
   end
 
   def execute
@@ -42,7 +42,6 @@ class DeleteGoogleCodeProjects
     begin
       project.tags.delete_all
       project.create_edit.undo!(@editor) if project.create_edit.allow_undo?
-
     rescue => e
       @log.error "error: #{project.id} - #{e.inspect}"
     end

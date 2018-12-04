@@ -1,5 +1,5 @@
 module ForumsHelper
-  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Style/MultilineIfModifier
   def forums_sidebar
     menus = []
     menus << [

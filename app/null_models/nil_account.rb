@@ -5,8 +5,7 @@ class NilAccount < NullObject
     Action.none
   end
 
-  def admin?
-  end
+  def admin?; end
 
   def id
     nil

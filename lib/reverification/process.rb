@@ -16,7 +16,7 @@ module Reverification
         success_queue.poll(initial_timeout: 1, idle_timeout: 1) do |msg|
           message_hash = msg.as_sns_message.body_message_as_h
           message_hash['delivery']['recipients'].each do |recipient|
-            account = Account.find_by_email recipient
+            account = Account.find_by email: recipient
             next unless account.try(:reverification_tracker)
             account.reverification_tracker.delivered! if account.reverification_tracker.pending?
           end
@@ -36,7 +36,7 @@ module Reverification
         complaints_queue.poll(initial_timeout: 1, idle_timeout: 1) do |msg|
           decoded_msg = msg.as_sns_message.body_message_as_h
           decoded_msg['complaint']['complainedRecipients'].each do |recipient|
-            rev_tracker = Account.find_by_email(recipient['emailAddress']).try(:reverification_tracker)
+            rev_tracker = Account.find_by(email: recipient['emailAddress']).try(:reverification_tracker)
             next unless rev_tracker
             rev_tracker.complained!
             rev_tracker.update feedback: decoded_msg['complaint']['complaintFeedbackType']
@@ -51,7 +51,7 @@ module Reverification
       end
 
       def handle_bounce_notification(type, recipient)
-        rev_tracker = Account.find_by_email(recipient).try(:reverification_tracker)
+        rev_tracker = Account.find_by(email: recipient).try(:reverification_tracker)
         return unless rev_tracker
         case type
         when 'Permanent' then ReverificationTracker.destroy_account(recipient)

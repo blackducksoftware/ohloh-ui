@@ -39,7 +39,7 @@ class String
   end
 
   def to_bool
-    (self =~ /^(true|t|yes|y|1)$/i) ? true : false
+    self =~ /^(true|t|yes|y|1)$/i ? true : false
   end
 
   def escape
@@ -63,7 +63,7 @@ class String
     def clean_url(url)
       return url if url.blank?
       url.strip!
-      (url =~ %r{^(http:/)|(https:/)|(ftp:/)}) ? url : "http://#{url}"
+      url =~ %r{^(http:/)|(https:/)|(ftp:/)} ? url : "http://#{url}"
     end
   end
 end

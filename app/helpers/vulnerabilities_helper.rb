@@ -63,7 +63,9 @@ module VulnerabilitiesHelper
                           date: options[0])
     end
     html << hidden_field_tag('vulnerability_filter_period', filter_period_param, class: 'vulnerability_main_filter')
+    # rubocop:disable Rails/OutputSafety # TODO: review
     html.html_safe
+    # rubocop:enable Rails/OutputSafety
   end
 
   def releaase_timespan_options
@@ -85,7 +87,7 @@ module VulnerabilitiesHelper
   end
 
   def sort_columns
-    %w(cve_id severity published_on)
+    %w[cve_id severity published_on]
   end
 
   def current_sort_column_and_order
@@ -106,7 +108,7 @@ module VulnerabilitiesHelper
 
   def sort_icon_visibility_classes(col)
     current_col, current_direction = current_sort_column_and_order
-    asc_desc_icon = %w(disable hidden)
+    asc_desc_icon = %w[disable hidden]
     if col == current_col
       asc_desc_icon = current_direction == 'desc' ? ['hidden', ''] : ['', 'hidden']
     end

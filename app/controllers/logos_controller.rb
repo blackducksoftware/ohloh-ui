@@ -3,10 +3,10 @@ class LogosController < SettingsController
   helper ProjectsHelper
 
   before_action :session_required, :redirect_unverified_account, except: :new
-  before_action :set_project, only: [:destroy, :create, :new], if: -> { params[:project_id] }
-  before_action :set_organization, only: [:destroy, :create, :new], if: -> { params[:organization_id] }
-  before_action :fail_unless_parent, only: [:destroy, :create, :new]
-  before_action :set_editor_account_to_current_user, only: [:destroy, :create, :new]
+  before_action :set_project, only: %i[destroy create new], if: -> { params[:project_id] }
+  before_action :set_organization, only: %i[destroy create new], if: -> { params[:organization_id] }
+  before_action :fail_unless_parent, only: %i[destroy create new]
+  before_action :set_editor_account_to_current_user, only: %i[destroy create new]
   before_action :set_logo, only: :destroy
   around_action :edit_authorized?, only: :create
   before_action :show_permissions_alert, only: :new
@@ -29,7 +29,9 @@ class LogosController < SettingsController
   end
 
   def destroy
+    # rubocop:disable Rails/SkipsModelValidations # We want to skip validations here.
     @parent.update_attribute(:logo_id, nil)
+    # rubocop:enable Rails/SkipsModelValidations
     @logo.destroy ? flash[:success] = t('.success') : flash[:error] = t('.error')
     redirect_to action: :new
   end
@@ -52,7 +54,9 @@ class LogosController < SettingsController
   end
 
   def update_parent_logo
+    # rubocop:disable Rails/SkipsModelValidations # We want to skip validations here.
     @parent.update_attribute(:logo_id, params[:logo_id] || @logo.id)
+    # rubocop:enable Rails/SkipsModelValidations
   end
 
   def set_project

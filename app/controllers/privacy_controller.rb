@@ -1,8 +1,8 @@
 class PrivacyController < ApplicationController
-  before_action :session_required, :redirect_unverified_account, only: [:edit, :update]
+  before_action :session_required, :redirect_unverified_account, only: %i[edit update]
   before_action :set_account
   before_action :update_email_opportunities_visited
-  before_action :must_own_account, only: [:edit, :update]
+  before_action :must_own_account, only: %i[edit update]
   before_action :set_oauth_applications
 
   def update
@@ -26,7 +26,9 @@ class PrivacyController < ApplicationController
   end
 
   def update_email_opportunities_visited
+    # rubocop:disable Rails/SkipsModelValidations # We want to skip validations here.
     @account.update_attribute(:email_opportunities_visited, Time.current)
+    # rubocop:enable Rails/SkipsModelValidations
   end
 
   def set_oauth_applications

@@ -48,7 +48,9 @@ class Account::Access < OhDelegator::Base
 
   def spam!
     Account.transaction do
+      # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
       account.update_attribute(:level, SPAM)
+      # rubocop:enable Rails/SkipsModelValidations
     end
   end
 

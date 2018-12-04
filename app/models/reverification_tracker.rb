@@ -5,8 +5,8 @@ class ReverificationTracker < ActiveRecord::Base
   NOTIFICATION3_DUE_DAYS = 28
   NOTIFICATION4_DUE_DAYS = 14
   belongs_to :account
-  enum status: [:pending, :delivered, :soft_bounced, :complained]
-  enum phase: [:initial, :marked_for_disable, :disabled, :final_warning]
+  enum status: %i[pending delivered soft_bounced complained]
+  enum phase: %i[initial marked_for_disable disabled final_warning]
 
   scope :soft_bounced_until_yesterday, lambda {
     soft_bounced.includes(:account).where('DATE(sent_at) < DATE(NOW())')
@@ -54,7 +54,7 @@ class ReverificationTracker < ActiveRecord::Base
     end
 
     def destroy_account(email_address)
-      account = Account.find_by_email(email_address)
+      account = Account.find_by(email: email_address)
       return unless account
       account.destroy
     end
@@ -99,7 +99,9 @@ class ReverificationTracker < ActiveRecord::Base
 
     def update_tracker(rev_tracker, phase, response)
       if phase == rev_tracker.phase_value
+        # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
         rev_tracker.increment! :attempts
+        # rubocop:enable Rails/SkipsModelValidations
       else
         rev_tracker.update attempts: 1
       end

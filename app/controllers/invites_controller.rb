@@ -20,7 +20,7 @@ class InvitesController < ApplicationController
   end
 
   def find_contribution
-    @contribution = Contribution.find_by_id(params[:contributor_id])
+    @contribution = Contribution.find_by(id: params[:contributor_id])
     raise ParamRecordNotFound if @contribution.nil?
     @invite = Invite.new(model_params)
   end

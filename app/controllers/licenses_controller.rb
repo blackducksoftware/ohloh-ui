@@ -1,7 +1,7 @@
 class LicensesController < ApplicationController
-  before_action :session_required, :redirect_unverified_account, only: [:create, :new, :edit, :update]
+  before_action :session_required, :redirect_unverified_account, only: %i[create new edit update]
   before_action :set_project
-  before_action :set_license, only: [:show, :edit, :update]
+  before_action :set_license, only: %i[show edit update]
 
   def index
     @licenses = License.active.filter_by(params[:query]).by_vanity_url.paginate(page: page_param, per_page: 30)

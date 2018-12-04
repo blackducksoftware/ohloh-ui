@@ -1,6 +1,7 @@
 language_percentages = Analysis::LanguagePercentages.new(analysis).collection
 
 xml.analysis do
+  tms = analysis.twelve_month_summary
   xml.id analysis.id
   xml.url project_analysis_url(analysis.project, analysis, format: :xml)
   xml.project_id analysis.project_id
@@ -10,9 +11,7 @@ xml.analysis do
   xml.max_month(analysis.max_month.iso8601) if analysis.max_month
   xml.twelve_month_contributor_count analysis.headcount
   xml.total_contributor_count analysis.committers_all_time
-  if tms = analysis.twelve_month_summary
-    xml.twelve_month_commit_count tms.commits_count
-  end
+  xml.twelve_month_commit_count tms.commits_count if tms
   xml.total_commit_count analysis.commit_count
   xml.total_code_lines analysis.code_total
   if analysis.factoids && analysis.factoids.any?
@@ -27,7 +26,7 @@ xml.analysis do
   if language_percentages.any?
     xml.languages graph_url: "#{project_url(analysis.project)}/analyses/#{analysis.id}/languages.png" do
       language_percentages.each do |id, name, attr|
-        percent = attr[:percent] > 0 ? "#{attr[:percent]}" : '<1'
+        percent = attr[:percent] > 0 ? attr[:percent].to_s : '<1'
         xml.language percentage: percent, color: attr[:color], id: id do
           xml.text! name
         end

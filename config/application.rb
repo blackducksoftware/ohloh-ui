@@ -21,16 +21,16 @@ module OhlohUi
 
     config.google_maps_api_key = ENV['GOOGLE_MAPS_API']
 
-    config.autoload_paths << "#{Rails.root}/lib"
-    config.autoload_paths << "#{Rails.root}/lib/reverification/**/*"
-    config.autoload_paths << "#{Rails.root}/lib/constraints"
+    config.autoload_paths << Rails.root.join('lib')
+    config.autoload_paths << Rails.root.join('lib', 'reverification', '**', '*')
+    config.autoload_paths << Rails.root.join('lib', 'constraints')
 
     config.to_prepare do
       Doorkeeper::AuthorizationsController.layout 'application'
       Doorkeeper::AuthorizationsController.helper OauthLayoutHelper
     end
 
-    file = "#{Rails.root}/config/GIT_SHA"
+    file = Rails.root.join('config', 'GIT_SHA')
     config.git_sha = File.exist?(file) ? File.read(file)[0...40] : 'development'
 
     matches = /([0-9\.]+)/.match(`passenger -v 2>&1`)

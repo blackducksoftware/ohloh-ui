@@ -53,7 +53,7 @@ class Analysis < ActiveRecord::Base
   end
 
   def empty?
-    min_month.nil? || (code_total == 0)
+    min_month.nil? || code_total.zero?
   end
 
   def cocomo_value(avg_salary = AVG_SALARY)

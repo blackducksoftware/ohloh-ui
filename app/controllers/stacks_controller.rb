@@ -4,13 +4,13 @@ class StacksController < ApplicationController
   helper RatingsHelper, ProjectsHelper
 
   before_action :session_required, :redirect_unverified_account,
-                except: [:index, :show, :similar, :similar_stacks, :near, :project_stacks]
-  before_action :find_stack, except: [:index, :create, :near, :project_stacks]
-  before_action :can_edit_stack, except: [:index, :show, :create, :similar, :similar_stacks, :near, :project_stacks]
-  before_action :find_account, :redirect_if_disabled, only: [:index, :show, :similar]
+                except: %i[index show similar similar_stacks near project_stacks]
+  before_action :find_stack, except: %i[index create near project_stacks]
+  before_action :can_edit_stack, except: %i[index show create similar similar_stacks near project_stacks]
+  before_action :find_account, :redirect_if_disabled, only: %i[index show similar]
   before_action :auto_ignore, only: [:builder]
-  before_action :set_project_or_fail, only: [:near, :project_stacks]
-  before_action :account_context, only: [:index, :show, :similar]
+  before_action :set_project_or_fail, only: %i[near project_stacks]
+  before_action :account_context, only: %i[index show similar]
   before_action :verify_api_access_for_xml_request, only: [:project_stacks]
 
   def index
@@ -94,7 +94,7 @@ class StacksController < ApplicationController
   end
 
   def find_stack
-    @stack = Stack.find_by_id(params[:id])
+    @stack = Stack.find_by(id: params[:id])
     raise ParamRecordNotFound if @stack.nil?
   end
 
@@ -109,7 +109,7 @@ class StacksController < ApplicationController
 
   def auto_ignore
     (params[:ignore] || []).split(',').compact.each do |project_vanity_url|
-      proj = Project.find_by_vanity_url(project_vanity_url)
+      proj = Project.find_by(vanity_url: project_vanity_url)
       StackIgnore.create(stack_id: @stack.id, project_id: proj.id) if proj
     end
   end

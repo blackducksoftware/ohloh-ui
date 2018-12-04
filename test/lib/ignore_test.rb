@@ -63,7 +63,7 @@ class IgnoreTest < ActiveSupport::TestCase
       assert Ignore.match?(['foo'], 'foo')
       assert Ignore.match?(['foo'], 'foobar')
       assert !Ignore.match?(['foobar'], 'foo')
-      assert Ignore.match?(%w(bar foo), 'foo')
+      assert Ignore.match?(%w[bar foo], 'foo')
     end
 
     it 'should gracefully handle backslashes in the prefixes' do

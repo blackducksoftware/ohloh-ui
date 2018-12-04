@@ -1,8 +1,8 @@
 class ProjectWidgetsController < WidgetsController
   helper :Projects, :Analyses
   before_action :set_project
-  before_action :render_image_for_gif_format, only: [:partner_badge, :thin_badge]
-  before_action :render_not_supported_for_gif_format, except: [:partner_badge, :thin_badge, :index]
+  before_action :render_image_for_gif_format, only: %i[partner_badge thin_badge]
+  before_action :render_not_supported_for_gif_format, except: %i[partner_badge thin_badge index]
   before_action :render_iframe_for_js_format
   before_action :project_context, only: :index
 

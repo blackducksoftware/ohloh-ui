@@ -46,9 +46,9 @@ class GithubUser
     loop do
       page += 1
       _stdin, json_repository_data = Open3.popen3('curl', github_url(page))
-      repository_data = JSON.load(json_repository_data)
-      break unless repository_data.present?
-      repository_urls.concat repository_data.map { |data| data['html_url'] }
+      repository_data = JSON.parse(json_repository_data.read) if json_repository_data
+      break if repository_data.blank?
+      repository_urls.concat(repository_data.map { |data| data['html_url'] })
     end
 
     repository_urls
@@ -68,7 +68,7 @@ class GithubUser
 
   def username_must_exist
     _stdin, stdout = Open3.popen3('curl', github_username_url)
-    output = JSON.load(stdout)
+    output = JSON.parse(stdout.read)
     errors.add(:url, I18n.t('invalid_github_username')) if output.is_a?(Hash) && output['message'] == 'Not Found'
   end
 end

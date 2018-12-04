@@ -63,41 +63,41 @@ describe 'SessionProjectsController' do
     end
 
     it 'must allow three projects in session' do
-      project_2 = create(:project)
-      project_3 = create(:project)
-      session[:session_projects] = [project_2.to_param, project_3.to_param]
+      project2 = create(:project)
+      project3 = create(:project)
+      session[:session_projects] = [project2.to_param, project3.to_param]
       xhr :post, :create, project_id: project.to_param
 
       must_respond_with :success
 
-      session[:session_projects].must_equal [project_2.to_param, project_3.to_param, project.to_param]
+      session[:session_projects].must_equal [project2.to_param, project3.to_param, project.to_param]
     end
 
     it 'wont allow a new project when session already has 3 projects' do
-      project_2 = create(:project)
-      project_3 = create(:project)
-      project_4 = create(:project)
-      session[:session_projects] = [project_2.to_param, project_3.to_param, project_4.to_param]
+      project2 = create(:project)
+      project3 = create(:project)
+      project4 = create(:project)
+      session[:session_projects] = [project2.to_param, project3.to_param, project4.to_param]
 
       xhr :post, :create, project_id: project.to_param
       must_respond_with :forbidden
 
-      session[:session_projects].must_equal [project_2.to_param, project_3.to_param, project_4.to_param]
+      session[:session_projects].must_equal [project2.to_param, project3.to_param, project4.to_param]
     end
   end
 
   describe 'destroy' do
     it 'must successfully remove a project from session' do
-      project_2 = create(:project)
-      project_3 = create(:project)
-      project_4 = create(:project)
-      session[:session_projects] = [project_2.to_param, project_3.to_param, project_4.to_param]
-      xhr :delete, :destroy, id: project_3.to_param
+      project2 = create(:project)
+      project3 = create(:project)
+      project4 = create(:project)
+      session[:session_projects] = [project2.to_param, project3.to_param, project4.to_param]
+      xhr :delete, :destroy, id: project3.to_param
 
       must_respond_with :success
 
-      session[:session_projects].must_equal [project_2.to_param, project_4.to_param]
-      assigns[:session_projects].must_equal [project_2, project_4]
+      session[:session_projects].must_equal [project2.to_param, project4.to_param]
+      assigns[:session_projects].must_equal [project2, project4]
     end
 
     it 'must prevent bot access' do

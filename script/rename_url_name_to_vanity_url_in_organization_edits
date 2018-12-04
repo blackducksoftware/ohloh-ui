@@ -4,4 +4,5 @@ raise 'RAILS_ENV is undefined' unless ENV['RAILS_ENV']
 
 require_relative '../config/environment'
 
+# rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
 puts PropertyEdit.where(target_type: 'Organization').for_property('url_name').update_all(key: 'vanity_url')

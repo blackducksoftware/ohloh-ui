@@ -13,7 +13,7 @@ class ArrayTest < ActiveSupport::TestCase
     end
 
     it 'should exclude for multiple arguments' do
-      fake_array = %w(voluptatem a sit commodi)
+      fake_array = %w[voluptatem a sit commodi]
       exclude_word1, exclude_word2 = fake_array.sample(2)
 
       output_array = fake_array.exclude(exclude_word1, exclude_word2)

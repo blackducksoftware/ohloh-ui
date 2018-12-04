@@ -6,7 +6,7 @@ class License < ActiveRecord::Base
   validates :description, length: { maximum: 50_000 }, allow_nil: true
   validates :url, url_format: true, allow_blank: true
 
-  acts_as_editable editable_attributes: [:vanity_url, :name, :abbreviation, :description, :url],
+  acts_as_editable editable_attributes: %i[vanity_url name abbreviation description url],
                    merge_within: 30.minutes
   acts_as_protected
 
@@ -20,14 +20,14 @@ class License < ActiveRecord::Base
   scope :from_param, ->(vanity_url) { where(vanity_url: vanity_url) }
   scope :resolve_vanity_url, ->(vanity_url) { where('lower(vanity_url) = ?', vanity_url.downcase) }
 
-  after_update :undo_redo_project_licenses, if: -> (license) { license.deleted_changed? }
+  after_update :undo_redo_project_licenses, if: ->(license) { license.deleted_changed? }
 
   def to_param
     vanity_url
   end
 
   def allow_undo_to_nil?(key)
-    ![:vanity_url, :name].include?(key)
+    !%i[vanity_url name].include?(key)
   end
 
   def allow_edit?
@@ -52,7 +52,7 @@ class License < ActiveRecord::Base
 
   class << self
     def autocomplete(term)
-      License.active.select([:name, :id]).where(['lower(name) LIKE ?', "#{term.downcase}%"]).limit(10)
+      License.active.select(%i[name id]).where(['lower(name) LIKE ?', "#{term.downcase}%"]).limit(10)
     end
   end
 

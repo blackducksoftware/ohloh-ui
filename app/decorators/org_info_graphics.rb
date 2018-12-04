@@ -29,7 +29,7 @@ class OrgInfoGraphics < Cherry::Decorator
     affiliated_committers_stats = object.affiliated_committers_stats
     aff_outside_commits_count = affiliated_committers_stats['affl_commits_out'].to_i
     outside_projects_count = affiliated_committers_stats['affl_projects_out'].to_i
-    outside_projects_image = (outside_projects_count > 0) ? 'projects-small-gray.png' : 'projects-small-ghost.png'
+    outside_projects_image = outside_projects_count > 0 ? 'projects-small-gray.png' : 'projects-small-ghost.png'
     outside_projects_image = 'projects-small-black.png' if @context[:view] == :outside_projects
     { aff_outside_commits_count: aff_outside_commits_count, affiliated_committers_stats: affiliated_committers_stats,
       outside_projects_count: outside_projects_count, outside_projects_image: outside_projects_image }
@@ -59,7 +59,7 @@ class OrgInfoGraphics < Cherry::Decorator
   end
 
   def set_width_height
-    if @dyamic_value == 0
+    if @dyamic_value.zero?
       @width = @minimum_stick_width
       @height = @minimum_stick_height
     else
@@ -69,8 +69,8 @@ class OrgInfoGraphics < Cherry::Decorator
   end
 
   def set_stroke_attributes(type, positioning)
-    stroke = @dyamic_value == 0 ? 'none' : ''
-    color = @dyamic_value == 0 ? '#DDDAD9' : '#000'
+    stroke = @dyamic_value.zero? ? 'none' : ''
+    color = @dyamic_value.zero? ? '#DDDAD9' : '#000'
 
     return { 'style' => "padding-top:#{set_height(type, @width)}px" } if positioning == true
 

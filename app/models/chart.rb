@@ -15,7 +15,7 @@ class Chart
   private
 
   def process_commits_by_project_data
-    years = date_objects @cbp.first.last.map { |af| af[:month].strftime('%b-%Y') } if @cbp.present?
+    years = date_objects(@cbp.first.last.map { |af| af[:month].strftime('%b-%Y') }) if @cbp.present?
     series = @cbp.each_with_object([]) do |(pname, afs), array|
       array.push('name' => pname, 'data' => afs.map { |af| af[:commits] })
     end
@@ -25,7 +25,7 @@ class Chart
   def date_objects(stringified_dates)
     stringified_dates.map do |date_string|
       { commit_month: date_string,
-        stringify: (date_string =~ /Jan/) ? date_string.split('-').last : '' }
+        stringify: date_string =~ /Jan/ ? date_string.split('-').last : '' }
     end
   end
 end

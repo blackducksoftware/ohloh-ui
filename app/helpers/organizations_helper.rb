@@ -1,7 +1,9 @@
 module OrganizationsHelper
   def org_pretty_display(value)
     return 'N/A' if value.blank?
+    # rubocop:disable Rails/OutputSafety # The values used here are sanitized.
     return '&mdash;'.html_safe if value.to_i.zero?
+    # rubocop: enable Rails/OutputSafety
     value
   end
 

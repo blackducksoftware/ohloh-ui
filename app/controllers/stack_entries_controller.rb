@@ -5,7 +5,7 @@ class StackEntriesController < ApplicationController
   before_action :session_required, :redirect_unverified_account
   before_action :find_stack, except: :new
   before_action :find_project, only: [:create]
-  before_action :find_stack_entry, except: [:create, :new]
+  before_action :find_stack_entry, except: %i[create new]
   before_action :set_project_or_fail, only: :new
 
   def create
@@ -33,7 +33,7 @@ class StackEntriesController < ApplicationController
   private
 
   def find_stack
-    @stack = Stack.find_by_id(params[:stack_id])
+    @stack = Stack.find_by(id: params[:stack_id])
     raise ParamRecordNotFound if @stack.nil? || ((@stack.account_id != current_user.id) && (params[:action] != 'show'))
   end
 
@@ -44,15 +44,15 @@ class StackEntriesController < ApplicationController
   end
 
   def find_project_by_vanity_url(vanity_url)
-    Project.find_by_vanity_url(vanity_url) if vanity_url
+    Project.find_by(vanity_url: vanity_url) if vanity_url
   end
 
   def find_project_by_name(name)
-    Project.find_by_name(name) if name
+    Project.find_by(name: name) if name
   end
 
   def find_stack_entry
-    @stack_entry = StackEntry.find_by_id(params[:id])
+    @stack_entry = StackEntry.find_by(id: params[:id])
     raise ParamRecordNotFound if @stack_entry.nil?
   end
 

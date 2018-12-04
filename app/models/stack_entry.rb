@@ -5,12 +5,12 @@ class StackEntry < ActiveRecord::Base
   belongs_to :project
 
   scope :active, -> { where(deleted_at: nil) }
-  scope :for_project_id, -> (project_id) { for_project_id_arel(project_id) }
-  scope :similar_stack_entries, -> (entries1, entries2) { similar_stack_entries_arel(entries1, entries2) }
+  scope :for_project_id, ->(project_id) { for_project_id_arel(project_id) }
+  scope :similar_stack_entries, ->(entries1, entries2) { similar_stack_entries_arel(entries1, entries2) }
 
   validates :stack, presence: true
   validates :project, presence: true,
-                      uniqueness: { scope: [:stack_id, :deleted_at] }
+                      uniqueness: { scope: %i[stack_id deleted_at] }
 
   validates :note, length: { within: 0..MAX_NOTE_LENGTH }, allow_nil: true
 
@@ -31,8 +31,10 @@ class StackEntry < ActiveRecord::Base
   end
 
   def update_counters
+    # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
     stack.update_column(:project_count, stack.stack_entries.count) if stack
     project.update_column(:user_count, project.stacks_count) if project
+    # rubocop:enable Rails/SkipsModelValidations
   end
 
   class << self

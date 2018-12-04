@@ -1,3 +1,4 @@
+# rubocop:disable Rails/SkipsModelValidations
 desc 'Checks broken active links in active projects'
 task check_broken_links: :environment do
   Link.joins(:project).where(deleted: false, projects: { deleted: false }).select(:id, :url).each do |link|

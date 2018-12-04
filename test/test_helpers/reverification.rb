@@ -1,4 +1,4 @@
-# Note: These classes are used for mocking Reverification AWS::SimpleEmailService responses and messages.
+# Note: These classes are used for mocking Reverification Aws::SES responses and messages.
 #        Used for the spammer cleanup initiative.
 module MOCK
   module AWS
@@ -9,7 +9,8 @@ module MOCK
         end
 
         def send_quota
-          { max_24_hour_send: 5000, max_send_rate: 1.0, sent_last_24_hours: 50 }
+          Struct.new(:max_24_hour_send, :max_send_rate, :sent_last_24_hours)
+                .new(5000, 1.0, 50)
         end
 
         def response
@@ -17,27 +18,35 @@ module MOCK
         end
 
         def under_bounce_limit
-          [{ sent: Time.now.utc - 10.hours, delivery_attempts: 0, rejects: 0, bounces: 1, complaints: 0 },
-           { sent: Time.now.utc - 8.hours, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
-           { sent: Time.now.utc - 3.hours, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 }]
+          Struct.new(:send_data_points).new(
+            [{ timestamp: Time.now.utc - 10.hours, delivery_attempts: 0, rejects: 0, bounces: 1, complaints: 0 },
+             { timestamp: Time.now.utc - 8.hours, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+             { timestamp: Time.now.utc - 3.hours, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 }]
+          )
         end
 
         def over_bounce_limit
-          [{ sent: Time.now.utc - 10.hours, delivery_attempts: 0, rejects: 0, bounces: 48, complaints: 0 },
-           { sent: Time.now.utc - 8.hours, delivery_attempts: 0, rejects: 0, bounces: 2, complaints: 0 },
-           { sent: Time.now.utc - 3.hours, delivery_attempts: 0, rejects: 0, bounces: 6, complaints: 0 }]
+          Struct.new(:send_data_points).new(
+            [{ timestamp: Time.now.utc - 10.hours, delivery_attempts: 0, rejects: 0, bounces: 48, complaints: 0 },
+             { timestamp: Time.now.utc - 8.hours, delivery_attempts: 0, rejects: 0, bounces: 2, complaints: 0 },
+             { timestamp: Time.now.utc - 3.hours, delivery_attempts: 0, rejects: 0, bounces: 6, complaints: 0 }]
+          )
         end
 
         def under_complaint_limit
-          [{ sent: Time.now.utc - 10.hours, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
-           { sent: Time.now.utc - 8.hours, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
-           { sent: Time.now.utc - 3.hours, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 }]
+          Struct.new(:send_data_points).new(
+            [{ timestamp: Time.now.utc - 10.hours, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+             { timestamp: Time.now.utc - 8.hours, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+             { timestamp: Time.now.utc - 3.hours, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 }]
+          )
         end
 
         def over_complaint_limit
-          [{ sent: Time.now.utc - 10.hours, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 2 },
-           { sent: Time.now.utc - 8.hours, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
-           { sent: Time.now.utc - 3.hours, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 }]
+          Struct.new(:send_data_points).new(
+            [{ timestamp: Time.now.utc - 10.hours, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 2 },
+             { timestamp: Time.now.utc - 8.hours, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 },
+             { timestamp: Time.now.utc - 3.hours, delivery_attempts: 0, rejects: 0, bounces: 0, complaints: 0 }]
+          )
         end
       end
     end

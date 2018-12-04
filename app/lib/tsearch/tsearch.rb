@@ -1,14 +1,17 @@
 module Tsearch
   extend ActiveSupport::Concern
 
+  # rubocop:disable Metrics/BlockLength
   included do
     # update_columns doesn't support string interpolation so we have used update_all.
     # Why interpolation? because the entire set_vector result is a postgres function
     # that has to be evaluated while updating the vector column but in update_columns
     # it was treated as a string instead of function
     after_save do |record|
+      # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
       record.class.where(id: record)
             .update_all("vector = #{set_vector(record)}, popularity_factor = #{record.searchable_factor}")
+      # rubocop:enable Rails/SkipsModelValidations
     end
 
     class << self
@@ -17,10 +20,14 @@ module Tsearch
       end
 
       def tsearch_sort_by(query, sort_by)
-        return order("greatest(#{tsearch_rank('simple', query)},
-                     #{tsearch_rank('default', query)})*(1+popularity_factor) desc") if sort_by.blank? && query.present?
-        return order(popularity_factor: :desc) if sort_by.blank?
-        send(sort_by)
+        if sort_by.blank? && query.present?
+          order("greatest(#{tsearch_rank('simple', query)},
+                #{tsearch_rank('default', query)})*(1+popularity_factor) desc")
+        elsif sort_by.blank?
+          order(popularity_factor: :desc)
+        else
+          send(sort_by)
+        end
       end
 
       private

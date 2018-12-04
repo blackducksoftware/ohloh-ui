@@ -1,5 +1,6 @@
 AllCops:
   TargetRubyVersion: 2.2
+  TargetRailsVersion: 4.2
   Exclude:
     - vagrant/**/*
     - script/*_temp.rb
@@ -12,6 +13,20 @@ HasAndBelongsToMany:
 
 Metrics/LineLength:
   Max: 120
+
+Metrics/BlockLength:
+  Exclude:
+    - lib/tasks/*
+    - lib/tasks/*/*
+    - app/*/concerns/*.rb
+    - app/views/*/*.xml.builder
+    - app/views/*/*.json.jbuilder
+    - app/views/*/*/*.xml.builder
+    - app/admin/*
+
+Lint/ScriptPermission:
+  Exclude:
+    - script/*
 
 Documentation:
   Enabled: false

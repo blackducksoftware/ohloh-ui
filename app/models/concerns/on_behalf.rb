@@ -22,7 +22,7 @@ module OnBehalf
   private
 
   def make_invitee
-    self.invitee = Account.find_by_email(invitee_email) # okay to be nil
+    self.invitee = Account.find_by(email: invitee_email) # okay to be nil
   end
 
   def make_activation_code

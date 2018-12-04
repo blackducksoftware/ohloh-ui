@@ -2,10 +2,10 @@ class ApiKeysController < ApplicationController
   before_action :session_required, :redirect_unverified_account
   before_action :find_account
   before_action :find_models, only: :index
-  before_action :find_model, only: [:edit, :update, :destroy]
-  before_action :check_api_key_limit, only: [:new, :create]
+  before_action :find_model, only: %i[edit update destroy]
+  before_action :check_api_key_limit, only: %i[new create]
   before_action :must_be_key_owner
-  before_action :account_context, only: [:index, :new, :edit, :create, :update]
+  before_action :account_context, only: %i[index new edit create update]
 
   API_KEYS_PER_PAGE = 10
 
@@ -65,7 +65,7 @@ class ApiKeysController < ApplicationController
 
   def model_params
     editable_params = [:name, :description, :url, :terms,
-                       { oauth_application_attributes: [:id, :name, :redirect_uri] }]
+                       { oauth_application_attributes: %i[id name redirect_uri] }]
     editable_params << :daily_limit if current_user_is_admin?
     params.require(:api_key).permit(editable_params)
   end

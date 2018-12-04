@@ -1,6 +1,6 @@
 class AuthenticationsController < ApplicationController
   skip_before_action :store_location
-  before_action :session_required, only: [:new, :firebase_callback]
+  before_action :session_required, only: %i[new firebase_callback]
   before_action :redirect_invalid_github_account, only: :github_callback, unless: :github_api_account_is_verified?
   before_action :redirect_matching_account, only: :github_callback, unless: -> { current_user.present? }
   before_action :redirect_if_current_user_verified

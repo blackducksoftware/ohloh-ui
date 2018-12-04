@@ -16,12 +16,12 @@ class StackIgnoresController < ApplicationController
   private
 
   def find_stack
-    @stack = Stack.find_by_id(params[:stack_id])
+    @stack = Stack.find_by(id: params[:stack_id])
     raise ParamRecordNotFound if @stack.nil? || (@stack.account_id != current_user.id)
   end
 
   def find_project
-    @project = Project.find_by_vanity_url(params[:stack_ignore][:project_id])
+    @project = Project.find_by(vanity_url: params[:stack_ignore][:project_id])
     raise ParamRecordNotFound if @project.nil?
   end
 end

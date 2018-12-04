@@ -47,10 +47,10 @@ class LicenseTest < ActiveSupport::TestCase
 
   describe 'autocomplete' do
     it 'must return correct licenses' do
-      license_1 = create(:license, name: 'AutocompleteMIT')
+      license1 = create(:license, name: 'AutocompleteMIT')
       create(:license, name: 'AutocompleteBSD')
-      license_3 = create(:license, name: 'AutocompleteMit v2')
-      License.autocomplete('autocompletemit').map(&:id).sort.must_equal [license_1.id, license_3.id].sort
+      license3 = create(:license, name: 'AutocompleteMit v2')
+      License.autocomplete('autocompletemit').map(&:id).sort.must_equal [license1.id, license3.id].sort
     end
 
     it 'must avoid deleted licenses' do
@@ -69,11 +69,11 @@ class LicenseTest < ActiveSupport::TestCase
 
   describe 'vanity_url' do
     it 'should validate uniqueness' do
-      license_1 = create(:license)
-      license_2 = build(:license, vanity_url: license_1.vanity_url)
-      license_2.valid?.must_equal false
-      license_2.errors.count.must_equal 2
-      license_2.errors[:vanity_url].must_equal ['has already been taken']
+      license1 = create(:license)
+      license2 = build(:license, vanity_url: license1.vanity_url)
+      license2.valid?.must_equal false
+      license2.errors.count.must_equal 2
+      license2.errors[:vanity_url].must_equal ['has already been taken']
     end
 
     it 'should validate length' do
@@ -84,7 +84,7 @@ class LicenseTest < ActiveSupport::TestCase
     end
 
     it 'must allow valid characters' do
-      valid_vanity_urls = %w(license-name license_name licenseé license_)
+      valid_vanity_urls = %w[license-name license_name licenseé license_]
 
       valid_vanity_urls.each do |vanity_url|
         license = build(:license, vanity_url: vanity_url)
@@ -93,7 +93,7 @@ class LicenseTest < ActiveSupport::TestCase
     end
 
     it 'wont allow invalid characters' do
-      invalid_vanity_urls = %w(license.name .license -license _license)
+      invalid_vanity_urls = %w[license.name .license -license _license]
 
       invalid_vanity_urls.each do |vanity_url|
         license = build(:license, vanity_url: vanity_url)
@@ -104,8 +104,8 @@ class LicenseTest < ActiveSupport::TestCase
 
   describe 'name' do
     it 'should validate uniqueness' do
-      license_1 = create(:license)
-      license = build(:license, name: license_1.name)
+      license1 = create(:license)
+      license = build(:license, name: license1.name)
       license.valid?.must_equal false
       license.errors.count.must_equal 2
       license.errors[:name].must_equal ['has already been taken']

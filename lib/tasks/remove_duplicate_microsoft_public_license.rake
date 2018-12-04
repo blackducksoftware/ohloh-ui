@@ -1,3 +1,4 @@
+# rubocop:disable Rails/SkipsModelValidations
 desc 'Remove duplicate Microsoft Public License records'
 task remove_duplicate_microsoft_public_license: :environment do
   ProjectLicense.where(license_id: 357).update_all(license_id: 150)

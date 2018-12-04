@@ -9,7 +9,7 @@ namespace :project_badge do
       page = 1
       loop do
         projects = JSON.parse Net::HTTP.get(URI("#{ENV['CII_API_BASE_URL']}projects.json?page=#{page}"))
-        break unless projects.present?
+        break if projects.blank?
         projects.each do |p|
           next if CiiBadge.find_by identifier: p['id']
           cii_projects << CiiProject.new(*p.slice('id', 'name', 'homepage_url', 'repo_url').values)

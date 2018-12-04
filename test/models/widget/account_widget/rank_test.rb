@@ -19,7 +19,7 @@ class RankTest < ActiveSupport::TestCase
   describe 'image' do
     it 'must find the image using kudo_rank' do
       widget.account.stubs(:kudo_rank).returns(5)
-      file_path = Rails.root.join('app/assets/images/icons/sm_laurel_5.png')
+      file_path = Rails.root.join('app', 'assets', 'images', 'icons', 'sm_laurel_5.png')
       File.expects(:binread).with(file_path).once
       widget.image
     end

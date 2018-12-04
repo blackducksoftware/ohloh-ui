@@ -14,7 +14,7 @@ class ProjectTest < ActiveSupport::TestCase
 
     describe 'vanity_url' do
       it 'must allow valid characters' do
-        valid_vanity_urls = %w(proj-name proj_name projéct proj_)
+        valid_vanity_urls = %w[proj-name proj_name projéct proj_]
 
         valid_vanity_urls.each do |name|
           project = build(:project, vanity_url: name)
@@ -23,7 +23,7 @@ class ProjectTest < ActiveSupport::TestCase
       end
 
       it 'wont allow invalid characters' do
-        invalid_vanity_urls = %w(proj.name .proj -proj _proj)
+        invalid_vanity_urls = %w[proj.name .proj -proj _proj]
 
         invalid_vanity_urls.each do |name|
           project = build(:project, vanity_url: name)
@@ -291,11 +291,11 @@ class ProjectTest < ActiveSupport::TestCase
 
   describe 'search_and_sort' do
     it 'should return sorted search results' do
-      pro_1 = create(:project, name: 'test na1', user_count: 5)
-      pro_2 = create(:project, name: 'test na2', user_count: 10)
-      pro_3 = create(:project, name: 'test na3', user_count: 9)
+      pro1 = create(:project, name: 'test na1', user_count: 5)
+      pro2 = create(:project, name: 'test na2', user_count: 10)
+      pro3 = create(:project, name: 'test na3', user_count: 9)
 
-      Project.search_and_sort('test', 'new', nil).must_equal [pro_3, pro_2, pro_1]
+      Project.search_and_sort('test', 'new', nil).must_equal [pro3, pro2, pro1]
     end
   end
 

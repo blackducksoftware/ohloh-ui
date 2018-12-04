@@ -2,10 +2,10 @@ class ProjectTagsController < SettingsController
   helper ProjectsHelper
   helper TagsHelper
 
-  before_action :session_required, :redirect_unverified_account, only: [:create, :destroy]
+  before_action :session_required, :redirect_unverified_account, only: %i[create destroy]
   before_action :set_project_or_fail, :set_project_editor_account_to_current_user
-  before_action :check_project_authorization, only: [:create, :destroy]
-  before_action :find_related_projects, only: [:index, :related]
+  before_action :check_project_authorization, only: %i[create destroy]
+  before_action :find_related_projects, only: %i[index related]
   before_action :find_tagging, only: [:destroy]
   before_action :project_context
 
@@ -45,9 +45,11 @@ class ProjectTagsController < SettingsController
   end
 
   def render_create_error
-    error_msg = @project.errors.full_messages
-                        .map { |msg| ERB::Util.html_escape(msg) }
-                        .join('<br/>') unless @project.errors[:descrirtion].empty?
+    if @project.errors[:description].present?
+      error_msg = @project.errors.full_messages
+                          .map { |msg| ERB::Util.html_escape(msg) }
+                          .join('<br/>')
+    end
     error_msg ||= custom_description_error
     render text: error_msg, status: :unprocessable_entity
   end

@@ -2,16 +2,16 @@ module ProjectFilters
   extend ActiveSupport::Concern
 
   included do
-    before_action :session_required, :redirect_unverified_account, only: [:check_forge, :create, :new, :update]
+    before_action :session_required, :redirect_unverified_account, only: %i[check_forge create new update]
     before_action :find_account
     before_action :find_projects, only: [:index]
     before_action :set_project_or_fail, :set_project_editor_account_to_current_user,
-                  only: [:show, :edit, :update, :estimated_cost, :users, :settings,
-                         :map, :similar_by_tags, :similar, :badges, :create_badge, :destroy_badge]
+                  only: %i[show edit update estimated_cost users settings
+                           map similar_by_tags similar badges create_badge destroy_badge]
     before_action :redirect_new_landing_page, only: :index
     before_action :find_duplicate_projects, only: :check_forge
-    before_action :project_context, only: [:show, :users, :estimated_cost, :edit, :settings, :map, :similar, :update]
-    before_action :show_permissions_alert, only: [:settings, :edit]
+    before_action :project_context, only: %i[show users estimated_cost edit settings map similar update]
+    before_action :show_permissions_alert, only: %i[settings edit]
     before_action :set_session_projects, only: :index
     before_action :set_rating_and_score, only: :show
     before_action :set_uuid, only: :show
@@ -61,6 +61,7 @@ module ProjectFilters
   def set_uuid
     return if @project.uuid.present?
     uuid = OpenhubSecurity.get_uuid(@project.name)
+    # rubocop:disable Rails/SkipsModelValidations # We want to skip validations here.
     @project.update_column('uuid', uuid) if uuid
   end
 end

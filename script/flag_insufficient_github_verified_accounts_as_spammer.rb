@@ -60,6 +60,7 @@ class FlagInsufficientGithubVerifiedAccounts
 
   def mark_account_as_spammer(account)
     @log.info "Marking #{account.login}(#{account.id}) as spammer"
+    # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
     account.update_attribute(:level, Account::Access::SPAM)
   end
 end
