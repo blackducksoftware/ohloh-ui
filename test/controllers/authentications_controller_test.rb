@@ -10,12 +10,17 @@ describe 'AuthenticationsController' do
 
   let(:github_stub) do
     stub(email: Faker::Internet.email, login: Faker::Name.first_name, access_token: Faker::Lorem.word,
-         'created_at' => 2.months.ago, 'repository_has_language?' => true)
+         'created_at' => 2.months.ago, 'repository_has_language?' => true, secondary_emails: [])
   end
 
   let(:github_account_stub) do
     stub(email: account.email, login: account.login, access_token: Faker::Lorem.word,
          'created_at' => 2.months.ago, 'repository_has_language?' => true)
+  end
+
+  let(:github_account_with_seconday_email) do
+    stub(email: Faker::Internet.email, login: Faker::Name.first_name, access_token: Faker::Lorem.word,
+         'created_at' => 2.months.ago, 'repository_has_language?' => true, secondary_emails: [account.email])
   end
 
   describe 'new' do
@@ -274,6 +279,16 @@ describe 'AuthenticationsController' do
 
         must_redirect_to new_session_path
         flash[:notice].must_equal I18n.t('github_sign_in_failed')
+      end
+
+      it 'must sign in an existing user whose email matches with github seconday email addresses' do
+        @controller.stubs(:github_api).returns(github_account_with_seconday_email)
+
+        get :github_callback, code: Faker::Lorem.word
+
+        account.reload
+        must_redirect_to account
+        request.env[:clearance].current_user.id.must_equal account.id
       end
     end
   end

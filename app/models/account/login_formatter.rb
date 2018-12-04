@@ -19,7 +19,7 @@ class Account
 
     def get_unique_login(clean_login)
       login = clean_login
-      while Account.exists?(login: login) || login.length < 3
+      while Account.resolve_login(login).present? || login.length < 3
         login = clean_login + Random.rand(999).to_s
       end
       login
