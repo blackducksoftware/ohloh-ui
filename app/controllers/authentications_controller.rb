@@ -56,6 +56,7 @@ class AuthenticationsController < ApplicationController
 
   def github_api_account
     @account ||= Account.find_by(email: github_api.email)
+    @account ||= Account.where(email: github_api.secondary_emails).first
   end
 
   def redirect_matching_account

@@ -3,6 +3,7 @@ class App.GithubAuth
 
   authenticate: ($githubButton) ->
     $githubButton.click ->
+      $(this).attr 'disabled', 'disabled'
       github_url_params = [
         AUTH_URL
         '?client_id=', $(this).data('clientId')
