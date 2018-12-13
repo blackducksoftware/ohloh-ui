@@ -1164,9 +1164,9 @@ CREATE TABLE broken_links (
     id integer NOT NULL,
     link_id integer,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    error text
 );
-
 
 --
 -- Name: broken_links_id_seq; Type: SEQUENCE; Schema: public; Owner: -
@@ -10409,6 +10409,8 @@ INSERT INTO schema_migrations (version) VALUES ('20171220032437');
 INSERT INTO schema_migrations (version) VALUES ('20180109182901');
 
 INSERT INTO schema_migrations (version) VALUES ('20180925181605');
+
+INSERT INTO schema_migrations (version) VALUES ('20181126091803');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
