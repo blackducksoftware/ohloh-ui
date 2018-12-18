@@ -24,10 +24,7 @@ class HomeDecorator
   end
 
   def vita_count
-    contributors = most_active_contributors
-    contributors.map do |contributor|
-      contributor.best_vita.name_fact.thirty_day_commits if contributor.best_vita
-    end
+    Rails.cache.fetch('HomeDecorator-vita_count-cache') || []
   end
 
   def lines_count
