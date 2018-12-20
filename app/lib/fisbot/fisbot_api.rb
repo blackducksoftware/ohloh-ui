@@ -22,8 +22,7 @@ class FisbotApi
 
   def update(data)
     uri = api_access.resource_uri(@id)
-    http = Net::HTTP.new(uri.host, uri.port)
-    response = http.send_request('PATCH', uri, data.to_query)
+    response = http_object(uri).send_request('PATCH', uri, data.to_query)
     self.class.handle_errors(response) do
       hsh = JSON.parse(response.body)
       set_attributes_or_errors(response, hsh)
@@ -45,7 +44,7 @@ class FisbotApi
   def delete
     uri = api_access.resource_uri(attributes.values.join('/'))
     request = Net::HTTP::Delete.new(uri)
-    response = Net::HTTP.new(uri.host, uri.port).request(request)
+    response = http_object(uri).request(request)
     self.class.handle_errors(response) { response }
   end
 
@@ -110,14 +109,14 @@ class FisbotApi
   end
 
   def set_attributes_or_errors(response, hsh)
-    if save_success?(response)
-      set_attributes(hsh)
-    else
-      set_errors(hsh)
-    end
+    save_success?(response) ? set_attributes(hsh) : set_errors(hsh)
   end
 
   def api_access
     self.class.api_access
+  end
+
+  def http_object(uri)
+    Net::HTTP.new(uri.host, uri.port).tap { |http| http.use_ssl = (uri.scheme == 'https') }
   end
 end
