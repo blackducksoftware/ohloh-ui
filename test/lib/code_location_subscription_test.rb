@@ -22,4 +22,15 @@ class CodeLocationSubscriptionTest < ActiveSupport::TestCase
       end.must_raise(FisbotApiError)
     end
   end
+
+  it 'should send https request and delete subscription for a given code_location' do
+    api_key = ENV['FISBOT_CLIENT_REGISTRATION_ID']
+    url = URI("https://vcrlocalhost.org:4004/api/v1/subscriptions/264/101.json?api_key=#{api_key}")
+    ApiAccess.any_instance.stubs(:resource_uri).returns(url)
+
+    VCR.use_cassette('delete_code_location_subscription', erb: { code_location_id: 263, client_relation_id: 100 }) do
+      response_body = CodeLocationSubscription.new(code_location_id: 263, client_relation_id: 100).delete
+      response_body.body.must_match 'Subscription Deleted Successfully'
+    end
+  end
 end
