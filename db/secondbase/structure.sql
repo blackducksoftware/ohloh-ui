@@ -2,14 +2,15 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.3
--- Dumped by pg_dump version 9.6.3
+-- Dumped from database version 9.6.10
+-- Dumped by pg_dump version 9.6.10
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'SQL_ASCII';
 SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET row_security = off;
@@ -42,13 +43,11 @@ CREATE EXTENSION IF NOT EXISTS postgres_fdw WITH SCHEMA public;
 COMMENT ON EXTENSION postgres_fdw IS 'foreign-data wrapper for remote PostgreSQL servers';
 
 
-SET search_path = public, pg_catalog;
-
 --
 -- Name: account_reports_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION account_reports_id_seq_view() RETURNS integer
+CREATE FUNCTION public.account_reports_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from account_reports_id_seq_view$$;
 
@@ -57,7 +56,7 @@ CREATE FUNCTION account_reports_id_seq_view() RETURNS integer
 -- Name: accounts_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION accounts_id_seq_view() RETURNS integer
+CREATE FUNCTION public.accounts_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from accounts_id_seq_view$$;
 
@@ -66,7 +65,7 @@ CREATE FUNCTION accounts_id_seq_view() RETURNS integer
 -- Name: actions_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION actions_id_seq_view() RETURNS integer
+CREATE FUNCTION public.actions_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from actions_id_seq_view$$;
 
@@ -75,7 +74,7 @@ CREATE FUNCTION actions_id_seq_view() RETURNS integer
 -- Name: aliases_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION aliases_id_seq_view() RETURNS integer
+CREATE FUNCTION public.aliases_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from aliases_id_seq_view$$;
 
@@ -84,7 +83,7 @@ CREATE FUNCTION aliases_id_seq_view() RETURNS integer
 -- Name: analyses_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION analyses_id_seq_view() RETURNS integer
+CREATE FUNCTION public.analyses_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from analyses_id_seq_view$$;
 
@@ -93,7 +92,7 @@ CREATE FUNCTION analyses_id_seq_view() RETURNS integer
 -- Name: analysis_aliases_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION analysis_aliases_id_seq_view() RETURNS integer
+CREATE FUNCTION public.analysis_aliases_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from analysis_aliases_id_seq_view$$;
 
@@ -102,7 +101,7 @@ CREATE FUNCTION analysis_aliases_id_seq_view() RETURNS integer
 -- Name: analysis_sloc_sets_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION analysis_sloc_sets_id_seq_view() RETURNS integer
+CREATE FUNCTION public.analysis_sloc_sets_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from analysis_sloc_sets_id_seq_view$$;
 
@@ -111,7 +110,7 @@ CREATE FUNCTION analysis_sloc_sets_id_seq_view() RETURNS integer
 -- Name: analysis_summaries_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION analysis_summaries_id_seq_view() RETURNS integer
+CREATE FUNCTION public.analysis_summaries_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from analysis_summaries_id_seq_view$$;
 
@@ -120,7 +119,7 @@ CREATE FUNCTION analysis_summaries_id_seq_view() RETURNS integer
 -- Name: api_keys_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION api_keys_id_seq_view() RETURNS integer
+CREATE FUNCTION public.api_keys_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from api_keys_id_seq_view$$;
 
@@ -129,7 +128,7 @@ CREATE FUNCTION api_keys_id_seq_view() RETURNS integer
 -- Name: attachments_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION attachments_id_seq_view() RETURNS integer
+CREATE FUNCTION public.attachments_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from attachments_id_seq_view$$;
 
@@ -138,7 +137,7 @@ CREATE FUNCTION attachments_id_seq_view() RETURNS integer
 -- Name: authorizations_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION authorizations_id_seq_view() RETURNS integer
+CREATE FUNCTION public.authorizations_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from authorizations_id_seq_view$$;
 
@@ -147,7 +146,7 @@ CREATE FUNCTION authorizations_id_seq_view() RETURNS integer
 -- Name: clumps_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION clumps_id_seq_view() RETURNS integer
+CREATE FUNCTION public.clumps_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from clumps_id_seq_view$$;
 
@@ -156,7 +155,7 @@ CREATE FUNCTION clumps_id_seq_view() RETURNS integer
 -- Name: code_location_tarballs_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION code_location_tarballs_id_seq_view() RETURNS integer
+CREATE FUNCTION public.code_location_tarballs_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from code_location_tarballs_id_seq_view$$;
 
@@ -165,7 +164,7 @@ CREATE FUNCTION code_location_tarballs_id_seq_view() RETURNS integer
 -- Name: code_locations_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION code_locations_id_seq_view() RETURNS integer
+CREATE FUNCTION public.code_locations_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from code_locations_id_seq_view$$;
 
@@ -174,7 +173,7 @@ CREATE FUNCTION code_locations_id_seq_view() RETURNS integer
 -- Name: code_sets_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION code_sets_id_seq_view() RETURNS integer
+CREATE FUNCTION public.code_sets_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from code_sets_id_seq_view$$;
 
@@ -183,7 +182,7 @@ CREATE FUNCTION code_sets_id_seq_view() RETURNS integer
 -- Name: commit_flags_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION commit_flags_id_seq_view() RETURNS integer
+CREATE FUNCTION public.commit_flags_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from commit_flags_id_seq_view$$;
 
@@ -192,7 +191,7 @@ CREATE FUNCTION commit_flags_id_seq_view() RETURNS integer
 -- Name: deleted_accounts_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION deleted_accounts_id_seq_view() RETURNS integer
+CREATE FUNCTION public.deleted_accounts_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from deleted_accounts_id_seq_view$$;
 
@@ -201,7 +200,7 @@ CREATE FUNCTION deleted_accounts_id_seq_view() RETURNS integer
 -- Name: diff_licenses_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION diff_licenses_id_seq_view() RETURNS integer
+CREATE FUNCTION public.diff_licenses_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from diff_licenses_id_seq_view$$;
 
@@ -210,7 +209,7 @@ CREATE FUNCTION diff_licenses_id_seq_view() RETURNS integer
 -- Name: duplicates_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION duplicates_id_seq_view() RETURNS integer
+CREATE FUNCTION public.duplicates_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from duplicates_id_seq_view$$;
 
@@ -219,7 +218,7 @@ CREATE FUNCTION duplicates_id_seq_view() RETURNS integer
 -- Name: edits_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION edits_id_seq_view() RETURNS integer
+CREATE FUNCTION public.edits_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from edits_id_seq_view$$;
 
@@ -228,7 +227,7 @@ CREATE FUNCTION edits_id_seq_view() RETURNS integer
 -- Name: email_addresses_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION email_addresses_id_seq_view() RETURNS integer
+CREATE FUNCTION public.email_addresses_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from email_addresses_id_seq_view$$;
 
@@ -237,7 +236,7 @@ CREATE FUNCTION email_addresses_id_seq_view() RETURNS integer
 -- Name: enlistments_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION enlistments_id_seq_view() RETURNS integer
+CREATE FUNCTION public.enlistments_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from enlistments_id_seq_view$$;
 
@@ -246,7 +245,7 @@ CREATE FUNCTION enlistments_id_seq_view() RETURNS integer
 -- Name: event_subscription_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION event_subscription_id_seq_view() RETURNS integer
+CREATE FUNCTION public.event_subscription_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from event_subscription_id_seq_view$$;
 
@@ -255,7 +254,7 @@ CREATE FUNCTION event_subscription_id_seq_view() RETURNS integer
 -- Name: exhibits_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION exhibits_id_seq_view() RETURNS integer
+CREATE FUNCTION public.exhibits_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from exhibits_id_seq_view$$;
 
@@ -264,7 +263,7 @@ CREATE FUNCTION exhibits_id_seq_view() RETURNS integer
 -- Name: factoids_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION factoids_id_seq_view() RETURNS integer
+CREATE FUNCTION public.factoids_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from factoids_id_seq_view$$;
 
@@ -273,7 +272,7 @@ CREATE FUNCTION factoids_id_seq_view() RETURNS integer
 -- Name: failure_groups_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION failure_groups_id_seq_view() RETURNS integer
+CREATE FUNCTION public.failure_groups_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from failure_groups_id_seq_view$$;
 
@@ -282,7 +281,7 @@ CREATE FUNCTION failure_groups_id_seq_view() RETURNS integer
 -- Name: feedbacks_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION feedbacks_id_seq_view() RETURNS integer
+CREATE FUNCTION public.feedbacks_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from feedbacks_id_seq_view$$;
 
@@ -291,7 +290,7 @@ CREATE FUNCTION feedbacks_id_seq_view() RETURNS integer
 -- Name: fisbot_events_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION fisbot_events_id_seq_view() RETURNS integer
+CREATE FUNCTION public.fisbot_events_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from fisbot_events_id_seq_view$$;
 
@@ -300,7 +299,7 @@ CREATE FUNCTION fisbot_events_id_seq_view() RETURNS integer
 -- Name: follows_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION follows_id_seq_view() RETURNS integer
+CREATE FUNCTION public.follows_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from follows_id_seq_view$$;
 
@@ -309,7 +308,7 @@ CREATE FUNCTION follows_id_seq_view() RETURNS integer
 -- Name: forges_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION forges_id_seq_view() RETURNS integer
+CREATE FUNCTION public.forges_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from forges_id_seq_view$$;
 
@@ -318,7 +317,7 @@ CREATE FUNCTION forges_id_seq_view() RETURNS integer
 -- Name: forums_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION forums_id_seq_view() RETURNS integer
+CREATE FUNCTION public.forums_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from forums_id_seq_view$$;
 
@@ -327,7 +326,7 @@ CREATE FUNCTION forums_id_seq_view() RETURNS integer
 -- Name: helpfuls_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION helpfuls_id_seq_view() RETURNS integer
+CREATE FUNCTION public.helpfuls_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from helpfuls_id_seq_view$$;
 
@@ -336,7 +335,7 @@ CREATE FUNCTION helpfuls_id_seq_view() RETURNS integer
 -- Name: invites_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION invites_id_seq_view() RETURNS integer
+CREATE FUNCTION public.invites_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from invites_id_seq_view$$;
 
@@ -345,7 +344,7 @@ CREATE FUNCTION invites_id_seq_view() RETURNS integer
 -- Name: jobs_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION jobs_id_seq_view() RETURNS integer
+CREATE FUNCTION public.jobs_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from jobs_id_seq_view$$;
 
@@ -354,7 +353,7 @@ CREATE FUNCTION jobs_id_seq_view() RETURNS integer
 -- Name: knowledge_base_statuses_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION knowledge_base_statuses_id_seq_view() RETURNS integer
+CREATE FUNCTION public.knowledge_base_statuses_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from knowledge_base_statuses_id_seq_view$$;
 
@@ -363,7 +362,7 @@ CREATE FUNCTION knowledge_base_statuses_id_seq_view() RETURNS integer
 -- Name: kudo_scores_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION kudo_scores_id_seq_view() RETURNS integer
+CREATE FUNCTION public.kudo_scores_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from kudo_scores_id_seq_view$$;
 
@@ -372,7 +371,7 @@ CREATE FUNCTION kudo_scores_id_seq_view() RETURNS integer
 -- Name: kudos_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION kudos_id_seq_view() RETURNS integer
+CREATE FUNCTION public.kudos_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from kudos_id_seq_view$$;
 
@@ -381,7 +380,7 @@ CREATE FUNCTION kudos_id_seq_view() RETURNS integer
 -- Name: language_experiences_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION language_experiences_id_seq_view() RETURNS integer
+CREATE FUNCTION public.language_experiences_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from language_experiences_id_seq_view$$;
 
@@ -390,7 +389,7 @@ CREATE FUNCTION language_experiences_id_seq_view() RETURNS integer
 -- Name: language_facts_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION language_facts_id_seq_view() RETURNS integer
+CREATE FUNCTION public.language_facts_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from language_facts_id_seq_view$$;
 
@@ -399,7 +398,7 @@ CREATE FUNCTION language_facts_id_seq_view() RETURNS integer
 -- Name: languages_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION languages_id_seq_view() RETURNS integer
+CREATE FUNCTION public.languages_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from languages_id_seq_view$$;
 
@@ -408,7 +407,7 @@ CREATE FUNCTION languages_id_seq_view() RETURNS integer
 -- Name: license_facts_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION license_facts_id_seq_view() RETURNS integer
+CREATE FUNCTION public.license_facts_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from license_facts_id_seq_view$$;
 
@@ -417,7 +416,7 @@ CREATE FUNCTION license_facts_id_seq_view() RETURNS integer
 -- Name: licenses_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION licenses_id_seq_view() RETURNS integer
+CREATE FUNCTION public.licenses_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from licenses_id_seq_view$$;
 
@@ -426,7 +425,7 @@ CREATE FUNCTION licenses_id_seq_view() RETURNS integer
 -- Name: link_categories_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION link_categories_id_seq_view() RETURNS integer
+CREATE FUNCTION public.link_categories_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from link_categories_id_seq_view$$;
 
@@ -435,7 +434,7 @@ CREATE FUNCTION link_categories_id_seq_view() RETURNS integer
 -- Name: links_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION links_id_seq_view() RETURNS integer
+CREATE FUNCTION public.links_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from links_id_seq_view$$;
 
@@ -444,7 +443,7 @@ CREATE FUNCTION links_id_seq_view() RETURNS integer
 -- Name: load_averages_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION load_averages_id_seq_view() RETURNS integer
+CREATE FUNCTION public.load_averages_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from load_averages_id_seq_view$$;
 
@@ -453,7 +452,7 @@ CREATE FUNCTION load_averages_id_seq_view() RETURNS integer
 -- Name: manages_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION manages_id_seq_view() RETURNS integer
+CREATE FUNCTION public.manages_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from manages_id_seq_view$$;
 
@@ -462,7 +461,7 @@ CREATE FUNCTION manages_id_seq_view() RETURNS integer
 -- Name: markups_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION markups_id_seq_view() RETURNS integer
+CREATE FUNCTION public.markups_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from markups_id_seq_view$$;
 
@@ -471,7 +470,7 @@ CREATE FUNCTION markups_id_seq_view() RETURNS integer
 -- Name: message_account_tags_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION message_account_tags_id_seq_view() RETURNS integer
+CREATE FUNCTION public.message_account_tags_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from message_account_tags_id_seq_view$$;
 
@@ -480,7 +479,7 @@ CREATE FUNCTION message_account_tags_id_seq_view() RETURNS integer
 -- Name: message_project_tags_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION message_project_tags_id_seq_view() RETURNS integer
+CREATE FUNCTION public.message_project_tags_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from message_project_tags_id_seq_view$$;
 
@@ -489,7 +488,7 @@ CREATE FUNCTION message_project_tags_id_seq_view() RETURNS integer
 -- Name: messages_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION messages_id_seq_view() RETURNS integer
+CREATE FUNCTION public.messages_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from messages_id_seq_view$$;
 
@@ -498,7 +497,7 @@ CREATE FUNCTION messages_id_seq_view() RETURNS integer
 -- Name: moderatorships_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION moderatorships_id_seq_view() RETURNS integer
+CREATE FUNCTION public.moderatorships_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from moderatorships_id_seq_view$$;
 
@@ -507,7 +506,7 @@ CREATE FUNCTION moderatorships_id_seq_view() RETURNS integer
 -- Name: monitorships_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION monitorships_id_seq_view() RETURNS integer
+CREATE FUNCTION public.monitorships_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from monitorships_id_seq_view$$;
 
@@ -516,7 +515,7 @@ CREATE FUNCTION monitorships_id_seq_view() RETURNS integer
 -- Name: monthly_commit_histories_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION monthly_commit_histories_id_seq_view() RETURNS integer
+CREATE FUNCTION public.monthly_commit_histories_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from monthly_commit_histories_id_seq_view$$;
 
@@ -525,7 +524,7 @@ CREATE FUNCTION monthly_commit_histories_id_seq_view() RETURNS integer
 -- Name: name_facts_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION name_facts_id_seq_view() RETURNS integer
+CREATE FUNCTION public.name_facts_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from name_facts_id_seq_view$$;
 
@@ -534,7 +533,7 @@ CREATE FUNCTION name_facts_id_seq_view() RETURNS integer
 -- Name: name_language_facts_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION name_language_facts_id_seq_view() RETURNS integer
+CREATE FUNCTION public.name_language_facts_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from name_language_facts_id_seq_view$$;
 
@@ -543,7 +542,7 @@ CREATE FUNCTION name_language_facts_id_seq_view() RETURNS integer
 -- Name: names_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION names_id_seq_view() RETURNS integer
+CREATE FUNCTION public.names_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from names_id_seq_view$$;
 
@@ -552,7 +551,7 @@ CREATE FUNCTION names_id_seq_view() RETURNS integer
 -- Name: oauth_access_grants_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION oauth_access_grants_id_seq_view() RETURNS integer
+CREATE FUNCTION public.oauth_access_grants_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from oauth_access_grants_id_seq_view$$;
 
@@ -561,7 +560,7 @@ CREATE FUNCTION oauth_access_grants_id_seq_view() RETURNS integer
 -- Name: oauth_access_tokens_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION oauth_access_tokens_id_seq_view() RETURNS integer
+CREATE FUNCTION public.oauth_access_tokens_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from oauth_access_tokens_id_seq_view$$;
 
@@ -570,7 +569,7 @@ CREATE FUNCTION oauth_access_tokens_id_seq_view() RETURNS integer
 -- Name: oauth_applications_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION oauth_applications_id_seq_view() RETURNS integer
+CREATE FUNCTION public.oauth_applications_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from oauth_applications_id_seq_view$$;
 
@@ -579,7 +578,7 @@ CREATE FUNCTION oauth_applications_id_seq_view() RETURNS integer
 -- Name: oauth_nonces_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION oauth_nonces_id_seq_view() RETURNS integer
+CREATE FUNCTION public.oauth_nonces_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from oauth_nonces_id_seq_view$$;
 
@@ -588,7 +587,7 @@ CREATE FUNCTION oauth_nonces_id_seq_view() RETURNS integer
 -- Name: old_edits_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION old_edits_id_seq_view() RETURNS integer
+CREATE FUNCTION public.old_edits_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from old_edits_id_seq_view$$;
 
@@ -597,7 +596,7 @@ CREATE FUNCTION old_edits_id_seq_view() RETURNS integer
 -- Name: org_stats_by_sectors_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION org_stats_by_sectors_id_seq_view() RETURNS integer
+CREATE FUNCTION public.org_stats_by_sectors_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from org_stats_by_sectors_id_seq_view$$;
 
@@ -606,7 +605,7 @@ CREATE FUNCTION org_stats_by_sectors_id_seq_view() RETURNS integer
 -- Name: org_thirty_day_activities_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION org_thirty_day_activities_id_seq_view() RETURNS integer
+CREATE FUNCTION public.org_thirty_day_activities_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from org_thirty_day_activities_id_seq_view$$;
 
@@ -615,7 +614,7 @@ CREATE FUNCTION org_thirty_day_activities_id_seq_view() RETURNS integer
 -- Name: organizations_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION organizations_id_seq_view() RETURNS integer
+CREATE FUNCTION public.organizations_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from organizations_id_seq_view$$;
 
@@ -624,7 +623,7 @@ CREATE FUNCTION organizations_id_seq_view() RETURNS integer
 -- Name: pages_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION pages_id_seq_view() RETURNS integer
+CREATE FUNCTION public.pages_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from pages_id_seq_view$$;
 
@@ -633,7 +632,7 @@ CREATE FUNCTION pages_id_seq_view() RETURNS integer
 -- Name: permissions_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION permissions_id_seq_view() RETURNS integer
+CREATE FUNCTION public.permissions_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from permissions_id_seq_view$$;
 
@@ -642,7 +641,7 @@ CREATE FUNCTION permissions_id_seq_view() RETURNS integer
 -- Name: positions_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION positions_id_seq_view() RETURNS integer
+CREATE FUNCTION public.positions_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from positions_id_seq_view$$;
 
@@ -651,7 +650,7 @@ CREATE FUNCTION positions_id_seq_view() RETURNS integer
 -- Name: posts_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION posts_id_seq_view() RETURNS integer
+CREATE FUNCTION public.posts_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from posts_id_seq_view$$;
 
@@ -660,7 +659,7 @@ CREATE FUNCTION posts_id_seq_view() RETURNS integer
 -- Name: profiles_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION profiles_id_seq_view() RETURNS integer
+CREATE FUNCTION public.profiles_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from profiles_id_seq_view$$;
 
@@ -669,7 +668,7 @@ CREATE FUNCTION profiles_id_seq_view() RETURNS integer
 -- Name: project_badges_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION project_badges_id_seq_view() RETURNS integer
+CREATE FUNCTION public.project_badges_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from project_badges_id_seq_view$$;
 
@@ -678,7 +677,7 @@ CREATE FUNCTION project_badges_id_seq_view() RETURNS integer
 -- Name: project_events_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION project_events_id_seq_view() RETURNS integer
+CREATE FUNCTION public.project_events_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from project_events_id_seq_view$$;
 
@@ -687,7 +686,7 @@ CREATE FUNCTION project_events_id_seq_view() RETURNS integer
 -- Name: project_experiences_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION project_experiences_id_seq_view() RETURNS integer
+CREATE FUNCTION public.project_experiences_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from project_experiences_id_seq_view$$;
 
@@ -696,7 +695,7 @@ CREATE FUNCTION project_experiences_id_seq_view() RETURNS integer
 -- Name: project_licenses_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION project_licenses_id_seq_view() RETURNS integer
+CREATE FUNCTION public.project_licenses_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from project_licenses_id_seq_view$$;
 
@@ -705,7 +704,7 @@ CREATE FUNCTION project_licenses_id_seq_view() RETURNS integer
 -- Name: project_reports_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION project_reports_id_seq_view() RETURNS integer
+CREATE FUNCTION public.project_reports_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from project_reports_id_seq_view$$;
 
@@ -714,7 +713,7 @@ CREATE FUNCTION project_reports_id_seq_view() RETURNS integer
 -- Name: project_security_sets_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION project_security_sets_id_seq_view() RETURNS integer
+CREATE FUNCTION public.project_security_sets_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from project_security_sets_id_seq_view$$;
 
@@ -723,7 +722,7 @@ CREATE FUNCTION project_security_sets_id_seq_view() RETURNS integer
 -- Name: project_vulnerability_reports_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION project_vulnerability_reports_id_seq_view() RETURNS integer
+CREATE FUNCTION public.project_vulnerability_reports_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from project_vulnerability_reports_id_seq_view$$;
 
@@ -732,7 +731,7 @@ CREATE FUNCTION project_vulnerability_reports_id_seq_view() RETURNS integer
 -- Name: projects_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION projects_id_seq_view() RETURNS integer
+CREATE FUNCTION public.projects_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from projects_id_seq_view$$;
 
@@ -741,7 +740,7 @@ CREATE FUNCTION projects_id_seq_view() RETURNS integer
 -- Name: ratings_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION ratings_id_seq_view() RETURNS integer
+CREATE FUNCTION public.ratings_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from ratings_id_seq_view$$;
 
@@ -750,7 +749,7 @@ CREATE FUNCTION ratings_id_seq_view() RETURNS integer
 -- Name: recently_active_accounts_cache_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION recently_active_accounts_cache_id_seq_view() RETURNS integer
+CREATE FUNCTION public.recently_active_accounts_cache_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from recently_active_accounts_cache_id_seq_view$$;
 
@@ -759,7 +758,7 @@ CREATE FUNCTION recently_active_accounts_cache_id_seq_view() RETURNS integer
 -- Name: recommend_entries_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION recommend_entries_id_seq_view() RETURNS integer
+CREATE FUNCTION public.recommend_entries_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from recommend_entries_id_seq_view$$;
 
@@ -768,7 +767,7 @@ CREATE FUNCTION recommend_entries_id_seq_view() RETURNS integer
 -- Name: recommendations_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION recommendations_id_seq_view() RETURNS integer
+CREATE FUNCTION public.recommendations_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from recommendations_id_seq_view$$;
 
@@ -777,7 +776,7 @@ CREATE FUNCTION recommendations_id_seq_view() RETURNS integer
 -- Name: releases_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION releases_id_seq_view() RETURNS integer
+CREATE FUNCTION public.releases_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from releases_id_seq_view$$;
 
@@ -786,7 +785,7 @@ CREATE FUNCTION releases_id_seq_view() RETURNS integer
 -- Name: reports_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION reports_id_seq_view() RETURNS integer
+CREATE FUNCTION public.reports_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from reports_id_seq_view$$;
 
@@ -795,7 +794,7 @@ CREATE FUNCTION reports_id_seq_view() RETURNS integer
 -- Name: repositories_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION repositories_id_seq_view() RETURNS integer
+CREATE FUNCTION public.repositories_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from repositories_id_seq_view$$;
 
@@ -804,7 +803,7 @@ CREATE FUNCTION repositories_id_seq_view() RETURNS integer
 -- Name: repository_directories_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION repository_directories_id_seq_view() RETURNS integer
+CREATE FUNCTION public.repository_directories_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from repository_directories_id_seq_view$$;
 
@@ -813,7 +812,7 @@ CREATE FUNCTION repository_directories_id_seq_view() RETURNS integer
 -- Name: repository_tags_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION repository_tags_id_seq_view() RETURNS integer
+CREATE FUNCTION public.repository_tags_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from repository_tags_id_seq_view$$;
 
@@ -822,7 +821,7 @@ CREATE FUNCTION repository_tags_id_seq_view() RETURNS integer
 -- Name: reverification_trackers_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION reverification_trackers_id_seq_view() RETURNS integer
+CREATE FUNCTION public.reverification_trackers_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from reverification_trackers_id_seq_view$$;
 
@@ -831,7 +830,7 @@ CREATE FUNCTION reverification_trackers_id_seq_view() RETURNS integer
 -- Name: reviews_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION reviews_id_seq_view() RETURNS integer
+CREATE FUNCTION public.reviews_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from reviews_id_seq_view$$;
 
@@ -840,7 +839,7 @@ CREATE FUNCTION reviews_id_seq_view() RETURNS integer
 -- Name: rss_articles_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION rss_articles_id_seq_view() RETURNS integer
+CREATE FUNCTION public.rss_articles_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from rss_articles_id_seq_view$$;
 
@@ -849,7 +848,7 @@ CREATE FUNCTION rss_articles_id_seq_view() RETURNS integer
 -- Name: rss_feeds_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION rss_feeds_id_seq_view() RETURNS integer
+CREATE FUNCTION public.rss_feeds_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from rss_feeds_id_seq_view$$;
 
@@ -858,7 +857,7 @@ CREATE FUNCTION rss_feeds_id_seq_view() RETURNS integer
 -- Name: rss_subscriptions_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION rss_subscriptions_id_seq_view() RETURNS integer
+CREATE FUNCTION public.rss_subscriptions_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from rss_subscriptions_id_seq_view$$;
 
@@ -867,7 +866,7 @@ CREATE FUNCTION rss_subscriptions_id_seq_view() RETURNS integer
 -- Name: sessions_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION sessions_id_seq_view() RETURNS integer
+CREATE FUNCTION public.sessions_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from sessions_id_seq_view$$;
 
@@ -876,7 +875,7 @@ CREATE FUNCTION sessions_id_seq_view() RETURNS integer
 -- Name: settings_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION settings_id_seq_view() RETURNS integer
+CREATE FUNCTION public.settings_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from settings_id_seq_view$$;
 
@@ -885,7 +884,7 @@ CREATE FUNCTION settings_id_seq_view() RETURNS integer
 -- Name: size_facts_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION size_facts_id_seq_view() RETURNS integer
+CREATE FUNCTION public.size_facts_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from size_facts_id_seq_view$$;
 
@@ -894,7 +893,7 @@ CREATE FUNCTION size_facts_id_seq_view() RETURNS integer
 -- Name: slave_logs_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION slave_logs_id_seq_view() RETURNS integer
+CREATE FUNCTION public.slave_logs_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from slave_logs_id_seq_view$$;
 
@@ -903,7 +902,7 @@ CREATE FUNCTION slave_logs_id_seq_view() RETURNS integer
 -- Name: slave_permissions_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION slave_permissions_id_seq_view() RETURNS integer
+CREATE FUNCTION public.slave_permissions_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from slave_permissions_id_seq_view$$;
 
@@ -912,7 +911,7 @@ CREATE FUNCTION slave_permissions_id_seq_view() RETURNS integer
 -- Name: sloc_sets_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION sloc_sets_id_seq_view() RETURNS integer
+CREATE FUNCTION public.sloc_sets_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from sloc_sets_id_seq_view$$;
 
@@ -921,7 +920,7 @@ CREATE FUNCTION sloc_sets_id_seq_view() RETURNS integer
 -- Name: stack_entries_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION stack_entries_id_seq_view() RETURNS integer
+CREATE FUNCTION public.stack_entries_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from stack_entries_id_seq_view$$;
 
@@ -930,7 +929,7 @@ CREATE FUNCTION stack_entries_id_seq_view() RETURNS integer
 -- Name: stack_ignores_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION stack_ignores_id_seq_view() RETURNS integer
+CREATE FUNCTION public.stack_ignores_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from stack_ignores_id_seq_view$$;
 
@@ -939,7 +938,7 @@ CREATE FUNCTION stack_ignores_id_seq_view() RETURNS integer
 -- Name: stacks_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION stacks_id_seq_view() RETURNS integer
+CREATE FUNCTION public.stacks_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from stacks_id_seq_view$$;
 
@@ -948,7 +947,7 @@ CREATE FUNCTION stacks_id_seq_view() RETURNS integer
 -- Name: successful_accounts_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION successful_accounts_id_seq_view() RETURNS integer
+CREATE FUNCTION public.successful_accounts_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from successful_accounts_id_seq_view$$;
 
@@ -957,7 +956,7 @@ CREATE FUNCTION successful_accounts_id_seq_view() RETURNS integer
 -- Name: taggings_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION taggings_id_seq_view() RETURNS integer
+CREATE FUNCTION public.taggings_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from taggings_id_seq_view$$;
 
@@ -966,7 +965,7 @@ CREATE FUNCTION taggings_id_seq_view() RETURNS integer
 -- Name: tags_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION tags_id_seq_view() RETURNS integer
+CREATE FUNCTION public.tags_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from tags_id_seq_view$$;
 
@@ -975,7 +974,7 @@ CREATE FUNCTION tags_id_seq_view() RETURNS integer
 -- Name: thirty_day_summaries_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION thirty_day_summaries_id_seq_view() RETURNS integer
+CREATE FUNCTION public.thirty_day_summaries_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from thirty_day_summaries_id_seq_view$$;
 
@@ -984,7 +983,7 @@ CREATE FUNCTION thirty_day_summaries_id_seq_view() RETURNS integer
 -- Name: tools_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION tools_id_seq_view() RETURNS integer
+CREATE FUNCTION public.tools_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from tools_id_seq_view$$;
 
@@ -993,7 +992,7 @@ CREATE FUNCTION tools_id_seq_view() RETURNS integer
 -- Name: topics_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION topics_id_seq_view() RETURNS integer
+CREATE FUNCTION public.topics_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from topics_id_seq_view$$;
 
@@ -1002,7 +1001,7 @@ CREATE FUNCTION topics_id_seq_view() RETURNS integer
 -- Name: verifications_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION verifications_id_seq_view() RETURNS integer
+CREATE FUNCTION public.verifications_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from verifications_id_seq_view$$;
 
@@ -1011,7 +1010,7 @@ CREATE FUNCTION verifications_id_seq_view() RETURNS integer
 -- Name: vita_analyses_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION vita_analyses_id_seq_view() RETURNS integer
+CREATE FUNCTION public.vita_analyses_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from vita_analyses_id_seq_view$$;
 
@@ -1020,7 +1019,7 @@ CREATE FUNCTION vita_analyses_id_seq_view() RETURNS integer
 -- Name: vitae_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION vitae_id_seq_view() RETURNS integer
+CREATE FUNCTION public.vitae_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from vitae_id_seq_view$$;
 
@@ -1029,7 +1028,7 @@ CREATE FUNCTION vitae_id_seq_view() RETURNS integer
 -- Name: vulnerabilities_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION vulnerabilities_id_seq_view() RETURNS integer
+CREATE FUNCTION public.vulnerabilities_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from vulnerabilities_id_seq_view$$;
 
@@ -1061,8 +1060,8 @@ SET default_tablespace = '';
 -- Name: account_reports; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE account_reports (
-    id integer DEFAULT account_reports_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.account_reports (
+    id integer DEFAULT public.account_reports_id_seq_view() NOT NULL,
     account_id integer NOT NULL,
     report_id integer NOT NULL
 )
@@ -1071,13 +1070,13 @@ OPTIONS (
     schema_name 'public',
     table_name 'account_reports'
 );
-ALTER FOREIGN TABLE account_reports ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.account_reports ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE account_reports ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.account_reports ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE account_reports ALTER COLUMN report_id OPTIONS (
+ALTER FOREIGN TABLE public.account_reports ALTER COLUMN report_id OPTIONS (
     column_name 'report_id'
 );
 
@@ -1086,7 +1085,7 @@ ALTER FOREIGN TABLE account_reports ALTER COLUMN report_id OPTIONS (
 -- Name: account_reports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE account_reports_id_seq
+CREATE SEQUENCE public.account_reports_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1098,7 +1097,7 @@ CREATE SEQUENCE account_reports_id_seq
 -- Name: account_reports_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE account_reports_id_seq_view (
+CREATE FOREIGN TABLE public.account_reports_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -1106,7 +1105,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'account_reports_id_seq_view'
 );
-ALTER FOREIGN TABLE account_reports_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.account_reports_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -1115,8 +1114,8 @@ ALTER FOREIGN TABLE account_reports_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: accounts; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE accounts (
-    id integer DEFAULT accounts_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.accounts (
+    id integer DEFAULT public.accounts_id_seq_view() NOT NULL,
     login text NOT NULL,
     email text NOT NULL,
     encrypted_password character varying NOT NULL,
@@ -1159,115 +1158,115 @@ OPTIONS (
     schema_name 'public',
     table_name 'accounts'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN login OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN login OPTIONS (
     column_name 'login'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN email OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN email OPTIONS (
     column_name 'email'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN encrypted_password OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN encrypted_password OPTIONS (
     column_name 'encrypted_password'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN salt OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN salt OPTIONS (
     column_name 'salt'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN activation_code OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN activation_code OPTIONS (
     column_name 'activation_code'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN activated_at OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN activated_at OPTIONS (
     column_name 'activated_at'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN remember_token OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN remember_token OPTIONS (
     column_name 'remember_token'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN remember_token_expires_at OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN remember_token_expires_at OPTIONS (
     column_name 'remember_token_expires_at'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN level OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN level OPTIONS (
     column_name 'level'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN posts_count OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN posts_count OPTIONS (
     column_name 'posts_count'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN last_seen_at OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN last_seen_at OPTIONS (
     column_name 'last_seen_at'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN name OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN name OPTIONS (
     column_name 'name'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN country_code OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN country_code OPTIONS (
     column_name 'country_code'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN location OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN location OPTIONS (
     column_name 'location'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN latitude OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN latitude OPTIONS (
     column_name 'latitude'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN longitude OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN longitude OPTIONS (
     column_name 'longitude'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN best_vita_id OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN best_vita_id OPTIONS (
     column_name 'best_vita_id'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN url OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN url OPTIONS (
     column_name 'url'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN about_markup_id OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN about_markup_id OPTIONS (
     column_name 'about_markup_id'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN hide_experience OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN hide_experience OPTIONS (
     column_name 'hide_experience'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN email_master OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN email_master OPTIONS (
     column_name 'email_master'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN email_posts OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN email_posts OPTIONS (
     column_name 'email_posts'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN email_kudos OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN email_kudos OPTIONS (
     column_name 'email_kudos'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN email_md5 OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN email_md5 OPTIONS (
     column_name 'email_md5'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN email_opportunities_visited OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN email_opportunities_visited OPTIONS (
     column_name 'email_opportunities_visited'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN activation_resent_at OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN activation_resent_at OPTIONS (
     column_name 'activation_resent_at'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN akas OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN akas OPTIONS (
     column_name 'akas'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN email_new_followers OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN email_new_followers OPTIONS (
     column_name 'email_new_followers'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN last_seen_ip OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN last_seen_ip OPTIONS (
     column_name 'last_seen_ip'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN twitter_account OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN twitter_account OPTIONS (
     column_name 'twitter_account'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN confirmation_token OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN confirmation_token OPTIONS (
     column_name 'confirmation_token'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN organization_id OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN organization_id OPTIONS (
     column_name 'organization_id'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN affiliation_type OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN affiliation_type OPTIONS (
     column_name 'affiliation_type'
 );
-ALTER FOREIGN TABLE accounts ALTER COLUMN organization_name OPTIONS (
+ALTER FOREIGN TABLE public.accounts ALTER COLUMN organization_name OPTIONS (
     column_name 'organization_name'
 );
 
@@ -1276,7 +1275,7 @@ ALTER FOREIGN TABLE accounts ALTER COLUMN organization_name OPTIONS (
 -- Name: accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE accounts_id_seq
+CREATE SEQUENCE public.accounts_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1288,7 +1287,7 @@ CREATE SEQUENCE accounts_id_seq
 -- Name: accounts_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE accounts_id_seq_view (
+CREATE FOREIGN TABLE public.accounts_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -1296,7 +1295,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'accounts_id_seq_view'
 );
-ALTER FOREIGN TABLE accounts_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.accounts_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -1305,8 +1304,8 @@ ALTER FOREIGN TABLE accounts_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: actions; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE actions (
-    id integer DEFAULT actions_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.actions (
+    id integer DEFAULT public.actions_id_seq_view() NOT NULL,
     account_id integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
@@ -1319,25 +1318,25 @@ OPTIONS (
     schema_name 'public',
     table_name 'actions'
 );
-ALTER FOREIGN TABLE actions ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.actions ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE actions ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.actions ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE actions ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.actions ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE actions ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.actions ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE actions ALTER COLUMN status OPTIONS (
+ALTER FOREIGN TABLE public.actions ALTER COLUMN status OPTIONS (
     column_name 'status'
 );
-ALTER FOREIGN TABLE actions ALTER COLUMN stack_project_id OPTIONS (
+ALTER FOREIGN TABLE public.actions ALTER COLUMN stack_project_id OPTIONS (
     column_name 'stack_project_id'
 );
-ALTER FOREIGN TABLE actions ALTER COLUMN claim_person_id OPTIONS (
+ALTER FOREIGN TABLE public.actions ALTER COLUMN claim_person_id OPTIONS (
     column_name 'claim_person_id'
 );
 
@@ -1346,7 +1345,7 @@ ALTER FOREIGN TABLE actions ALTER COLUMN claim_person_id OPTIONS (
 -- Name: actions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE actions_id_seq
+CREATE SEQUENCE public.actions_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1358,7 +1357,7 @@ CREATE SEQUENCE actions_id_seq
 -- Name: actions_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE actions_id_seq_view (
+CREATE FOREIGN TABLE public.actions_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -1366,7 +1365,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'actions_id_seq_view'
 );
-ALTER FOREIGN TABLE actions_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.actions_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -1375,7 +1374,7 @@ ALTER FOREIGN TABLE actions_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: activity_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE activity_facts_id_seq
+CREATE SEQUENCE public.activity_facts_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1387,7 +1386,7 @@ CREATE SEQUENCE activity_facts_id_seq
 -- Name: activity_facts; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE activity_facts (
+CREATE FOREIGN TABLE public.activity_facts (
     month date,
     language_id integer,
     code_added integer DEFAULT 0,
@@ -1397,7 +1396,7 @@ CREATE FOREIGN TABLE activity_facts (
     blanks_added integer DEFAULT 0,
     blanks_removed integer DEFAULT 0,
     name_id integer NOT NULL,
-    id bigint DEFAULT nextval('activity_facts_id_seq'::regclass) NOT NULL,
+    id bigint DEFAULT nextval('public.activity_facts_id_seq'::regclass) NOT NULL,
     analysis_id integer NOT NULL,
     commits integer DEFAULT 0,
     on_trunk boolean DEFAULT true
@@ -1407,43 +1406,43 @@ OPTIONS (
     schema_name 'public',
     table_name 'activity_facts'
 );
-ALTER FOREIGN TABLE activity_facts ALTER COLUMN month OPTIONS (
+ALTER FOREIGN TABLE public.activity_facts ALTER COLUMN month OPTIONS (
     column_name 'month'
 );
-ALTER FOREIGN TABLE activity_facts ALTER COLUMN language_id OPTIONS (
+ALTER FOREIGN TABLE public.activity_facts ALTER COLUMN language_id OPTIONS (
     column_name 'language_id'
 );
-ALTER FOREIGN TABLE activity_facts ALTER COLUMN code_added OPTIONS (
+ALTER FOREIGN TABLE public.activity_facts ALTER COLUMN code_added OPTIONS (
     column_name 'code_added'
 );
-ALTER FOREIGN TABLE activity_facts ALTER COLUMN code_removed OPTIONS (
+ALTER FOREIGN TABLE public.activity_facts ALTER COLUMN code_removed OPTIONS (
     column_name 'code_removed'
 );
-ALTER FOREIGN TABLE activity_facts ALTER COLUMN comments_added OPTIONS (
+ALTER FOREIGN TABLE public.activity_facts ALTER COLUMN comments_added OPTIONS (
     column_name 'comments_added'
 );
-ALTER FOREIGN TABLE activity_facts ALTER COLUMN comments_removed OPTIONS (
+ALTER FOREIGN TABLE public.activity_facts ALTER COLUMN comments_removed OPTIONS (
     column_name 'comments_removed'
 );
-ALTER FOREIGN TABLE activity_facts ALTER COLUMN blanks_added OPTIONS (
+ALTER FOREIGN TABLE public.activity_facts ALTER COLUMN blanks_added OPTIONS (
     column_name 'blanks_added'
 );
-ALTER FOREIGN TABLE activity_facts ALTER COLUMN blanks_removed OPTIONS (
+ALTER FOREIGN TABLE public.activity_facts ALTER COLUMN blanks_removed OPTIONS (
     column_name 'blanks_removed'
 );
-ALTER FOREIGN TABLE activity_facts ALTER COLUMN name_id OPTIONS (
+ALTER FOREIGN TABLE public.activity_facts ALTER COLUMN name_id OPTIONS (
     column_name 'name_id'
 );
-ALTER FOREIGN TABLE activity_facts ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.activity_facts ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE activity_facts ALTER COLUMN analysis_id OPTIONS (
+ALTER FOREIGN TABLE public.activity_facts ALTER COLUMN analysis_id OPTIONS (
     column_name 'analysis_id'
 );
-ALTER FOREIGN TABLE activity_facts ALTER COLUMN commits OPTIONS (
+ALTER FOREIGN TABLE public.activity_facts ALTER COLUMN commits OPTIONS (
     column_name 'commits'
 );
-ALTER FOREIGN TABLE activity_facts ALTER COLUMN on_trunk OPTIONS (
+ALTER FOREIGN TABLE public.activity_facts ALTER COLUMN on_trunk OPTIONS (
     column_name 'on_trunk'
 );
 
@@ -1452,7 +1451,7 @@ ALTER FOREIGN TABLE activity_facts ALTER COLUMN on_trunk OPTIONS (
 -- Name: activity_facts_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE activity_facts_id_seq_view (
+CREATE FOREIGN TABLE public.activity_facts_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -1460,7 +1459,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'activity_facts_id_seq_view'
 );
-ALTER FOREIGN TABLE activity_facts_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.activity_facts_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -1469,8 +1468,8 @@ ALTER FOREIGN TABLE activity_facts_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: aliases; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE aliases (
-    id integer DEFAULT aliases_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.aliases (
+    id integer DEFAULT public.aliases_id_seq_view() NOT NULL,
     project_id integer NOT NULL,
     commit_name_id integer NOT NULL,
     preferred_name_id integer NOT NULL,
@@ -1481,19 +1480,19 @@ OPTIONS (
     schema_name 'public',
     table_name 'aliases'
 );
-ALTER FOREIGN TABLE aliases ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.aliases ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE aliases ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.aliases ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE aliases ALTER COLUMN commit_name_id OPTIONS (
+ALTER FOREIGN TABLE public.aliases ALTER COLUMN commit_name_id OPTIONS (
     column_name 'commit_name_id'
 );
-ALTER FOREIGN TABLE aliases ALTER COLUMN preferred_name_id OPTIONS (
+ALTER FOREIGN TABLE public.aliases ALTER COLUMN preferred_name_id OPTIONS (
     column_name 'preferred_name_id'
 );
-ALTER FOREIGN TABLE aliases ALTER COLUMN deleted OPTIONS (
+ALTER FOREIGN TABLE public.aliases ALTER COLUMN deleted OPTIONS (
     column_name 'deleted'
 );
 
@@ -1502,7 +1501,7 @@ ALTER FOREIGN TABLE aliases ALTER COLUMN deleted OPTIONS (
 -- Name: aliases_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE aliases_id_seq
+CREATE SEQUENCE public.aliases_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1514,7 +1513,7 @@ CREATE SEQUENCE aliases_id_seq
 -- Name: aliases_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE aliases_id_seq_view (
+CREATE FOREIGN TABLE public.aliases_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -1522,7 +1521,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'aliases_id_seq_view'
 );
-ALTER FOREIGN TABLE aliases_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.aliases_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -1531,7 +1530,7 @@ ALTER FOREIGN TABLE aliases_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: all_months; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE all_months (
+CREATE FOREIGN TABLE public.all_months (
     month timestamp without time zone
 )
 SERVER ohloh
@@ -1539,7 +1538,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'all_months'
 );
-ALTER FOREIGN TABLE all_months ALTER COLUMN month OPTIONS (
+ALTER FOREIGN TABLE public.all_months ALTER COLUMN month OPTIONS (
     column_name 'month'
 );
 
@@ -1548,8 +1547,8 @@ ALTER FOREIGN TABLE all_months ALTER COLUMN month OPTIONS (
 -- Name: analyses; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE analyses (
-    id integer DEFAULT analyses_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.analyses (
+    id integer DEFAULT public.analyses_id_seq_view() NOT NULL,
     project_id integer NOT NULL,
     as_of timestamp without time zone,
     updated_on timestamp without time zone,
@@ -1575,64 +1574,64 @@ OPTIONS (
     schema_name 'public',
     table_name 'analyses'
 );
-ALTER FOREIGN TABLE analyses ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.analyses ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE analyses ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.analyses ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE analyses ALTER COLUMN as_of OPTIONS (
+ALTER FOREIGN TABLE public.analyses ALTER COLUMN as_of OPTIONS (
     column_name 'as_of'
 );
-ALTER FOREIGN TABLE analyses ALTER COLUMN updated_on OPTIONS (
+ALTER FOREIGN TABLE public.analyses ALTER COLUMN updated_on OPTIONS (
     column_name 'updated_on'
 );
-ALTER FOREIGN TABLE analyses ALTER COLUMN main_language_id OPTIONS (
+ALTER FOREIGN TABLE public.analyses ALTER COLUMN main_language_id OPTIONS (
     column_name 'main_language_id'
 );
-ALTER FOREIGN TABLE analyses ALTER COLUMN relative_comments OPTIONS (
+ALTER FOREIGN TABLE public.analyses ALTER COLUMN relative_comments OPTIONS (
     column_name 'relative_comments'
 );
-ALTER FOREIGN TABLE analyses ALTER COLUMN logic_total OPTIONS (
+ALTER FOREIGN TABLE public.analyses ALTER COLUMN logic_total OPTIONS (
     column_name 'logic_total'
 );
-ALTER FOREIGN TABLE analyses ALTER COLUMN markup_total OPTIONS (
+ALTER FOREIGN TABLE public.analyses ALTER COLUMN markup_total OPTIONS (
     column_name 'markup_total'
 );
-ALTER FOREIGN TABLE analyses ALTER COLUMN headcount OPTIONS (
+ALTER FOREIGN TABLE public.analyses ALTER COLUMN headcount OPTIONS (
     column_name 'headcount'
 );
-ALTER FOREIGN TABLE analyses ALTER COLUMN min_month OPTIONS (
+ALTER FOREIGN TABLE public.analyses ALTER COLUMN min_month OPTIONS (
     column_name 'min_month'
 );
-ALTER FOREIGN TABLE analyses ALTER COLUMN max_month OPTIONS (
+ALTER FOREIGN TABLE public.analyses ALTER COLUMN max_month OPTIONS (
     column_name 'max_month'
 );
-ALTER FOREIGN TABLE analyses ALTER COLUMN oldest_code_set_time OPTIONS (
+ALTER FOREIGN TABLE public.analyses ALTER COLUMN oldest_code_set_time OPTIONS (
     column_name 'oldest_code_set_time'
 );
-ALTER FOREIGN TABLE analyses ALTER COLUMN committers_all_time OPTIONS (
+ALTER FOREIGN TABLE public.analyses ALTER COLUMN committers_all_time OPTIONS (
     column_name 'committers_all_time'
 );
-ALTER FOREIGN TABLE analyses ALTER COLUMN first_commit_time OPTIONS (
+ALTER FOREIGN TABLE public.analyses ALTER COLUMN first_commit_time OPTIONS (
     column_name 'first_commit_time'
 );
-ALTER FOREIGN TABLE analyses ALTER COLUMN last_commit_time OPTIONS (
+ALTER FOREIGN TABLE public.analyses ALTER COLUMN last_commit_time OPTIONS (
     column_name 'last_commit_time'
 );
-ALTER FOREIGN TABLE analyses ALTER COLUMN commit_count OPTIONS (
+ALTER FOREIGN TABLE public.analyses ALTER COLUMN commit_count OPTIONS (
     column_name 'commit_count'
 );
-ALTER FOREIGN TABLE analyses ALTER COLUMN build_total OPTIONS (
+ALTER FOREIGN TABLE public.analyses ALTER COLUMN build_total OPTIONS (
     column_name 'build_total'
 );
-ALTER FOREIGN TABLE analyses ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.analyses ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE analyses ALTER COLUMN activity_score OPTIONS (
+ALTER FOREIGN TABLE public.analyses ALTER COLUMN activity_score OPTIONS (
     column_name 'activity_score'
 );
-ALTER FOREIGN TABLE analyses ALTER COLUMN hotness_score OPTIONS (
+ALTER FOREIGN TABLE public.analyses ALTER COLUMN hotness_score OPTIONS (
     column_name 'hotness_score'
 );
 
@@ -1641,7 +1640,7 @@ ALTER FOREIGN TABLE analyses ALTER COLUMN hotness_score OPTIONS (
 -- Name: analyses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE analyses_id_seq
+CREATE SEQUENCE public.analyses_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1653,7 +1652,7 @@ CREATE SEQUENCE analyses_id_seq
 -- Name: analyses_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE analyses_id_seq_view (
+CREATE FOREIGN TABLE public.analyses_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -1661,7 +1660,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'analyses_id_seq_view'
 );
-ALTER FOREIGN TABLE analyses_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.analyses_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -1672,7 +1671,7 @@ SET default_with_oids = false;
 -- Name: analysis_aliases; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE analysis_aliases (
+CREATE TABLE public.analysis_aliases (
     id integer NOT NULL,
     analysis_id integer NOT NULL,
     commit_name_id integer NOT NULL,
@@ -1684,7 +1683,7 @@ CREATE TABLE analysis_aliases (
 -- Name: analysis_aliases_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE analysis_aliases_id_seq
+CREATE SEQUENCE public.analysis_aliases_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1696,22 +1695,22 @@ CREATE SEQUENCE analysis_aliases_id_seq
 -- Name: analysis_aliases_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE analysis_aliases_id_seq OWNED BY analysis_aliases.id;
+ALTER SEQUENCE public.analysis_aliases_id_seq OWNED BY public.analysis_aliases.id;
 
 
 --
 -- Name: analysis_aliases_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW analysis_aliases_id_seq_view AS
- SELECT (nextval('analysis_aliases_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.analysis_aliases_id_seq_view AS
+ SELECT (nextval('public.analysis_aliases_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: analysis_sloc_sets; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE analysis_sloc_sets (
+CREATE TABLE public.analysis_sloc_sets (
     id integer NOT NULL,
     analysis_id integer NOT NULL,
     sloc_set_id integer NOT NULL,
@@ -1726,7 +1725,7 @@ CREATE TABLE analysis_sloc_sets (
 -- Name: analysis_sloc_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE analysis_sloc_sets_id_seq
+CREATE SEQUENCE public.analysis_sloc_sets_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1738,23 +1737,23 @@ CREATE SEQUENCE analysis_sloc_sets_id_seq
 -- Name: analysis_sloc_sets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE analysis_sloc_sets_id_seq OWNED BY analysis_sloc_sets.id;
+ALTER SEQUENCE public.analysis_sloc_sets_id_seq OWNED BY public.analysis_sloc_sets.id;
 
 
 --
 -- Name: analysis_sloc_sets_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW analysis_sloc_sets_id_seq_view AS
- SELECT (nextval('analysis_sloc_sets_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.analysis_sloc_sets_id_seq_view AS
+ SELECT (nextval('public.analysis_sloc_sets_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: analysis_summaries; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE analysis_summaries (
-    id integer DEFAULT analysis_summaries_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.analysis_summaries (
+    id integer DEFAULT public.analysis_summaries_id_seq_view() NOT NULL,
     analysis_id integer NOT NULL,
     files_modified integer,
     lines_added integer,
@@ -1775,43 +1774,43 @@ OPTIONS (
     schema_name 'public',
     table_name 'analysis_summaries'
 );
-ALTER FOREIGN TABLE analysis_summaries ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.analysis_summaries ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE analysis_summaries ALTER COLUMN analysis_id OPTIONS (
+ALTER FOREIGN TABLE public.analysis_summaries ALTER COLUMN analysis_id OPTIONS (
     column_name 'analysis_id'
 );
-ALTER FOREIGN TABLE analysis_summaries ALTER COLUMN files_modified OPTIONS (
+ALTER FOREIGN TABLE public.analysis_summaries ALTER COLUMN files_modified OPTIONS (
     column_name 'files_modified'
 );
-ALTER FOREIGN TABLE analysis_summaries ALTER COLUMN lines_added OPTIONS (
+ALTER FOREIGN TABLE public.analysis_summaries ALTER COLUMN lines_added OPTIONS (
     column_name 'lines_added'
 );
-ALTER FOREIGN TABLE analysis_summaries ALTER COLUMN lines_removed OPTIONS (
+ALTER FOREIGN TABLE public.analysis_summaries ALTER COLUMN lines_removed OPTIONS (
     column_name 'lines_removed'
 );
-ALTER FOREIGN TABLE analysis_summaries ALTER COLUMN type OPTIONS (
+ALTER FOREIGN TABLE public.analysis_summaries ALTER COLUMN type OPTIONS (
     column_name 'type'
 );
-ALTER FOREIGN TABLE analysis_summaries ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.analysis_summaries ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE analysis_summaries ALTER COLUMN recent_contributors OPTIONS (
+ALTER FOREIGN TABLE public.analysis_summaries ALTER COLUMN recent_contributors OPTIONS (
     column_name 'recent_contributors'
 );
-ALTER FOREIGN TABLE analysis_summaries ALTER COLUMN new_contributors_count OPTIONS (
+ALTER FOREIGN TABLE public.analysis_summaries ALTER COLUMN new_contributors_count OPTIONS (
     column_name 'new_contributors_count'
 );
-ALTER FOREIGN TABLE analysis_summaries ALTER COLUMN affiliated_committers_count OPTIONS (
+ALTER FOREIGN TABLE public.analysis_summaries ALTER COLUMN affiliated_committers_count OPTIONS (
     column_name 'affiliated_committers_count'
 );
-ALTER FOREIGN TABLE analysis_summaries ALTER COLUMN affiliated_commits_count OPTIONS (
+ALTER FOREIGN TABLE public.analysis_summaries ALTER COLUMN affiliated_commits_count OPTIONS (
     column_name 'affiliated_commits_count'
 );
-ALTER FOREIGN TABLE analysis_summaries ALTER COLUMN outside_committers_count OPTIONS (
+ALTER FOREIGN TABLE public.analysis_summaries ALTER COLUMN outside_committers_count OPTIONS (
     column_name 'outside_committers_count'
 );
-ALTER FOREIGN TABLE analysis_summaries ALTER COLUMN outside_commits_count OPTIONS (
+ALTER FOREIGN TABLE public.analysis_summaries ALTER COLUMN outside_commits_count OPTIONS (
     column_name 'outside_commits_count'
 );
 
@@ -1820,7 +1819,7 @@ ALTER FOREIGN TABLE analysis_summaries ALTER COLUMN outside_commits_count OPTION
 -- Name: analysis_summaries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE analysis_summaries_id_seq
+CREATE SEQUENCE public.analysis_summaries_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1832,7 +1831,7 @@ CREATE SEQUENCE analysis_summaries_id_seq
 -- Name: analysis_summaries_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE analysis_summaries_id_seq_view (
+CREATE FOREIGN TABLE public.analysis_summaries_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -1840,7 +1839,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'analysis_summaries_id_seq_view'
 );
-ALTER FOREIGN TABLE analysis_summaries_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.analysis_summaries_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -1849,8 +1848,8 @@ ALTER FOREIGN TABLE analysis_summaries_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: api_keys; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE api_keys (
-    id integer DEFAULT api_keys_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.api_keys (
+    id integer DEFAULT public.api_keys_id_seq_view() NOT NULL,
     created_at timestamp without time zone,
     account_id integer NOT NULL,
     key text,
@@ -1873,55 +1872,55 @@ OPTIONS (
     schema_name 'public',
     table_name 'api_keys'
 );
-ALTER FOREIGN TABLE api_keys ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.api_keys ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE api_keys ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.api_keys ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE api_keys ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.api_keys ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE api_keys ALTER COLUMN key OPTIONS (
+ALTER FOREIGN TABLE public.api_keys ALTER COLUMN key OPTIONS (
     column_name 'key'
 );
-ALTER FOREIGN TABLE api_keys ALTER COLUMN description OPTIONS (
+ALTER FOREIGN TABLE public.api_keys ALTER COLUMN description OPTIONS (
     column_name 'description'
 );
-ALTER FOREIGN TABLE api_keys ALTER COLUMN daily_count OPTIONS (
+ALTER FOREIGN TABLE public.api_keys ALTER COLUMN daily_count OPTIONS (
     column_name 'daily_count'
 );
-ALTER FOREIGN TABLE api_keys ALTER COLUMN daily_limit OPTIONS (
+ALTER FOREIGN TABLE public.api_keys ALTER COLUMN daily_limit OPTIONS (
     column_name 'daily_limit'
 );
-ALTER FOREIGN TABLE api_keys ALTER COLUMN day_began_at OPTIONS (
+ALTER FOREIGN TABLE public.api_keys ALTER COLUMN day_began_at OPTIONS (
     column_name 'day_began_at'
 );
-ALTER FOREIGN TABLE api_keys ALTER COLUMN last_access_at OPTIONS (
+ALTER FOREIGN TABLE public.api_keys ALTER COLUMN last_access_at OPTIONS (
     column_name 'last_access_at'
 );
-ALTER FOREIGN TABLE api_keys ALTER COLUMN total_count OPTIONS (
+ALTER FOREIGN TABLE public.api_keys ALTER COLUMN total_count OPTIONS (
     column_name 'total_count'
 );
-ALTER FOREIGN TABLE api_keys ALTER COLUMN status OPTIONS (
+ALTER FOREIGN TABLE public.api_keys ALTER COLUMN status OPTIONS (
     column_name 'status'
 );
-ALTER FOREIGN TABLE api_keys ALTER COLUMN name OPTIONS (
+ALTER FOREIGN TABLE public.api_keys ALTER COLUMN name OPTIONS (
     column_name 'name'
 );
-ALTER FOREIGN TABLE api_keys ALTER COLUMN url OPTIONS (
+ALTER FOREIGN TABLE public.api_keys ALTER COLUMN url OPTIONS (
     column_name 'url'
 );
-ALTER FOREIGN TABLE api_keys ALTER COLUMN support_url OPTIONS (
+ALTER FOREIGN TABLE public.api_keys ALTER COLUMN support_url OPTIONS (
     column_name 'support_url'
 );
-ALTER FOREIGN TABLE api_keys ALTER COLUMN callback_url OPTIONS (
+ALTER FOREIGN TABLE public.api_keys ALTER COLUMN callback_url OPTIONS (
     column_name 'callback_url'
 );
-ALTER FOREIGN TABLE api_keys ALTER COLUMN secret OPTIONS (
+ALTER FOREIGN TABLE public.api_keys ALTER COLUMN secret OPTIONS (
     column_name 'secret'
 );
-ALTER FOREIGN TABLE api_keys ALTER COLUMN oauth_application_id OPTIONS (
+ALTER FOREIGN TABLE public.api_keys ALTER COLUMN oauth_application_id OPTIONS (
     column_name 'oauth_application_id'
 );
 
@@ -1930,7 +1929,7 @@ ALTER FOREIGN TABLE api_keys ALTER COLUMN oauth_application_id OPTIONS (
 -- Name: api_keys_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE api_keys_id_seq
+CREATE SEQUENCE public.api_keys_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1942,7 +1941,7 @@ CREATE SEQUENCE api_keys_id_seq
 -- Name: api_keys_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE api_keys_id_seq_view (
+CREATE FOREIGN TABLE public.api_keys_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -1950,7 +1949,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'api_keys_id_seq_view'
 );
-ALTER FOREIGN TABLE api_keys_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.api_keys_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -1959,8 +1958,8 @@ ALTER FOREIGN TABLE api_keys_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: attachments; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE attachments (
-    id integer DEFAULT attachments_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.attachments (
+    id integer DEFAULT public.attachments_id_seq_view() NOT NULL,
     parent_id integer,
     type text NOT NULL,
     thumbnail text,
@@ -1976,34 +1975,34 @@ OPTIONS (
     schema_name 'public',
     table_name 'attachments'
 );
-ALTER FOREIGN TABLE attachments ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.attachments ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE attachments ALTER COLUMN parent_id OPTIONS (
+ALTER FOREIGN TABLE public.attachments ALTER COLUMN parent_id OPTIONS (
     column_name 'parent_id'
 );
-ALTER FOREIGN TABLE attachments ALTER COLUMN type OPTIONS (
+ALTER FOREIGN TABLE public.attachments ALTER COLUMN type OPTIONS (
     column_name 'type'
 );
-ALTER FOREIGN TABLE attachments ALTER COLUMN thumbnail OPTIONS (
+ALTER FOREIGN TABLE public.attachments ALTER COLUMN thumbnail OPTIONS (
     column_name 'thumbnail'
 );
-ALTER FOREIGN TABLE attachments ALTER COLUMN filename OPTIONS (
+ALTER FOREIGN TABLE public.attachments ALTER COLUMN filename OPTIONS (
     column_name 'filename'
 );
-ALTER FOREIGN TABLE attachments ALTER COLUMN content_type OPTIONS (
+ALTER FOREIGN TABLE public.attachments ALTER COLUMN content_type OPTIONS (
     column_name 'content_type'
 );
-ALTER FOREIGN TABLE attachments ALTER COLUMN size OPTIONS (
+ALTER FOREIGN TABLE public.attachments ALTER COLUMN size OPTIONS (
     column_name 'size'
 );
-ALTER FOREIGN TABLE attachments ALTER COLUMN width OPTIONS (
+ALTER FOREIGN TABLE public.attachments ALTER COLUMN width OPTIONS (
     column_name 'width'
 );
-ALTER FOREIGN TABLE attachments ALTER COLUMN height OPTIONS (
+ALTER FOREIGN TABLE public.attachments ALTER COLUMN height OPTIONS (
     column_name 'height'
 );
-ALTER FOREIGN TABLE attachments ALTER COLUMN is_default OPTIONS (
+ALTER FOREIGN TABLE public.attachments ALTER COLUMN is_default OPTIONS (
     column_name 'is_default'
 );
 
@@ -2012,7 +2011,7 @@ ALTER FOREIGN TABLE attachments ALTER COLUMN is_default OPTIONS (
 -- Name: attachments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE attachments_id_seq
+CREATE SEQUENCE public.attachments_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2024,7 +2023,7 @@ CREATE SEQUENCE attachments_id_seq
 -- Name: attachments_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE attachments_id_seq_view (
+CREATE FOREIGN TABLE public.attachments_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -2032,7 +2031,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'attachments_id_seq_view'
 );
-ALTER FOREIGN TABLE attachments_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.attachments_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -2041,8 +2040,8 @@ ALTER FOREIGN TABLE attachments_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: authorizations; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE authorizations (
-    id integer DEFAULT authorizations_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.authorizations (
+    id integer DEFAULT public.authorizations_id_seq_view() NOT NULL,
     account_id integer,
     type text,
     api_key_id integer NOT NULL,
@@ -2058,34 +2057,34 @@ OPTIONS (
     schema_name 'public',
     table_name 'authorizations'
 );
-ALTER FOREIGN TABLE authorizations ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.authorizations ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE authorizations ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.authorizations ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE authorizations ALTER COLUMN type OPTIONS (
+ALTER FOREIGN TABLE public.authorizations ALTER COLUMN type OPTIONS (
     column_name 'type'
 );
-ALTER FOREIGN TABLE authorizations ALTER COLUMN api_key_id OPTIONS (
+ALTER FOREIGN TABLE public.authorizations ALTER COLUMN api_key_id OPTIONS (
     column_name 'api_key_id'
 );
-ALTER FOREIGN TABLE authorizations ALTER COLUMN token OPTIONS (
+ALTER FOREIGN TABLE public.authorizations ALTER COLUMN token OPTIONS (
     column_name 'token'
 );
-ALTER FOREIGN TABLE authorizations ALTER COLUMN secret OPTIONS (
+ALTER FOREIGN TABLE public.authorizations ALTER COLUMN secret OPTIONS (
     column_name 'secret'
 );
-ALTER FOREIGN TABLE authorizations ALTER COLUMN authorized_at OPTIONS (
+ALTER FOREIGN TABLE public.authorizations ALTER COLUMN authorized_at OPTIONS (
     column_name 'authorized_at'
 );
-ALTER FOREIGN TABLE authorizations ALTER COLUMN invalidated_at OPTIONS (
+ALTER FOREIGN TABLE public.authorizations ALTER COLUMN invalidated_at OPTIONS (
     column_name 'invalidated_at'
 );
-ALTER FOREIGN TABLE authorizations ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.authorizations ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE authorizations ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.authorizations ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
 
@@ -2094,7 +2093,7 @@ ALTER FOREIGN TABLE authorizations ALTER COLUMN updated_at OPTIONS (
 -- Name: authorizations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE authorizations_id_seq
+CREATE SEQUENCE public.authorizations_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2106,7 +2105,7 @@ CREATE SEQUENCE authorizations_id_seq
 -- Name: authorizations_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE authorizations_id_seq_view (
+CREATE FOREIGN TABLE public.authorizations_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -2114,7 +2113,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'authorizations_id_seq_view'
 );
-ALTER FOREIGN TABLE authorizations_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.authorizations_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -2123,7 +2122,7 @@ ALTER FOREIGN TABLE authorizations_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: claims_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE claims_id_seq_view (
+CREATE FOREIGN TABLE public.claims_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -2131,7 +2130,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'claims_id_seq_view'
 );
-ALTER FOREIGN TABLE claims_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.claims_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -2140,8 +2139,8 @@ ALTER FOREIGN TABLE claims_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: clumps; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE clumps (
-    id integer DEFAULT clumps_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.clumps (
+    id integer DEFAULT public.clumps_id_seq_view() NOT NULL,
     slave_id integer,
     code_set_id integer,
     updated_at timestamp without time zone,
@@ -2153,22 +2152,22 @@ OPTIONS (
     schema_name 'public',
     table_name 'clumps'
 );
-ALTER FOREIGN TABLE clumps ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.clumps ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE clumps ALTER COLUMN slave_id OPTIONS (
+ALTER FOREIGN TABLE public.clumps ALTER COLUMN slave_id OPTIONS (
     column_name 'slave_id'
 );
-ALTER FOREIGN TABLE clumps ALTER COLUMN code_set_id OPTIONS (
+ALTER FOREIGN TABLE public.clumps ALTER COLUMN code_set_id OPTIONS (
     column_name 'code_set_id'
 );
-ALTER FOREIGN TABLE clumps ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.clumps ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE clumps ALTER COLUMN type OPTIONS (
+ALTER FOREIGN TABLE public.clumps ALTER COLUMN type OPTIONS (
     column_name 'type'
 );
-ALTER FOREIGN TABLE clumps ALTER COLUMN fetched_at OPTIONS (
+ALTER FOREIGN TABLE public.clumps ALTER COLUMN fetched_at OPTIONS (
     column_name 'fetched_at'
 );
 
@@ -2177,7 +2176,7 @@ ALTER FOREIGN TABLE clumps ALTER COLUMN fetched_at OPTIONS (
 -- Name: clumps_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE clumps_id_seq
+CREATE SEQUENCE public.clumps_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2189,7 +2188,7 @@ CREATE SEQUENCE clumps_id_seq
 -- Name: clumps_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE clumps_id_seq_view (
+CREATE FOREIGN TABLE public.clumps_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -2197,7 +2196,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'clumps_id_seq_view'
 );
-ALTER FOREIGN TABLE clumps_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.clumps_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -2206,7 +2205,7 @@ ALTER FOREIGN TABLE clumps_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: code_location_job_feeders; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE code_location_job_feeders (
+CREATE TABLE public.code_location_job_feeders (
     id integer NOT NULL,
     code_location_id integer,
     url text,
@@ -2220,7 +2219,7 @@ CREATE TABLE code_location_job_feeders (
 -- Name: code_location_job_feeders_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE code_location_job_feeders_id_seq
+CREATE SEQUENCE public.code_location_job_feeders_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2232,14 +2231,14 @@ CREATE SEQUENCE code_location_job_feeders_id_seq
 -- Name: code_location_job_feeders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE code_location_job_feeders_id_seq OWNED BY code_location_job_feeders.id;
+ALTER SEQUENCE public.code_location_job_feeders_id_seq OWNED BY public.code_location_job_feeders.id;
 
 
 --
 -- Name: code_location_tarballs; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE code_location_tarballs (
+CREATE TABLE public.code_location_tarballs (
     id integer NOT NULL,
     code_location_id integer,
     reference text,
@@ -2254,7 +2253,7 @@ CREATE TABLE code_location_tarballs (
 -- Name: code_location_tarballs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE code_location_tarballs_id_seq
+CREATE SEQUENCE public.code_location_tarballs_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2266,23 +2265,23 @@ CREATE SEQUENCE code_location_tarballs_id_seq
 -- Name: code_location_tarballs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE code_location_tarballs_id_seq OWNED BY code_location_tarballs.id;
+ALTER SEQUENCE public.code_location_tarballs_id_seq OWNED BY public.code_location_tarballs.id;
 
 
 --
 -- Name: code_location_tarballs_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW code_location_tarballs_id_seq_view AS
- SELECT (nextval('code_location_tarballs_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.code_location_tarballs_id_seq_view AS
+ SELECT (nextval('public.code_location_tarballs_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: code_locations; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE code_locations (
-    id integer DEFAULT code_locations_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.code_locations (
+    id integer DEFAULT public.code_locations_id_seq_view() NOT NULL,
     repository_id integer,
     module_branch_name text,
     status integer DEFAULT 0,
@@ -2297,31 +2296,31 @@ OPTIONS (
     schema_name 'public',
     table_name 'code_locations'
 );
-ALTER FOREIGN TABLE code_locations ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.code_locations ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE code_locations ALTER COLUMN repository_id OPTIONS (
+ALTER FOREIGN TABLE public.code_locations ALTER COLUMN repository_id OPTIONS (
     column_name 'repository_id'
 );
-ALTER FOREIGN TABLE code_locations ALTER COLUMN module_branch_name OPTIONS (
+ALTER FOREIGN TABLE public.code_locations ALTER COLUMN module_branch_name OPTIONS (
     column_name 'module_branch_name'
 );
-ALTER FOREIGN TABLE code_locations ALTER COLUMN status OPTIONS (
+ALTER FOREIGN TABLE public.code_locations ALTER COLUMN status OPTIONS (
     column_name 'status'
 );
-ALTER FOREIGN TABLE code_locations ALTER COLUMN best_code_set_id OPTIONS (
+ALTER FOREIGN TABLE public.code_locations ALTER COLUMN best_code_set_id OPTIONS (
     column_name 'best_code_set_id'
 );
-ALTER FOREIGN TABLE code_locations ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.code_locations ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE code_locations ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.code_locations ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE code_locations ALTER COLUMN update_interval OPTIONS (
+ALTER FOREIGN TABLE public.code_locations ALTER COLUMN update_interval OPTIONS (
     column_name 'update_interval'
 );
-ALTER FOREIGN TABLE code_locations ALTER COLUMN best_repository_directory_id OPTIONS (
+ALTER FOREIGN TABLE public.code_locations ALTER COLUMN best_repository_directory_id OPTIONS (
     column_name 'best_repository_directory_id'
 );
 
@@ -2330,7 +2329,7 @@ ALTER FOREIGN TABLE code_locations ALTER COLUMN best_repository_directory_id OPT
 -- Name: code_locations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE code_locations_id_seq
+CREATE SEQUENCE public.code_locations_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2342,7 +2341,7 @@ CREATE SEQUENCE code_locations_id_seq
 -- Name: code_locations_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE code_locations_id_seq_view (
+CREATE FOREIGN TABLE public.code_locations_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -2350,7 +2349,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'code_locations_id_seq_view'
 );
-ALTER FOREIGN TABLE code_locations_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.code_locations_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -2359,7 +2358,7 @@ ALTER FOREIGN TABLE code_locations_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: code_sets; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE code_sets (
+CREATE TABLE public.code_sets (
     id integer NOT NULL,
     updated_on timestamp without time zone,
     best_sloc_set_id integer,
@@ -2375,7 +2374,7 @@ CREATE TABLE code_sets (
 -- Name: code_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE code_sets_id_seq
+CREATE SEQUENCE public.code_sets_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2387,23 +2386,23 @@ CREATE SEQUENCE code_sets_id_seq
 -- Name: code_sets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE code_sets_id_seq OWNED BY code_sets.id;
+ALTER SEQUENCE public.code_sets_id_seq OWNED BY public.code_sets.id;
 
 
 --
 -- Name: code_sets_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW code_sets_id_seq_view AS
- SELECT (nextval('code_sets_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.code_sets_id_seq_view AS
+ SELECT (nextval('public.code_sets_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: positions; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE positions (
-    id integer DEFAULT positions_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.positions (
+    id integer DEFAULT public.positions_id_seq_view() NOT NULL,
     project_id integer,
     name_id integer,
     account_id integer NOT NULL,
@@ -2422,43 +2421,43 @@ OPTIONS (
     schema_name 'public',
     table_name 'positions'
 );
-ALTER FOREIGN TABLE positions ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.positions ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE positions ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.positions ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE positions ALTER COLUMN name_id OPTIONS (
+ALTER FOREIGN TABLE public.positions ALTER COLUMN name_id OPTIONS (
     column_name 'name_id'
 );
-ALTER FOREIGN TABLE positions ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.positions ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE positions ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.positions ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE positions ALTER COLUMN title OPTIONS (
+ALTER FOREIGN TABLE public.positions ALTER COLUMN title OPTIONS (
     column_name 'title'
 );
-ALTER FOREIGN TABLE positions ALTER COLUMN organization_name OPTIONS (
+ALTER FOREIGN TABLE public.positions ALTER COLUMN organization_name OPTIONS (
     column_name 'organization_name'
 );
-ALTER FOREIGN TABLE positions ALTER COLUMN description OPTIONS (
+ALTER FOREIGN TABLE public.positions ALTER COLUMN description OPTIONS (
     column_name 'description'
 );
-ALTER FOREIGN TABLE positions ALTER COLUMN start_date OPTIONS (
+ALTER FOREIGN TABLE public.positions ALTER COLUMN start_date OPTIONS (
     column_name 'start_date'
 );
-ALTER FOREIGN TABLE positions ALTER COLUMN stop_date OPTIONS (
+ALTER FOREIGN TABLE public.positions ALTER COLUMN stop_date OPTIONS (
     column_name 'stop_date'
 );
-ALTER FOREIGN TABLE positions ALTER COLUMN ongoing OPTIONS (
+ALTER FOREIGN TABLE public.positions ALTER COLUMN ongoing OPTIONS (
     column_name 'ongoing'
 );
-ALTER FOREIGN TABLE positions ALTER COLUMN organization_id OPTIONS (
+ALTER FOREIGN TABLE public.positions ALTER COLUMN organization_id OPTIONS (
     column_name 'organization_id'
 );
-ALTER FOREIGN TABLE positions ALTER COLUMN affiliation_type OPTIONS (
+ALTER FOREIGN TABLE public.positions ALTER COLUMN affiliation_type OPTIONS (
     column_name 'affiliation_type'
 );
 
@@ -2467,8 +2466,8 @@ ALTER FOREIGN TABLE positions ALTER COLUMN affiliation_type OPTIONS (
 -- Name: projects; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE projects (
-    id integer DEFAULT projects_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.projects (
+    id integer DEFAULT public.projects_id_seq_view() NOT NULL,
     name text,
     description text,
     comments text,
@@ -2501,85 +2500,85 @@ OPTIONS (
     schema_name 'public',
     table_name 'projects'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN name OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN name OPTIONS (
     column_name 'name'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN description OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN description OPTIONS (
     column_name 'description'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN comments OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN comments OPTIONS (
     column_name 'comments'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN best_analysis_id OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN best_analysis_id OPTIONS (
     column_name 'best_analysis_id'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN deleted OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN deleted OPTIONS (
     column_name 'deleted'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN old_name OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN old_name OPTIONS (
     column_name 'old_name'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN missing_source OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN missing_source OPTIONS (
     column_name 'missing_source'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN logo_id OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN logo_id OPTIONS (
     column_name 'logo_id'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN vanity_url OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN vanity_url OPTIONS (
     column_name 'vanity_url'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN downloadable OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN downloadable OPTIONS (
     column_name 'downloadable'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN scraped OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN scraped OPTIONS (
     column_name 'scraped'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN vector OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN vector OPTIONS (
     column_name 'vector'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN popularity_factor OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN popularity_factor OPTIONS (
     column_name 'popularity_factor'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN user_count OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN user_count OPTIONS (
     column_name 'user_count'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN rating_average OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN rating_average OPTIONS (
     column_name 'rating_average'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN forge_id OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN forge_id OPTIONS (
     column_name 'forge_id'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN name_at_forge OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN name_at_forge OPTIONS (
     column_name 'name_at_forge'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN owner_at_forge OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN owner_at_forge OPTIONS (
     column_name 'owner_at_forge'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN active_committers OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN active_committers OPTIONS (
     column_name 'active_committers'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN kb_id OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN kb_id OPTIONS (
     column_name 'kb_id'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN organization_id OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN organization_id OPTIONS (
     column_name 'organization_id'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN activity_level_index OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN activity_level_index OPTIONS (
     column_name 'activity_level_index'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN uuid OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN uuid OPTIONS (
     column_name 'uuid'
 );
-ALTER FOREIGN TABLE projects ALTER COLUMN best_project_security_set_id OPTIONS (
+ALTER FOREIGN TABLE public.projects ALTER COLUMN best_project_security_set_id OPTIONS (
     column_name 'best_project_security_set_id'
 );
 
@@ -2588,7 +2587,7 @@ ALTER FOREIGN TABLE projects ALTER COLUMN best_project_security_set_id OPTIONS (
 -- Name: sloc_sets; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE sloc_sets (
+CREATE TABLE public.sloc_sets (
     id integer NOT NULL,
     code_set_id integer NOT NULL,
     updated_on timestamp without time zone,
@@ -2601,7 +2600,7 @@ CREATE TABLE sloc_sets (
 -- Name: commit_contributors; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW commit_contributors AS
+CREATE VIEW public.commit_contributors AS
  SELECT analysis_aliases.commit_name_id AS id,
     sloc_sets.code_set_id,
     analysis_aliases.commit_name_id AS name_id,
@@ -2617,18 +2616,18 @@ CREATE VIEW commit_contributors AS
             WHEN (positions.account_id IS NULL) THEN ((((projects.id)::bigint << 32) + (analysis_aliases.preferred_name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint)
             ELSE (positions.account_id)::bigint
         END AS person_id
-   FROM ((((analysis_sloc_sets
-     JOIN sloc_sets ON ((analysis_sloc_sets.sloc_set_id = sloc_sets.id)))
-     JOIN projects ON ((analysis_sloc_sets.analysis_id = projects.best_analysis_id)))
-     JOIN analysis_aliases ON ((analysis_aliases.analysis_id = analysis_sloc_sets.analysis_id)))
-     LEFT JOIN positions ON (((positions.project_id = projects.id) AND (positions.name_id = analysis_aliases.preferred_name_id))));
+   FROM ((((public.analysis_sloc_sets
+     JOIN public.sloc_sets ON ((analysis_sloc_sets.sloc_set_id = sloc_sets.id)))
+     JOIN public.projects ON ((analysis_sloc_sets.analysis_id = projects.best_analysis_id)))
+     JOIN public.analysis_aliases ON ((analysis_aliases.analysis_id = analysis_sloc_sets.analysis_id)))
+     LEFT JOIN public.positions ON (((positions.project_id = projects.id) AND (positions.name_id = analysis_aliases.preferred_name_id))));
 
 
 --
 -- Name: commit_flags; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE commit_flags (
+CREATE TABLE public.commit_flags (
     id integer NOT NULL,
     sloc_set_id integer NOT NULL,
     commit_id integer NOT NULL,
@@ -2642,7 +2641,7 @@ CREATE TABLE commit_flags (
 -- Name: commit_flags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE commit_flags_id_seq
+CREATE SEQUENCE public.commit_flags_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2654,22 +2653,22 @@ CREATE SEQUENCE commit_flags_id_seq
 -- Name: commit_flags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE commit_flags_id_seq OWNED BY commit_flags.id;
+ALTER SEQUENCE public.commit_flags_id_seq OWNED BY public.commit_flags.id;
 
 
 --
 -- Name: commit_flags_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW commit_flags_id_seq_view AS
- SELECT (nextval('commit_flags_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.commit_flags_id_seq_view AS
+ SELECT (nextval('public.commit_flags_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: commit_spark_analysis_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE commit_spark_analysis_seq
+CREATE SEQUENCE public.commit_spark_analysis_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2681,7 +2680,7 @@ CREATE SEQUENCE commit_spark_analysis_seq
 -- Name: commits; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE commits (
+CREATE TABLE public.commits (
     id integer NOT NULL,
     sha1 text,
     "time" timestamp without time zone NOT NULL,
@@ -2698,7 +2697,7 @@ CREATE TABLE commits (
 -- Name: commits_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE commits_id_seq
+CREATE SEQUENCE public.commits_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2710,22 +2709,22 @@ CREATE SEQUENCE commits_id_seq
 -- Name: commits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE commits_id_seq OWNED BY commits.id;
+ALTER SEQUENCE public.commits_id_seq OWNED BY public.commits.id;
 
 
 --
 -- Name: commits_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW commits_id_seq_view AS
- SELECT (nextval('commits_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.commits_id_seq_view AS
+ SELECT (nextval('public.commits_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: contributions; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE contributions (
+CREATE FOREIGN TABLE public.contributions (
     id bigint,
     person_id bigint,
     project_id integer,
@@ -2737,19 +2736,19 @@ OPTIONS (
     schema_name 'public',
     table_name 'contributions'
 );
-ALTER FOREIGN TABLE contributions ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.contributions ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE contributions ALTER COLUMN person_id OPTIONS (
+ALTER FOREIGN TABLE public.contributions ALTER COLUMN person_id OPTIONS (
     column_name 'person_id'
 );
-ALTER FOREIGN TABLE contributions ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.contributions ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE contributions ALTER COLUMN name_fact_id OPTIONS (
+ALTER FOREIGN TABLE public.contributions ALTER COLUMN name_fact_id OPTIONS (
     column_name 'name_fact_id'
 );
-ALTER FOREIGN TABLE contributions ALTER COLUMN position_id OPTIONS (
+ALTER FOREIGN TABLE public.contributions ALTER COLUMN position_id OPTIONS (
     column_name 'position_id'
 );
 
@@ -2758,7 +2757,7 @@ ALTER FOREIGN TABLE contributions ALTER COLUMN position_id OPTIONS (
 -- Name: contributions2; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE contributions2 (
+CREATE FOREIGN TABLE public.contributions2 (
     id bigint,
     name_fact_id integer,
     position_id integer,
@@ -2770,19 +2769,19 @@ OPTIONS (
     schema_name 'public',
     table_name 'contributions2'
 );
-ALTER FOREIGN TABLE contributions2 ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.contributions2 ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE contributions2 ALTER COLUMN name_fact_id OPTIONS (
+ALTER FOREIGN TABLE public.contributions2 ALTER COLUMN name_fact_id OPTIONS (
     column_name 'name_fact_id'
 );
-ALTER FOREIGN TABLE contributions2 ALTER COLUMN position_id OPTIONS (
+ALTER FOREIGN TABLE public.contributions2 ALTER COLUMN position_id OPTIONS (
     column_name 'position_id'
 );
-ALTER FOREIGN TABLE contributions2 ALTER COLUMN person_id OPTIONS (
+ALTER FOREIGN TABLE public.contributions2 ALTER COLUMN person_id OPTIONS (
     column_name 'person_id'
 );
-ALTER FOREIGN TABLE contributions2 ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.contributions2 ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
 
@@ -2791,7 +2790,7 @@ ALTER FOREIGN TABLE contributions2 ALTER COLUMN project_id OPTIONS (
 -- Name: countries; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE countries (
+CREATE FOREIGN TABLE public.countries (
     country_code text,
     continent_code text,
     name text,
@@ -2802,16 +2801,16 @@ OPTIONS (
     schema_name 'public',
     table_name 'countries'
 );
-ALTER FOREIGN TABLE countries ALTER COLUMN country_code OPTIONS (
+ALTER FOREIGN TABLE public.countries ALTER COLUMN country_code OPTIONS (
     column_name 'country_code'
 );
-ALTER FOREIGN TABLE countries ALTER COLUMN continent_code OPTIONS (
+ALTER FOREIGN TABLE public.countries ALTER COLUMN continent_code OPTIONS (
     column_name 'continent_code'
 );
-ALTER FOREIGN TABLE countries ALTER COLUMN name OPTIONS (
+ALTER FOREIGN TABLE public.countries ALTER COLUMN name OPTIONS (
     column_name 'name'
 );
-ALTER FOREIGN TABLE countries ALTER COLUMN region OPTIONS (
+ALTER FOREIGN TABLE public.countries ALTER COLUMN region OPTIONS (
     column_name 'region'
 );
 
@@ -2820,8 +2819,8 @@ ALTER FOREIGN TABLE countries ALTER COLUMN region OPTIONS (
 -- Name: deleted_accounts; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE deleted_accounts (
-    id integer DEFAULT deleted_accounts_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.deleted_accounts (
+    id integer DEFAULT public.deleted_accounts_id_seq_view() NOT NULL,
     login text NOT NULL,
     email text NOT NULL,
     organization_id integer,
@@ -2836,31 +2835,31 @@ OPTIONS (
     schema_name 'public',
     table_name 'deleted_accounts'
 );
-ALTER FOREIGN TABLE deleted_accounts ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.deleted_accounts ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE deleted_accounts ALTER COLUMN login OPTIONS (
+ALTER FOREIGN TABLE public.deleted_accounts ALTER COLUMN login OPTIONS (
     column_name 'login'
 );
-ALTER FOREIGN TABLE deleted_accounts ALTER COLUMN email OPTIONS (
+ALTER FOREIGN TABLE public.deleted_accounts ALTER COLUMN email OPTIONS (
     column_name 'email'
 );
-ALTER FOREIGN TABLE deleted_accounts ALTER COLUMN organization_id OPTIONS (
+ALTER FOREIGN TABLE public.deleted_accounts ALTER COLUMN organization_id OPTIONS (
     column_name 'organization_id'
 );
-ALTER FOREIGN TABLE deleted_accounts ALTER COLUMN claimed_project_ids OPTIONS (
+ALTER FOREIGN TABLE public.deleted_accounts ALTER COLUMN claimed_project_ids OPTIONS (
     column_name 'claimed_project_ids'
 );
-ALTER FOREIGN TABLE deleted_accounts ALTER COLUMN reasons OPTIONS (
+ALTER FOREIGN TABLE public.deleted_accounts ALTER COLUMN reasons OPTIONS (
     column_name 'reasons'
 );
-ALTER FOREIGN TABLE deleted_accounts ALTER COLUMN reason_other OPTIONS (
+ALTER FOREIGN TABLE public.deleted_accounts ALTER COLUMN reason_other OPTIONS (
     column_name 'reason_other'
 );
-ALTER FOREIGN TABLE deleted_accounts ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.deleted_accounts ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE deleted_accounts ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.deleted_accounts ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
 
@@ -2869,7 +2868,7 @@ ALTER FOREIGN TABLE deleted_accounts ALTER COLUMN updated_at OPTIONS (
 -- Name: deleted_accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE deleted_accounts_id_seq
+CREATE SEQUENCE public.deleted_accounts_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2881,7 +2880,7 @@ CREATE SEQUENCE deleted_accounts_id_seq
 -- Name: deleted_accounts_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE deleted_accounts_id_seq_view (
+CREATE FOREIGN TABLE public.deleted_accounts_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -2889,7 +2888,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'deleted_accounts_id_seq_view'
 );
-ALTER FOREIGN TABLE deleted_accounts_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.deleted_accounts_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -2898,7 +2897,7 @@ ALTER FOREIGN TABLE deleted_accounts_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: diff_licenses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE diff_licenses_id_seq
+CREATE SEQUENCE public.diff_licenses_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2910,7 +2909,7 @@ CREATE SEQUENCE diff_licenses_id_seq
 -- Name: diff_licenses_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE diff_licenses_id_seq_view (
+CREATE FOREIGN TABLE public.diff_licenses_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -2918,7 +2917,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'diff_licenses_id_seq_view'
 );
-ALTER FOREIGN TABLE diff_licenses_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.diff_licenses_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -2927,7 +2926,7 @@ ALTER FOREIGN TABLE diff_licenses_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: diffs; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE diffs (
+CREATE TABLE public.diffs (
     id bigint NOT NULL,
     sha1 text,
     parent_sha1 text,
@@ -2943,7 +2942,7 @@ CREATE TABLE diffs (
 -- Name: diffs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE diffs_id_seq
+CREATE SEQUENCE public.diffs_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2955,23 +2954,23 @@ CREATE SEQUENCE diffs_id_seq
 -- Name: diffs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE diffs_id_seq OWNED BY diffs.id;
+ALTER SEQUENCE public.diffs_id_seq OWNED BY public.diffs.id;
 
 
 --
 -- Name: diffs_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW diffs_id_seq_view AS
- SELECT (nextval('diffs_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.diffs_id_seq_view AS
+ SELECT (nextval('public.diffs_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: duplicates; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE duplicates (
-    id integer DEFAULT duplicates_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.duplicates (
+    id integer DEFAULT public.duplicates_id_seq_view() NOT NULL,
     good_project_id integer NOT NULL,
     bad_project_id integer NOT NULL,
     account_id integer,
@@ -2984,25 +2983,25 @@ OPTIONS (
     schema_name 'public',
     table_name 'duplicates'
 );
-ALTER FOREIGN TABLE duplicates ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.duplicates ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE duplicates ALTER COLUMN good_project_id OPTIONS (
+ALTER FOREIGN TABLE public.duplicates ALTER COLUMN good_project_id OPTIONS (
     column_name 'good_project_id'
 );
-ALTER FOREIGN TABLE duplicates ALTER COLUMN bad_project_id OPTIONS (
+ALTER FOREIGN TABLE public.duplicates ALTER COLUMN bad_project_id OPTIONS (
     column_name 'bad_project_id'
 );
-ALTER FOREIGN TABLE duplicates ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.duplicates ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE duplicates ALTER COLUMN comment OPTIONS (
+ALTER FOREIGN TABLE public.duplicates ALTER COLUMN comment OPTIONS (
     column_name 'comment'
 );
-ALTER FOREIGN TABLE duplicates ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.duplicates ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE duplicates ALTER COLUMN resolved OPTIONS (
+ALTER FOREIGN TABLE public.duplicates ALTER COLUMN resolved OPTIONS (
     column_name 'resolved'
 );
 
@@ -3011,7 +3010,7 @@ ALTER FOREIGN TABLE duplicates ALTER COLUMN resolved OPTIONS (
 -- Name: duplicates_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE duplicates_id_seq
+CREATE SEQUENCE public.duplicates_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3023,7 +3022,7 @@ CREATE SEQUENCE duplicates_id_seq
 -- Name: duplicates_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE duplicates_id_seq_view (
+CREATE FOREIGN TABLE public.duplicates_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -3031,7 +3030,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'duplicates_id_seq_view'
 );
-ALTER FOREIGN TABLE duplicates_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.duplicates_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -3040,8 +3039,8 @@ ALTER FOREIGN TABLE duplicates_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: edits; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE edits (
-    id integer DEFAULT edits_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.edits (
+    id integer DEFAULT public.edits_id_seq_view() NOT NULL,
     type text,
     target_id integer NOT NULL,
     target_type text NOT NULL,
@@ -3062,49 +3061,49 @@ OPTIONS (
     schema_name 'public',
     table_name 'edits'
 );
-ALTER FOREIGN TABLE edits ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.edits ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE edits ALTER COLUMN type OPTIONS (
+ALTER FOREIGN TABLE public.edits ALTER COLUMN type OPTIONS (
     column_name 'type'
 );
-ALTER FOREIGN TABLE edits ALTER COLUMN target_id OPTIONS (
+ALTER FOREIGN TABLE public.edits ALTER COLUMN target_id OPTIONS (
     column_name 'target_id'
 );
-ALTER FOREIGN TABLE edits ALTER COLUMN target_type OPTIONS (
+ALTER FOREIGN TABLE public.edits ALTER COLUMN target_type OPTIONS (
     column_name 'target_type'
 );
-ALTER FOREIGN TABLE edits ALTER COLUMN key OPTIONS (
+ALTER FOREIGN TABLE public.edits ALTER COLUMN key OPTIONS (
     column_name 'key'
 );
-ALTER FOREIGN TABLE edits ALTER COLUMN value OPTIONS (
+ALTER FOREIGN TABLE public.edits ALTER COLUMN value OPTIONS (
     column_name 'value'
 );
-ALTER FOREIGN TABLE edits ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.edits ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE edits ALTER COLUMN ip OPTIONS (
+ALTER FOREIGN TABLE public.edits ALTER COLUMN ip OPTIONS (
     column_name 'ip'
 );
-ALTER FOREIGN TABLE edits ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.edits ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE edits ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.edits ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE edits ALTER COLUMN undone OPTIONS (
+ALTER FOREIGN TABLE public.edits ALTER COLUMN undone OPTIONS (
     column_name 'undone'
 );
-ALTER FOREIGN TABLE edits ALTER COLUMN undone_at OPTIONS (
+ALTER FOREIGN TABLE public.edits ALTER COLUMN undone_at OPTIONS (
     column_name 'undone_at'
 );
-ALTER FOREIGN TABLE edits ALTER COLUMN undone_by OPTIONS (
+ALTER FOREIGN TABLE public.edits ALTER COLUMN undone_by OPTIONS (
     column_name 'undone_by'
 );
-ALTER FOREIGN TABLE edits ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.edits ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE edits ALTER COLUMN organization_id OPTIONS (
+ALTER FOREIGN TABLE public.edits ALTER COLUMN organization_id OPTIONS (
     column_name 'organization_id'
 );
 
@@ -3113,7 +3112,7 @@ ALTER FOREIGN TABLE edits ALTER COLUMN organization_id OPTIONS (
 -- Name: edits_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE edits_id_seq
+CREATE SEQUENCE public.edits_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3125,7 +3124,7 @@ CREATE SEQUENCE edits_id_seq
 -- Name: edits_id_seq1_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE edits_id_seq1_view (
+CREATE FOREIGN TABLE public.edits_id_seq1_view (
     id integer
 )
 SERVER ohloh
@@ -3133,7 +3132,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'edits_id_seq1_view'
 );
-ALTER FOREIGN TABLE edits_id_seq1_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.edits_id_seq1_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -3142,7 +3141,7 @@ ALTER FOREIGN TABLE edits_id_seq1_view ALTER COLUMN id OPTIONS (
 -- Name: edits_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE edits_id_seq_view (
+CREATE FOREIGN TABLE public.edits_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -3150,7 +3149,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'edits_id_seq_view'
 );
-ALTER FOREIGN TABLE edits_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.edits_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -3159,7 +3158,7 @@ ALTER FOREIGN TABLE edits_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: email_addresses; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE email_addresses (
+CREATE TABLE public.email_addresses (
     id integer NOT NULL,
     address text NOT NULL
 );
@@ -3169,7 +3168,7 @@ CREATE TABLE email_addresses (
 -- Name: email_addresses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE email_addresses_id_seq
+CREATE SEQUENCE public.email_addresses_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3181,23 +3180,23 @@ CREATE SEQUENCE email_addresses_id_seq
 -- Name: email_addresses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE email_addresses_id_seq OWNED BY email_addresses.id;
+ALTER SEQUENCE public.email_addresses_id_seq OWNED BY public.email_addresses.id;
 
 
 --
 -- Name: email_addresses_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW email_addresses_id_seq_view AS
- SELECT (nextval('email_addresses_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.email_addresses_id_seq_view AS
+ SELECT (nextval('public.email_addresses_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: enlistments; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE enlistments (
-    id integer DEFAULT enlistments_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.enlistments (
+    id integer DEFAULT public.enlistments_id_seq_view() NOT NULL,
     project_id integer NOT NULL,
     repository_id integer,
     deleted boolean DEFAULT false NOT NULL,
@@ -3211,28 +3210,28 @@ OPTIONS (
     schema_name 'public',
     table_name 'enlistments'
 );
-ALTER FOREIGN TABLE enlistments ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.enlistments ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE enlistments ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.enlistments ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE enlistments ALTER COLUMN repository_id OPTIONS (
+ALTER FOREIGN TABLE public.enlistments ALTER COLUMN repository_id OPTIONS (
     column_name 'repository_id'
 );
-ALTER FOREIGN TABLE enlistments ALTER COLUMN deleted OPTIONS (
+ALTER FOREIGN TABLE public.enlistments ALTER COLUMN deleted OPTIONS (
     column_name 'deleted'
 );
-ALTER FOREIGN TABLE enlistments ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.enlistments ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE enlistments ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.enlistments ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE enlistments ALTER COLUMN ignore OPTIONS (
+ALTER FOREIGN TABLE public.enlistments ALTER COLUMN ignore OPTIONS (
     column_name 'ignore'
 );
-ALTER FOREIGN TABLE enlistments ALTER COLUMN code_location_id OPTIONS (
+ALTER FOREIGN TABLE public.enlistments ALTER COLUMN code_location_id OPTIONS (
     column_name 'code_location_id'
 );
 
@@ -3241,7 +3240,7 @@ ALTER FOREIGN TABLE enlistments ALTER COLUMN code_location_id OPTIONS (
 -- Name: enlistments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE enlistments_id_seq
+CREATE SEQUENCE public.enlistments_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3253,7 +3252,7 @@ CREATE SEQUENCE enlistments_id_seq
 -- Name: enlistments_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE enlistments_id_seq_view (
+CREATE FOREIGN TABLE public.enlistments_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -3261,7 +3260,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'enlistments_id_seq_view'
 );
-ALTER FOREIGN TABLE enlistments_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.enlistments_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -3270,8 +3269,8 @@ ALTER FOREIGN TABLE enlistments_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: event_subscription; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE event_subscription (
-    id integer DEFAULT event_subscription_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.event_subscription (
+    id integer DEFAULT public.event_subscription_id_seq_view() NOT NULL,
     subscriber_id integer,
     klass text NOT NULL,
     project_id integer,
@@ -3284,25 +3283,25 @@ OPTIONS (
     schema_name 'public',
     table_name 'event_subscription'
 );
-ALTER FOREIGN TABLE event_subscription ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.event_subscription ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE event_subscription ALTER COLUMN subscriber_id OPTIONS (
+ALTER FOREIGN TABLE public.event_subscription ALTER COLUMN subscriber_id OPTIONS (
     column_name 'subscriber_id'
 );
-ALTER FOREIGN TABLE event_subscription ALTER COLUMN klass OPTIONS (
+ALTER FOREIGN TABLE public.event_subscription ALTER COLUMN klass OPTIONS (
     column_name 'klass'
 );
-ALTER FOREIGN TABLE event_subscription ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.event_subscription ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE event_subscription ALTER COLUMN topic_id OPTIONS (
+ALTER FOREIGN TABLE public.event_subscription ALTER COLUMN topic_id OPTIONS (
     column_name 'topic_id'
 );
-ALTER FOREIGN TABLE event_subscription ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.event_subscription ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE event_subscription ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.event_subscription ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
 
@@ -3311,7 +3310,7 @@ ALTER FOREIGN TABLE event_subscription ALTER COLUMN created_at OPTIONS (
 -- Name: event_subscription_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE event_subscription_id_seq
+CREATE SEQUENCE public.event_subscription_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3323,7 +3322,7 @@ CREATE SEQUENCE event_subscription_id_seq
 -- Name: event_subscription_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE event_subscription_id_seq_view (
+CREATE FOREIGN TABLE public.event_subscription_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -3331,7 +3330,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'event_subscription_id_seq_view'
 );
-ALTER FOREIGN TABLE event_subscription_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.event_subscription_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -3340,8 +3339,8 @@ ALTER FOREIGN TABLE event_subscription_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: exhibits; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE exhibits (
-    id integer DEFAULT exhibits_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.exhibits (
+    id integer DEFAULT public.exhibits_id_seq_view() NOT NULL,
     report_id integer NOT NULL,
     type text NOT NULL,
     title text,
@@ -3355,28 +3354,28 @@ OPTIONS (
     schema_name 'public',
     table_name 'exhibits'
 );
-ALTER FOREIGN TABLE exhibits ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.exhibits ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE exhibits ALTER COLUMN report_id OPTIONS (
+ALTER FOREIGN TABLE public.exhibits ALTER COLUMN report_id OPTIONS (
     column_name 'report_id'
 );
-ALTER FOREIGN TABLE exhibits ALTER COLUMN type OPTIONS (
+ALTER FOREIGN TABLE public.exhibits ALTER COLUMN type OPTIONS (
     column_name 'type'
 );
-ALTER FOREIGN TABLE exhibits ALTER COLUMN title OPTIONS (
+ALTER FOREIGN TABLE public.exhibits ALTER COLUMN title OPTIONS (
     column_name 'title'
 );
-ALTER FOREIGN TABLE exhibits ALTER COLUMN params OPTIONS (
+ALTER FOREIGN TABLE public.exhibits ALTER COLUMN params OPTIONS (
     column_name 'params'
 );
-ALTER FOREIGN TABLE exhibits ALTER COLUMN result OPTIONS (
+ALTER FOREIGN TABLE public.exhibits ALTER COLUMN result OPTIONS (
     column_name 'result'
 );
-ALTER FOREIGN TABLE exhibits ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.exhibits ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE exhibits ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.exhibits ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
 
@@ -3385,7 +3384,7 @@ ALTER FOREIGN TABLE exhibits ALTER COLUMN updated_at OPTIONS (
 -- Name: exhibits_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE exhibits_id_seq
+CREATE SEQUENCE public.exhibits_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3397,7 +3396,7 @@ CREATE SEQUENCE exhibits_id_seq
 -- Name: exhibits_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE exhibits_id_seq_view (
+CREATE FOREIGN TABLE public.exhibits_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -3405,7 +3404,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'exhibits_id_seq_view'
 );
-ALTER FOREIGN TABLE exhibits_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.exhibits_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -3414,8 +3413,8 @@ ALTER FOREIGN TABLE exhibits_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: factoids; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE factoids (
-    id integer DEFAULT factoids_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.factoids (
+    id integer DEFAULT public.factoids_id_seq_view() NOT NULL,
     severity integer DEFAULT 0,
     analysis_id integer NOT NULL,
     type text,
@@ -3430,31 +3429,31 @@ OPTIONS (
     schema_name 'public',
     table_name 'factoids'
 );
-ALTER FOREIGN TABLE factoids ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.factoids ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE factoids ALTER COLUMN severity OPTIONS (
+ALTER FOREIGN TABLE public.factoids ALTER COLUMN severity OPTIONS (
     column_name 'severity'
 );
-ALTER FOREIGN TABLE factoids ALTER COLUMN analysis_id OPTIONS (
+ALTER FOREIGN TABLE public.factoids ALTER COLUMN analysis_id OPTIONS (
     column_name 'analysis_id'
 );
-ALTER FOREIGN TABLE factoids ALTER COLUMN type OPTIONS (
+ALTER FOREIGN TABLE public.factoids ALTER COLUMN type OPTIONS (
     column_name 'type'
 );
-ALTER FOREIGN TABLE factoids ALTER COLUMN license_id OPTIONS (
+ALTER FOREIGN TABLE public.factoids ALTER COLUMN license_id OPTIONS (
     column_name 'license_id'
 );
-ALTER FOREIGN TABLE factoids ALTER COLUMN language_id OPTIONS (
+ALTER FOREIGN TABLE public.factoids ALTER COLUMN language_id OPTIONS (
     column_name 'language_id'
 );
-ALTER FOREIGN TABLE factoids ALTER COLUMN previous_count OPTIONS (
+ALTER FOREIGN TABLE public.factoids ALTER COLUMN previous_count OPTIONS (
     column_name 'previous_count'
 );
-ALTER FOREIGN TABLE factoids ALTER COLUMN current_count OPTIONS (
+ALTER FOREIGN TABLE public.factoids ALTER COLUMN current_count OPTIONS (
     column_name 'current_count'
 );
-ALTER FOREIGN TABLE factoids ALTER COLUMN max_count OPTIONS (
+ALTER FOREIGN TABLE public.factoids ALTER COLUMN max_count OPTIONS (
     column_name 'max_count'
 );
 
@@ -3463,7 +3462,7 @@ ALTER FOREIGN TABLE factoids ALTER COLUMN max_count OPTIONS (
 -- Name: factoids_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE factoids_id_seq
+CREATE SEQUENCE public.factoids_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3475,7 +3474,7 @@ CREATE SEQUENCE factoids_id_seq
 -- Name: factoids_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE factoids_id_seq_view (
+CREATE FOREIGN TABLE public.factoids_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -3483,7 +3482,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'factoids_id_seq_view'
 );
-ALTER FOREIGN TABLE factoids_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.factoids_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -3492,8 +3491,8 @@ ALTER FOREIGN TABLE factoids_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: failure_groups; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE failure_groups (
-    id integer DEFAULT failure_groups_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.failure_groups (
+    id integer DEFAULT public.failure_groups_id_seq_view() NOT NULL,
     name text NOT NULL,
     pattern text NOT NULL,
     priority integer DEFAULT 0,
@@ -3504,19 +3503,19 @@ OPTIONS (
     schema_name 'public',
     table_name 'failure_groups'
 );
-ALTER FOREIGN TABLE failure_groups ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.failure_groups ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE failure_groups ALTER COLUMN name OPTIONS (
+ALTER FOREIGN TABLE public.failure_groups ALTER COLUMN name OPTIONS (
     column_name 'name'
 );
-ALTER FOREIGN TABLE failure_groups ALTER COLUMN pattern OPTIONS (
+ALTER FOREIGN TABLE public.failure_groups ALTER COLUMN pattern OPTIONS (
     column_name 'pattern'
 );
-ALTER FOREIGN TABLE failure_groups ALTER COLUMN priority OPTIONS (
+ALTER FOREIGN TABLE public.failure_groups ALTER COLUMN priority OPTIONS (
     column_name 'priority'
 );
-ALTER FOREIGN TABLE failure_groups ALTER COLUMN auto_reschedule OPTIONS (
+ALTER FOREIGN TABLE public.failure_groups ALTER COLUMN auto_reschedule OPTIONS (
     column_name 'auto_reschedule'
 );
 
@@ -3525,7 +3524,7 @@ ALTER FOREIGN TABLE failure_groups ALTER COLUMN auto_reschedule OPTIONS (
 -- Name: failure_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE failure_groups_id_seq
+CREATE SEQUENCE public.failure_groups_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3537,7 +3536,7 @@ CREATE SEQUENCE failure_groups_id_seq
 -- Name: failure_groups_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE failure_groups_id_seq_view (
+CREATE FOREIGN TABLE public.failure_groups_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -3545,7 +3544,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'failure_groups_id_seq_view'
 );
-ALTER FOREIGN TABLE failure_groups_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.failure_groups_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -3554,8 +3553,8 @@ ALTER FOREIGN TABLE failure_groups_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: feedbacks; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE feedbacks (
-    id integer DEFAULT feedbacks_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.feedbacks (
+    id integer DEFAULT public.feedbacks_id_seq_view() NOT NULL,
     rating integer,
     more_info integer,
     uuid character varying,
@@ -3569,28 +3568,28 @@ OPTIONS (
     schema_name 'public',
     table_name 'feedbacks'
 );
-ALTER FOREIGN TABLE feedbacks ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.feedbacks ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE feedbacks ALTER COLUMN rating OPTIONS (
+ALTER FOREIGN TABLE public.feedbacks ALTER COLUMN rating OPTIONS (
     column_name 'rating'
 );
-ALTER FOREIGN TABLE feedbacks ALTER COLUMN more_info OPTIONS (
+ALTER FOREIGN TABLE public.feedbacks ALTER COLUMN more_info OPTIONS (
     column_name 'more_info'
 );
-ALTER FOREIGN TABLE feedbacks ALTER COLUMN uuid OPTIONS (
+ALTER FOREIGN TABLE public.feedbacks ALTER COLUMN uuid OPTIONS (
     column_name 'uuid'
 );
-ALTER FOREIGN TABLE feedbacks ALTER COLUMN ip_address OPTIONS (
+ALTER FOREIGN TABLE public.feedbacks ALTER COLUMN ip_address OPTIONS (
     column_name 'ip_address'
 );
-ALTER FOREIGN TABLE feedbacks ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.feedbacks ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE feedbacks ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.feedbacks ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE feedbacks ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.feedbacks ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
 
@@ -3599,7 +3598,7 @@ ALTER FOREIGN TABLE feedbacks ALTER COLUMN updated_at OPTIONS (
 -- Name: feedbacks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE feedbacks_id_seq
+CREATE SEQUENCE public.feedbacks_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3611,7 +3610,7 @@ CREATE SEQUENCE feedbacks_id_seq
 -- Name: feedbacks_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE feedbacks_id_seq_view (
+CREATE FOREIGN TABLE public.feedbacks_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -3619,7 +3618,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'feedbacks_id_seq_view'
 );
-ALTER FOREIGN TABLE feedbacks_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.feedbacks_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -3628,7 +3627,7 @@ ALTER FOREIGN TABLE feedbacks_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: fisbot_events; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE fisbot_events (
+CREATE TABLE public.fisbot_events (
     id integer NOT NULL,
     code_location_id integer,
     type text NOT NULL,
@@ -3646,7 +3645,7 @@ CREATE TABLE fisbot_events (
 -- Name: fisbot_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE fisbot_events_id_seq
+CREATE SEQUENCE public.fisbot_events_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3658,22 +3657,22 @@ CREATE SEQUENCE fisbot_events_id_seq
 -- Name: fisbot_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE fisbot_events_id_seq OWNED BY fisbot_events.id;
+ALTER SEQUENCE public.fisbot_events_id_seq OWNED BY public.fisbot_events.id;
 
 
 --
 -- Name: fisbot_events_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW fisbot_events_id_seq_view AS
- SELECT (nextval('fisbot_events_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.fisbot_events_id_seq_view AS
+ SELECT (nextval('public.fisbot_events_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: followed_messages; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE followed_messages (
+CREATE FOREIGN TABLE public.followed_messages (
     owner_id integer,
     id integer,
     account_id integer,
@@ -3687,25 +3686,25 @@ OPTIONS (
     schema_name 'public',
     table_name 'followed_messages'
 );
-ALTER FOREIGN TABLE followed_messages ALTER COLUMN owner_id OPTIONS (
+ALTER FOREIGN TABLE public.followed_messages ALTER COLUMN owner_id OPTIONS (
     column_name 'owner_id'
 );
-ALTER FOREIGN TABLE followed_messages ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.followed_messages ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE followed_messages ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.followed_messages ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE followed_messages ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.followed_messages ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE followed_messages ALTER COLUMN deleted_at OPTIONS (
+ALTER FOREIGN TABLE public.followed_messages ALTER COLUMN deleted_at OPTIONS (
     column_name 'deleted_at'
 );
-ALTER FOREIGN TABLE followed_messages ALTER COLUMN body OPTIONS (
+ALTER FOREIGN TABLE public.followed_messages ALTER COLUMN body OPTIONS (
     column_name 'body'
 );
-ALTER FOREIGN TABLE followed_messages ALTER COLUMN title OPTIONS (
+ALTER FOREIGN TABLE public.followed_messages ALTER COLUMN title OPTIONS (
     column_name 'title'
 );
 
@@ -3714,8 +3713,8 @@ ALTER FOREIGN TABLE followed_messages ALTER COLUMN title OPTIONS (
 -- Name: follows; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE follows (
-    id integer DEFAULT follows_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.follows (
+    id integer DEFAULT public.follows_id_seq_view() NOT NULL,
     owner_id integer NOT NULL,
     project_id integer,
     account_id integer,
@@ -3726,19 +3725,19 @@ OPTIONS (
     schema_name 'public',
     table_name 'follows'
 );
-ALTER FOREIGN TABLE follows ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.follows ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE follows ALTER COLUMN owner_id OPTIONS (
+ALTER FOREIGN TABLE public.follows ALTER COLUMN owner_id OPTIONS (
     column_name 'owner_id'
 );
-ALTER FOREIGN TABLE follows ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.follows ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE follows ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.follows ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE follows ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.follows ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
 
@@ -3747,7 +3746,7 @@ ALTER FOREIGN TABLE follows ALTER COLUMN created_at OPTIONS (
 -- Name: follows_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE follows_id_seq
+CREATE SEQUENCE public.follows_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3759,7 +3758,7 @@ CREATE SEQUENCE follows_id_seq
 -- Name: follows_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE follows_id_seq_view (
+CREATE FOREIGN TABLE public.follows_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -3767,7 +3766,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'follows_id_seq_view'
 );
-ALTER FOREIGN TABLE follows_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.follows_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -3776,8 +3775,8 @@ ALTER FOREIGN TABLE follows_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: forges; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE forges (
-    id integer DEFAULT forges_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.forges (
+    id integer DEFAULT public.forges_id_seq_view() NOT NULL,
     name text NOT NULL,
     url text NOT NULL,
     type text
@@ -3787,16 +3786,16 @@ OPTIONS (
     schema_name 'public',
     table_name 'forges'
 );
-ALTER FOREIGN TABLE forges ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.forges ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE forges ALTER COLUMN name OPTIONS (
+ALTER FOREIGN TABLE public.forges ALTER COLUMN name OPTIONS (
     column_name 'name'
 );
-ALTER FOREIGN TABLE forges ALTER COLUMN url OPTIONS (
+ALTER FOREIGN TABLE public.forges ALTER COLUMN url OPTIONS (
     column_name 'url'
 );
-ALTER FOREIGN TABLE forges ALTER COLUMN type OPTIONS (
+ALTER FOREIGN TABLE public.forges ALTER COLUMN type OPTIONS (
     column_name 'type'
 );
 
@@ -3805,7 +3804,7 @@ ALTER FOREIGN TABLE forges ALTER COLUMN type OPTIONS (
 -- Name: forges_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE forges_id_seq
+CREATE SEQUENCE public.forges_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3817,7 +3816,7 @@ CREATE SEQUENCE forges_id_seq
 -- Name: forges_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE forges_id_seq_view (
+CREATE FOREIGN TABLE public.forges_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -3825,7 +3824,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'forges_id_seq_view'
 );
-ALTER FOREIGN TABLE forges_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.forges_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -3834,8 +3833,8 @@ ALTER FOREIGN TABLE forges_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: forums; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE forums (
-    id integer DEFAULT forums_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.forums (
+    id integer DEFAULT public.forums_id_seq_view() NOT NULL,
     project_id integer,
     name text NOT NULL,
     topics_count integer DEFAULT 0,
@@ -3848,25 +3847,25 @@ OPTIONS (
     schema_name 'public',
     table_name 'forums'
 );
-ALTER FOREIGN TABLE forums ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.forums ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE forums ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.forums ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE forums ALTER COLUMN name OPTIONS (
+ALTER FOREIGN TABLE public.forums ALTER COLUMN name OPTIONS (
     column_name 'name'
 );
-ALTER FOREIGN TABLE forums ALTER COLUMN topics_count OPTIONS (
+ALTER FOREIGN TABLE public.forums ALTER COLUMN topics_count OPTIONS (
     column_name 'topics_count'
 );
-ALTER FOREIGN TABLE forums ALTER COLUMN posts_count OPTIONS (
+ALTER FOREIGN TABLE public.forums ALTER COLUMN posts_count OPTIONS (
     column_name 'posts_count'
 );
-ALTER FOREIGN TABLE forums ALTER COLUMN "position" OPTIONS (
+ALTER FOREIGN TABLE public.forums ALTER COLUMN "position" OPTIONS (
     column_name 'position'
 );
-ALTER FOREIGN TABLE forums ALTER COLUMN description OPTIONS (
+ALTER FOREIGN TABLE public.forums ALTER COLUMN description OPTIONS (
     column_name 'description'
 );
 
@@ -3875,7 +3874,7 @@ ALTER FOREIGN TABLE forums ALTER COLUMN description OPTIONS (
 -- Name: forums_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE forums_id_seq
+CREATE SEQUENCE public.forums_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3887,7 +3886,7 @@ CREATE SEQUENCE forums_id_seq
 -- Name: forums_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE forums_id_seq_view (
+CREATE FOREIGN TABLE public.forums_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -3895,7 +3894,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'forums_id_seq_view'
 );
-ALTER FOREIGN TABLE forums_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.forums_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -3904,7 +3903,7 @@ ALTER FOREIGN TABLE forums_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: fyles; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE fyles (
+CREATE TABLE public.fyles (
     id integer NOT NULL,
     name text NOT NULL,
     code_set_id integer NOT NULL
@@ -3915,7 +3914,7 @@ CREATE TABLE fyles (
 -- Name: fyles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE fyles_id_seq
+CREATE SEQUENCE public.fyles_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3927,22 +3926,22 @@ CREATE SEQUENCE fyles_id_seq
 -- Name: fyles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE fyles_id_seq OWNED BY fyles.id;
+ALTER SEQUENCE public.fyles_id_seq OWNED BY public.fyles.id;
 
 
 --
 -- Name: fyles_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW fyles_id_seq_view AS
- SELECT (nextval('fyles_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.fyles_id_seq_view AS
+ SELECT (nextval('public.fyles_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: github_project; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE github_project (
+CREATE FOREIGN TABLE public.github_project (
     project_id text NOT NULL,
     owner text NOT NULL,
     state_code integer DEFAULT 660 NOT NULL,
@@ -3966,55 +3965,55 @@ OPTIONS (
     schema_name 'public',
     table_name 'github_project'
 );
-ALTER FOREIGN TABLE github_project ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.github_project ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE github_project ALTER COLUMN owner OPTIONS (
+ALTER FOREIGN TABLE public.github_project ALTER COLUMN owner OPTIONS (
     column_name 'owner'
 );
-ALTER FOREIGN TABLE github_project ALTER COLUMN state_code OPTIONS (
+ALTER FOREIGN TABLE public.github_project ALTER COLUMN state_code OPTIONS (
     column_name 'state_code'
 );
-ALTER FOREIGN TABLE github_project ALTER COLUMN description OPTIONS (
+ALTER FOREIGN TABLE public.github_project ALTER COLUMN description OPTIONS (
     column_name 'description'
 );
-ALTER FOREIGN TABLE github_project ALTER COLUMN homepage OPTIONS (
+ALTER FOREIGN TABLE public.github_project ALTER COLUMN homepage OPTIONS (
     column_name 'homepage'
 );
-ALTER FOREIGN TABLE github_project ALTER COLUMN has_downloads OPTIONS (
+ALTER FOREIGN TABLE public.github_project ALTER COLUMN has_downloads OPTIONS (
     column_name 'has_downloads'
 );
-ALTER FOREIGN TABLE github_project ALTER COLUMN is_fork OPTIONS (
+ALTER FOREIGN TABLE public.github_project ALTER COLUMN is_fork OPTIONS (
     column_name 'is_fork'
 );
-ALTER FOREIGN TABLE github_project ALTER COLUMN created OPTIONS (
+ALTER FOREIGN TABLE public.github_project ALTER COLUMN created OPTIONS (
     column_name 'created'
 );
-ALTER FOREIGN TABLE github_project ALTER COLUMN updated OPTIONS (
+ALTER FOREIGN TABLE public.github_project ALTER COLUMN updated OPTIONS (
     column_name 'updated'
 );
-ALTER FOREIGN TABLE github_project ALTER COLUMN last_spidered OPTIONS (
+ALTER FOREIGN TABLE public.github_project ALTER COLUMN last_spidered OPTIONS (
     column_name 'last_spidered'
 );
-ALTER FOREIGN TABLE github_project ALTER COLUMN parent OPTIONS (
+ALTER FOREIGN TABLE public.github_project ALTER COLUMN parent OPTIONS (
     column_name 'parent'
 );
-ALTER FOREIGN TABLE github_project ALTER COLUMN source OPTIONS (
+ALTER FOREIGN TABLE public.github_project ALTER COLUMN source OPTIONS (
     column_name 'source'
 );
-ALTER FOREIGN TABLE github_project ALTER COLUMN watchers OPTIONS (
+ALTER FOREIGN TABLE public.github_project ALTER COLUMN watchers OPTIONS (
     column_name 'watchers'
 );
-ALTER FOREIGN TABLE github_project ALTER COLUMN forks OPTIONS (
+ALTER FOREIGN TABLE public.github_project ALTER COLUMN forks OPTIONS (
     column_name 'forks'
 );
-ALTER FOREIGN TABLE github_project ALTER COLUMN project_created OPTIONS (
+ALTER FOREIGN TABLE public.github_project ALTER COLUMN project_created OPTIONS (
     column_name 'project_created'
 );
-ALTER FOREIGN TABLE github_project ALTER COLUMN note OPTIONS (
+ALTER FOREIGN TABLE public.github_project ALTER COLUMN note OPTIONS (
     column_name 'note'
 );
-ALTER FOREIGN TABLE github_project ALTER COLUMN organization OPTIONS (
+ALTER FOREIGN TABLE public.github_project ALTER COLUMN organization OPTIONS (
     column_name 'organization'
 );
 
@@ -4023,7 +4022,7 @@ ALTER FOREIGN TABLE github_project ALTER COLUMN organization OPTIONS (
 -- Name: guaranteed_spam_accounts; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE guaranteed_spam_accounts (
+CREATE FOREIGN TABLE public.guaranteed_spam_accounts (
     id integer NOT NULL,
     login text NOT NULL,
     email text NOT NULL,
@@ -4067,115 +4066,115 @@ OPTIONS (
     schema_name 'public',
     table_name 'guaranteed_spam_accounts'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN login OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN login OPTIONS (
     column_name 'login'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN email OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN email OPTIONS (
     column_name 'email'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN crypted_password OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN crypted_password OPTIONS (
     column_name 'crypted_password'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN salt OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN salt OPTIONS (
     column_name 'salt'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN activation_code OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN activation_code OPTIONS (
     column_name 'activation_code'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN activated_at OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN activated_at OPTIONS (
     column_name 'activated_at'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN remember_token OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN remember_token OPTIONS (
     column_name 'remember_token'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN remember_token_expires_at OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN remember_token_expires_at OPTIONS (
     column_name 'remember_token_expires_at'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN level OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN level OPTIONS (
     column_name 'level'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN posts_count OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN posts_count OPTIONS (
     column_name 'posts_count'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN last_seen_at OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN last_seen_at OPTIONS (
     column_name 'last_seen_at'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN name OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN name OPTIONS (
     column_name 'name'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN country_code OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN country_code OPTIONS (
     column_name 'country_code'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN location OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN location OPTIONS (
     column_name 'location'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN latitude OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN latitude OPTIONS (
     column_name 'latitude'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN longitude OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN longitude OPTIONS (
     column_name 'longitude'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN best_vita_id OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN best_vita_id OPTIONS (
     column_name 'best_vita_id'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN url OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN url OPTIONS (
     column_name 'url'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN about_markup_id OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN about_markup_id OPTIONS (
     column_name 'about_markup_id'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN hide_experience OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN hide_experience OPTIONS (
     column_name 'hide_experience'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN email_master OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN email_master OPTIONS (
     column_name 'email_master'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN email_posts OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN email_posts OPTIONS (
     column_name 'email_posts'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN email_kudos OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN email_kudos OPTIONS (
     column_name 'email_kudos'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN email_md5 OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN email_md5 OPTIONS (
     column_name 'email_md5'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN email_opportunities_visited OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN email_opportunities_visited OPTIONS (
     column_name 'email_opportunities_visited'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN activation_resent_at OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN activation_resent_at OPTIONS (
     column_name 'activation_resent_at'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN akas OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN akas OPTIONS (
     column_name 'akas'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN email_new_followers OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN email_new_followers OPTIONS (
     column_name 'email_new_followers'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN last_seen_ip OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN last_seen_ip OPTIONS (
     column_name 'last_seen_ip'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN twitter_account OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN twitter_account OPTIONS (
     column_name 'twitter_account'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN reset_password_tokens OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN reset_password_tokens OPTIONS (
     column_name 'reset_password_tokens'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN organization_id OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN organization_id OPTIONS (
     column_name 'organization_id'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN affiliation_type OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN affiliation_type OPTIONS (
     column_name 'affiliation_type'
 );
-ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN organization_name OPTIONS (
+ALTER FOREIGN TABLE public.guaranteed_spam_accounts ALTER COLUMN organization_name OPTIONS (
     column_name 'organization_name'
 );
 
@@ -4184,8 +4183,8 @@ ALTER FOREIGN TABLE guaranteed_spam_accounts ALTER COLUMN organization_name OPTI
 -- Name: helpfuls; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE helpfuls (
-    id integer DEFAULT helpfuls_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.helpfuls (
+    id integer DEFAULT public.helpfuls_id_seq_view() NOT NULL,
     review_id integer,
     account_id integer NOT NULL,
     yes boolean DEFAULT true
@@ -4195,16 +4194,16 @@ OPTIONS (
     schema_name 'public',
     table_name 'helpfuls'
 );
-ALTER FOREIGN TABLE helpfuls ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.helpfuls ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE helpfuls ALTER COLUMN review_id OPTIONS (
+ALTER FOREIGN TABLE public.helpfuls ALTER COLUMN review_id OPTIONS (
     column_name 'review_id'
 );
-ALTER FOREIGN TABLE helpfuls ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.helpfuls ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE helpfuls ALTER COLUMN yes OPTIONS (
+ALTER FOREIGN TABLE public.helpfuls ALTER COLUMN yes OPTIONS (
     column_name 'yes'
 );
 
@@ -4213,7 +4212,7 @@ ALTER FOREIGN TABLE helpfuls ALTER COLUMN yes OPTIONS (
 -- Name: helpfuls_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE helpfuls_id_seq
+CREATE SEQUENCE public.helpfuls_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4225,7 +4224,7 @@ CREATE SEQUENCE helpfuls_id_seq
 -- Name: helpfuls_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE helpfuls_id_seq_view (
+CREATE FOREIGN TABLE public.helpfuls_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -4233,7 +4232,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'helpfuls_id_seq_view'
 );
-ALTER FOREIGN TABLE helpfuls_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.helpfuls_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -4242,8 +4241,8 @@ ALTER FOREIGN TABLE helpfuls_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: invites; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE invites (
-    id integer DEFAULT invites_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.invites (
+    id integer DEFAULT public.invites_id_seq_view() NOT NULL,
     invitor_id integer NOT NULL,
     invitee_id integer,
     invitee_email text NOT NULL,
@@ -4259,34 +4258,34 @@ OPTIONS (
     schema_name 'public',
     table_name 'invites'
 );
-ALTER FOREIGN TABLE invites ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.invites ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE invites ALTER COLUMN invitor_id OPTIONS (
+ALTER FOREIGN TABLE public.invites ALTER COLUMN invitor_id OPTIONS (
     column_name 'invitor_id'
 );
-ALTER FOREIGN TABLE invites ALTER COLUMN invitee_id OPTIONS (
+ALTER FOREIGN TABLE public.invites ALTER COLUMN invitee_id OPTIONS (
     column_name 'invitee_id'
 );
-ALTER FOREIGN TABLE invites ALTER COLUMN invitee_email OPTIONS (
+ALTER FOREIGN TABLE public.invites ALTER COLUMN invitee_email OPTIONS (
     column_name 'invitee_email'
 );
-ALTER FOREIGN TABLE invites ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.invites ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE invites ALTER COLUMN activation_code OPTIONS (
+ALTER FOREIGN TABLE public.invites ALTER COLUMN activation_code OPTIONS (
     column_name 'activation_code'
 );
-ALTER FOREIGN TABLE invites ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.invites ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE invites ALTER COLUMN activated_at OPTIONS (
+ALTER FOREIGN TABLE public.invites ALTER COLUMN activated_at OPTIONS (
     column_name 'activated_at'
 );
-ALTER FOREIGN TABLE invites ALTER COLUMN name_id OPTIONS (
+ALTER FOREIGN TABLE public.invites ALTER COLUMN name_id OPTIONS (
     column_name 'name_id'
 );
-ALTER FOREIGN TABLE invites ALTER COLUMN contribution_id OPTIONS (
+ALTER FOREIGN TABLE public.invites ALTER COLUMN contribution_id OPTIONS (
     column_name 'contribution_id'
 );
 
@@ -4295,7 +4294,7 @@ ALTER FOREIGN TABLE invites ALTER COLUMN contribution_id OPTIONS (
 -- Name: invites_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE invites_id_seq
+CREATE SEQUENCE public.invites_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4307,7 +4306,7 @@ CREATE SEQUENCE invites_id_seq
 -- Name: invites_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE invites_id_seq_view (
+CREATE FOREIGN TABLE public.invites_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -4315,7 +4314,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'invites_id_seq_view'
 );
-ALTER FOREIGN TABLE invites_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.invites_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -4324,7 +4323,7 @@ ALTER FOREIGN TABLE invites_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: job_statuses; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE job_statuses (
+CREATE FOREIGN TABLE public.job_statuses (
     id integer NOT NULL,
     name text NOT NULL
 )
@@ -4333,10 +4332,10 @@ OPTIONS (
     schema_name 'public',
     table_name 'job_statuses'
 );
-ALTER FOREIGN TABLE job_statuses ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.job_statuses ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE job_statuses ALTER COLUMN name OPTIONS (
+ALTER FOREIGN TABLE public.job_statuses ALTER COLUMN name OPTIONS (
     column_name 'name'
 );
 
@@ -4345,8 +4344,8 @@ ALTER FOREIGN TABLE job_statuses ALTER COLUMN name OPTIONS (
 -- Name: jobs; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE jobs (
-    id integer DEFAULT jobs_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.jobs (
+    id integer DEFAULT public.jobs_id_seq_view() NOT NULL,
     project_id integer,
     status integer DEFAULT 0 NOT NULL,
     type text NOT NULL,
@@ -4376,76 +4375,76 @@ OPTIONS (
     schema_name 'public',
     table_name 'jobs'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN status OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN status OPTIONS (
     column_name 'status'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN type OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN type OPTIONS (
     column_name 'type'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN priority OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN priority OPTIONS (
     column_name 'priority'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN current_step OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN current_step OPTIONS (
     column_name 'current_step'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN current_step_at OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN current_step_at OPTIONS (
     column_name 'current_step_at'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN max_steps OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN max_steps OPTIONS (
     column_name 'max_steps'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN exception OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN exception OPTIONS (
     column_name 'exception'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN backtrace OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN backtrace OPTIONS (
     column_name 'backtrace'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN code_set_id OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN code_set_id OPTIONS (
     column_name 'code_set_id'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN sloc_set_id OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN sloc_set_id OPTIONS (
     column_name 'sloc_set_id'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN notes OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN notes OPTIONS (
     column_name 'notes'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN wait_until OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN wait_until OPTIONS (
     column_name 'wait_until'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN logged_at OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN logged_at OPTIONS (
     column_name 'logged_at'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN slave_id OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN slave_id OPTIONS (
     column_name 'slave_id'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN started_at OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN started_at OPTIONS (
     column_name 'started_at'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN retry_count OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN retry_count OPTIONS (
     column_name 'retry_count'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN do_not_retry OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN do_not_retry OPTIONS (
     column_name 'do_not_retry'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN failure_group_id OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN failure_group_id OPTIONS (
     column_name 'failure_group_id'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN organization_id OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN organization_id OPTIONS (
     column_name 'organization_id'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN code_location_id OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN code_location_id OPTIONS (
     column_name 'code_location_id'
 );
-ALTER FOREIGN TABLE jobs ALTER COLUMN code_location_tarball_id OPTIONS (
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN code_location_tarball_id OPTIONS (
     column_name 'code_location_tarball_id'
 );
 
@@ -4454,7 +4453,7 @@ ALTER FOREIGN TABLE jobs ALTER COLUMN code_location_tarball_id OPTIONS (
 -- Name: jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE jobs_id_seq
+CREATE SEQUENCE public.jobs_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4466,7 +4465,7 @@ CREATE SEQUENCE jobs_id_seq
 -- Name: jobs_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE jobs_id_seq_view (
+CREATE FOREIGN TABLE public.jobs_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -4474,7 +4473,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'jobs_id_seq_view'
 );
-ALTER FOREIGN TABLE jobs_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.jobs_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -4483,8 +4482,8 @@ ALTER FOREIGN TABLE jobs_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: knowledge_base_statuses; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE knowledge_base_statuses (
-    id integer DEFAULT knowledge_base_statuses_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.knowledge_base_statuses (
+    id integer DEFAULT public.knowledge_base_statuses_id_seq_view() NOT NULL,
     project_id integer NOT NULL,
     in_sync boolean DEFAULT false,
     updated_at timestamp without time zone
@@ -4494,16 +4493,16 @@ OPTIONS (
     schema_name 'public',
     table_name 'knowledge_base_statuses'
 );
-ALTER FOREIGN TABLE knowledge_base_statuses ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.knowledge_base_statuses ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE knowledge_base_statuses ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.knowledge_base_statuses ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE knowledge_base_statuses ALTER COLUMN in_sync OPTIONS (
+ALTER FOREIGN TABLE public.knowledge_base_statuses ALTER COLUMN in_sync OPTIONS (
     column_name 'in_sync'
 );
-ALTER FOREIGN TABLE knowledge_base_statuses ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.knowledge_base_statuses ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
 
@@ -4512,7 +4511,7 @@ ALTER FOREIGN TABLE knowledge_base_statuses ALTER COLUMN updated_at OPTIONS (
 -- Name: knowledge_base_statuses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE knowledge_base_statuses_id_seq
+CREATE SEQUENCE public.knowledge_base_statuses_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4524,7 +4523,7 @@ CREATE SEQUENCE knowledge_base_statuses_id_seq
 -- Name: knowledge_base_statuses_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE knowledge_base_statuses_id_seq_view (
+CREATE FOREIGN TABLE public.knowledge_base_statuses_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -4532,7 +4531,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'knowledge_base_statuses_id_seq_view'
 );
-ALTER FOREIGN TABLE knowledge_base_statuses_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.knowledge_base_statuses_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -4541,8 +4540,8 @@ ALTER FOREIGN TABLE knowledge_base_statuses_id_seq_view ALTER COLUMN id OPTIONS 
 -- Name: kudo_scores; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE kudo_scores (
-    id integer DEFAULT kudo_scores_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.kudo_scores (
+    id integer DEFAULT public.kudo_scores_id_seq_view() NOT NULL,
     array_index integer,
     account_id integer,
     project_id integer,
@@ -4558,34 +4557,34 @@ OPTIONS (
     schema_name 'public',
     table_name 'kudo_scores'
 );
-ALTER FOREIGN TABLE kudo_scores ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.kudo_scores ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE kudo_scores ALTER COLUMN array_index OPTIONS (
+ALTER FOREIGN TABLE public.kudo_scores ALTER COLUMN array_index OPTIONS (
     column_name 'array_index'
 );
-ALTER FOREIGN TABLE kudo_scores ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.kudo_scores ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE kudo_scores ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.kudo_scores ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE kudo_scores ALTER COLUMN name_id OPTIONS (
+ALTER FOREIGN TABLE public.kudo_scores ALTER COLUMN name_id OPTIONS (
     column_name 'name_id'
 );
-ALTER FOREIGN TABLE kudo_scores ALTER COLUMN damping OPTIONS (
+ALTER FOREIGN TABLE public.kudo_scores ALTER COLUMN damping OPTIONS (
     column_name 'damping'
 );
-ALTER FOREIGN TABLE kudo_scores ALTER COLUMN fraction OPTIONS (
+ALTER FOREIGN TABLE public.kudo_scores ALTER COLUMN fraction OPTIONS (
     column_name 'fraction'
 );
-ALTER FOREIGN TABLE kudo_scores ALTER COLUMN score OPTIONS (
+ALTER FOREIGN TABLE public.kudo_scores ALTER COLUMN score OPTIONS (
     column_name 'score'
 );
-ALTER FOREIGN TABLE kudo_scores ALTER COLUMN "position" OPTIONS (
+ALTER FOREIGN TABLE public.kudo_scores ALTER COLUMN "position" OPTIONS (
     column_name 'position'
 );
-ALTER FOREIGN TABLE kudo_scores ALTER COLUMN rank OPTIONS (
+ALTER FOREIGN TABLE public.kudo_scores ALTER COLUMN rank OPTIONS (
     column_name 'rank'
 );
 
@@ -4594,7 +4593,7 @@ ALTER FOREIGN TABLE kudo_scores ALTER COLUMN rank OPTIONS (
 -- Name: kudo_scores_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE kudo_scores_id_seq
+CREATE SEQUENCE public.kudo_scores_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4606,7 +4605,7 @@ CREATE SEQUENCE kudo_scores_id_seq
 -- Name: kudo_scores_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE kudo_scores_id_seq_view (
+CREATE FOREIGN TABLE public.kudo_scores_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -4614,7 +4613,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'kudo_scores_id_seq_view'
 );
-ALTER FOREIGN TABLE kudo_scores_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.kudo_scores_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -4623,8 +4622,8 @@ ALTER FOREIGN TABLE kudo_scores_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: kudos; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE kudos (
-    id integer DEFAULT kudos_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.kudos (
+    id integer DEFAULT public.kudos_id_seq_view() NOT NULL,
     sender_id integer NOT NULL,
     account_id integer,
     project_id integer,
@@ -4637,25 +4636,25 @@ OPTIONS (
     schema_name 'public',
     table_name 'kudos'
 );
-ALTER FOREIGN TABLE kudos ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.kudos ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE kudos ALTER COLUMN sender_id OPTIONS (
+ALTER FOREIGN TABLE public.kudos ALTER COLUMN sender_id OPTIONS (
     column_name 'sender_id'
 );
-ALTER FOREIGN TABLE kudos ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.kudos ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE kudos ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.kudos ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE kudos ALTER COLUMN name_id OPTIONS (
+ALTER FOREIGN TABLE public.kudos ALTER COLUMN name_id OPTIONS (
     column_name 'name_id'
 );
-ALTER FOREIGN TABLE kudos ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.kudos ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE kudos ALTER COLUMN message OPTIONS (
+ALTER FOREIGN TABLE public.kudos ALTER COLUMN message OPTIONS (
     column_name 'message'
 );
 
@@ -4664,7 +4663,7 @@ ALTER FOREIGN TABLE kudos ALTER COLUMN message OPTIONS (
 -- Name: kudos_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE kudos_id_seq
+CREATE SEQUENCE public.kudos_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4676,7 +4675,7 @@ CREATE SEQUENCE kudos_id_seq
 -- Name: kudos_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE kudos_id_seq_view (
+CREATE FOREIGN TABLE public.kudos_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -4684,7 +4683,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'kudos_id_seq_view'
 );
-ALTER FOREIGN TABLE kudos_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.kudos_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -4693,8 +4692,8 @@ ALTER FOREIGN TABLE kudos_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: language_experiences; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE language_experiences (
-    id integer DEFAULT language_experiences_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.language_experiences (
+    id integer DEFAULT public.language_experiences_id_seq_view() NOT NULL,
     position_id integer NOT NULL,
     language_id integer NOT NULL
 )
@@ -4703,13 +4702,13 @@ OPTIONS (
     schema_name 'public',
     table_name 'language_experiences'
 );
-ALTER FOREIGN TABLE language_experiences ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.language_experiences ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE language_experiences ALTER COLUMN position_id OPTIONS (
+ALTER FOREIGN TABLE public.language_experiences ALTER COLUMN position_id OPTIONS (
     column_name 'position_id'
 );
-ALTER FOREIGN TABLE language_experiences ALTER COLUMN language_id OPTIONS (
+ALTER FOREIGN TABLE public.language_experiences ALTER COLUMN language_id OPTIONS (
     column_name 'language_id'
 );
 
@@ -4718,7 +4717,7 @@ ALTER FOREIGN TABLE language_experiences ALTER COLUMN language_id OPTIONS (
 -- Name: language_experiences_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE language_experiences_id_seq
+CREATE SEQUENCE public.language_experiences_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4730,7 +4729,7 @@ CREATE SEQUENCE language_experiences_id_seq
 -- Name: language_experiences_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE language_experiences_id_seq_view (
+CREATE FOREIGN TABLE public.language_experiences_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -4738,7 +4737,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'language_experiences_id_seq_view'
 );
-ALTER FOREIGN TABLE language_experiences_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.language_experiences_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -4747,8 +4746,8 @@ ALTER FOREIGN TABLE language_experiences_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: language_facts; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE language_facts (
-    id integer DEFAULT language_facts_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.language_facts (
+    id integer DEFAULT public.language_facts_id_seq_view() NOT NULL,
     month date,
     language_id integer,
     commits bigint,
@@ -4762,28 +4761,28 @@ OPTIONS (
     schema_name 'public',
     table_name 'language_facts'
 );
-ALTER FOREIGN TABLE language_facts ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.language_facts ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE language_facts ALTER COLUMN month OPTIONS (
+ALTER FOREIGN TABLE public.language_facts ALTER COLUMN month OPTIONS (
     column_name 'month'
 );
-ALTER FOREIGN TABLE language_facts ALTER COLUMN language_id OPTIONS (
+ALTER FOREIGN TABLE public.language_facts ALTER COLUMN language_id OPTIONS (
     column_name 'language_id'
 );
-ALTER FOREIGN TABLE language_facts ALTER COLUMN commits OPTIONS (
+ALTER FOREIGN TABLE public.language_facts ALTER COLUMN commits OPTIONS (
     column_name 'commits'
 );
-ALTER FOREIGN TABLE language_facts ALTER COLUMN loc_changed OPTIONS (
+ALTER FOREIGN TABLE public.language_facts ALTER COLUMN loc_changed OPTIONS (
     column_name 'loc_changed'
 );
-ALTER FOREIGN TABLE language_facts ALTER COLUMN loc_total OPTIONS (
+ALTER FOREIGN TABLE public.language_facts ALTER COLUMN loc_total OPTIONS (
     column_name 'loc_total'
 );
-ALTER FOREIGN TABLE language_facts ALTER COLUMN projects OPTIONS (
+ALTER FOREIGN TABLE public.language_facts ALTER COLUMN projects OPTIONS (
     column_name 'projects'
 );
-ALTER FOREIGN TABLE language_facts ALTER COLUMN contributors OPTIONS (
+ALTER FOREIGN TABLE public.language_facts ALTER COLUMN contributors OPTIONS (
     column_name 'contributors'
 );
 
@@ -4792,7 +4791,7 @@ ALTER FOREIGN TABLE language_facts ALTER COLUMN contributors OPTIONS (
 -- Name: language_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE language_facts_id_seq
+CREATE SEQUENCE public.language_facts_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4804,7 +4803,7 @@ CREATE SEQUENCE language_facts_id_seq
 -- Name: language_facts_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE language_facts_id_seq_view (
+CREATE FOREIGN TABLE public.language_facts_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -4812,7 +4811,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'language_facts_id_seq_view'
 );
-ALTER FOREIGN TABLE language_facts_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.language_facts_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -4821,8 +4820,8 @@ ALTER FOREIGN TABLE language_facts_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: languages; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE languages (
-    id integer DEFAULT languages_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.languages (
+    id integer DEFAULT public.languages_id_seq_view() NOT NULL,
     name text,
     nice_name text,
     category integer DEFAULT 0,
@@ -4841,43 +4840,43 @@ OPTIONS (
     schema_name 'public',
     table_name 'languages'
 );
-ALTER FOREIGN TABLE languages ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.languages ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE languages ALTER COLUMN name OPTIONS (
+ALTER FOREIGN TABLE public.languages ALTER COLUMN name OPTIONS (
     column_name 'name'
 );
-ALTER FOREIGN TABLE languages ALTER COLUMN nice_name OPTIONS (
+ALTER FOREIGN TABLE public.languages ALTER COLUMN nice_name OPTIONS (
     column_name 'nice_name'
 );
-ALTER FOREIGN TABLE languages ALTER COLUMN category OPTIONS (
+ALTER FOREIGN TABLE public.languages ALTER COLUMN category OPTIONS (
     column_name 'category'
 );
-ALTER FOREIGN TABLE languages ALTER COLUMN avg_percent_comments OPTIONS (
+ALTER FOREIGN TABLE public.languages ALTER COLUMN avg_percent_comments OPTIONS (
     column_name 'avg_percent_comments'
 );
-ALTER FOREIGN TABLE languages ALTER COLUMN code OPTIONS (
+ALTER FOREIGN TABLE public.languages ALTER COLUMN code OPTIONS (
     column_name 'code'
 );
-ALTER FOREIGN TABLE languages ALTER COLUMN comments OPTIONS (
+ALTER FOREIGN TABLE public.languages ALTER COLUMN comments OPTIONS (
     column_name 'comments'
 );
-ALTER FOREIGN TABLE languages ALTER COLUMN blanks OPTIONS (
+ALTER FOREIGN TABLE public.languages ALTER COLUMN blanks OPTIONS (
     column_name 'blanks'
 );
-ALTER FOREIGN TABLE languages ALTER COLUMN commits OPTIONS (
+ALTER FOREIGN TABLE public.languages ALTER COLUMN commits OPTIONS (
     column_name 'commits'
 );
-ALTER FOREIGN TABLE languages ALTER COLUMN projects OPTIONS (
+ALTER FOREIGN TABLE public.languages ALTER COLUMN projects OPTIONS (
     column_name 'projects'
 );
-ALTER FOREIGN TABLE languages ALTER COLUMN contributors OPTIONS (
+ALTER FOREIGN TABLE public.languages ALTER COLUMN contributors OPTIONS (
     column_name 'contributors'
 );
-ALTER FOREIGN TABLE languages ALTER COLUMN active_contributors OPTIONS (
+ALTER FOREIGN TABLE public.languages ALTER COLUMN active_contributors OPTIONS (
     column_name 'active_contributors'
 );
-ALTER FOREIGN TABLE languages ALTER COLUMN experienced_contributors OPTIONS (
+ALTER FOREIGN TABLE public.languages ALTER COLUMN experienced_contributors OPTIONS (
     column_name 'experienced_contributors'
 );
 
@@ -4886,7 +4885,7 @@ ALTER FOREIGN TABLE languages ALTER COLUMN experienced_contributors OPTIONS (
 -- Name: languages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE languages_id_seq
+CREATE SEQUENCE public.languages_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4898,7 +4897,7 @@ CREATE SEQUENCE languages_id_seq
 -- Name: languages_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE languages_id_seq_view (
+CREATE FOREIGN TABLE public.languages_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -4906,7 +4905,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'languages_id_seq_view'
 );
-ALTER FOREIGN TABLE languages_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.languages_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -4915,11 +4914,11 @@ ALTER FOREIGN TABLE languages_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: license_facts; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE license_facts (
+CREATE FOREIGN TABLE public.license_facts (
     license_id integer NOT NULL,
     file_count integer DEFAULT 0 NOT NULL,
     scope integer DEFAULT 0 NOT NULL,
-    id integer DEFAULT license_facts_id_seq_view() NOT NULL,
+    id integer DEFAULT public.license_facts_id_seq_view() NOT NULL,
     analysis_id integer NOT NULL
 )
 SERVER ohloh
@@ -4927,19 +4926,19 @@ OPTIONS (
     schema_name 'public',
     table_name 'license_facts'
 );
-ALTER FOREIGN TABLE license_facts ALTER COLUMN license_id OPTIONS (
+ALTER FOREIGN TABLE public.license_facts ALTER COLUMN license_id OPTIONS (
     column_name 'license_id'
 );
-ALTER FOREIGN TABLE license_facts ALTER COLUMN file_count OPTIONS (
+ALTER FOREIGN TABLE public.license_facts ALTER COLUMN file_count OPTIONS (
     column_name 'file_count'
 );
-ALTER FOREIGN TABLE license_facts ALTER COLUMN scope OPTIONS (
+ALTER FOREIGN TABLE public.license_facts ALTER COLUMN scope OPTIONS (
     column_name 'scope'
 );
-ALTER FOREIGN TABLE license_facts ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.license_facts ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE license_facts ALTER COLUMN analysis_id OPTIONS (
+ALTER FOREIGN TABLE public.license_facts ALTER COLUMN analysis_id OPTIONS (
     column_name 'analysis_id'
 );
 
@@ -4948,7 +4947,7 @@ ALTER FOREIGN TABLE license_facts ALTER COLUMN analysis_id OPTIONS (
 -- Name: license_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE license_facts_id_seq
+CREATE SEQUENCE public.license_facts_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4960,7 +4959,7 @@ CREATE SEQUENCE license_facts_id_seq
 -- Name: license_facts_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE license_facts_id_seq_view (
+CREATE FOREIGN TABLE public.license_facts_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -4968,7 +4967,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'license_facts_id_seq_view'
 );
-ALTER FOREIGN TABLE license_facts_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.license_facts_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -4977,8 +4976,8 @@ ALTER FOREIGN TABLE license_facts_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: licenses; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE licenses (
-    id integer DEFAULT licenses_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.licenses (
+    id integer DEFAULT public.licenses_id_seq_view() NOT NULL,
     vanity_url text,
     name text,
     abbreviation text,
@@ -4992,28 +4991,28 @@ OPTIONS (
     schema_name 'public',
     table_name 'licenses'
 );
-ALTER FOREIGN TABLE licenses ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.licenses ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE licenses ALTER COLUMN vanity_url OPTIONS (
+ALTER FOREIGN TABLE public.licenses ALTER COLUMN vanity_url OPTIONS (
     column_name 'vanity_url'
 );
-ALTER FOREIGN TABLE licenses ALTER COLUMN name OPTIONS (
+ALTER FOREIGN TABLE public.licenses ALTER COLUMN name OPTIONS (
     column_name 'name'
 );
-ALTER FOREIGN TABLE licenses ALTER COLUMN abbreviation OPTIONS (
+ALTER FOREIGN TABLE public.licenses ALTER COLUMN abbreviation OPTIONS (
     column_name 'abbreviation'
 );
-ALTER FOREIGN TABLE licenses ALTER COLUMN url OPTIONS (
+ALTER FOREIGN TABLE public.licenses ALTER COLUMN url OPTIONS (
     column_name 'url'
 );
-ALTER FOREIGN TABLE licenses ALTER COLUMN description OPTIONS (
+ALTER FOREIGN TABLE public.licenses ALTER COLUMN description OPTIONS (
     column_name 'description'
 );
-ALTER FOREIGN TABLE licenses ALTER COLUMN deleted OPTIONS (
+ALTER FOREIGN TABLE public.licenses ALTER COLUMN deleted OPTIONS (
     column_name 'deleted'
 );
-ALTER FOREIGN TABLE licenses ALTER COLUMN locked OPTIONS (
+ALTER FOREIGN TABLE public.licenses ALTER COLUMN locked OPTIONS (
     column_name 'locked'
 );
 
@@ -5022,7 +5021,7 @@ ALTER FOREIGN TABLE licenses ALTER COLUMN locked OPTIONS (
 -- Name: licenses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE licenses_id_seq
+CREATE SEQUENCE public.licenses_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5034,7 +5033,7 @@ CREATE SEQUENCE licenses_id_seq
 -- Name: licenses_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE licenses_id_seq_view (
+CREATE FOREIGN TABLE public.licenses_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -5042,7 +5041,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'licenses_id_seq_view'
 );
-ALTER FOREIGN TABLE licenses_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.licenses_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -5051,7 +5050,7 @@ ALTER FOREIGN TABLE licenses_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: link_categories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE link_categories_id_seq
+CREATE SEQUENCE public.link_categories_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5063,8 +5062,8 @@ CREATE SEQUENCE link_categories_id_seq
 -- Name: link_categories_deleted; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE link_categories_deleted (
-    id integer DEFAULT nextval('link_categories_id_seq'::regclass) NOT NULL,
+CREATE FOREIGN TABLE public.link_categories_deleted (
+    id integer DEFAULT nextval('public.link_categories_id_seq'::regclass) NOT NULL,
     name text NOT NULL
 )
 SERVER ohloh
@@ -5072,10 +5071,10 @@ OPTIONS (
     schema_name 'public',
     table_name 'link_categories_deleted'
 );
-ALTER FOREIGN TABLE link_categories_deleted ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.link_categories_deleted ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE link_categories_deleted ALTER COLUMN name OPTIONS (
+ALTER FOREIGN TABLE public.link_categories_deleted ALTER COLUMN name OPTIONS (
     column_name 'name'
 );
 
@@ -5084,7 +5083,7 @@ ALTER FOREIGN TABLE link_categories_deleted ALTER COLUMN name OPTIONS (
 -- Name: link_categories_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE link_categories_id_seq_view (
+CREATE FOREIGN TABLE public.link_categories_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -5092,7 +5091,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'link_categories_id_seq_view'
 );
-ALTER FOREIGN TABLE link_categories_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.link_categories_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -5101,8 +5100,8 @@ ALTER FOREIGN TABLE link_categories_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: links; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE links (
-    id integer DEFAULT links_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.links (
+    id integer DEFAULT public.links_id_seq_view() NOT NULL,
     title text NOT NULL,
     url text NOT NULL,
     project_id integer NOT NULL,
@@ -5116,28 +5115,28 @@ OPTIONS (
     schema_name 'public',
     table_name 'links'
 );
-ALTER FOREIGN TABLE links ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.links ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE links ALTER COLUMN title OPTIONS (
+ALTER FOREIGN TABLE public.links ALTER COLUMN title OPTIONS (
     column_name 'title'
 );
-ALTER FOREIGN TABLE links ALTER COLUMN url OPTIONS (
+ALTER FOREIGN TABLE public.links ALTER COLUMN url OPTIONS (
     column_name 'url'
 );
-ALTER FOREIGN TABLE links ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.links ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE links ALTER COLUMN link_category_id OPTIONS (
+ALTER FOREIGN TABLE public.links ALTER COLUMN link_category_id OPTIONS (
     column_name 'link_category_id'
 );
-ALTER FOREIGN TABLE links ALTER COLUMN deleted OPTIONS (
+ALTER FOREIGN TABLE public.links ALTER COLUMN deleted OPTIONS (
     column_name 'deleted'
 );
-ALTER FOREIGN TABLE links ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.links ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE links ALTER COLUMN helpful_score OPTIONS (
+ALTER FOREIGN TABLE public.links ALTER COLUMN helpful_score OPTIONS (
     column_name 'helpful_score'
 );
 
@@ -5146,7 +5145,7 @@ ALTER FOREIGN TABLE links ALTER COLUMN helpful_score OPTIONS (
 -- Name: links_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE links_id_seq
+CREATE SEQUENCE public.links_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5158,7 +5157,7 @@ CREATE SEQUENCE links_id_seq
 -- Name: links_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE links_id_seq_view (
+CREATE FOREIGN TABLE public.links_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -5166,7 +5165,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'links_id_seq_view'
 );
-ALTER FOREIGN TABLE links_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.links_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -5175,7 +5174,7 @@ ALTER FOREIGN TABLE links_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: load_averages; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE load_averages (
+CREATE TABLE public.load_averages (
     current numeric DEFAULT 0.0,
     id integer NOT NULL,
     max numeric DEFAULT 3.0
@@ -5186,7 +5185,7 @@ CREATE TABLE load_averages (
 -- Name: load_averages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE load_averages_id_seq
+CREATE SEQUENCE public.load_averages_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5198,23 +5197,23 @@ CREATE SEQUENCE load_averages_id_seq
 -- Name: load_averages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE load_averages_id_seq OWNED BY load_averages.id;
+ALTER SEQUENCE public.load_averages_id_seq OWNED BY public.load_averages.id;
 
 
 --
 -- Name: load_averages_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW load_averages_id_seq_view AS
- SELECT (nextval('load_averages_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.load_averages_id_seq_view AS
+ SELECT (nextval('public.load_averages_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: manages; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE manages (
-    id integer DEFAULT manages_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.manages (
+    id integer DEFAULT public.manages_id_seq_view() NOT NULL,
     account_id integer NOT NULL,
     target_id integer NOT NULL,
     message text,
@@ -5230,34 +5229,34 @@ OPTIONS (
     schema_name 'public',
     table_name 'manages'
 );
-ALTER FOREIGN TABLE manages ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.manages ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE manages ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.manages ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE manages ALTER COLUMN target_id OPTIONS (
+ALTER FOREIGN TABLE public.manages ALTER COLUMN target_id OPTIONS (
     column_name 'target_id'
 );
-ALTER FOREIGN TABLE manages ALTER COLUMN message OPTIONS (
+ALTER FOREIGN TABLE public.manages ALTER COLUMN message OPTIONS (
     column_name 'message'
 );
-ALTER FOREIGN TABLE manages ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.manages ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE manages ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.manages ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE manages ALTER COLUMN approved_by OPTIONS (
+ALTER FOREIGN TABLE public.manages ALTER COLUMN approved_by OPTIONS (
     column_name 'approved_by'
 );
-ALTER FOREIGN TABLE manages ALTER COLUMN deleted_by OPTIONS (
+ALTER FOREIGN TABLE public.manages ALTER COLUMN deleted_by OPTIONS (
     column_name 'deleted_by'
 );
-ALTER FOREIGN TABLE manages ALTER COLUMN deleted_at OPTIONS (
+ALTER FOREIGN TABLE public.manages ALTER COLUMN deleted_at OPTIONS (
     column_name 'deleted_at'
 );
-ALTER FOREIGN TABLE manages ALTER COLUMN target_type OPTIONS (
+ALTER FOREIGN TABLE public.manages ALTER COLUMN target_type OPTIONS (
     column_name 'target_type'
 );
 
@@ -5266,7 +5265,7 @@ ALTER FOREIGN TABLE manages ALTER COLUMN target_type OPTIONS (
 -- Name: manages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE manages_id_seq
+CREATE SEQUENCE public.manages_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5278,7 +5277,7 @@ CREATE SEQUENCE manages_id_seq
 -- Name: manages_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE manages_id_seq_view (
+CREATE FOREIGN TABLE public.manages_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -5286,7 +5285,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'manages_id_seq_view'
 );
-ALTER FOREIGN TABLE manages_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.manages_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -5295,8 +5294,8 @@ ALTER FOREIGN TABLE manages_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: markups; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE markups (
-    id integer DEFAULT markups_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.markups (
+    id integer DEFAULT public.markups_id_seq_view() NOT NULL,
     raw text,
     formatted text
 )
@@ -5305,13 +5304,13 @@ OPTIONS (
     schema_name 'public',
     table_name 'markups'
 );
-ALTER FOREIGN TABLE markups ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.markups ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE markups ALTER COLUMN raw OPTIONS (
+ALTER FOREIGN TABLE public.markups ALTER COLUMN raw OPTIONS (
     column_name 'raw'
 );
-ALTER FOREIGN TABLE markups ALTER COLUMN formatted OPTIONS (
+ALTER FOREIGN TABLE public.markups ALTER COLUMN formatted OPTIONS (
     column_name 'formatted'
 );
 
@@ -5320,7 +5319,7 @@ ALTER FOREIGN TABLE markups ALTER COLUMN formatted OPTIONS (
 -- Name: markups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE markups_id_seq
+CREATE SEQUENCE public.markups_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5332,7 +5331,7 @@ CREATE SEQUENCE markups_id_seq
 -- Name: markups_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE markups_id_seq_view (
+CREATE FOREIGN TABLE public.markups_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -5340,7 +5339,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'markups_id_seq_view'
 );
-ALTER FOREIGN TABLE markups_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.markups_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -5349,8 +5348,8 @@ ALTER FOREIGN TABLE markups_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: message_account_tags; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE message_account_tags (
-    id integer DEFAULT message_account_tags_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.message_account_tags (
+    id integer DEFAULT public.message_account_tags_id_seq_view() NOT NULL,
     message_id integer,
     account_id integer
 )
@@ -5359,13 +5358,13 @@ OPTIONS (
     schema_name 'public',
     table_name 'message_account_tags'
 );
-ALTER FOREIGN TABLE message_account_tags ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.message_account_tags ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE message_account_tags ALTER COLUMN message_id OPTIONS (
+ALTER FOREIGN TABLE public.message_account_tags ALTER COLUMN message_id OPTIONS (
     column_name 'message_id'
 );
-ALTER FOREIGN TABLE message_account_tags ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.message_account_tags ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
 
@@ -5374,7 +5373,7 @@ ALTER FOREIGN TABLE message_account_tags ALTER COLUMN account_id OPTIONS (
 -- Name: message_account_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE message_account_tags_id_seq
+CREATE SEQUENCE public.message_account_tags_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5386,7 +5385,7 @@ CREATE SEQUENCE message_account_tags_id_seq
 -- Name: message_account_tags_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE message_account_tags_id_seq_view (
+CREATE FOREIGN TABLE public.message_account_tags_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -5394,7 +5393,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'message_account_tags_id_seq_view'
 );
-ALTER FOREIGN TABLE message_account_tags_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.message_account_tags_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -5403,8 +5402,8 @@ ALTER FOREIGN TABLE message_account_tags_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: message_project_tags; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE message_project_tags (
-    id integer DEFAULT message_project_tags_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.message_project_tags (
+    id integer DEFAULT public.message_project_tags_id_seq_view() NOT NULL,
     message_id integer,
     project_id integer
 )
@@ -5413,13 +5412,13 @@ OPTIONS (
     schema_name 'public',
     table_name 'message_project_tags'
 );
-ALTER FOREIGN TABLE message_project_tags ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.message_project_tags ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE message_project_tags ALTER COLUMN message_id OPTIONS (
+ALTER FOREIGN TABLE public.message_project_tags ALTER COLUMN message_id OPTIONS (
     column_name 'message_id'
 );
-ALTER FOREIGN TABLE message_project_tags ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.message_project_tags ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
 
@@ -5428,7 +5427,7 @@ ALTER FOREIGN TABLE message_project_tags ALTER COLUMN project_id OPTIONS (
 -- Name: message_project_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE message_project_tags_id_seq
+CREATE SEQUENCE public.message_project_tags_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5440,7 +5439,7 @@ CREATE SEQUENCE message_project_tags_id_seq
 -- Name: message_project_tags_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE message_project_tags_id_seq_view (
+CREATE FOREIGN TABLE public.message_project_tags_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -5448,7 +5447,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'message_project_tags_id_seq_view'
 );
-ALTER FOREIGN TABLE message_project_tags_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.message_project_tags_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -5457,8 +5456,8 @@ ALTER FOREIGN TABLE message_project_tags_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: messages; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE messages (
-    id integer DEFAULT messages_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.messages (
+    id integer DEFAULT public.messages_id_seq_view() NOT NULL,
     account_id integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
     deleted_at timestamp without time zone,
@@ -5470,22 +5469,22 @@ OPTIONS (
     schema_name 'public',
     table_name 'messages'
 );
-ALTER FOREIGN TABLE messages ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.messages ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE messages ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.messages ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE messages ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.messages ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE messages ALTER COLUMN deleted_at OPTIONS (
+ALTER FOREIGN TABLE public.messages ALTER COLUMN deleted_at OPTIONS (
     column_name 'deleted_at'
 );
-ALTER FOREIGN TABLE messages ALTER COLUMN body OPTIONS (
+ALTER FOREIGN TABLE public.messages ALTER COLUMN body OPTIONS (
     column_name 'body'
 );
-ALTER FOREIGN TABLE messages ALTER COLUMN title OPTIONS (
+ALTER FOREIGN TABLE public.messages ALTER COLUMN title OPTIONS (
     column_name 'title'
 );
 
@@ -5494,7 +5493,7 @@ ALTER FOREIGN TABLE messages ALTER COLUMN title OPTIONS (
 -- Name: messages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE messages_id_seq
+CREATE SEQUENCE public.messages_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5506,7 +5505,7 @@ CREATE SEQUENCE messages_id_seq
 -- Name: messages_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE messages_id_seq_view (
+CREATE FOREIGN TABLE public.messages_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -5514,7 +5513,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'messages_id_seq_view'
 );
-ALTER FOREIGN TABLE messages_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.messages_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -5523,7 +5522,7 @@ ALTER FOREIGN TABLE messages_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: mistaken_jobs; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE mistaken_jobs (
+CREATE FOREIGN TABLE public.mistaken_jobs (
     id integer,
     project_id integer,
     repository_id integer,
@@ -5553,73 +5552,73 @@ OPTIONS (
     schema_name 'public',
     table_name 'mistaken_jobs'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN repository_id OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN repository_id OPTIONS (
     column_name 'repository_id'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN status OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN status OPTIONS (
     column_name 'status'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN type OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN type OPTIONS (
     column_name 'type'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN priority OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN priority OPTIONS (
     column_name 'priority'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN current_step OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN current_step OPTIONS (
     column_name 'current_step'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN current_step_at OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN current_step_at OPTIONS (
     column_name 'current_step_at'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN max_steps OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN max_steps OPTIONS (
     column_name 'max_steps'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN exception OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN exception OPTIONS (
     column_name 'exception'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN backtrace OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN backtrace OPTIONS (
     column_name 'backtrace'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN code_set_id OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN code_set_id OPTIONS (
     column_name 'code_set_id'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN sloc_set_id OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN sloc_set_id OPTIONS (
     column_name 'sloc_set_id'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN notes OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN notes OPTIONS (
     column_name 'notes'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN wait_until OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN wait_until OPTIONS (
     column_name 'wait_until'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN logged_at OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN logged_at OPTIONS (
     column_name 'logged_at'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN slave_id OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN slave_id OPTIONS (
     column_name 'slave_id'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN started_at OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN started_at OPTIONS (
     column_name 'started_at'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN retry_count OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN retry_count OPTIONS (
     column_name 'retry_count'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN do_not_retry OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN do_not_retry OPTIONS (
     column_name 'do_not_retry'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN failure_group_id OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN failure_group_id OPTIONS (
     column_name 'failure_group_id'
 );
-ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN organization_id OPTIONS (
+ALTER FOREIGN TABLE public.mistaken_jobs ALTER COLUMN organization_id OPTIONS (
     column_name 'organization_id'
 );
 
@@ -5628,7 +5627,7 @@ ALTER FOREIGN TABLE mistaken_jobs ALTER COLUMN organization_id OPTIONS (
 -- Name: moderatorships_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE moderatorships_id_seq_view (
+CREATE FOREIGN TABLE public.moderatorships_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -5636,7 +5635,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'moderatorships_id_seq_view'
 );
-ALTER FOREIGN TABLE moderatorships_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.moderatorships_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -5645,7 +5644,7 @@ ALTER FOREIGN TABLE moderatorships_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: monitorships_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE monitorships_id_seq_view (
+CREATE FOREIGN TABLE public.monitorships_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -5653,7 +5652,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'monitorships_id_seq_view'
 );
-ALTER FOREIGN TABLE monitorships_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.monitorships_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -5662,8 +5661,8 @@ ALTER FOREIGN TABLE monitorships_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: monthly_commit_histories; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE monthly_commit_histories (
-    id integer DEFAULT monthly_commit_histories_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.monthly_commit_histories (
+    id integer DEFAULT public.monthly_commit_histories_id_seq_view() NOT NULL,
     analysis_id integer,
     json text
 )
@@ -5672,13 +5671,13 @@ OPTIONS (
     schema_name 'public',
     table_name 'monthly_commit_histories'
 );
-ALTER FOREIGN TABLE monthly_commit_histories ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.monthly_commit_histories ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE monthly_commit_histories ALTER COLUMN analysis_id OPTIONS (
+ALTER FOREIGN TABLE public.monthly_commit_histories ALTER COLUMN analysis_id OPTIONS (
     column_name 'analysis_id'
 );
-ALTER FOREIGN TABLE monthly_commit_histories ALTER COLUMN json OPTIONS (
+ALTER FOREIGN TABLE public.monthly_commit_histories ALTER COLUMN json OPTIONS (
     column_name 'json'
 );
 
@@ -5687,7 +5686,7 @@ ALTER FOREIGN TABLE monthly_commit_histories ALTER COLUMN json OPTIONS (
 -- Name: monthly_commit_histories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE monthly_commit_histories_id_seq
+CREATE SEQUENCE public.monthly_commit_histories_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5699,7 +5698,7 @@ CREATE SEQUENCE monthly_commit_histories_id_seq
 -- Name: monthly_commit_histories_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE monthly_commit_histories_id_seq_view (
+CREATE FOREIGN TABLE public.monthly_commit_histories_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -5707,7 +5706,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'monthly_commit_histories_id_seq_view'
 );
-ALTER FOREIGN TABLE monthly_commit_histories_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.monthly_commit_histories_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -5716,8 +5715,8 @@ ALTER FOREIGN TABLE monthly_commit_histories_id_seq_view ALTER COLUMN id OPTIONS
 -- Name: name_facts; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE name_facts (
-    id integer DEFAULT name_facts_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.name_facts (
+    id integer DEFAULT public.name_facts_id_seq_view() NOT NULL,
     analysis_id integer,
     name_id integer,
     primary_language_id integer,
@@ -5742,61 +5741,61 @@ OPTIONS (
     schema_name 'public',
     table_name 'name_facts'
 );
-ALTER FOREIGN TABLE name_facts ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.name_facts ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE name_facts ALTER COLUMN analysis_id OPTIONS (
+ALTER FOREIGN TABLE public.name_facts ALTER COLUMN analysis_id OPTIONS (
     column_name 'analysis_id'
 );
-ALTER FOREIGN TABLE name_facts ALTER COLUMN name_id OPTIONS (
+ALTER FOREIGN TABLE public.name_facts ALTER COLUMN name_id OPTIONS (
     column_name 'name_id'
 );
-ALTER FOREIGN TABLE name_facts ALTER COLUMN primary_language_id OPTIONS (
+ALTER FOREIGN TABLE public.name_facts ALTER COLUMN primary_language_id OPTIONS (
     column_name 'primary_language_id'
 );
-ALTER FOREIGN TABLE name_facts ALTER COLUMN total_code_added OPTIONS (
+ALTER FOREIGN TABLE public.name_facts ALTER COLUMN total_code_added OPTIONS (
     column_name 'total_code_added'
 );
-ALTER FOREIGN TABLE name_facts ALTER COLUMN last_checkin OPTIONS (
+ALTER FOREIGN TABLE public.name_facts ALTER COLUMN last_checkin OPTIONS (
     column_name 'last_checkin'
 );
-ALTER FOREIGN TABLE name_facts ALTER COLUMN comment_ratio OPTIONS (
+ALTER FOREIGN TABLE public.name_facts ALTER COLUMN comment_ratio OPTIONS (
     column_name 'comment_ratio'
 );
-ALTER FOREIGN TABLE name_facts ALTER COLUMN man_months OPTIONS (
+ALTER FOREIGN TABLE public.name_facts ALTER COLUMN man_months OPTIONS (
     column_name 'man_months'
 );
-ALTER FOREIGN TABLE name_facts ALTER COLUMN commits OPTIONS (
+ALTER FOREIGN TABLE public.name_facts ALTER COLUMN commits OPTIONS (
     column_name 'commits'
 );
-ALTER FOREIGN TABLE name_facts ALTER COLUMN median_commits OPTIONS (
+ALTER FOREIGN TABLE public.name_facts ALTER COLUMN median_commits OPTIONS (
     column_name 'median_commits'
 );
-ALTER FOREIGN TABLE name_facts ALTER COLUMN median_activity_lines OPTIONS (
+ALTER FOREIGN TABLE public.name_facts ALTER COLUMN median_activity_lines OPTIONS (
     column_name 'median_activity_lines'
 );
-ALTER FOREIGN TABLE name_facts ALTER COLUMN first_checkin OPTIONS (
+ALTER FOREIGN TABLE public.name_facts ALTER COLUMN first_checkin OPTIONS (
     column_name 'first_checkin'
 );
-ALTER FOREIGN TABLE name_facts ALTER COLUMN vita_id OPTIONS (
+ALTER FOREIGN TABLE public.name_facts ALTER COLUMN vita_id OPTIONS (
     column_name 'vita_id'
 );
-ALTER FOREIGN TABLE name_facts ALTER COLUMN type OPTIONS (
+ALTER FOREIGN TABLE public.name_facts ALTER COLUMN type OPTIONS (
     column_name 'type'
 );
-ALTER FOREIGN TABLE name_facts ALTER COLUMN thirty_day_commits OPTIONS (
+ALTER FOREIGN TABLE public.name_facts ALTER COLUMN thirty_day_commits OPTIONS (
     column_name 'thirty_day_commits'
 );
-ALTER FOREIGN TABLE name_facts ALTER COLUMN twelve_month_commits OPTIONS (
+ALTER FOREIGN TABLE public.name_facts ALTER COLUMN twelve_month_commits OPTIONS (
     column_name 'twelve_month_commits'
 );
-ALTER FOREIGN TABLE name_facts ALTER COLUMN commits_by_project OPTIONS (
+ALTER FOREIGN TABLE public.name_facts ALTER COLUMN commits_by_project OPTIONS (
     column_name 'commits_by_project'
 );
-ALTER FOREIGN TABLE name_facts ALTER COLUMN commits_by_language OPTIONS (
+ALTER FOREIGN TABLE public.name_facts ALTER COLUMN commits_by_language OPTIONS (
     column_name 'commits_by_language'
 );
-ALTER FOREIGN TABLE name_facts ALTER COLUMN email_address_ids OPTIONS (
+ALTER FOREIGN TABLE public.name_facts ALTER COLUMN email_address_ids OPTIONS (
     column_name 'email_address_ids'
 );
 
@@ -5805,7 +5804,7 @@ ALTER FOREIGN TABLE name_facts ALTER COLUMN email_address_ids OPTIONS (
 -- Name: name_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE name_facts_id_seq
+CREATE SEQUENCE public.name_facts_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5817,7 +5816,7 @@ CREATE SEQUENCE name_facts_id_seq
 -- Name: name_facts_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE name_facts_id_seq_view (
+CREATE FOREIGN TABLE public.name_facts_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -5825,7 +5824,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'name_facts_id_seq_view'
 );
-ALTER FOREIGN TABLE name_facts_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.name_facts_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -5834,8 +5833,8 @@ ALTER FOREIGN TABLE name_facts_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: name_language_facts; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE name_language_facts (
-    id integer DEFAULT name_language_facts_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.name_language_facts (
+    id integer DEFAULT public.name_language_facts_id_seq_view() NOT NULL,
     name_id integer,
     analysis_id integer,
     language_id integer,
@@ -5855,46 +5854,46 @@ OPTIONS (
     schema_name 'public',
     table_name 'name_language_facts'
 );
-ALTER FOREIGN TABLE name_language_facts ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.name_language_facts ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE name_language_facts ALTER COLUMN name_id OPTIONS (
+ALTER FOREIGN TABLE public.name_language_facts ALTER COLUMN name_id OPTIONS (
     column_name 'name_id'
 );
-ALTER FOREIGN TABLE name_language_facts ALTER COLUMN analysis_id OPTIONS (
+ALTER FOREIGN TABLE public.name_language_facts ALTER COLUMN analysis_id OPTIONS (
     column_name 'analysis_id'
 );
-ALTER FOREIGN TABLE name_language_facts ALTER COLUMN language_id OPTIONS (
+ALTER FOREIGN TABLE public.name_language_facts ALTER COLUMN language_id OPTIONS (
     column_name 'language_id'
 );
-ALTER FOREIGN TABLE name_language_facts ALTER COLUMN total_months OPTIONS (
+ALTER FOREIGN TABLE public.name_language_facts ALTER COLUMN total_months OPTIONS (
     column_name 'total_months'
 );
-ALTER FOREIGN TABLE name_language_facts ALTER COLUMN total_commits OPTIONS (
+ALTER FOREIGN TABLE public.name_language_facts ALTER COLUMN total_commits OPTIONS (
     column_name 'total_commits'
 );
-ALTER FOREIGN TABLE name_language_facts ALTER COLUMN total_activity_lines OPTIONS (
+ALTER FOREIGN TABLE public.name_language_facts ALTER COLUMN total_activity_lines OPTIONS (
     column_name 'total_activity_lines'
 );
-ALTER FOREIGN TABLE name_language_facts ALTER COLUMN vita_id OPTIONS (
+ALTER FOREIGN TABLE public.name_language_facts ALTER COLUMN vita_id OPTIONS (
     column_name 'vita_id'
 );
-ALTER FOREIGN TABLE name_language_facts ALTER COLUMN type OPTIONS (
+ALTER FOREIGN TABLE public.name_language_facts ALTER COLUMN type OPTIONS (
     column_name 'type'
 );
-ALTER FOREIGN TABLE name_language_facts ALTER COLUMN comment_ratio OPTIONS (
+ALTER FOREIGN TABLE public.name_language_facts ALTER COLUMN comment_ratio OPTIONS (
     column_name 'comment_ratio'
 );
-ALTER FOREIGN TABLE name_language_facts ALTER COLUMN most_commits_project_id OPTIONS (
+ALTER FOREIGN TABLE public.name_language_facts ALTER COLUMN most_commits_project_id OPTIONS (
     column_name 'most_commits_project_id'
 );
-ALTER FOREIGN TABLE name_language_facts ALTER COLUMN most_commits OPTIONS (
+ALTER FOREIGN TABLE public.name_language_facts ALTER COLUMN most_commits OPTIONS (
     column_name 'most_commits'
 );
-ALTER FOREIGN TABLE name_language_facts ALTER COLUMN recent_commit_project_id OPTIONS (
+ALTER FOREIGN TABLE public.name_language_facts ALTER COLUMN recent_commit_project_id OPTIONS (
     column_name 'recent_commit_project_id'
 );
-ALTER FOREIGN TABLE name_language_facts ALTER COLUMN recent_commit_month OPTIONS (
+ALTER FOREIGN TABLE public.name_language_facts ALTER COLUMN recent_commit_month OPTIONS (
     column_name 'recent_commit_month'
 );
 
@@ -5903,7 +5902,7 @@ ALTER FOREIGN TABLE name_language_facts ALTER COLUMN recent_commit_month OPTIONS
 -- Name: name_language_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE name_language_facts_id_seq
+CREATE SEQUENCE public.name_language_facts_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5915,7 +5914,7 @@ CREATE SEQUENCE name_language_facts_id_seq
 -- Name: name_language_facts_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE name_language_facts_id_seq_view (
+CREATE FOREIGN TABLE public.name_language_facts_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -5923,7 +5922,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'name_language_facts_id_seq_view'
 );
-ALTER FOREIGN TABLE name_language_facts_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.name_language_facts_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -5932,8 +5931,8 @@ ALTER FOREIGN TABLE name_language_facts_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: names; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE names (
-    id integer DEFAULT names_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.names (
+    id integer DEFAULT public.names_id_seq_view() NOT NULL,
     name text NOT NULL
 )
 SERVER ohloh
@@ -5941,10 +5940,10 @@ OPTIONS (
     schema_name 'public',
     table_name 'names'
 );
-ALTER FOREIGN TABLE names ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.names ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE names ALTER COLUMN name OPTIONS (
+ALTER FOREIGN TABLE public.names ALTER COLUMN name OPTIONS (
     column_name 'name'
 );
 
@@ -5953,7 +5952,7 @@ ALTER FOREIGN TABLE names ALTER COLUMN name OPTIONS (
 -- Name: names_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE names_id_seq
+CREATE SEQUENCE public.names_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5965,7 +5964,7 @@ CREATE SEQUENCE names_id_seq
 -- Name: names_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE names_id_seq_view (
+CREATE FOREIGN TABLE public.names_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -5973,7 +5972,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'names_id_seq_view'
 );
-ALTER FOREIGN TABLE names_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.names_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -5982,8 +5981,8 @@ ALTER FOREIGN TABLE names_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: oauth_access_grants; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE oauth_access_grants (
-    id integer DEFAULT oauth_access_grants_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.oauth_access_grants (
+    id integer DEFAULT public.oauth_access_grants_id_seq_view() NOT NULL,
     resource_owner_id integer NOT NULL,
     application_id integer NOT NULL,
     token character varying NOT NULL,
@@ -5998,31 +5997,31 @@ OPTIONS (
     schema_name 'public',
     table_name 'oauth_access_grants'
 );
-ALTER FOREIGN TABLE oauth_access_grants ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.oauth_access_grants ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE oauth_access_grants ALTER COLUMN resource_owner_id OPTIONS (
+ALTER FOREIGN TABLE public.oauth_access_grants ALTER COLUMN resource_owner_id OPTIONS (
     column_name 'resource_owner_id'
 );
-ALTER FOREIGN TABLE oauth_access_grants ALTER COLUMN application_id OPTIONS (
+ALTER FOREIGN TABLE public.oauth_access_grants ALTER COLUMN application_id OPTIONS (
     column_name 'application_id'
 );
-ALTER FOREIGN TABLE oauth_access_grants ALTER COLUMN token OPTIONS (
+ALTER FOREIGN TABLE public.oauth_access_grants ALTER COLUMN token OPTIONS (
     column_name 'token'
 );
-ALTER FOREIGN TABLE oauth_access_grants ALTER COLUMN expires_in OPTIONS (
+ALTER FOREIGN TABLE public.oauth_access_grants ALTER COLUMN expires_in OPTIONS (
     column_name 'expires_in'
 );
-ALTER FOREIGN TABLE oauth_access_grants ALTER COLUMN redirect_uri OPTIONS (
+ALTER FOREIGN TABLE public.oauth_access_grants ALTER COLUMN redirect_uri OPTIONS (
     column_name 'redirect_uri'
 );
-ALTER FOREIGN TABLE oauth_access_grants ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.oauth_access_grants ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE oauth_access_grants ALTER COLUMN revoked_at OPTIONS (
+ALTER FOREIGN TABLE public.oauth_access_grants ALTER COLUMN revoked_at OPTIONS (
     column_name 'revoked_at'
 );
-ALTER FOREIGN TABLE oauth_access_grants ALTER COLUMN scopes OPTIONS (
+ALTER FOREIGN TABLE public.oauth_access_grants ALTER COLUMN scopes OPTIONS (
     column_name 'scopes'
 );
 
@@ -6031,7 +6030,7 @@ ALTER FOREIGN TABLE oauth_access_grants ALTER COLUMN scopes OPTIONS (
 -- Name: oauth_access_grants_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE oauth_access_grants_id_seq
+CREATE SEQUENCE public.oauth_access_grants_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -6043,7 +6042,7 @@ CREATE SEQUENCE oauth_access_grants_id_seq
 -- Name: oauth_access_grants_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE oauth_access_grants_id_seq_view (
+CREATE FOREIGN TABLE public.oauth_access_grants_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -6051,7 +6050,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'oauth_access_grants_id_seq_view'
 );
-ALTER FOREIGN TABLE oauth_access_grants_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.oauth_access_grants_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -6060,8 +6059,8 @@ ALTER FOREIGN TABLE oauth_access_grants_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: oauth_access_tokens; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE oauth_access_tokens (
-    id integer DEFAULT oauth_access_tokens_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.oauth_access_tokens (
+    id integer DEFAULT public.oauth_access_tokens_id_seq_view() NOT NULL,
     resource_owner_id integer,
     application_id integer,
     token character varying NOT NULL,
@@ -6076,31 +6075,31 @@ OPTIONS (
     schema_name 'public',
     table_name 'oauth_access_tokens'
 );
-ALTER FOREIGN TABLE oauth_access_tokens ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.oauth_access_tokens ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE oauth_access_tokens ALTER COLUMN resource_owner_id OPTIONS (
+ALTER FOREIGN TABLE public.oauth_access_tokens ALTER COLUMN resource_owner_id OPTIONS (
     column_name 'resource_owner_id'
 );
-ALTER FOREIGN TABLE oauth_access_tokens ALTER COLUMN application_id OPTIONS (
+ALTER FOREIGN TABLE public.oauth_access_tokens ALTER COLUMN application_id OPTIONS (
     column_name 'application_id'
 );
-ALTER FOREIGN TABLE oauth_access_tokens ALTER COLUMN token OPTIONS (
+ALTER FOREIGN TABLE public.oauth_access_tokens ALTER COLUMN token OPTIONS (
     column_name 'token'
 );
-ALTER FOREIGN TABLE oauth_access_tokens ALTER COLUMN refresh_token OPTIONS (
+ALTER FOREIGN TABLE public.oauth_access_tokens ALTER COLUMN refresh_token OPTIONS (
     column_name 'refresh_token'
 );
-ALTER FOREIGN TABLE oauth_access_tokens ALTER COLUMN expires_in OPTIONS (
+ALTER FOREIGN TABLE public.oauth_access_tokens ALTER COLUMN expires_in OPTIONS (
     column_name 'expires_in'
 );
-ALTER FOREIGN TABLE oauth_access_tokens ALTER COLUMN revoked_at OPTIONS (
+ALTER FOREIGN TABLE public.oauth_access_tokens ALTER COLUMN revoked_at OPTIONS (
     column_name 'revoked_at'
 );
-ALTER FOREIGN TABLE oauth_access_tokens ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.oauth_access_tokens ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE oauth_access_tokens ALTER COLUMN scopes OPTIONS (
+ALTER FOREIGN TABLE public.oauth_access_tokens ALTER COLUMN scopes OPTIONS (
     column_name 'scopes'
 );
 
@@ -6109,7 +6108,7 @@ ALTER FOREIGN TABLE oauth_access_tokens ALTER COLUMN scopes OPTIONS (
 -- Name: oauth_access_tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE oauth_access_tokens_id_seq
+CREATE SEQUENCE public.oauth_access_tokens_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -6121,7 +6120,7 @@ CREATE SEQUENCE oauth_access_tokens_id_seq
 -- Name: oauth_access_tokens_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE oauth_access_tokens_id_seq_view (
+CREATE FOREIGN TABLE public.oauth_access_tokens_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -6129,7 +6128,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'oauth_access_tokens_id_seq_view'
 );
-ALTER FOREIGN TABLE oauth_access_tokens_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.oauth_access_tokens_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -6138,8 +6137,8 @@ ALTER FOREIGN TABLE oauth_access_tokens_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: oauth_applications; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE oauth_applications (
-    id integer DEFAULT oauth_applications_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.oauth_applications (
+    id integer DEFAULT public.oauth_applications_id_seq_view() NOT NULL,
     name character varying NOT NULL,
     uid character varying NOT NULL,
     secret character varying NOT NULL,
@@ -6153,28 +6152,28 @@ OPTIONS (
     schema_name 'public',
     table_name 'oauth_applications'
 );
-ALTER FOREIGN TABLE oauth_applications ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.oauth_applications ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE oauth_applications ALTER COLUMN name OPTIONS (
+ALTER FOREIGN TABLE public.oauth_applications ALTER COLUMN name OPTIONS (
     column_name 'name'
 );
-ALTER FOREIGN TABLE oauth_applications ALTER COLUMN uid OPTIONS (
+ALTER FOREIGN TABLE public.oauth_applications ALTER COLUMN uid OPTIONS (
     column_name 'uid'
 );
-ALTER FOREIGN TABLE oauth_applications ALTER COLUMN secret OPTIONS (
+ALTER FOREIGN TABLE public.oauth_applications ALTER COLUMN secret OPTIONS (
     column_name 'secret'
 );
-ALTER FOREIGN TABLE oauth_applications ALTER COLUMN redirect_uri OPTIONS (
+ALTER FOREIGN TABLE public.oauth_applications ALTER COLUMN redirect_uri OPTIONS (
     column_name 'redirect_uri'
 );
-ALTER FOREIGN TABLE oauth_applications ALTER COLUMN scopes OPTIONS (
+ALTER FOREIGN TABLE public.oauth_applications ALTER COLUMN scopes OPTIONS (
     column_name 'scopes'
 );
-ALTER FOREIGN TABLE oauth_applications ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.oauth_applications ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE oauth_applications ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.oauth_applications ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
 
@@ -6183,7 +6182,7 @@ ALTER FOREIGN TABLE oauth_applications ALTER COLUMN updated_at OPTIONS (
 -- Name: oauth_applications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE oauth_applications_id_seq
+CREATE SEQUENCE public.oauth_applications_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -6195,7 +6194,7 @@ CREATE SEQUENCE oauth_applications_id_seq
 -- Name: oauth_applications_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE oauth_applications_id_seq_view (
+CREATE FOREIGN TABLE public.oauth_applications_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -6203,7 +6202,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'oauth_applications_id_seq_view'
 );
-ALTER FOREIGN TABLE oauth_applications_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.oauth_applications_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -6212,8 +6211,8 @@ ALTER FOREIGN TABLE oauth_applications_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: oauth_nonces; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE oauth_nonces (
-    id integer DEFAULT oauth_nonces_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.oauth_nonces (
+    id integer DEFAULT public.oauth_nonces_id_seq_view() NOT NULL,
     nonce text NOT NULL,
     "timestamp" integer NOT NULL,
     created_at timestamp without time zone,
@@ -6224,19 +6223,19 @@ OPTIONS (
     schema_name 'public',
     table_name 'oauth_nonces'
 );
-ALTER FOREIGN TABLE oauth_nonces ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.oauth_nonces ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE oauth_nonces ALTER COLUMN nonce OPTIONS (
+ALTER FOREIGN TABLE public.oauth_nonces ALTER COLUMN nonce OPTIONS (
     column_name 'nonce'
 );
-ALTER FOREIGN TABLE oauth_nonces ALTER COLUMN "timestamp" OPTIONS (
+ALTER FOREIGN TABLE public.oauth_nonces ALTER COLUMN "timestamp" OPTIONS (
     column_name 'timestamp'
 );
-ALTER FOREIGN TABLE oauth_nonces ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.oauth_nonces ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE oauth_nonces ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.oauth_nonces ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
 
@@ -6245,7 +6244,7 @@ ALTER FOREIGN TABLE oauth_nonces ALTER COLUMN updated_at OPTIONS (
 -- Name: oauth_nonces_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE oauth_nonces_id_seq
+CREATE SEQUENCE public.oauth_nonces_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -6257,7 +6256,7 @@ CREATE SEQUENCE oauth_nonces_id_seq
 -- Name: oauth_nonces_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE oauth_nonces_id_seq_view (
+CREATE FOREIGN TABLE public.oauth_nonces_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -6265,7 +6264,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'oauth_nonces_id_seq_view'
 );
-ALTER FOREIGN TABLE oauth_nonces_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.oauth_nonces_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -6274,7 +6273,7 @@ ALTER FOREIGN TABLE oauth_nonces_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: old_edits_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE old_edits_id_seq_view (
+CREATE FOREIGN TABLE public.old_edits_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -6282,7 +6281,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'old_edits_id_seq_view'
 );
-ALTER FOREIGN TABLE old_edits_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.old_edits_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -6291,8 +6290,8 @@ ALTER FOREIGN TABLE old_edits_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: org_stats_by_sectors; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE org_stats_by_sectors (
-    id integer DEFAULT org_stats_by_sectors_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.org_stats_by_sectors (
+    id integer DEFAULT public.org_stats_by_sectors_id_seq_view() NOT NULL,
     org_type integer,
     organization_count integer,
     commits_count integer,
@@ -6306,28 +6305,28 @@ OPTIONS (
     schema_name 'public',
     table_name 'org_stats_by_sectors'
 );
-ALTER FOREIGN TABLE org_stats_by_sectors ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.org_stats_by_sectors ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE org_stats_by_sectors ALTER COLUMN org_type OPTIONS (
+ALTER FOREIGN TABLE public.org_stats_by_sectors ALTER COLUMN org_type OPTIONS (
     column_name 'org_type'
 );
-ALTER FOREIGN TABLE org_stats_by_sectors ALTER COLUMN organization_count OPTIONS (
+ALTER FOREIGN TABLE public.org_stats_by_sectors ALTER COLUMN organization_count OPTIONS (
     column_name 'organization_count'
 );
-ALTER FOREIGN TABLE org_stats_by_sectors ALTER COLUMN commits_count OPTIONS (
+ALTER FOREIGN TABLE public.org_stats_by_sectors ALTER COLUMN commits_count OPTIONS (
     column_name 'commits_count'
 );
-ALTER FOREIGN TABLE org_stats_by_sectors ALTER COLUMN affiliate_count OPTIONS (
+ALTER FOREIGN TABLE public.org_stats_by_sectors ALTER COLUMN affiliate_count OPTIONS (
     column_name 'affiliate_count'
 );
-ALTER FOREIGN TABLE org_stats_by_sectors ALTER COLUMN average_commits OPTIONS (
+ALTER FOREIGN TABLE public.org_stats_by_sectors ALTER COLUMN average_commits OPTIONS (
     column_name 'average_commits'
 );
-ALTER FOREIGN TABLE org_stats_by_sectors ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.org_stats_by_sectors ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE org_stats_by_sectors ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.org_stats_by_sectors ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
 
@@ -6336,7 +6335,7 @@ ALTER FOREIGN TABLE org_stats_by_sectors ALTER COLUMN updated_at OPTIONS (
 -- Name: org_stats_by_sectors_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE org_stats_by_sectors_id_seq
+CREATE SEQUENCE public.org_stats_by_sectors_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -6348,7 +6347,7 @@ CREATE SEQUENCE org_stats_by_sectors_id_seq
 -- Name: org_stats_by_sectors_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE org_stats_by_sectors_id_seq_view (
+CREATE FOREIGN TABLE public.org_stats_by_sectors_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -6356,7 +6355,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'org_stats_by_sectors_id_seq_view'
 );
-ALTER FOREIGN TABLE org_stats_by_sectors_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.org_stats_by_sectors_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -6365,8 +6364,8 @@ ALTER FOREIGN TABLE org_stats_by_sectors_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: org_thirty_day_activities; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE org_thirty_day_activities (
-    id integer DEFAULT org_thirty_day_activities_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.org_thirty_day_activities (
+    id integer DEFAULT public.org_thirty_day_activities_id_seq_view() NOT NULL,
     name character varying(255),
     organization_id integer,
     vanity_url character varying(255),
@@ -6382,34 +6381,34 @@ OPTIONS (
     schema_name 'public',
     table_name 'org_thirty_day_activities'
 );
-ALTER FOREIGN TABLE org_thirty_day_activities ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.org_thirty_day_activities ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE org_thirty_day_activities ALTER COLUMN name OPTIONS (
+ALTER FOREIGN TABLE public.org_thirty_day_activities ALTER COLUMN name OPTIONS (
     column_name 'name'
 );
-ALTER FOREIGN TABLE org_thirty_day_activities ALTER COLUMN organization_id OPTIONS (
+ALTER FOREIGN TABLE public.org_thirty_day_activities ALTER COLUMN organization_id OPTIONS (
     column_name 'organization_id'
 );
-ALTER FOREIGN TABLE org_thirty_day_activities ALTER COLUMN vanity_url OPTIONS (
+ALTER FOREIGN TABLE public.org_thirty_day_activities ALTER COLUMN vanity_url OPTIONS (
     column_name 'vanity_url'
 );
-ALTER FOREIGN TABLE org_thirty_day_activities ALTER COLUMN org_type OPTIONS (
+ALTER FOREIGN TABLE public.org_thirty_day_activities ALTER COLUMN org_type OPTIONS (
     column_name 'org_type'
 );
-ALTER FOREIGN TABLE org_thirty_day_activities ALTER COLUMN project_count OPTIONS (
+ALTER FOREIGN TABLE public.org_thirty_day_activities ALTER COLUMN project_count OPTIONS (
     column_name 'project_count'
 );
-ALTER FOREIGN TABLE org_thirty_day_activities ALTER COLUMN affiliate_count OPTIONS (
+ALTER FOREIGN TABLE public.org_thirty_day_activities ALTER COLUMN affiliate_count OPTIONS (
     column_name 'affiliate_count'
 );
-ALTER FOREIGN TABLE org_thirty_day_activities ALTER COLUMN thirty_day_commit_count OPTIONS (
+ALTER FOREIGN TABLE public.org_thirty_day_activities ALTER COLUMN thirty_day_commit_count OPTIONS (
     column_name 'thirty_day_commit_count'
 );
-ALTER FOREIGN TABLE org_thirty_day_activities ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.org_thirty_day_activities ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE org_thirty_day_activities ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.org_thirty_day_activities ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
 
@@ -6418,7 +6417,7 @@ ALTER FOREIGN TABLE org_thirty_day_activities ALTER COLUMN updated_at OPTIONS (
 -- Name: org_thirty_day_activities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE org_thirty_day_activities_id_seq
+CREATE SEQUENCE public.org_thirty_day_activities_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -6430,7 +6429,7 @@ CREATE SEQUENCE org_thirty_day_activities_id_seq
 -- Name: org_thirty_day_activities_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE org_thirty_day_activities_id_seq_view (
+CREATE FOREIGN TABLE public.org_thirty_day_activities_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -6438,7 +6437,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'org_thirty_day_activities_id_seq_view'
 );
-ALTER FOREIGN TABLE org_thirty_day_activities_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.org_thirty_day_activities_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -6447,8 +6446,8 @@ ALTER FOREIGN TABLE org_thirty_day_activities_id_seq_view ALTER COLUMN id OPTION
 -- Name: organizations; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE organizations (
-    id integer DEFAULT organizations_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.organizations (
+    id integer DEFAULT public.organizations_id_seq_view() NOT NULL,
     name text,
     vanity_url text,
     description text,
@@ -6468,46 +6467,46 @@ OPTIONS (
     schema_name 'public',
     table_name 'organizations'
 );
-ALTER FOREIGN TABLE organizations ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.organizations ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE organizations ALTER COLUMN name OPTIONS (
+ALTER FOREIGN TABLE public.organizations ALTER COLUMN name OPTIONS (
     column_name 'name'
 );
-ALTER FOREIGN TABLE organizations ALTER COLUMN vanity_url OPTIONS (
+ALTER FOREIGN TABLE public.organizations ALTER COLUMN vanity_url OPTIONS (
     column_name 'vanity_url'
 );
-ALTER FOREIGN TABLE organizations ALTER COLUMN description OPTIONS (
+ALTER FOREIGN TABLE public.organizations ALTER COLUMN description OPTIONS (
     column_name 'description'
 );
-ALTER FOREIGN TABLE organizations ALTER COLUMN org_type OPTIONS (
+ALTER FOREIGN TABLE public.organizations ALTER COLUMN org_type OPTIONS (
     column_name 'org_type'
 );
-ALTER FOREIGN TABLE organizations ALTER COLUMN homepage_url OPTIONS (
+ALTER FOREIGN TABLE public.organizations ALTER COLUMN homepage_url OPTIONS (
     column_name 'homepage_url'
 );
-ALTER FOREIGN TABLE organizations ALTER COLUMN logo_id OPTIONS (
+ALTER FOREIGN TABLE public.organizations ALTER COLUMN logo_id OPTIONS (
     column_name 'logo_id'
 );
-ALTER FOREIGN TABLE organizations ALTER COLUMN vector OPTIONS (
+ALTER FOREIGN TABLE public.organizations ALTER COLUMN vector OPTIONS (
     column_name 'vector'
 );
-ALTER FOREIGN TABLE organizations ALTER COLUMN popularity_factor OPTIONS (
+ALTER FOREIGN TABLE public.organizations ALTER COLUMN popularity_factor OPTIONS (
     column_name 'popularity_factor'
 );
-ALTER FOREIGN TABLE organizations ALTER COLUMN deleted OPTIONS (
+ALTER FOREIGN TABLE public.organizations ALTER COLUMN deleted OPTIONS (
     column_name 'deleted'
 );
-ALTER FOREIGN TABLE organizations ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.organizations ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE organizations ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.organizations ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE organizations ALTER COLUMN projects_count OPTIONS (
+ALTER FOREIGN TABLE public.organizations ALTER COLUMN projects_count OPTIONS (
     column_name 'projects_count'
 );
-ALTER FOREIGN TABLE organizations ALTER COLUMN thirty_day_activity_id OPTIONS (
+ALTER FOREIGN TABLE public.organizations ALTER COLUMN thirty_day_activity_id OPTIONS (
     column_name 'thirty_day_activity_id'
 );
 
@@ -6516,7 +6515,7 @@ ALTER FOREIGN TABLE organizations ALTER COLUMN thirty_day_activity_id OPTIONS (
 -- Name: organizations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE organizations_id_seq
+CREATE SEQUENCE public.organizations_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -6528,7 +6527,7 @@ CREATE SEQUENCE organizations_id_seq
 -- Name: organizations_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE organizations_id_seq_view (
+CREATE FOREIGN TABLE public.organizations_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -6536,7 +6535,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'organizations_id_seq_view'
 );
-ALTER FOREIGN TABLE organizations_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.organizations_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -6545,7 +6544,7 @@ ALTER FOREIGN TABLE organizations_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: pages_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE pages_id_seq_view (
+CREATE FOREIGN TABLE public.pages_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -6553,7 +6552,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'pages_id_seq_view'
 );
-ALTER FOREIGN TABLE pages_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.pages_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -6562,7 +6561,7 @@ ALTER FOREIGN TABLE pages_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: people; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE people (
+CREATE FOREIGN TABLE public.people (
     id bigint NOT NULL,
     effective_name text,
     account_id integer,
@@ -6580,37 +6579,37 @@ OPTIONS (
     schema_name 'public',
     table_name 'people'
 );
-ALTER FOREIGN TABLE people ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.people ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE people ALTER COLUMN effective_name OPTIONS (
+ALTER FOREIGN TABLE public.people ALTER COLUMN effective_name OPTIONS (
     column_name 'effective_name'
 );
-ALTER FOREIGN TABLE people ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.people ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE people ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.people ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE people ALTER COLUMN name_id OPTIONS (
+ALTER FOREIGN TABLE public.people ALTER COLUMN name_id OPTIONS (
     column_name 'name_id'
 );
-ALTER FOREIGN TABLE people ALTER COLUMN name_fact_id OPTIONS (
+ALTER FOREIGN TABLE public.people ALTER COLUMN name_fact_id OPTIONS (
     column_name 'name_fact_id'
 );
-ALTER FOREIGN TABLE people ALTER COLUMN kudo_position OPTIONS (
+ALTER FOREIGN TABLE public.people ALTER COLUMN kudo_position OPTIONS (
     column_name 'kudo_position'
 );
-ALTER FOREIGN TABLE people ALTER COLUMN kudo_score OPTIONS (
+ALTER FOREIGN TABLE public.people ALTER COLUMN kudo_score OPTIONS (
     column_name 'kudo_score'
 );
-ALTER FOREIGN TABLE people ALTER COLUMN kudo_rank OPTIONS (
+ALTER FOREIGN TABLE public.people ALTER COLUMN kudo_rank OPTIONS (
     column_name 'kudo_rank'
 );
-ALTER FOREIGN TABLE people ALTER COLUMN vector OPTIONS (
+ALTER FOREIGN TABLE public.people ALTER COLUMN vector OPTIONS (
     column_name 'vector'
 );
-ALTER FOREIGN TABLE people ALTER COLUMN popularity_factor OPTIONS (
+ALTER FOREIGN TABLE public.people ALTER COLUMN popularity_factor OPTIONS (
     column_name 'popularity_factor'
 );
 
@@ -6619,7 +6618,7 @@ ALTER FOREIGN TABLE people ALTER COLUMN popularity_factor OPTIONS (
 -- Name: people_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE people_view (
+CREATE FOREIGN TABLE public.people_view (
     id bigint,
     effective_name text,
     account_id integer,
@@ -6635,31 +6634,31 @@ OPTIONS (
     schema_name 'public',
     table_name 'people_view'
 );
-ALTER FOREIGN TABLE people_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.people_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE people_view ALTER COLUMN effective_name OPTIONS (
+ALTER FOREIGN TABLE public.people_view ALTER COLUMN effective_name OPTIONS (
     column_name 'effective_name'
 );
-ALTER FOREIGN TABLE people_view ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.people_view ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE people_view ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.people_view ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE people_view ALTER COLUMN name_id OPTIONS (
+ALTER FOREIGN TABLE public.people_view ALTER COLUMN name_id OPTIONS (
     column_name 'name_id'
 );
-ALTER FOREIGN TABLE people_view ALTER COLUMN name_fact_id OPTIONS (
+ALTER FOREIGN TABLE public.people_view ALTER COLUMN name_fact_id OPTIONS (
     column_name 'name_fact_id'
 );
-ALTER FOREIGN TABLE people_view ALTER COLUMN kudo_position OPTIONS (
+ALTER FOREIGN TABLE public.people_view ALTER COLUMN kudo_position OPTIONS (
     column_name 'kudo_position'
 );
-ALTER FOREIGN TABLE people_view ALTER COLUMN kudo_score OPTIONS (
+ALTER FOREIGN TABLE public.people_view ALTER COLUMN kudo_score OPTIONS (
     column_name 'kudo_score'
 );
-ALTER FOREIGN TABLE people_view ALTER COLUMN kudo_rank OPTIONS (
+ALTER FOREIGN TABLE public.people_view ALTER COLUMN kudo_rank OPTIONS (
     column_name 'kudo_rank'
 );
 
@@ -6668,8 +6667,8 @@ ALTER FOREIGN TABLE people_view ALTER COLUMN kudo_rank OPTIONS (
 -- Name: permissions; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE permissions (
-    id integer DEFAULT permissions_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.permissions (
+    id integer DEFAULT public.permissions_id_seq_view() NOT NULL,
     target_id integer NOT NULL,
     updated_at timestamp without time zone,
     created_at timestamp without time zone,
@@ -6682,25 +6681,25 @@ OPTIONS (
     schema_name 'public',
     table_name 'permissions'
 );
-ALTER FOREIGN TABLE permissions ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.permissions ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE permissions ALTER COLUMN target_id OPTIONS (
+ALTER FOREIGN TABLE public.permissions ALTER COLUMN target_id OPTIONS (
     column_name 'target_id'
 );
-ALTER FOREIGN TABLE permissions ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.permissions ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE permissions ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.permissions ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE permissions ALTER COLUMN remainder OPTIONS (
+ALTER FOREIGN TABLE public.permissions ALTER COLUMN remainder OPTIONS (
     column_name 'remainder'
 );
-ALTER FOREIGN TABLE permissions ALTER COLUMN downloads OPTIONS (
+ALTER FOREIGN TABLE public.permissions ALTER COLUMN downloads OPTIONS (
     column_name 'downloads'
 );
-ALTER FOREIGN TABLE permissions ALTER COLUMN target_type OPTIONS (
+ALTER FOREIGN TABLE public.permissions ALTER COLUMN target_type OPTIONS (
     column_name 'target_type'
 );
 
@@ -6709,7 +6708,7 @@ ALTER FOREIGN TABLE permissions ALTER COLUMN target_type OPTIONS (
 -- Name: permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE permissions_id_seq
+CREATE SEQUENCE public.permissions_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -6721,7 +6720,7 @@ CREATE SEQUENCE permissions_id_seq
 -- Name: permissions_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE permissions_id_seq_view (
+CREATE FOREIGN TABLE public.permissions_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -6729,7 +6728,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'permissions_id_seq_view'
 );
-ALTER FOREIGN TABLE permissions_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.permissions_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -6738,7 +6737,7 @@ ALTER FOREIGN TABLE permissions_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: pg_ts_cfg; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE pg_ts_cfg (
+CREATE FOREIGN TABLE public.pg_ts_cfg (
     ts_name text NOT NULL,
     prs_name text NOT NULL,
     locale text
@@ -6748,13 +6747,13 @@ OPTIONS (
     schema_name 'public',
     table_name 'pg_ts_cfg'
 );
-ALTER FOREIGN TABLE pg_ts_cfg ALTER COLUMN ts_name OPTIONS (
+ALTER FOREIGN TABLE public.pg_ts_cfg ALTER COLUMN ts_name OPTIONS (
     column_name 'ts_name'
 );
-ALTER FOREIGN TABLE pg_ts_cfg ALTER COLUMN prs_name OPTIONS (
+ALTER FOREIGN TABLE public.pg_ts_cfg ALTER COLUMN prs_name OPTIONS (
     column_name 'prs_name'
 );
-ALTER FOREIGN TABLE pg_ts_cfg ALTER COLUMN locale OPTIONS (
+ALTER FOREIGN TABLE public.pg_ts_cfg ALTER COLUMN locale OPTIONS (
     column_name 'locale'
 );
 
@@ -6763,7 +6762,7 @@ ALTER FOREIGN TABLE pg_ts_cfg ALTER COLUMN locale OPTIONS (
 -- Name: pg_ts_cfgmap; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE pg_ts_cfgmap (
+CREATE FOREIGN TABLE public.pg_ts_cfgmap (
     ts_name text NOT NULL,
     tok_alias text NOT NULL,
     dict_name text[]
@@ -6773,13 +6772,13 @@ OPTIONS (
     schema_name 'public',
     table_name 'pg_ts_cfgmap'
 );
-ALTER FOREIGN TABLE pg_ts_cfgmap ALTER COLUMN ts_name OPTIONS (
+ALTER FOREIGN TABLE public.pg_ts_cfgmap ALTER COLUMN ts_name OPTIONS (
     column_name 'ts_name'
 );
-ALTER FOREIGN TABLE pg_ts_cfgmap ALTER COLUMN tok_alias OPTIONS (
+ALTER FOREIGN TABLE public.pg_ts_cfgmap ALTER COLUMN tok_alias OPTIONS (
     column_name 'tok_alias'
 );
-ALTER FOREIGN TABLE pg_ts_cfgmap ALTER COLUMN dict_name OPTIONS (
+ALTER FOREIGN TABLE public.pg_ts_cfgmap ALTER COLUMN dict_name OPTIONS (
     column_name 'dict_name'
 );
 
@@ -6788,7 +6787,7 @@ ALTER FOREIGN TABLE pg_ts_cfgmap ALTER COLUMN dict_name OPTIONS (
 -- Name: positions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE positions_id_seq
+CREATE SEQUENCE public.positions_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -6800,7 +6799,7 @@ CREATE SEQUENCE positions_id_seq
 -- Name: positions_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE positions_id_seq_view (
+CREATE FOREIGN TABLE public.positions_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -6808,7 +6807,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'positions_id_seq_view'
 );
-ALTER FOREIGN TABLE positions_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.positions_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -6817,8 +6816,8 @@ ALTER FOREIGN TABLE positions_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: posts; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE posts (
-    id integer DEFAULT posts_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.posts (
+    id integer DEFAULT public.posts_id_seq_view() NOT NULL,
     account_id integer NOT NULL,
     topic_id integer NOT NULL,
     body text,
@@ -6833,31 +6832,31 @@ OPTIONS (
     schema_name 'public',
     table_name 'posts'
 );
-ALTER FOREIGN TABLE posts ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.posts ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE posts ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.posts ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE posts ALTER COLUMN topic_id OPTIONS (
+ALTER FOREIGN TABLE public.posts ALTER COLUMN topic_id OPTIONS (
     column_name 'topic_id'
 );
-ALTER FOREIGN TABLE posts ALTER COLUMN body OPTIONS (
+ALTER FOREIGN TABLE public.posts ALTER COLUMN body OPTIONS (
     column_name 'body'
 );
-ALTER FOREIGN TABLE posts ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.posts ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE posts ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.posts ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE posts ALTER COLUMN notified_at OPTIONS (
+ALTER FOREIGN TABLE public.posts ALTER COLUMN notified_at OPTIONS (
     column_name 'notified_at'
 );
-ALTER FOREIGN TABLE posts ALTER COLUMN vector OPTIONS (
+ALTER FOREIGN TABLE public.posts ALTER COLUMN vector OPTIONS (
     column_name 'vector'
 );
-ALTER FOREIGN TABLE posts ALTER COLUMN popularity_factor OPTIONS (
+ALTER FOREIGN TABLE public.posts ALTER COLUMN popularity_factor OPTIONS (
     column_name 'popularity_factor'
 );
 
@@ -6866,7 +6865,7 @@ ALTER FOREIGN TABLE posts ALTER COLUMN popularity_factor OPTIONS (
 -- Name: posts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE posts_id_seq
+CREATE SEQUENCE public.posts_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -6878,7 +6877,7 @@ CREATE SEQUENCE posts_id_seq
 -- Name: posts_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE posts_id_seq_view (
+CREATE FOREIGN TABLE public.posts_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -6886,7 +6885,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'posts_id_seq_view'
 );
-ALTER FOREIGN TABLE posts_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.posts_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -6895,8 +6894,8 @@ ALTER FOREIGN TABLE posts_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: profiles; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE profiles (
-    id integer DEFAULT profiles_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.profiles (
+    id integer DEFAULT public.profiles_id_seq_view() NOT NULL,
     job_id integer,
     name text NOT NULL,
     count integer NOT NULL,
@@ -6908,22 +6907,22 @@ OPTIONS (
     schema_name 'public',
     table_name 'profiles'
 );
-ALTER FOREIGN TABLE profiles ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.profiles ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE profiles ALTER COLUMN job_id OPTIONS (
+ALTER FOREIGN TABLE public.profiles ALTER COLUMN job_id OPTIONS (
     column_name 'job_id'
 );
-ALTER FOREIGN TABLE profiles ALTER COLUMN name OPTIONS (
+ALTER FOREIGN TABLE public.profiles ALTER COLUMN name OPTIONS (
     column_name 'name'
 );
-ALTER FOREIGN TABLE profiles ALTER COLUMN count OPTIONS (
+ALTER FOREIGN TABLE public.profiles ALTER COLUMN count OPTIONS (
     column_name 'count'
 );
-ALTER FOREIGN TABLE profiles ALTER COLUMN "time" OPTIONS (
+ALTER FOREIGN TABLE public.profiles ALTER COLUMN "time" OPTIONS (
     column_name 'time'
 );
-ALTER FOREIGN TABLE profiles ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.profiles ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
 
@@ -6932,7 +6931,7 @@ ALTER FOREIGN TABLE profiles ALTER COLUMN created_at OPTIONS (
 -- Name: profiles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE profiles_id_seq
+CREATE SEQUENCE public.profiles_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -6944,7 +6943,7 @@ CREATE SEQUENCE profiles_id_seq
 -- Name: profiles_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE profiles_id_seq_view (
+CREATE FOREIGN TABLE public.profiles_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -6952,7 +6951,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'profiles_id_seq_view'
 );
-ALTER FOREIGN TABLE profiles_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.profiles_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -6961,8 +6960,8 @@ ALTER FOREIGN TABLE profiles_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: project_badges; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE project_badges (
-    id integer DEFAULT project_badges_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.project_badges (
+    id integer DEFAULT public.project_badges_id_seq_view() NOT NULL,
     identifier character varying,
     type character varying,
     created_at timestamp without time zone NOT NULL,
@@ -6975,25 +6974,25 @@ OPTIONS (
     schema_name 'public',
     table_name 'project_badges'
 );
-ALTER FOREIGN TABLE project_badges ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.project_badges ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE project_badges ALTER COLUMN identifier OPTIONS (
+ALTER FOREIGN TABLE public.project_badges ALTER COLUMN identifier OPTIONS (
     column_name 'identifier'
 );
-ALTER FOREIGN TABLE project_badges ALTER COLUMN type OPTIONS (
+ALTER FOREIGN TABLE public.project_badges ALTER COLUMN type OPTIONS (
     column_name 'type'
 );
-ALTER FOREIGN TABLE project_badges ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.project_badges ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE project_badges ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.project_badges ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE project_badges ALTER COLUMN status OPTIONS (
+ALTER FOREIGN TABLE public.project_badges ALTER COLUMN status OPTIONS (
     column_name 'status'
 );
-ALTER FOREIGN TABLE project_badges ALTER COLUMN enlistment_id OPTIONS (
+ALTER FOREIGN TABLE public.project_badges ALTER COLUMN enlistment_id OPTIONS (
     column_name 'enlistment_id'
 );
 
@@ -7002,7 +7001,7 @@ ALTER FOREIGN TABLE project_badges ALTER COLUMN enlistment_id OPTIONS (
 -- Name: project_badges_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE project_badges_id_seq
+CREATE SEQUENCE public.project_badges_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -7014,7 +7013,7 @@ CREATE SEQUENCE project_badges_id_seq
 -- Name: project_badges_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE project_badges_id_seq_view (
+CREATE FOREIGN TABLE public.project_badges_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -7022,7 +7021,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'project_badges_id_seq_view'
 );
-ALTER FOREIGN TABLE project_badges_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.project_badges_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -7031,7 +7030,7 @@ ALTER FOREIGN TABLE project_badges_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: project_counts_by_quarter_and_language; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE project_counts_by_quarter_and_language (
+CREATE FOREIGN TABLE public.project_counts_by_quarter_and_language (
     language_id integer,
     quarter timestamp without time zone,
     project_count bigint
@@ -7041,13 +7040,13 @@ OPTIONS (
     schema_name 'public',
     table_name 'project_counts_by_quarter_and_language'
 );
-ALTER FOREIGN TABLE project_counts_by_quarter_and_language ALTER COLUMN language_id OPTIONS (
+ALTER FOREIGN TABLE public.project_counts_by_quarter_and_language ALTER COLUMN language_id OPTIONS (
     column_name 'language_id'
 );
-ALTER FOREIGN TABLE project_counts_by_quarter_and_language ALTER COLUMN quarter OPTIONS (
+ALTER FOREIGN TABLE public.project_counts_by_quarter_and_language ALTER COLUMN quarter OPTIONS (
     column_name 'quarter'
 );
-ALTER FOREIGN TABLE project_counts_by_quarter_and_language ALTER COLUMN project_count OPTIONS (
+ALTER FOREIGN TABLE public.project_counts_by_quarter_and_language ALTER COLUMN project_count OPTIONS (
     column_name 'project_count'
 );
 
@@ -7056,8 +7055,8 @@ ALTER FOREIGN TABLE project_counts_by_quarter_and_language ALTER COLUMN project_
 -- Name: project_events; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE project_events (
-    id integer DEFAULT project_events_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.project_events (
+    id integer DEFAULT public.project_events_id_seq_view() NOT NULL,
     project_id integer,
     type text NOT NULL,
     key text NOT NULL,
@@ -7070,25 +7069,25 @@ OPTIONS (
     schema_name 'public',
     table_name 'project_events'
 );
-ALTER FOREIGN TABLE project_events ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.project_events ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE project_events ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.project_events ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE project_events ALTER COLUMN type OPTIONS (
+ALTER FOREIGN TABLE public.project_events ALTER COLUMN type OPTIONS (
     column_name 'type'
 );
-ALTER FOREIGN TABLE project_events ALTER COLUMN key OPTIONS (
+ALTER FOREIGN TABLE public.project_events ALTER COLUMN key OPTIONS (
     column_name 'key'
 );
-ALTER FOREIGN TABLE project_events ALTER COLUMN data OPTIONS (
+ALTER FOREIGN TABLE public.project_events ALTER COLUMN data OPTIONS (
     column_name 'data'
 );
-ALTER FOREIGN TABLE project_events ALTER COLUMN "time" OPTIONS (
+ALTER FOREIGN TABLE public.project_events ALTER COLUMN "time" OPTIONS (
     column_name 'time'
 );
-ALTER FOREIGN TABLE project_events ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.project_events ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
 
@@ -7097,7 +7096,7 @@ ALTER FOREIGN TABLE project_events ALTER COLUMN created_at OPTIONS (
 -- Name: project_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE project_events_id_seq
+CREATE SEQUENCE public.project_events_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -7109,7 +7108,7 @@ CREATE SEQUENCE project_events_id_seq
 -- Name: project_events_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE project_events_id_seq_view (
+CREATE FOREIGN TABLE public.project_events_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -7117,7 +7116,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'project_events_id_seq_view'
 );
-ALTER FOREIGN TABLE project_events_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.project_events_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -7126,8 +7125,8 @@ ALTER FOREIGN TABLE project_events_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: project_experiences; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE project_experiences (
-    id integer DEFAULT project_experiences_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.project_experiences (
+    id integer DEFAULT public.project_experiences_id_seq_view() NOT NULL,
     position_id integer NOT NULL,
     project_id integer NOT NULL,
     promote boolean DEFAULT false NOT NULL
@@ -7137,16 +7136,16 @@ OPTIONS (
     schema_name 'public',
     table_name 'project_experiences'
 );
-ALTER FOREIGN TABLE project_experiences ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.project_experiences ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE project_experiences ALTER COLUMN position_id OPTIONS (
+ALTER FOREIGN TABLE public.project_experiences ALTER COLUMN position_id OPTIONS (
     column_name 'position_id'
 );
-ALTER FOREIGN TABLE project_experiences ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.project_experiences ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE project_experiences ALTER COLUMN promote OPTIONS (
+ALTER FOREIGN TABLE public.project_experiences ALTER COLUMN promote OPTIONS (
     column_name 'promote'
 );
 
@@ -7155,7 +7154,7 @@ ALTER FOREIGN TABLE project_experiences ALTER COLUMN promote OPTIONS (
 -- Name: project_experiences_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE project_experiences_id_seq
+CREATE SEQUENCE public.project_experiences_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -7167,7 +7166,7 @@ CREATE SEQUENCE project_experiences_id_seq
 -- Name: project_experiences_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE project_experiences_id_seq_view (
+CREATE FOREIGN TABLE public.project_experiences_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -7175,7 +7174,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'project_experiences_id_seq_view'
 );
-ALTER FOREIGN TABLE project_experiences_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.project_experiences_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -7184,7 +7183,7 @@ ALTER FOREIGN TABLE project_experiences_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: project_gestalts_tmp; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE project_gestalts_tmp (
+CREATE FOREIGN TABLE public.project_gestalts_tmp (
     id integer,
     date timestamp without time zone,
     project_id integer,
@@ -7195,16 +7194,16 @@ OPTIONS (
     schema_name 'public',
     table_name 'project_gestalts_tmp'
 );
-ALTER FOREIGN TABLE project_gestalts_tmp ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.project_gestalts_tmp ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE project_gestalts_tmp ALTER COLUMN date OPTIONS (
+ALTER FOREIGN TABLE public.project_gestalts_tmp ALTER COLUMN date OPTIONS (
     column_name 'date'
 );
-ALTER FOREIGN TABLE project_gestalts_tmp ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.project_gestalts_tmp ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE project_gestalts_tmp ALTER COLUMN gestalt_id OPTIONS (
+ALTER FOREIGN TABLE public.project_gestalts_tmp ALTER COLUMN gestalt_id OPTIONS (
     column_name 'gestalt_id'
 );
 
@@ -7213,8 +7212,8 @@ ALTER FOREIGN TABLE project_gestalts_tmp ALTER COLUMN gestalt_id OPTIONS (
 -- Name: project_licenses; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE project_licenses (
-    id integer DEFAULT project_licenses_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.project_licenses (
+    id integer DEFAULT public.project_licenses_id_seq_view() NOT NULL,
     project_id integer,
     license_id integer,
     deleted boolean DEFAULT false
@@ -7224,16 +7223,16 @@ OPTIONS (
     schema_name 'public',
     table_name 'project_licenses'
 );
-ALTER FOREIGN TABLE project_licenses ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.project_licenses ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE project_licenses ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.project_licenses ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE project_licenses ALTER COLUMN license_id OPTIONS (
+ALTER FOREIGN TABLE public.project_licenses ALTER COLUMN license_id OPTIONS (
     column_name 'license_id'
 );
-ALTER FOREIGN TABLE project_licenses ALTER COLUMN deleted OPTIONS (
+ALTER FOREIGN TABLE public.project_licenses ALTER COLUMN deleted OPTIONS (
     column_name 'deleted'
 );
 
@@ -7242,7 +7241,7 @@ ALTER FOREIGN TABLE project_licenses ALTER COLUMN deleted OPTIONS (
 -- Name: project_licenses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE project_licenses_id_seq
+CREATE SEQUENCE public.project_licenses_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -7254,7 +7253,7 @@ CREATE SEQUENCE project_licenses_id_seq
 -- Name: project_licenses_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE project_licenses_id_seq_view (
+CREATE FOREIGN TABLE public.project_licenses_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -7262,7 +7261,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'project_licenses_id_seq_view'
 );
-ALTER FOREIGN TABLE project_licenses_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.project_licenses_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -7271,8 +7270,8 @@ ALTER FOREIGN TABLE project_licenses_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: project_reports; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE project_reports (
-    id integer DEFAULT project_reports_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.project_reports (
+    id integer DEFAULT public.project_reports_id_seq_view() NOT NULL,
     project_id integer NOT NULL,
     report_id integer NOT NULL
 )
@@ -7281,13 +7280,13 @@ OPTIONS (
     schema_name 'public',
     table_name 'project_reports'
 );
-ALTER FOREIGN TABLE project_reports ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.project_reports ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE project_reports ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.project_reports ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE project_reports ALTER COLUMN report_id OPTIONS (
+ALTER FOREIGN TABLE public.project_reports ALTER COLUMN report_id OPTIONS (
     column_name 'report_id'
 );
 
@@ -7296,7 +7295,7 @@ ALTER FOREIGN TABLE project_reports ALTER COLUMN report_id OPTIONS (
 -- Name: project_reports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE project_reports_id_seq
+CREATE SEQUENCE public.project_reports_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -7308,7 +7307,7 @@ CREATE SEQUENCE project_reports_id_seq
 -- Name: project_reports_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE project_reports_id_seq_view (
+CREATE FOREIGN TABLE public.project_reports_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -7316,7 +7315,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'project_reports_id_seq_view'
 );
-ALTER FOREIGN TABLE project_reports_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.project_reports_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -7325,8 +7324,8 @@ ALTER FOREIGN TABLE project_reports_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: project_security_sets; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE project_security_sets (
-    id integer DEFAULT project_security_sets_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.project_security_sets (
+    id integer DEFAULT public.project_security_sets_id_seq_view() NOT NULL,
     project_id integer,
     uuid character varying NOT NULL,
     etag character varying,
@@ -7338,22 +7337,22 @@ OPTIONS (
     schema_name 'public',
     table_name 'project_security_sets'
 );
-ALTER FOREIGN TABLE project_security_sets ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.project_security_sets ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE project_security_sets ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.project_security_sets ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE project_security_sets ALTER COLUMN uuid OPTIONS (
+ALTER FOREIGN TABLE public.project_security_sets ALTER COLUMN uuid OPTIONS (
     column_name 'uuid'
 );
-ALTER FOREIGN TABLE project_security_sets ALTER COLUMN etag OPTIONS (
+ALTER FOREIGN TABLE public.project_security_sets ALTER COLUMN etag OPTIONS (
     column_name 'etag'
 );
-ALTER FOREIGN TABLE project_security_sets ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.project_security_sets ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE project_security_sets ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.project_security_sets ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
 
@@ -7362,7 +7361,7 @@ ALTER FOREIGN TABLE project_security_sets ALTER COLUMN updated_at OPTIONS (
 -- Name: project_security_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE project_security_sets_id_seq
+CREATE SEQUENCE public.project_security_sets_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -7374,7 +7373,7 @@ CREATE SEQUENCE project_security_sets_id_seq
 -- Name: project_security_sets_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE project_security_sets_id_seq_view (
+CREATE FOREIGN TABLE public.project_security_sets_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -7382,7 +7381,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'project_security_sets_id_seq_view'
 );
-ALTER FOREIGN TABLE project_security_sets_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.project_security_sets_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -7391,8 +7390,8 @@ ALTER FOREIGN TABLE project_security_sets_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: project_vulnerability_reports; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE project_vulnerability_reports (
-    id integer DEFAULT project_vulnerability_reports_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.project_vulnerability_reports (
+    id integer DEFAULT public.project_vulnerability_reports_id_seq_view() NOT NULL,
     project_id integer,
     etag character varying(255),
     vulnerability_score numeric,
@@ -7405,25 +7404,25 @@ OPTIONS (
     schema_name 'public',
     table_name 'project_vulnerability_reports'
 );
-ALTER FOREIGN TABLE project_vulnerability_reports ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.project_vulnerability_reports ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE project_vulnerability_reports ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.project_vulnerability_reports ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE project_vulnerability_reports ALTER COLUMN etag OPTIONS (
+ALTER FOREIGN TABLE public.project_vulnerability_reports ALTER COLUMN etag OPTIONS (
     column_name 'etag'
 );
-ALTER FOREIGN TABLE project_vulnerability_reports ALTER COLUMN vulnerability_score OPTIONS (
+ALTER FOREIGN TABLE public.project_vulnerability_reports ALTER COLUMN vulnerability_score OPTIONS (
     column_name 'vulnerability_score'
 );
-ALTER FOREIGN TABLE project_vulnerability_reports ALTER COLUMN security_score OPTIONS (
+ALTER FOREIGN TABLE public.project_vulnerability_reports ALTER COLUMN security_score OPTIONS (
     column_name 'security_score'
 );
-ALTER FOREIGN TABLE project_vulnerability_reports ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.project_vulnerability_reports ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE project_vulnerability_reports ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.project_vulnerability_reports ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
 
@@ -7432,7 +7431,7 @@ ALTER FOREIGN TABLE project_vulnerability_reports ALTER COLUMN updated_at OPTION
 -- Name: project_vulnerability_reports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE project_vulnerability_reports_id_seq
+CREATE SEQUENCE public.project_vulnerability_reports_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -7444,7 +7443,7 @@ CREATE SEQUENCE project_vulnerability_reports_id_seq
 -- Name: project_vulnerability_reports_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE project_vulnerability_reports_id_seq_view (
+CREATE FOREIGN TABLE public.project_vulnerability_reports_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -7452,7 +7451,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'project_vulnerability_reports_id_seq_view'
 );
-ALTER FOREIGN TABLE project_vulnerability_reports_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.project_vulnerability_reports_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -7461,7 +7460,7 @@ ALTER FOREIGN TABLE project_vulnerability_reports_id_seq_view ALTER COLUMN id OP
 -- Name: projects_by_month; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE projects_by_month (
+CREATE FOREIGN TABLE public.projects_by_month (
     month timestamp without time zone,
     project_count bigint
 )
@@ -7470,10 +7469,10 @@ OPTIONS (
     schema_name 'public',
     table_name 'projects_by_month'
 );
-ALTER FOREIGN TABLE projects_by_month ALTER COLUMN month OPTIONS (
+ALTER FOREIGN TABLE public.projects_by_month ALTER COLUMN month OPTIONS (
     column_name 'month'
 );
-ALTER FOREIGN TABLE projects_by_month ALTER COLUMN project_count OPTIONS (
+ALTER FOREIGN TABLE public.projects_by_month ALTER COLUMN project_count OPTIONS (
     column_name 'project_count'
 );
 
@@ -7482,7 +7481,7 @@ ALTER FOREIGN TABLE projects_by_month ALTER COLUMN project_count OPTIONS (
 -- Name: projects_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE projects_id_seq
+CREATE SEQUENCE public.projects_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -7494,7 +7493,7 @@ CREATE SEQUENCE projects_id_seq
 -- Name: projects_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE projects_id_seq_view (
+CREATE FOREIGN TABLE public.projects_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -7502,7 +7501,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'projects_id_seq_view'
 );
-ALTER FOREIGN TABLE projects_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.projects_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -7511,8 +7510,8 @@ ALTER FOREIGN TABLE projects_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: ratings; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE ratings (
-    id integer DEFAULT ratings_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.ratings (
+    id integer DEFAULT public.ratings_id_seq_view() NOT NULL,
     account_id integer NOT NULL,
     project_id integer NOT NULL,
     score integer NOT NULL,
@@ -7524,22 +7523,22 @@ OPTIONS (
     schema_name 'public',
     table_name 'ratings'
 );
-ALTER FOREIGN TABLE ratings ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.ratings ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE ratings ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.ratings ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE ratings ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.ratings ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE ratings ALTER COLUMN score OPTIONS (
+ALTER FOREIGN TABLE public.ratings ALTER COLUMN score OPTIONS (
     column_name 'score'
 );
-ALTER FOREIGN TABLE ratings ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.ratings ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE ratings ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.ratings ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
 
@@ -7548,7 +7547,7 @@ ALTER FOREIGN TABLE ratings ALTER COLUMN updated_at OPTIONS (
 -- Name: ratings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE ratings_id_seq
+CREATE SEQUENCE public.ratings_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -7560,7 +7559,7 @@ CREATE SEQUENCE ratings_id_seq
 -- Name: ratings_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE ratings_id_seq_view (
+CREATE FOREIGN TABLE public.ratings_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -7568,7 +7567,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'ratings_id_seq_view'
 );
-ALTER FOREIGN TABLE ratings_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.ratings_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -7577,8 +7576,8 @@ ALTER FOREIGN TABLE ratings_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: recently_active_accounts_cache; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE recently_active_accounts_cache (
-    id integer DEFAULT recently_active_accounts_cache_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.recently_active_accounts_cache (
+    id integer DEFAULT public.recently_active_accounts_cache_id_seq_view() NOT NULL,
     accounts text,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
@@ -7588,16 +7587,16 @@ OPTIONS (
     schema_name 'public',
     table_name 'recently_active_accounts_cache'
 );
-ALTER FOREIGN TABLE recently_active_accounts_cache ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.recently_active_accounts_cache ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE recently_active_accounts_cache ALTER COLUMN accounts OPTIONS (
+ALTER FOREIGN TABLE public.recently_active_accounts_cache ALTER COLUMN accounts OPTIONS (
     column_name 'accounts'
 );
-ALTER FOREIGN TABLE recently_active_accounts_cache ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.recently_active_accounts_cache ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE recently_active_accounts_cache ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.recently_active_accounts_cache ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
 
@@ -7606,7 +7605,7 @@ ALTER FOREIGN TABLE recently_active_accounts_cache ALTER COLUMN updated_at OPTIO
 -- Name: recently_active_accounts_cache_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE recently_active_accounts_cache_id_seq
+CREATE SEQUENCE public.recently_active_accounts_cache_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -7618,7 +7617,7 @@ CREATE SEQUENCE recently_active_accounts_cache_id_seq
 -- Name: recently_active_accounts_cache_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE recently_active_accounts_cache_id_seq_view (
+CREATE FOREIGN TABLE public.recently_active_accounts_cache_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -7626,7 +7625,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'recently_active_accounts_cache_id_seq_view'
 );
-ALTER FOREIGN TABLE recently_active_accounts_cache_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.recently_active_accounts_cache_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -7635,8 +7634,8 @@ ALTER FOREIGN TABLE recently_active_accounts_cache_id_seq_view ALTER COLUMN id O
 -- Name: recommend_entries; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE recommend_entries (
-    id integer DEFAULT recommend_entries_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.recommend_entries (
+    id integer DEFAULT public.recommend_entries_id_seq_view() NOT NULL,
     project_id integer,
     project_id_recommends integer,
     weight double precision
@@ -7646,16 +7645,16 @@ OPTIONS (
     schema_name 'public',
     table_name 'recommend_entries'
 );
-ALTER FOREIGN TABLE recommend_entries ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.recommend_entries ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE recommend_entries ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.recommend_entries ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE recommend_entries ALTER COLUMN project_id_recommends OPTIONS (
+ALTER FOREIGN TABLE public.recommend_entries ALTER COLUMN project_id_recommends OPTIONS (
     column_name 'project_id_recommends'
 );
-ALTER FOREIGN TABLE recommend_entries ALTER COLUMN weight OPTIONS (
+ALTER FOREIGN TABLE public.recommend_entries ALTER COLUMN weight OPTIONS (
     column_name 'weight'
 );
 
@@ -7664,7 +7663,7 @@ ALTER FOREIGN TABLE recommend_entries ALTER COLUMN weight OPTIONS (
 -- Name: recommend_entries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE recommend_entries_id_seq
+CREATE SEQUENCE public.recommend_entries_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -7676,7 +7675,7 @@ CREATE SEQUENCE recommend_entries_id_seq
 -- Name: recommend_entries_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE recommend_entries_id_seq_view (
+CREATE FOREIGN TABLE public.recommend_entries_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -7684,7 +7683,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'recommend_entries_id_seq_view'
 );
-ALTER FOREIGN TABLE recommend_entries_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.recommend_entries_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -7693,8 +7692,8 @@ ALTER FOREIGN TABLE recommend_entries_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: recommendations; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE recommendations (
-    id integer DEFAULT recommendations_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.recommendations (
+    id integer DEFAULT public.recommendations_id_seq_view() NOT NULL,
     invitor_id integer NOT NULL,
     invitee_id integer,
     invitee_email text NOT NULL,
@@ -7708,28 +7707,28 @@ OPTIONS (
     schema_name 'public',
     table_name 'recommendations'
 );
-ALTER FOREIGN TABLE recommendations ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.recommendations ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE recommendations ALTER COLUMN invitor_id OPTIONS (
+ALTER FOREIGN TABLE public.recommendations ALTER COLUMN invitor_id OPTIONS (
     column_name 'invitor_id'
 );
-ALTER FOREIGN TABLE recommendations ALTER COLUMN invitee_id OPTIONS (
+ALTER FOREIGN TABLE public.recommendations ALTER COLUMN invitee_id OPTIONS (
     column_name 'invitee_id'
 );
-ALTER FOREIGN TABLE recommendations ALTER COLUMN invitee_email OPTIONS (
+ALTER FOREIGN TABLE public.recommendations ALTER COLUMN invitee_email OPTIONS (
     column_name 'invitee_email'
 );
-ALTER FOREIGN TABLE recommendations ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.recommendations ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE recommendations ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.recommendations ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE recommendations ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.recommendations ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE recommendations ALTER COLUMN activation_code OPTIONS (
+ALTER FOREIGN TABLE public.recommendations ALTER COLUMN activation_code OPTIONS (
     column_name 'activation_code'
 );
 
@@ -7738,7 +7737,7 @@ ALTER FOREIGN TABLE recommendations ALTER COLUMN activation_code OPTIONS (
 -- Name: recommendations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE recommendations_id_seq
+CREATE SEQUENCE public.recommendations_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -7750,7 +7749,7 @@ CREATE SEQUENCE recommendations_id_seq
 -- Name: recommendations_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE recommendations_id_seq_view (
+CREATE FOREIGN TABLE public.recommendations_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -7758,7 +7757,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'recommendations_id_seq_view'
 );
-ALTER FOREIGN TABLE recommendations_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.recommendations_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -7767,8 +7766,8 @@ ALTER FOREIGN TABLE recommendations_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: releases; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE releases (
-    id integer DEFAULT releases_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.releases (
+    id integer DEFAULT public.releases_id_seq_view() NOT NULL,
     kb_release_id character varying NOT NULL,
     released_on timestamp without time zone,
     version character varying,
@@ -7781,25 +7780,25 @@ OPTIONS (
     schema_name 'public',
     table_name 'releases'
 );
-ALTER FOREIGN TABLE releases ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.releases ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE releases ALTER COLUMN kb_release_id OPTIONS (
+ALTER FOREIGN TABLE public.releases ALTER COLUMN kb_release_id OPTIONS (
     column_name 'kb_release_id'
 );
-ALTER FOREIGN TABLE releases ALTER COLUMN released_on OPTIONS (
+ALTER FOREIGN TABLE public.releases ALTER COLUMN released_on OPTIONS (
     column_name 'released_on'
 );
-ALTER FOREIGN TABLE releases ALTER COLUMN version OPTIONS (
+ALTER FOREIGN TABLE public.releases ALTER COLUMN version OPTIONS (
     column_name 'version'
 );
-ALTER FOREIGN TABLE releases ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.releases ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE releases ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.releases ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE releases ALTER COLUMN project_security_set_id OPTIONS (
+ALTER FOREIGN TABLE public.releases ALTER COLUMN project_security_set_id OPTIONS (
     column_name 'project_security_set_id'
 );
 
@@ -7808,7 +7807,7 @@ ALTER FOREIGN TABLE releases ALTER COLUMN project_security_set_id OPTIONS (
 -- Name: releases_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE releases_id_seq
+CREATE SEQUENCE public.releases_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -7820,7 +7819,7 @@ CREATE SEQUENCE releases_id_seq
 -- Name: releases_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE releases_id_seq_view (
+CREATE FOREIGN TABLE public.releases_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -7828,7 +7827,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'releases_id_seq_view'
 );
-ALTER FOREIGN TABLE releases_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.releases_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -7837,7 +7836,7 @@ ALTER FOREIGN TABLE releases_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: releases_vulnerabilities; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE releases_vulnerabilities (
+CREATE FOREIGN TABLE public.releases_vulnerabilities (
     release_id integer NOT NULL,
     vulnerability_id integer NOT NULL
 )
@@ -7846,10 +7845,10 @@ OPTIONS (
     schema_name 'public',
     table_name 'releases_vulnerabilities'
 );
-ALTER FOREIGN TABLE releases_vulnerabilities ALTER COLUMN release_id OPTIONS (
+ALTER FOREIGN TABLE public.releases_vulnerabilities ALTER COLUMN release_id OPTIONS (
     column_name 'release_id'
 );
-ALTER FOREIGN TABLE releases_vulnerabilities ALTER COLUMN vulnerability_id OPTIONS (
+ALTER FOREIGN TABLE public.releases_vulnerabilities ALTER COLUMN vulnerability_id OPTIONS (
     column_name 'vulnerability_id'
 );
 
@@ -7858,8 +7857,8 @@ ALTER FOREIGN TABLE releases_vulnerabilities ALTER COLUMN vulnerability_id OPTIO
 -- Name: reports; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE reports (
-    id integer DEFAULT reports_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.reports (
+    id integer DEFAULT public.reports_id_seq_view() NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     title text
@@ -7869,16 +7868,16 @@ OPTIONS (
     schema_name 'public',
     table_name 'reports'
 );
-ALTER FOREIGN TABLE reports ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.reports ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE reports ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.reports ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE reports ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.reports ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE reports ALTER COLUMN title OPTIONS (
+ALTER FOREIGN TABLE public.reports ALTER COLUMN title OPTIONS (
     column_name 'title'
 );
 
@@ -7887,7 +7886,7 @@ ALTER FOREIGN TABLE reports ALTER COLUMN title OPTIONS (
 -- Name: reports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE reports_id_seq
+CREATE SEQUENCE public.reports_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -7899,7 +7898,7 @@ CREATE SEQUENCE reports_id_seq
 -- Name: reports_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE reports_id_seq_view (
+CREATE FOREIGN TABLE public.reports_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -7907,7 +7906,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'reports_id_seq_view'
 );
-ALTER FOREIGN TABLE reports_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.reports_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -7916,8 +7915,8 @@ ALTER FOREIGN TABLE reports_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: repositories; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE repositories (
-    id integer DEFAULT repositories_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.repositories (
+    id integer DEFAULT public.repositories_id_seq_view() NOT NULL,
     url text,
     forge_id integer,
     username text,
@@ -7935,40 +7934,40 @@ OPTIONS (
     schema_name 'public',
     table_name 'repositories'
 );
-ALTER FOREIGN TABLE repositories ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE repositories ALTER COLUMN url OPTIONS (
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN url OPTIONS (
     column_name 'url'
 );
-ALTER FOREIGN TABLE repositories ALTER COLUMN forge_id OPTIONS (
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN forge_id OPTIONS (
     column_name 'forge_id'
 );
-ALTER FOREIGN TABLE repositories ALTER COLUMN username OPTIONS (
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN username OPTIONS (
     column_name 'username'
 );
-ALTER FOREIGN TABLE repositories ALTER COLUMN password OPTIONS (
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN password OPTIONS (
     column_name 'password'
 );
-ALTER FOREIGN TABLE repositories ALTER COLUMN type OPTIONS (
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN type OPTIONS (
     column_name 'type'
 );
-ALTER FOREIGN TABLE repositories ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE repositories ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE repositories ALTER COLUMN update_interval OPTIONS (
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN update_interval OPTIONS (
     column_name 'update_interval'
 );
-ALTER FOREIGN TABLE repositories ALTER COLUMN name_at_forge OPTIONS (
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN name_at_forge OPTIONS (
     column_name 'name_at_forge'
 );
-ALTER FOREIGN TABLE repositories ALTER COLUMN owner_at_forge OPTIONS (
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN owner_at_forge OPTIONS (
     column_name 'owner_at_forge'
 );
-ALTER FOREIGN TABLE repositories ALTER COLUMN best_repository_directory_id OPTIONS (
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN best_repository_directory_id OPTIONS (
     column_name 'best_repository_directory_id'
 );
 
@@ -7977,7 +7976,7 @@ ALTER FOREIGN TABLE repositories ALTER COLUMN best_repository_directory_id OPTIO
 -- Name: repositories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE repositories_id_seq
+CREATE SEQUENCE public.repositories_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -7989,7 +7988,7 @@ CREATE SEQUENCE repositories_id_seq
 -- Name: repositories_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE repositories_id_seq_view (
+CREATE FOREIGN TABLE public.repositories_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -7997,7 +7996,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'repositories_id_seq_view'
 );
-ALTER FOREIGN TABLE repositories_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.repositories_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -8006,8 +8005,8 @@ ALTER FOREIGN TABLE repositories_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: repository_directories; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE repository_directories (
-    id integer DEFAULT repository_directories_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.repository_directories (
+    id integer DEFAULT public.repository_directories_id_seq_view() NOT NULL,
     code_location_id integer,
     repository_id integer,
     fetched_at timestamp without time zone
@@ -8017,16 +8016,16 @@ OPTIONS (
     schema_name 'public',
     table_name 'repository_directories'
 );
-ALTER FOREIGN TABLE repository_directories ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.repository_directories ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE repository_directories ALTER COLUMN code_location_id OPTIONS (
+ALTER FOREIGN TABLE public.repository_directories ALTER COLUMN code_location_id OPTIONS (
     column_name 'code_location_id'
 );
-ALTER FOREIGN TABLE repository_directories ALTER COLUMN repository_id OPTIONS (
+ALTER FOREIGN TABLE public.repository_directories ALTER COLUMN repository_id OPTIONS (
     column_name 'repository_id'
 );
-ALTER FOREIGN TABLE repository_directories ALTER COLUMN fetched_at OPTIONS (
+ALTER FOREIGN TABLE public.repository_directories ALTER COLUMN fetched_at OPTIONS (
     column_name 'fetched_at'
 );
 
@@ -8035,7 +8034,7 @@ ALTER FOREIGN TABLE repository_directories ALTER COLUMN fetched_at OPTIONS (
 -- Name: repository_directories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE repository_directories_id_seq
+CREATE SEQUENCE public.repository_directories_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -8047,7 +8046,7 @@ CREATE SEQUENCE repository_directories_id_seq
 -- Name: repository_directories_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE repository_directories_id_seq_view (
+CREATE FOREIGN TABLE public.repository_directories_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -8055,7 +8054,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'repository_directories_id_seq_view'
 );
-ALTER FOREIGN TABLE repository_directories_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.repository_directories_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -8064,8 +8063,8 @@ ALTER FOREIGN TABLE repository_directories_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: repository_tags; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE repository_tags (
-    id integer DEFAULT repository_tags_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.repository_tags (
+    id integer DEFAULT public.repository_tags_id_seq_view() NOT NULL,
     repository_id integer,
     name text,
     commit_sha1 text,
@@ -8077,22 +8076,22 @@ OPTIONS (
     schema_name 'public',
     table_name 'repository_tags'
 );
-ALTER FOREIGN TABLE repository_tags ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.repository_tags ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE repository_tags ALTER COLUMN repository_id OPTIONS (
+ALTER FOREIGN TABLE public.repository_tags ALTER COLUMN repository_id OPTIONS (
     column_name 'repository_id'
 );
-ALTER FOREIGN TABLE repository_tags ALTER COLUMN name OPTIONS (
+ALTER FOREIGN TABLE public.repository_tags ALTER COLUMN name OPTIONS (
     column_name 'name'
 );
-ALTER FOREIGN TABLE repository_tags ALTER COLUMN commit_sha1 OPTIONS (
+ALTER FOREIGN TABLE public.repository_tags ALTER COLUMN commit_sha1 OPTIONS (
     column_name 'commit_sha1'
 );
-ALTER FOREIGN TABLE repository_tags ALTER COLUMN message OPTIONS (
+ALTER FOREIGN TABLE public.repository_tags ALTER COLUMN message OPTIONS (
     column_name 'message'
 );
-ALTER FOREIGN TABLE repository_tags ALTER COLUMN "timestamp" OPTIONS (
+ALTER FOREIGN TABLE public.repository_tags ALTER COLUMN "timestamp" OPTIONS (
     column_name 'timestamp'
 );
 
@@ -8101,7 +8100,7 @@ ALTER FOREIGN TABLE repository_tags ALTER COLUMN "timestamp" OPTIONS (
 -- Name: repository_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE repository_tags_id_seq
+CREATE SEQUENCE public.repository_tags_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -8113,7 +8112,7 @@ CREATE SEQUENCE repository_tags_id_seq
 -- Name: repository_tags_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE repository_tags_id_seq_view (
+CREATE FOREIGN TABLE public.repository_tags_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -8121,7 +8120,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'repository_tags_id_seq_view'
 );
-ALTER FOREIGN TABLE repository_tags_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.repository_tags_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -8130,8 +8129,8 @@ ALTER FOREIGN TABLE repository_tags_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: reverification_trackers; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE reverification_trackers (
-    id integer DEFAULT reverification_trackers_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.reverification_trackers (
+    id integer DEFAULT public.reverification_trackers_id_seq_view() NOT NULL,
     account_id integer NOT NULL,
     message_id character varying NOT NULL,
     phase integer DEFAULT 0,
@@ -8147,34 +8146,34 @@ OPTIONS (
     schema_name 'public',
     table_name 'reverification_trackers'
 );
-ALTER FOREIGN TABLE reverification_trackers ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.reverification_trackers ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE reverification_trackers ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.reverification_trackers ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE reverification_trackers ALTER COLUMN message_id OPTIONS (
+ALTER FOREIGN TABLE public.reverification_trackers ALTER COLUMN message_id OPTIONS (
     column_name 'message_id'
 );
-ALTER FOREIGN TABLE reverification_trackers ALTER COLUMN phase OPTIONS (
+ALTER FOREIGN TABLE public.reverification_trackers ALTER COLUMN phase OPTIONS (
     column_name 'phase'
 );
-ALTER FOREIGN TABLE reverification_trackers ALTER COLUMN status OPTIONS (
+ALTER FOREIGN TABLE public.reverification_trackers ALTER COLUMN status OPTIONS (
     column_name 'status'
 );
-ALTER FOREIGN TABLE reverification_trackers ALTER COLUMN feedback OPTIONS (
+ALTER FOREIGN TABLE public.reverification_trackers ALTER COLUMN feedback OPTIONS (
     column_name 'feedback'
 );
-ALTER FOREIGN TABLE reverification_trackers ALTER COLUMN attempts OPTIONS (
+ALTER FOREIGN TABLE public.reverification_trackers ALTER COLUMN attempts OPTIONS (
     column_name 'attempts'
 );
-ALTER FOREIGN TABLE reverification_trackers ALTER COLUMN sent_at OPTIONS (
+ALTER FOREIGN TABLE public.reverification_trackers ALTER COLUMN sent_at OPTIONS (
     column_name 'sent_at'
 );
-ALTER FOREIGN TABLE reverification_trackers ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.reverification_trackers ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE reverification_trackers ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.reverification_trackers ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
 
@@ -8183,7 +8182,7 @@ ALTER FOREIGN TABLE reverification_trackers ALTER COLUMN updated_at OPTIONS (
 -- Name: reverification_trackers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE reverification_trackers_id_seq
+CREATE SEQUENCE public.reverification_trackers_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -8195,7 +8194,7 @@ CREATE SEQUENCE reverification_trackers_id_seq
 -- Name: reverification_trackers_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE reverification_trackers_id_seq_view (
+CREATE FOREIGN TABLE public.reverification_trackers_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -8203,7 +8202,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'reverification_trackers_id_seq_view'
 );
-ALTER FOREIGN TABLE reverification_trackers_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.reverification_trackers_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -8212,8 +8211,8 @@ ALTER FOREIGN TABLE reverification_trackers_id_seq_view ALTER COLUMN id OPTIONS 
 -- Name: reviews; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE reviews (
-    id integer DEFAULT reviews_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.reviews (
+    id integer DEFAULT public.reviews_id_seq_view() NOT NULL,
     account_id integer NOT NULL,
     project_id integer NOT NULL,
     title text,
@@ -8227,28 +8226,28 @@ OPTIONS (
     schema_name 'public',
     table_name 'reviews'
 );
-ALTER FOREIGN TABLE reviews ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.reviews ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE reviews ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.reviews ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE reviews ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.reviews ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE reviews ALTER COLUMN title OPTIONS (
+ALTER FOREIGN TABLE public.reviews ALTER COLUMN title OPTIONS (
     column_name 'title'
 );
-ALTER FOREIGN TABLE reviews ALTER COLUMN comment OPTIONS (
+ALTER FOREIGN TABLE public.reviews ALTER COLUMN comment OPTIONS (
     column_name 'comment'
 );
-ALTER FOREIGN TABLE reviews ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.reviews ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE reviews ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.reviews ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE reviews ALTER COLUMN helpful_score OPTIONS (
+ALTER FOREIGN TABLE public.reviews ALTER COLUMN helpful_score OPTIONS (
     column_name 'helpful_score'
 );
 
@@ -8257,7 +8256,7 @@ ALTER FOREIGN TABLE reviews ALTER COLUMN helpful_score OPTIONS (
 -- Name: reviews_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE reviews_id_seq
+CREATE SEQUENCE public.reviews_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -8269,7 +8268,7 @@ CREATE SEQUENCE reviews_id_seq
 -- Name: reviews_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE reviews_id_seq_view (
+CREATE FOREIGN TABLE public.reviews_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -8277,7 +8276,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'reviews_id_seq_view'
 );
-ALTER FOREIGN TABLE reviews_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.reviews_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -8286,7 +8285,7 @@ ALTER FOREIGN TABLE reviews_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: robins_contributions_test; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE robins_contributions_test (
+CREATE FOREIGN TABLE public.robins_contributions_test (
     id bigint,
     person_id bigint,
     project_id integer,
@@ -8298,19 +8297,19 @@ OPTIONS (
     schema_name 'public',
     table_name 'robins_contributions_test'
 );
-ALTER FOREIGN TABLE robins_contributions_test ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.robins_contributions_test ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE robins_contributions_test ALTER COLUMN person_id OPTIONS (
+ALTER FOREIGN TABLE public.robins_contributions_test ALTER COLUMN person_id OPTIONS (
     column_name 'person_id'
 );
-ALTER FOREIGN TABLE robins_contributions_test ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.robins_contributions_test ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE robins_contributions_test ALTER COLUMN name_fact_id OPTIONS (
+ALTER FOREIGN TABLE public.robins_contributions_test ALTER COLUMN name_fact_id OPTIONS (
     column_name 'name_fact_id'
 );
-ALTER FOREIGN TABLE robins_contributions_test ALTER COLUMN position_id OPTIONS (
+ALTER FOREIGN TABLE public.robins_contributions_test ALTER COLUMN position_id OPTIONS (
     column_name 'position_id'
 );
 
@@ -8319,8 +8318,8 @@ ALTER FOREIGN TABLE robins_contributions_test ALTER COLUMN position_id OPTIONS (
 -- Name: rss_articles; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE rss_articles (
-    id integer DEFAULT rss_articles_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.rss_articles (
+    id integer DEFAULT public.rss_articles_id_seq_view() NOT NULL,
     rss_feed_id integer,
     guid text NOT NULL,
     "time" timestamp without time zone DEFAULT timezone('utc'::text, now()) NOT NULL,
@@ -8334,28 +8333,28 @@ OPTIONS (
     schema_name 'public',
     table_name 'rss_articles'
 );
-ALTER FOREIGN TABLE rss_articles ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.rss_articles ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE rss_articles ALTER COLUMN rss_feed_id OPTIONS (
+ALTER FOREIGN TABLE public.rss_articles ALTER COLUMN rss_feed_id OPTIONS (
     column_name 'rss_feed_id'
 );
-ALTER FOREIGN TABLE rss_articles ALTER COLUMN guid OPTIONS (
+ALTER FOREIGN TABLE public.rss_articles ALTER COLUMN guid OPTIONS (
     column_name 'guid'
 );
-ALTER FOREIGN TABLE rss_articles ALTER COLUMN "time" OPTIONS (
+ALTER FOREIGN TABLE public.rss_articles ALTER COLUMN "time" OPTIONS (
     column_name 'time'
 );
-ALTER FOREIGN TABLE rss_articles ALTER COLUMN title OPTIONS (
+ALTER FOREIGN TABLE public.rss_articles ALTER COLUMN title OPTIONS (
     column_name 'title'
 );
-ALTER FOREIGN TABLE rss_articles ALTER COLUMN description OPTIONS (
+ALTER FOREIGN TABLE public.rss_articles ALTER COLUMN description OPTIONS (
     column_name 'description'
 );
-ALTER FOREIGN TABLE rss_articles ALTER COLUMN author OPTIONS (
+ALTER FOREIGN TABLE public.rss_articles ALTER COLUMN author OPTIONS (
     column_name 'author'
 );
-ALTER FOREIGN TABLE rss_articles ALTER COLUMN link OPTIONS (
+ALTER FOREIGN TABLE public.rss_articles ALTER COLUMN link OPTIONS (
     column_name 'link'
 );
 
@@ -8364,7 +8363,7 @@ ALTER FOREIGN TABLE rss_articles ALTER COLUMN link OPTIONS (
 -- Name: rss_articles_2; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE rss_articles_2 (
+CREATE FOREIGN TABLE public.rss_articles_2 (
     id integer,
     rss_feed_id integer,
     guid text,
@@ -8379,28 +8378,28 @@ OPTIONS (
     schema_name 'public',
     table_name 'rss_articles_2'
 );
-ALTER FOREIGN TABLE rss_articles_2 ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.rss_articles_2 ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE rss_articles_2 ALTER COLUMN rss_feed_id OPTIONS (
+ALTER FOREIGN TABLE public.rss_articles_2 ALTER COLUMN rss_feed_id OPTIONS (
     column_name 'rss_feed_id'
 );
-ALTER FOREIGN TABLE rss_articles_2 ALTER COLUMN guid OPTIONS (
+ALTER FOREIGN TABLE public.rss_articles_2 ALTER COLUMN guid OPTIONS (
     column_name 'guid'
 );
-ALTER FOREIGN TABLE rss_articles_2 ALTER COLUMN "time" OPTIONS (
+ALTER FOREIGN TABLE public.rss_articles_2 ALTER COLUMN "time" OPTIONS (
     column_name 'time'
 );
-ALTER FOREIGN TABLE rss_articles_2 ALTER COLUMN title OPTIONS (
+ALTER FOREIGN TABLE public.rss_articles_2 ALTER COLUMN title OPTIONS (
     column_name 'title'
 );
-ALTER FOREIGN TABLE rss_articles_2 ALTER COLUMN description OPTIONS (
+ALTER FOREIGN TABLE public.rss_articles_2 ALTER COLUMN description OPTIONS (
     column_name 'description'
 );
-ALTER FOREIGN TABLE rss_articles_2 ALTER COLUMN author OPTIONS (
+ALTER FOREIGN TABLE public.rss_articles_2 ALTER COLUMN author OPTIONS (
     column_name 'author'
 );
-ALTER FOREIGN TABLE rss_articles_2 ALTER COLUMN link OPTIONS (
+ALTER FOREIGN TABLE public.rss_articles_2 ALTER COLUMN link OPTIONS (
     column_name 'link'
 );
 
@@ -8409,7 +8408,7 @@ ALTER FOREIGN TABLE rss_articles_2 ALTER COLUMN link OPTIONS (
 -- Name: rss_articles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE rss_articles_id_seq
+CREATE SEQUENCE public.rss_articles_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -8421,7 +8420,7 @@ CREATE SEQUENCE rss_articles_id_seq
 -- Name: rss_articles_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE rss_articles_id_seq_view (
+CREATE FOREIGN TABLE public.rss_articles_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -8429,7 +8428,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'rss_articles_id_seq_view'
 );
-ALTER FOREIGN TABLE rss_articles_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.rss_articles_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -8438,8 +8437,8 @@ ALTER FOREIGN TABLE rss_articles_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: rss_feeds; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE rss_feeds (
-    id integer DEFAULT rss_feeds_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.rss_feeds (
+    id integer DEFAULT public.rss_feeds_id_seq_view() NOT NULL,
     url text NOT NULL,
     last_fetch timestamp without time zone,
     next_fetch timestamp without time zone,
@@ -8450,19 +8449,19 @@ OPTIONS (
     schema_name 'public',
     table_name 'rss_feeds'
 );
-ALTER FOREIGN TABLE rss_feeds ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.rss_feeds ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE rss_feeds ALTER COLUMN url OPTIONS (
+ALTER FOREIGN TABLE public.rss_feeds ALTER COLUMN url OPTIONS (
     column_name 'url'
 );
-ALTER FOREIGN TABLE rss_feeds ALTER COLUMN last_fetch OPTIONS (
+ALTER FOREIGN TABLE public.rss_feeds ALTER COLUMN last_fetch OPTIONS (
     column_name 'last_fetch'
 );
-ALTER FOREIGN TABLE rss_feeds ALTER COLUMN next_fetch OPTIONS (
+ALTER FOREIGN TABLE public.rss_feeds ALTER COLUMN next_fetch OPTIONS (
     column_name 'next_fetch'
 );
-ALTER FOREIGN TABLE rss_feeds ALTER COLUMN error OPTIONS (
+ALTER FOREIGN TABLE public.rss_feeds ALTER COLUMN error OPTIONS (
     column_name 'error'
 );
 
@@ -8471,7 +8470,7 @@ ALTER FOREIGN TABLE rss_feeds ALTER COLUMN error OPTIONS (
 -- Name: rss_feeds_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE rss_feeds_id_seq
+CREATE SEQUENCE public.rss_feeds_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -8483,7 +8482,7 @@ CREATE SEQUENCE rss_feeds_id_seq
 -- Name: rss_feeds_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE rss_feeds_id_seq_view (
+CREATE FOREIGN TABLE public.rss_feeds_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -8491,7 +8490,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'rss_feeds_id_seq_view'
 );
-ALTER FOREIGN TABLE rss_feeds_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.rss_feeds_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -8500,8 +8499,8 @@ ALTER FOREIGN TABLE rss_feeds_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: rss_subscriptions; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE rss_subscriptions (
-    id integer DEFAULT rss_subscriptions_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.rss_subscriptions (
+    id integer DEFAULT public.rss_subscriptions_id_seq_view() NOT NULL,
     project_id integer,
     rss_feed_id integer,
     deleted boolean DEFAULT false
@@ -8511,16 +8510,16 @@ OPTIONS (
     schema_name 'public',
     table_name 'rss_subscriptions'
 );
-ALTER FOREIGN TABLE rss_subscriptions ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.rss_subscriptions ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE rss_subscriptions ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.rss_subscriptions ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE rss_subscriptions ALTER COLUMN rss_feed_id OPTIONS (
+ALTER FOREIGN TABLE public.rss_subscriptions ALTER COLUMN rss_feed_id OPTIONS (
     column_name 'rss_feed_id'
 );
-ALTER FOREIGN TABLE rss_subscriptions ALTER COLUMN deleted OPTIONS (
+ALTER FOREIGN TABLE public.rss_subscriptions ALTER COLUMN deleted OPTIONS (
     column_name 'deleted'
 );
 
@@ -8529,7 +8528,7 @@ ALTER FOREIGN TABLE rss_subscriptions ALTER COLUMN deleted OPTIONS (
 -- Name: rss_subscriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE rss_subscriptions_id_seq
+CREATE SEQUENCE public.rss_subscriptions_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -8541,7 +8540,7 @@ CREATE SEQUENCE rss_subscriptions_id_seq
 -- Name: rss_subscriptions_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE rss_subscriptions_id_seq_view (
+CREATE FOREIGN TABLE public.rss_subscriptions_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -8549,7 +8548,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'rss_subscriptions_id_seq_view'
 );
-ALTER FOREIGN TABLE rss_subscriptions_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.rss_subscriptions_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -8558,7 +8557,7 @@ ALTER FOREIGN TABLE rss_subscriptions_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE schema_migrations (
+CREATE TABLE public.schema_migrations (
     version character varying NOT NULL
 );
 
@@ -8567,8 +8566,8 @@ CREATE TABLE schema_migrations (
 -- Name: sessions; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE sessions (
-    id integer DEFAULT sessions_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.sessions (
+    id integer DEFAULT public.sessions_id_seq_view() NOT NULL,
     session_id character varying(255),
     data text,
     updated_at timestamp without time zone
@@ -8578,16 +8577,16 @@ OPTIONS (
     schema_name 'public',
     table_name 'sessions'
 );
-ALTER FOREIGN TABLE sessions ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.sessions ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE sessions ALTER COLUMN session_id OPTIONS (
+ALTER FOREIGN TABLE public.sessions ALTER COLUMN session_id OPTIONS (
     column_name 'session_id'
 );
-ALTER FOREIGN TABLE sessions ALTER COLUMN data OPTIONS (
+ALTER FOREIGN TABLE public.sessions ALTER COLUMN data OPTIONS (
     column_name 'data'
 );
-ALTER FOREIGN TABLE sessions ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.sessions ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
 
@@ -8596,7 +8595,7 @@ ALTER FOREIGN TABLE sessions ALTER COLUMN updated_at OPTIONS (
 -- Name: sessions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE sessions_id_seq
+CREATE SEQUENCE public.sessions_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -8608,7 +8607,7 @@ CREATE SEQUENCE sessions_id_seq
 -- Name: sessions_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE sessions_id_seq_view (
+CREATE FOREIGN TABLE public.sessions_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -8616,7 +8615,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'sessions_id_seq_view'
 );
-ALTER FOREIGN TABLE sessions_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.sessions_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -8625,8 +8624,8 @@ ALTER FOREIGN TABLE sessions_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: settings; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE settings (
-    id integer DEFAULT settings_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.settings (
+    id integer DEFAULT public.settings_id_seq_view() NOT NULL,
     key character varying,
     value character varying,
     created_at timestamp without time zone,
@@ -8637,19 +8636,19 @@ OPTIONS (
     schema_name 'public',
     table_name 'settings'
 );
-ALTER FOREIGN TABLE settings ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.settings ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE settings ALTER COLUMN key OPTIONS (
+ALTER FOREIGN TABLE public.settings ALTER COLUMN key OPTIONS (
     column_name 'key'
 );
-ALTER FOREIGN TABLE settings ALTER COLUMN value OPTIONS (
+ALTER FOREIGN TABLE public.settings ALTER COLUMN value OPTIONS (
     column_name 'value'
 );
-ALTER FOREIGN TABLE settings ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.settings ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE settings ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.settings ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
 
@@ -8658,7 +8657,7 @@ ALTER FOREIGN TABLE settings ALTER COLUMN updated_at OPTIONS (
 -- Name: settings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE settings_id_seq
+CREATE SEQUENCE public.settings_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -8670,7 +8669,7 @@ CREATE SEQUENCE settings_id_seq
 -- Name: settings_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE settings_id_seq_view (
+CREATE FOREIGN TABLE public.settings_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -8678,7 +8677,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'settings_id_seq_view'
 );
-ALTER FOREIGN TABLE settings_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.settings_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -8687,7 +8686,7 @@ ALTER FOREIGN TABLE settings_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: sf_vhosted; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE sf_vhosted (
+CREATE FOREIGN TABLE public.sf_vhosted (
     domain text NOT NULL
 )
 SERVER ohloh
@@ -8695,7 +8694,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'sf_vhosted'
 );
-ALTER FOREIGN TABLE sf_vhosted ALTER COLUMN domain OPTIONS (
+ALTER FOREIGN TABLE public.sf_vhosted ALTER COLUMN domain OPTIONS (
     column_name 'domain'
 );
 
@@ -8704,7 +8703,7 @@ ALTER FOREIGN TABLE sf_vhosted ALTER COLUMN domain OPTIONS (
 -- Name: sfprojects; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE sfprojects (
+CREATE FOREIGN TABLE public.sfprojects (
     project_id integer NOT NULL,
     hosted boolean DEFAULT false,
     vhosted boolean DEFAULT false,
@@ -8717,22 +8716,22 @@ OPTIONS (
     schema_name 'public',
     table_name 'sfprojects'
 );
-ALTER FOREIGN TABLE sfprojects ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.sfprojects ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE sfprojects ALTER COLUMN hosted OPTIONS (
+ALTER FOREIGN TABLE public.sfprojects ALTER COLUMN hosted OPTIONS (
     column_name 'hosted'
 );
-ALTER FOREIGN TABLE sfprojects ALTER COLUMN vhosted OPTIONS (
+ALTER FOREIGN TABLE public.sfprojects ALTER COLUMN vhosted OPTIONS (
     column_name 'vhosted'
 );
-ALTER FOREIGN TABLE sfprojects ALTER COLUMN code OPTIONS (
+ALTER FOREIGN TABLE public.sfprojects ALTER COLUMN code OPTIONS (
     column_name 'code'
 );
-ALTER FOREIGN TABLE sfprojects ALTER COLUMN downloads OPTIONS (
+ALTER FOREIGN TABLE public.sfprojects ALTER COLUMN downloads OPTIONS (
     column_name 'downloads'
 );
-ALTER FOREIGN TABLE sfprojects ALTER COLUMN downloads_vhosted OPTIONS (
+ALTER FOREIGN TABLE public.sfprojects ALTER COLUMN downloads_vhosted OPTIONS (
     column_name 'downloads_vhosted'
 );
 
@@ -8741,7 +8740,7 @@ ALTER FOREIGN TABLE sfprojects ALTER COLUMN downloads_vhosted OPTIONS (
 -- Name: size_facts_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE size_facts_id_seq_view (
+CREATE FOREIGN TABLE public.size_facts_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -8749,7 +8748,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'size_facts_id_seq_view'
 );
-ALTER FOREIGN TABLE size_facts_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.size_facts_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -8758,7 +8757,7 @@ ALTER FOREIGN TABLE size_facts_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: slave_logs; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE slave_logs (
+CREATE TABLE public.slave_logs (
     id integer NOT NULL,
     message text,
     created_on timestamp without time zone,
@@ -8773,7 +8772,7 @@ CREATE TABLE slave_logs (
 -- Name: slave_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE slave_logs_id_seq
+CREATE SEQUENCE public.slave_logs_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -8785,22 +8784,22 @@ CREATE SEQUENCE slave_logs_id_seq
 -- Name: slave_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE slave_logs_id_seq OWNED BY slave_logs.id;
+ALTER SEQUENCE public.slave_logs_id_seq OWNED BY public.slave_logs.id;
 
 
 --
 -- Name: slave_logs_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW slave_logs_id_seq_view AS
- SELECT (nextval('slave_logs_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.slave_logs_id_seq_view AS
+ SELECT (nextval('public.slave_logs_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: slaves; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE slaves (
+CREATE TABLE public.slaves (
     id integer NOT NULL,
     allow_deny text,
     hostname text NOT NULL,
@@ -8821,7 +8820,7 @@ CREATE TABLE slaves (
 -- Name: slave_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE slave_permissions_id_seq
+CREATE SEQUENCE public.slave_permissions_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -8833,22 +8832,22 @@ CREATE SEQUENCE slave_permissions_id_seq
 -- Name: slave_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE slave_permissions_id_seq OWNED BY slaves.id;
+ALTER SEQUENCE public.slave_permissions_id_seq OWNED BY public.slaves.id;
 
 
 --
 -- Name: slave_permissions_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW slave_permissions_id_seq_view AS
- SELECT (nextval('slave_permissions_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.slave_permissions_id_seq_view AS
+ SELECT (nextval('public.slave_permissions_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: sloc_metrics; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE sloc_metrics (
+CREATE TABLE public.sloc_metrics (
     id bigint NOT NULL,
     diff_id bigint,
     language_id integer,
@@ -8866,7 +8865,7 @@ CREATE TABLE sloc_metrics (
 -- Name: sloc_metrics_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE sloc_metrics_id_seq
+CREATE SEQUENCE public.sloc_metrics_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -8878,22 +8877,22 @@ CREATE SEQUENCE sloc_metrics_id_seq
 -- Name: sloc_metrics_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE sloc_metrics_id_seq OWNED BY sloc_metrics.id;
+ALTER SEQUENCE public.sloc_metrics_id_seq OWNED BY public.sloc_metrics.id;
 
 
 --
 -- Name: sloc_metrics_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW sloc_metrics_id_seq_view AS
- SELECT (nextval('sloc_metrics_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.sloc_metrics_id_seq_view AS
+ SELECT (nextval('public.sloc_metrics_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: sloc_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE sloc_sets_id_seq
+CREATE SEQUENCE public.sloc_sets_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -8905,23 +8904,23 @@ CREATE SEQUENCE sloc_sets_id_seq
 -- Name: sloc_sets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE sloc_sets_id_seq OWNED BY sloc_sets.id;
+ALTER SEQUENCE public.sloc_sets_id_seq OWNED BY public.sloc_sets.id;
 
 
 --
 -- Name: sloc_sets_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW sloc_sets_id_seq_view AS
- SELECT (nextval('sloc_sets_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.sloc_sets_id_seq_view AS
+ SELECT (nextval('public.sloc_sets_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: stack_entries; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE stack_entries (
-    id integer DEFAULT stack_entries_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.stack_entries (
+    id integer DEFAULT public.stack_entries_id_seq_view() NOT NULL,
     stack_id integer,
     project_id integer,
     created_at timestamp without time zone NOT NULL,
@@ -8933,22 +8932,22 @@ OPTIONS (
     schema_name 'public',
     table_name 'stack_entries'
 );
-ALTER FOREIGN TABLE stack_entries ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.stack_entries ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE stack_entries ALTER COLUMN stack_id OPTIONS (
+ALTER FOREIGN TABLE public.stack_entries ALTER COLUMN stack_id OPTIONS (
     column_name 'stack_id'
 );
-ALTER FOREIGN TABLE stack_entries ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.stack_entries ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE stack_entries ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.stack_entries ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE stack_entries ALTER COLUMN deleted_at OPTIONS (
+ALTER FOREIGN TABLE public.stack_entries ALTER COLUMN deleted_at OPTIONS (
     column_name 'deleted_at'
 );
-ALTER FOREIGN TABLE stack_entries ALTER COLUMN note OPTIONS (
+ALTER FOREIGN TABLE public.stack_entries ALTER COLUMN note OPTIONS (
     column_name 'note'
 );
 
@@ -8957,7 +8956,7 @@ ALTER FOREIGN TABLE stack_entries ALTER COLUMN note OPTIONS (
 -- Name: stack_entries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE stack_entries_id_seq
+CREATE SEQUENCE public.stack_entries_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -8969,7 +8968,7 @@ CREATE SEQUENCE stack_entries_id_seq
 -- Name: stack_entries_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE stack_entries_id_seq_view (
+CREATE FOREIGN TABLE public.stack_entries_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -8977,7 +8976,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'stack_entries_id_seq_view'
 );
-ALTER FOREIGN TABLE stack_entries_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.stack_entries_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -8986,8 +8985,8 @@ ALTER FOREIGN TABLE stack_entries_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: stack_ignores; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE stack_ignores (
-    id integer DEFAULT stack_ignores_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.stack_ignores (
+    id integer DEFAULT public.stack_ignores_id_seq_view() NOT NULL,
     project_id integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
     stack_id integer NOT NULL
@@ -8997,16 +8996,16 @@ OPTIONS (
     schema_name 'public',
     table_name 'stack_ignores'
 );
-ALTER FOREIGN TABLE stack_ignores ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.stack_ignores ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE stack_ignores ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.stack_ignores ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE stack_ignores ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.stack_ignores ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE stack_ignores ALTER COLUMN stack_id OPTIONS (
+ALTER FOREIGN TABLE public.stack_ignores ALTER COLUMN stack_id OPTIONS (
     column_name 'stack_id'
 );
 
@@ -9015,7 +9014,7 @@ ALTER FOREIGN TABLE stack_ignores ALTER COLUMN stack_id OPTIONS (
 -- Name: stack_ignores_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE stack_ignores_id_seq
+CREATE SEQUENCE public.stack_ignores_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -9027,7 +9026,7 @@ CREATE SEQUENCE stack_ignores_id_seq
 -- Name: stack_ignores_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE stack_ignores_id_seq_view (
+CREATE FOREIGN TABLE public.stack_ignores_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -9035,7 +9034,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'stack_ignores_id_seq_view'
 );
-ALTER FOREIGN TABLE stack_ignores_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.stack_ignores_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -9044,8 +9043,8 @@ ALTER FOREIGN TABLE stack_ignores_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: stacks; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE stacks (
-    id integer DEFAULT stacks_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.stacks (
+    id integer DEFAULT public.stacks_id_seq_view() NOT NULL,
     account_id integer,
     session_id character varying(255),
     project_count integer DEFAULT 0,
@@ -9060,31 +9059,31 @@ OPTIONS (
     schema_name 'public',
     table_name 'stacks'
 );
-ALTER FOREIGN TABLE stacks ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.stacks ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE stacks ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.stacks ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE stacks ALTER COLUMN session_id OPTIONS (
+ALTER FOREIGN TABLE public.stacks ALTER COLUMN session_id OPTIONS (
     column_name 'session_id'
 );
-ALTER FOREIGN TABLE stacks ALTER COLUMN project_count OPTIONS (
+ALTER FOREIGN TABLE public.stacks ALTER COLUMN project_count OPTIONS (
     column_name 'project_count'
 );
-ALTER FOREIGN TABLE stacks ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.stacks ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE stacks ALTER COLUMN title OPTIONS (
+ALTER FOREIGN TABLE public.stacks ALTER COLUMN title OPTIONS (
     column_name 'title'
 );
-ALTER FOREIGN TABLE stacks ALTER COLUMN description OPTIONS (
+ALTER FOREIGN TABLE public.stacks ALTER COLUMN description OPTIONS (
     column_name 'description'
 );
-ALTER FOREIGN TABLE stacks ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.stacks ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE stacks ALTER COLUMN deleted_at OPTIONS (
+ALTER FOREIGN TABLE public.stacks ALTER COLUMN deleted_at OPTIONS (
     column_name 'deleted_at'
 );
 
@@ -9093,7 +9092,7 @@ ALTER FOREIGN TABLE stacks ALTER COLUMN deleted_at OPTIONS (
 -- Name: stacks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE stacks_id_seq
+CREATE SEQUENCE public.stacks_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -9105,7 +9104,7 @@ CREATE SEQUENCE stacks_id_seq
 -- Name: stacks_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE stacks_id_seq_view (
+CREATE FOREIGN TABLE public.stacks_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -9113,7 +9112,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'stacks_id_seq_view'
 );
-ALTER FOREIGN TABLE stacks_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.stacks_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -9122,8 +9121,8 @@ ALTER FOREIGN TABLE stacks_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: successful_accounts; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE successful_accounts (
-    id integer DEFAULT successful_accounts_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.successful_accounts (
+    id integer DEFAULT public.successful_accounts_id_seq_view() NOT NULL,
     account_id integer
 )
 SERVER ohloh
@@ -9131,10 +9130,10 @@ OPTIONS (
     schema_name 'public',
     table_name 'successful_accounts'
 );
-ALTER FOREIGN TABLE successful_accounts ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.successful_accounts ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE successful_accounts ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.successful_accounts ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
 
@@ -9143,7 +9142,7 @@ ALTER FOREIGN TABLE successful_accounts ALTER COLUMN account_id OPTIONS (
 -- Name: successful_accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE successful_accounts_id_seq
+CREATE SEQUENCE public.successful_accounts_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -9155,7 +9154,7 @@ CREATE SEQUENCE successful_accounts_id_seq
 -- Name: successful_accounts_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE successful_accounts_id_seq_view (
+CREATE FOREIGN TABLE public.successful_accounts_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -9163,7 +9162,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'successful_accounts_id_seq_view'
 );
-ALTER FOREIGN TABLE successful_accounts_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.successful_accounts_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -9172,8 +9171,8 @@ ALTER FOREIGN TABLE successful_accounts_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: taggings; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE taggings (
-    id integer DEFAULT taggings_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.taggings (
+    id integer DEFAULT public.taggings_id_seq_view() NOT NULL,
     tag_id integer,
     taggable_id integer,
     taggable_type character varying(255)
@@ -9183,16 +9182,16 @@ OPTIONS (
     schema_name 'public',
     table_name 'taggings'
 );
-ALTER FOREIGN TABLE taggings ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.taggings ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE taggings ALTER COLUMN tag_id OPTIONS (
+ALTER FOREIGN TABLE public.taggings ALTER COLUMN tag_id OPTIONS (
     column_name 'tag_id'
 );
-ALTER FOREIGN TABLE taggings ALTER COLUMN taggable_id OPTIONS (
+ALTER FOREIGN TABLE public.taggings ALTER COLUMN taggable_id OPTIONS (
     column_name 'taggable_id'
 );
-ALTER FOREIGN TABLE taggings ALTER COLUMN taggable_type OPTIONS (
+ALTER FOREIGN TABLE public.taggings ALTER COLUMN taggable_type OPTIONS (
     column_name 'taggable_type'
 );
 
@@ -9201,7 +9200,7 @@ ALTER FOREIGN TABLE taggings ALTER COLUMN taggable_type OPTIONS (
 -- Name: taggings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE taggings_id_seq
+CREATE SEQUENCE public.taggings_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -9213,7 +9212,7 @@ CREATE SEQUENCE taggings_id_seq
 -- Name: taggings_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE taggings_id_seq_view (
+CREATE FOREIGN TABLE public.taggings_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -9221,7 +9220,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'taggings_id_seq_view'
 );
-ALTER FOREIGN TABLE taggings_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.taggings_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -9230,8 +9229,8 @@ ALTER FOREIGN TABLE taggings_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: tags; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE tags (
-    id integer DEFAULT tags_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.tags (
+    id integer DEFAULT public.tags_id_seq_view() NOT NULL,
     name text NOT NULL,
     taggings_count integer DEFAULT 0 NOT NULL,
     weight double precision DEFAULT 1.0 NOT NULL
@@ -9241,16 +9240,16 @@ OPTIONS (
     schema_name 'public',
     table_name 'tags'
 );
-ALTER FOREIGN TABLE tags ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.tags ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE tags ALTER COLUMN name OPTIONS (
+ALTER FOREIGN TABLE public.tags ALTER COLUMN name OPTIONS (
     column_name 'name'
 );
-ALTER FOREIGN TABLE tags ALTER COLUMN taggings_count OPTIONS (
+ALTER FOREIGN TABLE public.tags ALTER COLUMN taggings_count OPTIONS (
     column_name 'taggings_count'
 );
-ALTER FOREIGN TABLE tags ALTER COLUMN weight OPTIONS (
+ALTER FOREIGN TABLE public.tags ALTER COLUMN weight OPTIONS (
     column_name 'weight'
 );
 
@@ -9259,7 +9258,7 @@ ALTER FOREIGN TABLE tags ALTER COLUMN weight OPTIONS (
 -- Name: tags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE tags_id_seq
+CREATE SEQUENCE public.tags_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -9271,7 +9270,7 @@ CREATE SEQUENCE tags_id_seq
 -- Name: tags_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE tags_id_seq_view (
+CREATE FOREIGN TABLE public.tags_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -9279,7 +9278,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'tags_id_seq_view'
 );
-ALTER FOREIGN TABLE tags_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.tags_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -9288,8 +9287,8 @@ ALTER FOREIGN TABLE tags_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: thirty_day_summaries; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE thirty_day_summaries (
-    id integer DEFAULT thirty_day_summaries_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.thirty_day_summaries (
+    id integer DEFAULT public.thirty_day_summaries_id_seq_view() NOT NULL,
     analysis_id integer NOT NULL,
     committer_count integer,
     commit_count integer,
@@ -9303,28 +9302,28 @@ OPTIONS (
     schema_name 'public',
     table_name 'thirty_day_summaries'
 );
-ALTER FOREIGN TABLE thirty_day_summaries ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.thirty_day_summaries ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE thirty_day_summaries ALTER COLUMN analysis_id OPTIONS (
+ALTER FOREIGN TABLE public.thirty_day_summaries ALTER COLUMN analysis_id OPTIONS (
     column_name 'analysis_id'
 );
-ALTER FOREIGN TABLE thirty_day_summaries ALTER COLUMN committer_count OPTIONS (
+ALTER FOREIGN TABLE public.thirty_day_summaries ALTER COLUMN committer_count OPTIONS (
     column_name 'committer_count'
 );
-ALTER FOREIGN TABLE thirty_day_summaries ALTER COLUMN commit_count OPTIONS (
+ALTER FOREIGN TABLE public.thirty_day_summaries ALTER COLUMN commit_count OPTIONS (
     column_name 'commit_count'
 );
-ALTER FOREIGN TABLE thirty_day_summaries ALTER COLUMN files_modified OPTIONS (
+ALTER FOREIGN TABLE public.thirty_day_summaries ALTER COLUMN files_modified OPTIONS (
     column_name 'files_modified'
 );
-ALTER FOREIGN TABLE thirty_day_summaries ALTER COLUMN lines_added OPTIONS (
+ALTER FOREIGN TABLE public.thirty_day_summaries ALTER COLUMN lines_added OPTIONS (
     column_name 'lines_added'
 );
-ALTER FOREIGN TABLE thirty_day_summaries ALTER COLUMN lines_removed OPTIONS (
+ALTER FOREIGN TABLE public.thirty_day_summaries ALTER COLUMN lines_removed OPTIONS (
     column_name 'lines_removed'
 );
-ALTER FOREIGN TABLE thirty_day_summaries ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.thirty_day_summaries ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
 
@@ -9333,7 +9332,7 @@ ALTER FOREIGN TABLE thirty_day_summaries ALTER COLUMN created_at OPTIONS (
 -- Name: thirty_day_summaries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE thirty_day_summaries_id_seq
+CREATE SEQUENCE public.thirty_day_summaries_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -9345,7 +9344,7 @@ CREATE SEQUENCE thirty_day_summaries_id_seq
 -- Name: thirty_day_summaries_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE thirty_day_summaries_id_seq_view (
+CREATE FOREIGN TABLE public.thirty_day_summaries_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -9353,7 +9352,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'thirty_day_summaries_id_seq_view'
 );
-ALTER FOREIGN TABLE thirty_day_summaries_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.thirty_day_summaries_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -9362,8 +9361,8 @@ ALTER FOREIGN TABLE thirty_day_summaries_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: tools; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE tools (
-    id integer DEFAULT tools_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.tools (
+    id integer DEFAULT public.tools_id_seq_view() NOT NULL,
     name text NOT NULL,
     description text
 )
@@ -9372,13 +9371,13 @@ OPTIONS (
     schema_name 'public',
     table_name 'tools'
 );
-ALTER FOREIGN TABLE tools ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.tools ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE tools ALTER COLUMN name OPTIONS (
+ALTER FOREIGN TABLE public.tools ALTER COLUMN name OPTIONS (
     column_name 'name'
 );
-ALTER FOREIGN TABLE tools ALTER COLUMN description OPTIONS (
+ALTER FOREIGN TABLE public.tools ALTER COLUMN description OPTIONS (
     column_name 'description'
 );
 
@@ -9387,7 +9386,7 @@ ALTER FOREIGN TABLE tools ALTER COLUMN description OPTIONS (
 -- Name: tools_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE tools_id_seq
+CREATE SEQUENCE public.tools_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -9399,7 +9398,7 @@ CREATE SEQUENCE tools_id_seq
 -- Name: tools_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE tools_id_seq_view (
+CREATE FOREIGN TABLE public.tools_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -9407,7 +9406,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'tools_id_seq_view'
 );
-ALTER FOREIGN TABLE tools_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.tools_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -9416,8 +9415,8 @@ ALTER FOREIGN TABLE tools_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: topics; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE topics (
-    id integer DEFAULT topics_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.topics (
+    id integer DEFAULT public.topics_id_seq_view() NOT NULL,
     forum_id integer,
     account_id integer NOT NULL,
     title text,
@@ -9436,43 +9435,43 @@ OPTIONS (
     schema_name 'public',
     table_name 'topics'
 );
-ALTER FOREIGN TABLE topics ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.topics ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE topics ALTER COLUMN forum_id OPTIONS (
+ALTER FOREIGN TABLE public.topics ALTER COLUMN forum_id OPTIONS (
     column_name 'forum_id'
 );
-ALTER FOREIGN TABLE topics ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.topics ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE topics ALTER COLUMN title OPTIONS (
+ALTER FOREIGN TABLE public.topics ALTER COLUMN title OPTIONS (
     column_name 'title'
 );
-ALTER FOREIGN TABLE topics ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.topics ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE topics ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.topics ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE topics ALTER COLUMN hits OPTIONS (
+ALTER FOREIGN TABLE public.topics ALTER COLUMN hits OPTIONS (
     column_name 'hits'
 );
-ALTER FOREIGN TABLE topics ALTER COLUMN sticky OPTIONS (
+ALTER FOREIGN TABLE public.topics ALTER COLUMN sticky OPTIONS (
     column_name 'sticky'
 );
-ALTER FOREIGN TABLE topics ALTER COLUMN posts_count OPTIONS (
+ALTER FOREIGN TABLE public.topics ALTER COLUMN posts_count OPTIONS (
     column_name 'posts_count'
 );
-ALTER FOREIGN TABLE topics ALTER COLUMN replied_at OPTIONS (
+ALTER FOREIGN TABLE public.topics ALTER COLUMN replied_at OPTIONS (
     column_name 'replied_at'
 );
-ALTER FOREIGN TABLE topics ALTER COLUMN closed OPTIONS (
+ALTER FOREIGN TABLE public.topics ALTER COLUMN closed OPTIONS (
     column_name 'closed'
 );
-ALTER FOREIGN TABLE topics ALTER COLUMN replied_by OPTIONS (
+ALTER FOREIGN TABLE public.topics ALTER COLUMN replied_by OPTIONS (
     column_name 'replied_by'
 );
-ALTER FOREIGN TABLE topics ALTER COLUMN last_post_id OPTIONS (
+ALTER FOREIGN TABLE public.topics ALTER COLUMN last_post_id OPTIONS (
     column_name 'last_post_id'
 );
 
@@ -9481,7 +9480,7 @@ ALTER FOREIGN TABLE topics ALTER COLUMN last_post_id OPTIONS (
 -- Name: topics_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE topics_id_seq
+CREATE SEQUENCE public.topics_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -9493,7 +9492,7 @@ CREATE SEQUENCE topics_id_seq
 -- Name: topics_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE topics_id_seq_view (
+CREATE FOREIGN TABLE public.topics_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -9501,7 +9500,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'topics_id_seq_view'
 );
-ALTER FOREIGN TABLE topics_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.topics_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -9510,8 +9509,8 @@ ALTER FOREIGN TABLE topics_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: verifications; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE verifications (
-    id integer DEFAULT verifications_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.verifications (
+    id integer DEFAULT public.verifications_id_seq_view() NOT NULL,
     account_id integer,
     type character varying,
     token character varying,
@@ -9524,25 +9523,25 @@ OPTIONS (
     schema_name 'public',
     table_name 'verifications'
 );
-ALTER FOREIGN TABLE verifications ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.verifications ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE verifications ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.verifications ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE verifications ALTER COLUMN type OPTIONS (
+ALTER FOREIGN TABLE public.verifications ALTER COLUMN type OPTIONS (
     column_name 'type'
 );
-ALTER FOREIGN TABLE verifications ALTER COLUMN token OPTIONS (
+ALTER FOREIGN TABLE public.verifications ALTER COLUMN token OPTIONS (
     column_name 'token'
 );
-ALTER FOREIGN TABLE verifications ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.verifications ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE verifications ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.verifications ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE verifications ALTER COLUMN unique_id OPTIONS (
+ALTER FOREIGN TABLE public.verifications ALTER COLUMN unique_id OPTIONS (
     column_name 'unique_id'
 );
 
@@ -9551,7 +9550,7 @@ ALTER FOREIGN TABLE verifications ALTER COLUMN unique_id OPTIONS (
 -- Name: verifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE verifications_id_seq
+CREATE SEQUENCE public.verifications_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -9563,7 +9562,7 @@ CREATE SEQUENCE verifications_id_seq
 -- Name: verifications_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE verifications_id_seq_view (
+CREATE FOREIGN TABLE public.verifications_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -9571,7 +9570,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'verifications_id_seq_view'
 );
-ALTER FOREIGN TABLE verifications_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.verifications_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -9580,8 +9579,8 @@ ALTER FOREIGN TABLE verifications_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: vita_analyses; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE vita_analyses (
-    id integer DEFAULT vita_analyses_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.vita_analyses (
+    id integer DEFAULT public.vita_analyses_id_seq_view() NOT NULL,
     vita_id integer,
     analysis_id integer
 )
@@ -9590,13 +9589,13 @@ OPTIONS (
     schema_name 'public',
     table_name 'vita_analyses'
 );
-ALTER FOREIGN TABLE vita_analyses ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.vita_analyses ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE vita_analyses ALTER COLUMN vita_id OPTIONS (
+ALTER FOREIGN TABLE public.vita_analyses ALTER COLUMN vita_id OPTIONS (
     column_name 'vita_id'
 );
-ALTER FOREIGN TABLE vita_analyses ALTER COLUMN analysis_id OPTIONS (
+ALTER FOREIGN TABLE public.vita_analyses ALTER COLUMN analysis_id OPTIONS (
     column_name 'analysis_id'
 );
 
@@ -9605,7 +9604,7 @@ ALTER FOREIGN TABLE vita_analyses ALTER COLUMN analysis_id OPTIONS (
 -- Name: vita_analyses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE vita_analyses_id_seq
+CREATE SEQUENCE public.vita_analyses_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -9617,7 +9616,7 @@ CREATE SEQUENCE vita_analyses_id_seq
 -- Name: vita_analyses_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE vita_analyses_id_seq_view (
+CREATE FOREIGN TABLE public.vita_analyses_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -9625,7 +9624,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'vita_analyses_id_seq_view'
 );
-ALTER FOREIGN TABLE vita_analyses_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.vita_analyses_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -9634,8 +9633,8 @@ ALTER FOREIGN TABLE vita_analyses_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: vitae; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE vitae (
-    id integer DEFAULT vitae_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.vitae (
+    id integer DEFAULT public.vitae_id_seq_view() NOT NULL,
     account_id integer NOT NULL,
     created_at timestamp without time zone
 )
@@ -9644,13 +9643,13 @@ OPTIONS (
     schema_name 'public',
     table_name 'vitae'
 );
-ALTER FOREIGN TABLE vitae ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.vitae ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE vitae ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.vitae ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE vitae ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.vitae ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
 
@@ -9659,7 +9658,7 @@ ALTER FOREIGN TABLE vitae ALTER COLUMN created_at OPTIONS (
 -- Name: vitae_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE vitae_id_seq
+CREATE SEQUENCE public.vitae_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -9671,7 +9670,7 @@ CREATE SEQUENCE vitae_id_seq
 -- Name: vitae_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE vitae_id_seq_view (
+CREATE FOREIGN TABLE public.vitae_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -9679,7 +9678,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'vitae_id_seq_view'
 );
-ALTER FOREIGN TABLE vitae_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.vitae_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -9688,8 +9687,8 @@ ALTER FOREIGN TABLE vitae_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: vulnerabilities; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE vulnerabilities (
-    id integer DEFAULT vulnerabilities_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.vulnerabilities (
+    id integer DEFAULT public.vulnerabilities_id_seq_view() NOT NULL,
     cve_id character varying NOT NULL,
     generated_on timestamp without time zone,
     published_on timestamp without time zone,
@@ -9704,31 +9703,31 @@ OPTIONS (
     schema_name 'public',
     table_name 'vulnerabilities'
 );
-ALTER FOREIGN TABLE vulnerabilities ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.vulnerabilities ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE vulnerabilities ALTER COLUMN cve_id OPTIONS (
+ALTER FOREIGN TABLE public.vulnerabilities ALTER COLUMN cve_id OPTIONS (
     column_name 'cve_id'
 );
-ALTER FOREIGN TABLE vulnerabilities ALTER COLUMN generated_on OPTIONS (
+ALTER FOREIGN TABLE public.vulnerabilities ALTER COLUMN generated_on OPTIONS (
     column_name 'generated_on'
 );
-ALTER FOREIGN TABLE vulnerabilities ALTER COLUMN published_on OPTIONS (
+ALTER FOREIGN TABLE public.vulnerabilities ALTER COLUMN published_on OPTIONS (
     column_name 'published_on'
 );
-ALTER FOREIGN TABLE vulnerabilities ALTER COLUMN severity OPTIONS (
+ALTER FOREIGN TABLE public.vulnerabilities ALTER COLUMN severity OPTIONS (
     column_name 'severity'
 );
-ALTER FOREIGN TABLE vulnerabilities ALTER COLUMN score OPTIONS (
+ALTER FOREIGN TABLE public.vulnerabilities ALTER COLUMN score OPTIONS (
     column_name 'score'
 );
-ALTER FOREIGN TABLE vulnerabilities ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.vulnerabilities ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE vulnerabilities ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.vulnerabilities ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE vulnerabilities ALTER COLUMN description OPTIONS (
+ALTER FOREIGN TABLE public.vulnerabilities ALTER COLUMN description OPTIONS (
     column_name 'description'
 );
 
@@ -9737,7 +9736,7 @@ ALTER FOREIGN TABLE vulnerabilities ALTER COLUMN description OPTIONS (
 -- Name: vulnerabilities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE vulnerabilities_id_seq
+CREATE SEQUENCE public.vulnerabilities_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -9749,7 +9748,7 @@ CREATE SEQUENCE vulnerabilities_id_seq
 -- Name: vulnerabilities_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE vulnerabilities_id_seq_view (
+CREATE FOREIGN TABLE public.vulnerabilities_id_seq_view (
     id integer
 )
 SERVER ohloh
@@ -9757,7 +9756,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'vulnerabilities_id_seq_view'
 );
-ALTER FOREIGN TABLE vulnerabilities_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.vulnerabilities_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -9766,7 +9765,7 @@ ALTER FOREIGN TABLE vulnerabilities_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: vw_projecturlnameedits; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE vw_projecturlnameedits (
+CREATE FOREIGN TABLE public.vw_projecturlnameedits (
     project_id integer,
     value text
 )
@@ -9775,10 +9774,10 @@ OPTIONS (
     schema_name 'public',
     table_name 'vw_projecturlnameedits'
 );
-ALTER FOREIGN TABLE vw_projecturlnameedits ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.vw_projecturlnameedits ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE vw_projecturlnameedits ALTER COLUMN value OPTIONS (
+ALTER FOREIGN TABLE public.vw_projecturlnameedits ALTER COLUMN value OPTIONS (
     column_name 'value'
 );
 
@@ -9787,119 +9786,119 @@ ALTER FOREIGN TABLE vw_projecturlnameedits ALTER COLUMN value OPTIONS (
 -- Name: analysis_aliases id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY analysis_aliases ALTER COLUMN id SET DEFAULT nextval('analysis_aliases_id_seq'::regclass);
+ALTER TABLE ONLY public.analysis_aliases ALTER COLUMN id SET DEFAULT nextval('public.analysis_aliases_id_seq'::regclass);
 
 
 --
 -- Name: analysis_sloc_sets id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY analysis_sloc_sets ALTER COLUMN id SET DEFAULT nextval('analysis_sloc_sets_id_seq'::regclass);
+ALTER TABLE ONLY public.analysis_sloc_sets ALTER COLUMN id SET DEFAULT nextval('public.analysis_sloc_sets_id_seq'::regclass);
 
 
 --
 -- Name: code_location_job_feeders id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY code_location_job_feeders ALTER COLUMN id SET DEFAULT nextval('code_location_job_feeders_id_seq'::regclass);
+ALTER TABLE ONLY public.code_location_job_feeders ALTER COLUMN id SET DEFAULT nextval('public.code_location_job_feeders_id_seq'::regclass);
 
 
 --
 -- Name: code_location_tarballs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY code_location_tarballs ALTER COLUMN id SET DEFAULT nextval('code_location_tarballs_id_seq'::regclass);
+ALTER TABLE ONLY public.code_location_tarballs ALTER COLUMN id SET DEFAULT nextval('public.code_location_tarballs_id_seq'::regclass);
 
 
 --
 -- Name: code_sets id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY code_sets ALTER COLUMN id SET DEFAULT nextval('code_sets_id_seq'::regclass);
+ALTER TABLE ONLY public.code_sets ALTER COLUMN id SET DEFAULT nextval('public.code_sets_id_seq'::regclass);
 
 
 --
 -- Name: commit_flags id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY commit_flags ALTER COLUMN id SET DEFAULT nextval('commit_flags_id_seq'::regclass);
+ALTER TABLE ONLY public.commit_flags ALTER COLUMN id SET DEFAULT nextval('public.commit_flags_id_seq'::regclass);
 
 
 --
 -- Name: commits id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY commits ALTER COLUMN id SET DEFAULT nextval('commits_id_seq'::regclass);
+ALTER TABLE ONLY public.commits ALTER COLUMN id SET DEFAULT nextval('public.commits_id_seq'::regclass);
 
 
 --
 -- Name: diffs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY diffs ALTER COLUMN id SET DEFAULT nextval('diffs_id_seq'::regclass);
+ALTER TABLE ONLY public.diffs ALTER COLUMN id SET DEFAULT nextval('public.diffs_id_seq'::regclass);
 
 
 --
 -- Name: email_addresses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY email_addresses ALTER COLUMN id SET DEFAULT nextval('email_addresses_id_seq'::regclass);
+ALTER TABLE ONLY public.email_addresses ALTER COLUMN id SET DEFAULT nextval('public.email_addresses_id_seq'::regclass);
 
 
 --
 -- Name: fisbot_events id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY fisbot_events ALTER COLUMN id SET DEFAULT nextval('fisbot_events_id_seq'::regclass);
+ALTER TABLE ONLY public.fisbot_events ALTER COLUMN id SET DEFAULT nextval('public.fisbot_events_id_seq'::regclass);
 
 
 --
 -- Name: fyles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY fyles ALTER COLUMN id SET DEFAULT nextval('fyles_id_seq'::regclass);
+ALTER TABLE ONLY public.fyles ALTER COLUMN id SET DEFAULT nextval('public.fyles_id_seq'::regclass);
 
 
 --
 -- Name: load_averages id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY load_averages ALTER COLUMN id SET DEFAULT nextval('load_averages_id_seq'::regclass);
+ALTER TABLE ONLY public.load_averages ALTER COLUMN id SET DEFAULT nextval('public.load_averages_id_seq'::regclass);
 
 
 --
 -- Name: slave_logs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY slave_logs ALTER COLUMN id SET DEFAULT nextval('slave_logs_id_seq'::regclass);
+ALTER TABLE ONLY public.slave_logs ALTER COLUMN id SET DEFAULT nextval('public.slave_logs_id_seq'::regclass);
 
 
 --
 -- Name: slaves id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY slaves ALTER COLUMN id SET DEFAULT nextval('slave_permissions_id_seq'::regclass);
+ALTER TABLE ONLY public.slaves ALTER COLUMN id SET DEFAULT nextval('public.slave_permissions_id_seq'::regclass);
 
 
 --
 -- Name: sloc_metrics id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY sloc_metrics ALTER COLUMN id SET DEFAULT nextval('sloc_metrics_id_seq'::regclass);
+ALTER TABLE ONLY public.sloc_metrics ALTER COLUMN id SET DEFAULT nextval('public.sloc_metrics_id_seq'::regclass);
 
 
 --
 -- Name: sloc_sets id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY sloc_sets ALTER COLUMN id SET DEFAULT nextval('sloc_sets_id_seq'::regclass);
+ALTER TABLE ONLY public.sloc_sets ALTER COLUMN id SET DEFAULT nextval('public.sloc_sets_id_seq'::regclass);
 
 
 --
 -- Name: analysis_aliases analysis_aliases_analysis_id_commit_name_id; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY analysis_aliases
+ALTER TABLE ONLY public.analysis_aliases
     ADD CONSTRAINT analysis_aliases_analysis_id_commit_name_id UNIQUE (analysis_id, commit_name_id);
 
 
@@ -9907,7 +9906,7 @@ ALTER TABLE ONLY analysis_aliases
 -- Name: analysis_aliases analysis_aliases_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY analysis_aliases
+ALTER TABLE ONLY public.analysis_aliases
     ADD CONSTRAINT analysis_aliases_pkey PRIMARY KEY (id);
 
 
@@ -9915,7 +9914,7 @@ ALTER TABLE ONLY analysis_aliases
 -- Name: analysis_sloc_sets analysis_sloc_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY analysis_sloc_sets
+ALTER TABLE ONLY public.analysis_sloc_sets
     ADD CONSTRAINT analysis_sloc_sets_pkey PRIMARY KEY (id);
 
 
@@ -9923,7 +9922,7 @@ ALTER TABLE ONLY analysis_sloc_sets
 -- Name: code_location_job_feeders code_location_job_feeders_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY code_location_job_feeders
+ALTER TABLE ONLY public.code_location_job_feeders
     ADD CONSTRAINT code_location_job_feeders_pkey PRIMARY KEY (id);
 
 
@@ -9931,7 +9930,7 @@ ALTER TABLE ONLY code_location_job_feeders
 -- Name: code_location_tarballs code_location_tarballs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY code_location_tarballs
+ALTER TABLE ONLY public.code_location_tarballs
     ADD CONSTRAINT code_location_tarballs_pkey PRIMARY KEY (id);
 
 
@@ -9939,7 +9938,7 @@ ALTER TABLE ONLY code_location_tarballs
 -- Name: code_sets code_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY code_sets
+ALTER TABLE ONLY public.code_sets
     ADD CONSTRAINT code_sets_pkey PRIMARY KEY (id);
 
 
@@ -9947,7 +9946,7 @@ ALTER TABLE ONLY code_sets
 -- Name: commit_flags commit_flags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY commit_flags
+ALTER TABLE ONLY public.commit_flags
     ADD CONSTRAINT commit_flags_pkey PRIMARY KEY (id);
 
 
@@ -9955,7 +9954,7 @@ ALTER TABLE ONLY commit_flags
 -- Name: commits commits_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY commits
+ALTER TABLE ONLY public.commits
     ADD CONSTRAINT commits_pkey PRIMARY KEY (id);
 
 
@@ -9963,7 +9962,7 @@ ALTER TABLE ONLY commits
 -- Name: diffs diffs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY diffs
+ALTER TABLE ONLY public.diffs
     ADD CONSTRAINT diffs_pkey PRIMARY KEY (id);
 
 
@@ -9971,7 +9970,7 @@ ALTER TABLE ONLY diffs
 -- Name: email_addresses email_addresses_address_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY email_addresses
+ALTER TABLE ONLY public.email_addresses
     ADD CONSTRAINT email_addresses_address_key UNIQUE (address);
 
 
@@ -9979,7 +9978,7 @@ ALTER TABLE ONLY email_addresses
 -- Name: email_addresses email_addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY email_addresses
+ALTER TABLE ONLY public.email_addresses
     ADD CONSTRAINT email_addresses_pkey PRIMARY KEY (id);
 
 
@@ -9987,7 +9986,7 @@ ALTER TABLE ONLY email_addresses
 -- Name: fisbot_events fisbot_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY fisbot_events
+ALTER TABLE ONLY public.fisbot_events
     ADD CONSTRAINT fisbot_events_pkey PRIMARY KEY (id);
 
 
@@ -9995,7 +9994,7 @@ ALTER TABLE ONLY fisbot_events
 -- Name: fyles fyles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY fyles
+ALTER TABLE ONLY public.fyles
     ADD CONSTRAINT fyles_pkey PRIMARY KEY (id);
 
 
@@ -10003,7 +10002,7 @@ ALTER TABLE ONLY fyles
 -- Name: load_averages load_averages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY load_averages
+ALTER TABLE ONLY public.load_averages
     ADD CONSTRAINT load_averages_pkey PRIMARY KEY (id);
 
 
@@ -10011,7 +10010,7 @@ ALTER TABLE ONLY load_averages
 -- Name: slave_logs slave_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY slave_logs
+ALTER TABLE ONLY public.slave_logs
     ADD CONSTRAINT slave_logs_pkey PRIMARY KEY (id);
 
 
@@ -10019,7 +10018,7 @@ ALTER TABLE ONLY slave_logs
 -- Name: slaves slave_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY slaves
+ALTER TABLE ONLY public.slaves
     ADD CONSTRAINT slave_permissions_pkey PRIMARY KEY (id);
 
 
@@ -10027,7 +10026,7 @@ ALTER TABLE ONLY slaves
 -- Name: sloc_sets sloc_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY sloc_sets
+ALTER TABLE ONLY public.sloc_sets
     ADD CONSTRAINT sloc_sets_pkey PRIMARY KEY (id);
 
 
@@ -10035,7 +10034,7 @@ ALTER TABLE ONLY sloc_sets
 -- Name: diffs unique_diffs_on_commit_id_fyle_id; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY diffs
+ALTER TABLE ONLY public.diffs
     ADD CONSTRAINT unique_diffs_on_commit_id_fyle_id UNIQUE (commit_id, fyle_id);
 
 
@@ -10043,289 +10042,289 @@ ALTER TABLE ONLY diffs
 -- Name: foo; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX foo ON slaves USING btree (clump_status) WHERE (oldest_clump_timestamp IS NOT NULL);
+CREATE INDEX foo ON public.slaves USING btree (clump_status) WHERE (oldest_clump_timestamp IS NOT NULL);
 
 
 --
 -- Name: index_analysis_aliases_on_analysis_id_preferred_name_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_analysis_aliases_on_analysis_id_preferred_name_id ON analysis_aliases USING btree (analysis_id, preferred_name_id);
+CREATE INDEX index_analysis_aliases_on_analysis_id_preferred_name_id ON public.analysis_aliases USING btree (analysis_id, preferred_name_id);
 
 
 --
 -- Name: index_analysis_sloc_sets_on_analysis_id_sloc_set_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_analysis_sloc_sets_on_analysis_id_sloc_set_id ON analysis_sloc_sets USING btree (analysis_id, sloc_set_id);
+CREATE INDEX index_analysis_sloc_sets_on_analysis_id_sloc_set_id ON public.analysis_sloc_sets USING btree (analysis_id, sloc_set_id);
 
 
 --
 -- Name: index_analysis_sloc_sets_on_sloc_set_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_analysis_sloc_sets_on_sloc_set_id ON analysis_sloc_sets USING btree (sloc_set_id);
+CREATE INDEX index_analysis_sloc_sets_on_sloc_set_id ON public.analysis_sloc_sets USING btree (sloc_set_id);
 
 
 --
 -- Name: index_code_location_tarballs_on_code_location_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_code_location_tarballs_on_code_location_id ON code_location_tarballs USING btree (code_location_id);
+CREATE INDEX index_code_location_tarballs_on_code_location_id ON public.code_location_tarballs USING btree (code_location_id);
 
 
 --
 -- Name: index_code_location_tarballs_on_reference; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_code_location_tarballs_on_reference ON code_location_tarballs USING btree (reference);
+CREATE INDEX index_code_location_tarballs_on_reference ON public.code_location_tarballs USING btree (reference);
 
 
 --
 -- Name: index_code_sets_on_best_sloc_set_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_code_sets_on_best_sloc_set_id ON code_sets USING btree (best_sloc_set_id);
+CREATE INDEX index_code_sets_on_best_sloc_set_id ON public.code_sets USING btree (best_sloc_set_id);
 
 
 --
 -- Name: index_code_sets_on_code_location_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_code_sets_on_code_location_id ON code_sets USING btree (code_location_id);
+CREATE INDEX index_code_sets_on_code_location_id ON public.code_sets USING btree (code_location_id);
 
 
 --
 -- Name: index_code_sets_on_logged_at; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_code_sets_on_logged_at ON code_sets USING btree ((COALESCE(logged_at, '1970-01-01 00:00:00'::timestamp without time zone)));
+CREATE INDEX index_code_sets_on_logged_at ON public.code_sets USING btree ((COALESCE(logged_at, '1970-01-01 00:00:00'::timestamp without time zone)));
 
 
 --
 -- Name: index_commit_flags_on_commit_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_commit_flags_on_commit_id ON commit_flags USING btree (commit_id);
+CREATE INDEX index_commit_flags_on_commit_id ON public.commit_flags USING btree (commit_id);
 
 
 --
 -- Name: index_commit_flags_on_sloc_set_id_commit_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_commit_flags_on_sloc_set_id_commit_id ON commit_flags USING btree (sloc_set_id, commit_id);
+CREATE INDEX index_commit_flags_on_sloc_set_id_commit_id ON public.commit_flags USING btree (sloc_set_id, commit_id);
 
 
 --
 -- Name: index_commit_flags_on_sloc_set_id_time; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_commit_flags_on_sloc_set_id_time ON commit_flags USING btree (sloc_set_id, "time" DESC);
+CREATE INDEX index_commit_flags_on_sloc_set_id_time ON public.commit_flags USING btree (sloc_set_id, "time" DESC);
 
 
 --
 -- Name: index_commits_on_code_set_id_time; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_commits_on_code_set_id_time ON commits USING btree (code_set_id, "time");
+CREATE INDEX index_commits_on_code_set_id_time ON public.commits USING btree (code_set_id, "time");
 
 
 --
 -- Name: index_commits_on_name_id_month; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_commits_on_name_id_month ON commits USING btree (name_id, date_trunc('month'::text, "time"));
+CREATE INDEX index_commits_on_name_id_month ON public.commits USING btree (name_id, date_trunc('month'::text, "time"));
 
 
 --
 -- Name: index_commits_on_sha1; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_commits_on_sha1 ON commits USING btree (sha1);
+CREATE INDEX index_commits_on_sha1 ON public.commits USING btree (sha1);
 
 
 --
 -- Name: index_diffs_on_commit_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_diffs_on_commit_id ON diffs USING btree (commit_id);
+CREATE INDEX index_diffs_on_commit_id ON public.diffs USING btree (commit_id);
 
 
 --
 -- Name: index_diffs_on_fyle_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_diffs_on_fyle_id ON diffs USING btree (fyle_id);
+CREATE INDEX index_diffs_on_fyle_id ON public.diffs USING btree (fyle_id);
 
 
 --
 -- Name: index_fisbot_events_on_code_location_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_fisbot_events_on_code_location_id ON fisbot_events USING btree (code_location_id);
+CREATE INDEX index_fisbot_events_on_code_location_id ON public.fisbot_events USING btree (code_location_id);
 
 
 --
 -- Name: index_fisbot_events_on_repository_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_fisbot_events_on_repository_id ON fisbot_events USING btree (repository_id);
+CREATE INDEX index_fisbot_events_on_repository_id ON public.fisbot_events USING btree (repository_id);
 
 
 --
 -- Name: index_fyles_on_code_set_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_fyles_on_code_set_id ON fyles USING btree (code_set_id);
+CREATE INDEX index_fyles_on_code_set_id ON public.fyles USING btree (code_set_id);
 
 
 --
 -- Name: index_fyles_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_fyles_on_name ON fyles USING btree (name);
+CREATE INDEX index_fyles_on_name ON public.fyles USING btree (name);
 
 
 --
 -- Name: index_on_commits_code_set_id_position; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_on_commits_code_set_id_position ON commits USING btree (code_set_id, "position");
+CREATE INDEX index_on_commits_code_set_id_position ON public.commits USING btree (code_set_id, "position");
 
 
 --
 -- Name: index_slave_logs_on_code_sets_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_slave_logs_on_code_sets_id ON slave_logs USING btree (code_set_id);
+CREATE INDEX index_slave_logs_on_code_sets_id ON public.slave_logs USING btree (code_set_id);
 
 
 --
 -- Name: index_slave_logs_on_created_on; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_slave_logs_on_created_on ON slave_logs USING btree (created_on);
+CREATE INDEX index_slave_logs_on_created_on ON public.slave_logs USING btree (created_on);
 
 
 --
 -- Name: index_slave_logs_on_job_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_slave_logs_on_job_id ON slave_logs USING btree (job_id);
+CREATE INDEX index_slave_logs_on_job_id ON public.slave_logs USING btree (job_id);
 
 
 --
 -- Name: index_slave_logs_on_slave_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_slave_logs_on_slave_id ON slave_logs USING btree (slave_id);
+CREATE INDEX index_slave_logs_on_slave_id ON public.slave_logs USING btree (slave_id);
 
 
 --
 -- Name: index_sloc_metrics_on_diff_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_sloc_metrics_on_diff_id ON sloc_metrics USING btree (diff_id);
+CREATE INDEX index_sloc_metrics_on_diff_id ON public.sloc_metrics USING btree (diff_id);
 
 
 --
 -- Name: index_sloc_metrics_on_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_sloc_metrics_on_id ON sloc_metrics USING btree (id);
+CREATE INDEX index_sloc_metrics_on_id ON public.sloc_metrics USING btree (id);
 
 
 --
 -- Name: index_sloc_metrics_on_sloc_set_id_language_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_sloc_metrics_on_sloc_set_id_language_id ON sloc_metrics USING btree (sloc_set_id, language_id);
+CREATE INDEX index_sloc_metrics_on_sloc_set_id_language_id ON public.sloc_metrics USING btree (sloc_set_id, language_id);
 
 
 --
 -- Name: index_sloc_sets_on_code_set_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_sloc_sets_on_code_set_id ON sloc_sets USING btree (code_set_id);
+CREATE INDEX index_sloc_sets_on_code_set_id ON public.sloc_sets USING btree (code_set_id);
 
 
 --
 -- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
+CREATE UNIQUE INDEX unique_schema_migrations ON public.schema_migrations USING btree (version);
 
 
 --
 -- Name: analysis_sloc_sets analysis_sloc_sets_sloc_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY analysis_sloc_sets
-    ADD CONSTRAINT analysis_sloc_sets_sloc_set_id_fkey FOREIGN KEY (sloc_set_id) REFERENCES sloc_sets(id);
+ALTER TABLE ONLY public.analysis_sloc_sets
+    ADD CONSTRAINT analysis_sloc_sets_sloc_set_id_fkey FOREIGN KEY (sloc_set_id) REFERENCES public.sloc_sets(id);
 
 
 --
 -- Name: code_sets code_sets_best_sloc_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY code_sets
-    ADD CONSTRAINT code_sets_best_sloc_set_id_fkey FOREIGN KEY (best_sloc_set_id) REFERENCES sloc_sets(id);
+ALTER TABLE ONLY public.code_sets
+    ADD CONSTRAINT code_sets_best_sloc_set_id_fkey FOREIGN KEY (best_sloc_set_id) REFERENCES public.sloc_sets(id);
 
 
 --
 -- Name: commit_flags commit_flags_sloc_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY commit_flags
-    ADD CONSTRAINT commit_flags_sloc_set_id_fkey FOREIGN KEY (sloc_set_id) REFERENCES sloc_sets(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.commit_flags
+    ADD CONSTRAINT commit_flags_sloc_set_id_fkey FOREIGN KEY (sloc_set_id) REFERENCES public.sloc_sets(id) ON DELETE CASCADE;
 
 
 --
 -- Name: diffs diffs_commit_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY diffs
-    ADD CONSTRAINT diffs_commit_id_fkey FOREIGN KEY (commit_id) REFERENCES commits(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.diffs
+    ADD CONSTRAINT diffs_commit_id_fkey FOREIGN KEY (commit_id) REFERENCES public.commits(id) ON DELETE CASCADE;
 
 
 --
 -- Name: diffs diffs_fyle_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY diffs
-    ADD CONSTRAINT diffs_fyle_id_fkey FOREIGN KEY (fyle_id) REFERENCES fyles(id);
+ALTER TABLE ONLY public.diffs
+    ADD CONSTRAINT diffs_fyle_id_fkey FOREIGN KEY (fyle_id) REFERENCES public.fyles(id);
 
 
 --
 -- Name: slave_logs slave_logs_code_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY slave_logs
-    ADD CONSTRAINT slave_logs_code_set_id_fkey FOREIGN KEY (code_set_id) REFERENCES code_sets(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.slave_logs
+    ADD CONSTRAINT slave_logs_code_set_id_fkey FOREIGN KEY (code_set_id) REFERENCES public.code_sets(id) ON DELETE CASCADE;
 
 
 --
 -- Name: slave_logs slave_logs_slave_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY slave_logs
-    ADD CONSTRAINT slave_logs_slave_id_fkey FOREIGN KEY (slave_id) REFERENCES slaves(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.slave_logs
+    ADD CONSTRAINT slave_logs_slave_id_fkey FOREIGN KEY (slave_id) REFERENCES public.slaves(id) ON DELETE CASCADE;
 
 
 --
 -- Name: sloc_metrics sloc_metrics_diff_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY sloc_metrics
-    ADD CONSTRAINT sloc_metrics_diff_id_fkey FOREIGN KEY (diff_id) REFERENCES diffs(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.sloc_metrics
+    ADD CONSTRAINT sloc_metrics_diff_id_fkey FOREIGN KEY (diff_id) REFERENCES public.diffs(id) ON DELETE CASCADE;
 
 
 --
 -- Name: sloc_sets sloc_sets_code_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY sloc_sets
-    ADD CONSTRAINT sloc_sets_code_set_id_fkey FOREIGN KEY (code_set_id) REFERENCES code_sets(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.sloc_sets
+    ADD CONSTRAINT sloc_sets_code_set_id_fkey FOREIGN KEY (code_set_id) REFERENCES public.code_sets(id) ON DELETE CASCADE;
 
 
 --

@@ -2,14 +2,15 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.3
--- Dumped by pg_dump version 9.6.3
+-- Dumped from database version 9.6.10
+-- Dumped by pg_dump version 9.6.10
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'SQL_ASCII';
 SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET row_security = off;
@@ -56,13 +57,11 @@ CREATE EXTENSION IF NOT EXISTS postgres_fdw WITH SCHEMA public;
 COMMENT ON EXTENSION postgres_fdw IS 'foreign-data wrapper for remote PostgreSQL servers';
 
 
-SET search_path = public, pg_catalog;
-
 --
 -- Name: statinfo; Type: TYPE; Schema: public; Owner: -
 --
 
-CREATE TYPE statinfo AS (
+CREATE TYPE public.statinfo AS (
 	word text,
 	ndoc integer,
 	nentry integer
@@ -73,7 +72,7 @@ CREATE TYPE statinfo AS (
 -- Name: tokenout; Type: TYPE; Schema: public; Owner: -
 --
 
-CREATE TYPE tokenout AS (
+CREATE TYPE public.tokenout AS (
 	tokid integer,
 	token text
 );
@@ -83,7 +82,7 @@ CREATE TYPE tokenout AS (
 -- Name: tokentype; Type: TYPE; Schema: public; Owner: -
 --
 
-CREATE TYPE tokentype AS (
+CREATE TYPE public.tokentype AS (
 	tokid integer,
 	alias text,
 	descr text
@@ -94,7 +93,7 @@ CREATE TYPE tokentype AS (
 -- Name: tsdebug; Type: TYPE; Schema: public; Owner: -
 --
 
-CREATE TYPE tsdebug AS (
+CREATE TYPE public.tsdebug AS (
 	ts_name text,
 	tok_type text,
 	description text,
@@ -108,7 +107,7 @@ CREATE TYPE tsdebug AS (
 -- Name: _get_parser_from_curcfg(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION _get_parser_from_curcfg() RETURNS text
+CREATE FUNCTION public._get_parser_from_curcfg() RETURNS text
     LANGUAGE sql IMMUTABLE STRICT
     AS $$ select prs_name from pg_ts_cfg where oid = show_curcfg() $$;
 
@@ -117,7 +116,7 @@ CREATE FUNCTION _get_parser_from_curcfg() RETURNS text
 -- Name: analysis_aliases_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION analysis_aliases_id_seq_view() RETURNS integer
+CREATE FUNCTION public.analysis_aliases_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from analysis_aliases_id_seq_view$$;
 
@@ -126,7 +125,7 @@ CREATE FUNCTION analysis_aliases_id_seq_view() RETURNS integer
 -- Name: analysis_sloc_sets_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION analysis_sloc_sets_id_seq_view() RETURNS integer
+CREATE FUNCTION public.analysis_sloc_sets_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from analysis_sloc_sets_id_seq_view$$;
 
@@ -135,7 +134,7 @@ CREATE FUNCTION analysis_sloc_sets_id_seq_view() RETURNS integer
 -- Name: check_jobs(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION check_jobs(integer) RETURNS integer
+CREATE FUNCTION public.check_jobs(integer) RETURNS integer
     LANGUAGE sql
     AS $_$select repository_id as RESULT from jobs where status != 5 AND  repository_id= $1;$_$;
 
@@ -144,7 +143,7 @@ CREATE FUNCTION check_jobs(integer) RETURNS integer
 -- Name: code_location_tarballs_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION code_location_tarballs_id_seq_view() RETURNS integer
+CREATE FUNCTION public.code_location_tarballs_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from code_location_tarballs_id_seq_view$$;
 
@@ -153,7 +152,7 @@ CREATE FUNCTION code_location_tarballs_id_seq_view() RETURNS integer
 -- Name: code_sets_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION code_sets_id_seq_view() RETURNS integer
+CREATE FUNCTION public.code_sets_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from code_sets_id_seq_view$$;
 
@@ -162,7 +161,7 @@ CREATE FUNCTION code_sets_id_seq_view() RETURNS integer
 -- Name: commit_flags_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION commit_flags_id_seq_view() RETURNS integer
+CREATE FUNCTION public.commit_flags_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from commit_flags_id_seq_view$$;
 
@@ -171,7 +170,7 @@ CREATE FUNCTION commit_flags_id_seq_view() RETURNS integer
 -- Name: commits_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION commits_id_seq_view() RETURNS integer
+CREATE FUNCTION public.commits_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from commits_id_seq_view$$;
 
@@ -180,7 +179,7 @@ CREATE FUNCTION commits_id_seq_view() RETURNS integer
 -- Name: diffs_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION diffs_id_seq_view() RETURNS integer
+CREATE FUNCTION public.diffs_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from diffs_id_seq_view$$;
 
@@ -189,16 +188,25 @@ CREATE FUNCTION diffs_id_seq_view() RETURNS integer
 -- Name: email_addresses_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION email_addresses_id_seq_view() RETURNS integer
+CREATE FUNCTION public.email_addresses_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from email_addresses_id_seq_view$$;
+
+
+--
+-- Name: failure_groups_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.failure_groups_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from failure_groups_id_seq_view$$;
 
 
 --
 -- Name: fisbot_events_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION fisbot_events_id_seq_view() RETURNS integer
+CREATE FUNCTION public.fisbot_events_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from fisbot_events_id_seq_view$$;
 
@@ -207,16 +215,25 @@ CREATE FUNCTION fisbot_events_id_seq_view() RETURNS integer
 -- Name: fyles_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION fyles_id_seq_view() RETURNS integer
+CREATE FUNCTION public.fyles_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from fyles_id_seq_view$$;
+
+
+--
+-- Name: jobs_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.jobs_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from jobs_id_seq_view$$;
 
 
 --
 -- Name: load_averages_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION load_averages_id_seq_view() RETURNS integer
+CREATE FUNCTION public.load_averages_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from load_averages_id_seq_view$$;
 
@@ -225,7 +242,7 @@ CREATE FUNCTION load_averages_id_seq_view() RETURNS integer
 -- Name: slave_logs_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION slave_logs_id_seq_view() RETURNS integer
+CREATE FUNCTION public.slave_logs_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from slave_logs_id_seq_view$$;
 
@@ -234,7 +251,7 @@ CREATE FUNCTION slave_logs_id_seq_view() RETURNS integer
 -- Name: slave_permissions_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION slave_permissions_id_seq_view() RETURNS integer
+CREATE FUNCTION public.slave_permissions_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from slave_permissions_id_seq_view$$;
 
@@ -243,7 +260,7 @@ CREATE FUNCTION slave_permissions_id_seq_view() RETURNS integer
 -- Name: sloc_metrics_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION sloc_metrics_id_seq_view() RETURNS integer
+CREATE FUNCTION public.sloc_metrics_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from sloc_metrics_id_seq_view$$;
 
@@ -252,7 +269,7 @@ CREATE FUNCTION sloc_metrics_id_seq_view() RETURNS integer
 -- Name: sloc_sets_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION sloc_sets_id_seq_view() RETURNS integer
+CREATE FUNCTION public.sloc_sets_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from sloc_sets_id_seq_view$$;
 
@@ -261,10 +278,10 @@ CREATE FUNCTION sloc_sets_id_seq_view() RETURNS integer
 -- Name: ts_debug(text); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION ts_debug(text) RETURNS SETOF tsdebug
+CREATE FUNCTION public.ts_debug(text) RETURNS SETOF public.tsdebug
     LANGUAGE sql STRICT
     AS $_$
-select
+select 
         m.ts_name,
         t.alias as tok_type,
         t.descr as description,
@@ -278,9 +295,9 @@ from
         pg_ts_cfg as c
 where
         t.tokid=p.tokid and
-        t.alias = m.tok_alias and
-        m.ts_name=c.ts_name and
-        c.oid=show_curcfg()
+        t.alias = m.tok_alias and 
+        m.ts_name=c.ts_name and 
+        c.oid=show_curcfg() 
 $_$;
 
 
@@ -288,7 +305,7 @@ $_$;
 -- Name: <; Type: OPERATOR; Schema: public; Owner: -
 --
 
-CREATE OPERATOR < (
+CREATE OPERATOR public.< (
     PROCEDURE = tsvector_lt,
     LEFTARG = tsvector,
     RIGHTARG = tsvector,
@@ -303,7 +320,7 @@ CREATE OPERATOR < (
 -- Name: <=; Type: OPERATOR; Schema: public; Owner: -
 --
 
-CREATE OPERATOR <= (
+CREATE OPERATOR public.<= (
     PROCEDURE = tsvector_le,
     LEFTARG = tsvector,
     RIGHTARG = tsvector,
@@ -318,7 +335,7 @@ CREATE OPERATOR <= (
 -- Name: <>; Type: OPERATOR; Schema: public; Owner: -
 --
 
-CREATE OPERATOR <> (
+CREATE OPERATOR public.<> (
     PROCEDURE = tsvector_ne,
     LEFTARG = tsvector,
     RIGHTARG = tsvector,
@@ -333,12 +350,12 @@ CREATE OPERATOR <> (
 -- Name: =; Type: OPERATOR; Schema: public; Owner: -
 --
 
-CREATE OPERATOR = (
+CREATE OPERATOR public.= (
     PROCEDURE = tsvector_eq,
     LEFTARG = tsvector,
     RIGHTARG = tsvector,
     COMMUTATOR = OPERATOR(pg_catalog.=),
-    NEGATOR = <>,
+    NEGATOR = OPERATOR(public.<>),
     MERGES,
     RESTRICT = eqsel,
     JOIN = eqjoinsel
@@ -349,12 +366,12 @@ CREATE OPERATOR = (
 -- Name: >; Type: OPERATOR; Schema: public; Owner: -
 --
 
-CREATE OPERATOR > (
+CREATE OPERATOR public.> (
     PROCEDURE = tsvector_gt,
     LEFTARG = tsvector,
     RIGHTARG = tsvector,
-    COMMUTATOR = <,
-    NEGATOR = <=,
+    COMMUTATOR = OPERATOR(public.<),
+    NEGATOR = OPERATOR(public.<=),
     RESTRICT = contsel,
     JOIN = contjoinsel
 );
@@ -364,12 +381,12 @@ CREATE OPERATOR > (
 -- Name: >=; Type: OPERATOR; Schema: public; Owner: -
 --
 
-CREATE OPERATOR >= (
+CREATE OPERATOR public.>= (
     PROCEDURE = tsvector_ge,
     LEFTARG = tsvector,
     RIGHTARG = tsvector,
-    COMMUTATOR = <=,
-    NEGATOR = <,
+    COMMUTATOR = OPERATOR(public.<=),
+    NEGATOR = OPERATOR(public.<),
     RESTRICT = contsel,
     JOIN = contjoinsel
 );
@@ -379,64 +396,64 @@ CREATE OPERATOR >= (
 -- Name: default; Type: TEXT SEARCH CONFIGURATION; Schema: public; Owner: -
 --
 
-CREATE TEXT SEARCH CONFIGURATION "default" (
+CREATE TEXT SEARCH CONFIGURATION public."default" (
     PARSER = pg_catalog."default" );
 
-ALTER TEXT SEARCH CONFIGURATION "default"
+ALTER TEXT SEARCH CONFIGURATION public."default"
     ADD MAPPING FOR asciiword WITH english_stem;
 
-ALTER TEXT SEARCH CONFIGURATION "default"
+ALTER TEXT SEARCH CONFIGURATION public."default"
     ADD MAPPING FOR word WITH english_stem;
 
-ALTER TEXT SEARCH CONFIGURATION "default"
+ALTER TEXT SEARCH CONFIGURATION public."default"
     ADD MAPPING FOR numword WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION "default"
+ALTER TEXT SEARCH CONFIGURATION public."default"
     ADD MAPPING FOR email WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION "default"
+ALTER TEXT SEARCH CONFIGURATION public."default"
     ADD MAPPING FOR url WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION "default"
+ALTER TEXT SEARCH CONFIGURATION public."default"
     ADD MAPPING FOR host WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION "default"
+ALTER TEXT SEARCH CONFIGURATION public."default"
     ADD MAPPING FOR sfloat WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION "default"
+ALTER TEXT SEARCH CONFIGURATION public."default"
     ADD MAPPING FOR version WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION "default"
+ALTER TEXT SEARCH CONFIGURATION public."default"
     ADD MAPPING FOR hword_numpart WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION "default"
+ALTER TEXT SEARCH CONFIGURATION public."default"
     ADD MAPPING FOR hword_part WITH english_stem;
 
-ALTER TEXT SEARCH CONFIGURATION "default"
+ALTER TEXT SEARCH CONFIGURATION public."default"
     ADD MAPPING FOR hword_asciipart WITH english_stem;
 
-ALTER TEXT SEARCH CONFIGURATION "default"
+ALTER TEXT SEARCH CONFIGURATION public."default"
     ADD MAPPING FOR numhword WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION "default"
+ALTER TEXT SEARCH CONFIGURATION public."default"
     ADD MAPPING FOR asciihword WITH english_stem;
 
-ALTER TEXT SEARCH CONFIGURATION "default"
+ALTER TEXT SEARCH CONFIGURATION public."default"
     ADD MAPPING FOR hword WITH english_stem;
 
-ALTER TEXT SEARCH CONFIGURATION "default"
+ALTER TEXT SEARCH CONFIGURATION public."default"
     ADD MAPPING FOR url_path WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION "default"
+ALTER TEXT SEARCH CONFIGURATION public."default"
     ADD MAPPING FOR file WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION "default"
+ALTER TEXT SEARCH CONFIGURATION public."default"
     ADD MAPPING FOR "float" WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION "default"
+ALTER TEXT SEARCH CONFIGURATION public."default"
     ADD MAPPING FOR "int" WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION "default"
+ALTER TEXT SEARCH CONFIGURATION public."default"
     ADD MAPPING FOR uint WITH simple;
 
 
@@ -444,64 +461,64 @@ ALTER TEXT SEARCH CONFIGURATION "default"
 -- Name: pg; Type: TEXT SEARCH CONFIGURATION; Schema: public; Owner: -
 --
 
-CREATE TEXT SEARCH CONFIGURATION pg (
+CREATE TEXT SEARCH CONFIGURATION public.pg (
     PARSER = pg_catalog."default" );
 
-ALTER TEXT SEARCH CONFIGURATION pg
+ALTER TEXT SEARCH CONFIGURATION public.pg
     ADD MAPPING FOR asciiword WITH english_stem;
 
-ALTER TEXT SEARCH CONFIGURATION pg
+ALTER TEXT SEARCH CONFIGURATION public.pg
     ADD MAPPING FOR word WITH english_stem;
 
-ALTER TEXT SEARCH CONFIGURATION pg
+ALTER TEXT SEARCH CONFIGURATION public.pg
     ADD MAPPING FOR numword WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION pg
+ALTER TEXT SEARCH CONFIGURATION public.pg
     ADD MAPPING FOR email WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION pg
+ALTER TEXT SEARCH CONFIGURATION public.pg
     ADD MAPPING FOR url WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION pg
+ALTER TEXT SEARCH CONFIGURATION public.pg
     ADD MAPPING FOR host WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION pg
+ALTER TEXT SEARCH CONFIGURATION public.pg
     ADD MAPPING FOR sfloat WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION pg
+ALTER TEXT SEARCH CONFIGURATION public.pg
     ADD MAPPING FOR version WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION pg
+ALTER TEXT SEARCH CONFIGURATION public.pg
     ADD MAPPING FOR hword_numpart WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION pg
+ALTER TEXT SEARCH CONFIGURATION public.pg
     ADD MAPPING FOR hword_part WITH english_stem;
 
-ALTER TEXT SEARCH CONFIGURATION pg
+ALTER TEXT SEARCH CONFIGURATION public.pg
     ADD MAPPING FOR hword_asciipart WITH english_stem;
 
-ALTER TEXT SEARCH CONFIGURATION pg
+ALTER TEXT SEARCH CONFIGURATION public.pg
     ADD MAPPING FOR numhword WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION pg
+ALTER TEXT SEARCH CONFIGURATION public.pg
     ADD MAPPING FOR asciihword WITH english_stem;
 
-ALTER TEXT SEARCH CONFIGURATION pg
+ALTER TEXT SEARCH CONFIGURATION public.pg
     ADD MAPPING FOR hword WITH english_stem;
 
-ALTER TEXT SEARCH CONFIGURATION pg
+ALTER TEXT SEARCH CONFIGURATION public.pg
     ADD MAPPING FOR url_path WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION pg
+ALTER TEXT SEARCH CONFIGURATION public.pg
     ADD MAPPING FOR file WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION pg
+ALTER TEXT SEARCH CONFIGURATION public.pg
     ADD MAPPING FOR "float" WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION pg
+ALTER TEXT SEARCH CONFIGURATION public.pg
     ADD MAPPING FOR "int" WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION pg
+ALTER TEXT SEARCH CONFIGURATION public.pg
     ADD MAPPING FOR uint WITH simple;
 
 
@@ -534,7 +551,7 @@ SET default_with_oids = false;
 -- Name: account_reports; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE account_reports (
+CREATE TABLE public.account_reports (
     id integer NOT NULL,
     account_id integer NOT NULL,
     report_id integer NOT NULL
@@ -545,7 +562,7 @@ CREATE TABLE account_reports (
 -- Name: account_reports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE account_reports_id_seq
+CREATE SEQUENCE public.account_reports_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -557,22 +574,22 @@ CREATE SEQUENCE account_reports_id_seq
 -- Name: account_reports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE account_reports_id_seq OWNED BY account_reports.id;
+ALTER SEQUENCE public.account_reports_id_seq OWNED BY public.account_reports.id;
 
 
 --
 -- Name: account_reports_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW account_reports_id_seq_view AS
- SELECT (nextval('account_reports_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.account_reports_id_seq_view AS
+ SELECT (nextval('public.account_reports_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: accounts; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE accounts (
+CREATE TABLE public.accounts (
     id integer NOT NULL,
     login text NOT NULL,
     email text NOT NULL,
@@ -619,7 +636,7 @@ CREATE TABLE accounts (
 -- Name: accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE accounts_id_seq
+CREATE SEQUENCE public.accounts_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -631,22 +648,22 @@ CREATE SEQUENCE accounts_id_seq
 -- Name: accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE accounts_id_seq OWNED BY accounts.id;
+ALTER SEQUENCE public.accounts_id_seq OWNED BY public.accounts.id;
 
 
 --
 -- Name: accounts_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW accounts_id_seq_view AS
- SELECT (nextval('accounts_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.accounts_id_seq_view AS
+ SELECT (nextval('public.accounts_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: actions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE actions (
+CREATE TABLE public.actions (
     id integer NOT NULL,
     account_id integer,
     created_at timestamp without time zone,
@@ -661,7 +678,7 @@ CREATE TABLE actions (
 -- Name: actions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE actions_id_seq
+CREATE SEQUENCE public.actions_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -673,22 +690,22 @@ CREATE SEQUENCE actions_id_seq
 -- Name: actions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE actions_id_seq OWNED BY actions.id;
+ALTER SEQUENCE public.actions_id_seq OWNED BY public.actions.id;
 
 
 --
 -- Name: actions_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW actions_id_seq_view AS
- SELECT (nextval('actions_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.actions_id_seq_view AS
+ SELECT (nextval('public.actions_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: activity_facts; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE activity_facts (
+CREATE TABLE public.activity_facts (
     month date,
     language_id integer,
     code_added integer DEFAULT 0,
@@ -709,7 +726,7 @@ CREATE TABLE activity_facts (
 -- Name: activity_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE activity_facts_id_seq
+CREATE SEQUENCE public.activity_facts_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -721,22 +738,22 @@ CREATE SEQUENCE activity_facts_id_seq
 -- Name: activity_facts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE activity_facts_id_seq OWNED BY activity_facts.id;
+ALTER SEQUENCE public.activity_facts_id_seq OWNED BY public.activity_facts.id;
 
 
 --
 -- Name: activity_facts_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW activity_facts_id_seq_view AS
- SELECT (nextval('activity_facts_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.activity_facts_id_seq_view AS
+ SELECT (nextval('public.activity_facts_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: aliases; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE aliases (
+CREATE TABLE public.aliases (
     id integer NOT NULL,
     project_id integer NOT NULL,
     commit_name_id integer NOT NULL,
@@ -750,7 +767,7 @@ CREATE TABLE aliases (
 -- Name: aliases_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE aliases_id_seq
+CREATE SEQUENCE public.aliases_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -762,22 +779,22 @@ CREATE SEQUENCE aliases_id_seq
 -- Name: aliases_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE aliases_id_seq OWNED BY aliases.id;
+ALTER SEQUENCE public.aliases_id_seq OWNED BY public.aliases.id;
 
 
 --
 -- Name: aliases_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW aliases_id_seq_view AS
- SELECT (nextval('aliases_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.aliases_id_seq_view AS
+ SELECT (nextval('public.aliases_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: all_months; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE all_months (
+CREATE TABLE public.all_months (
     month timestamp without time zone
 );
 
@@ -786,7 +803,7 @@ CREATE TABLE all_months (
 -- Name: analyses; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE analyses (
+CREATE TABLE public.analyses (
     id integer NOT NULL,
     project_id integer NOT NULL,
     as_of timestamp without time zone,
@@ -814,7 +831,7 @@ CREATE TABLE analyses (
 -- Name: analyses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE analyses_id_seq
+CREATE SEQUENCE public.analyses_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -826,23 +843,23 @@ CREATE SEQUENCE analyses_id_seq
 -- Name: analyses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE analyses_id_seq OWNED BY analyses.id;
+ALTER SEQUENCE public.analyses_id_seq OWNED BY public.analyses.id;
 
 
 --
 -- Name: analyses_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW analyses_id_seq_view AS
- SELECT (nextval('analyses_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.analyses_id_seq_view AS
+ SELECT (nextval('public.analyses_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: analysis_aliases; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE analysis_aliases (
-    id integer DEFAULT analysis_aliases_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.analysis_aliases (
+    id integer DEFAULT public.analysis_aliases_id_seq_view() NOT NULL,
     analysis_id integer NOT NULL,
     commit_name_id integer NOT NULL,
     preferred_name_id integer NOT NULL
@@ -852,16 +869,16 @@ OPTIONS (
     schema_name 'public',
     table_name 'analysis_aliases'
 );
-ALTER FOREIGN TABLE analysis_aliases ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.analysis_aliases ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE analysis_aliases ALTER COLUMN analysis_id OPTIONS (
+ALTER FOREIGN TABLE public.analysis_aliases ALTER COLUMN analysis_id OPTIONS (
     column_name 'analysis_id'
 );
-ALTER FOREIGN TABLE analysis_aliases ALTER COLUMN commit_name_id OPTIONS (
+ALTER FOREIGN TABLE public.analysis_aliases ALTER COLUMN commit_name_id OPTIONS (
     column_name 'commit_name_id'
 );
-ALTER FOREIGN TABLE analysis_aliases ALTER COLUMN preferred_name_id OPTIONS (
+ALTER FOREIGN TABLE public.analysis_aliases ALTER COLUMN preferred_name_id OPTIONS (
     column_name 'preferred_name_id'
 );
 
@@ -870,7 +887,7 @@ ALTER FOREIGN TABLE analysis_aliases ALTER COLUMN preferred_name_id OPTIONS (
 -- Name: analysis_aliases_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE analysis_aliases_id_seq
+CREATE SEQUENCE public.analysis_aliases_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -882,7 +899,7 @@ CREATE SEQUENCE analysis_aliases_id_seq
 -- Name: analysis_aliases_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE analysis_aliases_id_seq_view (
+CREATE FOREIGN TABLE public.analysis_aliases_id_seq_view (
     id integer
 )
 SERVER fis
@@ -890,7 +907,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'analysis_aliases_id_seq_view'
 );
-ALTER FOREIGN TABLE analysis_aliases_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.analysis_aliases_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -899,8 +916,8 @@ ALTER FOREIGN TABLE analysis_aliases_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: analysis_sloc_sets; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE analysis_sloc_sets (
-    id integer DEFAULT analysis_sloc_sets_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.analysis_sloc_sets (
+    id integer DEFAULT public.analysis_sloc_sets_id_seq_view() NOT NULL,
     analysis_id integer NOT NULL,
     sloc_set_id integer NOT NULL,
     as_of integer,
@@ -913,25 +930,25 @@ OPTIONS (
     schema_name 'public',
     table_name 'analysis_sloc_sets'
 );
-ALTER FOREIGN TABLE analysis_sloc_sets ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.analysis_sloc_sets ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE analysis_sloc_sets ALTER COLUMN analysis_id OPTIONS (
+ALTER FOREIGN TABLE public.analysis_sloc_sets ALTER COLUMN analysis_id OPTIONS (
     column_name 'analysis_id'
 );
-ALTER FOREIGN TABLE analysis_sloc_sets ALTER COLUMN sloc_set_id OPTIONS (
+ALTER FOREIGN TABLE public.analysis_sloc_sets ALTER COLUMN sloc_set_id OPTIONS (
     column_name 'sloc_set_id'
 );
-ALTER FOREIGN TABLE analysis_sloc_sets ALTER COLUMN as_of OPTIONS (
+ALTER FOREIGN TABLE public.analysis_sloc_sets ALTER COLUMN as_of OPTIONS (
     column_name 'as_of'
 );
-ALTER FOREIGN TABLE analysis_sloc_sets ALTER COLUMN code_set_time OPTIONS (
+ALTER FOREIGN TABLE public.analysis_sloc_sets ALTER COLUMN code_set_time OPTIONS (
     column_name 'code_set_time'
 );
-ALTER FOREIGN TABLE analysis_sloc_sets ALTER COLUMN ignore OPTIONS (
+ALTER FOREIGN TABLE public.analysis_sloc_sets ALTER COLUMN ignore OPTIONS (
     column_name 'ignore'
 );
-ALTER FOREIGN TABLE analysis_sloc_sets ALTER COLUMN ignored_fyle_count OPTIONS (
+ALTER FOREIGN TABLE public.analysis_sloc_sets ALTER COLUMN ignored_fyle_count OPTIONS (
     column_name 'ignored_fyle_count'
 );
 
@@ -940,7 +957,7 @@ ALTER FOREIGN TABLE analysis_sloc_sets ALTER COLUMN ignored_fyle_count OPTIONS (
 -- Name: analysis_sloc_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE analysis_sloc_sets_id_seq
+CREATE SEQUENCE public.analysis_sloc_sets_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -952,7 +969,7 @@ CREATE SEQUENCE analysis_sloc_sets_id_seq
 -- Name: analysis_sloc_sets_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE analysis_sloc_sets_id_seq_view (
+CREATE FOREIGN TABLE public.analysis_sloc_sets_id_seq_view (
     id integer
 )
 SERVER fis
@@ -960,7 +977,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'analysis_sloc_sets_id_seq_view'
 );
-ALTER FOREIGN TABLE analysis_sloc_sets_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.analysis_sloc_sets_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -969,7 +986,7 @@ ALTER FOREIGN TABLE analysis_sloc_sets_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: analysis_summaries; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE analysis_summaries (
+CREATE TABLE public.analysis_summaries (
     id integer NOT NULL,
     analysis_id integer NOT NULL,
     files_modified integer,
@@ -992,7 +1009,7 @@ CREATE TABLE analysis_summaries (
 -- Name: analysis_summaries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE analysis_summaries_id_seq
+CREATE SEQUENCE public.analysis_summaries_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1004,22 +1021,22 @@ CREATE SEQUENCE analysis_summaries_id_seq
 -- Name: analysis_summaries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE analysis_summaries_id_seq OWNED BY analysis_summaries.id;
+ALTER SEQUENCE public.analysis_summaries_id_seq OWNED BY public.analysis_summaries.id;
 
 
 --
 -- Name: analysis_summaries_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW analysis_summaries_id_seq_view AS
- SELECT (nextval('analysis_summaries_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.analysis_summaries_id_seq_view AS
+ SELECT (nextval('public.analysis_summaries_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: api_keys; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE api_keys (
+CREATE TABLE public.api_keys (
     id integer NOT NULL,
     created_at timestamp without time zone,
     account_id integer NOT NULL,
@@ -1044,7 +1061,7 @@ CREATE TABLE api_keys (
 -- Name: api_keys_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE api_keys_id_seq
+CREATE SEQUENCE public.api_keys_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1056,22 +1073,22 @@ CREATE SEQUENCE api_keys_id_seq
 -- Name: api_keys_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE api_keys_id_seq OWNED BY api_keys.id;
+ALTER SEQUENCE public.api_keys_id_seq OWNED BY public.api_keys.id;
 
 
 --
 -- Name: api_keys_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW api_keys_id_seq_view AS
- SELECT (nextval('api_keys_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.api_keys_id_seq_view AS
+ SELECT (nextval('public.api_keys_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: attachments; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE attachments (
+CREATE TABLE public.attachments (
     id integer NOT NULL,
     parent_id integer,
     type text NOT NULL,
@@ -1089,7 +1106,7 @@ CREATE TABLE attachments (
 -- Name: attachments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE attachments_id_seq
+CREATE SEQUENCE public.attachments_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1101,22 +1118,22 @@ CREATE SEQUENCE attachments_id_seq
 -- Name: attachments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE attachments_id_seq OWNED BY attachments.id;
+ALTER SEQUENCE public.attachments_id_seq OWNED BY public.attachments.id;
 
 
 --
 -- Name: attachments_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW attachments_id_seq_view AS
- SELECT (nextval('attachments_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.attachments_id_seq_view AS
+ SELECT (nextval('public.attachments_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: authorizations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE authorizations (
+CREATE TABLE public.authorizations (
     id integer NOT NULL,
     account_id integer,
     type text,
@@ -1134,7 +1151,7 @@ CREATE TABLE authorizations (
 -- Name: authorizations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE authorizations_id_seq
+CREATE SEQUENCE public.authorizations_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1146,21 +1163,22 @@ CREATE SEQUENCE authorizations_id_seq
 -- Name: authorizations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE authorizations_id_seq OWNED BY authorizations.id;
+ALTER SEQUENCE public.authorizations_id_seq OWNED BY public.authorizations.id;
 
 
 --
 -- Name: authorizations_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW authorizations_id_seq_view AS
- SELECT (nextval('authorizations_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.authorizations_id_seq_view AS
+ SELECT (nextval('public.authorizations_id_seq'::regclass))::integer AS id;
+
 
 --
 -- Name: broken_links; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE broken_links (
+CREATE TABLE public.broken_links (
     id integer NOT NULL,
     link_id integer,
     created_at timestamp without time zone,
@@ -1168,11 +1186,12 @@ CREATE TABLE broken_links (
     error text
 );
 
+
 --
 -- Name: broken_links_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE broken_links_id_seq
+CREATE SEQUENCE public.broken_links_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1184,13 +1203,14 @@ CREATE SEQUENCE broken_links_id_seq
 -- Name: broken_links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE broken_links_id_seq OWNED BY broken_links.id;
+ALTER SEQUENCE public.broken_links_id_seq OWNED BY public.broken_links.id;
+
 
 --
 -- Name: positions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE positions (
+CREATE TABLE public.positions (
     id integer NOT NULL,
     project_id integer,
     name_id integer,
@@ -1211,7 +1231,7 @@ CREATE TABLE positions (
 -- Name: claims_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE claims_id_seq
+CREATE SEQUENCE public.claims_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1223,22 +1243,22 @@ CREATE SEQUENCE claims_id_seq
 -- Name: claims_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE claims_id_seq OWNED BY positions.id;
+ALTER SEQUENCE public.claims_id_seq OWNED BY public.positions.id;
 
 
 --
 -- Name: claims_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW claims_id_seq_view AS
- SELECT (nextval('claims_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.claims_id_seq_view AS
+ SELECT (nextval('public.claims_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: clumps; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE clumps (
+CREATE TABLE public.clumps (
     id integer NOT NULL,
     slave_id integer,
     code_set_id integer,
@@ -1252,7 +1272,7 @@ CREATE TABLE clumps (
 -- Name: clumps_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE clumps_id_seq
+CREATE SEQUENCE public.clumps_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1264,23 +1284,23 @@ CREATE SEQUENCE clumps_id_seq
 -- Name: clumps_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE clumps_id_seq OWNED BY clumps.id;
+ALTER SEQUENCE public.clumps_id_seq OWNED BY public.clumps.id;
 
 
 --
 -- Name: clumps_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW clumps_id_seq_view AS
- SELECT (nextval('clumps_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.clumps_id_seq_view AS
+ SELECT (nextval('public.clumps_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: code_location_tarballs; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE code_location_tarballs (
-    id integer DEFAULT code_location_tarballs_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.code_location_tarballs (
+    id integer DEFAULT public.code_location_tarballs_id_seq_view() NOT NULL,
     code_location_id integer,
     reference text,
     filepath text,
@@ -1293,25 +1313,25 @@ OPTIONS (
     schema_name 'public',
     table_name 'code_location_tarballs'
 );
-ALTER FOREIGN TABLE code_location_tarballs ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.code_location_tarballs ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE code_location_tarballs ALTER COLUMN code_location_id OPTIONS (
+ALTER FOREIGN TABLE public.code_location_tarballs ALTER COLUMN code_location_id OPTIONS (
     column_name 'code_location_id'
 );
-ALTER FOREIGN TABLE code_location_tarballs ALTER COLUMN reference OPTIONS (
+ALTER FOREIGN TABLE public.code_location_tarballs ALTER COLUMN reference OPTIONS (
     column_name 'reference'
 );
-ALTER FOREIGN TABLE code_location_tarballs ALTER COLUMN filepath OPTIONS (
+ALTER FOREIGN TABLE public.code_location_tarballs ALTER COLUMN filepath OPTIONS (
     column_name 'filepath'
 );
-ALTER FOREIGN TABLE code_location_tarballs ALTER COLUMN status OPTIONS (
+ALTER FOREIGN TABLE public.code_location_tarballs ALTER COLUMN status OPTIONS (
     column_name 'status'
 );
-ALTER FOREIGN TABLE code_location_tarballs ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.code_location_tarballs ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE code_location_tarballs ALTER COLUMN type OPTIONS (
+ALTER FOREIGN TABLE public.code_location_tarballs ALTER COLUMN type OPTIONS (
     column_name 'type'
 );
 
@@ -1320,7 +1340,7 @@ ALTER FOREIGN TABLE code_location_tarballs ALTER COLUMN type OPTIONS (
 -- Name: code_location_tarballs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE code_location_tarballs_id_seq
+CREATE SEQUENCE public.code_location_tarballs_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1332,7 +1352,7 @@ CREATE SEQUENCE code_location_tarballs_id_seq
 -- Name: code_location_tarballs_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE code_location_tarballs_id_seq_view (
+CREATE FOREIGN TABLE public.code_location_tarballs_id_seq_view (
     id integer
 )
 SERVER fis
@@ -1340,7 +1360,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'code_location_tarballs_id_seq_view'
 );
-ALTER FOREIGN TABLE code_location_tarballs_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.code_location_tarballs_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -1349,7 +1369,7 @@ ALTER FOREIGN TABLE code_location_tarballs_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: code_locations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE code_locations (
+CREATE TABLE public.code_locations (
     id integer NOT NULL,
     repository_id integer,
     module_branch_name text,
@@ -1367,7 +1387,7 @@ CREATE TABLE code_locations (
 -- Name: code_locations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE code_locations_id_seq
+CREATE SEQUENCE public.code_locations_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1379,23 +1399,23 @@ CREATE SEQUENCE code_locations_id_seq
 -- Name: code_locations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE code_locations_id_seq OWNED BY code_locations.id;
+ALTER SEQUENCE public.code_locations_id_seq OWNED BY public.code_locations.id;
 
 
 --
 -- Name: code_locations_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW code_locations_id_seq_view AS
- SELECT (nextval('code_locations_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.code_locations_id_seq_view AS
+ SELECT (nextval('public.code_locations_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: code_sets; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE code_sets (
-    id integer DEFAULT code_sets_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.code_sets (
+    id integer DEFAULT public.code_sets_id_seq_view() NOT NULL,
     updated_on timestamp without time zone,
     best_sloc_set_id integer,
     as_of integer,
@@ -1409,28 +1429,28 @@ OPTIONS (
     schema_name 'public',
     table_name 'code_sets'
 );
-ALTER FOREIGN TABLE code_sets ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.code_sets ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE code_sets ALTER COLUMN updated_on OPTIONS (
+ALTER FOREIGN TABLE public.code_sets ALTER COLUMN updated_on OPTIONS (
     column_name 'updated_on'
 );
-ALTER FOREIGN TABLE code_sets ALTER COLUMN best_sloc_set_id OPTIONS (
+ALTER FOREIGN TABLE public.code_sets ALTER COLUMN best_sloc_set_id OPTIONS (
     column_name 'best_sloc_set_id'
 );
-ALTER FOREIGN TABLE code_sets ALTER COLUMN as_of OPTIONS (
+ALTER FOREIGN TABLE public.code_sets ALTER COLUMN as_of OPTIONS (
     column_name 'as_of'
 );
-ALTER FOREIGN TABLE code_sets ALTER COLUMN logged_at OPTIONS (
+ALTER FOREIGN TABLE public.code_sets ALTER COLUMN logged_at OPTIONS (
     column_name 'logged_at'
 );
-ALTER FOREIGN TABLE code_sets ALTER COLUMN clump_count OPTIONS (
+ALTER FOREIGN TABLE public.code_sets ALTER COLUMN clump_count OPTIONS (
     column_name 'clump_count'
 );
-ALTER FOREIGN TABLE code_sets ALTER COLUMN fetched_at OPTIONS (
+ALTER FOREIGN TABLE public.code_sets ALTER COLUMN fetched_at OPTIONS (
     column_name 'fetched_at'
 );
-ALTER FOREIGN TABLE code_sets ALTER COLUMN code_location_id OPTIONS (
+ALTER FOREIGN TABLE public.code_sets ALTER COLUMN code_location_id OPTIONS (
     column_name 'code_location_id'
 );
 
@@ -1439,7 +1459,7 @@ ALTER FOREIGN TABLE code_sets ALTER COLUMN code_location_id OPTIONS (
 -- Name: code_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE code_sets_id_seq
+CREATE SEQUENCE public.code_sets_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1451,7 +1471,7 @@ CREATE SEQUENCE code_sets_id_seq
 -- Name: code_sets_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE code_sets_id_seq_view (
+CREATE FOREIGN TABLE public.code_sets_id_seq_view (
     id integer
 )
 SERVER fis
@@ -1459,7 +1479,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'code_sets_id_seq_view'
 );
-ALTER FOREIGN TABLE code_sets_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.code_sets_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -1468,7 +1488,7 @@ ALTER FOREIGN TABLE code_sets_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: commit_contributors; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE commit_contributors (
+CREATE FOREIGN TABLE public.commit_contributors (
     id integer,
     code_set_id integer,
     name_id integer,
@@ -1484,31 +1504,31 @@ OPTIONS (
     schema_name 'public',
     table_name 'commit_contributors'
 );
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.commit_contributors ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN code_set_id OPTIONS (
+ALTER FOREIGN TABLE public.commit_contributors ALTER COLUMN code_set_id OPTIONS (
     column_name 'code_set_id'
 );
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN name_id OPTIONS (
+ALTER FOREIGN TABLE public.commit_contributors ALTER COLUMN name_id OPTIONS (
     column_name 'name_id'
 );
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN analysis_id OPTIONS (
+ALTER FOREIGN TABLE public.commit_contributors ALTER COLUMN analysis_id OPTIONS (
     column_name 'analysis_id'
 );
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN project_id OPTIONS (
+ALTER FOREIGN TABLE public.commit_contributors ALTER COLUMN project_id OPTIONS (
     column_name 'project_id'
 );
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN position_id OPTIONS (
+ALTER FOREIGN TABLE public.commit_contributors ALTER COLUMN position_id OPTIONS (
     column_name 'position_id'
 );
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN account_id OPTIONS (
+ALTER FOREIGN TABLE public.commit_contributors ALTER COLUMN account_id OPTIONS (
     column_name 'account_id'
 );
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN contribution_id OPTIONS (
+ALTER FOREIGN TABLE public.commit_contributors ALTER COLUMN contribution_id OPTIONS (
     column_name 'contribution_id'
 );
-ALTER FOREIGN TABLE commit_contributors ALTER COLUMN person_id OPTIONS (
+ALTER FOREIGN TABLE public.commit_contributors ALTER COLUMN person_id OPTIONS (
     column_name 'person_id'
 );
 
@@ -1517,8 +1537,8 @@ ALTER FOREIGN TABLE commit_contributors ALTER COLUMN person_id OPTIONS (
 -- Name: commit_flags; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE commit_flags (
-    id integer DEFAULT commit_flags_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.commit_flags (
+    id integer DEFAULT public.commit_flags_id_seq_view() NOT NULL,
     sloc_set_id integer NOT NULL,
     commit_id integer NOT NULL,
     "time" timestamp without time zone NOT NULL,
@@ -1530,22 +1550,22 @@ OPTIONS (
     schema_name 'public',
     table_name 'commit_flags'
 );
-ALTER FOREIGN TABLE commit_flags ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.commit_flags ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE commit_flags ALTER COLUMN sloc_set_id OPTIONS (
+ALTER FOREIGN TABLE public.commit_flags ALTER COLUMN sloc_set_id OPTIONS (
     column_name 'sloc_set_id'
 );
-ALTER FOREIGN TABLE commit_flags ALTER COLUMN commit_id OPTIONS (
+ALTER FOREIGN TABLE public.commit_flags ALTER COLUMN commit_id OPTIONS (
     column_name 'commit_id'
 );
-ALTER FOREIGN TABLE commit_flags ALTER COLUMN "time" OPTIONS (
+ALTER FOREIGN TABLE public.commit_flags ALTER COLUMN "time" OPTIONS (
     column_name 'time'
 );
-ALTER FOREIGN TABLE commit_flags ALTER COLUMN type OPTIONS (
+ALTER FOREIGN TABLE public.commit_flags ALTER COLUMN type OPTIONS (
     column_name 'type'
 );
-ALTER FOREIGN TABLE commit_flags ALTER COLUMN data OPTIONS (
+ALTER FOREIGN TABLE public.commit_flags ALTER COLUMN data OPTIONS (
     column_name 'data'
 );
 
@@ -1554,7 +1574,7 @@ ALTER FOREIGN TABLE commit_flags ALTER COLUMN data OPTIONS (
 -- Name: commit_flags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE commit_flags_id_seq
+CREATE SEQUENCE public.commit_flags_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1566,7 +1586,7 @@ CREATE SEQUENCE commit_flags_id_seq
 -- Name: commit_flags_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE commit_flags_id_seq_view (
+CREATE FOREIGN TABLE public.commit_flags_id_seq_view (
     id integer
 )
 SERVER fis
@@ -1574,7 +1594,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'commit_flags_id_seq_view'
 );
-ALTER FOREIGN TABLE commit_flags_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.commit_flags_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -1583,8 +1603,8 @@ ALTER FOREIGN TABLE commit_flags_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: commits; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE commits (
-    id integer DEFAULT commits_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.commits (
+    id integer DEFAULT public.commits_id_seq_view() NOT NULL,
     sha1 text,
     "time" timestamp without time zone NOT NULL,
     comment text,
@@ -1599,31 +1619,31 @@ OPTIONS (
     schema_name 'public',
     table_name 'commits'
 );
-ALTER FOREIGN TABLE commits ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.commits ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE commits ALTER COLUMN sha1 OPTIONS (
+ALTER FOREIGN TABLE public.commits ALTER COLUMN sha1 OPTIONS (
     column_name 'sha1'
 );
-ALTER FOREIGN TABLE commits ALTER COLUMN "time" OPTIONS (
+ALTER FOREIGN TABLE public.commits ALTER COLUMN "time" OPTIONS (
     column_name 'time'
 );
-ALTER FOREIGN TABLE commits ALTER COLUMN comment OPTIONS (
+ALTER FOREIGN TABLE public.commits ALTER COLUMN comment OPTIONS (
     column_name 'comment'
 );
-ALTER FOREIGN TABLE commits ALTER COLUMN code_set_id OPTIONS (
+ALTER FOREIGN TABLE public.commits ALTER COLUMN code_set_id OPTIONS (
     column_name 'code_set_id'
 );
-ALTER FOREIGN TABLE commits ALTER COLUMN name_id OPTIONS (
+ALTER FOREIGN TABLE public.commits ALTER COLUMN name_id OPTIONS (
     column_name 'name_id'
 );
-ALTER FOREIGN TABLE commits ALTER COLUMN "position" OPTIONS (
+ALTER FOREIGN TABLE public.commits ALTER COLUMN "position" OPTIONS (
     column_name 'position'
 );
-ALTER FOREIGN TABLE commits ALTER COLUMN on_trunk OPTIONS (
+ALTER FOREIGN TABLE public.commits ALTER COLUMN on_trunk OPTIONS (
     column_name 'on_trunk'
 );
-ALTER FOREIGN TABLE commits ALTER COLUMN email_address_id OPTIONS (
+ALTER FOREIGN TABLE public.commits ALTER COLUMN email_address_id OPTIONS (
     column_name 'email_address_id'
 );
 
@@ -1632,7 +1652,7 @@ ALTER FOREIGN TABLE commits ALTER COLUMN email_address_id OPTIONS (
 -- Name: commits_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE commits_id_seq
+CREATE SEQUENCE public.commits_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1644,7 +1664,7 @@ CREATE SEQUENCE commits_id_seq
 -- Name: commits_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE commits_id_seq_view (
+CREATE FOREIGN TABLE public.commits_id_seq_view (
     id integer
 )
 SERVER fis
@@ -1652,7 +1672,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'commits_id_seq_view'
 );
-ALTER FOREIGN TABLE commits_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.commits_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -1661,7 +1681,7 @@ ALTER FOREIGN TABLE commits_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: name_facts; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE name_facts (
+CREATE TABLE public.name_facts (
     id integer NOT NULL,
     analysis_id integer,
     name_id integer,
@@ -1688,7 +1708,7 @@ CREATE TABLE name_facts (
 -- Name: people; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE people (
+CREATE TABLE public.people (
     id bigint NOT NULL,
     effective_name text,
     account_id integer,
@@ -1708,7 +1728,7 @@ CREATE TABLE people (
 -- Name: projects; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE projects (
+CREATE TABLE public.projects (
     id integer NOT NULL,
     name text,
     description text,
@@ -1744,13 +1764,13 @@ CREATE TABLE projects (
 -- Name: contributions; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW contributions AS
+CREATE VIEW public.contributions AS
  SELECT people.id,
     people.id AS person_id,
     people.project_id,
     people.name_fact_id,
     NULL::integer AS position_id
-   FROM people
+   FROM public.people
   WHERE (people.project_id IS NOT NULL)
 UNION
  SELECT (((positions.project_id)::bigint << 32) + (positions.account_id)::bigint) AS id,
@@ -1758,17 +1778,17 @@ UNION
     positions.project_id,
     name_facts.id AS name_fact_id,
     positions.id AS position_id
-   FROM (((people
-     JOIN positions ON ((positions.account_id = people.account_id)))
-     LEFT JOIN projects ON ((projects.id = positions.project_id)))
-     LEFT JOIN name_facts ON (((name_facts.analysis_id = projects.best_analysis_id) AND (name_facts.name_id = positions.name_id))));
+   FROM (((public.people
+     JOIN public.positions ON ((positions.account_id = people.account_id)))
+     LEFT JOIN public.projects ON ((projects.id = positions.project_id)))
+     LEFT JOIN public.name_facts ON (((name_facts.analysis_id = projects.best_analysis_id) AND (name_facts.name_id = positions.name_id))));
 
 
 --
 -- Name: contributions2; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW contributions2 AS
+CREATE VIEW public.contributions2 AS
  SELECT
         CASE
             WHEN (pos.id IS NULL) THEN ((((per.project_id)::bigint << 32) + (per.name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint)
@@ -1777,22 +1797,22 @@ CREATE VIEW contributions2 AS
         CASE
             WHEN (pos.id IS NULL) THEN per.name_fact_id
             ELSE ( SELECT name_facts.id
-               FROM name_facts
+               FROM public.name_facts
               WHERE ((name_facts.analysis_id = p.best_analysis_id) AND (name_facts.name_id = pos.name_id)))
         END AS name_fact_id,
     pos.id AS position_id,
     per.id AS person_id,
     COALESCE(pos.project_id, per.project_id) AS project_id
-   FROM ((people per
-     LEFT JOIN positions pos ON ((per.account_id = pos.account_id)))
-     JOIN projects p ON ((p.id = COALESCE(pos.project_id, per.project_id))));
+   FROM ((public.people per
+     LEFT JOIN public.positions pos ON ((per.account_id = pos.account_id)))
+     JOIN public.projects p ON ((p.id = COALESCE(pos.project_id, per.project_id))));
 
 
 --
 -- Name: countries; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE countries (
+CREATE TABLE public.countries (
     country_code text,
     continent_code text,
     name text,
@@ -1804,7 +1824,7 @@ CREATE TABLE countries (
 -- Name: deleted_accounts; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE deleted_accounts (
+CREATE TABLE public.deleted_accounts (
     id integer NOT NULL,
     login text NOT NULL,
     email text NOT NULL,
@@ -1821,7 +1841,7 @@ CREATE TABLE deleted_accounts (
 -- Name: deleted_accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE deleted_accounts_id_seq
+CREATE SEQUENCE public.deleted_accounts_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1833,22 +1853,22 @@ CREATE SEQUENCE deleted_accounts_id_seq
 -- Name: deleted_accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE deleted_accounts_id_seq OWNED BY deleted_accounts.id;
+ALTER SEQUENCE public.deleted_accounts_id_seq OWNED BY public.deleted_accounts.id;
 
 
 --
 -- Name: deleted_accounts_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW deleted_accounts_id_seq_view AS
- SELECT (nextval('deleted_accounts_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.deleted_accounts_id_seq_view AS
+ SELECT (nextval('public.deleted_accounts_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: diff_licenses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE diff_licenses_id_seq
+CREATE SEQUENCE public.diff_licenses_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1860,16 +1880,16 @@ CREATE SEQUENCE diff_licenses_id_seq
 -- Name: diff_licenses_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW diff_licenses_id_seq_view AS
- SELECT (nextval('diff_licenses_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.diff_licenses_id_seq_view AS
+ SELECT (nextval('public.diff_licenses_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: diffs; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE diffs (
-    id bigint DEFAULT diffs_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.diffs (
+    id bigint DEFAULT public.diffs_id_seq_view() NOT NULL,
     sha1 text,
     parent_sha1 text,
     commit_id integer,
@@ -1883,28 +1903,28 @@ OPTIONS (
     schema_name 'public',
     table_name 'diffs'
 );
-ALTER FOREIGN TABLE diffs ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.diffs ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE diffs ALTER COLUMN sha1 OPTIONS (
+ALTER FOREIGN TABLE public.diffs ALTER COLUMN sha1 OPTIONS (
     column_name 'sha1'
 );
-ALTER FOREIGN TABLE diffs ALTER COLUMN parent_sha1 OPTIONS (
+ALTER FOREIGN TABLE public.diffs ALTER COLUMN parent_sha1 OPTIONS (
     column_name 'parent_sha1'
 );
-ALTER FOREIGN TABLE diffs ALTER COLUMN commit_id OPTIONS (
+ALTER FOREIGN TABLE public.diffs ALTER COLUMN commit_id OPTIONS (
     column_name 'commit_id'
 );
-ALTER FOREIGN TABLE diffs ALTER COLUMN fyle_id OPTIONS (
+ALTER FOREIGN TABLE public.diffs ALTER COLUMN fyle_id OPTIONS (
     column_name 'fyle_id'
 );
-ALTER FOREIGN TABLE diffs ALTER COLUMN name OPTIONS (
+ALTER FOREIGN TABLE public.diffs ALTER COLUMN name OPTIONS (
     column_name 'name'
 );
-ALTER FOREIGN TABLE diffs ALTER COLUMN deleted OPTIONS (
+ALTER FOREIGN TABLE public.diffs ALTER COLUMN deleted OPTIONS (
     column_name 'deleted'
 );
-ALTER FOREIGN TABLE diffs ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.diffs ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
 
@@ -1913,7 +1933,7 @@ ALTER FOREIGN TABLE diffs ALTER COLUMN updated_at OPTIONS (
 -- Name: diffs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE diffs_id_seq
+CREATE SEQUENCE public.diffs_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1925,7 +1945,7 @@ CREATE SEQUENCE diffs_id_seq
 -- Name: diffs_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE diffs_id_seq_view (
+CREATE FOREIGN TABLE public.diffs_id_seq_view (
     id integer
 )
 SERVER fis
@@ -1933,7 +1953,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'diffs_id_seq_view'
 );
-ALTER FOREIGN TABLE diffs_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.diffs_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -1942,7 +1962,7 @@ ALTER FOREIGN TABLE diffs_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: duplicates; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE duplicates (
+CREATE TABLE public.duplicates (
     id integer NOT NULL,
     good_project_id integer NOT NULL,
     bad_project_id integer NOT NULL,
@@ -1958,7 +1978,7 @@ CREATE TABLE duplicates (
 -- Name: duplicates_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE duplicates_id_seq
+CREATE SEQUENCE public.duplicates_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1970,22 +1990,22 @@ CREATE SEQUENCE duplicates_id_seq
 -- Name: duplicates_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE duplicates_id_seq OWNED BY duplicates.id;
+ALTER SEQUENCE public.duplicates_id_seq OWNED BY public.duplicates.id;
 
 
 --
 -- Name: duplicates_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW duplicates_id_seq_view AS
- SELECT (nextval('duplicates_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.duplicates_id_seq_view AS
+ SELECT (nextval('public.duplicates_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: edits_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE edits_id_seq
+CREATE SEQUENCE public.edits_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1997,8 +2017,8 @@ CREATE SEQUENCE edits_id_seq
 -- Name: edits; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE edits (
-    id integer DEFAULT nextval('edits_id_seq'::regclass) NOT NULL,
+CREATE TABLE public.edits (
+    id integer DEFAULT nextval('public.edits_id_seq'::regclass) NOT NULL,
     type text,
     target_id integer NOT NULL,
     target_type text NOT NULL,
@@ -2020,7 +2040,7 @@ CREATE TABLE edits (
 -- Name: edits_id_seq1; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE edits_id_seq1
+CREATE SEQUENCE public.edits_id_seq1
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2032,31 +2052,31 @@ CREATE SEQUENCE edits_id_seq1
 -- Name: edits_id_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE edits_id_seq1 OWNED BY edits.id;
+ALTER SEQUENCE public.edits_id_seq1 OWNED BY public.edits.id;
 
 
 --
 -- Name: edits_id_seq1_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW edits_id_seq1_view AS
- SELECT (nextval('edits_id_seq1'::regclass))::integer AS id;
+CREATE VIEW public.edits_id_seq1_view AS
+ SELECT (nextval('public.edits_id_seq1'::regclass))::integer AS id;
 
 
 --
 -- Name: edits_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW edits_id_seq_view AS
- SELECT (nextval('edits_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.edits_id_seq_view AS
+ SELECT (nextval('public.edits_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: email_addresses; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE email_addresses (
-    id integer DEFAULT email_addresses_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.email_addresses (
+    id integer DEFAULT public.email_addresses_id_seq_view() NOT NULL,
     address text NOT NULL
 )
 SERVER fis
@@ -2064,10 +2084,10 @@ OPTIONS (
     schema_name 'public',
     table_name 'email_addresses'
 );
-ALTER FOREIGN TABLE email_addresses ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.email_addresses ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE email_addresses ALTER COLUMN address OPTIONS (
+ALTER FOREIGN TABLE public.email_addresses ALTER COLUMN address OPTIONS (
     column_name 'address'
 );
 
@@ -2076,7 +2096,7 @@ ALTER FOREIGN TABLE email_addresses ALTER COLUMN address OPTIONS (
 -- Name: email_addresses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE email_addresses_id_seq
+CREATE SEQUENCE public.email_addresses_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2088,7 +2108,7 @@ CREATE SEQUENCE email_addresses_id_seq
 -- Name: email_addresses_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE email_addresses_id_seq_view (
+CREATE FOREIGN TABLE public.email_addresses_id_seq_view (
     id integer
 )
 SERVER fis
@@ -2096,7 +2116,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'email_addresses_id_seq_view'
 );
-ALTER FOREIGN TABLE email_addresses_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.email_addresses_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -2105,7 +2125,7 @@ ALTER FOREIGN TABLE email_addresses_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: enlistments; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE enlistments (
+CREATE TABLE public.enlistments (
     id integer NOT NULL,
     project_id integer NOT NULL,
     repository_id integer,
@@ -2121,7 +2141,7 @@ CREATE TABLE enlistments (
 -- Name: enlistments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE enlistments_id_seq
+CREATE SEQUENCE public.enlistments_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2133,22 +2153,22 @@ CREATE SEQUENCE enlistments_id_seq
 -- Name: enlistments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE enlistments_id_seq OWNED BY enlistments.id;
+ALTER SEQUENCE public.enlistments_id_seq OWNED BY public.enlistments.id;
 
 
 --
 -- Name: enlistments_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW enlistments_id_seq_view AS
- SELECT (nextval('enlistments_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.enlistments_id_seq_view AS
+ SELECT (nextval('public.enlistments_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: event_subscription; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE event_subscription (
+CREATE TABLE public.event_subscription (
     id integer NOT NULL,
     subscriber_id integer,
     klass text NOT NULL,
@@ -2163,7 +2183,7 @@ CREATE TABLE event_subscription (
 -- Name: event_subscription_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE event_subscription_id_seq
+CREATE SEQUENCE public.event_subscription_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2175,22 +2195,22 @@ CREATE SEQUENCE event_subscription_id_seq
 -- Name: event_subscription_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE event_subscription_id_seq OWNED BY event_subscription.id;
+ALTER SEQUENCE public.event_subscription_id_seq OWNED BY public.event_subscription.id;
 
 
 --
 -- Name: event_subscription_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW event_subscription_id_seq_view AS
- SELECT (nextval('event_subscription_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.event_subscription_id_seq_view AS
+ SELECT (nextval('public.event_subscription_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: exhibits; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE exhibits (
+CREATE TABLE public.exhibits (
     id integer NOT NULL,
     report_id integer NOT NULL,
     type text NOT NULL,
@@ -2206,7 +2226,7 @@ CREATE TABLE exhibits (
 -- Name: exhibits_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE exhibits_id_seq
+CREATE SEQUENCE public.exhibits_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2218,22 +2238,22 @@ CREATE SEQUENCE exhibits_id_seq
 -- Name: exhibits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE exhibits_id_seq OWNED BY exhibits.id;
+ALTER SEQUENCE public.exhibits_id_seq OWNED BY public.exhibits.id;
 
 
 --
 -- Name: exhibits_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW exhibits_id_seq_view AS
- SELECT (nextval('exhibits_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.exhibits_id_seq_view AS
+ SELECT (nextval('public.exhibits_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: factoids; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE factoids (
+CREATE TABLE public.factoids (
     id integer NOT NULL,
     severity integer DEFAULT 0,
     analysis_id integer NOT NULL,
@@ -2250,7 +2270,7 @@ CREATE TABLE factoids (
 -- Name: factoids_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE factoids_id_seq
+CREATE SEQUENCE public.factoids_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2262,27 +2282,47 @@ CREATE SEQUENCE factoids_id_seq
 -- Name: factoids_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE factoids_id_seq OWNED BY factoids.id;
+ALTER SEQUENCE public.factoids_id_seq OWNED BY public.factoids.id;
 
 
 --
 -- Name: factoids_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW factoids_id_seq_view AS
- SELECT (nextval('factoids_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.factoids_id_seq_view AS
+ SELECT (nextval('public.factoids_id_seq'::regclass))::integer AS id;
 
 
 --
--- Name: failure_groups; Type: TABLE; Schema: public; Owner: -
+-- Name: failure_groups; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE failure_groups (
-    id integer NOT NULL,
+CREATE FOREIGN TABLE public.failure_groups (
+    id integer DEFAULT public.failure_groups_id_seq_view() NOT NULL,
     name text NOT NULL,
     pattern text NOT NULL,
     priority integer DEFAULT 0,
     auto_reschedule boolean DEFAULT false
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'failure_groups'
+);
+ALTER FOREIGN TABLE public.failure_groups ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE public.failure_groups ALTER COLUMN name OPTIONS (
+    column_name 'name'
+);
+ALTER FOREIGN TABLE public.failure_groups ALTER COLUMN pattern OPTIONS (
+    column_name 'pattern'
+);
+ALTER FOREIGN TABLE public.failure_groups ALTER COLUMN priority OPTIONS (
+    column_name 'priority'
+);
+ALTER FOREIGN TABLE public.failure_groups ALTER COLUMN auto_reschedule OPTIONS (
+    column_name 'auto_reschedule'
 );
 
 
@@ -2290,7 +2330,7 @@ CREATE TABLE failure_groups (
 -- Name: failure_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE failure_groups_id_seq
+CREATE SEQUENCE public.failure_groups_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2299,25 +2339,27 @@ CREATE SEQUENCE failure_groups_id_seq
 
 
 --
--- Name: failure_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: failure_groups_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE failure_groups_id_seq OWNED BY failure_groups.id;
-
-
---
--- Name: failure_groups_id_seq_view; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW failure_groups_id_seq_view AS
- SELECT (nextval('failure_groups_id_seq'::regclass))::integer AS id;
+CREATE FOREIGN TABLE public.failure_groups_id_seq_view (
+    id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'failure_groups_id_seq_view'
+);
+ALTER FOREIGN TABLE public.failure_groups_id_seq_view ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
 
 
 --
 -- Name: feedbacks; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE feedbacks (
+CREATE TABLE public.feedbacks (
     id integer NOT NULL,
     rating integer,
     more_info integer,
@@ -2333,7 +2375,7 @@ CREATE TABLE feedbacks (
 -- Name: feedbacks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE feedbacks_id_seq
+CREATE SEQUENCE public.feedbacks_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2345,23 +2387,23 @@ CREATE SEQUENCE feedbacks_id_seq
 -- Name: feedbacks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE feedbacks_id_seq OWNED BY feedbacks.id;
+ALTER SEQUENCE public.feedbacks_id_seq OWNED BY public.feedbacks.id;
 
 
 --
 -- Name: feedbacks_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW feedbacks_id_seq_view AS
- SELECT (nextval('feedbacks_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.feedbacks_id_seq_view AS
+ SELECT (nextval('public.feedbacks_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: fisbot_events; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE fisbot_events (
-    id integer DEFAULT fisbot_events_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.fisbot_events (
+    id integer DEFAULT public.fisbot_events_id_seq_view() NOT NULL,
     code_location_id integer,
     type text NOT NULL,
     value text,
@@ -2377,34 +2419,34 @@ OPTIONS (
     schema_name 'public',
     table_name 'fisbot_events'
 );
-ALTER FOREIGN TABLE fisbot_events ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.fisbot_events ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE fisbot_events ALTER COLUMN code_location_id OPTIONS (
+ALTER FOREIGN TABLE public.fisbot_events ALTER COLUMN code_location_id OPTIONS (
     column_name 'code_location_id'
 );
-ALTER FOREIGN TABLE fisbot_events ALTER COLUMN type OPTIONS (
+ALTER FOREIGN TABLE public.fisbot_events ALTER COLUMN type OPTIONS (
     column_name 'type'
 );
-ALTER FOREIGN TABLE fisbot_events ALTER COLUMN value OPTIONS (
+ALTER FOREIGN TABLE public.fisbot_events ALTER COLUMN value OPTIONS (
     column_name 'value'
 );
-ALTER FOREIGN TABLE fisbot_events ALTER COLUMN commit_sha1 OPTIONS (
+ALTER FOREIGN TABLE public.fisbot_events ALTER COLUMN commit_sha1 OPTIONS (
     column_name 'commit_sha1'
 );
-ALTER FOREIGN TABLE fisbot_events ALTER COLUMN status OPTIONS (
+ALTER FOREIGN TABLE public.fisbot_events ALTER COLUMN status OPTIONS (
     column_name 'status'
 );
-ALTER FOREIGN TABLE fisbot_events ALTER COLUMN created_at OPTIONS (
+ALTER FOREIGN TABLE public.fisbot_events ALTER COLUMN created_at OPTIONS (
     column_name 'created_at'
 );
-ALTER FOREIGN TABLE fisbot_events ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.fisbot_events ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE fisbot_events ALTER COLUMN repository_id OPTIONS (
+ALTER FOREIGN TABLE public.fisbot_events ALTER COLUMN repository_id OPTIONS (
     column_name 'repository_id'
 );
-ALTER FOREIGN TABLE fisbot_events ALTER COLUMN component_id OPTIONS (
+ALTER FOREIGN TABLE public.fisbot_events ALTER COLUMN component_id OPTIONS (
     column_name 'component_id'
 );
 
@@ -2413,7 +2455,7 @@ ALTER FOREIGN TABLE fisbot_events ALTER COLUMN component_id OPTIONS (
 -- Name: fisbot_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE fisbot_events_id_seq
+CREATE SEQUENCE public.fisbot_events_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2425,7 +2467,7 @@ CREATE SEQUENCE fisbot_events_id_seq
 -- Name: fisbot_events_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE fisbot_events_id_seq_view (
+CREATE FOREIGN TABLE public.fisbot_events_id_seq_view (
     id integer
 )
 SERVER fis
@@ -2433,7 +2475,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'fisbot_events_id_seq_view'
 );
-ALTER FOREIGN TABLE fisbot_events_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.fisbot_events_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -2442,7 +2484,7 @@ ALTER FOREIGN TABLE fisbot_events_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: follows; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE follows (
+CREATE TABLE public.follows (
     id integer NOT NULL,
     owner_id integer NOT NULL,
     project_id integer,
@@ -2455,7 +2497,7 @@ CREATE TABLE follows (
 -- Name: message_account_tags; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE message_account_tags (
+CREATE TABLE public.message_account_tags (
     id integer NOT NULL,
     message_id integer,
     account_id integer
@@ -2466,7 +2508,7 @@ CREATE TABLE message_account_tags (
 -- Name: message_project_tags; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE message_project_tags (
+CREATE TABLE public.message_project_tags (
     id integer NOT NULL,
     message_id integer,
     project_id integer
@@ -2477,7 +2519,7 @@ CREATE TABLE message_project_tags (
 -- Name: messages; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE messages (
+CREATE TABLE public.messages (
     id integer NOT NULL,
     account_id integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
@@ -2491,7 +2533,7 @@ CREATE TABLE messages (
 -- Name: followed_messages; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW followed_messages AS
+CREATE VIEW public.followed_messages AS
  SELECT f.owner_id,
     m.id,
     m.account_id,
@@ -2499,9 +2541,9 @@ CREATE VIEW followed_messages AS
     m.deleted_at,
     m.body,
     m.title
-   FROM ((messages m
-     JOIN message_project_tags mpt ON ((mpt.message_id = m.id)))
-     JOIN follows f ON ((f.project_id = mpt.project_id)))
+   FROM ((public.messages m
+     JOIN public.message_project_tags mpt ON ((mpt.message_id = m.id)))
+     JOIN public.follows f ON ((f.project_id = mpt.project_id)))
   WHERE (m.deleted_at IS NULL)
 UNION
  SELECT f.owner_id,
@@ -2511,8 +2553,8 @@ UNION
     m.deleted_at,
     m.body,
     m.title
-   FROM (messages m
-     JOIN follows f ON ((f.account_id = m.account_id)))
+   FROM (public.messages m
+     JOIN public.follows f ON ((f.account_id = m.account_id)))
   WHERE (m.deleted_at IS NULL)
 UNION
  SELECT mat.account_id AS owner_id,
@@ -2522,8 +2564,8 @@ UNION
     m.deleted_at,
     m.body,
     m.title
-   FROM (messages m
-     JOIN message_account_tags mat ON ((mat.message_id = m.id)))
+   FROM (public.messages m
+     JOIN public.message_account_tags mat ON ((mat.message_id = m.id)))
   WHERE (m.deleted_at IS NULL);
 
 
@@ -2531,7 +2573,7 @@ UNION
 -- Name: follows_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE follows_id_seq
+CREATE SEQUENCE public.follows_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2543,22 +2585,22 @@ CREATE SEQUENCE follows_id_seq
 -- Name: follows_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE follows_id_seq OWNED BY follows.id;
+ALTER SEQUENCE public.follows_id_seq OWNED BY public.follows.id;
 
 
 --
 -- Name: follows_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW follows_id_seq_view AS
- SELECT (nextval('follows_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.follows_id_seq_view AS
+ SELECT (nextval('public.follows_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: forges; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE forges (
+CREATE TABLE public.forges (
     id integer NOT NULL,
     name text NOT NULL,
     url text NOT NULL,
@@ -2570,7 +2612,7 @@ CREATE TABLE forges (
 -- Name: forges_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE forges_id_seq
+CREATE SEQUENCE public.forges_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2582,22 +2624,22 @@ CREATE SEQUENCE forges_id_seq
 -- Name: forges_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE forges_id_seq OWNED BY forges.id;
+ALTER SEQUENCE public.forges_id_seq OWNED BY public.forges.id;
 
 
 --
 -- Name: forges_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW forges_id_seq_view AS
- SELECT (nextval('forges_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.forges_id_seq_view AS
+ SELECT (nextval('public.forges_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: forums; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE forums (
+CREATE TABLE public.forums (
     id integer NOT NULL,
     project_id integer,
     name text NOT NULL,
@@ -2612,7 +2654,7 @@ CREATE TABLE forums (
 -- Name: forums_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE forums_id_seq
+CREATE SEQUENCE public.forums_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2624,23 +2666,23 @@ CREATE SEQUENCE forums_id_seq
 -- Name: forums_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE forums_id_seq OWNED BY forums.id;
+ALTER SEQUENCE public.forums_id_seq OWNED BY public.forums.id;
 
 
 --
 -- Name: forums_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW forums_id_seq_view AS
- SELECT (nextval('forums_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.forums_id_seq_view AS
+ SELECT (nextval('public.forums_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: fyles; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE fyles (
-    id integer DEFAULT fyles_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.fyles (
+    id integer DEFAULT public.fyles_id_seq_view() NOT NULL,
     name text NOT NULL,
     code_set_id integer NOT NULL
 )
@@ -2649,13 +2691,13 @@ OPTIONS (
     schema_name 'public',
     table_name 'fyles'
 );
-ALTER FOREIGN TABLE fyles ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.fyles ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE fyles ALTER COLUMN name OPTIONS (
+ALTER FOREIGN TABLE public.fyles ALTER COLUMN name OPTIONS (
     column_name 'name'
 );
-ALTER FOREIGN TABLE fyles ALTER COLUMN code_set_id OPTIONS (
+ALTER FOREIGN TABLE public.fyles ALTER COLUMN code_set_id OPTIONS (
     column_name 'code_set_id'
 );
 
@@ -2664,7 +2706,7 @@ ALTER FOREIGN TABLE fyles ALTER COLUMN code_set_id OPTIONS (
 -- Name: fyles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE fyles_id_seq
+CREATE SEQUENCE public.fyles_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2676,7 +2718,7 @@ CREATE SEQUENCE fyles_id_seq
 -- Name: fyles_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE fyles_id_seq_view (
+CREATE FOREIGN TABLE public.fyles_id_seq_view (
     id integer
 )
 SERVER fis
@@ -2684,7 +2726,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'fyles_id_seq_view'
 );
-ALTER FOREIGN TABLE fyles_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.fyles_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -2693,7 +2735,7 @@ ALTER FOREIGN TABLE fyles_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: github_project; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE github_project (
+CREATE TABLE public.github_project (
     project_id text NOT NULL,
     owner text NOT NULL,
     state_code integer DEFAULT 660 NOT NULL,
@@ -2718,7 +2760,7 @@ CREATE TABLE github_project (
 -- Name: guaranteed_spam_accounts; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE guaranteed_spam_accounts (
+CREATE TABLE public.guaranteed_spam_accounts (
     id integer NOT NULL,
     login text NOT NULL,
     email text NOT NULL,
@@ -2763,7 +2805,7 @@ CREATE TABLE guaranteed_spam_accounts (
 -- Name: helpfuls; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE helpfuls (
+CREATE TABLE public.helpfuls (
     id integer NOT NULL,
     review_id integer,
     account_id integer NOT NULL,
@@ -2775,7 +2817,7 @@ CREATE TABLE helpfuls (
 -- Name: helpfuls_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE helpfuls_id_seq
+CREATE SEQUENCE public.helpfuls_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2787,22 +2829,22 @@ CREATE SEQUENCE helpfuls_id_seq
 -- Name: helpfuls_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE helpfuls_id_seq OWNED BY helpfuls.id;
+ALTER SEQUENCE public.helpfuls_id_seq OWNED BY public.helpfuls.id;
 
 
 --
 -- Name: helpfuls_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW helpfuls_id_seq_view AS
- SELECT (nextval('helpfuls_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.helpfuls_id_seq_view AS
+ SELECT (nextval('public.helpfuls_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: invites; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE invites (
+CREATE TABLE public.invites (
     id integer NOT NULL,
     invitor_id integer NOT NULL,
     invitee_id integer,
@@ -2820,7 +2862,7 @@ CREATE TABLE invites (
 -- Name: invites_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE invites_id_seq
+CREATE SEQUENCE public.invites_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2832,33 +2874,33 @@ CREATE SEQUENCE invites_id_seq
 -- Name: invites_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE invites_id_seq OWNED BY invites.id;
+ALTER SEQUENCE public.invites_id_seq OWNED BY public.invites.id;
 
 
 --
 -- Name: invites_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW invites_id_seq_view AS
- SELECT (nextval('invites_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.invites_id_seq_view AS
+ SELECT (nextval('public.invites_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: job_statuses; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE job_statuses (
+CREATE TABLE public.job_statuses (
     id integer NOT NULL,
     name text NOT NULL
 );
 
 
 --
--- Name: jobs; Type: TABLE; Schema: public; Owner: -
+-- Name: jobs; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE jobs (
-    id integer NOT NULL,
+CREATE FOREIGN TABLE public.jobs (
+    id integer DEFAULT public.jobs_id_seq_view() NOT NULL,
     project_id integer,
     status integer DEFAULT 0 NOT NULL,
     type text NOT NULL,
@@ -2882,6 +2924,83 @@ CREATE TABLE jobs (
     organization_id integer,
     code_location_id integer,
     code_location_tarball_id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'jobs'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN project_id OPTIONS (
+    column_name 'project_id'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN status OPTIONS (
+    column_name 'status'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN type OPTIONS (
+    column_name 'type'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN priority OPTIONS (
+    column_name 'priority'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN current_step OPTIONS (
+    column_name 'current_step'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN current_step_at OPTIONS (
+    column_name 'current_step_at'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN max_steps OPTIONS (
+    column_name 'max_steps'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN exception OPTIONS (
+    column_name 'exception'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN backtrace OPTIONS (
+    column_name 'backtrace'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN code_set_id OPTIONS (
+    column_name 'code_set_id'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN sloc_set_id OPTIONS (
+    column_name 'sloc_set_id'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN notes OPTIONS (
+    column_name 'notes'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN wait_until OPTIONS (
+    column_name 'wait_until'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN account_id OPTIONS (
+    column_name 'account_id'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN logged_at OPTIONS (
+    column_name 'logged_at'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN slave_id OPTIONS (
+    column_name 'slave_id'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN started_at OPTIONS (
+    column_name 'started_at'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN retry_count OPTIONS (
+    column_name 'retry_count'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN do_not_retry OPTIONS (
+    column_name 'do_not_retry'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN failure_group_id OPTIONS (
+    column_name 'failure_group_id'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN organization_id OPTIONS (
+    column_name 'organization_id'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN code_location_id OPTIONS (
+    column_name 'code_location_id'
+);
+ALTER FOREIGN TABLE public.jobs ALTER COLUMN code_location_tarball_id OPTIONS (
+    column_name 'code_location_tarball_id'
 );
 
 
@@ -2889,7 +3008,7 @@ CREATE TABLE jobs (
 -- Name: jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE jobs_id_seq
+CREATE SEQUENCE public.jobs_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2898,25 +3017,27 @@ CREATE SEQUENCE jobs_id_seq
 
 
 --
--- Name: jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: jobs_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE jobs_id_seq OWNED BY jobs.id;
-
-
---
--- Name: jobs_id_seq_view; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW jobs_id_seq_view AS
- SELECT (nextval('jobs_id_seq'::regclass))::integer AS id;
+CREATE FOREIGN TABLE public.jobs_id_seq_view (
+    id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'jobs_id_seq_view'
+);
+ALTER FOREIGN TABLE public.jobs_id_seq_view ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
 
 
 --
 -- Name: knowledge_base_statuses; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE knowledge_base_statuses (
+CREATE TABLE public.knowledge_base_statuses (
     id integer NOT NULL,
     project_id integer NOT NULL,
     in_sync boolean DEFAULT false,
@@ -2928,7 +3049,7 @@ CREATE TABLE knowledge_base_statuses (
 -- Name: knowledge_base_statuses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE knowledge_base_statuses_id_seq
+CREATE SEQUENCE public.knowledge_base_statuses_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2940,22 +3061,22 @@ CREATE SEQUENCE knowledge_base_statuses_id_seq
 -- Name: knowledge_base_statuses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE knowledge_base_statuses_id_seq OWNED BY knowledge_base_statuses.id;
+ALTER SEQUENCE public.knowledge_base_statuses_id_seq OWNED BY public.knowledge_base_statuses.id;
 
 
 --
 -- Name: knowledge_base_statuses_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW knowledge_base_statuses_id_seq_view AS
- SELECT (nextval('knowledge_base_statuses_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.knowledge_base_statuses_id_seq_view AS
+ SELECT (nextval('public.knowledge_base_statuses_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: kudo_scores; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE kudo_scores (
+CREATE TABLE public.kudo_scores (
     id integer NOT NULL,
     array_index integer,
     account_id integer,
@@ -2973,7 +3094,7 @@ CREATE TABLE kudo_scores (
 -- Name: kudo_scores_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE kudo_scores_id_seq
+CREATE SEQUENCE public.kudo_scores_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2986,22 +3107,22 @@ CREATE SEQUENCE kudo_scores_id_seq
 -- Name: kudo_scores_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE kudo_scores_id_seq OWNED BY kudo_scores.id;
+ALTER SEQUENCE public.kudo_scores_id_seq OWNED BY public.kudo_scores.id;
 
 
 --
 -- Name: kudo_scores_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW kudo_scores_id_seq_view AS
- SELECT (nextval('kudo_scores_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.kudo_scores_id_seq_view AS
+ SELECT (nextval('public.kudo_scores_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: kudos; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE kudos (
+CREATE TABLE public.kudos (
     id integer NOT NULL,
     sender_id integer NOT NULL,
     account_id integer,
@@ -3017,7 +3138,7 @@ CREATE TABLE kudos (
 -- Name: kudos_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE kudos_id_seq
+CREATE SEQUENCE public.kudos_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3029,22 +3150,22 @@ CREATE SEQUENCE kudos_id_seq
 -- Name: kudos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE kudos_id_seq OWNED BY kudos.id;
+ALTER SEQUENCE public.kudos_id_seq OWNED BY public.kudos.id;
 
 
 --
 -- Name: kudos_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW kudos_id_seq_view AS
- SELECT (nextval('kudos_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.kudos_id_seq_view AS
+ SELECT (nextval('public.kudos_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: language_experiences; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE language_experiences (
+CREATE TABLE public.language_experiences (
     id integer NOT NULL,
     position_id integer NOT NULL,
     language_id integer NOT NULL
@@ -3055,7 +3176,7 @@ CREATE TABLE language_experiences (
 -- Name: language_experiences_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE language_experiences_id_seq
+CREATE SEQUENCE public.language_experiences_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3067,22 +3188,22 @@ CREATE SEQUENCE language_experiences_id_seq
 -- Name: language_experiences_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE language_experiences_id_seq OWNED BY language_experiences.id;
+ALTER SEQUENCE public.language_experiences_id_seq OWNED BY public.language_experiences.id;
 
 
 --
 -- Name: language_experiences_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW language_experiences_id_seq_view AS
- SELECT (nextval('language_experiences_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.language_experiences_id_seq_view AS
+ SELECT (nextval('public.language_experiences_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: language_facts; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE language_facts (
+CREATE TABLE public.language_facts (
     id integer NOT NULL,
     month date,
     language_id integer,
@@ -3098,7 +3219,7 @@ CREATE TABLE language_facts (
 -- Name: language_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE language_facts_id_seq
+CREATE SEQUENCE public.language_facts_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3110,22 +3231,22 @@ CREATE SEQUENCE language_facts_id_seq
 -- Name: language_facts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE language_facts_id_seq OWNED BY language_facts.id;
+ALTER SEQUENCE public.language_facts_id_seq OWNED BY public.language_facts.id;
 
 
 --
 -- Name: language_facts_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW language_facts_id_seq_view AS
- SELECT (nextval('language_facts_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.language_facts_id_seq_view AS
+ SELECT (nextval('public.language_facts_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: languages; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE languages (
+CREATE TABLE public.languages (
     id integer NOT NULL,
     name text,
     nice_name text,
@@ -3146,7 +3267,7 @@ CREATE TABLE languages (
 -- Name: languages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE languages_id_seq
+CREATE SEQUENCE public.languages_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3158,22 +3279,22 @@ CREATE SEQUENCE languages_id_seq
 -- Name: languages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE languages_id_seq OWNED BY languages.id;
+ALTER SEQUENCE public.languages_id_seq OWNED BY public.languages.id;
 
 
 --
 -- Name: languages_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW languages_id_seq_view AS
- SELECT (nextval('languages_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.languages_id_seq_view AS
+ SELECT (nextval('public.languages_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: license_facts; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE license_facts (
+CREATE TABLE public.license_facts (
     license_id integer NOT NULL,
     file_count integer DEFAULT 0 NOT NULL,
     scope integer DEFAULT 0 NOT NULL,
@@ -3186,7 +3307,7 @@ CREATE TABLE license_facts (
 -- Name: license_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE license_facts_id_seq
+CREATE SEQUENCE public.license_facts_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3198,22 +3319,22 @@ CREATE SEQUENCE license_facts_id_seq
 -- Name: license_facts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE license_facts_id_seq OWNED BY license_facts.id;
+ALTER SEQUENCE public.license_facts_id_seq OWNED BY public.license_facts.id;
 
 
 --
 -- Name: license_facts_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW license_facts_id_seq_view AS
- SELECT (nextval('license_facts_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.license_facts_id_seq_view AS
+ SELECT (nextval('public.license_facts_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: license_permission_roles; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE license_permission_roles (
+CREATE TABLE public.license_permission_roles (
     id integer NOT NULL,
     license_id integer,
     license_permission_id integer,
@@ -3227,7 +3348,7 @@ CREATE TABLE license_permission_roles (
 -- Name: license_permission_roles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE license_permission_roles_id_seq
+CREATE SEQUENCE public.license_permission_roles_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3239,14 +3360,14 @@ CREATE SEQUENCE license_permission_roles_id_seq
 -- Name: license_permission_roles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE license_permission_roles_id_seq OWNED BY license_permission_roles.id;
+ALTER SEQUENCE public.license_permission_roles_id_seq OWNED BY public.license_permission_roles.id;
 
 
 --
 -- Name: license_permissions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE license_permissions (
+CREATE TABLE public.license_permissions (
     id integer NOT NULL,
     name character varying,
     description character varying,
@@ -3260,7 +3381,7 @@ CREATE TABLE license_permissions (
 -- Name: license_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE license_permissions_id_seq
+CREATE SEQUENCE public.license_permissions_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3272,14 +3393,14 @@ CREATE SEQUENCE license_permissions_id_seq
 -- Name: license_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE license_permissions_id_seq OWNED BY license_permissions.id;
+ALTER SEQUENCE public.license_permissions_id_seq OWNED BY public.license_permissions.id;
 
 
 --
 -- Name: licenses; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE licenses (
+CREATE TABLE public.licenses (
     id integer NOT NULL,
     vanity_url text,
     name text,
@@ -3295,7 +3416,7 @@ CREATE TABLE licenses (
 -- Name: licenses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE licenses_id_seq
+CREATE SEQUENCE public.licenses_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3307,22 +3428,22 @@ CREATE SEQUENCE licenses_id_seq
 -- Name: licenses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE licenses_id_seq OWNED BY licenses.id;
+ALTER SEQUENCE public.licenses_id_seq OWNED BY public.licenses.id;
 
 
 --
 -- Name: licenses_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW licenses_id_seq_view AS
- SELECT (nextval('licenses_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.licenses_id_seq_view AS
+ SELECT (nextval('public.licenses_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: link_categories_deleted; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE link_categories_deleted (
+CREATE TABLE public.link_categories_deleted (
     id integer NOT NULL,
     name text NOT NULL
 );
@@ -3332,7 +3453,7 @@ CREATE TABLE link_categories_deleted (
 -- Name: link_categories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE link_categories_id_seq
+CREATE SEQUENCE public.link_categories_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3344,22 +3465,22 @@ CREATE SEQUENCE link_categories_id_seq
 -- Name: link_categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE link_categories_id_seq OWNED BY link_categories_deleted.id;
+ALTER SEQUENCE public.link_categories_id_seq OWNED BY public.link_categories_deleted.id;
 
 
 --
 -- Name: link_categories_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW link_categories_id_seq_view AS
- SELECT (nextval('link_categories_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.link_categories_id_seq_view AS
+ SELECT (nextval('public.link_categories_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: links; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE links (
+CREATE TABLE public.links (
     id integer NOT NULL,
     title text NOT NULL,
     url text NOT NULL,
@@ -3375,7 +3496,7 @@ CREATE TABLE links (
 -- Name: links_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE links_id_seq
+CREATE SEQUENCE public.links_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3387,24 +3508,24 @@ CREATE SEQUENCE links_id_seq
 -- Name: links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE links_id_seq OWNED BY links.id;
+ALTER SEQUENCE public.links_id_seq OWNED BY public.links.id;
 
 
 --
 -- Name: links_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW links_id_seq_view AS
- SELECT (nextval('links_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.links_id_seq_view AS
+ SELECT (nextval('public.links_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: load_averages; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE load_averages (
+CREATE FOREIGN TABLE public.load_averages (
     current numeric DEFAULT 0.0,
-    id integer DEFAULT load_averages_id_seq_view() NOT NULL,
+    id integer DEFAULT public.load_averages_id_seq_view() NOT NULL,
     max numeric DEFAULT 3.0
 )
 SERVER fis
@@ -3412,13 +3533,13 @@ OPTIONS (
     schema_name 'public',
     table_name 'load_averages'
 );
-ALTER FOREIGN TABLE load_averages ALTER COLUMN current OPTIONS (
+ALTER FOREIGN TABLE public.load_averages ALTER COLUMN current OPTIONS (
     column_name 'current'
 );
-ALTER FOREIGN TABLE load_averages ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.load_averages ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE load_averages ALTER COLUMN max OPTIONS (
+ALTER FOREIGN TABLE public.load_averages ALTER COLUMN max OPTIONS (
     column_name 'max'
 );
 
@@ -3427,7 +3548,7 @@ ALTER FOREIGN TABLE load_averages ALTER COLUMN max OPTIONS (
 -- Name: load_averages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE load_averages_id_seq
+CREATE SEQUENCE public.load_averages_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3439,7 +3560,7 @@ CREATE SEQUENCE load_averages_id_seq
 -- Name: load_averages_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE load_averages_id_seq_view (
+CREATE FOREIGN TABLE public.load_averages_id_seq_view (
     id integer
 )
 SERVER fis
@@ -3447,7 +3568,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'load_averages_id_seq_view'
 );
-ALTER FOREIGN TABLE load_averages_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.load_averages_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -3456,7 +3577,7 @@ ALTER FOREIGN TABLE load_averages_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: manages; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE manages (
+CREATE TABLE public.manages (
     id integer NOT NULL,
     account_id integer NOT NULL,
     target_id integer NOT NULL,
@@ -3474,7 +3595,7 @@ CREATE TABLE manages (
 -- Name: manages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE manages_id_seq
+CREATE SEQUENCE public.manages_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3486,22 +3607,22 @@ CREATE SEQUENCE manages_id_seq
 -- Name: manages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE manages_id_seq OWNED BY manages.id;
+ALTER SEQUENCE public.manages_id_seq OWNED BY public.manages.id;
 
 
 --
 -- Name: manages_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW manages_id_seq_view AS
- SELECT (nextval('manages_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.manages_id_seq_view AS
+ SELECT (nextval('public.manages_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: markups; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE markups (
+CREATE TABLE public.markups (
     id integer NOT NULL,
     raw text,
     formatted text
@@ -3512,7 +3633,7 @@ CREATE TABLE markups (
 -- Name: markups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE markups_id_seq
+CREATE SEQUENCE public.markups_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3524,22 +3645,22 @@ CREATE SEQUENCE markups_id_seq
 -- Name: markups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE markups_id_seq OWNED BY markups.id;
+ALTER SEQUENCE public.markups_id_seq OWNED BY public.markups.id;
 
 
 --
 -- Name: markups_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW markups_id_seq_view AS
- SELECT (nextval('markups_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.markups_id_seq_view AS
+ SELECT (nextval('public.markups_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: message_account_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE message_account_tags_id_seq
+CREATE SEQUENCE public.message_account_tags_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3551,22 +3672,22 @@ CREATE SEQUENCE message_account_tags_id_seq
 -- Name: message_account_tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE message_account_tags_id_seq OWNED BY message_account_tags.id;
+ALTER SEQUENCE public.message_account_tags_id_seq OWNED BY public.message_account_tags.id;
 
 
 --
 -- Name: message_account_tags_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW message_account_tags_id_seq_view AS
- SELECT (nextval('message_account_tags_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.message_account_tags_id_seq_view AS
+ SELECT (nextval('public.message_account_tags_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: message_project_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE message_project_tags_id_seq
+CREATE SEQUENCE public.message_project_tags_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3578,22 +3699,22 @@ CREATE SEQUENCE message_project_tags_id_seq
 -- Name: message_project_tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE message_project_tags_id_seq OWNED BY message_project_tags.id;
+ALTER SEQUENCE public.message_project_tags_id_seq OWNED BY public.message_project_tags.id;
 
 
 --
 -- Name: message_project_tags_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW message_project_tags_id_seq_view AS
- SELECT (nextval('message_project_tags_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.message_project_tags_id_seq_view AS
+ SELECT (nextval('public.message_project_tags_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: messages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE messages_id_seq
+CREATE SEQUENCE public.messages_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3605,22 +3726,22 @@ CREATE SEQUENCE messages_id_seq
 -- Name: messages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE messages_id_seq OWNED BY messages.id;
+ALTER SEQUENCE public.messages_id_seq OWNED BY public.messages.id;
 
 
 --
 -- Name: messages_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW messages_id_seq_view AS
- SELECT (nextval('messages_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.messages_id_seq_view AS
+ SELECT (nextval('public.messages_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: mistaken_jobs; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE mistaken_jobs (
+CREATE TABLE public.mistaken_jobs (
     id integer,
     project_id integer,
     repository_id integer,
@@ -3651,7 +3772,7 @@ CREATE TABLE mistaken_jobs (
 -- Name: moderatorships_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE moderatorships_id_seq
+CREATE SEQUENCE public.moderatorships_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3663,15 +3784,15 @@ CREATE SEQUENCE moderatorships_id_seq
 -- Name: moderatorships_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW moderatorships_id_seq_view AS
- SELECT (nextval('moderatorships_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.moderatorships_id_seq_view AS
+ SELECT (nextval('public.moderatorships_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: monitorships_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE monitorships_id_seq
+CREATE SEQUENCE public.monitorships_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3683,15 +3804,15 @@ CREATE SEQUENCE monitorships_id_seq
 -- Name: monitorships_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW monitorships_id_seq_view AS
- SELECT (nextval('monitorships_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.monitorships_id_seq_view AS
+ SELECT (nextval('public.monitorships_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: monthly_commit_histories; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE monthly_commit_histories (
+CREATE TABLE public.monthly_commit_histories (
     id integer NOT NULL,
     analysis_id integer,
     json text
@@ -3702,7 +3823,7 @@ CREATE TABLE monthly_commit_histories (
 -- Name: monthly_commit_histories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE monthly_commit_histories_id_seq
+CREATE SEQUENCE public.monthly_commit_histories_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3714,22 +3835,22 @@ CREATE SEQUENCE monthly_commit_histories_id_seq
 -- Name: monthly_commit_histories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE monthly_commit_histories_id_seq OWNED BY monthly_commit_histories.id;
+ALTER SEQUENCE public.monthly_commit_histories_id_seq OWNED BY public.monthly_commit_histories.id;
 
 
 --
 -- Name: monthly_commit_histories_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW monthly_commit_histories_id_seq_view AS
- SELECT (nextval('monthly_commit_histories_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.monthly_commit_histories_id_seq_view AS
+ SELECT (nextval('public.monthly_commit_histories_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: name_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE name_facts_id_seq
+CREATE SEQUENCE public.name_facts_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3741,22 +3862,22 @@ CREATE SEQUENCE name_facts_id_seq
 -- Name: name_facts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE name_facts_id_seq OWNED BY name_facts.id;
+ALTER SEQUENCE public.name_facts_id_seq OWNED BY public.name_facts.id;
 
 
 --
 -- Name: name_facts_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW name_facts_id_seq_view AS
- SELECT (nextval('name_facts_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.name_facts_id_seq_view AS
+ SELECT (nextval('public.name_facts_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: name_language_facts; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE name_language_facts (
+CREATE TABLE public.name_language_facts (
     id integer NOT NULL,
     name_id integer,
     analysis_id integer,
@@ -3778,7 +3899,7 @@ CREATE TABLE name_language_facts (
 -- Name: name_language_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE name_language_facts_id_seq
+CREATE SEQUENCE public.name_language_facts_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3790,22 +3911,22 @@ CREATE SEQUENCE name_language_facts_id_seq
 -- Name: name_language_facts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE name_language_facts_id_seq OWNED BY name_language_facts.id;
+ALTER SEQUENCE public.name_language_facts_id_seq OWNED BY public.name_language_facts.id;
 
 
 --
 -- Name: name_language_facts_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW name_language_facts_id_seq_view AS
- SELECT (nextval('name_language_facts_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.name_language_facts_id_seq_view AS
+ SELECT (nextval('public.name_language_facts_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: names; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE names (
+CREATE TABLE public.names (
     id integer NOT NULL,
     name text NOT NULL
 );
@@ -3815,7 +3936,7 @@ CREATE TABLE names (
 -- Name: names_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE names_id_seq
+CREATE SEQUENCE public.names_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3827,22 +3948,22 @@ CREATE SEQUENCE names_id_seq
 -- Name: names_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE names_id_seq OWNED BY names.id;
+ALTER SEQUENCE public.names_id_seq OWNED BY public.names.id;
 
 
 --
 -- Name: names_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW names_id_seq_view AS
- SELECT (nextval('names_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.names_id_seq_view AS
+ SELECT (nextval('public.names_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: oauth_access_grants; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE oauth_access_grants (
+CREATE TABLE public.oauth_access_grants (
     id integer NOT NULL,
     resource_owner_id integer NOT NULL,
     application_id integer NOT NULL,
@@ -3859,7 +3980,7 @@ CREATE TABLE oauth_access_grants (
 -- Name: oauth_access_grants_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE oauth_access_grants_id_seq
+CREATE SEQUENCE public.oauth_access_grants_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3871,22 +3992,22 @@ CREATE SEQUENCE oauth_access_grants_id_seq
 -- Name: oauth_access_grants_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE oauth_access_grants_id_seq OWNED BY oauth_access_grants.id;
+ALTER SEQUENCE public.oauth_access_grants_id_seq OWNED BY public.oauth_access_grants.id;
 
 
 --
 -- Name: oauth_access_grants_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW oauth_access_grants_id_seq_view AS
- SELECT (nextval('oauth_access_grants_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.oauth_access_grants_id_seq_view AS
+ SELECT (nextval('public.oauth_access_grants_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: oauth_access_tokens; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE oauth_access_tokens (
+CREATE TABLE public.oauth_access_tokens (
     id integer NOT NULL,
     resource_owner_id integer,
     application_id integer,
@@ -3903,7 +4024,7 @@ CREATE TABLE oauth_access_tokens (
 -- Name: oauth_access_tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE oauth_access_tokens_id_seq
+CREATE SEQUENCE public.oauth_access_tokens_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3915,22 +4036,22 @@ CREATE SEQUENCE oauth_access_tokens_id_seq
 -- Name: oauth_access_tokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE oauth_access_tokens_id_seq OWNED BY oauth_access_tokens.id;
+ALTER SEQUENCE public.oauth_access_tokens_id_seq OWNED BY public.oauth_access_tokens.id;
 
 
 --
 -- Name: oauth_access_tokens_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW oauth_access_tokens_id_seq_view AS
- SELECT (nextval('oauth_access_tokens_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.oauth_access_tokens_id_seq_view AS
+ SELECT (nextval('public.oauth_access_tokens_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: oauth_applications; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE oauth_applications (
+CREATE TABLE public.oauth_applications (
     id integer NOT NULL,
     name character varying NOT NULL,
     uid character varying NOT NULL,
@@ -3946,7 +4067,7 @@ CREATE TABLE oauth_applications (
 -- Name: oauth_applications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE oauth_applications_id_seq
+CREATE SEQUENCE public.oauth_applications_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3958,22 +4079,22 @@ CREATE SEQUENCE oauth_applications_id_seq
 -- Name: oauth_applications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE oauth_applications_id_seq OWNED BY oauth_applications.id;
+ALTER SEQUENCE public.oauth_applications_id_seq OWNED BY public.oauth_applications.id;
 
 
 --
 -- Name: oauth_applications_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW oauth_applications_id_seq_view AS
- SELECT (nextval('oauth_applications_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.oauth_applications_id_seq_view AS
+ SELECT (nextval('public.oauth_applications_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: oauth_nonces; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE oauth_nonces (
+CREATE TABLE public.oauth_nonces (
     id integer NOT NULL,
     nonce text NOT NULL,
     "timestamp" integer NOT NULL,
@@ -3986,7 +4107,7 @@ CREATE TABLE oauth_nonces (
 -- Name: oauth_nonces_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE oauth_nonces_id_seq
+CREATE SEQUENCE public.oauth_nonces_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3998,22 +4119,22 @@ CREATE SEQUENCE oauth_nonces_id_seq
 -- Name: oauth_nonces_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE oauth_nonces_id_seq OWNED BY oauth_nonces.id;
+ALTER SEQUENCE public.oauth_nonces_id_seq OWNED BY public.oauth_nonces.id;
 
 
 --
 -- Name: oauth_nonces_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW oauth_nonces_id_seq_view AS
- SELECT (nextval('oauth_nonces_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.oauth_nonces_id_seq_view AS
+ SELECT (nextval('public.oauth_nonces_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: old_edits_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE old_edits_id_seq
+CREATE SEQUENCE public.old_edits_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4025,15 +4146,15 @@ CREATE SEQUENCE old_edits_id_seq
 -- Name: old_edits_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW old_edits_id_seq_view AS
- SELECT (nextval('old_edits_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.old_edits_id_seq_view AS
+ SELECT (nextval('public.old_edits_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: org_stats_by_sectors; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE org_stats_by_sectors (
+CREATE TABLE public.org_stats_by_sectors (
     id integer NOT NULL,
     org_type integer,
     organization_count integer,
@@ -4049,7 +4170,7 @@ CREATE TABLE org_stats_by_sectors (
 -- Name: org_stats_by_sectors_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE org_stats_by_sectors_id_seq
+CREATE SEQUENCE public.org_stats_by_sectors_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4061,22 +4182,22 @@ CREATE SEQUENCE org_stats_by_sectors_id_seq
 -- Name: org_stats_by_sectors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE org_stats_by_sectors_id_seq OWNED BY org_stats_by_sectors.id;
+ALTER SEQUENCE public.org_stats_by_sectors_id_seq OWNED BY public.org_stats_by_sectors.id;
 
 
 --
 -- Name: org_stats_by_sectors_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW org_stats_by_sectors_id_seq_view AS
- SELECT (nextval('org_stats_by_sectors_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.org_stats_by_sectors_id_seq_view AS
+ SELECT (nextval('public.org_stats_by_sectors_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: org_thirty_day_activities; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE org_thirty_day_activities (
+CREATE TABLE public.org_thirty_day_activities (
     id integer NOT NULL,
     name character varying(255),
     organization_id integer,
@@ -4094,7 +4215,7 @@ CREATE TABLE org_thirty_day_activities (
 -- Name: org_thirty_day_activities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE org_thirty_day_activities_id_seq
+CREATE SEQUENCE public.org_thirty_day_activities_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4106,22 +4227,22 @@ CREATE SEQUENCE org_thirty_day_activities_id_seq
 -- Name: org_thirty_day_activities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE org_thirty_day_activities_id_seq OWNED BY org_thirty_day_activities.id;
+ALTER SEQUENCE public.org_thirty_day_activities_id_seq OWNED BY public.org_thirty_day_activities.id;
 
 
 --
 -- Name: org_thirty_day_activities_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW org_thirty_day_activities_id_seq_view AS
- SELECT (nextval('org_thirty_day_activities_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.org_thirty_day_activities_id_seq_view AS
+ SELECT (nextval('public.org_thirty_day_activities_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: organizations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE organizations (
+CREATE TABLE public.organizations (
     id integer NOT NULL,
     name text,
     vanity_url text,
@@ -4143,7 +4264,7 @@ CREATE TABLE organizations (
 -- Name: organizations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE organizations_id_seq
+CREATE SEQUENCE public.organizations_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4155,22 +4276,22 @@ CREATE SEQUENCE organizations_id_seq
 -- Name: organizations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE organizations_id_seq OWNED BY organizations.id;
+ALTER SEQUENCE public.organizations_id_seq OWNED BY public.organizations.id;
 
 
 --
 -- Name: organizations_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW organizations_id_seq_view AS
- SELECT (nextval('organizations_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.organizations_id_seq_view AS
+ SELECT (nextval('public.organizations_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: pages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE pages_id_seq
+CREATE SEQUENCE public.pages_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4182,15 +4303,15 @@ CREATE SEQUENCE pages_id_seq
 -- Name: pages_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW pages_id_seq_view AS
- SELECT (nextval('pages_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.pages_id_seq_view AS
+ SELECT (nextval('public.pages_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: people_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW people_view AS
+CREATE VIEW public.people_view AS
  SELECT a.id,
     a.name AS effective_name,
     a.id AS account_id,
@@ -4200,8 +4321,8 @@ CREATE VIEW people_view AS
     ks."position" AS kudo_position,
     ks.score AS kudo_score,
     ks.rank AS kudo_rank
-   FROM (accounts a
-     LEFT JOIN kudo_scores ks ON ((ks.account_id = a.id)))
+   FROM (public.accounts a
+     LEFT JOIN public.kudo_scores ks ON ((ks.account_id = a.id)))
   WHERE (a.level <> '-20'::integer)
 UNION
  SELECT ((((p.id)::bigint << 32) + (nf.name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint) AS id,
@@ -4213,12 +4334,12 @@ UNION
     ks."position" AS kudo_position,
     ks.score AS kudo_score,
     ks.rank AS kudo_rank
-   FROM (((name_facts nf
-     JOIN names n ON ((nf.name_id = n.id)))
-     JOIN projects p ON (((p.best_analysis_id = nf.analysis_id) AND (NOT p.deleted))))
-     LEFT JOIN kudo_scores ks ON (((ks.name_id = nf.name_id) AND (ks.project_id = p.id))))
+   FROM (((public.name_facts nf
+     JOIN public.names n ON ((nf.name_id = n.id)))
+     JOIN public.projects p ON (((p.best_analysis_id = nf.analysis_id) AND (NOT p.deleted))))
+     LEFT JOIN public.kudo_scores ks ON (((ks.name_id = nf.name_id) AND (ks.project_id = p.id))))
   WHERE (NOT (nf.name_id IN ( SELECT positions.name_id
-           FROM positions
+           FROM public.positions
           WHERE ((positions.project_id = p.id) AND (positions.name_id IS NOT NULL)))));
 
 
@@ -4226,7 +4347,7 @@ UNION
 -- Name: permissions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE permissions (
+CREATE TABLE public.permissions (
     id integer NOT NULL,
     target_id integer NOT NULL,
     updated_at timestamp without time zone,
@@ -4241,7 +4362,7 @@ CREATE TABLE permissions (
 -- Name: permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE permissions_id_seq
+CREATE SEQUENCE public.permissions_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4253,15 +4374,15 @@ CREATE SEQUENCE permissions_id_seq
 -- Name: permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE permissions_id_seq OWNED BY permissions.id;
+ALTER SEQUENCE public.permissions_id_seq OWNED BY public.permissions.id;
 
 
 --
 -- Name: permissions_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW permissions_id_seq_view AS
- SELECT (nextval('permissions_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.permissions_id_seq_view AS
+ SELECT (nextval('public.permissions_id_seq'::regclass))::integer AS id;
 
 
 SET default_with_oids = true;
@@ -4270,7 +4391,7 @@ SET default_with_oids = true;
 -- Name: pg_ts_cfg; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE pg_ts_cfg (
+CREATE TABLE public.pg_ts_cfg (
     ts_name text NOT NULL,
     prs_name text NOT NULL,
     locale text
@@ -4281,7 +4402,7 @@ CREATE TABLE pg_ts_cfg (
 -- Name: pg_ts_cfgmap; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE pg_ts_cfgmap (
+CREATE TABLE public.pg_ts_cfgmap (
     ts_name text NOT NULL,
     tok_alias text NOT NULL,
     dict_name text[]
@@ -4292,7 +4413,7 @@ CREATE TABLE pg_ts_cfgmap (
 -- Name: positions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE positions_id_seq
+CREATE SEQUENCE public.positions_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4304,15 +4425,15 @@ CREATE SEQUENCE positions_id_seq
 -- Name: positions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE positions_id_seq OWNED BY positions.id;
+ALTER SEQUENCE public.positions_id_seq OWNED BY public.positions.id;
 
 
 --
 -- Name: positions_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW positions_id_seq_view AS
- SELECT (nextval('positions_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.positions_id_seq_view AS
+ SELECT (nextval('public.positions_id_seq'::regclass))::integer AS id;
 
 
 SET default_with_oids = false;
@@ -4321,7 +4442,7 @@ SET default_with_oids = false;
 -- Name: posts; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE posts (
+CREATE TABLE public.posts (
     id integer NOT NULL,
     account_id integer NOT NULL,
     topic_id integer NOT NULL,
@@ -4338,7 +4459,7 @@ CREATE TABLE posts (
 -- Name: posts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE posts_id_seq
+CREATE SEQUENCE public.posts_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4350,22 +4471,22 @@ CREATE SEQUENCE posts_id_seq
 -- Name: posts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE posts_id_seq OWNED BY posts.id;
+ALTER SEQUENCE public.posts_id_seq OWNED BY public.posts.id;
 
 
 --
 -- Name: posts_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW posts_id_seq_view AS
- SELECT (nextval('posts_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.posts_id_seq_view AS
+ SELECT (nextval('public.posts_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: profiles; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE profiles (
+CREATE TABLE public.profiles (
     id integer NOT NULL,
     job_id integer,
     name text NOT NULL,
@@ -4379,7 +4500,7 @@ CREATE TABLE profiles (
 -- Name: profiles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE profiles_id_seq
+CREATE SEQUENCE public.profiles_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4391,22 +4512,22 @@ CREATE SEQUENCE profiles_id_seq
 -- Name: profiles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE profiles_id_seq OWNED BY profiles.id;
+ALTER SEQUENCE public.profiles_id_seq OWNED BY public.profiles.id;
 
 
 --
 -- Name: profiles_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW profiles_id_seq_view AS
- SELECT (nextval('profiles_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.profiles_id_seq_view AS
+ SELECT (nextval('public.profiles_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: project_badges; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE project_badges (
+CREATE TABLE public.project_badges (
     id integer NOT NULL,
     identifier character varying,
     type character varying,
@@ -4421,7 +4542,7 @@ CREATE TABLE project_badges (
 -- Name: project_badges_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE project_badges_id_seq
+CREATE SEQUENCE public.project_badges_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4433,28 +4554,28 @@ CREATE SEQUENCE project_badges_id_seq
 -- Name: project_badges_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE project_badges_id_seq OWNED BY project_badges.id;
+ALTER SEQUENCE public.project_badges_id_seq OWNED BY public.project_badges.id;
 
 
 --
 -- Name: project_badges_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW project_badges_id_seq_view AS
- SELECT (nextval('project_badges_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.project_badges_id_seq_view AS
+ SELECT (nextval('public.project_badges_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: project_counts_by_quarter_and_language; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW project_counts_by_quarter_and_language AS
+CREATE VIEW public.project_counts_by_quarter_and_language AS
  SELECT af.language_id,
     date_trunc('quarter'::text, timezone('utc'::text, (af.month)::timestamp with time zone)) AS quarter,
     count(DISTINCT af.analysis_id) AS project_count
-   FROM ((activity_facts af
-     JOIN analyses a ON ((a.id = af.analysis_id)))
-     JOIN projects p ON (((p.best_analysis_id = a.id) AND (NOT p.deleted))))
+   FROM ((public.activity_facts af
+     JOIN public.analyses a ON ((a.id = af.analysis_id)))
+     JOIN public.projects p ON (((p.best_analysis_id = a.id) AND (NOT p.deleted))))
   GROUP BY af.language_id, (date_trunc('quarter'::text, timezone('utc'::text, (af.month)::timestamp with time zone)));
 
 
@@ -4462,7 +4583,7 @@ CREATE VIEW project_counts_by_quarter_and_language AS
 -- Name: project_events; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE project_events (
+CREATE TABLE public.project_events (
     id integer NOT NULL,
     project_id integer,
     type text NOT NULL,
@@ -4477,7 +4598,7 @@ CREATE TABLE project_events (
 -- Name: project_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE project_events_id_seq
+CREATE SEQUENCE public.project_events_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4489,22 +4610,22 @@ CREATE SEQUENCE project_events_id_seq
 -- Name: project_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE project_events_id_seq OWNED BY project_events.id;
+ALTER SEQUENCE public.project_events_id_seq OWNED BY public.project_events.id;
 
 
 --
 -- Name: project_events_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW project_events_id_seq_view AS
- SELECT (nextval('project_events_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.project_events_id_seq_view AS
+ SELECT (nextval('public.project_events_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: project_experiences; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE project_experiences (
+CREATE TABLE public.project_experiences (
     id integer NOT NULL,
     position_id integer NOT NULL,
     project_id integer NOT NULL,
@@ -4516,7 +4637,7 @@ CREATE TABLE project_experiences (
 -- Name: project_experiences_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE project_experiences_id_seq
+CREATE SEQUENCE public.project_experiences_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4528,22 +4649,22 @@ CREATE SEQUENCE project_experiences_id_seq
 -- Name: project_experiences_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE project_experiences_id_seq OWNED BY project_experiences.id;
+ALTER SEQUENCE public.project_experiences_id_seq OWNED BY public.project_experiences.id;
 
 
 --
 -- Name: project_experiences_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW project_experiences_id_seq_view AS
- SELECT (nextval('project_experiences_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.project_experiences_id_seq_view AS
+ SELECT (nextval('public.project_experiences_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: project_gestalts_tmp; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE project_gestalts_tmp (
+CREATE TABLE public.project_gestalts_tmp (
     id integer,
     date timestamp without time zone,
     project_id integer,
@@ -4555,7 +4676,7 @@ CREATE TABLE project_gestalts_tmp (
 -- Name: project_licenses; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE project_licenses (
+CREATE TABLE public.project_licenses (
     id integer NOT NULL,
     project_id integer,
     license_id integer,
@@ -4567,7 +4688,7 @@ CREATE TABLE project_licenses (
 -- Name: project_licenses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE project_licenses_id_seq
+CREATE SEQUENCE public.project_licenses_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4579,22 +4700,22 @@ CREATE SEQUENCE project_licenses_id_seq
 -- Name: project_licenses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE project_licenses_id_seq OWNED BY project_licenses.id;
+ALTER SEQUENCE public.project_licenses_id_seq OWNED BY public.project_licenses.id;
 
 
 --
 -- Name: project_licenses_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW project_licenses_id_seq_view AS
- SELECT (nextval('project_licenses_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.project_licenses_id_seq_view AS
+ SELECT (nextval('public.project_licenses_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: project_reports; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE project_reports (
+CREATE TABLE public.project_reports (
     id integer NOT NULL,
     project_id integer NOT NULL,
     report_id integer NOT NULL
@@ -4605,7 +4726,7 @@ CREATE TABLE project_reports (
 -- Name: project_reports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE project_reports_id_seq
+CREATE SEQUENCE public.project_reports_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4617,22 +4738,22 @@ CREATE SEQUENCE project_reports_id_seq
 -- Name: project_reports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE project_reports_id_seq OWNED BY project_reports.id;
+ALTER SEQUENCE public.project_reports_id_seq OWNED BY public.project_reports.id;
 
 
 --
 -- Name: project_reports_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW project_reports_id_seq_view AS
- SELECT (nextval('project_reports_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.project_reports_id_seq_view AS
+ SELECT (nextval('public.project_reports_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: project_security_sets; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE project_security_sets (
+CREATE TABLE public.project_security_sets (
     id integer NOT NULL,
     project_id integer,
     uuid character varying NOT NULL,
@@ -4646,7 +4767,7 @@ CREATE TABLE project_security_sets (
 -- Name: project_security_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE project_security_sets_id_seq
+CREATE SEQUENCE public.project_security_sets_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4658,22 +4779,22 @@ CREATE SEQUENCE project_security_sets_id_seq
 -- Name: project_security_sets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE project_security_sets_id_seq OWNED BY project_security_sets.id;
+ALTER SEQUENCE public.project_security_sets_id_seq OWNED BY public.project_security_sets.id;
 
 
 --
 -- Name: project_security_sets_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW project_security_sets_id_seq_view AS
- SELECT (nextval('project_security_sets_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.project_security_sets_id_seq_view AS
+ SELECT (nextval('public.project_security_sets_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: project_vulnerability_reports; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE project_vulnerability_reports (
+CREATE TABLE public.project_vulnerability_reports (
     id integer NOT NULL,
     project_id integer,
     etag character varying(255),
@@ -4688,7 +4809,7 @@ CREATE TABLE project_vulnerability_reports (
 -- Name: project_vulnerability_reports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE project_vulnerability_reports_id_seq
+CREATE SEQUENCE public.project_vulnerability_reports_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4700,35 +4821,35 @@ CREATE SEQUENCE project_vulnerability_reports_id_seq
 -- Name: project_vulnerability_reports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE project_vulnerability_reports_id_seq OWNED BY project_vulnerability_reports.id;
+ALTER SEQUENCE public.project_vulnerability_reports_id_seq OWNED BY public.project_vulnerability_reports.id;
 
 
 --
 -- Name: project_vulnerability_reports_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW project_vulnerability_reports_id_seq_view AS
- SELECT (nextval('project_vulnerability_reports_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.project_vulnerability_reports_id_seq_view AS
+ SELECT (nextval('public.project_vulnerability_reports_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: projects_by_month; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW projects_by_month AS
+CREATE VIEW public.projects_by_month AS
  SELECT m.month,
     ( SELECT count(*) AS count
-           FROM (projects p
-             JOIN analyses a ON (((p.best_analysis_id = a.id) AND (NOT p.deleted))))
+           FROM (public.projects p
+             JOIN public.analyses a ON (((p.best_analysis_id = a.id) AND (NOT p.deleted))))
           WHERE (date_trunc('quarter'::text, (a.min_month)::timestamp with time zone) <= date_trunc('quarter'::text, m.month))) AS project_count
-   FROM all_months m;
+   FROM public.all_months m;
 
 
 --
 -- Name: projects_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE projects_id_seq
+CREATE SEQUENCE public.projects_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4740,22 +4861,22 @@ CREATE SEQUENCE projects_id_seq
 -- Name: projects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE projects_id_seq OWNED BY projects.id;
+ALTER SEQUENCE public.projects_id_seq OWNED BY public.projects.id;
 
 
 --
 -- Name: projects_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW projects_id_seq_view AS
- SELECT (nextval('projects_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.projects_id_seq_view AS
+ SELECT (nextval('public.projects_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: ratings; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE ratings (
+CREATE TABLE public.ratings (
     id integer NOT NULL,
     account_id integer NOT NULL,
     project_id integer NOT NULL,
@@ -4769,7 +4890,7 @@ CREATE TABLE ratings (
 -- Name: ratings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE ratings_id_seq
+CREATE SEQUENCE public.ratings_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4781,22 +4902,22 @@ CREATE SEQUENCE ratings_id_seq
 -- Name: ratings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE ratings_id_seq OWNED BY ratings.id;
+ALTER SEQUENCE public.ratings_id_seq OWNED BY public.ratings.id;
 
 
 --
 -- Name: ratings_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW ratings_id_seq_view AS
- SELECT (nextval('ratings_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.ratings_id_seq_view AS
+ SELECT (nextval('public.ratings_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: recently_active_accounts_cache; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE recently_active_accounts_cache (
+CREATE TABLE public.recently_active_accounts_cache (
     id integer NOT NULL,
     accounts text,
     created_at timestamp without time zone,
@@ -4808,7 +4929,7 @@ CREATE TABLE recently_active_accounts_cache (
 -- Name: recently_active_accounts_cache_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE recently_active_accounts_cache_id_seq
+CREATE SEQUENCE public.recently_active_accounts_cache_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4820,22 +4941,22 @@ CREATE SEQUENCE recently_active_accounts_cache_id_seq
 -- Name: recently_active_accounts_cache_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE recently_active_accounts_cache_id_seq OWNED BY recently_active_accounts_cache.id;
+ALTER SEQUENCE public.recently_active_accounts_cache_id_seq OWNED BY public.recently_active_accounts_cache.id;
 
 
 --
 -- Name: recently_active_accounts_cache_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW recently_active_accounts_cache_id_seq_view AS
- SELECT (nextval('recently_active_accounts_cache_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.recently_active_accounts_cache_id_seq_view AS
+ SELECT (nextval('public.recently_active_accounts_cache_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: recommend_entries; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE recommend_entries (
+CREATE TABLE public.recommend_entries (
     id integer NOT NULL,
     project_id integer,
     project_id_recommends integer,
@@ -4847,7 +4968,7 @@ CREATE TABLE recommend_entries (
 -- Name: recommend_entries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE recommend_entries_id_seq
+CREATE SEQUENCE public.recommend_entries_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4860,22 +4981,22 @@ CREATE SEQUENCE recommend_entries_id_seq
 -- Name: recommend_entries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE recommend_entries_id_seq OWNED BY recommend_entries.id;
+ALTER SEQUENCE public.recommend_entries_id_seq OWNED BY public.recommend_entries.id;
 
 
 --
 -- Name: recommend_entries_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW recommend_entries_id_seq_view AS
- SELECT (nextval('recommend_entries_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.recommend_entries_id_seq_view AS
+ SELECT (nextval('public.recommend_entries_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: recommendations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE recommendations (
+CREATE TABLE public.recommendations (
     id integer NOT NULL,
     invitor_id integer NOT NULL,
     invitee_id integer,
@@ -4891,7 +5012,7 @@ CREATE TABLE recommendations (
 -- Name: recommendations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE recommendations_id_seq
+CREATE SEQUENCE public.recommendations_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4903,22 +5024,22 @@ CREATE SEQUENCE recommendations_id_seq
 -- Name: recommendations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE recommendations_id_seq OWNED BY recommendations.id;
+ALTER SEQUENCE public.recommendations_id_seq OWNED BY public.recommendations.id;
 
 
 --
 -- Name: recommendations_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW recommendations_id_seq_view AS
- SELECT (nextval('recommendations_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.recommendations_id_seq_view AS
+ SELECT (nextval('public.recommendations_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: releases; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE releases (
+CREATE TABLE public.releases (
     id integer NOT NULL,
     kb_release_id character varying NOT NULL,
     released_on timestamp without time zone,
@@ -4933,7 +5054,7 @@ CREATE TABLE releases (
 -- Name: releases_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE releases_id_seq
+CREATE SEQUENCE public.releases_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4945,22 +5066,22 @@ CREATE SEQUENCE releases_id_seq
 -- Name: releases_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE releases_id_seq OWNED BY releases.id;
+ALTER SEQUENCE public.releases_id_seq OWNED BY public.releases.id;
 
 
 --
 -- Name: releases_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW releases_id_seq_view AS
- SELECT (nextval('releases_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.releases_id_seq_view AS
+ SELECT (nextval('public.releases_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: releases_vulnerabilities; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE releases_vulnerabilities (
+CREATE TABLE public.releases_vulnerabilities (
     release_id integer NOT NULL,
     vulnerability_id integer NOT NULL
 );
@@ -4970,7 +5091,7 @@ CREATE TABLE releases_vulnerabilities (
 -- Name: reports; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE reports (
+CREATE TABLE public.reports (
     id integer NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
@@ -4982,7 +5103,7 @@ CREATE TABLE reports (
 -- Name: reports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE reports_id_seq
+CREATE SEQUENCE public.reports_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4994,22 +5115,22 @@ CREATE SEQUENCE reports_id_seq
 -- Name: reports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE reports_id_seq OWNED BY reports.id;
+ALTER SEQUENCE public.reports_id_seq OWNED BY public.reports.id;
 
 
 --
 -- Name: reports_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW reports_id_seq_view AS
- SELECT (nextval('reports_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.reports_id_seq_view AS
+ SELECT (nextval('public.reports_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: repositories; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE repositories (
+CREATE TABLE public.repositories (
     id integer NOT NULL,
     url text,
     forge_id integer,
@@ -5029,7 +5150,7 @@ CREATE TABLE repositories (
 -- Name: repositories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE repositories_id_seq
+CREATE SEQUENCE public.repositories_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5041,22 +5162,22 @@ CREATE SEQUENCE repositories_id_seq
 -- Name: repositories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE repositories_id_seq OWNED BY repositories.id;
+ALTER SEQUENCE public.repositories_id_seq OWNED BY public.repositories.id;
 
 
 --
 -- Name: repositories_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW repositories_id_seq_view AS
- SELECT (nextval('repositories_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.repositories_id_seq_view AS
+ SELECT (nextval('public.repositories_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: repository_directories; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE repository_directories (
+CREATE TABLE public.repository_directories (
     id integer NOT NULL,
     code_location_id integer,
     repository_id integer,
@@ -5068,7 +5189,7 @@ CREATE TABLE repository_directories (
 -- Name: repository_directories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE repository_directories_id_seq
+CREATE SEQUENCE public.repository_directories_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5080,22 +5201,22 @@ CREATE SEQUENCE repository_directories_id_seq
 -- Name: repository_directories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE repository_directories_id_seq OWNED BY repository_directories.id;
+ALTER SEQUENCE public.repository_directories_id_seq OWNED BY public.repository_directories.id;
 
 
 --
 -- Name: repository_directories_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW repository_directories_id_seq_view AS
- SELECT (nextval('repository_directories_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.repository_directories_id_seq_view AS
+ SELECT (nextval('public.repository_directories_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: repository_tags; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE repository_tags (
+CREATE TABLE public.repository_tags (
     id integer NOT NULL,
     repository_id integer,
     name text,
@@ -5109,7 +5230,7 @@ CREATE TABLE repository_tags (
 -- Name: repository_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE repository_tags_id_seq
+CREATE SEQUENCE public.repository_tags_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5121,22 +5242,22 @@ CREATE SEQUENCE repository_tags_id_seq
 -- Name: repository_tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE repository_tags_id_seq OWNED BY repository_tags.id;
+ALTER SEQUENCE public.repository_tags_id_seq OWNED BY public.repository_tags.id;
 
 
 --
 -- Name: repository_tags_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW repository_tags_id_seq_view AS
- SELECT (nextval('repository_tags_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.repository_tags_id_seq_view AS
+ SELECT (nextval('public.repository_tags_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: reverification_trackers; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE reverification_trackers (
+CREATE TABLE public.reverification_trackers (
     id integer NOT NULL,
     account_id integer NOT NULL,
     message_id character varying NOT NULL,
@@ -5154,7 +5275,7 @@ CREATE TABLE reverification_trackers (
 -- Name: reverification_trackers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE reverification_trackers_id_seq
+CREATE SEQUENCE public.reverification_trackers_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5166,22 +5287,22 @@ CREATE SEQUENCE reverification_trackers_id_seq
 -- Name: reverification_trackers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE reverification_trackers_id_seq OWNED BY reverification_trackers.id;
+ALTER SEQUENCE public.reverification_trackers_id_seq OWNED BY public.reverification_trackers.id;
 
 
 --
 -- Name: reverification_trackers_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW reverification_trackers_id_seq_view AS
- SELECT (nextval('reverification_trackers_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.reverification_trackers_id_seq_view AS
+ SELECT (nextval('public.reverification_trackers_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: reviews; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE reviews (
+CREATE TABLE public.reviews (
     id integer NOT NULL,
     account_id integer NOT NULL,
     project_id integer NOT NULL,
@@ -5197,7 +5318,7 @@ CREATE TABLE reviews (
 -- Name: reviews_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE reviews_id_seq
+CREATE SEQUENCE public.reviews_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5209,22 +5330,22 @@ CREATE SEQUENCE reviews_id_seq
 -- Name: reviews_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE reviews_id_seq OWNED BY reviews.id;
+ALTER SEQUENCE public.reviews_id_seq OWNED BY public.reviews.id;
 
 
 --
 -- Name: reviews_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW reviews_id_seq_view AS
- SELECT (nextval('reviews_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.reviews_id_seq_view AS
+ SELECT (nextval('public.reviews_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: robins_contributions_test; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW robins_contributions_test AS
+CREATE VIEW public.robins_contributions_test AS
  SELECT
         CASE
             WHEN (pos.id IS NULL) THEN ((((per.project_id)::bigint << 32) + (per.name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint)
@@ -5235,20 +5356,20 @@ CREATE VIEW robins_contributions_test AS
         CASE
             WHEN (pos.id IS NULL) THEN per.name_fact_id
             ELSE ( SELECT name_facts.id
-               FROM name_facts
+               FROM public.name_facts
               WHERE ((name_facts.analysis_id = p.best_analysis_id) AND (name_facts.name_id = pos.name_id)))
         END AS name_fact_id,
     pos.id AS position_id
-   FROM ((people per
-     LEFT JOIN positions pos ON ((per.account_id = pos.account_id)))
-     JOIN projects p ON ((p.id = COALESCE(pos.project_id, per.project_id))));
+   FROM ((public.people per
+     LEFT JOIN public.positions pos ON ((per.account_id = pos.account_id)))
+     JOIN public.projects p ON ((p.id = COALESCE(pos.project_id, per.project_id))));
 
 
 --
 -- Name: rss_articles; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE rss_articles (
+CREATE TABLE public.rss_articles (
     id integer NOT NULL,
     rss_feed_id integer,
     guid text NOT NULL,
@@ -5264,7 +5385,7 @@ CREATE TABLE rss_articles (
 -- Name: rss_articles_2; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE rss_articles_2 (
+CREATE TABLE public.rss_articles_2 (
     id integer,
     rss_feed_id integer,
     guid text,
@@ -5280,7 +5401,7 @@ CREATE TABLE rss_articles_2 (
 -- Name: rss_articles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE rss_articles_id_seq
+CREATE SEQUENCE public.rss_articles_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5292,22 +5413,22 @@ CREATE SEQUENCE rss_articles_id_seq
 -- Name: rss_articles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE rss_articles_id_seq OWNED BY rss_articles.id;
+ALTER SEQUENCE public.rss_articles_id_seq OWNED BY public.rss_articles.id;
 
 
 --
 -- Name: rss_articles_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW rss_articles_id_seq_view AS
- SELECT (nextval('rss_articles_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.rss_articles_id_seq_view AS
+ SELECT (nextval('public.rss_articles_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: rss_feeds; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE rss_feeds (
+CREATE TABLE public.rss_feeds (
     id integer NOT NULL,
     url text NOT NULL,
     last_fetch timestamp without time zone,
@@ -5320,7 +5441,7 @@ CREATE TABLE rss_feeds (
 -- Name: rss_feeds_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE rss_feeds_id_seq
+CREATE SEQUENCE public.rss_feeds_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5332,22 +5453,22 @@ CREATE SEQUENCE rss_feeds_id_seq
 -- Name: rss_feeds_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE rss_feeds_id_seq OWNED BY rss_feeds.id;
+ALTER SEQUENCE public.rss_feeds_id_seq OWNED BY public.rss_feeds.id;
 
 
 --
 -- Name: rss_feeds_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW rss_feeds_id_seq_view AS
- SELECT (nextval('rss_feeds_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.rss_feeds_id_seq_view AS
+ SELECT (nextval('public.rss_feeds_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: rss_subscriptions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE rss_subscriptions (
+CREATE TABLE public.rss_subscriptions (
     id integer NOT NULL,
     project_id integer,
     rss_feed_id integer,
@@ -5359,7 +5480,7 @@ CREATE TABLE rss_subscriptions (
 -- Name: rss_subscriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE rss_subscriptions_id_seq
+CREATE SEQUENCE public.rss_subscriptions_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5371,22 +5492,22 @@ CREATE SEQUENCE rss_subscriptions_id_seq
 -- Name: rss_subscriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE rss_subscriptions_id_seq OWNED BY rss_subscriptions.id;
+ALTER SEQUENCE public.rss_subscriptions_id_seq OWNED BY public.rss_subscriptions.id;
 
 
 --
 -- Name: rss_subscriptions_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW rss_subscriptions_id_seq_view AS
- SELECT (nextval('rss_subscriptions_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.rss_subscriptions_id_seq_view AS
+ SELECT (nextval('public.rss_subscriptions_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE schema_migrations (
+CREATE TABLE public.schema_migrations (
     version character varying(255) NOT NULL
 );
 
@@ -5395,7 +5516,7 @@ CREATE TABLE schema_migrations (
 -- Name: sessions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE sessions (
+CREATE TABLE public.sessions (
     id integer NOT NULL,
     session_id character varying(255),
     data text,
@@ -5407,7 +5528,7 @@ CREATE TABLE sessions (
 -- Name: sessions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE sessions_id_seq
+CREATE SEQUENCE public.sessions_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5419,22 +5540,22 @@ CREATE SEQUENCE sessions_id_seq
 -- Name: sessions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE sessions_id_seq OWNED BY sessions.id;
+ALTER SEQUENCE public.sessions_id_seq OWNED BY public.sessions.id;
 
 
 --
 -- Name: sessions_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW sessions_id_seq_view AS
- SELECT (nextval('sessions_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.sessions_id_seq_view AS
+ SELECT (nextval('public.sessions_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: settings; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE settings (
+CREATE TABLE public.settings (
     id integer NOT NULL,
     key character varying,
     value character varying,
@@ -5447,7 +5568,7 @@ CREATE TABLE settings (
 -- Name: settings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE settings_id_seq
+CREATE SEQUENCE public.settings_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5459,22 +5580,22 @@ CREATE SEQUENCE settings_id_seq
 -- Name: settings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE settings_id_seq OWNED BY settings.id;
+ALTER SEQUENCE public.settings_id_seq OWNED BY public.settings.id;
 
 
 --
 -- Name: settings_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW settings_id_seq_view AS
- SELECT (nextval('settings_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.settings_id_seq_view AS
+ SELECT (nextval('public.settings_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: sf_vhosted; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE sf_vhosted (
+CREATE TABLE public.sf_vhosted (
     domain text NOT NULL
 );
 
@@ -5483,7 +5604,7 @@ CREATE TABLE sf_vhosted (
 -- Name: sfprojects; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE sfprojects (
+CREATE TABLE public.sfprojects (
     project_id integer NOT NULL,
     hosted boolean DEFAULT false,
     vhosted boolean DEFAULT false,
@@ -5497,7 +5618,7 @@ CREATE TABLE sfprojects (
 -- Name: size_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE size_facts_id_seq
+CREATE SEQUENCE public.size_facts_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5509,16 +5630,16 @@ CREATE SEQUENCE size_facts_id_seq
 -- Name: size_facts_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW size_facts_id_seq_view AS
- SELECT (nextval('size_facts_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.size_facts_id_seq_view AS
+ SELECT (nextval('public.size_facts_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: slave_logs; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE slave_logs (
-    id integer DEFAULT slave_logs_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.slave_logs (
+    id integer DEFAULT public.slave_logs_id_seq_view() NOT NULL,
     message text,
     created_on timestamp without time zone,
     slave_id integer,
@@ -5531,25 +5652,25 @@ OPTIONS (
     schema_name 'public',
     table_name 'slave_logs'
 );
-ALTER FOREIGN TABLE slave_logs ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.slave_logs ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE slave_logs ALTER COLUMN message OPTIONS (
+ALTER FOREIGN TABLE public.slave_logs ALTER COLUMN message OPTIONS (
     column_name 'message'
 );
-ALTER FOREIGN TABLE slave_logs ALTER COLUMN created_on OPTIONS (
+ALTER FOREIGN TABLE public.slave_logs ALTER COLUMN created_on OPTIONS (
     column_name 'created_on'
 );
-ALTER FOREIGN TABLE slave_logs ALTER COLUMN slave_id OPTIONS (
+ALTER FOREIGN TABLE public.slave_logs ALTER COLUMN slave_id OPTIONS (
     column_name 'slave_id'
 );
-ALTER FOREIGN TABLE slave_logs ALTER COLUMN job_id OPTIONS (
+ALTER FOREIGN TABLE public.slave_logs ALTER COLUMN job_id OPTIONS (
     column_name 'job_id'
 );
-ALTER FOREIGN TABLE slave_logs ALTER COLUMN code_set_id OPTIONS (
+ALTER FOREIGN TABLE public.slave_logs ALTER COLUMN code_set_id OPTIONS (
     column_name 'code_set_id'
 );
-ALTER FOREIGN TABLE slave_logs ALTER COLUMN level OPTIONS (
+ALTER FOREIGN TABLE public.slave_logs ALTER COLUMN level OPTIONS (
     column_name 'level'
 );
 
@@ -5558,7 +5679,7 @@ ALTER FOREIGN TABLE slave_logs ALTER COLUMN level OPTIONS (
 -- Name: slave_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE slave_logs_id_seq
+CREATE SEQUENCE public.slave_logs_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5570,7 +5691,7 @@ CREATE SEQUENCE slave_logs_id_seq
 -- Name: slave_logs_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE slave_logs_id_seq_view (
+CREATE FOREIGN TABLE public.slave_logs_id_seq_view (
     id integer
 )
 SERVER fis
@@ -5578,7 +5699,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'slave_logs_id_seq_view'
 );
-ALTER FOREIGN TABLE slave_logs_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.slave_logs_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -5587,7 +5708,7 @@ ALTER FOREIGN TABLE slave_logs_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: slave_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE slave_permissions_id_seq
+CREATE SEQUENCE public.slave_permissions_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5599,7 +5720,7 @@ CREATE SEQUENCE slave_permissions_id_seq
 -- Name: slave_permissions_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE slave_permissions_id_seq_view (
+CREATE FOREIGN TABLE public.slave_permissions_id_seq_view (
     id integer
 )
 SERVER fis
@@ -5607,7 +5728,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'slave_permissions_id_seq_view'
 );
-ALTER FOREIGN TABLE slave_permissions_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.slave_permissions_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -5616,8 +5737,8 @@ ALTER FOREIGN TABLE slave_permissions_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: slaves; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE slaves (
-    id integer DEFAULT slave_permissions_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.slaves (
+    id integer DEFAULT public.slave_permissions_id_seq_view() NOT NULL,
     allow_deny text,
     hostname text NOT NULL,
     available_blocks integer,
@@ -5636,43 +5757,43 @@ OPTIONS (
     schema_name 'public',
     table_name 'slaves'
 );
-ALTER FOREIGN TABLE slaves ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.slaves ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE slaves ALTER COLUMN allow_deny OPTIONS (
+ALTER FOREIGN TABLE public.slaves ALTER COLUMN allow_deny OPTIONS (
     column_name 'allow_deny'
 );
-ALTER FOREIGN TABLE slaves ALTER COLUMN hostname OPTIONS (
+ALTER FOREIGN TABLE public.slaves ALTER COLUMN hostname OPTIONS (
     column_name 'hostname'
 );
-ALTER FOREIGN TABLE slaves ALTER COLUMN available_blocks OPTIONS (
+ALTER FOREIGN TABLE public.slaves ALTER COLUMN available_blocks OPTIONS (
     column_name 'available_blocks'
 );
-ALTER FOREIGN TABLE slaves ALTER COLUMN used_blocks OPTIONS (
+ALTER FOREIGN TABLE public.slaves ALTER COLUMN used_blocks OPTIONS (
     column_name 'used_blocks'
 );
-ALTER FOREIGN TABLE slaves ALTER COLUMN used_percent OPTIONS (
+ALTER FOREIGN TABLE public.slaves ALTER COLUMN used_percent OPTIONS (
     column_name 'used_percent'
 );
-ALTER FOREIGN TABLE slaves ALTER COLUMN updated_at OPTIONS (
+ALTER FOREIGN TABLE public.slaves ALTER COLUMN updated_at OPTIONS (
     column_name 'updated_at'
 );
-ALTER FOREIGN TABLE slaves ALTER COLUMN load_average OPTIONS (
+ALTER FOREIGN TABLE public.slaves ALTER COLUMN load_average OPTIONS (
     column_name 'load_average'
 );
-ALTER FOREIGN TABLE slaves ALTER COLUMN clump_dir OPTIONS (
+ALTER FOREIGN TABLE public.slaves ALTER COLUMN clump_dir OPTIONS (
     column_name 'clump_dir'
 );
-ALTER FOREIGN TABLE slaves ALTER COLUMN clump_status OPTIONS (
+ALTER FOREIGN TABLE public.slaves ALTER COLUMN clump_status OPTIONS (
     column_name 'clump_status'
 );
-ALTER FOREIGN TABLE slaves ALTER COLUMN oldest_clump_timestamp OPTIONS (
+ALTER FOREIGN TABLE public.slaves ALTER COLUMN oldest_clump_timestamp OPTIONS (
     column_name 'oldest_clump_timestamp'
 );
-ALTER FOREIGN TABLE slaves ALTER COLUMN enable_profiling OPTIONS (
+ALTER FOREIGN TABLE public.slaves ALTER COLUMN enable_profiling OPTIONS (
     column_name 'enable_profiling'
 );
-ALTER FOREIGN TABLE slaves ALTER COLUMN blocked_types OPTIONS (
+ALTER FOREIGN TABLE public.slaves ALTER COLUMN blocked_types OPTIONS (
     column_name 'blocked_types'
 );
 
@@ -5681,8 +5802,8 @@ ALTER FOREIGN TABLE slaves ALTER COLUMN blocked_types OPTIONS (
 -- Name: sloc_metrics; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE sloc_metrics (
-    id bigint DEFAULT sloc_metrics_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.sloc_metrics (
+    id bigint DEFAULT public.sloc_metrics_id_seq_view() NOT NULL,
     diff_id bigint,
     language_id integer,
     code_added integer DEFAULT 0 NOT NULL,
@@ -5698,34 +5819,34 @@ OPTIONS (
     schema_name 'public',
     table_name 'sloc_metrics'
 );
-ALTER FOREIGN TABLE sloc_metrics ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.sloc_metrics ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE sloc_metrics ALTER COLUMN diff_id OPTIONS (
+ALTER FOREIGN TABLE public.sloc_metrics ALTER COLUMN diff_id OPTIONS (
     column_name 'diff_id'
 );
-ALTER FOREIGN TABLE sloc_metrics ALTER COLUMN language_id OPTIONS (
+ALTER FOREIGN TABLE public.sloc_metrics ALTER COLUMN language_id OPTIONS (
     column_name 'language_id'
 );
-ALTER FOREIGN TABLE sloc_metrics ALTER COLUMN code_added OPTIONS (
+ALTER FOREIGN TABLE public.sloc_metrics ALTER COLUMN code_added OPTIONS (
     column_name 'code_added'
 );
-ALTER FOREIGN TABLE sloc_metrics ALTER COLUMN code_removed OPTIONS (
+ALTER FOREIGN TABLE public.sloc_metrics ALTER COLUMN code_removed OPTIONS (
     column_name 'code_removed'
 );
-ALTER FOREIGN TABLE sloc_metrics ALTER COLUMN comments_added OPTIONS (
+ALTER FOREIGN TABLE public.sloc_metrics ALTER COLUMN comments_added OPTIONS (
     column_name 'comments_added'
 );
-ALTER FOREIGN TABLE sloc_metrics ALTER COLUMN comments_removed OPTIONS (
+ALTER FOREIGN TABLE public.sloc_metrics ALTER COLUMN comments_removed OPTIONS (
     column_name 'comments_removed'
 );
-ALTER FOREIGN TABLE sloc_metrics ALTER COLUMN blanks_added OPTIONS (
+ALTER FOREIGN TABLE public.sloc_metrics ALTER COLUMN blanks_added OPTIONS (
     column_name 'blanks_added'
 );
-ALTER FOREIGN TABLE sloc_metrics ALTER COLUMN blanks_removed OPTIONS (
+ALTER FOREIGN TABLE public.sloc_metrics ALTER COLUMN blanks_removed OPTIONS (
     column_name 'blanks_removed'
 );
-ALTER FOREIGN TABLE sloc_metrics ALTER COLUMN sloc_set_id OPTIONS (
+ALTER FOREIGN TABLE public.sloc_metrics ALTER COLUMN sloc_set_id OPTIONS (
     column_name 'sloc_set_id'
 );
 
@@ -5734,7 +5855,7 @@ ALTER FOREIGN TABLE sloc_metrics ALTER COLUMN sloc_set_id OPTIONS (
 -- Name: sloc_metrics_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE sloc_metrics_id_seq
+CREATE SEQUENCE public.sloc_metrics_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5746,7 +5867,7 @@ CREATE SEQUENCE sloc_metrics_id_seq
 -- Name: sloc_metrics_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE sloc_metrics_id_seq_view (
+CREATE FOREIGN TABLE public.sloc_metrics_id_seq_view (
     id integer
 )
 SERVER fis
@@ -5754,7 +5875,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'sloc_metrics_id_seq_view'
 );
-ALTER FOREIGN TABLE sloc_metrics_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.sloc_metrics_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -5763,8 +5884,8 @@ ALTER FOREIGN TABLE sloc_metrics_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: sloc_sets; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE sloc_sets (
-    id integer DEFAULT sloc_sets_id_seq_view() NOT NULL,
+CREATE FOREIGN TABLE public.sloc_sets (
+    id integer DEFAULT public.sloc_sets_id_seq_view() NOT NULL,
     code_set_id integer NOT NULL,
     updated_on timestamp without time zone,
     as_of integer,
@@ -5775,19 +5896,19 @@ OPTIONS (
     schema_name 'public',
     table_name 'sloc_sets'
 );
-ALTER FOREIGN TABLE sloc_sets ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.sloc_sets ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
-ALTER FOREIGN TABLE sloc_sets ALTER COLUMN code_set_id OPTIONS (
+ALTER FOREIGN TABLE public.sloc_sets ALTER COLUMN code_set_id OPTIONS (
     column_name 'code_set_id'
 );
-ALTER FOREIGN TABLE sloc_sets ALTER COLUMN updated_on OPTIONS (
+ALTER FOREIGN TABLE public.sloc_sets ALTER COLUMN updated_on OPTIONS (
     column_name 'updated_on'
 );
-ALTER FOREIGN TABLE sloc_sets ALTER COLUMN as_of OPTIONS (
+ALTER FOREIGN TABLE public.sloc_sets ALTER COLUMN as_of OPTIONS (
     column_name 'as_of'
 );
-ALTER FOREIGN TABLE sloc_sets ALTER COLUMN code_set_time OPTIONS (
+ALTER FOREIGN TABLE public.sloc_sets ALTER COLUMN code_set_time OPTIONS (
     column_name 'code_set_time'
 );
 
@@ -5796,7 +5917,7 @@ ALTER FOREIGN TABLE sloc_sets ALTER COLUMN code_set_time OPTIONS (
 -- Name: sloc_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE sloc_sets_id_seq
+CREATE SEQUENCE public.sloc_sets_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5808,7 +5929,7 @@ CREATE SEQUENCE sloc_sets_id_seq
 -- Name: sloc_sets_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE FOREIGN TABLE sloc_sets_id_seq_view (
+CREATE FOREIGN TABLE public.sloc_sets_id_seq_view (
     id integer
 )
 SERVER fis
@@ -5816,7 +5937,7 @@ OPTIONS (
     schema_name 'public',
     table_name 'sloc_sets_id_seq_view'
 );
-ALTER FOREIGN TABLE sloc_sets_id_seq_view ALTER COLUMN id OPTIONS (
+ALTER FOREIGN TABLE public.sloc_sets_id_seq_view ALTER COLUMN id OPTIONS (
     column_name 'id'
 );
 
@@ -5825,7 +5946,7 @@ ALTER FOREIGN TABLE sloc_sets_id_seq_view ALTER COLUMN id OPTIONS (
 -- Name: stack_entries; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE stack_entries (
+CREATE TABLE public.stack_entries (
     id integer NOT NULL,
     stack_id integer,
     project_id integer,
@@ -5839,7 +5960,7 @@ CREATE TABLE stack_entries (
 -- Name: stack_entries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE stack_entries_id_seq
+CREATE SEQUENCE public.stack_entries_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5851,22 +5972,22 @@ CREATE SEQUENCE stack_entries_id_seq
 -- Name: stack_entries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE stack_entries_id_seq OWNED BY stack_entries.id;
+ALTER SEQUENCE public.stack_entries_id_seq OWNED BY public.stack_entries.id;
 
 
 --
 -- Name: stack_entries_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW stack_entries_id_seq_view AS
- SELECT (nextval('stack_entries_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.stack_entries_id_seq_view AS
+ SELECT (nextval('public.stack_entries_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: stack_ignores; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE stack_ignores (
+CREATE TABLE public.stack_ignores (
     id integer NOT NULL,
     project_id integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
@@ -5878,7 +5999,7 @@ CREATE TABLE stack_ignores (
 -- Name: stack_ignores_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE stack_ignores_id_seq
+CREATE SEQUENCE public.stack_ignores_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5890,22 +6011,22 @@ CREATE SEQUENCE stack_ignores_id_seq
 -- Name: stack_ignores_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE stack_ignores_id_seq OWNED BY stack_ignores.id;
+ALTER SEQUENCE public.stack_ignores_id_seq OWNED BY public.stack_ignores.id;
 
 
 --
 -- Name: stack_ignores_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW stack_ignores_id_seq_view AS
- SELECT (nextval('stack_ignores_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.stack_ignores_id_seq_view AS
+ SELECT (nextval('public.stack_ignores_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: stacks; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE stacks (
+CREATE TABLE public.stacks (
     id integer NOT NULL,
     account_id integer,
     session_id character varying(255),
@@ -5922,7 +6043,7 @@ CREATE TABLE stacks (
 -- Name: stacks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE stacks_id_seq
+CREATE SEQUENCE public.stacks_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5934,22 +6055,22 @@ CREATE SEQUENCE stacks_id_seq
 -- Name: stacks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE stacks_id_seq OWNED BY stacks.id;
+ALTER SEQUENCE public.stacks_id_seq OWNED BY public.stacks.id;
 
 
 --
 -- Name: stacks_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW stacks_id_seq_view AS
- SELECT (nextval('stacks_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.stacks_id_seq_view AS
+ SELECT (nextval('public.stacks_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: successful_accounts; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE successful_accounts (
+CREATE TABLE public.successful_accounts (
     id integer NOT NULL,
     account_id integer
 );
@@ -5959,7 +6080,7 @@ CREATE TABLE successful_accounts (
 -- Name: successful_accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE successful_accounts_id_seq
+CREATE SEQUENCE public.successful_accounts_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5971,22 +6092,22 @@ CREATE SEQUENCE successful_accounts_id_seq
 -- Name: successful_accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE successful_accounts_id_seq OWNED BY successful_accounts.id;
+ALTER SEQUENCE public.successful_accounts_id_seq OWNED BY public.successful_accounts.id;
 
 
 --
 -- Name: successful_accounts_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW successful_accounts_id_seq_view AS
- SELECT (nextval('successful_accounts_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.successful_accounts_id_seq_view AS
+ SELECT (nextval('public.successful_accounts_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: taggings; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE taggings (
+CREATE TABLE public.taggings (
     id integer NOT NULL,
     tag_id integer,
     taggable_id integer,
@@ -5998,7 +6119,7 @@ CREATE TABLE taggings (
 -- Name: taggings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE taggings_id_seq
+CREATE SEQUENCE public.taggings_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -6010,22 +6131,22 @@ CREATE SEQUENCE taggings_id_seq
 -- Name: taggings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE taggings_id_seq OWNED BY taggings.id;
+ALTER SEQUENCE public.taggings_id_seq OWNED BY public.taggings.id;
 
 
 --
 -- Name: taggings_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW taggings_id_seq_view AS
- SELECT (nextval('taggings_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.taggings_id_seq_view AS
+ SELECT (nextval('public.taggings_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: tags; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE tags (
+CREATE TABLE public.tags (
     id integer NOT NULL,
     name text NOT NULL,
     taggings_count integer DEFAULT 0 NOT NULL,
@@ -6037,7 +6158,7 @@ CREATE TABLE tags (
 -- Name: tags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE tags_id_seq
+CREATE SEQUENCE public.tags_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -6049,22 +6170,22 @@ CREATE SEQUENCE tags_id_seq
 -- Name: tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE tags_id_seq OWNED BY tags.id;
+ALTER SEQUENCE public.tags_id_seq OWNED BY public.tags.id;
 
 
 --
 -- Name: tags_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW tags_id_seq_view AS
- SELECT (nextval('tags_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.tags_id_seq_view AS
+ SELECT (nextval('public.tags_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: thirty_day_summaries; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE thirty_day_summaries (
+CREATE TABLE public.thirty_day_summaries (
     id integer NOT NULL,
     analysis_id integer NOT NULL,
     committer_count integer,
@@ -6080,7 +6201,7 @@ CREATE TABLE thirty_day_summaries (
 -- Name: thirty_day_summaries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE thirty_day_summaries_id_seq
+CREATE SEQUENCE public.thirty_day_summaries_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -6092,22 +6213,22 @@ CREATE SEQUENCE thirty_day_summaries_id_seq
 -- Name: thirty_day_summaries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE thirty_day_summaries_id_seq OWNED BY thirty_day_summaries.id;
+ALTER SEQUENCE public.thirty_day_summaries_id_seq OWNED BY public.thirty_day_summaries.id;
 
 
 --
 -- Name: thirty_day_summaries_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW thirty_day_summaries_id_seq_view AS
- SELECT (nextval('thirty_day_summaries_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.thirty_day_summaries_id_seq_view AS
+ SELECT (nextval('public.thirty_day_summaries_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: tools; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE tools (
+CREATE TABLE public.tools (
     id integer NOT NULL,
     name text NOT NULL,
     description text
@@ -6118,7 +6239,7 @@ CREATE TABLE tools (
 -- Name: tools_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE tools_id_seq
+CREATE SEQUENCE public.tools_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -6130,22 +6251,22 @@ CREATE SEQUENCE tools_id_seq
 -- Name: tools_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE tools_id_seq OWNED BY tools.id;
+ALTER SEQUENCE public.tools_id_seq OWNED BY public.tools.id;
 
 
 --
 -- Name: tools_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW tools_id_seq_view AS
- SELECT (nextval('tools_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.tools_id_seq_view AS
+ SELECT (nextval('public.tools_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: topics; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE topics (
+CREATE TABLE public.topics (
     id integer NOT NULL,
     forum_id integer,
     account_id integer NOT NULL,
@@ -6166,7 +6287,7 @@ CREATE TABLE topics (
 -- Name: topics_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE topics_id_seq
+CREATE SEQUENCE public.topics_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -6178,22 +6299,22 @@ CREATE SEQUENCE topics_id_seq
 -- Name: topics_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE topics_id_seq OWNED BY topics.id;
+ALTER SEQUENCE public.topics_id_seq OWNED BY public.topics.id;
 
 
 --
 -- Name: topics_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW topics_id_seq_view AS
- SELECT (nextval('topics_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.topics_id_seq_view AS
+ SELECT (nextval('public.topics_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: verifications; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE verifications (
+CREATE TABLE public.verifications (
     id integer NOT NULL,
     account_id integer,
     type character varying,
@@ -6208,7 +6329,7 @@ CREATE TABLE verifications (
 -- Name: verifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE verifications_id_seq
+CREATE SEQUENCE public.verifications_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -6220,22 +6341,22 @@ CREATE SEQUENCE verifications_id_seq
 -- Name: verifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE verifications_id_seq OWNED BY verifications.id;
+ALTER SEQUENCE public.verifications_id_seq OWNED BY public.verifications.id;
 
 
 --
 -- Name: verifications_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW verifications_id_seq_view AS
- SELECT (nextval('verifications_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.verifications_id_seq_view AS
+ SELECT (nextval('public.verifications_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: vita_analyses; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE vita_analyses (
+CREATE TABLE public.vita_analyses (
     id integer NOT NULL,
     vita_id integer,
     analysis_id integer
@@ -6246,7 +6367,7 @@ CREATE TABLE vita_analyses (
 -- Name: vita_analyses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE vita_analyses_id_seq
+CREATE SEQUENCE public.vita_analyses_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -6258,22 +6379,22 @@ CREATE SEQUENCE vita_analyses_id_seq
 -- Name: vita_analyses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE vita_analyses_id_seq OWNED BY vita_analyses.id;
+ALTER SEQUENCE public.vita_analyses_id_seq OWNED BY public.vita_analyses.id;
 
 
 --
 -- Name: vita_analyses_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW vita_analyses_id_seq_view AS
- SELECT (nextval('vita_analyses_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.vita_analyses_id_seq_view AS
+ SELECT (nextval('public.vita_analyses_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: vitae; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE vitae (
+CREATE TABLE public.vitae (
     id integer NOT NULL,
     account_id integer NOT NULL,
     created_at timestamp without time zone
@@ -6284,7 +6405,7 @@ CREATE TABLE vitae (
 -- Name: vitae_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE vitae_id_seq
+CREATE SEQUENCE public.vitae_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -6296,22 +6417,22 @@ CREATE SEQUENCE vitae_id_seq
 -- Name: vitae_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE vitae_id_seq OWNED BY vitae.id;
+ALTER SEQUENCE public.vitae_id_seq OWNED BY public.vitae.id;
 
 
 --
 -- Name: vitae_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW vitae_id_seq_view AS
- SELECT (nextval('vitae_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.vitae_id_seq_view AS
+ SELECT (nextval('public.vitae_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: vulnerabilities; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE vulnerabilities (
+CREATE TABLE public.vulnerabilities (
     id integer NOT NULL,
     cve_id character varying NOT NULL,
     generated_on timestamp without time zone,
@@ -6328,7 +6449,7 @@ CREATE TABLE vulnerabilities (
 -- Name: vulnerabilities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE vulnerabilities_id_seq
+CREATE SEQUENCE public.vulnerabilities_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -6340,25 +6461,25 @@ CREATE SEQUENCE vulnerabilities_id_seq
 -- Name: vulnerabilities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE vulnerabilities_id_seq OWNED BY vulnerabilities.id;
+ALTER SEQUENCE public.vulnerabilities_id_seq OWNED BY public.vulnerabilities.id;
 
 
 --
 -- Name: vulnerabilities_id_seq_view; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW vulnerabilities_id_seq_view AS
- SELECT (nextval('vulnerabilities_id_seq'::regclass))::integer AS id;
+CREATE VIEW public.vulnerabilities_id_seq_view AS
+ SELECT (nextval('public.vulnerabilities_id_seq'::regclass))::integer AS id;
 
 
 --
 -- Name: vw_projecturlnameedits; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW vw_projecturlnameedits AS
+CREATE VIEW public.vw_projecturlnameedits AS
  SELECT edits.project_id,
     edits.value
-   FROM edits
+   FROM public.edits
   WHERE ((edits.target_type = 'Project'::text) AND (edits.key = 'url_name'::text));
 
 
@@ -6366,678 +6487,665 @@ CREATE VIEW vw_projecturlnameedits AS
 -- Name: account_reports id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY account_reports ALTER COLUMN id SET DEFAULT nextval('account_reports_id_seq'::regclass);
+ALTER TABLE ONLY public.account_reports ALTER COLUMN id SET DEFAULT nextval('public.account_reports_id_seq'::regclass);
 
 
 --
 -- Name: accounts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY accounts ALTER COLUMN id SET DEFAULT nextval('accounts_id_seq'::regclass);
+ALTER TABLE ONLY public.accounts ALTER COLUMN id SET DEFAULT nextval('public.accounts_id_seq'::regclass);
 
 
 --
 -- Name: actions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY actions ALTER COLUMN id SET DEFAULT nextval('actions_id_seq'::regclass);
+ALTER TABLE ONLY public.actions ALTER COLUMN id SET DEFAULT nextval('public.actions_id_seq'::regclass);
 
 
 --
 -- Name: activity_facts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY activity_facts ALTER COLUMN id SET DEFAULT nextval('activity_facts_id_seq'::regclass);
+ALTER TABLE ONLY public.activity_facts ALTER COLUMN id SET DEFAULT nextval('public.activity_facts_id_seq'::regclass);
 
 
 --
 -- Name: aliases id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY aliases ALTER COLUMN id SET DEFAULT nextval('aliases_id_seq'::regclass);
+ALTER TABLE ONLY public.aliases ALTER COLUMN id SET DEFAULT nextval('public.aliases_id_seq'::regclass);
 
 
 --
 -- Name: analyses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY analyses ALTER COLUMN id SET DEFAULT nextval('analyses_id_seq'::regclass);
+ALTER TABLE ONLY public.analyses ALTER COLUMN id SET DEFAULT nextval('public.analyses_id_seq'::regclass);
 
 
 --
 -- Name: analysis_summaries id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY analysis_summaries ALTER COLUMN id SET DEFAULT nextval('analysis_summaries_id_seq'::regclass);
+ALTER TABLE ONLY public.analysis_summaries ALTER COLUMN id SET DEFAULT nextval('public.analysis_summaries_id_seq'::regclass);
 
 
 --
 -- Name: api_keys id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY api_keys ALTER COLUMN id SET DEFAULT nextval('api_keys_id_seq'::regclass);
+ALTER TABLE ONLY public.api_keys ALTER COLUMN id SET DEFAULT nextval('public.api_keys_id_seq'::regclass);
 
 
 --
 -- Name: attachments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY attachments ALTER COLUMN id SET DEFAULT nextval('attachments_id_seq'::regclass);
+ALTER TABLE ONLY public.attachments ALTER COLUMN id SET DEFAULT nextval('public.attachments_id_seq'::regclass);
 
 
 --
 -- Name: authorizations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY authorizations ALTER COLUMN id SET DEFAULT nextval('authorizations_id_seq'::regclass);
+ALTER TABLE ONLY public.authorizations ALTER COLUMN id SET DEFAULT nextval('public.authorizations_id_seq'::regclass);
+
 
 --
 -- Name: broken_links id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY broken_links ALTER COLUMN id SET DEFAULT nextval('public.broken_links_id_seq'::regclass);
+ALTER TABLE ONLY public.broken_links ALTER COLUMN id SET DEFAULT nextval('public.broken_links_id_seq'::regclass);
 
 
 --
 -- Name: clumps id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY clumps ALTER COLUMN id SET DEFAULT nextval('clumps_id_seq'::regclass);
+ALTER TABLE ONLY public.clumps ALTER COLUMN id SET DEFAULT nextval('public.clumps_id_seq'::regclass);
 
 
 --
 -- Name: code_locations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY code_locations ALTER COLUMN id SET DEFAULT nextval('code_locations_id_seq'::regclass);
+ALTER TABLE ONLY public.code_locations ALTER COLUMN id SET DEFAULT nextval('public.code_locations_id_seq'::regclass);
 
 
 --
 -- Name: deleted_accounts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY deleted_accounts ALTER COLUMN id SET DEFAULT nextval('deleted_accounts_id_seq'::regclass);
+ALTER TABLE ONLY public.deleted_accounts ALTER COLUMN id SET DEFAULT nextval('public.deleted_accounts_id_seq'::regclass);
 
 
 --
 -- Name: duplicates id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY duplicates ALTER COLUMN id SET DEFAULT nextval('duplicates_id_seq'::regclass);
+ALTER TABLE ONLY public.duplicates ALTER COLUMN id SET DEFAULT nextval('public.duplicates_id_seq'::regclass);
 
 
 --
 -- Name: enlistments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY enlistments ALTER COLUMN id SET DEFAULT nextval('enlistments_id_seq'::regclass);
+ALTER TABLE ONLY public.enlistments ALTER COLUMN id SET DEFAULT nextval('public.enlistments_id_seq'::regclass);
 
 
 --
 -- Name: event_subscription id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY event_subscription ALTER COLUMN id SET DEFAULT nextval('event_subscription_id_seq'::regclass);
+ALTER TABLE ONLY public.event_subscription ALTER COLUMN id SET DEFAULT nextval('public.event_subscription_id_seq'::regclass);
 
 
 --
 -- Name: exhibits id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY exhibits ALTER COLUMN id SET DEFAULT nextval('exhibits_id_seq'::regclass);
+ALTER TABLE ONLY public.exhibits ALTER COLUMN id SET DEFAULT nextval('public.exhibits_id_seq'::regclass);
 
 
 --
 -- Name: factoids id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY factoids ALTER COLUMN id SET DEFAULT nextval('factoids_id_seq'::regclass);
-
-
---
--- Name: failure_groups id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY failure_groups ALTER COLUMN id SET DEFAULT nextval('failure_groups_id_seq'::regclass);
+ALTER TABLE ONLY public.factoids ALTER COLUMN id SET DEFAULT nextval('public.factoids_id_seq'::regclass);
 
 
 --
 -- Name: feedbacks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY feedbacks ALTER COLUMN id SET DEFAULT nextval('feedbacks_id_seq'::regclass);
+ALTER TABLE ONLY public.feedbacks ALTER COLUMN id SET DEFAULT nextval('public.feedbacks_id_seq'::regclass);
 
 
 --
 -- Name: follows id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY follows ALTER COLUMN id SET DEFAULT nextval('follows_id_seq'::regclass);
+ALTER TABLE ONLY public.follows ALTER COLUMN id SET DEFAULT nextval('public.follows_id_seq'::regclass);
 
 
 --
 -- Name: forges id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY forges ALTER COLUMN id SET DEFAULT nextval('forges_id_seq'::regclass);
+ALTER TABLE ONLY public.forges ALTER COLUMN id SET DEFAULT nextval('public.forges_id_seq'::regclass);
 
 
 --
 -- Name: forums id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY forums ALTER COLUMN id SET DEFAULT nextval('forums_id_seq'::regclass);
+ALTER TABLE ONLY public.forums ALTER COLUMN id SET DEFAULT nextval('public.forums_id_seq'::regclass);
 
 
 --
 -- Name: helpfuls id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY helpfuls ALTER COLUMN id SET DEFAULT nextval('helpfuls_id_seq'::regclass);
+ALTER TABLE ONLY public.helpfuls ALTER COLUMN id SET DEFAULT nextval('public.helpfuls_id_seq'::regclass);
 
 
 --
 -- Name: invites id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invites ALTER COLUMN id SET DEFAULT nextval('invites_id_seq'::regclass);
-
-
---
--- Name: jobs id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY jobs ALTER COLUMN id SET DEFAULT nextval('jobs_id_seq'::regclass);
+ALTER TABLE ONLY public.invites ALTER COLUMN id SET DEFAULT nextval('public.invites_id_seq'::regclass);
 
 
 --
 -- Name: knowledge_base_statuses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY knowledge_base_statuses ALTER COLUMN id SET DEFAULT nextval('knowledge_base_statuses_id_seq'::regclass);
+ALTER TABLE ONLY public.knowledge_base_statuses ALTER COLUMN id SET DEFAULT nextval('public.knowledge_base_statuses_id_seq'::regclass);
 
 
 --
 -- Name: kudo_scores id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY kudo_scores ALTER COLUMN id SET DEFAULT nextval('kudo_scores_id_seq'::regclass);
+ALTER TABLE ONLY public.kudo_scores ALTER COLUMN id SET DEFAULT nextval('public.kudo_scores_id_seq'::regclass);
 
 
 --
 -- Name: kudos id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY kudos ALTER COLUMN id SET DEFAULT nextval('kudos_id_seq'::regclass);
+ALTER TABLE ONLY public.kudos ALTER COLUMN id SET DEFAULT nextval('public.kudos_id_seq'::regclass);
 
 
 --
 -- Name: language_experiences id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY language_experiences ALTER COLUMN id SET DEFAULT nextval('language_experiences_id_seq'::regclass);
+ALTER TABLE ONLY public.language_experiences ALTER COLUMN id SET DEFAULT nextval('public.language_experiences_id_seq'::regclass);
 
 
 --
 -- Name: language_facts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY language_facts ALTER COLUMN id SET DEFAULT nextval('language_facts_id_seq'::regclass);
+ALTER TABLE ONLY public.language_facts ALTER COLUMN id SET DEFAULT nextval('public.language_facts_id_seq'::regclass);
 
 
 --
 -- Name: languages id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY languages ALTER COLUMN id SET DEFAULT nextval('languages_id_seq'::regclass);
+ALTER TABLE ONLY public.languages ALTER COLUMN id SET DEFAULT nextval('public.languages_id_seq'::regclass);
 
 
 --
 -- Name: license_facts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY license_facts ALTER COLUMN id SET DEFAULT nextval('license_facts_id_seq'::regclass);
+ALTER TABLE ONLY public.license_facts ALTER COLUMN id SET DEFAULT nextval('public.license_facts_id_seq'::regclass);
 
 
 --
 -- Name: license_permission_roles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY license_permission_roles ALTER COLUMN id SET DEFAULT nextval('license_permission_roles_id_seq'::regclass);
+ALTER TABLE ONLY public.license_permission_roles ALTER COLUMN id SET DEFAULT nextval('public.license_permission_roles_id_seq'::regclass);
 
 
 --
 -- Name: license_permissions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY license_permissions ALTER COLUMN id SET DEFAULT nextval('license_permissions_id_seq'::regclass);
+ALTER TABLE ONLY public.license_permissions ALTER COLUMN id SET DEFAULT nextval('public.license_permissions_id_seq'::regclass);
 
 
 --
 -- Name: licenses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY licenses ALTER COLUMN id SET DEFAULT nextval('licenses_id_seq'::regclass);
+ALTER TABLE ONLY public.licenses ALTER COLUMN id SET DEFAULT nextval('public.licenses_id_seq'::regclass);
 
 
 --
 -- Name: link_categories_deleted id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY link_categories_deleted ALTER COLUMN id SET DEFAULT nextval('link_categories_id_seq'::regclass);
+ALTER TABLE ONLY public.link_categories_deleted ALTER COLUMN id SET DEFAULT nextval('public.link_categories_id_seq'::regclass);
 
 
 --
 -- Name: links id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY links ALTER COLUMN id SET DEFAULT nextval('links_id_seq'::regclass);
+ALTER TABLE ONLY public.links ALTER COLUMN id SET DEFAULT nextval('public.links_id_seq'::regclass);
 
 
 --
 -- Name: manages id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY manages ALTER COLUMN id SET DEFAULT nextval('manages_id_seq'::regclass);
+ALTER TABLE ONLY public.manages ALTER COLUMN id SET DEFAULT nextval('public.manages_id_seq'::regclass);
 
 
 --
 -- Name: markups id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY markups ALTER COLUMN id SET DEFAULT nextval('markups_id_seq'::regclass);
+ALTER TABLE ONLY public.markups ALTER COLUMN id SET DEFAULT nextval('public.markups_id_seq'::regclass);
 
 
 --
 -- Name: message_account_tags id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY message_account_tags ALTER COLUMN id SET DEFAULT nextval('message_account_tags_id_seq'::regclass);
+ALTER TABLE ONLY public.message_account_tags ALTER COLUMN id SET DEFAULT nextval('public.message_account_tags_id_seq'::regclass);
 
 
 --
 -- Name: message_project_tags id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY message_project_tags ALTER COLUMN id SET DEFAULT nextval('message_project_tags_id_seq'::regclass);
+ALTER TABLE ONLY public.message_project_tags ALTER COLUMN id SET DEFAULT nextval('public.message_project_tags_id_seq'::regclass);
 
 
 --
 -- Name: messages id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY messages ALTER COLUMN id SET DEFAULT nextval('messages_id_seq'::regclass);
+ALTER TABLE ONLY public.messages ALTER COLUMN id SET DEFAULT nextval('public.messages_id_seq'::regclass);
 
 
 --
 -- Name: monthly_commit_histories id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY monthly_commit_histories ALTER COLUMN id SET DEFAULT nextval('monthly_commit_histories_id_seq'::regclass);
+ALTER TABLE ONLY public.monthly_commit_histories ALTER COLUMN id SET DEFAULT nextval('public.monthly_commit_histories_id_seq'::regclass);
 
 
 --
 -- Name: name_facts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY name_facts ALTER COLUMN id SET DEFAULT nextval('name_facts_id_seq'::regclass);
+ALTER TABLE ONLY public.name_facts ALTER COLUMN id SET DEFAULT nextval('public.name_facts_id_seq'::regclass);
 
 
 --
 -- Name: name_language_facts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY name_language_facts ALTER COLUMN id SET DEFAULT nextval('name_language_facts_id_seq'::regclass);
+ALTER TABLE ONLY public.name_language_facts ALTER COLUMN id SET DEFAULT nextval('public.name_language_facts_id_seq'::regclass);
 
 
 --
 -- Name: names id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY names ALTER COLUMN id SET DEFAULT nextval('names_id_seq'::regclass);
+ALTER TABLE ONLY public.names ALTER COLUMN id SET DEFAULT nextval('public.names_id_seq'::regclass);
 
 
 --
 -- Name: oauth_access_grants id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY oauth_access_grants ALTER COLUMN id SET DEFAULT nextval('oauth_access_grants_id_seq'::regclass);
+ALTER TABLE ONLY public.oauth_access_grants ALTER COLUMN id SET DEFAULT nextval('public.oauth_access_grants_id_seq'::regclass);
 
 
 --
 -- Name: oauth_access_tokens id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY oauth_access_tokens ALTER COLUMN id SET DEFAULT nextval('oauth_access_tokens_id_seq'::regclass);
+ALTER TABLE ONLY public.oauth_access_tokens ALTER COLUMN id SET DEFAULT nextval('public.oauth_access_tokens_id_seq'::regclass);
 
 
 --
 -- Name: oauth_applications id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY oauth_applications ALTER COLUMN id SET DEFAULT nextval('oauth_applications_id_seq'::regclass);
+ALTER TABLE ONLY public.oauth_applications ALTER COLUMN id SET DEFAULT nextval('public.oauth_applications_id_seq'::regclass);
 
 
 --
 -- Name: oauth_nonces id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY oauth_nonces ALTER COLUMN id SET DEFAULT nextval('oauth_nonces_id_seq'::regclass);
+ALTER TABLE ONLY public.oauth_nonces ALTER COLUMN id SET DEFAULT nextval('public.oauth_nonces_id_seq'::regclass);
 
 
 --
 -- Name: org_stats_by_sectors id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY org_stats_by_sectors ALTER COLUMN id SET DEFAULT nextval('org_stats_by_sectors_id_seq'::regclass);
+ALTER TABLE ONLY public.org_stats_by_sectors ALTER COLUMN id SET DEFAULT nextval('public.org_stats_by_sectors_id_seq'::regclass);
 
 
 --
 -- Name: org_thirty_day_activities id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY org_thirty_day_activities ALTER COLUMN id SET DEFAULT nextval('org_thirty_day_activities_id_seq'::regclass);
+ALTER TABLE ONLY public.org_thirty_day_activities ALTER COLUMN id SET DEFAULT nextval('public.org_thirty_day_activities_id_seq'::regclass);
 
 
 --
 -- Name: organizations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY organizations ALTER COLUMN id SET DEFAULT nextval('organizations_id_seq'::regclass);
+ALTER TABLE ONLY public.organizations ALTER COLUMN id SET DEFAULT nextval('public.organizations_id_seq'::regclass);
 
 
 --
 -- Name: permissions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY permissions ALTER COLUMN id SET DEFAULT nextval('permissions_id_seq'::regclass);
+ALTER TABLE ONLY public.permissions ALTER COLUMN id SET DEFAULT nextval('public.permissions_id_seq'::regclass);
 
 
 --
 -- Name: positions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY positions ALTER COLUMN id SET DEFAULT nextval('positions_id_seq'::regclass);
+ALTER TABLE ONLY public.positions ALTER COLUMN id SET DEFAULT nextval('public.positions_id_seq'::regclass);
 
 
 --
 -- Name: posts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY posts ALTER COLUMN id SET DEFAULT nextval('posts_id_seq'::regclass);
+ALTER TABLE ONLY public.posts ALTER COLUMN id SET DEFAULT nextval('public.posts_id_seq'::regclass);
 
 
 --
 -- Name: profiles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY profiles ALTER COLUMN id SET DEFAULT nextval('profiles_id_seq'::regclass);
+ALTER TABLE ONLY public.profiles ALTER COLUMN id SET DEFAULT nextval('public.profiles_id_seq'::regclass);
 
 
 --
 -- Name: project_badges id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_badges ALTER COLUMN id SET DEFAULT nextval('project_badges_id_seq'::regclass);
+ALTER TABLE ONLY public.project_badges ALTER COLUMN id SET DEFAULT nextval('public.project_badges_id_seq'::regclass);
 
 
 --
 -- Name: project_events id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_events ALTER COLUMN id SET DEFAULT nextval('project_events_id_seq'::regclass);
+ALTER TABLE ONLY public.project_events ALTER COLUMN id SET DEFAULT nextval('public.project_events_id_seq'::regclass);
 
 
 --
 -- Name: project_experiences id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_experiences ALTER COLUMN id SET DEFAULT nextval('project_experiences_id_seq'::regclass);
+ALTER TABLE ONLY public.project_experiences ALTER COLUMN id SET DEFAULT nextval('public.project_experiences_id_seq'::regclass);
 
 
 --
 -- Name: project_licenses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_licenses ALTER COLUMN id SET DEFAULT nextval('project_licenses_id_seq'::regclass);
+ALTER TABLE ONLY public.project_licenses ALTER COLUMN id SET DEFAULT nextval('public.project_licenses_id_seq'::regclass);
 
 
 --
 -- Name: project_reports id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_reports ALTER COLUMN id SET DEFAULT nextval('project_reports_id_seq'::regclass);
+ALTER TABLE ONLY public.project_reports ALTER COLUMN id SET DEFAULT nextval('public.project_reports_id_seq'::regclass);
 
 
 --
 -- Name: project_security_sets id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_security_sets ALTER COLUMN id SET DEFAULT nextval('project_security_sets_id_seq'::regclass);
+ALTER TABLE ONLY public.project_security_sets ALTER COLUMN id SET DEFAULT nextval('public.project_security_sets_id_seq'::regclass);
 
 
 --
 -- Name: project_vulnerability_reports id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_vulnerability_reports ALTER COLUMN id SET DEFAULT nextval('project_vulnerability_reports_id_seq'::regclass);
+ALTER TABLE ONLY public.project_vulnerability_reports ALTER COLUMN id SET DEFAULT nextval('public.project_vulnerability_reports_id_seq'::regclass);
 
 
 --
 -- Name: projects id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY projects ALTER COLUMN id SET DEFAULT nextval('projects_id_seq'::regclass);
+ALTER TABLE ONLY public.projects ALTER COLUMN id SET DEFAULT nextval('public.projects_id_seq'::regclass);
 
 
 --
 -- Name: ratings id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY ratings ALTER COLUMN id SET DEFAULT nextval('ratings_id_seq'::regclass);
+ALTER TABLE ONLY public.ratings ALTER COLUMN id SET DEFAULT nextval('public.ratings_id_seq'::regclass);
 
 
 --
 -- Name: recently_active_accounts_cache id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY recently_active_accounts_cache ALTER COLUMN id SET DEFAULT nextval('recently_active_accounts_cache_id_seq'::regclass);
+ALTER TABLE ONLY public.recently_active_accounts_cache ALTER COLUMN id SET DEFAULT nextval('public.recently_active_accounts_cache_id_seq'::regclass);
 
 
 --
 -- Name: recommend_entries id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY recommend_entries ALTER COLUMN id SET DEFAULT nextval('recommend_entries_id_seq'::regclass);
+ALTER TABLE ONLY public.recommend_entries ALTER COLUMN id SET DEFAULT nextval('public.recommend_entries_id_seq'::regclass);
 
 
 --
 -- Name: recommendations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY recommendations ALTER COLUMN id SET DEFAULT nextval('recommendations_id_seq'::regclass);
+ALTER TABLE ONLY public.recommendations ALTER COLUMN id SET DEFAULT nextval('public.recommendations_id_seq'::regclass);
 
 
 --
 -- Name: releases id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY releases ALTER COLUMN id SET DEFAULT nextval('releases_id_seq'::regclass);
+ALTER TABLE ONLY public.releases ALTER COLUMN id SET DEFAULT nextval('public.releases_id_seq'::regclass);
 
 
 --
 -- Name: reports id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY reports ALTER COLUMN id SET DEFAULT nextval('reports_id_seq'::regclass);
+ALTER TABLE ONLY public.reports ALTER COLUMN id SET DEFAULT nextval('public.reports_id_seq'::regclass);
 
 
 --
 -- Name: repositories id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY repositories ALTER COLUMN id SET DEFAULT nextval('repositories_id_seq'::regclass);
+ALTER TABLE ONLY public.repositories ALTER COLUMN id SET DEFAULT nextval('public.repositories_id_seq'::regclass);
 
 
 --
 -- Name: repository_directories id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY repository_directories ALTER COLUMN id SET DEFAULT nextval('repository_directories_id_seq'::regclass);
+ALTER TABLE ONLY public.repository_directories ALTER COLUMN id SET DEFAULT nextval('public.repository_directories_id_seq'::regclass);
 
 
 --
 -- Name: repository_tags id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY repository_tags ALTER COLUMN id SET DEFAULT nextval('repository_tags_id_seq'::regclass);
+ALTER TABLE ONLY public.repository_tags ALTER COLUMN id SET DEFAULT nextval('public.repository_tags_id_seq'::regclass);
 
 
 --
 -- Name: reverification_trackers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY reverification_trackers ALTER COLUMN id SET DEFAULT nextval('reverification_trackers_id_seq'::regclass);
+ALTER TABLE ONLY public.reverification_trackers ALTER COLUMN id SET DEFAULT nextval('public.reverification_trackers_id_seq'::regclass);
 
 
 --
 -- Name: reviews id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY reviews ALTER COLUMN id SET DEFAULT nextval('reviews_id_seq'::regclass);
+ALTER TABLE ONLY public.reviews ALTER COLUMN id SET DEFAULT nextval('public.reviews_id_seq'::regclass);
 
 
 --
 -- Name: rss_articles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY rss_articles ALTER COLUMN id SET DEFAULT nextval('rss_articles_id_seq'::regclass);
+ALTER TABLE ONLY public.rss_articles ALTER COLUMN id SET DEFAULT nextval('public.rss_articles_id_seq'::regclass);
 
 
 --
 -- Name: rss_feeds id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY rss_feeds ALTER COLUMN id SET DEFAULT nextval('rss_feeds_id_seq'::regclass);
+ALTER TABLE ONLY public.rss_feeds ALTER COLUMN id SET DEFAULT nextval('public.rss_feeds_id_seq'::regclass);
 
 
 --
 -- Name: rss_subscriptions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY rss_subscriptions ALTER COLUMN id SET DEFAULT nextval('rss_subscriptions_id_seq'::regclass);
+ALTER TABLE ONLY public.rss_subscriptions ALTER COLUMN id SET DEFAULT nextval('public.rss_subscriptions_id_seq'::regclass);
 
 
 --
 -- Name: sessions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY sessions ALTER COLUMN id SET DEFAULT nextval('sessions_id_seq'::regclass);
+ALTER TABLE ONLY public.sessions ALTER COLUMN id SET DEFAULT nextval('public.sessions_id_seq'::regclass);
 
 
 --
 -- Name: settings id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY settings ALTER COLUMN id SET DEFAULT nextval('settings_id_seq'::regclass);
+ALTER TABLE ONLY public.settings ALTER COLUMN id SET DEFAULT nextval('public.settings_id_seq'::regclass);
 
 
 --
 -- Name: stack_entries id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY stack_entries ALTER COLUMN id SET DEFAULT nextval('stack_entries_id_seq'::regclass);
+ALTER TABLE ONLY public.stack_entries ALTER COLUMN id SET DEFAULT nextval('public.stack_entries_id_seq'::regclass);
 
 
 --
 -- Name: stack_ignores id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY stack_ignores ALTER COLUMN id SET DEFAULT nextval('stack_ignores_id_seq'::regclass);
+ALTER TABLE ONLY public.stack_ignores ALTER COLUMN id SET DEFAULT nextval('public.stack_ignores_id_seq'::regclass);
 
 
 --
 -- Name: stacks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY stacks ALTER COLUMN id SET DEFAULT nextval('stacks_id_seq'::regclass);
+ALTER TABLE ONLY public.stacks ALTER COLUMN id SET DEFAULT nextval('public.stacks_id_seq'::regclass);
 
 
 --
 -- Name: successful_accounts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY successful_accounts ALTER COLUMN id SET DEFAULT nextval('successful_accounts_id_seq'::regclass);
+ALTER TABLE ONLY public.successful_accounts ALTER COLUMN id SET DEFAULT nextval('public.successful_accounts_id_seq'::regclass);
 
 
 --
 -- Name: taggings id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY taggings ALTER COLUMN id SET DEFAULT nextval('taggings_id_seq'::regclass);
+ALTER TABLE ONLY public.taggings ALTER COLUMN id SET DEFAULT nextval('public.taggings_id_seq'::regclass);
 
 
 --
 -- Name: tags id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY tags ALTER COLUMN id SET DEFAULT nextval('tags_id_seq'::regclass);
+ALTER TABLE ONLY public.tags ALTER COLUMN id SET DEFAULT nextval('public.tags_id_seq'::regclass);
 
 
 --
 -- Name: thirty_day_summaries id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY thirty_day_summaries ALTER COLUMN id SET DEFAULT nextval('thirty_day_summaries_id_seq'::regclass);
+ALTER TABLE ONLY public.thirty_day_summaries ALTER COLUMN id SET DEFAULT nextval('public.thirty_day_summaries_id_seq'::regclass);
 
 
 --
 -- Name: tools id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY tools ALTER COLUMN id SET DEFAULT nextval('tools_id_seq'::regclass);
+ALTER TABLE ONLY public.tools ALTER COLUMN id SET DEFAULT nextval('public.tools_id_seq'::regclass);
 
 
 --
 -- Name: topics id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY topics ALTER COLUMN id SET DEFAULT nextval('topics_id_seq'::regclass);
+ALTER TABLE ONLY public.topics ALTER COLUMN id SET DEFAULT nextval('public.topics_id_seq'::regclass);
 
 
 --
 -- Name: verifications id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY verifications ALTER COLUMN id SET DEFAULT nextval('verifications_id_seq'::regclass);
+ALTER TABLE ONLY public.verifications ALTER COLUMN id SET DEFAULT nextval('public.verifications_id_seq'::regclass);
 
 
 --
 -- Name: vita_analyses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY vita_analyses ALTER COLUMN id SET DEFAULT nextval('vita_analyses_id_seq'::regclass);
+ALTER TABLE ONLY public.vita_analyses ALTER COLUMN id SET DEFAULT nextval('public.vita_analyses_id_seq'::regclass);
 
 
 --
 -- Name: vitae id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY vitae ALTER COLUMN id SET DEFAULT nextval('vitae_id_seq'::regclass);
+ALTER TABLE ONLY public.vitae ALTER COLUMN id SET DEFAULT nextval('public.vitae_id_seq'::regclass);
 
 
 --
 -- Name: vulnerabilities id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY vulnerabilities ALTER COLUMN id SET DEFAULT nextval('vulnerabilities_id_seq'::regclass);
+ALTER TABLE ONLY public.vulnerabilities ALTER COLUMN id SET DEFAULT nextval('public.vulnerabilities_id_seq'::regclass);
 
 
 --
 -- Name: account_reports account_reports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY account_reports
+ALTER TABLE ONLY public.account_reports
     ADD CONSTRAINT account_reports_pkey PRIMARY KEY (id);
 
 
@@ -7045,7 +7153,7 @@ ALTER TABLE ONLY account_reports
 -- Name: accounts accounts_email_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY accounts
+ALTER TABLE ONLY public.accounts
     ADD CONSTRAINT accounts_email_key UNIQUE (email);
 
 
@@ -7053,7 +7161,7 @@ ALTER TABLE ONLY accounts
 -- Name: accounts accounts_login_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY accounts
+ALTER TABLE ONLY public.accounts
     ADD CONSTRAINT accounts_login_key UNIQUE (login);
 
 
@@ -7061,7 +7169,7 @@ ALTER TABLE ONLY accounts
 -- Name: accounts accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY accounts
+ALTER TABLE ONLY public.accounts
     ADD CONSTRAINT accounts_pkey PRIMARY KEY (id);
 
 
@@ -7069,7 +7177,7 @@ ALTER TABLE ONLY accounts
 -- Name: actions actions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY actions
+ALTER TABLE ONLY public.actions
     ADD CONSTRAINT actions_pkey PRIMARY KEY (id);
 
 
@@ -7077,7 +7185,7 @@ ALTER TABLE ONLY actions
 -- Name: activity_facts activity_facts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY activity_facts
+ALTER TABLE ONLY public.activity_facts
     ADD CONSTRAINT activity_facts_pkey PRIMARY KEY (id);
 
 
@@ -7085,7 +7193,7 @@ ALTER TABLE ONLY activity_facts
 -- Name: aliases aliases_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY aliases
+ALTER TABLE ONLY public.aliases
     ADD CONSTRAINT aliases_pkey PRIMARY KEY (id);
 
 
@@ -7093,7 +7201,7 @@ ALTER TABLE ONLY aliases
 -- Name: aliases aliases_project_id_name_id; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY aliases
+ALTER TABLE ONLY public.aliases
     ADD CONSTRAINT aliases_project_id_name_id UNIQUE (project_id, commit_name_id);
 
 
@@ -7101,7 +7209,7 @@ ALTER TABLE ONLY aliases
 -- Name: analyses analyses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY analyses
+ALTER TABLE ONLY public.analyses
     ADD CONSTRAINT analyses_pkey PRIMARY KEY (id);
 
 
@@ -7109,7 +7217,7 @@ ALTER TABLE ONLY analyses
 -- Name: analysis_summaries analysis_summaries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY analysis_summaries
+ALTER TABLE ONLY public.analysis_summaries
     ADD CONSTRAINT analysis_summaries_pkey PRIMARY KEY (id);
 
 
@@ -7117,7 +7225,7 @@ ALTER TABLE ONLY analysis_summaries
 -- Name: api_keys api_keys_key_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY api_keys
+ALTER TABLE ONLY public.api_keys
     ADD CONSTRAINT api_keys_key_key UNIQUE (key);
 
 
@@ -7125,7 +7233,7 @@ ALTER TABLE ONLY api_keys
 -- Name: api_keys api_keys_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY api_keys
+ALTER TABLE ONLY public.api_keys
     ADD CONSTRAINT api_keys_pkey PRIMARY KEY (id);
 
 
@@ -7133,7 +7241,7 @@ ALTER TABLE ONLY api_keys
 -- Name: attachments attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY attachments
+ALTER TABLE ONLY public.attachments
     ADD CONSTRAINT attachments_pkey PRIMARY KEY (id);
 
 
@@ -7141,7 +7249,7 @@ ALTER TABLE ONLY attachments
 -- Name: authorizations authorizations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY authorizations
+ALTER TABLE ONLY public.authorizations
     ADD CONSTRAINT authorizations_pkey PRIMARY KEY (id);
 
 
@@ -7149,7 +7257,7 @@ ALTER TABLE ONLY authorizations
 -- Name: broken_links broken_links_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY broken_links
+ALTER TABLE ONLY public.broken_links
     ADD CONSTRAINT broken_links_pkey PRIMARY KEY (id);
 
 
@@ -7157,7 +7265,7 @@ ALTER TABLE ONLY broken_links
 -- Name: positions claims_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY positions
+ALTER TABLE ONLY public.positions
     ADD CONSTRAINT claims_pkey PRIMARY KEY (id);
 
 
@@ -7165,7 +7273,7 @@ ALTER TABLE ONLY positions
 -- Name: clumps clumps_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY clumps
+ALTER TABLE ONLY public.clumps
     ADD CONSTRAINT clumps_pkey PRIMARY KEY (id);
 
 
@@ -7173,7 +7281,7 @@ ALTER TABLE ONLY clumps
 -- Name: code_locations code_locations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY code_locations
+ALTER TABLE ONLY public.code_locations
     ADD CONSTRAINT code_locations_pkey PRIMARY KEY (id);
 
 
@@ -7181,7 +7289,7 @@ ALTER TABLE ONLY code_locations
 -- Name: deleted_accounts deleted_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY deleted_accounts
+ALTER TABLE ONLY public.deleted_accounts
     ADD CONSTRAINT deleted_accounts_pkey PRIMARY KEY (id);
 
 
@@ -7189,7 +7297,7 @@ ALTER TABLE ONLY deleted_accounts
 -- Name: duplicates duplicates_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY duplicates
+ALTER TABLE ONLY public.duplicates
     ADD CONSTRAINT duplicates_pkey PRIMARY KEY (id);
 
 
@@ -7197,7 +7305,7 @@ ALTER TABLE ONLY duplicates
 -- Name: edits edits_pkey1; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY edits
+ALTER TABLE ONLY public.edits
     ADD CONSTRAINT edits_pkey1 PRIMARY KEY (id);
 
 
@@ -7205,7 +7313,7 @@ ALTER TABLE ONLY edits
 -- Name: enlistments enlistments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY enlistments
+ALTER TABLE ONLY public.enlistments
     ADD CONSTRAINT enlistments_pkey PRIMARY KEY (id);
 
 
@@ -7213,7 +7321,7 @@ ALTER TABLE ONLY enlistments
 -- Name: event_subscription event_subscription_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY event_subscription
+ALTER TABLE ONLY public.event_subscription
     ADD CONSTRAINT event_subscription_pkey PRIMARY KEY (id);
 
 
@@ -7221,7 +7329,7 @@ ALTER TABLE ONLY event_subscription
 -- Name: exhibits exhibits_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY exhibits
+ALTER TABLE ONLY public.exhibits
     ADD CONSTRAINT exhibits_pkey PRIMARY KEY (id);
 
 
@@ -7229,23 +7337,15 @@ ALTER TABLE ONLY exhibits
 -- Name: factoids factoids_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY factoids
+ALTER TABLE ONLY public.factoids
     ADD CONSTRAINT factoids_pkey PRIMARY KEY (id);
-
-
---
--- Name: failure_groups failure_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY failure_groups
-    ADD CONSTRAINT failure_groups_pkey PRIMARY KEY (id);
 
 
 --
 -- Name: feedbacks feedbacks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY feedbacks
+ALTER TABLE ONLY public.feedbacks
     ADD CONSTRAINT feedbacks_pkey PRIMARY KEY (id);
 
 
@@ -7253,7 +7353,7 @@ ALTER TABLE ONLY feedbacks
 -- Name: follows follows_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY follows
+ALTER TABLE ONLY public.follows
     ADD CONSTRAINT follows_pkey PRIMARY KEY (id);
 
 
@@ -7261,7 +7361,7 @@ ALTER TABLE ONLY follows
 -- Name: forges forges_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY forges
+ALTER TABLE ONLY public.forges
     ADD CONSTRAINT forges_pkey PRIMARY KEY (id);
 
 
@@ -7269,7 +7369,7 @@ ALTER TABLE ONLY forges
 -- Name: forges forges_type_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY forges
+ALTER TABLE ONLY public.forges
     ADD CONSTRAINT forges_type_key UNIQUE (type);
 
 
@@ -7277,7 +7377,7 @@ ALTER TABLE ONLY forges
 -- Name: forums forums_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY forums
+ALTER TABLE ONLY public.forums
     ADD CONSTRAINT forums_pkey PRIMARY KEY (id);
 
 
@@ -7285,7 +7385,7 @@ ALTER TABLE ONLY forums
 -- Name: github_project github_project_project_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY github_project
+ALTER TABLE ONLY public.github_project
     ADD CONSTRAINT github_project_project_id_key UNIQUE (project_id, owner);
 
 
@@ -7293,7 +7393,7 @@ ALTER TABLE ONLY github_project
 -- Name: helpfuls helpfuls_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY helpfuls
+ALTER TABLE ONLY public.helpfuls
     ADD CONSTRAINT helpfuls_pkey PRIMARY KEY (id);
 
 
@@ -7301,23 +7401,15 @@ ALTER TABLE ONLY helpfuls
 -- Name: invites invites_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invites
+ALTER TABLE ONLY public.invites
     ADD CONSTRAINT invites_pkey PRIMARY KEY (id);
-
-
---
--- Name: jobs jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY jobs
-    ADD CONSTRAINT jobs_pkey PRIMARY KEY (id);
 
 
 --
 -- Name: knowledge_base_statuses knowledge_base_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY knowledge_base_statuses
+ALTER TABLE ONLY public.knowledge_base_statuses
     ADD CONSTRAINT knowledge_base_statuses_pkey PRIMARY KEY (id);
 
 
@@ -7325,7 +7417,7 @@ ALTER TABLE ONLY knowledge_base_statuses
 -- Name: knowledge_base_statuses knowledge_base_statuses_project_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY knowledge_base_statuses
+ALTER TABLE ONLY public.knowledge_base_statuses
     ADD CONSTRAINT knowledge_base_statuses_project_id_key UNIQUE (project_id);
 
 
@@ -7333,7 +7425,7 @@ ALTER TABLE ONLY knowledge_base_statuses
 -- Name: kudo_scores kudo_scores_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY kudo_scores
+ALTER TABLE ONLY public.kudo_scores
     ADD CONSTRAINT kudo_scores_pkey PRIMARY KEY (id);
 
 
@@ -7341,7 +7433,7 @@ ALTER TABLE ONLY kudo_scores
 -- Name: kudos kudos_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY kudos
+ALTER TABLE ONLY public.kudos
     ADD CONSTRAINT kudos_pkey PRIMARY KEY (id);
 
 
@@ -7349,7 +7441,7 @@ ALTER TABLE ONLY kudos
 -- Name: language_experiences language_experiences_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY language_experiences
+ALTER TABLE ONLY public.language_experiences
     ADD CONSTRAINT language_experiences_pkey PRIMARY KEY (id);
 
 
@@ -7357,7 +7449,7 @@ ALTER TABLE ONLY language_experiences
 -- Name: language_facts language_facts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY language_facts
+ALTER TABLE ONLY public.language_facts
     ADD CONSTRAINT language_facts_pkey PRIMARY KEY (id);
 
 
@@ -7365,7 +7457,7 @@ ALTER TABLE ONLY language_facts
 -- Name: languages languages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY languages
+ALTER TABLE ONLY public.languages
     ADD CONSTRAINT languages_pkey PRIMARY KEY (id);
 
 
@@ -7373,7 +7465,7 @@ ALTER TABLE ONLY languages
 -- Name: license_facts license_facts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY license_facts
+ALTER TABLE ONLY public.license_facts
     ADD CONSTRAINT license_facts_pkey PRIMARY KEY (id);
 
 
@@ -7381,7 +7473,7 @@ ALTER TABLE ONLY license_facts
 -- Name: license_permission_roles license_permission_roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY license_permission_roles
+ALTER TABLE ONLY public.license_permission_roles
     ADD CONSTRAINT license_permission_roles_pkey PRIMARY KEY (id);
 
 
@@ -7389,7 +7481,7 @@ ALTER TABLE ONLY license_permission_roles
 -- Name: license_permissions license_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY license_permissions
+ALTER TABLE ONLY public.license_permissions
     ADD CONSTRAINT license_permissions_pkey PRIMARY KEY (id);
 
 
@@ -7397,7 +7489,7 @@ ALTER TABLE ONLY license_permissions
 -- Name: licenses licenses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY licenses
+ALTER TABLE ONLY public.licenses
     ADD CONSTRAINT licenses_pkey PRIMARY KEY (id);
 
 
@@ -7405,7 +7497,7 @@ ALTER TABLE ONLY licenses
 -- Name: link_categories_deleted link_categories_name_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY link_categories_deleted
+ALTER TABLE ONLY public.link_categories_deleted
     ADD CONSTRAINT link_categories_name_key UNIQUE (name);
 
 
@@ -7413,7 +7505,7 @@ ALTER TABLE ONLY link_categories_deleted
 -- Name: link_categories_deleted link_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY link_categories_deleted
+ALTER TABLE ONLY public.link_categories_deleted
     ADD CONSTRAINT link_categories_pkey PRIMARY KEY (id);
 
 
@@ -7421,7 +7513,7 @@ ALTER TABLE ONLY link_categories_deleted
 -- Name: links links_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY links
+ALTER TABLE ONLY public.links
     ADD CONSTRAINT links_pkey PRIMARY KEY (id);
 
 
@@ -7429,7 +7521,7 @@ ALTER TABLE ONLY links
 -- Name: manages manages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY manages
+ALTER TABLE ONLY public.manages
     ADD CONSTRAINT manages_pkey PRIMARY KEY (id);
 
 
@@ -7437,7 +7529,7 @@ ALTER TABLE ONLY manages
 -- Name: markups markups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY markups
+ALTER TABLE ONLY public.markups
     ADD CONSTRAINT markups_pkey PRIMARY KEY (id);
 
 
@@ -7445,7 +7537,7 @@ ALTER TABLE ONLY markups
 -- Name: message_account_tags message_account_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY message_account_tags
+ALTER TABLE ONLY public.message_account_tags
     ADD CONSTRAINT message_account_tags_pkey PRIMARY KEY (id);
 
 
@@ -7453,7 +7545,7 @@ ALTER TABLE ONLY message_account_tags
 -- Name: message_project_tags message_project_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY message_project_tags
+ALTER TABLE ONLY public.message_project_tags
     ADD CONSTRAINT message_project_tags_pkey PRIMARY KEY (id);
 
 
@@ -7461,7 +7553,7 @@ ALTER TABLE ONLY message_project_tags
 -- Name: messages messages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY messages
+ALTER TABLE ONLY public.messages
     ADD CONSTRAINT messages_pkey PRIMARY KEY (id);
 
 
@@ -7469,7 +7561,7 @@ ALTER TABLE ONLY messages
 -- Name: monthly_commit_histories monthly_commit_histories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY monthly_commit_histories
+ALTER TABLE ONLY public.monthly_commit_histories
     ADD CONSTRAINT monthly_commit_histories_pkey PRIMARY KEY (id);
 
 
@@ -7477,7 +7569,7 @@ ALTER TABLE ONLY monthly_commit_histories
 -- Name: name_facts name_facts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY name_facts
+ALTER TABLE ONLY public.name_facts
     ADD CONSTRAINT name_facts_pkey PRIMARY KEY (id);
 
 
@@ -7485,7 +7577,7 @@ ALTER TABLE ONLY name_facts
 -- Name: name_language_facts name_language_facts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY name_language_facts
+ALTER TABLE ONLY public.name_language_facts
     ADD CONSTRAINT name_language_facts_pkey PRIMARY KEY (id);
 
 
@@ -7493,7 +7585,7 @@ ALTER TABLE ONLY name_language_facts
 -- Name: names names_name_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY names
+ALTER TABLE ONLY public.names
     ADD CONSTRAINT names_name_key UNIQUE (name);
 
 
@@ -7501,7 +7593,7 @@ ALTER TABLE ONLY names
 -- Name: names names_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY names
+ALTER TABLE ONLY public.names
     ADD CONSTRAINT names_pkey PRIMARY KEY (id);
 
 
@@ -7509,7 +7601,7 @@ ALTER TABLE ONLY names
 -- Name: oauth_access_grants oauth_access_grants_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY oauth_access_grants
+ALTER TABLE ONLY public.oauth_access_grants
     ADD CONSTRAINT oauth_access_grants_pkey PRIMARY KEY (id);
 
 
@@ -7517,7 +7609,7 @@ ALTER TABLE ONLY oauth_access_grants
 -- Name: oauth_access_tokens oauth_access_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY oauth_access_tokens
+ALTER TABLE ONLY public.oauth_access_tokens
     ADD CONSTRAINT oauth_access_tokens_pkey PRIMARY KEY (id);
 
 
@@ -7525,7 +7617,7 @@ ALTER TABLE ONLY oauth_access_tokens
 -- Name: oauth_applications oauth_applications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY oauth_applications
+ALTER TABLE ONLY public.oauth_applications
     ADD CONSTRAINT oauth_applications_pkey PRIMARY KEY (id);
 
 
@@ -7533,7 +7625,7 @@ ALTER TABLE ONLY oauth_applications
 -- Name: oauth_nonces oauth_nonces_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY oauth_nonces
+ALTER TABLE ONLY public.oauth_nonces
     ADD CONSTRAINT oauth_nonces_pkey PRIMARY KEY (id);
 
 
@@ -7541,7 +7633,7 @@ ALTER TABLE ONLY oauth_nonces
 -- Name: org_stats_by_sectors org_stats_by_sectors_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY org_stats_by_sectors
+ALTER TABLE ONLY public.org_stats_by_sectors
     ADD CONSTRAINT org_stats_by_sectors_pkey PRIMARY KEY (id);
 
 
@@ -7549,7 +7641,7 @@ ALTER TABLE ONLY org_stats_by_sectors
 -- Name: org_thirty_day_activities org_thirty_day_activities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY org_thirty_day_activities
+ALTER TABLE ONLY public.org_thirty_day_activities
     ADD CONSTRAINT org_thirty_day_activities_pkey PRIMARY KEY (id);
 
 
@@ -7557,7 +7649,7 @@ ALTER TABLE ONLY org_thirty_day_activities
 -- Name: organizations organizations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY organizations
+ALTER TABLE ONLY public.organizations
     ADD CONSTRAINT organizations_pkey PRIMARY KEY (id);
 
 
@@ -7565,7 +7657,7 @@ ALTER TABLE ONLY organizations
 -- Name: people people_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY people
+ALTER TABLE ONLY public.people
     ADD CONSTRAINT people_id_key UNIQUE (id);
 
 
@@ -7573,7 +7665,7 @@ ALTER TABLE ONLY people
 -- Name: permissions permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY permissions
+ALTER TABLE ONLY public.permissions
     ADD CONSTRAINT permissions_pkey PRIMARY KEY (id);
 
 
@@ -7581,7 +7673,7 @@ ALTER TABLE ONLY permissions
 -- Name: pg_ts_cfg pg_ts_cfg_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY pg_ts_cfg
+ALTER TABLE ONLY public.pg_ts_cfg
     ADD CONSTRAINT pg_ts_cfg_pkey PRIMARY KEY (ts_name);
 
 
@@ -7589,7 +7681,7 @@ ALTER TABLE ONLY pg_ts_cfg
 -- Name: pg_ts_cfgmap pg_ts_cfgmap_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY pg_ts_cfgmap
+ALTER TABLE ONLY public.pg_ts_cfgmap
     ADD CONSTRAINT pg_ts_cfgmap_pkey PRIMARY KEY (ts_name, tok_alias);
 
 
@@ -7597,7 +7689,7 @@ ALTER TABLE ONLY pg_ts_cfgmap
 -- Name: posts posts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY posts
+ALTER TABLE ONLY public.posts
     ADD CONSTRAINT posts_pkey PRIMARY KEY (id);
 
 
@@ -7605,7 +7697,7 @@ ALTER TABLE ONLY posts
 -- Name: profiles profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY profiles
+ALTER TABLE ONLY public.profiles
     ADD CONSTRAINT profiles_pkey PRIMARY KEY (id);
 
 
@@ -7613,7 +7705,7 @@ ALTER TABLE ONLY profiles
 -- Name: project_badges project_badges_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_badges
+ALTER TABLE ONLY public.project_badges
     ADD CONSTRAINT project_badges_pkey PRIMARY KEY (id);
 
 
@@ -7621,7 +7713,7 @@ ALTER TABLE ONLY project_badges
 -- Name: project_events project_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_events
+ALTER TABLE ONLY public.project_events
     ADD CONSTRAINT project_events_pkey PRIMARY KEY (id);
 
 
@@ -7629,7 +7721,7 @@ ALTER TABLE ONLY project_events
 -- Name: project_experiences project_experiences_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_experiences
+ALTER TABLE ONLY public.project_experiences
     ADD CONSTRAINT project_experiences_pkey PRIMARY KEY (id);
 
 
@@ -7637,7 +7729,7 @@ ALTER TABLE ONLY project_experiences
 -- Name: project_licenses project_licenses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_licenses
+ALTER TABLE ONLY public.project_licenses
     ADD CONSTRAINT project_licenses_pkey PRIMARY KEY (id);
 
 
@@ -7645,7 +7737,7 @@ ALTER TABLE ONLY project_licenses
 -- Name: project_reports project_reports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_reports
+ALTER TABLE ONLY public.project_reports
     ADD CONSTRAINT project_reports_pkey PRIMARY KEY (id);
 
 
@@ -7653,7 +7745,7 @@ ALTER TABLE ONLY project_reports
 -- Name: project_reports project_reports_project_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_reports
+ALTER TABLE ONLY public.project_reports
     ADD CONSTRAINT project_reports_project_id_key UNIQUE (project_id, report_id);
 
 
@@ -7661,7 +7753,7 @@ ALTER TABLE ONLY project_reports
 -- Name: project_security_sets project_security_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_security_sets
+ALTER TABLE ONLY public.project_security_sets
     ADD CONSTRAINT project_security_sets_pkey PRIMARY KEY (id);
 
 
@@ -7669,7 +7761,7 @@ ALTER TABLE ONLY project_security_sets
 -- Name: project_vulnerability_reports project_vulnerability_reports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_vulnerability_reports
+ALTER TABLE ONLY public.project_vulnerability_reports
     ADD CONSTRAINT project_vulnerability_reports_pkey PRIMARY KEY (id);
 
 
@@ -7677,7 +7769,7 @@ ALTER TABLE ONLY project_vulnerability_reports
 -- Name: projects projects_kb_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY projects
+ALTER TABLE ONLY public.projects
     ADD CONSTRAINT projects_kb_id_key UNIQUE (kb_id);
 
 
@@ -7685,7 +7777,7 @@ ALTER TABLE ONLY projects
 -- Name: projects projects_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY projects
+ALTER TABLE ONLY public.projects
     ADD CONSTRAINT projects_pkey PRIMARY KEY (id);
 
 
@@ -7693,7 +7785,7 @@ ALTER TABLE ONLY projects
 -- Name: projects projects_url_name_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY projects
+ALTER TABLE ONLY public.projects
     ADD CONSTRAINT projects_url_name_key UNIQUE (vanity_url);
 
 
@@ -7701,7 +7793,7 @@ ALTER TABLE ONLY projects
 -- Name: ratings ratings_account_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY ratings
+ALTER TABLE ONLY public.ratings
     ADD CONSTRAINT ratings_account_id_key UNIQUE (account_id, project_id);
 
 
@@ -7709,7 +7801,7 @@ ALTER TABLE ONLY ratings
 -- Name: ratings ratings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY ratings
+ALTER TABLE ONLY public.ratings
     ADD CONSTRAINT ratings_pkey PRIMARY KEY (id);
 
 
@@ -7717,7 +7809,7 @@ ALTER TABLE ONLY ratings
 -- Name: recommend_entries recommend_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY recommend_entries
+ALTER TABLE ONLY public.recommend_entries
     ADD CONSTRAINT recommend_entries_pkey PRIMARY KEY (id);
 
 
@@ -7725,7 +7817,7 @@ ALTER TABLE ONLY recommend_entries
 -- Name: recommendations recommendations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY recommendations
+ALTER TABLE ONLY public.recommendations
     ADD CONSTRAINT recommendations_pkey PRIMARY KEY (id);
 
 
@@ -7733,7 +7825,7 @@ ALTER TABLE ONLY recommendations
 -- Name: releases releases_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY releases
+ALTER TABLE ONLY public.releases
     ADD CONSTRAINT releases_pkey PRIMARY KEY (id);
 
 
@@ -7741,7 +7833,7 @@ ALTER TABLE ONLY releases
 -- Name: reports reports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY reports
+ALTER TABLE ONLY public.reports
     ADD CONSTRAINT reports_pkey PRIMARY KEY (id);
 
 
@@ -7749,7 +7841,7 @@ ALTER TABLE ONLY reports
 -- Name: repositories repositories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY repositories
+ALTER TABLE ONLY public.repositories
     ADD CONSTRAINT repositories_pkey PRIMARY KEY (id);
 
 
@@ -7757,7 +7849,7 @@ ALTER TABLE ONLY repositories
 -- Name: repository_directories repository_directories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY repository_directories
+ALTER TABLE ONLY public.repository_directories
     ADD CONSTRAINT repository_directories_pkey PRIMARY KEY (id);
 
 
@@ -7765,7 +7857,7 @@ ALTER TABLE ONLY repository_directories
 -- Name: repository_tags repository_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY repository_tags
+ALTER TABLE ONLY public.repository_tags
     ADD CONSTRAINT repository_tags_pkey PRIMARY KEY (id);
 
 
@@ -7773,7 +7865,7 @@ ALTER TABLE ONLY repository_tags
 -- Name: reverification_trackers reverification_trackers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY reverification_trackers
+ALTER TABLE ONLY public.reverification_trackers
     ADD CONSTRAINT reverification_trackers_pkey PRIMARY KEY (id);
 
 
@@ -7781,7 +7873,7 @@ ALTER TABLE ONLY reverification_trackers
 -- Name: reviews reviews_account_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY reviews
+ALTER TABLE ONLY public.reviews
     ADD CONSTRAINT reviews_account_id_key UNIQUE (account_id, project_id);
 
 
@@ -7789,7 +7881,7 @@ ALTER TABLE ONLY reviews
 -- Name: reviews reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY reviews
+ALTER TABLE ONLY public.reviews
     ADD CONSTRAINT reviews_pkey PRIMARY KEY (id);
 
 
@@ -7797,7 +7889,7 @@ ALTER TABLE ONLY reviews
 -- Name: rss_articles rss_articles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY rss_articles
+ALTER TABLE ONLY public.rss_articles
     ADD CONSTRAINT rss_articles_pkey PRIMARY KEY (id);
 
 
@@ -7805,7 +7897,7 @@ ALTER TABLE ONLY rss_articles
 -- Name: rss_feeds rss_feeds_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY rss_feeds
+ALTER TABLE ONLY public.rss_feeds
     ADD CONSTRAINT rss_feeds_pkey PRIMARY KEY (id);
 
 
@@ -7813,7 +7905,7 @@ ALTER TABLE ONLY rss_feeds
 -- Name: rss_subscriptions rss_subscriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY rss_subscriptions
+ALTER TABLE ONLY public.rss_subscriptions
     ADD CONSTRAINT rss_subscriptions_pkey PRIMARY KEY (id);
 
 
@@ -7821,7 +7913,7 @@ ALTER TABLE ONLY rss_subscriptions
 -- Name: sessions sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY sessions
+ALTER TABLE ONLY public.sessions
     ADD CONSTRAINT sessions_pkey PRIMARY KEY (id);
 
 
@@ -7829,7 +7921,7 @@ ALTER TABLE ONLY sessions
 -- Name: sessions sessions_session_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY sessions
+ALTER TABLE ONLY public.sessions
     ADD CONSTRAINT sessions_session_id_key UNIQUE (session_id);
 
 
@@ -7837,7 +7929,7 @@ ALTER TABLE ONLY sessions
 -- Name: settings settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY settings
+ALTER TABLE ONLY public.settings
     ADD CONSTRAINT settings_pkey PRIMARY KEY (id);
 
 
@@ -7845,7 +7937,7 @@ ALTER TABLE ONLY settings
 -- Name: stack_entries stack_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY stack_entries
+ALTER TABLE ONLY public.stack_entries
     ADD CONSTRAINT stack_entries_pkey PRIMARY KEY (id);
 
 
@@ -7853,7 +7945,7 @@ ALTER TABLE ONLY stack_entries
 -- Name: stack_ignores stack_ignores_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY stack_ignores
+ALTER TABLE ONLY public.stack_ignores
     ADD CONSTRAINT stack_ignores_pkey PRIMARY KEY (id);
 
 
@@ -7861,7 +7953,7 @@ ALTER TABLE ONLY stack_ignores
 -- Name: stacks stacks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY stacks
+ALTER TABLE ONLY public.stacks
     ADD CONSTRAINT stacks_pkey PRIMARY KEY (id);
 
 
@@ -7869,7 +7961,7 @@ ALTER TABLE ONLY stacks
 -- Name: successful_accounts successful_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY successful_accounts
+ALTER TABLE ONLY public.successful_accounts
     ADD CONSTRAINT successful_accounts_pkey PRIMARY KEY (id);
 
 
@@ -7877,7 +7969,7 @@ ALTER TABLE ONLY successful_accounts
 -- Name: taggings taggings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY taggings
+ALTER TABLE ONLY public.taggings
     ADD CONSTRAINT taggings_pkey PRIMARY KEY (id);
 
 
@@ -7885,7 +7977,7 @@ ALTER TABLE ONLY taggings
 -- Name: tags tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY tags
+ALTER TABLE ONLY public.tags
     ADD CONSTRAINT tags_pkey PRIMARY KEY (id);
 
 
@@ -7893,7 +7985,7 @@ ALTER TABLE ONLY tags
 -- Name: thirty_day_summaries thirty_day_summaries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY thirty_day_summaries
+ALTER TABLE ONLY public.thirty_day_summaries
     ADD CONSTRAINT thirty_day_summaries_pkey PRIMARY KEY (id);
 
 
@@ -7901,7 +7993,7 @@ ALTER TABLE ONLY thirty_day_summaries
 -- Name: tools tools_name_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY tools
+ALTER TABLE ONLY public.tools
     ADD CONSTRAINT tools_name_key UNIQUE (name);
 
 
@@ -7909,7 +8001,7 @@ ALTER TABLE ONLY tools
 -- Name: tools tools_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY tools
+ALTER TABLE ONLY public.tools
     ADD CONSTRAINT tools_pkey PRIMARY KEY (id);
 
 
@@ -7917,7 +8009,7 @@ ALTER TABLE ONLY tools
 -- Name: topics topics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY topics
+ALTER TABLE ONLY public.topics
     ADD CONSTRAINT topics_pkey PRIMARY KEY (id);
 
 
@@ -7925,7 +8017,7 @@ ALTER TABLE ONLY topics
 -- Name: positions unique_account_id_project_id; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY positions
+ALTER TABLE ONLY public.positions
     ADD CONSTRAINT unique_account_id_project_id UNIQUE (account_id, project_id);
 
 
@@ -7933,7 +8025,7 @@ ALTER TABLE ONLY positions
 -- Name: authorizations unique_authorizations_token; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY authorizations
+ALTER TABLE ONLY public.authorizations
     ADD CONSTRAINT unique_authorizations_token UNIQUE (token);
 
 
@@ -7941,7 +8033,7 @@ ALTER TABLE ONLY authorizations
 -- Name: oauth_nonces unique_oauth_nonces_nonce_timestamp; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY oauth_nonces
+ALTER TABLE ONLY public.oauth_nonces
     ADD CONSTRAINT unique_oauth_nonces_nonce_timestamp UNIQUE (nonce, "timestamp");
 
 
@@ -7949,7 +8041,7 @@ ALTER TABLE ONLY oauth_nonces
 -- Name: project_events unique_project_events; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_events
+ALTER TABLE ONLY public.project_events
     ADD CONSTRAINT unique_project_events UNIQUE (project_id, type, key);
 
 
@@ -7957,7 +8049,7 @@ ALTER TABLE ONLY project_events
 -- Name: positions unique_project_id_name_id; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY positions
+ALTER TABLE ONLY public.positions
     ADD CONSTRAINT unique_project_id_name_id UNIQUE (project_id, name_id);
 
 
@@ -7965,7 +8057,7 @@ ALTER TABLE ONLY positions
 -- Name: rss_subscriptions unique_project_id_rss_feed_id; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY rss_subscriptions
+ALTER TABLE ONLY public.rss_subscriptions
     ADD CONSTRAINT unique_project_id_rss_feed_id UNIQUE (project_id, rss_feed_id);
 
 
@@ -7973,7 +8065,7 @@ ALTER TABLE ONLY rss_subscriptions
 -- Name: rss_articles unique_rss_feed_id_guid; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY rss_articles
+ALTER TABLE ONLY public.rss_articles
     ADD CONSTRAINT unique_rss_feed_id_guid UNIQUE (rss_feed_id, guid);
 
 
@@ -7981,7 +8073,7 @@ ALTER TABLE ONLY rss_articles
 -- Name: taggings unique_taggings_tag_id_taggable_id_taggable_type; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY taggings
+ALTER TABLE ONLY public.taggings
     ADD CONSTRAINT unique_taggings_tag_id_taggable_id_taggable_type UNIQUE (tag_id, taggable_id, taggable_type);
 
 
@@ -7989,7 +8081,7 @@ ALTER TABLE ONLY taggings
 -- Name: verifications verifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY verifications
+ALTER TABLE ONLY public.verifications
     ADD CONSTRAINT verifications_pkey PRIMARY KEY (id);
 
 
@@ -7997,7 +8089,7 @@ ALTER TABLE ONLY verifications
 -- Name: vita_analyses vita_analyses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY vita_analyses
+ALTER TABLE ONLY public.vita_analyses
     ADD CONSTRAINT vita_analyses_pkey PRIMARY KEY (id);
 
 
@@ -8005,7 +8097,7 @@ ALTER TABLE ONLY vita_analyses
 -- Name: vitae vitae_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY vitae
+ALTER TABLE ONLY public.vitae
     ADD CONSTRAINT vitae_pkey PRIMARY KEY (id);
 
 
@@ -8013,7 +8105,7 @@ ALTER TABLE ONLY vitae
 -- Name: vulnerabilities vulnerabilities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY vulnerabilities
+ALTER TABLE ONLY public.vulnerabilities
     ADD CONSTRAINT vulnerabilities_pkey PRIMARY KEY (id);
 
 
@@ -8021,2133 +8113,2053 @@ ALTER TABLE ONLY vulnerabilities
 -- Name: edits_organization_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX edits_organization_id ON edits USING btree (organization_id) WHERE (organization_id IS NOT NULL);
+CREATE INDEX edits_organization_id ON public.edits USING btree (organization_id) WHERE (organization_id IS NOT NULL);
 
 
 --
 -- Name: edits_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX edits_project_id ON edits USING btree (project_id) WHERE (project_id IS NOT NULL);
+CREATE INDEX edits_project_id ON public.edits USING btree (project_id) WHERE (project_id IS NOT NULL);
 
 
 --
 -- Name: github_project_owner_idx; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX github_project_owner_idx ON github_project USING btree (owner);
+CREATE INDEX github_project_owner_idx ON public.github_project USING btree (owner);
 
 
 --
 -- Name: github_project_project_id_idx; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX github_project_project_id_idx ON github_project USING btree (project_id);
+CREATE INDEX github_project_project_id_idx ON public.github_project USING btree (project_id);
 
 
 --
 -- Name: index_account_reports_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_account_reports_on_account_id ON account_reports USING btree (account_id);
+CREATE INDEX index_account_reports_on_account_id ON public.account_reports USING btree (account_id);
 
 
 --
 -- Name: index_account_reports_on_report_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_account_reports_on_report_id ON account_reports USING btree (report_id);
+CREATE INDEX index_account_reports_on_report_id ON public.account_reports USING btree (report_id);
 
 
 --
 -- Name: index_accounts_on_best_vita_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_accounts_on_best_vita_id ON accounts USING btree (best_vita_id) WHERE (best_vita_id IS NOT NULL);
+CREATE INDEX index_accounts_on_best_vita_id ON public.accounts USING btree (best_vita_id) WHERE (best_vita_id IS NOT NULL);
 
 
 --
 -- Name: index_accounts_on_email_md5; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_accounts_on_email_md5 ON accounts USING btree (email_md5);
+CREATE INDEX index_accounts_on_email_md5 ON public.accounts USING btree (email_md5);
 
 
 --
 -- Name: index_accounts_on_lower_login; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_accounts_on_lower_login ON accounts USING btree (lower(login));
+CREATE UNIQUE INDEX index_accounts_on_lower_login ON public.accounts USING btree (lower(login));
 
 
 --
 -- Name: index_accounts_on_organization_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_accounts_on_organization_id ON accounts USING btree (organization_id);
+CREATE INDEX index_accounts_on_organization_id ON public.accounts USING btree (organization_id);
 
 
 --
 -- Name: index_actions_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_actions_on_account_id ON actions USING btree (account_id);
+CREATE INDEX index_actions_on_account_id ON public.actions USING btree (account_id);
 
 
 --
 -- Name: index_activity_facts_on_analysis_id_month; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_activity_facts_on_analysis_id_month ON activity_facts USING btree (analysis_id, month);
+CREATE INDEX index_activity_facts_on_analysis_id_month ON public.activity_facts USING btree (analysis_id, month);
 
 
 --
 -- Name: index_activity_facts_on_language_id_month; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_activity_facts_on_language_id_month ON activity_facts USING btree (language_id, month);
+CREATE INDEX index_activity_facts_on_language_id_month ON public.activity_facts USING btree (language_id, month);
 
 
 --
 -- Name: index_activity_facts_on_name_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_activity_facts_on_name_id ON activity_facts USING btree (name_id);
+CREATE INDEX index_activity_facts_on_name_id ON public.activity_facts USING btree (name_id);
 
 
 --
 -- Name: index_analyses_on_logged_at_day; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_analyses_on_logged_at_day ON analyses USING btree (oldest_code_set_time, date_trunc('day'::text, oldest_code_set_time)) WHERE (oldest_code_set_time IS NOT NULL);
+CREATE INDEX index_analyses_on_logged_at_day ON public.analyses USING btree (oldest_code_set_time, date_trunc('day'::text, oldest_code_set_time)) WHERE (oldest_code_set_time IS NOT NULL);
 
 
 --
 -- Name: index_analyses_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_analyses_on_project_id ON analyses USING btree (project_id);
+CREATE INDEX index_analyses_on_project_id ON public.analyses USING btree (project_id);
 
 
 --
 -- Name: index_analysis_summaries_on_analysis_id_type; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_analysis_summaries_on_analysis_id_type ON analysis_summaries USING btree (analysis_id, type);
+CREATE INDEX index_analysis_summaries_on_analysis_id_type ON public.analysis_summaries USING btree (analysis_id, type);
 
 
 --
 -- Name: index_api_keys_on_key; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_api_keys_on_key ON api_keys USING btree (key);
+CREATE INDEX index_api_keys_on_key ON public.api_keys USING btree (key);
 
 
 --
 -- Name: index_api_keys_on_oauth_application_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_api_keys_on_oauth_application_id ON api_keys USING btree (oauth_application_id);
+CREATE INDEX index_api_keys_on_oauth_application_id ON public.api_keys USING btree (oauth_application_id);
 
 
 --
 -- Name: index_authorizations_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_authorizations_on_account_id ON authorizations USING btree (account_id);
+CREATE INDEX index_authorizations_on_account_id ON public.authorizations USING btree (account_id);
 
 
 --
 -- Name: index_authorizations_on_api_key_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_authorizations_on_api_key_id ON authorizations USING btree (api_key_id);
+CREATE INDEX index_authorizations_on_api_key_id ON public.authorizations USING btree (api_key_id);
 
 
 --
 -- Name: index_claims_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_claims_on_account_id ON positions USING btree (account_id);
+CREATE INDEX index_claims_on_account_id ON public.positions USING btree (account_id);
 
 
 --
 -- Name: index_clumps_on_code_set_id_slave_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_clumps_on_code_set_id_slave_id ON clumps USING btree (code_set_id, slave_id);
+CREATE INDEX index_clumps_on_code_set_id_slave_id ON public.clumps USING btree (code_set_id, slave_id);
 
 
 --
 -- Name: index_code_locations_on_best_code_set_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_code_locations_on_best_code_set_id ON code_locations USING btree (best_code_set_id);
+CREATE INDEX index_code_locations_on_best_code_set_id ON public.code_locations USING btree (best_code_set_id);
 
 
 --
 -- Name: index_code_locations_on_repository_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_code_locations_on_repository_id ON code_locations USING btree (repository_id);
+CREATE INDEX index_code_locations_on_repository_id ON public.code_locations USING btree (repository_id);
 
 
 --
 -- Name: index_code_locations_on_repository_id_and_module_branch_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_code_locations_on_repository_id_and_module_branch_name ON code_locations USING btree (repository_id, module_branch_name);
+CREATE UNIQUE INDEX index_code_locations_on_repository_id_and_module_branch_name ON public.code_locations USING btree (repository_id, module_branch_name);
 
 
 --
 -- Name: index_duplicates_on_bad_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_duplicates_on_bad_project_id ON duplicates USING btree (bad_project_id);
+CREATE INDEX index_duplicates_on_bad_project_id ON public.duplicates USING btree (bad_project_id);
 
 
 --
 -- Name: index_duplicates_on_created_at; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_duplicates_on_created_at ON duplicates USING btree (created_at);
+CREATE INDEX index_duplicates_on_created_at ON public.duplicates USING btree (created_at);
 
 
 --
 -- Name: index_duplicates_on_good_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_duplicates_on_good_project_id ON duplicates USING btree (good_project_id);
+CREATE INDEX index_duplicates_on_good_project_id ON public.duplicates USING btree (good_project_id);
 
 
 --
 -- Name: index_edits_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_edits_on_account_id ON edits USING btree (account_id);
+CREATE INDEX index_edits_on_account_id ON public.edits USING btree (account_id);
 
 
 --
 -- Name: index_edits_on_created_at; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_edits_on_created_at ON edits USING btree (created_at);
+CREATE INDEX index_edits_on_created_at ON public.edits USING btree (created_at);
 
 
 --
 -- Name: index_edits_on_edits; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_edits_on_edits ON edits USING btree (target_type, target_id, key);
+CREATE INDEX index_edits_on_edits ON public.edits USING btree (target_type, target_id, key);
 
 
 --
 -- Name: index_enlistments_on_code_location_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_enlistments_on_code_location_id ON enlistments USING btree (code_location_id);
+CREATE INDEX index_enlistments_on_code_location_id ON public.enlistments USING btree (code_location_id);
 
 
 --
 -- Name: index_enlistments_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_enlistments_on_project_id ON enlistments USING btree (project_id) WHERE (deleted IS FALSE);
+CREATE INDEX index_enlistments_on_project_id ON public.enlistments USING btree (project_id) WHERE (deleted IS FALSE);
 
 
 --
 -- Name: index_enlistments_on_project_id_and_code_location_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_enlistments_on_project_id_and_code_location_id ON enlistments USING btree (project_id, code_location_id);
+CREATE UNIQUE INDEX index_enlistments_on_project_id_and_code_location_id ON public.enlistments USING btree (project_id, code_location_id);
 
 
 --
 -- Name: index_enlistments_on_repository_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_enlistments_on_repository_id ON enlistments USING btree (repository_id) WHERE (deleted IS FALSE);
+CREATE INDEX index_enlistments_on_repository_id ON public.enlistments USING btree (repository_id) WHERE (deleted IS FALSE);
 
 
 --
 -- Name: index_exhibits_on_report_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_exhibits_on_report_id ON exhibits USING btree (report_id);
+CREATE INDEX index_exhibits_on_report_id ON public.exhibits USING btree (report_id);
 
 
 --
 -- Name: index_factoids_on_analysis_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_factoids_on_analysis_id ON factoids USING btree (analysis_id);
-
-
---
--- Name: index_failure_groups_on_priority_name; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_failure_groups_on_priority_name ON failure_groups USING btree (priority, name);
+CREATE INDEX index_factoids_on_analysis_id ON public.factoids USING btree (analysis_id);
 
 
 --
 -- Name: index_follows_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_follows_on_account_id ON follows USING btree (account_id);
+CREATE INDEX index_follows_on_account_id ON public.follows USING btree (account_id);
 
 
 --
 -- Name: index_follows_on_owner_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_follows_on_owner_id ON follows USING btree (owner_id);
+CREATE INDEX index_follows_on_owner_id ON public.follows USING btree (owner_id);
 
 
 --
 -- Name: index_follows_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_follows_on_project_id ON follows USING btree (project_id);
+CREATE INDEX index_follows_on_project_id ON public.follows USING btree (project_id);
 
 
 --
 -- Name: index_helpfuls_on_review_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_helpfuls_on_review_id ON helpfuls USING btree (review_id);
-
-
---
--- Name: index_jobs_on_account_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_jobs_on_account_id ON jobs USING btree (account_id);
-
-
---
--- Name: index_jobs_on_code_location_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_jobs_on_code_location_id ON jobs USING btree (code_location_id);
-
-
---
--- Name: index_jobs_on_code_set_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_jobs_on_code_set_id ON jobs USING btree (code_set_id);
-
-
---
--- Name: index_jobs_on_project_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_jobs_on_project_id ON jobs USING btree (project_id);
-
-
---
--- Name: index_jobs_on_slave_id_status; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_jobs_on_slave_id_status ON jobs USING btree (slave_id, status);
-
-
---
--- Name: index_jobs_on_slave_id_status_current_step; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_jobs_on_slave_id_status_current_step ON jobs USING btree (slave_id, status, current_step_at);
-
-
---
--- Name: index_jobs_on_sloc_set_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_jobs_on_sloc_set_id ON jobs USING btree (sloc_set_id);
+CREATE INDEX index_helpfuls_on_review_id ON public.helpfuls USING btree (review_id);
 
 
 --
 -- Name: index_kudo_scores_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_kudo_scores_on_account_id ON kudo_scores USING btree (account_id);
+CREATE INDEX index_kudo_scores_on_account_id ON public.kudo_scores USING btree (account_id);
 
 
 --
 -- Name: index_kudo_scores_on_array_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_kudo_scores_on_array_index ON kudo_scores USING btree (array_index);
+CREATE INDEX index_kudo_scores_on_array_index ON public.kudo_scores USING btree (array_index);
 
 
 --
 -- Name: index_kudo_scores_on_project_id_name_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_kudo_scores_on_project_id_name_id ON kudo_scores USING btree (project_id, name_id);
+CREATE INDEX index_kudo_scores_on_project_id_name_id ON public.kudo_scores USING btree (project_id, name_id);
 
 
 --
 -- Name: index_kudos_on_from_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_kudos_on_from_account_id ON kudos USING btree (sender_id);
+CREATE INDEX index_kudos_on_from_account_id ON public.kudos USING btree (sender_id);
 
 
 --
 -- Name: index_language_facts_on_month_language_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_language_facts_on_month_language_id ON language_facts USING btree (month, language_id);
+CREATE INDEX index_language_facts_on_month_language_id ON public.language_facts USING btree (month, language_id);
 
 
 --
 -- Name: index_license_facts_on_analysis_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_license_facts_on_analysis_id ON license_facts USING btree (analysis_id);
+CREATE INDEX index_license_facts_on_analysis_id ON public.license_facts USING btree (analysis_id);
 
 
 --
 -- Name: index_licenses_on_vanity_url; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_licenses_on_vanity_url ON licenses USING btree (vanity_url);
+CREATE UNIQUE INDEX index_licenses_on_vanity_url ON public.licenses USING btree (vanity_url);
 
 
 --
 -- Name: index_links_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_links_project_id ON links USING btree (project_id);
+CREATE INDEX index_links_project_id ON public.links USING btree (project_id);
 
 
 --
 -- Name: index_manages_on_target_account_deleted_by; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_manages_on_target_account_deleted_by ON manages USING btree (target_id, target_type, account_id) WHERE ((deleted_at IS NULL) AND (deleted_by IS NULL));
+CREATE UNIQUE INDEX index_manages_on_target_account_deleted_by ON public.manages USING btree (target_id, target_type, account_id) WHERE ((deleted_at IS NULL) AND (deleted_by IS NULL));
 
 
 --
 -- Name: index_message_account_tags_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_message_account_tags_on_account_id ON message_account_tags USING btree (account_id);
+CREATE INDEX index_message_account_tags_on_account_id ON public.message_account_tags USING btree (account_id);
 
 
 --
 -- Name: index_message_account_tags_on_message_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_message_account_tags_on_message_id ON message_account_tags USING btree (message_id);
+CREATE INDEX index_message_account_tags_on_message_id ON public.message_account_tags USING btree (message_id);
 
 
 --
 -- Name: index_message_project_tags_on_message_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_message_project_tags_on_message_id ON message_project_tags USING btree (message_id);
+CREATE INDEX index_message_project_tags_on_message_id ON public.message_project_tags USING btree (message_id);
 
 
 --
 -- Name: index_message_project_tags_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_message_project_tags_on_project_id ON message_project_tags USING btree (project_id);
+CREATE INDEX index_message_project_tags_on_project_id ON public.message_project_tags USING btree (project_id);
 
 
 --
 -- Name: index_messages_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_messages_on_account_id ON messages USING btree (account_id);
+CREATE INDEX index_messages_on_account_id ON public.messages USING btree (account_id);
 
 
 --
 -- Name: index_monthly_commit_histories_on_analysis_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_monthly_commit_histories_on_analysis_id ON monthly_commit_histories USING btree (analysis_id);
+CREATE INDEX index_monthly_commit_histories_on_analysis_id ON public.monthly_commit_histories USING btree (analysis_id);
 
 
 --
 -- Name: index_name_facts_email_address_ids; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_name_facts_email_address_ids ON name_facts USING gin (email_address_ids) WHERE (type = 'ContributorFact'::text);
+CREATE INDEX index_name_facts_email_address_ids ON public.name_facts USING gin (email_address_ids) WHERE (type = 'ContributorFact'::text);
 
 
 --
 -- Name: index_name_facts_on_analysis_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_name_facts_on_analysis_id ON name_facts USING btree (analysis_id);
+CREATE INDEX index_name_facts_on_analysis_id ON public.name_facts USING btree (analysis_id);
 
 
 --
 -- Name: index_name_facts_on_analysis_id_and_name_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_name_facts_on_analysis_id_and_name_id ON name_facts USING btree (analysis_id, name_id);
+CREATE INDEX index_name_facts_on_analysis_id_and_name_id ON public.name_facts USING btree (analysis_id, name_id);
 
 
 --
 -- Name: index_name_facts_on_analysis_id_contributors; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_name_facts_on_analysis_id_contributors ON name_facts USING btree (analysis_id) WHERE (type = 'ContributorFact'::text);
+CREATE INDEX index_name_facts_on_analysis_id_contributors ON public.name_facts USING btree (analysis_id) WHERE (type = 'ContributorFact'::text);
 
 
 --
 -- Name: index_name_facts_on_vita_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_name_facts_on_vita_id ON name_facts USING btree (vita_id);
+CREATE INDEX index_name_facts_on_vita_id ON public.name_facts USING btree (vita_id);
 
 
 --
 -- Name: index_name_language_facts_analysis_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_name_language_facts_analysis_id ON name_language_facts USING btree (analysis_id);
+CREATE INDEX index_name_language_facts_analysis_id ON public.name_language_facts USING btree (analysis_id);
 
 
 --
 -- Name: index_name_language_facts_name_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_name_language_facts_name_id ON name_language_facts USING btree (name_id);
+CREATE INDEX index_name_language_facts_name_id ON public.name_language_facts USING btree (name_id);
 
 
 --
 -- Name: index_name_language_facts_on_language_id_total_months; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_name_language_facts_on_language_id_total_months ON name_language_facts USING btree (language_id, total_months DESC) WHERE (vita_id IS NOT NULL);
+CREATE INDEX index_name_language_facts_on_language_id_total_months ON public.name_language_facts USING btree (language_id, total_months DESC) WHERE (vita_id IS NOT NULL);
 
 
 --
 -- Name: index_name_language_facts_on_vita_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_name_language_facts_on_vita_id ON name_language_facts USING btree (vita_id);
+CREATE INDEX index_name_language_facts_on_vita_id ON public.name_language_facts USING btree (vita_id);
 
 
 --
 -- Name: index_names_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_names_on_name ON names USING btree (name);
+CREATE INDEX index_names_on_name ON public.names USING btree (name);
 
 
 --
 -- Name: index_oauth_access_grants_on_token; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_oauth_access_grants_on_token ON oauth_access_grants USING btree (token);
+CREATE UNIQUE INDEX index_oauth_access_grants_on_token ON public.oauth_access_grants USING btree (token);
 
 
 --
 -- Name: index_oauth_access_tokens_on_refresh_token; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_oauth_access_tokens_on_refresh_token ON oauth_access_tokens USING btree (refresh_token);
+CREATE UNIQUE INDEX index_oauth_access_tokens_on_refresh_token ON public.oauth_access_tokens USING btree (refresh_token);
 
 
 --
 -- Name: index_oauth_access_tokens_on_resource_owner_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_oauth_access_tokens_on_resource_owner_id ON oauth_access_tokens USING btree (resource_owner_id);
+CREATE INDEX index_oauth_access_tokens_on_resource_owner_id ON public.oauth_access_tokens USING btree (resource_owner_id);
 
 
 --
 -- Name: index_oauth_access_tokens_on_token; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_oauth_access_tokens_on_token ON oauth_access_tokens USING btree (token);
+CREATE UNIQUE INDEX index_oauth_access_tokens_on_token ON public.oauth_access_tokens USING btree (token);
 
 
 --
 -- Name: index_oauth_applications_on_uid; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_oauth_applications_on_uid ON oauth_applications USING btree (uid);
+CREATE UNIQUE INDEX index_oauth_applications_on_uid ON public.oauth_applications USING btree (uid);
 
 
 --
 -- Name: index_org_stats_by_sectors_on_created_at_and_org_type; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_org_stats_by_sectors_on_created_at_and_org_type ON org_stats_by_sectors USING btree (created_at, org_type);
+CREATE INDEX index_org_stats_by_sectors_on_created_at_and_org_type ON public.org_stats_by_sectors USING btree (created_at, org_type);
 
 
 --
 -- Name: index_organizations_on_lower_url_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_organizations_on_lower_url_name ON organizations USING btree (lower(vanity_url));
+CREATE UNIQUE INDEX index_organizations_on_lower_url_name ON public.organizations USING btree (lower(vanity_url));
 
 
 --
 -- Name: index_organizations_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_organizations_on_name ON organizations USING btree (lower(name));
+CREATE UNIQUE INDEX index_organizations_on_name ON public.organizations USING btree (lower(name));
 
 
 --
 -- Name: index_organizations_on_vector; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_organizations_on_vector ON organizations USING gin (vector);
+CREATE INDEX index_organizations_on_vector ON public.organizations USING gin (vector);
 
 
 --
 -- Name: index_people_gin; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_people_gin ON people USING gin (vector);
+CREATE INDEX index_people_gin ON public.people USING gin (vector);
 
 
 --
 -- Name: index_people_name_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_people_name_id ON people USING btree (name_id) WHERE (name_id IS NOT NULL);
+CREATE INDEX index_people_name_id ON public.people USING btree (name_id) WHERE (name_id IS NOT NULL);
 
 
 --
 -- Name: index_people_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_people_on_account_id ON people USING btree (account_id);
+CREATE INDEX index_people_on_account_id ON public.people USING btree (account_id);
 
 
 --
 -- Name: index_people_on_kudo_position; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_people_on_kudo_position ON people USING btree ((COALESCE(kudo_position, 999999999)));
+CREATE INDEX index_people_on_kudo_position ON public.people USING btree ((COALESCE(kudo_position, 999999999)));
 
 
 --
 -- Name: index_people_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_people_on_project_id ON people USING btree (project_id);
+CREATE INDEX index_people_on_project_id ON public.people USING btree (project_id);
 
 
 --
 -- Name: index_people_on_vector_gin; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_people_on_vector_gin ON people USING gin (vector);
+CREATE INDEX index_people_on_vector_gin ON public.people USING gin (vector);
 
 
 --
 -- Name: index_permissions_on_target; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_permissions_on_target ON permissions USING btree (target_id, target_type);
+CREATE UNIQUE INDEX index_permissions_on_target ON public.permissions USING btree (target_id, target_type);
 
 
 --
 -- Name: index_positions_on_organization_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_positions_on_organization_id ON positions USING btree (organization_id);
+CREATE INDEX index_positions_on_organization_id ON public.positions USING btree (organization_id);
 
 
 --
 -- Name: index_posts_on_vector; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_posts_on_vector ON posts USING gist (vector);
+CREATE INDEX index_posts_on_vector ON public.posts USING gist (vector);
 
 
 --
 -- Name: index_profiles_on_job_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_profiles_on_job_id ON profiles USING btree (job_id);
+CREATE INDEX index_profiles_on_job_id ON public.profiles USING btree (job_id);
 
 
 --
 -- Name: index_project_badges_on_enlistment_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_project_badges_on_enlistment_id ON project_badges USING btree (enlistment_id);
+CREATE INDEX index_project_badges_on_enlistment_id ON public.project_badges USING btree (enlistment_id);
 
 
 --
 -- Name: index_project_events_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_project_events_on_project_id ON project_events USING btree (project_id);
+CREATE INDEX index_project_events_on_project_id ON public.project_events USING btree (project_id);
 
 
 --
 -- Name: index_project_experiences_on_position_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_project_experiences_on_position_id ON project_experiences USING btree (position_id);
+CREATE INDEX index_project_experiences_on_position_id ON public.project_experiences USING btree (position_id);
 
 
 --
 -- Name: index_project_licenses_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_project_licenses_project_id ON project_licenses USING btree (project_id);
+CREATE INDEX index_project_licenses_project_id ON public.project_licenses USING btree (project_id);
 
 
 --
 -- Name: index_project_reports_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_project_reports_on_project_id ON project_reports USING btree (project_id);
+CREATE INDEX index_project_reports_on_project_id ON public.project_reports USING btree (project_id);
 
 
 --
 -- Name: index_project_reports_on_report_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_project_reports_on_report_id ON project_reports USING btree (report_id);
+CREATE INDEX index_project_reports_on_report_id ON public.project_reports USING btree (report_id);
 
 
 --
 -- Name: index_project_security_sets_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_project_security_sets_on_project_id ON project_security_sets USING btree (project_id);
+CREATE INDEX index_project_security_sets_on_project_id ON public.project_security_sets USING btree (project_id);
 
 
 --
 -- Name: index_project_vulnerability_reports_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_project_vulnerability_reports_on_project_id ON project_vulnerability_reports USING btree (project_id);
+CREATE INDEX index_project_vulnerability_reports_on_project_id ON public.project_vulnerability_reports USING btree (project_id);
 
 
 --
 -- Name: index_projects_deleted; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_projects_deleted ON projects USING btree (deleted, id);
+CREATE INDEX index_projects_deleted ON public.projects USING btree (deleted, id);
 
 
 --
 -- Name: index_projects_on_best_analysis_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_projects_on_best_analysis_id ON projects USING btree (best_analysis_id);
+CREATE INDEX index_projects_on_best_analysis_id ON public.projects USING btree (best_analysis_id);
 
 
 --
 -- Name: index_projects_on_lower_url_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_projects_on_lower_url_name ON projects USING btree (lower(vanity_url));
+CREATE INDEX index_projects_on_lower_url_name ON public.projects USING btree (lower(vanity_url));
 
 
 --
 -- Name: index_projects_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_projects_on_name ON projects USING btree (lower(name));
+CREATE UNIQUE INDEX index_projects_on_name ON public.projects USING btree (lower(name));
 
 
 --
 -- Name: index_projects_on_organization_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_projects_on_organization_id ON projects USING btree (organization_id);
+CREATE INDEX index_projects_on_organization_id ON public.projects USING btree (organization_id);
 
 
 --
 -- Name: index_projects_on_user_count; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_projects_on_user_count ON projects USING btree (user_count DESC) WHERE (NOT deleted);
+CREATE INDEX index_projects_on_user_count ON public.projects USING btree (user_count DESC) WHERE (NOT deleted);
 
 
 --
 -- Name: index_projects_on_vector_gin; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_projects_on_vector_gin ON projects USING gin (vector);
+CREATE INDEX index_projects_on_vector_gin ON public.projects USING gin (vector);
 
 
 --
 -- Name: index_ratings_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_ratings_on_project_id ON ratings USING btree (project_id);
+CREATE INDEX index_ratings_on_project_id ON public.ratings USING btree (project_id);
 
 
 --
 -- Name: index_recommend_entries_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_recommend_entries_on_project_id ON recommend_entries USING btree (project_id);
+CREATE INDEX index_recommend_entries_on_project_id ON public.recommend_entries USING btree (project_id);
 
 
 --
 -- Name: index_releases_on_kb_release_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_releases_on_kb_release_id ON releases USING btree (kb_release_id);
+CREATE INDEX index_releases_on_kb_release_id ON public.releases USING btree (kb_release_id);
 
 
 --
 -- Name: index_releases_on_project_security_set_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_releases_on_project_security_set_id ON releases USING btree (project_security_set_id);
+CREATE INDEX index_releases_on_project_security_set_id ON public.releases USING btree (project_security_set_id);
 
 
 --
 -- Name: index_releases_vulnerabilities_on_release_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_releases_vulnerabilities_on_release_id ON releases_vulnerabilities USING btree (release_id);
+CREATE INDEX index_releases_vulnerabilities_on_release_id ON public.releases_vulnerabilities USING btree (release_id);
 
 
 --
 -- Name: index_releases_vulnerabilities_on_vulnerability_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_releases_vulnerabilities_on_vulnerability_id ON releases_vulnerabilities USING btree (vulnerability_id);
+CREATE INDEX index_releases_vulnerabilities_on_vulnerability_id ON public.releases_vulnerabilities USING btree (vulnerability_id);
 
 
 --
 -- Name: index_repositories_on_forge_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_repositories_on_forge_id ON repositories USING btree (forge_id);
+CREATE INDEX index_repositories_on_forge_id ON public.repositories USING btree (forge_id);
 
 
 --
 -- Name: index_repository_directories_on_code_location_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_repository_directories_on_code_location_id ON repository_directories USING btree (code_location_id);
+CREATE INDEX index_repository_directories_on_code_location_id ON public.repository_directories USING btree (code_location_id);
 
 
 --
 -- Name: index_repository_directories_on_repository_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_repository_directories_on_repository_id ON repository_directories USING btree (repository_id);
+CREATE INDEX index_repository_directories_on_repository_id ON public.repository_directories USING btree (repository_id);
 
 
 --
 -- Name: index_repository_tags_on_repository_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_repository_tags_on_repository_id ON repository_tags USING btree (repository_id);
+CREATE INDEX index_repository_tags_on_repository_id ON public.repository_tags USING btree (repository_id);
 
 
 --
 -- Name: index_reviews_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_reviews_on_account_id ON reviews USING btree (account_id);
+CREATE INDEX index_reviews_on_account_id ON public.reviews USING btree (account_id);
 
 
 --
 -- Name: index_reviews_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_reviews_on_project_id ON reviews USING btree (project_id);
+CREATE INDEX index_reviews_on_project_id ON public.reviews USING btree (project_id);
 
 
 --
 -- Name: index_rss_articles_rss_feed_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_rss_articles_rss_feed_id ON rss_articles USING btree (rss_feed_id);
+CREATE INDEX index_rss_articles_rss_feed_id ON public.rss_articles USING btree (rss_feed_id);
 
 
 --
 -- Name: index_rss_articles_time; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_rss_articles_time ON rss_articles USING btree ("time");
+CREATE INDEX index_rss_articles_time ON public.rss_articles USING btree ("time");
 
 
 --
 -- Name: index_rss_subscriptions_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_rss_subscriptions_project_id ON rss_subscriptions USING btree (project_id);
+CREATE INDEX index_rss_subscriptions_project_id ON public.rss_subscriptions USING btree (project_id);
 
 
 --
 -- Name: index_sessions_on_session_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_sessions_on_session_id ON sessions USING btree (session_id);
+CREATE INDEX index_sessions_on_session_id ON public.sessions USING btree (session_id);
 
 
 --
 -- Name: index_settings_on_key; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_settings_on_key ON settings USING btree (key);
+CREATE UNIQUE INDEX index_settings_on_key ON public.settings USING btree (key);
 
 
 --
 -- Name: index_stack_entries_on_project_stack_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_stack_entries_on_project_stack_id ON stack_entries USING btree (project_id, stack_id) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX index_stack_entries_on_project_stack_id ON public.stack_entries USING btree (project_id, stack_id) WHERE (deleted_at IS NULL);
 
 
 --
 -- Name: index_stacks_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_stacks_account_id ON stacks USING btree (account_id);
+CREATE INDEX index_stacks_account_id ON public.stacks USING btree (account_id);
 
 
 --
 -- Name: index_taggings_on_tag_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_taggings_on_tag_id ON taggings USING btree (tag_id);
+CREATE INDEX index_taggings_on_tag_id ON public.taggings USING btree (tag_id);
 
 
 --
 -- Name: index_taggings_on_taggable_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_taggings_on_taggable_id ON taggings USING btree (taggable_id);
+CREATE INDEX index_taggings_on_taggable_id ON public.taggings USING btree (taggable_id);
 
 
 --
 -- Name: index_tags_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_tags_on_name ON tags USING btree (name);
+CREATE INDEX index_tags_on_name ON public.tags USING btree (name);
 
 
 --
 -- Name: index_thirty_day_summaries_on_analysis_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_thirty_day_summaries_on_analysis_id ON thirty_day_summaries USING btree (analysis_id);
+CREATE INDEX index_thirty_day_summaries_on_analysis_id ON public.thirty_day_summaries USING btree (analysis_id);
 
 
 --
 -- Name: index_vita_analyses_on_analysis_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_vita_analyses_on_analysis_id ON vita_analyses USING btree (analysis_id);
+CREATE INDEX index_vita_analyses_on_analysis_id ON public.vita_analyses USING btree (analysis_id);
 
 
 --
 -- Name: index_vita_analyses_on_vita_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_vita_analyses_on_vita_id ON vita_analyses USING btree (vita_id);
+CREATE INDEX index_vita_analyses_on_vita_id ON public.vita_analyses USING btree (vita_id);
 
 
 --
 -- Name: index_vitae_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_vitae_on_account_id ON vitae USING btree (account_id);
+CREATE INDEX index_vitae_on_account_id ON public.vitae USING btree (account_id);
 
 
 --
 -- Name: index_vulnerabilities_on_cve_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_vulnerabilities_on_cve_id ON vulnerabilities USING btree (cve_id);
+CREATE INDEX index_vulnerabilities_on_cve_id ON public.vulnerabilities USING btree (cve_id);
 
 
 --
 -- Name: kudos_uniques; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX kudos_uniques ON kudos USING btree (sender_id, (COALESCE(account_id, 0)), (COALESCE(project_id, 0)), (COALESCE(name_id, 0)));
+CREATE UNIQUE INDEX kudos_uniques ON public.kudos USING btree (sender_id, (COALESCE(account_id, 0)), (COALESCE(project_id, 0)), (COALESCE(name_id, 0)));
 
 
 --
 -- Name: people_on_name_fact_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX people_on_name_fact_id ON people USING btree (name_fact_id);
+CREATE INDEX people_on_name_fact_id ON public.people USING btree (name_fact_id);
 
 
 --
 -- Name: posts_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX posts_account_id ON posts USING btree (account_id);
+CREATE INDEX posts_account_id ON public.posts USING btree (account_id);
 
 
 --
 -- Name: posts_topic_ic; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX posts_topic_ic ON posts USING btree (topic_id);
+CREATE INDEX posts_topic_ic ON public.posts USING btree (topic_id);
 
 
 --
 -- Name: releases_vulnerabilities_release_id_vulnerability_id_idx; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX releases_vulnerabilities_release_id_vulnerability_id_idx ON releases_vulnerabilities USING btree (release_id, vulnerability_id);
+CREATE UNIQUE INDEX releases_vulnerabilities_release_id_vulnerability_id_idx ON public.releases_vulnerabilities USING btree (release_id, vulnerability_id);
 
 
 --
 -- Name: robin; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX robin ON name_facts USING btree (last_checkin) WHERE (type = 'VitaFact'::text);
+CREATE INDEX robin ON public.name_facts USING btree (last_checkin) WHERE (type = 'VitaFact'::text);
 
 
 --
 -- Name: stack_entry_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX stack_entry_project_id ON stack_entries USING btree (project_id);
+CREATE INDEX stack_entry_project_id ON public.stack_entries USING btree (project_id);
 
 
 --
 -- Name: stack_entry_stack_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX stack_entry_stack_id ON stack_entries USING btree (stack_id);
+CREATE INDEX stack_entry_stack_id ON public.stack_entries USING btree (stack_id);
 
 
 --
 -- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
+CREATE UNIQUE INDEX unique_schema_migrations ON public.schema_migrations USING btree (version);
 
 
 --
 -- Name: unique_stacks_titles_per_account; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX unique_stacks_titles_per_account ON stacks USING btree (account_id, title);
+CREATE UNIQUE INDEX unique_stacks_titles_per_account ON public.stacks USING btree (account_id, title);
 
 
 --
 -- Name: unique_stacks_titles_per_project; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX unique_stacks_titles_per_project ON stacks USING btree (project_id, title);
+CREATE UNIQUE INDEX unique_stacks_titles_per_project ON public.stacks USING btree (project_id, title);
 
 
 --
 -- Name: account_reports account_reports_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY account_reports
-    ADD CONSTRAINT account_reports_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.account_reports
+    ADD CONSTRAINT account_reports_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: account_reports account_reports_report_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY account_reports
-    ADD CONSTRAINT account_reports_report_id_fkey FOREIGN KEY (report_id) REFERENCES reports(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.account_reports
+    ADD CONSTRAINT account_reports_report_id_fkey FOREIGN KEY (report_id) REFERENCES public.reports(id) ON DELETE CASCADE;
 
 
 --
 -- Name: accounts accounts_about_markup_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY accounts
-    ADD CONSTRAINT accounts_about_markup_id_fkey FOREIGN KEY (about_markup_id) REFERENCES markups(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.accounts
+    ADD CONSTRAINT accounts_about_markup_id_fkey FOREIGN KEY (about_markup_id) REFERENCES public.markups(id) ON DELETE CASCADE;
 
 
 --
 -- Name: accounts accounts_best_vita_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY accounts
-    ADD CONSTRAINT accounts_best_vita_id_fkey FOREIGN KEY (best_vita_id) REFERENCES vitae(id);
+ALTER TABLE ONLY public.accounts
+    ADD CONSTRAINT accounts_best_vita_id_fkey FOREIGN KEY (best_vita_id) REFERENCES public.vitae(id);
 
 
 --
 -- Name: accounts accounts_organization_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY accounts
-    ADD CONSTRAINT accounts_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES organizations(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.accounts
+    ADD CONSTRAINT accounts_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES public.organizations(id) ON DELETE CASCADE;
 
 
 --
 -- Name: actions actions_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY actions
-    ADD CONSTRAINT actions_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.actions
+    ADD CONSTRAINT actions_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: actions actions_claim_person_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY actions
-    ADD CONSTRAINT actions_claim_person_id_fkey FOREIGN KEY (claim_person_id) REFERENCES people(id);
+ALTER TABLE ONLY public.actions
+    ADD CONSTRAINT actions_claim_person_id_fkey FOREIGN KEY (claim_person_id) REFERENCES public.people(id);
 
 
 --
 -- Name: actions actions_stack_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY actions
-    ADD CONSTRAINT actions_stack_project_id_fkey FOREIGN KEY (stack_project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.actions
+    ADD CONSTRAINT actions_stack_project_id_fkey FOREIGN KEY (stack_project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: activity_facts activity_facts_analysis_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY activity_facts
-    ADD CONSTRAINT activity_facts_analysis_id_fkey FOREIGN KEY (analysis_id) REFERENCES analyses(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.activity_facts
+    ADD CONSTRAINT activity_facts_analysis_id_fkey FOREIGN KEY (analysis_id) REFERENCES public.analyses(id) ON DELETE CASCADE;
 
 
 --
 -- Name: activity_facts activity_facts_language_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY activity_facts
-    ADD CONSTRAINT activity_facts_language_id_fkey FOREIGN KEY (language_id) REFERENCES languages(id);
+ALTER TABLE ONLY public.activity_facts
+    ADD CONSTRAINT activity_facts_language_id_fkey FOREIGN KEY (language_id) REFERENCES public.languages(id);
 
 
 --
 -- Name: aliases aliases_commit_name_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY aliases
-    ADD CONSTRAINT aliases_commit_name_id_fkey FOREIGN KEY (commit_name_id) REFERENCES names(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.aliases
+    ADD CONSTRAINT aliases_commit_name_id_fkey FOREIGN KEY (commit_name_id) REFERENCES public.names(id) ON DELETE CASCADE;
 
 
 --
 -- Name: aliases aliases_preferred_name_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY aliases
-    ADD CONSTRAINT aliases_preferred_name_id_fkey FOREIGN KEY (preferred_name_id) REFERENCES names(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.aliases
+    ADD CONSTRAINT aliases_preferred_name_id_fkey FOREIGN KEY (preferred_name_id) REFERENCES public.names(id) ON DELETE CASCADE;
 
 
 --
 -- Name: aliases aliases_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY aliases
-    ADD CONSTRAINT aliases_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.aliases
+    ADD CONSTRAINT aliases_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: analyses analyses_main_language_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY analyses
-    ADD CONSTRAINT analyses_main_language_id_fkey FOREIGN KEY (main_language_id) REFERENCES languages(id);
+ALTER TABLE ONLY public.analyses
+    ADD CONSTRAINT analyses_main_language_id_fkey FOREIGN KEY (main_language_id) REFERENCES public.languages(id);
 
 
 --
 -- Name: analyses analyses_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY analyses
-    ADD CONSTRAINT analyses_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.analyses
+    ADD CONSTRAINT analyses_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: analysis_summaries analysis_summaries_analysis_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY analysis_summaries
-    ADD CONSTRAINT analysis_summaries_analysis_id_fkey FOREIGN KEY (analysis_id) REFERENCES analyses(id);
+ALTER TABLE ONLY public.analysis_summaries
+    ADD CONSTRAINT analysis_summaries_analysis_id_fkey FOREIGN KEY (analysis_id) REFERENCES public.analyses(id);
 
 
 --
 -- Name: api_keys api_keys_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY api_keys
-    ADD CONSTRAINT api_keys_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.api_keys
+    ADD CONSTRAINT api_keys_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: authorizations authorizations_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY authorizations
-    ADD CONSTRAINT authorizations_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.authorizations
+    ADD CONSTRAINT authorizations_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: authorizations authorizations_api_key_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY authorizations
-    ADD CONSTRAINT authorizations_api_key_id_fkey FOREIGN KEY (api_key_id) REFERENCES api_keys(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.authorizations
+    ADD CONSTRAINT authorizations_api_key_id_fkey FOREIGN KEY (api_key_id) REFERENCES public.api_keys(id) ON DELETE CASCADE;
 
 
 --
 -- Name: positions claims_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY positions
-    ADD CONSTRAINT claims_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.positions
+    ADD CONSTRAINT claims_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: positions claims_name_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY positions
-    ADD CONSTRAINT claims_name_id_fkey FOREIGN KEY (name_id) REFERENCES names(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.positions
+    ADD CONSTRAINT claims_name_id_fkey FOREIGN KEY (name_id) REFERENCES public.names(id) ON DELETE CASCADE;
 
 
 --
 -- Name: positions claims_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY positions
-    ADD CONSTRAINT claims_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.positions
+    ADD CONSTRAINT claims_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: duplicates duplicates_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY duplicates
-    ADD CONSTRAINT duplicates_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.duplicates
+    ADD CONSTRAINT duplicates_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: duplicates duplicates_bad_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY duplicates
-    ADD CONSTRAINT duplicates_bad_project_id_fkey FOREIGN KEY (bad_project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.duplicates
+    ADD CONSTRAINT duplicates_bad_project_id_fkey FOREIGN KEY (bad_project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: duplicates duplicates_good_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY duplicates
-    ADD CONSTRAINT duplicates_good_project_id_fkey FOREIGN KEY (good_project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.duplicates
+    ADD CONSTRAINT duplicates_good_project_id_fkey FOREIGN KEY (good_project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: edits edits_account_id_fkey1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY edits
-    ADD CONSTRAINT edits_account_id_fkey1 FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.edits
+    ADD CONSTRAINT edits_account_id_fkey1 FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: edits edits_organization_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY edits
-    ADD CONSTRAINT edits_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES organizations(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.edits
+    ADD CONSTRAINT edits_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES public.organizations(id) ON DELETE CASCADE;
 
 
 --
 -- Name: edits edits_project_id_fkey1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY edits
-    ADD CONSTRAINT edits_project_id_fkey1 FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.edits
+    ADD CONSTRAINT edits_project_id_fkey1 FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: edits edits_undone_by_fkey1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY edits
-    ADD CONSTRAINT edits_undone_by_fkey1 FOREIGN KEY (undone_by) REFERENCES accounts(id);
+ALTER TABLE ONLY public.edits
+    ADD CONSTRAINT edits_undone_by_fkey1 FOREIGN KEY (undone_by) REFERENCES public.accounts(id);
 
 
 --
 -- Name: enlistments enlistments_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY enlistments
-    ADD CONSTRAINT enlistments_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.enlistments
+    ADD CONSTRAINT enlistments_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: enlistments enlistments_repository_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY enlistments
-    ADD CONSTRAINT enlistments_repository_id_fkey FOREIGN KEY (repository_id) REFERENCES repositories(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.enlistments
+    ADD CONSTRAINT enlistments_repository_id_fkey FOREIGN KEY (repository_id) REFERENCES public.repositories(id) ON DELETE CASCADE;
 
 
 --
 -- Name: event_subscription event_subscription_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY event_subscription
-    ADD CONSTRAINT event_subscription_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.event_subscription
+    ADD CONSTRAINT event_subscription_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: event_subscription event_subscription_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY event_subscription
-    ADD CONSTRAINT event_subscription_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.event_subscription
+    ADD CONSTRAINT event_subscription_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: event_subscription event_subscription_subscriber_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY event_subscription
-    ADD CONSTRAINT event_subscription_subscriber_id_fkey FOREIGN KEY (subscriber_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.event_subscription
+    ADD CONSTRAINT event_subscription_subscriber_id_fkey FOREIGN KEY (subscriber_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: event_subscription event_subscription_topic_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY event_subscription
-    ADD CONSTRAINT event_subscription_topic_id_fkey FOREIGN KEY (topic_id) REFERENCES topics(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.event_subscription
+    ADD CONSTRAINT event_subscription_topic_id_fkey FOREIGN KEY (topic_id) REFERENCES public.topics(id) ON DELETE CASCADE;
 
 
 --
 -- Name: exhibits exhibits_report_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY exhibits
-    ADD CONSTRAINT exhibits_report_id_fkey FOREIGN KEY (report_id) REFERENCES reports(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.exhibits
+    ADD CONSTRAINT exhibits_report_id_fkey FOREIGN KEY (report_id) REFERENCES public.reports(id) ON DELETE CASCADE;
 
 
 --
 -- Name: factoids factoids_analysis_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY factoids
-    ADD CONSTRAINT factoids_analysis_id_fkey FOREIGN KEY (analysis_id) REFERENCES analyses(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.factoids
+    ADD CONSTRAINT factoids_analysis_id_fkey FOREIGN KEY (analysis_id) REFERENCES public.analyses(id) ON DELETE CASCADE;
 
 
 --
 -- Name: factoids factoids_language_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY factoids
-    ADD CONSTRAINT factoids_language_id_fkey FOREIGN KEY (language_id) REFERENCES languages(id);
+ALTER TABLE ONLY public.factoids
+    ADD CONSTRAINT factoids_language_id_fkey FOREIGN KEY (language_id) REFERENCES public.languages(id);
 
 
 --
 -- Name: factoids factoids_license_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY factoids
-    ADD CONSTRAINT factoids_license_id_fkey FOREIGN KEY (license_id) REFERENCES licenses(id);
+ALTER TABLE ONLY public.factoids
+    ADD CONSTRAINT factoids_license_id_fkey FOREIGN KEY (license_id) REFERENCES public.licenses(id);
 
 
 --
 -- Name: org_thirty_day_activities fk_organization_ids; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY org_thirty_day_activities
-    ADD CONSTRAINT fk_organization_ids FOREIGN KEY (organization_id) REFERENCES organizations(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.org_thirty_day_activities
+    ADD CONSTRAINT fk_organization_ids FOREIGN KEY (organization_id) REFERENCES public.organizations(id) ON DELETE CASCADE;
 
 
 --
 -- Name: project_vulnerability_reports fk_project_ids; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_vulnerability_reports
-    ADD CONSTRAINT fk_project_ids FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.project_vulnerability_reports
+    ADD CONSTRAINT fk_project_ids FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: code_locations fk_rails_0ff5ad97b1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY code_locations
-    ADD CONSTRAINT fk_rails_0ff5ad97b1 FOREIGN KEY (repository_id) REFERENCES repositories(id);
+ALTER TABLE ONLY public.code_locations
+    ADD CONSTRAINT fk_rails_0ff5ad97b1 FOREIGN KEY (repository_id) REFERENCES public.repositories(id);
 
 
 --
 -- Name: repository_tags fk_rails_275a40dd6e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY repository_tags
-    ADD CONSTRAINT fk_rails_275a40dd6e FOREIGN KEY (repository_id) REFERENCES repositories(id);
+ALTER TABLE ONLY public.repository_tags
+    ADD CONSTRAINT fk_rails_275a40dd6e FOREIGN KEY (repository_id) REFERENCES public.repositories(id);
 
 
 --
 -- Name: project_badges fk_rails_4c3c9e5c61; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_badges
-    ADD CONSTRAINT fk_rails_4c3c9e5c61 FOREIGN KEY (enlistment_id) REFERENCES enlistments(id);
+ALTER TABLE ONLY public.project_badges
+    ADD CONSTRAINT fk_rails_4c3c9e5c61 FOREIGN KEY (enlistment_id) REFERENCES public.enlistments(id);
 
 
 --
 -- Name: api_keys fk_rails_8faa63554c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY api_keys
-    ADD CONSTRAINT fk_rails_8faa63554c FOREIGN KEY (oauth_application_id) REFERENCES oauth_applications(id);
+ALTER TABLE ONLY public.api_keys
+    ADD CONSTRAINT fk_rails_8faa63554c FOREIGN KEY (oauth_application_id) REFERENCES public.oauth_applications(id);
+
+
+--
+-- Name: broken_links fk_rails_a80ad58988; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.broken_links
+    ADD CONSTRAINT fk_rails_a80ad58988 FOREIGN KEY (link_id) REFERENCES public.links(id);
 
 
 --
 -- Name: projects fk_rails_c67f665226; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY projects
-    ADD CONSTRAINT fk_rails_c67f665226 FOREIGN KEY (best_project_security_set_id) REFERENCES project_security_sets(id);
+ALTER TABLE ONLY public.projects
+    ADD CONSTRAINT fk_rails_c67f665226 FOREIGN KEY (best_project_security_set_id) REFERENCES public.project_security_sets(id);
 
 
 --
 -- Name: repository_directories fk_rails_d33c461543; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY repository_directories
-    ADD CONSTRAINT fk_rails_d33c461543 FOREIGN KEY (code_location_id) REFERENCES code_locations(id);
+ALTER TABLE ONLY public.repository_directories
+    ADD CONSTRAINT fk_rails_d33c461543 FOREIGN KEY (code_location_id) REFERENCES public.code_locations(id);
 
 
 --
 -- Name: repository_directories fk_rails_d36c79e15c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY repository_directories
-    ADD CONSTRAINT fk_rails_d36c79e15c FOREIGN KEY (repository_id) REFERENCES repositories(id);
+ALTER TABLE ONLY public.repository_directories
+    ADD CONSTRAINT fk_rails_d36c79e15c FOREIGN KEY (repository_id) REFERENCES public.repositories(id);
 
 
 --
 -- Name: project_security_sets fk_rails_efaa9c9657; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_security_sets
-    ADD CONSTRAINT fk_rails_efaa9c9657 FOREIGN KEY (project_id) REFERENCES projects(id);
+ALTER TABLE ONLY public.project_security_sets
+    ADD CONSTRAINT fk_rails_efaa9c9657 FOREIGN KEY (project_id) REFERENCES public.projects(id);
 
 
 --
 -- Name: follows follows_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY follows
-    ADD CONSTRAINT follows_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.follows
+    ADD CONSTRAINT follows_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: follows follows_owner_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY follows
-    ADD CONSTRAINT follows_owner_id_fkey FOREIGN KEY (owner_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.follows
+    ADD CONSTRAINT follows_owner_id_fkey FOREIGN KEY (owner_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: follows follows_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY follows
-    ADD CONSTRAINT follows_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.follows
+    ADD CONSTRAINT follows_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: forums forums_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY forums
-    ADD CONSTRAINT forums_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id);
+ALTER TABLE ONLY public.forums
+    ADD CONSTRAINT forums_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id);
 
 
 --
 -- Name: helpfuls helpfuls_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY helpfuls
-    ADD CONSTRAINT helpfuls_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.helpfuls
+    ADD CONSTRAINT helpfuls_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: helpfuls helpfuls_review_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY helpfuls
-    ADD CONSTRAINT helpfuls_review_id_fkey FOREIGN KEY (review_id) REFERENCES reviews(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.helpfuls
+    ADD CONSTRAINT helpfuls_review_id_fkey FOREIGN KEY (review_id) REFERENCES public.reviews(id) ON DELETE CASCADE;
 
 
 --
 -- Name: invites invites_invitee_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invites
-    ADD CONSTRAINT invites_invitee_id_fkey FOREIGN KEY (invitee_id) REFERENCES accounts(id);
+ALTER TABLE ONLY public.invites
+    ADD CONSTRAINT invites_invitee_id_fkey FOREIGN KEY (invitee_id) REFERENCES public.accounts(id);
 
 
 --
 -- Name: invites invites_invitor_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invites
-    ADD CONSTRAINT invites_invitor_id_fkey FOREIGN KEY (invitor_id) REFERENCES accounts(id);
+ALTER TABLE ONLY public.invites
+    ADD CONSTRAINT invites_invitor_id_fkey FOREIGN KEY (invitor_id) REFERENCES public.accounts(id);
 
 
 --
 -- Name: invites invites_name_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invites
-    ADD CONSTRAINT invites_name_id_fkey FOREIGN KEY (name_id) REFERENCES names(id);
+ALTER TABLE ONLY public.invites
+    ADD CONSTRAINT invites_name_id_fkey FOREIGN KEY (name_id) REFERENCES public.names(id);
 
 
 --
 -- Name: invites invites_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invites
-    ADD CONSTRAINT invites_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id);
-
-
---
--- Name: jobs jobs_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY jobs
-    ADD CONSTRAINT jobs_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
-
-
---
--- Name: jobs jobs_failure_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY jobs
-    ADD CONSTRAINT jobs_failure_group_id_fkey FOREIGN KEY (failure_group_id) REFERENCES failure_groups(id);
-
-
---
--- Name: jobs jobs_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY jobs
-    ADD CONSTRAINT jobs_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.invites
+    ADD CONSTRAINT invites_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id);
 
 
 --
 -- Name: knowledge_base_statuses knowledge_base_statuses_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY knowledge_base_statuses
-    ADD CONSTRAINT knowledge_base_statuses_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.knowledge_base_statuses
+    ADD CONSTRAINT knowledge_base_statuses_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: kudos kudos_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY kudos
-    ADD CONSTRAINT kudos_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.kudos
+    ADD CONSTRAINT kudos_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: kudos kudos_name_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY kudos
-    ADD CONSTRAINT kudos_name_id_fkey FOREIGN KEY (name_id) REFERENCES names(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.kudos
+    ADD CONSTRAINT kudos_name_id_fkey FOREIGN KEY (name_id) REFERENCES public.names(id) ON DELETE CASCADE;
 
 
 --
 -- Name: kudos kudos_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY kudos
-    ADD CONSTRAINT kudos_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.kudos
+    ADD CONSTRAINT kudos_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: kudos kudos_sender_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY kudos
-    ADD CONSTRAINT kudos_sender_id_fkey FOREIGN KEY (sender_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.kudos
+    ADD CONSTRAINT kudos_sender_id_fkey FOREIGN KEY (sender_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: language_experiences language_experiences_language_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY language_experiences
-    ADD CONSTRAINT language_experiences_language_id_fkey FOREIGN KEY (language_id) REFERENCES languages(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.language_experiences
+    ADD CONSTRAINT language_experiences_language_id_fkey FOREIGN KEY (language_id) REFERENCES public.languages(id) ON DELETE CASCADE;
 
 
 --
 -- Name: language_experiences language_experiences_position_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY language_experiences
-    ADD CONSTRAINT language_experiences_position_id_fkey FOREIGN KEY (position_id) REFERENCES positions(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.language_experiences
+    ADD CONSTRAINT language_experiences_position_id_fkey FOREIGN KEY (position_id) REFERENCES public.positions(id) ON DELETE CASCADE;
 
 
 --
 -- Name: language_facts language_facts_language_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY language_facts
-    ADD CONSTRAINT language_facts_language_id_fkey FOREIGN KEY (language_id) REFERENCES languages(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.language_facts
+    ADD CONSTRAINT language_facts_language_id_fkey FOREIGN KEY (language_id) REFERENCES public.languages(id) ON DELETE CASCADE;
 
 
 --
 -- Name: license_facts license_facts_analysis_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY license_facts
-    ADD CONSTRAINT license_facts_analysis_id_fkey FOREIGN KEY (analysis_id) REFERENCES analyses(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.license_facts
+    ADD CONSTRAINT license_facts_analysis_id_fkey FOREIGN KEY (analysis_id) REFERENCES public.analyses(id) ON DELETE CASCADE;
 
 
 --
 -- Name: license_facts license_facts_license_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY license_facts
-    ADD CONSTRAINT license_facts_license_id_fkey FOREIGN KEY (license_id) REFERENCES licenses(id);
+ALTER TABLE ONLY public.license_facts
+    ADD CONSTRAINT license_facts_license_id_fkey FOREIGN KEY (license_id) REFERENCES public.licenses(id);
 
 
 --
 -- Name: links links_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY links
-    ADD CONSTRAINT links_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.links
+    ADD CONSTRAINT links_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: manages manages_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY manages
-    ADD CONSTRAINT manages_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.manages
+    ADD CONSTRAINT manages_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: manages manages_approved_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY manages
-    ADD CONSTRAINT manages_approved_by_fkey FOREIGN KEY (approved_by) REFERENCES accounts(id);
+ALTER TABLE ONLY public.manages
+    ADD CONSTRAINT manages_approved_by_fkey FOREIGN KEY (approved_by) REFERENCES public.accounts(id);
 
 
 --
 -- Name: manages manages_deleted_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY manages
-    ADD CONSTRAINT manages_deleted_by_fkey FOREIGN KEY (deleted_by) REFERENCES accounts(id);
+ALTER TABLE ONLY public.manages
+    ADD CONSTRAINT manages_deleted_by_fkey FOREIGN KEY (deleted_by) REFERENCES public.accounts(id);
 
 
 --
 -- Name: message_account_tags message_account_tags_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY message_account_tags
-    ADD CONSTRAINT message_account_tags_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.message_account_tags
+    ADD CONSTRAINT message_account_tags_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: message_account_tags message_account_tags_message_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY message_account_tags
-    ADD CONSTRAINT message_account_tags_message_id_fkey FOREIGN KEY (message_id) REFERENCES messages(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.message_account_tags
+    ADD CONSTRAINT message_account_tags_message_id_fkey FOREIGN KEY (message_id) REFERENCES public.messages(id) ON DELETE CASCADE;
 
 
 --
 -- Name: message_project_tags message_project_tags_message_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY message_project_tags
-    ADD CONSTRAINT message_project_tags_message_id_fkey FOREIGN KEY (message_id) REFERENCES messages(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.message_project_tags
+    ADD CONSTRAINT message_project_tags_message_id_fkey FOREIGN KEY (message_id) REFERENCES public.messages(id) ON DELETE CASCADE;
 
 
 --
 -- Name: message_project_tags message_project_tags_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY message_project_tags
-    ADD CONSTRAINT message_project_tags_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.message_project_tags
+    ADD CONSTRAINT message_project_tags_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: messages messages_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY messages
-    ADD CONSTRAINT messages_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT messages_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: name_facts name_facts_analysis_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY name_facts
-    ADD CONSTRAINT name_facts_analysis_id_fkey FOREIGN KEY (analysis_id) REFERENCES analyses(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.name_facts
+    ADD CONSTRAINT name_facts_analysis_id_fkey FOREIGN KEY (analysis_id) REFERENCES public.analyses(id) ON DELETE CASCADE;
 
 
 --
 -- Name: name_facts name_facts_name_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY name_facts
-    ADD CONSTRAINT name_facts_name_id_fkey FOREIGN KEY (name_id) REFERENCES names(id);
+ALTER TABLE ONLY public.name_facts
+    ADD CONSTRAINT name_facts_name_id_fkey FOREIGN KEY (name_id) REFERENCES public.names(id);
 
 
 --
 -- Name: name_facts name_facts_primary_language_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY name_facts
-    ADD CONSTRAINT name_facts_primary_language_id_fkey FOREIGN KEY (primary_language_id) REFERENCES languages(id);
+ALTER TABLE ONLY public.name_facts
+    ADD CONSTRAINT name_facts_primary_language_id_fkey FOREIGN KEY (primary_language_id) REFERENCES public.languages(id);
 
 
 --
 -- Name: name_facts name_facts_vita_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY name_facts
-    ADD CONSTRAINT name_facts_vita_id_fkey FOREIGN KEY (vita_id) REFERENCES vitae(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.name_facts
+    ADD CONSTRAINT name_facts_vita_id_fkey FOREIGN KEY (vita_id) REFERENCES public.vitae(id) ON DELETE CASCADE;
 
 
 --
 -- Name: name_language_facts name_language_facts_analysis_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY name_language_facts
-    ADD CONSTRAINT name_language_facts_analysis_id_fkey FOREIGN KEY (analysis_id) REFERENCES analyses(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.name_language_facts
+    ADD CONSTRAINT name_language_facts_analysis_id_fkey FOREIGN KEY (analysis_id) REFERENCES public.analyses(id) ON DELETE CASCADE;
 
 
 --
 -- Name: name_language_facts name_language_facts_language_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY name_language_facts
-    ADD CONSTRAINT name_language_facts_language_id_fkey FOREIGN KEY (language_id) REFERENCES languages(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.name_language_facts
+    ADD CONSTRAINT name_language_facts_language_id_fkey FOREIGN KEY (language_id) REFERENCES public.languages(id) ON DELETE CASCADE;
 
 
 --
 -- Name: name_language_facts name_language_facts_most_commits_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY name_language_facts
-    ADD CONSTRAINT name_language_facts_most_commits_project_id_fkey FOREIGN KEY (most_commits_project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.name_language_facts
+    ADD CONSTRAINT name_language_facts_most_commits_project_id_fkey FOREIGN KEY (most_commits_project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: name_language_facts name_language_facts_name_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY name_language_facts
-    ADD CONSTRAINT name_language_facts_name_id_fkey FOREIGN KEY (name_id) REFERENCES names(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.name_language_facts
+    ADD CONSTRAINT name_language_facts_name_id_fkey FOREIGN KEY (name_id) REFERENCES public.names(id) ON DELETE CASCADE;
 
 
 --
 -- Name: name_language_facts name_language_facts_recent_commit_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY name_language_facts
-    ADD CONSTRAINT name_language_facts_recent_commit_project_id_fkey FOREIGN KEY (recent_commit_project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.name_language_facts
+    ADD CONSTRAINT name_language_facts_recent_commit_project_id_fkey FOREIGN KEY (recent_commit_project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: name_language_facts name_language_facts_vita_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY name_language_facts
-    ADD CONSTRAINT name_language_facts_vita_id_fkey FOREIGN KEY (vita_id) REFERENCES vitae(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.name_language_facts
+    ADD CONSTRAINT name_language_facts_vita_id_fkey FOREIGN KEY (vita_id) REFERENCES public.vitae(id) ON DELETE CASCADE;
 
 
 --
 -- Name: organizations organizations_logo_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY organizations
-    ADD CONSTRAINT organizations_logo_id_fkey FOREIGN KEY (logo_id) REFERENCES attachments(id);
+ALTER TABLE ONLY public.organizations
+    ADD CONSTRAINT organizations_logo_id_fkey FOREIGN KEY (logo_id) REFERENCES public.attachments(id);
 
 
 --
 -- Name: people people_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY people
-    ADD CONSTRAINT people_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.people
+    ADD CONSTRAINT people_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: people people_name_fact_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY people
-    ADD CONSTRAINT people_name_fact_id_fkey FOREIGN KEY (name_fact_id) REFERENCES name_facts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.people
+    ADD CONSTRAINT people_name_fact_id_fkey FOREIGN KEY (name_fact_id) REFERENCES public.name_facts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: people people_name_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY people
-    ADD CONSTRAINT people_name_id_fkey FOREIGN KEY (name_id) REFERENCES names(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.people
+    ADD CONSTRAINT people_name_id_fkey FOREIGN KEY (name_id) REFERENCES public.names(id) ON DELETE CASCADE;
 
 
 --
 -- Name: people people_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY people
-    ADD CONSTRAINT people_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.people
+    ADD CONSTRAINT people_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: positions positions_organization_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY positions
-    ADD CONSTRAINT positions_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES organizations(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.positions
+    ADD CONSTRAINT positions_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES public.organizations(id) ON DELETE CASCADE;
 
 
 --
 -- Name: posts posts_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY posts
-    ADD CONSTRAINT posts_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.posts
+    ADD CONSTRAINT posts_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: posts posts_topic_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY posts
-    ADD CONSTRAINT posts_topic_id_fkey FOREIGN KEY (topic_id) REFERENCES topics(id) ON DELETE CASCADE;
-
-
---
--- Name: profiles profiles_job_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY profiles
-    ADD CONSTRAINT profiles_job_id_fkey FOREIGN KEY (job_id) REFERENCES jobs(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.posts
+    ADD CONSTRAINT posts_topic_id_fkey FOREIGN KEY (topic_id) REFERENCES public.topics(id) ON DELETE CASCADE;
 
 
 --
 -- Name: project_events project_events_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_events
-    ADD CONSTRAINT project_events_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.project_events
+    ADD CONSTRAINT project_events_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: project_experiences project_experiences_position_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_experiences
-    ADD CONSTRAINT project_experiences_position_id_fkey FOREIGN KEY (position_id) REFERENCES positions(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.project_experiences
+    ADD CONSTRAINT project_experiences_position_id_fkey FOREIGN KEY (position_id) REFERENCES public.positions(id) ON DELETE CASCADE;
 
 
 --
 -- Name: project_experiences project_experiences_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_experiences
-    ADD CONSTRAINT project_experiences_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.project_experiences
+    ADD CONSTRAINT project_experiences_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: project_licenses project_licenses_license_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_licenses
-    ADD CONSTRAINT project_licenses_license_id_fkey FOREIGN KEY (license_id) REFERENCES licenses(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.project_licenses
+    ADD CONSTRAINT project_licenses_license_id_fkey FOREIGN KEY (license_id) REFERENCES public.licenses(id) ON DELETE CASCADE;
 
 
 --
 -- Name: project_licenses project_licenses_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_licenses
-    ADD CONSTRAINT project_licenses_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.project_licenses
+    ADD CONSTRAINT project_licenses_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: project_reports project_reports_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_reports
-    ADD CONSTRAINT project_reports_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.project_reports
+    ADD CONSTRAINT project_reports_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: project_reports project_reports_report_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_reports
-    ADD CONSTRAINT project_reports_report_id_fkey FOREIGN KEY (report_id) REFERENCES reports(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.project_reports
+    ADD CONSTRAINT project_reports_report_id_fkey FOREIGN KEY (report_id) REFERENCES public.reports(id) ON DELETE CASCADE;
 
 
 --
 -- Name: projects projects_best_analysis_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY projects
-    ADD CONSTRAINT projects_best_analysis_id_fkey FOREIGN KEY (best_analysis_id) REFERENCES analyses(id);
+ALTER TABLE ONLY public.projects
+    ADD CONSTRAINT projects_best_analysis_id_fkey FOREIGN KEY (best_analysis_id) REFERENCES public.analyses(id);
 
 
 --
 -- Name: projects projects_forge_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY projects
-    ADD CONSTRAINT projects_forge_id_fkey FOREIGN KEY (forge_id) REFERENCES forges(id);
+ALTER TABLE ONLY public.projects
+    ADD CONSTRAINT projects_forge_id_fkey FOREIGN KEY (forge_id) REFERENCES public.forges(id);
 
 
 --
 -- Name: projects projects_logo_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY projects
-    ADD CONSTRAINT projects_logo_id_fkey FOREIGN KEY (logo_id) REFERENCES attachments(id);
+ALTER TABLE ONLY public.projects
+    ADD CONSTRAINT projects_logo_id_fkey FOREIGN KEY (logo_id) REFERENCES public.attachments(id);
 
 
 --
 -- Name: projects projects_organization_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY projects
-    ADD CONSTRAINT projects_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES organizations(id);
+ALTER TABLE ONLY public.projects
+    ADD CONSTRAINT projects_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES public.organizations(id);
 
 
 --
 -- Name: ratings ratings_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY ratings
-    ADD CONSTRAINT ratings_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.ratings
+    ADD CONSTRAINT ratings_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: ratings ratings_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY ratings
-    ADD CONSTRAINT ratings_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.ratings
+    ADD CONSTRAINT ratings_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: recommend_entries recommend_entries_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY recommend_entries
-    ADD CONSTRAINT recommend_entries_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.recommend_entries
+    ADD CONSTRAINT recommend_entries_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: recommend_entries recommend_entries_project_id_recommends_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY recommend_entries
-    ADD CONSTRAINT recommend_entries_project_id_recommends_fkey FOREIGN KEY (project_id_recommends) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.recommend_entries
+    ADD CONSTRAINT recommend_entries_project_id_recommends_fkey FOREIGN KEY (project_id_recommends) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: recommendations recommendations_invitee_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY recommendations
-    ADD CONSTRAINT recommendations_invitee_id_fkey FOREIGN KEY (invitee_id) REFERENCES accounts(id);
+ALTER TABLE ONLY public.recommendations
+    ADD CONSTRAINT recommendations_invitee_id_fkey FOREIGN KEY (invitee_id) REFERENCES public.accounts(id);
 
 
 --
 -- Name: recommendations recommendations_invitor_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY recommendations
-    ADD CONSTRAINT recommendations_invitor_id_fkey FOREIGN KEY (invitor_id) REFERENCES accounts(id);
+ALTER TABLE ONLY public.recommendations
+    ADD CONSTRAINT recommendations_invitor_id_fkey FOREIGN KEY (invitor_id) REFERENCES public.accounts(id);
 
 
 --
 -- Name: recommendations recommendations_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY recommendations
-    ADD CONSTRAINT recommendations_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.recommendations
+    ADD CONSTRAINT recommendations_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: repositories repositories_forge_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY repositories
-    ADD CONSTRAINT repositories_forge_id_fkey FOREIGN KEY (forge_id) REFERENCES forges(id);
+ALTER TABLE ONLY public.repositories
+    ADD CONSTRAINT repositories_forge_id_fkey FOREIGN KEY (forge_id) REFERENCES public.forges(id);
 
 
 --
 -- Name: reviews reviews_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY reviews
-    ADD CONSTRAINT reviews_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT reviews_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: reviews reviews_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY reviews
-    ADD CONSTRAINT reviews_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT reviews_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: rss_articles rss_articles_rss_feed_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY rss_articles
-    ADD CONSTRAINT rss_articles_rss_feed_id_fkey FOREIGN KEY (rss_feed_id) REFERENCES rss_feeds(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.rss_articles
+    ADD CONSTRAINT rss_articles_rss_feed_id_fkey FOREIGN KEY (rss_feed_id) REFERENCES public.rss_feeds(id) ON DELETE CASCADE;
 
 
 --
 -- Name: rss_subscriptions rss_subscriptions_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY rss_subscriptions
-    ADD CONSTRAINT rss_subscriptions_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.rss_subscriptions
+    ADD CONSTRAINT rss_subscriptions_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: rss_subscriptions rss_subscriptions_rss_feed_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY rss_subscriptions
-    ADD CONSTRAINT rss_subscriptions_rss_feed_id_fkey FOREIGN KEY (rss_feed_id) REFERENCES rss_feeds(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.rss_subscriptions
+    ADD CONSTRAINT rss_subscriptions_rss_feed_id_fkey FOREIGN KEY (rss_feed_id) REFERENCES public.rss_feeds(id) ON DELETE CASCADE;
 
 
 --
 -- Name: sfprojects sfprojects_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY sfprojects
-    ADD CONSTRAINT sfprojects_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id);
+ALTER TABLE ONLY public.sfprojects
+    ADD CONSTRAINT sfprojects_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id);
 
 
 --
 -- Name: stack_entries stack_entries_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY stack_entries
-    ADD CONSTRAINT stack_entries_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.stack_entries
+    ADD CONSTRAINT stack_entries_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: stack_entries stack_entries_stack_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY stack_entries
-    ADD CONSTRAINT stack_entries_stack_id_fkey FOREIGN KEY (stack_id) REFERENCES stacks(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.stack_entries
+    ADD CONSTRAINT stack_entries_stack_id_fkey FOREIGN KEY (stack_id) REFERENCES public.stacks(id) ON DELETE CASCADE;
 
 
 --
 -- Name: stack_ignores stack_ignores_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY stack_ignores
-    ADD CONSTRAINT stack_ignores_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.stack_ignores
+    ADD CONSTRAINT stack_ignores_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: stack_ignores stack_ignores_stack_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY stack_ignores
-    ADD CONSTRAINT stack_ignores_stack_id_fkey FOREIGN KEY (stack_id) REFERENCES stacks(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.stack_ignores
+    ADD CONSTRAINT stack_ignores_stack_id_fkey FOREIGN KEY (stack_id) REFERENCES public.stacks(id) ON DELETE CASCADE;
 
 
 --
 -- Name: stacks stacks_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY stacks
-    ADD CONSTRAINT stacks_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.stacks
+    ADD CONSTRAINT stacks_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: stacks stacks_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY stacks
-    ADD CONSTRAINT stacks_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.stacks
+    ADD CONSTRAINT stacks_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
 -- Name: thirty_day_summaries thirty_day_summaries_analysis_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY thirty_day_summaries
-    ADD CONSTRAINT thirty_day_summaries_analysis_id_fkey FOREIGN KEY (analysis_id) REFERENCES analyses(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.thirty_day_summaries
+    ADD CONSTRAINT thirty_day_summaries_analysis_id_fkey FOREIGN KEY (analysis_id) REFERENCES public.analyses(id) ON DELETE CASCADE;
 
 
 --
 -- Name: topics topics_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY topics
-    ADD CONSTRAINT topics_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.topics
+    ADD CONSTRAINT topics_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: topics topics_forum_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY topics
-    ADD CONSTRAINT topics_forum_id_fkey FOREIGN KEY (forum_id) REFERENCES forums(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.topics
+    ADD CONSTRAINT topics_forum_id_fkey FOREIGN KEY (forum_id) REFERENCES public.forums(id) ON DELETE CASCADE;
 
 
 --
 -- Name: topics topics_replied_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY topics
-    ADD CONSTRAINT topics_replied_by_fkey FOREIGN KEY (replied_by) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.topics
+    ADD CONSTRAINT topics_replied_by_fkey FOREIGN KEY (replied_by) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
 -- Name: vita_analyses vita_analyses_analysis_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY vita_analyses
-    ADD CONSTRAINT vita_analyses_analysis_id_fkey FOREIGN KEY (analysis_id) REFERENCES analyses(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.vita_analyses
+    ADD CONSTRAINT vita_analyses_analysis_id_fkey FOREIGN KEY (analysis_id) REFERENCES public.analyses(id) ON DELETE CASCADE;
 
 
 --
 -- Name: vita_analyses vita_analyses_vita_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY vita_analyses
-    ADD CONSTRAINT vita_analyses_vita_id_fkey FOREIGN KEY (vita_id) REFERENCES vitae(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.vita_analyses
+    ADD CONSTRAINT vita_analyses_vita_id_fkey FOREIGN KEY (vita_id) REFERENCES public.vitae(id) ON DELETE CASCADE;
 
 
 --
 -- Name: vitae vitae_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY vitae
-    ADD CONSTRAINT vitae_account_id_fkey FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.vitae
+    ADD CONSTRAINT vitae_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
