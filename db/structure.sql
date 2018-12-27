@@ -116,7 +116,7 @@ CREATE FUNCTION public._get_parser_from_curcfg() RETURNS text
 -- Name: analysis_aliases_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION public.analysis_aliases_id_seq_view() RETURNS integer
+CREATE FUNCTION public.analysis_aliases_id_seq_view() RETURNS bigint
     LANGUAGE sql
     AS $$select id from analysis_aliases_id_seq_view$$;
 
@@ -170,7 +170,7 @@ CREATE FUNCTION public.commit_flags_id_seq_view() RETURNS integer
 -- Name: commits_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION public.commits_id_seq_view() RETURNS integer
+CREATE FUNCTION public.commits_id_seq_view() RETURNS bigint
     LANGUAGE sql
     AS $$select id from commits_id_seq_view$$;
 
@@ -215,7 +215,7 @@ CREATE FUNCTION public.fisbot_events_id_seq_view() RETURNS integer
 -- Name: fyles_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION public.fyles_id_seq_view() RETURNS integer
+CREATE FUNCTION public.fyles_id_seq_view() RETURNS bigint
     LANGUAGE sql
     AS $$select id from fyles_id_seq_view$$;
 
@@ -224,7 +224,7 @@ CREATE FUNCTION public.fyles_id_seq_view() RETURNS integer
 -- Name: jobs_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION public.jobs_id_seq_view() RETURNS integer
+CREATE FUNCTION public.jobs_id_seq_view() RETURNS bigint
     LANGUAGE sql
     AS $$select id from jobs_id_seq_view$$;
 
@@ -242,7 +242,7 @@ CREATE FUNCTION public.load_averages_id_seq_view() RETURNS integer
 -- Name: slave_logs_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION public.slave_logs_id_seq_view() RETURNS integer
+CREATE FUNCTION public.slave_logs_id_seq_view() RETURNS bigint
     LANGUAGE sql
     AS $$select id from slave_logs_id_seq_view$$;
 
@@ -859,7 +859,7 @@ CREATE VIEW public.analyses_id_seq_view AS
 --
 
 CREATE FOREIGN TABLE public.analysis_aliases (
-    id integer DEFAULT public.analysis_aliases_id_seq_view() NOT NULL,
+    id bigint DEFAULT public.analysis_aliases_id_seq_view() NOT NULL,
     analysis_id integer NOT NULL,
     commit_name_id integer NOT NULL,
     preferred_name_id integer NOT NULL
@@ -900,7 +900,7 @@ CREATE SEQUENCE public.analysis_aliases_id_seq
 --
 
 CREATE FOREIGN TABLE public.analysis_aliases_id_seq_view (
-    id integer
+    id bigint
 )
 SERVER fis
 OPTIONS (
@@ -1604,7 +1604,7 @@ ALTER FOREIGN TABLE public.commit_flags_id_seq_view ALTER COLUMN id OPTIONS (
 --
 
 CREATE FOREIGN TABLE public.commits (
-    id integer DEFAULT public.commits_id_seq_view() NOT NULL,
+    id bigint DEFAULT public.commits_id_seq_view() NOT NULL,
     sha1 text,
     "time" timestamp without time zone NOT NULL,
     comment text,
@@ -1665,7 +1665,7 @@ CREATE SEQUENCE public.commits_id_seq
 --
 
 CREATE FOREIGN TABLE public.commits_id_seq_view (
-    id integer
+    id bigint
 )
 SERVER fis
 OPTIONS (
@@ -2682,7 +2682,7 @@ CREATE VIEW public.forums_id_seq_view AS
 --
 
 CREATE FOREIGN TABLE public.fyles (
-    id integer DEFAULT public.fyles_id_seq_view() NOT NULL,
+    id bigint DEFAULT public.fyles_id_seq_view() NOT NULL,
     name text NOT NULL,
     code_set_id integer NOT NULL
 )
@@ -2719,7 +2719,7 @@ CREATE SEQUENCE public.fyles_id_seq
 --
 
 CREATE FOREIGN TABLE public.fyles_id_seq_view (
-    id integer
+    id bigint
 )
 SERVER fis
 OPTIONS (
@@ -2900,7 +2900,7 @@ CREATE TABLE public.job_statuses (
 --
 
 CREATE FOREIGN TABLE public.jobs (
-    id integer DEFAULT public.jobs_id_seq_view() NOT NULL,
+    id bigint DEFAULT public.jobs_id_seq_view() NOT NULL,
     project_id integer,
     status integer DEFAULT 0 NOT NULL,
     type text NOT NULL,
@@ -3021,7 +3021,7 @@ CREATE SEQUENCE public.jobs_id_seq
 --
 
 CREATE FOREIGN TABLE public.jobs_id_seq_view (
-    id integer
+    id bigint
 )
 SERVER fis
 OPTIONS (
@@ -3870,7 +3870,7 @@ ALTER SEQUENCE public.name_facts_id_seq OWNED BY public.name_facts.id;
 --
 
 CREATE VIEW public.name_facts_id_seq_view AS
- SELECT (nextval('public.name_facts_id_seq'::regclass))::integer AS id;
+ SELECT nextval('public.name_facts_id_seq'::regclass) AS id;
 
 
 --
@@ -3878,7 +3878,7 @@ CREATE VIEW public.name_facts_id_seq_view AS
 --
 
 CREATE TABLE public.name_language_facts (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     name_id integer,
     analysis_id integer,
     language_id integer,
@@ -3919,7 +3919,7 @@ ALTER SEQUENCE public.name_language_facts_id_seq OWNED BY public.name_language_f
 --
 
 CREATE VIEW public.name_language_facts_id_seq_view AS
- SELECT (nextval('public.name_language_facts_id_seq'::regclass))::integer AS id;
+ SELECT nextval('public.name_language_facts_id_seq'::regclass) AS id;
 
 
 --
@@ -4957,7 +4957,7 @@ CREATE VIEW public.recently_active_accounts_cache_id_seq_view AS
 --
 
 CREATE TABLE public.recommend_entries (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     project_id integer,
     project_id_recommends integer,
     weight double precision
@@ -4989,7 +4989,7 @@ ALTER SEQUENCE public.recommend_entries_id_seq OWNED BY public.recommend_entries
 --
 
 CREATE VIEW public.recommend_entries_id_seq_view AS
- SELECT (nextval('public.recommend_entries_id_seq'::regclass))::integer AS id;
+ SELECT nextval('public.recommend_entries_id_seq'::regclass) AS id;
 
 
 --
@@ -5639,7 +5639,7 @@ CREATE VIEW public.size_facts_id_seq_view AS
 --
 
 CREATE FOREIGN TABLE public.slave_logs (
-    id integer DEFAULT public.slave_logs_id_seq_view() NOT NULL,
+    id bigint DEFAULT public.slave_logs_id_seq_view() NOT NULL,
     message text,
     created_on timestamp without time zone,
     slave_id integer,
@@ -5692,7 +5692,7 @@ CREATE SEQUENCE public.slave_logs_id_seq
 --
 
 CREATE FOREIGN TABLE public.slave_logs_id_seq_view (
-    id integer
+    id bigint
 )
 SERVER fis
 OPTIONS (
@@ -6357,7 +6357,7 @@ CREATE VIEW public.verifications_id_seq_view AS
 --
 
 CREATE TABLE public.vita_analyses (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     vita_id integer,
     analysis_id integer
 );
@@ -6387,7 +6387,7 @@ ALTER SEQUENCE public.vita_analyses_id_seq OWNED BY public.vita_analyses.id;
 --
 
 CREATE VIEW public.vita_analyses_id_seq_view AS
- SELECT (nextval('public.vita_analyses_id_seq'::regclass))::integer AS id;
+ SELECT nextval('public.vita_analyses_id_seq'::regclass) AS id;
 
 
 --
@@ -10423,6 +10423,8 @@ INSERT INTO schema_migrations (version) VALUES ('20180109182901');
 INSERT INTO schema_migrations (version) VALUES ('20180925181605');
 
 INSERT INTO schema_migrations (version) VALUES ('20181126091803');
+
+INSERT INTO schema_migrations (version) VALUES ('20181220010101');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
