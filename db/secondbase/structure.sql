@@ -2882,7 +2882,7 @@ ALTER FOREIGN TABLE public.analyses_id_seq_view ALTER COLUMN id OPTIONS (
 --
 
 CREATE TABLE public.analysis_aliases (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     analysis_id integer NOT NULL,
     commit_name_id integer NOT NULL,
     preferred_name_id integer NOT NULL
@@ -2913,7 +2913,7 @@ ALTER SEQUENCE public.analysis_aliases_id_seq OWNED BY public.analysis_aliases.i
 --
 
 CREATE VIEW public.analysis_aliases_id_seq_view AS
- SELECT (nextval('public.analysis_aliases_id_seq'::regclass))::integer AS id;
+ SELECT nextval('public.analysis_aliases_id_seq'::regclass) AS id;
 
 
 --
@@ -3859,7 +3859,7 @@ CREATE SEQUENCE public.commit_spark_analysis_seq
 --
 
 CREATE TABLE public.commits (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     sha1 text,
     "time" timestamp without time zone NOT NULL,
     comment text,
@@ -3895,7 +3895,7 @@ ALTER SEQUENCE public.commits_id_seq OWNED BY public.commits.id;
 --
 
 CREATE VIEW public.commits_id_seq_view AS
- SELECT (nextval('public.commits_id_seq'::regclass))::integer AS id;
+ SELECT nextval('public.commits_id_seq'::regclass) AS id;
 
 
 --
@@ -5052,7 +5052,7 @@ ALTER FOREIGN TABLE public.forums_id_seq_view ALTER COLUMN id OPTIONS (
 --
 
 CREATE TABLE public.fyles (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     name text NOT NULL,
     code_set_id integer NOT NULL
 );
@@ -5082,7 +5082,7 @@ ALTER SEQUENCE public.fyles_id_seq OWNED BY public.fyles.id;
 --
 
 CREATE VIEW public.fyles_id_seq_view AS
- SELECT (nextval('public.fyles_id_seq'::regclass))::integer AS id;
+ SELECT nextval('public.fyles_id_seq'::regclass) AS id;
 
 
 --
@@ -5505,7 +5505,7 @@ CREATE SEQUENCE public.jobs_id_seq
 --
 
 CREATE TABLE public.jobs (
-    id integer DEFAULT nextval('public.jobs_id_seq'::regclass) NOT NULL,
+    id bigint DEFAULT nextval('public.jobs_id_seq'::regclass) NOT NULL,
     project_id integer,
     status integer DEFAULT 0 NOT NULL,
     type text NOT NULL,
@@ -5537,7 +5537,7 @@ CREATE TABLE public.jobs (
 --
 
 CREATE VIEW public.jobs_id_seq_view AS
- SELECT (nextval('public.jobs_id_seq'::regclass))::integer AS id;
+ SELECT nextval('public.jobs_id_seq'::regclass) AS id;
 
 
 --
@@ -6801,7 +6801,7 @@ ALTER FOREIGN TABLE public.monthly_commit_histories_id_seq_view ALTER COLUMN id 
 --
 
 CREATE FOREIGN TABLE public.name_facts (
-    id integer DEFAULT public.name_facts_id_seq_view() NOT NULL,
+    id bigint DEFAULT public.name_facts_id_seq_view() NOT NULL,
     analysis_id integer,
     name_id integer,
     primary_language_id integer,
@@ -6902,7 +6902,7 @@ CREATE SEQUENCE public.name_facts_id_seq
 --
 
 CREATE FOREIGN TABLE public.name_facts_id_seq_view (
-    id integer
+    id bigint
 )
 SERVER ohloh
 OPTIONS (
@@ -6919,7 +6919,7 @@ ALTER FOREIGN TABLE public.name_facts_id_seq_view ALTER COLUMN id OPTIONS (
 --
 
 CREATE FOREIGN TABLE public.name_language_facts (
-    id integer DEFAULT public.name_language_facts_id_seq_view() NOT NULL,
+    id bigint DEFAULT public.name_language_facts_id_seq_view() NOT NULL,
     name_id integer,
     analysis_id integer,
     language_id integer,
@@ -7000,7 +7000,7 @@ CREATE SEQUENCE public.name_language_facts_id_seq
 --
 
 CREATE FOREIGN TABLE public.name_language_facts_id_seq_view (
-    id integer
+    id bigint
 )
 SERVER ohloh
 OPTIONS (
@@ -8751,7 +8751,7 @@ ALTER FOREIGN TABLE public.recently_active_accounts_cache_id_seq_view ALTER COLU
 --
 
 CREATE FOREIGN TABLE public.recommend_entries (
-    id integer DEFAULT public.recommend_entries_id_seq_view() NOT NULL,
+    id bigint DEFAULT public.recommend_entries_id_seq_view() NOT NULL,
     project_id integer,
     project_id_recommends integer,
     weight double precision
@@ -8792,7 +8792,7 @@ CREATE SEQUENCE public.recommend_entries_id_seq
 --
 
 CREATE FOREIGN TABLE public.recommend_entries_id_seq_view (
-    id integer
+    id bigint
 )
 SERVER ohloh
 OPTIONS (
@@ -9791,7 +9791,7 @@ ALTER FOREIGN TABLE public.size_facts_id_seq_view ALTER COLUMN id OPTIONS (
 --
 
 CREATE TABLE public.slave_logs (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     message text,
     created_on timestamp without time zone,
     slave_id integer,
@@ -9825,7 +9825,7 @@ ALTER SEQUENCE public.slave_logs_id_seq OWNED BY public.slave_logs.id;
 --
 
 CREATE VIEW public.slave_logs_id_seq_view AS
- SELECT (nextval('public.slave_logs_id_seq'::regclass))::integer AS id;
+ SELECT nextval('public.slave_logs_id_seq'::regclass) AS id;
 
 
 --
@@ -10843,7 +10843,7 @@ ALTER FOREIGN TABLE public.verifications_id_seq_view ALTER COLUMN id OPTIONS (
 --
 
 CREATE FOREIGN TABLE public.vita_analyses (
-    id integer DEFAULT public.vita_analyses_id_seq_view() NOT NULL,
+    id bigint DEFAULT public.vita_analyses_id_seq_view() NOT NULL,
     vita_id integer,
     analysis_id integer
 )
@@ -10880,7 +10880,7 @@ CREATE SEQUENCE public.vita_analyses_id_seq
 --
 
 CREATE FOREIGN TABLE public.vita_analyses_id_seq_view (
-    id integer
+    id bigint
 )
 SERVER ohloh
 OPTIONS (
@@ -11951,4 +11951,6 @@ INSERT INTO schema_migrations (version) VALUES ('20181009171118');
 INSERT INTO schema_migrations (version) VALUES ('20181010181449');
 
 INSERT INTO schema_migrations (version) VALUES ('20181108152834');
+
+INSERT INTO schema_migrations (version) VALUES ('20181220010101');
 
