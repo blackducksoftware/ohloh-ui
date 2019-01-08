@@ -1,5 +1,6 @@
 - content_for(:html_title) { t('.title', name: @project.name) }
 - page_context[:select_footer_nav] = nil
+- has_permission = logged_in? && @project.edit_authorized?
 
 .project_content_title
   %h2.pull-left
@@ -41,7 +42,7 @@
         %th= t('.ignored_files')
         %th= t('.actions')
     %tbody
-      = render partial: 'enlistment', collection: @enlistments
+      = render partial: 'enlistment', collection: @enlistments, locals: { has_permission: has_permission }
 - else
   = render '/enlistments/no_enlistment'
 
