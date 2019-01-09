@@ -466,6 +466,7 @@ Rails.application.routes.draw do
       resources :jobs do
       end
     end
+    resources :broken_links, only: %i[index destroy]
   end
 
   get 'sitemap_index.xml', controller: 'sitemap', action: 'index', format: 'xml'
