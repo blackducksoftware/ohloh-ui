@@ -11,7 +11,7 @@
   %body.hold-transition.skin-blue.sidebar-mini
     .wrapper
       %header.main-header
-        %a.logo
+        %a.logo{ href: "#{oh_admin_root_path}" }
           %span.logo-lg
             %b OpenHub Admin
         %nav.navbar.navbar-static-top
@@ -38,6 +38,10 @@
               %a{ href: '#' }
                 %i.fa.fa-book
                 %span Project Jobs
+            %li
+              %a{ href: "#{oh_admin_broken_links_path}" }
+                %i.fa.fa-book
+                %span Broken Links
       .content-wrapper
         %section.content-header
           = yield
