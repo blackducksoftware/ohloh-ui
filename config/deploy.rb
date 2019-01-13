@@ -26,5 +26,7 @@ set :sidekiq_log, File.join(shared_path, 'log', 'sidekiq.log')
 set :sidekiq_config, nil
 set :sidekiq_default_hooks, true
 
+set :whenever_roles, :utility
+
 before 'deploy:check:linked_files', 'deploy:update_configuration'
 after 'deploy:updated', 'newrelic:notice_deployment'
