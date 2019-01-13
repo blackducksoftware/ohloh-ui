@@ -11,7 +11,7 @@ role :selenium, %w[serv-deployer@oh-web03.dc1.lan]
 
 role :db, %w[serv-deployer@oh-utility01.dc1.lan], primary: true
 
-role :sidekiq, %w[serv-deployer@oh-utility01.dc1.lan]
+role :utility, %w[serv-deployer@oh-utility01.dc1.lan]
 
 set :user, 'serv-deployer'
 set :default_env, 'PATH' => '/home/serv-deployer/.rbenv/shims:$PATH',
@@ -19,7 +19,7 @@ set :default_env, 'PATH' => '/home/serv-deployer/.rbenv/shims:$PATH',
 
 # All passenger_roles get a deploy:restart after deploy:publishing.
 set :passenger_roles, %i[web web_1 web_2 web_3 web_4 web_5 web_7 web_8]
-set :sidekiq_role, %i[sidekiq]
+set :sidekiq_role, [:utility]
 set :rails_env, 'staging'
 
 # shared/.env.staging contains environment specific dotenv overrides.

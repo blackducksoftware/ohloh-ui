@@ -1,0 +1,37 @@
+%h1
+  Broken Links
+  .dropdown.pull-right#broken_links
+    %button.btn.btn-primary.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+      Error Type
+      %span.caret
+    %ul.dropdown-menu.scrollable-menu
+      - errors = BrokenLink.uniq.pluck(:error).sort
+      - errors.each do |error|
+        %li.font-weight-light
+          = link_to error, oh_admin_broken_links_path(query: error)
+
+%section.content
+  = render partial: 'layouts/partials/alert'
+  - if @broken_links.present?
+    .box
+      .box-body.table-responsive.no-padding
+        %table.table.table-striped.table-hover
+          %tr
+            %th Link Id
+            %th URL
+            %th Error
+            %th Project Name
+            %th Last Updated
+            %th.text-center Actions
+          - @broken_links.each do |broken_link|
+            - project = broken_link.link.project
+            %tr
+              %td= broken_link.link_id
+              %td= broken_link.link.url
+              %td= broken_link.error
+              %td= link_to(project.name, project_links_url(project.to_param))
+              %td= broken_link.updated_at.strftime('%b %d, %Y')
+              %td.text-center= button_to 'Delete', oh_admin_broken_link_path(broken_link), method: :delete, data: { confirm: t('.delete_confirmation') }, class: 'btn btn-danger btn-xs'
+    = will_paginate @broken_links
+  - else
+    %h2= 'No Broken Links Found'

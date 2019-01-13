@@ -1,0 +1,2 @@
+class TwitterDigitsVerification < Verification
+end
