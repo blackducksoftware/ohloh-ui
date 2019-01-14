@@ -67,11 +67,7 @@ ActiveAdmin.register FailureGroup do
 
     def scoped_collection
       super
-        .joins(%(LEFT JOIN "jobs" ON "jobs"."failure_group_id" = "failure_groups"."id"
-          AND "jobs"."status" = #{Job::STATUS_FAILED}
-          AND ("jobs"."exception" IS NOT NULL)))
-        .select('failure_groups.*, COUNT(jobs.id) as job_count')
-        .group('failure_groups.id')
+        .select('failure_groups.*, 0 as job_count')
     end
   end
 end
