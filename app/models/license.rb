@@ -14,7 +14,7 @@ class License < ActiveRecord::Base
                  'licenses.name']
 
   has_many :license_permission_roles
-  has_many :license_permissions, through: :license_permission_roles, dependent: :destroy
+  has_many :license_permission_statuses, through: :license_permission_roles, dependent: :destroy
   scope :active, -> { where(deleted: false) }
   scope :by_vanity_url, -> { order(:vanity_url) }
   scope :from_param, ->(vanity_url) { where(vanity_url: vanity_url) }
@@ -39,15 +39,15 @@ class License < ActiveRecord::Base
   end
 
   def permitted_license_permissions
-    license_permissions.merge(LicensePermissionRole.permitted)
+    license_permission_statuses.merge(LicensePermissionStatus.permitted)
   end
 
   def forbidden_license_permissions
-    license_permissions.merge(LicensePermissionRole.forbidden)
+    license_permission_statuses.merge(LicensePermissionStatus.forbidden)
   end
 
   def required_license_permissions
-    license_permissions.merge(LicensePermissionRole.required)
+    license_permission_statuses.merge(LicensePermissionStatus.required)
   end
 
   class << self

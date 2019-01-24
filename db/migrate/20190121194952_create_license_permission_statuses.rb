@@ -19,7 +19,7 @@ class CreateLicensePermissionStatuses < ActiveRecord::Migration
   private
 
   def insert_status_records
-    permission_hash = {0 => 'PERMITTED', 1 => "FORBIDDEN", 2 => "RESTRICTED"}
+    permission_hash = { 0 => 'PERMITTED', 1 => 'FORBIDDEN', 2 => 'RESTRICTED' }
     permission_hash.each do |key, value|
       sql = "INSERT INTO license_permission_statuses
       (license_permission_id, description, status, created_at, updated_at)

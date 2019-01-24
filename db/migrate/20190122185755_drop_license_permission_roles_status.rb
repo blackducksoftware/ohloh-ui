@@ -18,7 +18,7 @@ class DropLicensePermissionRolesStatus < ActiveRecord::Migration
     sql = 'UPDATE license_permission_roles
     SET license_permission_status_id = q.lps_id
     FROM
-    (SELECT lpr.id, lps.id as lps_id 
+    (SELECT lpr.id, lps.id as lps_id
       FROM license_permission_statuses lps
       INNER JOIN license_permission_roles lpr ON lpr.status = lps.status
       ORDER BY lpr.status) AS q
