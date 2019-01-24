@@ -173,31 +173,36 @@ class LicenseTest < ActiveSupport::TestCase
   end
 
   describe 'license permissions' do
-    it 'can have a set of license permission' do
+    it 'can have a set of license permissions' do
       create(:license).must_respond_to(:license_permissions)
     end
 
     it 'can have required license_permissions' do
-      lp = create(:license_permission)
-      l = create(:license)
-      l.license_permissions << lp
-      l.license_permissions.count.must_equal 1
-      l.license_permissions.first.must_equal lp
+      license = create(:license)
+      permission = create(:license_permission)
+      create(:license_license_permission,  license_permission_id: permission.id,
+                                           license_id: license.id)
+
+      license.license_permissions.count.must_equal 1
+      license.license_permissions.first.must_equal permission
     end
 
     it 'will get the correct license_permissions' do
+      permitted_permission = create(:license_permission, license_right: create(:license_right, name: 'Permitted'))
+      forbidden_permission = create(:license_permission, status: LicensePermission.statuses['Forbidden'],
+                                                         license_right: create(:license_right, name: 'Forbidden'))
+      required_permission = create(:license_permission, status: LicensePermission.statuses['Required'],
+                                                        license_right: create(:license_right, name: 'Required'))
+
       create(:license) do |l|
         # Add a Permitted permission
-        lp = create(:license_permission, name: 'Permitted')
-        l.license_permission_roles.create(license_permission: lp, status: 'permitted')
+        l.license_license_permissions.create(license_permission_id: permitted_permission.id)
 
         # Add a Forbidden permission
-        lp = create(:license_permission, name: 'Forbidden')
-        l.license_permission_roles.create(license_permission: lp, status: 'forbidden')
+        l.license_license_permissions.create(license_permission_id: forbidden_permission.id)
 
         # Add a Required permission
-        lp = create(:license_permission, name: 'Required')
-        l.license_permission_roles.create(license_permission: lp, status: 'required')
+        l.license_license_permissions.create(license_permission_id: required_permission.id)
 
         l.license_permissions.count.must_equal 3
         l.permitted_license_permissions.count.must_equal 1
