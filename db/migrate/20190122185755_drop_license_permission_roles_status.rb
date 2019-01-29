@@ -9,6 +9,7 @@ class DropLicensePermissionRolesStatus < ActiveRecord::Migration
 
   def down
     add_column :license_permission_roles, :status, :integer
+    add_column :license_permission_roles, :license_permission_id, :integer
     remove_column :license_permission_roles, :license_permission_status_id
   end
 
@@ -18,11 +19,11 @@ class DropLicensePermissionRolesStatus < ActiveRecord::Migration
     sql = 'UPDATE license_permission_roles
     SET license_permission_status_id = q.lps_id
     FROM
-    (SELECT lpr.id, lps.id as lps_id
-      FROM license_permission_statuses lps
-      INNER JOIN license_permission_roles lpr ON lpr.status = lps.status
-      ORDER BY lpr.status) AS q
-    WHERE license_permission_roles.id = q.id'
+    (select lps.id as lps_id, license_permission_id, status, name, icon
+      from license_permission_statuses lps
+      inner join license_permissions lp on lps.license_permission_id = lp.id) as q
+    WHERE license_permission_roles.license_permission_id = q.license_permission_id
+    AND license_permission_roles.status = q.status ;'
 
     ActiveRecord::Base.connection.execute sql
   end

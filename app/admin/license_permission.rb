@@ -1,3 +1,3 @@
 ActiveAdmin.register LicensePermission do
-  permit_params :name, :description, :icon
+  permit_params :description, :icon
 end

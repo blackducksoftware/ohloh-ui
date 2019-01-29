@@ -12,8 +12,8 @@ class CreateLicensePermissionStatuses < ActiveRecord::Migration
   end
 
   def down
-    add_column :license_permissions, :description
-    drop_table license_permission_statuses
+    add_column :license_permissions, :description, :string
+    drop_table :license_permission_statuses
   end
 
   private

@@ -1,8 +1,8 @@
 ActiveAdmin.register LicensePermissionRole do
   permit_params :status, :license_id, :license_permission_id
 
-  filter :license, collection: proc { License.active.order(:name) }
-  filter :license_permission, collection: proc { LicensePermission.order(:name) }
+  # filter :license, collection: proc { License.active.order(:name) }
+  # filter :license_permission, collection: proc { LicensePermission.order(:name) }
   filter :status
 
   index do
@@ -13,7 +13,7 @@ ActiveAdmin.register LicensePermissionRole do
     column 'License Permission' do |permission|
       LicensePermission.find(permission.license_permission_id).name
     end
-    column :status
+    # column :status
     actions
   end
 
