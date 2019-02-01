@@ -173,40 +173,38 @@ class LicenseTest < ActiveSupport::TestCase
   end
 
   describe 'license permissions' do
-    it 'can have a set of license permission statuses' do
-      create(:license).must_respond_to(:license_permission_statuses)
+    it 'can have a set of license permissions' do
+      create(:license).must_respond_to(:license_permissions)
     end
 
     it 'can have required license_permissions' do
       license = create(:license)
       permission = create(:license_permission)
-      status = create(:license_permission_status, license_permission_id: permission.id)
-      lp = create(:license_permission_role, license: license, license_permission_status: status)
+      create(:license_license_permission,  license_permission_id: permission.id,
+                                           license_id: license.id)
 
-      license.license_permission_roles.count.must_equal 1
-      license.license_permission_roles.first.must_equal lp
+      license.license_permissions.count.must_equal 1
+      license.license_permissions.first.must_equal permission
     end
 
     it 'will get the correct license_permissions' do
-      permitted_permission = create(:license_permission, name: 'permitted')
-      forbidden_permission = create(:license_permission, name: 'forbidden')
-      required_permission = create(:license_permission, name: 'required')
+      permitted_permission = create(:license_permission, license_right: create(:license_right, name: 'permitted'))
+      forbidden_permission = create(:license_permission, status: LicensePermission.statuses['forbidden'],
+                                                         license_right: create(:license_right, name: 'forbidden'))
+      required_permission = create(:license_permission, status: LicensePermission.statuses['required'],
+                                                        license_right: create(:license_right, name: 'required'))
+
       create(:license) do |l|
         # Add a Permitted permission
-        l.license_permission_roles.create(license_permission_status:
-                                   create(:license_permission_status, status: 'permitted',
-                                                                      license_permission_id: permitted_permission.id))
+        l.license_license_permissions.create(license_permission_id: permitted_permission.id)
 
         # Add a Forbidden permission
-        l.license_permission_roles.create(license_permission_status:
-                                   create(:license_permission_status, status: 'forbidden',
-                                                                      license_permission_id: forbidden_permission.id))
+        l.license_license_permissions.create(license_permission_id: forbidden_permission.id)
 
         # Add a Required permission
-        l.license_permission_roles.create(license_permission_status:
-          create(:license_permission_status,
-                 status: 'required', license_permission_id: required_permission.id))
-        l.license_permission_roles.count.must_equal 3
+        l.license_license_permissions.create(license_permission_id: required_permission.id)
+
+        l.license_permissions.count.must_equal 3
         l.permitted_license_permissions.count.must_equal 1
         l.forbidden_license_permissions.count.must_equal 1
         l.required_license_permissions.count.must_equal 1
