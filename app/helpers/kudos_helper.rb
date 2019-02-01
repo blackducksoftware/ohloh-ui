@@ -8,7 +8,7 @@ module KudosHelper
   def kudo_position_for_person(person_id, kudo_position = 0)
     if person_id && kudo_position
       link = link_to(kudo_position, rankings_people_path(show: person_id))
-      I18n.t('kudos.position_for_person', link: link, total: Person.count.to_i)
+      I18n.t('kudos.position_for_person', link: link, total: Person::Count.total)
     else
       I18n.t('kudos.not_yet_ranked')
     end
