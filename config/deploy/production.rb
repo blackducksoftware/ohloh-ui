@@ -1,5 +1,5 @@
-role :web, ['deployer@prd-oh-web01.dc2.lan', 'deployer@prd-oh-web02.dc2.lan',
-            'deployer@prd-oh-web03.dc2.lan']
+role :web, ['serv-deployer@prd-oh-web01.dc2.lan', 'serv-deployer@prd-oh-web02.dc2.lan',
+            'serv-deployer@prd-oh-web03.dc2.lan']
 
 # role :utility, 'serv-deployer@prd-oh-utility03.dc2.lan', user: 'serv-deployer'
 
