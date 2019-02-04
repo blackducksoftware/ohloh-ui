@@ -1,2 +1,0 @@
-class TagJob < Job
-end
