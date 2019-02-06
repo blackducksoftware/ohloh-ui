@@ -3,6 +3,6 @@ FactoryBot.define do
     f.association :license_right
     license_right_id 0
     description 'MyString'
-    status LicensePermission.statuses['permitted']
+    status LicensePermission.statuses['Permitted']
   end
 end

@@ -188,11 +188,11 @@ class LicenseTest < ActiveSupport::TestCase
     end
 
     it 'will get the correct license_permissions' do
-      permitted_permission = create(:license_permission, license_right: create(:license_right, name: 'permitted'))
-      forbidden_permission = create(:license_permission, status: LicensePermission.statuses['forbidden'],
-                                                         license_right: create(:license_right, name: 'forbidden'))
-      required_permission = create(:license_permission, status: LicensePermission.statuses['required'],
-                                                        license_right: create(:license_right, name: 'required'))
+      permitted_permission = create(:license_permission, license_right: create(:license_right, name: 'Permitted'))
+      forbidden_permission = create(:license_permission, status: LicensePermission.statuses['Forbidden'],
+                                                         license_right: create(:license_right, name: 'Forbidden'))
+      required_permission = create(:license_permission, status: LicensePermission.statuses['Required'],
+                                                        license_right: create(:license_right, name: 'Required'))
 
       create(:license) do |l|
         # Add a Permitted permission

@@ -39,15 +39,15 @@ class License < ActiveRecord::Base
   end
 
   def permitted_license_permissions
-    license_permissions.merge(LicensePermission.permitted)
+    license_permissions.merge(LicensePermission.Permitted)
   end
 
   def forbidden_license_permissions
-    license_permissions.merge(LicensePermission.forbidden)
+    license_permissions.merge(LicensePermission.Forbidden)
   end
 
   def required_license_permissions
-    license_permissions.merge(LicensePermission.required)
+    license_permissions.merge(LicensePermission.Required)
   end
 
   class << self

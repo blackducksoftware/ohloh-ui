@@ -467,6 +467,7 @@ Rails.application.routes.draw do
       end
     end
     resources :broken_links, only: %i[index destroy]
+    resources :license_permissions
   end
 
   get 'sitemap_index.xml', controller: 'sitemap', action: 'index', format: 'xml'
