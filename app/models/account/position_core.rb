@@ -1,9 +1,6 @@
 class Account::PositionCore < OhDelegator::Base
   parent_scope do
-    has_many :positions, lambda {
-      deleted_projects = Project.select(:id).deleted.arel
-      where(arel_table[:project_id].eq(nil).or(arel_table[:project_id].not_in(deleted_projects)))
-    }
+    has_many :positions, -> { joins(:project).where(projects: { deleted: false }) }
     has_many :claimed_positions, -> { where.not(name_id: nil) }, class_name: :Position
   end
 
