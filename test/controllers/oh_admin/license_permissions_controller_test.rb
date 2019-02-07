@@ -15,4 +15,14 @@ describe 'OhAdmin::LicensePermissionsController' do
     get :index
     assigns(:license_permissions).first.must_equal license.license_license_permissions.first
   end
+
+  it 'should filter the license_permissions correctly' do
+    get :index, status: 2
+    assigns(:license_permissions).count.must_equal 0
+    get :index, license_id: license.id
+    assigns(:license_permissions).count.must_equal 1
+    get :index, commit: 'Clear Filter'
+    assigns(:license_permissions).first.must_equal license.license_license_permissions.first
+  end
+
 end
