@@ -24,5 +24,4 @@ describe 'OhAdmin::LicensePermissionsController' do
     get :index, commit: 'Clear Filter'
     assigns(:license_permissions).first.must_equal license.license_license_permissions.first
   end
-
 end
