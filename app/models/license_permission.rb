@@ -6,8 +6,4 @@ class LicensePermission < ActiveRecord::Base
   validates :license_right_id, presence: true
 
   enum status: %i[Permitted Forbidden Required]
-
-  def self.status(status)
-    where('status = ?', LicensePermission.statuses[status])
-  end
 end

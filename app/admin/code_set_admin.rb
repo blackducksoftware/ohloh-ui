@@ -34,16 +34,6 @@ ActiveAdmin.register CodeSet do
     end
   end
 
-  controller do
-    def scoped_collection
-      if params[:code_location_id]
-        CodeLocation.find(params[:code_location_id]).code_sets
-      else
-        super
-      end
-    end
-  end
-
   member_action :fetch, method: :post do
     code_set = CodeSet.find(params[:id])
     code_set.code_location.remove_pending_jobs
