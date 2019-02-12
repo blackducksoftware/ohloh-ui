@@ -24,4 +24,10 @@ describe 'OhAdmin::LicensePermissionsController' do
     get :index, commit: 'Clear Filter'
     assigns(:license_permissions).first.must_equal license.license_license_permissions.first
   end
+
+  it 'unlogged users should respond with 401' do
+    login_as nil
+    get :index
+    must_respond_with :unauthorized
+  end
 end
