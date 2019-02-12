@@ -12,7 +12,7 @@ class Organization::Affiliated < Organization::AccountFacts
   end
 
   def committers(page = 1, limit = 10)
-    accounts = @organization.accounts.joins(%i[person positions])
+    accounts = @organization.accounts.joins(:person, positions: :project).where(projects: { deleted: false })
     accounts = accounts.group('accounts.id, people.kudo_position').order('kudo_position nulls last')
     accounts.paginate(per_page: limit, page: page)
     Account.paginate_by_sql(accounts.to_sql, per_page: limit, page: page)

@@ -23,6 +23,7 @@ module AccountScopes
     scope :with_facts, lambda {
       joins(positions: :project)
         .joins('INNER JOIN name_facts ON name_facts.name_id = positions.name_id')
+        .where(projects: { deleted: false })
         .where.not(Position.arel_table[:name_id].eq(nil))
         .where(ContributorFact.arel_table[:analysis_id].eq(Project.arel_table[:best_analysis_id]))
     }
