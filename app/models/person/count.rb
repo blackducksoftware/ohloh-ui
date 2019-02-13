@@ -15,4 +15,10 @@ module Person::Count
       Person.count('distinct name_id')
     end
   end
+
+  def total
+    Rails.cache.fetch('people_total_count', expires_in: 4.hours) do
+      Person.count
+    end
+  end
 end
