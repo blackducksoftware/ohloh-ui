@@ -1,0 +1,2 @@
+class TagJob < Job
+end
