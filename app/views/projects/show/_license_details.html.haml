@@ -7,23 +7,23 @@
         - permissions = license.permitted_license_permissions
         - permissions.each do |p|
           %p
-            %span{ 'data-tipso' => p.description }= p.name
-            %i.fa.float_right{ 'aria-hidden' => 'true', class: p.icon, 'data-tipso' => p.name }
+            %span{ 'data-tipso' => p.description }= p.license_permission.name
+            %i.fa.float_right{ 'aria-hidden' => 'true', class: p.license_permission.icon, 'data-tipso' => p.license_permission.name }
     .col-md-4#forbidden
       .well.right_border
         %h5 Forbidden
         - permissions = license.forbidden_license_permissions
         - permissions.each do |p|
           %p
-            %span{ 'data-tipso' => p.description }= p.name
-            %i.fa.float_right{ 'aria-hidden' => 'true', class: p.icon, 'data-tipso' => p.name }
+            %span{ 'data-tipso' => p.description }= p.license_permission.name
+            %i.fa.float_right{ 'aria-hidden' => 'true', class: p.license_permission.icon, 'data-tipso' => p.license_permission.name }
     .col-md-4#required
       .well
         %h5 Required
         - permissions = license.required_license_permissions
         - permissions.each do |p|
           %p
-            %span{ 'data-tipso' => p.description }= p.name
-            %i.fa.float_right{ 'aria-hidden' => 'true', class: p.icon, 'data-tipso' => p.name }
+            %span{ 'data-tipso' => p.description }= p.license_permission.name
+            %i.fa.float_right{ 'aria-hidden' => 'true', class: p.license_permission.icon, 'data-tipso' => p.license_permission.name }
   .row
     %p.text-muted.small.center= t('.info')
