@@ -297,6 +297,19 @@ describe 'ProjectsController' do
       must_respond_with :ok
     end
 
+    it 'should show license information on project show' do
+      project = create(:project)
+      license = create(:license)
+      create(:license_license_permission,
+             license: license,
+             license_permission: create(:license_permission,
+                                        license_right: create(:license_right, name: 'permitted')))
+
+      create(:project_license, project: project, license: license)
+      get :show, id: project.to_param
+      must_respond_with :ok
+    end
+
     it 'show should render for projects that have been analyzed' do
       project = create(:project)
       af1 = create(:activity_fact, analysis: project.best_analysis, code_added: 8_000, comments_added: 8_000)
