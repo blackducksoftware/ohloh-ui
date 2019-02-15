@@ -1,7 +1,9 @@
 class OhAdmin::LicensePermissionsController < ApplicationController
   before_action :admin_session_required
   before_action :check_params, only: [:index]
+  before_action :get_permissions, only: %i[new update]
   layout 'admin'
+  include LicenseHelper
 
   def index
     retrieve_license_permissions
@@ -9,7 +11,33 @@ class OhAdmin::LicensePermissionsController < ApplicationController
     retrieve_license_rights
   end
 
+  def new
+    retrieve_licenses
+    render
+  end
+
+  def create
+    @create_list = []
+    @update_list = []
+    @delete_list = []
+    parse_params
+    save_changes
+    redirect_to oh_admin_license_permissions_path, notice: 'Changes Saved'
+  end
+
+  def get_permissions
+    retrieve_permission_rights
+  end
+
   private
+
+  def parse_params
+    original_hash = JSON.parse params['original']
+
+    original_hash.each do |permission|
+      categorize_permission(permission)
+    end
+  end
 
   def retrieve_license_permissions
     @license_permissions = LicenseLicensePermission
@@ -29,6 +57,23 @@ class OhAdmin::LicensePermissionsController < ApplicationController
   def retrieve_license_rights
     @license_rights = LicenseRight.order(:name).collect { |right| [right.name, right.id] }
   end
+
+  # rubocop:disable Metrics/MethodLength
+  def retrieve_permission_rights
+    return unless params[:license_id]
+    license_id = params[:license_id]
+    sql = "select lr.id, lr.name, t.license_permission_id, license_license_permission_id, t.license_id, t.status
+    from license_rights lr
+    left outer join
+    (select lp.license_right_id, lp.id, llp.license_id as license_id, lp.id as license_permission_id,
+        llp.id as license_license_permission_id, lp.status
+      from license_permissions lp
+      join license_license_permissions llp on lp.id = llp.license_permission_id
+      where llp.license_id = #{license_id})t on t.license_right_id = lr.id
+    order by lr.id ;"
+    @permission_rights = ActiveRecord::Base.connection.select_all(sql).to_hash
+  end
+  # rubocop:enable Metrics/MethodLength
 
   def check_params
     clear_params if params[:commit] == 'Clear Filter'
