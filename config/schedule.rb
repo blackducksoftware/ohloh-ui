@@ -1,3 +1,4 @@
+env :PATH, ENV['PATH']
 set :environment, 'production'
 set :output, error: 'cron_error.log', standard: 'cron.log'
 every 2.weeks, at: '11.00 am', roles: [:sidekiq] do
