@@ -20,7 +20,7 @@ en:
       log_in: "Log In"
     create:
       success: "Logged in successfully"
-      error: "Invalid Login Credentials"
       learn_about_privacy: "Almost done. Before using your account, please configure these email notification settings."
+      locked_message: 'This account is now locked. Please contact the Open Hub team at info@openhub.net for assistance in unlocking the account.'
     destroy:
       success: "You have been logged out."

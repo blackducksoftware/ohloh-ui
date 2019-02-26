@@ -1,5 +1,5 @@
 - @login = OpenStruct.new
-= form_for(@login, as: :login, url: sessions_path, html: { method: :post, class: 'well form-horizontal' }) do |f|
+= form_for(@login, as: :login, url: oh_sessions_path, html: { method: :post, class: 'well form-horizontal' }) do |f|
   %fieldset
     %legend= t('.log_in_to_open_hub')
     .control-group
