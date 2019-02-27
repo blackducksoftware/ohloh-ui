@@ -14,7 +14,6 @@
       - permissions_count = @permission_rights.count
 
       = form_tag(oh_admin_license_permissions_path, method: 'post') do
-        = hidden_field_tag 'original', @permission_rights.to_json
         = hidden_field_tag 'license_id', params['license_id']
         .grid_container
           - @permission_rights.each_with_index do |permission_right, index|

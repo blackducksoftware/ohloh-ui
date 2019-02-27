@@ -51,21 +51,15 @@ describe 'OhAdmin::LicensePermissionsController' do
     create(:license_permission, license_right: license_right)
     new_right_id = ('right_' + license_right.id.to_s).to_sym
 
-    @controller.params = { license_id: license.id }
-    original = @controller.get_permissions
-
     assert_difference 'LicenseLicensePermission.count', 1 do
-      post :create, :license_id => license.id, :original => original.to_json,
+      post :create, :license_id => license.id,
                     new_right_id => 0, right_id => lp.status
     end
   end
 
   it 'deletes an existing permission' do
-    @controller.params = { license_id: license.id }
-    original = @controller.get_permissions
-
     assert_difference 'LicenseLicensePermission.count', -1 do
-      post :create, license_id: license.id, original: original.to_json
+      post :create, license_id: license.id
     end
   end
 
@@ -77,11 +71,8 @@ describe 'OhAdmin::LicensePermissionsController' do
     new_lp = create(:license_permission, license_right_id: lp.license_right_id,
                                          status: LicensePermission.statuses['Forbidden'])
 
-    @controller.params = { license_id: license.id }
-    original = @controller.get_permissions
-
     assert LicenseLicensePermission.first.license_permission_id.must_equal lp.id
-    post :create, :license_id => license.id, :original => original.to_json,
+    post :create, :license_id => license.id,
                   right_id => LicensePermission.statuses['Forbidden']
     assert LicenseLicensePermission.first.license_permission_id.must_equal new_lp.id
   end

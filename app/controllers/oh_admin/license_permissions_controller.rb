@@ -32,7 +32,7 @@ class OhAdmin::LicensePermissionsController < ApplicationController
   private
 
   def parse_params
-    original_hash = JSON.parse params['original']
+    original_hash = get_permissions
 
     original_hash.each do |permission|
       categorize_permission(permission)
@@ -59,10 +59,9 @@ class OhAdmin::LicensePermissionsController < ApplicationController
   end
 
   # rubocop:disable Metrics/MethodLength
-  def retrieve_permission_rights
-    return unless params[:license_id]
-    license_id = params[:license_id]
-    sql = "select lr.id, lr.name, t.license_permission_id, license_license_permission_id, t.license_id, t.status
+
+  def get_sql(license_id)
+    "select lr.id, lr.name, t.license_permission_id, license_license_permission_id, t.license_id, t.status
     from license_rights lr
     left outer join
     (select lp.license_right_id, lp.id, llp.license_id as license_id, lp.id as license_permission_id,
@@ -70,10 +69,16 @@ class OhAdmin::LicensePermissionsController < ApplicationController
       from license_permissions lp
       join license_license_permissions llp on lp.id = llp.license_permission_id
       where llp.license_id = #{license_id})t on t.license_right_id = lr.id
-    order by lr.id ;"
-    @permission_rights = ActiveRecord::Base.connection.select_all(sql).to_hash
+    order by lr.id ;".freeze
   end
   # rubocop:enable Metrics/MethodLength
+
+  def retrieve_permission_rights
+    return unless params[:license_id]
+    license_id = params[:license_id]
+    sql = get_sql(license_id)
+    @permission_rights = ActiveRecord::Base.connection.select_all(sql).to_hash
+  end
 
   def check_params
     clear_params if params[:commit] == 'Clear Filter'
