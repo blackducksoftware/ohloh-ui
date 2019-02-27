@@ -21,13 +21,6 @@
     %p.help-block= t('.vanity_url_help')
 
 .control-group
-  %label.control-label= t('.abbreviation')
-  .controls
-    = f.text_field :abbreviation, class: 'col-md-6'
-    - error_tag @license, :abbreviation
-    %p.help-block= t('.abbreviation_help')
-
-.control-group
   %label.control-label= t('.homepage')
   .controls
     = f.text_field :url, class: 'col-md-11'

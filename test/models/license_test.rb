@@ -37,12 +37,8 @@ class LicenseTest < ActiveSupport::TestCase
     license.allow_edit?.must_equal true
   end
 
-  it '#short_name returns abbreviation if present' do
-    create(:license, name: 'Foobar', abbreviation: 'Foo').short_name.must_equal 'Foo'
-  end
-
-  it '#short_name returns name if no abbreviation is available' do
-    create(:license, name: 'Foobar', abbreviation: nil).short_name.must_equal 'Foobar'
+  it '#short_name returns vanity_url if present' do
+    create(:license, name: 'Foobar', vanity_url: 'Foo').short_name.must_equal 'Foo'
   end
 
   describe 'autocomplete' do
@@ -116,20 +112,6 @@ class LicenseTest < ActiveSupport::TestCase
       license.valid?.must_equal false
       license.errors.count.must_equal 2
       license.errors[:name].must_equal ['is too short (minimum is 1 character)']
-    end
-  end
-
-  describe 'abbreviation' do
-    it 'should validate length' do
-      license = build(:license, abbreviation: Faker::Lorem.characters(102))
-      license.valid?.must_equal false
-      license.errors.count.must_equal 2
-      license.errors[:abbreviation].must_equal ['is too long (maximum is 100 characters)']
-    end
-
-    it 'should allow nil' do
-      license = build(:license, abbreviation: nil, editor_account: create(:account))
-      license.valid?.must_equal true
     end
   end
 
