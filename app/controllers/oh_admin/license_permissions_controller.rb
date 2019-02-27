@@ -58,8 +58,6 @@ class OhAdmin::LicensePermissionsController < ApplicationController
     @license_rights = LicenseRight.order(:name).collect { |right| [right.name, right.id] }
   end
 
-  # rubocop:disable Metrics/MethodLength
-
   def get_sql(license_id)
     "select lr.id, lr.name, t.license_permission_id, license_license_permission_id, t.license_id, t.status
     from license_rights lr
@@ -71,7 +69,6 @@ class OhAdmin::LicensePermissionsController < ApplicationController
       where llp.license_id = #{license_id})t on t.license_right_id = lr.id
     order by lr.id ;".freeze
   end
-  # rubocop:enable Metrics/MethodLength
 
   def retrieve_permission_rights
     return unless params[:license_id]
