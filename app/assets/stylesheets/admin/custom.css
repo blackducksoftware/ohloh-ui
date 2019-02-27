@@ -14,7 +14,7 @@
     font-weight: bold;
 }
 label {
-    margin-left: 10px;
+    margin-left: 20px;
     text-align: center;
 }
 select {
@@ -64,7 +64,99 @@ form input[type="submit"], form input[type=button], form button {
     color: #5E6469;
 }
 
+.grid_container {
+    display: grid;
+    grid-gap: 2px;
+    grid-template-columns: 0.25fr .75fr 0.25fr .75fr ;
+    grid-auto-flow: column;
+    margin-top: 15px;
+    margin-right: 10px ;
+}
+.license_right {
+  text-align: right;
+  margin-top: 10px;
+  margin-right: 10px;
+}
 
+.license_right_left {
+  grid-column: 1 / 2;
+}
+
+.wrapper_left {
+  grid-column: 2 / 3;
+  margin-right: 15px ;
+}
+
+.license_right_right {
+    grid-column: 3 / 4;
+}
+
+.wrapper_right {
+    grid-column: 4 / 5;
+    margin-right: 15px ;
+  }
+
+.radio-wrap {
+  height: 30px;
+  position: relative;
+  float: left;
+  margin-bottom: 20px;
+  margin-top: 5px;
+}
+.radio-wrap.half {
+  width: 50%;
+}
+.radio-wrap.third {
+  width: 33.3%;
+}
+.radio-wrap.quarter {
+  width: 25%;
+}
+
+input.custom-radio {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+}
+
+input.custom-radio ~ label {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 0.5px solid #bebebe;
+  border-radius: 4px;
+  background-image: -moz-linear-gradient(top, #fefefe, #e1e1e1);
+  background-image: -webkit-linear-gradient(top, #fefefe, #e1e1e1);
+  text-align: center;
+  line-height: 28px;
+  cursor: pointer;
+  color: #888;
+  text-shadow: 0 1px 0 #fff;
+}
+
+input.custom-radio:checked ~ label {
+  background-image: -moz-linear-gradient(top, #ebebeb, #fefefe);
+  background-image: -webkit-linear-gradient(top, #ebebeb, #fefefe);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset;
+  color: blue;
+  text-shadow: 0 0 2px #fff;
+}
+
+input.custom-radio:checked[value = '0'] ~ label {
+  color: #70c725;
+}
+
+input.custom-radio:checked[value = '1'] ~ label {
+    color: #e53b3b;
+  }
+
+  input.custom-radio:checked[value = '2'] ~ label {
+    color: #007aff;
+  }
 
 
 
