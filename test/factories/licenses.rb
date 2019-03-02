@@ -5,7 +5,7 @@ FactoryBot.define do
     name         { Faker::Lorem.word + rand(999_999).to_s }
     abbreviation { Faker::Hacker.abbreviation }
     description { Faker::Lorem.sentence }
-    locked false
+    locked { false }
     before(:create) { |instance| instance.editor_account = create(:admin) }
   end
 end

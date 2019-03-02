@@ -10,7 +10,7 @@ FactoryBot.define do
   factory :link_with_no_editor_account, class: Link do
     title { generate(:link_title) }
     url { generate(:link_url) }
-    link_category_id Link::CATEGORIES.values.last(6).sample
+    link_category_id { Link::CATEGORIES.values.last(6).sample }
     association :project
   end
 

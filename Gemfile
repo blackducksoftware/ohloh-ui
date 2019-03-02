@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'activeadmin', '1.0.0'
+gem 'activeadmin'#, '1.0.0'
 gem 'airbrake', '~> 5.5'
 gem 'aws-sdk', '~> 2.3'
 gem 'brakeman'
@@ -25,13 +25,13 @@ gem 'oh_delegator'
 gem 'ohloh_scm', '2.4.0'
 gem 'open4'
 gem 'paperclip', '~> 5.3'
-gem 'pg'
-gem 'rails', '~> 4.2.7.1'
+gem 'pg', '0.20'
+gem 'rails', '>= 4.2'
 gem 'rails-html-sanitizer', '~> 1.0.4'
 gem 'recaptcha', require: 'recaptcha/rails'
 gem 'redcarpet'
 gem 'redis-rails', '>= 5.0.2'
-gem 'rubocop', '~> 0.49.0', require: false
+gem 'rubocop', require: false
 gem 'sass-rails'
 gem 'secondbase'
 gem 'sidekiq'
@@ -44,6 +44,7 @@ gem 'uglifier', '>= 2.7.2'
 gem 'whenever', require: false
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
+gem 'rubocop-rspec', '> 1.28'
 
 group :development do
   gem 'better_errors'
