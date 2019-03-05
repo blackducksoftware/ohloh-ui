@@ -22,5 +22,6 @@ en:
       success: "Logged in successfully"
       learn_about_privacy: "Almost done. Before using your account, please configure these email notification settings."
       locked_message: 'This account is now locked. Please contact the Open Hub team at info@openhub.net for assistance in unlocking the account.'
+      recaptcha_failure: 'Please verify the captcha to proceed.'
     destroy:
       success: "You have been logged out."

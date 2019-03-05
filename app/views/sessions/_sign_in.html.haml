@@ -15,5 +15,8 @@
       %label.checkbox{ style: 'padding-left: 0px;' }
         = f.check_box :remember_me
         = t('.remember_me')
+    - if @ask_for_recaptcha
+      .control-group
+        = render 'shared/captcha'
     .actions
       %input.btn.btn-primary{ type: 'submit', value: t('.log_in') }
