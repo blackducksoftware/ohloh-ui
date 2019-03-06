@@ -35,7 +35,7 @@ class LicensesController < ApplicationController
   private
 
   def license_params
-    params.require(:license).permit(:name, :vanity_url, :abbreviation, :url, :description, :locked)
+    params.require(:license).permit(:name, :vanity_url, :url, :description, :locked)
   end
 
   def set_license
