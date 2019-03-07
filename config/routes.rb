@@ -24,11 +24,13 @@ Rails.application.routes.draw do
     get :age_spark, on: :collection
   end
 
-  resources :sessions, controller: 'clearance/sessions', only: %i[new create] do
+  resources :sessions, controller: 'clearance/sessions', only: %i[new] do
     collection do
       delete :destroy
     end
   end
+
+  post 'sessions' => 'sessions#create', as: :oh_sessions
 
   resources :stack_entries, only: :new
 

@@ -627,6 +627,7 @@ CREATE TABLE public.accounts (
     organization_id integer,
     affiliation_type text DEFAULT 'unaffiliated'::text NOT NULL,
     organization_name text,
+    auth_fail_count integer DEFAULT 0,
     CONSTRAINT accounts_email_check CHECK ((length(email) >= 3)),
     CONSTRAINT accounts_login_check CHECK ((length(login) >= 3))
 );
@@ -10524,6 +10525,8 @@ INSERT INTO schema_migrations (version) VALUES ('20181220010101');
 INSERT INTO schema_migrations (version) VALUES ('20190108060802');
 
 INSERT INTO schema_migrations (version) VALUES ('20190130190953');
+
+INSERT INTO schema_migrations (version) VALUES ('20190221123532');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
