@@ -2,7 +2,7 @@ ENV['RAILS_ENV'] ||= 'test'
 require 'simplecov'
 require 'simplecov-rcov'
 
-SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
+SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
 SimpleCov.start 'rails'
 SimpleCov.minimum_coverage 99.57
 
