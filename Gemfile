@@ -93,7 +93,7 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'rails-erd'
-  gem 'rb-readline'
+  gem 'rb-readline', '~> 0.5.5'
   gem 'selenium-webdriver'
   gem 'spinach'
   gem 'spinach-console-reporter'
