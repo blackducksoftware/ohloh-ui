@@ -30,4 +30,50 @@ describe 'OhAdmin::LicensePermissionsController' do
     get :index
     must_respond_with :unauthorized
   end
+
+  it 'calls license_permission create' do
+    get :new
+    assert_select 'h2', 'No License Permissions Found'
+    must_respond_with :success
+  end
+
+  it 'calls license_permissions create with a license id' do
+    get :new, license_id: license.id
+    assert_select 'h2', false, 'No h2 is found'
+    must_respond_with :success
+  end
+
+  it 'creates a new permission' do
+    lp = LicensePermission.first
+    right_id = ('right_' + lp.license_right_id.to_s).to_sym
+
+    license_right = create(:license_right, name: 'New Right')
+    create(:license_permission, license_right: license_right)
+    new_right_id = ('right_' + license_right.id.to_s).to_sym
+
+    assert_difference 'LicenseLicensePermission.count', 1 do
+      post :create, :license_id => license.id,
+                    new_right_id => 0, right_id => lp.status
+    end
+  end
+
+  it 'deletes an existing permission' do
+    assert_difference 'LicenseLicensePermission.count', -1 do
+      post :create, license_id: license.id
+    end
+  end
+
+  it 'updates an existing license_license_permission with new status' do
+    lp = LicensePermission.first
+    right_id = ('right_' + lp.license_right_id.to_s).to_sym
+
+    # // create another permission for forbidden permission
+    new_lp = create(:license_permission, license_right_id: lp.license_right_id,
+                                         status: LicensePermission.statuses['Forbidden'])
+
+    assert LicenseLicensePermission.first.license_permission_id.must_equal lp.id
+    post :create, :license_id => license.id,
+                  right_id => LicensePermission.statuses['Forbidden']
+    assert LicenseLicensePermission.first.license_permission_id.must_equal new_lp.id
+  end
 end

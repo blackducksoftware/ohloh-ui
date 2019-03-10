@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.10
--- Dumped by pg_dump version 9.6.10
+-- Dumped from database version 9.6.8
+-- Dumped by pg_dump version 9.6.8
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -627,6 +627,7 @@ CREATE TABLE public.accounts (
     organization_id integer,
     affiliation_type text DEFAULT 'unaffiliated'::text NOT NULL,
     organization_name text,
+    auth_fail_count integer DEFAULT 0,
     CONSTRAINT accounts_email_check CHECK ((length(email) >= 3)),
     CONSTRAINT accounts_login_check CHECK ((length(login) >= 3))
 );
@@ -3331,6 +3332,38 @@ CREATE VIEW public.license_facts_id_seq_view AS
 
 
 --
+-- Name: license_license_permissions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.license_license_permissions (
+    id integer NOT NULL,
+    license_id integer,
+    license_permission_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: license_license_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.license_license_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: license_license_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.license_license_permissions_id_seq OWNED BY public.license_license_permissions.id;
+
+
+--
 -- Name: license_permission_roles; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3369,9 +3402,9 @@ ALTER SEQUENCE public.license_permission_roles_id_seq OWNED BY public.license_pe
 
 CREATE TABLE public.license_permissions (
     id integer NOT NULL,
-    name character varying,
-    description character varying,
-    icon character varying,
+    license_right_id integer,
+    status integer,
+    description text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -3394,6 +3427,38 @@ CREATE SEQUENCE public.license_permissions_id_seq
 --
 
 ALTER SEQUENCE public.license_permissions_id_seq OWNED BY public.license_permissions.id;
+
+
+--
+-- Name: license_rights; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.license_rights (
+    id integer NOT NULL,
+    name character varying,
+    icon character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: license_rights_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.license_rights_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: license_rights_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.license_rights_id_seq OWNED BY public.license_rights.id;
 
 
 --
@@ -6709,6 +6774,13 @@ ALTER TABLE ONLY public.license_facts ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: license_license_permissions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.license_license_permissions ALTER COLUMN id SET DEFAULT nextval('public.license_license_permissions_id_seq'::regclass);
+
+
+--
 -- Name: license_permission_roles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -6720,6 +6792,13 @@ ALTER TABLE ONLY public.license_permission_roles ALTER COLUMN id SET DEFAULT nex
 --
 
 ALTER TABLE ONLY public.license_permissions ALTER COLUMN id SET DEFAULT nextval('public.license_permissions_id_seq'::regclass);
+
+
+--
+-- Name: license_rights id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.license_rights ALTER COLUMN id SET DEFAULT nextval('public.license_rights_id_seq'::regclass);
 
 
 --
@@ -7471,6 +7550,14 @@ ALTER TABLE ONLY public.license_facts
 
 
 --
+-- Name: license_license_permissions license_license_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.license_license_permissions
+    ADD CONSTRAINT license_license_permissions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: license_permission_roles license_permission_roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7484,6 +7571,14 @@ ALTER TABLE ONLY public.license_permission_roles
 
 ALTER TABLE ONLY public.license_permissions
     ADD CONSTRAINT license_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: license_rights license_rights_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.license_rights
+    ADD CONSTRAINT license_rights_pkey PRIMARY KEY (id);
 
 
 --
@@ -10428,6 +10523,10 @@ INSERT INTO schema_migrations (version) VALUES ('20181126091803');
 INSERT INTO schema_migrations (version) VALUES ('20181220010101');
 
 INSERT INTO schema_migrations (version) VALUES ('20190108060802');
+
+INSERT INTO schema_migrations (version) VALUES ('20190130190953');
+
+INSERT INTO schema_migrations (version) VALUES ('20190221123532');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

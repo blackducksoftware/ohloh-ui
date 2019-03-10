@@ -66,8 +66,9 @@ GEM
     aws-sdk-resources (2.11.232)
       aws-sdk-core (= 2.11.232)
     aws-sigv4 (1.0.3)
-    bcrypt (3.1.12)
-    better_errors (2.5.1)
+    bcrypt (3.1.11)
+    bcrypt_pbkdf (1.0.0)
+    better_errors (2.1.1)
       coderay (>= 1.0.0)
       erubi (>= 1.0.0)
       rack (>= 0.9.0)
@@ -349,6 +350,8 @@ GEM
     path_expander (1.0.3)
     pg (0.20.0)
     phantomjs (2.1.1.0)
+    polyamorous (1.3.3)
+      activerecord (>= 3.0)
     posix-spawn (0.3.13)
     power_assert (1.1.3)
     powerpack (0.1.2)
@@ -407,11 +410,16 @@ GEM
       activerecord (>= 3.0, < 5.2)
       activesupport (>= 3.0, < 5.2)
       i18n
-    rb-fsevent (0.10.3)
-    rb-inotify (0.10.0)
-      ffi (~> 1.0)
-    rb-readline (0.5.5)
-    recaptcha (4.13.1)
+      polyamorous (~> 1.3)
+    rb-fsevent (0.9.7)
+    rb-inotify (0.9.7)
+      ffi (>= 0.5.0)
+    rb-readline (0.5.3)
+    rbnacl (3.4.0)
+      ffi
+    rbnacl-libsodium (1.0.15.1)
+      rbnacl (>= 3.0.1)
+    recaptcha (4.3.1)
       json
     redcarpet (3.4.0)
     redis (4.1.0)
@@ -551,6 +559,7 @@ DEPENDENCIES
   activeadmin
   airbrake (~> 5.5)
   aws-sdk (~> 2.3)
+  bcrypt_pbkdf (~> 1.0)
   better_errors
   binding_of_caller (~> 0.7.2)
   brakeman
@@ -609,6 +618,8 @@ DEPENDENCIES
   rails-erd
   rails-html-sanitizer (~> 1.0.4)
   rb-readline
+  rbnacl (~> 3.2)
+  rbnacl-libsodium
   recaptcha
   redcarpet
   redis-rails (>= 5.0.2)

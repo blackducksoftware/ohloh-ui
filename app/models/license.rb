@@ -2,16 +2,14 @@ class License < ActiveRecord::Base
   validates :vanity_url, uniqueness: { case_sensitive: false }, length: { in: 2..50 },
                          default_param_format: true
   validates :name, uniqueness: { case_sensitive: false }, length: { in: 1..100 }
-  validates :abbreviation, length: { maximum: 100 }, allow_nil: true
   validates :description, length: { maximum: 50_000 }, allow_nil: true
   validates :url, url_format: true, allow_blank: true
 
-  acts_as_editable editable_attributes: %i[vanity_url name abbreviation description url],
+  acts_as_editable editable_attributes: %i[vanity_url name description url],
                    merge_within: 30.minutes
   acts_as_protected
 
-  filterable_by ['licenses.vanity_url', 'licenses.description', 'licenses.url', 'licenses.abbreviation',
-                 'licenses.name']
+  filterable_by ['licenses.vanity_url', 'licenses.description', 'licenses.url', 'licenses.name']
 
   has_many :license_license_permissions
   has_many :license_permissions, through: :license_license_permissions, dependent: :destroy
@@ -35,7 +33,7 @@ class License < ActiveRecord::Base
   end
 
   def short_name
-    abbreviation.blank? ? name : abbreviation
+    vanity_url.blank? ? name : vanity_url
   end
 
   def permitted_license_permissions

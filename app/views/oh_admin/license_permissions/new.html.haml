@@ -1,0 +1,58 @@
+%h1
+  New License Permissions
+%section.content
+  = render partial: 'layouts/partials/alert'
+  = form_tag(new_oh_admin_license_permission_path, method: 'get', class: 'filter_form') do
+    .row
+      = label_tag 'License', nil
+      = select_tag 'license_id', options_for_select(@licenses, :selected => params[:license_id]),
+                                prompt: "Select License",
+                                onchange: 'this.form.submit()'
+
+  - if @permission_rights.present?
+    .box{:style => 'width: 85%; position: absolute; top: 35%; left: 5%;'}
+      - permissions_count = @permission_rights.count
+
+      = form_tag(oh_admin_license_permissions_path, method: 'post') do
+        = hidden_field_tag 'license_id', params['license_id']
+        .grid_container
+          - @permission_rights.each_with_index do |permission_right, index|
+            - license_right_col_start =  index < permissions_count / 2 ? 'license_right_left' : 'license_right_right'
+            - wrapper_col_start =  index < permissions_count / 2 ? 'wrapper_left' : 'wrapper_right'
+
+            .license_right{:class => license_right_col_start}
+              - element_name = "right_" + permission_right['id']
+              - status = permission_right['status']
+
+              =permission_right['name']
+            .radio_btn_wrapper{:class => wrapper_col_start}
+              .radio-wrap.third
+                %input{ :id => "permitted_#{permission_right['id']}", :class => 'custom-radio',:checked => (status == '0'), |
+                    :name => "#{element_name}", :onclick => "ToggleSelection(this);", :type => "checkbox", :value => 0, |
+                    :active => (status == '0' ? true : nil) }
+                %label{:for => "permitted_#{permission_right['id']}"} Permitted
+              .radio-wrap.third
+                %input{ :id => "forbidden_#{permission_right['id']}", :class => 'custom-radio',:checked =>  (status == '1'), |
+                    :name => "#{element_name}", :onclick => "ToggleSelection(this);", :type => "checkbox", :value => 1, |
+                    :active => (status == '1' ? true : nil) }
+                %label{:for => "forbidden_#{permission_right['id']}"} Forbidden
+              .radio-wrap.third
+                %input{ :id => "required_#{permission_right['id']}", :class => 'custom-radio',:checked =>  (status == '2'), |
+                    :name => "#{element_name}", :onclick => "ToggleSelection(this);", :type => "checkbox", :value => 2, |
+                    :active => (status == '2' ? true : nil) }}
+                %label{:for => "required_#{permission_right['id']}"} Required
+
+        = submit_tag('Save Changes', :class => 'btn-block', :style => "background-color: #3c8dbc; background-image: none; ")
+
+  - else
+    %h2= 'No License Permissions Found'
+
+:javascript
+  function ToggleSelection(radio) {
+    var elements = document.getElementsByName(radio.name);
+    for (var i = 0, l = elements.length; i < l; i++) {
+      if (elements[i] != radio) {
+        elements[i].checked = false;
+      }
+    }
+  }

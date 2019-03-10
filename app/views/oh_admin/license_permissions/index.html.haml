@@ -1,7 +1,9 @@
 %h1
   License Permissions
+
 %section.content
   = render partial: 'layouts/partials/alert'
+
   - if @license_permissions.present?
     .col-xs-7.col-sm-6.col-lg-10
       .box
@@ -27,7 +29,7 @@
       .well
         .panel.panel-default
           .panel-heading.strong Filter
-        = form_tag(oh_admin_license_permissions_path, method: 'get', class: 'filter_form') do
+        = form_tag(oh_admin_license_permissions_path, method: 'get') do
           .row
             = label_tag 'License', nil
           .row
@@ -43,6 +45,7 @@
           .buttons
             = submit_tag "Filter", name: nil
             = submit_tag "Clear Filter", id: "clear_filter"
-
+      = button_to('Add/Edit Permissions', new_oh_admin_license_permission_path, |
+          :class => "btn btn-outline-secondary float-right", :method => :get, :style => "margin-left: 20px;")
   - else
     %h2= 'No License Permissions Found'

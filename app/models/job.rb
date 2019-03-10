@@ -9,6 +9,7 @@ class Job < ActiveRecord::Base
   STATUS_RUNNING   = 1
   STATUS_QUEUED    = 2
   STATUS_FAILED    = 3
+  STATUS_RESTART   = 4
   STATUS_COMPLETED = 5
 
   def initialize(attributes = {})

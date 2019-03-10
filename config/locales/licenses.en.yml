@@ -11,8 +11,6 @@ en:
       url_name: 'Open Hub URL Name'
       name_help: 'This name must be unique for all licenses.'
       vanity_url_help: 'This is the URL address on Open Hub and must be unique. Only characters, numbers, dashes and underscores allowed.'
-      abbreviation: 'Abbreviation'
-      abbreviation_help: 'Enter a short abbreviation for the license.'
       homepage: 'Homepage'
       homepage_help: "The full homepage URL of the license, starting with 'http:// or https://'."
       license_text: 'License Text'
