@@ -18,7 +18,7 @@ class ProjectTest < ActiveSupport::TestCase
 
         valid_vanity_urls.each do |name|
           project = build(:project, vanity_url: name)
-          project.wont_be :valid?
+          project.must_be :valid?
         end
       end
 

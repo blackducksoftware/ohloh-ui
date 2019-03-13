@@ -4,8 +4,8 @@ FactoryBot.define do
     vanity_url  { Faker::Lorem.word + rand(999_999).to_s }
     description { Faker::Lorem.sentence }
     uuid { Faker::Code.isbn }
-    before(:create) { |instance| instance.editor_account = create(:admin) }
-    user_count 1
+    after(:build) { |instance| instance.editor_account = create(:admin) }
+    user_count { 1 }
     association :logo
     association :organization
     after(:create) { |instance| instance.update_attributes(best_analysis: create(:analysis, project: instance)) }
@@ -30,6 +30,6 @@ FactoryBot.define do
     description { Faker::Lorem.sentence }
     uuid { Faker::Code.isbn }
     before(:create) { |instance| instance.editor_account = create(:admin) }
-    user_count 1
+    user_count { 1 }
   end
 end

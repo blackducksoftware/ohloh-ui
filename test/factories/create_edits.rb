@@ -4,9 +4,9 @@ FactoryBot.define do
     association :account, factory: :account
     association :project, factory: :project
     association :organization, factory: :organization
-    ip '0.0.0.0'
-    undone false
-    undone_at nil
-    undone_by nil
+    ip { '0.0.0.0' }
+    undone { false }
+    undone_at { nil }
+    undone_by { nil }
   end
 end

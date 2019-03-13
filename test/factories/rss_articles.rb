@@ -4,7 +4,7 @@ FactoryBot.define do
     description { Faker::Lorem.paragraph }
     guid { Faker::Internet.url }
     author { Faker::Name.name }
-    time 5.days.ago
+    time { 5.days.ago }
     association :rss_feed
   end
 end
