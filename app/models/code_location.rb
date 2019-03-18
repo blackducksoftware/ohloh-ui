@@ -42,6 +42,7 @@ class CodeLocation < FisbotApi
 
   def attributes
     return scm_attributes unless @client_relation_id
+
     scm_attributes.merge(client_relation_id: @client_relation_id)
   end
 

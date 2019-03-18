@@ -17,6 +17,7 @@ module ActsAsProtected
     def protection_enabled?
       return true if self.class.aap_always_protected
       return send(aap_parent).protection_enabled? unless aap_parent.nil?
+
       (permission || Permission.new).remainder
     end
 
@@ -26,12 +27,14 @@ module ActsAsProtected
       return allow_edit? if respond_to?(:allow_edit?)
       return true if new_record?
       return true unless protection_enabled?
+
       aap_authorized_editors.include?(editor_account)
     end
 
     def must_be_authorized
       return unless changed?
       return if edit_authorized?
+
       errors.add :permission, I18n.t(:edit_permission_failed, klass: self.class)
     end
 

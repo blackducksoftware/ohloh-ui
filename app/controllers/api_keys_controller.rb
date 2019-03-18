@@ -19,12 +19,14 @@ class ApiKeysController < ApplicationController
 
   def new
     return render_404 unless @account
+
     @api_key = ApiKey.new
     render_with_format action_name
   end
 
   def create
     return render_404 unless @account
+
     @api_key = ApiKey.new(model_params)
     @api_key.account = @account
     if @api_key.save
@@ -36,11 +38,13 @@ class ApiKeysController < ApplicationController
 
   def edit
     return render_404 unless @account
+
     render_with_format action_name
   end
 
   def update
     return render_404 unless @account
+
     @api_key.account = @account
     if @api_key.update(model_params)
       redirect_to account_api_keys_path(@account), notice: t('.success')
@@ -96,11 +100,13 @@ class ApiKeysController < ApplicationController
 
   def must_be_key_owner
     return unless (@account != current_user) && !current_user_is_admin?
+
     error(message: t(:not_authorized), status: :unauthorized)
   end
 
   def check_api_key_limit
     return unless @account.api_keys.size >= ApiKey::KEY_LIMIT_PER_ACCOUNT
+
     redirect_to account_api_keys_path(@account), notice: t('.limit_reached')
   end
 end

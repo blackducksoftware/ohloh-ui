@@ -21,7 +21,7 @@ class AccountsHelperTest < ActionView::TestCase
 
   describe '#privacy_policy_link' do
     it 'should return privacy policy link for existing account' do
-      link = %(<a target="_blank" href="http://blog.openhub.net/privacy">#{privacy_policy_link_text}</a>)
+      link = %(<a target="_blank" rel="noopener" href="http://blog.openhub.net/privacy">#{privacy_policy_link_text}</a>)
       privacy_policy_link.must_equal link
     end
   end

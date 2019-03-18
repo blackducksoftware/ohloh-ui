@@ -38,6 +38,7 @@ class CompareProjectAnalysisCsvDecorator
     require_best_analysis do |a|
       f = a.factoids.find { |factoid| factoid.is_a?(FactoidComments) }
       return t('compares.project_cells.comments.no_comments_found') unless a.relative_comments && f
+
       t("compares.project_cells.comments.#{f.class.name.gsub('FactoidComments', '').underscore}")
     end
   end

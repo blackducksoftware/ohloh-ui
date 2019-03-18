@@ -17,5 +17,7 @@ module UnclaimedControllerTest
     Object.const_set('OBJECT_MEMORY_CAP', original_object_memory_cap)
   end
 
+  # rubocop:disable Style/AccessModifierDeclarations
   module_function :limit_by_memory_cap
+  # rubocop:enable Style/AccessModifierDeclarations
 end

@@ -17,6 +17,7 @@ module VulnerabilitiesHelper
   def filter_severity_param
     severity = params.fetch(:filter, {})[:severity]
     return nil unless Vulnerability.severity_exists?(severity) || severity == EMPTY_SEVERITY
+
     severity
   end
 
@@ -42,6 +43,7 @@ module VulnerabilitiesHelper
 
   def disabled_severities
     return [] unless @release
+
     (severities + [EMPTY_SEVERITY]).select { |s| @release.vulnerabilities.send(s).empty? }
   end
 
@@ -82,6 +84,7 @@ module VulnerabilitiesHelper
   def disable_timespan(timespan)
     timespan.each do |_label, values|
       next if values[0].blank?
+
       values.push(@best_security_set.releases.select_within_years(values[0]).blank? ? 'disabled' : '')
     end
   end

@@ -53,9 +53,7 @@ module Reverification
     def check_statistics_of_last_24_hrs
       stats = statistics_of_last_24_hrs
 
-      if bounce_rate(stats) >= amazon_stat_settings[:bounce_rate]
-        raise(BounceRateLimitError, 'Bounce Rate exceeded')
-      end
+      raise(BounceRateLimitError, 'Bounce Rate exceeded') if bounce_rate(stats) >= amazon_stat_settings[:bounce_rate]
       raise(ComplaintRateLimitError, 'Complaint Rate exceeded 0.1%') if complaint_rate(stats) >= 0.1
     end
 

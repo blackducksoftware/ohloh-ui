@@ -15,23 +15,27 @@ class PositionDecorator < Cherry::Decorator
       return I18n.t('position.affiliated_with', name: position.organization_name)
     end
     return if position.organization.blank?
+
     I18n.t('position.affiliated_with', name: position.organization)
   end
   # rubocop:enable Metrics/AbcSize
 
   def name_fact
     return @name_fact if @name_fact
+
     name_facts_map_key = "#{project.best_analysis_id}_#{name_id}"
     @name_fact = account.position_core.name_facts[name_facts_map_key].try(:first)
   end
 
   def project_contributor_or_show_path
     return h.project_contributor_path(project, contribution) if project && contribution
+
     h.account_position_path(account, position)
   end
 
   def stop_date
     return 'Present' if effective_ongoing?
+
     effective_stop_date.strftime('%b %Y')
   end
 

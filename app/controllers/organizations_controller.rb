@@ -17,7 +17,7 @@ class OrganizationsController < ApplicationController
     @organization = Organization.new({ editor_account: current_user }.merge(organization_params))
     @organization.save!
     redirect_to organization_path(@organization), notice: t('.notice')
-  rescue
+  rescue StandardError
     flash.now[:error] = t('.error')
     render :new
   end
@@ -28,9 +28,10 @@ class OrganizationsController < ApplicationController
 
   def update
     return render_unauthorized unless @organization.edit_authorized?
-    @organization.update_attributes!(organization_params)
+
+    @organization.update!(organization_params)
     redirect_to organization_path(@organization), notice: t('.notice')
-  rescue
+  rescue StandardError
     @current_object = @organization
     flash.now[:error] = t('.failure')
     render :edit, status: :unprocessable_entity
@@ -48,6 +49,7 @@ class OrganizationsController < ApplicationController
   def new_manager
     @manage = @organization.manages.new(account_id: params[:account_id], approver: Account.hamster)
     return if request.get?
+
     redirect_to list_managers_organization_path(@organization), flash: { success: t('.success') } if @manage.save
   end
 
@@ -55,6 +57,7 @@ class OrganizationsController < ApplicationController
     @projects = []
     params[:sort] ||= 'relevance'
     return if params[:query].blank?
+
     @projects = Project.active.search_and_sort(params[:query], params[:sort], page_param)
   end
 

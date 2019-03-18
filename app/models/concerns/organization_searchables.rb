@@ -13,6 +13,7 @@ module OrganizationSearchables
     def searchable_factor
       projects_count = Project.not_deleted.count
       return 0.0 if projects_count.zero? || projects_count.zero?
+
       Math.log10(projects_count * 2) / Math.log10(projects_count * 2)
     end
 

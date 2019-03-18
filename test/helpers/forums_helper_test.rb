@@ -4,7 +4,7 @@ class ForumsHelperTest < ActionView::TestCase
   include ForumsHelper
 
   before do
-    Object.any_instance.stubs(:current_user_is_admin?).returns(:true)
+    Object.any_instance.stubs(:current_user_is_admin?).returns(true)
   end
 
   let(:forum) { create(:forum) }

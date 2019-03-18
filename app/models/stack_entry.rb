@@ -26,7 +26,7 @@ class StackEntry < ActiveRecord::Base
   end
 
   def destroy
-    update_attributes(deleted_at: Time.current)
+    update(deleted_at: Time.current)
     update_counters
   end
 

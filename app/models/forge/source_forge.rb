@@ -31,12 +31,13 @@ class Forge::SourceForge < Forge
     json = match.get_json_api
     mount_point = get_mount_point(json)
     return [] if mount_point.empty?
+
     repo_type = mount_point.first['name']
-    if repo_type == 'cvs'
-      location = @url
-    else
-      location = "#{repo_type}://#{repo_type}.code.sf.net/p/#{match.name_at_forge}/#{mount_point.first['mount_point']}"
-    end
+    location = if repo_type == 'cvs'
+                 @url
+               else
+                 "#{repo_type}://#{repo_type}.code.sf.net/p/#{match.name_at_forge}/#{mount_point.first['mount_point']}"
+               end
     fetch_repo_attrs(match, repo_type, location)
   end
 

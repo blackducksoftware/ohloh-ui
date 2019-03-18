@@ -72,6 +72,14 @@ class AccountsController < ApplicationController
     Account::Subscription.new(@account).unsubscribe(@notification_type) if @status
   end
 
+  def confirm_delete; end
+
+  def edit; end
+
+  def disabled; end
+
+  def settings; end
+
   private
 
   def find_claimed_people
@@ -84,6 +92,7 @@ class AccountsController < ApplicationController
     set_account_by_email_md5
     @account ||= if params[:id] == 'me'
                    return redirect_to new_session_path if current_user.nil?
+
                    current_user
                  else
                    AccountFind.by_id_or_login(params[:id])

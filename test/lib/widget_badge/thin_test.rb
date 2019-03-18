@@ -41,3 +41,4 @@ describe 'WidgetBadge::Thin' do
     end
   end
 end
+# rubocop: enable Lint/UnneededSplatExpansion

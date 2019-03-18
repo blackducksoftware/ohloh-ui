@@ -24,7 +24,7 @@ class RemoveDuplicateRepositoriesMappedToSameProject
 
   def safe_destroy_enlistment(enlistment)
     enlistment.create_edit.undo!(Account.hamster)
-  rescue => e
+  rescue StandardError => e
     puts "Failed to delete Enlistment#{enlistment.id} due to #{e}"
   end
 

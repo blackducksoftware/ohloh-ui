@@ -139,9 +139,9 @@ describe 'AnalysesController' do
   describe 'committer_history' do
     it 'should return chart data' do
       create_all_months
-      activity_fact.update_attributes!(month: second_day_of_month)
+      activity_fact.update!(month: second_day_of_month)
       create(:activity_fact, month: beginning_of_month, analysis: activity_fact.analysis)
-      analysis.update_attributes!(oldest_code_set_time: Date.current + 32.days)
+      analysis.update!(oldest_code_set_time: Date.current + 32.days)
 
       get :committer_history, project_id: project.to_param, id: analysis.reload.id
 
@@ -165,7 +165,7 @@ describe 'AnalysesController' do
       create_all_months
       activity_fact.update_attribute(:month, second_day_of_month)
       create(:activity_fact, month: beginning_of_month, analysis: activity_fact.analysis)
-      analysis.update_attributes(oldest_code_set_time: Date.current + 32.days)
+      analysis.update(oldest_code_set_time: Date.current + 32.days)
 
       get :contributor_summary, project_id: project.to_param, id: analysis.reload.id
 
@@ -185,7 +185,7 @@ describe 'AnalysesController' do
     it 'should return chart data' do
       fact_values = { code_added: 10, code_removed: 5, comments_added: 20, comments_removed: 10, on_trunk: true,
                       blanks_added: 10, blanks_removed: 7, month: 2.months.ago.beginning_of_month.advance(days: 5) }
-      activity_fact.update_attributes(fact_values)
+      activity_fact.update(fact_values)
       create_all_months
 
       get :language_history, project_id: project.to_param, id: analysis.id
@@ -206,7 +206,7 @@ describe 'AnalysesController' do
     it 'should return chart data' do
       options = { code_added: 10, code_removed: 5, comments_added: 20, comments_removed: 10,
                   blanks_added: 10, blanks_removed: 7, month: 2.months.ago.beginning_of_month.advance(days: 5) }
-      activity_fact.update_attributes(options)
+      activity_fact.update(options)
       activity_fact_2
       create_all_months
 
@@ -231,7 +231,7 @@ describe 'AnalysesController' do
     it 'should return chart data' do
       options = { code_added: 10, code_removed: 5, comments_added: 20, comments_removed: 10,
                   blanks_added: 10, blanks_removed: 7, month: 2.months.ago.beginning_of_month.advance(days: 5) }
-      activity_fact.update_attributes(options)
+      activity_fact.update(options)
       activity_fact_2
       create_all_months
 

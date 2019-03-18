@@ -94,7 +94,7 @@ describe 'OrganizationsController' do
     af4 = create(:activity_fact, analysis: project.best_analysis)
     create(:factoid, analysis: project.best_analysis, language: af4.language)
     ats = project.best_analysis.all_time_summary
-    ats.update_attributes(recent_contributors: [create(:person).id, create(:person).id])
+    ats.update(recent_contributors: [create(:person).id, create(:person).id])
     cf = create(:commit_flag)
     create(:analysis_sloc_set, analysis: project.best_analysis, sloc_set: cf.sloc_set)
     key = create(:api_key, account_id: create(:account).id)

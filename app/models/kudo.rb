@@ -1,5 +1,5 @@
 class Kudo < ActiveRecord::Base
-  belongs_to :sender, foreign_key: :sender_id, class_name: :Account
+  belongs_to :sender, foreign_key: :sender_id, class_name: 'Account'
   belongs_to :account
   belongs_to :project
   belongs_to :name
@@ -34,7 +34,7 @@ class Kudo < ActiveRecord::Base
       when Account
         Kudo.find_by(sender_id: sender.id, account_id: target.id)
       when Contribution, Person
-        target = target.account ? target.account : target.contributions.first if target.is_a?(Person)
+        target = target.account || target.contributions.first if target.is_a?(Person)
         Kudo.find_by(sender_id: sender.id, project_id: target.project_id, name_id: target.name_fact.name_id)
       else
         raise 'Uknown Target Type'
@@ -61,17 +61,20 @@ class Kudo < ActiveRecord::Base
 
   def assign_account_from_position
     return unless project_id && name_id
+
     position = Position.find_by(project_id: project_id, name_id: name_id)
     self.account_id = (position && position.account_id)
   end
 
   def cant_kudo_self
     return unless sender_id == account_id
+
     errors.add :base, I18n.t('kudos.cant_kudo_self')
   end
 
   def notify_recipient
     return unless errors.empty? && account && account.email_kudos?
+
     AccountMailer.kudo_recipient(self).deliver_now
   end
 end

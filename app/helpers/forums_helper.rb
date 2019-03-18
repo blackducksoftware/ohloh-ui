@@ -21,4 +21,5 @@ module ForumsHelper
 
     menus
   end
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Style/MultilineIfModifier
 end

@@ -13,7 +13,7 @@ class AliasesController < SettingsController
   def create
     @alias = Alias.create_for_project(current_user, @project, params[:commit_name_id], params[:preferred_name_id])
     redirect_to action: :index
-  rescue
+  rescue StandardError
     render :new, status: :unprocessable_entity
   end
 
@@ -33,6 +33,8 @@ class AliasesController < SettingsController
     @preferred_names = Alias.preferred_names(@project, params[:commit_name_id])
     render partial: 'aliases/preferred_names'
   end
+
+  def new; end
 
   private
 

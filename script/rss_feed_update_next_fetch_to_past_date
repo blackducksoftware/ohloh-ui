@@ -8,3 +8,4 @@ require_relative '../config/environment'
 RssFeed.where(id: RssSubscription.not_deleted.select('rss_feed_id'))
        .where("(next_fetch >= NOW() AT TIME ZONE 'UTC') AND error IS NOT NULL")
        .update_all(next_fetch: Time.current - 1.day)
+# rubocop:enable Rails/SkipsModelValidations # We want a quick DB update here.

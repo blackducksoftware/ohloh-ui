@@ -5,6 +5,8 @@ class PeopleController < UnclaimedController
   before_action :preload_data, unless: :query_or_cache_exist, only: [:index]
   before_action :find_rankings_people, only: [:rankings]
 
+  def rankings; end
+
   private
 
   def query_or_cache_exist

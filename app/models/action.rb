@@ -21,8 +21,9 @@ class Action < ActiveRecord::Base
 
   def run
     return if !stack_project || account.stacks.count > 1
+
     account.stack_core.default.projects << stack_project
-    update_attributes status: STATUSES[:remind]
+    update status: STATUSES[:remind]
   end
 
   private
@@ -42,11 +43,13 @@ class Action < ActiveRecord::Base
 
   def action_payload_present
     return unless claim.nil? && stack_project.nil?
+
     errors.add :payload_required
   end
 
   def claim_is_claimable
     return if !claim || (claim.project && claim.name)
+
     errors.add :claim, I18n.t('actions.account_never_contributed')
   end
 end

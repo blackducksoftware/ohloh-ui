@@ -30,6 +30,7 @@ class PositionFactoriesController < ApplicationController
 
   def check_for_project_existence
     return if @project
+
     flash[:error] = t('.project_not_found', name: CGI.escapeHTML(params[:project_name].to_s))
     redirect_to projects_path
   end
@@ -40,6 +41,7 @@ class PositionFactoriesController < ApplicationController
 
   def check_for_committer_existence
     return if @name
+
     flash[:error] = t('.contributor_not_found', name: CGI.escapeHTML(params[:committer_name].to_s))
     redirect_to project_contributors_path(@project)
   end

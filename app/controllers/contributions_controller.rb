@@ -14,12 +14,14 @@ class ContributionsController < ApplicationController
 
   def index
     raise ParamRecordNotFound unless @project
+
     @contributions = @project.contributions_within_timespan(params).paginate(per_page: 20, page: page_param)
   end
 
   def show
     raise ParamRecordNotFound unless @project
     return redirect_to project_contributor_path(@project, @contribution) if @contribution.id != params[:id].to_i
+
     @recent_kudos = @contribution.kudoable.recent_kudos || []
   end
 
@@ -64,6 +66,7 @@ class ContributionsController < ApplicationController
 
   def set_contribution
     raise ParamRecordNotFound unless @project
+
     @contribution = @project.contributions.find_by(id: params[:id].to_i)
     # It's possible that the contributor we are looking for has been aliased to a new name.
     # Redirect to the new name if we can find it.

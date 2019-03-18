@@ -190,7 +190,7 @@ describe 'ContributionsController' do
       project = create(:project)
       name = create(:name)
       name_fact = create(:name_fact, analysis: project.best_analysis, name: name, vita_id: create(:vita).id)
-      name_fact.vita.account.update_attributes(best_vita_id: name_fact.vita_id, latitude: 30.26, longitude: -97.74)
+      name_fact.vita.account.update(best_vita_id: name_fact.vita_id, latitude: 30.26, longitude: -97.74)
       create(:position, project: project, name: name, account: name_fact.vita.account)
       get :near, project_id: project.to_param, lat: 25, lng: 12, zoom: 2
       must_respond_with :success
@@ -206,7 +206,7 @@ describe 'ContributionsController' do
       project = create(:project)
       name = create(:name)
       name_fact = create(:name_fact, analysis: project.best_analysis, name: name, vita_id: create(:vita).id)
-      name_fact.vita.account.update_attributes(best_vita_id: name_fact.vita_id, latitude: 30.26, longitude: -97.74)
+      name_fact.vita.account.update(best_vita_id: name_fact.vita_id, latitude: 30.26, longitude: -97.74)
       create(:position, project: project, name: name, account: name_fact.vita.account)
       get :near, project_id: project.to_param, lat: 25, lng: 12, zoom: 4
       must_respond_with :success

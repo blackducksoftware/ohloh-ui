@@ -11,7 +11,7 @@ class ActsAsEditable::ActsAsEditableTest < ActiveSupport::TestCase
 
   it 'edits get their property edits merged if they are recent to one another' do
     project = create(:project, name: 'Foobar')
-    project.update_attributes(name: 'Goobaz')
+    project.update(name: 'Goobaz')
     PropertyEdit.where(target: project, key: 'name', value: 'Foobar').count.must_equal 0
     PropertyEdit.where(target: project, key: 'name', value: 'Goobaz').count.must_equal 1
   end
@@ -21,7 +21,7 @@ class ActsAsEditable::ActsAsEditableTest < ActiveSupport::TestCase
     Time.stubs(:now).returns long_ago
     project = create(:project, name: 'Foobar')
     Time.unstub(:now)
-    project.update_attributes(name: 'Goobaz')
+    project.update(name: 'Goobaz')
     PropertyEdit.where(target: project, key: 'name', value: 'Foobar').count.must_equal 1
     PropertyEdit.where(target: project, key: 'name', value: 'Goobaz').count.must_equal 1
   end
@@ -29,7 +29,7 @@ class ActsAsEditable::ActsAsEditableTest < ActiveSupport::TestCase
   it 'edits do not get their property edits merged if they are not by the same editor' do
     project = create(:project, name: 'Foobar')
     project.editor_account = create(:account)
-    project.update_attributes(name: 'Goobaz')
+    project.update(name: 'Goobaz')
     PropertyEdit.where(target: project, key: 'name', value: 'Foobar').count.must_equal 1
     PropertyEdit.where(target: project, key: 'name', value: 'Goobaz').count.must_equal 1
   end

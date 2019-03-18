@@ -16,8 +16,10 @@ class CompareProjectUrlCsvDecorator
   def comments_url
     require_best_analysis do |a|
       return t('compares.project_cells.comments.no_comments_found') unless a.relative_comments
+
       f = a.factoids.find { |factoid| factoid.is_a?(FactoidComments) }
       return h.project_factoids_url(@project, host: @host, anchor: f.class.name) if f
+
       t('compares.project_cells.comments.no_comments_found')
     end
   end

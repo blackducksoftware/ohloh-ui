@@ -37,7 +37,7 @@ describe 'SessionsController' do
         account.reload
         account.auth_fail_count.must_equal(auth_fail_count + 1)
         flash.now[:error].must_equal I18n.t('flashes.failure_after_create')
-        refute account.access.disabled?
+        assert_not account.access.disabled?
       end
 
       it 'wont compare password when recaptcha fails on the last try but auth passes' do
@@ -52,7 +52,7 @@ describe 'SessionsController' do
         must_render_template 'sessions/new'
         account.auth_fail_count.must_equal auth_fail_count
         flash.now[:error].must_equal I18n.t('sessions.create.recaptcha_failure')
-        refute account.access.disabled?
+        assert_not account.access.disabled?
       end
 
       it 'wont compare password or disable account when recaptcha fails on the last try alongwith auth failure' do
@@ -67,7 +67,7 @@ describe 'SessionsController' do
         must_select('label.control-label').children.first.text.must_equal I18n.t('shared.captcha.captcha_label')
         account.auth_fail_count.must_equal auth_fail_count
         flash.now[:error].must_equal I18n.t('sessions.create.recaptcha_failure')
-        refute account.access.disabled?
+        assert_not account.access.disabled?
       end
 
       it 'must disable account and send notice when auth failure reaches limit' do
@@ -105,7 +105,7 @@ describe 'SessionsController' do
         must_respond_with :unauthorized
         account.reload
         account.auth_fail_count.must_equal 1
-        refute account.access.disabled?
+        assert_not account.access.disabled?
       end
 
       it 'must show appropriate message to disabled users' do

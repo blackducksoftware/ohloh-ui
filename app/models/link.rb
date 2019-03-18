@@ -35,7 +35,7 @@ class Link < ActiveRecord::Base
 
     CreateEdit.find_by(target: deleted_link).redo!(editor_account)
     deleted_link.editor_account = editor_account
-    deleted_link.update_attributes(title: title, link_category_id: link_category_id)
+    deleted_link.update(title: title, link_category_id: link_category_id)
   end
 
   def category
@@ -47,7 +47,7 @@ class Link < ActiveRecord::Base
   end
 
   def url_escaped
-    URI.escape(url)
+    CGI.escape(url)
   end
 
   def url_host

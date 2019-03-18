@@ -6,7 +6,8 @@ class RssArticle < ActiveRecord::Base
   validates :title, presence: true
 
   def absolute_link
-    return link if link =~ URI.regexp
+    return link if link =~ URI::DEFAULT_PARSER.make_regexp
+
     uri = URI.parse(rss_feed.url)
     "#{uri.scheme}://#{uri.host}#{link}"
   end

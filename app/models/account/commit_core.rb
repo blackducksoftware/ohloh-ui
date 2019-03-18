@@ -8,6 +8,7 @@ class Account::CommitCore
 
   def most_and_recent_data
     return {} if @account_ids.blank?
+
     stats = Account.select(select_clause)
                    .with_facts
                    .where(@accounts_id.in(@account_ids))

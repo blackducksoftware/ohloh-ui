@@ -1,7 +1,7 @@
 class OrgManagerBadge < Badge
   def eligibility_count
-    @count ||= vars[:manages_org_count]
-    @count ||= Organization.managed_by(account).count
+    @eligibility_count ||= vars[:manages_org_count]
+    @eligibility_count ||= Organization.managed_by(account).count
   end
 
   def name

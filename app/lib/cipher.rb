@@ -18,7 +18,7 @@ module Ohloh
         aes.key = key[0..31]
         data = Base64.decode64(CGI.unescape(data))
         aes.update(data) + aes.final
-      rescue
+      rescue StandardError
         nil
       end
     end

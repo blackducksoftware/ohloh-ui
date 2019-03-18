@@ -35,6 +35,7 @@ class Spark::AnalysisSpark < Spark::Base
 
   def bar_color(datum)
     return 'black' if datum.first.day == 1
+
     datum.last.to_i.zero? ? LIGHT_GRAY : DARK_GRAY
   end
 

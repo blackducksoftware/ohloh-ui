@@ -1,6 +1,7 @@
 class AccountWidget < Widget
   def initialize(vars = {})
     raise ArgumentError I18n.t('account_widgets.missing') unless vars[:account_id]
+
     super
   end
 

@@ -38,12 +38,13 @@ class Account::Access < OhDelegator::Base
 
   def activate!(activation_code)
     return unless !activated? && activation_code.eql?(account.activation_code)
-    account.update_attributes!(activated_at: Time.current, activation_code: nil)
+
+    account.update!(activated_at: Time.current, activation_code: nil)
     AccountMailer.activation(account).deliver_now
   end
 
   def disable!
-    account.update_attributes!(level: DISABLED)
+    account.update!(level: DISABLED)
   end
 
   def spam!
@@ -55,11 +56,12 @@ class Account::Access < OhDelegator::Base
   end
 
   def bot!
-    account.update_attributes!(level: BOT)
+    account.update!(level: BOT)
   end
 
   def mobile_or_oauth_verified?
     return if account.nil?
+
     account.verifications.exists?
   end
 

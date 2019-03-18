@@ -52,6 +52,7 @@ class RssSubscriptionsController < ApplicationController
 
   def project_edit_authorized
     return if @project.edit_authorized?
+
     flash.now[:notice] = t(:not_authorized)
     redirect_to project_path(@project)
   end

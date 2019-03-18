@@ -54,6 +54,7 @@ module Tsearch
 
       def query_parser(query)
         return "'' ' || ' #{query.tr("'", ' ')} ' || ' ''" unless query =~ /[-.\/]/
+
         "''#{query.gsub(/[-.'\/]/, '-' => 'dssh', '.' => 'dtt', '/' => ' ')}'' | ''#{query.delete("'")}''"
       end
     end
@@ -72,4 +73,5 @@ module Tsearch
       attr_value.to_s.gsub(/['?\\:]/, ' ')
     end
   end
+  # rubocop:enable Metrics/BlockLength
 end

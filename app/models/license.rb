@@ -33,7 +33,7 @@ class License < ActiveRecord::Base
   end
 
   def short_name
-    vanity_url.blank? ? name : vanity_url
+    vanity_url.presence || name
   end
 
   def permitted_license_permissions

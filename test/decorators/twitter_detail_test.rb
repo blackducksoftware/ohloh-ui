@@ -31,7 +31,7 @@ class TwitterDetailTest < ActiveSupport::TestCase
       Account.any_instance.stubs(:most_experienced_language).returns(language)
 
       vita = create(:vita, account_id: user.id)
-      user.update_attributes(best_vita: vita)
+      user.update(best_vita: vita)
       create(:vita_fact, vita_id: vita.id)
 
       description = "It was, 0 total commits to 0 projects, most experienced in #{language.nice_name}, earned Kudo Rank"

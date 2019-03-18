@@ -7,13 +7,13 @@ class Account::OrganizationCore
   end
 
   def orgs_for_my_positions
-    @orgs_positions ||=
+    @orgs_for_my_positions ||=
       Organization.active.joins(projects: :positions).where(@positions[:account_id].eq(@id))
                   .order(:id).distinct
   end
 
   def affiliations_for_my_positions
-    @affiliations_positions ||= orgs_for_my_positions.where.not(@positions[:organization_id].eq(nil))
+    @affiliations_for_my_positions ||= orgs_for_my_positions.where.not(@positions[:organization_id].eq(nil))
   end
 
   def contributions_to_org_portfolio

@@ -1,6 +1,7 @@
 module AvatarHelper
   def avatar_for(who, options = {})
     return '' unless who
+
     title = options[:title] == true ? avatar_title(who) : options[:title]
     attributes = { title: title, class: options[:class] || 'avatar' }
     url = options[:url] || avatar_path(who)
@@ -10,16 +11,19 @@ module AvatarHelper
   def avatar_img_path(who, size = 32)
     return gravatar_url(who.email_md5, size) if who.is_a? Account
     return gravatar_url(who.account.email_md5, size) if who.respond_to?(:account) && who.account
+
     anonymous_image_path(size)
   end
 
   def avatar_img_for(who, size = 32)
     return '' unless who
+
     image_tag avatar_img_path(who, size), style: "width: #{size}px; height: #{size}px;", class: 'avatar'
   end
 
   def avatar_path(who)
     return '#' unless who
+
     case who
     when Account
       account_path(who)
@@ -47,6 +51,7 @@ module AvatarHelper
   def avatar_default_size(size)
     return 32 if size <= 32
     return 40 if size <= 40
+
     80
   end
 
@@ -67,6 +72,7 @@ module AvatarHelper
 
   def avatar_title(who)
     return '' unless who
+
     case who
     when Account
       who.name
@@ -78,5 +84,6 @@ module AvatarHelper
   def avatar_laurels_img(rank, imag_base)
     # rubocop:disable Rails/OutputSafety # `rank` is the kudo_rank.
     "<img src='" + image_path("icons/#{imag_base}_#{rank || 1}.png") + "' alt='KudoRank #{rank || 1}'/>".html_safe
+    # rubocop:enable Rails/OutputSafety
   end
 end

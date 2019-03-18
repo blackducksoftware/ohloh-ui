@@ -5,8 +5,8 @@ class UrlFormatValidator < ActiveModel::EachValidator
     valid_url = begin
       @parser ||= defined?(URI::RFC2396_Parser) ? URI::RFC2396_Parser.new : URI
       @parser.parse(value).is_a?(URI::HTTP)
-    rescue URI::InvalidURIError
-      false
+                rescue URI::InvalidURIError
+                  false
     end
 
     record.errors.add(attribute, options[:message] || I18n.t('accounts.invalid_url_format')) unless valid_url

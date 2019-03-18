@@ -1,9 +1,8 @@
 namespace :ci do
   desc 'Run the complete build verification'
   task :all_tasks do
-    # FIXME: fix rubocop warnings
-    # puts '*** Running Rubocop'
-    # exit(1) unless system('rubocop')
+    puts '*** Running Rubocop'
+    exit(1) unless system('rubocop')
     # FIXME: fix haml-lint warnings
     # puts '*** Running HAML-Lint'
     # exit(1) unless system('haml-lint .')

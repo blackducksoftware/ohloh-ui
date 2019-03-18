@@ -1,10 +1,10 @@
 module EnlistmentsHelper
   def options_for_select_type(scm_type)
-    options_hash = { 'Subversion'       => 'svn_sync',
-                     'CVS'              => 'cvs',
-                     'Git'              => 'git',
-                     'Mercurial'        => 'hg',
-                     'Bazaar'           => 'bzr',
+    options_hash = { 'Subversion' => 'svn_sync',
+                     'CVS' => 'cvs',
+                     'Git' => 'git',
+                     'Mercurial' => 'hg',
+                     'Bazaar' => 'bzr',
                      'Github Repositories' => 'GithubUser' }
     current_selection = scm_type || 'svn_sync'
     options_for_select(options_hash, current_selection)

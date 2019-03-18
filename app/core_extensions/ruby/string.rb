@@ -57,11 +57,13 @@ class String
   class << self
     def clean_string(str)
       return str if str.blank?
+
       str.to_s.strip.strip_tags
     end
 
     def clean_url(url)
       return url if url.blank?
+
       url.strip!
       url =~ %r{^(http:/)|(https:/)|(ftp:/)} ? url : "http://#{url}"
     end

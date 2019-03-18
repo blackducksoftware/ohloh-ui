@@ -30,6 +30,7 @@ class PostsController < ApplicationController
 
   def edit
     return unless (current_user.id != @post.account_id) && (current_user_is_admin? == false)
+
     redirect_to topic_path(@topic)
   end
 
@@ -56,6 +57,7 @@ class PostsController < ApplicationController
   def find_relevant_records
     @topic = Topic.where(id: params[:topic_id]).take
     raise ParamRecordNotFound unless @topic
+
     @forum = @topic.forum
   end
 
@@ -67,6 +69,7 @@ class PostsController < ApplicationController
   def find_posts_belonging_to_account
     @account = AccountFind.by_id_or_login(params[:account_id])
     raise ParamRecordNotFound unless @account
+
     redirect_if_disabled
     @account.posts.includes(:topic).tsearch(params[:query], parse_sort_term)
   end
@@ -82,6 +85,7 @@ class PostsController < ApplicationController
 
   def parse_sort_term
     return Post.where(account_id: @account).respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : nil if @account
+
     Post.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : nil
   end
 
@@ -97,6 +101,7 @@ class PostsController < ApplicationController
 
   def verify_captcha_for_non_admin
     return true if current_user_is_admin?
+
     verify_recaptcha(model: @post, attribute: :captcha)
   end
 

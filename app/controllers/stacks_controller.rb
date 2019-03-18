@@ -2,7 +2,6 @@ class StacksController < ApplicationController
   include RedirectIfDisabled
   helper MapHelper
   helper RatingsHelper, ProjectsHelper
-
   before_action :session_required, :redirect_unverified_account,
                 except: %i[index show similar similar_stacks near project_stacks]
   before_action :find_stack, except: %i[index create near project_stacks]
@@ -32,7 +31,7 @@ class StacksController < ApplicationController
   end
 
   def update
-    if @stack.update_attributes(model_params)
+    if @stack.update(model_params)
       render nothing: true, status: :ok
     else
       render text: ERB::Util.html_escape(@stack.errors.full_messages.to_sentence), status: :unprocessable_entity
@@ -69,6 +68,8 @@ class StacksController < ApplicationController
     render text: view_context.map_near_stacks_json(@project, params)
   end
 
+  def project_stacks; end
+
   private
 
   def build_stack
@@ -90,6 +91,7 @@ class StacksController < ApplicationController
 
   def model_params
     return {} unless params[:stack]
+
     params.require(:stack).permit(:title, :description, stack_entries_attributes: [:project_id])
   end
 

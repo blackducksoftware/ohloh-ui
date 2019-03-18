@@ -171,7 +171,7 @@ class Account::HooksTest < ActiveSupport::TestCase
     it 'must update persons effective_name after save' do
       account = create(:account, name: 'test name')
       account.person.effective_name.must_equal 'test name'
-      account.update_attributes! name: 'test new name'
+      account.update! name: 'test new name'
       account.person.effective_name.must_equal 'test new name'
     end
   end

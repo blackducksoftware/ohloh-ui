@@ -23,6 +23,7 @@ Metrics/BlockLength:
     - app/views/*/*.json.jbuilder
     - app/views/*/*/*.xml.builder
     - app/admin/*
+    - app/views/admin/*/*.html.arb
 
 Lint/ScriptPermission:
   Exclude:
@@ -34,7 +35,7 @@ Documentation:
 Style/ClassAndModuleChildren:
   Enabled: false
 
-Style/AccessorMethodName:
+Naming/AccessorMethodName:
   Enabled: false
 
 Style/PerlBackrefs:
@@ -46,3 +47,16 @@ Style/RegexpLiteral:
 Style/EmptyCaseCondition:
   Description: 'Avoid empty condition in case statements.'
   Enabled: false
+
+Rails/InverseOf:
+  Enabled: false
+  
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+  
+Rails/UnknownEnv:
+  Environments:
+    - production
+    - development
+    - test
+    - staging

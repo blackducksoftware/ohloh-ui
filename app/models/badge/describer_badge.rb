@@ -1,7 +1,7 @@
 class DescriberBadge < Badge
   def eligibility_count
-    @count ||= vars[:desc_edit_count]
-    @count ||= Edit.where(target_type: 'Project', key: 'description', account_id: account.id).count
+    @eligibility_count ||= vars[:desc_edit_count]
+    @eligibility_count ||= Edit.where(target_type: 'Project', key: 'description', account_id: account.id).count
   end
 
   def short_desc

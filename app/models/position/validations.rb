@@ -34,6 +34,7 @@ module Position::Validations
     # check for someone already claiming this name
     prior_position = Position.find_by(project_id: project_id, name_id: name_fact.name_id)
     return unless prior_position && prior_position.id != id
+
     errors.add(:committer_name, I18n.t('position.name_already_claimed', name: prior_position.account.name))
   end
 

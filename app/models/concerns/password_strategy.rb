@@ -9,6 +9,7 @@ module PasswordStrategy
 
   def password=(new_password)
     return unless new_password
+
     @password = new_password
     self.salt = encrypt(Time.current.to_s, new_password)
     self.encrypted_password = encrypt(new_password, salt)

@@ -42,7 +42,7 @@ class DeleteGoogleCodeProjects
     begin
       project.tags.delete_all
       project.create_edit.undo!(@editor) if project.create_edit.allow_undo?
-    rescue => e
+    rescue StandardError => e
       @log.error "error: #{project.id} - #{e.inspect}"
     end
   end

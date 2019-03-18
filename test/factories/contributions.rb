@@ -6,8 +6,8 @@ FactoryBot.define do
     association :contributor_fact
 
     after(:create) do |instance|
-      instance.update_attributes(person: create(:person))
-      instance.update_attributes(project: instance.project)
+      instance.update(person: create(:person))
+      instance.update(project: instance.project)
     end
   end
 end

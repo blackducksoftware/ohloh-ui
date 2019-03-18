@@ -20,3 +20,4 @@ class KudoScoreTest < ActiveSupport::TestCase
     end
   end
 end
+# rubocop:enable Rails/DynamicFindBy # find_by... here is a predefined method.

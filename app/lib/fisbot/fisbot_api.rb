@@ -93,6 +93,7 @@ class FisbotApi
 
     def build_objects(response)
       return [] if response.is_a?(Net::HTTPNoContent)
+
       JSON.parse(response.body).map { |hsh| new(hsh) }
     end
   end

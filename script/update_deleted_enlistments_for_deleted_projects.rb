@@ -28,7 +28,7 @@ class UpdateEnlistmentsForDeletedProjects
       project.enlistments.each do |enlistment|
         enlistment.create_edit.undo!(@editor) if enlistment.create_edit.allow_undo?
       end
-    rescue => e
+    rescue StandardError => e
       @log.error "error: #{project.id} - #{e.inspect}"
     end
   end

@@ -181,9 +181,9 @@ class AccountTest < ActiveSupport::TestCase
 
   it 'should return recently active accounts' do
     best_vita = create(:best_vita)
-    best_vita.account.update_attributes(best_vita_id: best_vita.id, created_at: Time.current - 4.days)
+    best_vita.account.update(best_vita_id: best_vita.id, created_at: Time.current - 4.days)
     vita_fact = best_vita.vita_fact
-    vita_fact.update_attributes(last_checkin: Time.current)
+    vita_fact.update(last_checkin: Time.current)
 
     recently_active = Account.recently_active
     recently_active.wont_be_nil
@@ -199,9 +199,9 @@ class AccountTest < ActiveSupport::TestCase
   it 'should not include BOT accounts in active accounts' do
     best_vita = create(:best_vita)
     level = Account::Access::BOT
-    best_vita.account.update_attributes(best_vita_id: best_vita.id, created_at: Time.current - 4.days, level: level)
+    best_vita.account.update(best_vita_id: best_vita.id, created_at: Time.current - 4.days, level: level)
     vita_fact = best_vita.vita_fact
-    vita_fact.update_attributes(last_checkin: Time.current)
+    vita_fact.update(last_checkin: Time.current)
     Account.recently_active.count.must_equal 0
   end
 
@@ -217,7 +217,7 @@ class AccountTest < ActiveSupport::TestCase
     project = create(:project)
     name = create(:name)
     name_fact = create(:name_fact, analysis: project.best_analysis, name: name, vita_id: create(:vita).id)
-    name_fact.vita.account.update_attributes(best_vita_id: name_fact.vita_id, latitude: 30.26, longitude: -97.74)
+    name_fact.vita.account.update(best_vita_id: name_fact.vita_id, latitude: 30.26, longitude: -97.74)
     create(:position, project: project, name: name, account: name_fact.vita.account)
 
     accounts_with_facts = Account.with_facts
@@ -737,7 +737,7 @@ class AccountTest < ActiveSupport::TestCase
     it 'should not include an unverified account with edits' do
       account = create(:account, :no_verification)
       account.edits << create(:create_edit)
-      account.edits[0].update_attributes!(account_id: account.id)
+      account.edits[0].update!(account_id: account.id)
       unverified_account = create(:unverified_account)
       SuccessfulAccounts.create(account_id: unverified_account.id)
       assert_equal Account.reverification_not_initiated(5).count, 1
@@ -748,7 +748,7 @@ class AccountTest < ActiveSupport::TestCase
     it 'should not include an unverified account with posts' do
       account = create(:account, :no_verification)
       account.posts << create(:post)
-      account.posts[0].update_attributes!(account_id: account.id)
+      account.posts[0].update!(account_id: account.id)
       unverified_account = create(:unverified_account)
       SuccessfulAccounts.create(account_id: unverified_account.id)
       assert_equal Account.reverification_not_initiated(5).count, 1
@@ -773,7 +773,7 @@ class AccountTest < ActiveSupport::TestCase
     it 'should not include an unverified account with reviews' do
       account = create(:account, :no_verification)
       account.reviews << create(:review)
-      account.reviews[0].update_attributes!(account_id: account.id)
+      account.reviews[0].update!(account_id: account.id)
       unverified_account = create(:unverified_account)
       SuccessfulAccounts.create(account_id: unverified_account.id)
       assert_equal Account.reverification_not_initiated(5).count, 1
@@ -784,7 +784,7 @@ class AccountTest < ActiveSupport::TestCase
     it 'should not include an unverified account with positions' do
       account = create(:account, :no_verification)
       account.positions << create(:position)
-      account.positions[0].update_attributes!(account_id: account.id)
+      account.positions[0].update!(account_id: account.id)
       unverified_account = create(:unverified_account)
       SuccessfulAccounts.create(account_id: unverified_account.id)
       assert_equal Account.reverification_not_initiated(5).count, 1
@@ -795,7 +795,7 @@ class AccountTest < ActiveSupport::TestCase
     it 'should not include an unverified account with stacks' do
       account = create(:account, :no_verification)
       account.stacks << create(:stack)
-      account.stacks[0].update_attributes!(account_id: account.id)
+      account.stacks[0].update!(account_id: account.id)
       unverified_account = create(:unverified_account)
       SuccessfulAccounts.create(account_id: unverified_account.id)
       assert_equal Account.reverification_not_initiated(5).count, 1

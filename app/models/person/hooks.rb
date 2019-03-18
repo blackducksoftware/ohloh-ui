@@ -8,7 +8,7 @@ class Person::Hooks
   private
 
   def set_id_to_account_id_or_random(person)
-    person.id ||= person.account_id ? person.account_id : ((person.project_id << 32) + person.name_id + 0x80000000)
+    person.id ||= person.account_id || ((person.project_id << 32) + person.name_id + 0x80000000)
   end
 
   def set_effective_name_to_account_or_name(person)

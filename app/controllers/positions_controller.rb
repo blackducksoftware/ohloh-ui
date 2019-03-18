@@ -14,7 +14,7 @@ class PositionsController < ApplicationController
       @position.update!(position_params)
     end
     redirect_to account_positions_path(@account)
-  rescue => e
+  rescue StandardError => e
     flash.now[:error] = e.message unless e.is_a?(ActiveRecord::RecordInvalid)
     render :edit
   end

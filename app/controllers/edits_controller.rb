@@ -24,7 +24,7 @@ class EditsController < SettingsController
     undo ? perform_undo : @edit.redo!(current_user)
     render template: 'edits/edit', layout: false
   rescue StandardError
-    render text: undo ? t('.failed_undo') : t('.failed_redo'), status: 406
+    render text: undo ? t('.failed_undo') : t('.failed_redo'), status: :not_acceptable
   end
 
   private
@@ -40,26 +40,31 @@ class EditsController < SettingsController
   def find_parent
     @parent = find_account || find_project || find_organization || find_license
     raise ParamRecordNotFound unless @parent
+
     send("#{@parent.class.name.downcase}_context") unless @parent.is_a?(License)
   end
 
   def find_account
     return nil unless params[:account_id]
+
     Account.from_param(params[:account_id]).take
   end
 
   def find_project
     return nil unless params[:project_id]
+
     Project.by_vanity_url_or_id(params[:project_id]).take
   end
 
   def find_organization
     return nil unless params[:organization_id]
+
     Organization.from_param(params[:organization_id]).take
   end
 
   def find_license
     return nil unless params[:license_id]
+
     License.from_param(params[:license_id]).take
   end
 
@@ -85,6 +90,7 @@ class EditsController < SettingsController
 
   def add_where_extra_clause
     return nil unless [Account, Project, Organization].include?(@parent.class)
+
     " OR edits.#{@parent.class.name.downcase}_id = ?"
   end
 

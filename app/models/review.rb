@@ -19,12 +19,12 @@ class Review < ActiveRecord::Base
   scope :top, ->(limit = 2) { three_quarters_helpful_arel.order_by_helpfulness_arel.limit(limit) }
   scope :sort_by, lambda { |key = :helpful|
     {
-      'helpful'         => order_by_helpfulness_arel,
-      'highest_rated'   => order(ratings_sql('DESC')).order(created_at: :desc),
-      'lowest_rated'    => order(ratings_sql).order(:created_at),
-      'project'         => includes(:project).order('projects.name'),
-      'recently_added'  => order(created_at: :desc),
-      'author'          => joins(:account).order('accounts.login').order(created_at: :desc)
+      'helpful' => order_by_helpfulness_arel,
+      'highest_rated' => order(ratings_sql('DESC')).order(created_at: :desc),
+      'lowest_rated' => order(ratings_sql).order(:created_at),
+      'project' => includes(:project).order('projects.name'),
+      'recently_added' => order(created_at: :desc),
+      'author' => joins(:account).order('accounts.login').order(created_at: :desc)
     }.fetch(key, order_by_helpfulness_arel)
   }
 
@@ -40,6 +40,7 @@ class Review < ActiveRecord::Base
 
   def score
     return 0 unless project_id && account_id
+
     Rating.find_by(project_id: project_id, account_id: account_id).try(:score).to_i
   end
 

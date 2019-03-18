@@ -41,7 +41,7 @@ class Account::OrganizationCoreTest < ActiveSupport::TestCase
     name_fact = create(:name_fact, analysis_id: analysis.id)
     create_position(account: account, project: project, name: name_fact.name)
     project.editor_account = account
-    project.update_attributes! best_analysis_id: analysis.id, organization_id: create(:organization)
+    project.update! best_analysis_id: analysis.id, organization_id: create(:organization)
     account.update_column(:organization_id, create(:organization).id)
     account_org = Account::OrganizationCore.new(account.id)
     account.reload

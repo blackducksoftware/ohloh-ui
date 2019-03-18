@@ -6,7 +6,7 @@ class ChartDecorator
 
     chart.deep_merge! YAML.safe_load(ERB.new(File.read(
                                                Rails.root.join('config', 'charting', 'combined_commit_history.yml')
-    )).result(binding))
+                                             )).result(binding))
     chart[:yAxis][:max] = report_data[:max_commits]
     chart[:xAxis][:categories] = string_to_hash(report_data[:x_axis])
     chart[:series] = [{ name: I18n.t('all_projects'), data: report_data[:y_axis] }]

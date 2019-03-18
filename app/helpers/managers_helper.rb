@@ -20,12 +20,12 @@ module ManagersHelper
     parent.is_a?(Project) ? edit_project_manager_path(parent, account) : edit_organization_manager_path(parent, account)
   end
 
-  def approve_parent_manager_path(p, account)
-    p.is_a?(Project) ? approve_project_manager_path(p, account) : approve_organization_manager_path(p, account)
+  def approve_parent_manager_path(obj, account)
+    obj.is_a?(Project) ? approve_project_manager_path(obj, account) : approve_organization_manager_path(obj, account)
   end
 
-  def reject_parent_manager_path(p, account)
-    p.is_a?(Project) ? reject_project_manager_path(p, account) : reject_organization_manager_path(p, account)
+  def reject_parent_manager_path(obj, account)
+    obj.is_a?(Project) ? reject_project_manager_path(obj, account) : reject_organization_manager_path(obj, account)
   end
 
   def edit_manages_button(parent, account)

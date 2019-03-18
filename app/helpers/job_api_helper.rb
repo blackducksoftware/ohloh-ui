@@ -18,6 +18,7 @@ module JobApiHelper
 
   def slave_host(slave_id)
     return unless slave_id
+
     # rubocop:disable Rails/OutputSafety # The variables used here are known values.
     "on #{link_to Slave.find(slave_id).hostname, '#'}".html_safe
     # rubocop:enable Rails/OutputSafety
@@ -25,6 +26,7 @@ module JobApiHelper
 
   def job_progress(job)
     return unless [1, 3, 5].include?(job['status'])
+
     if job['status'] == 1
       css = ['progress progress-xs progress-striped active', 'progress-bar progress-bar-success']
     elsif job['status'] == 3
@@ -45,11 +47,13 @@ module JobApiHelper
 
   def percentage_completed(job)
     return unless job['current_step']
+
     ((job['current_step'].to_f / job['max_steps'].to_f) * 100).round
   end
 
   def step_message(job)
     return unless job['current_step']
+
     "Step #{job['current_step']} of #{job['max_steps']}"
   end
 end

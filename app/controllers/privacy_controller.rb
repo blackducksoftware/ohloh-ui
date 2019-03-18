@@ -13,11 +13,14 @@ class PrivacyController < ApplicationController
     end
   end
 
+  def edit; end
+
   private
 
   def set_account
     @account = if params[:id] == 'me'
                  return redirect_to new_session_path if current_user.nil?
+
                  current_user
                else
                  AccountFind.by_id_or_login(params[:id])

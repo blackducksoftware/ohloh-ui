@@ -43,6 +43,7 @@ class Stack < ActiveRecord::Base
     return title if respond_to?(:title) && title.present?
     return 'Default' if account && self == account.stack_core.default
     return "#{project.name}'s Stack" unless project.nil?
+
     'Unnamed'
   end
 
@@ -123,6 +124,7 @@ class Stack < ActiveRecord::Base
 
   def pad_project_suggestions(projects, limit)
     return projects unless projects.size < limit
+
     xtra_where = projects.empty? ? '' : "AND projects.id NOT IN (#{projects.collect { |p| p.id.to_s }.join(',')})"
     sql = <<-SQL
       SELECT projects.* FROM projects WHERE projects.deleted IS FALSE AND projects.user_count > 0 #{xtra_where}
@@ -134,3 +136,4 @@ class Stack < ActiveRecord::Base
     [projects, Project.find_by_sql(sql)].flatten
   end
 end
+# rubocop:enable Metrics/ClassLength

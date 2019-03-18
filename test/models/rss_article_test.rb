@@ -21,7 +21,7 @@ class RssArticleTest < ActiveSupport::TestCase
 
   it 'should return absolute_link path' do
     article = create(:rss_article, link: '/about.html')
-    article.rss_feed.update_attributes!(url: 'http://openhub.net')
+    article.rss_feed.update!(url: 'http://openhub.net')
     article.absolute_link.must_equal 'http://openhub.net/about.html'
   end
 end

@@ -1,15 +1,15 @@
 columns do
   column do
-    panel "Overview Statistics" do
-      table style: "width:300px;" do
+    panel 'Overview Statistics' do
+      table style: 'width:300px;' do
         tbody do
           tr do
-            td "Scheduled Jobs:"
+            td 'Scheduled Jobs:'
             td Job.where(status: Job::STATUS_SCHEDULED, slave_id: nil).count
           end
           tr do
-            td "Database Load Average:"
-            td style: (LoadAverage.first.too_high? ? "color:red;" : '') do
+            td 'Database Load Average:'
+            td style: (LoadAverage.first.too_high? ? 'color:red;' : '') do
               LoadAverage.first.current
             end
           end
@@ -18,7 +18,7 @@ columns do
             td Analysis.where(updated_on: get_window.utc..Time.current).count
           end
           tr do
-            td "Last ran Monthly Language Analysis"
+            td 'Last ran Monthly Language Analysis'
             td Analysis::MonthlyLanguage.last_run
           end
           tr do
@@ -27,22 +27,25 @@ columns do
           end
           tr do
             td 'Oldest Repository'
-            td #time_ago_in_days_hours_minutes(CodeSet.oldest_code_set.first.try(:logged_at))
+            td # time_ago_in_days_hours_minutes(CodeSet.oldest_code_set.first.try(:logged_at))
           end
-        end #tbody
-      end #table
-    end #panel
+        end
+      end
+    end
   end
 
   column do
-    panel "Deployment Details" do
+    panel 'Deployment Details' do
       begin
-        revision_file = File.open("#{Rails.root}/REVISION")
+        revision_file = File.open(Rails.root.join('REVISION').to_s)
         revision = revision_file.read.strip
-        para %(Currently deployed: #{link_to(revision, "https://github.com/blackducksoftware/ohloh-ui/commit/#{revision}")}).html_safe
+        # rubocop:disable Rails/OutputSafety
+        para %(Currently deployed:
+              #{link_to(revision, "https://github.com/blackducksoftware/ohloh-ui/commit/#{revision}")}).html_safe
         para %(Last Deployed: <b>#{time_ago_in_words(revision_file.mtime)}</b> ago).html_safe
+        # rubocop:enable Rails/OutputSafety
         revision_file.close
-      rescue Exception => e
+      rescue StandardError => e
         para e
       end
     end

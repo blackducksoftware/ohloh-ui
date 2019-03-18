@@ -26,6 +26,7 @@ class Feedback < ActiveRecord::Base
 
   def set_project_id
     return true if project_id.present?
+
     self.project_id = Project.find_by(name: project_name).try(:id)
   end
 end

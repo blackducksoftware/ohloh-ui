@@ -96,7 +96,7 @@ describe 'StackEntriesController' do
   end
 
   it 'update should gracefully handle update failures' do
-    StackEntry.any_instance.stubs(:update_attributes).returns false
+    StackEntry.any_instance.stubs(:update).returns false
     stack_entry = create(:stack_entry)
     login_as stack_entry.stack.account
     put :update, id: stack_entry, stack_id: stack_entry.stack, stack_entry: { note: 'Changed!' }

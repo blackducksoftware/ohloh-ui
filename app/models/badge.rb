@@ -58,6 +58,7 @@ class Badge
 
   def level
     return 0 unless levels?
+
     count = eligibility_count
     lvl = -1
     level_limits.each do |limit|

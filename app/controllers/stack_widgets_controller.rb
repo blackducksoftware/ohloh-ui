@@ -5,6 +5,8 @@ class StackWidgetsController < WidgetsController
   before_action :render_iframe_for_js_format
   before_action :account_context, only: :index
 
+  def index; end
+
   private
 
   def set_widget

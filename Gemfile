@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'activeadmin'#, '1.0.0'
+gem 'activeadmin' # , '1.0.0'
 gem 'airbrake', '~> 5.5'
 gem 'aws-sdk', '~> 2.3'
 gem 'bcrypt_pbkdf', '~> 1.0'
@@ -35,6 +35,7 @@ gem 'recaptcha', require: 'recaptcha/rails'
 gem 'redcarpet'
 gem 'redis-rails', '>= 5.0.2'
 gem 'rubocop', require: false
+gem 'rubocop-rspec', '> 1.28'
 gem 'sass-rails'
 gem 'secondbase'
 gem 'sidekiq'
@@ -47,7 +48,6 @@ gem 'uglifier', '>= 2.7.2'
 gem 'whenever', require: false
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
-gem 'rubocop-rspec', '> 1.28'
 
 group :development do
   gem 'better_errors'

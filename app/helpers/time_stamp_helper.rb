@@ -10,6 +10,7 @@ module TimeStampHelper
   # NOTE: this is not internationalized because it's currently only used in the ActiveAdmin UI
   def time_ago_in_days_hours_minutes(time)
     return 'not available' unless time
+
     seconds_since = Time.current.utc - time
     days = (seconds_since / SECS_PER_DAY).to_i
     hours = ((seconds_since % SECS_PER_DAY) / SECS_PER_MIN).to_i

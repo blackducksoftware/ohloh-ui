@@ -10,6 +10,7 @@ class FixUpdatedAtForTopic
         last_post_date = topic.posts.maximum(:updated_at)
         # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
         topic.update_column(:updated_at, last_post_date) if last_post_date
+        # rubocop:enable Rails/SkipsModelValidations # We want a quick DB update here.
       end
     end
   end

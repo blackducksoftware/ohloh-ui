@@ -50,6 +50,7 @@ class ManageMailer < ActionMailer::Base
   class << self
     def deliver_emails(manage)
       return if manage.changed.blank?
+
       %i[check_automatic_approval check_removed check_approved check_applied].each do |message|
         break if send(message, manage)
       end
@@ -74,12 +75,14 @@ class ManageMailer < ActionMailer::Base
   class << self
     def check_automatic_approval(manage)
       return false unless manage.approved_by == Account.hamster.id && !manage.deleted_by
+
       automatic_approval(manage).deliver_now
       true
     end
 
     def check_removed(manage)
       return false unless manage.changed.include?('deleted_by')
+
       manage.target.active_managers.each { |manager| deliver_deletion(manager, manage) }
       true
     end
@@ -95,6 +98,7 @@ class ManageMailer < ActionMailer::Base
 
     def check_approved(manage)
       return false unless manage.changed.include?('approved_by') && manage.approver
+
       manage.target.active_managers.each do |manager|
         approved(manager, manage).deliver_now
       end
@@ -103,6 +107,7 @@ class ManageMailer < ActionMailer::Base
 
     def check_applied(manage)
       return false unless manage.changed.include?('account_id') && manage.account
+
       manage.target.active_managers.each do |manager|
         applied(manager, manage).deliver_now
       end
@@ -112,6 +117,7 @@ class ManageMailer < ActionMailer::Base
     def check_rejection(manage)
       return false if !manage.changed.include?('deleted_by') || manage.deleted_by.blank?
       return false if manage.destroyer == manage.account
+
       manage.approver ? removal(manage).deliver_now : rejection(manage).deliver_now
     end
   end

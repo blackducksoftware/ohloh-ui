@@ -35,7 +35,7 @@ class Organization < ActiveRecord::Base
   after_update :schedule_analysis, if: :org_type_changed?
 
   def to_param
-    vanity_url.blank? ? id.to_s : vanity_url
+    vanity_url.presence || id.to_s
   end
 
   def active_managers
@@ -114,6 +114,7 @@ class Organization < ActiveRecord::Base
 
   def check_change_in_delete
     return false unless changed.include?('deleted')
+
     project_claim_edits(!deleted?).each { |edit| edit.send(deleted? ? :undo! : :redo!, editor_account) }
     schedule_analysis
   end

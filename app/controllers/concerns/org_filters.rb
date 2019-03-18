@@ -2,6 +2,7 @@ module OrgFilters
   extend ActiveSupport::Concern
 
   included do
+    # rubocop:disable Rails/LexicallyScopedActionFilter
     before_action :set_organization, except: %i[index new create
                                                 resolve_vanity_url print_org_infographic update]
     before_action :set_organization_based_on_id, only: [:update]
@@ -17,6 +18,7 @@ module OrgFilters
     before_action :can_claim_project, only: :claim_project
     after_action :schedule_analysis, only: %i[claim_project remove_project]
     before_action :avoid_global_search, only: %i[manage_projects claim_projects_list]
+    # rubocop:enable Rails/LexicallyScopedActionFilter
   end
 
   def schedule_analysis
@@ -28,6 +30,7 @@ module OrgFilters
   def set_organization
     @organization ||= Organization.from_param(params[:id]).take
     raise ParamRecordNotFound if @organization.nil?
+
     @organization.editor_account = current_user
   end
 
@@ -54,6 +57,7 @@ module OrgFilters
 
   def load_infographics_table
     return unless request.xhr?
+
     @graphics ||= OrgInfoGraphics.new(@organization)
     subview_html = render_to_string(partial: "organizations/show/#{@view}")
     pictogram_html = render_to_string(partial: 'organizations/show/pictogram')

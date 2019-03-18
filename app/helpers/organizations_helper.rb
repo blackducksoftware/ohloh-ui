@@ -1,9 +1,8 @@
 module OrganizationsHelper
   def org_pretty_display(value)
     return 'N/A' if value.blank?
-    # rubocop:disable Rails/OutputSafety # The values used here are sanitized.
     return '&mdash;'.html_safe if value.to_i.zero?
-    # rubocop: enable Rails/OutputSafety
+
     value
   end
 
@@ -17,9 +16,11 @@ module OrganizationsHelper
 
   def organization_affiliated_committers_stats(account_stat)
     return false unless account_stat
+
     most_commit_stat = org_most_commit_stat(account_stat)
     most_recent_stat = org_most_recent_stat(account_stat)
     return false unless most_commit_stat['project_id'] && most_recent_stat['project_id']
+
     {
       most_committed_project: Project.find(most_commit_stat['project_id']),
       most_recent_project: Project.find(most_recent_stat['project_id']),

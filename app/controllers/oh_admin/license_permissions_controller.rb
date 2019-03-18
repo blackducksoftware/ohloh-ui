@@ -1,7 +1,9 @@
 class OhAdmin::LicensePermissionsController < ApplicationController
   before_action :admin_session_required
   before_action :check_params, only: [:index]
+  # rubocop:disable Rails/LexicallyScopedActionFilter
   before_action :get_permissions, only: %i[new update]
+  # rubocop:enable Rails/LexicallyScopedActionFilter
   layout 'admin'
   include LicenseHelper
 
@@ -72,6 +74,7 @@ class OhAdmin::LicensePermissionsController < ApplicationController
 
   def retrieve_permission_rights
     return unless params[:license_id]
+
     license_id = params[:license_id]
     sql = get_sql(license_id)
     @permission_rights = ActiveRecord::Base.connection.select_all(sql).to_hash
