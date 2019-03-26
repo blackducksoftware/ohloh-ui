@@ -1,0 +1,2 @@
+class ProjectParamsError < StandardError
+end

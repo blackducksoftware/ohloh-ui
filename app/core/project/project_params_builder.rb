@@ -34,14 +34,14 @@ class ProjectParamsBuilder
   end
 
   def validate_row
-    raise StandardError.new "kb id:#{@kb_project_id} contains a blank description" if @row['description'].blank?
-    raise StandardError.new "kb id:#{@kb_project_id} project already exists"  if @row['owner'].nil?
+    raise ProjectParamsError, "kb id:#{@kb_project_id} contains a blank description" if @row['description'].blank?
+    raise ProjectParamsError, "kb id:#{@kb_project_id} project already exists"  if @row['owner'].nil?
   end
 
   def add_row_params
     @row['forge_id'] = @forge_id
     @row['owner_at_forge'], @row['name_at_forge'] = split_name(@row['owner_name'])
-    @row['owner'], @row['project_name']  = set_project_name(@row['owner_name'])
+    @row['owner'], @row['project_name'] = set_project_name(@row['owner_name'])
   end
 
   def split_name(owner_name)
@@ -57,23 +57,23 @@ class ProjectParamsBuilder
     [owner, project]
   end
 
+  # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
   def set_params
     name = @row['project_name']
     url = get_url(@row['owner_name'])
 
     licenses = get_license_ids(row['simple_form'])
-    messages << "#{@kb_project_id} is missing license information" if licenses.empty?
+    @messages << "#{@kb_project_id} is missing license information" if licenses.empty?
 
     { 'name' => name, 'description' => row['description'],
-      'vanity_url' => name.gsub('/','_').gsub('.', '_').gsub(/\s/, "-"), 'url' => url, 'download_url' => url,
-      'forge_id' => @forge_id,
-      'owner_at_forge' => @row['owner_at_forge'],
-      'name_at_forge' => @row['name_at_forge'],
-      'comments' => 'Created by kb_Ingestion script',
+      'vanity_url' => name.tr('/', '_').tr('.', '_').gsub(/\s/, '-'),
+      'url' => url, 'download_url' => url, 'forge_id' => @forge_id, 'owner_at_forge' => @row['owner_at_forge'],
+      'name_at_forge' => @row['name_at_forge'], 'comments' => 'Created by kb_Ingestion script',
       'managed_by_creator' => '0', 'project_licenses_attributes' => licenses,
       'enlistments_attributes' => { '0' => { 'code_location_attributes' =>
         { 'scm_type' => 'git', 'url' => url, 'branch' => row['module_branch'] } } } }
   end
+  # rubocop:enable Metrics/AbcSize,Metrics/MethodLength
 
   def get_url(raw_url)
     "https://github.com/#{raw_url}"

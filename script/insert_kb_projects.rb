@@ -15,17 +15,7 @@ class InsertKbProjects
 
   def run
     @log.info "Starting process with file #{@projects_csv}"
-    CSV.foreach(@projects_csv, headers: true).with_index(1) do |csv, index|
-      begin
-        show_progress(index)
-        row = csv.to_h
-        @project_builder.row = row
-        @project_builder.build_project
-        @log.info @project_builder.messages
-      rescue StandardError => e
-        @log.error "Error processing row #{index} with error #{e.message}"
-      end
-    end
+    loop_csv
     @log.info "Completed process with file #{@projects_csv}"
   end
 
@@ -35,6 +25,24 @@ class InsertKbProjects
     @log.info "Processing row #{index}"
     print '.' unless (index % 10).zero?
     puts index.to_s if (index % 10).zero?
+  end
+
+  def create_project(row)
+    @project_builder.row = row
+    @project_builder.build_project
+    @log.info @project_builder.messages
+  end
+
+  def loop_csv
+    CSV.foreach(@projects_csv, headers: true).with_index(1) do |csv, index|
+      begin
+        show_progress(index)
+        row = csv.to_h
+        create_project(row)
+      rescue StandardError => e
+        @log.error "Error processing row #{index} with error #{e.message}"
+      end
+    end
   end
 end
 
