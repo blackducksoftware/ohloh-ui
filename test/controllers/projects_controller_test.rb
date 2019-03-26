@@ -606,6 +606,37 @@ describe 'ProjectsController' do
     code_location.branch.must_equal 'master'
   end
 
+  it 'should use the project builder' do
+    CodeLocation.any_instance.stubs(:valid?).returns(true)
+    account = create(:account)
+    license1 = create(:license)
+    license2 = create(:license)
+    login_as account
+    webmock_create_code_location_and_subscription do
+      post :create, project: { 'name' => 'nnode-uuid',
+                               'description' => 'Rigorous implementation of RFC4122 (v1 and v4) UUIDs.',
+                               'vanity_url' => 'nnode-uuid',
+                               'url' => 'https://github.com/kelektiv/nnode-uuid', 'download_url' => 'https://github.com/kelektiv/nnode-uuid',
+                               'managed_by_creator' => '1',
+                               'project_licenses_attributes' => [{ 'license_id' => license_id.to_s },
+                                                                 { 'license_id' => license2.id.to_s }],
+                               'enlistments_attributes' => { '0' =>
+                                            { 'code_location_attributes' => { 'scm_type' => 'git',
+                                                                              'url' => 'https://github.com/kelektiv/nnode-uuid',
+                                                                              'branch' => 'master' } } } }
+    end
+    project = Project.where(vanity_url: 'nnode-uuid').last
+    project.url.must_equal 'https://github.com/kelektiv/nnode-uuid.git'
+    project.download_url.must_equal 'https://github.com/kelektiv/nnode-uuid.git'
+    project.active_managers.must_equal [account]
+    project.licenses.map(&:id).sort.must_equal [license1.id, license2.id].sort
+    project.enlistments.where('code_location_id is not null').must_be :exists?
+    WebMocker.get_project_code_locations
+    project.code_locations.length.must_equal 1
+    code_location = project.code_locations[0]
+    code_location.scm_type.must_equal 'git'
+  end
+
   it 'create should allow no download_url' do
     CodeLocation.any_instance.stubs(:valid?).returns(true)
     account = create(:account)
