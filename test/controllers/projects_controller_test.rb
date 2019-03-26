@@ -618,7 +618,7 @@ describe 'ProjectsController' do
                                'vanity_url' => 'nnode-uuid',
                                'url' => 'https://github.com/kelektiv/nnode-uuid', 'download_url' => 'https://github.com/kelektiv/nnode-uuid',
                                'managed_by_creator' => '1',
-                               'project_licenses_attributes' => [{ 'license_id' => license_id.to_s },
+                               'project_licenses_attributes' => [{ 'license_id' => license1.id.to_s },
                                                                  { 'license_id' => license2.id.to_s }],
                                'enlistments_attributes' => { '0' =>
                                             { 'code_location_attributes' => { 'scm_type' => 'git',
@@ -626,8 +626,8 @@ describe 'ProjectsController' do
                                                                               'branch' => 'master' } } } }
     end
     project = Project.where(vanity_url: 'nnode-uuid').last
-    project.url.must_equal 'https://github.com/kelektiv/nnode-uuid.git'
-    project.download_url.must_equal 'https://github.com/kelektiv/nnode-uuid.git'
+    project.url.must_equal 'https://github.com/kelektiv/nnode-uuid'
+    project.download_url.must_equal 'https://github.com/kelektiv/nnode-uuid'
     project.active_managers.must_equal [account]
     project.licenses.map(&:id).sort.must_equal [license1.id, license2.id].sort
     project.enlistments.where('code_location_id is not null').must_be :exists?
