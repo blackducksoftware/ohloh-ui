@@ -16,13 +16,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: bluemedora; Type: SCHEMA; Schema: -; Owner: -
---
-
-CREATE SCHEMA bluemedora;
-
-
---
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -34,20 +27,6 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
---
--- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
-
-
---
--- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
 
 
 --
@@ -79,72 +58,6 @@ COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UU
 
 
 --
--- Name: statinfo; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE public.statinfo AS (
-	word text,
-	ndoc integer,
-	nentry integer
-);
-
-
---
--- Name: tokenout; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE public.tokenout AS (
-	tokid integer,
-	token text
-);
-
-
---
--- Name: tokentype; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE public.tokentype AS (
-	tokid integer,
-	alias text,
-	descr text
-);
-
-
---
--- Name: tsdebug; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE public.tsdebug AS (
-	ts_name text,
-	tok_type text,
-	description text,
-	token text,
-	dict_name text[],
-	tsvector tsvector
-);
-
-
---
--- Name: pg_stat_statements(); Type: FUNCTION; Schema: bluemedora; Owner: -
---
-
-CREATE FUNCTION bluemedora.pg_stat_statements() RETURNS SETOF public.pg_stat_statements
-    LANGUAGE sql SECURITY DEFINER
-    AS $$
-SELECT * FROM public.pg_stat_statements;
-$$;
-
-
---
--- Name: _get_parser_from_curcfg(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public._get_parser_from_curcfg() RETURNS text
-    LANGUAGE sql IMMUTABLE STRICT
-    AS $$ select prs_name from pg_ts_cfg where oid = show_curcfg() $$;
-
-
---
 -- Name: account_reports_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -169,15 +82,6 @@ CREATE FUNCTION public.accounts_id_seq_view() RETURNS integer
 CREATE FUNCTION public.actions_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from actions_id_seq_view$$;
-
-
---
--- Name: activity_facts_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.activity_facts_id_seq_view() RETURNS bigint
-    LANGUAGE sql
-    AS $$select id from activity_facts_id_seq_view$$;
 
 
 --
@@ -288,9 +192,9 @@ INNER JOIN code_locations ON code_locations.best_code_set_id = code_sets.id
 LEFT OUTER JOIN (SELECT DISTINCT enlistments.code_location_id, enlistments.deleted FROM enlistments
           WHERE enlistments.deleted = false) e1 ON e1.code_location_id = code_locations.id
 
- WHERE (COALESCE(code_sets.logged_at, '1970-01-01') + code_locations.update_interval * INTERVAL '1 second'
-          <= NOW() AT TIME ZONE 'utc' )
- AND code_locations.do_not_fetch = false
+WHERE (COALESCE(code_sets.logged_at, '1970-01-01') + code_locations.update_interval * INTERVAL '1 second'
+        <= NOW() AT TIME ZONE 'utc' )
+AND code_locations.do_not_fetch = false
       AND ( (code_locations.status = 0  AND e1.deleted = false) OR code_locations.status = 1)),
 
 series AS (SELECT generate_series( date_trunc('year', now()),
@@ -849,15 +753,6 @@ CREATE FUNCTION public.authorizations_id_seq_view() RETURNS integer
 
 
 --
--- Name: check_jobs(integer); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.check_jobs(integer) RETURNS integer
-    LANGUAGE sql
-    AS $_$select repository_id as RESULT from jobs where status != 5 AND  repository_id= $1;$_$;
-
-
---
 -- Name: clumps_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -873,15 +768,6 @@ CREATE FUNCTION public.clumps_id_seq_view() RETURNS integer
 CREATE FUNCTION public.code_location_tarballs_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from code_location_tarballs_id_seq_view$$;
-
-
---
--- Name: code_locations_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.code_locations_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from code_locations_id_seq_view$$;
 
 
 --
@@ -1176,34 +1062,12 @@ CREATE FUNCTION public.exhibits_id_seq_view() RETURNS integer
 
 
 --
--- Name: explain_this(text); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.explain_this(l_query text, OUT explain json) RETURNS SETOF json
-    LANGUAGE plpgsql STRICT SECURITY DEFINER
-    AS $$
-BEGIN
-  RETURN QUERY EXECUTE 'explain (format json) ' || l_query;
-END;
-$$;
-
-
---
 -- Name: factoids_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION public.factoids_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from factoids_id_seq_view$$;
-
-
---
--- Name: failure_groups_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.failure_groups_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from failure_groups_id_seq_view$$;
 
 
 --
@@ -1234,15 +1098,6 @@ CREATE FUNCTION public.follows_id_seq_view() RETURNS integer
 
 
 --
--- Name: forges_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.forges_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from forges_id_seq_view$$;
-
-
---
 -- Name: forums_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1267,15 +1122,6 @@ CREATE FUNCTION public.helpfuls_id_seq_view() RETURNS integer
 CREATE FUNCTION public.invites_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from invites_id_seq_view$$;
-
-
---
--- Name: jobs_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.jobs_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from jobs_id_seq_view$$;
 
 
 --
@@ -1453,7 +1299,7 @@ CREATE FUNCTION public.monthly_commit_histories_id_seq_view() RETURNS integer
 -- Name: name_facts_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION public.name_facts_id_seq_view() RETURNS integer
+CREATE FUNCTION public.name_facts_id_seq_view() RETURNS bigint
     LANGUAGE sql
     AS $$select id from name_facts_id_seq_view$$;
 
@@ -1462,7 +1308,7 @@ CREATE FUNCTION public.name_facts_id_seq_view() RETURNS integer
 -- Name: name_language_facts_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION public.name_language_facts_id_seq_view() RETURNS integer
+CREATE FUNCTION public.name_language_facts_id_seq_view() RETURNS bigint
     LANGUAGE sql
     AS $$select id from name_language_facts_id_seq_view$$;
 
@@ -1687,7 +1533,7 @@ CREATE FUNCTION public.recently_active_accounts_cache_id_seq_view() RETURNS inte
 -- Name: recommend_entries_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION public.recommend_entries_id_seq_view() RETURNS integer
+CREATE FUNCTION public.recommend_entries_id_seq_view() RETURNS bigint
     LANGUAGE sql
     AS $$select id from recommend_entries_id_seq_view$$;
 
@@ -1717,33 +1563,6 @@ CREATE FUNCTION public.releases_id_seq_view() RETURNS integer
 CREATE FUNCTION public.reports_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from reports_id_seq_view$$;
-
-
---
--- Name: repositories_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.repositories_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from repositories_id_seq_view$$;
-
-
---
--- Name: repository_directories_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.repository_directories_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from repository_directories_id_seq_view$$;
-
-
---
--- Name: repository_tags_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.repository_tags_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from repository_tags_id_seq_view$$;
 
 
 --
@@ -1927,33 +1746,6 @@ CREATE FUNCTION public.topics_id_seq_view() RETURNS integer
 
 
 --
--- Name: ts_debug(text); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.ts_debug(text) RETURNS SETOF public.tsdebug
-    LANGUAGE sql STRICT
-    AS $_$
-select 
-        m.ts_name,
-        t.alias as tok_type,
-        t.descr as description,
-        p.token,
-        m.dict_name,
-        strip(to_tsvector(p.token)) as tsvector
-from
-        parse( _get_parser_from_curcfg(), $1 ) as p,
-        token_type() as t,
-        pg_ts_cfgmap as m,
-        pg_ts_cfg as c
-where
-        t.tokid=p.tokid and
-        t.alias = m.tok_alias and 
-        m.ts_name=c.ts_name and 
-        c.oid=show_curcfg() 
-$_$;
-
-
---
 -- Name: verifications_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1966,7 +1758,7 @@ CREATE FUNCTION public.verifications_id_seq_view() RETURNS integer
 -- Name: vita_analyses_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION public.vita_analyses_id_seq_view() RETURNS integer
+CREATE FUNCTION public.vita_analyses_id_seq_view() RETURNS bigint
     LANGUAGE sql
     AS $$select id from vita_analyses_id_seq_view$$;
 
@@ -1987,97 +1779,6 @@ CREATE FUNCTION public.vitae_id_seq_view() RETURNS integer
 CREATE FUNCTION public.vulnerabilities_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from vulnerabilities_id_seq_view$$;
-
-
---
--- Name: <; Type: OPERATOR; Schema: public; Owner: -
---
-
-CREATE OPERATOR public.< (
-    PROCEDURE = tsvector_lt,
-    LEFTARG = tsvector,
-    RIGHTARG = tsvector,
-    COMMUTATOR = OPERATOR(pg_catalog.>),
-    NEGATOR = OPERATOR(pg_catalog.>=),
-    RESTRICT = contsel,
-    JOIN = contjoinsel
-);
-
-
---
--- Name: <=; Type: OPERATOR; Schema: public; Owner: -
---
-
-CREATE OPERATOR public.<= (
-    PROCEDURE = tsvector_le,
-    LEFTARG = tsvector,
-    RIGHTARG = tsvector,
-    COMMUTATOR = OPERATOR(pg_catalog.>=),
-    NEGATOR = OPERATOR(pg_catalog.>),
-    RESTRICT = contsel,
-    JOIN = contjoinsel
-);
-
-
---
--- Name: <>; Type: OPERATOR; Schema: public; Owner: -
---
-
-CREATE OPERATOR public.<> (
-    PROCEDURE = tsvector_ne,
-    LEFTARG = tsvector,
-    RIGHTARG = tsvector,
-    COMMUTATOR = OPERATOR(pg_catalog.<>),
-    NEGATOR = OPERATOR(pg_catalog.=),
-    RESTRICT = neqsel,
-    JOIN = neqjoinsel
-);
-
-
---
--- Name: =; Type: OPERATOR; Schema: public; Owner: -
---
-
-CREATE OPERATOR public.= (
-    PROCEDURE = tsvector_eq,
-    LEFTARG = tsvector,
-    RIGHTARG = tsvector,
-    COMMUTATOR = OPERATOR(pg_catalog.=),
-    NEGATOR = OPERATOR(public.<>),
-    MERGES,
-    RESTRICT = eqsel,
-    JOIN = eqjoinsel
-);
-
-
---
--- Name: >; Type: OPERATOR; Schema: public; Owner: -
---
-
-CREATE OPERATOR public.> (
-    PROCEDURE = tsvector_gt,
-    LEFTARG = tsvector,
-    RIGHTARG = tsvector,
-    COMMUTATOR = OPERATOR(public.<),
-    NEGATOR = OPERATOR(public.<=),
-    RESTRICT = contsel,
-    JOIN = contjoinsel
-);
-
-
---
--- Name: >=; Type: OPERATOR; Schema: public; Owner: -
---
-
-CREATE OPERATOR public.>= (
-    PROCEDURE = tsvector_ge,
-    LEFTARG = tsvector,
-    RIGHTARG = tsvector,
-    COMMUTATOR = OPERATOR(public.<=),
-    NEGATOR = OPERATOR(public.<),
-    RESTRICT = contsel,
-    JOIN = contjoinsel
-);
 
 
 --
@@ -2215,10 +1916,9 @@ ALTER TEXT SEARCH CONFIGURATION public.pg
 --
 
 CREATE SERVER ohloh FOREIGN DATA WRAPPER postgres_fdw OPTIONS (
-    dbname 'openhub_development',
-    host 'oh-db01.dc1.lan',
-    port '5432',
-    use_remote_estimate 'true'
+    dbname 'openhub_test',
+    host 'localhost',
+    port '5432'
 );
 
 
@@ -2293,7 +1993,7 @@ ALTER FOREIGN TABLE public.account_reports_id_seq_view ALTER COLUMN id OPTIONS (
 --
 
 CREATE FOREIGN TABLE public.accounts (
-    id integer NOT NULL,
+    id integer DEFAULT public.accounts_id_seq_view() NOT NULL,
     login text NOT NULL,
     email text NOT NULL,
     encrypted_password character varying NOT NULL,
@@ -2304,8 +2004,8 @@ CREATE FOREIGN TABLE public.accounts (
     activated_at timestamp without time zone,
     remember_token character varying(128) NOT NULL,
     remember_token_expires_at timestamp without time zone,
-    level integer NOT NULL,
-    posts_count integer,
+    level integer DEFAULT 0 NOT NULL,
+    posts_count integer DEFAULT 0,
     last_seen_at timestamp without time zone,
     name text,
     country_code text,
@@ -2315,20 +2015,20 @@ CREATE FOREIGN TABLE public.accounts (
     best_vita_id integer,
     url text,
     about_markup_id integer,
-    hide_experience boolean,
-    email_master boolean,
-    email_posts boolean,
-    email_kudos boolean,
+    hide_experience boolean DEFAULT false,
+    email_master boolean DEFAULT true,
+    email_posts boolean DEFAULT true,
+    email_kudos boolean DEFAULT true,
     email_md5 text,
     email_opportunities_visited timestamp without time zone,
     activation_resent_at timestamp without time zone,
     akas text,
-    email_new_followers boolean,
+    email_new_followers boolean DEFAULT false,
     last_seen_ip text,
     twitter_account text,
     confirmation_token character varying,
     organization_id integer,
-    affiliation_type text NOT NULL,
+    affiliation_type text DEFAULT 'unaffiliated'::text NOT NULL,
     organization_name text
 )
 SERVER ohloh
@@ -2549,6 +2249,18 @@ ALTER FOREIGN TABLE public.actions_id_seq_view ALTER COLUMN id OPTIONS (
 
 
 --
+-- Name: activity_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.activity_facts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
 -- Name: activity_facts; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
@@ -2562,7 +2274,7 @@ CREATE FOREIGN TABLE public.activity_facts (
     blanks_added integer DEFAULT 0,
     blanks_removed integer DEFAULT 0,
     name_id integer NOT NULL,
-    id bigint DEFAULT public.activity_facts_id_seq_view() NOT NULL,
+    id bigint DEFAULT nextval('public.activity_facts_id_seq'::regclass) NOT NULL,
     analysis_id integer NOT NULL,
     commits integer DEFAULT 0,
     on_trunk boolean DEFAULT true
@@ -2614,23 +2326,11 @@ ALTER FOREIGN TABLE public.activity_facts ALTER COLUMN on_trunk OPTIONS (
 
 
 --
--- Name: activity_facts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.activity_facts_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
 -- Name: activity_facts_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
 CREATE FOREIGN TABLE public.activity_facts_id_seq_view (
-    id bigint
+    id integer
 )
 SERVER ohloh
 OPTIONS (
@@ -3494,7 +3194,6 @@ CREATE TABLE public.code_locations (
     id integer NOT NULL,
     repository_id integer,
     module_branch_name text,
-    status integer DEFAULT 0,
     best_code_set_id integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
@@ -3994,24 +3693,6 @@ ALTER FOREIGN TABLE public.countries ALTER COLUMN region OPTIONS (
 
 
 --
--- Name: delete_after_2018_03_01_if_all_is_ok; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.delete_after_2018_03_01_if_all_is_ok (
-    id integer,
-    repository_id integer,
-    module_branch_name text,
-    status integer,
-    best_code_set_id integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    update_interval integer,
-    best_repository_directory_id integer,
-    do_not_fetch boolean
-);
-
-
---
 -- Name: deleted_accounts; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
@@ -4158,7 +3839,7 @@ ALTER SEQUENCE public.diffs_id_seq OWNED BY public.diffs.id;
 --
 
 CREATE VIEW public.diffs_id_seq_view AS
- SELECT nextval('public.diffs_id_seq'::regclass) AS id;
+ SELECT (nextval('public.diffs_id_seq'::regclass))::integer AS id;
 
 
 --
@@ -4946,11 +4627,23 @@ ALTER FOREIGN TABLE public.follows_id_seq_view ALTER COLUMN id OPTIONS (
 
 
 --
+-- Name: forges; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.forges (
+    id integer NOT NULL,
+    name text NOT NULL,
+    url text NOT NULL,
+    type text
+);
+
+
+--
 -- Name: forges_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.forges_id_seq
-    START WITH 8
+    START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
@@ -4958,15 +4651,10 @@ CREATE SEQUENCE public.forges_id_seq
 
 
 --
--- Name: forges; Type: TABLE; Schema: public; Owner: -
+-- Name: forges_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-CREATE TABLE public.forges (
-    id integer DEFAULT nextval('public.forges_id_seq'::regclass) NOT NULL,
-    name text NOT NULL,
-    url text NOT NULL,
-    type text
-);
+ALTER SEQUENCE public.forges_id_seq OWNED BY public.forges.id;
 
 
 --
@@ -5489,23 +5177,11 @@ ALTER FOREIGN TABLE public.job_statuses ALTER COLUMN name OPTIONS (
 
 
 --
--- Name: jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.jobs_id_seq
-    START WITH 390996709
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
 -- Name: jobs; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.jobs (
-    id bigint DEFAULT nextval('public.jobs_id_seq'::regclass) NOT NULL,
+    id bigint NOT NULL,
     project_id integer,
     status integer DEFAULT 0 NOT NULL,
     type text NOT NULL,
@@ -5530,6 +5206,25 @@ CREATE TABLE public.jobs (
     code_location_id integer,
     code_location_tarball_id integer
 );
+
+
+--
+-- Name: jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.jobs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.jobs_id_seq OWNED BY public.jobs.id;
 
 
 --
@@ -6275,21 +5970,7 @@ CREATE VIEW public.load_averages_id_seq_view AS
 --
 
 CREATE TABLE public.locations (
-    id integer,
-    status integer,
-    do_not_fetch boolean,
-    update_interval integer,
-    best_code_set_id integer
-);
-
-
---
--- Name: m_enlistments; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.m_enlistments (
-    code_location_id integer,
-    deleted boolean
+    created_at timestamp without time zone
 );
 
 
@@ -9039,23 +8720,11 @@ ALTER FOREIGN TABLE public.reports_id_seq_view ALTER COLUMN id OPTIONS (
 
 
 --
--- Name: repositories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.repositories_id_seq
-    START WITH 821423
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
 -- Name: repositories; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.repositories (
-    id integer DEFAULT nextval('public.repositories_id_seq'::regclass) NOT NULL,
+    id integer NOT NULL,
     url text,
     forge_id integer,
     username text,
@@ -9068,6 +8737,25 @@ CREATE TABLE public.repositories (
     owner_at_forge text,
     best_repository_directory_id integer
 );
+
+
+--
+-- Name: repositories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.repositories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: repositories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.repositories_id_seq OWNED BY public.repositories.id;
 
 
 --
@@ -9918,7 +9606,7 @@ ALTER SEQUENCE public.sloc_metrics_id_seq OWNED BY public.sloc_metrics.id;
 --
 
 CREATE VIEW public.sloc_metrics_id_seq_view AS
- SELECT nextval('public.sloc_metrics_id_seq'::regclass) AS id;
+ SELECT (nextval('public.sloc_metrics_id_seq'::regclass))::integer AS id;
 
 
 --
@@ -10572,167 +10260,6 @@ ALTER FOREIGN TABLE public.topics_id_seq_view ALTER COLUMN id OPTIONS (
 
 
 --
--- Name: unknown_spam_accounts; Type: FOREIGN TABLE; Schema: public; Owner: -
---
-
-CREATE FOREIGN TABLE public.unknown_spam_accounts (
-    id integer NOT NULL,
-    login text NOT NULL,
-    email text NOT NULL,
-    crypted_password text NOT NULL,
-    salt text NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    activation_code text,
-    activated_at timestamp without time zone,
-    remember_token text,
-    remember_token_expires_at timestamp without time zone,
-    level integer NOT NULL,
-    posts_count integer,
-    last_seen_at timestamp without time zone,
-    name text,
-    country_code text,
-    location text,
-    latitude numeric,
-    longitude numeric,
-    best_vita_id integer,
-    url text,
-    about_markup_id integer,
-    hide_experience boolean,
-    email_master boolean,
-    email_posts boolean,
-    email_kudos boolean,
-    email_md5 text,
-    email_opportunities_visited timestamp without time zone,
-    activation_resent_at timestamp without time zone,
-    akas text,
-    email_new_followers boolean,
-    last_seen_ip text,
-    twitter_account text,
-    reset_password_tokens text,
-    organization_id integer,
-    affiliation_type text NOT NULL,
-    organization_name text
-)
-SERVER ohloh
-OPTIONS (
-    schema_name 'public',
-    table_name 'unknown_spam_accounts'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN id OPTIONS (
-    column_name 'id'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN login OPTIONS (
-    column_name 'login'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN email OPTIONS (
-    column_name 'email'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN crypted_password OPTIONS (
-    column_name 'crypted_password'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN salt OPTIONS (
-    column_name 'salt'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN created_at OPTIONS (
-    column_name 'created_at'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN updated_at OPTIONS (
-    column_name 'updated_at'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN activation_code OPTIONS (
-    column_name 'activation_code'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN activated_at OPTIONS (
-    column_name 'activated_at'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN remember_token OPTIONS (
-    column_name 'remember_token'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN remember_token_expires_at OPTIONS (
-    column_name 'remember_token_expires_at'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN level OPTIONS (
-    column_name 'level'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN posts_count OPTIONS (
-    column_name 'posts_count'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN last_seen_at OPTIONS (
-    column_name 'last_seen_at'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN name OPTIONS (
-    column_name 'name'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN country_code OPTIONS (
-    column_name 'country_code'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN location OPTIONS (
-    column_name 'location'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN latitude OPTIONS (
-    column_name 'latitude'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN longitude OPTIONS (
-    column_name 'longitude'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN best_vita_id OPTIONS (
-    column_name 'best_vita_id'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN url OPTIONS (
-    column_name 'url'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN about_markup_id OPTIONS (
-    column_name 'about_markup_id'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN hide_experience OPTIONS (
-    column_name 'hide_experience'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN email_master OPTIONS (
-    column_name 'email_master'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN email_posts OPTIONS (
-    column_name 'email_posts'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN email_kudos OPTIONS (
-    column_name 'email_kudos'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN email_md5 OPTIONS (
-    column_name 'email_md5'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN email_opportunities_visited OPTIONS (
-    column_name 'email_opportunities_visited'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN activation_resent_at OPTIONS (
-    column_name 'activation_resent_at'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN akas OPTIONS (
-    column_name 'akas'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN email_new_followers OPTIONS (
-    column_name 'email_new_followers'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN last_seen_ip OPTIONS (
-    column_name 'last_seen_ip'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN twitter_account OPTIONS (
-    column_name 'twitter_account'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN reset_password_tokens OPTIONS (
-    column_name 'reset_password_tokens'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN organization_id OPTIONS (
-    column_name 'organization_id'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN affiliation_type OPTIONS (
-    column_name 'affiliation_type'
-);
-ALTER FOREIGN TABLE public.unknown_spam_accounts ALTER COLUMN organization_name OPTIONS (
-    column_name 'organization_name'
-);
-
-
---
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -10773,7 +10300,7 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 --
 
 CREATE FOREIGN TABLE public.verifications (
-    id integer NOT NULL,
+    id integer DEFAULT public.verifications_id_seq_view() NOT NULL,
     account_id integer,
     type character varying,
     token character varying,
@@ -11137,10 +10664,24 @@ ALTER TABLE ONLY public.fisbot_events ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: forges id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.forges ALTER COLUMN id SET DEFAULT nextval('public.forges_id_seq'::regclass);
+
+
+--
 -- Name: fyles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.fyles ALTER COLUMN id SET DEFAULT nextval('public.fyles_id_seq'::regclass);
+
+
+--
+-- Name: jobs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.jobs ALTER COLUMN id SET DEFAULT nextval('public.jobs_id_seq'::regclass);
 
 
 --
@@ -11155,6 +10696,13 @@ ALTER TABLE ONLY public.load_averages ALTER COLUMN id SET DEFAULT nextval('publi
 --
 
 ALTER TABLE ONLY public.old_code_sets ALTER COLUMN id SET DEFAULT nextval('public.old_code_sets_id_seq'::regclass);
+
+
+--
+-- Name: repositories id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.repositories ALTER COLUMN id SET DEFAULT nextval('public.repositories_id_seq'::regclass);
 
 
 --
@@ -11331,6 +10879,22 @@ ALTER TABLE ONLY public.failure_groups
 
 ALTER TABLE ONLY public.fisbot_events
     ADD CONSTRAINT fisbot_events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: forges forges_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.forges
+    ADD CONSTRAINT forges_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: forges forges_type_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.forges
+    ADD CONSTRAINT forges_type_key UNIQUE (type);
 
 
 --
@@ -11523,6 +11087,13 @@ CREATE INDEX index_code_locations_on_repository_id ON public.code_locations USIN
 
 
 --
+-- Name: index_code_locations_on_repository_id_and_module_branch_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_code_locations_on_repository_id_and_module_branch_name ON public.code_locations USING btree (repository_id, module_branch_name);
+
+
+--
 -- Name: index_code_sets_on_best_sloc_set_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -11565,13 +11136,6 @@ CREATE INDEX index_commit_flags_on_sloc_set_id_time ON public.commit_flags USING
 
 
 --
--- Name: index_commits_on_code_set_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_commits_on_code_set_id ON public.commits USING btree (code_set_id);
-
-
---
 -- Name: index_commits_on_code_set_id_time; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -11604,6 +11168,13 @@ CREATE INDEX index_diffs_on_commit_id ON public.diffs USING btree (commit_id);
 --
 
 CREATE INDEX index_diffs_on_fyle_id ON public.diffs USING btree (fyle_id);
+
+
+--
+-- Name: index_failure_groups_on_priority_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_failure_groups_on_priority_name ON public.failure_groups USING btree (priority, name);
 
 
 --
@@ -11688,6 +11259,20 @@ CREATE INDEX index_jobs_on_status_type_wait_until ON public.jobs USING btree (st
 --
 
 CREATE INDEX index_on_commits_code_set_id_position ON public.commits USING btree (code_set_id, "position");
+
+
+--
+-- Name: index_repositories_on_forge_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_repositories_on_forge_id ON public.repositories USING btree (forge_id);
+
+
+--
+-- Name: index_repositories_on_url; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_repositories_on_url ON public.repositories USING btree (url);
 
 
 --
@@ -11811,19 +11396,43 @@ ALTER TABLE ONLY public.analysis_sloc_sets
 
 
 --
--- Name: code_sets code_sets_best_sloc_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.code_sets
-    ADD CONSTRAINT code_sets_best_sloc_set_id_fkey FOREIGN KEY (best_sloc_set_id) REFERENCES public.sloc_sets(id);
-
-
---
 -- Name: commit_flags commit_flags_sloc_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.commit_flags
     ADD CONSTRAINT commit_flags_sloc_set_id_fkey FOREIGN KEY (sloc_set_id) REFERENCES public.sloc_sets(id) ON DELETE CASCADE;
+
+
+--
+-- Name: diffs diffs_commit_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.diffs
+    ADD CONSTRAINT diffs_commit_id_fkey FOREIGN KEY (commit_id) REFERENCES public.commits(id) ON DELETE CASCADE;
+
+
+--
+-- Name: diffs diffs_fyle_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.diffs
+    ADD CONSTRAINT diffs_fyle_id_fkey FOREIGN KEY (fyle_id) REFERENCES public.fyles(id);
+
+
+--
+-- Name: code_locations fk_rails_0ff5ad97b1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.code_locations
+    ADD CONSTRAINT fk_rails_0ff5ad97b1 FOREIGN KEY (repository_id) REFERENCES public.repositories(id);
+
+
+--
+-- Name: repository_tags fk_rails_275a40dd6e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.repository_tags
+    ADD CONSTRAINT fk_rails_275a40dd6e FOREIGN KEY (repository_id) REFERENCES public.repositories(id);
 
 
 --
@@ -11843,6 +11452,14 @@ ALTER TABLE ONLY public.repository_directories
 
 
 --
+-- Name: repository_directories fk_rails_d36c79e15c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.repository_directories
+    ADD CONSTRAINT fk_rails_d36c79e15c FOREIGN KEY (repository_id) REFERENCES public.repositories(id);
+
+
+--
 -- Name: jobs jobs_failure_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -11851,11 +11468,11 @@ ALTER TABLE ONLY public.jobs
 
 
 --
--- Name: slave_logs slave_logs_code_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: repositories repositories_forge_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.slave_logs
-    ADD CONSTRAINT slave_logs_code_set_id_fkey FOREIGN KEY (code_set_id) REFERENCES public.code_sets(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.repositories
+    ADD CONSTRAINT repositories_forge_id_fkey FOREIGN KEY (forge_id) REFERENCES public.forges(id);
 
 
 --
@@ -11864,6 +11481,14 @@ ALTER TABLE ONLY public.slave_logs
 
 ALTER TABLE ONLY public.slave_logs
     ADD CONSTRAINT slave_logs_slave_id_fkey FOREIGN KEY (slave_id) REFERENCES public.slaves(id) ON DELETE CASCADE;
+
+
+--
+-- Name: sloc_metrics sloc_metrics_diff_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sloc_metrics
+    ADD CONSTRAINT sloc_metrics_diff_id_fkey FOREIGN KEY (diff_id) REFERENCES public.diffs(id) ON DELETE CASCADE;
 
 
 --
@@ -11953,4 +11578,10 @@ INSERT INTO schema_migrations (version) VALUES ('20181010181449');
 INSERT INTO schema_migrations (version) VALUES ('20181108152834');
 
 INSERT INTO schema_migrations (version) VALUES ('20181220010101');
+
+INSERT INTO schema_migrations (version) VALUES ('20190107183802');
+
+INSERT INTO schema_migrations (version) VALUES ('20190212105155');
+
+INSERT INTO schema_migrations (version) VALUES ('20190214122613');
 

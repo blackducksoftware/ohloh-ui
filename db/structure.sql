@@ -149,6 +149,15 @@ CREATE FUNCTION public.code_location_tarballs_id_seq_view() RETURNS integer
 
 
 --
+-- Name: code_locations_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.code_locations_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from code_locations_id_seq_view$$;
+
+
+--
 -- Name: code_sets_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -212,6 +221,15 @@ CREATE FUNCTION public.fisbot_events_id_seq_view() RETURNS integer
 
 
 --
+-- Name: forges_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.forges_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from forges_id_seq_view$$;
+
+
+--
 -- Name: fyles_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -236,6 +254,33 @@ CREATE FUNCTION public.jobs_id_seq_view() RETURNS bigint
 CREATE FUNCTION public.load_averages_id_seq_view() RETURNS integer
     LANGUAGE sql
     AS $$select id from load_averages_id_seq_view$$;
+
+
+--
+-- Name: repositories_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.repositories_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from repositories_id_seq_view$$;
+
+
+--
+-- Name: repository_directories_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.repository_directories_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from repository_directories_id_seq_view$$;
+
+
+--
+-- Name: repository_tags_id_seq_view(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.repository_tags_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from repository_tags_id_seq_view$$;
 
 
 --
@@ -627,6 +672,7 @@ CREATE TABLE public.accounts (
     organization_id integer,
     affiliation_type text DEFAULT 'unaffiliated'::text NOT NULL,
     organization_name text,
+    auth_fail_count integer DEFAULT 0,
     CONSTRAINT accounts_email_check CHECK ((length(email) >= 3)),
     CONSTRAINT accounts_login_check CHECK ((length(login) >= 3))
 );
@@ -1366,48 +1412,69 @@ ALTER FOREIGN TABLE public.code_location_tarballs_id_seq_view ALTER COLUMN id OP
 
 
 --
--- Name: code_locations; Type: TABLE; Schema: public; Owner: -
+-- Name: code_locations; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.code_locations (
-    id integer NOT NULL,
+CREATE FOREIGN TABLE public.code_locations (
+    id integer DEFAULT public.code_locations_id_seq_view() NOT NULL,
     repository_id integer,
     module_branch_name text,
-    status integer DEFAULT 0,
     best_code_set_id integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     update_interval integer DEFAULT 3600,
     best_repository_directory_id integer,
     do_not_fetch boolean DEFAULT false
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'code_locations'
+);
+ALTER FOREIGN TABLE public.code_locations ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE public.code_locations ALTER COLUMN repository_id OPTIONS (
+    column_name 'repository_id'
+);
+ALTER FOREIGN TABLE public.code_locations ALTER COLUMN module_branch_name OPTIONS (
+    column_name 'module_branch_name'
+);
+ALTER FOREIGN TABLE public.code_locations ALTER COLUMN best_code_set_id OPTIONS (
+    column_name 'best_code_set_id'
+);
+ALTER FOREIGN TABLE public.code_locations ALTER COLUMN created_at OPTIONS (
+    column_name 'created_at'
+);
+ALTER FOREIGN TABLE public.code_locations ALTER COLUMN updated_at OPTIONS (
+    column_name 'updated_at'
+);
+ALTER FOREIGN TABLE public.code_locations ALTER COLUMN update_interval OPTIONS (
+    column_name 'update_interval'
+);
+ALTER FOREIGN TABLE public.code_locations ALTER COLUMN best_repository_directory_id OPTIONS (
+    column_name 'best_repository_directory_id'
+);
+ALTER FOREIGN TABLE public.code_locations ALTER COLUMN do_not_fetch OPTIONS (
+    column_name 'do_not_fetch'
 );
 
 
 --
--- Name: code_locations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: code_locations_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.code_locations_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: code_locations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.code_locations_id_seq OWNED BY public.code_locations.id;
-
-
---
--- Name: code_locations_id_seq_view; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.code_locations_id_seq_view AS
- SELECT (nextval('public.code_locations_id_seq'::regclass))::integer AS id;
+CREATE FOREIGN TABLE public.code_locations_id_seq_view (
+    id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'code_locations_id_seq_view'
+);
+ALTER FOREIGN TABLE public.code_locations_id_seq_view ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
 
 
 --
@@ -2597,42 +2664,49 @@ CREATE VIEW public.follows_id_seq_view AS
 
 
 --
--- Name: forges; Type: TABLE; Schema: public; Owner: -
+-- Name: forges; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.forges (
-    id integer NOT NULL,
+CREATE FOREIGN TABLE public.forges (
+    id integer DEFAULT public.forges_id_seq_view() NOT NULL,
     name text NOT NULL,
     url text NOT NULL,
     type text
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'forges'
+);
+ALTER FOREIGN TABLE public.forges ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE public.forges ALTER COLUMN name OPTIONS (
+    column_name 'name'
+);
+ALTER FOREIGN TABLE public.forges ALTER COLUMN url OPTIONS (
+    column_name 'url'
+);
+ALTER FOREIGN TABLE public.forges ALTER COLUMN type OPTIONS (
+    column_name 'type'
 );
 
 
 --
--- Name: forges_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: forges_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.forges_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: forges_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.forges_id_seq OWNED BY public.forges.id;
-
-
---
--- Name: forges_id_seq_view; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.forges_id_seq_view AS
- SELECT (nextval('public.forges_id_seq'::regclass))::integer AS id;
+CREATE FOREIGN TABLE public.forges_id_seq_view (
+    id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'forges_id_seq_view'
+);
+ALTER FOREIGN TABLE public.forges_id_seq_view ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
 
 
 --
@@ -5192,11 +5266,11 @@ CREATE VIEW public.reports_id_seq_view AS
 
 
 --
--- Name: repositories; Type: TABLE; Schema: public; Owner: -
+-- Name: repositories; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.repositories (
-    id integer NOT NULL,
+CREATE FOREIGN TABLE public.repositories (
+    id integer DEFAULT public.repositories_id_seq_view() NOT NULL,
     url text,
     forge_id integer,
     username text,
@@ -5208,114 +5282,165 @@ CREATE TABLE public.repositories (
     name_at_forge text,
     owner_at_forge text,
     best_repository_directory_id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'repositories'
+);
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN url OPTIONS (
+    column_name 'url'
+);
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN forge_id OPTIONS (
+    column_name 'forge_id'
+);
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN username OPTIONS (
+    column_name 'username'
+);
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN password OPTIONS (
+    column_name 'password'
+);
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN type OPTIONS (
+    column_name 'type'
+);
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN created_at OPTIONS (
+    column_name 'created_at'
+);
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN updated_at OPTIONS (
+    column_name 'updated_at'
+);
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN update_interval OPTIONS (
+    column_name 'update_interval'
+);
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN name_at_forge OPTIONS (
+    column_name 'name_at_forge'
+);
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN owner_at_forge OPTIONS (
+    column_name 'owner_at_forge'
+);
+ALTER FOREIGN TABLE public.repositories ALTER COLUMN best_repository_directory_id OPTIONS (
+    column_name 'best_repository_directory_id'
 );
 
 
 --
--- Name: repositories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: repositories_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.repositories_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: repositories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.repositories_id_seq OWNED BY public.repositories.id;
+CREATE FOREIGN TABLE public.repositories_id_seq_view (
+    id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'repositories_id_seq_view'
+);
+ALTER FOREIGN TABLE public.repositories_id_seq_view ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
 
 
 --
--- Name: repositories_id_seq_view; Type: VIEW; Schema: public; Owner: -
+-- Name: repository_directories; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE VIEW public.repositories_id_seq_view AS
- SELECT (nextval('public.repositories_id_seq'::regclass))::integer AS id;
-
-
---
--- Name: repository_directories; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.repository_directories (
-    id integer NOT NULL,
+CREATE FOREIGN TABLE public.repository_directories (
+    id integer DEFAULT public.repository_directories_id_seq_view() NOT NULL,
     code_location_id integer,
     repository_id integer,
     fetched_at timestamp without time zone
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'repository_directories'
+);
+ALTER FOREIGN TABLE public.repository_directories ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE public.repository_directories ALTER COLUMN code_location_id OPTIONS (
+    column_name 'code_location_id'
+);
+ALTER FOREIGN TABLE public.repository_directories ALTER COLUMN repository_id OPTIONS (
+    column_name 'repository_id'
+);
+ALTER FOREIGN TABLE public.repository_directories ALTER COLUMN fetched_at OPTIONS (
+    column_name 'fetched_at'
 );
 
 
 --
--- Name: repository_directories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: repository_directories_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.repository_directories_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: repository_directories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.repository_directories_id_seq OWNED BY public.repository_directories.id;
+CREATE FOREIGN TABLE public.repository_directories_id_seq_view (
+    id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'repository_directories_id_seq_view'
+);
+ALTER FOREIGN TABLE public.repository_directories_id_seq_view ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
 
 
 --
--- Name: repository_directories_id_seq_view; Type: VIEW; Schema: public; Owner: -
+-- Name: repository_tags; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE VIEW public.repository_directories_id_seq_view AS
- SELECT (nextval('public.repository_directories_id_seq'::regclass))::integer AS id;
-
-
---
--- Name: repository_tags; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.repository_tags (
-    id integer NOT NULL,
+CREATE FOREIGN TABLE public.repository_tags (
+    id integer DEFAULT public.repository_tags_id_seq_view() NOT NULL,
     repository_id integer,
     name text,
     commit_sha1 text,
     message text,
     "timestamp" timestamp without time zone
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'repository_tags'
+);
+ALTER FOREIGN TABLE public.repository_tags ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
+ALTER FOREIGN TABLE public.repository_tags ALTER COLUMN repository_id OPTIONS (
+    column_name 'repository_id'
+);
+ALTER FOREIGN TABLE public.repository_tags ALTER COLUMN name OPTIONS (
+    column_name 'name'
+);
+ALTER FOREIGN TABLE public.repository_tags ALTER COLUMN commit_sha1 OPTIONS (
+    column_name 'commit_sha1'
+);
+ALTER FOREIGN TABLE public.repository_tags ALTER COLUMN message OPTIONS (
+    column_name 'message'
+);
+ALTER FOREIGN TABLE public.repository_tags ALTER COLUMN "timestamp" OPTIONS (
+    column_name 'timestamp'
 );
 
 
 --
--- Name: repository_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: repository_tags_id_seq_view; Type: FOREIGN TABLE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.repository_tags_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: repository_tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.repository_tags_id_seq OWNED BY public.repository_tags.id;
-
-
---
--- Name: repository_tags_id_seq_view; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.repository_tags_id_seq_view AS
- SELECT (nextval('public.repository_tags_id_seq'::regclass))::integer AS id;
+CREATE FOREIGN TABLE public.repository_tags_id_seq_view (
+    id integer
+)
+SERVER fis
+OPTIONS (
+    schema_name 'public',
+    table_name 'repository_tags_id_seq_view'
+);
+ALTER FOREIGN TABLE public.repository_tags_id_seq_view ALTER COLUMN id OPTIONS (
+    column_name 'id'
+);
 
 
 --
@@ -6633,13 +6758,6 @@ ALTER TABLE ONLY public.clumps ALTER COLUMN id SET DEFAULT nextval('public.clump
 
 
 --
--- Name: code_locations id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.code_locations ALTER COLUMN id SET DEFAULT nextval('public.code_locations_id_seq'::regclass);
-
-
---
 -- Name: deleted_accounts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -6693,13 +6811,6 @@ ALTER TABLE ONLY public.feedbacks ALTER COLUMN id SET DEFAULT nextval('public.fe
 --
 
 ALTER TABLE ONLY public.follows ALTER COLUMN id SET DEFAULT nextval('public.follows_id_seq'::regclass);
-
-
---
--- Name: forges id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.forges ALTER COLUMN id SET DEFAULT nextval('public.forges_id_seq'::regclass);
 
 
 --
@@ -7060,27 +7171,6 @@ ALTER TABLE ONLY public.reports ALTER COLUMN id SET DEFAULT nextval('public.repo
 
 
 --
--- Name: repositories id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.repositories ALTER COLUMN id SET DEFAULT nextval('public.repositories_id_seq'::regclass);
-
-
---
--- Name: repository_directories id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.repository_directories ALTER COLUMN id SET DEFAULT nextval('public.repository_directories_id_seq'::regclass);
-
-
---
--- Name: repository_tags id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.repository_tags ALTER COLUMN id SET DEFAULT nextval('public.repository_tags_id_seq'::regclass);
-
-
---
 -- Name: reverification_trackers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -7357,14 +7447,6 @@ ALTER TABLE ONLY public.clumps
 
 
 --
--- Name: code_locations code_locations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.code_locations
-    ADD CONSTRAINT code_locations_pkey PRIMARY KEY (id);
-
-
---
 -- Name: deleted_accounts deleted_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7434,22 +7516,6 @@ ALTER TABLE ONLY public.feedbacks
 
 ALTER TABLE ONLY public.follows
     ADD CONSTRAINT follows_pkey PRIMARY KEY (id);
-
-
---
--- Name: forges forges_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.forges
-    ADD CONSTRAINT forges_pkey PRIMARY KEY (id);
-
-
---
--- Name: forges forges_type_key; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.forges
-    ADD CONSTRAINT forges_type_key UNIQUE (type);
 
 
 --
@@ -7933,30 +7999,6 @@ ALTER TABLE ONLY public.reports
 
 
 --
--- Name: repositories repositories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.repositories
-    ADD CONSTRAINT repositories_pkey PRIMARY KEY (id);
-
-
---
--- Name: repository_directories repository_directories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.repository_directories
-    ADD CONSTRAINT repository_directories_pkey PRIMARY KEY (id);
-
-
---
--- Name: repository_tags repository_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.repository_tags
-    ADD CONSTRAINT repository_tags_pkey PRIMARY KEY (id);
-
-
---
 -- Name: reverification_trackers reverification_trackers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8363,27 +8405,6 @@ CREATE INDEX index_claims_on_account_id ON public.positions USING btree (account
 --
 
 CREATE INDEX index_clumps_on_code_set_id_slave_id ON public.clumps USING btree (code_set_id, slave_id);
-
-
---
--- Name: index_code_locations_on_best_code_set_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_code_locations_on_best_code_set_id ON public.code_locations USING btree (best_code_set_id);
-
-
---
--- Name: index_code_locations_on_repository_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_code_locations_on_repository_id ON public.code_locations USING btree (repository_id);
-
-
---
--- Name: index_code_locations_on_repository_id_and_module_branch_name; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_code_locations_on_repository_id_and_module_branch_name ON public.code_locations USING btree (repository_id, module_branch_name);
 
 
 --
@@ -8954,34 +8975,6 @@ CREATE INDEX index_releases_vulnerabilities_on_vulnerability_id ON public.releas
 
 
 --
--- Name: index_repositories_on_forge_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_repositories_on_forge_id ON public.repositories USING btree (forge_id);
-
-
---
--- Name: index_repository_directories_on_code_location_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_repository_directories_on_code_location_id ON public.repository_directories USING btree (code_location_id);
-
-
---
--- Name: index_repository_directories_on_repository_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_repository_directories_on_repository_id ON public.repository_directories USING btree (repository_id);
-
-
---
--- Name: index_repository_tags_on_repository_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_repository_tags_on_repository_id ON public.repository_tags USING btree (repository_id);
-
-
---
 -- Name: index_reviews_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -9418,14 +9411,6 @@ ALTER TABLE ONLY public.enlistments
 
 
 --
--- Name: enlistments enlistments_repository_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.enlistments
-    ADD CONSTRAINT enlistments_repository_id_fkey FOREIGN KEY (repository_id) REFERENCES public.repositories(id) ON DELETE CASCADE;
-
-
---
 -- Name: event_subscription event_subscription_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9506,22 +9491,6 @@ ALTER TABLE ONLY public.project_vulnerability_reports
 
 
 --
--- Name: code_locations fk_rails_0ff5ad97b1; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.code_locations
-    ADD CONSTRAINT fk_rails_0ff5ad97b1 FOREIGN KEY (repository_id) REFERENCES public.repositories(id);
-
-
---
--- Name: repository_tags fk_rails_275a40dd6e; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.repository_tags
-    ADD CONSTRAINT fk_rails_275a40dd6e FOREIGN KEY (repository_id) REFERENCES public.repositories(id);
-
-
---
 -- Name: project_badges fk_rails_4c3c9e5c61; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9551,22 +9520,6 @@ ALTER TABLE ONLY public.broken_links
 
 ALTER TABLE ONLY public.projects
     ADD CONSTRAINT fk_rails_c67f665226 FOREIGN KEY (best_project_security_set_id) REFERENCES public.project_security_sets(id);
-
-
---
--- Name: repository_directories fk_rails_d33c461543; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.repository_directories
-    ADD CONSTRAINT fk_rails_d33c461543 FOREIGN KEY (code_location_id) REFERENCES public.code_locations(id);
-
-
---
--- Name: repository_directories fk_rails_d36c79e15c; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.repository_directories
-    ADD CONSTRAINT fk_rails_d36c79e15c FOREIGN KEY (repository_id) REFERENCES public.repositories(id);
 
 
 --
@@ -10018,22 +9971,6 @@ ALTER TABLE ONLY public.projects
 
 
 --
--- Name: projects projects_forge_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.projects
-    ADD CONSTRAINT projects_forge_id_fkey FOREIGN KEY (forge_id) REFERENCES public.forges(id);
-
-
---
--- Name: projects projects_logo_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.projects
-    ADD CONSTRAINT projects_logo_id_fkey FOREIGN KEY (logo_id) REFERENCES public.attachments(id);
-
-
---
 -- Name: projects projects_organization_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -10095,14 +10032,6 @@ ALTER TABLE ONLY public.recommendations
 
 ALTER TABLE ONLY public.recommendations
     ADD CONSTRAINT recommendations_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
-
-
---
--- Name: repositories repositories_forge_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.repositories
-    ADD CONSTRAINT repositories_forge_id_fkey FOREIGN KEY (forge_id) REFERENCES public.forges(id);
 
 
 --
@@ -10524,6 +10453,8 @@ INSERT INTO schema_migrations (version) VALUES ('20181220010101');
 INSERT INTO schema_migrations (version) VALUES ('20190108060802');
 
 INSERT INTO schema_migrations (version) VALUES ('20190130190953');
+
+INSERT INTO schema_migrations (version) VALUES ('20190221123532');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

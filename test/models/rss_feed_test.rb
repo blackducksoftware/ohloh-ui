@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class RssFeedTest < ActiveSupport::TestCase
+  before { Feedjira.logger.stubs(:warn) }
+
   it 'should validate RSS feed' do
     rss_feed = build(:rss_feed, url: 'invalid_url')
     rss_feed.wont_be :valid?
