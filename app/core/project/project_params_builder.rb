@@ -26,16 +26,10 @@ class ProjectParamsBuilder
 
   def create_project
     params = set_params
-    builder = ProjectBuilder.new(@editor_account, params)
-    @project = builder.create
+    @project = ProjectBuilder.new(@editor_account, params).create
     raise ActiveRecord::RecordNotSaved, project.errors.messages unless @project.errors.messages.empty?
     @messages << "KB project #{@kb_project_id} has been imported to Open Hub as project #{@project.id}"
     @project
-  end
-
-  def validate_row
-    raise ProjectParamsError, "kb id:#{@kb_project_id} contains a blank description" if @row['description'].blank?
-    raise ProjectParamsError, "kb id:#{@kb_project_id} project already exists"  if @row['owner'].nil?
   end
 
   def add_row_params
@@ -50,11 +44,19 @@ class ProjectParamsBuilder
 
   def set_project_name(owner_name)
     owner, project = split_name(owner_name)
-    # check if project and owner already exists
+
+    # check if project and owner already exists if it does,
+    # a ProjectExistsError will be raised in validate_row method
     return if Project.where(owner_at_forge: owner, name_at_forge: project).exists?
+
     # if project exists with a different owner set name of project to owner_name
     project = owner_name if Project.exists?(name_at_forge: project)
     [owner, project]
+  end
+
+  def validate_row
+    raise ProjectParamsError, "kb id:#{@kb_project_id} contains a blank description" if @row['description'].blank?
+    raise ProjectExistsError, "kb id:#{@kb_project_id} project already exists"  if @row['owner'].nil?
   end
 
   # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
@@ -66,7 +68,7 @@ class ProjectParamsBuilder
     @messages << "#{@kb_project_id} is missing license information" if licenses.empty?
 
     { 'name' => name, 'description' => row['description'],
-      'vanity_url' => name.tr('/', '_').tr('.', '_').gsub(/\s/, '-'),
+      'vanity_url' => get_vanity_url(name),
       'url' => url, 'download_url' => url, 'forge_id' => @forge_id, 'owner_at_forge' => @row['owner_at_forge'],
       'name_at_forge' => @row['name_at_forge'], 'comments' => 'Created by kb_Ingestion script',
       'managed_by_creator' => '0', 'project_licenses_attributes' => licenses,
@@ -89,5 +91,9 @@ class ProjectParamsBuilder
     license = @licenses[kb_id] || License.find_by(kb_id: kb_id) || NoLicense.new
     @licenses[kb_id] = license
     license.id
+  end
+
+  def get_vanity_url(name)
+    name.tr('/', '_').tr('.', '_').gsub(/\s/, '-')
   end
 end

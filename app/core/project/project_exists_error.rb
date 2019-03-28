@@ -1,0 +1,2 @@
+class ProjectExistsError < StandardError
+end
