@@ -2,14 +2,14 @@ ENV['RAILS_ENV'] ||= 'test'
 require 'simplecov'
 require 'simplecov-rcov'
 
-SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
+SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
 SimpleCov.start 'rails'
 SimpleCov.minimum_coverage 99.57
 
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'minitest/rails'
-require 'mocha/mini_test'
+require 'mocha/minitest'
 require 'dotenv'
 require 'test_helpers/setup_hamster_account'
 require 'test_helpers/create_forges'

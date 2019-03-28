@@ -3,6 +3,9 @@ en:
     signup_notification:
       subject: "Open Hub account activation notice"
       body: "Your Open Hub account %{login} was created. Follow this link to activate your account:"
+    notify_disabled_account_for_login_failure:
+      subject: 'Open Hub account disabled notice'
+      body: '<p>We have encountered multiple failed login attempts for your Open Hub account, %{login}.</p><p> To keep your account secure, it has been disabled. Please contact the Open Hub team at info@openhub.net for assistance.</p>'
     activation:
       subject: "Your account has been activated!"
       dear: "Dear %{login};"

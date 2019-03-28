@@ -2,9 +2,9 @@ FactoryBot.define do
   factory :analysis do
     association :project
     association :main_language, factory: :language
-    markup_total 100
-    logic_total 101
-    build_total 102
+    markup_total { 100 }
+    logic_total { 101 }
+    build_total { 102 }
     first_commit_time { Time.current - 1.year }
     min_month { Date.current - 1.month }
     max_month { Date.current - 1.day }
@@ -19,7 +19,7 @@ FactoryBot.define do
 
     factory :analysis_with_multiple_activity_facts do
       transient do
-        activity_facts_count 3
+        activity_facts_count { 3 }
       end
 
       after(:create) do |analysis, evaluator|

@@ -1,13 +1,13 @@
 FactoryBot.define do
   factory :project_badge do
-    identifier 'MyString'
+    identifier { 'MyString' }
     association :enlistment
   end
 end
 
 FactoryBot.define do
   factory(:travis_badge) do
-    identifier "#{Faker::Lorem.word}/#{Faker::Lorem.word}.git?branch=#{Faker::Lorem.word}"
+    identifier { "#{Faker::Lorem.word}/#{Faker::Lorem.word}.git?branch=#{Faker::Lorem.word}" }
   end
 end
 

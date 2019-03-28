@@ -4,7 +4,7 @@ OhlohUI
 Dependencies:
 ----------------
 
-* OhlohUI uses the ruby version 2.2.5. Please install ruby 2.
+* OhlohUI uses the ruby version 2.5.3. Please install ruby '> 2.5'.
 * OhlohUI uses the postgresql database. Please install postgresql and create a new user on it.
 
 Getting Started:
@@ -93,7 +93,7 @@ $ brew cask install google-chrome
 $ brew install chromedriver
 ```
 
-#### Ubuntu
+#### Ubuntu 18.04
 
 ```sh
 $ sudo apt-get install chromium-browser
