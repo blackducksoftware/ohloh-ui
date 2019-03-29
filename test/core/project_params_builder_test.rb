@@ -45,7 +45,7 @@ class ProjectParamsBuilderTest < ActiveSupport::TestCase
       Project.any_instance.stubs(:save).returns true
       project_builder = ProjectParamsBuilder.new(@editor)
       project_builder.row = @row
-      exception = assert_raises ProjectParamsError do
+      exception = assert_raises ProjectExistsError do
         project_builder.build_project
       end
       assert exception.message.include? 'project already exists'
