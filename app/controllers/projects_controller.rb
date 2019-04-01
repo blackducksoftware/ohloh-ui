@@ -71,9 +71,7 @@ class ProjectsController < ApplicationController
   end
 
   def create_project_from_params
-    @project = Project.new({ editor_account: current_user }.merge(project_params))
-    @project.assign_editor_account_to_associations
-    @project.manages.new(account: current_user) if project_params[:managed_by_creator].to_bool
+    @project = ProjectBuilder.new(current_user, project_params).create
   end
 
   def populate_project_from_forge
