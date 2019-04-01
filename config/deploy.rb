@@ -1,4 +1,4 @@
-lock '3.10.1'
+lock '3.11.0'
 
 set :whoami, `whoami`.strip
 set :default_env, 'PATH' => '/home/serv-deployer/.rbenv/shims:$PATH',
