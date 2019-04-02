@@ -65,6 +65,7 @@ group :development do
   gem 'guard-rubocop'
   gem 'meta_request'
   gem 'quiet_assets'
+  gem 'ed25519'
 end
 
 group :test do
