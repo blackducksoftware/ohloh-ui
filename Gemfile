@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'activeadmin'#, '1.0.0'
+gem 'activeadmin', '1.0.0'
 gem 'airbrake', '~> 5.5'
 gem 'aws-sdk', '~> 2.3'
 gem 'bcrypt_pbkdf', '~> 1.0'
