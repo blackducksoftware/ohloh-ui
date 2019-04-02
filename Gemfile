@@ -51,7 +51,7 @@ gem 'rubocop-rspec', '> 1.28'
 
 group :development do
   gem 'better_errors'
-  gem 'binding_of_caller', '~> 0.7.2'
+  gem 'binding_of_caller'
   gem 'capistrano'
   gem 'capistrano-faster-assets'
   gem 'capistrano-passenger'
