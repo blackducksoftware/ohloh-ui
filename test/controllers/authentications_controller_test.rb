@@ -20,12 +20,14 @@ describe 'AuthenticationsController' do
 
   let(:github_account_with_seconday_email) do
     stub(email: Faker::Internet.email, login: Faker::Name.first_name, access_token: Faker::Lorem.word,
-         'created_at' => 2.months.ago, 'repository_has_language?' => true, secondary_emails: [account.email], all_emails: [])
+         'created_at' => 2.months.ago, 'repository_has_language?' => true,
+         secondary_emails: [account.email], all_emails: [])
   end
 
   let(:github_account_with_email_mismatch) do
     stub(email: Faker::Internet.email, login: Faker::Name.first_name, access_token: Faker::Lorem.word,
-         'created_at' => 2.months.ago, 'repository_has_language?' => true, secondary_emails: [account.email], all_emails: [Faker::Internet.email])
+         'created_at' => 2.months.ago, 'repository_has_language?' => true, secondary_emails: [account.email],
+         all_emails: [Faker::Internet.email])
   end
 
   describe 'new' do
@@ -296,15 +298,16 @@ describe 'AuthenticationsController' do
         request.env[:clearance].current_user.id.must_equal account.id
       end
 
-      it "must sign into an existing user whose github verification unique_id matches with github login even if it's github email mismatches with account email" do
+      it 'must sign into an existing user whose github verification unique_id matches with github login' do
         @controller.stubs(:github_api).returns(github_account_with_email_mismatch)
-        
+
         get :github_callback, code: Faker::Lorem.word
-        
+
         account.reload
         must_redirect_to account
         request.env[:clearance].current_user.id.must_equal account.id
-        flash[:notice].must_equal I18n.t('authentications.github_callback.email_mismatch', settings_account_link: settings_account_path(account))
+        flash[:notice].must_equal I18n.t('authentications.github_callback.email_mismatch',
+                                         settings_account_link: settings_account_path(account))
       end
     end
   end

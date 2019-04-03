@@ -57,6 +57,7 @@ group :development do
   gem 'capistrano-rails'
   gem 'capistrano-rbenv', '~> 2.0'
   gem 'capistrano-sidekiq'
+  gem 'ed25519'
   gem 'guard'
   gem 'guard-coffeescript'
   gem 'guard-haml_lint'
@@ -64,7 +65,6 @@ group :development do
   gem 'guard-rubocop'
   gem 'meta_request'
   gem 'quiet_assets'
-  gem 'ed25519'
 end
 
 group :test do

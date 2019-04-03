@@ -1,5 +1,3 @@
-# coding: iso-8859-1
-
 require 'test_helper'
 require 'test_helpers/image_helper'
 
@@ -17,7 +15,7 @@ describe 'WidgetBadge::Account' do
     end
 
     it 'must handle spaces and utf-8 characters in account names' do
-      options = { kudo_rank: 1, name: 'Stefan KÃ¼ng', kudos: 2, commits: 39 }
+      options = { kudo_rank: 1, name: 'Stefan Küng', kudos: 2, commits: 39 }
       expected_image_path = Rails.root.join('test', 'data', 'widget_badge', 'account', 'fancy_name.png')
 
       result_blob = WidgetBadge::Account.create(options)

@@ -28,6 +28,7 @@ class ProjectParamsBuilder
     params = set_params
     @project = ProjectBuilder.new(@editor_account, params).create
     raise ActiveRecord::RecordNotSaved, project.errors.messages unless @project.errors.messages.empty?
+
     @messages << "KB project #{@kb_project_id} has been imported to Open Hub as project #{@project.id}"
     @project
   end
