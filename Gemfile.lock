@@ -152,6 +152,7 @@ GEM
     dotenv-rails (2.7.2)
       dotenv (= 2.7.2)
       railties (>= 3.2, < 6.1)
+    ed25519 (1.2.4)
     em-websocket (0.5.1)
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0.6.0)
@@ -580,6 +581,7 @@ DEPENDENCIES
   database_cleaner
   doorkeeper (~> 4.4.0)
   dotenv-rails
+  ed25519
   execjs
   factory_bot_rails
   faker
