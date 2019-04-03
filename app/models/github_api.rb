@@ -44,6 +44,10 @@ class GithubApi
                                        .map { |response| response['email'] }.compact
   end
 
+  def all_emails
+    secondary_emails + [email]
+  end
+
   private
 
   def request

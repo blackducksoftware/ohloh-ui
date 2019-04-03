@@ -25,6 +25,7 @@ module OhlohUi
     config.autoload_paths << Rails.root.join('lib', 'reverification', '**', '*')
     config.autoload_paths << Rails.root.join('lib', 'constraints')
 
+    config.autoload_paths << Rails.root.join('core', '**', '*')
     config.to_prepare do
       Doorkeeper::AuthorizationsController.layout 'application'
       Doorkeeper::AuthorizationsController.helper OauthLayoutHelper

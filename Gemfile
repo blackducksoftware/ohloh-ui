@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
-
-gem 'activeadmin' # , '1.0.0'
+gem 'activeadmin', '1.0.0'
 gem 'airbrake', '~> 5.5'
 gem 'aws-sdk', '~> 2.3'
 gem 'bcrypt_pbkdf', '~> 1.0'
@@ -51,7 +50,7 @@ gem 'will_paginate-bootstrap'
 
 group :development do
   gem 'better_errors'
-  gem 'binding_of_caller', '~> 0.7.2'
+  gem 'binding_of_caller'
   gem 'capistrano'
   gem 'capistrano-faster-assets'
   gem 'capistrano-passenger'
@@ -65,6 +64,7 @@ group :development do
   gem 'guard-rubocop'
   gem 'meta_request'
   gem 'quiet_assets'
+  gem 'ed25519'
 end
 
 group :test do

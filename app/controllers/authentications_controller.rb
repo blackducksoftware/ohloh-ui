@@ -58,6 +58,7 @@ class AuthenticationsController < ApplicationController
     # rubocop:disable Naming/MemoizedInstanceVariableName
     @account ||= Account.find_by(email: github_api.email)
     @account ||= Account.where(email: github_api.secondary_emails).first
+    @account ||= GithubVerification.find_by(unique_id: github_api.login).try(:account)
     # rubocop:enable Naming/MemoizedInstanceVariableName
   end
 
@@ -84,6 +85,10 @@ class AuthenticationsController < ApplicationController
   def sign_in_and_redirect_to(account)
     reset_session
     clearance_session.sign_in account
+
+    if github_api && github_api.all_emails.exclude?(account.email)
+      flash[:notice] = t('.email_mismatch', settings_account_link: settings_account_path(account))
+    end
     redirect_to account
   end
 
