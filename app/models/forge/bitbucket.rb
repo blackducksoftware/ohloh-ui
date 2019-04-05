@@ -2,6 +2,7 @@ class Forge::Bitbucket < Forge
   def match(url)
     matches = /\bbitbucket\.org\/([^\/]+)\/([^\/\.]+)\b/.match(url)
     return nil unless matches
+
     owner_name = matches[1]
     base_name = matches[2]
     Forge::Match.new(self, owner_name, base_name)

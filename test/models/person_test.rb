@@ -66,7 +66,7 @@ class PersonTest < ActiveSupport::TestCase
 
   it 'should change effective_name when account name changed' do
     account.name.must_equal account.person.effective_name
-    account.update_attributes(name: 'new_name_test')
+    account.update(name: 'new_name_test')
     account.person.effective_name.must_equal 'new_name_test'
   end
 

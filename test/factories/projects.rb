@@ -8,7 +8,7 @@ FactoryBot.define do
     user_count { 1 }
     association :logo
     association :organization
-    after(:create) { |instance| instance.update_attributes(best_analysis: create(:analysis, project: instance)) }
+    after(:create) { |instance| instance.update(best_analysis: create(:analysis, project: instance)) }
 
     factory :project_with_invalid_description do
       description { Faker::Lorem.characters(820) }

@@ -1,6 +1,7 @@
 class ProjectWidget < Widget
   def initialize(vars = {})
     raise ArgumentError I18n.t('project_widgets.missing') unless vars[:project_id]
+
     super
   end
 

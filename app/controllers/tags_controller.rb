@@ -5,7 +5,10 @@ class TagsController < ApplicationController
   before_action :set_session_projects, only: :index
   before_action :find_tag_names, only: :index
   before_action :find_models, only: [:index]
+  # rubocop:disable Rails/LexicallyScopedActionFilter
   before_action :show_permissions_alert, only: :select
+  # rubocop:enable Rails/LexicallyScopedActionFilter
+  def index; end
 
   private
 

@@ -45,3 +45,4 @@ class AddCodeLocationTable < ActiveRecord::Migration
     drop_table :code_locations
   end
 end
+# rubocop: enable Metrics/AbcSize

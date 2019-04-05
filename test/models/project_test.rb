@@ -37,21 +37,21 @@ class ProjectTest < ActiveSupport::TestCase
     it 'should return hot projects' do
       proj = create(:project, deleted: false)
       analysis = create(:analysis, project_id: proj.id, hotness_score: 999_999)
-      proj.update_attributes(best_analysis_id: analysis.id)
+      proj.update(best_analysis_id: analysis.id)
       Project.hot.to_a.map(&:id).include?(proj.id).must_equal true
     end
 
     it 'should return hot projects with matching languages' do
       proj = create(:project, deleted: false)
       analysis = create(:analysis, project_id: proj.id, hotness_score: 999_999, main_language_id: language.id)
-      proj.update_attributes(best_analysis_id: analysis.id)
+      proj.update(best_analysis_id: analysis.id)
       Project.hot(language.id).to_a.map(&:id).include?(proj.id).must_equal true
     end
 
     it 'should not return hot projects without matching languages' do
       proj = create(:project, deleted: false)
       analysis = create(:analysis, project_id: proj.id, hotness_score: 999_999, main_language_id: language.id)
-      proj.update_attributes(best_analysis_id: analysis.id)
+      proj.update(best_analysis_id: analysis.id)
       Project.hot(language.id - 1).to_a.map(&:id).include?(proj.id).must_equal false
     end
 
@@ -156,25 +156,25 @@ class ProjectTest < ActiveSupport::TestCase
   describe 'url and download_url' do
     it 'should clean up url value' do
       proj = create(:project)
-      proj.update_attributes(url: 'openhub.net/url_cleanup')
+      proj.update(url: 'openhub.net/url_cleanup')
       proj.reload.url.must_equal 'http://openhub.net/url_cleanup'
     end
 
     it 'should clean up url value' do
       proj = create(:project)
-      proj.update_attributes(download_url: 'openhub.net/download_url_cleanup')
+      proj.update(download_url: 'openhub.net/download_url_cleanup')
       proj.reload.download_url.must_equal 'http://openhub.net/download_url_cleanup'
     end
 
     it 'should require url value is a valid url if present' do
       proj = create(:project)
-      proj.update_attributes(url: 'I am a banana!')
+      proj.update(url: 'I am a banana!')
       proj.errors.messages[:url].must_equal [I18n.t(:not_a_valid_url)]
     end
 
     it 'should require url value is a valid url if present' do
       proj = create(:project)
-      proj.update_attributes(download_url: 'I am a banana!')
+      proj.update(download_url: 'I am a banana!')
       proj.errors.messages[:download_url].must_equal [I18n.t(:not_a_valid_url)]
     end
 
@@ -195,7 +195,7 @@ class ProjectTest < ActiveSupport::TestCase
 
     it 'should support undo of setting url value' do
       proj = create(:project)
-      proj.update_attributes(url: 'http://openhub.net/url')
+      proj.update(url: 'http://openhub.net/url')
       proj = Project.find(proj.id)
       prop_edits = PropertyEdit.for_target(proj).where(key: :url).to_a
       prop_edits.length.must_equal 1
@@ -207,7 +207,7 @@ class ProjectTest < ActiveSupport::TestCase
 
     it 'should support undo of setting download_url value' do
       proj = create(:project)
-      proj.update_attributes(download_url: 'http://openhub.net/download_url')
+      proj.update(download_url: 'http://openhub.net/download_url')
       proj = Project.find(proj.id)
       prop_edits = PropertyEdit.for_target(proj).where(key: :download_url).to_a
       prop_edits.length.must_equal 1
@@ -242,11 +242,11 @@ class ProjectTest < ActiveSupport::TestCase
     it 'should record property_edits to the database' do
       project = create(:project)
       PropertyEdit.where(key: 'tag_list', target: project).count.must_equal 0
-      project.update_attributes(tag_list: 'aquatic beavers cavort down east')
+      project.update(tag_list: 'aquatic beavers cavort down east')
       project.reload.tags.length.must_equal 5
       PropertyEdit.where(key: 'tag_list', target: project).count.must_equal 1
       project.editor_account = create(:account)
-      project.update_attributes(tag_list: 'zany')
+      project.update(tag_list: 'zany')
       project.reload.tags.length.must_equal 1
       PropertyEdit.where(key: 'tag_list', target: project).count.must_equal 2
     end

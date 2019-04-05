@@ -41,6 +41,7 @@ class Widget
 
   def method_missing(method)
     return @vars[method] if @vars.include?(method)
+
     super
   end
 

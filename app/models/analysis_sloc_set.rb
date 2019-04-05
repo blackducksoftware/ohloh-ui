@@ -1,7 +1,7 @@
 class AnalysisSlocSet < FisBase
   belongs_to :analysis
   belongs_to :sloc_set
-  has_many :commit_flags, class_name: CommitFlag, foreign_key: :sloc_set_id, primary_key: :sloc_set_id
+  has_many :commit_flags, class_name: 'CommitFlag', foreign_key: :sloc_set_id, primary_key: :sloc_set_id
   has_one :project, primary_key: :analysis_id, foreign_key: :best_analysis_id
 
   scope :for_analysis, ->(analysis_id) { where(analysis_id: analysis_id) }

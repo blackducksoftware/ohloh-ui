@@ -20,8 +20,9 @@ namespace :OH do
     request = Net::HTTP::Head.new(uri.request_uri)
     response = http_object(uri).request(request)
     return unless response && @valid_response_codes.include?(response.code)
+
     [response.code, response['location']]
-  rescue
+  rescue StandardError
     false
   end
 
@@ -47,17 +48,18 @@ namespace :OH do
   end
 
   def create_new_link(url)
-    new_link = Link.where(link_params.merge(url: URI.escape(url))).first_or_initialize
+    new_link = Link.where(link_params.merge(url: CGI.escape(url))).first_or_initialize
     new_link.editor_account = Account.hamster
 
     return unless new_link.save
+
     destroy_old_link
     @log.info("Replaced project link #{@link.id}(#{@link.url}) with new link #{new_link.id}(#{new_link.url})")
   end
 
   def destroy_old_link
     @link.editor_account = Account.hamster
-    @link.update_attributes!(deleted: true)
+    @link.update!(deleted: true)
     create_edit = CreateEdit.where(target_type: 'Link', target_id: @link.id).first
     create_edit.undo!(Account.hamster) if create_edit
     BrokenLink.where(link_id: @link.id).destroy_all

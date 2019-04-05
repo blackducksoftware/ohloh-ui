@@ -103,7 +103,7 @@ describe 'LicensesControllerTest' do
 
     it 'should render edit if update fails' do
       login_as create(:account)
-      License.any_instance.stubs(:update_attributes).returns(false)
+      License.any_instance.stubs(:update).returns(false)
       put :update, id: @license.vanity_url, license: build(:license).attributes
       must_respond_with :ok
       must_render_template :edit

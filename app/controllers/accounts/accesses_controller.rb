@@ -14,6 +14,7 @@ class Accounts::AccessesController < ApplicationController
 
   def activate
     return unless @account.access.activate!(params[:code])
+
     @account.run_actions(Action::STATUSES[:after_activation])
     session[:account] = @account.id
     redirect_to account_path(@account), flash: { success: t('.success') }

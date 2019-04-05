@@ -10,11 +10,11 @@ FactoryBot.define do
     max_month { Date.current - 1.day }
     last_commit_time { Time.current - 1.day }
     after(:create) do |instance|
-      instance.update_attributes(thirty_day_summary: create(:thirty_day_summary, analysis: instance))
-      instance.update_attributes(twelve_month_summary: create(:twelve_month_summary, analysis: instance))
+      instance.update(thirty_day_summary: create(:thirty_day_summary, analysis: instance))
+      instance.update(twelve_month_summary: create(:twelve_month_summary, analysis: instance))
       prev = create(:previous_twelve_month_summary, analysis: instance)
-      instance.update_attributes(previous_twelve_month_summary: prev)
-      instance.update_attributes(all_time_summary: create(:all_time_summary, analysis: instance))
+      instance.update(previous_twelve_month_summary: prev)
+      instance.update(all_time_summary: create(:all_time_summary, analysis: instance))
     end
 
     factory :analysis_with_multiple_activity_facts do

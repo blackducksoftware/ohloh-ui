@@ -12,8 +12,10 @@ class FirebaseService
   def decode(id_token)
     decoded_token = FirebaseService.decode_jwt_token(id_token, @firebase_project_id, nil)
     return nil unless decoded_token
+
     valid_public_keys = FirebaseService.retrieve_and_cache_jwt_valid_public_keys
     return nil unless check_validations(decoded_token, valid_public_keys.keys)
+
     kid = decoded_token[1]['kid']
     public_key = OpenSSL::X509::Certificate.new(valid_public_keys[kid]).public_key
     decoded_token = FirebaseService.decode_jwt_token(id_token, @firebase_project_id, public_key)
@@ -65,7 +67,7 @@ class FirebaseService
     custom_options[:algorithm] = JWT_ALGORITHM unless public_key.nil?
     begin
       decoded_token = JWT.decode(firebase_jwt_token, public_key, !public_key.nil?, custom_options)
-    rescue => e
+    rescue StandardError => e
       Rails.logger.info("#{e.class} message: #{e.message}")
       return nil
     end
@@ -91,9 +93,8 @@ class FirebaseService
     https.use_ssl = true
     req = Net::HTTP::Get.new(uri.path)
     response = https.request(req)
-    if response.code != '200'
-      raise "Something went wrong: can't obtain valid JWT public keys from Google."
-    end
+    raise "Something went wrong: can't obtain valid JWT public keys from Google." if response.code != '200'
+
     [JSON.parse(response.body), response]
   end
 end

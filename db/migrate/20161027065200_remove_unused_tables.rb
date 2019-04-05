@@ -72,4 +72,5 @@ class RemoveUnusedTables < ActiveRecord::Migration
       JOIN gestalts g ON g.id = pg.gestalt_id;
     SQL
   end
+  # rubocop:enable Metrics/AbcSize
 end

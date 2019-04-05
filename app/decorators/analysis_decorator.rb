@@ -29,6 +29,7 @@ class AnalysisDecorator < Cherry::Decorator
   def display_chart?
     return [false, :no_commits] if commit_count.nil? || commit_count <= 0
     return [false, :no_understood_lang] if logic_total <= 0 && markup_total <= 0
+
     [true, nil]
   end
 
@@ -36,6 +37,7 @@ class AnalysisDecorator < Cherry::Decorator
 
   def year_ago_summary_difference(column)
     return unless twelve_month_summary.respond_to?(column)
+
     twelve_month_summary.send(column).to_i - previous_twelve_month_summary.send(column).to_i
   end
 end

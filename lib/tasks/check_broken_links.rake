@@ -5,6 +5,7 @@ task check_broken_links: :environment do
     valid, error = valid_url(link.url)
 
     next if valid
+
     broken_link = BrokenLink.find_or_initialize_by(link_id: link.id)
     broken_link.error = error
 
@@ -20,7 +21,7 @@ end
 def valid_url(url)
   response = get_response(url)
   response.code == '200' ? true : [false, "#{response.code}: #{response.class}"]
-rescue => e
+rescue StandardError => e
   [false, e.class]
 end
 
@@ -33,3 +34,4 @@ def get_response(url)
   request = Net::HTTP::Head.new(uri.request_uri)
   http.request(request)
 end
+# rubocop:enable Rails/SkipsModelValidations

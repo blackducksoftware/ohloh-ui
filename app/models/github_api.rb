@@ -13,6 +13,7 @@ class GithubApi
 
   def email
     return user_response['email'] if user_response['email']
+
     fetch_private_email
   end
 
@@ -32,13 +33,15 @@ class GithubApi
     response = request.send_request('POST', token_uri.path, config)
     data = CGI.parse(response.body)
     raise StandardError, data['error_description'] if data['error'].present?
+
     @access_token = data['access_token'].first
   end
 
   def secondary_emails
     return @secondary_emails if @secondary_emails
-    @secondary_emails = fetch_email_responses.select { |hsh| !hsh['primary'] && hsh['verified'] }
-                                             .map { |response| response['email'] }.compact
+
+    @secondary_emails = email_responses.select { |hsh| !hsh['primary'] && hsh['verified'] }
+                                       .map { |response| response['email'] }.compact
   end
 
   def all_emails
@@ -75,11 +78,12 @@ class GithubApi
 
   def fetch_private_email
     return @private_email if @private_email
-    primary_email_response = fetch_email_responses.find { |hsh| hsh['primary'] && hsh['verified'] }
+
+    primary_email_response = email_responses.find { |hsh| hsh['primary'] && hsh['verified'] }
     @private_email = primary_email_response['email'] if primary_email_response
   end
 
-  def fetch_email_responses
+  def email_responses
     email_uri = URI(GITHUB_USER_URI + '/emails')
     @email_responses ||= get_response_using_token(email_uri)
   end

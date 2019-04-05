@@ -47,7 +47,7 @@ class ComparesControllerTest < ActionController::TestCase
 
   test 'should not fail if project doesnot have analysis' do
     project1 = create(:project, name: 'The Avenger Initiative')
-    project1.update_attributes!(best_analysis_id: nil)
+    project1.update!(best_analysis_id: nil)
     xhr :get, :projects_graph, metric: 'commit', project_0: project1.name, project_1: 'invalid'
     must_respond_with :ok
   end
@@ -100,7 +100,7 @@ class ComparesControllerTest < ActionController::TestCase
   test 'csv format should handle some nil projects' do
     project1 = create(:project, name: 'Phil')
     project3 = create(:project, name: 'Bob')
-    project3.best_analysis.update_attributes(last_commit_time: nil)
+    project3.best_analysis.update(last_commit_time: nil)
     get :projects, project_0: project1.name, project_2: project3.name, format: :csv
     assert_response :success
     response.body.must_match 'Phil'
@@ -115,12 +115,12 @@ class ComparesControllerTest < ActionController::TestCase
     create(:project_license, project: project1, license: license)
     create(:factoid, analysis: project1.best_analysis, type: 'FactoidActivityIncreasing')
     project2 = create(:project, name: 'Jerry')
-    project2.best_analysis.update_attributes(relative_comments: 4.7)
+    project2.best_analysis.update(relative_comments: 4.7)
     create(:factoid, analysis: project2.best_analysis, type: 'FactoidActivityDecreasing')
     project3 = create(:project, name: 'Bob')
     create(:factoid, analysis: project3.best_analysis, type: 'FactoidCommentsHigh')
     create(:factoid, analysis: project3.best_analysis, type: 'FactoidTeamSizeZero')
-    project3.best_analysis.update_attributes(relative_comments: 7.2)
+    project3.best_analysis.update(relative_comments: 7.2)
     get :projects, project_0: project1.name, project_1: project2.name, project_2: project3.name, format: :csv
     assert_response :success
     response.body.must_match 'Phil'

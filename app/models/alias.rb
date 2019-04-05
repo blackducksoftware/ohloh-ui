@@ -62,7 +62,7 @@ class Alias < ActiveRecord::Base
         CreateEdit.find_by(target: alias_obj).undo!(editor_account) unless alias_obj.deleted
       else
         CreateEdit.find_by(target: alias_obj).redo!(editor_account) if alias_obj.deleted
-        alias_obj.update_attributes(preferred_name_id: preferred_name_id)
+        alias_obj.update(preferred_name_id: preferred_name_id)
       end
       alias_obj.reload
     end
@@ -74,6 +74,7 @@ class Alias < ActiveRecord::Base
 
   def remove_unclaimed_person
     return unless Person.exists?(name_id: commit_name_id, project_id: project_id)
+
     update_unclaimed_person if preferred_name_id_changed?
   end
 
@@ -81,6 +82,7 @@ class Alias < ActiveRecord::Base
     person = Person.where(name_id: commit_name_id, project_id: project_id).first_or_create
     contributor_fact = ContributorFact.find_by(name_id: preferred_name_id, analysis_id: project.best_analysis_id)
     return unless contributor_fact
+
     if deleted?
       contributor_fact.remove_name_fact(person.name_fact)
     elsif person

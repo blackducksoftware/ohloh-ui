@@ -12,7 +12,7 @@ module DashboardHelper
     github_url = "https://github.com/blackducksoftware/ohloh-ui/commit/#{revision}"
     link_text = " (#{revision[0..7]}) "
     deployed = time_ago_in_words(file_modified) + ' ago '
-    link = link_to(link_text, github_url, style: 'color: #fff', target: '_blank')
+    link = link_to(link_text, github_url, style: 'color: #fff', target: '_blank', rel: 'noopener')
     # rubocop:disable Rails/OutputSafety # Known variables used internally.
     (deployed + link).html_safe
     # rubocop:enable Rails/OutputSafety

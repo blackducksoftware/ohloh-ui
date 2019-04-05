@@ -13,6 +13,7 @@ class Invite < ActiveRecord::Base
 
   def set_project_id_name_id
     return if contribution_id.nil?
+
     self.project_id ||= contribution_id >> 32
     self.name_id ||= contribution_id & 0x7FFFFFFF
   end
@@ -29,11 +30,13 @@ class Invite < ActiveRecord::Base
 
   def unique_invitee_wrt_contribution
     return true if errors[:send_limit].any?
+
     errors.add(:invitee_email, I18n.t('invites.invited_to_claim')) if previous_invitee_wrt_contribution.count > 0
   end
 
   def duplicate_invitee_email
     return true unless invitee.nil?
+
     invites = Invite.where(invitee_email: invitee_email, invitor_id: invitor_id)
     invites = invites.where.not(id: id) if id
     errors.add(:invitee_email, I18n.t('invites.invited_to_join')) if invites.count > 0
@@ -41,6 +44,7 @@ class Invite < ActiveRecord::Base
 
   def account_already_exists
     return true unless invitee.nil?
+
     accounts = Account.where(email: invitee_email)
     errors.add(:invitee_email, I18n.t('invites.invited_to_join')) if accounts.count > 0
   end

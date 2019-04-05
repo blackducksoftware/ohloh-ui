@@ -270,7 +270,7 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
 
     it 'should not try to disable an account that is already disabled' do
       account = create(:reverification_tracker, phase: 2).account
-      account.update_attributes(level: -10)
+      account.update(level: -10)
       account.reload.access.level.must_equal(-10)
       ReverificationTracker.disable_accounts
       Account.any_instance.expects(:update_attributes!).never

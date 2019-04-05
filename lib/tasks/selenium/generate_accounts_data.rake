@@ -1,11 +1,11 @@
 # Usage:
 # rake selenium:prepare_accounts_data ACCOUNT_NAME=stefan
 
-include ActionView::Helpers::DateHelper
-
 OUTPUT_FILE = 'tmp/accounts_data.yml'.freeze
 
 namespace :selenium do
+  include ActionView::Helpers::DateHelper
+
   file :generate_data do
     File.open(OUTPUT_FILE, 'w+') do |file|
       file.write(@accounts_data.to_yaml)

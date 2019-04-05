@@ -57,7 +57,7 @@ class Edit < ActiveRecord::Base
     check_exceptions(undo, editor)
     Edit.transaction do
       undo ? do_undo : do_redo
-      swap_done = update_attributes!(undone: undo, undone_at: Time.current, undone_by: editor.id)
+      swap_done = update!(undone: undo, undone_at: Time.current, undone_by: editor.id)
       target.after_undo(editor) if undo && target.respond_to?(:after_undo)
       swap_done
     end

@@ -35,7 +35,7 @@ class Organization::Affiliated < Organization::AccountFacts
       #{affl_committers_out} AS affl_committers_out,
       #{affl_commits_out} AS affl_commits_out,
       #{affl_projects_out} AS affl_projects_out
-      SQL
+    SQL
   end
 
   def affl_committers

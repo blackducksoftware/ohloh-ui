@@ -50,7 +50,7 @@ class AnalysisSlocSetTest < ActiveSupport::TestCase
     Enlistment.connection.execute("insert into code_locations (best_code_set_id)
                                    values (#{sloc_set.code_set_id})")
     code_location_id = Enlistment.connection.execute('select max(id) from code_locations').values[0][0]
-    sloc_set.code_set.update_attributes(code_location_id: code_location_id)
+    sloc_set.code_set.update(code_location_id: code_location_id)
     scm_type = svn_sync ? :svn_sync : :git
     sloc_set.code_set.stubs(:code_location).returns(code_location_stub(scm_type: scm_type))
     @analysis_sloc_set = create(:analysis_sloc_set, sloc_set: sloc_set, ignore: ignore)

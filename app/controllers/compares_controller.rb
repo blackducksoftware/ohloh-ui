@@ -49,6 +49,7 @@ class ComparesController < ApplicationController
 
   def setup_header
     return unless request_format == 'csv'
+
     response.content_type = 'text/csv'
     response.headers['Content-Disposition'] = 'attachment; filename="export_compare.csv"'
   end

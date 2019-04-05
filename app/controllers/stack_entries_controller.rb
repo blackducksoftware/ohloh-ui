@@ -8,18 +8,20 @@ class StackEntriesController < ApplicationController
   before_action :find_stack_entry, except: %i[create new]
   before_action :set_project_or_fail, only: :new
 
+  def new; end
+
   def create
     existing_entry = StackEntry.where(stack_id: @stack.id, project_id: @project.id, deleted_at: nil).first
     entry = existing_entry || StackEntry.create!(stack_id: @stack.id, project_id: @project.id, deleted_at: nil)
     render json: { stack_entry_id: entry.id, stack_entry: stack_entry_html(entry),
                    result: 'okay', updated_count: @stack.projects.count,
                    newly_added: existing_entry.nil? }, status: :ok
-  rescue
+  rescue StandardError
     render json: { result: 'error' }, status: :unprocessable_entity
   end
 
   def update
-    if params[:stack_entry] && @stack_entry.update_attributes(note: params[:stack_entry][:note])
+    if params[:stack_entry] && @stack_entry.update(note: params[:stack_entry][:note])
       render json: { result: 'okay' }, status: :ok
     else
       render json: { result: 'error' }, status: :unprocessable_entity

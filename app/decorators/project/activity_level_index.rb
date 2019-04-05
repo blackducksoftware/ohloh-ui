@@ -38,6 +38,6 @@ class Project::ActivityLevelIndex
   end
 
   def selected
-    name == ACTIVITY_LEVEL_INDEX[INACTIVE_INDEX] ? true : false
+    name == ACTIVITY_LEVEL_INDEX[INACTIVE_INDEX]
   end
 end

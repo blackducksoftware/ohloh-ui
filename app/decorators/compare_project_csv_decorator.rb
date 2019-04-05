@@ -30,12 +30,14 @@ class CompareProjectCsvDecorator
   def licenses
     licenses = @project.licenses
     return t('compares.no_data') if licenses.blank?
+
     licenses.map { |license| "#{license.short_name} #{h.license_url(license, host: @host)}" }.join(', ')
   end
 
   def managers
     managers = @project.active_managers
     return t('compares.position_not_yet_claimed') if managers.blank?
+
     managers.map { |account| "#{account.name} #{h.account_url(account, host: @host)}" }.join(', ')
   end
 
@@ -47,6 +49,7 @@ class CompareProjectCsvDecorator
     return @url_decorator.send(method, *args) if @url_decorator.respond_to?(method)
     return @analysis_decorator.send(method, *args) if @analysis_decorator.respond_to?(method)
     return @project.send(method, *args) if @project.respond_to?(method)
+
     super
   end
 

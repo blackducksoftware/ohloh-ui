@@ -34,12 +34,14 @@ module LicenseHelper
 
   def check_new_permission(permission_exists, new_permission_exists, new_permission_status, permission_hash)
     return unless !permission_exists && new_permission_exists
+
     permission_hash['status'] = new_permission_status
     @create_list << permission_hash
   end
 
   def check_updated_permission(new_permission_exists, new_permission_status, permission_hash)
     return unless new_permission_exists && new_permission_status != permission_hash['status']
+
     permission_hash['status'] = new_permission_status
     @update_list << permission_hash
   end

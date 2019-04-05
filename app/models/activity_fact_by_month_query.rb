@@ -9,6 +9,7 @@ class ActivityFactByMonthQuery
   def execute
     raise ActiveRecord::RecordNotFound if @analysis.nil?
     return [] if @analysis.min_month.blank?
+
     ActivityFact.find_by_sql(query)
   end
 

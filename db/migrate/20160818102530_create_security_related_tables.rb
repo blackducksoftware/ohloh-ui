@@ -30,3 +30,4 @@ class CreateSecurityRelatedTables < ActiveRecord::Migration
     add_foreign_key :projects, :project_security_sets, column: :best_project_security_set_id
   end
 end
+# rubocop:enable Metrics/AbcSize

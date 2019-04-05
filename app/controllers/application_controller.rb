@@ -1,7 +1,7 @@
 # rubocop:disable Metrics/ClassLength
 class ApplicationController < ActionController::Base
   include ClearanceSetup
-  BOT_REGEX = /\b(Baiduspider|Googlebot|libwww-perl|msnbot|SiteUptime|Slurp)\b/i
+  BOT_REGEX = /\b(Baiduspider|Googlebot|libwww-perl|msnbot|SiteUptime|Slurp)\b/i.freeze
   FORMATS_THAT_WE_RENDER_ERRORS_FOR = %w[html xml json].freeze
 
   include PageContextHelper
@@ -20,6 +20,7 @@ class ApplicationController < ActionController::Base
   attr_reader :page_context
   helper_method :page_context
 
+  # rubocop:disable Rails/LexicallyScopedActionFilter
   before_action :validate_request_format
   before_action :store_location
   before_action :handle_me_account_paths
@@ -27,6 +28,7 @@ class ApplicationController < ActionController::Base
   before_action :clear_reminder
   before_action :verify_api_access_for_xml_request, only: %i[show index]
   before_action :update_last_seen_at_and_ip
+  # rubocop:enable Rails/LexicallyScopedActionFilter
 
   alias session_required require_login
 
@@ -41,6 +43,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from ::Exception do |exception|
     raise exception if Rails.application.config.consider_all_requests_local
+
     request.env[:user_agent] = request.user_agent
     case exception
     when SocketError, Errno::ECONNREFUSED, FisbotApiError
@@ -76,6 +79,7 @@ class ApplicationController < ActionController::Base
 
   def handle_me_account_paths
     return unless params[:account_id] == 'me'
+
     if current_user.nil?
       redirect_to new_session_path
     else
@@ -103,6 +107,7 @@ class ApplicationController < ActionController::Base
 
   def current_user_can_manage?
     return true if current_user_is_admin?
+
     logged_in? && current_project_or_org && current_project_or_org.active_managers.include?(current_user)
   end
   helper_method :current_user_can_manage?
@@ -173,12 +178,14 @@ class ApplicationController < ActionController::Base
 
   def clear_reminder
     return unless params[:clear_action_reminder]
+
     action = current_user.actions.where(id: params[:clear_action_reminder]).first
-    action.update_attributes(status: Action::STATUSES[:completed]) if action
+    action.update(status: Action::STATUSES[:completed]) if action
   end
 
   def store_location
     return if request.xhr? || request.post? || request_format != 'html'
+
     session[:return_to] = request.fullpath
   end
 
@@ -210,6 +217,7 @@ class ApplicationController < ActionController::Base
   def show_permissions_alert
     return if current_user_can_manage?
     return if logged_in? && !current_project_or_org.protection_enabled?
+
     flash.now[:notice] = logged_in? ? t('permissions.not_manager') : t('permissions.must_log_in')
   end
 
@@ -218,6 +226,7 @@ class ApplicationController < ActionController::Base
   def verify_api_access_for_xml_request
     return unless request_format == 'xml'
     return render_missing_api_key if params[:api_key].blank?
+
     verify_api_key_standing
   end
 
@@ -265,6 +274,7 @@ class ApplicationController < ActionController::Base
 
   def redirect_for_spammer_verification
     return if current_user && !current_user.access.disabled? && current_user.access.mobile_or_oauth_verified?
+
     redirect_to new_authentication_path
   end
 
@@ -278,6 +288,7 @@ class ApplicationController < ActionController::Base
     @project = Project.by_vanity_url_or_id(project_id).take
 
     raise ParamRecordNotFound unless @project
+
     project_context
     render 'projects/deleted' if @project.deleted?
   end
@@ -292,8 +303,10 @@ class ApplicationController < ActionController::Base
 
   def update_last_seen_at_and_ip
     return unless logged_in?
+
     # rubocop:disable Rails/SkipsModelValidations # We want to skip validations here.
     current_user.update_columns(last_seen_at: Time.current, last_seen_ip: request.remote_ip)
+    # rubocop:enable Rails/SkipsModelValidations # We want to skip validations here.
   end
 end
 # rubocop:enable Metrics/ClassLength

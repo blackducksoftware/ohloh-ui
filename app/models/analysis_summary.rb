@@ -16,6 +16,7 @@ class AnalysisSummary < ActiveRecord::Base
 
   def recent_contribution_persons
     return [] if recent_contributors.empty?
+
     @recent_contribution_persons ||= find_recent_contribution_persons(recent_contributors.first.to_s == 'name_ids')
   end
 

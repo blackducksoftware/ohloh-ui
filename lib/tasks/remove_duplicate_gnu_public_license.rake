@@ -12,6 +12,7 @@ task remove_duplicate_gnu_general_public_license: :environment do
   # rubocop:disable Rails/SkipsModelValidations
   # Update project licenses
   ProjectLicense.where(license_id: duplicate_license_ids).update_all(license_id: original_license.id)
+  # rubocop:enable Rails/SkipsModelValidations
 
   # Delete license permission role mappings for the duplicate licenses
   LicensePermissionRole.where(license_id: duplicate_license_ids).destroy_all

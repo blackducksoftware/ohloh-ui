@@ -24,13 +24,17 @@ class LicensesController < ApplicationController
   end
 
   def update
-    if @license.update_attributes(license_params)
+    if @license.update(license_params)
       redirect_to @license, notice: t('.notice')
     else
       flash.now[:error] = t('.error')
       render :edit
     end
   end
+
+  def edit; end
+
+  def show; end
 
   private
 
@@ -41,6 +45,7 @@ class LicensesController < ApplicationController
   def set_license
     @license = License.active.from_param(params[:id]).take
     raise ParamRecordNotFound unless @license
+
     @license.editor_account = current_user
   end
 

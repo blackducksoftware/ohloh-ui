@@ -17,13 +17,13 @@ module AnalysesHelper
     comments_and_code_sum > 0 ? number_with_precision(comments_by_code, precision: 1).to_s + '%' : '-'
   end
 
-  def barfill_css(language_breakdown, lb)
-    "width:#{total_percent(language_breakdown, lb).to_i}%;"\
-    "background-color: ##{language_color(lb.language_name)}"
+  def barfill_css(languages_breakdown, language_breakdown)
+    "width:#{total_percent(languages_breakdown, language_breakdown).to_i}%;"\
+    "background-color: ##{language_color(language_breakdown.language_name)}"
   end
 
-  def total_percent(language_breakdown, lb)
-    percentage = analysis_calculate_percentage lb, analysis_total_lines(language_breakdown)
+  def total_percent(languages_breakdown, language_breakdown)
+    percentage = analysis_calculate_percentage language_breakdown, analysis_total_lines(languages_breakdown)
     number_with_precision(percentage, precision: 1).to_s + '%'
   end
 
@@ -35,6 +35,7 @@ module AnalysesHelper
 
   def analysis_calculate_percentage(language_breakdown, total_lines)
     return 0 if total_lines.to_i <= 0
+
     ((analysis_calculate_sum_for(language_breakdown) / total_lines.to_f) * 100)
   end
 end

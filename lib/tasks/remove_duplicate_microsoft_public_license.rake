@@ -10,3 +10,4 @@ task remove_duplicate_microsoft_public_license: :environment do
   license.editor_account = Account.hamster
   license.update(vanity_url: 'Microsoft_Public_License')
 end
+# rubocop:enable Rails/SkipsModelValidations

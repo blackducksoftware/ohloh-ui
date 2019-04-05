@@ -5,9 +5,9 @@ ActiveAdmin.register Duplicate do
   index do
     column :id, sortable: :id do |duplicate|
       if duplicate.resolved?
-        link_to duplicate.id, admin_duplicate_path(duplicate), target: '_blank'
+        link_to duplicate.id, admin_duplicate_path(duplicate), target: '_blank', rel: 'noopener'
       else
-        link_to duplicate.id, duplicate_path(duplicate), target: '_blank'
+        link_to duplicate.id, duplicate_path(duplicate), target: '_blank', rel: 'noopener'
       end
     end
 

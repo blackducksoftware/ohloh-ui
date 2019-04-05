@@ -24,6 +24,8 @@ class ExploreController < ApplicationController
     @org_by_30_day_commits = OrgThirtyDayActivity.filter(params[:filter])
   end
 
+  def projects; end
+
   private
 
   def language_or_cache_exist

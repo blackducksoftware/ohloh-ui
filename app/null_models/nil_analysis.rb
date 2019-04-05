@@ -19,7 +19,7 @@ class NilAnalysis < NullObject
     :na
   end
 
-  def man_years_from_loc(_)
+  def man_years_from_loc(_loc)
     0
   end
 

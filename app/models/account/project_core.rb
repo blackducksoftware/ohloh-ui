@@ -19,7 +19,7 @@ class Account::ProjectCore < OhDelegator::Base
   end
 
   def stacked_count
-    @stacked_projects_count ||=
+    @stacked_count ||=
       Project.active.joins(:stacks).where(stacks_account_id).distinct.count
   end
 

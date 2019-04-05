@@ -15,14 +15,16 @@ module KudosHelper
   end
 
   def kudo_button(target)
-    target = target.account ? target.account : target.contributions.first if target.is_a?(Person)
+    target = target.account || target.contributions.first if target.is_a?(Person)
     return nil if !logged_in? || current_user == kudo_button_target_account(target)
+
     kudo = Kudo.find_for_sender_and_target(current_user, target)
     kudo ? remove_kudos_button(kudo) : give_kudos_button(target)
   end
 
   def kudo_is_new?(account_id, created_at)
     return (session[:last_active] && (created_at > session[:last_active])) if account_id == current_user.id
+
     created_at > Time.current - 24.hours
   end
 
@@ -38,6 +40,7 @@ module KudosHelper
   def kudo_delete_link(kudo)
     confirm = kudo_delete_link_confirm(kudo)
     return nil unless confirm
+
     haml_tag :a, href: kudo_path(kudo), class: 'command btn btn-minier btn-primary',
                  data: { method: :delete, confirm: confirm } do
       haml_tag :i, '', class: 'icon-undo rescind-kudos'
@@ -123,3 +126,4 @@ module KudosHelper
     link_to("#{kudo.name.name} (#{kudo.project.name})", path, id: "kudo_given_link_#{kudo.sender.login}")
   end
 end
+# rubocop: enable Metrics/ModuleLength

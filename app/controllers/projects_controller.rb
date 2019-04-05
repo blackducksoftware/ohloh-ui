@@ -21,7 +21,8 @@ class ProjectsController < ApplicationController
 
   def update
     return render_unauthorized unless @project.edit_authorized?
-    if @project.update_attributes(project_params)
+
+    if @project.update(project_params)
       redirect_to project_path(@project), notice: t('.success')
     else
       render :edit, status: :unprocessable_entity

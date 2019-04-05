@@ -54,3 +54,4 @@ describe 'WidgetBadge::Partner' do
     end
   end
 end
+# rubocop: enable Lint/UnneededSplatExpansion

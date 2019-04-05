@@ -4,7 +4,7 @@ class ProjectSecuritySet < ActiveRecord::Base
   belongs_to :project
 
   def most_recent_releases
-    @recent_releases_ ||= releases.order(released_on: :asc).last(10)
+    @most_recent_releases ||= releases.order(released_on: :asc).last(10)
   end
 
   def most_recent_vulnerabilities?

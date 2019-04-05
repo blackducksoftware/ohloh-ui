@@ -31,6 +31,7 @@ class Spark::CompoundSpark < Spark::Base
 
   def get_commits_color(datum)
     return 'black' if datum.month.month == 1
+
     datum.commits.to_i.zero? ? LIGHT_GRAY : DARK_GRAY
   end
 

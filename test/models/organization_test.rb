@@ -6,8 +6,8 @@ class OrganizationTest < ActiveSupport::TestCase
   it 'unclaims projects when destroyed and reclaims them when undestroyed' do
     proj1 = create(:project)
     proj2 = create(:project)
-    proj1.update_attributes(organization_id: org.id)
-    proj2.update_attributes(organization_id: org.id)
+    proj1.update(organization_id: org.id)
+    proj2.update(organization_id: org.id)
     pe1 = PropertyEdit.where(target: proj1, key: 'organization_id', value: org.id.to_s).first
     pe2 = PropertyEdit.where(target: proj2, key: 'organization_id', value: org.id.to_s).first
     pe1.undone.must_equal false

@@ -20,7 +20,7 @@ class LinksController < SettingsController
       redirect_to project_links_path(@project), flash: { success: t('.success') }
     else
       load_category_and_title
-      render :new, status: 422
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -33,7 +33,7 @@ class LinksController < SettingsController
       redirect_to project_links_path(@project), flash: { success: t('.success') }
     else
       load_category_and_title
-      render :edit, status: 422
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -55,6 +55,7 @@ class LinksController < SettingsController
   def load_category_and_title
     @category_name = Link.find_category_by_id(params[:category_id]) || @link.category
     return unless @link && @category_name
+
     type = nil
     type = :Homepage if @category_name.to_s == 'Homepage'
     type = :Downloads if @category_name.to_s == 'Download'

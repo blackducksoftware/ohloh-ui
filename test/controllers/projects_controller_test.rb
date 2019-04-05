@@ -292,7 +292,7 @@ describe 'ProjectsController' do
     it 'should render for projects with all time summaries with name_ids' do
       all_time_summary_summary_with_name_ids = create(:all_time_summary_summary_with_name_ids)
       project = all_time_summary_summary_with_name_ids.analysis.project
-      project.update_attributes(best_analysis: all_time_summary_summary_with_name_ids.analysis)
+      project.update(best_analysis: all_time_summary_summary_with_name_ids.analysis)
       get :show, id: project.to_param
       must_respond_with :ok
     end
@@ -321,7 +321,7 @@ describe 'ProjectsController' do
       af4 = create(:activity_fact, analysis: project.best_analysis)
       create(:factoid, analysis: project.best_analysis, language: af4.language)
       ats = project.best_analysis.all_time_summary
-      ats.update_attributes(recent_contributors: [create(:person).id, create(:person).id])
+      ats.update(recent_contributors: [create(:person).id, create(:person).id])
       cf = create(:commit_flag)
       create(:analysis_sloc_set, analysis: project.best_analysis, sloc_set: cf.sloc_set)
       login_as create(:admin)
@@ -344,7 +344,7 @@ describe 'ProjectsController' do
       create(:analysis_sloc_set, analysis: project.best_analysis, sloc_set: cf.sloc_set)
       login_as create(:admin)
       get :show, id: project.to_param
-      ats.update_attributes(recent_contributors: ['name_ids'])
+      ats.update(recent_contributors: ['name_ids'])
       must_respond_with :ok
     end
 
@@ -805,7 +805,7 @@ describe 'ProjectsController' do
 
   it 'estimated_cost should display for unanalyzed projects' do
     project = create(:project)
-    project.update_attributes(best_analysis_id: nil)
+    project.update(best_analysis_id: nil)
     login_as nil
     get :estimated_cost, id: project.id
     must_respond_with :success

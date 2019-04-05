@@ -1,7 +1,7 @@
 class TaxonomistBadge < Badge
   def eligibility_count
-    @count ||= vars[:tags_count]
-    @count ||= Edit.where(target_type: 'Project', key: 'tag_list', account_id: account.id).count
+    @eligibility_count ||= vars[:tags_count]
+    @eligibility_count ||= Edit.where(target_type: 'Project', key: 'tag_list', account_id: account.id).count
   end
 
   def name

@@ -37,7 +37,7 @@ class Forge::GoogleCode < Forge
   end
 
   def get_homepage_html(match)
-    open(homepage_html_url(match)).read
+    URI.parse(homepage_html_url(match)).open.read
   end
 
   def source_html_url(match)
@@ -45,7 +45,7 @@ class Forge::GoogleCode < Forge
   end
 
   def get_source_html(match)
-    open(source_html_url(match)).read
+    URI.parse(source_html_url(match)).open.read
   end
 
   def project_name(doc)

@@ -3,6 +3,7 @@ module Person::Count
 
   def unclaimed_by(query = nil, find_by = nil)
     return unclaimed if query.blank?
+
     Person.unclaimed_people(q: query, find_by: find_by).length
   end
 

@@ -41,6 +41,7 @@ class Analysis < ActiveRecord::Base
     return :new if new_first_commit?
     return :inactive if old_last_commit?
     return :very_low if too_small_team?
+
     convert_activity_score
   end
 

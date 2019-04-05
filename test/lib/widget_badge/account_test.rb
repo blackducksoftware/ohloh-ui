@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require 'test_helper'
 require 'test_helpers/image_helper'
 
@@ -61,3 +59,4 @@ describe 'WidgetBadge::Account' do
     end
   end
 end
+# rubocop: enable Lint/UnneededSplatExpansion

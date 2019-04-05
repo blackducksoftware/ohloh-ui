@@ -59,7 +59,7 @@ describe 'CommitsController' do
     it 'should return commits if valid project' do
       time_now = Time.zone.now
       thirty_days_ago = time_now - 30.days
-      @project.best_analysis.update_attributes(oldest_code_set_time: time_now)
+      @project.best_analysis.update(oldest_code_set_time: time_now)
       get :index, project_id: @project.id, time_span: '30 days'
       assigns(:commits).count.must_equal 2
       assigns(:commits).first.must_equal @commit1
@@ -67,7 +67,7 @@ describe 'CommitsController' do
     end
 
     it 'should gracefully handle garbage time spans' do
-      @project.best_analysis.update_attributes(oldest_code_set_time: Time.zone.now)
+      @project.best_analysis.update(oldest_code_set_time: Time.zone.now)
       get :index, project_id: @project.id, time_span: 'I am a banana'
       must_respond_with :ok
     end

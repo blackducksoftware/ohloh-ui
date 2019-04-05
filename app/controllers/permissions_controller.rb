@@ -19,6 +19,8 @@ class PermissionsController < ApplicationController
     end
   end
 
+  def show; end
+
   private
 
   def find_model
@@ -32,6 +34,7 @@ class PermissionsController < ApplicationController
 
   def require_manage_authorization
     return if current_user_can_manage?
+
     flash.now[:error] = t(:not_authorized)
     render :show, status: :unauthorized
   end

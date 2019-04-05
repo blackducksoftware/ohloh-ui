@@ -2,6 +2,7 @@ module EnlistmentFilters
   extend ActiveSupport::Concern
 
   included do
+    # rubocop:disable Rails/LexicallyScopedActionFilter
     before_action :session_required, :redirect_unverified_account, only: %i[create new destroy edit update]
     before_action :set_project_or_fail
     before_action :set_project_editor_account_to_current_user
@@ -13,6 +14,7 @@ module EnlistmentFilters
     before_action :handle_github_user_flow, only: :create
     before_action :build_code_location, only: :create
     before_action :project_has_code_location?, only: :create
+    # rubocop:enable Rails/LexicallyScopedActionFilter
   end
 
   private
@@ -28,6 +30,7 @@ module EnlistmentFilters
   def find_enlistment
     @enlistment = Enlistment.find_by(id: params[:id])
     raise ParamRecordNotFound unless @enlistment
+
     @enlistment.editor_account = current_user
   end
 
@@ -35,14 +38,17 @@ module EnlistmentFilters
     key = Setting.get_project_enlistment_key(@project.id)
     job = Setting.get_value(key)
     return unless job.present? && job.key?(code_location_params[:url])
+
     redirect_to project_enlistments_path(@project), flash: { error: t('.job_exists') }
   end
 
   def handle_github_user_flow
     return unless code_location_params[:scm_type] == 'GithubUser'
+
     github_user = GithubUser.new(url: code_location_params[:url])
     @code_location = CodeLocation.new(url: code_location_params[:url])
     return create_worker if github_user.valid?
+
     @code_location.errors = github_user.errors
     render :new, status: :unprocessable_entity
   end
@@ -56,6 +62,7 @@ module EnlistmentFilters
 
   def validate_project
     return if @project.valid?
+
     error_msg = @project.errors.include?(:description) ? add_custom_error_msg : @project.errors.full_messages
     flash[:error] = error_msg.join(', ')
     redirect_to project_enlistments_path

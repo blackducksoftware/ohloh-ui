@@ -73,6 +73,7 @@ class Account < ActiveRecord::Base
   def most_experienced_language
     language_facts = best_vita.vita_language_facts.ordered
     return if language_facts.empty?
+
     language_facts.first.language
   end
 
@@ -84,6 +85,7 @@ class Account < ActiveRecord::Base
   def first_commit_date
     first_checkin = best_vita.vita_fact.first_checkin
     return if first_checkin.blank?
+
     first_checkin.to_date.beginning_of_month
   end
 

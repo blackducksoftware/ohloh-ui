@@ -39,7 +39,7 @@ class DuplicatesController < ApplicationController
   end
 
   def update
-    if @duplicate.update_attributes(good_project: @good_project, comment: duplicate_params[:comment])
+    if @duplicate.update(good_project: @good_project, comment: duplicate_params[:comment])
       flash[:success] = t('.success')
       redirect_to project_path(@duplicate.bad_project)
     else
@@ -58,12 +58,16 @@ class DuplicatesController < ApplicationController
 
   def resolve
     if params[:keep_id].to_i == @duplicate.bad_project_id
-      @duplicate.update_attributes(bad_project: @duplicate.good_project, good_project: @duplicate.bad_project)
+      @duplicate.update(bad_project: @duplicate.good_project, good_project: @duplicate.bad_project)
     end
 
     @duplicate.resolve!(current_user)
     redirect_to admin_duplicates_path, flash: { success: t('.success') }
   end
+
+  def show; end
+
+  def edit; end
 
   private
 
@@ -87,6 +91,7 @@ class DuplicatesController < ApplicationController
 
   def must_own_duplicate
     return if (@duplicate.account == current_user) || current_user_is_admin?
+
     flash[:error] = t('duplicates.edit.must_own_duplicate')
     redirect_to project_path(@duplicate.bad_project)
   end

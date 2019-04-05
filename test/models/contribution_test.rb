@@ -130,7 +130,7 @@ class ContributionTest < ActiveSupport::TestCase
       name = create(:name)
       create(:alias, project: project, commit_name_id: person1.name_id, preferred_name_id: name.id)
       fact = person1.contributions.first.contributor_fact
-      fact.update_attributes(analysis_id: project.best_analysis_id, name_id: name.id)
+      fact.update(analysis_id: project.best_analysis_id, name_id: name.id)
       position = create(:position, project: project, name_id: name.id)
       contribution = Contribution.find_indirectly(contribution_id: person1.contributions.first.id, project: project)
       contribution.must_equal position.contribution

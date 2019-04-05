@@ -148,3 +148,4 @@ module Reverification
     end
   end
 end
+# rubocop:enable Metrics/MethodLength, Metrics/ClassLength, Metrics/LineLength

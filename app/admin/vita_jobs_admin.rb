@@ -2,7 +2,7 @@ ActiveAdmin.register VitaJob do
   menu false
   config.sort_order = 'current_step_at_desc'
 
-  belongs_to :account, finder: :find_by_login, optional: :true
+  belongs_to :account, finder: :find_by_login, optional: true
 
   permit_params :status, :priority, :wait_until, :current_step_at, :notes
 

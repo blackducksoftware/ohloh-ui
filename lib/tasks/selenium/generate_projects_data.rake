@@ -3,10 +3,10 @@
 
 require 'action_view'
 
-include ActionView::Helpers::NumberHelper
-include ActionView::Helpers::DateHelper
-
 namespace :selenium do
+  include ActionView::Helpers::NumberHelper
+  include ActionView::Helpers::DateHelper
+
   desc 'Prepare Projects data for selenium'
   task :prepare_projects_data, [:project_name] => :environment do |_t, args|
     include AnalysesHelper
@@ -241,6 +241,7 @@ namespace :selenium do
   def get_new_alias(project)
     committer_name = Alias.committer_names(project).take
     return if committer_name.nil?
+
     [committer_name.name, Alias.preferred_names(project, committer_name).take.name]
   end
 

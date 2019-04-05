@@ -6,6 +6,7 @@ module EditsHelper
     now = Time.current
     return t('edits.edit_humanize_datetime', difference: time_ago_in_words(datetime)) if (now - datetime) < 24.hours
     return datetime.strftime('%b %d') if datetime.year == now.year
+
     datetime.strftime('%b %d, %Y')
   end
 
@@ -44,6 +45,7 @@ module EditsHelper
 
   def edit_org_explanation(edit)
     return edit_org_explanation_org_type(edit) if edit.target_type == 'Organization' && edit.key == 'org_type'
+
     edit_org_explanation_org_id(edit) || edit_explanation(edit)
   end
 
@@ -61,6 +63,7 @@ module EditsHelper
     if PROJECT_RELATED_CLASSES.include?(edit.target.class)
       return send("edit_explanation_#{edit.target.class.name.downcase}".to_sym, edit)
     end
+
     edit_explanation_generic(edit)
   end
 

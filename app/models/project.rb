@@ -31,7 +31,7 @@ class Project < ActiveRecord::Base
   attr_accessor :managed_by_creator
 
   def to_param
-    vanity_url.blank? ? id.to_s : vanity_url
+    vanity_url.presence || id.to_s
   end
 
   def related_by_stacks(limit = 12)
@@ -62,6 +62,7 @@ class Project < ActiveRecord::Base
 
   def main_language
     return if best_analysis.nil? || best_analysis.main_language.nil?
+
     best_analysis.main_language.name
   end
 
@@ -123,7 +124,8 @@ class Project < ActiveRecord::Base
   def update_organzation_project_count
     org = Organization.find_by(id: organization_id || organization_id_was)
     return unless org
-    org.update_attributes(editor_account: editor_account, projects_count: org.projects.count)
+
+    org.update(editor_account: editor_account, projects_count: org.projects.count)
   end
 
   def remove_people
@@ -140,3 +142,4 @@ class Project < ActiveRecord::Base
     tags.each(&:recalc_weight!)
   end
 end
+# rubocop:enable Metrics/ClassLength

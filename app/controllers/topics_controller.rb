@@ -63,11 +63,14 @@ class TopicsController < ApplicationController
     redirect_to topic_path(@topic)
   end
 
+  def edit; end
+
   private
 
   def track_views
     topic = Topic.where(id: params[:id]).take
     raise ParamRecordNotFound unless topic
+
     # rubocop:disable Rails/SkipsModelValidations # We want to skip validations here.
     topic.increment!(:hits) unless logged_in? && (@topic.account == current_user)
     # rubocop:enable Rails/SkipsModelValidations
@@ -81,6 +84,7 @@ class TopicsController < ApplicationController
   def find_forum_and_topic_records
     @topic = Topic.where(id: params[:id]).take
     raise ParamRecordNotFound unless @topic
+
     @forum = @topic.forum
   end
 
@@ -95,6 +99,7 @@ class TopicsController < ApplicationController
 
   def verify_captcha_for_non_admin
     return true if current_user_is_admin?
+
     verify_recaptcha(model: @topic)
   end
 

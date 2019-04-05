@@ -1,5 +1,5 @@
 class GithubUser
-  URL_FORMAT = /\A[^\/]+\Z/
+  URL_FORMAT = /\A[^\/]+\Z/.freeze
   GITHUB_API_URL = 'https://api.github.com/users/'.freeze
   include ActiveModel::Model
 
@@ -32,11 +32,13 @@ class GithubUser
   private
 
   def create_code_locations
+    # rubocop:disable Naming/MemoizedInstanceVariableName
     @code_locations ||= begin
       fetch_repository_urls.map do |url|
         CodeLocation.create(url: url, branch: branch_name)
       end
     end
+    # rubocop:enable Naming/MemoizedInstanceVariableName
   end
 
   def fetch_repository_urls
@@ -48,6 +50,7 @@ class GithubUser
       _stdin, json_repository_data = Open3.popen3('curl', github_url(page))
       repository_data = JSON.parse(json_repository_data.read) if json_repository_data
       break if repository_data.blank?
+
       repository_urls.concat(repository_data.map { |data| data['html_url'] })
     end
 

@@ -18,7 +18,7 @@ class ProjectLicensesController < SettingsController
     create_project_license
     flash[:success] = t('.success')
     redirect_to action: :index
-  rescue
+  rescue StandardError
     handle_creation_errors(@project_license)
   end
 
@@ -46,11 +46,13 @@ class ProjectLicensesController < SettingsController
   def find_project_license
     @project_license = ProjectLicense.where(id: params[:id], project_id: @project.id).take
     raise ParamRecordNotFound unless @project_license
+
     @project_license.editor_account = current_user
   end
 
   def project_edit_authorized
     return if @project.edit_authorized?
+
     flash.now[:notice] = t(:not_authorized)
     redirect_to project_path(@project)
   end

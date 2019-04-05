@@ -2,9 +2,10 @@
 # rake selenium:prepare_organization_data[mozilla]
 
 require 'action_view'
-include ActionView::Helpers::NumberHelper
 
 namespace :selenium do
+  include ActionView::Helpers::NumberHelper
+
   desc 'Prepare Organization data for selenium'
   task :prepare_organization_data, [:organization_name] => :environment do |_t, args|
     yaml_file = File.open('organization_data.yml', 'w')

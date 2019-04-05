@@ -32,6 +32,7 @@ class Chart::Pie
       convert.fill "##{language[:color]}"
       degrees = language_degrees(language[:percent])
       next if degrees.zero?
+
       end_angle = start_angle + degrees
       convert.draw wedge(start_angle, end_angle)
       start_angle = end_angle

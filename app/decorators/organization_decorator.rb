@@ -25,4 +25,5 @@ class OrganizationDecorator < Cherry::Decorator
       options.push(['Other', ''])
     end
   end
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 end

@@ -26,6 +26,7 @@ class SessionsController < Clearance::SessionsController
 
   def captcha_verify
     return if verify_recaptcha
+
     @ask_for_recaptcha = true
     flash.now[:error] = t('.recaptcha_failure')
     render 'sessions/new', status: :unauthorized
@@ -40,12 +41,14 @@ class SessionsController < Clearance::SessionsController
 
   def disable_account_for_retries
     return if retries_remaining > 0 || account.access.disabled?
+
     disable_account_and_notify_admin
     flash.now[:error] = t('.locked_message')
   end
 
   def auth_failure_timeout?
     return unless account
+
     Time.current - account.updated_at > ENV['FAILED_LOGIN_TIMEOUT'].to_i.minutes.to_i
   end
 
@@ -70,6 +73,7 @@ class SessionsController < Clearance::SessionsController
   def account_must_exist
     @account = Account.fetch_by_login_or_email(params[:login][:login])
     return if @account
+
     flash.now[:error] = t('flashes.failure_after_create')
     render 'sessions/new', status: :unauthorized
   end

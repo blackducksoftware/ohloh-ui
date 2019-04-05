@@ -20,6 +20,7 @@ class UpdateProjectCiiBadge
   def create_cii_projects(cii_projects)
     cii_projects.each do |project|
       next if CiiBadge.find_by(identifier: project['id'])
+
       find_repo_enlistment_ids_and_create_badges(project)
       create_project(project['repo_url'], project['id'])
     end
@@ -36,7 +37,7 @@ class UpdateProjectCiiBadge
 
     enlistment_ids = project.enlistments.ids
     create_cii_badge_from_enlistments(enlistment_ids, identifier)
-  rescue
+  rescue StandardError
     nil
   end
 

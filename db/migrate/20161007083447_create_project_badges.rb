@@ -5,7 +5,7 @@ class CreateProjectBadges < ActiveRecord::Migration
       t.references :project, index: true, foreign_key: true
       t.string :url
       t.string :type
-      t.boolean :deleted, default: :false
+      t.boolean :deleted, default: false
       t.timestamps null: false
     end
   end

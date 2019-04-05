@@ -17,6 +17,7 @@ class ContributorFact < NameFact
 
   def append_name_fact(name_fact)
     return if name_fact.nil?
+
     self.commits += name_fact.commits
     self.email_address_ids += name_fact.email_address_ids
     save
@@ -24,6 +25,7 @@ class ContributorFact < NameFact
 
   def remove_name_fact(name_fact)
     return if name_fact.nil?
+
     self.commits -= name_fact.commits
     self.email_address_ids -= name_fact.email_address_ids
     save

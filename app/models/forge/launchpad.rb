@@ -34,7 +34,7 @@ class Forge::Launchpad < Forge
   end
 
   def get_homepage_html(match)
-    open(homepage_html_url(match)).read
+    URI.parse(homepage_html_url(match)).open.read
   end
 
   def repository_url(doc)

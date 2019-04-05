@@ -4,7 +4,7 @@ class Account::StackCore < OhDelegator::Base
   end
 
   def default
-    stacks << Stack.new unless @cached_default_stack || stacks.present?
-    @cached_default_stack ||= stacks[0]
+    stacks << Stack.new unless @default || stacks.present?
+    @default ||= stacks[0]
   end
 end

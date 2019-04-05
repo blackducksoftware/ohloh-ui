@@ -100,6 +100,7 @@ module Reverification
         if account.reverification_tracker
           return ReverificationTracker.update_tracker(account.reverification_tracker, phase, resp)
         end
+
         account.create_reverification_tracker(message_id: resp[:message_id], sent_at: Time.now.utc)
       end
     end

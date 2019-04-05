@@ -9,10 +9,12 @@ class ProjectTagsController < SettingsController
   before_action :find_tagging, only: [:destroy]
   before_action :project_context
 
+  def index; end
+
   def create
-    @project.update_attributes!(tag_list: "#{@project.tag_list} #{params[:tag_name]}")
+    @project.update!(tag_list: "#{@project.tag_list} #{params[:tag_name]}")
     render text: ERB::Util.html_escape(@project.tag_list).split.sort.join("\n")
-  rescue
+  rescue StandardError
     render_create_error
   end
 
@@ -36,6 +38,7 @@ class ProjectTagsController < SettingsController
   def find_tagging
     tag = Tag.where(name: params[:id]).take
     raise ParamRecordNotFound if tag.nil?
+
     @tagging = Tagging.where(taggable: @project, tag_id: tag.id).take
     raise ParamRecordNotFound if @tagging.nil?
   end

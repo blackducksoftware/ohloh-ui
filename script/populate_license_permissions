@@ -38,7 +38,8 @@ puts '...done.'
 
 def assign_permission(license, permission, role)
   perm = LicensePermission.find_by(name: permission)
-  raise 'Type: #{permission} not found!' unless perm
+  raise "Type: #{permission} not found!" unless perm
+
   license.license_permission_roles.find_or_create_by(license_permission: perm, status: role)
 end
 
@@ -185,3 +186,4 @@ end
 ['Include Copyright', 'Include License', 'Distribute Original', 'Disclose Source', 'Include Install Instructions', 'Compensate Damages'].each do |required|
   assign_permission(license, required, 'required')
 end
+# rubocop:enable LineLength

@@ -53,6 +53,7 @@ class ApiKey < ActiveRecord::Base
 
   def daily_reset!
     return unless day_began_at && day_began_at < (Time.current - 1.day)
+
     assign_attributes(day_began_at: Time.current,
                       daily_count: 0,
                       status: status == STATUS_LIMIT_EXCEEDED ? STATUS_OK : status)
@@ -63,15 +64,15 @@ class ApiKey < ActiveRecord::Base
   end
 
   def set_status_to_limit_exceeded!
-    update_attributes!(day_began_at: day_began_at || Time.current,
-                       status: status == STATUS_OK ? STATUS_LIMIT_EXCEEDED : status)
+    update!(day_began_at: day_began_at || Time.current,
+            status: status == STATUS_OK ? STATUS_LIMIT_EXCEEDED : status)
   end
 
   def update_api_counters!
-    update_attributes!(last_access_at: Time.current,
-                       day_began_at: day_began_at || Time.current,
-                       daily_count: daily_count + 1,
-                       total_count: total_count + 1,
-                       status: status)
+    update!(last_access_at: Time.current,
+            day_began_at: day_began_at || Time.current,
+            daily_count: daily_count + 1,
+            total_count: total_count + 1,
+            status: status)
   end
 end

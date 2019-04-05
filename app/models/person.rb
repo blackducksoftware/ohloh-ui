@@ -9,7 +9,7 @@ class Person < ActiveRecord::Base
   belongs_to :project
   belongs_to :name_fact
   belongs_to :contributor_fact, foreign_key: :name_fact_id
-  belongs_to :contributor_fact_on_name_id, primary_key: :name_id, foreign_key: :name_id, class_name: :ContributorFact
+  belongs_to :contributor_fact_on_name_id, primary_key: :name_id, foreign_key: :name_id, class_name: 'ContributorFact'
   has_many :contributions
 
   scope :sort_by_kudo_position, -> { order('kudo_position nulls last') }
@@ -27,6 +27,7 @@ class Person < ActiveRecord::Base
 
   def searchable_factor
     return 0.0 if kudo_position.nil? || Person.count == 1
+
     num = (Person.count - kudo_position).to_f
     denum = (Person.count - 1).to_f
 
@@ -56,6 +57,7 @@ class Person < ActiveRecord::Base
 
     def rebuild_by_project_id(project_id)
       return if project_id.blank?
+
       Person.delete_all(project_id: project_id)
       connection.execute("insert into people (select * from people_view where project_id = #{sanitize_sql project_id})")
     end
@@ -79,6 +81,7 @@ class Person < ActiveRecord::Base
 
     def find_by_name_or_email(opts)
       return tsearch(opts[:q]) unless opts[:find_by].eql?('email')
+
       where("name_facts.email_address_ids && (#{EmailAddress.search_sql(opts[:q])})")
         .joins(:contributor_fact)
     end

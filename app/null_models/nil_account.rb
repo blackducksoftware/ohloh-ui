@@ -7,10 +7,6 @@ class NilAccount < NullObject
 
   def admin?; end
 
-  def id
-    nil
-  end
-
   def access
     @access ||= Account::Access.new(self)
   end

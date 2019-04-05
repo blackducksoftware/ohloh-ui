@@ -37,6 +37,7 @@ class LanguagesController < ApplicationController
   def find_language
     @language = Language.from_param(params[:id]).take
     raise ParamRecordNotFound unless @language
+
     redirect_to language_path(@language) if @language.id.to_s == params[:id]
   end
 

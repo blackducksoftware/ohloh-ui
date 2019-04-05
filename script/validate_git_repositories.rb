@@ -12,7 +12,7 @@ CodeLocation.joins(:repository, :projects)
   cl.enlistments do |e|
     begin
       e.create_edit.undo!(Account.hamster) unless cl.valid?
-    rescue
+    rescue StandardError
       nil
     end
   end

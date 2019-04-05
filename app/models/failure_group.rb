@@ -28,4 +28,5 @@ class FailureGroup < ActiveRecord::Base
       Job.failed.where(failure_group_id: nil).where('exception ILIKE ?', failure_group.pattern)
     end
   end
+  # rubocop:enable Rails/SkipsModelValidations
 end

@@ -44,4 +44,5 @@ module SiteFeaturesHelper
       end
     end.flatten.zip(features_hash['OpenHub'].sample(2)).flatten
   end
+  # rubocop:enable Metrics/MethodLength
 end

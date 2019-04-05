@@ -84,6 +84,7 @@ class ReviewsController < ApplicationController
 
   def own_object?
     return true if current_user_is_admin? || @review.account_id == current_user.id
+
     redirect_to summary_project_reviews_path(@project), flash: { error: t(:not_authorized) }
   end
 end

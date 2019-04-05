@@ -11,8 +11,12 @@ class ManagersController < SettingsController
   before_action :admin_session_required, only: %i[new create edit update], if: -> { @parent.is_a? Organization }
   before_action :project_context, if: -> { @parent.is_a? Project }
 
+  def index; end
+
   def new
+    # rubocop:disable Naming/MemoizedInstanceVariableName
     @manage ||= Manage.new
+    # rubocop:enable Naming/MemoizedInstanceVariableName
   end
 
   def create
@@ -32,7 +36,8 @@ class ManagersController < SettingsController
 
   def update
     return render_unauthorized unless current_user_can_manage_or_self?
-    if @manage.update_attributes(model_params)
+
+    if @manage.update(model_params)
       flash[:notice] = t '.notice'
       redirect_to_index
     else
@@ -42,6 +47,7 @@ class ManagersController < SettingsController
 
   def approve
     return render_unauthorized unless current_user_can_manage?
+
     if @manage
       @manage.approve!(current_user)
       flash[:success] = t '.notice', name: ERB::Util.html_escape(@manage.account.name)
@@ -51,6 +57,7 @@ class ManagersController < SettingsController
 
   def reject
     return render_unauthorized unless current_user_can_manage_or_self?
+
     if @manage
       @manage.destroy_by!(current_user)
       flash[:notice] = t '.notice', name: ERB::Util.html_escape(@manage.account.name),

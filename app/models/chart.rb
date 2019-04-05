@@ -4,22 +4,24 @@ class Chart
   end
 
   def commits_by_project
-    @cbp ||= CommitsByProject.new(@account).history_in_date_range
+    @commits_by_project ||= CommitsByProject.new(@account).history_in_date_range
     CHART_DEFAULTS.deep_merge(COMMITS_BY_PROJECT_CHART_DEFAULTS).deep_merge(process_commits_by_project_data).to_json
   end
 
   def commits_by_language(scope = 'full')
-    @cbl ||= CommitsByLanguage.new(@account, context: { scope: scope }).language_experience.to_json
+    @commits_by_language ||= CommitsByLanguage.new(@account, context: { scope: scope }).language_experience.to_json
   end
 
   private
 
   def process_commits_by_project_data
-    years = date_objects(@cbp.first.last.map { |af| af[:month].strftime('%b-%Y') }) if @cbp.present?
-    series = @cbp.each_with_object([]) do |(pname, afs), array|
+    if @commits_by_project.present?
+      years = date_objects(@commits_by_project.first.last.map { |af| af[:month].strftime('%b-%Y') })
+    end
+    series = @commits_by_project.each_with_object([]) do |(pname, afs), array|
       array.push('name' => pname, 'data' => afs.map { |af| af[:commits] })
     end
-    { 'xAxis' => { 'categories' => years }, 'series' => series, 'noCommits' => @cbp.empty? }
+    { 'xAxis' => { 'categories' => years }, 'series' => series, 'noCommits' => @commits_by_project.empty? }
   end
 
   def date_objects(stringified_dates)

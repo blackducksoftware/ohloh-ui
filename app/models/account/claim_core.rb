@@ -6,11 +6,13 @@ class Account::ClaimCore < OhDelegator::Base
 
   def emails
     return [] if email_ids.empty?
+
     EmailAddress.where(id: email_ids).map(&:address)
   end
 
   def unclaimed_persons_count
     return 0 if emails.empty?
+
     Person::Count.unclaimed_by(emails.join(' '), 'email')
   end
 

@@ -22,6 +22,7 @@ class CommitsController < SettingsController
   def summary
     @analysis = @project.best_analysis
     return unless @project.best_analysis
+
     get_project_commits
     get_commit_contributors
   end

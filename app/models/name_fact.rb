@@ -26,11 +26,14 @@ class NameFact < ActiveRecord::Base
 
   def <=>(other)
     return 0 unless other
+
     if last_checkin.nil?
       return 0 if other.last_checkin.nil?
+
       return 1
     end
     return -1 if other.last_checkin.nil?
+
     other.last_checkin <=> last_checkin
   end
 end

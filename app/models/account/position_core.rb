@@ -10,7 +10,7 @@ class Account::PositionCore < OhDelegator::Base
   end
 
   def with_projects
-    @positions_with_projects ||=
+    @with_projects ||=
       positions.joins(:project).where.not(Position.arel_table[:project_id].eq(nil))
                .order(Project.arel_table[:name].lower)
   end
@@ -33,6 +33,7 @@ class Account::PositionCore < OhDelegator::Base
   # Returns a mapping of (position.project.analysis_id)_(position.name_id) => [position.name_fact] for all positions.
   def name_facts
     return @name_facts if @name_facts
+
     # Using preloaded_positions.pluck(:best_analysis_id) will trigger a new sql query.
     analysis_ids = preloaded_positions.map { |position| position.project.best_analysis_id }.compact
     name_ids = preloaded_positions.map(&:name_id).compact
@@ -76,6 +77,7 @@ class Account::PositionCore < OhDelegator::Base
     alias_obj = Alias.find_by(project_id: project.id, commit_name_id: name.id)
     return update_alias(alias_obj, existing_position.name_id, name.id) if alias_obj
     return existing_position if name.id == existing_position.name_id
+
     create_alias(project, name, existing_position, position_attributes)
   end
 
@@ -84,7 +86,7 @@ class Account::PositionCore < OhDelegator::Base
     Alias.create(project_id: project.id, commit_name_id: name.id, preferred_name_id: existing_position.name_id,
                  editor_account: account).tap do
       # and update the existing position to use new position_attributes(title, desc)
-      existing_position.update_attributes!(position_attributes)
+      existing_position.update!(position_attributes)
     end
   end
 
@@ -93,7 +95,7 @@ class Account::PositionCore < OhDelegator::Base
       alias_obj.create_edit.undo!(account) unless alias_obj.deleted?
     else
       alias_obj.create_edit.redo!(account) if alias_obj.deleted? && alias_obj.create_edit.undone?
-      alias_obj.reload.update_attributes!(preferred_name_id: preferred_name_id, editor_account: account)
+      alias_obj.reload.update!(preferred_name_id: preferred_name_id, editor_account: account)
     end
   end
 
