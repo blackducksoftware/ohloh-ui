@@ -247,7 +247,7 @@ en:
   permissions:
     permissions: 'Permissions'
     not_manager: "You can view, but not change this data. Only managers may change this data."
-    must_log_in: "You must be logged in to change this data. If you don't have an account, Please join."
+    must_log_in: "You must be logged in to change this data. If you don't have an account, please join."
     show:
       page_title: "%{name} : Permissions - Open Hub"
       about_permissions_1: "About"
