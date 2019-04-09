@@ -10,6 +10,8 @@ class CommitsController < SettingsController
   skip_before_action :show_permissions_alert
 
   def index
+    return if @project.best_analysis.blank?
+
     params[:contributor_id].present? ? individual_named_commits : named_commits
   end
 
