@@ -116,6 +116,17 @@ describe 'CommitsController' do
       assigns(:commits).ids.must_include commit_ids[1]
       assigns(:commits).ids.must_include commit_ids[2]
     end
+
+    it 'should show add code_location message when enlistment(s) is empty' do
+      Project.any_instance.stubs(:best_analysis).returns(NilAnalysis.new)
+      get :index, project_id: @project.id
+      must_respond_with :ok
+      response.body.must_match I18n.t('projects.show.no_analysis_summary.message_2')
+
+      response.body.wont_match I18n.t('commits.summary.commits_per_month')
+      response.body.wont_match I18n.t('commits.summary.most_recent_commits')
+      response.body.wont_match I18n.t('commits.summary.see_all_commits')
+    end
   end
 
   describe 'show' do
