@@ -1,17 +1,19 @@
 %table.table
   %tbody
     - accounts.each_with_index do |account_id, i|
-      - account = @accounts_map[account_id.first].first
-      %tr
-        %td
-          .rank= avatar_small_laurels(account.kudo_rank)
-        %td
-          %a.block.contributor{ href: account_path(account) }
-            .avatar= avatar_img_for(account, 32)
-        %td.col-md-10
-          %a.block.contributor{ href: account_path(account) }
-            .name #{i + 1}. #{account.name}
-          - if show_commits
-            .metric= pluralize(account_id.last, 'commit')
-          - else
-            .metric= months_or_years(account_id.last.to_i)
+      - account_array = @accounts_map[account_id.first]
+      - if account_array
+        - account = account_array.first
+        %tr
+          %td
+            .rank= avatar_small_laurels(account.kudo_rank)
+          %td
+            %a.block.contributor{ href: account_path(account) }
+              .avatar= avatar_img_for(account, 32)
+          %td.col-md-10
+            %a.block.contributor{ href: account_path(account) }
+              .name #{i + 1}. #{account.name}
+            - if show_commits
+              .metric= pluralize(account_id.last, 'commit')
+            - else
+              .metric= months_or_years(account_id.last.to_i)
