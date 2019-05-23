@@ -20,11 +20,6 @@ module SiteFeaturesHelper
          Open Hub blog</a>"
       ],
 
-      'Offers' => [
-        "Black Duck offers a <a href='https://www.blackducksoftware.com/hub-free-trial'
-         target='_blank'>free trial</a> so you can discover if there are open source vulnerabilities in your code"
-      ],
-
       'Security' => [
         'there are over 3,000 projects on the Open Hub with security vulnerabilities reported against them',
         'use of OSS increased in 65% of companies in 2016',
@@ -40,7 +35,7 @@ module SiteFeaturesHelper
   def random_site_features
     [].tap do |arr|
       (features_hash.keys - ['OpenHub']).each do |key|
-        arr << features_hash[key].sample(1)
+        arr << features_hash[key].sample(2)
       end
     end.flatten.zip(features_hash['OpenHub'].sample(2)).flatten
   end
