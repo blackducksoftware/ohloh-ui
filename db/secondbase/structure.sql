@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.8
--- Dumped by pg_dump version 9.6.8
+-- Dumped from database version 9.6.10
+-- Dumped by pg_dump version 9.6.10
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -496,6 +496,79 @@ CREATE FUNCTION public.admin_insert_cl_total_stats_v2() RETURNS jsonb
 
 
 --
+-- Name: admin_insert_cl_total_stats_v3(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.admin_insert_cl_total_stats_v3() RETURNS jsonb
+    LANGUAGE plpgsql
+    AS $$
+
+  DECLARE
+    result jsonb;
+  BEGIN
+    WITH locations AS (SELECT id, do_not_fetch, update_interval, best_code_set_id FROM code_locations),
+
+    dnf AS (Select * FROM locations WHERE do_not_fetch = true),
+
+    unsubscribed AS (SELECT cl.*
+      FROM locations cl
+      LEFT OUTER JOIN (SELECT DISTINCT subscriptions.code_location_id FROM subscriptions) sub
+          ON sub.code_location_id = cl.id
+      WHERE sub.code_location_id IS NULL
+        AND do_not_fetch = false AND best_code_set_id IS NOT NULL),
+
+    subscribed AS ( SELECT  locations.id, do_not_fetch, best_code_set_id
+      FROM code_sets cs
+      INNER JOIN locations ON locations.best_code_set_id = cs.id
+      INNER JOIN (SELECT DISTINCT subscriptions.code_location_id FROM subscriptions) sub
+          ON sub.code_location_id = locations.id
+      WHERE COALESCE(cs.logged_at, '1970-01-01') + locations.update_interval * INTERVAL '1 second'
+          < NOW() AT TIME ZONE 'utc'
+        AND locations.do_not_fetch = false),
+
+    timely AS (SELECT locations.id, do_not_fetch, update_interval, best_code_set_id
+      FROM locations
+      INNER JOIN code_sets cs ON  locations.best_code_set_id = cs.id
+      INNER JOIN (SELECT DISTINCT subscriptions.code_location_id FROM subscriptions) sub
+          ON sub.code_location_id = locations.id
+      WHERE COALESCE(cs.logged_at, '1970-01-01') +locations.update_interval * INTERVAL '1 second'
+          > NOW() AT TIME ZONE 'utc'
+        AND locations.do_not_fetch = false),
+
+    no_best_code AS (select * FROM locations where best_code_set_id IS NULL AND do_not_fetch = false )
+
+    SELECT array_to_json(array_agg(row_to_json(t))) FROM (
+    SELECT * FROM
+      (SELECT count(*) as total FROM locations) as total,
+      (SELECT count(*) as dnf FROM dnf) as dnf,
+      (SELECT count(*) as unsubscribed FROM unsubscribed) as unsubscribed,
+      (SELECT count(*) as wait_until FROM timely) as wait_until,
+      (SELECT count(*) as no_best_code FROM no_best_code) as no_best_code,
+      (SELECT count(*) as subscribed FROM subscribed) as subscribed,
+      (SELECT count(*) as idk
+        FROM locations cl
+        LEFT OUTER JOIN dnf ON cl.id = dnf.id
+        LEFT OUTER JOIN unsubscribed us ON cl.id = us.id
+        LEFT OUTER JOIN subscribed sb ON cl.id = sb.id
+        LEFT OUTER JOIN timely tml ON cl.id = tml.id
+        LEFT OUTER JOIN no_best_code nbc ON cl.id = nbc.id
+      WHERE dnf.id IS NULL
+      AND us.id IS NULL
+      AND sb.id IS NULL
+      AND tml.id IS NULL
+      AND nbc.id IS NULL) as idk)t
+    INTO result;
+
+    INSERT INTO admin_dashboard_stats (stat_type, data, created_at, updated_at)
+      VALUES ('cl_total', result, current_timestamp, current_timestamp) ;
+
+    RETURN result;
+  END;
+
+  $$;
+
+
+--
 -- Name: admin_insert_cl_visited_stats(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -546,6 +619,33 @@ BEGIN
 END;
 
 $$;
+
+
+--
+-- Name: admin_insert_cl_visited_stats_v3(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.admin_insert_cl_visited_stats_v3() RETURNS jsonb
+    LANGUAGE plpgsql
+    AS $$
+
+   DECLARE
+     result jsonb;
+   BEGIN
+     SELECT admin_select_cl_visited_stats_V3() ||
+           admin_select_cl_visited_stats_V3('3 days') ||
+           admin_select_cl_visited_stats_V3('1 month') ||
+           admin_select_cl_visited_stats_V3(NULL, 'discovery') ||
+           admin_select_cl_visited_stats_V3('3 days', 'discovery') ||
+           admin_select_cl_visited_stats_V3('1 month', 'discovery')
+           INTO result;
+
+     INSERT INTO admin_dashboard_stats (stat_type, data, created_at, updated_at)
+       VALUES ('cl_visited', result, current_timestamp, current_timestamp) ;
+     RETURN result;
+   END;
+
+   $$;
 
 
 --
@@ -639,6 +739,60 @@ CREATE FUNCTION public.admin_select_cl_visited_stats_v2(interval_span character 
       END;
 
      $_$;
+
+
+--
+-- Name: admin_select_cl_visited_stats_v3(character varying, character varying); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.admin_select_cl_visited_stats_v3(interval_span character varying DEFAULT NULL::character varying, registration_key character varying DEFAULT NULL::character varying) RETURNS jsonb
+    LANGUAGE plpgsql
+    AS $_$
+
+         DECLARE
+            result jsonb;
+            columnName varchar := '';
+            query varchar ;
+            client_name varchar ;
+         BEGIN
+            client_name := $2 ;
+
+            IF client_name IS NOT NULL THEN
+            columnName := '_kb' ;
+            END IF ;
+
+           columnName := columnName || '_' || COALESCE(REPLACE($1, ' ', ''), 'all') ;
+
+           query :=
+             'SELECT array_to_json(array_agg(row_to_json(t))) FROM (
+               SELECT  count(*) as ' || columnName ||
+                       ' FROM code_sets
+                       INNER JOIN code_locations ON code_locations.best_code_set_id = code_sets.id
+                             INNER JOIN jobs j ON j.id = code_locations.last_job_id
+                       INNER JOIN (SELECT DISTINCT sub.code_location_id FROM subscriptions sub ' ;
+
+           IF client_name IS NOT NULL THEN
+             query = query || ' INNER JOIN registration_keys reg ON reg.id = sub.registration_key_id
+                 AND reg.client_name = ''' || client_name || '''' ;
+           END IF ;
+
+           query = query || ') e1 ON e1.code_location_id = code_locations.id ' ;
+
+           IF $1 IS NOT NULL THEN
+             query := query || ' AND COALESCE(j.current_step_at, NOW()) >
+                                  NOW() - interval ''' || ($1)::interval || '''' ;
+           ELSE
+             query := query || ' AND code_locations.do_not_fetch = false' ;
+           END IF ;
+
+           query := query || ' )t' ;
+
+           RAISE NOTICE 'query: %', query ;
+           EXECUTE query INTO result;
+           RETURN result;
+         END;
+
+        $_$;
 
 
 --
@@ -5204,7 +5358,8 @@ CREATE TABLE public.jobs (
     failure_group_id integer,
     organization_id integer,
     code_location_id integer,
-    code_location_tarball_id integer
+    code_location_tarball_id integer,
+    is_expensive boolean DEFAULT false
 );
 
 
@@ -9533,7 +9688,8 @@ CREATE TABLE public.slaves (
     clump_status text,
     oldest_clump_timestamp timestamp without time zone,
     enable_profiling boolean DEFAULT false,
-    blocked_types text
+    blocked_types text,
+    queue_name character varying
 );
 
 
@@ -11584,4 +11740,14 @@ INSERT INTO schema_migrations (version) VALUES ('20190107183802');
 INSERT INTO schema_migrations (version) VALUES ('20190212105155');
 
 INSERT INTO schema_migrations (version) VALUES ('20190214122613');
+
+INSERT INTO schema_migrations (version) VALUES ('20190320154004');
+
+INSERT INTO schema_migrations (version) VALUES ('20190320154440');
+
+INSERT INTO schema_migrations (version) VALUES ('20190321201057');
+
+INSERT INTO schema_migrations (version) VALUES ('20190508051951');
+
+INSERT INTO schema_migrations (version) VALUES ('20190508052835');
 

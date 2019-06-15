@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.8
--- Dumped by pg_dump version 9.6.8
+-- Dumped from database version 9.6.10
+-- Dumped by pg_dump version 9.6.10
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -2997,7 +2997,8 @@ CREATE FOREIGN TABLE public.jobs (
     failure_group_id integer,
     organization_id integer,
     code_location_id integer,
-    code_location_tarball_id integer
+    code_location_tarball_id integer,
+    is_expensive boolean DEFAULT false
 )
 SERVER fis
 OPTIONS (
@@ -3546,7 +3547,8 @@ CREATE TABLE public.licenses (
     url text,
     description text,
     deleted boolean DEFAULT false,
-    locked boolean DEFAULT false
+    locked boolean DEFAULT false,
+    kb_id uuid
 );
 
 
@@ -5940,7 +5942,8 @@ CREATE FOREIGN TABLE public.slaves (
     clump_status text,
     oldest_clump_timestamp timestamp without time zone,
     enable_profiling boolean DEFAULT false,
-    blocked_types text
+    blocked_types text,
+    queue_name character varying
 )
 SERVER fis
 OPTIONS (
@@ -10455,6 +10458,10 @@ INSERT INTO schema_migrations (version) VALUES ('20190108060802');
 INSERT INTO schema_migrations (version) VALUES ('20190130190953');
 
 INSERT INTO schema_migrations (version) VALUES ('20190221123532');
+
+INSERT INTO schema_migrations (version) VALUES ('20190312150645');
+
+INSERT INTO schema_migrations (version) VALUES ('20190529010101');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
