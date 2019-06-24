@@ -37,4 +37,7 @@ Disallow: /
 User-agent: SemrushBot/3~b
 Disallow: /
 
+User-agent: MJ12bot
+Disallow: /
+
 Sitemap: http://www.openhub.net/sitemap_index.xml
