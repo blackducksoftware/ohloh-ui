@@ -76,6 +76,14 @@ describe 'OrganizationsController' do
     assert_select 'div#org_infographic'
   end
 
+  it 'show must strip tags from description' do
+    @organization.update! description: "foo \n <link>"
+
+    get :show, id: @organization.vanity_url
+
+    must_select('p')[2].text.must_equal "foo \n "
+  end
+
   it 'should support show page via xml api' do
     key = create(:api_key, account_id: create(:account).id)
     get :show, id: @organization, format: :xml, api_key: key.oauth_application.uid

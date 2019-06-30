@@ -283,6 +283,14 @@ describe 'ProjectsController' do
       must_respond_with :ok
     end
 
+    it 'must strip tags from description' do
+      project.update! description: "foo \n <link>"
+
+      get :show, id: project.vanity_url
+
+      must_select('p')[2].text.must_equal "foo \n "
+    end
+
     it 'show accepts being called via api' do
       api_key = create(:api_key, account: create(:account))
       get :show, id: create(:project), format: :xml, api_key: api_key.oauth_application.uid

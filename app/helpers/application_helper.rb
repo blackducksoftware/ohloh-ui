@@ -43,7 +43,7 @@ module ApplicationHelper
   def expander(text, min = 250, max = 350, regex = /\s/, regex_offset = -1)
     return unless text
 
-    text = text.escape.sanitize
+    text = text.sanitize
     return text.html_safe if text.length < max
 
     l = (text[0..min].rindex(regex) || min + 1) + regex_offset
@@ -131,10 +131,6 @@ module ApplicationHelper
 
     base_time ||= @highlight_from || Time.current
     return 'highlight' if actual_time >= base_time
-  end
-
-  def strip_tags_and_escaped_html(string)
-    ActionView::Base.full_sanitizer.sanitize(string)
   end
 
   def needs_login

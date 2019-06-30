@@ -25,7 +25,7 @@
       - size_breach = project_description_size_breached?(@project)
       %section#project_summary{ itemprop: 'description', class: ('vertical_scroll_bar' if size_breach) }
         - if @project.description.present?
-          = simple_format(@project.description.escape)
+          = simple_format @project.description.strip_tags
         - else
           = t('.no_description')
           = link_to t('.add_description'), edit_project_path(@project)

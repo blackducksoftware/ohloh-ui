@@ -132,29 +132,4 @@ class StringTest < ActiveSupport::TestCase
       '0'.to_bool.must_equal false
     end
   end
-
-  describe '#escape_unclosed_tags' do
-    it 'should escape any unclosed tags' do
-      'welcome to <open hub'.escape_unclosed_tags.must_equal 'welcome to &lt;open hub'
-      '<h1 great day'.escape_unclosed_tags.must_equal '&lt;h1 great day'
-    end
-  end
-
-  describe '#escape_invalid_tags' do
-    it 'should escape invalid html tags' do
-      'welcome to <blackduck org>'.escape_invalid_tags.must_equal 'welcome to &lt;blackduck org&gt;'
-      'welcome to <a href=/>blackduck</a>'.escape_invalid_tags.must_equal 'welcome to <a href=/>blackduck</a>'
-      '<openhub>Org</openhub>'.escape_invalid_tags.must_equal '&lt;openhub&gt;Org&lt;/openhub&gt;'
-    end
-
-    it 'should escape internal javascript to prevent from XSS attack' do
-      '<script>alert("hello");</script>'.escape_invalid_tags.must_equal '&lt;script&gt;alert("hello");&lt;/script&gt;'
-    end
-  end
-
-  describe '#escape' do
-    it 'should escape unclosed and invalid html tags' do
-      'welcome <to <a href=/><hub></a>'.escape_invalid_tags.wont_equal 'welcome &lt;to <a href=/>&lt;hub&gt;</a>'
-    end
-  end
 end

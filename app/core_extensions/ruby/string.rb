@@ -42,18 +42,6 @@ class String
     self =~ /^(true|t|yes|y|1)$/i ? true : false
   end
 
-  def escape
-    ActionController::Base.helpers.escape self
-  end
-
-  def escape_unclosed_tags
-    ActionController::Base.helpers.escape_unclosed_tags self
-  end
-
-  def escape_invalid_tags
-    ActionController::Base.helpers.escape_invalid_tags self
-  end
-
   class << self
     def clean_string(str)
       return str if str.blank?

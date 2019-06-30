@@ -44,6 +44,14 @@ describe 'LicensesControllerTest' do
 
       must_respond_with :not_found
     end
+
+    it 'must escape html and format newlines in description' do
+      @license.update! description: "foo \n <link>"
+
+      get :show, id: @license.vanity_url
+
+      must_select('p')[2].text.must_equal "foo \n <link>"
+    end
   end
 
   describe 'new' do

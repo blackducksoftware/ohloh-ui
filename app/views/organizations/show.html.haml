@@ -8,7 +8,7 @@
     = t('.no_desc')
     = link_to t('.add_desc'), edit_organization_path(@organization)
   - else
-    = simple_format @organization.description.escape
+    = simple_format @organization.description.strip_tags
   = render partial: '/shared/add_this', locals: { text: "#{@organization.name} organization" }
 .col-md-6.col-md-offset-1
   = render partial: 'organizations/show/quick_reference'
