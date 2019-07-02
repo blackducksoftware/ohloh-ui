@@ -157,5 +157,15 @@ describe 'StackEntriesController' do
 
       must_render_template 'new'
     end
+
+    it 'should not support html format' do
+      stack = create(:stack)
+      project = create(:project)
+      login_as stack.account
+      get :new, project_id: project.id
+      must_respond_with :not_acceptable
+      xhr :get, :new, project_id: project.id
+      must_respond_with :ok
+    end
   end
 end
