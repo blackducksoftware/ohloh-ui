@@ -8,7 +8,9 @@ class StackEntriesController < ApplicationController
   before_action :find_stack_entry, except: %i[create new]
   before_action :set_project_or_fail, only: :new
 
-  def new; end
+  def new
+    render nothing: true, status: :not_acceptable unless request.xhr?
+  end
 
   def create
     existing_entry = StackEntry.where(stack_id: @stack.id, project_id: @project.id, deleted_at: nil).first
