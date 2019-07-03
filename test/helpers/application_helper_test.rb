@@ -71,12 +71,6 @@ class ApplicationHelperTest < ActionView::TestCase
     end
   end
 
-  describe 'strip_tags_and_escaped_html' do
-    it 'must remove html tags' do
-      strip_tags_and_escaped_html('<p>test</p>').must_equal 'test'
-    end
-  end
-
   describe 'time ago in days, hours, and minutes' do
     it 'must return not available when there is no supplied value' do
       time_ago_in_days_hours_minutes(nil).must_equal 'not available'

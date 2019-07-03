@@ -17,7 +17,7 @@
         %tr
           %td
             .pull-left
-              - title = strip_tags_and_escaped_html(rss_article.title.to_s)
+              - title = rss_article.title.to_s.strip_tags
               = link_to title, rss_article.absolute_link, class: 'rss_article_title_link', target: '_blank'
             .pull-right.soft
               %i
@@ -26,7 +26,7 @@
                 = t('.ago')
                 - if rss_article.author
                   = t('.by')
-                  = obfuscate_email(strip_tags_and_escaped_html(rss_article.author.to_s))
+                  = obfuscate_email(rss_article.author.to_s.strip_tags)
             .clearfix
             - if rss_article.description.present?
               .summary-alignment.space= expander(strip_tags(CGI.unescapeHTML(rss_article.description)))
