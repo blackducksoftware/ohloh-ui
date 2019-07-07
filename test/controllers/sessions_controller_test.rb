@@ -86,8 +86,8 @@ describe 'SessionsController' do
         assert account.access.disabled?
       end
 
-      it 'must render a captcha form before the last try' do
-        account.update!(auth_fail_count: max_login_retries - 2)
+      it 'must render a captcha form after 3 failed login attempts' do
+        account.update!(auth_fail_count: 3)
 
         post :create, login: { login: account.login }
 
