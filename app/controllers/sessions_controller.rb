@@ -1,6 +1,6 @@
 class SessionsController < Clearance::SessionsController
   before_action :account_must_exist, only: :create
-  before_action :captcha_verify, if: :last_allowed_login_attempt?
+  before_action :captcha_verify, if: :failed_login_thrice?
   before_action :reset_auth_fail_count, only: :create, if: :auth_failure_timeout?
   attr_reader :account
 
@@ -20,8 +20,8 @@ class SessionsController < Clearance::SessionsController
 
   private
 
-  def last_allowed_login_attempt?
-    retries_remaining <= 1
+  def failed_login_thrice?
+    account.auth_fail_count >= 3
   end
 
   def captcha_verify
@@ -34,7 +34,7 @@ class SessionsController < Clearance::SessionsController
 
   def sign_in_failure(failure_message)
     flash.now[:error] = failure_message
-    @ask_for_recaptcha = true if retries_remaining == 1
+    @ask_for_recaptcha = true if failed_login_thrice?
     disable_account_for_retries
     render 'sessions/new', status: :unauthorized
   end
