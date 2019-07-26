@@ -1,7 +1,12 @@
 class ProjectSecuritySet < ActiveRecord::Base
   has_many :releases
-  has_many :vulnerabilities, -> { uniq }, through: :releases
   belongs_to :project
+
+  def vulnerabilities
+    vuln_ids = releases.joins('inner join releases_vulnerabilities rv on rv.release_id = releases.id')
+                       .uniq.pluck(:vulnerability_id)
+    Vulnerability.where(id: vuln_ids)
+  end
 
   def most_recent_releases
     @most_recent_releases ||= releases.order(released_on: :asc).last(10)
