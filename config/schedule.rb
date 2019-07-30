@@ -12,3 +12,7 @@ end
 every 1.day, at: '4:30 am', roles: [:sidekiq] do
   rake 'rss:feeds:sync'
 end
+
+every 1.day, at: '12:00 am', roles: [:sidekiq] do
+  rake 'cleanup_vulnerabilities'
+end
