@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   end
 
   post 'sessions' => 'sessions#create', as: :oh_sessions
+  get 'health' => 'sessions#health'
 
   resources :stack_entries, only: :new
 
