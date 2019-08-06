@@ -20,4 +20,8 @@ module EnlistmentsHelper
     key = Setting.get_project_enlistment_key(@project.id)
     Setting.get_value(key).try(:present?)
   end
+
+  def code_location_admin_url(id)
+    "#{FISBOT_API_URL}/admin/code_locations/#{id}/jobs"
+  end
 end
