@@ -1,6 +1,6 @@
 class SessionsController < Clearance::SessionsController
   before_action :account_must_exist, only: :create
-  before_action :captcha_verify, if: :failed_login_thrice?
+  before_action :captcha_verify, only: :create, if: :failed_login_thrice?
   before_action :reset_auth_fail_count, only: :create, if: :auth_failure_timeout?
   attr_reader :account
 
@@ -15,6 +15,14 @@ class SessionsController < Clearance::SessionsController
         increment_auth_fail_count
         sign_in_failure(status.failure_message)
       end
+    end
+  end
+
+  def health
+    if ActiveRecord::Base.connected?
+      render text: Time.current
+    else
+      render nothing: true, status: :internal_server_error
     end
   end
 
