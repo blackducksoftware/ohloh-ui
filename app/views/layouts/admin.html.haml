@@ -47,5 +47,8 @@
                 %i.fa.fa-book
                 %span License Permissions
       .content-wrapper
+        - if flash[:success]
+          %p.alert.alert-success= flash[:success]
+
         %section.content-header
           = yield
