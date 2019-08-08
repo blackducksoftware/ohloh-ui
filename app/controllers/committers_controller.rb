@@ -56,8 +56,8 @@ class CommittersController < UnclaimedController
         current_user.position_core.ensure_position_or_alias!(@projects_map[position[:project_id].to_i], @name, true,
                                                              title: position[:title],
                                                              description: position[:description])
-      rescue StandardError => exception
-        capture_failed_positions(exception, position)
+      rescue StandardError => e
+        capture_failed_positions(e, position)
       end
     end
   end
