@@ -1,6 +1,9 @@
 %tr.enlistment
   %td.col-md-4
     = enlistment.code_location.nice_url
+    - if current_user_is_admin?
+      = link_to code_location_admin_url(enlistment.code_location_id), target: '_blank' do
+        %span.glyphicon.glyphicon-link
   %td.col-md-2
     = enlistment.code_location.scm_name_in_english
   %td.col-md-3
