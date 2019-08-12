@@ -22,6 +22,6 @@ module EnlistmentsHelper
   end
 
   def code_location_admin_url(id)
-    "#{FISBOT_API_URL}/admin/code_locations/#{id}/jobs"
+    "#{ApiAccess::URL}/admin/code_locations/#{id}/jobs"
   end
 end
