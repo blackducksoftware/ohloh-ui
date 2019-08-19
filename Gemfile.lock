@@ -321,7 +321,7 @@ GEM
     mimemagic (0.3.3)
     mini_magick (4.1.1)
     mini_mime (1.0.1)
-    mini_portile2 (2.3.0)
+    mini_portile2 (2.4.0)
     minitest (5.11.3)
     minitest-rails (2.2.1)
       minitest (~> 5.7)
@@ -335,8 +335,8 @@ GEM
       net-ssh (>= 2.6.5, < 6.0.0)
     net-ssh (5.2.0)
     newrelic_rpm (6.2.0.354)
-    nokogiri (1.8.5)
-      mini_portile2 (~> 2.3.0)
+    nokogiri (1.10.4)
+      mini_portile2 (~> 2.4.0)
     notiffany (0.1.1)
       nenv (~> 0.1)
       shellany (~> 0.0)
@@ -612,7 +612,7 @@ DEPENDENCIES
   minitest-rails
   mocha
   newrelic_rpm
-  nokogiri (~> 1.8.5)
+  nokogiri (~> 1.10.3)
   oh_delegator
   ohloh_scm (= 2.4.0)
   open4
@@ -658,4 +658,4 @@ DEPENDENCIES
   will_paginate-bootstrap
 
 BUNDLED WITH
-   2.0.1
+   1.17.3
