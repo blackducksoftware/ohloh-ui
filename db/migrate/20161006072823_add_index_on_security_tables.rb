@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddIndexOnSecurityTables < ActiveRecord::Migration
   def change
     add_index :releases, :project_security_set_id

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CsvHelper
   def csv_escape(value)
     string = value.to_s

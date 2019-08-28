@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NilAnalysis < NullObject
   attr_reader :main_language, :oldest_code_set_time
 

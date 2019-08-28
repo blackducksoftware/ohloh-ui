@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # rubocop:disable Metrics/MethodLength, Metrics/ClassLength, Metrics/LineLength
 module Reverification
   class Template

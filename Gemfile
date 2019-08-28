@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 gem 'activeadmin', '1.0.0'
 gem 'airbrake', '~> 5.5'

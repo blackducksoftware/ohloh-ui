@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register OrganizationJob do
   menu false
   belongs_to :organization, finder: :find_by_vanity_url!, optional: true

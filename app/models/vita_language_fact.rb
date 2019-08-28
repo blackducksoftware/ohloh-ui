@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class VitaLanguageFact < NameLanguageFact
   belongs_to :vita
   belongs_to :language

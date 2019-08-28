@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EnlistmentsController < SettingsController
   helper EnlistmentsHelper
   helper ProjectsHelper

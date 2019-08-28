@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UnclaimedControllerTest
   def limit_by_memory_cap(instance, with_query = true)
     original_object_memory_cap = OBJECT_MEMORY_CAP

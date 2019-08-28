@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Account::VirtualAttributes
   extend ActiveSupport::Concern
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ActivationResendsController < ApplicationController
   before_action :find_account_by_email, only: :create
   before_action :prevent_email_delivery_for_active_account, only: :create

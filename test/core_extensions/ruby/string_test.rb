@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class StringTest < ActiveSupport::TestCase
@@ -44,7 +46,7 @@ class StringTest < ActiveSupport::TestCase
   it 'clean up weirdly encoded strings' do
     before = "* oprava chyby 33731\n* \xFAprava  podle Revize B anglick\xE9ho dokumentu\n"
     after = ['* oprava chyby 33731', '* �prava  podle Revize B anglick�ho dokumentu']
-    before.fix_encoding_if_invalid!.split("\n").must_equal after
+    before.fix_encoding_if_invalid.split("\n").must_equal after
   end
 
   it 'should not force_encode to utf-8 when string has valid encoding' do
@@ -59,13 +61,13 @@ class StringTest < ActiveSupport::TestCase
   end
 
   it 'should not mangle good unicode strings' do
-    'Stefan Küng'.fix_encoding_if_invalid!.must_equal 'Stefan Küng'
+    'Stefan Küng'.fix_encoding_if_invalid.must_equal 'Stefan Küng'
   end
 
   it 'should replace garbage encoded characters with unknowns' do
     bad_str = "\xE2??"
     bad_str.valid_encoding?.must_equal false
-    bad_str.fix_encoding_if_invalid!
+    bad_str = bad_str.fix_encoding_if_invalid
     bad_str.present?.must_equal true
     bad_str.valid_encoding?.must_equal true
     bad_str.must_equal '�??'

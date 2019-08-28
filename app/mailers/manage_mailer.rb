@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ManageMailer < ActionMailer::Base
   default to: proc { (@manager || @manage.account).email },
           from: 'mailer@openhub.net'

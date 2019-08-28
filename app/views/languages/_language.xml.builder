@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 xml.language do
   xml.id language.id
   xml.name language.name

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Logo < Attachment
   FILE_SIZE_LIMIT = (1..500.kilobytes).freeze
 

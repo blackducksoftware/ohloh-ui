@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Usage:
 # rake selenium:prepare_homepage_data
 

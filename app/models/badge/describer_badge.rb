@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DescriberBadge < Badge
   def eligibility_count
     @eligibility_count ||= vars[:desc_edit_count]

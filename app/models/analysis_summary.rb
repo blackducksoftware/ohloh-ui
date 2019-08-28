@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AnalysisSummary < ActiveRecord::Base
   serialize :recent_contributors
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def code_location_stub(scm_type: :git, url: Faker::Internet.url, branch: :master)
   url = ":pserver:anonymous:@cvs.sourceforge.net:/#{Faker::Lorem.word}/#{Faker::Lorem.word}" if scm_type == :cvs
   CodeLocation.new(url: url, scm_type: scm_type, branch: branch)

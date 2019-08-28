@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module VulnerabilitiesHelper
-  EMPTY_SEVERITY = 'unknown_severity'.freeze
+  EMPTY_SEVERITY = 'unknown_severity'
 
   def major_releases(releases, project)
     # Note: This is a temporary fix for the android project
@@ -60,14 +62,12 @@ module VulnerabilitiesHelper
     html = ''
     timespan = releaase_timespan_options
     timespan.each do |label, options|
-      html << content_tag(:div, label,
+      html += content_tag(:div, label,
                           class: "btn btn-info btn-mini release_timespan #{(options[1..2] || []).join(' ')}".strip,
                           date: options[0])
     end
-    html << hidden_field_tag('vulnerability_filter_period', filter_period_param, class: 'vulnerability_main_filter')
-    # rubocop:disable Rails/OutputSafety # TODO: review
+    html += hidden_field_tag('vulnerability_filter_period', filter_period_param, class: 'vulnerability_main_filter')
     html.html_safe
-    # rubocop:enable Rails/OutputSafety
   end
 
   def releaase_timespan_options

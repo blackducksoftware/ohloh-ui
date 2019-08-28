@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OrgThirtyDayActivity < ActiveRecord::Base
   SORT_TYPES = [['All Organizations', 'all_orgs'], %w[Commercial commercial], %w[Education educational],
                 %w[Government government], %w[Non-Profit non_profit], %w[Large large],

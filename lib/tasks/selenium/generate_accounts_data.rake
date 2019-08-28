@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 # Usage:
 # rake selenium:prepare_accounts_data ACCOUNT_NAME=stefan
 
-OUTPUT_FILE = 'tmp/accounts_data.yml'.freeze
+OUTPUT_FILE = 'tmp/accounts_data.yml'
 
 namespace :selenium do
   include ActionView::Helpers::DateHelper

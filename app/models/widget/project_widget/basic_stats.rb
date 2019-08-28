@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectWidget::BasicStats < ProjectWidget
   def height
     225

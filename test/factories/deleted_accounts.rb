@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :deleted_account do
     email { Faker::Internet.free_email }

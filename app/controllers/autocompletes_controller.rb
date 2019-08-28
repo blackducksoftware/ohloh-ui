@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AutocompletesController < ApplicationController
   before_action :check_for_project, only: :contributions
   before_action :set_name_facts, only: :contributions

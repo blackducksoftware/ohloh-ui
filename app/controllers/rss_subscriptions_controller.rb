@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RssSubscriptionsController < ApplicationController
   helper :projects
   before_action :session_required, :redirect_unverified_account, except: [:index]
@@ -36,7 +38,7 @@ class RssSubscriptionsController < ApplicationController
 
   def handle_subscription
     @rss_subscription = RssSubscription.where(project_id: @project.id, rss_feed_id: @rss_feed.id).first
-    if @rss_subscription && @rss_subscription.deleted
+    if @rss_subscription&.deleted
       @rss_subscription.editor_account = current_user
       @rss_subscription.create_edit.redo!(current_user)
     else

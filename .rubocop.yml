@@ -1,15 +1,8 @@
 AllCops:
-  TargetRubyVersion: 2.2
-  TargetRailsVersion: 4.2
+  TargetRubyVersion: 2.5
   Exclude:
     - vagrant/**/*
     - script/*_temp.rb
-
-Rails:
-  Enabled: true
-
-HasAndBelongsToMany:
-  Enabled: false
 
 Metrics/LineLength:
   Max: 120
@@ -47,16 +40,3 @@ Style/RegexpLiteral:
 Style/EmptyCaseCondition:
   Description: 'Avoid empty condition in case statements.'
   Enabled: false
-
-Rails/InverseOf:
-  Enabled: false
-  
-Rails/HasManyOrHasOneDependent:
-  Enabled: false
-  
-Rails/UnknownEnv:
-  Environments:
-    - production
-    - development
-    - test
-    - staging

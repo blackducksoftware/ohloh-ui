@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectParamsBuilder
   attr_accessor :row
   attr_reader :messages, :project

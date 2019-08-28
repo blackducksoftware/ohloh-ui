@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class Position::HooksTest < ActiveSupport::TestCase

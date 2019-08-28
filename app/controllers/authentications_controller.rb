@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AuthenticationsController < ApplicationController
   skip_before_action :store_location
   before_action :session_required, only: %i[new firebase_callback]
@@ -86,7 +88,7 @@ class AuthenticationsController < ApplicationController
     reset_session
     clearance_session.sign_in account
 
-    if github_api && github_api.all_emails.exclude?(account.email)
+    if github_api&.all_emails&.exclude?(account.email)
       flash[:notice] = t('.email_mismatch', settings_account_link: settings_account_path(account))
     end
     redirect_to account
@@ -116,6 +118,6 @@ class AuthenticationsController < ApplicationController
   end
 
   def github_api_account_is_verified?
-    github_api_account && github_api_account.github_verification
+    github_api_account&.github_verification
   end
 end

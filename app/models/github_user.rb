@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class GithubUser
   URL_FORMAT = /\A[^\/]+\Z/.freeze
-  GITHUB_API_URL = 'https://api.github.com/users/'.freeze
+  GITHUB_API_URL = 'https://api.github.com/users/'
   include ActiveModel::Model
 
   attr_accessor :url

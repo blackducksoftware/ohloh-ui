@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class Spark::AnalysisSpark < Spark::Base
   SPARK = { column_width: 4, column_gap: 1, column_base: 1, column_variant: 75, blank_row: 1,
             label_height: 14, label_point_size: 12, max_value: 100 }.freeze
 
-  LIGHT_GRAY = '#ddd'.freeze
-  DARK_GRAY = '#a7a7a7'.freeze
+  LIGHT_GRAY = '#ddd'
+  DARK_GRAY = '#a7a7a7'
   FONT = Rails.root.join('app', 'assets', 'fonts', 'OpenSans-Bold.ttf').freeze
 
   def initialize(data, options = {})
@@ -70,7 +72,7 @@ class Spark::AnalysisSpark < Spark::Base
     if value >= @max_value
       SPARK[:column_variant]
     else
-      (value.to_f / @max_value.to_f * SPARK[:column_variant]).to_i
+      (value.fdiv(@max_value) * SPARK[:column_variant]).to_i
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailObfuscation
   def obfuscate_email(email = '')
     email.to_s

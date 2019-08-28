@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 xml = xml_instance
 detailed_info ||= false
 

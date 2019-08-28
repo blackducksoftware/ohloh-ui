@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Custom Date or Time formats
 new_formats = {
   dmy: '%d-%b-%Y',

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :previous_twelve_month_summary do
     affiliated_committers_count { 4 }

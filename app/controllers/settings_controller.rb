@@ -1,7 +1,7 @@
+# frozen_string_literal: true
+
 class SettingsController < ApplicationController
-  # rubocop:disable Rails/LexicallyScopedActionFilter
   before_action :show_permissions_alert, only: %i[index new edit]
-  # rubocop:enable Rails/LexicallyScopedActionFilter
   ACCEPTABLE_TIME_UNITS = %w[hours days weeks months years].freeze
 
   def oversized_project?(project)

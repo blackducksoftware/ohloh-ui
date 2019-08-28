@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Analysis::ContributorHistoryChart < Analysis::Chart
   def initialize(analysis)
     @analysis = analysis

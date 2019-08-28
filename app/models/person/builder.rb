@@ -1,20 +1,17 @@
+# frozen_string_literal: true
+
 class Person::Builder
   class << self
     def rebuild_kudos
       Person.logger.info { 'Person.rebuild_kudos(): Begin' }
 
       Person.find_each(batch_size: 10_000) do |person|
-        # rubocop:disable Rails/DynamicFindBy # find_by... here is a predefined method.
         kudo_score = KudoScore.find_by_account_or_name_and_project(person) ||
                      NilKudoScore.new
-        # rubocop:enable Rails/DynamicFindBy
-
-        # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
         person.update_columns(
           kudo_score: kudo_score.score, kudo_position: kudo_score.position,
           kudo_rank: kudo_score.rank, popularity_factor: person.searchable_factor
         )
-        # rubocop:enable Rails/SkipsModelValidations
       end
 
       Person.logger.info { 'Person.rebuild_kudos(): Complete' }

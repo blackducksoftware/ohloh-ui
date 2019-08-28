@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StackDecorator < Cherry::Decorator
   def name(account, project)
     return object.title if object.title.present?

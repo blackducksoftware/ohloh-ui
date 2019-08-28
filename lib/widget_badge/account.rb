@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module WidgetBadge
   module Account
     module_function
@@ -21,10 +23,10 @@ module WidgetBadge
       modified_image = add_name(image, options[:name])
 
       commits_count = options[:commits].to_i
-      commits = "#{commits_count} commit".pluralize(commits_count) if commits_count > 0
+      commits = "#{commits_count} commit".pluralize(commits_count) if commits_count.positive?
 
       kudos_count = options[:kudos].to_i
-      kudos = "#{kudos_count} kudo".pluralize(kudos_count) if kudos_count > 0
+      kudos = "#{kudos_count} kudo".pluralize(kudos_count) if kudos_count.positive?
 
       add_commits_and_kudos(modified_image, commits, kudos)
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # rubocop:disable Metrics/ClassLength
 class ApplicationController < ActionController::Base
   include ClearanceSetup
@@ -19,8 +21,6 @@ class ApplicationController < ActionController::Base
 
   attr_reader :page_context
   helper_method :page_context
-
-  # rubocop:disable Rails/LexicallyScopedActionFilter
   before_action :validate_request_format
   before_action :store_location
   before_action :handle_me_account_paths
@@ -28,7 +28,6 @@ class ApplicationController < ActionController::Base
   before_action :clear_reminder
   before_action :verify_api_access_for_xml_request, only: %i[show index]
   before_action :update_last_seen_at_and_ip
-  # rubocop:enable Rails/LexicallyScopedActionFilter
 
   alias session_required require_login
 
@@ -180,7 +179,7 @@ class ApplicationController < ActionController::Base
     return unless params[:clear_action_reminder]
 
     action = current_user.actions.where(id: params[:clear_action_reminder]).first
-    action.update(status: Action::STATUSES[:completed]) if action
+    action&.update(status: Action::STATUSES[:completed])
   end
 
   def store_location
@@ -232,9 +231,9 @@ class ApplicationController < ActionController::Base
 
   def verify_api_key_standing
     api_key = ApiKey.in_good_standing.find_for_oauth_application_uid(api_client_id)
-    if api_key && api_key.may_i_have_another?
+    if api_key&.may_i_have_another?
       doorkeeper_authorize! if doorkeeper_token
-    elsif api_key && api_key.send(:exceeded_daily_allotment?)
+    elsif api_key&.send(:exceeded_daily_allotment?)
       render_limit_exceeded_api_key(api_key.daily_limit)
     else
       render_invalid_api_key
@@ -242,7 +241,7 @@ class ApplicationController < ActionController::Base
   end
 
   def api_client_id
-    params[:api_key] || (doorkeeper_token && doorkeeper_token.application && doorkeeper_token.application.uid)
+    params[:api_key] || (doorkeeper_token&.application && doorkeeper_token.application.uid)
   end
 
   def strip_query_param
@@ -279,7 +278,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user_is_verified?
-    current_user && current_user.access.verified?
+    current_user&.access&.verified?
   end
   helper_method :current_user_is_verified?
 
@@ -304,9 +303,7 @@ class ApplicationController < ActionController::Base
   def update_last_seen_at_and_ip
     return unless logged_in?
 
-    # rubocop:disable Rails/SkipsModelValidations # We want to skip validations here.
     current_user.update_columns(last_seen_at: Time.current, last_seen_ip: request.remote_ip)
-    # rubocop:enable Rails/SkipsModelValidations # We want to skip validations here.
   end
 end
 # rubocop:enable Metrics/ClassLength

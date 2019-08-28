@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Alias < ActiveRecord::Base
   include AliasScopes
   belongs_to :project

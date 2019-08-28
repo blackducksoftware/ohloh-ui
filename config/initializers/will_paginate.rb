@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module WillPaginate
   module ActionView
     def will_paginate(collection = nil, options = {})

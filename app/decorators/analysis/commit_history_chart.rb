@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Analysis::CommitHistoryChart < Analysis::Chart
   def initialize(analysis)
     @analysis = analysis

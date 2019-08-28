@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NameFact < ActiveRecord::Base
   include Comparable
   serialize :commits_by_project

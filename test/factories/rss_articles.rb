@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :rss_article do
     title { Faker::Lorem.paragraph }

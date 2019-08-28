@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectBadgeMailer < ActionMailer::Base
   default from: 'mailer@openhub.net'
 

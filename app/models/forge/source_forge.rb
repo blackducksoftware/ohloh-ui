@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Forge::SourceForge < Forge
   attr_accessor :url
 

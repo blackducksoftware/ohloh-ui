@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AvatarHelper
   def avatar_for(who, options = {})
     return '' unless who
@@ -32,7 +34,6 @@ module AvatarHelper
     end
   end
 
-  # rubocop:disable Rails/OutputSafety # `rank` is known kudo_rank
   def avatar_small_laurels(rank)
     avatar_laurels_img(rank, 'sm_laurel').html_safe
   end
@@ -44,7 +45,6 @@ module AvatarHelper
   def avatar_tiny_laurels(rank)
     avatar_laurels_img(rank, 'tn_laurel').html_safe
   end
-  # rubocop:enable Rails/OutputSafety
 
   private
 
@@ -59,9 +59,9 @@ module AvatarHelper
     default_url = if ActionController::Base.asset_host.blank?
                     'https%3a%2f%2fopenhub.net'
                   else
-                    "http#{'s' if request && request.ssl?}%3a%2f%2f#{ActionController::Base.asset_host}"
+                    "http#{'s' if request&.ssl?}%3a%2f%2f#{ActionController::Base.asset_host}"
                   end
-    default_url << "%2fanon#{avatar_default_size(size)}.gif"
+    default_url += "%2fanon#{avatar_default_size(size)}.gif"
     gravatar_host = 'https://gravatar.com'
     "#{gravatar_host}/avatar/#{md5}?&s=#{size}&rating=PG&d=#{default_url}"
   end
@@ -82,8 +82,6 @@ module AvatarHelper
   end
 
   def avatar_laurels_img(rank, imag_base)
-    # rubocop:disable Rails/OutputSafety # `rank` is the kudo_rank.
     "<img src='" + image_path("icons/#{imag_base}_#{rank || 1}.png") + "' alt='KudoRank #{rank || 1}'/>".html_safe
-    # rubocop:enable Rails/OutputSafety
   end
 end

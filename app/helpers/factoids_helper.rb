@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FactoidsHelper
   def get_factoid_display(fact)
     text, type, url = factiod_info(fact)

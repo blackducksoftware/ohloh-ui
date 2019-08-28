@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateFeedbacks < ActiveRecord::Migration
   def change
     create_table :feedbacks do |t|

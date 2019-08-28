@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Feedback < ActiveRecord::Base
   belongs_to :project
   before_create :set_project_id

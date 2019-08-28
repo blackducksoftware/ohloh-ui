@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 xml.factoid do
   xml.id factoid.id
   xml.analysis_id factoid.analysis_id

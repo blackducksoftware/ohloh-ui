@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SessionsController < Clearance::SessionsController
   before_action :account_must_exist, only: :create
   before_action :captcha_verify, only: :create, if: :failed_login_thrice?
@@ -48,7 +50,7 @@ class SessionsController < Clearance::SessionsController
   end
 
   def disable_account_for_retries
-    return if retries_remaining > 0 || account.access.disabled?
+    return if retries_remaining.positive? || account.access.disabled?
 
     disable_account_and_notify_admin
     flash.now[:error] = t('.locked_message')

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AccountScopes
   ANONYMOUS_ACCOUNTS = %w[anonymous_coward ohloh_slave uber_data_crawler].freeze
   ANONYMOUS_ACCOUNTS_EMAILS = %w[anon@openhub.net info@openhub.net uber_data_crawler@openhub.net].freeze

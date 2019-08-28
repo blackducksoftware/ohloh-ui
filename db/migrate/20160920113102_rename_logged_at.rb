@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RenameLoggedAt < ActiveRecord::Migration
   def change
     rename_column :sloc_sets, :logged_at, :code_set_time

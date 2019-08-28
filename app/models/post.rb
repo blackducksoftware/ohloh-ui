@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Post < ActiveRecord::Base
   include Tsearch
   belongs_to :forum, counter_cache: true
@@ -40,7 +42,7 @@ class Post < ActiveRecord::Base
   end
 
   def body=(value)
-    super(value ? value.fix_encoding_if_invalid!.strip_tags.strip : nil)
+    super(value ? value.fix_encoding_if_invalid.strip_tags.strip : nil)
   end
 
   def searchable_factor

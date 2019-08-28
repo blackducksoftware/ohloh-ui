@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'jwt'
 require 'net/http'
 
 class FirebaseService
-  VALID_JWT_PUBLIC_KEYS_RESPONSE_CACHE_KEY = 'firebase_phone_jwt_public_keys_cache_key'.freeze
-  JWT_ALGORITHM = 'RS256'.freeze
+  VALID_JWT_PUBLIC_KEYS_RESPONSE_CACHE_KEY = 'firebase_phone_jwt_public_keys_cache_key'
+  JWT_ALGORITHM = 'RS256'
 
   def initialize(firebase_project_id)
     @firebase_project_id = firebase_project_id

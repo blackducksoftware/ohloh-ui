@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RenameUrlNameToVanityUrlInOrganizations < ActiveRecord::Migration
   def change
     rename_column :organizations, :url_name, :vanity_url

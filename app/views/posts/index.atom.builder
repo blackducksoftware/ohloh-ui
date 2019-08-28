@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 @account_base_url = "http://#{request.host_with_port}/accounts/#{@account.login}#{all_posts_path}" if @account
 @base_url = "http://#{request.host_with_port}#{all_posts_path}"
 
 atom_feed do |feed|
   feed.instruct!
   feed.rss do
-    if @account.present? && @account.posts.count > 0
+    if @account.present? && @account.posts.count.positive?
       xml << render(partial: 'posts/account_header.atom.builder').gsub(/^/, '   ')
     elsif @account.present? && @account.posts.count.zero?
       xml << render(partial: 'posts/account_header.atom.builder').gsub(/^/, '   ')

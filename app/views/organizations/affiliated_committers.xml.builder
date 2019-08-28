@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 accs = @affiliated_committers.select { |acc| organization_affiliated_committers_stats(@stats_map[acc.id]) }
 
 xml.instruct!

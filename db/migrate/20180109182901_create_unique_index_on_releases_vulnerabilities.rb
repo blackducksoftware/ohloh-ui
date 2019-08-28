@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateUniqueIndexOnReleasesVulnerabilities < ActiveRecord::Migration
   def change
     index_exist = index_exists?(:releases_vulnerabilities, %i[release_id vulnerability_id],

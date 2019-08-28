@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :create_edit do
     association :target, factory: :project, description: 'Linux'

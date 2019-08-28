@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CodeLocation < FisbotApi
   include CodeLocationJobs
   extend ActiveModel::Naming # for model_name used by form_for.

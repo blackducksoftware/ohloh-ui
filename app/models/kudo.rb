@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Kudo < ActiveRecord::Base
   belongs_to :sender, foreign_key: :sender_id, class_name: 'Account'
   belongs_to :account
@@ -18,7 +20,7 @@ class Kudo < ActiveRecord::Base
   end
 
   def person_name
-    (name && name.name) || account.name
+    (name&.name) || account.name
   end
 
   class << self

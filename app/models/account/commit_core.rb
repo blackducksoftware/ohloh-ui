@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Account::CommitCore
   def initialize(account_ids)
     @account_ids = account_ids

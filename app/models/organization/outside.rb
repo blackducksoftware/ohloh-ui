@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Organization::Outside < Organization::AccountFacts
   def initialize(organization)
     @organization = organization

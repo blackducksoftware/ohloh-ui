@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateMonthlyCommitHistories < ActiveRecord::Migration
   def change
     create_table :monthly_commit_histories do |t|

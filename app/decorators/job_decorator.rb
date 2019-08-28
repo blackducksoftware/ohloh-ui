@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class JobDecorator < Cherry::Decorator
   include ActionView::Helpers::DateHelper
   delegate :current_step, :max_steps, :current_step_at, :project, :account,

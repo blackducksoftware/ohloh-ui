@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Account::Subscription
   attr_reader :account
 
@@ -11,9 +13,7 @@ class Account::Subscription
                      when :post then :email_posts
                      else :email_master
                      end
-    # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
     account.update_attribute(attribute_name, false)
-    # rubocop:enable Rails/SkipsModelValidations
   end
 
   def generate_unsubscription_key

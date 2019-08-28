@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LicenseHelper
   def categorize_permission(permission)
     permission_exists = permission['license_permission_id'].present?

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OhAdmin::JobsController < ApplicationController
   before_action :admin_session_required
   before_action :find_project

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Reverification
   module Amazon
     include Reverification::ExceptionHandlers

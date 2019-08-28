@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Account::ClaimCore < OhDelegator::Base
   def email_ids
     NameFact.from("(#{email_ids_from_position.to_sql} union #{email_ids_from_aliases.to_sql}) name_facts")

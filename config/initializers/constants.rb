@@ -1,4 +1,6 @@
-BADGE_IMAGE_ROOT = '/images/badges/'.freeze
+# frozen_string_literal: true
+
+BADGE_IMAGE_ROOT = '/images/badges/'
 
 BLOG_LINKS = {
   terms: 'terms',

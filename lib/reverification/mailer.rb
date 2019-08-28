@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module Reverification
   class Mailer
     extend Amazon
-    FROM = 'info@openhub.net'.freeze
+    FROM = 'info@openhub.net'
 
     class << self
       def first_notice_template(account)

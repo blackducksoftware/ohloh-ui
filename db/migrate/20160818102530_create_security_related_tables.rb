@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # rubocop:disable Metrics/AbcSize
 class CreateSecurityRelatedTables < ActiveRecord::Migration
   def change

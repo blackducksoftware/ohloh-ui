@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 show_positions = true
 show_about = true
 
@@ -21,7 +23,7 @@ json.account do
   json.latitude @account.latitude
   json.longitude @account.longitude
 
-  if @account.person && @account.person.kudo_score
+  if @account.person&.kudo_score
     json.kudo_score do
       json.kudo_rank @account.kudo_rank
       json.position @account.person.kudo_position
@@ -30,7 +32,7 @@ json.account do
 
   if show_positions
     vita_fact = @account.best_vita.try(:vita_fact)
-    if vita_fact && vita_fact.name_language_facts.any?
+    if vita_fact&.name_language_facts&.any?
       json.languages vita_fact.name_language_facts do |nlf|
         json.name nlf.language.name
         json.experience_months nlf.total_months

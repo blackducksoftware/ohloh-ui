@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Analysis::CodeHistoryChart < Analysis::Chart
   def initialize(analysis)
     @analysis = analysis

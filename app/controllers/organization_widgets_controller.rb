@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OrganizationWidgetsController < WidgetsController
   before_action :set_organization
   before_action :render_not_supported_for_gif_format

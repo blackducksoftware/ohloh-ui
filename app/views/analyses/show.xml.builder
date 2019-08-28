@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 xml.instruct!
 if @analysis.blank?
   xml.response do

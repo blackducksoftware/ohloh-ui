@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectWidget::Languages < ProjectWidget
   def title
     I18n.t('project_widgets.languages.title')

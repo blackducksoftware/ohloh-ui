@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OrganizationsHelper
   def org_pretty_display(value)
     return 'N/A' if value.blank?
@@ -7,10 +9,10 @@ module OrganizationsHelper
   end
 
   def org_ticker_markup(diff, previous, klass = nil)
-    haml_tag :span, class: "delta #{diff > 0 ? 'good' : 'bad'} #{klass}" do
-      percentage = diff.abs.to_f / previous.abs.to_f * 100
-      concat "#{'+' if diff > 0}#{diff}"
-      concat " (#{percentage.floor}%)" if previous > 0
+    haml_tag :span, class: "delta #{diff.positive? ? 'good' : 'bad'} #{klass}" do
+      percentage = diff.abs.fdiv(previous.abs) * 100
+      concat "#{'+' if diff.positive?}#{diff}"
+      concat " (#{percentage.floor}%)" if previous.positive?
     end
   end
 

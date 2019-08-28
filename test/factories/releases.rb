@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :release do
     kb_release_id { Faker::Lorem.word }

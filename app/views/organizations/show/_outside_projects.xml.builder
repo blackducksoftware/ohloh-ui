@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 xml = xml_instance
 
 xml.outside_projects do

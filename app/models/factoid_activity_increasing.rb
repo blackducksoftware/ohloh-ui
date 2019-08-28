@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FactoidActivityIncreasing < FactoidActivity
   def to_s
     I18n.t('factoids.activity_increasing')

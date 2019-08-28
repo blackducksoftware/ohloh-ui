@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DuplicatesController < ApplicationController
   helper ProjectsHelper
   helper RatingsHelper

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Tagging < ActiveRecord::Base
   belongs_to :tag
   belongs_to :taggable, polymorphic: true
@@ -19,6 +21,6 @@ class Tagging < ActiveRecord::Base
   private
 
   def recalc_weight!
-    tag && tag.recalc_weight!
+    tag&.recalc_weight!
   end
 end

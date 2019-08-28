@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PermissionsController < ApplicationController
   helper ProjectsHelper
   include ProjectOrOrganizationSetter

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Rating < ActiveRecord::Base
   belongs_to :account
   belongs_to :project
@@ -12,8 +14,6 @@ class Rating < ActiveRecord::Base
 
   def update_project_rating_average
     project.editor_account = account
-    # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
     project.update_attribute(:rating_average, project.ratings.average(:score))
-    # rubocop:enable Rails/SkipsModelValidations
   end
 end

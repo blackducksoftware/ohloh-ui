@@ -1,4 +1,5 @@
 #! /usr/bin/env ruby
+# frozen_string_literal: true
 
 require_relative '../config/environment'
 require 'open-uri'
@@ -61,7 +62,7 @@ class PopulateTravis
   def create_travis_badge(repo, badge_url)
     manipulated_url = manipulate_badge_url(badge_url)
     repo.enlistments.each do |enlistment|
-      next if enlistment.travis_badges.count > 0
+      next if enlistment.travis_badges.count.positive?
       next unless enlistment.travis_badges.create(identifier: manipulated_url)
 
       puts "Succefully created badge: #{@total_badges_created += 1}"

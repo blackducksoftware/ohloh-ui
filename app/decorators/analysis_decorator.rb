@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AnalysisDecorator < Cherry::Decorator
   delegate :twelve_month_summary, :previous_twelve_month_summary, :commit_count, :markup_total, :logic_total,
            to: :object

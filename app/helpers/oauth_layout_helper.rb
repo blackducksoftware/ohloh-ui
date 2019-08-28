@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Doorkeeper views do not have access to the rails application helpers.
 # This is used to make the application layout render successfully for a doorkeeper view.
 # Any new helper methods added for application layout will need to be added to this helper too.

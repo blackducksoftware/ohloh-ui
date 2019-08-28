@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Person::Hooks
   def before_validation(person)
     set_id_to_account_id_or_random(person)

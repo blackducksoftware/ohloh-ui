@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # rubocop:disable Metrics/ClassLength
 class Stack < ActiveRecord::Base
   SAMPLE_PROJECT_IDS = { lamp: [3141, 72, 4139, 28],

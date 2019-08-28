@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Forge < ActiveRecord::Base
   has_many :repositories
   has_many :projects

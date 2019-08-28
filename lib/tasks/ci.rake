@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :ci do
   desc 'Run the complete build verification'
   task :all_tasks do

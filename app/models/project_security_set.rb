@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectSecuritySet < ActiveRecord::Base
   has_many :releases
   belongs_to :project
@@ -13,7 +15,7 @@ class ProjectSecuritySet < ActiveRecord::Base
   end
 
   def most_recent_vulnerabilities?
-    ReleasesVulnerability.where(release_id: most_recent_releases.map(&:id)).count > 0
+    ReleasesVulnerability.where(release_id: most_recent_releases.map(&:id)).count.positive?
   end
 
   def matching_releases(version_number)

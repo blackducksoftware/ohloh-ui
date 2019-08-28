@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Analysis::MonthlyLanguage
   class << self
     def last_run

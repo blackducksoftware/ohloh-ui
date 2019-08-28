@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Link < ActiveRecord::Base
   # Maintain this order for the index page.
   CATEGORIES = HashWithIndifferentAccess.new(

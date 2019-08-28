@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Project do
   menu false
   actions :index, :show, :edit, :update
@@ -43,7 +45,7 @@ ActiveAdmin.register Project do
   member_action :create_analyze_job do
     project = Project.from_param(params[:id]).first
     job = AnalyzeJob.incomplete.find_by(project_id: project.id)
-    job.update!(status: 3, notes: 'Rescheduling Job') if job
+    job&.update!(status: 3, notes: 'Rescheduling Job')
 
     AnalyzeJob.create!(project_id: project.id)
 

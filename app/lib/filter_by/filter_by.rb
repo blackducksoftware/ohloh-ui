@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FilterBy
   def filterable_by(attributes)
     @filter_attributes = attributes.collect { |attr| "lower(#{attr}) like :query" }.join(' OR ')

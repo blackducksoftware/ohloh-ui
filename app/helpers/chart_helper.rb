@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ChartHelper
   def chart_default_time_span
     "#{7.years.ago.strftime('%b %Y')} - Present"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 show_positions ||= false
 show_about ||= false
 
@@ -21,7 +23,7 @@ xml.account do
   xml.country_code account.country_code
   xml.latitude account.latitude
   xml.longitude account.longitude
-  if account.person && account.person.kudo_score
+  if account.person&.kudo_score
     xml.kudo_score do
       xml.kudo_rank account.kudo_rank
       xml.position account.person.kudo_position
@@ -29,7 +31,7 @@ xml.account do
   end
   if show_positions
     vita_fact = account.best_vita.try(:vita_fact)
-    if vita_fact && vita_fact.name_language_facts.any?
+    if vita_fact&.name_language_facts&.any?
       xml.languages do
         vita_fact.name_language_facts.each do |nlf|
           color = language_color(nlf.language.name)

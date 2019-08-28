@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommitsByProject < Cherry::Decorator
   LIMIT = 6
 

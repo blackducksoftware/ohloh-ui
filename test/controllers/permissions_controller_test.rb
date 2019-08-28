@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # NOTE: The organization permission tests are covered by permissions_integration_test.
 require 'test_helper'
 

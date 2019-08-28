@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ProjectLicensesHelper
   def show_license_button(project)
     button_class = 'btn btn-primary new-license'

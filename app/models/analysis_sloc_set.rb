@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AnalysisSlocSet < FisBase
   belongs_to :analysis
   belongs_to :sloc_set

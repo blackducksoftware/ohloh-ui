@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 include_analysis ||= false
 
 xml.project do

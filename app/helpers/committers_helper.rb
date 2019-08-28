@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CommittersHelper
   def html_title
     if current_user.present? && params[:flow].present?

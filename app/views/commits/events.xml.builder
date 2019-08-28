@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 xml.data do
   @daily_commits.each do |commit|
     div_id = "commit_#{commit['time'].to_i}"

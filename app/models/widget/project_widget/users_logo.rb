@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectWidget::UsersLogo < ProjectWidget
   def height
     40

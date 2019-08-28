@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ComparesController < ApplicationController
   helper CsvHelper
   helper ProjectsHelper

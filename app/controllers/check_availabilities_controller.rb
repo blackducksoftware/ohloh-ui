@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CheckAvailabilitiesController < ApplicationController
   before_action :handle_blank_query_param
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 span "Priority: #{job.priority}"
 br
 span "Attempt: #{ActiveSupport::Inflector.ordinalize(job.retry_count + 1)}"
@@ -51,7 +53,7 @@ end
 unless job.running?
   a link_to 'Delete Job', admin_job_path(job), method: :delete,
                                                data: { confirm: 'Are you sure you want to delete this Job?' }
-  if job.retry_count > 0
+  if job.retry_count.positive?
     span '|'
     a link_to 'Reset Retry Counter', recount_admin_job_path(job)
   end

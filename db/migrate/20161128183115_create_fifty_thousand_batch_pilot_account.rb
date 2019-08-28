@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateFiftyThousandBatchPilotAccount < ActiveRecord::Migration
   def change
     create_table :fifty_thousand_batch_pilot_accounts do |t|

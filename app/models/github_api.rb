@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class GithubApi
-  GITHUB_USER_URI = 'https://api.github.com/user'.freeze
-  GITHUB_ACCESS_TOKEN_URI = 'https://github.com/login/oauth/access_token'.freeze
+  GITHUB_USER_URI = 'https://api.github.com/user'
+  GITHUB_ACCESS_TOKEN_URI = 'https://github.com/login/oauth/access_token'
   REPO_LIMIT = 10
 
   def initialize(code)

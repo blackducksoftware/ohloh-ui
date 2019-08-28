@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class Analysis::TopCommitVolumeChart
   include ChartHelper
   include ActionView::Helpers::AssetUrlHelper
 
-  OTHER = 'Other'.freeze
+  OTHER = 'Other'
   NAME_COUNT = 5
   INTERVALS = ['50 years', '12 months', '1 month'].freeze
 

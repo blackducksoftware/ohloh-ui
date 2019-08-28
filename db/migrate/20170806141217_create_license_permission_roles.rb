@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateLicensePermissionRoles < ActiveRecord::Migration
   def change
     create_table :license_permission_roles do |t|

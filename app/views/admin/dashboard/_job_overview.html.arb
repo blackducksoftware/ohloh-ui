@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 panel 'Job Overview' do
   columns do
     column do

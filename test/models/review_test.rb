@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class ReviewTest < ActiveSupport::TestCase
@@ -42,7 +44,6 @@ class ReviewTest < ActiveSupport::TestCase
   end
 
   describe '#find_by_comment_or_title_or_accounts_login' do
-    # rubocop:disable Rails/DynamicFindBy # find_by... here is a predefined scope.
     it 'find by comment' do
       review1 = create(:review, comment: 'search_by_comment')
       search_result = Review.find_by_comment_or_title_or_accounts_login('search_by_comment')
@@ -62,7 +63,6 @@ class ReviewTest < ActiveSupport::TestCase
       search_result.count.must_equal 1
       search_result.first.must_equal review
     end
-    # rubocop:enable Rails/DynamicFindBy
   end
 
   describe 'helpful_to_account?' do

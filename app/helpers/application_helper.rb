@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # rubocop: disable Metrics/ModuleLength
 module ApplicationHelper
   include EmailObfuscation
@@ -11,9 +13,7 @@ module ApplicationHelper
     err = model.errors[attr]
     return '' if err.blank?
 
-    # rubocop:disable Rails/OutputSafety # Here `err` comes from validations defined by us, so it is safe.
     haml_tag 'p', [err].flatten.join('<br />').html_safe, opts.reverse_merge(class: 'error').merge(rel: attr)
-    # rubocop:enable Rails/OutputSafety
   end
 
   def password_error_tag(model, attr, opts = {})
@@ -21,9 +21,7 @@ module ApplicationHelper
     return '' if err.blank? || err == ["can't be blank"]
 
     err = err.first if err.size == 2
-    # rubocop:disable Rails/OutputSafety # Here `err` comes from validations defined by us, so it is safe.
     haml_tag 'p', [err].flatten.join('<br />').html_safe, opts.reverse_merge(class: 'error').merge(rel: attr)
-    # rubocop:enable Rails/OutputSafety
   end
 
   def project_pages_title(page_name = nil, project_name = nil)
@@ -39,7 +37,6 @@ module ApplicationHelper
     current_user.actions.where(status: [Action::STATUSES[:nag_once], Action::STATUSES[:remind]]).first
   end
 
-  # rubocop:disable Rails/OutputSafety # TODO: review
   def expander(text, min = 250, max = 350, regex = /\s/, regex_offset = -1)
     return unless text
 
@@ -50,7 +47,6 @@ module ApplicationHelper
     l -= 1 if text[l..l] == ','
     render_expander(text, l).html_safe
   end
-  # rubocop:enable Rails/OutputSafety
 
   def pluralize_without_count(count, singular, plural = nil)
     count == 1 ? singular : (plural || singular.pluralize)

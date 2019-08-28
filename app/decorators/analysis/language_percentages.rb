@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Analysis::LanguagePercentages
   TOTAL_PERCENTAGE = 100
 

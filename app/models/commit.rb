@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Commit < FisBase
   belongs_to :code_set
   belongs_to :name

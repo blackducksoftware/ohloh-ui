@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateDoorkeeperTables < ActiveRecord::Migration
   # rubocop:disable Metrics/AbcSize
   def change

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AccountWidgetsController < WidgetsController
   before_action :set_account
   before_action :render_image_for_gif_format

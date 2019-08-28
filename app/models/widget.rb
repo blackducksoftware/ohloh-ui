@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Widget
   KEYS_TO_BE_REMOVED = %i[controller format action].freeze
 

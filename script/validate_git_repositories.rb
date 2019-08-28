@@ -1,4 +1,5 @@
 #! /usr/bin/env ruby
+# frozen_string_literal: true
 
 require_relative '../config/environment'
 
@@ -10,10 +11,8 @@ CodeLocation.joins(:repository, :projects)
             .find_each do |cl|
   puts "#{cl.id} :: #{index += 1}"
   cl.enlistments do |e|
-    begin
-      e.create_edit.undo!(Account.hamster) unless cl.valid?
-    rescue StandardError
-      nil
-    end
+    e.create_edit.undo!(Account.hamster) unless cl.valid?
+  rescue StandardError
+    nil
   end
 end

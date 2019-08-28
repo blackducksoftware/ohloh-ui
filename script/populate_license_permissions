@@ -1,4 +1,6 @@
 #! /usr/bin/env ruby
+# frozen_string_literal: true
+
 # rubocop:disable LineLength
 
 raise 'RAILS_ENV is undefined' unless ENV['RAILS_ENV']

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 role :web_1, %w[serv-deployer@oh-web01.dc1.lan]
 role :web_2, %w[serv-deployer@oh-web02.dc1.lan]
 role :web_3, %w[serv-deployer@oh-web03.dc1.lan]

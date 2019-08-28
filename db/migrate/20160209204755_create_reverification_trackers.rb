@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateReverificationTrackers < ActiveRecord::Migration
   def change
     create_table :reverification_trackers do |t|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 columns do
   column do
     panel 'Overview Statistics' do
@@ -36,18 +38,14 @@ columns do
 
   column do
     panel 'Deployment Details' do
-      begin
-        revision_file = File.open(Rails.root.join('REVISION').to_s)
-        revision = revision_file.read.strip
-        # rubocop:disable Rails/OutputSafety
-        para %(Currently deployed:
-              #{link_to(revision, "https://github.com/blackducksoftware/ohloh-ui/commit/#{revision}")}).html_safe
-        para %(Last Deployed: <b>#{time_ago_in_words(revision_file.mtime)}</b> ago).html_safe
-        # rubocop:enable Rails/OutputSafety
-        revision_file.close
-      rescue StandardError => e
-        para e
-      end
+      revision_file = File.open(Rails.root.join('REVISION').to_s)
+      revision = revision_file.read.strip
+      para %(Currently deployed:
+            #{link_to(revision, "https://github.com/blackducksoftware/ohloh-ui/commit/#{revision}")}).html_safe
+      para %(Last Deployed: <b>#{time_ago_in_words(revision_file.mtime)}</b> ago).html_safe
+      revision_file.close
+    rescue StandardError => e
+      para e
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Cherry
   class Decorator
     attr_reader :object

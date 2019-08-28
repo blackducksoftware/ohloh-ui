@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Duplicate do
   actions :index, :show
   filter :resolved

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Airbrake.configure do |config|
   config.environment = Rails.env # must be set for ignore_environments to work
   config.project_key = ENV['AIRBRAKE_API_KEY']

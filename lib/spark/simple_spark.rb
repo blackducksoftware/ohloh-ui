@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class Spark::SimpleSpark < Spark::Base
   SPARK = { column_width: 2, column_gap: 1, column_base: 1, column_variant: 21, blank_row: 1,
             label_height: 9, max_value: 5000 }.freeze
-  LIGHT_GRAY = '#a7a7a7'.freeze
-  DARK_GRAY = '#656565'.freeze
+  LIGHT_GRAY = '#a7a7a7'
+  DARK_GRAY = '#656565'
 
   def initialize(data, options = {})
     super(data, SPARK.merge(options))

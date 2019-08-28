@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Cherry
   module Decoratable
     def decorate

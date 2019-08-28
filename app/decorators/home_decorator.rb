@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HomeDecorator
   def most_popular_projects
     Project.active.by_popularity.includes(:logo, best_analysis: [:main_language]).limit(10)

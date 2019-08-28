@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Forge::Github < Forge
   def match(url)
     case url

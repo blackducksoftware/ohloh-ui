@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 desc 'Remove duplicate GNU General Public License records'
 task remove_duplicate_gnu_general_public_license: :environment do
   original_license = License.find(122) # GNU General Public License v3.0 only(gpl3)
@@ -8,11 +10,8 @@ task remove_duplicate_gnu_general_public_license: :environment do
   duplicate_license_ids << License.find(578).id  # GPL 3(GPL_3)
   duplicate_license_ids << License.find(301).id  # GNU GENERAL PUBLIC LICENSE(GPLv3)
   duplicate_license_ids << License.find(485).id  # GNU General Public License 3 or later(GPLv3plus)
-
-  # rubocop:disable Rails/SkipsModelValidations
   # Update project licenses
   ProjectLicense.where(license_id: duplicate_license_ids).update_all(license_id: original_license.id)
-  # rubocop:enable Rails/SkipsModelValidations
 
   # Delete license permission role mappings for the duplicate licenses
   LicensePermissionRole.where(license_id: duplicate_license_ids).destroy_all

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RatingsHelper
   def rating_stars(id, score, mini = false)
     dim = rating_star_dimensions(mini)

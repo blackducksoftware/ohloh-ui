@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EnlistmentsHelper
   def options_for_select_type(scm_type)
     options_hash = { 'Subversion' => 'svn_sync',

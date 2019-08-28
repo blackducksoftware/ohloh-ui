@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FactoidCommentsAverage < FactoidComments
   def to_s
     I18n.t('factoids.comments_average')

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GithubHelper
   def github_data_attributes
     { data: { client_id: ENV['GITHUB_CLIENT_ID'],

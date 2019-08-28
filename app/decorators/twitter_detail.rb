@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TwitterDetail < Cherry::Decorator
   include ActionView::Helpers::TextHelper
 

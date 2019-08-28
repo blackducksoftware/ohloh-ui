@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CreateForges
   FORGES = [{ name: 'Github', url: 'git://github.com', type: 'Forge::Github' },
             { name: 'Google Code', url: 'http://code.google.com', type: 'Forge::GoogleCode' },

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RssSubscription < ActiveRecord::Base
   belongs_to :project
   belongs_to :rss_feed

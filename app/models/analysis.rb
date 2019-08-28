@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class Analysis < ActiveRecord::Base
   include Analysis::Report
   AVG_SALARY = 55_000
   EARLIEST_DATE = Time.utc(1971, 1, 1)
-  EARLIEST_DATE_SQL_STRING = "TIMESTAMP '#{EARLIEST_DATE.strftime('%Y-%m-%d')}'".freeze
+  EARLIEST_DATE_SQL_STRING = "TIMESTAMP '#{EARLIEST_DATE.strftime('%Y-%m-%d')}'"
   ACTIVITY_LEVEL_INDEX_MAP = {
     na: 0, new: 10, inactive: 20, very_low: 30, low: 40, moderate: 50, high: 60, very_high: 70
   }.freeze
@@ -62,7 +64,7 @@ class Analysis < ActiveRecord::Base
   end
 
   def man_years_from_loc(loc = 0)
-    loc > 0 ? 2.4 * ((loc.to_f / 1000.0)**1.05) / 12.0 : 0
+    loc.positive? ? 2.4 * ((loc.to_f / 1000.0)**1.05) / 12.0 : 0
   end
 
   def ignore_tuples

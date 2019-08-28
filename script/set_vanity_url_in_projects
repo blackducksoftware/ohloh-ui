@@ -1,4 +1,5 @@
 #! /usr/bin/env ruby
+# frozen_string_literal: true
 
 raise 'RAILS_ENV is undefined' unless ENV['RAILS_ENV']
 

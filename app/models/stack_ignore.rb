@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StackIgnore < ActiveRecord::Base
   belongs_to :stack
   belongs_to :project

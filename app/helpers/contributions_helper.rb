@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ContributionsHelper
   def claim_position_url_options(contribution)
     { controller: :positions, action: :one_click_create,

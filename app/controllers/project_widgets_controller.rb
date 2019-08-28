@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectWidgetsController < WidgetsController
   helper :Projects, :Analyses
   before_action :set_project

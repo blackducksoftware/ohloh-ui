@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StatusController < ApplicationController
   def age_spark
     image = Rails.cache.fetch('analysis_age_spark', expires_in: 1.hour) do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Tag < ActiveRecord::Base
   MAX_ALLOWED_PER_PROJECT = 20
 
@@ -28,9 +30,7 @@ class Tag < ActiveRecord::Base
 
   def recalc_weight!
     recalc_taggings_count
-    # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
     update_attribute :weight, (taggings_count.zero? && 1.0) || (1.0 / (1.0 + Math.log10(taggings_count)))
-    # rubocop:enable Rails/SkipsModelValidations
   end
 
   def recalc_taggings_count
@@ -38,8 +38,6 @@ class Tag < ActiveRecord::Base
       SELECT COUNT(*) FROM taggings AS t INNER JOIN projects p ON t.taggable_id = p.id AND t.taggable_type = 'Project'
       WHERE t.tag_id = #{id} AND p.deleted = FALSE
     SQL
-    # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
     update_attribute :taggings_count, Tagging.count_by_sql(sql)
-    # rubocop:enable Rails/SkipsModelValidations
   end
 end

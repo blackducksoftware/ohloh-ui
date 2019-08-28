@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Account::OrganizationCore
   def initialize(account_id)
     @id = account_id

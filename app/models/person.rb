@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Person < ActiveRecord::Base
   self.primary_key = :id
   self.per_page = 10
@@ -89,11 +91,9 @@ class Person < ActiveRecord::Base
     private
 
     def query_with_email_or_name(sub_query, opts)
-      # rubocop:disable Rails/DynamicFindBy # find_by... here is a predefined method.
       sub_query.find_by_name_or_email(opts).group(%i[name_id effective_name])
                .reorder('MIN(COALESCE(kudo_position,999999999)), lower(effective_name)')
                .select(:name_id)
-      # rubocop:enable Rails/DynamicFindBy
     end
 
     def group_and_sort_by_kudo_positions_or_effective_name(people)

@@ -1,4 +1,5 @@
 #! /usr/bin/env ruby
+# frozen_string_literal: true
 
 require_relative '../config/environment'
 require 'csv'
@@ -35,13 +36,11 @@ class InsertKbProjects
 
   def loop_csv
     CSV.foreach(@projects_csv, headers: true).with_index(1) do |csv, index|
-      begin
-        show_progress(index)
-        row = csv.to_h
-        create_project(row)
-      rescue StandardError => e
-        @log.error "Error processing row #{index} with error #{e.message}"
-      end
+      show_progress(index)
+      row = csv.to_h
+      create_project(row)
+    rescue StandardError => e
+      @log.error "Error processing row #{index} with error #{e.message}"
     end
   end
 end

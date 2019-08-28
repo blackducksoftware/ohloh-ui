@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Edit < ActiveRecord::Base
   belongs_to :account
   belongs_to :target, polymorphic: true
