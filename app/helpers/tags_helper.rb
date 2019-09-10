@@ -14,7 +14,7 @@ module TagsHelper
 
   def tags_left(count)
     return t('tags.reached_maximum') if count.zero?
-    return t('tags.over_maximum', overage: count.abs) if count.positive?
+    return t('tags.over_maximum', overage: count.abs) if count.negative?
 
     t('tags.number_remaining', count: count, word: count > 1 ? t('tags.tag').pluralize : t('tags.tag'))
   end
