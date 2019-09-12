@@ -161,14 +161,18 @@ class ApplicationController < ActionController::Base
   end
 
   def render_missing_api_key
+    StatsD.increment('Openhub.Api.missing_api_key')
     error(message: t(:missing_api_key), status: :bad_request)
   end
 
   def render_invalid_api_key
+    StatsD.increment('Openhub.Api.invalid_api_key')
     error(message: t(:invalid_api_key), status: :bad_request)
   end
 
   def render_limit_exceeded_api_key(limit)
+    StatsD.increment('Openhub.Api.limit_exceeded')
+    StatsD.set('Openhub.Api.Key.limit_exceeded', params[:api_key])
     error(message: t(:overlimit_api_key, limit: limit), status: :unauthorized)
   end
 
@@ -233,12 +237,18 @@ class ApplicationController < ActionController::Base
   def verify_api_key_standing
     api_key = ApiKey.in_good_standing.find_for_oauth_application_uid(api_client_id)
     if api_key && api_key.may_i_have_another?
+      log_valid_api_request
       doorkeeper_authorize! if doorkeeper_token
     elsif api_key && api_key.send(:exceeded_daily_allotment?)
       render_limit_exceeded_api_key(api_key.daily_limit)
     else
       render_invalid_api_key
     end
+  end
+
+  def log_valid_api_request
+    StatsD.increment('Openhub.Api.success')
+    StatsD.set('Openhub.Api.valid_api', params[:api_key])
   end
 
   def api_client_id
