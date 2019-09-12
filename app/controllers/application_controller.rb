@@ -42,6 +42,7 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from ::Exception do |exception|
+    StatsD.increment('Openhub.Request.exception')
     raise exception if Rails.application.config.consider_all_requests_local
 
     request.env[:user_agent] = request.user_agent
