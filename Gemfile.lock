@@ -518,6 +518,7 @@ GEM
     sshkit (1.18.2)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
+    statsd-instrument (2.3.4)
     sysexits (1.2.0)
     teaspoon (1.1.5)
       railties (>= 3.2.5, < 6)
@@ -645,6 +646,7 @@ DEPENDENCIES
   spinach-console-reporter
   spring
   sprockets-rails (~> 2.3.3)
+  statsd-instrument
   teaspoon-jasmine
   therubyracer
   thor
