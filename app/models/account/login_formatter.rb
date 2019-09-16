@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Account
   class LoginFormatter
     attr_reader :login

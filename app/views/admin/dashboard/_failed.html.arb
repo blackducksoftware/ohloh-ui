@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 failed_jobs = slave.failed_jobs
 failed_jobs = failed_jobs.where("current_step_at is null or current_step_at > '#{get_window}'") if params['window']
 failed_jobs.each_with_index do |job, i|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CompareProjectCsvDecorator
   include ActionView::Helpers::DateHelper
   include ActionView::Helpers::NumberHelper

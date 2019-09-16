@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Job < ActiveRecord::Base
   belongs_to :project
   belongs_to :slave
@@ -45,9 +47,7 @@ class Job < ActiveRecord::Base
 
   def categorize_failure
     failure_group = FailureGroup.find_by('pattern ILIKE ?', exception)
-    # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
     update_column(failure_group_id: failure_group.id) if failure_group
-    # rubocop:enable Rails/SkipsModelValidations
     # Used by admin
     code_location.update(do_not_fetch: true) if failure_group.present? && !failure_group.auto_reschedule
   end

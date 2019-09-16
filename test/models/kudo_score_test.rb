@@ -1,6 +1,6 @@
-require 'test_helper'
+# frozen_string_literal: true
 
-# rubocop:disable Rails/DynamicFindBy # find_by... here is a predefined method.
+require 'test_helper'
 class KudoScoreTest < ActiveSupport::TestCase
   describe 'find_by_account_or_name_and_project' do
     describe 'person.account_id presence' do
@@ -20,4 +20,3 @@ class KudoScoreTest < ActiveSupport::TestCase
     end
   end
 end
-# rubocop:enable Rails/DynamicFindBy # find_by... here is a predefined method.

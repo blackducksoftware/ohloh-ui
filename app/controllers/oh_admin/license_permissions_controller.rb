@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 class OhAdmin::LicensePermissionsController < ApplicationController
   before_action :admin_session_required
   before_action :check_params, only: [:index]
-  # rubocop:disable Rails/LexicallyScopedActionFilter
   before_action :get_permissions, only: %i[new update]
-  # rubocop:enable Rails/LexicallyScopedActionFilter
   layout 'admin'
   include LicenseHelper
 
@@ -69,7 +69,7 @@ class OhAdmin::LicensePermissionsController < ApplicationController
       from license_permissions lp
       join license_license_permissions llp on lp.id = llp.license_permission_id
       where llp.license_id = #{license_id})t on t.license_right_id = lr.id
-    order by lr.id ;".freeze
+    order by lr.id ;"
   end
 
   def retrieve_permission_rights

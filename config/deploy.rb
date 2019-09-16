@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 lock '3.11.0'
 
 set :whoami, `whoami`.strip

@@ -2,7 +2,7 @@
   .search_tags
     %label= t('.filter_by_tags')
     .chosen#value_select
-      = select_tag :names, options_for_select(tags.map { |ary| ary.map(&:fix_encoding_if_invalid!) }, params[:names]),
+      = select_tag :names, options_for_select(tags.map { |ary| ary.map(&:fix_encoding_if_invalid) }, params[:names]),
         class: 'chzn-select value-select multiple-select',
         multiple: true, onchange: 'this.form.submit()'
 

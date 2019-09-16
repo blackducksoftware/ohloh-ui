@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StackWidgetsController < WidgetsController
   before_action :set_widget
   before_action :set_stack_and_account

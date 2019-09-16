@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 code_location = enlistment.code_location
 xml.enlistment do
   xml.id enlistment.id

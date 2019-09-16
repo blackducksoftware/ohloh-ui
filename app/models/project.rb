@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # rubocop:disable Metrics/ClassLength
 class Project < ActiveRecord::Base
   has_one :create_edit, as: :target

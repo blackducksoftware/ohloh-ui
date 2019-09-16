@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class PreviousTwelveMonthSummary < AnalysisSummary
   def data?
-    committer_count && committer_count > 0 && commits_count && commits_count > 0
+    committer_count&.positive? && commits_count&.positive?
   end
 
   def commits_difference

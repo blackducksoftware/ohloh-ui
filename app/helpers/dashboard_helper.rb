@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DashboardHelper
   def accounts_link(level)
     "/admin/accounts?q%5Blevel_eq%5D=#{level}&commit=Filter&order=id_desc"
@@ -13,9 +15,7 @@ module DashboardHelper
     link_text = " (#{revision[0..7]}) "
     deployed = time_ago_in_words(file_modified) + ' ago '
     link = link_to(link_text, github_url, style: 'color: #fff', target: '_blank', rel: 'noopener')
-    # rubocop:disable Rails/OutputSafety # Known variables used internally.
     (deployed + link).html_safe
-    # rubocop:enable Rails/OutputSafety
   end
 
   def get_revision_details

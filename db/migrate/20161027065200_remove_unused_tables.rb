@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RemoveUnusedTables < ActiveRecord::Migration
   def up
     remove_foreign_key :old_edits, :project

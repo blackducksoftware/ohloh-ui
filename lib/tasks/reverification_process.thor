@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'thor/group'
 require File.expand_path('config/environment.rb')
 

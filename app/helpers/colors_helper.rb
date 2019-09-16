@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ColorsHelper
   LANGUAGE_COLORS = {
     'actionscript' => 'E3491A',

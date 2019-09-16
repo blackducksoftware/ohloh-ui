@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module WidgetsHelper
   def factoid_image_path(factoid)
     path = case factoid.severity

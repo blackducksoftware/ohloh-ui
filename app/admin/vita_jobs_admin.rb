@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register VitaJob do
   menu false
   config.sort_order = 'current_step_at_desc'

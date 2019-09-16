@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HomeHelper
   def width(project, required, max)
     count = project_count(project, required)

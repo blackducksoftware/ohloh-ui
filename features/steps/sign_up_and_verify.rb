@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Spinach::Features::SignUpAndVerify < Spinach::FeatureSteps
   step 'I am on the OpenHub sign up page' do
     visit new_account_path

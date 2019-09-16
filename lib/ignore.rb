@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Ignore
   class << self
     def parse(text)
@@ -13,7 +15,7 @@ module Ignore
     def match?(prefixes, fyle_name)
       prefixes.any? do |prefix|
         prefix = prefix.tr('\\', '/')
-        fyle_name.match(/^#{ prefix }/)
+        fyle_name.match(/^#{prefix}/)
       end
     end
   end

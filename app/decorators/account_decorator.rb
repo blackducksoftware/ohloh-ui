@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AccountDecorator < Cherry::Decorator
   include ActionView::Helpers::TextHelper
 

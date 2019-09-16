@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Position < ActiveRecord::Base
   include AffiliationValidation
   include Position::Validations
@@ -42,7 +44,7 @@ class Position < ActiveRecord::Base
   end
 
   def committer_name
-    @committer_name || (name && name.name)
+    @committer_name || (name&.name)
   end
 
   def committer_name=(name)

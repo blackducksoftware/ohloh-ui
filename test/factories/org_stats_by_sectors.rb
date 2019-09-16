@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :org_stats_by_sector do
     org_type { 1 }

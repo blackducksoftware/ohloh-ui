@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectsController < ApplicationController
   [AnalysesHelper, FactoidsHelper, MapHelper, RatingsHelper,
    ScmHelper, TagsHelper].each { |help| helper help }

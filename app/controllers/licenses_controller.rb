@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LicensesController < ApplicationController
   before_action :session_required, :redirect_unverified_account, only: %i[create new edit update]
   before_action :set_project

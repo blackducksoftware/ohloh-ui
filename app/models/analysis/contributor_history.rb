@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Analysis::ContributorHistory < Analysis::QueryBase
   attr_reader :start_date, :end_date
 

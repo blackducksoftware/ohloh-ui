@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FactoidAgeOld < FactoidAge
   def to_s
     I18n.t('factoids.age_old')

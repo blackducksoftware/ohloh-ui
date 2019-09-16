@@ -1,4 +1,6 @@
 #! /usr/bin/env ruby
+# frozen_string_literal: true
+
 # Usage: ruby script/populate_repository_directories [options]
 # Options:
 # +up+: This is default. Runs the migration to create repository_directories.

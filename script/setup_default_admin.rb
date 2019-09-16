@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../config/environment'
 
 login = ARGV[0] || :admin_user

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OhAdmin::AccountChart
   def initialize(period)
     @period = period

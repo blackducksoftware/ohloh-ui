@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class KudosController < ApplicationController
   before_action :session_required, :redirect_unverified_account, except: %i[index sent]
   before_action :verify_api_access_for_xml_request, only: %i[index sent]

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ContributorFact < NameFact
   belongs_to :analysis
   belongs_to :name
@@ -12,7 +14,7 @@ class ContributorFact < NameFact
   end
 
   def kudo_rank
-    person && person.kudo_rank
+    person&.kudo_rank
   end
 
   def append_name_fact(name_fact)

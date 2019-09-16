@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CompareRepositoriesController < ApplicationController
   before_action :tool_context, only: :index
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Topic < ActiveRecord::Base
   validates :account, :title, :hits, presence: true
   validates :sticky, :hits, numericality: true

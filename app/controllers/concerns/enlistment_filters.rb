@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 module EnlistmentFilters
   extend ActiveSupport::Concern
 
   included do
-    # rubocop:disable Rails/LexicallyScopedActionFilter
     before_action :session_required, :redirect_unverified_account, only: %i[create new destroy edit update]
     before_action :set_project_or_fail
     before_action :set_project_editor_account_to_current_user
@@ -14,7 +15,6 @@ module EnlistmentFilters
     before_action :handle_github_user_flow, only: :create
     before_action :build_code_location, only: :create
     before_action :project_has_code_location?, only: :create
-    # rubocop:enable Rails/LexicallyScopedActionFilter
   end
 
   private

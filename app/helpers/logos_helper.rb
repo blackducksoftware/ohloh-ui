@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LogosHelper
   def default_logos
     logos = Logo.where(id: Logo::DEFAULT_LOGOS.keys).to_a

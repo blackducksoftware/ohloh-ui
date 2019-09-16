@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :fisa do
   desc 'Populate monthly commit histories'
   task populate_monthly_commit_history: :environment do

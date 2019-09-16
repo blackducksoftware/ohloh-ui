@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # rubocop: disable Metrics/ModuleLength
 module KudosHelper
   def kudos_laurel_link_for(person)
@@ -72,7 +74,7 @@ module KudosHelper
       kudo.account.kudo_rank
     else
       contributor_fact = ContributorFact.first_for_name_id_and_project_id(kudo.name_id, kudo.project_id)
-      contributor_fact && contributor_fact.kudo_rank
+      contributor_fact&.kudo_rank
     end
   end
 

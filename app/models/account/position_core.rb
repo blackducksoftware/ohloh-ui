@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Account::PositionCore < OhDelegator::Base
   parent_scope do
     has_many :positions, lambda {

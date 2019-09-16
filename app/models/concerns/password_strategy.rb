@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PasswordStrategy
   def authenticated?(password)
     encrypted_password == encrypt(password, salt)

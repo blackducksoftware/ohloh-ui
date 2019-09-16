@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register ProjectSecuritySet do
   filter :project_name_eq, label: 'project_name'
   filter :project_vanity_url_eq, label: 'project_vanity_url'

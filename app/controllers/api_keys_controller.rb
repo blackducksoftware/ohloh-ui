@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApiKeysController < ApplicationController
   before_action :session_required, :redirect_unverified_account
   before_action :find_account

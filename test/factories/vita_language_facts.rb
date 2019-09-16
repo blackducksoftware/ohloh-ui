@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :vita_language_fact do
     association :vita, factory: :best_vita

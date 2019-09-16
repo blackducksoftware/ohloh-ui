@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CloudTag
   TAGS_LIST = YAML.load_file(Rails.root.join('config', 'tags_list.yml'))
 

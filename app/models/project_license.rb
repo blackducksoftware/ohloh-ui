@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectLicense < ActiveRecord::Base
   belongs_to :project
   belongs_to :license

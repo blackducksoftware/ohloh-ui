@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AliasesController < SettingsController
   helper ProjectsHelper
   before_action :session_required, :redirect_unverified_account, except: :index
@@ -19,13 +21,13 @@ class AliasesController < SettingsController
 
   def undo
     alias_record = Alias.find_by(id: params[:id], deleted: false)
-    alias_record.create_edit.undo!(current_user) if alias_record
+    alias_record&.create_edit&.undo!(current_user)
     redirect_to action: :index
   end
 
   def redo
     alias_record = Alias.find_by(id: params[:id], deleted: true)
-    alias_record.create_edit.redo!(current_user) if alias_record
+    alias_record&.create_edit&.redo!(current_user)
     redirect_to action: :index
   end
 

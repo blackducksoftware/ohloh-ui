@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RssSubscriptionsHelper
   def last_fetch_detail(object)
     if object.rss_feed.last_fetch?

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Job do
   config.sort_order = 'current_step_at_desc'
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Icon < Cherry::Decorator
   include ActionView::Helpers::AssetTagHelper
   include ActionView::Helpers::TagHelper

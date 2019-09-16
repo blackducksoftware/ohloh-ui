@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require 'test_helpers/image_helper'
 require 'test_helpers/activity_facts_by_commits_data'

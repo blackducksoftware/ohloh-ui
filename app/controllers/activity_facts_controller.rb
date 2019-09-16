@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class ActivityFactsController < ApplicationController
   helper :projects
 
   before_action :set_project_or_fail
 
-  LATEST_ID = 'latest'.freeze
+  LATEST_ID = 'latest'
 
   def index
     latest_analysis = params[:analysis_id] == LATEST_ID

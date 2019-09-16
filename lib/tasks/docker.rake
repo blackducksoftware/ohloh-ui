@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :docker do
   desc 'Cuts a new build'
   task :build do

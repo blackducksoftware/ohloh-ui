@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class ProjectAdminTest < ActionDispatch::IntegrationTest
@@ -28,13 +30,13 @@ class ProjectAdminTest < ActionDispatch::IntegrationTest
   describe 'create_analyze_job' do
     it 'must mark incomplete AnalyzeJob as failed and create new' do
       job = AnalyzeJob.create!(project_id: project.id)
-      Job.find(job).wont_be :failed?
+      Job.find(job.id).wont_be :failed?
 
       assert_difference 'AnalyzeJob.count' do
         get create_analyze_job_admin_project_path(project.id)
       end
 
-      Job.find(job).must_be :failed?
+      Job.find(job.id).must_be :failed?
       flash[:success].wont_be :empty?
     end
   end

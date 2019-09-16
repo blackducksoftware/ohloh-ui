@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UrlFormatValidator < ActiveModel::EachValidator
   # With Ruby 2.2, the default URI parser is more forgiving than we want, so use the same trick Rails does in Rack
   # see: https://bugs.ruby-lang.org/issues/10669

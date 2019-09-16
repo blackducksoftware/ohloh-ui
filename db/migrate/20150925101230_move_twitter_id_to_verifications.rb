@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MoveTwitterIdToVerifications < ActiveRecord::Migration
   def up
     Account.where('twitter_id is not null').each do |account|

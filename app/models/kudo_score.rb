@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class KudoScore < ActiveRecord::Base
   class << self
     def find_by_account_or_name_and_project(person)

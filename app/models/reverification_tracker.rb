@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReverificationTracker < ActiveRecord::Base
   MAX_ATTEMPTS = 3
   NOTIFICATION1_DUE_DAYS = 21
@@ -101,9 +103,7 @@ class ReverificationTracker < ActiveRecord::Base
 
     def update_tracker(rev_tracker, phase, response)
       if phase == rev_tracker.phase_value
-        # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
         rev_tracker.increment! :attempts
-        # rubocop:enable Rails/SkipsModelValidations
       else
         rev_tracker.update attempts: 1
       end

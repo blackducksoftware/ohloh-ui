@@ -1,14 +1,14 @@
+# frozen_string_literal: true
+
 class WidgetsController < ApplicationController
   WIDGET_TYPES = %w[account project stack organization].freeze
 
   helper :widgets
-  # rubocop:disable Rails/LexicallyScopedActionFilter
   before_action :set_widget, except: :index
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   layout false, except: :index
   before_action :handle_xml_format, except: :index
   skip_before_action :verify_authenticity_token
-  # rubocop:enable Rails/LexicallyScopedActionFilter
 
   private
 

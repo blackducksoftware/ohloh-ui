@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BaseballCard < Cherry::Decorator
   include ActionView::Helpers::DateHelper
   include ActionView::Helpers::TextHelper

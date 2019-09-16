@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Helpful < ActiveRecord::Base
   belongs_to :review
   belongs_to :account

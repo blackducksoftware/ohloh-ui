@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SlocMetric < FisBase
   belongs_to :diff
   belongs_to :language

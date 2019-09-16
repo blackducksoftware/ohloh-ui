@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommittersController < UnclaimedController
   before_action :session_required, :redirect_unverified_account, only: %i[claim save_claim]
   before_action :find_committer, except: :index
@@ -28,7 +30,7 @@ class CommittersController < UnclaimedController
 
     if @positions.present?
       render_claim
-    elsif current_user.claim_core.unclaimed_persons_count > 0
+    elsif current_user.claim_core.unclaimed_persons_count.positive?
       redirect_to committers_path, notice: t('.notice')
     else
       redirect_to account_positions_url(current_user), success: t('.success')
@@ -52,13 +54,11 @@ class CommittersController < UnclaimedController
 
   def create_positions
     params[:positions].each do |position|
-      begin
-        current_user.position_core.ensure_position_or_alias!(@projects_map[position[:project_id].to_i], @name, true,
-                                                             title: position[:title],
-                                                             description: position[:description])
-      rescue StandardError => e
-        capture_failed_positions(e, position)
-      end
+      current_user.position_core.ensure_position_or_alias!(@projects_map[position[:project_id].to_i], @name, true,
+                                                           title: position[:title],
+                                                           description: position[:description])
+    rescue StandardError => e
+      capture_failed_positions(e, position)
     end
   end
 

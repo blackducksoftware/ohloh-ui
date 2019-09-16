@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Analysis::TopCommitVolume < Analysis::QueryBase
   INTERVAL_ATTRS = { '50 years' => :commits, '12 months' => :twelve_month_commits,
                      '1 month' => :thirty_day_commits }.freeze

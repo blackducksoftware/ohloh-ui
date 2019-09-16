@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LogosController < SettingsController
   helper ManagersHelper
   helper ProjectsHelper
@@ -29,9 +31,7 @@ class LogosController < SettingsController
   end
 
   def destroy
-    # rubocop:disable Rails/SkipsModelValidations # We want to skip validations here.
     @parent.update_attribute(:logo_id, nil)
-    # rubocop:enable Rails/SkipsModelValidations
     @logo.destroy ? flash[:success] = t('.success') : flash[:error] = t('.error')
     redirect_to action: :new
   end
@@ -54,9 +54,7 @@ class LogosController < SettingsController
   end
 
   def update_parent_logo
-    # rubocop:disable Rails/SkipsModelValidations # We want to skip validations here.
     @parent.update_attribute(:logo_id, params[:logo_id] || @logo.id)
-    # rubocop:enable Rails/SkipsModelValidations
   end
 
   def set_project

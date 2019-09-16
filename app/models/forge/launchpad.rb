@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Forge::Launchpad < Forge
   def match(url)
     case url

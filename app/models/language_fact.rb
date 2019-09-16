@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LanguageFact < ActiveRecord::Base
   belongs_to :language
   belongs_to :all_month, primary_key: :month, foreign_key: :month

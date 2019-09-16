@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Ohloh
   class Cipher
     class << self

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectBadgesController < ApplicationController
   before_action :set_project_or_fail
   before_action :session_required, :redirect_unverified_account, only: %i[create destroy]

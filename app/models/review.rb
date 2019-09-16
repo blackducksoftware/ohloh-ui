@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Review < ActiveRecord::Base
   belongs_to :account
   belongs_to :project

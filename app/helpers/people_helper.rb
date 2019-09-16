@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PeopleHelper
   def people_contribution_list_for(person)
     if person.account.nil?

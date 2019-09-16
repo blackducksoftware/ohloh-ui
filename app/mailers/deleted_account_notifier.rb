@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DeletedAccountNotifier < ActionMailer::Base
   def deletion(account)
     recipient = ENV['DELETED_ACCOUNT_RECIPIENT']

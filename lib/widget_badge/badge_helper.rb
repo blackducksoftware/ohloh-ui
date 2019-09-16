@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module WidgetBadge
   module BadgeHelper
     extend ActiveSupport::Concern

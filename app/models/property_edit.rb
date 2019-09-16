@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PropertyEdit < Edit
   scope :for_property, ->(property) { where(key: property) }
 

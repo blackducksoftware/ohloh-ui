@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module StripAttributes
   def strip_attributes(*attributes)
     before_validation do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Clearance.configure do |config|
   config.routes = false
   config.mailer_sender = 'mailer@openhub.net'

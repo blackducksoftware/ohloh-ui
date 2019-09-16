@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StackWidget < Widget
   MIN_INITIAL_ICONS_PER_ROW = 3
   MAX_INITIAL_ICONS_PER_ROW = 12

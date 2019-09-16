@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReviewsController < ApplicationController
   helper RatingsHelper
   helper ProjectsHelper
@@ -10,12 +12,10 @@ class ReviewsController < ApplicationController
   before_action :review_context
 
   def index
-    # rubocop:disable Rails/DynamicFindBy # find_by... here is a predefined scope.
     @reviews = @parent.reviews
                       .find_by_comment_or_title_or_accounts_login(params[:query])
                       .sort_by(params[:sort])
                       .paginate(page: page_param, per_page: 10)
-    # rubocop:enable Rails/DynamicFindBy
   end
 
   def summary

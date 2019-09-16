@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 xml.response do
   xml.status 'success'
   xml.items_returned @affiliated_projects.length

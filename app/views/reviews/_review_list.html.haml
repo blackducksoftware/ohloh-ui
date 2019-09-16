@@ -30,7 +30,7 @@
       .col-md
         %abbr.soft.small{ title: review_list.created_at }
           = t('reviews.written_ago', time: time_ago_in_words(review_list.created_at))
-      %p= simple_format(review_list.comment.fix_encoding_if_invalid!)
+      %p= simple_format(review_list.comment.fix_encoding_if_invalid)
       .soft.small
         .pull-left
           = render partial: 'helpful_count_status', locals: { review: review_list }

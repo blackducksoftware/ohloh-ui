@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :name do
     name { Faker::Name.first_name + rand(999_999).to_s }

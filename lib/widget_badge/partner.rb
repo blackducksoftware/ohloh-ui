@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The width is constrained to be about 22 characters, so its up to the caller
 # to shorten each string to the correct length (or add ellipses).
 module WidgetBadge

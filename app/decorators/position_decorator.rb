@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PositionDecorator < Cherry::Decorator
   delegate :account, :project, :contribution, :name_id,
            :description, :title, :organization, :created_at,

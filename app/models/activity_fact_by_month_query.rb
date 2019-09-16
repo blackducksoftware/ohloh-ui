@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ActivityFactByMonthQuery
   SUM_COLUMNS = %i[code_added code_removed blanks_added blanks_removed
                    comments_added comments_removed commits].freeze

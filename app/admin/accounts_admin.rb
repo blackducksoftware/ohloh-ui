@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Account do
   account_params = %i[login email name country_code location url twitter_account
                       affiliation_type organization_name level]

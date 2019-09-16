@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TimeStampHelper
   def project_analysis_timestamp(project)
     analysis = project.best_analysis

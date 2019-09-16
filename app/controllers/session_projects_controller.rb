@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SessionProjectsController < ApplicationController
   skip_before_action :store_location
   before_action :prevent_bot_access

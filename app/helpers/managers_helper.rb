@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ManagersHelper
   def settings_parent_path(parent)
     parent.is_a?(Project) ? settings_project_path(parent) : settings_organization_path(parent)

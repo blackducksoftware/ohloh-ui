@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AccountsHelper
   def notification_type_text(notification_type)
     case notification_type

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Note: These classes are used for mocking Reverification Aws::SES responses and messages.
 #        Used for the spammer cleanup initiative.
 module MOCK

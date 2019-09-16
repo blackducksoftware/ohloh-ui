@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectLicensesController < SettingsController
   helper ProjectsHelper
 
@@ -59,7 +61,7 @@ class ProjectLicensesController < SettingsController
 
   def handle_creation_errors(project_license)
     msgs = project_license.errors.messages[:license_id]
-    already_added = (msgs && msgs.include?(t('errors.messages.taken')))
+    already_added = (msgs&.include?(t('errors.messages.taken')))
     flash.now[:notice] = already_added ? t('.error_already_exists') : t('.error_other')
     @licenses = License.all
     render action: :new, status: :unprocessable_entity

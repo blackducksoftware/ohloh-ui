@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApiKey < ActiveRecord::Base
   DEFAULT_DAILY_LIMIT = 1000
   STATUS_OK = 0
@@ -38,10 +40,8 @@ class ApiKey < ActiveRecord::Base
 
   class << self
     def reset_all!
-      # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
       ApiKey.update_all(daily_count: 0, day_began_at: Time.current)
       ApiKey.where(status: STATUS_LIMIT_EXCEEDED).update_all(status: STATUS_OK)
-      # rubocop:enable Rails/SkipsModelValidations
     end
 
     def find_for_oauth_application_uid(client_id)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Organization::Affiliated < Organization::AccountFacts
   def initialize(organization)
     @organization = organization

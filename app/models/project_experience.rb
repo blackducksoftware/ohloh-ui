@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectExperience < ActiveRecord::Base
   belongs_to :position
   belongs_to :project

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StacksController < ApplicationController
   include RedirectIfDisabled
   helper MapHelper

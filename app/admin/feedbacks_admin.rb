@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Feedback do
   config.sort_order = ''
   actions :index, :dashboard, :project

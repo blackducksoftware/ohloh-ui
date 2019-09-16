@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PositionFactoriesController < ApplicationController
   before_action :session_required, :redirect_unverified_account
   before_action :set_account

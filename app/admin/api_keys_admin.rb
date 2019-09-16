@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register ApiKey do
   filter :oauth_application_secret_or_key, as: :string, label: 'Key'
   filter :name

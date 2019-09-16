@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectBuilder
   def initialize(account, param_hash = {})
     @project_params = param_hash

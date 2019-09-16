@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Accounts::LanguagesController < ApplicationController
   include SetAccountByAccountId
   helper :Projects

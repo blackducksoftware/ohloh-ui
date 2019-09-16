@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StackerBadge < Badge
   def eligibility_count
     @eligibility_count ||= vars[:stacks_count]

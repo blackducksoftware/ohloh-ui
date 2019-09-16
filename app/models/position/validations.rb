@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Position::Validations
   extend ActiveSupport::Concern
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HelpfulsController < ApplicationController
   before_action :session_required, :redirect_unverified_account
 

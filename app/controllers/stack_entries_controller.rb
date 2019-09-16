@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StackEntriesController < ApplicationController
   helper RatingsHelper
   helper StacksHelper

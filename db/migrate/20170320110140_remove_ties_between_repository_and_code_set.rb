@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RemoveTiesBetweenRepositoryAndCodeSet < ActiveRecord::Migration
   def up
     remove_foreign_key :repositories, column: :best_code_set_id

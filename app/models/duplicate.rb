@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Duplicate < ActiveRecord::Base
   RESOLVES = %i[stack_entries kudos tags ratings reviews links aliases enlistments
                 positions project_experiences edits self].freeze
@@ -23,7 +25,7 @@ class Duplicate < ActiveRecord::Base
   end
 
   def verify_no_dupes_of_dupes
-    return unless good_project && good_project.is_a_duplicate
+    return unless good_project&.is_a_duplicate
 
     real_good = good_project.is_a_duplicate.good_project
     errors.add :good_project, I18n.t('duplicates.no_dupe_of_dupe', this: good_project.name, that: real_good.name)
@@ -118,8 +120,6 @@ class Duplicate < ActiveRecord::Base
   def resolve_self!
     bad_project.update(name: "Duplicate Project #{id}", vanity_url: '')
     CreateEdit.find_by(target: bad_project).undo!(@editor_account) unless bad_project.deleted?
-    # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
     update_attribute(:resolved, true)
-    # rubocop:enable Rails/SkipsModelValidations
   end
 end

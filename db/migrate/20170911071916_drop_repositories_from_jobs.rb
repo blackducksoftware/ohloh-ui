@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DropRepositoriesFromJobs < ActiveRecord::Migration
   def up
     remove_foreign_key :jobs, column: :repository_id

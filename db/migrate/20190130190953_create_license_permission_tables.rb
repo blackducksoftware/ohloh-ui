@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateLicensePermissionTables < ActiveRecord::Migration
   def up
     rename_table :license_permissions, :license_rights

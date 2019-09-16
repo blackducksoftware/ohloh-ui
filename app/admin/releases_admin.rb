@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Release do
   filter :release_id
   filter :version

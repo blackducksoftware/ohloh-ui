@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :org_thirty_day_activity do
     name        { Faker::Company.name + rand(999_999).to_s }

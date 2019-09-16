@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Forge::Match
   require 'open-uri'
   require 'json'
@@ -15,7 +17,7 @@ class Forge::Match
   end
 
   def forge_id
-    forge && forge.id
+    forge&.id
   end
 
   def get_json_api

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OhAdmin::BrokenLinksController < ApplicationController
   before_action :admin_session_required
   layout 'admin'

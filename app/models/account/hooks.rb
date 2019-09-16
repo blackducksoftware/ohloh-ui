@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # rubocop:disable Metrics/ClassLength
 
 class Account::Hooks
@@ -105,7 +107,6 @@ class Account::Hooks
     DeletedAccount.create(traits)
   end
 
-  # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update in the following methods.
   def transfer_associations_to_anonymous_account(account)
     @anonymous_account = Account.find_or_create_anonymous_account
     account.posts.update_all(account_id: @anonymous_account)
@@ -137,6 +138,5 @@ class Account::Hooks
   def update_edit(account_id)
     Edit.where(undone_by: account_id).update_all(undone_by: @anonymous_account)
   end
-  # rubocop:enable Rails/SkipsModelValidations
 end
 # rubocop:enable Metrics/ClassLength

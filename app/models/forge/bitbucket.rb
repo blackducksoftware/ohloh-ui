@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Forge::Bitbucket < Forge
   def match(url)
     matches = /\bbitbucket\.org\/([^\/]+)\/([^\/\.]+)\b/.match(url)

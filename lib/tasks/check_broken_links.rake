@@ -1,4 +1,5 @@
-# rubocop:disable Rails/SkipsModelValidations
+# frozen_string_literal: true
+
 desc 'Checks broken active links in active projects'
 task check_broken_links: :environment do
   Link.joins(:project).where(deleted: false, projects: { deleted: false }).select(:id, :url).find_each do |link|
@@ -34,4 +35,3 @@ def get_response(url)
   request = Net::HTTP::Head.new(uri.request_uri)
   http.request(request)
 end
-# rubocop:enable Rails/SkipsModelValidations

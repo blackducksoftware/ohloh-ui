@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LicensePermission < ActiveRecord::Base
   belongs_to :license_right
   has_one :license_license_permission

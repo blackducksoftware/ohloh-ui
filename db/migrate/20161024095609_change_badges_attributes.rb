@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChangeBadgesAttributes < ActiveRecord::Migration
   def self.up
     remove_column :project_badges, :deleted

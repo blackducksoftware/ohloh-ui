@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Analysis::LanguageHistory < Analysis::QueryBase
   arel_tables :all_month, :activity_fact, :language
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AboutsController < ApplicationController
   def tools
     @languages = Language.all.order('nice_name')

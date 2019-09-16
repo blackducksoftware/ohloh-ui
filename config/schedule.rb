@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 env :PATH, ENV['PATH']
 set :environment, 'production'
 set :output, error: 'cron_error.log', standard: 'cron.log'

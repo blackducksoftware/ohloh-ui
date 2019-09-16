@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Analysis::MonthlyCommits < Analysis::QueryBase
   COMMIT_YEARS = 5
 

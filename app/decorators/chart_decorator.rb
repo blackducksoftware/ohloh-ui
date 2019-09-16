@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChartDecorator
   # rubocop:disable Metrics/AbcSize
   def combined_commit_history(account)

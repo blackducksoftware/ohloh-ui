@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :project_badge do
   namespace :cii do
     desc 'Check CII best practices projects'

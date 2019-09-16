@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Spinach::Features::Login < Spinach::FeatureSteps
   step 'I am an OpenHub User' do
     @password = 'test_password'

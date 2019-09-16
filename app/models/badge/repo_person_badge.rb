@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RepoPersonBadge < Badge
   def eligibility_count
     @eligibility_count ||= vars[:repo_edit_count]

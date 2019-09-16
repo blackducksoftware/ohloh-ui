@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Usage:
 # rake selenium:prepare_projects_data[firefox]
 
@@ -179,13 +181,13 @@ namespace :selenium do
 
     commits_diff = summary.send(diff)
     commits_count = summary.send(count)
-    str = (commits_diff > 0 ? 'Up + ' : 'Down ') + commits_diff.to_s
+    str = (commits_diff.positive? ? 'Up + ' : 'Down ') + commits_diff.to_s
     str += calc_percentage(commits_diff, commits_count).to_s
     str.concat(' from previous 12 months')
   end
 
   def calc_percentage(commits_diff, commits_count)
-    " (#{(commits_diff.abs.to_f / commits_count.abs.to_f * 100).floor}%)" if commits_count > 0
+    " (#{(commits_diff.abs.fdiv(commits_count.abs) * 100).floor}%)" if commits_count.positive?
   end
 
   def get_commits_stats(analysis)
@@ -257,7 +259,7 @@ namespace :selenium do
     project_activity_index = Project.group(:activity_level_index).with_pai_available
     total_count = project_activity_index.values.sum
     project_activity_index.each_with_object({}) do |data, hsh|
-      hsh[Project::ACTIVITY_LEVEL.invert[data.first]] = "#{((data.second.to_f / total_count.to_f) * 100).round(1)} %"
+      hsh[Project::ACTIVITY_LEVEL.invert[data.first]] = "#{(data.second.fdiv(total_count) * 100).round(1)} %"
     end
   end
 

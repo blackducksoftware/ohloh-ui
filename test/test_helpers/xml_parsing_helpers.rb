@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def xml_time(date)
   Time.gm(date.year, date.month, date.day).xmlschema
 end

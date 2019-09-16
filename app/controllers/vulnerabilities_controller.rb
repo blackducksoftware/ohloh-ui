@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class VulnerabilitiesController < ApplicationController
   layout 'responsive_project_layout', only: [:index]
   helper ProjectsHelper

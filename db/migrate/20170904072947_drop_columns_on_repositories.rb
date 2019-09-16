@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DropColumnsOnRepositories < ActiveRecord::Migration
   def up
     remove_column :repositories, :branch_name, :text

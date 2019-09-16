@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FOSSerBadge < Badge
   def eligibility_count
     @eligibility_count ||= vars[:positions_count]

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 role :web, ['serv-deployer@prd-oh-web04.dc2.lan', 'serv-deployer@prd-oh-web05.dc2.lan',
             'serv-deployer@prd-oh-web06.dc2.lan']
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Tsearch
   extend ActiveSupport::Concern
 
@@ -8,10 +10,8 @@ module Tsearch
     # that has to be evaluated while updating the vector column but in update_columns
     # it was treated as a string instead of function
     after_save do |record|
-      # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
       record.class.where(id: record)
             .update_all("vector = #{set_vector(record)}, popularity_factor = #{record.searchable_factor}")
-      # rubocop:enable Rails/SkipsModelValidations
     end
 
     class << self

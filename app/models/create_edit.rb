@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateEdit < Edit
   def do_undo
     target.update!(deleted: true)

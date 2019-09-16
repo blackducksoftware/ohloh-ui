@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OrganizationsController < ApplicationController
   helper ProjectsHelper
   helper RatingsHelper
@@ -63,13 +65,11 @@ class OrganizationsController < ApplicationController
 
   def claim_project
     @project.editor_account = current_user
-    # rubocop:disable Rails/SkipsModelValidations # We want to skip validations here.
     if @project.update_attribute(:organization_id, @organization.id)
       render partial: 'active_remove_project_button', locals: { p: @project }
     else
       render text: t('.failed')
     end
-    # rubocop:enable Rails/SkipsModelValidations
   end
 
   def manage_projects

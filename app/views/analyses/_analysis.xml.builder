@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 language_percentages = Analysis::LanguagePercentages.new(analysis).collection
 
 xml.analysis do
@@ -14,7 +16,7 @@ xml.analysis do
   xml.twelve_month_commit_count tms.commits_count if tms
   xml.total_commit_count analysis.commit_count
   xml.total_code_lines analysis.code_total
-  if analysis.factoids && analysis.factoids.any?
+  if analysis.factoids&.any?
     xml.factoids do
       analysis.factoids.to_a.reject { |f| f.type.to_s =~ /FactoidDistribution|FactoidStaff/ }.each do |f|
         xml.factoid type: f.class do
@@ -26,7 +28,7 @@ xml.analysis do
   if language_percentages.any?
     xml.languages graph_url: "#{project_url(analysis.project)}/analyses/#{analysis.id}/languages.png" do
       language_percentages.each do |id, name, attr|
-        percent = attr[:percent] > 0 ? attr[:percent].to_s : '<1'
+        percent = attr[:percent].positive? ? attr[:percent].to_s : '<1'
         xml.language percentage: percent, color: attr[:color], id: id do
           xml.text! name
         end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StackEntry < ActiveRecord::Base
   MAX_NOTE_LENGTH = 255
 
@@ -31,10 +33,8 @@ class StackEntry < ActiveRecord::Base
   end
 
   def update_counters
-    # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
-    stack.update_column(:project_count, stack.stack_entries.count) if stack
-    project.update_column(:user_count, project.stacks_count) if project
-    # rubocop:enable Rails/SkipsModelValidations
+    stack&.update_column(:project_count, stack.stack_entries.count)
+    project&.update_column(:user_count, project.stacks_count)
   end
 
   class << self

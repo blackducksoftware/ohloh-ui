@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :OH do
   desc 'Fix broken links failed with "301: Net::HTTPMovedPermanently" error'
 
@@ -61,7 +63,7 @@ namespace :OH do
     @link.editor_account = Account.hamster
     @link.update!(deleted: true)
     create_edit = CreateEdit.where(target_type: 'Link', target_id: @link.id).first
-    create_edit.undo!(Account.hamster) if create_edit
+    create_edit&.undo!(Account.hamster)
     BrokenLink.where(link_id: @link.id).destroy_all
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ProjectJobs
   extend ActiveSupport::Concern
   ACTIVITY_LEVEL = { na: 0, new: 10, inactive: 20, very_low: 30, low: 40,
@@ -50,9 +52,7 @@ module ProjectJobs
     if job.nil?
       job = AnalyzeJob.create(project: self, wait_until: Time.current + delay)
     elsif job.is_a? AnalyzeJob
-      # rubocop:disable Rails/SkipsModelValidations # We want to skip validations here.
       job.update_attribute(:wait_until, Time.current + delay)
-      # rubocop:enable Rails/SkipsModelValidations
     end
     job
   end

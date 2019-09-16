@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PositionsHelper
   def show_position_url(position)
     if position.project_id && position.contribution

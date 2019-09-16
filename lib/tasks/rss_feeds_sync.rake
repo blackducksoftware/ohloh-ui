@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :rss do
   namespace :feeds do
     desc 'Sync the rss feeds'

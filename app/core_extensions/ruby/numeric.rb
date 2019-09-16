@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class Numeric
   def to_human(len = 3)
     num = to_human_simple
 
-    len += 1 if num.index('.') && num.index('.').send(:<, len)
+    len += 1 if num.index('.')&.send(:<, len)
     return num if num.length <= len
 
     format('%<str>g', str: num.first(len)) + num.match(/[A-Z]$/).to_s

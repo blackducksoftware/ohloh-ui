@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DeletedAccountsController < ApplicationController
   before_action :set_deleted_account
   before_action :feedback_time_must_not_be_elapsed

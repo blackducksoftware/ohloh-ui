@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Teaspoon.configure do |config|
   config.mount_at = '/teaspoon'
   config.root = nil

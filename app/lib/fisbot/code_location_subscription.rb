@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CodeLocationSubscription < FisbotApi
   class << self
     def resource

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Analysis::CommitVolume < Analysis::QueryBase
   arel_tables :name, :analysis_sloc_set, :commit, :analysis_alias
 

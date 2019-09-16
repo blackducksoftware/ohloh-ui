@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 prefs = {}
 prefs[:title] = @widget.title
 prefs[:title_url] = root_url

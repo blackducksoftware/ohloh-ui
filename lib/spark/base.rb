@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Spark::Base
   include MiniMagickHelper
 

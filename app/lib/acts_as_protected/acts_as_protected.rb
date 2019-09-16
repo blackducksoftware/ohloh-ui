@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActsAsProtected
   extend ActiveSupport::Concern
 

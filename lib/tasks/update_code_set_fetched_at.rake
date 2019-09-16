@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 task update_code_set_fetched_at: :environment do
   ActiveRecord::Base.connection.execute("
     UPDATE code_sets

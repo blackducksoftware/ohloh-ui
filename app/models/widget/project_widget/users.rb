@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectWidget::Users < ProjectWidget
   POSITIONS_MAP = { gray: 13, rainbow: 17, green: 14, red: 15, blue: 16 }.freeze
   STYLES = ['gray', 'rainbow', 'green', 'red', 'blue', nil].freeze

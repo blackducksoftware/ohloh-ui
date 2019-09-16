@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TopicsController < ApplicationController
   helper MarkdownHelper
   before_action :session_required, :redirect_unverified_account, only: %i[new create close reopen]
@@ -71,9 +73,7 @@ class TopicsController < ApplicationController
     topic = Topic.where(id: params[:id]).take
     raise ParamRecordNotFound unless topic
 
-    # rubocop:disable Rails/SkipsModelValidations # We want to skip validations here.
     topic.increment!(:hits) unless logged_in? && (@topic.account == current_user)
-    # rubocop:enable Rails/SkipsModelValidations
   end
 
   def find_forum_record

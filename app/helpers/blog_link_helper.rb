@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module BlogLinkHelper
   BLOG_LINKS = {
     terms: 'terms',
@@ -23,9 +25,7 @@ module BlogLinkHelper
   }.freeze
 
   def blog_link_to(link:, link_text:)
-    # rubocop:disable Rails/OutputSafety # Static values are being used.
     "<a class='meta' href='http://blog.openhub.net/#{BLOG_LINKS[link]}' target='_blank'>#{link_text}</a>".html_safe
-    # rubocop:enable Rails/OutputSafety
   end
 
   def blog_url_for(article_name)

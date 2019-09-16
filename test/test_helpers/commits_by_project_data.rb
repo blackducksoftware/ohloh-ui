@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommitsByProjectData
   FIRST_POSTION_COMMITS = %w[25 40 28 18 1 8 26 9].freeze
   SECOND_POSTION_COMMITS = %w[4 3].freeze

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ExploreHelper
   COMPARE_PROJECT_INPUT_NOS = [0, 1, 2].freeze
 

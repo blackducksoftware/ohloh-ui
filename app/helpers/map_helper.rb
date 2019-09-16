@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MapHelper
   def map_init(id, zoom = 2)
     map_script_load + map_js_initialization(id, zoom)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NilAccount < NullObject
   attr_reader :id, :level, :activated_at
 

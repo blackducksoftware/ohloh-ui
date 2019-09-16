@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Account < ActiveRecord::Base
   include AffiliationValidation
   include AccountValidations
@@ -23,7 +25,7 @@ class Account < ActiveRecord::Base
   end
 
   def to_param
-    login && login.match(Patterns::DEFAULT_PARAM_FORMAT) ? login : id.to_s
+    login&.match(Patterns::DEFAULT_PARAM_FORMAT) ? login : id.to_s
   end
 
   # It's optional, but used if present by acts_as_editable.
@@ -50,9 +52,7 @@ class Account < ActiveRecord::Base
   # To speed up searching, we keep track of an account's 'aliases'.
   def update_akas
     akas = claimed_positions.includes(:name).map { |p| p.name.name }.uniq.join("\n")
-    # rubocop:disable Rails/SkipsModelValidations # We want a quick DB update here.
     update_attribute(:akas, akas)
-    # rubocop:enable Rails/SkipsModelValidations
   end
 
   def run_actions(status)

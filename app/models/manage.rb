@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Manage < ActiveRecord::Base
   MAX_PROJECTS = 200
 

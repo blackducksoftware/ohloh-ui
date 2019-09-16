@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class VitaJob < Job
   scope :schedule_account_analysis, lambda { |account, delay = 0|
     delayed_time = Time.current + delay

@@ -1,4 +1,5 @@
-# rubocop:disable Rails/SkipsModelValidations
+# frozen_string_literal: true
+
 desc 'Remove duplicate Microsoft Public License records'
 task remove_duplicate_microsoft_public_license: :environment do
   ProjectLicense.where(license_id: 357).update_all(license_id: 150)
@@ -10,4 +11,3 @@ task remove_duplicate_microsoft_public_license: :environment do
   license.editor_account = Account.hamster
   license.update(vanity_url: 'Microsoft_Public_License')
 end
-# rubocop:enable Rails/SkipsModelValidations

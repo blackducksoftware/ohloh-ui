@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BrokenLink < ActiveRecord::Base
   belongs_to :link
 

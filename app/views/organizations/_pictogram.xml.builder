@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 xml = xml_instance
 affl_committers_stats = org.affiliated_committers_stats
 out_committers_stats = org.outside_committers_stats

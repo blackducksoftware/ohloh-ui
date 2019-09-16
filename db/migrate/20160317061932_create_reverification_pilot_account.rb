@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateReverificationPilotAccount < ActiveRecord::Migration
   def change
     create_table :reverification_pilot_accounts do |t|

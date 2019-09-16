@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Analysis::QueryBase
   SUM_COLUMNS = [%i[code_added code_removed code_total],
                  %i[comments_added comments_removed comments_total],

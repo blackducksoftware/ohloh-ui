@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Language::Chart
   include ColorsHelper
   include ChartHelper

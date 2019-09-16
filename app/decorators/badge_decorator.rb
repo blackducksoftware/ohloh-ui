@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BadgeDecorator < Cherry::Decorator
   delegate :to_underscore, :level, :level_bits, :levels?, :description, to: :object
 

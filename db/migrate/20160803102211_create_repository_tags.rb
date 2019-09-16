@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateRepositoryTags < ActiveRecord::Migration
   def change
     create_table :repository_tags do |t|

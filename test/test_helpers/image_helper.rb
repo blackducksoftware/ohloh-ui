@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def write_to_file(result_blob, extension = '.jpg')
   result_file = Tempfile.new(['widget', extension])
   File.binwrite(result_file.path, result_blob)

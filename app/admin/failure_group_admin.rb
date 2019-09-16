@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register FailureGroup do
   config.sort_order = :priority_desc
   permit_params :name, :pattern, :priority, :auto_reschedule

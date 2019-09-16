@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ForumsHelper
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Style/MultilineIfModifier
   def forums_sidebar

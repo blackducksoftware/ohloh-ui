@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :docker do
   desc 'deploy a specified tag'
   task :deploy do

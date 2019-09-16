@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Forge::Codeplex < Forge
   def match(url)
     return nil if url.blank? || url !~ /codeplex.com/

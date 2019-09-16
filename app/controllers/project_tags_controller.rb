@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectTagsController < SettingsController
   helper ProjectsHelper
   helper TagsHelper
