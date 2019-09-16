@@ -37,12 +37,14 @@ class SessionsController < Clearance::SessionsController
   def captcha_verify
     return if verify_recaptcha
 
+    StatsD.increment('Openhub.Session.fail')
     @ask_for_recaptcha = true
     flash.now[:error] = t('.recaptcha_failure')
     render 'sessions/new', status: :unauthorized
   end
 
   def sign_in_failure(failure_message)
+    StatsD.increment('Openhub.Session.fail')
     flash.now[:error] = failure_message
     @ask_for_recaptcha = true if failed_login_thrice?
     disable_account_for_retries
@@ -77,6 +79,7 @@ class SessionsController < Clearance::SessionsController
   end
 
   def reset_auth_fail_count
+    StatsD.increment('Openhub.Session.success')
     account.update!(auth_fail_count: 0)
   end
 
