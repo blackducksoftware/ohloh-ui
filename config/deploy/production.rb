@@ -1,19 +1,23 @@
 # frozen_string_literal: true
 
-role :web, ['serv-deployer@prd-oh-web04.dc2.lan', 'serv-deployer@prd-oh-web05.dc2.lan',
-            'serv-deployer@prd-oh-web06.dc2.lan']
+on ['serv-deployer@prd-oh-web04.dc2.lan', 'serv-deployer@prd-oh-web05.dc2.lan', 'serv-deployer@prd-oh-web06.dc2.lan'] do
+  within '/home/serv-deployer' do
+    execute('wget -O docker-compose.yml https://raw.githubusercontent.com/blackducksoftware/ohloh-ui/master/docker-compose.yml')
+    execute('docker pull sigsynopsys/openhub:latest')
+  end
+end
 
-# role :utility, 'serv-deployer@prd-oh-utility03.dc2.lan', user: 'serv-deployer'
+# Run the bundle install, assets on one of the web host
+on ['serv-deployer@prd-oh-web06.dc2.lan'] do
+  within '/home/serv-deployer' do
+    execute('docker-compose run --rm web bundle install')
+    execute('docker-compose run --rm web bundle exec rake assets:precompile RAILS_ENV=production')
+  end
+end
 
-role :sidekiq, %w[serv-deployer@prd-oh-utility01.dc2.lan]
-# set :sidekiq_role, [:utility]
-set :sidekiq_role, [:sidekiq]
-set sidekiq_env: fetch(:rails_env)
-
-# All passenger_roles get a deploy:restart after deploy:publishing.
-set :passenger_roles, [:web]
-set :rails_env, 'production'
-
-set :linked_files, %w[.env.production]
-
-set :assets_roles, [:web]
+# Rebuild the container with the latest changes (code, assets)
+on ['serv-deployer@prd-oh-web04.dc2.lan', 'serv-deployer@prd-oh-web05.dc2.lan', 'serv-deployer@prd-oh-web06.dc2.lan'] do
+  within '/home/serv-deployer' do
+    execute('docker-compose up -d --build')
+  end
+end
