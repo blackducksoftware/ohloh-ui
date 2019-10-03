@@ -20,7 +20,10 @@ class Job < ActiveRecord::Base
     self.code_location_id ||= code_set.code_location_id if code_set_id
   end
 
-  scope :incomplete_fis_jobs, -> { where.not(type: %w[TarballJob VulnerabilityJob TagJob], status: STATUS_COMPLETED) }
+  scope :incomplete_fis_jobs, lambda {
+                                where.not(type: %w[TarballJob VulnerabilityJob TagJob RepostEventJob],
+                                          status: STATUS_COMPLETED)
+                              }
   scope :incomplete, -> { where.not(status: STATUS_COMPLETED) }
   scope :failed, -> { where(status: STATUS_FAILED) }
   scope :scheduled, -> { where(status: STATUS_SCHEDULED) }
