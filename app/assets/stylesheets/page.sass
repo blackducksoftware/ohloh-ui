@@ -1,8 +1,8 @@
 @import "base"
 
 body
-  background-color: #555
-  font-family: Open Sans
+  background-color: white
+  font-family: Roboto
   font-size: 1.3rem
   margin: 0
   color: #000
@@ -14,7 +14,7 @@ body
   padding: 10px 10px 0 10px
 
 header
-  background-color: #242021
+  background-color: white
   margin: -10px -10px 0px -10px
 
 #nav-top-bar
@@ -27,18 +27,20 @@ header
       display: inline-block
       margin-right: 16px
       a
-        color: #ddd
-        font-size: 13pt
+        color: white
+        font-size: 10pt
         text-decoration: none
         &:hover
           padding-bottom: 0px
-          border-bottom: 0.4rem white solid
-          color: white
+          color: color-gradient($SECONDARY_YELLOW, 60)
 #navbar-inner
-  height: 28px
+  background-color: color-gradient($PRIMARY_PURPLE, 100)
+  padding-top: 1px
+  padding-left: 2px
+  height: 42px
 
 #project_container
-  background-color: white
+  background-color: color-gradient($LIGHT_GRAY, 40)
   #page-contents
     width: auto
     #project_masthead
@@ -58,29 +60,68 @@ header
     padding-left: 2rem
 .navbar
   border-width: 0
-  margin: 0
-  padding: 0
-  min-height: 33px
-  .logo_link
+  margin: 15px 15px 0 15px
+  padding: 0 0 5px 0
+  min-height: 30px
+  .logo-div
+    height: 100%
+    width: 125px
     float: left
-    margin-top: 3px
+    .logo_link
+      color: color-gradient($PRIMARY_PURPLE, 100) !important
+      text-decoration: none
+      margin-top: 3px
+    .logo_img
+      width: 100%
+      height: 100%
+  .company-div
+    float: left
+    color: color-gradient($PRIMARY_PURPLE, 100) !important
+    padding-right: 10px !important
+    padding-bottom: 5px !important
+    .navbar_small_text
+      font-size: 10px !important
+    .navbar_large_text
+      font-size: 24px !important
+    a
+      color: color-gradient($PRIMARY_PURPLE, 100) !important
+      text-decoration: none
+  .spacing-div
+    float: left
+    width: 2px
+    height: 30px
+    background-color: white
+    margin: 0 auto
+  .separator-div
+    float: left
+    width: 1px
+    height: 30px
+    background-color: color-gradient($LIGHT_GRAY, 60) !important
+    margin: 0 2px 0 2px
+  .actions-div
+    float: right
+  .twitter-text
+    background-color: color-gradient($PRIMARY_PURPLE, 100)
+    color: white
+    font-weight: bold
+    font-size: 0.80em
   .btn
     border: 0
     display: inline-block
-    font-size: 13px
-    line-height: 22px
+    font-size: 15px
+    line-height: 25px
     margin: 0
     padding: 1px 6px 0 7px
   .follow_btn
-    background-color: #DDD !important
+    background-color: color-gradient($LIGHT_GRAY, 120) !important
     display: inline-block
     padding: 0 0 0 4px
     &:hover
-      background-color: #BBB !important
+      background-color: color-gradient($LIGHT_GRAY, 100) !important
       text-decoration: none
     height: 24px
     i, p, img
-      color: #888
+      color: white
       display: inline-block
       vertical-align: top
     i
@@ -101,16 +142,15 @@ header
     li
       float: left
       padding: 0 0 0 8px
-      a
-        text-transform: uppercase
+  a
+    color: $secondary-light-purple !important
 
 #top_nav_actions
   float: right
   margin-right: 5px
-  margin-top: .6rem
 #logged_user_menu
   a
-    color: #e6e6e6
+    color: black
     text-transform: none
     text-decoration: none
     margin: 8px 0px 15px
@@ -162,7 +202,7 @@ header
   border-top: 1px solid #aaa
 
 .c3_light
-  :background-color $c3_light
+  background-color: $c3_light
 
 .error
   color: red !important
@@ -184,7 +224,7 @@ header
   @extend .no_padding
 
 .busy, a.busy
-  :background transparent asset_url('ui/spinner.gif') no-repeat center
+  background: transparent asset_url('ui/spinner.gif') no-repeat center
 
 .center
   text-align: center
@@ -203,10 +243,10 @@ header
 
 table
   td,th
-    :vertical-align middle !important
+    vertical-align: middle !important
 
 .valign_centre
-  :vertical-align middle !important
+  vertical-align: middle !important
 
 .btn-group
   a

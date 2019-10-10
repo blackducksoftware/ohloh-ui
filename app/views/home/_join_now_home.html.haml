@@ -1,19 +1,16 @@
 .join_now_home
-  %p
-    %img{ alt: 'cliam contribution', src: image_path('home/icon-claim.png') }
-    &nbsp;&nbsp;
-    %span.green= t('.claim')
-    = t('.contributions')
-  %p
-    %span.green= t('.manage')
-    = t('.projects_data')
-    &nbsp;&nbsp;
-    %img{ alt: 'Manage', src: image_path('home/icon-manage.png') }
-  %p
-    %img{ alt: 'Build', src: image_path('home/icon-build.png') }
-    &nbsp;&nbsp;
-    %span.green= t('.highlight')
-    = t('.use')
+  %ul
+    %li.fa.fa-stop.fa-rotate-45.join_now_color
+    %span.join_now_color= t('.claim')
+    %span.join_now_color= t('.contributions')
+    %p
+    %li.fa.fa-stop.fa-rotate-45.join_now_color
+    %span.join_now_color= t('.manage')
+    %span.join_now_color= t('.projects_data')
+    %p
+    %li.fa.fa-stop.fa-rotate-45.join_now_color
+    %span.join_now_color= t('.highlight')
+    %span.join_now_color= t('.use')
   %br
   %p
     = link_to t('.join_now'), new_account_path(invite: params[:invite], ref: 'homepage'), class: 'btn btn_join_now'

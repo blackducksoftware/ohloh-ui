@@ -290,7 +290,7 @@ describe 'ProjectsController' do
 
       get :show, id: project.vanity_url
 
-      must_select('p')[2].text.must_equal "foo \n "
+      must_select('p')[3].text.must_equal "foo \n "
     end
 
     it 'show accepts being called via api' do
@@ -913,6 +913,11 @@ describe 'ProjectsController' do
   # similar_by_tags
   it 'similar_by_tags should reject requests if not ajax' do
     get :similar_by_tags, id: create(:project).to_param
+    must_respond_with :missing
+  end
+
+  it 'similar_by_tags should reject requests if format is js and not ajax' do
+    get :similar_by_tags, id: create(:project).to_param, format: :js
     must_respond_with :missing
   end
 

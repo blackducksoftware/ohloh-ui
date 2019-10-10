@@ -1,12 +1,14 @@
 .showcase
-  padding-top: 30px
+  padding-top: 20px
+  padding-bottom: 30px
   width: 980px
   margin-left: -20px
 .billboard
-  background: none repeat scroll 0 0 #156d93
+  background: none repeat scroll 0 0 color-gradient($SECONDARY_SKY_BLUE, 120)
   color: white
   height: 160px
   padding-top: 30px
+  padding-bottom: 30px
   text-align: center
   width: 100%
   z-index: 2
@@ -16,7 +18,7 @@
     padding: 0
   .discover_msg
     font-size: 2.1em !important
-    font-weight: 500 !important
+    font-weight: 100 !important
     margin-top: -10px
     margin-bottom: 10px
     h1
@@ -29,47 +31,63 @@
     font-size: 14px
     font-weight: 200 !important
 .join_now
-  color: #3e5e3e
-  border-bottom: 3px solid #3e5e3e
+  color: color-gradient($SECONDARY_FOREST_GREEN, 100)
+  border-bottom: 3px solid color-gradient($SECONDARY_FOREST_GREEN, 100)
   padding-bottom: 5px
   padding-left: 12px
 .join_now_home
+  padding-top: 10px
+  font-size: 1.4em 
   p
-    font-size: 14px
-  .green
-    color: #3e5e3e !important
-    font-size: 1.2em !important
+    font-size: 14px !important
+  .join_now_color
+    color: color-gradient($SECONDARY_FOREST_GREEN, 100) !important
+  li
+    font-size: 0.5em !important
+    height: 30px
+    width: 30px
 .home_page_row
   .whats_new
     margin-right: -27px !important
   .col-md-8
     h2
-      margin-right: -25px !important
+      font-weight: 500 !important
+      margin-right: -40px !important
+      margin-left: 30px !important
+      text-indent: -10px !important
   .col-md-4
-    margin-left: -14px !important
-    padding-right: 0px
+    background-color: color-gradient($SECTION_BACKGROUND, 0) !important
+    padding-bottom: 20px
+    width: 32%
+    h2
+      font-weight: 500 !important
+      margin-left: 5px !important
+      text-indent: -10px !important
 .btn.btn_join_now
-  background-color: #3e5e3e !important
-  border-color: #3e5e3e !important
+  font-family: 'Roboto' !important
+  font-size: 22px !important
   font-weight: bold !important
+  background-color: color-gradient($SECONDARY_FOREST_GREEN, 100) !important
+  border-color: color-gradient($SECONDARY_FOREST_GREEN, 100) !important
   margin-left: 60px !important
   width: 161px !important
   &:hover
-    background-color: #659965 !important
-    border-color: #659965 !important
+    background-color: color-gradient($SECONDARY_FOREST_GREEN, 80) !important
+    border-color: color-gradient($SECONDARY_FOREST_GREEN, 80) !important
 .copilot
   background: asset_url("home/Rookies18-OH.jpg") 0 0 no-repeat
   height: 230px
+  width: 600px
   margin-top: 20px
-  margin-left: 0
+  margin-left: 30px
 
 ::-webkit-input-placeholder
-  color:    black
+  color:    color-gradient($PRIMARY_DARK_GRAY, 120)
 \:-moz-placeholder
-  color:    black
+  color:    color-gradient($PRIMARY_DARK_GRAY, 120)
   opacity:  1
 ::-moz-placeholder
-  color:    black
+  color:    color-gradient($PRIMARY_DARK_GRAY, 120)
   opacity:  1
 \:-ms-input-placeholder
   color:    #909
@@ -82,6 +100,7 @@ input:focus::-ms-input-placeholder
   color: transparent
 
 .landing
+  margin-top: 20px
   margin-left: -14px
 .top_ten_main
   padding-left: 40px !important
@@ -98,8 +117,13 @@ input:focus::-ms-input-placeholder
   line-height: 1.5em
   padding-left: 8px
   color: #555
+.top_ten
+  h2
+    font-weight: 500 !important
+.top_ten.middle
+  background-color: color-gradient($SECTION_BACKGROUND, 80)
 .top_ten.last
-  h3
+  h2
     margin-right: -25px !important
 .top_ten_icon
   img
@@ -118,7 +142,7 @@ input:focus::-ms-input-placeholder
   height: 23px !important
   margin-top: -108px
   width: 413px
-  color: black !important
+  color: color-gradient($PRIMARY_DARK_GRAY, 120) !important
 .image_icon
   img
     margin-left: -24px
@@ -131,17 +155,16 @@ input:focus::-ms-input-placeholder
   a
     border: 0
 .icon_search
-  font-family: open sans
   font-size: 14px
   font-weight: 300
   margin-top: -37px
   margin-left: -71px
   text-align: center
 .wh_new
-  color: #92240b
-  border-bottom: 3px solid #92240b
+  color: color-gradient($SECONDARY_ORANGE, 120)
+  border-bottom: 3px solid color-gradient($SECONDARY_ORANGE, 120)
+  width: 100%
   padding-bottom: 5px
-  padding-left: 12px
 .common
   padding-left: 6px
   padding-bottom: 3px
@@ -149,18 +172,18 @@ input:focus::-ms-input-placeholder
   font-weight: normal
   color: #000000
 .most_popular_projects
-  color: #92240b
-  border-bottom: 2px solid #92240b
+  color: color-gradient($SECONDARY_ORANGE, 120)
+  border-bottom: 2px solid color-gradient($SECONDARY_ORANGE, 120)
 .most_active_projects 
-  color: #00314e
-  border-bottom: 2px solid #00314e
+  color: color-gradient($SECONDARY_MARINE_BLUE, 120)
+  border-bottom: 2px solid color-gradient($SECONDARY_MARINE_BLUE, 120)
   margin-left: -1px
 .most_active_contributors
-  color: #0c3931
-  border-bottom: 2px solid #0c3931
+  color: color-gradient($SECONDARY_TEAL, 120)
+  border-bottom: 2px solid color-gradient($SECONDARY_TEAL, 120)
 .popular
-  background: #92240b !important
+  background: color-gradient($SECONDARY_ORANGE, 120) !important
 .active
-  background: #00314e !important
+  background: color-gradient($SECONDARY_MARINE_BLUE, 120) !important
 .contributor
-  background: #0c3931 !important
+  background: color-gradient($SECONDARY_TEAL, 120) !important

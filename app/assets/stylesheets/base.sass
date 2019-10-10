@@ -1,37 +1,25 @@
 @import oh-colors
 
-@font-face
-  font-family: 'Open Sans'
-  font-style: normal
-  font-weight: 300
-  src: font-url('OpenSans-Light.woff') format('woff')
-
-@font-face
-  font-family: 'Open Sans'
-  font-style: normal
-  font-weight: 400
-  src: font-url('OpenSans-Regular.woff') format('woff')
-
 // base mixins
 =sans_font
-  :font-family Open Sans
+  font-family: 'Roboto'
 =serif_font
-  :font-family Open Sans
+  font-family: 'Roboto'
 =arial_font
-  :font-family Open Sans
+  font-family: 'Roboto'
 =lucida_font
-  :font-family Open Sans
+  font-family: 'Roboto'
 =small_font
-  :font-size .91667em
+  font-size: .91667em
 =tiny_font
-  :font-size .8333em
+  font-size: .8333em
 =link_blue
-  :color $primary-blue-darker
+  color: color-gradient($SECONDARY_MARINE_BLUE, 120)
 
 body
   text-rendering: optimizeLegibility
   a
-    color: $primary-blue-darker
+    color: color-gradient($SECONDARY_MARINE_BLUE, 120)
   
 
 .hidden
@@ -79,7 +67,7 @@ h4
   line-height: 1.2
   margin-bottom: 1.2em
   a:link, a:hover, a:visited
-    color: $secondary-blue-80
+    color: color-gradient($SECONDARY_MARINE_BLUE, 120)
   &.section_header
     border-bottom: 2px solid #ccc
     padding: 0 5px

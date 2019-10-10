@@ -83,7 +83,7 @@ describe 'OrganizationsController' do
 
     get :show, id: @organization.vanity_url
 
-    must_select('p')[2].text.must_equal "foo \n "
+    must_select('p')[3].text.must_equal "foo \n "
   end
 
   it 'should support show page via xml api' do

@@ -1,81 +1,126 @@
 /////////////////////////////////////////////////////////////////////////////////
+//
+// New OTWO COLOR STANDARDS (from marketing, Nov. 2019)
+//   https://sig-confluence.internal.synopsys.com/pages/viewpage.action?spaceKey=O2&title=2019+OH+Color+Standards
 
-// Black Duck Black Background
-$bds-background-black: #242021
+// base color defs, used below as keys for $COLORS map
+$FOOTER_BACKGROUND:       -1
+$SECTION_BACKGROUND:      -2
+$SECTION_BACKGROUND_BLUE: -3
+$SUBHEAD_COPY:            -4
+$BLACK_DUCK_BLUE:         1
+$LIGHT_GRAY:              2
+$PRIMARY_DARK_GRAY:       3
+$PRIMARY_PURPLE:          4
+$SECONDARY_FOREST_GREEN:  5
+$SECONDARY_LIGHT_PURPLE:  6
+$SECONDARY_LIME_GREEN:    7
+$SECONDARY_MARINE_BLUE:   8
+$SECONDARY_ORANGE:        9
+$SECONDARY_SKY_BLUE:      10
+$SECONDARY_SLATE_BLUE:    11
+$SECONDARY_TEAL:          12
+$SECONDARY_YELLOW:        13
+$WEB_RED:                 14
 
-// PRIMARY COLORS
-$primary-blue: #29aae1
-$primary-blue-darker: #156d93
-$primary-blue-80: #5dbee8
-$primary-blue-60: #7fcced
-$primary-blue-40: #a1daf2
-$primary-blue-20: #d5eef9
+// hex color defs, used as values in $COLORS map
+$FOOTER_BACKGROUND_COLOR:        #F0F0F0
+$c1: $FOOTER_BACKGROUND_COLOR
 
-$primary-gray: #686665
-$primary-gray-80: #7c7a78
-$primary-gray-60: #999796
-$primary-gray-40: #c0bebe
+$SECTION_BACKGROUND_COLOR:       #F7F7FA
+$c2: $SECTION_BACKGROUND_COLOR
+
+$SECTION_BACKGROUND_BLUE_COLOR:  #e6f7f8
+$c3: $SECTION_BACKGROUND_BLUE_COLOR
+
+$SUBHEAD_COPY_COLOR:             #2E3B4E
+$c4: $SUBHEAD_COPY_COLOR
+
+$BLACK_DUCK_BLUE_COLORS:         ( 120: #008893, 100: #00AAB8, 80: #33bbc6, 60: #66ccd4, 40: #99dde3, 20: #cceef1 )
+$m1: $BLACK_DUCK_BLUE_COLORS 
+
+$LIGHT_GRAY_COLORS:              ( 120: #8f908f, 100: #b3b4b3, 80: #c2c3c2, 60: #d1d2d1, 40: #e1e1e1, 20: #f0f0f0 )
+$m2: $LIGHT_GRAY_COLORS 
+
+$PRIMARY_DARK_GRAY_COLORS:       ( 120: #505867, 100: #646E81, 80: #838b9a, 60: #a2a8b3, 40: #c1c5cd, 20: #e0e2e6 )
+$m3: $PRIMARY_DARK_GRAY_COLORS 
+
+$PRIMARY_PURPLE_COLORS:          ( 120: #482268, 100: #5A2A82, 80: #7b559b, 60: #9c7fb4, 40: #bdaacd, 20: #ded4e6 )
+$m4: $PRIMARY_PURPLE_COLORS 
+
+$SECONDARY_FOREST_GREEN_COLORS:  ( 120: #1c6238, 100: #237b46, 80: #4f956b, 60: #7bb090, 40: #a7cab5, 20: #d3e5da )
+$m5: $SECONDARY_FOREST_GREEN_COLORS 
+
+$SECONDARY_LIGHT_PURPLE_COLORS:  ( 120: #66427d, 100: #80539C, 80: #9975b0, 60: #b398c4, 40: #ccbad7, 20: #e6ddeb )
+$m6: $SECONDARY_LIGHT_PURPLE_COLORS
+
+$SECONDARY_LIME_GREEN_COLORS:    ( 120: #739932, 100: #90bf3e, 80: #a6cc65, 60: #bcd98b, 40: #d3e5b2, 20: #e9f2d8 )
+$m7: $SECONDARY_LIME_GREEN_COLORS
+
+$SECONDARY_MARINE_BLUE_COLORS:   ( 120: #183867, 100: #1e4681, 80: #4b6b9a, 60: #7890b3, 40: #a5b5cd, 20: #d2dae6 )
+$m8: $SECONDARY_MARINE_BLUE_COLORS 
+
+$SECONDARY_ORANGE_COLORS:        ( 120: #bb641a, 100: #ea7d21, 80: #ee974d, 60: #f2b17a, 40: #f7cba6, 20: #fbe5d3 )
+$m9: $SECONDARY_ORANGE_COLORS 
+
+$SECONDARY_SKY_BLUE_COLORS:      ( 120: #3482a6, 100: #41a2d0, 80: #67b5d9, 60: #8dc7e3, 40: #b3daec, 20: #d9ecf6 )
+$m10: $SECONDARY_SKY_BLUE_COLORS
+
+$SECONDARY_SLATE_BLUE_COLORS:    ( 120: #005272, 100: #00678f, 80: #3385a5, 60: #66a4bc, 40: #99c2d2, 20: #cce1e9 )
+$m11: $SECONDARY_SLATE_BLUE_COLORS 
+
+$SECONDARY_TEAL_COLORS:          ( 120: #008792, 100: #00a9b7, 80: #33bac5, 60: #66cbd4, 40: #99dde2, 20: #cceef1 )
+$m12: $SECONDARY_TEAL_COLORS 
+
+$SECONDARY_YELLOW_COLORS:        ( 120: #ca9215, 100: #FDB71A, 80: #fdc548, 60: #fed476, 40: #fee2a3, 20: #fff1d1 )
+$m13: $SECONDARY_YELLOW_COLORS 
+
+$WEB_RED_COLORS:                 ( 120: #b33027, 100: #E03C31, 80: #e6635a, 60: #ec8a83, 40: #f3b1ad, 20: #f9d8d6 )
+$m14: $WEB_RED_COLORS 
+
+// main color map, somewhat minified as Sass can't handle multiline variable definitions
+$COLORS: ( -1: $c1, -2: $c2, -3: $c3, -4: $c4, 1: $m1, 2: $m2, 3: $m3, 4: $m4, 5: $m5, 6: $m6, 7: $m7, 8: $m8, 9: $m9, 10: $m10, 11: $m11, 12: $m12, 13: $m13, 14: $m14 )
+
+////////////////////////////
+//
+// COLOR FUNCITONS
+
+@function color-gradient($color, $gradient)
+  @if $color < 0
+    @return map-get($COLORS, $color)
+  @else
+    $color_map: map-get($COLORS, $color)
+    @return map-get($color_map, $gradient)
+
+////////////////////////////
+//
+// DEPRECATED COLORS
+
+$primary-black: #f1f1ef // #000000
+$primary-black-20: #f1f1ef // #ebebeb
+$primary-black-40: #f1f1ef // #cccccc
+$primary-black-60: #f1f1ef // #b8b8b8
+$primary-black-80: #f1f1ef // #999999
+
 $primary-gray-20: #f0f0f0
-
-$primary-black: #000000
-$primary-black-80: #999999
-$primary-black-60: #b8b8b8
-$primary-black-40: #cccccc
-$primary-black-20: #ebebeb
-
-// SECONDARY COLORS
-$secondary-yellow: #ffbb33
-$secondary-yellow-darker: #d08b00
-$secondary-yellow-80: #ffc85a
-$secondary-yellow-60: #ffd581
-$secondary-yellow-40: #ffe2a9
-$secondary-yellow-20: #ffefd0
-
-$secondary-orange: #ff9933
-$secondary-orange-darker: #a95400
-$secondary-orange-80: #ffb66e
-$secondary-orange-60: #ffca95
-$secondary-orange-40: #ffdebc
-$secondary-orange-20: #fff1e4
-
-$secondary-red: #ef4923
-$secondary-red-darker: #92240b
-$secondary-red-80: #f3765a
-$secondary-red-60: #f6957e
-$secondary-red-40: #f8b3a3
-$secondary-red-20: #fce0da
+$primary-gray-40: #c0bebe
+$primary-gray-80: #7c7a78
 
 $secondary-blue: #00639c
 $secondary-blue-darker: #00314e
-$secondary-blue-80: #0088d7
-$secondary-blue-60: #00a1fe
-$secondary-blue-40: #3ab7ff
 $secondary-blue-20: #c9cdd9
-
-$secondary-blue-2: #3b4254
+$secondary-blue-40: #3ab7ff
+$secondary-blue-80: #0088d7
 $secondary-blue-2-darker: #2b303d
-$secondary-blue-2-80: #535d77
-$secondary-blue-2-60: #636f8e
-$secondary-blue-2-40: #8f98b0
-$secondary-blue-2-20: #c9cdd9
-
-$secondary-green: #a0c565
-$secondary-green-darker: #84ae41
-$secondary-green-80: #b2d081
-$secondary-green-60: #c3da9e
-$secondary-green-40: #d5e5ba
-$secondary-green-20: #e6f0d7
-
 $secondary-green-2: #659965
 $secondary-green-2-darker: #466a46
 $secondary-green-2-80: #7ca97c
-$secondary-green-2-60: #94b894
-$secondary-green-2-40: #c3d8c3
-$secondary-green-2-20: #e7efe7
+$secondary-red: #ef4923
+$secondary-red-darker: #92240b
 
-$secondary-green-3:  #166a5b
-$secondary-green-3-darker: #0c3931
-$secondary-green-3-80: #209b85
-$secondary-green-3-60: #2acbaf
-$secondary-green-3-40: #75e2cf
-$secondary-green-3-20: #c7f3eb
+$bds-background-black: #242021
+
+$primary-blue-darker: color-gradient($BLACK_DUCK_BLUE, 80)
+$primary-blue: color-gradient($SECONDARY_MARINE_BLUE, 80)
+$primary-blue-20: color-gradient($SECONDARY_SKY_BLUE, 20)
+

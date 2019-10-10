@@ -1,13 +1,13 @@
 .col-md-4.top_ten
-  %h3.most_popular_projects.common= t('.popular_projects')
+  %h2.most_popular_projects= t('.popular_projects')
   = render partial: 'content', locals: { popular_items: @home.most_popular_projects,
     commit: 'user', colors: 'popular', required: 'most_popular_projects',
     max: @home.most_popular_projects.map(&:user_count).max }
-.col-md-4.top_ten
-  %h3.most_active_projects.common= t('.active_projects')
+.col-md-4.top_ten.middle
+  %h2.most_active_projects= t('.active_projects')
   = render partial: 'content', locals: { popular_items: @home.most_active_projects,
     commit: 'commit', colors: 'active', required: 'most_active_projects', max: @home.commit_count.max }
 .col-md-4.top_ten.last
-  %h3.most_active_contributors.common= t('.active_contributors')
+  %h2.most_active_contributors= t('.active_contributors')
   = render partial: 'content', locals: { popular_items: @home.most_active_contributors,
     commit: 'commit', colors: 'contributor', required: 'most_active_contributors', max: @home.vita_count.max }
