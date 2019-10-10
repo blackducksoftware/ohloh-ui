@@ -1,5 +1,6 @@
 .showcase
-  padding-top: 30px
+  padding-top: 20px
+  padding-bottom: 30px
   width: 980px
   margin-left: -20px
 .billboard
@@ -7,6 +8,7 @@
   color: white
   height: 160px
   padding-top: 30px
+  padding-bottom: 30px
   text-align: center
   width: 100%
   z-index: 2
@@ -16,7 +18,7 @@
     padding: 0
   .discover_msg
     font-size: 2.1em !important
-    font-weight: 500 !important
+    font-weight: 100 !important
     margin-top: -10px
     margin-bottom: 10px
     h1
@@ -29,34 +31,45 @@
     font-size: 14px
     font-weight: 200 !important
 .join_now
-  color: #3e5e3e
-  border-bottom: 3px solid #3e5e3e
+  color: $secondary-dark-blue
+  border-bottom: 3px solid $secondary-dark-blue
   padding-bottom: 5px
   padding-left: 12px
 .join_now_home
+  padding-top: 10px
+  padding-left: 20px
+  font-size: 1.4em 
   p
-    font-size: 14px
-  .green
-    color: #3e5e3e !important
-    font-size: 1.2em !important
+    font-size: 14px !important
+  .join_now_color
+    color: $secondary-dark-blue !important
+  li
+    font-size: 0.5em !important
+    height: 30px
+    width: 30px
 .home_page_row
   .whats_new
     margin-right: -27px !important
   .col-md-8
     h2
+      font-weight: 500 !important
       margin-right: -25px !important
   .col-md-4
+    h2
+      font-weight: 500 !important
     margin-left: -14px !important
     padding-right: 0px
 .btn.btn_join_now
-  background-color: #3e5e3e !important
-  border-color: #3e5e3e !important
+  font-family: 'Roboto' !important
+  font-size: 22px !important
   font-weight: bold !important
+  background-color: $secondary-dark-blue !important
+  border-color: $secondary-dark-blue !important
   margin-left: 60px !important
   width: 161px !important
   &:hover
-    background-color: #659965 !important
-    border-color: #659965 !important
+    background-color: $secondary-dark-blue-40 !important
+    border-color: $secondary-dark-blue-40 !important
 .copilot
   background: asset_url("home/Rookies18-OH.jpg") 0 0 no-repeat
   height: 230px
@@ -64,12 +77,12 @@
   margin-left: 0
 
 ::-webkit-input-placeholder
-  color:    black
+  color:    $primary-dark-gray-darker
 \:-moz-placeholder
-  color:    black
+  color:    $primary-dark-gray-darker
   opacity:  1
 ::-moz-placeholder
-  color:    black
+  color:    $primary-dark-gray-darker
   opacity:  1
 \:-ms-input-placeholder
   color:    #909
@@ -82,6 +95,7 @@ input:focus::-ms-input-placeholder
   color: transparent
 
 .landing
+  margin-top: 20px
   margin-left: -14px
 .top_ten_main
   padding-left: 40px !important
@@ -98,8 +112,13 @@ input:focus::-ms-input-placeholder
   line-height: 1.5em
   padding-left: 8px
   color: #555
+.top_ten
+  h2
+    font-weight: 500 !important
+.top_ten.middle
+  background-color: white
 .top_ten.last
-  h3
+  h2
     margin-right: -25px !important
 .top_ten_icon
   img
@@ -118,7 +137,7 @@ input:focus::-ms-input-placeholder
   height: 23px !important
   margin-top: -108px
   width: 413px
-  color: black !important
+  color: $primary-dark-gray-darker !important
 .image_icon
   img
     margin-left: -24px
@@ -131,15 +150,14 @@ input:focus::-ms-input-placeholder
   a
     border: 0
 .icon_search
-  font-family: open sans
   font-size: 14px
   font-weight: 300
   margin-top: -37px
   margin-left: -71px
   text-align: center
 .wh_new
-  color: #92240b
-  border-bottom: 3px solid #92240b
+  color: $secondary-orange-darker
+  border-bottom: 3px solid $secondary-orange-darker
   padding-bottom: 5px
   padding-left: 12px
 .common
@@ -149,18 +167,18 @@ input:focus::-ms-input-placeholder
   font-weight: normal
   color: #000000
 .most_popular_projects
-  color: #92240b
-  border-bottom: 2px solid #92240b
+  color: $secondary-orange-darker
+  border-bottom: 2px solid $secondary-orange-darker
 .most_active_projects 
-  color: #00314e
-  border-bottom: 2px solid #00314e
+  color: $secondary-midnight-blue-darker
+  border-bottom: 2px solid $secondary-midnight-blue-darker
   margin-left: -1px
 .most_active_contributors
-  color: #0c3931
-  border-bottom: 2px solid #0c3931
+  color: $secondary-dark-blue
+  border-bottom: 2px solid $secondary-dark-blue
 .popular
-  background: #92240b !important
+  background: $secondary-orange-darker !important
 .active
-  background: #00314e !important
+  background: $secondary-midnight-blue-darker !important
 .contributor
-  background: #0c3931 !important
+  background: $secondary-dark-blue !important
