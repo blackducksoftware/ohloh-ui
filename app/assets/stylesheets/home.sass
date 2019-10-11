@@ -1,5 +1,6 @@
 .showcase
   padding-top: 30px
+  padding-bottom: 30px
   width: 980px
   margin-left: -20px
 .billboard
@@ -7,6 +8,7 @@
   color: white
   height: 160px
   padding-top: 30px
+  padding-bottom: 30px
   text-align: center
   width: 100%
   z-index: 2
@@ -16,7 +18,7 @@
     padding: 0
   .discover_msg
     font-size: 2.1em !important
-    font-weight: 500 !important
+    font-weight: 100 !important
     margin-top: -10px
     margin-bottom: 10px
     h1
@@ -29,16 +31,17 @@
     font-size: 14px
     font-weight: 200 !important
 .join_now
-  color: #3e5e3e
-  border-bottom: 3px solid #3e5e3e
+  color: $secondary-dark-blue
+  border-bottom: 3px solid $secondary-dark-blue
   padding-bottom: 5px
   padding-left: 12px
 .join_now_home
+  padding-left: 20px
   p
     font-size: 14px
-  .green
-    color: #3e5e3e !important
-    font-size: 1.2em !important
+  .join_now_color
+    color: $secondary-dark-blue !important
+    font-size: 1.4em !important
 .home_page_row
   .whats_new
     margin-right: -27px !important
@@ -49,14 +52,15 @@
     margin-left: -14px !important
     padding-right: 0px
 .btn.btn_join_now
-  background-color: #3e5e3e !important
-  border-color: #3e5e3e !important
-  font-weight: bold !important
+  font-family: 'Roboto' !important
+  font-size: 22px !important
+  background-color: $secondary-dark-blue !important
+  border-color: $secondary-dark-blue !important
   margin-left: 60px !important
   width: 161px !important
   &:hover
-    background-color: #659965 !important
-    border-color: #659965 !important
+    background-color: $secondary-dark-blue-40 !important
+    border-color: $secondary-dark-blue-40 !important
 .copilot
   background: asset_url("home/Rookies18-OH.jpg") 0 0 no-repeat
   height: 230px
@@ -98,6 +102,8 @@ input:focus::-ms-input-placeholder
   line-height: 1.5em
   padding-left: 8px
   color: #555
+.top_ten.middle
+  background-color: white
 .top_ten.last
   h3
     margin-right: -25px !important
@@ -131,15 +137,14 @@ input:focus::-ms-input-placeholder
   a
     border: 0
 .icon_search
-  font-family: open sans
   font-size: 14px
   font-weight: 300
   margin-top: -37px
   margin-left: -71px
   text-align: center
 .wh_new
-  color: #92240b
-  border-bottom: 3px solid #92240b
+  color: $secondary-orange-darker
+  border-bottom: 3px solid $secondary-orange-darker
   padding-bottom: 5px
   padding-left: 12px
 .common
