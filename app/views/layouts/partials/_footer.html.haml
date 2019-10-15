@@ -1,42 +1,32 @@
 .footer-left
+  %a.logo_link{ href: root_path }
+    %img.logo_img{ itemprop: 'image', src: image_path('logo/synopsys_logo.png'), alt: 'Open Hub' }
+
+.footer-mid
+  = "ABOUT SYNOPSYS"
+  %p
+    %a{ href: 'http://www.google.com' }= "Google, Inc."
+  %p
+    %a{ href: 'http://www.yahoo.com' }= "Yahoo, Inc."
+
+.footer-right
+  = "ABOUT OPEN HUB"
   %ul.nav.nav-pills
-    %li
-      %a{ href: 'http://blog.openhub.net/about' }= t :about
     %li
       %a{ href: forums_path }= t :forum
     %li
       %a{ href: 'http://blog.openhub.net/terms' }= t :terms
     %li
       %a{ href: 'http://blog.openhub.net/privacy' }= t :privacy_blog
+    %li
+      %a{ href: 'https://github.com/blackducksoftware/ohloh-ui', target: '_blank' }= t('copyright.source_code')
 
-.footer-mid
-  %a{ href: 'http://creativecommons.org/licenses/by/3.0/', rel: 'license', target: '_blank' }
-    %img{ alt: 'Creative Commons License', src: '//i.creativecommons.org/l/by/3.0/88x31.png' }
-  = t('copyright.start_year')
-  = Time.current.year
-  %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
-    %span{ itemprop: 'publisher' }
-      %a{ href: 'http://www.blackducksoftware.com', target: '_blank' }= t('copyright.company_name')
-      ,
-  %span{ itemprop: 'description' }
-    = t('copyright.description')
-  %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
-    %span{ itemprop: 'publishingPrinciples' }
-      %a{ rel: 'license', href: 'http://creativecommons.org/licenses/by/3.0/', target: '_blank' }
-        = t('copyright.license_text')
-
-.footer-right
-  %p.careers
-    %a{ href: 'https://github.com/blackducksoftware/ohloh-ui', target: '_blank' }= t('copyright.source_code')
-  %p.careers
-    %a{ href: 'https://www.blackducksoftware.com/about/careers', target: '_blank' }= t('copyright.careers')
-  .clear &nbsp;
+.footer-bottom
   %sup &copy;
   = Time.current.year
   %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
     %span{ itemprop: 'publisher' }
-      %a{ href: 'http://www.blackducksoftware.com', target: '_blank' }= t('copyright.company_name')
-      %br
+      %a{ href: 'http://www.synopsys.com', target: '_blank' }= "Synopsys, Inc."
       = t('copyright.rights_text')
 
 - if Rails.env.production?
