@@ -30,10 +30,9 @@ header
         color: white
         font-size: 10pt
         text-decoration: none
-        //&:hover
-        //  padding-bottom: 0px
-        //  border-bottom: 0.4rem white solid
-        //  color: white
+        &:hover
+          padding-bottom: 0px
+          background-color: $secondary-light-purple-40
 #navbar-inner
   background-color: $secondary-light-purple
   padding-top: 1px
@@ -175,7 +174,7 @@ header
   border-top: 1px solid #aaa
 
 .c3_light
-  :background-color $c3_light
+  background-color: $c3_light
 
 .error
   color: red !important
@@ -197,7 +196,7 @@ header
   @extend .no_padding
 
 .busy, a.busy
-  :background transparent asset_url('ui/spinner.gif') no-repeat center
+  background: transparent asset_url('ui/spinner.gif') no-repeat center
 
 .center
   text-align: center
