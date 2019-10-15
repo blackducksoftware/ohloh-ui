@@ -37,11 +37,22 @@
   padding-left: 12px
 .join_now_home
   padding-left: 20px
+  font-size: 1.4em 
   p
-    font-size: 14px
+    font-size: 14px !important
   .join_now_color
     color: $secondary-dark-blue !important
-    font-size: 1.4em !important
+  li
+    font-size: 0.5em !important
+    height: 30px
+    width: 30px
+    -webkit-transform: rotate(45deg)
+    -moz-transform: rotate(45deg)
+    -ms-transform: rotate(45deg)
+    -o-transform: rotate(45deg)
+    transform: rotate(45deg)
+    -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=0.70711, M12=0.70711, M21=-0.70711, M22=0.70711)"
+    filter: progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=0.70711, M12=0.70711, M21=-0.70711, M22=0.70711)
 .home_page_row
   .whats_new
     margin-right: -27px !important
@@ -154,18 +165,18 @@ input:focus::-ms-input-placeholder
   font-weight: normal
   color: #000000
 .most_popular_projects
-  color: #92240b
-  border-bottom: 2px solid #92240b
+  color: $secondary-orange-darker
+  border-bottom: 2px solid $secondary-orange-darker
 .most_active_projects 
-  color: #00314e
-  border-bottom: 2px solid #00314e
+  color: $secondary-midnight-blue-darker
+  border-bottom: 2px solid $secondary-midnight-blue-darker
   margin-left: -1px
 .most_active_contributors
-  color: #0c3931
-  border-bottom: 2px solid #0c3931
+  color: $secondary-dark-blue
+  border-bottom: 2px solid $secondary-dark-blue
 .popular
-  background: #92240b !important
+  background: $secondary-orange-darker !important
 .active
-  background: #00314e !important
+  background: $secondary-midnight-blue-darker !important
 .contributor
-  background: #0c3931 !important
+  background: $secondary-dark-blue !important
