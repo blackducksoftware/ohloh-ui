@@ -1,14 +1,16 @@
 .join_now_home
   %ul
-    %li
-      %span.join_now_color= t('.claim')
-      %span.join_now_color= t('.contributions')
-    %li
-      %span.join_now_color= t('.manage')
-      %span.join_now_color= t('projects_data')
-    %li
-      %span.join_now_color= t('.highlight')
-      %span.join_now_color= t('.use')
+    %li.fa.fa-stop.join_now_color
+    %span.join_now_color= t('.claim')
+    %span.join_now_color= t('.contributions')
+    %p
+    %li.fa.fa-stop.join_now_color
+    %span.join_now_color= t('.manage')
+    %span.join_now_color= t('.projects_data')
+    %p
+    %li.fa.fa-stop.join_now_color
+    %span.join_now_color= t('.highlight')
+    %span.join_now_color= t('.use')
   %br
   %p
     = link_to t('.join_now'), new_account_path(invite: params[:invite], ref: 'homepage'), class: 'btn btn_join_now'
