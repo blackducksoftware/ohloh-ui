@@ -41,9 +41,9 @@
                   = link_to("<i class='icon-off'></i> #{t(:logout)}".html_safe, sessions_path, method: :delete)
         - else
           %li
-            %a.btn.btn-mini.btn-primary{ href: new_session_path }= t :sign_in
+            %a.btn.btn-mini.btn-primary.btn-header{ href: new_session_path }= t :sign_in
           %li
-            %a.btn.btn-mini.btn-success{ href: new_account_path }= t :join_now
+            %a.btn.btn-mini.btn-success.btn-header{ href: new_account_path }= t :join_now
 
 - if read_only_mode?
   %div
