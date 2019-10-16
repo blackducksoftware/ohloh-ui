@@ -2,48 +2,52 @@
   %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
     %span.hidden{ itemprop: 'author' } openhub.net
     %span.hidden{ itemprop: 'publisher' } Black Duck Software, Inc.
-    %div
-      %a.logo_link{ href: root_path }
-        %img.logo_img{ itemprop: 'image', src: image_path('logo/synopsys_logo.png'), alt: 'Open Hub' }
-        %span.navbar_seperator
-          |
+    %span
+      %div.logo-div
+        %a.logo_link{ href: root_path }
+          %img.logo_img{ itemprop: 'image', src: image_path('logo/synopsys_logo.png'), alt: 'Open Hub' }
+      %div.spacing-div
+      %div.seperator-div
+      %div.spacing-div
+      %div.company-div
         %span.navbar_small_text
           Black Duck
         %span.navbar_large_text
           Open Hub
-      %ul#top_nav_actions
-        %li.twitter_follow
-          :ruby
-            twitter_url = 'https://twitter.com/intent/follow?original_referer='
-            twitter_url += CGI.escape request.url
-            twitter_url += '&region=follow_link&screen_name=bdopenhub&source=followbutton&variant=2.0'
-          %a.btn.follow_btn{ href: twitter_url, target: '_blank' }
-            %i.icon-twitter
-            %p.follow! #{t(:follow)}&nbsp;@
-            %img.icon_twitter{ src: image_path('header/twitter.png') }
-        - if logged_in?
-          %li
-            .dropdown#logged_user_menu
-              %a{ 'data-toggle' => 'dropdown', :href => '#', :class => 'dropdown-toggle navbar-text link_no_underline' }
-                %i.icon-user
-                = h(current_user.name)
-                %i.icon-caret-down
-              %ul.dropdown-menu.user-menu.pull-right.dropdown-menu.dropdown-yellow.dropdown-caret.dropdown-closer
-                %li
-                  = link_to("<i class='icon-user'></i> #{t(:profile)}".html_safe, account_path(current_user).to_s)
-                %li
-                  = link_to("<i class='icon-cog'></i> #{t(:settings)}".html_safe, settings_account_path(current_user).to_s)
-                - if current_user_is_admin?
+      %div.actions-div
+        %ul#top_nav_actions
+          %li.twitter_follow
+            :ruby
+              twitter_url = 'https://twitter.com/intent/follow?original_referer='
+              twitter_url += CGI.escape request.url
+              twitter_url += '&region=follow_link&screen_name=bdopenhub&source=followbutton&variant=2.0'
+            %a.btn.follow_btn{ href: twitter_url, target: '_blank' }
+              %i.icon-twitter
+              %p.follow! #{t(:follow)}&nbsp;@
+              %img.icon_twitter{ src: image_path('header/twitter.png') }
+          - if logged_in?
+            %li
+              .dropdown#logged_user_menu
+                %a{ 'data-toggle' => 'dropdown', :href => '#', :class => 'dropdown-toggle navbar-text link_no_underline' }
+                  %i.icon-user
+                  = h(current_user.name)
+                  %i.icon-caret-down
+                %ul.dropdown-menu.user-menu.pull-right.dropdown-menu.dropdown-yellow.dropdown-caret.dropdown-closer
                   %li
-                    = link_to("<i class='icon-tachometer'></i> #{t(:admin_dashboard)}".html_safe, admin_accounts_path)
-                %li.divider
-                %li
-                  = link_to("<i class='icon-off'></i> #{t(:logout)}".html_safe, sessions_path, method: :delete)
-        - else
-          %li
-            %a.btn.btn-mini.btn-primary.btn-header{ href: new_session_path }= t :sign_in
-          %li
-            %a.btn.btn-mini.btn-success.btn-header{ href: new_account_path }= t :join_now
+                    = link_to("<i class='icon-user'></i> #{t(:profile)}".html_safe, account_path(current_user).to_s)
+                  %li
+                    = link_to("<i class='icon-cog'></i> #{t(:settings)}".html_safe, settings_account_path(current_user).to_s)
+                  - if current_user_is_admin?
+                    %li
+                      = link_to("<i class='icon-tachometer'></i> #{t(:admin_dashboard)}".html_safe, admin_accounts_path)
+                  %li.divider
+                  %li
+                    = link_to("<i class='icon-off'></i> #{t(:logout)}".html_safe, sessions_path, method: :delete)
+          - else
+            %li
+              %a.btn.btn-mini.btn-primary.btn-header{ href: new_session_path }= t :sign_in
+            %li
+              %a.btn.btn-mini.btn-success.btn-header{ href: new_account_path }= t :join_now
 
 - if read_only_mode?
   %div
