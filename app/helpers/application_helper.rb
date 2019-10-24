@@ -138,10 +138,6 @@ module ApplicationHelper
     will_paginate(numbers.paginate(page: response['current_page'], per_page: response['per_page']))
   end
 
-  def synopsys_logo_url
-    'https://www.synopsys.com'
-  end
-
   private
 
   def render_expander(text, limit)
