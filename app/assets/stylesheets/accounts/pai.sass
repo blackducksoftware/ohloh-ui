@@ -1,3 +1,5 @@
+@import oh-colors
+
 /////////////////////////  PROJECT ACTIVITY INDICATORS ///////////////////
 // Each size element has the icon family string, the icon dimension in pixels and the left margin
 $sizes: (('fifteen', 15, 1), ('twenty', 20, 0), ('twentyfive', 25, 19), ('thirtyfive', 35, 23))
@@ -73,11 +75,10 @@ $pai_levels: (('vh',0), ('h', 1), ('m', 2), ('l', 3), ('vl', 4), ('i', 5), ('na'
     :text-align center
     :margin-top 2px
     a
-      :color #E86D1F
+      :color $secondary-midnight-blue-80 !important
+
 #project_container
   #i_use_this_container
     :padding 0
     .btn.iusethis
       :font-size 2rem
-  .i_use_this_btn
-    width: 100%
