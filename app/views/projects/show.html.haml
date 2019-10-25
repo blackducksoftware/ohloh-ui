@@ -12,6 +12,9 @@
     %meta{ content: @project.logo.attachment.url(:med), name: 'twitter:image' }
   %meta{ content: 'https://www.openhub.net', name: 'twitter:domain' }
 
+%div
+  = project_analysis_timestamp(@project)
+
 .clear
 = render partial: 'projects/show/is_a_duplicate', locals: { project: @project }
 
