@@ -1,5 +1,5 @@
 - page_context[:footer_menu_list].each do |section|
-  .actions.margin_bottom_20{ class: ('col-md-3 no_padding' if page_context[:nav_type].eql?('footer_nav')) }
+  .actions.margin_top_20.margin_bottom_40{ class: ('col-md-3 no_padding' if page_context[:nav_type].eql?('footer_nav')) }
     %ul.nav.nav-stacked.nav-pills
       - header, *links = section
       - header_class, header_name, header_url, header_type = header
