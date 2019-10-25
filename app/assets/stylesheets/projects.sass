@@ -312,7 +312,11 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     font-style: italic
 
 .project_licenses
+  margin-bottom: 1em
+  .all-license-div
+    margin-top: 18em
   .license_title_container
+    margin-top: 1em
     padding-left: 1em
     h4
       margin-bottom: 0
@@ -335,28 +339,34 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     border-bottom: medium none
     cursor: pointer
   #permitted
-    color: $secondary-green-2-darker
+    color: $primary-green-darker
     margin-top: -20px
     .well
       padding-bottom: 0
       padding-top: 0
       height: 78%
+      p
+        margin-left: 2em
   #forbidden
-    color: $secondary-red-darker
+    color: $web-red
     margin-top: -20px
     padding-left: 0
     .well
       padding-bottom: 0
       padding-top: 0
       height: 78%
+      p
+        margin-left: 2em
   #required
-    color: $secondary-blue
+    color: $secondary-midnight-blue-darker
     margin-top: -20px
     padding-left: 0
     .well
       padding-bottom: 0
       padding-top: 0
       height: 78%
+      p
+        margin-left: 2em
     h5
       margin-top: 1em
 
