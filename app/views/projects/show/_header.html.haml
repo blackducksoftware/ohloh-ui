@@ -43,7 +43,7 @@
                   %h4.modal-title#LoginModalLabel= t('.login_required')
                 .model-body
                   = render 'sessions/sign_in'
-      .pull-left#project_header_activity_indicator
+      .pull-right#project_header_activity_indicator
         - project_activity_level_class(@project, :thirtyfive)
         - project_activity_level_text(@project, :thirtyfive)
 
