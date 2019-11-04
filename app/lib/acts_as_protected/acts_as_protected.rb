@@ -52,4 +52,6 @@ module ActsAsProtected
   end
 end
 
-ActiveRecord::Base.send :include, ActsAsProtected
+ActiveRecord::Base.class_eval do
+  include ActsAsProtected
+end

@@ -36,4 +36,6 @@ module ActsAsTaggable
   end
 end
 
-ActiveRecord::Base.send :include, ActsAsTaggable
+ActiveRecord::Base.class_eval do
+  include ActsAsTaggable
+end

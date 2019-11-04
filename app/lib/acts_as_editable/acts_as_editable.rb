@@ -86,4 +86,6 @@ module ActsAsEditable
   end
 end
 
-ActiveRecord::Base.send :include, ActsAsEditable
+ActiveRecord::Base.class_eval do
+  include ActsAsEditable
+end

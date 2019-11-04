@@ -62,4 +62,6 @@ require_relative 'lib/decoratable'
 module Cherry
 end
 
-ActiveRecord::Base.send :include, Cherry::Decoratable
+ActiveRecord::Base.class_eval do
+  include Cherry::Decoratable
+end
