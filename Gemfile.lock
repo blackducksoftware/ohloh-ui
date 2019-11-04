@@ -250,7 +250,7 @@ GEM
       has_scope (~> 0.6)
       railties (>= 4.2, < 5.3)
       responders
-    jaro_winkler (1.5.3)
+    jaro_winkler (1.5.4)
     jasmine-core (2.99.2)
     jasmine-jquery-rails (2.0.3)
     jasmine-rails (0.14.8)
@@ -352,8 +352,8 @@ GEM
       mime-types
       mimemagic (~> 0.3.0)
       terrapin (~> 0.6.0)
-    parallel (1.17.0)
-    parser (2.6.3.0)
+    parallel (1.18.0)
+    parser (2.6.5.0)
       ast (~> 2.4.0)
     path_expander (1.0.3)
     pg (0.20.0)
@@ -449,13 +449,16 @@ GEM
     responders (2.4.1)
       actionpack (>= 4.2.0, < 6.0)
       railties (>= 4.2.0, < 6.0)
-    rubocop (0.74.0)
+    rubocop (0.76.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.6)
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 1.7)
+    rubocop-rails (2.3.2)
+      rack (>= 1.1)
+      rubocop (>= 0.72.0)
     rubocop-rspec (1.32.0)
       rubocop (>= 0.60.0)
     ruby-graphviz (1.2.4)
@@ -629,7 +632,7 @@ DEPENDENCIES
   recaptcha
   redcarpet
   redis-rails (>= 5.0.2)
-  rubocop
+  rubocop-rails
   rubocop-rspec (> 1.28)
   ruby_parser
   sass-rails
@@ -657,4 +660,4 @@ DEPENDENCIES
   will_paginate-bootstrap
 
 BUNDLED WITH
-   1.17.3
+   2.0.2
