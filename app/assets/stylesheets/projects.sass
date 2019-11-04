@@ -4,13 +4,13 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
 @each $size in $sizes
   $icon_family: nth($size, 1)
   $dimension:   nth($size, 2)
-  $left_margin: nth($size, 3)
+  $right_margin: nth($size, 3)
   $activity_level: #{$icon_family}_project_activity_level
 
   #{$activity_level}
     width:  #{$dimension}px
     height: #{$dimension}px
-    margin-left: #{$left_margin}px
+    margin-right: #{$right_margin * 10}px
 
   @each $level in $pai_levels
     $postfix:    nth($level, 1)
@@ -143,6 +143,11 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     margin-top: 10px
     li
       margin: 15px 0 15px 30px
+
+#i_use_this_div
+  position: absolute
+  margin-left: 24rem !important
+
 #add_this
   margin-left: 5.3rem
   margin-top: 5.3rem
