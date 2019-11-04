@@ -22,4 +22,6 @@ module FilterBy
   end
 end
 
-ActiveRecord::Base.send :extend, FilterBy
+ActiveRecord::Base.class_eval do
+  extend FilterBy
+end
