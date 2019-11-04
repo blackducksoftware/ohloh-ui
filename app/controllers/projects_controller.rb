@@ -53,6 +53,8 @@ class ProjectsController < ApplicationController
   end
 
   def similar_by_tags
+    return render_404 unless request.xhr?
+
     respond_to do |format|
       format.js
     end
