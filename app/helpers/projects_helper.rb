@@ -74,7 +74,7 @@ module ProjectsHelper
   end
 
   def project_separator_text
-    "&nbsp;|&nbsp;".html_safe
+    '&nbsp;|&nbsp;'.html_safe
   end
 
   def show_badges
