@@ -11,7 +11,8 @@ class BadgeDecorator < Cherry::Decorator
   def pips_url(request)
     return nil unless (1..15).cover?(level)
 
-    file = BADGE_IMAGE_ROOT + format('pips_%02i.png', level)
+    level_hash = { level: level }
+    file = BADGE_IMAGE_ROOT + format('pips_%<level>02i.png', level_hash)
     base_url(request) + file
   end
 
