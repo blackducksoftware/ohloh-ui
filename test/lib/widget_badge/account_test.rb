@@ -3,7 +3,6 @@
 require 'test_helper'
 require 'test_helpers/image_helper'
 
-# rubocop: disable Lint/UnneededSplatExpansion
 describe 'WidgetBadge::Account' do
   describe '#create' do
     it 'must create the badge successfully' do
@@ -33,7 +32,8 @@ describe 'WidgetBadge::Account' do
     it 'must produce an image without text when no name' do
       options = { kudo_rank: 1, kudos: 2, commits: 39 }
 
-      result_image = WidgetBadge::Account.send :add_text, *[base_image, options]
+      array = [base_image, options]
+      result_image = WidgetBadge::Account.send :add_text, *array
       expected_image_path = Rails.root.join('test', 'data', 'widget_badge', 'account', 'text_without_name.png')
 
       compare_images(result_image.path, expected_image_path, 0.1)
@@ -42,7 +42,8 @@ describe 'WidgetBadge::Account' do
     it 'must produce an image without commits and kudos when not present' do
       options = { kudo_rank: 1, name: 'sara' }
 
-      result_image = WidgetBadge::Account.send :add_text, *[base_image, options]
+      array = [base_image, options]
+      result_image = WidgetBadge::Account.send :add_text, *array
       expected_image_path = Rails.root.join('test', 'data', 'widget_badge',
                                             'account', 'text_without_commits_and_kudos.png')
 
@@ -54,11 +55,11 @@ describe 'WidgetBadge::Account' do
     it 'must succesfully create a image with a given text' do
       options = WidgetBadge::Account::DEFAULT_FONT_OPTIONS
 
-      result_image = WidgetBadge::Account.send :new_text_image, *['Some Text', options]
+      array = ['Some Text', options]
+      result_image = WidgetBadge::Account.send :new_text_image, *array
       expected_image_path = Rails.root.join('test', 'data', 'widget_badge', 'account', 'new_text_image.png')
 
       compare_images(result_image.path, expected_image_path, 0.1)
     end
   end
 end
-# rubocop: enable Lint/UnneededSplatExpansion

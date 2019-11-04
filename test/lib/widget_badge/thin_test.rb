@@ -3,7 +3,6 @@
 require 'test_helper'
 require 'test_helpers/image_helper'
 
-# rubocop: disable Lint/UnneededSplatExpansion
 describe 'WidgetBadge::Thin' do
   describe '#create' do
     # We were unable to compare the gifs. So we instead just check for successful method call.
@@ -25,7 +24,8 @@ describe 'WidgetBadge::Thin' do
       text = '124k Lines'
       options = { y_offset: -1, blur: 70 }
 
-      result_image = WidgetBadge::Thin.send :add_text, *[text, options]
+      array = [text, options]
+      result_image = WidgetBadge::Thin.send :add_text, *array
       expected_image_path = Rails.root.join('test', 'data', 'widget_badge', 'thin', 'openhub_and_text.png')
 
       compare_images(result_image.path, expected_image_path, 0.1)
@@ -36,11 +36,11 @@ describe 'WidgetBadge::Thin' do
     it 'must create a image with a given text' do
       options = { y_offset: -1, blur: 70, align: :center }
 
-      result_image = WidgetBadge::Thin.send :new_text_image, *['Some Text', options]
+      array = ['Some Text', options]
+      result_image = WidgetBadge::Thin.send :new_text_image, *array
       expected_image_path = Rails.root.join('test', 'data', 'widget_badge', 'thin', 'new_text_image.png')
 
       compare_images(result_image.path, expected_image_path, 0.13)
     end
   end
 end
-# rubocop: enable Lint/UnneededSplatExpansion
