@@ -122,10 +122,10 @@ module ApplicationHelper
     number
   end
 
-  def highlight(actual_time, base_time = nil)
+  def highlight(highlight_from, actual_time, base_time = nil)
     return if actual_time.blank?
 
-    base_time ||= @highlight_from || Time.current
+    base_time ||= highlight_from || Time.current
     return 'highlight' if actual_time >= base_time
   end
 
