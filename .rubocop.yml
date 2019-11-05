@@ -1,8 +1,20 @@
+require: rubocop-rails
+
 AllCops:
   TargetRubyVersion: 2.5
   Exclude:
     - vagrant/**/*
     - script/*_temp.rb
+
+Rails:
+  Enabled: true
+
+Rails/UnknownEnv:
+  Environments:
+    - production
+    - development
+    - test
+    - staging
 
 Metrics/LineLength:
   Max: 120
