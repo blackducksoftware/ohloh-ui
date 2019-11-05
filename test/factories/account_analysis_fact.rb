@@ -1,0 +1,2 @@
+class AccountAnalysisFact < VitaFact
+end
