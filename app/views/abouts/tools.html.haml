@@ -32,7 +32,7 @@
       %p= t('.font_size')
       %p.language-list-lineheight
         - @languages.each do |language|
-          = link_to language.nice_name, language_path(language), style: compute_style_for_language_tag(language)
+          = link_to language.nice_name, language_path(language), style: compute_style_for_language_tag(language, @languages_total_sum)
       %p= t('.view_stats_for_all_languages_html', href: link_to(t('.all_languages'), languages_path))
     .col-md-4
       %h3= t('.additional_info')
