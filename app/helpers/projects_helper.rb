@@ -21,8 +21,8 @@ module ProjectsHelper
     end
   end
 
-  def project_compare_button(project, label = project.name)
-    selected = (@session_projects || []).include?(project)
+  def project_compare_button(project, session_projects, label = project.name)
+    selected = (session_projects || []).include?(project)
     haml_tag :form, class: "sp_form styled form-inline #{'selected' if selected}",
                     style: 'min-width: 94px;', id: "sp_form_#{project.to_param}" do
       haml_tag :span, class: 'sp_label', title: label do
@@ -50,14 +50,14 @@ module ProjectsHelper
     end
   end
 
-  def project_managers_list
-    @project.active_managers.map { |m| link_to(html_escape(m.name), account_path(m)) }.to_sentence
+  def project_managers_list(project)
+    project.active_managers.map { |m| link_to(html_escape(m.name), account_path(m)) }.to_sentence
   end
 
-  def stack_name(account)
-    stacks ||= account.stacks.joins(:projects).where(projects: { id: @project })
+  def stack_name(project, account)
+    stacks ||= account.stacks.joins(:projects).where(projects: { id: project })
     stacks.map do |stack|
-      name = stack.decorate.name(account, @project)
+      name = stack.decorate.name(account, project)
       link_to "#{name}#{' Stack' unless name =~ /stack/i}", stack_path(stack)
     end.join(', ')
   end
@@ -73,19 +73,19 @@ module ProjectsHelper
     end
   end
 
-  def show_badges
+  def show_badges(project)
     content_tag :div, class: 'badges' do
-      @project.badges_summary.map do |badge|
+      project.badges_summary.map do |badge|
         concat content_tag(:img, nil, src: badge.badge_url)
       end
     end
   end
 
-  def more_badges_link
-    return if @project.project_badges.active.count <= ProjectBadge::SUMMARY_LIMIT
+  def more_badges_link(project)
+    return if project.project_badges.active.count <= ProjectBadge::SUMMARY_LIMIT
 
     content_tag :div, class: 'more_badges clearfix' do
-      content_tag :p, link_to('more', project_project_badges_path(@project))
+      content_tag :p, link_to('more', project_project_badges_path(project))
     end
   end
 

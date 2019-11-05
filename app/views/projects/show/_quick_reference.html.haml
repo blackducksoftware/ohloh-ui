@@ -46,6 +46,6 @@
     = link_to t('.managers'), project_managers_path(@project)
   .col-xs-7{ style: 'margin-bottom: .5em;' }
     - if @project.active_managers.present?
-      != project_managers_list
+      != project_managers_list(@project)
     - else
       = link_to t('.become_first', what: @project.name), new_project_manager_path(@project)
