@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module BlogLinkHelper
+  include ApplicationHelper
+
   BLOG_LINKS = {
     terms: 'terms',
     additional_terms: 'terms-2',

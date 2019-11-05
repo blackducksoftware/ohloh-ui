@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module MarkdownHelper
+  include ApplicationHelper
+
   def markdown_format(text)
     options = { filter_html: true,
                 hard_wrap: true,
