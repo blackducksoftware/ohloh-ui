@@ -33,8 +33,8 @@ module PageContextHelper
                      page_header: 'projects/show/header')
   end
 
-  def forum_context
-    set_page_context(footer_menu_list: forums_sidebar)
+  def forum_context(forum)
+    set_page_context(footer_menu_list: forums_sidebar(forum))
   end
 
   def tool_context

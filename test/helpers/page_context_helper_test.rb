@@ -73,7 +73,7 @@ class PageContextHelperTest < ActionView::TestCase
   it 'should return forum page context' do
     Object.any_instance.stubs(:current_user_is_admin?).returns(true)
     @forum = rails
-    forum_context
+    forum_context(@forum)
     page_context.delete(:footer_menu_list)
     page_context.must_equal forum_menus
   end

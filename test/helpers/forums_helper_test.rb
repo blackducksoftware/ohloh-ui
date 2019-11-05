@@ -42,19 +42,20 @@ class ForumsHelperTest < ActionView::TestCase
 
   it 'should return two sections' do
     @forum = forum
-    forums_sidebar.length.must_equal 2
+    forums_sidebar(@forum).length.must_equal 2
   end
 
   it 'should return three sections' do
-    forums_sidebar.length.must_equal 2
+    @forum = forum
+    forums_sidebar(@forum).length.must_equal 2
   end
 
   it 'should return forum menu list' do
     @forum = forum
-    forums_sidebar.must_equal forum_sidebar
+    forums_sidebar(@forum).must_equal forum_sidebar
   end
 
   it 'should return admin forum menu list' do
-    forums_sidebar.must_equal admin_sidebar
+    forums_sidebar(nil).must_equal admin_sidebar
   end
 end
