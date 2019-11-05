@@ -21,7 +21,7 @@ module JobApiHelper
   def slave_host(slave_id)
     return unless slave_id
 
-    "on #{link_to Slave.find(slave_id).hostname, '#'}".html_safe
+    safe_text("on #{link_to Slave.find(slave_id).hostname, '#'}")
   end
 
   def job_progress(job)

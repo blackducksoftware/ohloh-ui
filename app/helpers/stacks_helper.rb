@@ -10,7 +10,7 @@ module StacksHelper
   def stack_similar_project_list(projects)
     projects.collect do |proj|
       link_to(html_escape(proj.name), project_path(proj), title: html_escape(proj.name))
-    end.join(', ').html_safe
+    end.safe_text(join(', '))
   end
 
   def stack_country_flag(code)

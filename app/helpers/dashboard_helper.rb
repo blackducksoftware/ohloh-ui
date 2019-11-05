@@ -15,7 +15,7 @@ module DashboardHelper
     link_text = " (#{revision[0..7]}) "
     deployed = time_ago_in_words(file_modified) + ' ago '
     link = link_to(link_text, github_url, style: 'color: #fff', target: '_blank', rel: 'noopener')
-    (deployed + link).html_safe
+    safe_text((deployed + link))
   end
 
   def get_revision_details

@@ -97,7 +97,7 @@ module EditsHelper
   def edit_enlistment_branch_info(edit)
     if @parent.is_a?(Project) && edit.target.is_a?(Enlistment) && edit.is_a?(CreateEdit)
       enlistment_branch_name_html_snippet(edit.target)
-    end.to_s.html_safe
+    safe_text(end.to_s)
   end
 
   def edit_explanation_link(edit)
