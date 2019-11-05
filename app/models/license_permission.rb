@@ -7,5 +7,5 @@ class LicensePermission < ActiveRecord::Base
   delegate :license, to: :license_license_permission
   validates :license_right_id, presence: true
 
-  enum status: %i[Permitted Forbidden Required]
+  enum status: { 'Permitted': 0, 'Forbidden': 1, 'Required': 2 }
 end

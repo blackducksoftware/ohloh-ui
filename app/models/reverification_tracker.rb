@@ -7,8 +7,8 @@ class ReverificationTracker < ActiveRecord::Base
   NOTIFICATION3_DUE_DAYS = 28
   NOTIFICATION4_DUE_DAYS = 14
   belongs_to :account
-  enum status: %i[pending delivered soft_bounced complained]
-  enum phase: %i[initial marked_for_disable disabled final_warning]
+  enum status: { pending: 0, delivered: 1, soft_bounced: 2, complained: 3 }
+  enum phase: { initial: 0, marked_for_disable: 1, disabled: 2, final_warning: 3 }
 
   scope :soft_bounced_until_yesterday, lambda {
     soft_bounced.includes(:account).where('DATE(sent_at) < DATE(NOW())')

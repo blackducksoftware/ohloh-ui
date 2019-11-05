@@ -8,7 +8,7 @@ class ProjectBadge < ActiveRecord::Base
   validates :enlistment_id, presence: true,
                             uniqueness: { scope: [:type],
                                           message: I18n.t('.project_badges.repo_validation') }
-  enum status: %i[inactive active]
+  enum status: { inactive: 0, active: 1 }
 
   SUMMARY_LIMIT = 2
 
