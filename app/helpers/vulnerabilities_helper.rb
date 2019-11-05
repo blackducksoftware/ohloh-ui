@@ -43,24 +43,24 @@ module VulnerabilitiesHelper
     [Release.new(id: '', version: t('.vulnerabilities.filter.no_versions_available'))]
   end
 
-  def disabled_severities
-    return [] unless @release
+  def disabled_severities(release)
+    return [] unless release
 
-    (severities + [EMPTY_SEVERITY]).select { |s| @release.vulnerabilities.send(s).empty? }
+    (severities + [EMPTY_SEVERITY]).select { |s| release.vulnerabilities.send(s).empty? }
   end
 
-  def options_for_severities_filter
+  def options_for_severities_filter(release)
     options_for_select(severities.collect { |s| [s.capitalize, s] } + [['Unknown', EMPTY_SEVERITY]],
-                       selected: filter_severity_param, disabled: disabled_severities)
+                       selected: filter_severity_param, disabled: disabled_severities(release))
   end
 
   def severities
     Vulnerability.severities.keys
   end
 
-  def release_timespan_widget
+  def release_timespan_widget(default_timespan, security_set)
     html = ''
-    timespan = releaase_timespan_options
+    timespan = releaase_timespan_options(default_timespan, security_set)
     timespan.each do |label, options|
       html += content_tag(:div, label,
                           class: "btn btn-info btn-mini release_timespan #{(options[1..2] || []).join(' ')}".strip,
@@ -70,22 +70,22 @@ module VulnerabilitiesHelper
     safe_text(html)
   end
 
-  def releaase_timespan_options
+  def releaase_timespan_options(default_timespan, security_set)
     timespan = {}
     Release::TIMESPAN.each { |label, values| timespan[label] = values.dup }
-    disable_timespan(timespan)
-    set_default_timespan(timespan)
+    disable_timespan(timespan, security_set)
+    set_default_timespan(timespan, default_timespan)
   end
 
-  def set_default_timespan(timespan)
-    timespan.tap { |ts| ts[@default_timespan].push 'selected' }
+  def set_default_timespan(timespan, default_timespan)
+    timespan.tap { |ts| ts[default_timespan].push 'selected' }
   end
 
-  def disable_timespan(timespan)
+  def disable_timespan(timespan, security_set)
     timespan.each do |_label, values|
       next if values[0].blank?
 
-      values.push(@best_security_set.releases.select_within_years(values[0]).blank? ? 'disabled' : '')
+      values.push(security_set.releases.select_within_years(values[0]).blank? ? 'disabled' : '')
     end
   end
 

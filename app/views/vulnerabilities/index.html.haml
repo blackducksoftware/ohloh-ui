@@ -32,7 +32,7 @@
                           data: { releases: @release_history.to_json }, class: 'vulnerability_main_filter' }
           = select_tag 'vulnerability_filter_major_version', select_opts, html_release_opts
         .pull-right.btn-toolbar{ 'aria-label' => '...', :role => 'group', style: 'margin-top: 17px' }
-          = release_timespan_widget
+          = release_timespan_widget(@default_timespan, @best_security_set)
       .row
         .pull-right
           .h6= t('.click_and_zoom')
