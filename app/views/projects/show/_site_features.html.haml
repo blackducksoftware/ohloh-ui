@@ -1,7 +1,7 @@
 .well
   %h4= t('.did_you_know') + '...'
   %ul.unstyled
-    - random_site_features.each do |feature|
+    - random_site_features(@project).each do |feature|
       %li
         \...
         .indent

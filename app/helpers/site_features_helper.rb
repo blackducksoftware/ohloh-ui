@@ -3,14 +3,14 @@
 module SiteFeaturesHelper
   # rubocop:disable Metrics/MethodLength
 
-  def features_hash
+  def features_hash(project)
     {
       'OpenHub' => [
         "you can subscribe to e-mail newsletters to receive update from the <a href='http://blog.openhub.net/'
          target='_blank'>Open Hub blog</a>",
         "data presented on the Open Hub is available through our
          <a href='https://github.com/blackducksoftware/ohloh_api#ohloh-api-documentation' target='_blank'>API</a>",
-        "you can embed <a href=#{project_widgets_path(project_id: @project.to_param)}
+        "you can embed <a href=#{project_widgets_path(project_id: project.to_param)}
          target='_self'>statistics from Open Hub</a> on your site",
         'by exploring contributors within projects, you can view details on every commit
          they have made to that project',
@@ -34,12 +34,13 @@ module SiteFeaturesHelper
     }.freeze
   end
 
-  def random_site_features
+  def random_site_features(project)
+    hash = features_hash(project)
     [].tap do |arr|
-      (features_hash.keys - ['OpenHub']).each do |key|
-        arr << features_hash[key].sample(2)
+      (hash.keys - ['OpenHub']).each do |key|
+        arr << hash[key].sample(2)
       end
-    end.flatten.zip(features_hash['OpenHub'].sample(2)).flatten
+    end.flatten.zip(hash['OpenHub'].sample(2)).flatten
   end
   # rubocop:enable Metrics/MethodLength
 end
