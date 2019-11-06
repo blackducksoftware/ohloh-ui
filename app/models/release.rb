@@ -2,7 +2,8 @@
 
 class Release < ActiveRecord::Base
   belongs_to :project_security_set
-  has_and_belongs_to_many :vulnerabilities
+  has_many :releases_vulnerabilities
+  has_many :vulnerabilities, through: :releases_vulnerabilities
 
   scope :sort_by_release_date, ->(order = :desc) { order(released_on: order) }
   scope :select_within_years, lambda { |year|
