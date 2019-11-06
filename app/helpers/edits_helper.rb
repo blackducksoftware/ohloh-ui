@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable ModuleLength
+# rubocop:disable Metrics/ModuleLength
 
 module EditsHelper
   include ApplicationHelper
@@ -132,4 +132,4 @@ module EditsHelper
   end
 end
 
-# rubocop:enable ModuleLength
+# rubocop:enable Metrics/ModuleLength

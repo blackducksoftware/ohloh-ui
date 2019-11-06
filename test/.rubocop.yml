@@ -3,10 +3,7 @@ inherit_from: ../.rubocop.yml
 Metrics/AbcSize:
   Enabled: false
 
-ClassLength:
-  Enabled: false
-
-AbcSize:
+Metrics/ClassLength:
   Enabled: false
 
 Metrics/MethodLength:
