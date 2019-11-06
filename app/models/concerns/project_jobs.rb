@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable SkipsModelValidations
+
 module ProjectJobs
   extend ActiveSupport::Concern
   ACTIVITY_LEVEL = { na: 0, new: 10, inactive: 20, very_low: 30, low: 40,
@@ -100,3 +102,5 @@ module ProjectJobs
     sloc_sets_out_of_date
   end
 end
+
+# rubocop:enable SkipsModelValidations

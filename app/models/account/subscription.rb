@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable SkipsModelValidations
+
 class Account::Subscription
   attr_reader :account
 
@@ -20,3 +22,5 @@ class Account::Subscription
     CGI.unescape(Ohloh::Cipher.encrypt(account.id.to_s))
   end
 end
+
+# rubocop:enable SkipsModelValidations

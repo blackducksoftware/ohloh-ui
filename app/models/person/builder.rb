@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable SkipsModelValidations
+
 class Person::Builder
   class << self
     def rebuild_kudos
@@ -71,3 +73,6 @@ class Person::Builder
     end
   end
 end
+
+# rubocop:enable SkipsModelValidations
+

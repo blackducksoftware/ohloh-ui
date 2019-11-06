@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable SkipsModelValidations
+
 class Account::Access < OhDelegator::Base
   delegate :level, to: :account
 
@@ -69,3 +71,5 @@ class Account::Access < OhDelegator::Base
     mobile_or_oauth_verified? && email_verified?
   end
 end
+
+# rubocop:enable SkipsModelValidations

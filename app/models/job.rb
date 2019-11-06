@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # rubocop:disable HasManyOrHasOneDependent
+# rubocop:disable SkipsModelValidations
 
 class Job < ActiveRecord::Base
   belongs_to :project
@@ -76,4 +77,5 @@ class Job < ActiveRecord::Base
   end
 end
 
+# rubocop:enable SkipsModelValidations
 # rubocop:enable HasManyOrHasOneDependent

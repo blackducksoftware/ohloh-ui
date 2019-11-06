@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable SkipsModelValidations
+
 class FailureGroup < ActiveRecord::Base
   has_many :jobs, -> { where(status: Job::STATUS_FAILED).with_exception }
   def decategorize
@@ -29,3 +31,5 @@ class FailureGroup < ActiveRecord::Base
     end
   end
 end
+
+# rubocop:enable SkipsModelValidations

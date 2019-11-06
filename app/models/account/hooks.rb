@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # rubocop:disable Metrics/ClassLength
+# rubocop:disable SkipsModelValidations
 
 class Account::Hooks
   def before_validation(account)
@@ -140,3 +141,4 @@ class Account::Hooks
   end
 end
 # rubocop:enable Metrics/ClassLength
+# rubocop:enable SkipsModelValidations

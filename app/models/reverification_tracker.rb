@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable SkipsModelValidations
+
 class ReverificationTracker < ActiveRecord::Base
   MAX_ATTEMPTS = 3
   NOTIFICATION1_DUE_DAYS = 21
@@ -111,3 +113,5 @@ class ReverificationTracker < ActiveRecord::Base
     end
   end
 end
+
+# rubocop:enable SkipsModelValidations

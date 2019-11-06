@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable SkipsModelValidations
+
 class ApiKey < ActiveRecord::Base
   DEFAULT_DAILY_LIMIT = 1000
   STATUS_OK = 0
@@ -76,3 +78,5 @@ class ApiKey < ActiveRecord::Base
             status: status)
   end
 end
+
+# rubocop:enable SkipsModelValidations
