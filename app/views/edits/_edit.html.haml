@@ -13,7 +13,7 @@
         %p.strong.nomargin{ class: edit_title_class(edit) }
           = link_to edit.id, show_edit_path(edit), class: 'show_edit_btn', remote: true,
                     data: { toggle: 'modal', target: '#edit-details.modal', keyboard: true }
-          %span - #{edit_show_subject(edit)}
+          %span - #{edit_show_subject(edit, @parent)}
         %p
           by
           = link_to edit.account.name, account_path(edit.account)

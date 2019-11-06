@@ -46,7 +46,7 @@ class EditsHelperTest < ActionView::TestCase
         enlistment = create_enlistment_with_code_location
         @parent = enlistment.project
         edit = create(:create_edit, target: enlistment)
-        edit_show_subject(edit).must_match "Branch: #{enlistment.code_location.branch}"
+        edit_show_subject(edit, @parent).must_match "Branch: #{enlistment.code_location.branch}"
       end
 
       it 'should not display neither branch nor module name if both are empty' do
@@ -54,7 +54,7 @@ class EditsHelperTest < ActionView::TestCase
         enlistment.code_location = CodeLocation.new
         @parent = enlistment.project
         edit = create(:create_edit, target: enlistment)
-        edit_show_subject(edit).wont_match 'Branch: '
+        edit_show_subject(edit, @parent).wont_match 'Branch: '
       end
     end
   end
