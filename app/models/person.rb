@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # rubocop:disable HasManyOrHasOneDependent
+# rubocop:disable DynamicFindBy
 
 class Person < ActiveRecord::Base
   self.primary_key = :id
@@ -128,4 +129,5 @@ class Person < ActiveRecord::Base
   end
 end
 
+# rubocop:enable DynamicFindBy
 # rubocop:enable HasManyOrHasOneDependent

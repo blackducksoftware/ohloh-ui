@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # rubocop:disable SkipsModelValidations
+# rubocop:disable DynamicFindBy
 
 class Person::Builder
   class << self
@@ -74,4 +75,5 @@ class Person::Builder
   end
 end
 
+# rubocop:enable DynamicFindBy
 # rubocop:enable SkipsModelValidations
