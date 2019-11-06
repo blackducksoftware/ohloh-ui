@@ -1,5 +1,8 @@
 inherit_from: ../.rubocop.yml
 
+Rails/DynamicFindBy:
+  Enabled: false
+
 Rails/SkipsModelValidations:
   Enabled: false
 
