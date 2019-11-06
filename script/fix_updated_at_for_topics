@@ -1,6 +1,8 @@
 #! /usr/bin/env ruby
 # frozen_string_literal: true
 
+# rubocop:disable SkipsModelValidations
+
 require_relative '../config/environment'
 
 class FixUpdatedAtForTopic
@@ -16,3 +18,5 @@ class FixUpdatedAtForTopic
 end
 
 FixUpdatedAtForTopic.new.execute
+
+# rubocop:enable SkipsModelValidations

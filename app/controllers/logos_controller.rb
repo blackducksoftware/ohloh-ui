@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable SkipsModelValidations
+
 class LogosController < SettingsController
   helper ManagersHelper
   helper ProjectsHelper
@@ -82,3 +84,5 @@ class LogosController < SettingsController
     params.require(:logo).permit(:logo, :url, :attachment)
   end
 end
+
+# rubocop:enable SkipsModelValidations

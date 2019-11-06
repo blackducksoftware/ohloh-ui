@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable SkipsModelValidations
+
 desc 'Remove duplicate GNU General Public License records'
 task remove_duplicate_gnu_general_public_license: :environment do
   original_license = License.find(122) # GNU General Public License v3.0 only(gpl3)
@@ -22,3 +24,5 @@ task remove_duplicate_gnu_general_public_license: :environment do
   # Delete duplicate licenses
   ActiveRecord::Base.connection.execute("delete from licenses where id in (#{duplicate_license_ids.join(',')});")
 end
+
+# rubocop:enable SkipsModelValidations

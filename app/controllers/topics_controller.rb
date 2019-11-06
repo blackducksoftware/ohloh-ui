@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable SkipsModelValidations
+
 class TopicsController < ApplicationController
   helper MarkdownHelper
   before_action :session_required, :redirect_unverified_account, only: %i[new create close reopen]
@@ -112,3 +114,5 @@ class TopicsController < ApplicationController
     topic_params[:account_id] == topic_params[:posts_attributes]['0'][:account_id]
   end
 end
+
+# rubocop:enable SkipsModelValidations
