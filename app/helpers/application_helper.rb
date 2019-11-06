@@ -138,9 +138,11 @@ module ApplicationHelper
     will_paginate(numbers.paginate(page: response['current_page'], per_page: response['per_page']))
   end
 
+  # rubocop: disable Rails/OutputSafety
   def safe_text(str)
     safe_join(Array(str.html_safe))
   end
+  # rubocop: enable Rails/OutputSafety
 
   private
 
