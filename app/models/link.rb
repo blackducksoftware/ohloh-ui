@@ -48,14 +48,6 @@ class Link < ActiveRecord::Base
     !%i[title url link_category_id].include?(key)
   end
 
-  def url_escaped
-    CGI.escape(url)
-  end
-
-  def url_host
-    URI.parse(url_escaped).host
-  end
-
   class << self
     def find_category_by_id(category_id)
       return unless category_id
