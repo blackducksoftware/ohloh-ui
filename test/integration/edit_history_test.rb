@@ -12,7 +12,7 @@ class EditHistoryTest < ActionDispatch::IntegrationTest
         login_as create(:account)
         @parent = project
         project.update_attribute :description, Faker::Lorem.sentence(100)
-        xhr :get, show_edit_path(project.edits.where(key: 'description').last)
+        xhr :get, show_edit_path(project.edits.where(key: 'description').last, @parent)
         assert_response :success
         assert response.body.match(/\[More\]/)
         assert response.body.match(/\[Less\]/)
