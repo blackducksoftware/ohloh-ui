@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable HasManyOrHasOneDependent
+
 require 'open3'
 require 'socket'
 
@@ -41,3 +43,5 @@ class Slave < FisBase
     hostname == Socket.gethostname
   end
 end
+
+# rubocop:enable HasManyOrHasOneDependent

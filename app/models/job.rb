@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable HasManyOrHasOneDependent
+
 class Job < ActiveRecord::Base
   belongs_to :project
   belongs_to :slave
@@ -73,3 +75,5 @@ class Job < ActiveRecord::Base
     end
   end
 end
+
+# rubocop:enable HasManyOrHasOneDependent

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable HasManyOrHasOneDependent
+
 class Kudo < ActiveRecord::Base
   belongs_to :sender, foreign_key: :sender_id, class_name: 'Account'
   belongs_to :account
@@ -80,3 +82,5 @@ class Kudo < ActiveRecord::Base
     AccountMailer.kudo_recipient(self).deliver_now
   end
 end
+
+# rubocop:enable HasManyOrHasOneDependent

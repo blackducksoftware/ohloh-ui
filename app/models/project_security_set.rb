@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable HasManyOrHasOneDependent
+
 class ProjectSecuritySet < ActiveRecord::Base
   has_many :releases
   belongs_to :project
@@ -38,3 +40,5 @@ class ProjectSecuritySet < ActiveRecord::Base
     self.class.find_by_sql(sql)
   end
 end
+
+# rubocop:enable HasManyOrHasOneDependent

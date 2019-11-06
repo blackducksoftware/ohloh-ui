@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable HasManyOrHasOneDependent
+
 class Organization < ActiveRecord::Base
   include OrganizationSearchables
   include OrganizationJobs
@@ -121,3 +123,5 @@ class Organization < ActiveRecord::Base
     schedule_analysis
   end
 end
+
+# rubocop:enable HasManyOrHasOneDependent

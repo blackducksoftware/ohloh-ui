@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable HasManyOrHasOneDependent
+
 class License < ActiveRecord::Base
   validates :vanity_url, uniqueness: { case_sensitive: false }, length: { in: 2..50 },
                          default_param_format: true
@@ -76,3 +78,5 @@ class License < ActiveRecord::Base
     end
   end
 end
+
+# rubocop:enable HasManyOrHasOneDependent

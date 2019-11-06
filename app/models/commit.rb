@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable HasManyOrHasOneDependent
+
 class Commit < FisBase
   belongs_to :code_set
   belongs_to :name
@@ -71,3 +73,5 @@ class Commit < FisBase
     short ? sha1.to_s.truncate(8, omission: '') : sha1
   end
 end
+
+# rubocop:enable HasManyOrHasOneDependent

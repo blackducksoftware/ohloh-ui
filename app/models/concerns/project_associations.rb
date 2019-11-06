@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable HasManyOrHasOneDependent
+
 module ProjectAssociations
   extend ActiveSupport::Concern
 
@@ -89,3 +91,5 @@ module ProjectAssociations
     end
   end
 end
+
+# rubocop:enable HasManyOrHasOneDependent

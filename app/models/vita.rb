@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable HasManyOrHasOneDependent
+
 class Vita < ActiveRecord::Base
   self.table_name = 'vitae'
   belongs_to :account
@@ -18,3 +20,5 @@ class Vita < ActiveRecord::Base
     Logo.where(id: logo_ids.compact)
   end
 end
+
+# rubocop:enable HasManyOrHasOneDependent

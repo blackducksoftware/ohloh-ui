@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable HasManyOrHasOneDependent
+
 class Position < ActiveRecord::Base
   include AffiliationValidation
   include Position::Validations
@@ -119,3 +121,5 @@ class Position < ActiveRecord::Base
     committer_name && project
   end
 end
+
+# rubocop:enable HasManyOrHasOneDependent

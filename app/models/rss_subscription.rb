@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable HasManyOrHasOneDependent
+
 class RssSubscription < ActiveRecord::Base
   belongs_to :project
   belongs_to :rss_feed
@@ -17,3 +19,5 @@ class RssSubscription < ActiveRecord::Base
     I18n.t('.rss_subscriptions.index.explain', url: rss_feed.url)
   end
 end
+
+# rubocop:enable HasManyOrHasOneDependent

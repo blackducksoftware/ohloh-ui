@@ -10,7 +10,7 @@ class Contribution < ActiveRecord::Base
   belongs_to :person
   belongs_to :name_fact
   belongs_to :contributor_fact, foreign_key: 'name_fact_id'
-  has_many :invites
+  has_many :invites, dependent: :destroy
   has_many :kudos, ->(contribution) { joins(:name_fact).where(NameFact.arel_table[:id].eq(contribution.name_fact_id)) },
            primary_key: :project_id, foreign_key: :project_id
 

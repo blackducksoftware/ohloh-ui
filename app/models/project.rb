@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable HasManyOrHasOneDependent
+
 # rubocop:disable Metrics/ClassLength
 class Project < ActiveRecord::Base
   has_one :create_edit, as: :target
@@ -145,3 +147,4 @@ class Project < ActiveRecord::Base
   end
 end
 # rubocop:enable Metrics/ClassLength
+# rubocop:enable HasManyOrHasOneDependent

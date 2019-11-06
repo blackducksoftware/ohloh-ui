@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable HasManyOrHasOneDependent
+
 class CodeSet < FisBase
   belongs_to :best_sloc_set, foreign_key: :best_sloc_set_id, class_name: 'SlocSet'
   has_many :commits, -> { order(:position) }, dependent: :destroy
@@ -70,3 +72,5 @@ class CodeSet < FisBase
   end
   # .... to here
 end
+
+# rubocop:enable HasManyOrHasOneDependent

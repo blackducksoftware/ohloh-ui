@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable HasManyOrHasOneDependent
 # rubocop:disable Metrics/ClassLength
 class Stack < ActiveRecord::Base
   SAMPLE_PROJECT_IDS = { lamp: [3141, 72, 4139, 28],
@@ -138,4 +139,5 @@ class Stack < ActiveRecord::Base
     [projects, Project.find_by_sql(sql)].flatten
   end
 end
+# rubocop:enable HasManyOrHasOneDependent
 # rubocop:enable Metrics/ClassLength

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable HasManyOrHasOneDependent
+
 module AccountAssociations
   extend ActiveSupport::Concern
 
@@ -29,3 +31,5 @@ module AccountAssociations
     has_one :reverification_tracker, dependent: :destroy
   end
 end
+
+# rubocop:enable HasManyOrHasOneDependent

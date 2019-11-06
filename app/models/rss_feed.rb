@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable HasManyOrHasOneDependent
+
 require 'feedjira'
 
 class RssFeed < ActiveRecord::Base
@@ -61,3 +63,5 @@ class RssFeed < ActiveRecord::Base
     end
   end
 end
+
+# rubocop:enable HasManyOrHasOneDependent

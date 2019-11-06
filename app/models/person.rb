@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable HasManyOrHasOneDependent
+
 class Person < ActiveRecord::Base
   self.primary_key = :id
   self.per_page = 10
@@ -125,3 +127,5 @@ class Person < ActiveRecord::Base
     name_id? && project_id?
   end
 end
+
+# rubocop:enable HasManyOrHasOneDependent

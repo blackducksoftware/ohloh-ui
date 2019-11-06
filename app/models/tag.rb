@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable HasManyOrHasOneDependent
+
 class Tag < ActiveRecord::Base
   MAX_ALLOWED_PER_PROJECT = 20
 
@@ -41,3 +43,5 @@ class Tag < ActiveRecord::Base
     update_attribute :taggings_count, Tagging.count_by_sql(sql)
   end
 end
+
+# rubocop:enable HasManyOrHasOneDependent
