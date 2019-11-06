@@ -1,5 +1,8 @@
 inherit_from: ../.rubocop.yml
 
+Rails/SkipsModelValidations:
+  Enabled: false
+
 Metrics/AbcSize:
   Enabled: false
 
