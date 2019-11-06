@@ -75,4 +75,3 @@ class Person::Builder
 end
 
 # rubocop:enable SkipsModelValidations
-

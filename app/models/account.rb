@@ -131,4 +131,3 @@ class Account < ActiveRecord::Base
 end
 
 # rubocop:enable SkipsModelValidations
-
