@@ -8,7 +8,7 @@ module ForumsHelper
       [nil,             t(:topic)],
       [:new_topic,      t(:new_topic), new_forum_topic_path(forum)],
       [:forum,          forum.name, forum_path(forum)]
-    ] if @forum
+    ] if forum
 
     menus << [
       [nil,             t(:post)],
