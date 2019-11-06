@@ -21,18 +21,18 @@
                   languages_summary_project_analysis_path(@project, id: 'latest')
         %br
         with
-        - get_factoid_display :comments
+        - get_factoid_display :comments, @project, @analysis
   %li
     \...
     .indent
       has
-      - get_factoid_display :age
+      - get_factoid_display :age, @project, @analysis
       %br
       maintained by
-      - get_factoid_display :team
+      - get_factoid_display :team, @project, @analysis
       %br
       with
-      - get_factoid_display :activity
+      - get_factoid_display :activity, @project, @analysis
   - unless homepage
     %li
       \...

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module FactoidsHelper
-  def get_factoid_display(fact)
-    text, type, url = factiod_info(fact)
+  def get_factoid_display(fact, project, analysis)
+    text, type, url = factiod_info(fact, project, analysis)
     haml_tag :span, class: type.to_s do
       haml_tag :a, href: url do
         concat text
@@ -12,16 +12,16 @@ module FactoidsHelper
 
   private
 
-  def get_factoid_type(fact)
+  def get_factoid_type(fact, analysis)
     match = "Factoid#{fact.to_s.capitalize}"
-    fact = @analysis.factoids.select { |f| f.type.starts_with?(match) }
+    fact = analysis.factoids.select { |f| f.type.starts_with?(match) }
     fact.empty? ? nil : fact.first
   end
 
-  def factiod_info(fact)
-    factoid = get_factoid_type(fact)
+  def factiod_info(fact, project, analysis)
+    factoid = get_factoid_type(fact, analysis)
     if factoid
-      [factoid.inline, factoid.category, project_factoids_path(@project, anchor: factoid.type)]
+      [factoid.inline, factoid.category, project_factoids_path(project, anchor: factoid.type)]
     else
       factoid_no_factoid_info(fact)
     end
