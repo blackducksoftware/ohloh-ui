@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop: disable InverseOf
+
 class Topic < ActiveRecord::Base
   validates :account, :title, :hits, presence: true
   validates :sticky, :hits, numericality: true
@@ -14,3 +16,5 @@ class Topic < ActiveRecord::Base
 
   scope :recent, -> { where(closed: false).order(replied_at: :desc).limit(10) }
 end
+
+# rubocop: enable InverseOf

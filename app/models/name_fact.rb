@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop: disable InverseOf
+
 class NameFact < ActiveRecord::Base
   include Comparable
   serialize :commits_by_project
@@ -39,3 +41,5 @@ class NameFact < ActiveRecord::Base
     other.last_checkin <=> last_checkin
   end
 end
+
+# rubocop: enable InverseOf

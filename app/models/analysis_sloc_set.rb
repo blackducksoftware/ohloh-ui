@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # rubocop:disable HasManyOrHasOneDependent
+# rubocop:disable InverseOf
 
 class AnalysisSlocSet < FisBase
   belongs_to :analysis
@@ -44,4 +45,5 @@ class AnalysisSlocSet < FisBase
   end
 end
 
+# rubocop:enable InverseOf
 # rubocop:enable HasManyOrHasOneDependent

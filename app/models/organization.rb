@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # rubocop:disable HasManyOrHasOneDependent
+# rubocop:disable InverseOf
 
 class Organization < ActiveRecord::Base
   include OrganizationSearchables
@@ -124,4 +125,5 @@ class Organization < ActiveRecord::Base
   end
 end
 
+# rubocop:enable InverseOf
 # rubocop:enable HasManyOrHasOneDependent

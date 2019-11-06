@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop: disable InverseOf
+
 class Account::PositionCore < OhDelegator::Base
   parent_scope do
     has_many :positions, lambda {
@@ -114,3 +116,5 @@ class Account::PositionCore < OhDelegator::Base
                                                 :name, :account, :contribution, :affiliation)
   end
 end
+
+# rubocop: enable InverseOf

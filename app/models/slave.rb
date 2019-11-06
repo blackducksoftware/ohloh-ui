@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # rubocop:disable HasManyOrHasOneDependent
+# rubocop:disable InverseOf
 
 require 'open3'
 require 'socket'
@@ -44,4 +45,5 @@ class Slave < FisBase
   end
 end
 
+# rubocop:enable InverseOf
 # rubocop:enable HasManyOrHasOneDependent

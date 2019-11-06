@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # rubocop:disable HasManyOrHasOneDependent
+# rubocop:disable InverseOf
 
 class Alias < ActiveRecord::Base
   include AliasScopes
@@ -108,4 +109,5 @@ class Alias < ActiveRecord::Base
   end
 end
 
+# rubocop:enable InverseOf
 # rubocop:enable HasManyOrHasOneDependent

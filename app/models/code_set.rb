@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # rubocop:disable HasManyOrHasOneDependent
+# rubocop:disable InverseOf
 
 class CodeSet < FisBase
   belongs_to :best_sloc_set, foreign_key: :best_sloc_set_id, class_name: 'SlocSet'
@@ -73,4 +74,5 @@ class CodeSet < FisBase
   # .... to here
 end
 
+# rubocop:enable InverseOf
 # rubocop:enable HasManyOrHasOneDependent

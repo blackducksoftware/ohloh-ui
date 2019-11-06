@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # rubocop:disable HasManyOrHasOneDependent
+# rubocop:disable InverseOf
 
 class RssSubscription < ActiveRecord::Base
   belongs_to :project
@@ -20,4 +21,5 @@ class RssSubscription < ActiveRecord::Base
   end
 end
 
+# rubocop:enable InverseOf
 # rubocop:enable HasManyOrHasOneDependent

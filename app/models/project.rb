@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-# rubocop:disable HasManyOrHasOneDependent
-
 # rubocop:disable Metrics/ClassLength
+# rubocop:disable HasManyOrHasOneDependent
+# rubocop:disable InverseOf
+
 class Project < ActiveRecord::Base
   has_one :create_edit, as: :target
   acts_as_editable editable_attributes: %i[name vanity_url organization_id best_analysis_id
@@ -146,5 +147,7 @@ class Project < ActiveRecord::Base
     tags.each(&:recalc_weight!)
   end
 end
-# rubocop:enable Metrics/ClassLength
+
+# rubocop:enable InverseOf
 # rubocop:enable HasManyOrHasOneDependent
+# rubocop:enable Metrics/ClassLength

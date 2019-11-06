@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # rubocop:disable HasManyOrHasOneDependent
+# rubocop:disable InverseOf
 
 class Position < ActiveRecord::Base
   include AffiliationValidation
@@ -122,4 +123,5 @@ class Position < ActiveRecord::Base
   end
 end
 
+# rubocop:enable InverseOf
 # rubocop:enable HasManyOrHasOneDependent

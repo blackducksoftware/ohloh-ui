@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop: disable InverseOf
+
 class AnalysisAlias < FisBase
   belongs_to :analysis
   belongs_to :commit_name, class_name: 'Name', foreign_key: :commit_name_id
@@ -18,3 +20,5 @@ class AnalysisAlias < FisBase
       .pluck(:commit_name_id)
   }
 end
+
+# rubocop: enable InverseOf

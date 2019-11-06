@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # rubocop:disable HasManyOrHasOneDependent
+# rubocop:disable InverseOf
 
 class Analysis < ActiveRecord::Base
   include Analysis::Report
@@ -122,4 +123,5 @@ class Analysis < ActiveRecord::Base
   end
 end
 
+# rubocop:enable InverseOf
 # rubocop:enable HasManyOrHasOneDependent

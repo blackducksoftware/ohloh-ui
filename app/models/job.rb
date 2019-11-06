@@ -2,6 +2,7 @@
 
 # rubocop:disable HasManyOrHasOneDependent
 # rubocop:disable SkipsModelValidations
+# rubocop:disable InverseOf
 
 class Job < ActiveRecord::Base
   belongs_to :project
@@ -77,5 +78,6 @@ class Job < ActiveRecord::Base
   end
 end
 
+# rubocop:enable InverseOf
 # rubocop:enable SkipsModelValidations
 # rubocop:enable HasManyOrHasOneDependent

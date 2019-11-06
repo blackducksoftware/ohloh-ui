@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # rubocop:disable HasManyOrHasOneDependent
+# rubocop:disable InverseOf
 
 class Kudo < ActiveRecord::Base
   belongs_to :sender, foreign_key: :sender_id, class_name: 'Account'
@@ -83,4 +84,5 @@ class Kudo < ActiveRecord::Base
   end
 end
 
+# rubocop:enable InverseOf
 # rubocop:enable HasManyOrHasOneDependent

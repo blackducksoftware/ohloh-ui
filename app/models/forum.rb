@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop: disable InverseOf
+
 class Forum < ActiveRecord::Base
   validates :name, presence: true
   validates :position, numericality: { only_integer: true }, allow_blank: true
@@ -8,3 +10,5 @@ class Forum < ActiveRecord::Base
   has_many :topics, -> { order('sticky desc, updated_at desc') }, dependent: :destroy
   has_many :posts, through: :topics
 end
+
+# rubocop: enable InverseOf

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # rubocop:disable HasManyOrHasOneDependent
+# rubocop:disable InverseOf
 
 class Forge::Base < ActiveRecord::Base
   self.table_name = 'forges'
@@ -8,4 +9,5 @@ class Forge::Base < ActiveRecord::Base
   has_many :projects, foreign_key: 'forge_id'
 end
 
+# rubocop:enable InverseOf
 # rubocop:enable HasManyOrHasOneDependent

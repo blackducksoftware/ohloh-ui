@@ -2,6 +2,7 @@
 
 # rubocop:disable HasManyOrHasOneDependent
 # rubocop:disable DynamicFindBy
+# rubocop:disable InverseOf
 
 class Person < ActiveRecord::Base
   self.primary_key = :id
@@ -129,5 +130,6 @@ class Person < ActiveRecord::Base
   end
 end
 
+# rubocop:enable InverseOf
 # rubocop:enable DynamicFindBy
 # rubocop:enable HasManyOrHasOneDependent
