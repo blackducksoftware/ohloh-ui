@@ -9,6 +9,10 @@ AllCops:
 Rails:
   Enabled: true
 
+Rails/SkipsModelValidations:
+  Exclude:
+    - 'test/**/*.rb'
+
 Rails/UnknownEnv:
   Environments:
     - production
