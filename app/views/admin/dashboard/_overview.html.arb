@@ -40,9 +40,11 @@ columns do
     panel 'Deployment Details' do
       revision_file = File.open(Rails.root.join('REVISION').to_s)
       revision = revision_file.read.strip
-      para %(Currently deployed:
-            #{link_to(revision, "https://github.com/blackducksoftware/ohloh-ui/commit/#{revision}")}).html_safe
-      para %(Last Deployed: <b>#{time_ago_in_words(revision_file.mtime)}</b> ago).html_safe
+      para %(safe_text(
+              Currently deployed:
+              #{link_to(revision, "https://github.com/blackducksoftware/ohloh-ui/commit/#{revision}")}
+            ))
+      para %(safe_text(Last Deployed: <b>#{time_ago_in_words(revision_file.mtime)}</b> ago))
       revision_file.close
     rescue StandardError => e
       para e
