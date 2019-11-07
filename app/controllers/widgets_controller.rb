@@ -10,6 +10,8 @@ class WidgetsController < ApplicationController
   before_action :handle_xml_format, except: :index
   skip_before_action :verify_authenticity_token
 
+  def index; end
+
   private
 
   def record_not_found

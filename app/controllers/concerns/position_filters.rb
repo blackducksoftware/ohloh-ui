@@ -18,6 +18,20 @@ module PositionFilters
     helper_method :params_id_is_total?
   end
 
+  def create; end
+
+  def new; end
+
+  def show; end
+
+  def edit; end
+
+  def udpate; end
+
+  def delete; end
+
+  def destroy; end
+
   private
 
   def set_account

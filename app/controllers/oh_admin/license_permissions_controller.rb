@@ -7,6 +7,8 @@ class OhAdmin::LicensePermissionsController < ApplicationController
   layout 'admin'
   include LicenseHelper
 
+  def update; end
+
   def index
     retrieve_license_permissions
     retrieve_licenses

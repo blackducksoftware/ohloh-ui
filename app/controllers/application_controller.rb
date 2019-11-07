@@ -37,6 +37,10 @@ class ApplicationController < ActionController::Base
     super(*params)
   end
 
+  def index; end
+
+  def show; end
+
   def validate_request_format
     render_404 if request.format.nil?
   end

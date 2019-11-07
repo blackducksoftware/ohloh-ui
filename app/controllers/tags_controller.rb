@@ -8,6 +8,7 @@ class TagsController < ApplicationController
   before_action :find_tag_names, only: :index
   before_action :find_models, only: [:index]
   before_action :show_permissions_alert, only: :select
+
   def index; end
 
   private

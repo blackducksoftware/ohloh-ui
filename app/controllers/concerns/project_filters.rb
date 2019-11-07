@@ -23,6 +23,18 @@ module ProjectFilters
     before_action :avoid_global_search, only: :users
   end
 
+  def create; end
+
+  def new; end
+
+  def index; end
+
+  def show; end
+
+  def edit; end
+
+  def update; end
+
   private
 
   def avoid_global_search_if_parent_is_account

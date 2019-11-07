@@ -21,6 +21,18 @@ module OrgFilters
     before_action :avoid_global_search, only: %i[manage_projects claim_projects_list]
   end
 
+  def create; end
+
+  def new; end
+
+  def index; end
+
+  def show; end
+
+  def edit; end
+
+  def update; end
+
   def schedule_analysis
     @organization.schedule_analysis
   end
