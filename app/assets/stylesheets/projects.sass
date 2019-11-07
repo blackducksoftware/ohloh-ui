@@ -398,15 +398,20 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     height: 26px
     padding: 0
     text-align: center
+    font-size: 1.2em
     line-height: 23px
     border: 0
+    color: #646EA1 !important
+    background-color: #a0c9d0 !important
     &.selected
-      background-color: #0082C6 !important
+      color: white !important
+      background-color: $primary-blue-darker  !important
       font-weight: bold !important
     &.disabled
-      background-color: #9A9A9A !important
+      background-color: $primary-blue-40 !important
     &:hover
       font-weight: bold !important
+      font-size: 1.3em
 
 .rating_stars_value
   float: left
