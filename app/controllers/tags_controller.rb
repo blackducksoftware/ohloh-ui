@@ -11,6 +11,8 @@ class TagsController < ApplicationController
 
   def index; end
 
+  def select; end
+
   private
 
   def find_tag_names
