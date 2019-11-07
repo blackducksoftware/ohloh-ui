@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop: disable HelperInstanceVariable
+
 module PageContextHelper
   include ForumsHelper
 
@@ -62,3 +64,5 @@ module PageContextHelper
     page_context.reverse_merge!(options)
   end
 end
+
+# rubocop: enable HelperInstanceVariable
