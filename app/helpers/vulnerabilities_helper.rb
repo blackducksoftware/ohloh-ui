@@ -54,6 +54,16 @@ module VulnerabilitiesHelper
                        selected: filter_severity_param, disabled: disabled_severities)
   end
 
+  def sort_releases_by_version_number(releases)
+    return nil if releases.nil?
+    vanity_url = releases.first.project_security_set.project.vanity_url
+    if vanity_url == 'android'
+      releases.sort { |a,b| b.version <=> a.version }
+    else
+      releases.sort_by { |r| ( (_r = r.version.split('.').map(&:to_i))==[0] ) ? r.version.split('').map { |c| c.bytes.first.to_i*-1 } : _r }.reverse
+    end
+  end
+
   def severities
     Vulnerability.severities.keys
   end
