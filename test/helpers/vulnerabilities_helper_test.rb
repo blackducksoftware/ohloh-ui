@@ -38,6 +38,15 @@ class VulnerabilitiesHelperTest < ActionView::TestCase
       sort_releases_by_version_number(Release.all).must_equal [rel3, rel2, rel1]
     end
 
+    it 'should correctly filter version releases w/ alphabetic chars' do
+      project = FactoryBot.create(:project)
+      pss = FactoryBot.create(:project_security_set, project: project)
+      rel1 = FactoryBot.create(:release, version: 'PRE_RELEASE')
+      rel2 = FactoryBot.create(:release, version: 'ALPHA_RELEASE')
+      rel3 = FactoryBot.create(:release, version: 'BETA_RELEASE')
+      sort_releases_by_version_number(Release.all).must_equal [rel2, rel3, rel1]
+    end
+
     it 'should correctly filter android version releases' do
       android = FactoryBot.create(:project, vanity_url: 'android')
       pss = FactoryBot.create(:project_security_set, project: android)
