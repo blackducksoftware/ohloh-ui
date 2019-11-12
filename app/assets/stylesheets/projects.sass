@@ -441,11 +441,14 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
 
 .vulnerabilities-datatable
   position: relative
+  tbody
+    tr
+      border-color: $primary-dark-gray-80
   btn i
     display: inline
-    color: #0082C6
+    color: $primary-blue-darker
     &.disable
-      color: #ccc
+      color: $lightest-gray-darker
     &:hover
       cursor: pointer
     &.fa.fa-sort-amount-desc, &.fa.fa-sort-amount-asc
@@ -453,16 +456,16 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
   .oh_pagination
     li
       a
-        color: #3d7ea1
-        border-color: #bab9b7
+        color: $primary-blue-darker
+        border-color: $lightest-gray-darker
     .active
       span
-        background-color: #3d7ea1
-        border-color: #bab9b7
+        background-color: $primary-blue-darker
+        border-color: $lightest-gray-darker
     .disabled
       span
-        color: #bab9b7
-        border-color: #bab9b7
+        color: $lightest-gray-darker
+        border-color: $lightest-gray-darker
 
 .overlay-loader
   position: absolute
