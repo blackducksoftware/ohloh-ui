@@ -130,25 +130,13 @@ module VulnerabilitiesHelper
 
   private
 
-  ###
-  # 1.0.0
-  # 1.0.0-rc.1
-  # 1.0.0-beta.11
-  # 1.0.0-beta.2
-  # 1.0.0-beta
-  # 1.0.0-alpha.beta
-  # 1.0.0-alpha.1 
-  # 1.0.0-alpha
-  
   def release_version_to_array(release)
-    # (_array = release.version.split('.').map(&:to_i))==[0] ) ? release.version.split('').map { |char| char.bytes.first.to_i*-1 } : _array } 
     _array = release.version.split('.').map do |token|
       get_release_version_array(token)
     end
   end
 
   def get_release_version_array(token)
-    # returns array of int or char values
     val = token.to_i
     val.to_s == token ? [val] : get_token_char_array(token)
   end
