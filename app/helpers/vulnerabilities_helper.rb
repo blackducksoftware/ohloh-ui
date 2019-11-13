@@ -138,18 +138,32 @@ module VulnerabilitiesHelper
 
   def get_release_version_array(token)
     val = token.to_i
-    val.to_s == token ? [val] : get_token_char_array(token)
+    val.to_s == token ? [val, 0] : get_token_char_array(token)
   end
 
   def get_token_char_array(token)
-    token.chars.map do |char|
-      case char 
-      when '0'..'9'
-        char.to_s.to_i
-      when 'A'..'Z','a'..'z'
-        char.bytes.first.to_i*-1
-      when '-','+','_'
-        char.bytes.first.to_i*-1
+    if token.include?('-')
+      token1, token2 = token.split('-')
+      [token1.to_i, get_token_char_array(token2)].flatten
+    else
+      case token
+      when 'rc'
+        [-1]
+      when 'beta'
+        [-2]
+      when 'alpha'
+        [-3]
+      else
+        token.chars.map do |char|
+          case char 
+          when '0'..'9'
+            char.to_s.to_i
+          when 'A'..'Z','a'..'z'
+            char.bytes.first.to_i*-1
+          when '-','+','_'
+            char.bytes.first.to_i*-1
+          end
+        end
       end
     end
   end

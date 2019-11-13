@@ -60,14 +60,14 @@ class VulnerabilitiesHelperTest < ActionView::TestCase
     it 'should correctly filter mixed style of version releases' do
       project = FactoryBot.create(:project)
       pss = FactoryBot.create(:project_security_set, project: project)
-      rel1 = FactoryBot.create(:release, version: '1.0.0-alpha.1')
-      rel2 = FactoryBot.create(:release, version: '1.0.0-alpha')
-      rel3 = FactoryBot.create(:release, version: '1.0.0-beta.11')
+      rel1 = FactoryBot.create(:release, version: '1.0.0-alpha')
+      rel2 = FactoryBot.create(:release, version: '1.0.0-alpha.1')
+      rel3 = FactoryBot.create(:release, version: '1.0.0-beta')
       rel4 = FactoryBot.create(:release, version: '1.0.0-beta.2')
-      rel5 = FactoryBot.create(:release, version: '1.0.0-beta')
+      rel5 = FactoryBot.create(:release, version: '1.0.0-beta.11')
       rel6 = FactoryBot.create(:release, version: '1.0.0-rc.1')
       rel7 = FactoryBot.create(:release, version: '1.0.0')
-      sort_releases_by_version_number(Release.all).must_equal [rel1, rel2, rel3, rel4, rel5, rel6, rel7]
+      sort_releases_by_version_number(Release.all).must_equal [rel7, rel6, rel5, rel4, rel3, rel2, rel1]
     end
 
   end
