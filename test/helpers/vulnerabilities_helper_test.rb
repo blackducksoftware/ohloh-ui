@@ -32,10 +32,11 @@ class VulnerabilitiesHelperTest < ActionView::TestCase
     it 'should correctly filter version releases' do
       project = FactoryBot.create(:project)
       pss = FactoryBot.create(:project_security_set, project: project)
-      rel1 = FactoryBot.create(:release, version: '10.1')
-      rel2 = FactoryBot.create(:release, version: '21.1')
-      rel3 = FactoryBot.create(:release, version: '32.1')
-      sort_releases_by_version_number(Release.all).must_equal [rel3, rel2, rel1]
+      rel1 = FactoryBot.create(:release, version: '10.1.1')
+      rel2 = FactoryBot.create(:release, version: '10.1.2')
+      rel3 = FactoryBot.create(:release, version: '10.1.3')
+      rel4 = FactoryBot.create(:release, version: '10.1')
+      sort_releases_by_version_number(Release.all).must_equal [rel3, rel2, rel1, rel4]
     end
 
     it 'should correctly filter version releases w/ alphabetic chars' do
@@ -55,5 +56,19 @@ class VulnerabilitiesHelperTest < ActionView::TestCase
       rel3 = FactoryBot.create(:major_release_three, version: 'android-3.1.0_r1', project_security_set: pss)
       sort_releases_by_version_number(Release.all).must_equal [rel1, rel3, rel2]
     end
+
+    it 'should correctly filter mixed style of version releases' do
+      project = FactoryBot.create(:project)
+      pss = FactoryBot.create(:project_security_set, project: project)
+      rel1 = FactoryBot.create(:release, version: '1.0.0-alpha.1')
+      rel2 = FactoryBot.create(:release, version: '1.0.0-alpha')
+      rel3 = FactoryBot.create(:release, version: '1.0.0-beta.11')
+      rel4 = FactoryBot.create(:release, version: '1.0.0-beta.2')
+      rel5 = FactoryBot.create(:release, version: '1.0.0-beta')
+      rel6 = FactoryBot.create(:release, version: '1.0.0-rc.1')
+      rel7 = FactoryBot.create(:release, version: '1.0.0')
+      sort_releases_by_version_number(Release.all).must_equal [rel1, rel2, rel3, rel4, rel5, rel6, rel7]
+    end
+
   end
 end

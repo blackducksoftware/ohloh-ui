@@ -60,7 +60,7 @@ module VulnerabilitiesHelper
     if vanity_url == 'android'
       releases.sort { |a,b| b.version <=> a.version }
     else
-      releases.sort_by { |r| ( (_r = r.version.split('.').map(&:to_i))==[0] ) ? r.version.split('').map { |c| c.bytes.first.to_i*-1 } : _r }.reverse
+      releases.sort_by { |release| release_version_to_array(release) }.reverse
     end
   end
 
@@ -126,5 +126,43 @@ module VulnerabilitiesHelper
       asc_desc_icon = current_direction == 'desc' ? ['hidden', ''] : ['', 'hidden']
     end
     asc_desc_icon
+  end
+
+  private
+
+  ###
+  # 1.0.0
+  # 1.0.0-rc.1
+  # 1.0.0-beta.11
+  # 1.0.0-beta.2
+  # 1.0.0-beta
+  # 1.0.0-alpha.beta
+  # 1.0.0-alpha.1 
+  # 1.0.0-alpha
+  
+  def release_version_to_array(release)
+    # (_array = release.version.split('.').map(&:to_i))==[0] ) ? release.version.split('').map { |char| char.bytes.first.to_i*-1 } : _array } 
+    _array = release.version.split('.').map do |token|
+      get_release_version_array(token)
+    end
+  end
+
+  def get_release_version_array(token)
+    # returns array of int or char values
+    val = token.to_i
+    val.to_s == token ? [val] : get_token_char_array(token)
+  end
+
+  def get_token_char_array(token)
+    token.chars.map do |char|
+      case char 
+      when '0'..'9'
+        char.to_s.to_i
+      when 'A'..'Z','a'..'z'
+        char.bytes.first.to_i*-1
+      when '-','+','_'
+        char.bytes.first.to_i*-1
+      end
+    end
   end
 end
