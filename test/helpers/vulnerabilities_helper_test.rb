@@ -31,7 +31,7 @@ class VulnerabilitiesHelperTest < ActionView::TestCase
   describe '' do
     it 'should correctly filter version releases' do
       project = FactoryBot.create(:project)
-      pss = FactoryBot.create(:project_security_set, project: project)
+      FactoryBot.create(:project_security_set, project: project)
       rel1 = FactoryBot.create(:release, version: '10.1.1')
       rel2 = FactoryBot.create(:release, version: '10.1.2')
       rel3 = FactoryBot.create(:release, version: '10.1.3')
@@ -41,7 +41,7 @@ class VulnerabilitiesHelperTest < ActionView::TestCase
 
     it 'should correctly filter version releases w/ alphabetic chars' do
       project = FactoryBot.create(:project)
-      pss = FactoryBot.create(:project_security_set, project: project)
+      FactoryBot.create(:project_security_set, project: project)
       rel1 = FactoryBot.create(:release, version: 'PRE_RELEASE')
       rel2 = FactoryBot.create(:release, version: 'ALPHA_RELEASE')
       rel3 = FactoryBot.create(:release, version: 'BETA_RELEASE')
@@ -59,7 +59,7 @@ class VulnerabilitiesHelperTest < ActionView::TestCase
 
     it 'should correctly filter mixed style of version releases' do
       project = FactoryBot.create(:project)
-      pss = FactoryBot.create(:project_security_set, project: project)
+      FactoryBot.create(:project_security_set, project: project)
       rel1 = FactoryBot.create(:release, version: '1.0.0-alpha')
       rel2 = FactoryBot.create(:release, version: '1.0.0-alpha.1')
       rel3 = FactoryBot.create(:release, version: '1.0.0-beta')
@@ -69,6 +69,5 @@ class VulnerabilitiesHelperTest < ActionView::TestCase
       rel7 = FactoryBot.create(:release, version: '1.0.0')
       sort_releases_by_version_number(Release.all).must_equal [rel7, rel6, rel5, rel4, rel3, rel2, rel1]
     end
-
   end
 end

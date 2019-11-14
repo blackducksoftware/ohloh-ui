@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop: disable Metrics/ModuleLength
+
 module VulnerabilitiesHelper
   EMPTY_SEVERITY = 'unknown_severity'
 
@@ -56,9 +58,10 @@ module VulnerabilitiesHelper
 
   def sort_releases_by_version_number(releases)
     return nil if releases.nil?
+
     vanity_url = releases.first.project_security_set.project.vanity_url
     if vanity_url == 'android'
-      releases.sort { |a,b| b.version <=> a.version }
+      releases.sort { |a, b| b.version <=> a.version }
     else
       releases.sort_by { |release| release_version_to_array(release) }.reverse
     end
@@ -138,33 +141,38 @@ module VulnerabilitiesHelper
 
   def get_release_version_array(token)
     val = token.to_i
-    val.to_s == token ? [val, 0] : get_token_char_array(token)
+    val.to_s == token ? [val, 0] : get_token_array(token)
   end
 
-  def get_token_char_array(token)
+  def get_token_array(token)
     if token.include?('-')
       token1, token2 = token.split('-')
-      [token1.to_i, get_token_char_array(token2)].flatten
+      [token1.to_i, get_token_array(token2)].flatten
     else
-      case token
-      when 'rc'
-        [-1]
-      when 'beta'
-        [-2]
-      when 'alpha'
-        [-3]
-      else
-        token.chars.map do |char|
-          case char 
-          when '0'..'9'
-            char.to_s.to_i
-          when 'A'..'Z','a'..'z'
-            char.bytes.first.to_i*-1
-          when '-','+','_'
-            char.bytes.first.to_i*-1
-          end
+      get_token_char_array(token)
+    end
+  end
+
+  # rubocop: disable Metrics/MethodLength
+  def get_token_char_array(token)
+    case token
+    when 'rc'
+      [-1]
+    when 'beta'
+      [-2]
+    when 'alpha'
+      [-3]
+    else
+      token.chars.map do |char|
+        case char
+        when '0'..'9'
+          char.to_s.to_i
+        when 'A'..'Z', 'a'..'z', '-', '+', '_'
+          char.bytes.first.to_i * -1
         end
       end
     end
   end
+  # rubocop: enable Metrics/MethodLength
 end
+# rubocop: enable Metrics/ModuleLength
