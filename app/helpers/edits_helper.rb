@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/ModuleLength
-
 module EditsHelper
   include ApplicationHelper
   include EnlistmentsHelper
@@ -98,11 +96,9 @@ module EditsHelper
   end
 
   def edit_enlistment_branch_info(edit)
-    safe_text(
-      if @parent.is_a?(Project) && edit.target.is_a?(Enlistment) && edit.is_a?(CreateEdit)
-        enlistment_branch_name_html_snippet(edit.target)
-      end.to_s
-    )
+    if @parent.is_a?(Project) && edit.target.is_a?(Enlistment) && edit.is_a?(CreateEdit)
+      enlistment_branch_name_html_snippet(edit.target)
+    end.to_s.html_safe
   end
 
   def edit_explanation_link(edit)
@@ -131,5 +127,3 @@ module EditsHelper
     t('edits.explanation_rsssubscription', url: edit.target.rss_feed.url)
   end
 end
-
-# rubocop:enable Metrics/ModuleLength

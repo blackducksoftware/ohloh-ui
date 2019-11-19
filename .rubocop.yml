@@ -24,6 +24,9 @@ Rails/InverseOf:
 Rails/LexicallyScopedActionFilter:
   Enabled: false
 
+Rails/OutputSafety:
+  Enabled: false
+
 Rails/SkipsModelValidations:
   Enabled: false
 

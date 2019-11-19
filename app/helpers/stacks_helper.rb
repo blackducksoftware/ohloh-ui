@@ -13,7 +13,7 @@ module StacksHelper
     str = projects.collect do |proj|
       link_to(html_escape(proj.name), project_path(proj), title: html_escape(proj.name))
     end.join(', ')
-    safe_text(str)
+    str.html_safe
   end
 
   def stack_country_flag(code)

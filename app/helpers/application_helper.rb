@@ -13,7 +13,7 @@ module ApplicationHelper
     err = model.errors[attr]
     return '' if err.blank?
 
-    haml_tag 'p', safe_text([err].flatten.join('<br />')), opts.reverse_merge(class: 'error').merge(rel: attr)
+    haml_tag 'p', [err].flatten.join('<br />').html_safe, opts.reverse_merge(class: 'error').merge(rel: attr)
   end
 
   def password_error_tag(model, attr, opts = {})
@@ -21,7 +21,7 @@ module ApplicationHelper
     return '' if err.blank? || err == ["can't be blank"]
 
     err = err.first if err.size == 2
-    haml_tag 'p', safe_text([err].flatten.join('<br />')), opts.reverse_merge(class: 'error').merge(rel: attr)
+    haml_tag 'p', [err].flatten.join('<br />').html_safe, opts.reverse_merge(class: 'error').merge(rel: attr)
   end
 
   def project_pages_title(page_name = nil, project_name = nil)
@@ -41,11 +41,11 @@ module ApplicationHelper
     return unless text
 
     text = text.sanitize
-    return safe_text(text) if text.length < max
+    return text.html_safe if text.length < max
 
     l = (text[0..min].rindex(regex) || min + 1) + regex_offset
     l -= 1 if text[l..l] == ','
-    safe_text(render_expander(text, l))
+    render_expander(text, l).html_safe
   end
 
   def pluralize_without_count(count, singular, plural = nil)
@@ -137,12 +137,6 @@ module ApplicationHelper
     numbers = (1..response['total_entries']).to_a
     will_paginate(numbers.paginate(page: response['current_page'], per_page: response['per_page']))
   end
-
-  # rubocop: disable Rails/OutputSafety
-  def safe_text(str)
-    safe_join(Array(str.html_safe))
-  end
-  # rubocop: enable Rails/OutputSafety
 
   private
 

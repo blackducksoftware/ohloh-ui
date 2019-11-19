@@ -9,7 +9,7 @@ module MarkdownHelper
                 link_attributes: { rel: 'nofollow', target: '_blank' } }
     renderer = Redcarpet::Render::HTML.new(options)
     markdown = Redcarpet::Markdown.new(renderer, autolink: true, tables: true)
-    safe_text(markdown.render(text))
+    markdown.render(text).html_safe
   rescue StandardError
     Rails.logger.error "Redcarpet failed to convert:\n#{text}."
     text.to_s

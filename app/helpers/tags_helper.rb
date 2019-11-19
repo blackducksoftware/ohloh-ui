@@ -12,7 +12,7 @@ module TagsHelper
       tag = tag.fix_encoding_if_invalid
       link_to html_escape(tag), tags_path(names: tag), class: 'tag', itemprop: 'keywords'
     end.join(' ')
-    safe_text(str)
+    str.html_safe
   end
 
   def tags_left(count)

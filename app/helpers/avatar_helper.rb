@@ -35,15 +35,15 @@ module AvatarHelper
   end
 
   def avatar_small_laurels(rank)
-    safe_text(avatar_laurels_img(rank, 'sm_laurel'))
+    avatar_laurels_img(rank, 'sm_laurel').html_safe
   end
 
   def avatar_laurels(rank)
-    safe_text(avatar_laurels_img(rank, 'laurel'))
+    avatar_laurels_img(rank, 'laurel').html_safe
   end
 
   def avatar_tiny_laurels(rank)
-    safe_text(avatar_laurels_img(rank, 'tn_laurel'))
+    avatar_laurels_img(rank, 'tn_laurel').html_safe
   end
 
   private
@@ -82,6 +82,6 @@ module AvatarHelper
   end
 
   def avatar_laurels_img(rank, imag_base)
-    safe_text("<img src='" + image_path("icons/#{imag_base}_#{rank || 1}.png") + "' alt='KudoRank #{rank || 1}'/>")
+    "<img src='" + image_path("icons/#{imag_base}_#{rank || 1}.png") + "' alt='KudoRank #{rank || 1}'/>".html_safe
   end
 end
