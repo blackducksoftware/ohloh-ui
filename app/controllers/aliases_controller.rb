@@ -36,8 +36,6 @@ class AliasesController < SettingsController
     render partial: 'aliases/preferred_names'
   end
 
-  def new; end
-
   private
 
   def redirect_to_message_if_oversized_project

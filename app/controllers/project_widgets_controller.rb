@@ -12,10 +12,6 @@ class ProjectWidgetsController < WidgetsController
     @widgets = ProjectWidget.create_widgets(params[:project_id])
   end
 
-  def partner_badge; end
-
-  def thin_badge; end
-
   private
 
   def set_project

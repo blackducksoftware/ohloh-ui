@@ -4,12 +4,6 @@ class SettingsController < ApplicationController
   before_action :show_permissions_alert, only: %i[index new edit]
   ACCEPTABLE_TIME_UNITS = %w[hours days weeks months years].freeze
 
-  def index; end
-
-  def new; end
-
-  def edit; end
-
   def oversized_project?(project)
     return true if defined?(OVERSIZED_PROJECT_IDS) && OVERSIZED_PROJECT_IDS.include?(project.id)
   end

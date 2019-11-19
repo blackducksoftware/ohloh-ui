@@ -21,6 +21,9 @@ Rails/HelperInstanceVariable:
 Rails/InverseOf:
   Enabled: false
 
+Rails/LexicallyScopedActionFilter:
+  Enabled: false
+
 Rails/SkipsModelValidations:
   Enabled: false
 

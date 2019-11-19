@@ -4,7 +4,6 @@ module PositionFilters
   extend ActiveSupport::Concern
 
   included do
-    # rubocop: disable LexicallyScopedActionFilter
     before_action :session_required, :redirect_unverified_account,
                   only: %i[edit new create delete one_click_create]
     before_action :set_account
@@ -17,22 +16,7 @@ module PositionFilters
     before_action :set_project_and_name_fact, only: :commits_compound_spark
     skip_before_action :store_location, only: [:commits_compound_spark]
     helper_method :params_id_is_total?
-    # rubocop: enable LexicallyScopedActionFilter
   end
-
-  def create; end
-
-  def new; end
-
-  def show; end
-
-  def edit; end
-
-  def update; end
-
-  def delete; end
-
-  def destroy; end
 
   private
 

@@ -4,7 +4,6 @@ module OrgFilters
   extend ActiveSupport::Concern
 
   included do
-    # rubocop: disable LexicallyScopedActionFilter
     before_action :set_organization, except: %i[index new create
                                                 resolve_vanity_url print_org_infographic update]
     before_action :set_organization_based_on_id, only: [:update]
@@ -20,20 +19,7 @@ module OrgFilters
     before_action :can_claim_project, only: :claim_project
     after_action :schedule_analysis, only: %i[claim_project remove_project]
     before_action :avoid_global_search, only: %i[manage_projects claim_projects_list]
-    # rubocop: enable LexicallyScopedActionFilter
   end
-
-  def create; end
-
-  def new; end
-
-  def index; end
-
-  def show; end
-
-  def edit; end
-
-  def update; end
 
   def schedule_analysis
     @organization.schedule_analysis

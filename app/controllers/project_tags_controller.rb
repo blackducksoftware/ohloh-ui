@@ -11,8 +11,6 @@ class ProjectTagsController < SettingsController
   before_action :find_tagging, only: [:destroy]
   before_action :project_context
 
-  def index; end
-
   def create
     @project.update!(tag_list: "#{@project.tag_list} #{params[:tag_name]}")
     render text: ERB::Util.html_escape(@project.tag_list).split.sort.join("\n")

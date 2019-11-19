@@ -4,7 +4,6 @@ module ProjectFilters
   extend ActiveSupport::Concern
 
   included do
-    # rubocop: disable LexicallyScopedActionFilter
     before_action :session_required, :redirect_unverified_account, only: %i[check_forge create new update]
     before_action :find_account
     before_action :find_projects, only: [:index]
@@ -20,20 +19,7 @@ module ProjectFilters
     before_action :set_uuid, only: :show
     before_action :avoid_global_search_if_parent_is_account, only: :index
     before_action :avoid_global_search, only: :users
-    # rubocop: enable LexicallyScopedActionFilter
   end
-
-  def create; end
-
-  def new; end
-
-  def index; end
-
-  def show; end
-
-  def edit; end
-
-  def update; end
 
   private
 

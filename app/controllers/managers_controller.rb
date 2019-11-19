@@ -13,8 +13,6 @@ class ManagersController < SettingsController
   before_action :admin_session_required, only: %i[new create edit update], if: -> { @parent.is_a? Organization }
   before_action :project_context, if: -> { @parent.is_a? Project }
 
-  def index; end
-
   def new
     # rubocop:disable Naming/MemoizedInstanceVariableName
     @manage ||= Manage.new
