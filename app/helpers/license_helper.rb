@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop: disable HelperInstanceVariable
-
 module LicenseHelper
   def categorize_permission(permission)
     permission_exists = permission['license_permission_id'].present?
@@ -77,5 +75,3 @@ module LicenseHelper
     end
   end
 end
-
-# rubocop: enable HelperInstanceVariable

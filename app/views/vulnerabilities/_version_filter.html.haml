@@ -6,5 +6,5 @@
       class: 'ctrl vulnerability_filter'
 .vulnerability_filter_wrapper.vulnerability_filter_severity
   %span.title= t('.severity')
-  = select_tag 'vulnerability[filter][severity]', options_for_severities_filter(@release),
+  = select_tag 'vulnerability[filter][severity]', options_for_severities_filter,
       include_blank: 'All', class: 'ctrl vulnerability_filter', disabled: @minor_versions.blank?

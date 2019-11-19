@@ -2,13 +2,13 @@
 
 module ForumsHelper
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Style/MultilineIfModifier
-  def forums_sidebar(forum)
+  def forums_sidebar
     menus = []
     menus << [
       [nil,             t(:topic)],
-      [:new_topic,      t(:new_topic), new_forum_topic_path(forum)],
-      [:forum,          forum.name, forum_path(forum)]
-    ] if forum
+      [:new_topic,      t(:new_topic), new_forum_topic_path(@forum)],
+      [:forum,          @forum.name, forum_path(@forum)]
+    ] if @forum
 
     menus << [
       [nil,             t(:post)],
@@ -19,7 +19,7 @@ module ForumsHelper
     menus << [
       [nil,             t(:admin)],
       [:new,            t(:new_forum), new_forum_path]
-    ] if current_user_is_admin? && !forum
+    ] if current_user_is_admin? && !@forum
 
     menus
   end

@@ -16,7 +16,7 @@
     - @commits.each do |commit|
       - commit_contributor = @commit_contributor || @commit_contributors.fetch(commit.name_id, []).first
       - next if commit_contributor.nil?
-      %tr{ class: highlight(@hightlight_from, commit.time) }
+      %tr{ class: highlight(commit.time) }
         %td= link_to h(commit.obfuscate_email(commit.comment).split("\n").first), project_commit_path(@project, commit)
         %td
           = avatar_for(commit_contributor.person)

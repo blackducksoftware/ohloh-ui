@@ -15,8 +15,8 @@ module ExploreHelper
     end
   end
 
-  def cache_projects_explore_page(language)
-    if language.blank?
+  def cache_projects_explore_page
+    if @language.blank?
       Rails.cache.fetch('projects_explore_page', expires_in: 1.hour) do
         render 'projects'
       end

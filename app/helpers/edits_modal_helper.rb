@@ -7,9 +7,9 @@ module EditsModalHelper
     expander(get_edit_value(edit) || edit.value, 300, 340)
   end
 
-  def show_edit_path(edit, parent)
-    path = "#{parent.class.name.downcase}_edit_path".to_sym
-    send(path, parent, edit) if respond_to?(path)
+  def show_edit_path(edit)
+    path = "#{@parent.class.name.downcase}_edit_path".to_sym
+    send(path, @parent, edit) if respond_to?(path)
   end
 
   def get_edit_value(edit)

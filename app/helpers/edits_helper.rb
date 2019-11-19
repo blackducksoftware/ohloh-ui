@@ -19,8 +19,8 @@ module EditsHelper
     edit.undone? ? t('edits.undone') : nil
   end
 
-  def edit_show_subject(edit, parent)
-    html_escape(edit_subject(edit, parent)) + ' ' + edit_enlistment_branch_info(edit, parent)
+  def edit_show_subject(edit)
+    html_escape(edit_subject(edit)) + ' ' + edit_enlistment_branch_info(edit)
   end
 
   def get_edit_summary(edit)
@@ -33,9 +33,9 @@ module EditsHelper
     params[:organization_id].present? || edit.key == 'organization_id' || edit.key == 'org_type'
   end
 
-  def edit_subject(edit, parent)
-    project_term = if parent.is_a?(Project) || parent.is_a?(Organization)
-                     "#{parent.class} '#{parent.name}': "
+  def edit_subject(edit)
+    project_term = if @parent.is_a?(Project) || @parent.is_a?(Organization)
+                     "#{@parent.class} '#{@parent.name}': "
                    else
                      ''
                    end
@@ -97,9 +97,9 @@ module EditsHelper
     t('edits.explanation_enlistment', url: edit.target.code_location.url)
   end
 
-  def edit_enlistment_branch_info(edit, parent)
+  def edit_enlistment_branch_info(edit)
     safe_text(
-      if parent.is_a?(Project) && edit.target.is_a?(Enlistment) && edit.is_a?(CreateEdit)
+      if @parent.is_a?(Project) && edit.target.is_a?(Enlistment) && edit.is_a?(CreateEdit)
         enlistment_branch_name_html_snippet(edit.target)
       end.to_s
     )

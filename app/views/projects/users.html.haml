@@ -22,7 +22,7 @@
           = link_to avatar_img_for(account.person), avatar_path(account.person)
           .avatar_name
             %h4.nomargin= link_to h(account.person.person_name), avatar_path(account.person)
-          .margin_left_50.small!= stack_name(@project, account)
+          .margin_left_50.small!= stack_name(account)
       .col-md-6
         %h6.soft.margin_top_0= t('.contributions')
         = render partial: '/projects/person_contribution', locals: { person: account.person }

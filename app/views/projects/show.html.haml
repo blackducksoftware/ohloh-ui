@@ -44,8 +44,8 @@
       - if @project.project_badges.active.present?
         %section#project_badges
           %h4.title= link_to t('project_badges.index.title'), project_project_badges_path(@project)
-          = show_badges(@project)
-          = more_badges_link(@project)
+          = show_badges
+          = more_badges_link
 
   .col-md-4.nutshell_container
     .well

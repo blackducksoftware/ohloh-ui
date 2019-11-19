@@ -3,7 +3,7 @@
   %h2.title.pull-left= link_to project.name.truncate(70), project_path(project), title: project.name
   .pull-right
     .compare
-      - project_compare_button(project, @session_projects, t('.compare')) if defined?(compare) && compare
+      - project_compare_button(project, t('.compare')) if defined?(compare) && compare
     - if params[:action].to_s != 'check_forge'
       .i_use_this
         - project_iusethis_button(project) if defined?(i_use_this) && i_use_this

@@ -146,7 +146,7 @@ class ProjectsHelperTest < ActionView::TestCase
     it 'should return project managers list' do
       project_manager = create(:manage)
       @project = project_manager.target
-      project_managers_list(@project).must_match project_manager.account.name
+      project_managers_list.must_match project_manager.account.name
     end
   end
 

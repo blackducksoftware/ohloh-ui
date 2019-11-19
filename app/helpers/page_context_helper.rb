@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop: disable HelperInstanceVariable
-
 module PageContextHelper
   include ForumsHelper
 
@@ -35,8 +33,8 @@ module PageContextHelper
                      page_header: 'projects/show/header')
   end
 
-  def forum_context(forum)
-    set_page_context(footer_menu_list: forums_sidebar(forum))
+  def forum_context
+    set_page_context(footer_menu_list: forums_sidebar)
   end
 
   def tool_context
@@ -64,5 +62,3 @@ module PageContextHelper
     page_context.reverse_merge!(options)
   end
 end
-
-# rubocop: enable HelperInstanceVariable
