@@ -186,7 +186,7 @@ Rails.application.routes.draw do
   get 'p/_project_graph', to: 'compares#projects_graph', as: :compare_graph_projects, defaults: { format: 'js' }
   get 'projects/:id/stacks', to: 'stacks#project_stacks', constraints: { format: /xml/ }
   get 'p/:id/stacks', to: 'stacks#project_stacks', as: :project_stacks, constraints: { format: /xml/ }
-  get 'p/:id/stacks', to: redirect('/p/%<id>/users'), constraints: { format: /html/ }
+  get 'p/:id/stacks', to: redirect('/p/%{id}/users'), constraints: { format: /html/ }
   get 'projects', to: 'projects#index', as: :project_xml_api, constraints: { format: /xml/ }
   get 'projects/:project_id/badge_js',      to: 'project_widgets#thin_badge', defaults: { format: 'js' }
   get 'projects/:project_id/badge.:format', to: 'project_widgets#thin_badge'
