@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable SkipsModelValidations
-
 class OrganizationsController < ApplicationController
   helper ProjectsHelper
   helper RatingsHelper
@@ -126,5 +124,3 @@ class OrganizationsController < ApplicationController
     end
   end
 end
-
-# rubocop:enable SkipsModelValidations

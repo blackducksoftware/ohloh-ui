@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable SkipsModelValidations
-
 module ProjectFilters
   extend ActiveSupport::Concern
 
@@ -84,5 +82,3 @@ module ProjectFilters
     @project.update_column('uuid', uuid) if uuid
   end
 end
-
-# rubocop:enable SkipsModelValidations

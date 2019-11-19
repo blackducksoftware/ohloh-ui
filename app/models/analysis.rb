@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable HasManyOrHasOneDependent
-# rubocop:disable InverseOf
-
 class Analysis < ActiveRecord::Base
   include Analysis::Report
   AVG_SALARY = 55_000
@@ -122,6 +119,3 @@ class Analysis < ActiveRecord::Base
     end
   end
 end
-
-# rubocop:enable InverseOf
-# rubocop:enable HasManyOrHasOneDependent

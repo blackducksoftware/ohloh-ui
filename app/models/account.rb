@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable SkipsModelValidations
-
 class Account < ActiveRecord::Base
   include AffiliationValidation
   include AccountValidations
@@ -129,5 +127,3 @@ class Account < ActiveRecord::Base
     end
   end
 end
-
-# rubocop:enable SkipsModelValidations

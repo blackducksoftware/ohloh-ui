@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop: disable InverseOf
-
 class Edit < ActiveRecord::Base
   belongs_to :account
   belongs_to :target, polymorphic: true
@@ -104,5 +102,3 @@ class Edit < ActiveRecord::Base
     !target.is_a?(Project) && target.respond_to?(:organization_id) ? target.organization_id : nil
   end
 end
-
-# rubocop: enable InverseOf

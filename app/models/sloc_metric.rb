@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop: disable InverseOf
-
 class SlocMetric < FisBase
   belongs_to :diff
   belongs_to :language
@@ -45,5 +43,3 @@ class SlocMetric < FisBase
     end
   end
 end
-
-# rubocop: enable InverseOf

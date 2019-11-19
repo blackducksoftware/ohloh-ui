@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop: disable InverseOf
-
 module OnBehalf
   extend ActiveSupport::Concern
 
@@ -45,5 +43,3 @@ module OnBehalf
     errors.add(:send_limit, err_msg) if invites_sent_from_this_account >= OnBehalf::MAX_SENT
   end
 end
-
-# rubocop: enable InverseOf

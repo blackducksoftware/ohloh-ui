@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable HasManyOrHasOneDependent
-# rubocop:disable InverseOf
-
 class Organization < ActiveRecord::Base
   include OrganizationSearchables
   include OrganizationJobs
@@ -124,6 +121,3 @@ class Organization < ActiveRecord::Base
     schedule_analysis
   end
 end
-
-# rubocop:enable InverseOf
-# rubocop:enable HasManyOrHasOneDependent

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable SkipsModelValidations
-
 class Rating < ActiveRecord::Base
   belongs_to :account
   belongs_to :project
@@ -19,5 +17,3 @@ class Rating < ActiveRecord::Base
     project.update_attribute(:rating_average, project.ratings.average(:score))
   end
 end
-
-# rubocop:enable SkipsModelValidations

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable SkipsModelValidations
-
 module OrganizationJobs
   extend ActiveSupport::Concern
 
@@ -31,5 +29,3 @@ module OrganizationJobs
     job
   end
 end
-
-# rubocop:enable SkipsModelValidations

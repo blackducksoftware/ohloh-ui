@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop: disable InverseOf
-
 class Contribution < ActiveRecord::Base
   SORT_OPTIONS = %i[name kudo_position commits twelve_month_commits
                     language latest_commit newest oldest].freeze
@@ -108,5 +106,3 @@ class Contribution < ActiveRecord::Base
     end
   end
 end
-
-# rubocop: enable InverseOf

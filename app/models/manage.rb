@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop: disable InverseOf
-
 class Manage < ActiveRecord::Base
   MAX_PROJECTS = 200
 
@@ -71,5 +69,3 @@ class Manage < ActiveRecord::Base
     true
   end
 end
-
-# rubocop: enable InverseOf

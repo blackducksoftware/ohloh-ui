@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable SkipsModelValidations
 # rubocop:disable Metrics/ClassLength
 class ApplicationController < ActionController::Base
   include ClearanceSetup
@@ -323,4 +322,3 @@ class ApplicationController < ActionController::Base
   end
 end
 # rubocop:enable Metrics/ClassLength
-# rubocop:enable SkipsModelValidations

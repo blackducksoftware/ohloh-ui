@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable HasManyOrHasOneDependent
-# rubocop:disable InverseOf
-
 class Alias < ActiveRecord::Base
   include AliasScopes
   belongs_to :project
@@ -108,6 +105,3 @@ class Alias < ActiveRecord::Base
     ContributorFact.find_by(name_id: commit_name_id, analysis_id: project.best_analysis_id)
   end
 end
-
-# rubocop:enable InverseOf
-# rubocop:enable HasManyOrHasOneDependent

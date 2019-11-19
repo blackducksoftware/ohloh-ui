@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable HasManyOrHasOneDependent
-# rubocop:disable InverseOf
-
 module ProjectAssociations
   extend ActiveSupport::Concern
 
@@ -92,6 +89,3 @@ module ProjectAssociations
     end
   end
 end
-
-# rubocop:enable InverseOf
-# rubocop:enable HasManyOrHasOneDependent

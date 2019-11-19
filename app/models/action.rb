@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop: disable InverseOf
-
 class Action < ActiveRecord::Base
   attr_reader :payload_required
 
@@ -57,5 +55,3 @@ class Action < ActiveRecord::Base
     errors.add :claim, I18n.t('actions.account_never_contributed')
   end
 end
-
-# rubocop: enable InverseOf

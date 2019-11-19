@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable SkipsModelValidations
-
 module Tsearch
   extend ActiveSupport::Concern
 
@@ -77,5 +75,3 @@ module Tsearch
   end
   # rubocop:enable Metrics/BlockLength
 end
-
-# rubocop:enable SkipsModelValidations

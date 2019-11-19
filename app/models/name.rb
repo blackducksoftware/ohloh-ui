@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable HasManyOrHasOneDependent
-
 class Name < ActiveRecord::Base
   has_many :name_facts
   has_many :people
@@ -12,5 +10,3 @@ class Name < ActiveRecord::Base
     end
   end
 end
-
-# rubocop:enable HasManyOrHasOneDependent

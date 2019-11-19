@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable HasManyOrHasOneDependent
-# rubocop:disable InverseOf
-
 class Position < ActiveRecord::Base
   include AffiliationValidation
   include Position::Validations
@@ -122,6 +119,3 @@ class Position < ActiveRecord::Base
     committer_name && project
   end
 end
-
-# rubocop:enable InverseOf
-# rubocop:enable HasManyOrHasOneDependent

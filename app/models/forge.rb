@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable HasManyOrHasOneDependent
-
 class Forge < ActiveRecord::Base
   has_many :repositories
   has_many :projects
@@ -22,5 +20,3 @@ class Forge < ActiveRecord::Base
     []
   end
 end
-
-# rubocop:enable HasManyOrHasOneDependent

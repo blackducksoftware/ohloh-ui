@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable HasManyOrHasOneDependent
-# rubocop:disable DynamicFindBy
-# rubocop:disable InverseOf
-
 class Person < ActiveRecord::Base
   self.primary_key = :id
   self.per_page = 10
@@ -129,7 +125,3 @@ class Person < ActiveRecord::Base
     name_id? && project_id?
   end
 end
-
-# rubocop:enable InverseOf
-# rubocop:enable DynamicFindBy
-# rubocop:enable HasManyOrHasOneDependent

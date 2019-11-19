@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable SkipsModelValidations
-
 class StackEntry < ActiveRecord::Base
   MAX_NOTE_LENGTH = 255
 
@@ -70,5 +68,3 @@ class StackEntry < ActiveRecord::Base
     stack.stack_ignores.for_project(project).destroy_all
   end
 end
-
-# rubocop:enable SkipsModelValidations

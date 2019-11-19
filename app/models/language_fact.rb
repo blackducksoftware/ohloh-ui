@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop: disable InverseOf
-
 class LanguageFact < ActiveRecord::Base
   belongs_to :language
   belongs_to :all_month, primary_key: :month, foreign_key: :month
@@ -49,5 +47,3 @@ class LanguageFact < ActiveRecord::Base
     end
   end
 end
-
-# rubocop: enable InverseOf

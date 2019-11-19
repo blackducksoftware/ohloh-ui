@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable SkipsModelValidations
-
 class Duplicate < ActiveRecord::Base
   RESOLVES = %i[stack_entries kudos tags ratings reviews links aliases enlistments
                 positions project_experiences edits self].freeze
@@ -125,5 +123,3 @@ class Duplicate < ActiveRecord::Base
     update_attribute(:resolved, true)
   end
 end
-
-# rubocop:enable SkipsModelValidations

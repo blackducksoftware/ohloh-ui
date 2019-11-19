@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable HasManyOrHasOneDependent
-
 class Release < ActiveRecord::Base
   belongs_to :project_security_set
   has_many :releases_vulnerabilities
@@ -27,5 +25,3 @@ class Release < ActiveRecord::Base
     project_security_set.matching_releases(major_version_number)
   end
 end
-
-# rubocop:enable HasManyOrHasOneDependent

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable SkipsModelValidations
-
 class PrivacyController < ApplicationController
   before_action :session_required, :redirect_unverified_account, only: %i[edit update]
   before_action :set_account
@@ -48,5 +46,3 @@ class PrivacyController < ApplicationController
     params.require(:account).permit(:email_master, :email_kudos, :email_posts)
   end
 end
-
-# rubocop:enable SkipsModelValidations

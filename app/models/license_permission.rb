@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable HasManyOrHasOneDependent
-
 class LicensePermission < ActiveRecord::Base
   belongs_to :license_right
   has_one :license_license_permission
@@ -11,5 +9,3 @@ class LicensePermission < ActiveRecord::Base
 
   enum status: { 'Permitted': 0, 'Forbidden': 1, 'Required': 2 }
 end
-
-# rubocop:enable HasManyOrHasOneDependent

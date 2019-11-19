@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable DynamicFindBy
-
 class ReviewsController < ApplicationController
   helper RatingsHelper
   helper ProjectsHelper
@@ -90,5 +88,3 @@ class ReviewsController < ApplicationController
     redirect_to summary_project_reviews_path(@project), flash: { error: t(:not_authorized) }
   end
 end
-
-# rubocop:enable DynamicFindBy

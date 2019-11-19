@@ -1,13 +1,9 @@
 #! /usr/bin/env ruby
 # frozen_string_literal: true
 
-# rubocop:disable SkipsModelValidations
-
 raise 'RAILS_ENV is undefined' unless ENV['RAILS_ENV']
 
 require_relative '../config/environment'
 RssFeed.where(id: RssSubscription.not_deleted.select('rss_feed_id'))
        .where("(next_fetch >= NOW() AT TIME ZONE 'UTC') AND error IS NOT NULL")
        .update_all(next_fetch: Time.current - 1.day)
-
-# rubocop:enable SkipsModelValidations

@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable HasManyOrHasOneDependent
-# rubocop:disable SkipsModelValidations
-
 require 'feedjira'
 
 class RssFeed < ActiveRecord::Base
@@ -64,6 +61,3 @@ class RssFeed < ActiveRecord::Base
     end
   end
 end
-
-# rubocop:enable SkipsModelValidations
-# rubocop:enable HasManyOrHasOneDependent

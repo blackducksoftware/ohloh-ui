@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable HasManyOrHasOneDependent
-# rubocop:disable InverseOf
-
 class Enlistment < ActiveRecord::Base
   has_one :create_edit, as: :target
   has_many :project_badges
@@ -87,6 +84,3 @@ class Enlistment < ActiveRecord::Base
     CodeLocationSubscription.create(params)
   end
 end
-
-# rubocop:enable InverseOf
-# rubocop:enable HasManyOrHasOneDependent

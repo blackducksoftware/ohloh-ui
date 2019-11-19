@@ -1,8 +1,6 @@
 #! /usr/bin/env ruby
 # frozen_string_literal: true
 
-# rubocop:disable SkipsModelValidations
-
 require_relative '../config/environment'
 require 'logger'
 
@@ -68,5 +66,3 @@ class FlagInsufficientGithubVerifiedAccounts
 end
 
 FlagInsufficientGithubVerifiedAccounts.new.execute
-
-# rubocop:enable SkipsModelValidations

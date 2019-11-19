@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable HasManyOrHasOneDependent
-# rubocop:disable SkipsModelValidations
-# rubocop:disable InverseOf
-
 class Job < ActiveRecord::Base
   belongs_to :project
   belongs_to :slave
@@ -77,7 +73,3 @@ class Job < ActiveRecord::Base
     end
   end
 end
-
-# rubocop:enable InverseOf
-# rubocop:enable SkipsModelValidations
-# rubocop:enable HasManyOrHasOneDependent

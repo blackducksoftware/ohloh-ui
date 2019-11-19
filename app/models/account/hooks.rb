@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 # rubocop:disable Metrics/ClassLength
-# rubocop:disable SkipsModelValidations
-
 class Account::Hooks
   def before_validation(account)
     assign_name_to_login(account) if account.name.blank?
@@ -141,4 +139,3 @@ class Account::Hooks
   end
 end
 # rubocop:enable Metrics/ClassLength
-# rubocop:enable SkipsModelValidations

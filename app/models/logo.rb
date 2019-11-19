@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable HasManyOrHasOneDependent
-
 class Logo < Attachment
   FILE_SIZE_LIMIT = (1..500.kilobytes).freeze
 
@@ -68,5 +66,3 @@ class Logo < Attachment
     style.blank? ? '' : "_#{style}"
   end
 end
-
-# rubocop:enable HasManyOrHasOneDependent
