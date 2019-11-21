@@ -32,15 +32,15 @@ header
         text-decoration: none
         &:hover
           padding-bottom: 0px
-          color: $secondary-yellow-60
+          color: color-gradient($SECONDARY_YELLOW, 60)
 #navbar-inner
-  background-color: $secondary-light-purple
+  background-color: color-gradient($PRIMARY_PURPLE, 100)
   padding-top: 1px
   padding-left: 2px
   height: 42px
 
 #project_container
-  background-color: $lightest-gray-80
+  background-color: color-gradient($LIGHT_GRAY, 40)
   #page-contents
     width: auto
     #project_masthead
@@ -68,7 +68,7 @@ header
     width: 125px
     float: left
     .logo_link
-      color: $secondary-light-purple !important
+      color: color-gradient($PRIMARY_PURPLE, 100) !important
       text-decoration: none
       margin-top: 3px
     .logo_img
@@ -76,7 +76,7 @@ header
       height: 100%
   .company-div
     float: left
-    color: $secondary-light-purple !important
+    color: color-gradient($PRIMARY_PURPLE, 100) !important
     padding-right: 10px !important
     padding-bottom: 5px !important
     .navbar_small_text
@@ -84,7 +84,7 @@ header
     .navbar_large_text
       font-size: 24px !important
     a
-      color: $secondary-light-purple !important
+      color: color-gradient($PRIMARY_PURPLE, 100) !important
       text-decoration: none
   .spacing-div
     float: left
@@ -96,12 +96,12 @@ header
     float: left
     width: 1px
     height: 30px
-    background-color: $light-gray-60 !important
+    background-color: color-gradient($LIGHT_GRAY, 60) !important
     margin: 0 2px 0 2px
   .actions-div
     float: right
   .twitter-text
-    background-color: $secondary-light-purple
+    background-color: color-gradient($PRIMARY_PURPLE, 100)
     color: white
     font-weight: bold
     font-size: 0.80em
@@ -113,11 +113,11 @@ header
     margin: 0
     padding: 1px 6px 0 7px
   .follow_btn
-    background-color: $light-gray !important
+    background-color: color-gradient($LIGHT_GRAY, 120) !important
     display: inline-block
     padding: 0 0 0 4px
     &:hover
-      background-color: #BBB !important
+      background-color: color-gradient($LIGHT_GRAY, 100) !important
       text-decoration: none
     height: 24px
     i, p, img
@@ -142,6 +142,8 @@ header
     li
       float: left
       padding: 0 0 0 8px
+  a
+    color: color-gradient($PRIMARY_PURPLE, 100) !important
 
 #top_nav_actions
   float: right
