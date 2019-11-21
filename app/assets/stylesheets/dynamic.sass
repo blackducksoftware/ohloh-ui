@@ -7,9 +7,12 @@
       padding-#{$pos}: #{$pixel}px !important
 
 @mixin menu_links
-  :border-bottom 0.4rem solid white
-  :margin-bottom 0px
-  :padding-bottom 0px
+  &:hover
+    padding-bottom: 0px
+    color: color-gradient($SECONDARY_YELLOW, 60)
+  color: color-gradient($SECONDARY_YELLOW, 100)  !important
+  margin-bottom: 0px
+  padding-bottom: 0px
 
 ul.select_projects
   li.projects

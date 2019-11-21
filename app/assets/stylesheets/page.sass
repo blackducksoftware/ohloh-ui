@@ -18,17 +18,17 @@ header
   margin: -10px -10px 0px -10px
 
 #nav-top-bar
-  margin: 11px 0 0 13px
+  margin: 11px 11px 0 11px
   .new_main_menu
     list-style: none
     margin: 0
     padding: 0
     li
       display: inline-block
-      margin-right: 16px
+      margin-right: 32px
       a
         color: white
-        font-size: 10pt
+        font-size: 11pt
         text-decoration: none
         &:hover
           padding-bottom: 0px
@@ -39,13 +39,20 @@ header
   padding-left: 2px
   height: 42px
 
+#page_contents
+  .separator-div
+    color: color-gradient($PRIMARY_DARK_GRAY, 60)
+
 #project_container
-  background-color: color-gradient($LIGHT_GRAY, 40)
+  width: 1240px
+  background-color: white
+  margin: 0 auto
+  padding: 10px 10px 0 10px
   #page-contents
     width: auto
     #project_masthead
       .no_padding
-        margin-left: 1rem
+        //margin-left: 1rem
       #project_header_activity_indicator.no_padding
         margin-left: 2rem
     #project_header
@@ -60,7 +67,10 @@ header
     padding-left: 2rem
 .navbar
   border-width: 0
-  margin: 15px 15px 0 15px
+  margin-top: 15px
+  margin-right: 15px
+  margin-bottom: 5px
+  margin-left: 15px
   padding: 0 0 5px 0
   min-height: 30px
   .logo-div
@@ -97,6 +107,7 @@ header
     width: 1px
     height: 30px
     background-color: color-gradient($LIGHT_GRAY, 60) !important
+    color: color-gradient($LIGHT_GRAY, 60) !important
     margin: 0 2px 0 2px
   .actions-div
     float: right
@@ -142,8 +153,6 @@ header
     li
       float: left
       padding: 0 0 0 8px
-  a
-    color: $secondary-light-purple !important
 
 #top_nav_actions
   float: right
@@ -307,16 +316,14 @@ fieldset
     padding-top: 0
 
 .container-fluid#project_container
+  a
+    color: color-gradient($SECONDARY_SLATE_BLUE, 120)
   padding-left: 10px
   padding-right: 10px
   .row.mezzo
     margin: 0 -10px
   .page-contents
     margin: 0
-  .navbar
-    margin-bottom: 1.5rem
-    #top_nav_actions
-      margin-top: 1.6rem
 
   .no_padding_right
     padding-right: 0
@@ -361,6 +368,7 @@ fieldset
       .well
         height: 100%
         margin-bottom: 0
+        background-color: color-gradient($SECTION_BACKGROUND, 0)
       .no_analysis_message .alert
         background-color: $primary-black-20
         border-color: $primary-black-20
@@ -409,7 +417,7 @@ fieldset
   @media screen and (min-width: 1366px) and (max-width:1919px)
     #project_masthead
       .project_title
-        margin-left: -2rem
+        margin-left: 0
     .project_row
       padding: 0 5rem 0rem 5rem
       .community_well, .activity_well

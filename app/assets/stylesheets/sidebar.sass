@@ -11,25 +11,22 @@
       border-radius: 0px
       padding-left: 5px
       padding-right: 10px
-  //  &.active
-  //    a
-  //      background-color: #E86D1F !important
 
   .nav-active
-    :background $primary-blue-20
-    :border-left 3px solid $primary-blue-darker
-    :margin-left -3px
-    :color $primary-blue-darker
+    background: color-gradient($SECTION_BACKGROUND_BLUE, 0)
+    border-left: 3px solid color-gradient($SECONDARY_SLATE_BLUE, 100)
+    margin-left: -3px
+    color: $primary-blue-darker
 
   .nav-hover
-    :background $primary-black-20
-    :border-left 3px solid $primary-black-80
-    :color $secondary-blue-darker
-    :border-radius 0px
-    :margin-left -3px
+    background: color-gradient($LIGHT_GRAY, 20)
+    border-left: 3px solid color-gradient($PRIMARY_DARK_GRAY, 100)
+    color: $secondary-blue-darker
+    border-radius: 0px
+    margin-left: -3px
 
   .navbar-justify
-    :border-radius 0px
+    border-radius: 0px
 
   .actions
     line-height: 0.5em
@@ -47,43 +44,42 @@
       &:hover
         @extend .nav-hover
         margin-left: 15px
-        padding-left: 0px
       padding-left: 18px
       border-top: -10px
     .footer-navbar, h4
-      :padding-top 2px
-      :padding-bottom 6px
-      :margin-top 8px
-      :margin-bottom 0px
+      padding-top: 2px
+      padding-bottom: 6px
+      margin-top: 8px
+      margin-bottom: 0px
       a
         color: $primary-blue-darker
         &:hover
           text-decoration: none
       .icon
-        :background-image asset_url('icons/ohloh-icon-sprite.png')
-        :height 24px
-        :width 24px
-        :float left
-        :margin-right 6px
-        :margin-top -3px
+        background-image: asset_url('icons/ohloh-icon-sprite.png')
+        height: 24px
+        width: 24px
+        float: left
+        margin-right: 6px
+        margin-top: -3px
         &.project_summary,&.account_summary,&.org_summary
-          :background-position -448px -8px
+          background-position: -448px -8px
         &.contributions
-          :background-position -768px -8px
+          background-position: -768px -8px
         &.recognition
-          :background-position -807px -8px
+          background-position: -807px -8px
         &.usage
-          :background-position -848px -8px
+          background-position: -848px -8px
         &.code_data
-          :background-position -489px -6px
-          :margin-top -5px
-          :margin-left 1px
+          background-position: -489px -6px
+          margin-top: -5px
+          margin-left: 1px
         &.scm_data
-          :background-position -528px -6px
-          :margin-top -5px
+          background-position: -528px -6px
+          margin-top: -5px
         &.user_data
-          :background-position -568px -6px
-          :margin-top -4px
+          background-position: -568px -6px
+          margin-top: -4px
       &.selected
         @extend .nav-active, .navbar-justify
         margin-right: 20px
