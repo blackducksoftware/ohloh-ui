@@ -73,6 +73,10 @@ module ProjectsHelper
     end
   end
 
+  def project_separator_text
+    '&nbsp;|&nbsp;'.html_safe
+  end
+
   def show_badges
     content_tag :div, class: 'badges' do
       @project.badges_summary.map do |badge|

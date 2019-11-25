@@ -8,18 +8,29 @@
       %h1.float_left{ itemprop: 'name' }
         = link_to @project.name, project_path(@project), style: 'color: black', itemprop: 'url'
       %small.pull-left.clear_both
-        != link_to bootstrap_icon('icon-cogs', t('projects.header.settings')), settings_project_path(@project)
+        %span.project_separator_text
+          = project_separator_text
+        %span
+          != link_to "&nbsp;".html_safe + t('projects.header.settings'), settings_project_path(@project)
         - if @project.is_a_duplicate
           - if current_user_is_admin? || (@current_account && @project.is_a_duplicate.account == @current_account)
             |
-            != link_to bootstrap_icon('icon-flag', t('projects.header.edit_duplicate')),
-                       edit_project_duplicate_path(@project, @project.is_a_duplicate)
+            %span.project_separator_text
+              = project_separator_text
+            %span
+              != link_to "&nbsp;".html_safe + t('projects.header.edit_duplicate'), edit_project_duplicate_path(@project, @project.is_a_duplicate)
         - else
           |
-          = link_to bootstrap_icon('icon-flag', t('projects.header.duplicate')), new_project_duplicate_path(@project)
+          %span.project_separator_text
+            = project_separator_text
+          %span
+            = link_to "&nbsp;".html_safe + t('projects.header.duplicate'), new_project_duplicate_path(@project)
         - if current_user_is_admin?
           |
-          = link_to bootstrap_icon('icon-legal', t('projects.header.job')), oh_admin_project_jobs_path(@project)
+          %span.project_separator_text
+            = project_separator_text
+          %span
+            = link_to "&nbsp;".html_safe + t('projects.header.job'), oh_admin_project_jobs_path(@project)
     .pull-right.no_padding#widgets
       .pull-left
         #add_this{ 'data-analytics-id' => ENV['ADDTHIS_ANALYTICS_ID'] }
@@ -43,7 +54,7 @@
                   %h4.modal-title#LoginModalLabel= t('.login_required')
                 .model-body
                   = render 'sessions/sign_in'
-      .pull-left#project_header_activity_indicator
+      .pull-right#project_header_activity_indicator
         - project_activity_level_class(@project, :thirtyfive)
         - project_activity_level_text(@project, :thirtyfive)
 

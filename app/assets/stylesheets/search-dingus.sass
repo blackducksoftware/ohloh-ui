@@ -41,12 +41,13 @@
       width: 14px
 
 #nav-top-bar .new_main_menu form#quicksearch
+  margin-top: -4px
   button.submit
     background: none
     border: 0
   ul.dropdown-menu
     border-radius: 0px
-    margin-top: -10px
+    margin-top: -10px !important
     li
       display: inline
       a
@@ -55,23 +56,32 @@
         text-transform: none
         &:hover
           color: #fff
-          background-color: $secondary-blue 
+          background-color: color-gradient($SECONDARY_MARINE_BLUE, 60)
   .btn-small
-    font-size: 17px
+    font-size: 14px
     border-width: 2px !important
+    margin-right: 0px !important
     .selection
       font-weight: 100
       text-transform: none
-    background-color: $secondary-blue !important
-    border-color: $secondary-blue 
     &:hover
-      background-color: $secondary-blue !important
-      border-color: $secondary-blue !important
+      background-color: color-gradient($SECONDARY_MARINE_BLUE, 60) !important
+      border-color: color-gradient($SECONDARY_MARINE_BLUE, 60) !important
 
 .global_top_search
-  margin-left: 5px
   height: 18px !important
-  border-color: rgba(82, 168, 236, 0.8) !important
+  border-color: color-gradient($SECONDARY_LIGHT_PURPLE, 100) !important
+  color: color-gradient($LIGHT_GRAY, 120) !important
+  &:-moz-placeholder
+    color:    color-gradient($LIGHT_GRAY, 100) 
+    font-style: italic
+    opacity:  1
+  &:-ms-input-placeholder
+    color:    color-gradient($LIGHT_GRAY, 100)
+    font-style: italic
+  &::-webkit-input-placeholder
+    color:    color-gradient($LIGHT_GRAY, 100)
+    font-style: italic
 
 .global_top_search_icon
   color: rgba(82, 168, 236, 0.8) !important

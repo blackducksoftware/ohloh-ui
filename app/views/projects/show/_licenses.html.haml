@@ -10,4 +10,7 @@
       .col-md-8#license_details
         .well= render partial: 'projects/show/license_details', collection: @project.licenses, as: :license
       .col-md-2
-    = link_to t('.all'), licenses_path, target: '_blank', class: 'license_link'
+      %div.all-license-div
+        %h4.float-right
+          = link_to t('.all'), licenses_path, target: '_blank', class: 'license_link'
+
