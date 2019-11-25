@@ -37,11 +37,7 @@
           %p
             .addthis_custom_sharing.addthis
               %script{ src: '//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-500da8c658f6dda7' }
-      .pull-right#project_header_activity_indicator
-        .pull_left
-          - project_activity_level_class(@project, :thirtyfive)
-          - project_activity_level_text(@project, :thirtyfive)
-      .pull-right#i_use_this_div{ itemtype: 'CreativeWork', itemprop: 'interactionCount' }
+      .pull-right{ itemtype: 'CreativeWork', itemprop: 'interactionCount' }
         #i_use_this_container
           .use_count
             = link_to number_with_delimiter(@project.user_count), users_project_path(@project)
