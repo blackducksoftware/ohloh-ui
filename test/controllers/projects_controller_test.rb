@@ -916,6 +916,11 @@ describe 'ProjectsController' do
     must_respond_with :missing
   end
 
+  it 'similar_by_tags should reject requests if format is js and not ajax' do
+    get :similar_by_tags, id: create(:project).to_param, format: :js
+    must_respond_with :missing
+  end
+
   it 'similar_by_tags should display for projects with no tags' do
     xhr :get, :similar_by_tags, id: create(:project).to_param
     must_respond_with :success

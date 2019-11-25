@@ -56,7 +56,7 @@
         text-transform: none
         &:hover
           color: #fff
-          background-color: $secondary-midnight-blue-60 
+          background-color: color-gradient($SECONDARY_MARINE_BLUE, 60)
   .btn-small
     font-size: 14px
     border-width: 2px !important
@@ -65,22 +65,22 @@
       font-weight: 100
       text-transform: none
     &:hover
-      background-color: $secondary-midnight-blue-60 !important
-      border-color: $secondary-midnight-blue-60 !important
+      background-color: color-gradient($SECONDARY_MARINE_BLUE, 60) !important
+      border-color: color-gradient($SECONDARY_MARINE_BLUE, 60) !important
 
 .global_top_search
   height: 18px !important
-  border-color: $secondary-light-purple !important
-  color: $light-gray-darker !important
+  border-color: color-gradient($SECONDARY_LIGHT_PURPLE, 100) !important
+  color: color-gradient($LIGHT_GRAY, 120) !important
   &:-moz-placeholder
-    color:    $light-gray-darker
+    color:    color-gradient($LIGHT_GRAY, 100) 
     font-style: italic
     opacity:  1
   &:-ms-input-placeholder
-    color:    $light-gray-darker
+    color:    color-gradient($LIGHT_GRAY, 100)
     font-style: italic
   &::-webkit-input-placeholder
-    color:    $light-gray-darker
+    color:    color-gradient($LIGHT_GRAY, 100)
     font-style: italic
 
 .global_top_search_icon

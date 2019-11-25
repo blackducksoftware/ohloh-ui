@@ -11,19 +11,16 @@
       border-radius: 0px
       padding-left: 5px
       padding-right: 10px
-  //  &.active
-  //    a
-  //      background-color: #E86D1F !important
 
   .nav-active
-    background: $primary-blue-20
-    border-left: 3px solid $primary-blue-darker
+    background: color-gradient($SECTION_BACKGROUND_BLUE, 0)
+    border-left: 3px solid color-gradient($SECONDARY_SLATE_BLUE, 100)
     margin-left: -3px
     color: $primary-blue-darker
 
   .nav-hover
-    background: $light-gray-20
-    border-left: 3px solid $light-gray-darker
+    background: color-gradient($LIGHT_GRAY, 20)
+    border-left: 3px solid color-gradient($PRIMARY_DARK_GRAY, 100)
     color: $secondary-blue-darker
     border-radius: 0px
     margin-left: -3px

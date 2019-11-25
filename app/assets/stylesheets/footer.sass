@@ -1,7 +1,7 @@
 @import oh-colors
 
 footer
-  background: $footer-background !important
+  background: color-gradient($FOOTER_BACKGROUND, 0) !important
   margin: 20px 0 0 0
   min-height: 250px
   padding-top: 10px
@@ -12,7 +12,7 @@ footer
     margin-top: 20px
     margin-left: 30px
     width: 15%
-    color: $secondary-light-purple !important
+    color: color-gradient($PRIMARY_PURPLE, 120) !important
     a
       .logo_img
         width: 150%
@@ -21,30 +21,32 @@ footer
   .footer-mid
     float: left
     margin-top: 20px
-    margin-left: 150px
-    width: 30%
-    color: $secondary-light-purple !important
+    margin-left: 120px
+    margin-right: 40px
+    width: 20%
+    color: color-gradient($PRIMARY_PURPLE, 120) !important
     font-size: 12px
     a
-      color: $secondary-light-purple !important
+      color: color-gradient($PRIMARY_PURPLE, 120) !important
       padding: 4px 4px
       &:hover
-        background: $lightest-gray-40
+        background: color-gradient($FOOTER_BACKGROUND, 0)
         border-radius: 0
 
   .footer-right
     float: left
     margin-top: 20px
     margin-bottom: 20px
+    width: 30%
     font-size: 12px
-    color: $secondary-light-purple !important
+    color: color-gradient($PRIMARY_PURPLE, 120) !important
     padding-right: 60px
     text-align: left
     a
-      color: $secondary-light-purple !important
+      color: color-gradient($PRIMARY_PURPLE, 120) !important
       padding: 4px 6px
       &:hover
-        background: $lightest-gray-40
+        background: color-gradient($FOOTER_BACKGROUND, 0)
         border-radius: 0
 
   .footer-bottom
@@ -53,22 +55,23 @@ footer
     margin-left: 30px
     margin-bottom: 2em
     bottom: 0
-    color: $light-gray !important
+    color: color-gradient($LIGHT_GRAY, 100) !important
     a
-      color: $light-gray !important
+      color: color-gradient($LIGHT_GRAY, 100) !important
 
 footer.fluid_footer
   width: auto
-  padding-right: 10em
+  margin-left: 50px
+  margin-right: 50px
   .footer-left
-    width: 8.33333333%
+    width: 12%
     ul
       li
         a
           padding: 1rem 2rem
           font-weight: bold
   .footer-mid
-    width: 30%
+    width: 25%
     text-align: left
     font-weight: bold
     font-size: 13px

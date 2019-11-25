@@ -53,18 +53,18 @@ button.btn:active
   left: 1px
 
 .btn, .btn-default
-  background-color: $secondary-midnight-blue !important
-  border-color: $secondary-midnight-blue 
+  background-color: color-gradient($SECONDARY_MARINE_BLUE, 100) !important
+  border-color: color-gradient($SECONDARY_MARINE_BLUE, 100)
 
 .btn:hover, .btn-default:hover
-  background-color: $secondary-midnight-blue-40 !important
-  border-color: $secondary-midnight-blue-40 !important
+  background-color: color-gradient($SECONDARY_MARINE_BLUE, 60) !important
+  border-color: color-gradient($SECONDARY_MARINE_BLUE, 60) !important
 
 .btn.no-border:hover, .btn-default.no-border:hover
-  border-color: #9A9A9A
+  border-color: color-gradient($SECONDARY_MARINE_BLUE, 60)
 
 .btn.no-hover:hover, .btn-default.no-hover:hover
-  background-color: #9A9A9A !important
+  background-color: color-gradient($SECONDARY_MARINE_BLUE, 60) !important
 
 .btn.active, .btn-default.active
   background-color: #9baab3 !important
@@ -81,20 +81,20 @@ button.btn:active
   width: 100px
 
 .i_use_this_btn
-    background-color: $light-gray-darker !important
-    border-color: $light-gray-darker !important
+    background-color: color-gradient($LIGHT_GRAY, 120) !important
+    border-color: color-gradient($LIGHT_GRAY, 120) !important
     color: white
     width: 100%
     &:hover
-        background-color: $light-gray-60 !important
-        border-color: $light-gray-60 !important
+        background-color: color-gradient($LIGHT_GRAY, 100) !important
+        border-color: color-gradient($LIGHT_GRAY, 100) !important
 
 .btn-primary
-  background-color: $secondary-midnight-blue !important
-  border-color: $secondary-midnight-blue 
+  background-color: color-gradient($SECONDARY_SLATE_BLUE, 120) !important
+  border-color: color-gradient($SECONDARY_SLATE_BLUE, 120) 
   &:hover
-    background-color: $secondary-midnight-blue-80 !important
-    border-color: $secondary-midnight-blue-80 !important
+    background-color: color-gradient($SECONDARY_SLATE_BLUE, 80) !important
+    border-color: color-gradient($SECONDARY_SLATE_BLUE, 80) !important
   &.no-border:hover
     border-color: #005481
   &.no-hover:hover
@@ -122,11 +122,11 @@ button.btn:active
     background-color: #66CEF6 !important
 
 .btn-success
-  background-color: $secondary-dark-blue !important
-  border-color: $secondary-dark-blue
+  background-color: color-gradient($SECONDARY_FOREST_GREEN, 100) !important
+  border-color: color-gradient($SECONDARY_FOREST_GREEN, 100)
   &:hover
-    background-color: $secondary-dark-blue-80 !important
-    border-color: $secondary-dark-blue-80 !important
+    background-color: color-gradient($SECONDARY_FOREST_GREEN, 80)  !important
+    border-color: color-gradient($SECONDARY_FOREST_GREEN, 80)  !important
   &.no-border:hover
     border-color: #659965
   &.no-hover:hover

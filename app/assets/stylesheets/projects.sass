@@ -136,7 +136,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
       h1
         margin: 15px 0px 6px 0px
     .project_separator_text
-      background-color: $black-duck-blue-web
+      background-color: color-gradient($BLACK_DUCK_BLUE, 100)
       color: white
 
   .about
@@ -348,7 +348,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     border-bottom: medium none
     cursor: pointer
   #permitted
-    color: $primary-green-darker
+    color: color-gradient($SECONDARY_FOREST_GREEN, 120) 
     margin-top: -20px
     .well
       padding-bottom: 0
@@ -357,7 +357,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
       p
         margin-left: 2em
   #forbidden
-    color: $web-red
+    color: color-gradient($WEB_RED, 120) 
     margin-top: -20px
     padding-left: 0
     .well
@@ -367,7 +367,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
       p
         margin-left: 2em
   #required
-    color: $secondary-midnight-blue-darker
+    color: color-gradient($SECONDARY_MARINE_BLUE, 120) 
     margin-top: -20px
     padding-left: 0
     .well
@@ -401,14 +401,14 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     font-size: 1.2em
     line-height: 23px
     border: 0
-    color: $primary-dark-gray !important
-    background-color: $secondary-dark-blue-40 !important
+    color: color-gradient($PRIMARY_DARK_GRAY, 100) !important
+    background-color: color-gradient($SECONDARY_SLATE_BLUE, 40) !important
     &.selected
       color: white !important
       background-color: $primary-blue-darker  !important
       font-weight: bold !important
     &.disabled
-      background-color: $primary-blue-40 !important
+      background-color: color-gradient($SECONDARY_SLATE_BLUE, 40) !important
     &:hover
       font-weight: bold !important
       font-size: 1.3em
@@ -443,12 +443,12 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
   position: relative
   tbody
     tr
-      border-color: $primary-dark-gray-80
+      border-color: color-gradient($PRIMARY_DARK_GRAY, 80) 
   btn i
     display: inline
     color: $primary-blue-darker
     &.disable
-      color: $lightest-gray-darker
+      color: color-gradient($LIGHT_GRAY, 120)
     &:hover
       cursor: pointer
     &.fa.fa-sort-amount-desc, &.fa.fa-sort-amount-asc
@@ -457,15 +457,15 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     li
       a
         color: $primary-blue-darker
-        border-color: $lightest-gray-darker
+        border-color: color-gradient($LIGHT_GRAY, 120)
     .active
       span
         background-color: $primary-blue-darker
-        border-color: $lightest-gray-darker
+        border-color: color-gradient($LIGHT_GRAY, 120)
     .disabled
       span
-        color: $lightest-gray-darker
-        border-color: $lightest-gray-darker
+        color: color-gradient($LIGHT_GRAY, 120)
+        border-color: color-gradient($LIGHT_GRAY, 120)
 
 .overlay-loader
   position: absolute
@@ -518,7 +518,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
 
 #project_tags, #project_badges
   .title
-    color: $black-duck-blue-web
+    color: color-gradient($BLACK_DUCK_BLUE, 100)
     margin-bottom: 0.3em
 
 #project_badges

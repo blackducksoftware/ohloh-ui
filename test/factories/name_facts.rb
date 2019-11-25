@@ -12,7 +12,7 @@ FactoryBot.define do
     association :analysis
     association :name
     association :primary_language, factory: :language
-    type { 'VitaFact' }
+    type { 'AccountAnalysisFact' }
     first_checkin { Time.current - 3.days }
     last_checkin { Time.current - 1.day }
   end

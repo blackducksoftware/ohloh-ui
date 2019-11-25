@@ -4,7 +4,7 @@
   width: 980px
   margin-left: -20px
 .billboard
-  background: none repeat scroll 0 0 #156d93
+  background: none repeat scroll 0 0 color-gradient($SECONDARY_SKY_BLUE, 120)
   color: white
   height: 160px
   padding-top: 30px
@@ -31,8 +31,8 @@
     font-size: 14px
     font-weight: 200 !important
 .join_now
-  color: $secondary-dark-blue
-  border-bottom: 3px solid $secondary-dark-blue
+  color: color-gradient($SECONDARY_FOREST_GREEN, 100)
+  border-bottom: 3px solid color-gradient($SECONDARY_FOREST_GREEN, 100)
   padding-bottom: 5px
   padding-left: 12px
 .join_now_home
@@ -42,7 +42,7 @@
   p
     font-size: 14px !important
   .join_now_color
-    color: $secondary-dark-blue !important
+    color: color-gradient($SECONDARY_FOREST_GREEN, 100) !important
   li
     font-size: 0.5em !important
     height: 30px
@@ -53,39 +53,45 @@
   .col-md-8
     h2
       font-weight: 500 !important
-      margin-right: -25px !important
+      margin-right: -40px !important
+      margin-left: 30px !important
+      text-indent: -10px !important
   .col-md-4
+    background-color: color-gradient($SECTION_BACKGROUND, 0) !important
+    padding-bottom: 20px
+    width: 32%
     h2
       font-weight: 500 !important
-    margin-left: -14px !important
-    padding-right: 0px
+      margin-left: 5px !important
+      text-indent: -10px !important
 .btn.btn_join_now
   font-family: 'Roboto' !important
   font-size: 22px !important
   font-weight: bold !important
-  background-color: $secondary-dark-blue !important
-  border-color: $secondary-dark-blue !important
+  background-color: color-gradient($SECONDARY_FOREST_GREEN, 100) !important
+  border-color: color-gradient($SECONDARY_FOREST_GREEN, 100) !important
   margin-left: 60px !important
   width: 161px !important
   &:hover
-    background-color: $secondary-dark-blue-40 !important
-    border-color: $secondary-dark-blue-40 !important
+    background-color: color-gradient($SECONDARY_FOREST_GREEN, 80) !important
+    border-color: color-gradient($SECONDARY_FOREST_GREEN, 80) !important
 .copilot
   background: asset_url("home/Rookies18-OH.jpg") 0 0 no-repeat
   height: 230px
+  width: 600px
   margin-top: 20px
-  margin-left: 0
+  margin-left: 30px
 
 ::-webkit-input-placeholder
-  color:    $primary-dark-gray-darker
+  color:    color-gradient($PRIMARY_DARK_GRAY, 120)
 \:-moz-placeholder
-  color:    $primary-dark-gray-darker
+  color:    color-gradient($PRIMARY_DARK_GRAY, 120)
   opacity:  1
 ::-moz-placeholder
-  color:    $primary-dark-gray-darker
+  color:    color-gradient($PRIMARY_DARK_GRAY, 120)
   opacity:  1
 \:-ms-input-placeholder
-  color:    $primary-dark-gray-darker
+  color:    color-gradient($PRIMARY_DARK_GRAY, 120)
 
 input:focus::-webkit-input-placeholder
   color: transparent
@@ -116,7 +122,7 @@ input:focus::-ms-input-placeholder
   h2
     font-weight: 500 !important
 .top_ten.middle
-  background-color: white
+  background-color: color-gradient($SECTION_BACKGROUND, 80)
 .top_ten.last
   h2
     margin-right: -25px !important
@@ -137,7 +143,7 @@ input:focus::-ms-input-placeholder
   height: 23px !important
   margin-top: -108px
   width: 413px
-  color: $primary-dark-gray-darker !important
+  color: color-gradient($PRIMARY_DARK_GRAY, 120) !important
 .image_icon
   img
     margin-left: -24px
@@ -156,10 +162,10 @@ input:focus::-ms-input-placeholder
   margin-left: -71px
   text-align: center
 .wh_new
-  color: $secondary-orange-darker
-  border-bottom: 3px solid $secondary-orange-darker
+  color: color-gradient($SECONDARY_ORANGE, 120)
+  border-bottom: 3px solid color-gradient($SECONDARY_ORANGE, 120)
+  width: 100%
   padding-bottom: 5px
-  padding-left: 12px
 .common
   padding-left: 6px
   padding-bottom: 3px
@@ -167,18 +173,18 @@ input:focus::-ms-input-placeholder
   font-weight: normal
   color: #000000
 .most_popular_projects
-  color: $secondary-orange-darker
-  border-bottom: 2px solid $secondary-orange-darker
+  color: color-gradient($SECONDARY_ORANGE, 120)
+  border-bottom: 2px solid color-gradient($SECONDARY_ORANGE, 120)
 .most_active_projects 
-  color: $secondary-midnight-blue-darker
-  border-bottom: 2px solid $secondary-midnight-blue-darker
+  color: color-gradient($SECONDARY_MARINE_BLUE, 120)
+  border-bottom: 2px solid color-gradient($SECONDARY_MARINE_BLUE, 120)
   margin-left: -1px
 .most_active_contributors
-  color: $secondary-dark-blue
-  border-bottom: 2px solid $secondary-dark-blue
+  color: color-gradient($SECONDARY_TEAL, 120)
+  border-bottom: 2px solid color-gradient($SECONDARY_TEAL, 120)
 .popular
-  background: $secondary-orange-darker !important
+  background: color-gradient($SECONDARY_ORANGE, 120) !important
 .active
-  background: $secondary-midnight-blue-darker !important
+  background: color-gradient($SECONDARY_MARINE_BLUE, 120) !important
 .contributor
-  background: $secondary-dark-blue !important
+  background: color-gradient($SECONDARY_TEAL, 120) !important

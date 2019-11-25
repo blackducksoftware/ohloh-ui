@@ -1,7 +1,7 @@
 .vulnerability_filter_wrapper.vulnerability_filter_version
   %span.title= t('.version')
   = select_tag 'vulnerability[filter][version]',
-    options_from_collection_for_select(@minor_versions.presence || no_versions_available,
+    options_from_collection_for_select(sort_releases_by_version_number(@minor_versions).presence || no_versions_available,
       'id', 'version', filter_version_param),
       class: 'ctrl vulnerability_filter'
 .vulnerability_filter_wrapper.vulnerability_filter_severity
