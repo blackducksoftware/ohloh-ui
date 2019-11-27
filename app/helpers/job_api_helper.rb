@@ -12,6 +12,7 @@ module JobApiHelper
   def status_tag(status)
     case status
     when Job::STATUS_SCHEDULED  then %w[scheduled label-warning]
+    when Job::STATUS_QUEUED     then %w[queued label-warning]
     when Job::STATUS_RUNNING    then %w[running label-primary]
     when Job::STATUS_FAILED     then %w[failed label-danger]
     when Job::STATUS_COMPLETED  then %w[completed label-success]

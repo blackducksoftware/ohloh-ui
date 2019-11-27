@@ -50,6 +50,18 @@ class CodeSetAdminTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  it 'should render project jobs index page for queued project jobs' do
+    Project.any_instance.stubs(:code_locations).returns([])
+    login_as admin
+    project = create(:project)
+    create(:slave, id: 1)
+
+    VCR.use_cassette('project_jobs', match_requests_on: [:path]) do
+      get oh_admin_project_jobs_path(project_id: project.vanity_url)
+    end
+    assert_response :success
+  end
+
   it 'should render jobs show page' do
     login_as admin
     job = create(:fetch_job, slave: create(:slave))
