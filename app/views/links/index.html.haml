@@ -36,10 +36,10 @@
                     link.url_escaped, target: '_blank', title: h(link.url_escaped)
             .col-md-2.nomargin.pull-right
               - if has_permission
-                %a.btn.btn-info.btn-mini{ href: edit_project_link_path(@project, link) }
+                %a.btn.btn-mini.btn-primary{ href: edit_project_link_path(@project, link) }
                   %i.icon-pencil= t('edit')
               - else
-                = disabled_button bootstrap_icon('icon-pencil', t('edit')), class: 'btn-mini'
+                = disabled_button bootstrap_icon('icon-pencil', t('edit')), class: 'btn-mini btn-primary'
             .clearfix
           .col-md-4
             - unless links.any? && %w(Homepage Download).include?(category_name)

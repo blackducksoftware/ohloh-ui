@@ -1,8 +1,8 @@
-@import oh-colors
+@import oh-styles
 
 .footer-navigation
   a
-    color: $secondary-blue
+    @include site-link-color
   .sidebar-nav
     line-height: 12px
     &:hover
@@ -13,15 +13,11 @@
       padding-right: 10px
 
   .nav-active
-    background: color-gradient($SECTION_BACKGROUND_BLUE, 0)
-    border-left: 3px solid color-gradient($SECONDARY_SLATE_BLUE, 100)
+    @include bottom-nav-active-colors
     margin-left: -3px
-    color: $primary-blue-darker
 
   .nav-hover
-    background: color-gradient($LIGHT_GRAY, 20)
-    border-left: 3px solid color-gradient($PRIMARY_DARK_GRAY, 100)
-    color: $secondary-blue-darker
+    @include bottom-nav-hover-colors
     border-radius: 0px
     margin-left: -3px
 
@@ -52,7 +48,7 @@
       margin-top: 8px
       margin-bottom: 0px
       a
-        color: $primary-blue-darker
+        @include site-link-color
         &:hover
           text-decoration: none
       .icon

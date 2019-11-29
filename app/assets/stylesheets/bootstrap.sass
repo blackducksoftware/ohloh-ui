@@ -1,54 +1,35 @@
+@import oh-styles
+
 @font-face
   font-family: 'Glyphicons Halflings'
   src: font-url('glyphicons-halflings-regular.woff') format('woff')
 
-#organizations_claim_projects_list_page,
-#enlistments_index_page
+#page
+  .alert, .alert h4
+    @include bootstrap-default-alert-colors
+  .alert h4
+    border: 0px !important
   .alert
     padding: 8px 35px 8px 14px
     margin-bottom: 20px
-    background-color: #FDE6D2
-    border: 1px solid #FBCDA6
     font-size: 15px
-
-  .alert,
-  .alert h4
-    color: #F58220
-
   .alert h4
     margin: 0
-
   .alert .close
     position: relative
     top: -2px
     right: -21px
     line-height: 20px
 
-  .alert-success
-    color: #7AB247
-    background-color: #E4F0DA
-    border-color: #CAE0B5
+  .alert-success, .alert-success h4
+    @include bootstrap-success-alert-colors
 
-  .alert-success h4
-    color: #437417
+  .alert-danger, .alert-danger h4,
+  .alert-error, .alert-error h4
+    @include bootstrap-error-alert-colors
 
-  .alert-danger,
-  .alert-error
-    color: #F5471D
-    background-color: #FDDAD2
-    border-color: #FBB5A5
-
-  .alert-danger h4,
-  .alert-error h4
-    color: #b94a48
-
-  .alert-info
-    color: #339BD1
-    background-color: #CCE6F4
-    border-color: #99CDE5
-
-  .alert-info h4
-    color: #00719C
+  .alert-info, .alert-info h4
+    @include bootstrap-info-alert-colors
 
   .alert-block
     padding-top: 14px

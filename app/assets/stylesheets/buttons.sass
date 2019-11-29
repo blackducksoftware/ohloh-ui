@@ -1,4 +1,4 @@
-@import "oh-colors"
+@import "oh-styles"
 
 /** buttons **/
 
@@ -53,18 +53,7 @@ button.btn:active
   left: 1px
 
 .btn, .btn-default
-  background-color: color-gradient($SECONDARY_MARINE_BLUE, 100) !important
-  border-color: color-gradient($SECONDARY_MARINE_BLUE, 100)
-
-.btn:hover, .btn-default:hover
-  background-color: color-gradient($SECONDARY_MARINE_BLUE, 60) !important
-  border-color: color-gradient($SECONDARY_MARINE_BLUE, 60) !important
-
-.btn.no-border:hover, .btn-default.no-border:hover
-  border-color: color-gradient($SECONDARY_MARINE_BLUE, 60)
-
-.btn.no-hover:hover, .btn-default.no-hover:hover
-  background-color: color-gradient($SECONDARY_MARINE_BLUE, 60) !important
+  @include default-button-colors
 
 .btn.active, .btn-default.active
   background-color: #9baab3 !important
@@ -81,38 +70,29 @@ button.btn:active
   width: 100px
 
 .i_use_this_btn
-    background-color: color-gradient($LIGHT_GRAY, 120) !important
-    border-color: color-gradient($LIGHT_GRAY, 120) !important
-    color: white
-    width: 100%
-    &:hover
-        background-color: color-gradient($LIGHT_GRAY, 100) !important
-        border-color: color-gradient($LIGHT_GRAY, 100) !important
+  @include secondary-button-colors
+  width: 100%
+
+.btn-info
+  @include info-button-colors
+  &.no-hover:hover
+    background-color: #0082C6 !important
+  &.active, &.no-border.active
+    background-color: #66B7E8 !important
+    border-color: #66B7E8
+  &.disabled, &[disabled]
+    background-color: #66CEF6 !important
 
 .btn-primary
-  background-color: color-gradient($SECONDARY_SLATE_BLUE, 120) !important
-  border-color: color-gradient($SECONDARY_SLATE_BLUE, 120) 
-  &:hover
-    background-color: color-gradient($SECONDARY_SLATE_BLUE, 80) !important
-    border-color: color-gradient($SECONDARY_SLATE_BLUE, 80) !important
-  &.no-border:hover
-    border-color: #005481
+  @include primary-button-colors
   &.no-hover:hover
     background-color: #005481 !important
   &.active, &.no-border.active
     background-color: #0082C6 !important
     border-color: #005481
-  &.disabled, &[disabled]
-    background-color: #0082C6 !important
 
-.btn-info
-  background-color: $primary-blue-darker !important
-  border-color: $primary-blue-darker !important
-  &:hover
-    background-color: $primary-blue !important
-    border-color: $primary-blue !important
-  &.no-border:hover
-    border-color: #0082C6 !important
+.btn-refresh
+  @include secondary-button-colors
   &.no-hover:hover
     background-color: #0082C6 !important
   &.active, &.no-border.active
@@ -122,11 +102,7 @@ button.btn:active
     background-color: #66CEF6 !important
 
 .btn-success
-  background-color: color-gradient($SECONDARY_FOREST_GREEN, 100) !important
-  border-color: color-gradient($SECONDARY_FOREST_GREEN, 100)
-  &:hover
-    background-color: color-gradient($SECONDARY_FOREST_GREEN, 80)  !important
-    border-color: color-gradient($SECONDARY_FOREST_GREEN, 80)  !important
+  @include join-now-button-colors
   &.no-border:hover
     border-color: #659965
   &.no-hover:hover
@@ -138,28 +114,15 @@ button.btn:active
     background-color: #79B247 !important
 
 .btn-warning
-  background-color: #F79B4D !important
-  border-color: #F79B4D
-  &:hover
-    background-color: #F58220 !important
-  &.no-border:hover
-    border-color: #F58220 !important
+  @include warning-button-colors
   &.no-hover:hover
     background-color: #9F4F0A !important
   &.active, &.no-border.active
     background-color: #F58220 !important
     border-color: #F58220
-  &.disabled, &[disabled]
-    background-color: #F58220 !important
 
 .btn-danger
-  background-color: $secondary-red-darker !important
-  border-color: $secondary-red-darker !important
-  &:hover
-    background-color: $secondary-red !important
-    border-color: $secondary-red !important
-  &.no-border:hover
-    border-color: $secondary-red-darker !important
+  @include danger-button-colors
   &.no-hover:hover
     background-color: #9F2609 !important
   &.active, &.no-border.active
@@ -318,5 +281,3 @@ button.btn:active
       color: #515151
       &:after
         border-bottom-color: #B5B5B5
-
-/* active buttons

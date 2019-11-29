@@ -1,10 +1,12 @@
+@import oh-styles
+
 .showcase
   padding-top: 20px
   padding-bottom: 30px
   width: 980px
   margin-left: -20px
 .billboard
-  background: none repeat scroll 0 0 color-gradient($SECONDARY_SKY_BLUE, 120)
+  @include billboard-background-color
   color: white
   height: 160px
   padding-top: 30px
@@ -31,8 +33,7 @@
     font-size: 14px
     font-weight: 200 !important
 .join_now
-  color: color-gradient($SECONDARY_FOREST_GREEN, 100)
-  border-bottom: 3px solid color-gradient($SECONDARY_FOREST_GREEN, 100)
+  @include join-now-header-colors
   padding-bottom: 5px
   padding-left: 12px
 .join_now_home
@@ -41,7 +42,7 @@
   p
     font-size: 14px !important
   .join_now_color
-    color: color-gradient($SECONDARY_FOREST_GREEN, 100) !important
+    @include join-now-section-colors
   li
     font-size: 0.5em !important
     height: 30px
@@ -56,7 +57,7 @@
       margin-left: 30px !important
       text-indent: -10px !important
   .col-md-4
-    background-color: color-gradient($SECTION_BACKGROUND, 0) !important
+    @include site-well-color
     padding-bottom: 20px
     width: 32%
     h2
@@ -64,16 +65,12 @@
       margin-left: 5px !important
       text-indent: -10px !important
 .btn.btn_join_now
+  @include join-now-button-colors
   font-family: 'Roboto' !important
   font-size: 22px !important
   font-weight: bold !important
-  background-color: color-gradient($SECONDARY_FOREST_GREEN, 100) !important
-  border-color: color-gradient($SECONDARY_FOREST_GREEN, 100) !important
   margin-left: 60px !important
   width: 161px !important
-  &:hover
-    background-color: color-gradient($SECONDARY_FOREST_GREEN, 80) !important
-    border-color: color-gradient($SECONDARY_FOREST_GREEN, 80) !important
 .copilot
   background: asset_url("home/Rookies18-OH.jpg") 0 0 no-repeat
   height: 230px
@@ -82,15 +79,15 @@
   margin-left: 30px
 
 ::-webkit-input-placeholder
-  color:    color-gradient($PRIMARY_DARK_GRAY, 120)
+  @include site-placeholder-color
 \:-moz-placeholder
-  color:    color-gradient($PRIMARY_DARK_GRAY, 120)
+  @include site-placeholder-color
   opacity:  1
 ::-moz-placeholder
-  color:    color-gradient($PRIMARY_DARK_GRAY, 120)
+  @include site-placeholder-color
   opacity:  1
 \:-ms-input-placeholder
-  color:    color-gradient($PRIMARY_DARK_GRAY, 120)
+  @include site-placeholder-color
 
 input:focus::-webkit-input-placeholder
   color: transparent
@@ -121,7 +118,7 @@ input:focus::-ms-input-placeholder
   h2
     font-weight: 500 !important
 .top_ten.middle
-  background-color: color-gradient($SECTION_BACKGROUND, 80)
+  @include site-well-color
 .top_ten.last
   h2
     margin-right: -25px !important
@@ -139,10 +136,10 @@ input:focus::-ms-input-placeholder
     margin-top: 0
     margin-right: 2px
 .for_search_all_code
+  @include site-placeholder-color
   height: 23px !important
   margin-top: -108px
   width: 413px
-  color: color-gradient($PRIMARY_DARK_GRAY, 120) !important
 .image_icon
   img
     margin-left: -24px
@@ -161,8 +158,7 @@ input:focus::-ms-input-placeholder
   margin-left: -71px
   text-align: center
 .wh_new
-  color: color-gradient($SECONDARY_ORANGE, 120)
-  border-bottom: 3px solid color-gradient($SECONDARY_ORANGE, 120)
+  @include whats-new-header-colors
   width: 100%
   padding-bottom: 5px
 .common
@@ -172,18 +168,15 @@ input:focus::-ms-input-placeholder
   font-weight: normal
   color: #000000
 .most_popular_projects
-  color: color-gradient($SECONDARY_ORANGE, 120)
-  border-bottom: 2px solid color-gradient($SECONDARY_ORANGE, 120)
+  @include most-popular-projects-colors
 .most_active_projects 
-  color: color-gradient($SECONDARY_MARINE_BLUE, 120)
-  border-bottom: 2px solid color-gradient($SECONDARY_MARINE_BLUE, 120)
+  @include most-active-projects-colors
   margin-left: -1px
 .most_active_contributors
-  color: color-gradient($SECONDARY_TEAL, 120)
-  border-bottom: 2px solid color-gradient($SECONDARY_TEAL, 120)
+  @include most-active-contributors-colors
 .popular
-  background: color-gradient($SECONDARY_ORANGE, 120) !important
+  @include most-popular-projects-background-color
 .active
-  background: color-gradient($SECONDARY_MARINE_BLUE, 120) !important
+  @include most-active-projects-background-color
 .contributor
-  background: color-gradient($SECONDARY_TEAL, 120) !important
+  @include most-active-contributors-background-color

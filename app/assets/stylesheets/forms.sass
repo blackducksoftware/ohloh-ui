@@ -4,19 +4,20 @@ form
   // add the "required" text to required fields
   .required
     &:after
-      :content " (required)"
-      :color $soft_gray
+      @include static-forms-text-color
+      content: " (required)"
+      font-style: light
 
   // tighten up the space between help text and the fields they are for
   input ~ .help-block
-    :margin-top -6px
-    :display block
-    :clear both
+    margin-top: -6px
+    display: block
+    clear: both
 
 .field_with_errors
-  :width 100%
-  :display inline-block
+  width: 100%
+  display: inline-block
 
 #new_logo
   .field_with_errors
-    :display block
+    display: block

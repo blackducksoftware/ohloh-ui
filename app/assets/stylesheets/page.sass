@@ -27,22 +27,20 @@ header
       display: inline-block
       margin-right: 32px
       a
-        color: white
+        @include top-navbar-menu-colors
         font-size: 11pt
         text-decoration: none
-        &:hover
-          padding-bottom: 0px
-          color: color-gradient($SECONDARY_YELLOW, 60)
+
 #navbar-inner
-  background-color: color-gradient($PRIMARY_PURPLE, 100)
+  @include top-navbar-colors
   padding-top: 1px
-  padding-left: 2px
-  padding-right: 10px
+  margin-left: -3px
+  margin-right: 5px
   height: 42px
 
 #page_contents
   .separator-div
-    color: color-gradient($PRIMARY_DARK_GRAY, 60)
+    @include site-separator-color
 
 #project_container
   width: 1240px
@@ -79,15 +77,14 @@ header
     width: 125px
     float: left
     .logo_link
-      color: color-gradient($PRIMARY_PURPLE, 100) !important
       text-decoration: none
       margin-top: 3px
     .logo_img
       width: 100%
       height: 100%
   .company-div
+    @include top-navigation-colors
     float: left
-    color: color-gradient($PRIMARY_PURPLE, 100) !important
     padding-right: 10px !important
     padding-bottom: 5px !important
     .navbar_small_text
@@ -95,7 +92,7 @@ header
     .navbar_large_text
       font-size: 24px !important
     a
-      color: color-gradient($PRIMARY_PURPLE, 100) !important
+      @include top-navigation-colors
       text-decoration: none
   .spacing-div
     float: left
@@ -104,16 +101,16 @@ header
     background-color: white
     margin: 0 auto
   .separator-div
+    @include site-separator-color
+    @include site-separator-background-color
     float: left
     width: 1px
     height: 30px
-    background-color: color-gradient($LIGHT_GRAY, 60) !important
-    color: color-gradient($LIGHT_GRAY, 60) !important
     margin: 0 2px 0 2px
   .actions-div
     float: right
   .twitter-text
-    background-color: color-gradient($PRIMARY_PURPLE, 100)
+    @include twitter-background-color
     color: white
     font-weight: bold
     font-size: 0.80em
@@ -125,12 +122,9 @@ header
     margin: 0
     padding: 1px 6px 0 7px
   .follow_btn
-    background-color: color-gradient($LIGHT_GRAY, 120) !important
+    @include follow-button-colors
     display: inline-block
     padding: 0 0 0 4px
-    &:hover
-      background-color: color-gradient($LIGHT_GRAY, 100) !important
-      text-decoration: none
     height: 24px
     i, p, img
       color: white
@@ -160,7 +154,7 @@ header
   margin-right: 5px
 #logged_user_menu
   a
-    color: black
+    color: black !important
     text-transform: none
     text-decoration: none
     margin: 8px 0px 15px
@@ -269,6 +263,7 @@ table
     font-size: 16px
 
 .well
+  @include site-well-color
   border: medium none
   box-shadow: none
   border-radius: 0px
@@ -318,7 +313,7 @@ fieldset
 
 .container-fluid#project_container
   a
-    color: color-gradient($SECONDARY_SLATE_BLUE, 120)
+    @include site-link-color
   padding-left: 10px
   padding-right: 10px
   .row.mezzo
@@ -366,12 +361,12 @@ fieldset
       margin-bottom: 3rem
       word-wrap: break-word
       .well
+        @include site-well-color
         height: 100%
         margin-bottom: 0
-        background-color: color-gradient($SECTION_BACKGROUND, 0)
       .no_analysis_message .alert
-        background-color: $primary-black-20
-        border-color: $primary-black-20
+        background-color: black
+        border-color: black
         .title h3
           margin-top: 0
     .vertical_scroll_bar
