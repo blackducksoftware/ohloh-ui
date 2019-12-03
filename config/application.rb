@@ -40,7 +40,7 @@ module OhlohUi
     config.passenger_version = matches ? matches[0] : '???'
 
     config.cache_store = :redis_store, { host: ENV['REDIS_HOST'], port: ENV['REDIS_PORT'],
-                                         namespace: ENV['REDIS_NAMESPACE'] }
+                                         namespace: ENV['REDIS_NAMESPACE'], password: ENV['REDIS_PASSWORD'] }
 
     config.action_dispatch.default_headers = { 'X-Content-Type-Options' => 'nosniff' }
 
