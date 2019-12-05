@@ -6,7 +6,7 @@ class EnlistmentsController < SettingsController
 
   include EnlistmentFilters
 
-  # TODO: Remove dependence on code_locations table here.
+  # FDW: uses FDW columns repositories.url & code_locations.module_branch_name to filter enlistments.
   def index
     @enlistments = @project.enlistments.joins(:project)
                            .joins('join code_locations on code_location_id = code_locations.id

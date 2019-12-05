@@ -15,6 +15,7 @@ class Analysis::CommitVolume < Analysis::QueryBase
   private
 
   def execute
+    # FDW: joins FDW tables(code_sets, commits, analysis_sloc_sets & analysis_aliases) to get analysis. #API
     Analysis.select([name.as('committer_name'), Arel.star.count.as('count')])
             .joins(analysis_sloc_sets: { sloc_set: { code_set: :commits } }, analysis_aliases: :preferred_name)
             .where(conditions)

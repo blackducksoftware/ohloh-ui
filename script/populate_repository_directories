@@ -5,6 +5,7 @@
 # Options:
 # +up+: This is default. Runs the migration to create repository_directories.
 # +down+: Reverses the migration to remove all existing repository_directories.
+# FDW: uses several FDW tables. Research further if we need this task.
 
 direction = ARGV[0] || 'up'
 allowed_args = %w[up down]

@@ -16,6 +16,7 @@ class Analysis < ActiveRecord::Base
   has_many :analysis_summaries
   has_many :analysis_aliases
   has_many :contributor_facts, class_name: 'ContributorFact'
+  # FDW: delete analysis_sloc_sets on analysis deletion. #API
   has_many :analysis_sloc_sets, dependent: :delete_all
   has_many :sloc_sets, through: :analysis_sloc_sets
   has_many :factoids, -> { order('severity DESC') }, dependent: :delete_all
@@ -69,6 +70,7 @@ class Analysis < ActiveRecord::Base
 
   def ignore_tuples
     [].tap do |tuples|
+      # FDW: analysis_sloc_sets.map(&:ignore_prefixes) #API
       analysis_sloc_sets.each do |analysis_sloc_set|
         tuples << analysis_sloc_set.ignore_tuples
       end

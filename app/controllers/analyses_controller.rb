@@ -65,6 +65,7 @@ class AnalysesController < ApplicationController
 
   def commits_spark
     spark_image = Rails.cache.fetch("analysis/#{@analysis.id}/commits_spark", expires_in: 4.hours) do
+      # FDW: Uses Analysis::QueryBase which joins fdw tables for analysis_id. #API
       monthly_commits = Analysis::MonthlyCommits.new(analysis: @analysis).execute
       Spark::SimpleSpark.new(monthly_commits, max_value: 5000).render.to_blob
     end

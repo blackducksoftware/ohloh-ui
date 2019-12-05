@@ -14,6 +14,7 @@ class Job < ActiveRecord::Base
   STATUS_RESTART   = 4
   STATUS_COMPLETED = 5
 
+  # FDW: needs code_set & sloc_set. #API
   def initialize(attributes = {})
     super(attributes)
     self.code_set_id ||= sloc_set.code_set_id if sloc_set
@@ -48,6 +49,7 @@ class Job < ActiveRecord::Base
   belongs_to :account
   belongs_to :organization
 
+  # FDW: categorizes job failure. Possibly unused.. Move to #API
   def categorize_failure
     failure_group = FailureGroup.find_by('pattern ILIKE ?', exception)
     update_column(failure_group_id: failure_group.id) if failure_group
@@ -69,6 +71,7 @@ class Job < ActiveRecord::Base
 
   class << self
     def incomplete_project_job(project_ids)
+      # FDW: find jobs for given values. #API
       where(project_id: project_ids).where.not(status: STATUS_COMPLETED).first
     end
   end

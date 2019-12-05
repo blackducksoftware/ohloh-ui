@@ -28,6 +28,7 @@ class CodeSet < FisBase
   # end
 
   # After clumps are removed, delete from here ....
+  # FDW: calls slave & creates Job. Invoked by app/admin. #unused.
   def reimport
     old_clump.slave.run_local_or_remote("mv #{old_clump.path} #{new_clump.path}")
     return ImportJob.create(code_set: new_code_set) if old_clump.delete
@@ -35,6 +36,7 @@ class CodeSet < FisBase
 
   class << self
     # TODO: Remove this direct code_location table access once we stop using this method in activeadmin.
+    # FDW: oldest_code_set joins FDW tables code_sets, code_locations & jobs with projects, enlistments & analyses.
     def oldest_code_set
       joins('join code_locations on best_code_set_id = code_sets.id
              join enlistments on enlistments.code_location_id = code_locations.id
@@ -66,6 +68,7 @@ class CodeSet < FisBase
   end
 
   def new_code_set
+    # FDW: create code_set #API
     @new_code_set ||= CodeSet.create!(code_location_id: code_location_id)
   end
   # .... to here

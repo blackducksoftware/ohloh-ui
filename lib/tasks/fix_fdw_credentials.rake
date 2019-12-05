@@ -7,12 +7,12 @@
 ## OpenHub
 ## Server: fis
 ## Username: openhub_app_dev
-## FDW options: ("user" 'fisbot_app_dev', password 'fisbot_app_dev password')
+## Foreign data wrapper options: ("user" 'fisbot_app_dev', password 'fisbot_app_dev password')
 
 ## Fisbot
 ## Server: ohloh
 ## Username: fisbot_app_dev
-## FDW options: ("user" 'openhub_app_dev', password 'openhub_app_dev password')
+## Foreign data wrapper options: ("user" 'openhub_app_dev', password 'openhub_app_dev password')
 
 ## Note: The above configuration is an example for development.
 

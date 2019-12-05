@@ -34,6 +34,7 @@ class RemoveDuplicateRepositoriesMappedToSameProject
     Repository.where(url: url, branch_name: branch_name.to_s, module_name: module_name.to_s)
   end
 
+  # FDW: joins fdw table repositories with local project, enlistments. Maybe #unused.
   def find_duplicate_repositories
     ActiveRecord::Base.connection.select_all("
       select project_id, repo_url from (

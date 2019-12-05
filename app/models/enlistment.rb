@@ -18,21 +18,25 @@ class Enlistment < ActiveRecord::Base
   validate :validate_code_location, if: -> { @nested_code_location }
 
   scope :not_deleted, -> { where(deleted: false) }
+  # FDW: EnlistmentsController#parse_sort_term needs FDW columns repositories.url, type & code_locations.module_branch_name
   scope :by_url, -> { order('repositories.url, code_locations.module_branch_name') }
   scope :by_project, -> { order('projects.name, repositories.url, code_locations.module_branch_name') }
   scope :by_type, -> { order('repositories.type, repositories.url, code_locations.module_branch_name') }
   scope :by_module_name, -> { order('code_locations.module_branch_name, repositories.url') }
   # TODO: Check history to see where this was being used before.
   # scope :with_repo_url, ->(url) { joins(code_location: :repository).where(Repository.arel_table[:url].eq(url)) }
+  # FDW: EnlistmentsController#parse_sort_term needs to join with FDW table code_sets to sort by code_sets.updated_on.
   scope :by_last_update, lambda {
     joins('left join code_sets on code_sets.id = code_locations.best_code_set_id')
       .order('code_sets.updated_on DESC')
   }
+  # FDW: uses jobs table. #unused
   scope :by_update_status, lambda {
     joins('left join jobs on jobs.code_location_id = enlistments.code_location_id')
       .group('enlistments.id').order('min(jobs.status), max(jobs.current_step_at) DESC')
   }
 
+  # FDW: EnlistmentsController#filter_by needs to join with FDW tables code_locations & repositories.
   filterable_by ['projects.name', 'repositories.url', 'code_locations.module_branch_name', 'repositories.type']
 
   attr_writer :code_location
@@ -49,10 +53,12 @@ class Enlistment < ActiveRecord::Base
   def analysis_sloc_set
     return if project.best_analysis.nil?
 
+    # FDW: find AnalysisSlocSet(FDW) for given code_location_id & analysis_id. #API
     AnalysisSlocSet.for_code_location(code_location_id).find_by(analysis_id: project.best_analysis_id)
   end
 
   def ignore_examples
+    # FDW: get fyles for given code_location. #API
     code_location.best_code_set.fyles.limit(3).map(&:name).sort if code_location.best_code_set
   end
 

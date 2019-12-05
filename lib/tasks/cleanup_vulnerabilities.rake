@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# FDW: needs to join with fdw table jobs.
+
 desc 'Cleanup old unused vulnerabilities data'
 task cleanup_vulnerabilities: :environment do
   @conn = ActiveRecord::Base.connection

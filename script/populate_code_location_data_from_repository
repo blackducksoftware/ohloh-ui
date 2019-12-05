@@ -1,6 +1,8 @@
 #! /usr/bin/env ruby
 # frozen_string_literal: true
 
+# FDW: uses several FDW tables. Research further if we need this task.
+
 require_relative '../config/environment'
 
 # populate code_locations from repositories

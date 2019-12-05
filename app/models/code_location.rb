@@ -49,6 +49,7 @@ class CodeLocation < FisbotApi
   end
 
   def best_code_set
+    # FDW: get code_set by id #API
     CodeSet.find_by(id: @best_code_set_id)
   end
 

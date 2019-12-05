@@ -26,6 +26,7 @@ class DeleteGoogleCodeProjects
     puts 'Successfully completed script - Please check deleted_googlecode_log_file.log to view any exceptions'
   end
 
+  # FDW: joins fdw table repositories with local project, enlistments. Maybe #unused.
   def fetch_googlecode_projects_array
     ActiveRecord::Base.connection.select_values("SELECT p.id as project_id
         FROM code_locations cl inner join repositories r ON cl.repository_id = r.id

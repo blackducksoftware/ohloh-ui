@@ -8,6 +8,7 @@ class AliasesController < SettingsController
   before_action :project_context, only: %i[index new create]
 
   def index
+    # FDW: @best_analysis_aliases used in the index view. See aliases/index for details.
     @best_analysis_aliases = Alias.best_analysis_aliases(@project)
     @aliases = Alias.for_project(@project).includes(:commit_name, :preferred_name)
   end

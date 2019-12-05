@@ -11,6 +11,7 @@
   = project_analysis_timestamp(@project)
 .clearfix
 .alias
+  -# FDW: Uses analysis_alias.commit_name_id & preferred_name_id to display alias info. #API
   - if @aliases.length + @best_analysis_aliases.length > 0
     %ul
       - @aliases.each do |a|

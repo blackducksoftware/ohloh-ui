@@ -47,6 +47,7 @@ class PositionsController < ApplicationController
 
   def commits_compound_spark
     spark_image = Rails.cache.fetch("position/#{@position.id}/commits_compound_spark", expires_in: 4.hours) do
+      # FDW: here name_fact uses fdw commits table. See Analysis::QueryBase. #API
       Spark::CompoundSpark.new(@name_fact.monthly_commits(11), max_value: 50).render.to_blob
     end
     send_data spark_image, type: 'image/png', filename: 'position_commits_compound_spark.png', disposition: 'inline'

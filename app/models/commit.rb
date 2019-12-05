@@ -16,6 +16,7 @@ class Commit < FisBase
     by_analysis(contributor_fact.analysis).where(name_id: commit_name_ids)
   }
 
+  # FDW: joins several FDW tables(commit, code_set, analysis_sloc_set) to fetch commits matching given analysis_id. #API
   scope :by_analysis, lambda { |analysis|
     joins(code_set: [sloc_sets: :analysis_sloc_sets])
       .joins('and commits.position <= analysis_sloc_sets.as_of')
@@ -53,6 +54,7 @@ class Commit < FisBase
   end
 
   class << self
+    # FDW: joins FDW tables code_sets & commits with local enlistments & projects tables to filter commits by project.
     def for_project(project)
       joins(:code_set).joins('join enlistments on enlistments.code_location_id = code_sets.code_location_id
                               join projects on project_id = projects.id')

@@ -27,6 +27,7 @@ class Alias < ActiveRecord::Base
     # Returns the entries from the aliases table which resulted in the current best_analysis.
     # !!! Note that these entries may have been modified since the analysis ran !!!
     # This method is here to help determine which aliases are active and which are still pending.
+    # FDW: joins FDW table analysis_aliases with local aliases & projects tables.
     def best_analysis_aliases(project)
       aliases = Alias.arel_table
       aas = AnalysisAlias.arel_table

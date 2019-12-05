@@ -1,7 +1,9 @@
 :ruby
   content_for(:html_title) { t('.html_title', name: @project.name) }
   page_context[:select_footer_nav] = :commits
+  # FDW: needs commit.lines_added_and_removed #API
   lines_added, lines_removed = @commit.lines_added_and_removed(@project.best_analysis_id)
+  # FDW: get FDW CommitContributor record for given analysis_id & name_id. #API
   commit_contributor = CommitContributor.where(analysis_id: @project.best_analysis_id).find_by(name_id: @commit.name_id)
 
 .project_content_title

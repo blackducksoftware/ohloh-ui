@@ -72,6 +72,7 @@ class GithubUser
   end
 
   def username_must_exist
+    puts github_username_url
     _stdin, stdout = Open3.popen3('curl', github_username_url)
     output = JSON.parse(stdout.read)
     errors.add(:url, I18n.t('invalid_github_username')) if output.is_a?(Hash) && output['message'] == 'Not Found'

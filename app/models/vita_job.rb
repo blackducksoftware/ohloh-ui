@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class VitaJob < Job
+  # FDW: update/create VitaJob when position changes. #API
   scope :schedule_account_analysis, lambda { |account, delay = 0|
     delayed_time = Time.current + delay
     job = where(account_id: account.id).where.not(status: Job::STATUS_COMPLETED).take

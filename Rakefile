@@ -7,3 +7,6 @@
 require File.expand_path('config/application', __dir__)
 
 Rails.application.load_tasks
+
+# Fix for rake notes to work with HAML.
+SourceAnnotationExtractor::Annotation.register_extensions("haml") { |tag| /(?:\/\/|#)\s*(#{tag}):?\s*(.*)$/ }

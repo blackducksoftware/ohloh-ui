@@ -6,6 +6,7 @@ class SlocMetric < FisBase
   belongs_to :sloc_set
   belongs_to :analysis_sloc_set, primary_key: :sloc_set_id, foreign_key: :sloc_set_id
 
+  # FDW: joins several FDW tables(sloc_metrics, analysis_sloc_sets, diffs, commits, fyles) with non FDW table languages.
   scope :commit_summaries, lambda { |commit, analysis_id|
     return none unless analysis_id
 
@@ -19,6 +20,7 @@ class SlocMetric < FisBase
               .group([:language_id, 'languages.nice_name', 'languages.name'])
   }
 
+  # FDW: joins several FDW tables(sloc_metrics, analysis_sloc_sets) with non FDW table languages.
   scope :diff_summaries, lambda { |diff, analysis_id|
     SlocMetric.select_summary_attributes.select('languages.nice_name as language_name')
               .joins(:analysis_sloc_set, :language)

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# FDW: needs jobs table. Used by oh_admin/jobs_controller.
 module JobApiHelper
   def current_step_at(step_at)
     step_at&.to_datetime&.strftime('%B %d, %Y %H:%M')
@@ -21,6 +22,7 @@ module JobApiHelper
   def slave_host(slave_id)
     return unless slave_id
 
+    # FDW: find slave record #API
     "on #{link_to Slave.find(slave_id).hostname, '#'}".html_safe
   end
 

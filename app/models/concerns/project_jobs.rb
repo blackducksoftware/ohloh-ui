@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# FDW: uses fdw tables jobs, code_locations with local tables projects, analyses
+# Can be moved into api calls. However there will be several api calls for a single ensure_job.
 module ProjectJobs
   extend ActiveSupport::Concern
   ACTIVITY_LEVEL = { na: 0, new: 10, inactive: 20, very_low: 30, low: 40,
@@ -63,6 +65,7 @@ module ProjectJobs
   end
 
   def update_logged_at
+    # FDW: use FDW tables analysis_sloc_sets & sloc_sets to update analysis.oldest_code_set_time #API
     sloc_set_ids = AnalysisSlocSet.where(analysis_id: best_analysis_id).pluck(:sloc_set_id)
     best_analysis.update(oldest_code_set_time: SlocSet.where(id: sloc_set_ids).minimum(:code_set_time))
   end
@@ -81,10 +84,12 @@ module ProjectJobs
   end
 
   def incomplete_code_location_job
+    # FDW: get jobs for given code_location_id. #API
     Job.incomplete.find_by(code_location_id: code_locations.map(&:id))
   end
 
   def sloc_sets_out_of_date?
+    # FDW: joins FDW tables code_locations, sloc_sets, code_sets to update FDW table analysis_sloc_sets. #API
     best_sloc_set_ids = CodeSet.where(id: code_locations.map(&:best_code_set_id)).pluck(:best_sloc_set_id)
     return true if (best_analysis.sloc_sets.pluck(:id) - best_sloc_set_ids).present?
 

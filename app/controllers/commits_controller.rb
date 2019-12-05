@@ -18,6 +18,7 @@ class CommitsController < SettingsController
   end
 
   def show
+    # FDW: get diffs, fyles for given commit & filter by given query. #API
     @diffs = @commit.diffs.includes(:fyle).filter_by(params[:query])
                     .order('fyles.name').page(page_param).per_page(10)
     @ignore_prefixes = @commit.code_set.ignore_prefixes(@project)
@@ -31,6 +32,7 @@ class CommitsController < SettingsController
     get_commit_contributors
   end
 
+  # FDW: joins FDW tables commits & commit_contributors with local people & names tables to get contributors.
   def get_commit_contributors
     @commit_contributors = CommitContributor.includes(:name, :person)
                                             .where(analysis_id: @analysis.id)
@@ -39,6 +41,7 @@ class CommitsController < SettingsController
   end
 
   def statistics
+    # FDW: find commit by id. Needs commit.lines_added_and_removed. #API
     @commit = Commit.find(params[:id])
 
     @lines_added, @lines_removed = @commit.lines_added_and_removed(@project.best_analysis_id)
@@ -62,6 +65,7 @@ class CommitsController < SettingsController
 
   def individual_named_commits
     get_commit_contributor
+    # FDW: joins FDW tables only: commits, analysis_aliases & commit_contributors. #API
     @commits = Commit.joins(:analysis_aliases)
                      .where(code_set_id: @commit_contributor.code_set_id, name_id: @commit_contributor.name_id)
                      .where('commits.position <= ?', @commit_contributor.code_set.as_of.to_i)
@@ -78,6 +82,7 @@ class CommitsController < SettingsController
   end
 
   def get_project_commits
+    # FDW: joins several FDW tables(commit, code_set, analysis_sloc_set) to fetch commits for analysis_id. #API
     @commits = Commit.by_analysis(@analysis)
                      .within_timespan(params[:time_span], @analysis.oldest_code_set_time)
                      .filter_by(params[:query])
@@ -85,6 +90,8 @@ class CommitsController < SettingsController
   end
 
   def find_commit
+    # FDW: find commit by id. #API
+    # This commit object needs to respond to functions called on it in the view (diffs, code_set etc.).
     @commit = Commit.find_by(id: params[:id])
     raise ParamRecordNotFound if @commit.nil?
   end
@@ -103,6 +110,7 @@ class CommitsController < SettingsController
     redirect_to root_path, notice: t('commits.project_temporarily_disabled') if oversized_project?(@project)
   end
 
+  # FDW: needs FDW table commit_contributors for local projects.id. #API
   def get_commit_contributor
     @commit_contributor = @project.commit_contributors.find_by(contribution_id: params[:contributor_id])
   end

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# FDW: joins FDW tables(commits, code_sets, sloc_sets, analysis_sloc_sets) for given analysis_id. #API
+
 namespace :fisa do
   desc 'Populate monthly commit histories'
   task populate_monthly_commit_history: :environment do

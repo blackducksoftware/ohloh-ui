@@ -3,6 +3,7 @@
 module OrganizationJobs
   extend ActiveSupport::Concern
 
+  # FDW: ensure_job for org. #API
   def ensure_job(priority = 0)
     Job.transaction do
       return if jobs.incomplete.any?

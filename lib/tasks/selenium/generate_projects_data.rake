@@ -2,6 +2,7 @@
 
 # Usage:
 # rake selenium:prepare_projects_data[firefox]
+# FDW: uses several FDW tables. Research further if we need this task.
 
 require 'action_view'
 

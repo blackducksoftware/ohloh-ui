@@ -34,6 +34,7 @@ class ContributorFact < NameFact
   end
 
   def daily_commits
+    # FDW: joins fdw tables commits & analysis_aliases with local table contributor_facts.
     Commit.for_contributor_fact(self)
           .select(daily_commits_select_clause)
           .group("date_trunc('day', commits.time)")
@@ -42,6 +43,7 @@ class ContributorFact < NameFact
   end
 
   def commits_within(from, to)
+    # FDW: joins fdw tables commits & analysis_aliases with local table contributor_facts.
     Commit.for_contributor_fact(self)
           .where(time: from..to)
           .order(:time)

@@ -8,6 +8,7 @@ module AliasScopes
     scope :for_project, lambda { |project|
       where(project_id: project.id).where(deleted: false).where.not(preferred_name_id: nil)
     }
+    # FDW: joins FDW tables code_sets & commits with local aliases, names, positions & projects tables.
     scope :committer_names, lambda { |project|
       code_set_ids = CodeSet.where(code_location_id: project.enlistments.pluck(:code_location_id)).pluck(:id)
       Name.where(id: Commit.where(code_set_id: code_set_ids).select(:name_id))
@@ -16,6 +17,7 @@ module AliasScopes
           .where.not(id: Position.for_project(project).where.not(name_id: nil).select(:name_id))
           .order('lower(name)')
     }
+    # FDW: joins FDW tables code_sets & commits with local aliases, names & projects tables.
     scope :preferred_names, lambda { |project, name_id = nil|
       code_set_ids = CodeSet.where(code_location_id: project.enlistments.pluck(:code_location_id)).pluck(:id)
       Name.where(id: Commit.where(code_set_id: code_set_ids).select(:name_id))

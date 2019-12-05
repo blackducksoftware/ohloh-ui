@@ -4,6 +4,7 @@ module CodeLocationJobs
   extend ActiveSupport::Concern
 
   included do
+    # FDW: ensure_job for code_location. #API
     def ensure_job(priority = 0)
       job = nil
       Job.transaction do
@@ -50,10 +51,12 @@ module CodeLocationJobs
     end
 
     def create_fetch_job(priority)
+      # FDW: creates code_set & fetch_job. #API
       cs = CodeSet.create(code_location_id: @id)
       FetchJob.create(code_set: cs, priority: priority)
     end
 
+    # FDW: creates jobs using code_set & sloc_set. #API
     def create_import_or_sloc_jobs(priority)
       sloc_set = best_code_set.best_sloc_set
       if sloc_set.blank?

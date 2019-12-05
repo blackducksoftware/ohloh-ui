@@ -26,6 +26,7 @@ module Report
   end
 
   def commit_history(start_date, end_date)
+    # FDW: joins FDW tables(commits, code_sets, analysis_sloc_sets & sloc_sets) with local all_months for monthly commit
     sql = <<-INLINE_SQL
     SELECT month, COALESCE(count,0) AS commits FROM all_months M LEFT OUTER JOIN (SELECT COUNT(*)
     AS count, date_trunc('month', C.time) AS this_month FROM analysis_sloc_sets ASS INNER JOIN sloc_sets SS

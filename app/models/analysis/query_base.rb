@@ -88,6 +88,7 @@ class Analysis::QueryBase
   end
 
   def contributor_monthly_commits_query
+    # FDW: joins FDW tables code_sets, commits & analysis_aliases to get monthly commits count. #API
     sql = <<-SQL
       select to_char(date(C.time),'MON,YYYY') as month, count (*) as count
       FROM  commits C INNER JOIN code_sets CS ON C.code_set_id = CS.id

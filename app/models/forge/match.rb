@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# FDW: the fdw Forge table can be moved. #API
 class Forge::Match
   require 'open-uri'
   require 'json'

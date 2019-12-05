@@ -8,6 +8,7 @@ class AnalysisSlocSet < FisBase
 
   scope :for_analysis, ->(analysis_id) { where(analysis_id: analysis_id) }
 
+  # FDW: joins FDW tables analysis_sloc_sets, sloc_sets & fyles to get ignore_tuples. #API
   def ignore_tuples
     conditions = ignore_prefixes.collect do |prefix|
       AnalysisSlocSet.sanitize_sql_condition(prefix)
@@ -24,7 +25,7 @@ class AnalysisSlocSet < FisBase
       sanitize_sql_for_conditions(["fyles.name like '%s%%'", sanitize_sql_like(file_name)])
     end
 
-    # TODO: Remove dependence on code_locations table here.
+    # FDW: joins FDW tables sloc_sets, code_sets & code_locations to fetch matching analysis_sloc_set. #API
     def for_code_location(code_location_id)
       joins(sloc_set: :code_set).joins('join code_locations on best_code_set_id = code_sets.id')
                                 .where('code_locations.id = ?', code_location_id)

@@ -78,6 +78,7 @@ class PopulateTravis
   end
 
   def travis_fyles_of_best_code_sets
+    # FDW: joins only FDW tables(code_sets, fyles, code_locations & repository) to find the .travis.yml file. #API
     Fyle.includes(code_set: { best_code_location: :repository })
         .joins(code_set: { best_code_location: :repository })
         .where(name: '.travis.yml')

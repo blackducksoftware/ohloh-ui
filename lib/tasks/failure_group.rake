@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# FDW: move task. #API
 namespace :jobs do
   desc 'Fix Job Failures'
   task reschedule_failure_group: :environment do

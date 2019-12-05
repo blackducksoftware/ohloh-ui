@@ -7,6 +7,7 @@ class ProjectParamsBuilder
   def initialize(account, *param_hash)
     @row = param_hash
     @editor_account = account
+    # FDW: find forge record. #API
     @forge_id = Forge.find_by(name: 'Github').id
 
     @licenses = {}

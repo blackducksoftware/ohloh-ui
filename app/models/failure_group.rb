@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# FDW: class can be moved. #API
 class FailureGroup < ActiveRecord::Base
   has_many :jobs, -> { where(status: Job::STATUS_FAILED).with_exception }
   def decategorize

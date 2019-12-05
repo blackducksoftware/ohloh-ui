@@ -48,11 +48,13 @@ class Contribution < ActiveRecord::Base
     kudos.limit(limit)
   end
 
+  # FDW: get AnalysisAlias matching given contribution.contributor_fact. #API
   def analysis_aliases
     AnalysisAlias.for_contribution(self)
   end
 
   def scm_names
+    # FDW: analysis_aliases.map(&:commit_name) #API
     analysis_aliases.collect(&:commit_name).uniq.compact
   end
 

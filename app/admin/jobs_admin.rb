@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# FDW: Jobs admin is probably #unused
 ActiveAdmin.register Job do
   config.sort_order = 'current_step_at_desc'
 
