@@ -69,5 +69,35 @@ class VulnerabilitiesHelperTest < ActionView::TestCase
       rel7 = FactoryBot.create(:release, version: '1.0.0')
       sort_releases_by_version_number(Release.all).must_equal [rel7, rel6, rel5, rel4, rel3, rel2, rel1]
     end
+
+    it 'should correctly filter invalid names of version releases' do
+      project = FactoryBot.create(:project)
+      FactoryBot.create(:project_security_set, project: project)
+      rel1 = FactoryBot.create(:release, version: 'Compose.NET 0.4b')
+      rel2 = FactoryBot.create(:release, version: 'Compose.NET 0.3b')
+      rel3 = FactoryBot.create(:release, version: 'Compose-.NET 0.8 for .NET 1.1')
+      rel4 = FactoryBot.create(:release, version: 'Compose-.NET 0.8.1 for .NET 1.1')
+      rel5 = FactoryBot.create(:release, version: 'Compose*.NET 0.7b')
+      sort_releases_by_version_number(Release.all).must_equal [rel4, rel3, rel5, rel1, rel2]
+    end
+
+    # rubocop: disable Metrics/LineLength
+    it 'should correctly filter a mix of valid and invalid version release names' do
+      project = FactoryBot.create(:project)
+      FactoryBot.create(:project_security_set, project: project)
+      rel1 = FactoryBot.create(:release, version: 'N/A')
+      rel2 = FactoryBot.create(:release, version: 'BEEing_5.0.3')
+      rel3 = FactoryBot.create(:release, version: 'BEEingXLib_7.0.0')
+      rel4 = FactoryBot.create(:release, version: 'BEEingLib_5.0.0')
+      rel5 = FactoryBot.create(:release, version: 'Sources')
+      rel6 = FactoryBot.create(:release, version: '3.0.0.5')
+      rel7 = FactoryBot.create(:release, version: '2.1.3')
+      rel8 = FactoryBot.create(:release, version: '3.0.0')
+      rel9 = FactoryBot.create(:release, version: 'Navicat BEEing Databases')
+      rel10 = FactoryBot.create(:release, version: 'BEEingDependencies')
+      rel11 = FactoryBot.create(:release, version: 'BEEingLibs')
+      sort_releases_by_version_number(Release.all).must_equal [rel6, rel8, rel7, rel10, rel4, rel11, rel3, rel2, rel1, rel9, rel5]
+    end
+    # rubocop: enable Metrics/LineLength
   end
 end
