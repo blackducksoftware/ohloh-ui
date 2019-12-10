@@ -9,4 +9,5 @@ namespace :deploy do
   task started: 'docker:deploy'
   task offline: 'docker:offline'
   task online:  'docker:online'
+  task utility: 'docker:utility'
 end

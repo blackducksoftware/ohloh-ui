@@ -39,4 +39,12 @@ namespace :docker do
       execute('docker start $DOCKER_HOST_NAME')
     end
   end
+
+  task :utility do
+    on fetch(:utility) do
+      execute('wget -O docker-compose.yml https://raw.githubusercontent.com/blackducksoftware/ohloh-ui/master/docker-compose-utility.yml')
+      execute('docker pull sigsynopsys/openhub:latest')
+      execute('docker-compose up -d --build')
+    end
+  end
 end
