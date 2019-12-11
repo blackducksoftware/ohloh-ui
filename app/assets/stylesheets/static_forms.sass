@@ -1,5 +1,5 @@
-textarea
-  color: #202020
+// textarea
+//   color: #202020
 
 input
   &[type="text"], &[type="password"], &[type="datetime"], &[type="datetime-local"], &[type="date"], &[type="month"], &[type="time"], &[type="week"], &[type="number"], &[type="email"], &[type="url"], &[type="search"], &[type="tel"], &[type="color"]
@@ -46,13 +46,13 @@ label
   margin-bottom: 5px
 
 select, textarea
+  @include static-forms-default-text-color
   display: inline-block
   height: 20px
   padding: 4px 6px
   margin-bottom: 10px
   font-size: 14px
   line-height: 20px
-  color: #555555
   vertical-align: middle
   -webkit-border-radius: 4px
   -moz-border-radius: 4px
@@ -101,9 +101,9 @@ input, textarea, .uneditable-input
   width: 206px
 
 textarea
+  @include static-forms-background-color
+  @include static-forms-border-color
   height: auto
-  background-color: #ffffff
-  border: 1px solid #cccccc
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075)
   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075)
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075)
@@ -114,8 +114,8 @@ textarea
 
 input
   &[type="text"], &[type="password"], &[type="datetime"], &[type="datetime-local"], &[type="date"], &[type="month"], &[type="time"], &[type="week"], &[type="number"], &[type="email"], &[type="url"], &[type="search"], &[type="tel"], &[type="color"]
-    background-color: #ffffff
-    border: 1px solid #cccccc
+    @include static-forms-background-color
+    @include static-forms-border-color
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075)
     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075)
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075)
@@ -125,8 +125,8 @@ input
     transition: border linear 0.2s, box-shadow linear 0.2s
 
 .uneditable-input
-  background-color: #ffffff
-  border: 1px solid #cccccc
+  @include static-forms-background-color
+  @include static-forms-border-color
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075)
   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075)
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075)
@@ -180,8 +180,8 @@ select, input[type="file"]
   line-height: 30px
 
 select
+  @include static-forms-background-color
   width: 220px
-  background-color: #ffffff
   border: 1px solid #cccccc
   &[multiple], &[size]
     height: auto
@@ -197,10 +197,10 @@ input
     outline-offset: -2px
 
 .uneditable-input, .uneditable-textarea
+  @include static-forms-border-color
   color: #999999
   cursor: not-allowed
   background-color: #fcfcfc
-  border-color: #cccccc
   -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.025)
   -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.025)
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.025)
@@ -405,8 +405,8 @@ input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:fo
   padding: 19px 20px 20px
   margin-top: 20px
   margin-bottom: 20px
-  background-color: $primary-black-20
-  border-top: 1px solid $primary-black-40
+  background-color: black
+  border-top: 1px solid black
   *zoom: 1
   &:before
     display: table
@@ -452,6 +452,8 @@ input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:fo
   z-index: 2
 
 .input-append .add-on, .input-prepend .add-on
+  @include static-forms-add-on-background-color
+  @include static-forms-border-color
   display: inline-block
   width: auto
   height: 20px
@@ -462,8 +464,6 @@ input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:fo
   line-height: 20px
   text-align: center
   text-shadow: 0 1px 0 #ffffff
-  background-color: #eeeeee
-  border: 1px solid #ccc
 
 .input-append .add-on, .input-prepend .add-on, .input-append .btn, .input-prepend .btn, .input-append .btn-group > .dropdown-toggle, .input-prepend .btn-group > .dropdown-toggle
   vertical-align: top
@@ -618,13 +618,12 @@ input
   font-size: 11px !important
 
 textarea
+  @include static-forms-border-color
+  @include static-forms-text-color
   -webkit-border-radius: 0 !important
   -moz-border-radius: 0 !important
   border-radius: 0 !important
-  border-width: 1px
-  color: #858585
   background-color: #ffffff
-  border-color: #d5d5d5
   -webkit-box-shadow: none
   -moz-box-shadow: none
   box-shadow: none
@@ -635,13 +634,12 @@ textarea
 
 input
   &[type="text"], &[type="password"], &[type="datetime"], &[type="datetime-local"], &[type="date"], &[type="month"], &[type="time"], &[type="week"], &[type="number"], &[type="email"], &[type="url"], &[type="search"], &[type="tel"], &[type="color"]
+    @include static-forms-border-color
+    @include static-forms-text-color
     -webkit-border-radius: 0 !important
     -moz-border-radius: 0 !important
     border-radius: 0 !important
-    border-width: 1px
-    color: #858585
     background-color: #ffffff
-    border-color: #d5d5d5
     -webkit-box-shadow: none
     -moz-box-shadow: none
     box-shadow: none

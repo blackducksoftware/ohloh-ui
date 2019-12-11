@@ -139,7 +139,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
       h1
         margin: 15px 0px 6px 0px
       i
-        background-color: color-gradient($SECONDARY_SLATE_BLUE, 120)
+        @include project-icon-colors
 
   .about
     margin-top: 10px
@@ -149,7 +149,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
   margin-left: 5.3rem
   margin-top: 5.3rem
   a
-    background-color: color-gradient($LIGHT_GRAY, 100) !important
+    @include add-this-link-colors
 
 #project_container
   #project_masthead
@@ -347,7 +347,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     border-bottom: medium none
     cursor: pointer
   #permitted
-    color: color-gradient($SECONDARY_FOREST_GREEN, 120) 
+    @include licenses-permitted-color
     margin-top: -20px
     .well
       padding-bottom: 0
@@ -356,7 +356,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
       p
         margin-left: 2em
   #forbidden
-    color: color-gradient($WEB_RED, 120)
+    @include licenses-forbidden-color
     margin-top: -20px
     padding-left: 0
     .well
@@ -366,7 +366,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
       p
         margin-left: 2em
   #required
-    color: color-gradient($SECONDARY_MARINE_BLUE, 120)
+    @include licenses-required-color
     margin-top: -20px
     padding-left: 0
     .well
@@ -387,19 +387,10 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
   overflow-y: auto
   word-break: break-word
 
+.oh_pagination
+  @include site-pagination-colors
+
 #vulnerabilities_index_page
-  .oh_pagination
-    border-color: color-gradient($LIGHT_GRAY, 100) !important
-    li
-      a
-        color: color-gradient($SECONDARY_SLATE_BLUE, 120) !important
-    .disabled
-      span
-        color: color-gradient($LIGHT_GRAY, 100) !important
-    .active
-      span
-        color: white
-        background-color: color-gradient($SECONDARY_SLATE_BLUE, 120) !important
   .no_vulnerability
     text-align: center
     margin-bottom: 25px
@@ -409,18 +400,13 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     padding-right: 30px
     text-align: justify
   .release_timespan
+    @include vulnerabilities-release-timespan-colors
     width: 40px
     height: 26px
     padding: 0
     text-align: center
     line-height: 23px
     border: 0
-    color: color-gradient($SECONDARY_SLATE_BLUE, 120) !important
-    background-color: color-gradient($SECONDARY_SLATE_BLUE, 40) !important
-    &.selected
-      color: white !important
-      background-color: color-gradient($SECONDARY_SLATE_BLUE, 120) !important
-      font-weight: bold !important
     &.disabled
       background-color: #9A9A9A !important
     &:hover
@@ -460,13 +446,13 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
 .vulnerabilities-datatable
   tbody tr
     &:nth-child(odd)
-      background-color: color-gradient($SECTION_BACKGROUND, 0)
+      @include site-well-color
   position: relative
   btn i
+    @mixin site-link-color
     display: inline
-    color: color-gradient($SECONDARY_SLATE_BLUE, 120)
     &.disable
-      color: color-gradient($LIGHT_GRAY, 100)
+      @include vulnerabilities-disabled-text-color
     &:hover
       cursor: pointer
     &.fa.fa-sort-amount-desc, &.fa.fa-sort-amount-asc
@@ -523,7 +509,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
 
 #project_tags, #project_badges
   .title
-    color: color-gradient($SECONDARY_SLATE_BLUE, 120)
+    @include site-link-color
     margin-bottom: 0.3em
 
 #project_badges

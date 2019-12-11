@@ -1,3 +1,5 @@
+@import oh-styles
+
 // margin classes like margin_top_10, margin_left_5, margin_bottom_10..
 @each $pos in ('top', 'right', 'bottom', 'left')
   @each $pixel in (0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50)
@@ -5,14 +7,6 @@
       margin-#{$pos}: #{$pixel}px !important
     .padding_#{$pos}_#{$pixel}
       padding-#{$pos}: #{$pixel}px !important
-
-@mixin menu_links
-  &:hover
-    padding-bottom: 0px
-    color: color-gradient($SECONDARY_YELLOW, 60)
-  margin-bottom: 0px
-  padding-bottom: 0px
-  color: color-gradient($SECONDARY_YELLOW, 100)  !important
 
 ul.select_projects
   li.projects

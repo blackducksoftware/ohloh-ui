@@ -1,7 +1,7 @@
 @import oh-colors
 
 #search-dingus
-  background-color: #F6F6F6
+  @include site-well-color
   padding: 7px 0px
   line-height: 29px
   min-height: 33px
@@ -55,8 +55,8 @@
         font-size: 14px
         text-transform: none
         &:hover
+          @include global-top-search-hover-background-color
           color: #fff
-          background-color: color-gradient($SECONDARY_MARINE_BLUE, 60)
   .btn-small
     font-size: 14px
     border-width: 2px !important
@@ -65,23 +65,12 @@
       font-weight: 100
       text-transform: none
     &:hover
-      background-color: color-gradient($SECONDARY_MARINE_BLUE, 60) !important
-      border-color: color-gradient($SECONDARY_MARINE_BLUE, 60) !important
+      @include global-top-search-hover-background-color
+      @include global-top-search-hover-border-color
 
 .global_top_search
   height: 18px !important
-  border-color: color-gradient($SECONDARY_LIGHT_PURPLE, 100) !important
-  color: color-gradient($LIGHT_GRAY, 120) !important
-  &:-moz-placeholder
-    color:    color-gradient($LIGHT_GRAY, 100) 
-    font-style: italic
-    opacity:  1
-  &:-ms-input-placeholder
-    color:    color-gradient($LIGHT_GRAY, 100)
-    font-style: italic
-  &::-webkit-input-placeholder
-    color:    color-gradient($LIGHT_GRAY, 100)
-    font-style: italic
+  @include global-top-search-colors
 
 .global_top_search_icon
   color: rgba(82, 168, 236, 0.8) !important

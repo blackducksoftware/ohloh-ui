@@ -1,4 +1,4 @@
-@import oh-colors
+@import oh-styles
 
 // base mixins
 =sans_font
@@ -14,12 +14,12 @@
 =tiny_font
   font-size: .8333em
 =link_blue
-  color: color-gradient($SECONDARY_MARINE_BLUE, 120)
+  @include site-link-color
 
 body
   text-rendering: optimizeLegibility
   a
-    color: color-gradient($SECONDARY_MARINE_BLUE, 120)
+    @include site-link-color
   
 
 .hidden
@@ -67,7 +67,7 @@ h4
   line-height: 1.2
   margin-bottom: 1.2em
   a:link, a:hover, a:visited
-    color: color-gradient($SECONDARY_MARINE_BLUE, 120)
+    @include site-link-color
   &.section_header
     border-bottom: 2px solid #ccc
     padding: 0 5px
@@ -87,14 +87,14 @@ h6
 
 h1, h2, h3, h4, h5, h6
   a:link, a:visited
+    @include site-link-color
     border:  0
-    color: $primary-blue-darker
   &.section
     border-botton: 1px solid #aaa
 
 h1, h2, h3, h4, h5, h6, p, li, dd, dt,span,a,abbr,td,th
   &.soft
-    color: $primary-gray-80
+    @include soft-font-color
   &.date
     color: #777
 
@@ -116,7 +116,7 @@ h1, h2, h3, h4, h5, h6, p, li, dd, dt,span,a,abbr,td,th
       font-style: normal
 
 .soft
-  color: $primary-gray-80
+  @include soft-font-color
 
 code
   color: $secondary-blue-80
@@ -127,8 +127,8 @@ code
 
 .required
   &:after
+    @include soft-font-color
     content: ' (required)'
-    color: $primary-gray-80
 
 .control-label, b
   font-size: 14px

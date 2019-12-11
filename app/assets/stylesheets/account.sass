@@ -7,7 +7,7 @@
     position: relative
     height: 128px
   .commits_summary
-    background-color: $primary-black-40
+    background-color: black
     width: 455px
     margin: 5px 0px
     height: 118px
@@ -58,7 +58,7 @@
     text-align: center
     padding: 50px
     font-size: 15px
-    color: $primary-black-60
+    color: black
   .member_info
     position: absolute
     bottom: 0px
@@ -84,8 +84,8 @@
       color: $secondary-blue-2-darker !important
 
 #analysis_timestamp
+  @include analysis-timestamp-color
   margin-top: 0px
-  color: color-gradient($LIGHT_GRAY, 100)
 
 .account_settings_options
   margin-left: 20px
