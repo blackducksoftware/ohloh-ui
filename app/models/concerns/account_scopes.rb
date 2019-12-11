@@ -16,7 +16,7 @@ module AccountScopes
     scope :recently_active, lambda {
       where(level: Account::Access::DEFAULT)
         .joins(best_vita: :vita_fact)
-        .where("last_checkin > '#{1.month.ago.to_date.to_s}'")
+        .where("last_checkin > '#{1.month.ago.to_date}'")
         .order('name_facts.thirty_day_commits DESC NULLS LAST').limit(10)
     }
 
