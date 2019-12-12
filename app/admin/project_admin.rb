@@ -47,8 +47,8 @@ ActiveAdmin.register Project do
     job = ProjectAnalysisJob.incomplete.find_by(project_id: project.id)
     job&.update!(status: 3, notes: 'Rescheduling Job')
 
-    job = ProjectAnalysisJob.incomplete.find_by(project_id: project.id)
-    .create!(project_id: project.id)
+    ProjectAnalysisJob.incomplete.find_by(project_id: project.id)
+                      .create!(project_id: project.id)
 
     redirect_to oh_admin_project_jobs_path(project),
                 flash: { success: 'ProjectAnalysisJob scheduled successfully' }
