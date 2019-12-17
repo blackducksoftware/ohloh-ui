@@ -44,13 +44,13 @@ ActiveAdmin.register Project do
 
   member_action :create_analyze_job do
     project = Project.from_param(params[:id]).first
-    job = AnalyzeJob.incomplete.find_by(project_id: project.id)
+    job = ProjectAnalysisJob.incomplete.find_by(project_id: project.id)
     job&.update!(status: 3, notes: 'Rescheduling Job')
 
-    AnalyzeJob.create!(project_id: project.id)
+    ProjectAnalysisJob.create!(project_id: project.id)
 
     redirect_to oh_admin_project_jobs_path(project),
-                flash: { success: 'AnalyzeJob scheduled successfully' }
+                flash: { success: 'ProjectAnalysisJob scheduled successfully' }
   end
 
   form do |f|
