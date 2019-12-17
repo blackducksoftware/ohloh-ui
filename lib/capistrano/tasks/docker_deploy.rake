@@ -27,7 +27,7 @@ namespace :docker do
       on fetch(:web_heads), in: :parallel do
         execute('docker pull sigsynopsys/openhub:offline')
         execute('docker stop $DOCKER_HOST_NAME')
-        execute('docker run --name=offline --rm -d -p 80:80 sigsynopsys/openhub:offline')
+        execute('docker run --name=offline --rm -d -p 443:443 sigsynopsys/openhub:offline')
       end
       puts 'Please run cap production deploy:online to bring the site back online.'
     end
