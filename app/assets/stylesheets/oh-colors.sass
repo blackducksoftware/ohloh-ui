@@ -3,7 +3,7 @@
 // New OTWO COLOR STANDARDS (from marketing, Nov. 2019)
 //   https://sig-confluence.internal.synopsys.com/pages/viewpage.action?spaceKey=O2&title=2019+OH+Color+Standards
 
-// base color defs, used below as keys for $COLORS map
+// base color defs, used below as keys for $OH_COLORS map
 $FOOTER_BACKGROUND:       -1
 $SECTION_BACKGROUND:      -2
 $SECTION_BACKGROUND_BLUE: -3
@@ -23,7 +23,7 @@ $SECONDARY_TEAL:          12
 $SECONDARY_YELLOW:        13
 $WEB_RED:                 14
 
-// hex color defs, used as values in $COLORS map
+// hex color defs, used as values in $OH_COLORS map
 $FOOTER_BACKGROUND_COLOR:        #F0F0F4
 $c1: $FOOTER_BACKGROUND_COLOR
 
@@ -79,7 +79,7 @@ $WEB_RED_COLORS:                 ( 120: #b33027, 100: #E03C31, 80: #e6635a, 60: 
 $m14: $WEB_RED_COLORS 
 
 // main color map, somewhat minified as Sass can't handle multiline variable definitions
-$COLORS: ( -1: $c1, -2: $c2, -3: $c3, -4: $c4, 1: $m1, 2: $m2, 3: $m3, 4: $m4, 5: $m5, 6: $m6, 7: $m7, 8: $m8, 9: $m9, 10: $m10, 11: $m11, 12: $m12, 13: $m13, 14: $m14 )
+$OH_COLORS: ( -1: $c1, -2: $c2, -3: $c3, -4: $c4, 1: $m1, 2: $m2, 3: $m3, 4: $m4, 5: $m5, 6: $m6, 7: $m7, 8: $m8, 9: $m9, 10: $m10, 11: $m11, 12: $m12, 13: $m13, 14: $m14 )
 
 ////////////////////////////
 //
@@ -87,9 +87,9 @@ $COLORS: ( -1: $c1, -2: $c2, -3: $c3, -4: $c4, 1: $m1, 2: $m2, 3: $m3, 4: $m4, 5
 
 @function color-gradient($color, $gradient)
   @if $color < 0
-    @return map-get($COLORS, $color)
+    @return map-get($OH_COLORS, $color)
   @else
-    $color_map: map-get($COLORS, $color)
+    $color_map: map-get($OH_COLORS, $color)
     @return map-get($color_map, $gradient)
 
 ////////////////////////////
