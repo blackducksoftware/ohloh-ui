@@ -10,4 +10,4 @@ services:
     volumes:
       - "/docker_data/gems/:/home/serv-deployer/.rbenv/versions/2.5.3/lib/ruby/gems/2.5.0/"
       - "/docker_data/logs/${DOCKER_HOST_NAME}/:/var/local/openhub/log/"
-      - "/docker_data/assets/:/var/local/openhub/public/"
+      - "/docker_data/assets/assets/:/var/local/openhub/public/assets/"
