@@ -1,5 +1,9 @@
 @import oh-colors
 
+////////////////////////////////////////////////////////////////////
+//
+// Bootstrap mixins
+
 @mixin bootstrap-default-alert-colors
   color: color-gradient($SECONDARY_ORANGE, 120)
   background-color: color-gradient($SECONDARY_ORANGE, 20)
@@ -20,6 +24,10 @@
   background-color: color-gradient($SECONDARY_SKY_BLUE, 40)
   border-color: color-gradient($SECONDARY_SLATE_BLUE, 60)
 
+////////////////////////////////////////////////////////////////////
+//
+// Global/site-wide mixins
+
 @mixin site-well-color
   background-color: color-gradient($SECTION_BACKGROUND, 0) !important
 
@@ -34,6 +42,10 @@
 
 @mixin site-separator-background-color
   background-color: color-gradient($PRIMARY_DARK_GRAY, 60)
+
+////////////////////////////////////////////////////////////////////
+//
+// Header/menu-bar mixins
 
 @mixin top-navigation-colors
   color: color-gradient($PRIMARY_PURPLE, 100) !important
@@ -79,6 +91,10 @@
 @mixin global-top-search-hover-border-color
   border-color: color-gradient($SECONDARY_MARINE_BLUE, 60) !important
 
+////////////////////////////////////////////////////////////////////
+//
+// Footer/bottom-nav mixins
+
 @mixin bottom-nav-active-colors
   color: color-gradient($SECONDARY_SLATE_BLUE, 100)
   background-color: color-gradient($SECTION_BACKGROUND_BLUE, 0)
@@ -99,6 +115,10 @@
 
 @mixin footer-copyright-colors
   color: color-gradient($LIGHT_GRAY, 100) !important
+
+////////////////////////////////////////////////////////////////////
+//
+// Home page mixins
 
 @mixin billboard-background-color
   background: none repeat scroll 0 0 color-gradient($SECONDARY_SKY_BLUE, 120)
@@ -134,6 +154,10 @@
 
 @mixin most-active-contributors-background-color
   background-color: color-gradient($SECONDARY_TEAL, 120) !important
+
+////////////////////////////////////////////////////////////////////
+//
+// Button mixins
 
 @mixin follow-button-colors
   background-color: color-gradient($LIGHT_GRAY, 120) !important
@@ -216,6 +240,10 @@
   &.no-border:hover
     border-color: $primary-blue !important
 
+////////////////////////////////////////////////////////////////////
+//
+// Form mixins
+
 @mixin static-forms-add-on-background-color
   background-color: color-gradient($PRIMARY_DARK_GRAY, 40)
 
@@ -230,6 +258,27 @@
   
 @mixin static-forms-text-color
   color: color-gradient($PRIMARY_DARK_GRAY, 100)
+
+////////////////////////////////////////////////////////////////////
+//
+// Pagination mixins
+
+@mixin site-pagination-colors
+  border-color: color-gradient($LIGHT_GRAY, 100) !important
+  li
+    a
+      @include site-link-color
+  .disabled
+    span
+      color: color-gradient($LIGHT_GRAY, 100) !important
+  .active
+    span
+      color: white
+      background-color: color-gradient($SECONDARY_SLATE_BLUE, 120) !important
+
+////////////////////////////////////////////////////////////////////
+//
+// Project mixins
 
 @mixin default-tag-colors
   color: color-gradient($SECONDARY_SLATE_BLUE, 100) !important
@@ -257,19 +306,6 @@
 @mixin project-icon-colors
   color: white
   background-color: color-gradient($SECONDARY_SLATE_BLUE, 120) !important
-
-@mixin site-pagination-colors
-  border-color: color-gradient($LIGHT_GRAY, 100) !important
-  li
-    a
-      @include site-link-color
-  .disabled
-    span
-      color: color-gradient($LIGHT_GRAY, 100) !important
-  .active
-    span
-      color: white
-      background-color: color-gradient($SECONDARY_SLATE_BLUE, 120) !important
 
 @mixin vulnerabilities-release-timespan-colors
   color: color-gradient($SECONDARY_SLATE_BLUE, 120) !important
