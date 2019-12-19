@@ -77,7 +77,6 @@ Timeline.Platform = new Object();
 		};
 
 		(function() {
-			debugger;
 			if (typeof Timeline_urlPrefix == 'string') {
 				Timeline.urlPrefix = Timeline_urlPrefix;
 				if (typeof Timeline_parameters == 'string') {
