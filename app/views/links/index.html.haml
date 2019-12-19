@@ -32,8 +32,8 @@
               = h link.title
             .col-md-6
               %h5.nomargin
-                = link_to bootstrap_icon('icon-external-link', h(truncate(link.url_host, length: 33))),
-                    link.url_escaped, target: '_blank', title: h(link.url_escaped)
+                = link_to bootstrap_icon('icon-external-link', safe_slice_host(link.url)),
+                    sanitize(link.url), target: '_blank', title: sanitize(link.url)
             .col-md-2.nomargin.pull-right
               - if has_permission
                 %a.btn.btn-info.btn-mini{ href: edit_project_link_path(@project, link) }
