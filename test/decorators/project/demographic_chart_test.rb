@@ -23,13 +23,11 @@ class Project::DemographicChartTest < ActiveSupport::TestCase
       low_active_data = data['series'].last['data'].last
 
       inactive_data[:name].must_equal 'Inactive'
-      inactive_data[:color].must_equal '#2369C8'
       inactive_data[:y].must_equal 60.0
       inactive_data[:selected].must_equal true
       inactive_data[:sliced].must_equal true
 
       low_active_data[:name].must_equal 'Low'
-      low_active_data[:color].must_equal '#75B134'
       low_active_data[:y].must_equal 40.0
       low_active_data[:selected].must_equal false
       low_active_data[:sliced].must_equal false
